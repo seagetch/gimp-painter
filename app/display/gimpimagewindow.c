@@ -226,6 +226,9 @@ static void      gimp_image_window_page_removed        (GtkNotebook         *not
                                                         GtkWidget           *widget,
                                                         gint                 page_num,
                                                         GimpImageWindow     *window);
+static void      gimp_image_window_notebook_resized    (GtkNotebook     *notebook,
+                                                        GtkAllocation   *allocation,
+                                                        GimpImageWindow *window);
 static void      gimp_image_window_disconnect_from_shell
                                                        (GimpImageWindow     *window,
 						        GimpDisplayShell    *shell);
@@ -555,6 +558,9 @@ gimp_image_window_constructed (GObject *object)
                     window);
   g_signal_connect (private->notebook, "page-removed",
                     G_CALLBACK (gimp_image_window_page_removed),
+                    window);
+  g_signal_connect (private->notebook, "size-allocate",
+                    G_CALLBACK (gimp_image_window_notebook_resized),
                     window);
   }
 
@@ -2095,6 +2101,20 @@ gimp_image_window_page_removed (GtkNotebook     *notebook,
       gimp_image_window_disconnect_from_active_shell (window);
       private->active_shell = NULL;
     }
+}
+
+static void
+gimp_image_window_notebook_resized (GtkNotebook     *notebook,
+                                    GtkAllocation   *allocation,
+                                    GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  if (allocation->width > allocation->height) {
+    gtk_notebook_set_tab_pos (GTK_NOTEBOOK (private->notebook), GTK_POS_LEFT);
+  } else {
+    gtk_notebook_set_tab_pos (GTK_NOTEBOOK (private->notebook), GTK_POS_TOP);
+  }
 }
 
 static void
