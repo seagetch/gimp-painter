@@ -101,7 +101,8 @@ static void      gimp_paned_box_unrealize               (GtkWidget      *widget)
 static void      gimp_paned_box_set_widget_drag_handler (GtkWidget      *widget,
                                                          GimpPanedBox   *handler);
 static gint      gimp_paned_box_get_drop_area_size      (GimpPanedBox   *paned_box);
-
+static void      gimp_paned_box_orientation_notify      (GimpPanedBox *paned_box,
+                                                         void         *data);
 
 G_DEFINE_TYPE (GimpPanedBox, gimp_paned_box, GTK_TYPE_BOX)
 
@@ -160,6 +161,7 @@ gimp_paned_box_init (GimpPanedBox *paned_box)
                      0,
                      dialog_target_table, G_N_ELEMENTS (dialog_target_table),
                      GDK_ACTION_MOVE);
+  g_signal_connect (G_OBJECT (paned_box), "notify::orientation", G_CALLBACK (gimp_paned_box_orientation_notify), NULL);
 }
 
 static void
@@ -766,4 +768,37 @@ gimp_paned_box_set_drag_handler (GimpPanedBox *paned_box,
   g_return_if_fail (GIMP_IS_PANED_BOX (paned_box));
 
   paned_box->p->drag_handler = drag_handler;
+}
+
+static void
+gimp_paned_box_orientation_notify (GimpPanedBox *paned_box,
+                                   void         *data)
+{
+  GtkOrientation orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (paned_box));
+  GList* children = gtk_container_get_children (GTK_CONTAINER (paned_box));
+  GList* next_children = NULL;
+
+  do {
+
+    for (GList* child_iter = children; child_iter; child_iter = child_iter->next) {
+      GtkWidget* child = GTK_WIDGET(child_iter->data);
+
+      if (GTK_IS_PANED(child)) {
+        GList* grandchildren = gtk_container_get_children(GTK_CONTAINER (child));
+
+        for (GList* grandchild_iter = grandchildren; grandchild_iter; grandchild_iter = grandchild_iter->next) {
+          GtkWidget* grandchild = GTK_WIDGET(grandchild_iter->data);
+          next_children = g_list_append(next_children, grandchild);
+        }
+        g_list_free (grandchildren);
+
+        gtk_orientable_set_orientation(GTK_ORIENTABLE(child), orientation);
+      }
+    }
+
+    g_list_free(children);
+    children = next_children;
+    next_children = NULL;
+
+  } while (children);
 }

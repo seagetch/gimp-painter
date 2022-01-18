@@ -135,6 +135,7 @@ struct _GimpImageWindowPrivate
   GdkWindowState     window_state;
 
   const gchar       *entry_id;
+  gboolean           pane_vertical;
 };
 
 typedef struct
@@ -263,6 +264,11 @@ static void    gimp_image_window_configure_for_toolbar_window_mode(GimpImageWind
 static void    gimp_image_window_configure_for_non_toolbar_window_mode(GimpImageWindow* window);
 static void    gimp_image_window_switch_active_shell (GimpImageWindow* window,
                                                       GimpDisplayShell* shell);
+static void    gimp_image_window_resized               (GtkWidget       *widget,
+                                                        GtkAllocation   *allocation,
+                                                        GimpImageWindow *window);
+static void    gimp_image_window_set_dock_orientation  (GimpImageWindow *window,
+                                                        GtkOrientation   orientation);
 static void    navigation_bar_success_clicked (GtkWidget* widget, GimpImageWindow *window);
 
 G_DEFINE_TYPE_WITH_CODE (GimpImageWindow, gimp_image_window, GIMP_TYPE_WINDOW,
@@ -584,6 +590,11 @@ gimp_image_window_constructed (GObject *object)
                                     NULL /*new_display*/,
                                     gimp_image_window_config_to_entry_id (config));
   gimp_image_window_configure_window_mode(window);
+
+  private->pane_vertical = FALSE;
+  g_signal_connect (window, "size-allocate",
+                    G_CALLBACK (gimp_image_window_resized),
+                    window);
 }
 
 static void
@@ -1066,6 +1077,11 @@ gimp_image_window_add_dock (GimpDockContainer   *dock_container,
                                   -1 /*index*/);
     }
 
+  if (private->pane_vertical) {
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (dock), GTK_ORIENTATION_HORIZONTAL);
+  } else {
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (dock), GTK_ORIENTATION_VERTICAL);
+  }
   active_shell = gimp_image_window_get_active_shell (window);
   if (active_shell)
     gimp_display_shell_appearance_update (active_shell);
@@ -2540,6 +2556,76 @@ gimp_image_window_activate_navigation_bar (GimpImageWindow *window,
   gtk_label_set_text (GTK_LABEL(private->guide.label), message_text);
   g_signal_connect (private->guide.success_button, "clicked", (GCallback)(navigation_bar_success_clicked), window);
   gtk_widget_show (private->guide.bar);
+}
+
+static void
+gimp_image_window_resized (GtkWidget       *widget,
+                           GtkAllocation   *allocation,
+                           GimpImageWindow *window)
+{
+  GtkWidget *widget1;
+  GtkWidget *widget2;
+
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  if (allocation->width > allocation->height) {
+    if (private->pane_vertical) {
+      
+      widget1 = gtk_paned_get_child1(GTK_PANED(private->right_hpane));
+      g_object_ref(G_OBJECT(widget1));
+      gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget1));
+
+      widget2 = gtk_paned_get_child2(GTK_PANED(private->right_hpane));
+      g_object_ref(G_OBJECT(widget2));
+      gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget2));
+
+      gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, FALSE, FALSE);
+      gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, FALSE, FALSE);
+      gtk_orientable_set_orientation(GTK_ORIENTABLE(private->right_hpane), GTK_ORIENTATION_HORIZONTAL);
+      g_object_unref(G_OBJECT(widget1));
+      g_object_unref(G_OBJECT(widget2));
+
+      gimp_image_window_set_dock_orientation (window, GTK_ORIENTATION_VERTICAL);
+      private->pane_vertical = FALSE;
+    }
+  } else {
+    if (!private->pane_vertical) {
+      
+      widget1 = gtk_paned_get_child1(GTK_PANED(private->right_hpane));
+      g_object_ref(G_OBJECT(widget1));
+      gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget1));
+      
+      widget2 = gtk_paned_get_child2(GTK_PANED(private->right_hpane));
+      g_object_ref(G_OBJECT(widget2));
+      gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget2));
+      
+      gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, FALSE, FALSE);
+      gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, FALSE, FALSE);
+      gtk_orientable_set_orientation(GTK_ORIENTABLE(private->right_hpane), GTK_ORIENTATION_VERTICAL);
+      g_object_unref(G_OBJECT(widget1));
+      g_object_unref(G_OBJECT(widget2));
+
+      gimp_image_window_set_dock_orientation (window, GTK_ORIENTATION_HORIZONTAL);
+      private->pane_vertical = TRUE;
+    }
+  }
+}
+
+static void
+gimp_image_window_set_dock_orientation (GimpImageWindow *window,
+                                        GtkOrientation   orientation)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GtkWidget *docks;
+  GList     *children_list;
+
+  docks = private->right_docks;
+  children_list = gimp_dock_columns_get_docks(GIMP_DOCK_COLUMNS(docks));
+
+  for (GList* children = children_list; children; children = children->next) {
+    GimpDock *dock = GIMP_DOCK(children->data);
+    gtk_orientable_set_orientation(GTK_ORIENTABLE(dock), orientation);
+  }
+
 }
 
 void

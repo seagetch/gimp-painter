@@ -104,6 +104,8 @@ static void       gimp_dock_invalidate_description (GimpDock     *dock);
 static gboolean   gimp_dock_dropped_cb             (GtkWidget    *source,
                                                     gint          insert_index,
                                                     gpointer      data);
+static void       gimp_dock_orientation_notify     (GimpDock     *dock,
+                                                    void         *data);
 
 /* Gimp-painter-2.7: Functions for title bar implementation */
 static void              gimp_dock_titlebar_init          (GimpDockTitlebar *titlebar, 
@@ -243,6 +245,8 @@ gimp_dock_init (GimpDock *dock)
 
   gtk_container_add (GTK_CONTAINER (dock->p->content_hbox), dock->p->paned_vbox);
   gtk_widget_show (dock->p->paned_vbox);
+
+  g_signal_connect(G_OBJECT(dock), "notify::orientation", G_CALLBACK(gimp_dock_orientation_notify), NULL);
 }
 
 static GtkWidget *
@@ -1019,4 +1023,12 @@ gimp_dock_set_shaded (GimpDock *dock, gboolean shaded)
   g_return_if_fail (GIMP_IS_DOCK (dock));
 
   gimp_dock_titlebar_set_shaded (dock, shaded);
+}
+
+static void
+gimp_dock_orientation_notify     (GimpDock     *dock,
+                                  void         *data)
+{
+  GtkOrientation orientation = gtk_orientable_get_orientation(GTK_ORIENTABLE(dock));
+  gtk_orientable_set_orientation(GTK_ORIENTABLE(dock->p->paned_vbox), orientation); 
 }
