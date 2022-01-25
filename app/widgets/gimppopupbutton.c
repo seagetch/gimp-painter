@@ -171,36 +171,17 @@ gimp_popup_map (GtkWidget *widget)
    *  receive events. we filter away events outside this toplevel
    *  away in button_press()
    */
-  if (gdk_pointer_grab (gtk_widget_get_window (widget), TRUE,
-                        GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-                        GDK_POINTER_MOTION_MASK,
-                        NULL, NULL, GDK_CURRENT_TIME) == 0)
-    {
-      if (gdk_keyboard_grab (gtk_widget_get_window (widget), TRUE,
-                             GDK_CURRENT_TIME) == 0)
-        {
-          gtk_grab_add (widget);
 
-          g_signal_connect (widget, "grab-notify",
-                            G_CALLBACK (gimp_popup_grab_notify),
-                            widget);
-          g_signal_connect (widget, "grab-broken-event",
-                            G_CALLBACK (gimp_popup_grab_broken_event),
-                            widget);
+  gtk_grab_add (widget);
 
-          return;
-        }
-      else
-        {
-          gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
-                                      GDK_CURRENT_TIME);
-        }
-    }
+  g_signal_connect (widget, "grab-notify",
+                    G_CALLBACK (gimp_popup_grab_notify),
+                    widget);
+  g_signal_connect (widget, "grab-broken-event",
+                    G_CALLBACK (gimp_popup_grab_broken_event),
+                    widget);
 
-  /*  if we could not grab, destroy the popup instead of leaving it
-   *  around uncloseable.
-   */
-  g_signal_emit (widget, popup_signals[CANCEL], 0);
+  return;
 }
 
 static gboolean

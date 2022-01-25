@@ -213,29 +213,13 @@ void GLib::Popup::map ()
    *  receive events. we filter away events outside this toplevel
    *  away in button_press()
    */
-  if (gdk_pointer_grab (widget[gtk_widget_get_window] (), TRUE,
-                        (GdkEventMask)(GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-                        GDK_POINTER_MOTION_MASK),
-                        NULL, NULL, GDK_CURRENT_TIME) == 0) {
-    if (gdk_keyboard_grab (widget[gtk_widget_get_window] (), TRUE,
-                           GDK_CURRENT_TIME) == 0) {
-        widget[gtk_grab_add]();
+  widget[gtk_grab_add]();
 
-        g_signal_connect_delegator (g_object, "grab-notify",
-                                    Delegators::delegator(this, &Popup::on_grab_notify));
-        g_signal_connect_delegator (g_object, "grab-broken-event",
-                                    Delegators::delegator(this, &Popup::on_grab_broken_event));
-        return;
-    } else {
-      gdk_display_pointer_ungrab (widget[gtk_widget_get_display] (),
-                                  GDK_CURRENT_TIME);
-    }
-  }
-
-  /*  if we could not grab, destroy the popup instead of leaving it
-   *  around uncloseable.
-   */
-  g_signal_emit (widget.ptr(), popup_signals[CANCEL], 0);
+  g_signal_connect_delegator (g_object, "grab-notify",
+                              Delegators::delegator(this, &Popup::on_grab_notify));
+  g_signal_connect_delegator (g_object, "grab-broken-event",
+                              Delegators::delegator(this, &Popup::on_grab_broken_event));
+  return;
 }
 
 gboolean GLib::Popup::button_press_event (GdkEventButton *bevent)

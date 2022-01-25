@@ -111,7 +111,10 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
   ScopedPointer<cairo_surface_t, void (cairo_surface_t*), cairo_surface_destroy> eye_surface;
   CXXPointer<_D::Delegator<GimpViewable* (GtkWidget*, GimpContext**)> > drag_viewable_holder; 
   CXXPointer<_D::Connection> drag_motion_handler;
+  CXXPointer<_D::Connection> drag_failed_handler;
+  CXXPointer<_D::Connection> drag_leave_handler;
   CXXPointer<_D::Connection> drag_drop_handler;
+  CXXPointer<_D::Connection> drag_data_received_handler;
   // Internal class which hold layer information required for display and control.
   struct Layer {
     Layer(GimpViewable* layer, int level) : surface(NULL) {
@@ -148,6 +151,7 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
     enum Action { InsertBefore, InsertAfter };
     DragAction() : target(NULL), action(InsertBefore) {};
     DragAction(GimpViewable* target, Action action): target(target), action(action) {};
+    GimpViewable* source;
     GimpViewable* target;
     Action action;
   };
@@ -168,6 +172,8 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
   gboolean on_button_press(GtkWidget* widget, GdkEventButton* event);
   gboolean on_drag_motion(GtkWidget* widget, GdkDragContext* context, gint x, gint y, guint time_);
   gboolean on_drag_drop(GtkWidget* widget, GdkDragContext* context, gint x, gint y, guint time_);
+  void on_drag_leave(GtkWidget* widget, GdkDragContext* context, guint time_);
+  void on_drag_data_received(GtkWidget* widget, GdkDragContext* context, gint x, gint y, GtkSelectionData* selection_data, guint info, guint time);
 
   CopyValue get_image();
   void      set_image(IValue v);
@@ -184,6 +190,7 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
   GdkRectangle  get_boundary(GimpViewable* viewable);
   MouseAction get_viewable_at(gint x, gint y);
 
+  DragAction* get_drag_action(GtkWidget* widget, GdkDragContext* context, gint x, gint y, guint time_);
 
   GimpViewable* get_drag_viewable(GtkWidget *widget, GimpContext **context);
 
@@ -203,7 +210,8 @@ static Class class_instance;
 #define _getter(method)   Class::__((CopyValue (**)(GObject*))NULL).bind<&LayerTileView::get_##method >()
 #define _setter(method)   Class::__((void (**)(GObject*, IValue))NULL).bind<&LayerTileView::set_##method >()
 
-void LayerTileView::class_init(CStructs::Class *klass)
+void 
+LayerTileView::class_init(CStructs::Class *klass)
 {
   class_instance.with_class(klass)->
       as_class<GObject>([&](GObjectClass* klass){
@@ -238,7 +246,8 @@ LayerTileView::~LayerTileView() {
 
 }
 
-void LayerTileView::constructed ()
+void 
+LayerTileView::constructed ()
 {
   ref(g_object) [gtk_orientable_set_orientation] (GTK_ORIENTATION_VERTICAL);
 
@@ -278,8 +287,10 @@ void LayerTileView::constructed ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Event handlers
+//////////////////////////////////////////////////////////////////////////////////////////////
 
-void LayerTileView::on_expose(GtkDrawingArea *widget, GdkEventExpose *event) {
+void 
+LayerTileView::on_expose(GtkDrawingArea *widget, GdkEventExpose *event) {
   auto i_widget = ref(widget);
   cairo_t* cr = gdk_cairo_create (i_widget [gtk_widget_get_window] ());
   int width = event->area.width;
@@ -289,7 +300,8 @@ void LayerTileView::on_expose(GtkDrawingArea *widget, GdkEventExpose *event) {
   cairo_destroy(cr);
 }
 
-void LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height) {
+void 
+LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height) {
 //  g_print("LayerTileView::draw(%d, %d)\n", width, height);
   IList<Layer*> i_layers = layers;
   auto i_layer_dict      = ref<GimpViewable*, GList*>(this->layer_dict);
@@ -412,7 +424,8 @@ void LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int he
 }
 
 
-void LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer) {
+void 
+LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer) {
   g_print("on_layer_added\n");
   IContainer<GimpViewable*> i_container = container;
   auto i_layer           = ref(layer);
@@ -465,7 +478,8 @@ void LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer
   ref(content_area) [gtk_widget_queue_draw] ();
 }
 
-void LayerTileView::on_layer_removed(GimpContainer* container, GimpViewable* layer) {
+void 
+LayerTileView::on_layer_removed(GimpContainer* container, GimpViewable* layer) {
   IContainer<GimpViewable*> i_container = container;
   auto i_layer           = ref(layer);
   auto i_layer_dict      = ref<GimpViewable*, GList*>(this->layer_dict);
@@ -492,12 +506,14 @@ void LayerTileView::on_layer_removed(GimpContainer* container, GimpViewable* lay
   ref(content_area) [gtk_widget_queue_draw] ();
 }
 
-void LayerTileView::on_layer_reordered(GimpContainer* container, GimpViewable* layer, gint index) {
+void 
+LayerTileView::on_layer_reordered(GimpContainer* container, GimpViewable* layer, gint index) {
   on_layer_removed(container, layer);
   on_layer_added(container, layer);
 }
 
-void LayerTileView::on_invalidate_preview(GimpViewable* viewable) {
+void 
+LayerTileView::on_invalidate_preview(GimpViewable* viewable) {
   auto i_context = context;
   if (i_context) {
     IHashTable<GimpViewable*, GList*> i_layer_dict(layer_dict);
@@ -526,7 +542,8 @@ void LayerTileView::on_invalidate_preview(GimpViewable* viewable) {
   }
 };
 
-gboolean LayerTileView::on_button_press(GtkWidget* widget, GdkEventButton* event) {
+gboolean 
+LayerTileView::on_button_press(GtkWidget* widget, GdkEventButton* event) {
   // Debug
   g_print("button=%x, x, y = %d, %d\n", event->button, (int)event->x, (int)event->y);
 
@@ -560,47 +577,143 @@ gboolean LayerTileView::on_button_press(GtkWidget* widget, GdkEventButton* event
   return false;
 }
 
-gboolean LayerTileView::on_drag_motion(GtkWidget* widget, GdkDragContext* drag_context, gint x, gint y, guint time_) {
-  if (!drag_action) {
-    drag_action = new DragAction();
-    drag_action->target = NULL;
-    drag_action->action = DragAction::InsertAfter;
-  }
-  int index    = y / LAYER_MAX_HEIGHT;
-  int offset_y = y % LAYER_MAX_HEIGHT;
+gboolean 
+LayerTileView::on_drag_motion(GtkWidget* widget, GdkDragContext* drag_context, gint x, gint y, guint time_) {
+  DragAction* action = get_drag_action(widget, drag_context, x, y, time_);
+  drag_action = action;
 
-  IList<Layer*> i_layers = layers;
-  Layer* layer_info = i_layers[index];
-  drag_action->target = layer_info->layer;
-
-  if (offset_y < LAYER_MAX_HEIGHT / 2) {
-    drag_action->action = DragAction::InsertBefore;
-  } else {
-    drag_action->action = DragAction::InsertAfter;
+  if (!action) {
+    return false;
   }
-  g_print("on_drag_motion::action = %d, target:%s\n", drag_action->action, gimp_object_get_name(GIMP_OBJECT(drag_action->target)));
+
+  if (drag_action->target) {
+    g_print("on_drag_motion::action = %d, source:%s, target:%s\n", 
+      drag_action->action, 
+      gimp_object_get_name(GIMP_OBJECT(drag_action->source)),
+      gimp_object_get_name(GIMP_OBJECT(drag_action->target)));
+  }
+
   gdk_drag_status(drag_context, GDK_ACTION_MOVE, time_);
   ref(content_area) [gtk_widget_queue_draw] ();
-  return TRUE; 
+
+  return true; 
 }
 
-
-gboolean LayerTileView::on_drag_drop(GtkWidget* widget, GdkDragContext* context, gint x, gint y, guint time_) {
-  g_print("drag_drop\n");
+void 
+LayerTileView::on_drag_leave(GtkWidget* widget, GdkDragContext* drag_context, guint time_) {
+  g_print("drag_leave\n");
   drag_action = NULL;
   ref(content_area) [gtk_widget_queue_draw] ();
+}
+
+gboolean 
+LayerTileView::on_drag_drop(GtkWidget* widget, GdkDragContext* drag_context, gint x, gint y, guint time_) {
+  g_print("drag_drop\n");
+  bool success = true;
+
+  CXXPointer<DragAction> action = get_drag_action(widget, drag_context, x, y, time_);
+
+  if (!action) {
+    g_print("drag_drop: no action\n");
+    success = false;
+
+  } else {
+
+    if (true) { 
+      // case when dropped viewable(layer).
+      // Do actual reordering and / or insertion.
+      g_print("drag_drop: execute reorder\n");
+
+      gint dest_index = -1;
+
+      if (image != ref(action->source) [gimp_item_get_image] () ||
+          ! g_type_is_a (G_TYPE_FROM_INSTANCE (action->source), GIMP_TYPE_VIEWABLE)) {
+        // TBD: dropped from another image or another format. data source must be converted into Viewable.
+#if 0
+        GType     item_type = item_view_class->item_type;
+        GimpItem *new_item;
+        GimpItem *parent;
+
+        if (g_type_is_a (G_TYPE_FROM_INSTANCE (src_viewable), item_type))
+          item_type = G_TYPE_FROM_INSTANCE (src_viewable);
+
+        dest_index = gimp_item_tree_view_get_drop_index (item_view, dest_viewable,
+                                                        drop_pos,
+                                                        (GimpViewable **) &parent);
+
+        new_item = gimp_item_convert (GIMP_ITEM (src_viewable),
+                                      item_view->priv->image, item_type);
+
+        gimp_item_set_linked (new_item, FALSE, FALSE);
+
+        item_view_class->add_item (item_view->priv->image, new_item,
+                                  parent, dest_index, TRUE);
+#endif
+      } else if (action->target) {
+        // Reorder layers within the same image.
+        auto      source      = ref(action->source);
+        auto      target      = ref(action->target);
+        GimpItem* src_parent  = GIMP_ITEM(source [gimp_viewable_get_parent] ());
+        int       src_index   = source [gimp_item_get_index] ();
+
+        GimpItem* dest_parent = GIMP_ITEM(target [gimp_viewable_get_parent] ());
+        int       dest_index  = target [gimp_item_get_index] ();
+
+        if (action->action == DragAction::InsertAfter) {
+          IContainer<GimpViewable*> i_container = target [gimp_viewable_get_children] ();
+          if (i_container && i_container [gimp_container_get_n_children] () == 0) {
+            dest_parent = GIMP_ITEM(target.ptr());
+            dest_index = 0;
+          } else {
+            dest_index ++;
+          }
+        }
+
+        if (src_parent == dest_parent) {
+          if (src_index < dest_index)
+            dest_index--;
+        }
+
+        image [gimp_image_reorder_item] (
+          GIMP_ITEM (action->source),
+          dest_parent, dest_index, TRUE, NULL);
+      }
+
+      image [gimp_image_flush] ();
+
+    } else { // TBD: case when dropped various data source.
+      // TBD: required target (GdkAtom)
+      //gtk_drag_get_data (widget, context, target, time);
+      g_print("drag_drop: drop from data source\n");
+    }
+  }
+
+  gtk_drag_finish (drag_context, success, FALSE, time_);
+  ref(content_area) [gtk_widget_queue_draw] ();
+  return success;
+}
+
+void 
+LayerTileView::on_drag_data_received(
+    GtkWidget* widget, GdkDragContext* context, gint x, gint y, 
+    GtkSelectionData* selection_data, guint info, guint time) {
+  g_print("on_drag_data_received\n");
 
 }
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Setter / getter for GObject properties
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 
-CopyValue LayerTileView::get_image() {
+CopyValue 
+LayerTileView::get_image() {
   return image.ptr();
 }
 
-void LayerTileView::set_image(IValue v) {
+void 
+LayerTileView::set_image(IValue v) {
   const GValue* val = v.ptr();
   GimpImage* image = GIMP_IMAGE(g_value_get_object(val));
 
@@ -614,8 +727,8 @@ void LayerTileView::set_image(IValue v) {
   }
   this->image = image;
 
+  reset_layers();
   if (this->image) {
-    reset_layers();
 
     GimpContainer* container = ref(image) [gimp_image_get_layers] ();
     IContainer<GimpViewable> i_container = ref(container);
@@ -631,16 +744,15 @@ void LayerTileView::set_image(IValue v) {
       on_layer_added(container, viewable);
     });
 
-    // Debug dump
     IList<Layer*> i_layers     = layers;
-    i_layers.each([](Layer* info){
-      auto i_viewable = ref(info->layer);
-      g_print("%d: %s\n", info->level, i_viewable [gimp_object_get_name] ());
+    int max_level = 0;
+    i_layers.each([&max_level](Layer* info){
+      max_level = std::max(info->level, max_level);
     });
 
     auto i_content_area = ref(content_area);
     num_layers = g_list_length (layers.ptr());
-    i_content_area [gtk_widget_set_size_request] (LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT * num_layers);
+    i_content_area [gtk_widget_set_size_request] (max_level * LAYER_INDENT_WIDTH + LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT * num_layers);
 
     drag_viewable_holder = _D::delegator(this, &LayerTileView::get_drag_viewable);
     i_content_area [gimp_dnd_viewable_source_add] (
@@ -659,8 +771,13 @@ void LayerTileView::set_image(IValue v) {
                                 GIMP_TYPE_LAYER_MASK,
                                 NULL,this);
 
-    drag_motion_handler = i_content_area.connect("drag-motion", _D::delegator(this, &LayerTileView::on_drag_motion));
-    drag_drop_handler   = i_content_area.connect("drag-drop",   _D::delegator(this, &LayerTileView::on_drag_motion));
+    drag_motion_handler        = i_content_area.connect("drag-motion",        _D::delegator(this, &LayerTileView::on_drag_motion));
+    drag_failed_handler        = i_content_area.connect("drag-failed",        _D::delegator(this, &LayerTileView::on_drag_leave));
+    drag_leave_handler         = i_content_area.connect("drag-leave",         _D::delegator(this, &LayerTileView::on_drag_leave));
+    drag_drop_handler          = i_content_area.connect("drag-drop",          _D::delegator(this, &LayerTileView::on_drag_drop));
+    drag_data_received_handler = i_content_area.connect("drag-data-received", _D::delegator(this, &LayerTileView::on_drag_data_received));
+  } else {
+    ref(g_object) [gtk_widget_queue_draw] ();
   }
 }
 
@@ -675,11 +792,13 @@ LayerTileView::get_drag_viewable (GtkWidget    *widget,
   return GIMP_VIEWABLE(layer);
 }
 
-CopyValue LayerTileView::get_context() {
+CopyValue 
+LayerTileView::get_context() {
   return context.ptr();
 }
 
-void LayerTileView::set_context(IValue v) {
+void 
+LayerTileView::set_context(IValue v) {
   const GValue* val = v.ptr();
   GimpContext* context = GIMP_CONTEXT(g_value_get_object(val));
   this->context = context;
@@ -687,8 +806,10 @@ void LayerTileView::set_context(IValue v) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions
+//////////////////////////////////////////////////////////////////////////////////////////////
 
-void LayerTileView::reset_layers() {
+void 
+LayerTileView::reset_layers() {
   IList<Layer*> i_layers = layers;
   IHashTable<GimpViewable*, GList*> i_layer_dict(layer_dict);
 
@@ -700,7 +821,11 @@ void LayerTileView::reset_layers() {
 }
 
 
-void LayerTileView::update_cairo_surface(LayerTileView::Layer* layer_info, GimpViewable* viewable) {
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Building cairo surface for preview / other icons
+
+void 
+LayerTileView::update_cairo_surface(LayerTileView::Layer* layer_info, GimpViewable* viewable) {
   if (!layer_info) {
     auto i_layer_dict = ref<GimpViewable*, GList*>(layer_dict);
     GList* list = i_layer_dict[viewable];
@@ -739,33 +864,34 @@ void LayerTileView::update_cairo_surface(LayerTileView::Layer* layer_info, GimpV
   }
 }
 
-cairo_surface_t* LayerTileView::build_cairo_surface(TempBuf* temp_buf) {
+
+cairo_surface_t* 
+LayerTileView::build_cairo_surface(TempBuf* temp_buf) {
   g_return_val_if_fail (temp_buf != NULL, NULL);
 
-  cairo_surface_t* surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24,
-                                                         temp_buf->width,
-                                                         temp_buf->height);
+  cairo_surface_t* surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, temp_buf->width, temp_buf->height);
 
   g_print("gimp_view_render_temp_buf_to_surface\n");
-  gimp_view_render_temp_buf_to_surface (temp_buf,
-                                        -1,
-                                        GIMP_VIEW_BG_CHECKS,
-                                        GIMP_VIEW_BG_WHITE,
-                                        surface,
-                                        temp_buf->width,
-                                        temp_buf->height);
+  gimp_view_render_temp_buf_to_surface (
+    temp_buf, -1, 
+    GIMP_VIEW_BG_CHECKS, GIMP_VIEW_BG_WHITE, 
+    surface, temp_buf->width, temp_buf->height);
 
   return surface;
 }
 
-cairo_surface_t* LayerTileView::build_cairo_surface(GdkPixbuf* pixbuf) {
+
+cairo_surface_t* 
+LayerTileView::build_cairo_surface(GdkPixbuf* pixbuf) {
   g_return_val_if_fail (pixbuf != NULL, NULL);
 
   cairo_surface_t* surface = gimp_cairo_surface_create_from_pixbuf (pixbuf);
   return surface;
 }
 
-cairo_surface_t* LayerTileView::build_cairo_surface(const gchar* stock_id, gint width, gint height) {
+
+cairo_surface_t* 
+LayerTileView::build_cairo_surface(const gchar* stock_id, gint width, gint height) {
   GdkPixbuf   *pixbuf = NULL;
   GtkIconSize  icon_size;
 
@@ -787,15 +913,8 @@ cairo_surface_t* LayerTileView::build_cairo_surface(const gchar* stock_id, gint 
         {
           GdkPixbuf *scaled_pixbuf;
 
-          gimp_viewable_calc_preview_size (w, h,
-                                           width, height,
-                                           TRUE, 1.0, 1.0,
-                                           &w, &h,
-                                           NULL);
-
-          scaled_pixbuf = gdk_pixbuf_scale_simple (pixbuf,
-                                                   w, h,
-                                                   GDK_INTERP_BILINEAR);
+          gimp_viewable_calc_preview_size (w, h, width, height, TRUE, 1.0, 1.0, &w, &h, NULL);
+          scaled_pixbuf = gdk_pixbuf_scale_simple (pixbuf, w, h, GDK_INTERP_BILINEAR);
 
           g_object_unref (pixbuf);
           pixbuf = scaled_pixbuf;
@@ -806,8 +925,11 @@ cairo_surface_t* LayerTileView::build_cairo_surface(const gchar* stock_id, gint 
     return result;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Conversion between mouse cursor position and target viewable
 
-LayerTileView::MouseAction LayerTileView::get_viewable_at(gint x, gint y) {
+LayerTileView::MouseAction 
+LayerTileView::get_viewable_at(gint x, gint y) {
   GdkRectangle hit_test_boundary = { 0, (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT };
   IList<Layer*> i_layers     = layers;
 
@@ -829,7 +951,8 @@ LayerTileView::MouseAction LayerTileView::get_viewable_at(gint x, gint y) {
   return result;
 }
 
-GdkRectangle LayerTileView::get_boundary(GimpViewable* viewable) {
+GdkRectangle 
+LayerTileView::get_boundary(GimpViewable* viewable) {
   bool found = false;
   IList<Layer*> i_layers     = layers;
   GdkRectangle result = {0, (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT };
@@ -847,6 +970,88 @@ GdkRectangle LayerTileView::get_boundary(GimpViewable* viewable) {
     return result;
   else
     return {-1, -1, -1, -1};
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Handling drag&drop
+
+LayerTileView::DragAction* 
+LayerTileView::get_drag_action(GtkWidget* widget, GdkDragContext* drag_context, gint x, gint y, guint time_) {
+  auto i_content_area = ref(content_area);
+
+  // Getting dragged source.
+
+  GtkTargetList* target_list;
+  GdkAtom        target_atom;
+  GimpDndType    src_type;
+  GimpViewable*  source = NULL;
+
+  target_list = i_content_area [gtk_drag_dest_get_target_list] ();
+  target_atom = i_content_area [gtk_drag_dest_find_target] (drag_context, target_list);
+
+  if (! gtk_target_list_find (target_list, target_atom, (guint*)&src_type)) {
+    return NULL;
+  }
+
+  switch (src_type) {
+  case GIMP_DND_TYPE_URI_LIST:
+  case GIMP_DND_TYPE_TEXT_PLAIN:
+  case GIMP_DND_TYPE_NETSCAPE_URL:
+  case GIMP_DND_TYPE_COLOR:
+  case GIMP_DND_TYPE_SVG:
+  case GIMP_DND_TYPE_SVG_XML:
+  case GIMP_DND_TYPE_COMPONENT:
+  case GIMP_DND_TYPE_PIXBUF:
+    break;
+
+  default: 
+    {
+      GtkWidget *src_widget = gtk_drag_get_source_widget (drag_context);
+      if (src_widget)
+        source = GIMP_VIEWABLE(gimp_dnd_get_drag_data (src_widget));
+    }
+    break;
+  }
+
+  if (!source)
+    return NULL;
+
+  // Getting dragged target
+
+  int index    = y / LAYER_MAX_HEIGHT;
+  int offset_y = y % LAYER_MAX_HEIGHT;
+
+  IList<Layer*> i_layers = layers;
+  Layer* layer_info = i_layers[index];
+
+  if (!layer_info)
+    return NULL;
+
+  // Checking whether source can be dropped to target.
+
+  GimpViewable* parent = layer_info->layer;
+  while (parent) {
+    if (source == parent)
+      return NULL;
+
+    parent = ref(parent) [gimp_viewable_get_parent] ();
+  }
+  
+
+  // returning DragAction
+
+  DragAction* drag_action = new DragAction();
+  drag_action->action = DragAction::InsertAfter;
+  drag_action->source = source;
+  drag_action->target = layer_info->layer;
+
+  if (offset_y < LAYER_MAX_HEIGHT / 2) {
+    drag_action->action = DragAction::InsertBefore;
+  } else {
+    drag_action->action = DragAction::InsertAfter;
+  }
+
+  return drag_action; 
 }
 
 /*  public functions  */
