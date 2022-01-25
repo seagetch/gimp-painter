@@ -46,9 +46,13 @@ public:
   operator T*() { return ptr(); };
   operator T* const () const { return ptr(); };
   ScopedPointer& operator =(T* src) {
-    if (!is_null<T*>(this->obj))
+    if (this->obj == src)
+      return *this;
+    if (!is_null<T*>(this->obj)) {
       (*f)(this->obj);
+    }
     this->obj = src;
+    return *this;
   }
   operator bool() const { return !is_null(ptr()); }
 };

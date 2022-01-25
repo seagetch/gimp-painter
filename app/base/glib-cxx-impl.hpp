@@ -115,6 +115,9 @@ public:
   static GParamSpec* g_param_spec_new(const gchar* param_name, const gchar* default_value, GParamFlags flags) {
     return g_param_spec_string(param_name, NULL, NULL, default_value, flags);
   }
+  static GParamSpec* g_param_spec_object(const gchar* param_name, GType g_type, GParamFlags flags) {
+    return ::g_param_spec_object(param_name, NULL, NULL, g_type, flags);
+  }
 
 };
 
@@ -454,21 +457,28 @@ public:
     };
 
     template<Ret (Impl::*signature)(Args... args)>
-    void bind() {
-      *store = &(callback<signature>);
+    auto bind() {
+      if (store)
+        *store = &(callback<signature>);
+      return &(callback<signature>);
     };
 
     template<typename R2, typename G2>
-    void bind(R2 (*func)(G2*, Args...)) {
-      *store = reinterpret_cast<Ret (*)(G*, Args...)>(func);
+    auto bind(R2 (*func)(G2*, Args...)) {
+      if (store)
+         *store = reinterpret_cast<Ret (*)(G*, Args...)>(func);
+      return reinterpret_cast<Ret (*)(G*, Args...)>(func);
     }
 
     template<typename R2, typename G2>
-    void operator = (R2 (*func)(G2*, Args...)) {
-      bind(func);
+    auto operator = (R2 (*func)(G2*, Args...)) {
+      return bind(func);
     }
 
-    void clear() { *store = NULL; }
+    void clear() { 
+      if (store)
+        *store = NULL; 
+    }
   };
   template<typename Ret, typename G, typename... Args>
   static Binder<Ret, G, Args...> __(Ret (**ptr)(G*, Args...)) { return Binder<Ret, G, Args...>(ptr); }

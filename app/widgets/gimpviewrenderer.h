@@ -138,6 +138,14 @@ void   gimp_view_renderer_draw             (GimpViewRenderer   *renderer,
                                             gint                available_width,
                                             gint                available_height);
 
+void   gimp_view_render_temp_buf_to_surface(TempBuf            *temp_buf,
+                                            gint                channel,
+                                            GimpViewBG          inside_bg,
+                                            GimpViewBG          outside_bg,
+                                            cairo_surface_t    *surface,
+                                            gint                dest_width,
+                                            gint                dest_height);
+
 /*  protected  */
 
 void   gimp_view_renderer_render_temp_buf_simple (GimpViewRenderer *renderer,

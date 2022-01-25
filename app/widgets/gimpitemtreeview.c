@@ -414,7 +414,7 @@ gimp_item_tree_view_constructed (GObject *object)
   gimp_container_view_enable_dnd (GIMP_CONTAINER_VIEW (item_view),
                                   GTK_BUTTON (item_view->priv->edit_button),
                                   item_view_class->item_type);
-#if 0
+#if 1
   item_view->priv->new_button =
     gimp_editor_add_action_button (editor, item_view_class->action_group,
                                    item_view_class->new_action,
@@ -453,7 +453,7 @@ gimp_item_tree_view_constructed (GObject *object)
                                    item_view_class->lower_bottom_action,
                                    GDK_SHIFT_MASK,
                                    NULL);
-#if 0
+#if 1
   item_view->priv->duplicate_button =
     gimp_editor_add_action_button (editor, item_view_class->action_group,
                                    item_view_class->duplicate_action, NULL);

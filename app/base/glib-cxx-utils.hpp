@@ -148,30 +148,84 @@ public:
     src.obj = NULL;
   };
   List(const List& src) : ScopedPointer<GList, void(GList*), g_list_free>(g_list_copy(src.obj)) { }
+  void free() {
+    g_list_free(obj);
+    obj = NULL;    
+  }
+  void update_assign(GList* updated_list) {
+    obj = updated_list;
+  }
 };
 
 
 inline auto hold(GList* list) { return static_cast<List&&>(List(list)); }
 
-
 template<class T>
 class IList {
   GList* obj;
+  List*  src_list;
   template<typename F>
   static void foreach_callback(gpointer data, gpointer user) {
     F* func = reinterpret_cast<F*>(user);
     (*func)(T(data));
   };
-public:
-  IList(GList* list) : obj(list) { };
-  IList(IList&& src) : obj(src.obj) { src.obj = NULL; };
-  IList(const IList& src) : obj(src.obj) { };
-  T operator[](int index) {
-    return T(g_list_nth_data(obj, index));
+  void update_assign(GList* updated_list) {
+    if (src_list) {
+      src_list->update_assign(updated_list);
+    }
+    else {
+      obj = updated_list;
+    }
   }
+  GList* ptr() const {
+    if (src_list)
+      return src_list->ptr();
+    else
+      return obj;
+  }
+public:
+  IList(GList* list) : obj(list), src_list(NULL) { };
+  IList(IList&& src) : obj(src.obj), src_list(NULL) { 
+    src.obj = NULL; 
+    src.src_list = NULL; 
+  };
+  IList(const IList& src) : obj(src.obj), src_list(src.src_list) { };
+  IList(List& src) : obj(NULL), src_list(&src) {};
+
+  T operator[](int index) {
+    return T(g_list_nth_data(ptr(), index));
+  }
+
+  IList& operator =(GList* list) {
+    obj = list;
+    src_list = NULL;
+    return *this;
+  }
+
+  IList& operator =(IList&& src) {
+    obj = src.obj;
+    src_list = src.list;
+    src.obj = NULL;
+    src.src_list = NULL;
+    return *this;
+  }
+
+  IList& operator =(const IList&& src) {
+    obj = src.obj;
+    src_list = src.list;
+    return *this;
+  }
+
+  IList& operator =(List&& src) {
+    obj = NULL;
+    src_list = &src;
+    return *this;
+  }
+
+ 
   template<typename F>
   void each(F each_func) {
-    g_list_foreach (obj, foreach_callback<F>, &each_func);
+    g_list_foreach (ptr(), foreach_callback<F>, &each_func);
   }
   class Iterator {
     GList* iter;
@@ -186,22 +240,59 @@ public:
     operator T() { return reinterpret_cast<T>(iter->data); }
     auto operator *() { return T(*this); }
   };
-  Iterator begin() const { return Iterator(obj); }
+  Iterator begin() const { return Iterator(ptr()); }
   Iterator end() const { return Iterator(); }
-};
+  void dump() {
+    g_print("IList:obj=%lx, src_list=%lx, src_list->ptr=%lx\n", obj, src_list, src_list->ptr());
+  }
 
+  IList& insert(T data, gint position) {
+    update_assign(g_list_insert (ptr(), (gpointer)data, position));
+    return *this;
+  }
+  IList& insert_before(GList* sibling, T data) {
+    update_assign(g_list_insert_before (ptr(), sibling, (gpointer)data));
+    return *this;
+  }
+  IList& prepend(T data) {
+    update_assign(g_list_prepend (ptr(), (gpointer)data));
+    return *this;
+  }
+  IList& append(T data) {
+    GList* result = g_list_append (ptr(), (gpointer)data);
+    update_assign(result);
+    return *this;
+  }
+  IList& remove(const T data) {
+    update_assign(g_list_remove(ptr(), (gconstpointer)data)); 
+    return *this;
+  }
+  IList& remove_all(const T data) {
+    update_assign(g_list_remove_all(ptr(), (gconstpointer)data)); 
+    return *this;
+  }
+  IList& delete_link(GList* link) {
+    update_assign(g_list_delete_link (ptr(), link));
+    return *this;
+  }
+
+  GList* nth(int index) {
+    return g_list_nth(ptr(), index);
+  }
+};
 
 template<typename Data>
 inline auto ref(GList* list) { return static_cast<IList<Data>&&>(IList<Data>(list)); }
 
-}; // namespace GLib
+template<typename Data>
+inline auto ref(List& list) { return static_cast<IList<Data>&&>(IList<Data>(list)); }
 
+}; // namespace GLib
 
 namespace std {
 template<typename T> auto begin(const GLib::IList<T>& list) { return list.begin(); }
 template<typename T> auto end(const GLib::IList<T>& list) { return list.end(); }
 };
-
 
 namespace GLib {
 
@@ -340,6 +431,12 @@ public:
   }
   bool insert(const Key key, Data value) {
     return g_hash_table_insert(obj, (gpointer)key, (gpointer)value);
+  }
+  bool remove(const Key key) {
+    return g_hash_table_remove(obj, (gpointer)key);
+  }
+  void remove_all() {
+    g_hash_table_remove_all(obj);
   }
   template<typename F>
   void each(F each_func) {

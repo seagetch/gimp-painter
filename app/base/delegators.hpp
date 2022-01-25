@@ -73,7 +73,7 @@ public:
         void* trace[trace_size];
         int size = backtrace(trace, trace_size);
         char** symbols = backtrace_symbols(trace, size);
-        g_print("%s\n", symbols);
+        g_print("%s\n", *symbols);
         free(symbols);      
       }
     };
@@ -95,10 +95,10 @@ delegator(std::function<Ret (Args...)> f)
   return new Delegator<Ret(Args...)>(f);
 }
 
-template<typename Decl, typename F>
+template<typename Ret, typename... Args>
 inline auto
-delegator(F f) {
-  return new Delegator<Decl>(f);
+delegator(Ret (*f)(Args...)) {
+  return new Delegator<Ret (Args...)>(f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

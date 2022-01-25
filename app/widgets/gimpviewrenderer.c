@@ -72,7 +72,7 @@ static void      gimp_view_renderer_size_changed      (GimpViewRenderer   *rende
 static cairo_pattern_t *
                  gimp_view_renderer_create_background (GimpViewRenderer   *renderer,
                                                        GtkWidget          *widget);
-
+#if 0
 static void      gimp_view_render_temp_buf_to_surface (TempBuf            *temp_buf,
                                                        gint                channel,
                                                        GimpViewBG          inside_bg,
@@ -80,7 +80,7 @@ static void      gimp_view_render_temp_buf_to_surface (TempBuf            *temp_
                                                        cairo_surface_t    *surface,
                                                        gint                dest_width,
                                                        gint                dest_height);
-
+#endif
 
 
 G_DEFINE_TYPE (GimpViewRenderer, gimp_view_renderer, G_TYPE_OBJECT)
@@ -915,7 +915,7 @@ gimp_view_renderer_render_stock (GimpViewRenderer *renderer,
   renderer->needs_render = FALSE;
 }
 
-static void
+void
 gimp_view_render_temp_buf_to_surface (TempBuf         *temp_buf,
                                       gint             channel,
                                       GimpViewBG       inside_bg,

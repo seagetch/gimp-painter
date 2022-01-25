@@ -54,6 +54,7 @@
 #include "widgets/gimpuimanager.h"
 #include "widgets/gimpview.h"
 #include "widgets/gimptooloptionstoolbar.h"
+#include "widgets/gimplayertileview.h"
 
 #include "gimpdisplay.h"
 #include "gimpdisplay-foreach.h"
@@ -130,6 +131,7 @@ struct _GimpImageWindowPrivate
   GtkWidget         *toolbar; /* gimp-painter-2.7 */
   GtkWidget         *toolbar_container; /* gimp-painter-2.8 */
   GtkWidget         *flip_button; /* gimp-painter-2.8 */
+  GtkWidget         *layer_tile_view;
   NavigationGuide    guide; /* gimp-painter-2.8 */
 
   GdkWindowState     window_state;
@@ -516,12 +518,15 @@ gimp_image_window_constructed (GObject *object)
   /* Create notebook that contains images */
   {
     GtkWidget* notebook_vbox;
+    GtkWidget* notebook_hbox;
     GtkWidget* label_box;
     GdkColor   color;
 
     notebook_vbox = gtk_vbox_new (FALSE, 0);
+    notebook_hbox = gtk_hbox_new (FALSE, 0);
     gtk_paned_pack1 (GTK_PANED (private->right_hpane), notebook_vbox,
                      TRUE, FALSE);
+    gtk_widget_show (notebook_hbox);
     gtk_widget_show (notebook_vbox);
 
     private->guide.bar = gtk_hbox_new (FALSE, 0);
@@ -549,6 +554,7 @@ gimp_image_window_constructed (GObject *object)
     gtk_widget_modify_fg (private->guide.success_button, GTK_STATE_NORMAL, &color);
     gtk_widget_show(private->guide.success_button);
 
+    gtk_box_pack_start (GTK_BOX (notebook_vbox), notebook_hbox, TRUE, TRUE, 0);
 
   private->notebook = gtk_notebook_new ();
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (private->notebook), TRUE);
@@ -557,7 +563,7 @@ gimp_image_window_constructed (GObject *object)
   gtk_notebook_set_tab_pos (GTK_NOTEBOOK (private->notebook), GTK_POS_LEFT);
 //  gtk_paned_pack1 (GTK_PANED (private->right_hpane), private->notebook,
 //                   TRUE, FALSE);
-  gtk_box_pack_start (GTK_BOX (notebook_vbox), private->notebook,
+  gtk_box_pack_start (GTK_BOX (notebook_hbox), private->notebook,
                       TRUE, TRUE, 0);
   g_signal_connect (private->notebook, "switch-page",
                     G_CALLBACK (gimp_image_window_switch_page),
@@ -568,6 +574,11 @@ gimp_image_window_constructed (GObject *object)
   g_signal_connect (private->notebook, "size-allocate",
                     G_CALLBACK (gimp_image_window_notebook_resized),
                     window);
+  private->layer_tile_view = gimp_layer_tile_view_new ();
+  gtk_widget_show (private->layer_tile_view);
+  g_print("Adding layer_tile_view\n");
+  gtk_box_pack_end (GTK_BOX (notebook_hbox), private->layer_tile_view, FALSE, TRUE, 0);
+  g_print("Added layer_tile_view\n");
   }
 
   /* Create the right dock columns widget */
@@ -2037,10 +2048,8 @@ gimp_image_window_switch_active_shell (GimpImageWindow* window,
             window, shell);
   private->active_shell = shell;
 
-  g_print ("GimpImageWindow %p, private->active_shell = %p; \n",
-           window, shell);
-
   if (shell) {
+    GimpContext* user_context = gimp_get_user_context (private->gimp);
     gimp_window_set_primary_focus_widget (GIMP_WINDOW (window),
                                           shell->canvas);
 
@@ -2065,6 +2074,10 @@ gimp_image_window_switch_active_shell (GimpImageWindow* window,
                         G_CALLBACK (gimp_image_window_shell_destroy),
                         window);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(private->flip_button), shell->mirrored);
+
+    g_object_set(private->layer_tile_view, "image", gimp_display_get_image (active_display), "context", user_context, NULL);
+  } else {
+    g_object_set(private->layer_tile_view, "image", NULL, "context", NULL, NULL);
   }
 }
 
@@ -2083,7 +2096,6 @@ gimp_image_window_switch_page (GtkNotebook     *notebook,
   if (shell == private->active_shell)
     return;
 
-  g_print ("gimp_image_window_switch_page:toolbar_window=%d\n", private->toolbar_window);
   gimp_image_window_switch_active_shell (window, shell);
   active_display = private->active_shell->display;
 
@@ -2185,6 +2197,7 @@ gimp_image_window_image_notify (GimpDisplay      *display,
   GtkWidget              *tab_label;
   GList                  *children;
   GtkWidget              *view;
+  GimpContext            *user_context;
 
   g_print("gimp_image_window_image_notify:toolbar_window=%d\n", private->toolbar_window);
   gimp_image_window_session_update (window,
@@ -2202,7 +2215,8 @@ gimp_image_window_image_notify (GimpDisplay      *display,
     gimp_view_set_viewable (GIMP_VIEW (view),
                             GIMP_VIEWABLE (gimp_display_get_image (display)));
   }
-
+  user_context = gimp_get_user_context (private->gimp);
+  g_object_set(private->layer_tile_view, "image", gimp_display_get_image (display), "context", user_context, NULL);
   gimp_ui_manager_update (private->menubar_manager, display);
 }
 
@@ -2578,7 +2592,7 @@ gimp_image_window_resized (GtkWidget       *widget,
       g_object_ref(G_OBJECT(widget2));
       gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget2));
 
-      gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, FALSE, FALSE);
+      gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, FALSE, TRUE);
       gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, FALSE, FALSE);
       gtk_orientable_set_orientation(GTK_ORIENTABLE(private->right_hpane), GTK_ORIENTATION_HORIZONTAL);
       g_object_unref(G_OBJECT(widget1));
@@ -2599,7 +2613,7 @@ gimp_image_window_resized (GtkWidget       *widget,
       gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget2));
       
       gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, FALSE, FALSE);
-      gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, FALSE, FALSE);
+      gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, FALSE, TRUE);
       gtk_orientable_set_orientation(GTK_ORIENTABLE(private->right_hpane), GTK_ORIENTATION_VERTICAL);
       g_object_unref(G_OBJECT(widget1));
       g_object_unref(G_OBJECT(widget2));
