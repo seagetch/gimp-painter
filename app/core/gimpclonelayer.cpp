@@ -88,8 +88,8 @@ struct CloneLayer : virtual public ImplBase, virtual public CloneLayerInterface
   gint             prev_x, prev_y;
 
   CXXPointer<Delegators::Connection> parent_changed_conn;
-  CXXPointer<Delegators::Connection> reorder_conn;
   CXXPointer<Delegators::Connection> update_conn;
+  CXXPointer<Delegators::Connection> freeze_conn;
   CString          source_name;
 
   static void class_init(Traits<GimpCloneLayer>::Class* klass);
@@ -101,13 +101,13 @@ struct CloneLayer : virtual public ImplBase, virtual public CloneLayerInterface
   // Inherited methods
   virtual void            constructed  ();
 
-  virtual gint64          get_memsize  (gint64          *gui_size);
+  virtual gint64          get_memsize  (gint64*          gui_size);
 
-  virtual gboolean        get_size     (gint            *width,
-                                        gint            *height);
+  virtual gboolean        get_size     (gint*            width,
+                                        gint*            height);
 
   virtual GimpItem      * duplicate    (GType            new_type);
-  virtual void            convert      (GimpImage       *dest_image);
+  virtual void            convert      (GimpImage*       dest_image);
   virtual void            translate    (gint             offset_x,
                                         gint             offset_y,
                                         gboolean         push_undo);
@@ -116,28 +116,28 @@ struct CloneLayer : virtual public ImplBase, virtual public CloneLayerInterface
                                         gint             new_offset_x,
                                         gint             new_offset_y,
                                         GimpInterpolationType  interp_type,
-                                        GimpProgress    *progress);
-  virtual void            resize       (GimpContext     *context,
+                                        GimpProgress*    progress);
+  virtual void            resize       (GimpContext*     context,
                                         gint             new_width,
                                         gint             new_height,
                                         gint             offset_x,
                                         gint             offset_y);
-  virtual void            flip         (GimpContext     *context,
+  virtual void            flip         (GimpContext*     context,
                                         GimpOrientationType flip_type,
                                         gdouble          axis,
                                         gboolean         clip_result);
-  virtual void            rotate       (GimpContext     *context,
+  virtual void            rotate       (GimpContext*     context,
                                         GimpRotationType rotate_type,
                                         gdouble          center_x,
                                         gdouble          center_y,
                                         gboolean         clip_result);
-  virtual void            transform    (GimpContext     *context,
-                                        const GimpMatrix3 *matrix,
+  virtual void            transform    (GimpContext*     context,
+                                        const GimpMatrix3* matrix,
                                         GimpTransformDirection direction,
                                         GimpInterpolationType  interpolation_type,
                                         gint             recursion_level,
                                         GimpTransformResize clip_result,
-                                        GimpProgress    *progress);
+                                        GimpProgress*    progress);
 
   virtual gint64      estimate_memsize (gint             width,
                                         gint             height);
@@ -155,14 +155,16 @@ struct CloneLayer : virtual public ImplBase, virtual public CloneLayerInterface
   virtual gboolean        is_editable  ();
 
   // Event handlers
-  virtual void       on_parent_changed (GimpViewable  *viewable,
-                                        GimpViewable  *parent);
+  virtual void       on_parent_changed (GimpViewable* viewable,
+                                        GimpViewable* parent);
 
   virtual void        on_source_update (GimpDrawable* drawable,
                                         gint          x,
                                         gint          y,
                                         gint          width,
                                         gint          height);
+  virtual void        on_source_frozen (GObject*      object,
+                                        GParamSpec*   pspec);
 private:
   void                invalidate_layer ();
 };
@@ -258,8 +260,8 @@ GLib::CloneLayer::CloneLayer(GObject* o) : ImplBase(o)
 {
 //  parent_changed_conn = g_signal_connect_delegator (G_OBJECT(g_object), "parent-changed",
 //                                                    Delegators::delegator(this, &GLib::CloneLayer::on_parent_changed));
-  reorder_conn        = NULL;
   update_conn         = NULL;
+  freeze_conn         = NULL;
   prev_x              = 0;
   prev_y              = 0;
   prev_w              = 0;
@@ -281,6 +283,8 @@ void GLib::CloneLayer::set_source(GimpLayer* layer)
   if (layer) {
     update_conn = g_signal_connect_delegator (G_OBJECT(layer), "update",
         Delegators::delegator(this, &GLib::CloneLayer::on_source_update));
+    freeze_conn = g_signal_connect_delegator (G_OBJECT(layer), "notify::frozen", 
+        Delegators::delegator(this, &GLib::CloneLayer::on_source_frozen));
     source_layer = layer;
     auto src  = ref(layer);
     gint w, h;
@@ -577,6 +581,18 @@ void GLib::CloneLayer::on_source_update (GimpDrawable* _source,
   source [gimp_drawable_project_region] (x, y, width, height, &destPR, FALSE);
 
   self [gimp_drawable_update] (x, y, width, height);
+}
+
+void GLib::CloneLayer::on_source_frozen(GObject* object, GParamSpec* spec)
+{
+  auto self     = ref(g_object);
+  auto viewable = ref(object);
+
+  bool frozen = viewable [gimp_viewable_preview_is_frozen] ();
+  if (frozen)
+    self [gimp_viewable_preview_freeze] ();
+  else
+    self [gimp_viewable_preview_thaw] ();
 }
 
 /*  public functions  */
