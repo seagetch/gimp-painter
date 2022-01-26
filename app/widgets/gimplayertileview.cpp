@@ -71,6 +71,9 @@ static const int LAYER_INDENT_WIDTH = 8;
 static const int LAYER_BAR_WIDTH    = 4;
 static const int CHECKERBORAD_SIZE  = 4;
 static const int ICON_SIZE          = 14;
+static const int SCROLL_THRESHOLD   = LAYER_MAX_WIDTH * 2 / 3;
+static const int SCROLL_STEP        = LAYER_MAX_WIDTH / 3;
+static const int SCROLL_INTERVAL    = 2;
 //////////////////////////////////////////////////////////////////////////////////////////////
 namespace GLib {
 namespace _D = Delegators;
@@ -89,6 +92,37 @@ public:
     delete recursive_delegator;
   }
 };
+
+template<
+    typename EventRegisterer, 
+    EventRegisterer add_func, 
+    typename EventUnregisterer, 
+    EventUnregisterer remove_func, 
+    typename... Args>
+class EventSource {
+  typedef _D::Delegator<gboolean()> Delegator;
+  CXXPointer<Delegator> handler;
+  guint id;
+public:
+  EventSource() : id(0), handler(NULL) {};
+  EventSource(Args... args, Delegator* _handler) {
+    add(args..., _handler);
+  }
+  ~EventSource() { remove(); }
+
+  void add(Args... args, Delegator* _handler) {
+    handler = _handler;
+    id = (*add_func)(args..., Delegator::callback, handler);
+  }
+  void remove() {
+    (*remove_func)(id);
+    id = 0;
+  }
+
+};
+typedef EventSource<decltype(&g_timeout_add), &g_timeout_add, decltype(&g_source_remove), &g_source_remove, guint> Timeout;
+typedef EventSource<decltype(&g_idle_add), &g_idle_add, decltype(&g_source_remove), &g_source_remove> Idle;
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Class definitions
@@ -115,6 +149,7 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
   CXXPointer<_D::Connection> drag_leave_handler;
   CXXPointer<_D::Connection> drag_drop_handler;
   CXXPointer<_D::Connection> drag_data_received_handler;
+  CXXPointer<Timeout>        scroll_timeout_handler;
   // Internal class which hold layer information required for display and control.
   struct Layer {
     Layer(GimpViewable* layer, int level) : surface(NULL) {
@@ -426,7 +461,6 @@ LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
 
 void 
 LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer) {
-  g_print("on_layer_added\n");
   IContainer<GimpViewable*> i_container = container;
   auto i_layer           = ref(layer);
   auto i_layer_dict      = ref<GimpViewable*, GList*>(this->layer_dict);
@@ -578,19 +612,47 @@ LayerTileView::on_button_press(GtkWidget* widget, GdkEventButton* event) {
 }
 
 gboolean 
-LayerTileView::on_drag_motion(GtkWidget* widget, GdkDragContext* drag_context, gint x, gint y, guint time_) {
-  DragAction* action = get_drag_action(widget, drag_context, x, y, time_);
+LayerTileView::on_drag_motion(GtkWidget* widget, GdkDragContext* drag_context, gint x, gint y, guint time_) 
+{
+  auto i_content_area = ref(content_area);
+  auto i_window       = ref(scrolled_window);
+  DragAction* action  = get_drag_action(widget, drag_context, x, y, time_);
+  GtkAdjustment* adj  = i_window [gtk_scrolled_window_get_vadjustment] ();
+
   drag_action = action;
+
+  GtkAllocation alloc;
+  i_content_area [gtk_widget_get_allocation] (&alloc);
+  gint offset_y = y - gtk_adjustment_get_value (adj);
+  gint alloc_h  = gtk_adjustment_get_page_size (adj);
+
+  if (offset_y < SCROLL_THRESHOLD || alloc_h - offset_y < SCROLL_THRESHOLD) {
+    int distance = std::max(std::min(std::abs(SCROLL_THRESHOLD - offset_y), std::abs(SCROLL_THRESHOLD + offset_y - alloc_h)), 1);
+    int sign     = offset_y < SCROLL_THRESHOLD ? -1: 1;
+    int interval = SCROLL_INTERVAL * std::max(1, SCROLL_THRESHOLD - distance);
+
+    std::function<gboolean()> on_timeout = [&, distance, sign] () -> gboolean {
+      auto           i_window  = ref(scrolled_window);
+      GtkAdjustment* adj       = i_window [gtk_scrolled_window_get_vadjustment] ();
+      gdouble        new_value = gtk_adjustment_get_value (adj) + sign * SCROLL_STEP;
+
+      new_value = CLAMP (new_value,
+                        gtk_adjustment_get_lower (adj),
+                        gtk_adjustment_get_upper (adj) -
+                        gtk_adjustment_get_page_size (adj));
+
+      gtk_adjustment_set_value (adj, new_value);
+      return true;
+    };
+
+    scroll_timeout_handler = new Timeout(interval, _D::delegator(on_timeout));
+  } else {
+    scroll_timeout_handler = NULL;
+  }
+
 
   if (!action) {
     return false;
-  }
-
-  if (drag_action->target) {
-    g_print("on_drag_motion::action = %d, source:%s, target:%s\n", 
-      drag_action->action, 
-      gimp_object_get_name(GIMP_OBJECT(drag_action->source)),
-      gimp_object_get_name(GIMP_OBJECT(drag_action->target)));
   }
 
   gdk_drag_status(drag_context, GDK_ACTION_MOVE, time_);
@@ -603,6 +665,7 @@ void
 LayerTileView::on_drag_leave(GtkWidget* widget, GdkDragContext* drag_context, guint time_) {
   g_print("drag_leave\n");
   drag_action = NULL;
+  scroll_timeout_handler = NULL;
   ref(content_area) [gtk_widget_queue_draw] ();
 }
 
