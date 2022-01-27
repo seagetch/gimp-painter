@@ -666,7 +666,9 @@ LayerTileView::on_invalidate_preview(GimpViewable* viewable)
   if (i_context) {
     IHashTable<GimpViewable*, GList*> i_layer_dict(layer_dict);
     GimpContainer* children = gimp_viewable_get_children (viewable);
+    bool updated = false;
     if (!children) {
+      updated = true;
       update_cairo_surface(NULL, viewable);
     } else {
       GList* list = i_layer_dict[viewable];
@@ -674,19 +676,25 @@ LayerTileView::on_invalidate_preview(GimpViewable* viewable)
         Layer* layer_info = reinterpret_cast<Layer*>(list->data);
         if (layer_info->dirty_count > 0) {
           layer_info->dirty_count = 0;
+          updated = true;
           update_cairo_surface(NULL, viewable);
         }
       }
     }
-    while (viewable) {
-      viewable = gimp_viewable_get_parent (viewable);
-      GList* list = i_layer_dict[viewable];
-      if (list && list->data) {
-        Layer* layer_info = reinterpret_cast<Layer*>(list->data);
-        layer_info->dirty_count ++;
+
+    // Porpagating update to the ancestors if updated surface.
+    if (updated) {
+      while (viewable) {
+        viewable = gimp_viewable_get_parent (viewable);
+        GList* list = i_layer_dict[viewable];
+        if (list && list->data) {
+          Layer* layer_info = reinterpret_cast<Layer*>(list->data);
+          layer_info->dirty_count ++;
+        }
+        update_cairo_surface(NULL, viewable);
       }
-      update_cairo_surface(NULL, viewable);
     }
+
   }
 }
 
