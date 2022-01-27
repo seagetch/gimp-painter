@@ -1,5 +1,5 @@
 /*
- * popupper.cpp
+ * popover.cpp
  *
  *  Created on: 2017/03/24
  *      Author: seagetch
@@ -41,47 +41,13 @@ using namespace GLib;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-extern "C" {
-typedef struct _GimpPopupClass  GimpPopupClass;
-typedef struct _GimpPopup       GimpPopup;
-
-struct _GimpPopup
-{
-  GtkWindow            parent_instance;
-};
-
-struct _GimpPopupClass
-{
-  GtkWindowClass  parent_instance;
-
-  void (* cancel)  (GimpPopup *popup);
-  void (* confirm) (GimpPopup *popup);
-};
-};
-
-class PopupInterface {
-public:
-  static GtkWidget*      new_instance   (GtkWidget* widget);
-  static PopupInterface* cast           (gpointer obj);
-  static bool            is_instance    (gpointer obj);
-  virtual void     show                 (GdkScreen *screen,
-                                         gint targetLeft,
-                                         gint targetTop,
-                                         gint targetRight,
-                                         gint targetBottom,
-                                         GtkCornerType pos) = 0;
-  virtual void     show_over            (GtkWidget *widget, GdkRectangle* cell_area) = 0;
-  virtual void     set_view             (GtkWidget *view) = 0;
-  virtual gboolean button_press_event   (GdkEventButton     *bevent) = 0;
-  virtual gboolean key_press_event      (GdkEventKey        *kevent) = 0;
-};
 
 namespace GLib {
 
-template<> auto g_class_type(const GimpPopup* obj) { return (GimpPopupClass*)NULL; }
-typedef UseCStructs<GtkWindow, GimpPopup> CStructs;
+template<> auto g_class_type(const GimpPopover* obj) { return (GimpPopoverClass*)NULL; }
+typedef UseCStructs<GtkWindow, GimpPopover> CStructs;
 
-struct Popup : virtual public ImplBase, virtual public PopupInterface
+struct Popover : virtual public ImplBase, virtual public PopoverInterface
 {
   enum
   {
@@ -89,13 +55,13 @@ struct Popup : virtual public ImplBase, virtual public PopupInterface
     CONFIRM,
     LAST_SIGNAL
   };
-  static guint popup_signals[LAST_SIGNAL];
+  static guint popover_signals[LAST_SIGNAL];
     gint                 view_border_width;
 
     GtkWidget           *frame;
     GtkWidget           *view;
 public:
-  Popup(GObject* obj) : ImplBase(obj) {
+  Popover(GObject* obj) : ImplBase(obj) {
     view_border_width = 1;
 
     frame       = gtk_frame_new (NULL);
@@ -105,7 +71,7 @@ public:
     iframe [gtk_widget_show] ();
   };
 
-  virtual ~Popup() { }
+  virtual ~Popover() { }
   static void      class_init           (CStructs::Class *klass);
 
   virtual void     map                  ();
@@ -126,25 +92,25 @@ public:
   virtual gboolean key_press_event      (GdkEventKey        *kevent);
 
   // Event handlers
-  void             on_grab_notify       (GimpPopup* popup, gboolean   was_grabbed);
-  gboolean         on_grab_broken_event (GimpPopup* popup, GdkEventGrabBroken *event);
+  void             on_grab_notify       (GimpPopover* popover, gboolean   was_grabbed);
+  gboolean         on_grab_broken_event (GimpPopover* popover, GdkEventGrabBroken *event);
 };
 
-guint Popup::popup_signals[LAST_SIGNAL];
+guint Popover::popover_signals[LAST_SIGNAL];
 
-extern const char gimp_popup_name[] = "GimpPopup2";
-typedef NewGClass<gimp_popup_name, CStructs, Popup> Class;
+extern const char gimp_popover_name[] = "GimpPopover2";
+typedef NewGClass<gimp_popover_name, CStructs, Popover> Class;
 
 
 #define bind_to_class(klass, method, impl)  Class::__(&klass->method).bind<&impl::method>()
 
-void GLib::Popup::class_init(CStructs::Class *klass)
+void GLib::Popover::class_init(CStructs::Class *klass)
 {
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GtkBindingSet  *binding_set;
 
-  popup_signals[CANCEL] =
+  popover_signals[CANCEL] =
     g_signal_new ("cancel",
                   G_OBJECT_CLASS_TYPE (klass),
                   (GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
@@ -152,7 +118,7 @@ void GLib::Popup::class_init(CStructs::Class *klass)
                   NULL, NULL,
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  popup_signals[CONFIRM] =
+  popover_signals[CONFIRM] =
     g_signal_new ("confirm",
                   G_OBJECT_CLASS_TYPE (klass),
                   (GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
@@ -160,11 +126,11 @@ void GLib::Popup::class_init(CStructs::Class *klass)
                   NULL, NULL,
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  bind_to_class (widget_class, map               , Popup);
-  bind_to_class (widget_class, button_press_event, Popup);
-  bind_to_class (widget_class, key_press_event   , Popup);
-  bind_to_class (klass, cancel                   , Popup);
-  bind_to_class (klass, confirm                  , Popup);
+  bind_to_class (widget_class, map               , Popover);
+  bind_to_class (widget_class, button_press_event, Popover);
+  bind_to_class (widget_class, key_press_event   , Popover);
+  bind_to_class (klass, cancel                   , Popover);
+  bind_to_class (klass, confirm                  , Popover);
   binding_set = gtk_binding_set_by_class (klass);
 
   gtk_binding_entry_add_signal (binding_set, GDK_Escape, GdkModifierType(0),
@@ -186,7 +152,7 @@ void GLib::Popup::class_init(CStructs::Class *klass)
 }; // namespace
 
 
-void GLib::Popup::on_grab_notify (GimpPopup* popup, gboolean   was_grabbed)
+void GLib::Popover::on_grab_notify (GimpPopover* popover, gboolean   was_grabbed)
 {
   if (was_grabbed)
     return;
@@ -195,34 +161,34 @@ void GLib::Popup::on_grab_notify (GimpPopup* popup, gboolean   was_grabbed)
   if (gtk_widget_is_ancestor (gtk_grab_get_current (), GTK_WIDGET(g_object)))
     return;
 
-/*  g_signal_emit (widget, popup_signals[CANCEL], 0); */
+/*  g_signal_emit (widget, popover_signals[CANCEL], 0); */
 }
 
-gboolean GLib::Popup::on_grab_broken_event (GimpPopup* popup, GdkEventGrabBroken *event)
+gboolean GLib::Popover::on_grab_broken_event (GimpPopover* popover, GdkEventGrabBroken *event)
 {
-  on_grab_notify(popup, FALSE);
+  on_grab_notify(popover, FALSE);
   return FALSE;
 }
 
-void GLib::Popup::map ()
+void GLib::Popover::map ()
 {
   auto widget = ref(GTK_WIDGET(g_object));
   GTK_WIDGET_CLASS (Class::parent_class)->map (widget.ptr());
 
-  /*  grab with owner_events == TRUE so the popup's widgets can
+  /*  grab with owner_events == TRUE so the popover's widgets can
    *  receive events. we filter away events outside this toplevel
    *  away in button_press()
    */
   widget[gtk_grab_add]();
 
   g_signal_connect_delegator (g_object, "grab-notify",
-                              Delegators::delegator(this, &Popup::on_grab_notify));
+                              Delegators::delegator(this, &Popover::on_grab_notify));
   g_signal_connect_delegator (g_object, "grab-broken-event",
-                              Delegators::delegator(this, &Popup::on_grab_broken_event));
+                              Delegators::delegator(this, &Popover::on_grab_broken_event));
   return;
 }
 
-gboolean GLib::Popup::button_press_event (GdkEventButton *bevent)
+gboolean GLib::Popover::button_press_event (GdkEventButton *bevent)
 {
   GtkWidget *event_widget;
   gboolean   cancel = FALSE;
@@ -234,8 +200,8 @@ gboolean GLib::Popup::button_press_event (GdkEventButton *bevent)
 
       ref(g_object)[gtk_widget_get_allocation](&allocation);
 
-      /*  the event was on the popup, which can either be really on the
-       *  popup or outside gimp (owner_events == TRUE, see map())
+      /*  the event was on the popover, which can either be really on the
+       *  popover or outside gimp (owner_events == TRUE, see map())
        */
       if (bevent->x < 0                || bevent->y < 0 ||
           bevent->x > allocation.width || bevent->y > allocation.height) {
@@ -245,22 +211,22 @@ gboolean GLib::Popup::button_press_event (GdkEventButton *bevent)
     }
   else if (gtk_widget_get_toplevel (event_widget) != GTK_WIDGET(g_object)) {
     /* GtkWidget *parent; */
-    /*  the event was on a gimp widget, but not inside the popup  */
+    /*  the event was on a gimp widget, but not inside the popover  */
 
     cancel = TRUE;
   }
 
   if (cancel)
-    g_signal_emit (g_object, popup_signals[CANCEL], 0);
+    g_signal_emit (g_object, popover_signals[CANCEL], 0);
 
   return cancel;
 }
 
-gboolean GLib::Popup::key_press_event (GdkEventKey *kevent)
+gboolean GLib::Popover::key_press_event (GdkEventKey *kevent)
 {
   GtkBindingSet  *binding_set = gtk_binding_set_by_class (Class::Traits::get_class(g_object));
 
-  /*  invoke the popup's binding entries manually, because otherwise
+  /*  invoke the popover's binding entries manually, because otherwise
    *  the focus widget (GtkTreeView e.g.) would consume it
    */
   if (gtk_binding_set_activate (binding_set, kevent->keyval,
@@ -272,7 +238,7 @@ gboolean GLib::Popup::key_press_event (GdkEventKey *kevent)
   return GTK_WIDGET_CLASS (Class::parent_class)->key_press_event (GTK_WIDGET(g_object), kevent);
 }
 
-void GLib::Popup::cancel ()
+void GLib::Popover::cancel ()
 {
   auto widget = ref(GTK_WIDGET (g_object));
 
@@ -282,12 +248,12 @@ void GLib::Popup::cancel ()
   widget[gtk_widget_destroy] ();
 }
 
-void GLib::Popup::confirm () {
+void GLib::Popover::confirm () {
   close ();
 }
 
 
-void GLib::Popup::close () {
+void GLib::Popover::close () {
   auto widget = ref(GTK_WIDGET (g_object));
 
   if (gtk_grab_get_current () == widget.ptr())
@@ -298,7 +264,7 @@ void GLib::Popup::close () {
 }
 
 
-void GLib::Popup::show (GdkScreen *screen,
+void GLib::Popover::show (GdkScreen *screen,
                           gint targetLeft,
                           gint targetTop,
                           gint targetRight,
@@ -346,7 +312,7 @@ void GLib::Popup::show (GdkScreen *screen,
   self[gtk_widget_show] ();
 }
 
-void GLib::Popup::show_over(GtkWidget *widget, GdkRectangle* cell_area)
+void GLib::Popover::show_over(GtkWidget *widget, GdkRectangle* cell_area)
 {
   GdkScreen      *screen;
   GtkRequisition  requisition;
@@ -381,7 +347,7 @@ void GLib::Popup::show_over(GtkWidget *widget, GdkRectangle* cell_area)
           GTK_CORNER_BOTTOM_LEFT);
 }
 
-void GLib::Popup::set_view (GtkWidget *view)
+void GLib::Popover::set_view (GtkWidget *view)
 {
   this->view = view;
 
@@ -393,36 +359,43 @@ void GLib::Popup::set_view (GtkWidget *view)
 /*  private functions  */
 /* no private functions */
 
-GtkWidget* PopupInterface::new_instance (GtkWidget *view)
+GtkWidget* PopoverInterface::new_instance (GtkWidget *view)
 {
   GtkWidget* widget;
-  GLib::Popup *popup;
+  GLib::Popover *popover;
 
   widget = GTK_WIDGET(g_object_new (GLib::Class::get_type(),
                         "type", GTK_WINDOW_POPUP,
                         NULL));
   ref(widget)[gtk_window_set_resizable] (FALSE);
 
-  popup = dynamic_cast<GLib::Popup*>(PopupInterface::cast(widget));
-  popup->view_border_width = 0;
+  popover = dynamic_cast<GLib::Popover*>(PopoverInterface::cast(widget));
+  popover->view_border_width = 0;
 
-  popup->set_view (view);
+  popover->set_view (view);
 
   return GTK_WIDGET (widget);
 }
 
-PopupInterface*
-PopupInterface::cast(gpointer obj) {
-  return dynamic_cast<PopupInterface*>(GLib::Class::get_private(obj));
+PopoverInterface*
+PopoverInterface::cast(gpointer obj) {
+  return dynamic_cast<PopoverInterface*>(GLib::Class::get_private(obj));
 }
 
-bool PopupInterface::is_instance(gpointer obj) {
+bool PopoverInterface::is_instance(gpointer obj) {
   return GLib::Class::Traits::is_instance(obj);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+extern "C" {
+GtkWidget* gimp_popover_new (GtkWidget*view)
+{
+  return PopoverInterface::new_instance (view);
+}
+}; // extern "C"
+///////////////////////////////////////////////////////////////////////////////
 
-class Popupper {
+class PopoverDecorator {
 public:
 private:
   CreateViewDelegator* create_view_delegator;
@@ -433,8 +406,8 @@ private:
 public:
   gboolean scroll_event (GtkWidget *widget, GdkEventScroll *sevent) { return TRUE; };
 
-  void on_popup_closed (GimpPopup *popup) {
-    // Handlers are already deleted by popup.
+  void on_popover_closed (GimpPopover *popover) {
+    // Handlers are already deleted by popover.
     cancel_handler  = NULL;
     confirm_handler = NULL;
   }
@@ -446,7 +419,7 @@ public:
   }
 
   void parent_clicked(GObject* object, GObject* widget, const gchar* path_str, GdkRectangle* cell_area) {
-    g_print("Popupper::parent_clicked:%s:%s\n", (const gchar*)ref(widget)["name"], path_str);
+    g_print("Popover::parent_clicked:%s:%s\n", (const gchar*)ref(widget)["name"], path_str);
     GtkTreeView*  tree_view = GTK_TREE_VIEW(widget);
     GtkTreeModel* model;
     GtkTreePath*  path;
@@ -474,17 +447,17 @@ public:
   }
 
   void clicked_internal(GtkWidget* widget, GdkRectangle* cell_area, gpointer data = NULL) {
-    GtkWidget       *popup_widget;
-    PopupInterface  *popup;
+    GtkWidget       *popover_widget;
+    PopoverInterface  *popover;
     GtkWidget       *view;
-    g_print("Popupper::clicked: %p(%s)\n", widget, G_OBJECT_TYPE_NAME(widget));
+    g_print("Popover::clicked: %p(%s)\n", widget, G_OBJECT_TYPE_NAME(widget));
 
     view = create_view (widget, data);
 
     g_return_if_fail (GTK_IS_WIDGET (view));
 
-    popup_widget = PopupInterface::new_instance (view);
-    popup        = PopupInterface::cast(popup_widget);
+    popover_widget = PopoverInterface::new_instance (view);
+    popover        = PopoverInterface::cast(popover_widget);
 
     if (cancel_handler) {
       delete cancel_handler;
@@ -496,44 +469,44 @@ public:
     }
 
     cancel_handler =
-      g_signal_connect_delegator (G_OBJECT(popup_widget), "cancel", delegator(this, &Popupper::on_popup_closed));
+      g_signal_connect_delegator (G_OBJECT(popover_widget), "cancel", delegator(this, &PopoverDecorator::on_popover_closed));
     confirm_handler =
-      g_signal_connect_delegator (G_OBJECT(popup_widget), "confirm", delegator(this, &Popupper::on_popup_closed));
+      g_signal_connect_delegator (G_OBJECT(popover_widget), "confirm", delegator(this, &PopoverDecorator::on_popover_closed));
 
-    popup->show_over (widget, cell_area);
+    popover->show_over (widget, cell_area);
   }
 
   GtkWidget* create_view (GtkWidget* widget, gpointer aux) {
-    g_print("Popupper::create_view\n");
+    g_print("Popover::create_view\n");
     GtkWidget *result = NULL;
     if (create_view_delegator)
       (*create_view_delegator)(widget, &result, aux);
     else
-      g_print("Error: Popupper::create_view: create_view_delegator is NULL.\n");
+      g_print("Error: PopoverDecorator::create_view: create_view_delegator is NULL.\n");
 
     g_return_val_if_fail (GTK_IS_WIDGET (result), NULL);
 
     return result;
   }
 
-  Popupper(GObject* widget, CreateViewDelegator* delegator) {
-    g_print("Popupper::Popupper\n");
+  PopoverDecorator(GObject* widget, CreateViewDelegator* delegator) {
+    g_print("PopoverDecorator::PopoverDecorator\n");
     create_view_delegator = delegator;
     cancel_handler = NULL;
     confirm_handler = NULL;
     scroll_event_handler =
-      g_signal_connect_delegator (G_OBJECT(widget), "scroll-event", Delegators::delegator(this, &Popupper::scroll_event));
+      g_signal_connect_delegator (G_OBJECT(widget), "scroll-event", Delegators::delegator(this, &PopoverDecorator::scroll_event));
     button_press_handler =
-      g_signal_connect_delegator (G_OBJECT(widget), "button-press-event", Delegators::delegator(this, &Popupper::button_press));
+      g_signal_connect_delegator (G_OBJECT(widget), "button-press-event", Delegators::delegator(this, &PopoverDecorator::button_press));
     if (!button_press_handler->is_valid())
       button_press_handler =
-          g_signal_connect_delegator (G_OBJECT(widget), "clicked", Delegators::delegator(this, &Popupper::clicked));
+          g_signal_connect_delegator (G_OBJECT(widget), "clicked", Delegators::delegator(this, &PopoverDecorator::clicked));
     if (!button_press_handler->is_valid())
       button_press_handler =
-          g_signal_connect_delegator (G_OBJECT(widget), "parent-clicked", Delegators::delegator(this, &Popupper::parent_clicked));
+          g_signal_connect_delegator (G_OBJECT(widget), "parent-clicked", Delegators::delegator(this, &PopoverDecorator::parent_clicked));
   }
 
-  ~Popupper() {
+  ~PopoverDecorator() {
     if (cancel_handler)
       delete cancel_handler;
     if (confirm_handler)
@@ -545,23 +518,23 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-void decorate_popupper(GObject* widget, CreateViewDelegator* delegator)
+void decorate_popover(GObject* widget, CreateViewDelegator* delegator)
 {
-  Popupper* popupper = new Popupper(widget, delegator);
-  decorator(widget, popupper);
+  PopoverDecorator* popover = new PopoverDecorator(widget, delegator);
+  decorator(widget, popover);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-class ToolbarPopupViewCreator {
+class ToolbarPopoverViewCreator {
 private:
   IObject<GObject>              config;
-  GimpPopupCreateViewCallbackExt create_view_full_handler;
-  GimpPopupCreateViewCallback    create_view_handler;
+  GimpPopoverCreateViewCallbackExt create_view_full_handler;
+  GimpPopoverCreateViewCallback    create_view_handler;
   gpointer                       data;
   void (*data_destructor) (gpointer data);
 public:
-  ToolbarPopupViewCreator(GObject* c,
-                          GimpPopupCreateViewCallbackExt cv,
+  ToolbarPopoverViewCreator(GObject* c,
+                          GimpPopoverCreateViewCallbackExt cv,
                           gpointer d,
                           void(*dd)(gpointer))
   : config(c), create_view_handler(NULL), create_view_full_handler(NULL),
@@ -570,13 +543,13 @@ public:
     data = d;
     data_destructor = dd;
   }
-  ToolbarPopupViewCreator(GObject* c,
-                          GimpPopupCreateViewCallback cv)
+  ToolbarPopoverViewCreator(GObject* c,
+                          GimpPopoverCreateViewCallback cv)
   : config(c), create_view_handler(NULL), create_view_full_handler(NULL),
     data(NULL), data_destructor(NULL) {
     create_view_handler = cv;
   }
-  ~ToolbarPopupViewCreator() {
+  ~ToolbarPopoverViewCreator() {
     if (data && data_destructor)
       (*data_destructor)(data);
   }
