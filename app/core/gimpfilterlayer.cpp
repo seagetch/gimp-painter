@@ -260,7 +260,7 @@ void FilterLayer::class_init(Traits<GimpFilterLayer>::Class *this_class)
 
       })->
       as_class <GimpViewable> ([](GimpViewableClass* klass) {
-        klass->default_stock_id = "gtk-directory";
+        klass->default_stock_id = "gimp-display-filter";
 
       })->
       as_class <GimpItem> ([](GimpItemClass* klass) {
