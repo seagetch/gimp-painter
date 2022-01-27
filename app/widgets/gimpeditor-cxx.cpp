@@ -161,7 +161,7 @@ gimp_editor_add_dropdown (GimpEditor  *editor,
 
     auto popup = new GIMP_EDITOR::PopupWindow(editor);
     decorator (it.ptr(), popup);
-    decorate_popupper (it, Delegators::delegator(popup, &GIMP_EDITOR::PopupWindow::create_view) );
+    decorate_popover (it, Delegators::delegator(popup, &GIMP_EDITOR::PopupWindow::create_view) );
 
   });
 
