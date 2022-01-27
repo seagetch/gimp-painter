@@ -211,7 +211,7 @@ void CloneLayer::class_init(Traits<GimpCloneLayer>::Class *klass)
 
       })->
       as_class<GimpViewable>([](GimpViewableClass* klass){
-        klass->default_stock_id = "gtk-duplicate";
+        klass->default_stock_id = "gtk-copy";
         _override (get_size);
 
       })->
@@ -508,9 +508,6 @@ void GLib::CloneLayer::on_source_update (GimpDrawable* _source,
                                          gint            width,
                                          gint            height)
 {
-  g_print ("%s (%s) %d, %d (%d, %d)\n",
-           G_STRFUNC, gimp_object_get_name (g_object),
-           x, y, width, height);
 
   auto self   = ref(g_object);
   auto source = ref(_source);
@@ -559,7 +556,6 @@ void GLib::CloneLayer::on_source_update (GimpDrawable* _source,
       height = dest_tiles->height;
     return;
   }
-  g_print("Copy=%d,%d\n", width, height);
   pixel_region_init (&destPR, dest_tiles, x, y, width, height, TRUE);
 /*
   GimpImageType self_type   = self [gimp_drawable_type] ();
