@@ -30,26 +30,30 @@ public:
   virtual ~Delegator() {};
 
   static Ret callback(Args... args, gpointer ptr) {
-    try {
+//    try {
       Delegator* delegator = reinterpret_cast<Delegator*>(ptr);
       return (*delegator)(args...);
+#if 0
     } catch(...) {
       const int trace_size = 10;
       void* trace[trace_size];
       int size = backtrace(trace, trace_size);
       backtrace_symbols_fd(trace, size, 1);
     }
+#endif
   }
 
   Ret operator()(Args... args) {
-    try {
+//    try {
       return func_ref(args...);
+#if 0
     } catch(...) {
       const int trace_size = 10;
       void* trace[trace_size];
       int size = backtrace(trace, trace_size);
       backtrace_symbols_fd(trace, size, 1);
     }
+#endif
   }
 };
 
@@ -66,16 +70,18 @@ public:
     obj = o;
     f = _f;
     this->func_ref = [this](Args... args)->Ret { 
-      try {
-        return (obj->*f)(args...); 
+//      try {
+      return (obj->*f)(args...); 
+      #if 0
       } catch(...) {
         const int trace_size = 10;
         void* trace[trace_size];
         int size = backtrace(trace, trace_size);
         char** symbols = backtrace_symbols(trace, size);
         g_print("%s\n", *symbols);
-        free(symbols);      
+        free(symbols);
       }
+      #endif
     };
 //    this->func_ref = std::bind(std::mem_fn(f), obj);
   }
@@ -171,6 +177,20 @@ g_signal_connect_delegator (GObject* target,
   return new Delegators::Connection(handler_id, target, event, closure);
 }
 
+template<typename Ret, typename... Args>
+void
+g_signal_connect_delegator_noret (GObject* target, 
+                                  const gchar* event, 
+                                  Delegators::Delegator<Ret(Args...)>* delegator,
+                                  bool after=false)
+{
+  GClosure *closure;  
+  closure = g_cclosure_new (G_CALLBACK (Delegators::Delegator<Ret(Args...)>::callback),
+                            (gpointer)delegator, 
+                            closure_destroy_notify<Delegators::Delegator<Ret(Args...)> >);
+  gulong handler_id = g_signal_connect_closure (target, event, closure, after);
+}
+
 template<typename T>
 inline void g_object_set_cxx_object (GObject* target, const gchar* key, T* object)
 {
@@ -202,6 +222,16 @@ g_signal_disconnect (GObject* target,
                      gulong handler_id)
 {
 	g_signal_handler_disconnect(gpointer(target), handler_id);
+}
+
+template<typename Ret, typename... Args>
+decltype(&Delegators::Delegator<Ret(Args...)>::callback) proxy(Ret (*f)(Args...)) {
+  return &Delegators::Delegator<Ret(Args...)>::callback;
+}
+
+template<typename Ret, typename... Args>
+decltype(&Delegators::Delegator<Ret(Args...)>::callback) proxy(std::function<Ret(Args...)>& f) {
+  return &Delegators::Delegator<Ret(Args...)>::callback;
 }
 
 #endif

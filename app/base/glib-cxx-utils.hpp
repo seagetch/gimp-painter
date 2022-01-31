@@ -1031,6 +1031,10 @@ public:
   Delegators::Connection* connect(const gchar* signal_name, D d) {
     return g_signal_connect_delegator(G_OBJECT(super::obj), signal_name, d);
   }
+  template<typename D>
+  void connect_noret(const gchar* signal_name, D d) {
+    g_signal_connect_delegator_noret(G_OBJECT(super::obj), signal_name, d);
+  }
 };
 
 
