@@ -72,28 +72,49 @@ public:
       this->padding = padding;
       return *this;
     }
+    template<typename T2>
+    Definer& pack_start(T2* child, gboolean expand, gboolean fill, guint padding) {
+      return wrapper.pack_start(child, expand, fill, padding);
+    }
+    template<typename T2, typename F>
+    Definer& pack_start(T2* child, gboolean expand, gboolean fill, guint padding, F f) {
+      return wrapper.pack_start(child, expand, fill, padding, f);
+    }
+    template<typename T2>
+    Definer& pack_end(T2* child, gboolean expand, gboolean fill, guint padding) {
+      return wrapper.pack_end(child, expand, fill, padding);
+    }
+    template<typename T2, typename F>
+    Definer& pack_end(T2* child, gboolean expand, gboolean fill, guint padding, F f) {
+      return wrapper.pack_end(child, expand, fill, padding, f);
+    }
   };
+
   template<typename T2>
-  void pack_start(T2* child, gboolean expand, gboolean fill, guint padding) {
+  Definer& pack_start(T2* child, gboolean expand, gboolean fill, guint padding) {
     (*this)[gtk_box_pack_start](GTK_WIDGET(child), expand, fill, padding);
+    return *this;
   }
   template<typename T2, typename F>
-  void pack_start(T2* child, gboolean expand, gboolean fill, guint padding, F init) {
+  Definer& pack_start(T2* child, gboolean expand, gboolean fill, guint padding, F init) {
     pack_start<T2>(child, expand, fill, padding);
     init(Definer<T2>(child));
+    return *this;
   }
   auto pack_start(bool expand, bool fill, unsigned int padding) {
     return Packer(*this, true, expand, fill, padding);
   }
 
   template<typename T2>
-  void pack_end(T2* child, gboolean expand, gboolean fill, guint padding) {
+  Definer& pack_end(T2* child, gboolean expand, gboolean fill, guint padding) {
     (*this)[gtk_box_pack_end](GTK_WIDGET(child), expand, fill, padding);
+    return *this;
   }
   template<typename T2, typename F>
-  void pack_end(T2* child, gboolean expand, gboolean fill, guint padding, F init) {
+  Definer& pack_end(T2* child, gboolean expand, gboolean fill, guint padding, F init) {
     pack_end<T2>(child, expand, fill, padding);
     init(Definer<T2>(child));
+    return *this;
   }
   auto pack_end(bool expand, bool fill, unsigned int padding) {
     return Packer(*this, false, expand, fill, padding);
@@ -104,9 +125,11 @@ public:
     (*this)[gtk_container_add](GTK_WIDGET(child));
   }
   template<typename T2, typename F>
-  void add(T2* child, F init) {
+  Definer<T2> add(T2* child, F init) {
     add<T2>(child);
-    init(Definer<T2>(child));
+    auto i_child = Definer<T2>(child);
+    init(i_child);
+    return i_child;
   }
 
   template<typename T2>
@@ -114,9 +137,11 @@ public:
     (*this)[gtk_scrolled_window_add_with_viewport](GTK_WIDGET(child));
   }
   template<typename T2, typename F>
-  void add_with_viewport(T2* child, F init) {
+  Definer<T2> add_with_viewport(T2* child, F init) {
     add_with_viewport<T2>(child);
-    init(Definer<T2>(child));
+    auto i_child = Definer<T2>(child);
+    init(i_child);
+    return i_child;
   }
 };
 
