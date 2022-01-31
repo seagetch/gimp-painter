@@ -40,6 +40,7 @@
 #include "widgets/gimpdockwindow.h"
 #include "widgets/gimpimageeditor.h"
 #include "widgets/gimpitemtreeview.h"
+#include "widgets/gimplayertileview.h"
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
@@ -307,6 +308,8 @@ action_data_get_gimp (gpointer data)
     context = ((GimpImageEditor *) data)->context;
   else if (GIMP_IS_NAVIGATION_EDITOR (data))
     context = ((GimpNavigationEditor *) data)->context;
+  else if (GIMP_IS_LAYER_TILE_VIEW (data))
+    g_object_get (G_OBJECT(data), "context", &context, NULL);
 
   if (context)
     return context->gimp;
@@ -341,6 +344,11 @@ action_data_get_context (gpointer data)
     return ((GimpImageEditor *) data)->context;
   else if (GIMP_IS_NAVIGATION_EDITOR (data))
     return ((GimpNavigationEditor *) data)->context;
+  else if (GIMP_IS_LAYER_TILE_VIEW (data)) {
+    GimpContext* context;
+    g_object_get (G_OBJECT(data), "context", &context, NULL);
+    return context;
+  }
 
   return NULL;
 }
@@ -373,6 +381,11 @@ action_data_get_image (gpointer data)
     return ((GimpImageEditor *) data)->image;
   else if (GIMP_IS_NAVIGATION_EDITOR (data))
     context = ((GimpNavigationEditor *) data)->context;
+  else if (GIMP_IS_LAYER_TILE_VIEW (data)) {
+    GimpImage* image;
+    g_object_get (G_OBJECT(data), "image", &image, NULL);
+    return image;
+  }
 
   if (context)
     return gimp_context_get_image (context);
@@ -405,6 +418,8 @@ action_data_get_display (gpointer data)
     context = gimp_dock_window_get_context (((GimpDockWindow *) data));
   else if (GIMP_IS_NAVIGATION_EDITOR (data))
     context = ((GimpNavigationEditor *) data)->context;
+  else if (GIMP_IS_LAYER_TILE_VIEW (data))
+    g_object_get (G_OBJECT(data), "context", &context, NULL);
 
   if (context)
     return gimp_context_get_display (context);

@@ -35,6 +35,8 @@ extern "C" {
 #include "widgets-types.h"
 #include "widgets/gimpviewrenderer.h"
 
+#include "menus/menus.h"
+
 #include "core/gimpdashpattern.h"
 #include "core/gimpmarshal.h"
 #include "core/gimp.h"
@@ -43,6 +45,8 @@ extern "C" {
 #include "core/gimplayermask.h"
 #include "core/gimpcontext.h"
 #include "core/gimpcontainer.h"
+#include "core/gimpdatafactory.h"
+#include "core/gimpdata.h"
 
 #include "gimp-intl.h"
 #include "gimpwidgets-constructors.h"
@@ -52,11 +56,15 @@ extern "C" {
 #include "gimpdnd.h"
 #include "gimplayerpopup.h"
 #include "popupper.h"
+#include "gimpmenufactory.h"
+#include "gimpuimanager.h"
 
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 };
+#include "presets/gimpjsonresource.h"
+#include "presets/layer-preset.h"
 
 #include "base/glib-cxx-def-utils.hpp"
 
@@ -154,31 +162,6 @@ typedef UseCStructs<GtkBox, GimpLayerTileView> CStructs;
 
 struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInterface
 {
-  Object<GtkScrolledWindow> scrolled_window;
-  Object<GtkDrawingArea>    content_area;
-  Object<GtkButton>         add_button;
-  Object<GtkButton>         anchor_button;
-  Object<GtkButton>         delete_button;
-  IObject<GimpContext>      context;
-  IObject<GimpImage>        image;
-
-  List                      layers;
-  HashTable                 layer_dict;
-  int                       freezed_count;
-
-  CXXPointer<_D::Connection> added_handler;
-  CXXPointer<_D::Connection> removed_handler;
-  CXXPointer<_D::Connection> reordered_handler;
-  CXXPointer<_D::Connection> active_layer_changed_handler;
-  ScopedPointer<cairo_surface_t, void (cairo_surface_t*), cairo_surface_destroy> eye_surface;
-  CXXPointer<LayerPopupWindow> layer_popup_decorator;
-  CXXPointer<_D::Delegator<GimpViewable* (GtkWidget*, GimpContext**)> > drag_viewable_holder; 
-  CXXPointer<_D::Connection> drag_motion_handler;
-  CXXPointer<_D::Connection> drag_failed_handler;
-  CXXPointer<_D::Connection> drag_leave_handler;
-  CXXPointer<_D::Connection> drag_drop_handler;
-  CXXPointer<_D::Connection> drag_data_received_handler;
-  CXXPointer<Timeout>        scroll_timeout_handler;
   // Internal class which hold layer information required for display and control.
   struct Layer {
     Layer(GimpViewable* layer, int level) : surface(NULL) {
@@ -224,12 +207,47 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
     Action action;
   };
 
-  CXXPointer<DragAction> drag_action;
+
+  Object<GtkScrolledWindow> scrolled_window;
+  Object<GtkDrawingArea>    content_area;
+  Object<GtkButton>         add_button;
+  Object<GtkButton>         anchor_button;
+  Object<GtkButton>         delete_button;
+  Object<GimpUIManager>     ui_manager;
+  IObject<GimpContext>      context;
+  IObject<GimpImage>        image;
+
+  List                      layers;
+  HashTable                 layer_dict;
+  int                       freezed_count;
+
+  CXXPointer<_D::Connection> added_handler;
+  CXXPointer<_D::Connection> removed_handler;
+  CXXPointer<_D::Connection> reordered_handler;
+  CXXPointer<_D::Connection> active_layer_changed_handler;
+  ScopedPointer<cairo_surface_t, void (cairo_surface_t*), cairo_surface_destroy> eye_surface;
+  CXXPointer<LayerPopupWindow> layer_popup_decorator;
+  CXXPointer<_D::Delegator<GimpViewable* (GtkWidget*, GimpContext**)> > drag_viewable_holder; 
+  CXXPointer<_D::Connection> drag_motion_handler;
+  CXXPointer<_D::Connection> drag_failed_handler;
+  CXXPointer<_D::Connection> drag_leave_handler;
+  CXXPointer<_D::Connection> drag_drop_handler;
+  CXXPointer<_D::Connection> drag_data_received_handler;
+  CXXPointer<Timeout>        scroll_timeout_handler;
+
+  CXXPointer<DragAction>     drag_action;
+  CXXPointer<GdkPoint>       add_cursor;
+  CXXPointer<Timeout>        add_timeout_handler;
 
   LayerTileView(GObject* o);  
   virtual ~LayerTileView();
 
   static void class_init(CStructs::Class* klass);
+
+  CopyValue get_image();
+  void      set_image(IValue v);
+  CopyValue get_context();
+  void      set_context(IValue v);
 
   void on_expose(GtkDrawingArea *widget, GdkEventExpose *event);
   void draw(GtkDrawingArea* drawing_area, cairo_t* cr, int width, int height); //gpointer user_data
@@ -243,14 +261,9 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
   void on_drag_leave(GtkWidget* widget, GdkDragContext* context, guint time_);
   void on_drag_data_received(GtkWidget* widget, GdkDragContext* context, gint x, gint y, GtkSelectionData* selection_data, guint info, guint time);
   void on_changed(GtkWidget* widget);
-  void on_anchor_button_clicked(GtkWidget* widget);
-  void on_delete_button_clicked(GtkWidget* widget);
-  void on_add_button_clicked(GtkWidget* widget);
-
-  CopyValue get_image();
-  void      set_image(IValue v);
-  CopyValue get_context();
-  void      set_context(IValue v);
+  gboolean on_add_button_press(GtkWidget* widget, GdkEventButton* event);
+  gboolean on_add_button_motion(GtkWidget* widget, GdkEventMotion* event);
+  gboolean on_add_button_release(GtkWidget* widget, GdkEventButton* event);
 
   void reset_layers();
 
@@ -265,9 +278,10 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
   DragAction* get_drag_action(GtkWidget* widget, GdkDragContext* context, gint x, gint y, guint time_);
 
   GimpViewable* get_drag_viewable(GtkWidget *widget, GimpContext **context);
+  void popup_layer_operation();
 
   // Inherited methods
-  virtual void            constructed  ();
+  virtual void constructed  ();
   virtual void dummy() {};
 };
 
@@ -325,6 +339,33 @@ LayerTileView::~LayerTileView()
 void 
 LayerTileView::constructed ()
 {
+  ui_manager = gimp_menu_factory_manager_new (global_menu_factory, "<Dock>", g_object, false);//last is tear-off.
+  GimpActionGroup* group = gimp_ui_manager_get_action_group (ui_manager, "layers");
+
+
+  auto setup_action_button = [] (GimpActionGroup* group, const char* action_name, IObject<GtkWidget> button, GtkIconSize button_icon_size) {
+
+    GtkAction* action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), action_name);
+    gtk_activatable_set_related_action (GTK_ACTIVATABLE(button.ptr()), action);
+
+    button [gtk_button_set_relief] (GTK_RELIEF_NONE);    
+    button [gtk_widget_show] ();
+
+    const gchar* stock_id = gtk_action_get_stock_id (action);
+    gchar*       tooltip  = g_strdup (gtk_action_get_tooltip (action));
+    const gchar* help_id  = (const char*)g_object_get_qdata (G_OBJECT(action), GIMP_HELP_ID);
+
+    GtkWidget* old_child = button [gtk_bin_get_child] ();
+
+    if (old_child)
+      gtk_widget_destroy (old_child);
+
+    GtkWidget* button_image = gtk_image_new_from_stock (stock_id, button_icon_size);
+    button [gtk_container_add] (button_image);
+    ref(button_image) [gtk_widget_show] ();
+  };
+
+
   ref(g_object) [gtk_orientable_set_orientation] (GTK_ORIENTATION_VERTICAL);
 
   with (ref(GTK_BOX(g_object)), [&](auto self) {
@@ -334,54 +375,166 @@ LayerTileView::constructed ()
       box.pack_start(false, false, 0) (gtk_button_new(), [&] (auto button) {
 
         anchor_button = GTK_BUTTON (button.ptr());
-
-        button [gtk_button_set_image] (gtk_image_new_from_stock(GIMP_STOCK_ANCHOR, GTK_ICON_SIZE_MENU));
-        button [gtk_widget_show] ();
-
-        button.connect("clicked", _D::delegator(this, &LayerTileView::on_anchor_button_clicked));
+        setup_action_button(group, "layers-anchor", button, GTK_ICON_SIZE_MENU);
 
       }).pack_end(false, false, 0) (gtk_button_new(), [&] (auto button) {
         
         delete_button = GTK_BUTTON (button.ptr());
+        setup_action_button(group, "layers-delete", button, GTK_ICON_SIZE_MENU);
 
-        button [gtk_button_set_image] (gtk_image_new_from_stock(GTK_STOCK_DELETE, GTK_ICON_SIZE_MENU));
-        button [gtk_widget_show] ();
-
-        button.connect("clicked", _D::delegator(this, &LayerTileView::on_delete_button_clicked));
       });
       box [gtk_widget_show] ();
 
-    }).pack_start(false, false, 0) (gtk_button_new(), [&] (auto button) {
+    }).pack_start(false, false, 0) (gimp_button_new(), [&] (auto button) {
 
       add_button = GTK_BUTTON (button.ptr());
+      setup_action_button(group, "layers-new-last-values", button, GTK_ICON_SIZE_LARGE_TOOLBAR);
+      button [gtk_widget_set_events] (GDK_ALL_EVENTS_MASK);
 
-      button [gtk_button_set_image] (gtk_image_new_from_stock(GTK_STOCK_ADD, GTK_ICON_SIZE_LARGE_TOOLBAR));
-      button [gtk_widget_show] ();
-
-      button.connect("clicked", _D::delegator(this, &LayerTileView::on_add_button_clicked));
+      button.connect("button-press-event",   _D::delegator(this, &LayerTileView::on_add_button_press));
+      button.connect("motion-notify-event",  _D::delegator(this, &LayerTileView::on_add_button_motion));
+      button.connect("button-release-event", _D::delegator(this, &LayerTileView::on_add_button_release));
 
     }).pack_start(true, true, 0) (GTK_SCROLLED_WINDOW (gtk_scrolled_window_new (NULL, NULL)), [&] (auto window) {
 
-      scrolled_window     = window.ptr();
-      content_area        = GTK_DRAWING_AREA (gtk_drawing_area_new ());
-      auto i_content_area = ref(content_area);
+      scrolled_window     = with(window, [this](auto window) {
 
-      window [gtk_scrolled_window_add_with_viewport] (GTK_WIDGET(content_area.ptr()));
-      
-      i_content_area [gtk_widget_set_size_request] (LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT);
-      i_content_area [gtk_widget_set_events] (GDK_ALL_EVENTS_MASK);
+        content_area = window.add_with_viewport(GTK_DRAWING_AREA (gtk_drawing_area_new ()), [this] (auto i_content_area){
+          i_content_area [gtk_widget_set_size_request] (LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT);
+          i_content_area [gtk_widget_set_events] (GDK_ALL_EVENTS_MASK);
 
-      i_content_area.connect("expose-event",       _D::delegator(this, &LayerTileView::on_expose));
-      i_content_area.connect("button-press-event", _D::delegator(this, &LayerTileView::on_button_press));
-      
-      i_content_area [gtk_widget_show] ();
-
-      window [gtk_widget_set_size_request] (LAYER_MAX_WIDTH + 16, LAYER_MAX_HEIGHT);
-      window [gtk_widget_show] ();
+          i_content_area.connect("expose-event",       _D::delegator(this, &LayerTileView::on_expose));
+          i_content_area.connect("button-press-event", _D::delegator(this, &LayerTileView::on_button_press));
+          
+          i_content_area [gtk_widget_show] ();
+        }).ptr();
+        
+        window [gtk_widget_set_size_request] (LAYER_MAX_WIDTH + 16, LAYER_MAX_HEIGHT);
+        window [gtk_widget_show] ();
+      }).ptr();
 
     });
   });
+}
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Setter / getter for GObject properties
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+CopyValue 
+LayerTileView::get_image()
+{
+  CopyValue result = G_OBJECT(image.ptr());
+  GObject* object = result;
+  return result;
+}
+
+
+void 
+LayerTileView::set_image(IValue v)
+{
+  const GValue* val = v.ptr();
+  GimpImage* image = GIMP_IMAGE(g_value_get_object(val));
+
+  if (this->image.ptr() == image)
+    return;
+
+  if (this->image) {
+    added_handler     = NULL;
+    removed_handler   = NULL;
+    reordered_handler = NULL;
+  }
+  this->image = image;
+
+  reset_layers();
+  if (this->image) {
+
+    GimpContainer* container = ref(image) [gimp_image_get_layers] ();
+    IContainer<GimpViewable> i_container = ref(container);
+
+    added_handler     = i_container.connect("add",     _D::delegator(this, &LayerTileView::on_layer_added));
+    removed_handler   = i_container.connect("remove",  _D::delegator(this, &LayerTileView::on_layer_removed));
+    reordered_handler = i_container.connect("reorder", _D::delegator(this, &LayerTileView::on_layer_reordered));
+
+    active_layer_changed_handler = this->image.connect("active-layer-changed", _D::delegator(this, &LayerTileView::on_changed));
+
+    int level = 0;
+    int num_layers = 0;
+
+    i_container.each([&] (GimpViewable* viewable) {
+      on_layer_added(container, viewable);
+    });
+
+    IList<Layer*> i_layers     = layers;
+    int max_level = 0;
+    i_layers.each([&max_level](Layer* info){
+      max_level = std::max(info->level, max_level);
+    });
+
+    auto i_content_area = ref(content_area);
+    num_layers = g_list_length (layers.ptr());
+    i_content_area [gtk_widget_set_size_request] (max_level * LAYER_INDENT_WIDTH + LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT * num_layers);
+
+    drag_viewable_holder = _D::delegator(this, &LayerTileView::get_drag_viewable);
+    i_content_area [gimp_dnd_viewable_source_add] (
+      i_container [gimp_container_get_children_type] (),
+      std::remove_reference<decltype(*drag_viewable_holder.ptr())>::type::callback,
+      drag_viewable_holder.ptr());
+    
+    i_content_area [gimp_dnd_drag_dest_set_by_type] (
+      GtkDestDefaults(0),
+      GIMP_TYPE_LAYER,
+      GdkDragAction(GDK_ACTION_MOVE | GDK_ACTION_COPY));    
+    i_content_area [gimp_dnd_viewable_dest_add] (
+                                GIMP_TYPE_CHANNEL,
+                                NULL,this);
+    i_content_area [gimp_dnd_viewable_dest_add] (
+                                GIMP_TYPE_LAYER_MASK,
+                                NULL,this);
+
+    drag_motion_handler        = i_content_area.connect("drag-motion",        _D::delegator(this, &LayerTileView::on_drag_motion));
+    drag_failed_handler        = i_content_area.connect("drag-failed",        _D::delegator(this, &LayerTileView::on_drag_leave));
+    drag_leave_handler         = i_content_area.connect("drag-leave",         _D::delegator(this, &LayerTileView::on_drag_leave));
+    drag_drop_handler          = i_content_area.connect("drag-drop",          _D::delegator(this, &LayerTileView::on_drag_drop));
+    drag_data_received_handler = i_content_area.connect("drag-data-received", _D::delegator(this, &LayerTileView::on_drag_data_received));
+
+  } else {
+    ref(content_area) [gtk_widget_set_size_request] (LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT);
+    ref(g_object) [gtk_widget_queue_draw] ();
+  }
+}
+
+
+GimpViewable *
+LayerTileView::get_drag_viewable (GtkWidget    *widget,
+                                  GimpContext **context_holder)
+{
+  if (context_holder)
+    *context_holder = context.ptr();
+
+  GimpLayer* layer = image [gimp_image_get_active_layer] ();
+
+  return GIMP_VIEWABLE(layer);
+}
+
+
+CopyValue 
+LayerTileView::get_context()
+{
+  CopyValue result = G_OBJECT(context.ptr());
+  GObject* object = result;
+  return result;
+}
+
+
+void 
+LayerTileView::set_context(IValue v) 
+{
+  const GValue* val = v.ptr();
+  GimpContext* context = GIMP_CONTEXT(g_value_get_object(val));
+  this->context = context;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -711,7 +864,7 @@ LayerTileView::on_button_press(GtkWidget* widget, GdkEventButton* event)
   if (action.target && action.action == MouseAction::Hit) {
     auto i_viewable = ref(action.target);
 
-    if (event->button == 1) {
+    if (event->button == 1 || event->button == 3) {
       GdkRectangle visibility_area = {0, 0, ICON_SIZE, ICON_SIZE};
 
       if (visibility_area.x <= action.offset_x && action.offset_x < visibility_area.x + visibility_area.width &&
@@ -728,11 +881,13 @@ LayerTileView::on_button_press(GtkWidget* widget, GdkEventButton* event)
 
       ref(content_area) [gtk_widget_queue_draw] ();
       image [gimp_image_flush] ();
-    } else if (event->button == 3) {
+    }
+    
+    if (event->button == 3) {
       GdkRectangle area = {event->x - action.offset_x, event->y - action.offset_y, LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT };
       layer_popup_decorator = new LayerPopupWindow;
       GtkWidget* view = NULL;
-      layer_popup_decorator->create_view(GTK_WIDGET(content_area.ptr()), &view, action.target);
+      layer_popup_decorator->create_view(GTK_WIDGET(g_object), &view, action.target);
       GtkWidget* popover = PopoverInterface::new_instance(view);
       auto i_popover     = PopoverInterface::cast(popover);
       i_popover->show_over(GTK_WIDGET(content_area.ptr()), &area);
@@ -924,146 +1079,55 @@ LayerTileView::on_changed(GtkWidget* widget)
 }
 
 
-void 
-LayerTileView::on_anchor_button_clicked(GtkWidget* widget)
+gboolean 
+LayerTileView::on_add_button_press(GtkWidget* widget, GdkEventButton* event)
 {
   if (image) {
 
+    if (event->button == 1) {
+      add_cursor = new GdkPoint;
+      add_cursor->x = event->x;
+      add_cursor->y = event->y;
+    }
+    add_timeout_handler = new Timeout(500, _D::delegator(std::function<gboolean()>([this]() -> gboolean {
+      popup_layer_operation();
+      add_timeout_handler = NULL;
+      return false;
+    })));
   }
+  return false;
 }
 
 
-void 
-LayerTileView::on_delete_button_clicked(GtkWidget* widget)
+gboolean 
+LayerTileView::on_add_button_motion(GtkWidget* widget, GdkEventMotion* event)
 {
   if (image) {
-
+    if (add_cursor) {
+      if (event->y - add_cursor->y > 12) {
+        popup_layer_operation();
+        add_timeout_handler = NULL;
+      }
+    }
   }
+  return false;
 }
 
 
-void 
-LayerTileView::on_add_button_clicked(GtkWidget* widget)
+gboolean 
+LayerTileView::on_add_button_release(GtkWidget* widget, GdkEventButton* event)
 {
   if (image) {
-
+    if (add_cursor)
+      add_cursor = NULL;
+    if (add_timeout_handler) {
+      add_timeout_handler = NULL;
+      return false;
+    }
   }
+  return true;
 }
 
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-// Setter / getter for GObject properties
-//////////////////////////////////////////////////////////////////////////////////////////////
-
-
-CopyValue 
-LayerTileView::get_image()
-{
-  return image.ptr();
-}
-
-
-void 
-LayerTileView::set_image(IValue v)
-{
-  const GValue* val = v.ptr();
-  GimpImage* image = GIMP_IMAGE(g_value_get_object(val));
-
-  if (this->image.ptr() == image)
-    return;
-
-  if (this->image) {
-    added_handler     = NULL;
-    removed_handler   = NULL;
-    reordered_handler = NULL;
-  }
-  this->image = image;
-
-  reset_layers();
-  if (this->image) {
-
-    GimpContainer* container = ref(image) [gimp_image_get_layers] ();
-    IContainer<GimpViewable> i_container = ref(container);
-
-    added_handler     = i_container.connect("add",     _D::delegator(this, &LayerTileView::on_layer_added));
-    removed_handler   = i_container.connect("remove",  _D::delegator(this, &LayerTileView::on_layer_removed));
-    reordered_handler = i_container.connect("reorder", _D::delegator(this, &LayerTileView::on_layer_reordered));
-
-    active_layer_changed_handler = this->image.connect("active-layer-changed", _D::delegator(this, &LayerTileView::on_changed));
-
-    int level = 0;
-    int num_layers = 0;
-
-    i_container.each([&] (GimpViewable* viewable) {
-      on_layer_added(container, viewable);
-    });
-
-    IList<Layer*> i_layers     = layers;
-    int max_level = 0;
-    i_layers.each([&max_level](Layer* info){
-      max_level = std::max(info->level, max_level);
-    });
-
-    auto i_content_area = ref(content_area);
-    num_layers = g_list_length (layers.ptr());
-    i_content_area [gtk_widget_set_size_request] (max_level * LAYER_INDENT_WIDTH + LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT * num_layers);
-
-    drag_viewable_holder = _D::delegator(this, &LayerTileView::get_drag_viewable);
-    i_content_area [gimp_dnd_viewable_source_add] (
-      i_container [gimp_container_get_children_type] (),
-      std::remove_reference<decltype(*drag_viewable_holder.ptr())>::type::callback,
-      drag_viewable_holder.ptr());
-    
-    i_content_area [gimp_dnd_drag_dest_set_by_type] (
-      GtkDestDefaults(0),
-      GIMP_TYPE_LAYER,
-      GdkDragAction(GDK_ACTION_MOVE | GDK_ACTION_COPY));    
-    i_content_area [gimp_dnd_viewable_dest_add] (
-                                GIMP_TYPE_CHANNEL,
-                                NULL,this);
-    i_content_area [gimp_dnd_viewable_dest_add] (
-                                GIMP_TYPE_LAYER_MASK,
-                                NULL,this);
-
-    drag_motion_handler        = i_content_area.connect("drag-motion",        _D::delegator(this, &LayerTileView::on_drag_motion));
-    drag_failed_handler        = i_content_area.connect("drag-failed",        _D::delegator(this, &LayerTileView::on_drag_leave));
-    drag_leave_handler         = i_content_area.connect("drag-leave",         _D::delegator(this, &LayerTileView::on_drag_leave));
-    drag_drop_handler          = i_content_area.connect("drag-drop",          _D::delegator(this, &LayerTileView::on_drag_drop));
-    drag_data_received_handler = i_content_area.connect("drag-data-received", _D::delegator(this, &LayerTileView::on_drag_data_received));
-
-  } else {
-    ref(g_object) [gtk_widget_queue_draw] ();
-  }
-}
-
-
-GimpViewable *
-LayerTileView::get_drag_viewable (GtkWidget    *widget,
-                                  GimpContext **context_holder)
-{
-  if (context_holder)
-    *context_holder = context.ptr();
-
-  GimpLayer* layer = image [gimp_image_get_active_layer] ();
-
-  return GIMP_VIEWABLE(layer);
-}
-
-
-CopyValue 
-LayerTileView::get_context()
-{
-  return context.ptr();
-}
-
-
-void 
-LayerTileView::set_context(IValue v) 
-{
-  const GValue* val = v.ptr();
-  GimpContext* context = GIMP_CONTEXT(g_value_get_object(val));
-  this->context = context;
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions
@@ -1081,7 +1145,6 @@ LayerTileView::reset_layers()
   });
   layers.free();
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Building cairo surface for preview / other icons
@@ -1321,6 +1384,81 @@ LayerTileView::get_drag_action(GtkWidget* widget, GdkDragContext* drag_context, 
   }
 
   return drag_action; 
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Layer operation
+
+void
+LayerTileView::popup_layer_operation()
+{
+  if (image) {
+
+    GimpActionGroup* group = gimp_ui_manager_get_action_group (ui_manager, "layers");
+
+    auto action_item_builder = [group] (GtkWidget* menu, const char* command) {
+
+      GtkWidget* item = with(gtk_image_menu_item_new(), [group, command](auto menu_item) {
+        GtkAction* action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), command);
+        gtk_activatable_set_related_action (GTK_ACTIVATABLE(menu_item.ptr()), action);
+
+        const gchar* stock_id   = gtk_action_get_stock_id (action);
+        GtkWidget* button_image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_MENU);
+
+        menu_item [gtk_image_menu_item_set_image] (button_image);
+        menu_item [gtk_widget_show] ();
+        menu_item [gtk_image_menu_item_set_always_show_image] (TRUE);
+      }).ptr();
+
+      gtk_menu_shell_append (GTK_MENU_SHELL(menu), item);
+    };
+
+    auto menu = with(GTK_MENU(gtk_menu_new()), [this, group, &action_item_builder](auto menu) {
+      action_item_builder(menu, "layers-new");
+      action_item_builder(menu, "layers-new-group");
+      action_item_builder(menu, "layers-duplicate");
+      action_item_builder(menu, "layers-new-filter");
+      action_item_builder(menu, "layers-new-clone");
+
+      auto separator = ref(gtk_separator_menu_item_new());
+      separator [gtk_widget_show] ();
+      gtk_menu_shell_append (GTK_MENU_SHELL(menu.ptr()), separator.ptr());
+
+      GimpDataFactory* factory;
+      if (context)
+        factory = gimp_get_data_factory (context->gimp, "layer-preset");
+      IContainer<GimpData> i_container = ref(gimp_data_factory_get_container(factory));
+
+      i_container.each([&](GimpData* preset) {
+        auto menu_item = ref(gtk_menu_item_new());
+        menu_item [gtk_menu_item_set_label] (ref(preset) [gimp_object_get_name] ());
+        menu_item [gtk_widget_show] ();
+        gtk_menu_shell_append (GTK_MENU_SHELL(menu.ptr()), menu_item.ptr());
+
+        menu_item.connect("activate", _D::delegator(std::function<void(GtkWidget*)>([this, preset](GtkWidget* widget) {
+          auto applier = hold(ILayerPresetApplier::new_instance(context.ptr(), GIMP_JSON_RESOURCE(preset)));
+          applier->apply_for_active_layer();
+        })));
+      });
+
+    });
+
+    GtkButton* add_button = this->add_button.ptr();
+    std::function<void(GtkMenu*,gint*,gint*,gboolean*)> set_position = [add_button] (GtkMenu* menu, gint *x, gint *y, gboolean* push_in) {
+      IObject<GtkButton> button = add_button;
+      GtkAllocation alloc;
+      button [gtk_widget_get_allocation] (&alloc);
+      gdk_window_get_origin (button [gtk_widget_get_window] (), x, y);
+      *x += alloc.x;
+      *y += alloc.y + alloc.height;
+      *push_in = TRUE;
+    };
+    auto p_set_position = guard(_D::delegator(set_position));
+
+    menu [gtk_menu_popup] (NULL, NULL, std::remove_reference<decltype(*p_set_position.ptr())>::type::callback, p_set_position.ptr(), 0, gtk_get_current_event_time());
+    add_cursor = NULL;
+
+  }
 }
 
 /*  public functions  */

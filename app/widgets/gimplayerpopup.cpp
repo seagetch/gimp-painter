@@ -37,6 +37,9 @@ extern "C" {
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
 
+#include "widgets/gimpuimanager.h"
+#include "widgets/gimpmenufactory.h"
+
 #include "pdb/gimppdb-query.h"
 #include "pdb/gimppdb.h"
 #include "pdb/gimpprocedure.h"
@@ -51,7 +54,9 @@ extern "C" {
 #include "gimphelp-ids.h"
 #include "gimpspinscale.h"
 #include "gimpcolorpanel.h"
+#include "gimpactiongroup.h"
 
+#include "menus/menus.h"
 };
 
 #include "base/glib-cxx-def-utils.hpp"
@@ -59,6 +64,7 @@ extern "C" {
 #include "gimpcellrendererpopup.h"
 #include "popupper.h"
 #include "gimplayerpopup.h"
+#include "gimplayertileview.h"
 
 #include "core/gimpfilterlayer.h"
 
@@ -72,12 +78,14 @@ class PopupWindowDecorator {
     PIXBUF,
     NUM_ARGS
   };
-  IObject<GimpLayer> layer;
-  IObject<GtkWidget> mode_select;
-  IObject<GtkWidget> filter_select;
-  IObject<GtkWidget> filter_edit;
-  CString            proc_name;
-  Array              proc_args;
+  IObject<GimpLayer>    layer;
+  IObject<GtkWidget>    mode_select;
+  IObject<GtkWidget>    filter_select;
+  IObject<GtkWidget>    filter_edit;
+  Object<GimpUIManager> ui_manager;
+  Object<GtkMenu>       menu;
+  CString               proc_name;
+  Array                 proc_args;
 
   GtkWidget* create_label_tree_view(const gchar* title, GtkTreeModel* model) {
     return with (gtk_tree_view_new_with_model(model), [&title] (auto tree_view) {
@@ -245,26 +253,22 @@ class PopupWindowDecorator {
     with (filter_edit, [&](auto vbox) {
       GtkRequisition req = { 300, -1 };
 
-      vbox.pack_start(false, true, 4) (
-        gtk_label_new(""), [&](auto it) {
-          it [gtk_widget_show] ();
-          it [gtk_label_set_line_wrap] (TRUE);
-          it [gtk_widget_set_size_request] (req.width, req.height);
-          const gchar* label = plug_in_proc [gimp_plug_in_procedure_get_label] ();
-          CString markup = g_markup_printf_escaped ("<span font_weight=\"bold\" size=\"larger\">%s</span>", label);
-          it [gtk_label_set_markup] (markup.ptr());
-        }
-      ).pack_start(false, true, 0) (
-        gtk_label_new(plug_in_proc [gimp_plug_in_procedure_get_blurb]()), [&](auto it) {
-          it [gtk_widget_show] ();
-          it [gtk_label_set_line_wrap] (TRUE);
-          it [gtk_widget_set_size_request] (req.width, req.height);
-        }
-      ).pack_start(false, true, 3) (
-        gtk_hseparator_new(), [&](auto it) {
-          it [gtk_widget_show] ();
-        }
-      );
+      vbox.pack_start(false, true, 4) (gtk_label_new(""), [&](auto it) {
+        it [gtk_widget_show] ();
+        it [gtk_label_set_line_wrap] (TRUE);
+        it [gtk_widget_set_size_request] (req.width, req.height);
+        const gchar* label = plug_in_proc [gimp_plug_in_procedure_get_label] ();
+        CString markup = g_markup_printf_escaped ("<span font_weight=\"bold\" size=\"larger\">%s</span>", label);
+        it [gtk_label_set_markup] (markup.ptr());
+
+      }).pack_start(false, true, 0) (gtk_label_new(plug_in_proc [gimp_plug_in_procedure_get_blurb]()), [&](auto it) {
+        it [gtk_widget_show] ();
+        it [gtk_label_set_line_wrap] (TRUE);
+        it [gtk_widget_set_size_request] (req.width, req.height);
+
+      }).pack_start(false, true, 3) (gtk_hseparator_new(), [&](auto it) {
+        it [gtk_widget_show] ();
+      });
 
       IHashTable<gchar*, GimpFrame*> frames = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 
@@ -396,7 +400,7 @@ class PopupWindowDecorator {
                   gtk_spin_button_new (
                     with (gtk_adjustment_new (cur_value, min_value, max_value, 1.0, 10.0, 0.0),[&](auto it) {
 
-                      it.connect("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                      it.connect_noret("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                         auto i_proc_args = ref<GValue>(proc_args);
                         g_value_set_double(&i_proc_args[j], ref(o)["value"]);
                       })));
@@ -414,7 +418,7 @@ class PopupWindowDecorator {
               gimp_spin_scale_new (
                 with (gtk_adjustment_new (cur_value, min_value, max_value, 1.0, 10.0, 0.0),[&](auto it) {
 
-                  it.connect("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                  it.connect_noret("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                     auto i_proc_args = ref<GValue>(proc_args);
                     g_value_set_double(&i_proc_args[j], ref(o)["value"]);
                   })));
@@ -507,7 +511,7 @@ class PopupWindowDecorator {
                     it [gtk_widget_show] ();
                     it [gtk_toggle_button_set_active] (cur_value);
 
-                    it.connect("toggled", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                    it.connect_noret("toggled", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                       auto i_proc_args = ref<GValue>(proc_args);
                       g_value_set_int(&i_proc_args[j], ref(o) [gtk_toggle_button_get_active] ());
                     })));
@@ -526,7 +530,7 @@ class PopupWindowDecorator {
                     it [gtk_widget_show] ();
                     it [gimp_int_combo_box_set_active] (cur_value);
 
-                    it.connect("changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                    it.connect_noret("changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                       gint32 value;
                       ref(o) [gimp_int_combo_box_get_active] (&value);
                       auto i_proc_args = ref<GValue>(proc_args);
@@ -621,7 +625,7 @@ class PopupWindowDecorator {
                     gtk_spin_button_new (
                       with (gtk_adjustment_new (cur_value, min_value, max_value, 1.0, 10.0, 0.0),[&](auto it) {
 
-                        it.connect("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                        it.connect_noret("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                           auto i_proc_args = ref<GValue>(proc_args);
                           g_value_set_int(&i_proc_args[j], ref(o)["value"]);
                         })));
@@ -639,7 +643,7 @@ class PopupWindowDecorator {
                 gimp_spin_scale_new (
                   with (gtk_adjustment_new (cur_value, min_value, max_value, 1.0, 10.0, 0.0),[&](auto it) {
 
-                    it.connect("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                    it.connect_noret("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                       gdouble value = (gdouble)ref(o)["value"];
                       auto i_proc_args = ref<GValue>(proc_args);
                       g_value_set_int(&i_proc_args[j], (gint32)value);
@@ -817,223 +821,313 @@ public:
   void create_view(GtkWidget* widget, GtkWidget** result, gpointer data) {
     PangoAttribute        *attr;
 
-    g_print("PopupWindowDecorator::create_view\n");
     layer = GIMP_LAYER(data);
-    g_print("layer=%p\n", layer);
     *result = with (gtk_box_new(GTK_ORIENTATION_VERTICAL, 0), [&](auto vbox) {
-      vbox.pack_start (true, false, 0) (
-        gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0), [&](auto hbox) {
-          hbox [gtk_widget_show] ();
+      vbox.pack_start (true, false, 0) (gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0), [&](auto hbox) {
 
-          /*  Opacity scale  */
+        hbox [gtk_widget_show] ();
 
-          g_print("opacity adjustment\n");
-          hbox.pack_start(true, true, 0) (
-            gimp_spin_scale_new (
-              with (gtk_adjustment_new (100.0, 0.0, 100.0, 1.0, 10.0, 0.0),[&](auto it) {
-                it.set("value", this->layer [gimp_layer_get_opacity] () * 100.0);
+        /*  Opacity scale  */
 
-                it.connect("value-changed", delegator(std::function<void(GtkAdjustment*)>([this](GtkAdjustment* o) {
-//                  g_print("Update opacity: %d\n", (gint)ref(o)["value"]);
-                  this->layer [gimp_layer_set_opacity] ((gdouble)ref(o)["value"] / 100.0, TRUE);
-                  auto image = ref( this->layer [gimp_item_get_image] () );
-                  image [gimp_image_flush] ();
-                })));
+        hbox.pack_start(true, true, 0) (gimp_spin_scale_new (
+            with (gtk_adjustment_new (100.0, 0.0, 100.0, 1.0, 10.0, 0.0),[&](auto it) {
+              it.set("value", this->layer [gimp_layer_get_opacity] () * 100.0);
 
-              }),
-              _("Opacity"), 1),
-            [](auto it) {
-              it [gimp_help_set_help_data] (NULL, GIMP_HELP_LAYER_DIALOG_OPACITY_SCALE);
-            }
-          ).pack_start (false, false, 0) (
-            /*  Lock alpha toggle  */
-            gtk_toggle_button_new(), [&] (auto it) {
-              it [gtk_widget_show] ();
-              it.connect("toggled", delegator(std::function<void(GtkWidget*)>([this](GtkWidget* o) {
-                this->layer [gimp_layer_set_lock_alpha] ( ref(o) [gtk_toggle_button_get_active] (), TRUE );
-              })));
-              it [gimp_help_set_help_data] ( _("Lock alpha channel"), GIMP_HELP_LAYER_DIALOG_LOCK_ALPHA_BUTTON);
-
-              auto icon_size = GTK_ICON_SIZE_BUTTON;
-              it.add (gtk_image_new_from_stock (GIMP_STOCK_TRANSPARENCY, icon_size), [&](auto image) {
-                image [gtk_widget_show] ();
-              });
-            }
-          );
-        }
-      ).pack_start (true, true, 0) (
-
-        // Main contents
-        gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0), [&](auto hbox) {
-          hbox [gtk_widget_show] ();
-
-          //  Paint mode menu
-//          g_print("create paint_mode_menu\n");
-          hbox.pack_start (true, true, 0) (gtk_scrolled_window_new(NULL, NULL), [&](auto it) {
-            it [gtk_widget_show] ();
-            it.add (this->create_paint_mode_list(), [this](auto it) {
-              // Set attributes.
-              it [gimp_help_set_help_data] (NULL, GIMP_HELP_LAYER_DIALOG_PAINT_MODE_MENU);
-              it [gtk_tree_view_expand_all] ();
-              it [gtk_widget_show] ();
-
-              auto model     = ref(it [gtk_tree_view_get_model] ());
-              auto selection = ref(it [gtk_tree_view_get_selection] ());
-
-              // "changed" handler
-              selection.connect("changed", delegator(std::function<void(GtkWidget*)>([this](auto o) {
-                GtkTreeModel* model;
-                GtkTreeIter iter;
-                GimpLayerModeEffects effect;
-                auto selection = ref(o);
-                selection [gtk_tree_selection_get_selected] (&model, &iter);
-                gtk_tree_model_get (model, &iter, VALUE, &effect, -1);
-                if (effect > -1)
-                  layer [gimp_layer_set_mode] (effect, TRUE);
-                auto image = ref( layer [gimp_item_get_image] () );
+              it.connect_noret("value-changed", delegator(std::function<void(GtkAdjustment*)>([this](GtkAdjustment* o) {
+                this->layer [gimp_layer_set_opacity] ((gdouble)ref(o)["value"] / 100.0, TRUE);
+                auto image = ref( this->layer [gimp_item_get_image] () );
                 image [gimp_image_flush] ();
               })));
 
-              // initial cursor placement.
-              auto callback = guard(delegator(std::function<gboolean(GtkTreeModel*, GtkTreePath*, GtkTreeIter*)>(
-                  [this, &it, /*&model,*/ &selection](auto model, auto path, auto iter)->gboolean
-                  {
-                    GimpLayerModeEffects effect;
-                    gtk_tree_model_get (model, iter, VALUE, &effect, -1);
-                    if (effect == layer [gimp_layer_get_mode] ()) {
-                      selection [gtk_tree_selection_select_iter] (iter);
-                      it [gtk_tree_view_scroll_to_cell] (path, NULL, TRUE, 0.5, 0.0);
-                      return TRUE;
-                    }
-                    return FALSE;
-                  })));
-              model [gtk_tree_model_foreach] (GLib::strip_ref<decltype(*callback)>::type::callback, (gpointer)callback.ptr());
+            }),
+            _("Opacity"), 1),
+          [](auto it) {
+            it [gimp_help_set_help_data] (NULL, GIMP_HELP_LAYER_DIALOG_OPACITY_SCALE);
+          }
+        ).pack_start (false, false, 0) (gtk_toggle_button_new(), [&] (auto it) {
+          /*  Lock alpha toggle  */
+          bool lock_alpha = this->layer [gimp_layer_get_lock_alpha] ();
+          it [gtk_toggle_button_set_active] (lock_alpha);
+          it [gtk_widget_show] ();
 
-            });
-            GtkRequisition req;
-            vbox[gtk_widget_get_requisition](&req);
+          it.connect_noret("toggled", delegator(std::function<void(GtkWidget*)>([this](GtkWidget* o) {
+            this->layer [gimp_layer_set_lock_alpha] ( ref(o) [gtk_toggle_button_get_active] (), TRUE );
+          })));
+          it [gimp_help_set_help_data] ( _("Lock alpha channel"), GIMP_HELP_LAYER_DIALOG_LOCK_ALPHA_BUTTON);
 
-            req.width  = MAX(req.width, 150);
-            req.height = MAX(req.height, 200);
-            it [gtk_widget_set_size_request] (req.width, req.height);
+          auto icon_size = GTK_ICON_SIZE_BUTTON;
+          it.add (gtk_image_new_from_stock (GIMP_STOCK_TRANSPARENCY, icon_size), [&](auto image) {
+            image [gtk_widget_show] ();
           });
 
-          if (FilterLayerInterface::is_instance(layer)) {
-            auto filter_layer = FilterLayerInterface::cast(layer);
+        });
+ 
+      }).pack_start (true, true, 0) (gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0), [&](auto hbox) {
+        // Main contents
+        hbox [gtk_widget_show] ();
 
-            // Filter configuration pane
-            hbox.pack_start (true, true, 0) (
-              gtk_box_new (GTK_ORIENTATION_VERTICAL, 0), [&](auto vbox2) {
+        //  Paint mode menu
+        hbox.pack_start (true, true, 0) (gtk_scrolled_window_new(NULL, NULL), [&](auto it) {
+          it [gtk_widget_show] ();
+          it.add (this->create_paint_mode_list(), [this](auto it) {
+            // Set attributes.
+            it [gimp_help_set_help_data] (NULL, GIMP_HELP_LAYER_DIALOG_PAINT_MODE_MENU);
+            it [gtk_tree_view_expand_all] ();
+            it [gtk_widget_show] ();
 
-                vbox2 [gtk_widget_show] ();
-                vbox2.pack_start (true, true, 0) (
+            auto model     = ref(it [gtk_tree_view_get_model] ());
+            auto selection = ref(it [gtk_tree_view_get_selection] ());
+
+            // "changed" handler
+            selection.connect_noret("changed", delegator(std::function<void(GtkWidget*)>([this](auto o) {
+              GtkTreeModel* model;
+              GtkTreeIter iter;
+              GimpLayerModeEffects effect;
+              auto selection = ref(o);
+              selection [gtk_tree_selection_get_selected] (&model, &iter);
+              gtk_tree_model_get (model, &iter, VALUE, &effect, -1);
+              if (effect > -1)
+                layer [gimp_layer_set_mode] (effect, TRUE);
+              auto image = ref( layer [gimp_item_get_image] () );
+              image [gimp_image_flush] ();
+            })));
+
+            // initial cursor placement.
+            auto callback = guard(delegator(std::function<gboolean(GtkTreeModel*, GtkTreePath*, GtkTreeIter*)>(
+                [this, &it, /*&model,*/ &selection](auto model, auto path, auto iter)->gboolean
+                {
+                  GimpLayerModeEffects effect;
+                  gtk_tree_model_get (model, iter, VALUE, &effect, -1);
+                  if (effect == layer [gimp_layer_get_mode] ()) {
+                    selection [gtk_tree_selection_select_iter] (iter);
+                    it [gtk_tree_view_scroll_to_cell] (path, NULL, TRUE, 0.5, 0.0);
+                    return TRUE;
+                  }
+                  return FALSE;
+                })));
+            model [gtk_tree_model_foreach] (GLib::strip_ref<decltype(*callback)>::type::callback, (gpointer)callback.ptr());
+
+          });
+          GtkRequisition req;
+          vbox[gtk_widget_get_requisition](&req);
+
+          req.width  = MAX(req.width, 150);
+          req.height = MAX(req.height, 200);
+          it [gtk_widget_set_size_request] (req.width, req.height);
+
+        });
+
+        // Contex menu
+
+        if (GIMP_IS_LAYER_TILE_VIEW(widget)) {
+          hbox.pack_start (
+
+            with (gtk_box_new(GTK_ORIENTATION_VERTICAL, 0), [&](auto item_vbox) {
+
+              ui_manager = gimp_menu_factory_manager_new (global_menu_factory, "<Layers>", widget, false);
+              this->menu = GTK_MENU(gtk_ui_manager_get_widget (GTK_UI_MANAGER(ui_manager.ptr()), "/layers-popup"));
+              auto menu = ref(this->menu);
+
+              IList<GimpActionGroup*> i_list = ref(ui_manager) [gtk_ui_manager_get_action_groups]();
+              for (auto action_group: i_list) {
+                gimp_action_group_update (action_group, widget);
+              }
+
+  #if 0
+              GtkMenu* menu_widget = menu.ptr();
+
+              vbox.pack_start(gtk_button_new_with_label("MENU"), false, true, 0, [this, menu_widget](auto button) {
+                button [gtk_widget_show]();
+                button.connect_noret("clicked", Delegators::delegator(std::function<void(GtkWidget*)>([this,menu_widget](GtkWidget* b){
+                  auto menu = ref(menu_widget);
+                  menu [gtk_widget_show] ();
+                  menu [gtk_menu_popup] (NULL, NULL, NULL, NULL, 0, gtk_get_current_event_time());
+                })));
+              });
+  #elif 0
+              menu [gtk_widget_show] ();
+              menu.incref();
+              auto parent = ref(menu [gtk_widget_get_parent] ());
+              parent [gtk_container_remove] (GTK_WIDGET(menu.ptr()));
+              hbox.pack_start(menu.ptr(), false, true, 3);
+              menu.decref();
+  #else
+              std::function<void(GtkWidget*)> iter = [this, &item_vbox, widget](GtkWidget* menu_item) {
+
+                auto i_menu_item = ref(menu_item);
+                item_vbox.pack_start (gtk_event_box_new(), false, true, 0, [this, menu_item, widget] (auto box) {
+                  GtkWidget* label_widget = gtk_label_new(gtk_menu_item_get_label(GTK_MENU_ITEM(menu_item)));
+                  auto label = ref(label_widget);
+                  label [gtk_widget_show] ();
+                  box.add(label.ptr());
+                  box [gtk_widget_show] ();
+
+                  GdkColor fg_color, bg_color;
+                  GdkColor h_fg_color, h_bg_color;
+                  GtkStyle* style = ref(widget) [gtk_widget_get_style] ();
+                  h_fg_color = style->fg[GTK_STATE_SELECTED];
+                  h_bg_color = style->bg[GTK_STATE_SELECTED];
+                  fg_color   = style->fg[GTK_STATE_NORMAL];
+                  bg_color   = style->bg[GTK_STATE_NORMAL];
+
+                  box [gtk_widget_modify_bg] (GTK_STATE_NORMAL, &bg_color);
+                  label [gtk_widget_modify_fg] (GTK_STATE_NORMAL, &fg_color);
+
+                  box.connect_noret("enter-notify-event", Delegators::delegator(std::function<gboolean(GtkWidget*, GdkEventCrossing*)>([this, menu_item, label_widget, h_fg_color, h_bg_color](GtkWidget* w, GdkEventCrossing* e)-> gboolean {
+                    ref(w) [gtk_widget_modify_bg] (GTK_STATE_NORMAL, &h_bg_color);
+                    ref(label_widget) [gtk_widget_modify_fg] (GTK_STATE_NORMAL, &h_fg_color);
+                    return false;
+                  })));
+
+                  box.connect_noret("leave-notify-event", Delegators::delegator(std::function<gboolean(GtkWidget*, GdkEventCrossing*)>([this, menu_item, label_widget, fg_color, bg_color](GtkWidget* w, GdkEventCrossing* e)-> gboolean {
+                    ref(w) [gtk_widget_modify_bg] (GTK_STATE_NORMAL, &bg_color);
+                    ref(label_widget) [gtk_widget_modify_fg] (GTK_STATE_NORMAL, &fg_color);
+                    return false;
+                  })));
+
+                  box.connect_noret("button-press-event", Delegators::delegator(std::function<gboolean(GtkWidget*, GdkEventButton*)>([this, menu_item, label_widget](GtkWidget* w, GdkEventButton* e)-> gboolean {
+                    g_print("%s\n", gtk_menu_item_get_label(GTK_MENU_ITEM(menu_item)));
+
+                    CString name = (gchar*)ref(menu_item).get("accel-path");
+                    StringList path_list = g_strsplit(name.ptr(), "/", -1);
+                    const gchar* command = *(path_list.end()-1);
+
+                    GtkAction* action = NULL;
+                    IList<GimpActionGroup*> i_list = ref(ui_manager) [gtk_ui_manager_get_action_groups]();
+                    for (auto group: i_list) {
+                      action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), command);
+                      break;
+                    }
+                    gtk_action_activate(action);
+                    ref(ref(w) [gtk_widget_get_toplevel] ()) [gtk_widget_destroy] ();
+                    return false;
+                  })));
+                });
+
+              };
+              CXXPointer<Delegators::Delegator<void(GtkWidget*)> > p_iter = Delegators::delegator(iter);
+              menu [gtk_container_foreach] (Delegators::Delegator<void(GtkWidget*)>::callback, p_iter);
+              menu [gtk_widget_show] ();
+  #endif
+            }).ptr(), false, true, 3);
+        }
+
+        // Filter configuration pane
+
+        if (FilterLayerInterface::is_instance(layer)) {
+          auto filter_layer = FilterLayerInterface::cast(layer);
+
+          hbox.pack_start (true, true, 0) (
+            gtk_box_new (GTK_ORIENTATION_VERTICAL, 0), [&](auto vbox2) {
+
+              vbox2 [gtk_widget_show] ();
+              vbox2.pack_start (true, true, 0) (
+                gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0), [&](auto hbox2) {
+                  hbox2 [gtk_widget_show] ();
+
+                  hbox2.pack_start (true, true, 0)(
+                    // Filter selection list (boxed by scrolled-window)
+                    gtk_scrolled_window_new(NULL, NULL), [&](auto it) {
+                      it [gtk_widget_show] ();
+                      GtkRequisition req;
+                      vbox [gtk_widget_get_requisition] (&req);
+                      req.width  = MAX(req.width, 200);
+                      req.height = MAX(req.height, 300);
+                      it [gtk_widget_set_size_request] (req.width, req.height);
+
+                      it.add (this->create_filter_list(layer), [this](auto it) {
+                        it [gtk_widget_show] ();
+                        it [gtk_tree_view_expand_all] ();
+                        auto selection = ref( it [gtk_tree_view_get_selection] () );
+
+                        // "changed" handler
+                        selection.connect_noret("changed", delegator(std::function<void(GtkWidget*)>([this](auto widget) {
+                          GtkTreeModel* model     = NULL;
+                          GtkTreeIter   iter;
+                          gchar*        proc_name = NULL;
+
+                          auto selection = ref(widget);
+                          selection [gtk_tree_selection_get_selected] (&model, &iter);
+                          gtk_tree_model_get (model, &iter, VALUE, &proc_name, -1);
+                          if (proc_name && strlen(proc_name) > 0) {
+                            g_print("CHANGED: proc_name=%s\n", proc_name);
+                            this->update_filter_edit(proc_name);
+                          }
+                          this->proc_name = proc_name;
+                        })));
+
+                      });
+                    }
+                  )(
+                    // Filter option pane (boxed by scrolled-window)
+                    gtk_scrolled_window_new(NULL, NULL), [&](auto it) {
+                      it [gtk_widget_show] ();
+                      GtkRequisition req;
+                      vbox [gtk_widget_get_requisition] (&req);
+                      req.width  = MAX(req.width, 300);
+                      req.height = MAX(req.height, 300);
+                      it [gtk_widget_set_size_request] (req.width, req.height);
+                      it [gtk_scrolled_window_set_policy] (GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
+                      it.add_with_viewport (this->create_filter_edit(layer), [&](auto it) {
+                        GtkRequisition req = { 200, -1 };
+                        it [gtk_widget_show] ();
+                        it [gtk_widget_set_size_request] (req.width, req.height);
+                      });
+                    }
+                  );
+                }
+              ).pack_start (false, true, 0) (
                   gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0), [&](auto hbox2) {
                     hbox2 [gtk_widget_show] ();
 
                     hbox2.pack_start (true, true, 0)(
-                      // Filter selection list (boxed by scrolled-window)
-                      gtk_scrolled_window_new(NULL, NULL), [&](auto it) {
+                      gtk_check_button_new_with_label ("Live update"), [](auto it) {
                         it [gtk_widget_show] ();
-                        GtkRequisition req;
-                        vbox [gtk_widget_get_requisition] (&req);
-                        req.width  = MAX(req.width, 200);
-                        req.height = MAX(req.height, 300);
-                        it [gtk_widget_set_size_request] (req.width, req.height);
-
-                        it.add (this->create_filter_list(layer), [this](auto it) {
-                          it [gtk_widget_show] ();
-                          it [gtk_tree_view_expand_all] ();
-                          auto selection = ref( it [gtk_tree_view_get_selection] () );
-
-                          // "changed" handler
-                          selection.connect("changed", delegator(std::function<void(GtkWidget*)>([this](auto widget) {
-                            GtkTreeModel* model     = NULL;
-                            GtkTreeIter   iter;
-                            gchar*        proc_name = NULL;
-
-                            auto selection = ref(widget);
-                            selection [gtk_tree_selection_get_selected] (&model, &iter);
-                            gtk_tree_model_get (model, &iter, VALUE, &proc_name, -1);
-                            if (proc_name && strlen(proc_name) > 0) {
-                              g_print("CHANGED: proc_name=%s\n", proc_name);
-                              this->update_filter_edit(proc_name);
-                            }
-                            this->proc_name = proc_name;
-                          })));
-
-                        });
                       }
-                    )(
-                      // Filter option pane (boxed by scrolled-window)
-                      gtk_scrolled_window_new(NULL, NULL), [&](auto it) {
+                    ).pack_start (false, true, 0)(
+                      gtk_button_new_from_stock (GTK_STOCK_APPLY), [this](auto it) {
                         it [gtk_widget_show] ();
-                        GtkRequisition req;
-                        vbox [gtk_widget_get_requisition] (&req);
-                        req.width  = MAX(req.width, 300);
-                        req.height = MAX(req.height, 300);
-                        it [gtk_widget_set_size_request] (req.width, req.height);
-                        it [gtk_scrolled_window_set_policy] (GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-
-                        it.add_with_viewport (this->create_filter_edit(layer), [&](auto it) {
-                          GtkRequisition req = { 200, -1 };
-                          it [gtk_widget_show] ();
-                          it [gtk_widget_set_size_request] (req.width, req.height);
-                        });
+                        it.connect_noret("clicked", delegator(std::function<void(GtkWidget*)>([this](auto o) {
+//                            g_print("Apply filter settings...\n");
+                          auto filter_layer = FilterLayerInterface::cast(this->layer);
+                          filter_layer->set_procedure(this->proc_name, this->proc_args);
+                        })));
                       }
                     );
                   }
-                ).pack_start (false, true, 0) (
-                    gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0), [&](auto hbox2) {
-                      hbox2 [gtk_widget_show] ();
-
-                      hbox2.pack_start (true, true, 0)(
-                        gtk_check_button_new_with_label ("Live update"), [](auto it) {
-                          it [gtk_widget_show] ();
-                        }
-                      ).pack_start (false, true, 0)(
-                        gtk_button_new_from_stock (GTK_STOCK_APPLY), [this](auto it) {
-                          it [gtk_widget_show] ();
-                          it.connect("clicked", delegator(std::function<void(GtkWidget*)>([this](auto o) {
-//                            g_print("Apply filter settings...\n");
-                            auto filter_layer = FilterLayerInterface::cast(this->layer);
-                            filter_layer->set_procedure(this->proc_name, this->proc_args);
-                          })));
-                        }
-                      );
-                    }
-                );
-              }
-            );
-
-            const gchar* proc_name = filter_layer->get_procedure();
-
-            auto model     = ref(filter_select [gtk_tree_view_get_model] ());
-            auto selection = ref(filter_select [gtk_tree_view_get_selection] ());
-            {
-              auto callback = guard(delegator(std::function<gboolean(GtkTreeModel*, GtkTreePath*, GtkTreeIter*)>(
-                  [&](auto model, auto path, auto iter)->gboolean
-                  {
-                    gchar* iter_proc_name;
-                    gtk_tree_model_get (model, iter, VALUE, &iter_proc_name, -1);
-                    CString name_holder = iter_proc_name;
-                    if (iter_proc_name && strcmp(proc_name, iter_proc_name) == 0) {
-                      selection [gtk_tree_selection_select_iter] (iter);
-                      filter_select [gtk_tree_view_scroll_to_cell] (path, NULL, TRUE, 0.5, 0.0);
-                      return TRUE;
-                    }
-                    return FALSE;
-                  })));
-              gtk_tree_model_foreach (model, GLib::strip_ref<decltype(*callback)>::type::callback, (gpointer)callback.ptr());
+              );
             }
-            if (strlen(proc_name)) {
-              // FIXME: select filter_list
-              this->update_filter_edit(proc_name);
-            }
+          );
 
+          const gchar* proc_name = filter_layer->get_procedure();
+
+          auto model     = ref(filter_select [gtk_tree_view_get_model] ());
+          auto selection = ref(filter_select [gtk_tree_view_get_selection] ());
+          {
+            auto callback = guard(delegator(std::function<gboolean(GtkTreeModel*, GtkTreePath*, GtkTreeIter*)>(
+                [&](auto model, auto path, auto iter)->gboolean
+                {
+                  gchar* iter_proc_name;
+                  gtk_tree_model_get (model, iter, VALUE, &iter_proc_name, -1);
+                  CString name_holder = iter_proc_name;
+                  if (iter_proc_name && strcmp(proc_name, iter_proc_name) == 0) {
+                    selection [gtk_tree_selection_select_iter] (iter);
+                    filter_select [gtk_tree_view_scroll_to_cell] (path, NULL, TRUE, 0.5, 0.0);
+                    return TRUE;
+                  }
+                  return FALSE;
+                })));
+            gtk_tree_model_foreach (model, GLib::strip_ref<decltype(*callback)>::type::callback, (gpointer)callback.ptr());
+          }
+          if (strlen(proc_name)) {
+            // FIXME: select filter_list
+            this->update_filter_edit(proc_name);
           }
 
-        }
-      );
+        } // if (FilterLayerInstance::is_instance)
+
+      });
       vbox [gtk_widget_show_all] ();
 
     });
