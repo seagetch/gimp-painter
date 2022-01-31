@@ -301,6 +301,10 @@ gimp_dispose (GObject *object)
   if (gimp->tool_preset_factory)
     gimp_data_factory_data_free (gimp->tool_preset_factory);
 
+  if (gimp->factory_table) {
+    g_hash_table_destroy (gimp->factory_table);
+  }
+
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
@@ -791,6 +795,8 @@ gimp_new (const gchar       *name,
   gimp->console_messages = console_messages ? TRUE : FALSE;
   gimp->stack_trace_mode = stack_trace_mode;
   gimp->pdb_compat_mode  = pdb_compat_mode;
+
+  gimp->factory_table    = g_hash_table_new(g_str_hash, g_str_equal);
 
   return gimp;
 }
@@ -1323,4 +1329,21 @@ gimp_use_gegl (Gimp *gimp)
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
 
   return gimp->config->use_gegl;
+}
+
+void
+gimp_register_data_factory (Gimp               *gimp,
+                            const gchar        *key,
+                            GimpDataFactory    *factory)
+{
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_hash_table_insert (gimp->factory_table, key, factory);
+}
+
+GimpDataFactory*
+gimp_get_data_factory (Gimp            *gimp,
+                       const gchar     *key)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  return g_hash_table_lookup (gimp->factory_table, key);
 }

@@ -98,6 +98,7 @@ struct _Gimp
   GimpDataFactory        *palette_factory;
   GimpDataFactory        *tool_preset_factory;
   GimpDataFactory        *mypaint_brush_factory;
+  GHashTable             *factory_table;
 
   GimpTagCache           *tag_cache;
 
@@ -215,6 +216,13 @@ void           gimp_image_opened         (Gimp                *gimp,
                                           const gchar         *uri);
 
 gboolean       gimp_use_gegl             (Gimp                *gimp);
+
+void           gimp_register_data_factory (Gimp               *gimp,
+                                           const gchar        *key,
+                                           GimpDataFactory    *factory);
+
+GimpDataFactory* gimp_get_data_factory    (Gimp               *gimp,
+                                           const gchar        *key);
 
 
 #endif  /* __GIMP_H__ */

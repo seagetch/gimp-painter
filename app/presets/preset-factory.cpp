@@ -255,6 +255,7 @@ PresetFactory::restore (Gimp               *gimp,
     GimpDataFactory* factory = it->get_data_factory();
     gimp_data_factory_data_init (factory, gimp->user_context,
                                  gimp->no_data);
+    gimp_register_data_factory (gimp, "layer-preset", factory);                                 
   });
 
   // Dialog initialization.
