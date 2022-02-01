@@ -154,6 +154,71 @@ public:
 typedef EventSource<decltype(&g_timeout_add_full), &g_timeout_add_full, decltype(&g_source_remove), &g_source_remove, G_PRIORITY_DEFAULT, guint> Timeout;
 typedef EventSource<decltype(&g_idle_add_full), &g_idle_add_full, decltype(&g_source_remove), &g_source_remove, G_PRIORITY_DEFAULT> Idle;
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Surface creation helpers
+
+static cairo_surface_t* 
+build_cairo_surface(TempBuf* temp_buf)
+{
+  g_return_val_if_fail (temp_buf != NULL, NULL);
+
+  cairo_surface_t* surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, temp_buf->width, temp_buf->height);
+
+  g_print("gimp_view_render_temp_buf_to_surface\n");
+  gimp_view_render_temp_buf_to_surface (
+    temp_buf, -1, 
+    GIMP_VIEW_BG_CHECKS, GIMP_VIEW_BG_WHITE, 
+    surface, temp_buf->width, temp_buf->height);
+
+  return surface;
+}
+
+
+static cairo_surface_t* 
+build_cairo_surface(GdkPixbuf* pixbuf)
+{
+  g_return_val_if_fail (pixbuf != NULL, NULL);
+
+  cairo_surface_t* surface = gimp_cairo_surface_create_from_pixbuf (pixbuf);
+  return surface;
+}
+
+
+static cairo_surface_t* 
+build_cairo_surface(GtkWidget* widget, const gchar* stock_id, gint width, gint height)
+{
+  GdkPixbuf   *pixbuf = NULL;
+  GtkIconSize  icon_size;
+
+  g_return_val_if_fail (stock_id != NULL, NULL);
+  auto i_widget = ref(widget);
+
+  icon_size = i_widget [gimp_get_icon_size] (stock_id, GTK_ICON_SIZE_INVALID,
+                                             width, height);
+
+  if (icon_size)
+    pixbuf = i_widget [gtk_widget_render_icon] (stock_id, icon_size, NULL);
+
+  if (pixbuf)
+    {
+      gint  w  = gdk_pixbuf_get_width (pixbuf);
+      gint  h = gdk_pixbuf_get_height (pixbuf);
+
+      if (w > width || h > height)
+        {
+          GdkPixbuf *scaled_pixbuf;
+
+          gimp_viewable_calc_preview_size (w, h, width, height, TRUE, 1.0, 1.0, &w, &h, NULL);
+          scaled_pixbuf = gdk_pixbuf_scale_simple (pixbuf, w, h, GDK_INTERP_BILINEAR);
+
+          g_object_unref (pixbuf);
+          pixbuf = scaled_pixbuf;
+        }
+    }
+    cairo_surface_t* result = build_cairo_surface(pixbuf);
+    g_object_unref (pixbuf);
+    return result;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Class definitions
@@ -163,32 +228,57 @@ typedef UseCStructs<GtkBox, GimpLayerTileView> CStructs;
 struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInterface
 {
   // Internal class which hold layer information required for display and control.
-  struct Layer {
-    Layer(GimpViewable* layer, int level) : surface(NULL) {
-      this->layer = layer;
-      this->level = level;
-      dirty_count = 0;
-    }
+  struct LayerInfo {
+    LayerInfo(LayerTileView* view, GimpViewable* layer, int level);
+    ~LayerInfo();
 
-    ~Layer() {}
+    LayerTileView* view;
 
-    CXXPointer<_D::Connection> invalidate_preview_handler;
-    CXXPointer<_D::Connection> size_changed_handler;
     CXXPointer<_D::Connection> added_handler;
     CXXPointer<_D::Connection> removed_handler;
     CXXPointer<_D::Connection> reordered_handler;
+    CXXPointer<_D::Connection> mask_changed_handler;
+
     CXXPointer<_D::Connection> visible_changed_handler;
     CXXPointer<_D::Connection> linked_changed_handler;
     CXXPointer<_D::Connection> lock_content_changed_handler;
-    CXXPointer<Idle>           update_idle;
-    ScopedPointer<cairo_surface_t, void (cairo_surface_t*), cairo_surface_destroy> surface;
+
+    CXXPointer<_D::Connection> apply_changed_handler;
+    CXXPointer<_D::Connection> edit_changed_handler;
+    CXXPointer<_D::Connection> show_changed_handler;
 
     IObject<GimpViewable> layer;
     int level;
-    int preview_width;
-    int preview_height;
     int dirty_count;
+
+
+    struct LayerPreview {
+      ScopedPointer<cairo_surface_t, void (cairo_surface_t*), cairo_surface_destroy> surface;
+      int width;
+      int height;
+      LayerInfo* info;
+      CXXPointer<_D::Connection> invalidate_preview_handler;
+      CXXPointer<_D::Connection> size_changed_handler;
+      CXXPointer<Idle>           update_idle;
+
+      LayerPreview(LayerInfo* _info);
+      ~LayerPreview();
+      void decorate(GimpViewable* layer);
+      void update_cairo_surface(GimpViewable* viewable);
+      void on_layer_invalidate_preview(GimpViewable* viewable);
+      void draw(cairo_t* cr, gint x, gint y, GimpRGB* fg_color, GimpRGB* bg_color);
+    };
+
+
+    LayerPreview layer_preview;
+    LayerPreview mask_preview;
+
+    void decorate(GimpViewable* layer);
+    void on_changed(GtkWidget* widget);
+    void on_mask_changed(GimpLayer* layer);
+    void draw(cairo_t* cr, gint x, gint y, GimpRGB* fg_color, GimpRGB* bg_color);
   };
+
 
   struct MouseAction {
     enum Action { Hit, Collapse };
@@ -234,7 +324,7 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
   CXXPointer<_D::Connection> drag_drop_handler;
   CXXPointer<_D::Connection> drag_data_received_handler;
   CXXPointer<Timeout>        scroll_timeout_handler;
-
+  
   CXXPointer<DragAction>     drag_action;
   CXXPointer<GdkPoint>       add_cursor;
   CXXPointer<Timeout>        add_timeout_handler;
@@ -254,23 +344,17 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
   void on_layer_added(GimpContainer* container, GimpViewable* layer);
   void on_layer_removed(GimpContainer* container, GimpViewable* layer);
   void on_layer_reordered(GimpContainer* container, GimpViewable* layer, gint index);
-  void on_invalidate_preview(GimpViewable* viewable);
   gboolean on_button_press(GtkWidget* widget, GdkEventButton* event);
   gboolean on_drag_motion(GtkWidget* widget, GdkDragContext* context, gint x, gint y, guint time_);
   gboolean on_drag_drop(GtkWidget* widget, GdkDragContext* context, gint x, gint y, guint time_);
   void on_drag_leave(GtkWidget* widget, GdkDragContext* context, guint time_);
   void on_drag_data_received(GtkWidget* widget, GdkDragContext* context, gint x, gint y, GtkSelectionData* selection_data, guint info, guint time);
-  void on_changed(GtkWidget* widget);
   gboolean on_add_button_press(GtkWidget* widget, GdkEventButton* event);
   gboolean on_add_button_motion(GtkWidget* widget, GdkEventMotion* event);
   gboolean on_add_button_release(GtkWidget* widget, GdkEventButton* event);
+  void on_changed(GtkWidget* widget);
 
   void reset_layers();
-
-  void update_cairo_surface(Layer* layer_info, GimpViewable* viewable);
-  cairo_surface_t* build_cairo_surface(TempBuf* temp_buf);
-  cairo_surface_t* build_cairo_surface(GdkPixbuf* pixbuf);
-  cairo_surface_t* build_cairo_surface(const gchar* stock_id, int width, int height);
 
   GdkRectangle  get_boundary(GimpViewable* viewable);
   MouseAction get_viewable_at(gint x, gint y);
@@ -316,6 +400,11 @@ LayerTileView::class_init(CStructs::Class *klass)
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Implementation of LayerTileView class
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Class LayerTileView
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -391,9 +480,9 @@ LayerTileView::constructed ()
       setup_action_button(group, "layers-new-last-values", button, GTK_ICON_SIZE_LARGE_TOOLBAR);
       button [gtk_widget_set_events] (GDK_ALL_EVENTS_MASK);
 
-      button.connect("button-press-event",   _D::delegator(this, &LayerTileView::on_add_button_press));
-      button.connect("motion-notify-event",  _D::delegator(this, &LayerTileView::on_add_button_motion));
-      button.connect("button-release-event", _D::delegator(this, &LayerTileView::on_add_button_release));
+      button.connect_noret("button-press-event",   _D::delegator(this, &LayerTileView::on_add_button_press));
+      button.connect_noret("motion-notify-event",  _D::delegator(this, &LayerTileView::on_add_button_motion));
+      button.connect_noret("button-release-event", _D::delegator(this, &LayerTileView::on_add_button_release));
 
     }).pack_start(true, true, 0) (GTK_SCROLLED_WINDOW (gtk_scrolled_window_new (NULL, NULL)), [&] (auto window) {
 
@@ -403,8 +492,8 @@ LayerTileView::constructed ()
           i_content_area [gtk_widget_set_size_request] (LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT);
           i_content_area [gtk_widget_set_events] (GDK_ALL_EVENTS_MASK);
 
-          i_content_area.connect("expose-event",       _D::delegator(this, &LayerTileView::on_expose));
-          i_content_area.connect("button-press-event", _D::delegator(this, &LayerTileView::on_button_press));
+          i_content_area.connect_noret("expose-event",       _D::delegator(this, &LayerTileView::on_expose));
+          i_content_area.connect_noret("button-press-event", _D::delegator(this, &LayerTileView::on_button_press));
           
           i_content_area [gtk_widget_show] ();
         }).ptr();
@@ -467,9 +556,9 @@ LayerTileView::set_image(IValue v)
       on_layer_added(container, viewable);
     });
 
-    IList<Layer*> i_layers     = layers;
+    IList<LayerInfo*> i_layers     = layers;
     int max_level = 0;
-    i_layers.each([&max_level](Layer* info){
+    i_layers.each([&max_level](LayerInfo* info){
       max_level = std::max(info->level, max_level);
     });
 
@@ -555,175 +644,24 @@ LayerTileView::on_expose(GtkDrawingArea *widget, GdkEventExpose *event)
 
 
 void 
-LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
-{
-//  g_print("LayerTileView::draw(%d, %d)\n", width, height);
-  IList<Layer*> i_layers = layers;
-  auto i_layer_dict      = ref<GimpViewable*, GList*>(this->layer_dict);
-  
-  GimpRGB color1 = { 0.8, 0.8, 0.8, 1};
-  GimpRGB color2 = { 0.9, 0.9, 0.9, 1};
-  GtkStyle* style = ref(g_object) [gtk_widget_get_style] ();
-  GimpRGB highlight_color;
-  GimpRGB bg_color;
-  GimpRGB fg_color;
-  gimp_rgb_set_gdk_color (&highlight_color, &style->bg[GTK_STATE_SELECTED]);
-  gimp_rgb_set_gdk_color (&bg_color,        &style->light[GTK_STATE_NORMAL]);
-  gimp_rgb_set_gdk_color (&fg_color,        &style->fg[GTK_STATE_NORMAL]);
-  
-  GimpViewable* active_layer = GIMP_VIEWABLE(image [gimp_image_get_active_layer]());
-
-  cairo_pattern_t* pattern =  gimp_cairo_checkerboard_create (cr, CHECKERBORAD_SIZE, &color1, &color2);
-
-  if (!eye_surface) {
-    eye_surface = build_cairo_surface(GIMP_STOCK_VISIBLE, ICON_SIZE, ICON_SIZE);
-  }
-
-  cairo_set_source_rgb (cr, bg_color.r, bg_color.g, bg_color.b);
-  cairo_rectangle ( cr, 0, 0, width, height );
-  cairo_fill (cr);
-
-  int i = 0;
-  i_layers.each([&](Layer* layer) {
-    if (drag_action) {
-      if (layer->layer == drag_action->target) {
-
-        switch (drag_action->action) {
-        case DragAction::InsertBefore: {
-            cairo_rectangle (cr, 
-              layer->level * LAYER_INDENT_WIDTH, 
-              i* LAYER_MAX_HEIGHT - (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, 
-              LAYER_MAX_WIDTH, 
-              (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT));
-            cairo_set_source_rgb (cr, highlight_color.r, highlight_color.g, highlight_color.b);
-            cairo_fill (cr);
-          }
-          break;
-        
-        case DragAction::InsertAfter: {
-            cairo_rectangle (cr, 
-              layer->level * LAYER_INDENT_WIDTH, 
-              (i + 1) * LAYER_MAX_HEIGHT - (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, 
-              LAYER_MAX_WIDTH, 
-              (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT));
-            cairo_set_source_rgb (cr, highlight_color.r, highlight_color.g, highlight_color.b);
-            cairo_fill (cr);
-          }
-          break;
-        }
-
-      }
-
-    } else {
-      if (layer->layer == active_layer) {
-        cairo_rectangle (cr, layer->level * LAYER_INDENT_WIDTH, i* LAYER_MAX_HEIGHT, LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT);
-        cairo_set_source_rgb (cr, highlight_color.r, highlight_color.g, highlight_color.b);
-        cairo_fill (cr);
-      }
-    }
-
-    for (int j = 0; j < layer->level; j ++) {
-      cairo_rectangle (cr, j * LAYER_INDENT_WIDTH, i* LAYER_MAX_HEIGHT, LAYER_BAR_WIDTH, LAYER_MAX_HEIGHT);
-      cairo_set_source_rgb (cr, 0.75, 0.75, 0.75);
-      cairo_fill (cr);
-    }
-
-    cairo_rectangle (cr, 
-      layer->level * LAYER_INDENT_WIDTH, 
-      i* LAYER_MAX_HEIGHT + (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, 
-      LAYER_MIN_WIDTH, 
-      LAYER_MIN_HEIGHT);
-    cairo_set_source (cr, pattern);
-    cairo_fill_preserve (cr);
-
-    if (context) {
-      if (!layer->surface) {
-        update_cairo_surface(layer, layer->layer);
-
-      } else {
-        cairo_set_source_surface (
-          cr, layer->surface, 
-          layer->level * LAYER_INDENT_WIDTH + (LAYER_MIN_WIDTH - layer->preview_width) / 2, 
-          i* LAYER_MAX_HEIGHT + (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2 + (LAYER_MIN_HEIGHT - layer->preview_height) / 2);
-        cairo_paint (cr);
-      }
-
-      // Visibility eye-ball icon
-      auto i_layer = ref(layer->layer);
-      gboolean visible = i_layer [gimp_item_get_visible] ();
-      cairo_set_source_surface (
-        cr, eye_surface, 
-        layer->level * LAYER_INDENT_WIDTH, 
-        i* LAYER_MAX_HEIGHT + (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2);
-      cairo_paint (cr);
-
-      if (!visible) {
-        cairo_set_source_rgb (cr, fg_color.r, fg_color.g, fg_color.b);
-        cairo_move_to (
-          cr,layer->level * LAYER_INDENT_WIDTH + ICON_SIZE, 
-          i* LAYER_MAX_HEIGHT + (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2);
-        cairo_line_to (
-          cr,layer->level * LAYER_INDENT_WIDTH, 
-          i* LAYER_MAX_HEIGHT + (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2 + ICON_SIZE);
-        cairo_stroke(cr);
-      }
-      
-      gboolean linked = i_layer [gimp_item_get_linked] ();
-      if (linked) {
-        ScopedPointer<cairo_surface_t, void (cairo_surface_t*), cairo_surface_destroy> surface = build_cairo_surface(GIMP_STOCK_LINKED, ICON_SIZE, ICON_SIZE);
-        cairo_set_source_surface (
-          cr, surface.ptr(), 
-          layer->level * LAYER_INDENT_WIDTH, 
-          i* LAYER_MAX_HEIGHT + (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2 + ICON_SIZE);
-        cairo_paint (cr);
-      }
-
-      const gchar* stock_id = i_layer [gimp_viewable_get_stock_id] ();
-      if (stock_id && strcmp(stock_id, GIMP_STOCK_LAYER) != 0) {
-        ScopedPointer<cairo_surface_t, void (cairo_surface_t*), cairo_surface_destroy> surface = build_cairo_surface(stock_id, ICON_SIZE, ICON_SIZE);
-        cairo_set_source_surface (
-          cr, surface.ptr(), 
-          layer->level * LAYER_INDENT_WIDTH, 
-          i* LAYER_MAX_HEIGHT + (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2 + LAYER_MIN_HEIGHT - ICON_SIZE);
-        cairo_paint (cr);
-      }
-
-    }
-
-    cairo_set_source_rgb (cr, 0.7, 0.7, 0.7);
-    cairo_rectangle (cr, 
-      layer->level * LAYER_INDENT_WIDTH, 
-      i* LAYER_MAX_HEIGHT + (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, 
-      LAYER_MIN_WIDTH, 
-      LAYER_MIN_HEIGHT);
-
-    cairo_stroke (cr);
-    i ++;
-  });
-
-  cairo_pattern_destroy (pattern);
-}
-
-
-void 
 LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer)
 {
   IContainer<GimpViewable*> i_container = container;
   auto i_layer           = ref(layer);
   auto i_layer_dict      = ref<GimpViewable*, GList*>(this->layer_dict);
-  IList<Layer*> i_layers = this->layers;
+  IList<LayerInfo*> i_layers = this->layers;
 
   gint index = i_container [gimp_container_get_child_index] (GIMP_OBJECT (layer));
   GimpViewable* parent = i_layer [gimp_viewable_get_parent] ();
 
   GList* parent_list = i_layer_dict[parent];
-  Layer* parent_info = parent_list? reinterpret_cast<Layer*>(parent_list->data): NULL;
+  LayerInfo* parent_info = parent_list? reinterpret_cast<LayerInfo*>(parent_list->data): NULL;
 
-  Layer* layer_info;
+  LayerInfo* layer_info;
   if (parent_info) {
-    layer_info = new Layer(layer, parent_info->level + 1);
+    layer_info = new LayerInfo(this, layer, parent_info->level + 1);
   } else {
-    layer_info = new Layer(layer, 0);
+    layer_info = new LayerInfo(this, layer, 0);
     index --;
   }
 
@@ -733,7 +671,7 @@ LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer)
     if (!sibling)
       break;
     sibling = sibling->next;
-    while (sibling && sibling->data && reinterpret_cast<Layer*>(sibling->data)->level > layer_info->level)
+    while (sibling && sibling->data && reinterpret_cast<LayerInfo*>(sibling->data)->level > layer_info->level)
       sibling = sibling->next;
   }
   i_layers.insert_before(sibling, layer_info);
@@ -741,11 +679,7 @@ LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer)
   GList* new_item = g_list_find (layers.ptr(), layer_info);
   i_layer_dict.insert(layer, new_item);
 
-  layer_info->size_changed_handler         = i_layer.connect("size-changed",         _D::delegator(this, &LayerTileView::on_invalidate_preview));
-  layer_info->invalidate_preview_handler   = i_layer.connect("invalidate-preview",   _D::delegator(this, &LayerTileView::on_invalidate_preview));
-  layer_info->visible_changed_handler      = i_layer.connect("visibility-changed",   _D::delegator(this, &LayerTileView::on_changed));
-  layer_info->linked_changed_handler       = i_layer.connect("linked-changed",       _D::delegator(this, &LayerTileView::on_changed));
-  layer_info->lock_content_changed_handler = i_layer.connect("lock-content-changed", _D::delegator(this, &LayerTileView::on_changed));
+  layer_info->decorate(layer);
 
   GimpContainer* children = gimp_viewable_get_children (layer);
   if (children) {
@@ -772,14 +706,14 @@ LayerTileView::on_layer_removed(GimpContainer* container, GimpViewable* layer)
   IContainer<GimpViewable*> i_container = container;
   auto i_layer           = ref(layer);
   auto i_layer_dict      = ref<GimpViewable*, GList*>(this->layer_dict);
-  IList<Layer*> i_layers = this->layers;
+  IList<LayerInfo*> i_layers = this->layers;
   
   gint index = i_container [gimp_container_get_child_index] (GIMP_OBJECT (layer));
 
   GList* self_list = i_layer_dict[layer];
   g_return_if_fail (self_list != NULL);
 
-  Layer* layer_info = reinterpret_cast<Layer*>(self_list->data);
+  LayerInfo* layer_info = reinterpret_cast<LayerInfo*>(self_list->data);
   i_layer_dict.remove(layer);
   i_layers.remove(layer_info);
 
@@ -813,42 +747,9 @@ LayerTileView::on_layer_reordered(GimpContainer* container, GimpViewable* layer,
 
 
 void 
-LayerTileView::on_invalidate_preview(GimpViewable* viewable)
+LayerTileView::on_changed(GtkWidget* widget)
 {
-  auto i_context = context;
-  if (i_context) {
-    IHashTable<GimpViewable*, GList*> i_layer_dict(layer_dict);
-    GimpContainer* children = gimp_viewable_get_children (viewable);
-    bool updated = false;
-    if (!children) {
-      updated = true;
-      update_cairo_surface(NULL, viewable);
-    } else {
-      GList* list = i_layer_dict[viewable];
-      if (list && list->data) {
-        Layer* layer_info = reinterpret_cast<Layer*>(list->data);
-        if (layer_info->dirty_count > 0) {
-          layer_info->dirty_count = 0;
-          updated = true;
-          update_cairo_surface(NULL, viewable);
-        }
-      }
-    }
-
-    // Porpagating update to the ancestors if updated surface.
-    if (updated) {
-      while (viewable) {
-        viewable = gimp_viewable_get_parent (viewable);
-        GList* list = i_layer_dict[viewable];
-        if (list && list->data) {
-          Layer* layer_info = reinterpret_cast<Layer*>(list->data);
-          layer_info->dirty_count ++;
-        }
-        update_cairo_surface(NULL, viewable);
-      }
-    }
-
-  }
+  ref(content_area) [gtk_widget_queue_draw] ();
 }
 
 
@@ -1072,13 +973,6 @@ LayerTileView::on_drag_data_received(
 }
 
 
-void 
-LayerTileView::on_changed(GtkWidget* widget)
-{
-  ref(content_area) [gtk_widget_queue_draw] ();
-}
-
-
 gboolean 
 LayerTileView::on_add_button_press(GtkWidget* widget, GdkEventButton* event)
 {
@@ -1088,12 +982,14 @@ LayerTileView::on_add_button_press(GtkWidget* widget, GdkEventButton* event)
       add_cursor = new GdkPoint;
       add_cursor->x = event->x;
       add_cursor->y = event->y;
-    }
-    add_timeout_handler = new Timeout(500, _D::delegator(std::function<gboolean()>([this]() -> gboolean {
+      add_timeout_handler = new Timeout(500, _D::delegator(std::function<gboolean()>([this]() -> gboolean {
+        popup_layer_operation();
+        add_timeout_handler = NULL;
+        return false;
+      })));
+    } else if (event->button == 3) {
       popup_layer_operation();
-      add_timeout_handler = NULL;
-      return false;
-    })));
+    }
   }
   return false;
 }
@@ -1133,131 +1029,124 @@ LayerTileView::on_add_button_release(GtkWidget* widget, GdkEventButton* event)
 // Other functions
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+
+void 
+LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
+{
+  g_print("LayerTileView::draw(%d, %d)\n", width, height);
+  IList<LayerInfo*> i_layers = layers;
+  auto i_layer_dict      = ref<GimpViewable*, GList*>(this->layer_dict);
+  
+  GimpRGB color1 = { 0.8, 0.8, 0.8, 1};
+  GimpRGB color2 = { 0.9, 0.9, 0.9, 1};
+  GtkStyle* style = ref(g_object) [gtk_widget_get_style] ();
+  GimpRGB highlight_color;
+  GimpRGB bg_color;
+  GimpRGB fg_color;
+  gimp_rgb_set_gdk_color (&highlight_color, &style->bg[GTK_STATE_SELECTED]);
+  gimp_rgb_set_gdk_color (&bg_color,        &style->light[GTK_STATE_NORMAL]);
+  gimp_rgb_set_gdk_color (&fg_color,        &style->fg[GTK_STATE_NORMAL]);
+  
+  GimpViewable* active_layer = GIMP_VIEWABLE(image [gimp_image_get_active_layer]());
+
+  cairo_pattern_t* pattern =  gimp_cairo_checkerboard_create (cr, CHECKERBORAD_SIZE, &color1, &color2);
+
+  if (!eye_surface) {
+    eye_surface = build_cairo_surface(GTK_WIDGET(g_object), GIMP_STOCK_VISIBLE, ICON_SIZE, ICON_SIZE);
+  }
+
+  cairo_set_source_rgb (cr, bg_color.r, bg_color.g, bg_color.b);
+  cairo_rectangle ( cr, 0, 0, width, height );
+  cairo_fill (cr);
+
+  int i = 0;
+  i_layers.each([&](LayerInfo* layer_info) {
+    if (drag_action) {
+      if (layer_info->layer == drag_action->target) {
+
+        // Drawing insertion point of layers if layer is dragged.
+        
+        switch (drag_action->action) {
+        case DragAction::InsertBefore: {
+            cairo_rectangle (cr, 
+              layer_info->level * LAYER_INDENT_WIDTH, 
+              i* LAYER_MAX_HEIGHT - (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, 
+              LAYER_MAX_WIDTH, 
+              (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT));
+            cairo_set_source_rgb (cr, highlight_color.r, highlight_color.g, highlight_color.b);
+            cairo_fill (cr);
+          }
+          break;
+        
+        case DragAction::InsertAfter: {
+            cairo_rectangle (cr, 
+              layer_info->level * LAYER_INDENT_WIDTH, 
+              (i + 1) * LAYER_MAX_HEIGHT - (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, 
+              LAYER_MAX_WIDTH, 
+              (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT));
+            cairo_set_source_rgb (cr, highlight_color.r, highlight_color.g, highlight_color.b);
+            cairo_fill (cr);
+          }
+          break;
+        }
+
+      }
+
+    } else {
+      
+      // Drawing background highlight for active layer.
+      
+      if (layer_info->layer == active_layer) {
+        cairo_rectangle (cr, layer_info->level * LAYER_INDENT_WIDTH, i* LAYER_MAX_HEIGHT, LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT);
+        cairo_set_source_rgb (cr, highlight_color.r, highlight_color.g, highlight_color.b);
+        cairo_fill (cr);
+      }
+    }
+
+    // Drawing indent level indicator.
+
+    for (int j = 0; j < layer_info->level; j ++) {
+      cairo_rectangle (cr, j * LAYER_INDENT_WIDTH, i* LAYER_MAX_HEIGHT, LAYER_BAR_WIDTH, LAYER_MAX_HEIGHT);
+      cairo_set_source_rgb (cr, 0.75, 0.75, 0.75);
+      cairo_fill (cr);
+    }
+
+    // Drawing checkerboard background.
+
+    cairo_rectangle (cr, 
+      layer_info->level * LAYER_INDENT_WIDTH, 
+      i* LAYER_MAX_HEIGHT + (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, 
+      LAYER_MIN_WIDTH, 
+      LAYER_MIN_HEIGHT);
+    cairo_set_source (cr, pattern);
+    cairo_fill_preserve (cr);
+
+    if (context) {
+      gint x = layer_info->level * LAYER_INDENT_WIDTH;
+      gint y = i* LAYER_MAX_HEIGHT + (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2;
+      layer_info->draw(cr, x, y, &fg_color, &bg_color);
+    }
+
+    i ++;
+  });
+
+  cairo_pattern_destroy (pattern);
+}
+
+
 void 
 LayerTileView::reset_layers() 
 {
-  IList<Layer*> i_layers = layers;
+  IList<LayerInfo*> i_layers = layers;
   IHashTable<GimpViewable*, GList*> i_layer_dict(layer_dict);
 
   i_layer_dict.remove_all();
-  i_layers.each([&](Layer* layer_info) {
+  i_layers.each([&](LayerInfo* layer_info) {
     delete layer_info;
   });
   layers.free();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-// Building cairo surface for preview / other icons
-
-void 
-LayerTileView::update_cairo_surface(LayerTileView::Layer* layer_info, GimpViewable* viewable)
-{
-  if (!layer_info) {
-    auto i_layer_dict = ref<GimpViewable*, GList*>(layer_dict);
-    GList* list = i_layer_dict[viewable];
-    if (list)
-      layer_info = reinterpret_cast<LayerTileView::Layer*>(list->data);
-  }
-  if (!layer_info)
-    return;
-
-  layer_info->update_idle = new Idle(
-    _D::delegator(std::function<gboolean()>([&, layer_info, viewable]()->gboolean {
-
-      auto i_viewable = ref(viewable);
-
-      gint width, height;
-      i_viewable [gimp_viewable_get_preview_size] (std::min(LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT), TRUE, TRUE, &width, &height);
-
-      GdkPixbuf* pixbuf = i_viewable [gimp_viewable_get_pixbuf] (context.ptr(), width, height);
-
-      if (pixbuf) {
-        cairo_surface_t* surface   = build_cairo_surface(pixbuf);
-        layer_info->surface        = surface;
-        layer_info->preview_width  = width;
-        layer_info->preview_height = height;
-
-        GdkRectangle boundary = get_boundary(viewable);
-        ref(content_area) [gtk_widget_queue_draw_area] (boundary.x, boundary.y, boundary.width, boundary.height);
-
-      } else {
-        TempBuf* buf = i_viewable [gimp_viewable_get_preview] (context.ptr(), width, height);
-        layer_info->surface        = build_cairo_surface(buf);
-        layer_info->preview_width  = width;
-        layer_info->preview_height = height;
-        temp_buf_free (buf);
-
-        GdkRectangle boundary = get_boundary(viewable);
-        ref(content_area) [gtk_widget_queue_draw_area] (boundary.x, boundary.y, boundary.width, boundary.height);
-      }
-      return  false;
-    }))
-  );
-}
-
-
-cairo_surface_t* 
-LayerTileView::build_cairo_surface(TempBuf* temp_buf)
-{
-  g_return_val_if_fail (temp_buf != NULL, NULL);
-
-  cairo_surface_t* surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, temp_buf->width, temp_buf->height);
-
-  g_print("gimp_view_render_temp_buf_to_surface\n");
-  gimp_view_render_temp_buf_to_surface (
-    temp_buf, -1, 
-    GIMP_VIEW_BG_CHECKS, GIMP_VIEW_BG_WHITE, 
-    surface, temp_buf->width, temp_buf->height);
-
-  return surface;
-}
-
-
-cairo_surface_t* 
-LayerTileView::build_cairo_surface(GdkPixbuf* pixbuf)
-{
-  g_return_val_if_fail (pixbuf != NULL, NULL);
-
-  cairo_surface_t* surface = gimp_cairo_surface_create_from_pixbuf (pixbuf);
-  return surface;
-}
-
-
-cairo_surface_t* 
-LayerTileView::build_cairo_surface(const gchar* stock_id, gint width, gint height)
-{
-  GdkPixbuf   *pixbuf = NULL;
-  GtkIconSize  icon_size;
-
-  g_return_val_if_fail (stock_id != NULL, NULL);
-  auto i_widget = ref(g_object);
-
-  icon_size = i_widget [gimp_get_icon_size] (stock_id, GTK_ICON_SIZE_INVALID,
-                                             width, height);
-
-  if (icon_size)
-    pixbuf = i_widget [gtk_widget_render_icon] (stock_id, icon_size, NULL);
-
-  if (pixbuf)
-    {
-      gint  w  = gdk_pixbuf_get_width (pixbuf);
-      gint  h = gdk_pixbuf_get_height (pixbuf);
-
-      if (w > width || h > height)
-        {
-          GdkPixbuf *scaled_pixbuf;
-
-          gimp_viewable_calc_preview_size (w, h, width, height, TRUE, 1.0, 1.0, &w, &h, NULL);
-          scaled_pixbuf = gdk_pixbuf_scale_simple (pixbuf, w, h, GDK_INTERP_BILINEAR);
-
-          g_object_unref (pixbuf);
-          pixbuf = scaled_pixbuf;
-        }
-    }
-    cairo_surface_t* result = build_cairo_surface(pixbuf);
-    g_object_unref (pixbuf);
-    return result;
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Conversion between mouse cursor position and target viewable
@@ -1266,11 +1155,11 @@ LayerTileView::MouseAction
 LayerTileView::get_viewable_at(gint x, gint y) 
 {
   GdkRectangle hit_test_boundary = { 0, (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT };
-  IList<Layer*> i_layers     = layers;
+  IList<LayerInfo*> i_layers     = layers;
 
   MouseAction result = {NULL, MouseAction::Hit, 0, 0};
 
-  i_layers.each([&](Layer* layer_info){
+  i_layers.each([&](LayerInfo* layer_info){
     hit_test_boundary.x = layer_info->level * LAYER_INDENT_WIDTH;
     if (result.target)
       return;
@@ -1290,10 +1179,13 @@ LayerTileView::get_viewable_at(gint x, gint y)
 GdkRectangle 
 LayerTileView::get_boundary(GimpViewable* viewable)
 {
+  if (GIMP_IS_LAYER_MASK(viewable))
+    viewable = GIMP_VIEWABLE(gimp_layer_mask_get_layer (GIMP_LAYER_MASK(viewable)));
+
   bool found = false;
-  IList<Layer*> i_layers     = layers;
+  IList<LayerInfo*> i_layers     = layers;
   GdkRectangle result = {0, (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT };
-  i_layers.each([&](Layer* layer_info){
+  i_layers.each([&](LayerInfo* layer_info){
     if (found)
       return;
     if (layer_info->layer == viewable) {
@@ -1359,8 +1251,8 @@ LayerTileView::get_drag_action(GtkWidget* widget, GdkDragContext* drag_context, 
   int index    = y / LAYER_MAX_HEIGHT;
   int offset_y = y % LAYER_MAX_HEIGHT;
 
-  IList<Layer*> i_layers = layers;
-  Layer* layer_info = i_layers[index];
+  IList<LayerInfo*> i_layers = layers;
+  LayerInfo* layer_info = i_layers[index];
 
   if (!layer_info)
     return NULL;
@@ -1435,10 +1327,10 @@ LayerTileView::popup_layer_operation()
         menu_item [gtk_widget_show] ();
         gtk_menu_shell_append (GTK_MENU_SHELL(menu.ptr()), menu_item.ptr());
 
-        menu_item.connect("activate", _D::delegator(std::function<void(GtkWidget*)>([this, preset](GtkWidget* widget) {
+        menu_item.connect_noret("activate", std::function<void(GtkWidget*)>([this, preset](GtkWidget* widget) {
           auto applier = hold(ILayerPresetApplier::new_instance(context.ptr(), GIMP_JSON_RESOURCE(preset)));
           applier->apply_for_active_layer();
-        })));
+        }));
       });
 
     });
@@ -1461,7 +1353,268 @@ LayerTileView::popup_layer_operation()
   }
 }
 
-/*  public functions  */
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Class LayerInfo
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// constructors / destructors
+
+LayerTileView::LayerInfo::LayerInfo(LayerTileView* view, GimpViewable* layer, int level) : 
+    layer_preview(this), mask_preview(this) 
+{
+  this->view  = view;
+  this->layer = layer;
+  this->level = level;
+  dirty_count = 0;
+}
+
+LayerTileView::LayerInfo::~LayerInfo() {
+}
+
+void 
+LayerTileView::LayerInfo::decorate(GimpViewable* layer)
+{
+  auto i_layer = ref(layer);
+  visible_changed_handler      = i_layer.connect("visibility-changed",   _D::delegator(this, &LayerTileView::LayerInfo::on_changed));
+  linked_changed_handler       = i_layer.connect("linked-changed",       _D::delegator(this, &LayerTileView::LayerInfo::on_changed));
+  lock_content_changed_handler = i_layer.connect("lock-content-changed", _D::delegator(this, &LayerTileView::LayerInfo::on_changed));
+  mask_changed_handler         = i_layer.connect("mask-changed",         _D::delegator(this, &LayerTileView::LayerInfo::on_mask_changed));
+
+  layer_preview.decorate(GIMP_VIEWABLE(layer));
+
+  GimpLayerMask* mask = i_layer [gimp_layer_get_mask] ();
+  if (mask)
+    mask_preview.decorate(GIMP_VIEWABLE(mask));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Event handlers
+
+void 
+LayerTileView::LayerInfo::on_changed(GtkWidget* widget)
+{
+  ref(view->content_area) [gtk_widget_queue_draw] ();
+}
+
+
+void
+LayerTileView::LayerInfo::on_mask_changed(GimpLayer* layer)
+{
+  auto mask = ref ( ref(layer) [gimp_layer_get_mask] ());
+  mask_preview.decorate(GIMP_VIEWABLE(mask.ptr()));
+  ref(view->content_area) [gtk_widget_queue_draw] ();
+
+  apply_changed_handler = mask.connect("apply-changed", _D::delegator(this, &LayerTileView::LayerInfo::on_changed));
+  edit_changed_handler  = mask.connect("edit-changed",  _D::delegator(this, &LayerTileView::LayerInfo::on_changed));
+  show_changed_handler  = mask.connect("show-changed",  _D::delegator(this, &LayerTileView::LayerInfo::on_changed));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Other functions
+
+void
+LayerTileView::LayerInfo::draw(cairo_t* cr, gint x, gint y, GimpRGB* fg_color, GimpRGB* bg_color) 
+{
+  auto i_layer = ref(layer);
+  auto i_layer_mask = ref(i_layer [gimp_layer_get_mask]());
+
+  if (i_layer_mask && i_layer_mask [gimp_layer_mask_get_edit] ())
+    mask_preview.draw(cr, x, y, fg_color, bg_color);
+  else
+    layer_preview.draw(cr, x, y, fg_color, bg_color);
+
+  gboolean visible = i_layer [gimp_item_get_visible] ();
+  cairo_set_source_surface (cr, view->eye_surface, x, y);
+  cairo_paint (cr);
+
+  if (!visible) {
+    cairo_set_source_rgb (cr, fg_color->r, fg_color->g, fg_color->b);
+    cairo_move_to (cr, x + ICON_SIZE, y);
+    cairo_line_to (cr, x, y + ICON_SIZE);
+    cairo_stroke(cr);
+  }
+
+  gboolean linked = i_layer [gimp_item_get_linked] ();
+  if (linked) {
+    ScopedPointer<cairo_surface_t, void (cairo_surface_t*), cairo_surface_destroy> surface = build_cairo_surface(GTK_WIDGET(view->g_object), GIMP_STOCK_LINKED, ICON_SIZE, ICON_SIZE);
+    cairo_set_source_surface (cr, surface.ptr(), x, y + ICON_SIZE);
+    cairo_paint (cr);
+  }
+
+  gboolean has_mask = i_layer [gimp_layer_get_mask] () != NULL;
+  if (has_mask) {
+    ScopedPointer<cairo_surface_t, void (cairo_surface_t*), cairo_surface_destroy> surface = build_cairo_surface(GTK_WIDGET(view->g_object), GIMP_STOCK_LAYER_MASK, ICON_SIZE, ICON_SIZE);
+    cairo_set_source_surface (cr, surface.ptr(), x + LAYER_MIN_WIDTH - ICON_SIZE, y);
+    cairo_paint (cr);
+  }
+
+  const gchar* stock_id = i_layer [gimp_viewable_get_stock_id] ();
+  if (stock_id && strcmp(stock_id, GIMP_STOCK_LAYER) != 0) {
+    ScopedPointer<cairo_surface_t, void (cairo_surface_t*), cairo_surface_destroy> surface = build_cairo_surface(GTK_WIDGET(view->g_object), stock_id, ICON_SIZE, ICON_SIZE);
+    cairo_set_source_surface (cr, surface.ptr(), x, y + LAYER_MIN_HEIGHT - ICON_SIZE);
+    cairo_paint (cr);
+  }
+
+  cairo_set_source_rgb (cr, 0.7, 0.7, 0.7);
+  cairo_rectangle (cr, x, y, LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT);
+  cairo_stroke (cr);
+
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Class LayerPreview
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// constructors / destructors
+
+LayerTileView::LayerInfo::LayerPreview::LayerPreview(LayerInfo* _info) : surface(NULL)
+{
+  info = _info;
+  width  = 0;
+  height = 0;
+};
+LayerTileView::LayerInfo::LayerPreview::~LayerPreview() 
+{
+};
+
+void
+LayerTileView::LayerInfo::LayerPreview::decorate(GimpViewable* viewable) 
+{
+  if (viewable) {
+    auto i_layer = ref(viewable);
+    size_changed_handler         = i_layer.connect("size-changed",         _D::delegator(this, &LayerTileView::LayerInfo::LayerPreview::on_layer_invalidate_preview));
+    invalidate_preview_handler   = i_layer.connect("invalidate-preview",   _D::delegator(this, &LayerTileView::LayerInfo::LayerPreview::on_layer_invalidate_preview));
+
+  } else {
+    surface                    = NULL;
+    size_changed_handler       = NULL;
+    invalidate_preview_handler = NULL;
+
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Event handler
+
+void 
+LayerTileView::LayerInfo::LayerPreview::on_layer_invalidate_preview(GimpViewable* viewable)
+{
+  bool is_mask = GIMP_IS_LAYER_MASK(viewable);
+  if (!is_mask) {
+    auto layer_mask = gimp_layer_get_mask (GIMP_LAYER(viewable));
+    if (layer_mask && gimp_layer_mask_get_edit(layer_mask))
+      return;
+  }
+
+  auto i_context = info->view->context;
+  if (i_context) {
+    IHashTable<GimpViewable*, GList*> i_layer_dict(info->view->layer_dict);
+    GimpContainer* children = gimp_viewable_get_children (viewable);
+    bool updated = false;
+    if (!children || is_mask) {
+      updated = true;
+      update_cairo_surface(viewable);
+    } else {
+      GList* list = i_layer_dict[viewable];
+      if (list && list->data) {
+        LayerInfo* layer_info = reinterpret_cast<LayerInfo*>(list->data);
+        if (layer_info->dirty_count > 0) {
+          layer_info->dirty_count = 0;
+          updated = true;
+          layer_info->layer_preview.update_cairo_surface(viewable);
+        }
+      }
+    }
+
+    // Porpagating update to the ancestors if updated surface.
+    if (updated) {
+      if (is_mask)
+        viewable = GIMP_VIEWABLE(gimp_layer_mask_get_layer (GIMP_LAYER_MASK(viewable)));
+      while (viewable) {
+        viewable = gimp_viewable_get_parent (viewable);
+        GList* list = i_layer_dict[viewable];
+        if (list && list->data) {
+          LayerInfo* layer_info = reinterpret_cast<LayerInfo*>(list->data);
+          layer_info->dirty_count ++;
+          layer_info->layer_preview.update_cairo_surface(viewable);
+        }
+      }
+    }
+
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Other functions
+
+void
+LayerTileView::LayerInfo::LayerPreview::draw(cairo_t* cr, gint x, gint y, GimpRGB* fg_color, GimpRGB* bg_color)
+{
+  if (!surface) {
+    update_cairo_surface(info->layer);
+
+  } else {
+    cairo_set_source_surface (
+      cr, surface, 
+      x + (LAYER_MIN_WIDTH - width) / 2, 
+      y + (LAYER_MIN_HEIGHT - height) / 2);
+    cairo_paint (cr);
+  }
+
+}
+
+
+void 
+LayerTileView::LayerInfo::LayerPreview::update_cairo_surface(GimpViewable* viewable)
+{
+  update_idle = new Idle(
+    _D::delegator(std::function<gboolean()>([this, viewable]()->gboolean {
+
+      auto i_viewable = ref(viewable);
+      gint width, height;
+
+      i_viewable [gimp_viewable_get_preview_size] (std::min(LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT), TRUE, TRUE, &width, &height);
+      GdkPixbuf* pixbuf = i_viewable [gimp_viewable_get_pixbuf] (info->view->context.ptr(), width, height);
+
+      if (pixbuf) {
+        cairo_surface_t* surface   = build_cairo_surface(pixbuf);
+        this->surface  = surface;
+        this->width    = width;
+        this->height   = height;
+
+        GdkRectangle boundary = info->view->get_boundary(viewable);
+        ref(info->view->content_area) [gtk_widget_queue_draw_area] (boundary.x, boundary.y, boundary.width, boundary.height);
+
+      } else {
+        TempBuf* buf = i_viewable [gimp_viewable_get_preview] (info->view->context.ptr(), width, height);
+        this->surface  = build_cairo_surface(buf);
+        this->width  = width;
+        this->height = height;
+
+        GdkRectangle boundary = info->view->get_boundary(viewable);
+        ref(info->view->content_area) [gtk_widget_queue_draw_area] (boundary.x, boundary.y, boundary.width, boundary.height);
+      }
+      return  false;
+    }))
+  );
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Public functions
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 GimpLayerTileView *
 LayerTileViewInterface::new_instance () {

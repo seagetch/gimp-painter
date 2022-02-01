@@ -83,7 +83,6 @@ class PopupWindowDecorator {
   IObject<GtkWidget>    filter_select;
   IObject<GtkWidget>    filter_edit;
   Object<GimpUIManager> ui_manager;
-  Object<GtkMenu>       menu;
   CString               proc_name;
   Array                 proc_args;
 
@@ -400,10 +399,10 @@ class PopupWindowDecorator {
                   gtk_spin_button_new (
                     with (gtk_adjustment_new (cur_value, min_value, max_value, 1.0, 10.0, 0.0),[&](auto it) {
 
-                      it.connect_noret("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                      it.connect_noret("value-changed", std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                         auto i_proc_args = ref<GValue>(proc_args);
                         g_value_set_double(&i_proc_args[j], ref(o)["value"]);
-                      })));
+                      }));
 
                     }), 1, 1),
                   [&desc](auto it) {
@@ -418,10 +417,10 @@ class PopupWindowDecorator {
               gimp_spin_scale_new (
                 with (gtk_adjustment_new (cur_value, min_value, max_value, 1.0, 10.0, 0.0),[&](auto it) {
 
-                  it.connect_noret("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                  it.connect_noret("value-changed", std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                     auto i_proc_args = ref<GValue>(proc_args);
                     g_value_set_double(&i_proc_args[j], ref(o)["value"]);
-                  })));
+                  }));
 
                 }),
                 _(desc), 1),
@@ -511,10 +510,10 @@ class PopupWindowDecorator {
                     it [gtk_widget_show] ();
                     it [gtk_toggle_button_set_active] (cur_value);
 
-                    it.connect_noret("toggled", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                    it.connect_noret("toggled", std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                       auto i_proc_args = ref<GValue>(proc_args);
                       g_value_set_int(&i_proc_args[j], ref(o) [gtk_toggle_button_get_active] ());
-                    })));
+                    }));
 
                   }
                 );
@@ -530,12 +529,12 @@ class PopupWindowDecorator {
                     it [gtk_widget_show] ();
                     it [gimp_int_combo_box_set_active] (cur_value);
 
-                    it.connect_noret("changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                    it.connect_noret("changed", std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                       gint32 value;
                       ref(o) [gimp_int_combo_box_get_active] (&value);
                       auto i_proc_args = ref<GValue>(proc_args);
                       g_value_set_int(&i_proc_args[j], value);
-                    })));
+                    }));
 
                   }
                 );
@@ -625,10 +624,10 @@ class PopupWindowDecorator {
                     gtk_spin_button_new (
                       with (gtk_adjustment_new (cur_value, min_value, max_value, 1.0, 10.0, 0.0),[&](auto it) {
 
-                        it.connect_noret("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                        it.connect_noret("value-changed", std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                           auto i_proc_args = ref<GValue>(proc_args);
                           g_value_set_int(&i_proc_args[j], ref(o)["value"]);
-                        })));
+                        }));
 
                       }), 1, 0),
                     [&desc](auto it) {
@@ -643,11 +642,11 @@ class PopupWindowDecorator {
                 gimp_spin_scale_new (
                   with (gtk_adjustment_new (cur_value, min_value, max_value, 1.0, 10.0, 0.0),[&](auto it) {
 
-                    it.connect_noret("value-changed", delegator(std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
+                    it.connect_noret("value-changed", std::function<void(GtkWidget*)>([this,j](GtkWidget* o) {
                       gdouble value = (gdouble)ref(o)["value"];
                       auto i_proc_args = ref<GValue>(proc_args);
                       g_value_set_int(&i_proc_args[j], (gint32)value);
-                    })));
+                    }));
 
                   }), _(desc), 1),
                 [&desc](auto it) {
@@ -833,11 +832,11 @@ public:
             with (gtk_adjustment_new (100.0, 0.0, 100.0, 1.0, 10.0, 0.0),[&](auto it) {
               it.set("value", this->layer [gimp_layer_get_opacity] () * 100.0);
 
-              it.connect_noret("value-changed", delegator(std::function<void(GtkAdjustment*)>([this](GtkAdjustment* o) {
+              it.connect_noret("value-changed", std::function<void(GtkAdjustment*)>([this](GtkAdjustment* o) {
                 this->layer [gimp_layer_set_opacity] ((gdouble)ref(o)["value"] / 100.0, TRUE);
                 auto image = ref( this->layer [gimp_item_get_image] () );
                 image [gimp_image_flush] ();
-              })));
+              }));
 
             }),
             _("Opacity"), 1),
@@ -850,9 +849,9 @@ public:
           it [gtk_toggle_button_set_active] (lock_alpha);
           it [gtk_widget_show] ();
 
-          it.connect_noret("toggled", delegator(std::function<void(GtkWidget*)>([this](GtkWidget* o) {
+          it.connect_noret("toggled", std::function<void(GtkWidget*)>([this](GtkWidget* o) {
             this->layer [gimp_layer_set_lock_alpha] ( ref(o) [gtk_toggle_button_get_active] (), TRUE );
-          })));
+          }));
           it [gimp_help_set_help_data] ( _("Lock alpha channel"), GIMP_HELP_LAYER_DIALOG_LOCK_ALPHA_BUTTON);
 
           auto icon_size = GTK_ICON_SIZE_BUTTON;
@@ -925,90 +924,96 @@ public:
             with (gtk_box_new(GTK_ORIENTATION_VERTICAL, 0), [&](auto item_vbox) {
 
               ui_manager = gimp_menu_factory_manager_new (global_menu_factory, "<Layers>", widget, false);
-              this->menu = GTK_MENU(gtk_ui_manager_get_widget (GTK_UI_MANAGER(ui_manager.ptr()), "/layers-popup"));
-              auto menu = ref(this->menu);
+              auto _menu = hold(GTK_MENU(gtk_ui_manager_get_widget (GTK_UI_MANAGER(ui_manager.ptr()), "/layers-popup")));
+              auto menu = ref(_menu);
 
               IList<GimpActionGroup*> i_list = ref(ui_manager) [gtk_ui_manager_get_action_groups]();
               for (auto action_group: i_list) {
                 gimp_action_group_update (action_group, widget);
               }
 
-  #if 0
-              GtkMenu* menu_widget = menu.ptr();
-
-              vbox.pack_start(gtk_button_new_with_label("MENU"), false, true, 0, [this, menu_widget](auto button) {
-                button [gtk_widget_show]();
-                button.connect_noret("clicked", Delegators::delegator(std::function<void(GtkWidget*)>([this,menu_widget](GtkWidget* b){
-                  auto menu = ref(menu_widget);
-                  menu [gtk_widget_show] ();
-                  menu [gtk_menu_popup] (NULL, NULL, NULL, NULL, 0, gtk_get_current_event_time());
-                })));
-              });
-  #elif 0
-              menu [gtk_widget_show] ();
-              menu.incref();
-              auto parent = ref(menu [gtk_widget_get_parent] ());
-              parent [gtk_container_remove] (GTK_WIDGET(menu.ptr()));
-              hbox.pack_start(menu.ptr(), false, true, 3);
-              menu.decref();
-  #else
-              std::function<void(GtkWidget*)> iter = [this, &item_vbox, widget](GtkWidget* menu_item) {
-
+              for (auto menu_item: IList<GtkMenuItem*>(menu [gtk_container_get_children]())) {
                 auto i_menu_item = ref(menu_item);
-                item_vbox.pack_start (gtk_event_box_new(), false, true, 0, [this, menu_item, widget] (auto box) {
-                  GtkWidget* label_widget = gtk_label_new(gtk_menu_item_get_label(GTK_MENU_ITEM(menu_item)));
+
+                CString name = (gchar*)ref(menu_item).get("accel-path");
+                if (!name) {
+                  item_vbox.pack_start (gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), true, true, 3);
+                  continue;
+                }
+                
+                StringList path_list = g_strsplit(name.ptr(), "/", -1);
+                const gchar* command = *(path_list.end()-1);
+
+                GtkAction* action = NULL;
+                IList<GimpActionGroup*> i_list = ref(ui_manager) [gtk_ui_manager_get_action_groups]();
+                for (auto group: i_list) {
+                  action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), command);
+                  break;
+                }
+                if (!action) {
+                  continue;
+                }
+                
+                if (!gtk_action_get_visible(action))
+                  continue;
+                
+                item_vbox.pack_start (gtk_event_box_new(), false, true, 1, [this, menu_item, widget, action] (auto box) {
+                  CString label_text = g_strdup(gtk_menu_item_get_label(GTK_MENU_ITEM(menu_item)));
+                  if (GTK_IS_TOGGLE_ACTION (action)) {
+                    if (gtk_toggle_action_get_active(GTK_TOGGLE_ACTION(action))) {
+                      label_text = g_strdup_printf("✅%s", label_text.ptr());
+                    }
+                  }
+                  GtkWidget* label_widget = gtk_label_new(label_text);
                   auto label = ref(label_widget);
                   label [gtk_widget_show] ();
                   box.add(label.ptr());
                   box [gtk_widget_show] ();
 
                   GdkColor fg_color, bg_color;
+                  GdkColor d_fg_color, d_bg_color;
                   GdkColor h_fg_color, h_bg_color;
                   GtkStyle* style = ref(widget) [gtk_widget_get_style] ();
                   h_fg_color = style->fg[GTK_STATE_SELECTED];
                   h_bg_color = style->bg[GTK_STATE_SELECTED];
+                  d_fg_color = style->fg[GTK_STATE_INSENSITIVE];
+                  d_bg_color = style->bg[GTK_STATE_INSENSITIVE];
                   fg_color   = style->fg[GTK_STATE_NORMAL];
                   bg_color   = style->bg[GTK_STATE_NORMAL];
 
-                  box [gtk_widget_modify_bg] (GTK_STATE_NORMAL, &bg_color);
-                  label [gtk_widget_modify_fg] (GTK_STATE_NORMAL, &fg_color);
+                  if (gtk_action_get_sensitive(action)) {
+                    box [gtk_widget_modify_bg] (GTK_STATE_NORMAL, &bg_color);
+                    label [gtk_widget_modify_fg] (GTK_STATE_NORMAL, &fg_color);
+                  } else {
+                    box [gtk_widget_modify_bg] (GTK_STATE_NORMAL, &d_bg_color);
+                    label [gtk_widget_modify_fg] (GTK_STATE_NORMAL, &d_fg_color);
+                  }
 
-                  box.connect_noret("enter-notify-event", Delegators::delegator(std::function<gboolean(GtkWidget*, GdkEventCrossing*)>([this, menu_item, label_widget, h_fg_color, h_bg_color](GtkWidget* w, GdkEventCrossing* e)-> gboolean {
-                    ref(w) [gtk_widget_modify_bg] (GTK_STATE_NORMAL, &h_bg_color);
-                    ref(label_widget) [gtk_widget_modify_fg] (GTK_STATE_NORMAL, &h_fg_color);
-                    return false;
-                  })));
-
-                  box.connect_noret("leave-notify-event", Delegators::delegator(std::function<gboolean(GtkWidget*, GdkEventCrossing*)>([this, menu_item, label_widget, fg_color, bg_color](GtkWidget* w, GdkEventCrossing* e)-> gboolean {
-                    ref(w) [gtk_widget_modify_bg] (GTK_STATE_NORMAL, &bg_color);
-                    ref(label_widget) [gtk_widget_modify_fg] (GTK_STATE_NORMAL, &fg_color);
-                    return false;
-                  })));
-
-                  box.connect_noret("button-press-event", Delegators::delegator(std::function<gboolean(GtkWidget*, GdkEventButton*)>([this, menu_item, label_widget](GtkWidget* w, GdkEventButton* e)-> gboolean {
-                    g_print("%s\n", gtk_menu_item_get_label(GTK_MENU_ITEM(menu_item)));
-
-                    CString name = (gchar*)ref(menu_item).get("accel-path");
-                    StringList path_list = g_strsplit(name.ptr(), "/", -1);
-                    const gchar* command = *(path_list.end()-1);
-
-                    GtkAction* action = NULL;
-                    IList<GimpActionGroup*> i_list = ref(ui_manager) [gtk_ui_manager_get_action_groups]();
-                    for (auto group: i_list) {
-                      action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), command);
-                      break;
+                  box.connect_noret("enter-notify-event", std::function<gboolean(GtkWidget*, GdkEventCrossing*)>([this, action, menu_item, label_widget, h_fg_color, h_bg_color](GtkWidget* w, GdkEventCrossing* e)-> gboolean {
+                    if (gtk_action_get_sensitive(action)) {
+                      ref(w) [gtk_widget_modify_bg] (GTK_STATE_NORMAL, &h_bg_color);
+                      ref(label_widget) [gtk_widget_modify_fg] (GTK_STATE_NORMAL, &h_fg_color);
                     }
+                    return false;
+                  }));
+
+                  box.connect_noret("leave-notify-event", std::function<gboolean(GtkWidget*, GdkEventCrossing*)>([this, action, menu_item, label_widget, fg_color, bg_color](GtkWidget* w, GdkEventCrossing* e)-> gboolean {
+                    if (gtk_action_get_sensitive(action)) {
+                      ref(w) [gtk_widget_modify_bg] (GTK_STATE_NORMAL, &bg_color);
+                      ref(label_widget) [gtk_widget_modify_fg] (GTK_STATE_NORMAL, &fg_color);
+                    }
+                    return false;
+                  }));
+
+                  box.connect_noret("button-press-event", std::function<gboolean(GtkWidget*, GdkEventButton*)>([this, action, menu_item, label_widget](GtkWidget* w, GdkEventButton* e)-> gboolean {
                     gtk_action_activate(action);
                     ref(ref(w) [gtk_widget_get_toplevel] ()) [gtk_widget_destroy] ();
                     return false;
-                  })));
+                  }));
                 });
 
               };
-              CXXPointer<Delegators::Delegator<void(GtkWidget*)> > p_iter = Delegators::delegator(iter);
-              menu [gtk_container_foreach] (Delegators::Delegator<void(GtkWidget*)>::callback, p_iter);
               menu [gtk_widget_show] ();
-  #endif
             }).ptr(), false, true, 3);
         }
 
@@ -1041,7 +1046,7 @@ public:
                         auto selection = ref( it [gtk_tree_view_get_selection] () );
 
                         // "changed" handler
-                        selection.connect_noret("changed", delegator(std::function<void(GtkWidget*)>([this](auto widget) {
+                        selection.connect_noret("changed", std::function<void(GtkWidget*)>([this](auto widget) {
                           GtkTreeModel* model     = NULL;
                           GtkTreeIter   iter;
                           gchar*        proc_name = NULL;
@@ -1054,7 +1059,7 @@ public:
                             this->update_filter_edit(proc_name);
                           }
                           this->proc_name = proc_name;
-                        })));
+                        }));
 
                       });
                     }
@@ -1088,11 +1093,11 @@ public:
                     ).pack_start (false, true, 0)(
                       gtk_button_new_from_stock (GTK_STOCK_APPLY), [this](auto it) {
                         it [gtk_widget_show] ();
-                        it.connect_noret("clicked", delegator(std::function<void(GtkWidget*)>([this](auto o) {
+                        it.connect_noret("clicked", std::function<void(GtkWidget*)>([this](auto o) {
 //                            g_print("Apply filter settings...\n");
                           auto filter_layer = FilterLayerInterface::cast(this->layer);
                           filter_layer->set_procedure(this->proc_name, this->proc_args);
-                        })));
+                        }));
                       }
                     );
                   }

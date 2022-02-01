@@ -4,6 +4,7 @@
 extern "C" {
 #include <glib.h>
 #include <glib-object.h>
+
 #include "core/core-types.h"
 #include "core/gimpparamspecs.h"
 }
@@ -915,16 +916,6 @@ public:
     g_object_set_property(object, prop_name, &value.ref());
   };
 
-  template<typename Ret, typename... Args>
-  Delegators::Connection* connect(
-      const gchar* event,
-      Delegators::Delegator<Ret(Args...)>* delegator,
-      bool after=false) {
-
-    return g_signal_connect_delegator (super::as_object(), event, delegator, after);
-
-  };
-
   //operator GObject* () { return super::as_object(); };
   operator T*       () { return super::ptr(); };
   operator gpointer () { return super::ptr(); }
@@ -1027,14 +1018,60 @@ public:
 
   //  GValueAssigner operator [](const gchar* name) { return GValueAssigner(this); }
   CopyValue operator[] (const gchar* name) { return this->get(name); }
+
+
+  template<typename Ret, typename... Args>
+  Delegators::Connection* connect(
+      const gchar* event,
+      Delegators::Delegator<Ret(Args...)>* delegator,
+      bool after=false) {
+
+    return g_signal_connect_delegator (super::as_object(), event, delegator, after);
+
+  };
+
+  template<typename Ret, typename... Args>
+  Delegators::Connection* connect(
+      const gchar* event,
+      std::function<Ret(Args...)> function,
+      bool after=false) {
+
+    return g_signal_connect_delegator (super::as_object(), event, Delegators::delegator(function), after);
+
+  };
+
+
+  template<typename Ret, typename... Args>
+  void connect_noret(
+      const gchar* event,
+      Delegators::Delegator<Ret(Args...)>* delegator,
+      bool after=false) {
+
+    g_signal_connect_delegator_noret (super::as_object(), event, delegator, after);
+
+  };
+
+  template<typename Ret, typename... Args>
+  void connect_noret(
+      const gchar* event,
+      std::function<Ret(Args...)> function,
+      bool after=false) {
+
+    g_signal_connect_delegator_noret (super::as_object(), event, Delegators::delegator(function), after);
+
+  };
+
+#if 0
   template<typename D>
   Delegators::Connection* connect(const gchar* signal_name, D d) {
-    return g_signal_connect_delegator(G_OBJECT(super::obj), signal_name, d);
+    return g_signal_connect_delegator(super::as_object(), signal_name, d);
   }
+  
   template<typename D>
   void connect_noret(const gchar* signal_name, D d) {
-    g_signal_connect_delegator_noret(G_OBJECT(super::obj), signal_name, d);
+    g_signal_connect_delegator_noret(super::as_object(), signal_name, d);
   }
+#endif
 };
 
 
