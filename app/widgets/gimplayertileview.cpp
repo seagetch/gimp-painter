@@ -92,10 +92,10 @@ namespace _D = Delegators;
 // Helper classes
 
 template<typename T>
-class IContainer : public IObject<GimpContainer> {
+class IGimpContainer : public IObject<GimpContainer> {
 public:
-  IContainer (GimpContainer* src) : IObject(src) {}
-  IContainer (const IObject<GimpContainer>& src) : IObject(src) {}
+  IGimpContainer (GimpContainer* src) : IObject(src) {}
+  IGimpContainer (const IObject<GimpContainer>& src) : IObject(src) {}
   void each(std::function<void(T* obj)> f) {
     auto recursive_delegator = _D::delegator(f);
     (*this) [gimp_container_foreach] (GFunc(std::remove_reference<decltype(*recursive_delegator)>::type::callback), &recursive_delegator);
@@ -355,7 +355,7 @@ struct LayerTileView : virtual public ImplBase, virtual public LayerTileViewInte
   void on_changed(GtkWidget* widget);
 
   void reset_layers();
-
+  void invalidate_dirty();
   GdkRectangle  get_boundary(GimpViewable* viewable);
   MouseAction get_viewable_at(gint x, gint y);
 
@@ -541,7 +541,7 @@ LayerTileView::set_image(IValue v)
   if (this->image) {
 
     GimpContainer* container = ref(image) [gimp_image_get_layers] ();
-    IContainer<GimpViewable> i_container = ref(container);
+    IGimpContainer<GimpViewable> i_container = ref(container);
 
     added_handler     = i_container.connect("add",     _D::delegator(this, &LayerTileView::on_layer_added));
     removed_handler   = i_container.connect("remove",  _D::delegator(this, &LayerTileView::on_layer_removed));
@@ -646,7 +646,7 @@ LayerTileView::on_expose(GtkDrawingArea *widget, GdkEventExpose *event)
 void 
 LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer)
 {
-  IContainer<GimpViewable*> i_container = container;
+  IGimpContainer<GimpViewable*> i_container = container;
   auto i_layer           = ref(layer);
   auto i_layer_dict      = ref<GimpViewable*, GList*>(this->layer_dict);
   IList<LayerInfo*> i_layers = this->layers;
@@ -660,8 +660,12 @@ LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer)
   LayerInfo* layer_info;
   if (parent_info) {
     layer_info = new LayerInfo(this, layer, parent_info->level + 1);
+    // FIXME: ancestor's layer preview must be updated recursively here.
+    parent_info->dirty_count ++;
+    layer_info->dirty_count ++;
   } else {
     layer_info = new LayerInfo(this, layer, 0);
+    layer_info->dirty_count ++;
     index --;
   }
 
@@ -683,7 +687,7 @@ LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer)
 
   GimpContainer* children = gimp_viewable_get_children (layer);
   if (children) {
-    IContainer<GimpViewable> i_children(children);
+    IGimpContainer<GimpViewable> i_children(children);
     layer_info->added_handler     = i_children.connect("add",     _D::delegator(this, &LayerTileView::on_layer_added));
     layer_info->removed_handler   = i_children.connect("remove",  _D::delegator(this, &LayerTileView::on_layer_removed));
     layer_info->reordered_handler = i_children.connect("reorder", _D::delegator(this, &LayerTileView::on_layer_reordered));
@@ -695,15 +699,17 @@ LayerTileView::on_layer_added(GimpContainer* container, GimpViewable* layer)
   } else {
   }
 
-  if (freezed_count == 0)
-    ref(content_area) [gtk_widget_queue_draw] ();
+  if (freezed_count == 0) {
+    invalidate_dirty();
+  }
+//    ref(content_area) [gtk_widget_queue_draw] ();
 }
 
 
 void 
 LayerTileView::on_layer_removed(GimpContainer* container, GimpViewable* layer)
 {
-  IContainer<GimpViewable*> i_container = container;
+  IGimpContainer<GimpViewable*> i_container = container;
   auto i_layer           = ref(layer);
   auto i_layer_dict      = ref<GimpViewable*, GList*>(this->layer_dict);
   IList<LayerInfo*> i_layers = this->layers;
@@ -719,7 +725,7 @@ LayerTileView::on_layer_removed(GimpContainer* container, GimpViewable* layer)
 
   GimpContainer* children = gimp_viewable_get_children (layer);
   if (children) {
-    IContainer<GimpViewable> i_children(children);
+    IGimpContainer<GimpViewable> i_children(children);
     freezed_count ++;
     i_children.each([&](GimpViewable* viewable) {
       on_layer_removed(children, viewable);
@@ -728,8 +734,10 @@ LayerTileView::on_layer_removed(GimpContainer* container, GimpViewable* layer)
   }
   delete layer_info;
 
-  if (freezed_count == 0)
-    ref(content_area) [gtk_widget_queue_draw] ();
+  if (freezed_count == 0) {
+    invalidate_dirty();    
+  }
+//    ref(content_area) [gtk_widget_queue_draw] ();
 }
 
 
@@ -741,8 +749,10 @@ LayerTileView::on_layer_reordered(GimpContainer* container, GimpViewable* layer,
   on_layer_added(container, layer);
   freezed_count --;
 
-  if (freezed_count == 0)
-    ref(content_area) [gtk_widget_queue_draw] ();
+  if (freezed_count == 0) {
+    invalidate_dirty();    
+  }
+//    ref(content_area) [gtk_widget_queue_draw] ();
 }
 
 
@@ -929,7 +939,7 @@ LayerTileView::on_drag_drop(GtkWidget* widget, GdkDragContext* drag_context, gin
         int       dest_index  = target [gimp_item_get_index] ();
 
         if (action->action == DragAction::InsertAfter) {
-          IContainer<GimpViewable*> i_container = target [gimp_viewable_get_children] ();
+          IGimpContainer<GimpViewable*> i_container = target [gimp_viewable_get_children] ();
           if (i_container && i_container [gimp_container_get_n_children] () == 0) {
             dest_parent = GIMP_ITEM(target.ptr());
             dest_index = 0;
@@ -1141,12 +1151,23 @@ LayerTileView::reset_layers()
   IHashTable<GimpViewable*, GList*> i_layer_dict(layer_dict);
 
   i_layer_dict.remove_all();
-  i_layers.each([&](LayerInfo* layer_info) {
+  for (auto layer_info: i_layers) {
     delete layer_info;
-  });
+  };
   layers.free();
 }
 
+
+void
+LayerTileView::invalidate_dirty()
+{
+  IList<LayerInfo*> i_layers = layers;
+  for (LayerInfo* layer_info: i_layers) {
+    if (layer_info->dirty_count > 0) {
+      layer_info->layer_preview.on_layer_invalidate_preview (GIMP_VIEWABLE(layer_info->layer.ptr()));
+    }
+  };
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Conversion between mouse cursor position and target viewable
@@ -1279,7 +1300,7 @@ LayerTileView::get_drag_action(GtkWidget* widget, GdkDragContext* drag_context, 
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-// Layer operation
+// Layer operation popup
 
 void
 LayerTileView::popup_layer_operation()
@@ -1319,7 +1340,7 @@ LayerTileView::popup_layer_operation()
       GimpDataFactory* factory;
       if (context)
         factory = gimp_get_data_factory (context->gimp, "layer-preset");
-      IContainer<GimpData> i_container = ref(gimp_data_factory_get_container(factory));
+      IGimpContainer<GimpData> i_container = ref(gimp_data_factory_get_container(factory));
 
       i_container.each([&](GimpData* preset) {
         auto menu_item = ref(gtk_menu_item_new());
@@ -1521,9 +1542,12 @@ LayerTileView::LayerInfo::LayerPreview::on_layer_invalidate_preview(GimpViewable
     IHashTable<GimpViewable*, GList*> i_layer_dict(info->view->layer_dict);
     GimpContainer* children = gimp_viewable_get_children (viewable);
     bool updated = false;
+
     if (!children || is_mask) {
       updated = true;
+      info->dirty_count = 0;
       update_cairo_surface(viewable);
+ 
     } else {
       GList* list = i_layer_dict[viewable];
       if (list && list->data) {
@@ -1533,21 +1557,26 @@ LayerTileView::LayerInfo::LayerPreview::on_layer_invalidate_preview(GimpViewable
           updated = true;
           layer_info->layer_preview.update_cairo_surface(viewable);
         }
+ 
       }
     }
 
     // Porpagating update to the ancestors if updated surface.
     if (updated) {
+ 
       if (is_mask)
         viewable = GIMP_VIEWABLE(gimp_layer_mask_get_layer (GIMP_LAYER_MASK(viewable)));
+ 
       while (viewable) {
         viewable = gimp_viewable_get_parent (viewable);
         GList* list = i_layer_dict[viewable];
+ 
         if (list && list->data) {
           LayerInfo* layer_info = reinterpret_cast<LayerInfo*>(list->data);
           layer_info->dirty_count ++;
           layer_info->layer_preview.update_cairo_surface(viewable);
         }
+
       }
     }
 
