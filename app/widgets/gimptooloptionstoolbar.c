@@ -79,13 +79,11 @@ static void        gimp_tool_options_toolbar_get_property      (GObject         
                                                                GValue                *value,
                                                                GParamSpec            *pspec);
 
-static void        gimp_tool_options_toolbar_visible_changed (GimpToolOptionsToolbar *toolbar);
-
 static void        gimp_tool_options_toolbar_tool_changed      (GimpContext           *context,
                                                                GimpToolInfo          *tool_info,
                                                                GimpToolOptionsToolbar *toolbar);
-static void        gimp_tool_options_toolbar_hide_toolbar    (GimpToolOptionsToolbar *toolbar);
-static void        gimp_tool_options_toolbar_show_toolbar    (GimpToolOptionsToolbar *toolbar);
+static void    gimp_tool_options_toolbar_hide_toolbar    (GimpToolOptionsToolbar *toolbar);
+static void    gimp_tool_options_toolbar_show_toolbar    (GimpToolOptionsToolbar *toolbar);
 
 
 G_DEFINE_TYPE (GimpToolOptionsToolbar, gimp_tool_options_toolbar, GTK_TYPE_TOOLBAR)
@@ -157,10 +155,8 @@ gimp_tool_options_toolbar_constructor (GType                  type,
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
   gtk_widget_show (GTK_WIDGET(item));
 
-  g_signal_connect_object (G_OBJECT(toolbar), "notify::visible",
-                           G_CALLBACK (gimp_tool_options_toolbar_visible_changed),
-                           NULL,
-                           0);
+  g_signal_connect (G_OBJECT(toolbar), "hide", G_CALLBACK(gimp_tool_options_toolbar_hide_toolbar), NULL);
+  g_signal_connect (G_OBJECT(toolbar), "show", G_CALLBACK(gimp_tool_options_toolbar_show_toolbar), NULL);
 
   if (gtk_widget_get_visible(GTK_WIDGET(toolbar))) {
     gimp_tool_options_toolbar_tool_changed (user_context,
@@ -175,6 +171,7 @@ static void
 gimp_tool_options_toolbar_dispose (GObject *object)
 {
   GimpToolOptionsToolbar* toolbar = GIMP_TOOL_OPTIONS_TOOLBAR (object);
+  g_print("GimpToolOptionsToolbar::dispose\n");
   gimp_tool_options_toolbar_hide_toolbar (toolbar);
   if (toolbar->p->options_hbox) {
     gimp_tool_options_toolbar_hide_toolbar(toolbar);
@@ -232,6 +229,7 @@ GtkWidget *
 gimp_tool_options_toolbar_new (Gimp            *gimp,
                               GimpMenuFactory *menu_factory)
 {
+  g_print("GtimpToolOptionsToolbar::new\n");
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
   return g_object_new (GIMP_TYPE_TOOL_OPTIONS_TOOLBAR,
@@ -242,22 +240,12 @@ gimp_tool_options_toolbar_new (Gimp            *gimp,
 GimpToolOptions *
 gimp_tool_options_toolbar_get_tool_options (GimpToolOptionsToolbar *toolbar)
 {
+  g_print("GtimpToolOptionsToolbar::get_tool_options\n");
   g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS_TOOLBAR (toolbar), NULL);
 
   return toolbar->p->visible_tool_options;
 }
 
-/*  private functions  */
-static void
-gimp_tool_options_toolbar_visible_changed (GimpToolOptionsToolbar *toolbar)
-{
-  gimp_tool_options_toolbar_hide_toolbar (toolbar);
-  
-  if (gtk_widget_get_visible(GTK_WIDGET(toolbar))) {
-    gimp_tool_options_toolbar_show_toolbar (toolbar);
-  }
-  
-}
 
 static void
 gimp_tool_options_toolbar_tool_changed (GimpContext           *context,
@@ -268,6 +256,7 @@ gimp_tool_options_toolbar_tool_changed (GimpContext           *context,
 
 //  if (tool_info && tool_info->tool_options == toolbar->p->visible_tool_options)
 //    return;
+  g_print("GimpToolOptionsToolbar::tool_changed\n");
 
   if (toolbar->p->visible_tool_options)
     {
@@ -275,8 +264,10 @@ gimp_tool_options_toolbar_tool_changed (GimpContext           *context,
       options_gui = g_object_get_data (G_OBJECT (toolbar->p->visible_tool_options),
                                        "gimp-tool-options-toolbar-gui");
 
-      if (options_gui)
+      if (options_gui) {
+        g_print("GimpToolOptionsToolbar::tool_changed::hide %p\n", options_gui);
         gtk_widget_hide (options_gui);
+      }
 
       toolbar->p->visible_tool_options = NULL;
     }
@@ -311,11 +302,14 @@ gimp_tool_options_toolbar_tool_changed (GimpContext           *context,
       gtk_widget_set_size_request (toolbar->p->scrolled_window, -1, req.height);
       gtk_widget_show_all (options_gui);
       gtk_widget_show (toolbar->p->scrolled_window);
+      gtk_widget_show (toolbar->p->options_hbox);
+      gtk_widget_show (toolbar);
 
       toolbar->p->visible_tool_options = tool_info->tool_options;
     }
   else
     {
+      g_print("GimpToolOptionsToolbar::tool_changed, no_visible_tool_options\n");
     }
 
 }
@@ -366,5 +360,4 @@ gimp_tool_options_toolbar_show_toolbar (GimpToolOptionsToolbar *toolbar)
   gimp_tool_options_toolbar_tool_changed (user_context,
                                           gimp_context_get_tool (user_context),
                                           toolbar);
-
 }
