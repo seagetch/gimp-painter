@@ -422,6 +422,7 @@ LayerTileView::LayerTileView(GObject* o) :
 
 LayerTileView::~LayerTileView()
 {
+  reset_layers();
 }
 
 
@@ -558,9 +559,9 @@ LayerTileView::set_image(IValue v)
 
     IList<LayerInfo*> i_layers     = layers;
     int max_level = 0;
-    i_layers.each([&max_level](LayerInfo* info){
+    for (LayerInfo* info: i_layers){
       max_level = std::max(info->level, max_level);
-    });
+    };
 
     auto i_content_area = ref(content_area);
     num_layers = g_list_length (layers.ptr());
@@ -1043,7 +1044,7 @@ LayerTileView::on_add_button_release(GtkWidget* widget, GdkEventButton* event)
 void 
 LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
 {
-  g_print("LayerTileView::draw(%d, %d)\n", width, height);
+//  g_print("LayerTileView::draw(%d, %d)\n", width, height);
   IList<LayerInfo*> i_layers = layers;
   auto i_layer_dict      = ref<GimpViewable*, GList*>(this->layer_dict);
   
@@ -1070,7 +1071,7 @@ LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
   cairo_fill (cr);
 
   int i = 0;
-  i_layers.each([&](LayerInfo* layer_info) {
+  for (auto layer_info: i_layers) {
     if (drag_action) {
       if (layer_info->layer == drag_action->target) {
 
@@ -1138,7 +1139,7 @@ LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
     }
 
     i ++;
-  });
+  };
 
   cairo_pattern_destroy (pattern);
 }
@@ -1180,19 +1181,18 @@ LayerTileView::get_viewable_at(gint x, gint y)
 
   MouseAction result = {NULL, MouseAction::Hit, 0, 0};
 
-  i_layers.each([&](LayerInfo* layer_info){
+  for (auto layer_info: i_layers) {
     hit_test_boundary.x = layer_info->level * LAYER_INDENT_WIDTH;
-    if (result.target)
-      return;
     if (hit_test_boundary.x <= x && x < hit_test_boundary.x + hit_test_boundary.width &&
         hit_test_boundary.y <= y && y < hit_test_boundary.y + hit_test_boundary.height) {
       result.target   = layer_info->layer;
       result.action   = MouseAction::Hit;
       result.offset_x = x - hit_test_boundary.x;
       result.offset_y = y - hit_test_boundary.y;
+      return result;
     }
     hit_test_boundary.y += LAYER_MAX_HEIGHT;
-  });
+  };
   return result;
 }
 
@@ -1203,23 +1203,18 @@ LayerTileView::get_boundary(GimpViewable* viewable)
   if (GIMP_IS_LAYER_MASK(viewable))
     viewable = GIMP_VIEWABLE(gimp_layer_mask_get_layer (GIMP_LAYER_MASK(viewable)));
 
-  bool found = false;
   IList<LayerInfo*> i_layers     = layers;
   GdkRectangle result = {0, (LAYER_MAX_HEIGHT - LAYER_MIN_HEIGHT) / 2, LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT };
-  i_layers.each([&](LayerInfo* layer_info){
-    if (found)
-      return;
+  for (auto layer_info: i_layers){
     if (layer_info->layer == viewable) {
-      found = true;
       result.x = layer_info->level * LAYER_INDENT_WIDTH;
+      return result;
+
     } else {
       result.y += LAYER_MAX_HEIGHT;
     }
-  });
-  if (found)
-    return result;
-  else
-    return {-1, -1, -1, -1};
+  };
+  return {-1, -1, -1, -1};
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -1552,7 +1547,7 @@ LayerTileView::LayerInfo::LayerPreview::on_layer_invalidate_preview(GimpViewable
       GList* list = i_layer_dict[viewable];
       if (list && list->data) {
         LayerInfo* layer_info = reinterpret_cast<LayerInfo*>(list->data);
-        if (layer_info->dirty_count > 0) {
+        if (layer_info->dirty_count > 0 || gimp_container_get_n_children(children) == 0) {
           layer_info->dirty_count = 0;
           updated = true;
           layer_info->layer_preview.update_cairo_surface(viewable);
