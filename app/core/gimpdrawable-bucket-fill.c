@@ -183,15 +183,19 @@ gimp_drawable_bucket_fill_full (GimpDrawable        *drawable,
    */
   if (do_seed_fill)
     {
-      mask = gimp_image_contiguous_region_by_seed (image, drawable,
-                                                   sample_merged,
-                                                   TRUE,
-                                                   (gint) threshold,
-                                                   fill_transparent,
-                                                   fill_criterion,
-                                                   (gint) x,
-                                                   (gint) y);
-
+      GimpChannel* src_mask = NULL;
+      if (selection) {
+        src_mask = gimp_image_get_mask (image);
+      }
+      mask = gimp_image_contiguous_region_by_seed_full (image, drawable, src_mask,
+                                                        sample_merged,
+                                                        TRUE,
+                                                        (gint) threshold,
+                                                        fill_transparent,
+                                                        fill_criterion,
+                                                        (gint) x,
+                                                        (gint) y);
+#if 0
       if (selection)
         {
           gint off_x = 0;
@@ -204,7 +208,7 @@ gimp_drawable_bucket_fill_full (GimpDrawable        *drawable,
                                      GIMP_CHANNEL_OP_INTERSECT,
                                      -off_x, -off_y);
         }
-
+#endif
       gimp_channel_bounds (mask, &x1, &y1, &x2, &y2);
 
       /*  make sure we handle the mask correctly if it was sample-merged  */
