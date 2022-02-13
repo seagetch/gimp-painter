@@ -51,6 +51,24 @@ typedef struct
 } ContinuousRegionData;
 
 
+typedef struct {
+  PixelRegion* pr1;
+  PixelRegion* pr2;
+  PixelRegion* pr3;
+  gboolean    pr1_writable;
+  gboolean    pr2_writable;
+  gboolean    pr3_writable;
+  gint origin_x;
+  gint origin_y;
+  gint cur_x;
+  gint cur_y;
+  gint cur_tile_width;
+  gint min_x, min_y;
+  gint max_x, max_y;
+} PixelRegionIteratorX3;
+
+
+
 /*  local function prototypes  */
 
 static void contiguous_region_by_color    (ContinuousRegionData *cont,
@@ -66,26 +84,9 @@ static gint pixel_difference              (const guchar        *col1,
                                            gboolean             has_alpha,
                                            gboolean             select_transparent,
                                            GimpSelectCriterion  select_criterion);
-static void ref_tiles                     (TileManager         *src,
-                                           TileManager         *mask,
-                                           TileManager         *src_mask,
-                                           Tile               **s_tile,
-                                           Tile               **m_tile,
-                                           Tile               **s_m_tile,
-                                           gint                 x,
-                                           gint                 y,
-                                           gint                 off_x,
-                                           gint                 off_y,
-                                           guchar             **s,
-                                           guchar             **m,
-                                           guchar             **s_m);
 static gboolean find_contiguous_segment   (GimpImage           *image,
                                            const guchar        *col,
-                                           PixelRegion         *src,
-                                           PixelRegion         *mask,
-                                           PixelRegion         *src_mask,
-                                           gint                 width,
-                                           gint                 bytes,
+                                           PixelRegionIteratorX3* iter,
                                            GimpImageType        src_type,
                                            gboolean             has_alpha,
                                            gboolean             select_transparent,
@@ -94,9 +95,7 @@ static gboolean find_contiguous_segment   (GimpImage           *image,
                                            gint                 threshold,
                                            gint                 initial,
                                            gint                *start,
-                                           gint                *end,
-                                           gint                 off_x,
-                                           gint                 off_y);
+                                           gint                *end);
 static void find_contiguous_region_helper (GimpImage           *image,
                                            PixelRegion         *mask,
                                            PixelRegion         *src,
@@ -112,6 +111,152 @@ static void find_contiguous_region_helper (GimpImage           *image,
                                            gint                 off_x,
                                            gint                 off_y,
                                            const guchar        *col);
+
+static void
+pixel_region_iterator_x_init(
+  PixelRegionIteratorX3* iter, 
+  PixelRegion* pr1, PixelRegion* pr2, PixelRegion* pr3, 
+  gboolean pr1_writable, gboolean pr2_writable, gboolean pr3_writable,
+  gint x, gint y, gint min_x, gint min_y, gint max_x, gint max_y)
+{
+  iter->pr1 = iter->pr2 = iter->pr3 = NULL;
+  if (iter){
+    if (pr1) {
+      iter->pr1 = g_new0(PixelRegion, 1);
+      pixel_region_duplicate(iter->pr1, pr1);
+    }
+    if (pr2) {
+      iter->pr2 = g_new0(PixelRegion, 1);
+      pixel_region_duplicate(iter->pr2, pr2);
+    }
+    if (pr3) {
+      iter->pr3 = g_new0(PixelRegion, 1);
+      pixel_region_duplicate(iter->pr3, pr3);
+    }
+    iter->pr1_writable = pr1_writable;
+    iter->pr2_writable = pr2_writable;
+    iter->pr3_writable = pr3_writable;
+    iter->origin_x = iter->cur_x = x;
+    iter->origin_y = iter->cur_y = y;
+    iter->min_x = min_x;
+    iter->max_x = max_x;
+    iter->min_y = min_y;
+    iter->max_y = max_y;
+    iter->cur_tile_width  = 0;
+  }
+}
+
+static void
+pixel_region_iterator_x_cleanup(PixelRegionIteratorX3* iter)
+{
+  if (iter->pr1)
+    g_free(iter->pr1);
+  if (iter->pr2)
+    g_free(iter->pr2);
+  if (iter->pr3)
+    g_free(iter->pr3);
+}
+
+static void
+pixel_region_iterator_x_update(PixelRegionIteratorX3* iter)
+{
+  gint off_x = iter->cur_x - iter->min_x;
+  gint off_y = iter->cur_y - iter->min_y;
+
+  if (iter->pr1) {
+    if (iter->pr1->curtile != NULL)
+      tile_release (iter->pr1->curtile, iter->pr1_writable && iter->pr1->dirty);
+    
+    iter->pr1->offx    = (iter->pr1->x + off_x) % TILE_WIDTH;
+    iter->pr1->offy    = (iter->pr1->y + off_y) % TILE_WIDTH;
+    
+    iter->pr1->curtile = tile_manager_get_tile (iter->pr1->tiles, iter->pr1->x + off_x, iter->pr1->y + off_y, TRUE, iter->pr1_writable);
+    iter->pr1->data    = tile_data_pointer (iter->pr1->curtile, iter->pr1->offx, iter->pr1->offy);
+    iter->pr1->dirty   = FALSE;
+  }
+
+  if (iter->pr2) {
+    if (iter->pr2->curtile != NULL)
+      tile_release (iter->pr2->curtile, iter->pr2_writable && iter->pr2->dirty);
+    
+    iter->pr2->offx    = (iter->pr2->x + off_x) % TILE_WIDTH;
+    iter->pr2->offy    = (iter->pr2->y + off_y) % TILE_WIDTH;
+    
+    iter->pr2->curtile = tile_manager_get_tile (iter->pr2->tiles, iter->pr2->x + off_x, iter->pr2->y + off_y, TRUE, iter->pr2_writable);
+    iter->pr2->data    = tile_data_pointer (iter->pr2->curtile, iter->pr2->offx, iter->pr2->offy);
+    iter->pr2->dirty   = FALSE;
+  }
+
+  if (iter->pr3) {
+    if (iter->pr3->curtile != NULL)
+      tile_release (iter->pr3->curtile, iter->pr3_writable && iter->pr3->dirty);
+    
+    iter->pr3->offx    = (iter->pr3->x + off_x) % TILE_WIDTH;
+    iter->pr3->offy    = (iter->pr3->y + off_y) % TILE_WIDTH;
+
+    iter->pr3->curtile = tile_manager_get_tile (iter->pr3->tiles, iter->pr3->x + off_x, iter->pr3->y + off_y, TRUE, iter->pr3_writable);
+    iter->pr3->data    = tile_data_pointer (iter->pr3->curtile, iter->pr3->offx, iter->pr3->offy);
+    iter->pr3->dirty   = FALSE;
+  }
+};
+
+static gboolean
+pixel_region_iterator_x_next(PixelRegionIteratorX3* iter)
+{
+  gint off_x;
+  gint pr1_width_fw, pr2_width_fw, pr3_width_fw;
+
+  pr1_width_fw = pr2_width_fw = pr3_width_fw = TILE_WIDTH;
+
+  iter->cur_x += iter->cur_tile_width;
+
+  if (iter->cur_x >= iter->max_x)
+    return FALSE;
+
+  pixel_region_iterator_x_update(iter);
+  off_x = iter->cur_x - iter->min_x;
+
+  if (iter->pr1)
+    pr1_width_fw = MIN(TILE_WIDTH - iter->pr1->offx, iter->pr1->w - off_x);
+  if (iter->pr2)
+    pr2_width_fw = MIN(TILE_WIDTH - iter->pr2->offx, iter->pr2->w - off_x);
+  if (iter->pr3)
+    pr3_width_fw = MIN(TILE_WIDTH - iter->pr3->offx, iter->pr3->w - off_x);
+
+  iter->cur_tile_width = CLAMP(MIN(pr1_width_fw, MIN(pr2_width_fw, pr3_width_fw)), 0, TILE_WIDTH);
+  return TRUE;
+};
+
+static gboolean
+pixel_region_iterator_x_prev(PixelRegionIteratorX3* iter)
+{
+  gint off_x;
+  gint pr1_width_bw, pr2_width_bw, pr3_width_bw;
+
+  pr1_width_bw = pr2_width_bw = pr3_width_bw = TILE_WIDTH;
+
+  off_x = iter->cur_x - iter->min_x;
+
+  if (iter->pr1)
+    pr1_width_bw = MIN(iter->pr1->offx > 0 ? iter->pr1->offx: TILE_WIDTH, off_x);
+  if (iter->pr2)
+    pr2_width_bw = MIN(iter->pr2->offx > 0 ? iter->pr2->offx: TILE_WIDTH, off_x);
+  if (iter->pr3)
+    pr3_width_bw = MIN(iter->pr3->offx > 0 ? iter->pr3->offx: TILE_WIDTH, off_x);
+
+  iter->cur_tile_width = CLAMP(MIN(pr1_width_bw, MIN(pr2_width_bw, pr3_width_bw)), 0, TILE_WIDTH);
+
+  iter->cur_x -= iter->cur_tile_width;
+
+  if (iter->cur_x < iter->min_x) {
+    g_print("prev: shoud not be happened.\n");
+    return FALSE;
+  }
+
+  pixel_region_iterator_x_update(iter);
+  return TRUE;
+}
+
 
 /*  public functions  */
 
@@ -133,7 +278,7 @@ gimp_image_contiguous_region_by_seed (GimpImage           *image,
   );
 }
 
-// by gimp-painter 2.8
+// added by gimp-painter 2.8
 GimpChannel *
 gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
                                            GimpDrawable        *drawable,
@@ -176,9 +321,20 @@ gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
   if (source_mask) {
 
     gimp_channel_bounds (source_mask, &x1, &y1, &x2, &y2);
+    if (GIMP_IS_DRAWABLE(pickable)) {
+      gimp_item_get_offset (GIMP_ITEM(pickable), &off_x, &off_y);
+      g_print("offset: %d, %d\n", off_x, off_y);
+    }
+    if (x1 < off_x)
+      x1 = off_x;
+    if (y1 < off_y)
+      y1 = off_y;
+    if (x2 - off_x >= tile_manager_width (tiles))
+      x2 = tile_manager_width (tiles);
+    if (y2 - off_y >= tile_manager_height (tiles))
+      y2 = tile_manager_height (tiles);
     pixel_region_init (&src_mask_PR, gimp_drawable_get_tiles (GIMP_DRAWABLE (source_mask)),
-        x1, y1, x2, y2, TRUE);
-    g_print("x, y = (%d, %d) --> (%d, %d)\n", x, y, x - x1, y - y1);
+                       x1, y1, x2 - x1, y2 - y1, TRUE);
 
   } else {
 
@@ -188,18 +344,14 @@ gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
 
   }
 
-  pixel_region_init (&srcPR, tiles,
-                    x1, y1,
-                    x2,
-                    y2,
-                    FALSE);
-
   mask = gimp_channel_new_mask (image, tile_manager_width (tiles), tile_manager_height (tiles));
+  if (x1 >= x2 || y1 >= y2) {
+    return mask;
+  }
   pixel_region_init (&maskPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
-                    x1, y1,
-                    x2,
-                    y2,
-                    TRUE);
+                     x1 - off_x, y1 - off_y, x2 - x1, y2 - y1, TRUE);
+
+  pixel_region_init (&srcPR, tiles, x1 - off_x, y1 - off_y, x2 - x1, y2 - y1, FALSE);
 
   
   tile = tile_manager_get_tile (srcPR.tiles, x, y, TRUE, FALSE);
@@ -375,6 +527,7 @@ contiguous_region_by_color (ContinuousRegionData *cont,
     }
 }
 
+// updated by gimp-painter 2.8
 static gint
 pixel_difference (const guchar        *col1,
                   const guchar        *col2,
@@ -499,50 +652,11 @@ pixel_difference (const guchar        *col1,
     }
 }
 
-static void
-ref_tiles (TileManager  *src,
-           TileManager  *mask,
-           TileManager  *src_mask,
-           Tile        **s_tile,
-           Tile        **m_tile,
-           Tile        **s_m_tile,
-           gint          x,
-           gint          y,
-           gint          off_x,
-           gint          off_y,
-           guchar      **s,
-           guchar      **m,
-           guchar      **s_m)
-{
-//  g_print("ref_tiles: %d, %d (%d, %d)\n", x, y,  x - off_x, y - off_y);
-  if (*s_tile != NULL)
-    tile_release (*s_tile, FALSE);
-  if (*m_tile != NULL)
-    tile_release (*m_tile, TRUE);
-  if (*s_m_tile != NULL)
-    tile_release (*s_m_tile, TRUE);
-
-  *s_tile   = tile_manager_get_tile (src, x, y, TRUE, FALSE);
-  *m_tile   = tile_manager_get_tile (mask, x, y, TRUE, TRUE);
-  if (src_mask)
-    *s_m_tile = tile_manager_get_tile (src_mask, x, y, TRUE, TRUE);
-
-  *s   = tile_data_pointer (*s_tile,   x, y);
-  *m   = tile_data_pointer (*m_tile,   x, y);
-  if (src_mask)
-    *s_m = tile_data_pointer (*s_m_tile, x, y);
-  else
-    *s_m = NULL;
-}
-
+// updated by gimp-painter 2.8
 static gboolean
 find_contiguous_segment (GimpImage           *image,
                          const guchar        *col,
-                         PixelRegion         *src,
-                         PixelRegion         *mask,
-                         PixelRegion         *src_mask,
-                         gint                 width,
-                         gint                 bytes,
+                         PixelRegionIteratorX3* iter,
                          GimpImageType        src_type,
                          gboolean             has_alpha,
                          gboolean             select_transparent,
@@ -551,35 +665,27 @@ find_contiguous_segment (GimpImage           *image,
                          gint                 threshold,
                          gint                 initial,
                          gint                *start,
-                         gint                *end,
-                         gint                 off_x,
-                         gint                 off_y)
+                         gint                *end)
 {
-  guchar *s;
-  guchar *m;
-  guchar *s_m;
   guchar  s_color[MAX_CHANNELS];
   guchar  diff;
-  gint    col_bytes = bytes;
-  Tile   *s_tile    = NULL;
-  Tile   *m_tile    = NULL;
-  Tile   *s_m_tile  = NULL;
+  gint    col_bytes = iter->pr1->bytes;
+  gint    cur_tile_remained;
 
-  ref_tiles (src->tiles, mask->tiles, src_mask? src_mask->tiles: NULL,
-             &s_tile, &m_tile, &s_m_tile, src->x, src->y, off_x, off_y, &s, &m, &s_m);
+  pixel_region_iterator_x_update(iter);
   if (GIMP_IMAGE_TYPE_IS_INDEXED (src_type))
     {
       col_bytes = has_alpha ? 4 : 3;
 
-      gimp_image_get_color (image, src_type, s, s_color);
+      gimp_image_get_color (image, src_type, iter->pr1->data, s_color);
 
-      diff = pixel_difference (col, s_color, s_m, antialias, threshold,
+      diff = pixel_difference (col, s_color, iter->pr3? iter->pr3->data: NULL, antialias, threshold,
                                col_bytes, has_alpha, select_transparent,
                                select_criterion);
      }
   else
     {
-      diff = pixel_difference (col, s, s_m, antialias, threshold,
+      diff = pixel_difference (col, iter->pr1->data, iter->pr3? iter->pr3->data: NULL, antialias, threshold,
                                col_bytes, has_alpha, select_transparent,
                                select_criterion);
     }
@@ -587,88 +693,108 @@ find_contiguous_segment (GimpImage           *image,
   /* check the starting pixel */
   if (! diff)
     {
-      tile_release (s_tile, FALSE);
-      tile_release (m_tile, TRUE);
+      if (iter->pr1->curtile)
+        tile_release (iter->pr1->curtile, FALSE);
+      if (iter->pr2->curtile)
+        tile_release (iter->pr2->curtile, FALSE);
+      if (iter->pr3 && iter->pr3->curtile)
+        tile_release (iter->pr3->curtile, FALSE);
       return FALSE;
     }
 
-  *m-- = diff;
-  s -= bytes;
+  iter->pr2->dirty   = TRUE;
+  *iter->pr2->data-- = diff;
+  iter->pr1->data -= iter->pr1->bytes;
   *start = initial - 1;
 
-  while (*start >= 0 && diff)
-    {
-      if (! ((*start + 1) % TILE_WIDTH))
-        ref_tiles (src->tiles, mask->tiles, src_mask ? src_mask->tiles: NULL,
-                   &s_tile, &m_tile, &s_m_tile, *start, src->y, off_x, off_y, &s, &m, &s_m);
+  iter->cur_x = *start + 1;
+  cur_tile_remained = iter->cur_tile_width = 0;
 
-//      g_print("src=%d,%d, mask=%d,%d, w,h=%d,%d\n", *start, src->y, *start - off_x, src->y - off_y, src->w, src->h);
+  while (*start >= iter->min_x && diff)
+    {
+      if (cur_tile_remained <= 0) {
+        pixel_region_iterator_x_prev (iter);
+        iter->pr1->data += iter->pr1->bytes * (*start - iter->cur_x);
+        iter->pr2->data += iter->pr2->bytes * (*start - iter->cur_x);
+        if (iter->pr3)
+          iter->pr3->data += iter->pr3->bytes * (*start - iter->cur_x);
+        cur_tile_remained = iter->cur_tile_width;
+      }
 
       if (GIMP_IMAGE_TYPE_IS_INDEXED (src_type))
         {
-          gimp_image_get_color (image, src_type, s, s_color);
+          gimp_image_get_color (image, src_type, iter->pr1->data, s_color);
 
-          diff = pixel_difference (col, s_color, s_m, antialias, threshold,
+          diff = pixel_difference (col, s_color, iter->pr3? iter->pr3->data: NULL, antialias, threshold,
                                    col_bytes, has_alpha, select_transparent,
                                    select_criterion);
         }
       else
         {
-          diff = pixel_difference (col, s, s_m, antialias, threshold,
+          diff = pixel_difference (col, iter->pr1->data, iter->pr3? iter->pr3->data: NULL, antialias, threshold,
                                    col_bytes, has_alpha, select_transparent,
                                    select_criterion);
         }
 
-      if ((*m-- = diff))
+      iter->pr2->dirty   = TRUE;
+      if ((*iter->pr2->data-- = diff))
         {
-          s -= bytes;
+          iter->pr1->data -= iter->pr1->bytes;
           (*start)--;
+          cur_tile_remained --;
         }
     }
 
   diff = 1;
   *end = initial + 1;
+  cur_tile_remained = iter->cur_tile_width = 0;
+  iter->cur_x = *end;
 
-  if (*end % TILE_WIDTH && *end < width)
-    ref_tiles (src->tiles, mask->tiles, src_mask ? src_mask->tiles: NULL,
-               &s_tile, &m_tile, &s_m_tile, *end, src->y, off_x, off_y, &s, &m, &s_m);
+  pixel_region_iterator_x_update (iter);
 
-  while (*end < width && diff)
+  while (*end < iter->max_x && diff)
     {
-      if (! (*end % TILE_WIDTH))
-        ref_tiles (src->tiles, mask->tiles, src_mask ? src_mask->tiles: NULL,
-                   &s_tile, &m_tile, &s_m_tile, *end, src->y, off_x, off_y, &s, &m, &s_m);
 
-//      g_print("src=%d,%d, mask=%d,%d, w,h=%d,%d\n", *end, src->y, *end - off_x, src->y - off_y, src->w, src->h);
+      if (cur_tile_remained <= 0) {
+        pixel_region_iterator_x_next(iter);
+        cur_tile_remained = iter->cur_tile_width;
+      }
+
       if (GIMP_IMAGE_TYPE_IS_INDEXED (src_type))
         {
-          gimp_image_get_color (image, src_type, s, s_color);
+          gimp_image_get_color (image, src_type, iter->pr1->data, s_color);
 
-          diff = pixel_difference (col, s_color, s_m, antialias, threshold,
+          diff = pixel_difference (col, s_color, iter->pr3? iter->pr3->data: NULL, antialias, threshold,
                                    col_bytes, has_alpha, select_transparent,
                                    select_criterion);
         }
       else
         {
-          diff = pixel_difference (col, s, s_m, antialias, threshold,
+          diff = pixel_difference (col, iter->pr1->data, iter->pr3? iter->pr3->data: NULL, antialias, threshold,
                                    col_bytes, has_alpha, select_transparent,
                                    select_criterion);
         }
 
-      if ((*m++ = diff))
+      iter->pr2->dirty   = TRUE;
+      if ((*iter->pr2->data++ = diff))
         {
-          s += bytes;
+          iter->pr1->data += iter->pr1->bytes;
           (*end)++;
+          cur_tile_remained --;
         }
     }
 
-  tile_release (s_tile, FALSE);
-  tile_release (m_tile, TRUE);
+  if (iter->pr1->curtile)
+    tile_release (iter->pr1->curtile, iter->pr1_writable);
+  if (iter->pr2->curtile)
+    tile_release (iter->pr2->curtile, iter->pr2_writable);
+  if (iter->pr3 && iter->pr3->curtile)
+    tile_release (iter->pr3->curtile, iter->pr3_writable);
 
   return TRUE;
 }
 
-// gimp-painter 2.8
+// updated by gimp-painter 2.8
 static void
 find_contiguous_region_helper (GimpImage           *image,
                                PixelRegion         *mask,
@@ -711,30 +837,32 @@ find_contiguous_region_helper (GimpImage           *image,
 
       for (x = start + 1; x < end; x++)
         {
+          PixelRegionIteratorX3 iter;
           tile = tile_manager_get_tile (mask->tiles, x, y, TRUE, FALSE);
           val = *(const guchar *) tile_data_pointer (tile, x, y);
           tile_release (tile, FALSE);
           if (val != 0)
             continue;
 
-          src->x = x;
-          src->y = y;
+          pixel_region_iterator_x_init(&iter, src, mask, src_mask, FALSE, TRUE, FALSE, x, y, src->x, src->y, src->x + src->w, src->y + src->h);
 
-          if (! find_contiguous_segment (image, col, src, mask, src_mask, src->w,
-                                         src->bytes, src_type, has_alpha,
+          if (! find_contiguous_segment (image, col, &iter, src_type, has_alpha,
                                          select_transparent, select_criterion,
                                          antialias, threshold, x,
-                                         &new_start, &new_end, off_x, off_y))
+                                         &new_start, &new_end)) {
+            pixel_region_iterator_x_cleanup (&iter);
             continue;
+          }
+          pixel_region_iterator_x_cleanup (&iter);
 
-          if (y + 1 < src->h)
+          if (y + 1 < src->y + src->h)
             {
               g_queue_push_tail (coord_stack, GINT_TO_POINTER (y + 1));
               g_queue_push_tail (coord_stack, GINT_TO_POINTER (new_start));
               g_queue_push_tail (coord_stack, GINT_TO_POINTER (new_end));
             }
 
-          if (y - 1 >= 0)
+          if (y - 1 >= src->y)
             {
               g_queue_push_tail (coord_stack, GINT_TO_POINTER (y - 1));
               g_queue_push_tail (coord_stack, GINT_TO_POINTER (new_start));
