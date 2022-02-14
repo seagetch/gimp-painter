@@ -21,14 +21,14 @@
 #include "base/glib-cxx-types.hpp"
 #include "base/glib-cxx-impl.hpp"
 #include "base/selectcase-utils.hpp"
-#include "base/tile.h"
-#include "base/tile-manager.h"
 #include <functional>
 
 using namespace GLib;
 
 extern "C" {
 
+#include "base/tile.h"
+#include "base/tile-manager.h"
 #include <gegl.h>
 
 #include "config.h"
@@ -253,8 +253,15 @@ struct _GimpBucketFillBrush
   GimpBrushCore  parent_instance;
 
   gboolean       initialized;
-  guchar        *blending_data;
   guint          max_radius;
+
+  TileManager   *tiles;
+  GimpImageType  src_type;
+  gboolean       has_alpha;
+  gint           bytes;
+  gint           off_x;
+  gint           off_y;
+  guchar         start_col[MAX_CHANNELS];
 };
 typedef struct _GimpBucketFillBrush GimpBucketFillBrush;
 
@@ -332,20 +339,18 @@ static void
 gimp_bucket_fill_brush_init (GimpBucketFillBrush *bucket_fill_brush)
 {
   bucket_fill_brush->initialized = FALSE;
-  bucket_fill_brush->blending_data = NULL;
+  bucket_fill_brush->tiles       = NULL;
 }
 
 static void
 gimp_bucket_fill_brush_finalize (GObject *object)
 {
   GimpBucketFillBrush *bucket_fill_brush = GIMP_BUCKET_FILL_BRUSH (object);
-  
-  if (bucket_fill_brush->blending_data)
-    {
-      g_free (bucket_fill_brush->blending_data);
-      bucket_fill_brush->blending_data = NULL;
-    }
-  
+
+  if (bucket_fill_brush->tiles) {
+    tile_manager_unref (bucket_fill_brush->tiles);
+    bucket_fill_brush->tiles = NULL;
+  }  
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -373,11 +378,11 @@ gimp_bucket_fill_brush_paint (GimpPaintCore    *paint_core,
       break;
 
     case GIMP_PAINT_STATE_FINISH:
-      if (bucket_fill_brush->blending_data)
-        {
-          g_free (bucket_fill_brush->blending_data);
-          bucket_fill_brush->blending_data = NULL;
-        }
+      if (bucket_fill_brush->tiles) {
+        tile_manager_unref (bucket_fill_brush->tiles);
+        bucket_fill_brush->tiles = NULL;
+      }  
+
       bucket_fill_brush->initialized = FALSE;
       break;
 
@@ -387,78 +392,63 @@ gimp_bucket_fill_brush_paint (GimpPaintCore    *paint_core,
 }
 
 static gboolean
-gimp_bucket_fill_brush_start (GimpPaintCore    *paint_core,
-                   GimpDrawable     *drawable,
-                   GimpPaintOptions *paint_options,
+gimp_bucket_fill_brush_start (GimpPaintCore    *_paint_core,
+                   GimpDrawable     *_drawable,
+                   GimpPaintOptions *_paint_options,
                    const GimpCoords *coords)
 {
-#if 0
-  GimpBucketFillBrush  *bucket_fill_brush = GIMP_BUCKET_FILL_BRUSH (paint_core);
-  TempBuf     *area;
-  PixelRegion  srcPR;
-  gint         bytes;
-  gint         x, y, w, h;
-  GimpBrushCore *brush_core  = GIMP_BRUSH_CORE (paint_core);        /* gimp-painter-2.7 */
-  GimpBucketFillBrushOptions *options = GIMP_BUCKET_FILL_BRUSH_OPTIONS (paint_options); /* gimp-painter-2.7 */
+  auto paint_core    = ref(_paint_core);
+  auto drawable      = ref(_drawable);
+  auto paint_options = ref(_paint_options);
+  auto image             = ref(drawable [gimp_item_get_image] ());
+  auto bucket_fill_brush = GIMP_BUCKET_FILL_BRUSH (paint_core.ptr());
+  gint x, y;
+  GimpPickable  *pickable;
+  Tile* tile;
 
-  if (gimp_drawable_is_indexed (drawable))
-    return FALSE;
 
-  brush_core->ignore_scale = TRUE;
+  x = coords->x;
+  y = coords->y;
+  pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
 
-  area  = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options,
-                                         coords);
-  if (! area)
-    return FALSE;
+  gimp_pickable_flush (pickable);
+  bucket_fill_brush->src_type  = gimp_pickable_get_image_type (pickable);
+  bucket_fill_brush->has_alpha = GIMP_IMAGE_TYPE_HAS_ALPHA (bucket_fill_brush->src_type);
+  bucket_fill_brush->bytes     = GIMP_IMAGE_TYPE_BYTES (bucket_fill_brush->src_type);
 
-  /*  adjust the x and y coordinates to the upper left corner of the brush  */
-  bucket_fill_brush->max_radius = 0;
-  w = h = 0;
-  gimp_bucket_fill_brush_brush_coords (paint_core, paint_options, coords, &x, &y, &w, &h);
-//  g_print ("bucket_fill_brush:start: (x,y,w,h)=%d,%d,%d,%d\n", x, y, w, h);
+  bucket_fill_brush->tiles     = tile_manager_duplicate(gimp_pickable_get_tiles (pickable));
+  if (GIMP_IS_DRAWABLE(pickable)) {
+    gimp_item_get_offset (GIMP_ITEM(pickable), &bucket_fill_brush->off_x, &bucket_fill_brush->off_y);
+    x += bucket_fill_brush->off_x;
+    y += bucket_fill_brush->off_y;
+  }
 
-  /*  Allocate the accumulation buffer */
-  bytes = gimp_drawable_bytes (drawable);
-  if (options->use_color_blending)
-    bucket_fill_brush->blending_data = (guchar*)g_malloc (w * h * bytes);
-
-  /*  If clipped, prefill the bucket_fill_brush buffer with the color at the
-   *  brush position.
-   */
-  if (x != area->x ||
-      y != area->y ||
-      w != area->width ||
-      h != area->height)
-    {
-      guchar fill[4];
-
-      gimp_pickable_get_pixel_at (GIMP_PICKABLE (drawable),
-                                  CLAMP ((gint) coords->x,
-                                         0,
-                                         gimp_item_get_width (GIMP_ITEM (drawable)) - 1),
-                                  CLAMP ((gint) coords->y,
-                                         0,
-                                         gimp_item_get_height (GIMP_ITEM (drawable)) - 1),
-                                  fill);
-
-      color_region (&srcPR, fill);
+  tile = tile_manager_get_tile (bucket_fill_brush->tiles, x, y, TRUE, FALSE);
+  if (tile) {
+    const guchar *start;
+    start = (const guchar*)tile_data_pointer (tile, x, y);
+/*
+    if (bucket_fill_brush->has_alpha) {
+      if (select_transparent) {
+        if (start[bytes - 1] > 0)
+          select_transparent = FALSE;
+      }
+    } else {
+      select_transparent = FALSE;
     }
+*/
+    if (GIMP_IMAGE_TYPE_IS_INDEXED (bucket_fill_brush->src_type)) {
+        gimp_image_get_color (image, bucket_fill_brush->src_type, start, bucket_fill_brush->start_col);
+    } else {
+      for (gint i = 0; i < bucket_fill_brush->bytes; i++)
+        bucket_fill_brush->start_col[i] = start[i];
+    }
+    tile_release (tile, FALSE);
+  } else {
+    for (gint i = 0; i < bucket_fill_brush->bytes; i++)
+      bucket_fill_brush->start_col[i] = 0;
+  }
 
-  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                     area->x, area->y, area->width, area->height, FALSE);
-
-  /* copy the region under the original painthit. */
-//  copy_region (&srcPR, &bucket_fill_brush->accumPR);
-
-//  pixel_region_init_data (&bucket_fill_brush->accumPR, bucket_fill_brush->accum_data,
-//                          bytes, bytes * w,
-//                          area->x - x,
-//                          area->y - y,
-//                          area->width,
-//                          area->height);
-
-  brush_core->ignore_scale = FALSE;
-#endif
   return TRUE;
 }
 
@@ -515,7 +505,8 @@ gimp_bucket_fill_brush_motion (GimpPaintCore    *_paint_core,
   gimp_brush_core_eval_transform_dynamics (brush_core, drawable, paint_options, coords);
 
 
-  /* FIXME: following code is simply copied from gimp_brush_core_clamp_scale */
+  // Adjust the brush scaling.
+
   TempBuf *mask = brush_core->main_brush->mask;
   brush_core->scale = MAX (0.5 / (gfloat) MIN (mask->width, mask->height), brush_core->scale);
 
@@ -523,7 +514,8 @@ gimp_bucket_fill_brush_motion (GimpPaintCore    *_paint_core,
   ref(brush_core->brush) [gimp_brush_transform_size] (brush_core->scale, brush_core->aspect_ratio, brush_core->angle, &brush_width, &brush_height);
 
 
-  /*  adjust the x and y coordinates to the upper left corner of the brush  */
+  //  adjust the x and y coordinates to the upper left corner of the brush
+
   gint x = (gint) floor (coords->x) - (brush_width  / 2);
   gint y = (gint) floor (coords->y) - (brush_height / 2);
 
@@ -555,18 +547,43 @@ gimp_bucket_fill_brush_motion (GimpPaintCore    *_paint_core,
   channel->x2 = x2;
   channel->y1 = y1;
   channel->y2 = y2;
+  
+  
+  PixelRegion    srcPR, src_mask_PR;
 
-  Object<GimpChannel> ch_mask = hold(gimp_image_contiguous_region_by_seed_full (image, drawable, channel.ptr(),
-      TRUE, TRUE, 30, TRUE, GIMP_SELECT_CRITERION_COMPOSITE, coords->x, coords->y));
+  if (x1 < bucket_fill_brush->off_x)
+    x1 = bucket_fill_brush->off_x;
+  if (y1 < bucket_fill_brush->off_y)
+    y1 = bucket_fill_brush->off_y;
+  if (x2 - bucket_fill_brush->off_x >= tile_manager_width (bucket_fill_brush->tiles))
+    x2 = tile_manager_width (bucket_fill_brush->tiles) + bucket_fill_brush->off_x;
+  if (y2 - bucket_fill_brush->off_y >= tile_manager_height (bucket_fill_brush->tiles))
+    y2 = tile_manager_height (bucket_fill_brush->tiles) + bucket_fill_brush->off_y;
+    
+  pixel_region_init (&src_mask_PR, gimp_drawable_get_tiles (GIMP_DRAWABLE (channel.ptr())),
+                      x1, y1, x2 - x1, y2 - y1, TRUE);
+//  pixel_region_init_temp_buf (&src_mask_PR, brush_mask, 0, 0, brush_width, brush_height);
+  pixel_region_init (&srcPR, bucket_fill_brush->tiles, x1 - bucket_fill_brush->off_x, y1 - bucket_fill_brush->off_y, x2 - x1, y2 - y1, FALSE);
+
+  g_print("color=%d,%d,%d,%d\n",
+  bucket_fill_brush->start_col[0],
+  bucket_fill_brush->start_col[1],
+  bucket_fill_brush->start_col[2],
+  bucket_fill_brush->start_col[3]
+  );
+
+  Object<GimpChannel> ch_mask = hold(gimp_image_contiguous_region_by_seed_full (image, 
+      &srcPR, bucket_fill_brush->off_x, bucket_fill_brush->off_y, &src_mask_PR, 0, 0, x1, y1, x2, y2, 
+      bucket_fill_brush->src_type, bucket_fill_brush->has_alpha, bucket_fill_brush->bytes,
+      TRUE, 30, TRUE, GIMP_SELECT_CRITERION_COMPOSITE, coords->x, coords->y, bucket_fill_brush->start_col));
   
   pixel_region_init (&pr_ch, ref(ch_mask) [gimp_drawable_get_tiles](), x1 + 1 + offx, y1 + 1 + offy, brush_width, brush_height, FALSE);
-//  pixel_region_init (&pr_ch, ref(channel) [gimp_drawable_get_tiles](), x1 + 1 + offx, y1 + 1 + offy, brush_width, brush_height, FALSE);
-//  pixel_region_init_temp_buf (&pr_br, brush_mask, 0, 0, brush_width, brush_height);
 
   paint_core [gimp_paint_core_paste] (&pr_ch, drawable, MIN (opacity, GIMP_OPACITY_OPAQUE), 
-//  paint_core [gimp_paint_core_paste] (&pr_br, drawable, MIN (opacity, GIMP_OPACITY_OPAQUE), 
       gimp_context_get_opacity (context), gimp_context_get_paint_mode (context), GIMP_PAINT_CONSTANT);
 }
+
+
 
 static void
 gimp_bucket_fill_brush_brush_coords (GimpPaintCore    *paint_core,

@@ -29,7 +29,7 @@ GimpChannel * gimp_image_contiguous_region_by_seed  (GimpImage           *image,
                                                      gint                 x,
                                                      gint                 y);
 
-GimpChannel * gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
+GimpChannel * gimp_image_contiguous_region_by_seed_ext  (GimpImage           *image,
                                                          GimpDrawable        *drawable,
                                                          GimpChannel         *source_mask,
                                                          gboolean             sample_merged,
@@ -39,6 +39,31 @@ GimpChannel * gimp_image_contiguous_region_by_seed_full (GimpImage           *im
                                                          GimpSelectCriterion  select_criterion,
                                                          gint                 x,
                                                          gint                 y);
+
+GimpChannel * gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
+                                                         PixelRegion         *srcPR,
+                                                         gint                 off_src_x,
+                                                         gint                 off_src_y,
+                                                         PixelRegion         *src_maskPR,
+                                                         gint                 off_mask_x,
+                                                         gint                 off_mask_y,
+                                                         gint                 x1,
+                                                         gint                 y1,
+                                                         gint                 x2,
+                                                         gint                 y2,
+                                                         GimpImageType        src_type,
+                                                         gboolean             has_alpha,
+                                                         gint                 bytes,
+//                                                         GimpDrawable        *drawable,
+//                                                         GimpChannel         *source_mask,
+//                                                         gboolean             sample_merged,
+                                                         gboolean             antialias,
+                                                         gint                 threshold,
+                                                         gboolean             select_transparent,
+                                                         GimpSelectCriterion  select_criterion,
+                                                         gint                 x,
+                                                         gint                 y,
+                                                         guchar              *start_color);
 
 
 GimpChannel * gimp_image_contiguous_region_by_color (GimpImage           *image,

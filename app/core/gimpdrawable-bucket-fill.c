@@ -187,14 +187,14 @@ gimp_drawable_bucket_fill_full (GimpDrawable        *drawable,
       if (selection) {
         src_mask = gimp_image_get_mask (image);
       }
-      mask = gimp_image_contiguous_region_by_seed_full (image, drawable, src_mask,
-                                                        sample_merged,
-                                                        TRUE,
-                                                        (gint) threshold,
-                                                        fill_transparent,
-                                                        fill_criterion,
-                                                        (gint) x,
-                                                        (gint) y);
+      mask = gimp_image_contiguous_region_by_seed_ext (image, drawable, src_mask,
+                                                       sample_merged,
+                                                       TRUE,
+                                                       (gint) threshold,
+                                                       fill_transparent,
+                                                       fill_criterion,
+                                                       (gint) x,
+                                                       (gint) y);
 #if 0
       if (selection)
         {

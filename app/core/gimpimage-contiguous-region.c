@@ -108,8 +108,6 @@ static void find_contiguous_region_helper (GimpImage           *image,
                                            gint                 threshold,
                                            gint                 x,
                                            gint                 y,
-                                           gint                 off_x,
-                                           gint                 off_y,
                                            const guchar        *col);
 
 static void
@@ -272,38 +270,34 @@ gimp_image_contiguous_region_by_seed (GimpImage           *image,
                                       gint                 x,
                                       gint                 y)
 {
-  return gimp_image_contiguous_region_by_seed_full (
+  return gimp_image_contiguous_region_by_seed_ext (
     image, drawable, NULL, sample_merged, antialias, threshold,
     select_transparent, select_criterion, x, y
   );
 }
 
+
 // added by gimp-painter 2.8
 GimpChannel *
-gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
-                                           GimpDrawable        *drawable,
-                                           GimpChannel         *source_mask,
-                                           gboolean             sample_merged,
-                                           gboolean             antialias,
-                                           gint                 threshold,
-                                           gboolean             select_transparent,
-                                           GimpSelectCriterion  select_criterion,
-                                           gint                 x,
-                                           gint                 y)
+gimp_image_contiguous_region_by_seed_ext (GimpImage           *image,
+                                          GimpDrawable        *drawable,
+                                          GimpChannel         *source_mask,
+                                          gboolean             sample_merged,
+                                          gboolean             antialias,
+                                          gint                 threshold,
+                                          gboolean             select_transparent,
+                                          GimpSelectCriterion  select_criterion,
+                                          gint                 x,
+                                          gint                 y)
 {
-  PixelRegion    srcPR, maskPR, src_mask_PR;
-  GimpPickable  *pickable;
+  PixelRegion    srcPR, src_mask_PR;
   TileManager   *tiles;
-  GimpChannel   *mask;
+  GimpPickable  *pickable;
   GimpImageType  src_type;
   gboolean       has_alpha;
   gint           bytes;
-  Tile          *tile;
   gint           x1, y1, x2, y2;
   gint           off_x = 0, off_y = 0;
-
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
 
   if (sample_merged)
     pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
@@ -317,13 +311,13 @@ gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
   bytes     = GIMP_IMAGE_TYPE_BYTES (src_type);
 
   tiles = gimp_pickable_get_tiles (pickable);
+  if (GIMP_IS_DRAWABLE(pickable)) {
+    gimp_item_get_offset (GIMP_ITEM(pickable), &off_x, &off_y);
+  }
 
   if (source_mask) {
 
     gimp_channel_bounds (source_mask, &x1, &y1, &x2, &y2);
-    if (GIMP_IS_DRAWABLE(pickable)) {
-      gimp_item_get_offset (GIMP_ITEM(pickable), &off_x, &off_y);
-    }
     if (x1 < off_x)
       x1 = off_x;
     if (y1 < off_y)
@@ -333,27 +327,65 @@ gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
     if (y2 - off_y >= tile_manager_height (tiles))
       y2 = tile_manager_height (tiles);
     pixel_region_init (&src_mask_PR, gimp_drawable_get_tiles (GIMP_DRAWABLE (source_mask)),
-                       x1, y1, x2 - x1, y2 - y1, TRUE);
+                        x1, y1, x2 - x1, y2 - y1, TRUE);
 
   } else {
-
     x1 = y1 = 0;
     x2 = tile_manager_width (tiles);
     y2 = tile_manager_height (tiles);
-
   }
 
-  mask = gimp_channel_new_mask (image, tile_manager_width (tiles), tile_manager_height (tiles));
+  pixel_region_init (&srcPR, tiles, x1 - off_x, y1 - off_y, x2 - x1, y2 - y1, FALSE);
+
+  return gimp_image_contiguous_region_by_seed_full (
+    image, &srcPR, off_x, off_y, source_mask? &src_mask_PR: NULL, 0, 0, x1, y1, x2, y2, src_type, has_alpha, bytes, antialias, threshold,
+    select_transparent, select_criterion, x, y, NULL
+  );
+}
+
+
+// added by gimp-painter 2.8
+GimpChannel *
+gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
+                                           PixelRegion         *srcPR,
+                                           gint                 off_src_x,
+                                           gint                 off_src_y,
+                                           PixelRegion         *src_maskPR,
+                                           gint                 off_mask_x,
+                                           gint                 off_mask_y,
+                                           gint                 x1,
+                                           gint                 y1,
+                                           gint                 x2,
+                                           gint                 y2,
+                                           GimpImageType        src_type,
+                                           gboolean             has_alpha,
+                                           gint                 bytes,
+                                           gboolean             antialias,
+                                           gint                 threshold,
+                                           gboolean             select_transparent,
+                                           GimpSelectCriterion  select_criterion,
+                                           gint                 x,
+                                           gint                 y,
+                                           guchar              *start_color)
+{
+  PixelRegion    maskPR;
+//  TileManager   *tiles;
+  GimpChannel   *mask;
+  Tile          *tile;
+  gint           off_x = off_src_x - off_mask_x;
+  gint           off_y = off_src_y - off_mask_y;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+
+  // FIXME:
+  mask = gimp_channel_new_mask (image, tile_manager_width (srcPR->tiles), tile_manager_height (srcPR->tiles));
   if (x1 >= x2 || y1 >= y2) {
     return mask;
   }
   pixel_region_init (&maskPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
                      x1 - off_x, y1 - off_y, x2 - x1, y2 - y1, TRUE);
-
-  pixel_region_init (&srcPR, tiles, x1 - off_x, y1 - off_y, x2 - x1, y2 - y1, FALSE);
-
   
-  tile = tile_manager_get_tile (srcPR.tiles, x, y, TRUE, FALSE);
+  tile = tile_manager_get_tile (srcPR->tiles, x, y, TRUE, FALSE);
   if (tile)
     {
       const guchar *start;
@@ -361,39 +393,36 @@ gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
 
       start = tile_data_pointer (tile, x, y);
 
-      if (has_alpha)
-        {
-          if (select_transparent)
-            {
-              /*  don't select transparent regions if the start pixel isn't
-               *  fully transparent
-               */
-              if (start[bytes - 1] > 0)
-                select_transparent = FALSE;
-            }
-        }
-      else
-        {
-          select_transparent = FALSE;
-        }
+      if (!start_color) {
+        start_color = start_col;
 
-      if (GIMP_IMAGE_TYPE_IS_INDEXED (src_type))
-        {
-          gimp_image_get_color (image, src_type, start, start_col);
-        }
-      else
-        {
+        if (GIMP_IMAGE_TYPE_IS_INDEXED (src_type)) {
+            gimp_image_get_color (image, src_type, start, start_col);
+        } else {
           gint i;
 
           for (i = 0; i < bytes; i++)
             start_col[i] = start[i];
         }
+      }
+      
+      if (has_alpha) {
+        if (select_transparent) {
+          /*  don't select transparent regions if the start pixel isn't
+          *  fully transparent
+          */
+          if (start[bytes - 1] > 0)
+            select_transparent = FALSE;
+        }
+      } else {
+        select_transparent = FALSE;
+      }
 
-      find_contiguous_region_helper (image, &maskPR, &srcPR, source_mask? &src_mask_PR: NULL,
+      find_contiguous_region_helper (image, &maskPR, srcPR, src_maskPR,
                                      src_type, has_alpha,
                                      select_transparent, select_criterion,
                                      antialias, threshold,
-                                     x, y, off_x, off_y, start_col);
+                                     x, y, start_color);
 
       tile_release (tile, FALSE);
     }
@@ -740,7 +769,8 @@ find_contiguous_segment (GimpImage           *image,
       if ((*iter->pr2->data-- = diff))
         {
           iter->pr1->data -= iter->pr1->bytes;
-          iter->pr3->data -= iter->pr3->bytes;
+          if (iter->pr3)
+            iter->pr3->data -= iter->pr3->bytes;
           (*start)--;
           cur_tile_remained --;
         }
@@ -784,7 +814,8 @@ find_contiguous_segment (GimpImage           *image,
       if ((*iter->pr2->data++ = diff))
         {
           iter->pr1->data += iter->pr1->bytes;
-          iter->pr3->data += iter->pr3->bytes;
+          if (iter->pr3)
+            iter->pr3->data += iter->pr3->bytes;
           (*end)++;
           cur_tile_remained --;
         }
@@ -814,8 +845,6 @@ find_contiguous_region_helper (GimpImage           *image,
                                gint                 threshold,
                                gint                 x,
                                gint                 y,
-                               gint                 off_x,
-                               gint                 off_y,
                                const guchar        *col)
 {
   gint    start, end;
