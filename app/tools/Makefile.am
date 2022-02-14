@@ -42,6 +42,8 @@ libapptools_a_sources = \
 	gimpbucketfilloptions.h		\
 	gimpbucketfilltool.c		\
 	gimpbucketfilltool.h		\
+	gimpbucketfillbrushtool.cpp		\
+	gimpbucketfillbrushtool.h		\
 	gimpbycolorselecttool.c		\
 	gimpbycolorselecttool.h		\
 	gimpcageoptions.c		\

@@ -21,6 +21,7 @@
 
 void   gimp_paint_init (Gimp *gimp);
 void   gimp_paint_exit (Gimp *gimp);
+void   gimp_paint_register(Gimp* gimp, GimpPaintInfo* info);
 
 
 #endif  /* __GIMP_PAINT_H__ */

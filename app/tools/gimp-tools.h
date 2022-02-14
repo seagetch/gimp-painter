@@ -32,5 +32,8 @@ gboolean   gimp_tools_clear             (Gimp      *gimp,
 
 GList    * gimp_tools_get_default_order (Gimp      *gimp);
 
+void       gimp_tools_register          (Gimp         *gimp,
+                                         GimpToolInfo *tool_info);
+
 
 #endif  /* __GIMP_TOOLS_H__ */

@@ -52,5 +52,11 @@ GimpData           * gimp_dynamics_get_standard (GimpContext            *context
 GimpDynamicsOutput * gimp_dynamics_get_output   (GimpDynamics           *dynamics,
                                                  GimpDynamicsOutputType  type);
 
+#ifdef __cplusplus
+extern "C++" {
+#include "base/glib-cxx-types.hpp"
+__DECLARE_GTK_CLASS__(GimpDynamics, GIMP_TYPE_DYNAMICS);
+};
+#endif
 
 #endif  /*  __GIMP_DYNAMICS_H__  */

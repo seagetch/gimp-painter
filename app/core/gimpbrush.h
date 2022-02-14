@@ -141,5 +141,11 @@ gint                   gimp_brush_get_spacing        (const GimpBrush  *brush);
 void                   gimp_brush_set_spacing        (GimpBrush        *brush,
                                                       gint              spacing);
 
+#ifdef __cplusplus
+extern "C++" {
+#include "base/glib-cxx-types.hpp"
+__DECLARE_GTK_CLASS__(GimpBrush, GIMP_TYPE_BRUSH);
+};
+#endif
 
 #endif /* __GIMP_BRUSH_H__ */

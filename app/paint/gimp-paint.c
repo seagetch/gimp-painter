@@ -42,7 +42,7 @@
 
 /*  local function prototypes  */
 
-static void   gimp_paint_register (Gimp        *gimp,
+static void   gimp_paint_register_internal (Gimp        *gimp,
                                    GType        paint_type,
                                    GType        paint_options_type,
                                    const gchar *identifier,
@@ -82,7 +82,7 @@ gimp_paint_init (Gimp *gimp)
 
   for (i = 0; i < G_N_ELEMENTS (register_funcs); i++)
     {
-      register_funcs[i] (gimp, gimp_paint_register);
+      register_funcs[i] (gimp, gimp_paint_register_internal);
     }
 
   gimp_container_thaw (gimp->paint_info_list);
@@ -105,10 +105,20 @@ gimp_paint_exit (Gimp *gimp)
 }
 
 
+void
+gimp_paint_register (Gimp        *gimp, GimpPaintInfo* paint_info)
+{
+  g_return_if_fail (GIMP_IS_PAINT_INFO(paint_info));
+
+  gimp_container_add (gimp->paint_info_list, GIMP_OBJECT (paint_info));
+  g_object_unref (paint_info);
+}
+
+
 /*  private functions  */
 
 static void
-gimp_paint_register (Gimp        *gimp,
+gimp_paint_register_internal (Gimp        *gimp,
                      GType        paint_type,
                      GType        paint_options_type,
                      const gchar *identifier,

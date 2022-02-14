@@ -64,5 +64,10 @@ gdouble    gimp_dynamics_output_get_aspect_value   (GimpDynamicsOutput *output,
                                                     GimpPaintOptions   *options,
                                                     gdouble             fade_point);
 
-
+#ifdef __cplusplus
+extern "C++" {
+#include "base/glib-cxx-types.hpp"
+__DECLARE_GTK_CLASS__(GimpDynamicsOutput, GIMP_TYPE_DYNAMICS_OUTPUT);
+};
+#endif
 #endif  /*  __GIMP_DYNAMICS_OUTPUT_H__  */

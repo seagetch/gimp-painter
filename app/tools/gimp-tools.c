@@ -43,6 +43,7 @@
 #include "gimpblendtool.h"
 #include "gimpbrightnesscontrasttool.h"
 #include "gimpbucketfilltool.h"
+#include "gimpbucketfillbrushtool.h"
 #include "gimpbycolorselecttool.h"
 #include "gimpcagetool.h"
 #include "gimpclonetool.h"
@@ -90,7 +91,7 @@
 
 /*  local function prototypes  */
 
-static void   gimp_tools_register (GType                   tool_type,
+static void   gimp_tools_register_internal (GType                   tool_type,
                                    GType                   tool_options_type,
                                    GimpToolOptionsGUIFunc  options_gui_func,
                                    GimpToolOptionsGUIFunc  options_gui_horizontal_func,
@@ -149,6 +150,7 @@ gimp_tools_init (Gimp *gimp)
     gimp_bucket_fill_tool_register,
     gimp_text_tool_register,
     gimp_mypaint_tool_register,
+    gimp_bucket_fill_brush_tool_register,
 
     /*  transform tools  */
 
@@ -197,7 +199,7 @@ gimp_tools_init (Gimp *gimp)
 
   for (i = 0; i < G_N_ELEMENTS (register_funcs); i++)
     {
-      register_funcs[i] (gimp_tools_register, gimp);
+      register_funcs[i] (gimp_tools_register_internal, gimp);
     }
 
   gimp_container_thaw (gimp->tool_info_list);
@@ -488,10 +490,22 @@ gimp_tools_get_default_order (Gimp *gimp)
 }
 
 
+void
+gimp_tools_register (Gimp* gimp, GimpToolInfo* tool_info)
+{
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (GIMP_IS_TOOL_INFO(tool_info));
+
+  gimp_container_add (gimp->tool_info_list, GIMP_OBJECT (tool_info));
+  g_object_unref (tool_info);
+
+}
+
+
 /*  private functions  */
 
 static void
-gimp_tools_register (GType                   tool_type,
+gimp_tools_register_internal (GType                   tool_type,
                      GType                   tool_options_type,
                      GimpToolOptionsGUIFunc  options_gui_func,
                      GimpToolOptionsGUIFunc  options_gui_horizontal_func,

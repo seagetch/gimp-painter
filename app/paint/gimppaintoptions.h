@@ -171,5 +171,10 @@ void    gimp_paint_options_copy_dynamics_props (GimpPaintOptions *src,
 void    gimp_paint_options_copy_gradient_props (GimpPaintOptions *src,
                                                 GimpPaintOptions *dest);
 
-
+#ifdef __cplusplus
+extern "C++" {
+#include "base/glib-cxx-types.hpp"
+__DECLARE_GTK_CLASS__(GimpPaintOptions, GIMP_TYPE_PAINT_OPTIONS);
+};
+#endif
 #endif  /*  __GIMP_PAINT_OPTIONS_H__  */
