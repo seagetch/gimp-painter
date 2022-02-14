@@ -323,7 +323,6 @@ gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
     gimp_channel_bounds (source_mask, &x1, &y1, &x2, &y2);
     if (GIMP_IS_DRAWABLE(pickable)) {
       gimp_item_get_offset (GIMP_ITEM(pickable), &off_x, &off_y);
-      g_print("offset: %d, %d\n", off_x, off_y);
     }
     if (x1 < off_x)
       x1 = off_x;
@@ -688,6 +687,7 @@ find_contiguous_segment (GimpImage           *image,
       diff = pixel_difference (col, iter->pr1->data, iter->pr3? iter->pr3->data: NULL, antialias, threshold,
                                col_bytes, has_alpha, select_transparent,
                                select_criterion);
+//      g_print("bytes=%d, mask.x=%d, mask.y=%d, mask=%d,diff=%d\n",iter->pr3? iter->pr3->bytes: 0, iter->pr3? iter->pr3->x:0, iter->pr3? iter->pr3->y:0, iter->pr3? *iter->pr3->data: 0, diff);
     }
 
   /* check the starting pixel */
@@ -740,6 +740,7 @@ find_contiguous_segment (GimpImage           *image,
       if ((*iter->pr2->data-- = diff))
         {
           iter->pr1->data -= iter->pr1->bytes;
+          iter->pr3->data -= iter->pr3->bytes;
           (*start)--;
           cur_tile_remained --;
         }
@@ -757,6 +758,10 @@ find_contiguous_segment (GimpImage           *image,
 
       if (cur_tile_remained <= 0) {
         pixel_region_iterator_x_next(iter);
+        iter->pr1->data += iter->pr1->bytes * (*end - iter->cur_x);
+        iter->pr2->data += iter->pr2->bytes * (*end - iter->cur_x);
+        if (iter->pr3)
+          iter->pr3->data += iter->pr3->bytes * (*end - iter->cur_x);
         cur_tile_remained = iter->cur_tile_width;
       }
 
@@ -779,6 +784,7 @@ find_contiguous_segment (GimpImage           *image,
       if ((*iter->pr2->data++ = diff))
         {
           iter->pr1->data += iter->pr1->bytes;
+          iter->pr3->data += iter->pr3->bytes;
           (*end)++;
           cur_tile_remained --;
         }
@@ -854,6 +860,7 @@ find_contiguous_region_helper (GimpImage           *image,
             continue;
           }
           pixel_region_iterator_x_cleanup (&iter);
+//          g_print("%d-%d\n",new_start, new_end);
 
           if (y + 1 < src->y + src->h)
             {
