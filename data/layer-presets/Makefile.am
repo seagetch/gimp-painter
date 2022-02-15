@@ -4,6 +4,7 @@ layerpresetsdatadir = $(gimpdatadir)/layer-presets/
 
 layerpresetsdata_DATA = \
 	crop-with-selection.json	\
+	new-cropped-layer.json	\
 	duplicate-as-clone.json		\
       	duplicate-as-normal.json  	\
 	new-anime-layer.json		\

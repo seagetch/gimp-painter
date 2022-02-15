@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "name": "New Layer with cropped by selection",
+  "desc": "Adding new layer which size is cropped by selection.",
+
+  "source-layer" : {
+    "type": "any",           "#": "group, filter, clone, normal, any",
+    "alpha": true
+  },
+
+  "replacement-layer" : [
+    {
+      "target": "new",
+      "name":   "new-layer",
+      "type":   "normal",
+      "mode":   "normal-mode",
+      "opacity": 1.0,
+      "boundary": "selection"
+    },
+    {
+      "target":  "source",
+      "mode":   "normal-mode",
+      "opacity": 1.0
+    }
+  ]
+}
