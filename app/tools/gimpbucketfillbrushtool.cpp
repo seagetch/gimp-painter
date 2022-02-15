@@ -522,10 +522,10 @@ gimp_bucket_fill_brush_motion (GimpPaintCore    *_paint_core,
   gint drawable_width  = drawable [gimp_item_get_width]  ();
   gint drawable_height = drawable [gimp_item_get_height] ();
 
-  gint x1 = CLAMP (x - 1, 0, drawable_width);
-  gint y1 = CLAMP (y - 1, 0, drawable_height);
-  gint x2 = CLAMP (x + brush_width  + 1, 0, drawable_width);
-  gint y2 = CLAMP (y + brush_height + 1, 0, drawable_height);
+  gint x1 = CLAMP (x, 0, drawable_width);
+  gint y1 = CLAMP (y, 0, drawable_height);
+  gint x2 = CLAMP (x + brush_width, 0, drawable_width);
+  gint y2 = CLAMP (y + brush_height, 0, drawable_height);
 
   gint offx, offy;
   drawable [gimp_item_get_offset] (&offx, &offy);
@@ -533,15 +533,13 @@ gimp_bucket_fill_brush_motion (GimpPaintCore    *_paint_core,
   hardness = hardness_output [gimp_dynamics_output_get_linear_value] (coords, paint_options, fade_point);
   force    = hardness_output [gimp_dynamics_output_get_linear_value] (coords, paint_options, fade_point);
   
-//  g_print("x1=%d, y1=%d, x2=%d, y2=%d, opacity=%lf, force=%lf\n", x1, y1, x2, y2, opacity, force);
-
   Object<GimpChannel> channel     = hold(gimp_channel_new_mask (image, image[gimp_image_get_width](), image[gimp_image_get_height]()));
   TileManager*        channel_buf = ref(channel) [gimp_drawable_get_tiles] ();
   TempBuf*            brush_mask  = (TempBuf*)brush_core [gimp_brush_core_get_brush_mask] (coords, paint_options [gimp_paint_options_get_brush_mode] (), force);
   PixelRegion         pr_ch, pr_br;
 
-  pixel_region_init          (&pr_ch, channel_buf, x1 + 1 + offx, y1 + 1 + offy, brush_width, brush_height, TRUE);
-  pixel_region_init_temp_buf (&pr_br, brush_mask, 0, 0, brush_width, brush_height);
+  pixel_region_init          (&pr_ch, channel_buf, x1 + offx, y1 + offy, x2 - x1, y2 - y1, TRUE);
+  pixel_region_init_temp_buf (&pr_br, brush_mask, x1 == 0 ? brush_width - x2: 0, y1 == 0 ? brush_height - y2: 0, x2 - x1, y2 - y1);
   copy_region (&pr_br, &pr_ch);
   channel->x1 = x1;
   channel->x2 = x2;
@@ -560,24 +558,17 @@ gimp_bucket_fill_brush_motion (GimpPaintCore    *_paint_core,
   if (y2 - bucket_fill_brush->off_y >= tile_manager_height (bucket_fill_brush->tiles))
     y2 = tile_manager_height (bucket_fill_brush->tiles) + bucket_fill_brush->off_y;
     
-  pixel_region_init (&src_mask_PR, gimp_drawable_get_tiles (GIMP_DRAWABLE (channel.ptr())),
-                      x1, y1, x2 - x1, y2 - y1, TRUE);
-//  pixel_region_init_temp_buf (&src_mask_PR, brush_mask, 0, 0, brush_width, brush_height);
+  pixel_region_init (&src_mask_PR, gimp_drawable_get_tiles (GIMP_DRAWABLE (channel.ptr())), x1, y1, x2 - x1, y2 - y1, TRUE);
   pixel_region_init (&srcPR, bucket_fill_brush->tiles, x1 - bucket_fill_brush->off_x, y1 - bucket_fill_brush->off_y, x2 - x1, y2 - y1, FALSE);
-
-  g_print("color=%d,%d,%d,%d\n",
-  bucket_fill_brush->start_col[0],
-  bucket_fill_brush->start_col[1],
-  bucket_fill_brush->start_col[2],
-  bucket_fill_brush->start_col[3]
-  );
 
   Object<GimpChannel> ch_mask = hold(gimp_image_contiguous_region_by_seed_full (image, 
       &srcPR, bucket_fill_brush->off_x, bucket_fill_brush->off_y, &src_mask_PR, 0, 0, x1, y1, x2, y2, 
       bucket_fill_brush->src_type, bucket_fill_brush->has_alpha, bucket_fill_brush->bytes,
       TRUE, 30, TRUE, GIMP_SELECT_CRITERION_COMPOSITE, coords->x, coords->y, bucket_fill_brush->start_col));
-  
-  pixel_region_init (&pr_ch, ref(ch_mask) [gimp_drawable_get_tiles](), x1 + 1 + offx, y1 + 1 + offy, brush_width, brush_height, FALSE);
+
+//  ref(ch_mask) [gimp_channel_grow] (1, 1, FALSE);
+
+  pixel_region_init (&pr_ch, ref(ch_mask) [gimp_drawable_get_tiles](), x1 + offx, y1 + offy, x2 - x1, y2 - y1, FALSE);
 
   paint_core [gimp_paint_core_paste] (&pr_ch, drawable, MIN (opacity, GIMP_OPACITY_OPAQUE), 
       gimp_context_get_opacity (context), gimp_context_get_paint_mode (context), GIMP_PAINT_CONSTANT);
