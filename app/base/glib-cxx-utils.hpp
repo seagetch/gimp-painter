@@ -1137,5 +1137,57 @@ DelegatorProxy<W, T>* delegator(W* w, T* d) { return new DelegatorProxy<W, T>(w,
 template<typename W, typename T>
 DelegatorProxy<W, T>* decorator(W* w, T* d) { return new Decorator<W, T>(w, d); };
 
+
+template<
+    typename EventRegisterer, 
+    EventRegisterer add_func, 
+    typename EventUnregisterer, 
+    EventUnregisterer remove_func,
+    gint priority,
+    typename... Args>
+class EventSource {
+  typedef Delegators::Delegator<gboolean()> Delegator;
+  CXXPointer<Delegator> handler;
+  guint id;
+  bool  disposable;
+ 
+  static void destroy(EventSource* instance) {
+    if (instance->disposable)
+      delete instance;
+    else {
+      instance->id   = 0;
+    }
+  }
+
+  static gboolean callback(EventSource* source) {
+    return (*source->handler)();
+  }
+
+  void add(Args... args, Delegator* _handler) {
+    handler = _handler;
+    id = (*add_func)(priority, args..., GSourceFunc(EventSource::callback), this, GDestroyNotify(EventSource::destroy));
+  }
+
+  static void dispose(EventSource* source) {
+    guint id = source->id;
+    if (id) {
+      (*remove_func)(id);
+    }
+  }
+
+public:
+  EventSource(Args... args, Delegator* _handler, bool disposable = false) {
+    this->disposable = disposable;
+    add(args..., _handler);
+  }
+  ~EventSource() {
+    if (!disposable) {
+      dispose(this);
+    }
+  }
+};
+typedef EventSource<decltype(&g_timeout_add_full), &g_timeout_add_full, decltype(&g_source_remove), &g_source_remove, G_PRIORITY_DEFAULT, guint> Timeout;
+typedef EventSource<decltype(&g_idle_add_full), &g_idle_add_full, decltype(&g_source_remove), &g_source_remove, G_PRIORITY_DEFAULT> Idle;
+
 };
 #endif

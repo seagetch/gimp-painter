@@ -129,6 +129,23 @@ void         gimp_container_remove_handler     (GimpContainer       *container,
 extern "C++" {
 #include "base/glib-cxx-types.hpp"
 __DECLARE_GTK_CLASS__(GimpContainer, GIMP_TYPE_CONTAINER);
+
+
+#include "base/glib-cxx-utils.hpp"
+namespace GIMP {
+template<typename T>
+class IGimpContainer : public GLib::IObject<GimpContainer> {
+public:
+  IGimpContainer (GimpContainer* src) : IObject(src) {}
+  IGimpContainer (const GLib::IObject<GimpContainer>& src) : IObject(src) {}
+  void each(std::function<void(T* obj)> f) {
+    auto recursive_delegator = Delegators::delegator(f);
+    (*this) [gimp_container_foreach] (GFunc(std::remove_reference<decltype(*recursive_delegator)>::type::callback), &recursive_delegator);
+    delete recursive_delegator;
+  }
+};
+};
+
 };
 #endif
 

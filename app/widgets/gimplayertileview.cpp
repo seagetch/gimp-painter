@@ -71,6 +71,7 @@ extern "C" {
 #include "gimplayertileview.h"
 
 using namespace GLib;
+using namespace GIMP;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 static const int LAYER_MAX_WIDTH    = 64;
@@ -88,71 +89,6 @@ static const int SCROLL_INTERVAL    = 2;
 namespace GLib {
 namespace _D = Delegators;
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-// Helper classes
-
-template<typename T>
-class IGimpContainer : public IObject<GimpContainer> {
-public:
-  IGimpContainer (GimpContainer* src) : IObject(src) {}
-  IGimpContainer (const IObject<GimpContainer>& src) : IObject(src) {}
-  void each(std::function<void(T* obj)> f) {
-    auto recursive_delegator = _D::delegator(f);
-    (*this) [gimp_container_foreach] (GFunc(std::remove_reference<decltype(*recursive_delegator)>::type::callback), &recursive_delegator);
-    delete recursive_delegator;
-  }
-};
-
-template<
-    typename EventRegisterer, 
-    EventRegisterer add_func, 
-    typename EventUnregisterer, 
-    EventUnregisterer remove_func,
-    gint priority,
-    typename... Args>
-class EventSource {
-  typedef _D::Delegator<gboolean()> Delegator;
-  CXXPointer<Delegator> handler;
-  guint id;
-  bool  disposable;
- 
-  static void destroy(EventSource* instance) {
-    if (instance->disposable)
-      delete instance;
-    else {
-      instance->id   = 0;
-    }
-  }
-
-  static gboolean callback(EventSource* source) {
-    return (*source->handler)();
-  }
-
-  void add(Args... args, Delegator* _handler) {
-    handler = _handler;
-    id = (*add_func)(priority, args..., GSourceFunc(EventSource::callback), this, GDestroyNotify(EventSource::destroy));
-  }
-
-  static void dispose(EventSource* source) {
-    guint id = source->id;
-    if (id) {
-      (*remove_func)(id);
-    }
-  }
-
-public:
-  EventSource(Args... args, Delegator* _handler, bool disposable = false) {
-    this->disposable = disposable;
-    add(args..., _handler);
-  }
-  ~EventSource() {
-    if (!disposable) {
-      dispose(this);
-    }
-  }
-};
-typedef EventSource<decltype(&g_timeout_add_full), &g_timeout_add_full, decltype(&g_source_remove), &g_source_remove, G_PRIORITY_DEFAULT, guint> Timeout;
-typedef EventSource<decltype(&g_idle_add_full), &g_idle_add_full, decltype(&g_source_remove), &g_source_remove, G_PRIORITY_DEFAULT> Idle;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Surface creation helpers
