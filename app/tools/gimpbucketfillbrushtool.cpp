@@ -288,14 +288,6 @@ static void       gimp_bucket_fill_brush_motion       (GimpPaintCore    *paint_c
                                             GimpPaintOptions *paint_options,
                                             const GimpCoords *coords);
 
-static void       gimp_bucket_fill_brush_brush_coords (GimpPaintCore    *paint_core,
-                                            GimpPaintOptions  *options,
-                                            const GimpCoords *coords,
-                                            gint             *x,
-                                            gint             *y,
-                                            gint             *w,
-                                            gint             *h);
-
 GType   gimp_bucket_fill_brush_get_type (void) G_GNUC_CONST;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -571,49 +563,6 @@ gimp_bucket_fill_brush_motion (GimpPaintCore    *_paint_core,
 }
 
 
-
-static void
-gimp_bucket_fill_brush_brush_coords (GimpPaintCore    *paint_core,
-                          GimpPaintOptions *paint_options,
-                          const GimpCoords *coords,
-                          gint             *x,
-                          gint             *y,
-                          gint             *w,
-                          gint             *h)
-{
-  GimpBrushCore *brush_core = GIMP_BRUSH_CORE (paint_core);
-  GimpBucketFillBrush    *bucket_fill_brush     = GIMP_BUCKET_FILL_BRUSH (paint_core);
-  gint           width = 0;
-  gint           height = 0;
-
-  if (bucket_fill_brush->max_radius == 0)
-    {
-      if (brush_core->main_brush)
-        brush_core->scale = paint_options->brush_size /
-                            MAX (brush_core->main_brush->mask->width,
-                                 brush_core->main_brush->mask->height);
-      else
-        brush_core->scale = -1;
-
-      gimp_brush_transform_size (brush_core->brush,
-                                 brush_core->scale,
-                                 brush_core->aspect_ratio,
-                                 brush_core->angle,
-                                 &width, &height);
-      bucket_fill_brush->max_radius = ceil(sqrt(width * width + height * height));
-    }
-
-  width = height = (gint)bucket_fill_brush->max_radius;
-
-  /* Note: these are the brush mask size plus a border of 1 pixel */
-  *x = (gint) coords->x - width  / 2 - 1;
-  *y = (gint) coords->y - height / 2 - 1;
-  *w = width  + 2;
-  *h = height + 2;
-}
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Tool definition
 extern "C" {
@@ -684,6 +633,9 @@ gimp_bucket_fill_brush_tool_init (GimpBucketFillBrushTool *bucket_fill_brush)
   paint_tool->status      = _("Click to bucket fill brush");
   paint_tool->status_line = _("Click to bucket fill brush the line");
   paint_tool->status_ctrl = NULL;
+
+  gimp_paint_tool_enable_color_picker (paint_tool,
+                                       GIMP_COLOR_PICK_MODE_FOREGROUND);
 }
 
 
