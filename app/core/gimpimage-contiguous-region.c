@@ -405,7 +405,7 @@ gimp_image_contiguous_region_by_seed_full (GimpImage           *image,
             start_col[i] = start[i];
         }
       }
-      
+
       if (has_alpha) {
         if (select_transparent) {
           /*  don't select transparent regions if the start pixel isn't
@@ -781,7 +781,8 @@ find_contiguous_segment (GimpImage           *image,
   cur_tile_remained = iter->cur_tile_width = 0;
   iter->cur_x = *end;
 
-  pixel_region_iterator_x_update (iter);
+  if (iter->cur_x < iter->max_x)
+    pixel_region_iterator_x_update (iter);
 
   while (*end < iter->max_x && diff)
     {
