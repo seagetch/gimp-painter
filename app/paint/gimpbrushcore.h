@@ -168,4 +168,10 @@ void   gimp_brush_core_eval_transform_dynamics
                                        const GimpCoords         *coords);
 
 
+#ifdef __cplusplus
+extern "C++" {
+#include "base/glib-cxx-types.hpp"
+__DECLARE_GTK_CLASS__(GimpBrushCore, GIMP_TYPE_BRUSH_CORE);
+};
+#endif
 #endif  /*  __GIMP_BRUSH_CORE_H__  */
