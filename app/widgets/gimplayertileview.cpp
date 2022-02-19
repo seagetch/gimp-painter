@@ -1007,7 +1007,9 @@ LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
   cairo_fill (cr);
 
   int i = 0;
+  int max_level = 0;
   for (auto layer_info: i_layers) {
+    max_level = MAX(max_level, layer_info->level);
     if (drag_action) {
       if (layer_info->layer == drag_action->target) {
 
@@ -1076,7 +1078,7 @@ LayerTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
 
     i ++;
   };
-
+  ref(content_area) [gtk_widget_set_size_request] (max_level * LAYER_INDENT_WIDTH + LAYER_MAX_WIDTH, LAYER_MAX_HEIGHT * i);
   cairo_pattern_destroy (pattern);
 }
 
