@@ -207,5 +207,10 @@ void      gimp_paint_core_smooth_coords             (GimpPaintCore    *core,
                                                      GimpPaintOptions *paint_options,
                                                      GimpCoords       *coords);
 
-
+#ifdef __cplusplus
+extern "C++" {
+#include "base/glib-cxx-types.hpp"
+__DECLARE_GTK_CLASS__(GimpPaintCore, GIMP_TYPE_PAINT_CORE);
+};
+#endif
 #endif  /*  __GIMP_PAINT_CORE_H__  */
