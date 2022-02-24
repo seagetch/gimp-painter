@@ -57,6 +57,9 @@
 /*  timeout (in milliseconds) for temporary statusbar messages  */
 #define MESSAGE_TIMEOUT  8000
 
+/*  gimp-painter 2.8: degree of ration with button press */
+#define ROTATE_UNIT_ANGLE 30
+
 
 typedef struct _GimpStatusbarMsg GimpStatusbarMsg;
 
@@ -122,6 +125,11 @@ static void     gimp_statusbar_msg_free           (GimpStatusbarMsg  *msg);
 static gchar *  gimp_statusbar_vprintf            (const gchar       *format,
                                                    va_list            args);
 
+static void gimp_statusbar_rotate_left_clicked  (GtkWidget *widget, GimpStatusbar *statusbar);
+static void gimp_statusbar_rotate_right_clicked (GtkWidget *widget, GimpStatusbar *statusbar);
+static void gimp_statusbar_flip_side_clicked    (GtkWidget *widget, GimpStatusbar *statusbar);
+static void gimp_statusbar_reset_view_clicked   (GtkWidget *widget, GimpStatusbar *statusbar);
+
 
 G_DEFINE_TYPE_WITH_CODE (GimpStatusbar, gimp_statusbar, GTK_TYPE_STATUSBAR,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_PROGRESS,
@@ -159,6 +167,7 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
   GtkWidget     *image;
   GimpUnitStore *store;
   GList         *children;
+  GtkWidget     *widget; /* gimp-painter 2.8 */
 
   statusbar->shell          = NULL;
   statusbar->messages       = NULL;
@@ -238,6 +247,47 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
                                          NULL);
   gtk_box_pack_start (GTK_BOX (hbox), statusbar->progressbar, TRUE, TRUE, 0);
   /*  don't show the progress bar  */
+
+  /* gimp-painter 2.8 */
+
+  /* Temporary: right side left buttons */
+  image = gtk_image_new_from_stock (GIMP_STOCK_FLIP_HORIZONTAL, GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show(image);
+  widget = gtk_toggle_button_new();
+  gtk_button_set_image(GTK_BUTTON(widget), image);
+  gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
+  gtk_widget_show (widget);
+  g_signal_connect(widget, "toggled", G_CALLBACK(gimp_statusbar_flip_side_clicked), statusbar);
+  gtk_box_pack_end (GTK_BOX (hbox), widget, FALSE, TRUE, 0);
+
+  /* Temporary: rotate buttons */
+  image = gtk_image_new_from_stock (GIMP_STOCK_ROTATE_90, GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show(image);
+  widget = gtk_button_new();
+  gtk_button_set_image(GTK_BUTTON(widget), image);
+  gtk_widget_show (widget);
+  gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
+  g_signal_connect(widget, "clicked", G_CALLBACK(gimp_statusbar_rotate_right_clicked), statusbar);
+  gtk_box_pack_end (GTK_BOX (hbox), widget, FALSE, TRUE, 0);
+
+  image = gtk_image_new_from_stock (GTK_STOCK_ZOOM_100, GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show(image);
+  widget = gtk_button_new();
+  gtk_button_set_image(GTK_BUTTON(widget), image);
+  gtk_widget_show (widget);
+  gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
+  g_signal_connect(widget, "clicked", G_CALLBACK(gimp_statusbar_reset_view_clicked), statusbar);
+  gtk_box_pack_end (GTK_BOX (hbox), widget, FALSE, TRUE, 0);
+
+  image = gtk_image_new_from_stock (GIMP_STOCK_ROTATE_270, GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show(image);
+  widget = gtk_button_new();
+  gtk_button_set_image(GTK_BUTTON(widget), image);
+  gtk_widget_show (widget);
+  gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
+  g_signal_connect(widget, "clicked", G_CALLBACK(gimp_statusbar_rotate_left_clicked), statusbar);
+  gtk_box_pack_end (GTK_BOX (hbox), widget, FALSE, TRUE, 0);
+
 
   statusbar->cancel_button = gtk_button_new ();
   gtk_widget_set_can_focus (statusbar->cancel_button, FALSE);
@@ -1529,4 +1579,54 @@ gimp_statusbar_vprintf (const gchar *format,
     *newline = '\0';
 
   return message;
+}
+
+static void
+gimp_statusbar_rotate_left_clicked (GtkWidget     *widget,
+                                    GimpStatusbar *statusbar)
+{
+  GimpDisplayShell *shell  = statusbar->shell;
+  gdouble direction = shell->mirrored ? -1: 1;
+  g_return_if_fail (shell != NULL);
+
+  shell->rotate_angle = fmod(round((shell->rotate_angle- direction * ROTATE_UNIT_ANGLE) /
+                                   ROTATE_UNIT_ANGLE) * ROTATE_UNIT_ANGLE, 360);
+  gtk_widget_queue_draw(GTK_WIDGET(shell));
+}
+
+static void
+gimp_statusbar_rotate_right_clicked (GtkWidget     *widget,
+                                    GimpStatusbar *statusbar)
+{
+  GimpDisplayShell *shell  = statusbar->shell;
+  gdouble direction = shell->mirrored ? -1: 1;
+  g_return_if_fail (shell != NULL);
+
+  shell->rotate_angle = fmod(round((shell->rotate_angle + direction * ROTATE_UNIT_ANGLE) /
+                                   ROTATE_UNIT_ANGLE) * ROTATE_UNIT_ANGLE, 360);
+  gtk_widget_queue_draw(GTK_WIDGET(shell));
+}
+
+static void
+gimp_statusbar_flip_side_clicked (GtkWidget     *widget,
+                                  GimpStatusbar *statusbar)
+{
+  GimpDisplayShell *shell  = statusbar->shell;
+  g_return_if_fail (shell != NULL);
+
+  shell->mirrored = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+  gtk_widget_queue_draw(GTK_WIDGET(shell));
+}
+
+static void
+gimp_statusbar_reset_view_clicked (GtkWidget     *widget,
+                                   GimpStatusbar *statusbar)
+{
+  GimpDisplayShell *shell  = statusbar->shell;
+  g_return_if_fail (shell != NULL);
+
+  shell->mirrored = FALSE;
+  shell->rotate_angle = 0;
+  gimp_display_shell_scale(shell, GIMP_ZOOM_TO, 1.0, GIMP_ZOOM_FOCUS_BEST_GUESS);
+  gtk_widget_queue_draw(GTK_WIDGET(shell));
 }

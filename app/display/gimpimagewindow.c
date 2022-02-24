@@ -438,7 +438,6 @@ gimp_image_window_constructed (GObject *object)
   gtk_box_pack_start (GTK_BOX (private->main_vbox), hbox,
                       FALSE, TRUE, 0);
   gtk_widget_show (hbox);
-
     {
           GtkWidget* image;
 	  private->toolbar = 
@@ -446,6 +445,7 @@ gimp_image_window_constructed (GObject *object)
                                          gimp_dialog_factory_get_menu_factory (private->dialog_factory));
 	  gtk_box_pack_start (GTK_BOX (hbox), private->toolbar,
 						  TRUE, TRUE, 0);
+#if 0
 //	  gtk_widget_show (private->toolbar);
 
 	  /* Temporary: right side left buttons */
@@ -489,8 +489,8 @@ gimp_image_window_constructed (GObject *object)
 	  g_signal_connect(widget, "clicked", G_CALLBACK(gimp_image_window_rotate_left_clicked), window);
 	  gtk_box_pack_end (GTK_BOX (hbox), widget,
 						  FALSE, TRUE, 0);
+#endif
 	}
-
   /* Create the hbox that contains docks and images */
   private->hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (private->main_vbox), private->hbox,
