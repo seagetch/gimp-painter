@@ -51,6 +51,8 @@
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpuimanager.h"
 #include "widgets/gimpwidgets-utils.h"
+#include "widgets/gimplayertileview.h" /* gimp-painter 2.8 */
+#include "widgets/gimptoolbox.h" /* gimp-painter 2.8 */
 
 #include "tools/tool_manager.h"
 
@@ -366,6 +368,9 @@ gimp_display_shell_init (GimpDisplayShell *shell)
 
   gimp_help_connect (GTK_WIDGET (shell), gimp_standard_help_func,
                      GIMP_HELP_IMAGE_WINDOW, NULL);
+  
+  shell->layer_view = NULL;
+  shell->toolbox    = NULL;
 }
 
 static void
@@ -1923,4 +1928,74 @@ gimp_display_shell_set_mask (GimpDisplayShell *shell,
     shell->mask_color = *color;
 
   gimp_display_shell_expose_full (shell);
+}
+
+
+static void
+gimp_display_shell_reparent_on_canvas_widget (GimpDisplayShell* shell, GtkWidget* widget)
+{
+  GtkWidget* old_parent;
+  g_return_if_fail (widget != NULL);
+
+  old_parent = gtk_widget_get_parent (widget);
+  if (old_parent != shell->canvas) {
+    if (old_parent) {
+      g_object_ref (G_OBJECT (widget));
+      gtk_container_remove(GTK_CONTAINER(old_parent), widget);
+    }
+    gimp_overlay_box_add_child (GIMP_OVERLAY_BOX (shell->canvas), widget, 0.0, 0.0);
+    if (old_parent)
+      g_object_unref (G_OBJECT (widget));
+  }  
+}
+
+
+void
+gimp_display_shell_set_layer_view (GimpDisplayShell* shell) 
+{
+  GtkAllocation alloc;
+  GimpImage* image;
+  // FIXME: position of widget is adjusted everytime cursor moves on canvas.
+  gtk_widget_get_allocation(GTK_WIDGET(shell), &alloc);
+
+  if (!shell->layer_view) {
+    GimpContext* user_context;
+    shell->layer_view = GTK_WIDGET(gimp_layer_tile_view_new ());
+    user_context = gimp_get_user_context (shell->display->gimp);
+    g_object_set (shell->layer_view, "context", user_context, NULL);
+    gtk_widget_show (shell->layer_view);
+  }
+
+  image = gimp_display_get_image (shell->display);
+  if (shell->layer_view) {
+    GimpImage* image1;
+
+    /* Set appropriate image and context for layer view */
+    g_object_get(shell->layer_view, "image", &image1, NULL);
+    if (image) {
+      if (image1 != image) {
+        g_object_set (shell->layer_view, "image", image, NULL);
+      }
+    } else {
+      g_object_set(shell->layer_view, "image", NULL, NULL);
+    }
+
+    /* Reparent widget to current canvas */
+    gimp_display_shell_reparent_on_canvas_widget (shell, shell->layer_view);
+
+    /* Resize and set position of the layer view */
+    gtk_widget_set_size_request(shell->layer_view, 80, alloc.height * 8 / 10);
+    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, alloc.width-100, alloc.height/10);
+    gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, 0.85);
+  }
+
+  if (shell->toolbox) {
+    GtkAllocation alloc2;
+    gtk_widget_get_allocation(GTK_WIDGET (shell->toolbox), &alloc2);
+    gimp_display_shell_reparent_on_canvas_widget (shell, shell->toolbox);
+
+    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbox, 0, (alloc.height - alloc2.height) / 2);
+    gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbox, 0.85);
+  }
+
 }

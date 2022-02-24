@@ -1286,6 +1286,8 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
   gimp_display_shell_update_cursor (shell, &display_coords, &image_coords,
                                     state, update_sw_cursor);
 
+  /* gimp-painter 2.8 */
+  gimp_display_shell_set_layer_view (shell); 
   return return_val;
 }
 

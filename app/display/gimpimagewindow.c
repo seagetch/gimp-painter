@@ -51,10 +51,12 @@
 #include "widgets/gimpsessionmanaged.h"
 #include "widgets/gimpsessioninfo-dock.h"
 #include "widgets/gimptoolbox.h"
+#include "widgets/gimptoolpalette.h"
 #include "widgets/gimpuimanager.h"
 #include "widgets/gimpview.h"
 #include "widgets/gimptooloptionstoolbar.h"
 #include "widgets/gimplayertileview.h"
+#include "widgets/gimptooltileview.h"
 
 #include "gimpdisplay.h"
 #include "gimpdisplay-foreach.h"
@@ -132,7 +134,7 @@ struct _GimpImageWindowPrivate
   GtkWidget         *toolbar_container; /* gimp-painter-2.8 */
   GtkWidget         *toolbar_container2; /* gimp-painter-2.8 */
   GtkWidget         *flip_button; /* gimp-painter-2.8 */
-  GtkWidget         *layer_tile_view;
+//  GtkWidget         *layer_tile_view;
   NavigationGuide    guide; /* gimp-painter-2.8 */
 
   GdkWindowState     window_state;
@@ -575,11 +577,11 @@ gimp_image_window_constructed (GObject *object)
   g_signal_connect (private->notebook, "size-allocate",
                     G_CALLBACK (gimp_image_window_notebook_resized),
                     window);
-  private->layer_tile_view = gimp_layer_tile_view_new ();
-  gtk_widget_show (private->layer_tile_view);
-  g_print("Adding layer_tile_view\n");
-  gtk_box_pack_end (GTK_BOX (notebook_hbox), private->layer_tile_view, FALSE, TRUE, 0);
-  g_print("Added layer_tile_view\n");
+//  private->layer_tile_view = gimp_layer_tile_view_new ();
+//  gtk_widget_show (private->layer_tile_view);
+//  g_print("Adding layer_tile_view\n");
+//  gtk_box_pack_end (GTK_BOX (notebook_hbox), private->layer_tile_view, FALSE, TRUE, 0);
+//  g_print("Added layer_tile_view\n");
   }
 
   /* Create the right dock columns widget */
@@ -638,7 +640,7 @@ gimp_image_window_configure_for_toolbar_window_mode(GimpImageWindow* window)
   gtk_widget_set_visible (private->toolbar_container2, TRUE);
   gtk_widget_set_visible (private->toolbar, TRUE);
   gtk_widget_set_visible (private->menubar, TRUE);
-  gtk_widget_set_visible (private->layer_tile_view, FALSE);
+//  gtk_widget_set_visible (private->layer_tile_view, FALSE);
 
   gtk_widget_show (GTK_WIDGET(window));
 #if 0
@@ -702,7 +704,8 @@ gimp_image_window_configure_for_non_toolbar_window_mode(GimpImageWindow* window)
   gtk_widget_set_visible (private->toolbar, show_docks);
   gtk_widget_set_visible (private->menubar, config->single_window_mode);
   gtk_widget_set_visible (private->menubar, TRUE);
-  gtk_widget_set_visible (private->layer_tile_view, !config->hide_docks);
+  gtk_widget_set_visible (private->left_docks, FALSE);
+//  gtk_widget_set_visible (private->layer_tile_view, !config->hide_docks);
 
 #if 0
   {
@@ -1403,6 +1406,18 @@ gimp_image_window_add_shell (GimpImageWindow  *window,
   gtk_notebook_append_page (GTK_NOTEBOOK (private->notebook),
                             GTK_WIDGET (shell), tab_label);
 
+  /* gimp-painter 2.8 */
+  shell->toolbox = GTK_WIDGET(gimp_tool_tile_view_new ());
+  g_print("GIMP: %p\n", private->gimp);
+  g_object_set (shell->toolbox, "context", gimp_get_user_context (private->gimp), NULL);
+  gtk_widget_show (shell->toolbox);
+#if 0
+  shell->toolbox = gimp_tool_palette_new ();
+  gimp_tool_palette_set_context (GIMP_TOOL_PALETTE(shell->toolbox), gimp_get_user_context (private->gimp));
+  gimp_tool_palette_set_dialog_factory (GIMP_TOOL_PALETTE(shell->toolbox), private->dialog_factory);
+  gimp_tool_palette_set_ui_manager (GIMP_TOOL_PALETTE(shell->toolbox), private->menubar_manager);
+  gtk_widget_show (shell->toolbox);
+#endif
   gtk_widget_show (GTK_WIDGET (shell));
 }
 
@@ -2041,7 +2056,7 @@ gimp_image_window_shell_events (GtkWidget       *widget,
 
   return gimp_display_shell_events (widget, event, shell);
 }
-
+#include "widgets/gimpoverlaybox.h"
 static void
 gimp_image_window_switch_active_shell (GimpImageWindow* window,
                                        GimpDisplayShell* shell)
@@ -2087,9 +2102,9 @@ gimp_image_window_switch_active_shell (GimpImageWindow* window,
                         window);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(private->flip_button), shell->mirrored);
 
-    g_object_set(private->layer_tile_view, "image", gimp_display_get_image (active_display), "context", user_context, NULL);
+//    g_object_set(private->layer_tile_view, "image", gimp_display_get_image (active_display), "context", user_context, NULL);
   } else {
-    g_object_set(private->layer_tile_view, "image", NULL, "context", NULL, NULL);
+//    g_object_set(private->layer_tile_view, "image", NULL, "context", NULL, NULL);
   }
 }
 
@@ -2227,8 +2242,8 @@ gimp_image_window_image_notify (GimpDisplay      *display,
     gimp_view_set_viewable (GIMP_VIEW (view),
                             GIMP_VIEWABLE (gimp_display_get_image (display)));
   }
-  user_context = gimp_get_user_context (private->gimp);
-  g_object_set(private->layer_tile_view, "image", gimp_display_get_image (display), "context", user_context, NULL);
+//  user_context = gimp_get_user_context (private->gimp);
+//  g_object_set(private->layer_tile_view, "image", gimp_display_get_image (display), "context", user_context, NULL);
   gimp_ui_manager_update (private->menubar_manager, display);
 }
 

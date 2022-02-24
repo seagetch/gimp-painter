@@ -696,7 +696,7 @@ LayerTileView::on_layer_reordered(GimpContainer* container, GimpViewable* layer,
 void 
 LayerTileView::on_changed(GtkWidget* widget)
 {
-  ref(content_area) [gtk_widget_queue_draw] ();
+  ref(scrolled_window) [gtk_widget_queue_draw] ();
 }
 
 
@@ -727,7 +727,7 @@ LayerTileView::on_button_press(GtkWidget* widget, GdkEventButton* event)
         image [gimp_image_set_active_layer] (GIMP_LAYER(action.target));
       }
 
-      ref(content_area) [gtk_widget_queue_draw] ();
+      ref(scrolled_window) [gtk_widget_queue_draw] ();
       image [gimp_image_flush] ();
     }
     
@@ -803,7 +803,7 @@ LayerTileView::on_drag_motion(GtkWidget* widget, GdkDragContext* drag_context, g
   }
 
   gdk_drag_status(drag_context, GDK_ACTION_MOVE, time_);
-  ref(content_area) [gtk_widget_queue_draw] ();
+  ref(scrolled_window) [gtk_widget_queue_draw] ();
 
   return true; 
 }
@@ -817,7 +817,7 @@ LayerTileView::on_drag_leave(GtkWidget* widget, GdkDragContext* drag_context, gu
   if (scroll_timeout_handler) {
     scroll_timeout_handler = NULL;
   }
-  ref(content_area) [gtk_widget_queue_draw] ();
+  ref(scrolled_window) [gtk_widget_queue_draw] ();
 }
 
 
@@ -905,7 +905,7 @@ LayerTileView::on_drag_drop(GtkWidget* widget, GdkDragContext* drag_context, gin
   }
 
   gtk_drag_finish (drag_context, success, FALSE, time_);
-  ref(content_area) [gtk_widget_queue_draw] ();
+  ref(scrolled_window) [gtk_widget_queue_draw] ();
   return success;
 }
 
@@ -1352,7 +1352,7 @@ LayerTileView::LayerInfo::decorate(GimpViewable* layer)
 void 
 LayerTileView::LayerInfo::on_changed(GtkWidget* widget)
 {
-  ref(view->content_area) [gtk_widget_queue_draw] ();
+  ref(view->scrolled_window) [gtk_widget_queue_draw] ();
 }
 
 
@@ -1361,7 +1361,7 @@ LayerTileView::LayerInfo::on_mask_changed(GimpLayer* layer)
 {
   auto mask = ref ( ref(layer) [gimp_layer_get_mask] ());
   mask_preview.decorate(GIMP_VIEWABLE(mask.ptr()));
-  ref(view->content_area) [gtk_widget_queue_draw] ();
+  ref(view->scrolled_window) [gtk_widget_queue_draw] ();
 
   apply_changed_handler = mask.connect("apply-changed", _D::delegator(this, &LayerTileView::LayerInfo::on_changed));
   edit_changed_handler  = mask.connect("edit-changed",  _D::delegator(this, &LayerTileView::LayerInfo::on_changed));
@@ -1556,6 +1556,7 @@ LayerTileView::LayerInfo::LayerPreview::update_cairo_surface(GimpViewable* viewa
 
         GdkRectangle boundary = info->view->get_boundary(viewable);
         ref(info->view->content_area) [gtk_widget_queue_draw_area] (boundary.x, boundary.y, boundary.width, boundary.height);
+        ref(info->view->scrolled_window) [gtk_widget_queue_draw] ();
 
       } else {
         TempBuf* buf = i_viewable [gimp_viewable_get_preview] (info->view->context.ptr(), width, height);
@@ -1565,6 +1566,7 @@ LayerTileView::LayerInfo::LayerPreview::update_cairo_surface(GimpViewable* viewa
 
         GdkRectangle boundary = info->view->get_boundary(viewable);
         ref(info->view->content_area) [gtk_widget_queue_draw_area] (boundary.x, boundary.y, boundary.width, boundary.height);
+        ref(info->view->scrolled_window) [gtk_widget_queue_draw] ();
       }
       return  false;
     }))

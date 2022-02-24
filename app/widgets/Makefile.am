@@ -374,6 +374,8 @@ libappwidgets_a_sources = \
 	gimptoolpreseteditor.h		\
 	gimptoolpresetfactoryview.c	\
 	gimptoolpresetfactoryview.h	\
+	gimptooltileview.cpp	\
+	gimptooltileview.h		\
 	gimptranslationstore.c		\
 	gimptranslationstore.h		\
 	gimpuimanager.c			\
