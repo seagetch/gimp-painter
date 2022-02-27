@@ -20,6 +20,7 @@
 #include <gegl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <math.h>
 
 #include "libgimpmath/gimpmath.h"
 
@@ -32,6 +33,8 @@
 
 #include "core/gimp.h"
 #include "core/gimpimage.h"
+#include "core/gimpperspectiveguide.h"
+#include "core/gimpimage-perspective-guide.h"
 
 #include "widgets/gimpcontrollers.h"
 #include "widgets/gimpcontrollerkeyboard.h"
@@ -146,6 +149,161 @@ static void       gimp_display_shell_untransform_event_coords (GimpDisplayShell 
                                                                gboolean          *update_software_cursor);
 
 static GdkEvent * gimp_display_shell_compress_motion          (GimpDisplayShell  *shell);
+
+
+
+#define DIST_THRESHOLD 32
+static gboolean
+gimp_display_shell_snap_angle (GimpDisplayShell * shell,
+                       const gdouble x,
+                       const gdouble y,
+                       gdouble* snapped_angle,
+                       const double origin_x,
+                       const double origin_y,
+                       GimpPerspectiveGuide* guide)
+{
+  gboolean snapped = TRUE;
+  gint num_points = gimp_perspective_guide_get_vanish_point_length (guide);
+  gdouble angle;
+  gdouble angles[5];
+  int num_angles = 0;
+  int i;
+  gdouble min_angle = -1;
+  int min_index;
+  gdouble cur_angle = 0;
+  gdouble dx, dy;
+  dx = (x - origin_x) * shell->scale_x;
+  dy = (y - origin_y) * shell->scale_y;
+  if (dx * dx + dy * dy < DIST_THRESHOLD * DIST_THRESHOLD)
+    return FALSE;
+  cur_angle = fmod(atan2(-dy, dx), M_PI);
+
+  g_object_get(G_OBJECT(guide), "angle", &angle, NULL);
+
+  g_print("cur_angle=%f, num_points=%d\n", cur_angle / M_PI * 180, num_points);
+
+  switch (num_points) {
+  case 1: {
+    angles[num_angles++] = fmod(angle + M_PI, M_PI);
+    angles[num_angles++] = fmod(angle + M_PI * 3 / 2, M_PI);
+    break;
+  }
+  case 2: {
+    gdouble p1x, p1y;
+    gdouble p2x, p2y;
+    gdouble w, h;
+    gimp_perspective_guide_get_vanish_points (guide, 0, &p1x, &p1y);
+    gimp_perspective_guide_get_vanish_points (guide, 1, &p2x, &p2y);
+    w = p2x - p1x;
+    h = p2y - p1y;
+    angle = atan2(-h, w);
+    angles[num_angles++] = fmod(angle + M_PI * 3 / 2, M_PI);
+    break;
+  }
+  case 3: {
+    break;
+  }
+  default:
+    return FALSE;
+  }
+
+  for (i = 0; i < num_points; i ++) {
+    gdouble van_dx, van_dy;
+    gdouble ang;
+    gdouble px, py;
+    gimp_perspective_guide_get_vanish_points (guide, i, &px, &py);
+    van_dx = origin_x - px;
+    van_dy = origin_y - py;
+    ang = atan2(-van_dy, van_dx);
+    angles[num_angles++] = fmod(ang + M_PI, M_PI); 
+  }
+
+  min_index = 0;
+  // check against angles to vanish_points
+  for (i = 0; i < num_angles; i ++) {
+    // check against 
+    gdouble ang = MIN(fmod(fabs(angles[i] - cur_angle), M_PI), fmod(fabs(angles[i] + M_PI - cur_angle), M_PI));
+
+    if (min_angle < 0 || ang < min_angle) {
+      min_index = i;
+      min_angle = ang;
+    }
+  }
+
+  *snapped_angle = angles[min_index];
+
+  return snapped;
+}
+
+static void
+gimp_display_shell_begin_tool (Gimp             *gimp, 
+                               GimpDisplayShell *shell, 
+                               GimpCoords       *image_coords, 
+                               guint32           time, 
+                               GdkModifierType   state, 
+                               GimpDisplay      *display)
+{
+  if (gimp_display_shell_initialize_tool (shell,
+                                          image_coords, state))
+    {
+      GimpCoords last_motion;
+
+      /* Use the last evaluated dynamic axes instead of the
+      * button_press event's ones because the click is
+      * usually at the same spot as the last motion event
+      * which would give us bogus dynamics.
+      */
+      gimp_motion_buffer_begin_stroke (shell->motion_buffer, time,
+                                      &last_motion);
+
+      last_motion.x        = image_coords->x;
+      last_motion.y        = image_coords->y;
+      last_motion.pressure = image_coords->pressure;
+      last_motion.xtilt    = image_coords->xtilt;
+      last_motion.ytilt    = image_coords->ytilt;
+      last_motion.wheel    = image_coords->wheel;
+
+      *image_coords = last_motion;
+
+      tool_manager_button_press_active (gimp,
+                                        image_coords,
+                                        time, state,
+                                        GIMP_BUTTON_PRESS_NORMAL,
+                                        display);
+    }
+}
+
+static gboolean
+gimp_display_shell_lazy_snap (GimpDisplayShell* shell, GimpImage* image, GimpCoords* image_coords)
+{
+  gboolean snapped = FALSE;
+  GimpPerspectiveGuide* guide = gimp_image_get_perspective_guide (image);
+  if (!guide)
+    return FALSE;
+  g_print("Check snapping...\n");
+  if (shell->snapping) {
+    snapped = gimp_display_shell_snap_angle (shell, image_coords->x, image_coords->y, &shell->snapped_angle, 
+                                      shell->snap_origin.x, shell->snap_origin.y,
+                                      guide);
+  } else {
+    snapped = TRUE;
+  }
+  if (snapped) {
+    gdouble dx, dy;
+    gdouble cosx, siny;
+    dx = image_coords->x - shell->snap_origin.x;
+    dy = image_coords->y - shell->snap_origin.y;
+    cosx = cos(shell->snapped_angle);
+    siny = sin(shell->snapped_angle);
+    if (shell->snapped_angle < M_PI / 4 || shell->snapped_angle > M_PI * 3 / 4) {
+      image_coords->y = shell->snap_origin.y - siny / cosx * dx;
+    } else {
+      image_coords->x = shell->snap_origin.x - cosx / siny * dy; 
+    }
+    g_print("angle=%f, x=%f, y=%f\n", shell->snapped_angle / M_PI * 180, image_coords->x, image_coords->y);
+  }
+  return snapped;
+}
 
 
 /*  public functions  */
@@ -347,6 +505,11 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
   GIMP_LOG (TOOL_EVENTS, "event (display %p): %s",
             display, gimp_print_event (event));
+
+
+  if (gimp_image_get_perspective_guide (image)) {
+    shell->snap_perspective = TRUE;
+  }  
 
   /* See bug 771444 */
   if (shell->pointer_grabbed &&
@@ -563,6 +726,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
           }
         else if (bevent->button == 1)
           {
+
             if (! gimp_display_shell_pointer_grab (shell, NULL, 0))
               return TRUE;
 
@@ -572,35 +736,13 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                   gimp_display_shell_pointer_ungrab (shell, NULL);
                   return TRUE;
                 }
-
-            if (gimp_display_shell_initialize_tool (shell,
-                                                    &image_coords, state))
-              {
-                GimpCoords last_motion;
-
-                /* Use the last evaluated dynamic axes instead of the
-                 * button_press event's ones because the click is
-                 * usually at the same spot as the last motion event
-                 * which would give us bogus dynamics.
-                 */
-                gimp_motion_buffer_begin_stroke (shell->motion_buffer, time,
-                                                 &last_motion);
-
-                last_motion.x        = image_coords.x;
-                last_motion.y        = image_coords.y;
-                last_motion.pressure = image_coords.pressure;
-                last_motion.xtilt    = image_coords.xtilt;
-                last_motion.ytilt    = image_coords.ytilt;
-                last_motion.wheel    = image_coords.wheel;
-
-                image_coords = last_motion;
-
-                tool_manager_button_press_active (gimp,
-                                                  &image_coords,
-                                                  time, state,
-                                                  GIMP_BUTTON_PRESS_NORMAL,
-                                                  display);
-              }
+            if (!shell->snap_perspective) {
+              gimp_display_shell_begin_tool (gimp, shell, &image_coords, time, state, display);
+            } else {
+              g_print("snapping to angle...\n");
+              shell->snapping    = TRUE;
+              shell->snap_origin = image_coords;
+            }
           }
         else if (bevent->button == 2)
           {
@@ -727,6 +869,9 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
             if (shell->space_release_pending)
               gimp_display_shell_space_released (shell, event, &image_coords);
+
+            if (shell->snap_perspective)
+              shell->snapping = FALSE;
           }
         else if (bevent->button == 2)
           {
@@ -931,13 +1076,15 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             gimp_display_shell_do_scaling (shell, x, y);
           }
         else if (state & GDK_BUTTON1_MASK || 
-                 (active_tool && active_tool->want_full_motion_tracking))
+                 (active_tool && active_tool->want_full_motion_tracking) ||
+                 shell->snapping)
           {
             if (active_tool                                        &&
-                (gimp_tool_control_is_active (active_tool->control) ||
-                 active_tool->want_full_motion_tracking) &&
-                (! gimp_image_is_empty (image) ||
-                 gimp_tool_control_get_handle_empty_image (active_tool->control)))
+                (shell->snapping ||
+                 ((gimp_tool_control_is_active (active_tool->control) ||
+                   active_tool->want_full_motion_tracking) &&
+                  (! gimp_image_is_empty (image) ||
+                   gimp_tool_control_get_handle_empty_image (active_tool->control)))))
               {
                 GdkTimeCoord **history_events;
                 gint           n_history_events;
@@ -989,20 +1136,30 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                                                      &display_coords,
                                                                      &image_coords,
                                                                      NULL);
-
-                        /* Early removal of useless events saves CPU time.
-                         */
-                        if (gimp_motion_buffer_motion_event (shell->motion_buffer,
-                                                             &image_coords,
-                                                             history_events[i]->time,
-                                                             shell->scale_x,
-                                                             shell->scale_y,
-                                                             TRUE))
-                          {
-                            gimp_motion_buffer_request_stroke (shell->motion_buffer,
-                                                               state,
-                                                               history_events[i]->time);
+                        if (!shell->snapping) {
+                          /* Early removal of useless events saves CPU time.
+                          */
+                          if (shell->snap_perspective) {
+                            gimp_display_shell_lazy_snap (shell, image, &image_coords);
                           }
+                          if (gimp_motion_buffer_motion_event (shell->motion_buffer,
+                                                              &image_coords,
+                                                              history_events[i]->time,
+                                                              shell->scale_x,
+                                                              shell->scale_y,
+                                                              TRUE))
+                            {
+                              gimp_motion_buffer_request_stroke (shell->motion_buffer,
+                                                                state,
+                                                                history_events[i]->time);
+                            }
+                        } else {
+                          gboolean snapped = gimp_display_shell_lazy_snap (shell, image, &image_coords);
+                          if (snapped) {
+                            shell->snapping = FALSE;
+                            gimp_display_shell_begin_tool (gimp, shell, &shell->snap_origin, time, state, display);
+                          }
+                        }
                       }
 
                     gdk_device_free_history (history_events, n_history_events);
@@ -1013,17 +1170,29 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
                     /* Early removal of useless events saves CPU time.
                      */
-                    if (gimp_motion_buffer_motion_event (shell->motion_buffer,
-                                                         &image_coords,
-                                                         time,
-                                                         shell->scale_x,
-                                                         shell->scale_y,
-                                                         event_fill))
-                      {
-                        gimp_motion_buffer_request_stroke (shell->motion_buffer,
-                                                           state,
-                                                           time);
+                    if (!shell->snapping) {
+                      if (shell->snap_perspective) {
+                        gimp_display_shell_lazy_snap (shell, image, &image_coords);
                       }
+ 
+                      if (gimp_motion_buffer_motion_event (shell->motion_buffer,
+                                                          &image_coords,
+                                                          time,
+                                                          shell->scale_x,
+                                                          shell->scale_y,
+                                                          event_fill))
+                        {
+                          gimp_motion_buffer_request_stroke (shell->motion_buffer,
+                                                            state,
+                                                            time);
+                        }
+                    } else {
+                      gboolean snapped = gimp_display_shell_lazy_snap (shell, image, &image_coords);
+                      if (snapped) {
+                        shell->snapping = FALSE;
+                        gimp_display_shell_begin_tool (gimp, shell, &shell->snap_origin, time, state, display);
+                      }                      
+                    }
                   }
               }
           }

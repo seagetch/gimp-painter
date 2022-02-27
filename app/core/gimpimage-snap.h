@@ -58,5 +58,4 @@ gboolean    gimp_image_snap_rectangle (GimpImage *image,
                                        gboolean   snap_to_canvas,
                                        gboolean   snap_to_vectors);
 
-
 #endif /* __GIMP_IMAGE_SNAP_H__ */

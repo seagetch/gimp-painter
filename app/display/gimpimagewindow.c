@@ -259,11 +259,6 @@ static GtkWidget *
 static void      gimp_image_window_shell_destroy       (GimpDisplayShell    *shell,
                                                         GimpImageWindow     *window);
 
-static void    gimp_image_window_rotate_left_clicked (GtkWidget* widget, GimpImageWindow *window);
-static void    gimp_image_window_rotate_right_clicked (GtkWidget* widget, GimpImageWindow *window);
-static void    gimp_image_window_flip_side_clicked (GtkWidget* widget, GimpImageWindow *window);
-static void    gimp_image_window_reset_view_clicked (GtkWidget* widget, GimpImageWindow *window);
-
 static void    gimp_image_window_configure_window_mode(GimpImageWindow* window);
 static void    gimp_image_window_configure_for_toolbar_window_mode(GimpImageWindow* window);
 static void    gimp_image_window_configure_for_non_toolbar_window_mode(GimpImageWindow* window);
@@ -438,59 +433,14 @@ gimp_image_window_constructed (GObject *object)
   gtk_box_pack_start (GTK_BOX (private->main_vbox), hbox,
                       FALSE, TRUE, 0);
   gtk_widget_show (hbox);
-    {
-          GtkWidget* image;
-	  private->toolbar = 
-          gimp_tool_options_toolbar_new (private->gimp,
-                                         gimp_dialog_factory_get_menu_factory (private->dialog_factory));
-	  gtk_box_pack_start (GTK_BOX (hbox), private->toolbar,
-						  TRUE, TRUE, 0);
-#if 0
-//	  gtk_widget_show (private->toolbar);
-
-	  /* Temporary: right side left buttons */
-	  image = gtk_image_new_from_stock (GIMP_STOCK_FLIP_HORIZONTAL, GTK_ICON_SIZE_BUTTON);
-          gtk_widget_show(image);
-          widget = private->flip_button = gtk_toggle_button_new();
-          gtk_button_set_image(GTK_BUTTON(widget), image);
-	  gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
-	  gtk_widget_show (widget);
-	  g_signal_connect(widget, "toggled", G_CALLBACK(gimp_image_window_flip_side_clicked), window);
-	  gtk_box_pack_end (GTK_BOX (hbox), widget,
-						  FALSE, TRUE, 0);
-
-	  /* Temporary: rotate buttons */
-	  image = gtk_image_new_from_stock (GIMP_STOCK_ROTATE_90, GTK_ICON_SIZE_BUTTON);
-          gtk_widget_show(image);
-          widget = gtk_button_new();
-          gtk_button_set_image(GTK_BUTTON(widget), image);
-	  gtk_widget_show (widget);
-	  gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
-	  g_signal_connect(widget, "clicked", G_CALLBACK(gimp_image_window_rotate_right_clicked), window);
-	  gtk_box_pack_end (GTK_BOX (hbox), widget,
-						  FALSE, TRUE, 0);
-
-	  image = gtk_image_new_from_stock (GTK_STOCK_ZOOM_100, GTK_ICON_SIZE_BUTTON);
-          gtk_widget_show(image);
-          widget = gtk_button_new();
-          gtk_button_set_image(GTK_BUTTON(widget), image);
-	  gtk_widget_show (widget);
-	  gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
-	  g_signal_connect(widget, "clicked", G_CALLBACK(gimp_image_window_reset_view_clicked), window);
-	  gtk_box_pack_end (GTK_BOX (hbox), widget,
-						  FALSE, TRUE, 0);
-
-	  image = gtk_image_new_from_stock (GIMP_STOCK_ROTATE_270, GTK_ICON_SIZE_BUTTON);
-          gtk_widget_show(image);
-          widget = gtk_button_new();
-          gtk_button_set_image(GTK_BUTTON(widget), image);
-	  gtk_widget_show (widget);
-	  gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
-	  g_signal_connect(widget, "clicked", G_CALLBACK(gimp_image_window_rotate_left_clicked), window);
-	  gtk_box_pack_end (GTK_BOX (hbox), widget,
-						  FALSE, TRUE, 0);
-#endif
-	}
+  {
+    GtkWidget* image;
+    private->toolbar = 
+        gimp_tool_options_toolbar_new (private->gimp,
+                                        gimp_dialog_factory_get_menu_factory (private->dialog_factory));
+    gtk_box_pack_start (GTK_BOX (hbox), private->toolbar,
+            TRUE, TRUE, 0);
+  }
   /* Create the hbox that contains docks and images */
   private->hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (private->main_vbox), private->hbox,
@@ -2500,47 +2450,6 @@ gimp_image_window_create_tab_label (GimpImageWindow  *window,
                             shell);
 
   return hbox;
-}
-static void
-gimp_image_window_rotate_left_clicked (GtkWidget* widget,
-                                       GimpImageWindow *window)
-{
-  GimpDisplayShell *shell  = gimp_image_window_get_active_shell (window);
-  gdouble direction = shell->mirrored ? -1: 1;
-  shell->rotate_angle = fmod(round((shell->rotate_angle- direction * ROTATE_UNIT_ANGLE) /
-                                   ROTATE_UNIT_ANGLE) * ROTATE_UNIT_ANGLE, 360);
-  gtk_widget_queue_draw(GTK_WIDGET(shell));
-}
-
-static void
-gimp_image_window_rotate_right_clicked (GtkWidget* widget,
-                                        GimpImageWindow *window)
-{
-  GimpDisplayShell *shell  = gimp_image_window_get_active_shell (window);
-  gdouble direction = shell->mirrored ? -1: 1;
-  shell->rotate_angle = fmod(round((shell->rotate_angle + direction * ROTATE_UNIT_ANGLE) /
-                                   ROTATE_UNIT_ANGLE) * ROTATE_UNIT_ANGLE, 360);
-  gtk_widget_queue_draw(GTK_WIDGET(shell));
-}
-
-static void
-gimp_image_window_flip_side_clicked (GtkWidget* widget,
-                                     GimpImageWindow *window)
-{
-  GimpDisplayShell *shell  = gimp_image_window_get_active_shell (window);
-  shell->mirrored = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-  gtk_widget_queue_draw(GTK_WIDGET(shell));
-}
-
-static void
-gimp_image_window_reset_view_clicked (GtkWidget* widget,
-                                     GimpImageWindow *window)
-{
-  GimpDisplayShell *shell  = gimp_image_window_get_active_shell (window);
-  shell->mirrored = FALSE;
-  shell->rotate_angle = 0;
-  gimp_display_shell_scale(shell, GIMP_ZOOM_TO, 1.0, GIMP_ZOOM_FOCUS_BEST_GUESS);
-  gtk_widget_queue_draw(GTK_WIDGET(shell));
 }
 
 void

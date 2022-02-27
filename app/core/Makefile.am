@@ -252,6 +252,8 @@ libappcore_a_sources = \
 	gimpimage-merge.h			\
 	gimpimage-new.c				\
 	gimpimage-new.h				\
+	gimpimage-perspective-guide.c    \
+	gimpimage-perspective-guide.h 		\
 	gimpimage-pick-color.c			\
 	gimpimage-pick-color.h			\
 	gimpimage-pick-layer.c			\
@@ -348,6 +350,8 @@ libappcore_a_sources = \
 	gimpparasitelist.h			\
 	gimppdbprogress.c			\
 	gimppdbprogress.h			\
+	gimpperspectiveguide.cpp    \
+	gimpperspectiveguide.h 		\
 	gimppickable.c				\
 	gimppickable.h				\
 	gimppreviewcache.c			\

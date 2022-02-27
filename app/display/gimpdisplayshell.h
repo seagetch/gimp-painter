@@ -200,6 +200,11 @@ struct _GimpDisplayShell
 
   gboolean           mirrored;
 
+  gboolean           snap_perspective;
+  gboolean           snapping;
+  gdouble            snapped_angle;
+  GimpCoords         snap_origin;
+
   GimpDrawable      *mask;
   GimpRGB            mask_color;
 

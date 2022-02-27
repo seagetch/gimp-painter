@@ -164,6 +164,7 @@ typedef struct _GimpImagefile       GimpImagefile;
 typedef struct _GimpInterpreterDB   GimpInterpreterDB;
 typedef struct _GimpParasiteList    GimpParasiteList;
 typedef struct _GimpPdbProgress     GimpPdbProgress;
+typedef struct _GimpPerspectiveGuide      GimpPerspectiveGuide; /* gimp-painter 2.8 */
 typedef struct _GimpProjection      GimpProjection;
 typedef struct _GimpSubProgress     GimpSubProgress;
 typedef struct _GimpTag             GimpTag;

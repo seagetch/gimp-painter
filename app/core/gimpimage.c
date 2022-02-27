@@ -59,6 +59,7 @@
 #include "gimplayermask.h"
 #include "gimpmarshal.h"
 #include "gimpparasitelist.h"
+#include "gimpperspectiveguide.h"
 #include "gimppickable.h"
 #include "gimpprojectable.h"
 #include "gimpprojection.h"
@@ -656,6 +657,7 @@ gimp_image_init (GimpImage *image)
   private->guides              = NULL;
   private->grid                = NULL;
   private->sample_points       = NULL;
+  private->perspective_guides  = NULL;
 
   private->layers              = gimp_item_tree_new (image,
                                                      GIMP_TYPE_DRAWABLE_STACK,
@@ -782,6 +784,23 @@ gimp_image_constructed (GObject *object)
                            image, G_CONNECT_SWAPPED);
 
   gimp_container_add (image->gimp->images, GIMP_OBJECT (image));
+#if 0
+  {
+    GimpPerspectiveGuide* guide = gimp_image_get_perspective_guide (image);
+    if (!guide) {
+      GimpPerspectiveGuide* guide = gimp_perspective_guide_new(0);
+      gdouble px, py;
+      px = 0;
+      py = gimp_image_get_height (image) / 2;
+      gimp_perspective_guide_add_vanish_points (guide, px, py);
+      px = gimp_image_get_width (image);
+      py = gimp_image_get_height (image) / 2;
+      gimp_perspective_guide_add_vanish_points (guide, px, py);
+      gimp_image_set_perspective_guide (image, guide);
+    }
+  }
+#endif
+
 }
 
 static void
@@ -999,6 +1018,10 @@ gimp_image_finalize (GObject *object)
       g_free (private->display_path);
       private->display_path = NULL;
     }
+
+  if (private->perspective_guides) {
+    g_object_unref (private->perspective_guides);
+  }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

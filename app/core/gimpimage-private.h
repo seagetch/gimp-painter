@@ -70,6 +70,7 @@ struct _GimpImagePrivate
   GList             *guides;                /*  guides                       */
   GimpGrid          *grid;                  /*  grid                         */
   GList             *sample_points;         /*  color sample points          */
+  GimpPerspectiveGuide * perspective_guides; /* gimp-painter 2.8: perspective guides */
 
   /*  Layer/Channel attributes  */
   GimpItemTree      *layers;                /*  the tree of layers           */

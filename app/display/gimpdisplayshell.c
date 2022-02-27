@@ -371,6 +371,8 @@ gimp_display_shell_init (GimpDisplayShell *shell)
   
   shell->layer_view = NULL;
   shell->toolbox    = NULL;
+
+  shell->snap_perspective = FALSE;
 }
 
 static void

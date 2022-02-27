@@ -406,9 +406,9 @@ ToolTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
 {
 //  g_print("LayerTileView::draw(%d, %d)\n", width, height);
   GimpToolInfo* active_tool;
-  GimpRGB color1 = { 0.5, 0.5, 0.5, 1};
+  GimpRGB color1 = { 1.0, 1.0, 1.0, 1};
   GimpRGB color2 = { 0.7, 0.7, 0.7, 1};
-  GimpRGB color3 = { 0.9, 0.9, 0.9, 1};
+  GimpRGB color3 = { 0.25, 0.5, 1.0, 1};
   GtkStyle* style = ref(g_object) [gtk_widget_get_style] ();
   GimpRGB highlight_color;
   GimpRGB bg_color = color1;
