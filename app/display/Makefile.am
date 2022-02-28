@@ -54,6 +54,8 @@ libappdisplay_a_sources = \
 	gimpcanvaspath.h			\
 	gimpcanvaspen.c				\
 	gimpcanvaspen.h				\
+	gimpcanvasperspectiveguide.cpp				\
+	gimpcanvasperspectiveguide.h				\
 	gimpcanvaspolygon.c			\
 	gimpcanvaspolygon.h			\
 	gimpcanvasprogress.c			\

@@ -110,5 +110,8 @@ void             _gimp_canvas_item_stroke          (GimpCanvasItem   *item,
 void             _gimp_canvas_item_fill            (GimpCanvasItem   *item,
                                                     cairo_t          *cr);
 
+#ifdef __cplusplus
+__DECLARE_GTK_CLASS__(GimpCanvasItem, GIMP_TYPE_CANVAS_ITEM);
+#endif
 
 #endif /* __GIMP_CANVAS_ITEM_H__ */

@@ -69,6 +69,10 @@
 #include "gimpimagewindow.h"
 #include "gimpmotionbuffer.h"
 
+#include "gimpcanvasitem.h"
+#include "gimpcanvasperspectiveguide.h"
+#include "gimpdisplayshell-items.h"
+
 #include "gimp-log.h"
 
 /*  local constant values  */
@@ -223,11 +227,13 @@ gimp_display_shell_snap_angle (GimpDisplayShell * shell,
   for (i = 0; i < num_angles; i ++) {
     // check against 
     gdouble ang = MIN(fmod(fabs(angles[i] - cur_angle), M_PI), fmod(fabs(angles[i] + M_PI - cur_angle), M_PI));
-
+    g_print("Check against angle %f<diff=%f>...", angles[i] * 180 / M_PI, ang*180/M_PI);
     if (min_angle < 0 || ang < min_angle) {
       min_index = i;
       min_angle = ang;
+      g_print("updated");
     }
+    g_print("\n");
   }
 
   *snapped_angle = angles[min_index];
@@ -508,7 +514,13 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
 
   if (gimp_image_get_perspective_guide (image)) {
-    shell->snap_perspective = TRUE;
+    GimpCanvasItem* item;
+    if (!shell->snap_perspective) {
+      shell->snap_perspective = TRUE;
+      item = GIMP_CANVAS_ITEM(gimp_canvas_perspective_guide_new (shell, gimp_image_get_perspective_guide(image)));
+      gimp_display_shell_add_tool_item (shell, item);
+      g_object_unref (item);
+    }
   }  
 
   /* See bug 771444 */
