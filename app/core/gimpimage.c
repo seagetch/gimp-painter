@@ -784,7 +784,7 @@ gimp_image_constructed (GObject *object)
                            image, G_CONNECT_SWAPPED);
 
   gimp_container_add (image->gimp->images, GIMP_OBJECT (image));
-#if 1
+#if 0
   {
     GimpPerspectiveGuide* guide = gimp_image_get_perspective_guide (image);
     if (!guide) {
