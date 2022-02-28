@@ -180,7 +180,7 @@ gimp_display_shell_snap_angle (GimpDisplayShell * shell,
   dy = (y - origin_y) * shell->scale_y;
   if (dx * dx + dy * dy < DIST_THRESHOLD * DIST_THRESHOLD)
     return FALSE;
-  cur_angle = fmod(atan2(-dy, dx), M_PI);
+  cur_angle = fmod(atan2(-dy, dx) + M_PI, M_PI);
 
   g_object_get(G_OBJECT(guide), "angle", &angle, NULL);
 
@@ -226,7 +226,8 @@ gimp_display_shell_snap_angle (GimpDisplayShell * shell,
   // check against angles to vanish_points
   for (i = 0; i < num_angles; i ++) {
     // check against 
-    gdouble ang = MIN(fmod(fabs(angles[i] - cur_angle), M_PI), fmod(fabs(angles[i] + M_PI - cur_angle), M_PI));
+    gdouble ang = fmod(angles[i] + M_PI - cur_angle, M_PI);
+    ang = MIN(ang, M_PI - ang);
     g_print("Check against angle %f<diff=%f>...", angles[i] * 180 / M_PI, ang*180/M_PI);
     if (min_angle < 0 || ang < min_angle) {
       min_index = i;
