@@ -513,17 +513,19 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
   GIMP_LOG (TOOL_EVENTS, "event (display %p): %s",
             display, gimp_print_event (event));
 
-
+#if 0
   if (gimp_image_get_perspective_guide (image)) {
 //    GimpCanvasItem* item;
-    if (!shell->snap_perspective) {
-      shell->snap_perspective = TRUE;
+//    if (!shell->snap_perspective) {
+//      shell->snap_perspective = TRUE;
 //      item = GIMP_CANVAS_ITEM(gimp_canvas_perspective_guide_new (shell, gimp_image_get_perspective_guide(image)));
 //      gimp_display_shell_add_tool_item (shell, item);
 //      g_object_unref (item);
-    }
-  }  
-
+//    }
+  } else {
+    
+  }
+#endif
   /* See bug 771444 */
   if (shell->pointer_grabbed &&
       event->type == GDK_MOTION_NOTIFY)
