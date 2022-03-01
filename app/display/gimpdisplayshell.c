@@ -52,7 +52,7 @@
 #include "widgets/gimpuimanager.h"
 #include "widgets/gimpwidgets-utils.h"
 #include "widgets/gimplayertileview.h" /* gimp-painter 2.8 */
-#include "widgets/gimptoolbox.h" /* gimp-painter 2.8 */
+#include "widgets/gimptooltileview.h" /* gimp-painter 2.8 */
 
 #include "tools/tool_manager.h"
 
@@ -1941,6 +1941,7 @@ gimp_display_shell_reparent_on_canvas_widget (GimpDisplayShell* shell, GtkWidget
 
   old_parent = gtk_widget_get_parent (widget);
   if (old_parent != shell->canvas) {
+    g_print("Reparent\n");
     if (old_parent) {
       g_object_ref (G_OBJECT (widget));
       gtk_container_remove(GTK_CONTAINER(old_parent), widget);
@@ -1957,8 +1958,25 @@ gimp_display_shell_set_layer_view (GimpDisplayShell* shell)
 {
   GtkAllocation alloc;
   GimpImage* image;
+  image = gimp_display_get_image (shell->display);
   // FIXME: position of widget is adjusted everytime cursor moves on canvas.
   gtk_widget_get_allocation(GTK_WIDGET(shell), &alloc);
+
+  if (!image) {
+    if (shell->layer_view) {
+      GtkWidget* old_parent = gtk_widget_get_parent (shell->layer_view);
+      gtk_container_remove(GTK_CONTAINER(old_parent), shell->layer_view);
+      g_object_unref(shell->layer_view);
+      shell->layer_view = NULL;
+    }
+    if (shell->toolbox) {
+      GtkWidget* old_parent = gtk_widget_get_parent (shell->toolbox);
+      gtk_container_remove(GTK_CONTAINER(old_parent), shell->toolbox);
+      g_object_unref(shell->toolbox);
+      shell->toolbox = NULL;
+    }
+    return;
+  }
 
   if (!shell->layer_view) {
     GimpContext* user_context;
@@ -1966,9 +1984,15 @@ gimp_display_shell_set_layer_view (GimpDisplayShell* shell)
     user_context = gimp_get_user_context (shell->display->gimp);
     g_object_set (shell->layer_view, "context", user_context, NULL);
     gtk_widget_show (shell->layer_view);
+    g_print("Create new Layer View\n");
   }
 
-  image = gimp_display_get_image (shell->display);
+  if (!shell->toolbox) {
+    shell->toolbox = GTK_WIDGET(gimp_tool_tile_view_new ());
+    g_object_set (shell->toolbox, "context", gimp_get_user_context (shell->display->gimp), NULL);
+    gtk_widget_show (shell->toolbox);
+  }
+
   if (shell->layer_view) {
     GimpImage* image1;
 

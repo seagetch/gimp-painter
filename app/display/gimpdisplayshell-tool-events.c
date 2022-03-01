@@ -152,7 +152,16 @@ static void       gimp_display_shell_untransform_event_coords (GimpDisplayShell 
                                                                GimpCoords        *image_coords,
                                                                gboolean          *update_software_cursor);
 
+static gboolean
+gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
+                                       GdkEvent         *event,
+                                       GimpDisplayShell *shell,
+                                       GdkEvent** next_event);
+#if 0
 static GdkEvent * gimp_display_shell_compress_motion          (GimpDisplayShell  *shell);
+#endif
+static GdkEvent * gimp_display_shell_compress_motion             (GdkEvent           *initial_event,
+                                                                  GdkEvent          **next_event);
 
 
 
@@ -475,6 +484,31 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                        GdkEvent         *event,
                                        GimpDisplayShell *shell)
 {
+  GdkEvent *next_event = NULL;
+  gboolean  return_val;
+
+  g_return_val_if_fail (gtk_widget_get_realized (canvas), FALSE);
+
+  return_val = gimp_display_shell_canvas_tool_events_internal (canvas,
+                                                               event, shell,
+                                                               &next_event);
+
+  if (next_event)
+    {
+      gtk_main_do_event (next_event);
+
+      gdk_event_free (next_event);
+    }
+
+  return return_val;
+}
+
+gboolean
+gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
+                                       GdkEvent         *event,
+                                       GimpDisplayShell *shell,
+                                       GdkEvent** next_event)
+{
   GimpDisplay     *display;
   GimpImage       *image;
   Gimp            *gimp;
@@ -570,8 +604,12 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
       {
         GdkEventCrossing *cevent = (GdkEventCrossing *) event;
 
-        if (shell->inferior_ignore_mode)
+        if (shell->inferior_ignore_mode &&
+            cevent->subwindow == NULL   &&
+            cevent->mode      == GDK_CROSSING_NORMAL)
+
           {
+            g_print("enter canvas\n");
             shell->inferior_ignore_mode = FALSE;
             gtk_widget_set_extension_events (shell->canvas,
                                              GDK_EXTENSION_EVENTS_ALL);
@@ -598,8 +636,13 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
       {
         GdkEventCrossing *cevent = (GdkEventCrossing *) event;
 
-        if (cevent->detail == GDK_NOTIFY_INFERIOR)
+        if (! shell->inferior_ignore_mode            &&
+            cevent->subwindow == NULL                &&
+            cevent->mode      == GDK_CROSSING_NORMAL &&
+            cevent->detail    == GDK_NOTIFY_INFERIOR)
+
           {
+            g_print("leave canvas\n");
             shell->inferior_ignore_mode = TRUE;
             gtk_widget_set_extension_events (shell->canvas,
                                              GDK_EXTENSION_EVENTS_NONE);
@@ -1030,7 +1073,10 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
         if (shell->scrolling ||
             motion_mode == GIMP_MOTION_MODE_COMPRESS)
           {
+#if 0
             compressed_motion = gimp_display_shell_compress_motion (shell);
+#endif
+            compressed_motion = gimp_display_shell_compress_motion (event, next_event);
 
             if (compressed_motion && ! shell->scrolling)
               {
@@ -2197,7 +2243,7 @@ gimp_display_shell_get_event_coords (GimpDisplayShell *shell,
 
   manager = gimp_devices_get_manager (gimp);
   current_device = gimp_device_manager_get_current_device (manager);
-
+  g_print("current_device=%s\n", gimp_object_get_name(current_device));
   gimp_device_info_get_event_coords (current_device,
                                      gtk_widget_get_window (shell->canvas),
                                      event,
@@ -2254,6 +2300,7 @@ gimp_display_shell_untransform_event_coords (GimpDisplayShell *shell,
  * The gimp_display_shell_compress_motion function source may be re-used under
  * the XFree86-style license. <adam@gimp.org>
  */
+#if 0
 static GdkEvent *
 gimp_display_shell_compress_motion (GimpDisplayShell *shell)
 {
@@ -2311,6 +2358,52 @@ gimp_display_shell_compress_motion (GimpDisplayShell *shell)
     }
 
   g_list_free (requeued_events);
+
+  return last_motion;
+}
+#endif
+static GdkEvent *
+gimp_display_shell_compress_motion (GdkEvent  *initial_event,
+                                    GdkEvent **next_event)
+{
+  GdkEvent  *last_motion = NULL;
+  GtkWidget *widget;
+
+  *next_event = NULL;
+
+  if (initial_event->any.type != GDK_MOTION_NOTIFY)
+    return NULL;
+
+  widget = gtk_get_event_widget (initial_event);
+
+  while (gdk_events_pending ())
+    {
+      GdkEvent *event = gdk_event_get ();
+
+      if (!event)
+        {
+          /* Do nothing */
+        }
+      else if ((gtk_get_event_widget (event) == widget)               &&
+               (event->any.type      == GDK_MOTION_NOTIFY)            &&
+               (event->any.window    == initial_event->any.window)    &&
+               (event->motion.state  == initial_event->motion.state)  &&
+               (event->motion.device == initial_event->motion.device))
+        {
+          /* Discard previous motion event */
+          if (last_motion)
+            gdk_event_free (last_motion);
+
+          last_motion = event;
+        }
+      else
+        {
+          /* Let the caller dispatch the event */
+          *next_event = event;
+
+          break;
+        }
+    }
 
   return last_motion;
 }

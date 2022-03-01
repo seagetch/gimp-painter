@@ -1357,11 +1357,12 @@ gimp_image_window_add_shell (GimpImageWindow  *window,
                             GTK_WIDGET (shell), tab_label);
 
   /* gimp-painter 2.8 */
+#if 0
   shell->toolbox = GTK_WIDGET(gimp_tool_tile_view_new ());
   g_print("GIMP: %p\n", private->gimp);
   g_object_set (shell->toolbox, "context", gimp_get_user_context (private->gimp), NULL);
   gtk_widget_show (shell->toolbox);
-#if 0
+
   shell->toolbox = gimp_tool_palette_new ();
   gimp_tool_palette_set_context (GIMP_TOOL_PALETTE(shell->toolbox), gimp_get_user_context (private->gimp));
   gimp_tool_palette_set_dialog_factory (GIMP_TOOL_PALETTE(shell->toolbox), private->dialog_factory);
