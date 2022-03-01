@@ -60,5 +60,7 @@ gboolean   gimp_tool_options_delete        (GimpToolOptions   *tool_options,
                                             GError           **error);
 void       gimp_tool_options_create_folder (void);
 
-
+#ifdef __cplusplus
+__DECLARE_GTK_CLASS__(GimpToolOptions, GIMP_TYPE_TOOL_OPTIONS);
+#endif
 #endif  /*  __GIMP_TOOL_OPTIONS_H__  */

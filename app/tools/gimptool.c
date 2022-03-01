@@ -186,6 +186,7 @@ gimp_tool_init (GimpTool *tool)
   tool->modifier_state        = 0;
   tool->active_modifier_state = 0;
   tool->button_press_state    = 0;
+  tool->disable_lazy_snap     = FALSE;
 }
 
 static void

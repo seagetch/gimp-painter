@@ -42,6 +42,7 @@ struct _GimpTool
 
   gint             ID;          /*  unique tool ID                         */
   gboolean         want_full_motion_tracking; /* gimp-painter: set to true to grab all motion-notify-event */
+  gboolean         disable_lazy_snap; /* gimp-painter 2.8: set to true if this tool disable lazy snap (e.g. perspective guide) */
 
   GimpToolControl *control;
 
@@ -250,5 +251,7 @@ void              gimp_tool_set_cursor          (GimpTool            *tool,
                                                  GimpToolCursorType   tool_cursor,
                                                  GimpCursorModifier   modifier);
 
-
+#ifdef __cplusplus
+__DECLARE_GTK_CLASS__(GimpTool, GIMP_TYPE_TOOL);
+#endif
 #endif  /*  __GIMP_TOOL_H__  */

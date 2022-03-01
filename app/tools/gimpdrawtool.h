@@ -254,5 +254,7 @@ gboolean         gimp_draw_tool_on_vectors           (GimpDrawTool     *draw_too
                                                       GimpStroke      **ret_stroke,
                                                       GimpVectors     **ret_vectors);
 
-
+#ifdef __cplusplus
+__DECLARE_GTK_CLASS__(GimpDrawTool, GIMP_TYPE_DRAW_TOOL);
+#endif
 #endif  /*  __GIMP_DRAW_TOOL_H__  */

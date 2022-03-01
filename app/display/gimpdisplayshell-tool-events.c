@@ -286,7 +286,7 @@ gimp_display_shell_lazy_snap (GimpDisplayShell* shell, GimpImage* image, GimpCoo
   gboolean snapped = FALSE;
   GimpPerspectiveGuide* guide = gimp_image_get_perspective_guide (image);
   if (!guide)
-    return FALSE;
+    return TRUE;
   g_print("Check snapping...\n");
   if (shell->snapping) {
     snapped = gimp_display_shell_snap_angle (shell, image_coords->x, image_coords->y, &shell->snapped_angle, 
@@ -515,12 +515,12 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
 
   if (gimp_image_get_perspective_guide (image)) {
-    GimpCanvasItem* item;
+//    GimpCanvasItem* item;
     if (!shell->snap_perspective) {
       shell->snap_perspective = TRUE;
-      item = GIMP_CANVAS_ITEM(gimp_canvas_perspective_guide_new (shell, gimp_image_get_perspective_guide(image)));
-      gimp_display_shell_add_tool_item (shell, item);
-      g_object_unref (item);
+//      item = GIMP_CANVAS_ITEM(gimp_canvas_perspective_guide_new (shell, gimp_image_get_perspective_guide(image)));
+//      gimp_display_shell_add_tool_item (shell, item);
+//      g_object_unref (item);
     }
   }  
 
@@ -739,6 +739,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
           }
         else if (bevent->button == 1)
           {
+            GimpTool* active_tool = tool_manager_get_active (gimp);
 
             if (! gimp_display_shell_pointer_grab (shell, NULL, 0))
               return TRUE;
@@ -749,7 +750,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                   gimp_display_shell_pointer_ungrab (shell, NULL);
                   return TRUE;
                 }
-            if (!shell->snap_perspective) {
+            if (!shell->snap_perspective || (active_tool && active_tool->disable_lazy_snap)) {
               gimp_display_shell_begin_tool (gimp, shell, &image_coords, time, state, display);
             } else {
               g_print("snapping to angle...\n");
@@ -883,8 +884,11 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             if (shell->space_release_pending)
               gimp_display_shell_space_released (shell, event, &image_coords);
 
-            if (shell->snap_perspective)
+            if (shell->snap_perspective && 
+                (!active_tool || !active_tool->disable_lazy_snap) &&
+                (!active_tool || !active_tool->want_full_motion_tracking)) {
               shell->snapping = FALSE;
+            }
           }
         else if (bevent->button == 2)
           {
@@ -1152,7 +1156,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                         if (!shell->snapping) {
                           /* Early removal of useless events saves CPU time.
                           */
-                          if (shell->snap_perspective) {
+                          if (shell->snap_perspective && (!active_tool || !active_tool->disable_lazy_snap)) {
                             gimp_display_shell_lazy_snap (shell, image, &image_coords);
                           }
                           if (gimp_motion_buffer_motion_event (shell->motion_buffer,
@@ -1184,7 +1188,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                     /* Early removal of useless events saves CPU time.
                      */
                     if (!shell->snapping) {
-                      if (shell->snap_perspective) {
+                      if (shell->snap_perspective && (!active_tool || !active_tool->disable_lazy_snap)) {
                         gimp_display_shell_lazy_snap (shell, image, &image_coords);
                       }
  
@@ -1216,6 +1220,9 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             /* Early removal of useless events saves CPU time.
              * Pass event_fill = FALSE since we are only hovering.
              */
+            if (shell->snap_perspective && (active_tool && active_tool->want_full_motion_tracking)) {
+              gimp_display_shell_lazy_snap (shell, image, &image_coords);
+            }
             if (gimp_motion_buffer_motion_event (shell->motion_buffer,
                                                  &image_coords,
                                                  time,

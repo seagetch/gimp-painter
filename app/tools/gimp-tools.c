@@ -43,7 +43,7 @@
 #include "gimpblendtool.h"
 #include "gimpbrightnesscontrasttool.h"
 #include "gimpbucketfilltool.h"
-#include "gimpbucketfillbrushtool.h"
+#include "gimpbucketfillbrushtool.h" /* gimp-painter 2.8 */
 #include "gimpbycolorselecttool.h"
 #include "gimpcagetool.h"
 #include "gimpclonetool.h"
@@ -73,6 +73,7 @@
 #include "gimppaintbrushtool.h"
 #include "gimppenciltool.h"
 #include "gimpperspectiveclonetool.h"
+#include "gimpperspectiveguidetool.h" /* gimp-painter 2.8 */
 #include "gimpperspectivetool.h"
 #include "gimpposterizetool.h"
 #include "gimpthresholdtool.h"
@@ -173,6 +174,10 @@ gimp_tools_init (Gimp *gimp)
     /*  path tool */
 
     gimp_vector_tool_register,
+
+    /* gimp-painter 2.8: perspective guide */
+
+    gimp_perspective_guide_tool_register,
 
     /*  selection tools */
 
