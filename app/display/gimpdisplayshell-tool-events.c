@@ -609,7 +609,6 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
             cevent->mode      == GDK_CROSSING_NORMAL)
 
           {
-            g_print("enter canvas\n");
             shell->inferior_ignore_mode = FALSE;
             gtk_widget_set_extension_events (shell->canvas,
                                              GDK_EXTENSION_EVENTS_ALL);
@@ -642,7 +641,6 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
             cevent->detail    == GDK_NOTIFY_INFERIOR)
 
           {
-            g_print("leave canvas\n");
             shell->inferior_ignore_mode = TRUE;
             gtk_widget_set_extension_events (shell->canvas,
                                              GDK_EXTENSION_EVENTS_NONE);
@@ -2243,7 +2241,6 @@ gimp_display_shell_get_event_coords (GimpDisplayShell *shell,
 
   manager = gimp_devices_get_manager (gimp);
   current_device = gimp_device_manager_get_current_device (manager);
-  g_print("current_device=%s\n", gimp_object_get_name(current_device));
   gimp_device_info_get_event_coords (current_device,
                                      gtk_widget_get_window (shell->canvas),
                                      event,
