@@ -723,27 +723,25 @@ LayerTileView::on_button_press(GtkWidget* widget, GdkEventButton* event)
         i_viewable [gimp_item_set_visible] (!active, TRUE);
 
       } else {
+        GimpLayer* current_active = image [gimp_image_get_active_layer] ();
         // Activate item
         image [gimp_image_set_active_layer] (GIMP_LAYER(action.target));
+
+        if (current_active == GIMP_LAYER(action.target) || event->button == 3) {
+          GdkRectangle area = {(gint)(event->x - action.offset_x), (gint)(event->y - action.offset_y), LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT };
+          layer_popup_decorator = new LayerPopupWindow;
+          GtkWidget* view = NULL;
+          layer_popup_decorator->create_view(GTK_WIDGET(g_object), &view, action.target);
+          GtkWidget* popover = PopoverInterface::new_instance(view);
+          auto i_popover     = PopoverInterface::cast(popover);
+          i_popover->show_over(GTK_WIDGET(content_area.ptr()), &area);
+
+        }
       }
 
       ref(scrolled_window) [gtk_widget_queue_draw] ();
       image [gimp_image_flush] ();
-    }
-    
-    if (event->button == 3) {
-      GdkRectangle area = {event->x - action.offset_x, event->y - action.offset_y, LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT };
-      layer_popup_decorator = new LayerPopupWindow;
-      GtkWidget* view = NULL;
-      layer_popup_decorator->create_view(GTK_WIDGET(g_object), &view, action.target);
-      GtkWidget* popover = PopoverInterface::new_instance(view);
-      auto i_popover     = PopoverInterface::cast(popover);
-      i_popover->show_over(GTK_WIDGET(content_area.ptr()), &area);
-
-      //decorator(g_object, window_decor);
-      //decorate_popover(g_object, Delegators::delegator(window_decor, &LayerPopupWindow::create_view));
-
-    }
+    }    
   } else {
 
   }

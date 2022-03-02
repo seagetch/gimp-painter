@@ -603,12 +603,15 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
     case GDK_ENTER_NOTIFY:
       {
         GdkEventCrossing *cevent = (GdkEventCrossing *) event;
+//            g_print("enter canvas1, inferiro_ignore=%d, subwin=%p, mode=%d\n", 
+//              shell->inferior_ignore_mode, cevent->subwindow, cevent->mode==GDK_CROSSING_UNGRAB);
 
         if (shell->inferior_ignore_mode &&
-            cevent->subwindow == NULL   &&
-            cevent->mode      == GDK_CROSSING_NORMAL)
+            ((cevent->subwindow == NULL && cevent->mode == GDK_CROSSING_NORMAL)||
+             (cevent->subwindow != NULL && cevent->mode == GDK_CROSSING_GTK_UNGRAB)))
 
           {
+//            g_print("enter canvas\n");
             shell->inferior_ignore_mode = FALSE;
             gtk_widget_set_extension_events (shell->canvas,
                                              GDK_EXTENSION_EVENTS_ALL);
@@ -641,6 +644,7 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
             cevent->detail    == GDK_NOTIFY_INFERIOR)
 
           {
+//            g_print("leave canvas\n");
             shell->inferior_ignore_mode = TRUE;
             gtk_widget_set_extension_events (shell->canvas,
                                              GDK_EXTENSION_EVENTS_NONE);
