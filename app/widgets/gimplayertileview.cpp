@@ -727,7 +727,7 @@ LayerTileView::on_button_press(GtkWidget* widget, GdkEventButton* event)
         // Activate item
         image [gimp_image_set_active_layer] (GIMP_LAYER(action.target));
 
-        if (current_active == GIMP_LAYER(action.target) || event->button == 3) {
+        if (event->button == 3) {
           GdkRectangle area = {(gint)(event->x - action.offset_x), (gint)(event->y - action.offset_y), LAYER_MIN_WIDTH, LAYER_MIN_HEIGHT };
           layer_popup_decorator = new LayerPopupWindow;
           GtkWidget* view = NULL;
