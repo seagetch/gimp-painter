@@ -638,10 +638,17 @@ void GLib::FilterLayer::set_procedure(const char* proc_name, GArray* _args)
   GimpProcedure* proc    = pdb [gimp_pdb_lookup_procedure] (proc_name);
   if (proc) {
     ProcedureRunner* r     = new ProcedureRunner(proc, GIMP_PROGRESS(g_object));
-
     if (args) {
-      for (int i = 0; i < proc->num_args; i ++)
+      for (int i = 0; i < proc->num_args; i ++) {
+        GParamSpec* pspec = proc->args[i];
+
+        if (GIMP_IS_PARAM_SPEC_IMAGE_ID(pspec) ||
+            GIMP_IS_PARAM_SPEC_DRAWABLE_ID(pspec) ||
+            GIMP_IS_PARAM_SPEC_ITEM_ID(pspec))
+          continue;
+
         r->set_arg(i, args[i]);
+      }
     }
 
     runner     = r;
