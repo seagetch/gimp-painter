@@ -603,19 +603,35 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
     case GDK_ENTER_NOTIFY:
       {
         GdkEventCrossing *cevent = (GdkEventCrossing *) event;
-//            g_print("enter canvas1, inferiro_ignore=%d, subwin=%p, mode=%d\n", 
-//              shell->inferior_ignore_mode, cevent->subwindow, cevent->mode==GDK_CROSSING_UNGRAB);
+//            g_print("enter canvas1, inferiro_ignore=%d, win=%p, subwin=%p, mode=%d\n", 
+              shell->inferior_ignore_mode, cevent->window, cevent->subwindow, cevent->mode);
 
-        if (shell->inferior_ignore_mode &&
-            ((cevent->subwindow == NULL && cevent->mode == GDK_CROSSING_NORMAL)||
-             (cevent->subwindow != NULL && cevent->mode == GDK_CROSSING_GTK_UNGRAB)))
-
-          {
-//            g_print("enter canvas\n");
+        if (shell->inferior_ignore_mode) {
+          if (cevent->subwindow == NULL && cevent->mode == GDK_CROSSING_NORMAL) {
             shell->inferior_ignore_mode = FALSE;
+          } else if (cevent->subwindow != NULL && cevent->mode == GDK_CROSSING_GTK_UNGRAB) {
+            gboolean found = FALSE;
+            for (GList* list = gtk_container_get_children(GTK_CONTAINER(shell->canvas)); list; list = g_list_next(list)) {
+              GtkWidget* child = (GtkWidget*)list->data;
+              gint mx, my;
+              GtkAllocation alloc;
+              gtk_widget_get_pointer(child, &mx, &my);
+              gtk_widget_get_allocation (child, &alloc);
+              if (0 <= mx && mx < alloc.width && 0<= my && my < alloc.height) {
+//                g_print("found container child: %s\n", G_OBJECT_TYPE_NAME(child));
+                found = TRUE;
+                break;
+              }
+            }
+            shell->inferior_ignore_mode = found;
+          }
+          if (!shell->inferior_ignore_mode) {
+//            g_print("enter canvas\n");
             gtk_widget_set_extension_events (shell->canvas,
                                              GDK_EXTENSION_EVENTS_ALL);
           }
+
+        }
 
         if (cevent->mode != GDK_CROSSING_NORMAL)
           return TRUE;
@@ -637,6 +653,8 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
     case GDK_LEAVE_NOTIFY:
       {
         GdkEventCrossing *cevent = (GdkEventCrossing *) event;
+//            g_print("leave canvas1, inferiro_ignore=%d, win=%p, subwin=%p, mode=%d\n", 
+              shell->inferior_ignore_mode, cevent->window, cevent->subwindow, cevent->mode);
 
         if (! shell->inferior_ignore_mode            &&
             cevent->subwindow == NULL                &&
