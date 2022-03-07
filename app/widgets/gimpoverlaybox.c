@@ -374,7 +374,12 @@ gimp_overlay_box_add_child (GimpOverlayBox *box,
   g_return_if_fail (GIMP_IS_OVERLAY_BOX (box));
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
+  /* gimp-painter 2.8: Temporary turn on double buffering. */
+#if 0
   unset_double_buffered (widget);
+#else
+  gtk_widget_show(widget);
+#endif
 
   child = gimp_overlay_child_new (box, widget, xalign, yalign, 0.0, 0.7);
 

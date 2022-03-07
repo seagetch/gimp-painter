@@ -434,7 +434,6 @@ LayerTileView::constructed ()
           
           i_content_area [gtk_widget_show] ();
         }).ptr();
-        
         window [gtk_widget_set_size_request] (LAYER_MAX_WIDTH + 16, LAYER_MAX_HEIGHT);
         window [gtk_widget_show] ();
       }).ptr();

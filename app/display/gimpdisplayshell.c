@@ -53,6 +53,7 @@
 #include "widgets/gimpwidgets-utils.h"
 #include "widgets/gimplayertileview.h" /* gimp-painter 2.8 */
 #include "widgets/gimptooltileview.h" /* gimp-painter 2.8 */
+#include "widgets/gimpoverlayframe.h"
 
 #include "tools/tool_manager.h"
 
@@ -1980,10 +1981,19 @@ gimp_display_shell_set_layer_view (GimpDisplayShell* shell)
 
   if (!shell->layer_view) {
     GimpContext* user_context;
-    shell->layer_view = GTK_WIDGET(gimp_layer_tile_view_new ());
+    GtkWidget* layer_view;
+    layer_view = GTK_WIDGET(gimp_layer_tile_view_new ());
     user_context = gimp_get_user_context (shell->display->gimp);
-    g_object_set (shell->layer_view, "context", user_context, NULL);
-    gtk_widget_show (shell->layer_view);
+    g_object_set (layer_view, "context", user_context, NULL);
+
+//    shell->layer_view = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    shell->layer_view = gimp_overlay_frame_new ();
+//    shell->layer_view = gtk_frame_new ("");
+    gtk_container_set_border_width (GTK_CONTAINER (shell->layer_view), 4);
+//    gtk_frame_set_shadow_type (GTK_FRAME(shell->layer_view), GTK_SHADOW_OUT);
+    gtk_container_add (GTK_CONTAINER(shell->layer_view), layer_view);
+//    gtk_box_pack_start (GTK_BOX(shell->layer_view), layer_view, TRUE, TRUE, 0);
+    gtk_widget_show_all (shell->layer_view);
     g_print("Create new Layer View\n");
   }
 
@@ -1995,15 +2005,17 @@ gimp_display_shell_set_layer_view (GimpDisplayShell* shell)
 
   if (shell->layer_view) {
     GimpImage* image1;
-
+    GtkWidget* layer_view;
+    layer_view = gtk_bin_get_child (GTK_BIN(shell->layer_view));
+//    layer_view = gtk_container_get_children (GTK_CONTAINER(shell->layer_view))->data;
     /* Set appropriate image and context for layer view */
-    g_object_get(shell->layer_view, "image", &image1, NULL);
+    g_object_get(layer_view, "image", &image1, NULL);
     if (image) {
       if (image1 != image) {
-        g_object_set (shell->layer_view, "image", image, NULL);
+        g_object_set (layer_view, "image", image, NULL);
       }
     } else {
-      g_object_set(shell->layer_view, "image", NULL, NULL);
+      g_object_set(layer_view, "image", NULL, NULL);
     }
 
     /* Reparent widget to current canvas */

@@ -245,7 +245,7 @@ ToolTileView::constructed ()
   with (ref(GTK_BOX(g_object)), [&](auto self) {
     self.pack_start(false, false, 0) (GTK_SCROLLED_WINDOW(gtk_scrolled_window_new(NULL, NULL)), [&](auto box) {
       event_box = box.ptr();
-      box [gtk_scrolled_window_set_policy] (GTK_POLICY_ALWAYS, GTK_POLICY_NEVER);
+      box [gtk_scrolled_window_set_policy] (GTK_POLICY_NEVER, GTK_POLICY_NEVER);
       content_area = box.add_with_viewport (GTK_DRAWING_AREA (gtk_drawing_area_new ()), [this] (auto i_content_area){
         i_content_area [gtk_widget_set_size_request] (ICON_SIZE, ICON_SIZE);
         i_content_area [gtk_widget_set_events] (GDK_ALL_EVENTS_MASK);
