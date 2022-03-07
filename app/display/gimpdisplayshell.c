@@ -1961,7 +1961,7 @@ gimp_display_shell_set_layer_view (GimpDisplayShell* shell)
   GimpImage* image;
   image = gimp_display_get_image (shell->display);
   // FIXME: position of widget is adjusted everytime cursor moves on canvas.
-  gtk_widget_get_allocation(GTK_WIDGET(shell), &alloc);
+  gtk_widget_get_allocation(GTK_WIDGET(shell->canvas), &alloc);
 
   if (!image) {
     if (shell->layer_view) {
@@ -1986,21 +1986,22 @@ gimp_display_shell_set_layer_view (GimpDisplayShell* shell)
     user_context = gimp_get_user_context (shell->display->gimp);
     g_object_set (layer_view, "context", user_context, NULL);
 
-//    shell->layer_view = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     shell->layer_view = gimp_overlay_frame_new ();
-//    shell->layer_view = gtk_frame_new ("");
     gtk_container_set_border_width (GTK_CONTAINER (shell->layer_view), 4);
-//    gtk_frame_set_shadow_type (GTK_FRAME(shell->layer_view), GTK_SHADOW_OUT);
     gtk_container_add (GTK_CONTAINER(shell->layer_view), layer_view);
-//    gtk_box_pack_start (GTK_BOX(shell->layer_view), layer_view, TRUE, TRUE, 0);
     gtk_widget_show_all (shell->layer_view);
     g_print("Create new Layer View\n");
   }
 
   if (!shell->toolbox) {
-    shell->toolbox = GTK_WIDGET(gimp_tool_tile_view_new ());
-    g_object_set (shell->toolbox, "context", gimp_get_user_context (shell->display->gimp), NULL);
-    gtk_widget_show (shell->toolbox);
+    GtkWidget* toolbox;
+    toolbox = GTK_WIDGET(gimp_tool_tile_view_new ());
+    g_object_set (toolbox, "context", gimp_get_user_context (shell->display->gimp), NULL);
+
+    shell->toolbox = gimp_overlay_frame_new ();
+    gtk_container_set_border_width (GTK_CONTAINER (shell->toolbox), 4);
+    gtk_container_add (GTK_CONTAINER(shell->toolbox), toolbox);
+    gtk_widget_show_all (shell->toolbox);
   }
 
   if (shell->layer_view) {
@@ -2023,7 +2024,7 @@ gimp_display_shell_set_layer_view (GimpDisplayShell* shell)
 
     /* Resize and set position of the layer view */
     gtk_widget_set_size_request(shell->layer_view, 80, alloc.height * 8 / 10);
-    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, alloc.width-100, alloc.height/10);
+    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, alloc.width-80, alloc.height/10);
     gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, 0.85);
   }
 

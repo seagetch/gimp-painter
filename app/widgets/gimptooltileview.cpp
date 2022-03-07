@@ -410,14 +410,11 @@ ToolTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
   GimpRGB color2 = { 0.7, 0.7, 0.7, 1};
   GimpRGB color3 = { 0.25, 0.5, 1.0, 1};
   GtkStyle* style = ref(g_object) [gtk_widget_get_style] ();
-  GimpRGB highlight_color;
-  GimpRGB bg_color = color1;
-  GimpRGB fg_color;
-//  gimp_rgb_set_gdk_color (&highlight_color, &style->bg[GTK_STATE_SELECTED]);
-//  gimp_rgb_set_gdk_color (&bg_color,        &style->light[GTK_STATE_NORMAL]);
-//  gimp_rgb_set_gdk_color (&fg_color,        &style->fg[GTK_STATE_NORMAL]);
+  gimp_rgb_set_gdk_color (&color1, &style->bg[GTK_STATE_NORMAL]);
+  gimp_rgb_set_gdk_color (&color2, &style->dark[GTK_STATE_SELECTED]);
+  gimp_rgb_set_gdk_color (&color3, &style->bg[GTK_STATE_SELECTED]);
   
-  cairo_set_source_rgb (cr, bg_color.r, bg_color.g, bg_color.b);
+  cairo_set_source_rgb (cr, color1.r, color1.g, color1.b);
   cairo_rectangle ( cr, 0, 0, width, height );
   cairo_fill (cr);
 
