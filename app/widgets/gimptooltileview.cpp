@@ -44,6 +44,7 @@ extern "C" {
 #include "core/gimpcontainer.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimptoolitem.h"
+#include "core/gimptoolgroup.h"
 
 #include "gimp-intl.h"
 #include "gimpwidgets-constructors.h"
@@ -333,18 +334,21 @@ gboolean
 ToolTileView::on_button_press(GtkWidget* widget, GdkEventButton* event)
 {
   if (event->button == 1) {
-    GimpToolInfo* active_tool = NULL;
+    GimpToolItem* active_tool = NULL;
     gint x, y;
     x =  vertical ? 0: event->x / (ICON_SIZE + ICON_MARGIN * 2);
     y = !vertical ? 0: event->y / (ICON_SIZE + ICON_MARGIN * 2);
     gint index = x + y;
 
-    IList<GimpToolInfo*> i_tools = tools;
+    IList<GimpToolItem*> i_tools = tools;
     if (index >= 0 && index < g_list_length (tools.ptr()))
       active_tool = i_tools[index];
 
     if (active_tool) {
-      ref(context) [gimp_context_set_tool] (active_tool);
+      if (GIMP_IS_TOOL_GROUP(active_tool)) {
+        active_tool = GIMP_TOOL_ITEM(gimp_tool_group_get_active_tool_info(GIMP_TOOL_GROUP(active_tool)));
+      }
+      ref(context) [gimp_context_set_tool] (GIMP_TOOL_INFO(active_tool));
       ref(event_box) [gtk_widget_queue_draw] ();
     }
 
@@ -425,16 +429,22 @@ ToolTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
   IList<GimpToolItem*> i_tools = tools;
   int i = 0;
 
-  for (auto tool_item : i_tools) {
+  for (auto tool : i_tools) {
       GtkToolItem   *item;
       const gchar   *stock_id;
       GimpUIManager *ui_manager;
       gint x, y, w, h;
       GimpRGB* knob_color = NULL;
+      GimpToolItem* tool_item = tool;
+
+      if (GIMP_IS_TOOL_GROUP(tool)) {
+        tool_item = GIMP_TOOL_ITEM(gimp_tool_group_get_active_tool_info (GIMP_TOOL_GROUP(tool)));
+      }
+
 
       if (tool_item == GIMP_TOOL_ITEM(active_tool)) {
         knob_color = &color3;
-      } else if (tool_item == GIMP_TOOL_ITEM(hover_tool)) {
+      } else if (tool == GIMP_TOOL_ITEM(hover_tool)) {
         knob_color = &color2;
       }
 
