@@ -43,6 +43,7 @@ extern "C" {
 #include "core/gimpcontext.h"
 #include "core/gimpcontainer.h"
 #include "core/gimptoolinfo.h"
+#include "core/gimptoolitem.h"
 
 #include "gimp-intl.h"
 #include "gimpwidgets-constructors.h"
@@ -290,12 +291,12 @@ ToolTileView::set_context(IValue v)
   if (this->context) {
     g_print("CONTEXT:%p\n", this->context.ptr());
 
-    IList<GimpToolInfo*> tool_iter = gimp_get_tool_info_iter (this->context->gimp);
-    IList<GimpToolInfo*> i_tools = tools;
+    IList<GimpToolItem*> tool_iter = gimp_get_tool_item_iter (this->context->gimp);
+    IList<GimpToolItem*> i_tools = tools;
 
-    for (auto tool_info : tool_iter) {
-        if (tool_info->visible) {
-          i_tools.append(tool_info);
+    for (auto tool_item : tool_iter) {
+        if (gimp_tool_item_get_visible (tool_item)) {
+          i_tools.append(tool_item);
         }
     }
 
@@ -421,19 +422,19 @@ ToolTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
 
   active_tool = ref(context) [gimp_context_get_tool] ();
 
-  IList<GimpToolInfo*> i_tools = tools;
+  IList<GimpToolItem*> i_tools = tools;
   int i = 0;
 
-  for (auto tool_info : i_tools) {
+  for (auto tool_item : i_tools) {
       GtkToolItem   *item;
       const gchar   *stock_id;
       GimpUIManager *ui_manager;
       gint x, y, w, h;
       GimpRGB* knob_color = NULL;
 
-      if (tool_info == active_tool) {
+      if (tool_item == GIMP_TOOL_ITEM(active_tool)) {
         knob_color = &color3;
-      } else if (tool_info == hover_tool) {
+      } else if (tool_item == GIMP_TOOL_ITEM(hover_tool)) {
         knob_color = &color2;
       }
 
@@ -450,7 +451,7 @@ ToolTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
       x =  vertical? ICON_MARGIN + ICON_KNOB_WIDTH: (ICON_SIZE + ICON_MARGIN * 2) * i + ICON_MARGIN;
       y = !vertical? ICON_MARGIN + ICON_KNOB_WIDTH: (ICON_SIZE + ICON_MARGIN * 2) * i + ICON_MARGIN;
 
-      stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (tool_info));
+      stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (tool_item));
       cairo_surface_t* surface = build_cairo_surface (GTK_WIDGET (g_object), stock_id, ICON_SIZE, ICON_SIZE);
       cairo_set_source_surface (cr, surface, x, y);
       cairo_paint (cr);
