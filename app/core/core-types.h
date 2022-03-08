@@ -93,6 +93,7 @@ typedef struct _GimpToolOptions     GimpToolOptions;
 
 typedef struct _GimpPaintInfo       GimpPaintInfo;
 typedef struct _GimpToolInfo        GimpToolInfo;
+typedef struct _GimpToolItem        GimpToolItem;
 typedef struct _GimpMypaintInfo     GimpMypaintInfo;
 
 

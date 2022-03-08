@@ -301,8 +301,10 @@ gimp_tools_restore (Gimp *gimp)
 
           if (object)
             {
+              GimpToolItem *tool_item = list->data;
+              
               g_object_set (object,
-                            "visible", GIMP_TOOL_INFO (list->data)->visible,
+                            "visible", gimp_tool_item_is_visible (tool_item),
                             NULL);
 
               gimp_container_reorder (gimp->tool_info_list,

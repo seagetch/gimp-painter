@@ -19,7 +19,7 @@
 #define __GIMP_TOOL_INFO_H__
 
 
-#include "gimpdata.h"
+#include "gimptoolitem.h"
 
 
 #define GIMP_TYPE_TOOL_INFO            (gimp_tool_info_get_type ())
@@ -34,7 +34,7 @@ typedef struct _GimpToolInfoClass GimpToolInfoClass;
 
 struct _GimpToolInfo
 {
-  GimpViewable         parent_instance;
+  GimpToolItem         parent_instance;
 
   Gimp                *gimp;
 
@@ -52,6 +52,7 @@ struct _GimpToolInfo
   gchar               *help_id;
 
   gboolean             visible;
+  gboolean             hidden;
   GimpToolOptions     *tool_options;
   GimpPaintInfo       *paint_info;
 //  GimpMypaintInfo     *mypaint_info;
@@ -61,33 +62,33 @@ struct _GimpToolInfo
 
 struct _GimpToolInfoClass
 {
-  GimpViewableClass    parent_class;
+  GimpToolItemClass  parent_class;
 };
 
 
-GType          gimp_tool_info_get_type     (void) G_GNUC_CONST;
+GType          gimp_tool_info_get_type         (void) G_GNUC_CONST;
 
-GimpToolInfo * gimp_tool_info_new          (Gimp                *gimp,
-                                            GType                tool_type,
-                                            GType                tool_options_type,
-                                            GimpContextPropMask  context_props,
-                                            const gchar         *identifier,
-                                            const gchar         *blurb,
-                                            const gchar         *help,
-                                            const gchar         *menu_label,
-                                            const gchar         *menu_accel,
-                                            const gchar         *help_domain,
-                                            const gchar         *help_id,
-                                            const gchar         *paint_core_name,
-                                            const gchar         *stock_id);
+GimpToolInfo * gimp_tool_info_new              (Gimp                *gimp,
+                                                GType                tool_type,
+                                                GType                tool_options_type,
+                                                GimpContextPropMask  context_props,
+                                                const gchar         *identifier,
+                                                const gchar         *label,
+                                                const gchar         *tooltip,
+                                                const gchar         *menu_label,
+                                                const gchar         *menu_accel,
+                                                const gchar         *help_domain,
+                                                const gchar         *help_id,
+                                                const gchar         *paint_core_name,
+                                                const gchar         *icon_name);
 
-void           gimp_tool_info_set_standard (Gimp                *gimp,
-                                            GimpToolInfo        *tool_info);
-GimpToolInfo * gimp_tool_info_get_standard (Gimp                *gimp);
+void           gimp_tool_info_set_standard     (Gimp                *gimp,
+                                                GimpToolInfo        *tool_info);
+GimpToolInfo * gimp_tool_info_get_standard     (Gimp                *gimp);
 
 gchar *
-     gimp_tool_info_build_options_filename (GimpToolInfo        *tool_info,
-                                            const gchar         *suffix);
+gimp_tool_info_build_options_filename (GimpToolInfo *tool_info,
+                                       const gchar  *suffix);
 
 
 #endif  /*  __GIMP_TOOL_INFO_H__  */
