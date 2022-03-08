@@ -2008,7 +2008,6 @@ gimp_display_shell_set_layer_view (GimpDisplayShell* shell)
     GimpImage* image1;
     GtkWidget* layer_view;
     layer_view = gtk_bin_get_child (GTK_BIN(shell->layer_view));
-//    layer_view = gtk_container_get_children (GTK_CONTAINER(shell->layer_view))->data;
     /* Set appropriate image and context for layer view */
     g_object_get(layer_view, "image", &image1, NULL);
     if (image) {
@@ -2023,8 +2022,8 @@ gimp_display_shell_set_layer_view (GimpDisplayShell* shell)
     gimp_display_shell_reparent_on_canvas_widget (shell, shell->layer_view);
 
     /* Resize and set position of the layer view */
-    gtk_widget_set_size_request(shell->layer_view, 80, alloc.height * 8 / 10);
-    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, alloc.width-80, alloc.height/10);
+    gtk_widget_set_size_request(shell->layer_view, 88, alloc.height * 8 / 10);
+    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, alloc.width-84, alloc.height/10);
     gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, 0.85);
   }
 
@@ -2032,8 +2031,13 @@ gimp_display_shell_set_layer_view (GimpDisplayShell* shell)
     GtkAllocation alloc2;
     gtk_widget_get_allocation(GTK_WIDGET (shell->toolbox), &alloc2);
     gimp_display_shell_reparent_on_canvas_widget (shell, shell->toolbox);
-
-    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbox, 0, (alloc.height - alloc2.height) / 2);
+    /*
+    if (alloc2.height > alloc.height * 0.8) {
+      alloc2.height = alloc.height * 0.8;
+      gtk_widget_set_size_request (gtk_bin_get_child(GTK_BIN(shell->toolbox)), -1, alloc2.height);
+    }
+    */
+    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbox, -4, (alloc.height - alloc2.height) / 2);
     gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbox, 0.85);
   }
 
