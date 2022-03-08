@@ -453,9 +453,11 @@ ToolTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
 
       stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (tool_item));
       cairo_surface_t* surface = build_cairo_surface (GTK_WIDGET (g_object), stock_id, ICON_SIZE, ICON_SIZE);
-      cairo_set_source_surface (cr, surface, x, y);
-      cairo_paint (cr);
-      cairo_surface_destroy (surface);
+      if (surface) {
+        cairo_set_source_surface (cr, surface, x, y);
+        cairo_paint (cr);
+        cairo_surface_destroy (surface);
+      }
 
     i ++;
   }

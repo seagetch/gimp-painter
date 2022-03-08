@@ -201,9 +201,7 @@ gimp_tools_init (Gimp *gimp)
     gimp_rectangle_select_tool_register
   };
 
-  GList *default_order = NULL;
-  GList *list;
-  gint   i;
+  gint i;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
@@ -219,20 +217,6 @@ gimp_tools_init (Gimp *gimp)
     }
 
   gimp_container_thaw (gimp->tool_info_list);
-
-  for (list = gimp_get_tool_info_iter (gimp);
-       list;
-       list = g_list_next (list))
-    {
-      const gchar *identifier = gimp_object_get_name (list->data);
-
-      default_order = g_list_prepend (default_order, g_strdup (identifier));
-    }
-
-  default_order = g_list_reverse (default_order);
-
-  g_object_set_data (G_OBJECT (gimp),
-                     "gimp-tools-default-order", default_order);
 }
 
 void
@@ -705,15 +689,6 @@ gimp_tools_reset (Gimp          *gimp,
   gimp_container_thaw (container);
 }
 
-GList *
-gimp_tools_get_default_order (Gimp *gimp)
-{
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-
-  return g_object_get_data (G_OBJECT (gimp),
-                            "gimp-tools-default-order");
-}
-
 
 void
 gimp_tools_register (Gimp* gimp, GimpToolInfo* tool_info)
@@ -824,8 +799,6 @@ gimp_tools_register_internal (GType                   tool_type,
   visible = (! g_type_is_a (tool_type, GIMP_TYPE_IMAGE_MAP_TOOL));
 
   gimp_tool_item_set_visible (GIMP_TOOL_ITEM (tool_info), visible);
-  g_object_set_data (G_OBJECT (tool_info), "gimp-tool-default-visible",
-                     GINT_TO_POINTER (visible));
 
   g_object_set_data (G_OBJECT (tool_info), "gimp-tool-options-gui-func",
                      options_gui_func);
