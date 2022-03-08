@@ -65,6 +65,7 @@ struct _GimpContainerClass
   void         (* foreach)            (const GimpContainer *container,
                                        GFunc                func,
                                        gpointer             user_data);
+  gboolean     (* get_unique_names)   (GimpContainer *container);
   GimpObject * (* get_child_by_name)  (const GimpContainer *container,
                                        const gchar         *name);
   GimpObject * (* get_child_by_index) (const GimpContainer *container,
@@ -102,6 +103,8 @@ gboolean     gimp_container_have               (const GimpContainer *container,
 void         gimp_container_foreach            (const GimpContainer *container,
                                                 GFunc                func,
                                                 gpointer             user_data);
+
+gboolean     gimp_container_get_unique_names   (GimpContainer *container);
 
 GimpObject * gimp_container_get_child_by_name  (const GimpContainer *container,
                                                 const gchar         *name);

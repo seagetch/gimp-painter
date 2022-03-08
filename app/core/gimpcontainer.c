@@ -193,6 +193,7 @@ gimp_container_class_init (GimpContainerClass *klass)
   klass->clear                   = NULL;
   klass->have                    = NULL;
   klass->foreach                 = NULL;
+  klass->get_unique_names        = NULL;
   klass->get_child_by_name       = NULL;
   klass->get_child_by_index      = NULL;
   klass->get_child_index         = NULL;
@@ -418,7 +419,7 @@ gimp_container_deserialize (GimpConfig *config,
 
         case G_TOKEN_IDENTIFIER:
           {
-            GimpObject *child;
+            GimpObject *child     = NULL;
             GType       type;
             gchar      *name      = NULL;
             gboolean    add_child = FALSE;
@@ -459,7 +460,8 @@ gimp_container_deserialize (GimpConfig *config,
             if (! name)
               name = g_strdup ("");
 
-            child = gimp_container_get_child_by_name (container, name);
+            if (gimp_container_get_unique_names (container))
+              child = gimp_container_get_child_by_name (container, name);
 
             if (! child)
               {
@@ -819,6 +821,17 @@ gimp_container_get_child_by_name (const GimpContainer *container,
 
   return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_name (container,
                                                                   name);
+}
+
+gboolean
+gimp_container_get_unique_names (GimpContainer *container)
+{
+  g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
+
+  if (GIMP_CONTAINER_GET_CLASS (container)->get_unique_names)
+    return GIMP_CONTAINER_GET_CLASS (container)->get_unique_names (container);
+
+  return FALSE;
 }
 
 GimpObject *
