@@ -42,6 +42,7 @@ extern "C" {
 #include "core/gimpimage.h"
 #include "core/gimpcontext.h"
 #include "core/gimpcontainer.h"
+#include "core/gimplist.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimptoolitem.h"
 #include "core/gimptoolgroup.h"
@@ -147,7 +148,8 @@ typedef UseCStructs<GtkBox, GimpToolTileView> CStructs;
 struct ToolTileView : virtual public ImplBase, virtual public ToolTileViewInterface
 {
   bool vertical;
-  GimpToolInfo* hover_tool;
+  GimpToolItem* hover_tool;
+  GimpToolGroup* active_group;
 
   Object<GtkScrolledWindow> event_box;
   Object<GtkDrawingArea> content_area;
@@ -167,12 +169,16 @@ struct ToolTileView : virtual public ImplBase, virtual public ToolTileViewInterf
   void set_context(IValue v);
 
   void on_expose(GtkDrawingArea *widget, GdkEventExpose *event);
-  void draw(GtkDrawingArea* drawing_area, cairo_t* cr, int width, int height);
   gboolean on_button_press(GtkWidget* widget, GdkEventButton* event);
   gboolean on_motion_notify(GtkWidget* widget, GdkEventMotion* event);
   gboolean on_enter_notify(GtkWidget* widget, GdkEventCrossing* event);
   gboolean on_leave_notify(GtkWidget* widget, GdkEventCrossing* event);
   void     on_tool_changed (GtkWidget* widget, GimpToolInfo* tool_info);
+
+
+  void draw(GtkDrawingArea* drawing_area, cairo_t* cr, int width, int height);
+  void get_tool_item_at_position(gint x, gint y, GimpToolGroup** group, GimpToolInfo** item);
+  void configure_size();
 
   // Inherited methods
   virtual void constructed  ();
@@ -228,6 +234,7 @@ ToolTileView::ToolTileView(GObject* o) :
 {
   vertical = true;
   hover_tool = NULL;
+  active_group = NULL;
 }
 
 
@@ -302,11 +309,7 @@ ToolTileView::set_context(IValue v)
     }
 
     tool_changed_handler = ref(context).connect("tool-changed", _D::delegator(this, &ToolTileView::on_tool_changed));
-
-    ref(content_area) [gtk_widget_set_size_request] ( vertical? ICON_SIZE + ICON_MARGIN * 2 + ICON_KNOB_WIDTH: 16 + (ICON_SIZE + ICON_MARGIN * 2) * g_list_length(tools.ptr()),
-                                                    !vertical? ICON_SIZE + ICON_MARGIN * 2 + ICON_KNOB_WIDTH: 16 + (ICON_SIZE + ICON_MARGIN * 2) * g_list_length(tools.ptr())); 
-    ref(event_box) [gtk_widget_set_size_request] ( vertical? ICON_SIZE + ICON_MARGIN * 2 + ICON_KNOB_WIDTH: 16 + (ICON_SIZE + ICON_MARGIN * 2) * g_list_length(tools.ptr()),
-                                                    !vertical? ICON_SIZE + ICON_MARGIN * 2 + ICON_KNOB_WIDTH: 16 + (ICON_SIZE + ICON_MARGIN * 2) * g_list_length(tools.ptr())); 
+    configure_size();
   }
 }
 
@@ -334,21 +337,24 @@ gboolean
 ToolTileView::on_button_press(GtkWidget* widget, GdkEventButton* event)
 {
   if (event->button == 1) {
-    GimpToolItem* active_tool = NULL;
-    gint x, y;
-    x =  vertical ? 0: event->x / (ICON_SIZE + ICON_MARGIN * 2);
-    y = !vertical ? 0: event->y / (ICON_SIZE + ICON_MARGIN * 2);
-    gint index = x + y;
-
-    IList<GimpToolItem*> i_tools = tools;
-    if (index >= 0 && index < g_list_length (tools.ptr()))
-      active_tool = i_tools[index];
-
+    GimpToolGroup* group;
+    GimpToolInfo* active_tool = NULL;
+    get_tool_item_at_position(event->x, event->y, &group, &active_tool);
+    g_print("active_tool=%s, group=%p\n", gimp_object_get_name(G_OBJECT(active_tool)), group);
     if (active_tool) {
-      if (GIMP_IS_TOOL_GROUP(active_tool)) {
-        active_tool = GIMP_TOOL_ITEM(gimp_tool_group_get_active_tool_info(GIMP_TOOL_GROUP(active_tool)));
+      if (group) {
+        gimp_viewable_set_expanded (GIMP_VIEWABLE(group), TRUE);
+        gimp_tool_group_set_active_tool_info (group, active_tool);
+        if (active_group != group)
+          gimp_viewable_set_expanded (GIMP_VIEWABLE(active_group), FALSE);
+        active_group = group;
+        configure_size();
+      } else {
+        gimp_viewable_set_expanded (GIMP_VIEWABLE(active_group), FALSE);
+        active_group = NULL;
+        configure_size();
       }
-      ref(context) [gimp_context_set_tool] (GIMP_TOOL_INFO(active_tool));
+      ref(context) [gimp_context_set_tool] (active_tool);
       ref(event_box) [gtk_widget_queue_draw] ();
     }
 
@@ -361,17 +367,13 @@ ToolTileView::on_button_press(GtkWidget* widget, GdkEventButton* event)
 gboolean
 ToolTileView::on_motion_notify(GtkWidget* widget, GdkEventMotion* event)
 {
-  gint x, y;
-  x =  vertical ? 0: event->x / (ICON_SIZE + ICON_MARGIN * 2);
-  y = !vertical ? 0: event->y / (ICON_SIZE + ICON_MARGIN * 2);
-  gint index = x + y;
-
-  IList<GimpToolInfo*> i_tools = tools;
-  if (index >= 0 && index < g_list_length (tools.ptr()))
-    hover_tool = i_tools[index];
+  GimpToolGroup* group;
+  GimpToolInfo*  tool;
+  get_tool_item_at_position(event->x, event->y, &group, &tool);
+  if (group && !gimp_viewable_get_expanded(GIMP_VIEWABLE(group)))
+    hover_tool = GIMP_TOOL_ITEM(group);
   else
-    hover_tool = NULL;
-
+    hover_tool = GIMP_TOOL_ITEM(tool);
   ref(event_box) [gtk_widget_queue_draw] ();
 
   return TRUE;
@@ -414,10 +416,12 @@ ToolTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
   GimpRGB color1 = { 1.0, 1.0, 1.0, 1};
   GimpRGB color2 = { 0.7, 0.7, 0.7, 1};
   GimpRGB color3 = { 0.25, 0.5, 1.0, 1};
+  GimpRGB color4;
   GtkStyle* style = ref(g_object) [gtk_widget_get_style] ();
   gimp_rgb_set_gdk_color (&color1, &style->bg[GTK_STATE_NORMAL]);
   gimp_rgb_set_gdk_color (&color2, &style->dark[GTK_STATE_SELECTED]);
   gimp_rgb_set_gdk_color (&color3, &style->bg[GTK_STATE_SELECTED]);
+  gimp_rgb_set_gdk_color (&color4, &style->light[GTK_STATE_SELECTED]);
   
   cairo_set_source_rgb (cr, color1.r, color1.g, color1.b);
   cairo_rectangle ( cr, 0, 0, width, height );
@@ -429,49 +433,135 @@ ToolTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
   IList<GimpToolItem*> i_tools = tools;
   int i = 0;
 
-  for (auto tool : i_tools) {
-      GtkToolItem   *item;
-      const gchar   *stock_id;
-      GimpUIManager *ui_manager;
-      gint x, y, w, h;
-      GimpRGB* knob_color = NULL;
-      GimpToolItem* tool_item = tool;
+  std::function<void(IList<GimpToolItem*>&)> draw_tools = [&](IList<GimpToolItem*>& i_tools) {
+    for (auto tool : i_tools) {
+        GtkToolItem   *item;
+        const gchar   *stock_id;
+        GimpUIManager *ui_manager;
+        gint x, y, w, h;
+        GimpRGB* knob_color = NULL;
+        GimpToolItem* tool_item = tool;
 
-      if (GIMP_IS_TOOL_GROUP(tool)) {
-        tool_item = GIMP_TOOL_ITEM(gimp_tool_group_get_active_tool_info (GIMP_TOOL_GROUP(tool)));
+        if (GIMP_IS_TOOL_GROUP(tool)) {
+          tool_item = GIMP_TOOL_ITEM(gimp_tool_group_get_active_tool_info (GIMP_TOOL_GROUP(tool)));
+          if (tool_item == GIMP_TOOL_ITEM(active_tool)) {
+            if (gimp_viewable_get_expanded (GIMP_VIEWABLE (tool))) {
+              GimpList* container = GIMP_LIST(gimp_viewable_get_children (GIMP_VIEWABLE (tool)));
+              IList<GimpToolItem*> sub_tools = container->list;
+
+              x =  vertical? 0: (ICON_SIZE + ICON_MARGIN * 2) * i;
+              y = !vertical? 0: (ICON_SIZE + ICON_MARGIN * 2) * i;
+              w =  vertical? ICON_KNOB_WIDTH + ICON_SIZE + ICON_MARGIN * 2: (ICON_SIZE+ICON_MARGIN*2)*sub_tools.length();
+              h = !vertical? ICON_KNOB_WIDTH + ICON_SIZE + ICON_MARGIN * 2: (ICON_SIZE+ICON_MARGIN*2)*sub_tools.length();
+              cairo_set_source_rgb (cr, color4.r, color4.g, color4.b);
+              cairo_rectangle ( cr, x, y, w, h );
+              cairo_stroke (cr);
+
+              draw_tools(sub_tools);
+              continue;
+            }
+          }
+        }
+
+
+        if (tool_item == GIMP_TOOL_ITEM(active_tool)) {
+          knob_color = &color3;
+        } else if (tool == GIMP_TOOL_ITEM(hover_tool)) {
+          knob_color = &color2;
+        }
+
+        if (knob_color) {
+          x =  vertical? 0 : (ICON_SIZE + ICON_MARGIN * 2) * i;
+          y = !vertical? 0 : (ICON_SIZE + ICON_MARGIN * 2) * i;
+          w =  vertical? ICON_KNOB_WIDTH: ICON_SIZE + ICON_MARGIN * 2;
+          h = !vertical? ICON_KNOB_WIDTH: ICON_SIZE + ICON_MARGIN * 2;
+          cairo_set_source_rgb (cr, knob_color->r, knob_color->g, knob_color->b);
+          cairo_rectangle ( cr, x, y, w, h);
+          cairo_fill (cr);
+        }
+
+        x =  vertical? ICON_MARGIN + ICON_KNOB_WIDTH: (ICON_SIZE + ICON_MARGIN * 2) * i + ICON_MARGIN;
+        y = !vertical? ICON_MARGIN + ICON_KNOB_WIDTH: (ICON_SIZE + ICON_MARGIN * 2) * i + ICON_MARGIN;
+
+        stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (tool_item));
+        cairo_surface_t* surface = build_cairo_surface (GTK_WIDGET (g_object), stock_id, ICON_SIZE, ICON_SIZE);
+        if (surface) {
+          cairo_set_source_surface (cr, surface, x, y);
+          cairo_paint (cr);
+          cairo_surface_destroy (surface);
+        }
+
+      i ++;
+    }
+  };
+  draw_tools(i_tools);
+
+
+}
+
+
+void 
+ToolTileView::get_tool_item_at_position(gint x, gint y, GimpToolGroup** group, GimpToolInfo** item)
+{
+    gint ix, iy;
+    ix =  vertical ? 0: x / (ICON_SIZE + ICON_MARGIN * 2);
+    iy = !vertical ? 0: y / (ICON_SIZE + ICON_MARGIN * 2);
+    gint index = ix + iy;
+
+    if (group)
+      *group = NULL;
+
+    if (item)
+      *item = NULL;
+
+    int i = 0;
+    IList<GimpToolItem*> i_tools = tools;
+    for (auto tool_item: i_tools) {
+      if (GIMP_IS_TOOL_GROUP(tool_item) && gimp_viewable_get_expanded(GIMP_VIEWABLE(tool_item))) {
+        IList<GimpToolItem*> children = GIMP_LIST(gimp_viewable_get_children (GIMP_VIEWABLE(tool_item)))->list;
+        gint length =  children.length();
+        if (i + length <= index ) {
+          i += length;
+          continue;
+        } else {
+          if (group)
+            *group = GIMP_TOOL_GROUP(tool_item);
+          if (item)
+            *item = GIMP_TOOL_INFO(children[index - i]);
+          return;
+        }
+      } else {
+        if (index == i) {
+          if (GIMP_IS_TOOL_GROUP(tool_item)) {
+            if (item) 
+              *item = gimp_tool_group_get_active_tool_info (GIMP_TOOL_GROUP(tool_item));
+            if (group)
+              *group = GIMP_TOOL_GROUP(tool_item);
+          } else if (item)
+            *item = GIMP_TOOL_INFO(tool_item);
+          return;
+        }
       }
+      i ++;
+    }
+}
 
 
-      if (tool_item == GIMP_TOOL_ITEM(active_tool)) {
-        knob_color = &color3;
-      } else if (tool == GIMP_TOOL_ITEM(hover_tool)) {
-        knob_color = &color2;
-      }
+void 
+ToolTileView::configure_size()
+{
+  IList<GimpToolItem*> i_tools = tools;
+  gint length = i_tools.length();
 
-      if (knob_color) {
-        x =  vertical? 0 : (ICON_SIZE + ICON_MARGIN * 2) * i;
-        y = !vertical? 0 : (ICON_SIZE + ICON_MARGIN * 2) * i;
-        w =  vertical? ICON_KNOB_WIDTH: ICON_SIZE + ICON_MARGIN * 2;
-        h = !vertical? ICON_KNOB_WIDTH: ICON_SIZE + ICON_MARGIN * 2;
-        cairo_set_source_rgb (cr, knob_color->r, knob_color->g, knob_color->b);
-        cairo_rectangle ( cr, x, y, w, h);
-        cairo_fill (cr);
-      }
-
-      x =  vertical? ICON_MARGIN + ICON_KNOB_WIDTH: (ICON_SIZE + ICON_MARGIN * 2) * i + ICON_MARGIN;
-      y = !vertical? ICON_MARGIN + ICON_KNOB_WIDTH: (ICON_SIZE + ICON_MARGIN * 2) * i + ICON_MARGIN;
-
-      stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (tool_item));
-      cairo_surface_t* surface = build_cairo_surface (GTK_WIDGET (g_object), stock_id, ICON_SIZE, ICON_SIZE);
-      if (surface) {
-        cairo_set_source_surface (cr, surface, x, y);
-        cairo_paint (cr);
-        cairo_surface_destroy (surface);
-      }
-
-    i ++;
+  if (active_group) {
+    IList<GimpToolItem*> children = GIMP_LIST(gimp_viewable_get_children (GIMP_VIEWABLE(active_group)))->list;
+    length += children.length() - 1;
   }
 
+  ref(content_area) [gtk_widget_set_size_request] ( vertical? ICON_SIZE + ICON_MARGIN * 2 + ICON_KNOB_WIDTH: 16 + (ICON_SIZE + ICON_MARGIN * 2) * length,
+                                                  !vertical? ICON_SIZE + ICON_MARGIN * 2 + ICON_KNOB_WIDTH: 16 + (ICON_SIZE + ICON_MARGIN * 2) * length); 
+  ref(event_box) [gtk_widget_set_size_request] ( vertical? ICON_SIZE + ICON_MARGIN * 2 + ICON_KNOB_WIDTH: 16 + (ICON_SIZE + ICON_MARGIN * 2) * length,
+                                                  !vertical? ICON_SIZE + ICON_MARGIN * 2 + ICON_KNOB_WIDTH: 16 + (ICON_SIZE + ICON_MARGIN * 2) * length); 
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
