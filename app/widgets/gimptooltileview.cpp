@@ -345,12 +345,9 @@ ToolTileView::on_button_press(GtkWidget* widget, GdkEventButton* event)
       if (group) {
         gimp_viewable_set_expanded (GIMP_VIEWABLE(group), TRUE);
         gimp_tool_group_set_active_tool_info (group, active_tool);
-        if (active_group != group)
-          gimp_viewable_set_expanded (GIMP_VIEWABLE(active_group), FALSE);
         active_group = group;
         configure_size();
       } else {
-        gimp_viewable_set_expanded (GIMP_VIEWABLE(active_group), FALSE);
         active_group = NULL;
         configure_size();
       }
@@ -370,7 +367,7 @@ ToolTileView::on_motion_notify(GtkWidget* widget, GdkEventMotion* event)
   GimpToolGroup* group;
   GimpToolInfo*  tool;
   get_tool_item_at_position(event->x, event->y, &group, &tool);
-  if (group && !gimp_viewable_get_expanded(GIMP_VIEWABLE(group)))
+  if (group && group != active_group)
     hover_tool = GIMP_TOOL_ITEM(group);
   else
     hover_tool = GIMP_TOOL_ITEM(tool);
@@ -399,6 +396,22 @@ ToolTileView::on_leave_notify(GtkWidget* widget, GdkEventCrossing* event)
 void
 ToolTileView::on_tool_changed (GtkWidget* widget, GimpToolInfo* tool_info)
 {
+  IList<GimpToolItem*> i_tools = tools;
+  for (auto tool : i_tools) {
+    if (GIMP_IS_TOOL_GROUP(tool)) {
+      GimpList* container = GIMP_LIST(gimp_viewable_get_children (GIMP_VIEWABLE (tool)));
+      IList<GimpToolItem*> sub_tools = container->list;
+      for (auto sub_tool : sub_tools) {
+        if (sub_tool == GIMP_TOOL_ITEM(tool_info)) {
+          active_group = GIMP_TOOL_GROUP(tool);
+          break;
+        }
+      }
+    } else if (tool == GIMP_TOOL_ITEM(tool_info)) {
+      active_group = NULL;
+    }
+  }
+
   ref(event_box) [gtk_widget_queue_draw] ();  
 }
 
@@ -444,22 +457,20 @@ ToolTileView::draw(GtkDrawingArea * widget, cairo_t* cr, int width, int height)
 
         if (GIMP_IS_TOOL_GROUP(tool)) {
           tool_item = GIMP_TOOL_ITEM(gimp_tool_group_get_active_tool_info (GIMP_TOOL_GROUP(tool)));
-          if (tool_item == GIMP_TOOL_ITEM(active_tool)) {
-            if (gimp_viewable_get_expanded (GIMP_VIEWABLE (tool))) {
-              GimpList* container = GIMP_LIST(gimp_viewable_get_children (GIMP_VIEWABLE (tool)));
-              IList<GimpToolItem*> sub_tools = container->list;
+          if (active_group == GIMP_TOOL_GROUP(tool)) {
+            GimpList* container = GIMP_LIST(gimp_viewable_get_children (GIMP_VIEWABLE (tool)));
+            IList<GimpToolItem*> sub_tools = container->list;
 
-              x =  vertical? 0: (ICON_SIZE + ICON_MARGIN * 2) * i;
-              y = !vertical? 0: (ICON_SIZE + ICON_MARGIN * 2) * i;
-              w =  vertical? ICON_KNOB_WIDTH + ICON_SIZE + ICON_MARGIN * 2: (ICON_SIZE+ICON_MARGIN*2)*sub_tools.length();
-              h = !vertical? ICON_KNOB_WIDTH + ICON_SIZE + ICON_MARGIN * 2: (ICON_SIZE+ICON_MARGIN*2)*sub_tools.length();
-              cairo_set_source_rgb (cr, color4.r, color4.g, color4.b);
-              cairo_rectangle ( cr, x, y, w, h );
-              cairo_stroke (cr);
+            x =  vertical? 0: (ICON_SIZE + ICON_MARGIN * 2) * i;
+            y = !vertical? 0: (ICON_SIZE + ICON_MARGIN * 2) * i;
+            w =  vertical? ICON_KNOB_WIDTH + ICON_SIZE + ICON_MARGIN * 2: (ICON_SIZE+ICON_MARGIN*2)*sub_tools.length();
+            h = !vertical? ICON_KNOB_WIDTH + ICON_SIZE + ICON_MARGIN * 2: (ICON_SIZE+ICON_MARGIN*2)*sub_tools.length();
+            cairo_set_source_rgb (cr, color4.r, color4.g, color4.b);
+            cairo_rectangle ( cr, x, y, w, h );
+            cairo_stroke (cr);
 
-              draw_tools(sub_tools);
-              continue;
-            }
+            draw_tools(sub_tools);
+            continue;
           }
         }
 
@@ -517,7 +528,7 @@ ToolTileView::get_tool_item_at_position(gint x, gint y, GimpToolGroup** group, G
     int i = 0;
     IList<GimpToolItem*> i_tools = tools;
     for (auto tool_item: i_tools) {
-      if (GIMP_IS_TOOL_GROUP(tool_item) && gimp_viewable_get_expanded(GIMP_VIEWABLE(tool_item))) {
+      if (GIMP_IS_TOOL_GROUP(tool_item) && tool_item == GIMP_TOOL_ITEM(active_group)) {
         IList<GimpToolItem*> children = GIMP_LIST(gimp_viewable_get_children (GIMP_VIEWABLE(tool_item)))->list;
         gint length =  children.length();
         if (i + length <= index ) {
