@@ -214,7 +214,7 @@ gimp_display_shell_canvas_size_allocate (GtkWidget        *widget,
       gimp_display_shell_scaled (shell);
 
       /* gimp-painter 2.8: add layer_tile_view */
-      gimp_display_shell_set_layer_view (shell);
+      gimp_display_shell_update_on_canvas_views (shell);
 
       /* Reset */
       shell->size_allocate_from_configure_event = FALSE;

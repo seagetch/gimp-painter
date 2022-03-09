@@ -435,9 +435,9 @@ gimp_image_window_constructed (GObject *object)
   gtk_widget_show (hbox);
   {
     GtkWidget* image;
-    private->toolbar = 
-        gimp_tool_options_toolbar_new (private->gimp,
-                                        gimp_dialog_factory_get_menu_factory (private->dialog_factory));
+//    private->toolbar = 
+//        gimp_tool_options_toolbar_new (private->gimp,
+//                                        gimp_dialog_factory_get_menu_factory (private->dialog_factory));
     gtk_box_pack_start (GTK_BOX (hbox), private->toolbar,
             TRUE, TRUE, 0);
   }
@@ -588,7 +588,7 @@ gimp_image_window_configure_for_toolbar_window_mode(GimpImageWindow* window)
   gtk_widget_set_visible (private->notebook, FALSE);
   gtk_widget_set_visible (private->toolbar_container, TRUE);
   gtk_widget_set_visible (private->toolbar_container2, TRUE);
-  gtk_widget_set_visible (private->toolbar, TRUE);
+//  gtk_widget_set_visible (private->toolbar, TRUE);
   gtk_widget_set_visible (private->menubar, TRUE);
 //  gtk_widget_set_visible (private->layer_tile_view, FALSE);
 
@@ -651,7 +651,7 @@ gimp_image_window_configure_for_non_toolbar_window_mode(GimpImageWindow* window)
   gtk_widget_set_visible (private->notebook, TRUE);
   gtk_widget_set_visible (private->toolbar_container, show_docks);
   gtk_widget_set_visible (private->toolbar_container2, show_docks);
-  gtk_widget_set_visible (private->toolbar, show_docks);
+//  gtk_widget_set_visible (private->toolbar, show_docks);
   gtk_widget_set_visible (private->menubar, config->single_window_mode);
   gtk_widget_set_visible (private->menubar, TRUE);
   gtk_widget_set_visible (private->left_docks, FALSE);
@@ -2074,6 +2074,11 @@ gimp_image_window_switch_page (GtkNotebook     *notebook,
   if (shell == private->active_shell)
     return;
 
+  if (private->active_shell && private->active_shell->toolbar)
+    gtk_widget_hide (gtk_bin_get_child (GTK_BIN(private->active_shell->toolbar)));
+  if (shell && shell->toolbar)
+    gtk_widget_show (gtk_bin_get_child (GTK_BIN(shell->toolbar)));
+
   gimp_image_window_switch_active_shell (window, shell);
   active_display = private->active_shell->display;
 
@@ -2529,8 +2534,8 @@ gimp_image_window_resized (GtkWidget       *widget,
       g_object_ref(G_OBJECT(widget2));
       gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget2));
 
-      g_object_ref(G_OBJECT(private->toolbar));
-      gtk_container_remove(GTK_CONTAINER(private->toolbar_container2), private->toolbar);
+//      g_object_ref(G_OBJECT(private->toolbar));
+//      gtk_container_remove(GTK_CONTAINER(private->toolbar_container2), private->toolbar);
       
       gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, FALSE, TRUE);
       gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, FALSE, FALSE);
@@ -2538,8 +2543,8 @@ gimp_image_window_resized (GtkWidget       *widget,
       g_object_unref(G_OBJECT(widget1));
       g_object_unref(G_OBJECT(widget2));
 
-      gtk_box_pack_start(GTK_BOX(private->toolbar_container), private->toolbar, TRUE, TRUE, 0);
-      g_object_unref(G_OBJECT(private->toolbar));
+//      gtk_box_pack_start(GTK_BOX(private->toolbar_container), private->toolbar, TRUE, TRUE, 0);
+//      g_object_unref(G_OBJECT(private->toolbar));
 
       gimp_image_window_set_dock_orientation (window, GTK_ORIENTATION_VERTICAL);
       gimp_image_window_configure_window_mode(window);
@@ -2556,8 +2561,8 @@ gimp_image_window_resized (GtkWidget       *widget,
       g_object_ref(G_OBJECT(widget2));
       gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget2));
 
-      g_object_ref(G_OBJECT(private->toolbar));
-      gtk_container_remove(GTK_CONTAINER(private->toolbar_container), private->toolbar);
+//      g_object_ref(G_OBJECT(private->toolbar));
+//      gtk_container_remove(GTK_CONTAINER(private->toolbar_container), private->toolbar);
       
       gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, FALSE, FALSE);
       gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, FALSE, TRUE);
@@ -2565,8 +2570,8 @@ gimp_image_window_resized (GtkWidget       *widget,
       g_object_unref(G_OBJECT(widget1));
       g_object_unref(G_OBJECT(widget2));
 
-      gtk_box_pack_start(GTK_BOX(private->toolbar_container2), private->toolbar, TRUE, TRUE, 0);
-      g_object_unref(G_OBJECT(private->toolbar));
+//      gtk_box_pack_start(GTK_BOX(private->toolbar_container2), private->toolbar, TRUE, TRUE, 0);
+//      g_object_unref(G_OBJECT(private->toolbar));
 
       gimp_image_window_set_dock_orientation (window, GTK_ORIENTATION_HORIZONTAL);
       gimp_image_window_configure_window_mode(window);

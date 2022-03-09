@@ -117,6 +117,7 @@ struct _GimpDisplayShell
   GtkWidget         *statusbar;        /*  statusbar                          */
   GtkWidget         *layer_view;       /*  layer tile view (gimp-painter 2.8) */
   GtkWidget         *toolbox;          /*  tool box widget (gimp-painter 2.8) */
+  GtkWidget         *toolbar;          /*  toolbar widget  (gimp-painter 2.8) */
 
   cairo_surface_t   *render_surface;   /*  buffer for rendering the image     */
   cairo_surface_t   *mask_surface;     /*  buffer for rendering the mask      */
@@ -296,5 +297,6 @@ void              gimp_display_shell_set_mask      (GimpDisplayShell   *shell,
                                                     GimpDrawable       *mask,
                                                     const GimpRGB      *color);
 
-void              gimp_display_shell_set_layer_view (GimpDisplayShell* shell);
+void              gimp_display_shell_update_on_canvas_views (GimpDisplayShell* shell);
+void              gimp_display_shell_update_on_canvas_opacity (GimpDisplayShell* shell, gboolean fade_out);
 #endif /* __GIMP_DISPLAY_SHELL_H__ */

@@ -264,6 +264,8 @@ gimp_display_shell_begin_tool (Gimp             *gimp,
     {
       GimpCoords last_motion;
 
+      gimp_display_shell_update_on_canvas_opacity (shell, TRUE);
+
       /* Use the last evaluated dynamic axes instead of the
       * button_press event's ones because the click is
       * usually at the same spot as the last motion event
@@ -932,6 +934,7 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
                                                         time, state,
                                                         display);
                   }
+                gimp_display_shell_update_on_canvas_opacity (shell, FALSE);
               }
 
             /*  update the tool's modifier state because it didn't get
@@ -1544,7 +1547,7 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
                                     state, update_sw_cursor);
 
   /* gimp-painter 2.8 */
-  gimp_display_shell_set_layer_view (shell); 
+  gimp_display_shell_update_on_canvas_views (shell); 
   return return_val;
 }
 
