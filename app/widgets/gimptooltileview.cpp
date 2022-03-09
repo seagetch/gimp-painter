@@ -404,11 +404,13 @@ ToolTileView::on_tool_changed (GtkWidget* widget, GimpToolInfo* tool_info)
       for (auto sub_tool : sub_tools) {
         if (sub_tool == GIMP_TOOL_ITEM(tool_info)) {
           active_group = GIMP_TOOL_GROUP(tool);
+          configure_size();
           break;
         }
       }
     } else if (tool == GIMP_TOOL_ITEM(tool_info)) {
       active_group = NULL;
+      configure_size();
     }
   }
 
