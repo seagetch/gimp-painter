@@ -280,6 +280,10 @@ public:
   GList* nth(int index) {
     return g_list_nth(ptr(), index);
   }
+
+  gint length() {
+    return g_list_length (ptr());
+  }
 };
 
 template<typename Data>
