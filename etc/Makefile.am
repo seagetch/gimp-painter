@@ -7,6 +7,7 @@ gimpsysconf_DATA = \
 	menurc		\
 	sessionrc	\
 	templaterc	\
+	toolrc		\
 	unitrc
 
 EXTRA_DIST = \
