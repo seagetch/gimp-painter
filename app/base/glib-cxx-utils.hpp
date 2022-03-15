@@ -9,6 +9,7 @@ extern "C" {
 #include "core/gimpparamspecs.h"
 }
 #include <iterator>
+#include <typeinfo>
 
 #include "base/scopeguard.hpp"
 #include "base/delegators.hpp"
@@ -1105,7 +1106,7 @@ public:
 
   template<typename F>
   DelegatorProxy connect(const gchar* name, F f) {
-    g_signal_connect_delegator (G_OBJECT(widget), name, Delegators::delegator(obj, f));
+    g_signal_connect_delegator_noret (G_OBJECT(widget), name, Delegators::delegator(obj, f));
     return *this;
   }
   ;
@@ -1122,7 +1123,7 @@ class Decorator : public DelegatorProxy<W, T> {
 public:
 
   Decorator(W* w, T* d) : DelegatorProxy<W, T>(w, d) {
-    CString attr = g_strdup_printf("_decorator%lx", (gulong)this->obj);
+    CString attr = g_strdup_printf("_decorator%s", typeid(T).name());
     g_object_set_cxx_object(G_OBJECT(this->widget), attr.ptr(), this);
   };
 
@@ -1133,6 +1134,28 @@ public:
     }
   }
 
+  T* get_delegator() { return this->obj; }
+
+  template<typename Ret, typename... Args>
+  static Ret call(W* widget, Ret (T::*f)(Args...), Args... args) {
+    CString attr = g_strdup_printf("_decorator%s", typeid(T).name());
+    auto decorator = (Decorator*)g_object_get_data(G_OBJECT(widget), attr.ptr());
+    if (decorator && decorator->get_delegator()) {
+      T* delegator = decorator->get_delegator();
+      return (delegator->*f)(args...);
+    }
+
+  }
+
+  template<typename... Args>
+  static void call(W* widget, void (T::*f)(Args...), Args... args) {
+    CString attr = g_strdup_printf("_decorator%s", typeid(T).name());
+    auto decorator = (Decorator*)g_object_get_data(G_OBJECT(widget), attr.ptr());
+    if (decorator && decorator->get_delegator()) {
+      T* delegator = decorator->get_delegator();
+      (delegator->*f)(args...);
+    }
+  }
 };
 
 template<typename W, typename T>
@@ -1140,6 +1163,14 @@ DelegatorProxy<W, T>* delegator(W* w, T* d) { return new DelegatorProxy<W, T>(w,
 
 template<typename W, typename T>
 DelegatorProxy<W, T>* decorator(W* w, T* d) { return new Decorator<W, T>(w, d); };
+
+template<typename W, typename T>
+void undecorate(W* w) {
+  CString attr = g_strdup_printf("_decorator%s", typeid(T).name());
+  Decorator<W, T>* decorator = reinterpret_cast<Decorator<W, T>*>(g_object_steal_data (G_OBJECT(w), attr.ptr()));
+  if (decorator)
+    delete decorator;
+};
 
 
 template<
