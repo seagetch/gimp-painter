@@ -66,23 +66,23 @@ GType               gimp_template_get_type            (void) G_GNUC_CONST;
 
 GimpTemplate      * gimp_template_new                 (const gchar  *name);
 
-void                gimp_template_set_from_image      (GimpTemplate *template,
+void                gimp_template_set_from_image      (GimpTemplate *_template,
                                                        GimpImage    *image);
 
-gint                gimp_template_get_width           (GimpTemplate *template);
-gint                gimp_template_get_height          (GimpTemplate *template);
-GimpUnit            gimp_template_get_unit            (GimpTemplate *template);
+gint                gimp_template_get_width           (GimpTemplate *_template);
+gint                gimp_template_get_height          (GimpTemplate *_template);
+GimpUnit            gimp_template_get_unit            (GimpTemplate *_template);
 
-gdouble             gimp_template_get_resolution_x    (GimpTemplate *template);
-gdouble             gimp_template_get_resolution_y    (GimpTemplate *template);
-GimpUnit            gimp_template_get_resolution_unit (GimpTemplate *template);
+gdouble             gimp_template_get_resolution_x    (GimpTemplate *_template);
+gdouble             gimp_template_get_resolution_y    (GimpTemplate *_template);
+GimpUnit            gimp_template_get_resolution_unit (GimpTemplate *_template);
 
-GimpImageBaseType   gimp_template_get_image_type      (GimpTemplate *template);
-GimpFillType        gimp_template_get_fill_type       (GimpTemplate *template);
+GimpImageBaseType   gimp_template_get_image_type      (GimpTemplate *_template);
+GimpFillType        gimp_template_get_fill_type       (GimpTemplate *_template);
 
-const gchar       * gimp_template_get_comment         (GimpTemplate *template);
+const gchar       * gimp_template_get_comment         (GimpTemplate *_template);
 
-guint64             gimp_template_get_initial_size    (GimpTemplate *template);
+guint64             gimp_template_get_initial_size    (GimpTemplate *_template);
 
 
 #endif /* __GIMP_TEMPLATE__ */
