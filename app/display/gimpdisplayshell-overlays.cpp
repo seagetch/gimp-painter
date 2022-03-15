@@ -222,8 +222,8 @@ public:
 
       if (distance < 200 * 200) {
         gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), widget, 0.1);
-      } else if (distance > 400 * 400)
-        gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), widget, opacity);
+      }// else if (distance > 400 * 400)
+      //  gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), widget, opacity);
     }
   }
 
@@ -551,6 +551,7 @@ void gimp_display_shell_attach_on_canvas_view (GimpDisplayShell* shell, GtkWidge
   if (!widget)
     return;
   shell->docks = widget;
+  gtk_widget_set_size_request (widget, 256, 256); // initial size for allocation.
   auto impl = new OverlayWidgetDecorator(shell->docks, shell, &shell->docks);
   impl->updator = [] (GimpDisplayShell* shell) {
     GtkAllocation alloc, alloc2, alloc3, alloc4;
@@ -567,10 +568,7 @@ void gimp_display_shell_attach_on_canvas_view (GimpDisplayShell* shell, GtkWidge
     gtk_widget_get_allocation(GTK_WIDGET (shell->color_selector), &alloc4);
 
     if (alloc.width < alloc.height) {
-      gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->docks, 
-          0,
-          0);
-  //        (alloc.height - alloc3.height) / 2 - alloc2.height - 4);
+      gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->docks, 0, 0);
 
       gtk_widget_set_size_request (shell->docks,
           MAX(alloc.width - alloc4.width - alloc2.width - 4, 1), 
@@ -591,9 +589,10 @@ void gimp_display_shell_attach_on_canvas_view (GimpDisplayShell* shell, GtkWidge
 }
 
 
-void gimp_display_shell_detach_on_canvas_view (GimpDisplayShell* shell, GtkWidget* widget)
+void gimp_display_shell_detach_on_canvas_view (GimpDisplayShell* shell, GimpCanvas* canvas, GtkWidget* widget)
 {
   GLib::undecorate<GtkWidget, OverlayWidgetDecorator>(widget);
-  gtk_container_remove (GTK_CONTAINER(shell->canvas), widget);
-  shell->docks = NULL;
+  gtk_container_remove (GTK_CONTAINER(canvas), widget);
+  if (shell->docks == widget)
+    shell->docks = NULL;
 }

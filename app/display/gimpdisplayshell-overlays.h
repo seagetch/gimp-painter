@@ -21,6 +21,6 @@
 void              gimp_display_shell_update_on_canvas_views (GimpDisplayShell* shell);
 void              gimp_display_shell_update_on_canvas_opacity (GimpDisplayShell* shell, gint x, gint y, gboolean released);
 void gimp_display_shell_attach_on_canvas_view (GimpDisplayShell* shell, GtkWidget* widget);
-void gimp_display_shell_detach_on_canvas_view (GimpDisplayShell* shell, GtkWidget* widget);
+void gimp_display_shell_detach_on_canvas_view (GimpDisplayShell* shell, GimpCanvas* canvas, GtkWidget* widget);
 
 #endif /* __GIMP_DISPLAY_SHELL_OVERLAYS_H__ */
