@@ -114,6 +114,8 @@ libappdisplay_a_sources = \
 	gimpdisplayshell-icon.h			\
 	gimpdisplayshell-items.c		\
 	gimpdisplayshell-items.h		\
+	gimpdisplayshell-overlays.cpp	\
+	gimpdisplayshell-overlays.h		\
 	gimpdisplayshell-progress.c		\
 	gimpdisplayshell-progress.h		\
 	gimpdisplayshell-render.c		\

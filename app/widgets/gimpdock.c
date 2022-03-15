@@ -67,6 +67,8 @@ typedef struct _GimpDockTitlebar GimpDockTitlebar;
 struct _GimpDockTitlebar
 {
   GtkWidget *box;
+  GtkWidget *box2;
+  GtkWidget *scrolled;
   GtkWidget *label;
   GtkWidget *button;
 };
@@ -89,6 +91,7 @@ struct _GimpDockPrivate
   gint               orig_w, orig_h;
 };
 
+#define TITLEBAR_BUTTON_SIZE 16
 
 static void       gimp_dock_dispose                (GObject      *object);
 
@@ -223,14 +226,15 @@ gimp_dock_init (GimpDock *dock)
   gtk_box_pack_start (GTK_BOX (dock->p->main_vbox), dock->p->titlebar.box, FALSE, TRUE, 0);
   gtk_widget_show (dock->p->titlebar.box);
 
-  /* Contents holder */
-  dock->p->content_hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (dock->p->main_vbox), dock->p->content_hbox, TRUE, TRUE, 0);
-  gtk_widget_show (dock->p->content_hbox);
-
   /* Shaded titlebar */
   gimp_dock_titlebar_init (&dock->p->shaded_titlebar, TRUE, G_OBJECT (dock));
+
+  /* Contents holder */
+  dock->p->content_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_pack_start (GTK_BOX (dock->p->main_vbox), dock->p->content_hbox, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (dock->p->content_hbox), dock->p->shaded_titlebar.box, FALSE, TRUE, 0);
+  gtk_widget_show (dock->p->content_hbox);
+
   gtk_widget_hide (dock->p->shaded_titlebar.box);
 
   dock->p->orig_w = -1;
@@ -243,7 +247,7 @@ gimp_dock_init (GimpDock *dock)
                                  gimp_dock_dropped_cb,
                                  dock);
 
-  gtk_container_add (GTK_CONTAINER (dock->p->content_hbox), dock->p->paned_vbox);
+  gtk_box_pack_end (dock->p->content_hbox, dock->p->paned_vbox, TRUE, TRUE, 0);
   gtk_widget_show (dock->p->paned_vbox);
 
   g_signal_connect(G_OBJECT(dock), "notify::orientation", G_CALLBACK(gimp_dock_orientation_notify), NULL);
@@ -257,14 +261,15 @@ gimp_dock_create_icon_from_data (const GdkPixdata* data)
   return image;
 }
 
+
 static void
 gimp_dock_titlebar_init (GimpDockTitlebar *titlebar, gboolean shaded, GObject *dock)
 {
-  GtkWidget *box;
   GtkWidget *image;
   GtkWidget *frame;
   GdkColor   fg_color = { 0, 0xffff, 0xffff, 0xffff};
   GdkColor   bg_color = { 0, 0x8000, 0x8000, 0x8000};
+  GtkOrientation orientation;
   
   titlebar->box = gtk_event_box_new ();
   frame         = gtk_frame_new (NULL);
@@ -272,15 +277,22 @@ gimp_dock_titlebar_init (GimpDockTitlebar *titlebar, gboolean shaded, GObject *d
   gtk_widget_show (frame);
 
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
+
+  orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE(GIMP_DOCK(dock)->p->paned_vbox));
   
   if (!shaded)
     {
-      box           = gtk_hbox_new (FALSE, 3);
-      gtk_container_add (GTK_CONTAINER(frame), box);
-      gtk_widget_show (box);
+      titlebar->box2        = gtk_hbox_new (FALSE, 3);
+      gtk_container_add (GTK_CONTAINER(frame), titlebar->box2);
+      gtk_widget_show (titlebar->box2);
+
+      titlebar->scrolled = gtk_scrolled_window_new (NULL, NULL);
+      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(titlebar->scrolled), GTK_POLICY_NEVER, GTK_POLICY_NEVER);
+      gtk_widget_show(titlebar->scrolled);
+      gtk_box_pack_start (GTK_BOX (titlebar->box2), titlebar->scrolled, TRUE, TRUE, 0);
 
       titlebar->label    = gtk_label_new (gtk_widget_get_name (GTK_WIDGET (dock)));
-      gtk_box_pack_start (GTK_BOX (box), titlebar->label, TRUE, TRUE, 0);
+      gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW(titlebar->scrolled), titlebar->label);
       gtk_misc_set_alignment (GTK_MISC (titlebar->label), 0.0, 0.5);
       gtk_widget_show (titlebar->label);
       
@@ -288,7 +300,7 @@ gimp_dock_titlebar_init (GimpDockTitlebar *titlebar, gboolean shaded, GObject *d
       gtk_button_set_relief (GTK_BUTTON (titlebar->button), GTK_RELIEF_NONE);
       image = gimp_dock_create_icon_from_data (&gimp_dock_titlebar_minimize);
       gtk_button_set_image (GTK_BUTTON (titlebar->button), image);
-      gtk_box_pack_end (GTK_BOX (box), titlebar->button, FALSE, FALSE, 0);
+      gtk_box_pack_end (GTK_BOX (titlebar->box2), titlebar->button, FALSE, FALSE, 0);
       g_signal_connect_object (G_OBJECT (titlebar->button), "clicked", 
                                G_CALLBACK(gimp_dock_titlebar_button_clicked), 
                                G_OBJECT (dock), 0);
@@ -296,31 +308,57 @@ gimp_dock_titlebar_init (GimpDockTitlebar *titlebar, gboolean shaded, GObject *d
     }
   else
     {
-      box           = gtk_vbox_new (FALSE, 3);
-      gtk_container_add (GTK_CONTAINER(frame), box);
-      gtk_widget_show (box);
+      titlebar->box2           = gtk_box_new (orientation, 3);
+      gtk_container_add (GTK_CONTAINER(frame), titlebar->box2);
+      gtk_widget_show (titlebar->box2);
       
       titlebar->button = gtk_button_new ();
       gtk_button_set_relief (GTK_BUTTON (titlebar->button), GTK_RELIEF_NONE);
       image = gimp_dock_create_icon_from_data (&gimp_dock_titlebar_maximize);
       gtk_button_set_image (GTK_BUTTON (titlebar->button), image);
-      gtk_box_pack_start (GTK_BOX (box), titlebar->button, FALSE, TRUE, 0);
+      gtk_box_pack_end (GTK_BOX (titlebar->box2), titlebar->button, FALSE, FALSE, 0);
       g_signal_connect_object (G_OBJECT (titlebar->button), "clicked", 
                                G_CALLBACK(gimp_dock_titlebar_button_clicked), 
                                G_OBJECT (dock), 0);
       gtk_widget_show (titlebar->button);
 
+      titlebar->scrolled = gtk_scrolled_window_new (NULL, NULL);
+      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(titlebar->scrolled), GTK_POLICY_AUTOMATIC, GTK_POLICY_NEVER);
+      gtk_widget_show(titlebar->scrolled);
+      gtk_box_pack_start (GTK_BOX (titlebar->box2), titlebar->scrolled, TRUE, TRUE, 0);
+
       titlebar->label    = gtk_label_new (gtk_widget_get_name (GTK_WIDGET (dock)));
-      gtk_box_pack_start (GTK_BOX (box), titlebar->label, TRUE, TRUE, 0);
+      gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW(titlebar->scrolled), titlebar->label);
       gtk_widget_show (titlebar->label);
       gtk_misc_set_alignment (GTK_MISC (titlebar->label), 0.5, 0.0);
-      gtk_label_set_angle (GTK_LABEL (titlebar->label), 90);
+      gtk_label_set_angle (GTK_LABEL (titlebar->label), orientation == GTK_ORIENTATION_VERTICAL? 90: 0);
     }
     
     gtk_widget_modify_bg (titlebar->box, GTK_STATE_NORMAL, &bg_color);
-    gtk_widget_modify_fg (titlebar->label, GTK_STATE_NORMAL, &fg_color);
+//    gtk_widget_modify_fg (titlebar->label, GTK_STATE_NORMAL, &fg_color);
+//    gtk_widget_modify_bg (titlebar->label, GTK_STATE_NORMAL, &bg_color);
   
 }
+
+static void
+gimp_dock_titlebar_update(GimpDockTitlebar* titlebar, GimpDock* dock)
+{
+  GtkOrientation orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE(dock->p->paned_vbox));
+  g_print("gimp_dock_titlebar_update: orientation==vertical ==> %d\n", orientation == GTK_ORIENTATION_VERTICAL);
+  gtk_orientable_set_orientation (GTK_ORIENTABLE(titlebar->box2), orientation);
+  gtk_label_set_angle (GTK_LABEL (titlebar->label), orientation == GTK_ORIENTATION_VERTICAL? 90: 0);
+
+  if (orientation == GTK_ORIENTATION_VERTICAL) {
+    gtk_misc_set_alignment (GTK_MISC (titlebar->label), 0.5, 0.0);
+
+  } else {
+    gtk_misc_set_alignment (GTK_MISC (titlebar->label), 0.0, 0.5);
+
+  }
+
+
+}
+
 
 static void
 gimp_dock_dispose (GObject *object)
@@ -905,11 +943,13 @@ gimp_dock_temp_remove (GimpDock  *dock,
 static void
 gimp_dock_titlebar_set_shaded (GimpDock *dock, gboolean shaded)
 {
-  g_return_if_fail (GIMP_IS_DOCK (dock));
-  gint w, h;
+  GtkAllocation alloc;
   GtkWidget *parent_paned = NULL;
   GtkWidget *paned_child  = NULL;
   gboolean   resize;
+  GtkOrientation orientation;
+
+  g_return_if_fail (GIMP_IS_DOCK (dock));
    
   if (dock->p->shaded == shaded)
     return;
@@ -937,7 +977,10 @@ gimp_dock_titlebar_set_shaded (GimpDock *dock, gboolean shaded)
       gtk_widget_show (dock->p->paned_vbox);
       gtk_widget_hide (dock->p->shaded_titlebar.box);
       gtk_widget_show (dock->p->titlebar.box);
+      g_print("Set original: allocation=%d,%d\n", dock->p->orig_w, dock->p->orig_h);
+
       gtk_widget_set_size_request (GTK_WIDGET (dock), dock->p->orig_w, dock->p->orig_h);
+//      gtk_widget_set_size_request(GTK_WIDGET(dock->p->titlebar.scrolled), 1, 1);
       gtk_widget_queue_resize (GTK_WIDGET (dock));
       gimp_dock_titlebar_update_description (&dock->p->titlebar, dock);
     }
@@ -968,7 +1011,7 @@ gimp_dock_titlebar_set_shaded (GimpDock *dock, gboolean shaded)
             g_object_set (G_OBJECT (paned_child), "position-set", FALSE, NULL);
 */
       }
-
+      
       parent_paned = GTK_WIDGET (dock);
       while (parent_paned)
         {
@@ -982,9 +1025,17 @@ gimp_dock_titlebar_set_shaded (GimpDock *dock, gboolean shaded)
       gtk_widget_hide (dock->p->paned_vbox);
       gtk_widget_show (dock->p->shaded_titlebar.box);
       gtk_widget_hide (dock->p->titlebar.box);
-      gtk_widget_get_size_request (GTK_WIDGET (dock), &dock->p->orig_w, &dock->p->orig_h);
-      gtk_widget_get_size_request (dock->p->shaded_titlebar.box, &w, &h);
-      gtk_widget_set_size_request (GTK_WIDGET (dock), w, h);
+      gtk_widget_get_allocation (GTK_WIDGET(dock), &alloc);
+      dock->p->orig_w = alloc.width;
+      dock->p->orig_h = alloc.height;
+      gtk_widget_get_allocation (dock->p->shaded_titlebar.button, &alloc);
+      orientation = gtk_orientable_get_orientation(GTK_ORIENTABLE(dock->p->paned_vbox));
+      if (orientation == GTK_ORIENTATION_HORIZONTAL) {
+        gtk_widget_set_size_request (GTK_WIDGET(dock), -1, alloc.width);
+      } else {
+        gtk_widget_set_size_request (GTK_WIDGET(dock), alloc.height, -1);
+      }
+      gtk_widget_set_size_request(GTK_WIDGET(dock->p->titlebar.scrolled), TITLEBAR_BUTTON_SIZE, TITLEBAR_BUTTON_SIZE);
       gtk_widget_queue_resize (GTK_WIDGET (dock));
     }
 }
@@ -1006,6 +1057,7 @@ gimp_dock_titlebar_update_description (GimpDockTitlebar* titlebar, GimpDock *doc
 {
   gchar *desc = gimp_dock_get_description (dock, TRUE);
   gtk_label_set_label (GTK_LABEL (titlebar->label), desc);
+
   g_free (desc);
 }
 
@@ -1030,5 +1082,9 @@ gimp_dock_orientation_notify     (GimpDock     *dock,
                                   void         *data)
 {
   GtkOrientation orientation = gtk_orientable_get_orientation(GTK_ORIENTABLE(dock));
-  gtk_orientable_set_orientation(GTK_ORIENTABLE(dock->p->paned_vbox), orientation); 
+  gtk_orientable_set_orientation(GTK_ORIENTABLE(dock->p->paned_vbox), orientation);
+  gtk_orientable_set_orientation(GTK_ORIENTABLE(dock->p->content_hbox), 
+      orientation == GTK_ORIENTATION_VERTICAL? GTK_ORIENTATION_HORIZONTAL: GTK_ORIENTATION_VERTICAL);
+
+  gimp_dock_titlebar_update(&dock->p->shaded_titlebar, dock);
 }

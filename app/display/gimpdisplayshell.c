@@ -372,9 +372,11 @@ gimp_display_shell_init (GimpDisplayShell *shell)
   gimp_help_connect (GTK_WIDGET (shell), gimp_standard_help_func,
                      GIMP_HELP_IMAGE_WINDOW, NULL);
   
-  shell->layer_view = NULL;
-  shell->toolbox    = NULL;
-  shell->toolbar    = NULL;
+  shell->layer_view     = NULL;
+  shell->toolbox        = NULL;
+  shell->toolbar        = NULL;
+  shell->color_selector = NULL;
+  shell->fg_bg_edit     = NULL;
 
   shell->snap_perspective = FALSE;
 }
@@ -1934,154 +1936,4 @@ gimp_display_shell_set_mask (GimpDisplayShell *shell,
     shell->mask_color = *color;
 
   gimp_display_shell_expose_full (shell);
-}
-
-
-static void
-gimp_display_shell_reparent_on_canvas_widget (GimpDisplayShell* shell, GtkWidget* widget)
-{
-  GtkWidget* old_parent;
-  g_return_if_fail (widget != NULL);
-
-  old_parent = gtk_widget_get_parent (widget);
-  if (old_parent != shell->canvas) {
-    g_print("Reparent\n");
-    if (old_parent) {
-      g_object_ref (G_OBJECT (widget));
-      gtk_container_remove(GTK_CONTAINER(old_parent), widget);
-    }
-    gimp_overlay_box_add_child (GIMP_OVERLAY_BOX (shell->canvas), widget, 0.0, 0.0);
-    if (old_parent)
-      g_object_unref (G_OBJECT (widget));
-  }  
-}
-
-
-void
-gimp_display_shell_update_on_canvas_views (GimpDisplayShell* shell) 
-{
-  GtkAllocation alloc;
-  GimpImage* image;
-  image = gimp_display_get_image (shell->display);
-  // FIXME: position of widget is adjusted everytime cursor moves on canvas.
-  gtk_widget_get_allocation(GTK_WIDGET(shell->canvas), &alloc);
-
-  if (!image) {
-    if (shell->layer_view) {
-      GtkWidget* old_parent = gtk_widget_get_parent (shell->layer_view);
-      gtk_container_remove(GTK_CONTAINER(old_parent), shell->layer_view);
-      g_object_unref(shell->layer_view);
-      shell->layer_view = NULL;
-    }
-    if (shell->toolbox) {
-      GtkWidget* old_parent = gtk_widget_get_parent (shell->toolbox);
-      gtk_container_remove(GTK_CONTAINER(old_parent), shell->toolbox);
-      g_object_unref(shell->toolbox);
-      shell->toolbox = NULL;
-    }
-    return;
-  }
-
-  if (!shell->layer_view) {
-    GimpContext* user_context;
-    GtkWidget* layer_view;
-    layer_view = GTK_WIDGET(gimp_layer_tile_view_new ());
-    user_context = gimp_get_user_context (shell->display->gimp);
-    g_object_set (layer_view, "context", user_context, NULL);
-
-    shell->layer_view = gimp_overlay_frame_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (shell->layer_view), 4);
-    gtk_container_add (GTK_CONTAINER(shell->layer_view), layer_view);
-    gtk_widget_show_all (shell->layer_view);
-    gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, 0.85);
-  }
-
-  if (!shell->toolbox) {
-    GtkWidget* toolbox;
-    toolbox = GTK_WIDGET(gimp_tool_tile_view_new ());
-    g_object_set (toolbox, "context", gimp_get_user_context (shell->display->gimp), NULL);
-
-    shell->toolbox = gimp_overlay_frame_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (shell->toolbox), 4);
-    gtk_container_add (GTK_CONTAINER(shell->toolbox), toolbox);
-    gtk_widget_show_all (shell->toolbox);
-    gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbox, 0.85);
-  }
-
-  if (!shell->toolbar) {
-    GtkWidget* toolbar;
-    toolbar = gimp_tool_options_toolbar_new (shell->display->gimp, global_menu_factory);
-    shell->toolbar = gimp_overlay_frame_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (shell->toolbar), 4);
-    gtk_container_add (GTK_CONTAINER(shell->toolbar), toolbar);
-    gtk_widget_show_all (shell->toolbar);
-    gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbar, 0.85);
-  }
-
-  if (shell->layer_view) {
-    GimpImage* image1;
-    GtkWidget* layer_view;
-    layer_view = gtk_bin_get_child (GTK_BIN(shell->layer_view));
-    /* Set appropriate image and context for layer view */
-    g_object_get(layer_view, "image", &image1, NULL);
-    if (image) {
-      if (image1 != image) {
-        g_object_set (layer_view, "image", image, NULL);
-      }
-    } else {
-      g_object_set(layer_view, "image", NULL, NULL);
-    }
-
-    /* Reparent widget to current canvas */
-    gimp_display_shell_reparent_on_canvas_widget (shell, shell->layer_view);
-
-    /* Resize and set position of the layer view */
-    gtk_widget_set_size_request(shell->layer_view, 88, alloc.height * 8 / 10);
-    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, alloc.width-84, alloc.height/10);
-  }
-
-  if (shell->toolbox) {
-    GtkAllocation alloc2;
-    gtk_widget_get_allocation(GTK_WIDGET (shell->toolbox), &alloc2);
-    gimp_display_shell_reparent_on_canvas_widget (shell, shell->toolbox);
-    /*
-    if (alloc2.height > alloc.height * 0.8) {
-      alloc2.height = alloc.height * 0.8;
-      gtk_widget_set_size_request (gtk_bin_get_child(GTK_BIN(shell->toolbox)), -1, alloc2.height);
-    }
-    */
-    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbox, -4, (alloc.height - alloc2.height) / 2);
-  }
-
-  if (shell->toolbar) {
-    GtkAllocation alloc2;
-    GtkWidget* toolbar = gtk_bin_get_child (GTK_BIN(shell->toolbar));
-    gtk_widget_set_size_request(toolbar, alloc.width * 0.9, -1);
-    gtk_widget_get_allocation(GTK_WIDGET (shell->toolbar), &alloc2);
-    gimp_display_shell_reparent_on_canvas_widget (shell, shell->toolbar);
-    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbar, (alloc.width - alloc2.width) / 2, -4);
-  }
-
-}
-
-
-void
-gimp_display_shell_update_on_canvas_opacity (GimpDisplayShell* shell, gboolean fade_out) 
-{
-  g_print("update opacity\n");
-  if (fade_out) {
-    if (shell->toolbox)
-      gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbox, 0.3);
-    if (shell->layer_view)
-      gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, 0.3);
-    if (shell->toolbar)
-      gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbar, 0.3);
-  } else {
-    if (shell->toolbox)
-      gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbox, 0.85);
-    if (shell->layer_view)
-      gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, 0.85);
-    if (shell->toolbar)
-      gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbar, 0.85);
-  }
 }

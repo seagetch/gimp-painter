@@ -47,7 +47,7 @@ typedef struct _GimpColorWheelClass GimpColorWheelClass;
 
 struct _GimpColorWheel
 {
-  GtkWidget parent_instance;
+  GtkBox parent_instance;
 
   /* Private data */
   gpointer priv;
@@ -55,7 +55,7 @@ struct _GimpColorWheel
 
 struct _GimpColorWheelClass
 {
-  GtkWidgetClass parent_class;
+  GtkBoxClass parent_class;
 
   /* Notification signals */
   void (* changed) (GimpColorWheel   *wheel);

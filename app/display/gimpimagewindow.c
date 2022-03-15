@@ -60,6 +60,7 @@
 
 #include "gimpdisplay.h"
 #include "gimpdisplay-foreach.h"
+#include "gimpcanvas.h"
 #include "gimpdisplayshell.h"
 #include "gimpdisplayshell-appearance.h"
 #include "gimpdisplayshell-close.h"
@@ -539,6 +540,7 @@ gimp_image_window_constructed (GObject *object)
     gimp_dock_columns_new (gimp_get_user_context (private->gimp),
                            private->dialog_factory,
                            private->menubar_manager);
+  g_object_ref (private->right_docks);
   gtk_paned_pack2 (GTK_PANED (private->right_hpane), private->right_docks,
                    FALSE, FALSE);
   gtk_widget_set_visible (private->right_docks, config->single_window_mode);
@@ -1399,6 +1401,10 @@ gimp_image_window_remove_shell (GimpImageWindow  *window,
   g_return_if_fail (g_list_find (private->shells, shell) != NULL);
 
   private->shells = g_list_remove (private->shells, shell);
+  if (shell->docks) {
+    g_object_ref (private->right_docks);
+    gimp_display_shell_detach_on_canvas_view(shell, private->right_docks);
+  }
 
   gtk_container_remove (GTK_CONTAINER (private->notebook),
                         GTK_WIDGET (shell));
@@ -2079,8 +2085,20 @@ gimp_image_window_switch_page (GtkNotebook     *notebook,
   if (shell && shell->toolbar)
     gtk_widget_show (gtk_bin_get_child (GTK_BIN(shell->toolbar)));
 
+  if (private->right_docks) {
+    GtkWidget* old_parent = gtk_widget_get_parent (private->right_docks);
+    g_object_ref (private->right_docks);
+    if (GIMP_IS_CANVAS(old_parent)) {
+      GimpDisplayShell* old_shell = GIMP_DISPLAY_SHELL(gtk_widget_get_parent (old_parent));
+      gimp_display_shell_detach_on_canvas_view(old_shell, private->right_docks);
+    }
+  }
+
   gimp_image_window_switch_active_shell (window, shell);
   active_display = private->active_shell->display;
+
+  gimp_display_shell_attach_on_canvas_view (private->active_shell, private->right_docks);
+  g_object_unref (private->right_docks);
 
   gtk_window_set_title (GTK_WINDOW (window), shell->title);
   gtk_window_set_icon (GTK_WINDOW (window), shell->icon);
@@ -2526,19 +2544,19 @@ gimp_image_window_resized (GtkWidget       *widget,
   if (allocation->width > allocation->height) {
     if (private->pane_vertical) {
       
-      widget1 = gtk_paned_get_child1(GTK_PANED(private->right_hpane));
-      g_object_ref(G_OBJECT(widget1));
-      gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget1));
-
       widget2 = gtk_paned_get_child2(GTK_PANED(private->right_hpane));
       g_object_ref(G_OBJECT(widget2));
       gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget2));
 
+      widget1 = gtk_paned_get_child1(GTK_PANED(private->right_hpane));
+      g_object_ref(G_OBJECT(widget1));
+      gtk_container_remove(GTK_CONTAINER(private->right_hpane), GTK_WIDGET(widget1));
+
 //      g_object_ref(G_OBJECT(private->toolbar));
 //      gtk_container_remove(GTK_CONTAINER(private->toolbar_container2), private->toolbar);
       
-      gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, FALSE, TRUE);
-      gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, FALSE, FALSE);
+      gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, TRUE, FALSE);
+      gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, TRUE, TRUE);
       gtk_orientable_set_orientation(GTK_ORIENTABLE(private->right_hpane), GTK_ORIENTATION_HORIZONTAL);
       g_object_unref(G_OBJECT(widget1));
       g_object_unref(G_OBJECT(widget2));
@@ -2564,8 +2582,8 @@ gimp_image_window_resized (GtkWidget       *widget,
 //      g_object_ref(G_OBJECT(private->toolbar));
 //      gtk_container_remove(GTK_CONTAINER(private->toolbar_container), private->toolbar);
       
-      gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, FALSE, FALSE);
-      gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, FALSE, TRUE);
+      gtk_paned_pack2(GTK_PANED(private->right_hpane), widget1, TRUE, FALSE);
+      gtk_paned_pack1(GTK_PANED(private->right_hpane), widget2, TRUE, TRUE);
       gtk_orientable_set_orientation(GTK_ORIENTABLE(private->right_hpane), GTK_ORIENTATION_VERTICAL);
       g_object_unref(G_OBJECT(widget1));
       g_object_unref(G_OBJECT(widget2));

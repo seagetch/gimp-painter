@@ -61,6 +61,7 @@
 #include "gimpdisplayshell-expose.h"
 #include "gimpdisplayshell-grab.h"
 #include "gimpdisplayshell-layer-select.h"
+#include "gimpdisplayshell-overlays.h"
 #include "gimpdisplayshell-rotate.h"
 #include "gimpdisplayshell-scale.h"
 #include "gimpdisplayshell-scroll.h"
@@ -253,7 +254,8 @@ gimp_display_shell_snap_angle (GimpDisplayShell * shell,
 
 static void
 gimp_display_shell_begin_tool (Gimp             *gimp, 
-                               GimpDisplayShell *shell, 
+                               GimpDisplayShell *shell,
+                               GimpCoords       *display_coords,
                                GimpCoords       *image_coords, 
                                guint32           time, 
                                GdkModifierType   state, 
@@ -263,8 +265,7 @@ gimp_display_shell_begin_tool (Gimp             *gimp,
                                           image_coords, state))
     {
       GimpCoords last_motion;
-
-      gimp_display_shell_update_on_canvas_opacity (shell, TRUE);
+      gimp_display_shell_update_on_canvas_opacity (shell,display_coords->x, display_coords->y, FALSE);
 
       /* Use the last evaluated dynamic axes instead of the
       * button_press event's ones because the click is
@@ -818,7 +819,7 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
                   return TRUE;
                 }
             if (!shell->snap_perspective || (active_tool && active_tool->disable_lazy_snap)) {
-              gimp_display_shell_begin_tool (gimp, shell, &image_coords, time, state, display);
+              gimp_display_shell_begin_tool (gimp, shell, &display_coords, &image_coords, time, state, display);
             } else {
               g_print("snapping to angle...\n");
               shell->snapping    = TRUE;
@@ -934,7 +935,7 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
                                                         time, state,
                                                         display);
                   }
-                gimp_display_shell_update_on_canvas_opacity (shell, FALSE);
+                gimp_display_shell_update_on_canvas_opacity (shell, display_coords.x, display_coords.y, TRUE);
               }
 
             /*  update the tool's modifier state because it didn't get
@@ -1227,6 +1228,10 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
                         if (!shell->snapping) {
                           /* Early removal of useless events saves CPU time.
                           */
+                          if (state & GDK_BUTTON1_MASK) {
+                            gimp_display_shell_update_on_canvas_opacity (shell, display_coords.x, display_coords.y, FALSE);
+                          }
+
                           if (shell->snap_perspective && (!active_tool || !active_tool->disable_lazy_snap)) {
                             gimp_display_shell_lazy_snap (shell, image, &image_coords);
                           }
@@ -1245,7 +1250,7 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
                           gboolean snapped = gimp_display_shell_lazy_snap (shell, image, &image_coords);
                           if (snapped) {
                             shell->snapping = FALSE;
-                            gimp_display_shell_begin_tool (gimp, shell, &shell->snap_origin, time, state, display);
+                            gimp_display_shell_begin_tool (gimp, shell, &display_coords, &shell->snap_origin, time, state, display);
                           }
                         }
                       }
@@ -1259,6 +1264,10 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
                     /* Early removal of useless events saves CPU time.
                      */
                     if (!shell->snapping) {
+                      if (state & GDK_BUTTON1_MASK) {
+                        gimp_display_shell_update_on_canvas_opacity (shell,display_coords.x, display_coords.y, FALSE);
+                      }
+
                       if (shell->snap_perspective && (!active_tool || !active_tool->disable_lazy_snap)) {
                         gimp_display_shell_lazy_snap (shell, image, &image_coords);
                       }
@@ -1275,10 +1284,11 @@ gimp_display_shell_canvas_tool_events_internal (GtkWidget        *canvas,
                                                             time);
                         }
                     } else {
-                      gboolean snapped = gimp_display_shell_lazy_snap (shell, image, &image_coords);
+                      gboolean snapped;
+                      snapped = gimp_display_shell_lazy_snap (shell, image, &image_coords);
                       if (snapped) {
                         shell->snapping = FALSE;
-                        gimp_display_shell_begin_tool (gimp, shell, &shell->snap_origin, time, state, display);
+                        gimp_display_shell_begin_tool (gimp, shell, &display_coords, &shell->snap_origin, time, state, display);
                       }                      
                     }
                   }
