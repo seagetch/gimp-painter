@@ -236,21 +236,11 @@ gimp_overlay_child_size_allocate (GimpOverlayBox   *box,
   g_return_if_fail (GIMP_IS_OVERLAY_BOX (box));
   g_return_if_fail (child != NULL);
   g_return_if_fail (GTK_IS_WIDGET(child->widget));
-  g_print(">>>GimpOverlayChild::size_allocate: child widget=%s(%p)\n", G_OBJECT_TYPE_NAME(child->widget), child->widget);
-  if (G_OBJECT_TYPE_NAME(child->widget) == "GimpOverlayFrame") {
-    GList* list;
-    for (list = gtk_container_get_children(GTK_CONTAINER(child->widget)); list; list = g_list_next(list)) {
-      GtkWidget* w2 = GTK_WIDGET(list->data);
-      g_print("   >>> sub-widget=%s(%p)\n", G_OBJECT_TYPE_NAME(w2), w2);
-    }
-  }
 
   widget = GTK_WIDGET (box);
-  g_print("get_allocation (box = %p)\n",box);
   g_return_if_fail (GTK_IS_WIDGET(child->widget));
   gtk_widget_get_allocation (widget, &allocation);
 
-  g_print("get_child_requisition (box = %p)\n",box);
   g_return_if_fail (GTK_IS_WIDGET(child->widget));
   gtk_widget_get_child_requisition (child->widget, &child_requisition);
 
@@ -259,11 +249,9 @@ gimp_overlay_child_size_allocate (GimpOverlayBox   *box,
   child_allocation.width  = child_requisition.width;
   child_allocation.height = child_requisition.height;
 
-  g_print("size_allocate (child->widget = %p)\n",child->widget);
   g_return_if_fail (GTK_IS_WIDGET(child->widget));
   gtk_widget_size_allocate (child->widget, &child_allocation);
 
-  g_print("get_allocation (child->widget)\n");
   g_return_if_fail (GTK_IS_WIDGET(child->widget));
   gtk_widget_get_allocation (child->widget, &child_allocation);
 
@@ -328,8 +316,6 @@ gimp_overlay_child_size_allocate (GimpOverlayBox   *box,
 
   /* local transform */
   cairo_matrix_rotate (&child->matrix, child->angle);
-
-  g_print("<<<GimpOverlayChild::size_allocate\n");
 
 }
 

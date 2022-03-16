@@ -2089,16 +2089,15 @@ gimp_image_window_switch_page (GtkNotebook     *notebook,
     GtkWidget* old_parent = gtk_widget_get_parent (private->right_docks);
     g_object_ref (private->right_docks);
     if (GIMP_IS_CANVAS(old_parent)) {
-      GimpDisplayShell* old_shell = GIMP_DISPLAY_SHELL(gtk_widget_get_parent (old_parent));
-      if (old_shell->canvas == old_parent)
-        gimp_display_shell_detach_on_canvas_view(old_shell, old_parent, private->right_docks);
-      else {
+      if (private->active_shell->canvas == old_parent) {
+        gimp_display_shell_detach_on_canvas_view(private->active_shell, private->active_shell->canvas, private->right_docks);
+      } else {
         g_print("********************************************************************\n");
-        g_print("something wrong happened. canvas->parent->canvas is not the canvas\n");
-        g_print("canvas = %p\n", old_parent);
-        g_print("shell->canvas = %p\n", old_shell->canvas);
+        g_print("something wrong happened. old_shell != private->active_shell\n");
+        g_print("old_parent = %s(%p)\n", G_OBJECT_TYPE_NAME(old_parent), old_parent);
+        g_print("active_shell->canvas = %p, not removing from canvas.\n", private->active_shell->canvas);
         g_print("********************************************************************\n");
-        gimp_display_shell_detach_on_canvas_view(old_shell, old_parent, private->right_docks);
+
       }
     }
   }

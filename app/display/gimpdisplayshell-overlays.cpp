@@ -245,6 +245,7 @@ class ColorSelectorDecorator {
   GimpDisplayShell* shell;
   GtkWidget*        widget;
   bool              blocked;
+  bool              edit_bg;
   CXXPointer<Delegators::Connection> fg_color_changed_handler;
   CXXPointer<Delegators::Connection> bg_color_changed_handler;
   typedef ColorSelectorDecorator Self;
@@ -254,6 +255,7 @@ public:
     this->shell  = shell;
     this->widget = widget;
     blocked      = false;
+    edit_bg      = false;
     g_signal_connect_delegator_noret (G_OBJECT(widget), "color-changed", Delegators::delegator(this, &Self::on_select_color));
 
     GimpContext* user_context;
@@ -269,11 +271,17 @@ public:
   };
 
   void on_select_color(GimpColorSelector* selector, const GimpRGB* rgb, const GimpHSV* hsv) {
+    if (blocked)
+      return;
+    
     GimpContext* user_context;
     user_context = gimp_get_user_context (shell->display->gimp);
 
     blocked = true;
-    gimp_context_set_foreground (user_context, rgb);
+    if (edit_bg)
+      gimp_context_set_background (user_context, rgb);
+    else
+      gimp_context_set_foreground (user_context, rgb);
     blocked = false;
   };
 
@@ -281,21 +289,76 @@ public:
     if (blocked)
       return;
 
+    if (edit_bg)
+      return;
+
     GimpHSV hsv;
 
     gimp_rgb_to_hsv (rgb, &hsv);
     gimp_color_selector_set_color (GIMP_COLOR_SELECTOR(widget), rgb, &hsv);
-
-//    gimp_color_hex_entry_set_color (GIMP_COLOR_HEX_ENTRY (editor->hex_entry),
-//                                    rgb);
 
   };
 
   void on_bg_color_changed(GimpContext* context, const GimpRGB   *rgb) {
     if (blocked)
       return;
+
+    if (!edit_bg)
+      return;
+
+    GimpHSV hsv;
+
+    gimp_rgb_to_hsv (rgb, &hsv);
+    gimp_color_selector_set_color (GIMP_COLOR_SELECTOR(widget), rgb, &hsv);
+  };
+
+
+  void set_edit_bg(bool edit_bg) {
+    if (edit_bg != this->edit_bg) {
+      this->edit_bg = edit_bg;
+
+      GimpRGB rgb;
+      GimpHSV hsv;
+      GimpContext* user_context;
+      user_context = gimp_get_user_context (shell->display->gimp);
+
+      if (edit_bg) {
+        gimp_context_get_background (user_context, &rgb);
+      } else {
+        gimp_context_get_foreground (user_context, &rgb);
+      }
+  
+      blocked = true;
+      gimp_rgb_to_hsv (&rgb, &hsv);
+      gimp_color_selector_set_color (GIMP_COLOR_SELECTOR(widget), &rgb, &hsv);
+      blocked = false;
+    }
   }
 
+};
+
+class FgBgEditorDecorator {
+  GimpDisplayShell* shell;
+  GtkWidget*        widget;
+  typedef FgBgEditorDecorator Self;
+  bool              edit_bg;
+public:
+  FgBgEditorDecorator(GtkWidget* widget, GimpDisplayShell* shell) {
+    this->shell  = shell;
+    this->widget = widget;
+    g_signal_connect_delegator_noret (G_OBJECT(widget), "notify::active-color", Delegators::delegator(this, &Self::on_active_color_notify));
+  };
+
+  ~FgBgEditorDecorator() {
+  }
+
+  void on_active_color_notify(GtkWidget* widget, GParamSpec* pspec) {
+    bool edit_bg = (GIMP_FG_BG_EDITOR (widget)->active_color ==
+                    GIMP_ACTIVE_COLOR_BACKGROUND);
+    g_print("notify::active-color: %s\n", G_OBJECT_TYPE_NAME(gtk_bin_get_child(GTK_BIN(shell->color_selector))));
+    GtkWidget* color_selector = gtk_bin_get_child(GTK_BIN(shell->color_selector));
+    Decorator<GtkWidget, ColorSelectorDecorator>::call<void, bool>(color_selector, &ColorSelectorDecorator::set_edit_bg, edit_bg);
+  }
 };
 
 static GtkWidget*
@@ -385,13 +448,33 @@ create_toolbar (GimpDisplayShell* shell)
   auto impl = new OverlayWidgetDecorator(frame, shell, &shell->toolbar);
 
   impl->updator = [](GimpDisplayShell* shell) {
-    GtkAllocation alloc, alloc2;
+    GtkAllocation alloc, alloc2, alloc3;
+
     GimpImage* image = gimp_display_get_image (shell->display);
     gtk_widget_get_allocation(GTK_WIDGET(shell->canvas), &alloc);
+
     GtkWidget* toolbar = gtk_bin_get_child (GTK_BIN(shell->toolbar));
-    gtk_widget_set_size_request(toolbar, alloc.width * 0.9, -1);
+    gint w = alloc.width * 0.9;
     gtk_widget_get_allocation(GTK_WIDGET (shell->toolbar), &alloc2);
-    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbar, (alloc.width - alloc2.width) / 2, (alloc.height - alloc2.height)+4);
+
+    gint x3, y3;
+    gint x, y;
+    x = (alloc.width - alloc2.width) / 2;
+    y = (alloc.height - alloc2.height)+4;
+
+    if (shell->docks) {
+      if (Decorator<GtkWidget, OverlayWidgetDecorator>::call(shell->docks, &OverlayWidgetDecorator::get_position, &x3, &y3)) {
+        gtk_widget_get_allocation(GTK_WIDGET(shell->docks), &alloc3);
+        if (x3 < (alloc.width + alloc2.width) / 2 && y3 + alloc3.height > y) {
+          w = MAX(x3 - x - 4, 1);
+          g_print("w=%d\n", w);
+        }
+      }
+
+    }
+    
+    gtk_widget_set_size_request(toolbar, w, -1);
+    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->toolbar, x, y);
   };
 
   return frame;
@@ -408,11 +491,13 @@ create_color_selector (GimpDisplayShell* shell)
 
   GimpContext* user_context;
   user_context = gimp_get_user_context (shell->display->gimp);
-
+  GimpDisplayConfig* config;
+  config = shell->display->config;
   gimp_context_get_foreground (user_context, &rgb);
   gimp_rgb_to_hsv (&rgb, &hsv);
 
   color_selector = gimp_color_selector_new (GIMP_TYPE_COLOR_NOTEBOOK, &rgb, &hsv, GIMP_COLOR_SELECTOR_HUE);
+  gimp_color_selector_set_config (GIMP_COLOR_SELECTOR(color_selector), GIMP_CORE_CONFIG (config)->color_management);
   frame = gimp_overlay_frame_new ();
   gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
   gtk_container_add (GTK_CONTAINER(frame), color_selector);
@@ -422,18 +507,18 @@ create_color_selector (GimpDisplayShell* shell)
   impl->updator = [](GimpDisplayShell* shell) {
     GtkAllocation alloc, alloc2, alloc3, alloc4, alloc5;
     GimpImage* image = gimp_display_get_image (shell->display);
+
     gtk_widget_get_allocation(GTK_WIDGET(shell->canvas), &alloc);
+    
     GtkWidget* color_selector = gtk_bin_get_child (GTK_BIN(shell->color_selector));
     gtk_widget_set_size_request(color_selector, 256, 256);
 
     gtk_widget_get_allocation(GTK_WIDGET (shell->color_selector), &alloc2);
-    gtk_widget_get_allocation(GTK_WIDGET (shell->layer_view), &alloc3);
-    gtk_widget_get_allocation(GTK_WIDGET (shell->fg_bg_edit), &alloc4);
+    gtk_widget_get_allocation(GTK_WIDGET (shell->layer_view),     &alloc3);
+    gtk_widget_get_allocation(GTK_WIDGET (shell->fg_bg_edit),     &alloc4);
 
     gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), 
-        shell->color_selector, alloc.width - alloc2.width - alloc4.width, 
-        0);
-//        (alloc.height - alloc3.height) / 2 - alloc4.height - 4);
+        shell->color_selector, alloc.width - alloc2.width - alloc4.width, 0);
 
   };
 
@@ -477,6 +562,8 @@ create_fg_bg_edit (GimpDisplayShell* shell)
 
   };
 
+  auto impl2 = new FgBgEditorDecorator(fg_bg_edit, shell);
+
   return frame;
 }
 
@@ -491,10 +578,15 @@ gimp_display_shell_update_on_canvas_views (GimpDisplayShell* shell)
 
   image = gimp_display_get_image (shell->display);
   if (!image) {
+    g_print("dispose layer_view\n");
     OverlayWidgetDecorator::dispose_obj(shell->layer_view);
+    g_print("dispose toolbox\n");
     OverlayWidgetDecorator::dispose_obj(shell->toolbox);
+    g_print("dispose toolbar\n");
     OverlayWidgetDecorator::dispose_obj(shell->toolbar);
+    g_print("dispose fg/bg edit\n");
     OverlayWidgetDecorator::dispose_obj(shell->fg_bg_edit);
+    g_print("dispose toolbar\n");
     OverlayWidgetDecorator::dispose_obj(shell->color_selector);
     // shell->docks should not be disposed.
     return;
@@ -526,10 +618,10 @@ gimp_display_shell_update_on_canvas_views (GimpDisplayShell* shell)
 
   OverlayWidgetDecorator::update_obj(shell->layer_view);
   OverlayWidgetDecorator::update_obj(shell->toolbox);
-  OverlayWidgetDecorator::update_obj(shell->toolbar);
   OverlayWidgetDecorator::update_obj(shell->fg_bg_edit);
   OverlayWidgetDecorator::update_obj(shell->color_selector);
   OverlayWidgetDecorator::update_obj(shell->docks);
+  OverlayWidgetDecorator::update_obj(shell->toolbar);
 
 }
 
@@ -552,6 +644,7 @@ void gimp_display_shell_attach_on_canvas_view (GimpDisplayShell* shell, GtkWidge
     return;
   shell->docks = widget;
   gtk_widget_set_size_request (widget, 256, 256); // initial size for allocation.
+  g_print("Attach new OverlayWidgetDecorator to docks.\n");
   auto impl = new OverlayWidgetDecorator(shell->docks, shell, &shell->docks);
   impl->updator = [] (GimpDisplayShell* shell) {
     GtkAllocation alloc, alloc2, alloc3, alloc4;
@@ -559,7 +652,6 @@ void gimp_display_shell_attach_on_canvas_view (GimpDisplayShell* shell, GtkWidge
     GimpImage* image = gimp_display_get_image (shell->display);
     if (!image) {
       gtk_widget_hide(shell->docks);
-      g_print("hide and return\n");
       return;
     }
     gtk_widget_get_allocation(GTK_WIDGET(shell->canvas), &alloc);
@@ -591,8 +683,16 @@ void gimp_display_shell_attach_on_canvas_view (GimpDisplayShell* shell, GtkWidge
 
 void gimp_display_shell_detach_on_canvas_view (GimpDisplayShell* shell, GimpCanvas* canvas, GtkWidget* widget)
 {
+  g_return_if_fail (shell->docks == widget);
+  g_print("undecorate %s[%p]\n", G_OBJECT_TYPE_NAME(widget), widget);
   GLib::undecorate<GtkWidget, OverlayWidgetDecorator>(widget);
-  gtk_container_remove (GTK_CONTAINER(canvas), widget);
-  if (shell->docks == widget)
+  GtkWidget* parent_canvas = gtk_widget_get_parent (widget);
+
+  g_return_if_fail (GTK_WIDGET(canvas) == parent_canvas);
+
+  gtk_container_remove (GTK_CONTAINER(parent_canvas), widget);
+
+  if (shell->docks == widget) {
     shell->docks = NULL;
+  }
 }

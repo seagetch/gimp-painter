@@ -1144,7 +1144,7 @@ public:
       T* delegator = decorator->get_delegator();
       return (delegator->*f)(args...);
     }
-
+    return Ret();
   }
 
   template<typename... Args>
