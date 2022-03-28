@@ -70,6 +70,7 @@ static void     gimp_rectangle_options_create_view            (GtkWidget *source
                                                                GObject *config);
 static void     gimp_rectangle_options_destroy_view           (GtkWidget *widget, 
                                                                gpointer   data);
+static void     gimp_rectangle_options_destroy_entry          (GtkWidget* entry, GtkWidget* config);
 
 GType
 gimp_rectangle_options_interface_get_type (void)
@@ -950,6 +951,7 @@ gimp_rectangle_options_create_view (GtkWidget *source, GtkWidget **result, GObje
     g_signal_connect_swapped (config, "notify::use-string-current",
                               G_CALLBACK (gimp_rectangle_options_string_current_updates),
                               entry);
+    g_signal_connect (entry, "destroy", G_CALLBACK(gimp_rectangle_options_destroy_entry), config);
 
     gimp_rectangle_options_setup_ratio_completion (GIMP_RECTANGLE_OPTIONS (tool_options),
                                                    entry,
@@ -1124,6 +1126,14 @@ gimp_rectangle_options_destroy_view (GtkWidget *widget,
 
 }
 
+static void
+gimp_rectangle_options_destroy_entry (GtkWidget* entry, GtkWidget* config)
+{
+  g_signal_handlers_disconnect_by_func (config, 
+                                        G_CALLBACK (gimp_rectangle_options_string_current_updates),
+                                        entry);
+
+}
 
 /**
  * gimp_rectangle_options_fixed_rule_active:
