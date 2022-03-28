@@ -397,8 +397,19 @@ create_layer_view(GimpDisplayShell* shell)
     gtk_widget_get_allocation(GTK_WIDGET(shell->canvas), &alloc);
 
     /* Resize and set position of the layer view */
-    gtk_widget_set_size_request(shell->layer_view, 88, alloc.height * 8 / 10);
-    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, alloc.width-84, alloc.height/10);
+    gint width, height, y_ofs;
+    if (alloc.width < alloc.height) {
+      width = 88;
+      y_ofs  = 256;
+      height = (alloc.height - y_ofs) * 8 / 10;
+    } else {
+      width = 88;
+      y_ofs  = 0;
+      height = (alloc.height - y_ofs) * 8 / 10;
+    }
+
+    gtk_widget_set_size_request(shell->layer_view, width, height);
+    gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas), shell->layer_view, alloc.width-width + 4, (alloc.height - y_ofs - height) / 2 + y_ofs);
   };
 
   return frame;
@@ -488,6 +499,7 @@ create_color_selector (GimpDisplayShell* shell)
   GimpRGB rgb;
   GimpHSV hsv;
   GtkWidget* color_selector;
+  const gchar* DEFAULT_COLOR_SELECTOR = "ColorselWheel";
 
   GimpContext* user_context;
   user_context = gimp_get_user_context (shell->display->gimp);
@@ -497,7 +509,23 @@ create_color_selector (GimpDisplayShell* shell)
   gimp_rgb_to_hsv (&rgb, &hsv);
 
   color_selector = gimp_color_selector_new (GIMP_TYPE_COLOR_NOTEBOOK, &rgb, &hsv, GIMP_COLOR_SELECTOR_HUE);
-  gimp_color_selector_set_config (GIMP_COLOR_SELECTOR(color_selector), GIMP_CORE_CONFIG (config)->color_management);
+  IObject<GtkWidget> i_selector = GIMP_COLOR_NOTEBOOK(color_selector)->notebook;
+
+  i_selector [gimp_color_selector_set_config] (GIMP_CORE_CONFIG (config)->color_management);
+
+  GtkWidget* default_selector = NULL;
+  IList<GtkWidget*> list = i_selector [gtk_container_get_children] ();
+  for (auto child: list) {
+    if (strcmp(G_OBJECT_TYPE_NAME(child), DEFAULT_COLOR_SELECTOR) == 0) {
+      default_selector = child;
+      break;
+    }
+    if (!default_selector)
+      default_selector = child;
+  }
+  gint page_num = i_selector [gtk_notebook_page_num] (default_selector);
+  i_selector [gtk_notebook_set_current_page] (page_num);
+
   frame = gimp_overlay_frame_new ();
   gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
   gtk_container_add (GTK_CONTAINER(frame), color_selector);

@@ -140,6 +140,10 @@ void   gimp_color_selector_set_config            (GimpColorSelector *selector,
                                                   GimpColorConfig   *config);
 
 
+#ifdef __cplusplus
+__DECLARE_GTK_CLASS__(GimpColorSelector, GIMP_TYPE_COLOR_SELECTOR);
+#endif
+
 G_END_DECLS
 
 #endif /* __GIMP_COLOR_SELECTOR_H__ */

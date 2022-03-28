@@ -1,4 +1,4 @@
-/* GIMP - The GNU Image Manipulation Program
+/* GIMP-painter
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,6 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+
+#include "base/delegators.hpp"
+#include "base/scopeguard.hpp"
+#include "base/glib-cxx-bridge.hpp"
+#include "base/glib-cxx-utils.hpp"
+#include "base/glib-cxx-def-utils.hpp"
+
 extern "C" {
 #include "config.h"
 
