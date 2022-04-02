@@ -108,7 +108,7 @@ struct Options : virtual public ImplBase
 };
 __DECLARE_GTK_CLASS__(GimpPerspectiveGuideOptions, GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS);
 
-static const char gimp_perspective_guide_options_name[] = "GimpPerspectiveGuideOptions";
+constexpr char gimp_perspective_guide_options_name[] = "GimpPerspectiveGuideOptions";
 using OptionsClass = NewGClass<gimp_perspective_guide_options_name, GLib::UseCStructs<GimpToolOptions, GimpPerspectiveGuideOptions>, Options>;
 
 #define _override(method) OptionsClass::__(&klass->method).bind<&Options::method>()
@@ -220,7 +220,7 @@ struct Tool : virtual public ImplBase
 
 };
 
-static const char gimp_perspective_guide_tool_name[] = "GimpPerspectiveGuideTool";
+constexpr char gimp_perspective_guide_tool_name[] = "GimpPerspectiveGuideTool";
 using ToolClass = NewGClass<gimp_perspective_guide_tool_name, GLib::UseCStructs<GimpDrawTool, GimpPerspectiveGuideTool>, Tool>;
 
 #define _override(method) ToolClass::__(&klass->method).bind<&Tool::method>()
