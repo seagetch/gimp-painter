@@ -141,10 +141,17 @@ class IGimpContainer : public GLib::IObject<GimpContainer> {
 public:
   IGimpContainer (GimpContainer* src) : IObject(src) {}
   IGimpContainer (const GLib::IObject<GimpContainer>& src) : IObject(src) {}
+
+  static void callback(T* target, gpointer ptr) {
+    auto delegator = reinterpret_cast<std::function<void(T* obj)>*>(ptr);
+    (*delegator)(target);
+  }
+
   void each(std::function<void(T* obj)> f) {
-    auto recursive_delegator = Delegators::delegator(f);
-    (*this) [gimp_container_foreach] (GFunc(std::remove_reference<decltype(*recursive_delegator)>::type::callback), &recursive_delegator);
-    delete recursive_delegator;
+//    auto recursive_delegator = Delegators::delegator(f);
+//    (*this) [gimp_container_foreach] (GFunc(std::remove_reference<decltype(*recursive_delegator)>::type::callback), &recursive_delegator);
+    (*this) [gimp_container_foreach] (GFunc(callback), gpointer(&f));
+//    delete recursive_delegator;
   }
 };
 };
