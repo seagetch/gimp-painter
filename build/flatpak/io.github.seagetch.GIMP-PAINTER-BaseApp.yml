@@ -1,0 +1,136 @@
+branch: master
+build-options:
+  cflags: -O2 -g
+  cxxflags: -O2 -g
+  env: {V: '1'}
+#cleanup: [/include, /lib/pkgconfig, /share/pkgconfig, /share/aclocal, /man, /share/man,
+#  /share/gtk-doc, /share/vala, '*.la', '*.a']
+finish-args: [--share=ipc, --socket=x11, --filesystem=host, --filesystem=xdg-config/GIMP,
+  --share=network, --socket=system-bus, --socket=session-bus]
+id: io.github.seagetch.GIMP-PAINTER-BaseApp
+modules:
+- modules:
+  - name: py2cairo
+    rm-configure: true
+    sources:
+    - {sha256: d30439f06c2ec1a39e27464c6c828b6eface3b22ee17b2de05dc409e429a7431, type: archive,
+      url: 'http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2'}
+    - commands: [libtoolize --force, aclocal, autoheader, automake --force-missing
+          --add-missing --foreign, autoconf]
+      dest-filename: autogen.sh
+      type: script
+  - name: pyobject
+#    cleanup: [/bin, /share/pygobject/2.0/codegen]
+    config-opts: [--disable-introspection]
+    sources:
+    - {sha256: fb8a1d4f665130a125011659bd347c7339c944232163dbb9a34fd0686577adb8, type: archive,
+      url: 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/2.28/pygobject-2.28.6.tar.xz'}
+  - name: pygtk
+#    cleanup: [/bin, /lib/pygtk]
+    sources:
+    - {sha256: 6e3e54fa6e65a69ac60bd58cb2e60a57f3346ac52efe995f3d10b6c38c972fd8, type: archive,
+      url: 'http://ftp.gnome.org/pub/GNOME/sources/pygtk/2.24/pygtk-2.24.0.tar.gz'}
+  name: python
+#- config-opts: [--disable-introspection]
+#  modules:
+#  - cleanup: [/bin]
+#    name: exiv2
+#    sources:
+#    - {sha256: c80bfc778a15fdb06f71265db2c3d49d8493c382e516cb99b8c9f9cbde36efa4, type: archive,
+#      url: 'http://www.exiv2.org/exiv2-0.25.tar.gz'}
+#  name: gexiv2
+#  sources:
+#  - {sha256: ad8d31afdc0a1932cc44c4cfcea449497c0d0b445c0ad2f9735707b306e71ca4, type: archive,
+#    url: 'https://download.gnome.org/sources/gexiv2/0.10/gexiv2-0.10.4.tar.xz'}
+- cleanup: [/bin, /share/doc]
+  config-opts: [--disable-static, --disable-ilmbasetest]
+  modules:
+  - config-opts: [--disable-static]
+    name: ilmbase
+    sources:
+    - {sha256: ecf815b60695555c1fbc73679e84c7c9902f4e8faa6e8000d2f905b8b86cedc7, type: archive,
+      url: 'http://download.savannah.nongnu.org/releases/openexr/ilmbase-2.2.0.tar.gz'}
+  name: openexr
+  sources:
+  - {sha256: 36a012f6c43213f840ce29a8b182700f6cf6b214bea0d5735594136b44914231, type: archive,
+    url: 'http://download.savannah.nongnu.org/releases/openexr/openexr-2.2.0.tar.gz'}
+- builddir: true
+  cleanup: [/bin, /share]
+  buildsystem: cmake
+  config-opts: [-DCMAKE_INSTALL_LIBDIR=lib]
+  name: jasper
+  sources:
+  - {sha256: 54d85428e35263642358a11c312d61cbc054170546fae780e11271df5d1502e8, type: archive,
+    url: 'http://www.ece.uvic.ca/~frodo/jasper/software/jasper-2.0.10.tar.gz'}
+#- cleanup: [/bin, /share/doc]
+#  config-opts: [--disable-static]
+#  name: libraw
+#  sources:
+#  - {sha256: d56a0c9a0e6d1b8c8c5585346acf2cfb0554eee0f0948da66f580cd65c8c5c9b, type: archive,
+#    url: 'http://www.libraw.org/data/LibRaw-0.18.0.tar.gz'}
+- cleanup: [/bin]
+  config-opts: [--disable-libopenjpeg, --disable-introspection]
+  modules:
+  - make-install-args: [prefix=/app]
+    name: popplerdata
+    no-autogen: true
+    sources:
+    - {sha256: e752b0d88a7aba54574152143e7bf76436a7ef51977c55d6bd9a48dccde3a7de, type: archive,
+      url: 'http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz'}
+  name: poppler
+  sources:
+  - {sha256: e997c9ad81a8372f2dd03a02b00692b8cc479c220340c8881edaca540f402c1f, type: archive,
+    url: 'https://poppler.freedesktop.org/poppler-0.51.0.tar.xz'}
+- modules:
+  - cleanup: [/bin, /share]
+    name: libpng
+    sources:
+    - {sha256: d8d3ec9de6b5db740fefac702c37ffcf96ae46cb17c18c1544635a3852f78f7a, type: archive,
+      url: 'http://download.sourceforge.net/libpng/libpng-1.6.28.tar.xz'}
+  name: duplicate-dependencies
+- cleanup: [/bin, /info, /man]
+  config-opts: [--disable-static]
+  name: aalib
+  sources:
+  - {sha256: fbddda9230cf6ee2a4f5706b4b11e2190ae45f5eda1f0409dc4f99b35e0a70ee, type: archive,
+    url: 'http://download.sourceforge.net/aa-project/aalib-1.4rc5.tar.gz'}
+- cleanup: [/share]
+  config-opts: [--disable-static]
+  name: libmng
+  sources:
+  - {sha256: 4a462fdd48d4bc82c1d7a21106c8a18b62f8cc0042454323058e6da0dbb57dd3, type: archive,
+    url: 'http://download.sourceforge.net/libmng/libmng-2.0.3.tar.xz'}
+- cleanup: [/share, /bin]
+  config-opts: [--disable-static, --enable-libwebpmux, --enable-libwebpdemux]
+  name: libwebp
+  sources:
+  - {sha256: b75310c810b3eda222c77f6d6c26b061240e3d9060095de44b2c1bae291ecdef, type: archive,
+    url: 'http://downloads.webmproject.org/releases/webp/libwebp-0.5.2.tar.gz'}
+- cleanup: [/share/doc, /bin]
+  config-opts: [--disable-static, --disable-dependency-tracking]
+  name: libwmf
+  sources:
+  - {sha256: 5b345c69220545d003ad52bfd035d5d6f4f075e65204114a9e875e84895a7cf8, type: archive,
+    url: 'http://downloads.sourceforge.net/wvware/libwmf-0.2.8.4.tar.gz'}
+- cleanup: [/bin, /share/man, /share/ghostscript/9.20/doc/, /share/ghostscript/9.20/examples]
+  config-opts: [--disable-cups]
+  make-args: [so]
+  make-install-args: [soinstall]
+  name: ghostscript
+  sources:
+  - {sha256: 3c0f3dc5df6f784850fa4ce7dcc3d6c56ef543af1fbaedd1d9f8d9f8b66de0ab, type: archive,
+    url: 'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs920/ghostscript-9.20.tar.xz'}
+#- build-options:
+#    env: {PYTHON: /usr/bin/python3}
+#  cleanup: [/share/doc, /bin]
+#  config-opts: [--with-gtk=2.0, --disable-webkit2, --disable-geolocation, --disable-video,
+#    --disable-spellcheck, --disable-credential-storage, --disable-web-audio]
+#  name: webkitgtk
+#  sources:
+#  - {sha256: 588aea051bfbacced27fdfe0335a957dca839ebe36aa548df39c7bbafdb65bf7, type: archive,
+#    url: 'https://www.webkitgtk.org/releases/webkitgtk-2.4.11.tar.xz'}
+#  - {path: patches/webkitgtk-2.4.11.patch, type: patch}
+runtime: org.gnome.Platform
+runtime-version: '3.28'
+sdk: org.gnome.Sdk
+tags: [dev]

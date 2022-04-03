@@ -1,0 +1,42 @@
+branch: master
+build-options:
+  cflags: -O2 -g
+  cxxflags: -O2 -g
+  env: {V: '1'}
+cleanup: [/include, /lib/pkgconfig, /share/pkgconfig, /share/aclocal, /man, /share/man,
+  /share/gtk-doc, /share/vala, '*.la', '*.a']
+command: gimp-2.8
+desktop-file-name-prefix: '(Dev) '
+finish-args: [--share=ipc, --socket=x11, --filesystem=host, --filesystem=xdg-config/GIMP,
+  --share=network, --socket=system-bus, --socket=session-bus]
+id: io.github.seagetch.GIMP-painter
+modules:
+- config-opts: [--disable-docs]
+  name: babl
+  sources:
+  - type: "git"
+    url: "https://gitlab.gnome.org/GNOME/babl.git"
+    branch: "BABL_0_1_46"
+    commit: "e92ced2c54250af1dddb58f76ff1678d74a30dcf"
+- cleanup: [/bin]
+  config-opts: [--disable-docs, --disable-introspection]
+  name: gegl
+  sources:
+  - type: "git"
+    url: "https://gitlab.gnome.org/GNOME/gegl.git"
+    branch: "GEGL_0_3_34"
+    commit: "29254dcd875d271043aba57d0e6ebc48ec63c013"
+- config-opts: [--disable-docs, --disable-gtk-doc, --disable-gtk-doc-html, --enable-vector-icons]
+  name: gimp
+  sources:
+  - type: git 
+    url: 'https://github.com/seagetch/gimp-painter'
+    branch: "gimp-2-8"
+rename-appdata-file: gimp.appdata.xml
+rename-desktop-file: gimp.desktop
+rename-icon: gimp
+runtime: org.gnome.Platform
+runtime-version: '3.28'
+base: "io.github.seagetch.GIMP-PAINTER-BaseApp"
+sdk: org.gnome.Sdk
+tags: [dev]
