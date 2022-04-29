@@ -404,6 +404,7 @@ void GLib::CloneLayer::resize (GimpContext *context,
                                gint         offset_x,
                                gint         offset_y)
 {
+  g_print("resize\n");
   GIMP_ITEM_CLASS(Class::parent_class)->resize(GIMP_ITEM(g_object), context, new_width, new_height, offset_x, offset_y);
   invalidate_layer();
 }
@@ -464,7 +465,12 @@ void GLib::CloneLayer::update_size (gint width, gint height) {
   if (!get_source())
     return;
 
-  resize(NULL, width, height, 0, 0);
+  auto self         = ref(g_object);
+  gint cur_width  = self [gimp_item_get_width]  ();
+  gint cur_height = self [gimp_item_get_height] ();
+
+  if (cur_width != width || cur_height != height)
+    resize(NULL, width, height, 0, 0);
 }
 
 gboolean GLib::CloneLayer::is_editable()
