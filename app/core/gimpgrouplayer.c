@@ -39,6 +39,7 @@
 #include "gimppickable.h"
 #include "gimpprojectable.h"
 #include "gimpprojection.h"
+#include "gimpclonelayer.h" /* gimp-painter 2.8 */
 
 #include "gimp-intl.h"
 
@@ -88,7 +89,9 @@ static GimpContainer * gimp_group_layer_get_children (GimpViewable    *viewable)
 static gboolean        gimp_group_layer_get_expanded (GimpViewable    *viewable);
 static void            gimp_group_layer_set_expanded (GimpViewable    *viewable,
                                                       gboolean         expanded);
-
+static GimpItem *      gimp_group_layer_duplicate_aux (GimpItem *item,
+                                                      GType     new_type,
+                                                      GHashTable* copy_refs);
 static GimpItem      * gimp_group_layer_duplicate    (GimpItem        *item,
                                                       GType            new_type);
 static void            gimp_group_layer_convert      (GimpItem        *item,
@@ -408,8 +411,9 @@ gimp_group_layer_set_expanded (GimpViewable *viewable,
 }
 
 static GimpItem *
-gimp_group_layer_duplicate (GimpItem *item,
-                            GType     new_type)
+gimp_group_layer_duplicate_aux (GimpItem *item,
+                                GType     new_type,
+                                GHashTable* copy_refs)
 {
   GimpItem *new_item;
 
@@ -426,6 +430,7 @@ gimp_group_layer_duplicate (GimpItem *item,
       GList                 *list;
 
       gimp_group_layer_suspend_resize (new_group, FALSE);
+      g_hash_table_insert (copy_refs, item, new_item);
 
       for (list = gimp_item_stack_get_item_iter (GIMP_ITEM_STACK (private->children));
            list;
@@ -435,7 +440,13 @@ gimp_group_layer_duplicate (GimpItem *item,
           GimpItem      *new_child;
           GimpLayerMask *mask;
 
-          new_child = gimp_item_duplicate (child, G_TYPE_FROM_INSTANCE (child));
+          if (GIMP_IS_GROUP_LAYER (child)) {
+            new_child = gimp_group_layer_duplicate_aux (child, G_TYPE_FROM_INSTANCE (child), copy_refs);
+
+          } else {
+            new_child = gimp_item_duplicate (child, G_TYPE_FROM_INSTANCE (child));
+            g_hash_table_insert (copy_refs, child, new_child);
+          }
 
           gimp_object_set_name (GIMP_OBJECT (new_child),
                                 gimp_object_get_name (child));
@@ -466,6 +477,51 @@ gimp_group_layer_duplicate (GimpItem *item,
       gimp_group_layer_resume_resize (new_group, FALSE);
     }
 
+  return new_item;
+}
+
+static void
+gimp_group_layer_remap_clone_layers (GimpGroupLayer* item, 
+                                     GHashTable* copy_refs) 
+{
+  GimpGroupLayerPrivate *private     = GET_PRIVATE (item);
+  GList                 *list;
+
+  for (list = gimp_item_stack_get_item_iter (GIMP_ITEM_STACK (private->children));
+        list;
+        list = g_list_next (list)) {
+
+    GimpItem      *child = list->data;
+
+    if (GIMP_IS_GROUP_LAYER (child)) {
+      gimp_group_layer_remap_clone_layers (child, copy_refs);
+
+    } else if (GIMP_IS_CLONE_LAYER (child)) {
+      GimpCloneLayer* clone_layer = GIMP_CLONE_LAYER(child);
+
+      GimpLayer* source_in_refs = GIMP_LAYER(g_hash_table_lookup (copy_refs, gimp_clone_layer_get_source(clone_layer)));
+      g_print("Detected source is %lx\n", source_in_refs);
+      if (source_in_refs) {
+        g_print("Replacing source for %s\n", gimp_object_get_name(GIMP_OBJECT(source_in_refs)));
+        gimp_clone_layer_set_source (clone_layer, source_in_refs);
+      }
+    }
+  }
+
+}
+
+static GimpItem *
+gimp_group_layer_duplicate (GimpItem *item,
+                            GType     new_type)
+{
+  GimpItem * new_item;
+  GHashTable* copy_refs = g_hash_table_new (g_direct_hash, g_direct_equal);
+
+  new_item = gimp_group_layer_duplicate_aux (item, new_type, copy_refs);
+
+  gimp_group_layer_remap_clone_layers (GIMP_GROUP_LAYER(new_item), copy_refs);
+
+  g_hash_table_unref (copy_refs);
   return new_item;
 }
 

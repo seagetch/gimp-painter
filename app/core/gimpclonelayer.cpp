@@ -394,7 +394,7 @@ void GLib::CloneLayer::scale (gint                   new_width,
                                  GimpInterpolationType  interpolation_type,
                                  GimpProgress          *progress)
 {
-  GIMP_ITEM_CLASS(Class::parent_class)->scale(GIMP_ITEM(g_object), new_width, new_height, new_offset_x, new_offset_y, interpolation_type, progress);
+//  GIMP_ITEM_CLASS(Class::parent_class)->scale(GIMP_ITEM(g_object), new_width, new_height, new_offset_x, new_offset_y, interpolation_type, progress);
 //  invalidate_layer();
 }
 
@@ -405,7 +405,7 @@ void GLib::CloneLayer::resize (GimpContext *context,
                                gint         offset_y)
 {
   GIMP_ITEM_CLASS(Class::parent_class)->resize(GIMP_ITEM(g_object), context, new_width, new_height, offset_x, offset_y);
-//  invalidate_layer();
+  invalidate_layer();
 }
 
 void GLib::CloneLayer::flip (GimpContext         *context,
@@ -413,7 +413,7 @@ void GLib::CloneLayer::flip (GimpContext         *context,
                              gdouble              axis,
                              gboolean             clip_result)
 {
-  GIMP_ITEM_CLASS(Class::parent_class)->flip(GIMP_ITEM(g_object), context, flip_type, axis, clip_result);
+//  GIMP_ITEM_CLASS(Class::parent_class)->flip(GIMP_ITEM(g_object), context, flip_type, axis, clip_result);
 //  invalidate_layer();
 }
 
@@ -423,7 +423,7 @@ void GLib::CloneLayer::rotate (GimpContext      *context,
                                   gdouble           center_y,
                                   gboolean          clip_result)
 {
-  GIMP_ITEM_CLASS(Class::parent_class)->rotate(GIMP_ITEM(g_object), context, rotate_type, center_x, center_y, clip_result);
+//  GIMP_ITEM_CLASS(Class::parent_class)->rotate(GIMP_ITEM(g_object), context, rotate_type, center_x, center_y, clip_result);
 //  invalidate_layer();
 }
 
@@ -435,7 +435,7 @@ void GLib::CloneLayer::transform (GimpContext            *context,
                                   GimpTransformResize     clip_result,
                                   GimpProgress           *progress)
 {
-  GIMP_ITEM_CLASS(Class::parent_class)->transform(GIMP_ITEM(g_object), context, matrix, direction, interpolation_type, recursion_level, clip_result, progress);
+//  GIMP_ITEM_CLASS(Class::parent_class)->transform(GIMP_ITEM(g_object), context, matrix, direction, interpolation_type, recursion_level, clip_result, progress);
 //  invalidate_layer();
 }
 
