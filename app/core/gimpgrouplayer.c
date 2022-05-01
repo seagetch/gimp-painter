@@ -519,7 +519,8 @@ gimp_group_layer_duplicate (GimpItem *item,
 
   new_item = gimp_group_layer_duplicate_aux (item, new_type, copy_refs);
 
-  gimp_group_layer_remap_clone_layers (GIMP_GROUP_LAYER(new_item), copy_refs);
+  if (GIMP_IS_GROUP_LAYER (new_item))
+    gimp_group_layer_remap_clone_layers (GIMP_GROUP_LAYER(new_item), copy_refs);
 
   g_hash_table_unref (copy_refs);
   return new_item;
