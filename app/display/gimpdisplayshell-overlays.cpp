@@ -465,7 +465,7 @@ create_toolbar (GimpDisplayShell* shell)
     gtk_widget_get_allocation(GTK_WIDGET(shell->canvas), &alloc);
 
     GtkWidget* toolbar = gtk_bin_get_child (GTK_BIN(shell->toolbar));
-    gint w = alloc.width * 0.9;
+    gint w = alloc.width * 0.98;
     gtk_widget_get_allocation(GTK_WIDGET (shell->toolbar), &alloc2);
 
     gint x3, y3;
@@ -478,6 +478,7 @@ create_toolbar (GimpDisplayShell* shell)
         gtk_widget_get_allocation(GTK_WIDGET(shell->docks), &alloc3);
         if (x3 < (alloc.width + alloc2.width) / 2 && y3 + alloc3.height > y) {
           w = MAX(x3 - x - 4, 1);
+          x = (x3 - w) / 2;
           g_print("w=%d\n", w);
         }
       }
