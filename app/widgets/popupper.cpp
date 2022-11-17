@@ -308,6 +308,11 @@ void GLib::Popover::show (GdkScreen *screen,
       y = targetBottom;
   }
 
+  if (x < rect.x)
+    x = rect.x;
+  if (y < rect.y)
+    y = rect.y;
+
   self[gtk_window_move] (x, y);
   self[gtk_widget_show] ();
 }
