@@ -310,8 +310,32 @@ void GLib::Popover::show (GdkScreen *screen,
 
   if (x < rect.x)
     x = rect.x;
-  if (y < rect.y)
+    if (pos == GTK_CORNER_TOP_LEFT || pos == GTK_CORNER_TOP_RIGHT) {
+      if ( targetBottom + requisition.height < rect.y + rect.height)
+        y = targetBottom;
+      else if (targetTop - requisition.height >= rect.y)
+        y = targetTop - requisition.height;
+    } else {
+      if ( targetTop - requisition.height >= rect.y)
+        y = targetTop - requisition.height;
+      else if ( targetBottom + requisition.height < rect.y + rect.height)
+        y = targetBottom;
+    }
+  if (y < rect.y) {
     y = rect.y;
+    if (pos == GTK_CORNER_TOP_LEFT || pos == GTK_CORNER_BOTTOM_LEFT) {
+      if ( targetRight + requisition.width < rect.x + rect.width)
+        x = targetRight;
+      else if ( targetLeft - requisition.width >= rect.x)
+        x = targetLeft - requisition.width;
+
+    } else {
+      if ( targetLeft - requisition.width >= rect.x)
+        x = targetLeft - requisition.width;
+      else if ( targetRight + requisition.width < rect.x + rect.width)
+        x = targetRight;
+    }
+  }
 
   self[gtk_window_move] (x, y);
   self[gtk_widget_show] ();
