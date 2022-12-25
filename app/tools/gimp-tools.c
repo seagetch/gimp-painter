@@ -66,6 +66,7 @@
 #include "gimpgegltool.h"
 #include "gimphealtool.h"
 #include "gimphuesaturationtool.h"
+#include "gimpimagegeneratortool.h" /* gimp-painter 2.8 */
 #include "gimpinktool.h"
 #include "gimpiscissorstool.h"
 #include "gimplevelstool.h"
@@ -198,7 +199,10 @@ gimp_tools_init (Gimp *gimp)
     gimp_fuzzy_select_tool_register,
     gimp_free_select_tool_register,
     gimp_ellipse_select_tool_register,
-    gimp_rectangle_select_tool_register
+    gimp_rectangle_select_tool_register,
+
+    /* image generation tools */
+    gimp_image_generator_tool_register
   };
 
   gint i;

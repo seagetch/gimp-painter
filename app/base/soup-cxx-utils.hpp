@@ -32,6 +32,86 @@ __DECLARE_GTK_CAST__(SoupMessage, SOUP_MESSAGE, soup_message);
 
 namespace Soup {
 
+class ISoupSession : public GLib::IObject<SoupSession> {
+  using super = GLib::IObject<SoupSession>;
+public:
+  using Handler = Delegators::Delegator<void(SoupSession*, SoupMessage*)>;
+
+  class Defferred {
+    using Handler = Delegator<SoupMessage*(SoupMessage*)>;
+    CXXPointer<Handler> handler;
+    Defferred* prev;
+    Defferred* next;
+    int refCount;
+  public:
+    Defferred() : handler(NULL), next(NULL), prev(NULL), refCount(0) {};
+    Defferred(Handler* handler) : handler(handler), next(NULL), prev(NULL), refCount(0) {};
+    Defferred* then(Handler* handler) {
+      next = new Defferred(handler);
+      next->prev = this;
+      incRef();
+      return next;
+    }
+    void incRef() {
+      refCount ++;
+    }
+    void decRef() {
+      refCount --;
+      if (prev)
+        prev->decRef();
+      prev = NULL;
+      if (refCount <= 0) {
+        delete this;
+      }
+    }
+
+    static
+    void callback(SoupSession* session, SoupMessage* message, gpointer user_data) {
+      ISoupSession i_session(session);
+      Defferred* defferred = reinterpret_cast<Defferred*>(user_data);
+
+      while (defferred && !defferred->handler) {
+        if (defferred->next)
+          defferred = defferred->next;
+      }
+      if (!defferred)
+        return;
+
+      SoupMessage* new_message = (*(defferred->handler)) (message);
+      Defferred* next = defferred->next;
+      if (new_message)
+        i_session.queue_message(new_message, next);
+      else {
+        defferred->decRef();
+      }
+    };
+  };
+
+  ISoupSession() : super() { };
+  ISoupSession(SoupSession* session) : super(session) { };
+  ISoupSession(const ISoupSession& session) : super(session.obj) { };
+
+  Defferred* queue_message(SoupMessage *msg, Defferred* defferred = NULL) {
+    if (!defferred)
+      defferred = new Defferred();
+    SoupSession* session = SOUP_SESSION(obj);
+    soup_session_queue_message (session, msg, Defferred::callback, defferred);
+    return defferred;
+  }
+
+  void abort() {
+    SoupSession* session = SOUP_SESSION(obj);
+    soup_session_abort (session);
+  }
+
+  void cancel(SoupMessage* msg, guint status) {
+    SoupSession* session = SOUP_SESSION(obj);
+    soup_session_cancel_message (session, msg, status);
+  }
+
+};
+
+
 class ISoupServer : public GLib::IObject<SoupServer> {
   using super = GLib::IObject<SoupServer>;
 public:

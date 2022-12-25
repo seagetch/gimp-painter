@@ -145,6 +145,7 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_TOOL_THRESHOLD           "gimp-tool-threshold"
 #define GIMP_STOCK_TOOL_ZOOM                "gimp-tool-zoom"
 #define GIMP_STOCK_TOOL_MYPAINT             "gimp-tool-mypaint"
+#define GIMP_STOCK_TOOL_IMAGE_GENERATOR     "gimp-image"
 
 
 /*  in menu size:  */
