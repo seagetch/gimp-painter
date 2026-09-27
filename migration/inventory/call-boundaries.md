@@ -81,6 +81,16 @@ The `REVIEW` status is intentional. Pattern matches can include declarations
 or pointer invocations that are not actual ABI boundaries. Conversely, a
 more complex declaration or a C caller may not match. The signature list is
 an audit aid, not a declaration that same-named functions have the same ABI.
+
+`extern-c-block-review.tsv` gives the opening and matching closing line for
+each of the 69 `extern "C"` scopes found in the C++ candidate list. Run
+`python3 tools/audit_extern_c_blocks.py` to regenerate it. Of these scopes,
+55 include C headers without a named `gimp_*` definition match, nine contain
+named definitions without includes, three contain both, and two hold local
+GObject type declarations and macros. The definition count is a pattern
+match for triage, not an exported-symbol count; macro-generated entries and
+the signatures of each callback need separate review.
+
 Before 01.005 can be
 completed, inspect each candidate, identify exported C functions and their
 callers in changed C sources and public headers (including entry names missed
