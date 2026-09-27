@@ -52,6 +52,16 @@ legacy linkage classification, but does not yet audit every actual caller or
 make the headers safe for arbitrary C++ includes. The port must give intended
 C declarations explicit linkage guards.
 
+`c-parameter-review.tsv` compares the parameter spelling of the 64 pairs
+whose definition is in C++ and whose header declares that same entry. Run
+`python3 tools/audit_c_parameters.py` to regenerate it. After normalizing
+spaces around `*` and empty parameter lists, 61 parameter lists match, two
+differ only in the parameter name, and
+`gimp_perspective_guide_new` differs in `guint` versus `guint32` as well as
+the name. The latter needs a deliberate public type choice and target ABI
+check in the port. This comparison does not validate return types, typedef
+equivalence, pointer ownership or runtime callers.
+
 The `gimp_tool_options_button_with_popup` pairs are deliberately left for
 review despite sharing a name. The legacy C function is defined in
 `app/tools/gimptooloptions-gui.c:201`; the C++ helper in
