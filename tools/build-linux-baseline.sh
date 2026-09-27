@@ -52,4 +52,7 @@ fi
 configure "$repo_dir/build" "$repo_dir" --prefix="$prefix_dir" \
   -Dauto_features=disabled -Dlibunwind=false
 meson compile -C "$repo_dir/build" -j 2
+python3 "$repo_dir/tools/verify_build_executables.py" "$repo_dir/build" \
+  --repair-permissions \
+  --report "$repo_dir/migration/baseline/build-artifact-check.json"
 meson install --no-rebuild -C "$repo_dir/build"

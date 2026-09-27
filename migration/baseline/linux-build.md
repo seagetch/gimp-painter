@@ -23,6 +23,10 @@ the local prefix. For subsequent commands, run
 `source tools/linux-build-env.sh` to set pkg-config, runtime library, GI
 typelib and plug-in Python search paths.
 
+The script verifies every default Meson executable and restores missing
+execute bits only on valid ELF outputs. Any missing or non-ELF executable
+stops the build before installation.
+
 The configuration disables optional auto-detected plug-ins for a lean baseline;
 this does not assert that those plug-ins are implemented or compatible.
 Generated build directories, binaries and package cache stay outside Git
@@ -30,8 +34,42 @@ history. If the container's apt sandbox refuses to change to `_apt`, use
 `-o APT::Sandbox::User=root` and a writable `Dir::Cache::archives` directory.
 
 The baseline batch fixture at `migration/tests/baseline-smoke.py` creates an
-image, fills a layer, saves an XCF and reopens it. In this execution container
-the batch prints `BASELINE_CREATE_FILL_SAVE_REOPEN_OK` and saves the file,
-but the process returns status 1 at shutdown. A D-Bus session cannot be
-started here (`Failed to open socket: Operation not permitted`). Accordingly,
-the exit part of WBS 03.004 is still open; a full runtime success is not claimed.
+image, fills a layer, saves an XCF and reopens it. Run the console binary
+directly for this non-UI test; `xvfb-run` yielded exit status 1 in this
+container although the batch itself succeeded. Direct headless execution
+prints `BASELINE_CREATE_FILL_SAVE_REOPEN_OK` and returns status 0. The XCF
+is preserved as `migration/fixtures/gimp3-baseline.xcf`. The container
+cannot create a D-Bus session socket, so GUI tests still need a suitable
+environment. A nonfatal GLib `g_file_test` critical occurs during startup;
+its source has not been established and is tracked separately from the
+successful batch exit.
+
+The original app test suite and its one baseline failure are recorded in
+`standard-tests.md`; the Meson executable inspection results are in
+`build-artifact-check.json`.
+
+To reproduce GIMP compilation without a previous GIMP build directory or a
+compiler cache, use a **new** build directory and the installed, pinned babl
+and GEGL prefix. Do not reuse an existing `build-clean` directory:
+
+```sh
+source tools/linux-build-env.sh
+test ! -e build-clean
+export CCACHE_DISABLE=1
+meson setup build-clean --prefix="$(dirname "$PWD")/.build-prefix" \
+  -Dauto_features=disabled -Dlibunwind=false
+meson compile -C build-clean -j 2
+python3 tools/verify_build_executables.py build-clean
+```
+
+This records the cache-free clean build procedure; the validated installed
+baseline above was compiled in `build`, not `build-clean`.
+
+```sh
+source tools/linux-build-env.sh
+GIMP3_DIRECTORY="$(dirname "$PWD")/.gimp-baseline-check" \
+GIMP_BASELINE_XCF="$(dirname "$PWD")/baseline-smoke-check.xcf" \
+  ../.build-prefix/bin/gimp-console-3.0 -n -c \
+  --batch-interpreter=python-fu-eval -b - --quit \
+  < migration/tests/baseline-smoke.py
+```

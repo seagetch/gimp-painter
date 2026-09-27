@@ -1,0 +1,174 @@
+Core properties:
+  Source dir /workspace/scratch/bdc79f7668b3/gimp-painter
+  Build dir  /workspace/scratch/bdc79f7668b3/gimp-painter/build
+
+Main project options:
+
+  Core options                   Current Value                    Possible Values                  Description
+  --------------                 -------------                    ---------------                  -----------
+  auto_features                  disabled                         [enabled, disabled, auto]        Override value of all 'auto' features
+  backend                        ninja                            [ninja, vs, vs2010, vs2012,      Backend to use
+                                                                   vs2013, vs2015, vs2017, vs2019,
+                                                                   vs2022, xcode, none]
+  buildtype                      debugoptimized                   [plain, debug, debugoptimized,   Build type to use
+                                                                   release, minsize, custom]
+  cmake_prefix_path              []                               []                               List of additional prefixes for cmake to search
+  debug                          true                             [true, false]                    Enable debug symbols and other information
+  default_library                shared                           [shared, static, both]           Default library type
+  force_fallback_for             []                               []                               Force fallback for those subprojects
+  genvslite                      vs2022                           [vs2022]                         Setup multiple buildtype-suffixed ninja-backend build
+                                                                                                   directories, and a [builddir]_vs containing a Visual Studio
+                                                                                                   meta-backend with multiple configurations that calls into
+                                                                                                   them
+  install_umask                  0022                             [preserve, 0000-0777]            Default umask to apply on permissions of installed files
+  layout                         mirror                           [mirror, flat]                   Build directory layout
+  optimization                   2                                [plain, 0, g, 1, 2, 3, s]        Optimization level
+  pkg_config_path                [/workspace/scratch/bdc79f7668b3 []                               List of additional paths for pkg-config to search
+                                  /.build-
+                                  prefix/lib/x86_64-linux-
+                                  gnu/pkgconfig]
+  prefer_static                  false                            [true, false]                    Whether to try static linking before shared linking
+  strip                          false                            [true, false]                    Strip targets on install
+  unity                          off                              [on, off, subprojects]           Unity build
+  unity_size                     4                                >=2                              Unity block size
+  vsenv                          false                            [true, false]                    Activate Visual Studio environment
+  warning_level                  1                                [0, 1, 2, 3, everything]         Compiler warning level to use
+  werror                         false                            [true, false]                    Treat warnings as errors
+  wrap_mode                      default                          [default, nofallback,            Wrap mode
+                                                                   nodownload, forcefallback,
+                                                                   nopromote]
+
+  Backend options                Current Value                    Possible Values                  Description
+  -----------------              -------------                    ---------------                  -----------
+  backend_max_links              0                                >=0                              Maximum number of linker processes to run or 0 for no limit
+
+  Base options                   Current Value                    Possible Values                  Description
+  --------------                 -------------                    ---------------                  -----------
+  b_asneeded                     true                             [true, false]                    Use -Wl,--as-needed when linking
+  b_colorout                     always                           [auto, always, never]            Use colored output
+  b_coverage                     false                            [true, false]                    Enable coverage tracking.
+  b_lto                          false                            [true, false]                    Use link time optimization
+  b_lto_threads                  0                                                                 Use multiple threads for Link Time Optimization
+  b_lundef                       true                             [true, false]                    Use -Wl,--no-undefined when linking
+  b_ndebug                       false                            [true, false, if-release]        Disable asserts
+  b_pch                          true                             [true, false]                    Use precompiled headers
+  b_pgo                          off                              [off, generate, use]             Use profile guided optimization
+  b_pie                          false                            [true, false]                    Build executables as position independent
+  b_sanitize                     none                             [none, address, thread,          Code sanitizer to use
+                                                                   undefined, memory, leak,
+                                                                   address,undefined]
+  b_staticpic                    true                             [true, false]                    Build static libraries as position independent
+
+  Compiler options               Current Value                    Possible Values                  Description
+  ------------------             -------------                    ---------------                  -----------
+  c_args                         []                               []                               Extra arguments passed to the c compiler
+  c_link_args                    []                               []                               Extra arguments passed to the c linker
+  c_std                          none                             [none, c89, c99, c11, c17, c18,  C language standard to use
+                                                                   c2x, gnu89, gnu99, gnu11,
+                                                                   gnu17, gnu18, gnu2x]
+  cpp_args                       []                               []                               Extra arguments passed to the cpp compiler
+  cpp_debugstl                   false                            [true, false]                    STL debug mode
+  cpp_eh                         default                          [none, default, a, s, sc]        C++ exception handling type.
+  cpp_link_args                  []                               []                               Extra arguments passed to the cpp linker
+  cpp_rtti                       true                             [true, false]                    Enable RTTI
+  cpp_std                        c++14                            [none, c++98, c++03, c++11,      C++ language standard to use
+                                                                   c++14, c++17, c++1z, c++2a,
+                                                                   c++20, c++23, gnu++98, gnu++03,
+                                                                   gnu++11, gnu++14, gnu++17,
+                                                                   gnu++1z, gnu++2a, gnu++20,
+                                                                   gnu++23]
+
+  pkgconfig module options       Current Value                    Possible Values                  Description
+  --------------------------     -------------                    ---------------                  -----------
+  pkgconfig.relocatable          false                            [true, false]                    Generate pkgconfig files as relocatable
+
+  python module options          Current Value                    Possible Values                  Description
+  -----------------------        -------------                    ---------------                  -----------
+  python.allow_limited_api       true                             [true, false]                    Whether to allow use of the Python Limited API
+  python.bytecompile             0                                >=-1, <=2                        Whether to compile bytecode
+  python.install_env             prefix                           [auto, prefix, system, venv]     Which python environment to install to
+  python.platlibdir                                                                                Directory for site-specific, platform-specific files.
+  python.purelibdir                                                                                Directory for site-specific, non-platform-specific files.
+
+  Directories                    Current Value                    Possible Values                  Description
+  -------------                  -------------                    ---------------                  -----------
+  bindir                         bin                                                               Executable directory
+  datadir                        share                                                             Data file directory
+  includedir                     include                                                           Header file directory
+  infodir                        share/info                                                        Info page directory
+  libdir                         lib/x86_64-linux-gnu                                              Library directory
+  libexecdir                     libexec                                                           Library executable directory
+  licensedir                                                                                       Licenses directory
+  localedir                      share/locale                                                      Locale data directory
+  localstatedir                  var                                                               Localstate data directory
+  mandir                         share/man                                                         Manual page directory
+  prefix                         /workspace/scratch/bdc79f7668b3/                                  Installation prefix
+                                 .build-prefix
+  sbindir                        sbin                                                              System executable directory
+  sharedstatedir                 com                                                               Architecture-independent data directory
+  sysconfdir                     etc                                                               Sysconf data directory
+
+  Testing options                Current Value                    Possible Values                  Description
+  -----------------              -------------                    ---------------                  -----------
+  errorlogs                      true                             [true, false]                    Whether to print the logs from failing tests
+  stdsplit                       true                             [true, false]                    Split stdout and stderr in test logs
+
+  Project options                Current Value                    Possible Values                  Description
+  -----------------              -------------                    ---------------                  -----------
+  aa                             disabled                         [enabled, disabled, auto]        AA plugin
+  alsa                           disabled                         [enabled, disabled, auto]        Alsa support in midi input controller
+  ansi                           false                            [true, false]                    Turn on strict ansi
+  appdata-test                   disabled                         [enabled, disabled, auto]        Validate the appdata file
+  bash-completion                disabled                         [enabled, disabled, auto]        Install a bash completion script
+  bug-report-url                                                                                   URL used by the debug dialog to report bugs
+  build-id                       unknown                                                           Unique string used to define your build
+  cairo-pdf                      disabled                         [enabled, disabled, auto]        Cairo-pdf support
+  can-crosscompile-gir           false                            [true, false]                    GIR is buildable even if crosscompiling
+  check-update                   platform-default                 [yes, no, platform-default]      GIMP will look up new version availability on startup
+  debug-self-in-build            false                            [true, false]                    Run in-build GIMP within gdb for debugging purpose
+  dmg                            false                            [true, false]                    Generate files needed for the macOS .dmg
+  enable-console-bin             true                             [true, false]                    Build a console-only binary which does not link GTK
+  enable-default-bin             disabled                         [enabled, disabled, auto]        Install unversioned symlinks pointing to versioned
+                                                                                                   executables (on UNIX) or unversioned duplicates (on Windows)
+  enable-multiproc               true                             [true, false]                    Support for multiple processors
+  file-plug-ins-test             false                            [true, false]                    Always install test-file-plug-ins (mostly for CI testing)
+  fits                           disabled                         [enabled, disabled, auto]        Support for loading/exporting FITS images
+  ghostscript                    disabled                         [enabled, disabled, auto]        Ghostscript support
+  gi-docgen                      disabled                         [enabled, disabled, auto]        Build developer documentation (uses gi-docgen)
+  gimpdir                                                                                          Change default gimpdir from ~/.config/GIMP/3.0 to
+                                                                                                   ~/.config/DIR/3.0 (if relative), or to DIR (if absolute)
+  gudev                          disabled                         [enabled, disabled, auto]        Gudev support
+  headless-tests                 disabled                         [enabled, disabled, auto]        Use xvfb-run/dbus-run-session for UI-dependent automatic
+                                                                                                   tests
+  heif                           disabled                         [enabled, disabled, auto]        HEIF support
+  icc-directory                                                                                    Path to default color profiles for this system
+  ilbm                           disabled                         [enabled, disabled, auto]        Amiga IFF support
+  javascript                     disabled                         [enabled, disabled, auto]        Install Javascript plug-ins
+  jpeg-xl                        disabled                         [enabled, disabled, auto]        JPEG XL support
+  jpeg2000                       disabled                         [enabled, disabled, auto]        Jpeg-2000 support
+  libbacktrace                   true                             [true, false]                    Build with libbacktrace support
+  libunwind                      false                            [true, false]                    Build with libunwind for backtrace
+  linux-input                    disabled                         [enabled, disabled, auto]        Linux input event controller module
+  lua                            false                            [true, false]                    Install Lua plug-ins (experimental)
+  mng                            disabled                         [enabled, disabled, auto]        Mng support
+  ms-store                       false                            [true, false]                    Generate files needed for the Microsoft Store .msixupload
+                                                                                                   and/or .msixbundle
+  openexr                        disabled                         [enabled, disabled, auto]        Openexr support
+  openmp                         disabled                         [enabled, disabled, auto]        OpenMP support
+  print                          true                             [true, false]                    Print support
+  profiling                      false                            [true, false]                    Enable profiling
+  relocatable-bundle             platform-default                 [yes, no, platform-default]      build with resources considered bundled under the same prefix
+  revision                       0                                                                 Revision increment for a package
+  shmem-type                     auto                             [none, sysv, posix, win32, auto] Shared memory transport type
+  vala                           disabled                         [enabled, disabled, auto]        Build VAPI and Vala plugins
+  vector-icons                   true                             [true, false]                    Use vector icons rather than raster ones
+  webkit-unmaintained            false                            [true, false]                    Help browser and webpage plugins (unmaintained)
+  webp                           disabled                         [enabled, disabled, auto]        Webp support
+  win-debugging                  native                           [native, dwarf]                  Build with native/CodeView debug symbols or with DWARF
+  win32-32bits-dll-folder        32/bin                                                            alternative folder with 32-bit versions of DLL libraries on
+                                                                                                   Windows
+  windows-installer              false                            [true, false]                    Generate files needed for the Inno Windows installer
+  with-sendmail                                                                                    Use Sendmail instead of Xdg-email
+  wmf                            disabled                         [enabled, disabled, auto]        Wmf support
+  xcursor                        disabled                         [enabled, disabled, auto]        Xcursor support
+  xpm                            disabled                         [enabled, disabled, auto]        XPM support
