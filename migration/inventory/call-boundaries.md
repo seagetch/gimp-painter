@@ -28,9 +28,18 @@ and 32 have a C source site; a name can occur in both groups.
 `c-entry-signatures.tsv` pairs 66 C++ definitions and header declarations
 covering 65 names. It records both parameter lists and whether a C linkage
 guard encloses the header declaration: 38 pairs have an identifiable guard,
-and 28 need review. A missing guard does not prove a link failure in the old
-build: some C++ files include the header inside a surrounding `extern "C"`
-block. The new interface must make the intended linkage explicit.
+and 28 were flagged for linkage review. Run
+`python3 tools/audit_c_linkage_review.py` to verify the 28 source anchors and
+regenerate `c-linkage-review.tsv`. Of those pairs, 25 use a matching header
+included inside `extern "C"` in the C++ source; one defines
+`gimp_mypaint_brush_button_with_popup` inside an explicit `extern "C"` block
+at `app/tools/gimpmypaintbrushoptions-gui.cpp:322` (the implementation does
+not include its own header). The remaining two pairs are a separate C++
+overload and its template wrapper. The table lists candidate references in
+C source files, including C definitions where applicable. This resolves the
+legacy linkage classification, but does not yet audit every actual caller or
+make the headers safe for arbitrary C++ includes. The port must give intended
+C declarations explicit linkage guards.
 
 The `gimp_tool_options_button_with_popup` pairs are deliberately left for
 review despite sharing a name. The legacy C function is defined in
