@@ -1,0 +1,35 @@
+legacy_site	pointer_name	syntax_role	legacy_code	status
+app/base/delegators.hpp:35	delegator	INDIRECT_CALL	return (*delegator)(args...);	DONE
+app/base/delegators.hpp:106	f	POINTER_DECLARATION	delegator(Ret (*f)(Args...)) {	DONE
+app/base/delegators.hpp:228	f	POINTER_DECLARATION	decltype(&Delegators::Delegator<Ret(Args...)>::callback) proxy(Ret (*f)(Args...)) {	DONE
+app/base/glib-cxx-impl.hpp:345	class_init_callback	POINTER_DECLARATION	static void (*class_init_callback)(IGClass::IWithClass*);	DONE
+app/base/glib-cxx-impl.hpp:397	callback	POINTER_DECLARATION	NewGClass(void (*callback)(IGClass::IWithClass*)) {	DONE
+app/base/glib-cxx-impl.hpp:449	FuncStore	POINTER_DECLARATION	typedef Ret (*FuncStore)(G*, Args...);	DONE
+app/base/glib-cxx-impl.hpp:467	func	POINTER_DECLARATION	auto bind(R2 (*func)(G2*, Args...)) {	DONE
+app/base/glib-cxx-impl.hpp:474	func	POINTER_DECLARATION	auto operator = (R2 (*func)(G2*, Args...)) {	DONE
+app/base/glib-cxx-impl.hpp:493	init	POINTER_DECLARATION	void (*init)(typename IFaceTraits::Class* klass);	DONE
+app/base/glib-cxx-types.hpp:53	g_type	POINTER_DECLARATION	GType (*g_type)() = g_type<_Instance> >	DONE
+app/base/glib-cxx-types.hpp:58	g_type	INDIRECT_CALL	static GType get_type() { return (*g_type)(); };	DONE
+app/base/glib-cxx-utils.hpp:172	func	INDIRECT_CALL	(*func)(T(data));	DONE
+app/base/glib-cxx-utils.hpp:425	func	INDIRECT_CALL	(*func)((const Key)key, (Data)data);	DONE
+app/base/glib-cxx-utils.hpp:962	method	INDIRECT_CALL	return (*method)(obj, args...);	DONE
+app/base/glib-cxx-utils.hpp:979	method	INDIRECT_CALL	return (*method)(obj, args...);	DONE
+app/base/glib-cxx-utils.hpp:1203	add_func	INDIRECT_CALL	id = (*add_func)(priority, args..., GSourceFunc(EventSource::callback), this, GDestroyNotify(EventSource::destroy));	DONE
+app/base/glib-cxx-utils.hpp:1209	remove_func	INDIRECT_CALL	(*remove_func)(id);	DONE
+app/base/json-cxx-utils.hpp:121	func	INDIRECT_CALL	(*func)(node);	DONE
+app/base/json-cxx-utils.hpp:358	this	INDIRECT_CALL	return (*this)(args...);	DONE
+app/base/scopeguard.hpp:10	IsNull	POINTER_DECLARATION	template<class T, typename Destructor, Destructor* Free, bool (*IsNull)(const T) = always_true<T>, T (*Clear)() = default_value<T> >	DONE
+app/base/scopeguard.hpp:52	f	INDIRECT_CALL	(*f)(this->obj);	DONE
+app/core/gimpmypaintbrush-load.cpp:488	trans	INDIRECT_CALL	y_val = (*trans)((gfloat)y_val);	DONE
+app/core/gimpmypaintbrush-load.cpp:535	trans	INDIRECT_CALL	y_val = (*trans)((gfloat)y_val);	DONE
+app/gimp-features.cpp:48	feature_singleton_factory	POINTER_DECLARATION	typedef GIMP::Feature* (*feature_singleton_factory)(void);	DONE
+app/gimp-features.cpp:78	i	INDIRECT_CALL	GIMP::Feature* feature = (*i)();	DONE
+app/httpd/navigation-guide.cpp:65	f	INDIRECT_CALL	return (*f)(args...);	DONE
+app/httpd/rest-image-tree.cpp:59	f	INDIRECT_CALL	return (*f)(args...);	DONE
+app/tools/gimpmypainttool.cpp:816	callback	INDIRECT_CALL	(* callback) (GIMP_TYPE_MYPAINT_TOOL,	DONE
+app/widgets/popupper.cpp:512	create_view_delegator	INDIRECT_CALL	(*create_view_delegator)(widget, &result, aux);	DONE
+app/widgets/popupper.cpp:563	data_destructor	POINTER_DECLARATION	void (*data_destructor) (gpointer data);	DONE
+app/widgets/popupper.cpp:568	dd	POINTER_DECLARATION	void(*dd)(gpointer))	DONE
+app/widgets/popupper.cpp:583	data_destructor	INDIRECT_CALL	(*data_destructor)(data);	DONE
+app/widgets/popupper.cpp:587	create_view_full_handler	INDIRECT_CALL	(*create_view_full_handler)(widget, result,config.ptr(), data);	DONE
+app/widgets/popupper.cpp:589	create_view_handler	INDIRECT_CALL	(*create_view_handler)(widget, result, config.ptr());	DONE

@@ -91,6 +91,12 @@ GObject type declarations and macros. The definition count is a pattern
 match for triage, not an exported-symbol count; macro-generated entries and
 the signatures of each callback need separate review.
 
+`function-pointer-review.tsv` classifies all 34 first-pass function-pointer
+syntax candidates: 13 declarations or function-pointer parameters and 21
+indirect calls. Run `python3 tools/audit_function_pointers.py` to verify the
+legacy source lines. This is a syntax classification; the pointed-to function,
+its C ABI, lifetime and callback ownership remain to be traced.
+
 Before 01.005 can be
 completed, inspect each candidate, identify exported C functions and their
 callers in changed C sources and public headers (including entry names missed
