@@ -100,6 +100,16 @@ def cpp_function_definitions(code: str):
             yield match[1], code.count("\n", 0, match.start()) + 1
 
 
+def statement(lines: list[str], line: int) -> str:
+    """Keep a bounded multiline call/assignment for callback target review."""
+    pieces = []
+    for raw in lines[line - 1:line + 11]:
+        pieces.append(raw.strip())
+        if ";" in raw or "{" in raw:
+            break
+    return " ".join(" ".join(pieces).split())[:1200]
+
+
 def main() -> None:
     paths = [p for p in git("ls-tree", "-r", "--name-only", REVISION, "app").splitlines()
              if p.endswith((".cpp", ".hpp"))]
@@ -107,18 +117,22 @@ def main() -> None:
     for path in paths:
         source = git("show", f"{REVISION}:{path}")
         clean = without_comments(source)
+        source_lines = source.splitlines()
         for number, (raw, code) in enumerate(
-                zip(source.splitlines(), clean.splitlines()), start=1):
+                zip(source_lines, clean.splitlines()), start=1):
             for kind, pattern in PATTERNS:
                 if pattern.search(code):
-                    rows.append((path, number, kind, "REVIEW", raw.strip()[:300]))
+                    rows.append((path, number, kind, "REVIEW", raw.strip()[:300],
+                                 statement(source_lines, number)))
         for _, line in cpp_function_definitions(clean):
             rows.append((path, line, "c_definition_candidate", "REVIEW",
-                         source.splitlines()[line - 1].strip()[:300]))
+                         source_lines[line - 1].strip()[:300],
+                         statement(source_lines, line)))
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     with OUTPUT.open("w", encoding="utf-8", newline="") as file:
         writer = csv.writer(file, delimiter="\t", lineterminator="\n")
-        writer.writerow(("source", "line", "kind", "status", "legacy_code"))
+        writer.writerow(("source", "line", "kind", "status", "legacy_code",
+                         "boundary_statement"))
         writer.writerows(rows)
     symbols = sorted(set(match[1] for row in rows
                          if row[2] in ("c_entry_candidate", "c_definition_candidate")

@@ -10,6 +10,10 @@ candidates, 149 C++ `gimp_*` definition candidates, 34 function-pointer sites,
 registrations, 22 signal-wrapper connections, and 107 delegator sites. The
 definition scan handles return types on a preceding line. Comments are masked
 before matching, and each row retains its legacy path and line number.
+`boundary_statement` retains up to 12 source lines (bounded at 1,200
+characters), so multiline signal registrations expose both the target and
+the callback. For example, the clone layer `update` connection identifies
+`GLib::CloneLayer::on_source_update` at `app/core/gimpclonelayer.cpp:284`.
 
 The companion `c-call-reference-candidates.tsv` searches the legacy `app`
 tree for 147 distinct C entry names from this pass. It found 130
