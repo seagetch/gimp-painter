@@ -25,6 +25,17 @@ status until the C declaration and C++ definition signatures are compared.
 header references and C source references. Of these, 65 have a header site
 and 32 have a C source site; a name can occur in both groups.
 
+`c-reference-review.tsv` classifies each of the 130 first-pass C/header
+references against its legacy source line. Run
+`python3 tools/audit_c_references.py` to regenerate it. The 80 header sites
+contain 65 declarations, 11 type macro references, three C++ template
+references and one commented-out declaration. The 50 C source sites contain
+41 direct calls, six function-pointer registrations, one C definition and two
+commented-out calls. Of the direct calls, 39 target C++ entry names; the
+other two target the separate C implementation of the popup button helper.
+This classification covers the existing candidate list, not all C uses in
+the legacy tree. Caller argument types and owners still need inspection.
+
 `c-entry-signatures.tsv` pairs 66 C++ definitions and header declarations
 covering 65 names. It records both parameter lists and whether a C linkage
 guard encloses the header declaration: 38 pairs have an identifiable guard,
