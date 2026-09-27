@@ -35,6 +35,14 @@ review despite sharing a name. The legacy C function is defined in
 and has a separate C++ declaration in `gimptooloptions-gui-cxx.hpp:31`.
 Their linkage and call sites must remain distinct in the port.
 
+`bridge-boundary-findings.tsv` records nine inspected mechanisms in the old
+`Delegator` and `NewGClass` bridges. It identifies the actual C-to-C++ callback
+entry points, destruction paths and registration calls. In particular,
+`Delegator::callback` invokes a C++ function with its `catch` block compiled
+out under `#if 0`, and `NewGClass::Binder::callback` invokes an `Impl` method
+without an exception boundary. Their replacement must contain exceptions at
+the C ABI and preserve closure, GObject and private `Impl` lifetimes.
+
 The `REVIEW` status is intentional. Pattern matches can include declarations
 or pointer invocations that are not actual ABI boundaries. Conversely, a
 more complex declaration or a C caller may not match. The signature list is

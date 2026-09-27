@@ -1,0 +1,10 @@
+kind	source	line	direction	mechanism	migration_check
+signal_callback	app/base/delegators.hpp	32	GLib C -> C++	Delegator::callback invokes std::function; catch body disabled under #if 0	C callback must translate exceptions into a safe result
+closure_destroy	app/base/delegators.hpp	160	GLib C -> C++	closure_destroy_notify deletes the heap Delegator through typed callback	Match disconnect and closure finalization; avoid double deletion
+signal_registration	app/base/delegators.hpp	167	C++ -> GLib C	g_cclosure_new binds Delegator::callback and closure_destroy_notify	Preserve callback signature and closure ownership
+signal_connection	app/base/delegators.hpp	128	C++ -> GLib C	Connection destructor calls disconnect using a retained raw target pointer	Prove target remains valid through disconnect
+instance_init	app/base/glib-cxx-impl.hpp	407	GObject C -> C++	NewGClass instance_init placement-constructs Impl in GObject private area	Check alignment construction and failure behavior
+instance_finalize	app/base/glib-cxx-impl.hpp	413	GObject C -> C++	NewGClass instance_finalize destroys Impl and chains to parent	Add idempotent dispose and preserve finalize order
+vfunc_callback	app/base/glib-cxx-impl.hpp	454	GObject C -> C++	Binder callback retrieves Impl and invokes a member function	Prohibit exception escape through C ABI
+vfunc_binding	app/base/glib-cxx-impl.hpp	467	C++ -> GObject C	Binder::bind casts another function pointer with reinterpret_cast	Require exact ABI signature before binding
+gtype_registration	app/base/glib-cxx-impl.hpp	523	C++ -> GObject C	g_type_register_static_simple receives class and instance callback casts	Verify static callback signatures and lifetime
