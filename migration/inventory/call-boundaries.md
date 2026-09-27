@@ -21,9 +21,25 @@ status until the C declaration and C++ definition signatures are compared.
 header references and C source references. Of these, 65 have a header site
 and 32 have a C source site; a name can occur in both groups.
 
+`c-entry-signatures.tsv` pairs 66 C++ definitions and header declarations
+covering 65 names. It records both parameter lists and whether a C linkage
+guard encloses the header declaration: 38 pairs have an identifiable guard,
+and 28 need review. A missing guard does not prove a link failure in the old
+build: some C++ files include the header inside a surrounding `extern "C"`
+block. The new interface must make the intended linkage explicit.
+
+The `gimp_tool_options_button_with_popup` pairs are deliberately left for
+review despite sharing a name. The legacy C function is defined in
+`app/tools/gimptooloptions-gui.c:201`; the C++ helper in
+`app/tools/gimptooloptions-gui-cxx.cpp:45` takes a different argument list
+and has a separate C++ declaration in `gimptooloptions-gui-cxx.hpp:31`.
+Their linkage and call sites must remain distinct in the port.
+
 The `REVIEW` status is intentional. Pattern matches can include declarations
 or pointer invocations that are not actual ABI boundaries. Conversely, a
-more complex declaration or a C caller may not match. Before 01.005 can be
+more complex declaration or a C caller may not match. The signature list is
+an audit aid, not a declaration that same-named functions have the same ABI.
+Before 01.005 can be
 completed, inspect each candidate, identify exported C functions and their
 callers in changed C sources and public headers (including entry names missed
 by the first-pass regex), trace indirect callbacks and

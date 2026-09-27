@@ -121,7 +121,7 @@
 | 01.002 | [x] | 変更 hunk 台帳を作る | 01.001 | 各 hunk に機能・基盤・生成物・資産の分類欄を持たせる。子チェック 2,489 件は `migration/inventory/changed-hunks.tsv` に列挙（01.013 の機能割当は別作業） |
 | 01.003 | [x] | app 外の差分を分類する | 01.002 | libgimp、plug-ins、tools、po、data、build 等の各変更に処置を付与。子チェック 474 件は `migration/inventory/external-changes.tsv` に列挙 |
 | 01.004 | [x] | C++ 型と登録箇所を列挙する | 01.003 | NewGClass、DerivedFrom、UseCStructs、Interface、GType の対応を記録。子チェック 17 件は `migration/inventory/cpp-types.tsv` に列挙 |
-| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 658 件と C/ヘッダー参照候補 130 件を抽出済み。署名照合・候補の精査は継続中 |
+| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 658 件、C/ヘッダー参照 130 件、署名対照 66 組を抽出済み。候補の精査は継続中 |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
