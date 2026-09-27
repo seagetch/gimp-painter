@@ -1,0 +1,29 @@
+{
+  "source": {
+    "repository": "https://github.com/seagetch/gimp-painter.git",
+    "branch": "gimp-2-8",
+    "commit": "afa43fae3e920210146abed514f136fd49f671b5"
+  },
+  "source_diff_base": {
+    "repository": "https://github.com/GNOME/gimp.git",
+    "branch": "gimp-2-8",
+    "commit": "a61915a8e62aad8855cd8c620bdb7195a25ffb90",
+    "verified_ancestor_of_source": true
+  },
+  "published_comparison": {
+    "repository": "https://github.com/GNOME/gimp.git",
+    "tag": "GIMP_3_0_8",
+    "commit": "6ac8031c9555667e080fef0324fca9f28a02e5ab"
+  },
+  "initial_port": {
+    "repository": "https://github.com/GNOME/gimp.git",
+    "upstream_branch": "gimp-3-0",
+    "upstream_commit": "95f6410f25c5186686db7a489d79c1e79187cd41",
+    "work_branch": "gimp-3-0-port"
+  },
+  "future_candidate": {
+    "upstream_branch": "gimp-3-2",
+    "work_branch": "gimp-3-2-port",
+    "support_status": "unverified"
+  }
+}

@@ -1,0 +1,23 @@
+id	status	owner	commit_or_artifact	test	result	added_children	limitations
+00.001	DONE	Codex	migration/baseline/baseline.json	git rev-parse afa43fae	source commit resolves	-	-
+00.002	DONE	Codex	migration/baseline/baseline.json	git merge-base --is-ancestor a61915a8 afa43fae	ancestor verified	-	-
+00.003	DONE	Codex	migration/baseline/baseline.json	git rev-parse GIMP_3_0_8^{commit}	6ac8031c verified	-	-
+00.004	DONE	Codex	migration/support-policy.md	policy review against design.md section 2	initial 3.0 and added-series rule recorded	-	-
+00.005	DONE	Codex	branch gimp-3-0-port	git rev-parse HEAD gimp-upstream/gimp-3-0	branch starts at 95f6410f	-	-
+00.006	DONE	Codex	migration/constraints.md	compare design.md section 1	four forbidden substitutions recorded	-	-
+00.007	DONE	Codex	migration/README.md	directory existence and path review	six artifact destinations defined	-	-
+00.008	DONE	Codex	migration/progress.tsv	python3 tools/check_tasks.py	required evidence columns defined	-	-
+00.009	DONE	Codex	tools/check_tasks.py	python3 tools/check_tasks.py	missing IDs and cycles checked	-	-
+00.010	DONE	Codex	migration/README.md	review child-ID and blocked procedure	child implementation and test rule recorded	-	-
+00.011	DONE	Codex	tasks.md section 5	36-row count and task group mapping review	all 36 features mapped to implementation and checks	-	-
+00.012	DONE	Codex	migration/support-policy.md	review target architectures	Linux x86_64 Windows x86_64 macOS arm64/x86_64 recorded	-	-
+01.001	DONE	Codex	migration/inventory/changed-files.tsv	python3 tools/inventory_changes.py; wc -l changed-files.tsv	947 changed paths with status and old/new blob IDs	-	-
+03.001	DONE	Codex	meson.build:1-8; migration/baseline/build-definition.md	inspect project language, standard, minimum Meson	C and C++ enabled; C++14; Meson >=0.61.0	-	-
+01.002	DONE	Codex	migration/inventory/changed-hunks.tsv	tools/inventory_hunks.py; verified 947/947 changed paths	2489 sections with classification columns and per-section child checks	01.002/000001..002489	-
+02.001	BLOCKED	Codex	migration/baseline/legacy-build.md	configure.ac dependency inspection	declared minima extracted; exact isolated stack unavailable	-	GTK 2 and GEGL 0.3 build stack absent
+03.002	DONE	Codex	migration/baseline/build-environment.json; migration/baseline/linux-build.md	pkg-config versions; meson setup build	toolchain and GLib GTK GEGL babl versions recorded; GIMP configured	-	-
+01.003	DONE	Codex	migration/inventory/external-changes.tsv	python3 tools/classify_external.py; 474/474 non-app files	every external changed file has a category and implementation/test sections	01.003/0001..0474	implementation and feature parity remain open
+01.004	DONE	Codex	migration/inventory/cpp-types.tsv	python3 tools/inventory_cpp_types.py; 17 declarations	all NewGClass declarations mapped to C parents instances Impl interfaces and GType names	01.004/001..017	-
+01.005	TODO	Codex	-	-	-	-	-
+03.003	DONE	Codex	gimp-build.log (workspace)	meson compile -C build -j 2; build/app/gimp-console-3.0 --version	2594/2594 targets linked; GNU Image Manipulation Program version 3.0.9	-	-
+03.004	BLOCKED	Codex	migration/tests/baseline-smoke.py; migration/fixtures/gimp3-baseline.xcf; gimp-smoke.log (workspace)	xvfb-run GIMP Python batch; file save and reopen; process exit status	create/fill/save/reopen successful; batch reports success; process exits 1	-	full shutdown criterion unverified; sandbox denies D-Bus socket; causality not established

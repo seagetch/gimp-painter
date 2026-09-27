@@ -1,0 +1,18 @@
+child_id	status	source	line	runtime_gtype	name_symbol	struct_strategy	c_parent	c_instance	cpp_impl	ginterface	gtype_getter
+01.004/001	DONE	app/core/gimpclonelayer.cpp	174	GimpCloneLayer	gimp_clone_layer_name	UseCStructs	GimpLayer	GimpCloneLayer	CloneLayer	GimpPickable	gimp_clone_layer_get_type
+01.004/002	DONE	app/core/gimpclonelayerundo.cpp	57	GimpCloneLayerUndo	gimp_clone_layer_undo_name	UseCStructs	GimpItemUndo	GimpCloneLayerUndo	GLib::CloneLayerUndo		gimp_clone_layer_undo_get_type
+01.004/003	DONE	app/core/gimpfilterlayer.cpp	242	GimpFilterLayer	gimp_filter_layer_name	UseCStructs	GimpLayer	GimpFilterLayer	FilterLayer	GimpProgress, GimpPickable	gimp_filter_layer_get_type
+01.004/004	DONE	app/core/gimpperspectiveguide.cpp	84	GimpPerspectiveGuide	gimp_perspective_guide_name	UseCStructs	GObject	GimpPerspectiveGuide	PerspectiveGuide		gimp_perspective_guide_get_type
+01.004/005	DONE	app/display/gimpcanvasperspectiveguide.cpp	79	GimpCanvasPerspectiveGuide	gimp_canvas_perspective_guide_name	UseCStructs	GimpCanvasItem	GimpCanvasPerspectiveGuide	CanvasPerspectiveGuide		gimp_canvas_perspective_guide_get_type
+01.004/006	DONE	app/presets/gimpjsonresource.cpp	90	GimpJsonResource	gimp_json_resource_name	UseCStructs	GimpData	GimpJsonResource	JsonResource		gimp_json_resource_get_type
+01.004/007	DONE	app/presets/layer-preset-gui.cpp	85	GimpLayerPresetFactoryView	layer_preset_factory_view	DerivedFrom	GimpDataFactoryView	generated instance	LayerPresetFactoryView		through Class::Traits::get_type
+01.004/008	DONE	app/tools/gimpbucketfillbrushtool.cpp	127	GimpBucketFillBrushOptions	gimp_bucket_fill_brush_options_name	DerivedFrom	GimpPaintOptions	generated instance	Options		through Class::Traits::get_type
+01.004/009	DONE	app/tools/gimpbucketfillbrushtool.cpp	204	GimpBucketFillBrush	gimp_bucket_fill_brush_name	DerivedFrom	GimpBrushCore	generated instance	Brush		through Class::Traits::get_type
+01.004/010	DONE	app/tools/gimpimagegeneratortool.cpp	112	GimpImageGeneratorOptions	gimp_image_generator_options_name	UseCStructs	GimpToolOptions	GimpImageGeneratorOptions	Options		gimp_image_generator_options_get_type
+01.004/011	DONE	app/tools/gimpimagegeneratortool.cpp	195	GimpImageGeneratorTool	gimp_image_generator_name	UseCStructs	GimpDrawTool	GimpImageGeneratorTool	Tool		through Class::Traits::get_type
+01.004/012	DONE	app/tools/gimpperspectiveguidetool.cpp	112	GimpPerspectiveGuideOptions	gimp_perspective_guide_options_name	UseCStructs	GimpToolOptions	GimpPerspectiveGuideOptions	Options		gimp_perspective_guide_options_get_type
+01.004/013	DONE	app/tools/gimpperspectiveguidetool.cpp	224	GimpPerspectiveGuideTool	gimp_perspective_guide_tool_name	UseCStructs	GimpDrawTool	GimpPerspectiveGuideTool	Tool		gimp_perspective_guide_tool_get_type
+01.004/014	DONE	app/widgets/gimpcellrendererpopup.cpp	124	GimpCellRendererPopup	gimp_cell_renderer_popup_name	UseCStructs	GtkCellRenderer	GimpCellRendererPopup	CellRendererPopup		gimp_cell_renderer_popup_get_type
+01.004/015	DONE	app/widgets/gimplayertileview.cpp	312	GimpLayerTileView	gimp_layer_tile_view_name	UseCStructs	GtkBox	GimpLayerTileView	LayerTileView		gimp_layer_tile_view_get_type
+01.004/016	DONE	app/widgets/gimptooltileview.cpp	192	GimpToolTileView	gimp_tool_tile_view_name	UseCStructs	GtkBox	GimpToolTileView	ToolTileView		gimp_tool_tile_view_get_type
+01.004/017	DONE	app/widgets/popupper.cpp	102	GimpPopover2	gimp_popover_name	UseCStructs	GtkWindow	GimpPopover	Popover		through Class::Traits::get_type
