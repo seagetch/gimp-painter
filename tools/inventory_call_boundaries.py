@@ -10,6 +10,7 @@ from pathlib import Path
 
 REVISION = "afa43fae3e920210146abed514f136fd49f671b5"
 OUTPUT = Path("migration/inventory/cpp-call-boundary-candidates.tsv")
+C_REFERENCES = Path("migration/inventory/c-call-reference-candidates.tsv")
 PATTERNS = (
     ("extern_c", re.compile(r'\bextern\s+"C"')),
     ("c_entry_candidate", re.compile(
@@ -91,8 +92,31 @@ def main() -> None:
         writer = csv.writer(file, delimiter="\t", lineterminator="\n")
         writer.writerow(("source", "line", "kind", "status", "legacy_code"))
         writer.writerows(rows)
+    symbols = sorted(set(match[1] for row in rows if row[2] == "c_entry_candidate"
+                         if (match := re.search(r"\b(gimp_[A-Za-z0-9_]+)\s*\(", row[4]))))
+    references = []
+    if symbols:
+        command = ["git", "grep", "-n", "-w", "-F"]
+        for symbol in symbols:
+            command.extend(("-e", symbol))
+        command.extend((REVISION, "--", "app"))
+        for entry in subprocess.check_output(command, text=True, encoding="utf-8").splitlines():
+            _, path, line, code = entry.split(":", 3)
+            if not path.endswith((".c", ".h")):
+                continue
+            found = set(re.findall(r"\bgimp_[A-Za-z0-9_]+\b", code)) & set(symbols)
+            for symbol in sorted(found):
+                references.append((symbol, path, int(line),
+                                   "header" if path.endswith(".h") else "c_source",
+                                   "REVIEW", code.strip()[:300]))
+    C_REFERENCES.parent.mkdir(parents=True, exist_ok=True)
+    with C_REFERENCES.open("w", encoding="utf-8", newline="") as file:
+        writer = csv.writer(file, delimiter="\t", lineterminator="\n")
+        writer.writerow(("symbol", "source", "line", "kind", "status", "legacy_code"))
+        writer.writerows(references)
     print(f"{len(paths)} C++ files scanned; {len(rows)} candidates: "
-          f"{dict(Counter(row[2] for row in rows))}")
+          f"{dict(Counter(row[2] for row in rows))}; "
+          f"{len(symbols)} candidate C entry names, {len(references)} C/header references")
 
 
 if __name__ == "__main__":

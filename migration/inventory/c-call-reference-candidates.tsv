@@ -1,0 +1,51 @@
+symbol	source	line	kind	status	legacy_code
+gimp_clone_layer_get_type	app/core/gimpclonelayer.h	30	header	REVIEW	#define GIMP_TYPE_CLONE_LAYER            (gimp_clone_layer_get_type ())
+gimp_clone_layer_get_type	app/core/gimpclonelayer.h	47	header	REVIEW	GType            gimp_clone_layer_get_type       (void) G_GNUC_CONST;
+gimp_clone_layer_get_type	app/core/gimpclonelayer.h	83	header	REVIEW	template<> inline GType g_type<GimpCloneLayer>() { return gimp_clone_layer_get_type(); }
+gimp_clone_layer_undo_get_type	app/core/gimpclonelayerundo.h	21	header	REVIEW	#define GIMP_TYPE_CLONE_LAYER_UNDO            (gimp_clone_layer_undo_get_type ())
+gimp_clone_layer_undo_get_type	app/core/gimpclonelayerundo.h	46	header	REVIEW	GType   gimp_clone_layer_undo_get_type (void) G_GNUC_CONST;
+gimp_filter_layer_get_type	app/core/gimpfilterlayer.h	30	header	REVIEW	#define GIMP_TYPE_FILTER_LAYER            (gimp_filter_layer_get_type ())
+gimp_filter_layer_get_type	app/core/gimpfilterlayer.h	47	header	REVIEW	GType            gimp_filter_layer_get_type       (void) G_GNUC_CONST;
+gimp_filter_layer_get_type	app/core/gimpfilterlayer.h	85	header	REVIEW	template<> inline GType g_type<GimpFilterLayer>() { return gimp_filter_layer_get_type(); }
+gimp_perspective_guide_new	app/core/gimpimage.c	791	c_source	REVIEW	GimpPerspectiveGuide* guide = gimp_perspective_guide_new(0);
+gimp_perspective_guide_add_vanish_points	app/core/gimpimage.c	795	c_source	REVIEW	gimp_perspective_guide_add_vanish_points (guide, px, py);
+gimp_perspective_guide_add_vanish_points	app/core/gimpimage.c	798	c_source	REVIEW	gimp_perspective_guide_add_vanish_points (guide, px, py);
+gimp_perspective_guide_get_type	app/core/gimpperspectiveguide.h	31	header	REVIEW	#define GIMP_TYPE_PERSPECTIVE_GUIDE            (gimp_perspective_guide_get_type ())
+gimp_perspective_guide_get_type	app/core/gimpperspectiveguide.h	56	header	REVIEW	GType               gimp_perspective_guide_get_type        (void) G_GNUC_CONST;
+gimp_perspective_guide_new	app/core/gimpperspectiveguide.h	58	header	REVIEW	GimpPerspectiveGuide *         gimp_perspective_guide_new  (guint32              guide_ID);
+gimp_perspective_guide_get_vanish_point_length	app/core/gimpperspectiveguide.h	59	header	REVIEW	gint     gimp_perspective_guide_get_vanish_point_length   (GimpPerspectiveGuide * guide);
+gimp_perspective_guide_add_vanish_points	app/core/gimpperspectiveguide.h	60	header	REVIEW	gint     gimp_perspective_guide_add_vanish_points         (GimpPerspectiveGuide  *guide, gdouble x, gdouble y);
+gimp_perspective_guide_remove_vanish_points	app/core/gimpperspectiveguide.h	61	header	REVIEW	gboolean gimp_perspective_guide_remove_vanish_points      (GimpPerspectiveGuide  *guide, gint index);
+gimp_perspective_guide_get_vanish_points	app/core/gimpperspectiveguide.h	62	header	REVIEW	gboolean gimp_perspective_guide_get_vanish_points    (GimpPerspectiveGuide  *guide, gint index, gdouble* x, gdouble* y);
+gimp_perspective_guide_set_vanish_points	app/core/gimpperspectiveguide.h	63	header	REVIEW	gboolean gimp_perspective_guide_set_vanish_points    (GimpPerspectiveGuide  *guide, gint index, gdouble x, gdouble y);
+gimp_canvas_perspective_guide_get_type	app/display/gimpcanvasperspectiveguide.h	29	header	REVIEW	#define GIMP_TYPE_CANVAS_PERSPECTIVE_GUIDE            (gimp_canvas_perspective_guide_get_type ())
+gimp_canvas_perspective_guide_get_type	app/display/gimpcanvasperspectiveguide.h	53	header	REVIEW	GType               gimp_canvas_perspective_guide_get_type        (void) G_GNUC_CONST;
+gimp_canvas_perspective_guide_new	app/display/gimpcanvasperspectiveguide.h	55	header	REVIEW	GimpCanvasPerspectiveGuide *         gimp_canvas_perspective_guide_new  (GimpDisplayShell* shell, GimpPerspectiveGuide* guide);
+gimp_display_shell_attach_on_canvas_view	app/display/gimpdisplayshell-overlays.h	23	header	REVIEW	void gimp_display_shell_attach_on_canvas_view (GimpDisplayShell* shell, GtkWidget* widget);
+gimp_display_shell_detach_on_canvas_view	app/display/gimpdisplayshell-overlays.h	24	header	REVIEW	void gimp_display_shell_detach_on_canvas_view (GimpDisplayShell* shell, GimpCanvas* canvas, GtkWidget* widget);
+gimp_perspective_guide_get_vanish_point_length	app/display/gimpdisplayshell-tool-events.c	180	c_source	REVIEW	gint num_points = gimp_perspective_guide_get_vanish_point_length (guide);
+gimp_perspective_guide_get_vanish_points	app/display/gimpdisplayshell-tool-events.c	209	c_source	REVIEW	gimp_perspective_guide_get_vanish_points (guide, 0, &p1x, &p1y);
+gimp_perspective_guide_get_vanish_points	app/display/gimpdisplayshell-tool-events.c	210	c_source	REVIEW	gimp_perspective_guide_get_vanish_points (guide, 1, &p2x, &p2y);
+gimp_perspective_guide_get_vanish_points	app/display/gimpdisplayshell-tool-events.c	228	c_source	REVIEW	gimp_perspective_guide_get_vanish_points (guide, i, &px, &py);
+gimp_canvas_perspective_guide_new	app/display/gimpdisplayshell-tool-events.c	558	c_source	REVIEW	//      item = GIMP_CANVAS_ITEM(gimp_canvas_perspective_guide_new (shell, gimp_image_get_perspective_guide(image)));
+gimp_layer_tile_view_new	app/display/gimpimagewindow.c	531	c_source	REVIEW	//  private->layer_tile_view = gimp_layer_tile_view_new ();
+gimp_tool_tile_view_new	app/display/gimpimagewindow.c	1363	c_source	REVIEW	shell->toolbox = GTK_WIDGET(gimp_tool_tile_view_new ());
+gimp_display_shell_detach_on_canvas_view	app/display/gimpimagewindow.c	1406	c_source	REVIEW	gimp_display_shell_detach_on_canvas_view(shell, shell->canvas, private->right_docks);
+gimp_display_shell_detach_on_canvas_view	app/display/gimpimagewindow.c	2093	c_source	REVIEW	gimp_display_shell_detach_on_canvas_view(private->active_shell, private->active_shell->canvas, private->right_docks);
+gimp_display_shell_attach_on_canvas_view	app/display/gimpimagewindow.c	2108	c_source	REVIEW	gimp_display_shell_attach_on_canvas_view (private->active_shell, private->right_docks);
+gimp_json_resource_get_type	app/presets/gimpjsonresource.h	35	header	REVIEW	#define GIMP_TYPE_JSON_RESOURCE            (gimp_json_resource_get_type ())
+gimp_json_resource_get_type	app/presets/gimpjsonresource.h	54	header	REVIEW	GType     gimp_json_resource_get_type       (void) G_GNUC_CONST;
+gimp_json_resource_new	app/presets/gimpjsonresource.h	55	header	REVIEW	GimpData* gimp_json_resource_new            (GimpContext* context, const gchar* name);
+gimp_json_resource_get_type	app/presets/gimpjsonresource.h	85	header	REVIEW	template<> inline GType g_type<GimpJsonResource>() { return gimp_json_resource_get_type(); }
+gimp_image_generator_tool_get_type	app/tools/gimpimagegeneratortool.h	28	header	REVIEW	#define GIMP_TYPE_IMAGE_GENERATOR_TOOL            (gimp_image_generator_tool_get_type ())
+gimp_image_generator_tool_get_type	app/tools/gimpimagegeneratortool.h	51	header	REVIEW	GType   gimp_image_generator_tool_get_type (void) G_GNUC_CONST;
+gimp_perspective_guide_tool_get_type	app/tools/gimpperspectiveguidetool.h	28	header	REVIEW	#define GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL            (gimp_perspective_guide_tool_get_type ())
+gimp_perspective_guide_tool_get_type	app/tools/gimpperspectiveguidetool.h	53	header	REVIEW	GType   gimp_perspective_guide_tool_get_type (void) G_GNUC_CONST;
+gimp_cell_renderer_popup_get_type	app/widgets/gimpcellrendererpopup.h	26	header	REVIEW	#define GIMP_TYPE_CELL_RENDERER_POPUP            (gimp_cell_renderer_popup_get_type ())
+gimp_cell_renderer_popup_get_type	app/widgets/gimpcellrendererpopup.h	48	header	REVIEW	GType             gimp_cell_renderer_popup_get_type (void) G_GNUC_CONST;
+gimp_layer_tile_view_get_type	app/widgets/gimplayertileview.h	26	header	REVIEW	#define GIMP_TYPE_LAYER_TILE_VIEW            (gimp_layer_tile_view_get_type ())
+gimp_layer_tile_view_get_type	app/widgets/gimplayertileview.h	48	header	REVIEW	GType             gimp_layer_tile_view_get_type (void) G_GNUC_CONST;
+gimp_layer_tile_view_new	app/widgets/gimplayertileview.h	50	header	REVIEW	GimpLayerTileView * gimp_layer_tile_view_new      (void);
+gimp_tool_tile_view_get_type	app/widgets/gimptooltileview.h	26	header	REVIEW	#define GIMP_TYPE_TOOL_TILE_VIEW            (gimp_tool_tile_view_get_type ())
+gimp_tool_tile_view_get_type	app/widgets/gimptooltileview.h	48	header	REVIEW	GType             gimp_tool_tile_view_get_type (void) G_GNUC_CONST;
+gimp_tool_tile_view_new	app/widgets/gimptooltileview.h	50	header	REVIEW	GimpToolTileView * gimp_tool_tile_view_new      (void);
