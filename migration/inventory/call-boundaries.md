@@ -4,21 +4,26 @@
 all 71 `.cpp` and `.hpp` files under `app` at legacy commit
 `afa43fae3e920210146abed514f136fd49f671b5`. Run
 `python3 tools/inventory_call_boundaries.py` to regenerate it. The first pass
-contains 288 source-line candidates: 69 `extern_c`, 28 C entry candidates,
-34 function-pointer sites, 63 class/interface vfunc assignments, and 94
-callback registrations. Comments are masked before matching, and each row
-retains its legacy path and line number.
+contains 658 source-line candidates: 69 `extern_c`, 28 C entry declaration
+candidates, 149 C++ `gimp_*` definition candidates, 34 function-pointer sites,
+63 direct vfunc assignments, 92 class-binding macro sites, 94 GLib callback
+registrations, 22 signal-wrapper connections, and 107 delegator sites. The
+definition scan handles return types on a preceding line. Comments are masked
+before matching, and each row retains its legacy path and line number.
 
 The companion `c-call-reference-candidates.tsv` searches the legacy `app`
-tree for the 26 distinct C entry names from that first pass. It found 50
+tree for 147 distinct C entry names from this pass. It found 130
 references in `.c` and `.h` files. These include header declarations, type
 macros and actual C call sites; the `kind` column distinguishes source files
 from headers but does not yet classify each use. Both lists retain `REVIEW`
 status until the C declaration and C++ definition signatures are compared.
+`c-entry-coverage.tsv` places each of the 147 names beside its C++ definition,
+header references and C source references. Of these, 65 have a header site
+and 32 have a C source site; a name can occur in both groups.
 
 The `REVIEW` status is intentional. Pattern matches can include declarations
 or pointer invocations that are not actual ABI boundaries. Conversely, a
-multiline declaration or a C caller may not match. Before 01.005 can be
+more complex declaration or a C caller may not match. Before 01.005 can be
 completed, inspect each candidate, identify exported C functions and their
 callers in changed C sources and public headers (including entry names missed
 by the first-pass regex), trace indirect callbacks and

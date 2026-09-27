@@ -1,15 +1,43 @@
 symbol	source	line	kind	status	legacy_code
+gimp_clone_layer_new	app/actions/layers-commands.c	430	c_source	REVIEW	new_layer = gimp_clone_layer_new (image, GIMP_LAYER (layer), 0, 0,
+gimp_filter_layer_new	app/actions/layers-commands.c	1108	c_source	REVIEW	layer = gimp_filter_layer_new (dialog->image,
+gimp_mypaint_brush_load	app/core/gimp.c	611	c_source	REVIEW	{gimp_mypaint_brush_load,    GIMP_MYPAINT_BRUSH_FILE_EXTENSION,   TRUE },
+gimp_mypaint_brush_new	app/core/gimp.c	696	c_source	REVIEW	gimp_mypaint_brush_new,
 gimp_clone_layer_get_type	app/core/gimpclonelayer.h	30	header	REVIEW	#define GIMP_TYPE_CLONE_LAYER            (gimp_clone_layer_get_type ())
 gimp_clone_layer_get_type	app/core/gimpclonelayer.h	47	header	REVIEW	GType            gimp_clone_layer_get_type       (void) G_GNUC_CONST;
+gimp_clone_layer_new	app/core/gimpclonelayer.h	48	header	REVIEW	GimpLayer*       gimp_clone_layer_new            (GimpImage*           image,
+gimp_clone_layer_set_source	app/core/gimpclonelayer.h	55	header	REVIEW	void             gimp_clone_layer_set_source     (GimpCloneLayer*      layer,
+gimp_clone_layer_get_source	app/core/gimpclonelayer.h	57	header	REVIEW	GimpLayer*       gimp_clone_layer_get_source     (GimpCloneLayer*      layer);
+gimp_clone_layer_set_source_by_name	app/core/gimpclonelayer.h	58	header	REVIEW	void         gimp_clone_layer_set_source_by_name (GimpCloneLayer* layer,
 gimp_clone_layer_get_type	app/core/gimpclonelayer.h	83	header	REVIEW	template<> inline GType g_type<GimpCloneLayer>() { return gimp_clone_layer_get_type(); }
 gimp_clone_layer_undo_get_type	app/core/gimpclonelayerundo.h	21	header	REVIEW	#define GIMP_TYPE_CLONE_LAYER_UNDO            (gimp_clone_layer_undo_get_type ())
 gimp_clone_layer_undo_get_type	app/core/gimpclonelayerundo.h	46	header	REVIEW	GType   gimp_clone_layer_undo_get_type (void) G_GNUC_CONST;
+gimp_mypaint_brush_get_standard	app/core/gimpcontext.c	1758	c_source	REVIEW	standard_object = gimp_mypaint_brush_get_standard (src);
+gimp_mypaint_brush_get_standard	app/core/gimpcontext.c	3452	c_source	REVIEW	gimp_mypaint_brush_get_standard (context));
+gimp_mypaint_brush_get_standard	app/core/gimpcontext.c	3485	c_source	REVIEW	mypaint_brush != GIMP_MYPAINT_BRUSH (gimp_mypaint_brush_get_standard (context)))
+gimp_mypaint_brush_get_standard	app/core/gimpcontext.c	3511	c_source	REVIEW	if (mypaint_brush != GIMP_MYPAINT_BRUSH (gimp_mypaint_brush_get_standard (context)))
 gimp_filter_layer_get_type	app/core/gimpfilterlayer.h	30	header	REVIEW	#define GIMP_TYPE_FILTER_LAYER            (gimp_filter_layer_get_type ())
 gimp_filter_layer_get_type	app/core/gimpfilterlayer.h	47	header	REVIEW	GType            gimp_filter_layer_get_type       (void) G_GNUC_CONST;
+gimp_filter_layer_new	app/core/gimpfilterlayer.h	48	header	REVIEW	GimpLayer      * gimp_filter_layer_new            (GimpImage            *image,
+gimp_filter_layer_get_procedure	app/core/gimpfilterlayer.h	54	header	REVIEW	const gchar*     gimp_filter_layer_get_procedure  (GimpFilterLayer* layer);
+gimp_filter_layer_get_procedure_args	app/core/gimpfilterlayer.h	55	header	REVIEW	GArray*          gimp_filter_layer_get_procedure_args  (GimpFilterLayer* layer);
+gimp_filter_layer_set_procedure	app/core/gimpfilterlayer.h	56	header	REVIEW	void             gimp_filter_layer_set_procedure  (GimpFilterLayer* layer,
+gimp_filter_layer_mark_as_loaded	app/core/gimpfilterlayer.h	59	header	REVIEW	void             gimp_filter_layer_mark_as_loaded (GimpFilterLayer* layer);
 gimp_filter_layer_get_type	app/core/gimpfilterlayer.h	85	header	REVIEW	template<> inline GType g_type<GimpFilterLayer>() { return gimp_filter_layer_get_type(); }
+gimp_clone_layer_get_source	app/core/gimpgrouplayer.c	502	c_source	REVIEW	GimpLayer* source_in_refs = GIMP_LAYER(g_hash_table_lookup (copy_refs, gimp_clone_layer_get_source(clone_layer)));
+gimp_clone_layer_set_source	app/core/gimpgrouplayer.c	506	c_source	REVIEW	gimp_clone_layer_set_source (clone_layer, source_in_refs);
 gimp_perspective_guide_new	app/core/gimpimage.c	791	c_source	REVIEW	GimpPerspectiveGuide* guide = gimp_perspective_guide_new(0);
 gimp_perspective_guide_add_vanish_points	app/core/gimpimage.c	795	c_source	REVIEW	gimp_perspective_guide_add_vanish_points (guide, px, py);
 gimp_perspective_guide_add_vanish_points	app/core/gimpimage.c	798	c_source	REVIEW	gimp_perspective_guide_add_vanish_points (guide, px, py);
+gimp_mypaint_brush_load	app/core/gimpmypaintbrush-load.h	26	header	REVIEW	GList     * gimp_mypaint_brush_load        (GimpContext  *context,
+gimp_mypaint_brush_save	app/core/gimpmypaintbrush-save.h	23	header	REVIEW	gboolean gimp_mypaint_brush_save       (GimpData  *brush,
+gimp_mypaint_brush_new	app/core/gimpmypaintbrush.h	61	header	REVIEW	GimpData             * gimp_mypaint_brush_new                 (GimpContext      *context,
+gimp_mypaint_brush_get_standard	app/core/gimpmypaintbrush.h	63	header	REVIEW	GimpData             * gimp_mypaint_brush_get_standard        (GimpContext      *context);
+gimp_mypaint_brush_begin_use	app/core/gimpmypaintbrush.h	65	header	REVIEW	void                   gimp_mypaint_brush_begin_use           (GimpMypaintBrush        *mypaint_brush);
+gimp_mypaint_brush_end_use	app/core/gimpmypaintbrush.h	66	header	REVIEW	void                   gimp_mypaint_brush_end_use             (GimpMypaintBrush        *mypaint_brush);
+gimp_mypaint_brush_select_mypaint_brush	app/core/gimpmypaintbrush.h	68	header	REVIEW	GimpMypaintBrush     * gimp_mypaint_brush_select_mypaint_brush(GimpMypaintBrush        *mypaint_brush,
+gimp_mypaint_brush_want_null_motion	app/core/gimpmypaintbrush.h	71	header	REVIEW	gboolean               gimp_mypaint_brush_want_null_motion    (GimpMypaintBrush        *mypaint_brush,
+gimp_mypaint_brush_duplicate	app/core/gimpmypaintbrush.h	74	header	REVIEW	GimpData              * gimp_mypaint_brush_duplicate         (GimpMypaintBrush *mypaint_brush);
 gimp_perspective_guide_get_type	app/core/gimpperspectiveguide.h	31	header	REVIEW	#define GIMP_TYPE_PERSPECTIVE_GUIDE            (gimp_perspective_guide_get_type ())
 gimp_perspective_guide_get_type	app/core/gimpperspectiveguide.h	56	header	REVIEW	GType               gimp_perspective_guide_get_type        (void) G_GNUC_CONST;
 gimp_perspective_guide_new	app/core/gimpperspectiveguide.h	58	header	REVIEW	GimpPerspectiveGuide *         gimp_perspective_guide_new  (guint32              guide_ID);
@@ -18,34 +46,86 @@ gimp_perspective_guide_add_vanish_points	app/core/gimpperspectiveguide.h	60	head
 gimp_perspective_guide_remove_vanish_points	app/core/gimpperspectiveguide.h	61	header	REVIEW	gboolean gimp_perspective_guide_remove_vanish_points      (GimpPerspectiveGuide  *guide, gint index);
 gimp_perspective_guide_get_vanish_points	app/core/gimpperspectiveguide.h	62	header	REVIEW	gboolean gimp_perspective_guide_get_vanish_points    (GimpPerspectiveGuide  *guide, gint index, gdouble* x, gdouble* y);
 gimp_perspective_guide_set_vanish_points	app/core/gimpperspectiveguide.h	63	header	REVIEW	gboolean gimp_perspective_guide_set_vanish_points    (GimpPerspectiveGuide  *guide, gint index, gdouble x, gdouble y);
+gimp_mypaint_brush_editor_new	app/dialogs/dialogs-constructors.c	813	c_source	REVIEW	return gimp_mypaint_brush_editor_new (context,
 gimp_canvas_perspective_guide_get_type	app/display/gimpcanvasperspectiveguide.h	29	header	REVIEW	#define GIMP_TYPE_CANVAS_PERSPECTIVE_GUIDE            (gimp_canvas_perspective_guide_get_type ())
 gimp_canvas_perspective_guide_get_type	app/display/gimpcanvasperspectiveguide.h	53	header	REVIEW	GType               gimp_canvas_perspective_guide_get_type        (void) G_GNUC_CONST;
 gimp_canvas_perspective_guide_new	app/display/gimpcanvasperspectiveguide.h	55	header	REVIEW	GimpCanvasPerspectiveGuide *         gimp_canvas_perspective_guide_new  (GimpDisplayShell* shell, GimpPerspectiveGuide* guide);
+gimp_display_shell_update_on_canvas_views	app/display/gimpdisplayshell-callbacks.c	217	c_source	REVIEW	gimp_display_shell_update_on_canvas_views (shell);
+gimp_display_shell_update_on_canvas_views	app/display/gimpdisplayshell-overlays.h	21	header	REVIEW	void              gimp_display_shell_update_on_canvas_views (GimpDisplayShell* shell);
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-overlays.h	22	header	REVIEW	void              gimp_display_shell_update_on_canvas_opacity (GimpDisplayShell* shell, gint x, gint y, gboolean released);
 gimp_display_shell_attach_on_canvas_view	app/display/gimpdisplayshell-overlays.h	23	header	REVIEW	void gimp_display_shell_attach_on_canvas_view (GimpDisplayShell* shell, GtkWidget* widget);
 gimp_display_shell_detach_on_canvas_view	app/display/gimpdisplayshell-overlays.h	24	header	REVIEW	void gimp_display_shell_detach_on_canvas_view (GimpDisplayShell* shell, GimpCanvas* canvas, GtkWidget* widget);
 gimp_perspective_guide_get_vanish_point_length	app/display/gimpdisplayshell-tool-events.c	180	c_source	REVIEW	gint num_points = gimp_perspective_guide_get_vanish_point_length (guide);
 gimp_perspective_guide_get_vanish_points	app/display/gimpdisplayshell-tool-events.c	209	c_source	REVIEW	gimp_perspective_guide_get_vanish_points (guide, 0, &p1x, &p1y);
 gimp_perspective_guide_get_vanish_points	app/display/gimpdisplayshell-tool-events.c	210	c_source	REVIEW	gimp_perspective_guide_get_vanish_points (guide, 1, &p2x, &p2y);
 gimp_perspective_guide_get_vanish_points	app/display/gimpdisplayshell-tool-events.c	228	c_source	REVIEW	gimp_perspective_guide_get_vanish_points (guide, i, &px, &py);
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-tool-events.c	268	c_source	REVIEW	gimp_display_shell_update_on_canvas_opacity (shell,display_coords->x, display_coords->y, FALSE);
 gimp_canvas_perspective_guide_new	app/display/gimpdisplayshell-tool-events.c	558	c_source	REVIEW	//      item = GIMP_CANVAS_ITEM(gimp_canvas_perspective_guide_new (shell, gimp_image_get_perspective_guide(image)));
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-tool-events.c	938	c_source	REVIEW	gimp_display_shell_update_on_canvas_opacity (shell, display_coords.x, display_coords.y, TRUE);
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-tool-events.c	1232	c_source	REVIEW	gimp_display_shell_update_on_canvas_opacity (shell, display_coords.x, display_coords.y, FALSE);
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-tool-events.c	1268	c_source	REVIEW	gimp_display_shell_update_on_canvas_opacity (shell,display_coords.x, display_coords.y, FALSE);
+gimp_display_shell_update_on_canvas_views	app/display/gimpdisplayshell-tool-events.c	1560	c_source	REVIEW	gimp_display_shell_update_on_canvas_views (shell);
 gimp_layer_tile_view_new	app/display/gimpimagewindow.c	531	c_source	REVIEW	//  private->layer_tile_view = gimp_layer_tile_view_new ();
 gimp_tool_tile_view_new	app/display/gimpimagewindow.c	1363	c_source	REVIEW	shell->toolbox = GTK_WIDGET(gimp_tool_tile_view_new ());
 gimp_display_shell_detach_on_canvas_view	app/display/gimpimagewindow.c	1406	c_source	REVIEW	gimp_display_shell_detach_on_canvas_view(shell, shell->canvas, private->right_docks);
 gimp_display_shell_detach_on_canvas_view	app/display/gimpimagewindow.c	2093	c_source	REVIEW	gimp_display_shell_detach_on_canvas_view(private->active_shell, private->active_shell->canvas, private->right_docks);
 gimp_display_shell_attach_on_canvas_view	app/display/gimpimagewindow.c	2108	c_source	REVIEW	gimp_display_shell_attach_on_canvas_view (private->active_shell, private->right_docks);
+gimp_mypaint_options_new	app/paint/gimpmypaintoptions.h	69	header	REVIEW	//GimpMypaintOptions * gimp_mypaint_options_new      (GimpMypaintInfo    *mypaint_info);
+gimp_mypaint_options_new	app/paint/gimpmypaintoptions.h	70	header	REVIEW	GimpMypaintOptions * gimp_mypaint_options_new      (GimpToolInfo    *tool_info);
+gimp_mypaint_options_get_brush_mode	app/paint/gimpmypaintoptions.h	73	header	REVIEW	gimp_mypaint_options_get_brush_mode (GimpMypaintOptions *mypaint_options);
+gimp_mypaint_options_get_current_brush	app/paint/gimpmypaintoptions.h	76	header	REVIEW	gimp_mypaint_options_get_current_brush (GimpMypaintOptions* options);
+gimp_mypaint_options_copy_brush_props	app/paint/gimpmypaintoptions.h	78	header	REVIEW	void    gimp_mypaint_options_copy_brush_props    (GimpMypaintOptions *src,
+gimp_mypaint_options_set_mapping_point	app/paint/gimpmypaintoptions.h	82	header	REVIEW	gimp_mypaint_options_set_mapping_point(GimpMypaintOptions* options,
+gimp_mypaint_options_get_mapping_point	app/paint/gimpmypaintoptions.h	89	header	REVIEW	gimp_mypaint_options_get_mapping_point(GimpMypaintOptions* options,
+gimp_mypaint_options_is_ready	app/paint/gimpmypaintoptions.h	96	header	REVIEW	gimp_mypaint_options_is_ready(GimpMypaintOptions* options);
 gimp_json_resource_get_type	app/presets/gimpjsonresource.h	35	header	REVIEW	#define GIMP_TYPE_JSON_RESOURCE            (gimp_json_resource_get_type ())
 gimp_json_resource_get_type	app/presets/gimpjsonresource.h	54	header	REVIEW	GType     gimp_json_resource_get_type       (void) G_GNUC_CONST;
 gimp_json_resource_new	app/presets/gimpjsonresource.h	55	header	REVIEW	GimpData* gimp_json_resource_new            (GimpContext* context, const gchar* name);
 gimp_json_resource_get_type	app/presets/gimpjsonresource.h	85	header	REVIEW	template<> inline GType g_type<GimpJsonResource>() { return gimp_json_resource_get_type(); }
+gimp_mypaint_tool_register	app/tools/gimp-tools.c	165	c_source	REVIEW	gimp_mypaint_tool_register,
+gimp_bucket_fill_brush_tool_register	app/tools/gimp-tools.c	166	c_source	REVIEW	gimp_bucket_fill_brush_tool_register,
+gimp_perspective_guide_tool_register	app/tools/gimp-tools.c	192	c_source	REVIEW	gimp_perspective_guide_tool_register,
+gimp_image_generator_tool_register	app/tools/gimp-tools.c	205	c_source	REVIEW	gimp_image_generator_tool_register
+gimp_tool_options_button_with_popup	app/tools/gimpbrushoptions-gui.c	768	c_source	REVIEW	return gimp_tool_options_button_with_popup (config, label_widget,
+gimp_bucket_fill_brush_tool_register	app/tools/gimpbucketfillbrushtool.h	50	header	REVIEW	void    gimp_bucket_fill_brush_tool_register (GimpToolRegisterCallback  callback,
+gimp_tool_options_button_with_popup	app/tools/gimpdynamicsoptions-gui.c	381	c_source	REVIEW	return gimp_tool_options_button_with_popup (config, label_widget,
 gimp_image_generator_tool_get_type	app/tools/gimpimagegeneratortool.h	28	header	REVIEW	#define GIMP_TYPE_IMAGE_GENERATOR_TOOL            (gimp_image_generator_tool_get_type ())
+gimp_image_generator_tool_register	app/tools/gimpimagegeneratortool.h	48	header	REVIEW	void    gimp_image_generator_tool_register (GimpToolRegisterCallback  callback,
 gimp_image_generator_tool_get_type	app/tools/gimpimagegeneratortool.h	51	header	REVIEW	GType   gimp_image_generator_tool_get_type (void) G_GNUC_CONST;
+gimp_mypaint_brush_button_with_popup	app/tools/gimpmypaintbrushoptions-gui.h	21	header	REVIEW	GtkWidget *gimp_mypaint_brush_button_with_popup (GObject *config);
+gimp_mypaint_options_gui	app/tools/gimpmypaintoptions-gui.h	22	header	REVIEW	GtkWidget * gimp_mypaint_options_gui (GimpToolOptions *tool_options);
+gimp_mypaint_options_gui_horizontal	app/tools/gimpmypaintoptions-gui.h	23	header	REVIEW	GtkWidget * gimp_mypaint_options_gui_horizontal (GimpToolOptions *tool_options);
+gimp_mypaint_tool_enable_color_picker	app/tools/gimpmypainttool.h	69	header	REVIEW	void    gimp_mypaint_tool_enable_color_picker (GimpMypaintTool     *tool,
+gimp_mypaint_tool_register	app/tools/gimpmypainttool.h	72	header	REVIEW	void    gimp_mypaint_tool_register (GimpToolRegisterCallback  callback,
 gimp_perspective_guide_tool_get_type	app/tools/gimpperspectiveguidetool.h	28	header	REVIEW	#define GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL            (gimp_perspective_guide_tool_get_type ())
+gimp_perspective_guide_tool_register	app/tools/gimpperspectiveguidetool.h	50	header	REVIEW	void    gimp_perspective_guide_tool_register (GimpToolRegisterCallback  callback,
 gimp_perspective_guide_tool_get_type	app/tools/gimpperspectiveguidetool.h	53	header	REVIEW	GType   gimp_perspective_guide_tool_get_type (void) G_GNUC_CONST;
+gimp_tool_options_button_with_popup	app/tools/gimptooloptions-gui.c	201	c_source	REVIEW	gimp_tool_options_button_with_popup (GObject                       *config,
+gimp_tool_options_button_with_popup	app/tools/gimptooloptions-gui.h	61	header	REVIEW	GtkWidget * gimp_tool_options_button_with_popup (GObject                    *config,
 gimp_cell_renderer_popup_get_type	app/widgets/gimpcellrendererpopup.h	26	header	REVIEW	#define GIMP_TYPE_CELL_RENDERER_POPUP            (gimp_cell_renderer_popup_get_type ())
 gimp_cell_renderer_popup_get_type	app/widgets/gimpcellrendererpopup.h	48	header	REVIEW	GType             gimp_cell_renderer_popup_get_type (void) G_GNUC_CONST;
+gimp_cell_renderer_popup_new	app/widgets/gimpcellrendererpopup.h	50	header	REVIEW	GtkCellRenderer * gimp_cell_renderer_popup_new      (void);
+gimp_cell_renderer_popup_clicked	app/widgets/gimpcellrendererpopup.h	51	header	REVIEW	void              gimp_cell_renderer_popup_clicked  (GimpCellRendererPopup* popup,
+gimp_cell_renderer_popup_clicked	app/widgets/gimpcontainertreeview.c	1187	c_source	REVIEW	gimp_cell_renderer_popup_clicked (GIMP_CELL_RENDERER_POPUP(misc_cell), G_OBJECT(widget), path_str, &background_area);
+gimp_editor_add_dropdown	app/widgets/gimpeditor-cxx.h	16	header	REVIEW	gimp_editor_add_dropdown (GimpEditor  *editor,
+gimp_editor_add_action_dropdown	app/widgets/gimpeditor-cxx.h	26	header	REVIEW	gimp_editor_add_action_dropdown (GimpEditor  *editor,
+gimp_editor_add_action_dropdown	app/widgets/gimpitemtreeview.c	426	c_source	REVIEW	gimp_editor_add_action_dropdown (editor,
+gimp_editor_add_action_dropdown	app/widgets/gimpitemtreeview.c	462	c_source	REVIEW	gimp_editor_add_action_dropdown (editor,
 gimp_layer_tile_view_get_type	app/widgets/gimplayertileview.h	26	header	REVIEW	#define GIMP_TYPE_LAYER_TILE_VIEW            (gimp_layer_tile_view_get_type ())
 gimp_layer_tile_view_get_type	app/widgets/gimplayertileview.h	48	header	REVIEW	GType             gimp_layer_tile_view_get_type (void) G_GNUC_CONST;
 gimp_layer_tile_view_new	app/widgets/gimplayertileview.h	50	header	REVIEW	GimpLayerTileView * gimp_layer_tile_view_new      (void);
+gimp_cell_renderer_popup_new	app/widgets/gimplayertreeview.c	354	c_source	REVIEW	layer_view->priv->dropdown = gimp_cell_renderer_popup_new();
+gimp_mypaint_brush_editor_new	app/widgets/gimpmypaintbrusheditor.h	54	header	REVIEW	GtkWidget * gimp_mypaint_brush_editor_new      (GimpContext     *context,
 gimp_tool_tile_view_get_type	app/widgets/gimptooltileview.h	26	header	REVIEW	#define GIMP_TYPE_TOOL_TILE_VIEW            (gimp_tool_tile_view_get_type ())
 gimp_tool_tile_view_get_type	app/widgets/gimptooltileview.h	48	header	REVIEW	GType             gimp_tool_tile_view_get_type (void) G_GNUC_CONST;
 gimp_tool_tile_view_new	app/widgets/gimptooltileview.h	50	header	REVIEW	GimpToolTileView * gimp_tool_tile_view_new      (void);
+gimp_popover_new	app/widgets/popupper.h	34	header	REVIEW	GtkWidget* gimp_popover_new (GtkWidget*view);
+gimp_filter_layer_new	app/xcf/xcf-load.c	1019	c_source	REVIEW	filter     = gimp_filter_layer_new (image, width, height, layer_name, opacity, mode);
+gimp_filter_layer_mark_as_loaded	app/xcf/xcf-load.c	1020	c_source	REVIEW	gimp_filter_layer_mark_as_loaded(filter);
+gimp_filter_layer_set_procedure	app/xcf/xcf-load.c	1048	c_source	REVIEW	gimp_filter_layer_set_procedure (GIMP_FILTER_LAYER(filter), filter_name, proc_args);
+gimp_clone_layer_new	app/xcf/xcf-load.c	1082	c_source	REVIEW	cloned     = gimp_clone_layer_new (image, NULL, width, height, layer_name, opacity, mode);
+gimp_clone_layer_set_source_by_name	app/xcf/xcf-load.c	1106	c_source	REVIEW	gimp_clone_layer_set_source_by_name (GIMP_CLONE_LAYER(cloned), target_name);
+gimp_clone_layer_get_source	app/xcf/xcf-load.c	2528	c_source	REVIEW	gimp_clone_layer_get_source (GIMP_CLONE_LAYER(layer));
+gimp_filter_layer_get_procedure	app/xcf/xcf-save.c	660	c_source	REVIEW	const gchar* filter_name = gimp_filter_layer_get_procedure (filter_layer);
+gimp_filter_layer_get_procedure_args	app/xcf/xcf-save.c	661	c_source	REVIEW	GArray* args             = gimp_filter_layer_get_procedure_args (filter_layer);
+gimp_clone_layer_get_source	app/xcf/xcf-save.c	666	c_source	REVIEW	GimpLayer* target_layer = gimp_clone_layer_get_source (clone_layer);
