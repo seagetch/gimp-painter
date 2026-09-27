@@ -1,0 +1,289 @@
+source	line	kind	status	legacy_code
+app/base/delegators.hpp	4	extern_c	REVIEW	"extern ""C"" {"
+app/base/delegators.hpp	35	function_pointer	REVIEW	return (*delegator)(args...);
+app/base/delegators.hpp	106	function_pointer	REVIEW	delegator(Ret (*f)(Args...)) {
+app/base/delegators.hpp	167	callback_registration	REVIEW	g_signal_connect_delegator (GObject* target,
+app/base/delegators.hpp	173	callback_registration	REVIEW	closure = g_cclosure_new (G_CALLBACK (Delegators::Delegator<Ret(Args...)>::callback),
+app/base/delegators.hpp	176	callback_registration	REVIEW	gulong handler_id = g_signal_connect_closure (target, event, closure, after);
+app/base/delegators.hpp	182	callback_registration	REVIEW	g_signal_connect_delegator_noret (GObject* target,
+app/base/delegators.hpp	188	callback_registration	REVIEW	closure = g_cclosure_new (G_CALLBACK (Delegators::Delegator<Ret(Args...)>::callback),
+app/base/delegators.hpp	191	callback_registration	REVIEW	gulong handler_id = g_signal_connect_closure (target, event, closure, after);
+app/base/delegators.hpp	228	function_pointer	REVIEW	decltype(&Delegators::Delegator<Ret(Args...)>::callback) proxy(Ret (*f)(Args...)) {
+app/base/glib-cxx-bridge.hpp	6	extern_c	REVIEW	"extern ""C"" {"
+app/base/glib-cxx-def-utils.hpp	11	extern_c	REVIEW	"extern ""C"" {"
+app/base/glib-cxx-impl.hpp	252	vfunc_candidate	REVIEW	G_OBJECT_CLASS(klass)->set_property = GClassWrapper::set_property;
+app/base/glib-cxx-impl.hpp	258	vfunc_candidate	REVIEW	G_OBJECT_CLASS(klass)->get_property = GClassWrapper::get_property;
+app/base/glib-cxx-impl.hpp	345	function_pointer	REVIEW	static void (*class_init_callback)(IGClass::IWithClass*);
+app/base/glib-cxx-impl.hpp	397	function_pointer	REVIEW	NewGClass(void (*callback)(IGClass::IWithClass*)) {
+app/base/glib-cxx-impl.hpp	443	vfunc_candidate	REVIEW	G_OBJECT_CLASS(klass)->finalize     = instance_finalize;
+app/base/glib-cxx-impl.hpp	449	function_pointer	REVIEW	typedef Ret (*FuncStore)(G*, Args...);
+app/base/glib-cxx-impl.hpp	467	function_pointer	REVIEW	auto bind(R2 (*func)(G2*, Args...)) {
+app/base/glib-cxx-impl.hpp	474	function_pointer	REVIEW	auto operator = (R2 (*func)(G2*, Args...)) {
+app/base/glib-cxx-impl.hpp	493	function_pointer	REVIEW	void (*init)(typename IFaceTraits::Class* klass);
+app/base/glib-cxx-impl.hpp	498	callback_registration	REVIEW	g_type_add_interface_static (g_define_type_id, IFaceTraits::get_type(), &g_implement_interface_info);
+app/base/glib-cxx-impl.hpp	523	callback_registration	REVIEW	g_type_register_static_simple (CStructs::ParentTraits::get_type(),
+app/base/glib-cxx-types.hpp	23	extern_c	REVIEW	"extern ""C"" {"
+app/base/glib-cxx-types.hpp	53	function_pointer	REVIEW	GType (*g_type)() = g_type<_Instance> >
+app/base/glib-cxx-types.hpp	58	function_pointer	REVIEW	static GType get_type() { return (*g_type)(); };
+app/base/glib-cxx-utils.hpp	4	extern_c	REVIEW	"extern ""C"" {"
+app/base/glib-cxx-utils.hpp	172	function_pointer	REVIEW	(*func)(T(data));
+app/base/glib-cxx-utils.hpp	425	function_pointer	REVIEW	(*func)((const Key)key, (Data)data);
+app/base/glib-cxx-utils.hpp	962	function_pointer	REVIEW	return (*method)(obj, args...);
+app/base/glib-cxx-utils.hpp	979	function_pointer	REVIEW	return (*method)(obj, args...);
+app/base/glib-cxx-utils.hpp	1034	callback_registration	REVIEW	return g_signal_connect_delegator (super::as_object(), event, delegator, after);
+app/base/glib-cxx-utils.hpp	1044	callback_registration	REVIEW	return g_signal_connect_delegator (super::as_object(), event, Delegators::delegator(function), after);
+app/base/glib-cxx-utils.hpp	1055	callback_registration	REVIEW	g_signal_connect_delegator_noret (super::as_object(), event, delegator, after);
+app/base/glib-cxx-utils.hpp	1065	callback_registration	REVIEW	g_signal_connect_delegator_noret (super::as_object(), event, Delegators::delegator(function), after);
+app/base/glib-cxx-utils.hpp	1072	callback_registration	REVIEW	return g_signal_connect_delegator(super::as_object(), signal_name, d);
+app/base/glib-cxx-utils.hpp	1077	callback_registration	REVIEW	g_signal_connect_delegator_noret(super::as_object(), signal_name, d);
+app/base/glib-cxx-utils.hpp	1109	callback_registration	REVIEW	g_signal_connect_delegator_noret (G_OBJECT(widget), name, Delegators::delegator(obj, f));
+app/base/glib-cxx-utils.hpp	1115	callback_registration	REVIEW	return g_signal_connect_delegator (G_OBJECT(widget), name, Delegators::delegator(obj, f));
+app/base/glib-cxx-utils.hpp	1203	function_pointer	REVIEW	id = (*add_func)(priority, args..., GSourceFunc(EventSource::callback), this, GDestroyNotify(EventSource::destroy));
+app/base/glib-cxx-utils.hpp	1209	function_pointer	REVIEW	(*remove_func)(id);
+app/base/json-cxx-utils.hpp	4	extern_c	REVIEW	"extern ""C"" {"
+app/base/json-cxx-utils.hpp	121	function_pointer	REVIEW	(*func)(node);
+app/base/json-cxx-utils.hpp	358	function_pointer	REVIEW	return (*this)(args...);
+app/base/scopeguard.hpp	10	function_pointer	REVIEW	template<class T, typename Destructor, Destructor* Free, bool (*IsNull)(const T) = always_true<T>, T (*Clear)() = default_value<T> >
+app/base/scopeguard.hpp	52	function_pointer	REVIEW	(*f)(this->obj);
+app/base/soup-cxx-utils.hpp	23	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpclonelayer.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpclonelayer.cpp	214	vfunc_candidate	REVIEW	"klass->default_stock_id = ""gtk-copy"";"
+app/core/gimpclonelayer.cpp	229	vfunc_candidate	REVIEW	"klass->default_name         = _(""Clone Layer"");"
+app/core/gimpclonelayer.cpp	230	vfunc_candidate	REVIEW	"klass->rename_desc          = C_(""undo-type"", ""Rename Clone Layer"");"
+app/core/gimpclonelayer.cpp	231	vfunc_candidate	REVIEW	"klass->translate_desc       = C_(""undo-type"", ""Move Clone Layer"");"
+app/core/gimpclonelayer.cpp	232	vfunc_candidate	REVIEW	"klass->scale_desc           = C_(""undo-type"", ""Scale Clone Layer"");"
+app/core/gimpclonelayer.cpp	233	vfunc_candidate	REVIEW	"klass->resize_desc          = C_(""undo-type"", ""Resize Clone Layer"");"
+app/core/gimpclonelayer.cpp	234	vfunc_candidate	REVIEW	"klass->flip_desc            = C_(""undo-type"", ""Flip Clone Layer"");"
+app/core/gimpclonelayer.cpp	235	vfunc_candidate	REVIEW	"klass->rotate_desc          = C_(""undo-type"", ""Rotate Clone Layer"");"
+app/core/gimpclonelayer.cpp	236	vfunc_candidate	REVIEW	"klass->transform_desc       = C_(""undo-type"", ""Transform Clone Layer"");"
+app/core/gimpclonelayer.cpp	284	callback_registration	REVIEW	"update_conn = g_signal_connect_delegator (G_OBJECT(layer), ""update"","
+app/core/gimpclonelayer.cpp	286	callback_registration	REVIEW	"freeze_conn = g_signal_connect_delegator (G_OBJECT(layer), ""notify::frozen"","
+app/core/gimpclonelayer.cpp	664	c_entry_candidate	REVIEW	GType gimp_clone_layer_get_type() {
+app/core/gimpclonelayerundo.cpp	23	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpclonelayerundo.cpp	61	c_entry_candidate	REVIEW	GType gimp_clone_layer_undo_get_type() {
+app/core/gimpfilterlayer.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpfilterlayer.cpp	263	vfunc_candidate	REVIEW	"klass->default_stock_id = ""gimp-display-filter"";"
+app/core/gimpfilterlayer.cpp	275	vfunc_candidate	REVIEW	"klass->default_name   = _(""Filter Layer"");"
+app/core/gimpfilterlayer.cpp	276	vfunc_candidate	REVIEW	"klass->rename_desc    = C_(""undo-type"", ""Rename Filter Layer"");"
+app/core/gimpfilterlayer.cpp	277	vfunc_candidate	REVIEW	"klass->translate_desc = C_(""undo-type"", ""Move Filter Layer"");"
+app/core/gimpfilterlayer.cpp	278	vfunc_candidate	REVIEW	"klass->scale_desc     = C_(""undo-type"", ""Scale Filter Layer"");"
+app/core/gimpfilterlayer.cpp	279	vfunc_candidate	REVIEW	"klass->resize_desc    = C_(""undo-type"", ""Resize Filter Layer"");"
+app/core/gimpfilterlayer.cpp	280	vfunc_candidate	REVIEW	"klass->flip_desc      = C_(""undo-type"", ""Flip Filter Layer"");"
+app/core/gimpfilterlayer.cpp	281	vfunc_candidate	REVIEW	"klass->rotate_desc    = C_(""undo-type"", ""Rotate Filter Layer"");"
+app/core/gimpfilterlayer.cpp	282	vfunc_candidate	REVIEW	"klass->transform_desc = C_(""undo-type"", ""Transform Filter Layer"");"
+app/core/gimpfilterlayer.cpp	320	callback_registration	REVIEW	"parent_changed_conn = g_signal_connect_delegator (G_OBJECT(g_object), ""parent-changed"","
+app/core/gimpfilterlayer.cpp	322	callback_registration	REVIEW	"visibility_changed_conn = g_signal_connect_delegator (G_OBJECT(g_object), ""visibility-changed"","
+app/core/gimpfilterlayer.cpp	614	callback_registration	REVIEW	g_timeout_add(300, (GSourceFunc)notify_filter_end_callback, this);
+app/core/gimpfilterlayer.cpp	943	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(children), ""update"","
+app/core/gimpfilterlayer.cpp	946	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(children), ""reorder"","
+app/core/gimpfilterlayer.cpp	952	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(container), ""update"","
+app/core/gimpfilterlayer.cpp	955	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(container), ""reorder"","
+app/core/gimpfilterlayer.cpp	1170	c_entry_candidate	REVIEW	GType gimp_filter_layer_get_type() {
+app/core/gimpmypaintbrush-load.cpp	20	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpmypaintbrush-load.cpp	107	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpmypaintbrush-load.cpp	488	function_pointer	REVIEW	y_val = (*trans)((gfloat)y_val);
+app/core/gimpmypaintbrush-load.cpp	535	function_pointer	REVIEW	y_val = (*trans)((gfloat)y_val);
+app/core/gimpmypaintbrush-private.hpp	4	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpmypaintbrush-save.cpp	20	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpmypaintbrush-save.cpp	97	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpmypaintbrush.cpp	17	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpmypaintbrush.cpp	117	vfunc_candidate	REVIEW	object_class->finalize           = gimp_mypaint_brush_finalize;
+app/core/gimpmypaintbrush.cpp	118	vfunc_candidate	REVIEW	object_class->get_property       = gimp_mypaint_brush_get_property;
+app/core/gimpmypaintbrush.cpp	119	vfunc_candidate	REVIEW	object_class->set_property       = gimp_mypaint_brush_set_property;
+app/core/gimpmypaintbrush.cpp	121	vfunc_candidate	REVIEW	gimp_object_class->get_memsize   = gimp_mypaint_brush_get_memsize;
+app/core/gimpmypaintbrush.cpp	123	vfunc_candidate	REVIEW	"viewable_class->default_stock_id = ""gimp-tool-mypaint-brush"";"
+app/core/gimpmypaintbrush.cpp	124	vfunc_candidate	REVIEW	viewable_class->get_size         = gimp_mypaint_brush_get_size;
+app/core/gimpmypaintbrush.cpp	125	vfunc_candidate	REVIEW	viewable_class->get_new_preview  = gimp_mypaint_brush_get_new_preview;
+app/core/gimpmypaintbrush.cpp	126	vfunc_candidate	REVIEW	viewable_class->get_description  = gimp_mypaint_brush_get_description;
+app/core/gimpmypaintbrush.cpp	128	vfunc_candidate	REVIEW	data_class->dirty                = gimp_mypaint_brush_dirty;
+app/core/gimpmypaintbrush.cpp	129	vfunc_candidate	REVIEW	data_class->get_extension        = gimp_mypaint_brush_get_extension;
+app/core/gimpmypaintbrush.cpp	130	vfunc_candidate	REVIEW	data_class->save                 = gimp_mypaint_brush_save;
+app/core/gimpmypaintbrush.cpp	132	vfunc_candidate	REVIEW	klass->begin_use                 = gimp_mypaint_brush_real_begin_use;
+app/core/gimpmypaintbrush.cpp	133	vfunc_candidate	REVIEW	klass->end_use                   = gimp_mypaint_brush_real_end_use;
+app/core/gimpmypaintbrush.cpp	134	vfunc_candidate	REVIEW	klass->select_mypaint_brush      = gimp_mypaint_brush_real_select_mypaint_brush;
+app/core/gimpmypaintbrush.cpp	135	vfunc_candidate	REVIEW	klass->want_null_motion          = gimp_mypaint_brush_real_want_null_motion;
+app/core/gimpmypaintbrush.cpp	141	vfunc_candidate	REVIEW	iface->get_checksum = gimp_mypaint_brush_get_checksum;
+app/core/gimpperspectiveguide.cpp	28	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpperspectiveguide.cpp	239	extern_c	REVIEW	"extern ""C"" {"
+app/core/gimpperspectiveguide.cpp	240	c_entry_candidate	REVIEW	GType gimp_perspective_guide_get_type()
+app/core/gimpperspectiveguide.cpp	245	c_entry_candidate	REVIEW	GimpPerspectiveGuide* gimp_perspective_guide_new (guint id)
+app/core/gimpperspectiveguide.cpp	250	c_entry_candidate	REVIEW	gint     gimp_perspective_guide_get_vanish_point_length   (GimpPerspectiveGuide * guide)
+app/core/gimpperspectiveguide.cpp	255	c_entry_candidate	REVIEW	gint     gimp_perspective_guide_add_vanish_points         (GimpPerspectiveGuide  *guide, gdouble x, gdouble y)
+app/core/gimpperspectiveguide.cpp	260	c_entry_candidate	REVIEW	gboolean gimp_perspective_guide_remove_vanish_points      (GimpPerspectiveGuide  *guide, gint index)
+app/core/gimpperspectiveguide.cpp	265	c_entry_candidate	REVIEW	gboolean gimp_perspective_guide_get_vanish_points    (GimpPerspectiveGuide  *guide, gint index, gdouble* x, gdouble* y)
+app/core/gimpperspectiveguide.cpp	270	c_entry_candidate	REVIEW	gboolean gimp_perspective_guide_set_vanish_points    (GimpPerspectiveGuide  *guide, gint index, gdouble x, gdouble y)
+app/display/gimpcanvasperspectiveguide.cpp	30	extern_c	REVIEW	"extern ""C"" {"
+app/display/gimpcanvasperspectiveguide.cpp	294	extern_c	REVIEW	"extern ""C"" {"
+app/display/gimpcanvasperspectiveguide.cpp	295	c_entry_candidate	REVIEW	GType gimp_canvas_perspective_guide_get_type()
+app/display/gimpcanvasperspectiveguide.cpp	300	c_entry_candidate	REVIEW	GimpCanvasPerspectiveGuide* gimp_canvas_perspective_guide_new (GimpDisplayShell* shell, GimpPerspectiveGuide* guide)
+app/display/gimpdisplayshell-overlays.cpp	26	extern_c	REVIEW	"extern ""C""{"
+app/display/gimpdisplayshell-overlays.cpp	128	callback_registration	REVIEW	"connection = g_signal_connect_delegator (G_OBJECT(widget), ""size-allocate"", Delegators::delegator(this, &Self::on_size_allocate));"
+app/display/gimpdisplayshell-overlays.cpp	129	callback_registration	REVIEW	"g_signal_connect_delegator_noret (G_OBJECT(widget), ""enter-notify-event"", Delegators::delegator(this, &Self::on_enter_notify));"
+app/display/gimpdisplayshell-overlays.cpp	130	callback_registration	REVIEW	"g_signal_connect_delegator_noret (G_OBJECT(widget), ""leave-notify-event"", Delegators::delegator(this, &Self::on_leave_notify));"
+app/display/gimpdisplayshell-overlays.cpp	172	callback_registration	REVIEW	"connection = g_signal_connect_delegator (G_OBJECT(widget), ""size-allocate"", Delegators::delegator(this, &Self::on_size_allocate));"
+app/display/gimpdisplayshell-overlays.cpp	259	callback_registration	REVIEW	"g_signal_connect_delegator_noret (G_OBJECT(widget), ""color-changed"", Delegators::delegator(this, &Self::on_select_color));"
+app/display/gimpdisplayshell-overlays.cpp	264	callback_registration	REVIEW	"fg_color_changed_handler = g_signal_connect_delegator (G_OBJECT(user_context), ""foreground-changed"", Delegators::delegator(this, &Self::on_fg_color_changed));"
+app/display/gimpdisplayshell-overlays.cpp	265	callback_registration	REVIEW	"bg_color_changed_handler = g_signal_connect_delegator (G_OBJECT(user_context), ""background-changed"", Delegators::delegator(this, &Self::on_bg_color_changed));"
+app/display/gimpdisplayshell-overlays.cpp	349	callback_registration	REVIEW	"g_signal_connect_delegator_noret (G_OBJECT(widget), ""notify::active-color"", Delegators::delegator(this, &Self::on_active_color_notify));"
+app/display/gimpdisplayshell-overlays.cpp	670	c_entry_candidate	REVIEW	void gimp_display_shell_attach_on_canvas_view (GimpDisplayShell* shell, GtkWidget* widget)
+app/display/gimpdisplayshell-overlays.cpp	713	c_entry_candidate	REVIEW	void gimp_display_shell_detach_on_canvas_view (GimpDisplayShell* shell, GimpCanvas* canvas, GtkWidget* widget)
+app/gimp-features.cpp	21	extern_c	REVIEW	"extern ""C"" {"
+app/gimp-features.cpp	48	function_pointer	REVIEW	typedef GIMP::Feature* (*feature_singleton_factory)(void);
+app/gimp-features.cpp	78	function_pointer	REVIEW	GIMP::Feature* feature = (*i)();
+app/gimp-features.cpp	89	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(gimp), ""initialize"", Delegators::delegator(this, &Feature::on_initialize));"
+app/gimp-features.cpp	92	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(gimp), ""restore"", Delegators::delegator(this, &Feature::on_restore));"
+app/gimp-features.cpp	93	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(gimp), ""exit"",    Delegators::delegator(this, &Feature::on_exit));"
+app/gimp-features.cpp	109	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(gimp), ""restore"", Delegators::delegator(this, &Feature::on_restore));"
+app/gimp-features.cpp	110	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(gimp), ""exit"",    Delegators::delegator(this, &Feature::on_exit));"
+app/httpd/httpd-features-gui.cpp	21	extern_c	REVIEW	"extern ""C"" {"
+app/httpd/httpd-features.cpp	21	extern_c	REVIEW	"extern ""C"" {"
+app/httpd/httpd.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/httpd/navigation-guide.cpp	25	extern_c	REVIEW	"extern ""C"" {"
+app/httpd/navigation-guide.cpp	65	function_pointer	REVIEW	return (*f)(args...);
+app/httpd/navigation-guide.cpp	269	callback_registration	REVIEW	gimp_image_window_activate_navigation_bar (window, guide_context->arg_conf->message_text, NULL, G_CALLBACK(on_guide_finished), guide_context);
+app/httpd/rest-image-tree.cpp	25	extern_c	REVIEW	"extern ""C"" {"
+app/httpd/rest-image-tree.cpp	59	function_pointer	REVIEW	return (*f)(args...);
+app/httpd/rest-pdb.cpp	25	extern_c	REVIEW	"extern ""C"" {"
+app/paint/gimpmypaintcore-brushfeature.hpp	21	extern_c	REVIEW	"extern ""C"" {"
+app/paint/gimpmypaintcore-surface.cpp	18	extern_c	REVIEW	"extern ""C"" {"
+app/paint/gimpmypaintcore-surface.hpp	21	extern_c	REVIEW	"extern ""C"" {"
+app/paint/gimpmypaintcore.cpp	22	extern_c	REVIEW	"extern ""C"" {"
+app/paint/gimpmypaintcore.cpp	120	callback_registration	REVIEW	"option_changed_handler = g_signal_connect_delegator(G_OBJECT(options), ""notify"", Delegators::delegator(this, &GimpMypaintCore::option_changed));"
+app/paint/gimpmypaintcore.hpp	21	extern_c	REVIEW	"extern ""C"" {"
+app/paint/gimpmypaintcore.hpp	62	c_entry_candidate	REVIEW	void      gimp_mypaint_core_round_line                (GimpMypaintCore    *core,
+app/paint/gimpmypaintcoreundo.cpp	18	extern_c	REVIEW	"extern ""C"" {"
+app/paint/gimpmypaintcoreundo.cpp	67	vfunc_candidate	REVIEW	object_class->constructed  = gimp_mypaint_core_undo_constructed;
+app/paint/gimpmypaintcoreundo.cpp	68	vfunc_candidate	REVIEW	object_class->set_property = gimp_mypaint_core_undo_set_property;
+app/paint/gimpmypaintcoreundo.cpp	69	vfunc_candidate	REVIEW	object_class->get_property = gimp_mypaint_core_undo_get_property;
+app/paint/gimpmypaintcoreundo.cpp	71	vfunc_candidate	REVIEW	undo_class->pop            = gimp_mypaint_core_undo_pop;
+app/paint/gimpmypaintcoreundo.cpp	72	vfunc_candidate	REVIEW	undo_class->free           = gimp_mypaint_core_undo_free;
+app/paint/gimpmypaintoptions-history.cpp	18	extern_c	REVIEW	"extern ""C"" {"
+app/paint/gimpmypaintoptions.cpp	21	extern_c	REVIEW	"extern ""C"" {"
+app/paint/gimpmypaintoptions.cpp	58	extern_c	REVIEW	"extern ""C"" {"
+app/paint/gimpmypaintoptions.cpp	105	vfunc_candidate	REVIEW	object_class->dispose      = gimp_mypaint_options_dispose;
+app/paint/gimpmypaintoptions.cpp	106	vfunc_candidate	REVIEW	object_class->finalize     = gimp_mypaint_options_finalize;
+app/paint/gimpmypaintoptions.cpp	107	vfunc_candidate	REVIEW	object_class->set_property = gimp_mypaint_options_set_property;
+app/paint/gimpmypaintoptions.cpp	108	vfunc_candidate	REVIEW	object_class->get_property = gimp_mypaint_options_get_property;
+app/paint/gimpmypaintoptions.cpp	168	callback_registration	REVIEW	g_signal_connect(G_OBJECT(options),
+app/paint/gimpmypaintoptions.cpp	170	callback_registration	REVIEW	G_CALLBACK(gimp_mypaint_options_mypaint_brush_changed),
+app/paint/gimpmypaintoptions.cpp	172	callback_registration	REVIEW	g_signal_connect(G_OBJECT(options),
+app/paint/gimpmypaintoptions.cpp	174	callback_registration	REVIEW	G_CALLBACK(gimp_mypaint_options_brush_changed), NULL);
+app/paint/gimpmypaintoptions.cpp	175	callback_registration	REVIEW	g_signal_connect(G_OBJECT(options),
+app/paint/gimpmypaintoptions.cpp	177	callback_registration	REVIEW	G_CALLBACK(gimp_mypaint_options_texture_changed), NULL);
+app/paint/gimpmypaintoptions.cpp	180	callback_registration	REVIEW	g_signal_connect(G_OBJECT(options),
+app/paint/gimpmypaintoptions.cpp	181	callback_registration	REVIEW	notify_name, G_CALLBACK(gimp_mypaint_options_prop_brushmark_updated), NULL);
+app/paint/gimpmypaintoptions.cpp	185	callback_registration	REVIEW	g_signal_connect(G_OBJECT(options),
+app/paint/gimpmypaintoptions.cpp	186	callback_registration	REVIEW	notify_name, G_CALLBACK(gimp_mypaint_options_prop_brushmark_updated), NULL);
+app/paint/gimpmypaintoptions.cpp	190	callback_registration	REVIEW	g_signal_connect(G_OBJECT(options),
+app/paint/gimpmypaintoptions.cpp	191	callback_registration	REVIEW	notify_name, G_CALLBACK(gimp_mypaint_options_prop_brushmark_updated), NULL);
+app/paint/gimpmypaintoptions.cpp	195	callback_registration	REVIEW	g_signal_connect(G_OBJECT(options),
+app/paint/gimpmypaintoptions.cpp	196	callback_registration	REVIEW	notify_name, G_CALLBACK(gimp_mypaint_options_prop_texture_updated), NULL);
+app/paint/gimpmypaintoptions.cpp	200	callback_registration	REVIEW	g_signal_connect(G_OBJECT(options),
+app/paint/gimpmypaintoptions.cpp	201	callback_registration	REVIEW	notify_name, G_CALLBACK(gimp_mypaint_options_prop_texture_updated), NULL);
+app/paint/gimpmypaintoptions.cpp	205	callback_registration	REVIEW	g_signal_connect(G_OBJECT(options),
+app/paint/gimpmypaintoptions.cpp	206	callback_registration	REVIEW	notify_name, G_CALLBACK(gimp_mypaint_options_prop_texture_updated), NULL);
+app/paint/mypaintbrush-brush.hpp	25	extern_c	REVIEW	"extern ""C"" {"
+app/paint/mypaintbrush-stroke.cpp	3	extern_c	REVIEW	"extern ""C"" {"
+app/pdb/pdb-cxx-utils.hpp	23	extern_c	REVIEW	"extern ""C"" {"
+app/presets/gimpjsonresource.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/presets/gimpjsonresource.cpp	215	c_entry_candidate	REVIEW	GType gimp_json_resource_get_type()
+app/presets/gimpjsonresource.cpp	219	c_entry_candidate	REVIEW	GimpData* gimp_json_resource_new (GimpContext* context, const gchar* name)
+app/presets/layer-preset-gui.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/presets/layer-preset.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/presets/preset-factory-gui.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/presets/preset-factory-gui.cpp	143	callback_registration	REVIEW	G_CALLBACK (dialogs_create_dockable_cmd_callback));
+app/presets/preset-factory.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpbucketfillbrushtool.cpp	28	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpbucketfillbrushtool.cpp	159	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpbucketfillbrushtool.cpp	214	vfunc_candidate	REVIEW	klass->handles_changing_brush             = TRUE;
+app/tools/gimpbucketfillbrushtool.cpp	215	vfunc_candidate	REVIEW	klass->handles_transforming_brush         = TRUE;
+app/tools/gimpbucketfillbrushtool.cpp	216	vfunc_candidate	REVIEW	klass->handles_dynamic_transforming_brush = TRUE;
+app/tools/gimpbucketfillbrushtool.cpp	476	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpimagegeneratortool.cpp	28	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpimagegeneratortool.cpp	80	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpimagegeneratortool.cpp	94	c_entry_candidate	REVIEW	GType   gimp_image_generator_options_get_type (void);
+app/tools/gimpimagegeneratortool.cpp	137	c_entry_candidate	REVIEW	GType   gimp_image_generator_options_get_type (void)
+app/tools/gimpimagegeneratortool.cpp	146	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpimagegeneratortool.cpp	388	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpimagegeneratortool.cpp	472	c_entry_candidate	REVIEW	GType   gimp_image_generator_tool_get_type (void)
+app/tools/gimpmypaintbrusheditor.cpp	24	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpmypaintbrusheditor.cpp	141	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(tree_sel), ""changed"", Delegators::delegator(this, &CurveViewActions::selected));"
+app/tools/gimpmypaintbrusheditor.cpp	142	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(toggle), ""toggled"", Delegators::delegator(this, &CurveViewActions::toggled));"
+app/tools/gimpmypaintbrusheditor.cpp	144	callback_registration	REVIEW	"options_notify_handler      = g_signal_connect_delegator (G_OBJECT(options), ""notify"", Delegators::delegator(this, &CurveViewActions::notify_options));"
+app/tools/gimpmypaintbrusheditor.cpp	145	callback_registration	REVIEW	"x_min_adj_changed_handler   = g_signal_connect_delegator (G_OBJECT(x_min_adj), ""value-changed"", Delegators::delegator(this, &CurveViewActions::value_changed));"
+app/tools/gimpmypaintbrusheditor.cpp	146	callback_registration	REVIEW	"x_max_adj_changed_handler   = g_signal_connect_delegator (G_OBJECT(x_max_adj), ""value-changed"", Delegators::delegator(this, &CurveViewActions::value_changed));"
+app/tools/gimpmypaintbrusheditor.cpp	147	callback_registration	REVIEW	"y_min_adj_changed_handler   = g_signal_connect_delegator (G_OBJECT(y_min_adj), ""value-changed"", Delegators::delegator(this, &CurveViewActions::value_changed));"
+app/tools/gimpmypaintbrusheditor.cpp	148	callback_registration	REVIEW	"y_max_adj_changed_handler   = g_signal_connect_delegator (G_OBJECT(y_max_adj), ""value-changed"", Delegators::delegator(this, &CurveViewActions::value_changed));"
+app/tools/gimpmypaintbrusheditor.cpp	272	callback_registration	REVIEW	"curve_notify_handler = g_signal_connect_delegator(G_OBJECT(curve), ""notify::points"","
+app/tools/gimpmypaintbrushoptions-gui.cpp	24	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpmypaintbrushoptions-gui.cpp	292	callback_registration	REVIEW	"g_signal_connect_delegator(G_OBJECT(renderer), ""edited"","
+app/tools/gimpmypaintbrushoptions-gui.cpp	295	callback_registration	REVIEW	"g_signal_connect_delegator(G_OBJECT(history), ""cursor-changed"","
+app/tools/gimpmypaintbrushoptions-gui.cpp	306	callback_registration	REVIEW	g_signal_connect_delegator (G_OBJECT(context),
+app/tools/gimpmypaintbrushoptions-gui.cpp	318	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT (*result), ""destroy"","
+app/tools/gimpmypaintbrushoptions-gui.cpp	322	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpmypaintoptions-gui.cpp	22	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpmypaintoptions-gui.cpp	296	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT (brush_name_entry), ""activate"","
+app/tools/gimpmypaintoptions-gui.cpp	304	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT (action_button), ""clicked"","
+app/tools/gimpmypaintoptions-gui.cpp	312	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT (action_button), ""clicked"","
+app/tools/gimpmypaintoptions-gui.cpp	342	callback_registration	REVIEW	g_signal_connect_delegator (G_OBJECT(context),
+app/tools/gimpmypaintoptions-gui.cpp	351	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT (*result), ""destroy"","
+app/tools/gimpmypaintoptions-gui.cpp	457	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(button), ""clicked"","
+app/tools/gimpmypaintoptions-gui.cpp	540	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpmypainttool.cpp	25	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpmypainttool.cpp	129	vfunc_candidate	REVIEW	object_class->constructed  = gimp_mypaint_tool_constructed;
+app/tools/gimpmypainttool.cpp	130	vfunc_candidate	REVIEW	object_class->finalize     = gimp_mypaint_tool_finalize;
+app/tools/gimpmypainttool.cpp	132	vfunc_candidate	REVIEW	tool_class->control        = gimp_mypaint_tool_control;
+app/tools/gimpmypainttool.cpp	133	vfunc_candidate	REVIEW	tool_class->button_press   = gimp_mypaint_tool_button_press;
+app/tools/gimpmypainttool.cpp	134	vfunc_candidate	REVIEW	tool_class->button_release = gimp_mypaint_tool_button_release;
+app/tools/gimpmypainttool.cpp	135	vfunc_candidate	REVIEW	tool_class->motion         = gimp_mypaint_tool_motion;
+app/tools/gimpmypainttool.cpp	136	vfunc_candidate	REVIEW	tool_class->modifier_key   = gimp_mypaint_tool_modifier_key;
+app/tools/gimpmypainttool.cpp	137	vfunc_candidate	REVIEW	tool_class->cursor_update  = gimp_mypaint_tool_cursor_update;
+app/tools/gimpmypainttool.cpp	138	vfunc_candidate	REVIEW	tool_class->oper_update    = gimp_mypaint_tool_oper_update;
+app/tools/gimpmypainttool.cpp	140	vfunc_candidate	REVIEW	draw_tool_class->draw      = gimp_mypaint_tool_draw;
+app/tools/gimpmypainttool.cpp	816	function_pointer	REVIEW	(* callback) (GIMP_TYPE_MYPAINT_TOOL,
+app/tools/gimpperspectiveguidetool.cpp	29	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpperspectiveguidetool.cpp	82	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpperspectiveguidetool.cpp	96	c_entry_candidate	REVIEW	GType   gimp_perspective_guide_options_get_type (void);
+app/tools/gimpperspectiveguidetool.cpp	137	c_entry_candidate	REVIEW	GType   gimp_perspective_guide_options_get_type (void)
+app/tools/gimpperspectiveguidetool.cpp	144	extern_c	REVIEW	"extern ""C"" {"
+app/tools/gimpperspectiveguidetool.cpp	662	c_entry_candidate	REVIEW	GType   gimp_perspective_guide_tool_get_type (void)
+app/tools/gimptooloptions-gui-cxx.cpp	52	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(result), ""create-view"", create_view);"
+app/tools/gimptooloptions-gui-cxx.hpp	46	callback_registration	REVIEW	g_signal_connect_delegator (G_OBJECT(target), signal_name, delegator);
+app/tools/gimptooloptions-gui-cxx.hpp	103	callback_registration	REVIEW	"g_signal_connect_delegator(G_OBJECT(notebook), ""switch-page"", Delegators::delegator(this, &PageRemindAction::emit));"
+app/widgets/gimpcellrendererpopup.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/widgets/gimpcellrendererpopup.cpp	341	c_entry_candidate	REVIEW	GType gimp_cell_renderer_popup_get_type() { return GLib::Class::Traits::get_type(); }
+app/widgets/gimpeditor-cxx.cpp	25	extern_c	REVIEW	"extern ""C"" {"
+app/widgets/gimpeditor-cxx.cpp	132	callback_registration	REVIEW	"g_signal_connect (it, ""clicked"","
+app/widgets/gimpeditor-cxx.cpp	136	callback_registration	REVIEW	"g_signal_connect (it, ""extended-clicked"","
+app/widgets/gimpeditor-cxx.cpp	260	callback_registration	REVIEW	"g_signal_connect (button, ""extended-clicked"","
+app/widgets/gimpeditor-cxx.cpp	261	callback_registration	REVIEW	G_CALLBACK (gimp_editor_button_extended_clicked),
+app/widgets/gimplayerpopup.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/widgets/gimplayertileview.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/widgets/gimplayertileview.cpp	1594	c_entry_candidate	REVIEW	GType gimp_layer_tile_view_get_type() { return GLib::Class::Traits::get_type(); }
+app/widgets/gimplayertileview.cpp	1595	c_entry_candidate	REVIEW	GimpLayerTileView* gimp_layer_tile_view_new() { return LayerTileViewInterface::new_instance(); }
+app/widgets/gimpmypaintbrusheditor.cpp	24	extern_c	REVIEW	"extern ""C"" {"
+app/widgets/gimpmypaintbrusheditor.cpp	100	vfunc_candidate	REVIEW	object_class->constructed = gimp_mypaint_brush_editor_constructed;
+app/widgets/gimpmypaintbrusheditor.cpp	102	vfunc_candidate	REVIEW	editor_class->set_data    = gimp_mypaint_brush_editor_set_data;
+app/widgets/gimpmypaintbrusheditor.cpp	103	vfunc_candidate	REVIEW	"editor_class->title       = _(""Mypaint Brush Editor"");"
+app/widgets/gimpmypaintbrusheditor.cpp	116	vfunc_candidate	REVIEW	iface->set_context = gimp_mypaint_brush_editor_set_context;
+app/widgets/gimpmypaintbrusheditor.cpp	240	callback_registration	REVIEW	"g_signal_connect (editor->angle_data, ""value-changed"","
+app/widgets/gimpmypaintbrusheditor.cpp	241	callback_registration	REVIEW	G_CALLBACK (gimp_mypaint_brush_editor_update_mypaint_brush),
+app/widgets/gimptooltileview.cpp	27	extern_c	REVIEW	"extern ""C"" {"
+app/widgets/gimptooltileview.cpp	600	c_entry_candidate	REVIEW	GType gimp_tool_tile_view_get_type() { return GLib::Class::Traits::get_type(); }
+app/widgets/gimptooltileview.cpp	601	c_entry_candidate	REVIEW	GimpToolTileView* gimp_tool_tile_view_new() { return ToolTileViewInterface::new_instance(); }
+app/widgets/popupper.cpp	14	extern_c	REVIEW	"extern ""C"" {"
+app/widgets/popupper.cpp	184	callback_registration	REVIEW	"g_signal_connect_delegator (g_object, ""grab-notify"","
+app/widgets/popupper.cpp	186	callback_registration	REVIEW	"g_signal_connect_delegator (g_object, ""grab-broken-event"","
+app/widgets/popupper.cpp	419	extern_c	REVIEW	"extern ""C"" {"
+app/widgets/popupper.cpp	501	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(popover_widget), ""cancel"", delegator(this, &PopoverDecorator::on_popover_closed));"
+app/widgets/popupper.cpp	503	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(popover_widget), ""confirm"", delegator(this, &PopoverDecorator::on_popover_closed));"
+app/widgets/popupper.cpp	512	function_pointer	REVIEW	(*create_view_delegator)(widget, &result, aux);
+app/widgets/popupper.cpp	527	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(widget), ""scroll-event"", Delegators::delegator(this, &PopoverDecorator::scroll_event));"
+app/widgets/popupper.cpp	529	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(widget), ""button-press-event"", Delegators::delegator(this, &PopoverDecorator::button_press));"
+app/widgets/popupper.cpp	532	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(widget), ""clicked"", Delegators::delegator(this, &PopoverDecorator::clicked));"
+app/widgets/popupper.cpp	535	callback_registration	REVIEW	"g_signal_connect_delegator (G_OBJECT(widget), ""parent-clicked"", Delegators::delegator(this, &PopoverDecorator::parent_clicked));"
+app/widgets/popupper.cpp	563	function_pointer	REVIEW	void (*data_destructor) (gpointer data);
+app/widgets/popupper.cpp	568	function_pointer	REVIEW	void(*dd)(gpointer))
+app/widgets/popupper.cpp	583	function_pointer	REVIEW	(*data_destructor)(data);
+app/widgets/popupper.cpp	587	function_pointer	REVIEW	(*create_view_full_handler)(widget, result,config.ptr(), data);
+app/widgets/popupper.cpp	589	function_pointer	REVIEW	(*create_view_handler)(widget, result, config.ptr());
