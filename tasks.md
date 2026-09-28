@@ -152,6 +152,7 @@
 | 01.005/gimp3-layer-slots | [x] | CloneLayer と FilterLayer の旧 vfunc を現行 slot と対照する | 01.005/indirect-callback-owners | 旧 Binder 34 箇所を C ヘッダーの実 slot 署名へ対応付け、削除された `project_region` / `is_editable` と新 GEGL source node、引数・戻り値の変化を記録（`migration/inventory/gimp3-layer-vfunc-review.tsv`）。実装は機能タスク |
 | 01.005/gimp3-tool-slots | [x] | 塗りつぶしブラシと操作ツールの vfunc を現行 slot と対照する | 01.005/gimp3-layer-slots | 旧 Binder 18 件の宣言を照合（`migration/inventory/gimp3-tool-vfunc-review.tsv`）。塗りつぶしブラシの paint 引数は GList と GimpSymmetry に変更。定規と placeholder の 17 件は C 宣言の署名が同じ |
 | 01.005/gimp3-core-binders | [x] | Undo・canvas・JSON 資源の Binder slot を現行 C ヘッダーと対照する | 01.005/gimp3-tool-slots | 旧 Binder 6 件を行単位で照合（`migration/inventory/gimp3-core-binder-review.tsv`）。canvas の shell 引数削除 2 件、JSON save の出力 stream 追加 1 件、署名一致 3 件。移植は各機能タスク |
+| 01.005/gimp3-external-binders | [x] | GTK/GLib と旧独自型の Binder 境界を照合する | 01.005/gimp3-core-binders | 残る 13 件を公開 GTK 2.24 / GTK 3.24、GLib 2.32 / 2.80 の固定ヘッダーと旧独自型宣言へ一対一に照合（`migration/inventory/gimp3-external-binder-review.tsv`）。署名一致 7、変更 3、移植先の型未作成 3。実装は各機能タスク |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
@@ -328,6 +329,7 @@
 | 08.007 | [ ] | MyPaint options 型を移植する | 08.006 | 現行 property と設定機構に接続 |
 | 08.008 | [ ] | MyPaint tool 型を移植する | 08.007 | tool manager に登録できる |
 | 08.009 | [ ] | パース定規モデル型を移植する | 08.008 | 画像との所有関係を接続 |
+| 08.009/removed-signal | [ ] | パース定規型の削除通知 slot を復元する | 08.009, 01.005/gimp3-external-binders | 独自 `GimpPerspectiveGuideClass.removed` を新しい型に再定義し、削除時に一度だけ発火・接続解除する |
 | 08.010 | [ ] | パース定規 tool 型を移植する | 08.009 | draw tool と options に登録 |
 | 08.011 | [ ] | 塗りつぶし brush core 型を移植する | 08.010 | paint core と親 vfunc を接続 |
 | 08.012 | [ ] | 塗りつぶし tool/options 型を移植する | 08.011 | tool manager と設定に登録 |
@@ -867,6 +869,8 @@
 | 29.004 | [ ] | layer tile の順序操作を実装する | 29.003 | group と独自参照の更新を通知 |
 | 29.005 | [ ] | layer tile の複数選択を接続する | 29.004 | 現行選択 model と整合 |
 | 29.006 | [ ] | layer tile の popup を接続する | 29.005 | 独自型設定へ到達可能 |
+| 29.006/cellrenderer-gtk3 | [ ] | popup 用 cell renderer を GTK 3 描画 ABI へ移す | 29.006, 01.005/gimp3-external-binders | activate/get_size の const GdkRectangle と render の Cairo コンテキスト・領域引数を守り、描画とクリックを確認 |
+| 29.006/popover-class-signals | [ ] | popup 独自型の cancel/confirm class slot を再定義する | 29.006, 01.005/gimp3-external-binders | GTK 3 の window 子型で class closure・キー割当と終了時の接続解除を確認 |
 | 29.006/popover-handler-teardown | [ ] | popup の signal と view callback を終了時に解除する | 29.005, 06.017, 01.005/indirect-callback-owners | widget・popup を先に破棄しても借用中の owner を参照せず、scroll/button/confirm/cancel の接続が解除される |
 | 29.007 | [ ] | color UI を移植する | 29.006 | 前景・背景色が context と同期 |
 | 29.008 | [ ] | tool tile の表示を移植する | 29.007 | tool manager の現在選択と同期 |
