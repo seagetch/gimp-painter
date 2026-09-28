@@ -261,8 +261,27 @@ does not establish whether either path is safe in the legacy build.
 `call-boundary-coverage.md` and `tools/check_call_boundary_coverage.py` verify
 that every one of the 683 first-pass C++ candidates and 130 C/header
 references has a classified row, including the 33 active C++ direct calls.
-This only closes **candidate coverage**: before 01.005 can be completed,
-identify exported C entries missed by the first-pass regex, trace indirect
-callbacks and vfunc owners, and compare signatures and lifetimes with GIMP 3.
-Record the verified direction, signature and ownership at each boundary.
-The parent WBS item remains open.
+This only closes **candidate coverage**. The independent reverse audit in
+`non-gimp-c-entry-review.tsv` scans the 2,051 legacy app C/C++ sources and
+headers for C-linkage declarations paired with C++ definitions. It adds four
+non-`gimp_` C ABI entries missing from the first pass: `features_entry_point`
+called by `app/app.c:175`; `preset_factory_gui_prefs_entry_point` called by
+`app/dialogs/preferences-dialog.c:2865` (the returned `GArray` is unreffed at
+line 2889); `preset_factory_gui_dialogs_actions_entry_point` called by
+`app/actions/dialogs-actions.c:335`; and
+`preset_factory_gui_action_group_entry_point` registered as a C factory
+callback at `app/presets/preset-factory-gui.cpp:216`. The same registration
+passes the `static` callback `preset_factory_gui_action_group_update` at line
+217. The two `httpd_get_*factory` functions return C++ `GIMP::Feature*` and
+have no C linkage or C callers. The six macro-generated GType functions remain
+in `generated-gtype-review.tsv`. Run
+`python3 -B tools/audit_non_gimp_c_entries.py` to repeat the reverse scan.
+
+The preset dialog action builder prints `entry->name` before checking whether
+`entry` is null (`app/presets/preset-factory-gui.cpp:135-136`). Its migration
+task must guard the dereference and handle an empty action array. The startup
+feature factory and preset UI entries have separate implementation tasks in
+`tasks.md`. Before 01.005 can be completed, trace indirect callbacks and
+vfunc owners, and compare signatures and lifetimes with GIMP 3. Record the
+verified direction, signature and ownership at each boundary. The parent WBS
+item remains open.

@@ -121,7 +121,7 @@
 | 01.002 | [x] | 変更 hunk 台帳を作る | 01.001 | 各 hunk に機能・基盤・生成物・資産の分類欄を持たせる。子チェック 2,489 件は `migration/inventory/changed-hunks.tsv` に列挙（01.013 の機能割当は別作業） |
 | 01.003 | [x] | app 外の差分を分類する | 01.002 | libgimp、plug-ins、tools、po、data、build 等の各変更に処置を付与。子チェック 474 件は `migration/inventory/external-changes.tsv` に列挙 |
 | 01.004 | [x] | C++ 型と登録箇所を列挙する | 01.003 | NewGClass、DerivedFrom、UseCStructs、Interface、GType の対応を記録。子チェック 17 件は `migration/inventory/cpp-types.tsv` に列挙 |
-| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 683 件、C/ヘッダー参照 130 件（関数ポインター登録 6 件と 有効な C→C++ 直接呼出し 33 件は入口・結果の扱いを追跡、直接呼出し構文 41 件は有効 35・無効 6 に分離）、C 入口構文候補 28 件、C++ 定義候補 149 件、マクロ生成 GType 入口 6 件、extern C scope 69 件、関数ポインター構文 34 件、class 代入 63 件、Binder 候補 92 件、callback 登録候補 94 件、遅延 source 2 経路、signal wrapper 接続 47 件、delegator 候補 107 件、別走査の property accessor 44 出現を分類。署名対照 66 組、うち未保護ヘッダー 28 組と C++ 入口の引数・戻り値各 64 組、共通 bridge 9 経路を確認済み。残りを精査中 |
+| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 683 件、C/ヘッダー参照 130 件（関数ポインター登録 6 件と 有効な C→C++ 直接呼出し 33 件は入口・結果の扱いを追跡、直接呼出し構文 41 件は有効 35・無効 6 に分離）、非 gimp_ C 公開入口 4 件（C 直接呼出し 3 件、C callback 登録 1 件）と static callback 1 件を別走査で補完、C 入口構文候補 28 件、C++ 定義候補 149 件、マクロ生成 GType 入口 6 件、extern C scope 69 件、関数ポインター構文 34 件、class 代入 63 件、Binder 候補 92 件、callback 登録候補 94 件、遅延 source 2 経路、signal wrapper 接続 47 件、delegator 候補 107 件、別走査の property accessor 44 出現を分類。署名対照 66 組、うち未保護ヘッダー 28 組と C++ 入口の引数・戻り値各 64 組、共通 bridge 9 経路を確認済み。残りを精査中 |
 | 01.005/bridge-core | [x] | NewGClass と Delegator の共通境界を確定する | 01.004 | C ABI callback・登録・破棄・vfunc の 9 経路を旧版の出典行と移植時の確認事項に対応付ける（`migration/inventory/bridge-boundary-findings.tsv`） |
 | 01.005/c-linkage | [x] | C 入口候補の未保護ヘッダーを分類する | 01.004 | 28 組のうちヘッダーを extern C 内で読み込む 25 組、定義を extern C 内に置く 1 組、別シグネチャの C++ overload 2 組を旧版の行番号付きで記録（`migration/inventory/c-linkage-review.tsv`） |
 | 01.005/c-references | [x] | C とヘッダーの参照候補を用途別に分類する | 01.004 | 130 件を旧版の行と照合し、C の直接呼び出し構文 41、関数ポインター登録 6、C 定義 1、コメント 2、ヘッダーの宣言 65、マクロ 11、テンプレート 3、コメント 1 に分類（`migration/inventory/c-reference-review.tsv`）。直接呼出しの有効性は別子で照合 |
@@ -145,8 +145,8 @@
 | 01.005/deferred-sources | [x] | 遅延 callback の解除経路を追う | 01.005/callback-registrations, 01.005/delegator-sites | FilterLayer の ID 未保存 timeout と、ID を保持し破棄時に解除する layer preview idle の所有者・捕捉を照合（`migration/inventory/deferred-source-review.tsv`）。viewable の寿命は移植時の検証対象 |
 | 01.005/fill-brush-boundary | [x] | 塗りつぶしブラシの旧 paint core 入口と現行 GEGL 境界を照合する | 01.004 | 旧 GType・paint vfunc・projection snapshot・有界探索・paint paste を現行 API と対照（`migration/inventory/fill-brush-rendering.md`）。移植と実測は後続子タスク |
 | 01.005/candidate-coverage | [x] | 一次候補と分類結果の全件照合を自動化する | 01.005/deferred-sources, 01.005/fill-brush-boundary, 01.005/non-xcf-c-calls | C++ 683 件と C/ヘッダー 130 件を分類済み行に一対一照合し、直接呼出し 33 件、登録 6 件と別走査の項目も検査（`migration/inventory/call-boundary-coverage.md`） |
-| 01.005/missed-c-entries | [ ] | 正規表現に拾われない C 公開入口と呼出しを照合する | 01.005/candidate-coverage | 旧 C++ 全ファイルの非 static C linkage 宣言・マクロ生成入口と C/ヘッダー全参照を逆引きし、新規候補は分類・機能タスクに登録 |
-| 01.005/indirect-callback-owners | [ ] | 間接関数ポインターの呼出し先・所有権を確定する | 01.005/candidate-coverage | 34 候補のうち実際の callback を受け渡す経路を typedef・保持者・解放・呼出し箇所まで分類 |
+| 01.005/missed-c-entries | [x] | 正規表現に拾われない C 公開入口と呼出しを照合する | 01.005/candidate-coverage | 旧 app の 2,051 C/C++ ソース・ヘッダーを逆引きし、非 gimp_ C 公開入口 4 件、C 直接呼出し 3 件、C callback 登録 1 件、static callback 1 件を発見・分類（`migration/inventory/non-gimp-c-entry-review.tsv`）。C++ 専用工場 2 件と既存 GType マクロ生成 6 件も照合し後続機能タスクへ割当 |
+| 01.005/indirect-callback-owners | [ ] | 間接関数ポインターの呼出し先・所有権を確定する | 01.005/candidate-coverage | 34 候補と新規の preset action-group static callback のうち実際の callback を受け渡す経路を typedef・保持者・解放・呼出し箇所まで分類 |
 | 01.005/gimp3-vfunc-contract | [ ] | 旧 vfunc と現行 GIMP 3 slot の署名・寿命を照合する | 01.005/candidate-coverage | 40 class callback と 71 binding の実 slot・引数・戻り値・例外境界を対象ごとの子チェックに分けて記録 |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
@@ -224,6 +224,7 @@
 | 04.016 | [ ] | install 後の起動を検証する | 04.015 | build tree に依存せず独自モジュールを含め起動する |
 | 04.017 | [ ] | 生成 C ヘッダーの二重 include を試験する | 04.016 | C linkage と include guard が安定 |
 | 04.018 | [ ] | C++ static 初期化の順序依存を除去する | 04.017 | GIMP 初期化前に型登録や GTK 呼出しを行わない |
+| 04.018/feature-entry-point | [ ] | 旧 features_entry_point の起動時登録を現行初期化へ接続する | 04.018, 28.003 | GUI/console と HTTPD 条件分岐、Gimp 所有者、initialize/restore/exit の接続と解除を検証 |
 | 04.019 | [ ] | 異なる allocator の解放を監査する | 04.018 | new/delete と GLib allocation の対応が全境界で一致 |
 
 ### 05 単一 C++ API の契約
@@ -836,6 +837,9 @@
 | 28.012 | [ ] | 水彩 preset を検証する | 28.011 | edge filter・difference・opacity・group が一致 |
 | 28.013 | [ ] | その他同梱 preset を検証する | 28.012 | 全定義に生成結果 fixture がある |
 | 28.014 | [ ] | preset 選択 UI を接続する | 28.013 | 旧導線から適用可能 |
+| 28.014/preset-preferences | [ ] | preset 設定ページ入口を移植する | 28.013, 04.004 | C 側でページを構築し返却 GArray を処理後に参照解放する |
+| 28.014/preset-dialog-actions | [ ] | preset ダイアログアクションを移植する | 28.013, 04.004 | エントリが NULL の場合に参照せず、空配列も安全に登録する |
+| 28.014/preset-action-group | [ ] | preset action-group 登録 callback を移植する | 28.013, 04.004 | entry/update の C ABI と登録者の寿命・解除を確認する |
 | 28.015 | [ ] | preset 生成後の保存を試験する | 28.014 | 再読込して source 編集・filter 再評価が可能 |
 
 ### 29 キャンバス UI と tile view
