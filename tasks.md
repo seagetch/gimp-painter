@@ -154,6 +154,7 @@
 | 01.005/gimp3-core-binders | [x] | Undo・canvas・JSON 資源の Binder slot を現行 C ヘッダーと対照する | 01.005/gimp3-tool-slots | 旧 Binder 6 件を行単位で照合（`migration/inventory/gimp3-core-binder-review.tsv`）。canvas の shell 引数削除 2 件、JSON save の出力 stream 追加 1 件、署名一致 3 件。移植は各機能タスク |
 | 01.005/gimp3-external-binders | [x] | GTK/GLib と旧独自型の Binder 境界を照合する | 01.005/gimp3-core-binders | 残る 13 件を公開 GTK 2.24 / GTK 3.24、GLib 2.32 / 2.80 の固定ヘッダーと旧独自型宣言へ一対一に照合（`migration/inventory/gimp3-external-binder-review.tsv`）。署名一致 7、変更 3、移植先の型未作成 3。実装は各機能タスク |
 | 01.005/gimp3-brush-callbacks | [x] | 拡張 MyPaint ブラシ資源の class callback を現行 slot と対照する | 01.005/gimp3-external-binders | 旧定義と旧 slot の一致も確認した 15 件の照合表（`migration/inventory/gimp3-brush-callback-review.tsv`）。現行署名一致 9、変更 2、独自型再作成待ち 4。save/preview の差分を実装タスクに割当 |
+| 01.005/gimp3-tool-callbacks | [x] | 拡張 MyPaint 操作ツールの直接 callback を照合する | 01.005/gimp3-brush-callbacks | 旧 C++ 定義 10 件が旧 slot と現行 GIMP 3 slot の両方で同じ署名（`migration/inventory/gimp3-tool-callback-review.tsv`）。tool core の保持・破棄を機能タスクに割当 |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
@@ -329,6 +330,7 @@
 | 08.006 | [ ] | MyPaint paint core 型を移植する | 08.005 | 現行 GimpPaintCore に登録できる |
 | 08.007 | [ ] | MyPaint options 型を移植する | 08.006 | 現行 property と設定機構に接続 |
 | 08.008 | [ ] | MyPaint tool 型を移植する | 08.007 | tool manager に登録できる |
+| 08.008/tool-core-lifetime | [ ] | MyPaint tool と core の生成・破棄順を明示する | 08.008, 01.005/gimp3-tool-callbacks | constructed で保持する core が finalize/停止時に二重解放や残存を起こさず、qdata と Undo の解除順が整合 |
 | 08.009 | [ ] | パース定規モデル型を移植する | 08.008 | 画像との所有関係を接続 |
 | 08.009/removed-signal | [ ] | パース定規型の削除通知 slot を復元する | 08.009, 01.005/gimp3-external-binders | 独自 `GimpPerspectiveGuideClass.removed` を新しい型に再定義し、削除時に一度だけ発火・接続解除する |
 | 08.010 | [ ] | パース定規 tool 型を移植する | 08.009 | draw tool と options に登録 |
