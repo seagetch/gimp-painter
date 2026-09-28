@@ -126,6 +126,19 @@ rate and eraser-mode bindings in ImageGenerator and PerspectiveGuide options
 must not be counted as active legacy behavior. Accessor return types,
 property ownership and error handling still need port-level checks.
 
+`callback-registration-review.tsv` classifies the 94 callback registration
+candidates. Sixty rows are signal connections with visible named targets;
+eleven more are continuation lines of those same calls. Ten rows forward
+generic callbacks through helpers, two accept callback parameters, two
+declare helper entry points, and the remaining nine cover closure creation
+and installation, GType registration, a timeout source, an action callback
+and a custom API callback. Run
+`python3 -B tools/audit_callback_registrations.py` to regenerate it. The
+FilterLayer timeout at `app/core/gimpfilterlayer.cpp:614` passes raw `this`
+without storing a source ID at that call site. The port must cancel pending
+sources before owner destruction or otherwise guarantee the callback's
+lifetime. The table identifies registrations, not all disconnection paths.
+
 Before 01.005 can be
 completed, inspect each candidate, identify exported C functions and their
 callers in changed C sources and public headers (including entry names missed

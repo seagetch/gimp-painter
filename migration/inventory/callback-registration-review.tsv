@@ -1,0 +1,95 @@
+legacy_site	role	registration_site	callback_target_if_visible	port_check	status
+app/base/delegators.hpp:167	HELPER_DECLARATION	app/base/delegators.hpp:167	-	Check callback lifetime and C ABI during port	DONE
+app/base/delegators.hpp:173	CLOSURE_CREATION	app/base/delegators.hpp:173	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/delegators.hpp:176	CLOSURE_INSTALLATION	app/base/delegators.hpp:176	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/delegators.hpp:182	HELPER_DECLARATION	app/base/delegators.hpp:182	-	Check callback lifetime and C ABI during port	DONE
+app/base/delegators.hpp:188	CLOSURE_CREATION	app/base/delegators.hpp:188	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/delegators.hpp:191	CLOSURE_INSTALLATION	app/base/delegators.hpp:191	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/glib-cxx-impl.hpp:498	GTYPE_REGISTRATION	app/base/glib-cxx-impl.hpp:498	-	Check callback lifetime and C ABI during port	DONE
+app/base/glib-cxx-impl.hpp:523	GTYPE_REGISTRATION	app/base/glib-cxx-impl.hpp:523	-	Check callback lifetime and C ABI during port	DONE
+app/base/glib-cxx-utils.hpp:1034	GENERIC_HELPER_FORWARD	app/base/glib-cxx-utils.hpp:1034	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/glib-cxx-utils.hpp:1044	GENERIC_HELPER_FORWARD	app/base/glib-cxx-utils.hpp:1044	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/glib-cxx-utils.hpp:1055	GENERIC_HELPER_FORWARD	app/base/glib-cxx-utils.hpp:1055	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/glib-cxx-utils.hpp:1065	GENERIC_HELPER_FORWARD	app/base/glib-cxx-utils.hpp:1065	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/glib-cxx-utils.hpp:1072	GENERIC_HELPER_FORWARD	app/base/glib-cxx-utils.hpp:1072	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/glib-cxx-utils.hpp:1077	GENERIC_HELPER_FORWARD	app/base/glib-cxx-utils.hpp:1077	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/glib-cxx-utils.hpp:1109	GENERIC_HELPER_FORWARD	app/base/glib-cxx-utils.hpp:1109	-	Check handler lifetime, disconnect and callback signature	DONE
+app/base/glib-cxx-utils.hpp:1115	GENERIC_HELPER_FORWARD	app/base/glib-cxx-utils.hpp:1115	-	Check handler lifetime, disconnect and callback signature	DONE
+app/core/gimpclonelayer.cpp:284	SIGNAL_CONNECTION	app/core/gimpclonelayer.cpp:284	GLib::CloneLayer::on_source_update	Check handler lifetime, disconnect and callback signature	DONE
+app/core/gimpclonelayer.cpp:286	SIGNAL_CONNECTION	app/core/gimpclonelayer.cpp:286	GLib::CloneLayer::on_source_frozen	Check handler lifetime, disconnect and callback signature	DONE
+app/core/gimpfilterlayer.cpp:320	SIGNAL_CONNECTION	app/core/gimpfilterlayer.cpp:320	GLib::FilterLayer::on_parent_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/core/gimpfilterlayer.cpp:322	SIGNAL_CONNECTION	app/core/gimpfilterlayer.cpp:322	GLib::FilterLayer::on_visibility_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/core/gimpfilterlayer.cpp:614	TIMEOUT_SOURCE	app/core/gimpfilterlayer.cpp:614	FilterLayer::notify_filter_end_callback	Track source ID and cancel before owner destruction; raw this is passed	DONE
+app/core/gimpfilterlayer.cpp:943	SIGNAL_CONNECTION	app/core/gimpfilterlayer.cpp:943	GLib::FilterLayer::on_stack_update	Check handler lifetime, disconnect and callback signature	DONE
+app/core/gimpfilterlayer.cpp:946	SIGNAL_CONNECTION	app/core/gimpfilterlayer.cpp:946	GLib::FilterLayer::on_reorder	Check handler lifetime, disconnect and callback signature	DONE
+app/core/gimpfilterlayer.cpp:952	SIGNAL_CONNECTION	app/core/gimpfilterlayer.cpp:952	GLib::FilterLayer::on_stack_update	Check handler lifetime, disconnect and callback signature	DONE
+app/core/gimpfilterlayer.cpp:955	SIGNAL_CONNECTION	app/core/gimpfilterlayer.cpp:955	GLib::FilterLayer::on_reorder	Check handler lifetime, disconnect and callback signature	DONE
+app/display/gimpdisplayshell-overlays.cpp:128	SIGNAL_CONNECTION	app/display/gimpdisplayshell-overlays.cpp:128	Self::on_size_allocate	Check handler lifetime, disconnect and callback signature	DONE
+app/display/gimpdisplayshell-overlays.cpp:129	SIGNAL_CONNECTION	app/display/gimpdisplayshell-overlays.cpp:129	Self::on_enter_notify	Check handler lifetime, disconnect and callback signature	DONE
+app/display/gimpdisplayshell-overlays.cpp:130	SIGNAL_CONNECTION	app/display/gimpdisplayshell-overlays.cpp:130	Self::on_leave_notify	Check handler lifetime, disconnect and callback signature	DONE
+app/display/gimpdisplayshell-overlays.cpp:172	SIGNAL_CONNECTION	app/display/gimpdisplayshell-overlays.cpp:172	Self::on_size_allocate	Check handler lifetime, disconnect and callback signature	DONE
+app/display/gimpdisplayshell-overlays.cpp:259	SIGNAL_CONNECTION	app/display/gimpdisplayshell-overlays.cpp:259	Self::on_select_color	Check handler lifetime, disconnect and callback signature	DONE
+app/display/gimpdisplayshell-overlays.cpp:264	SIGNAL_CONNECTION	app/display/gimpdisplayshell-overlays.cpp:264	Self::on_fg_color_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/display/gimpdisplayshell-overlays.cpp:265	SIGNAL_CONNECTION	app/display/gimpdisplayshell-overlays.cpp:265	Self::on_bg_color_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/display/gimpdisplayshell-overlays.cpp:349	SIGNAL_CONNECTION	app/display/gimpdisplayshell-overlays.cpp:349	Self::on_active_color_notify	Check handler lifetime, disconnect and callback signature	DONE
+app/gimp-features.cpp:89	SIGNAL_CONNECTION	app/gimp-features.cpp:89	Feature::on_initialize	Check handler lifetime, disconnect and callback signature	DONE
+app/gimp-features.cpp:92	SIGNAL_CONNECTION	app/gimp-features.cpp:92	Feature::on_restore	Check handler lifetime, disconnect and callback signature	DONE
+app/gimp-features.cpp:93	SIGNAL_CONNECTION	app/gimp-features.cpp:93	Feature::on_exit	Check handler lifetime, disconnect and callback signature	DONE
+app/gimp-features.cpp:109	SIGNAL_CONNECTION	app/gimp-features.cpp:109	Feature::on_restore	Check handler lifetime, disconnect and callback signature	DONE
+app/gimp-features.cpp:110	SIGNAL_CONNECTION	app/gimp-features.cpp:110	Feature::on_exit	Check handler lifetime, disconnect and callback signature	DONE
+app/httpd/navigation-guide.cpp:269	CUSTOM_API_CALLBACK	app/httpd/navigation-guide.cpp:269	on_guide_finished	Check callback lifetime and C ABI during port	DONE
+app/paint/gimpmypaintcore.cpp:120	SIGNAL_CONNECTION	app/paint/gimpmypaintcore.cpp:120	GimpMypaintCore::option_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/paint/gimpmypaintoptions.cpp:168	SIGNAL_CONNECTION	app/paint/gimpmypaintoptions.cpp:168	gimp_mypaint_options_mypaint_brush_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/paint/gimpmypaintoptions.cpp:170	CONTINUATION_OF_SIGNAL	app/paint/gimpmypaintoptions.cpp:168	gimp_mypaint_options_mypaint_brush_changed	Same registration as the initiating signal line	DONE
+app/paint/gimpmypaintoptions.cpp:172	SIGNAL_CONNECTION	app/paint/gimpmypaintoptions.cpp:172	gimp_mypaint_options_brush_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/paint/gimpmypaintoptions.cpp:174	CONTINUATION_OF_SIGNAL	app/paint/gimpmypaintoptions.cpp:172	gimp_mypaint_options_brush_changed	Same registration as the initiating signal line	DONE
+app/paint/gimpmypaintoptions.cpp:175	SIGNAL_CONNECTION	app/paint/gimpmypaintoptions.cpp:175	gimp_mypaint_options_texture_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/paint/gimpmypaintoptions.cpp:177	CONTINUATION_OF_SIGNAL	app/paint/gimpmypaintoptions.cpp:175	gimp_mypaint_options_texture_changed	Same registration as the initiating signal line	DONE
+app/paint/gimpmypaintoptions.cpp:180	SIGNAL_CONNECTION	app/paint/gimpmypaintoptions.cpp:180	gimp_mypaint_options_prop_brushmark_updated	Check handler lifetime, disconnect and callback signature	DONE
+app/paint/gimpmypaintoptions.cpp:181	CONTINUATION_OF_SIGNAL	app/paint/gimpmypaintoptions.cpp:180	gimp_mypaint_options_prop_brushmark_updated	Same registration as the initiating signal line	DONE
+app/paint/gimpmypaintoptions.cpp:185	SIGNAL_CONNECTION	app/paint/gimpmypaintoptions.cpp:185	gimp_mypaint_options_prop_brushmark_updated	Check handler lifetime, disconnect and callback signature	DONE
+app/paint/gimpmypaintoptions.cpp:186	CONTINUATION_OF_SIGNAL	app/paint/gimpmypaintoptions.cpp:185	gimp_mypaint_options_prop_brushmark_updated	Same registration as the initiating signal line	DONE
+app/paint/gimpmypaintoptions.cpp:190	SIGNAL_CONNECTION	app/paint/gimpmypaintoptions.cpp:190	gimp_mypaint_options_prop_brushmark_updated	Check handler lifetime, disconnect and callback signature	DONE
+app/paint/gimpmypaintoptions.cpp:191	CONTINUATION_OF_SIGNAL	app/paint/gimpmypaintoptions.cpp:190	gimp_mypaint_options_prop_brushmark_updated	Same registration as the initiating signal line	DONE
+app/paint/gimpmypaintoptions.cpp:195	SIGNAL_CONNECTION	app/paint/gimpmypaintoptions.cpp:195	gimp_mypaint_options_prop_texture_updated	Check handler lifetime, disconnect and callback signature	DONE
+app/paint/gimpmypaintoptions.cpp:196	CONTINUATION_OF_SIGNAL	app/paint/gimpmypaintoptions.cpp:195	gimp_mypaint_options_prop_texture_updated	Same registration as the initiating signal line	DONE
+app/paint/gimpmypaintoptions.cpp:200	SIGNAL_CONNECTION	app/paint/gimpmypaintoptions.cpp:200	gimp_mypaint_options_prop_texture_updated	Check handler lifetime, disconnect and callback signature	DONE
+app/paint/gimpmypaintoptions.cpp:201	CONTINUATION_OF_SIGNAL	app/paint/gimpmypaintoptions.cpp:200	gimp_mypaint_options_prop_texture_updated	Same registration as the initiating signal line	DONE
+app/paint/gimpmypaintoptions.cpp:205	SIGNAL_CONNECTION	app/paint/gimpmypaintoptions.cpp:205	gimp_mypaint_options_prop_texture_updated	Check handler lifetime, disconnect and callback signature	DONE
+app/paint/gimpmypaintoptions.cpp:206	CONTINUATION_OF_SIGNAL	app/paint/gimpmypaintoptions.cpp:205	gimp_mypaint_options_prop_texture_updated	Same registration as the initiating signal line	DONE
+app/presets/preset-factory-gui.cpp:143	ACTION_CALLBACK	app/presets/preset-factory-gui.cpp:140	dialogs_create_dockable_cmd_callback	Check callback lifetime and C ABI during port	DONE
+app/tools/gimpmypaintbrusheditor.cpp:141	SIGNAL_CONNECTION	app/tools/gimpmypaintbrusheditor.cpp:141	CurveViewActions::selected	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrusheditor.cpp:142	SIGNAL_CONNECTION	app/tools/gimpmypaintbrusheditor.cpp:142	CurveViewActions::toggled	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrusheditor.cpp:144	SIGNAL_CONNECTION	app/tools/gimpmypaintbrusheditor.cpp:144	CurveViewActions::notify_options	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrusheditor.cpp:145	SIGNAL_CONNECTION	app/tools/gimpmypaintbrusheditor.cpp:145	CurveViewActions::value_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrusheditor.cpp:146	SIGNAL_CONNECTION	app/tools/gimpmypaintbrusheditor.cpp:146	CurveViewActions::value_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrusheditor.cpp:147	SIGNAL_CONNECTION	app/tools/gimpmypaintbrusheditor.cpp:147	CurveViewActions::value_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrusheditor.cpp:148	SIGNAL_CONNECTION	app/tools/gimpmypaintbrusheditor.cpp:148	CurveViewActions::value_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrusheditor.cpp:272	SIGNAL_CONNECTION	app/tools/gimpmypaintbrusheditor.cpp:272	CurveViewActions::notify_curve	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:292	SIGNAL_CONNECTION	app/tools/gimpmypaintbrushoptions-gui.cpp:292	MypaintPopupPrivate::history_name_edited	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:295	SIGNAL_CONNECTION	app/tools/gimpmypaintbrushoptions-gui.cpp:295	MypaintPopupPrivate::history_cursor_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:306	SIGNAL_CONNECTION	app/tools/gimpmypaintbrushoptions-gui.cpp:306	MypaintPopupPrivate::brush_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:318	SIGNAL_CONNECTION	app/tools/gimpmypaintbrushoptions-gui.cpp:318	MypaintPopupPrivate::destroy	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintoptions-gui.cpp:296	SIGNAL_CONNECTION	app/tools/gimpmypaintoptions-gui.cpp:296	MypaintDetailOptionsPopupPrivate::brush_name_edited	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintoptions-gui.cpp:304	SIGNAL_CONNECTION	app/tools/gimpmypaintoptions-gui.cpp:304	MypaintDetailOptionsPopupPrivate::brush_save_clicked	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintoptions-gui.cpp:312	SIGNAL_CONNECTION	app/tools/gimpmypaintoptions-gui.cpp:312	MypaintDetailOptionsPopupPrivate::brush_delete_clicked	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintoptions-gui.cpp:342	SIGNAL_CONNECTION	app/tools/gimpmypaintoptions-gui.cpp:342	MypaintDetailOptionsPopupPrivate::brush_changed	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintoptions-gui.cpp:351	SIGNAL_CONNECTION	app/tools/gimpmypaintoptions-gui.cpp:351	MypaintDetailOptionsPopupPrivate::destroy	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimpmypaintoptions-gui.cpp:457	SIGNAL_CONNECTION	app/tools/gimpmypaintoptions-gui.cpp:457	MypaintOptionsGUIPrivate::reset_size	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimptooloptions-gui-cxx.cpp:52	GENERIC_HELPER_FORWARD	app/tools/gimptooloptions-gui-cxx.cpp:52	-	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimptooloptions-gui-cxx.hpp:46	GENERIC_HELPER_FORWARD	app/tools/gimptooloptions-gui-cxx.hpp:46	-	Check handler lifetime, disconnect and callback signature	DONE
+app/tools/gimptooloptions-gui-cxx.hpp:103	SIGNAL_CONNECTION	app/tools/gimptooloptions-gui-cxx.hpp:103	PageRemindAction::emit	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/gimpeditor-cxx.cpp:132	PARAMETER_CALLBACK	app/widgets/gimpeditor-cxx.cpp:132	-	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/gimpeditor-cxx.cpp:136	PARAMETER_CALLBACK	app/widgets/gimpeditor-cxx.cpp:136	-	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/gimpeditor-cxx.cpp:260	SIGNAL_CONNECTION	app/widgets/gimpeditor-cxx.cpp:260	gimp_editor_button_extended_clicked	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/gimpeditor-cxx.cpp:261	CONTINUATION_OF_SIGNAL	app/widgets/gimpeditor-cxx.cpp:260	gimp_editor_button_extended_clicked	Same registration as the initiating signal line	DONE
+app/widgets/gimpmypaintbrusheditor.cpp:240	SIGNAL_CONNECTION	app/widgets/gimpmypaintbrusheditor.cpp:240	gimp_mypaint_brush_editor_update_mypaint_brush	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/gimpmypaintbrusheditor.cpp:241	CONTINUATION_OF_SIGNAL	app/widgets/gimpmypaintbrusheditor.cpp:240	gimp_mypaint_brush_editor_update_mypaint_brush	Same registration as the initiating signal line	DONE
+app/widgets/popupper.cpp:184	SIGNAL_CONNECTION	app/widgets/popupper.cpp:184	Popover::on_grab_notify	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/popupper.cpp:186	SIGNAL_CONNECTION	app/widgets/popupper.cpp:186	Popover::on_grab_broken_event	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/popupper.cpp:501	SIGNAL_CONNECTION	app/widgets/popupper.cpp:501	PopoverDecorator::on_popover_closed	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/popupper.cpp:503	SIGNAL_CONNECTION	app/widgets/popupper.cpp:503	PopoverDecorator::on_popover_closed	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/popupper.cpp:527	SIGNAL_CONNECTION	app/widgets/popupper.cpp:527	PopoverDecorator::scroll_event	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/popupper.cpp:529	SIGNAL_CONNECTION	app/widgets/popupper.cpp:529	PopoverDecorator::button_press	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/popupper.cpp:532	SIGNAL_CONNECTION	app/widgets/popupper.cpp:532	PopoverDecorator::clicked	Check handler lifetime, disconnect and callback signature	DONE
+app/widgets/popupper.cpp:535	SIGNAL_CONNECTION	app/widgets/popupper.cpp:535	PopoverDecorator::parent_clicked	Check handler lifetime, disconnect and callback signature	DONE
