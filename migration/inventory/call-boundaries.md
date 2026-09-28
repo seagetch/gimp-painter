@@ -66,6 +66,23 @@ information and call `gimp_tools_register` directly. Their GUI function
 pointers are also stored with the tool information. The GIMP 3 port must
 preserve the actual registration effects and the deferred factory lifetime.
 
+`xcf-c-entry-review.tsv` traces all nine first-pass direct calls from the old
+XCF C reader and writer into C++ layer entries (six load, three save). Run
+`python3 -B tools/audit_xcf_c_entries.py` to regenerate it. The reader first
+creates a filter/clone with the old layer's size, mode and opacity, then
+replaces the layer. The filter setter consumes values before the caller
+unrefs its `GArray`. Clone creation starts with a null source; the saved name
+is duplicated for later resolution. The post-load walk calls
+`gimp_clone_layer_get_source` and discards its return because that getter
+resolves the saved name as a side effect. Removing this call would break old
+CloneLayer references. The writer obtains a borrowed filter procedure name,
+a newly allocated argument array, and a borrowed clone source. The legacy
+argument getter shallow-appends `GValue` structures from a copied
+`GValueArray`; neither copy is freed along this save path. The writer also
+dereferences a potentially null clone source without a guard. The port must
+make argument copying and freeing explicit and define how an unresolved
+clone source is saved without losing the reference name.
+
 `c-reference-review.tsv` classifies each of the 130 first-pass C/header
 references against its legacy source line. Run
 `python3 tools/audit_c_references.py` to regenerate it. The 80 header sites

@@ -1,0 +1,10 @@
+c_call_site	symbol	cpp_entry	observed_effect	ownership_and_port_contract	status
+app/xcf/xcf-load.c:1019	gimp_filter_layer_new	app/core/gimpfilterlayer.cpp:1175	REPLACE_LAYER	Build a distinct filter layer, copy old layer properties, then replace *layer	DONE
+app/xcf/xcf-load.c:1020	gimp_filter_layer_mark_as_loaded	app/core/gimpfilterlayer.cpp:1206	SET_LOADED_FLAG	Set FilterLayer::loaded before replaying the saved procedure	DONE
+app/xcf/xcf-load.c:1048	gimp_filter_layer_set_procedure	app/core/gimpfilterlayer.cpp:1198	COPY_VALUES_BEFORE_ARRAY_RELEASE	Caller unrefs proc_args; setter transforms values into runner arguments without retaining GArray	DONE
+app/xcf/xcf-load.c:1082	gimp_clone_layer_new	app/core/gimpclonelayer.cpp:669	REPLACE_LAYER_WITH_NULL_SOURCE	Construct clone without a source; copy old layer properties and replace *layer	DONE
+app/xcf/xcf-load.c:1106	gimp_clone_layer_set_source_by_name	app/core/gimpclonelayer.cpp:696	DEFER_SOURCE_LOOKUP	Setter duplicates saved name; source resolution is deferred	DONE
+app/xcf/xcf-load.c:2528	gimp_clone_layer_get_source	app/core/gimpclonelayer.cpp:688	IGNORE_RETURN_FOR_LAZY_RESOLUTION	Post-load walk calls getter for its lazy name resolution side effect	DONE
+app/xcf/xcf-save.c:660	gimp_filter_layer_get_procedure	app/core/gimpfilterlayer.cpp:1186	BORROWED_PROCEDURE_NAME	Returned string comes from runner or empty literal; serialize before runner changes	DONE
+app/xcf/xcf-save.c:661	gimp_filter_layer_get_procedure_args	app/core/gimpfilterlayer.cpp:1192	ALLOCATED_ARGUMENT_ARRAY	Getter shallow-appends GValues from copied GValueArray; legacy writer frees neither allocation	DONE
+app/xcf/xcf-save.c:666	gimp_clone_layer_get_source	app/core/gimpclonelayer.cpp:688	BORROWED_NULLABLE_SOURCE	Getter resolves name and returns source pointer; writer dereferences it without null guard	DONE
