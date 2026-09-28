@@ -121,7 +121,7 @@
 | 01.002 | [x] | 変更 hunk 台帳を作る | 01.001 | 各 hunk に機能・基盤・生成物・資産の分類欄を持たせる。子チェック 2,489 件は `migration/inventory/changed-hunks.tsv` に列挙（01.013 の機能割当は別作業） |
 | 01.003 | [x] | app 外の差分を分類する | 01.002 | libgimp、plug-ins、tools、po、data、build 等の各変更に処置を付与。子チェック 474 件は `migration/inventory/external-changes.tsv` に列挙 |
 | 01.004 | [x] | C++ 型と登録箇所を列挙する | 01.003 | NewGClass、DerivedFrom、UseCStructs、Interface、GType の対応を記録。子チェック 17 件は `migration/inventory/cpp-types.tsv` に列挙 |
-| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 683 件、C/ヘッダー参照 130 件（関数ポインター登録 6 件と 有効な C→C++ 直接呼出し 33 件は入口・結果の扱いを追跡、直接呼出し構文 41 件は有効 35・無効 6 に分離）、C 入口構文候補 28 件、C++ 定義候補 149 件、マクロ生成 GType 入口 6 件、extern C scope 69 件、関数ポインター構文 34 件、class 代入 63 件、Binder 候補 92 件、callback 登録候補 94 件、signal wrapper 接続 47 件、delegator 候補 107 件、別走査の property accessor 44 出現を分類。署名対照 66 組、うち未保護ヘッダー 28 組と C++ 入口の引数・戻り値各 64 組、共通 bridge 9 経路を確認済み。残りを精査中 |
+| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 683 件、C/ヘッダー参照 130 件（関数ポインター登録 6 件と 有効な C→C++ 直接呼出し 33 件は入口・結果の扱いを追跡、直接呼出し構文 41 件は有効 35・無効 6 に分離）、C 入口構文候補 28 件、C++ 定義候補 149 件、マクロ生成 GType 入口 6 件、extern C scope 69 件、関数ポインター構文 34 件、class 代入 63 件、Binder 候補 92 件、callback 登録候補 94 件、遅延 source 2 経路、signal wrapper 接続 47 件、delegator 候補 107 件、別走査の property accessor 44 出現を分類。署名対照 66 組、うち未保護ヘッダー 28 組と C++ 入口の引数・戻り値各 64 組、共通 bridge 9 経路を確認済み。残りを精査中 |
 | 01.005/bridge-core | [x] | NewGClass と Delegator の共通境界を確定する | 01.004 | C ABI callback・登録・破棄・vfunc の 9 経路を旧版の出典行と移植時の確認事項に対応付ける（`migration/inventory/bridge-boundary-findings.tsv`） |
 | 01.005/c-linkage | [x] | C 入口候補の未保護ヘッダーを分類する | 01.004 | 28 組のうちヘッダーを extern C 内で読み込む 25 組、定義を extern C 内に置く 1 組、別シグネチャの C++ overload 2 組を旧版の行番号付きで記録（`migration/inventory/c-linkage-review.tsv`） |
 | 01.005/c-references | [x] | C とヘッダーの参照候補を用途別に分類する | 01.004 | 130 件を旧版の行と照合し、C の直接呼び出し構文 41、関数ポインター登録 6、C 定義 1、コメント 2、ヘッダーの宣言 65、マクロ 11、テンプレート 3、コメント 1 に分類（`migration/inventory/c-reference-review.tsv`）。直接呼出しの有効性は別子で照合 |
@@ -142,6 +142,7 @@
 | 01.005/xcf-c-entries | [x] | 旧 XCF の C→C++ 境界を追う | 01.005/c-references | XCF reader の直接呼出し 6 件と writer の 3 件について返却値・参照・副作用を照合し、CloneLayer の名前遅延解決と FilterLayer 引数のコピー・解放要件を記録（`migration/inventory/xcf-c-entry-review.tsv`）。旧 writer の引数コピー未解放と null source 参照は移植時に修正 |
 | 01.005/c-direct-call-activity | [x] | C の直接呼出し候補を有効・無効に分類する | 01.005/c-references | 41 構文候補のうち C++ 入口への有効呼出し 33、別 C 実装への有効呼出し 2、`#if 0` / `#if 1` の反対分岐にある無効呼出し 6 を分離し、ガード行と呼出し式を記録（`migration/inventory/c-direct-call-activity.tsv`） |
 | 01.005/non-xcf-c-calls | [x] | XCF 以外の有効な C→C++ 呼出しを追う | 01.005/c-direct-call-activity | 残る 24 件・14 symbol の入口・戻り値・所有者を記録（`migration/inventory/non-xcf-c-call-review.tsv`）。MyPaint editor の矛盾した型検査と NULL options、Guide getter の結果未確認を移植時の修正点として特定 |
+| 01.005/deferred-sources | [x] | 遅延 callback の解除経路を追う | 01.005/callback-registrations, 01.005/delegator-sites | FilterLayer の ID 未保存 timeout と、ID を保持し破棄時に解除する layer preview idle の所有者・捕捉を照合（`migration/inventory/deferred-source-review.tsv`）。viewable の寿命は移植時の検証対象 |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
@@ -539,6 +540,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 17.001 | [ ] | 状態遷移表を作る | 15.014, 16.023 | dirty・入力準備・依存待ち・予約・実行・反映・失敗を列挙 |
+| 17.001/filter-end-timeout-contract | [ ] | FilterLayer の遅延終了通知の所有権を定義する | 17.001, 01.005/deferred-sources | source ID、所有者寿命、close とキャンセルの順序、通知の一回性を状態遷移表へ明記 |
 | 17.002 | [ ] | 更新イベントの入力を実装する | 17.001 | 下層画素・設定・階層変更を分類 |
 | 17.003 | [ ] | 上層変更の除外を実装する | 17.002 | 無関係な変更で再評価しない |
 | 17.004 | [ ] | 可視下層の依存検出を実装する | 17.003 | 評価前に未確定依存を識別 |
@@ -564,6 +566,7 @@
 | 17.024 | [ ] | 終了判定を実装する | 17.023 | 最新世代反映済・dirty無・依存待ち無・実行無を判定 |
 | 17.025 | [ ] | 保存との同期点を接続する | 17.024, 12.016 | UI を止めず一貫した保存 snapshot を渡す |
 | 17.026 | [ ] | close に scheduler を接続する | 17.025 | 世代失効・source 解除・cancel を非待機で実施 |
+| 17.026/filter-end-timeout-cancel | [ ] | FilterLayer の遅延通知 source を close 時に解除する | 17.025, 17.001/filter-end-timeout-contract | timeout の ID を管理し、close 後に raw `this` へ callback しない。終了通知の重複を防ぐ |
 | 17.027 | [ ] | 実行 trace を実装する | 17.026 | 優先順位・checkpoint・終了理由を ID 付きで記録 |
 | 17.028 | [ ] | UI callback の同期 flush を監査する | 17.027 | 旧同期 flush を無制限の main-thread 処理として残さない |
 | 17.029 | [ ] | 評価経路の禁止事項を検査する | 17.028 | 独自 FilterLayer の制御が既存 GEGL 非破壊効果へ委譲されていない |
@@ -582,6 +585,7 @@
 | 18.006 | [ ] | 実行中の並替えを試験する | 18.005 | 依存を再評価し待機を解除 |
 | 18.007 | [ ] | 非表示切替を試験する | 18.006 | 不要待ちと旧仕様との差がない |
 | 18.008 | [ ] | 実行中の削除を試験する | 18.007 | 完了 callback が削除済み型を触らない |
+| 18.008/filter-end-timeout-teardown | [ ] | FilterLayer の timeout 待機中に削除する試験を実行する | 18.007, 17.026/filter-end-timeout-cancel | timeout 予約直後に layer と画像を破棄して source が解除され、遅延 callback で解放済み所有者を触らない |
 | 18.009 | [ ] | 画像終了を試験する | 18.008 | 終了処理で join せず資源を回収 |
 | 18.010 | [ ] | Undo/Redo 中の評価を試験する | 18.009 | 復元した定義と画素へ収束 |
 | 18.011 | [ ] | 実行中の保存を試験する | 18.010 | 再読込で定義と cache 世代が整合 |
@@ -825,6 +829,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 29.001 | [ ] | overlay の配置 model を移植する | 08.020, 14.020, 15.014, 24.017 | 画像表示と独立して位置を保持 |
+| 29.001/preview-idle-lifetime-contract | [ ] | layer preview idle の捕捉寿命を定義する | 29.001, 01.005/deferred-sources | preview と viewable の所有・破棄順、再予約時の旧 source 解除を明記 |
 | 29.002 | [ ] | layer tile の表示を移植する | 29.001 | 名前・preview・選択状態が一致 |
 | 29.003 | [ ] | layer tile の可視切替を実装する | 29.002 | 状態と projection が同期 |
 | 29.004 | [ ] | layer tile の順序操作を実装する | 29.003 | group と独自参照の更新を通知 |
@@ -843,7 +848,9 @@
 | 29.017 | [ ] | HiDPI の座標を接続する | 29.016 | 表示倍率と入力領域が一致 |
 | 29.018 | [ ] | keyboard 操作を接続する | 29.017 | focus と shortcut が描画を妨げない |
 | 29.019 | [ ] | widget destroy を close へ接続する | 29.018 | behavior の遅延通知が残らない |
+| 29.019/preview-idle-owner | [ ] | preview idle の viewable 寿命を保証する | 29.018, 29.001/preview-idle-lifetime-contract | viewable を保持または弱参照で検査し、破棄済み preview・viewable へのアクセスを抑止 |
 | 29.020 | [ ] | UI の操作試験を実行する | 29.019 | ペン・マウス・複数画像・popup の状態復帰を確認 |
+| 29.020/preview-idle-teardown | [ ] | preview の再予約・破棄試験を実行する | 29.019/preview-idle-owner, 29.019 | idle 待機中に viewable と widget を破棄して source 解除と描画停止を確認 |
 
 ### 30 actions・設定・資源配布の統合
 

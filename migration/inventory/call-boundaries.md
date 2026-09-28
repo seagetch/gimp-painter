@@ -229,6 +229,15 @@ without storing a source ID at that call site. The port must cancel pending
 sources before owner destruction or otherwise guarantee the callback's
 lifetime. The table identifies registrations, not all disconnection paths.
 
+`deferred-source-review.tsv` contrasts two delayed C callback paths. Run
+`python3 -B tools/audit_deferred_sources.py` to regenerate it. FilterLayer
+passes raw `this` into a 300 ms timeout and does not retain the returned
+source ID or remove the source in that file. Its owner may be destroyed before
+the callback. The layer preview uses an `Idle` wrapper that stores its GLib
+source ID and removes it when its RAII owner is destroyed or replaced.
+However, the pending lambda also captures a raw `GimpViewable*`; its lifetime
+relative to the idle callback still needs a guard or retained reference.
+
 The first pass originally counted only `.connect()` calls. The scanner now
 also includes 25 `.connect_noret()` sites. `signal-wrapper-review.tsv`
 classifies all 47 wrapper connections, with receiver, signal, callback and

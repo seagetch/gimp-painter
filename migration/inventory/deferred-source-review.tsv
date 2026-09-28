@@ -1,0 +1,3 @@
+registration	source_kind	callback	captured_owner	cancellation	observed_risk	port_action	status
+app/core/gimpfilterlayer.cpp:614	300ms timeout	notify_filter_end_callback	raw FilterLayer this	ID ignored at call	No g_source_remove in FilterLayer source; owner may be destroyed before callback	Cancel on teardown or retain a safe owner until one-shot callback completes	DONE
+app/widgets/gimplayertileview.cpp:1539	default-priority idle	EventSource::callback	lambda captures this and viewable	Idle ID held in LayerPreview::update_idle; destructor calls g_source_remove	Owner teardown cancels registered source, but captured viewable lifetime is unproven	Tie viewable lifetime to idle source or guard invalidation before dereference	DONE
