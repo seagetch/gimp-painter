@@ -1,8 +1,8 @@
 # gimp-painter → GIMP 3.0 移植方針
 
-更新日：2026-09-27
+更新日：2026-09-29
 
-本書は現行の移植方針をまとめた設計文書である。調査はソースの静的解析までであり、移植実装、ビルド、旧作品の読込み試験、筆跡比較、応答時間測定は未実施。必須要件と、確認済みの旧実装、移植先への設計案を区別する。
+本書は現行の移植方針をまとめた設計文書である。独自機能の調査はソースの静的解析までであり、移植実装、旧作品の読込み試験、筆跡比較、応答時間測定は未実施。GIMP 3 基準版のビルドと標準描画の確認は完了している（`migration/baseline/`）。必須要件と、確認済みの旧実装、移植先への設計案を区別する。
 
 ## 1. 最優先の要件
 
@@ -195,6 +195,23 @@ FilterLayer は、処理定義を保存するレイヤーであると同時に�
 塗りつぶしブラシは開始時の参照画像と開始色を使い、ブラシ範囲を領域探索の境界として扱う。範囲外を回り込んでつながる領域では、全体を探索した後でマスクを掛ける処理とは異なる。選択境界についても同じ比較を行う。
 
 キャンバス UI は、透明化と入力透過を区別する。ペンを離した時、ポップアップを閉じた時、画像を切り替えた時の状態復帰まで含める。
+
+### 7.1 GEGL の描画経路と塗りつぶしブラシ
+
+GIMP 3 の表示・合成は GEGL ノードグラフ、画素の格納と paint core は `GeglBuffer` を使う。独自機能を旧 `PixelRegion` や旧投影の更新処理のまま挿入しない。GEGL Operator を自作するか、既存の operator と buffer を接続するかは、評価の入口ごとに決める。「GEGL 非破壊効果への置換禁止」は独自 FilterLayer のデータモデルとスケジューラに対する制約であり、GIMP 3 の描画グラフを使わないという意味ではない。
+
+| 機能 | 計算と状態の所有 | GIMP 3 への接続と確認点 |
+|---|---|---|
+| 合成モード | 旧画素式、alpha と合成空間の意味を保持 | `GimpLayer` の mode node と現行 operator を数値照合し、結果が異なる式には独自 GEGL 合成 operator を接続。opacity、mask、group の順序も試験 |
+| CloneLayer | 独自参照、座標変換、更新通知を保持 | 参照元の確定画素を drawable の source node に供給し、変更範囲と投影キャッシュを無効化。循環とグループ参照も確認 |
+| FilterLayer | 独自型と runner、依存先優先のスケジューラを保持 | 旧世代・処理途中の画素を公開せず、確定結果の buffer をレイヤーの source node へ供給。再評価は operator の `process` callback に起動させない |
+| MyPaint・紙目・通常ブラシ・Smudge | ストローク時の状態、採色元、押印を paint core / Surface で管理 | 現行 paint buffer、マスク、Undo へ接続し dirty 領域を通知。dab ごとの独自 GEGL operator を前提にしない |
+| 塗りつぶしブラシ | stroke 開始時の投影 snapshot と開始色、dab ごとの有界探索を管理 | 変形済みブラシ mask を探索の通過条件と coverage に使用し、結果 mask を現行 paint core の `GeglBuffer` 合成へ渡す。ブラシ範囲を後から切り抜く実装は採用しない |
+| 選択境界を使う塗りつぶし | 探索中に選択外へ進まない境界条件を管理 | 標準 bucket の全域探索→選択範囲で裁断する経路と比較し、有界探索への入力 mask を別途用意する |
+
+移植先の `gimp_pickable_contiguous_region_by_seed()` は pickable の現在画素を flush し、探索元、開始色、探索境界を外から指定できない。標準 `gimp_drawable_get_bucket_fill_buffer()` は探索後に選択範囲を適用する。このため旧ブラシの `gimp_image_contiguous_region_by_seed_full()` をそのまま呼び替えることはできない。旧ブラシでは固定開始色とブラシ境界、mask による探索制限、1 px の領域拡大、constant mode の paint paste が一つの dab に含まれる。旧版で有効な比較式は共有候補だが、範囲・座標・stroke 単位の Undo とともに実画像で比較する（`migration/inventory/fill-brush-rendering.md`）。
+
+描画途中の preview と確定結果を分離し、paint core が Undo、合成、表示更新を管理する。GEGL グラフは遅延評価・領域別評価されるため、ブラシの開始スナップショットや flood fill の副作用を operator の `process` に置かない。取り込み点、ROI、フォーマット、色空間、キャッシュ無効化を個別の WBS 子タスクとして検証する。
 
 ## 8. 実装の配置
 

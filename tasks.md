@@ -143,6 +143,7 @@
 | 01.005/c-direct-call-activity | [x] | C の直接呼出し候補を有効・無効に分類する | 01.005/c-references | 41 構文候補のうち C++ 入口への有効呼出し 33、別 C 実装への有効呼出し 2、`#if 0` / `#if 1` の反対分岐にある無効呼出し 6 を分離し、ガード行と呼出し式を記録（`migration/inventory/c-direct-call-activity.tsv`） |
 | 01.005/non-xcf-c-calls | [x] | XCF 以外の有効な C→C++ 呼出しを追う | 01.005/c-direct-call-activity | 残る 24 件・14 symbol の入口・戻り値・所有者を記録（`migration/inventory/non-xcf-c-call-review.tsv`）。MyPaint editor の矛盾した型検査と NULL options、Guide getter の結果未確認を移植時の修正点として特定 |
 | 01.005/deferred-sources | [x] | 遅延 callback の解除経路を追う | 01.005/callback-registrations, 01.005/delegator-sites | FilterLayer の ID 未保存 timeout と、ID を保持し破棄時に解除する layer preview idle の所有者・捕捉を照合（`migration/inventory/deferred-source-review.tsv`）。viewable の寿命は移植時の検証対象 |
+| 01.005/fill-brush-boundary | [x] | 塗りつぶしブラシの旧 paint core 入口と現行 GEGL 境界を照合する | 01.004 | 旧 GType・paint vfunc・projection snapshot・有界探索・paint paste を現行 API と対照（`migration/inventory/fill-brush-rendering.md`）。移植と実測は後続子タスク |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
@@ -154,6 +155,7 @@
 | 01.014 | [ ] | 不要候補を分類する | 01.013 | 空ファイル・バックアップ・生成物・実機能を混同せず理由を記録 |
 | 01.015 | [ ] | C++ 以外の補助スクリプトを照合する | 01.014 | Python・Scheme・生成ツール等の旧差分に移植先または廃止根拠がある |
 | 01.016 | [ ] | 標準 paint の独自差分を照合する | 01.015 | paintbrush・dynamics・bucket fill・context の各 hunk を機能タスクへ割当 |
+| 01.016/bucket-selection-source | [ ] | 旧標準 bucket fill の選択境界差分を現行全域探索と照合する | 01.015, 01.005/fill-brush-boundary | 選択外を通る回込み、透過と開始位置を含め旧変更 hunk と移植先の接続先を一件ずつ記録 |
 | 01.017 | [ ] | 全差分の粒度を検査する | 01.016 | 一行の割当が複数の未実装変更を隠す場合は個別子タスクへ展開 |
 
 ### 02 旧版の再現環境と比較データ
@@ -347,6 +349,7 @@
 | 09.011 | [ ] | 現行 Undo への buffer 差分記録を実装する | 09.010 | 一操作単位で復元できる |
 | 09.012 | [ ] | 描画の確定と破棄を実装する | 09.011 | cancel と commit で正しい画素が残る |
 | 09.013 | [ ] | projection 更新通知を接続する | 09.012 | 変更領域が表示へ伝わる |
+| 09.013/gegl-graph-invalidation | [ ] | paint buffer 更新と GEGL 投影キャッシュの無効化を接続する | 09.013 | 変更 ROI と座標を source node・投影へ通知し画面更新と再評価範囲が一致 |
 | 09.014 | [ ] | 色変換の配置を実装する | 09.013 | 採色と合成で意図しない二重変換がない |
 | 09.015 | [ ] | 高精度・色空間変換の扱いを実装する | 09.014 | unsupported 時も情報を黙って欠落させない |
 | 09.016 | [ ] | buffer 基盤の境界試験を作る | 09.015 | 小画像・負座標・端・alpha・stride を検証 |
@@ -441,6 +444,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 13.001 | [ ] | 旧7モードの式を抽出する | 09.017, 10.018 | alpha・premultiplication・丸め・clamp の仕様を記録 |
+| 13.001/gegl-operation-route | [ ] | 独自合成ごとに現行 GEGL operator との数値・ノード接続を決める | 13.001 | 7 モードの式、Babl 形式、mask、opacity、group 順序と operator の採用・追加を一件ずつ記録 |
 | 13.002 | [ ] | Erase 演算を移植する | 13.001 | 旧代表画素と一致 |
 | 13.003 | [ ] | Replace 演算を移植する | 13.002 | 旧代表画素と一致 |
 | 13.004 | [ ] | Anti-Erase 演算を移植する | 13.003 | 旧代表画素と一致 |
@@ -464,6 +468,7 @@
 | 14.001 | [ ] | source の所有と監視を実装する | 08.020, 09.017, 10.018 | 旧仕様に沿う参照が close で解除される |
 | 14.002 | [ ] | 名前による旧 source 解決を実装する | 14.001 | 探索順と同名の解決が fixture と一致 |
 | 14.003 | [ ] | source レイヤーの画素追従を実装する | 14.002 | 編集領域が clone に更新される |
+| 14.003/gegl-source-node | [ ] | CloneLayer の参照画素を GEGL source node に接続する | 14.003, 09.013/gegl-graph-invalidation | source の変更 ROI、offset、参照解除が projection の再評価へ届く |
 | 14.004 | [ ] | source グループの追従を実装する | 14.003 | 子の変更と合成が更新される |
 | 14.005 | [ ] | source の座標・サイズ追従を実装する | 14.004 | 移動と resize の見え方が一致 |
 | 14.006 | [ ] | clone 自身の座標処理を実装する | 14.005 | source 座標との合成が一致 |
@@ -494,6 +499,7 @@
 | 15.004 | [ ] | 処理対象の下層範囲を実装する | 15.003 | 位置と階層に応じ旧範囲を選ぶ |
 | 15.005 | [ ] | 位置・サイズ変更を処理する | 15.004 | 入力と出力 buffer の座標が一致 |
 | 15.006 | [ ] | マスク・opacity・mode を接続する | 15.005 | 独自型でも通常属性が適用される |
+| 15.006/gegl-result-source | [ ] | FilterLayer の確定結果を GEGL source node へ供給する | 15.006, 09.013/gegl-graph-invalidation | 未完成・旧世代の結果を見せず source 変更が投影を更新し operator 評価から runner を起動しない |
 | 15.007 | [ ] | loaded 状態を実装する | 15.006 | 保存済み cache の初回表示を区別 |
 | 15.008 | [ ] | 定義変更の世代を実装する | 15.007 | procedure/引数変更で結果を失効 |
 | 15.009 | [ ] | 依存構造の世代を実装する | 15.008 | 並替え・移動で結果を失効 |
@@ -785,18 +791,24 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 27.001 | [ ] | stroke 開始時の参照画像を固定する | 08.020, 09.017, 23.015 | 途中の塗りで探索元が変わらない |
+| 27.001/snapshot-contract | [ ] | 投影 snapshot の所有と開始色の座標契約を確定する | 27.001, 01.005/fill-brush-boundary | 書込み後も入力不変、旧投影と同じ合成段階、画像・drawable 原点と format が一致 |
 | 27.002 | [ ] | 開始色の取得を実装する | 27.001 | 旧座標・alpha の基準が一致 |
-| 27.003 | [ ] | 色許容差の判定を移植する | 27.002 | 色差と透明領域の扱いが一致 |
+| 27.003 | [ ] | 固定閾値と色許容差の判定を移植する | 27.002 | 旧ブラシの固定閾値 30、色差と透明領域の扱いが一致 |
 | 27.004 | [ ] | ブラシ内の探索を実装する | 27.003 | 領域探索が brush 外へ出ない |
+| 27.004/gegl-bounded-search | [ ] | snapshot・固定開始色・矩形・ブラシ mask を受ける GEGL buffer 有界探索入口を実装する | 27.004 | 範囲外経由の回込みを許さず旧色判定・coverage・grow と一致 |
 | 27.005 | [ ] | 選択境界内の探索を実装する | 27.004 | 探索自体が選択外を経由しない |
+| 27.005/selection-barrier | [ ] | 選択 mask を探索中の通過条件に接続する | 27.005, 01.016/bucket-selection-source | 選択外経由の連結を除外し部分選択の coverage を旧結果と比較 |
 | 27.006 | [ ] | 連結規則を移植する | 27.005 | 隣接・斜め・境界条件が一致 |
 | 27.007 | [ ] | 塗りの coverage を接続する | 27.006 | mask と opacity を旧順序で適用 |
+| 27.007/paintcore-gegl-compose | [ ] | 探索 mask と paint buffer を現行 paint core の合成に接続する | 27.007, 09.013/gegl-graph-invalidation | ブラシ変形・塗り・erase・不透明度・constant mode の順と ROI が旧筆跡と一致 |
 | 27.008 | [ ] | 消去を接続する | 27.007 | 塗りモードとの差が一致 |
 | 27.009 | [ ] | stroke 中の brush 移動を実装する | 27.008 | 各範囲の探索と開始参照が整合 |
+| 27.009/stroke-lifecycle | [ ] | 描画中の snapshot と mask の寿命を paint vfunc の start・motion・finish に接続する | 27.009 | 終了と cancel で解放し複数 drawable・symmetry の扱いを明示して一筆の Undo を維持 |
 | 27.010 | [ ] | 大領域探索の実行量を制限する | 27.009 | 取消しと UI 入力へ戻れる |
 | 27.011 | [ ] | 塗りつぶしの Undo を接続する | 27.010 | 一操作で元画像へ復元 |
-| 27.012 | [ ] | tool options を移植する | 27.011 | 色許容差・モード等を編集・保存可能 |
+| 27.012 | [ ] | tool options を移植する | 27.011 | 旧 rate・eraser-mode・継承描画設定を編集・保存し、固定閾値を新規 UI 設定と混同しない。rate の実効性を旧版で測定 |
 | 27.013 | [ ] | 範囲外回込みの試験を作る | 27.012 | 全体探索後の mask 適用との差を検出 |
+| 27.013/gegl-render-regression | [ ] | 塗りつぶしブラシの探索・paint 合成・GEGL 表示の比較試験を作る | 27.013, 27.007/paintcore-gegl-compose | 旧筆跡の画素と画面を比較し offset・縮小・回転・grow・Undo と再描画を検証 |
 | 27.014 | [ ] | 選択外回込みの試験を作る | 27.013 | 探索境界の意味を検証 |
 | 27.015 | [ ] | 半透明と小レイヤーを試験する | 27.014 | offset・境界・alpha が旧版と一致 |
 
