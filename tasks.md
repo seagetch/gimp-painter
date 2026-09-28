@@ -153,6 +153,7 @@
 | 01.005/gimp3-tool-slots | [x] | 塗りつぶしブラシと操作ツールの vfunc を現行 slot と対照する | 01.005/gimp3-layer-slots | 旧 Binder 18 件の宣言を照合（`migration/inventory/gimp3-tool-vfunc-review.tsv`）。塗りつぶしブラシの paint 引数は GList と GimpSymmetry に変更。定規と placeholder の 17 件は C 宣言の署名が同じ |
 | 01.005/gimp3-core-binders | [x] | Undo・canvas・JSON 資源の Binder slot を現行 C ヘッダーと対照する | 01.005/gimp3-tool-slots | 旧 Binder 6 件を行単位で照合（`migration/inventory/gimp3-core-binder-review.tsv`）。canvas の shell 引数削除 2 件、JSON save の出力 stream 追加 1 件、署名一致 3 件。移植は各機能タスク |
 | 01.005/gimp3-external-binders | [x] | GTK/GLib と旧独自型の Binder 境界を照合する | 01.005/gimp3-core-binders | 残る 13 件を公開 GTK 2.24 / GTK 3.24、GLib 2.32 / 2.80 の固定ヘッダーと旧独自型宣言へ一対一に照合（`migration/inventory/gimp3-external-binder-review.tsv`）。署名一致 7、変更 3、移植先の型未作成 3。実装は各機能タスク |
+| 01.005/gimp3-brush-callbacks | [x] | 拡張 MyPaint ブラシ資源の class callback を現行 slot と対照する | 01.005/gimp3-external-binders | 旧定義と旧 slot の一致も確認した 15 件の照合表（`migration/inventory/gimp3-brush-callback-review.tsv`）。現行署名一致 9、変更 2、独自型再作成待ち 4。save/preview の差分を実装タスクに割当 |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
@@ -638,8 +639,10 @@
 | 19.009 | [ ] | 紙目参照を解決する | 19.008 | 旧参照から対象資源を選ぶ |
 | 19.010 | [ ] | 欠落資源の扱いを実装する | 19.009 | 参照文字列を失わず再指定可能 |
 | 19.011 | [ ] | writer の設定出力を実装する | 19.010 | 独自設定と入力カーブを全保存 |
+| 19.011/output-stream-save | [ ] | 拡張 myb writer を現行 GimpData.save の stream 契約へ移す | 19.011, 01.005/gimp3-brush-callbacks | 渡された GOutputStream に JSON を書き、出力失敗を呼出元へ返し、アイコン保存との整合と再読込みを確認 |
 | 19.012 | [ ] | writer のメタデータ出力を実装する | 19.011 | 未知情報と参照を保持 |
 | 19.013 | [ ] | data factory を接続する | 19.012 | 検索パス・読込み・更新を処理 |
+| 19.013/preview-contract | [ ] | 拡張ブラシのサイズ・preview を GIMP 3 契約へ移す | 19.013, 01.005/gimp3-brush-callbacks | get_size の成功時に幅・高さを必ず設定し、GimpTempBuf と GeglColor の preview を所有権込みで検証 |
 | 19.014 | [ ] | ブラシの複製・改名・削除を接続する | 19.013 | 資源所有と保存先が整合 |
 | 19.015 | [ ] | 全177件の往復試験を実行する | 19.014 | 設定の意味差分がゼロ |
 | 19.015/v1-curve-roundtrip | [ ] | 旧 myb v1 曲線の読込・保存・再読込を試験する | 19.014, 19.006/v1-curve-validation | 変換あり・なしと点列順序の fixture で欠落・停止がない |
