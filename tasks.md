@@ -150,6 +150,7 @@
 | 01.005/preset-action-factory-owner | [x] | preset action-group の間接 callback 保持者を追う | 01.005/missed-c-entries | 旧 factory の setup/update 関数ポインター保持・呼出し・解放と現行の group キャッシュを照合（`migration/inventory/preset-action-factory-callback.md`）。移植の実装は 28.014/preset-action-group |
 | 01.005/gimp3-vfunc-contract | [ ] | 旧 vfunc と現行 GIMP 3 slot の署名・寿命を照合する | 01.005/candidate-coverage | 40 class callback と 71 binding の実 slot・引数・戻り値・例外境界を対象ごとの子チェックに分けて記録 |
 | 01.005/gimp3-layer-slots | [x] | CloneLayer と FilterLayer の旧 vfunc を現行 slot と対照する | 01.005/indirect-callback-owners | 旧 Binder 34 箇所を C ヘッダーの実 slot 署名へ対応付け、削除された `project_region` / `is_editable` と新 GEGL source node、引数・戻り値の変化を記録（`migration/inventory/gimp3-layer-vfunc-review.tsv`）。実装は機能タスク |
+| 01.005/gimp3-tool-slots | [x] | 塗りつぶしブラシと操作ツールの vfunc を現行 slot と対照する | 01.005/gimp3-layer-slots | 旧 Binder 18 件の宣言を照合（`migration/inventory/gimp3-tool-vfunc-review.tsv`）。塗りつぶしブラシの paint 引数は GList と GimpSymmetry に変更。定規と placeholder の 17 件は C 宣言の署名が同じ |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
