@@ -1,0 +1,108 @@
+legacy_site	role	bound_owner_if_visible	cpp_target	lambda_capture_if_visible	port_check	status
+app/base/delegators.hpp:92	ADAPTER_FACTORY	-	-	-	Verify delegator release and callback invocation contract	DONE
+app/base/delegators.hpp:99	ADAPTER_FACTORY	-	-	-	Verify delegator release and callback invocation contract	DONE
+app/base/delegators.hpp:106	ADAPTER_FACTORY	-	-	-	Verify delegator release and callback invocation contract	DONE
+app/base/glib-cxx-utils.hpp:1044	GENERIC_FORWARD	-	generic callback parameter	-	Verify delegator release and callback invocation contract	DONE
+app/base/glib-cxx-utils.hpp:1065	GENERIC_FORWARD	-	generic callback parameter	-	Verify delegator release and callback invocation contract	DONE
+app/base/glib-cxx-utils.hpp:1109	GENERIC_FORWARD	-	generic callback parameter	-	Verify delegator release and callback invocation contract	DONE
+app/base/glib-cxx-utils.hpp:1115	GENERIC_FORWARD	-	generic callback parameter	-	Verify delegator release and callback invocation contract	DONE
+app/base/glib-cxx-utils.hpp:1162	ADAPTER_FACTORY	-	-	-	Verify delegator release and callback invocation contract	DONE
+app/core/gimpclonelayer.cpp:285	MEMBER_DELEGATOR	this	GLib::CloneLayer::on_source_update	-	Verify owner lifetime and disconnection before method callback	DONE
+app/core/gimpclonelayer.cpp:287	MEMBER_DELEGATOR	this	GLib::CloneLayer::on_source_frozen	-	Verify owner lifetime and disconnection before method callback	DONE
+app/core/gimpfilterlayer.cpp:321	MEMBER_DELEGATOR	this	GLib::FilterLayer::on_parent_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/core/gimpfilterlayer.cpp:323	MEMBER_DELEGATOR	this	GLib::FilterLayer::on_visibility_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/core/gimpfilterlayer.cpp:944	MEMBER_DELEGATOR	this	GLib::FilterLayer::on_stack_update	-	Verify owner lifetime and disconnection before method callback	DONE
+app/core/gimpfilterlayer.cpp:947	MEMBER_DELEGATOR	this	GLib::FilterLayer::on_reorder	-	Verify owner lifetime and disconnection before method callback	DONE
+app/core/gimpfilterlayer.cpp:953	MEMBER_DELEGATOR	this	GLib::FilterLayer::on_stack_update	-	Verify owner lifetime and disconnection before method callback	DONE
+app/core/gimpfilterlayer.cpp:956	MEMBER_DELEGATOR	this	GLib::FilterLayer::on_reorder	-	Verify owner lifetime and disconnection before method callback	DONE
+app/display/gimpdisplayshell-overlays.cpp:128	MEMBER_DELEGATOR	this	Self::on_size_allocate	-	Verify owner lifetime and disconnection before method callback	DONE
+app/display/gimpdisplayshell-overlays.cpp:129	MEMBER_DELEGATOR	this	Self::on_enter_notify	-	Verify owner lifetime and disconnection before method callback	DONE
+app/display/gimpdisplayshell-overlays.cpp:130	MEMBER_DELEGATOR	this	Self::on_leave_notify	-	Verify owner lifetime and disconnection before method callback	DONE
+app/display/gimpdisplayshell-overlays.cpp:172	MEMBER_DELEGATOR	this	Self::on_size_allocate	-	Verify owner lifetime and disconnection before method callback	DONE
+app/display/gimpdisplayshell-overlays.cpp:259	MEMBER_DELEGATOR	this	Self::on_select_color	-	Verify owner lifetime and disconnection before method callback	DONE
+app/display/gimpdisplayshell-overlays.cpp:264	MEMBER_DELEGATOR	this	Self::on_fg_color_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/display/gimpdisplayshell-overlays.cpp:265	MEMBER_DELEGATOR	this	Self::on_bg_color_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/display/gimpdisplayshell-overlays.cpp:349	MEMBER_DELEGATOR	this	Self::on_active_color_notify	-	Verify owner lifetime and disconnection before method callback	DONE
+app/gimp-features.cpp:89	MEMBER_DELEGATOR	this	Feature::on_initialize	-	Verify owner lifetime and disconnection before method callback	DONE
+app/gimp-features.cpp:92	MEMBER_DELEGATOR	this	Feature::on_restore	-	Verify owner lifetime and disconnection before method callback	DONE
+app/gimp-features.cpp:93	MEMBER_DELEGATOR	this	Feature::on_exit	-	Verify owner lifetime and disconnection before method callback	DONE
+app/gimp-features.cpp:109	MEMBER_DELEGATOR	this	Feature::on_restore	-	Verify owner lifetime and disconnection before method callback	DONE
+app/gimp-features.cpp:110	MEMBER_DELEGATOR	this	Feature::on_exit	-	Verify owner lifetime and disconnection before method callback	DONE
+app/httpd/httpd-features-gui.cpp:60	LAMBDA_DELEGATOR	-	lambda@app/httpd/httpd-features-gui.cpp:60	&	Verify captured values and asynchronous callback lifetime	DONE
+app/httpd/httpd-features.cpp:59	LAMBDA_DELEGATOR	-	lambda@app/httpd/httpd-features.cpp:59	&	Verify captured values and asynchronous callback lifetime	DONE
+app/httpd/httpd.cpp:42	MEMBER_DELEGATOR	this	HTTPD::handle_request	-	Verify owner lifetime and disconnection before method callback	DONE
+app/httpd/httpd.cpp:62	MEMBER_DELEGATOR	factory	RESTResourceFactory::handle_request	-	Verify owner lifetime and disconnection before method callback	DONE
+app/paint/gimpmypaintcore.cpp:120	MEMBER_DELEGATOR	this	GimpMypaintCore::option_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrusheditor.cpp:141	MEMBER_DELEGATOR	this	CurveViewActions::selected	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrusheditor.cpp:142	MEMBER_DELEGATOR	this	CurveViewActions::toggled	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrusheditor.cpp:144	MEMBER_DELEGATOR	this	CurveViewActions::notify_options	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrusheditor.cpp:145	MEMBER_DELEGATOR	this	CurveViewActions::value_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrusheditor.cpp:146	MEMBER_DELEGATOR	this	CurveViewActions::value_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrusheditor.cpp:147	MEMBER_DELEGATOR	this	CurveViewActions::value_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrusheditor.cpp:148	MEMBER_DELEGATOR	this	CurveViewActions::value_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrusheditor.cpp:273	MEMBER_DELEGATOR	this	CurveViewActions::notify_curve	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrusheditor.cpp:761	MEMBER_DELEGATOR	create_view	CurveViewCreator::create_view	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:293	MEMBER_DELEGATOR	this	MypaintPopupPrivate::history_name_edited	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:296	MEMBER_DELEGATOR	this	MypaintPopupPrivate::history_cursor_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:308	MEMBER_DELEGATOR	this	MypaintPopupPrivate::brush_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:319	MEMBER_DELEGATOR	this	MypaintPopupPrivate::destroy	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:350	MEMBER_DELEGATOR	priv	MypaintPopupPrivate::create	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintoptions-gui.cpp:297	MEMBER_DELEGATOR	this	MypaintDetailOptionsPopupPrivate::brush_name_edited	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintoptions-gui.cpp:305	MEMBER_DELEGATOR	this	MypaintDetailOptionsPopupPrivate::brush_save_clicked	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintoptions-gui.cpp:313	MEMBER_DELEGATOR	this	MypaintDetailOptionsPopupPrivate::brush_delete_clicked	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintoptions-gui.cpp:344	MEMBER_DELEGATOR	this	MypaintDetailOptionsPopupPrivate::brush_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintoptions-gui.cpp:352	MEMBER_DELEGATOR	this	MypaintDetailOptionsPopupPrivate::destroy	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintoptions-gui.cpp:458	MEMBER_DELEGATOR	this	MypaintOptionsGUIPrivate::reset_size	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimpmypaintoptions-gui.cpp:512	MEMBER_DELEGATOR	priv	MypaintDetailOptionsPopupPrivate::create	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimptooloptions-gui-cxx.hpp:62	MEMBER_DELEGATOR	this	SimpleBindAction::emit	-	Verify owner lifetime and disconnection before method callback	DONE
+app/tools/gimptooloptions-gui-cxx.hpp:103	MEMBER_DELEGATOR	this	PageRemindAction::emit	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimpcellrendererpopup.cpp:165	MEMBER_DELEGATOR	window_decor	LayerPopupWindow::create_view	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimpeditor-cxx.cpp:168	MEMBER_DELEGATOR	popup	GIMP_EDITOR::PopupWindow::create_view	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayerpopup.cpp:881	LAMBDA_DELEGATOR	-	lambda@app/widgets/gimplayerpopup.cpp:881	this	Verify captured values and asynchronous callback lifetime	DONE
+app/widgets/gimplayerpopup.cpp:895	LAMBDA_DELEGATOR	-	lambda@app/widgets/gimplayerpopup.cpp:895	this, &it, /*&model,*/ &selection	Verify captured values and asynchronous callback lifetime	DONE
+app/widgets/gimplayerpopup.cpp:1113	LAMBDA_DELEGATOR	-	lambda@app/widgets/gimplayerpopup.cpp:1113	&	Verify captured values and asynchronous callback lifetime	DONE
+app/widgets/gimplayertileview.cpp:420	MEMBER_DELEGATOR	this	LayerTileView::on_add_button_press	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:421	MEMBER_DELEGATOR	this	LayerTileView::on_add_button_motion	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:422	MEMBER_DELEGATOR	this	LayerTileView::on_add_button_release	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:432	MEMBER_DELEGATOR	this	LayerTileView::on_expose	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:433	MEMBER_DELEGATOR	this	LayerTileView::on_button_press	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:482	MEMBER_DELEGATOR	this	LayerTileView::on_layer_added	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:483	MEMBER_DELEGATOR	this	LayerTileView::on_layer_removed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:484	MEMBER_DELEGATOR	this	LayerTileView::on_layer_reordered	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:486	MEMBER_DELEGATOR	this	LayerTileView::on_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:505	MEMBER_DELEGATOR	this	LayerTileView::get_drag_viewable	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:522	MEMBER_DELEGATOR	this	LayerTileView::on_drag_motion	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:523	MEMBER_DELEGATOR	this	LayerTileView::on_drag_leave	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:524	MEMBER_DELEGATOR	this	LayerTileView::on_drag_leave	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:525	MEMBER_DELEGATOR	this	LayerTileView::on_drag_drop	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:526	MEMBER_DELEGATOR	this	LayerTileView::on_drag_data_received	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:627	MEMBER_DELEGATOR	this	LayerTileView::on_layer_added	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:628	MEMBER_DELEGATOR	this	LayerTileView::on_layer_removed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:629	MEMBER_DELEGATOR	this	LayerTileView::on_layer_reordered	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:790	LOCAL_FUNCTION	-	local function variable	-	Verify delegator release and callback invocation contract	DONE
+app/widgets/gimplayertileview.cpp:929	LAMBDA_DELEGATOR	-	lambda@app/widgets/gimplayertileview.cpp:929	this	Verify captured values and asynchronous callback lifetime	DONE
+app/widgets/gimplayertileview.cpp:1299	LOCAL_FUNCTION	-	local function variable	-	Verify delegator release and callback invocation contract	DONE
+app/widgets/gimplayertileview.cpp:1334	MEMBER_DELEGATOR	this	LayerTileView::LayerInfo::on_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:1335	MEMBER_DELEGATOR	this	LayerTileView::LayerInfo::on_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:1336	MEMBER_DELEGATOR	this	LayerTileView::LayerInfo::on_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:1337	MEMBER_DELEGATOR	this	LayerTileView::LayerInfo::on_mask_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:1363	MEMBER_DELEGATOR	this	LayerTileView::LayerInfo::on_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:1364	MEMBER_DELEGATOR	this	LayerTileView::LayerInfo::on_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:1365	MEMBER_DELEGATOR	this	LayerTileView::LayerInfo::on_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:1446	MEMBER_DELEGATOR	this	LayerTileView::LayerInfo::LayerPreview::on_layer_invalidate_preview	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:1447	MEMBER_DELEGATOR	this	LayerTileView::LayerInfo::LayerPreview::on_layer_invalidate_preview	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimplayertileview.cpp:1540	LAMBDA_DELEGATOR	-	lambda@app/widgets/gimplayertileview.cpp:1540	this, viewable	Verify captured values and asynchronous callback lifetime	DONE
+app/widgets/gimptooltileview.cpp:262	MEMBER_DELEGATOR	this	ToolTileView::on_expose	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimptooltileview.cpp:263	MEMBER_DELEGATOR	this	ToolTileView::on_button_press	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimptooltileview.cpp:264	MEMBER_DELEGATOR	this	ToolTileView::on_motion_notify	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimptooltileview.cpp:265	MEMBER_DELEGATOR	this	ToolTileView::on_enter_notify	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimptooltileview.cpp:266	MEMBER_DELEGATOR	this	ToolTileView::on_leave_notify	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/gimptooltileview.cpp:311	MEMBER_DELEGATOR	this	ToolTileView::on_tool_changed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/popupper.cpp:185	MEMBER_DELEGATOR	this	Popover::on_grab_notify	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/popupper.cpp:187	MEMBER_DELEGATOR	this	Popover::on_grab_broken_event	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/popupper.cpp:501	MEMBER_DELEGATOR	this	PopoverDecorator::on_popover_closed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/popupper.cpp:503	MEMBER_DELEGATOR	this	PopoverDecorator::on_popover_closed	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/popupper.cpp:527	MEMBER_DELEGATOR	this	PopoverDecorator::scroll_event	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/popupper.cpp:529	MEMBER_DELEGATOR	this	PopoverDecorator::button_press	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/popupper.cpp:532	MEMBER_DELEGATOR	this	PopoverDecorator::clicked	-	Verify owner lifetime and disconnection before method callback	DONE
+app/widgets/popupper.cpp:535	MEMBER_DELEGATOR	this	PopoverDecorator::parent_clicked	-	Verify owner lifetime and disconnection before method callback	DONE

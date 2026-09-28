@@ -149,6 +149,16 @@ and 15 pass lambdas that capture `this`. Run
 absence of a stored handle does not itself prove a dangling callback, but
 the port must tie teardown to the signal emitter and the captured owner.
 
+`delegator-site-review.tsv` classifies all 107 first-pass delegator sites:
+90 bind a C++ member to an owner pointer, seven wrap lambdas, four are
+adapter factories, four forward generic callback arguments and two wrap
+local function variables. Run `python3 -B tools/audit_delegator_sites.py` to
+regenerate it. The table records visible lambda captures, including local
+references in `gimplayerpopup.cpp:895` and raw `this` and `viewable` at the
+idle callback in `gimplayertileview.cpp:1540`. The synchronous foreach and
+deferred idle paths require different lifetime checks; classification alone
+does not establish whether either path is safe in the legacy build.
+
 Before 01.005 can be
 completed, inspect each candidate, identify exported C functions and their
 callers in changed C sources and public headers (including entry names missed
