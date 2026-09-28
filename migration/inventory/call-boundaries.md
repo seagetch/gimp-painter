@@ -106,6 +106,19 @@ lie in `#else` branches under `#if 1`. These disabled call sites are historical
 references, not active caller requirements. The named features must still
 be checked against the complete legacy functionality inventory.
 
+`non-xcf-c-call-review.tsv` traces the other 24 active C-to-C++ direct calls
+across 14 symbols. Run `python3 -B tools/audit_non_xcf_c_calls.py` to
+regenerate it. Among these, group duplication remaps borrowed CloneLayer
+sources, the context owns a reference to a selected MyPaint brush while the
+standard-brush helper keeps a weak pointer, and the overlay entry points use
+shell/widget pointers across attach and detach. Three Perspective Guide point
+reads ignore the returned success flag. The MyPaint editor constructor
+requires a `GimpContext` parameter to pass a `GIMP_IS_MYPAINT_OPTIONS`
+check, then passes a local `options = NULL` to the brush getter. This code
+cannot be treated as a working editor construction path in the port. The
+actual GIMP 3 type contracts, widget teardown and failure handling remain
+implementation checks.
+
 `c-entry-signatures.tsv` pairs 66 C++ definitions and header declarations
 covering 65 names. It records both parameter lists and whether a C linkage
 guard encloses the header declaration: 38 pairs have an identifiable guard,

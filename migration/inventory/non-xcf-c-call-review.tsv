@@ -1,0 +1,25 @@
+c_site	symbol	cpp_entry	effect	result_and_owner_contract	status
+app/actions/layers-commands.c:430	gimp_clone_layer_new	app/core/gimpclonelayer.cpp:669	CREATE_LAYER	Returns new layer for insertion above source; caller lacks null guard	DONE
+app/actions/layers-commands.c:1108	gimp_filter_layer_new	app/core/gimpfilterlayer.cpp:1175	CREATE_LAYER	Returns new layer for insertion; caller checks null	DONE
+app/core/gimpcontext.c:1758	gimp_mypaint_brush_get_standard	app/core/gimpmypaintbrush.cpp:364	BORROW_STANDARD_RESOURCE	Returns weak-pointer-backed standard brush; context references selected brush	DONE
+app/core/gimpcontext.c:3452	gimp_mypaint_brush_get_standard	app/core/gimpmypaintbrush.cpp:364	BORROW_STANDARD_RESOURCE	Returns weak-pointer-backed standard brush; context references selected brush	DONE
+app/core/gimpcontext.c:3485	gimp_mypaint_brush_get_standard	app/core/gimpmypaintbrush.cpp:364	BORROW_STANDARD_RESOURCE	Returns weak-pointer-backed standard brush; context references selected brush	DONE
+app/core/gimpcontext.c:3511	gimp_mypaint_brush_get_standard	app/core/gimpmypaintbrush.cpp:364	BORROW_STANDARD_RESOURCE	Returns weak-pointer-backed standard brush; context references selected brush	DONE
+app/core/gimpgrouplayer.c:502	gimp_clone_layer_get_source	app/core/gimpclonelayer.cpp:688	LOOKUP_SOURCE	Borrowed source; getter may resolve saved source name as a side effect	DONE
+app/core/gimpgrouplayer.c:506	gimp_clone_layer_set_source	app/core/gimpclonelayer.cpp:681	REMAP_GROUP_CLONE	Rebinds copied clone to copied source and connects update signals	DONE
+app/dialogs/dialogs-constructors.c:813	gimp_mypaint_brush_editor_new	app/widgets/gimpmypaintbrusheditor.cpp:284	CONSTRUCT_EDITOR_WITH_LEGACY_GUARD_DEFECT	GimpContext parameter is also checked as GimpMypaintOptions; local options remains null	DONE
+app/display/gimpdisplayshell-callbacks.c:217	gimp_display_shell_update_on_canvas_views	app/display/gimpdisplayshell-overlays.cpp:601	REFRESH_OVERLAYS	Rebuilds or disposes canvas overlay widgets as image/display changes	DONE
+app/display/gimpdisplayshell-tool-events.c:180	gimp_perspective_guide_get_vanish_point_length	app/core/gimpperspectiveguide.cpp:250	READ_GUIDE	Returns point count to the snapping calculation	DONE
+app/display/gimpdisplayshell-tool-events.c:209	gimp_perspective_guide_get_vanish_points	app/core/gimpperspectiveguide.cpp:265	READ_GUIDE	Boolean success result ignored while using output coordinates	DONE
+app/display/gimpdisplayshell-tool-events.c:210	gimp_perspective_guide_get_vanish_points	app/core/gimpperspectiveguide.cpp:265	READ_GUIDE	Boolean success result ignored while using output coordinates	DONE
+app/display/gimpdisplayshell-tool-events.c:228	gimp_perspective_guide_get_vanish_points	app/core/gimpperspectiveguide.cpp:265	READ_GUIDE	Boolean success result ignored while using output coordinates	DONE
+app/display/gimpdisplayshell-tool-events.c:268	gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-overlays.cpp:659	UPDATE_OVERLAY_OPACITY	Uses borrowed shell widgets and press/release flag	DONE
+app/display/gimpdisplayshell-tool-events.c:938	gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-overlays.cpp:659	UPDATE_OVERLAY_OPACITY	Uses borrowed shell widgets and press/release flag	DONE
+app/display/gimpdisplayshell-tool-events.c:1232	gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-overlays.cpp:659	UPDATE_OVERLAY_OPACITY	Uses borrowed shell widgets and press/release flag	DONE
+app/display/gimpdisplayshell-tool-events.c:1268	gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-overlays.cpp:659	UPDATE_OVERLAY_OPACITY	Uses borrowed shell widgets and press/release flag	DONE
+app/display/gimpdisplayshell-tool-events.c:1560	gimp_display_shell_update_on_canvas_views	app/display/gimpdisplayshell-overlays.cpp:601	REFRESH_OVERLAYS	Rebuilds or disposes canvas overlay widgets as image/display changes	DONE
+app/display/gimpimagewindow.c:1406	gimp_display_shell_detach_on_canvas_view	app/display/gimpdisplayshell-overlays.cpp:713	DETACH_OVERLAY	Undecorates widget before parent change; caller holds dock reference	DONE
+app/display/gimpimagewindow.c:2093	gimp_display_shell_detach_on_canvas_view	app/display/gimpdisplayshell-overlays.cpp:713	DETACH_OVERLAY	Undecorates widget before parent change; caller holds dock reference	DONE
+app/display/gimpimagewindow.c:2108	gimp_display_shell_attach_on_canvas_view	app/display/gimpdisplayshell-overlays.cpp:670	ATTACH_OVERLAY	Installs decorator and stores widget in shell; caller releases temporary reference	DONE
+app/widgets/gimpcontainertreeview.c:1187	gimp_cell_renderer_popup_clicked	app/widgets/gimpcellrendererpopup.cpp:344	FORWARD_POPUP_EVENT	Synchronous call receives path string freed just after return	DONE
+app/widgets/gimplayertreeview.c:354	gimp_cell_renderer_popup_new	app/widgets/gimpcellrendererpopup.cpp:342	CONSTRUCT_RENDERER	New renderer stored in layer view and packed into tree column	DONE
