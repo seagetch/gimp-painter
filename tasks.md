@@ -149,6 +149,7 @@
 | 01.005/indirect-callback-owners | [x] | 間接関数ポインターの呼出し先・所有権を確定する | 01.005/candidate-coverage | 34 候補の保存先・呼出し・解放経路を一対一に照合（`migration/inventory/indirect-callback-owner-review.tsv`）。preset action-group static callback は 01.005/preset-action-factory-owner で確認。v1 曲線の無条件スキップ、借用 callable、popover signal の寿命を後続タスクへ割当 |
 | 01.005/preset-action-factory-owner | [x] | preset action-group の間接 callback 保持者を追う | 01.005/missed-c-entries | 旧 factory の setup/update 関数ポインター保持・呼出し・解放と現行の group キャッシュを照合（`migration/inventory/preset-action-factory-callback.md`）。移植の実装は 28.014/preset-action-group |
 | 01.005/gimp3-vfunc-contract | [ ] | 旧 vfunc と現行 GIMP 3 slot の署名・寿命を照合する | 01.005/candidate-coverage | 40 class callback と 71 binding の実 slot・引数・戻り値・例外境界を対象ごとの子チェックに分けて記録 |
+| 01.005/gimp3-layer-slots | [x] | CloneLayer と FilterLayer の旧 vfunc を現行 slot と対照する | 01.005/indirect-callback-owners | 旧 Binder 34 箇所を C ヘッダーの実 slot 署名へ対応付け、削除された `project_region` / `is_editable` と新 GEGL source node、引数・戻り値の変化を記録（`migration/inventory/gimp3-layer-vfunc-review.tsv`）。実装は機能タスク |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
@@ -476,9 +477,11 @@
 | 14.002 | [ ] | 名前による旧 source 解決を実装する | 14.001 | 探索順と同名の解決が fixture と一致 |
 | 14.003 | [ ] | source レイヤーの画素追従を実装する | 14.002 | 編集領域が clone に更新される |
 | 14.003/gegl-source-node | [ ] | CloneLayer の参照画素を GEGL source node に接続する | 14.003, 09.013/gegl-graph-invalidation | source の変更 ROI、offset、参照解除が projection の再評価へ届く |
+| 14.003/clone-pickable-opacity | [ ] | CloneLayer の不透明度照会を現行型へ接続する | 14.002, 01.005/gimp3-layer-slots | 旧 gint 返却のゼロ透明を現行 gdouble 契約で保ち、参照画素・子レイヤー表示への影響を試験 |
 | 14.004 | [ ] | source グループの追従を実装する | 14.003 | 子の変更と合成が更新される |
 | 14.005 | [ ] | source の座標・サイズ追従を実装する | 14.004 | 移動と resize の見え方が一致 |
 | 14.006 | [ ] | clone 自身の座標処理を実装する | 14.005 | source 座標との合成が一致 |
+| 14.006/editability-contract | [ ] | CloneLayer の編集可否を現行ロック規約へ対応付ける | 14.005, 01.005/gimp3-layer-slots | 廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認 |
 | 14.007 | [ ] | source の可視性・合成変更を処理する | 14.006 | 旧版の更新範囲と表示が一致 |
 | 14.008 | [ ] | source 改名を処理する | 14.007 | 既存参照を旧仕様に沿って維持 |
 | 14.009 | [ ] | 同名 source を処理する | 14.008 | 保存前後で別レイヤーへ変わらない |
@@ -507,6 +510,9 @@
 | 15.005 | [ ] | 位置・サイズ変更を処理する | 15.004 | 入力と出力 buffer の座標が一致 |
 | 15.006 | [ ] | マスク・opacity・mode を接続する | 15.005 | 独自型でも通常属性が適用される |
 | 15.006/gegl-result-source | [ ] | FilterLayer の確定結果を GEGL source node へ供給する | 15.006, 09.013/gegl-graph-invalidation | 未完成・旧世代の結果を見せず source 変更が投影を更新し operator 評価から runner を起動しない |
+| 15.006/filter-pickable-opacity | [ ] | FilterLayer の不透明度照会を現行型へ接続する | 15.005, 01.005/gimp3-layer-slots | 旧 gint 返却のゼロ透明を現行 gdouble 契約で保ち、合成結果との矛盾を試験 |
+| 15.006/filter-progress-start | [ ] | FilterLayer の progress 開始 callback を現行 ABI に合わせる | 15.005, 06.016, 01.005/gimp3-layer-slots | cancellable と message の新しい引数順を守り、進捗通知・取消しが逆転しない |
+| 15.006/editability-contract | [ ] | FilterLayer の編集可否を現行ロック規約へ対応付ける | 15.005, 01.005/gimp3-layer-slots | 廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証 |
 | 15.007 | [ ] | loaded 状態を実装する | 15.006 | 保存済み cache の初回表示を区別 |
 | 15.008 | [ ] | 定義変更の世代を実装する | 15.007 | procedure/引数変更で結果を失効 |
 | 15.009 | [ ] | 依存構造の世代を実装する | 15.008 | 並替え・移動で結果を失効 |
