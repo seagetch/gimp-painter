@@ -144,6 +144,10 @@
 | 01.005/non-xcf-c-calls | [x] | XCF 以外の有効な C→C++ 呼出しを追う | 01.005/c-direct-call-activity | 残る 24 件・14 symbol の入口・戻り値・所有者を記録（`migration/inventory/non-xcf-c-call-review.tsv`）。MyPaint editor の矛盾した型検査と NULL options、Guide getter の結果未確認を移植時の修正点として特定 |
 | 01.005/deferred-sources | [x] | 遅延 callback の解除経路を追う | 01.005/callback-registrations, 01.005/delegator-sites | FilterLayer の ID 未保存 timeout と、ID を保持し破棄時に解除する layer preview idle の所有者・捕捉を照合（`migration/inventory/deferred-source-review.tsv`）。viewable の寿命は移植時の検証対象 |
 | 01.005/fill-brush-boundary | [x] | 塗りつぶしブラシの旧 paint core 入口と現行 GEGL 境界を照合する | 01.004 | 旧 GType・paint vfunc・projection snapshot・有界探索・paint paste を現行 API と対照（`migration/inventory/fill-brush-rendering.md`）。移植と実測は後続子タスク |
+| 01.005/candidate-coverage | [x] | 一次候補と分類結果の全件照合を自動化する | 01.005/deferred-sources, 01.005/fill-brush-boundary, 01.005/non-xcf-c-calls | C++ 683 件と C/ヘッダー 130 件を分類済み行に一対一照合し、直接呼出し 33 件、登録 6 件と別走査の項目も検査（`migration/inventory/call-boundary-coverage.md`） |
+| 01.005/missed-c-entries | [ ] | 正規表現に拾われない C 公開入口と呼出しを照合する | 01.005/candidate-coverage | 旧 C++ 全ファイルの非 static C linkage 宣言・マクロ生成入口と C/ヘッダー全参照を逆引きし、新規候補は分類・機能タスクに登録 |
+| 01.005/indirect-callback-owners | [ ] | 間接関数ポインターの呼出し先・所有権を確定する | 01.005/candidate-coverage | 34 候補のうち実際の callback を受け渡す経路を typedef・保持者・解放・呼出し箇所まで分類 |
+| 01.005/gimp3-vfunc-contract | [ ] | 旧 vfunc と現行 GIMP 3 slot の署名・寿命を照合する | 01.005/candidate-coverage | 40 class callback と 71 binding の実 slot・引数・戻り値・例外境界を対象ごとの子チェックに分けて記録 |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |

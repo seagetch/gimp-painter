@@ -258,9 +258,11 @@ idle callback in `gimplayertileview.cpp:1540`. The synchronous foreach and
 deferred idle paths require different lifetime checks; classification alone
 does not establish whether either path is safe in the legacy build.
 
-Before 01.005 can be
-completed, inspect each candidate, identify exported C functions and their
-callers in changed C sources and public headers (including entry names missed
-by the first-pass regex), trace indirect callbacks and
-vfunc owners, and add any missing sites. Record the verified direction,
-signature and ownership at each boundary. The parent WBS item remains open.
+`call-boundary-coverage.md` and `tools/check_call_boundary_coverage.py` verify
+that every one of the 683 first-pass C++ candidates and 130 C/header
+references has a classified row, including the 33 active C++ direct calls.
+This only closes **candidate coverage**: before 01.005 can be completed,
+identify exported C entries missed by the first-pass regex, trace indirect
+callbacks and vfunc owners, and compare signatures and lifetimes with GIMP 3.
+Record the verified direction, signature and ownership at each boundary.
+The parent WBS item remains open.
