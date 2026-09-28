@@ -146,7 +146,7 @@
 | 01.005/fill-brush-boundary | [x] | 塗りつぶしブラシの旧 paint core 入口と現行 GEGL 境界を照合する | 01.004 | 旧 GType・paint vfunc・projection snapshot・有界探索・paint paste を現行 API と対照（`migration/inventory/fill-brush-rendering.md`）。移植と実測は後続子タスク |
 | 01.005/candidate-coverage | [x] | 一次候補と分類結果の全件照合を自動化する | 01.005/deferred-sources, 01.005/fill-brush-boundary, 01.005/non-xcf-c-calls | C++ 683 件と C/ヘッダー 130 件を分類済み行に一対一照合し、直接呼出し 33 件、登録 6 件と別走査の項目も検査（`migration/inventory/call-boundary-coverage.md`） |
 | 01.005/missed-c-entries | [x] | 正規表現に拾われない C 公開入口と呼出しを照合する | 01.005/candidate-coverage | 旧 app の 2,051 C/C++ ソース・ヘッダーを逆引きし、非 gimp_ C 公開入口 4 件、C 直接呼出し 3 件、C callback 登録 1 件、static callback 1 件を発見・分類（`migration/inventory/non-gimp-c-entry-review.tsv`）。C++ 専用工場 2 件と既存 GType マクロ生成 6 件も照合し後続機能タスクへ割当 |
-| 01.005/indirect-callback-owners | [ ] | 間接関数ポインターの呼出し先・所有権を確定する | 01.005/candidate-coverage | 34 候補と新規の preset action-group static callback のうち実際の callback を受け渡す経路を typedef・保持者・解放・呼出し箇所まで分類 |
+| 01.005/indirect-callback-owners | [x] | 間接関数ポインターの呼出し先・所有権を確定する | 01.005/candidate-coverage | 34 候補の保存先・呼出し・解放経路を一対一に照合（`migration/inventory/indirect-callback-owner-review.tsv`）。preset action-group static callback は 01.005/preset-action-factory-owner で確認。v1 曲線の無条件スキップ、借用 callable、popover signal の寿命を後続タスクへ割当 |
 | 01.005/preset-action-factory-owner | [x] | preset action-group の間接 callback 保持者を追う | 01.005/missed-c-entries | 旧 factory の setup/update 関数ポインター保持・呼出し・解放と現行の group キャッシュを照合（`migration/inventory/preset-action-factory-callback.md`）。移植の実装は 28.014/preset-action-group |
 | 01.005/gimp3-vfunc-contract | [ ] | 旧 vfunc と現行 GIMP 3 slot の署名・寿命を照合する | 01.005/candidate-coverage | 40 class callback と 71 binding の実 slot・引数・戻り値・例外境界を対象ごとの子チェックに分けて記録 |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
@@ -238,6 +238,7 @@
 | 05.002 | [ ] | ハンドルの所有規約を定義する | 05.001 | retain・adopt・sink の差を記載 |
 | 05.003 | [ ] | ハンドルの copy/move 規約を定義する | 05.002 | 参照数増減と moved-from 状態を記載 |
 | 05.004 | [ ] | 短期借用の規約を定義する | 05.003 | 保存不可・非同期持出し不可の境界を明示 |
+| 05.004/bound-method-lifetime | [ ] | 旧 BoundMethod の借用 object 寿命を新 API に定義する | 05.004, 01.005/indirect-callback-owners | `operator[]` から返る callable が object の参照を持たないことを考慮し、保持・遅延使用を禁止または weak/strong handle へ移す |
 | 05.005 | [ ] | C++ メソッドと C 入口を対応付ける | 05.004 | 同じ操作の第二実装を作らない対応表がある |
 | 05.006 | [ ] | 型付き slot の宣言形式を定義する | 05.005 | GType・Impl 型・key・close 方針が固定される |
 | 05.007 | [ ] | BindingStore の登録規約を定義する | 05.006 | 一 object 一 store、重複登録・稼働中置換の扱いを明記 |
@@ -621,6 +622,7 @@
 | 19.004 | [ ] | switches の decoder を実装する | 19.003 | 既定値と明示値を区別 |
 | 19.005 | [ ] | texts の decoder を実装する | 19.004 | 文字列と資源参照を保持 |
 | 19.006 | [ ] | 入力カーブの decoder を実装する | 19.005 | 点列・入力名・範囲を保持 |
+| 19.006/v1-curve-validation | [ ] | 旧 myb v1 の曲線点読込みを修正して移植する | 19.005, 01.005/indirect-callback-owners | 旧 `parse_points_v1` の余分なセミコロンによる全点スキップを排除し、x の単調性・y 変換・異常な点列を処理 |
 | 19.007 | [ ] | 未知キーの保持を実装する | 19.006 | 読込→保存で消えない |
 | 19.008 | [ ] | GIMP ブラシ参照を解決する | 19.007 | 資源名と識別規則を旧版に合わせる |
 | 19.009 | [ ] | 紙目参照を解決する | 19.008 | 旧参照から対象資源を選ぶ |
@@ -630,6 +632,7 @@
 | 19.013 | [ ] | data factory を接続する | 19.012 | 検索パス・読込み・更新を処理 |
 | 19.014 | [ ] | ブラシの複製・改名・削除を接続する | 19.013 | 資源所有と保存先が整合 |
 | 19.015 | [ ] | 全177件の往復試験を実行する | 19.014 | 設定の意味差分がゼロ |
+| 19.015/v1-curve-roundtrip | [ ] | 旧 myb v1 曲線の読込・保存・再読込を試験する | 19.014, 19.006/v1-curve-validation | 変換あり・なしと点列順序の fixture で欠落・停止がない |
 | 19.016 | [ ] | 設定ファイルの旧キーを移行する | 19.015 | 旧 tool preset 等から拡張設定を復元 |
 
 ### 20 拡張 MyPaint エンジン
@@ -856,6 +859,7 @@
 | 29.004 | [ ] | layer tile の順序操作を実装する | 29.003 | group と独自参照の更新を通知 |
 | 29.005 | [ ] | layer tile の複数選択を接続する | 29.004 | 現行選択 model と整合 |
 | 29.006 | [ ] | layer tile の popup を接続する | 29.005 | 独自型設定へ到達可能 |
+| 29.006/popover-handler-teardown | [ ] | popup の signal と view callback を終了時に解除する | 29.005, 06.017, 01.005/indirect-callback-owners | widget・popup を先に破棄しても借用中の owner を参照せず、scroll/button/confirm/cancel の接続が解除される |
 | 29.007 | [ ] | color UI を移植する | 29.006 | 前景・背景色が context と同期 |
 | 29.008 | [ ] | tool tile の表示を移植する | 29.007 | tool manager の現在選択と同期 |
 | 29.009 | [ ] | tool group を接続する | 29.008 | 旧分類と現行 action の対応が明確 |

@@ -281,7 +281,28 @@ The preset dialog action builder prints `entry->name` before checking whether
 `entry` is null (`app/presets/preset-factory-gui.cpp:135-136`). Its migration
 task must guard the dereference and handle an empty action array. The startup
 feature factory and preset UI entries have separate implementation tasks in
-`tasks.md`. Before 01.005 can be completed, trace indirect callbacks and
-vfunc owners, and compare signatures and lifetimes with GIMP 3. Record the
+`tasks.md`.
+
+`indirect-callback-owner-review.tsv` accounts for every one of the 34
+function-pointer syntax candidates, including five synchronous stack
+functors, five sites inside the uninstantiated `ToolbarPopoverViewCreator`,
+two borrowed bound methods, two C signal closure sites, two deferred source
+sites, and one `(*this)` false positive. The registered preset action callbacks
+that were missed by this syntax scan have an independent owner trace in
+`preset-action-factory-callback.md`. Run
+`python3 -B tools/audit_indirect_callback_owners.py` to regenerate the
+one-to-one mapping. In the legacy v1 MyPaint curve parser at
+`app/core/gimpmypaintbrush-load.cpp:479-483`, a semicolon ends the condition
+and the following `goto next` always executes. Every input point therefore
+skips `set_point` at line 492. The fix and a v1 roundtrip fixture have
+separate tasks. `PopoverDecorator` deletes its view delegator at
+`app/widgets/popupper.cpp:543-544` but its destructor does not delete or
+disconnect the retained scroll/button connections set at lines 526-535;
+the teardown path needs a GIMP 3 implementation and test. The borrowed
+`BoundMethod` callable stores a raw object pointer; its lifetime contract is
+also tracked as a task.
+
+Before 01.005 can be completed, compare the legacy vfunc slots and bindings
+with actual GIMP 3 signatures, callback exceptions and ownership. Record the
 verified direction, signature and ownership at each boundary. The parent WBS
 item remains open.
