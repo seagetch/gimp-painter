@@ -1,0 +1,150 @@
+symbol	cpp_site	declaration_site	classification	preceding_source	port_action	status
+gimp_image_undo_push_clone_layer_convert	app/core/gimpclonelayer.cpp:181	-	FILE_LOCAL_STATIC	static GimpUndo *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_clone_layer_get_type	app/core/gimpclonelayer.cpp:664	app/core/gimpclonelayer.h:47	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_clone_layer_new	app/core/gimpclonelayer.cpp:669	app/core/gimpclonelayer.h:48	C_HEADER_ENTRY	GimpLayer*	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_clone_layer_set_source	app/core/gimpclonelayer.cpp:681	app/core/gimpclonelayer.h:55	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_clone_layer_get_source	app/core/gimpclonelayer.cpp:688	app/core/gimpclonelayer.h:57	C_HEADER_ENTRY	GimpLayer*	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_clone_layer_set_source_by_name	app/core/gimpclonelayer.cpp:696	app/core/gimpclonelayer.h:58	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_clone_layer_undo_get_type	app/core/gimpclonelayerundo.cpp:61	app/core/gimpclonelayerundo.h:46	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_filter_layer_get_type	app/core/gimpfilterlayer.cpp:1170	app/core/gimpfilterlayer.h:47	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_filter_layer_new	app/core/gimpfilterlayer.cpp:1175	app/core/gimpfilterlayer.h:48	C_HEADER_ENTRY	GimpLayer*	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_filter_layer_get_procedure	app/core/gimpfilterlayer.cpp:1186	app/core/gimpfilterlayer.h:54	C_HEADER_ENTRY	const gchar*	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_filter_layer_get_procedure_args	app/core/gimpfilterlayer.cpp:1192	app/core/gimpfilterlayer.h:55	C_HEADER_ENTRY	GArray*	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_filter_layer_set_procedure	app/core/gimpfilterlayer.cpp:1198	app/core/gimpfilterlayer.h:56	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_filter_layer_mark_as_loaded	app/core/gimpfilterlayer.cpp:1206	app/core/gimpfilterlayer.h:59	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_load	app/core/gimpmypaintbrush-load.cpp:111	app/core/gimpmypaintbrush-load.h:26	C_HEADER_ENTRY	GList *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_save	app/core/gimpmypaintbrush-save.cpp:101	app/core/gimpmypaintbrush-save.h:23	C_HEADER_ENTRY	gboolean	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_class_init	app/core/gimpmypaintbrush.cpp:110	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_tagged_iface_init	app/core/gimpmypaintbrush.cpp:139	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_init	app/core/gimpmypaintbrush.cpp:145	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_finalize	app/core/gimpmypaintbrush.cpp:151	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_set_property	app/core/gimpmypaintbrush.cpp:165	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_get_property	app/core/gimpmypaintbrush.cpp:181	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_get_memsize	app/core/gimpmypaintbrush.cpp:197	-	FILE_LOCAL_STATIC	static gint64	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_get_size	app/core/gimpmypaintbrush.cpp:211	-	FILE_LOCAL_STATIC	static gboolean	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_get_new_preview	app/core/gimpmypaintbrush.cpp:224	-	FILE_LOCAL_STATIC	static TempBuf *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_get_description	app/core/gimpmypaintbrush.cpp:247	-	FILE_LOCAL_STATIC	static gchar *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_dirty	app/core/gimpmypaintbrush.cpp:258	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_get_extension	app/core/gimpmypaintbrush.cpp:275	-	FILE_LOCAL_STATIC	static const gchar *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_real_begin_use	app/core/gimpmypaintbrush.cpp:281	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_real_end_use	app/core/gimpmypaintbrush.cpp:286	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_real_select_mypaint_brush	app/core/gimpmypaintbrush.cpp:291	-	FILE_LOCAL_STATIC	static GimpMypaintBrush *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_real_want_null_motion	app/core/gimpmypaintbrush.cpp:299	-	FILE_LOCAL_STATIC	static gboolean	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_get_checksum	app/core/gimpmypaintbrush.cpp:307	-	FILE_LOCAL_STATIC	static gchar *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_new	app/core/gimpmypaintbrush.cpp:334	app/core/gimpmypaintbrush.h:61	C_HEADER_ENTRY	GimpData *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_duplicate	app/core/gimpmypaintbrush.cpp:350	app/core/gimpmypaintbrush.h:74	C_HEADER_ENTRY	GimpData *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_get_standard	app/core/gimpmypaintbrush.cpp:364	app/core/gimpmypaintbrush.h:63	C_HEADER_ENTRY	GimpData *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_begin_use	app/core/gimpmypaintbrush.cpp:383	app/core/gimpmypaintbrush.h:65	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_end_use	app/core/gimpmypaintbrush.cpp:394	app/core/gimpmypaintbrush.h:66	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_select_mypaint_brush	app/core/gimpmypaintbrush.cpp:406	app/core/gimpmypaintbrush.h:68	C_HEADER_ENTRY	GimpMypaintBrush *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_want_null_motion	app/core/gimpmypaintbrush.cpp:420	app/core/gimpmypaintbrush.h:71	C_HEADER_ENTRY	gboolean	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_perspective_guide_get_type	app/core/gimpperspectiveguide.cpp:240	app/core/gimpperspectiveguide.h:56	C_HEADER_ENTRY	"extern ""C"" {"	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_perspective_guide_new	app/core/gimpperspectiveguide.cpp:245	app/core/gimpperspectiveguide.h:58	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_perspective_guide_get_vanish_point_length	app/core/gimpperspectiveguide.cpp:250	app/core/gimpperspectiveguide.h:59	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_perspective_guide_add_vanish_points	app/core/gimpperspectiveguide.cpp:255	app/core/gimpperspectiveguide.h:60	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_perspective_guide_remove_vanish_points	app/core/gimpperspectiveguide.cpp:260	app/core/gimpperspectiveguide.h:61	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_perspective_guide_get_vanish_points	app/core/gimpperspectiveguide.cpp:265	app/core/gimpperspectiveguide.h:62	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_perspective_guide_set_vanish_points	app/core/gimpperspectiveguide.cpp:270	app/core/gimpperspectiveguide.h:63	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_canvas_perspective_guide_get_type	app/display/gimpcanvasperspectiveguide.cpp:295	app/display/gimpcanvasperspectiveguide.h:53	C_HEADER_ENTRY	"extern ""C"" {"	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_canvas_perspective_guide_new	app/display/gimpcanvasperspectiveguide.cpp:300	app/display/gimpcanvasperspectiveguide.h:55	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_display_shell_update_on_canvas_views	app/display/gimpdisplayshell-overlays.cpp:601	app/display/gimpdisplayshell-overlays.h:21	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-overlays.cpp:659	app/display/gimpdisplayshell-overlays.h:22	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_display_shell_attach_on_canvas_view	app/display/gimpdisplayshell-overlays.cpp:670	app/display/gimpdisplayshell-overlays.h:23	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_display_shell_detach_on_canvas_view	app/display/gimpdisplayshell-overlays.cpp:713	app/display/gimpdisplayshell-overlays.h:24	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_container_foreach_	app/httpd/navigation-guide.cpp:69	-	CPP_TEMPLATE_HELPER	template<typename F>	C++ template helper; no C caller found in app	DONE
+gimp_container_foreach_	app/httpd/rest-image-tree.cpp:63	-	CPP_TEMPLATE_HELPER	template<typename F>	C++ template helper; no C caller found in app	DONE
+gimp_mypaint_core_paint	app/paint/gimpmypaintcore.cpp:292	-	DISABLED_IF_0	void	No compiled entry; retain only as historical reference	DONE
+gimp_mypaint_core_cancel	app/paint/gimpmypaintcore.cpp:333	-	DISABLED_IF_0	void	No compiled entry; retain only as historical reference	DONE
+gimp_mypaint_core_interpolate	app/paint/gimpmypaintcore.cpp:377	-	DISABLED_IF_0	void	No compiled entry; retain only as historical reference	DONE
+gimp_mypaint_core_set_current_coords	app/paint/gimpmypaintcore.cpp:396	-	DISABLED_IF_0	void	No compiled entry; retain only as historical reference	DONE
+gimp_mypaint_core_get_current_coords	app/paint/gimpmypaintcore.cpp:406	-	DISABLED_IF_0	void	No compiled entry; retain only as historical reference	DONE
+gimp_mypaint_core_set_last_coords	app/paint/gimpmypaintcore.cpp:417	-	DISABLED_IF_0	void	No compiled entry; retain only as historical reference	DONE
+gimp_mypaint_core_get_last_coords	app/paint/gimpmypaintcore.cpp:427	-	DISABLED_IF_0	void	No compiled entry; retain only as historical reference	DONE
+gimp_mypaint_core_round_line	app/paint/gimpmypaintcore.cpp:451	-	DISABLED_IF_0	void	No compiled entry; retain only as historical reference	DONE
+gimp_mypaint_core_undo_class_init	app/paint/gimpmypaintcoreundo.cpp:62	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_core_undo_init	app/paint/gimpmypaintcoreundo.cpp:82	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_core_undo_constructed	app/paint/gimpmypaintcoreundo.cpp:87	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_core_undo_set_property	app/paint/gimpmypaintcoreundo.cpp:97	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_core_undo_get_property	app/paint/gimpmypaintcoreundo.cpp:117	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_core_undo_pop	app/paint/gimpmypaintcoreundo.cpp:137	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_core_undo_free	app/paint/gimpmypaintcoreundo.cpp:152	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_class_init	app/paint/gimpmypaintoptions.cpp:101	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_init	app/paint/gimpmypaintoptions.cpp:164	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_dispose	app/paint/gimpmypaintoptions.cpp:211	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_finalize	app/paint/gimpmypaintoptions.cpp:219	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_set_property	app/paint/gimpmypaintoptions.cpp:231	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_get_property	app/paint/gimpmypaintoptions.cpp:280	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_new	app/paint/gimpmypaintoptions.cpp:334	app/paint/gimpmypaintoptions.h:70	C_HEADER_ENTRY	GimpMypaintOptions *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_options_get_brush_mode	app/paint/gimpmypaintoptions.cpp:347	app/paint/gimpmypaintoptions.h:73	C_HEADER_ENTRY	GimpMypaintBrushMode	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_options_copy_brush_props	app/paint/gimpmypaintoptions.cpp:358	app/paint/gimpmypaintoptions.h:78	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_options_mypaint_brush_changed	app/paint/gimpmypaintoptions.cpp:382	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_brush_changed	app/paint/gimpmypaintoptions.cpp:428	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_prop_brushmark_updated	app/paint/gimpmypaintoptions.cpp:446	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_texture_changed	app/paint/gimpmypaintoptions.cpp:481	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_prop_texture_updated	app/paint/gimpmypaintoptions.cpp:499	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_options_get_current_brush	app/paint/gimpmypaintoptions.cpp:533	app/paint/gimpmypaintoptions.h:76	C_HEADER_ENTRY	GimpMypaintBrush*	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_options_set_mapping_point	app/paint/gimpmypaintoptions.cpp:539	app/paint/gimpmypaintoptions.h:82	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_options_get_mapping_point	app/paint/gimpmypaintoptions.cpp:571	app/paint/gimpmypaintoptions.h:89	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_options_is_ready	app/paint/gimpmypaintoptions.cpp:606	app/paint/gimpmypaintoptions.h:96	C_HEADER_ENTRY	gboolean	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_json_resource_get_type	app/presets/gimpjsonresource.cpp:215	app/presets/gimpjsonresource.h:54	C_HEADER_ENTRY	// C compatibility functions	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_json_resource_new	app/presets/gimpjsonresource.cpp:219	app/presets/gimpjsonresource.h:55	C_HEADER_ENTRY	}	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_bucket_fill_brush_register	app/tools/gimpbucketfillbrushtool.cpp:461	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_bucket_fill_brush_tool_register	app/tools/gimpbucketfillbrushtool.cpp:490	app/tools/gimpbucketfillbrushtool.h:50	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_bucket_fill_brush_tool_class_init	app/tools/gimpbucketfillbrushtool.cpp:528	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_bucket_fill_brush_tool_init	app/tools/gimpbucketfillbrushtool.cpp:533	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_bucket_fill_brush_options_gui	app/tools/gimpbucketfillbrushtool.cpp:552	-	FILE_LOCAL_STATIC	static GtkWidget *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_bucket_fill_brush_options_gui_horizontal	app/tools/gimpbucketfillbrushtool.cpp:558	-	FILE_LOCAL_STATIC	static GtkWidget *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_bucket_fill_brush_options_gui_full	app/tools/gimpbucketfillbrushtool.cpp:564	-	FILE_LOCAL_STATIC	static GtkWidget *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_image_generator_options_get_type	app/tools/gimpimagegeneratortool.cpp:137	app/tools/gimpimagegeneratortool.cpp:94	LOCAL_C_DECLARED_GET_TYPE		C linkage via local extern C declaration; verify GType registration	DONE
+gimp_image_generator_options_gui	app/tools/gimpimagegeneratortool.cpp:399	-	FILE_LOCAL_STATIC	static GtkWidget *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_image_generator_options_gui_horizontal	app/tools/gimpimagegeneratortool.cpp:405	-	FILE_LOCAL_STATIC	static GtkWidget *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_image_generator_options_gui_full	app/tools/gimpimagegeneratortool.cpp:411	-	FILE_LOCAL_STATIC	static GtkWidget *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_image_generator_tool_register	app/tools/gimpimagegeneratortool.cpp:437	app/tools/gimpimagegeneratortool.h:48	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_image_generator_tool_get_type	app/tools/gimpimagegeneratortool.cpp:472	app/tools/gimpimagegeneratortool.h:51	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_button_with_popup	app/tools/gimpmypaintbrushoptions-gui.cpp:325	app/tools/gimpmypaintbrushoptions-gui.h:21	C_HEADER_ENTRY	GtkWidget*	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_options_gui	app/tools/gimpmypaintoptions-gui.cpp:543	app/tools/gimpmypaintoptions-gui.h:22	C_HEADER_ENTRY	GtkWidget *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_options_gui_horizontal	app/tools/gimpmypaintoptions-gui.cpp:573	app/tools/gimpmypaintoptions-gui.h:23	C_HEADER_ENTRY	GtkWidget *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_tool_class_init	app/tools/gimpmypainttool.cpp:123	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_init	app/tools/gimpmypainttool.cpp:144	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_constructed	app/tools/gimpmypainttool.cpp:169	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_finalize	app/tools/gimpmypainttool.cpp:198	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_enable_color_picker	app/tools/gimpmypainttool.cpp:222	app/tools/gimpmypainttool.h:69	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_tool_control	app/tools/gimpmypainttool.cpp:233	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_button_press	app/tools/gimpmypainttool.cpp:255	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_button_release	app/tools/gimpmypainttool.cpp:340	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_motion	app/tools/gimpmypainttool.cpp:372	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_motion_internal	app/tools/gimpmypainttool.cpp:383	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_modifier_key	app/tools/gimpmypainttool.cpp:505	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_cursor_update	app/tools/gimpmypainttool.cpp:552	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_oper_update	app/tools/gimpmypainttool.cpp:597	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_draw	app/tools/gimpmypainttool.cpp:756	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_hard_notify	app/tools/gimpmypainttool.cpp:803	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_tool_register	app/tools/gimpmypainttool.cpp:813	app/tools/gimpmypainttool.h:72	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_perspective_guide_options_get_type	app/tools/gimpperspectiveguidetool.cpp:137	app/tools/gimpperspectiveguidetool.cpp:96	LOCAL_C_DECLARED_GET_TYPE		C linkage via local extern C declaration; verify GType registration	DONE
+gimp_perspective_guide_options_gui_full	app/tools/gimpperspectiveguidetool.cpp:582	-	FILE_LOCAL_STATIC	static GtkWidget *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_perspective_guide_options_gui	app/tools/gimpperspectiveguidetool.cpp:612	-	FILE_LOCAL_STATIC	static GtkWidget *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_perspective_guide_options_gui_horizontal	app/tools/gimpperspectiveguidetool.cpp:618	-	FILE_LOCAL_STATIC	static GtkWidget *	File-local function; inspect callback registration or C++ caller	DONE
+gimp_perspective_guide_tool_register	app/tools/gimpperspectiveguidetool.cpp:627	app/tools/gimpperspectiveguidetool.h:50	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_perspective_guide_tool_get_type	app/tools/gimpperspectiveguidetool.cpp:662	app/tools/gimpperspectiveguidetool.h:53	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_tool_options_button_with_popup	app/tools/gimptooloptions-gui-cxx.cpp:45	app/tools/gimptooloptions-gui.h:61	SEPARATE_CPP_OVERLOAD	GtkWidget *	C++ helper; separate C implementation in gimptooloptions-gui.c:201	DONE
+gimp_tool_options_button_with_popup	app/tools/gimptooloptions-gui-cxx.hpp:31	app/tools/gimptooloptions-gui.h:61	SEPARATE_CPP_OVERLOAD	template<typename CXXType>	C++ helper; separate C implementation in gimptooloptions-gui.c:201	DONE
+gimp_cell_renderer_popup_get_type	app/widgets/gimpcellrendererpopup.cpp:341	app/widgets/gimpcellrendererpopup.h:48	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_cell_renderer_popup_new	app/widgets/gimpcellrendererpopup.cpp:342	app/widgets/gimpcellrendererpopup.h:50	C_HEADER_ENTRY	GType gimp_cell_renderer_popup_get_type() { return GLib::Class::Traits::get_type(); }	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_cell_renderer_popup_clicked	app/widgets/gimpcellrendererpopup.cpp:344	app/widgets/gimpcellrendererpopup.h:51	C_HEADER_ENTRY	void	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_editor_add_dropdown	app/widgets/gimpeditor-cxx.cpp:89	app/widgets/gimpeditor-cxx.h:16	C_HEADER_ENTRY	GtkWidget *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_editor_add_action_dropdown	app/widgets/gimpeditor-cxx.cpp:182	app/widgets/gimpeditor-cxx.h:26	C_HEADER_ENTRY	GtkWidget *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_layer_tile_view_get_type	app/widgets/gimplayertileview.cpp:1594	app/widgets/gimplayertileview.h:48	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_layer_tile_view_new	app/widgets/gimplayertileview.cpp:1595	app/widgets/gimplayertileview.h:50	C_HEADER_ENTRY	GType gimp_layer_tile_view_get_type() { return GLib::Class::Traits::get_type(); }	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_editor_class_init	app/widgets/gimpmypaintbrusheditor.cpp:95	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_editor_docked_iface_init	app/widgets/gimpmypaintbrusheditor.cpp:107	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_editor_init	app/widgets/gimpmypaintbrusheditor.cpp:120	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_editor_constructed	app/widgets/gimpmypaintbrusheditor.cpp:126	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_editor_set_data	app/widgets/gimpmypaintbrusheditor.cpp:249	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_editor_set_context	app/widgets/gimpmypaintbrusheditor.cpp:269	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_editor_new	app/widgets/gimpmypaintbrusheditor.cpp:284	app/widgets/gimpmypaintbrusheditor.h:54	C_HEADER_ENTRY	GtkWidget *	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_mypaint_brush_editor_update_mypaint_brush	app/widgets/gimpmypaintbrusheditor.cpp:308	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_editor_update_shape	app/widgets/gimpmypaintbrusheditor.cpp:364	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_mypaint_brush_editor_notify_mypaint_brush	app/widgets/gimpmypaintbrusheditor.cpp:389	-	FILE_LOCAL_STATIC	static void	File-local function; inspect callback registration or C++ caller	DONE
+gimp_tool_tile_view_get_type	app/widgets/gimptooltileview.cpp:600	app/widgets/gimptooltileview.h:48	C_HEADER_ENTRY		C header declaration to C++ definition; compare return type and owner	DONE
+gimp_tool_tile_view_new	app/widgets/gimptooltileview.cpp:601	app/widgets/gimptooltileview.h:50	C_HEADER_ENTRY	GType gimp_tool_tile_view_get_type() { return GLib::Class::Traits::get_type(); }	C header declaration to C++ definition; compare return type and owner	DONE
+gimp_popover_new	app/widgets/popupper.cpp:420	app/widgets/popupper.h:34	C_HEADER_ENTRY	"extern ""C"" {"	C header declaration to C++ definition; compare return type and owner	DONE

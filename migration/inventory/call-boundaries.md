@@ -25,6 +25,19 @@ status until the C declaration and C++ definition signatures are compared.
 header references and C source references. Of these, 65 have a header site
 and 32 have a C source site; a name can occur in both groups.
 
+`cpp-definition-review.tsv` classifies all 149 named C++ definition candidates
+at the legacy source revision. Run `python3 -B tools/audit_cpp_definitions.py`
+to regenerate it. Sixty-four definitions have a corresponding C header
+declaration. Two are the separate C++ popup-button overload, 71 are
+file-local `static` functions, and two are C++ template helpers. Eight
+historical MyPaint core definitions occur inside literal `#if 0` blocks and
+are not compiled. The remaining two options `get_type` definitions have
+local declarations inside `extern "C"` blocks in their translation units,
+but no matching header declaration in the candidate list. A `static`
+callback may still be passed to a C vfunc or signal; these rows are not
+automatically safe from callback signature and owner checks. The port also
+needs to verify the two locally declared GType entry registrations.
+
 `c-reference-review.tsv` classifies each of the 130 first-pass C/header
 references against its legacy source line. Run
 `python3 tools/audit_c_references.py` to regenerate it. The 80 header sites
