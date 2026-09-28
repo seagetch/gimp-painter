@@ -1,0 +1,31 @@
+legacy_site	operation	owner_expr	key_expr	value_expr	destroy_expr	syntax_role	status
+app/base/delegators.hpp:195	g_object_set_cxx_object	GObject* target	const gchar* key	T* object	-	HELPER_DEFINITION	DONE
+app/base/delegators.hpp:197	g_object_set_data_full	target	key	(gpointer)object	Delegators::destroy_cxx_object_callback<T>	HELPER_FORWARD	DONE
+app/base/delegators.hpp:201	g_object_set_cxx_object	GObject* target	const GQuark key	T* object	-	HELPER_DEFINITION	DONE
+app/base/delegators.hpp:203	g_object_set_qdata_full	target	key	(gpointer)object	Delegators::destroy_cxx_object_callback<T>	HELPER_FORWARD	DONE
+app/base/glib-cxx-utils.hpp:1127	g_object_set_cxx_object	G_OBJECT(this->widget)	attr.ptr()	this	-	OWNING_ATTACHMENT	DONE
+app/base/glib-cxx-utils.hpp:1142	g_object_get_data	G_OBJECT(widget)	attr.ptr()	-	-	BORROWED_READ	DONE
+app/base/glib-cxx-utils.hpp:1153	g_object_get_data	G_OBJECT(widget)	attr.ptr()	-	-	BORROWED_READ	DONE
+app/base/glib-cxx-utils.hpp:1170	g_object_steal_data	G_OBJECT(w)	attr.ptr()	-	-	TRANSFER_READ	DONE
+app/presets/preset-factory.cpp:97	g_object_get_data	obj	type_key	-	-	BORROWED_READ	DONE
+app/presets/preset-factory.cpp:101	g_object_set_cxx_object	obj	(const gchar*)type_key	extender	-	OWNING_ATTACHMENT	DONE
+app/tools/gimpbucketfillbrushtool.cpp:515	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-default-visible"""	GINT_TO_POINTER (TRUE)	-	BORROWED_ATTACHMENT	DONE
+app/tools/gimpbucketfillbrushtool.cpp:518	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-options-gui-func"""	(gpointer)gimp_bucket_fill_brush_options_gui	-	BORROWED_ATTACHMENT	DONE
+app/tools/gimpbucketfillbrushtool.cpp:521	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-options-gui-horizontal-func"""	(gpointer)gimp_bucket_fill_brush_options_gui_horizontal	-	BORROWED_ATTACHMENT	DONE
+app/tools/gimpimagegeneratortool.cpp:460	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-default-visible"""	GINT_TO_POINTER (TRUE)	-	BORROWED_ATTACHMENT	DONE
+app/tools/gimpimagegeneratortool.cpp:463	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-options-gui-func"""	(gpointer)gimp_image_generator_options_gui	-	BORROWED_ATTACHMENT	DONE
+app/tools/gimpimagegeneratortool.cpp:466	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-options-gui-horizontal-func"""	(gpointer)gimp_image_generator_options_gui_horizontal	-	BORROWED_ATTACHMENT	DONE
+app/tools/gimpmypaint-gui-base.hpp:107	g_object_set_cxx_object	G_OBJECT(widget)	"""behavior"""	this	-	OWNING_ATTACHMENT	DONE
+app/tools/gimpmypaintbrusheditor.cpp:139	g_object_set_cxx_object	G_OBJECT(tree_view)	"""behavior"""	this	-	OWNING_ATTACHMENT	DONE
+app/tools/gimpmypaintbrusheditor.cpp:821	g_object_set_cxx_object	G_OBJECT(brushsetting_vbox)	"""behavior-editor-private"""	this	-	OWNING_ATTACHMENT	DONE
+app/tools/gimpmypaintoptions-gui.cpp:518	g_object_set_cxx_object	G_OBJECT(vbox)	"""behavior-options-private"""	this	-	OWNING_ATTACHMENT	DONE
+app/tools/gimpmypainttool.cpp:188	g_object_set_cxx_object	object	"""paint-core"""	core	-	OWNING_ATTACHMENT	DONE
+app/tools/gimpperspectiveguidetool.cpp:650	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-default-visible"""	GINT_TO_POINTER (TRUE)	-	BORROWED_ATTACHMENT	DONE
+app/tools/gimpperspectiveguidetool.cpp:653	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-options-gui-func"""	(gpointer)gimp_perspective_guide_options_gui	-	BORROWED_ATTACHMENT	DONE
+app/tools/gimpperspectiveguidetool.cpp:656	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-options-gui-horizontal-func"""	(gpointer)gimp_perspective_guide_options_gui_horizontal	-	BORROWED_ATTACHMENT	DONE
+app/tools/gimptooloptions-gui-cxx.hpp:35	g_object_set_cxx_object	G_OBJECT(result)	"""behaviour"""	object	-	OWNING_ATTACHMENT	DONE
+app/tools/gimptooloptions-gui-cxx.hpp:47	g_object_set_cxx_object	G_OBJECT(target)	(const gchar*)object_id	this	-	OWNING_ATTACHMENT	DONE
+app/widgets/gimpeditor-cxx.cpp:208	g_object_get_qdata	G_OBJECT (action)	GIMP_HELP_ID	-	-	BORROWED_READ	DONE
+app/widgets/gimpeditor-cxx.cpp:257	g_object_set_data_full	G_OBJECT (button)	"""extended-actions"""	extended	(GDestroyNotify) gimp_editor_button_extended_actions_free	OWNING_ATTACHMENT	DONE
+app/widgets/gimplayertileview.cpp:382	g_object_get_qdata	G_OBJECT(action)	GIMP_HELP_ID	-	-	BORROWED_READ	DONE
+app/widgets/gimpmypaintbrusheditor.cpp:379	g_object_get_data	G_OBJECT (widget)	"""gimp-item-data"""	-	-	BORROWED_READ	DONE
