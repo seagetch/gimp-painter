@@ -45,6 +45,15 @@ matching `GType` declarations in legacy C headers, but have no textual
 definition in the 149-row candidate scan. These macro-generated entries
 must be included in the GIMP 3 type registration and linkage review.
 
+`c-entry-candidate-review.tsv` closes the 28 syntactic C entry candidates
+from the first pass. Twenty-three are compiled C header entries, two are
+compiled options `get_type` entries with local C declarations, and two rows
+are those local declarations themselves. The remaining C++ header declaration
+for `gimp_mypaint_core_round_line` points to a definition inside `#if 0`.
+Run `python3 -B tools/audit_c_entry_candidates.py` to regenerate this table.
+The old header declaration does not make the disabled MyPaint core routine a
+working migration requirement; any callers must be checked separately.
+
 `c-reference-review.tsv` classifies each of the 130 first-pass C/header
 references against its legacy source line. Run
 `python3 tools/audit_c_references.py` to regenerate it. The 80 header sites
