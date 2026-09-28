@@ -1,0 +1,7 @@
+legacy_binding	slot	legacy_header	legacy_signature	gimp3_header	gimp3_signature	classification	followup_task	status
+app/core/gimpclonelayerundo.cpp:74	pop	app/core/gimpundo.h:69	void(GimpUndo*,GimpUndoMode,GimpUndoAccumulator*)	app/core/gimpundo.h:70	void(GimpUndo*,GimpUndoMode,GimpUndoAccumulator*)	SAME_SIGNATURE	08.004	DONE
+app/display/gimpcanvasperspectiveguide.cpp:89	draw	app/display/gimpcanvasitem.h:52	void(GimpCanvasItem*,GimpDisplayShell*,cairo_t*)	app/display/gimpcanvasitem.h:55	void(GimpCanvasItem*,cairo_t*)	CHANGED_SIGNATURE	26.005	DONE
+app/display/gimpcanvasperspectiveguide.cpp:90	get_extents	app/display/gimpcanvasitem.h:55	cairo_region_t*(GimpCanvasItem*,GimpDisplayShell*)	app/display/gimpcanvasitem.h:57	cairo_region_t*(GimpCanvasItem*)	CHANGED_SIGNATURE	26.005	DONE
+app/presets/gimpjsonresource.cpp:101	save	app/core/gimpdata.h:61	gboolean(GimpData*,GError**)	app/core/gimpdata.h:63	gboolean(GimpData*,GOutputStream*,GError**)	CHANGED_SIGNATURE	28.002	DONE
+app/presets/gimpjsonresource.cpp:102	get_extension	app/core/gimpdata.h:63	const gchar*(GimpData*)	app/core/gimpdata.h:66	const gchar*(GimpData*)	SAME_SIGNATURE	28.002	DONE
+app/presets/gimpjsonresource.cpp:103	duplicate	app/core/gimpdata.h:64	GimpData*(GimpData*)	app/core/gimpdata.h:69	GimpData*(GimpData*)	SAME_SIGNATURE	28.002	DONE

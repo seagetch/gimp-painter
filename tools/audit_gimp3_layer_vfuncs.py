@@ -34,7 +34,7 @@ def header(slot):
 
 
 def signature(source, slot):
-    pattern = re.compile(r"(?m)^[ \t]*(?P<result>[A-Za-z_]\w*(?:\s*\*)?)\s*"
+    pattern = re.compile(r"(?m)^[ \t]*(?P<result>(?:const\s+)?[A-Za-z_]\w*(?:\s*\*)?)\s*"
                          r"\(\s*\*\s*" + re.escape(slot) +
                          r"\s*\)\s*\((?P<args>.*?)\)\s*;", re.S)
     matches = list(pattern.finditer(source))
