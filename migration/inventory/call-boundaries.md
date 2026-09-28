@@ -92,7 +92,19 @@ references and one commented-out declaration. The 50 C source sites contain
 commented-out calls. Of the direct calls, 39 target C++ entry names; the
 other two target the separate C implementation of the popup button helper.
 This classification covers the existing candidate list, not all C uses in
-the legacy tree. Caller argument types and owners still need inspection.
+the legacy tree. `DIRECT_CALL` here is a syntax role, including disabled
+preprocessor branches. Caller argument types and owners still need inspection.
+
+`c-direct-call-activity.tsv` checks the preprocessor state and full call
+expression of all 41 direct-call syntax candidates. Run
+`python3 -B tools/audit_c_direct_call_activity.py` to regenerate it. There
+are 33 active calls to C++ entries and two active calls to the separate C
+popup helper. Six C++ calls are disabled: three that would create initial
+Perspective Guide state in `gimpimage.c`, one alternative Tool Tile View,
+and two alternative action dropdowns in `gimpitemtreeview.c`. The latter two
+lie in `#else` branches under `#if 1`. These disabled call sites are historical
+references, not active caller requirements. The named features must still
+be checked against the complete legacy functionality inventory.
 
 `c-entry-signatures.tsv` pairs 66 C++ definitions and header declarations
 covering 65 names. It records both parameter lists and whether a C linkage

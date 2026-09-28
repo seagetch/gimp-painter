@@ -121,10 +121,10 @@
 | 01.002 | [x] | 変更 hunk 台帳を作る | 01.001 | 各 hunk に機能・基盤・生成物・資産の分類欄を持たせる。子チェック 2,489 件は `migration/inventory/changed-hunks.tsv` に列挙（01.013 の機能割当は別作業） |
 | 01.003 | [x] | app 外の差分を分類する | 01.002 | libgimp、plug-ins、tools、po、data、build 等の各変更に処置を付与。子チェック 474 件は `migration/inventory/external-changes.tsv` に列挙 |
 | 01.004 | [x] | C++ 型と登録箇所を列挙する | 01.003 | NewGClass、DerivedFrom、UseCStructs、Interface、GType の対応を記録。子チェック 17 件は `migration/inventory/cpp-types.tsv` に列挙 |
-| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 683 件、C/ヘッダー参照 130 件（C 側の関数ポインター登録 6 件と XCF 直接呼出し 9 件は保持・呼出し先まで追跡）、C 入口構文候補 28 件、C++ 定義候補 149 件、マクロ生成 GType 入口 6 件、extern C scope 69 件、関数ポインター構文 34 件、class 代入 63 件、Binder 候補 92 件、callback 登録候補 94 件、signal wrapper 接続 47 件、delegator 候補 107 件、別走査の property accessor 44 出現を分類。署名対照 66 組、うち未保護ヘッダー 28 組と C++ 入口の引数・戻り値各 64 組、共通 bridge 9 経路を確認済み。残りを精査中 |
+| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 683 件、C/ヘッダー参照 130 件（関数ポインター登録 6 件と XCF 直接呼出し 9 件は保持・呼出し先まで追跡、直接呼出し構文 41 件は有効 35・無効 6 に分離）、C 入口構文候補 28 件、C++ 定義候補 149 件、マクロ生成 GType 入口 6 件、extern C scope 69 件、関数ポインター構文 34 件、class 代入 63 件、Binder 候補 92 件、callback 登録候補 94 件、signal wrapper 接続 47 件、delegator 候補 107 件、別走査の property accessor 44 出現を分類。署名対照 66 組、うち未保護ヘッダー 28 組と C++ 入口の引数・戻り値各 64 組、共通 bridge 9 経路を確認済み。残りを精査中 |
 | 01.005/bridge-core | [x] | NewGClass と Delegator の共通境界を確定する | 01.004 | C ABI callback・登録・破棄・vfunc の 9 経路を旧版の出典行と移植時の確認事項に対応付ける（`migration/inventory/bridge-boundary-findings.tsv`） |
 | 01.005/c-linkage | [x] | C 入口候補の未保護ヘッダーを分類する | 01.004 | 28 組のうちヘッダーを extern C 内で読み込む 25 組、定義を extern C 内に置く 1 組、別シグネチャの C++ overload 2 組を旧版の行番号付きで記録（`migration/inventory/c-linkage-review.tsv`） |
-| 01.005/c-references | [x] | C とヘッダーの参照候補を用途別に分類する | 01.004 | 130 件を旧版の行と照合し、C の直接呼び出し 41、関数ポインター登録 6、C 定義 1、コメント 2、ヘッダーの宣言 65、マクロ 11、テンプレート 3、コメント 1 に分類（`migration/inventory/c-reference-review.tsv`） |
+| 01.005/c-references | [x] | C とヘッダーの参照候補を用途別に分類する | 01.004 | 130 件を旧版の行と照合し、C の直接呼び出し構文 41、関数ポインター登録 6、C 定義 1、コメント 2、ヘッダーの宣言 65、マクロ 11、テンプレート 3、コメント 1 に分類（`migration/inventory/c-reference-review.tsv`）。直接呼出しの有効性は別子で照合 |
 | 01.005/c-parameters | [x] | C 入口の引数表記を照合する | 01.004 | C++ 定義と対応するヘッダー宣言 64 組で、正規化後に一致 61、仮引数名のみ差 2、`guint` と `guint32` の型表記差 1 を記録（`migration/inventory/c-parameter-review.tsv`）。型の ABI 判定と戻り値の照合は別途必要 |
 | 01.005/extern-c | [x] | extern C の scope を分類する | 01.004 | 旧 C++ の 69 scope で開閉行を照合し、ヘッダー読み込み 55、関数定義候補 9、両方 3、局所 GObject 型宣言 2 を記録（`migration/inventory/extern-c-block-review.tsv`） |
 | 01.005/function-pointers | [x] | 関数ポインター構文を分類する | 01.004 | 候補 34 件を旧版の行と照合し、宣言・引数 13、間接呼び出し 21 に分類（`migration/inventory/function-pointer-review.tsv`）。呼出し先・所有権は別途追跡 |
@@ -140,6 +140,7 @@
 | 01.005/c-entry-candidates | [x] | C 入口の構文候補を実定義と照合する | 01.005/cpp-definitions | 28 件を C ヘッダー対応の有効な定義 23、局所 C 宣言付き GType 定義 2、その局所宣言 2、`#if 0` 内の MyPaint core 定義に対応する C++ ヘッダー宣言 1 に分類（`migration/inventory/c-entry-candidate-review.tsv`） |
 | 01.005/c-pointer-registrations | [x] | C 側の関数ポインター登録から利用先まで追う | 01.005/c-references | 6 件のうち factory が保持する資源 callback 2 件、渡された callback を同期呼出しするツール 1 件、独自登録へ直接進むツール 3 件の typedef・保持・呼出し箇所を記録（`migration/inventory/c-pointer-registration-review.tsv`）。資源オブジェクトの返却所有権は移植時に確認 |
 | 01.005/xcf-c-entries | [x] | 旧 XCF の C→C++ 境界を追う | 01.005/c-references | XCF reader の直接呼出し 6 件と writer の 3 件について返却値・参照・副作用を照合し、CloneLayer の名前遅延解決と FilterLayer 引数のコピー・解放要件を記録（`migration/inventory/xcf-c-entry-review.tsv`）。旧 writer の引数コピー未解放と null source 参照は移植時に修正 |
+| 01.005/c-direct-call-activity | [x] | C の直接呼出し候補を有効・無効に分類する | 01.005/c-references | 41 構文候補のうち C++ 入口への有効呼出し 33、別 C 実装への有効呼出し 2、`#if 0` / `#if 1` の反対分岐にある無効呼出し 6 を分離し、ガード行と呼出し式を記録（`migration/inventory/c-direct-call-activity.tsv`） |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |

@@ -1,0 +1,42 @@
+symbol	c_site	target_kind	compile_state	disabled_guard	call_expression	status
+gimp_clone_layer_new	app/actions/layers-commands.c:430	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	"gimp_clone_layer_new (image, GIMP_LAYER (layer), 0, 0, layer_name ? layer_name : _(""Clone Layer""), 1.0, GIMP_NORMAL_MODE)"	DONE
+gimp_filter_layer_new	app/actions/layers-commands.c:1108	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_filter_layer_new (dialog->image, dialog->xsize, dialog->ysize, layer_name, GIMP_OPACITY_OPAQUE, GIMP_REPLACE_MODE)	DONE
+gimp_mypaint_brush_get_standard	app/core/gimpcontext.c:1758	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_mypaint_brush_get_standard (src)	DONE
+gimp_mypaint_brush_get_standard	app/core/gimpcontext.c:3452	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_mypaint_brush_get_standard (context)	DONE
+gimp_mypaint_brush_get_standard	app/core/gimpcontext.c:3485	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_mypaint_brush_get_standard (context)	DONE
+gimp_mypaint_brush_get_standard	app/core/gimpcontext.c:3511	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_mypaint_brush_get_standard (context)	DONE
+gimp_clone_layer_get_source	app/core/gimpgrouplayer.c:502	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_clone_layer_get_source(clone_layer)	DONE
+gimp_clone_layer_set_source	app/core/gimpgrouplayer.c:506	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_clone_layer_set_source (clone_layer, source_in_refs)	DONE
+gimp_perspective_guide_new	app/core/gimpimage.c:791	CPP_ENTRY	DISABLED_BY_PREPROCESSOR	app/core/gimpimage.c:787	gimp_perspective_guide_new(0)	DONE
+gimp_perspective_guide_add_vanish_points	app/core/gimpimage.c:795	CPP_ENTRY	DISABLED_BY_PREPROCESSOR	app/core/gimpimage.c:787	gimp_perspective_guide_add_vanish_points (guide, px, py)	DONE
+gimp_perspective_guide_add_vanish_points	app/core/gimpimage.c:798	CPP_ENTRY	DISABLED_BY_PREPROCESSOR	app/core/gimpimage.c:787	gimp_perspective_guide_add_vanish_points (guide, px, py)	DONE
+gimp_mypaint_brush_editor_new	app/dialogs/dialogs-constructors.c:813	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_mypaint_brush_editor_new (context, gimp_dialog_factory_get_menu_factory (factory))	DONE
+gimp_display_shell_update_on_canvas_views	app/display/gimpdisplayshell-callbacks.c:217	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_display_shell_update_on_canvas_views (shell)	DONE
+gimp_perspective_guide_get_vanish_point_length	app/display/gimpdisplayshell-tool-events.c:180	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_perspective_guide_get_vanish_point_length (guide)	DONE
+gimp_perspective_guide_get_vanish_points	app/display/gimpdisplayshell-tool-events.c:209	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_perspective_guide_get_vanish_points (guide, 0, &p1x, &p1y)	DONE
+gimp_perspective_guide_get_vanish_points	app/display/gimpdisplayshell-tool-events.c:210	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_perspective_guide_get_vanish_points (guide, 1, &p2x, &p2y)	DONE
+gimp_perspective_guide_get_vanish_points	app/display/gimpdisplayshell-tool-events.c:228	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_perspective_guide_get_vanish_points (guide, i, &px, &py)	DONE
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-tool-events.c:268	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_display_shell_update_on_canvas_opacity (shell,display_coords->x, display_coords->y, FALSE)	DONE
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-tool-events.c:938	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_display_shell_update_on_canvas_opacity (shell, display_coords.x, display_coords.y, TRUE)	DONE
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-tool-events.c:1232	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_display_shell_update_on_canvas_opacity (shell, display_coords.x, display_coords.y, FALSE)	DONE
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-tool-events.c:1268	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_display_shell_update_on_canvas_opacity (shell,display_coords.x, display_coords.y, FALSE)	DONE
+gimp_display_shell_update_on_canvas_views	app/display/gimpdisplayshell-tool-events.c:1560	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_display_shell_update_on_canvas_views (shell)	DONE
+gimp_tool_tile_view_new	app/display/gimpimagewindow.c:1363	CPP_ENTRY	DISABLED_BY_PREPROCESSOR	app/display/gimpimagewindow.c:1362	gimp_tool_tile_view_new ()	DONE
+gimp_display_shell_detach_on_canvas_view	app/display/gimpimagewindow.c:1406	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_display_shell_detach_on_canvas_view(shell, shell->canvas, private->right_docks)	DONE
+gimp_display_shell_detach_on_canvas_view	app/display/gimpimagewindow.c:2093	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_display_shell_detach_on_canvas_view(private->active_shell, private->active_shell->canvas, private->right_docks)	DONE
+gimp_display_shell_attach_on_canvas_view	app/display/gimpimagewindow.c:2108	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_display_shell_attach_on_canvas_view (private->active_shell, private->right_docks)	DONE
+gimp_tool_options_button_with_popup	app/tools/gimpbrushoptions-gui.c:768	C_IMPLEMENTATION	ACTIVE_C_IMPLEMENTATION	-	gimp_tool_options_button_with_popup (config, label_widget, create_brush_popup_dialog, p, brush_dialog_private_destroy)	DONE
+gimp_tool_options_button_with_popup	app/tools/gimpdynamicsoptions-gui.c:381	C_IMPLEMENTATION	ACTIVE_C_IMPLEMENTATION	-	gimp_tool_options_button_with_popup (config, label_widget, create_dynamics_popup_dialog, p, dynamics_dialog_private_destroy)	DONE
+gimp_cell_renderer_popup_clicked	app/widgets/gimpcontainertreeview.c:1187	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_cell_renderer_popup_clicked (GIMP_CELL_RENDERER_POPUP(misc_cell), G_OBJECT(widget), path_str, &background_area)	DONE
+gimp_editor_add_action_dropdown	app/widgets/gimpitemtreeview.c:426	CPP_ENTRY	DISABLED_BY_PREPROCESSOR	app/widgets/gimpitemtreeview.c:424	"gimp_editor_add_action_dropdown (editor, ""gimp-layer-preset-list"", item_view_class->action_group, item_view_class->new_action, item_view_class->new_default_action, GDK_SHIFT_MASK, NULL)"	DONE
+gimp_editor_add_action_dropdown	app/widgets/gimpitemtreeview.c:462	CPP_ENTRY	DISABLED_BY_PREPROCESSOR	app/widgets/gimpitemtreeview.c:460	"gimp_editor_add_action_dropdown (editor, ""gimp-layer-preset-list"", item_view_class->action_group, item_view_class->duplicate_action, NULL)"	DONE
+gimp_cell_renderer_popup_new	app/widgets/gimplayertreeview.c:354	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_cell_renderer_popup_new()	DONE
+gimp_filter_layer_new	app/xcf/xcf-load.c:1019	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_filter_layer_new (image, width, height, layer_name, opacity, mode)	DONE
+gimp_filter_layer_mark_as_loaded	app/xcf/xcf-load.c:1020	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_filter_layer_mark_as_loaded(filter)	DONE
+gimp_filter_layer_set_procedure	app/xcf/xcf-load.c:1048	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_filter_layer_set_procedure (GIMP_FILTER_LAYER(filter), filter_name, proc_args)	DONE
+gimp_clone_layer_new	app/xcf/xcf-load.c:1082	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_clone_layer_new (image, NULL, width, height, layer_name, opacity, mode)	DONE
+gimp_clone_layer_set_source_by_name	app/xcf/xcf-load.c:1106	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_clone_layer_set_source_by_name (GIMP_CLONE_LAYER(cloned), target_name)	DONE
+gimp_clone_layer_get_source	app/xcf/xcf-load.c:2528	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_clone_layer_get_source (GIMP_CLONE_LAYER(layer))	DONE
+gimp_filter_layer_get_procedure	app/xcf/xcf-save.c:660	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_filter_layer_get_procedure (filter_layer)	DONE
+gimp_filter_layer_get_procedure_args	app/xcf/xcf-save.c:661	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_filter_layer_get_procedure_args (filter_layer)	DONE
+gimp_clone_layer_get_source	app/xcf/xcf-save.c:666	CPP_ENTRY	ACTIVE_CPP_ENTRY	-	gimp_clone_layer_get_source (clone_layer)	DONE
