@@ -11,3 +11,5 @@
 | 所有権を取り出す参照 | 1 | `undecorate` が `steal_data` の返り値を `delete` する |
 
 `ComplexBindAction::bind_to_full` は `this` を対象の GObject と signal 名に由来するキーへ `set_cxx_object` で渡す。同じインスタンスが複数の格納先に登録される場合の二重破棄と、signal closure が参照する寿命を後続で検証する。`gimpmypainttool.cpp:188` は tool GObject が `paint-core` の C++ オブジェクトを所有する構造なので、core と tool の finalize 順序も検証する。`Decorator` は widget 側に所有権を置き、明示解除では steal 後に一度だけ delete する設計である。これらは旧版の契約の記録であり、GIMP 3 での安全性をまだ示さない。
+
+所有権を持つ 10 箇所の具体的な型、owner、破棄 callback、別の参照経路は `cpp-owning-data-review.tsv` に対応付けた。特に `CurveViewActions` は tree_view が所有する一方で tree selection、toggle、options、adjustment に raw `this` を登録し、空の destructor ではそれらを切断しない。`ComplexBindAction` の保持は対象 GObject の data による一回の delete を想定しているが、`PageRemindAction::bind_to` は signal 登録のみで data に格納しない。後続の `01.008` と機能タスクで接続ごとの解除・多重登録・破棄順を実装し、破棄中の callback 発火を検証する。
