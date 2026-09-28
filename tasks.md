@@ -147,6 +147,7 @@
 | 01.005/candidate-coverage | [x] | 一次候補と分類結果の全件照合を自動化する | 01.005/deferred-sources, 01.005/fill-brush-boundary, 01.005/non-xcf-c-calls | C++ 683 件と C/ヘッダー 130 件を分類済み行に一対一照合し、直接呼出し 33 件、登録 6 件と別走査の項目も検査（`migration/inventory/call-boundary-coverage.md`） |
 | 01.005/missed-c-entries | [x] | 正規表現に拾われない C 公開入口と呼出しを照合する | 01.005/candidate-coverage | 旧 app の 2,051 C/C++ ソース・ヘッダーを逆引きし、非 gimp_ C 公開入口 4 件、C 直接呼出し 3 件、C callback 登録 1 件、static callback 1 件を発見・分類（`migration/inventory/non-gimp-c-entry-review.tsv`）。C++ 専用工場 2 件と既存 GType マクロ生成 6 件も照合し後続機能タスクへ割当 |
 | 01.005/indirect-callback-owners | [ ] | 間接関数ポインターの呼出し先・所有権を確定する | 01.005/candidate-coverage | 34 候補と新規の preset action-group static callback のうち実際の callback を受け渡す経路を typedef・保持者・解放・呼出し箇所まで分類 |
+| 01.005/preset-action-factory-owner | [x] | preset action-group の間接 callback 保持者を追う | 01.005/missed-c-entries | 旧 factory の setup/update 関数ポインター保持・呼出し・解放と現行の group キャッシュを照合（`migration/inventory/preset-action-factory-callback.md`）。移植の実装は 28.014/preset-action-group |
 | 01.005/gimp3-vfunc-contract | [ ] | 旧 vfunc と現行 GIMP 3 slot の署名・寿命を照合する | 01.005/candidate-coverage | 40 class callback と 71 binding の実 slot・引数・戻り値・例外境界を対象ごとの子チェックに分けて記録 |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
@@ -839,7 +840,7 @@
 | 28.014 | [ ] | preset 選択 UI を接続する | 28.013 | 旧導線から適用可能 |
 | 28.014/preset-preferences | [ ] | preset 設定ページ入口を移植する | 28.013, 04.004 | C 側でページを構築し返却 GArray を処理後に参照解放する |
 | 28.014/preset-dialog-actions | [ ] | preset ダイアログアクションを移植する | 28.013, 04.004 | エントリが NULL の場合に参照せず、空配列も安全に登録する |
-| 28.014/preset-action-group | [ ] | preset action-group 登録 callback を移植する | 28.013, 04.004 | entry/update の C ABI と登録者の寿命・解除を確認する |
+| 28.014/preset-action-group | [ ] | preset action-group 登録 callback を移植する | 28.013, 04.004, 01.005/preset-action-factory-owner | entry/update の C ABI と登録者の寿命・解除、現行 get_group/delete_group のキャッシュと初期化順を確認する |
 | 28.015 | [ ] | preset 生成後の保存を試験する | 28.014 | 再読込して source 編集・filter 再評価が可能 |
 
 ### 29 キャンバス UI と tile view
