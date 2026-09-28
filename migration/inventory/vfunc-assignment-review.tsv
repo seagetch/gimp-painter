@@ -1,0 +1,64 @@
+assignment_site	receiver	slot	assigned_value	role	target_definition	port_check	status
+app/base/glib-cxx-impl.hpp:252	G_OBJECT_CLASS(klass)	set_property	GClassWrapper::set_property	BRIDGE_CALLBACK	app/base/glib-cxx-impl.hpp:185	Replace catch-all process exit with a defined C ABI error path	DONE
+app/base/glib-cxx-impl.hpp:258	G_OBJECT_CLASS(klass)	get_property	GClassWrapper::get_property	BRIDGE_CALLBACK	app/base/glib-cxx-impl.hpp:216	Replace catch-all process exit with a defined C ABI error path	DONE
+app/base/glib-cxx-impl.hpp:443	G_OBJECT_CLASS(klass)	finalize	instance_finalize	BRIDGE_CALLBACK	app/base/glib-cxx-impl.hpp:413	Verify lifecycle ordering, parent chaining and exception containment	DONE
+app/core/gimpclonelayer.cpp:214	klass	default_stock_id	"""gtk-copy"""	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpclonelayer.cpp:229	klass	default_name	"_(""Clone Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpclonelayer.cpp:230	klass	rename_desc	"C_(""undo-type"", ""Rename Clone Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpclonelayer.cpp:231	klass	translate_desc	"C_(""undo-type"", ""Move Clone Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpclonelayer.cpp:232	klass	scale_desc	"C_(""undo-type"", ""Scale Clone Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpclonelayer.cpp:233	klass	resize_desc	"C_(""undo-type"", ""Resize Clone Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpclonelayer.cpp:234	klass	flip_desc	"C_(""undo-type"", ""Flip Clone Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpclonelayer.cpp:235	klass	rotate_desc	"C_(""undo-type"", ""Rotate Clone Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpclonelayer.cpp:236	klass	transform_desc	"C_(""undo-type"", ""Transform Clone Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpfilterlayer.cpp:263	klass	default_stock_id	"""gimp-display-filter"""	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpfilterlayer.cpp:275	klass	default_name	"_(""Filter Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpfilterlayer.cpp:276	klass	rename_desc	"C_(""undo-type"", ""Rename Filter Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpfilterlayer.cpp:277	klass	translate_desc	"C_(""undo-type"", ""Move Filter Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpfilterlayer.cpp:278	klass	scale_desc	"C_(""undo-type"", ""Scale Filter Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpfilterlayer.cpp:279	klass	resize_desc	"C_(""undo-type"", ""Resize Filter Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpfilterlayer.cpp:280	klass	flip_desc	"C_(""undo-type"", ""Flip Filter Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpfilterlayer.cpp:281	klass	rotate_desc	"C_(""undo-type"", ""Rotate Filter Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpfilterlayer.cpp:282	klass	transform_desc	"C_(""undo-type"", ""Transform Filter Layer"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpmypaintbrush.cpp:117	object_class	finalize	gimp_mypaint_brush_finalize	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:151	Verify lifecycle ordering, parent chaining and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:118	object_class	get_property	gimp_mypaint_brush_get_property	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:181	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:119	object_class	set_property	gimp_mypaint_brush_set_property	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:165	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:121	gimp_object_class	get_memsize	gimp_mypaint_brush_get_memsize	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:197	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:123	viewable_class	default_stock_id	"""gimp-tool-mypaint-brush"""	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/core/gimpmypaintbrush.cpp:124	viewable_class	get_size	gimp_mypaint_brush_get_size	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:211	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:125	viewable_class	get_new_preview	gimp_mypaint_brush_get_new_preview	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:224	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:126	viewable_class	get_description	gimp_mypaint_brush_get_description	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:247	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:128	data_class	dirty	gimp_mypaint_brush_dirty	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:258	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:129	data_class	get_extension	gimp_mypaint_brush_get_extension	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:275	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:130	data_class	save	gimp_mypaint_brush_save	CROSS_FILE_CALLBACK	app/core/gimpmypaintbrush-save.cpp:101	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:132	klass	begin_use	gimp_mypaint_brush_real_begin_use	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:281	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:133	klass	end_use	gimp_mypaint_brush_real_end_use	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:286	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:134	klass	select_mypaint_brush	gimp_mypaint_brush_real_select_mypaint_brush	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:291	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:135	klass	want_null_motion	gimp_mypaint_brush_real_want_null_motion	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:299	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/core/gimpmypaintbrush.cpp:141	iface	get_checksum	gimp_mypaint_brush_get_checksum	LOCAL_CALLBACK	app/core/gimpmypaintbrush.cpp:307	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/paint/gimpmypaintcoreundo.cpp:67	object_class	constructed	gimp_mypaint_core_undo_constructed	LOCAL_CALLBACK	app/paint/gimpmypaintcoreundo.cpp:87	Verify lifecycle ordering, parent chaining and exception containment	DONE
+app/paint/gimpmypaintcoreundo.cpp:68	object_class	set_property	gimp_mypaint_core_undo_set_property	LOCAL_CALLBACK	app/paint/gimpmypaintcoreundo.cpp:97	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/paint/gimpmypaintcoreundo.cpp:69	object_class	get_property	gimp_mypaint_core_undo_get_property	LOCAL_CALLBACK	app/paint/gimpmypaintcoreundo.cpp:117	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/paint/gimpmypaintcoreundo.cpp:71	undo_class	pop	gimp_mypaint_core_undo_pop	LOCAL_CALLBACK	app/paint/gimpmypaintcoreundo.cpp:137	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/paint/gimpmypaintcoreundo.cpp:72	undo_class	free	gimp_mypaint_core_undo_free	LOCAL_CALLBACK	app/paint/gimpmypaintcoreundo.cpp:152	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/paint/gimpmypaintoptions.cpp:105	object_class	dispose	gimp_mypaint_options_dispose	LOCAL_CALLBACK	app/paint/gimpmypaintoptions.cpp:211	Verify lifecycle ordering, parent chaining and exception containment	DONE
+app/paint/gimpmypaintoptions.cpp:106	object_class	finalize	gimp_mypaint_options_finalize	LOCAL_CALLBACK	app/paint/gimpmypaintoptions.cpp:219	Verify lifecycle ordering, parent chaining and exception containment	DONE
+app/paint/gimpmypaintoptions.cpp:107	object_class	set_property	gimp_mypaint_options_set_property	LOCAL_CALLBACK	app/paint/gimpmypaintoptions.cpp:231	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/paint/gimpmypaintoptions.cpp:108	object_class	get_property	gimp_mypaint_options_get_property	LOCAL_CALLBACK	app/paint/gimpmypaintoptions.cpp:280	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/tools/gimpbucketfillbrushtool.cpp:214	klass	handles_changing_brush	TRUE	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/tools/gimpbucketfillbrushtool.cpp:215	klass	handles_transforming_brush	TRUE	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/tools/gimpbucketfillbrushtool.cpp:216	klass	handles_dynamic_transforming_brush	TRUE	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/tools/gimpmypainttool.cpp:129	object_class	constructed	gimp_mypaint_tool_constructed	LOCAL_CALLBACK	app/tools/gimpmypainttool.cpp:169	Verify lifecycle ordering, parent chaining and exception containment	DONE
+app/tools/gimpmypainttool.cpp:130	object_class	finalize	gimp_mypaint_tool_finalize	LOCAL_CALLBACK	app/tools/gimpmypainttool.cpp:198	Verify lifecycle ordering, parent chaining and exception containment	DONE
+app/tools/gimpmypainttool.cpp:132	tool_class	control	gimp_mypaint_tool_control	LOCAL_CALLBACK	app/tools/gimpmypainttool.cpp:233	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/tools/gimpmypainttool.cpp:133	tool_class	button_press	gimp_mypaint_tool_button_press	LOCAL_CALLBACK	app/tools/gimpmypainttool.cpp:255	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/tools/gimpmypainttool.cpp:134	tool_class	button_release	gimp_mypaint_tool_button_release	LOCAL_CALLBACK	app/tools/gimpmypainttool.cpp:340	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/tools/gimpmypainttool.cpp:135	tool_class	motion	gimp_mypaint_tool_motion	LOCAL_CALLBACK	app/tools/gimpmypainttool.cpp:372	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/tools/gimpmypainttool.cpp:136	tool_class	modifier_key	gimp_mypaint_tool_modifier_key	LOCAL_CALLBACK	app/tools/gimpmypainttool.cpp:505	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/tools/gimpmypainttool.cpp:137	tool_class	cursor_update	gimp_mypaint_tool_cursor_update	LOCAL_CALLBACK	app/tools/gimpmypainttool.cpp:552	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/tools/gimpmypainttool.cpp:138	tool_class	oper_update	gimp_mypaint_tool_oper_update	LOCAL_CALLBACK	app/tools/gimpmypainttool.cpp:597	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/tools/gimpmypainttool.cpp:140	draw_tool_class	draw	gimp_mypaint_tool_draw	LOCAL_CALLBACK	app/tools/gimpmypainttool.cpp:756	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/widgets/gimpmypaintbrusheditor.cpp:100	object_class	constructed	gimp_mypaint_brush_editor_constructed	LOCAL_CALLBACK	app/widgets/gimpmypaintbrusheditor.cpp:126	Verify lifecycle ordering, parent chaining and exception containment	DONE
+app/widgets/gimpmypaintbrusheditor.cpp:102	editor_class	set_data	gimp_mypaint_brush_editor_set_data	LOCAL_CALLBACK	app/widgets/gimpmypaintbrusheditor.cpp:249	Verify GIMP 3 slot signature, owner and exception containment	DONE
+app/widgets/gimpmypaintbrusheditor.cpp:103	editor_class	title	"_(""Mypaint Brush Editor"")"	CLASS_METADATA	-	Preserve class metadata, not a callback ABI	DONE
+app/widgets/gimpmypaintbrusheditor.cpp:116	iface	set_context	gimp_mypaint_brush_editor_set_context	LOCAL_CALLBACK	app/widgets/gimpmypaintbrusheditor.cpp:269	Verify GIMP 3 slot signature, owner and exception containment	DONE

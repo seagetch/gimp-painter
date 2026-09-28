@@ -97,6 +97,18 @@ indirect calls. Run `python3 tools/audit_function_pointers.py` to verify the
 legacy source lines. This is a syntax classification; the pointed-to function,
 its C ABI, lifetime and callback ownership remain to be traced.
 
+`vfunc-assignment-review.tsv` maps the 63 direct class-field assignment
+candidates to receiver, slot and value. Run
+`python3 -B tools/audit_vfunc_assignments.py` to regenerate it. Twenty-three
+assignments are metadata (labels, icons or flags), while 40 assign callbacks:
+36 target a definition in the same C++ file, one targets the separate
+MyPaint brush save source, and three target the generic GObject bridge.
+`GClassWrapper::set_property` and `get_property` catch all exceptions and
+call `exit(1)` in the legacy bridge. The GIMP 3 trampoline must define a
+safe failure path without terminating the process. This table locates the
+old targets; target signatures and ownership still require comparison with
+the actual GIMP 3 class and interface slots.
+
 Before 01.005 can be
 completed, inspect each candidate, identify exported C functions and their
 callers in changed C sources and public headers (including entry names missed
