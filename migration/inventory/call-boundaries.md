@@ -4,10 +4,10 @@
 all 71 `.cpp` and `.hpp` files under `app` at legacy commit
 `afa43fae3e920210146abed514f136fd49f671b5`. Run
 `python3 tools/inventory_call_boundaries.py` to regenerate it. The first pass
-contains 658 source-line candidates: 69 `extern_c`, 28 C entry declaration
+contains 683 source-line candidates: 69 `extern_c`, 28 C entry declaration
 candidates, 149 C++ `gimp_*` definition candidates, 34 function-pointer sites,
 63 direct vfunc assignments, 92 class-binding macro sites, 94 GLib callback
-registrations, 22 signal-wrapper connections, and 107 delegator sites. The
+registrations, 47 signal-wrapper connections, and 107 delegator sites. The
 definition scan handles return types on a preceding line. Comments are masked
 before matching, and each row retains its legacy path and line number.
 `boundary_statement` retains up to 12 source lines (bounded at 1,200
@@ -138,6 +138,16 @@ FilterLayer timeout at `app/core/gimpfilterlayer.cpp:614` passes raw `this`
 without storing a source ID at that call site. The port must cancel pending
 sources before owner destruction or otherwise guarantee the callback's
 lifetime. The table identifies registrations, not all disconnection paths.
+
+The first pass originally counted only `.connect()` calls. The scanner now
+also includes 25 `.connect_noret()` sites. `signal-wrapper-review.tsv`
+classifies all 47 wrapper connections, with receiver, signal, callback and
+handler storage. The 22 `.connect()` calls store a connection handle. The
+25 `.connect_noret()` calls return no handle: ten pass a C++ member delegator,
+and 15 pass lambdas that capture `this`. Run
+`python3 -B tools/audit_signal_wrappers.py` to regenerate the mapping. The
+absence of a stored handle does not itself prove a dangling callback, but
+the port must tie teardown to the signal emitter and the captured owner.
 
 Before 01.005 can be
 completed, inspect each candidate, identify exported C functions and their

@@ -27,7 +27,7 @@ PATTERNS = (
         r"\b(?:G_CALLBACK|g_cclosure_new|g_signal_connect\w*|g_idle_add\w*|"
         r"g_timeout_add\w*|g_source_set_callback|g_object_weak_ref|"
         r"g_type_add_interface_static|g_type_register_static\w*)\s*\(")),
-    ("signal_wrapper_candidate", re.compile(r"(?:\.|->)\s*connect\s*\(")),
+    ("signal_wrapper_candidate", re.compile(r"(?:\.|->)\s*connect(?:_noret)?\s*\(")),
     ("delegator_candidate", re.compile(r"\b(?:_D::|Delegators::)?delegator\s*\(")),
 )
 
