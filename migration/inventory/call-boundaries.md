@@ -109,6 +109,16 @@ safe failure path without terminating the process. This table locates the
 old targets; target signatures and ownership still require comparison with
 the actual GIMP 3 class and interface slots.
 
+`binder-site-review.tsv` expands the named pieces of 92 `NewGClass` binder
+candidates. Twenty-one rows define binding macros; 71 rows invoke a macro
+to bind a vfunc slot to a C++ method. The table resolves local `Impl` aliases
+to the class named by the nearest preceding typedef or using declaration.
+Regenerate it with `python3 -B tools/audit_binder_sites.py`. It identifies
+the slot and implementation class, while the method signature, C++ exception
+boundary and lifetime contract still need inspection against GIMP 3. The
+first-pass candidate list does not yet include `_getter` and `_setter`
+property accessor invocations; they need a separate pass.
+
 Before 01.005 can be
 completed, inspect each candidate, identify exported C functions and their
 callers in changed C sources and public headers (including entry names missed
