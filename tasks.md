@@ -121,7 +121,7 @@
 | 01.002 | [x] | 変更 hunk 台帳を作る | 01.001 | 各 hunk に機能・基盤・生成物・資産の分類欄を持たせる。子チェック 2,489 件は `migration/inventory/changed-hunks.tsv` に列挙（01.013 の機能割当は別作業） |
 | 01.003 | [x] | app 外の差分を分類する | 01.002 | libgimp、plug-ins、tools、po、data、build 等の各変更に処置を付与。子チェック 474 件は `migration/inventory/external-changes.tsv` に列挙 |
 | 01.004 | [x] | C++ 型と登録箇所を列挙する | 01.003 | NewGClass、DerivedFrom、UseCStructs、Interface、GType の対応を記録。子チェック 17 件は `migration/inventory/cpp-types.tsv` に列挙 |
-| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 683 件、C/ヘッダー参照 130 件（関数ポインター登録 6 件と 有効な C→C++ 直接呼出し 33 件は入口・結果の扱いを追跡、直接呼出し構文 41 件は有効 35・無効 6 に分離）、非 gimp_ C 公開入口 4 件（C 直接呼出し 3 件、C callback 登録 1 件）と static callback 1 件を別走査で補完、C 入口構文候補 28 件、C++ 定義候補 149 件、マクロ生成 GType 入口 6 件、extern C scope 69 件、関数ポインター構文 34 件、class 代入 63 件、Binder 候補 92 件、callback 登録候補 94 件、遅延 source 2 経路、signal wrapper 接続 47 件、delegator 候補 107 件、別走査の property accessor 44 出現を分類。署名対照 66 組、うち未保護ヘッダー 28 組と C++ 入口の引数・戻り値各 64 組、共通 bridge 9 経路を確認済み。残りを精査中 |
+| 01.005 | [x] | C/C++ 呼出し境界を列挙する | 01.004 | 旧 C++ 71 ファイルの一次候補 683 件と C/ヘッダー参照 130 件を全件照合。非 gimp_ の C 入口 4 件、static callback 1 件、旧 Binder 71 と直接 class callback 40 件も別走査・現行 slot 対照で補完。間接関数ポインターの所有者、XCF 9 件を含む C 直接呼出し 33 件、共通 bridge 9 経路などを子チェックに記録（`migration/inventory/call-boundary-coverage.md`、`migration/inventory/gimp3-vfunc-contract-summary.md`）。実装時の所有権と例外の試験は機能タスクで実施 |
 | 01.005/bridge-core | [x] | NewGClass と Delegator の共通境界を確定する | 01.004 | C ABI callback・登録・破棄・vfunc の 9 経路を旧版の出典行と移植時の確認事項に対応付ける（`migration/inventory/bridge-boundary-findings.tsv`） |
 | 01.005/c-linkage | [x] | C 入口候補の未保護ヘッダーを分類する | 01.004 | 28 組のうちヘッダーを extern C 内で読み込む 25 組、定義を extern C 内に置く 1 組、別シグネチャの C++ overload 2 組を旧版の行番号付きで記録（`migration/inventory/c-linkage-review.tsv`） |
 | 01.005/c-references | [x] | C とヘッダーの参照候補を用途別に分類する | 01.004 | 130 件を旧版の行と照合し、C の直接呼び出し構文 41、関数ポインター登録 6、C 定義 1、コメント 2、ヘッダーの宣言 65、マクロ 11、テンプレート 3、コメント 1 に分類（`migration/inventory/c-reference-review.tsv`）。直接呼出しの有効性は別子で照合 |
@@ -148,13 +148,14 @@
 | 01.005/missed-c-entries | [x] | 正規表現に拾われない C 公開入口と呼出しを照合する | 01.005/candidate-coverage | 旧 app の 2,051 C/C++ ソース・ヘッダーを逆引きし、非 gimp_ C 公開入口 4 件、C 直接呼出し 3 件、C callback 登録 1 件、static callback 1 件を発見・分類（`migration/inventory/non-gimp-c-entry-review.tsv`）。C++ 専用工場 2 件と既存 GType マクロ生成 6 件も照合し後続機能タスクへ割当 |
 | 01.005/indirect-callback-owners | [x] | 間接関数ポインターの呼出し先・所有権を確定する | 01.005/candidate-coverage | 34 候補の保存先・呼出し・解放経路を一対一に照合（`migration/inventory/indirect-callback-owner-review.tsv`）。preset action-group static callback は 01.005/preset-action-factory-owner で確認。v1 曲線の無条件スキップ、借用 callable、popover signal の寿命を後続タスクへ割当 |
 | 01.005/preset-action-factory-owner | [x] | preset action-group の間接 callback 保持者を追う | 01.005/missed-c-entries | 旧 factory の setup/update 関数ポインター保持・呼出し・解放と現行の group キャッシュを照合（`migration/inventory/preset-action-factory-callback.md`）。移植の実装は 28.014/preset-action-group |
-| 01.005/gimp3-vfunc-contract | [ ] | 旧 vfunc と現行 GIMP 3 slot の署名・寿命を照合する | 01.005/candidate-coverage | 40 class callback と 71 binding の実 slot・引数・戻り値・例外境界を対象ごとの子チェックに分けて記録 |
+| 01.005/gimp3-vfunc-contract | [x] | 旧 vfunc と現行 GIMP 3 slot の署名・寿命を照合する | 01.005/candidate-coverage | 40 class callback と 71 binding の全111件を子チェックで行単位に照合。削除 slot・独自型再作成・署名変更、所有者と例外境界の後続タスクを記録（`migration/inventory/gimp3-vfunc-contract-summary.md`）。実装・試験は未完了 |
 | 01.005/gimp3-layer-slots | [x] | CloneLayer と FilterLayer の旧 vfunc を現行 slot と対照する | 01.005/indirect-callback-owners | 旧 Binder 34 箇所を C ヘッダーの実 slot 署名へ対応付け、削除された `project_region` / `is_editable` と新 GEGL source node、引数・戻り値の変化を記録（`migration/inventory/gimp3-layer-vfunc-review.tsv`）。実装は機能タスク |
 | 01.005/gimp3-tool-slots | [x] | 塗りつぶしブラシと操作ツールの vfunc を現行 slot と対照する | 01.005/gimp3-layer-slots | 旧 Binder 18 件の宣言を照合（`migration/inventory/gimp3-tool-vfunc-review.tsv`）。塗りつぶしブラシの paint 引数は GList と GimpSymmetry に変更。定規と placeholder の 17 件は C 宣言の署名が同じ |
 | 01.005/gimp3-core-binders | [x] | Undo・canvas・JSON 資源の Binder slot を現行 C ヘッダーと対照する | 01.005/gimp3-tool-slots | 旧 Binder 6 件を行単位で照合（`migration/inventory/gimp3-core-binder-review.tsv`）。canvas の shell 引数削除 2 件、JSON save の出力 stream 追加 1 件、署名一致 3 件。移植は各機能タスク |
 | 01.005/gimp3-external-binders | [x] | GTK/GLib と旧独自型の Binder 境界を照合する | 01.005/gimp3-core-binders | 残る 13 件を公開 GTK 2.24 / GTK 3.24、GLib 2.32 / 2.80 の固定ヘッダーと旧独自型宣言へ一対一に照合（`migration/inventory/gimp3-external-binder-review.tsv`）。署名一致 7、変更 3、移植先の型未作成 3。実装は各機能タスク |
 | 01.005/gimp3-brush-callbacks | [x] | 拡張 MyPaint ブラシ資源の class callback を現行 slot と対照する | 01.005/gimp3-external-binders | 旧定義と旧 slot の一致も確認した 15 件の照合表（`migration/inventory/gimp3-brush-callback-review.tsv`）。現行署名一致 9、変更 2、独自型再作成待ち 4。save/preview の差分を実装タスクに割当 |
 | 01.005/gimp3-tool-callbacks | [x] | 拡張 MyPaint 操作ツールの直接 callback を照合する | 01.005/gimp3-brush-callbacks | 旧 C++ 定義 10 件が旧 slot と現行 GIMP 3 slot の両方で同じ署名（`migration/inventory/gimp3-tool-callback-review.tsv`）。tool core の保持・破棄を機能タスクに割当 |
+| 01.005/gimp3-remaining-callbacks | [x] | ブリッジ・MyPaint Undo/options/editor の class callback を照合する | 01.005/gimp3-tool-callbacks | 残り 15 件の旧 C++ 定義・旧 slot・現行 slot の署名一致を記録（`migration/inventory/gimp3-remaining-callback-review.tsv`）。旧例外時の exit と Undo pop の空実装を後続へ割当 |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
@@ -254,6 +255,8 @@
 | 05.011 | [ ] | 親 vfunc の呼出し規約を定義する | 05.010 | 対象型ごとの呼出し順と callback 再入を記載 |
 | 05.012 | [ ] | main context の所有規約を定義する | 05.011 | GObject・UI と worker の操作可能範囲を記載 |
 | 05.013 | [ ] | エラー境界を定義する | 05.012 | 型不一致・未登録・終了済み・例外の返し方を統一 |
+| 05.013/legacy-exit-removal | [ ] | 旧 property callback の例外時 exit を C ABI 安全な処理へ変更する | 05.013, 01.005/gimp3-remaining-callbacks | setter/getter の例外でプロセスを終了せず、GValue と登録済み property の状態を整合させて通知・復帰する |
+| 05.013/all-vfunc-exception-containment | [ ] | 全 vfunc callback の C ABI 例外封じ込めを実装・試験する | 05.013, 01.005/gimp3-vfunc-contract | Binder 71 件と class callback 40 件の実装に例外方針を適用し、初期化・描画・保存・終了の失敗が C を越えない |
 | 05.014 | [ ] | 移行 adapter の撤去条件を定義する | 05.013 | 旧 API 利用箇所ゼロを機械検査できる |
 
 ### 06 単一 C++ API の共通実装
@@ -362,6 +365,7 @@
 | 09.009 | [ ] | 作業用 buffer の確保を実装する | 09.008 | 必要領域へ制限し上限を扱う |
 | 09.010 | [ ] | dirty 領域の集約を実装する | 09.009 | 重複・隣接・範囲外を処理 |
 | 09.011 | [ ] | 現行 Undo への buffer 差分記録を実装する | 09.010 | 一操作単位で復元できる |
+| 09.011/mypaint-undo-stroke | [ ] | MyPaint stroke の pop/free と所有権を現行 Undo に接続する | 09.011, 01.005/gimp3-remaining-callbacks | 旧 pop の空処理を引き継がず Undo/Redo で画素と stroke 状態が往復し、pointer を一度だけ破棄 |
 | 09.012 | [ ] | 描画の確定と破棄を実装する | 09.011 | cancel と commit で正しい画素が残る |
 | 09.013 | [ ] | projection 更新通知を接続する | 09.012 | 変更領域が表示へ伝わる |
 | 09.013/gegl-graph-invalidation | [ ] | paint buffer 更新と GEGL 投影キャッシュの無効化を接続する | 09.013 | 変更 ROI と座標を source node・投影へ通知し画面更新と再評価範囲が一致 |

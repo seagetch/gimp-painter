@@ -28,8 +28,13 @@ C / ヘッダー参照 130 件も `c-reference-review.tsv` に一対一に対応
 利用先を記録済み。別走査のマクロ生成 GType 6 件、property accessor
 44 出現、遅延 source 2 経路も各分類表の DONE と数を検査する。
 
-**未解決:** 一次抽出器の正規表現に拾われなかった C 入口・callback が
-ないことは、この一対一照合では証明できない。間接関数ポインターの
-実際の呼出し先と所有者、旧 vfunc の引数と GIMP 3 の slot 署名・寿命は
-別の子タスクで検証する。一次候補表の REVIEW は分類済み表の DONE と
-矛盾しない。親 `01.005` は、これらの調査を終えるまで DOING とする。
+追加の逆引きで旧 app の 2,051 ソース・ヘッダーを確認し、一次抽出に
+現れなかった C 入口 4 件と static callback 1 件を別表に補った。
+間接関数ポインター 34 候補は `indirect-callback-owner-review.tsv` に
+保持者・呼出し・解放とともに記録した。Binder 71 件と直接 class callback
+40 件の現行 slot 対照は `gimp3-vfunc-contract-summary.md` に集約する。
+一次候補表の REVIEW は分類済み表の DONE と矛盾しない。
+
+正規表現抽出と逆引きは静的な棚卸しであり、実行時に登録される
+全 callback の安全性を証明するものではない。移植後の C ABI 例外封じ込め、
+所有者・破棄順と描画結果は、各機能タスクで実装と試験を行う。
