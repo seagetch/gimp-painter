@@ -1,0 +1,65 @@
+symbol	cpp_site	header_site	cpp_return	header_return	classification	status
+gimp_clone_layer_get_type	app/core/gimpclonelayer.cpp:664	app/core/gimpclonelayer.h:47	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_clone_layer_new	app/core/gimpclonelayer.cpp:669	app/core/gimpclonelayer.h:48	GimpLayer*	GimpLayer*	RETURN_SPELLING_MATCH	DONE
+gimp_clone_layer_set_source	app/core/gimpclonelayer.cpp:681	app/core/gimpclonelayer.h:55	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_clone_layer_get_source	app/core/gimpclonelayer.cpp:688	app/core/gimpclonelayer.h:57	GimpLayer*	GimpLayer*	RETURN_SPELLING_MATCH	DONE
+gimp_clone_layer_set_source_by_name	app/core/gimpclonelayer.cpp:696	app/core/gimpclonelayer.h:58	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_clone_layer_undo_get_type	app/core/gimpclonelayerundo.cpp:61	app/core/gimpclonelayerundo.h:46	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_filter_layer_get_type	app/core/gimpfilterlayer.cpp:1170	app/core/gimpfilterlayer.h:47	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_filter_layer_new	app/core/gimpfilterlayer.cpp:1175	app/core/gimpfilterlayer.h:48	GimpLayer*	GimpLayer      *	RETURN_SPELLING_MATCH	DONE
+gimp_filter_layer_get_procedure	app/core/gimpfilterlayer.cpp:1186	app/core/gimpfilterlayer.h:54	const gchar*	const gchar*	RETURN_SPELLING_MATCH	DONE
+gimp_filter_layer_get_procedure_args	app/core/gimpfilterlayer.cpp:1192	app/core/gimpfilterlayer.h:55	GArray*	GArray*	RETURN_SPELLING_MATCH	DONE
+gimp_filter_layer_set_procedure	app/core/gimpfilterlayer.cpp:1198	app/core/gimpfilterlayer.h:56	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_filter_layer_mark_as_loaded	app/core/gimpfilterlayer.cpp:1206	app/core/gimpfilterlayer.h:59	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_load	app/core/gimpmypaintbrush-load.cpp:111	app/core/gimpmypaintbrush-load.h:26	GList *	GList     *	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_save	app/core/gimpmypaintbrush-save.cpp:101	app/core/gimpmypaintbrush-save.h:23	gboolean	gboolean	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_new	app/core/gimpmypaintbrush.cpp:334	app/core/gimpmypaintbrush.h:61	GimpData *	GimpData             *	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_duplicate	app/core/gimpmypaintbrush.cpp:350	app/core/gimpmypaintbrush.h:74	GimpData *	GimpData              *	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_get_standard	app/core/gimpmypaintbrush.cpp:364	app/core/gimpmypaintbrush.h:63	GimpData *	GimpData             *	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_begin_use	app/core/gimpmypaintbrush.cpp:383	app/core/gimpmypaintbrush.h:65	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_end_use	app/core/gimpmypaintbrush.cpp:394	app/core/gimpmypaintbrush.h:66	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_select_mypaint_brush	app/core/gimpmypaintbrush.cpp:406	app/core/gimpmypaintbrush.h:68	GimpMypaintBrush *	GimpMypaintBrush     *	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_want_null_motion	app/core/gimpmypaintbrush.cpp:420	app/core/gimpmypaintbrush.h:71	gboolean	gboolean	RETURN_SPELLING_MATCH	DONE
+gimp_perspective_guide_get_type	app/core/gimpperspectiveguide.cpp:240	app/core/gimpperspectiveguide.h:56	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_perspective_guide_new	app/core/gimpperspectiveguide.cpp:245	app/core/gimpperspectiveguide.h:58	GimpPerspectiveGuide*	GimpPerspectiveGuide *	RETURN_SPELLING_MATCH	DONE
+gimp_perspective_guide_get_vanish_point_length	app/core/gimpperspectiveguide.cpp:250	app/core/gimpperspectiveguide.h:59	gint	gint	RETURN_SPELLING_MATCH	DONE
+gimp_perspective_guide_add_vanish_points	app/core/gimpperspectiveguide.cpp:255	app/core/gimpperspectiveguide.h:60	gint	gint	RETURN_SPELLING_MATCH	DONE
+gimp_perspective_guide_remove_vanish_points	app/core/gimpperspectiveguide.cpp:260	app/core/gimpperspectiveguide.h:61	gboolean	gboolean	RETURN_SPELLING_MATCH	DONE
+gimp_perspective_guide_get_vanish_points	app/core/gimpperspectiveguide.cpp:265	app/core/gimpperspectiveguide.h:62	gboolean	gboolean	RETURN_SPELLING_MATCH	DONE
+gimp_perspective_guide_set_vanish_points	app/core/gimpperspectiveguide.cpp:270	app/core/gimpperspectiveguide.h:63	gboolean	gboolean	RETURN_SPELLING_MATCH	DONE
+gimp_canvas_perspective_guide_get_type	app/display/gimpcanvasperspectiveguide.cpp:295	app/display/gimpcanvasperspectiveguide.h:53	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_canvas_perspective_guide_new	app/display/gimpcanvasperspectiveguide.cpp:300	app/display/gimpcanvasperspectiveguide.h:55	GimpCanvasPerspectiveGuide*	GimpCanvasPerspectiveGuide *	RETURN_SPELLING_MATCH	DONE
+gimp_display_shell_update_on_canvas_views	app/display/gimpdisplayshell-overlays.cpp:601	app/display/gimpdisplayshell-overlays.h:21	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_display_shell_update_on_canvas_opacity	app/display/gimpdisplayshell-overlays.cpp:659	app/display/gimpdisplayshell-overlays.h:22	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_display_shell_attach_on_canvas_view	app/display/gimpdisplayshell-overlays.cpp:670	app/display/gimpdisplayshell-overlays.h:23	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_display_shell_detach_on_canvas_view	app/display/gimpdisplayshell-overlays.cpp:713	app/display/gimpdisplayshell-overlays.h:24	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_options_new	app/paint/gimpmypaintoptions.cpp:334	app/paint/gimpmypaintoptions.h:70	GimpMypaintOptions *	GimpMypaintOptions *	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_options_get_brush_mode	app/paint/gimpmypaintoptions.cpp:347	app/paint/gimpmypaintoptions.h:73	GimpMypaintBrushMode	GimpMypaintBrushMode	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_options_copy_brush_props	app/paint/gimpmypaintoptions.cpp:358	app/paint/gimpmypaintoptions.h:78	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_options_get_current_brush	app/paint/gimpmypaintoptions.cpp:533	app/paint/gimpmypaintoptions.h:76	GimpMypaintBrush*	GimpMypaintBrush*	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_options_set_mapping_point	app/paint/gimpmypaintoptions.cpp:539	app/paint/gimpmypaintoptions.h:82	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_options_get_mapping_point	app/paint/gimpmypaintoptions.cpp:571	app/paint/gimpmypaintoptions.h:89	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_options_is_ready	app/paint/gimpmypaintoptions.cpp:606	app/paint/gimpmypaintoptions.h:96	gboolean	gboolean	RETURN_SPELLING_MATCH	DONE
+gimp_json_resource_get_type	app/presets/gimpjsonresource.cpp:215	app/presets/gimpjsonresource.h:54	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_json_resource_new	app/presets/gimpjsonresource.cpp:219	app/presets/gimpjsonresource.h:55	GimpData*	GimpData*	RETURN_SPELLING_MATCH	DONE
+gimp_bucket_fill_brush_tool_register	app/tools/gimpbucketfillbrushtool.cpp:490	app/tools/gimpbucketfillbrushtool.h:50	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_image_generator_tool_register	app/tools/gimpimagegeneratortool.cpp:437	app/tools/gimpimagegeneratortool.h:48	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_image_generator_tool_get_type	app/tools/gimpimagegeneratortool.cpp:472	app/tools/gimpimagegeneratortool.h:51	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_button_with_popup	app/tools/gimpmypaintbrushoptions-gui.cpp:325	app/tools/gimpmypaintbrushoptions-gui.h:21	GtkWidget*	GtkWidget *	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_options_gui	app/tools/gimpmypaintoptions-gui.cpp:543	app/tools/gimpmypaintoptions-gui.h:22	GtkWidget *	GtkWidget *	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_options_gui_horizontal	app/tools/gimpmypaintoptions-gui.cpp:573	app/tools/gimpmypaintoptions-gui.h:23	GtkWidget *	GtkWidget *	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_tool_enable_color_picker	app/tools/gimpmypainttool.cpp:222	app/tools/gimpmypainttool.h:69	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_tool_register	app/tools/gimpmypainttool.cpp:813	app/tools/gimpmypainttool.h:72	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_perspective_guide_tool_register	app/tools/gimpperspectiveguidetool.cpp:627	app/tools/gimpperspectiveguidetool.h:50	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_perspective_guide_tool_get_type	app/tools/gimpperspectiveguidetool.cpp:662	app/tools/gimpperspectiveguidetool.h:53	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_cell_renderer_popup_get_type	app/widgets/gimpcellrendererpopup.cpp:341	app/widgets/gimpcellrendererpopup.h:48	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_cell_renderer_popup_new	app/widgets/gimpcellrendererpopup.cpp:342	app/widgets/gimpcellrendererpopup.h:50	GtkCellRenderer*	GtkCellRenderer *	RETURN_SPELLING_MATCH	DONE
+gimp_cell_renderer_popup_clicked	app/widgets/gimpcellrendererpopup.cpp:344	app/widgets/gimpcellrendererpopup.h:51	void	void	RETURN_SPELLING_MATCH	DONE
+gimp_editor_add_dropdown	app/widgets/gimpeditor-cxx.cpp:89	app/widgets/gimpeditor-cxx.h:16	GtkWidget *	GtkWidget *	RETURN_SPELLING_MATCH	DONE
+gimp_editor_add_action_dropdown	app/widgets/gimpeditor-cxx.cpp:182	app/widgets/gimpeditor-cxx.h:26	GtkWidget *	GtkWidget *	RETURN_SPELLING_MATCH	DONE
+gimp_layer_tile_view_get_type	app/widgets/gimplayertileview.cpp:1594	app/widgets/gimplayertileview.h:48	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_layer_tile_view_new	app/widgets/gimplayertileview.cpp:1595	app/widgets/gimplayertileview.h:50	GimpLayerTileView*	GimpLayerTileView *	RETURN_SPELLING_MATCH	DONE
+gimp_mypaint_brush_editor_new	app/widgets/gimpmypaintbrusheditor.cpp:284	app/widgets/gimpmypaintbrusheditor.h:54	GtkWidget *	GtkWidget *	RETURN_SPELLING_MATCH	DONE
+gimp_tool_tile_view_get_type	app/widgets/gimptooltileview.cpp:600	app/widgets/gimptooltileview.h:48	GType	GType	RETURN_SPELLING_MATCH	DONE
+gimp_tool_tile_view_new	app/widgets/gimptooltileview.cpp:601	app/widgets/gimptooltileview.h:50	GimpToolTileView*	GimpToolTileView *	RETURN_SPELLING_MATCH	DONE
+gimp_popover_new	app/widgets/popupper.cpp:420	app/widgets/popupper.h:34	GtkWidget*	GtkWidget*	RETURN_SPELLING_MATCH	DONE

@@ -75,6 +75,13 @@ the name. The latter needs a deliberate public type choice and target ABI
 check in the port. This comparison does not validate return types, typedef
 equivalence, pointer ownership or runtime callers.
 
+`c-return-review.tsv` checks return spelling at those 64 actual C++
+definitions and C header declarations. Run
+`python3 -B tools/audit_c_returns.py` to regenerate it. All 64 return types
+match after whitespace and pointer spacing normalization. This verifies the
+legacy declarations against their definitions; it does not establish return
+value ownership, error behavior, or compatibility with GIMP 3 data types.
+
 The `gimp_tool_options_button_with_popup` pairs are deliberately left for
 review despite sharing a name. The legacy C function is defined in
 `app/tools/gimptooloptions-gui.c:201`; the C++ helper in
