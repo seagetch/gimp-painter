@@ -54,6 +54,18 @@ Run `python3 -B tools/audit_c_entry_candidates.py` to regenerate this table.
 The old header declaration does not make the disabled MyPaint core routine a
 working migration requirement; any callers must be checked separately.
 
+`c-pointer-registration-review.tsv` traces the six C-side function-pointer
+registrations to their callback typedefs, storage and invocation. Run
+`python3 -B tools/audit_c_pointer_registrations.py` to regenerate it. The
+MyPaint brush loader and constructor are held by `GimpDataFactory` and invoked
+later; its loader table is `static const`, because the factory stores the
+pointer. The tool registration array runs synchronously. Only
+`gimp_mypaint_tool_register` calls the supplied registration callback. Bucket
+Fill Brush, Perspective Guide and Image Generator instead construct tool
+information and call `gimp_tools_register` directly. Their GUI function
+pointers are also stored with the tool information. The GIMP 3 port must
+preserve the actual registration effects and the deferred factory lifetime.
+
 `c-reference-review.tsv` classifies each of the 130 first-pass C/header
 references against its legacy source line. Run
 `python3 tools/audit_c_references.py` to regenerate it. The 80 header sites
