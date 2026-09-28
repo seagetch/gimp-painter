@@ -116,8 +116,15 @@ to the class named by the nearest preceding typedef or using declaration.
 Regenerate it with `python3 -B tools/audit_binder_sites.py`. It identifies
 the slot and implementation class, while the method signature, C++ exception
 boundary and lifetime contract still need inspection against GIMP 3. The
-first-pass candidate list does not yet include `_getter` and `_setter`
-property accessor invocations; they need a separate pass.
+first-pass candidate list omits `_getter` and `_setter` property accessor
+invocations. `property-accessor-review.tsv` covers them separately across all
+legacy C++ sources: 18 macro definitions, 18 active bindings and eight
+bindings inside literal `#if 0` branches. Each active binding maps a property
+token to a C++ getter or setter occurrence in its source file. Run
+`python3 -B tools/audit_property_accessors.py` to regenerate it. The disabled
+rate and eraser-mode bindings in ImageGenerator and PerspectiveGuide options
+must not be counted as active legacy behavior. Accessor return types,
+property ownership and error handling still need port-level checks.
 
 Before 01.005 can be
 completed, inspect each candidate, identify exported C functions and their

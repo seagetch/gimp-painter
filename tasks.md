@@ -121,7 +121,7 @@
 | 01.002 | [x] | 変更 hunk 台帳を作る | 01.001 | 各 hunk に機能・基盤・生成物・資産の分類欄を持たせる。子チェック 2,489 件は `migration/inventory/changed-hunks.tsv` に列挙（01.013 の機能割当は別作業） |
 | 01.003 | [x] | app 外の差分を分類する | 01.002 | libgimp、plug-ins、tools、po、data、build 等の各変更に処置を付与。子チェック 474 件は `migration/inventory/external-changes.tsv` に列挙 |
 | 01.004 | [x] | C++ 型と登録箇所を列挙する | 01.003 | NewGClass、DerivedFrom、UseCStructs、Interface、GType の対応を記録。子チェック 17 件は `migration/inventory/cpp-types.tsv` に列挙 |
-| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 658 件、C/ヘッダー参照 130 件、extern C scope 69 件、関数ポインター構文 34 件、class 代入 63 件、Binder 候補 92 件を分類、署名対照 66 組、うち未保護ヘッダー 28 組と C++ 入口の引数 64 組を分類、共通 bridge 9 経路を確認済み。残りを精査中 |
+| 01.005 | [ ] | C/C++ 呼出し境界を列挙する | 01.004 | extern C、C 入口、function pointer、vfunc、callback の全利用箇所を記録。旧 C++ 71 ファイルの候補 658 件、C/ヘッダー参照 130 件、extern C scope 69 件、関数ポインター構文 34 件、class 代入 63 件、Binder 候補 92 件、別走査の property accessor 44 出現を分類。署名対照 66 組、うち未保護ヘッダー 28 組と C++ 入口の引数 64 組、共通 bridge 9 経路を確認済み。残りを精査中 |
 | 01.005/bridge-core | [x] | NewGClass と Delegator の共通境界を確定する | 01.004 | C ABI callback・登録・破棄・vfunc の 9 経路を旧版の出典行と移植時の確認事項に対応付ける（`migration/inventory/bridge-boundary-findings.tsv`） |
 | 01.005/c-linkage | [x] | C 入口候補の未保護ヘッダーを分類する | 01.004 | 28 組のうちヘッダーを extern C 内で読み込む 25 組、定義を extern C 内に置く 1 組、別シグネチャの C++ overload 2 組を旧版の行番号付きで記録（`migration/inventory/c-linkage-review.tsv`） |
 | 01.005/c-references | [x] | C とヘッダーの参照候補を用途別に分類する | 01.004 | 130 件を旧版の行と照合し、C の直接呼び出し 41、関数ポインター登録 6、C 定義 1、コメント 2、ヘッダーの宣言 65、マクロ 11、テンプレート 3、コメント 1 に分類（`migration/inventory/c-reference-review.tsv`） |
@@ -130,6 +130,7 @@
 | 01.005/function-pointers | [x] | 関数ポインター構文を分類する | 01.004 | 候補 34 件を旧版の行と照合し、宣言・引数 13、間接呼び出し 21 に分類（`migration/inventory/function-pointer-review.tsv`）。呼出し先・所有権は別途追跡 |
 | 01.005/vfunc-assignments | [x] | 旧 class 代入の callback と値を分ける | 01.004 | 候補 63 件から callback 40 件と class 設定 23 件を分類し、callback の定義元 40 件を行番号で照合（`migration/inventory/vfunc-assignment-review.tsv`）。現行 GIMP 3 slot 署名は別途照合 |
 | 01.005/binder-sites | [x] | NewGClass の vfunc 接続を分類する | 01.004 | 候補 92 件のうちマクロ定義 21 と実接続 71 を分離し、class pointer、slot、Impl 型、alias 宣言箇所を記録（`migration/inventory/binder-site-review.tsv`）。現行 slot 署名は別途照合 |
+| 01.005/property-accessors | [x] | NewGClass の property accessor を分類する | 01.004 | 旧 C++ 全体の 44 出現をマクロ定義 18、有効な接続 18、`#if 0` 内の無効な接続 8 に分け、有効な C++ メソッド所在を記録（`migration/inventory/property-accessor-review.tsv`）。型と所有権は別途照合 |
 | 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |

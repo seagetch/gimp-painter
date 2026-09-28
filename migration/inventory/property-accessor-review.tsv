@@ -1,0 +1,45 @@
+legacy_site	macro	property_token	role	macro_definition	impl_class	cpp_method	method_sites	status
+app/core/gimpperspectiveguide.cpp:88	_getter	-	MACRO_DEFINITION	app/core/gimpperspectiveguide.cpp:88	PerspectiveGuide	-	-	DONE
+app/core/gimpperspectiveguide.cpp:89	_setter	-	MACRO_DEFINITION	app/core/gimpperspectiveguide.cpp:89	PerspectiveGuide	-	-	DONE
+app/core/gimpperspectiveguide.cpp:98	_getter	id	ACTIVE_BINDING	app/core/gimpperspectiveguide.cpp:88	PerspectiveGuide	get_id	app/core/gimpperspectiveguide.cpp:69; app/core/gimpperspectiveguide.cpp:130	DONE
+app/core/gimpperspectiveguide.cpp:98	_setter	id	ACTIVE_BINDING	app/core/gimpperspectiveguide.cpp:89	PerspectiveGuide	set_id	app/core/gimpperspectiveguide.cpp:70; app/core/gimpperspectiveguide.cpp:136	DONE
+app/core/gimpperspectiveguide.cpp:102	_getter	id	ACTIVE_BINDING	app/core/gimpperspectiveguide.cpp:88	PerspectiveGuide	get_id	app/core/gimpperspectiveguide.cpp:69; app/core/gimpperspectiveguide.cpp:130	DONE
+app/core/gimpperspectiveguide.cpp:102	_setter	id	ACTIVE_BINDING	app/core/gimpperspectiveguide.cpp:89	PerspectiveGuide	set_id	app/core/gimpperspectiveguide.cpp:70; app/core/gimpperspectiveguide.cpp:136	DONE
+app/display/gimpcanvasperspectiveguide.cpp:83	_getter	-	MACRO_DEFINITION	app/display/gimpcanvasperspectiveguide.cpp:83	CanvasPerspectiveGuide	-	-	DONE
+app/display/gimpcanvasperspectiveguide.cpp:84	_setter	-	MACRO_DEFINITION	app/display/gimpcanvasperspectiveguide.cpp:84	CanvasPerspectiveGuide	-	-	DONE
+app/display/gimpcanvasperspectiveguide.cpp:97	_getter	guide	ACTIVE_BINDING	app/display/gimpcanvasperspectiveguide.cpp:83	CanvasPerspectiveGuide	get_guide	app/display/gimpcanvasperspectiveguide.cpp:72; app/display/gimpcanvasperspectiveguide.cpp:114	DONE
+app/display/gimpcanvasperspectiveguide.cpp:97	_setter	guide	ACTIVE_BINDING	app/display/gimpcanvasperspectiveguide.cpp:84	CanvasPerspectiveGuide	set_guide	app/display/gimpcanvasperspectiveguide.cpp:73; app/display/gimpcanvasperspectiveguide.cpp:120	DONE
+app/tools/gimpbucketfillbrushtool.cpp:130	_getter	-	MACRO_DEFINITION	app/tools/gimpbucketfillbrushtool.cpp:130	Options	-	-	DONE
+app/tools/gimpbucketfillbrushtool.cpp:131	_setter	-	MACRO_DEFINITION	app/tools/gimpbucketfillbrushtool.cpp:131	Options	-	-	DONE
+app/tools/gimpbucketfillbrushtool.cpp:139	_getter	rate	ACTIVE_BINDING	app/tools/gimpbucketfillbrushtool.cpp:130	Options	get_rate	app/tools/gimpbucketfillbrushtool.cpp:109	DONE
+app/tools/gimpbucketfillbrushtool.cpp:139	_setter	rate	ACTIVE_BINDING	app/tools/gimpbucketfillbrushtool.cpp:131	Options	set_rate	app/tools/gimpbucketfillbrushtool.cpp:113	DONE
+app/tools/gimpbucketfillbrushtool.cpp:143	_getter	eraser_mode	ACTIVE_BINDING	app/tools/gimpbucketfillbrushtool.cpp:130	Options	get_eraser_mode	app/tools/gimpbucketfillbrushtool.cpp:117	DONE
+app/tools/gimpbucketfillbrushtool.cpp:143	_setter	eraser_mode	ACTIVE_BINDING	app/tools/gimpbucketfillbrushtool.cpp:131	Options	set_eraser_mode	app/tools/gimpbucketfillbrushtool.cpp:121	DONE
+app/tools/gimpimagegeneratortool.cpp:115	_getter	-	MACRO_DEFINITION	app/tools/gimpimagegeneratortool.cpp:115	Options	-	-	DONE
+app/tools/gimpimagegeneratortool.cpp:116	_setter	-	MACRO_DEFINITION	app/tools/gimpimagegeneratortool.cpp:116	Options	-	-	DONE
+app/tools/gimpimagegeneratortool.cpp:124	_getter	rate	DISABLED_BY_IF_0	app/tools/gimpimagegeneratortool.cpp:115	Options	get_rate	-	DONE
+app/tools/gimpimagegeneratortool.cpp:124	_setter	rate	DISABLED_BY_IF_0	app/tools/gimpimagegeneratortool.cpp:116	Options	set_rate	-	DONE
+app/tools/gimpimagegeneratortool.cpp:128	_getter	eraser_mode	DISABLED_BY_IF_0	app/tools/gimpimagegeneratortool.cpp:115	Options	get_eraser_mode	-	DONE
+app/tools/gimpimagegeneratortool.cpp:128	_setter	eraser_mode	DISABLED_BY_IF_0	app/tools/gimpimagegeneratortool.cpp:116	Options	set_eraser_mode	-	DONE
+app/tools/gimpimagegeneratortool.cpp:198	_getter	-	MACRO_DEFINITION	app/tools/gimpimagegeneratortool.cpp:198	Tool	-	-	DONE
+app/tools/gimpimagegeneratortool.cpp:199	_setter	-	MACRO_DEFINITION	app/tools/gimpimagegeneratortool.cpp:199	Tool	-	-	DONE
+app/tools/gimpperspectiveguidetool.cpp:115	_getter	-	MACRO_DEFINITION	app/tools/gimpperspectiveguidetool.cpp:115	Options	-	-	DONE
+app/tools/gimpperspectiveguidetool.cpp:116	_setter	-	MACRO_DEFINITION	app/tools/gimpperspectiveguidetool.cpp:116	Options	-	-	DONE
+app/tools/gimpperspectiveguidetool.cpp:124	_getter	rate	DISABLED_BY_IF_0	app/tools/gimpperspectiveguidetool.cpp:115	Options	get_rate	-	DONE
+app/tools/gimpperspectiveguidetool.cpp:124	_setter	rate	DISABLED_BY_IF_0	app/tools/gimpperspectiveguidetool.cpp:116	Options	set_rate	-	DONE
+app/tools/gimpperspectiveguidetool.cpp:128	_getter	eraser_mode	DISABLED_BY_IF_0	app/tools/gimpperspectiveguidetool.cpp:115	Options	get_eraser_mode	-	DONE
+app/tools/gimpperspectiveguidetool.cpp:128	_setter	eraser_mode	DISABLED_BY_IF_0	app/tools/gimpperspectiveguidetool.cpp:116	Options	set_eraser_mode	-	DONE
+app/tools/gimpperspectiveguidetool.cpp:227	_getter	-	MACRO_DEFINITION	app/tools/gimpperspectiveguidetool.cpp:227	Tool	-	-	DONE
+app/tools/gimpperspectiveguidetool.cpp:228	_setter	-	MACRO_DEFINITION	app/tools/gimpperspectiveguidetool.cpp:228	Tool	-	-	DONE
+app/tools/gimpperspectiveguidetool.cpp:249	_getter	guide	ACTIVE_BINDING	app/tools/gimpperspectiveguidetool.cpp:227	Tool	get_guide	app/tools/gimpperspectiveguidetool.cpp:209	DONE
+app/tools/gimpperspectiveguidetool.cpp:249	_setter	guide	ACTIVE_BINDING	app/tools/gimpperspectiveguidetool.cpp:228	Tool	set_guide	app/tools/gimpperspectiveguidetool.cpp:213	DONE
+app/widgets/gimplayertileview.cpp:316	_getter	-	MACRO_DEFINITION	app/widgets/gimplayertileview.cpp:316	LayerTileView	-	-	DONE
+app/widgets/gimplayertileview.cpp:317	_setter	-	MACRO_DEFINITION	app/widgets/gimplayertileview.cpp:317	LayerTileView	-	-	DONE
+app/widgets/gimplayertileview.cpp:328	_getter	image	ACTIVE_BINDING	app/widgets/gimplayertileview.cpp:316	LayerTileView	get_image	app/widgets/gimplayertileview.cpp:273; app/widgets/gimplayertileview.cpp:452	DONE
+app/widgets/gimplayertileview.cpp:328	_setter	image	ACTIVE_BINDING	app/widgets/gimplayertileview.cpp:317	LayerTileView	set_image	app/widgets/gimplayertileview.cpp:274; app/widgets/gimplayertileview.cpp:461	DONE
+app/widgets/gimplayertileview.cpp:331	_getter	context	ACTIVE_BINDING	app/widgets/gimplayertileview.cpp:316	LayerTileView	get_context	app/widgets/gimplayertileview.cpp:275; app/widgets/gimplayertileview.cpp:549	DONE
+app/widgets/gimplayertileview.cpp:331	_setter	context	ACTIVE_BINDING	app/widgets/gimplayertileview.cpp:317	LayerTileView	set_context	app/widgets/gimplayertileview.cpp:276; app/widgets/gimplayertileview.cpp:558	DONE
+app/widgets/gimptooltileview.cpp:196	_getter	-	MACRO_DEFINITION	app/widgets/gimptooltileview.cpp:196	ToolTileView	-	-	DONE
+app/widgets/gimptooltileview.cpp:197	_setter	-	MACRO_DEFINITION	app/widgets/gimptooltileview.cpp:197	ToolTileView	-	-	DONE
+app/widgets/gimptooltileview.cpp:208	_getter	context	ACTIVE_BINDING	app/widgets/gimptooltileview.cpp:196	ToolTileView	get_context	app/widgets/gimptooltileview.cpp:168; app/widgets/gimptooltileview.cpp:284	DONE
+app/widgets/gimptooltileview.cpp:208	_setter	context	ACTIVE_BINDING	app/widgets/gimptooltileview.cpp:197	ToolTileView	set_context	app/widgets/gimptooltileview.cpp:169; app/widgets/gimptooltileview.cpp:293	DONE
