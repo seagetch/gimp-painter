@@ -1,0 +1,5 @@
+legacy_site	observed_object	weak_slot	owner_lifetime	remove_path	status	followup
+app/core/gimpmypaintbrush.cpp:375	standard_mypaint_brush	static standard_mypaint_brush	process static	no explicit remove; static slot remains valid until process exit	DONE	confirm standard brush reacquisition after finalize
+app/paint/gimpmypaintcore-drawablefeature.hpp:108	GimpDrawable d	GimpImageFeature.drawable	GimpImageFeature instance	destructor removes weak pointer if drawable remains nonnull	DONE	verify drawable can finalize before feature without callback access
+app/tools/gimpmypaint-gui-base.hpp:53	GimpMypaintOptions opts	MypaintOptionsPropertyGUIPrivate.options	spin widget behavior-owned helper	no removal in helper destructor	DONE	remove weak pointer when helper dies first; disconnect callbacks
+app/tools/gimpmypaint-gui-base.hpp:94	spin widget	MypaintOptionsPropertyGUIPrivate.widget	widget behavior-owned helper	no removal in helper destructor	DONE	ensure weak pointer slot remains valid across widget finalize or remove before helper destruction

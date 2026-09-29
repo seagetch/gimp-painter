@@ -168,6 +168,7 @@
 | 01.007/scoped-pointers | [x] | CXXPointer の対象型と破棄を分類する | 01.007/cpp-candidates | 54 箇所を signal connection、source、delegator、C++ instance に分類する |
 | 01.007/gvalue | [x] | 旧 C++ の GValue 使用箇所を分類する | 01.007/cpp-candidates | 136 箇所の helper、配列借用、初期化、引数、値ポインターを分類する |
 | 01.007/raw-candidates | [x] | C++ の raw pointer 寿命構文を抽出する | 01.007/cpp-candidates | new/delete/g_free/weak pointer の出典行を列挙し、弱参照解除漏れの候補を記録する |
+| 01.007/weak-pointers | [x] | C++ weak pointer の登録と解除を照合する | 01.007/raw-candidates | 4 箇所の対象、スロット、存続期間、解除経路を出典行付きで記録する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |

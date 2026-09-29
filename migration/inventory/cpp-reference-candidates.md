@@ -17,3 +17,5 @@
 `cpp-raw-lifetime-candidates.tsv` に旧 C++ の `new`、`delete`、`g_free`、weak pointer の 168 構文候補を列挙した。`GimpImageFeature` は destructor で weak pointer を解除するが、`MypaintOptionsPropertyGUIPrivate` は `options` と `widget` に weak pointer を登録し、destructor では解除していない。この helper が対象より先に消えると、GObject finalize 時に解放済みメモリーへ NULL を書く可能性がある。移植先で弱参照の登録解除と signal 接続の解除を同一 owner の終了処理に含める。
 
 `c-reference-added-line-review.tsv` は 21 ファイルの変更前・変更後 blob の差分を再計算し、hunk に位置した 74 件すべてが実際に追加された行だと照合した。内訳は `unref` 41、`ref` 21、`ref_sink` 3、`g_value_init` 5、`g_value_set_object` 4。確認した経路のうち brush core の texture は setter の旧参照を解放して新参照を保持する。brush options GUI private は container/context の参照を取得し、destroy/reset で解除する。dock widget の付け替えでは一時参照を取得して container から取り外し、再追加後に解除する。ただし追加行であることと全経路の参照数が釣り合うことは別であり、残るファイルの分岐経路は `01.007/c-state` で追う。
+
+`cpp-weak-pointer-review.tsv` は四つの登録先とスロットを個別に追う。静的な standard brush のスロットは process の存続中有効で、`GimpImageFeature.drawable` は destructor が対象存続時に登録解除する。`MypaintOptionsPropertyGUIPrivate` の二つのスロットは helper のメンバーだが、旧 destructor に解除がない。特に `options` が widget より長生きして widget が helper を破棄した場合、後の options finalize が無効なスロットに書き込む可能性がある。先行破棄の両順序を `08.008/weak-pointer-teardown` の実装テストに含める。
