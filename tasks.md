@@ -165,6 +165,7 @@
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.007/cpp-candidates | [x] | 旧 C++ の参照管理候補を抽出する | 01.006 | 71 ファイルの hold/ref、GValue、CXXPointer 構文を出典行付きで列挙 |
 | 01.007/ref-hold | [x] | 旧 C++ の hold/ref/unref を分類する | 01.007/cpp-candidates | 明示的な 52 箇所を helper、採用、参照追加、解放、借用疑義に分類する |
+| 01.007/scoped-pointers | [x] | CXXPointer の対象型と破棄を分類する | 01.007/cpp-candidates | 54 箇所を signal connection、source、delegator、C++ instance に分類する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-state | [ ] | C 側の変更行で参照管理を照合する | 01.007/cpp-candidates | 追加差分の ref/unref、GValue、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |

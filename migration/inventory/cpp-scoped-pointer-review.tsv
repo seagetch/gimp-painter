@@ -1,0 +1,55 @@
+legacy_site	owner_role	source_line	destruction_contract	status
+app/base/glib-cxx-utils.hpp:1185	DELEGATOR_OWNER	CXXPointer<Delegator> handler;	delete delegated callback; verify closure lifetime	DONE
+app/base/scopeguard.hpp:105	HELPER_DEFINITION	CXXPointer<T> guard(T* ptr) { return ptr; }	delete T through CXXPointer on scope exit	DONE
+app/base/soup-cxx-utils.hpp:42	CXX_INSTANCE	CXXPointer<Handler> handler;	delete T on replacement or scope exit; verify allocation and aliases	DONE
+app/base/soup-cxx-utils.hpp:258	DELEGATOR_OWNER	CXXPointer<rule_delegator> handler;	delete delegated callback; verify closure lifetime	DONE
+app/core/gimpclonelayer.cpp:90	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection> parent_changed_conn;	delete Connection; destructor disconnects target signal	DONE
+app/core/gimpclonelayer.cpp:91	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection> update_conn;	delete Connection; destructor disconnects target signal	DONE
+app/core/gimpclonelayer.cpp:92	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection> freeze_conn;	delete Connection; destructor disconnects target signal	DONE
+app/core/gimpfilterlayer.cpp:75	CXX_INSTANCE	CXXPointer<ProcedureRunner> runner;	delete T on replacement or scope exit; verify allocation and aliases	DONE
+app/core/gimpfilterlayer.cpp:76	CXX_INSTANCE	CXXPointer<ProcedureRunner> new_runner;	delete T on replacement or scope exit; verify allocation and aliases	DONE
+app/core/gimpfilterlayer.cpp:93	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection> child_update_conn;	delete Connection; destructor disconnects target signal	DONE
+app/core/gimpfilterlayer.cpp:94	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection> parent_changed_conn;	delete Connection; destructor disconnects target signal	DONE
+app/core/gimpfilterlayer.cpp:95	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection> reorder_conn;	delete Connection; destructor disconnects target signal	DONE
+app/core/gimpfilterlayer.cpp:96	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection> visibility_changed_conn;	delete Connection; destructor disconnects target signal	DONE
+app/display/gimpdisplayshell-overlays.cpp:112	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection> connection;	delete Connection; destructor disconnects target signal	DONE
+app/display/gimpdisplayshell-overlays.cpp:249	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection> fg_color_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/display/gimpdisplayshell-overlays.cpp:250	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection> bg_color_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/httpd/httpd-features-gui.cpp:37	CXX_INSTANCE	CXXPointer<RESTD> rest_daemon;	delete T on replacement or scope exit; verify allocation and aliases	DONE
+app/httpd/httpd-features.cpp:37	CXX_INSTANCE	CXXPointer<RESTD> rest_daemon;	delete T on replacement or scope exit; verify allocation and aliases	DONE
+app/tools/gimpmypaintbrusheditor.cpp:106	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection>     options_notify_handler;	delete Connection; destructor disconnects target signal	DONE
+app/tools/gimpmypaintbrusheditor.cpp:107	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection>     curve_notify_handler;	delete Connection; destructor disconnects target signal	DONE
+app/tools/gimpmypaintbrusheditor.cpp:108	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection>     x_min_adj_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/tools/gimpmypaintbrusheditor.cpp:109	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection>     x_max_adj_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/tools/gimpmypaintbrusheditor.cpp:110	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection>     y_max_adj_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/tools/gimpmypaintbrusheditor.cpp:111	SIGNAL_CONNECTION	CXXPointer<Delegators::Connection>     y_min_adj_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:173	SIGNAL_CONNECTION	CXXPointer<_D::Connection> added_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:174	SIGNAL_CONNECTION	CXXPointer<_D::Connection> removed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:175	SIGNAL_CONNECTION	CXXPointer<_D::Connection> reordered_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:176	SIGNAL_CONNECTION	CXXPointer<_D::Connection> mask_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:178	SIGNAL_CONNECTION	CXXPointer<_D::Connection> visible_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:179	SIGNAL_CONNECTION	CXXPointer<_D::Connection> linked_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:180	SIGNAL_CONNECTION	CXXPointer<_D::Connection> lock_content_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:182	SIGNAL_CONNECTION	CXXPointer<_D::Connection> apply_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:183	SIGNAL_CONNECTION	CXXPointer<_D::Connection> edit_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:184	SIGNAL_CONNECTION	CXXPointer<_D::Connection> show_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:196	SIGNAL_CONNECTION	CXXPointer<_D::Connection> invalidate_preview_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:197	SIGNAL_CONNECTION	CXXPointer<_D::Connection> size_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:198	SOURCE_OWNER	CXXPointer<Idle>           update_idle;	delete source guard; verify source cancellation	DONE
+app/widgets/gimplayertileview.cpp:250	SIGNAL_CONNECTION	CXXPointer<_D::Connection> added_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:251	SIGNAL_CONNECTION	CXXPointer<_D::Connection> removed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:252	SIGNAL_CONNECTION	CXXPointer<_D::Connection> reordered_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:253	SIGNAL_CONNECTION	CXXPointer<_D::Connection> active_layer_changed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:255	CXX_INSTANCE	CXXPointer<LayerPopupWindow> layer_popup_decorator;	delete T on replacement or scope exit; verify allocation and aliases	DONE
+app/widgets/gimplayertileview.cpp:256	DELEGATOR_OWNER	CXXPointer<_D::Delegator<GimpViewable* (GtkWidget*, GimpContext**)> > drag_viewable_holder;	delete delegated callback; verify closure lifetime	DONE
+app/widgets/gimplayertileview.cpp:257	SIGNAL_CONNECTION	CXXPointer<_D::Connection> drag_motion_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:258	SIGNAL_CONNECTION	CXXPointer<_D::Connection> drag_failed_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:259	SIGNAL_CONNECTION	CXXPointer<_D::Connection> drag_leave_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:260	SIGNAL_CONNECTION	CXXPointer<_D::Connection> drag_drop_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:261	SIGNAL_CONNECTION	CXXPointer<_D::Connection> drag_data_received_handler;	delete Connection; destructor disconnects target signal	DONE
+app/widgets/gimplayertileview.cpp:262	SOURCE_OWNER	CXXPointer<Timeout>        scroll_timeout_handler;	delete source guard; verify source cancellation	DONE
+app/widgets/gimplayertileview.cpp:264	CXX_INSTANCE	CXXPointer<DragAction>     drag_action;	delete T on replacement or scope exit; verify allocation and aliases	DONE
+app/widgets/gimplayertileview.cpp:265	CXX_INSTANCE	CXXPointer<GdkPoint>       add_cursor;	delete T on replacement or scope exit; verify allocation and aliases	DONE
+app/widgets/gimplayertileview.cpp:266	SOURCE_OWNER	CXXPointer<Timeout>        add_timeout_handler;	delete source guard; verify source cancellation	DONE
+app/widgets/gimplayertileview.cpp:827	CXX_INSTANCE	CXXPointer<DragAction> action = get_drag_action(widget, drag_context, x, y, time_);	delete T on replacement or scope exit; verify allocation and aliases	DONE
+app/widgets/gimptooltileview.cpp:161	SIGNAL_CONNECTION	CXXPointer<_D::Connection> tool_changed_handler;	delete Connection; destructor disconnects target signal	DONE

@@ -5,3 +5,5 @@
 旧 `app/base/scopeguard.hpp` の `CXXPointer<T>` は `ScopedPointer` を介して `delete` を呼ぶ。`app/base/glib-cxx-utils.hpp` の `Object<T>` は `g_object_unref` によって保持参照を解放し、`Value<IsOwner,IsManager>` は `g_value_unset` と必要に応じて `g_free` を行う。`hold(T*)` は渡された参照を `Object<T>` に格納する。個々の値が新規参照か借用参照か、raw pointer の寿命、コピーと移動、例外経路を後続の `01.007` 子タスクで確定する。
 
 `cpp-ref-hold-review.tsv` は明示的な `hold` と `g_object_ref*` / `g_object_unref` の 52 件を構文上の役割に分ける。`app/widgets/gimplayerpopup.cpp:927` は `gtk_ui_manager_get_widget` の返り値を参照追加なしで `hold` に渡すため、所有権を確認すべき箇所である。GTK 3 の menu 構築時には、新規参照を得るか借用として保持するかを明示し、破棄順も検証する。これ以外の `TRANSFER_CONTRACT_REVIEW` も各関数の返り値契約を調べるまで確定扱いにしない。
+
+`cpp-scoped-pointer-review.tsv` は `CXXPointer` 54 箇所を対象に、対象の C++ 型と `delete` の対象を整理する。38 箇所の `Connection` は destructor が対象 GObject の signal を解除するため、Connection が対象より長生きしないことを実装時に確認する。3 箇所の Idle/Timeout は source の取消と callback の終了順を別途検証する。`GdkPoint` は `new` で生成されるため `delete` と対応する。一覧の `DONE` は構文分類の完了を示し、実行時の安全性を意味しない。
