@@ -172,6 +172,7 @@
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
 | 01.007/c-added-lines | [x] | C の変更行と上流文脈を判別する | 01.007/c-hunk-roles | hunk 内の 74 件を変更前・変更後 blob の実差分と照合する |
+| 01.007/toolbar-ref | [x] | 旧 toolbar の widget 参照経路を確定する | 01.007/c-added-lines | data-full の保持、付け替え時の一時参照、hide 時の余剰参照を出典行付きで記録する |
 | 01.007/c-state | [ ] | C 側の変更行で参照管理を照合する | 01.007/cpp-candidates | 追加差分の ref/unref、GValue、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
 | 01.009 | [ ] | 保存経路を列挙する | 01.008 | XCF、myb、JSON、設定、parasite の reader/writer を記録 |
@@ -903,6 +904,7 @@
 | 29.007 | [ ] | color UI を移植する | 29.006 | 前景・背景色が context と同期 |
 | 29.008 | [ ] | tool tile の表示を移植する | 29.007 | tool manager の現在選択と同期 |
 | 29.009 | [ ] | tool group を接続する | 29.008 | 旧分類と現行 action の対応が明確 |
+| 29.010/toolbar-ref-balance | [ ] | toolbar の再表示と終了時の参照数を修正する | 29.010, 01.007/toolbar-ref | hide 時の余剰参照をなくし、移動・反復表示・破棄を検証する |
 | 29.010 | [ ] | 操作バーを移植する | 29.009 | 旧 action を呼び UI 状態を反映 |
 | 29.011 | [ ] | 縦長配置を移植する | 29.010 | 部品の機能を削らず再配置 |
 | 29.012 | [ ] | UI 退避を実装する | 29.011 | 描画時の表示切替が一致 |
