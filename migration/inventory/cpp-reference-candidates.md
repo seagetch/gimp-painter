@@ -7,3 +7,5 @@
 `cpp-ref-hold-review.tsv` は明示的な `hold` と `g_object_ref*` / `g_object_unref` の 52 件を構文上の役割に分ける。`app/widgets/gimplayerpopup.cpp:927` は `gtk_ui_manager_get_widget` の返り値を参照追加なしで `hold` に渡すため、所有権を確認すべき箇所である。GTK 3 の menu 構築時には、新規参照を得るか借用として保持するかを明示し、破棄順も検証する。これ以外の `TRANSFER_CONTRACT_REVIEW` も各関数の返り値契約を調べるまで確定扱いにしない。
 
 `cpp-scoped-pointer-review.tsv` は `CXXPointer` 54 箇所を対象に、対象の C++ 型と `delete` の対象を整理する。38 箇所の `Connection` は destructor が対象 GObject の signal を解除するため、Connection が対象より長生きしないことを実装時に確認する。3 箇所の Idle/Timeout は source の取消と callback の終了順を別途検証する。`GdkPoint` は `new` で生成されるため `delete` と対応する。一覧の `DONE` は構文分類の完了を示し、実行時の安全性を意味しない。
+
+`cpp-gvalue-review.tsv` は `GValue` 136 件の構文を helper、配列借用、初期化、引数、値ポインターに分けた。旧 `app/pdb/pdb-cxx-utils.hpp:177-181` と `:263-267` は文字列の一時 `GValue` を初期化しているが `g_value_unset` がない。`app/core/gimpfilterlayer.cpp:665-674` は `GValueArray` の要素を `GArray` に byte copy して clear callback を設定する一方、元配列の解放が見えず、同一内部ポインターの二重解放とリークの危険がある。`get_procedure_arg` は runner の戻り値を返さずに破棄する。移植先では値ごとに `g_value_copy` を行い、元配列と一時値を個別に解放し、getter の戻り値を検証する。

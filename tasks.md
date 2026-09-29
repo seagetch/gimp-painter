@@ -166,6 +166,7 @@
 | 01.007/cpp-candidates | [x] | 旧 C++ の参照管理候補を抽出する | 01.006 | 71 ファイルの hold/ref、GValue、CXXPointer 構文を出典行付きで列挙 |
 | 01.007/ref-hold | [x] | 旧 C++ の hold/ref/unref を分類する | 01.007/cpp-candidates | 明示的な 52 箇所を helper、採用、参照追加、解放、借用疑義に分類する |
 | 01.007/scoped-pointers | [x] | CXXPointer の対象型と破棄を分類する | 01.007/cpp-candidates | 54 箇所を signal connection、source、delegator、C++ instance に分類する |
+| 01.007/gvalue | [x] | 旧 C++ の GValue 使用箇所を分類する | 01.007/cpp-candidates | 136 箇所の helper、配列借用、初期化、引数、値ポインターを分類する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-state | [ ] | C 側の変更行で参照管理を照合する | 01.007/cpp-candidates | 追加差分の ref/unref、GValue、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
@@ -525,6 +526,8 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 15.001 | [ ] | procedure 定義の所有モデルを実装する | 08.020, 09.017, 10.018 | 名前と型付き引数を独立に保持 |
+| 15.001/gvalue-deep-copy | [ ] | FilterLayer の GValue 配列を深くコピーする | 15.001, 01.007/gvalue | 元 GValueArray と保存先を独立に解放し、getter の値を正しく返す |
+| 15.001/pdb-temporary-gvalue | [ ] | PDB 一時 GValue の破棄を保証する | 15.001, 01.007/gvalue | 変換用一時値を全経路で unset し、引数配列との所有権を分ける |
 | 15.002 | [ ] | 引数の旧値と実行値を分離する | 15.001 | 変換後も保存された元情報を失わない |
 | 15.003 | [ ] | FilterLayer の property を接続する | 15.002 | 設定の読取り・変更・通知が一経路 |
 | 15.004 | [ ] | 処理対象の下層範囲を実装する | 15.003 | 位置と階層に応じ旧範囲を選ぶ |

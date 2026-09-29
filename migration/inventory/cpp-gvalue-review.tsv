@@ -1,0 +1,137 @@
+legacy_site	syntax_role	source_line	ownership_followup	status
+app/base/glib-cxx-impl.hpp:187	BORROWED_VALUE_POINTER	const GValue *value,	Callback or accessor pointer has external lifetime	DONE
+app/base/glib-cxx-impl.hpp:218	VALUE_COPY_OR_SIGNATURE	GValue     *value,	Check by-value shallow copy and ownership transfer	DONE
+app/base/glib-cxx-utils.hpp:549	VALUE_WRAPPER_OR_TRAIT	template<typename T> inline const T get_value(const GValue& src) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:554	VALUE_WRAPPER_OR_TRAIT	template<typename T> inline void set_value(GValue& src, T value) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:560	VALUE_WRAPPER_OR_TRAIT	template<> inline const gchar get_value<gchar>(const GValue& src) { return g_value_get_schar(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:561	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<gchar>(GValue& src, gchar value) { g_value_set_schar(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:564	VALUE_WRAPPER_OR_TRAIT	template<> inline const guchar get_value<guchar>(const GValue& src) { return g_value_get_uchar(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:565	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<guchar>(GValue& src, guchar value) { g_value_set_uchar(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:568	VALUE_WRAPPER_OR_TRAIT	template<> inline const bool get_value<bool>(const GValue& src) { return g_value_get_boolean(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:569	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<bool>(GValue& src, bool value) { g_value_set_boolean(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:572	VALUE_WRAPPER_OR_TRAIT	template<> inline const gint32 get_value<gint32>(const GValue& src) { return g_value_get_int(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:573	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<gint32>(GValue& src, gint32 value) { g_value_set_int(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:576	VALUE_WRAPPER_OR_TRAIT	template<> inline const guint32 get_value<guint32>(const GValue& src) { return g_value_get_uint(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:577	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<guint32>(GValue& src, guint32 value) { g_value_set_uint(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:580	VALUE_WRAPPER_OR_TRAIT	template<> inline const glong get_value<glong>(const GValue& src) { return g_value_get_long(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:581	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<glong>(GValue& src, glong value) { g_value_set_long(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:584	VALUE_WRAPPER_OR_TRAIT	template<> inline const gulong get_value<gulong>(const GValue& src) { return g_value_get_ulong(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:585	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<gulong>(GValue& src, gulong value) { g_value_set_ulong(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:588	VALUE_WRAPPER_OR_TRAIT	template<> inline const gfloat get_value<gfloat>(const GValue& src) { return g_value_get_float(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:589	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<gfloat>(GValue& src, gfloat value) { g_value_set_float(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:592	VALUE_WRAPPER_OR_TRAIT	template<> inline const gdouble get_value<gdouble>(const GValue& src) { return g_value_get_double(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:593	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<gdouble>(GValue& src, gdouble value) { g_value_set_double(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:596	VALUE_WRAPPER_OR_TRAIT	template<> inline gchar* const get_value<gchar*>(const GValue& src) { return (gchar* const)g_value_get_string(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:597	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<gchar*>(GValue& src, gchar* value) { g_value_set_string(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:600	VALUE_WRAPPER_OR_TRAIT	template<> inline const gpointer get_value<gpointer>(const GValue& src) { return g_value_get_pointer(&src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:601	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<gpointer>(GValue& src, gpointer value) { g_value_set_pointer(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:604	VALUE_WRAPPER_OR_TRAIT	template<> inline GObject* const get_value<GObject*>(const GValue& src) { return (GObject* const)G_OBJECT(g_value_get_object(&src)); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:605	VALUE_WRAPPER_OR_TRAIT	template<> inline void set_value<GObject*>(GValue& src, GObject* value) { g_value_set_object(&src, value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:622	VALUE_WRAPPER_OR_TRAIT	static GValue _default() {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:623	VALUE_WRAPPER_OR_TRAIT	GValue value = G_VALUE_INIT;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:624	VALUE_WRAPPER_OR_TRAIT	g_value_init(&value, get_type());	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:628	VALUE_WRAPPER_OR_TRAIT	static const Instance cast(const GValue& src) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:629	VALUE_WRAPPER_OR_TRAIT	GValue value = _default();	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:634	VALUE_WRAPPER_OR_TRAIT	static GValue init(Instance src) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:635	VALUE_WRAPPER_OR_TRAIT	GValue value = _default();	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:640	VALUE_WRAPPER_OR_TRAIT	static void set(GValue& value, Instance src) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:644	VALUE_WRAPPER_OR_TRAIT	static Instance get(GValue& value) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:651	VALUE_WRAPPER_OR_TRAIT	inline void g_value_finalize(GValue* value) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:653	VALUE_WRAPPER_OR_TRAIT	g_value_unset(value);	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:662	VALUE_WRAPPER_OR_TRAIT	class Value : public ScopedPointer<GValue, void(GValue*), g_value_finalize<IsOwner, IsManager>>	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:664	VALUE_WRAPPER_OR_TRAIT	using super = ScopedPointer<GValue, void(GValue*), g_value_finalize<IsOwner, IsManager>>;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:666	VALUE_WRAPPER_OR_TRAIT	Value(GValue* src) : super(src) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:668	VALUE_WRAPPER_OR_TRAIT	Value(GValue& src) : super(&src) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:688	VALUE_WRAPPER_OR_TRAIT	GValue& ref() { return *super::obj; };	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:699	VALUE_WRAPPER_OR_TRAIT	CopyValue(const GValue* src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:700	VALUE_WRAPPER_OR_TRAIT	GValue default_value = G_VALUE_INIT;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:702	VALUE_WRAPPER_OR_TRAIT	g_value_init(obj, G_VALUE_TYPE(src));	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:706	VALUE_WRAPPER_OR_TRAIT	CopyValue(const GValue& src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:707	VALUE_WRAPPER_OR_TRAIT	GValue default_value = G_VALUE_INIT;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:709	VALUE_WRAPPER_OR_TRAIT	g_value_init(obj, G_VALUE_TYPE(&src));	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:717	VALUE_WRAPPER_OR_TRAIT	CopyValue(const HoldValue& src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:719	VALUE_WRAPPER_OR_TRAIT	GValue default_value = G_VALUE_INIT;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:721	VALUE_WRAPPER_OR_TRAIT	g_value_init(obj, G_VALUE_TYPE(src.ptr()));	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:726	VALUE_WRAPPER_OR_TRAIT	CopyValue(const CopyValue& src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:727	VALUE_WRAPPER_OR_TRAIT	GValue default_value = G_VALUE_INIT;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:729	VALUE_WRAPPER_OR_TRAIT	g_value_init(obj, G_VALUE_TYPE(src.ptr()));	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:733	VALUE_WRAPPER_OR_TRAIT	CopyValue(const gchar src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:737	VALUE_WRAPPER_OR_TRAIT	CopyValue(const guchar src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:741	VALUE_WRAPPER_OR_TRAIT	CopyValue(const bool src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:745	VALUE_WRAPPER_OR_TRAIT	CopyValue(const gint32 src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:749	VALUE_WRAPPER_OR_TRAIT	CopyValue(const guint32 src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:753	VALUE_WRAPPER_OR_TRAIT	CopyValue(const glong src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:757	VALUE_WRAPPER_OR_TRAIT	CopyValue(const gulong src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:761	VALUE_WRAPPER_OR_TRAIT	CopyValue(const gfloat src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:765	VALUE_WRAPPER_OR_TRAIT	CopyValue(const gdouble src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:769	VALUE_WRAPPER_OR_TRAIT	CopyValue(const gpointer src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:773	VALUE_WRAPPER_OR_TRAIT	CopyValue(const gchar* src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:777	VALUE_WRAPPER_OR_TRAIT	CopyValue(GObject* src) : super(g_new0(GValue, 1)) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:782	VALUE_WRAPPER_OR_TRAIT	GValue default_value = G_VALUE_INIT;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:784	VALUE_WRAPPER_OR_TRAIT	g_value_init(obj, G_VALUE_TYPE(src.obj));	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:796	VALUE_WRAPPER_OR_TRAIT	GValue value = G_VALUE_INIT;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:797	VALUE_WRAPPER_OR_TRAIT	g_value_init(&value, G_TYPE_BOXED);	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:808	VALUE_WRAPPER_OR_TRAIT	ValueRef(GValue* src) : super(src) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:811	VALUE_WRAPPER_OR_TRAIT	ValueRef(GValue& src) : super(&src) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:814	VALUE_WRAPPER_OR_TRAIT	ValueRef(const GValue* src) : super(NULL) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:815	VALUE_WRAPPER_OR_TRAIT	super::obj = (GValue*)src;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:818	VALUE_WRAPPER_OR_TRAIT	ValueRef(const GValue& src) : super(NULL) {	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:819	VALUE_WRAPPER_OR_TRAIT	super::obj = (GValue*)&src;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:837	VALUE_WRAPPER_OR_TRAIT	inline auto hold(GValue* value) { return HoldValue(value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:838	VALUE_WRAPPER_OR_TRAIT	inline auto hold(GValue& value) { return HoldValue(value); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:839	VALUE_WRAPPER_OR_TRAIT	inline auto move(GValue& src)  { return static_cast<CopyValue&&>(CopyValue(src)); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:841	VALUE_WRAPPER_OR_TRAIT	inline auto dup(const GValue& src) { return CopyValue(src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:842	VALUE_WRAPPER_OR_TRAIT	inline auto ref(GValue* src) { return IValue(src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:843	VALUE_WRAPPER_OR_TRAIT	inline auto ref(GValue& src) { return IValue(src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:844	VALUE_WRAPPER_OR_TRAIT	inline auto manage(GValue* src) { return ManagedValue(src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:845	VALUE_WRAPPER_OR_TRAIT	inline auto manage(GValue& src) { return ManagedValue(src); }	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:907	VALUE_WRAPPER_OR_TRAIT	GValue result = G_VALUE_INIT;	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/base/glib-cxx-utils.hpp:908	VALUE_WRAPPER_OR_TRAIT	g_value_init(&result, pspec->value_type);	Value wrapper ownership depends on IsOwner and IsManager	DONE
+app/core/gimpfilterlayer.cpp:169	VALUE_COPY_OR_SIGNATURE	virtual GValue          get_procedure_arg(int index);	Check by-value shallow copy and ownership transfer	DONE
+app/core/gimpfilterlayer.cpp:170	VALUE_COPY_OR_SIGNATURE	virtual void            set_procedure_arg(int index, GValue value);	Check by-value shallow copy and ownership transfer	DONE
+app/core/gimpfilterlayer.cpp:637	ARRAY_BORROW	auto           args  = ref<GValue>(_args);	Check backing array and element clear function	DONE
+app/core/gimpfilterlayer.cpp:672	VALUE_COPY_OR_SIGNATURE	GArray *array = g_array_sized_new (FALSE, TRUE, sizeof (GValue), varray->n_values);	Check by-value shallow copy and ownership transfer	DONE
+app/core/gimpfilterlayer.cpp:680	VALUE_COPY_OR_SIGNATURE	GValue GLib::FilterLayer::get_procedure_arg(int index)	Check by-value shallow copy and ownership transfer	DONE
+app/core/gimpfilterlayer.cpp:687	VALUE_COPY_OR_SIGNATURE	void GLib::FilterLayer::set_procedure_arg(int index, GValue value)	Check by-value shallow copy and ownership transfer	DONE
+app/core/gimpmypaintbrush.cpp:65	BORROWED_VALUE_POINTER	const GValue         *value,	Callback or accessor pointer has external lifetime	DONE
+app/core/gimpmypaintbrush.cpp:69	VALUE_COPY_OR_SIGNATURE	GValue               *value,	Check by-value shallow copy and ownership transfer	DONE
+app/core/gimpmypaintbrush.cpp:167	BORROWED_VALUE_POINTER	const GValue *value,	Callback or accessor pointer has external lifetime	DONE
+app/core/gimpmypaintbrush.cpp:183	VALUE_COPY_OR_SIGNATURE	GValue     *value,	Check by-value shallow copy and ownership transfer	DONE
+app/display/gimpcanvasperspectiveguide.cpp:121	BORROWED_VALUE_POINTER	const GValue* val = v.ptr();	Callback or accessor pointer has external lifetime	DONE
+app/paint/gimpmypaintcoreundo.cpp:42	BORROWED_VALUE_POINTER	const GValue        *value,	Callback or accessor pointer has external lifetime	DONE
+app/paint/gimpmypaintcoreundo.cpp:46	VALUE_COPY_OR_SIGNATURE	GValue              *value,	Check by-value shallow copy and ownership transfer	DONE
+app/paint/gimpmypaintcoreundo.cpp:99	BORROWED_VALUE_POINTER	const GValue *value,	Callback or accessor pointer has external lifetime	DONE
+app/paint/gimpmypaintcoreundo.cpp:119	VALUE_COPY_OR_SIGNATURE	GValue     *value,	Check by-value shallow copy and ownership transfer	DONE
+app/paint/gimpmypaintoptions.cpp:80	BORROWED_VALUE_POINTER	const GValue *value,	Callback or accessor pointer has external lifetime	DONE
+app/paint/gimpmypaintoptions.cpp:84	VALUE_COPY_OR_SIGNATURE	GValue       *value,	Check by-value shallow copy and ownership transfer	DONE
+app/paint/gimpmypaintoptions.cpp:233	BORROWED_VALUE_POINTER	const GValue *value,	Callback or accessor pointer has external lifetime	DONE
+app/paint/gimpmypaintoptions.cpp:282	VALUE_COPY_OR_SIGNATURE	GValue     *value,	Check by-value shallow copy and ownership transfer	DONE
+app/pdb/pdb-cxx-utils.hpp:165	BORROWED_VALUE_POINTER	bool setup_args(GLib::IHashTable<const gchar*, GValue*>* arg_tables) {	Callback or accessor pointer has external lifetime	DONE
+app/pdb/pdb-cxx-utils.hpp:173	BORROWED_VALUE_POINTER	GValue* value = (arg_tables)? (*arg_tables)[g_param_spec_get_name(pspec)] : NULL;	Callback or accessor pointer has external lifetime	DONE
+app/pdb/pdb-cxx-utils.hpp:177	VALUE_INITIALIZATION	GValue v_str = G_VALUE_INIT;	Unset initialized owned contents exactly once	DONE
+app/pdb/pdb-cxx-utils.hpp:178	VALUE_INITIALIZATION	g_value_init(&v_str, G_TYPE_STRING);	Unset initialized owned contents exactly once	DONE
+app/pdb/pdb-cxx-utils.hpp:259	VALUE_COPY_OR_SIGNATURE	GValue get_arg(int index) {	Check by-value shallow copy and ownership transfer	DONE
+app/pdb/pdb-cxx-utils.hpp:263	VALUE_COPY_OR_SIGNATURE	GValue b;	Check by-value shallow copy and ownership transfer	DONE
+app/pdb/pdb-cxx-utils.hpp:264	VALUE_INITIALIZATION	g_value_init (&b, G_TYPE_STRING);	Unset initialized owned contents exactly once	DONE
+app/pdb/pdb-cxx-utils.hpp:275	VALUE_COPY_OR_SIGNATURE	void set_arg(int index, GValue value) {	Check by-value shallow copy and ownership transfer	DONE
+app/presets/layer-preset.cpp:312	VALUE_COPY_OR_SIGNATURE	GArray* result = g_array_new(FALSE, TRUE, sizeof(GValue));	Check by-value shallow copy and ownership transfer	DONE
+app/presets/layer-preset.cpp:315	ARRAY_BORROW	auto args = ref<GValue>(result);	Check backing array and element clear function	DONE
+app/presets/layer-preset.cpp:337	VALUE_INITIALIZATION	GValue v = G_VALUE_INIT;	Unset initialized owned contents exactly once	DONE
+app/presets/layer-preset.cpp:342	VALUE_INITIALIZATION	GValue v = G_VALUE_INIT;	Unset initialized owned contents exactly once	DONE
+app/presets/layer-preset.cpp:351	VALUE_INITIALIZATION	GValue v = G_VALUE_INIT;	Unset initialized owned contents exactly once	DONE
+app/presets/layer-preset.cpp:356	VALUE_INITIALIZATION	GValue v = G_VALUE_INIT;	Unset initialized owned contents exactly once	DONE
+app/tools/gimpperspectiveguidetool.cpp:214	BORROWED_VALUE_POINTER	const GValue* val = v.ptr();	Callback or accessor pointer has external lifetime	DONE
+app/widgets/gimplayerpopup.cpp:230	ARRAY_BORROW	auto i_proc_args = ref<GValue>(proc_args);	Check backing array and element clear function	DONE
+app/widgets/gimplayerpopup.cpp:242	VALUE_COPY_OR_SIGNATURE	proc_args = g_array_sized_new (FALSE, TRUE, sizeof (GValue), temp_args->n_values);	Check by-value shallow copy and ownership transfer	DONE
+app/widgets/gimplayerpopup.cpp:336	ARRAY_BORROW	auto i_proc_args = ref<GValue>(proc_args);	Check backing array and element clear function	DONE
+app/widgets/gimplayerpopup.cpp:403	ARRAY_BORROW	auto i_proc_args = ref<GValue>(proc_args);	Check backing array and element clear function	DONE
+app/widgets/gimplayerpopup.cpp:421	ARRAY_BORROW	auto i_proc_args = ref<GValue>(proc_args);	Check backing array and element clear function	DONE
+app/widgets/gimplayerpopup.cpp:457	ARRAY_BORROW	auto i_proc_args = ref<GValue>(proc_args);	Check backing array and element clear function	DONE
+app/widgets/gimplayerpopup.cpp:514	ARRAY_BORROW	auto i_proc_args = ref<GValue>(proc_args);	Check backing array and element clear function	DONE
+app/widgets/gimplayerpopup.cpp:535	ARRAY_BORROW	auto i_proc_args = ref<GValue>(proc_args);	Check backing array and element clear function	DONE
+app/widgets/gimplayerpopup.cpp:628	ARRAY_BORROW	auto i_proc_args = ref<GValue>(proc_args);	Check backing array and element clear function	DONE
+app/widgets/gimplayerpopup.cpp:647	ARRAY_BORROW	auto i_proc_args = ref<GValue>(proc_args);	Check backing array and element clear function	DONE
+app/widgets/gimplayerpopup.cpp:663	BORROWED_VALUE_POINTER	const GValue*  value = g_param_spec_get_default_value(pspec);	Callback or accessor pointer has external lifetime	DONE
+app/widgets/gimplayertileview.cpp:463	BORROWED_VALUE_POINTER	const GValue* val = v.ptr();	Callback or accessor pointer has external lifetime	DONE
+app/widgets/gimplayertileview.cpp:560	BORROWED_VALUE_POINTER	const GValue* val = v.ptr();	Callback or accessor pointer has external lifetime	DONE
+app/widgets/gimptooltileview.cpp:295	BORROWED_VALUE_POINTER	const GValue* val = v.ptr();	Callback or accessor pointer has external lifetime	DONE
