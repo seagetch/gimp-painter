@@ -164,6 +164,7 @@
 | 01.006/c-state | [x] | C ソースの状態付加を照合する | 01.006/cpp-candidates | 旧差分の C 側 data/qdata をキー、型、所有者、破棄経路まで照合 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.007/cpp-candidates | [x] | 旧 C++ の参照管理候補を抽出する | 01.006 | 71 ファイルの hold/ref、GValue、CXXPointer 構文を出典行付きで列挙 |
+| 01.007/ref-hold | [x] | 旧 C++ の hold/ref/unref を分類する | 01.007/cpp-candidates | 明示的な 52 箇所を helper、採用、参照追加、解放、借用疑義に分類する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-state | [ ] | C 側の変更行で参照管理を照合する | 01.007/cpp-candidates | 追加差分の ref/unref、GValue、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
@@ -888,6 +889,7 @@
 | 29.006 | [ ] | layer tile の popup を接続する | 29.005 | 独自型設定へ到達可能 |
 | 29.006/cellrenderer-gtk3 | [ ] | popup 用 cell renderer を GTK 3 描画 ABI へ移す | 29.006, 01.005/gimp3-external-binders | activate/get_size の const GdkRectangle と render の Cairo コンテキスト・領域引数を守り、描画とクリックを確認 |
 | 29.006/popover-class-signals | [ ] | popup 独自型の cancel/confirm class slot を再定義する | 29.006, 01.005/gimp3-external-binders | GTK 3 の window 子型で class closure・キー割当と終了時の接続解除を確認 |
+| 29.006/menu-borrowed-reference | [ ] | layer popup の menu 参照の所有権を確定する | 29.006, 01.007/ref-hold | UI manager の menu 取得が借用か確認し、保持 wrapper と破棄順を修正・検証する |
 | 29.006/popover-handler-teardown | [ ] | popup の signal と view callback を終了時に解除する | 29.005, 06.017, 01.005/indirect-callback-owners | widget・popup を先に破棄しても借用中の owner を参照せず、scroll/button/confirm/cancel の接続が解除される |
 | 29.007 | [ ] | color UI を移植する | 29.006 | 前景・背景色が context と同期 |
 | 29.008 | [ ] | tool tile の表示を移植する | 29.007 | tool manager の現在選択と同期 |

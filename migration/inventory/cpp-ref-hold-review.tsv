@@ -1,0 +1,53 @@
+legacy_site	kind	syntax_role	source_line	ownership_followup	status
+app/base/glib-cxx-impl.hpp:161	HOLD	NEW_OBJECT_ADOPTION	_signals = hold(g_array_new(FALSE, TRUE, sizeof(guint)));	Verify new allocation and release on exit	DONE
+app/base/glib-cxx-impl.hpp:169	HOLD	NEW_OBJECT_ADOPTION	_properties = hold(g_array_new(FALSE, TRUE, sizeof(Property)));	Verify new allocation and release on exit	DONE
+app/base/glib-cxx-utils.hpp:163	HOLD	ADOPTING_HELPER	inline auto hold(GList* list) { return static_cast<List&&>(List(list)); }	Review caller transfer before wrapping	DONE
+app/base/glib-cxx-utils.hpp:332	HOLD	ADOPTING_HELPER	inline auto hold(GArray* arr) { return static_cast<Array&&>(Array(arr)); }	Review caller transfer before wrapping	DONE
+app/base/glib-cxx-utils.hpp:416	HOLD	ADOPTING_HELPER	inline auto hold(GHashTable* hashtable) { return static_cast<HashTable&&>(HashTable(hashtable)); }	Review caller transfer before wrapping	DONE
+app/base/glib-cxx-utils.hpp:837	HOLD	ADOPTING_HELPER	inline auto hold(GValue* value) { return HoldValue(value); }	Review caller transfer before wrapping	DONE
+app/base/glib-cxx-utils.hpp:838	HOLD	ADOPTING_HELPER	inline auto hold(GValue& value) { return HoldValue(value); }	Review caller transfer before wrapping	DONE
+app/base/glib-cxx-utils.hpp:860	REF_UNREF	REFERENCE_HELPER	void incref() { if (super::obj) g_object_ref(as_object()); };	Inspect wrapper copy move and unref behavior	DONE
+app/base/glib-cxx-utils.hpp:861	REF_UNREF	REFERENCE_HELPER	void decref() { if (super::obj) g_object_unref(as_object()); };	Inspect wrapper copy move and unref behavior	DONE
+app/base/glib-cxx-utils.hpp:875	HOLD	ADOPTING_HELPER	inline auto hold(T* src) { return static_cast<Object<T>&&>(Object<T>(src)); }	Review caller transfer before wrapping	DONE
+app/base/json-cxx-utils.hpp:41	HOLD	ADOPTING_HELPER	inline auto hold(JsonNode* src) { return Node(src); }	Review caller transfer before wrapping	DONE
+app/base/json-cxx-utils.hpp:276	REF_UNREF	REFERENCE_HELPER	IBuilder(const Builder& b) : Builder(b) { g_object_ref(G_OBJECT(obj)); };	Inspect wrapper copy move and unref behavior	DONE
+app/base/json-cxx-utils.hpp:277	REF_UNREF	REFERENCE_HELPER	IBuilder(const IBuilder& b) : Builder(b.obj) { g_object_ref(G_OBJECT(obj)); };	Inspect wrapper copy move and unref behavior	DONE
+app/core/gimpmypaintbrush-load.cpp:277	HOLD	TRANSFER_CONTRACT_REVIEW	auto _settings_dict = hold(mypaint_brush_get_brush_settings_dict ());	Verify returned ownership and wrapper cleanup	DONE
+app/core/gimpmypaintbrush-load.cpp:279	HOLD	TRANSFER_CONTRACT_REVIEW	auto _inputs_dict   = hold( mypaint_brush_get_input_settings_dict () );	Verify returned ownership and wrapper cleanup	DONE
+app/core/gimpmypaintbrush-load.cpp:345	HOLD	TRANSFER_CONTRACT_REVIEW	auto _switches_dict = hold( mypaint_brush_get_brush_switch_settings_dict () );	Verify returned ownership and wrapper cleanup	DONE
+app/core/gimpmypaintbrush-load.cpp:367	HOLD	TRANSFER_CONTRACT_REVIEW	auto _text_dict = hold( mypaint_brush_get_brush_text_settings_dict () );	Verify returned ownership and wrapper cleanup	DONE
+app/core/gimpmypaintbrush-load.cpp:551	HOLD	TRANSFER_CONTRACT_REVIEW	auto _settings_dict = hold( mypaint_brush_get_brush_settings_dict () );	Verify returned ownership and wrapper cleanup	DONE
+app/core/gimpmypaintbrush-load.cpp:553	HOLD	TRANSFER_CONTRACT_REVIEW	auto _inputs_dict   = hold( mypaint_brush_get_input_settings_dict () );	Verify returned ownership and wrapper cleanup	DONE
+app/core/gimpmypaintbrush-load.cpp:555	HOLD	TRANSFER_CONTRACT_REVIEW	auto _migrate_dict  = hold( mypaint_brush_get_setting_migrate_dict () );	Verify returned ownership and wrapper cleanup	DONE
+app/display/gimpdisplayshell-overlays.cpp:162	REF_UNREF	RETAIN	g_object_ref (G_OBJECT (widget));	Find corresponding unref and owner	DONE
+app/display/gimpdisplayshell-overlays.cpp:170	REF_UNREF	RELEASE	g_object_unref (G_OBJECT (widget));	Find matching ownership source and post-release aliases	DONE
+app/httpd/navigation-guide.cpp:190	REF_UNREF	RELEASE	g_object_unref(logger);	Find matching ownership source and post-release aliases	DONE
+app/httpd/navigation-guide.cpp:201	REF_UNREF	RELEASE	g_object_unref(hook_msg);	Find matching ownership source and post-release aliases	DONE
+app/paint/gimpmypaintcore-surface.cpp:415	REF_UNREF	RELEASE	g_object_unref(G_OBJECT(brushmark));	Find matching ownership source and post-release aliases	DONE
+app/paint/gimpmypaintcore-surface.cpp:418	REF_UNREF	RELEASE	g_object_unref(G_OBJECT(texture));	Find matching ownership source and post-release aliases	DONE
+app/paint/gimpmypaintcore-surface.cpp:436	REF_UNREF	RELEASE	g_object_unref(G_OBJECT(brushmark));	Find matching ownership source and post-release aliases	DONE
+app/paint/gimpmypaintcore-surface.cpp:443	REF_UNREF	RETAIN	g_object_ref(G_OBJECT(brushmark));	Find corresponding unref and owner	DONE
+app/paint/gimpmypaintcore-surface.cpp:454	REF_UNREF	RELEASE	g_object_unref(G_OBJECT(texture));	Find matching ownership source and post-release aliases	DONE
+app/paint/gimpmypaintcore-surface.cpp:460	REF_UNREF	RETAIN	g_object_ref(G_OBJECT(texture));	Find corresponding unref and owner	DONE
+app/paint/gimpmypaintoptions-history.cpp:93	REF_UNREF	RELEASE	g_object_unref (brush);	Find matching ownership source and post-release aliases	DONE
+app/paint/gimpmypaintoptions.cpp:224	REF_UNREF	RELEASE	g_object_unref(options->brush);	Find matching ownership source and post-release aliases	DONE
+app/paint/gimpmypaintoptions.cpp:398	REF_UNREF	RELEASE	g_object_unref(options->brush);	Find matching ownership source and post-release aliases	DONE
+app/presets/layer-preset.cpp:98	HOLD	TRANSFER_CONTRACT_REVIEW	auto _keys = hold( json.keys() );	Verify returned ownership and wrapper cleanup	DONE
+app/presets/layer-preset.cpp:450	HOLD	TRANSFER_CONTRACT_REVIEW	auto _children = hold( create_replacement_layer(children_json, source, layer, 0) );	Verify returned ownership and wrapper cleanup	DONE
+app/presets/layer-preset.cpp:468	HOLD	TRANSFER_CONTRACT_REVIEW	"auto proc_args = hold( get_args(filter_json[""args""], source) );"	Verify returned ownership and wrapper cleanup	DONE
+app/presets/preset-factory-gui.cpp:129	HOLD	NEW_OBJECT_ADOPTION	auto _array = hold ( g_array_new(FALSE, TRUE, sizeof(GimpStringActionEntry)) );	Verify new allocation and release on exit	DONE
+app/tools/gimpbucketfillbrushtool.cpp:410	HOLD	NEW_OBJECT_ADOPTION	Object<GimpChannel> channel     = hold(gimp_channel_new_mask (image,	Verify new allocation and release on exit	DONE
+app/tools/gimpbucketfillbrushtool.cpp:433	HOLD	NEW_OBJECT_ADOPTION	Object<GimpChannel> ch_mask = hold(gimp_image_contiguous_region_by_seed_full (image,	Verify new allocation and release on exit	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:208	REF_UNREF	RELEASE	g_object_unref (G_OBJECT (container));	Find matching ownership source and post-release aliases	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:244	REF_UNREF	RETAIN	g_object_ref(G_OBJECT(container));	Find corresponding unref and owner	DONE
+app/tools/gimpmypaintoptions-gui.cpp:226	REF_UNREF	RELEASE	g_object_unref (G_OBJECT (container));	Find matching ownership source and post-release aliases	DONE
+app/tools/gimpmypaintoptions-gui.cpp:266	REF_UNREF	RETAIN	g_object_ref(G_OBJECT(container));	Find corresponding unref and owner	DONE
+app/widgets/gimpcellrendererpopup.cpp:92	REF_UNREF	RELEASE	g_object_unref (pixbuf);	Find matching ownership source and post-release aliases	DONE
+app/widgets/gimpcellrendererpopup.cpp:217	REF_UNREF	RELEASE	g_object_unref (pixbuf);	Find matching ownership source and post-release aliases	DONE
+app/widgets/gimplayerpopup.cpp:927	HOLD	BORROWED_SOURCE_RISK	"auto _menu = hold(GTK_MENU(gtk_ui_manager_get_widget (GTK_UI_MANAGER(ui_manager.ptr()), ""/layers-popup"")));"	gtk_ui_manager_get_widget result is wrapped by adopting hold; verify ownership or take explicit ref	DONE
+app/widgets/gimplayertileview.cpp:150	REF_UNREF	RELEASE	g_object_unref (pixbuf);	Find matching ownership source and post-release aliases	DONE
+app/widgets/gimplayertileview.cpp:155	REF_UNREF	RELEASE	g_object_unref (pixbuf);	Find matching ownership source and post-release aliases	DONE
+app/widgets/gimplayertileview.cpp:1282	HOLD	TRANSFER_CONTRACT_REVIEW	auto applier = hold(ILayerPresetApplier::new_instance(context.ptr(), GIMP_JSON_RESOURCE(preset)));	Verify returned ownership and wrapper cleanup	DONE
+app/widgets/gimptooltileview.cpp:134	REF_UNREF	RELEASE	g_object_unref (pixbuf);	Find matching ownership source and post-release aliases	DONE
+app/widgets/gimptooltileview.cpp:139	REF_UNREF	RELEASE	g_object_unref (pixbuf);	Find matching ownership source and post-release aliases	DONE
+app/widgets/popupper.cpp:468	REF_UNREF	RELEASE	g_object_unref (renderer);	Find matching ownership source and post-release aliases	DONE
