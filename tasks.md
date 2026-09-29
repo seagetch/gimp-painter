@@ -169,6 +169,7 @@
 | 01.007/gvalue | [x] | 旧 C++ の GValue 使用箇所を分類する | 01.007/cpp-candidates | 136 箇所の helper、配列借用、初期化、引数、値ポインターを分類する |
 | 01.007/raw-candidates | [x] | C++ の raw pointer 寿命構文を抽出する | 01.007/cpp-candidates | new/delete/g_free/weak pointer の出典行を列挙し、弱参照解除漏れの候補を記録する |
 | 01.007/weak-pointers | [x] | C++ weak pointer の登録と解除を照合する | 01.007/raw-candidates | 4 箇所の対象、スロット、存続期間、解除経路を出典行付きで記録する |
+| 01.007/mapping-array | [x] | MyPaint Mapping 配列の確保・破棄を照合する | 01.007/raw-candidates | new[] と delete の不一致、既定コピー構築の共有リスクを出典行で記録する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
@@ -660,6 +661,7 @@
 | 19.005 | [ ] | texts の decoder を実装する | 19.004 | 文字列と資源参照を保持 |
 | 19.006 | [ ] | 入力カーブの decoder を実装する | 19.005 | 点列・入力名・範囲を保持 |
 | 19.006/v1-curve-validation | [ ] | 旧 myb v1 の曲線点読込みを修正して移植する | 19.005, 01.005/indirect-callback-owners | 旧 `parse_points_v1` の余分なセミコロンによる全点スキップを排除し、x の単調性・y 変換・異常な点列を処理 |
+| 19.006/mapping-value-owner | [ ] | 曲線点列の値所有を実装する | 19.006, 01.007/mapping-array | 点列を独立にコピー・移動し、再代入・破棄で配列の多重解放を起こさない |
 | 19.007 | [ ] | 未知キーの保持を実装する | 19.006 | 読込→保存で消えない |
 | 19.008 | [ ] | GIMP ブラシ参照を解決する | 19.007 | 資源名と識別規則を旧版に合わせる |
 | 19.009 | [ ] | 紙目参照を解決する | 19.008 | 旧参照から対象資源を選ぶ |
