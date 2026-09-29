@@ -1,36 +1,36 @@
 legacy_site	operation	syntax_role	owner	release_contract	followup	coverage
-app/base/delegators.hpp:13	DELETE	CXX_RELEASE				PENDING
-app/base/delegators.hpp:94	NEW	CXX_ALLOCATION				PENDING
-app/base/delegators.hpp:101	NEW	CXX_ALLOCATION				PENDING
-app/base/delegators.hpp:107	NEW	CXX_ALLOCATION				PENDING
-app/base/delegators.hpp:177	NEW	CXX_ALLOCATION				PENDING
-app/base/glib-cxx-impl.hpp:279	G_FREE	C_ALLOCATOR_RELEASE				PENDING
-app/base/glib-cxx-impl.hpp:283	NEW	CXX_ALLOCATION				PENDING
-app/base/glib-cxx-utils.hpp:45	G_FREE	C_ALLOCATOR_RELEASE				PENDING
-app/base/glib-cxx-utils.hpp:656	G_FREE	C_ALLOCATOR_RELEASE				PENDING
-app/base/glib-cxx-utils.hpp:1132	DELETE	CXX_RELEASE				PENDING
-app/base/glib-cxx-utils.hpp:1162	NEW	CXX_ALLOCATION				PENDING
-app/base/glib-cxx-utils.hpp:1165	NEW	CXX_ALLOCATION				PENDING
-app/base/glib-cxx-utils.hpp:1172	DELETE	CXX_RELEASE				PENDING
-app/base/glib-cxx-utils.hpp:1191	DELETE	CXX_RELEASE				PENDING
-app/base/route.hpp:95	NEW	CXX_ALLOCATION				PENDING
-app/base/route.hpp:98	NEW	CXX_ALLOCATION				PENDING
-app/base/route.hpp:104	NEW	CXX_ALLOCATION				PENDING
-app/base/route.hpp:118	DELETE	CXX_RELEASE				PENDING
-app/base/route.hpp:158	NEW	CXX_ALLOCATION				PENDING
-app/base/scopeguard.hpp:65	DELETE	CXX_RELEASE				PENDING
-app/base/soup-cxx-utils.hpp:50	NEW	CXX_ALLOCATION				PENDING
-app/base/soup-cxx-utils.hpp:64	DELETE	CXX_RELEASE				PENDING
-app/base/soup-cxx-utils.hpp:96	NEW	CXX_ALLOCATION				PENDING
-app/base/soup-cxx-utils.hpp:251	G_FREE	C_ALLOCATOR_RELEASE				PENDING
-app/base/soup-cxx-utils.hpp:292	NEW	CXX_ALLOCATION				PENDING
-app/base/soup-cxx-utils.hpp:296	NEW	CXX_ALLOCATION				PENDING
-app/base/soup-cxx-utils.hpp:305	NEW	CXX_ALLOCATION				PENDING
-app/base/soup-cxx-utils.hpp:308	NEW	CXX_ALLOCATION				PENDING
-app/base/soup-cxx-utils.hpp:313	NEW	CXX_ALLOCATION				PENDING
-app/base/soup-cxx-utils.hpp:322	DELETE	CXX_RELEASE				PENDING
-app/base/soup-cxx-utils.hpp:372	DELETE	CXX_RELEASE				PENDING
-app/base/soup-cxx-utils.hpp:376	NEW	CXX_ALLOCATION				PENDING
+app/base/delegators.hpp:13	DELETE	CXX_RELEASE	GObject data or closure payload	destroy notify deletes typed C++ value	06.010	MAPPED
+app/base/delegators.hpp:94	NEW	CXX_ALLOCATION	delegator factory caller	closure notify or CXXPointer deletes ObjectDelegator	06.017	MAPPED
+app/base/delegators.hpp:101	NEW	CXX_ALLOCATION	delegator factory caller	closure notify or CXXPointer deletes Delegator	06.017	MAPPED
+app/base/delegators.hpp:107	NEW	CXX_ALLOCATION	delegator factory caller	closure notify or CXXPointer deletes Delegator	06.017	MAPPED
+app/base/delegators.hpp:177	NEW	CXX_ALLOCATION	Connection factory caller	caller deletes Connection and disconnects signal	06.017	MAPPED
+app/base/glib-cxx-impl.hpp:279	G_FREE	C_ALLOCATOR_RELEASE	temporary GParamSpec pointer array	g_free after property count; GParamSpecs borrowed	05.008	MAPPED
+app/base/glib-cxx-impl.hpp:283	NEW	CXX_ALLOCATION	thrown InvalidClass pointer	no matching pointer catch/delete found	05.013/class-init-error	MAPPED
+app/base/glib-cxx-utils.hpp:45	G_FREE	C_ALLOCATOR_RELEASE	CString.obj	g_free previous string on pointer assignment	06.021	MAPPED
+app/base/glib-cxx-utils.hpp:656	G_FREE	C_ALLOCATOR_RELEASE	owned GValue allocation	g_value_unset then g_free when IsOwner	06.020	MAPPED
+app/base/glib-cxx-utils.hpp:1132	DELETE	CXX_RELEASE	Decorator.obj	Decorator destructor deletes wrapped C++ object	06.023	MAPPED
+app/base/glib-cxx-utils.hpp:1162	NEW	CXX_ALLOCATION	DelegatorProxy factory caller	caller must delete proxy; widget and delegate pointers borrowed	06.023	MAPPED
+app/base/glib-cxx-utils.hpp:1165	NEW	CXX_ALLOCATION	widget data-full Decorator	widget destroy or undecorate deletes Decorator and wrapped object	06.023	MAPPED
+app/base/glib-cxx-utils.hpp:1172	DELETE	CXX_RELEASE	widget data-full Decorator	steal data before explicit delete to avoid double deletion	06.023	MAPPED
+app/base/glib-cxx-utils.hpp:1191	DELETE	CXX_RELEASE	disposable EventSource callback owner	source destroy notify deletes disposable instance; other instances clear id	06.019	MAPPED
+app/base/route.hpp:95	NEW	CXX_ALLOCATION	Route.Rule.rules Select	Rule destructor deletes TokenRule base pointer without virtual destructor	31.008/router-lifetime	MAPPED
+app/base/route.hpp:98	NEW	CXX_ALLOCATION	Route.Rule.rules Name	Rule destructor deletes TokenRule base pointer without virtual destructor	31.008/router-lifetime	MAPPED
+app/base/route.hpp:104	NEW	CXX_ALLOCATION	Route.Rule.rules Match	Rule destructor deletes TokenRule base pointer without virtual destructor	31.008/router-lifetime	MAPPED
+app/base/route.hpp:118	DELETE	CXX_RELEASE	Route.Rule.handler	Rule destructor deletes owned delegator	31.008/router-lifetime	MAPPED
+app/base/route.hpp:158	NEW	CXX_ALLOCATION	Route.rules Rule	Route destructor deletes each Rule and handler	31.008/router-lifetime	MAPPED
+app/base/scopeguard.hpp:65	DELETE	CXX_RELEASE	CXXPointer<T> object	ScopeGuard destroy_instance deletes T once	06.010	MAPPED
+app/base/soup-cxx-utils.hpp:50	NEW	CXX_ALLOCATION	Defferred.next	linked decRef cascade deletes when refCount reaches zero	31.008	MAPPED
+app/base/soup-cxx-utils.hpp:64	DELETE	CXX_RELEASE	Defferred callback chain	decRef deletes this and decrements prev; no-handler callback can return without decRef	31.008	MAPPED
+app/base/soup-cxx-utils.hpp:96	NEW	CXX_ALLOCATION	queued message Defferred	queue callback should release chain on completion/cancel	31.008	MAPPED
+app/base/soup-cxx-utils.hpp:251	G_FREE	C_ALLOCATOR_RELEASE	router Matched ** value	free replaced string after hash insertion; other values require owner cleanup	31.008/router-lifetime	MAPPED
+app/base/soup-cxx-utils.hpp:292	NEW	CXX_ALLOCATION	Soup.Router.Rule.rules Select	Rule destructor deletes TokenRule base pointer without virtual destructor	31.008/router-lifetime	MAPPED
+app/base/soup-cxx-utils.hpp:296	NEW	CXX_ALLOCATION	Soup.Router.Rule.rules Name	Rule destructor deletes TokenRule base pointer without virtual destructor	31.008/router-lifetime	MAPPED
+app/base/soup-cxx-utils.hpp:305	NEW	CXX_ALLOCATION	Soup.Router.Rule.rules AnyLoop	Rule destructor deletes TokenRule base pointer without virtual destructor	31.008/router-lifetime	MAPPED
+app/base/soup-cxx-utils.hpp:308	NEW	CXX_ALLOCATION	Soup.Router.Rule.rules Any	Rule destructor deletes TokenRule base pointer without virtual destructor	31.008/router-lifetime	MAPPED
+app/base/soup-cxx-utils.hpp:313	NEW	CXX_ALLOCATION	Soup.Router.Rule.rules Match	Rule destructor deletes TokenRule base pointer without virtual destructor	31.008/router-lifetime	MAPPED
+app/base/soup-cxx-utils.hpp:322	DELETE	CXX_RELEASE	Soup.Router.Rule.rules children	delete via TokenRule pointer; derived cleanup requires virtual destructor	31.008/router-lifetime	MAPPED
+app/base/soup-cxx-utils.hpp:372	DELETE	CXX_RELEASE	Soup.Router.rules Rule	Router destructor deletes each Rule and handler	31.008/router-lifetime	MAPPED
+app/base/soup-cxx-utils.hpp:376	NEW	CXX_ALLOCATION	Soup.Router.rules Rule	Router owns new Rule and passed handler	31.008/router-lifetime	MAPPED
 app/core/gimpfilterlayer.cpp:525	DELETE	CXX_RELEASE	FilterLayer.updates Rectangle	delete after removing list link	17.007	MAPPED
 app/core/gimpfilterlayer.cpp:640	NEW	CXX_ALLOCATION	FilterLayer.runner	CXXPointer deletes on replacement/finalize; local r can escape cleanup if set_arg fails	16.019	MAPPED
 app/core/gimpfilterlayer.cpp:875	NEW	CXX_ALLOCATION	FilterLayer.updates Rectangle	delete when projected or free list on reset	17.007	MAPPED
@@ -52,10 +52,10 @@ app/core/gimpmypaintbrush.cpp:734	DELETE	CXX_RELEASE	preview local GimpMypaintSu
 app/core/gimpmypaintbrush.cpp:782	NEW	CXX_ALLOCATION	duplicated private result	transferred to result.p then GObject finalize	mapping copy and icon buffer followups	MAPPED
 app/core/gimpperspectiveguide.cpp:117	DELETE	CXX_RELEASE	PerspectiveGuide.vanish_points element	destructor deletes Point; List frees nodes	08.009	MAPPED
 app/core/gimpperspectiveguide.cpp:159	NEW	CXX_ALLOCATION	PerspectiveGuide.vanish_points element	destructor deletes Point; List frees nodes	08.009	MAPPED
-app/core/mypaintbrush-mapping.hpp:42	NEW	ARRAY_ALLOCATION				PENDING
-app/core/mypaintbrush-mapping.hpp:48	DELETE	CXX_RELEASE				PENDING
-app/core/mypaintbrush-mapping.hpp:52	DELETE	CXX_RELEASE				PENDING
-app/core/mypaintbrush-mapping.hpp:56	NEW	ARRAY_ALLOCATION				PENDING
+app/core/mypaintbrush-mapping.hpp:42	NEW	ARRAY_ALLOCATION	Mapping.control_points	new[] must match delete[]; old destructor uses delete	19.006/mapping-value-owner	MAPPED
+app/core/mypaintbrush-mapping.hpp:48	DELETE	CXX_RELEASE	Mapping.control_points	old scalar delete mismatches array allocation	19.006/mapping-value-owner	MAPPED
+app/core/mypaintbrush-mapping.hpp:52	DELETE	CXX_RELEASE	Mapping.control_points	old scalar delete in resize mismatches array allocation	19.006/mapping-value-owner	MAPPED
+app/core/mypaintbrush-mapping.hpp:56	NEW	ARRAY_ALLOCATION	Mapping.control_points	replacement new[] paired with value owner on resize	19.006/mapping-value-owner	MAPPED
 app/display/gimpdisplayshell-overlays.cpp:380	NEW	CXX_ALLOCATION				PENDING
 app/display/gimpdisplayshell-overlays.cpp:433	NEW	CXX_ALLOCATION				PENDING
 app/display/gimpdisplayshell-overlays.cpp:459	NEW	CXX_ALLOCATION				PENDING
