@@ -1,0 +1,518 @@
+legacy_site	operation	role	changed_hunk	source_line	status
+app/actions/layers-commands.c:221	g_signal_connect	SIGNAL	-	"g_signal_connect (dialog->dialog, ""response"","	REVIEW
+app/actions/layers-commands.c:270	g_signal_connect	SIGNAL	-	"g_signal_connect (dialog->dialog, ""response"","	REVIEW
+app/actions/layers-commands.c:414	g_signal_connect	SIGNAL	01.002/000026	"g_signal_connect (dialog->dialog, ""response"","	REVIEW
+app/actions/layers-commands.c:792	g_signal_connect	SIGNAL	-	"g_signal_connect (dialog->dialog, ""response"","	REVIEW
+app/actions/view-commands.c:361	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->filters_dialog, ""destroy"","	REVIEW
+app/actions/view-commands.c:612	g_signal_connect	SIGNAL	-	"g_signal_connect (color_dialog, ""update"","	REVIEW
+app/app.c:244	g_signal_connect_after	SIGNAL	-	"g_signal_connect_after (gimp, ""exit"","	REVIEW
+app/base/tile-cache.c:105	g_source_remove	CANCEL	-	g_source_remove (idle_swapper);	REVIEW
+app/base/tile-cache.c:242	g_timeout_add_full	DEFERRED_SOURCE	-	idle_swapper = g_timeout_add_full (G_PRIORITY_LOW,	REVIEW
+app/base/tile-cache.c:364	g_timeout_add_full	DEFERRED_SOURCE	-	idle_swapper = g_timeout_add_full (G_PRIORITY_LOW,	REVIEW
+app/base/tile-cache.c:437	g_timeout_add_full	DEFERRED_SOURCE	-	idle_swapper = g_timeout_add_full (G_PRIORITY_LOW,	REVIEW
+app/config/gimpcoreconfig.c:500	g_signal_connect	SIGNAL	-	"g_signal_connect (config->default_image, ""notify"","	REVIEW
+app/config/gimpcoreconfig.c:507	g_signal_connect	SIGNAL	-	"g_signal_connect (config->default_grid, ""notify"","	REVIEW
+app/config/gimpcoreconfig.c:512	g_signal_connect	SIGNAL	-	"g_signal_connect (config->color_management, ""notify"","	REVIEW
+app/core/gimp.c:953	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->config, ""notify"","	REVIEW
+app/core/gimp.c:956	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->edit_config, ""notify"","	REVIEW
+app/core/gimpcontainer.c:575	g_signal_connect	SIGNAL	-	handler_id = g_signal_connect (object,	REVIEW
+app/core/gimpcontainer.c:591	g_signal_connect	SIGNAL	-	"g_signal_connect (object, ""disconnect"","	REVIEW
+app/core/gimpcontainer.c:967	g_signal_connect	SIGNAL	-	handler_id = g_signal_connect (object,	REVIEW
+app/core/gimpcontext.c:822	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->images, ""remove"","	REVIEW
+app/core/gimpcontext.c:825	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->displays, ""remove"","	REVIEW
+app/core/gimpcontext.c:829	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->tool_info_list, ""remove"","	REVIEW
+app/core/gimpcontext.c:832	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->tool_info_list, ""thaw"","	REVIEW
+app/core/gimpcontext.c:836	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->paint_info_list, ""remove"","	REVIEW
+app/core/gimpcontext.c:839	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->paint_info_list, ""thaw"","	REVIEW
+app/core/gimpcontext.c:844	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""remove"","	REVIEW
+app/core/gimpcontext.c:847	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""thaw"","	REVIEW
+app/core/gimpcontext.c:852	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""remove"","	REVIEW
+app/core/gimpcontext.c:855	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""thaw"","	REVIEW
+app/core/gimpcontext.c:860	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""remove"","	REVIEW
+app/core/gimpcontext.c:863	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""thaw"","	REVIEW
+app/core/gimpcontext.c:868	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""remove"","	REVIEW
+app/core/gimpcontext.c:871	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""thaw"","	REVIEW
+app/core/gimpcontext.c:876	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""remove"","	REVIEW
+app/core/gimpcontext.c:879	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""thaw"","	REVIEW
+app/core/gimpcontext.c:884	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""remove"","	REVIEW
+app/core/gimpcontext.c:887	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (container, ""thaw"","	REVIEW
+app/core/gimpcontext.c:891	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->fonts, ""remove"","	REVIEW
+app/core/gimpcontext.c:894	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->fonts, ""thaw"","	REVIEW
+app/core/gimpcontext.c:899	g_signal_connect_object	SIGNAL	01.002/000195	"g_signal_connect_object (container, ""remove"","	REVIEW
+app/core/gimpcontext.c:902	g_signal_connect_object	SIGNAL	01.002/000195	"g_signal_connect_object (container, ""thaw"","	REVIEW
+app/core/gimpcontext.c:906	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->named_buffers, ""remove"","	REVIEW
+app/core/gimpcontext.c:909	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->named_buffers, ""thaw"","	REVIEW
+app/core/gimpcontext.c:913	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->documents, ""remove"","	REVIEW
+app/core/gimpcontext.c:916	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->documents, ""thaw"","	REVIEW
+app/core/gimpcontext.c:920	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->templates, ""remove"","	REVIEW
+app/core/gimpcontext.c:923	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp->templates, ""thaw"","	REVIEW
+app/core/gimpcontext.c:1555	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (parent, ""notify"","	REVIEW
+app/core/gimpcontext.c:2162	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tool_info, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:2286	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (paint_info, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:2641	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (brush, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:2759	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (dynamics, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:2879	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (pattern, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:2999	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gradient, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:3119	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (palette, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:3232	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tool_preset, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:3385	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (font, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:3506	g_signal_connect_object	SIGNAL	01.002/000207	"g_signal_connect_object (mypaint_brush, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:3630	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (buffer, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:3753	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (imagefile, ""name-changed"","	REVIEW
+app/core/gimpcontext.c:3876	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (template, ""name-changed"","	REVIEW
+app/core/gimpdrawable.c:1046	g_signal_connect	SIGNAL	-	"g_signal_connect (fs, ""notify"","	REVIEW
+app/core/gimpdrawable.c:1866	g_signal_connect	SIGNAL	-	"g_signal_connect (floating_sel, ""update"","	REVIEW
+app/core/gimpdynamics.c:590	g_signal_connect	SIGNAL	-	"g_signal_connect (output, ""notify"","	REVIEW
+app/core/gimpgrouplayer.c:265	g_signal_connect	SIGNAL	-	"g_signal_connect (private->children, ""add"","	REVIEW
+app/core/gimpgrouplayer.c:268	g_signal_connect	SIGNAL	-	"g_signal_connect (private->children, ""remove"","	REVIEW
+app/core/gimpgrouplayer.c:282	g_signal_connect	SIGNAL	-	"g_signal_connect (private->children, ""update"","	REVIEW
+app/core/gimpgrouplayer.c:288	g_signal_connect	SIGNAL	-	"g_signal_connect (private->projection, ""update"","	REVIEW
+app/core/gimpimage.c:673	g_signal_connect	SIGNAL	-	"g_signal_connect (private->layers, ""notify::active-item"","	REVIEW
+app/core/gimpimage.c:676	g_signal_connect	SIGNAL	-	"g_signal_connect (private->channels, ""notify::active-item"","	REVIEW
+app/core/gimpimage.c:679	g_signal_connect	SIGNAL	-	"g_signal_connect (private->vectors, ""notify::active-item"","	REVIEW
+app/core/gimpimage.c:683	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (private->layers->container, ""update"","	REVIEW
+app/core/gimpimage.c:692	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (private->channels->container, ""update"","	REVIEW
+app/core/gimpimage.c:705	g_signal_connect	SIGNAL	-	"g_signal_connect (private->channels->container, ""add"","	REVIEW
+app/core/gimpimage.c:708	g_signal_connect	SIGNAL	-	"g_signal_connect (private->channels->container, ""remove"","	REVIEW
+app/core/gimpimage.c:776	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify::transparency-type"","	REVIEW
+app/core/gimpimage.c:779	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify::transparency-size"","	REVIEW
+app/core/gimpimage.c:782	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify::layer-previews"","	REVIEW
+app/core/gimpimage.c:2144	g_signal_connect	SIGNAL	-	"g_signal_connect (private->selection_mask, ""update"","	REVIEW
+app/core/gimplayer.c:1499	g_signal_connect	SIGNAL	-	"g_signal_connect (mask, ""update"","	REVIEW
+app/core/gimplist.c:224	g_signal_connect	SIGNAL	-	"g_signal_connect (object, ""name-changed"","	REVIEW
+app/core/gimpprojection.c:179	g_source_remove	CANCEL	-	g_source_remove (proj->idle_render.idle_id);	REVIEW
+app/core/gimpprojection.c:362	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (projectable, ""invalidate"","	REVIEW
+app/core/gimpprojection.c:365	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (projectable, ""flush"","	REVIEW
+app/core/gimpprojection.c:368	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (projectable, ""structure-changed"","	REVIEW
+app/core/gimpprojection.c:493	g_source_remove	CANCEL	-	g_source_remove (proj->idle_render.idle_id);	REVIEW
+app/core/gimpprojection.c:628	g_idle_add_full	DEFERRED_SOURCE	-	g_idle_add_full (GIMP_PROJECTION_IDLE_PRIORITY,	REVIEW
+app/core/gimpprojection.c:866	g_source_remove	CANCEL	-	g_source_remove (proj->idle_render.idle_id);	REVIEW
+app/core/gimptoolgroup.c:158	g_signal_connect	SIGNAL	01.002/000393	"g_signal_connect (tool_group->priv->children, ""add"","	REVIEW
+app/core/gimptoolgroup.c:161	g_signal_connect	SIGNAL	01.002/000393	"g_signal_connect (tool_group->priv->children, ""remove"","	REVIEW
+app/core/gimptooloptions.c:106	g_signal_connect	SIGNAL	-	"g_signal_connect (options, ""notify::tool"","	REVIEW
+app/dialogs/preferences-dialog.c:152	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify"","	REVIEW
+app/dialogs/preferences-dialog.c:155	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config_copy, ""notify"","	REVIEW
+app/dialogs/preferences-dialog.c:573	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gtk_widget_get_toplevel (widget), ""unmap"","	REVIEW
+app/dialogs/preferences-dialog.c:1032	g_signal_connect	SIGNAL	-	"g_signal_connect (dialog, ""response"","	REVIEW
+app/dialogs/preferences-dialog.c:1036	g_signal_connect	SIGNAL	-	"g_signal_connect (combo, ""changed"","	REVIEW
+app/dialogs/preferences-dialog.c:1348	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""color-changed"","	REVIEW
+app/dialogs/preferences-dialog.c:1382	g_signal_connect	SIGNAL	-	"g_signal_connect (dialog, ""response"","	REVIEW
+app/dialogs/preferences-dialog.c:1458	g_signal_connect	SIGNAL	-	"g_signal_connect (dialog, ""response"","	REVIEW
+app/dialogs/preferences-dialog.c:1539	g_signal_connect	SIGNAL	-	"g_signal_connect (sel, ""changed"","	REVIEW
+app/dialogs/preferences-dialog.c:1542	g_signal_connect	SIGNAL	-	"g_signal_connect (notebook, ""switch-page"","	REVIEW
+app/dialogs/preferences-dialog.c:1670	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:1681	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:1688	g_signal_connect	SIGNAL	-	"g_signal_connect (button2, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:1697	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:1788	g_signal_connect	SIGNAL	-	"g_signal_connect (sel, ""changed"","	REVIEW
+app/dialogs/preferences-dialog.c:1800	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:1920	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:1928	g_signal_connect	SIGNAL	-	"g_signal_connect (button2, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:2058	g_signal_connect	SIGNAL	-	"g_signal_connect (combo, ""select-item"","	REVIEW
+app/dialogs/preferences-dialog.c:2334	g_signal_connect	SIGNAL	-	"g_signal_connect (sel, ""changed"","	REVIEW
+app/dialogs/preferences-dialog.c:2424	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""toggled"","	REVIEW
+app/dialogs/preferences-dialog.c:2458	g_signal_connect	SIGNAL	-	"g_signal_connect (calibrate_button, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:2617	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:2628	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:2636	g_signal_connect	SIGNAL	-	"g_signal_connect (button2, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:2702	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/dialogs/preferences-dialog.c:2710	g_signal_connect	SIGNAL	-	"g_signal_connect (button2, ""clicked"","	REVIEW
+app/display/gimpdisplay.c:465	g_signal_connect	SIGNAL	-	"g_signal_connect (gimp_display_shell_get_statusbar (shell), ""cancel"","	REVIEW
+app/display/gimpdisplayshell-callbacks.c:94	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->hsbdata, ""value-changed"","	REVIEW
+app/display/gimpdisplayshell-callbacks.c:97	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->vsbdata, ""value-changed"","	REVIEW
+app/display/gimpdisplayshell-callbacks.c:101	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->hsb, ""change-value"","	REVIEW
+app/display/gimpdisplayshell-callbacks.c:105	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->vsb, ""change-value"","	REVIEW
+app/display/gimpdisplayshell-close.c:198	g_signal_connect	SIGNAL	-	"g_signal_connect (dialog, ""destroy"","	REVIEW
+app/display/gimpdisplayshell-close.c:202	g_signal_connect	SIGNAL	-	"g_signal_connect (dialog, ""response"","	REVIEW
+app/display/gimpdisplayshell-close.c:235	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (image, ""name-changed"","	REVIEW
+app/display/gimpdisplayshell-close.c:238	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (image, ""exported"","	REVIEW
+app/display/gimpdisplayshell-scroll.c:433	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""size-allocate"","	REVIEW
+app/display/gimpdisplayshell-selection.c:109	g_signal_connect	SIGNAL	-	"g_signal_connect (shell, ""window-state-event"","	REVIEW
+app/display/gimpdisplayshell-selection.c:112	g_signal_connect	SIGNAL	-	"g_signal_connect (shell, ""visibility-notify-event"","	REVIEW
+app/display/gimpdisplayshell-selection.c:230	g_idle_add	DEFERRED_SOURCE	-	selection->timeout = g_idle_add ((GSourceFunc) selection_start_timeout,	REVIEW
+app/display/gimpdisplayshell-selection.c:240	g_source_remove	CANCEL	-	g_source_remove (selection->timeout);	REVIEW
+app/display/gimpdisplayshell-selection.c:455	g_timeout_add_full	DEFERRED_SOURCE	-	selection->timeout = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE,	REVIEW
+app/display/gimpdisplayshell.c:339	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->motion_buffer, ""stroke"","	REVIEW
+app/display/gimpdisplayshell.c:342	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->motion_buffer, ""hover"","	REVIEW
+app/display/gimpdisplayshell.c:357	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (shell->zoom, ""zoomed"","	REVIEW
+app/display/gimpdisplayshell.c:362	g_signal_connect	SIGNAL	-	"g_signal_connect (shell, ""button-press-event"","	REVIEW
+app/display/gimpdisplayshell.c:365	g_signal_connect	SIGNAL	-	"g_signal_connect (shell, ""button-release-event"","	REVIEW
+app/display/gimpdisplayshell.c:368	g_signal_connect	SIGNAL	-	"g_signal_connect (shell, ""key-press-event"","	REVIEW
+app/display/gimpdisplayshell.c:553	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->origin, ""button-press-event"","	REVIEW
+app/display/gimpdisplayshell.c:565	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""remove"","	REVIEW
+app/display/gimpdisplayshell.c:578	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->hrule, ""button-press-event"","	REVIEW
+app/display/gimpdisplayshell.c:590	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->vrule, ""button-press-event"","	REVIEW
+app/display/gimpdisplayshell.c:606	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""realize"","	REVIEW
+app/display/gimpdisplayshell.c:609	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""size-allocate"","	REVIEW
+app/display/gimpdisplayshell.c:612	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""expose-event"","	REVIEW
+app/display/gimpdisplayshell.c:615	g_signal_connect_after	SIGNAL	-	"g_signal_connect_after (shell->canvas, ""expose-event"","	REVIEW
+app/display/gimpdisplayshell.c:619	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""enter-notify-event"","	REVIEW
+app/display/gimpdisplayshell.c:622	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""leave-notify-event"","	REVIEW
+app/display/gimpdisplayshell.c:625	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""proximity-in-event"","	REVIEW
+app/display/gimpdisplayshell.c:628	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""proximity-out-event"","	REVIEW
+app/display/gimpdisplayshell.c:631	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""focus-in-event"","	REVIEW
+app/display/gimpdisplayshell.c:634	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""focus-out-event"","	REVIEW
+app/display/gimpdisplayshell.c:637	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""button-press-event"","	REVIEW
+app/display/gimpdisplayshell.c:640	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""button-release-event"","	REVIEW
+app/display/gimpdisplayshell.c:643	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""scroll-event"","	REVIEW
+app/display/gimpdisplayshell.c:646	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""motion-notify-event"","	REVIEW
+app/display/gimpdisplayshell.c:649	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""key-press-event"","	REVIEW
+app/display/gimpdisplayshell.c:652	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->canvas, ""key-release-event"","	REVIEW
+app/display/gimpdisplayshell.c:675	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (shell->zoom_button, ""toggled"","	REVIEW
+app/display/gimpdisplayshell.c:704	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->quick_mask_button, ""toggled"","	REVIEW
+app/display/gimpdisplayshell.c:707	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->quick_mask_button, ""button-press-event"","	REVIEW
+app/display/gimpdisplayshell.c:719	g_signal_connect	SIGNAL	-	"g_signal_connect (shell->nav_ebox, ""button-press-event"","	REVIEW
+app/display/gimpdisplayshell.c:824	g_source_remove	CANCEL	-	g_source_remove (shell->filter_idle_id);	REVIEW
+app/display/gimpdisplayshell.c:868	g_source_remove	CANCEL	-	g_source_remove (shell->title_idle_id);	REVIEW
+app/display/gimpdisplayshell.c:874	g_source_remove	CANCEL	-	g_source_remove (shell->fill_idle_id);	REVIEW
+app/display/gimpdisplayshell.c:1338	g_source_remove	CANCEL	-	g_source_remove (shell->fill_idle_id);	REVIEW
+app/display/gimpdisplayshell.c:1367	g_source_remove	CANCEL	-	g_source_remove (shell->fill_idle_id);	REVIEW
+app/display/gimpdisplayshell.c:1455	g_idle_add_full	DEFERRED_SOURCE	-	shell->fill_idle_id = g_idle_add_full (G_PRIORITY_LOW,	REVIEW
+app/display/gimpimagewindow.c:375	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (private->dialog_factory, ""dock-window-added"","	REVIEW
+app/display/gimpimagewindow.c:378	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (private->dialog_factory, ""dock-window-removed"","	REVIEW
+app/display/gimpimagewindow.c:385	g_signal_connect	SIGNAL	-	"g_signal_connect (private->menubar_manager, ""show-tooltip"","	REVIEW
+app/display/gimpimagewindow.c:388	g_signal_connect	SIGNAL	-	"g_signal_connect (private->menubar_manager, ""hide-tooltip"","	REVIEW
+app/display/gimpimagewindow.c:415	g_signal_connect	SIGNAL	-	"g_signal_connect (private->menubar, ""can-activate-accel"","	REVIEW
+app/display/gimpimagewindow.c:420	g_signal_connect	SIGNAL	-	"g_signal_connect (private->menubar, ""button-press-event"","	REVIEW
+app/display/gimpimagewindow.c:423	g_signal_connect	SIGNAL	-	"g_signal_connect (private->menubar, ""button-release-event"","	REVIEW
+app/display/gimpimagewindow.c:426	g_signal_connect	SIGNAL	-	"g_signal_connect (private->menubar, ""key-press-event"","	REVIEW
+app/display/gimpimagewindow.c:522	g_signal_connect	SIGNAL	-	"g_signal_connect (private->notebook, ""switch-page"","	REVIEW
+app/display/gimpimagewindow.c:525	g_signal_connect	SIGNAL	-	"g_signal_connect (private->notebook, ""page-removed"","	REVIEW
+app/display/gimpimagewindow.c:528	g_signal_connect	SIGNAL	01.002/000753	"g_signal_connect (private->notebook, ""size-allocate"","	REVIEW
+app/display/gimpimagewindow.c:548	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify::single-window-mode"","	REVIEW
+app/display/gimpimagewindow.c:551	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify::hide-docks"","	REVIEW
+app/display/gimpimagewindow.c:568	g_signal_connect	SIGNAL	01.002/000756	"g_signal_connect (window, ""size-allocate"","	REVIEW
+app/display/gimpimagewindow.c:1230	g_signal_connect_data	SIGNAL	-	"g_signal_connect_data (private->right_hpane, ""size-allocate"","	REVIEW
+app/display/gimpimagewindow.c:1827	g_signal_connect_data	SIGNAL	-	"g_signal_connect_data (shell, ""size-allocate"","	REVIEW
+app/display/gimpimagewindow.c:2042	g_signal_connect	SIGNAL	01.002/000783	"g_signal_connect (active_display, ""notify::image"","	REVIEW
+app/display/gimpimagewindow.c:2046	g_signal_connect	SIGNAL	01.002/000783	"g_signal_connect (private->active_shell, ""scaled"","	REVIEW
+app/display/gimpimagewindow.c:2049	g_signal_connect	SIGNAL	01.002/000783	"g_signal_connect (private->active_shell, ""notify::title"","	REVIEW
+app/display/gimpimagewindow.c:2052	g_signal_connect	SIGNAL	01.002/000783	"g_signal_connect (private->active_shell, ""notify::icon"","	REVIEW
+app/display/gimpimagewindow.c:2057	g_signal_connect	SIGNAL	01.002/000783	"g_signal_connect (private->active_shell, ""destroy"","	REVIEW
+app/display/gimpimagewindow.c:2480	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (button, ""clicked"","	REVIEW
+app/display/gimpimagewindow.c:2539	g_signal_connect	SIGNAL	01.002/000805	"g_signal_connect (private->guide.success_button, ""clicked"", (GCallback)(navigation_bar_success_clicked), window);"	REVIEW
+app/display/gimpmotionbuffer.c:137	g_source_remove	CANCEL	-	g_source_remove (buffer->event_delay_timeout);	REVIEW
+app/display/gimpmotionbuffer.c:222	g_source_remove	CANCEL	-	g_source_remove (buffer->event_delay_timeout);	REVIEW
+app/display/gimpmotionbuffer.c:481	g_source_remove	CANCEL	-	g_source_remove (buffer->event_delay_timeout);	REVIEW
+app/display/gimpmotionbuffer.c:500	g_timeout_add	DEFERRED_SOURCE	-	g_timeout_add (50,	REVIEW
+app/display/gimpstatusbar.c:199	g_signal_connect	SIGNAL	-	"g_signal_connect (hbox, ""size-request"","	REVIEW
+app/display/gimpstatusbar.c:217	g_signal_connect	SIGNAL	-	"g_signal_connect (statusbar->unit_combo, ""changed"","	REVIEW
+app/display/gimpstatusbar.c:227	g_signal_connect	SIGNAL	-	"g_signal_connect (statusbar->scale_combo, ""changed"","	REVIEW
+app/display/gimpstatusbar.c:231	g_signal_connect	SIGNAL	-	"g_signal_connect (statusbar->scale_combo, ""entry-activated"","	REVIEW
+app/display/gimpstatusbar.c:240	g_signal_connect_after	SIGNAL	-	"g_signal_connect_after (statusbar->label, ""expose-event"","	REVIEW
+app/display/gimpstatusbar.c:261	g_signal_connect	SIGNAL	01.002/000814	"g_signal_connect(widget, ""toggled"", G_CALLBACK(gimp_statusbar_flip_side_clicked), statusbar);"	REVIEW
+app/display/gimpstatusbar.c:271	g_signal_connect	SIGNAL	01.002/000814	"g_signal_connect(widget, ""clicked"", G_CALLBACK(gimp_statusbar_rotate_right_clicked), statusbar);"	REVIEW
+app/display/gimpstatusbar.c:280	g_signal_connect	SIGNAL	01.002/000814	"g_signal_connect(widget, ""clicked"", G_CALLBACK(gimp_statusbar_reset_view_clicked), statusbar);"	REVIEW
+app/display/gimpstatusbar.c:289	g_signal_connect	SIGNAL	01.002/000814	"g_signal_connect(widget, ""clicked"", G_CALLBACK(gimp_statusbar_rotate_left_clicked), statusbar);"	REVIEW
+app/display/gimpstatusbar.c:299	g_signal_connect	SIGNAL	01.002/000814	"g_signal_connect(widget, ""toggled"", G_CALLBACK(gimp_statusbar_toggle_snap), statusbar);"	REVIEW
+app/display/gimpstatusbar.c:315	g_signal_connect	SIGNAL	-	"g_signal_connect (statusbar->cancel_button, ""clicked"","	REVIEW
+app/display/gimpstatusbar.c:327	g_source_remove	CANCEL	-	g_source_remove (statusbar->temp_timeout_id);	REVIEW
+app/display/gimpstatusbar.c:747	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (statusbar->shell, ""scaled"","	REVIEW
+app/display/gimpstatusbar.c:751	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (statusbar->shell, ""notify::status"","	REVIEW
+app/display/gimpstatusbar.c:1222	g_source_remove	CANCEL	-	g_source_remove (statusbar->temp_timeout_id);	REVIEW
+app/display/gimpstatusbar.c:1225	g_timeout_add	DEFERRED_SOURCE	-	g_timeout_add (MESSAGE_TIMEOUT,	REVIEW
+app/display/gimpstatusbar.c:1271	g_source_remove	CANCEL	-	g_source_remove (statusbar->temp_timeout_id);	REVIEW
+app/gui/gui.c:266	g_signal_connect_after	SIGNAL	-	"g_signal_connect_after (gimp, ""initialize"","	REVIEW
+app/gui/gui.c:270	g_signal_connect	SIGNAL	-	"g_signal_connect (gimp, ""restore"","	REVIEW
+app/gui/gui.c:273	g_signal_connect_after	SIGNAL	-	"g_signal_connect_after (gimp, ""restore"","	REVIEW
+app/gui/gui.c:277	g_signal_connect	SIGNAL	-	"g_signal_connect (gimp, ""exit"","	REVIEW
+app/gui/gui.c:280	g_signal_connect_after	SIGNAL	-	"g_signal_connect_after (gimp, ""exit"","	REVIEW
+app/gui/gui.c:404	g_signal_connect	SIGNAL	-	"g_signal_connect (gui_config, ""notify::show-tooltips"","	REVIEW
+app/gui/gui.c:411	g_signal_connect	SIGNAL	-	"g_signal_connect (gui_config, ""notify::use-help"","	REVIEW
+app/gui/gui.c:414	g_signal_connect	SIGNAL	-	"g_signal_connect (gui_config, ""notify::user-manual-online"","	REVIEW
+app/gui/gui.c:417	g_signal_connect	SIGNAL	-	"g_signal_connect (gui_config, ""notify::show-help-button"","	REVIEW
+app/gui/gui.c:421	g_signal_connect	SIGNAL	-	"g_signal_connect (gimp_get_user_context (gimp), ""display-changed"","	REVIEW
+app/gui/gui.c:450	g_signal_connect	SIGNAL	-	"g_signal_connect (gimp, ""buffer-changed"","	REVIEW
+app/gui/gui.c:562	g_signal_connect	SIGNAL	-	"g_signal_connect (osx_app, ""NSApplicationBlockTermination"","	REVIEW
+app/gui/gui.c:570	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gui_config, ""notify::single-window-mode"","	REVIEW
+app/gui/gui.c:573	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gui_config, ""notify::tearoff-menus"","	REVIEW
+app/gui/gui.c:576	g_signal_connect	SIGNAL	-	"g_signal_connect (image_ui_manager, ""show-tooltip"","	REVIEW
+app/gui/gui.c:579	g_signal_connect	SIGNAL	-	"g_signal_connect (image_ui_manager, ""hide-tooltip"","	REVIEW
+app/menus/menus.c:89	g_signal_connect	SIGNAL	-	"g_signal_connect (gimp->config, ""notify::can-change-accels"","	REVIEW
+app/paint/gimpbrushcore.c:955	g_signal_connect	SIGNAL	-	"g_signal_connect (core->main_brush, ""invalidate-preview"","	REVIEW
+app/plug-in/gimpplugin.c:395	g_source_set_callback	DEFERRED_SOURCE	-	g_source_set_callback (source,	REVIEW
+app/plug-in/gimpplugin.c:511	g_source_remove	CANCEL	-	g_source_remove (plug_in->input_id);	REVIEW
+app/tools/gimpalignoptions.c:251	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimpaligntool.c:177	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""align-button-clicked"","	REVIEW
+app/tools/gimpaligntool.c:317	g_signal_connect	SIGNAL	-	"g_signal_connect (object, ""removed"","	REVIEW
+app/tools/gimpaligntool.c:361	g_signal_connect	SIGNAL	-	"g_signal_connect (layer, ""removed"","	REVIEW
+app/tools/gimpblendoptions.c:275	g_signal_connect	SIGNAL	-	"g_signal_connect (config, ""notify::gradient-type"","	REVIEW
+app/tools/gimpbrightnesscontrasttool.c:208	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (bc_tool->config, ""notify"","	REVIEW
+app/tools/gimpbrightnesscontrasttool.c:325	g_signal_connect	SIGNAL	-	"g_signal_connect (data, ""value-changed"","	REVIEW
+app/tools/gimpbrightnesscontrasttool.c:338	g_signal_connect	SIGNAL	-	"g_signal_connect (data, ""value-changed"","	REVIEW
+app/tools/gimpbrightnesscontrasttool.c:347	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimpbrushoptions-gui.c:174	g_signal_connect	SIGNAL	01.002/001166	"g_signal_connect (brush, ""notify"","	REVIEW
+app/tools/gimpbrushoptions-gui.c:580	g_signal_connect	SIGNAL	01.002/001166	"g_signal_connect (adj, ""value-changed"","	REVIEW
+app/tools/gimpbrushoptions-gui.c:647	g_signal_connect	SIGNAL	01.002/001166	"g_signal_connect (adj, ""value-changed"","	REVIEW
+app/tools/gimpbrushoptions-gui.c:663	g_signal_connect	SIGNAL	01.002/001166	"g_signal_connect (adj, ""value-changed"","	REVIEW
+app/tools/gimpbrushoptions-gui.c:680	g_signal_connect	SIGNAL	01.002/001166	"g_signal_connect (adj, ""value-changed"","	REVIEW
+app/tools/gimpbrushoptions-gui.c:697	g_signal_connect	SIGNAL	01.002/001166	"g_signal_connect (adj,""value-changed"","	REVIEW
+app/tools/gimpbrushoptions-gui.c:714	g_signal_connect	SIGNAL	01.002/001166	"g_signal_connect (adj, ""value-changed"","	REVIEW
+app/tools/gimpbrushoptions-gui.c:726	g_signal_connect	SIGNAL	01.002/001166	g_signal_connect (context,	REVIEW
+app/tools/gimpbrushoptions-gui.c:737	g_signal_connect	SIGNAL	01.002/001166	"g_signal_connect (GTK_WIDGET (*result), ""destroy"", G_CALLBACK(destroy_brush_popup_dialog), p);"	REVIEW
+app/tools/gimpbrushtool.c:143	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (display_config, ""notify::show-paint-tool-cursor"","	REVIEW
+app/tools/gimpbrushtool.c:146	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (display_config, ""notify::show-brush-outline"","	REVIEW
+app/tools/gimpbrushtool.c:150	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp_tool_get_options (tool), ""brush-changed"","	REVIEW
+app/tools/gimpbrushtool.c:154	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (paint_tool->core, ""set-brush"","	REVIEW
+app/tools/gimpcagetool.c:1193	g_signal_connect	SIGNAL	-	"g_signal_connect (transform, ""notify::progress"","	REVIEW
+app/tools/gimpcagetool.c:1252	g_signal_connect	SIGNAL	-	"g_signal_connect (ct->image_map, ""flush"","	REVIEW
+app/tools/gimpcolorbalancetool.c:186	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (cb_tool->config, ""notify"","	REVIEW
+app/tools/gimpcolorbalancetool.c:295	g_signal_connect	SIGNAL	-	"g_signal_connect (cb_tool->cyan_red_adj, ""value-changed"","	REVIEW
+app/tools/gimpcolorbalancetool.c:304	g_signal_connect	SIGNAL	-	"g_signal_connect (cb_tool->magenta_green_adj, ""value-changed"","	REVIEW
+app/tools/gimpcolorbalancetool.c:313	g_signal_connect	SIGNAL	-	"g_signal_connect (cb_tool->yellow_blue_adj, ""value-changed"","	REVIEW
+app/tools/gimpcolorbalancetool.c:325	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimpcolorbalancetool.c:337	g_signal_connect	SIGNAL	-	"g_signal_connect (cb_tool->preserve_toggle, ""toggled"","	REVIEW
+app/tools/gimpcolorizetool.c:188	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (col_tool->config, ""notify"","	REVIEW
+app/tools/gimpcolorizetool.c:248	g_signal_connect	SIGNAL	-	"g_signal_connect (data, ""value-changed"","	REVIEW
+app/tools/gimpcolorizetool.c:261	g_signal_connect	SIGNAL	-	"g_signal_connect (data, ""value-changed"","	REVIEW
+app/tools/gimpcolorizetool.c:274	g_signal_connect	SIGNAL	-	"g_signal_connect (data, ""value-changed"","	REVIEW
+app/tools/gimpcolorpickertool.c:323	g_signal_connect	SIGNAL	-	"g_signal_connect (picker_tool->dialog, ""response"","	REVIEW
+app/tools/gimpcroptool.c:191	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp_context, ""image-changed"","	REVIEW
+app/tools/gimpcroptool.c:206	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""notify::layer-only"","	REVIEW
+app/tools/gimpcroptool.c:210	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""notify::allow-growing"","	REVIEW
+app/tools/gimpcroptool.c:450	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (image, ""size-changed"","	REVIEW
+app/tools/gimpcurvestool.c:411	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tool->config, ""notify"","	REVIEW
+app/tools/gimpcurvestool.c:462	g_signal_connect	SIGNAL	-	"g_signal_connect (image_map_tool->settings_box, ""file-dialog-setup"","	REVIEW
+app/tools/gimpcurvestool.c:494	g_signal_connect	SIGNAL	-	"g_signal_connect (tool->channel_menu, ""changed"","	REVIEW
+app/tools/gimpcurvestool.c:504	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimpcurvestool.c:747	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""toggled"","	REVIEW
+app/tools/gimpdesaturatetool.c:158	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (desaturate_tool->config, ""notify"","	REVIEW
+app/tools/gimpdrawtool.c:118	g_source_remove	CANCEL	-	g_source_remove (draw_tool->draw_timeout);	REVIEW
+app/tools/gimpdrawtool.c:211	g_source_remove	CANCEL	-	g_source_remove (draw_tool->draw_timeout);	REVIEW
+app/tools/gimpdrawtool.c:292	g_source_remove	CANCEL	-	g_source_remove (draw_tool->draw_timeout);	REVIEW
+app/tools/gimpdrawtool.c:318	g_source_remove	CANCEL	-	g_source_remove (draw_tool->draw_timeout);	REVIEW
+app/tools/gimpdynamicsoptions-gui.c:138	g_signal_connect	SIGNAL	01.002/001242	"g_signal_connect (p->current_target_dynamics, ""notify"","	REVIEW
+app/tools/gimpdynamicsoptions-gui.c:344	g_signal_connect	SIGNAL	01.002/001242	g_signal_connect (p->working_dynamics,	REVIEW
+app/tools/gimpdynamicsoptions-gui.c:346	g_signal_connect	SIGNAL	01.002/001242	g_signal_connect (context,	REVIEW
+app/tools/gimpdynamicsoptions-gui.c:350	g_signal_connect	SIGNAL	01.002/001242	"g_signal_connect (GTK_WIDGET (*result), ""destroy"", G_CALLBACK(destroy_dynamics_popup_dialog), p);"	REVIEW
+app/tools/gimpforegroundselecttool.c:212	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""notify"","	REVIEW
+app/tools/gimpforegroundselecttool.c:615	g_source_remove	CANCEL	-	g_source_remove (fg_select->idle_id);	REVIEW
+app/tools/gimpforegroundselecttool.c:870	g_source_remove	CANCEL	-	g_source_remove (fg_select->idle_id);	REVIEW
+app/tools/gimpforegroundselecttool.c:873	g_timeout_add_full	DEFERRED_SOURCE	-	g_timeout_add_full (G_PRIORITY_LOW, MINIMUM_DELAY,	REVIEW
+app/tools/gimpgegltool.c:428	g_signal_connect	SIGNAL	-	"g_signal_connect (combo, ""changed"","	REVIEW
+app/tools/gimpgegltool.c:689	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tool->config, ""notify"","	REVIEW
+app/tools/gimphuesaturationtool.c:194	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (hs_tool->config, ""notify"","	REVIEW
+app/tools/gimphuesaturationtool.c:328	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""toggled"","	REVIEW
+app/tools/gimphuesaturationtool.c:360	g_signal_connect	SIGNAL	-	"g_signal_connect (data, ""value-changed"","	REVIEW
+app/tools/gimphuesaturationtool.c:391	g_signal_connect	SIGNAL	-	"g_signal_connect (data, ""value-changed"","	REVIEW
+app/tools/gimphuesaturationtool.c:407	g_signal_connect	SIGNAL	-	"g_signal_connect (data, ""value-changed"","	REVIEW
+app/tools/gimphuesaturationtool.c:423	g_signal_connect	SIGNAL	-	"g_signal_connect (hs_tool->saturation_data, ""value-changed"","	REVIEW
+app/tools/gimphuesaturationtool.c:435	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimpimagemaptool.c:353	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (dialog, ""response"","	REVIEW
+app/tools/gimpimagemaptool.c:375	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tool_info->gimp->config, ""notify::use-gegl"","	REVIEW
+app/tools/gimpimagemaptool.c:634	g_signal_connect	SIGNAL	-	"g_signal_connect (tool->image_map, ""flush"","	REVIEW
+app/tools/gimplevelstool.c:270	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tool->config, ""notify"","	REVIEW
+app/tools/gimplevelstool.c:342	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""toggled"","	REVIEW
+app/tools/gimplevelstool.c:373	g_signal_connect	SIGNAL	-	"g_signal_connect (image_map_tool->settings_box, ""file-dialog-setup"","	REVIEW
+app/tools/gimplevelstool.c:397	g_signal_connect	SIGNAL	-	"g_signal_connect (menu, ""changed"","	REVIEW
+app/tools/gimplevelstool.c:413	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimplevelstool.c:470	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (tool->input_bar, ""button-press-event"","	REVIEW
+app/tools/gimplevelstool.c:474	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (tool->input_bar, ""button-release-event"","	REVIEW
+app/tools/gimplevelstool.c:478	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (tool->input_bar, ""motion-notify-event"","	REVIEW
+app/tools/gimplevelstool.c:482	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (bar, ""button-press-event"","	REVIEW
+app/tools/gimplevelstool.c:486	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (bar, ""button-release-event"","	REVIEW
+app/tools/gimplevelstool.c:490	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (bar, ""motion-notify-event"","	REVIEW
+app/tools/gimplevelstool.c:515	g_signal_connect	SIGNAL	-	"g_signal_connect (tool->low_input, ""value-changed"","	REVIEW
+app/tools/gimplevelstool.c:531	g_signal_connect	SIGNAL	-	"g_signal_connect (tool->gamma, ""value-changed"","	REVIEW
+app/tools/gimplevelstool.c:537	g_signal_connect	SIGNAL	-	"g_signal_connect (tool->gamma_linear, ""value-changed"","	REVIEW
+app/tools/gimplevelstool.c:561	g_signal_connect	SIGNAL	-	"g_signal_connect (tool->high_input, ""value-changed"","	REVIEW
+app/tools/gimplevelstool.c:597	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (tool->output_bar, ""button-press-event"","	REVIEW
+app/tools/gimplevelstool.c:601	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (tool->output_bar, ""button-release-event"","	REVIEW
+app/tools/gimplevelstool.c:605	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (tool->output_bar, ""motion-notify-event"","	REVIEW
+app/tools/gimplevelstool.c:622	g_signal_connect	SIGNAL	-	"g_signal_connect (tool->low_output, ""value-changed"","	REVIEW
+app/tools/gimplevelstool.c:637	g_signal_connect	SIGNAL	-	"g_signal_connect (tool->high_output, ""value-changed"","	REVIEW
+app/tools/gimplevelstool.c:663	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimplevelstool.c:682	g_signal_connect	SIGNAL	-	"g_signal_connect (image_map_tool->dialog, ""unmap"","	REVIEW
+app/tools/gimplevelstool.c:691	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimplevelstool.c:836	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""toggled"","	REVIEW
+app/tools/gimpmeasuretool.c:1061	g_signal_connect	SIGNAL	-	"g_signal_connect (dialog, ""response"","	REVIEW
+app/tools/gimpmoveoptions.c:198	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify::move-type"","	REVIEW
+app/tools/gimppaintoptions-gui.c:238	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimppaintoptions-gui.c:264	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimppaintoptions-gui.c:288	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimppainttool.c:167	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""notify::hard"","	REVIEW
+app/tools/gimpperspectiveclonetool.c:197	g_signal_connect_object	SIGNAL	-	g_signal_connect_object (options,	REVIEW
+app/tools/gimpposterizetool.c:186	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (posterize_tool->config, ""notify"","	REVIEW
+app/tools/gimpposterizetool.c:239	g_signal_connect	SIGNAL	-	"g_signal_connect (posterize_tool->levels_data, ""value-changed"","	REVIEW
+app/tools/gimprectangleoptions.c:870	g_signal_connect	SIGNAL	01.002/001416	"g_signal_connect (vbox, ""destroy"","	REVIEW
+app/tools/gimprectangleoptions.c:903	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""toggled"","	REVIEW
+app/tools/gimprectangleoptions.c:911	g_signal_connect	SIGNAL	-	"g_signal_connect (combo, ""changed"","	REVIEW
+app/tools/gimprectangleoptions.c:948	g_signal_connect	SIGNAL	-	"g_signal_connect (entry, ""notify::user-override"","	REVIEW
+app/tools/gimprectangleoptions.c:951	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (config, ""notify::use-string-current"","	REVIEW
+app/tools/gimprectangleoptions.c:954	g_signal_connect	SIGNAL	01.002/001417	"g_signal_connect (entry, ""destroy"", G_CALLBACK(gimp_rectangle_options_destroy_entry), config);"	REVIEW
+app/tools/gimprectangleoptions.c:1175	g_signal_connect	SIGNAL	-	"g_signal_connect (entry, ""ratio-changed"","	REVIEW
+app/tools/gimprectangleoptions.c:1179	g_signal_connect	SIGNAL	-	"g_signal_connect (completion, ""match-selected"","	REVIEW
+app/tools/gimprectangleselecttool.c:264	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""notify::round-corners"","	REVIEW
+app/tools/gimprectangleselecttool.c:267	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""notify::corner-radius"","	REVIEW
+app/tools/gimprotatetool.c:196	g_signal_connect	SIGNAL	-	"g_signal_connect (rotate->angle_adj, ""value-changed"","	REVIEW
+app/tools/gimprotatetool.c:220	g_signal_connect	SIGNAL	-	"g_signal_connect (rotate->sizeentry, ""value-changed"","	REVIEW
+app/tools/gimpscaletool.c:190	g_signal_connect	SIGNAL	-	"g_signal_connect (scale->box, ""notify"","	REVIEW
+app/tools/gimpsheartool.c:139	g_signal_connect	SIGNAL	-	"g_signal_connect (shear->x_adj, ""value-changed"","	REVIEW
+app/tools/gimpsheartool.c:149	g_signal_connect	SIGNAL	-	"g_signal_connect (shear->y_adj, ""value-changed"","	REVIEW
+app/tools/gimptextoptions.c:483	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""notify::font"","	REVIEW
+app/tools/gimptextoptions.c:486	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (text, ""notify::font"","	REVIEW
+app/tools/gimptextoptions.c:490	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""notify::foreground"","	REVIEW
+app/tools/gimptextoptions.c:493	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (text, ""notify::color"","	REVIEW
+app/tools/gimptextoptions.c:755	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (editor, ""dir-changed"","	REVIEW
+app/tools/gimptextoptions.c:758	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""notify::base-direction"","	REVIEW
+app/tools/gimptextoptions.c:761	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (options, ""notify::font"","	REVIEW
+app/tools/gimptexttool.c:251	g_signal_connect	SIGNAL	-	"g_signal_connect (text_tool->buffer, ""begin-user-action"","	REVIEW
+app/tools/gimptexttool.c:254	g_signal_connect	SIGNAL	-	"g_signal_connect (text_tool->buffer, ""end-user-action"","	REVIEW
+app/tools/gimptexttool.c:291	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (text_tool->proxy, ""notify"","	REVIEW
+app/tools/gimptexttool.c:1062	g_signal_connect	SIGNAL	-	"g_signal_connect (text, ""notify"","	REVIEW
+app/tools/gimptexttool.c:1065	g_signal_connect	SIGNAL	-	"g_signal_connect (text, ""changed"","	REVIEW
+app/tools/gimptexttool.c:1088	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (text_tool->layer, ""notify"","	REVIEW
+app/tools/gimptexttool.c:1135	g_source_remove	CANCEL	-	g_source_remove (text_tool->idle_id);	REVIEW
+app/tools/gimptexttool.c:1138	g_idle_add_full	DEFERRED_SOURCE	-	g_idle_add_full (G_PRIORITY_LOW,	REVIEW
+app/tools/gimptexttool.c:1226	g_source_remove	CANCEL	-	g_source_remove (text_tool->idle_id);	REVIEW
+app/tools/gimptexttool.c:1548	g_signal_connect	SIGNAL	-	"g_signal_connect (dialog, ""response"","	REVIEW
+app/tools/gimptexttool.c:1573	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (dialog, ""destroy"","	REVIEW
+app/tools/gimptexttool.c:1645	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (text_tool->image, ""active-layer-changed"","	REVIEW
+app/tools/gimpthresholdtool.c:198	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (t_tool->config, ""notify"","	REVIEW
+app/tools/gimpthresholdtool.c:258	g_signal_connect	SIGNAL	-	"g_signal_connect (t_tool->histogram_box->view, ""range-changed"","	REVIEW
+app/tools/gimpthresholdtool.c:275	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/tools/gimptool.c:202	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp_tool_get_options (tool), ""notify"","	REVIEW
+app/tools/gimptooloptions-gui.c:214	g_signal_connect_closure	SIGNAL	01.002/001488	"g_signal_connect_closure (result, ""create-view"", closure, 0);"	REVIEW
+app/tools/gimptooloptions-gui.c:351	g_signal_connect_object	SIGNAL	01.002/001488	"g_signal_connect_object (button, ""create-view"", G_CALLBACK (create_view), config, 0);"	REVIEW
+app/tools/gimptooloptions-gui.c:445	g_signal_connect	SIGNAL	01.002/001488	"g_signal_connect (toggle, ""toggled"", G_CALLBACK (update_toggle_option), button);"	REVIEW
+app/tools/gimptooloptions-gui.c:447	g_signal_connect_object	SIGNAL	01.002/001488	"g_signal_connect_object (button, ""create-view"", G_CALLBACK (create_view), config, 0);"	REVIEW
+app/tools/gimptooloptions-gui.c:602	g_signal_connect_object	SIGNAL	01.002/001488	g_signal_connect_object (config, signal_detail,	REVIEW
+app/tools/gimptooloptions-gui.c:611	g_signal_connect_closure	SIGNAL	01.002/001488	"g_signal_connect_closure (button, ""create-view"", closure, 0);"	REVIEW
+app/tools/gimptransformtool.c:1358	g_signal_connect	SIGNAL	-	"g_signal_connect (tr_tool->dialog, ""response"","	REVIEW
+app/tools/gimpvectortool.c:1663	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (gimp_item_get_image (item), ""active-vectors-changed"","	REVIEW
+app/tools/gimpvectortool.c:1666	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (vectors, ""removed"","	REVIEW
+app/tools/gimpvectortool.c:1669	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (vectors, ""visibility-changed"","	REVIEW
+app/tools/gimpvectortool.c:1672	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (vectors, ""freeze"","	REVIEW
+app/tools/gimpvectortool.c:1675	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (vectors, ""thaw"","	REVIEW
+app/tools/gimpvectortool.c:1681	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (options->to_selection_button, ""clicked"","	REVIEW
+app/tools/gimpvectortool.c:1684	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (options->to_selection_button, ""extended-clicked"","	REVIEW
+app/tools/gimpvectortool.c:1692	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (options->stroke_button, ""clicked"","	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:246	g_source_remove	CANCEL	-	g_source_remove (tree_view->priv->scroll_timeout_id);	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:249	g_timeout_add	DEFERRED_SOURCE	-	g_timeout_add (tree_view->priv->scroll_timeout_interval,	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:265	g_source_remove	CANCEL	-	g_source_remove (tree_view->priv->scroll_timeout_id);	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:280	g_source_remove	CANCEL	-	g_source_remove (tree_view->priv->scroll_timeout_id);	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:325	g_timeout_add	DEFERRED_SOURCE	-	g_timeout_add (tree_view->priv->scroll_timeout_interval,	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:331	g_source_remove	CANCEL	-	g_source_remove (tree_view->priv->scroll_timeout_id);	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:368	g_source_remove	CANCEL	-	g_source_remove (tree_view->priv->scroll_timeout_id);	REVIEW
+app/widgets/gimpcontainertreeview.c:285	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->priv->name_cell, ""editing-started"","	REVIEW
+app/widgets/gimpcontainertreeview.c:288	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->priv->name_cell, ""editing-canceled"","	REVIEW
+app/widgets/gimpcontainertreeview.c:297	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->priv->selection, ""changed"","	REVIEW
+app/widgets/gimpcontainertreeview.c:301	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->view, ""drag-failed"","	REVIEW
+app/widgets/gimpcontainertreeview.c:304	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->view, ""drag-leave"","	REVIEW
+app/widgets/gimpcontainertreeview.c:307	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->view, ""drag-motion"","	REVIEW
+app/widgets/gimpcontainertreeview.c:310	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->view, ""drag-drop"","	REVIEW
+app/widgets/gimpcontainertreeview.c:313	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->view, ""drag-data-received"","	REVIEW
+app/widgets/gimpcontainertreeview.c:317	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->view, ""query-tooltip"","	REVIEW
+app/widgets/gimpcontainertreeview.c:355	g_source_remove	CANCEL	-	g_source_remove (tree_view->priv->scroll_timeout_id);	REVIEW
+app/widgets/gimpcontainertreeview.c:531	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->priv->name_cell, ""edited"","	REVIEW
+app/widgets/gimpcontainertreeview.c:592	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->view, ""button-press-event"","	REVIEW
+app/widgets/gimpcontainertreeview.c:605	g_signal_connect	SIGNAL	-	g_signal_connect (tree_view->view,	REVIEW
+app/widgets/gimpcontainertreeview.c:609	g_signal_connect	SIGNAL	-	g_signal_connect (tree_view->view,	REVIEW
+app/widgets/gimpcontainertreeview.c:886	g_signal_connect	SIGNAL	-	"g_signal_connect (GTK_ENTRY (editable), ""focus-out-event"","	REVIEW
+app/widgets/gimpcurveview.c:1213	g_signal_connect	SIGNAL	-	"g_signal_connect (view->curve, ""dirty"","	REVIEW
+app/widgets/gimpcurveview.c:1265	g_signal_connect	SIGNAL	-	"g_signal_connect (bg->curve, ""dirty"","	REVIEW
+app/widgets/gimpdevicemanager.c:153	g_signal_connect	SIGNAL	-	"g_signal_connect (disp_manager, ""display-opened"","	REVIEW
+app/widgets/gimpdevicemanager.c:292	g_signal_connect	SIGNAL	-	"g_signal_connect (gdk_display, ""closed"","	REVIEW
+app/widgets/gimpdnd.c:872	g_signal_connect	SIGNAL	-	"g_signal_connect (widget, ""drag-begin"","	REVIEW
+app/widgets/gimpdnd.c:875	g_signal_connect	SIGNAL	-	"g_signal_connect (widget, ""drag-end"","	REVIEW
+app/widgets/gimpdnd.c:878	g_signal_connect	SIGNAL	-	"g_signal_connect (widget, ""drag-data-get"","	REVIEW
+app/widgets/gimpdnd.c:1014	g_signal_connect	SIGNAL	-	"g_signal_connect (widget, ""drag-data-received"","	REVIEW
+app/widgets/gimpdnd.c:1267	g_signal_connect	SIGNAL	-	"handler = g_signal_connect (widget, ""drag-begin"","	REVIEW
+app/widgets/gimpdnd.c:1279	g_signal_connect	SIGNAL	-	"handler = g_signal_connect (widget, ""drag-end"","	REVIEW
+app/widgets/gimpdock.c:253	g_signal_connect	SIGNAL	01.002/001582	"g_signal_connect(G_OBJECT(dock), ""notify::orientation"", G_CALLBACK(gimp_dock_orientation_notify), NULL);"	REVIEW
+app/widgets/gimpdock.c:304	g_signal_connect_object	SIGNAL	01.002/001582	"g_signal_connect_object (G_OBJECT (titlebar->button), ""clicked"","	REVIEW
+app/widgets/gimpdock.c:320	g_signal_connect_object	SIGNAL	01.002/001582	"g_signal_connect_object (G_OBJECT (titlebar->button), ""clicked"","	REVIEW
+app/widgets/gimpdock.c:487	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (dockbook, ""switch-page"","	REVIEW
+app/widgets/gimpdock.c:856	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (dockbook, ""dockable-added"","	REVIEW
+app/widgets/gimpdock.c:859	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (dockbook, ""dockable-removed"","	REVIEW
+app/widgets/gimpdock.c:862	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (dockbook, ""dockable-reordered"","	REVIEW
+app/widgets/gimpdockable.c:900	g_source_remove	CANCEL	-	g_source_remove (dockable->p->blink_timeout_id);	REVIEW
+app/widgets/gimpdockable.c:903	g_timeout_add	DEFERRED_SOURCE	-	g_timeout_add (150, (GSourceFunc) gimp_dockable_blink_timeout, dockable);	REVIEW
+app/widgets/gimpdockable.c:915	g_source_remove	CANCEL	-	g_source_remove (dockable->p->blink_timeout_id);	REVIEW
+app/widgets/gimpdockbook.c:299	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (dockbook->p->menu_button, ""button-press-event"","	REVIEW
+app/widgets/gimpdockbook.c:1049	g_signal_connect	SIGNAL	-	"g_signal_connect (dockable, ""notify::locked"","	REVIEW
+app/widgets/gimpdockbook.c:1241	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tab_widget, ""drag-begin"","	REVIEW
+app/widgets/gimpdockbook.c:1244	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tab_widget, ""drag-end"","	REVIEW
+app/widgets/gimpdockbook.c:1248	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (dockable, ""drag-begin"","	REVIEW
+app/widgets/gimpdockbook.c:1251	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (dockable, ""drag-end"","	REVIEW
+app/widgets/gimpdockbook.c:1259	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tab_widget, ""drag-leave"","	REVIEW
+app/widgets/gimpdockbook.c:1262	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tab_widget, ""drag-motion"","	REVIEW
+app/widgets/gimpdockbook.c:1265	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tab_widget, ""drag-drop"","	REVIEW
+app/widgets/gimpdockbook.c:1675	g_timeout_add	DEFERRED_SOURCE	-	g_timeout_add (TAB_HOVER_TIMEOUT,	REVIEW
+app/widgets/gimpdockbook.c:1687	g_source_remove	CANCEL	-	g_source_remove (dockbook->p->tab_hover_timeout);	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:216	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:255	g_signal_connect	SIGNAL	-	"g_signal_connect (G_OBJECT (cell), ""toggled"","	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:287	g_signal_connect	SIGNAL	-	"g_signal_connect (G_OBJECT (tree_sel), ""changed"","	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:292	g_signal_connect	SIGNAL	01.002/001602	"g_signal_connect (editor, ""destroy"","	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:297	g_signal_connect	SIGNAL	-	"g_signal_connect (private->output, ""notify"","	REVIEW
+app/widgets/gimpeditor.c:490	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""clicked"","	REVIEW
+app/widgets/gimpeditor.c:495	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""extended-clicked"","	REVIEW
+app/widgets/gimpeditor.c:695	g_signal_connect	SIGNAL	-	"g_signal_connect (button, ""extended-clicked"","	REVIEW
+app/widgets/gimpfgbgeditor.c:560	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (context, ""foreground-changed"","	REVIEW
+app/widgets/gimpfgbgeditor.c:563	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (context, ""background-changed"","	REVIEW
+app/widgets/gimpfgbgeditor.c:747	g_signal_connect	SIGNAL	01.002/001627	"g_signal_connect (view, ""entry-clicked"","	REVIEW
+app/widgets/gimpfgbgeditor.c:750	g_signal_connect	SIGNAL	01.002/001627	"g_signal_connect (button, ""clicked"", G_CALLBACK (gimp_fg_color_add_clicked), editor);"	REVIEW
+app/widgets/gimpfgbgeditor.c:762	g_signal_connect	SIGNAL	01.002/001627	"g_signal_connect (view, ""entry-clicked"","	REVIEW
+app/widgets/gimpfgbgeditor.c:782	g_signal_connect	SIGNAL	01.002/001627	"g_signal_connect (view, ""entry-confirmed"","	REVIEW
+app/widgets/gimpitemtreeview.c:351	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->view, ""row-expanded"","	REVIEW
+app/widgets/gimpitemtreeview.c:355	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->renderer_cell, ""pre-clicked"","	REVIEW
+app/widgets/gimpitemtreeview.c:378	g_signal_connect	SIGNAL	-	"g_signal_connect (item_view->priv->eye_cell, ""clicked"","	REVIEW
+app/widgets/gimpitemtreeview.c:399	g_signal_connect	SIGNAL	-	"g_signal_connect (item_view->priv->chain_cell, ""clicked"","	REVIEW
+app/widgets/gimpitemtreeview.c:490	g_signal_connect	SIGNAL	-	"g_signal_connect (item_view->priv->lock_content_toggle, ""toggled"","	REVIEW
+app/widgets/gimpitemtreeview.c:850	g_signal_connect	SIGNAL	-	g_signal_connect (view->priv->image,	REVIEW
+app/widgets/gimpitemtreeview.c:854	g_signal_connect	SIGNAL	-	"g_signal_connect (view->priv->image, ""size-changed"","	REVIEW
+app/widgets/gimpitemtreeview.c:858	g_signal_connect	SIGNAL	-	"g_signal_connect (view->priv->image, ""flush"","	REVIEW
+app/widgets/gimpitemtreeview.c:944	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (context, ""image-changed"","	REVIEW
+app/widgets/gimplayertreeview.c:299	g_signal_connect	SIGNAL	-	"g_signal_connect (view->priv->opacity_adjustment, ""value-changed"","	REVIEW
+app/widgets/gimplayertreeview.c:312	g_signal_connect	SIGNAL	-	"g_signal_connect (view->priv->lock_alpha_toggle, ""toggled"","	REVIEW
+app/widgets/gimplayertreeview.c:378	g_signal_connect	SIGNAL	-	"g_signal_connect (tree_view->renderer_cell, ""clicked"","	REVIEW
+app/widgets/gimplayertreeview.c:381	g_signal_connect	SIGNAL	-	"g_signal_connect (layer_view->priv->mask_cell, ""clicked"","	REVIEW
+app/widgets/gimplayertreeview.c:852	g_signal_connect	SIGNAL	-	g_signal_connect (gimp_item_tree_view_get_image (view),	REVIEW
+app/widgets/gimplayertreeview.c:1190	g_signal_connect	SIGNAL	-	"g_signal_connect (renderer, ""update"","	REVIEW
+app/widgets/gimplayertreeview.c:1197	g_signal_connect_closure	SIGNAL	-	"g_signal_connect_closure (mask, ""apply-changed"", closure, FALSE);"	REVIEW
+app/widgets/gimplayertreeview.c:1198	g_signal_connect_closure	SIGNAL	-	"g_signal_connect_closure (mask, ""edit-changed"",  closure, FALSE);"	REVIEW
+app/widgets/gimplayertreeview.c:1199	g_signal_connect_closure	SIGNAL	-	"g_signal_connect_closure (mask, ""show-changed"",  closure, FALSE);"	REVIEW
+app/widgets/gimpmypaintbrushfactoryview.c:88	g_signal_connect	SIGNAL	01.002/001655	"g_signal_connect (view->spacing_adjustment, ""value-changed"","	REVIEW
+app/widgets/gimpoverlaybox.c:164	g_signal_connect	SIGNAL	-	"g_signal_connect (gtk_widget_get_window (widget), ""pick-embedded-child"","	REVIEW
+app/widgets/gimpoverlaychild.c:189	g_signal_connect	SIGNAL	-	"g_signal_connect (child->window, ""from-embedder"","	REVIEW
+app/widgets/gimpoverlaychild.c:192	g_signal_connect	SIGNAL	-	"g_signal_connect (child->window, ""to-embedder"","	REVIEW
+app/widgets/gimppaletteview.c:417	g_signal_connect	SIGNAL	-	"g_signal_connect (new_viewable, ""invalidate-preview"","	REVIEW
+app/widgets/gimppanedbox.c:164	g_signal_connect	SIGNAL	01.002/001677	"g_signal_connect (G_OBJECT (paned_box), ""notify::orientation"", G_CALLBACK (gimp_paned_box_orientation_notify), NULL);"	REVIEW
+app/widgets/gimppopupbutton.c:177	g_signal_connect	SIGNAL	01.002/001679	"g_signal_connect (widget, ""grab-notify"","	REVIEW
+app/widgets/gimppopupbutton.c:180	g_signal_connect	SIGNAL	01.002/001679	"g_signal_connect (widget, ""grab-broken-event"","	REVIEW
+app/widgets/gimppopupbutton.c:570	g_signal_connect	SIGNAL	01.002/001679	"g_signal_connect (popup, ""cancel"","	REVIEW
+app/widgets/gimppopupbutton.c:573	g_signal_connect	SIGNAL	01.002/001679	"g_signal_connect (popup, ""confirm"","	REVIEW
+app/widgets/gimptoolbox.c:215	g_signal_connect	SIGNAL	-	/* Use g_signal_connect() also for the toolbox itself so we can pass	REVIEW
+app/widgets/gimptoolbox.c:218	g_signal_connect	SIGNAL	-	"g_signal_connect (toolbox, ""drag-leave"","	REVIEW
+app/widgets/gimptoolbox.c:221	g_signal_connect	SIGNAL	-	"g_signal_connect (toolbox, ""drag-motion"","	REVIEW
+app/widgets/gimptoolbox.c:224	g_signal_connect	SIGNAL	-	"g_signal_connect (toolbox, ""drag-drop"","	REVIEW
+app/widgets/gimptoolbox.c:227	g_signal_connect	SIGNAL	-	"g_signal_connect (toolbox->p->vbox, ""drag-leave"","	REVIEW
+app/widgets/gimptoolbox.c:230	g_signal_connect	SIGNAL	-	"g_signal_connect (toolbox->p->vbox, ""drag-motion"","	REVIEW
+app/widgets/gimptoolbox.c:233	g_signal_connect	SIGNAL	-	"g_signal_connect (toolbox->p->vbox, ""drag-drop"","	REVIEW
+app/widgets/gimptoolbox.c:245	g_signal_connect	SIGNAL	-	"g_signal_connect (toolbox->p->header, ""size-request"","	REVIEW
+app/widgets/gimptoolbox.c:248	g_signal_connect	SIGNAL	-	"g_signal_connect (toolbox->p->header, ""expose-event"","	REVIEW
+app/widgets/gimptoolbox.c:255	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify::toolbox-wilber"","	REVIEW
+app/widgets/gimptoolbox.c:303	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify::toolbox-color-area"","	REVIEW
+app/widgets/gimptoolbox.c:313	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify::toolbox-foo-area"","	REVIEW
+app/widgets/gimptoolbox.c:324	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (config, ""notify::toolbox-image-area"","	REVIEW
+app/widgets/gimptooleditor.c:234	g_signal_connect	SIGNAL	-	"g_signal_connect (eye_cell, ""clicked"","	REVIEW
+app/widgets/gimptooloptionstoolbar.c:158	g_signal_connect	SIGNAL	01.002/001799	"g_signal_connect (G_OBJECT(toolbar), ""hide"", G_CALLBACK(gimp_tool_options_toolbar_hide_toolbar), NULL);"	REVIEW
+app/widgets/gimptooloptionstoolbar.c:159	g_signal_connect	SIGNAL	01.002/001799	"g_signal_connect (G_OBJECT(toolbar), ""show"", G_CALLBACK(gimp_tool_options_toolbar_show_toolbar), NULL);"	REVIEW
+app/widgets/gimptooloptionstoolbar.c:355	g_signal_connect_object	SIGNAL	01.002/001799	"g_signal_connect_object (user_context, ""tool-changed"","	REVIEW
+app/widgets/gimptoolpalette.c:241	g_signal_connect_swapped	SIGNAL	-	"g_signal_connect_swapped (private->toolbox, ""parent-set"","	REVIEW
+app/widgets/gimptoolpalette.c:245	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (context->gimp->tool_info_list, ""reorder"","	REVIEW
+app/widgets/gimptoolpalette.c:249	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (context, ""tool-changed"","	REVIEW
+app/widgets/gimptoolpalette.c:418	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (tool_info, ""notify::visible"","	REVIEW
+app/widgets/gimptoolpalette.c:428	g_signal_connect	SIGNAL	-	"g_signal_connect (item, ""toggled"","	REVIEW
+app/widgets/gimptoolpalette.c:432	g_signal_connect	SIGNAL	-	"g_signal_connect (gtk_bin_get_child (GTK_BIN (item)), ""button-press-event"","	REVIEW
+app/widgets/gimpviewrenderer.c:358	g_signal_connect_swapped	SIGNAL	-	g_signal_connect_swapped (renderer->viewable,	REVIEW
+app/widgets/gimpviewrenderer.c:363	g_signal_connect_swapped	SIGNAL	-	g_signal_connect_swapped (renderer->viewable,	REVIEW
+app/widgets/gimpviewrenderer.c:533	g_source_remove	CANCEL	-	g_source_remove (renderer->idle_id);	REVIEW
+app/widgets/gimpviewrenderer.c:540	g_idle_add_full	DEFERRED_SOURCE	-	g_idle_add_full (GIMP_VIEWABLE_PRIORITY_IDLE,	REVIEW
+app/widgets/gimpviewrenderer.c:552	g_source_remove	CANCEL	-	g_source_remove (renderer->idle_id);	REVIEW
+app/widgets/gimpviewrenderer.c:565	g_source_remove	CANCEL	-	g_source_remove (renderer->idle_id);	REVIEW
+app/widgets/gimpviewrenderer.c:568	g_idle_add_full	DEFERRED_SOURCE	-	g_idle_add_full (GIMP_VIEWABLE_PRIORITY_IDLE,	REVIEW
+app/widgets/gimpviewrenderer.c:580	g_source_remove	CANCEL	-	g_source_remove (renderer->idle_id);	REVIEW
+app/widgets/gimpwidgets-utils.c:933	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (window, ""realize"","	REVIEW
+app/widgets/gimpwidgets-utils.c:1026	g_signal_connect_object	SIGNAL	-	"g_signal_connect_object (accel_group, ""accel-changed"","	REVIEW
+app/widgets/gimpwidgets-utils.c:1306	g_idle_add	DEFERRED_SOURCE	-	g_idle_add (gimp_print_event_free, str);	REVIEW

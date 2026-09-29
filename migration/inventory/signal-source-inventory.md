@@ -7,3 +7,5 @@
 FilterLayer の300ms timeout は ID を捨て、破棄後の raw `this` に callback が入る危険がある。LayerPreview idle は `G_PRIORITY_DEFAULT` で `this` と `viewable` を生で捕捉する。tile の scroll timeout と長押し timeout も `G_PRIORITY_DEFAULT` で、後者は callback 中に自分の CXXPointer を消す経路がある。個別の追跡先は台帳に記録した。
 
 これは C++ 側で既に抽出済みの候補を結合した第一段階。旧差分の C 側にある signal/source、汎用 helper から生成される実接続、動的 signal 名、先行破棄と再入の実経路を続けて照合する。`01.008` の完了判定はまだ行わない。
+
+旧差分対象の C 220ファイルを追加で走査し、`c-signal-source-candidates.tsv` に517構文候補（signal 460、source登録19、source解除38）を列挙した。このうち57件は変更hunk内の signal 接続で、`c-signal-added-line-review.tsv` は57件すべてが実際の追加行であることを前後 blob の差分で照合した。残る460件は変更対象ファイルの旧文脈を含む。次に追加57件の user data、接続先先行破棄、再入を個別に追跡する。
