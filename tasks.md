@@ -160,6 +160,7 @@
 | 01.006/cpp-candidates | [x] | 旧 C++ の data/qdata 候補を抽出する | 01.005 | 旧版の 71 C++ ファイルの 30 呼び出し構文、キー、対象、値、destroy callback を TSV に記録 |
 | 01.006/owning-attachments | [x] | C++ の所有権付き付加を照合する | 01.006/cpp-candidates | 10 箇所の型、owner、destroy callback、他の参照経路と寿命の懸念を記録 |
 | 01.006/cpp-ownership | [ ] | C++ 付加値の所有者と破棄経路を照合する | 01.006/cpp-candidates | Impl 型と全使用先を追い、共有ポインターと signal の寿命を判定 |
+| 01.006/c-candidates | [x] | 旧差分 C ファイルの data/qdata 候補を抽出する | 01.006/cpp-candidates | 220 ファイルの呼び出し式 185 件を出典行、キー、値、destroy callback とともに列挙 |
 | 01.006/c-state | [ ] | C ソースの状態付加を照合する | 01.006/cpp-candidates | 旧差分の C 側 data/qdata をキー、型、所有者、破棄経路まで照合 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |

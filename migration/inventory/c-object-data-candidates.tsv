@@ -1,0 +1,188 @@
+legacy_site	operation	owner_expr	key_expr	value_expr	destroy_expr	status
+app/actions/view-commands.c:581	g_object_set_data	G_OBJECT (shell)	"""padding-color-dialog"""	NULL	-	REVIEW
+app/actions/view-commands.c:593	g_object_get_data	G_OBJECT (shell)	"""padding-color-dialog"""	-	-	REVIEW
+app/actions/view-commands.c:616	g_object_set_data_full	G_OBJECT (shell)	"""padding-color-dialog"""	color_dialog	(GDestroyNotify) gtk_widget_destroy	REVIEW
+app/actions/view-commands.c:626	g_object_set_data	G_OBJECT (shell)	"""padding-color-dialog"""	NULL	-	REVIEW
+app/actions/view-commands.c:747	g_object_set_data	G_OBJECT (shell)	"""padding-color-dialog"""	NULL	-	REVIEW
+app/core/gimpcontainer.c:580	g_object_set_qdata	G_OBJECT (object)	handler->quark	GUINT_TO_POINTER (handler_id)	-	REVIEW
+app/core/gimpcontainer.c:638	g_object_get_qdata	G_OBJECT (object)	handler->quark	-	-	REVIEW
+app/core/gimpcontainer.c:645	g_object_set_qdata	G_OBJECT (object)	handler->quark	NULL	-	REVIEW
+app/core/gimpcontainer.c:972	g_object_set_qdata	G_OBJECT (object)	handler->quark	GUINT_TO_POINTER (handler_id)	-	REVIEW
+app/core/gimpcontainer.c:1024	g_object_get_qdata	G_OBJECT (object)	handler->quark	-	-	REVIEW
+app/core/gimpcontainer.c:1031	g_object_set_qdata	G_OBJECT (object)	handler->quark	NULL	-	REVIEW
+app/core/gimpdatafactory.c:350	g_object_set_data	G_OBJECT (factory)	WRITABLE_PATH_KEY	writable_list	-	REVIEW
+app/core/gimpdatafactory.c:365	g_object_set_data	G_OBJECT (factory)	WRITABLE_PATH_KEY	NULL	-	REVIEW
+app/core/gimpdatafactory.c:909	g_object_get_data	G_OBJECT (factory)	WRITABLE_PATH_KEY	-	-	REVIEW
+app/core/gimpimage.c:1622	g_object_get_data	G_OBJECT (image)	GIMP_FILE_IMPORT_SOURCE_URI_KEY	-	-	REVIEW
+app/core/gimpimage.c:1638	g_object_get_data	G_OBJECT (image)	GIMP_FILE_EXPORT_URI_KEY	-	-	REVIEW
+app/core/gimpimage.c:1653	g_object_get_data	G_OBJECT (image)	GIMP_FILE_SAVE_A_COPY_URI_KEY	-	-	REVIEW
+app/core/gimpimage.c:1700	g_object_set_data_full	G_OBJECT (image)	GIMP_FILE_IMPORT_SOURCE_URI_KEY	g_strdup (uri)	(GDestroyNotify) g_free	REVIEW
+app/core/gimpimage.c:1723	g_object_set_data_full	G_OBJECT (image)	GIMP_FILE_EXPORT_URI_KEY	g_strdup (uri)	(GDestroyNotify) g_free	REVIEW
+app/core/gimpimage.c:1747	g_object_set_data_full	G_OBJECT (image)	GIMP_FILE_SAVE_A_COPY_URI_KEY	g_strdup (uri)	(GDestroyNotify) g_free	REVIEW
+app/dialogs/dialogs.c:452	g_object_set_data	G_OBJECT (dialog)	GIMP_DIALOG_VISIBILITY_KEY	"GINT_TO_POINTER (GIMP_GUI_CONFIG (config)->hide_docks ?
+                                      GIMP_DIALOG_VISIBILITY_HIDDEN :
+                                      GIMP_DIALOG_VISIBILITY_VISIBLE)"	-	REVIEW
+app/dialogs/preferences-dialog.c:164	g_object_set_data	G_OBJECT (prefs_dialog)	"""gimp"""	gimp	-	REVIEW
+app/dialogs/preferences-dialog.c:166	g_object_set_data_full	G_OBJECT (prefs_dialog)	"""config-copy"""	config_copy	(GDestroyNotify) g_object_unref	REVIEW
+app/dialogs/preferences-dialog.c:168	g_object_set_data_full	G_OBJECT (prefs_dialog)	"""config-orig"""	config_orig	(GDestroyNotify) g_object_unref	REVIEW
+app/dialogs/preferences-dialog.c:259	g_object_get_data	G_OBJECT (dialog)	"""gimp"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:292	g_object_get_data	G_OBJECT (dialog)	"""config-copy"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:318	g_object_get_data	G_OBJECT (dialog)	"""config-copy"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:321	g_object_set_data	G_OBJECT (dialog)	"""config-orig"""	NULL	-	REVIEW
+app/dialogs/preferences-dialog.c:389	g_object_get_data	G_OBJECT (dialog)	"""config-orig"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:392	g_object_set_data	G_OBJECT (dialog)	"""config-copy"""	NULL	-	REVIEW
+app/dialogs/preferences-dialog.c:465	g_object_get_data	G_OBJECT (widget)	"""monitor_resolution_sizeentry"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:491	g_object_get_data	G_OBJECT (dialog)	"""notebook"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:492	g_object_get_data	G_OBJECT (notebook)	"""image"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:523	g_object_get_data	G_OBJECT (widget)	"""clear-button"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:597	g_object_get_data	G_OBJECT (widget)	"""clear-button"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:632	g_object_get_data	G_OBJECT (widget)	"""clear-button"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:667	g_object_get_data	G_OBJECT (widget)	"""clear-button"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:784	g_object_get_data	G_OBJECT (notebook)	"""label"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:785	g_object_get_data	G_OBJECT (notebook)	"""image"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:983	g_object_get_data	G_OBJECT (combo)	"""property-name"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:1026	g_object_set_data	G_OBJECT (combo)	"""property-name"""	(gpointer) property_name	-	REVIEW
+app/dialogs/preferences-dialog.c:1361	g_object_get_data	G_OBJECT (help_data)	"""notebook"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:1365	g_object_get_data	G_OBJECT (event_box)	"""gimp-help-id"""	-	-	REVIEW
+app/dialogs/preferences-dialog.c:1533	g_object_set_data	G_OBJECT (dialog)	"""notebook"""	notebook	-	REVIEW
+app/dialogs/preferences-dialog.c:1535	g_object_set_data	G_OBJECT (notebook)	"""label"""	label	-	REVIEW
+app/dialogs/preferences-dialog.c:1536	g_object_set_data	G_OBJECT (notebook)	"""image"""	image	-	REVIEW
+app/dialogs/preferences-dialog.c:1692	g_object_set_data	G_OBJECT (button)	"""clear-button"""	button2	-	REVIEW
+app/dialogs/preferences-dialog.c:1932	g_object_set_data	G_OBJECT (button)	"""clear-button"""	button2	-	REVIEW
+app/dialogs/preferences-dialog.c:2422	g_object_set_data	G_OBJECT (button)	"""monitor_resolution_sizeentry"""	entry	-	REVIEW
+app/dialogs/preferences-dialog.c:2640	g_object_set_data	G_OBJECT (button)	"""clear-button"""	button2	-	REVIEW
+app/dialogs/preferences-dialog.c:2714	g_object_set_data	G_OBJECT (button)	"""clear-button"""	button2	-	REVIEW
+app/display/gimpdisplayshell-close.c:107	g_object_get_data	G_OBJECT (image)	"""gimp-file-save-dialog"""	-	-	REVIEW
+app/display/gimpdisplayshell-close.c:257	g_object_set_data	G_OBJECT (box)	"""gimp-image"""	image	-	REVIEW
+app/display/gimpdisplayshell-close.c:296	g_object_get_data	G_OBJECT (box)	"""gimp-image"""	-	-	REVIEW
+app/display/gimpdisplayshell.c:1152	g_object_get_data	G_OBJECT (child)	"""image-coords-overlay"""	-	-	REVIEW
+app/display/gimpdisplayshell.c:1252	g_object_set_data_full	G_OBJECT (child)	"""image-coords-overlay"""	overlay	(GDestroyNotify) g_free	REVIEW
+app/display/gimpdisplayshell.c:1279	g_object_get_data	G_OBJECT (child)	"""image-coords-overlay"""	-	-	REVIEW
+app/file/file-open.c:591	g_object_set_data_full	G_OBJECT (gimp)	GIMP_FILE_OPEN_LAST_URI_KEY	uri	(GDestroyNotify) g_free	REVIEW
+app/tools/gimp-tools.c:242	g_object_get_data	G_OBJECT (tool_info->tool_options)	"""gimp-tool-options-toolbar-gui"""	-	-	REVIEW
+app/tools/gimp-tools.c:249	g_object_set_data	G_OBJECT (tool_info->tool_options)	"""gimp-tool-options-toolbar-gui"""	NULL	-	REVIEW
+app/tools/gimp-tools.c:357	g_object_get_data	G_OBJECT (tool_info)	"""gimp-tool-options-gui-func"""	-	-	REVIEW
+app/tools/gimp-tools.c:382	g_object_get_data	G_OBJECT (tool_info)	"""gimp-tool-options-gui-horizontal-func"""	-	-	REVIEW
+app/tools/gimp-tools.c:403	g_object_set_data_full	G_OBJECT (tool_info->tool_options)	"""gimp-tool-options-toolbar-gui"""	g_object_ref_sink (toolbar_gui)	(GDestroyNotify) g_object_unref	REVIEW
+app/tools/gimp-tools.c:807	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-options-gui-func"""	options_gui_func	-	REVIEW
+app/tools/gimp-tools.c:810	g_object_set_data	G_OBJECT (tool_info)	"""gimp-tool-options-gui-horizontal-func"""	options_gui_horizontal_func	-	REVIEW
+app/tools/gimpalignoptions.c:176	g_object_get_data	G_OBJECT (button)	"""align-action"""	-	-	REVIEW
+app/tools/gimpalignoptions.c:249	g_object_set_data	G_OBJECT (button)	"""align-action"""	GINT_TO_POINTER (action)	-	REVIEW
+app/tools/gimpbrushoptions-gui.c:302	g_object_get_data	G_OBJECT (adjustment)	"""prop_name"""	-	-	REVIEW
+app/tools/gimpbrushoptions-gui.c:371	g_object_get_data	G_OBJECT (widget)	"""gimp-item-data"""	-	-	REVIEW
+app/tools/gimpbrushoptions-gui.c:574	g_object_set_data	G_OBJECT (adj)	"""prop_name"""	"""spacing"""	-	REVIEW
+app/tools/gimpbrushoptions-gui.c:644	g_object_set_data	G_OBJECT (adj)	"""prop_name"""	"""radius"""	-	REVIEW
+app/tools/gimpbrushoptions-gui.c:661	g_object_set_data	G_OBJECT (adj)	"""prop_name"""	"""spikes"""	-	REVIEW
+app/tools/gimpbrushoptions-gui.c:678	g_object_set_data	G_OBJECT (adj)	"""prop_name"""	"""hardness"""	-	REVIEW
+app/tools/gimpbrushoptions-gui.c:695	g_object_set_data	G_OBJECT (adj)	"""prop_name"""	"""aspect-ratio"""	-	REVIEW
+app/tools/gimpbrushoptions-gui.c:712	g_object_set_data	G_OBJECT (adj)	"""prop_name"""	"""angle"""	-	REVIEW
+app/tools/gimpbucketfilloptions.c:293	g_object_get_data	G_OBJECT (frame)	"""radio-button"""	-	-	REVIEW
+app/tools/gimpdesaturatetool.c:225	g_object_get_data	G_OBJECT (button)	"""gimp-item-data"""	-	-	REVIEW
+app/tools/gimpgegltool.c:488	g_object_get_data	object	"""properties"""	-	-	REVIEW
+app/tools/gimpgegltool.c:497	g_object_set_data_full	object	"""properties"""	properties	(GDestroyNotify) g_hash_table_unref	REVIEW
+app/tools/gimphuesaturationtool.c:284	g_object_set_data	G_OBJECT (button)	"""gimp-item-data"""	GINT_TO_POINTER (i)	-	REVIEW
+app/tools/gimplevelstool.c:340	g_object_set_data	G_OBJECT (button)	"""pick-value"""	GUINT_TO_POINTER (value)	-	REVIEW
+app/tools/gimplevelstool.c:1207	g_object_get_data	G_OBJECT (tool->active_picker)	"""pick-value"""	-	-	REVIEW
+app/tools/gimpmoveoptions.c:134	g_object_get_data	G_OBJECT (frame)	"""radio-button"""	-	-	REVIEW
+app/tools/gimprectangleoptions.c:352	g_object_get_qdata	G_OBJECT (options)	private_key	-	-	REVIEW
+app/tools/gimprectangleoptions.c:368	g_object_set_qdata_full	G_OBJECT (options)	private_key	private	(GDestroyNotify) gimp_rectangle_options_private_finalize	REVIEW
+app/tools/gimptexttool.c:967	g_object_get_data	G_OBJECT (undo)	"""reshape-text-layer"""	-	-	REVIEW
+app/tools/gimptexttool.c:979	g_object_set_data	G_OBJECT (undo)	"""reshape-text-layer"""	(gpointer) item	-	REVIEW
+app/tools/gimptooloptions-gui.c:533	g_object_get_data	G_OBJECT (label)	"""percentage"""	-	-	REVIEW
+app/tools/gimptooloptions-gui.c:545	g_object_get_data	G_OBJECT (label)	"""digits"""	-	-	REVIEW
+app/tools/gimptooloptions-gui.c:583	g_object_set_data	G_OBJECT (button_label)	"""percentage"""	GINT_TO_POINTER (opacity)	-	REVIEW
+app/tools/gimptooloptions-gui.c:585	g_object_set_data	G_OBJECT (button_label)	"""digits"""	GINT_TO_POINTER (digits)	-	REVIEW
+app/tools/gimpvectoroptions.c:161	g_object_get_data	G_OBJECT (frame)	"""radio-button"""	-	-	REVIEW
+app/widgets/gimpdnd.c:661	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-get-data-type"""	-	-	REVIEW
+app/widgets/gimpdnd.c:672	g_object_get_data	G_OBJECT (widget)	dnd_data->get_data_func_name	-	-	REVIEW
+app/widgets/gimpdnd.c:676	g_object_get_data	G_OBJECT (widget)	dnd_data->get_data_data_name	-	-	REVIEW
+app/widgets/gimpdnd.c:707	g_object_set_data_full	G_OBJECT (widget)	"""gimp-dnd-data-widget"""	window	(GDestroyNotify) gtk_widget_destroy	REVIEW
+app/widgets/gimpdnd.c:714	g_object_set_data	G_OBJECT (window)	"""gimp-gdk-drag-context"""	context	-	REVIEW
+app/widgets/gimpdnd.c:725	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-get-data-type"""	-	-	REVIEW
+app/widgets/gimpdnd.c:730	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-data-widget"""	-	-	REVIEW
+app/widgets/gimpdnd.c:737	g_object_get_data	G_OBJECT (icon_widget)	"""gimp-gdk-drag-context"""	-	-	REVIEW
+app/widgets/gimpdnd.c:741	g_object_set_data	G_OBJECT (widget)	"""gimp-dnd-data-widget"""	NULL	-	REVIEW
+app/widgets/gimpdnd.c:771	g_object_get_data	G_OBJECT (widget)	dnd_data->get_data_func_name	-	-	REVIEW
+app/widgets/gimpdnd.c:775	g_object_get_data	G_OBJECT (widget)	dnd_data->get_data_data_name	-	-	REVIEW
+app/widgets/gimpdnd.c:826	g_object_get_data	G_OBJECT (widget)	dnd_data->set_data_func_name	-	-	REVIEW
+app/widgets/gimpdnd.c:830	g_object_get_data	G_OBJECT (widget)	dnd_data->set_data_data_name	-	-	REVIEW
+app/widgets/gimpdnd.c:861	g_object_get_data	G_OBJECT (widget)	"""gtk-site-data"""	-	-	REVIEW
+app/widgets/gimpdnd.c:867	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-drag-connected"""	-	-	REVIEW
+app/widgets/gimpdnd.c:882	g_object_set_data	G_OBJECT (widget)	"""gimp-dnd-drag-connected"""	GINT_TO_POINTER (TRUE)	-	REVIEW
+app/widgets/gimpdnd.c:886	g_object_set_data	G_OBJECT (widget)	dnd_data->get_data_func_name	get_data_func	-	REVIEW
+app/widgets/gimpdnd.c:888	g_object_set_data	G_OBJECT (widget)	dnd_data->get_data_data_name	get_data_data	-	REVIEW
+app/widgets/gimpdnd.c:892	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-get-data-type"""	-	-	REVIEW
+app/widgets/gimpdnd.c:893	g_object_set_data	G_OBJECT (widget)	"""gimp-dnd-get-data-type"""	GINT_TO_POINTER (data_type)	-	REVIEW
+app/widgets/gimpdnd.c:925	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-drag-connected"""	-	-	REVIEW
+app/widgets/gimpdnd.c:933	g_object_set_data	G_OBJECT (widget)	dnd_data->get_data_func_name	NULL	-	REVIEW
+app/widgets/gimpdnd.c:934	g_object_set_data	G_OBJECT (widget)	dnd_data->get_data_data_name	NULL	-	REVIEW
+app/widgets/gimpdnd.c:938	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-get-data-type"""	-	-	REVIEW
+app/widgets/gimpdnd.c:940	g_object_set_data	G_OBJECT (widget)	"""gimp-dnd-get-data-type"""	NULL	-	REVIEW
+app/widgets/gimpdnd.c:1005	g_object_get_data	G_OBJECT (widget)	"""gtk-drag-dest"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1009	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-drop-connected"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1018	g_object_set_data	G_OBJECT (widget)	"""gimp-dnd-drop-connected"""	GINT_TO_POINTER (TRUE)	-	REVIEW
+app/widgets/gimpdnd.c:1026	g_object_set_data	G_OBJECT (widget)	dnd_data->set_data_func_name	set_data_func	-	REVIEW
+app/widgets/gimpdnd.c:1028	g_object_set_data	G_OBJECT (widget)	dnd_data->set_data_data_name	set_data_data	-	REVIEW
+app/widgets/gimpdnd.c:1060	g_object_set_data	G_OBJECT (widget)	dnd_data->set_data_func_name	NULL	-	REVIEW
+app/widgets/gimpdnd.c:1061	g_object_set_data	G_OBJECT (widget)	dnd_data->set_data_data_name	NULL	-	REVIEW
+app/widgets/gimpdnd.c:1160	g_object_get_data	G_OBJECT (widget)	"""gtk-drag-dest"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1201	g_object_get_data	G_OBJECT (context)	"""gimp-dnd-viewable"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1222	g_object_get_data	G_OBJECT (widget)	dnd_data->get_data_func_name	-	-	REVIEW
+app/widgets/gimpdnd.c:1224	g_object_get_data	G_OBJECT (widget)	dnd_data->get_data_data_name	-	-	REVIEW
+app/widgets/gimpdnd.c:1262	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-xds-drag-begin"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1270	g_object_set_data	G_OBJECT (widget)	"""gimp-dnd-xds-drag-begin"""	GUINT_TO_POINTER (handler)	-	REVIEW
+app/widgets/gimpdnd.c:1274	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-xds-drag-end"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1282	g_object_set_data	G_OBJECT (widget)	"""gimp-dnd-xds-drag-end"""	GUINT_TO_POINTER (handler)	-	REVIEW
+app/widgets/gimpdnd.c:1294	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-xds-drag-begin"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1299	g_object_set_data	G_OBJECT (widget)	"""gimp-dnd-xds-drag-begin"""	NULL	-	REVIEW
+app/widgets/gimpdnd.c:1302	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-xds-drag-end"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1307	g_object_set_data	G_OBJECT (widget)	"""gimp-dnd-xds-drag-end"""	NULL	-	REVIEW
+app/widgets/gimpdnd.c:1331	g_object_set_data_full	G_OBJECT (context)	"""gimp-dnd-color"""	g_memdup (&color, sizeof (GimpRGB))	(GDestroyNotify) g_free	REVIEW
+app/widgets/gimpdnd.c:1352	g_object_get_data	G_OBJECT (context)	"""gimp-dnd-color"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1692	g_object_set_data_full	G_OBJECT (context)	"""gimp-dnd-viewable"""	g_object_ref (image)	(GDestroyNotify) g_object_unref	REVIEW
+app/widgets/gimpdnd.c:1695	g_object_set_data	G_OBJECT (context)	"""gimp-dnd-component"""	GINT_TO_POINTER (channel)	-	REVIEW
+app/widgets/gimpdnd.c:1717	g_object_get_data	G_OBJECT (context)	"""gimp-dnd-viewable"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1718	g_object_get_data	G_OBJECT (context)	"""gimp-dnd-component"""	-	-	REVIEW
+app/widgets/gimpdnd.c:1823	g_object_set_data_full	G_OBJECT (context)	"""gimp-dnd-viewable"""	g_object_ref (viewable)	(GDestroyNotify) g_object_unref	REVIEW
+app/widgets/gimpdnd.c:2061	g_object_get_data	G_OBJECT (widget)	"""gimp-dnd-get-data-type"""	-	-	REVIEW
+app/widgets/gimpdnd.c:2070	g_object_get_data	G_OBJECT (widget)	dnd_data->get_data_func_name	-	-	REVIEW
+app/widgets/gimpdnd.c:2074	g_object_get_data	G_OBJECT (widget)	dnd_data->get_data_data_name	-	-	REVIEW
+app/widgets/gimpdnd.c:2098	g_object_get_data	G_OBJECT (context)	"""gimp-dnd-viewable"""	-	-	REVIEW
+app/widgets/gimpdnd.c:2148	g_object_get_data	G_OBJECT (context)	"""gimp-dnd-viewable"""	-	-	REVIEW
+app/widgets/gimpdnd.c:2198	g_object_get_data	G_OBJECT (context)	"""gimp-dnd-viewable"""	-	-	REVIEW
+app/widgets/gimpdockbook.c:598	g_object_set_data_full	G_OBJECT (dockable)	GIMP_DOCKABLE_DETACH_REF_KEY	g_object_ref (dockbook)	g_object_unref	REVIEW
+app/widgets/gimpdockbook.c:633	g_object_set_data	G_OBJECT (dockable)	GIMP_DOCKABLE_DETACH_REF_KEY	NULL	-	REVIEW
+app/widgets/gimpdockbook.c:1194	g_object_get_data	G_OBJECT (dockable)	"""gimp-dialog-identifier"""	-	-	REVIEW
+app/widgets/gimpdockbook.c:1237	g_object_set_data	G_OBJECT (tab_widget)	"""gimp-dockable"""	dockable	-	REVIEW
+app/widgets/gimpdockbook.c:1358	g_object_get_data	G_OBJECT (drag_source)	"""gimp-dockable"""	-	-	REVIEW
+app/widgets/gimpdockbook.c:1361	g_object_set_data	G_OBJECT (dockable)	"""gimp-dock-drag-widget"""	NULL	-	REVIEW
+app/widgets/gimpdockbook.c:1452	g_object_set_data_full	G_OBJECT (dockable)	"""gimp-dock-drag-widget"""	window	(GDestroyNotify) gtk_widget_destroy	REVIEW
+app/widgets/gimpdockbook.c:1473	g_object_get_data	G_OBJECT (dockable)	"""gimp-dock-drag-widget"""	-	-	REVIEW
+app/widgets/gimpdockbook.c:1481	g_object_set_data	G_OBJECT (dockable)	"""gimp-dock-drag-widget"""	NULL	-	REVIEW
+app/widgets/gimpdockbook.c:1569	g_object_get_data	G_OBJECT (widget)	"""gimp-dockable"""	-	-	REVIEW
+app/widgets/gimpeditor.c:572	g_object_get_data	G_OBJECT (button)	"""extended-actions"""	-	-	REVIEW
+app/widgets/gimpeditor.c:632	g_object_get_qdata	G_OBJECT (action)	GIMP_HELP_ID	-	-	REVIEW
+app/widgets/gimpeditor.c:692	g_object_set_data_full	G_OBJECT (button)	"""extended-actions"""	extended	(GDestroyNotify) gimp_editor_button_extended_actions_free	REVIEW
+app/widgets/gimptooloptionstoolbar.c:264	g_object_get_data	G_OBJECT (toolbar->p->visible_tool_options)	"""gimp-tool-options-toolbar-gui"""	-	-	REVIEW
+app/widgets/gimptooloptionstoolbar.c:279	g_object_get_data	G_OBJECT (tool_info->tool_options)	"""gimp-tool-options-toolbar-gui"""	-	-	REVIEW
+app/widgets/gimptoolpalette.c:202	g_object_get_data	G_OBJECT (tool_info)	TOOL_BUTTON_DATA_KEY	-	-	REVIEW
+app/widgets/gimptoolpalette.c:273	g_object_get_data	G_OBJECT (tool_info)	TOOL_BUTTON_DATA_KEY	-	-	REVIEW
+app/widgets/gimptoolpalette.c:300	g_object_get_data	G_OBJECT (tool_info)	TOOL_BUTTON_DATA_KEY	-	-	REVIEW
+app/widgets/gimptoolpalette.c:328	g_object_get_data	G_OBJECT (tool_info)	TOOL_BUTTON_DATA_KEY	-	-	REVIEW
+app/widgets/gimptoolpalette.c:353	g_object_get_data	G_OBJECT (widget)	TOOL_INFO_DATA_KEY	-	-	REVIEW
+app/widgets/gimptoolpalette.c:422	g_object_set_data	G_OBJECT (tool_info)	TOOL_BUTTON_DATA_KEY	item	-	REVIEW
+app/widgets/gimptoolpalette.c:423	g_object_set_data	G_OBJECT (item)	TOOL_INFO_DATA_KEY	tool_info	-	REVIEW
+app/widgets/gimpwidgets-utils.c:266	g_object_get_data	list->data	"""gimp-item-data"""	-	-	REVIEW
+app/widgets/gimpwidgets-utils.c:309	g_object_get_data	G_OBJECT (box)	"""size-group"""	-	-	REVIEW
+app/widgets/gimpwidgets-utils.c:314	g_object_set_data	G_OBJECT (box)	"""size-group"""	size_group	-	REVIEW
+app/widgets/gimpwidgets-utils.c:969	g_object_get_data	G_OBJECT (widget)	"""gimp-accel-closure"""	-	-	REVIEW
+app/widgets/gimpwidgets-utils.c:978	g_object_get_data	G_OBJECT (widget)	"""gimp-accel-action"""	-	-	REVIEW
+app/widgets/gimpwidgets-utils.c:981	g_object_get_qdata	G_OBJECT (action)	GIMP_HELP_ID	-	-	REVIEW
+app/widgets/gimpwidgets-utils.c:1019	g_object_set_data	G_OBJECT (widget)	"""gimp-accel-closure"""	accel_closure	-	REVIEW
+app/widgets/gimpwidgets-utils.c:1021	g_object_set_data	G_OBJECT (widget)	"""gimp-accel-action"""	action	-	REVIEW
+app/widgets/gimpwidgets-utils.c:1041	g_object_get_qdata	G_OBJECT (action)	GIMP_HELP_ID	-	-	REVIEW
+app/widgets/gimpwidgets-utils.c:1182	g_object_get_data	G_OBJECT (tool_options)	GIMP_TOOL_OPTIONS_GUI_KEY	-	-	REVIEW
+app/widgets/gimpwidgets-utils.c:1190	g_object_set_data_full	G_OBJECT (tool_options)	GIMP_TOOL_OPTIONS_GUI_KEY	widget	widget ? (GDestroyNotify) g_object_unref : NULL	REVIEW
+app/xcf/xcf-load.c:443	g_object_get_data	G_OBJECT (layer)	"""gimp-layer-mask"""	-	-	REVIEW
+app/xcf/xcf-load.c:449	g_object_set_data	G_OBJECT (layer)	"""gimp-layer-mask"""	NULL	-	REVIEW
+app/xcf/xcf-load.c:1607	g_object_set_data_full	G_OBJECT (layer)	"""gimp-layer-mask"""	g_object_ref_sink (layer_mask)	(GDestroyNotify) g_object_unref	REVIEW
