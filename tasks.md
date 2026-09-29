@@ -172,6 +172,7 @@
 | 01.007/mapping-array | [x] | MyPaint Mapping 配列の確保・破棄を照合する | 01.007/raw-candidates | new[] と delete の不一致、既定コピー構築の共有リスクを出典行で記録する |
 | 01.007/raw-activity | [x] | raw pointer 候補の有効性を分類する | 01.007/raw-candidates | 168 箇所を確保・解放・weak 登録とコメント/文字列に分ける |
 | 01.007/class-pointer-exception | [x] | class 初期化時の pointer 例外を追跡する | 01.007/raw-activity | InvalidClass の new/throw と未解放経路を出典行で記録する |
+| 01.007/dict-transfer | [x] | MyPaint 設定辞書の返り値参照を照合する | 01.007/ref-hold | 7 箇所の hold の取得元と HashTable の解放、静的辞書の追加保持を出典行で記録する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
@@ -353,6 +354,7 @@
 | 08.005 | [ ] | MyPaint 資源型を移植する | 08.004 | data factory から生成できる |
 | 08.006 | [ ] | MyPaint paint core 型を移植する | 08.005 | 現行 GimpPaintCore に登録できる |
 | 08.007 | [ ] | MyPaint options 型を移植する | 08.006 | 現行 property と設定機構に接続 |
+| 08.007/dict-owner | [ ] | MyPaint 設定辞書の静的参照を整理する | 08.007, 01.007/dict-transfer | 辞書五種のキャッシュ参照と呼出し元へ渡す参照を分離し、初期化・終了・再取得を検証する |
 | 08.008/weak-pointer-teardown | [ ] | MyPaint GUI の weak pointer 登録を対称に解除する | 08.008, 01.007/raw-candidates | options/widget の先行破棄と GUI helper の先行破棄で解放済み領域に書き込まない |
 | 08.008 | [ ] | MyPaint tool 型を移植する | 08.007 | tool manager に登録できる |
 | 08.008/tool-core-lifetime | [ ] | MyPaint tool と core の生成・破棄順を明示する | 08.008, 01.005/gimp3-tool-callbacks | constructed で保持する core が finalize/停止時に二重解放や残存を起こさず、qdata と Undo の解除順が整合 |
