@@ -1,0 +1,15 @@
+legacy_site	operation	syntax_role	owner	release_contract	status
+app/paint/gimpmypaintcore.cpp:86	DELETE	CXX_RELEASE	option_changed_handler	cleanup deletes Connection and disconnects signal	DONE
+app/paint/gimpmypaintcore.cpp:93	DELETE	CXX_RELEASE	stroke	cleanup deletes remaining stroke after split	DONE
+app/paint/gimpmypaintcore.cpp:97	DELETE	CXX_RELEASE	brush	cleanup deletes Brush	DONE
+app/paint/gimpmypaintcore.cpp:101	DELETE	CXX_RELEASE	surface	cleanup deletes Surface	DONE
+app/paint/gimpmypaintcore.cpp:116	DELETE	CXX_RELEASE	option_changed_handler	options change deletes previous Connection	DONE
+app/paint/gimpmypaintcore.cpp:129	NEW	INACTIVE_OR_TEXT	none	log string mentioning new; no allocation	DONE
+app/paint/gimpmypaintcore.cpp:133	DELETE	INACTIVE_OR_TEXT	none	log string mentioning delete; no release	DONE
+app/paint/gimpmypaintcore.cpp:134	DELETE	CXX_RELEASE	surface	replace drawable surface then assign new factory result	DONE
+app/paint/gimpmypaintcore.cpp:135	NEW	INACTIVE_OR_TEXT	none	log string mentioning new; no allocation	DONE
+app/paint/gimpmypaintcore.cpp:141	NEW	CXX_ALLOCATION	stroke	new Stroke deleted in split_stroke or cleanup	DONE
+app/paint/gimpmypaintcore.cpp:219	DELETE	CXX_RELEASE	stroke	split_stroke deletes and nulls stroke	DONE
+app/paint/gimpmypaintcore.cpp:223	DELETE	INACTIVE_OR_TEXT	none	commented out delete; no release	DONE
+app/paint/gimpmypaintcore.cpp:239	DELETE	INACTIVE_OR_TEXT	brush	disabled code branch; no active release	DONE
+app/paint/gimpmypaintcore.cpp:245	NEW	CXX_ALLOCATION	brush	new Brush deleted in cleanup	DONE

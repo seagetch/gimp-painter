@@ -21,6 +21,34 @@ def mask_comments_and_strings(source):
     return TOKEN.sub(lambda match: " " * len(match[0]), source)
 
 
+def mask_literal_if_zero(source):
+    """Mask literal #if 0 arms while preserving source line numbers."""
+    frames = []
+    active = True
+    output = []
+    for line in source.splitlines(keepends=True):
+        directive = re.match(r"\s*#\s*(if|ifdef|ifndef|elif|else|endif)\b(.*)", line)
+        if directive:
+            name, arg = directive.groups()
+            if name in ("if", "ifdef", "ifndef"):
+                enabled = name != "if" or not re.fullmatch(r"0\s*(?://.*)?", arg.strip())
+                frames.append([active, enabled, enabled])
+                active = active and enabled
+            elif name == "elif" and frames:
+                parent, _, seen = frames[-1]
+                enabled = not seen and not re.fullmatch(r"0\s*(?://.*)?", arg.strip())
+                frames[-1][1:] = [enabled, seen or enabled]
+                active = parent and enabled
+            elif name == "else" and frames:
+                parent, _, seen = frames[-1]
+                frames[-1][1:] = [not seen, True]
+                active = parent and not seen
+            elif name == "endif" and frames:
+                active = frames.pop()[0]
+        output.append(line if active else re.sub(r"[^\n]", " ", line))
+    return "".join(output)
+
+
 def classify(kind, text):
     if kind == "NEW":
         return "ARRAY_ALLOCATION" if re.search(r"\bnew\s+\w+\s*\[", text) else "CXX_ALLOCATION"
@@ -39,7 +67,7 @@ def main():
     for path in paths:
         source = subprocess.check_output(["git", "show", f"{REVISION}:{path}"],
                                          text=True, errors="replace")
-        masked[path] = mask_comments_and_strings(source).splitlines()
+        masked[path] = mask_comments_and_strings(mask_literal_if_zero(source)).splitlines()
     rows = []
     for row in candidates:
         path, number = row["legacy_site"].rsplit(":", 1)

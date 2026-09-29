@@ -179,6 +179,7 @@
 | 01.007/array-wrapper | [x] | GLib 配列 wrapper の代入時所有権を追跡する | 01.007/raw-activity | Array の二種類の移動代入と旧 GArray の解放経路を確認する |
 | 01.007/icon-buffer | [x] | MyPaint アイコン画素の所有権を追跡する | 01.007/raw-activity | Cairo surface と backing buffer の解放・stride・自己代入経路を旧ソースで照合する |
 | 01.007/mypaint-brush-private | [x] | MyPaint ブラシ資源の raw pointer を対応付ける | 01.007/raw-activity | 16 箇所を GObject private・設定・preview・weak slot の所有者と解放経路へ対応付ける |
+| 01.007/mypaint-core-raw | [x] | MyPaint paint core の raw pointer を対応付ける | 01.007/raw-activity | 14 候補の active/非 active、surface・stroke・brush・signal connection の破棄経路を追う |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
@@ -362,6 +363,7 @@
 | 08.004 | [ ] | CloneLayerUndo の型を移植する | 08.003 | 現行 GimpItemUndo と親処理を接続 |
 | 08.005 | [ ] | MyPaint 資源型を移植する | 08.004 | data factory から生成できる |
 | 08.006 | [ ] | MyPaint paint core 型を移植する | 08.005 | 現行 GimpPaintCore に登録できる |
+| 08.006/core-options-init | [ ] | MyPaint core の options 借用参照を初期化する | 08.006, 01.007/mypaint-core-raw | 初回 stroke_to の比較前に NULL 初期化し、signal 接続・切断と options 先行破棄を検証する |
 | 08.007 | [ ] | MyPaint options 型を移植する | 08.006 | 現行 property と設定機構に接続 |
 | 08.007/dict-owner | [ ] | MyPaint 設定辞書の静的参照を整理する | 08.007, 01.007/dict-transfer | 辞書五種のキャッシュ参照と呼出し元へ渡す参照を分離し、初期化・終了・再取得を検証する |
 | 08.008/weak-pointer-teardown | [ ] | MyPaint GUI の weak pointer 登録を対称に解除する | 08.008, 01.007/raw-candidates | options/widget の先行破棄と GUI helper の先行破棄で解放済み領域に書き込まない |

@@ -106,7 +106,7 @@ app/paint/gimpmypaintcore.cpp:135	NEW	INACTIVE_OR_TEXT	"g_print(""MypaintCore(%p
 app/paint/gimpmypaintcore.cpp:141	NEW	CXX_ALLOCATION	stroke = new Stroke();	DONE
 app/paint/gimpmypaintcore.cpp:219	DELETE	CXX_RELEASE	delete stroke;	DONE
 app/paint/gimpmypaintcore.cpp:223	DELETE	INACTIVE_OR_TEXT	delete brush;	DONE
-app/paint/gimpmypaintcore.cpp:239	DELETE	CXX_RELEASE	delete brush;	DONE
+app/paint/gimpmypaintcore.cpp:239	DELETE	INACTIVE_OR_TEXT	delete brush;	DONE
 app/paint/gimpmypaintcore.cpp:245	NEW	CXX_ALLOCATION	brush = new Brush();	DONE
 app/paint/gimpmypaintcoreundo.cpp:159	DELETE	CXX_RELEASE	delete stroke;	DONE
 app/paint/gimpmypaintoptions-history.cpp:85	NEW	CXX_ALLOCATION	instance = new GimpMypaintOptionsHistory();	DONE
@@ -138,8 +138,8 @@ app/tools/gimpmypaintoptions-gui.cpp:547	NEW	CXX_ALLOCATION	MypaintBrushEditorPr
 app/tools/gimpmypaintoptions-gui.cpp:575	NEW	CXX_ALLOCATION	MypaintOptionsGUIPrivate* priv = new MypaintOptionsGUIPrivate(tool_options, true);	DONE
 app/tools/gimpmypainttool.cpp:187	NEW	CXX_ALLOCATION	paint_tool->core = core = new GimpMypaintCore();	DONE
 app/tools/gimpmypainttool.cpp:204	DELETE	INACTIVE_OR_TEXT	delete core;	DONE
-app/tools/gimpmypainttool.cpp:707	G_FREE	C_ALLOCATOR_RELEASE	g_free (status_help);	DONE
-app/tools/gimpmypainttool.cpp:735	G_FREE	C_ALLOCATOR_RELEASE	g_free (status);	DONE
+app/tools/gimpmypainttool.cpp:707	G_FREE	INACTIVE_OR_TEXT	g_free (status_help);	DONE
+app/tools/gimpmypainttool.cpp:735	G_FREE	INACTIVE_OR_TEXT	g_free (status);	DONE
 app/tools/gimpperspectiveguidetool.cpp:318	NEW	INACTIVE_OR_TEXT	"g_print(""Creating new guide\n"");"	DONE
 app/tools/gimpperspectiveguidetool.cpp:322	NEW	INACTIVE_OR_TEXT	"g_print(""Added new vanishment point(%d)\n"", i_guide->get_vanish_point_length());"	DONE
 app/widgets/gimpcellrendererpopup.cpp:87	G_FREE	C_ALLOCATOR_RELEASE	g_free (stock_id);	DONE
