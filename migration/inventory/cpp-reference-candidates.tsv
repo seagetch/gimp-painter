@@ -1,0 +1,243 @@
+legacy_site	kind	source_line	status
+app/base/glib-cxx-impl.hpp:161	HOLD	_signals = hold(g_array_new(FALSE, TRUE, sizeof(guint)));	REVIEW
+app/base/glib-cxx-impl.hpp:169	HOLD	_properties = hold(g_array_new(FALSE, TRUE, sizeof(Property)));	REVIEW
+app/base/glib-cxx-impl.hpp:187	G_VALUE	const GValue *value,	REVIEW
+app/base/glib-cxx-impl.hpp:218	G_VALUE	GValue     *value,	REVIEW
+app/base/glib-cxx-utils.hpp:163	HOLD	inline auto hold(GList* list) { return static_cast<List&&>(List(list)); }	REVIEW
+app/base/glib-cxx-utils.hpp:332	HOLD	inline auto hold(GArray* arr) { return static_cast<Array&&>(Array(arr)); }	REVIEW
+app/base/glib-cxx-utils.hpp:416	HOLD	inline auto hold(GHashTable* hashtable) { return static_cast<HashTable&&>(HashTable(hashtable)); }	REVIEW
+app/base/glib-cxx-utils.hpp:549	G_VALUE	template<typename T> inline const T get_value(const GValue& src) {	REVIEW
+app/base/glib-cxx-utils.hpp:554	G_VALUE	template<typename T> inline void set_value(GValue& src, T value) {	REVIEW
+app/base/glib-cxx-utils.hpp:560	G_VALUE	template<> inline const gchar get_value<gchar>(const GValue& src) { return g_value_get_schar(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:561	G_VALUE	template<> inline void set_value<gchar>(GValue& src, gchar value) { g_value_set_schar(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:564	G_VALUE	template<> inline const guchar get_value<guchar>(const GValue& src) { return g_value_get_uchar(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:565	G_VALUE	template<> inline void set_value<guchar>(GValue& src, guchar value) { g_value_set_uchar(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:568	G_VALUE	template<> inline const bool get_value<bool>(const GValue& src) { return g_value_get_boolean(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:569	G_VALUE	template<> inline void set_value<bool>(GValue& src, bool value) { g_value_set_boolean(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:572	G_VALUE	template<> inline const gint32 get_value<gint32>(const GValue& src) { return g_value_get_int(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:573	G_VALUE	template<> inline void set_value<gint32>(GValue& src, gint32 value) { g_value_set_int(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:576	G_VALUE	template<> inline const guint32 get_value<guint32>(const GValue& src) { return g_value_get_uint(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:577	G_VALUE	template<> inline void set_value<guint32>(GValue& src, guint32 value) { g_value_set_uint(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:580	G_VALUE	template<> inline const glong get_value<glong>(const GValue& src) { return g_value_get_long(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:581	G_VALUE	template<> inline void set_value<glong>(GValue& src, glong value) { g_value_set_long(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:584	G_VALUE	template<> inline const gulong get_value<gulong>(const GValue& src) { return g_value_get_ulong(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:585	G_VALUE	template<> inline void set_value<gulong>(GValue& src, gulong value) { g_value_set_ulong(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:588	G_VALUE	template<> inline const gfloat get_value<gfloat>(const GValue& src) { return g_value_get_float(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:589	G_VALUE	template<> inline void set_value<gfloat>(GValue& src, gfloat value) { g_value_set_float(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:592	G_VALUE	template<> inline const gdouble get_value<gdouble>(const GValue& src) { return g_value_get_double(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:593	G_VALUE	template<> inline void set_value<gdouble>(GValue& src, gdouble value) { g_value_set_double(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:596	G_VALUE	template<> inline gchar* const get_value<gchar*>(const GValue& src) { return (gchar* const)g_value_get_string(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:597	G_VALUE	template<> inline void set_value<gchar*>(GValue& src, gchar* value) { g_value_set_string(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:600	G_VALUE	template<> inline const gpointer get_value<gpointer>(const GValue& src) { return g_value_get_pointer(&src); }	REVIEW
+app/base/glib-cxx-utils.hpp:601	G_VALUE	template<> inline void set_value<gpointer>(GValue& src, gpointer value) { g_value_set_pointer(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:604	G_VALUE	template<> inline GObject* const get_value<GObject*>(const GValue& src) { return (GObject* const)G_OBJECT(g_value_get_object(&src)); }	REVIEW
+app/base/glib-cxx-utils.hpp:605	G_VALUE	template<> inline void set_value<GObject*>(GValue& src, GObject* value) { g_value_set_object(&src, value); }	REVIEW
+app/base/glib-cxx-utils.hpp:622	G_VALUE	static GValue _default() {	REVIEW
+app/base/glib-cxx-utils.hpp:623	G_VALUE	GValue value = G_VALUE_INIT;	REVIEW
+app/base/glib-cxx-utils.hpp:624	G_VALUE	g_value_init(&value, get_type());	REVIEW
+app/base/glib-cxx-utils.hpp:628	G_VALUE	static const Instance cast(const GValue& src) {	REVIEW
+app/base/glib-cxx-utils.hpp:629	G_VALUE	GValue value = _default();	REVIEW
+app/base/glib-cxx-utils.hpp:634	G_VALUE	static GValue init(Instance src) {	REVIEW
+app/base/glib-cxx-utils.hpp:635	G_VALUE	GValue value = _default();	REVIEW
+app/base/glib-cxx-utils.hpp:640	G_VALUE	static void set(GValue& value, Instance src) {	REVIEW
+app/base/glib-cxx-utils.hpp:644	G_VALUE	static Instance get(GValue& value) {	REVIEW
+app/base/glib-cxx-utils.hpp:651	G_VALUE	inline void g_value_finalize(GValue* value) {	REVIEW
+app/base/glib-cxx-utils.hpp:653	G_VALUE	g_value_unset(value);	REVIEW
+app/base/glib-cxx-utils.hpp:662	G_VALUE	class Value : public ScopedPointer<GValue, void(GValue*), g_value_finalize<IsOwner, IsManager>>	REVIEW
+app/base/glib-cxx-utils.hpp:664	G_VALUE	using super = ScopedPointer<GValue, void(GValue*), g_value_finalize<IsOwner, IsManager>>;	REVIEW
+app/base/glib-cxx-utils.hpp:666	G_VALUE	Value(GValue* src) : super(src) {	REVIEW
+app/base/glib-cxx-utils.hpp:668	G_VALUE	Value(GValue& src) : super(&src) {	REVIEW
+app/base/glib-cxx-utils.hpp:688	G_VALUE	GValue& ref() { return *super::obj; };	REVIEW
+app/base/glib-cxx-utils.hpp:699	G_VALUE	CopyValue(const GValue* src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:700	G_VALUE	GValue default_value = G_VALUE_INIT;	REVIEW
+app/base/glib-cxx-utils.hpp:702	G_VALUE	g_value_init(obj, G_VALUE_TYPE(src));	REVIEW
+app/base/glib-cxx-utils.hpp:706	G_VALUE	CopyValue(const GValue& src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:707	G_VALUE	GValue default_value = G_VALUE_INIT;	REVIEW
+app/base/glib-cxx-utils.hpp:709	G_VALUE	g_value_init(obj, G_VALUE_TYPE(&src));	REVIEW
+app/base/glib-cxx-utils.hpp:717	G_VALUE	CopyValue(const HoldValue& src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:719	G_VALUE	GValue default_value = G_VALUE_INIT;	REVIEW
+app/base/glib-cxx-utils.hpp:721	G_VALUE	g_value_init(obj, G_VALUE_TYPE(src.ptr()));	REVIEW
+app/base/glib-cxx-utils.hpp:726	G_VALUE	CopyValue(const CopyValue& src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:727	G_VALUE	GValue default_value = G_VALUE_INIT;	REVIEW
+app/base/glib-cxx-utils.hpp:729	G_VALUE	g_value_init(obj, G_VALUE_TYPE(src.ptr()));	REVIEW
+app/base/glib-cxx-utils.hpp:733	G_VALUE	CopyValue(const gchar src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:737	G_VALUE	CopyValue(const guchar src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:741	G_VALUE	CopyValue(const bool src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:745	G_VALUE	CopyValue(const gint32 src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:749	G_VALUE	CopyValue(const guint32 src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:753	G_VALUE	CopyValue(const glong src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:757	G_VALUE	CopyValue(const gulong src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:761	G_VALUE	CopyValue(const gfloat src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:765	G_VALUE	CopyValue(const gdouble src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:769	G_VALUE	CopyValue(const gpointer src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:773	G_VALUE	CopyValue(const gchar* src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:777	G_VALUE	CopyValue(GObject* src) : super(g_new0(GValue, 1)) {	REVIEW
+app/base/glib-cxx-utils.hpp:782	G_VALUE	GValue default_value = G_VALUE_INIT;	REVIEW
+app/base/glib-cxx-utils.hpp:784	G_VALUE	g_value_init(obj, G_VALUE_TYPE(src.obj));	REVIEW
+app/base/glib-cxx-utils.hpp:796	G_VALUE	GValue value = G_VALUE_INIT;	REVIEW
+app/base/glib-cxx-utils.hpp:797	G_VALUE	g_value_init(&value, G_TYPE_BOXED);	REVIEW
+app/base/glib-cxx-utils.hpp:808	G_VALUE	ValueRef(GValue* src) : super(src) {	REVIEW
+app/base/glib-cxx-utils.hpp:811	G_VALUE	ValueRef(GValue& src) : super(&src) {	REVIEW
+app/base/glib-cxx-utils.hpp:814	G_VALUE	ValueRef(const GValue* src) : super(NULL) {	REVIEW
+app/base/glib-cxx-utils.hpp:815	G_VALUE	super::obj = (GValue*)src;	REVIEW
+app/base/glib-cxx-utils.hpp:818	G_VALUE	ValueRef(const GValue& src) : super(NULL) {	REVIEW
+app/base/glib-cxx-utils.hpp:819	G_VALUE	super::obj = (GValue*)&src;	REVIEW
+app/base/glib-cxx-utils.hpp:837	G_VALUE	inline auto hold(GValue* value) { return HoldValue(value); }	REVIEW
+app/base/glib-cxx-utils.hpp:837	HOLD	inline auto hold(GValue* value) { return HoldValue(value); }	REVIEW
+app/base/glib-cxx-utils.hpp:838	G_VALUE	inline auto hold(GValue& value) { return HoldValue(value); }	REVIEW
+app/base/glib-cxx-utils.hpp:838	HOLD	inline auto hold(GValue& value) { return HoldValue(value); }	REVIEW
+app/base/glib-cxx-utils.hpp:839	G_VALUE	inline auto move(GValue& src)  { return static_cast<CopyValue&&>(CopyValue(src)); }	REVIEW
+app/base/glib-cxx-utils.hpp:841	G_VALUE	inline auto dup(const GValue& src) { return CopyValue(src); }	REVIEW
+app/base/glib-cxx-utils.hpp:842	G_VALUE	inline auto ref(GValue* src) { return IValue(src); }	REVIEW
+app/base/glib-cxx-utils.hpp:843	G_VALUE	inline auto ref(GValue& src) { return IValue(src); }	REVIEW
+app/base/glib-cxx-utils.hpp:844	G_VALUE	inline auto manage(GValue* src) { return ManagedValue(src); }	REVIEW
+app/base/glib-cxx-utils.hpp:845	G_VALUE	inline auto manage(GValue& src) { return ManagedValue(src); }	REVIEW
+app/base/glib-cxx-utils.hpp:860	REF_UNREF	void incref() { if (super::obj) g_object_ref(as_object()); };	REVIEW
+app/base/glib-cxx-utils.hpp:861	REF_UNREF	void decref() { if (super::obj) g_object_unref(as_object()); };	REVIEW
+app/base/glib-cxx-utils.hpp:875	HOLD	inline auto hold(T* src) { return static_cast<Object<T>&&>(Object<T>(src)); }	REVIEW
+app/base/glib-cxx-utils.hpp:907	G_VALUE	GValue result = G_VALUE_INIT;	REVIEW
+app/base/glib-cxx-utils.hpp:908	G_VALUE	g_value_init(&result, pspec->value_type);	REVIEW
+app/base/glib-cxx-utils.hpp:1185	CXX_POINTER	CXXPointer<Delegator> handler;	REVIEW
+app/base/json-cxx-utils.hpp:41	HOLD	inline auto hold(JsonNode* src) { return Node(src); }	REVIEW
+app/base/json-cxx-utils.hpp:276	REF_UNREF	IBuilder(const Builder& b) : Builder(b) { g_object_ref(G_OBJECT(obj)); };	REVIEW
+app/base/json-cxx-utils.hpp:277	REF_UNREF	IBuilder(const IBuilder& b) : Builder(b.obj) { g_object_ref(G_OBJECT(obj)); };	REVIEW
+app/base/scopeguard.hpp:105	CXX_POINTER	CXXPointer<T> guard(T* ptr) { return ptr; }	REVIEW
+app/base/soup-cxx-utils.hpp:42	CXX_POINTER	CXXPointer<Handler> handler;	REVIEW
+app/base/soup-cxx-utils.hpp:258	CXX_POINTER	CXXPointer<rule_delegator> handler;	REVIEW
+app/core/gimpclonelayer.cpp:90	CXX_POINTER	CXXPointer<Delegators::Connection> parent_changed_conn;	REVIEW
+app/core/gimpclonelayer.cpp:91	CXX_POINTER	CXXPointer<Delegators::Connection> update_conn;	REVIEW
+app/core/gimpclonelayer.cpp:92	CXX_POINTER	CXXPointer<Delegators::Connection> freeze_conn;	REVIEW
+app/core/gimpfilterlayer.cpp:75	CXX_POINTER	CXXPointer<ProcedureRunner> runner;	REVIEW
+app/core/gimpfilterlayer.cpp:76	CXX_POINTER	CXXPointer<ProcedureRunner> new_runner;	REVIEW
+app/core/gimpfilterlayer.cpp:93	CXX_POINTER	CXXPointer<Delegators::Connection> child_update_conn;	REVIEW
+app/core/gimpfilterlayer.cpp:94	CXX_POINTER	CXXPointer<Delegators::Connection> parent_changed_conn;	REVIEW
+app/core/gimpfilterlayer.cpp:95	CXX_POINTER	CXXPointer<Delegators::Connection> reorder_conn;	REVIEW
+app/core/gimpfilterlayer.cpp:96	CXX_POINTER	CXXPointer<Delegators::Connection> visibility_changed_conn;	REVIEW
+app/core/gimpfilterlayer.cpp:169	G_VALUE	virtual GValue          get_procedure_arg(int index);	REVIEW
+app/core/gimpfilterlayer.cpp:170	G_VALUE	virtual void            set_procedure_arg(int index, GValue value);	REVIEW
+app/core/gimpfilterlayer.cpp:637	G_VALUE	auto           args  = ref<GValue>(_args);	REVIEW
+app/core/gimpfilterlayer.cpp:672	G_VALUE	GArray *array = g_array_sized_new (FALSE, TRUE, sizeof (GValue), varray->n_values);	REVIEW
+app/core/gimpfilterlayer.cpp:680	G_VALUE	GValue GLib::FilterLayer::get_procedure_arg(int index)	REVIEW
+app/core/gimpfilterlayer.cpp:687	G_VALUE	void GLib::FilterLayer::set_procedure_arg(int index, GValue value)	REVIEW
+app/core/gimpmypaintbrush-load.cpp:277	HOLD	auto _settings_dict = hold(mypaint_brush_get_brush_settings_dict ());	REVIEW
+app/core/gimpmypaintbrush-load.cpp:279	HOLD	auto _inputs_dict   = hold( mypaint_brush_get_input_settings_dict () );	REVIEW
+app/core/gimpmypaintbrush-load.cpp:345	HOLD	auto _switches_dict = hold( mypaint_brush_get_brush_switch_settings_dict () );	REVIEW
+app/core/gimpmypaintbrush-load.cpp:367	HOLD	auto _text_dict = hold( mypaint_brush_get_brush_text_settings_dict () );	REVIEW
+app/core/gimpmypaintbrush-load.cpp:551	HOLD	auto _settings_dict = hold( mypaint_brush_get_brush_settings_dict () );	REVIEW
+app/core/gimpmypaintbrush-load.cpp:553	HOLD	auto _inputs_dict   = hold( mypaint_brush_get_input_settings_dict () );	REVIEW
+app/core/gimpmypaintbrush-load.cpp:555	HOLD	auto _migrate_dict  = hold( mypaint_brush_get_setting_migrate_dict () );	REVIEW
+app/core/gimpmypaintbrush.cpp:65	G_VALUE	const GValue         *value,	REVIEW
+app/core/gimpmypaintbrush.cpp:69	G_VALUE	GValue               *value,	REVIEW
+app/core/gimpmypaintbrush.cpp:167	G_VALUE	const GValue *value,	REVIEW
+app/core/gimpmypaintbrush.cpp:183	G_VALUE	GValue     *value,	REVIEW
+app/display/gimpcanvasperspectiveguide.cpp:121	G_VALUE	const GValue* val = v.ptr();	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:112	CXX_POINTER	CXXPointer<Delegators::Connection> connection;	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:162	REF_UNREF	g_object_ref (G_OBJECT (widget));	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:170	REF_UNREF	g_object_unref (G_OBJECT (widget));	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:249	CXX_POINTER	CXXPointer<Delegators::Connection> fg_color_changed_handler;	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:250	CXX_POINTER	CXXPointer<Delegators::Connection> bg_color_changed_handler;	REVIEW
+app/httpd/httpd-features-gui.cpp:37	CXX_POINTER	CXXPointer<RESTD> rest_daemon;	REVIEW
+app/httpd/httpd-features.cpp:37	CXX_POINTER	CXXPointer<RESTD> rest_daemon;	REVIEW
+app/httpd/navigation-guide.cpp:190	REF_UNREF	g_object_unref(logger);	REVIEW
+app/httpd/navigation-guide.cpp:201	REF_UNREF	g_object_unref(hook_msg);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:415	REF_UNREF	g_object_unref(G_OBJECT(brushmark));	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:418	REF_UNREF	g_object_unref(G_OBJECT(texture));	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:436	REF_UNREF	g_object_unref(G_OBJECT(brushmark));	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:443	REF_UNREF	g_object_ref(G_OBJECT(brushmark));	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:454	REF_UNREF	g_object_unref(G_OBJECT(texture));	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:460	REF_UNREF	g_object_ref(G_OBJECT(texture));	REVIEW
+app/paint/gimpmypaintcoreundo.cpp:42	G_VALUE	const GValue        *value,	REVIEW
+app/paint/gimpmypaintcoreundo.cpp:46	G_VALUE	GValue              *value,	REVIEW
+app/paint/gimpmypaintcoreundo.cpp:99	G_VALUE	const GValue *value,	REVIEW
+app/paint/gimpmypaintcoreundo.cpp:119	G_VALUE	GValue     *value,	REVIEW
+app/paint/gimpmypaintoptions-history.cpp:93	REF_UNREF	g_object_unref (brush);	REVIEW
+app/paint/gimpmypaintoptions.cpp:80	G_VALUE	const GValue *value,	REVIEW
+app/paint/gimpmypaintoptions.cpp:84	G_VALUE	GValue       *value,	REVIEW
+app/paint/gimpmypaintoptions.cpp:224	REF_UNREF	g_object_unref(options->brush);	REVIEW
+app/paint/gimpmypaintoptions.cpp:233	G_VALUE	const GValue *value,	REVIEW
+app/paint/gimpmypaintoptions.cpp:282	G_VALUE	GValue     *value,	REVIEW
+app/paint/gimpmypaintoptions.cpp:398	REF_UNREF	g_object_unref(options->brush);	REVIEW
+app/pdb/pdb-cxx-utils.hpp:165	G_VALUE	bool setup_args(GLib::IHashTable<const gchar*, GValue*>* arg_tables) {	REVIEW
+app/pdb/pdb-cxx-utils.hpp:173	G_VALUE	GValue* value = (arg_tables)? (*arg_tables)[g_param_spec_get_name(pspec)] : NULL;	REVIEW
+app/pdb/pdb-cxx-utils.hpp:177	G_VALUE	GValue v_str = G_VALUE_INIT;	REVIEW
+app/pdb/pdb-cxx-utils.hpp:178	G_VALUE	g_value_init(&v_str, G_TYPE_STRING);	REVIEW
+app/pdb/pdb-cxx-utils.hpp:259	G_VALUE	GValue get_arg(int index) {	REVIEW
+app/pdb/pdb-cxx-utils.hpp:263	G_VALUE	GValue b;	REVIEW
+app/pdb/pdb-cxx-utils.hpp:264	G_VALUE	g_value_init (&b, G_TYPE_STRING);	REVIEW
+app/pdb/pdb-cxx-utils.hpp:275	G_VALUE	void set_arg(int index, GValue value) {	REVIEW
+app/presets/layer-preset.cpp:98	HOLD	auto _keys = hold( json.keys() );	REVIEW
+app/presets/layer-preset.cpp:312	G_VALUE	GArray* result = g_array_new(FALSE, TRUE, sizeof(GValue));	REVIEW
+app/presets/layer-preset.cpp:315	G_VALUE	auto args = ref<GValue>(result);	REVIEW
+app/presets/layer-preset.cpp:337	G_VALUE	GValue v = G_VALUE_INIT;	REVIEW
+app/presets/layer-preset.cpp:342	G_VALUE	GValue v = G_VALUE_INIT;	REVIEW
+app/presets/layer-preset.cpp:351	G_VALUE	GValue v = G_VALUE_INIT;	REVIEW
+app/presets/layer-preset.cpp:356	G_VALUE	GValue v = G_VALUE_INIT;	REVIEW
+app/presets/layer-preset.cpp:450	HOLD	auto _children = hold( create_replacement_layer(children_json, source, layer, 0) );	REVIEW
+app/presets/layer-preset.cpp:468	HOLD	"auto proc_args = hold( get_args(filter_json[""args""], source) );"	REVIEW
+app/presets/preset-factory-gui.cpp:129	HOLD	auto _array = hold ( g_array_new(FALSE, TRUE, sizeof(GimpStringActionEntry)) );	REVIEW
+app/tools/gimpbucketfillbrushtool.cpp:410	HOLD	Object<GimpChannel> channel     = hold(gimp_channel_new_mask (image,	REVIEW
+app/tools/gimpbucketfillbrushtool.cpp:433	HOLD	Object<GimpChannel> ch_mask = hold(gimp_image_contiguous_region_by_seed_full (image,	REVIEW
+app/tools/gimpmypaintbrusheditor.cpp:106	CXX_POINTER	CXXPointer<Delegators::Connection>     options_notify_handler;	REVIEW
+app/tools/gimpmypaintbrusheditor.cpp:107	CXX_POINTER	CXXPointer<Delegators::Connection>     curve_notify_handler;	REVIEW
+app/tools/gimpmypaintbrusheditor.cpp:108	CXX_POINTER	CXXPointer<Delegators::Connection>     x_min_adj_changed_handler;	REVIEW
+app/tools/gimpmypaintbrusheditor.cpp:109	CXX_POINTER	CXXPointer<Delegators::Connection>     x_max_adj_changed_handler;	REVIEW
+app/tools/gimpmypaintbrusheditor.cpp:110	CXX_POINTER	CXXPointer<Delegators::Connection>     y_max_adj_changed_handler;	REVIEW
+app/tools/gimpmypaintbrusheditor.cpp:111	CXX_POINTER	CXXPointer<Delegators::Connection>     y_min_adj_changed_handler;	REVIEW
+app/tools/gimpmypaintbrushoptions-gui.cpp:208	REF_UNREF	g_object_unref (G_OBJECT (container));	REVIEW
+app/tools/gimpmypaintbrushoptions-gui.cpp:244	REF_UNREF	g_object_ref(G_OBJECT(container));	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:226	REF_UNREF	g_object_unref (G_OBJECT (container));	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:266	REF_UNREF	g_object_ref(G_OBJECT(container));	REVIEW
+app/tools/gimpperspectiveguidetool.cpp:214	G_VALUE	const GValue* val = v.ptr();	REVIEW
+app/widgets/gimpcellrendererpopup.cpp:92	REF_UNREF	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimpcellrendererpopup.cpp:217	REF_UNREF	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimplayerpopup.cpp:230	G_VALUE	auto i_proc_args = ref<GValue>(proc_args);	REVIEW
+app/widgets/gimplayerpopup.cpp:242	G_VALUE	proc_args = g_array_sized_new (FALSE, TRUE, sizeof (GValue), temp_args->n_values);	REVIEW
+app/widgets/gimplayerpopup.cpp:336	G_VALUE	auto i_proc_args = ref<GValue>(proc_args);	REVIEW
+app/widgets/gimplayerpopup.cpp:403	G_VALUE	auto i_proc_args = ref<GValue>(proc_args);	REVIEW
+app/widgets/gimplayerpopup.cpp:421	G_VALUE	auto i_proc_args = ref<GValue>(proc_args);	REVIEW
+app/widgets/gimplayerpopup.cpp:457	G_VALUE	auto i_proc_args = ref<GValue>(proc_args);	REVIEW
+app/widgets/gimplayerpopup.cpp:514	G_VALUE	auto i_proc_args = ref<GValue>(proc_args);	REVIEW
+app/widgets/gimplayerpopup.cpp:535	G_VALUE	auto i_proc_args = ref<GValue>(proc_args);	REVIEW
+app/widgets/gimplayerpopup.cpp:628	G_VALUE	auto i_proc_args = ref<GValue>(proc_args);	REVIEW
+app/widgets/gimplayerpopup.cpp:647	G_VALUE	auto i_proc_args = ref<GValue>(proc_args);	REVIEW
+app/widgets/gimplayerpopup.cpp:663	G_VALUE	const GValue*  value = g_param_spec_get_default_value(pspec);	REVIEW
+app/widgets/gimplayerpopup.cpp:927	HOLD	"auto _menu = hold(GTK_MENU(gtk_ui_manager_get_widget (GTK_UI_MANAGER(ui_manager.ptr()), ""/layers-popup"")));"	REVIEW
+app/widgets/gimplayertileview.cpp:150	REF_UNREF	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimplayertileview.cpp:155	REF_UNREF	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimplayertileview.cpp:173	CXX_POINTER	CXXPointer<_D::Connection> added_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:174	CXX_POINTER	CXXPointer<_D::Connection> removed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:175	CXX_POINTER	CXXPointer<_D::Connection> reordered_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:176	CXX_POINTER	CXXPointer<_D::Connection> mask_changed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:178	CXX_POINTER	CXXPointer<_D::Connection> visible_changed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:179	CXX_POINTER	CXXPointer<_D::Connection> linked_changed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:180	CXX_POINTER	CXXPointer<_D::Connection> lock_content_changed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:182	CXX_POINTER	CXXPointer<_D::Connection> apply_changed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:183	CXX_POINTER	CXXPointer<_D::Connection> edit_changed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:184	CXX_POINTER	CXXPointer<_D::Connection> show_changed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:196	CXX_POINTER	CXXPointer<_D::Connection> invalidate_preview_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:197	CXX_POINTER	CXXPointer<_D::Connection> size_changed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:198	CXX_POINTER	CXXPointer<Idle>           update_idle;	REVIEW
+app/widgets/gimplayertileview.cpp:250	CXX_POINTER	CXXPointer<_D::Connection> added_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:251	CXX_POINTER	CXXPointer<_D::Connection> removed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:252	CXX_POINTER	CXXPointer<_D::Connection> reordered_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:253	CXX_POINTER	CXXPointer<_D::Connection> active_layer_changed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:255	CXX_POINTER	CXXPointer<LayerPopupWindow> layer_popup_decorator;	REVIEW
+app/widgets/gimplayertileview.cpp:256	CXX_POINTER	CXXPointer<_D::Delegator<GimpViewable* (GtkWidget*, GimpContext**)> > drag_viewable_holder;	REVIEW
+app/widgets/gimplayertileview.cpp:257	CXX_POINTER	CXXPointer<_D::Connection> drag_motion_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:258	CXX_POINTER	CXXPointer<_D::Connection> drag_failed_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:259	CXX_POINTER	CXXPointer<_D::Connection> drag_leave_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:260	CXX_POINTER	CXXPointer<_D::Connection> drag_drop_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:261	CXX_POINTER	CXXPointer<_D::Connection> drag_data_received_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:262	CXX_POINTER	CXXPointer<Timeout>        scroll_timeout_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:264	CXX_POINTER	CXXPointer<DragAction>     drag_action;	REVIEW
+app/widgets/gimplayertileview.cpp:265	CXX_POINTER	CXXPointer<GdkPoint>       add_cursor;	REVIEW
+app/widgets/gimplayertileview.cpp:266	CXX_POINTER	CXXPointer<Timeout>        add_timeout_handler;	REVIEW
+app/widgets/gimplayertileview.cpp:463	G_VALUE	const GValue* val = v.ptr();	REVIEW
+app/widgets/gimplayertileview.cpp:560	G_VALUE	const GValue* val = v.ptr();	REVIEW
+app/widgets/gimplayertileview.cpp:827	CXX_POINTER	CXXPointer<DragAction> action = get_drag_action(widget, drag_context, x, y, time_);	REVIEW
+app/widgets/gimplayertileview.cpp:1282	HOLD	auto applier = hold(ILayerPresetApplier::new_instance(context.ptr(), GIMP_JSON_RESOURCE(preset)));	REVIEW
+app/widgets/gimptooltileview.cpp:134	REF_UNREF	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimptooltileview.cpp:139	REF_UNREF	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimptooltileview.cpp:161	CXX_POINTER	CXXPointer<_D::Connection> tool_changed_handler;	REVIEW
+app/widgets/gimptooltileview.cpp:295	G_VALUE	const GValue* val = v.ptr();	REVIEW
+app/widgets/popupper.cpp:468	REF_UNREF	g_object_unref (renderer);	REVIEW

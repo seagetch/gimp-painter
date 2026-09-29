@@ -163,6 +163,9 @@
 | 01.006/c-candidates | [x] | 旧差分 C ファイルの data/qdata 候補を抽出する | 01.006/cpp-candidates | 220 ファイルの呼び出し式 185 件を出典行、キー、値、destroy callback とともに列挙 |
 | 01.006/c-state | [x] | C ソースの状態付加を照合する | 01.006/cpp-candidates | 旧差分の C 側 data/qdata をキー、型、所有者、破棄経路まで照合 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
+| 01.007/cpp-candidates | [x] | 旧 C++ の参照管理候補を抽出する | 01.006 | 71 ファイルの hold/ref、GValue、CXXPointer 構文を出典行付きで列挙 |
+| 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
+| 01.007/c-state | [ ] | C 側の変更行で参照管理を照合する | 01.007/cpp-candidates | 追加差分の ref/unref、GValue、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
 | 01.009 | [ ] | 保存経路を列挙する | 01.008 | XCF、myb、JSON、設定、parasite の reader/writer を記録 |
 | 01.010 | [ ] | 追加 enum と生成元を列挙する | 01.009 | 手書き定義・生成スクリプト・生成物・保存数値を対応 |
