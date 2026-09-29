@@ -926,6 +926,7 @@
 | 29.004 | [ ] | layer tile の順序操作を実装する | 29.003 | group と独自参照の更新を通知 |
 | 29.005 | [ ] | layer tile の複数選択を接続する | 29.004 | 現行選択 model と整合 |
 | 29.006 | [ ] | layer tile の popup を接続する | 29.005 | 独自型設定へ到達可能 |
+| 29.006/proc-args-owner | [ ] | layer popup の filter 引数を深くコピーする | 29.006, 15.001/gvalue-deep-copy, 01.007/cpp-ownership | PDB 既定値を GValue ごとに複写し、元配列と編集配列を個別に解放する。文字列・object・数値の編集、filter 切替、閉鎖を反復試験する |
 | 29.006/cellrenderer-gtk3 | [ ] | popup 用 cell renderer を GTK 3 描画 ABI へ移す | 29.006, 01.005/gimp3-external-binders | activate/get_size の const GdkRectangle と render の Cairo コンテキスト・領域引数を守り、描画とクリックを確認 |
 | 29.006/popover-class-signals | [ ] | popup 独自型の cancel/confirm class slot を再定義する | 29.006, 01.005/gimp3-external-binders | GTK 3 の window 子型で class closure・キー割当と終了時の接続解除を確認 |
 | 29.006/menu-borrowed-reference | [ ] | layer popup の menu 参照の所有権を確定する | 29.006, 01.007/ref-hold | UI manager の menu 取得が借用か確認し、保持 wrapper と破棄順を修正・検証する |

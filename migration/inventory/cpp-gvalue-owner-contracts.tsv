@@ -1,0 +1,137 @@
+legacy_site	syntax_role	owner	release_contract	followup	finding
+app/base/glib-cxx-impl.hpp:187	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/base/glib-cxx-impl.hpp:218	VALUE_COPY_OR_SIGNATURE	GObject property callback argument	GValue pointer belongs to caller and is valid only during callback	08.020	SIGNATURE
+app/base/glib-cxx-utils.hpp:549	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:554	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:560	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:561	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:564	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:565	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:568	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:569	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:572	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:573	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:576	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:577	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:580	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:581	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:584	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:585	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:588	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:589	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:592	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:593	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:596	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:597	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:600	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:601	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:604	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:605	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:622	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:623	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:624	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:628	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:629	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:634	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:635	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:640	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:644	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:651	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:653	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:662	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:664	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:666	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:668	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:688	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:699	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:700	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:702	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:706	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:707	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:709	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:717	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:719	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:721	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:726	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:727	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:729	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:733	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:737	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:741	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:745	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:749	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:753	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:757	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:761	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:765	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:769	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:773	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:777	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:782	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:784	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:796	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:797	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:808	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:811	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:814	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:815	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:818	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:819	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:837	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:838	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:839	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:841	VALUE_WRAPPER_OR_TRAIT	CopyValue heap GValue	owning Value destructor unsets then frees; copy/move assignment must release old value	06.020/value-assignment	WRAPPER
+app/base/glib-cxx-utils.hpp:842	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:843	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:844	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:845	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:907	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/base/glib-cxx-utils.hpp:908	VALUE_WRAPPER_OR_TRAIT	GValue wrapper or trait caller	trait get/set borrows its argument; Value/ValueRef ownership depends on IsOwner and IsManager	06.020	WRAPPER
+app/core/gimpfilterlayer.cpp:169	VALUE_COPY_OR_SIGNATURE	FilterLayer argument or getter	by-value GValue may alias payload; getter must return defined ownership, setter copies/transform values	15.001/gvalue-deep-copy	SIGNATURE
+app/core/gimpfilterlayer.cpp:170	VALUE_COPY_OR_SIGNATURE	FilterLayer argument or getter	by-value GValue may alias payload; getter must return defined ownership, setter copies/transform values	15.001/gvalue-deep-copy	SIGNATURE
+app/core/gimpfilterlayer.cpp:637	ARRAY_BORROW	caller GArray	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	15.001/gvalue-deep-copy	ARRAY_BORROW
+app/core/gimpfilterlayer.cpp:672	VALUE_COPY_OR_SIGNATURE	FilterLayer returned arguments	g_array_append_vals shallow-copies GValueArray entries; old source array is not freed	15.001/gvalue-deep-copy	RISK
+app/core/gimpfilterlayer.cpp:680	VALUE_COPY_OR_SIGNATURE	FilterLayer argument or getter	by-value GValue may alias payload; getter must return defined ownership, setter copies/transform values	15.001/gvalue-deep-copy	SIGNATURE
+app/core/gimpfilterlayer.cpp:687	VALUE_COPY_OR_SIGNATURE	FilterLayer argument or getter	by-value GValue may alias payload; getter must return defined ownership, setter copies/transform values	15.001/gvalue-deep-copy	SIGNATURE
+app/core/gimpmypaintbrush.cpp:65	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/core/gimpmypaintbrush.cpp:69	VALUE_COPY_OR_SIGNATURE	GObject property callback argument	GValue pointer belongs to caller and is valid only during callback	08.020	SIGNATURE
+app/core/gimpmypaintbrush.cpp:167	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/core/gimpmypaintbrush.cpp:183	VALUE_COPY_OR_SIGNATURE	GObject property callback argument	GValue pointer belongs to caller and is valid only during callback	08.020	SIGNATURE
+app/display/gimpcanvasperspectiveguide.cpp:121	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/paint/gimpmypaintcoreundo.cpp:42	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/paint/gimpmypaintcoreundo.cpp:46	VALUE_COPY_OR_SIGNATURE	GObject property callback argument	GValue pointer belongs to caller and is valid only during callback	08.020	SIGNATURE
+app/paint/gimpmypaintcoreundo.cpp:99	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/paint/gimpmypaintcoreundo.cpp:119	VALUE_COPY_OR_SIGNATURE	GObject property callback argument	GValue pointer belongs to caller and is valid only during callback	08.020	SIGNATURE
+app/paint/gimpmypaintoptions.cpp:80	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/paint/gimpmypaintoptions.cpp:84	VALUE_COPY_OR_SIGNATURE	GObject property callback argument	GValue pointer belongs to caller and is valid only during callback	08.020	SIGNATURE
+app/paint/gimpmypaintoptions.cpp:233	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/paint/gimpmypaintoptions.cpp:282	VALUE_COPY_OR_SIGNATURE	GObject property callback argument	GValue pointer belongs to caller and is valid only during callback	08.020	SIGNATURE
+app/pdb/pdb-cxx-utils.hpp:165	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	15.001/pdb-temporary-gvalue	BORROWED
+app/pdb/pdb-cxx-utils.hpp:173	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	15.001/pdb-temporary-gvalue	BORROWED
+app/pdb/pdb-cxx-utils.hpp:177	VALUE_INITIALIZATION	PDB stack GValue	g_value_init requires g_value_unset before return; old temporary string value is not unset	15.001/pdb-temporary-gvalue	RISK
+app/pdb/pdb-cxx-utils.hpp:178	VALUE_INITIALIZATION	PDB stack GValue	g_value_init requires g_value_unset before return; old temporary string value is not unset	15.001/pdb-temporary-gvalue	RISK
+app/pdb/pdb-cxx-utils.hpp:259	VALUE_COPY_OR_SIGNATURE	PDB runner args or returned GValue	by-value GValue is borrowed/shallow; local conversion must be unset and returned values require explicit contract	15.001/pdb-temporary-gvalue	SIGNATURE
+app/pdb/pdb-cxx-utils.hpp:263	VALUE_COPY_OR_SIGNATURE	PDB runner args or returned GValue	by-value GValue is borrowed/shallow; local conversion must be unset and returned values require explicit contract	15.001/pdb-temporary-gvalue	SIGNATURE
+app/pdb/pdb-cxx-utils.hpp:264	VALUE_INITIALIZATION	PDB stack GValue	g_value_init requires g_value_unset before return; old temporary string value is not unset	15.001/pdb-temporary-gvalue	RISK
+app/pdb/pdb-cxx-utils.hpp:275	VALUE_COPY_OR_SIGNATURE	PDB runner args or returned GValue	by-value GValue is borrowed/shallow; local conversion must be unset and returned values require explicit contract	15.001/pdb-temporary-gvalue	SIGNATURE
+app/presets/layer-preset.cpp:312	VALUE_COPY_OR_SIGNATURE	preset argument array	new GArray owns values with g_value_unset clear function; append must establish each element's ownership	28.007	SIGNATURE
+app/presets/layer-preset.cpp:315	ARRAY_BORROW	caller GArray	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	28.007	ARRAY_BORROW
+app/presets/layer-preset.cpp:337	VALUE_INITIALIZATION	preset stack GValue	G_VALUE_INIT entries are copied as bytes into GArray with g_value_unset clear function	28.007	INITIALIZATION
+app/presets/layer-preset.cpp:342	VALUE_INITIALIZATION	preset stack GValue	G_VALUE_INIT entries are copied as bytes into GArray with g_value_unset clear function	28.007	INITIALIZATION
+app/presets/layer-preset.cpp:351	VALUE_INITIALIZATION	preset stack GValue	G_VALUE_INIT entries are copied as bytes into GArray with g_value_unset clear function	28.007	INITIALIZATION
+app/presets/layer-preset.cpp:356	VALUE_INITIALIZATION	preset stack GValue	G_VALUE_INIT entries are copied as bytes into GArray with g_value_unset clear function	28.007	INITIALIZATION
+app/tools/gimpperspectiveguidetool.cpp:214	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/widgets/gimplayerpopup.cpp:230	ARRAY_BORROW	popup proc_args Array	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	29.006/proc-args-owner	ARRAY_BORROW
+app/widgets/gimplayerpopup.cpp:242	VALUE_COPY_OR_SIGNATURE	popup proc_args Array	g_array_append_vals shallow-copies GValueArray entries then g_value_array_free invalidates owned payloads	29.006/proc-args-owner	RISK
+app/widgets/gimplayerpopup.cpp:336	ARRAY_BORROW	popup proc_args Array	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	29.006/proc-args-owner	ARRAY_BORROW
+app/widgets/gimplayerpopup.cpp:403	ARRAY_BORROW	popup proc_args Array	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	29.006/proc-args-owner	ARRAY_BORROW
+app/widgets/gimplayerpopup.cpp:421	ARRAY_BORROW	popup proc_args Array	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	29.006/proc-args-owner	ARRAY_BORROW
+app/widgets/gimplayerpopup.cpp:457	ARRAY_BORROW	popup proc_args Array	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	29.006/proc-args-owner	ARRAY_BORROW
+app/widgets/gimplayerpopup.cpp:514	ARRAY_BORROW	popup proc_args Array	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	29.006/proc-args-owner	ARRAY_BORROW
+app/widgets/gimplayerpopup.cpp:535	ARRAY_BORROW	popup proc_args Array	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	29.006/proc-args-owner	ARRAY_BORROW
+app/widgets/gimplayerpopup.cpp:628	ARRAY_BORROW	popup proc_args Array	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	29.006/proc-args-owner	ARRAY_BORROW
+app/widgets/gimplayerpopup.cpp:647	ARRAY_BORROW	popup proc_args Array	IArray<GValue> adds a temporary GArray ref and drops it on scope exit; element values remain owned by array	29.006/proc-args-owner	ARRAY_BORROW
+app/widgets/gimplayerpopup.cpp:663	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	29.006/proc-args-owner	BORROWED
+app/widgets/gimplayertileview.cpp:463	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/widgets/gimplayertileview.cpp:560	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
+app/widgets/gimptooltileview.cpp:295	BORROWED_VALUE_POINTER	callback, param spec or local wrapper supplies GValue	pointer is borrowed for callback or expression; do not unset externally owned value	06.020	BORROWED
