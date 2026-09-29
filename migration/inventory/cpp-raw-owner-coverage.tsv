@@ -1,0 +1,169 @@
+legacy_site	operation	syntax_role	owner	release_contract	followup	coverage
+app/base/delegators.hpp:13	DELETE	CXX_RELEASE				PENDING
+app/base/delegators.hpp:94	NEW	CXX_ALLOCATION				PENDING
+app/base/delegators.hpp:101	NEW	CXX_ALLOCATION				PENDING
+app/base/delegators.hpp:107	NEW	CXX_ALLOCATION				PENDING
+app/base/delegators.hpp:177	NEW	CXX_ALLOCATION				PENDING
+app/base/glib-cxx-impl.hpp:279	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/base/glib-cxx-impl.hpp:283	NEW	CXX_ALLOCATION				PENDING
+app/base/glib-cxx-utils.hpp:45	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/base/glib-cxx-utils.hpp:656	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/base/glib-cxx-utils.hpp:1132	DELETE	CXX_RELEASE				PENDING
+app/base/glib-cxx-utils.hpp:1162	NEW	CXX_ALLOCATION				PENDING
+app/base/glib-cxx-utils.hpp:1165	NEW	CXX_ALLOCATION				PENDING
+app/base/glib-cxx-utils.hpp:1172	DELETE	CXX_RELEASE				PENDING
+app/base/glib-cxx-utils.hpp:1191	DELETE	CXX_RELEASE				PENDING
+app/base/route.hpp:95	NEW	CXX_ALLOCATION				PENDING
+app/base/route.hpp:98	NEW	CXX_ALLOCATION				PENDING
+app/base/route.hpp:104	NEW	CXX_ALLOCATION				PENDING
+app/base/route.hpp:118	DELETE	CXX_RELEASE				PENDING
+app/base/route.hpp:158	NEW	CXX_ALLOCATION				PENDING
+app/base/scopeguard.hpp:65	DELETE	CXX_RELEASE				PENDING
+app/base/soup-cxx-utils.hpp:50	NEW	CXX_ALLOCATION				PENDING
+app/base/soup-cxx-utils.hpp:64	DELETE	CXX_RELEASE				PENDING
+app/base/soup-cxx-utils.hpp:96	NEW	CXX_ALLOCATION				PENDING
+app/base/soup-cxx-utils.hpp:251	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/base/soup-cxx-utils.hpp:292	NEW	CXX_ALLOCATION				PENDING
+app/base/soup-cxx-utils.hpp:296	NEW	CXX_ALLOCATION				PENDING
+app/base/soup-cxx-utils.hpp:305	NEW	CXX_ALLOCATION				PENDING
+app/base/soup-cxx-utils.hpp:308	NEW	CXX_ALLOCATION				PENDING
+app/base/soup-cxx-utils.hpp:313	NEW	CXX_ALLOCATION				PENDING
+app/base/soup-cxx-utils.hpp:322	DELETE	CXX_RELEASE				PENDING
+app/base/soup-cxx-utils.hpp:372	DELETE	CXX_RELEASE				PENDING
+app/base/soup-cxx-utils.hpp:376	NEW	CXX_ALLOCATION				PENDING
+app/core/gimpfilterlayer.cpp:525	DELETE	CXX_RELEASE	FilterLayer.updates Rectangle	delete after removing list link	17.007	MAPPED
+app/core/gimpfilterlayer.cpp:640	NEW	CXX_ALLOCATION	FilterLayer.runner	CXXPointer deletes on replacement/finalize; local r can escape cleanup if set_arg fails	16.019	MAPPED
+app/core/gimpfilterlayer.cpp:875	NEW	CXX_ALLOCATION	FilterLayer.updates Rectangle	delete when projected or free list on reset	17.007	MAPPED
+app/core/gimpmypaintbrush.cpp:147	NEW	CXX_ALLOCATION	GimpMypaintBrush.p	GObject finalize deletes private	normal construction	MAPPED
+app/core/gimpmypaintbrush.cpp:157	DELETE	CXX_RELEASE	GimpMypaintBrush.p	private destructor releases strings, mappings and icon	normal finalize	MAPPED
+app/core/gimpmypaintbrush.cpp:357	DELETE	CXX_RELEASE	duplicate result.p	replace constructed private with duplicate result	duplicate must release former private	MAPPED
+app/core/gimpmypaintbrush.cpp:375	WEAK_POINTER	WEAK_POINTER_REGISTRATION	static standard_mypaint_brush slot	weak pointer nulls static slot when GObject finalizes	slot survives process	MAPPED
+app/core/gimpmypaintbrush.cpp:457	G_FREE	C_ALLOCATOR_RELEASE	private.parent_brush_name	private destructor frees duplicate string	normal finalize	MAPPED
+app/core/gimpmypaintbrush.cpp:461	G_FREE	C_ALLOCATOR_RELEASE	private.group	private destructor frees duplicate string	normal finalize	MAPPED
+app/core/gimpmypaintbrush.cpp:469	G_FREE	C_ALLOCATOR_RELEASE	private.text[i]	private destructor frees each duplicate string	normal finalize	MAPPED
+app/core/gimpmypaintbrush.cpp:503	NEW	CXX_ALLOCATION	private.settings[index].mapping	deallocate_mapping deletes mapping	19.006/mapping-value-owner	MAPPED
+app/core/gimpmypaintbrush.cpp:512	DELETE	CXX_RELEASE	private.settings[index].mapping	delete and reset slot to NULL	19.006/mapping-value-owner	MAPPED
+app/core/gimpmypaintbrush.cpp:527	G_FREE	C_ALLOCATOR_RELEASE	private.parent_brush_name	setter frees previous string then duplicates input	alias input to old string unsafe	MAPPED
+app/core/gimpmypaintbrush.cpp:541	G_FREE	C_ALLOCATOR_RELEASE	private.group	setter frees previous string then duplicates input	alias input to old string unsafe	MAPPED
+app/core/gimpmypaintbrush.cpp:567	G_FREE	C_ALLOCATOR_RELEASE	private.text[index]	setter frees previous string then duplicates input	alias input to old string unsafe	MAPPED
+app/core/gimpmypaintbrush.cpp:628	NEW	CXX_ALLOCATION	preview local Brush	deleted after surface session	early exit and exception cleanup	MAPPED
+app/core/gimpmypaintbrush.cpp:733	DELETE	CXX_RELEASE	preview local Brush	delete after surface session	normal preview exit	MAPPED
+app/core/gimpmypaintbrush.cpp:734	DELETE	CXX_RELEASE	preview local GimpMypaintSurface	delete after surface session	normal preview exit	MAPPED
+app/core/gimpmypaintbrush.cpp:782	NEW	CXX_ALLOCATION	duplicated private result	transferred to result.p then GObject finalize	mapping copy and icon buffer followups	MAPPED
+app/core/gimpperspectiveguide.cpp:117	DELETE	CXX_RELEASE	PerspectiveGuide.vanish_points element	destructor deletes Point; List frees nodes	08.009	MAPPED
+app/core/gimpperspectiveguide.cpp:159	NEW	CXX_ALLOCATION	PerspectiveGuide.vanish_points element	destructor deletes Point; List frees nodes	08.009	MAPPED
+app/core/mypaintbrush-mapping.hpp:42	NEW	ARRAY_ALLOCATION				PENDING
+app/core/mypaintbrush-mapping.hpp:48	DELETE	CXX_RELEASE				PENDING
+app/core/mypaintbrush-mapping.hpp:52	DELETE	CXX_RELEASE				PENDING
+app/core/mypaintbrush-mapping.hpp:56	NEW	ARRAY_ALLOCATION				PENDING
+app/display/gimpdisplayshell-overlays.cpp:380	NEW	CXX_ALLOCATION				PENDING
+app/display/gimpdisplayshell-overlays.cpp:433	NEW	CXX_ALLOCATION				PENDING
+app/display/gimpdisplayshell-overlays.cpp:459	NEW	CXX_ALLOCATION				PENDING
+app/display/gimpdisplayshell-overlays.cpp:534	NEW	CXX_ALLOCATION				PENDING
+app/display/gimpdisplayshell-overlays.cpp:554	NEW	CXX_ALLOCATION				PENDING
+app/display/gimpdisplayshell-overlays.cpp:576	NEW	CXX_ALLOCATION				PENDING
+app/display/gimpdisplayshell-overlays.cpp:594	NEW	CXX_ALLOCATION				PENDING
+app/display/gimpdisplayshell-overlays.cpp:676	NEW	INACTIVE_OR_TEXT				PENDING
+app/display/gimpdisplayshell-overlays.cpp:677	NEW	CXX_ALLOCATION				PENDING
+app/httpd/httpd-features-gui.cpp:50	NEW	CXX_ALLOCATION				PENDING
+app/httpd/httpd-features-gui.cpp:57	NEW	CXX_ALLOCATION				PENDING
+app/httpd/httpd-features-gui.cpp:72	NEW	CXX_ALLOCATION				PENDING
+app/httpd/httpd-features-gui.cpp:74	NEW	CXX_ALLOCATION				PENDING
+app/httpd/httpd-features-gui.cpp:76	NEW	CXX_ALLOCATION				PENDING
+app/httpd/httpd-features.cpp:50	NEW	CXX_ALLOCATION				PENDING
+app/httpd/httpd-features.cpp:58	NEW	CXX_ALLOCATION				PENDING
+app/httpd/httpd-features.cpp:70	NEW	CXX_ALLOCATION				PENDING
+app/httpd/httpd-features.cpp:71	NEW	CXX_ALLOCATION				PENDING
+app/httpd/httpd.cpp:100	DELETE	CXX_RELEASE	RESTResource factory result	handle deletes this through base type without virtual destructor	31.008	MAPPED
+app/httpd/navigation-guide.cpp:202	DELETE	CXX_RELEASE	NavigationGuideContext.arg_conf	callback deletes only when webhook_uri exists; context itself not freed here	31.008	MAPPED
+app/httpd/navigation-guide.cpp:224	NEW	CXX_ALLOCATION	RESTResource factory result	RESTResource::handle deletes base pointer	31.008	MAPPED
+app/httpd/navigation-guide.cpp:253	NEW	CXX_ALLOCATION	NavigationGuideContext.arg_conf	callback deletes conditionally; callback registration can fail	31.008	MAPPED
+app/httpd/rest-image-tree.cpp:269	NEW	CXX_ALLOCATION	RESTResource factory result	RESTResource::handle deletes base pointer	31.008	MAPPED
+app/paint/gimpmypaintcore-drawablefeature.hpp:108	WEAK_POINTER	WEAK_POINTER_REGISTRATION				PENDING
+app/paint/gimpmypaintcore-surface.cpp:327	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color src1PR old region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:331	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color destPR old region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:335	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color brushPR old region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:345	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color src1PR final region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:346	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color destPR final region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:347	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color brushPR final region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:348	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color maskPR final region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:349	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color texturePR final region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:400	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color src1PR sampled region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:401	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color brushPR sampled region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:402	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color maskPR sampled region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:403	G_FREE	C_ALLOCATOR_RELEASE	draw/get_color texturePR sampled region	g_free region struct after use or before replacement; backing storage belongs to feature	09.003/region-lifetime	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:614	NEW	CXX_ALLOCATION	GimpMypaintCore.surface	core cleanup or drawable replacement deletes factory result	08.006	MAPPED
+app/paint/gimpmypaintcore-surface.cpp:618	NEW	CXX_ALLOCATION	brush preview local surface	preview deletes factory result after session	19.013/preview-contract	MAPPED
+app/paint/gimpmypaintcore.cpp:86	DELETE	CXX_RELEASE	option_changed_handler	cleanup deletes Connection and disconnects signal	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:93	DELETE	CXX_RELEASE	stroke	cleanup deletes remaining stroke after split	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:97	DELETE	CXX_RELEASE	brush	cleanup deletes Brush	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:101	DELETE	CXX_RELEASE	surface	cleanup deletes Surface	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:116	DELETE	CXX_RELEASE	option_changed_handler	options change deletes previous Connection	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:129	NEW	INACTIVE_OR_TEXT	none	log string mentioning new; no allocation	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:133	DELETE	INACTIVE_OR_TEXT	none	log string mentioning delete; no release	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:134	DELETE	CXX_RELEASE	surface	replace drawable surface then assign new factory result	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:135	NEW	INACTIVE_OR_TEXT	none	log string mentioning new; no allocation	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:141	NEW	CXX_ALLOCATION	stroke	new Stroke deleted in split_stroke or cleanup	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:219	DELETE	CXX_RELEASE	stroke	split_stroke deletes and nulls stroke	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:223	DELETE	INACTIVE_OR_TEXT	none	commented out delete; no release	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:239	DELETE	INACTIVE_OR_TEXT	brush	disabled code branch; no active release	08.006	MAPPED
+app/paint/gimpmypaintcore.cpp:245	NEW	CXX_ALLOCATION	brush	new Brush deleted in cleanup	08.006	MAPPED
+app/paint/gimpmypaintcoreundo.cpp:159	DELETE	CXX_RELEASE	GimpMypaintCoreUndo.stroke	undo free deletes and nulls stroke	09.011/mypaint-undo-stroke	MAPPED
+app/paint/gimpmypaintoptions-history.cpp:85	NEW	CXX_ALLOCATION	process history singleton	no explicit singleton deletion found; destructor frees brush list	24.010	MAPPED
+app/paint/mypaintbrush-brush.hpp:161	NEW	CXX_ALLOCATION	Brush.settings[i]	Brush destructor deletes Mapping for each setting	20.008	MAPPED
+app/paint/mypaintbrush-brush.hpp:178	DELETE	CXX_RELEASE	Brush.settings[i]	delete corresponding constructor Mapping	20.008	MAPPED
+app/presets/layer-preset-gui.cpp:255	NEW	CXX_ALLOCATION	process LayerPresetGuiConfig singleton	no explicit singleton deletion found	28.014	MAPPED
+app/presets/layer-preset.cpp:691	NEW	CXX_ALLOCATION	caller-owned ILayerPresetApplier	returned new instance adopted by caller hold wrapper	28.010	MAPPED
+app/presets/layer-preset.cpp:749	NEW	CXX_ALLOCATION	process LayerPresetConfig singleton	no explicit singleton deletion found	28.003	MAPPED
+app/presets/preset-factory-gui.cpp:89	NEW	CXX_ALLOCATION	process PresetGuiFactory singleton	no explicit singleton deletion found	28.014	MAPPED
+app/presets/preset-factory.cpp:153	NEW	CXX_ALLOCATION	process PresetFactory singleton	no explicit singleton deletion found	28.003	MAPPED
+app/tools/gimpmypaint-gui-base.hpp:53	WEAK_POINTER	WEAK_POINTER_REGISTRATION				PENDING
+app/tools/gimpmypaint-gui-base.hpp:59	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/tools/gimpmypaint-gui-base.hpp:62	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/tools/gimpmypaint-gui-base.hpp:94	WEAK_POINTER	WEAK_POINTER_REGISTRATION				PENDING
+app/tools/gimpmypaintbrusheditor.cpp:197	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/tools/gimpmypaintbrusheditor.cpp:563	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/tools/gimpmypaintbrusheditor.cpp:677	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypaintbrusheditor.cpp:758	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypaintbrushoptions-gui.cpp:214	DELETE	CXX_RELEASE				PENDING
+app/tools/gimpmypaintbrushoptions-gui.cpp:347	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypaintoptions-gui.cpp:232	DELETE	CXX_RELEASE				PENDING
+app/tools/gimpmypaintoptions-gui.cpp:357	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypaintoptions-gui.cpp:445	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypaintoptions-gui.cpp:472	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypaintoptions-gui.cpp:485	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypaintoptions-gui.cpp:509	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypaintoptions-gui.cpp:546	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypaintoptions-gui.cpp:547	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypaintoptions-gui.cpp:575	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypainttool.cpp:187	NEW	CXX_ALLOCATION				PENDING
+app/tools/gimpmypainttool.cpp:204	DELETE	INACTIVE_OR_TEXT				PENDING
+app/tools/gimpmypainttool.cpp:707	G_FREE	INACTIVE_OR_TEXT				PENDING
+app/tools/gimpmypainttool.cpp:735	G_FREE	INACTIVE_OR_TEXT				PENDING
+app/tools/gimpperspectiveguidetool.cpp:318	NEW	INACTIVE_OR_TEXT				PENDING
+app/tools/gimpperspectiveguidetool.cpp:322	NEW	INACTIVE_OR_TEXT				PENDING
+app/widgets/gimpcellrendererpopup.cpp:87	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/widgets/gimpcellrendererpopup.cpp:163	NEW	CXX_ALLOCATION				PENDING
+app/widgets/gimpeditor-cxx.cpp:166	NEW	CXX_ALLOCATION				PENDING
+app/widgets/gimplayerpopup.cpp:165	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/widgets/gimplayerpopup.cpp:211	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/widgets/gimplayerpopup.cpp:432	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/widgets/gimplayerpopup.cpp:502	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/widgets/gimplayerpopup.cpp:659	G_FREE	C_ALLOCATOR_RELEASE				PENDING
+app/widgets/gimplayerpopup.cpp:1151	NEW	CXX_ALLOCATION				PENDING
+app/widgets/gimplayertileview.cpp:598	NEW	CXX_ALLOCATION				PENDING
+app/widgets/gimplayertileview.cpp:603	NEW	CXX_ALLOCATION				PENDING
+app/widgets/gimplayertileview.cpp:671	DELETE	CXX_RELEASE				PENDING
+app/widgets/gimplayertileview.cpp:731	NEW	CXX_ALLOCATION				PENDING
+app/widgets/gimplayertileview.cpp:790	NEW	CXX_ALLOCATION				PENDING
+app/widgets/gimplayertileview.cpp:926	NEW	CXX_ALLOCATION				PENDING
+app/widgets/gimplayertileview.cpp:929	NEW	CXX_ALLOCATION				PENDING
+app/widgets/gimplayertileview.cpp:1091	DELETE	CXX_RELEASE				PENDING
+app/widgets/gimplayertileview.cpp:1218	NEW	CXX_ALLOCATION				PENDING
+app/widgets/gimplayertileview.cpp:1539	NEW	CXX_ALLOCATION				PENDING
+app/widgets/popupper.cpp:492	DELETE	CXX_RELEASE				PENDING
+app/widgets/popupper.cpp:496	DELETE	CXX_RELEASE				PENDING
+app/widgets/popupper.cpp:540	DELETE	CXX_RELEASE				PENDING
+app/widgets/popupper.cpp:542	DELETE	CXX_RELEASE				PENDING
+app/widgets/popupper.cpp:544	DELETE	CXX_RELEASE				PENDING
+app/widgets/popupper.cpp:552	NEW	CXX_ALLOCATION				PENDING
