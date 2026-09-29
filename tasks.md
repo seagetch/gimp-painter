@@ -814,6 +814,7 @@
 | 24.013 | [ ] | preview 描画を実装する | 24.012 | 紙目・Smudge・非累積を含む独自設定が反映 |
 | 24.014 | [ ] | preview 更新の取消しを実装する | 24.013 | 古い設定の結果を表示しない |
 | 24.015 | [ ] | dock と popup の共有 UI を接続する | 24.014 | 二重保存・二重通知がない |
+| 24.015/brush-popup-signal-owner | [ ] | ブラシ popup の旧資源への通知接続を解除する | 24.015, 01.008 | 選択変更時に旧ブラシの notify を解除して新ブラシへ接続し、popup 終了時には保持した接続先を解除して解放済み user data を呼ばない |
 | 24.015/mypaint-editor-create | [ ] | MyPaint editor の生成条件と options を修正する | 24.014, 24.001/editor-context-contract | `GimpContext` への誤った `GIMP_IS_MYPAINT_OPTIONS` 判定と NULL options の参照を排除し、正しいブラシを表示する |
 | 24.016 | [ ] | 横型 GUI を共通部品へ接続する | 24.015 | 旧操作を削らず重複実装を排除 |
 | 24.017 | [ ] | editor の往復試験を実行する | 24.016 | 編集→保存→再選択で全設定が一致 |
