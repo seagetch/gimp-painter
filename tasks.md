@@ -167,6 +167,7 @@
 | 01.007/ref-hold | [x] | 旧 C++ の hold/ref/unref を分類する | 01.007/cpp-candidates | 明示的な 52 箇所を helper、採用、参照追加、解放、借用疑義に分類する |
 | 01.007/scoped-pointers | [x] | CXXPointer の対象型と破棄を分類する | 01.007/cpp-candidates | 54 箇所を signal connection、source、delegator、C++ instance に分類する |
 | 01.007/gvalue | [x] | 旧 C++ の GValue 使用箇所を分類する | 01.007/cpp-candidates | 136 箇所の helper、配列借用、初期化、引数、値ポインターを分類する |
+| 01.007/raw-candidates | [x] | C++ の raw pointer 寿命構文を抽出する | 01.007/cpp-candidates | new/delete/g_free/weak pointer の出典行を列挙し、弱参照解除漏れの候補を記録する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
@@ -345,6 +346,7 @@
 | 08.005 | [ ] | MyPaint 資源型を移植する | 08.004 | data factory から生成できる |
 | 08.006 | [ ] | MyPaint paint core 型を移植する | 08.005 | 現行 GimpPaintCore に登録できる |
 | 08.007 | [ ] | MyPaint options 型を移植する | 08.006 | 現行 property と設定機構に接続 |
+| 08.008/weak-pointer-teardown | [ ] | MyPaint GUI の weak pointer 登録を対称に解除する | 08.008, 01.007/raw-candidates | options/widget の先行破棄と GUI helper の先行破棄で解放済み領域に書き込まない |
 | 08.008 | [ ] | MyPaint tool 型を移植する | 08.007 | tool manager に登録できる |
 | 08.008/tool-core-lifetime | [ ] | MyPaint tool と core の生成・破棄順を明示する | 08.008, 01.005/gimp3-tool-callbacks | constructed で保持する core が finalize/停止時に二重解放や残存を起こさず、qdata と Undo の解除順が整合 |
 | 08.009 | [ ] | パース定規モデル型を移植する | 08.008 | 画像との所有関係を接続 |

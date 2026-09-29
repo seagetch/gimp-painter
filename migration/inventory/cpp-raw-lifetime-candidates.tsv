@@ -1,0 +1,169 @@
+legacy_site	kind	source_line	status
+app/base/delegators.hpp:13	DELETE	delete reinterpret_cast<T*>(ptr);	REVIEW
+app/base/delegators.hpp:94	NEW	return new ObjectDelegator<Type, Ret(Args...)>(obj, f);	REVIEW
+app/base/delegators.hpp:101	NEW	return new Delegator<Ret(Args...)>(f);	REVIEW
+app/base/delegators.hpp:107	NEW	return new Delegator<Ret (Args...)>(f);	REVIEW
+app/base/delegators.hpp:177	NEW	return new Delegators::Connection(handler_id, target, event, closure);	REVIEW
+app/base/glib-cxx-impl.hpp:279	G_FREE	g_free(g_object_class_list_properties(G_OBJECT_CLASS(klass), &n_properties));	REVIEW
+app/base/glib-cxx-impl.hpp:283	NEW	throw new InvalidClass(klass, class_struct);	REVIEW
+app/base/glib-cxx-utils.hpp:45	G_FREE	g_free(obj);	REVIEW
+app/base/glib-cxx-utils.hpp:656	G_FREE	g_free(value);	REVIEW
+app/base/glib-cxx-utils.hpp:1132	DELETE	delete this->obj;	REVIEW
+app/base/glib-cxx-utils.hpp:1162	NEW	DelegatorProxy<W, T>* delegator(W* w, T* d) { return new DelegatorProxy<W, T>(w, d); };	REVIEW
+app/base/glib-cxx-utils.hpp:1165	NEW	DelegatorProxy<W, T>* decorator(W* w, T* d) { return new Decorator<W, T>(w, d); };	REVIEW
+app/base/glib-cxx-utils.hpp:1172	DELETE	delete decorator;	REVIEW
+app/base/glib-cxx-utils.hpp:1191	DELETE	delete instance;	REVIEW
+app/base/route.hpp:95	NEW	rules.push_back(new Select(subname.ptr(), candidates.ptr()));	REVIEW
+app/base/route.hpp:98	NEW	rules.push_back(new Name(varname.ptr()));	REVIEW
+app/base/route.hpp:104	NEW	rules.push_back(new Match(*token));	REVIEW
+app/base/route.hpp:118	DELETE	delete handler;	REVIEW
+app/base/route.hpp:158	NEW	rules.push_back(new Rule(route, handler));	REVIEW
+app/base/scopeguard.hpp:65	DELETE	delete instance;	REVIEW
+app/base/soup-cxx-utils.hpp:50	NEW	next = new Defferred(handler);	REVIEW
+app/base/soup-cxx-utils.hpp:64	DELETE	delete this;	REVIEW
+app/base/soup-cxx-utils.hpp:96	NEW	defferred = new Defferred();	REVIEW
+app/base/soup-cxx-utils.hpp:251	G_FREE	g_free(path);	REVIEW
+app/base/soup-cxx-utils.hpp:292	NEW	rules().append(new Select(subname, candidates));	REVIEW
+app/base/soup-cxx-utils.hpp:296	NEW	rules().append(new Name(varname));	REVIEW
+app/base/soup-cxx-utils.hpp:305	NEW	rules().append(new AnyLoop());	REVIEW
+app/base/soup-cxx-utils.hpp:308	NEW	rules().append(new Any());	REVIEW
+app/base/soup-cxx-utils.hpp:313	NEW	rules().append(new Match(token));	REVIEW
+app/base/soup-cxx-utils.hpp:322	DELETE	for (auto i : rules()) { delete i; }	REVIEW
+app/base/soup-cxx-utils.hpp:372	DELETE	for (auto i: rules()) { delete i; }	REVIEW
+app/base/soup-cxx-utils.hpp:376	NEW	rules().append(new Rule(route, handler));	REVIEW
+app/core/gimpfilterlayer.cpp:525	DELETE	delete rect;	REVIEW
+app/core/gimpfilterlayer.cpp:640	NEW	ProcedureRunner* r     = new ProcedureRunner(proc, GIMP_PROGRESS(g_object));	REVIEW
+app/core/gimpfilterlayer.cpp:875	NEW	updates = g_list_append(updates, new Rectangle(x3, y3, w, h));	REVIEW
+app/core/gimpmypaintbrush.cpp:147	NEW	mypaint_brush->p = (gpointer)(new GimpMypaintBrushPrivate());	REVIEW
+app/core/gimpmypaintbrush.cpp:157	DELETE	delete priv;	REVIEW
+app/core/gimpmypaintbrush.cpp:357	DELETE	delete reinterpret_cast<GimpMypaintBrushPrivate*>(result->p);	REVIEW
+app/core/gimpmypaintbrush.cpp:375	WEAK_POINTER	g_object_add_weak_pointer (G_OBJECT (standard_mypaint_brush),	REVIEW
+app/core/gimpmypaintbrush.cpp:457	G_FREE	g_free (parent_brush_name);	REVIEW
+app/core/gimpmypaintbrush.cpp:461	G_FREE	g_free (group);	REVIEW
+app/core/gimpmypaintbrush.cpp:469	G_FREE	g_free(text[i]);	REVIEW
+app/core/gimpmypaintbrush.cpp:503	NEW	settings[index].mapping = new Mapping(INPUT_COUNT);	REVIEW
+app/core/gimpmypaintbrush.cpp:512	DELETE	delete settings[index].mapping;	REVIEW
+app/core/gimpmypaintbrush.cpp:527	G_FREE	g_free (parent_brush_name);	REVIEW
+app/core/gimpmypaintbrush.cpp:541	G_FREE	g_free (group);	REVIEW
+app/core/gimpmypaintbrush.cpp:567	G_FREE	g_free (text[index]);	REVIEW
+app/core/gimpmypaintbrush.cpp:628	NEW	Brush*              brush     = new Brush();	REVIEW
+app/core/gimpmypaintbrush.cpp:733	DELETE	delete brush;	REVIEW
+app/core/gimpmypaintbrush.cpp:734	DELETE	delete surface;	REVIEW
+app/core/gimpmypaintbrush.cpp:782	NEW	GimpMypaintBrushPrivate* priv = new GimpMypaintBrushPrivate();	REVIEW
+app/core/gimpperspectiveguide.cpp:117	DELETE	delete point;	REVIEW
+app/core/gimpperspectiveguide.cpp:159	NEW	i_vanish_points.append(new Point(x, y));	REVIEW
+app/core/mypaintbrush-mapping.hpp:42	NEW	pointsList = new ControlPoints[inputs];	REVIEW
+app/core/mypaintbrush-mapping.hpp:48	DELETE	delete pointsList;	REVIEW
+app/core/mypaintbrush-mapping.hpp:52	DELETE	delete pointsList;	REVIEW
+app/core/mypaintbrush-mapping.hpp:56	NEW	pointsList = new ControlPoints[inputs];	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:380	NEW	auto impl = new OverlayWidgetDecorator(frame, shell, &shell->layer_view);	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:433	NEW	auto impl = new OverlayWidgetDecorator(frame, shell, &shell->toolbox);	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:459	NEW	auto impl = new OverlayWidgetDecorator(frame, shell, &shell->toolbar);	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:534	NEW	auto impl = new OverlayWidgetDecorator(frame, shell, &shell->color_selector, 1.0);	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:554	NEW	auto impl2 = new ColorSelectorDecorator(color_selector, shell);	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:576	NEW	auto impl = new OverlayWidgetDecorator(frame, shell, &shell->fg_bg_edit, 1.0);	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:594	NEW	auto impl2 = new FgBgEditorDecorator(fg_bg_edit, shell);	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:676	NEW	"g_print(""Attach new OverlayWidgetDecorator to docks.\n"");"	REVIEW
+app/display/gimpdisplayshell-overlays.cpp:677	NEW	auto impl = new OverlayWidgetDecorator(shell->docks, shell, &shell->docks);	REVIEW
+app/httpd/httpd-features-gui.cpp:50	NEW	singleton = new HTTPDFeature();	REVIEW
+app/httpd/httpd-features-gui.cpp:57	NEW	rest_daemon = new RESTD(gimp);	REVIEW
+app/httpd/httpd-features-gui.cpp:72	NEW	auto pdb_factory              = new RESTPDBFactory;	REVIEW
+app/httpd/httpd-features-gui.cpp:74	NEW	auto image_tree_factory       = new RESTImageTreeFactory;	REVIEW
+app/httpd/httpd-features-gui.cpp:76	NEW	auto navigation_guide_factory = new NavigationGuideFactory;	REVIEW
+app/httpd/httpd-features.cpp:50	NEW	singleton = new HTTPDFeature();	REVIEW
+app/httpd/httpd-features.cpp:58	NEW	rest_daemon = new RESTD(gimp);	REVIEW
+app/httpd/httpd-features.cpp:70	NEW	auto pdb_factory              = new RESTPDBFactory;	REVIEW
+app/httpd/httpd-features.cpp:71	NEW	auto image_tree_factory       = new RESTImageTreeFactory;	REVIEW
+app/httpd/httpd.cpp:100	DELETE	delete this;	REVIEW
+app/httpd/navigation-guide.cpp:202	DELETE	delete navi_context->arg_conf;	REVIEW
+app/httpd/navigation-guide.cpp:224	NEW	return new NavigationGuide(gimp, matched, msg, context);	REVIEW
+app/httpd/navigation-guide.cpp:253	NEW	auto arg_conf = new JsonContextAccessor;	REVIEW
+app/httpd/rest-image-tree.cpp:269	NEW	return new RESTImageTree(gimp, matched, msg, context);	REVIEW
+app/paint/gimpmypaintcore-drawablefeature.hpp:108	WEAK_POINTER	g_object_add_weak_pointer(G_OBJECT(d), (gpointer*)&drawable);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:327	G_FREE	if (src1PR) g_free(src1PR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:331	G_FREE	if (destPR) g_free(destPR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:335	G_FREE	if (brushPR) g_free(brushPR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:345	G_FREE	if (src1PR) g_free(src1PR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:346	G_FREE	if (destPR) g_free(destPR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:347	G_FREE	if (brushPR) g_free(brushPR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:348	G_FREE	if (maskPR) g_free(maskPR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:349	G_FREE	if (texturePR) g_free(texturePR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:400	G_FREE	if (src1PR) g_free(src1PR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:401	G_FREE	if (brushPR) g_free(brushPR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:402	G_FREE	if (maskPR) g_free(maskPR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:403	G_FREE	if (texturePR) g_free(texturePR);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:614	NEW	return new GimpMypaintSurfaceImpl<GimpImageFeature>(drawable);	REVIEW
+app/paint/gimpmypaintcore-surface.cpp:618	NEW	return new GimpMypaintSurfaceImpl<GimpTempBufFeature>(drawable);	REVIEW
+app/paint/gimpmypaintcore.cpp:86	DELETE	delete option_changed_handler;	REVIEW
+app/paint/gimpmypaintcore.cpp:93	DELETE	delete stroke;	REVIEW
+app/paint/gimpmypaintcore.cpp:97	DELETE	delete brush;	REVIEW
+app/paint/gimpmypaintcore.cpp:101	DELETE	delete surface;	REVIEW
+app/paint/gimpmypaintcore.cpp:116	DELETE	delete option_changed_handler;	REVIEW
+app/paint/gimpmypaintcore.cpp:129	NEW	"g_print(""MypaintCore(%p)::create new surface...\n"", this);"	REVIEW
+app/paint/gimpmypaintcore.cpp:133	DELETE	"g_print(""MypaintCore(%p)::delete surface...\n"", this);"	REVIEW
+app/paint/gimpmypaintcore.cpp:134	DELETE	delete surface;	REVIEW
+app/paint/gimpmypaintcore.cpp:135	NEW	"g_print(""MypaintCore(%p)::recreate new surface...\n"", this);"	REVIEW
+app/paint/gimpmypaintcore.cpp:141	NEW	stroke = new Stroke();	REVIEW
+app/paint/gimpmypaintcore.cpp:219	DELETE	delete stroke;	REVIEW
+app/paint/gimpmypaintcore.cpp:223	DELETE	delete brush;	REVIEW
+app/paint/gimpmypaintcore.cpp:239	DELETE	delete brush;	REVIEW
+app/paint/gimpmypaintcore.cpp:245	NEW	brush = new Brush();	REVIEW
+app/paint/gimpmypaintcoreundo.cpp:159	DELETE	delete stroke;	REVIEW
+app/paint/gimpmypaintoptions-history.cpp:85	NEW	instance = new GimpMypaintOptionsHistory();	REVIEW
+app/paint/mypaintbrush-brush.hpp:161	NEW	settings[i] = new Mapping(INPUT_COUNT);	REVIEW
+app/paint/mypaintbrush-brush.hpp:178	DELETE	delete settings[i];	REVIEW
+app/presets/layer-preset-gui.cpp:255	NEW	instance = new LayerPresetGuiConfig();	REVIEW
+app/presets/layer-preset.cpp:691	NEW	return new LayerPresetApplier(context, preset);	REVIEW
+app/presets/layer-preset.cpp:749	NEW	instance = new LayerPresetConfig();	REVIEW
+app/presets/preset-factory-gui.cpp:89	NEW	singleton = new PresetGuiFactory();	REVIEW
+app/presets/preset-factory.cpp:153	NEW	singleton = new PresetFactory();	REVIEW
+app/tools/gimpmypaint-gui-base.hpp:53	WEAK_POINTER	g_object_add_weak_pointer(G_OBJECT(options), (void**)&options);	REVIEW
+app/tools/gimpmypaint-gui-base.hpp:59	G_FREE	g_free(property_name);	REVIEW
+app/tools/gimpmypaint-gui-base.hpp:62	G_FREE	g_free(internal_name);	REVIEW
+app/tools/gimpmypaint-gui-base.hpp:94	WEAK_POINTER	g_object_add_weak_pointer(G_OBJECT(widget), (void**)&widget);	REVIEW
+app/tools/gimpmypaintbrusheditor.cpp:197	G_FREE	g_free(name);	REVIEW
+app/tools/gimpmypaintbrusheditor.cpp:563	G_FREE	g_free(brush_setting_name);	REVIEW
+app/tools/gimpmypaintbrusheditor.cpp:677	NEW	CurveViewActions* select_action = new CurveViewActions(G_OBJECT(list_view),	REVIEW
+app/tools/gimpmypaintbrusheditor.cpp:758	NEW	CurveViewCreator* create_view = new CurveViewCreator(options, s->internal_name);	REVIEW
+app/tools/gimpmypaintbrushoptions-gui.cpp:214	DELETE	delete brush_changed_handler;	REVIEW
+app/tools/gimpmypaintbrushoptions-gui.cpp:347	NEW	MypaintPopupPrivate* priv = new MypaintPopupPrivate(container, context);	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:232	DELETE	delete brush_changed_handler;	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:357	NEW	MypaintBrushEditorPrivate* editor_priv = new MypaintBrushEditorPrivate(GIMP_TOOL_OPTIONS(context), MypaintBrushEditorPrivate::TAB);	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:445	NEW	"new MypaintOptionsPropertyGUIPrivate(options, brush_settings_dict.ptr(), ""radius-logarithmic"");"	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:472	NEW	"new MypaintOptionsPropertyGUIPrivate(options, brush_settings_dict.ptr(), ""slow-tracking"");"	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:485	NEW	"new MypaintOptionsPropertyGUIPrivate(options, brush_settings_dict.ptr(), ""hardness"");"	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:509	NEW	MypaintDetailOptionsPopupPrivate* priv = new MypaintDetailOptionsPopupPrivate(container, context);	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:546	NEW	MypaintOptionsGUIPrivate* priv = new MypaintOptionsGUIPrivate(tool_options, false);	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:547	NEW	MypaintBrushEditorPrivate* editor_priv = new MypaintBrushEditorPrivate(tool_options);	REVIEW
+app/tools/gimpmypaintoptions-gui.cpp:575	NEW	MypaintOptionsGUIPrivate* priv = new MypaintOptionsGUIPrivate(tool_options, true);	REVIEW
+app/tools/gimpmypainttool.cpp:187	NEW	paint_tool->core = core = new GimpMypaintCore();	REVIEW
+app/tools/gimpmypainttool.cpp:204	DELETE	delete core;	REVIEW
+app/tools/gimpmypainttool.cpp:707	G_FREE	g_free (status_help);	REVIEW
+app/tools/gimpmypainttool.cpp:735	G_FREE	g_free (status);	REVIEW
+app/tools/gimpperspectiveguidetool.cpp:318	NEW	"g_print(""Creating new guide\n"");"	REVIEW
+app/tools/gimpperspectiveguidetool.cpp:322	NEW	"g_print(""Added new vanishment point(%d)\n"", i_guide->get_vanish_point_length());"	REVIEW
+app/widgets/gimpcellrendererpopup.cpp:87	G_FREE	g_free (stock_id);	REVIEW
+app/widgets/gimpcellrendererpopup.cpp:163	NEW	LayerPopupWindow* window_decor = new LayerPopupWindow;	REVIEW
+app/widgets/gimpeditor-cxx.cpp:166	NEW	auto popup = new GIMP_EDITOR::PopupWindow(editor);	REVIEW
+app/widgets/gimplayerpopup.cpp:165	G_FREE	g_free(proc_name);	REVIEW
+app/widgets/gimplayerpopup.cpp:211	G_FREE	g_free(procs);	REVIEW
+app/widgets/gimplayerpopup.cpp:432	G_FREE	g_free(desc);	REVIEW
+app/widgets/gimplayerpopup.cpp:502	G_FREE	g_free(label);	REVIEW
+app/widgets/gimplayerpopup.cpp:659	G_FREE	g_free(desc);	REVIEW
+app/widgets/gimplayerpopup.cpp:1151	NEW	auto decor = new PopupWindowDecorator();	REVIEW
+app/widgets/gimplayertileview.cpp:598	NEW	layer_info = new LayerInfo(this, layer, parent_info->level + 1);	REVIEW
+app/widgets/gimplayertileview.cpp:603	NEW	layer_info = new LayerInfo(this, layer, 0);	REVIEW
+app/widgets/gimplayertileview.cpp:671	DELETE	delete layer_info;	REVIEW
+app/widgets/gimplayertileview.cpp:731	NEW	layer_popup_decorator = new LayerPopupWindow;	REVIEW
+app/widgets/gimplayertileview.cpp:790	NEW	scroll_timeout_handler = new Timeout(interval, _D::delegator(on_timeout));	REVIEW
+app/widgets/gimplayertileview.cpp:926	NEW	add_cursor = new GdkPoint;	REVIEW
+app/widgets/gimplayertileview.cpp:929	NEW	add_timeout_handler = new Timeout(500, _D::delegator(std::function<gboolean()>([this]() -> gboolean {	REVIEW
+app/widgets/gimplayertileview.cpp:1091	DELETE	delete layer_info;	REVIEW
+app/widgets/gimplayertileview.cpp:1218	NEW	DragAction* drag_action = new DragAction();	REVIEW
+app/widgets/gimplayertileview.cpp:1539	NEW	update_idle = new Idle(	REVIEW
+app/widgets/popupper.cpp:492	DELETE	delete cancel_handler;	REVIEW
+app/widgets/popupper.cpp:496	DELETE	delete confirm_handler;	REVIEW
+app/widgets/popupper.cpp:540	DELETE	delete cancel_handler;	REVIEW
+app/widgets/popupper.cpp:542	DELETE	delete confirm_handler;	REVIEW
+app/widgets/popupper.cpp:544	DELETE	delete create_view_delegator;	REVIEW
+app/widgets/popupper.cpp:552	NEW	PopoverDecorator* popover = new PopoverDecorator(widget, delegator);	REVIEW

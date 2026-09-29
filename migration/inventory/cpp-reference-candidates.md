@@ -13,3 +13,5 @@
 旧差分に含まれる C 220 ファイルで `g_object_ref*` / `g_object_unref` と `g_value_*` の呼び出しを抽出すると 645 件あり、そのうち 74 件が変更 hunk の範囲に位置する。`c-reference-candidates.tsv` に操作、出典行、hunk ID を記録した。hunk 範囲内であることは新規行という証明ではない。後続では変更前の行との照合、返り値の参照数、解放との対応を確認する。
 
 `c-reference-hunk-review.tsv` はこの 74 件を参照追加・floating 参照の sink・解放・GValue 初期化・object 格納に分ける。個別の出典を見ると、`app/paint/gimpbrushcore.c:982-987` は texture の旧参照を解放して新参照を取得する。`app/xcf/xcf-load.c:1028-1029` と `:1089-1090` は置換する layer に対して `ref_sink` と `unref` を続けて呼ぶため、floating 状態に依存する処理である。`xcf_load_filter_specs` はループごとに `GValue*` を確保し、配列への値コピー後のポインターと文字列の解放が確認できない。保存形式を移す際は `12.003/filter-args-ownership` の成功・失敗時の cleanup に含める。
+
+`cpp-raw-lifetime-candidates.tsv` に旧 C++ の `new`、`delete`、`g_free`、weak pointer の 168 構文候補を列挙した。`GimpImageFeature` は destructor で weak pointer を解除するが、`MypaintOptionsPropertyGUIPrivate` は `options` と `widget` に weak pointer を登録し、destructor では解除していない。この helper が対象より先に消えると、GObject finalize 時に解放済みメモリーへ NULL を書く可能性がある。移植先で弱参照の登録解除と signal 接続の解除を同一 owner の終了処理に含める。
