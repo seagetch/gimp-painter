@@ -177,7 +177,7 @@
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
 | 01.007/c-added-lines | [x] | C の変更行と上流文脈を判別する | 01.007/c-hunk-roles | hunk 内の 74 件を変更前・変更後 blob の実差分と照合する |
 | 01.007/toolbar-ref | [x] | 旧 toolbar の widget 参照経路を確定する | 01.007/c-added-lines | data-full の保持、付け替え時の一時参照、hide 時の余剰参照を出典行付きで記録する |
-| 01.007/c-state | [ ] | C 側の変更行で参照管理を照合する | 01.007/cpp-candidates | 追加差分の ref/unref、GValue、raw pointer の保持・解放を記録 |
+| 01.007/c-state | [x] | C 側の変更行で参照管理を照合する | 01.007/cpp-candidates | 追加差分 74 行の ref/unref、GValue、raw pointer の所有者・解放契約と移植時の追跡先を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
 | 01.009 | [ ] | 保存経路を列挙する | 01.008 | XCF、myb、JSON、設定、parasite の reader/writer を記録 |
 | 01.010 | [ ] | 追加 enum と生成元を列挙する | 01.009 | 手書き定義・生成スクリプト・生成物・保存数値を対応 |
@@ -358,6 +358,7 @@
 | 08.008/tool-core-lifetime | [ ] | MyPaint tool と core の生成・破棄順を明示する | 08.008, 01.005/gimp3-tool-callbacks | constructed で保持する core が finalize/停止時に二重解放や残存を起こさず、qdata と Undo の解除順が整合 |
 | 08.009 | [ ] | パース定規モデル型を移植する | 08.008 | 画像との所有関係を接続 |
 | 08.009/removed-signal | [ ] | パース定規型の削除通知 slot を復元する | 08.009, 01.005/gimp3-external-binders | 独自 `GimpPerspectiveGuideClass.removed` を新しい型に再定義し、削除時に一度だけ発火・接続解除する |
+| 08.009/guide-owner | [ ] | パース定規の image setter の参照移譲契約を確定する | 08.009, 01.007/c-state | setter の旧値解放と新値代入を対称にし、呼出し元・画像終了時の二重解放と残存を防ぐ |
 | 08.010 | [ ] | パース定規 tool 型を移植する | 08.009 | draw tool と options に登録 |
 | 08.011 | [ ] | 塗りつぶし brush core 型を移植する | 08.010 | paint core と親 vfunc を接続 |
 | 08.012 | [ ] | 塗りつぶし tool/options 型を移植する | 08.011 | tool manager と設定に登録 |
@@ -936,6 +937,7 @@
 | 30.003 | [ ] | 独自 tool の icon を登録する | 30.002 | テーマと scale に応じ表示 |
 | 30.004 | [ ] | 独自 tool の表示順を登録する | 30.003 | tool palette から利用可能 |
 | 30.005 | [ ] | 追加 dock/dialog の登録を統合する | 30.004 | 再起動後に復元可能 |
+| 30.005/shell-reparent-ref | [ ] | display shell の移動時参照を対称にする | 30.005, 01.007/c-state | 空 display 分岐の一時参照を解放し、通常の移動・閉鎖を反復して shell を破棄できる |
 | 30.006 | [ ] | 独自設定の gimprc serialization を実装する | 30.005 | 型・既定値・旧キー変換が一致 |
 | 30.007 | [ ] | context の独自値を接続する | 30.006 | tool 切替と画像切替で正しい設定 |
 | 30.008 | [ ] | 旧 tool preset の移行を実装する | 30.007 | 独自ブラシと紙目設定を保持 |

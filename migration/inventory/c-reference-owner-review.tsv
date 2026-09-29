@@ -1,0 +1,75 @@
+legacy_site	operation	owner_group	release_contract	migration_followup	changed_hunk	status
+app/core/gimp.c:360	g_object_unref	Gimp.tool_item_list	release at Gimp shutdown	tool item list lifetime	01.002/000158	DONE
+app/core/gimpcontext.c:996	g_object_unref	GimpContext brush/template fields and GValue	field replacement/finalize unrefs; GValue owns its object ref	signal disconnect and null on removal	01.002/000196	DONE
+app/core/gimpcontext.c:1014	g_object_unref	GimpContext brush/template fields and GValue	field replacement/finalize unrefs; GValue owns its object ref	signal disconnect and null on removal	01.002/000198	DONE
+app/core/gimpcontext.c:1256	g_value_set_object	GimpContext brush/template fields and GValue	field replacement/finalize unrefs; GValue owns its object ref	signal disconnect and null on removal	01.002/000201	DONE
+app/core/gimpcontext.c:3470	g_object_unref	GimpContext brush/template fields and GValue	field replacement/finalize unrefs; GValue owns its object ref	signal disconnect and null on removal	01.002/000207	DONE
+app/core/gimpcontext.c:3497	g_object_unref	GimpContext brush/template fields and GValue	field replacement/finalize unrefs; GValue owns its object ref	signal disconnect and null on removal	01.002/000207	DONE
+app/core/gimpcontext.c:3504	g_object_ref	GimpContext brush/template fields and GValue	field replacement/finalize unrefs; GValue owns its object ref	signal disconnect and null on removal	01.002/000207	DONE
+app/core/gimpcontext.c:3867	g_object_unref	GimpContext brush/template fields and GValue	field replacement/finalize unrefs; GValue owns its object ref	signal disconnect and null on removal	01.002/000215	DONE
+app/core/gimpdynamics.c:281	g_object_unref	GimpDynamicsPrivate.blending_output and GValue	private finalize releases field; GValue owns its assigned ref	output replacement and serialization	01.002/000249	DONE
+app/core/gimpdynamics.c:434	g_value_set_object	GimpDynamicsPrivate.blending_output and GValue	private finalize releases field; GValue owns its assigned ref	output replacement and serialization	01.002/000251	DONE
+app/core/gimpimage-perspective-guide.c:54	g_object_unref	GimpImage private perspective guide container	release previous pointer on replacement; incoming pointer assigned without new ref	define transfer contract for guide setter and image teardown	01.002/000333	DONE
+app/core/gimpimage-undo.c:407	g_object_unref	local undo object	free and unref newly allocated undo on uneditable drawable rejection	reject path before undo stack registration	01.002/000341	DONE
+app/core/gimpimage.c:1023	g_object_unref	GimpImage private perspective guide container	container release in image teardown	guide signals and teardown	01.002/000345	DONE
+app/core/gimptoolgroup.c:193	g_value_set_object	tool group children and GValue	property GValue receives an object ref	children model property lifetime	01.002/000393	DONE
+app/display/gimpimagewindow.c:543	g_object_ref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000754	DONE
+app/display/gimpimagewindow.c:1405	g_object_ref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000767	DONE
+app/display/gimpimagewindow.c:2090	g_object_ref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000784	DONE
+app/display/gimpimagewindow.c:2109	g_object_unref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000787	DONE
+app/display/gimpimagewindow.c:2556	g_object_ref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000805	DONE
+app/display/gimpimagewindow.c:2560	g_object_ref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000805	DONE
+app/display/gimpimagewindow.c:2569	g_object_unref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000805	DONE
+app/display/gimpimagewindow.c:2570	g_object_unref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000805	DONE
+app/display/gimpimagewindow.c:2583	g_object_ref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000805	DONE
+app/display/gimpimagewindow.c:2587	g_object_ref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000805	DONE
+app/display/gimpimagewindow.c:2596	g_object_unref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000805	DONE
+app/display/gimpimagewindow.c:2597	g_object_unref	right docks and reparented widgets	temporary refs surround removal and reparent; window owns dock	branch specific dock moves and final unref	01.002/000805	DONE
+app/gui/gimpuiconfigurer.c:439	g_object_ref	display shell during UI reparent	image shell temporary ref released after reparent; empty display branch lacks matching unref	release temporary ref in empty display branch	01.002/000828	DONE
+app/gui/gimpuiconfigurer.c:443	g_object_unref	display shell during UI reparent	image shell temporary ref released after reparent; empty display branch lacks matching unref	release temporary ref in empty display branch	01.002/000828	DONE
+app/gui/gimpuiconfigurer.c:455	g_object_ref	display shell during UI reparent	image shell temporary ref released after reparent; empty display branch lacks matching unref	release temporary ref in empty display branch	01.002/000828	DONE
+app/paint/gimp-paint.c:114	g_object_unref	local paint info	release local reference after registration	registration ownership	01.002/000890	DONE
+app/paint/gimpbrushcore.c:338	g_object_unref	GimpBrushCore.texture	release old field before retaining replacement; finalize releases current	texture reset and GEGL paint lifecycle	01.002/000906	DONE
+app/paint/gimpbrushcore.c:982	g_object_unref	GimpBrushCore.texture	release old field before retaining replacement; finalize releases current	texture reset and GEGL paint lifecycle	01.002/000913	DONE
+app/paint/gimpbrushcore.c:987	g_object_ref	GimpBrushCore.texture	release old field before retaining replacement; finalize releases current	texture reset and GEGL paint lifecycle	01.002/000913	DONE
+app/pdb/mypaint-brush-select-cmds.c:163	g_object_unref	local GimpProcedure	release after registration	procedure registry ownership	01.002/001044	DONE
+app/pdb/mypaint-brush-select-cmds.c:187	g_object_unref	local GimpProcedure	release after registration	procedure registry ownership	01.002/001044	DONE
+app/pdb/mypaint-brush-select-cmds.c:218	g_object_unref	local GimpProcedure	release after registration	procedure registry ownership	01.002/001044	DONE
+app/plug-in/gimpplugin-message.c:852	g_object_unref	local procedure object	release newly allocated procedure on invalid argument or return-name error	plugin install early return paths	01.002/001048	DONE
+app/plug-in/gimpplugin-message.c:903	g_object_unref	local procedure object	release newly allocated procedure on invalid argument or return-name error	plugin install early return paths	01.002/001050	DONE
+app/tools/gimp-tools.c:405	g_object_ref_sink	tool options toolbar data and local registration objects	data-full releases sunk toolbar; local containers/tool infos released	toolbar exit and repeated hide	01.002/001116	DONE
+app/tools/gimp-tools.c:632	g_object_unref	tool options toolbar data and local registration objects	data-full releases sunk toolbar; local containers/tool infos released	toolbar exit and repeated hide	01.002/001121	DONE
+app/tools/gimp-tools.c:704	g_object_unref	tool options toolbar data and local registration objects	data-full releases sunk toolbar; local containers/tool infos released	toolbar exit and repeated hide	01.002/001121	DONE
+app/tools/gimpbrushoptions-gui.c:105	g_object_ref	BrushDialogPrivate.container/context	ref in setter; destroy/reset unref	reset signal disconnect and alias safety	01.002/001166	DONE
+app/tools/gimpbrushoptions-gui.c:112	g_object_ref	BrushDialogPrivate.container/context	ref in setter; destroy/reset unref	reset signal disconnect and alias safety	01.002/001166	DONE
+app/tools/gimpbrushoptions-gui.c:133	g_object_unref	BrushDialogPrivate.container/context	ref in setter; destroy/reset unref	reset signal disconnect and alias safety	01.002/001166	DONE
+app/tools/gimpbrushoptions-gui.c:139	g_object_unref	BrushDialogPrivate.container/context	ref in setter; destroy/reset unref	reset signal disconnect and alias safety	01.002/001166	DONE
+app/tools/gimpbrushoptions-gui.c:448	g_object_unref	BrushDialogPrivate.container/context	ref in setter; destroy/reset unref	reset signal disconnect and alias safety	01.002/001166	DONE
+app/tools/gimpbrushoptions-gui.c:459	g_object_unref	BrushDialogPrivate.container/context	ref in setter; destroy/reset unref	reset signal disconnect and alias safety	01.002/001166	DONE
+app/tools/gimpdynamicsoptions-gui.c:76	g_object_ref	working dynamics	ref retained for editor and unref at teardown	editor destruction before dynamics	01.002/001242	DONE
+app/tools/gimpdynamicsoptions-gui.c:85	g_object_unref	working dynamics	ref retained for editor and unref at teardown	editor destruction before dynamics	01.002/001242	DONE
+app/tools/gimptooloptions-gui.c:159	g_object_unref	popup callback state.config	ref retained in closure state and unref in destroy callback	closure release on all popup exits	01.002/001488	DONE
+app/tools/gimptooloptions-gui.c:189	g_object_ref	popup callback state.config	ref retained in closure state and unref in destroy callback	closure release on all popup exits	01.002/001488	DONE
+app/tools/gimptooloptions-gui.c:315	g_object_ref	popup callback state.config	ref retained in closure state and unref in destroy callback	closure release on all popup exits	01.002/001488	DONE
+app/widgets/gimpcontainertreeview-dnd.c:723	g_object_ref	drag source viewable	temporary ref around drag transfer	drop failure and cancellation	01.002/001534	DONE
+app/widgets/gimpcontainertreeview-dnd.c:729	g_object_unref	drag source viewable	temporary ref around drag transfer	drop failure and cancellation	01.002/001535	DONE
+app/widgets/gimptooleditor.c:397	g_object_unref	group/tool item/action/renderer locals	temporary refs and locals released after operation	all drag/selection branches	01.002/001740	DONE
+app/widgets/gimptooleditor.c:537	g_object_ref	group/tool item/action/renderer locals	temporary refs and locals released after operation	all drag/selection branches	01.002/001770	DONE
+app/widgets/gimptooleditor.c:548	g_object_ref	group/tool item/action/renderer locals	temporary refs and locals released after operation	all drag/selection branches	01.002/001773	DONE
+app/widgets/gimptooleditor.c:553	g_object_unref	group/tool item/action/renderer locals	temporary refs and locals released after operation	all drag/selection branches	01.002/001774	DONE
+app/widgets/gimptooleditor.c:564	g_object_unref	group/tool item/action/renderer locals	temporary refs and locals released after operation	all drag/selection branches	01.002/001775	DONE
+app/widgets/gimptooleditor.c:632	g_object_unref	group/tool item/action/renderer locals	temporary refs and locals released after operation	all drag/selection branches	01.002/001786	DONE
+app/widgets/gimptooleditor.c:665	g_object_unref	group/tool item/action/renderer locals	temporary refs and locals released after operation	all drag/selection branches	01.002/001791	DONE
+app/widgets/gimptooloptionstoolbar.c:217	g_value_set_object	toolbar child widgets	move ref/unref pair; hide takes extra ref without local unref	repeat hide/show and finalization	01.002/001799	DONE
+app/widgets/gimptooloptionstoolbar.c:286	g_object_ref	toolbar child widgets	move ref/unref pair; hide takes extra ref without local unref	repeat hide/show and finalization	01.002/001799	DONE
+app/widgets/gimptooloptionstoolbar.c:294	g_object_unref	toolbar child widgets	move ref/unref pair; hide takes extra ref without local unref	repeat hide/show and finalization	01.002/001799	DONE
+app/widgets/gimptooloptionstoolbar.c:332	g_object_ref	toolbar child widgets	move ref/unref pair; hide takes extra ref without local unref	repeat hide/show and finalization	01.002/001799	DONE
+app/xcf/xcf-load.c:1028	g_object_ref_sink	replaced layer and filter argument GValues	sink/unref old layer; value array clear should unset values	floating layer state and temporary GValue/string cleanup	01.002/001832	DONE
+app/xcf/xcf-load.c:1029	g_object_unref	replaced layer and filter argument GValues	sink/unref old layer; value array clear should unset values	floating layer state and temporary GValue/string cleanup	01.002/001832	DONE
+app/xcf/xcf-load.c:1089	g_object_ref_sink	replaced layer and filter argument GValues	sink/unref old layer; value array clear should unset values	floating layer state and temporary GValue/string cleanup	01.002/001832	DONE
+app/xcf/xcf-load.c:1090	g_object_unref	replaced layer and filter argument GValues	sink/unref old layer; value array clear should unset values	floating layer state and temporary GValue/string cleanup	01.002/001832	DONE
+app/xcf/xcf-load.c:1327	g_value_init	replaced layer and filter argument GValues	sink/unref old layer; value array clear should unset values	floating layer state and temporary GValue/string cleanup	01.002/001833	DONE
+app/xcf/xcf-load.c:1338	g_value_init	replaced layer and filter argument GValues	sink/unref old layer; value array clear should unset values	floating layer state and temporary GValue/string cleanup	01.002/001833	DONE
+app/xcf/xcf-load.c:1349	g_value_init	replaced layer and filter argument GValues	sink/unref old layer; value array clear should unset values	floating layer state and temporary GValue/string cleanup	01.002/001833	DONE
+app/xcf/xcf-load.c:1360	g_value_init	replaced layer and filter argument GValues	sink/unref old layer; value array clear should unset values	floating layer state and temporary GValue/string cleanup	01.002/001833	DONE
+app/xcf/xcf-load.c:1388	g_value_init	replaced layer and filter argument GValues	sink/unref old layer; value array clear should unset values	floating layer state and temporary GValue/string cleanup	01.002/001833	DONE
