@@ -22,7 +22,7 @@ CONTRACTS = {
     "app/paint/mypaintbrush-brush.hpp:161": ("Brush.settings[i]", "Brush destructor deletes Mapping for each setting", "20.008"),
     "app/paint/mypaintbrush-brush.hpp:178": ("Brush.settings[i]", "delete corresponding constructor Mapping", "20.008"),
     "app/presets/layer-preset-gui.cpp:255": ("process LayerPresetGuiConfig singleton", "no explicit singleton deletion found", "28.014"),
-    "app/presets/layer-preset.cpp:691": ("caller-owned ILayerPresetApplier", "returned new instance adopted by caller hold wrapper", "28.010"),
+    "app/presets/layer-preset.cpp:691": ("caller-owned ILayerPresetApplier", "two GUI callers leak it; tile caller adopts it with GObject hold instead of C++ delete", "28.014/applier-owner"),
     "app/presets/layer-preset.cpp:749": ("process LayerPresetConfig singleton", "no explicit singleton deletion found", "28.003"),
     "app/presets/preset-factory-gui.cpp:89": ("process PresetGuiFactory singleton", "no explicit singleton deletion found", "28.014"),
     "app/presets/preset-factory.cpp:153": ("process PresetFactory singleton", "no explicit singleton deletion found", "28.003"),

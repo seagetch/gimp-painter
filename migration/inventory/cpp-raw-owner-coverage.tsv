@@ -113,7 +113,7 @@ app/paint/gimpmypaintoptions-history.cpp:85	NEW	CXX_ALLOCATION	process history s
 app/paint/mypaintbrush-brush.hpp:161	NEW	CXX_ALLOCATION	Brush.settings[i]	Brush destructor deletes Mapping for each setting	20.008	MAPPED
 app/paint/mypaintbrush-brush.hpp:178	DELETE	CXX_RELEASE	Brush.settings[i]	delete corresponding constructor Mapping	20.008	MAPPED
 app/presets/layer-preset-gui.cpp:255	NEW	CXX_ALLOCATION	process LayerPresetGuiConfig singleton	no explicit singleton deletion found	28.014	MAPPED
-app/presets/layer-preset.cpp:691	NEW	CXX_ALLOCATION	caller-owned ILayerPresetApplier	returned new instance adopted by caller hold wrapper	28.010	MAPPED
+app/presets/layer-preset.cpp:691	NEW	CXX_ALLOCATION	caller-owned ILayerPresetApplier	two GUI callers leak it; tile caller adopts it with GObject hold instead of C++ delete	28.014/applier-owner	MAPPED
 app/presets/layer-preset.cpp:749	NEW	CXX_ALLOCATION	process LayerPresetConfig singleton	no explicit singleton deletion found	28.003	MAPPED
 app/presets/preset-factory-gui.cpp:89	NEW	CXX_ALLOCATION	process PresetGuiFactory singleton	no explicit singleton deletion found	28.014	MAPPED
 app/presets/preset-factory.cpp:153	NEW	CXX_ALLOCATION	process PresetFactory singleton	no explicit singleton deletion found	28.003	MAPPED

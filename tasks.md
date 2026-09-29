@@ -904,6 +904,7 @@
 | 28.012 | [ ] | 水彩 preset を検証する | 28.011 | edge filter・difference・opacity・group が一致 |
 | 28.013 | [ ] | その他同梱 preset を検証する | 28.012 | 全定義に生成結果 fixture がある |
 | 28.014 | [ ] | preset 選択 UI を接続する | 28.013 | 旧導線から適用可能 |
+| 28.014/applier-owner | [ ] | preset 適用オブジェクトの寿命を修正する | 28.014, 01.007/cpp-ownership | C++ の適用インスタンスを GObject として解放せず、選択・起動・tile view の各経路で一回だけ delete し、失敗時も残存しない |
 | 28.014/preset-preferences | [ ] | preset 設定ページ入口を移植する | 28.013, 04.004 | C 側でページを構築し返却 GArray を処理後に参照解放する |
 | 28.014/preset-dialog-actions | [ ] | preset ダイアログアクションを移植する | 28.013, 04.004 | エントリが NULL の場合に参照せず、空配列も安全に登録する |
 | 28.014/preset-action-group | [ ] | preset action-group 登録 callback を移植する | 28.013, 04.004, 01.005/preset-action-factory-owner | entry/update の C ABI と登録者の寿命・解除、現行 get_group/delete_group のキャッシュと初期化順を確認する |
