@@ -168,6 +168,7 @@
 | 01.007/scoped-pointers | [x] | CXXPointer の対象型と破棄を分類する | 01.007/cpp-candidates | 54 箇所を signal connection、source、delegator、C++ instance に分類する |
 | 01.007/gvalue | [x] | 旧 C++ の GValue 使用箇所を分類する | 01.007/cpp-candidates | 136 箇所の helper、配列借用、初期化、引数、値ポインターを分類する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
+| 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-state | [ ] | C 側の変更行で参照管理を照合する | 01.007/cpp-candidates | 追加差分の ref/unref、GValue、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
 | 01.009 | [ ] | 保存経路を列挙する | 01.008 | XCF、myb、JSON、設定、parasite の reader/writer を記録 |

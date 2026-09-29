@@ -1,0 +1,646 @@
+legacy_site	operation	changed_hunk	source_line	status
+app/actions/actions.c:278	g_object_unref	-	g_object_unref (global_action_factory);	REVIEW
+app/app.c:273	g_object_unref	-	g_object_unref (gimp);	REVIEW
+app/config/gimpcoreconfig.c:551	g_object_unref	-	g_object_unref (core_config->default_image);	REVIEW
+app/config/gimpcoreconfig.c:554	g_object_unref	-	g_object_unref (core_config->default_grid);	REVIEW
+app/config/gimpcoreconfig.c:557	g_object_unref	-	g_object_unref (core_config->color_management);	REVIEW
+app/config/gimpcoreconfig.c:906	g_value_set_object	-	g_value_set_object (value, core_config->default_image);	REVIEW
+app/config/gimpcoreconfig.c:909	g_value_set_object	-	g_value_set_object (value, core_config->default_grid);	REVIEW
+app/config/gimpcoreconfig.c:939	g_value_set_object	-	g_value_set_object (value, core_config->color_management);	REVIEW
+app/core/gimp-user-install.c:612	g_object_unref	-	g_object_unref (gimprc);	REVIEW
+app/core/gimp.c:330	g_object_unref	-	g_object_unref (gimp->image_new_last_template);	REVIEW
+app/core/gimp.c:336	g_object_unref	-	g_object_unref (gimp->templates);	REVIEW
+app/core/gimp.c:342	g_object_unref	-	g_object_unref (gimp->documents);	REVIEW
+app/core/gimp.c:352	g_object_unref	-	g_object_unref (gimp->tool_info_list);	REVIEW
+app/core/gimp.c:360	g_object_unref	01.002/000158	g_object_unref (gimp->tool_item_list);	REVIEW
+app/core/gimp.c:367	g_object_unref	-	g_object_unref (gimp->pdb);	REVIEW
+app/core/gimp.c:373	g_object_unref	-	g_object_unref (gimp->brush_factory);	REVIEW
+app/core/gimp.c:379	g_object_unref	-	g_object_unref (gimp->dynamics_factory);	REVIEW
+app/core/gimp.c:385	g_object_unref	-	g_object_unref (gimp->pattern_factory);	REVIEW
+app/core/gimp.c:391	g_object_unref	-	g_object_unref (gimp->gradient_factory);	REVIEW
+app/core/gimp.c:397	g_object_unref	-	g_object_unref (gimp->palette_factory);	REVIEW
+app/core/gimp.c:403	g_object_unref	-	g_object_unref (gimp->tool_preset_factory);	REVIEW
+app/core/gimp.c:409	g_object_unref	-	g_object_unref (gimp->tag_cache);	REVIEW
+app/core/gimp.c:415	g_object_unref	-	g_object_unref (gimp->fonts);	REVIEW
+app/core/gimp.c:421	g_object_unref	-	g_object_unref (gimp->named_buffers);	REVIEW
+app/core/gimp.c:427	g_object_unref	-	g_object_unref (gimp->global_buffer);	REVIEW
+app/core/gimp.c:433	g_object_unref	-	g_object_unref (gimp->displays);	REVIEW
+app/core/gimp.c:439	g_object_unref	-	g_object_unref (gimp->item_table);	REVIEW
+app/core/gimp.c:445	g_object_unref	-	g_object_unref (gimp->image_table);	REVIEW
+app/core/gimp.c:451	g_object_unref	-	g_object_unref (gimp->images);	REVIEW
+app/core/gimp.c:457	g_object_unref	-	g_object_unref (gimp->plug_in_manager);	REVIEW
+app/core/gimp.c:468	g_object_unref	-	g_object_unref (gimp->parasites);	REVIEW
+app/core/gimp.c:474	g_object_unref	-	g_object_unref (gimp->edit_config);	REVIEW
+app/core/gimp.c:721	g_object_unref	-	g_object_unref (clipboard_brush);	REVIEW
+app/core/gimp.c:729	g_object_unref	-	g_object_unref (clipboard_pattern);	REVIEW
+app/core/gimp.c:857	g_value_init	-	g_value_init (&global_value, param_spec->value_type);	REVIEW
+app/core/gimp.c:858	g_value_init	-	g_value_init (&edit_value,   param_spec->value_type);	REVIEW
+app/core/gimp.c:876	g_value_unset	-	g_value_unset (&global_value);	REVIEW
+app/core/gimp.c:877	g_value_unset	-	g_value_unset (&edit_value);	REVIEW
+app/core/gimp.c:888	g_value_init	-	g_value_init (&edit_value,   param_spec->value_type);	REVIEW
+app/core/gimp.c:889	g_value_init	-	g_value_init (&global_value, param_spec->value_type);	REVIEW
+app/core/gimp.c:922	g_value_unset	-	g_value_unset (&edit_value);	REVIEW
+app/core/gimp.c:923	g_value_unset	-	g_value_unset (&global_value);	REVIEW
+app/core/gimp.c:1157	g_object_unref	-	g_object_unref (gimp->global_buffer);	REVIEW
+app/core/gimp.c:1162	g_object_ref	-	g_object_ref (gimp->global_buffer);	REVIEW
+app/core/gimp.c:1210	g_object_unref	-	g_object_unref (gimp->default_context);	REVIEW
+app/core/gimp.c:1215	g_object_ref	-	g_object_ref (gimp->default_context);	REVIEW
+app/core/gimp.c:1237	g_object_unref	-	g_object_unref (gimp->user_context);	REVIEW
+app/core/gimp.c:1242	g_object_ref	-	g_object_ref (gimp->user_context);	REVIEW
+app/core/gimpcontainer.c:488	g_object_unref	-	g_object_unref (child);	REVIEW
+app/core/gimpcontainer.c:499	g_object_unref	-	g_object_unref (child);	REVIEW
+app/core/gimpcontainer.c:587	g_object_ref	-	g_object_ref (object);	REVIEW
+app/core/gimpcontainer.c:665	g_object_unref	-	g_object_unref (object);	REVIEW
+app/core/gimpcontext.c:942	g_object_unref	-	g_object_unref (context->tool_info);	REVIEW
+app/core/gimpcontext.c:948	g_object_unref	-	g_object_unref (context->paint_info);	REVIEW
+app/core/gimpcontext.c:954	g_object_unref	-	g_object_unref (context->brush);	REVIEW
+app/core/gimpcontext.c:960	g_object_unref	-	g_object_unref (context->dynamics);	REVIEW
+app/core/gimpcontext.c:966	g_object_unref	-	g_object_unref (context->pattern);	REVIEW
+app/core/gimpcontext.c:972	g_object_unref	-	g_object_unref (context->gradient);	REVIEW
+app/core/gimpcontext.c:978	g_object_unref	-	g_object_unref (context->palette);	REVIEW
+app/core/gimpcontext.c:984	g_object_unref	-	g_object_unref (context->tool_preset);	REVIEW
+app/core/gimpcontext.c:990	g_object_unref	-	g_object_unref (context->font);	REVIEW
+app/core/gimpcontext.c:996	g_object_unref	01.002/000196	g_object_unref (context->mypaint_brush);	REVIEW
+app/core/gimpcontext.c:1002	g_object_unref	-	g_object_unref (context->buffer);	REVIEW
+app/core/gimpcontext.c:1008	g_object_unref	-	g_object_unref (context->imagefile);	REVIEW
+app/core/gimpcontext.c:1014	g_object_unref	01.002/000198	g_object_unref (context->template_);	REVIEW
+app/core/gimpcontext.c:1198	g_value_set_object	-	g_value_set_object (value, context->gimp);	REVIEW
+app/core/gimpcontext.c:1201	g_value_set_object	-	g_value_set_object (value, gimp_context_get_image (context));	REVIEW
+app/core/gimpcontext.c:1204	g_value_set_object	-	g_value_set_object (value, gimp_context_get_display (context));	REVIEW
+app/core/gimpcontext.c:1207	g_value_set_object	-	g_value_set_object (value, gimp_context_get_tool (context));	REVIEW
+app/core/gimpcontext.c:1210	g_value_set_object	-	g_value_set_object (value, gimp_context_get_paint_info (context));	REVIEW
+app/core/gimpcontext.c:1235	g_value_set_object	-	g_value_set_object (value, gimp_context_get_brush (context));	REVIEW
+app/core/gimpcontext.c:1238	g_value_set_object	-	g_value_set_object (value, gimp_context_get_dynamics (context));	REVIEW
+app/core/gimpcontext.c:1241	g_value_set_object	-	g_value_set_object (value, gimp_context_get_pattern (context));	REVIEW
+app/core/gimpcontext.c:1244	g_value_set_object	-	g_value_set_object (value, gimp_context_get_gradient (context));	REVIEW
+app/core/gimpcontext.c:1247	g_value_set_object	-	g_value_set_object (value, gimp_context_get_palette (context));	REVIEW
+app/core/gimpcontext.c:1250	g_value_set_object	-	g_value_set_object (value, gimp_context_get_tool_preset (context));	REVIEW
+app/core/gimpcontext.c:1253	g_value_set_object	-	g_value_set_object (value, gimp_context_get_font (context));	REVIEW
+app/core/gimpcontext.c:1256	g_value_set_object	01.002/000201	g_value_set_object (value, gimp_context_get_mypaint_brush (context));	REVIEW
+app/core/gimpcontext.c:1259	g_value_set_object	-	g_value_set_object (value, gimp_context_get_buffer (context));	REVIEW
+app/core/gimpcontext.c:1262	g_value_set_object	-	g_value_set_object (value, gimp_context_get_imagefile (context));	REVIEW
+app/core/gimpcontext.c:1265	g_value_set_object	-	g_value_set_object (value, gimp_context_get_template (context));	REVIEW
+app/core/gimpcontext.c:1438	g_value_set_object	-	g_value_set_object (value, NULL);	REVIEW
+app/core/gimpcontext.c:1463	g_value_set_object	-	g_value_set_object (value, deserialize_obj);	REVIEW
+app/core/gimpcontext.c:1870	g_object_unref	-	g_object_unref (object);	REVIEW
+app/core/gimpcontext.c:2024	g_object_unref	-	g_object_unref (image);	REVIEW
+app/core/gimpcontext.c:2043	g_object_unref	-	g_object_unref (image);	REVIEW
+app/core/gimpcontext.c:2126	g_object_unref	-	g_object_unref (tool_info);	REVIEW
+app/core/gimpcontext.c:2153	g_object_unref	-	g_object_unref (context->tool_info);	REVIEW
+app/core/gimpcontext.c:2160	g_object_ref	-	g_object_ref (tool_info);	REVIEW
+app/core/gimpcontext.c:2250	g_object_unref	-	g_object_unref (paint_info);	REVIEW
+app/core/gimpcontext.c:2277	g_object_unref	-	g_object_unref (context->paint_info);	REVIEW
+app/core/gimpcontext.c:2284	g_object_ref	-	g_object_ref (paint_info);	REVIEW
+app/core/gimpcontext.c:2605	g_object_unref	-	g_object_unref (brush);	REVIEW
+app/core/gimpcontext.c:2632	g_object_unref	-	g_object_unref (context->brush);	REVIEW
+app/core/gimpcontext.c:2639	g_object_ref	-	g_object_ref (brush);	REVIEW
+app/core/gimpcontext.c:2707	g_object_unref	-	g_object_unref (dynamics);	REVIEW
+app/core/gimpcontext.c:2750	g_object_unref	-	g_object_unref (context->dynamics);	REVIEW
+app/core/gimpcontext.c:2757	g_object_ref	-	g_object_ref (dynamics);	REVIEW
+app/core/gimpcontext.c:2843	g_object_unref	-	g_object_unref (pattern);	REVIEW
+app/core/gimpcontext.c:2870	g_object_unref	-	g_object_unref (context->pattern);	REVIEW
+app/core/gimpcontext.c:2877	g_object_ref	-	g_object_ref (pattern);	REVIEW
+app/core/gimpcontext.c:2963	g_object_unref	-	g_object_unref (gradient);	REVIEW
+app/core/gimpcontext.c:2990	g_object_unref	-	g_object_unref (context->gradient);	REVIEW
+app/core/gimpcontext.c:2997	g_object_ref	-	g_object_ref (gradient);	REVIEW
+app/core/gimpcontext.c:3083	g_object_unref	-	g_object_unref (palette);	REVIEW
+app/core/gimpcontext.c:3110	g_object_unref	-	g_object_unref (context->palette);	REVIEW
+app/core/gimpcontext.c:3117	g_object_ref	-	g_object_ref (palette);	REVIEW
+app/core/gimpcontext.c:3185	g_object_unref	-	g_object_unref (tool_preset);	REVIEW
+app/core/gimpcontext.c:3223	g_object_unref	-	g_object_unref (context->tool_preset);	REVIEW
+app/core/gimpcontext.c:3230	g_object_ref	-	g_object_ref (tool_preset);	REVIEW
+app/core/gimpcontext.c:3349	g_object_unref	-	g_object_unref (font);	REVIEW
+app/core/gimpcontext.c:3376	g_object_unref	-	g_object_unref (context->font);	REVIEW
+app/core/gimpcontext.c:3383	g_object_ref	-	g_object_ref (font);	REVIEW
+app/core/gimpcontext.c:3470	g_object_unref	01.002/000207	g_object_unref (mypaint_brush);	REVIEW
+app/core/gimpcontext.c:3497	g_object_unref	01.002/000207	g_object_unref (context->mypaint_brush);	REVIEW
+app/core/gimpcontext.c:3504	g_object_ref	01.002/000207	g_object_ref (mypaint_brush);	REVIEW
+app/core/gimpcontext.c:3595	g_object_unref	-	g_object_unref (buffer);	REVIEW
+app/core/gimpcontext.c:3621	g_object_unref	-	g_object_unref (context->buffer);	REVIEW
+app/core/gimpcontext.c:3628	g_object_ref	-	g_object_ref (buffer);	REVIEW
+app/core/gimpcontext.c:3718	g_object_unref	-	g_object_unref (imagefile);	REVIEW
+app/core/gimpcontext.c:3744	g_object_unref	-	g_object_unref (context->imagefile);	REVIEW
+app/core/gimpcontext.c:3751	g_object_ref	-	g_object_ref (imagefile);	REVIEW
+app/core/gimpcontext.c:3841	g_object_unref	-	g_object_unref (template);	REVIEW
+app/core/gimpcontext.c:3867	g_object_unref	01.002/000215	g_object_unref (context->template_);	REVIEW
+app/core/gimpcontext.c:3874	g_object_ref	-	g_object_ref (template);	REVIEW
+app/core/gimpcurve.c:311	g_value_init	-	g_value_init (&v, G_TYPE_DOUBLE);	REVIEW
+app/core/gimpcurve.c:322	g_value_unset	-	g_value_unset (&v);	REVIEW
+app/core/gimpcurve.c:338	g_value_init	-	g_value_init (&v, G_TYPE_DOUBLE);	REVIEW
+app/core/gimpcurve.c:346	g_value_unset	-	g_value_unset (&v);	REVIEW
+app/core/gimpcurve.c:537	g_object_ref	-	g_object_ref (standard_curve);	REVIEW
+app/core/gimpdatafactory.c:135	g_object_unref	-	g_object_unref (factory->priv->container);	REVIEW
+app/core/gimpdatafactory.c:141	g_object_unref	-	g_object_unref (factory->priv->container_obsolete);	REVIEW
+app/core/gimpdatafactory.c:257	g_object_ref	-	g_object_ref (data);	REVIEW
+app/core/gimpdatafactory.c:276	g_object_unref	-	g_object_unref (list->data);	REVIEW
+app/core/gimpdatafactory.c:520	g_object_unref	-	g_object_unref (data);	REVIEW
+app/core/gimpdatafactory.c:569	g_object_unref	-	g_object_unref (new_data);	REVIEW
+app/core/gimpdatafactory.c:589	g_object_ref	-	g_object_ref (data);	REVIEW
+app/core/gimpdatafactory.c:596	g_object_unref	-	g_object_unref (data);	REVIEW
+app/core/gimpdatafactory.c:942	g_object_unref	-	g_object_unref (data);	REVIEW
+app/core/gimpdrawable-bucket-fill.c:298	g_object_unref	-	g_object_unref (mask);	REVIEW
+app/core/gimpdrawable.c:305	g_object_unref	-	g_object_unref (drawable->private->source_node);	REVIEW
+app/core/gimpdrawable.c:496	g_object_unref	-	g_object_unref (scale);	REVIEW
+app/core/gimpdrawable.c:757	g_object_unref	-	g_object_unref (operation);	REVIEW
+app/core/gimpdrawablestack.c:139	g_object_unref	-	g_object_unref (stack->graph);	REVIEW
+app/core/gimpdynamics.c:270	g_object_unref	-	g_object_unref (private->opacity_output);	REVIEW
+app/core/gimpdynamics.c:271	g_object_unref	-	g_object_unref (private->force_output);	REVIEW
+app/core/gimpdynamics.c:272	g_object_unref	-	g_object_unref (private->hardness_output);	REVIEW
+app/core/gimpdynamics.c:273	g_object_unref	-	g_object_unref (private->rate_output);	REVIEW
+app/core/gimpdynamics.c:274	g_object_unref	-	g_object_unref (private->flow_output);	REVIEW
+app/core/gimpdynamics.c:275	g_object_unref	-	g_object_unref (private->size_output);	REVIEW
+app/core/gimpdynamics.c:276	g_object_unref	-	g_object_unref (private->aspect_ratio_output);	REVIEW
+app/core/gimpdynamics.c:277	g_object_unref	-	g_object_unref (private->color_output);	REVIEW
+app/core/gimpdynamics.c:278	g_object_unref	-	g_object_unref (private->angle_output);	REVIEW
+app/core/gimpdynamics.c:279	g_object_unref	-	g_object_unref (private->jitter_output);	REVIEW
+app/core/gimpdynamics.c:280	g_object_unref	-	g_object_unref (private->spacing_output);	REVIEW
+app/core/gimpdynamics.c:281	g_object_unref	01.002/000249	g_object_unref (private->blending_output);	REVIEW
+app/core/gimpdynamics.c:390	g_value_set_object	-	g_value_set_object (value, private->opacity_output);	REVIEW
+app/core/gimpdynamics.c:394	g_value_set_object	-	g_value_set_object (value, private->force_output);	REVIEW
+app/core/gimpdynamics.c:398	g_value_set_object	-	g_value_set_object (value, private->hardness_output);	REVIEW
+app/core/gimpdynamics.c:402	g_value_set_object	-	g_value_set_object (value, private->rate_output);	REVIEW
+app/core/gimpdynamics.c:406	g_value_set_object	-	g_value_set_object (value, private->flow_output);	REVIEW
+app/core/gimpdynamics.c:410	g_value_set_object	-	g_value_set_object (value, private->size_output);	REVIEW
+app/core/gimpdynamics.c:414	g_value_set_object	-	g_value_set_object (value, private->aspect_ratio_output);	REVIEW
+app/core/gimpdynamics.c:418	g_value_set_object	-	g_value_set_object (value, private->color_output);	REVIEW
+app/core/gimpdynamics.c:422	g_value_set_object	-	g_value_set_object (value, private->angle_output);	REVIEW
+app/core/gimpdynamics.c:426	g_value_set_object	-	g_value_set_object (value, private->jitter_output);	REVIEW
+app/core/gimpdynamics.c:430	g_value_set_object	-	g_value_set_object (value, private->spacing_output);	REVIEW
+app/core/gimpdynamics.c:434	g_value_set_object	01.002/000251	g_value_set_object (value, private->blending_output);	REVIEW
+app/core/gimpgrouplayer.c:310	g_object_unref	-	g_object_unref (private->children);	REVIEW
+app/core/gimpgrouplayer.c:316	g_object_unref	-	g_object_unref (private->projection);	REVIEW
+app/core/gimpgrouplayer.c:322	g_object_unref	-	g_object_unref (private->graph);	REVIEW
+app/core/gimpimage-perspective-guide.c:54	g_object_unref	01.002/000333	g_object_unref (private->perspective_guides);	REVIEW
+app/core/gimpimage-undo.c:407	g_object_unref	01.002/000341	g_object_unref(undo);	REVIEW
+app/core/gimpimage-undo.c:588	g_object_unref	-	g_object_unref (freed);	REVIEW
+app/core/gimpimage-undo.c:624	g_object_unref	-	g_object_unref (freed);	REVIEW
+app/core/gimpimage.c:850	g_value_set_object	-	g_value_set_object (value, image->gimp);	REVIEW
+app/core/gimpimage.c:922	g_object_unref	-	g_object_unref (private->projection);	REVIEW
+app/core/gimpimage.c:928	g_object_unref	-	g_object_unref (private->graph);	REVIEW
+app/core/gimpimage.c:937	g_object_unref	-	g_object_unref (private->layers);	REVIEW
+app/core/gimpimage.c:942	g_object_unref	-	g_object_unref (private->channels);	REVIEW
+app/core/gimpimage.c:947	g_object_unref	-	g_object_unref (private->vectors);	REVIEW
+app/core/gimpimage.c:958	g_object_unref	-	g_object_unref (private->selection_mask);	REVIEW
+app/core/gimpimage.c:970	g_object_unref	-	g_object_unref (private->parasites);	REVIEW
+app/core/gimpimage.c:982	g_object_unref	-	g_object_unref (private->grid);	REVIEW
+app/core/gimpimage.c:995	g_object_unref	-	g_object_unref (private->undo_stack);	REVIEW
+app/core/gimpimage.c:1000	g_object_unref	-	g_object_unref (private->redo_stack);	REVIEW
+app/core/gimpimage.c:1023	g_object_unref	01.002/000345	g_object_unref (private->perspective_guides);	REVIEW
+app/core/gimpimage.c:2140	g_object_unref	-	g_object_unref (private->selection_mask);	REVIEW
+app/core/gimpimage.c:2142	g_object_ref_sink	-	private->selection_mask = g_object_ref_sink (mask);	REVIEW
+app/core/gimpimage.c:3860	g_object_ref	-	g_object_ref (layer);	REVIEW
+app/core/gimpimage.c:3905	g_object_unref	-	g_object_unref (layer);	REVIEW
+app/core/gimpimage.c:4066	g_object_ref	-	g_object_ref (channel);	REVIEW
+app/core/gimpimage.c:4084	g_object_unref	-	g_object_unref (channel);	REVIEW
+app/core/gimpimage.c:4151	g_object_ref	-	g_object_ref (vectors);	REVIEW
+app/core/gimpimage.c:4166	g_object_unref	-	g_object_unref (vectors);	REVIEW
+app/core/gimpitem.c:339	g_object_unref	-	g_object_unref (private->node);	REVIEW
+app/core/gimpitem.c:351	g_object_unref	-	g_object_unref (private->parasites);	REVIEW
+app/core/gimpitem.c:389	g_value_set_object	-	g_value_set_object (value, private->image);	REVIEW
+app/core/gimpitem.c:521	g_object_unref	-	g_object_unref (GET_PRIVATE (new_item)->parasites);	REVIEW
+app/core/gimpitem.c:1734	g_object_unref	-	g_object_unref (private->parasites);	REVIEW
+app/core/gimpitem.c:1773	g_object_unref	-	g_object_unref (private->parasites);	REVIEW
+app/core/gimpitem.c:1774	g_object_ref	-	private->parasites = g_object_ref (parasites);	REVIEW
+app/core/gimplayer.c:383	g_value_set_object	-	g_value_set_object (value, gimp_layer_get_mask (layer));	REVIEW
+app/core/gimplayer.c:426	g_object_unref	-	g_object_unref (layer->mask);	REVIEW
+app/core/gimplayer.c:1476	g_object_ref_sink	-	layer->mask = g_object_ref_sink (mask);	REVIEW
+app/core/gimplayer.c:1812	g_object_unref	-	g_object_unref (mask);	REVIEW
+app/core/gimpparamspecs-duplicate.c:162	g_value_init	-	g_value_init (&value, GEGL_TYPE_COLOR);	REVIEW
+app/core/gimpparamspecs-duplicate.c:171	g_value_unset	-	g_value_unset (&value);	REVIEW
+app/core/gimpprojection.c:197	g_object_unref	-	g_object_unref (proj->graph);	REVIEW
+app/core/gimpprojection.c:204	g_object_unref	-	g_object_unref (proj->processor);	REVIEW
+app/core/gimptoolgroup.c:193	g_value_set_object	01.002/000393	g_value_set_object (value, tool_group->priv->children);	REVIEW
+app/core/gimptoolinfo.c:94	g_object_unref	-	g_object_unref (tool_info->tool_options);	REVIEW
+app/core/gimptoolinfo.c:100	g_object_unref	-	g_object_unref (tool_info->presets);	REVIEW
+app/core/gimptoolinfo.c:225	g_object_ref	-	tool_info->tool_options = g_object_ref (paint_info->paint_options);	REVIEW
+app/core/gimptoolinfo.c:264	g_object_unref	-	g_object_unref (gimp->standard_tool_info);	REVIEW
+app/core/gimptoolinfo.c:269	g_object_ref	-	g_object_ref (gimp->standard_tool_info);	REVIEW
+app/core/gimptooloptions.c:124	g_object_unref	-	g_object_unref (options->tool_info);	REVIEW
+app/core/gimptooloptions.c:209	g_object_ref	-	options->tool_info = g_object_ref (tool_info);	REVIEW
+app/core/gimptooloptions.c:238	g_value_set_object	-	g_value_set_object (value, gimp_context_get_tool (GIMP_CONTEXT (options)));	REVIEW
+app/core/gimptooloptions.c:242	g_value_set_object	-	g_value_set_object (value, options->tool_info);	REVIEW
+app/core/gimpviewable.c:230	g_object_unref	-	g_object_unref (private->preview_pixbuf);	REVIEW
+app/core/gimpviewable.c:314	g_object_unref	-	g_object_unref (private->preview_pixbuf);	REVIEW
+app/core/gimpviewable.c:857	g_object_unref	-	g_object_unref (pixbuf);	REVIEW
+app/core/gimpviewable.c:918	g_object_unref	-	g_object_unref (private->preview_pixbuf);	REVIEW
+app/core/gimpviewable.c:1035	g_object_unref	-	g_object_unref (icon);	REVIEW
+app/dialogs/dialogs.c:538	g_object_unref	-	g_object_unref (gimp_dialog_factory_get_singleton ());	REVIEW
+app/dialogs/dialogs.c:544	g_object_unref	-	g_object_unref (global_recent_docks);	REVIEW
+app/dialogs/preferences-dialog.c:185	g_value_init	-	g_value_init (&global_value, param_spec->value_type);	REVIEW
+app/dialogs/preferences-dialog.c:186	g_value_init	-	g_value_init (&copy_value,   param_spec->value_type);	REVIEW
+app/dialogs/preferences-dialog.c:204	g_value_unset	-	g_value_unset (&global_value);	REVIEW
+app/dialogs/preferences-dialog.c:205	g_value_unset	-	g_value_unset (&copy_value);	REVIEW
+app/dialogs/preferences-dialog.c:216	g_value_init	-	g_value_init (&copy_value,   param_spec->value_type);	REVIEW
+app/dialogs/preferences-dialog.c:217	g_value_init	-	g_value_init (&global_value, param_spec->value_type);	REVIEW
+app/dialogs/preferences-dialog.c:250	g_value_unset	-	g_value_unset (&copy_value);	REVIEW
+app/dialogs/preferences-dialog.c:251	g_value_unset	-	g_value_unset (&global_value);	REVIEW
+app/dialogs/preferences-dialog.c:336	g_value_init	-	g_value_init (&value, param_spec->value_type);	REVIEW
+app/dialogs/preferences-dialog.c:343	g_value_unset	-	g_value_unset (&value);	REVIEW
+app/dialogs/preferences-dialog.c:407	g_value_init	-	g_value_init (&value, param_spec->value_type);	REVIEW
+app/dialogs/preferences-dialog.c:414	g_value_unset	-	g_value_unset (&value);	REVIEW
+app/dialogs/preferences-dialog.c:761	g_object_unref	-	g_object_unref (pixbuf);	REVIEW
+app/dialogs/preferences-dialog.c:764	g_object_unref	-	g_object_unref (small_pixbuf);	REVIEW
+app/dialogs/preferences-dialog.c:798	g_object_unref	-	g_object_unref (pixbuf);	REVIEW
+app/dialogs/preferences-dialog.c:878	g_value_unset	-	g_value_unset (&val);	REVIEW
+app/dialogs/preferences-dialog.c:895	g_value_unset	-	g_value_unset (&val);	REVIEW
+app/dialogs/preferences-dialog.c:1482	g_object_unref	-	g_object_unref (tree);	REVIEW
+app/dialogs/preferences-dialog.c:1609	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/dialogs/preferences-dialog.c:1743	g_object_unref	-	g_object_unref (list_store);	REVIEW
+app/dialogs/preferences-dialog.c:1890	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/dialogs/preferences-dialog.c:1951	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/dialogs/preferences-dialog.c:1980	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/dialogs/preferences-dialog.c:2017	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/dialogs/preferences-dialog.c:2187	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/dialogs/preferences-dialog.c:2305	g_object_unref	-	g_object_unref (list_store);	REVIEW
+app/dialogs/preferences-dialog.c:2462	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/dialogs/preferences-dialog.c:2563	g_object_unref	-	g_object_unref (store);	REVIEW
+app/dialogs/preferences-dialog.c:2592	g_object_unref	-	g_object_unref (color_config);	REVIEW
+app/display/gimpcanvasgrid.c:133	g_object_unref	-	g_object_unref (private->grid);	REVIEW
+app/display/gimpcanvasgrid.c:178	g_value_set_object	-	g_value_set_object (value, private->grid);	REVIEW
+app/display/gimpdisplay.c:253	g_value_set_object	-	g_value_set_object (value, display->gimp);	REVIEW
+app/display/gimpdisplay.c:257	g_value_set_object	-	g_value_set_object (value, private->image);	REVIEW
+app/display/gimpdisplay.c:261	g_value_set_object	-	g_value_set_object (value, private->shell);	REVIEW
+app/display/gimpdisplay.c:524	g_object_ref	-	g_object_ref (shell);	REVIEW
+app/display/gimpdisplay.c:529	g_object_unref	-	g_object_unref (shell);	REVIEW
+app/display/gimpdisplay.c:539	g_object_unref	-	g_object_unref (shell);	REVIEW
+app/display/gimpdisplay.c:543	g_object_unref	-	g_object_unref (display);	REVIEW
+app/display/gimpdisplay.c:681	g_object_ref	-	g_object_ref (image);	REVIEW
+app/display/gimpdisplay.c:695	g_object_unref	-	g_object_unref (old_image);	REVIEW
+app/display/gimpdisplayshell-close.c:209	g_object_unref	-	g_object_unref (accel_group);	REVIEW
+app/display/gimpdisplayshell.c:774	g_object_unref	-	g_object_unref (filter);	REVIEW
+app/display/gimpdisplayshell.c:848	g_object_unref	-	g_object_unref (shell->mask);	REVIEW
+app/display/gimpdisplayshell.c:856	g_object_unref	-	g_object_unref (shell->motion_buffer);	REVIEW
+app/display/gimpdisplayshell.c:900	g_object_unref	-	g_object_unref (shell->zoom);	REVIEW
+app/display/gimpdisplayshell.c:903	g_object_unref	-	g_object_unref (shell->options);	REVIEW
+app/display/gimpdisplayshell.c:906	g_object_unref	-	g_object_unref (shell->fullscreen_options);	REVIEW
+app/display/gimpdisplayshell.c:909	g_object_unref	-	g_object_unref (shell->no_image_options);	REVIEW
+app/display/gimpdisplayshell.c:918	g_object_unref	-	g_object_unref (shell->icon);	REVIEW
+app/display/gimpdisplayshell.c:952	g_object_unref	-	g_object_unref (shell->icon);	REVIEW
+app/display/gimpdisplayshell.c:953	g_value_dup_object	-	shell->icon = g_value_dup_object (value);	REVIEW
+app/display/gimpdisplayshell.c:973	g_value_set_object	-	g_value_set_object (value, shell->popup_manager);	REVIEW
+app/display/gimpdisplayshell.c:976	g_value_set_object	-	g_value_set_object (value, shell->display);	REVIEW
+app/display/gimpdisplayshell.c:988	g_value_set_object	-	g_value_set_object (value, shell->icon);	REVIEW
+app/display/gimpdisplayshell.c:1928	g_object_ref	-	g_object_ref (mask);	REVIEW
+app/display/gimpdisplayshell.c:1931	g_object_unref	-	g_object_unref (shell->mask);	REVIEW
+app/display/gimpimagewindow.c:543	g_object_ref	01.002/000754	g_object_ref (private->right_docks);	REVIEW
+app/display/gimpimagewindow.c:691	g_object_unref	-	g_object_unref (private->menubar_manager);	REVIEW
+app/display/gimpimagewindow.c:775	g_value_set_object	-	g_value_set_object (value, private->gimp);	REVIEW
+app/display/gimpimagewindow.c:778	g_value_set_object	-	g_value_set_object (value, private->dialog_factory);	REVIEW
+app/display/gimpimagewindow.c:1405	g_object_ref	01.002/000767	g_object_ref (private->right_docks);	REVIEW
+app/display/gimpimagewindow.c:2090	g_object_ref	01.002/000784	g_object_ref (private->right_docks);	REVIEW
+app/display/gimpimagewindow.c:2109	g_object_unref	01.002/000787	g_object_unref (private->right_docks);	REVIEW
+app/display/gimpimagewindow.c:2556	g_object_ref	01.002/000805	g_object_ref(G_OBJECT(widget2));	REVIEW
+app/display/gimpimagewindow.c:2560	g_object_ref	01.002/000805	g_object_ref(G_OBJECT(widget1));	REVIEW
+app/display/gimpimagewindow.c:2569	g_object_unref	01.002/000805	g_object_unref(G_OBJECT(widget1));	REVIEW
+app/display/gimpimagewindow.c:2570	g_object_unref	01.002/000805	g_object_unref(G_OBJECT(widget2));	REVIEW
+app/display/gimpimagewindow.c:2583	g_object_ref	01.002/000805	g_object_ref(G_OBJECT(widget1));	REVIEW
+app/display/gimpimagewindow.c:2587	g_object_ref	01.002/000805	g_object_ref(G_OBJECT(widget2));	REVIEW
+app/display/gimpimagewindow.c:2596	g_object_unref	01.002/000805	g_object_unref(G_OBJECT(widget1));	REVIEW
+app/display/gimpimagewindow.c:2597	g_object_unref	01.002/000805	g_object_unref(G_OBJECT(widget2));	REVIEW
+app/display/gimpstatusbar.c:194	g_object_ref	-	statusbar->label = g_object_ref (children->data);	REVIEW
+app/display/gimpstatusbar.c:210	g_object_unref	-	g_object_unref (store);	REVIEW
+app/display/gimpstatusbar.c:238	g_object_unref	-	g_object_unref (statusbar->label);	REVIEW
+app/display/gimpstatusbar.c:341	g_object_unref	-	g_object_unref (statusbar->icon);	REVIEW
+app/display/gimpstatusbar.c:601	g_object_unref	-	g_object_unref (pixbuf);	REVIEW
+app/display/gimpstatusbar.c:612	g_object_unref	-	g_object_unref (layout);	REVIEW
+app/display/gimpstatusbar.c:641	g_object_unref	-	g_object_unref (statusbar->icon);	REVIEW
+app/file/file-open.c:441	g_object_unref	-	g_object_unref (image);	REVIEW
+app/file/file-open.c:543	g_object_unref	-	g_object_unref (new_image);	REVIEW
+app/gui/gimpuiconfigurer.c:148	g_value_set_object	-	g_value_set_object (value, ui_configurer->p->gimp);	REVIEW
+app/gui/gimpuiconfigurer.c:239	g_object_ref	-	g_object_ref (dock);	REVIEW
+app/gui/gimpuiconfigurer.c:242	g_object_unref	-	g_object_unref (dock);	REVIEW
+app/gui/gimpuiconfigurer.c:293	g_object_ref	-	g_object_ref (shell);	REVIEW
+app/gui/gimpuiconfigurer.c:296	g_object_unref	-	g_object_unref (shell);	REVIEW
+app/gui/gimpuiconfigurer.c:383	g_object_ref	-	g_object_ref (dock);	REVIEW
+app/gui/gimpuiconfigurer.c:386	g_object_unref	-	g_object_unref (dock);	REVIEW
+app/gui/gimpuiconfigurer.c:439	g_object_ref	01.002/000828	g_object_ref (shell);	REVIEW
+app/gui/gimpuiconfigurer.c:443	g_object_unref	01.002/000828	g_object_unref (shell);	REVIEW
+app/gui/gimpuiconfigurer.c:455	g_object_ref	01.002/000828	g_object_ref (shell);	REVIEW
+app/gui/gui-vtable.c:713	g_object_unref	-	g_object_unref (imagefile);	REVIEW
+app/gui/gui.c:684	g_object_unref	-	g_object_unref (image_ui_manager);	REVIEW
+app/gui/gui.c:687	g_object_unref	-	g_object_unref (ui_configurer);	REVIEW
+app/menus/menus.c:407	g_object_unref	-	g_object_unref (global_menu_factory);	REVIEW
+app/paint/gimp-paint.c:102	g_object_unref	-	g_object_unref (gimp->paint_info_list);	REVIEW
+app/paint/gimp-paint.c:114	g_object_unref	01.002/000890	g_object_unref (paint_info);	REVIEW
+app/paint/gimp-paint.c:144	g_object_unref	-	g_object_unref (paint_info);	REVIEW
+app/paint/gimpbrushcore.c:326	g_object_unref	-	g_object_unref (core->main_brush);	REVIEW
+app/paint/gimpbrushcore.c:332	g_object_unref	-	g_object_unref (core->dynamics);	REVIEW
+app/paint/gimpbrushcore.c:338	g_object_unref	01.002/000906	g_object_unref (core->texture);	REVIEW
+app/paint/gimpbrushcore.c:945	g_object_unref	-	g_object_unref (core->main_brush);	REVIEW
+app/paint/gimpbrushcore.c:953	g_object_ref	-	g_object_ref (core->main_brush);	REVIEW
+app/paint/gimpbrushcore.c:969	g_object_unref	-	g_object_unref (core->dynamics);	REVIEW
+app/paint/gimpbrushcore.c:974	g_object_ref	-	g_object_ref (core->dynamics);	REVIEW
+app/paint/gimpbrushcore.c:982	g_object_unref	01.002/000913	g_object_unref (core->texture);	REVIEW
+app/paint/gimpbrushcore.c:987	g_object_ref	01.002/000913	g_object_ref (core->texture);	REVIEW
+app/paint/gimppaintoptions.c:346	g_object_unref	-	g_object_unref (options->paint_info);	REVIEW
+app/paint/gimppaintoptions.c:382	g_value_dup_object	-	options->paint_info = g_value_dup_object (value);	REVIEW
+app/paint/gimppaintoptions.c:507	g_value_set_object	-	g_value_set_object (value, options->paint_info);	REVIEW
+app/pdb/mypaint-brush-select-cmds.c:163	g_object_unref	01.002/001044	g_object_unref (procedure);	REVIEW
+app/pdb/mypaint-brush-select-cmds.c:187	g_object_unref	01.002/001044	g_object_unref (procedure);	REVIEW
+app/pdb/mypaint-brush-select-cmds.c:218	g_object_unref	01.002/001044	g_object_unref (procedure);	REVIEW
+app/plug-in/gimpplugin-message.c:852	g_object_unref	01.002/001048	g_object_unref (proc);	REVIEW
+app/plug-in/gimpplugin-message.c:903	g_object_unref	01.002/001050	g_object_unref (proc);	REVIEW
+app/plug-in/gimpplugin-message.c:948	g_object_unref	-	g_object_unref (proc);	REVIEW
+app/plug-in/gimpplugin.c:612	g_object_ref	-	g_object_ref (plug_in);	REVIEW
+app/plug-in/gimpplugin.c:656	g_object_unref	-	g_object_unref (plug_in);	REVIEW
+app/plug-in/gimpplugin.c:1028	g_object_ref	-	g_object_ref (proc));	REVIEW
+app/plug-in/gimpplugin.c:1042	g_object_unref	-	g_object_unref (proc);	REVIEW
+app/plug-in/gimppluginmanager-call.c:105	g_object_unref	-	g_object_unref (plug_in);	REVIEW
+app/plug-in/gimppluginmanager-call.c:145	g_object_unref	-	g_object_unref (plug_in);	REVIEW
+app/plug-in/gimppluginmanager-call.c:211	g_object_unref	-	g_object_unref (plug_in);	REVIEW
+app/plug-in/gimppluginmanager-call.c:264	g_object_unref	-	g_object_unref (plug_in);	REVIEW
+app/plug-in/gimppluginmanager-call.c:314	g_object_unref	-	g_object_unref (plug_in);	REVIEW
+app/plug-in/gimppluginmanager-call.c:372	g_object_ref	-	g_object_ref (plug_in);	REVIEW
+app/plug-in/gimppluginmanager-call.c:384	g_object_unref	-	g_object_unref (plug_in);	REVIEW
+app/plug-in/gimppluginprocframe.c:75	g_object_ref	-	proc_frame->main_context       = g_object_ref (context);	REVIEW
+app/plug-in/gimppluginprocframe.c:77	g_object_ref	-	proc_frame->procedure          = procedure ? g_object_ref (procedure) : NULL;	REVIEW
+app/plug-in/gimppluginprocframe.c:80	g_object_ref	-	proc_frame->progress           = progress ? g_object_ref (progress) : NULL;	REVIEW
+app/plug-in/gimppluginprocframe.c:107	g_object_unref	-	g_object_unref (proc_frame->progress);	REVIEW
+app/plug-in/gimppluginprocframe.c:121	g_object_unref	-	g_object_unref (proc_frame->main_context);	REVIEW
+app/plug-in/gimppluginprocframe.c:142	g_object_unref	-	g_object_unref (proc_frame->procedure);	REVIEW
+app/plug-in/plug-in-rc.c:249	g_object_unref	-	g_object_unref (plug_in_def);	REVIEW
+app/plug-in/plug-in-rc.c:279	g_object_unref	-	g_object_unref (proc);	REVIEW
+app/plug-in/plug-in-rc.c:319	g_object_unref	-	g_object_unref (plug_in_def);	REVIEW
+app/tools/gimp-tools.c:310	g_object_unref	-	g_object_unref (gimp_list);	REVIEW
+app/tools/gimp-tools.c:380	g_object_ref_sink	-	g_object_ref_sink (options_gui));	REVIEW
+app/tools/gimp-tools.c:405	g_object_ref_sink	01.002/001116	g_object_ref_sink (toolbar_gui),	REVIEW
+app/tools/gimp-tools.c:632	g_object_unref	01.002/001121	g_object_unref (src_container);	REVIEW
+app/tools/gimp-tools.c:704	g_object_unref	01.002/001121	g_object_unref (tool_info);	REVIEW
+app/tools/gimp-tools.c:814	g_object_unref	-	g_object_unref (tool_info);	REVIEW
+app/tools/gimpbrightnesscontrasttool.c:424	g_object_unref	-	g_object_unref (levels);	REVIEW
+app/tools/gimpbrushoptions-gui.c:105	g_object_ref	01.002/001166	g_object_ref (G_OBJECT (p->container));	REVIEW
+app/tools/gimpbrushoptions-gui.c:112	g_object_ref	01.002/001166	g_object_ref (G_OBJECT (p->context));	REVIEW
+app/tools/gimpbrushoptions-gui.c:133	g_object_unref	01.002/001166	g_object_unref (G_OBJECT (p->container));	REVIEW
+app/tools/gimpbrushoptions-gui.c:139	g_object_unref	01.002/001166	g_object_unref (G_OBJECT (p->context));	REVIEW
+app/tools/gimpbrushoptions-gui.c:448	g_object_unref	01.002/001166	g_object_unref (G_OBJECT (p->container));	REVIEW
+app/tools/gimpbrushoptions-gui.c:459	g_object_unref	01.002/001166	g_object_unref (G_OBJECT (p->context));	REVIEW
+app/tools/gimpbrushtool.c:310	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpcagetool.c:228	g_object_unref	-	g_object_unref (ct->config);	REVIEW
+app/tools/gimpcagetool.c:234	g_object_unref	-	g_object_unref (ct->coef);	REVIEW
+app/tools/gimpcagetool.c:240	g_object_unref	-	g_object_unref (ct->render_node);	REVIEW
+app/tools/gimpcagetool.c:251	g_object_unref	-	g_object_unref (ct->image_map);	REVIEW
+app/tools/gimpcagetool.c:287	g_object_unref	-	g_object_unref (ct->config);	REVIEW
+app/tools/gimpcagetool.c:293	g_object_unref	-	g_object_unref (ct->coef);	REVIEW
+app/tools/gimpcagetool.c:301	g_object_unref	-	g_object_unref (ct->image_map);	REVIEW
+app/tools/gimpcagetool.c:307	g_object_unref	-	g_object_unref (ct->render_node);	REVIEW
+app/tools/gimpcagetool.c:448	g_object_unref	-	g_object_unref (ct->image_map);	REVIEW
+app/tools/gimpcagetool.c:1074	g_object_unref	-	g_object_unref (ct->coef);	REVIEW
+app/tools/gimpcagetool.c:1109	g_object_unref	-	g_object_unref (processor);	REVIEW
+app/tools/gimpcagetool.c:1112	g_object_unref	-	g_object_unref (gegl);	REVIEW
+app/tools/gimpcagetool.c:1196	g_object_unref	-	g_object_unref (transform);	REVIEW
+app/tools/gimpcagetool.c:1235	g_object_unref	-	g_object_unref (buffer);	REVIEW
+app/tools/gimpcurvestool.c:485	g_object_unref	-	g_object_unref (store);	REVIEW
+app/tools/gimpdrawtool.c:250	g_object_unref	-	g_object_unref (draw_tool->preview);	REVIEW
+app/tools/gimpdrawtool.c:257	g_object_unref	-	g_object_unref (draw_tool->item);	REVIEW
+app/tools/gimpdrawtool.c:489	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:505	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:557	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:584	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:639	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:672	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:693	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:722	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:744	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:788	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:810	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:832	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:852	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:876	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:915	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:933	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:958	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdrawtool.c:986	g_object_unref	-	g_object_unref (item);	REVIEW
+app/tools/gimpdynamicsoptions-gui.c:76	g_object_ref	01.002/001242	g_object_ref (G_OBJECT (p->working_dynamics));	REVIEW
+app/tools/gimpdynamicsoptions-gui.c:85	g_object_unref	01.002/001242	g_object_unref (G_OBJECT (p->working_dynamics));	REVIEW
+app/tools/gimpforegroundselecttool.c:685	g_object_unref	-	g_object_unref (mask);	REVIEW
+app/tools/gimpforegroundselecttool.c:703	g_object_unref	-	g_object_unref (fg_select->mask);	REVIEW
+app/tools/gimpforegroundselecttool.c:711	g_object_ref	-	fg_select->mask = g_object_ref (mask);	REVIEW
+app/tools/gimpgegltool.c:138	g_object_unref	-	g_object_unref (tool->config);	REVIEW
+app/tools/gimpgegltool.c:200	g_value_init	-	g_value_init (&value, gimp_pspec->value_type);	REVIEW
+app/tools/gimpgegltool.c:211	g_value_unset	-	g_value_unset (&value);	REVIEW
+app/tools/gimpgegltool.c:219	g_value_init	-	g_value_init (&value, gegl_pspec->value_type);	REVIEW
+app/tools/gimpgegltool.c:226	g_value_unset	-	g_value_unset (&value);	REVIEW
+app/tools/gimpgegltool.c:414	g_object_unref	-	g_object_unref (store);	REVIEW
+app/tools/gimpgegltool.c:473	g_value_init	-	g_value_init (value, pspec->value_type);	REVIEW
+app/tools/gimpgegltool.c:481	g_value_unset	-	g_value_unset (value);	REVIEW
+app/tools/gimpgegltool.c:530	g_value_copy	-	g_value_copy (value, val);	REVIEW
+app/tools/gimpgegltool.c:541	g_value_copy	-	g_value_copy (val, value);	REVIEW
+app/tools/gimpgegltool.c:655	g_object_unref	-	g_object_unref (tool->config);	REVIEW
+app/tools/gimpgegltool.c:669	g_object_unref	-	g_object_unref (GIMP_IMAGE_MAP_TOOL (tool)->image_map);	REVIEW
+app/tools/gimphuesaturationtool.c:357	g_object_unref	-	g_object_unref (label_group);	REVIEW
+app/tools/gimphuesaturationtool.c:358	g_object_unref	-	g_object_unref (spinner_group);	REVIEW
+app/tools/gimpimagemaptool.c:242	g_object_unref	-	g_object_unref (image_map_tool->operation);	REVIEW
+app/tools/gimpimagemaptool.c:248	g_object_unref	-	g_object_unref (image_map_tool->config);	REVIEW
+app/tools/gimpimagemaptool.c:254	g_object_unref	-	g_object_unref (image_map_tool->default_config);	REVIEW
+app/tools/gimpimagemaptool.c:384	g_object_unref	-	g_object_unref (image_map_tool->dialog);	REVIEW
+app/tools/gimpimagemaptool.c:428	g_object_unref	-	g_object_unref (image_map_tool->image_map);	REVIEW
+app/tools/gimpimagemaptool.c:621	g_object_unref	-	g_object_unref (tool->image_map);	REVIEW
+app/tools/gimpimagemaptool.c:677	g_object_unref	-	g_object_unref (image_map_tool->image_map);	REVIEW
+app/tools/gimpimagemaptool.c:710	g_object_ref	-	g_object_ref (dialog);	REVIEW
+app/tools/gimpimagemaptool.c:723	g_object_unref	-	g_object_unref (image_map_tool->dialog);	REVIEW
+app/tools/gimpimagemaptool.c:796	g_object_ref	-	GIMP_IMAGE_MAP_TOOL (new_tool)->default_config = g_object_ref (config);	REVIEW
+app/tools/gimpinkoptions-gui.c:184	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/tools/gimpiscissorstool.c:380	g_object_unref	-	g_object_unref (iscissors->mask);	REVIEW
+app/tools/gimpiscissorstool.c:542	g_object_unref	-	g_object_unref (iscissors->mask);	REVIEW
+app/tools/gimplevelstool.c:395	g_object_unref	-	g_object_unref (store);	REVIEW
+app/tools/gimplevelstool.c:543	g_object_unref	-	g_object_unref (tool->gamma_linear);	REVIEW
+app/tools/gimplevelstool.c:1258	g_object_unref	-	g_object_unref (curves);	REVIEW
+app/tools/gimppainttool.c:181	g_object_unref	-	g_object_unref (paint_tool->core);	REVIEW
+app/tools/gimprectangleoptions.c:334	g_object_unref	-	g_object_unref (private->aspect_history);	REVIEW
+app/tools/gimprectangleoptions.c:335	g_object_unref	-	g_object_unref (private->size_history);	REVIEW
+app/tools/gimprectangleoptions.c:928	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/tools/gimprectangleoptions.c:1173	g_object_unref	-	g_object_unref (completion);	REVIEW
+app/tools/gimprectangleoptions.c:1227	g_value_unset	-	g_value_unset (&value);	REVIEW
+app/tools/gimprectangleoptions.c:1231	g_value_unset	-	g_value_unset (&value);	REVIEW
+app/tools/gimptextoptions.c:627	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/tools/gimptexttool.c:307	g_object_unref	-	g_object_unref (text_tool->proxy);	REVIEW
+app/tools/gimptexttool.c:313	g_object_unref	-	g_object_unref (text_tool->buffer);	REVIEW
+app/tools/gimptexttool.c:1029	g_object_unref	-	g_object_unref (text_tool->text);	REVIEW
+app/tools/gimptexttool.c:1060	g_object_ref	-	text_tool->text = g_object_ref (text);	REVIEW
+app/tools/gimptexttool.c:1157	g_value_init	-	g_value_init (&value, pspec->value_type);	REVIEW
+app/tools/gimptexttool.c:1171	g_value_unset	-	g_value_unset (&value);	REVIEW
+app/tools/gimptexttool.c:1321	g_value_init	-	g_value_init (&value, pspec->value_type);	REVIEW
+app/tools/gimptexttool.c:1326	g_value_unset	-	g_value_unset (&value);	REVIEW
+app/tools/gimptexttool.c:1405	g_object_unref	-	g_object_unref (text);	REVIEW
+app/tools/gimptexttool.c:1769	g_object_unref	-	g_object_unref (text_tool->layout);	REVIEW
+app/tools/gimptool.c:224	g_object_unref	-	g_object_unref (tool->tool_info);	REVIEW
+app/tools/gimptool.c:230	g_object_unref	-	g_object_unref (tool->control);	REVIEW
+app/tools/gimptool.c:248	g_value_dup_object	-	tool->tool_info = g_value_dup_object (value);	REVIEW
+app/tools/gimptool.c:268	g_value_set_object	-	g_value_set_object (value, tool->tool_info);	REVIEW
+app/tools/gimptool.c:656	g_object_ref	-	g_object_ref (tool);	REVIEW
+app/tools/gimptool.c:700	g_object_unref	-	g_object_unref (tool);	REVIEW
+app/tools/gimptooloptions-gui.c:159	g_object_unref	01.002/001488	g_object_unref (state->config);	REVIEW
+app/tools/gimptooloptions-gui.c:189	g_object_ref	01.002/001488	g_object_ref (config);	REVIEW
+app/tools/gimptooloptions-gui.c:315	g_object_ref	01.002/001488	g_object_ref (config);	REVIEW
+app/tools/gimpvectortool.c:345	g_object_unref	-	g_object_unref (vector_tool->cur_stroke);	REVIEW
+app/tools/gimpvectortool.c:628	g_object_unref	-	g_object_unref (new_stroke);	REVIEW
+app/tools/gimpvectortool.c:676	g_object_unref	-	g_object_unref (undo);	REVIEW
+app/tools/gimpvectortool.c:1623	g_object_unref	-	g_object_unref (vector_tool->vectors);	REVIEW
+app/tools/gimpvectortool.c:1661	g_object_ref	-	g_object_ref (vectors);	REVIEW
+app/widgets/gimpcellrendererviewable.c:171	g_object_unref	-	g_object_unref (cell->renderer);	REVIEW
+app/widgets/gimpcellrendererviewable.c:189	g_value_set_object	-	g_value_set_object (value, cell->renderer);	REVIEW
+app/widgets/gimpcellrendererviewable.c:210	g_value_dup_object	-	GimpViewRenderer *renderer = g_value_dup_object (value);	REVIEW
+app/widgets/gimpcellrendererviewable.c:213	g_object_unref	-	g_object_unref (cell->renderer);	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:114	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:167	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:522	g_object_unref	-	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:723	g_object_ref	01.002/001534	g_object_ref (src_viewable);	REVIEW
+app/widgets/gimpcontainertreeview-dnd.c:729	g_object_unref	01.002/001535	g_object_unref (src_viewable);	REVIEW
+app/widgets/gimpcontainertreeview.c:248	g_object_unref	-	g_object_unref (tree_view->model);	REVIEW
+app/widgets/gimpcontainertreeview.c:702	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcontainertreeview.c:901	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcontainertreeview.c:931	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcontainertreeview.c:1067	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcontainertreeview.c:1101	g_object_ref	-	g_object_ref (tree_view);	REVIEW
+app/widgets/gimpcontainertreeview.c:1239	g_object_unref	-	g_object_unref (tree_view);	REVIEW
+app/widgets/gimpcontainertreeview.c:1242	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcontainertreeview.c:1297	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcontainertreeview.c:1403	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcontainertreeview.c:1443	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcontainertreeview.c:1473	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpcurveview.c:245	g_object_unref	-	g_object_unref (view->layout);	REVIEW
+app/widgets/gimpcurveview.c:251	g_object_unref	-	g_object_unref (view->cursor_layout);	REVIEW
+app/widgets/gimpcurveview.c:328	g_value_set_object	-	g_value_set_object (value, view->gimp);	REVIEW
+app/widgets/gimpcurveview.c:361	g_object_unref	-	g_object_unref (view->layout);	REVIEW
+app/widgets/gimpcurveview.c:367	g_object_unref	-	g_object_unref (view->cursor_layout);	REVIEW
+app/widgets/gimpcurveview.c:1147	g_object_unref	-	g_object_unref (copy);	REVIEW
+app/widgets/gimpcurveview.c:1169	g_object_unref	-	g_object_unref (copy);	REVIEW
+app/widgets/gimpcurveview.c:1205	g_object_unref	-	g_object_unref (view->curve);	REVIEW
+app/widgets/gimpcurveview.c:1212	g_object_ref	-	g_object_ref (view->curve);	REVIEW
+app/widgets/gimpcurveview.c:1257	g_object_ref	-	bg->curve = g_object_ref (curve);	REVIEW
+app/widgets/gimpcurveview.c:1292	g_object_unref	-	g_object_unref (bg->curve);	REVIEW
+app/widgets/gimpcurveview.c:1320	g_object_unref	-	g_object_unref (bg->curve);	REVIEW
+app/widgets/gimpdatafactoryview.c:301	g_object_unref	-	g_object_unref (factory_view->priv->tagged_container);	REVIEW
+app/widgets/gimpdatafactoryview.c:307	g_object_unref	-	g_object_unref (factory_view->priv->factory);	REVIEW
+app/widgets/gimpdatafactoryview.c:331	g_value_dup_object	-	factory_view->priv->factory = g_value_dup_object (value);	REVIEW
+app/widgets/gimpdatafactoryview.c:355	g_value_set_object	-	g_value_set_object (value, factory_view->priv->factory);	REVIEW
+app/widgets/gimpdatafactoryview.c:560	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpdevicemanager.c:210	g_value_set_object	-	g_value_set_object (value, private->gimp);	REVIEW
+app/widgets/gimpdevicemanager.c:214	g_value_set_object	-	g_value_set_object (value, private->current_device);	REVIEW
+app/widgets/gimpdevicemanager.c:335	g_object_unref	-	g_object_unref (device_info);	REVIEW
+app/widgets/gimpdnd.c:1549	g_object_unref	-	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimpdnd.c:1580	g_object_unref	-	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimpdnd.c:1693	g_object_ref	-	"""gimp-dnd-viewable"", g_object_ref (image),"	REVIEW
+app/widgets/gimpdnd.c:1824	g_object_ref	-	"""gimp-dnd-viewable"", g_object_ref (viewable),"	REVIEW
+app/widgets/gimpdock.c:372	g_object_ref	-	g_object_ref (dockbook);	REVIEW
+app/widgets/gimpdock.c:375	g_object_unref	-	g_object_unref (dockbook);	REVIEW
+app/widgets/gimpdock.c:546	g_object_ref	-	g_object_ref (dockable);	REVIEW
+app/widgets/gimpdock.c:555	g_object_unref	-	g_object_unref (dockable);	REVIEW
+app/widgets/gimpdock.c:894	g_object_ref	-	g_object_ref (dockbook);	REVIEW
+app/widgets/gimpdock.c:904	g_object_unref	-	g_object_unref (dockbook);	REVIEW
+app/widgets/gimpdockable.c:883	g_object_ref	-	g_object_ref (dockable);	REVIEW
+app/widgets/gimpdockable.c:888	g_object_unref	-	g_object_unref (dockable);	REVIEW
+app/widgets/gimpdockbook.c:323	g_object_ref	-	g_object_ref (dockable);	REVIEW
+app/widgets/gimpdockbook.c:326	g_object_unref	-	g_object_unref (dockable);	REVIEW
+app/widgets/gimpdockbook.c:339	g_object_unref	-	g_object_unref (dockbook->p->ui_manager);	REVIEW
+app/widgets/gimpdockbook.c:597	g_object_ref	-	g_object_ref (dockable);	REVIEW
+app/widgets/gimpdockbook.c:599	g_object_ref	-	g_object_ref (dockbook),	REVIEW
+app/widgets/gimpdockbook.c:634	g_object_unref	-	g_object_unref (dockable);	REVIEW
+app/widgets/gimpdockbook.c:1113	g_object_ref	-	g_object_ref (dockable);	REVIEW
+app/widgets/gimpdockbook.c:1132	g_object_unref	-	g_object_unref (dockable);	REVIEW
+app/widgets/gimpdockbook.c:1309	g_object_ref	-	g_object_ref (dockable);	REVIEW
+app/widgets/gimpdockbook.c:1314	g_object_unref	-	g_object_unref (dockable);	REVIEW
+app/widgets/gimpdockbook.c:1598	g_object_ref	-	g_object_ref (src_dockable);	REVIEW
+app/widgets/gimpdockbook.c:1604	g_object_unref	-	g_object_unref (src_dockable);	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:244	g_object_unref	-	g_object_unref (private->input_list);	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:309	g_object_unref	-	g_object_unref (private->output);	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:327	g_value_dup_object	-	private->output = g_value_dup_object (value);	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:347	g_value_set_object	-	g_value_set_object (value, private->output);	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:449	g_object_unref	-	g_object_unref (input_curve);	REVIEW
+app/widgets/gimpdynamicsoutputeditor.c:495	g_object_unref	-	g_object_unref (input_curve);	REVIEW
+app/widgets/gimpeditor.c:236	g_object_unref	-	g_object_unref (editor->priv->menu_factory);	REVIEW
+app/widgets/gimpeditor.c:248	g_object_unref	-	g_object_unref (editor->priv->ui_manager);	REVIEW
+app/widgets/gimpeditor.c:272	g_value_dup_object	-	editor->priv->menu_factory = g_value_dup_object (value);	REVIEW
+app/widgets/gimpeditor.c:313	g_value_set_object	-	g_value_set_object (value, editor->priv->menu_factory);	REVIEW
+app/widgets/gimpeditor.c:420	g_object_unref	-	g_object_unref (editor->priv->menu_factory);	REVIEW
+app/widgets/gimpeditor.c:422	g_object_ref	-	editor->priv->menu_factory = g_object_ref (menu_factory);	REVIEW
+app/widgets/gimpeditor.c:425	g_object_unref	-	g_object_unref (editor->priv->ui_manager);	REVIEW
+app/widgets/gimpeditor.c:536	g_object_ref	-	g_object_ref (button);	REVIEW
+app/widgets/gimpeditor.c:544	g_object_unref	-	g_object_unref (button);	REVIEW
+app/widgets/gimpeditor.c:549	g_object_ref_sink	-	g_object_ref_sink (hbox);	REVIEW
+app/widgets/gimpeditor.c:550	g_object_unref	-	g_object_unref (hbox);	REVIEW
+app/widgets/gimpfgbgeditor.c:178	g_object_unref	-	g_object_unref (editor->default_icon);	REVIEW
+app/widgets/gimpfgbgeditor.c:184	g_object_unref	-	g_object_unref (editor->swap_icon);	REVIEW
+app/widgets/gimpfgbgeditor.c:224	g_value_set_object	-	g_value_set_object (value, editor->context);	REVIEW
+app/widgets/gimpfgbgeditor.c:550	g_object_unref	-	g_object_unref (editor->context);	REVIEW
+app/widgets/gimpfgbgeditor.c:558	g_object_ref	-	g_object_ref (context);	REVIEW
+app/widgets/gimpitemtreeview.c:719	g_object_unref	-	g_object_unref (view->priv->options_group);	REVIEW
+app/widgets/gimpitemtreeview.c:1283	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpitemtreeview.c:1459	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpitemtreeview.c:1552	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimpitemtreeview.c:1604	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimplayertreeview.c:522	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimplayertreeview.c:627	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimplayertreeview.c:798	g_object_unref	-	g_object_unref (channel);	REVIEW
+app/widgets/gimplayertreeview.c:1212	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimplayertreeview.c:1299	g_object_unref	-	g_object_unref (layer_renderer);	REVIEW
+app/widgets/gimplayertreeview.c:1302	g_object_unref	-	g_object_unref (mask_renderer);	REVIEW
+app/widgets/gimplayertreeview.c:1350	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimplayertreeview.c:1396	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimppanedbox.c:176	g_object_ref	-	g_object_ref (widget);	REVIEW
+app/widgets/gimppanedbox.c:179	g_object_unref	-	g_object_unref (widget);	REVIEW
+app/widgets/gimppanedbox.c:578	g_object_ref	-	g_object_ref (old_widget);	REVIEW
+app/widgets/gimppanedbox.c:610	g_object_unref	-	g_object_unref (old_widget);	REVIEW
+app/widgets/gimppanedbox.c:661	g_object_ref	-	g_object_ref (widget);	REVIEW
+app/widgets/gimppanedbox.c:671	g_object_ref	-	g_object_ref (other_widget);	REVIEW
+app/widgets/gimppanedbox.c:683	g_object_unref	-	g_object_unref (other_widget);	REVIEW
+app/widgets/gimppanedbox.c:685	g_object_unref	-	g_object_unref (widget);	REVIEW
+app/widgets/gimpselectiondata.c:411	g_object_unref	-	g_object_unref (curve);	REVIEW
+app/widgets/gimpsessioninfo-dock.c:363	g_object_ref	-	g_object_ref (dockbook);	REVIEW
+app/widgets/gimpsessioninfo-dock.c:366	g_object_unref	-	g_object_unref (dockbook);	REVIEW
+app/widgets/gimptoolbox.c:340	g_object_unref	-	g_object_unref (toolbox->p->context);	REVIEW
+app/widgets/gimptoolbox.c:360	g_value_dup_object	-	toolbox->p->context = g_value_dup_object (value);	REVIEW
+app/widgets/gimptoolbox.c:380	g_value_set_object	-	g_value_set_object (value, toolbox->p->context);	REVIEW
+app/widgets/gimptoolbox.c:453	g_object_ref	-	g_object_ref (toolbox->p->context));	REVIEW
+app/widgets/gimptoolbox.c:828	g_object_unref	-	g_object_unref (context);	REVIEW
+app/widgets/gimptooleditor.c:397	g_object_unref	01.002/001740	g_object_unref (group);	REVIEW
+app/widgets/gimptooleditor.c:537	g_object_ref	01.002/001770	g_object_ref (tool_item);	REVIEW
+app/widgets/gimptooleditor.c:548	g_object_ref	01.002/001773	g_object_ref (object);	REVIEW
+app/widgets/gimptooleditor.c:553	g_object_unref	01.002/001774	g_object_unref (object);	REVIEW
+app/widgets/gimptooleditor.c:564	g_object_unref	01.002/001775	g_object_unref (tool_item);	REVIEW
+app/widgets/gimptooleditor.c:632	g_object_unref	01.002/001786	g_object_unref (renderer);	REVIEW
+app/widgets/gimptooleditor.c:665	g_object_unref	01.002/001791	g_object_unref (renderer);	REVIEW
+app/widgets/gimptooleditor.c:695	g_object_unref	-	g_object_unref (renderer);	REVIEW
+app/widgets/gimptooloptionstoolbar.c:217	g_value_set_object	01.002/001799	g_value_set_object (value, toolbar->p->gimp);	REVIEW
+app/widgets/gimptooloptionstoolbar.c:286	g_object_ref	01.002/001799	g_object_ref(G_OBJECT(options_gui));	REVIEW
+app/widgets/gimptooloptionstoolbar.c:294	g_object_unref	01.002/001799	g_object_unref(G_OBJECT(options_gui));	REVIEW
+app/widgets/gimptooloptionstoolbar.c:332	g_object_ref	01.002/001799	g_object_ref (list->data);	REVIEW
+app/widgets/gimpviewrenderer.c:195	g_object_unref	-	g_object_unref (renderer->pixbuf);	REVIEW
+app/widgets/gimpviewrenderer.c:331	g_object_unref	-	g_object_unref (renderer->pixbuf);	REVIEW
+app/widgets/gimpviewrenderer.c:521	g_object_unref	-	g_object_unref (renderer->pattern);	REVIEW
+app/widgets/gimpviewrenderer.c:665	g_object_unref	-	g_object_unref (renderer->context);	REVIEW
+app/widgets/gimpviewrenderer.c:670	g_object_ref	-	g_object_ref (renderer->context);	REVIEW
+app/widgets/gimpviewrenderer.c:818	g_object_unref	-	g_object_unref (renderer->pixbuf);	REVIEW
+app/widgets/gimpviewrenderer.c:849	g_object_ref	-	g_object_ref (pixbuf);	REVIEW
+app/widgets/gimpviewrenderer.c:852	g_object_unref	-	g_object_unref (renderer->pixbuf);	REVIEW
+app/widgets/gimpviewrenderer.c:873	g_object_unref	-	g_object_unref (renderer->pixbuf);	REVIEW
+app/widgets/gimpviewrenderer.c:908	g_object_unref	-	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimpviewrenderer.c:1133	g_object_unref	-	g_object_unref (pixbuf);	REVIEW
+app/widgets/gimpwidgets-constructors.c:189	g_object_unref	-	g_object_unref (store);	REVIEW
+app/widgets/gimpwidgets-utils.c:317	g_object_unref	-	g_object_unref (size_group);	REVIEW
+app/widgets/gimpwidgets-utils.c:326	g_object_ref	-	g_object_ref (radio);	REVIEW
+app/widgets/gimpwidgets-utils.c:329	g_object_unref	-	g_object_unref (radio);	REVIEW
+app/widgets/gimpwidgets-utils.c:937	g_object_unref	-	g_object_unref (parent);	REVIEW
+app/xcf/xcf-load.c:217	g_object_unref	-	g_object_unref (grid);	REVIEW
+app/xcf/xcf-load.c:425	g_object_unref	-	g_object_unref (image);	REVIEW
+app/xcf/xcf-load.c:949	g_object_ref_sink	-	g_object_ref_sink (*layer);	REVIEW
+app/xcf/xcf-load.c:950	g_object_unref	-	g_object_unref (*layer);	REVIEW
+app/xcf/xcf-load.c:1028	g_object_ref_sink	01.002/001832	g_object_ref_sink (*layer);	REVIEW
+app/xcf/xcf-load.c:1029	g_object_unref	01.002/001832	g_object_unref (*layer);	REVIEW
+app/xcf/xcf-load.c:1089	g_object_ref_sink	01.002/001832	g_object_ref_sink (*layer);	REVIEW
+app/xcf/xcf-load.c:1090	g_object_unref	01.002/001832	g_object_unref (*layer);	REVIEW
+app/xcf/xcf-load.c:1167	g_object_unref	-	g_object_unref (*channel);	REVIEW
+app/xcf/xcf-load.c:1327	g_value_init	01.002/001833	g_value_init(value, G_TYPE_INT);	REVIEW
+app/xcf/xcf-load.c:1338	g_value_init	01.002/001833	g_value_init(value, G_TYPE_UINT);	REVIEW
+app/xcf/xcf-load.c:1349	g_value_init	01.002/001833	g_value_init(value, G_TYPE_UCHAR);	REVIEW
+app/xcf/xcf-load.c:1360	g_value_init	01.002/001833	g_value_init(value, G_TYPE_DOUBLE);	REVIEW
+app/xcf/xcf-load.c:1388	g_value_init	01.002/001833	g_value_init(value, G_TYPE_STRING);	REVIEW
+app/xcf/xcf-load.c:1608	g_object_ref_sink	-	g_object_ref_sink (layer_mask),	REVIEW
+app/xcf/xcf-load.c:1620	g_object_unref	-	g_object_unref (layer);	REVIEW
+app/xcf/xcf-load.c:1680	g_object_unref	-	g_object_unref (channel);	REVIEW
+app/xcf/xcf-load.c:1743	g_object_unref	-	g_object_unref (layer_mask);	REVIEW
+app/xcf/xcf-load.c:2362	g_value_init	-	g_value_init (&value, GIMP_TYPE_ANCHOR);	REVIEW
+app/xcf/xcf-load.c:2421	g_value_unset	-	g_value_unset (&value);	REVIEW
+app/xcf/xcf-load.c:2430	g_object_unref	-	g_object_unref (stroke);	REVIEW
+app/xcf/xcf.c:174	g_object_unref	-	g_object_unref (procedure);	REVIEW
+app/xcf/xcf.c:237	g_object_unref	-	g_object_unref (procedure);	REVIEW

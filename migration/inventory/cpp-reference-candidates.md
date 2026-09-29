@@ -9,3 +9,5 @@
 `cpp-scoped-pointer-review.tsv` は `CXXPointer` 54 箇所を対象に、対象の C++ 型と `delete` の対象を整理する。38 箇所の `Connection` は destructor が対象 GObject の signal を解除するため、Connection が対象より長生きしないことを実装時に確認する。3 箇所の Idle/Timeout は source の取消と callback の終了順を別途検証する。`GdkPoint` は `new` で生成されるため `delete` と対応する。一覧の `DONE` は構文分類の完了を示し、実行時の安全性を意味しない。
 
 `cpp-gvalue-review.tsv` は `GValue` 136 件の構文を helper、配列借用、初期化、引数、値ポインターに分けた。旧 `app/pdb/pdb-cxx-utils.hpp:177-181` と `:263-267` は文字列の一時 `GValue` を初期化しているが `g_value_unset` がない。`app/core/gimpfilterlayer.cpp:665-674` は `GValueArray` の要素を `GArray` に byte copy して clear callback を設定する一方、元配列の解放が見えず、同一内部ポインターの二重解放とリークの危険がある。`get_procedure_arg` は runner の戻り値を返さずに破棄する。移植先では値ごとに `g_value_copy` を行い、元配列と一時値を個別に解放し、getter の戻り値を検証する。
+
+旧差分に含まれる C 220 ファイルで `g_object_ref*` / `g_object_unref` と `g_value_*` の呼び出しを抽出すると 645 件あり、そのうち 74 件が変更 hunk の範囲に位置する。`c-reference-candidates.tsv` に操作、出典行、hunk ID を記録した。hunk 範囲内であることは新規行という証明ではない。後続では変更前の行との照合、返り値の参照数、解放との対応を確認する。
