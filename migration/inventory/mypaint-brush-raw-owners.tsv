@@ -1,0 +1,17 @@
+legacy_site	operation	owner	release_contract	migration_followup	status
+app/core/gimpmypaintbrush.cpp:147	NEW	GimpMypaintBrush.p	GObject finalize deletes private	normal construction	DONE
+app/core/gimpmypaintbrush.cpp:157	DELETE	GimpMypaintBrush.p	private destructor releases strings, mappings and icon	normal finalize	DONE
+app/core/gimpmypaintbrush.cpp:357	DELETE	duplicate result.p	replace constructed private with duplicate result	duplicate must release former private	DONE
+app/core/gimpmypaintbrush.cpp:375	WEAK_POINTER	static standard_mypaint_brush slot	weak pointer nulls static slot when GObject finalizes	slot survives process	DONE
+app/core/gimpmypaintbrush.cpp:457	G_FREE	private.parent_brush_name	private destructor frees duplicate string	normal finalize	DONE
+app/core/gimpmypaintbrush.cpp:461	G_FREE	private.group	private destructor frees duplicate string	normal finalize	DONE
+app/core/gimpmypaintbrush.cpp:469	G_FREE	private.text[i]	private destructor frees each duplicate string	normal finalize	DONE
+app/core/gimpmypaintbrush.cpp:503	NEW	private.settings[index].mapping	deallocate_mapping deletes mapping	19.006/mapping-value-owner	DONE
+app/core/gimpmypaintbrush.cpp:512	DELETE	private.settings[index].mapping	delete and reset slot to NULL	19.006/mapping-value-owner	DONE
+app/core/gimpmypaintbrush.cpp:527	G_FREE	private.parent_brush_name	setter frees previous string then duplicates input	alias input to old string unsafe	DONE
+app/core/gimpmypaintbrush.cpp:541	G_FREE	private.group	setter frees previous string then duplicates input	alias input to old string unsafe	DONE
+app/core/gimpmypaintbrush.cpp:567	G_FREE	private.text[index]	setter frees previous string then duplicates input	alias input to old string unsafe	DONE
+app/core/gimpmypaintbrush.cpp:628	NEW	preview local Brush	deleted after surface session	early exit and exception cleanup	DONE
+app/core/gimpmypaintbrush.cpp:733	DELETE	preview local Brush	delete after surface session	normal preview exit	DONE
+app/core/gimpmypaintbrush.cpp:734	DELETE	preview local GimpMypaintSurface	delete after surface session	normal preview exit	DONE
+app/core/gimpmypaintbrush.cpp:782	NEW	duplicated private result	transferred to result.p then GObject finalize	mapping copy and icon buffer followups	DONE

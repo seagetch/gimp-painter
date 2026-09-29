@@ -178,6 +178,7 @@
 | 01.007/value-wrapper | [x] | GValue wrapper の代入時所有権を追跡する | 01.007/gvalue | CopyValue の copy/move 代入と一時値の破棄経路を出典行で確認する |
 | 01.007/array-wrapper | [x] | GLib 配列 wrapper の代入時所有権を追跡する | 01.007/raw-activity | Array の二種類の移動代入と旧 GArray の解放経路を確認する |
 | 01.007/icon-buffer | [x] | MyPaint アイコン画素の所有権を追跡する | 01.007/raw-activity | Cairo surface と backing buffer の解放・stride・自己代入経路を旧ソースで照合する |
+| 01.007/mypaint-brush-private | [x] | MyPaint ブラシ資源の raw pointer を対応付ける | 01.007/raw-activity | 16 箇所を GObject private・設定・preview・weak slot の所有者と解放経路へ対応付ける |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
