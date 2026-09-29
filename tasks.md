@@ -175,6 +175,7 @@
 | 01.007/dict-transfer | [x] | MyPaint 設定辞書の返り値参照を照合する | 01.007/ref-hold | 7 箇所の hold の取得元と HashTable の解放、静的辞書の追加保持を出典行で記録する |
 | 01.007/router-tree | [x] | 旧 HTTP router の規則木の所有を照合する | 01.007/raw-activity | 二世代の Router の生成・破棄と TokenRule 派生型の削除契約を追跡する |
 | 01.007/connection-signal | [x] | signal Connection の補助文字列を追跡する | 01.007/scoped-pointers | g_strdup した signal 名の解放先と target・closure の解放契約を調べる |
+| 01.007/value-wrapper | [x] | GValue wrapper の代入時所有権を追跡する | 01.007/gvalue | CopyValue の copy/move 代入と一時値の破棄経路を出典行で確認する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
@@ -309,6 +310,7 @@
 | 06.018 | [ ] | Connection の block/unblock を実装する | 06.017 | 旧 after と一時抑制の順序を維持 |
 | 06.019 | [ ] | idle source の所有管理を実装する | 06.018 | close 後に user data を参照しない |
 | 06.020 | [ ] | GValue の所有 wrapper を実装する | 06.019 | borrow・copy・unset・free を明示して二重解放しない |
+| 06.020/value-assignment | [ ] | GValue wrapper の再代入を安全にする | 06.020, 01.007/value-wrapper | copy/move/self 代入で旧値を解放し、確保領域と値を一度だけ破棄する |
 | 06.021 | [ ] | GLib 配列と文字列の所有 wrapper を実装する | 06.020 | allocator 対応が一致 |
 | 06.022 | [ ] | mutex guard の置換を実装する | 06.021 | 早期 return・例外でも unlock する |
 | 06.023 | [ ] | GTK DSL を新ハンドルへ接続する | 06.022 | Definer/Packer の旧二重所有を排除 |
