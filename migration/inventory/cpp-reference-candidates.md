@@ -11,3 +11,5 @@
 `cpp-gvalue-review.tsv` は `GValue` 136 件の構文を helper、配列借用、初期化、引数、値ポインターに分けた。旧 `app/pdb/pdb-cxx-utils.hpp:177-181` と `:263-267` は文字列の一時 `GValue` を初期化しているが `g_value_unset` がない。`app/core/gimpfilterlayer.cpp:665-674` は `GValueArray` の要素を `GArray` に byte copy して clear callback を設定する一方、元配列の解放が見えず、同一内部ポインターの二重解放とリークの危険がある。`get_procedure_arg` は runner の戻り値を返さずに破棄する。移植先では値ごとに `g_value_copy` を行い、元配列と一時値を個別に解放し、getter の戻り値を検証する。
 
 旧差分に含まれる C 220 ファイルで `g_object_ref*` / `g_object_unref` と `g_value_*` の呼び出しを抽出すると 645 件あり、そのうち 74 件が変更 hunk の範囲に位置する。`c-reference-candidates.tsv` に操作、出典行、hunk ID を記録した。hunk 範囲内であることは新規行という証明ではない。後続では変更前の行との照合、返り値の参照数、解放との対応を確認する。
+
+`c-reference-hunk-review.tsv` はこの 74 件を参照追加・floating 参照の sink・解放・GValue 初期化・object 格納に分ける。個別の出典を見ると、`app/paint/gimpbrushcore.c:982-987` は texture の旧参照を解放して新参照を取得する。`app/xcf/xcf-load.c:1028-1029` と `:1089-1090` は置換する layer に対して `ref_sink` と `unref` を続けて呼ぶため、floating 状態に依存する処理である。`xcf_load_filter_specs` はループごとに `GValue*` を確保し、配列への値コピー後のポインターと文字列の解放が確認できない。保存形式を移す際は `12.003/filter-args-ownership` の成功・失敗時の cleanup に含める。
