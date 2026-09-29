@@ -177,6 +177,7 @@
 | 01.007/connection-signal | [x] | signal Connection の補助文字列を追跡する | 01.007/scoped-pointers | g_strdup した signal 名の解放先と target・closure の解放契約を調べる |
 | 01.007/value-wrapper | [x] | GValue wrapper の代入時所有権を追跡する | 01.007/gvalue | CopyValue の copy/move 代入と一時値の破棄経路を出典行で確認する |
 | 01.007/array-wrapper | [x] | GLib 配列 wrapper の代入時所有権を追跡する | 01.007/raw-activity | Array の二種類の移動代入と旧 GArray の解放経路を確認する |
+| 01.007/icon-buffer | [x] | MyPaint アイコン画素の所有権を追跡する | 01.007/raw-activity | Cairo surface と backing buffer の解放・stride・自己代入経路を旧ソースで照合する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
@@ -684,6 +685,7 @@
 | 19.012 | [ ] | writer のメタデータ出力を実装する | 19.011 | 未知情報と参照を保持 |
 | 19.013 | [ ] | data factory を接続する | 19.012 | 検索パス・読込み・更新を処理 |
 | 19.013/preview-contract | [ ] | 拡張ブラシのサイズ・preview を GIMP 3 契約へ移す | 19.013, 01.005/gimp3-brush-callbacks | get_size の成功時に幅・高さを必ず設定し、GimpTempBuf と GeglColor の preview を所有権込みで検証 |
+| 19.013/icon-buffer | [ ] | MyPaint アイコンの画素バッファーを安全に所有する | 19.013, 01.007/icon-buffer | surface と data の破棄を結び、実 stride の領域を確保し、同一 surface の再設定を安全にする |
 | 19.014 | [ ] | ブラシの複製・改名・削除を接続する | 19.013 | 資源所有と保存先が整合 |
 | 19.015 | [ ] | 全177件の往復試験を実行する | 19.014 | 設定の意味差分がゼロ |
 | 19.015/v1-curve-roundtrip | [ ] | 旧 myb v1 曲線の読込・保存・再読込を試験する | 19.014, 19.006/v1-curve-validation | 変換あり・なしと点列順序の fixture で欠落・停止がない |
