@@ -174,6 +174,7 @@
 | 01.007/class-pointer-exception | [x] | class 初期化時の pointer 例外を追跡する | 01.007/raw-activity | InvalidClass の new/throw と未解放経路を出典行で記録する |
 | 01.007/dict-transfer | [x] | MyPaint 設定辞書の返り値参照を照合する | 01.007/ref-hold | 7 箇所の hold の取得元と HashTable の解放、静的辞書の追加保持を出典行で記録する |
 | 01.007/router-tree | [x] | 旧 HTTP router の規則木の所有を照合する | 01.007/raw-activity | 二世代の Router の生成・破棄と TokenRule 派生型の削除契約を追跡する |
+| 01.007/connection-signal | [x] | signal Connection の補助文字列を追跡する | 01.007/scoped-pointers | g_strdup した signal 名の解放先と target・closure の解放契約を調べる |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
@@ -332,6 +333,7 @@
 | 07.006 | [ ] | dispose の再実行を試験する | 07.005 | 二度目以降でも状態が壊れない |
 | 07.007 | [ ] | signal 中の close を試験する | 07.006 | 呼出し中 Impl が生存する |
 | 07.008 | [ ] | 接続先先行破棄を試験する | 07.007 | Connection の destructor が解放済み object を触らない |
+| 07.008/connection-name | [ ] | Connection の signal 名を解放する | 07.008, 01.007/connection-signal | 接続・切断・再切断で複製文字列を一回解放し、closure と target の寿命を検証する |
 | 07.009 | [ ] | 投入済み callback の失効を試験する | 07.008 | 切断前に予約済みでも変更を行わない |
 | 07.010 | [ ] | 例外の境界変換を試験する | 07.009 | C 入口と vfunc の両方で契約どおり返す |
 | 07.011 | [ ] | weak handle と終了状態を試験する | 07.010 | 生存中だが close 済みの object を更新しない |
