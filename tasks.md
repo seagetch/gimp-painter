@@ -173,6 +173,7 @@
 | 01.007/raw-activity | [x] | raw pointer 候補の有効性を分類する | 01.007/raw-candidates | 168 箇所を確保・解放・weak 登録とコメント/文字列に分ける |
 | 01.007/class-pointer-exception | [x] | class 初期化時の pointer 例外を追跡する | 01.007/raw-activity | InvalidClass の new/throw と未解放経路を出典行で記録する |
 | 01.007/dict-transfer | [x] | MyPaint 設定辞書の返り値参照を照合する | 01.007/ref-hold | 7 箇所の hold の取得元と HashTable の解放、静的辞書の追加保持を出典行で記録する |
+| 01.007/router-tree | [x] | 旧 HTTP router の規則木の所有を照合する | 01.007/raw-activity | 二世代の Router の生成・破棄と TokenRule 派生型の削除契約を追跡する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
@@ -967,6 +968,7 @@
 | 31.006 | [ ] | PDB endpoint を移植する | 31.005 | 現行引数型へ対応 |
 | 31.007 | [ ] | HTTP の main-context 転送を実装する | 31.006 | 通信 callback が直接 UI を操作しない |
 | 31.008 | [ ] | HTTP の終了処理を接続する | 31.007 | request と image 終了の競合を処理 |
+| 31.008/router-lifetime | [ ] | HTTP router の規則派生型を安全に破棄する | 31.008, 01.007/router-tree | 基底型経由の削除で派生メンバーを解放し、route と handler を一度だけ破棄する |
 | 31.009 | [ ] | HTTP 無効ビルドを試験する | 31.008 | 保存・描画・UI の必須機能が動く |
 | 31.010 | [ ] | HTTP 有効ビルドを試験する | 31.009 | 列挙した endpoint の契約を満たす |
 | 31.011 | [ ] | ImageGenerator placeholder の依存を確認する | 31.010 | 保存された実機能を削除しない根拠を記録 |
