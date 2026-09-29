@@ -1,0 +1,25 @@
+legacy_site	syntax_role	owner_or_source	release_contract	followup	finding
+app/base/glib-cxx-impl.hpp:161	NEW_OBJECT_ADOPTION	new GArray signals cache	static Array adopts initial ref and unrefs on destruction	05.008	NEW_OBJECT
+app/base/glib-cxx-impl.hpp:169	NEW_OBJECT_ADOPTION	new GArray properties cache	static Array adopts initial ref and unrefs on destruction	05.008	NEW_OBJECT
+app/base/glib-cxx-utils.hpp:163	ADOPTING_HELPER	GList nodes	List destructor g_list_free; elements remain borrowed	06.021	HELPER
+app/base/glib-cxx-utils.hpp:332	ADOPTING_HELPER	GArray reference	Array destructor g_array_unref; element clear function belongs to creator	06.021/array-reassignment	HELPER
+app/base/glib-cxx-utils.hpp:416	ADOPTING_HELPER	GHashTable reference	HashTable destructor g_hash_table_unref	08.007/dict-owner	HELPER
+app/base/glib-cxx-utils.hpp:837	ADOPTING_HELPER	heap GValue pointer	HoldValue destructor g_value_unset then g_free; caller must pass heap allocation	06.020	HELPER
+app/base/glib-cxx-utils.hpp:838	ADOPTING_HELPER	GValue reference	HoldValue also g_free on destruction; only safe if reference aliases owned heap allocation	06.020	HELPER
+app/base/glib-cxx-utils.hpp:875	ADOPTING_HELPER	owned GObject T*	Object<T> destructor g_object_unref; non-GObject T is invalid	28.014/applier-owner	HELPER
+app/base/json-cxx-utils.hpp:41	ADOPTING_HELPER	owned JsonNode reference	Node destructor json_node_unref	06.020	HELPER
+app/core/gimpmypaintbrush-load.cpp:277	TRANSFER_CONTRACT_REVIEW	getter adds a GHashTable reference for each caller	GLib::HashTable hold adopts that reference and unrefs at scope exit	01.007/dict-transfer,08.007/dict-owner	TRACED
+app/core/gimpmypaintbrush-load.cpp:279	TRANSFER_CONTRACT_REVIEW	getter adds a GHashTable reference for each caller	GLib::HashTable hold adopts that reference and unrefs at scope exit	01.007/dict-transfer,08.007/dict-owner	TRACED
+app/core/gimpmypaintbrush-load.cpp:345	TRANSFER_CONTRACT_REVIEW	getter adds a GHashTable reference for each caller	GLib::HashTable hold adopts that reference and unrefs at scope exit	01.007/dict-transfer,08.007/dict-owner	TRACED
+app/core/gimpmypaintbrush-load.cpp:367	TRANSFER_CONTRACT_REVIEW	getter adds a GHashTable reference for each caller	GLib::HashTable hold adopts that reference and unrefs at scope exit	01.007/dict-transfer,08.007/dict-owner	TRACED
+app/core/gimpmypaintbrush-load.cpp:551	TRANSFER_CONTRACT_REVIEW	getter adds a GHashTable reference for each caller	GLib::HashTable hold adopts that reference and unrefs at scope exit	01.007/dict-transfer,08.007/dict-owner	TRACED
+app/core/gimpmypaintbrush-load.cpp:553	TRANSFER_CONTRACT_REVIEW	getter adds a GHashTable reference for each caller	GLib::HashTable hold adopts that reference and unrefs at scope exit	01.007/dict-transfer,08.007/dict-owner	TRACED
+app/core/gimpmypaintbrush-load.cpp:555	TRANSFER_CONTRACT_REVIEW	getter adds a GHashTable reference for each caller	GLib::HashTable hold adopts that reference and unrefs at scope exit	01.007/dict-transfer,08.007/dict-owner	TRACED
+app/presets/layer-preset.cpp:98	TRANSFER_CONTRACT_REVIEW	JSON::INode::keys returns json_object_get_members allocated GList	GLib::List hold frees list nodes; member strings remain borrowed	28.003	TRACED
+app/presets/layer-preset.cpp:450	TRANSFER_CONTRACT_REVIEW	create_replacement_layer returns NULL; its result is never appended	GLib::List hold sees NULL; created layers are handed to the image	28.005	TRACED
+app/presets/layer-preset.cpp:468	TRANSFER_CONTRACT_REVIEW	get_args allocates GArray with GValue clear function; IArray borrow adds a temporary ref	IArray scope drops its ref; returned ref passes to GLib::Array hold; caller unrefs after set_procedure copies values	28.007,15.001/gvalue-deep-copy	TRACED
+app/presets/preset-factory-gui.cpp:129	NEW_OBJECT_ADOPTION	new GArray action entries	local Array adopts initial ref; IArray view adds/drops temporary ref	28.014/preset-dialog-actions	NEW_OBJECT
+app/tools/gimpbucketfillbrushtool.cpp:410	NEW_OBJECT_ADOPTION	new GimpChannel mask	local Object<GimpChannel> unrefs initial GObject ref at scope end	27.004	NEW_OBJECT
+app/tools/gimpbucketfillbrushtool.cpp:433	NEW_OBJECT_ADOPTION	new GimpChannel contiguous region	local Object<GimpChannel> unrefs initial GObject ref at scope end	27.004	NEW_OBJECT
+app/widgets/gimplayerpopup.cpp:927	BORROWED_SOURCE_RISK	gtk_ui_manager_get_widget returns borrowed GtkWidget menu	generic hold adopts without g_object_ref and unrefs borrowed widget; use nonowning ref or explicit ref	29.006/menu-borrowed-reference	BUG
+app/widgets/gimplayertileview.cpp:1282	TRANSFER_CONTRACT_REVIEW	ILayerPresetApplier::new_instance returns new LayerPresetApplier C++ instance	generic hold selects GLib::Object and g_object_unref, not C++ delete; use CXXPointer or unique_ptr	28.014/applier-owner	BUG

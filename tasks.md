@@ -164,7 +164,7 @@
 | 01.006/cpp-ownership | [x] | C++ 付加値の所有者と破棄経路を照合する | 01.006/cpp-candidates | Impl 型と全使用先を追い、共有ポインターと signal の寿命を判定 |
 | 01.006/c-candidates | [x] | 旧差分 C ファイルの data/qdata 候補を抽出する | 01.006/cpp-candidates | 220 ファイルの呼び出し式 185 件を出典行、キー、値、destroy callback とともに列挙 |
 | 01.006/c-state | [x] | C ソースの状態付加を照合する | 01.006/cpp-candidates | 旧差分の C 側 data/qdata をキー、型、所有者、破棄経路まで照合 |
-| 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
+| 01.007 | [x] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.007/cpp-candidates | [x] | 旧 C++ の参照管理候補を抽出する | 01.006 | 71 ファイルの hold/ref、GValue、CXXPointer 構文を出典行付きで列挙 |
 | 01.007/ref-hold | [x] | 旧 C++ の hold/ref/unref を分類する | 01.007/cpp-candidates | 明示的な 52 箇所を helper、採用、参照追加、解放、借用疑義に分類する |
 | 01.007/scoped-pointers | [x] | CXXPointer の対象型と破棄を分類する | 01.007/cpp-candidates | 54 箇所を signal connection、source、delegator、C++ instance に分類する |
@@ -183,7 +183,7 @@
 | 01.007/mypaint-brush-private | [x] | MyPaint ブラシ資源の raw pointer を対応付ける | 01.007/raw-activity | 16 箇所を GObject private・設定・preview・weak slot の所有者と解放経路へ対応付ける |
 | 01.007/mypaint-core-raw | [x] | MyPaint paint core の raw pointer を対応付ける | 01.007/raw-activity | 14 候補の active/非 active、surface・stroke・brush・signal connection の破棄経路を追う |
 | 01.007/surface-regions | [x] | MyPaint Surface の一時 PixelRegion を対応付ける | 01.007/raw-activity | 14 箇所の一時領域解放と Surface factory の所有者を描画・採色経路で照合する |
-| 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
+| 01.007/cpp-ownership | [x] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
 | 01.007/c-added-lines | [x] | C の変更行と上流文脈を判別する | 01.007/c-hunk-roles | hunk 内の 74 件を変更前・変更後 blob の実差分と照合する |
