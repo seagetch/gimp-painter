@@ -170,6 +170,7 @@
 | 01.007/raw-candidates | [x] | C++ の raw pointer 寿命構文を抽出する | 01.007/cpp-candidates | new/delete/g_free/weak pointer の出典行を列挙し、弱参照解除漏れの候補を記録する |
 | 01.007/weak-pointers | [x] | C++ weak pointer の登録と解除を照合する | 01.007/raw-candidates | 4 箇所の対象、スロット、存続期間、解除経路を出典行付きで記録する |
 | 01.007/mapping-array | [x] | MyPaint Mapping 配列の確保・破棄を照合する | 01.007/raw-candidates | new[] と delete の不一致、既定コピー構築の共有リスクを出典行で記録する |
+| 01.007/raw-activity | [x] | raw pointer 候補の有効性を分類する | 01.007/raw-candidates | 168 箇所を確保・解放・weak 登録とコメント/文字列に分ける |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |

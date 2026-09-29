@@ -1,0 +1,169 @@
+legacy_site	kind	syntax_role	source_line	status
+app/base/delegators.hpp:13	DELETE	CXX_RELEASE	delete reinterpret_cast<T*>(ptr);	DONE
+app/base/delegators.hpp:94	NEW	CXX_ALLOCATION	return new ObjectDelegator<Type, Ret(Args...)>(obj, f);	DONE
+app/base/delegators.hpp:101	NEW	CXX_ALLOCATION	return new Delegator<Ret(Args...)>(f);	DONE
+app/base/delegators.hpp:107	NEW	CXX_ALLOCATION	return new Delegator<Ret (Args...)>(f);	DONE
+app/base/delegators.hpp:177	NEW	CXX_ALLOCATION	return new Delegators::Connection(handler_id, target, event, closure);	DONE
+app/base/glib-cxx-impl.hpp:279	G_FREE	C_ALLOCATOR_RELEASE	g_free(g_object_class_list_properties(G_OBJECT_CLASS(klass), &n_properties));	DONE
+app/base/glib-cxx-impl.hpp:283	NEW	CXX_ALLOCATION	throw new InvalidClass(klass, class_struct);	DONE
+app/base/glib-cxx-utils.hpp:45	G_FREE	C_ALLOCATOR_RELEASE	g_free(obj);	DONE
+app/base/glib-cxx-utils.hpp:656	G_FREE	C_ALLOCATOR_RELEASE	g_free(value);	DONE
+app/base/glib-cxx-utils.hpp:1132	DELETE	CXX_RELEASE	delete this->obj;	DONE
+app/base/glib-cxx-utils.hpp:1162	NEW	CXX_ALLOCATION	DelegatorProxy<W, T>* delegator(W* w, T* d) { return new DelegatorProxy<W, T>(w, d); };	DONE
+app/base/glib-cxx-utils.hpp:1165	NEW	CXX_ALLOCATION	DelegatorProxy<W, T>* decorator(W* w, T* d) { return new Decorator<W, T>(w, d); };	DONE
+app/base/glib-cxx-utils.hpp:1172	DELETE	CXX_RELEASE	delete decorator;	DONE
+app/base/glib-cxx-utils.hpp:1191	DELETE	CXX_RELEASE	delete instance;	DONE
+app/base/route.hpp:95	NEW	CXX_ALLOCATION	rules.push_back(new Select(subname.ptr(), candidates.ptr()));	DONE
+app/base/route.hpp:98	NEW	CXX_ALLOCATION	rules.push_back(new Name(varname.ptr()));	DONE
+app/base/route.hpp:104	NEW	CXX_ALLOCATION	rules.push_back(new Match(*token));	DONE
+app/base/route.hpp:118	DELETE	CXX_RELEASE	delete handler;	DONE
+app/base/route.hpp:158	NEW	CXX_ALLOCATION	rules.push_back(new Rule(route, handler));	DONE
+app/base/scopeguard.hpp:65	DELETE	CXX_RELEASE	delete instance;	DONE
+app/base/soup-cxx-utils.hpp:50	NEW	CXX_ALLOCATION	next = new Defferred(handler);	DONE
+app/base/soup-cxx-utils.hpp:64	DELETE	CXX_RELEASE	delete this;	DONE
+app/base/soup-cxx-utils.hpp:96	NEW	CXX_ALLOCATION	defferred = new Defferred();	DONE
+app/base/soup-cxx-utils.hpp:251	G_FREE	C_ALLOCATOR_RELEASE	g_free(path);	DONE
+app/base/soup-cxx-utils.hpp:292	NEW	CXX_ALLOCATION	rules().append(new Select(subname, candidates));	DONE
+app/base/soup-cxx-utils.hpp:296	NEW	CXX_ALLOCATION	rules().append(new Name(varname));	DONE
+app/base/soup-cxx-utils.hpp:305	NEW	CXX_ALLOCATION	rules().append(new AnyLoop());	DONE
+app/base/soup-cxx-utils.hpp:308	NEW	CXX_ALLOCATION	rules().append(new Any());	DONE
+app/base/soup-cxx-utils.hpp:313	NEW	CXX_ALLOCATION	rules().append(new Match(token));	DONE
+app/base/soup-cxx-utils.hpp:322	DELETE	CXX_RELEASE	for (auto i : rules()) { delete i; }	DONE
+app/base/soup-cxx-utils.hpp:372	DELETE	CXX_RELEASE	for (auto i: rules()) { delete i; }	DONE
+app/base/soup-cxx-utils.hpp:376	NEW	CXX_ALLOCATION	rules().append(new Rule(route, handler));	DONE
+app/core/gimpfilterlayer.cpp:525	DELETE	CXX_RELEASE	delete rect;	DONE
+app/core/gimpfilterlayer.cpp:640	NEW	CXX_ALLOCATION	ProcedureRunner* r     = new ProcedureRunner(proc, GIMP_PROGRESS(g_object));	DONE
+app/core/gimpfilterlayer.cpp:875	NEW	CXX_ALLOCATION	updates = g_list_append(updates, new Rectangle(x3, y3, w, h));	DONE
+app/core/gimpmypaintbrush.cpp:147	NEW	CXX_ALLOCATION	mypaint_brush->p = (gpointer)(new GimpMypaintBrushPrivate());	DONE
+app/core/gimpmypaintbrush.cpp:157	DELETE	CXX_RELEASE	delete priv;	DONE
+app/core/gimpmypaintbrush.cpp:357	DELETE	CXX_RELEASE	delete reinterpret_cast<GimpMypaintBrushPrivate*>(result->p);	DONE
+app/core/gimpmypaintbrush.cpp:375	WEAK_POINTER	WEAK_POINTER_REGISTRATION	g_object_add_weak_pointer (G_OBJECT (standard_mypaint_brush),	DONE
+app/core/gimpmypaintbrush.cpp:457	G_FREE	C_ALLOCATOR_RELEASE	g_free (parent_brush_name);	DONE
+app/core/gimpmypaintbrush.cpp:461	G_FREE	C_ALLOCATOR_RELEASE	g_free (group);	DONE
+app/core/gimpmypaintbrush.cpp:469	G_FREE	C_ALLOCATOR_RELEASE	g_free(text[i]);	DONE
+app/core/gimpmypaintbrush.cpp:503	NEW	CXX_ALLOCATION	settings[index].mapping = new Mapping(INPUT_COUNT);	DONE
+app/core/gimpmypaintbrush.cpp:512	DELETE	CXX_RELEASE	delete settings[index].mapping;	DONE
+app/core/gimpmypaintbrush.cpp:527	G_FREE	C_ALLOCATOR_RELEASE	g_free (parent_brush_name);	DONE
+app/core/gimpmypaintbrush.cpp:541	G_FREE	C_ALLOCATOR_RELEASE	g_free (group);	DONE
+app/core/gimpmypaintbrush.cpp:567	G_FREE	C_ALLOCATOR_RELEASE	g_free (text[index]);	DONE
+app/core/gimpmypaintbrush.cpp:628	NEW	CXX_ALLOCATION	Brush*              brush     = new Brush();	DONE
+app/core/gimpmypaintbrush.cpp:733	DELETE	CXX_RELEASE	delete brush;	DONE
+app/core/gimpmypaintbrush.cpp:734	DELETE	CXX_RELEASE	delete surface;	DONE
+app/core/gimpmypaintbrush.cpp:782	NEW	CXX_ALLOCATION	GimpMypaintBrushPrivate* priv = new GimpMypaintBrushPrivate();	DONE
+app/core/gimpperspectiveguide.cpp:117	DELETE	CXX_RELEASE	delete point;	DONE
+app/core/gimpperspectiveguide.cpp:159	NEW	CXX_ALLOCATION	i_vanish_points.append(new Point(x, y));	DONE
+app/core/mypaintbrush-mapping.hpp:42	NEW	ARRAY_ALLOCATION	pointsList = new ControlPoints[inputs];	DONE
+app/core/mypaintbrush-mapping.hpp:48	DELETE	CXX_RELEASE	delete pointsList;	DONE
+app/core/mypaintbrush-mapping.hpp:52	DELETE	CXX_RELEASE	delete pointsList;	DONE
+app/core/mypaintbrush-mapping.hpp:56	NEW	ARRAY_ALLOCATION	pointsList = new ControlPoints[inputs];	DONE
+app/display/gimpdisplayshell-overlays.cpp:380	NEW	CXX_ALLOCATION	auto impl = new OverlayWidgetDecorator(frame, shell, &shell->layer_view);	DONE
+app/display/gimpdisplayshell-overlays.cpp:433	NEW	CXX_ALLOCATION	auto impl = new OverlayWidgetDecorator(frame, shell, &shell->toolbox);	DONE
+app/display/gimpdisplayshell-overlays.cpp:459	NEW	CXX_ALLOCATION	auto impl = new OverlayWidgetDecorator(frame, shell, &shell->toolbar);	DONE
+app/display/gimpdisplayshell-overlays.cpp:534	NEW	CXX_ALLOCATION	auto impl = new OverlayWidgetDecorator(frame, shell, &shell->color_selector, 1.0);	DONE
+app/display/gimpdisplayshell-overlays.cpp:554	NEW	CXX_ALLOCATION	auto impl2 = new ColorSelectorDecorator(color_selector, shell);	DONE
+app/display/gimpdisplayshell-overlays.cpp:576	NEW	CXX_ALLOCATION	auto impl = new OverlayWidgetDecorator(frame, shell, &shell->fg_bg_edit, 1.0);	DONE
+app/display/gimpdisplayshell-overlays.cpp:594	NEW	CXX_ALLOCATION	auto impl2 = new FgBgEditorDecorator(fg_bg_edit, shell);	DONE
+app/display/gimpdisplayshell-overlays.cpp:676	NEW	INACTIVE_OR_TEXT	"g_print(""Attach new OverlayWidgetDecorator to docks.\n"");"	DONE
+app/display/gimpdisplayshell-overlays.cpp:677	NEW	CXX_ALLOCATION	auto impl = new OverlayWidgetDecorator(shell->docks, shell, &shell->docks);	DONE
+app/httpd/httpd-features-gui.cpp:50	NEW	CXX_ALLOCATION	singleton = new HTTPDFeature();	DONE
+app/httpd/httpd-features-gui.cpp:57	NEW	CXX_ALLOCATION	rest_daemon = new RESTD(gimp);	DONE
+app/httpd/httpd-features-gui.cpp:72	NEW	CXX_ALLOCATION	auto pdb_factory              = new RESTPDBFactory;	DONE
+app/httpd/httpd-features-gui.cpp:74	NEW	CXX_ALLOCATION	auto image_tree_factory       = new RESTImageTreeFactory;	DONE
+app/httpd/httpd-features-gui.cpp:76	NEW	CXX_ALLOCATION	auto navigation_guide_factory = new NavigationGuideFactory;	DONE
+app/httpd/httpd-features.cpp:50	NEW	CXX_ALLOCATION	singleton = new HTTPDFeature();	DONE
+app/httpd/httpd-features.cpp:58	NEW	CXX_ALLOCATION	rest_daemon = new RESTD(gimp);	DONE
+app/httpd/httpd-features.cpp:70	NEW	CXX_ALLOCATION	auto pdb_factory              = new RESTPDBFactory;	DONE
+app/httpd/httpd-features.cpp:71	NEW	CXX_ALLOCATION	auto image_tree_factory       = new RESTImageTreeFactory;	DONE
+app/httpd/httpd.cpp:100	DELETE	CXX_RELEASE	delete this;	DONE
+app/httpd/navigation-guide.cpp:202	DELETE	CXX_RELEASE	delete navi_context->arg_conf;	DONE
+app/httpd/navigation-guide.cpp:224	NEW	CXX_ALLOCATION	return new NavigationGuide(gimp, matched, msg, context);	DONE
+app/httpd/navigation-guide.cpp:253	NEW	CXX_ALLOCATION	auto arg_conf = new JsonContextAccessor;	DONE
+app/httpd/rest-image-tree.cpp:269	NEW	CXX_ALLOCATION	return new RESTImageTree(gimp, matched, msg, context);	DONE
+app/paint/gimpmypaintcore-drawablefeature.hpp:108	WEAK_POINTER	WEAK_POINTER_REGISTRATION	g_object_add_weak_pointer(G_OBJECT(d), (gpointer*)&drawable);	DONE
+app/paint/gimpmypaintcore-surface.cpp:327	G_FREE	C_ALLOCATOR_RELEASE	if (src1PR) g_free(src1PR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:331	G_FREE	C_ALLOCATOR_RELEASE	if (destPR) g_free(destPR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:335	G_FREE	C_ALLOCATOR_RELEASE	if (brushPR) g_free(brushPR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:345	G_FREE	C_ALLOCATOR_RELEASE	if (src1PR) g_free(src1PR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:346	G_FREE	C_ALLOCATOR_RELEASE	if (destPR) g_free(destPR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:347	G_FREE	C_ALLOCATOR_RELEASE	if (brushPR) g_free(brushPR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:348	G_FREE	C_ALLOCATOR_RELEASE	if (maskPR) g_free(maskPR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:349	G_FREE	C_ALLOCATOR_RELEASE	if (texturePR) g_free(texturePR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:400	G_FREE	C_ALLOCATOR_RELEASE	if (src1PR) g_free(src1PR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:401	G_FREE	C_ALLOCATOR_RELEASE	if (brushPR) g_free(brushPR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:402	G_FREE	C_ALLOCATOR_RELEASE	if (maskPR) g_free(maskPR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:403	G_FREE	C_ALLOCATOR_RELEASE	if (texturePR) g_free(texturePR);	DONE
+app/paint/gimpmypaintcore-surface.cpp:614	NEW	CXX_ALLOCATION	return new GimpMypaintSurfaceImpl<GimpImageFeature>(drawable);	DONE
+app/paint/gimpmypaintcore-surface.cpp:618	NEW	CXX_ALLOCATION	return new GimpMypaintSurfaceImpl<GimpTempBufFeature>(drawable);	DONE
+app/paint/gimpmypaintcore.cpp:86	DELETE	CXX_RELEASE	delete option_changed_handler;	DONE
+app/paint/gimpmypaintcore.cpp:93	DELETE	CXX_RELEASE	delete stroke;	DONE
+app/paint/gimpmypaintcore.cpp:97	DELETE	CXX_RELEASE	delete brush;	DONE
+app/paint/gimpmypaintcore.cpp:101	DELETE	CXX_RELEASE	delete surface;	DONE
+app/paint/gimpmypaintcore.cpp:116	DELETE	CXX_RELEASE	delete option_changed_handler;	DONE
+app/paint/gimpmypaintcore.cpp:129	NEW	INACTIVE_OR_TEXT	"g_print(""MypaintCore(%p)::create new surface...\n"", this);"	DONE
+app/paint/gimpmypaintcore.cpp:133	DELETE	INACTIVE_OR_TEXT	"g_print(""MypaintCore(%p)::delete surface...\n"", this);"	DONE
+app/paint/gimpmypaintcore.cpp:134	DELETE	CXX_RELEASE	delete surface;	DONE
+app/paint/gimpmypaintcore.cpp:135	NEW	INACTIVE_OR_TEXT	"g_print(""MypaintCore(%p)::recreate new surface...\n"", this);"	DONE
+app/paint/gimpmypaintcore.cpp:141	NEW	CXX_ALLOCATION	stroke = new Stroke();	DONE
+app/paint/gimpmypaintcore.cpp:219	DELETE	CXX_RELEASE	delete stroke;	DONE
+app/paint/gimpmypaintcore.cpp:223	DELETE	INACTIVE_OR_TEXT	delete brush;	DONE
+app/paint/gimpmypaintcore.cpp:239	DELETE	CXX_RELEASE	delete brush;	DONE
+app/paint/gimpmypaintcore.cpp:245	NEW	CXX_ALLOCATION	brush = new Brush();	DONE
+app/paint/gimpmypaintcoreundo.cpp:159	DELETE	CXX_RELEASE	delete stroke;	DONE
+app/paint/gimpmypaintoptions-history.cpp:85	NEW	CXX_ALLOCATION	instance = new GimpMypaintOptionsHistory();	DONE
+app/paint/mypaintbrush-brush.hpp:161	NEW	CXX_ALLOCATION	settings[i] = new Mapping(INPUT_COUNT);	DONE
+app/paint/mypaintbrush-brush.hpp:178	DELETE	CXX_RELEASE	delete settings[i];	DONE
+app/presets/layer-preset-gui.cpp:255	NEW	CXX_ALLOCATION	instance = new LayerPresetGuiConfig();	DONE
+app/presets/layer-preset.cpp:691	NEW	CXX_ALLOCATION	return new LayerPresetApplier(context, preset);	DONE
+app/presets/layer-preset.cpp:749	NEW	CXX_ALLOCATION	instance = new LayerPresetConfig();	DONE
+app/presets/preset-factory-gui.cpp:89	NEW	CXX_ALLOCATION	singleton = new PresetGuiFactory();	DONE
+app/presets/preset-factory.cpp:153	NEW	CXX_ALLOCATION	singleton = new PresetFactory();	DONE
+app/tools/gimpmypaint-gui-base.hpp:53	WEAK_POINTER	WEAK_POINTER_REGISTRATION	g_object_add_weak_pointer(G_OBJECT(options), (void**)&options);	DONE
+app/tools/gimpmypaint-gui-base.hpp:59	G_FREE	C_ALLOCATOR_RELEASE	g_free(property_name);	DONE
+app/tools/gimpmypaint-gui-base.hpp:62	G_FREE	C_ALLOCATOR_RELEASE	g_free(internal_name);	DONE
+app/tools/gimpmypaint-gui-base.hpp:94	WEAK_POINTER	WEAK_POINTER_REGISTRATION	g_object_add_weak_pointer(G_OBJECT(widget), (void**)&widget);	DONE
+app/tools/gimpmypaintbrusheditor.cpp:197	G_FREE	C_ALLOCATOR_RELEASE	g_free(name);	DONE
+app/tools/gimpmypaintbrusheditor.cpp:563	G_FREE	C_ALLOCATOR_RELEASE	g_free(brush_setting_name);	DONE
+app/tools/gimpmypaintbrusheditor.cpp:677	NEW	CXX_ALLOCATION	CurveViewActions* select_action = new CurveViewActions(G_OBJECT(list_view),	DONE
+app/tools/gimpmypaintbrusheditor.cpp:758	NEW	CXX_ALLOCATION	CurveViewCreator* create_view = new CurveViewCreator(options, s->internal_name);	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:214	DELETE	CXX_RELEASE	delete brush_changed_handler;	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:347	NEW	CXX_ALLOCATION	MypaintPopupPrivate* priv = new MypaintPopupPrivate(container, context);	DONE
+app/tools/gimpmypaintoptions-gui.cpp:232	DELETE	CXX_RELEASE	delete brush_changed_handler;	DONE
+app/tools/gimpmypaintoptions-gui.cpp:357	NEW	CXX_ALLOCATION	MypaintBrushEditorPrivate* editor_priv = new MypaintBrushEditorPrivate(GIMP_TOOL_OPTIONS(context), MypaintBrushEditorPrivate::TAB);	DONE
+app/tools/gimpmypaintoptions-gui.cpp:445	NEW	CXX_ALLOCATION	"new MypaintOptionsPropertyGUIPrivate(options, brush_settings_dict.ptr(), ""radius-logarithmic"");"	DONE
+app/tools/gimpmypaintoptions-gui.cpp:472	NEW	CXX_ALLOCATION	"new MypaintOptionsPropertyGUIPrivate(options, brush_settings_dict.ptr(), ""slow-tracking"");"	DONE
+app/tools/gimpmypaintoptions-gui.cpp:485	NEW	CXX_ALLOCATION	"new MypaintOptionsPropertyGUIPrivate(options, brush_settings_dict.ptr(), ""hardness"");"	DONE
+app/tools/gimpmypaintoptions-gui.cpp:509	NEW	CXX_ALLOCATION	MypaintDetailOptionsPopupPrivate* priv = new MypaintDetailOptionsPopupPrivate(container, context);	DONE
+app/tools/gimpmypaintoptions-gui.cpp:546	NEW	CXX_ALLOCATION	MypaintOptionsGUIPrivate* priv = new MypaintOptionsGUIPrivate(tool_options, false);	DONE
+app/tools/gimpmypaintoptions-gui.cpp:547	NEW	CXX_ALLOCATION	MypaintBrushEditorPrivate* editor_priv = new MypaintBrushEditorPrivate(tool_options);	DONE
+app/tools/gimpmypaintoptions-gui.cpp:575	NEW	CXX_ALLOCATION	MypaintOptionsGUIPrivate* priv = new MypaintOptionsGUIPrivate(tool_options, true);	DONE
+app/tools/gimpmypainttool.cpp:187	NEW	CXX_ALLOCATION	paint_tool->core = core = new GimpMypaintCore();	DONE
+app/tools/gimpmypainttool.cpp:204	DELETE	INACTIVE_OR_TEXT	delete core;	DONE
+app/tools/gimpmypainttool.cpp:707	G_FREE	C_ALLOCATOR_RELEASE	g_free (status_help);	DONE
+app/tools/gimpmypainttool.cpp:735	G_FREE	C_ALLOCATOR_RELEASE	g_free (status);	DONE
+app/tools/gimpperspectiveguidetool.cpp:318	NEW	INACTIVE_OR_TEXT	"g_print(""Creating new guide\n"");"	DONE
+app/tools/gimpperspectiveguidetool.cpp:322	NEW	INACTIVE_OR_TEXT	"g_print(""Added new vanishment point(%d)\n"", i_guide->get_vanish_point_length());"	DONE
+app/widgets/gimpcellrendererpopup.cpp:87	G_FREE	C_ALLOCATOR_RELEASE	g_free (stock_id);	DONE
+app/widgets/gimpcellrendererpopup.cpp:163	NEW	CXX_ALLOCATION	LayerPopupWindow* window_decor = new LayerPopupWindow;	DONE
+app/widgets/gimpeditor-cxx.cpp:166	NEW	CXX_ALLOCATION	auto popup = new GIMP_EDITOR::PopupWindow(editor);	DONE
+app/widgets/gimplayerpopup.cpp:165	G_FREE	C_ALLOCATOR_RELEASE	g_free(proc_name);	DONE
+app/widgets/gimplayerpopup.cpp:211	G_FREE	C_ALLOCATOR_RELEASE	g_free(procs);	DONE
+app/widgets/gimplayerpopup.cpp:432	G_FREE	C_ALLOCATOR_RELEASE	g_free(desc);	DONE
+app/widgets/gimplayerpopup.cpp:502	G_FREE	C_ALLOCATOR_RELEASE	g_free(label);	DONE
+app/widgets/gimplayerpopup.cpp:659	G_FREE	C_ALLOCATOR_RELEASE	g_free(desc);	DONE
+app/widgets/gimplayerpopup.cpp:1151	NEW	CXX_ALLOCATION	auto decor = new PopupWindowDecorator();	DONE
+app/widgets/gimplayertileview.cpp:598	NEW	CXX_ALLOCATION	layer_info = new LayerInfo(this, layer, parent_info->level + 1);	DONE
+app/widgets/gimplayertileview.cpp:603	NEW	CXX_ALLOCATION	layer_info = new LayerInfo(this, layer, 0);	DONE
+app/widgets/gimplayertileview.cpp:671	DELETE	CXX_RELEASE	delete layer_info;	DONE
+app/widgets/gimplayertileview.cpp:731	NEW	CXX_ALLOCATION	layer_popup_decorator = new LayerPopupWindow;	DONE
+app/widgets/gimplayertileview.cpp:790	NEW	CXX_ALLOCATION	scroll_timeout_handler = new Timeout(interval, _D::delegator(on_timeout));	DONE
+app/widgets/gimplayertileview.cpp:926	NEW	CXX_ALLOCATION	add_cursor = new GdkPoint;	DONE
+app/widgets/gimplayertileview.cpp:929	NEW	CXX_ALLOCATION	add_timeout_handler = new Timeout(500, _D::delegator(std::function<gboolean()>([this]() -> gboolean {	DONE
+app/widgets/gimplayertileview.cpp:1091	DELETE	CXX_RELEASE	delete layer_info;	DONE
+app/widgets/gimplayertileview.cpp:1218	NEW	CXX_ALLOCATION	DragAction* drag_action = new DragAction();	DONE
+app/widgets/gimplayertileview.cpp:1539	NEW	CXX_ALLOCATION	update_idle = new Idle(	DONE
+app/widgets/popupper.cpp:492	DELETE	CXX_RELEASE	delete cancel_handler;	DONE
+app/widgets/popupper.cpp:496	DELETE	CXX_RELEASE	delete confirm_handler;	DONE
+app/widgets/popupper.cpp:540	DELETE	CXX_RELEASE	delete cancel_handler;	DONE
+app/widgets/popupper.cpp:542	DELETE	CXX_RELEASE	delete confirm_handler;	DONE
+app/widgets/popupper.cpp:544	DELETE	CXX_RELEASE	delete create_view_delegator;	DONE
+app/widgets/popupper.cpp:552	NEW	CXX_ALLOCATION	PopoverDecorator* popover = new PopoverDecorator(widget, delegator);	DONE

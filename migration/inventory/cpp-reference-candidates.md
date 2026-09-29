@@ -21,3 +21,5 @@
 `cpp-weak-pointer-review.tsv` は四つの登録先とスロットを個別に追う。静的な standard brush のスロットは process の存続中有効で、`GimpImageFeature.drawable` は destructor が対象存続時に登録解除する。`MypaintOptionsPropertyGUIPrivate` の二つのスロットは helper のメンバーだが、旧 destructor に解除がない。特に `options` が widget より長生きして widget が helper を破棄した場合、後の options finalize が無効なスロットに書き込む可能性がある。先行破棄の両順序を `08.008/weak-pointer-teardown` の実装テストに含める。
 
 raw allocation の個別追跡では `mypaintbrush-mapping.hpp` の `new[]` と `delete` の不一致を確認した。詳細と GIMP 3 の値所有モデルは `mapping-array-ownership.md` に記録した。
+
+`cpp-raw-lifetime-review.tsv` は 168 候補をコメントと文字列を除いて分類した。実際の構文は単体 `new` 81、配列 `new[]` 2、`delete` 39、`g_free` 34、weak pointer 登録 4 で、8 件はコメントまたは文字列である。旧 `gimpmypainttool.cpp:204` の `delete core` はコメント内なので、`paint-core` data-full の破棄と重複する active 解放経路ではない。確保先の保有者や条件分岐ごとの解放は引き続き `01.007/cpp-ownership` で判定する。
