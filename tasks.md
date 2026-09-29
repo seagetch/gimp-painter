@@ -171,6 +171,7 @@
 | 01.007/weak-pointers | [x] | C++ weak pointer の登録と解除を照合する | 01.007/raw-candidates | 4 箇所の対象、スロット、存続期間、解除経路を出典行付きで記録する |
 | 01.007/mapping-array | [x] | MyPaint Mapping 配列の確保・破棄を照合する | 01.007/raw-candidates | new[] と delete の不一致、既定コピー構築の共有リスクを出典行で記録する |
 | 01.007/raw-activity | [x] | raw pointer 候補の有効性を分類する | 01.007/raw-candidates | 168 箇所を確保・解放・weak 登録とコメント/文字列に分ける |
+| 01.007/class-pointer-exception | [x] | class 初期化時の pointer 例外を追跡する | 01.007/raw-activity | InvalidClass の new/throw と未解放経路を出典行で記録する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
@@ -274,6 +275,7 @@
 | 05.011 | [ ] | 親 vfunc の呼出し規約を定義する | 05.010 | 対象型ごとの呼出し順と callback 再入を記載 |
 | 05.012 | [ ] | main context の所有規約を定義する | 05.011 | GObject・UI と worker の操作可能範囲を記載 |
 | 05.013 | [ ] | エラー境界を定義する | 05.012 | 型不一致・未登録・終了済み・例外の返し方を統一 |
+| 05.013/class-init-error | [ ] | class 初期化失敗を C ABI 内で処理する | 05.013, 01.007/class-pointer-exception | pointer 例外を廃止し、部分登録と再試行の状態を試験する |
 | 05.013/legacy-exit-removal | [ ] | 旧 property callback の例外時 exit を C ABI 安全な処理へ変更する | 05.013, 01.005/gimp3-remaining-callbacks | setter/getter の例外でプロセスを終了せず、GValue と登録済み property の状態を整合させて通知・復帰する |
 | 05.013/all-vfunc-exception-containment | [ ] | 全 vfunc callback の C ABI 例外封じ込めを実装・試験する | 05.013, 01.005/gimp3-vfunc-contract | Binder 71 件と class callback 40 件の実装に例外方針を適用し、初期化・描画・保存・終了の失敗が C を越えない |
 | 05.014 | [ ] | 移行 adapter の撤去条件を定義する | 05.013 | 旧 API 利用箇所ゼロを機械検査できる |
