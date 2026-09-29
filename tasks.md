@@ -382,6 +382,7 @@
 | 08.014 | [ ] | ToolTileView 型を移植する | 08.013 | GTK3 の親 widget と終了を接続 |
 | 08.015 | [ ] | Popover 型を移植する | 08.014 | window のイベント・destroy を接続 |
 | 08.016 | [ ] | CellRendererPopup 型を移植する | 08.015 | cell renderer の vfunc と callback を接続 |
+| 08.016/pixbuf-owner | [ ] | popup renderer の pixbuf 寿命を修正する | 08.016, 01.007/cpp-ownership | 初期値・生成失敗・再生成・破棄時の参照を一回だけ解放し、NULL pixbuf を描画しない |
 | 08.017 | [ ] | 既存 widget behavior を store に移す | 08.016 | 全登録箇所が共通 slot を利用 |
 | 08.018 | [ ] | C 公開操作を新 Impl へ接続する | 08.017 | C 入口から旧 Interface::cast を排除 |
 | 08.019 | [ ] | C++ 利用箇所をハンドルへ移す | 08.018 | ref 関数添字と公開 interface cast を排除 |
@@ -731,6 +732,7 @@
 |---|:---:|---|---|---|
 | 21.001 | [ ] | 通常形状の押印を実装する | 09.017, 20.018 | 硬さ・半径・alpha が一致 |
 | 21.002 | [ ] | GIMP ブラシ mask の取得を実装する | 21.001 | 旧形状と資源選択を保持 |
+| 21.002/resource-owner | [ ] | Surface のブラシと紙目の参照・使用期間を対称にする | 21.002, 01.007/cpp-ownership | 同一資源の再設定、NULL 切替、Surface 先行終了時に begin_use/end_use と ref/unref を一回ずつ対応付ける |
 | 21.003 | [ ] | GIMP ブラシ mask の変形を実装する | 21.002 | サイズ・角度・縦横比を反映 |
 | 21.004 | [ ] | 形状 mask の押印を実装する | 21.003 | ブラシ coverage を画素へ反映 |
 | 21.005 | [ ] | 通常採色の重みを実装する | 21.004 | 硬さ・縦横比・角度を使用 |
@@ -929,6 +931,7 @@
 | 29.006/popover-handler-teardown | [ ] | popup の signal と view callback を終了時に解除する | 29.005, 06.017, 01.005/indirect-callback-owners | widget・popup を先に破棄しても借用中の owner を参照せず、scroll/button/confirm/cancel の接続が解除される |
 | 29.007 | [ ] | color UI を移植する | 29.006 | 前景・背景色が context と同期 |
 | 29.008 | [ ] | tool tile の表示を移植する | 29.007 | tool manager の現在選択と同期 |
+| 29.008/icon-null | [ ] | tile icon 生成失敗時の NULL 経路を処理する | 29.002, 29.008, 01.007/cpp-ownership | layer/tool 両 tile の icon 未登録・render 失敗時に NULL を unref せず、代替表示を確認 |
 | 29.009 | [ ] | tool group を接続する | 29.008 | 旧分類と現行 action の対応が明確 |
 | 29.010/toolbar-ref-balance | [ ] | toolbar の再表示と終了時の参照数を修正する | 29.010, 01.007/toolbar-ref | hide 時の余剰参照をなくし、移動・反復表示・破棄を検証する |
 | 29.010 | [ ] | 操作バーを移植する | 29.009 | 旧 action を呼び UI 状態を反映 |
