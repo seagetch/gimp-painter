@@ -15,3 +15,5 @@
 所有権を持つ 10 箇所の具体的な型、owner、破棄 callback、別の参照経路は `cpp-owning-data-review.tsv` に対応付けた。特に `CurveViewActions` は tree_view が所有する一方で tree selection、toggle、options、adjustment に raw `this` を登録し、空の destructor ではそれらを切断しない。`ComplexBindAction` の保持は対象 GObject の data による一回の delete を想定しているが、`PageRemindAction::bind_to` は signal 登録のみで data に格納しない。後続の `01.008` と機能タスクで接続ごとの解除・多重登録・破棄順を実装し、破棄中の callback 発火を検証する。
 
 旧差分に含まれる C 220 ファイルについて、`c-object-data-candidates.tsv` に 185 件の `data/qdata` 呼び出し式を出典行・キー・格納値・destroy callback とともに抽出した。ファイル単位の差分であり、この 185 件すべてが追加コードという意味ではない。後続では追加行と上流由来を照合し、GIMP 3 側の対応箇所、所有者と破棄経路を確定する。
+
+`c-object-data-delta-review.tsv` は変更 hunk 内の 19 件を切り出す。`gimp-tools.c` の toolbar widget は `g_object_ref_sink` 後に tool options の data-full に渡し、`g_object_unref` を破棄 callback に登録する。tool info の横向き GUI 関数は借用する関数ポインターである。新規 `gimpbrushoptions-gui.c` の property 名は静的文字列、`gimptooloptions-gui.c` の percentage と digits はポインターに変換した整数値で、いずれも delete しない。toolbar 側の参照は tool options に保持された widget の借用である。signal の解除と GTK widget の finalize 順は `01.008` で追跡する。

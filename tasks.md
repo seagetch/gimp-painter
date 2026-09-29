@@ -156,12 +156,12 @@
 | 01.005/gimp3-brush-callbacks | [x] | 拡張 MyPaint ブラシ資源の class callback を現行 slot と対照する | 01.005/gimp3-external-binders | 旧定義と旧 slot の一致も確認した 15 件の照合表（`migration/inventory/gimp3-brush-callback-review.tsv`）。現行署名一致 9、変更 2、独自型再作成待ち 4。save/preview の差分を実装タスクに割当 |
 | 01.005/gimp3-tool-callbacks | [x] | 拡張 MyPaint 操作ツールの直接 callback を照合する | 01.005/gimp3-brush-callbacks | 旧 C++ 定義 10 件が旧 slot と現行 GIMP 3 slot の両方で同じ署名（`migration/inventory/gimp3-tool-callback-review.tsv`）。tool core の保持・破棄を機能タスクに割当 |
 | 01.005/gimp3-remaining-callbacks | [x] | ブリッジ・MyPaint Undo/options/editor の class callback を照合する | 01.005/gimp3-tool-callbacks | 残り 15 件の旧 C++ 定義・旧 slot・現行 slot の署名一致を記録（`migration/inventory/gimp3-remaining-callback-review.tsv`）。旧例外時の exit と Undo pop の空実装を後続へ割当 |
-| 01.006 | [ ] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
+| 01.006 | [x] | 状態付加箇所を列挙する | 01.005 | data/qdata のキー、Impl 型、所有者、破棄経路を記録 |
 | 01.006/cpp-candidates | [x] | 旧 C++ の data/qdata 候補を抽出する | 01.005 | 旧版の 71 C++ ファイルの 30 呼び出し構文、キー、対象、値、destroy callback を TSV に記録 |
 | 01.006/owning-attachments | [x] | C++ の所有権付き付加を照合する | 01.006/cpp-candidates | 10 箇所の型、owner、destroy callback、他の参照経路と寿命の懸念を記録 |
-| 01.006/cpp-ownership | [ ] | C++ 付加値の所有者と破棄経路を照合する | 01.006/cpp-candidates | Impl 型と全使用先を追い、共有ポインターと signal の寿命を判定 |
+| 01.006/cpp-ownership | [x] | C++ 付加値の所有者と破棄経路を照合する | 01.006/cpp-candidates | Impl 型と全使用先を追い、共有ポインターと signal の寿命を判定 |
 | 01.006/c-candidates | [x] | 旧差分 C ファイルの data/qdata 候補を抽出する | 01.006/cpp-candidates | 220 ファイルの呼び出し式 185 件を出典行、キー、値、destroy callback とともに列挙 |
-| 01.006/c-state | [ ] | C ソースの状態付加を照合する | 01.006/cpp-candidates | 旧差分の C 側 data/qdata をキー、型、所有者、破棄経路まで照合 |
+| 01.006/c-state | [x] | C ソースの状態付加を照合する | 01.006/cpp-candidates | 旧差分の C 側 data/qdata をキー、型、所有者、破棄経路まで照合 |
 | 01.007 | [ ] | 参照管理箇所を列挙する | 01.006 | hold/ref、GValue、CXXPointer、raw pointer の保持・解放を記録 |
 | 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
 | 01.009 | [ ] | 保存経路を列挙する | 01.008 | XCF、myb、JSON、設定、parasite の reader/writer を記録 |
