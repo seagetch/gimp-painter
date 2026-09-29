@@ -180,6 +180,7 @@
 | 01.007/icon-buffer | [x] | MyPaint アイコン画素の所有権を追跡する | 01.007/raw-activity | Cairo surface と backing buffer の解放・stride・自己代入経路を旧ソースで照合する |
 | 01.007/mypaint-brush-private | [x] | MyPaint ブラシ資源の raw pointer を対応付ける | 01.007/raw-activity | 16 箇所を GObject private・設定・preview・weak slot の所有者と解放経路へ対応付ける |
 | 01.007/mypaint-core-raw | [x] | MyPaint paint core の raw pointer を対応付ける | 01.007/raw-activity | 14 候補の active/非 active、surface・stroke・brush・signal connection の破棄経路を追う |
+| 01.007/surface-regions | [x] | MyPaint Surface の一時 PixelRegion を対応付ける | 01.007/raw-activity | 14 箇所の一時領域解放と Surface factory の所有者を描画・採色経路で照合する |
 | 01.007/cpp-ownership | [ ] | C++ 参照と raw pointer の所有権を確定する | 01.007/cpp-candidates | 候補を用途別に分類し、新規参照・借用・解放・例外経路を対応付ける |
 | 01.007/c-candidates | [x] | 旧差分 C ファイルの参照操作を抽出する | 01.007/cpp-candidates | 220 ファイルの ref/unref と GValue 操作を hunk 位置とともに列挙する |
 | 01.007/c-hunk-roles | [x] | C の変更 hunk 内参照操作を分類する | 01.007/c-candidates | 74 件を参照追加、sink、解放、GValue 初期化・格納に分類する |
@@ -393,6 +394,7 @@
 | 09.001 | [ ] | 画素形式の対応表を作る | 03.009, 06.029 | 旧形式と RGB/Gray/Indexed、alpha、精度、色空間を対応 |
 | 09.002 | [ ] | 座標契約を固定する | 09.001 | 画像・レイヤー・buffer・画面の原点と境界を記録 |
 | 09.003 | [ ] | DrawableFeature の buffer read を実装する | 09.002 | 負の offset と部分領域を読める |
+| 09.003/region-lifetime | [ ] | MyPaint Surface の一時領域を GEGL buffer 寿命へ移す | 09.003, 01.007/surface-regions | draw_dab と get_color の全 return・失敗経路で read/write/snapshot/mask/texture の buffer を一度だけ解放する |
 | 09.004 | [ ] | DrawableFeature の buffer write を実装する | 09.003 | 範囲外に書かず dirty 領域を返す |
 | 09.005 | [ ] | TempBuf の変換を実装する | 09.004 | stride・format・所有権を保持 |
 | 09.006 | [ ] | 選択マスクの読取りを接続する | 09.005 | オフセットと coverage が一致 |
