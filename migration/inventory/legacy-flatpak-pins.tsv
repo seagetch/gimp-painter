@@ -1,0 +1,90 @@
+legacy_site	activation	manifest_line	followup
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:1	ACTIVE	branch: master	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:13	ACTIVE	- name: py2cairo	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:16	ACTIVE	- {sha256: d30439f06c2ec1a39e27464c6c828b6eface3b22ee17b2de05dc409e429a7431, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:17	ACTIVE	url: 'http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:22	ACTIVE	- name: pyobject	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:24	ACTIVE	config-opts: [--disable-introspection]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:26	ACTIVE	- {sha256: fb8a1d4f665130a125011659bd347c7339c944232163dbb9a34fd0686577adb8, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:27	ACTIVE	url: 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/2.28/pygobject-2.28.6.tar.xz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:28	ACTIVE	- name: pygtk	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:31	ACTIVE	- {sha256: 6e3e54fa6e65a69ac60bd58cb2e60a57f3346ac52efe995f3d10b6c38c972fd8, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:32	ACTIVE	url: 'http://ftp.gnome.org/pub/GNOME/sources/pygtk/2.24/pygtk-2.24.0.tar.gz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:33	ACTIVE	name: python	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:34	COMMENTED_DISABLED	#- config-opts: [--disable-introspection]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:37	COMMENTED_DISABLED	#    name: exiv2	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:39	COMMENTED_DISABLED	#    - {sha256: c80bfc778a15fdb06f71265db2c3d49d8493c382e516cb99b8c9f9cbde36efa4, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:40	COMMENTED_DISABLED	#      url: 'http://www.exiv2.org/exiv2-0.25.tar.gz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:41	COMMENTED_DISABLED	#  name: gexiv2	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:43	COMMENTED_DISABLED	#  - {sha256: ad8d31afdc0a1932cc44c4cfcea449497c0d0b445c0ad2f9735707b306e71ca4, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:44	COMMENTED_DISABLED	#    url: 'https://download.gnome.org/sources/gexiv2/0.10/gexiv2-0.10.4.tar.xz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:46	ACTIVE	config-opts: [--disable-static, --disable-ilmbasetest]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:48	ACTIVE	- config-opts: [--disable-static]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:49	ACTIVE	name: ilmbase	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:51	ACTIVE	- {sha256: ecf815b60695555c1fbc73679e84c7c9902f4e8faa6e8000d2f905b8b86cedc7, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:52	ACTIVE	url: 'http://download.savannah.nongnu.org/releases/openexr/ilmbase-2.2.0.tar.gz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:53	ACTIVE	name: openexr	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:55	ACTIVE	- {sha256: 36a012f6c43213f840ce29a8b182700f6cf6b214bea0d5735594136b44914231, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:56	ACTIVE	url: 'http://download.savannah.nongnu.org/releases/openexr/openexr-2.2.0.tar.gz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:60	ACTIVE	config-opts: [-DCMAKE_INSTALL_LIBDIR=lib]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:61	ACTIVE	name: jasper	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:63	ACTIVE	- {sha256: 54d85428e35263642358a11c312d61cbc054170546fae780e11271df5d1502e8, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:64	ACTIVE	url: 'http://www.ece.uvic.ca/~frodo/jasper/software/jasper-2.0.10.tar.gz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:66	COMMENTED_DISABLED	#  config-opts: [--disable-static]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:67	COMMENTED_DISABLED	#  name: libraw	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:69	COMMENTED_DISABLED	#  - {sha256: d56a0c9a0e6d1b8c8c5585346acf2cfb0554eee0f0948da66f580cd65c8c5c9b, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:70	COMMENTED_DISABLED	#    url: 'http://www.libraw.org/data/LibRaw-0.18.0.tar.gz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:72	ACTIVE	config-opts: [--disable-libopenjpeg, --disable-introspection]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:75	ACTIVE	name: popplerdata	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:78	ACTIVE	- {sha256: e752b0d88a7aba54574152143e7bf76436a7ef51977c55d6bd9a48dccde3a7de, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:79	ACTIVE	url: 'http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:80	ACTIVE	name: poppler	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:82	ACTIVE	- {sha256: e997c9ad81a8372f2dd03a02b00692b8cc479c220340c8881edaca540f402c1f, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:83	ACTIVE	url: 'https://poppler.freedesktop.org/poppler-0.51.0.tar.xz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:86	ACTIVE	name: libpng	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:88	ACTIVE	- {sha256: d8d3ec9de6b5db740fefac702c37ffcf96ae46cb17c18c1544635a3852f78f7a, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:89	ACTIVE	url: 'http://download.sourceforge.net/libpng/libpng-1.6.28.tar.xz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:90	ACTIVE	name: duplicate-dependencies	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:92	ACTIVE	config-opts: [--disable-static]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:93	ACTIVE	name: aalib	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:95	ACTIVE	- {sha256: fbddda9230cf6ee2a4f5706b4b11e2190ae45f5eda1f0409dc4f99b35e0a70ee, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:96	ACTIVE	url: 'http://download.sourceforge.net/aa-project/aalib-1.4rc5.tar.gz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:98	ACTIVE	config-opts: [--disable-static]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:99	ACTIVE	name: libmng	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:101	ACTIVE	- {sha256: 4a462fdd48d4bc82c1d7a21106c8a18b62f8cc0042454323058e6da0dbb57dd3, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:102	ACTIVE	url: 'http://download.sourceforge.net/libmng/libmng-2.0.3.tar.xz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:104	ACTIVE	config-opts: [--disable-static, --enable-libwebpmux, --enable-libwebpdemux]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:105	ACTIVE	name: libwebp	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:107	ACTIVE	- {sha256: b75310c810b3eda222c77f6d6c26b061240e3d9060095de44b2c1bae291ecdef, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:108	ACTIVE	url: 'http://downloads.webmproject.org/releases/webp/libwebp-0.5.2.tar.gz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:110	ACTIVE	config-opts: [--disable-static, --disable-dependency-tracking]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:111	ACTIVE	name: libwmf	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:113	ACTIVE	- {sha256: 5b345c69220545d003ad52bfd035d5d6f4f075e65204114a9e875e84895a7cf8, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:114	ACTIVE	url: 'http://downloads.sourceforge.net/wvware/libwmf-0.2.8.4.tar.gz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:116	ACTIVE	config-opts: [--disable-cups]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:119	ACTIVE	name: ghostscript	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:121	ACTIVE	- {sha256: 3c0f3dc5df6f784850fa4ce7dcc3d6c56ef543af1fbaedd1d9f8d9f8b66de0ab, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:122	ACTIVE	url: 'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs920/ghostscript-9.20.tar.xz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:126	COMMENTED_DISABLED	#  config-opts: [--with-gtk=2.0, --disable-webkit2, --disable-geolocation, --disable-video,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:128	COMMENTED_DISABLED	#  name: webkitgtk	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:130	COMMENTED_DISABLED	#  - {sha256: 588aea051bfbacced27fdfe0335a957dca839ebe36aa548df39c7bbafdb65bf7, type: archive,	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:131	COMMENTED_DISABLED	#    url: 'https://www.webkitgtk.org/releases/webkitgtk-2.4.11.tar.xz'}	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:133	ACTIVE	runtime: org.gnome.Platform	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:134	ACTIVE	runtime-version: '3.28'	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml:135	ACTIVE	sdk: org.gnome.Sdk	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:1	ACTIVE	branch: master	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:14	ACTIVE	- config-opts: [--disable-docs]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:15	ACTIVE	name: babl	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:18	ACTIVE	"url: ""https://gitlab.gnome.org/GNOME/babl.git"""	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:19	ACTIVE	"branch: ""BABL_0_1_46"""	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:22	ACTIVE	config-opts: [--disable-docs, --disable-introspection]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:23	ACTIVE	name: gegl	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:26	ACTIVE	"url: ""https://gitlab.gnome.org/GNOME/gegl.git"""	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:27	ACTIVE	"branch: ""GEGL_0_3_34"""	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:29	ACTIVE	- config-opts: [--disable-docs, --disable-gtk-doc, --disable-gtk-doc-html, --enable-vector-icons]	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:30	ACTIVE	name: gimp	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:33	ACTIVE	url: 'https://github.com/seagetch/gimp-painter'	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:34	ACTIVE	"branch: ""gimp-2-8"""	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:38	ACTIVE	runtime: org.gnome.Platform	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:39	ACTIVE	runtime-version: '3.28'	34.005/license-manifest
+build/flatpak/io.github.seagetch.GIMP-PAINTER.yml:41	ACTIVE	sdk: org.gnome.Sdk	34.005/license-manifest
