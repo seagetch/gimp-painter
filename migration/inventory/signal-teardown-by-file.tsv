@@ -1,0 +1,17 @@
+path_basename	teardown_evidence	followup
+gimpbrushoptions-gui.c	gimpbrushoptions-gui.c:170-175,431-464 disconnects current/new brush instead of previously connected brush; adjustments end with popup; container handler removed	24.015/brush-popup-signal-owner
+gimpcontext.c	g_signal_connect_object watches callback GObject; emitter/data finalization disconnects	08.006
+gimpdock.c	self emitter; connect_object titlebar connections watch dock GObject; no deferred callback	29.020
+gimpdynamicsoptions-gui.c	gimpdynamicsoptions-gui.c:128-138 disconnect previous target; destroy_dynamics_popup_dialog:195-239 disconnect target/working/context before freeing popup state	24.015
+gimpdynamicsoutputeditor.c	destroy callback data NULL; emitter is editor itself	24.015
+gimpfgbgeditor.c	gimpfgbgeditor.c:169-188 dispose clears context but does not destroy popup created at791; popup children borrow editor; owner-first destruction unsafe	29.007/palette-popup-teardown
+gimpimagewindow.c	gimpimagewindow.c:2029,2158-2198 disconnect old display/shell callbacks before switch; child/self emitters end with window	29.016
+gimpmypaintbrushfactoryview.c	spacing adjustment belongs to view child UI; borrowed view callback data requires child emitters to end before view Impl	24.015
+gimppanedbox.c	self emitter and NULL data; synchronous orientation update	29.020
+gimppopupbutton.c	self grab callbacks borrow same widget; popup cancel/confirm data button but callback body at588-599 is empty; finalize502-507 has no popup release	29.006/popover-handler-teardown
+gimprectangleoptions.c	gimprectangleoptions.c:1097-1135 view destroy clears borrowed fields; entry destroy disconnects config notification by entry	24.015
+gimpstatusbar.c	child buttons owned by statusbar widget hierarchy; no source reservation; owner disposal must destroy child emitters	29.020
+gimptoolgroup.c	gimptoolgroup.c:145-179 owned children cleared in finalize; callbacks synchronous with group mutation	30.001
+gimptooloptions-gui.c	gimptooloptions-gui.c:145-169 closure destroy disconnects matched closure, unrefs config, invokes destroy_data and frees state; connect_object watches config; toggle emitter/data are sibling buttons	24.015
+gimptooloptionstoolbar.c	self hide/show NULL data; context tool-changed watches toolbar via connect_object	29.020
+layers-commands.c	layers_new_filter_layer_response:1087-1127 destroys dialog on response; dialog owner cleanup must precede callback-data free	30.001

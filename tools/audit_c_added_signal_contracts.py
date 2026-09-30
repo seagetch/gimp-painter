@@ -24,6 +24,7 @@ def main():
     assert len(rows) == 57 and all(r["line_origin"] == "ADDED" for r in rows)
     cache = {}
     result = []
+    teardown = {r["path_basename"]: r for r in read("signal-teardown-by-file.tsv")}
     for row in rows:
         site, op = row["legacy_site"], row["operation"]
         path, number = site.rsplit(":", 1)
@@ -45,12 +46,13 @@ def main():
         else:
             release = "emitter finalization or explicit handler disconnect; verify data owner"
         result.append((site, op, receiver, signal, callback, data, release,
-                       "synchronous signal emission", "callback may reenter owner while signal is emitted", "REVIEW"))
+                       "synchronous signal emission", "Synchronous emission: callback may switch/destroy owner; guard executing state", "TRACED_STATIC",
+                       teardown[Path(path).name]["teardown_evidence"], teardown[Path(path).name]["followup"]))
     assert len(result) == len({r[0] for r in result}) == 57
     with OUTPUT.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.writer(stream, delimiter="\t", lineterminator="\n")
         writer.writerow(("legacy_site", "operation", "receiver", "signal", "callback", "user_data",
-                         "release_contract", "priority", "reentrancy", "status"))
+                         "release_contract", "priority", "reentrancy", "status", "teardown_evidence", "followup"))
         writer.writerows(result)
     print(f"{len(result)} added C signal argument contracts parsed: {dict(Counter(r[1] for r in result))}")
 

@@ -1,0 +1,615 @@
+legacy_site	operation	end_line	delta_role	added_lines	complete_call	status
+app/actions/layers-commands.c:221	g_signal_connect	223	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dialog->dialog, ""response"", G_CALLBACK (layers_edit_layer_response), dialog)"	DONE
+app/actions/layers-commands.c:270	g_signal_connect	272	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dialog->dialog, ""response"", G_CALLBACK (layers_new_layer_response), dialog)"	DONE
+app/actions/layers-commands.c:414	g_signal_connect	416	DELTA	414,415,416	"g_signal_connect (dialog->dialog, ""response"", G_CALLBACK (layers_new_filter_layer_response), dialog)"	DONE
+app/actions/layers-commands.c:792	g_signal_connect	794	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dialog->dialog, ""response"", G_CALLBACK (layers_add_mask_response), dialog)"	DONE
+app/actions/view-commands.c:361	g_signal_connect	363	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->filters_dialog, ""destroy"", G_CALLBACK (gtk_widget_destroyed), &shell->filters_dialog)"	DONE
+app/actions/view-commands.c:612	g_signal_connect	614	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (color_dialog, ""update"", G_CALLBACK (view_padding_color_dialog_update), shell)"	DONE
+app/app.c:244	g_signal_connect_after	246	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_after (gimp, ""exit"", G_CALLBACK (app_exit_after_callback), &run_loop)"	DONE
+app/base/delegators.hpp:167	g_signal_connect_delegator	170	DELTA	167,168,169,170	g_signal_connect_delegator (GObject* target, const gchar* event, Delegators::Delegator<Ret(Args...)>* delegator, bool after=false)	DONE
+app/base/delegators.hpp:176	g_signal_connect_closure	176	DELTA	176	g_signal_connect_closure (target, event, closure, after)	DONE
+app/base/delegators.hpp:182	g_signal_connect_delegator_noret	185	DELTA	182,183,184,185	g_signal_connect_delegator_noret (GObject* target, const gchar* event, Delegators::Delegator<Ret(Args...)>* delegator, bool after=false)	DONE
+app/base/delegators.hpp:191	g_signal_connect_closure	191	DELTA	191	g_signal_connect_closure (target, event, closure, after)	DONE
+app/base/glib-cxx-utils.hpp:1034	g_signal_connect_delegator	1034	DELTA	1034	g_signal_connect_delegator (super::as_object(), event, delegator, after)	DONE
+app/base/glib-cxx-utils.hpp:1044	g_signal_connect_delegator	1044	DELTA	1044	g_signal_connect_delegator (super::as_object(), event, Delegators::delegator(function), after)	DONE
+app/base/glib-cxx-utils.hpp:1055	g_signal_connect_delegator_noret	1055	DELTA	1055	g_signal_connect_delegator_noret (super::as_object(), event, delegator, after)	DONE
+app/base/glib-cxx-utils.hpp:1065	g_signal_connect_delegator_noret	1065	DELTA	1065	g_signal_connect_delegator_noret (super::as_object(), event, Delegators::delegator(function), after)	DONE
+app/base/glib-cxx-utils.hpp:1072	g_signal_connect_delegator	1072	DELTA	1072	g_signal_connect_delegator(super::as_object(), signal_name, d)	DONE
+app/base/glib-cxx-utils.hpp:1077	g_signal_connect_delegator_noret	1077	DELTA	1077	g_signal_connect_delegator_noret(super::as_object(), signal_name, d)	DONE
+app/base/glib-cxx-utils.hpp:1109	g_signal_connect_delegator_noret	1109	DELTA	1109	g_signal_connect_delegator_noret (G_OBJECT(widget), name, Delegators::delegator(obj, f))	DONE
+app/base/glib-cxx-utils.hpp:1115	g_signal_connect_delegator	1115	DELTA	1115	g_signal_connect_delegator (G_OBJECT(widget), name, Delegators::delegator(obj, f))	DONE
+app/base/tile-cache.c:105	g_source_remove	105	UNCHANGED_CALL_CONTEXT	-	g_source_remove (idle_swapper)	DONE
+app/base/tile-cache.c:242	g_timeout_add_full	245	UNCHANGED_CALL_CONTEXT	-	g_timeout_add_full (G_PRIORITY_LOW, IDLE_SWAPPER_START, tile_idle_preswap, NULL, NULL)	DONE
+app/base/tile-cache.c:364	g_timeout_add_full	367	UNCHANGED_CALL_CONTEXT	-	g_timeout_add_full (G_PRIORITY_LOW, IDLE_SWAPPER_START, tile_idle_preswap, NULL, NULL)	DONE
+app/base/tile-cache.c:437	g_timeout_add_full	440	UNCHANGED_CALL_CONTEXT	-	g_timeout_add_full (G_PRIORITY_LOW, IDLE_SWAPPER_INTERVAL_MS, tile_idle_preswap_run, NULL, NULL)	DONE
+app/config/gimpcoreconfig.c:500	g_signal_connect	502	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (config->default_image, ""notify"", G_CALLBACK (gimp_core_config_default_image_notify), config)"	DONE
+app/config/gimpcoreconfig.c:507	g_signal_connect	509	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (config->default_grid, ""notify"", G_CALLBACK (gimp_core_config_default_grid_notify), config)"	DONE
+app/config/gimpcoreconfig.c:512	g_signal_connect	514	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (config->color_management, ""notify"", G_CALLBACK (gimp_core_config_color_management_notify), config)"	DONE
+app/core/gimp.c:953	g_signal_connect_object	955	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->config, ""notify"", G_CALLBACK (gimp_global_config_notify), gimp->edit_config, 0)"	DONE
+app/core/gimp.c:956	g_signal_connect_object	958	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->edit_config, ""notify"", G_CALLBACK (gimp_edit_config_notify), gimp->config, 0)"	DONE
+app/core/gimpclonelayer.cpp:284	g_signal_connect_delegator	285	DELTA	284,285	"g_signal_connect_delegator (G_OBJECT(layer), ""update"", Delegators::delegator(this, &GLib::CloneLayer::on_source_update))"	DONE
+app/core/gimpclonelayer.cpp:286	g_signal_connect_delegator	287	DELTA	286,287	"g_signal_connect_delegator (G_OBJECT(layer), ""notify::frozen"", Delegators::delegator(this, &GLib::CloneLayer::on_source_frozen))"	DONE
+app/core/gimpcontainer.c:248	gimp_container_remove_handler	250	UNCHANGED_CALL_CONTEXT	-	gimp_container_remove_handler (container, ((GimpContainerHandler *) container->priv->handlers->data)->quark)	DONE
+app/core/gimpcontainer.c:575	g_signal_connect	578	UNCHANGED_CALL_CONTEXT	-	g_signal_connect (object, handler->signame, handler->callback, handler->callback_data)	DONE
+app/core/gimpcontainer.c:591	g_signal_connect	593	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (object, ""disconnect"", G_CALLBACK (gimp_container_disconnect_callback), container)"	DONE
+app/core/gimpcontainer.c:967	g_signal_connect	970	UNCHANGED_CALL_CONTEXT	-	g_signal_connect (object, handler->signame, handler->callback, handler->callback_data)	DONE
+app/core/gimpcontainer.c:977	gimp_container_add_handler	980	UNCHANGED_CALL_CONTEXT	-	gimp_container_add_handler (GimpContainer *container, const gchar *signame, GCallback callback, gpointer callback_data)	DONE
+app/core/gimpcontainer.c:1036	gimp_container_remove_handler	1037	UNCHANGED_CALL_CONTEXT	-	gimp_container_remove_handler (GimpContainer *container, GQuark id)	DONE
+app/core/gimpcontainer.h:124	gimp_container_add_handler	127	UNCHANGED_CALL_CONTEXT	-	gimp_container_add_handler (GimpContainer *container, const gchar *signame, GCallback callback, gpointer callback_data)	DONE
+app/core/gimpcontainer.h:128	gimp_container_remove_handler	129	UNCHANGED_CALL_CONTEXT	-	gimp_container_remove_handler (GimpContainer *container, GQuark id)	DONE
+app/core/gimpcontext.c:822	g_signal_connect_object	824	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->images, ""remove"", G_CALLBACK (gimp_context_image_removed), object, 0)"	DONE
+app/core/gimpcontext.c:825	g_signal_connect_object	827	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->displays, ""remove"", G_CALLBACK (gimp_context_display_removed), object, 0)"	DONE
+app/core/gimpcontext.c:829	g_signal_connect_object	831	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->tool_info_list, ""remove"", G_CALLBACK (gimp_context_tool_removed), object, 0)"	DONE
+app/core/gimpcontext.c:832	g_signal_connect_object	834	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->tool_info_list, ""thaw"", G_CALLBACK (gimp_context_tool_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:836	g_signal_connect_object	838	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->paint_info_list, ""remove"", G_CALLBACK (gimp_context_paint_info_removed), object, 0)"	DONE
+app/core/gimpcontext.c:839	g_signal_connect_object	841	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->paint_info_list, ""thaw"", G_CALLBACK (gimp_context_paint_info_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:844	g_signal_connect_object	846	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""remove"", G_CALLBACK (gimp_context_brush_removed), object, 0)"	DONE
+app/core/gimpcontext.c:847	g_signal_connect_object	849	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""thaw"", G_CALLBACK (gimp_context_brush_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:852	g_signal_connect_object	854	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""remove"", G_CALLBACK (gimp_context_dynamics_removed), object, 0)"	DONE
+app/core/gimpcontext.c:855	g_signal_connect_object	857	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""thaw"", G_CALLBACK (gimp_context_dynamics_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:860	g_signal_connect_object	862	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""remove"", G_CALLBACK (gimp_context_pattern_removed), object, 0)"	DONE
+app/core/gimpcontext.c:863	g_signal_connect_object	865	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""thaw"", G_CALLBACK (gimp_context_pattern_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:868	g_signal_connect_object	870	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""remove"", G_CALLBACK (gimp_context_gradient_removed), object, 0)"	DONE
+app/core/gimpcontext.c:871	g_signal_connect_object	873	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""thaw"", G_CALLBACK (gimp_context_gradient_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:876	g_signal_connect_object	878	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""remove"", G_CALLBACK (gimp_context_palette_removed), object, 0)"	DONE
+app/core/gimpcontext.c:879	g_signal_connect_object	881	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""thaw"", G_CALLBACK (gimp_context_palette_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:884	g_signal_connect_object	886	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""remove"", G_CALLBACK (gimp_context_tool_preset_removed), object, 0)"	DONE
+app/core/gimpcontext.c:887	g_signal_connect_object	889	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (container, ""thaw"", G_CALLBACK (gimp_context_tool_preset_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:891	g_signal_connect_object	893	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->fonts, ""remove"", G_CALLBACK (gimp_context_font_removed), object, 0)"	DONE
+app/core/gimpcontext.c:894	g_signal_connect_object	896	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->fonts, ""thaw"", G_CALLBACK (gimp_context_font_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:899	g_signal_connect_object	901	DELTA	899,900,901	"g_signal_connect_object (container, ""remove"", G_CALLBACK (gimp_context_mypaint_brush_removed), object, 0)"	DONE
+app/core/gimpcontext.c:902	g_signal_connect_object	904	DELTA	902,903,904	"g_signal_connect_object (container, ""thaw"", G_CALLBACK (gimp_context_mypaint_brush_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:906	g_signal_connect_object	908	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->named_buffers, ""remove"", G_CALLBACK (gimp_context_buffer_removed), object, 0)"	DONE
+app/core/gimpcontext.c:909	g_signal_connect_object	911	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->named_buffers, ""thaw"", G_CALLBACK (gimp_context_buffer_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:913	g_signal_connect_object	915	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->documents, ""remove"", G_CALLBACK (gimp_context_imagefile_removed), object, 0)"	DONE
+app/core/gimpcontext.c:916	g_signal_connect_object	918	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->documents, ""thaw"", G_CALLBACK (gimp_context_imagefile_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:920	g_signal_connect_object	922	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->templates, ""remove"", G_CALLBACK (gimp_context_template_removed), object, 0)"	DONE
+app/core/gimpcontext.c:923	g_signal_connect_object	925	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp->templates, ""thaw"", G_CALLBACK (gimp_context_template_list_thaw), object, 0)"	DONE
+app/core/gimpcontext.c:1555	g_signal_connect_object	1558	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (parent, ""notify"", G_CALLBACK (gimp_context_parent_notify), context, 0)"	DONE
+app/core/gimpcontext.c:2162	g_signal_connect_object	2165	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tool_info, ""name-changed"", G_CALLBACK (gimp_context_tool_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:2286	g_signal_connect_object	2289	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (paint_info, ""name-changed"", G_CALLBACK (gimp_context_paint_info_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:2641	g_signal_connect_object	2644	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (brush, ""name-changed"", G_CALLBACK (gimp_context_brush_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:2759	g_signal_connect_object	2762	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (dynamics, ""name-changed"", G_CALLBACK (gimp_context_dynamics_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:2879	g_signal_connect_object	2882	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (pattern, ""name-changed"", G_CALLBACK (gimp_context_pattern_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:2999	g_signal_connect_object	3002	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gradient, ""name-changed"", G_CALLBACK (gimp_context_gradient_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:3119	g_signal_connect_object	3122	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (palette, ""name-changed"", G_CALLBACK (gimp_context_palette_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:3232	g_signal_connect_object	3235	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tool_preset, ""name-changed"", G_CALLBACK (gimp_context_tool_preset_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:3385	g_signal_connect_object	3388	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (font, ""name-changed"", G_CALLBACK (gimp_context_font_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:3506	g_signal_connect_object	3509	DELTA	3506,3507,3508,3509	"g_signal_connect_object (mypaint_brush, ""name-changed"", G_CALLBACK (gimp_context_mypaint_brush_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:3630	g_signal_connect_object	3633	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (buffer, ""name-changed"", G_CALLBACK (gimp_context_buffer_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:3753	g_signal_connect_object	3756	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (imagefile, ""name-changed"", G_CALLBACK (gimp_context_imagefile_dirty), context, 0)"	DONE
+app/core/gimpcontext.c:3876	g_signal_connect_object	3879	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (template, ""name-changed"", G_CALLBACK (gimp_context_template_dirty), context, 0)"	DONE
+app/core/gimpdrawable.c:1046	g_signal_connect	1048	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (fs, ""notify"", G_CALLBACK (gimp_drawable_fs_notify), drawable)"	DONE
+app/core/gimpdrawable.c:1866	g_signal_connect	1868	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (floating_sel, ""update"", G_CALLBACK (gimp_drawable_fs_update), drawable)"	DONE
+app/core/gimpdrawablestack.c:124	gimp_container_add_handler	126	UNCHANGED_CALL_CONTEXT	-	"gimp_container_add_handler (container, ""update"", G_CALLBACK (gimp_drawable_stack_drawable_update), container)"	DONE
+app/core/gimpdrawablestack.c:127	gimp_container_add_handler	129	UNCHANGED_CALL_CONTEXT	-	"gimp_container_add_handler (container, ""visibility-changed"", G_CALLBACK (gimp_drawable_stack_drawable_visible), container)"	DONE
+app/core/gimpdynamics.c:590	g_signal_connect	592	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (output, ""notify"", G_CALLBACK (gimp_dynamics_output_notify), dynamics)"	DONE
+app/core/gimpfilterlayer.cpp:320	g_signal_connect_delegator	321	DELTA	320,321	"g_signal_connect_delegator (G_OBJECT(g_object), ""parent-changed"", Delegators::delegator(this, &GLib::FilterLayer::on_parent_changed))"	DONE
+app/core/gimpfilterlayer.cpp:322	g_signal_connect_delegator	323	DELTA	322,323	"g_signal_connect_delegator (G_OBJECT(g_object), ""visibility-changed"", Delegators::delegator(this, &GLib::FilterLayer::on_visibility_changed))"	DONE
+app/core/gimpfilterlayer.cpp:614	g_timeout_add	614	DELTA	614	g_timeout_add(300, (GSourceFunc)notify_filter_end_callback, this)	DONE
+app/core/gimpfilterlayer.cpp:943	g_signal_connect_delegator	944	DELTA	943,944	"g_signal_connect_delegator (G_OBJECT(children), ""update"", Delegators::delegator(this, &GLib::FilterLayer::on_stack_update))"	DONE
+app/core/gimpfilterlayer.cpp:946	g_signal_connect_delegator	947	DELTA	946,947	"g_signal_connect_delegator (G_OBJECT(children), ""reorder"", Delegators::delegator(this, &GLib::FilterLayer::on_reorder))"	DONE
+app/core/gimpfilterlayer.cpp:952	g_signal_connect_delegator	953	DELTA	952,953	"g_signal_connect_delegator (G_OBJECT(container), ""update"", Delegators::delegator(this, &GLib::FilterLayer::on_stack_update))"	DONE
+app/core/gimpfilterlayer.cpp:955	g_signal_connect_delegator	956	DELTA	955,956	"g_signal_connect_delegator (G_OBJECT(container), ""reorder"", Delegators::delegator(this, &GLib::FilterLayer::on_reorder))"	DONE
+app/core/gimpgrouplayer.c:265	g_signal_connect	267	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->children, ""add"", G_CALLBACK (gimp_group_layer_child_add), group)"	DONE
+app/core/gimpgrouplayer.c:268	g_signal_connect	270	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->children, ""remove"", G_CALLBACK (gimp_group_layer_child_remove), group)"	DONE
+app/core/gimpgrouplayer.c:272	gimp_container_add_handler	274	UNCHANGED_CALL_CONTEXT	-	"gimp_container_add_handler (private->children, ""notify::offset-x"", G_CALLBACK (gimp_group_layer_child_move), group)"	DONE
+app/core/gimpgrouplayer.c:275	gimp_container_add_handler	277	UNCHANGED_CALL_CONTEXT	-	"gimp_container_add_handler (private->children, ""notify::offset-y"", G_CALLBACK (gimp_group_layer_child_move), group)"	DONE
+app/core/gimpgrouplayer.c:278	gimp_container_add_handler	280	UNCHANGED_CALL_CONTEXT	-	"gimp_container_add_handler (private->children, ""size-changed"", G_CALLBACK (gimp_group_layer_child_resize), group)"	DONE
+app/core/gimpgrouplayer.c:282	g_signal_connect	284	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->children, ""update"", G_CALLBACK (gimp_group_layer_stack_update), group)"	DONE
+app/core/gimpgrouplayer.c:288	g_signal_connect	290	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->projection, ""update"", G_CALLBACK (gimp_group_layer_proj_update), group)"	DONE
+app/core/gimpimage.c:673	g_signal_connect	675	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->layers, ""notify::active-item"", G_CALLBACK (gimp_image_active_layer_notify), image)"	DONE
+app/core/gimpimage.c:676	g_signal_connect	678	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->channels, ""notify::active-item"", G_CALLBACK (gimp_image_active_channel_notify), image)"	DONE
+app/core/gimpimage.c:679	g_signal_connect	681	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->vectors, ""notify::active-item"", G_CALLBACK (gimp_image_active_vectors_notify), image)"	DONE
+app/core/gimpimage.c:683	g_signal_connect_swapped	685	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (private->layers->container, ""update"", G_CALLBACK (gimp_image_invalidate), image)"	DONE
+app/core/gimpimage.c:688	gimp_container_add_handler	690	UNCHANGED_CALL_CONTEXT	-	"gimp_container_add_handler (private->layers->container, ""alpha-changed"", G_CALLBACK (gimp_image_layer_alpha_changed), image)"	DONE
+app/core/gimpimage.c:692	g_signal_connect_swapped	694	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (private->channels->container, ""update"", G_CALLBACK (gimp_image_invalidate), image)"	DONE
+app/core/gimpimage.c:697	gimp_container_add_handler	699	UNCHANGED_CALL_CONTEXT	-	"gimp_container_add_handler (private->channels->container, ""name-changed"", G_CALLBACK (gimp_image_channel_name_changed), image)"	DONE
+app/core/gimpimage.c:701	gimp_container_add_handler	703	UNCHANGED_CALL_CONTEXT	-	"gimp_container_add_handler (private->channels->container, ""color-changed"", G_CALLBACK (gimp_image_channel_color_changed), image)"	DONE
+app/core/gimpimage.c:705	g_signal_connect	707	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->channels->container, ""add"", G_CALLBACK (gimp_image_channel_add), image)"	DONE
+app/core/gimpimage.c:708	g_signal_connect	710	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->channels->container, ""remove"", G_CALLBACK (gimp_image_channel_remove), image)"	DONE
+app/core/gimpimage.c:776	g_signal_connect_object	778	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify::transparency-type"", G_CALLBACK (gimp_item_stack_invalidate_previews), private->layers->container, G_CONNECT_SWAPPED)"	DONE
+app/core/gimpimage.c:779	g_signal_connect_object	781	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify::transparency-size"", G_CALLBACK (gimp_item_stack_invalidate_previews), private->layers->container, G_CONNECT_SWAPPED)"	DONE
+app/core/gimpimage.c:782	g_signal_connect_object	784	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify::layer-previews"", G_CALLBACK (gimp_viewable_size_changed), image, G_CONNECT_SWAPPED)"	DONE
+app/core/gimpimage.c:885	gimp_container_remove_handler	886	UNCHANGED_CALL_CONTEXT	-	gimp_container_remove_handler (private->layers->container, private->layer_alpha_handler)	DONE
+app/core/gimpimage.c:892	gimp_container_remove_handler	893	UNCHANGED_CALL_CONTEXT	-	gimp_container_remove_handler (private->channels->container, private->channel_name_changed_handler)	DONE
+app/core/gimpimage.c:894	gimp_container_remove_handler	895	UNCHANGED_CALL_CONTEXT	-	gimp_container_remove_handler (private->channels->container, private->channel_color_changed_handler)	DONE
+app/core/gimpimage.c:2144	g_signal_connect	2146	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->selection_mask, ""update"", G_CALLBACK (gimp_image_mask_update), image)"	DONE
+app/core/gimplayer.c:1499	g_signal_connect	1501	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (mask, ""update"", G_CALLBACK (gimp_layer_layer_mask_update), layer)"	DONE
+app/core/gimplist.c:224	g_signal_connect	226	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (object, ""name-changed"", G_CALLBACK (gimp_list_object_renamed), list)"	DONE
+app/core/gimpprojection.c:179	g_source_remove	179	UNCHANGED_CALL_CONTEXT	-	g_source_remove (proj->idle_render.idle_id)	DONE
+app/core/gimpprojection.c:362	g_signal_connect_object	364	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (projectable, ""invalidate"", G_CALLBACK (gimp_projection_projectable_invalidate), proj, 0)"	DONE
+app/core/gimpprojection.c:365	g_signal_connect_object	367	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (projectable, ""flush"", G_CALLBACK (gimp_projection_projectable_flush), proj, 0)"	DONE
+app/core/gimpprojection.c:368	g_signal_connect_object	370	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (projectable, ""structure-changed"", G_CALLBACK (gimp_projection_projectable_changed), proj, 0)"	DONE
+app/core/gimpprojection.c:493	g_source_remove	493	UNCHANGED_CALL_CONTEXT	-	g_source_remove (proj->idle_render.idle_id)	DONE
+app/core/gimpprojection.c:628	g_idle_add_full	630	UNCHANGED_CALL_CONTEXT	-	g_idle_add_full (GIMP_PROJECTION_IDLE_PRIORITY, gimp_projection_idle_render_callback, proj, NULL)	DONE
+app/core/gimpprojection.c:866	g_source_remove	866	UNCHANGED_CALL_CONTEXT	-	g_source_remove (proj->idle_render.idle_id)	DONE
+app/core/gimptoolgroup.c:158	g_signal_connect	160	DELTA	158,159,160	"g_signal_connect (tool_group->priv->children, ""add"", G_CALLBACK (gimp_tool_group_child_add), tool_group)"	DONE
+app/core/gimptoolgroup.c:161	g_signal_connect	163	DELTA	161,162,163	"g_signal_connect (tool_group->priv->children, ""remove"", G_CALLBACK (gimp_tool_group_child_remove), tool_group)"	DONE
+app/core/gimptooloptions.c:106	g_signal_connect	108	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (options, ""notify::tool"", G_CALLBACK (gimp_tool_options_tool_notify), NULL)"	DONE
+app/dialogs/preferences-dialog.c:152	g_signal_connect_object	154	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify"", G_CALLBACK (prefs_config_notify), config_copy, 0)"	DONE
+app/dialogs/preferences-dialog.c:155	g_signal_connect_object	157	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config_copy, ""notify"", G_CALLBACK (prefs_config_copy_notify), config, 0)"	DONE
+app/dialogs/preferences-dialog.c:573	g_signal_connect_object	575	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gtk_widget_get_toplevel (widget), ""unmap"", G_CALLBACK (gtk_widget_destroy), dialog, G_CONNECT_SWAPPED)"	DONE
+app/dialogs/preferences-dialog.c:1032	g_signal_connect	1034	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dialog, ""response"", G_CALLBACK (prefs_profile_combo_dialog_response), combo)"	DONE
+app/dialogs/preferences-dialog.c:1036	g_signal_connect	1038	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (combo, ""changed"", G_CALLBACK (prefs_profile_combo_changed), config)"	DONE
+app/dialogs/preferences-dialog.c:1348	g_signal_connect	1350	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""color-changed"", G_CALLBACK (prefs_canvas_padding_color_changed), combo)"	DONE
+app/dialogs/preferences-dialog.c:1382	g_signal_connect	1384	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dialog, ""response"", G_CALLBACK (gtk_widget_destroy), NULL)"	DONE
+app/dialogs/preferences-dialog.c:1458	g_signal_connect	1460	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dialog, ""response"", G_CALLBACK (prefs_response), dialog)"	DONE
+app/dialogs/preferences-dialog.c:1539	g_signal_connect	1541	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (sel, ""changed"", G_CALLBACK (prefs_tree_select_callback), notebook)"	DONE
+app/dialogs/preferences-dialog.c:1542	g_signal_connect	1544	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (notebook, ""switch-page"", G_CALLBACK (prefs_notebook_page_callback), sel)"	DONE
+app/dialogs/preferences-dialog.c:1670	g_signal_connect	1672	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (prefs_keyboard_shortcuts_dialog), gimp)"	DONE
+app/dialogs/preferences-dialog.c:1681	g_signal_connect	1683	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (prefs_menus_save_callback), gimp)"	DONE
+app/dialogs/preferences-dialog.c:1688	g_signal_connect	1690	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button2, ""clicked"", G_CALLBACK (prefs_menus_clear_callback), gimp)"	DONE
+app/dialogs/preferences-dialog.c:1697	g_signal_connect	1699	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (prefs_menus_remove_callback), gimp)"	DONE
+app/dialogs/preferences-dialog.c:1788	g_signal_connect	1790	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (sel, ""changed"", G_CALLBACK (prefs_theme_select_callback), gimp)"	DONE
+app/dialogs/preferences-dialog.c:1800	g_signal_connect	1802	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (prefs_theme_reload_callback), gimp)"	DONE
+app/dialogs/preferences-dialog.c:1920	g_signal_connect	1922	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (prefs_tool_options_save_callback), gimp)"	DONE
+app/dialogs/preferences-dialog.c:1928	g_signal_connect	1930	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button2, ""clicked"", G_CALLBACK (prefs_tool_options_clear_callback), gimp)"	DONE
+app/dialogs/preferences-dialog.c:2058	g_signal_connect	2060	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (combo, ""select-item"", G_CALLBACK (prefs_template_select_callback), core_config->default_image)"	DONE
+app/dialogs/preferences-dialog.c:2334	g_signal_connect	2336	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (sel, ""changed"", G_CALLBACK (prefs_format_string_select_callback), entry)"	DONE
+app/dialogs/preferences-dialog.c:2424	g_signal_connect	2426	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""toggled"", G_CALLBACK (prefs_resolution_source_callback), config)"	DONE
+app/dialogs/preferences-dialog.c:2458	g_signal_connect	2460	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (calibrate_button, ""clicked"", G_CALLBACK (prefs_resolution_calibrate_callback), entry)"	DONE
+app/dialogs/preferences-dialog.c:2617	g_signal_connect	2619	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (prefs_input_devices_dialog), gimp)"	DONE
+app/dialogs/preferences-dialog.c:2628	g_signal_connect	2630	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (prefs_devices_save_callback), gimp)"	DONE
+app/dialogs/preferences-dialog.c:2636	g_signal_connect	2638	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button2, ""clicked"", G_CALLBACK (prefs_devices_clear_callback), gimp)"	DONE
+app/dialogs/preferences-dialog.c:2702	g_signal_connect	2704	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (prefs_session_save_callback), gimp)"	DONE
+app/dialogs/preferences-dialog.c:2710	g_signal_connect	2712	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button2, ""clicked"", G_CALLBACK (prefs_session_clear_callback), gimp)"	DONE
+app/display/gimpdisplay.c:465	g_signal_connect	467	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gimp_display_shell_get_statusbar (shell), ""cancel"", G_CALLBACK (gimp_display_progress_canceled), display)"	DONE
+app/display/gimpdisplayshell-callbacks.c:94	g_signal_connect	96	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->hsbdata, ""value-changed"", G_CALLBACK (gimp_display_shell_hadjustment_changed), shell)"	DONE
+app/display/gimpdisplayshell-callbacks.c:97	g_signal_connect	99	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->vsbdata, ""value-changed"", G_CALLBACK (gimp_display_shell_vadjustment_changed), shell)"	DONE
+app/display/gimpdisplayshell-callbacks.c:101	g_signal_connect	103	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->hsb, ""change-value"", G_CALLBACK (gimp_display_shell_hscrollbar_change_value), shell)"	DONE
+app/display/gimpdisplayshell-callbacks.c:105	g_signal_connect	107	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->vsb, ""change-value"", G_CALLBACK (gimp_display_shell_vscrollbar_change_value), shell)"	DONE
+app/display/gimpdisplayshell-close.c:198	g_signal_connect	200	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dialog, ""destroy"", G_CALLBACK (gtk_widget_destroyed), &shell->close_dialog)"	DONE
+app/display/gimpdisplayshell-close.c:202	g_signal_connect	204	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dialog, ""response"", G_CALLBACK (gimp_display_shell_close_response), shell)"	DONE
+app/display/gimpdisplayshell-close.c:235	g_signal_connect_object	237	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (image, ""name-changed"", G_CALLBACK (gimp_display_shell_close_name_changed), box, 0)"	DONE
+app/display/gimpdisplayshell-close.c:238	g_signal_connect_object	240	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (image, ""exported"", G_CALLBACK (gimp_display_shell_close_exported), box, 0)"	DONE
+app/display/gimpdisplayshell-overlays.cpp:128	g_signal_connect_delegator	128	DELTA	128	"g_signal_connect_delegator (G_OBJECT(widget), ""size-allocate"", Delegators::delegator(this, &Self::on_size_allocate))"	DONE
+app/display/gimpdisplayshell-overlays.cpp:129	g_signal_connect_delegator_noret	129	DELTA	129	"g_signal_connect_delegator_noret (G_OBJECT(widget), ""enter-notify-event"", Delegators::delegator(this, &Self::on_enter_notify))"	DONE
+app/display/gimpdisplayshell-overlays.cpp:130	g_signal_connect_delegator_noret	130	DELTA	130	"g_signal_connect_delegator_noret (G_OBJECT(widget), ""leave-notify-event"", Delegators::delegator(this, &Self::on_leave_notify))"	DONE
+app/display/gimpdisplayshell-overlays.cpp:172	g_signal_connect_delegator	172	DELTA	172	"g_signal_connect_delegator (G_OBJECT(widget), ""size-allocate"", Delegators::delegator(this, &Self::on_size_allocate))"	DONE
+app/display/gimpdisplayshell-overlays.cpp:259	g_signal_connect_delegator_noret	259	DELTA	259	"g_signal_connect_delegator_noret (G_OBJECT(widget), ""color-changed"", Delegators::delegator(this, &Self::on_select_color))"	DONE
+app/display/gimpdisplayshell-overlays.cpp:264	g_signal_connect_delegator	264	DELTA	264	"g_signal_connect_delegator (G_OBJECT(user_context), ""foreground-changed"", Delegators::delegator(this, &Self::on_fg_color_changed))"	DONE
+app/display/gimpdisplayshell-overlays.cpp:265	g_signal_connect_delegator	265	DELTA	265	"g_signal_connect_delegator (G_OBJECT(user_context), ""background-changed"", Delegators::delegator(this, &Self::on_bg_color_changed))"	DONE
+app/display/gimpdisplayshell-overlays.cpp:349	g_signal_connect_delegator_noret	349	DELTA	349	"g_signal_connect_delegator_noret (G_OBJECT(widget), ""notify::active-color"", Delegators::delegator(this, &Self::on_active_color_notify))"	DONE
+app/display/gimpdisplayshell-scroll.c:433	g_signal_connect	435	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""size-allocate"", G_CALLBACK (gimp_display_shell_scroll_center_image_callback), data)"	DONE
+app/display/gimpdisplayshell-selection.c:109	g_signal_connect	111	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell, ""window-state-event"", G_CALLBACK (selection_window_state_event), selection)"	DONE
+app/display/gimpdisplayshell-selection.c:112	g_signal_connect	114	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell, ""visibility-notify-event"", G_CALLBACK (selection_visibility_notify_event), selection)"	DONE
+app/display/gimpdisplayshell-selection.c:230	g_idle_add	231	UNCHANGED_CALL_CONTEXT	-	g_idle_add ((GSourceFunc) selection_start_timeout, selection)	DONE
+app/display/gimpdisplayshell-selection.c:240	g_source_remove	240	UNCHANGED_CALL_CONTEXT	-	g_source_remove (selection->timeout)	DONE
+app/display/gimpdisplayshell-selection.c:455	g_timeout_add_full	458	UNCHANGED_CALL_CONTEXT	-	g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, config->marching_ants_speed, (GSourceFunc) selection_timeout, selection, NULL)	DONE
+app/display/gimpdisplayshell.c:339	g_signal_connect	341	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->motion_buffer, ""stroke"", G_CALLBACK (gimp_display_shell_buffer_stroke), shell)"	DONE
+app/display/gimpdisplayshell.c:342	g_signal_connect	344	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->motion_buffer, ""hover"", G_CALLBACK (gimp_display_shell_buffer_hover), shell)"	DONE
+app/display/gimpdisplayshell.c:357	g_signal_connect_swapped	359	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (shell->zoom, ""zoomed"", G_CALLBACK (gimp_display_shell_scale_changed), shell)"	DONE
+app/display/gimpdisplayshell.c:362	g_signal_connect	364	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell, ""button-press-event"", G_CALLBACK (gimp_display_shell_events), shell)"	DONE
+app/display/gimpdisplayshell.c:365	g_signal_connect	367	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell, ""button-release-event"", G_CALLBACK (gimp_display_shell_events), shell)"	DONE
+app/display/gimpdisplayshell.c:368	g_signal_connect	370	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell, ""key-press-event"", G_CALLBACK (gimp_display_shell_events), shell)"	DONE
+app/display/gimpdisplayshell.c:553	g_signal_connect	555	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->origin, ""button-press-event"", G_CALLBACK (gimp_display_shell_origin_button_press), shell)"	DONE
+app/display/gimpdisplayshell.c:565	g_signal_connect	567	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""remove"", G_CALLBACK (gimp_display_shell_remove_overlay), shell)"	DONE
+app/display/gimpdisplayshell.c:578	g_signal_connect	580	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->hrule, ""button-press-event"", G_CALLBACK (gimp_display_shell_hruler_button_press), shell)"	DONE
+app/display/gimpdisplayshell.c:590	g_signal_connect	592	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->vrule, ""button-press-event"", G_CALLBACK (gimp_display_shell_vruler_button_press), shell)"	DONE
+app/display/gimpdisplayshell.c:606	g_signal_connect	608	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""realize"", G_CALLBACK (gimp_display_shell_canvas_realize), shell)"	DONE
+app/display/gimpdisplayshell.c:609	g_signal_connect	611	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""size-allocate"", G_CALLBACK (gimp_display_shell_canvas_size_allocate), shell)"	DONE
+app/display/gimpdisplayshell.c:612	g_signal_connect	614	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""expose-event"", G_CALLBACK (gimp_display_shell_canvas_expose), shell)"	DONE
+app/display/gimpdisplayshell.c:615	g_signal_connect_after	617	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_after (shell->canvas, ""expose-event"", G_CALLBACK (gimp_display_shell_canvas_expose_after), shell)"	DONE
+app/display/gimpdisplayshell.c:619	g_signal_connect	621	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""enter-notify-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:622	g_signal_connect	624	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""leave-notify-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:625	g_signal_connect	627	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""proximity-in-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:628	g_signal_connect	630	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""proximity-out-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:631	g_signal_connect	633	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""focus-in-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:634	g_signal_connect	636	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""focus-out-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:637	g_signal_connect	639	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""button-press-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:640	g_signal_connect	642	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""button-release-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:643	g_signal_connect	645	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""scroll-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:646	g_signal_connect	648	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""motion-notify-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:649	g_signal_connect	651	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""key-press-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:652	g_signal_connect	654	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->canvas, ""key-release-event"", G_CALLBACK (gimp_display_shell_canvas_tool_events), shell)"	DONE
+app/display/gimpdisplayshell.c:675	g_signal_connect_swapped	677	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (shell->zoom_button, ""toggled"", G_CALLBACK (gimp_display_shell_zoom_button_callback), shell)"	DONE
+app/display/gimpdisplayshell.c:704	g_signal_connect	706	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->quick_mask_button, ""toggled"", G_CALLBACK (gimp_display_shell_quick_mask_toggled), shell)"	DONE
+app/display/gimpdisplayshell.c:707	g_signal_connect	709	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->quick_mask_button, ""button-press-event"", G_CALLBACK (gimp_display_shell_quick_mask_button_press), shell)"	DONE
+app/display/gimpdisplayshell.c:719	g_signal_connect	721	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shell->nav_ebox, ""button-press-event"", G_CALLBACK (gimp_display_shell_navigation_button_press), shell)"	DONE
+app/display/gimpdisplayshell.c:824	g_source_remove	824	UNCHANGED_CALL_CONTEXT	-	g_source_remove (shell->filter_idle_id)	DONE
+app/display/gimpdisplayshell.c:868	g_source_remove	868	UNCHANGED_CALL_CONTEXT	-	g_source_remove (shell->title_idle_id)	DONE
+app/display/gimpdisplayshell.c:874	g_source_remove	874	UNCHANGED_CALL_CONTEXT	-	g_source_remove (shell->fill_idle_id)	DONE
+app/display/gimpdisplayshell.c:1338	g_source_remove	1338	UNCHANGED_CALL_CONTEXT	-	g_source_remove (shell->fill_idle_id)	DONE
+app/display/gimpdisplayshell.c:1367	g_source_remove	1367	UNCHANGED_CALL_CONTEXT	-	g_source_remove (shell->fill_idle_id)	DONE
+app/display/gimpdisplayshell.c:1455	g_idle_add_full	1457	UNCHANGED_CALL_CONTEXT	-	g_idle_add_full (G_PRIORITY_LOW, (GSourceFunc) gimp_display_shell_fill_idle, shell, NULL)	DONE
+app/display/gimpimagewindow.c:375	g_signal_connect_object	377	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (private->dialog_factory, ""dock-window-added"", G_CALLBACK (gimp_image_window_update_ui_manager), window, G_CONNECT_SWAPPED)"	DONE
+app/display/gimpimagewindow.c:378	g_signal_connect_object	380	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (private->dialog_factory, ""dock-window-removed"", G_CALLBACK (gimp_image_window_update_ui_manager), window, G_CONNECT_SWAPPED)"	DONE
+app/display/gimpimagewindow.c:385	g_signal_connect	387	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->menubar_manager, ""show-tooltip"", G_CALLBACK (gimp_image_window_show_tooltip), window)"	DONE
+app/display/gimpimagewindow.c:388	g_signal_connect	390	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->menubar_manager, ""hide-tooltip"", G_CALLBACK (gimp_image_window_hide_tooltip), window)"	DONE
+app/display/gimpimagewindow.c:415	g_signal_connect	417	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->menubar, ""can-activate-accel"", G_CALLBACK (gtk_true), NULL)"	DONE
+app/display/gimpimagewindow.c:420	g_signal_connect	422	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->menubar, ""button-press-event"", G_CALLBACK (gimp_image_window_shell_events), window)"	DONE
+app/display/gimpimagewindow.c:423	g_signal_connect	425	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->menubar, ""button-release-event"", G_CALLBACK (gimp_image_window_shell_events), window)"	DONE
+app/display/gimpimagewindow.c:426	g_signal_connect	428	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->menubar, ""key-press-event"", G_CALLBACK (gimp_image_window_shell_events), window)"	DONE
+app/display/gimpimagewindow.c:522	g_signal_connect	524	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->notebook, ""switch-page"", G_CALLBACK (gimp_image_window_switch_page), window)"	DONE
+app/display/gimpimagewindow.c:525	g_signal_connect	527	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->notebook, ""page-removed"", G_CALLBACK (gimp_image_window_page_removed), window)"	DONE
+app/display/gimpimagewindow.c:528	g_signal_connect	530	DELTA	528,529,530	"g_signal_connect (private->notebook, ""size-allocate"", G_CALLBACK (gimp_image_window_notebook_resized), window)"	DONE
+app/display/gimpimagewindow.c:548	g_signal_connect_object	550	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify::single-window-mode"", G_CALLBACK (gimp_image_window_config_notify), window, G_CONNECT_SWAPPED)"	DONE
+app/display/gimpimagewindow.c:551	g_signal_connect_object	553	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify::hide-docks"", G_CALLBACK (gimp_image_window_config_notify), window, G_CONNECT_SWAPPED)"	DONE
+app/display/gimpimagewindow.c:568	g_signal_connect	570	DELTA	568,569,570	"g_signal_connect (window, ""size-allocate"", G_CALLBACK (gimp_image_window_resized), window)"	DONE
+app/display/gimpimagewindow.c:1230	g_signal_connect_data	1233	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_data (private->right_hpane, ""size-allocate"", G_CALLBACK (gimp_image_window_set_right_docks_width), GINT_TO_POINTER (right_docks_width), NULL, G_CONNECT_AFTER)"	DONE
+app/display/gimpimagewindow.c:1827	g_signal_connect_data	1830	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_data (shell, ""size-allocate"", G_CALLBACK (gimp_image_window_shell_size_allocate), data, (GClosureNotify) g_free, G_CONNECT_AFTER)"	DONE
+app/display/gimpimagewindow.c:2042	g_signal_connect	2044	DELTA	2042,2043,2044	"g_signal_connect (active_display, ""notify::image"", G_CALLBACK (gimp_image_window_image_notify), window)"	DONE
+app/display/gimpimagewindow.c:2046	g_signal_connect	2048	DELTA	2046,2047,2048	"g_signal_connect (private->active_shell, ""scaled"", G_CALLBACK (gimp_image_window_shell_scaled), window)"	DONE
+app/display/gimpimagewindow.c:2049	g_signal_connect	2051	DELTA	2049,2050,2051	"g_signal_connect (private->active_shell, ""notify::title"", G_CALLBACK (gimp_image_window_shell_title_notify), window)"	DONE
+app/display/gimpimagewindow.c:2052	g_signal_connect	2054	DELTA	2052,2053,2054	"g_signal_connect (private->active_shell, ""notify::icon"", G_CALLBACK (gimp_image_window_shell_icon_notify), window)"	DONE
+app/display/gimpimagewindow.c:2057	g_signal_connect	2059	DELTA	2057,2058,2059	"g_signal_connect (private->active_shell, ""destroy"", G_CALLBACK (gimp_image_window_shell_destroy), window)"	DONE
+app/display/gimpimagewindow.c:2480	g_signal_connect_swapped	2482	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (button, ""clicked"", G_CALLBACK (gimp_image_window_shell_close_button_callback), shell)"	DONE
+app/display/gimpimagewindow.c:2539	g_signal_connect	2539	DELTA	2539	"g_signal_connect (private->guide.success_button, ""clicked"", (GCallback)(navigation_bar_success_clicked), window)"	DONE
+app/display/gimpmotionbuffer.c:137	g_source_remove	137	UNCHANGED_CALL_CONTEXT	-	g_source_remove (buffer->event_delay_timeout)	DONE
+app/display/gimpmotionbuffer.c:222	g_source_remove	222	UNCHANGED_CALL_CONTEXT	-	g_source_remove (buffer->event_delay_timeout)	DONE
+app/display/gimpmotionbuffer.c:481	g_source_remove	481	UNCHANGED_CALL_CONTEXT	-	g_source_remove (buffer->event_delay_timeout)	DONE
+app/display/gimpmotionbuffer.c:500	g_timeout_add	502	UNCHANGED_CALL_CONTEXT	-	g_timeout_add (50, (GSourceFunc) gimp_motion_buffer_event_queue_timeout, buffer)	DONE
+app/display/gimpstatusbar.c:199	g_signal_connect	201	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (hbox, ""size-request"", G_CALLBACK (gimp_statusbar_hbox_size_request), statusbar)"	DONE
+app/display/gimpstatusbar.c:217	g_signal_connect	219	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (statusbar->unit_combo, ""changed"", G_CALLBACK (gimp_statusbar_unit_changed), statusbar)"	DONE
+app/display/gimpstatusbar.c:227	g_signal_connect	229	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (statusbar->scale_combo, ""changed"", G_CALLBACK (gimp_statusbar_scale_changed), statusbar)"	DONE
+app/display/gimpstatusbar.c:231	g_signal_connect	233	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (statusbar->scale_combo, ""entry-activated"", G_CALLBACK (gimp_statusbar_scale_activated), statusbar)"	DONE
+app/display/gimpstatusbar.c:240	g_signal_connect_after	242	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_after (statusbar->label, ""expose-event"", G_CALLBACK (gimp_statusbar_label_expose), statusbar)"	DONE
+app/display/gimpstatusbar.c:261	g_signal_connect	261	DELTA	261	"g_signal_connect(widget, ""toggled"", G_CALLBACK(gimp_statusbar_flip_side_clicked), statusbar)"	DONE
+app/display/gimpstatusbar.c:271	g_signal_connect	271	DELTA	271	"g_signal_connect(widget, ""clicked"", G_CALLBACK(gimp_statusbar_rotate_right_clicked), statusbar)"	DONE
+app/display/gimpstatusbar.c:280	g_signal_connect	280	DELTA	280	"g_signal_connect(widget, ""clicked"", G_CALLBACK(gimp_statusbar_reset_view_clicked), statusbar)"	DONE
+app/display/gimpstatusbar.c:289	g_signal_connect	289	DELTA	289	"g_signal_connect(widget, ""clicked"", G_CALLBACK(gimp_statusbar_rotate_left_clicked), statusbar)"	DONE
+app/display/gimpstatusbar.c:299	g_signal_connect	299	DELTA	299	"g_signal_connect(widget, ""toggled"", G_CALLBACK(gimp_statusbar_toggle_snap), statusbar)"	DONE
+app/display/gimpstatusbar.c:315	g_signal_connect	317	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (statusbar->cancel_button, ""clicked"", G_CALLBACK (gimp_statusbar_progress_canceled), statusbar)"	DONE
+app/display/gimpstatusbar.c:327	g_source_remove	327	UNCHANGED_CALL_CONTEXT	-	g_source_remove (statusbar->temp_timeout_id)	DONE
+app/display/gimpstatusbar.c:747	g_signal_connect_object	749	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (statusbar->shell, ""scaled"", G_CALLBACK (gimp_statusbar_shell_scaled), statusbar, 0)"	DONE
+app/display/gimpstatusbar.c:751	g_signal_connect_object	753	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (statusbar->shell, ""notify::status"", G_CALLBACK (gimp_statusbar_shell_status_notify), statusbar, 0)"	DONE
+app/display/gimpstatusbar.c:1222	g_source_remove	1222	UNCHANGED_CALL_CONTEXT	-	g_source_remove (statusbar->temp_timeout_id)	DONE
+app/display/gimpstatusbar.c:1225	g_timeout_add	1226	UNCHANGED_CALL_CONTEXT	-	g_timeout_add (MESSAGE_TIMEOUT, (GSourceFunc) gimp_statusbar_temp_timeout, statusbar)	DONE
+app/display/gimpstatusbar.c:1271	g_source_remove	1271	UNCHANGED_CALL_CONTEXT	-	g_source_remove (statusbar->temp_timeout_id)	DONE
+app/gimp-features.cpp:89	g_signal_connect_delegator	89	DELTA	89	"g_signal_connect_delegator (G_OBJECT(gimp), ""initialize"", Delegators::delegator(this, &Feature::on_initialize))"	DONE
+app/gimp-features.cpp:92	g_signal_connect_delegator	92	DELTA	92	"g_signal_connect_delegator (G_OBJECT(gimp), ""restore"", Delegators::delegator(this, &Feature::on_restore))"	DONE
+app/gimp-features.cpp:93	g_signal_connect_delegator	93	DELTA	93	"g_signal_connect_delegator (G_OBJECT(gimp), ""exit"", Delegators::delegator(this, &Feature::on_exit))"	DONE
+app/gimp-features.cpp:109	g_signal_connect_delegator	109	DELTA	109	"g_signal_connect_delegator (G_OBJECT(gimp), ""restore"", Delegators::delegator(this, &Feature::on_restore))"	DONE
+app/gimp-features.cpp:110	g_signal_connect_delegator	110	DELTA	110	"g_signal_connect_delegator (G_OBJECT(gimp), ""exit"", Delegators::delegator(this, &Feature::on_exit))"	DONE
+app/gui/gui.c:266	g_signal_connect_after	268	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_after (gimp, ""initialize"", G_CALLBACK (gui_initialize_after_callback), NULL)"	DONE
+app/gui/gui.c:270	g_signal_connect	272	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gimp, ""restore"", G_CALLBACK (gui_restore_callback), NULL)"	DONE
+app/gui/gui.c:273	g_signal_connect_after	275	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_after (gimp, ""restore"", G_CALLBACK (gui_restore_after_callback), NULL)"	DONE
+app/gui/gui.c:277	g_signal_connect	279	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gimp, ""exit"", G_CALLBACK (gui_exit_callback), NULL)"	DONE
+app/gui/gui.c:280	g_signal_connect_after	282	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_after (gimp, ""exit"", G_CALLBACK (gui_exit_after_callback), NULL)"	DONE
+app/gui/gui.c:404	g_signal_connect	406	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gui_config, ""notify::show-tooltips"", G_CALLBACK (gui_show_tooltips_notify), gimp)"	DONE
+app/gui/gui.c:411	g_signal_connect	413	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gui_config, ""notify::use-help"", G_CALLBACK (gui_show_help_button_notify), gimp)"	DONE
+app/gui/gui.c:414	g_signal_connect	416	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gui_config, ""notify::user-manual-online"", G_CALLBACK (gui_user_manual_notify), gimp)"	DONE
+app/gui/gui.c:417	g_signal_connect	419	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gui_config, ""notify::show-help-button"", G_CALLBACK (gui_show_help_button_notify), gimp)"	DONE
+app/gui/gui.c:421	g_signal_connect	423	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gimp_get_user_context (gimp), ""display-changed"", G_CALLBACK (gui_display_changed), gimp)"	DONE
+app/gui/gui.c:450	g_signal_connect	452	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gimp, ""buffer-changed"", G_CALLBACK (gui_global_buffer_changed), NULL)"	DONE
+app/gui/gui.c:562	g_signal_connect	564	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (osx_app, ""NSApplicationBlockTermination"", G_CALLBACK (gui_quartz_quit_callback), image_ui_manager)"	DONE
+app/gui/gui.c:570	g_signal_connect_object	572	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gui_config, ""notify::single-window-mode"", G_CALLBACK (gui_single_window_mode_notify), ui_configurer, 0)"	DONE
+app/gui/gui.c:573	g_signal_connect_object	575	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gui_config, ""notify::tearoff-menus"", G_CALLBACK (gui_tearoff_menus_notify), image_ui_manager, 0)"	DONE
+app/gui/gui.c:576	g_signal_connect	578	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (image_ui_manager, ""show-tooltip"", G_CALLBACK (gui_menu_show_tooltip), gimp)"	DONE
+app/gui/gui.c:579	g_signal_connect	581	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (image_ui_manager, ""hide-tooltip"", G_CALLBACK (gui_menu_hide_tooltip), gimp)"	DONE
+app/menus/menus.c:89	g_signal_connect	90	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gimp->config, ""notify::can-change-accels"", G_CALLBACK (menus_can_change_accels), NULL)"	DONE
+app/paint/gimpbrushcore.c:955	g_signal_connect	957	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (core->main_brush, ""invalidate-preview"", G_CALLBACK (gimp_brush_core_invalidate_cache), core)"	DONE
+app/paint/gimpmypaintcore.cpp:120	g_signal_connect_delegator	120	DELTA	120	"g_signal_connect_delegator(G_OBJECT(options), ""notify"", Delegators::delegator(this, &GimpMypaintCore::option_changed))"	DONE
+app/paint/gimpmypaintoptions.cpp:168	g_signal_connect	171	DELTA	168,169,170,171	g_signal_connect(G_OBJECT(options), gimp_context_type_to_signal_name (GIMP_TYPE_MYPAINT_BRUSH), G_CALLBACK(gimp_mypaint_options_mypaint_brush_changed), NULL)	DONE
+app/paint/gimpmypaintoptions.cpp:172	g_signal_connect	174	DELTA	172,173,174	g_signal_connect(G_OBJECT(options), gimp_context_type_to_signal_name (GIMP_TYPE_BRUSH), G_CALLBACK(gimp_mypaint_options_brush_changed), NULL)	DONE
+app/paint/gimpmypaintoptions.cpp:175	g_signal_connect	177	DELTA	175,176,177	g_signal_connect(G_OBJECT(options), gimp_context_type_to_signal_name (GIMP_TYPE_PATTERN), G_CALLBACK(gimp_mypaint_options_texture_changed), NULL)	DONE
+app/paint/gimpmypaintoptions.cpp:180	g_signal_connect	181	DELTA	180,181	g_signal_connect(G_OBJECT(options), notify_name, G_CALLBACK(gimp_mypaint_options_prop_brushmark_updated), NULL)	DONE
+app/paint/gimpmypaintoptions.cpp:185	g_signal_connect	186	DELTA	185,186	g_signal_connect(G_OBJECT(options), notify_name, G_CALLBACK(gimp_mypaint_options_prop_brushmark_updated), NULL)	DONE
+app/paint/gimpmypaintoptions.cpp:190	g_signal_connect	191	DELTA	190,191	g_signal_connect(G_OBJECT(options), notify_name, G_CALLBACK(gimp_mypaint_options_prop_brushmark_updated), NULL)	DONE
+app/paint/gimpmypaintoptions.cpp:195	g_signal_connect	196	DELTA	195,196	g_signal_connect(G_OBJECT(options), notify_name, G_CALLBACK(gimp_mypaint_options_prop_texture_updated), NULL)	DONE
+app/paint/gimpmypaintoptions.cpp:200	g_signal_connect	201	DELTA	200,201	g_signal_connect(G_OBJECT(options), notify_name, G_CALLBACK(gimp_mypaint_options_prop_texture_updated), NULL)	DONE
+app/paint/gimpmypaintoptions.cpp:205	g_signal_connect	206	DELTA	205,206	g_signal_connect(G_OBJECT(options), notify_name, G_CALLBACK(gimp_mypaint_options_prop_texture_updated), NULL)	DONE
+app/plug-in/gimpplugin.c:395	g_source_set_callback	397	UNCHANGED_CALL_CONTEXT	-	g_source_set_callback (source, (GSourceFunc) gimp_plug_in_recv_message, plug_in, NULL)	DONE
+app/plug-in/gimpplugin.c:511	g_source_remove	511	UNCHANGED_CALL_CONTEXT	-	g_source_remove (plug_in->input_id)	DONE
+app/tools/gimpalignoptions.c:251	g_signal_connect	253	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (gimp_align_options_button_clicked), options)"	DONE
+app/tools/gimpaligntool.c:177	g_signal_connect_object	179	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""align-button-clicked"", G_CALLBACK (gimp_align_tool_align), align_tool, G_CONNECT_SWAPPED)"	DONE
+app/tools/gimpaligntool.c:317	g_signal_connect	319	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (object, ""removed"", G_CALLBACK (gimp_align_tool_object_removed), align_tool)"	DONE
+app/tools/gimpaligntool.c:361	g_signal_connect	363	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (layer, ""removed"", G_CALLBACK (gimp_align_tool_object_removed), align_tool)"	DONE
+app/tools/gimpblendoptions.c:275	g_signal_connect	277	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (config, ""notify::gradient-type"", G_CALLBACK (blend_options_gradient_type_notify), combo)"	DONE
+app/tools/gimpbrightnesscontrasttool.c:208	g_signal_connect_object	210	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (bc_tool->config, ""notify"", G_CALLBACK (brightness_contrast_config_notify), G_OBJECT (bc_tool), 0)"	DONE
+app/tools/gimpbrightnesscontrasttool.c:325	g_signal_connect	327	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (data, ""value-changed"", G_CALLBACK (brightness_contrast_brightness_changed), bc_tool)"	DONE
+app/tools/gimpbrightnesscontrasttool.c:338	g_signal_connect	340	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (data, ""value-changed"", G_CALLBACK (brightness_contrast_contrast_changed), bc_tool)"	DONE
+app/tools/gimpbrightnesscontrasttool.c:347	g_signal_connect	349	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (brightness_contrast_to_levels_callback), bc_tool)"	DONE
+app/tools/gimpbrushoptions-gui.c:122	gimp_container_remove_handler	123	DELTA	122,123	gimp_container_remove_handler (p->container, p->spacing_changed_handler_id)	DONE
+app/tools/gimpbrushoptions-gui.c:174	g_signal_connect	176	DELTA	174,175,176	"g_signal_connect (brush, ""notify"", G_CALLBACK (notify_brush), p)"	DONE
+app/tools/gimpbrushoptions-gui.c:437	gimp_container_remove_handler	438	DELTA	437,438	gimp_container_remove_handler (p->container, p->spacing_changed_handler_id)	DONE
+app/tools/gimpbrushoptions-gui.c:580	g_signal_connect	582	DELTA	580,581,582	"g_signal_connect (adj, ""value-changed"", G_CALLBACK (spacing_update), p)"	DONE
+app/tools/gimpbrushoptions-gui.c:647	g_signal_connect	649	DELTA	647,648,649	"g_signal_connect (adj, ""value-changed"", G_CALLBACK (update_brush), p)"	DONE
+app/tools/gimpbrushoptions-gui.c:663	g_signal_connect	665	DELTA	663,664,665	"g_signal_connect (adj, ""value-changed"", G_CALLBACK (update_brush), p)"	DONE
+app/tools/gimpbrushoptions-gui.c:680	g_signal_connect	682	DELTA	680,681,682	"g_signal_connect (adj, ""value-changed"", G_CALLBACK (update_brush), p)"	DONE
+app/tools/gimpbrushoptions-gui.c:697	g_signal_connect	699	DELTA	697,698,699	"g_signal_connect (adj,""value-changed"", G_CALLBACK (update_brush), p)"	DONE
+app/tools/gimpbrushoptions-gui.c:714	g_signal_connect	716	DELTA	714,715,716	"g_signal_connect (adj, ""value-changed"", G_CALLBACK (update_brush), p)"	DONE
+app/tools/gimpbrushoptions-gui.c:720	gimp_container_add_handler	722	DELTA	720,721,722	"gimp_container_add_handler (container, ""spacing-changed"", G_CALLBACK (spacing_changed), p)"	DONE
+app/tools/gimpbrushoptions-gui.c:726	g_signal_connect	729	DELTA	726,727,728,729	g_signal_connect (context, gimp_context_type_to_signal_name (GIMP_TYPE_BRUSH), G_CALLBACK (brush_changed), p)	DONE
+app/tools/gimpbrushoptions-gui.c:737	g_signal_connect	737	DELTA	737	"g_signal_connect (GTK_WIDGET (*result), ""destroy"", G_CALLBACK(destroy_brush_popup_dialog), p)"	DONE
+app/tools/gimpbrushtool.c:143	g_signal_connect_object	145	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (display_config, ""notify::show-paint-tool-cursor"", G_CALLBACK (gimp_brush_tool_notify_brush), brush_tool, 0)"	DONE
+app/tools/gimpbrushtool.c:146	g_signal_connect_object	148	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (display_config, ""notify::show-brush-outline"", G_CALLBACK (gimp_brush_tool_notify_brush), brush_tool, 0)"	DONE
+app/tools/gimpbrushtool.c:150	g_signal_connect_object	152	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp_tool_get_options (tool), ""brush-changed"", G_CALLBACK (gimp_brush_tool_brush_changed), brush_tool, 0)"	DONE
+app/tools/gimpbrushtool.c:154	g_signal_connect_object	156	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (paint_tool->core, ""set-brush"", G_CALLBACK (gimp_brush_tool_set_brush), brush_tool, 0)"	DONE
+app/tools/gimpcagetool.c:1193	g_signal_connect	1195	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (transform, ""notify::progress"", G_CALLBACK (gimp_cage_tool_transform_progress), ct)"	DONE
+app/tools/gimpcagetool.c:1252	g_signal_connect	1254	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (ct->image_map, ""flush"", G_CALLBACK (gimp_cage_tool_image_map_flush), ct)"	DONE
+app/tools/gimpcolorbalancetool.c:186	g_signal_connect_object	188	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (cb_tool->config, ""notify"", G_CALLBACK (color_balance_config_notify), G_OBJECT (cb_tool), 0)"	DONE
+app/tools/gimpcolorbalancetool.c:295	g_signal_connect	297	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (cb_tool->cyan_red_adj, ""value-changed"", G_CALLBACK (color_balance_cr_changed), cb_tool)"	DONE
+app/tools/gimpcolorbalancetool.c:304	g_signal_connect	306	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (cb_tool->magenta_green_adj, ""value-changed"", G_CALLBACK (color_balance_mg_changed), cb_tool)"	DONE
+app/tools/gimpcolorbalancetool.c:313	g_signal_connect	315	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (cb_tool->yellow_blue_adj, ""value-changed"", G_CALLBACK (color_balance_yb_changed), cb_tool)"	DONE
+app/tools/gimpcolorbalancetool.c:325	g_signal_connect	327	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (color_balance_range_reset_callback), cb_tool)"	DONE
+app/tools/gimpcolorbalancetool.c:337	g_signal_connect	339	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (cb_tool->preserve_toggle, ""toggled"", G_CALLBACK (color_balance_preserve_toggled), cb_tool)"	DONE
+app/tools/gimpcolorizetool.c:188	g_signal_connect_object	190	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (col_tool->config, ""notify"", G_CALLBACK (gimp_colorize_tool_config_notify), G_OBJECT (col_tool), 0)"	DONE
+app/tools/gimpcolorizetool.c:248	g_signal_connect	250	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (data, ""value-changed"", G_CALLBACK (colorize_hue_changed), col_tool)"	DONE
+app/tools/gimpcolorizetool.c:261	g_signal_connect	263	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (data, ""value-changed"", G_CALLBACK (colorize_saturation_changed), col_tool)"	DONE
+app/tools/gimpcolorizetool.c:274	g_signal_connect	276	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (data, ""value-changed"", G_CALLBACK (colorize_lightness_changed), col_tool)"	DONE
+app/tools/gimpcolorpickertool.c:323	g_signal_connect	325	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (picker_tool->dialog, ""response"", G_CALLBACK (gimp_color_picker_tool_info_response), picker_tool)"	DONE
+app/tools/gimpcroptool.c:191	g_signal_connect_object	194	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp_context, ""image-changed"", G_CALLBACK (gimp_crop_tool_image_changed), crop_tool, G_CONNECT_SWAPPED)"	DONE
+app/tools/gimpcroptool.c:206	g_signal_connect_object	208	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify::layer-only"", G_CALLBACK (gimp_crop_tool_options_notify), object, 0)"	DONE
+app/tools/gimpcroptool.c:210	g_signal_connect_object	212	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify::allow-growing"", G_CALLBACK (gimp_crop_tool_options_notify), object, 0)"	DONE
+app/tools/gimpcroptool.c:450	g_signal_connect_object	453	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (image, ""size-changed"", G_CALLBACK (gimp_crop_tool_image_size_changed), crop_tool, G_CONNECT_SWAPPED)"	DONE
+app/tools/gimpcurvestool.c:411	g_signal_connect_object	413	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tool->config, ""notify"", G_CALLBACK (gimp_curves_tool_config_notify), tool, 0)"	DONE
+app/tools/gimpcurvestool.c:462	g_signal_connect	464	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (image_map_tool->settings_box, ""file-dialog-setup"", G_CALLBACK (gimp_curves_tool_export_setup), image_map_tool)"	DONE
+app/tools/gimpcurvestool.c:494	g_signal_connect	496	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tool->channel_menu, ""changed"", G_CALLBACK (curves_channel_callback), tool)"	DONE
+app/tools/gimpcurvestool.c:504	g_signal_connect	506	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (curves_channel_reset_callback), tool)"	DONE
+app/tools/gimpcurvestool.c:747	g_signal_connect	749	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""toggled"", G_CALLBACK (gimp_toggle_button_update), &tool->export_old_format)"	DONE
+app/tools/gimpdesaturatetool.c:158	g_signal_connect_object	160	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (desaturate_tool->config, ""notify"", G_CALLBACK (gimp_desaturate_tool_config_notify), G_OBJECT (desaturate_tool), 0)"	DONE
+app/tools/gimpdrawtool.c:118	g_source_remove	118	UNCHANGED_CALL_CONTEXT	-	g_source_remove (draw_tool->draw_timeout)	DONE
+app/tools/gimpdrawtool.c:211	g_source_remove	211	UNCHANGED_CALL_CONTEXT	-	g_source_remove (draw_tool->draw_timeout)	DONE
+app/tools/gimpdrawtool.c:292	g_source_remove	292	UNCHANGED_CALL_CONTEXT	-	g_source_remove (draw_tool->draw_timeout)	DONE
+app/tools/gimpdrawtool.c:318	g_source_remove	318	UNCHANGED_CALL_CONTEXT	-	g_source_remove (draw_tool->draw_timeout)	DONE
+app/tools/gimpdynamicsoptions-gui.c:138	g_signal_connect	140	DELTA	138,139,140	"g_signal_connect (p->current_target_dynamics, ""notify"", G_CALLBACK (notify_current_target_dynamics), p)"	DONE
+app/tools/gimpdynamicsoptions-gui.c:344	g_signal_connect	345	DELTA	344,345	"g_signal_connect (p->working_dynamics, ""notify"", G_CALLBACK (notify_working_dynamics), p)"	DONE
+app/tools/gimpdynamicsoptions-gui.c:346	g_signal_connect	349	DELTA	346,347,348,349	g_signal_connect (context, gimp_context_type_to_signal_name (GIMP_TYPE_DYNAMICS), G_CALLBACK (dynamics_changed), p)	DONE
+app/tools/gimpdynamicsoptions-gui.c:350	g_signal_connect	350	DELTA	350	"g_signal_connect (GTK_WIDGET (*result), ""destroy"", G_CALLBACK(destroy_dynamics_popup_dialog), p)"	DONE
+app/tools/gimpforegroundselecttool.c:212	g_signal_connect_object	214	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify"", G_CALLBACK (gimp_foreground_select_options_notify), object, 0)"	DONE
+app/tools/gimpforegroundselecttool.c:615	g_source_remove	615	UNCHANGED_CALL_CONTEXT	-	g_source_remove (fg_select->idle_id)	DONE
+app/tools/gimpforegroundselecttool.c:870	g_source_remove	870	UNCHANGED_CALL_CONTEXT	-	g_source_remove (fg_select->idle_id)	DONE
+app/tools/gimpforegroundselecttool.c:873	g_timeout_add_full	875	UNCHANGED_CALL_CONTEXT	-	g_timeout_add_full (G_PRIORITY_LOW, MINIMUM_DELAY, (GSourceFunc) gimp_foreground_select_tool_idle_select, fg_select, NULL)	DONE
+app/tools/gimpgegltool.c:428	g_signal_connect	430	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (combo, ""changed"", G_CALLBACK (gimp_gegl_tool_operation_changed), tool)"	DONE
+app/tools/gimpgegltool.c:689	g_signal_connect_object	691	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tool->config, ""notify"", G_CALLBACK (gimp_gegl_tool_config_notify), G_OBJECT (tool), 0)"	DONE
+app/tools/gimphuesaturationtool.c:194	g_signal_connect_object	196	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (hs_tool->config, ""notify"", G_CALLBACK (hue_saturation_config_notify), G_OBJECT (hs_tool), 0)"	DONE
+app/tools/gimphuesaturationtool.c:328	g_signal_connect	330	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""toggled"", G_CALLBACK (hue_saturation_range_callback), hs_tool)"	DONE
+app/tools/gimphuesaturationtool.c:360	g_signal_connect	362	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (data, ""value-changed"", G_CALLBACK (hue_saturation_overlap_changed), hs_tool)"	DONE
+app/tools/gimphuesaturationtool.c:391	g_signal_connect	393	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (data, ""value-changed"", G_CALLBACK (hue_saturation_hue_changed), hs_tool)"	DONE
+app/tools/gimphuesaturationtool.c:407	g_signal_connect	409	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (data, ""value-changed"", G_CALLBACK (hue_saturation_lightness_changed), hs_tool)"	DONE
+app/tools/gimphuesaturationtool.c:423	g_signal_connect	425	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (hs_tool->saturation_data, ""value-changed"", G_CALLBACK (hue_saturation_saturation_changed), hs_tool)"	DONE
+app/tools/gimphuesaturationtool.c:435	g_signal_connect	437	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (hue_saturation_range_reset_callback), hs_tool)"	DONE
+app/tools/gimpimagemaptool.c:353	g_signal_connect_object	355	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (dialog, ""response"", G_CALLBACK (gimp_image_map_tool_response), G_OBJECT (image_map_tool), 0)"	DONE
+app/tools/gimpimagemaptool.c:375	g_signal_connect_object	377	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tool_info->gimp->config, ""notify::use-gegl"", G_CALLBACK (gimp_image_map_tool_gegl_notify), image_map_tool, 0)"	DONE
+app/tools/gimpimagemaptool.c:634	g_signal_connect	636	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tool->image_map, ""flush"", G_CALLBACK (gimp_image_map_tool_flush), tool)"	DONE
+app/tools/gimplevelstool.c:270	g_signal_connect_object	272	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tool->config, ""notify"", G_CALLBACK (gimp_levels_tool_config_notify), G_OBJECT (tool), 0)"	DONE
+app/tools/gimplevelstool.c:342	g_signal_connect	344	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""toggled"", G_CALLBACK (levels_input_picker_toggled), tool)"	DONE
+app/tools/gimplevelstool.c:373	g_signal_connect	375	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (image_map_tool->settings_box, ""file-dialog-setup"", G_CALLBACK (gimp_levels_tool_export_setup), image_map_tool)"	DONE
+app/tools/gimplevelstool.c:397	g_signal_connect	399	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (menu, ""changed"", G_CALLBACK (levels_channel_callback), tool)"	DONE
+app/tools/gimplevelstool.c:413	g_signal_connect	415	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (levels_channel_reset_callback), tool)"	DONE
+app/tools/gimplevelstool.c:470	g_signal_connect_swapped	472	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (tool->input_bar, ""button-press-event"", G_CALLBACK (GTK_WIDGET_GET_CLASS (tool->input_sliders)->button_press_event), tool->input_sliders)"	DONE
+app/tools/gimplevelstool.c:474	g_signal_connect_swapped	476	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (tool->input_bar, ""button-release-event"", G_CALLBACK (GTK_WIDGET_GET_CLASS (tool->input_sliders)->button_release_event), tool->input_sliders)"	DONE
+app/tools/gimplevelstool.c:478	g_signal_connect_swapped	480	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (tool->input_bar, ""motion-notify-event"", G_CALLBACK (GTK_WIDGET_GET_CLASS (tool->input_sliders)->motion_notify_event), tool->input_sliders)"	DONE
+app/tools/gimplevelstool.c:482	g_signal_connect_swapped	484	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (bar, ""button-press-event"", G_CALLBACK (GTK_WIDGET_GET_CLASS (tool->input_sliders)->button_press_event), tool->input_sliders)"	DONE
+app/tools/gimplevelstool.c:486	g_signal_connect_swapped	488	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (bar, ""button-release-event"", G_CALLBACK (GTK_WIDGET_GET_CLASS (tool->input_sliders)->button_release_event), tool->input_sliders)"	DONE
+app/tools/gimplevelstool.c:490	g_signal_connect_swapped	492	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (bar, ""motion-notify-event"", G_CALLBACK (GTK_WIDGET_GET_CLASS (tool->input_sliders)->motion_notify_event), tool->input_sliders)"	DONE
+app/tools/gimplevelstool.c:515	g_signal_connect	517	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tool->low_input, ""value-changed"", G_CALLBACK (levels_low_input_changed), tool)"	DONE
+app/tools/gimplevelstool.c:531	g_signal_connect	533	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tool->gamma, ""value-changed"", G_CALLBACK (levels_gamma_changed), tool)"	DONE
+app/tools/gimplevelstool.c:537	g_signal_connect	539	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tool->gamma_linear, ""value-changed"", G_CALLBACK (levels_linear_gamma_changed), tool)"	DONE
+app/tools/gimplevelstool.c:561	g_signal_connect	563	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tool->high_input, ""value-changed"", G_CALLBACK (levels_high_input_changed), tool)"	DONE
+app/tools/gimplevelstool.c:597	g_signal_connect_swapped	599	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (tool->output_bar, ""button-press-event"", G_CALLBACK (GTK_WIDGET_GET_CLASS (tool->output_sliders)->button_press_event), tool->output_sliders)"	DONE
+app/tools/gimplevelstool.c:601	g_signal_connect_swapped	603	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (tool->output_bar, ""button-release-event"", G_CALLBACK (GTK_WIDGET_GET_CLASS (tool->output_sliders)->button_release_event), tool->output_sliders)"	DONE
+app/tools/gimplevelstool.c:605	g_signal_connect_swapped	607	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (tool->output_bar, ""motion-notify-event"", G_CALLBACK (GTK_WIDGET_GET_CLASS (tool->output_sliders)->motion_notify_event), tool->output_sliders)"	DONE
+app/tools/gimplevelstool.c:622	g_signal_connect	624	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tool->low_output, ""value-changed"", G_CALLBACK (levels_low_output_changed), tool)"	DONE
+app/tools/gimplevelstool.c:637	g_signal_connect	639	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tool->high_output, ""value-changed"", G_CALLBACK (levels_high_output_changed), tool)"	DONE
+app/tools/gimplevelstool.c:663	g_signal_connect	665	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (levels_stretch_callback), tool)"	DONE
+app/tools/gimplevelstool.c:682	g_signal_connect	684	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (image_map_tool->dialog, ""unmap"", G_CALLBACK (gimp_levels_tool_dialog_unmap), tool)"	DONE
+app/tools/gimplevelstool.c:691	g_signal_connect	693	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (levels_to_curves_callback), tool)"	DONE
+app/tools/gimplevelstool.c:836	g_signal_connect	838	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""toggled"", G_CALLBACK (gimp_toggle_button_update), &tool->export_old_format)"	DONE
+app/tools/gimpmeasuretool.c:1061	g_signal_connect	1063	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dialog, ""response"", G_CALLBACK (gtk_widget_destroy), NULL)"	DONE
+app/tools/gimpmoveoptions.c:198	g_signal_connect_object	200	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify::move-type"", G_CALLBACK (gimp_move_options_notify_type), frame, 0)"	DONE
+app/tools/gimpmypaintbrusheditor.cpp:141	g_signal_connect_delegator	141	DELTA	141	"g_signal_connect_delegator (G_OBJECT(tree_sel), ""changed"", Delegators::delegator(this, &CurveViewActions::selected))"	DONE
+app/tools/gimpmypaintbrusheditor.cpp:142	g_signal_connect_delegator	142	DELTA	142	"g_signal_connect_delegator (G_OBJECT(toggle), ""toggled"", Delegators::delegator(this, &CurveViewActions::toggled))"	DONE
+app/tools/gimpmypaintbrusheditor.cpp:144	g_signal_connect_delegator	144	DELTA	144	"g_signal_connect_delegator (G_OBJECT(options), ""notify"", Delegators::delegator(this, &CurveViewActions::notify_options))"	DONE
+app/tools/gimpmypaintbrusheditor.cpp:145	g_signal_connect_delegator	145	DELTA	145	"g_signal_connect_delegator (G_OBJECT(x_min_adj), ""value-changed"", Delegators::delegator(this, &CurveViewActions::value_changed))"	DONE
+app/tools/gimpmypaintbrusheditor.cpp:146	g_signal_connect_delegator	146	DELTA	146	"g_signal_connect_delegator (G_OBJECT(x_max_adj), ""value-changed"", Delegators::delegator(this, &CurveViewActions::value_changed))"	DONE
+app/tools/gimpmypaintbrusheditor.cpp:147	g_signal_connect_delegator	147	DELTA	147	"g_signal_connect_delegator (G_OBJECT(y_min_adj), ""value-changed"", Delegators::delegator(this, &CurveViewActions::value_changed))"	DONE
+app/tools/gimpmypaintbrusheditor.cpp:148	g_signal_connect_delegator	148	DELTA	148	"g_signal_connect_delegator (G_OBJECT(y_max_adj), ""value-changed"", Delegators::delegator(this, &CurveViewActions::value_changed))"	DONE
+app/tools/gimpmypaintbrusheditor.cpp:272	g_signal_connect_delegator	273	DELTA	272,273	"g_signal_connect_delegator(G_OBJECT(curve), ""notify::points"", Delegators::delegator(this, &CurveViewActions::notify_curve))"	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:292	g_signal_connect_delegator	293	DELTA	292,293	"g_signal_connect_delegator(G_OBJECT(renderer), ""edited"", Delegators::delegator(this, &MypaintPopupPrivate::history_name_edited))"	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:295	g_signal_connect_delegator	296	DELTA	295,296	"g_signal_connect_delegator(G_OBJECT(history), ""cursor-changed"", Delegators::delegator(this, &MypaintPopupPrivate::history_cursor_changed))"	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:306	g_signal_connect_delegator	308	DELTA	306,307,308	g_signal_connect_delegator (G_OBJECT(context), gimp_context_type_to_signal_name (GIMP_TYPE_MYPAINT_BRUSH), Delegators::delegator(this, &MypaintPopupPrivate::brush_changed))	DONE
+app/tools/gimpmypaintbrushoptions-gui.cpp:318	g_signal_connect_delegator	319	DELTA	318,319	"g_signal_connect_delegator (G_OBJECT (*result), ""destroy"", Delegators::delegator(this, &MypaintPopupPrivate::destroy))"	DONE
+app/tools/gimpmypaintoptions-gui.cpp:296	g_signal_connect_delegator	297	DELTA	296,297	"g_signal_connect_delegator (G_OBJECT (brush_name_entry), ""activate"", Delegators::delegator(this, &MypaintDetailOptionsPopupPrivate::brush_name_edited))"	DONE
+app/tools/gimpmypaintoptions-gui.cpp:304	g_signal_connect_delegator	305	DELTA	304,305	"g_signal_connect_delegator (G_OBJECT (action_button), ""clicked"", Delegators::delegator(this, &MypaintDetailOptionsPopupPrivate::brush_save_clicked))"	DONE
+app/tools/gimpmypaintoptions-gui.cpp:312	g_signal_connect_delegator	313	DELTA	312,313	"g_signal_connect_delegator (G_OBJECT (action_button), ""clicked"", Delegators::delegator(this, &MypaintDetailOptionsPopupPrivate::brush_delete_clicked))"	DONE
+app/tools/gimpmypaintoptions-gui.cpp:342	g_signal_connect_delegator	344	DELTA	342,343,344	g_signal_connect_delegator (G_OBJECT(context), gimp_context_type_to_signal_name (GIMP_TYPE_BRUSH), Delegators::delegator(this, &MypaintDetailOptionsPopupPrivate::brush_changed))	DONE
+app/tools/gimpmypaintoptions-gui.cpp:351	g_signal_connect_delegator	352	DELTA	351,352	"g_signal_connect_delegator (G_OBJECT (*result), ""destroy"", Delegators::delegator(this, &MypaintDetailOptionsPopupPrivate::destroy))"	DONE
+app/tools/gimpmypaintoptions-gui.cpp:457	g_signal_connect_delegator	458	DELTA	457,458	"g_signal_connect_delegator (G_OBJECT(button), ""clicked"", Delegators::delegator(this, &MypaintOptionsGUIPrivate::reset_size))"	DONE
+app/tools/gimppaintoptions-gui.c:238	g_signal_connect	240	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (gimp_paint_options_gui_reset_size), options)"	DONE
+app/tools/gimppaintoptions-gui.c:264	g_signal_connect	266	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (gimp_paint_options_gui_reset_aspect_ratio), options)"	DONE
+app/tools/gimppaintoptions-gui.c:288	g_signal_connect	290	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (gimp_paint_options_gui_reset_angle), options)"	DONE
+app/tools/gimppainttool.c:167	g_signal_connect_object	169	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify::hard"", G_CALLBACK (gimp_paint_tool_hard_notify), tool, 0)"	DONE
+app/tools/gimpperspectiveclonetool.c:197	g_signal_connect_object	200	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify::clone-mode"", G_CALLBACK (gimp_perspective_clone_tool_mode_notify), clone_tool, 0)"	DONE
+app/tools/gimpposterizetool.c:186	g_signal_connect_object	188	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (posterize_tool->config, ""notify"", G_CALLBACK (gimp_posterize_tool_config_notify), G_OBJECT (posterize_tool), 0)"	DONE
+app/tools/gimpposterizetool.c:239	g_signal_connect	241	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (posterize_tool->levels_data, ""value-changed"", G_CALLBACK (gimp_posterize_tool_levels_changed), posterize_tool)"	DONE
+app/tools/gimprectangleoptions.c:870	g_signal_connect	872	DELTA	870,871,872	"g_signal_connect (vbox, ""destroy"", G_CALLBACK (gimp_rectangle_options_destroy_view), config)"	DONE
+app/tools/gimprectangleoptions.c:903	g_signal_connect	905	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""toggled"", G_CALLBACK (gimp_rectangle_options_fixed_rule_changed), private)"	DONE
+app/tools/gimprectangleoptions.c:911	g_signal_connect	913	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (combo, ""changed"", G_CALLBACK (gimp_rectangle_options_fixed_rule_changed), private)"	DONE
+app/tools/gimprectangleoptions.c:948	g_signal_connect	950	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (entry, ""notify::user-override"", G_CALLBACK (gimp_rectangle_options_string_current_updates), config)"	DONE
+app/tools/gimprectangleoptions.c:951	g_signal_connect_swapped	953	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (config, ""notify::use-string-current"", G_CALLBACK (gimp_rectangle_options_string_current_updates), entry)"	DONE
+app/tools/gimprectangleoptions.c:954	g_signal_connect	954	DELTA	954	"g_signal_connect (entry, ""destroy"", G_CALLBACK(gimp_rectangle_options_destroy_entry), config)"	DONE
+app/tools/gimprectangleoptions.c:1175	g_signal_connect	1177	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (entry, ""ratio-changed"", G_CALLBACK (gimp_number_pair_entry_history_add), history)"	DONE
+app/tools/gimprectangleoptions.c:1179	g_signal_connect	1181	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (completion, ""match-selected"", G_CALLBACK (gimp_number_pair_entry_history_select), entry)"	DONE
+app/tools/gimprectangleselecttool.c:264	g_signal_connect_object	266	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify::round-corners"", G_CALLBACK (gimp_rectangle_select_tool_round_corners_notify), object, 0)"	DONE
+app/tools/gimprectangleselecttool.c:267	g_signal_connect_object	269	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify::corner-radius"", G_CALLBACK (gimp_rectangle_select_tool_round_corners_notify), object, 0)"	DONE
+app/tools/gimprotatetool.c:196	g_signal_connect	198	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (rotate->angle_adj, ""value-changed"", G_CALLBACK (rotate_angle_changed), tr_tool)"	DONE
+app/tools/gimprotatetool.c:220	g_signal_connect	222	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (rotate->sizeentry, ""value-changed"", G_CALLBACK (rotate_center_changed), tr_tool)"	DONE
+app/tools/gimpscaletool.c:190	g_signal_connect	192	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (scale->box, ""notify"", G_CALLBACK (gimp_scale_tool_size_notify), tr_tool)"	DONE
+app/tools/gimpsheartool.c:139	g_signal_connect	141	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shear->x_adj, ""value-changed"", G_CALLBACK (shear_x_mag_changed), tr_tool)"	DONE
+app/tools/gimpsheartool.c:149	g_signal_connect	151	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (shear->y_adj, ""value-changed"", G_CALLBACK (shear_y_mag_changed), tr_tool)"	DONE
+app/tools/gimptextoptions.c:483	g_signal_connect_object	485	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify::font"", G_CALLBACK (gimp_text_options_notify_font), text, 0)"	DONE
+app/tools/gimptextoptions.c:486	g_signal_connect_object	488	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (text, ""notify::font"", G_CALLBACK (gimp_text_options_notify_text_font), options, 0)"	DONE
+app/tools/gimptextoptions.c:490	g_signal_connect_object	492	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify::foreground"", G_CALLBACK (gimp_text_options_notify_color), text, 0)"	DONE
+app/tools/gimptextoptions.c:493	g_signal_connect_object	495	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (text, ""notify::color"", G_CALLBACK (gimp_text_options_notify_text_color), options, 0)"	DONE
+app/tools/gimptextoptions.c:755	g_signal_connect_object	757	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (editor, ""dir-changed"", G_CALLBACK (gimp_text_options_editor_dir_changed), options, 0)"	DONE
+app/tools/gimptextoptions.c:758	g_signal_connect_object	760	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify::base-direction"", G_CALLBACK (gimp_text_options_editor_notify_dir), editor, 0)"	DONE
+app/tools/gimptextoptions.c:761	g_signal_connect_object	763	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (options, ""notify::font"", G_CALLBACK (gimp_text_options_editor_notify_font), editor, 0)"	DONE
+app/tools/gimptexttool.c:251	g_signal_connect	253	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (text_tool->buffer, ""begin-user-action"", G_CALLBACK (gimp_text_tool_buffer_begin_edit), text_tool)"	DONE
+app/tools/gimptexttool.c:254	g_signal_connect	256	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (text_tool->buffer, ""end-user-action"", G_CALLBACK (gimp_text_tool_buffer_end_edit), text_tool)"	DONE
+app/tools/gimptexttool.c:291	g_signal_connect_object	293	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (text_tool->proxy, ""notify"", G_CALLBACK (gimp_text_tool_proxy_notify), text_tool, 0)"	DONE
+app/tools/gimptexttool.c:1062	g_signal_connect	1064	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (text, ""notify"", G_CALLBACK (gimp_text_tool_text_notify), text_tool)"	DONE
+app/tools/gimptexttool.c:1065	g_signal_connect	1067	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (text, ""changed"", G_CALLBACK (gimp_text_tool_text_changed), text_tool)"	DONE
+app/tools/gimptexttool.c:1088	g_signal_connect_object	1090	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (text_tool->layer, ""notify"", G_CALLBACK (gimp_text_tool_layer_notify), text_tool, 0)"	DONE
+app/tools/gimptexttool.c:1135	g_source_remove	1135	UNCHANGED_CALL_CONTEXT	-	g_source_remove (text_tool->idle_id)	DONE
+app/tools/gimptexttool.c:1138	g_idle_add_full	1140	UNCHANGED_CALL_CONTEXT	-	g_idle_add_full (G_PRIORITY_LOW, gimp_text_tool_apply_idle, text_tool, NULL)	DONE
+app/tools/gimptexttool.c:1226	g_source_remove	1226	UNCHANGED_CALL_CONTEXT	-	g_source_remove (text_tool->idle_id)	DONE
+app/tools/gimptexttool.c:1548	g_signal_connect	1550	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dialog, ""response"", G_CALLBACK (gimp_text_tool_confirm_response), text_tool)"	DONE
+app/tools/gimptexttool.c:1573	g_signal_connect_swapped	1575	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (dialog, ""destroy"", G_CALLBACK (g_nullify_pointer), &text_tool->confirm_dialog)"	DONE
+app/tools/gimptexttool.c:1645	g_signal_connect_object	1647	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (text_tool->image, ""active-layer-changed"", G_CALLBACK (gimp_text_tool_layer_changed), text_tool, 0)"	DONE
+app/tools/gimpthresholdtool.c:198	g_signal_connect_object	200	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (t_tool->config, ""notify"", G_CALLBACK (gimp_threshold_tool_config_notify), G_OBJECT (t_tool), 0)"	DONE
+app/tools/gimpthresholdtool.c:258	g_signal_connect	260	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (t_tool->histogram_box->view, ""range-changed"", G_CALLBACK (gimp_threshold_tool_histogram_range), t_tool)"	DONE
+app/tools/gimpthresholdtool.c:275	g_signal_connect	277	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (gimp_threshold_tool_auto_clicked), t_tool)"	DONE
+app/tools/gimptool.c:202	g_signal_connect_object	204	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp_tool_get_options (tool), ""notify"", G_CALLBACK (gimp_tool_options_notify), tool, 0)"	DONE
+app/tools/gimptooloptions-gui-cxx.cpp:52	g_signal_connect_delegator	52	DELTA	52	"g_signal_connect_delegator (G_OBJECT(result), ""create-view"", create_view)"	DONE
+app/tools/gimptooloptions-gui-cxx.hpp:46	g_signal_connect_delegator	46	DELTA	46	g_signal_connect_delegator (G_OBJECT(target), signal_name, delegator)	DONE
+app/tools/gimptooloptions-gui-cxx.hpp:103	g_signal_connect_delegator	103	DELTA	103	"g_signal_connect_delegator(G_OBJECT(notebook), ""switch-page"", Delegators::delegator(this, &PageRemindAction::emit))"	DONE
+app/tools/gimptooloptions-gui.c:214	g_signal_connect_closure	214	DELTA	214	"g_signal_connect_closure (result, ""create-view"", closure, 0)"	DONE
+app/tools/gimptooloptions-gui.c:351	g_signal_connect_object	351	DELTA	351	"g_signal_connect_object (button, ""create-view"", G_CALLBACK (create_view), config, 0)"	DONE
+app/tools/gimptooloptions-gui.c:445	g_signal_connect	445	DELTA	445	"g_signal_connect (toggle, ""toggled"", G_CALLBACK (update_toggle_option), button)"	DONE
+app/tools/gimptooloptions-gui.c:447	g_signal_connect_object	447	DELTA	447	"g_signal_connect_object (button, ""create-view"", G_CALLBACK (create_view), config, 0)"	DONE
+app/tools/gimptooloptions-gui.c:602	g_signal_connect_object	603	DELTA	602,603	g_signal_connect_object (config, signal_detail, G_CALLBACK (config_notify_label), button_label, 0)	DONE
+app/tools/gimptooloptions-gui.c:611	g_signal_connect_closure	611	DELTA	611	"g_signal_connect_closure (button, ""create-view"", closure, 0)"	DONE
+app/tools/gimptransformtool.c:1358	g_signal_connect	1360	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tr_tool->dialog, ""response"", G_CALLBACK (gimp_transform_tool_response), tr_tool)"	DONE
+app/tools/gimpvectortool.c:1663	g_signal_connect_object	1665	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (gimp_item_get_image (item), ""active-vectors-changed"", G_CALLBACK (gimp_vector_tool_vectors_changed), vector_tool, 0)"	DONE
+app/tools/gimpvectortool.c:1666	g_signal_connect_object	1668	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (vectors, ""removed"", G_CALLBACK (gimp_vector_tool_vectors_removed), vector_tool, 0)"	DONE
+app/tools/gimpvectortool.c:1669	g_signal_connect_object	1671	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (vectors, ""visibility-changed"", G_CALLBACK (gimp_vector_tool_vectors_visible), vector_tool, 0)"	DONE
+app/tools/gimpvectortool.c:1672	g_signal_connect_object	1674	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (vectors, ""freeze"", G_CALLBACK (gimp_vector_tool_vectors_freeze), vector_tool, 0)"	DONE
+app/tools/gimpvectortool.c:1675	g_signal_connect_object	1677	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (vectors, ""thaw"", G_CALLBACK (gimp_vector_tool_vectors_thaw), vector_tool, 0)"	DONE
+app/tools/gimpvectortool.c:1681	g_signal_connect_swapped	1683	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (options->to_selection_button, ""clicked"", G_CALLBACK (gimp_vector_tool_to_selection), tool)"	DONE
+app/tools/gimpvectortool.c:1684	g_signal_connect_swapped	1686	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (options->to_selection_button, ""extended-clicked"", G_CALLBACK (gimp_vector_tool_to_selection_extended), tool)"	DONE
+app/tools/gimpvectortool.c:1692	g_signal_connect_swapped	1694	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (options->stroke_button, ""clicked"", G_CALLBACK (gimp_vector_tool_stroke_vectors), tool)"	DONE
+app/widgets/gimpcontainertreeview-dnd.c:246	g_source_remove	246	UNCHANGED_CALL_CONTEXT	-	g_source_remove (tree_view->priv->scroll_timeout_id)	DONE
+app/widgets/gimpcontainertreeview-dnd.c:249	g_timeout_add	251	UNCHANGED_CALL_CONTEXT	-	g_timeout_add (tree_view->priv->scroll_timeout_interval, gimp_container_tree_view_scroll_timeout, tree_view)	DONE
+app/widgets/gimpcontainertreeview-dnd.c:265	g_source_remove	265	UNCHANGED_CALL_CONTEXT	-	g_source_remove (tree_view->priv->scroll_timeout_id)	DONE
+app/widgets/gimpcontainertreeview-dnd.c:280	g_source_remove	280	UNCHANGED_CALL_CONTEXT	-	g_source_remove (tree_view->priv->scroll_timeout_id)	DONE
+app/widgets/gimpcontainertreeview-dnd.c:325	g_timeout_add	327	UNCHANGED_CALL_CONTEXT	-	g_timeout_add (tree_view->priv->scroll_timeout_interval, gimp_container_tree_view_scroll_timeout, tree_view)	DONE
+app/widgets/gimpcontainertreeview-dnd.c:331	g_source_remove	331	UNCHANGED_CALL_CONTEXT	-	g_source_remove (tree_view->priv->scroll_timeout_id)	DONE
+app/widgets/gimpcontainertreeview-dnd.c:368	g_source_remove	368	UNCHANGED_CALL_CONTEXT	-	g_source_remove (tree_view->priv->scroll_timeout_id)	DONE
+app/widgets/gimpcontainertreeview.c:285	g_signal_connect	287	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->priv->name_cell, ""editing-started"", G_CALLBACK (gimp_container_tree_view_name_started), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:288	g_signal_connect	290	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->priv->name_cell, ""editing-canceled"", G_CALLBACK (gimp_container_tree_view_name_canceled), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:297	g_signal_connect	299	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->priv->selection, ""changed"", G_CALLBACK (gimp_container_tree_view_selection_changed), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:301	g_signal_connect	303	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->view, ""drag-failed"", G_CALLBACK (gimp_container_tree_view_drag_failed), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:304	g_signal_connect	306	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->view, ""drag-leave"", G_CALLBACK (gimp_container_tree_view_drag_leave), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:307	g_signal_connect	309	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->view, ""drag-motion"", G_CALLBACK (gimp_container_tree_view_drag_motion), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:310	g_signal_connect	312	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->view, ""drag-drop"", G_CALLBACK (gimp_container_tree_view_drag_drop), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:313	g_signal_connect	315	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->view, ""drag-data-received"", G_CALLBACK (gimp_container_tree_view_drag_data_received), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:317	g_signal_connect	319	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->view, ""query-tooltip"", G_CALLBACK (gimp_container_tree_view_tooltip), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:355	g_source_remove	355	UNCHANGED_CALL_CONTEXT	-	g_source_remove (tree_view->priv->scroll_timeout_id)	DONE
+app/widgets/gimpcontainertreeview.c:531	g_signal_connect	533	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->priv->name_cell, ""edited"", callback, data)"	DONE
+app/widgets/gimpcontainertreeview.c:592	g_signal_connect	594	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->view, ""button-press-event"", G_CALLBACK (gimp_container_tree_view_button_press), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:605	g_signal_connect	608	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->view, ""row-collapsed"", G_CALLBACK (gimp_container_tree_view_row_expanded), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:609	g_signal_connect	612	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->view, ""row-expanded"", G_CALLBACK (gimp_container_tree_view_row_expanded), tree_view)"	DONE
+app/widgets/gimpcontainertreeview.c:886	g_signal_connect	888	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (GTK_ENTRY (editable), ""focus-out-event"", G_CALLBACK (gimp_container_tree_view_edit_focus_out), tree_view)"	DONE
+app/widgets/gimpcurveview.c:1213	g_signal_connect	1215	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (view->curve, ""dirty"", G_CALLBACK (gimp_curve_view_curve_dirty), view)"	DONE
+app/widgets/gimpcurveview.c:1265	g_signal_connect	1267	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (bg->curve, ""dirty"", G_CALLBACK (gimp_curve_view_curve_dirty), view)"	DONE
+app/widgets/gimpdevicemanager.c:153	g_signal_connect	155	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (disp_manager, ""display-opened"", G_CALLBACK (gimp_device_manager_display_opened), manager)"	DONE
+app/widgets/gimpdevicemanager.c:292	g_signal_connect	294	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gdk_display, ""closed"", G_CALLBACK (gimp_device_manager_display_closed), manager)"	DONE
+app/widgets/gimpdnd.c:872	g_signal_connect	874	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (widget, ""drag-begin"", G_CALLBACK (gimp_dnd_data_drag_begin), NULL)"	DONE
+app/widgets/gimpdnd.c:875	g_signal_connect	877	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (widget, ""drag-end"", G_CALLBACK (gimp_dnd_data_drag_end), NULL)"	DONE
+app/widgets/gimpdnd.c:878	g_signal_connect	880	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (widget, ""drag-data-get"", G_CALLBACK (gimp_dnd_data_drag_handle), NULL)"	DONE
+app/widgets/gimpdnd.c:1014	g_signal_connect	1016	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (widget, ""drag-data-received"", G_CALLBACK (gimp_dnd_data_drop_handle), NULL)"	DONE
+app/widgets/gimpdnd.c:1267	g_signal_connect	1269	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (widget, ""drag-begin"", G_CALLBACK (gimp_dnd_xds_drag_begin), NULL)"	DONE
+app/widgets/gimpdnd.c:1279	g_signal_connect	1281	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (widget, ""drag-end"", G_CALLBACK (gimp_dnd_xds_drag_end), NULL)"	DONE
+app/widgets/gimpdock.c:253	g_signal_connect	253	DELTA	253	"g_signal_connect(G_OBJECT(dock), ""notify::orientation"", G_CALLBACK(gimp_dock_orientation_notify), NULL)"	DONE
+app/widgets/gimpdock.c:304	g_signal_connect_object	306	DELTA	304,305,306	"g_signal_connect_object (G_OBJECT (titlebar->button), ""clicked"", G_CALLBACK(gimp_dock_titlebar_button_clicked), G_OBJECT (dock), 0)"	DONE
+app/widgets/gimpdock.c:320	g_signal_connect_object	322	DELTA	320,321,322	"g_signal_connect_object (G_OBJECT (titlebar->button), ""clicked"", G_CALLBACK(gimp_dock_titlebar_button_clicked), G_OBJECT (dock), 0)"	DONE
+app/widgets/gimpdock.c:487	g_signal_connect_object	489	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (dockbook, ""switch-page"", G_CALLBACK (gimp_dock_invalidate_description), dock, G_CONNECT_SWAPPED)"	DONE
+app/widgets/gimpdock.c:856	g_signal_connect_object	858	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (dockbook, ""dockable-added"", G_CALLBACK (gimp_dock_invalidate_description), dock, G_CONNECT_SWAPPED)"	DONE
+app/widgets/gimpdock.c:859	g_signal_connect_object	861	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (dockbook, ""dockable-removed"", G_CALLBACK (gimp_dock_invalidate_description), dock, G_CONNECT_SWAPPED)"	DONE
+app/widgets/gimpdock.c:862	g_signal_connect_object	864	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (dockbook, ""dockable-reordered"", G_CALLBACK (gimp_dock_invalidate_description), dock, G_CONNECT_SWAPPED)"	DONE
+app/widgets/gimpdockable.c:900	g_source_remove	900	UNCHANGED_CALL_CONTEXT	-	g_source_remove (dockable->p->blink_timeout_id)	DONE
+app/widgets/gimpdockable.c:903	g_timeout_add	903	UNCHANGED_CALL_CONTEXT	-	g_timeout_add (150, (GSourceFunc) gimp_dockable_blink_timeout, dockable)	DONE
+app/widgets/gimpdockable.c:915	g_source_remove	915	UNCHANGED_CALL_CONTEXT	-	g_source_remove (dockable->p->blink_timeout_id)	DONE
+app/widgets/gimpdockbook.c:299	g_signal_connect_swapped	301	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (dockbook->p->menu_button, ""button-press-event"", G_CALLBACK (gimp_dockbook_menu_button_press), dockbook)"	DONE
+app/widgets/gimpdockbook.c:1049	g_signal_connect	1051	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (dockable, ""notify::locked"", G_CALLBACK (gimp_dockbook_tab_locked_notify), dockbook)"	DONE
+app/widgets/gimpdockbook.c:1241	g_signal_connect_object	1243	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tab_widget, ""drag-begin"", G_CALLBACK (gimp_dockbook_tab_drag_begin), dockable, 0)"	DONE
+app/widgets/gimpdockbook.c:1244	g_signal_connect_object	1246	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tab_widget, ""drag-end"", G_CALLBACK (gimp_dockbook_tab_drag_end), dockable, 0)"	DONE
+app/widgets/gimpdockbook.c:1248	g_signal_connect_object	1250	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (dockable, ""drag-begin"", G_CALLBACK (gimp_dockbook_tab_drag_begin), dockable, 0)"	DONE
+app/widgets/gimpdockbook.c:1251	g_signal_connect_object	1253	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (dockable, ""drag-end"", G_CALLBACK (gimp_dockbook_tab_drag_end), dockable, 0)"	DONE
+app/widgets/gimpdockbook.c:1259	g_signal_connect_object	1261	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tab_widget, ""drag-leave"", G_CALLBACK (gimp_dockbook_tab_drag_leave), dockable, 0)"	DONE
+app/widgets/gimpdockbook.c:1262	g_signal_connect_object	1264	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tab_widget, ""drag-motion"", G_CALLBACK (gimp_dockbook_tab_drag_motion), dockable, 0)"	DONE
+app/widgets/gimpdockbook.c:1265	g_signal_connect_object	1267	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tab_widget, ""drag-drop"", G_CALLBACK (gimp_dockbook_tab_drag_drop), dockbook, 0)"	DONE
+app/widgets/gimpdockbook.c:1675	g_timeout_add	1677	UNCHANGED_CALL_CONTEXT	-	g_timeout_add (TAB_HOVER_TIMEOUT, (GSourceFunc) gimp_dockbook_tab_timeout, dockbook)	DONE
+app/widgets/gimpdockbook.c:1687	g_source_remove	1687	UNCHANGED_CALL_CONTEXT	-	g_source_remove (dockbook->p->tab_hover_timeout)	DONE
+app/widgets/gimpdynamicsoutputeditor.c:216	g_signal_connect	218	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", G_CALLBACK (gimp_dynamics_output_editor_curve_reset), editor)"	DONE
+app/widgets/gimpdynamicsoutputeditor.c:255	g_signal_connect	257	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (G_OBJECT (cell), ""toggled"", G_CALLBACK (gimp_dynamics_output_editor_input_toggled), editor)"	DONE
+app/widgets/gimpdynamicsoutputeditor.c:287	g_signal_connect	289	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (G_OBJECT (tree_sel), ""changed"", G_CALLBACK (gimp_dynamics_output_editor_input_selected), editor)"	DONE
+app/widgets/gimpdynamicsoutputeditor.c:292	g_signal_connect	293	DELTA	292,293	"g_signal_connect (editor, ""destroy"", G_CALLBACK (gimp_dynamics_output_editor_destroy), NULL)"	DONE
+app/widgets/gimpdynamicsoutputeditor.c:297	g_signal_connect	299	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (private->output, ""notify"", G_CALLBACK (gimp_dynamics_output_editor_notify_output), editor)"	DONE
+app/widgets/gimpeditor-cxx.cpp:132	g_signal_connect	134	DELTA	132,133,134	"g_signal_connect (it, ""clicked"", callback, callback_data)"	DONE
+app/widgets/gimpeditor-cxx.cpp:136	g_signal_connect	138	DELTA	136,137,138	"g_signal_connect (it, ""extended-clicked"", extended_callback, callback_data)"	DONE
+app/widgets/gimpeditor-cxx.cpp:260	g_signal_connect	262	DELTA	260,261,262	"g_signal_connect (button, ""extended-clicked"", G_CALLBACK (gimp_editor_button_extended_clicked), NULL)"	DONE
+app/widgets/gimpeditor.c:490	g_signal_connect	492	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""clicked"", callback, callback_data)"	DONE
+app/widgets/gimpeditor.c:495	g_signal_connect	497	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""extended-clicked"", extended_callback, callback_data)"	DONE
+app/widgets/gimpeditor.c:695	g_signal_connect	697	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (button, ""extended-clicked"", G_CALLBACK (gimp_editor_button_extended_clicked), NULL)"	DONE
+app/widgets/gimpfgbgeditor.c:560	g_signal_connect_swapped	562	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (context, ""foreground-changed"", G_CALLBACK (gtk_widget_queue_draw), editor)"	DONE
+app/widgets/gimpfgbgeditor.c:563	g_signal_connect_swapped	565	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (context, ""background-changed"", G_CALLBACK (gtk_widget_queue_draw), editor)"	DONE
+app/widgets/gimpfgbgeditor.c:747	g_signal_connect	749	DELTA	747,748,749	"g_signal_connect (view, ""entry-clicked"", G_CALLBACK (gimp_fg_entry_clicked), editor)"	DONE
+app/widgets/gimpfgbgeditor.c:750	g_signal_connect	750	DELTA	750	"g_signal_connect (button, ""clicked"", G_CALLBACK (gimp_fg_color_add_clicked), editor)"	DONE
+app/widgets/gimpfgbgeditor.c:762	g_signal_connect	764	DELTA	762,763,764	"g_signal_connect (view, ""entry-clicked"", G_CALLBACK (gimp_bg_entry_clicked), editor)"	DONE
+app/widgets/gimpfgbgeditor.c:782	g_signal_connect	784	DELTA	782,783,784	"g_signal_connect (view, ""entry-confirmed"", G_CALLBACK (gimp_fg_bg_editor_entry_activated), editor)"	DONE
+app/widgets/gimpitemtreeview.c:351	g_signal_connect	353	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->view, ""row-expanded"", G_CALLBACK (gimp_item_tree_view_row_expanded), tree_view)"	DONE
+app/widgets/gimpitemtreeview.c:355	g_signal_connect	357	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->renderer_cell, ""pre-clicked"", G_CALLBACK (gimp_item_tree_view_item_pre_clicked), item_view)"	DONE
+app/widgets/gimpitemtreeview.c:378	g_signal_connect	380	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (item_view->priv->eye_cell, ""clicked"", G_CALLBACK (gimp_item_tree_view_eye_clicked), item_view)"	DONE
+app/widgets/gimpitemtreeview.c:399	g_signal_connect	401	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (item_view->priv->chain_cell, ""clicked"", G_CALLBACK (gimp_item_tree_view_chain_clicked), item_view)"	DONE
+app/widgets/gimpitemtreeview.c:490	g_signal_connect	492	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (item_view->priv->lock_content_toggle, ""toggled"", G_CALLBACK (gimp_item_tree_view_lock_content_toggled), item_view)"	DONE
+app/widgets/gimpitemtreeview.c:850	g_signal_connect	853	UNCHANGED_CALL_CONTEXT	-	g_signal_connect (view->priv->image, GIMP_ITEM_TREE_VIEW_GET_CLASS (view)->signal_name, G_CALLBACK (gimp_item_tree_view_item_changed), view)	DONE
+app/widgets/gimpitemtreeview.c:854	g_signal_connect	856	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (view->priv->image, ""size-changed"", G_CALLBACK (gimp_item_tree_view_size_changed), view)"	DONE
+app/widgets/gimpitemtreeview.c:858	g_signal_connect	860	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (view->priv->image, ""flush"", G_CALLBACK (gimp_item_tree_view_image_flush), view)"	DONE
+app/widgets/gimpitemtreeview.c:944	g_signal_connect_swapped	946	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (context, ""image-changed"", G_CALLBACK (gimp_item_tree_view_set_image), item_view)"	DONE
+app/widgets/gimplayertreeview.c:299	g_signal_connect	301	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (view->priv->opacity_adjustment, ""value-changed"", G_CALLBACK (gimp_layer_tree_view_opacity_scale_changed), view)"	DONE
+app/widgets/gimplayertreeview.c:312	g_signal_connect	314	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (view->priv->lock_alpha_toggle, ""toggled"", G_CALLBACK (gimp_layer_tree_view_lock_alpha_button_toggled), view)"	DONE
+app/widgets/gimplayertreeview.c:378	g_signal_connect	380	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (tree_view->renderer_cell, ""clicked"", G_CALLBACK (gimp_layer_tree_view_layer_clicked), layer_view)"	DONE
+app/widgets/gimplayertreeview.c:381	g_signal_connect	383	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (layer_view->priv->mask_cell, ""clicked"", G_CALLBACK (gimp_layer_tree_view_mask_clicked), layer_view)"	DONE
+app/widgets/gimplayertreeview.c:852	g_signal_connect	855	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gimp_item_tree_view_get_image (view), ""floating-selection-changed"", G_CALLBACK (gimp_layer_tree_view_floating_selection_changed), view)"	DONE
+app/widgets/gimplayertreeview.c:1190	g_signal_connect	1192	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (renderer, ""update"", G_CALLBACK (gimp_layer_tree_view_renderer_update), layer_view)"	DONE
+app/widgets/gimplayertreeview.c:1197	g_signal_connect_closure	1197	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_closure (mask, ""apply-changed"", closure, FALSE)"	DONE
+app/widgets/gimplayertreeview.c:1198	g_signal_connect_closure	1198	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_closure (mask, ""edit-changed"", closure, FALSE)"	DONE
+app/widgets/gimplayertreeview.c:1199	g_signal_connect_closure	1199	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_closure (mask, ""show-changed"", closure, FALSE)"	DONE
+app/widgets/gimpmypaintbrusheditor.cpp:240	g_signal_connect	242	DELTA	240,241,242	"g_signal_connect (editor->angle_data, ""value-changed"", G_CALLBACK (gimp_mypaint_brush_editor_update_mypaint_brush), editor)"	DONE
+app/widgets/gimpmypaintbrushfactoryview.c:88	g_signal_connect	90	DELTA	88,89,90	"g_signal_connect (view->spacing_adjustment, ""value-changed"", G_CALLBACK (gimp_mypaint_brush_factory_view_spacing_update), view)"	DONE
+app/widgets/gimpmypaintbrushfactoryview.c:107	gimp_container_remove_handler	108	DELTA	107,108	gimp_container_remove_handler (container, view->spacing_changed_handler_id)	DONE
+app/widgets/gimpmypaintbrushfactoryview.c:157	gimp_container_add_handler	159	DELTA	157,158,159	"gimp_container_add_handler (gimp_data_factory_get_container (factory), ""spacing-changed"", G_CALLBACK (gimp_mypaint_brush_factory_view_spacing_changed), factory_view)"	DONE
+app/widgets/gimpoverlaybox.c:164	g_signal_connect	166	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gtk_widget_get_window (widget), ""pick-embedded-child"", G_CALLBACK (gimp_overlay_box_pick_embedded_child), widget)"	DONE
+app/widgets/gimpoverlaychild.c:189	g_signal_connect	191	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (child->window, ""from-embedder"", G_CALLBACK (gimp_overlay_child_from_embedder), child)"	DONE
+app/widgets/gimpoverlaychild.c:192	g_signal_connect	194	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (child->window, ""to-embedder"", G_CALLBACK (gimp_overlay_child_to_embedder), child)"	DONE
+app/widgets/gimppaletteview.c:417	g_signal_connect	419	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (new_viewable, ""invalidate-preview"", G_CALLBACK (gimp_palette_view_invalidate), view)"	DONE
+app/widgets/gimppanedbox.c:164	g_signal_connect	164	DELTA	164	"g_signal_connect (G_OBJECT (paned_box), ""notify::orientation"", G_CALLBACK (gimp_paned_box_orientation_notify), NULL)"	DONE
+app/widgets/gimppopupbutton.c:177	g_signal_connect	179	DELTA	177,178,179	"g_signal_connect (widget, ""grab-notify"", G_CALLBACK (gimp_popup_grab_notify), widget)"	DONE
+app/widgets/gimppopupbutton.c:180	g_signal_connect	182	DELTA	180,181,182	"g_signal_connect (widget, ""grab-broken-event"", G_CALLBACK (gimp_popup_grab_broken_event), widget)"	DONE
+app/widgets/gimppopupbutton.c:570	g_signal_connect	572	DELTA	570,571,572	"g_signal_connect (popup, ""cancel"", G_CALLBACK (gimp_popup_button_popup_closed), button)"	DONE
+app/widgets/gimppopupbutton.c:573	g_signal_connect	575	DELTA	573,574,575	"g_signal_connect (popup, ""confirm"", G_CALLBACK (gimp_popup_button_popup_closed), button)"	DONE
+app/widgets/gimptoolbox.c:218	g_signal_connect	220	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (toolbox, ""drag-leave"", G_CALLBACK (gimp_toolbox_drag_leave), toolbox)"	DONE
+app/widgets/gimptoolbox.c:221	g_signal_connect	223	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (toolbox, ""drag-motion"", G_CALLBACK (gimp_toolbox_drag_motion), toolbox)"	DONE
+app/widgets/gimptoolbox.c:224	g_signal_connect	226	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (toolbox, ""drag-drop"", G_CALLBACK (gimp_toolbox_drag_drop), toolbox)"	DONE
+app/widgets/gimptoolbox.c:227	g_signal_connect	229	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (toolbox->p->vbox, ""drag-leave"", G_CALLBACK (gimp_toolbox_drag_leave), toolbox)"	DONE
+app/widgets/gimptoolbox.c:230	g_signal_connect	232	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (toolbox->p->vbox, ""drag-motion"", G_CALLBACK (gimp_toolbox_drag_motion), toolbox)"	DONE
+app/widgets/gimptoolbox.c:233	g_signal_connect	235	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (toolbox->p->vbox, ""drag-drop"", G_CALLBACK (gimp_toolbox_drag_drop), toolbox)"	DONE
+app/widgets/gimptoolbox.c:245	g_signal_connect	247	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (toolbox->p->header, ""size-request"", G_CALLBACK (gimp_toolbox_size_request_wilber), toolbox)"	DONE
+app/widgets/gimptoolbox.c:248	g_signal_connect	250	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (toolbox->p->header, ""expose-event"", G_CALLBACK (gimp_toolbox_expose_wilber), toolbox)"	DONE
+app/widgets/gimptoolbox.c:255	g_signal_connect_object	257	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify::toolbox-wilber"", G_CALLBACK (toolbox_wilber_notify), toolbox->p->header, 0)"	DONE
+app/widgets/gimptoolbox.c:303	g_signal_connect_object	305	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify::toolbox-color-area"", G_CALLBACK (toolbox_area_notify), toolbox->p->color_area, 0)"	DONE
+app/widgets/gimptoolbox.c:313	g_signal_connect_object	315	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify::toolbox-foo-area"", G_CALLBACK (toolbox_area_notify), toolbox->p->foo_area, 0)"	DONE
+app/widgets/gimptoolbox.c:324	g_signal_connect_object	326	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (config, ""notify::toolbox-image-area"", G_CALLBACK (toolbox_area_notify), toolbox->p->image_area, 0)"	DONE
+app/widgets/gimptooleditor.c:234	g_signal_connect	236	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (eye_cell, ""clicked"", G_CALLBACK (gimp_tool_editor_eye_clicked), tool_editor)"	DONE
+app/widgets/gimptooloptionstoolbar.c:158	g_signal_connect	158	DELTA	158	"g_signal_connect (G_OBJECT(toolbar), ""hide"", G_CALLBACK(gimp_tool_options_toolbar_hide_toolbar), NULL)"	DONE
+app/widgets/gimptooloptionstoolbar.c:159	g_signal_connect	159	DELTA	159	"g_signal_connect (G_OBJECT(toolbar), ""show"", G_CALLBACK(gimp_tool_options_toolbar_show_toolbar), NULL)"	DONE
+app/widgets/gimptooloptionstoolbar.c:355	g_signal_connect_object	358	DELTA	355,356,357,358	"g_signal_connect_object (user_context, ""tool-changed"", G_CALLBACK (gimp_tool_options_toolbar_tool_changed), toolbar, 0)"	DONE
+app/widgets/gimptoolpalette.c:241	g_signal_connect_swapped	243	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (private->toolbox, ""parent-set"", G_CALLBACK (gimp_tool_palette_initialize_tools), palette)"	DONE
+app/widgets/gimptoolpalette.c:245	g_signal_connect_object	247	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (context->gimp->tool_info_list, ""reorder"", G_CALLBACK (gimp_tool_palette_tool_reorder), palette, 0)"	DONE
+app/widgets/gimptoolpalette.c:249	g_signal_connect_object	252	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (context, ""tool-changed"", G_CALLBACK (gimp_tool_palette_tool_changed), palette, 0)"	DONE
+app/widgets/gimptoolpalette.c:418	g_signal_connect_object	420	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (tool_info, ""notify::visible"", G_CALLBACK (gimp_tool_palette_tool_visible_notify), item, 0)"	DONE
+app/widgets/gimptoolpalette.c:428	g_signal_connect	430	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (item, ""toggled"", G_CALLBACK (gimp_tool_palette_tool_button_toggled), palette)"	DONE
+app/widgets/gimptoolpalette.c:432	g_signal_connect	434	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect (gtk_bin_get_child (GTK_BIN (item)), ""button-press-event"", G_CALLBACK (gimp_tool_palette_tool_button_press), palette)"	DONE
+app/widgets/gimpviewrenderer.c:358	g_signal_connect_swapped	361	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (renderer->viewable, ""invalidate-preview"", G_CALLBACK (gimp_view_renderer_invalidate), renderer)"	DONE
+app/widgets/gimpviewrenderer.c:363	g_signal_connect_swapped	366	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_swapped (renderer->viewable, ""size-changed"", G_CALLBACK (gimp_view_renderer_size_changed), renderer)"	DONE
+app/widgets/gimpviewrenderer.c:533	g_source_remove	533	UNCHANGED_CALL_CONTEXT	-	g_source_remove (renderer->idle_id)	DONE
+app/widgets/gimpviewrenderer.c:540	g_idle_add_full	542	UNCHANGED_CALL_CONTEXT	-	g_idle_add_full (GIMP_VIEWABLE_PRIORITY_IDLE, (GSourceFunc) gimp_view_renderer_idle_update, renderer, NULL)	DONE
+app/widgets/gimpviewrenderer.c:552	g_source_remove	552	UNCHANGED_CALL_CONTEXT	-	g_source_remove (renderer->idle_id)	DONE
+app/widgets/gimpviewrenderer.c:565	g_source_remove	565	UNCHANGED_CALL_CONTEXT	-	g_source_remove (renderer->idle_id)	DONE
+app/widgets/gimpviewrenderer.c:568	g_idle_add_full	570	UNCHANGED_CALL_CONTEXT	-	g_idle_add_full (GIMP_VIEWABLE_PRIORITY_IDLE, (GSourceFunc) gimp_view_renderer_idle_update, renderer, NULL)	DONE
+app/widgets/gimpviewrenderer.c:580	g_source_remove	580	UNCHANGED_CALL_CONTEXT	-	g_source_remove (renderer->idle_id)	DONE
+app/widgets/gimpwidgets-utils.c:933	g_signal_connect_object	935	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (window, ""realize"", G_CALLBACK (gimp_window_transient_realized), parent, 0)"	DONE
+app/widgets/gimpwidgets-utils.c:1026	g_signal_connect_object	1028	UNCHANGED_CALL_CONTEXT	-	"g_signal_connect_object (accel_group, ""accel-changed"", G_CALLBACK (gimp_widget_accel_changed), widget, 0)"	DONE
+app/widgets/gimpwidgets-utils.c:1306	g_idle_add	1306	UNCHANGED_CALL_CONTEXT	-	g_idle_add (gimp_print_event_free, str)	DONE
+app/widgets/popupper.cpp:184	g_signal_connect_delegator	185	DELTA	184,185	"g_signal_connect_delegator (g_object, ""grab-notify"", Delegators::delegator(this, &Popover::on_grab_notify))"	DONE
+app/widgets/popupper.cpp:186	g_signal_connect_delegator	187	DELTA	186,187	"g_signal_connect_delegator (g_object, ""grab-broken-event"", Delegators::delegator(this, &Popover::on_grab_broken_event))"	DONE
+app/widgets/popupper.cpp:501	g_signal_connect_delegator	501	DELTA	501	"g_signal_connect_delegator (G_OBJECT(popover_widget), ""cancel"", delegator(this, &PopoverDecorator::on_popover_closed))"	DONE
+app/widgets/popupper.cpp:503	g_signal_connect_delegator	503	DELTA	503	"g_signal_connect_delegator (G_OBJECT(popover_widget), ""confirm"", delegator(this, &PopoverDecorator::on_popover_closed))"	DONE
+app/widgets/popupper.cpp:527	g_signal_connect_delegator	527	DELTA	527	"g_signal_connect_delegator (G_OBJECT(widget), ""scroll-event"", Delegators::delegator(this, &PopoverDecorator::scroll_event))"	DONE
+app/widgets/popupper.cpp:529	g_signal_connect_delegator	529	DELTA	529	"g_signal_connect_delegator (G_OBJECT(widget), ""button-press-event"", Delegators::delegator(this, &PopoverDecorator::button_press))"	DONE
+app/widgets/popupper.cpp:532	g_signal_connect_delegator	532	DELTA	532	"g_signal_connect_delegator (G_OBJECT(widget), ""clicked"", Delegators::delegator(this, &PopoverDecorator::clicked))"	DONE
+app/widgets/popupper.cpp:535	g_signal_connect_delegator	535	DELTA	535	"g_signal_connect_delegator (G_OBJECT(widget), ""parent-clicked"", Delegators::delegator(this, &PopoverDecorator::parent_clicked))"	DONE

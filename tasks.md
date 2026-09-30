@@ -189,7 +189,7 @@
 | 01.007/c-added-lines | [x] | C の変更行と上流文脈を判別する | 01.007/c-hunk-roles | hunk 内の 74 件を変更前・変更後 blob の実差分と照合する |
 | 01.007/toolbar-ref | [x] | 旧 toolbar の widget 参照経路を確定する | 01.007/c-added-lines | data-full の保持、付け替え時の一時参照、hide 時の余剰参照を出典行付きで記録する |
 | 01.007/c-state | [x] | C 側の変更行で参照管理を照合する | 01.007/cpp-candidates | 追加差分 74 行の ref/unref、GValue、raw pointer の所有者・解放契約と移植時の追跡先を記録 |
-| 01.008 | [ ] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
+| 01.008 | [x] | シグナルと idle source を列挙する | 01.007 | 接続先、user data、解除、優先度、再入可能性を記録 |
 | 01.009 | [ ] | 保存経路を列挙する | 01.008 | XCF、myb、JSON、設定、parasite の reader/writer を記録 |
 | 01.010 | [ ] | 追加 enum と生成元を列挙する | 01.009 | 手書き定義・生成スクリプト・生成物・保存数値を対応 |
 | 01.011 | [ ] | 旧依存ライブラリーを列挙する | 01.010 | API、版、リンク方法、ライセンス、配布対象を記録 |
@@ -934,6 +934,7 @@
 | 29.006/menu-borrowed-reference | [ ] | layer popup の menu 参照の所有権を確定する | 29.006, 01.007/ref-hold | UI manager の menu 取得が借用か確認し、保持 wrapper と破棄順を修正・検証する |
 | 29.006/popover-handler-teardown | [ ] | popup の signal と view callback を終了時に解除する | 29.005, 06.017, 01.005/indirect-callback-owners | widget・popup を先に破棄しても借用中の owner を参照せず、scroll/button/confirm/cancel の接続が解除される |
 | 29.007 | [ ] | color UI を移植する | 29.006 | 前景・背景色が context と同期 |
+| 29.007/palette-popup-teardown | [ ] | 色パレット popup の借用 editor を終了時に切り離す | 29.007, 01.008 | popup を保持したまま editor を破棄する経路を閉じ、context 解除前に通知を外す。選択・確定・editor 先行破棄を反復試験する |
 | 29.008 | [ ] | tool tile の表示を移植する | 29.007 | tool manager の現在選択と同期 |
 | 29.008/icon-null | [ ] | tile icon 生成失敗時の NULL 経路を処理する | 29.002, 29.008, 01.007/cpp-ownership | layer/tool 両 tile の icon 未登録・render 失敗時に NULL を unref せず、代替表示を確認 |
 | 29.009 | [ ] | tool group を接続する | 29.008 | 旧分類と現行 action の対応が明確 |

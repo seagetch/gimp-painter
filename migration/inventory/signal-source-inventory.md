@@ -1,15 +1,13 @@
-# 01.008 signal と idle/timeout の着手
+# 01.008 signal / idle / timeout 静的棚卸し
 
-`signal-source-inventory.tsv` は旧 C++ の明示 signal 登録60箇所、C++ wrapper 接続47箇所、既知の deferred source 4箇所を、接続先・callback・user data・解除・優先度・再入の観点でまとめた111行の着手台帳。各行は旧コードの構文から確認できる範囲を記録し、`REVIEW` は個別の接続先と破棄順の検証が残ることを示す。`python3 -B tools/audit_signal_source_inventory.py` で対象集合と行数を検査する。
+対象を旧差分947ファイル内の C/C++ 呼出しに固定した。`signal-call-spans.tsv` はコメントを除外し、呼出しの閉括弧まで追う614件。実際の追加行が引数を含む呼出し全体と交差する139件を `signal-span-contracts.tsv` に接続先・データ・解除証跡・優先度・再入リスク・移植先として記録した。残る475件は、開始行だけでなく呼出し全体に追加行がない文脈である。既存C台帳517件には文脈が含まれ、これを変更件数とは数えない。
 
-107 signal のうち15件は直接 helper の返却 Connection を保持し、22件は wrapper の `connect` の返却を保持する。34件は `g_signal_connect_delegator(...)` の返却 Connection を保存せず、25件は `connect_noret` なので切断用 handle を持たない。残る11件は C 形式の callback を接続し、明示的な handler ID は保存しない。特に前者34件は Connection allocation 自体を失う。callback の `this` が emitter より先に破棄される順序を `07.008/untracked-signals` に追跡した。
+Cの通常接続57件に加え、container handler登録2件・解除3件を確認した。複数行の引数のみの変更による、追加のC登録はなかった。`c-added-signal-contracts.tsv` と `signal-teardown-by-file.tsv` は終了経路を記録する。connect_objectの9件は監視GObjectの終了、closure接続2件は closure notifier の config/data 解放、通常接続は emitter終了または明示解除を使う。brush popupは以前のブラシではなく現在のブラシから接続を外す欠陥を持つ。palette popupはeditorのdisposeから閉じられず、context解除後に生のeditorを参照する。修正先はそれぞれ `24.015/brush-popup-signal-owner`、`29.007/palette-popup-teardown`。
 
-FilterLayer の300ms timeout は ID を捨て、破棄後の raw `this` に callback が入る危険がある。LayerPreview idle は `G_PRIORITY_DEFAULT` で `this` と `viewable` を生で捕捉する。tile の scroll timeout と長押し timeout も `G_PRIORITY_DEFAULT` で、後者は callback 中に自分の CXXPointer を消す経路がある。個別の追跡先は台帳に記録した。
+C++の111件（signal107、source4）は `signal-source-inventory.tsv`。15件の明示接続と22件のwrapper接続はConnectionを保持する。34件はConnection返却を捨て、25件はconnect_noretでhandleがない。借用thisをemitterより先に破棄する順序は `07.008/untracked-signals` で修正・試験する。汎用helperは `delegators.hpp:121-191` のConnection/closure、`glib-cxx-utils.hpp:1034-1115` の転送を経由する。終了中callbackを保護する責務は `06.017` と `07.007-07.009` に残す。widgetに結び付くImplとclosureの所有者は `indirect-callback-owner-review.tsv`、CXXPointerの破棄は `cpp-scoped-owner-contracts.tsv` に対応する。
 
-これは C++ 側で既に抽出済みの候補を結合した第一段階。旧差分の C 側にある signal/source、汎用 helper から生成される実接続、動的 signal 名、先行破棄と再入の実経路を続けて照合する。`01.008` の完了判定はまだ行わない。
+source4件はFilterLayerの300ms timeout（IDを捨てる）、LayerPreview idle（保持したEventSource）、tile scroll timeout、tile長押し500ms timeout。いずれも既定優先度。後者はcallback内で自身のownerを消すので、実行中delegatorの自己破棄を防ぐ必要がある。解除・再予約・close順は各行の修正先に追跡した。`EventSource` の登録・remove・destructorは `glib-cxx-utils.hpp:1185-1218`、destroy notifierはclosure/delegator所有台帳に記録済み。
 
-旧差分対象の C 220ファイルを追加で走査し、`c-signal-source-candidates.tsv` に517構文候補（signal 460、source登録19、source解除38）を列挙した。このうち57件は変更hunk内の signal 接続で、`c-signal-added-line-review.tsv` は57件すべてが実際の追加行であることを前後 blob の差分で照合した。残る460件は変更対象ファイルの旧文脈を含む。次に追加57件の user data、接続先先行破棄、再入を個別に追跡する。
+`TRACED_STATIC` は解除経路または解除欠陥と移植先を記録した意味で、寿命安全や実機試験の合格ではない。全signalは同期発火中に選択切替・closeが再入し得る。台帳の優先度はsourceのスケジューリングとsignal同期発火を区別している。旧XCF等を含む実際の終了試験は後続タスクで行う。
 
-`c-added-signal-contracts.tsv` は追加57件を関数呼出しの引数として解析し、receiver、signal式、callback、user dataを記録する。内訳は通常 `g_signal_connect` 46、`g_signal_connect_object` 9、closure接続2。後者9件は user data GObject の終了と共に接続が解除される契約を持つ。通常接続では emitter が user data より長生きする場合を個別に検査する必要がある。
-
-旧 `gimpbrushoptions-gui.c:170-175,451-458` はブラシ変更時と popup 終了時に**新しい選択ブラシ**から handler を外そうとし、旧ブラシの `notify_brush` 接続を残し得る。callback user data `p` の解放後に古いブラシが通知すれば無効領域を参照する。移植先の `24.015/brush-popup-signal-owner` に修正・切替・終了試験を追加した。57件の個別破棄経路と C 文脈の残りの source はまだ `REVIEW`。
+再生成・照合: `audit_signal_call_spans.py` → `audit_signal_source_inventory.py` → `audit_c_added_signal_contracts.py` → `audit_signal_span_contracts.py`。対象行数614/139/111/57、全変更行の解除証跡と追跡先、WBS依存を検査する。

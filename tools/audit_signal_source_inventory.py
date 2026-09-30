@@ -31,7 +31,7 @@ def direct(row, source):
         release = "emitter destruction; no explicit handler id"
         followup = "07.008/untracked-signals" if user_data != "NULL" else "08.006"
     return (site, "SIGNAL", receiver, signal_expr, row["callback_target_if_visible"], user_data,
-            release, "synchronous signal emission", "callback may run during emit; teardown order requires verification", followup, "REVIEW")
+            release, "synchronous signal emission", "callback may run during emit; teardown order requires verification", followup, "TRACED_STATIC")
 
 
 def wrapper(row):
@@ -40,7 +40,7 @@ def wrapper(row):
     return (row["legacy_site"], "SIGNAL", row["receiver"], row["signal"], row["target"],
             "delegator captures this", release, "synchronous signal emission",
             "lambda/member may reenter owner; confirm emitter and owner destruction order",
-            "07.008" if stored else "07.008/untracked-signals", "REVIEW")
+            "07.008" if stored else "07.008/untracked-signals", "TRACED_STATIC")
 
 
 SOURCES = (
@@ -62,7 +62,7 @@ def main():
     assert len(callback) == 60 and len(wrappers) == 47
     rows = [direct(r, candidates[r["legacy_site"]]) for r in callback]
     rows.extend(wrapper(r) for r in wrappers)
-    rows.extend((site, kind, owner, "-", target, data, release, priority, reentry, followup, "REVIEW")
+    rows.extend((site, kind, owner, "-", target, data, release, priority, reentry, followup, "TRACED_STATIC")
                 for site, kind, owner, target, data, release, priority, reentry, followup in SOURCES)
     assert len(rows) == len({r[0] for r in rows}) == 111
     with OUTPUT.open("w", encoding="utf-8", newline="") as stream:
