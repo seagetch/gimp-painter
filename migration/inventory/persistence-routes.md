@@ -1,0 +1,13 @@
+# 01.009 保存経路
+
+`persistence-routes.tsv` は16経路を、storage・payload・reader/writer・移植先・衝突に分けて記録した。`persistence-sites.tsv` は変更対象C/C++ファイル内の保存APIとproperty登録873箇所の構文索引であり、873個の追加保存項目という意味ではない。既存の標準経路も独自型から利用されるので索引に含めた。
+
+旧XCFはheader、通常属性、FilterLayer、CloneLayer、mode、parasiteを区別する。独自32/33やmode23–29を現行数値へそのまま渡さない。Filter引数のサイズ宣言と実書込みの不整合、文字列・配列の可読範囲は10章で仕様・byte fixtureを確定する。parasiteはname/flags/size/bytesを持ち、persistent flag付きだけが書き出される。これは新独自型の保存形式をすでに設計したという意味ではない。
+
+mybの通常writerはJSON v3とPNG sidecar。readerはJSON失敗後にv2テキストを試し、v1の色・半径・mapping変換も行う。settingsの数値と入力curve、switches、texts、group、parent_brush_nameを同じ資源の往復対象にする。旧コードは未知キーの保存、書込みエラー伝播、sidecarとの原子的保存が不十分であり、19章で補う。旧テキストwriterの存在を通常のv2保存保証とは扱わない。
+
+presetはJsonResourceがroot全体を保持し、JsonResource::saveがJSONを書き出す。PresetFactoryは読込みと終了時のdata factory保存を仲介する。LayerPresetApplierが構造を生成する経路はJSON readerそのものとは別で、28章に割り当てた。preset folder設定はfactoryが動的登録するconfig propertyで、gimprc読込み前の登録順も追跡する。
+
+gimprc、tool-options、toolrc、tool preset/dynamics、context資源名、parasitercはGimpConfigに接続する。MyPaintOptionsは設定dictのindexからGObject propertyを登録するが、保存名は文字列でありXCFの数値wire IDとは区別する。追加項目の既定値・型・flags・試験IDを埋める詳細台帳は10.001の責務である。
+
+確認: `python3 -B tools/inventory_persistence.py`。全routeのreader/writer tokenを固定旧revisionから照合し、五保存種別を検査した。まだ旧実機の保存往復試験は行っていない。

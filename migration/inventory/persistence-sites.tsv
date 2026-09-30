@@ -1,0 +1,874 @@
+legacy_site	operation	source_line	role
+app/base/json-cxx-utils.hpp:304	json_builder_set_member_name	json_builder_set_member_name(obj, name);	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:152	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_LANGUAGE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:157	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_INTERPOLATION_TYPE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:163	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_DEFAULT_THRESHOLD,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:169	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_PLUG_IN_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:177	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_MODULE_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:185	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_INTERPRETER_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:193	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_ENVIRON_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:201	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_BRUSH_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:209	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_BRUSH_PATH_WRITABLE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:218	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_DYNAMICS_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:226	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_DYNAMICS_PATH_WRITABLE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:235	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_PATTERN_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:243	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_PATTERN_PATH_WRITABLE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:252	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_PALETTE_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:260	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_PALETTE_PATH_WRITABLE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:269	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_GRADIENT_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:277	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_GRADIENT_PATH_WRITABLE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:286	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_TOOL_PRESET_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:294	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_TOOL_PRESET_PATH_WRITABLE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:303	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_FONT_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:310	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_FONT_PATH_WRITABLE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:317	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_MYPAINT_BRUSH_PATH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:325	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_MYPAINT_BRUSH_PATH_WRITABLE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:333	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_DEFAULT_BRUSH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:337	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_DEFAULT_DYNAMICS,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:341	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_DEFAULT_PATTERN,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:345	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_DEFAULT_PALETTE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:349	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_DEFAULT_GRADIENT,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:353	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_DEFAULT_TOOL_PRESET,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:357	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_DEFAULT_FONT,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:361	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_DEFAULT_MYPAINT_BRUSH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:365	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_GLOBAL_BRUSH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:369	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_GLOBAL_DYNAMICS,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:373	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_GLOBAL_PATTERN,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:377	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_GLOBAL_PALETTE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:381	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_GLOBAL_GRADIENT,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:385	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_GLOBAL_FONT,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:389	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_GLOBAL_MYPAINT_BRUSH,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:393	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_DEFAULT_IMAGE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:398	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_DEFAULT_GRID,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:403	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_UNDO_LEVELS,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:408	GIMP_CONFIG_INSTALL_PROP_MEMSIZE	GIMP_CONFIG_INSTALL_PROP_MEMSIZE (object_class, PROP_UNDO_SIZE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:413	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_UNDO_PREVIEW_SIZE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:419	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_PLUG_IN_HISTORY_SIZE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:425	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:432	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_LAYER_PREVIEWS,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:436	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_LAYER_PREVIEW_SIZE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:441	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_THUMBNAIL_SIZE,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:446	GIMP_CONFIG_INSTALL_PROP_MEMSIZE	GIMP_CONFIG_INSTALL_PROP_MEMSIZE (object_class, PROP_THUMBNAIL_FILESIZE_LIMIT,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:451	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_COLOR_MANAGEMENT,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:456	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_COLOR_PROFILE_POLICY,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:462	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAVE_DOCUMENT_HISTORY,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:467	GIMP_CONFIG_INSTALL_PROP_RGB	GIMP_CONFIG_INSTALL_PROP_RGB (object_class, PROP_QUICK_MASK_COLOR,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:481	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_INSTALL_COLORMAP,	SOURCE_CANDIDATE
+app/config/gimpcoreconfig.c:486	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_MIN_COLORS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:122	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_MOVE_TOOL_CHANGES_ACTIVE,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:127	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_IMAGE_MAP_TOOL_MAX_RECENT,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:132	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TRUST_DIRTY_FLAG,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:137	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAVE_DEVICE_STATUS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:142	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAVE_SESSION_INFO,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:147	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_RESTORE_SESSION,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:151	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAVE_TOOL_OPTIONS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:156	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_TOOLTIPS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:161	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TEAROFF_MENUS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:165	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_CAN_CHANGE_ACCELS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:169	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAVE_ACCELS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:173	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_RESTORE_ACCELS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:177	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_LAST_OPENED_SIZE,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:182	GIMP_CONFIG_INSTALL_PROP_MEMSIZE	GIMP_CONFIG_INSTALL_PROP_MEMSIZE (object_class, PROP_MAX_NEW_IMAGE_SIZE,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:187	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TOOLBOX_COLOR_AREA,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:192	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TOOLBOX_FOO_AREA,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:197	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TOOLBOX_IMAGE_AREA,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:202	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TOOLBOX_WILBER,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:208	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_THEME_PATH,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:214	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_THEME,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:218	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_HELP,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:222	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_HELP_BUTTON,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:226	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_HELP_LOCALES,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:230	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_HELP_BROWSER,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:235	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USER_MANUAL_ONLINE,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:240	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_USER_MANUAL_ONLINE_URI,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:245	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_DOCK_WINDOW_HINT,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:252	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CURSOR_FORMAT,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:257	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CURSOR_HANDEDNESS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:288	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_INFO_WINDOW_PER_DISPLAY,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:294	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_MENU_MNEMONICS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:299	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_TOOL_TIPS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:304	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_TIPS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:309	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_TOOLBOX_WINDOW_HINT,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:315	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TRANSIENT_DOCKS,	SOURCE_CANDIDATE
+app/config/gimpguiconfig.c:320	GIMP_CONFIG_INSTALL_PROP_PATH	GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_WEB_BROWSER,	SOURCE_CANDIDATE
+app/core/gimp.c:215	gimp_parasite_list_new	gimp->parasites           = gimp_parasite_list_new ();	SOURCE_CANDIDATE
+app/core/gimp.c:1188	gimp_parasite_new	"GimpParasite *parasite = gimp_parasite_new (""gimp-comment"","	SOURCE_CANDIDATE
+app/core/gimp.c:1192	gimp_image_parasite_attach	gimp_image_parasite_attach (image, parasite);	SOURCE_CANDIDATE
+app/core/gimp.c:1193	gimp_parasite_free	gimp_parasite_free (parasite);	SOURCE_CANDIDATE
+app/core/gimpcontainer.c:514	gimp_config_deserialize_return	return gimp_config_deserialize_return (scanner, token, nest_level);	SOURCE_CANDIDATE
+app/core/gimpcontext.c:642	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_TOOL,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:647	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_PAINT_INFO,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:652	GIMP_CONFIG_INSTALL_PROP_RGB	GIMP_CONFIG_INSTALL_PROP_RGB (object_class, GIMP_CONTEXT_PROP_FOREGROUND,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:658	GIMP_CONFIG_INSTALL_PROP_RGB	GIMP_CONFIG_INSTALL_PROP_RGB (object_class, GIMP_CONTEXT_PROP_BACKGROUND,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:664	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, GIMP_CONTEXT_PROP_OPACITY,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:672	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, GIMP_CONTEXT_PROP_PAINT_MODE,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:679	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_BRUSH,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:685	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_DYNAMICS,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:691	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_PATTERN,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:697	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_GRADIENT,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:703	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_PALETTE,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:709	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_TOOL_PRESET,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:715	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_FONT,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:721	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_MYPAINT_BRUSH,	SOURCE_CANDIDATE
+app/core/gimpcontext.c:1302	gimp_config_serialize_changed_properties	return gimp_config_serialize_changed_properties (config, writer);	SOURCE_CANDIDATE
+app/core/gimpcurve.c:148	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CURVE_TYPE,	SOURCE_CANDIDATE
+app/core/gimpcurve.c:154	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_N_POINTS,	SOURCE_CANDIDATE
+app/core/gimpcurve.c:168	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT  (object_class, PROP_N_SAMPLES,	SOURCE_CANDIDATE
+app/core/gimpcurve.c:450	gimp_config_serialize_properties	return gimp_config_serialize_properties (config, writer);	SOURCE_CANDIDATE
+app/core/gimpcurve.c:461	gimp_config_deserialize_properties	success = gimp_config_deserialize_properties (config, scanner, nest_level);	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:133	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_NAME,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:138	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_OPACITY_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:143	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_FORCE_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:148	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_HARDNESS_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:153	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_RATE_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:158	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_FLOW_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:163	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_SIZE_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:168	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_ASPECT_RATIO_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:173	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_COLOR_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:178	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_ANGLE_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:183	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_JITTER_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:188	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_SPACING_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpdynamics.c:193	GIMP_CONFIG_INSTALL_PROP_OBJECT	GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_BLENDING_OUTPUT,	SOURCE_CANDIDATE
+app/core/gimpimage.c:715	gimp_parasite_list_new	private->parasites           = gimp_parasite_list_new ();	SOURCE_CANDIDATE
+app/core/gimpimage.c:1231	gimp_image_parasite_find	"parasite = gimp_image_parasite_find (GIMP_IMAGE (managed), ""icc-profile"");"	SOURCE_CANDIDATE
+app/core/gimpimage.c:1235	gimp_parasite_data_size	gsize data_size = gimp_parasite_data_size (parasite);	SOURCE_CANDIDATE
+app/core/gimpimage.c:1241	gimp_parasite_data	return gimp_parasite_data (parasite);	SOURCE_CANDIDATE
+app/core/gimpimage.c:2975	gimp_image_parasite_find	gimp_image_parasite_find (const GimpImage *image,	SOURCE_CANDIDATE
+app/core/gimpimage.c:2980	gimp_parasite_list_find	return gimp_parasite_list_find (GIMP_IMAGE_GET_PRIVATE (image)->parasites,	SOURCE_CANDIDATE
+app/core/gimpimage.c:2993	gimp_image_parasite_list	gimp_image_parasite_list (const GimpImage *image,	SOURCE_CANDIDATE
+app/core/gimpimage.c:3004	gimp_parasite_list_length	*count = gimp_parasite_list_length (private->parasites);	SOURCE_CANDIDATE
+app/core/gimpimage.c:3007	gimp_parasite_list_foreach	gimp_parasite_list_foreach (private->parasites, (GHFunc) list_func, &cur);	SOURCE_CANDIDATE
+app/core/gimpimage.c:3013	gimp_image_parasite_attach	gimp_image_parasite_attach (GimpImage          *image,	SOURCE_CANDIDATE
+app/core/gimpimage.c:3029	gimp_parasite_is_undoable	if (gimp_parasite_is_undoable (&copy))	SOURCE_CANDIDATE
+app/core/gimpimage.c:3040	gimp_parasite_list_add	gimp_parasite_list_add (GIMP_IMAGE_GET_PRIVATE (image)->parasites, &copy);	SOURCE_CANDIDATE
+app/core/gimpimage.c:3042	gimp_parasite_has_flag	if (gimp_parasite_has_flag (&copy, GIMP_PARASITE_ATTACH_PARENT))	SOURCE_CANDIDATE
+app/core/gimpimage.c:3044	gimp_parasite_shift_parent	gimp_parasite_shift_parent (&copy);	SOURCE_CANDIDATE
+app/core/gimpimage.c:3045	gimp_parasite_attach	gimp_parasite_attach (image->gimp, &copy);	SOURCE_CANDIDATE
+app/core/gimpimage.c:3056	gimp_image_parasite_detach	gimp_image_parasite_detach (GimpImage   *image,	SOURCE_CANDIDATE
+app/core/gimpimage.c:3067	gimp_parasite_list_find	if (! (parasite = gimp_parasite_list_find (private->parasites, name)))	SOURCE_CANDIDATE
+app/core/gimpimage.c:3070	gimp_parasite_is_undoable	if (gimp_parasite_is_undoable (parasite))	SOURCE_CANDIDATE
+app/core/gimpimage.c:3075	gimp_parasite_list_remove	gimp_parasite_list_remove (private->parasites, name);	SOURCE_CANDIDATE
+app/core/gimpimage.h:356	gimp_image_parasite_find	const GimpParasite * gimp_image_parasite_find    (const GimpImage    *image,	SOURCE_CANDIDATE
+app/core/gimpimage.h:358	gimp_image_parasite_list	gchar        ** gimp_image_parasite_list         (const GimpImage    *image,	SOURCE_CANDIDATE
+app/core/gimpimage.h:360	gimp_image_parasite_attach	void            gimp_image_parasite_attach       (GimpImage          *image,	SOURCE_CANDIDATE
+app/core/gimpimage.h:362	gimp_image_parasite_detach	void            gimp_image_parasite_detach       (GimpImage          *image,	SOURCE_CANDIDATE
+app/core/gimpitem.c:307	gimp_parasite_list_new	private->parasites    = gimp_parasite_list_new ();	SOURCE_CANDIDATE
+app/core/gimpitem.c:522	gimp_parasite_list_copy	GET_PRIVATE (new_item)->parasites = gimp_parasite_list_copy (private->parasites);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1797	gimp_item_parasite_attach	gimp_item_parasite_attach (GimpItem           *item,	SOURCE_CANDIDATE
+app/core/gimpitem.c:1822	gimp_parasite_is_undoable	if (gimp_parasite_is_undoable (&copy))	SOURCE_CANDIDATE
+app/core/gimpitem.c:1831	gimp_parasite_is_persistent	else if (gimp_parasite_is_persistent (&copy) &&	SOURCE_CANDIDATE
+app/core/gimpitem.c:1832	gimp_parasite_compare	! gimp_parasite_compare (&copy,	SOURCE_CANDIDATE
+app/core/gimpitem.c:1833	gimp_item_parasite_find	gimp_item_parasite_find	SOURCE_CANDIDATE
+app/core/gimpitem.c:1834	gimp_parasite_name	(item, gimp_parasite_name (&copy))))	SOURCE_CANDIDATE
+app/core/gimpitem.c:1841	gimp_parasite_list_add	gimp_parasite_list_add (private->parasites, &copy);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1843	gimp_parasite_has_flag	if (gimp_parasite_has_flag (&copy, GIMP_PARASITE_ATTACH_PARENT))	SOURCE_CANDIDATE
+app/core/gimpitem.c:1845	gimp_parasite_shift_parent	gimp_parasite_shift_parent (&copy);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1846	gimp_image_parasite_attach	gimp_image_parasite_attach (private->image, &copy);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1848	gimp_parasite_has_flag	else if (gimp_parasite_has_flag (&copy, GIMP_PARASITE_ATTACH_GRANDPARENT))	SOURCE_CANDIDATE
+app/core/gimpitem.c:1850	gimp_parasite_shift_parent	gimp_parasite_shift_parent (&copy);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1851	gimp_parasite_shift_parent	gimp_parasite_shift_parent (&copy);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1852	gimp_parasite_attach	gimp_parasite_attach (private->image->gimp, &copy);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1856	gimp_parasite_is_undoable	gimp_parasite_is_undoable (&copy))	SOURCE_CANDIDATE
+app/core/gimpitem.c:1863	gimp_item_parasite_detach	gimp_item_parasite_detach (GimpItem    *item,	SOURCE_CANDIDATE
+app/core/gimpitem.c:1875	gimp_parasite_list_find	parasite = gimp_parasite_list_find (private->parasites, name);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1885	gimp_parasite_is_undoable	if (gimp_parasite_is_undoable (parasite))	SOURCE_CANDIDATE
+app/core/gimpitem.c:1890	gimp_parasite_name	gimp_parasite_name (parasite));	SOURCE_CANDIDATE
+app/core/gimpitem.c:1892	gimp_parasite_is_persistent	else if (gimp_parasite_is_persistent (parasite))	SOURCE_CANDIDATE
+app/core/gimpitem.c:1899	gimp_parasite_list_remove	gimp_parasite_list_remove (private->parasites, name);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1903	gimp_item_parasite_find	gimp_item_parasite_find (const GimpItem *item,	SOURCE_CANDIDATE
+app/core/gimpitem.c:1908	gimp_parasite_list_find	return gimp_parasite_list_find (GET_PRIVATE (item)->parasites, name);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1912	gimp_item_parasite_list_foreach_func	gimp_item_parasite_list_foreach_func (gchar          *name,	SOURCE_CANDIDATE
+app/core/gimpitem.c:1920	gimp_item_parasite_list	gimp_item_parasite_list (const GimpItem *item,	SOURCE_CANDIDATE
+app/core/gimpitem.c:1932	gimp_parasite_list_length	*count = gimp_parasite_list_length (private->parasites);	SOURCE_CANDIDATE
+app/core/gimpitem.c:1936	gimp_parasite_list_foreach	gimp_parasite_list_foreach (private->parasites,	SOURCE_CANDIDATE
+app/core/gimpitem.h:280	gimp_item_parasite_attach	void            gimp_item_parasite_attach    (GimpItem           *item,	SOURCE_CANDIDATE
+app/core/gimpitem.h:283	gimp_item_parasite_detach	void            gimp_item_parasite_detach    (GimpItem           *item,	SOURCE_CANDIDATE
+app/core/gimpitem.h:286	gimp_item_parasite_find	const GimpParasite * gimp_item_parasite_find (const GimpItem     *item,	SOURCE_CANDIDATE
+app/core/gimpitem.h:288	gimp_item_parasite_list	gchar        ** gimp_item_parasite_list      (const GimpItem     *item,	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-load.cpp:230	json_parser_load_from_file	json_parser_load_from_file(parser, filename, &jerror);	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-load.cpp:241	json_reader_read_member	"bool version_result = json_reader_read_member(reader, ""version"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-load.cpp:254	json_reader_read_member	"bool brushname_result = json_reader_read_member(reader, ""parent_brush_name"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-load.cpp:267	json_reader_read_member	"bool group_result = json_reader_read_member(reader, ""group"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-load.cpp:275	json_reader_read_member	"bool settings_result = json_reader_read_member(reader, ""settings"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-load.cpp:292	json_reader_read_member	"prop_result = json_reader_read_member(reader, ""base_value"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-load.cpp:302	json_reader_read_member	"prop_result = json_reader_read_member(reader, ""inputs"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-load.cpp:343	json_reader_read_member	"bool switch_result = json_reader_read_member(reader, ""switches"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-load.cpp:365	json_reader_read_member	"bool text_result = json_reader_read_member(reader, ""texts"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:185	json_builder_set_member_name	"json_builder_set_member_name(builder, ""version"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:188	json_builder_set_member_name	"json_builder_set_member_name(builder, ""group"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:191	json_builder_set_member_name	"json_builder_set_member_name(builder, ""parent_brush_name"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:194	json_builder_set_member_name	"json_builder_set_member_name(builder, ""settings"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:199	json_builder_set_member_name	json_builder_set_member_name(builder, setting->internal_name);	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:204	json_builder_set_member_name	"json_builder_set_member_name(builder, ""base_value"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:207	json_builder_set_member_name	"json_builder_set_member_name(builder, ""inputs"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:218	json_builder_set_member_name	json_builder_set_member_name(builder, input->name);	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:238	json_builder_set_member_name	"json_builder_set_member_name(builder, ""switches"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:243	json_builder_set_member_name	json_builder_set_member_name(builder, setting->internal_name);	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:249	json_builder_set_member_name	"json_builder_set_member_name(builder, ""texts"");"	SOURCE_CANDIDATE
+app/core/gimpmypaintbrush-save.cpp:255	json_builder_set_member_name	json_builder_set_member_name(builder, setting->internal_name);	SOURCE_CANDIDATE
+app/core/gimptooloptions.c:318	gimp_config_serialize_to_file	retval = gimp_config_serialize_to_file (GIMP_CONFIG (tool_options),	SOURCE_CANDIDATE
+app/core/gimptooloptions.c:346	gimp_config_deserialize_file	retval = gimp_config_deserialize_file (GIMP_CONFIG (tool_options),	SOURCE_CANDIDATE
+app/core/gimpviewable.c:187	GIMP_CONFIG_INSTALL_PROP_STRING	"GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_STOCK_ID, ""stock-id"","	SOURCE_CANDIDATE
+app/dialogs/dialogs.c:591	gimp_config_deserialize_file	if (! gimp_config_deserialize_file (GIMP_CONFIG (global_recent_docks),	SOURCE_CANDIDATE
+app/dialogs/dialogs.c:626	gimp_config_serialize_to_file	if (! gimp_config_serialize_to_file (GIMP_CONFIG (global_recent_docks),	SOURCE_CANDIDATE
+app/file/file-open.c:735	gimp_image_parasite_find	"if (gimp_image_parasite_find (image, ""icc-profile""))"	SOURCE_CANDIDATE
+app/httpd/httpd.cpp:140	json_parser_load_from_data	json_parser_load_from_data(parser, content_str, -1, NULL);	SOURCE_CANDIDATE
+app/paint/gimpmypaintoptions.cpp:115	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, setting->index + 1,	SOURCE_CANDIDATE
+app/paint/gimpmypaintoptions.cpp:126	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, setting->index + 1,	SOURCE_CANDIDATE
+app/paint/gimpmypaintoptions.cpp:136	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, setting->index + 1,	SOURCE_CANDIDATE
+app/paint/gimpmypaintoptions.cpp:142	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_BRUSH_MODE,	SOURCE_CANDIDATE
+app/paint/gimpmypaintoptions.cpp:148	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_BRUSH_VIEW_TYPE,	SOURCE_CANDIDATE
+app/paint/gimpmypaintoptions.cpp:154	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_BRUSH_VIEW_SIZE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:195	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_BRUSH_SIZE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:200	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_BRUSH_ASPECT_RATIO,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:204	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_BRUSH_ANGLE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:209	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_APPLICATION_MODE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:215	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_HARD,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:220	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_JITTER,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:224	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_JITTER_AMOUNT,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:229	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_DYNAMICS_EXPANDED,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:234	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_FADE_LENGTH,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:238	GIMP_CONFIG_INSTALL_PROP_UNIT	GIMP_CONFIG_INSTALL_PROP_UNIT (object_class, PROP_FADE_UNIT,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:242	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_FADE_REVERSE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:246	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_FADE_REPEAT,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:252	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_GRADIENT_REVERSE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:257	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_BRUSH_VIEW_TYPE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:262	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_BRUSH_VIEW_SIZE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:269	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_DYNAMICS_VIEW_TYPE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:274	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_DYNAMICS_VIEW_SIZE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:281	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_PATTERN_VIEW_TYPE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:286	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_PATTERN_VIEW_SIZE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:293	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_GRADIENT_VIEW_TYPE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:298	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_GRADIENT_VIEW_SIZE,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:305	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_SMOOTHING,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:309	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_SMOOTHING_QUALITY,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:313	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_SMOOTHING_FACTOR,	SOURCE_CANDIDATE
+app/paint/gimppaintoptions.c:321	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_TEXTURE,	SOURCE_CANDIDATE
+app/paint/gimpsmudgeoptions.c:63	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_RATE,	SOURCE_CANDIDATE
+app/paint/gimpsmudgeoptions.c:68	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_COLOR_BLENDING,	SOURCE_CANDIDATE
+app/tools/gimp-tools.c:275	gimp_config_deserialize_file	if (gimp_config_deserialize_file (GIMP_CONFIG (gimp_list), filename,	SOURCE_CANDIDATE
+app/tools/gimp-tools.c:452	gimp_config_serialize_to_file	gimp_config_serialize_to_file (GIMP_CONFIG (gimp->tool_info_list),	SOURCE_CANDIDATE
+app/tools/gimp-tools.c:512	gimp_config_serialize	return gimp_config_serialize (GIMP_CONFIG (container), writer, NULL);	SOURCE_CANDIDATE
+app/tools/gimp-tools.c:601	gimp_config_deserialize	if (gimp_config_deserialize (GIMP_CONFIG (src_container),	SOURCE_CANDIDATE
+app/tools/gimpalignoptions.c:89	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_ALIGN_REFERENCE,	SOURCE_CANDIDATE
+app/tools/gimpalignoptions.c:96	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_OFFSET_X,	SOURCE_CANDIDATE
+app/tools/gimpalignoptions.c:102	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_OFFSET_Y,	SOURCE_CANDIDATE
+app/tools/gimpblendoptions.c:80	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_OFFSET,	SOURCE_CANDIDATE
+app/tools/gimpblendoptions.c:84	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_GRADIENT_TYPE,	SOURCE_CANDIDATE
+app/tools/gimpblendoptions.c:89	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_GRADIENT_REPEAT,	SOURCE_CANDIDATE
+app/tools/gimpblendoptions.c:95	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SUPERSAMPLE,	SOURCE_CANDIDATE
+app/tools/gimpblendoptions.c:99	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_SUPERSAMPLE_DEPTH,	SOURCE_CANDIDATE
+app/tools/gimpblendoptions.c:103	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_SUPERSAMPLE_THRESHOLD,	SOURCE_CANDIDATE
+app/tools/gimpblendoptions.c:108	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_DITHER,	SOURCE_CANDIDATE
+app/tools/gimpbucketfilloptions.c:93	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_FILL_MODE,	SOURCE_CANDIDATE
+app/tools/gimpbucketfilloptions.c:98	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_FILL_SELECTION,	SOURCE_CANDIDATE
+app/tools/gimpbucketfilloptions.c:103	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_FILL_TRANSPARENT,	SOURCE_CANDIDATE
+app/tools/gimpbucketfilloptions.c:109	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAMPLE_MERGED,	SOURCE_CANDIDATE
+app/tools/gimpbucketfilloptions.c:115	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_THRESHOLD,	SOURCE_CANDIDATE
+app/tools/gimpbucketfilloptions.c:120	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_FILL_CRITERION,	SOURCE_CANDIDATE
+app/tools/gimpcageoptions.c:69	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CAGE_MODE,	SOURCE_CANDIDATE
+app/tools/gimpcageoptions.c:75	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_FILL_PLAIN_COLOR,	SOURCE_CANDIDATE
+app/tools/gimpcoloroptions.c:70	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAMPLE_MERGED,	SOURCE_CANDIDATE
+app/tools/gimpcoloroptions.c:74	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAMPLE_AVERAGE,	SOURCE_CANDIDATE
+app/tools/gimpcoloroptions.c:78	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_AVERAGE_RADIUS,	SOURCE_CANDIDATE
+app/tools/gimpcolorpickeroptions.c:66	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAMPLE_AVERAGE,	SOURCE_CANDIDATE
+app/tools/gimpcolorpickeroptions.c:72	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_PICK_MODE,	SOURCE_CANDIDATE
+app/tools/gimpcolorpickeroptions.c:78	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_INFO_WINDOW,	SOURCE_CANDIDATE
+app/tools/gimpcropoptions.c:73	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class,	SOURCE_CANDIDATE
+app/tools/gimpcropoptions.c:80	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_LAYER_ONLY,	SOURCE_CANDIDATE
+app/tools/gimpcropoptions.c:86	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ALLOW_GROWING,	SOURCE_CANDIDATE
+app/tools/gimpflipoptions.c:64	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_FLIP_TYPE,	SOURCE_CANDIDATE
+app/tools/gimpforegroundselectoptions.c:80	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ANTIALIAS,	SOURCE_CANDIDATE
+app/tools/gimpforegroundselectoptions.c:86	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_CONTIGUOUS,	SOURCE_CANDIDATE
+app/tools/gimpforegroundselectoptions.c:92	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_BACKGROUND,	SOURCE_CANDIDATE
+app/tools/gimpforegroundselectoptions.c:99	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_STROKE_WIDTH,	SOURCE_CANDIDATE
+app/tools/gimpforegroundselectoptions.c:105	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_SMOOTHNESS,	SOURCE_CANDIDATE
+app/tools/gimpforegroundselectoptions.c:113	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_MASK_COLOR,	SOURCE_CANDIDATE
+app/tools/gimpforegroundselectoptions.c:120	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_EXPANDED,	SOURCE_CANDIDATE
+app/tools/gimpforegroundselectoptions.c:125	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_SENSITIVITY_L,	SOURCE_CANDIDATE
+app/tools/gimpforegroundselectoptions.c:131	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_SENSITIVITY_A,	SOURCE_CANDIDATE
+app/tools/gimpforegroundselectoptions.c:137	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_SENSITIVITY_B,	SOURCE_CANDIDATE
+app/tools/gimphistogramoptions.c:67	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_SCALE,	SOURCE_CANDIDATE
+app/tools/gimpiscissorsoptions.c:66	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_INTERACTIVE,	SOURCE_CANDIDATE
+app/tools/gimpmagnifyoptions.c:77	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_AUTO_RESIZE,	SOURCE_CANDIDATE
+app/tools/gimpmagnifyoptions.c:84	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_ZOOM_TYPE,	SOURCE_CANDIDATE
+app/tools/gimpmeasureoptions.c:65	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_INFO_WINDOW,	SOURCE_CANDIDATE
+app/tools/gimpmoveoptions.c:64	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_MOVE_TYPE,	SOURCE_CANDIDATE
+app/tools/gimpmoveoptions.c:69	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_MOVE_CURRENT,	SOURCE_CANDIDATE
+app/tools/gimprectangleselectoptions.c:75	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class,	SOURCE_CANDIDATE
+app/tools/gimprectangleselectoptions.c:82	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ROUND_CORNERS,	SOURCE_CANDIDATE
+app/tools/gimprectangleselectoptions.c:88	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_CORNER_RADIUS,	SOURCE_CANDIDATE
+app/tools/gimpregionselectoptions.c:80	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SELECT_TRANSPARENT,	SOURCE_CANDIDATE
+app/tools/gimpregionselectoptions.c:87	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAMPLE_MERGED,	SOURCE_CANDIDATE
+app/tools/gimpregionselectoptions.c:93	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_THRESHOLD,	SOURCE_CANDIDATE
+app/tools/gimpregionselectoptions.c:99	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_SELECT_CRITERION,	SOURCE_CANDIDATE
+app/tools/gimpselectionoptions.c:75	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_OPERATION,	SOURCE_CANDIDATE
+app/tools/gimpselectionoptions.c:81	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ANTIALIAS,	SOURCE_CANDIDATE
+app/tools/gimpselectionoptions.c:87	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_FEATHER,	SOURCE_CANDIDATE
+app/tools/gimpselectionoptions.c:93	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_FEATHER_RADIUS,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:128	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:134	GIMP_CONFIG_INSTALL_PROP_UNIT	GIMP_CONFIG_INSTALL_PROP_UNIT (object_class, PROP_UNIT,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:139	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_FONT_SIZE,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:144	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ANTIALIAS,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:148	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_HINT_STYLE,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:156	GIMP_CONFIG_INSTALL_PROP_STRING	GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_LANGUAGE,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:162	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_BASE_DIR,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:167	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_JUSTIFICATION,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:173	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_INDENTATION,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:179	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_LINE_SPACING,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:185	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_LETTER_SPACING,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:191	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_BOX_MODE,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:199	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_EDITOR,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:206	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_FONT_VIEW_TYPE,	SOURCE_CANDIDATE
+app/tools/gimptextoptions.c:211	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_FONT_VIEW_SIZE,	SOURCE_CANDIDATE
+app/tools/gimptransformoptions.c:98	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_TYPE,	SOURCE_CANDIDATE
+app/tools/gimptransformoptions.c:103	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_DIRECTION,	SOURCE_CANDIDATE
+app/tools/gimptransformoptions.c:109	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_INTERPOLATION,	SOURCE_CANDIDATE
+app/tools/gimptransformoptions.c:115	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CLIP,	SOURCE_CANDIDATE
+app/tools/gimptransformoptions.c:121	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_PREVIEW,	SOURCE_CANDIDATE
+app/tools/gimptransformoptions.c:126	GIMP_CONFIG_INSTALL_PROP_DOUBLE	GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_PREVIEW_OPACITY,	SOURCE_CANDIDATE
+app/tools/gimptransformoptions.c:131	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_GRID_TYPE,	SOURCE_CANDIDATE
+app/tools/gimptransformoptions.c:137	GIMP_CONFIG_INSTALL_PROP_INT	GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_GRID_SIZE,	SOURCE_CANDIDATE
+app/tools/gimptransformoptions.c:142	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_CONSTRAIN,	SOURCE_CANDIDATE
+app/tools/gimpvectoroptions.c:68	GIMP_CONFIG_INSTALL_PROP_ENUM	GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_VECTORS_EDIT_MODE,	SOURCE_CANDIDATE
+app/tools/gimpvectoroptions.c:74	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_VECTORS_POLYGONAL,	SOURCE_CANDIDATE
+app/widgets/gimpselectiondata.c:374	gimp_config_serialize_to_string	str = gimp_config_serialize_to_string (GIMP_CONFIG (curve), NULL);	SOURCE_CANDIDATE
+app/widgets/gimpselectiondata.c:402	gimp_config_deserialize_string	if (! gimp_config_deserialize_string (GIMP_CONFIG (curve),	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:88	xcf_load_add_masks	static void            xcf_load_add_masks     (GimpImage    *image);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:89	xcf_load_image_props	static gboolean        xcf_load_image_props   (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:91	xcf_load_layer_props	static gboolean        xcf_load_layer_props   (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:100	xcf_load_channel_props	static gboolean        xcf_load_channel_props (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:103	xcf_load_prop	static gboolean        xcf_load_prop          (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:106	xcf_load_layer	static GimpLayer     * xcf_load_layer         (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:109	xcf_load_channel	static GimpChannel   * xcf_load_channel       (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:111	xcf_load_layer_mask	static GimpLayerMask * xcf_load_layer_mask    (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:113	xcf_load_hierarchy	static gboolean        xcf_load_hierarchy     (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:115	xcf_load_level	static gboolean        xcf_load_level         (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:117	xcf_load_tile	static gboolean        xcf_load_tile          (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:119	xcf_load_tile_rle	static gboolean        xcf_load_tile_rle      (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:122	xcf_load_parasite	static GimpParasite  * xcf_load_parasite      (XcfInfo      *info);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:123	xcf_load_old_paths	static gboolean        xcf_load_old_paths     (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:125	xcf_load_old_path	static gboolean        xcf_load_old_path      (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:127	xcf_load_vectors	static gboolean        xcf_load_vectors       (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:129	xcf_load_vector	static gboolean        xcf_load_vector        (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:136	xcf_load_filter_specs	static gboolean        xcf_load_filter_specs  (XcfInfo *info, GArray* value);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:137	xcf_load_clone_specs	static gboolean        xcf_load_clone_specs  (XcfInfo *info);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:168	xcf_load_image	xcf_load_image (Gimp     *gimp,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:185	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &width, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:186	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &height, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:187	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &image_type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:199	xcf_load_image_props	if (! xcf_load_image_props (info, image))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:203	gimp_image_parasite_find	parasite = gimp_image_parasite_find (GIMP_IMAGE (image),	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:213	gimp_parasite_list_remove	gimp_parasite_list_remove (private->parasites,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:214	gimp_parasite_name	gimp_parasite_name (parasite));	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:236	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:254	xcf_load_layer	layer = xcf_load_layer (info, image, &item_path);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:321	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:337	xcf_load_channel	channel = xcf_load_channel (info, image);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:380	xcf_load_add_masks	xcf_load_add_masks (image);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:412	xcf_load_add_masks	xcf_load_add_masks (image);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:431	xcf_load_add_masks	xcf_load_add_masks (GimpImage *image)	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:457	xcf_load_image_props	xcf_load_image_props (XcfInfo   *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:465	xcf_load_prop	if (! xcf_load_prop (info, &prop_type, &prop_size))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:479	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &n_colors, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:512	xcf_read_int8	info->cp += xcf_read_int8 (info->fp, cmap, n_colors * 3);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:528	xcf_read_int8	info->cp += xcf_read_int8 (info->fp, (guint8 *) &compression, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:556	xcf_read_int32	info->cp += xcf_read_int32 (info->fp,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:558	xcf_read_int8	info->cp += xcf_read_int8 (info->fp,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:599	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &x, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:600	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &y, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:611	xcf_read_float	info->cp += xcf_read_float (info->fp, &xres, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:612	xcf_read_float	info->cp += xcf_read_float (info->fp, &yres, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:632	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &info->tattoo_state, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:642	xcf_load_parasite	GimpParasite *p = xcf_load_parasite (info);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:647	gimp_image_parasite_attach	gimp_image_parasite_attach (image, p);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:648	gimp_parasite_free	gimp_parasite_free (p);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:662	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &unit, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:679	xcf_load_old_paths	xcf_load_old_paths (info, image);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:691	xcf_read_float	info->cp += xcf_read_float (info->fp, &factor, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:692	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &digits, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:693	xcf_read_string	info->cp += xcf_read_string (info->fp, unit_strings, 5);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:736	xcf_load_vectors	if (xcf_load_vectors (info, image))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:772	xcf_load_layer_props	xcf_load_layer_props (XcfInfo    *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:787	xcf_load_prop	if (! xcf_load_prop (info, &prop_type, &prop_size))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:803	xcf_read_int32	xcf_read_int32 (info->fp,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:811	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &opacity, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:820	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &visible, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:829	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &linked, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:838	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &lock_content, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:850	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &lock_alpha, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:858	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) apply_mask, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:862	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) edit_mask, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:866	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) show_mask, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:874	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &offset_x, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:875	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &offset_y, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:885	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &mode, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:894	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &tattoo, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:905	xcf_load_parasite	GimpParasite *p = xcf_load_parasite (info);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:910	gimp_item_parasite_attach	gimp_item_parasite_attach (GIMP_ITEM (*layer), p, FALSE);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:911	gimp_parasite_free	gimp_parasite_free (p);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:922	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, text_layer_flags, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:971	xcf_read_int32	if (xcf_read_int32 (info->fp, &index, 1) != 4)	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:986	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, group_layer_flags, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1043	xcf_read_string	info->cp += xcf_read_string (info->fp, &filter_name, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1046	xcf_load_filter_specs	if ( !xcf_load_filter_specs (info, proc_args) )	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1101	xcf_read_string	info->cp += xcf_read_string (info->fp, &target_name, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1104	xcf_load_clone_specs	if ( !xcf_load_clone_specs (info) )	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1126	xcf_load_channel_props	xcf_load_channel_props (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1135	xcf_load_prop	if (! xcf_load_prop (info, &prop_type, &prop_size))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1182	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &opacity, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1191	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &visible, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1201	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &linked, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1211	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &lock_content, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1221	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &show_masked, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1230	xcf_read_int8	info->cp += xcf_read_int8 (info->fp, (guint8 *) col, 3);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1239	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &tattoo, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1250	xcf_load_parasite	GimpParasite *p = xcf_load_parasite (info);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1255	gimp_item_parasite_attach	gimp_item_parasite_attach (GIMP_ITEM (*channel), p, FALSE);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1256	gimp_parasite_free	gimp_parasite_free (p);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1281	xcf_load_filter_specs	xcf_load_filter_specs(XcfInfo *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1298	xcf_read_int32	if (G_UNLIKELY (xcf_read_int32 (info->fp, &value_type, 1) != 4))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1304	xcf_read_int32	if (G_UNLIKELY (xcf_read_int32 (info->fp, &size, 1) != 4))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1326	xcf_read_int32	info->cp += xcf_read_int32(info->fp, &read_value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1337	xcf_read_int32	info->cp += xcf_read_int32(info->fp, &read_value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1348	xcf_read_int8	info->cp += xcf_read_int8(info->fp, &read_value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1359	xcf_read_float	info->cp += xcf_read_float(info->fp, &read_value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1387	xcf_read_string	info->cp += xcf_read_string(info->fp, &string, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1420	xcf_load_clone_specs	xcf_load_clone_specs(XcfInfo *info)	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1435	xcf_read_int32	if (G_UNLIKELY (xcf_read_int32 (info->fp, &value_type, 1) != 4))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1439	xcf_read_int32	if (G_UNLIKELY (xcf_read_int32 (info->fp, &size, 1) != 4))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1461	xcf_load_prop	xcf_load_prop (XcfInfo  *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1465	xcf_read_int32	if (G_UNLIKELY (xcf_read_int32 (info->fp, (guint32 *) prop_type, 1) != 4))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1470	xcf_read_int32	if (G_UNLIKELY (xcf_read_int32 (info->fp, (guint32 *) prop_size, 1) != 4))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1479	xcf_load_layer	xcf_load_layer (XcfInfo    *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1508	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &width, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1509	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &height, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1510	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1514	xcf_read_string	info->cp += xcf_read_string (info->fp, &name, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1524	xcf_load_layer_props	if (! xcf_load_layer_props (info, image, &layer, item_path,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1552	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &hierarchy_offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1555	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &layer_mask_offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1568	xcf_load_hierarchy	if (! xcf_load_hierarchy (info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1591	xcf_load_layer_mask	layer_mask = xcf_load_layer_mask (info, image);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1625	xcf_load_channel	xcf_load_channel (XcfInfo   *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1642	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &width, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1643	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &height, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1647	xcf_read_string	info->cp += xcf_read_string (info->fp, &name, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1656	xcf_load_channel_props	if (!xcf_load_channel_props (info, image, &channel))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1662	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &hierarchy_offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1668	xcf_load_hierarchy	if (!xcf_load_hierarchy (info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1685	xcf_load_layer_mask	xcf_load_layer_mask (XcfInfo   *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1703	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &width, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1704	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &height, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1708	xcf_read_string	info->cp += xcf_read_string (info->fp, &name, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1718	xcf_load_channel_props	if (!xcf_load_channel_props (info, image, &channel))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1724	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &hierarchy_offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1730	xcf_load_hierarchy	if (!xcf_load_hierarchy (info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1748	xcf_load_hierarchy	xcf_load_hierarchy (XcfInfo     *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1757	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &width, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1760	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &height, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1763	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &bpp, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1777	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &offset, 1); /* top level */	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1786	xcf_load_level	if (!xcf_load_level (info, tiles))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1798	xcf_load_level	xcf_load_level (XcfInfo     *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1812	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &width, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1813	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &height, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1830	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1858	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &offset2, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1885	xcf_load_tile	if (!xcf_load_tile (info, tile))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1889	xcf_load_tile_rle	if (!xcf_load_tile_rle (info, tile, offset2 - offset))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1939	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1953	xcf_load_tile	xcf_load_tile (XcfInfo *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1956	xcf_read_int8	info->cp += xcf_read_int8 (info->fp, tile_data_pointer (tile, 0, 0),	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:1963	xcf_load_tile_rle	xcf_load_tile_rle (XcfInfo *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2094	xcf_load_parasite	xcf_load_parasite (XcfInfo *info)	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2102	xcf_read_string	info->cp += xcf_read_string (info->fp, &name, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2103	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &flags, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2104	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2115	xcf_read_int8	info->cp += xcf_read_int8 (info->fp, data, size);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2117	gimp_parasite_new	parasite = gimp_parasite_new (name, flags, size, data);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2126	xcf_load_old_paths	xcf_load_old_paths (XcfInfo   *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2133	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &last_selected_row, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2134	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &num_paths, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2137	xcf_load_old_path	xcf_load_old_path (info, image);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2150	xcf_load_old_path	xcf_load_old_path (XcfInfo   *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2164	xcf_read_string	info->cp += xcf_read_string (info->fp, &name, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2165	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &linked, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2166	xcf_read_int8	info->cp += xcf_read_int8   (info->fp, &state, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2167	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &closed, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2168	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &num_points, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2169	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &version, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2176	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &dummy, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2183	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &dummy,  1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2184	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &tattoo, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2209	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &points[i].type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2210	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &x,  1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2211	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, (guint32 *) &y,  1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2221	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &points[i].type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2222	xcf_read_float	info->cp += xcf_read_float (info->fp, &x,              1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2223	xcf_read_float	info->cp += xcf_read_float (info->fp, &y,              1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2249	xcf_load_vectors	xcf_load_vectors (XcfInfo   *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2261	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &version, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2271	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &active_index, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2272	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &num_paths,    1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2279	xcf_load_vector	if (! xcf_load_vector (info, image))	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2297	xcf_load_vector	xcf_load_vector (XcfInfo   *info,	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2313	xcf_read_string	info->cp += xcf_read_string (info->fp, &name,          1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2314	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &tattoo,        1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2315	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &visible,       1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2316	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &linked,        1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2317	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &num_parasites, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2318	xcf_read_int32	info->cp += xcf_read_int32  (info->fp, &num_strokes,   1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2337	xcf_load_parasite	GimpParasite *parasite = xcf_load_parasite (info);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2342	gimp_item_parasite_attach	gimp_item_parasite_attach (GIMP_ITEM (vectors), parasite, FALSE);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2343	gimp_parasite_free	gimp_parasite_free (parasite);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2364	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &stroke_type_id,     1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2365	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &closed,             1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2366	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &num_axes,           1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2367	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &num_control_points, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2400	xcf_read_int32	info->cp += xcf_read_int32 (info->fp, &type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2401	xcf_read_float	info->cp += xcf_read_float (info->fp, coords, num_axes);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2455	xcf_read_int8	info->cp += xcf_read_int8 (info->fp, buf, amount);	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2476	xcf_read_int8	if (xcf_read_int8 (info->fp, &c, 1) == 0)	SOURCE_CANDIDATE
+app/xcf/xcf-load.c:2485	xcf_read_int8	if (xcf_read_int8 (info->fp, &c, 1) == 0)	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:81	xcf_save_image_props	static gboolean xcf_save_image_props   (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:84	xcf_save_layer_props	static gboolean xcf_save_layer_props   (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:88	xcf_save_channel_props	static gboolean xcf_save_channel_props (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:92	xcf_save_prop	static gboolean xcf_save_prop          (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:97	xcf_save_layer	static gboolean xcf_save_layer         (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:101	xcf_save_channel	static gboolean xcf_save_channel       (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:105	xcf_save_hierarchy	static gboolean xcf_save_hierarchy     (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:108	xcf_save_level	static gboolean xcf_save_level         (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:111	xcf_save_tile	static gboolean xcf_save_tile          (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:114	xcf_save_tile_rle	static gboolean xcf_save_tile_rle      (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:118	xcf_save_parasite	static gboolean xcf_save_parasite      (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:121	xcf_save_parasite_list	static gboolean xcf_save_parasite_list (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:124	xcf_save_old_paths	static gboolean xcf_save_old_paths     (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:127	xcf_save_vectors	static gboolean xcf_save_vectors       (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:131	xcf_save_filter_spec_value	static gboolean xcf_save_filter_spec_value   (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:137	xcf_write_int32_check_error	#define xcf_write_int32_check_error(info, data, count) G_STMT_START { \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:138	xcf_write_int32	info->cp += xcf_write_int32 (info->fp, data, count, &tmp_error); \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:146	xcf_write_zero_int32_check_error	#define xcf_write_zero_int32_check_error(info, count) G_STMT_START {  \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:147	xcf_write_zero_int32	info->cp += xcf_write_zero_int32 (info->fp, count, &tmp_error); \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:155	xcf_write_int8_check_error	#define xcf_write_int8_check_error(info, data, count) G_STMT_START { \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:156	xcf_write_int8	info->cp += xcf_write_int8 (info->fp, data, count, &tmp_error); \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:164	xcf_write_float_check_error	#define xcf_write_float_check_error(info, data, count) G_STMT_START { \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:165	xcf_write_float	info->cp += xcf_write_float (info->fp, data, count, &tmp_error); \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:173	xcf_write_string_check_error	#define xcf_write_string_check_error(info, data, count) G_STMT_START { \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:174	xcf_write_string	info->cp += xcf_write_string (info->fp, data, count, &tmp_error); \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:182	xcf_write_prop_type_check_error	#define xcf_write_prop_type_check_error(info, prop_type) G_STMT_START { \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:184	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &_prop_int32, 1); \	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:201	xcf_save_choose_format_recursive	xcf_save_choose_format_recursive(XcfInfo* info, GimpContainer* layers) {	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:230	xcf_save_choose_format_recursive	save_version = MAX(save_version, xcf_save_choose_format_recursive (info, children));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:266	xcf_save_choose_format	xcf_save_choose_format (XcfInfo   *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:312	xcf_save_choose_format_recursive	save_version = MAX (save_version, xcf_save_choose_format_recursive (info, children));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:341	xcf_save_image	xcf_save_image (XcfInfo    *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:369	xcf_write_int8_check_error	xcf_write_int8_check_error (info, (guint8 *) version_tag, 14);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:373	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:376	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:379	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:398	xcf_save_image_props	xcf_check_error (xcf_save_image_props (info, image, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:406	xcf_write_zero_int32_check_error	xcf_write_zero_int32_check_error (info, n_layers + n_channels + 2);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:420	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:427	xcf_save_layer	xcf_check_error (xcf_save_layer (info, image, layer, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:449	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:456	xcf_save_channel	xcf_check_error (xcf_save_channel (info, image, channel, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:475	xcf_save_image_props	xcf_save_image_props (XcfInfo    *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:489	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_COLORMAP, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:494	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_COMPRESSION, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:498	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_GUIDES, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:502	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_SAMPLE_POINTS, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:505	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_RESOLUTION, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:508	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_TATTOO, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:512	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_UNIT, error, unit));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:517	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_PATHS, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:519	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_VECTORS, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:523	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_USER_UNIT, error, unit));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:530	gimp_parasite_list_add	gimp_parasite_list_add (private->parasites, parasite);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:533	gimp_parasite_list_length	if (gimp_parasite_list_length (private->parasites) > 0)	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:535	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_PARASITES, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:541	gimp_parasite_list_remove	gimp_parasite_list_remove (private->parasites,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:542	gimp_parasite_name	gimp_parasite_name (parasite));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:543	gimp_parasite_free	gimp_parasite_free (parasite);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:546	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_END, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:552	xcf_save_layer_props	xcf_save_layer_props (XcfInfo    *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:562	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_GROUP_ITEM, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:569	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_ITEM_PATH, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:575	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_ACTIVE_LAYER, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:580	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_FLOATING_SELECTION,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:584	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_OPACITY, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:586	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_VISIBLE, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:588	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_LINKED, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:590	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_LOCK_CONTENT, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:592	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_LOCK_ALPHA, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:599	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_APPLY_MASK, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:601	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_EDIT_MASK, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:603	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_SHOW_MASK, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:608	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_APPLY_MASK, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:610	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_EDIT_MASK, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:612	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_SHOW_MASK, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:618	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_OFFSETS, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:620	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_MODE, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:622	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_TATTOO, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:633	xcf_save_prop	xcf_check_error (xcf_save_prop (info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:645	xcf_save_prop	xcf_check_error (xcf_save_prop (info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:652	gimp_parasite_list_length	if (gimp_parasite_list_length (parasites) > 0)	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:654	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_PARASITES, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:662	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_FILTER_SPEC, error, filter_name, args));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:668	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_CLONE_SPEC, error, target_name));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:672	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_END, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:678	xcf_save_channel_props	xcf_save_channel_props (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:687	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_ACTIVE_CHANNEL, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:690	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_SELECTION, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:692	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_OPACITY, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:694	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_VISIBLE, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:696	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_LINKED, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:698	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_LOCK_CONTENT, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:700	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_SHOW_MASKED, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:704	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_COLOR, error, col));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:706	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_TATTOO, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:711	gimp_parasite_list_length	if (gimp_parasite_list_length (parasites) > 0)	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:713	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_PARASITES, error,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:717	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_END, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:723	xcf_save_prop	xcf_save_prop (XcfInfo    *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:741	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:742	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:754	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:755	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:756	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &n_colors, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:757	xcf_write_int8_check_error	xcf_write_int8_check_error  (info, colors, n_colors * 3);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:767	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:768	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:778	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:779	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:781	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &dummy, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:796	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:797	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:798	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &uint_opacity, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:809	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:810	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:811	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &mode, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:822	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:823	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:824	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &visible, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:835	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:836	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:837	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &linked, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:848	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:849	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:850	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &lock_content, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:861	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:862	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:863	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &lock_alpha, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:874	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:875	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:876	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &apply_mask, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:887	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:888	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:889	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &edit_mask, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:900	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:901	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:902	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &show_mask, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:913	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:914	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:915	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &show_masked, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:927	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:928	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:929	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) offsets, 2);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:940	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:941	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:942	xcf_write_int8_check_error	xcf_write_int8_check_error  (info, color, 3);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:953	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:954	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:955	xcf_write_int8_check_error	xcf_write_int8_check_error  (info, &compression, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:969	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:970	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:994	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &position,    1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:995	xcf_write_int8_check_error	xcf_write_int8_check_error  (info, (guint8 *)  &orientation, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1010	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1011	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1021	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &x, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1022	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &y, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1038	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1039	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1041	xcf_write_float_check_error	xcf_write_float_check_error (info, &xresolution, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1042	xcf_write_float_check_error	xcf_write_float_check_error (info, &yresolution, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1053	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1054	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1055	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &tattoo, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1065	gimp_parasite_list_persistent_length	if (gimp_parasite_list_persistent_length (list) > 0)	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1070	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1076	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &length, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1079	xcf_save_parasite_list	xcf_check_error (xcf_save_parasite_list (info, list, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1084	xcf_write_int32	xcf_write_int32 (info->fp, &length, 1, &tmp_error);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1104	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1105	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1106	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &unit, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1115	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1121	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &length, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1125	xcf_save_old_paths	xcf_check_error (xcf_save_old_paths (info, image, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1131	xcf_write_int32	xcf_write_int32 (info->fp, &length, 1, &tmp_error);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1168	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1169	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1170	xcf_write_float_check_error	xcf_write_float_check_error (info, &factor, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1171	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &digits, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1172	xcf_write_string_check_error	xcf_write_string_check_error (info, (gchar **) unit_strings, 5);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1181	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1187	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &length, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1191	xcf_save_vectors	xcf_check_error (xcf_save_vectors (info, image, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1197	xcf_write_int32	xcf_write_int32 (info->fp, &length, 1, &tmp_error);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1215	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1216	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1217	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &flags, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1228	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1229	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1235	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &index, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1249	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1250	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1251	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &flags, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1267	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1270	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &length, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1273	xcf_write_string_check_error	xcf_write_string_check_error (info, (gchar **) &filter_name, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1279	xcf_save_filter_spec_value	xcf_check_error ( xcf_save_filter_spec_value (info, image, error, value) );	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1284	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_END, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1289	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &length, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1303	xcf_write_prop_type_check_error	xcf_write_prop_type_check_error (info, prop_type);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1306	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &length, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1309	xcf_write_string_check_error	xcf_write_string_check_error (info, (gchar **) &target_name, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1312	xcf_save_prop	xcf_check_error (xcf_save_prop (info, image, PROP_END, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1317	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &length, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1329	xcf_save_filter_spec_value	xcf_save_filter_spec_value   (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1343	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value_type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1344	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1345	xcf_write_float_check_error	xcf_write_float_check_error (info, &write_value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1352	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value_type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1353	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1354	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &write_value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1361	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value_type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1362	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1363	xcf_write_int8_check_error	xcf_write_int8_check_error (info, &write_value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1370	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value_type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1371	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1372	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &write_value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1378	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value_type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1379	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1385	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value_type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1386	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1392	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value_type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1393	xcf_write_string_check_error	xcf_write_string_check_error (info, &write_value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1399	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value_type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1400	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1406	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value_type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1407	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &size, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1418	xcf_save_layer	xcf_save_layer (XcfInfo    *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1436	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &saved_pos, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1442	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1445	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1448	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1452	xcf_write_string_check_error	xcf_write_string_check_error (info, (gchar **) &string, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1455	xcf_save_layer_props	xcf_save_layer_props (info, image, layer, error);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1461	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1467	xcf_write_zero_int32_check_error	xcf_write_zero_int32_check_error (info, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1470	xcf_save_hierarchy	xcf_check_error (xcf_save_hierarchy (info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1483	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1486	xcf_save_channel	xcf_check_error (xcf_save_channel (info, image, GIMP_CHANNEL (mask),	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1494	xcf_save_channel	xcf_save_channel (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1512	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &saved_pos, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1518	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1521	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1525	xcf_write_string_check_error	xcf_write_string_check_error (info, (gchar **) &string, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1528	xcf_save_channel_props	xcf_save_channel_props (info, image, channel, error);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1531	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1533	xcf_save_hierarchy	xcf_check_error (xcf_save_hierarchy (info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1558	xcf_save_hierarchy	xcf_save_hierarchy (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1578	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &width, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1580	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &height, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1582	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &bpp, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1595	xcf_write_zero_int32_check_error	xcf_write_zero_int32_check_error (info, nlevels + 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1607	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &offset, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1618	xcf_save_level	xcf_check_error (xcf_save_level (info, tiles, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1626	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &width,  1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1627	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &height, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1628	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &tmp1,   1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1643	xcf_save_level	xcf_save_level (XcfInfo      *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1663	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &width, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1664	xcf_write_int32_check_error	xcf_write_int32_check_error (info, (guint32 *) &height, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1691	xcf_write_zero_int32_check_error	xcf_write_zero_int32_check_error (info, ntiles + 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1707	xcf_save_tile	xcf_check_error (xcf_save_tile (info, level->tiles[i], error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1710	xcf_save_tile_rle	xcf_check_error (xcf_save_tile_rle (info, level->tiles[i],	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1740	xcf_write_int32_check_error	xcf_write_int32_check_error (info, offset_table, ntiles + 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1749	xcf_save_tile	xcf_save_tile (XcfInfo  *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1756	xcf_write_int8_check_error	xcf_write_int8_check_error (info, tile_data_pointer (tile, 0, 0),	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1764	xcf_save_tile_rle	xcf_save_tile_rle (XcfInfo  *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1875	xcf_write_int8_check_error	xcf_write_int8_check_error (info, rlebuf, len);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1882	xcf_save_parasite	xcf_save_parasite (XcfInfo       *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1886	gimp_parasite_is_persistent	if (gimp_parasite_is_persistent (parasite))	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1892	gimp_parasite_name	string = gimp_parasite_name (parasite);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1893	xcf_write_string_check_error	xcf_write_string_check_error (info, (gchar **) &string, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1895	gimp_parasite_flags	value = gimp_parasite_flags (parasite);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1896	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1898	gimp_parasite_data_size	value = gimp_parasite_data_size (parasite);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1899	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &value, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1901	xcf_write_int8_check_error	xcf_write_int8_check_error (info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1902	gimp_parasite_data	gimp_parasite_data (parasite),	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1903	gimp_parasite_data_size	gimp_parasite_data_size (parasite));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1916	xcf_save_parasite_func	xcf_save_parasite_func (gchar           *key,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1921	xcf_save_parasite	xcf_save_parasite (data->info, parasite, &data->error);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1925	xcf_save_parasite_list	xcf_save_parasite_list (XcfInfo           *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1934	gimp_parasite_list_foreach	gimp_parasite_list_foreach (list, (GHFunc) xcf_save_parasite_func, &data);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1946	xcf_save_old_paths	xcf_save_old_paths (XcfInfo    *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1972	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &active_index, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:1973	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &num_paths,    1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2019	xcf_write_string_check_error	xcf_write_string_check_error (info, &name,       1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2020	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &linked,     1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2021	xcf_write_int8_check_error	xcf_write_int8_check_error   (info, &state,      1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2022	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &closed,     1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2023	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &num_points, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2024	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &version,    1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2025	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &pathtype,   1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2026	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &tattoo,     1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2042	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &points[i].type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2043	xcf_write_float_check_error	xcf_write_float_check_error (info, &x,              1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2044	xcf_write_float_check_error	xcf_write_float_check_error (info, &y,              1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2054	xcf_save_vectors	xcf_save_vectors (XcfInfo    *info,	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2083	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &version,      1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2084	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &active_index, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2085	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &num_paths,    1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2117	gimp_parasite_list_persistent_length	num_parasites = gimp_parasite_list_persistent_length (parasites);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2120	xcf_write_string_check_error	xcf_write_string_check_error (info, (gchar **) &name, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2121	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &tattoo,          1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2122	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &visible,         1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2123	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &linked,          1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2124	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &num_parasites,   1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2125	xcf_write_int32_check_error	xcf_write_int32_check_error  (info, &num_strokes,     1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2127	xcf_save_parasite_list	xcf_check_error (xcf_save_parasite_list (info, parasites, error));	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2166	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &stroke_type,         1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2167	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &closed,              1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2168	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &num_axes,            1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2169	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &control_points->len, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2197	xcf_write_int32_check_error	xcf_write_int32_check_error (info, &type, 1);	SOURCE_CANDIDATE
+app/xcf/xcf-save.c:2198	xcf_write_float_check_error	xcf_write_float_check_error (info, coords, num_axes);	SOURCE_CANDIDATE
+app/xcf/xcf.c:61	xcf_load_invoker	static GValueArray * xcf_load_invoker (GimpProcedure      *procedure,	SOURCE_CANDIDATE
+app/xcf/xcf.c:67	xcf_save_invoker	static GValueArray * xcf_save_invoker (GimpProcedure      *procedure,	SOURCE_CANDIDATE
+app/xcf/xcf.c:263	xcf_load_invoker	xcf_load_invoker (GimpProcedure      *procedure,	SOURCE_CANDIDATE
+app/xcf/xcf.c:312	xcf_read_int8	info.cp += xcf_read_int8 (info.fp, (guint8 *) id, 14);	SOURCE_CANDIDATE
+app/xcf/xcf.c:376	xcf_save_invoker	xcf_save_invoker (GimpProcedure      *procedure,	SOURCE_CANDIDATE
+app/xcf/xcf.c:422	xcf_save_choose_format	xcf_save_choose_format (&info, image);	SOURCE_CANDIDATE
+app/xcf/xcf.c:424	xcf_save_image	success = xcf_save_image (&info, image, error);	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:74	GIMP_CONFIG_INSTALL_PROP_BOOLEAN	#define GIMP_CONFIG_INSTALL_PROP_BOOLEAN(class, id, name, blurb, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:80	GIMP_CONFIG_INSTALL_PROP_RGB	#define GIMP_CONFIG_INSTALL_PROP_RGB(class, id, name, blurb, has_alpha, default, flags) \	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:86	GIMP_CONFIG_INSTALL_PROP_DOUBLE	#define GIMP_CONFIG_INSTALL_PROP_DOUBLE(class, id, name, blurb, min, max, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:92	GIMP_CONFIG_INSTALL_PROP_RESOLUTION	#define GIMP_CONFIG_INSTALL_PROP_RESOLUTION(class, id, name, blurb, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:99	GIMP_CONFIG_INSTALL_PROP_ENUM	#define GIMP_CONFIG_INSTALL_PROP_ENUM(class, id, name, blurb, enum_type, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:105	GIMP_CONFIG_INSTALL_PROP_INT	#define GIMP_CONFIG_INSTALL_PROP_INT(class, id, name, blurb, min, max, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:111	GIMP_CONFIG_INSTALL_PROP_MATRIX2	#define GIMP_CONFIG_INSTALL_PROP_MATRIX2(class, id, name, blurb, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:117	GIMP_CONFIG_INSTALL_PROP_MEMSIZE	#define GIMP_CONFIG_INSTALL_PROP_MEMSIZE(class, id, name, blurb, min, max, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:123	GIMP_CONFIG_INSTALL_PROP_PATH	#define GIMP_CONFIG_INSTALL_PROP_PATH(class, id, name, blurb, path_type, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:129	GIMP_CONFIG_INSTALL_PROP_STRING	#define GIMP_CONFIG_INSTALL_PROP_STRING(class, id, name, blurb, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:135	GIMP_CONFIG_INSTALL_PROP_UINT	#define GIMP_CONFIG_INSTALL_PROP_UINT(class, id, name, blurb, min, max, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:141	GIMP_CONFIG_INSTALL_PROP_UNIT	#define GIMP_CONFIG_INSTALL_PROP_UNIT(class, id, name, blurb, pixels, percent, default, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:150	GIMP_CONFIG_INSTALL_PROP_OBJECT	#define GIMP_CONFIG_INSTALL_PROP_OBJECT(class, id, name, blurb, object_type, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:158	GIMP_CONFIG_INSTALL_PROP_BOXED	#define GIMP_CONFIG_INSTALL_PROP_BOXED(class, id, name, blurb, boxed_type, flags)\	SOURCE_CANDIDATE
+libgimpconfig/gimpconfig-params.h:166	GIMP_CONFIG_INSTALL_PROP_POINTER	#define GIMP_CONFIG_INSTALL_PROP_POINTER(class, id, name, blurb, flags)\	SOURCE_CANDIDATE
+plug-ins/common/decompose.c:462	gimp_parasite_new	"parasite = gimp_parasite_new (""decompose-data"","	SOURCE_CANDIDATE
+plug-ins/common/decompose.c:465	gimp_parasite_free	gimp_parasite_free (parasite);	SOURCE_CANDIDATE
