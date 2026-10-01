@@ -3,6 +3,7 @@
 
 import argparse
 import csv
+import json
 import re
 import sys
 from pathlib import Path
@@ -97,6 +98,38 @@ def validate(tasks_path: Path, evidence_path: Path) -> list[str]:
                 child.get("status") != "DONE" or not child.get("child_id", "").startswith(task + "/")
                 for child in children):
             errors.append(f"{task}: incomplete or malformed child checklist")
+    if rows.get('01.012', (False,))[0]:
+        inventory = evidence_path.parent / 'inventory'
+        paths = [inventory / name for name in
+                 ('changed-hunks.tsv', 'upstream-hunk-comparison.tsv',
+                  'upstream-contracts.json', 'upstream-contract-review.tsv')]
+        if any(not path.exists() for path in paths):
+            errors.append('01.012: missing upstream comparison child ledger')
+        else:
+            def read_tsv(path):
+                with path.open(newline='', encoding='utf-8') as file:
+                    return list(csv.DictReader(file, delimiter='\t'))
+            hunk_ids = {r['child_id'] for r in read_tsv(paths[0])}
+            comparisons = read_tsv(paths[1])
+            baseline = json.loads((evidence_path.parent / 'baseline' / 'baseline.json').read_text())
+            targets = {'published': baseline['published_comparison']['commit'],
+                       'initial-port': baseline['initial_port']['upstream_commit']}
+            expected = {(hunk, role, commit) for hunk in hunk_ids
+                        for role, commit in targets.items()}
+            actual = {(r['hunk_id'], r['target_role'], r['target_commit']) for r in comparisons}
+            if (actual != expected or len(comparisons) != len(expected) or
+                    len({r['child_id'] for r in comparisons}) != len(comparisons) or
+                    any(r['status'] != 'DONE' or r['behavior_relation'] != 'NOT_PROVEN'
+                        for r in comparisons)):
+                errors.append('01.012: incomplete or overclaimed upstream hunk checklist')
+            manifest = json.loads(paths[2].read_text())
+            reviews = read_tsv(paths[3])
+            expected_reviews = {f'01.012/{r["key"]}-{role}' for r in manifest for role in targets}
+            if ({r['child_id'] for r in reviews} != expected_reviews or
+                    len(reviews) != len(expected_reviews) or
+                    any(r['status'] != 'DONE' or not r['legacy_site'] or not r['target_site']
+                        or not r['behavior_evidence'] or not r['followup'] for r in reviews)):
+                errors.append('01.012: incomplete upstream contract checklist')
     return errors
 
 
