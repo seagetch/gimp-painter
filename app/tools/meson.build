@@ -81,6 +81,7 @@ libapptools_sources = [
   'gimpmovetool.c',
   'gimpmybrushoptions-gui.c',
   'gimpmybrushtool.c',
+  'gimppaintermybrushtool.cpp',
   'gimpnpointdeformationoptions.c',
   'gimpnpointdeformationtool.c',
   'gimpoffsettool.c',
@@ -146,6 +147,6 @@ libapptools = static_library('apptools',
   c_args: '-DG_LOG_DOMAIN="Gimp-Tools"',
   cpp_args: painter_cpp_args,
   dependencies: [
-    gegl, gtk3, gexiv2,
+    gegl, gtk3, gexiv2, painter_mypaint_surface_dep,
   ],
 )

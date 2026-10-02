@@ -41,6 +41,7 @@ libapppaint_sources = [
   'gimpinkoptions.c',
   'gimpinkundo.c',
   'gimpmybrushcore.c',
+  'gimppainterpaintgate.c',
   'gimpmybrushoptions.c',
   'gimpmybrushsurface.c',
   'gimppaintbrush.c',

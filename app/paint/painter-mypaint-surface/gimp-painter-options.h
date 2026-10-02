@@ -27,7 +27,9 @@ guint gimp_painter_mybrush_options_history_size (GimpPainterMybrushOptions *opti
 gchar *gimp_painter_mybrush_options_history_name (GimpPainterMybrushOptions *options, guint index);
 gboolean gimp_painter_mybrush_options_restore_history (GimpPainterMybrushOptions *options, guint index, GError **error);
 /* Borrow no options through an untyped cast. Returns a new reference or an
- * explicit diagnostic for NULL/wrong context or an unavailable painter tool. */
+ * explicit diagnostic for NULL/wrong/closed context or an unavailable tool.
+ * A normal context selects its resource into the canonical shared tool model;
+ * an unselected context uses the internal standard. Dirty drafts enter history. */
 GimpPainterMybrushOptions *gimp_painter_mybrush_options_ref_for_context (GimpContext *context, GError **error);
 G_END_DECLS
 #endif

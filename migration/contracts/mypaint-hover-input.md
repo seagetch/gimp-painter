@@ -18,22 +18,25 @@ initialization without owning an old drawable or image.
 
 Explicit finish/cancel clears logical identity. Resource callbacks cannot
 recursively reconfigure or paint the currently executing evaluator. A lifecycle
-epoch detects cancel/finish during resource setup and prevents subsequent work.
+epoch and deferred stop flags detect cancel/finish during resource setup and
+prevent subsequent work. Stop requests during an active sample take effect after
+the evaluator returns, with cancellation taking priority over finish.
 Transient target/image/resource leases expire before hover returns. A subsequent
 hover does not resurrect an ended native transaction; legitimate pending native
 transactions retain their normal target/image leases until the legacy split.
 
-Five synthetic native GIMP cases pass normally and with focused ASan/UBSan/
+Six synthetic native GIMP cases pass normally and with focused ASan/UBSan/
 float-cast-overflow: constant opacity at pressure0/default1, incremental and
 nonincremental sampling with zero pixel writes and zero Undo; unchanged-position
 hover preserving pending Undo until a later evaluator split; old image release
 before and after finish; closed-adapter rejection; and recursive resource-setup
-configure/motion rejection plus cancellation. The focused runner instruments26
+configure/motion rejection plus cancellation; and a real ordinary brush selector
+receiving zero hover pressure with unchanged tilt. The focused runner instruments26
 sources, uses private archives and leaves production objects untouched. LSan is
 disabled; unlisted GIMP/dependency sources remain uninstrumented.
 
-The nine Surface tests, six session adapter tests and all129 records from the
+The nine Surface tests, eight session adapter tests and all129 records from the
 independent warmed old active-session oracle still pass. That oracle proves its
 specified active-stroke scenes, not this intentional hover write suppression.
-Actual registered tool events, delayed ruler start and GUI/hardware behavior
-remain separate gates.
+The registered tool, delayed ruler start and synthetic GTK event path are now
+covered separately in `mypaint-native-tool.md`; physical hardware remains open.

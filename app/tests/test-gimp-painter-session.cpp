@@ -112,6 +112,37 @@ static void notification_drops_last_ref()
   bool finalized=false;g_object_weak_ref(G_OBJECT(session),finalize_mark,&finalized);g_signal_connect(session,"notify::active",G_CALLBACK(drop_session),&session);
   g_assert_true(gimp_painter_session_finish(session,nullptr));g_assert_null(session);g_assert_true(finalized);g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,1);g_object_unref(options);g_object_unref(image);
 }
+struct StopDuringSample {GimpPainterSession*session;bool cancel;bool fired=false;};
+static void stop_on_update(GimpDrawable*,gint,gint,gint,gint,gpointer data)
+{
+  auto&s=*static_cast<StopDuringSample*>(data);if(s.fired)return;s.fired=true;GError*error=nullptr;
+  g_assert_true(s.cancel?gimp_painter_session_cancel(s.session,&error):gimp_painter_session_finish(s.session,&error));g_assert_no_error(error);
+  // A later HALT/finish must not override an earlier cancellation.
+  if(s.cancel){g_assert_true(gimp_painter_session_finish(s.session,&error));g_assert_no_error(error);}
+}
+static void stop_during_sample()
+{
+  for(bool cancel:{false,true}) {
+    auto*options=options_new();auto*session=gimp_painter_session_new(options,nullptr);GimpImage*image;auto*layer=layer_new(&image);auto*drawable=GIMP_DRAWABLE(layer);const auto before=pixels(drawable);
+    GimpCoords c=GIMP_COORDS_DEFAULT_VALUES;c.x=16;c.y=16;c.pressure=0;g_assert_true(gimp_painter_session_stroke_to(session,drawable,.01,&c,nullptr,nullptr));
+    StopDuringSample state{session,cancel};auto id=g_signal_connect(layer,"update",G_CALLBACK(stop_on_update),&state);c.pressure=1;c.x+=20;GError*error=nullptr;
+    g_assert_true(gimp_painter_session_stroke_to(session,drawable,.1,&c,nullptr,&error));g_assert_no_error(error);g_assert_true(state.fired);g_assert_false(gimp_painter_session_is_active(session));
+    g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,cancel?0:1);g_assert_true((pixels(drawable)==before)==cancel);g_assert_false(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(layer)));
+    g_signal_handler_disconnect(layer,id);g_object_unref(session);g_object_unref(options);g_object_unref(image);
+  }
+}
+static void request_cancel_on_freeze(GObject*object,GParamSpec*,gpointer data)
+{
+  auto&s=*static_cast<Closing*>(data);if(s.fired||!gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(object)))return;s.fired=true;GError*error=nullptr;
+  g_assert_true(gimp_painter_session_cancel(s.session,&error));g_assert_no_error(error);
+}
+static void cancel_during_native_start()
+{
+  auto*options=options_new();auto*session=gimp_painter_session_new(options,nullptr);GimpImage*image;auto*layer=layer_new(&image);const auto before=pixels(GIMP_DRAWABLE(layer));Closing state{session};
+  auto id=g_signal_connect(layer,"notify::frozen",G_CALLBACK(request_cancel_on_freeze),&state);GimpCoords c=GIMP_COORDS_DEFAULT_VALUES;c.x=16;c.y=16;
+  g_assert_true(gimp_painter_session_stroke_to(session,GIMP_DRAWABLE(layer),.1,&c,nullptr,nullptr));g_assert_true(state.fired);g_assert_false(gimp_painter_session_is_active(session));g_assert_true(pixels(GIMP_DRAWABLE(layer))==before);g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,0);
+  g_signal_handler_disconnect(layer,id);g_object_unref(session);g_object_unref(options);g_object_unref(image);
+}
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
@@ -121,5 +152,7 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-session/settings-during-motion",options_change_during_motion);
   g_test_add_func("/painter-session/closed-options-cancel",closed_options_cancel);
   g_test_add_func("/painter-session/notification-last-ref",notification_drops_last_ref);
+  g_test_add_func("/painter-session/deferred-sample-stop",stop_during_sample);
+  g_test_add_func("/painter-session/cancel-native-start",cancel_during_native_start);
   int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }

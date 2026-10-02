@@ -1,0 +1,27 @@
+{
+  "scope": "13 synthetic native GTK extended-tool cases, normal and focused sanitizer, after final hover-selector-pressure fix; no physical device claim",
+  "exit_code": 0,
+  "sanitized_exit_code": 0,
+  "cases": 13,
+  "asan_build_report": "mypaint-tool-sanitizer-build.json",
+  "normal_log": "mypaint-tool-native.log",
+  "sanitized_log": "mypaint-tool-asan.log",
+  "normal_executable_sha256": "baff9335d95a3254a68a098846dcbcdace63af6ada8cfc87667812d0af521e30",
+  "sanitized_executable_sha256": "e7f05d57a7d4ac841d548915b2c3861cbd2b28b70024e865db7188686f07f825",
+  "source_hashes_rechecked_after_runs": true,
+  "tool_checkpoint_sources_sha256": {
+    "app/tools/gimppaintermybrushtool.cpp": "903ecac872700c49e7fcac8f95edb77d5d229b6ae5e7f0a21a850299e4cb973a",
+    "app/tools/gimppaintermybrushtool.h": "7ecef834398caedfa24516d6fa89828d7f1779ac20690c324b3ba538ef6027e0",
+    "app/tools/gimppaintermybrushtool.hpp": "e3122c4cdf41d64b6eb204c07fc5fdb830a10d7352de925e544caab168790cde",
+    "app/paint/gimppainterpaintgate.c": "b4a190185598678f3dba9dbd64b88428c9ad1c483269bdadd9932b8d14c1eac7",
+    "app/paint/gimppainterpaintgate.h": "0c8c082d018410e021bcacaca778a9058ffc2e3fc84ce4ad78f511ac2613d78c",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "3c7f46d1765addfee8c5735d01e95100e254f7c4a8f922339cbddf439814bb63",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h": "a714dd1306aea247ee82adfa5fdb2956f8da029f4829deb14ad97dd2e6403e01",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "9702c157de0bff4989b8d3f690c74f341c8a817f61eb63ed03d49218a676d27e",
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "51fc961c5ee8a93f955b0157725f863e53bd7e34307f4f25a4d8a63d6aecaf81",
+    "app/tests/test-gimp-painter-session.cpp": "28c9346f0825e0631018c8ecff0536c55dbedb6e00faff66ca303163404a7a81",
+    "app/tests/test-gimp-painter-hover.cpp": "d5ea382cc4761985d9ddc6b4cfd497b3b486291583e8049f2a09fd1896d64d4b",
+    "app/tests/test-painter-mypaint-tool.cpp": "0235d2b07cf03de51e6f128bba4b73d4ed7a39560c4d580274a393b8846cfb0b"
+  },
+  "diagnostics": "Known test profile writable-folder/search-path shutdown warning retained. LSan disabled. See sanitizer build report for exact 33-source scope, all other GIMP/dependency objects uninstrumented."
+}

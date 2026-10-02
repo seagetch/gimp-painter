@@ -51,7 +51,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   Engine engine;
   std::shared_ptr<GeglSurface> surface;
   std::shared_ptr<GimpResources> resources;
-  bool started=false,starting=false,ending=false,cancel_requested=false,processing=false,logical=false;
+  bool started=false,starting=false,ending=false,cancel_requested=false,finish_requested=false,processing=false,logical=false;
   WeakRef<GimpDrawable> logical_target;
   std::uint64_t lifecycle=0;
   std::size_t read=0,written=0;
@@ -72,8 +72,10 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   void end(bool commit)
   {
     if(starting){cancel_requested=true;return;}
+    if(processing){finish_requested=true;if(!commit)cancel_requested=true;return;}
     if(ending)return;
     ++lifecycle;logical=false;logical_target=WeakRef<GimpDrawable>();
+    cancel_requested=finish_requested=false;
     if(!started)return;
     struct Transition { bool& state; explicit Transition(bool&s):state(s){state=true;} ~Transition(){state=false;} } transition(ending);
     started=false; // callbacks may reenter the controller while updates thaw
@@ -99,7 +101,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   bool begin(GimpDrawable *d,const GimpCoords&coords)
   {
     if(starting||ending)throw std::logic_error("Paint transaction is transitioning");
-    starting=true;cancel_requested=false;
+    starting=true;cancel_requested=finish_requested=false;
     try {
       // Own both endpoints before resource/native callbacks. GimpItem's image
       // link is weak, so a retained drawable alone cannot protect native start.
@@ -157,38 +159,46 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
     auto raster=surface;auto owners=resources;
     owners->set_coords(coords);gimp_paint_core_set_current_coords(native.get(),&coords);
     try {
-      Processing sample(processing);
-      const bool split=engine.stroke_to(*raster,coords.x,coords.y,coords.pressure,coords.xtilt,coords.ytilt,dt);
+      bool split;
+      {Processing sample(processing);split=engine.stroke_to(*raster,coords.x,coords.y,coords.pressure,coords.xtilt,coords.ytilt,dt);}
       gimp_paint_core_set_last_coords(native.get(),&coords);
-      if(split&&started)end(true);
+      if(cancel_requested)end(false);
+      else if(finish_requested||(split&&started))end(true);
       return split;
     }catch(...){end(false);throw;}
   }
   bool hover(GimpDrawable*d,double dt,const GimpCoords&coords)
   {
     if(starting||ending||processing)throw std::logic_error("Paint transaction is transitioning");
-    Processing sample(processing);
     auto target=ObjectRef<GimpDrawable>::retain(d);
     if(!target||!gimp_item_is_attached(GIMP_ITEM(d)))throw std::invalid_argument("Expected attached hover drawable");
     auto image_owner=ObjectRef<GimpImage>::retain(gimp_item_get_image(GIMP_ITEM(d)));
-    if(started&&drawable.get()!=d)end(true);
-    const auto epoch=lifecycle;
-    auto raster=surface;auto owners=resources;const bool transient=!started;
-    if(transient) {
-      raster=std::make_shared<GeglSurface>(gimp_drawable_get_buffer(d));
-      owners=std::make_shared<GimpResources>(GIMP_CONTEXT(options.get()),resource);
-      owners->attach(*raster);
-    }
-    if(lifecycle!=epoch)return false; // canceled/finished by resource callbacks
-    logical_begin(d);owners->set_coords(coords);SamplingSurface sample_surface(*raster);
+    bool split=false;
     try {
-      const bool split=engine.stroke_to(sample_surface,coords.x,coords.y,0,coords.xtilt,coords.ytilt,dt);
-      if(transient)read+=raster->bytes_read();
-      if(split)end(true);
+      if(started&&drawable.get()!=d)end(true);
+      {
+        Processing sample(processing);
+        const auto epoch=lifecycle;
+        auto raster=surface;auto owners=resources;const bool transient=!started;
+        if(transient) {
+          raster=std::make_shared<GeglSurface>(gimp_drawable_get_buffer(d));
+          owners=std::make_shared<GimpResources>(GIMP_CONTEXT(options.get()),resource);
+          owners->attach(*raster);
+        }
+        if(lifecycle==epoch&&!cancel_requested&&!finish_requested) {
+          logical_begin(d);GimpCoords hover_coords=coords;hover_coords.pressure=0;
+          owners->set_coords(hover_coords);SamplingSurface sample_surface(*raster);
+          split=engine.stroke_to(sample_surface,coords.x,coords.y,0,coords.xtilt,coords.ytilt,dt);
+          if(transient)read+=raster->bytes_read();
+        }
+      }
+      if(cancel_requested)end(false);
+      else if(finish_requested||split)end(true);
       return split;
     }catch(...){end(false);throw;}
     // Transient image/drawable/sampling resources are never retained by hover.
   }
+
 
 };
 PaintCore::PaintCore(GimpPaintOptions*options,const Resource&resource):impl_(std::make_shared<Impl>(options,resource)){}

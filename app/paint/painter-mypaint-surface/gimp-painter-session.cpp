@@ -147,10 +147,24 @@ gboolean gimp_painter_session_hover_to(GimpPainterSession*session,GimpDrawable*d
 {
   return boundary<gboolean>(error,FALSE,[&]() -> gboolean{if(!coords)throw std::invalid_argument("Expected input coordinates");operate(session,true,[&](PaintCore&core){const bool result=core.hover_to(drawable,seconds,*coords);if(split)*split=result;});return TRUE;});
 }
+namespace {
+gboolean stop(GimpPainterSession*session,bool commit,GError**error)
+{
+  return boundary<gboolean>(error,FALSE,[&]() -> gboolean{
+    auto owner=ObjectRef<GimpPainterSession>::retain(session);
+    auto pending=store(session).with<SessionSlot>([](SessionImpl&i){return (i.busy||i.refreshing)?i.core:std::shared_ptr<PaintCore>();});
+    // PaintCore defers start/sample-time stop requests until the guarded input
+    // unwinds. Cancel takes priority over a simultaneous finish request.
+    if(pending){if(commit)pending->finish();else pending->cancel();}
+    else operate(session,false,[&](PaintCore&core){if(commit)core.finish();else core.cancel();});
+    return TRUE;
+  });
+}
+}
 gboolean gimp_painter_session_finish(GimpPainterSession*session,GError**error)
-{return boundary<gboolean>(error,FALSE,[&]() -> gboolean{operate(session,false,[](PaintCore&core){core.finish();});return TRUE;});}
+{return stop(session,true,error);}
 gboolean gimp_painter_session_cancel(GimpPainterSession*session,GError**error)
-{return boundary<gboolean>(error,FALSE,[&]() -> gboolean{operate(session,false,[](PaintCore&core){core.cancel();});return TRUE;});}
+{return stop(session,false,error);}
 gboolean gimp_painter_session_is_active(GimpPainterSession*session)
 {return boundary<gboolean>(nullptr,FALSE,[&]{return store(session).read<SessionSlot>([](const SessionImpl&i)->gboolean{return i.core&&i.core->active();});});}
 gchar*gimp_painter_session_dup_error(GimpPainterSession*session)

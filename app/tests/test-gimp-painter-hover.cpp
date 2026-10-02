@@ -2,6 +2,7 @@
 #include "config.h"
 #include <gtk/gtk.h>
 #include <vector>
+#include <cstring>
 extern "C" {
 #include "core/core-types.h"
 #include "widgets/widgets-types.h"
@@ -94,7 +95,7 @@ static void close_rejects_hover()
   g_assert_true(gimp_painter_binding_close(G_OBJECT(session),&error));g_assert_no_error(error);g_assert_false(gimp_painter_session_hover_to(session,GIMP_DRAWABLE(layer),.1,&c,nullptr,&error));g_assert_error(error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_CLOSED);g_clear_error(&error);g_assert_true(pixels(GIMP_DRAWABLE(layer))==before);
   g_object_unref(session);g_object_unref(options);g_object_unref(image);
 }
-typedef struct _HoverBrush {GimpBrush parent;MyPaint::PaintCore*core;GimpDrawable*drawable;bool fired;} HoverBrush;
+typedef struct _HoverBrush {GimpBrush parent;MyPaint::PaintCore*core;GimpDrawable*drawable;bool fired;double selected_pressure,selected_tilt;guint selections;} HoverBrush;
 typedef struct _HoverBrushClass {GimpBrushClass parent;} HoverBrushClass;
 G_DEFINE_TYPE(HoverBrush,hover_brush,GIMP_TYPE_BRUSH)
 static void hover_brush_begin(GimpBrush*brush)
@@ -105,8 +106,10 @@ static void hover_brush_begin(GimpBrush*brush)
   rejected=false;GimpCoords c=GIMP_COORDS_DEFAULT_VALUES;try{self->core->stroke_to(self->drawable,.1,c);}catch(const std::logic_error&){rejected=true;}g_assert_true(rejected);
   self->core->cancel();
 }
-static void hover_brush_class_init(HoverBrushClass*klass){GIMP_BRUSH_CLASS(klass)->begin_use=hover_brush_begin;}
-static void hover_brush_init(HoverBrush*self){self->core=nullptr;self->drawable=nullptr;self->fired=false;}
+static GimpBrush*hover_brush_select(GimpBrush*brush,const GimpCoords*,const GimpCoords*current)
+{auto*self=reinterpret_cast<HoverBrush*>(brush);self->selected_pressure=current->pressure;self->selected_tilt=current->xtilt;++self->selections;return brush;}
+static void hover_brush_class_init(HoverBrushClass*klass){GIMP_BRUSH_CLASS(klass)->begin_use=hover_brush_begin;GIMP_BRUSH_CLASS(klass)->select_brush=hover_brush_select;}
+static void hover_brush_init(HoverBrush*self){self->core=nullptr;self->drawable=nullptr;self->fired=false;self->selected_pressure=-1;self->selected_tilt=0;self->selections=0;}
 static void resource_setup_reentry()
 {
   auto*options=options_new();GimpImage*image;auto*layer=layer_new(&image);auto*drawable=GIMP_DRAWABLE(layer);const auto before=pixels(drawable);
@@ -116,6 +119,17 @@ static void resource_setup_reentry()
   g_assert_false(core.hover_to(drawable,.1,c));g_assert_true(brush->fired);g_assert_false(core.active());g_assert_cmpuint(core.bytes_read(),==,0);g_assert_true(pixels(drawable)==before);
   brush->core=nullptr;g_object_unref(brush);g_object_unref(options);g_object_unref(image);
 }
+static void resource_selector_hover_pressure()
+{
+  auto*options=options_new();GimpImage*image;auto*layer=layer_new(&image);auto*drawable=GIMP_DRAWABLE(layer);const auto before=pixels(drawable);
+  auto*brush=reinterpret_cast<HoverBrush*>(g_object_new(hover_brush_get_type(),"name","Hover selector axes",nullptr));
+  GIMP_BRUSH(brush)->priv->mask=gimp_temp_buf_new(3,3,babl_format("Y u8"));std::memset(gimp_temp_buf_get_data(GIMP_BRUSH(brush)->priv->mask),255,9);
+  gimp_context_set_brush(GIMP_CONTEXT(options),GIMP_BRUSH(brush));g_object_set(options,"use-gimp-brushmark",TRUE,"smudge",.7,nullptr);
+  MyPaint::PaintCore core(GIMP_PAINT_OPTIONS(options),PainterOptionsRef::retain(options).snapshot());GimpCoords c=GIMP_COORDS_DEFAULT_VALUES;c.x=16;c.y=16;c.xtilt=.31;
+  core.hover_to(drawable,.01,c);core.hover_to(drawable,.1,c);g_assert_cmpuint(brush->selections,>,0);g_assert_cmpfloat(brush->selected_pressure,==,0);g_assert_cmpfloat(brush->selected_tilt,==,.31);
+  g_assert_true(pixels(drawable)==before);g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,0);
+  g_object_unref(brush);g_object_unref(options);g_object_unref(image);
+}
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
@@ -124,5 +138,6 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-hover/release-image",hover_releases_old_image);
   g_test_add_func("/painter-hover/closed",close_rejects_hover);
   g_test_add_func("/painter-hover/resource-reentry",resource_setup_reentry);
+  g_test_add_func("/painter-hover/resource-selector-pressure",resource_selector_hover_pressure);
   int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }

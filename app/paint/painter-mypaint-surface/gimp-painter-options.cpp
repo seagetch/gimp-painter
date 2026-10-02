@@ -350,10 +350,25 @@ GimpPainterMybrushOptions*gimp_painter_mybrush_options_ref_for_context(GimpConte
 {
   return boundary<GimpPainterMybrushOptions*>(error,nullptr,[&]{
     if(!GIMP_IS_CONTEXT(context))throw Error(GIMP_PAINTER_ERROR_WRONG_TYPE,"Expected a valid GimpContext");
-    if(GIMP_IS_PAINTER_MYBRUSH_OPTIONS(context))return GIMP_PAINTER_MYBRUSH_OPTIONS(g_object_ref(context));
+    if(!context->gimp)throw Error(GIMP_PAINTER_ERROR_CLOSED,"Painter editor context is disposed");
+    auto context_owner=ObjectRef<GObject>::retain(G_OBJECT(context));
+    if(GIMP_IS_PAINTER_MYBRUSH_OPTIONS(context)) {
+      auto*options=GIMP_PAINTER_MYBRUSH_OPTIONS(context);store(options).with<OptionsSlot>([](const OptionsImpl&){});
+      return GIMP_PAINTER_MYBRUSH_OPTIONS(g_object_ref(options));
+    }
     auto*info=gimp_context_get_tool(context);
     if(!info||!GIMP_IS_PAINTER_MYBRUSH_OPTIONS(info->tool_options))info=GIMP_TOOL_INFO(gimp_container_get_child_by_name(context->gimp->tool_info_list,"gimp-painter-mypaint-tool"));
     if(!info||!GIMP_IS_PAINTER_MYBRUSH_OPTIONS(info->tool_options))throw std::runtime_error("Painter brush options are not registered in this context");
-    return GIMP_PAINTER_MYBRUSH_OPTIONS(g_object_ref(info->tool_options));
+    auto target=ObjectRef<GimpPainterMybrushOptions>::retain(GIMP_PAINTER_MYBRUSH_OPTIONS(info->tool_options));
+    store(target.get()).with<OptionsSlot>([](const OptionsImpl&){});
+    auto*selected=gimp_context_get_painter_mybrush(context);
+    if(!selected)selected=GIMP_PAINTER_MYBRUSH(gimp_painter_mybrush_get_standard(context));
+    auto resource=ObjectRef<GimpPainterMybrush>::retain(selected);
+    if(gimp_context_get_painter_mybrush(GIMP_CONTEXT(target.get()))!=selected)
+      gimp_context_set_painter_mybrush(GIMP_CONTEXT(target.get()),selected);
+    if(gimp_context_get_painter_mybrush(GIMP_CONTEXT(target.get()))!=selected)
+      throw std::runtime_error("Brush selection changed while opening the shared painter editor");
+    store(target.get()).with<OptionsSlot>([](const OptionsImpl&){});
+    return target.release();
   });
 }

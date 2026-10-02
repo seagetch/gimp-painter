@@ -43,7 +43,8 @@ Settings and relevant context changes split the current transaction. Changes
 that arrive inside motion are deferred until the current sample unwinds. Invalid
 or unsupported settings finish the previous valid stroke, retain an explicit
 error and refuse later painting until the draft is fixed. They never keep using
-a stale brush silently. Reentrant operations are rejected during transitions;
+a stale brush silently. Reentrant painting/configuration is rejected during transitions; stop requests
+are deferred safely and cancellation takes priority over finish;
 closing cancels safely, including during native preview freeze. Controller
 ownership survives a callback closing or dropping the last adapter reference.
 
@@ -54,10 +55,11 @@ conflict behavior, history plus config copy/duplicate/round trip, notification
 last-reference release, closed/invalid-curve access, bidirectional shape/paper,
 old-resource finalizer selection reentry and close during memory commit.
 
-Six native adapter cases cover exact pixels against the existing controller for
+Eight native adapter cases cover exact pixels against the existing controller for
 incremental and nonincremental strokes; real Undo splitting and unsupported
 settings; close during native start; options changing during motion; closed
-options canceling unfinished pixels; and last-reference notification teardown.
+options canceling unfinished pixels; last-reference notification teardown; deferred sample finish/cancel priority;
+and public cancel during native start preview freeze.
 These are synthetic lifecycle stimuli in the real GIMP application. The direct
 adapter/controller pixel test is not an independent old-session oracle; the
 separately sealed old oracle remains the 32 warmed scenarios / 96 snapshots /
@@ -73,9 +75,10 @@ old evaluator code can print its existing negative-substep time warning even
 when supplied positive input intervals; this checkpoint does not change that
 legacy arithmetic.
 
-This checkpoint supplies the native model and session adapter. Tool registration,
-GUI editor/preview/save workflow, shared/global history equivalence across separate
-options instances and ordinary-context editor routing are subsequent gates.
+This checkpoint supplies the native model and session adapter. Tool registration
+and ordinary-context canonical editor routing are now covered separately in
+`mypaint-native-tool.md`. Full GUI editor/preview/save workflow and shared/global
+history equivalence across separate options instances remain subsequent gates.
 The existing unprofiled nonlinear RGBA-u8 oracle does not establish other
 precision modes, arbitrary ICC, brush pipes, all 177 rendered scenes or real
 hardware/platform behavior.

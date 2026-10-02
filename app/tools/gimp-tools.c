@@ -73,6 +73,7 @@
 #include "gimpmeasuretool.h"
 #include "gimpmovetool.h"
 #include "gimpmybrushtool.h"
+#include "gimppaintermybrushtool.h"
 #include "gimpnpointdeformationtool.h"
 #include "gimpoffsettool.h"
 #include "gimppaintbrushtool.h"
@@ -186,6 +187,7 @@ gimp_tools_init (Gimp *gimp)
     gimp_airbrush_tool_register,
     gimp_ink_tool_register,
     gimp_mybrush_tool_register,
+    gimp_painter_mybrush_tool_register,
     gimp_clone_tool_register,
     gimp_heal_tool_register,
     gimp_perspective_clone_tool_register,
@@ -728,6 +730,10 @@ gimp_tools_register (GType                   tool_type,
   else if (tool_type == GIMP_TYPE_INK_TOOL)
     {
       paint_core_name = "gimp-ink";
+    }
+  else if (tool_type == GIMP_TYPE_PAINTER_MYBRUSH_TOOL)
+    {
+      paint_core_name = "gimp-painter-mypaint";
     }
   else if (tool_type == GIMP_TYPE_MYBRUSH_TOOL)
     {
