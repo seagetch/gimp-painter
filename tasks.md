@@ -198,7 +198,7 @@
 | 01.012/contract-review | [x] | 同名機能の実装と保存・操作契約を照合する | 01.011 | 19契約×2比較先を実ソース行と後続WBSへ対応し、ヘッダー一致と機能同等性を分離する |
 | 01.012/counterexamples | [x] | 実ソース式の筆圧・丸め・属性番号反例を実行する | 01.011 | C99で切り出した両式をrint/floor両経路で実行し、静止筆圧の差と32/33属性衝突を確認。GIMP全体replayの代用にしない |
 | 01.013 | [x] | 各差分を WBS に割り当てる | 01.012 | 全2,489 hunk・947変更pathと402資産/manifestをsource blob・範囲・hash付きで具体的WBSと検証先へ割当。未割当ゼロ、3子タスク追加（`migration/inventory/wbs-assignment.md`）。実装は未完了 |
-| 01.014 | [ ] | 不要候補を分類する | 01.013 | 空ファイル・バックアップ・生成物・実機能を混同せず理由を記録 |
+| 01.014 | [x] | 不要候補を分類する | 01.013 | 全947 pathを固定blobで確認し、空linker carrier・非空backup・生成物16件・コメント等のみ9件・live editor・placeholder・Ruby generator・実presetを分離（`migration/inventory/cleanup-candidates.md`）。削除は未実施 |
 | 01.015 | [ ] | C++ 以外の補助スクリプトを照合する | 01.014 | Python・Scheme・生成ツール等の旧差分に移植先または廃止根拠がある |
 | 01.016 | [ ] | 標準 paint の独自差分を照合する | 01.015 | paintbrush・dynamics・bucket fill・context の各 hunk を機能タスクへ割当 |
 | 01.016/bucket-selection-source | [ ] | 旧標準 bucket fill の選択境界差分を現行全域探索と照合する | 01.015, 01.005/fill-brush-boundary | 選択外を通る回込み、透過と開始位置を含め旧変更 hunk と移植先の接続先を一件ずつ記録 |
