@@ -1,23 +1,24 @@
-Log of Meson test suite run on 2026-10-02T11:32:48.057873
+Log of Meson test suite run on 2026-10-02T11:43:22.180820
 
 Inherited environment omitted; see whitelisted JSON reproducibility variables.
 
 ==================================== 1/1 =====================================
 test:         gimp:painter / painter-navigation
-start time:   02:32:48
-duration:     0.01s
+start time:   02:43:22
+duration:     0.02s
 result:       exit status 0
-command:      ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=137 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/display/painter-navigation /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-navigation/rotation.tsv
+command:      MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 MALLOC_PERTURB_=243 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/display/painter-navigation /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-navigation/rotation.tsv /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-zoom/zoom.tsv
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02Sc608ad0d58ccb32d0818a0da9ac00546
-1..5
+# random seed: R02S9a6b0af1538fa571e8341117a6c08e73
+1..6
 # Start of navigation tests
 ok 1 /navigation/golden-rotation
-ok 2 /navigation/modifier-bits
-ok 3 /navigation/midpoint-toggle
-ok 4 /navigation/mirrored-keys
-ok 5 /navigation/custom-rotation
+ok 2 /navigation/golden-zoom
+ok 3 /navigation/modifier-bits
+ok 4 /navigation/midpoint-toggle
+ok 5 /navigation/mirrored-keys
+ok 6 /navigation/custom-rotation
 # End of navigation tests
 ==============================================================================
 

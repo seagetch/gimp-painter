@@ -49,6 +49,27 @@ gimp_painter_navigation_rotate (gint width, gint height, gint x, gint y,
   return normalize ((!!flip_h != !!flip_v) ? -angle : angle);
 }
 
+static gdouble
+radius (gint width, gint height, gint x, gint y)
+{
+  const gdouble rx = x - width / 2;
+  const gdouble ry = y - height / 2;
+  return sqrt (rx * rx + ry * ry);
+}
+
+gdouble
+gimp_painter_navigation_zoom_begin (gint width, gint height, gint x, gint y,
+                                     gdouble scale_x, gdouble scale_y)
+{
+  return MAX (scale_x, scale_y) * 300.0 - radius (width, height, x, y);
+}
+
+gdouble
+gimp_painter_navigation_zoom (gint width, gint height, gint x, gint y, gdouble anchor)
+{
+  return (radius (width, height, x, y) + anchor) / 300.0;
+}
+
 GimpModifierAction
 gimp_painter_navigation_middle_action (GdkModifierType state)
 {

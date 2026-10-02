@@ -12,6 +12,10 @@ gdouble gimp_painter_navigation_begin (gint width, gint height, gint x, gint y,
 gdouble gimp_painter_navigation_rotate (gint width, gint height, gint x, gint y,
                                         gdouble anchor, gboolean flip_h,
                                         gboolean flip_v, GdkModifierType state);
+gdouble gimp_painter_navigation_zoom_begin (gint width, gint height, gint x, gint y,
+                                            gdouble scale_x, gdouble scale_y);
+gdouble gimp_painter_navigation_zoom (gint width, gint height, gint x, gint y,
+                                      gdouble anchor);
 GimpModifierAction gimp_painter_navigation_middle_action (GdkModifierType state);
 GimpModifierAction gimp_painter_navigation_rotation_action (GimpModifierAction initial,
                                                             gboolean inherited,

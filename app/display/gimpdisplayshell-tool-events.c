@@ -1744,6 +1744,8 @@ gimp_display_shell_start_scrolling (GimpDisplayShell *shell,
   shell->rotate_drag_angle = gimp_painter_navigation_begin (
     shell->disp_width, shell->disp_height, x, y, shell->rotate_angle,
     shell->flip_horizontally, shell->flip_vertically);
+  shell->painter_zoom_anchor = gimp_painter_navigation_zoom_begin (
+    shell->disp_width, shell->disp_height, x, y, shell->scale_x, shell->scale_y);
 
   switch (mod_action)
     {
@@ -1851,6 +1853,7 @@ gimp_display_shell_stop_scrolling (GimpDisplayShell *shell,
   shell->scroll_last_x     = 0;
   shell->scroll_last_y     = 0;
   shell->rotate_drag_angle = 0.0;
+  shell->painter_zoom_anchor = 0.0;
 
   /* We may have ungrabbed the pointer when space was released while
    * mouse was down, to be able to catch a GDK_BUTTON_RELEASE event.
@@ -1906,11 +1909,17 @@ gimp_display_shell_handle_scrolling (GimpDisplayShell *shell,
                                       constrain);
       break;
     case GIMP_MODIFIER_ACTION_ZOOMING:
-      gimp_display_shell_scale_drag (shell,
-                                     shell->scroll_start_x,
-                                     shell->scroll_start_y,
-                                     shell->scroll_last_x - x,
-                                     shell->scroll_last_y - y);
+      if (shell->painter_navigation_inherited)
+        gimp_display_shell_scale (shell, GIMP_ZOOM_TO,
+          gimp_painter_navigation_zoom (shell->disp_width, shell->disp_height,
+                                        x, y, shell->painter_zoom_anchor),
+          GIMP_ZOOM_FOCUS_RETAIN_CENTERING_ELSE_BEST_GUESS);
+      else
+        gimp_display_shell_scale_drag (shell,
+                                       shell->scroll_start_x,
+                                       shell->scroll_start_y,
+                                       shell->scroll_last_x - x,
+                                       shell->scroll_last_y - y);
       break;
     case GIMP_MODIFIER_ACTION_BRUSH_RADIUS_PIXEL_SIZE:
       size_multiplier = 2.0;

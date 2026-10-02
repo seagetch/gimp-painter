@@ -55,6 +55,24 @@ outside painter default inheritance.
 
 Whole physical drag event sequences, interruption/focus/device-switch cleanup,
 mouse/tablet equivalence, macOS/Windows, radial legacy drag zoom and transformed
-pan integration remain explicit gates. A registered zoom action still uses the
-current GIMP zoom implementation in this increment. Touchpad gesture rotation is
+pan integration remain explicit gates. The initial rotation increment left zoom on the current GIMP route; the
+radial-default follow-on below supersedes that temporary state. Touchpad gesture rotation is
 unchanged. These tests do not establish all of section 25.
+
+## Follow-on: inherited radial drag zoom
+
+The inherited Ctrl+middle route now stores
+`max(scale_x, scale_y) * 300 - initial_radius` and requests
+`(current_radius + anchor) / 300` about the integer viewport center. It uses the
+old retain-centering/best-guess focus policy. Explicitly customized zoom bindings
+continue using the current GIMP drag-zoom preference; the inherited default is
+not silently replaced by exponential vertical movement. Modifier release while
+the initiating button remains held does not reset the anchor.
+
+A separate `legacy-zoom` source-arithmetic fixture runs the unchanged old
+start/update bodies for 2,400 anisotropic-scale, mirror, odd/even-center and
+inward/outward/stationary cases. Normal and ASan/UBSan now pass six portable
+navigation groups. The scale API's clamping and full display event sequences
+remain separate integration tests; the oracle records raw requested factors,
+including negative values rather than pretending they are valid displayed zoom.
+Transformed pan and physical mouse/tablet comparisons remain unfinished.

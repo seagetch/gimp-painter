@@ -1,13 +1,13 @@
 {
-  "scope": "pure navigation math and four test groups; GTK/Cairo uninstrumented; no GUI/device run",
+  "scope": "pure navigation math and six test groups; GTK/Cairo uninstrumented; no GUI/device run",
   "sanitizers": [
     "address",
     "undefined"
   ],
   "leak_detection": false,
   "source_sha256": {
-    "app/display/gimppainternavigation.c": "5b24f163f484cf78147a4aa0bd749b0cda21bfe7e7c0cf953b76fbd844a02249",
-    "app/tests/test-painter-navigation.c": "1b17470802ac3508d93beb90224acee508ce12cf6fd9b65db069259ae5f13529"
+    "app/display/gimppainternavigation.c": "6d5ace7b15a13c795141e60d206bd1b044a30a6f1e15742097d3b58c65aa24e9",
+    "app/tests/test-painter-navigation.c": "3d5b7a142fa707549fa0074045bd7e7f87e1b9a3a3479d16d1082ee82b874b38"
   },
   "compile_command": [
     "cc",
@@ -61,9 +61,9 @@
     "-lcairo",
     "-lm",
     "-o",
-    "/tmp/painter-navigation-sanitize-2bkgzf81/navigation"
+    "/tmp/painter-navigation-sanitize-mzk01frl/navigation"
   ],
   "returncode": 0,
-  "stdout": "TAP version 14\n# random seed: R02S9edafbe654736941f5743c057ab54600\n1..5\n# Start of navigation tests\nok 1 /navigation/golden-rotation\nok 2 /navigation/modifier-bits\nok 3 /navigation/midpoint-toggle\nok 4 /navigation/mirrored-keys\nok 5 /navigation/custom-rotation\n# End of navigation tests\n",
+  "stdout": "TAP version 14\n# random seed: R02S0dc47a971c648b3d7a811259f6f4ab35\n1..6\n# Start of navigation tests\nok 1 /navigation/golden-rotation\nok 2 /navigation/golden-zoom\nok 3 /navigation/modifier-bits\nok 4 /navigation/midpoint-toggle\nok 5 /navigation/mirrored-keys\nok 6 /navigation/custom-rotation\n# End of navigation tests\n",
   "stderr": ""
 }

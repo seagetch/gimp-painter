@@ -871,6 +871,7 @@
 | 25.008/mirrored-arrow-input | [ ] | 表示反転中の左右キー入力を移植する | 25.007, 01.017 | mirrored時のLeft/Right変換と非反転時の不変を、押下・解除・toolへの転送・回転併用で試験する |
 | 25.009 | [ ] | 現行表示行列へ接続する | 25.008 | canvas と overlay が同じ角度を使用 |
 | 25.009/drag-zoom-scroll | [ ] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |
+| 25.009/radial-default | [x] | 旧Ctrl+middleの距離300 radial zoomを接続する | 25.001/start-relative-route | 開始scale最大値・整数中心・固定anchorを保持し2400不変旧関数演算に一致、6 pure通常/ASan/UBSan合格。明示custom zoomは現行設定を保持。実display clamp/pan/deviceは未完了 |
 | 25.010 | [ ] | 回転 reset action を接続する | 25.009 | 状態と UI 表示が一致 |
 | 25.011 | [ ] | modifier を含む操作試験を実行する | 25.010 | 記録した全キー遷移の期待角に一致 |
 | 25.012 | [ ] | ペン・マウスの両方を試験する | 25.011 | 入力デバイスで snap 条件が変わらない |

@@ -134,5 +134,6 @@ painter_navigation_test = executable('painter-navigation',
   dependencies: [gtk3, cairo, math],
 )
 test('painter-navigation', painter_navigation_test,
-  args: [meson.project_source_root() / 'migration/fixtures/legacy-navigation/rotation.tsv'],
+  args: [meson.project_source_root() / 'migration/fixtures/legacy-navigation/rotation.tsv',
+         meson.project_source_root() / 'migration/fixtures/legacy-zoom/zoom.tsv'],
   suite: 'painter', timeout: 30)

@@ -226,6 +226,7 @@ struct _GimpDisplayShell
   gint               scroll_last_x;
   gint               scroll_last_y;
   gdouble            rotate_drag_angle; /* fixed painter rotation anchor */
+  gdouble            painter_zoom_anchor;
   gpointer           scroll_info;
   GimpLayer         *picked_layer;
 

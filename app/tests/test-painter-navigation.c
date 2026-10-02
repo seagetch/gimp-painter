@@ -5,7 +5,7 @@
 #include <cairo.h>
 #include "display/gimppainternavigation.h"
 
-static const gchar *fixture;
+static const gchar *fixture, *zoom_fixture;
 static gdouble norm (gdouble a) { a = fmod (a,360); return a < 0 ? a+360 : a; }
 static void golden_rotation (void)
 {
@@ -39,6 +39,21 @@ static void golden_rotation (void)
     }
   g_assert_true (feof (in)); fclose (in);
   g_assert_cmpuint (count,==,5184);
+}
+static void golden_zoom (void)
+{
+  FILE *in=fopen(zoom_fixture,"r");
+  gint w,h,mirror,sx,sy,x,y;guint count=0;
+  gdouble scale_x,scale_y,expected;
+  g_assert_nonnull(in);
+  while(fscanf(in,"%d%d%d%lf%lf%d%d%d%d%lf",&w,&h,&mirror,&scale_x,&scale_y,&sx,&sy,&x,&y,&expected)==10)
+    {
+      gdouble anchor=gimp_painter_navigation_zoom_begin(w,h,sx,sy,scale_x,scale_y);
+      gdouble actual=gimp_painter_navigation_zoom(w,h,x,y,anchor);
+      g_assert_cmpfloat_with_epsilon(actual,expected,1e-12);
+      ++count;
+    }
+  g_assert_true(feof(in));fclose(in);g_assert_cmpuint(count,==,2400);
 }
 static void modifier_bits (void)
 {
@@ -90,8 +105,9 @@ static void mirrored_keys (void)
 }
 int main(int argc,char **argv)
 {
-  g_test_init(&argc,&argv,NULL); g_assert_cmpint(argc,==,2); fixture=argv[1];
+  g_test_init(&argc,&argv,NULL); g_assert_cmpint(argc,==,3); fixture=argv[1]; zoom_fixture=argv[2];
   g_test_add_func("/navigation/golden-rotation",golden_rotation);
+  g_test_add_func("/navigation/golden-zoom",golden_zoom);
   g_test_add_func("/navigation/modifier-bits",modifier_bits);
   g_test_add_func("/navigation/midpoint-toggle",midpoint_and_toggle);
   g_test_add_func("/navigation/mirrored-keys",mirrored_keys);
