@@ -16,6 +16,7 @@ typedef struct { GimpPaintOptionsClass parent; } GimpFillBrushOptionsClass;
 GType gimp_fill_brush_get_type(void) G_GNUC_CONST;
 GType gimp_fill_brush_options_get_type(void) G_GNUC_CONST;
 void gimp_fill_brush_register (Gimp *gimp, GimpPaintRegisterCallback callback);
+/* Generic GimpPaintCore stroking is explicitly refused until integrated. */
 gboolean gimp_fill_brush_begin (GimpFillBrush *brush, GimpDrawable *drawable,
                                 GimpPaintOptions *options, const GimpCoords *coords,
                                 GError **error);

@@ -76,6 +76,8 @@ struct _GimpPaintCore
   GimpSymmetry   *sym;
   GimpPaintLockBlinkState
                   lock_blink_state;
+
+
 };
 
 struct _GimpPaintCoreClass
@@ -124,6 +126,13 @@ struct _GimpPaintCoreClass
   GimpUndo   * (* push_undo)        (GimpPaintCore    *core,
                                      GimpImage        *image,
                                      const gchar      *undo_desc);
+  /* Optional admission check before start mutates any native stroke state. */
+  gboolean     (* check_start)      (GimpPaintCore    *core,
+                                     GList            *drawables,
+                                     GimpPaintOptions *paint_options,
+                                     const GimpCoords *coords,
+                                     GError          **error);
+
 };
 
 

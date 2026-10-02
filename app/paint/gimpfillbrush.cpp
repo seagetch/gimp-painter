@@ -96,9 +96,10 @@ struct BrushImpl {
  std::string error;
  bool closed=false,preparing=false,draining=false,interpolating=false,starting=false,ending=false;
  bool started=false,first=true,cancel_requested=false;
+ bool start_permit=false,native_start_armed=false;
  std::uint64_t revision=0;
  void clear_dabs(){++revision;auto old_segment=std::move(segment);auto retired=std::move(pending);auto old_snapshot=std::move(snapshot);error.clear();}
- void release_frame(){clear_dabs();auto old_connection=std::move(target_connection);auto old_query=std::move(paint_query_connection);auto old_watch=std::move(target_watch);if(old_watch)old_watch->busy.store(false,std::memory_order_release);old_query.close();old_connection.close();auto old_buffer=std::move(observed_buffer);auto old_options=std::move(options);auto old_drawable=std::move(drawable);auto old_image=std::move(image);}
+ void release_frame(){start_permit=false;native_start_armed=false;clear_dabs();auto old_connection=std::move(target_connection);auto old_query=std::move(paint_query_connection);auto old_watch=std::move(target_watch);if(old_watch)old_watch->busy.store(false,std::memory_order_release);old_query.close();old_connection.close();auto old_buffer=std::move(observed_buffer);auto old_options=std::move(options);auto old_drawable=std::move(drawable);auto old_image=std::move(image);}
  void close()noexcept {
   closed=true;cancel_requested=true;
   if(starting||preparing||draining||ending)return;
@@ -120,6 +121,21 @@ void observe_target(BrushImpl&impl) {
  impl.paint_query_connection=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(impl.image.get())),"query-pending-paint",G_CALLBACK(pending_paint),query_payload.get(),release_watch);query_payload.release();
 }
 struct BrushSlot:SlotSpec<GimpFillBrush,BrushImpl>{};
+gboolean check_start(GimpPaintCore*core,GList*,GimpPaintOptions*,const GimpCoords*,GError**error){
+ return boundary<gboolean>(error,FALSE,[&]()->gboolean{return BindingStore::require(G_OBJECT(core)).with<BrushSlot>([&](BrushImpl&impl)->gboolean{
+  if(!impl.start_permit||!impl.starting||impl.closed){g_set_error_literal(error,G_IO_ERROR,G_IO_ERROR_NOT_SUPPORTED,"Fill Brush requires its resumable stroke adapter; generic stroking is not integrated");return FALSE;}
+  // Consume before native start performs any allocation, mutation or callback.
+  impl.start_permit=false;impl.native_start_armed=true;return TRUE;
+ });});
+}
+gboolean native_start(GimpPaintCore*core,GList*drawables,GimpPaintOptions*options,const GimpCoords*coords,GError**error){
+ return boundary<gboolean>(error,FALSE,[&]()->gboolean{return BindingStore::require(G_OBJECT(core)).with<BrushSlot>([&](BrushImpl&impl)->gboolean{
+  if(!impl.native_start_armed||!impl.starting||impl.closed){g_set_error_literal(error,G_IO_ERROR,G_IO_ERROR_NOT_SUPPORTED,"Fill Brush native start has no adapter permit");return FALSE;}
+  impl.native_start_armed=false;
+  return GIMP_PAINT_CORE_CLASS(gimp_fill_brush_parent_class)->start(core,drawables,options,coords,error);
+ });});
+}
+
 void constructed(GObject*o){G_OBJECT_CLASS(gimp_fill_brush_parent_class)->constructed(o);boundary_void(nullptr,[&]{BindingStore::require(o).activate();});}
 void dispose(GObject*o){gimp_painter_binding_close(o,nullptr);G_OBJECT_CLASS(gimp_fill_brush_parent_class)->dispose(o);}
 void queue_dab(GimpFillBrush*self,BrushImpl&impl,GimpDrawable*d,GimpPaintOptions*options,GimpSymmetry*sym){
@@ -208,7 +224,7 @@ static void gimp_fill_brush_options_class_init(GimpFillBrushOptionsClass*k){auto
  GIMP_CONFIG_PROP_DOUBLE(o,1,"rate","Rate","Legacy fill rate (preserved; old output is rate-independent)",0,100,50,GIMP_PARAM_STATIC_STRINGS);
  GIMP_CONFIG_PROP_BOOLEAN(o,2,"eraser-mode","Eraser mode","Erase instead of painting foreground",FALSE,GIMP_PARAM_STATIC_STRINGS);}
 static void gimp_fill_brush_options_init(GimpFillBrushOptions*o){o->binding_failed=!boundary<bool>(nullptr,false,[&]{BindingStore::ensure(G_OBJECT(o)).emplace<OptionsSlot>();return true;});}
-static void gimp_fill_brush_class_init(GimpFillBrushClass*k){G_OBJECT_CLASS(k)->constructed=constructed;G_OBJECT_CLASS(k)->dispose=dispose;GIMP_PAINT_CORE_CLASS(k)->paint=paint;auto*b=GIMP_BRUSH_CORE_CLASS(k);b->handles_changing_brush=TRUE;b->handles_transforming_brush=TRUE;b->handles_dynamic_transforming_brush=TRUE;}
+static void gimp_fill_brush_class_init(GimpFillBrushClass*k){G_OBJECT_CLASS(k)->constructed=constructed;G_OBJECT_CLASS(k)->dispose=dispose;GIMP_PAINT_CORE_CLASS(k)->paint=paint;GIMP_PAINT_CORE_CLASS(k)->check_start=check_start;GIMP_PAINT_CORE_CLASS(k)->start=native_start;auto*b=GIMP_BRUSH_CORE_CLASS(k);b->handles_changing_brush=TRUE;b->handles_transforming_brush=TRUE;b->handles_dynamic_transforming_brush=TRUE;}
 static void gimp_fill_brush_init(GimpFillBrush*b){b->binding_failed=!boundary<bool>(nullptr,false,[&]{BindingStore::ensure(G_OBJECT(b)).emplace<BrushSlot>(b);return true;});}
 gboolean gimp_fill_brush_step(GimpFillBrush*self,gsize budget,GError**error){return boundary<gboolean>(error,FALSE,[&]()->gboolean{
  return BindingStore::require(G_OBJECT(self)).with<BrushSlot>([&](BrushImpl&impl)->gboolean{
@@ -272,7 +288,8 @@ gboolean gimp_fill_brush_begin(GimpFillBrush*self,GimpDrawable*d,GimpPaintOption
   impl.release_frame();impl.drawable=target;impl.image=image;impl.options=ObjectRef<GimpPaintOptions>::retain(options);impl.starting=true;impl.cancel_requested=false;impl.first=true;
   try{observe_target(impl);}catch(...){impl.starting=false;impl.release_frame();throw;}
   auto*core=GIMP_PAINT_CORE(self);GList list={d,nullptr,nullptr};GError*native_error=nullptr;
-  bool ok=gimp_paint_core_start(core,&list,options,coords,&native_error);impl.starting=false;
+  impl.start_permit=true;
+  bool ok=gimp_paint_core_start(core,&list,options,coords,&native_error);impl.start_permit=false;impl.native_start_armed=false;impl.starting=false;
   if(!ok){std::string message=native_error?native_error->message:"Fill native start failed";g_clear_error(&native_error);release_native_scratch(core);impl.release_frame();throw std::runtime_error(message);}
   impl.started=true;
   if(impl.closed||impl.cancel_requested||!target_current(impl)){finish_frame(impl,false);throw std::runtime_error("Fill start was cancelled");}

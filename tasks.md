@@ -951,6 +951,7 @@
 | 27.009 | [ ] | stroke 中の brush 移動を実装する | 27.008 | 各範囲の探索と開始参照が整合 |
 | 27.009/stroke-lifecycle | [ ] | 描画中の snapshot と mask の寿命を paint vfunc の start・motion・finish に接続する | 27.009 | 終了と cancel で解放し複数 drawable・symmetry の扱いを明示して一筆の Undo を維持 |
 | 27.009/native-paint-transaction | [x] | Fill探索jobを実native PaintCore・Undoへ接続する | 27.004/runtime-search-foundation, 27.012/legacy-dab-origin, 10.005/native-paint-mode-route | 36実旧RGBA snapshotが逐次/全入力queue両方1814962 bytes完全一致。12 native試験と17unit ASan/UBSan/float-cast-overflow合格。再入・invalid入力・外部編集/format/size/lock失効とpending queryを検証。GUI/全brush/ICC/有界補間は別gate |
+| 27.009/native-start-preflight | [x] | Fill開始前の一回限りadmissionで未統合・再入native startを安全拒否する | 27.010/bounded-interpolation | 26 native/18source focused sanitizer合格、全app build・実旧Fill3通り・native補間6budget再確認。拒否時は既存stroke stateを変更しない。generic Stroke Path実装と自動Save継続は別gate |
 | 27.010 | [ ] | 大領域探索の実行量を制限する | 27.009 | 取消しと UI 入力へ戻れる |
 | 27.011 | [ ] | 塗りつぶしの Undo を接続する | 27.010 | 一操作で元画像へ復元 |
 | 27.012 | [ ] | tool options を移植する | 27.011 | 旧 rate・eraser-mode・継承描画設定を編集・保存し、固定閾値を新規 UI 設定と混同しない。rate の実効性を旧版で測定 |

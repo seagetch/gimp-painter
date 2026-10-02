@@ -140,6 +140,7 @@ gimp_paint_core_class_init (GimpPaintCoreClass *klass)
   object_class->set_property = gimp_paint_core_set_property;
   object_class->get_property = gimp_paint_core_get_property;
 
+  klass->check_start         = NULL;
   klass->start               = gimp_paint_core_real_start;
   klass->pre_paint           = gimp_paint_core_real_pre_paint;
   klass->paint               = gimp_paint_core_real_paint;
@@ -375,6 +376,13 @@ gimp_paint_core_start (GimpPaintCore     *core,
 
   for (GList *iter = drawables; iter; iter = iter->next)
     g_return_val_if_fail (gimp_item_is_attached (iter->data), FALSE);
+
+  /* A specialized asynchronous core can refuse a generic or reentrant start
+   * here, before stroke_buffer, coordinates or applicators are overwritten. */
+  if (GIMP_PAINT_CORE_GET_CLASS (core)->check_start &&
+      ! GIMP_PAINT_CORE_GET_CLASS (core)->check_start (core, drawables,
+                                                       paint_options, coords, error))
+    return FALSE;
 
   image = gimp_item_get_image (GIMP_ITEM (drawables->data));
 

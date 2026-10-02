@@ -1,0 +1,518 @@
+ninja: Entering directory `build-debian13'
+[1/432] Generating symbol file libgimpwidgets/libgimpwidgets-3.0.so.0.8.1.p/libgimpwidgets-3.0.so.0.8.1.symbols
+[2/430] Generating git-version.h.in.1 with a custom command
+[3/430] Compiling C object libgimp/libgimp-3.0.so.0.8.1.p/gimpbatchprocedure.c.o
+[4/430] Generating git-version.h.in.2 with a custom command
+[5/430] Compiling C object libgimp/libgimp-3.0.so.0.8.1.p/gimp.c.o
+[6/430] Generating git-version.h with a custom command
+[7/425] Linking target libgimp/libgimp-3.0.so.0.8.1
+[8/425] Compiling C object app/paint/libapppaint.a.p/gimp-paint.c.o
+[9/425] Generating symbol file libgimp/libgimp-3.0.so.0.8.1.p/libgimp-3.0.so.0.8.1.symbols
+[10/421] Compiling C object app/paint/libapppaint.a.p/gimpairbrush.c.o
+[11/421] Compiling C object app/paint/libapppaint.a.p/gimpbrushcore.c.o
+[12/421] Compiling C object app/paint/libapppaint.a.p/gimpclone.c.o
+[13/421] Compiling C++ object app/paint/libapppaint.a.p/gimpbrushcore-loops.cc.o
+[14/421] Compiling C object app/paint/libapppaint.a.p/gimpconvolve.c.o
+[15/421] Compiling C object app/paint/libapppaint.a.p/gimpdodgeburn.c.o
+[16/421] Compiling C object app/paint/libapppaint.a.p/gimperaser.c.o
+[17/421] Compiling C object app/paint/libapppaint.a.p/gimpheal.c.o
+[18/421] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o
+[19/421] Compiling C object app/paint/libapppaint.a.p/gimpink.c.o
+[20/421] Generating libgimp/Gimp-3.0.gir with a custom command (wrapped by meson to set env)
+[21/421] Compiling C object app/paint/libapppaint.a.p/gimpinkundo.c.o
+[22/421] Compiling C object app/paint/libapppaint.a.p/gimpmybrushcore.c.o
+[23/421] Compiling C object app/paint/libapppaint.a.p/gimppaintbrush.c.o
+[24/421] Compiling C object app/paint/libapppaint.a.p/gimppainterpaintgate.c.o
+[25/421] Compiling C object app/paint/libapppaint.a.p/gimppaintcoreundo.c.o
+[26/421] Compiling C object app/paint/libapppaint.a.p/gimppaintcore-stroke.c.o
+[27/421] Compiling C object app/paint/libapppaint.a.p/gimppencil.c.o
+[28/421] Compiling C object app/paint/libapppaint.a.p/gimppaintcore.c.o
+[29/421] Compiling C object app/paint/libapppaint.a.p/gimpperspectiveclone.c.o
+[30/421] Compiling C object app/paint/libapppaint.a.p/gimpsmudge.c.o
+[31/421] Compiling C object app/paint/libapppaint.a.p/gimppaintoptions.c.o
+[32/421] Compiling C object app/paint/libapppaint.a.p/gimpsourcecore.c.o
+[33/421] Compiling C object app/pdb/libapppdb.a.p/gimppdbcontext.c.o
+[34/421] Generating symbol file libgimpthumb/libgimpthumb-3.0.so.0.8.1.p/libgimpthumb-3.0.so.0.8.1.symbols
+[35/420] Compiling C object app/pdb/libappinternalprocs.a.p/paint-tools-cmds.c.o
+[36/420] Linking target plug-ins/common/align-layers
+[37/420] Linking target plug-ins/common/animation-optimize
+[38/420] Compiling C++ object app/paint/libapppaint.a.p/gimpfillbrush.cpp.o
+[39/420] Linking target plug-ins/common/animation-play
+[40/420] Linking target plug-ins/common/blinds
+[41/420] Linking target plug-ins/common/border-average
+[42/420] Linking target plug-ins/common/busy-dialog
+[43/420] Linking target plug-ins/common/checkerboard
+[44/420] Linking target plug-ins/common/cml-explorer
+[45/420] Linking target plug-ins/common/colormap-remap
+[46/420] Linking target plug-ins/common/compose
+[47/420] Linking target plug-ins/common/contrast-retinex
+[48/420] Linking target plug-ins/common/crop-zealous
+[49/420] Linking target plug-ins/common/curve-bend
+[50/420] Linking target plug-ins/common/decompose
+[51/420] Linking target plug-ins/common/depth-merge
+[52/420] Linking target plug-ins/common/despeckle
+[53/420] Compiling C++ object app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o
+[54/420] Linking target plug-ins/common/destripe
+[55/420] Linking target plug-ins/common/file-compressor
+[56/420] Linking target plug-ins/common/file-cel
+[57/420] Linking target plug-ins/common/file-csource
+[58/420] Linking target plug-ins/common/file-dicom
+[59/420] Linking target plug-ins/common/file-farbfeld
+[60/420] Linking target plug-ins/common/file-gegl
+[61/420] Linking target plug-ins/common/file-gbr
+[62/420] Linking target plug-ins/common/file-gif-load
+[63/420] Linking target plug-ins/common/file-gih
+[64/420] Linking target plug-ins/common/file-gif-export
+[65/420] Linking target plug-ins/common/file-glob
+[66/420] Linking target plug-ins/common/file-header
+[67/420] Linking target plug-ins/common/file-html-table
+[68/420] Linking target plug-ins/common/file-pat
+[69/420] Linking target plug-ins/common/file-pcx
+[70/420] Linking target plug-ins/common/file-pix
+[71/420] Linking target plug-ins/common/file-pdf-load
+[72/420] Linking target plug-ins/common/file-png
+[73/420] Linking target plug-ins/common/file-pnm
+[74/420] Linking target plug-ins/common/file-psp
+[75/420] Linking target plug-ins/common/file-raw-data
+[76/420] Linking target plug-ins/common/file-sunras
+[77/420] Linking target plug-ins/common/file-wbmp
+[78/420] Linking target plug-ins/common/file-svg
+[79/420] Linking target plug-ins/common/file-tga
+[80/420] Generating libgimp/GimpUi-3.0.gir with a custom command (wrapped by meson to set env)
+[81/420] Linking target plug-ins/common/file-xwd
+[82/420] Linking target plug-ins/common/file-xbm
+[83/420] Linking target plug-ins/common/gradient-map
+[84/420] Linking target plug-ins/common/film
+[85/420] Linking target plug-ins/common/grid
+[86/420] Linking target plug-ins/common/guillotine
+[87/420] Linking target plug-ins/common/hot
+[88/420] Linking target plug-ins/common/jigsaw
+[89/420] Linking target plug-ins/common/plugin-browser
+[90/420] Linking target plug-ins/common/nl-filter
+[91/420] Linking target plug-ins/common/procedure-browser
+[92/420] Linking target plug-ins/common/qbist
+[93/420] Linking target plug-ins/common/sample-colorize
+[94/420] Linking target plug-ins/common/smooth-palette
+[95/420] Linking target plug-ins/common/sparkle
+[96/420] Linking target plug-ins/common/sphere-designer
+[97/420] Linking target plug-ins/common/tile
+[98/420] Linking target plug-ins/common/tile-small
+[99/420] Linking target plug-ins/common/van-gogh-lic
+[100/420] Linking target plug-ins/common/unit-editor
+[101/420] Linking target plug-ins/common/wavelet-decompose
+[102/420] Linking target plug-ins/common/warp
+[103/420] Linking target plug-ins/common/file-desktop-link
+[104/420] Linking target plug-ins/file-bmp/file-bmp
+[105/420] Linking target plug-ins/common/web-browser
+[106/420] Linking target plug-ins/common/mail
+[107/420] Linking target plug-ins/file-faxg3/file-faxg3
+[108/420] Linking target plug-ins/file-dds/file-dds
+[109/420] Linking target plug-ins/file-fli/file-fli
+[110/420] Linking target plug-ins/file-icns/file-icns
+[111/420] Linking target plug-ins/file-ico/file-ico
+[112/420] Linking target plug-ins/file-jpeg/file-jpeg
+[113/420] Linking target plug-ins/file-raw/file-darktable
+[114/420] Linking target plug-ins/file-raw/file-raw-placeholder
+[115/420] Linking target plug-ins/file-psd/file-psd
+[116/420] Linking target plug-ins/file-raw/file-rawtherapee
+[117/420] Linking target plug-ins/file-sgi/file-sgi
+[118/420] Linking target plug-ins/file-tiff/file-tiff
+[119/420] Linking target plug-ins/flame/flame
+[120/420] Linking target plug-ins/fractal-explorer/fractal-explorer
+[121/420] Linking target plug-ins/gimpressionist/gimpressionist
+[122/420] Linking target plug-ins/gfig/gfig
+[123/420] Linking target plug-ins/gradient-flare/gradient-flare
+[124/420] Linking target plug-ins/help/help
+[125/420] Linking target plug-ins/ifs-compose/ifs-compose
+[126/420] Linking target plug-ins/lighting/lighting
+[127/420] Linking target plug-ins/map-object/map-object
+[128/420] Linking target plug-ins/imagemap/imagemap
+[129/420] Linking target plug-ins/metadata/metadata-editor
+[130/420] Linking target plug-ins/print/print
+[131/420] Linking target plug-ins/metadata/metadata-viewer
+[132/420] Linking target plug-ins/pagecurl/pagecurl
+[133/420] Linking target plug-ins/screenshot/screenshot
+[134/420] Linking target plug-ins/script-fu/server/script-fu-server
+[135/420] Linking target plug-ins/script-fu/script-fu
+[136/420] Linking static target app/file/libappfile.a
+[137/420] Linking target plug-ins/selection-to-path/selection-to-path
+[138/420] Linking static target app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a
+[139/420] Linking static target app/paint/libapppaint.a
+[140/420] Linking static target app/pdb/libapppdb.a
+[141/420] Linking static target app/pdb/libappinternalprocs.a
+[142/420] Compiling C object app/dialogs/libappdialogs.a.p/dialogs-constructors.c.o
+[143/420] Compiling C object app/tools/libapptools.a.p/gimpairbrushtool.c.o
+[144/420] Compiling C object app/dialogs/libappdialogs.a.p/file-save-dialog.c.o
+[145/420] Compiling C object app/tools/libapptools.a.p/gimpbrushtool.c.o
+[146/420] Compiling C object app/tools/libapptools.a.p/gimpclonetool.c.o
+[147/420] Compiling C object app/tools/libapptools.a.p/gimppainttool-paint.c.o
+[148/420] Compiling C object app/tools/libapptools.a.p/gimppainttool.c.o
+[149/420] Compiling C object app/tools/libapptools.a.p/gimpperspectiveclonetool.c.o
+[150/420] Compiling C object app/tools/libapptools.a.p/gimpsourcetool.c.o
+[151/420] Compiling C object app/gimp-console-3.0.p/main.c.o
+[152/420] Compiling C object app/gimp-console-3.0.p/app.c.o
+[153/420] Compiling C object app/gimp-console-3.0.p/errors.c.o
+[154/420] Compiling C object app/gimp-console-3.0.p/gimpconsoleapp.c.o
+[155/420] Compiling C object app/gimp-console-3.0.p/gimpcoreapp.c.o
+[156/420] Compiling C object app/gimp-console-3.0.p/gimp-debug.c.o
+[157/420] Compiling C object app/gimp-console-3.0.p/gimp-update.c.o
+[158/420] Compiling C object app/gimp-console-3.0.p/gimp-version.c.o
+[159/420] Compiling C object app/gimp-console-3.0.p/signals.c.o
+[160/420] Compiling C object app/gimp-console-3.0.p/unique.c.o
+[161/420] Compiling C object libgimp/tests/test-color-parser.p/meson-generated_.._test-color-parser.c.o
+[162/420] Compiling C object libgimp/tests/test-export-options.p/meson-generated_.._test-export-options.c.o
+[163/420] Compiling C object libgimp/tests/test-image.p/meson-generated_.._test-image.c.o
+[164/420] Compiling C object libgimp/tests/test-selection-float.p/meson-generated_.._test-selection-float.c.o
+[165/420] Compiling C object libgimp/tests/test-palette.p/meson-generated_.._test-palette.c.o
+[166/420] Generating menus/dockable-menu.ui with a custom command
+[167/420] Generating menus/image-menu.ui with a custom command
+[168/420] Compiling C++ object app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o
+[169/420] Compiling C object libgimp/tests/test-unit.p/meson-generated_.._test-unit.c.o
+[170/420] Compiling C object extensions/goat-exercises/goat-exercise-c.p/goat-exercise-c.c.o
+[171/420] Generating libgimp/Gimp-3.0.typelib with a custom command
+[172/420] Generating libgimp/GimpUi-3.0.typelib with a custom command
+[173/420] Compiling C object modules/libcolor-selector-cmyk.so.p/color-selector-cmyk.c.o
+[174/420] Compiling C object modules/libcolor-selector-wheel.so.p/gimpcolorwheel.c.o
+[175/420] Compiling C object modules/libdisplay-filter-clip-warning.so.p/display-filter-clip-warning.c.o
+[176/420] Compiling C object modules/libdisplay-filter-color-blind.so.p/display-filter-color-blind.c.o
+[177/420] Compiling C object modules/libdisplay-filter-aces-rrt.so.p/display-filter-aces-rrt.c.o
+[178/420] Compiling C object modules/libdisplay-filter-gamma.so.p/display-filter-gamma.c.o
+[179/420] Generating plug-ins/common/test-align-layers with a custom command
+[180/420] Generating plug-ins/common/test-animation-optimize with a custom command
+[181/420] Generating plug-ins/common/test-animation-play with a custom command
+[182/420] Generating plug-ins/common/test-blinds with a custom command
+[183/420] Generating plug-ins/common/test-border-average with a custom command
+[184/420] Generating plug-ins/common/test-busy-dialog with a custom command
+[185/420] Generating plug-ins/common/test-checkerboard with a custom command
+[186/420] Generating plug-ins/common/test-cml-explorer with a custom command
+[187/420] Generating plug-ins/common/test-colormap-remap with a custom command
+[188/420] Generating plug-ins/common/test-compose with a custom command
+[189/420] Generating plug-ins/common/test-contrast-retinex with a custom command
+[190/420] Compiling C object modules/libdisplay-filter-high-contrast.so.p/display-filter-high-contrast.c.o
+[191/420] Generating plug-ins/common/test-crop-zealous with a custom command
+[192/420] Generating plug-ins/common/test-curve-bend with a custom command
+[193/420] Generating plug-ins/common/test-decompose with a custom command
+[194/420] Generating plug-ins/common/test-depth-merge with a custom command
+[195/420] Generating plug-ins/common/test-despeckle with a custom command
+[196/420] Generating plug-ins/common/test-destripe with a custom command
+[197/420] Generating plug-ins/common/test-file-cel with a custom command
+[198/420] Generating plug-ins/common/test-file-compressor with a custom command
+[199/420] Generating plug-ins/common/test-file-csource with a custom command
+[200/420] Generating plug-ins/common/test-file-dicom with a custom command
+[201/420] Generating plug-ins/common/test-file-farbfeld with a custom command
+[202/420] Generating plug-ins/common/test-file-gbr with a custom command
+[203/420] Compiling C object modules/libcontroller-midi.so.p/controller-midi.c.o
+[204/420] Generating plug-ins/common/test-file-gegl with a custom command
+[205/420] Generating plug-ins/common/test-file-gif-load with a custom command
+[206/420] Generating plug-ins/common/test-file-gif-export with a custom command
+[207/420] Generating plug-ins/common/test-file-glob with a custom command
+[208/420] Generating plug-ins/common/test-file-gih with a custom command
+[209/420] Generating plug-ins/common/test-file-header with a custom command
+[210/420] Generating plug-ins/common/test-file-html-table with a custom command
+[211/420] Generating plug-ins/common/test-file-pat with a custom command
+[212/420] Generating plug-ins/common/test-file-pcx with a custom command
+[213/420] Generating plug-ins/common/test-file-pdf-load with a custom command
+[214/420] Generating plug-ins/common/test-file-pix with a custom command
+[215/420] Generating plug-ins/common/test-file-png with a custom command
+[216/420] Generating plug-ins/common/test-file-pnm with a custom command
+[217/420] Generating plug-ins/common/test-file-psp with a custom command
+[218/420] Generating plug-ins/common/test-file-raw-data with a custom command
+[219/420] Generating plug-ins/common/test-file-sunras with a custom command
+[220/420] Generating plug-ins/common/test-file-svg with a custom command
+[221/420] Generating plug-ins/common/test-file-wbmp with a custom command
+[222/420] Generating plug-ins/common/test-file-tga with a custom command
+[223/420] Generating plug-ins/common/test-file-xbm with a custom command
+[224/420] Generating plug-ins/common/test-file-xwd with a custom command
+[225/420] Generating plug-ins/common/test-film with a custom command
+[226/420] Generating plug-ins/common/test-grid with a custom command
+[227/420] Generating plug-ins/common/test-gradient-map with a custom command
+[228/420] Generating plug-ins/common/test-guillotine with a custom command
+[229/420] Generating plug-ins/common/test-jigsaw with a custom command
+[230/420] Generating plug-ins/common/test-hot with a custom command
+[231/420] Generating plug-ins/common/test-nl-filter with a custom command
+[232/420] Generating plug-ins/common/test-plugin-browser with a custom command
+[233/420] Generating plug-ins/common/test-procedure-browser with a custom command
+[234/420] Generating plug-ins/common/test-qbist with a custom command
+[235/420] Generating plug-ins/common/test-smooth-palette with a custom command
+[236/420] Generating plug-ins/common/test-sample-colorize with a custom command
+[237/420] Generating plug-ins/common/test-sparkle with a custom command
+[238/420] Generating plug-ins/common/test-sphere-designer with a custom command
+[239/420] Generating plug-ins/common/test-tile-small with a custom command
+[240/420] Generating plug-ins/common/test-tile with a custom command
+[241/420] Generating plug-ins/common/test-unit-editor with a custom command
+[242/420] Generating plug-ins/common/test-van-gogh-lic with a custom command
+[243/420] Generating plug-ins/common/test-warp with a custom command
+[244/420] Generating plug-ins/common/test-wavelet-decompose with a custom command
+[245/420] Generating plug-ins/common/test-web-browser with a custom command
+[246/420] Generating plug-ins/common/test-file-desktop-link with a custom command
+[247/420] Generating plug-ins/file-bmp/dummy-file-bmp with a custom command
+[248/420] Generating plug-ins/file-dds/dummy-file-dds with a custom command
+[249/420] Generating plug-ins/file-faxg3/dummy-file-faxg3 with a custom command
+[250/420] Generating plug-ins/file-fli/dummy-file-fli with a custom command
+[251/420] Generating plug-ins/common/test-mail with a custom command
+[252/420] Generating plug-ins/file-icns/dummy-file-icns with a custom command
+[253/420] Generating plug-ins/file-jpeg/dummy-file-jpeg with a custom command
+[254/420] Generating plug-ins/file-ico/dummy-file-ico with a custom command
+[255/420] Generating plug-ins/file-psd/dummy-file-psd with a custom command
+[256/420] Generating plug-ins/file-raw/dummy-file-darktable with a custom command
+[257/420] Generating plug-ins/file-raw/dummy-file-raw-placeholder with a custom command
+[258/420] Compiling C++ object app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o
+[259/420] Generating plug-ins/file-raw/dummy-file-rawtherapee with a custom command
+[260/420] Generating plug-ins/file-sgi/dummy-file-sgi with a custom command
+[261/420] Generating plug-ins/file-tiff/dummy-file-tiff with a custom command
+[262/420] Generating plug-ins/fractal-explorer/dummy-fractal-explorer with a custom command
+[263/420] Generating plug-ins/flame/dummy-flame with a custom command
+[264/420] Generating plug-ins/gfig/dummy-gfig with a custom command
+[265/420] Generating plug-ins/gimpressionist/dummy-gimpressionist with a custom command
+[266/420] Generating plug-ins/help/dummy-help with a custom command
+[267/420] Generating plug-ins/ifs-compose/dummy-ifs-compose with a custom command
+[268/420] Generating plug-ins/gradient-flare/dummy-gradient-flare with a custom command
+[269/420] Generating plug-ins/imagemap/dummy-imagemap with a custom command
+[270/420] Generating plug-ins/map-object/dummy-map-object with a custom command
+[271/420] Generating plug-ins/lighting/dummy-lighting with a custom command
+[272/420] Generating plug-ins/metadata/dummy-metadata-editor with a custom command
+[273/420] Generating plug-ins/metadata/dummy-metadata-viewer with a custom command
+[274/420] Generating plug-ins/print/dummy-print with a custom command
+[275/420] Generating plug-ins/pagecurl/dummy-pagecurl with a custom command
+[276/420] Generating plug-ins/screenshot/dummy-screenshot with a custom command
+[277/420] Generating plug-ins/script-fu/dummy-script-fu with a custom command
+[278/420] Generating plug-ins/script-fu/interpreter/dummy-script-fu-server with a custom command
+[279/420] Generating plug-ins/selection-to-path/dummy-selection-to-path with a custom command
+[280/420] Compiling C object plug-ins/script-fu/interpreter/gimp-script-fu-interpreter-3.0.p/script-fu-interpreter.c.o
+[281/420] Compiling C object plug-ins/script-fu/interpreter/gimp-script-fu-interpreter-3.0.p/script-fu-interpreter-plugin.c.o
+[282/420] Compiling C++ object app/painter/painter-foundation.p/tests_test-gobject.cpp.o
+[283/420] Compiling C++ object app/painter/painter-foundation.p/tests_test-foundation.cpp.o
+[284/420] Linking static target app/actions/libappactions.a
+[285/420] Linking static target app/dialogs/libappdialogs.a
+[286/420] Linking static target app/tools/libapptools.a
+[287/420] Linking static target app/widgets/libappwidgets.a
+[288/420] Compiling C++ object app/painter/painter-filter-gray.p/tests_test-filter-gray.cpp.o
+[289/420] Compiling C++ object app/painter/painter-foundation.p/tests_test-reentry.cpp.o
+[290/420] Compiling C++ object app/xcf/painter-xcf-compat-test.p/painter-xcf-compat.cpp.o
+[291/420] Compiling C object app/config/test-config.p/.._gimp-debug.c.o
+[292/420] Compiling C object app/config/test-config.p/test-config.c.o
+[293/420] Compiling C object app/tests/core.p/test-core.c.o
+[294/420] Compiling C object app/tests/core.p/tests.c.o
+[295/420] Linking target app/gimp-console-3.0
+[296/420] Compiling C++ object app/painter/painter-filter-raster-kernels.p/tests_test-filter-raster-kernels.cpp.o
+[297/420] Compiling C++ object app/xcf/painter-xcf-compat-test.p/tests_test-painter-xcf-compat.cpp.o
+[298/420] Compiling C object app/tests/gimp-clone-layer.p/tests.c.o
+[299/420] Compiling C++ object app/tests/gimp-clone-layer.p/test-gimp-clone-layout.cpp.o
+[300/420] Compiling C object app/tests/painter-layer-ui.p/tests.c.o
+[301/420] Compiling C object app/tests/gimp-painter-mybrush.p/test-gimp-painter-mybrush.c.o
+[302/420] Compiling C object app/tests/gimp-clone-layer.p/test-gimp-clone-layer.c.o
+[303/420] Compiling C object app/tests/painter-layer-ui.p/test-painter-layer-ui.c.o
+[304/420] Compiling C object app/tests/gimp-painter-mybrush.p/tests.c.o
+[305/420] Compiling C object app/tests/gimp-painter-mybrush-factory.p/test-gimp-painter-mybrush-factory.c.o
+[306/420] Compiling C object app/tests/gimp-painter-mybrush-factory.p/tests.c.o
+[307/420] Compiling C object app/tests/gimpidtable.p/test-gimpidtable.c.o
+[308/420] Compiling C object app/tests/gimp-painter-context.p/test-gimp-painter-context.c.o
+[309/420] Compiling C object app/tests/gimp-filter-layer.p/test-gimp-filter-layer.c.o
+[310/420] Compiling C object app/tests/gimp-painter-context.p/tests.c.o
+[311/420] Compiling C object app/tests/gimpidtable.p/tests.c.o
+[312/420] Compiling C object app/tests/xcf.p/tests.c.o
+[313/420] Compiling C object app/tests/xcf.p/test-xcf.c.o
+[314/420] Compiling C object app/tests/painter-xcf-open.p/tests.c.o
+[315/420] Compiling C object app/tests/painter-xcf-open.p/test-painter-xcf-open.c.o
+[316/420] Compiling C object app/tests/painter-xcf-roundtrip.p/tests.c.o
+[317/420] Compiling C object app/tests/painter-layer-modes.p/tests.c.o
+[318/420] Compiling C object app/tests/painter-layer-modes.p/test-painter-layer-modes.c.o
+../app/tests/test-painter-layer-modes.c: In function ‘direct_paint_operation’:
+../app/tests/test-painter-layer-modes.c:122:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  122 |           GimpOperationLayerMode *operation = GIMP_OPERATION_LAYER_MODE(gimp_layer_mode_get_operation(mode));
+      |           ^~~~~~~~~~~~~~~~~~~~~~
+[319/420] Compiling C object app/tests/painter-navigation-ui.p/test-painter-navigation-ui.c.o
+[320/420] Compiling C object app/tests/painter-navigation-events.p/test-painter-navigation-events.c.o
+[321/420] Compiling C object app/tests/painter-navigation-ui.p/tests.c.o
+[322/420] Compiling C object app/tests/painter-navigation-events.p/tests.c.o
+[323/420] Compiling C object app/tests/painter-perspective.p/tests.c.o
+[324/420] Compiling C object app/tests/painter-xcf-roundtrip.p/test-painter-xcf-roundtrip.c.o
+[325/420] Compiling C object app/tests/painter-perspective.p/test-painter-perspective.c.o
+[326/420] Compiling C object app/tests/painter-perspective-ui.p/test-painter-perspective-ui.c.o
+[327/420] Compiling C object app/tests/painter-perspective-ui.p/tests.c.o
+[328/420] Compiling C object app/tests/painter-perspective-events.p/tests.c.o
+[329/420] Compiling C object app/tests/painter-perspective-events.p/test-painter-perspective-events.c.o
+[330/420] Compiling C++ object app/tests/painter-fill-brush-trace.p/painter-fill-brush-trace.cpp.o
+[331/420] Compiling C++ object app/tests/gimp-painter-session.p/test-gimp-painter-session.cpp.o
+[332/420] Compiling C++ object app/tests/gimp-fill-brush.p/test-gimp-fill-brush.cpp.o
+[333/420] Compiling C++ object app/tests/gimp-painter-hover.p/test-gimp-painter-hover.cpp.o
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib-object.h:24,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/gioenums.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/giotypes.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/gio.h:28,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gdk/gdkapplaunchcontext.h:28,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gdk/gdk.h:32,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gtk/gtk.h:30,
+                 from ../app/tests/test-gimp-painter-hover.cpp:3:
+../app/tests/test-gimp-painter-hover.cpp:100:26: warning: no previous declaration for ‘GType hover_brush_get_type()’ [-Wmissing-declarations]
+  100 | G_DEFINE_TYPE(HoverBrush,hover_brush,GIMP_TYPE_BRUSH)
+      |                          ^~~~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:2305:1: note: in definition of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE’
+ 2305 | type_name##_get_type (void) \
+      | ^~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:2053:61: note: in expansion of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:1834:61: note: in expansion of macro ‘G_DEFINE_TYPE_EXTENDED’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~
+../app/tests/test-gimp-painter-hover.cpp:100:1: note: in expansion of macro ‘G_DEFINE_TYPE’
+  100 | G_DEFINE_TYPE(HoverBrush,hover_brush,GIMP_TYPE_BRUSH)
+      | ^~~~~~~~~~~~~
+[334/420] Compiling C object app/tests/gimp-layer-presets.p/test-gimp-layer-presets.c.o
+../app/tests/test-gimp-layer-presets.c: In function ‘load_file’:
+../app/tests/test-gimp-layer-presets.c:40:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   40 |   GimpLayerPreset *preset = list->data; g_list_free (list); return preset;
+      |   ^~~~~~~~~~~~~~~
+../app/tests/test-gimp-layer-presets.c: In function ‘from_json’:
+../app/tests/test-gimp-layer-presets.c:121:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  121 |   GimpLayerPreset *preset = GIMP_LAYER_PRESET (gimp_layer_preset_new (gimp->user_context, "test"));
+      |   ^~~~~~~~~~~~~~~
+../app/tests/test-gimp-layer-presets.c: In function ‘resource_roundtrip’:
+../app/tests/test-gimp-layer-presets.c:134:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  134 |   JsonNode *a = gimp_layer_preset_dup_json (preset), *b = gimp_layer_preset_dup_json (reloaded), *c = gimp_layer_preset_dup_json (copy);
+      |   ^~~~~~~~
+../app/tests/test-gimp-layer-presets.c:140:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  140 |   GFile *dir = g_file_new_for_path (directory); g_file_delete (dir, NULL, NULL); g_object_unref (dir); g_free (directory); g_free (filename);
+      |   ^~~~~
+../app/tests/test-gimp-layer-presets.c: In function ‘reject_without_history_loss’:
+../app/tests/test-gimp-layer-presets.c:156:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  156 |       GimpUndo *undo = gimp_undo_stack_peek (gimp_image_get_undo_stack (image)), *redo = gimp_undo_stack_peek (gimp_image_get_redo_stack (image));
+      |       ^~~~~~~~
+../app/tests/test-gimp-layer-presets.c: In function ‘rollback_after_insert’:
+../app/tests/test-gimp-layer-presets.c:172:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  172 |   GimpUndo *undo = gimp_undo_stack_peek (gimp_image_get_undo_stack (image)), *redo = gimp_undo_stack_peek (gimp_image_get_redo_stack (image));
+      |   ^~~~~~~~
+../app/tests/test-gimp-layer-presets.c: In function ‘preflight_rejects_changed_target’:
+../app/tests/test-gimp-layer-presets.c:251:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  251 |         GimpLayerPreset *preset = from_json ("{\"version\":1,\"source-layer\":{\"type\":\"any\"},\"replacement-layer\":[{\"target\":\"new\",\"name\":\"Preflight probe\"}]}");
+      |         ^~~~~~~~~~~~~~~
+../app/tests/test-gimp-layer-presets.c:254:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  254 |         guint signal = g_signal_lookup ("name-changed", GIMP_TYPE_OBJECT);
+      |         ^~~~~
+../app/tests/test-gimp-layer-presets.c: In function ‘ordered_source_edits’:
+../app/tests/test-gimp-layer-presets.c:277:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  277 |   GimpLayer *duplicate = GIMP_LAYER (gimp_container_get_first_child (gimp_image_get_layers (image)));
+      |   ^~~~~~~~~
+../app/tests/test-gimp-layer-presets.c: In function ‘factory_paths’:
+../app/tests/test-gimp-layer-presets.c:293:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  293 |   GimpContainer *container = gimp_data_factory_get_container (gimp->layer_preset_factory);
+      |   ^~~~~~~~~~~~~
+../app/tests/test-gimp-layer-presets.c: In function ‘save_reopen_editable’:
+../app/tests/test-gimp-layer-presets.c:305:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  305 |       GOutputStream *output = g_memory_output_stream_new_resizable (); GFile *file = g_file_new_for_path ("/tmp/layer-preset-roundtrip.xcf");
+      |       ^~~~~~~~~~~~~
+../app/tests/test-gimp-layer-presets.c:308:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  308 |       GBytes *bytes = g_memory_output_stream_steal_as_bytes (G_MEMORY_OUTPUT_STREAM (output)); GInputStream *input = g_memory_input_stream_new_from_bytes (bytes);
+      |       ^~~~~~
+../app/tests/test-gimp-layer-presets.c:310:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  310 |       GimpLayer *group = GIMP_LAYER (gimp_container_get_first_child (gimp_image_get_layers (copy)));
+      |       ^~~~~~~~~
+../app/tests/test-gimp-layer-presets.c:311:52: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  311 |       g_assert_true (GIMP_IS_GROUP_LAYER (group)); GimpContainer *children = gimp_viewable_get_children (GIMP_VIEWABLE (group));
+      |                                                    ^~~~~~~~~~~~~
+../app/tests/test-gimp-layer-presets.c:314:60: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  314 |       else { g_assert_true (GIMP_IS_FILTER_LAYER (first)); gchar *proc = gimp_filter_layer_dup_procedure (GIMP_FILTER_LAYER (first)); g_assert_cmpstr (proc, ==, "plug-in-edge"); g_free (proc); }
+      |                                                            ^~~~~
+../app/tests/test-gimp-layer-presets.c:315:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  315 |       GeglColor *color = gegl_color_new ("rgba(0.2,0.7,0.4,0.8)"); gegl_buffer_set_color (gimp_drawable_get_buffer (GIMP_DRAWABLE (last)), NULL, color); g_object_unref (color);
+      |       ^~~~~~~~~
+../app/tests/test-gimp-layer-presets.c: In function ‘unknown_filter_stays_inert’:
+../app/tests/test-gimp-layer-presets.c:346:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  346 |   GimpFilterLayer *filter = GIMP_FILTER_LAYER (gimp_container_get_first_child (gimp_image_get_layers (image)));
+      |   ^~~~~~~~~~~~~~~
+../app/tests/test-gimp-layer-presets.c:352:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  352 |   GBytes *bytes = gimp_filter_layer_ref_definition (filter); gsize size; const char *data = g_bytes_get_data (bytes, &size);
+      |   ^~~~~~
+../app/tests/test-gimp-layer-presets.c: In function ‘main’:
+../app/tests/test-gimp-layer-presets.c:365:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  365 |   int result = g_test_run ();
+      |   ^~~
+[335/420] Compiling C++ object app/tests/painter-smudge-trace.p/painter-smudge-trace.cpp.o
+[336/420] Compiling C++ object app/tests/painter-fill-brush-ui.p/test-painter-fill-brush-ui.cpp.o
+[337/420] Compiling C++ object app/tests/painter-mypaint-tool.p/test-painter-mypaint-tool.cpp.o
+[338/420] Linking target libgimp/tests/test-color-parser
+[339/420] Linking target libgimp/tests/test-export-options
+[340/420] Linking target libgimp/tests/test-image
+[341/420] Linking target libgimp/tests/test-palette
+[342/420] Linking target libgimp/tests/test-selection-float
+[343/420] Linking target libgimp/tests/test-unit
+[344/420] Generating menus/validate_ui_menus with a custom command
+[345/420] Compiling C++ object app/tests/painter-brush-interpolation-trace.p/painter-brush-interpolation-trace.cpp.o
+[346/420] Generating libgimp/check-def-files with a custom command
+[347/420] Linking target modules/libcolor-selector-cmyk.so
+[348/420] Linking target modules/libcolor-selector-wheel.so
+[349/420] Linking target extensions/goat-exercises/goat-exercise-c
+[350/420] Linking target modules/libdisplay-filter-clip-warning.so
+[351/420] Linking target modules/libdisplay-filter-color-blind.so
+[352/420] Linking target modules/libdisplay-filter-aces-rrt.so
+[353/420] Linking target modules/libdisplay-filter-gamma.so
+[354/420] Linking target modules/libcontroller-midi.so
+[355/420] Linking target modules/libdisplay-filter-high-contrast.so
+[356/420] Linking target app/painter/painter-foundation
+[357/420] Linking target app/painter/painter-filter-scheduler
+[358/420] Linking target plug-ins/script-fu/interpreter/gimp-script-fu-interpreter-3.0
+[359/420] Linking target app/painter/painter-filter-edge
+[360/420] Linking target app/painter/painter-filter-gray
+[361/420] Linking target app/painter/painter-work-admission
+[362/420] Linking target app/painter/painter-fair-dispatcher
+[363/420] Linking target app/painter/painter-filter-raster
+[364/420] Linking target app/painter/painter-filter-spool
+[365/420] Linking target app/painter/painter-filter-raster-kernels
+[366/420] Linking target app/paint/painter-mypaint/painter-mypaint-resource
+[367/420] Linking target app/paint/painter-mypaint/painter-mypaint-resource-trace
+[368/420] Linking target app/paint/painter-mypaint/painter-mypaint-engine-trace
+[369/420] Linking target app/paint/painter-bounded-fill/painter-bounded-fill-trace
+[370/420] Linking target app/paint/painter-bounded-fill/painter-bounded-fill-test
+[371/420] Linking target app/paint/painter-mypaint-surface/painter-mypaint-surface-trace
+[372/420] Linking target app/paint/painter-mypaint-surface/painter-mypaint-generated-trace
+[373/420] Linking target app/xcf/painter-xcf-compat-test
+[374/420] Linking target app/config/test-config
+[375/420] Linking target app-tools/gimp-debug-tool-3.0
+[376/420] Compiling C++ object app/tests/painter-mypaint-editor.p/test-painter-mypaint-editor.cpp.o
+[377/420] Compiling C++ object app/tests/painter-save-continuation.p/test-painter-save-continuation.cpp.o
+[378/420] Linking target app/gimp-3.0
+[379/420] Linking target app/tests/core
+[380/420] Linking target app/tests/gimp-clone-layer
+[381/420] Linking target app/tests/gimp-filter-layer
+[382/420] Linking target app/tests/painter-layer-ui
+[383/420] Linking target app/tests/gimp-painter-mybrush-factory
+[384/420] Linking target app/tests/gimp-painter-mybrush
+[385/420] Linking target app/tests/gimp-painter-context
+[386/420] Linking target app/tests/gimpidtable
+[387/420] Linking target app/tests/gimp-tool-owner
+[388/420] Linking target app/tests/xcf
+[389/420] Linking target app/tests/painter-xcf-open
+[390/420] Linking target app/tests/painter-xcf-roundtrip
+[391/420] Linking target app/tests/painter-layer-modes
+[392/420] Linking target app/tests/painter-dynamics
+[393/420] Linking target app/tests/painter-navigation-ui
+[394/420] Linking target app/tests/painter-navigation-events
+[395/420] Linking target app/tests/painter-perspective
+[396/420] Linking target app/tests/painter-perspective-ui
+[397/420] Linking target app/tests/gimp-painter-surface
+[398/420] Linking target app/tests/painter-perspective-events
+[399/420] Linking target app/tests/painter-mypaint-session-trace
+[400/420] Linking target app/tests/painter-fill-brush-trace
+[401/420] Linking target app/tests/gimp-painter-options
+[402/420] Linking target app/tests/gimp-painter-session
+[403/420] Linking target app/tests/gimp-painter-hover
+[404/420] Linking target app/tests/gimp-fill-brush
+[405/420] Linking target app/tests/painter-fill-brush-ui
+[406/420] Linking target app/tests/gimp-layer-presets
+[407/420] Linking target app/tests/painter-mypaint-tool
+[408/420] Linking target app/tests/painter-smudge-trace
+[409/420] Linking target app/tests/layer-presets-ui
+[410/420] Linking target app/tests/painter-brush-interpolation-trace
+[411/420] Generating gimp-data/images/gimp-splash.png with a custom command (wrapped by meson to set env, to feed input)
+[412/420] Generating libgimp/tests/test-color-parser.dummy with a custom command
+[413/420] Generating libgimp/tests/test-export-options.dummy with a custom command
+[414/420] Generating libgimp/tests/test-image.dummy with a custom command
+[415/420] Generating libgimp/tests/test-palette.dummy with a custom command
+[416/420] Generating libgimp/tests/test-selection-float.dummy with a custom command
+[417/420] Linking target app/tests/painter-mypaint-editor
+[418/420] Linking target app/tests/gimp-painter-preview
+[419/420] Generating libgimp/tests/test-unit.dummy with a custom command
+[420/420] Linking target app/tests/painter-save-continuation

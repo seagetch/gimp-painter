@@ -1,0 +1,49 @@
+{
+  "status": "Frozen start-gate-only checkpoint, excluding all Save continuation source and UI changes",
+  "whole_file_allowlist": [
+    "app/paint/gimppaintcore.c",
+    "app/paint/gimppaintcore.h",
+    "app/paint/gimpfillbrush.cpp",
+    "app/paint/gimpfillbrush.h",
+    "app/tests/test-gimp-fill-brush.cpp",
+    "migration/tests/run_fill_brush_sanitizers.py",
+    "migration/tests/build_fill_brush_ui_sanitizers.py",
+    "migration/tests/fill-startgate-core-sanitizers.json",
+    "migration/tests/fill-startgate-core-native.txt",
+    "migration/tests/fill-startgate-full-build.txt",
+    "migration/tests/fill-startgate-interpolation.txt",
+    "migration/tests/fill-startgate-legacy.txt"
+  ],
+  "sha256": {
+    "app/paint/gimppaintcore.c": "306710d7b6ae412e7e12bcedaf85b5f9bd4b43de2a7f424dca2bb82a9c6a16be",
+    "app/paint/gimppaintcore.h": "ebb93d0364e3fb37d54613afa6b9f730cc224264658362a59d8117bec735a07c",
+    "app/paint/gimpfillbrush.cpp": "93561421f8c02ff015912d3c3f5972ae612e6d7a6d31fd3c3fcb2d940fa5960c",
+    "app/paint/gimpfillbrush.h": "12e21e8a0694c700ba058304819218cb4deac93753890688632325a0692d6a68",
+    "app/tests/test-gimp-fill-brush.cpp": "32b7f69aa429c74753e45b12aff1d468d066bc3476f335175922f96d81cc8301",
+    "migration/tests/run_fill_brush_sanitizers.py": "30549b5b8ac5af3380f9f27f0a563412865ebccfaac55fd01e2401515b4fb3e5",
+    "migration/tests/build_fill_brush_ui_sanitizers.py": "76fc5cb8cb1df5b3293245cfee0f089026008d31115ec36f023d581454526199",
+    "migration/tests/fill-startgate-core-sanitizers.json": "bc20287d75d66d8124fe4140a41196131408fd612bb724d3f54f743079b2d6d0",
+    "migration/tests/fill-startgate-core-native.txt": "ef9ed25d16d2fb3fc324d7f2fd8c5b55239ad3e235a5fc6b3d99e3b343082a4c",
+    "migration/tests/fill-startgate-full-build.txt": "2452aefab5c5bb584427382fcff877b30c9e552823389059e459a14538aa840f",
+    "migration/tests/fill-startgate-interpolation.txt": "d5a07bfd4cb13caf105b8e213aaa8d9863412841222287fe79ea80bcd1735a97",
+    "migration/tests/fill-startgate-legacy.txt": "15acb5ab8ddf439be2c76df4053b42be61e19169bed567588d92ff291538fbde"
+  },
+  "results": {
+    "full_normal_ninja": "PASS, all targets",
+    "normal_lifecycle_groups": 26,
+    "sanitized_lifecycle_groups": 26,
+    "old_fill_modes": 3,
+    "old_fill_bytes_each": 1814962,
+    "native_interpolation_budgets": [
+      0,
+      1,
+      2,
+      7,
+      31,
+      4096
+    ],
+    "native_interpolation_bytes_each": 4655000,
+    "generic_start": "Public and direct-vfunc rejection; reentrant public start preserves native outer state"
+  },
+  "limitations": "Generic Stroke Path integration remains unsupported and now fails explicitly. Guard must not be mistaken for that integration. Fresh full normal build precedes all sanitizer relinks; class header included in source hashes."
+}
