@@ -218,12 +218,14 @@ struct _GimpDisplayShell
   /* Modifier action currently ON. */
   GimpModifierAction mod_action;
   gchar             *mod_action_desc;
+  guint              mod_action_button;
+  gboolean           painter_navigation_inherited;
 
   gint               scroll_start_x;
   gint               scroll_start_y;
   gint               scroll_last_x;
   gint               scroll_last_y;
-  gdouble            rotate_drag_angle;
+  gdouble            rotate_drag_angle; /* fixed painter rotation anchor */
   gpointer           scroll_info;
   GimpLayer         *picked_layer;
 

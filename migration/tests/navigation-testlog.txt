@@ -1,0 +1,30 @@
+Log of Meson test suite run on 2026-10-02T11:32:48.057873
+
+Inherited environment omitted; see whitelisted JSON reproducibility variables.
+
+==================================== 1/1 =====================================
+test:         gimp:painter / painter-navigation
+start time:   02:32:48
+duration:     0.01s
+result:       exit status 0
+command:      ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=137 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/display/painter-navigation /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-navigation/rotation.tsv
+----------------------------------- stdout -----------------------------------
+TAP version 14
+# random seed: R02Sc608ad0d58ccb32d0818a0da9ac00546
+1..5
+# Start of navigation tests
+ok 1 /navigation/golden-rotation
+ok 2 /navigation/modifier-bits
+ok 3 /navigation/midpoint-toggle
+ok 4 /navigation/mirrored-keys
+ok 5 /navigation/custom-rotation
+# End of navigation tests
+==============================================================================
+
+
+Ok:                 1
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0

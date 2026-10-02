@@ -48,6 +48,7 @@ app_tests = [
   'xcf',
   'painter-xcf-open',
   'painter-layer-modes',
+  'painter-navigation-ui',
 ]
 
 # Prevent parallel builds for the tests

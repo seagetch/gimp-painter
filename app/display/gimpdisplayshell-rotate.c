@@ -31,6 +31,7 @@
 #include "gimpdisplayshell-expose.h"
 #include "gimpdisplayshell-render.h"
 #include "gimpdisplayshell-rotate.h"
+#include "gimppainternavigation.h"
 #include "gimpdisplayshell-scale.h"
 #include "gimpdisplayshell-scroll.h"
 #include "gimpdisplayshell-transform.h"
@@ -149,33 +150,15 @@ gimp_display_shell_rotate_drag (GimpDisplayShell *shell,
                                 gdouble           cur_y,
                                 gboolean          constrain)
 {
-  gdouble pivot_x, pivot_y;
-  gdouble src_x,   src_y,   src_angle;
-  gdouble dest_x,  dest_y,  dest_angle;
-  gdouble                   delta_angle;
-
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  /* Rotate the image around the center of the viewport. */
-  pivot_x     = shell->disp_width  / 2.0;
-  pivot_y     = shell->disp_height / 2.0;
-
-  src_x       = last_x - pivot_x;
-  src_y       = last_y - pivot_y;
-  src_angle   = atan2 (src_y, src_x);
-
-  dest_x      = cur_x - pivot_x;
-  dest_y      = cur_y - pivot_y;
-  dest_angle  = atan2 (dest_y, dest_x);
-
-  delta_angle = dest_angle - src_angle;
-
-  shell->rotate_drag_angle += 180.0 * delta_angle / G_PI;
-
+  /* Start-relative arithmetic is independent of skipped/compressed motion and
+   * keeps the unsnapped reference when Ctrl is pressed or released mid-drag. */
   gimp_display_shell_rotate_to (shell,
-                                constrain ?
-                                RINT (shell->rotate_drag_angle / 15.0) * 15.0 :
-                                shell->rotate_drag_angle);
+    gimp_painter_navigation_rotate (shell->disp_width, shell->disp_height,
+                                    cur_x, cur_y, shell->rotate_drag_angle,
+                                    shell->flip_horizontally, shell->flip_vertically,
+                                    constrain ? GDK_CONTROL_MASK : 0));
 }
 
 void

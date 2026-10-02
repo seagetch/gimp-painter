@@ -1,0 +1,18 @@
+{
+  "scope": "Four GTK/GdkDevice modifier configuration cases on native cloud Xfce DISPLAY=:0; not a physical drag or tablet test",
+  "observed_utc": "2026-10-02T02:37:30Z",
+  "launch": "bash /workspace/shared/pnav",
+  "exit_code": 0,
+  "verification": "Native terminal screenshot visibly showed all four TAP cases and PAINTER_NAV_EXIT=0",
+  "source_sha256": {
+    "app/display/gimppainternavigation.c": "5b24f163f484cf78147a4aa0bd749b0cda21bfe7e7c0cf953b76fbd844a02249",
+    "app/display/gimppainternavigation.h": "2cb6c84eda8dedfeb08530c3c8b60fac6e29b8a9c042903c35045cb5b3f259ad",
+    "app/display/gimpmodifiersmanager.c": "686e0ddfd749140b272c0561cc80394d3bf6e696fa20e1b97e0d8fe6095364dc",
+    "app/display/gimpmodifiersmanager.h": "582a33d9259525b3b0cd24ff809cc8e12f8ccf60e69ea20587281d047c80a8a2",
+    "app/display/gimpdisplayshell-tool-events.c": "b5dc0475ba8b7321f8874f3ee76af064d5430e792b8d44e3913ed35419b88650",
+    "app/display/gimpdisplayshell-rotate.c": "1c07a0afa30325b85ce21540e6607b94aa4b2ed10b40acabdac62f7666cf5728",
+    "app/tests/test-painter-navigation-ui.c": "7a0b30dedbdc50108b2319474b79f406d4ca5ea260b63e98588cc77b14dabd6d",
+    "build-debian13/app/tests/painter-navigation-ui": "c3e8992e3b089f4ed4fa9fd0f8d04aa972e5792e759d718866134486fa6d9337",
+    "migration/tests/navigation-native.txt": "64e22a38ae83bde2633e4f494336ac40b4f000e4af4cc0bf3df3d51d93aae08b"
+  }
+}

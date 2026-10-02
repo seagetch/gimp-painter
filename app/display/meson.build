@@ -73,6 +73,7 @@ libappdisplay_sources = [
   'gimpdisplayshell-render.c',
   'gimpdisplayshell-rotate-dialog.c',
   'gimpdisplayshell-rotate.c',
+  'gimppainternavigation.c',
   'gimpdisplayshell-rulers.c',
   'gimpdisplayshell-scale-dialog.c',
   'gimpdisplayshell-scale.c',
@@ -125,3 +126,13 @@ libappdisplay = static_library('appdisplay',
     gegl, gtk3, cairo, gexiv2
   ],
 )
+
+# Pure input arithmetic runs without a display server or simulated GUI claim.
+painter_navigation_test = executable('painter-navigation',
+  'gimppainternavigation.c', '../tests/test-painter-navigation.c',
+  include_directories: [rootInclude, rootAppInclude],
+  dependencies: [gtk3, cairo, math],
+)
+test('painter-navigation', painter_navigation_test,
+  args: [meson.project_source_root() / 'migration/fixtures/legacy-navigation/rotation.tsv'],
+  suite: 'painter', timeout: 30)

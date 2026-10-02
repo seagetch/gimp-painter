@@ -71,6 +71,7 @@
 #include "gimpdisplayshell-grab.h"
 #include "gimpdisplayshell-layer-select.h"
 #include "gimpdisplayshell-rotate.h"
+#include "gimppainternavigation.h"
 #include "gimpdisplayshell-scale.h"
 #include "gimpdisplayshell-scroll.h"
 #include "gimpdisplayshell-tool-events.h"
@@ -599,11 +600,15 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                                         bevent->button, bevent->state,
                                                         &action_desc);
             shell->mod_action = action;
+            shell->mod_action_button = bevent->button;
+            shell->painter_navigation_inherited =
+              gimp_modifiers_manager_uses_painter_defaults (mod_manager, device, bevent->button, bevent->state);
             switch (action)
               {
               case GIMP_MODIFIER_ACTION_MENU:
                 gimp_display_triggers_context_menu (event, shell, gimp, &image_coords, TRUE);
                 shell->mod_action = GIMP_MODIFIER_ACTION_NONE;
+                shell->mod_action_button = 0;
                 break;
               case GIMP_MODIFIER_ACTION_PANNING:
               case GIMP_MODIFIER_ACTION_ZOOMING:
@@ -620,6 +625,8 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                 shell->mod_action_desc = g_strdup (action_desc);
                 break;
               case GIMP_MODIFIER_ACTION_NONE:
+                shell->mod_action_button = 0;
+                shell->painter_navigation_inherited = FALSE;
                 gimp_display_triggers_context_menu (event, shell, gimp, &image_coords, FALSE);
                 break;
               }
@@ -744,6 +751,8 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
           }
         else
           {
+            if (shell->mod_action_button && shell->mod_action_button != bevent->button)
+              return TRUE;
             switch (shell->mod_action)
               {
               case GIMP_MODIFIER_ACTION_MENU:
@@ -773,6 +782,8 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
               }
 
             shell->mod_action = GIMP_MODIFIER_ACTION_NONE;
+            shell->mod_action_button = 0;
+            shell->painter_navigation_inherited = FALSE;
           }
 
         return_val = TRUE;
@@ -1029,7 +1040,8 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
           }
         else
           {
-            gboolean arrow_key = FALSE;
+            gboolean    arrow_key = FALSE;
+            GdkEventKey translated_key;
 
             tool_manager_focus_display_active (gimp, display);
 
@@ -1058,6 +1070,13 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             if (gimp_display_shell_key_to_state (kevent->keyval) == GDK_MOD1_MASK)
               /* Make sure the picked layer is reset. */
               g_clear_weak_pointer (&shell->picked_layer);
+
+            /* Do not modify the GDK event shared with other handlers. Match
+             * the old normal key-press route, after wants-all-key-events. */
+            translated_key = *kevent;
+            translated_key.keyval = gimp_painter_navigation_key (
+              kevent->keyval, shell->flip_horizontally, TRUE);
+            kevent = &translated_key;
 
             switch (kevent->keyval)
               {
@@ -1158,8 +1177,11 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
             g_clear_weak_pointer (&shell->picked_layer);
             shell->mod_action = GIMP_MODIFIER_ACTION_NONE;
+            shell->mod_action_button = 0;
+            shell->painter_navigation_inherited = FALSE;
           }
         else if (shell->mod_action != GIMP_MODIFIER_ACTION_NONE &&
+                 shell->mod_action_button == 0 &&
                  (state & gimp_get_all_modifiers_mask ()) == 0)
           {
             gimp_display_shell_stop_scrolling (shell, event);
@@ -1719,7 +1741,9 @@ gimp_display_shell_start_scrolling (GimpDisplayShell *shell,
   shell->scroll_start_y    = y;
   shell->scroll_last_x     = x;
   shell->scroll_last_y     = y;
-  shell->rotate_drag_angle = shell->rotate_angle;
+  shell->rotate_drag_angle = gimp_painter_navigation_begin (
+    shell->disp_width, shell->disp_height, x, y, shell->rotate_angle,
+    shell->flip_horizontally, shell->flip_vertically);
 
   switch (mod_action)
     {
@@ -1819,6 +1843,8 @@ gimp_display_shell_stop_scrolling (GimpDisplayShell *shell,
     }
 
   shell->mod_action = GIMP_MODIFIER_ACTION_NONE;
+  shell->mod_action_button = 0;
+  shell->painter_navigation_inherited = FALSE;
 
   shell->scroll_start_x    = 0;
   shell->scroll_start_y    = 0;
@@ -1860,15 +1886,10 @@ gimp_display_shell_handle_scrolling (GimpDisplayShell *shell,
   else if (mod_action == GIMP_MODIFIER_ACTION_ROTATING ||
            mod_action == GIMP_MODIFIER_ACTION_STEP_ROTATING)
     {
-      state &= gimp_get_all_modifiers_mask ();
-
-      /* Allow switching from the constrained to non-constrained
-       * variant, back and forth, during a single scroll.
-       */
-      if (state == gimp_get_extend_selection_mask ())
-        mod_action = GIMP_MODIFIER_ACTION_ROTATING;
-      else if (state == (gimp_get_extend_selection_mask () | GDK_CONTROL_MASK))
-        mod_action = GIMP_MODIFIER_ACTION_STEP_ROTATING;
+      /* Ctrl is a bit test throughout an active rotation, even after Shift
+       * release or with extra modifiers. Keep the original start reference. */
+      mod_action = gimp_painter_navigation_rotation_action (
+        mod_action, shell->painter_navigation_inherited, state);
     }
 
   switch (mod_action)

@@ -30,6 +30,7 @@
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpmodifiersmanager.h"
+#include "gimppainternavigation.h"
 
 #include "gimp-intl.h"
 
@@ -38,6 +39,7 @@ enum
   MODIFIERS_MANAGER_MAPPING,
   MODIFIERS_MANAGER_MODIFIERS,
   MODIFIERS_MANAGER_MOD_ACTION,
+  MODIFIERS_MANAGER_PAINTER_DEFAULTS,
 };
 
 typedef struct
@@ -51,6 +53,7 @@ struct _GimpModifiersManagerPrivate
 {
   GHashTable *actions;
   GList      *buttons;
+  GHashTable *painter_buttons; /* inherited defaults plus explicit overrides */
 };
 
 static void      gimp_modifiers_manager_config_iface_init  (GimpConfigInterface    *iface);
@@ -96,6 +99,7 @@ gimp_modifiers_manager_init (GimpModifiersManager *manager)
 {
   manager->p = gimp_modifiers_manager_get_instance_private (manager);
 
+  manager->p->painter_buttons = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
   manager->p->actions = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
                                                (GDestroyNotify) gimp_modifiers_manager_free_mapping);
 }
@@ -115,6 +119,7 @@ gimp_modifiers_manager_finalize (GObject *object)
   G_OBJECT_CLASS (parent_class)->finalize (object);
 
   g_hash_table_unref (manager->p->actions);
+  g_hash_table_unref (manager->p->painter_buttons);
   g_list_free_full (manager->p->buttons, g_free);
 }
 
@@ -128,6 +133,14 @@ gimp_modifiers_manager_serialize (GimpConfig       *config,
   GList                *keys;
   GList                *iter;
 
+  keys = g_hash_table_get_keys (manager->p->painter_buttons);
+  for (iter = keys; iter; iter = iter->next)
+    {
+      gimp_config_writer_open (writer, "painter-defaults");
+      gimp_config_writer_string (writer, iter->data);
+      gimp_config_writer_close (writer);
+    }
+  g_list_free (keys);
   enum_class = g_type_class_ref (GIMP_TYPE_MODIFIER_ACTION);
   keys       = g_hash_table_get_keys (manager->p->actions);
 
@@ -180,6 +193,8 @@ gimp_modifiers_manager_deserialize (GimpConfig *config,
   old_scope_id = g_scanner_set_scope (scanner, scope_id);
   enum_class = g_type_class_ref (GIMP_TYPE_MODIFIER_ACTION);
 
+  g_scanner_scope_add_symbol (scanner, scope_id, "painter-defaults",
+                              GINT_TO_POINTER (MODIFIERS_MANAGER_PAINTER_DEFAULTS));
   g_scanner_scope_add_symbol (scanner, scope_id, "mapping",
                               GINT_TO_POINTER (MODIFIERS_MANAGER_MAPPING));
   g_scanner_scope_add_symbol (scanner, scope_id, "modifiers",
@@ -202,6 +217,19 @@ gimp_modifiers_manager_deserialize (GimpConfig *config,
         case G_TOKEN_SYMBOL:
           switch (GPOINTER_TO_INT (scanner->value.v_symbol))
             {
+            case MODIFIERS_MANAGER_PAINTER_DEFAULTS:
+                {
+                  gchar *button_key = NULL;
+                  if (! gimp_scanner_parse_string (scanner, &button_key))
+                    goto error;
+                  if (! g_list_find_custom (manager->p->buttons, button_key,
+                                            (GCompareFunc) g_strcmp0))
+                    manager->p->buttons = g_list_prepend (manager->p->buttons, g_strdup (button_key));
+                  g_hash_table_add (manager->p->painter_buttons, button_key);
+                  token = G_TOKEN_RIGHT_PAREN;
+                }
+              break;
+
             case MODIFIERS_MANAGER_MAPPING:
               token = G_TOKEN_LEFT_PAREN;
               if (! gimp_scanner_parse_string (scanner, &actions_key))
@@ -319,6 +347,7 @@ gimp_modifiers_manager_deserialize (GimpConfig *config,
 
  error:
 
+  g_scanner_scope_remove_symbol (scanner, scope_id, "painter-defaults");
   g_scanner_scope_remove_symbol (scanner, scope_id, "mapping");
   g_scanner_scope_remove_symbol (scanner, scope_id, "modifiers");
   g_scanner_scope_remove_symbol (scanner, scope_id, "mod-action");
@@ -366,7 +395,8 @@ gimp_modifiers_manager_get_action (GimpModifiersManager *manager,
       mapping = g_hash_table_lookup (manager->p->actions, actions_key);
 
       if (mapping == NULL)
-        retval = GIMP_MODIFIER_ACTION_NONE;
+        retval = button == 2 && g_hash_table_contains (manager->p->painter_buttons, buttons_key) ?
+          gimp_painter_navigation_middle_action (mod_state) : GIMP_MODIFIER_ACTION_NONE;
       else
         retval = mapping->mod_action;
 
@@ -375,16 +405,7 @@ gimp_modifiers_manager_get_action (GimpModifiersManager *manager,
     }
   else if (button == 2)
     {
-      if (mod_state == gimp_get_extend_selection_mask ())
-        retval = GIMP_MODIFIER_ACTION_ROTATING;
-      else if (mod_state == (gimp_get_extend_selection_mask () | GDK_CONTROL_MASK))
-        retval = GIMP_MODIFIER_ACTION_STEP_ROTATING;
-      else if (mod_state == gimp_get_toggle_behavior_mask ())
-        retval = GIMP_MODIFIER_ACTION_ZOOMING;
-      else if (mod_state == GDK_MOD1_MASK)
-        retval = GIMP_MODIFIER_ACTION_LAYER_PICKING;
-      else if (mod_state == 0)
-        retval = GIMP_MODIFIER_ACTION_PANNING;
+      retval = gimp_painter_navigation_middle_action (mod_state);
     }
   else if (button == 3)
     {
@@ -400,6 +421,25 @@ gimp_modifiers_manager_get_action (GimpModifiersManager *manager,
   return retval;
 }
 
+gboolean
+gimp_modifiers_manager_uses_painter_defaults (GimpModifiersManager *manager,
+                                              GdkDevice *device, guint button,
+                                              GdkModifierType state)
+{
+  gchar *key, *action_key;
+  gboolean inherited;
+  g_return_val_if_fail (GIMP_IS_MODIFIERS_MANAGER (manager), FALSE);
+  g_return_val_if_fail (GDK_IS_DEVICE (device), FALSE);
+  gimp_modifiers_manager_get_keys (device, button, state, &action_key, &key);
+  inherited = button == 2 &&
+    (! g_list_find_custom (manager->p->buttons, key, (GCompareFunc) g_strcmp0) ||
+     (g_hash_table_contains (manager->p->painter_buttons, key) &&
+      ! g_hash_table_contains (manager->p->actions, action_key)));
+  g_free (action_key);
+  g_free (key);
+  return inherited;
+}
+
 GList *
 gimp_modifiers_manager_get_modifiers (GimpModifiersManager *manager,
                                       GdkDevice            *device,
@@ -411,10 +451,37 @@ gimp_modifiers_manager_get_modifiers (GimpModifiersManager *manager,
   GList *iter;
   gchar *action_prefix;
 
-  gimp_modifiers_manager_initialize (manager, device, button);
+  g_return_val_if_fail (GIMP_IS_MODIFIERS_MANAGER (manager), NULL);
+  g_return_val_if_fail (GDK_IS_DEVICE (device), NULL);
 
   gimp_modifiers_manager_get_keys (device, button, 0, NULL,
                                    &buttons_key);
+  if (! g_list_find_custom (manager->p->buttons, buttons_key,
+                            (GCompareFunc) g_strcmp0))
+    {
+      /* Merely opening Preferences must not turn inherited bit-mask defaults
+       * into explicit exact-match overrides for this device. */
+      modifiers = g_list_append (modifiers, GUINT_TO_POINTER (0));
+      if (button == 2)
+        {
+          modifiers = g_list_append (modifiers, GUINT_TO_POINTER (GDK_SHIFT_MASK));
+          modifiers = g_list_append (modifiers, GUINT_TO_POINTER (GDK_CONTROL_MASK));
+          modifiers = g_list_append (modifiers, GUINT_TO_POINTER (GDK_SHIFT_MASK | GDK_CONTROL_MASK));
+        }
+      else if (button == 3)
+        modifiers = g_list_append (modifiers, GUINT_TO_POINTER (GDK_MOD1_MASK));
+      else
+        g_clear_pointer (&modifiers, g_list_free);
+      g_free (buttons_key);
+      return modifiers;
+    }
+  if (button == 2 && g_hash_table_contains (manager->p->painter_buttons, buttons_key))
+    {
+      modifiers = g_list_append (modifiers, GUINT_TO_POINTER (0));
+      modifiers = g_list_append (modifiers, GUINT_TO_POINTER (GDK_SHIFT_MASK));
+      modifiers = g_list_append (modifiers, GUINT_TO_POINTER (GDK_CONTROL_MASK));
+      modifiers = g_list_append (modifiers, GUINT_TO_POINTER (GDK_SHIFT_MASK | GDK_CONTROL_MASK));
+    }
   action_prefix = g_strdup_printf ("%s-", buttons_key);
   g_free (buttons_key);
 
@@ -430,7 +497,8 @@ gimp_modifiers_manager_get_modifiers (GimpModifiersManager *manager,
           /* TODO: the modifiers list should be sorted to ensure
            * consistency.
            */
-          modifiers = g_list_prepend (modifiers, GINT_TO_POINTER (mapping->modifiers));
+          if (! g_list_find (modifiers, GINT_TO_POINTER (mapping->modifiers)))
+            modifiers = g_list_prepend (modifiers, GINT_TO_POINTER (mapping->modifiers));
         }
     }
 
@@ -456,12 +524,12 @@ gimp_modifiers_manager_set (GimpModifiersManager *manager,
 
   gimp_modifiers_manager_get_keys (device, button, modifiers,
                                    &actions_key, &buttons_key);
-  g_free (buttons_key);
-
   gimp_modifiers_manager_initialize (manager, device, button);
 
-  if (action == GIMP_MODIFIER_ACTION_NONE ||
-      (action == GIMP_MODIFIER_ACTION_ACTION && action_desc == NULL))
+  if (action == GIMP_MODIFIER_ACTION_ACTION && action_desc == NULL)
+    action = GIMP_MODIFIER_ACTION_NONE;
+  if (action == GIMP_MODIFIER_ACTION_NONE &&
+      ! g_hash_table_contains (manager->p->painter_buttons, buttons_key))
     {
       g_hash_table_remove (manager->p->actions, actions_key);
       g_free (actions_key);
@@ -477,6 +545,7 @@ gimp_modifiers_manager_set (GimpModifiersManager *manager,
       g_hash_table_insert (manager->p->actions, actions_key,
                            mapping);
     }
+  g_free (buttons_key);
 }
 
 void
@@ -493,6 +562,7 @@ void
 gimp_modifiers_manager_clear (GimpModifiersManager *manager)
 {
   g_hash_table_remove_all (manager->p->actions);
+  g_hash_table_remove_all (manager->p->painter_buttons);
   g_list_free_full (manager->p->buttons, g_free);
   manager->p->buttons = NULL;
 }
@@ -567,42 +637,9 @@ gimp_modifiers_manager_initialize (GimpModifiersManager *manager,
       manager->p->buttons = g_list_prepend (manager->p->buttons, buttons_key);
       if (button == 2)
         {
-          /* The default mapping for second (middle) button which had no explicit configuration. */
-
-          mapping = g_slice_new0 (GimpModifierMapping);
-          mapping->modifiers  = GDK_MOD1_MASK;
-          mapping->mod_action = GIMP_MODIFIER_ACTION_LAYER_PICKING;
-          gimp_modifiers_manager_get_keys (device, 2, mapping->modifiers,
-                                           &actions_key, NULL);
-          g_hash_table_insert (manager->p->actions, actions_key, mapping);
-
-          mapping = g_slice_new0 (GimpModifierMapping);
-          mapping->modifiers  = gimp_get_extend_selection_mask () | GDK_CONTROL_MASK;
-          mapping->mod_action = GIMP_MODIFIER_ACTION_STEP_ROTATING;
-          gimp_modifiers_manager_get_keys (device, 2, mapping->modifiers,
-                                           &actions_key, NULL);
-          g_hash_table_insert (manager->p->actions, actions_key, mapping);
-
-          mapping = g_slice_new0 (GimpModifierMapping);
-          mapping->modifiers  = gimp_get_extend_selection_mask ();
-          mapping->mod_action = GIMP_MODIFIER_ACTION_ROTATING;
-          gimp_modifiers_manager_get_keys (device, 2, mapping->modifiers,
-                                           &actions_key, NULL);
-          g_hash_table_insert (manager->p->actions, actions_key, mapping);
-
-          mapping = g_slice_new0 (GimpModifierMapping);
-          mapping->modifiers  = gimp_get_toggle_behavior_mask ();
-          mapping->mod_action = GIMP_MODIFIER_ACTION_ZOOMING;
-          gimp_modifiers_manager_get_keys (device, 2, mapping->modifiers,
-                                           &actions_key, NULL);
-          g_hash_table_insert (manager->p->actions, actions_key, mapping);
-
-          mapping = g_slice_new0 (GimpModifierMapping);
-          mapping->modifiers  = 0;
-          mapping->mod_action = GIMP_MODIFIER_ACTION_PANNING;
-          gimp_modifiers_manager_get_keys (device, 2, mapping->modifiers,
-                                           &actions_key, NULL);
-          g_hash_table_insert (manager->p->actions, actions_key, mapping);
+          /* New painter customization overlays only the edited combination.
+           * Older exact-match configurations remain exact-match on reload. */
+          g_hash_table_add (manager->p->painter_buttons, g_strdup (buttons_key));
         }
       else if (button == 3)
         {

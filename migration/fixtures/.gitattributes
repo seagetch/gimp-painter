@@ -1,2 +1,5 @@
 # Raw captured pixels must never undergo text/line-ending conversion.
 *.rgba binary
+
+# Unchanged old function bodies are preserved by the arithmetic oracle.
+legacy-navigation/capture.c whitespace=-blank-at-eol

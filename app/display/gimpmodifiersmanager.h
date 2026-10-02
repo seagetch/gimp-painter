@@ -61,6 +61,12 @@ GimpModifierAction     gimp_modifiers_manager_get_action    (GimpModifiersManage
                                                              GdkModifierType       modifiers,
                                                              const gchar         **action_desc);
 
+gboolean               gimp_modifiers_manager_uses_painter_defaults
+                                                            (GimpModifiersManager *manager,
+                                                             GdkDevice            *device,
+                                                             guint                 button,
+                                                             GdkModifierType       state);
+
 /* Protected functions: only use them from GimpModifiersEditor */
 
 GList                * gimp_modifiers_manager_get_modifiers (GimpModifiersManager *manager,
