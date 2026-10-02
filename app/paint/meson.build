@@ -1,3 +1,5 @@
+subdir('painter-brush-settings')
+
 stamp_paint_enums = custom_target('stamp-paint-enums.h',
   input : [
     files(

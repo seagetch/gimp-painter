@@ -1,0 +1,124 @@
+{
+  "status": "PASS",
+  "scope": "Pinned metadata and generated C/C++14 data only; no brush rendering or reader/writer compatibility claim",
+  "tests_run": 10,
+  "skipped": 0,
+  "errors": 0,
+  "failures": 0,
+  "counts": {
+    "constants": 103,
+    "inputs": 9,
+    "settings": 45,
+    "switches": 5,
+    "texts": 2,
+    "states": 30
+  },
+  "pinned_revision": "afa43fae3e920210146abed514f136fd49f671b5",
+  "commands": [
+    [
+      "cc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-std=c11",
+      "-Wno-missing-field-initializers",
+      "-I/tmp/tmp7xrgcyas",
+      "/tmp/tmp7xrgcyas/legacy.c",
+      "-o",
+      "/tmp/tmp7xrgcyas/legacy"
+    ],
+    [
+      "/tmp/tmp7xrgcyas/legacy"
+    ],
+    [
+      "cc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-std=c11",
+      "-I/tmp/tmp7xrgcyas",
+      "/tmp/tmp7xrgcyas/generated-c.c",
+      "-o",
+      "/tmp/tmp7xrgcyas/generated-c"
+    ],
+    [
+      "/tmp/tmp7xrgcyas/generated-c"
+    ],
+    [
+      "c++",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-std=c++14",
+      "-I/tmp/tmp7xrgcyas",
+      "/tmp/tmp7xrgcyas/generated-cpp.cpp",
+      "-o",
+      "/tmp/tmp7xrgcyas/generated-cpp"
+    ],
+    [
+      "/tmp/tmp7xrgcyas/generated-cpp"
+    ],
+    [
+      "cc",
+      "-std=c11",
+      "-I/tmp/tmp7xrgcyas",
+      "/tmp/tmp7xrgcyas/generated-c.c",
+      "-o",
+      "/tmp/tmp7xrgcyas/mutated"
+    ],
+    [
+      "/tmp/tmp7xrgcyas/mutated"
+    ],
+    [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-brush-settings/generate.py",
+      "--manifest",
+      "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-brush-settings/brush-settings.json",
+      "--output-dir",
+      "/tmp/tmptr_y2kd0/a"
+    ],
+    [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-brush-settings/generate.py",
+      "--manifest",
+      "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-brush-settings/brush-settings.json",
+      "--output-dir",
+      "/tmp/tmptr_y2kd0/b"
+    ],
+    [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-brush-settings/generate.py",
+      "--manifest",
+      "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-brush-settings/brush-settings.json",
+      "--output-dir",
+      "/tmp/tmptr_y2kd0/a"
+    ],
+    [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-brush-settings/generate.py",
+      "--manifest",
+      "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-brush-settings/brush-settings.json",
+      "--output-dir",
+      "/tmp/tmptr_y2kd0/a",
+      "--check"
+    ],
+    [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-brush-settings/generate.py",
+      "--manifest",
+      "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-brush-settings/brush-settings.json",
+      "--output-dir",
+      "/tmp/tmptr_y2kd0/a",
+      "--check"
+    ]
+  ],
+  "generated_sha256": {
+    "mypaintbrush-enum-settings.h": "36c203c31c0f45889ef5667cad4f04e4774b0505708931ccf7f410d0f935b678",
+    "mypaintbrush-settings-data.h": "f9e2bf77bb7d0c360b7536daa5578465e12d854340f976ce324e5306fca029b5"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "scope": "Isolated production Meson edge, C11/C++14 consumers and manifest-change rebuild",
+  "mutation_compatibility_test_failed_as_expected": true,
+  "noop_build_rebuilt_objects": false,
+  "manifest_edit_rebuilt_both_consumers": true,
+  "objects_before": {
+    "brush-settings/painter-brush-metadata-c.p/tests_test-data.c.o": 1790896936693987770,
+    "brush-settings/painter-brush-metadata-cpp.p/tests_test-data.cpp.o": 1790896936701987392
+  },
+  "objects_after": {
+    "brush-settings/painter-brush-metadata-c.p/tests_test-data.c.o": 1790896939133872493,
+    "brush-settings/painter-brush-metadata-cpp.p/tests_test-data.cpp.o": 1790896939147052793
+  },
+  "commands": [
+    [
+      "meson",
+      "setup",
+      "/tmp/painter-brush-meson-ifmq_3qv/build",
+      "/tmp/painter-brush-meson-ifmq_3qv/source"
+    ],
+    [
+      "meson",
+      "compile",
+      "-C",
+      "/tmp/painter-brush-meson-ifmq_3qv/build"
+    ],
+    [
+      "meson",
+      "test",
+      "-C",
+      "/tmp/painter-brush-meson-ifmq_3qv/build",
+      "--print-errorlogs"
+    ],
+    [
+      "meson",
+      "compile",
+      "-C",
+      "/tmp/painter-brush-meson-ifmq_3qv/build"
+    ],
+    [
+      "meson",
+      "compile",
+      "-C",
+      "/tmp/painter-brush-meson-ifmq_3qv/build"
+    ],
+    [
+      "meson",
+      "test",
+      "-C",
+      "/tmp/painter-brush-meson-ifmq_3qv/build",
+      "--print-errorlogs",
+      "painter-brush-metadata-c",
+      "painter-brush-metadata-cpp"
+    ],
+    [
+      "meson",
+      "test",
+      "-C",
+      "/tmp/painter-brush-meson-ifmq_3qv/build",
+      "--print-errorlogs",
+      "painter-brush-generator"
+    ]
+  ],
+  "output": [
+    "The Meson build system\nVersion: 1.7.0\nSource dir: /tmp/painter-brush-meson-ifmq_3qv/source\nBuild dir: /tmp/painter-brush-meson-ifmq_3qv/build\nBuild type: native build\nProject name: painter-brush-generation-check\nProject version: undefined\nC compiler for the host machine: cc (gcc 14.2.0 \"cc (Debian 14.2.0-19) 14.2.0\")\nC linker for the host machine: cc ld.bfd 2.44\nC++ compiler for the host machine: c++ (gcc 14.2.0 \"c++ (Debian 14.2.0-19) 14.2.0\")\nC++ linker for the host machine: c++ ld.bfd 2.44\nHost machine cpu family: x86_64\nHost machine cpu: x86_64\nProgram python3 found: YES (/usr/bin/python3)\nBuild targets in project: 3\n\nFound ninja-1.12.1 at /workspace/shared/gimp-build-deps/root/usr/bin/ninja\n",
+    "ninja: Entering directory `/tmp/painter-brush-meson-ifmq_3qv/build'\n[1/5] Generating brush-settings/painter-brush-settings-generated with a custom command\n[2/5] Compiling C object brush-settings/painter-brush-metadata-c.p/tests_test-data.c.o\n[3/5] Compiling C++ object brush-settings/painter-brush-metadata-cpp.p/tests_test-data.cpp.o\n[4/5] Linking target brush-settings/painter-brush-metadata-c\n[5/5] Linking target brush-settings/painter-brush-metadata-cpp\nINFO: autodetecting backend as ninja\nINFO: calculating backend command to run: /workspace/shared/gimp-build-deps/root/usr/bin/ninja -C /tmp/painter-brush-meson-ifmq_3qv/build\n",
+    "ninja: Entering directory `/tmp/painter-brush-meson-ifmq_3qv/build'\nninja: no work to do.\n1/3 painter-brush-metadata-c   OK              0.02s\n2/3 painter-brush-metadata-cpp OK              0.01s\n3/3 painter-brush-generator    OK              0.97s\n\nOk:                 3   \nExpected Fail:      0   \nFail:               0   \nUnexpected Pass:    0   \nSkipped:            0   \nTimeout:            0   \n\nFull log written to /tmp/painter-brush-meson-ifmq_3qv/build/meson-logs/testlog.txt\n",
+    "ninja: Entering directory `/tmp/painter-brush-meson-ifmq_3qv/build'\nninja: no work to do.\nINFO: autodetecting backend as ninja\nINFO: calculating backend command to run: /workspace/shared/gimp-build-deps/root/usr/bin/ninja -C /tmp/painter-brush-meson-ifmq_3qv/build\n",
+    "ninja: Entering directory `/tmp/painter-brush-meson-ifmq_3qv/build'\n[1/5] Generating brush-settings/painter-brush-settings-generated with a custom command\n[2/5] Compiling C object brush-settings/painter-brush-metadata-c.p/tests_test-data.c.o\n[3/5] Compiling C++ object brush-settings/painter-brush-metadata-cpp.p/tests_test-data.cpp.o\n[4/5] Linking target brush-settings/painter-brush-metadata-c\n[5/5] Linking target brush-settings/painter-brush-metadata-cpp\nINFO: autodetecting backend as ninja\nINFO: calculating backend command to run: /workspace/shared/gimp-build-deps/root/usr/bin/ninja -C /tmp/painter-brush-meson-ifmq_3qv/build\n",
+    "ninja: Entering directory `/tmp/painter-brush-meson-ifmq_3qv/build'\nninja: no work to do.\n1/2 painter-brush-metadata-c   OK              0.02s\n2/2 painter-brush-metadata-cpp OK              0.01s\n\nOk:                 2   \nExpected Fail:      0   \nFail:               0   \nUnexpected Pass:    0   \nSkipped:            0   \nTimeout:            0   \n\nFull log written to /tmp/painter-brush-meson-ifmq_3qv/build/meson-logs/testlog.txt\n",
+    "1/1 painter-brush-generator FAIL            0.77s   exit status 1\n>>> MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=233 MESON_TEST_ITERATION=1 /usr/bin/python3 -B /tmp/painter-brush-meson-ifmq_3qv/build/../source/brush-settings/tests/test-generate.py --cc-arg=cc --cxx-arg=c++\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015 \u2700  \u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\nstderr:\ntest_all_legacy_tables_semantic_fields (__main__.BrushSettingsTests.test_all_legacy_tables_semantic_fields) ... FAIL\ntest_c_and_cpp_field_bytes_match_old_c (__main__.BrushSettingsTests.test_c_and_cpp_field_bytes_match_old_c) ... FAIL\ntest_deterministic_cli_and_read_only_check (__main__.BrushSettingsTests.test_deterministic_cli_and_read_only_check) ... ok\ntest_enum_exact_legacy_bytes (__main__.BrushSettingsTests.test_enum_exact_legacy_bytes) ... ok\ntest_fixture_provenance (__main__.BrushSettingsTests.test_fixture_provenance) ... ok\ntest_generated_license_and_sentinel (__main__.BrushSettingsTests.test_generated_license_and_sentinel) ... ok\ntest_legacy_groups_and_migrations_preserved (__main__.BrushSettingsTests.test_legacy_groups_and_migrations_preserved) ... ok\ntest_manifest_validation_rejects_corruption (__main__.BrushSettingsTests.test_manifest_validation_rejects_corruption) ... ok\ntest_numeric_constants_and_index_spaces (__main__.BrushSettingsTests.test_numeric_constants_and_index_spaces) ... ok\ntest_state_order_constructor_and_no_invented_range (__main__.BrushSettingsTests.test_state_order_constructor_and_no_invented_range) ... ok\n\n======================================================================\nFAIL: test_all_legacy_tables_semantic_fields (__main__.BrushSettingsTests.test_all_legacy_tables_semantic_fields)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/painter-brush-meson-ifmq_3qv/build/../source/brush-settings/tests/test-generate.py\", line 158, in test_all_legacy_tables_semantic_fields\n    self.assertEqual(entry[key], value, category + ':' + entry['name'] + ':' + key)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '0.5' != '1.0'\n- 0.5\n+ 1.0\n : settings:opaque:default_value\n\n======================================================================\nFAIL: test_c_and_cpp_field_bytes_match_old_c (__main__.BrushSettingsTests.test_c_and_cpp_field_bytes_match_old_c)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/painter-brush-meson-ifmq_3qv/build/../source/brush-settings/tests/test-generate.py\", line 274, in test_c_and_cpp_field_bytes_match_old_c\n    self.assertEqual(results[0], results[1], 'compiled C metadata bytes differ')\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: b'\\x0[2620 chars]x00\\x80?\\x00\\x00\\x00@N\\x00\\x00\\x000 means brus[14199 chars]\\xff' != b'\\x0[2620 chars]x00\\x00?\\x00\\x00\\x00@N\\x00\\x00\\x000 means brus[14199 chars]\\xff' : compiled C metadata bytes differ\n\n----------------------------------------------------------------------\nRan 10 tests in 0.639s\n\nFAILED (failures=2)\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\n\nSummary of Failures:\n\n1/1 painter-brush-generator FAIL            0.77s   exit status 1\n\nOk:                 0   \nExpected Fail:      0   \nFail:               1   \nUnexpected Pass:    0   \nSkipped:            0   \nTimeout:            0   \n\nFull log written to /tmp/painter-brush-meson-ifmq_3qv/build/meson-logs/testlog.txt\n"
+  ],
+  "source_sha256": {
+    "COPYING": "2b369df0f96c17b2d58c3121961d0e2d7367c4993ad23d1ba2a44763f29fdc7d",
+    "README.md": "1786832a548d7d262915aa0d7e9022330e37cb1d93d009c892a80cbcf28c6d66",
+    "brush-settings.json": "3c8f2e5c67b1d5a8bd8a7af4c37457fbe76448038dac39062a3a19dfdea35c44",
+    "generate.py": "b2314b34a41a34bcbb1ffb285fbc339a955187404953df1dff9a84ac4a628076",
+    "meson.build": "49ffdc89681014266308b749cfda29e09d6e5a4296ce3aae6de48aa4ac4fa7bd",
+    "tests/legacy/.gitattributes": "baa5f35381ebda1f1dbd49413514e4048eb731c27cf892d81a43bbb5e4df80e9",
+    "tests/legacy/mypaintbrush-brush.hpp": "bc8b24293d8b85e9f956dab40b8c6bfaa2f43ca626715e08a3627f7043c6e8b4",
+    "tests/legacy/mypaintbrush-brushsettings.c": "bc734413af37338972d73bb8e9c70daab14bb9a897728b4170e17068168fa0b2",
+    "tests/legacy/mypaintbrush-brushsettings.h": "a6754a9e31c04e6b5abff05e287c45c7405ae83201b679874766d9e137b91f60",
+    "tests/legacy/mypaintbrush-enum-settings.h": "36c203c31c0f45889ef5667cad4f04e4774b0505708931ccf7f410d0f935b678",
+    "tests/test-data.c": "195595311c1f147fd20cb5b1cb83e2bfbd5ab563201204ae350966b989d55a8c",
+    "tests/test-data.cpp": "195595311c1f147fd20cb5b1cb83e2bfbd5ab563201204ae350966b989d55a8c",
+    "tests/test-data.h": "fbd3112ffb42af86be22f52d913f8938d22762de6d1993c32dd1101a91db6631",
+    "tests/test-generate.py": "d6459134aa0b98e932c55d13ee2574acb8ce9525307ced132238c6871266c55d",
+    "tests/test-meson.py": "5d71fe0e2338ee89e657f4f5197b28f85ac59f6fbdc18fd1a664c59cfef02cae"
+  }
+}
