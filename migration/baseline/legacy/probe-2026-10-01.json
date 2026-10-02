@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "captured_utc": "2026-10-01T22:42:38.338832+00:00",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "source_path": "/workspace/scratch/5b5281e79681/gimp-painter-legacy",
+  "machine": "x86_64",
+  "os_release": "PRETTY_NAME=\"Debian GNU/Linux 13 (trixie)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"13\"\nVERSION=\"13 (trixie)\"\nVERSION_CODENAME=trixie\nDEBIAN_VERSION_FULL=13.6\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
+  "tools": {
+    "gcc": {
+      "path": "/usr/bin/gcc",
+      "version": {
+        "argv": [
+          "gcc",
+          "--version"
+        ],
+        "exit_code": 0,
+        "output": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      }
+    },
+    "g++": {
+      "path": "/usr/bin/g++",
+      "version": {
+        "argv": [
+          "g++",
+          "--version"
+        ],
+        "exit_code": 0,
+        "output": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      }
+    },
+    "make": {
+      "path": "/usr/bin/make",
+      "version": {
+        "argv": [
+          "make",
+          "--version"
+        ],
+        "exit_code": 0,
+        "output": "GNU Make 4.4.1\nBuilt for x86_64-pc-linux-gnu\nCopyright (C) 1988-2023 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n"
+      }
+    },
+    "pkg-config": {
+      "path": "/usr/bin/pkg-config",
+      "version": {
+        "argv": [
+          "pkg-config",
+          "--version"
+        ],
+        "exit_code": 0,
+        "output": "1.8.1\n"
+      }
+    },
+    "autoconf": {
+      "path": null,
+      "version": null
+    },
+    "automake": {
+      "path": null,
+      "version": null
+    },
+    "automake-1.11": {
+      "path": null,
+      "version": null
+    },
+    "aclocal": {
+      "path": null,
+      "version": null
+    },
+    "libtoolize": {
+      "path": null,
+      "version": null
+    },
+    "intltoolize": {
+      "path": null,
+      "version": null
+    },
+    "gtkdocize": {
+      "path": null,
+      "version": null
+    },
+    "xsltproc": {
+      "path": null,
+      "version": null
+    },
+    "flatpak": {
+      "path": null,
+      "version": null
+    },
+    "flatpak-builder": {
+      "path": null,
+      "version": null
+    },
+    "docker": {
+      "path": null,
+      "version": null
+    },
+    "podman": {
+      "path": null,
+      "version": null
+    }
+  },
+  "pkg_config": {
+    "babl": {
+      "declared_minimum": "0.1.12",
+      "probe": {
+        "argv": [
+          "pkg-config",
+          "--modversion",
+          "babl"
+        ],
+        "exit_code": 1,
+        "output": "Package babl was not found in the pkg-config search path.\nPerhaps you should add the directory containing `babl.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'babl', required by 'virtual:world', not found\n"
+      }
+    },
+    "gegl-0.3": {
+      "declared_minimum": "0.3.0",
+      "probe": {
+        "argv": [
+          "pkg-config",
+          "--modversion",
+          "gegl-0.3"
+        ],
+        "exit_code": 1,
+        "output": "Package gegl-0.3 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `gegl-0.3.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'gegl-0.3', required by 'virtual:world', not found\n"
+      }
+    },
+    "glib-2.0": {
+      "declared_minimum": "2.30.2",
+      "probe": {
+        "argv": [
+          "pkg-config",
+          "--modversion",
+          "glib-2.0"
+        ],
+        "exit_code": 1,
+        "output": "Package glib-2.0 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `glib-2.0.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'glib-2.0', required by 'virtual:world', not found\n"
+      }
+    },
+    "gtk+-2.0": {
+      "declared_minimum": "2.24.10",
+      "probe": {
+        "argv": [
+          "pkg-config",
+          "--modversion",
+          "gtk+-2.0"
+        ],
+        "exit_code": 1,
+        "output": "Package gtk+-2.0 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `gtk+-2.0.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'gtk+-2.0', required by 'virtual:world', not found\n"
+      }
+    },
+    "json-glib-1.0": {
+      "declared_minimum": "1.0",
+      "probe": {
+        "argv": [
+          "pkg-config",
+          "--modversion",
+          "json-glib-1.0"
+        ],
+        "exit_code": 1,
+        "output": "Package json-glib-1.0 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `json-glib-1.0.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'json-glib-1.0', required by 'virtual:world', not found\n"
+      }
+    },
+    "atk": {
+      "declared_minimum": "2.2.0",
+      "probe": {
+        "argv": [
+          "pkg-config",
+          "--modversion",
+          "atk"
+        ],
+        "exit_code": 1,
+        "output": "Package atk was not found in the pkg-config search path.\nPerhaps you should add the directory containing `atk.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'atk', required by 'virtual:world', not found\n"
+      }
+    },
+    "gdk-pixbuf-2.0": {
+      "declared_minimum": "2.24.1",
+      "probe": {
+        "argv": [
+          "pkg-config",
+          "--modversion",
+          "gdk-pixbuf-2.0"
+        ],
+        "exit_code": 1,
+        "output": "Package gdk-pixbuf-2.0 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `gdk-pixbuf-2.0.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'gdk-pixbuf-2.0', required by 'virtual:world', not found\n"
+      }
+    },
+    "cairo": {
+      "declared_minimum": "1.10.2",
+      "probe": {
+        "argv": [
+          "pkg-config",
+          "--modversion",
+          "cairo"
+        ],
+        "exit_code": 1,
+        "output": "Package cairo was not found in the pkg-config search path.\nPerhaps you should add the directory containing `cairo.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'cairo', required by 'virtual:world', not found\n"
+      }
+    },
+    "pangocairo": {
+      "declared_minimum": "1.29.4",
+      "probe": {
+        "argv": [
+          "pkg-config",
+          "--modversion",
+          "pangocairo"
+        ],
+        "exit_code": 1,
+        "output": "Package pangocairo was not found in the pkg-config search path.\nPerhaps you should add the directory containing `pangocairo.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'pangocairo', required by 'virtual:world', not found\n"
+      }
+    }
+  },
+  "legacy_application_executed": false,
+  "bootstrap": {
+    "argv": [
+      "sh",
+      "./autogen.sh"
+    ],
+    "exit_code": 1,
+    "output": "\nI am testing that you have the tools required to build the\nGNU Image Manipulation Program from git. This test is not foolproof,\nso if anything goes wrong, see the file HACKING for more information...\n\nchecking for libtool >= 1.5 ... \n  You must have libtool installed to compile GNU Image Manipulation Program.\n  Install the appropriate package for your distribution,\n  or get the source tarball at ftp://ftp.gnu.org/pub/gnu/\n\n./autogen.sh: 1: libtoolize: not found\nMajor version might be too new (1.5)\nchecking for gtkdocize ... \n  You must have gtk-doc installed to compile GNU Image Manipulation Program.\n  Install the appropriate package for your distribution,\n  or get the source tarball at\n  http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/\n  You can also use the option --disable-gtk-doc to skip\n  this test but then you will not be able to generate a\n  configure script that can build the API documentation.\nchecking for autoconf >= 2.54 ... \n  You must have autoconf installed to compile GNU Image Manipulation Program.\n  Download the appropriate package for your distribution,\n  or get the source tarball at ftp://ftp.gnu.org/pub/gnu/autoconf/\n\nchecking for automake >= 1.10.0 ... \n  You must have automake 1.10.0 or newer installed to compile GNU Image Manipulation Program.\n  Download the appropriate package for your distribution,\n  or get the source tarball at ftp://ftp.gnu.org/pub/gnu/automake/\n\n./autogen.sh: 1: automake-1.11: not found\nMajor version might be too new (1.10.0)\nchecking for intltool >= 0.40.1 ... \n  You must have intltool installed to compile GNU Image Manipulation Program.\n  Get the latest version from\n  ftp://ftp.gnome.org/pub/GNOME/sources/intltool/\n\nchecking for xsltproc ... \n  You must have xsltproc installed to compile GNU Image Manipulation Program.\n  Get the latest version from\n  ftp://ftp.gnome.org/pub/GNOME/sources/libxslt/\n\n\nPlease install/upgrade the missing tools and call me again.\n\n",
+    "environment_override": {
+      "NOCONFIGURE": "1"
+    }
+  },
+  "source_checksums": {
+    "configure.ac": "c0c8adb27348aaeda97bb384fe3ff55cbe5e237030322d46ddbbc0f4219c6c3a",
+    "autogen.sh": "d8a8aa08d042cf8d0de3048f037826b77b0f81e328849df25d6c2542bb489738",
+    "build/flatpak/io.github.seagetch.GIMP-PAINTER.yml": "26d6202043a22d088d7bd3e7ec6afdb2cace8ccb83c1ad8e9ee7d7bc53c24da9",
+    "build/flatpak/io.github.seagetch.GIMP-PAINTER-BaseApp.yml": "b3295152243f8b03b13ff1a8de2afd472037216a7ed771e09b0f6140cef55a63"
+  }
+}
