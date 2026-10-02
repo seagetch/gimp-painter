@@ -35,6 +35,8 @@
 
 #include "core/gimp.h"
 #include "core/gimpchannel.h"
+#include "core/gimpclonelayer.h"
+#include "core/gimpfilterlayer.h"
 #include "core/gimpchannel-combine.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
@@ -78,6 +80,7 @@
 #include "dialogs/dialogs.h"
 #include "dialogs/layer-add-mask-dialog.h"
 #include "dialogs/layer-options-dialog.h"
+#include "dialogs/painter-layer-dialog.h"
 #include "dialogs/resize-dialog.h"
 #include "dialogs/scale-dialog.h"
 
@@ -196,7 +199,11 @@ layers_edit_cmd_callback (GimpAction *action,
   if (g_list_length (layers) != 1)
     return;
 
-  if (gimp_item_is_text_layer (GIMP_ITEM (layers->data)))
+  if (GIMP_IS_CLONE_LAYER (layers->data))
+    layers_edit_clone_cmd_callback (action, value, data);
+  else if (GIMP_IS_FILTER_LAYER (layers->data))
+    layers_edit_filter_cmd_callback (action, value, data);
+  else if (gimp_item_is_text_layer (GIMP_ITEM (layers->data)))
     {
       layers_edit_text_cmd_callback (action, value, data);
     }
@@ -204,6 +211,118 @@ layers_edit_cmd_callback (GimpAction *action,
     {
       layers_edit_attributes_cmd_callback (action, value, data);
     }
+}
+
+/* Painter's source is the single selected layer, including a group. Use its
+ * actual parent, as in 2.8: a clone of a group belongs above it, not inside it. */
+void
+layers_new_clone_cmd_callback (GimpAction *action,
+                               GVariant   *value,
+                               gpointer    data)
+{
+  GimpImage *image;
+  GList     *layers;
+  GimpLayer *source;
+  GimpLayer *clone;
+  return_if_no_layers (image, layers, data);
+  if (g_list_length (layers) != 1 || gimp_image_get_floating_selection (image) ||
+      gimp_image_get_selected_channels (image))
+    return;
+  source = g_object_ref (layers->data);
+  g_object_ref (image);
+  clone = gimp_clone_layer_new (image, source, 0, 0, _("Clone Layer"),
+                                1.0, GIMP_LAYER_MODE_PAINTER_NORMAL);
+  if (! clone)
+    {
+      gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_ERROR,
+                             _("The clone layer could not be created."));
+      g_object_unref (source);
+      g_object_unref (image);
+      return;
+    }
+  g_object_ref_sink (clone);
+  /* The factory notifies its source. Revalidate after possible signal reentry
+   * rather than inserting against an item removed or moved during that call. */
+  if (gimp_item_get_image (GIMP_ITEM (source)) == image &&
+      gimp_item_is_attached (GIMP_ITEM (source)))
+    {
+      if (! gimp_image_add_layer (image, clone, gimp_layer_get_parent (source),
+                                  gimp_item_get_index (GIMP_ITEM (source)), TRUE))
+        gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_ERROR,
+                               _("The clone layer could not be added to the image."));
+      gimp_image_flush (image);
+    }
+  g_object_unref (clone);
+  g_object_unref (source);
+  g_object_unref (image);
+}
+
+void
+layers_new_filter_cmd_callback (GimpAction *action,
+                                GVariant   *value,
+                                gpointer    data)
+{
+  GimpImage *image;
+  GtkWidget *widget;
+  GtkWidget *dialog;
+  return_if_no_image (image, data);
+  return_if_no_widget (widget, data);
+  if (gimp_image_get_floating_selection (image) ||
+      gimp_image_get_selected_channels (image))
+    return;
+  dialog = dialogs_get_dialog (G_OBJECT (image), "gimp-painter-filter-new-dialog");
+  if (! dialog)
+    {
+      dialog = painter_filter_layer_dialog_new (image, NULL,
+        action_data_get_context (data), widget);
+      dialogs_attach_dialog (G_OBJECT (image), "gimp-painter-filter-new-dialog", dialog);
+    }
+  gtk_window_present (GTK_WINDOW (dialog));
+}
+
+static void
+layers_edit_painter (gpointer data,
+                     gboolean clone)
+{
+  GimpImage *image;
+  GList     *layers;
+  GimpLayer *layer;
+  GtkWidget *widget;
+  GtkWidget *dialog;
+  return_if_no_layers (image, layers, data);
+  return_if_no_widget (widget, data);
+  if (g_list_length (layers) != 1 || gimp_image_get_floating_selection (image) ||
+      gimp_image_get_selected_channels (image))
+    return;
+  layer = layers->data;
+  if (clone ? ! GIMP_IS_CLONE_LAYER (layer) : ! GIMP_IS_FILTER_LAYER (layer))
+    return;
+  dialog = dialogs_get_dialog (G_OBJECT (layer), "gimp-painter-layer-edit-dialog");
+  if (! dialog)
+    {
+      dialog = clone ? painter_clone_layer_dialog_new (image, layer,
+                         action_data_get_context (data), widget) :
+                       painter_filter_layer_dialog_new (image, layer,
+                         action_data_get_context (data), widget);
+      dialogs_attach_dialog (G_OBJECT (layer), "gimp-painter-layer-edit-dialog", dialog);
+    }
+  gtk_window_present (GTK_WINDOW (dialog));
+}
+
+void
+layers_edit_clone_cmd_callback (GimpAction *action,
+                                GVariant   *value,
+                                gpointer    data)
+{
+  layers_edit_painter (data, TRUE);
+}
+
+void
+layers_edit_filter_cmd_callback (GimpAction *action,
+                                 GVariant   *value,
+                                 gpointer    data)
+{
+  layers_edit_painter (data, FALSE);
 }
 
 void

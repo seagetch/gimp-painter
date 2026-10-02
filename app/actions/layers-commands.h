@@ -22,6 +22,18 @@
 void   layers_edit_cmd_callback               (GimpAction *action,
                                                GVariant   *value,
                                                gpointer    data);
+void   layers_new_clone_cmd_callback              (GimpAction *action,
+                                                    GVariant   *value,
+                                                    gpointer    data);
+void   layers_new_filter_cmd_callback             (GimpAction *action,
+                                                    GVariant   *value,
+                                                    gpointer    data);
+void   layers_edit_clone_cmd_callback             (GimpAction *action,
+                                                    GVariant   *value,
+                                                    gpointer    data);
+void   layers_edit_filter_cmd_callback            (GimpAction *action,
+                                                    GVariant   *value,
+                                                    gpointer    data);
 void   layers_edit_text_cmd_callback          (GimpAction *action,
                                                GVariant   *value,
                                                gpointer    data);

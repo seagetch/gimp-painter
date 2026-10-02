@@ -27,6 +27,8 @@
 #include "operations/layer-modes/gimp-layer-modes.h"
 
 #include "core/gimpchannel.h"
+#include "core/gimpclonelayer.h"
+#include "core/gimpfilterlayer.h"
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
 #include "core/gimplayer-floating-selection.h"
@@ -90,6 +92,30 @@ static const GimpActionEntry layers_actions[] =
     NC_("layers-action", "Create a new layer group and add it to the image"),
     layers_new_group_cmd_callback,
     GIMP_HELP_LAYER_NEW },
+
+  { "layers-new-clone", GIMP_ICON_OBJECT_DUPLICATE,
+    NC_("layers-action", "New _Clone Layer"), NULL, { NULL },
+    NC_("layers-action", "Create a live clone of the selected layer or group"),
+    layers_new_clone_cmd_callback,
+    GIMP_HELP_LAYER_NEW },
+
+  { "layers-new-filter", GIMP_ICON_DISPLAY_FILTER,
+    NC_("layers-action", "New _Filter Layer..."), NULL, { NULL },
+    NC_("layers-action", "Create an independent Painter filter layer"),
+    layers_new_filter_cmd_callback,
+    GIMP_HELP_LAYER_NEW },
+
+  { "layers-edit-clone", GIMP_ICON_EDIT,
+    NC_("layers-action", "Edit Clone _Source..."), NULL, { NULL },
+    NC_("layers-action", "Choose the source of this clone layer"),
+    layers_edit_clone_cmd_callback,
+    GIMP_HELP_LAYER_EDIT },
+
+  { "layers-edit-filter", GIMP_ICON_EDIT,
+    NC_("layers-action", "Edit Filter _Definition..."), NULL, { NULL },
+    NC_("layers-action", "Edit this Painter filter layer's saved procedure and arguments"),
+    layers_edit_filter_cmd_callback,
+    GIMP_HELP_LAYER_EDIT },
 
   { "layers-duplicate", GIMP_ICON_OBJECT_DUPLICATE,
     NC_("layers-action", "D_uplicate Layers"), NULL, { "<primary><shift>D", NULL },
@@ -1010,6 +1036,13 @@ layers_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("layers-new-last-values",  image);
   SET_SENSITIVE ("layers-new-from-visible", image);
   SET_SENSITIVE ("layers-new-group",        image && !indexed && !fs);
+  SET_SENSITIVE ("layers-new-clone",        n_selected_layers == 1 && !fs && !ac);
+  SET_SENSITIVE ("layers-new-filter",       image && !fs && !ac);
+  SET_SENSITIVE ("layers-edit-clone",       layer && GIMP_IS_CLONE_LAYER (layer) && !fs && !ac);
+  SET_SENSITIVE ("layers-edit-filter",      layer && GIMP_IS_FILTER_LAYER (layer) && !fs && !ac);
+  SET_VISIBLE   ("layers-edit-clone",       layer && GIMP_IS_CLONE_LAYER (layer));
+  SET_VISIBLE   ("layers-edit-filter",      layer && GIMP_IS_FILTER_LAYER (layer));
+
   SET_SENSITIVE ("layers-duplicate",        n_selected_layers > 0 && !fs && !ac);
   SET_SENSITIVE ("layers-delete",           n_selected_layers > 0 && !ac);
 

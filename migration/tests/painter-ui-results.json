@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-02",
+  "platform": "Linux x86_64 cloud Xfce GTK3 native display",
+  "normal": {
+    "cases": 16,
+    "exit_code": 0,
+    "log": "migration/tests/painter-ui-native.txt"
+  },
+  "sanitizers": {
+    "cases": 16,
+    "exit_code": 0,
+    "log": "migration/tests/painter-ui-sanitizer-native.txt",
+    "scope": "Painter dialogs/actions/test C translation units; other GIMP and GTK uninstrumented",
+    "flags": "ASan+UBSan",
+    "detect_leaks": false
+  },
+  "headless": {
+    "status": "SKIP",
+    "exit_code": 77,
+    "reason": "No display; isolated Xvfb could not establish listening sockets"
+  },
+  "source_hashes": {
+    "app/actions/layers-actions.c": "2b7d35647209755248b7c38979b0e78202b1ad0ba3b54a3c760f95a59ab88fc0",
+    "app/actions/layers-commands.c": "99031ad4e7a9de4cb2de9f7de9e66176b7f23d239a5e3ff88c33e9e1b4dd8b44",
+    "app/dialogs/painter-layer-dialog.c": "c098e14707b11f31f9e69b32ac93321a7fcc25fa4720ac97ed532ce4cdc4694f",
+    "app/tests/test-painter-layer-ui.c": "9a2f0851bcaf831fbb4f24baf041d5e92e8f2efa9124dd3aae53d20e0fcecf8b"
+  },
+  "known_diagnostic": "Existing test-profile writable data directory warning at shutdown, also in earlier clone logs",
+  "native_app_projection_retest": "PASS: fresh app shows completed black edge output without visibility toggle; real Background brush stroke propagates through Clone+Filter; Undo clears and Redo restores visible edge output",
+  "review_regressions": {
+    "before_fix_log": "migration/tests/painter-ui-review-before-fix.txt",
+    "fixed": [
+      "Detached child changed signal after dialog finalization: ASan heap-use-after-free",
+      "Clone edit closes editor during Undo dirty; failed return touched destroyed error label",
+      "Filter creation closes dialog during definition status; response still inserted layer",
+      "Refresh changed destroys combo during remove_all; unleased list model was freed"
+    ],
+    "additional_passes": [
+      "Parented retained child signals after finalization",
+      "Filter edit success and closed-binding response destruction",
+      "Invalid UTF8 procedure preview repairs presentation only; procedure, string and original bytes remain exact"
+    ]
+  },
+  "final_integration": {
+    "verified_at_utc": "2026-10-02T03:11:20Z",
+    "filter_core_sha256": "f095eaba8067c18e77d09c37218017d4602257ae19522fb36f0ef5281b8c6095",
+    "binaries": {
+      "build-debian13/app/tests/painter-layer-ui": "b7b82e8b9f206ce6d7c12fb565a93b465c495b3d23753e0de8798695fa59c300",
+      "build-debian13/app/tests/painter-layer-ui-asan": "7d21ccc11aa7e8b67cc132ea619ef2d2789ca401b899f9781a1d6862a9ecd28d"
+    },
+    "normal_exit_marker": "PAINTER_UI_EXIT=0",
+    "sanitizer_exit_marker": "PAINTER_UI_ASAN_EXIT=0",
+    "scope": "Final native suites linked after Filter definition reentry guards; no repeat of earlier manual visual QA"
+  }
+}

@@ -1001,6 +1001,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 30.001 | [ ] | 追加 actions の登録を統合する | 24.017, 25.012, 26.014, 27.015, 28.015, 29.020 | 重複 ID と未登録 command がない |
+| 30.001/layer-create-edit | [x] | Clone/Filter作成・編集を実GTK actions/menuへ接続する | 14.015/reference-undo-snapshot, 17.001/dependency-publication | 16 native GTK通常/focused sanitizer合格、複製参照/定義Undo・未知bytes表示保持・dialog/child寿命再入を確認。実appでbrush→Clone→Filter/Undo/Redoを視認。全popup/device/platformは未完了 |
 | 30.001/tool-group-state | [ ] | 上流tool groupへ旧展開・選択・保存状態を接続する | 30.001, 01.012 | 旧expanded state、active-tool、toolrc順序とgroup変更を個別に比較し、上流モデルで失う状態は移行する |
 | 30.002 | [ ] | 旧 shortcut の対応を実装する | 30.001 | 回転等の旧操作を復元可能 |
 | 30.003 | [ ] | 独自 tool の icon を登録する | 30.002 | テーマと scale に応じ表示 |

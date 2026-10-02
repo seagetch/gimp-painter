@@ -1,0 +1,123 @@
+Painter UI lifecycle review regressions, native GTK display, 2026-10-02.
+The following are deliberately reproduced pre-fix failures, not final results.
+
+=== detached_child_widgets ===
+# Start of painter-layer-ui tests
+=================================================================
+==353872==ERROR: AddressSanitizer: heap-use-after-free on address 0x50e000082e68 at pc 0x56505d5a0398 bp 0x7ffe4bac6980 sp 0x7ffe4bac6978
+READ of size 8 at 0x50e000082e68 thread T0
+    #0 0x56505d5a0397 in painter_filter_choice_changed ../app/dialogs/painter-layer-dialog.c:290
+    #1 0x7fb2b1305b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x17b80) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #2 0x7fb2b131b8b7  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x2d8b7) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #3 0x7fb2b132186d in g_signal_emit_by_name (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x3386d) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #4 0x56505d556585 in child_widget_lifetimes ../app/tests/test-painter-layer-ui.c:361
+    #5 0x7fb2b12210d8  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c0d8) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #6 0x7fb2b1221052  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c052) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #7 0x7fb2b122158a in g_test_run_suite (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c58a) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #8 0x7fb2b1221667 in g_test_run (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c667) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #9 0x56505d557f30 in main ../app/tests/test-painter-layer-ui.c:468
+    #10 0x7fb2af3c2ca7  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6+0x29ca7) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #11 0x7fb2af3c2d64 in __libc_start_main (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6+0x29d64) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #12 0x56505d553710 in _start (/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-layer-ui-asan+0x135710) (BuildId: f7c5eb2a5e428687b2fedad56509ac5795a72f40)
+
+0x50e000082e68 is located 72 bytes inside of 160-byte region [0x50e000082e20,0x50e000082ec0)
+freed by thread T0 here:
+    #0 0x7fb2b18d38f8 in free ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:52
+    #1 0x56505d59fc92 in painter_dialog_free ../app/dialogs/painter-layer-dialog.c:60
+    #2 0x7fb2b11ce3c9  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x393c9) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+
+previously allocated by thread T0 here:
+    #0 0x7fb2b18d4610 in calloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:77
+    #1 0x7fb2b11fa879 in g_malloc0 (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x65879) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #2 0x56505d5a84d4 in painter_filter_layer_dialog_new ../app/dialogs/painter-layer-dialog.c:595
+    #3 0x56505d5538d2 in new_filter_dialog ../app/tests/test-painter-layer-ui.c:72
+    #4 0x56505d556650 in child_widget_lifetimes ../app/tests/test-painter-layer-ui.c:354
+    #5 0x7fb2b12210d8  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c0d8) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+
+SUMMARY: AddressSanitizer: heap-use-after-free ../app/dialogs/painter-layer-dialog.c:290 in painter_filter_choice_changed
+Shadow bytes around the buggy address:
+  0x50e000082b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x50e000082c00: 00 00 00 00 fa fa fa fa fa fa fa fa 00 00 00 00
+  0x50e000082c80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x50e000082d00: fa fa fa fa fa fa fa fa fd fd fd fd fd fd fd fd
+  0x50e000082d80: fd fd fd fd fd fd fd fd fd fd fd fd fa fa fa fa
+=>0x50e000082e00: fa fa fa fa fd fd fd fd fd fd fd fd fd[fd]fd fd
+  0x50e000082e80: fd fd fd fd fd fd fd fd fa fa fa fa fa fa fa fa
+  0x50e000082f00: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x50e000082f80: fd fd fd fa fa fa fa fa fa fa fa fa fd fd fd fd
+  0x50e000083000: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x50e000083080: fa fa fa fa fa fa fa fa 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==353872==ABORTING
+
+=== clone_response_close_reentry ===
+# Start of painter-layer-ui tests
+not ok /painter-layer-ui/clone_response_close_reentry - Gtk-FATAL-CRITICAL: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+Bail out!
+
+=== filter_creation_close_reentry ===
+# Start of painter-layer-ui tests
+**
+ERROR:../app/tests/test-painter-layer-ui.c:450:filter_creation_close_reentry: assertion failed (gimp_image_get_n_layers (image) == 1): (2 == 1)
+not ok /painter-layer-ui/filter_creation_close_reentry - ERROR:../app/tests/test-painter-layer-ui.c:450:filter_creation_close_reentry: assertion failed (gimp_image_get_n_layers (image) == 1): (2 == 1)
+Bail out!
+
+=== refresh-before-model-lease ===
+# Start of painter-layer-ui tests
+ok 1 /painter-layer-ui/clone_creation_source_reentry
+ok 2 /painter-layer-ui/clone_creation_and_parent
+ok 3 /painter-layer-ui/clone_edit_cancel_undo_live
+ok 4 /painter-layer-ui/clone_deleted_source_and_cycle
+ok 5 /painter-layer-ui/filter_create_cancel_and_validate
+ok 6 /painter-layer-ui/filter_preserve_unknown_and_undo
+ok 7 /painter-layer-ui/filter_preserve_float_shape
+ok 8 /painter-layer-ui/dialog_lifetimes
+ok 9 /painter-layer-ui/action_enablement
+ok 10 /painter-layer-ui/retained_child_widgets
+ok 11 /painter-layer-ui/detached_child_widgets
+ok 12 /painter-layer-ui/clone_response_close_reentry
+ok 13 /painter-layer-ui/filter_response_close_reentry
+ok 14 /painter-layer-ui/filter_creation_close_reentry
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==356838==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000ec8 (pc 0x7f68c831e653 bp 0x50b000331bb0 sp 0x7fff70d41518 T0)
+==356838==The signal is caused by a READ memory access.
+==356838==Hint: address points to the zero page.
+    #0 0x7f68c831e653 in g_sequence_get_length (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x7f653) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #1 0x7f68c7508d8f in gtk_list_store_clear (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x203d8f) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #2 0x564a0b9c1a19 in painter_clone_refresh ../app/dialogs/painter-layer-dialog.c:169
+    #3 0x7f68c840fb80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x17b80) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #4 0x7f68c84258b7  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x2d8b7) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #5 0x7f68c842b5a5 in g_signal_emit_valist (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x335a5) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #6 0x7f68c842b662 in g_signal_emit (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x33662) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #7 0x564a0b971e88 in clone_refresh_close_reentry ../app/tests/test-painter-layer-ui.c:390
+    #8 0x7f68c832b0d8  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c0d8) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #9 0x7f68c832b052  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c052) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #10 0x7f68c832b5e1 in g_test_run_suite (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c5e1) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #11 0x7f68c832b667 in g_test_run (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c667) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #12 0x564a0b975be7 in main ../app/tests/test-painter-layer-ui.c:528
+    #13 0x7f68c64ccca7  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6+0x29ca7) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #14 0x7f68c64ccd64 in __libc_start_main (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6+0x29d64) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #15 0x564a0b970a00 in _start (/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-layer-ui-asan+0x136a00) (BuildId: 8821703108719b8cf02a29bef97c4d7c3b35107b)
+
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x7f653) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4) in g_sequence_get_length
+==356838==ABORTING
