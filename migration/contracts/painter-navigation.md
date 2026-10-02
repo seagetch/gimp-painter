@@ -76,3 +76,29 @@ navigation groups. The scale API's clamping and full display event sequences
 remain separate integration tests; the oracle records raw requested factors,
 including negative values rather than pretending they are valid displayed zoom.
 Transformed pan and physical mouse/tablet comparisons remain unfinished.
+
+## Native display event route
+
+Four full-GUI tests now dispatch synthetic GDK button, motion and key events
+through the real GimpDisplayShell canvas handler on the native cloud display:
+
+- Default Shift/Ctrl/additional-modifier rotation with horizontal reflection,
+  stationary Ctrl release and fixed-anchor angle restoration
+- Explicit step rotation on buttons 4, 5 and 8, modifier release while held,
+  rejected second-button press and ignored unrelated-button release
+- Inherited radial zoom through the real display scale API and anchor cleanup
+- Layer-picker modifier release before button release, without a stale grab
+
+The last case first failed: state was cleared but the pointer remained grabbed.
+The picker branch now uses the ordinary stop-scrolling cleanup. All four normal
+and all four focused ASan/UBSan cases pass. The builder instruments the math,
+modifier manager, rotate/event adapter and test translation units, not all GTK or
+core dependencies. The harness initializes GIMP's normal first-focus lifecycle
+before synthesizing input; bypassing that setup had initially left its deferred
+device manager uninitialized. Neither failure was hidden by relaxing assertions.
+
+Reports and original diagnostics are `migration/tests/navigation-events-*`.
+Synthetic native events extend the earlier pure arithmetic/configuration proof;
+physical tablet input, full focus/device transitions and transformed pan remain
+separate gates. Existing GUI test-profile diagnostics are recorded in the result
+manifest rather than suppressed.

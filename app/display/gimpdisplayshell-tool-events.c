@@ -1176,9 +1176,9 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             gimp_statusbar_pop_temp (statusbar);
 
             g_clear_weak_pointer (&shell->picked_layer);
-            shell->mod_action = GIMP_MODIFIER_ACTION_NONE;
-            shell->mod_action_button = 0;
-            shell->painter_navigation_inherited = FALSE;
+            /* This may precede the initiating button release. Finish the
+             * pointer grab as well as its state, so a later Space drag works. */
+            gimp_display_shell_stop_scrolling (shell, event);
           }
         else if (shell->mod_action != GIMP_MODIFIER_ACTION_NONE &&
                  shell->mod_action_button == 0 &&

@@ -1,0 +1,29 @@
+{
+  "scope": "Real GimpDisplayShell on native cloud Xfce DISPLAY=:0 with synthetic GDK button/motion/key events; no physical tablet claim",
+  "verified_utc": "2026-10-02T03:28:20Z",
+  "normal_cases": 4,
+  "normal_exit": 0,
+  "sanitizer_cases": 4,
+  "sanitizer_exit": 0,
+  "normal_log": "navigation-events-native.txt",
+  "sanitizer_log": "navigation-events-sanitizer-native.txt",
+  "before_fix_log": "navigation-events-before-fix.txt",
+  "launch": "bash /workspace/shared/pna (pnev && pneas)",
+  "instrumentation": "Five navigation/test C translation units; GTK/core/dependencies uninstrumented; ASan+UBSan;LSanoff",
+  "source_sha256": {
+    "app/display/gimppainternavigation.c": "6d5ace7b15a13c795141e60d206bd1b044a30a6f1e15742097d3b58c65aa24e9",
+    "app/display/gimpmodifiersmanager.c": "686e0ddfd749140b272c0561cc80394d3bf6e696fa20e1b97e0d8fe6095364dc",
+    "app/display/gimpdisplayshell-rotate.c": "1c07a0afa30325b85ce21540e6607b94aa4b2ed10b40acabdac62f7666cf5728",
+    "app/display/gimpdisplayshell-tool-events.c": "a463048f736953c45d85dfa99fbf05048ea6f205461c593e1c4f03e01d072931",
+    "app/tests/test-painter-navigation-events.c": "192aa2842e58675c6e1a008f24d1230a661a83a14964b057e0b1d669a862679a"
+  },
+  "binary_sha256": {
+    "build-debian13/app/tests/painter-navigation-events": "0f67fa3ead6948dbef116d7da4afd1611d99cbb813bf51e4755e862b0f02c7d8",
+    "build-debian13/app/tests/painter-navigation-events-asan": "007f426aceb7f1c23f3e14752f3b622b0fdc667db2f71f0ce316eaa82f679099"
+  },
+  "known_diagnostics": [
+    "Upstream GUI test-profile source icon paths are absent",
+    "Concurrent test app does not acquire the existing org.gimp.GIMP.UI bus name",
+    "Existing test-profile writable/search-path warning at shutdown"
+  ]
+}

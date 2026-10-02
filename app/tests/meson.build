@@ -51,6 +51,7 @@ app_tests = [
   'painter-xcf-roundtrip',
   'painter-layer-modes',
   'painter-navigation-ui',
+  'painter-navigation-events',
 ]
 
 # Prevent parallel builds for the tests
