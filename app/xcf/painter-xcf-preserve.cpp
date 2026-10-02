@@ -35,6 +35,7 @@ extern "C" {
 #include <cstring>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -132,8 +133,67 @@ gchar *read_string (GVariant *dict, const char *key)
   if (!size || data[size - 1] || std::memchr (data, 0, size - 1)) fail ("Malformed Painter name");
   return static_cast<gchar *> (g_memdup2 (data, size));
 }
+const char external_key[] = "gimp-painter-xcf-external-origins";
+const char external_field[] = "external-reference-origins";
+Bytes little_endian_bytes (GVariant *value)
+{
+  Variant wire (g_variant_ref (value));
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  wire.reset (g_variant_byteswap (wire.get ()));
+#endif
+  return Bytes (g_variant_get_data_as_bytes (wire.get ()));
+}
+void merge_external_origins (Dictionary &dict, GObject *object, GVariant *incoming)
+{
+  Variant existing (g_variant_dict_lookup_value (&dict.dict, external_field, G_VARIANT_TYPE ("aa{sv}")));
+  if (!existing && g_variant_dict_contains (&dict.dict, external_field)) fail ("Invalid external reference provenance");
+  Variant cached;
+  if (auto *bytes = static_cast<GBytes *> (g_object_get_data (object, external_key)))
+    {
+      cached.reset (g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("aa{sv}"), bytes, FALSE)));
+      if (!g_variant_is_normal_form (cached.get ())) fail ("Invalid retained external reference provenance");
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+      cached.reset (g_variant_byteswap (cached.get ()));
+#endif
+    }
+  std::vector<Variant> records;
+  std::unordered_map<std::string, std::vector<gsize>> fingerprints;
+  gsize retained_size = 0;
+  for (GVariant *source : {existing.get (), cached.get (), incoming})
+    if (source)
+      {
+        if (!g_variant_is_of_type (source, G_VARIANT_TYPE ("aa{sv}"))) fail ("Invalid external reference provenance type");
+        const gsize count = g_variant_n_children (source);
+        if (count > 65536) fail ("Too many external reference records");
+        for (gsize i = 0; i < count; ++i)
+          {
+            Variant record (g_variant_get_child_value (source, i));
+            Bytes raw (g_variant_get_data_as_bytes (record.get ()));
+            std::unique_ptr<gchar, decltype (&g_free)> digest (g_compute_checksum_for_bytes (G_CHECKSUM_SHA256, raw.get ()), g_free);
+            auto &bucket = fingerprints[std::string (digest.get ())];
+            bool seen = false;
+            for (gsize index : bucket)
+              if (g_variant_equal (records[index].get (), record.get ())) { seen = true; break; }
+            if (!seen)
+              {
+                const gsize size = g_bytes_get_size (raw.get ());
+                if (records.size () >= 65536 || size > max_blob - retained_size) fail ("External reference archive exceeds its serialization limits");
+                retained_size += size;
+                records.emplace_back (std::move (record));
+                bucket.push_back (records.size () - 1);
+              }
+          }
+      }
+  if (!records.empty ())
+    {
+      GVariantBuilder array; g_variant_builder_init (&array, G_VARIANT_TYPE ("aa{sv}"));
+      for (const auto &record : records) g_variant_builder_add_value (&array, record.get ());
+      dict.put (external_field, g_variant_builder_end (&array));
+    }
+}
 void preserve_records (Dictionary &dict, GObject *object)
 {
+  merge_external_origins (dict, object, nullptr);
   if (!g_variant_dict_contains (&dict.dict, "original-owner"))
     if (auto *type = static_cast<const gchar *> (g_object_get_data (object, "gimp-painter-xcf-original-type")))
       dict.put ("original-owner", g_variant_new_string (type));
@@ -250,10 +310,17 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
       GError *error = nullptr;
       Clone ref (gimp_clone_layer_dup_reference (GIMP_CLONE_LAYER (item), &error));
       if (!ref) { if (error) g_error_free (error); fail ("Could not snapshot Clone reference"); }
-      if (ref->source && gimp_item_get_image (GIMP_ITEM (ref->source)) != image)
-        fail ("Clone source is outside the image; destination was not changed");
       dict.put ("kind", g_variant_new_string ("clone"));
-      const guint32 source_id = ref->source ? GPOINTER_TO_UINT (g_hash_table_lookup (ids, ref->source)) : 0;
+      const bool external = ref->source && gimp_item_get_image (GIMP_ITEM (ref->source)) != image;
+      const guint32 source_id = ref->source && !external ? GPOINTER_TO_UINT (g_hash_table_lookup (ids, ref->source)) : 0;
+      if (ref->source && !source_id)
+        {
+          Variant origin (GimpPainterXcf::external_reference_origin (G_OBJECT (ref->source), G_OBJECT_TYPE (ref->source), "clone-source"));
+          GVariantBuilder array; g_variant_builder_init (&array, G_VARIANT_TYPE ("aa{sv}"));
+          g_variant_builder_add_value (&array, origin.get ());
+          Variant incoming (g_variant_ref_sink (g_variant_builder_end (&array)));
+          merge_external_origins (dict, G_OBJECT (item), incoming.get ());
+        }
       if (ref->source && !source_id)
         {
           ref->source_expired = TRUE; ref->allow_name_lookup = FALSE;
@@ -267,6 +334,8 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
           if (g_variant_lookup (base.get (), "source-id", "u", &missing) && missing)
             dict.put ("unresolved-source-id", g_variant_new_uint32 (missing));
         }
+      if (!ref->source && ref->source_expired && !ref->pending_name)
+        ref->allow_name_lookup = FALSE;
       dict.put ("source-id", g_variant_new_uint32 (source_id));
       dict.put ("source-state", g_variant_new_uint32 (ref->state));
       dict.put ("source-expired", g_variant_new_boolean (ref->source_expired));
@@ -311,7 +380,10 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
               if (original_procedure) dict.put ("original-argument-procedure", original_procedure.get ());
             }
           dict.put ("has-arguments", g_variant_new_boolean (args != nullptr));
-          Variant encoded_args (GimpPainterXcf::encode_snapshot (args.get (), image, ids));
+          GVariant *external = nullptr;
+          Variant encoded_args (GimpPainterXcf::encode_snapshot (args.get (), image, ids, &external));
+          Variant external_origins (external);
+          merge_external_origins (dict, G_OBJECT (item), external_origins.get ());
           dict.put ("arguments", encoded_args.get ());
         }
       dict.put ("generation", g_variant_new_uint64 (state.generation));
@@ -365,6 +437,7 @@ struct _XcfPainterSave
   Parasite image;
   std::unordered_map<GimpItem *, Parasite> items;
   std::unordered_map<GObject *, Parasite> origins;
+  std::unordered_map<GObject *, Bytes> external_origins;
   std::unordered_map<GimpDrawable *, Object> buffers;
   std::unordered_map<GimpCloneLayer *, Clone> clone_checks;
   std::unordered_map<GimpFilterLayer *, GimpFilterLayerSnapshot> filter_checks;
@@ -446,6 +519,14 @@ extern "C" XcfPainterSave *xcf_painter_prepare_save (GimpImage *image, GError **
       for (auto *item : all)
         {
           result->items.emplace (item, item_record (image, item, result->ids));
+          {
+            Variant record = decode (result->items.at (item).get ());
+            if (record)
+              {
+                Variant external (g_variant_lookup_value (record.get (), external_field, G_VARIANT_TYPE ("aa{sv}")));
+                if (external) result->external_origins.emplace (G_OBJECT (item), little_endian_bytes (external.get ()));
+              }
+          }
           if (GIMP_IS_CLONE_LAYER (item))
             {
               Clone reference (gimp_clone_layer_dup_reference (GIMP_CLONE_LAYER (item), nullptr));
@@ -514,6 +595,11 @@ extern "C" void xcf_painter_commit_save (XcfPainterSave *save)
 {
   for (const auto &item : save->items)
     g_object_set_data (G_OBJECT (item.first), "gimp-painter-xcf-save-id", g_hash_table_lookup (save->ids, item.first));
+  /* Retain diagnostic provenance if a live external target later expires,
+   * without changing the live binding, definition or native parasite list. */
+  for (const auto &entry : save->external_origins)
+    g_object_set_data_full (entry.first, external_key, g_bytes_ref (entry.second.get ()),
+                            reinterpret_cast<GDestroyNotify> (g_bytes_unref));
 }
 extern "C" guint32 xcf_painter_saved_id (XcfPainterSave *save, GimpItem *item)
 { return save ? GPOINTER_TO_UINT (g_hash_table_lookup (save->ids, item)) : gimp_item_get_tattoo (item); }

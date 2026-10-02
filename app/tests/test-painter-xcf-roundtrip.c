@@ -726,6 +726,84 @@ static void opaque_argument_shapes (void)
       g_bytes_unref(opaque);g_object_unref(image);g_file_delete(file,NULL,NULL);g_object_unref(file);
     }
 }
+static gboolean contains_bytes (const gchar *data, gsize size, const gchar *needle)
+{
+  gsize length=strlen(needle);
+  for(gsize i=0;i+length<=size;++i)if(!memcmp(data+i,needle,length))return TRUE;
+  return FALSE;
+}
+static GVariant *external_origins (GimpItem *item)
+{
+  GVariant *record=capsule(item),*origins=g_variant_lookup_value(record,"external-reference-origins",G_VARIANT_TYPE("aa{sv}"));
+  g_assert_nonnull(origins);g_variant_unref(record);return origins;
+}
+static void external_references_remain_unresolved (void)
+{
+  GimpImage *external=gimp_image_new(gimp,2,2,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+  GimpImage *image=gimp_image_new(gimp,2,2,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR),*copy;
+  GimpLayer *source=gimp_layer_new(external,2,2,babl_format("R'G'B'A u8"),"shared source",1,GIMP_LAYER_MODE_NORMAL);
+  GimpLayer *local=gimp_layer_new(image,2,2,babl_format("R'G'B'A u8"),"shared source",1,GIMP_LAYER_MODE_NORMAL);
+  GimpLayer *clone,*filter;GFile *file=temporary_file(),*display_file;
+  GimpFilterArgumentReference refs[4];GObject *targets[]={G_OBJECT(external),G_OBJECT(source),G_OBJECT(image),G_OBJECT(local)};
+  GimpFilterArgumentSpec spec={0};GimpFilterArgumentsSnapshot *args;GError *error=NULL;
+  GVariant *clone_origin,*filter_origin;gint64 external_id=gimp_image_get_id(external),source_id=gimp_item_get_id(GIMP_ITEM(source));
+  const guint8 source_pixel[]={191,32,64,255},local_pixel[]={9,8,7,255},filter_pixel[]={17,18,19,255};
+  display_file=g_file_new_for_uri("https://unit-user:unit-secret@example.invalid/private/source.xcf");
+  gimp_image_set_file(external,display_file);g_object_unref(display_file); /* no file/network lookup */
+  gimp_image_add_layer(external,source,NULL,0,FALSE);gimp_image_add_layer(image,local,NULL,0,FALSE);
+  gimp_item_set_tattoo(GIMP_ITEM(local),(guint32)source_id); /* diagnostic-ID collision trap */
+  gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(source)),GEGL_RECTANGLE(0,0,1,1),0,babl_format("R'G'B'A u8"),source_pixel,GEGL_AUTO_ROWSTRIDE);
+  gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(local)),GEGL_RECTANGLE(0,0,1,1),0,babl_format("R'G'B'A u8"),local_pixel,GEGL_AUTO_ROWSTRIDE);
+  clone=gimp_clone_layer_new(image,source,2,2,"external clone",1,GIMP_LAYER_MODE_NORMAL);gimp_image_add_layer(image,clone,NULL,0,FALSE);
+  filter=gimp_filter_layer_new(image,2,2,"external filter",1,GIMP_LAYER_MODE_NORMAL);gimp_image_add_layer(image,filter,NULL,0,FALSE);
+  refs[0]=(GimpFilterArgumentReference){GIMP_TYPE_IMAGE,external_id,TRUE,FALSE};
+  refs[1]=(GimpFilterArgumentReference){GIMP_TYPE_LAYER,source_id,TRUE,FALSE};
+  refs[2]=(GimpFilterArgumentReference){GIMP_TYPE_IMAGE,gimp_image_get_id(image),TRUE,FALSE};
+  refs[3]=(GimpFilterArgumentReference){GIMP_TYPE_LAYER,gimp_item_get_id(GIMP_ITEM(local)),TRUE,FALSE};
+  spec.value_type=GIMP_TYPE_CORE_OBJECT_ARRAY;spec.n_references=4;spec.references=refs;spec.targets=targets;
+  args=gimp_filter_arguments_snapshot_import(1,&spec,&error);g_assert_no_error(error);g_assert_nonnull(args);
+  g_assert_true(gimp_filter_layer_set_definition_with_snapshot(GIMP_FILTER_LAYER(filter),"unavailable-external",NULL,args,&error));g_assert_no_error(error);
+  gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(filter)),GEGL_RECTANGLE(0,0,1,1),0,babl_format("R'G'B'A u8"),filter_pixel,GEGL_AUTO_ROWSTRIDE);
+  gimp_filter_layer_mark_as_loaded(GIMP_FILTER_LAYER(filter));
+  save(image,file);
+  /* Serializing an unresolved-on-reload descriptor must not change live links. */
+  g_assert_true(gimp_clone_layer_get_source(GIMP_CLONE_LAYER(clone))==source);pixel(clone,191,32,64,255);
+  {GimpFilterArgumentsSnapshot *live=gimp_filter_layer_snapshot_arguments(GIMP_FILTER_LAYER(filter));GimpFilterArgumentReference ref;
+   g_assert_true(gimp_filter_arguments_snapshot_reference(live,0,0,&ref));g_assert_false(ref.expired);g_assert_cmpint(ref.id,==,external_id);
+   gimp_filter_arguments_snapshot_free(live);}
+  copy=load(file);clone_origin=external_origins(GIMP_ITEM(layer(copy,"external clone")));filter_origin=external_origins(GIMP_ITEM(layer(copy,"external filter")));
+  g_assert_cmpuint(g_variant_n_children(clone_origin),==,1);g_assert_cmpuint(g_variant_n_children(filter_origin),==,2);
+  for(guint repeat=0;repeat<3;++repeat)
+    {
+      GimpLayer *restored_clone=layer(copy,"external clone"),*restored_filter=layer(copy,"external filter");
+      GimpCloneLayerReference *reference=gimp_clone_layer_dup_reference(GIMP_CLONE_LAYER(restored_clone),NULL);
+      GimpFilterArgumentsSnapshot *model=gimp_filter_layer_snapshot_arguments(GIMP_FILTER_LAYER(restored_filter));
+      GimpFilterArgumentReference ref;GVariant *origins;gchar *bytes;gsize size;
+      g_assert_null(reference->source);g_assert_true(reference->source_expired);g_assert_false(reference->allow_name_lookup);
+      g_assert_cmpstr(reference->source_name,==,"shared source");gimp_clone_layer_reference_free(reference);
+      g_assert_null(gimp_clone_layer_get_source(GIMP_CLONE_LAYER(restored_clone)));pixel(restored_clone,191,32,64,255);pixel(restored_filter,17,18,19,255);
+      g_assert_nonnull(model);g_assert_true(gimp_filter_arguments_snapshot_reference(model,0,0,&ref));g_assert_true(ref.expired);g_assert_cmpint(ref.id,==,external_id);
+      g_assert_true(gimp_filter_arguments_snapshot_reference(model,0,1,&ref));g_assert_true(ref.expired);g_assert_cmpint(ref.id,==,source_id);
+      g_assert_true(gimp_filter_arguments_snapshot_reference(model,0,2,&ref));g_assert_false(ref.expired);g_assert_cmpint(ref.id,==,gimp_image_get_id(copy));
+      g_assert_true(gimp_filter_arguments_snapshot_reference(model,0,3,&ref));g_assert_false(ref.expired);g_assert_cmpint(ref.id,==,gimp_item_get_id(GIMP_ITEM(layer(copy,"shared source"))));
+      gimp_filter_arguments_snapshot_free(model);
+      origins=external_origins(GIMP_ITEM(restored_clone));g_assert_true(g_variant_equal(origins,clone_origin));g_variant_unref(origins);
+      origins=external_origins(GIMP_ITEM(restored_filter));g_assert_true(g_variant_equal(origins,filter_origin));g_variant_unref(origins);
+      g_assert_true(g_file_load_contents(file,NULL,&bytes,&size,NULL,NULL));
+      g_assert_false(contains_bytes(bytes,size,"unit-secret"));g_assert_false(contains_bytes(bytes,size,"example.invalid"));g_assert_false(contains_bytes(bytes,size,"/private/"));g_free(bytes);
+      if(!repeat)
+        {
+          /* Retained successful-save provenance also survives expiry in the
+           * original live image, not just reopening an already saved file. */
+          g_object_unref(external);external=NULL;g_assert_null(gimp_clone_layer_get_source(GIMP_CLONE_LAYER(clone)));
+          save(image,file);
+        }
+      else save(copy,file);
+      g_object_unref(copy);copy=load(file);
+    }
+  g_variant_unref(clone_origin);g_variant_unref(filter_origin);gimp_filter_arguments_snapshot_free(args);
+  g_object_unref(copy);g_object_unref(image);g_file_delete(file,NULL,NULL);g_object_unref(file);
+}
 int main (int argc, char **argv)
 {
   int result;
@@ -746,6 +824,7 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-xcf-roundtrip/missing_clone_id_and_pending_name", missing_clone_id_and_pending_name);
   g_test_add_func ("/painter-xcf-roundtrip/replace_uninterpreted_arguments", replace_uninterpreted_arguments);
   g_test_add_func ("/painter-xcf-roundtrip/opaque_argument_shapes", opaque_argument_shapes);
+  g_test_add_func ("/painter-xcf-roundtrip/external_references_remain_unresolved", external_references_remain_unresolved);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

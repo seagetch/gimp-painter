@@ -9,7 +9,8 @@ gimp_painter_copy_provenance (GObject *source, GObject *target)
 {
   const gchar *bytes_keys[] = { "gimp-painter-xcf-property-records",
                                 "gimp-painter-xcf-extension",
-                                "gimp-painter-xcf-object-header" };
+                                "gimp-painter-xcf-object-header",
+                                "gimp-painter-xcf-external-origins" };
   const gchar *text_keys[] = { "gimp-painter-xcf-original-name",
                                "gimp-painter-xcf-original-type" };
   guint i;

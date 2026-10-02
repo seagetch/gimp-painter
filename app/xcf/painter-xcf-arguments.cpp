@@ -293,26 +293,66 @@ namespace GimpPainterXcf {
 namespace {
 struct SnapshotFree { void operator() (GimpFilterArgumentsSnapshot *p) const { if (p) gimp_filter_arguments_snapshot_free (p); } };
 using Snapshot = std::unique_ptr<GimpFilterArgumentsSnapshot, SnapshotFree>;
-GVariant *encode_reference (GimpFilterArgumentReference ref, GimpImage *image, GHashTable *saved_ids)
+const gchar *safe_image_name (GimpImage *image)
+{
+  if (!image) return nullptr;
+  const gchar *name = gimp_image_get_display_name (image);
+  /* Only an already-visible basename, never a file URI/path or userinfo. */
+  return name && !std::strstr (name, "://") && !std::strchr (name, '/') &&
+         !std::strchr (name, '\\') && !std::strchr (name, '@') ? name : nullptr;
+}
+GVariant *origin_record (GObject *object, GType declared_type, const char *role)
+{
+  GimpImage *owner = GIMP_IS_IMAGE (object) ? GIMP_IMAGE (object) :
+                     GIMP_IS_ITEM (object) ? gimp_item_get_image (GIMP_ITEM (object)) : nullptr;
+  if (!GIMP_IS_IMAGE (object) && !GIMP_IS_ITEM (object)) invalid ();
+  const gint64 id = GIMP_IS_IMAGE (object) ? gimp_image_get_id (GIMP_IMAGE (object)) : gimp_item_get_id (GIMP_ITEM (object));
+  Builder record ("a{sv}");
+  g_variant_builder_add (&record.value, "{sv}", "role", g_variant_new_string (role));
+  g_variant_builder_add (&record.value, "{sv}", "declared-type", g_variant_new_string (g_type_name (declared_type)));
+  g_variant_builder_add (&record.value, "{sv}", "object-type", g_variant_new_string (G_OBJECT_TYPE_NAME (object)));
+  g_variant_builder_add (&record.value, "{sv}", "object-runtime-id", g_variant_new_int64 (id));
+  g_variant_builder_add (&record.value, "{sv}", "image-runtime-id", g_variant_new_int64 (owner ? gimp_image_get_id (owner) : 0));
+  g_variant_builder_add (&record.value, "{sv}", "object-name", string_bytes (GIMP_IS_IMAGE (object) ? safe_image_name (owner) : gimp_object_get_name (object)));
+  g_variant_builder_add (&record.value, "{sv}", "image-name", string_bytes (safe_image_name (owner)));
+  return record.end ();
+}
+GVariant *encode_reference (GimpFilterArgumentReference ref, GimpImage *image, GHashTable *saved_ids, Builder &external)
 {
   guint32 kind = 0, tattoo = 0;
   if (ref.was_set)
     {
       if (ref.expired) kind = 3;
-      else if (g_type_is_a (ref.object_type, GIMP_TYPE_IMAGE) && gimp_image_get_id (image) == ref.id) kind = 1;
+      else if (g_type_is_a (ref.object_type, GIMP_TYPE_IMAGE))
+        {
+          if (ref.id <= 0 || ref.id > G_MAXINT) invalid ();
+          auto *target = gimp_image_get_by_id (image->gimp, ref.id);
+          if (!target) invalid ();
+          if (target == image) kind = 1;
+          else
+            {
+              g_variant_builder_add_value (&external.value, origin_record (G_OBJECT (target), ref.object_type, "filter-argument"));
+              kind = 3; ref.expired = TRUE;
+            }
+        }
       else if (g_type_is_a (ref.object_type, GIMP_TYPE_ITEM))
         {
           if (ref.id <= 0 || ref.id > G_MAXINT) invalid ();
           auto *item = gimp_item_get_by_id (image->gimp, ref.id);
-          if (!item || gimp_item_get_image (item) != image) invalid ();
-          kind = 2; tattoo = GPOINTER_TO_UINT (g_hash_table_lookup (saved_ids, item));
-          if (!tattoo) { kind = 3; ref.expired = TRUE; }
+          if (!item) invalid ();
+          if (gimp_item_get_image (item) == image)
+            { kind = 2; tattoo = GPOINTER_TO_UINT (g_hash_table_lookup (saved_ids, item)); }
+          if (!tattoo)
+            {
+              g_variant_builder_add_value (&external.value, origin_record (G_OBJECT (item), ref.object_type, "filter-argument"));
+              kind = 3; ref.expired = TRUE;
+            }
         }
       else invalid ();
     }
   return g_variant_new ("(uuxsbb)", kind, tattoo, ref.id, g_type_name (ref.object_type), ref.was_set, ref.expired);
 }
-GVariant *encode_snapshot_inner (const GimpFilterArgumentsSnapshot *args, GimpImage *image, GHashTable *saved_ids, unsigned depth, guint &work)
+GVariant *encode_snapshot_inner (const GimpFilterArgumentsSnapshot *args, GimpImage *image, GHashTable *saved_ids, unsigned depth, guint &work, Builder &external)
 {
   if (depth > 32) invalid ();
   const guint count = args ? gimp_filter_arguments_snapshot_count (args) : 0;
@@ -334,14 +374,14 @@ GVariant *encode_snapshot_inner (const GimpFilterArgumentsSnapshot *args, GimpIm
             {
               GimpFilterArgumentReference ref;
               if (!gimp_filter_arguments_snapshot_reference (args, i, j, &ref)) invalid ();
-              g_variant_builder_add_value (&refs.value, encode_reference (ref, image, saved_ids));
+              g_variant_builder_add_value (&refs.value, encode_reference (ref, image, saved_ids, external));
             }
           payload = refs.end ();
         }
       else if (type == GIMP_TYPE_VALUE_ARRAY)
         {
           Snapshot nested (gimp_filter_arguments_snapshot_nested (args, i));
-          payload = encode_snapshot_inner (nested.get (), image, saved_ids, depth + 1, work);
+          payload = encode_snapshot_inner (nested.get (), image, saved_ids, depth + 1, work, external);
         }
       else
         {
@@ -429,8 +469,16 @@ std::vector<std::unique_ptr<Imported>> decode_snapshot_inner (GVariant *variant,
   return result;
 }
 }
-GVariant *encode_snapshot (const GimpFilterArgumentsSnapshot *args, GimpImage *image, GHashTable *saved_ids)
-{ guint work = 0; return g_variant_ref_sink (encode_snapshot_inner (args, image, saved_ids, 0, work)); }
+GVariant *external_reference_origin (GObject *object, GType declared_type, const char *role)
+{ return g_variant_ref_sink (origin_record (object, declared_type, role)); }
+GVariant *encode_snapshot (const GimpFilterArgumentsSnapshot *args, GimpImage *image, GHashTable *saved_ids, GVariant **external_origins)
+{
+  if (external_origins) *external_origins = nullptr;
+  guint work = 0; Builder external ("aa{sv}");
+  Variant result (g_variant_ref_sink (encode_snapshot_inner (args, image, saved_ids, 0, work, external)));
+  if (external_origins) *external_origins = g_variant_ref_sink (external.end ());
+  return result.release ();
+}
 GimpFilterArgumentsSnapshot *decode_snapshot (GVariant *variant, GimpImage *image)
 {
   guint work = 0;

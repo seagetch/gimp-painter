@@ -103,15 +103,29 @@ epoch. Complete/equal caches remain clean with zero initial runs; stale/incomple
 caches schedule a new evaluation. In-flight worker output is never serialized as
 a completed cache. Persisted counters are validated, not trusted as job tokens.
 
-## Remaining external-reference boundary
+## External and unavailable references
 
-A live Clone source or Filter object argument outside the saved image currently
-fails preflight without changing the destination. Same-image IDs and expired
-reference descriptors are supported. Persisting live cross-image references
-without rebinding by a coincidental local name remains an explicit migration
-gate; this refusal is not a permanent feature policy or a full save-compatibility
-claim. Image-level duplication of unsaved origin metadata and edits replacing an
-uninterpreted argument model are covered by the follow-on checkpoint below.
+Live Clone sources and Filter image/item arguments outside the saved image are
+saved as explicitly unresolved descriptors, with committed caches retained. Save
+does not mutate their live session bindings. No external image is embedded or
+looked up by file, network, matching local name, tattoo or runtime ID on reload.
+The active file-local source ID is zero; object argument descriptors are expired.
+An explicit future UI relink may choose a source, but the loader never guesses.
+
+`external-reference-origins` stores diagnostic role, declared/actual types,
+original object/image runtime IDs and optional already-visible object/image names.
+Runtime IDs are provenance, not persistent lookup authority. Image names are
+restricted to safe display basenames; no derived file paths/URIs or credential
+userinfo are stored. Unknown object internals are still not fabricated: objects
+without a supported image/item identity require opaque preservation or explicit
+preflight failure.
+
+The immutable origin array is deduplicated by serialized fingerprint plus exact
+value comparison, bounded by the argument/parasite limits. A successful save
+retains it as immutable item provenance so closing an external source and then
+resaving the original live image does not lose its recorded identity. Cancellation
+never publishes new provenance. Item duplication shares only these diagnostic
+bytes, never an active external binding or guessed target.
 
 ## Save transaction and failure
 
@@ -197,3 +211,16 @@ Opaque argument models are never executed or fabricated as empty converted
 arguments. This checkpoint does not turn unsupported definitions into executable
 procedures. The core definition-revision getter remains a runtime-only API and is
 not persisted or used as cache/job lineage.
+
+
+## External-reference checkpoint
+
+Normal application coverage is 33 cases (XCF 4, Open 14, roundtrip 15); all 15
+focused ASan+UBSan roundtrip cases pass. Evidence is
+`migration/tests/painter-xcf-external-{meson.txt,testlog.txt,testlog.json,sanitizers.json}`.
+The new real file test includes a live cross-image Clone, external image/item
+Filter arguments, live local arguments, duplicate local names and colliding
+local tattoos. It verifies live bindings remain unchanged during save, then
+unresolved descriptors and exact caches survive repeated reload/resave and
+closure of the original external image before resaving the live original. A
+synthetic credential-bearing source URI is not copied into any saved bytes.
