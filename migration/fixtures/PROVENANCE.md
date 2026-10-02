@@ -29,10 +29,11 @@ private artworks nor new brush binaries.
 | --- | --- | --- |
 | `gimp3-baseline.xcf` | Existing modern baseline, documented by `../baseline/standard-tests.md` | Keep existing baseline provenance; not a legacy output |
 | Stroke validator self-tests | Constructed in `../tests/test_stroke_records.py`; tagged `synthetic-format-test` | Test data, never measured brush output or UI input capture |
-| Ordinary legacy XCF | Not yet captured; 02.004 pending | Obtain source/build/capture log and creator's permission before adding |
-| CloneLayer / FilterLayer XCF | Not yet captured; 02.005–02.006 pending | Preserve editable objects and original capture provenance |
+| Ordinary legacy XCF | Captured by actual old PDB/writer and reopened; `legacy-runtime/ordinary-layers.xcf` | Newly constructed minimal test scene; source script, build hash, capture log and pixel hashes retained |
+| CloneLayer XCF | Two real writer/reader captures; `legacy-runtime/clone-*.xcf` | Custom types and source references retained; see per-run instrumentation and binary hashes |
+| FilterLayer XCF | Actual async execution and writer capture; `legacy-runtime/filter-edge.xcf`; old reader crashes | Negative reader case is explicit; never label it a successful FilterLayer roundtrip |
 | Anime/watercolor works | Not yet captured; 02.007 pending | Prefer minimal generated test artworks, with creator and license stated |
-| Legacy strokes / layer / rotation / execution traces | Not yet captured; 02.010–02.013 pending | Require the measured application's revision and binary/build provenance |
+| Legacy strokes / layer / rotation / execution traces | Selected Clone pixels/geometry/name/delete+Undo and one Filter completion observed; comprehensive 02.010–02.013 coverage still pending | Per-run source/binary/instrumentation hashes and logs are retained; no tablet, rotation or full scheduler trace coverage claimed |
 | User-provided or third-party private works | None imported | Keep outside Git and all distributable bundles; record only a local opaque fixture ID with permission and retention scope |
 
 When adding a runtime fixture record: operator, creation date, source commit,
@@ -42,6 +43,7 @@ output hashes, author/license/permission and permitted distribution scope.
 A synthetic file can test a parser, but its origin must stay marked synthetic
 and it cannot close a task requiring execution of the old reader or writer.
 
-This source register completes only the independent source-provenance work.
-Runtime-fixture provenance and permission checks remain open with their capture
-tasks; a missing capture is not a redistributable fixture.
+The captured runtime test scenes and their provenance are documented in
+`legacy-runtime/README.md` and locked by `legacy-runtime/manifest.json`. No private
+artwork was imported. Remaining runtime capture tasks retain their provenance
+and permission requirements; a missing capture is not a redistributable fixture.

@@ -1,0 +1,303 @@
+diff --git a/app/core/gimpfilterlayer.cpp b/app/core/gimpfilterlayer.cpp
+index 9141c8c7ea..7be38b6eea 100644
+--- a/app/core/gimpfilterlayer.cpp
++++ b/app/core/gimpfilterlayer.cpp
+@@ -769,6 +769,11 @@ void GLib::FilterLayer::end()
+   }
+ 
+   notify_filter_end();
++  if (g_getenv("GIMP_PAINTER_CAPTURE_FILTER")) {
++    gint n = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(g_object), "migration-capture-completions"));
++    g_object_set_data(G_OBJECT(g_object), "migration-capture-completions", GINT_TO_POINTER(n + 1));
++    g_print("FILTER_COMPLETE time_us=%" G_GINT64_FORMAT " name=%s\n", g_get_monotonic_time(), gimp_object_get_name(g_object));
++  }
+ }
+ 
+ gboolean GLib::FilterLayer::is_active()
+@@ -1207,3 +1212,11 @@ gimp_filter_layer_mark_as_loaded (GimpFilterLayer* layer)
+ {
+   FilterLayerInterface::cast(layer)->mark_as_loaded ();
+ }
++
++/* Read-only capture instrumentation, excluded from the reference app binary. */
++extern "C" gint gimp_filter_layer_capture_pending(GimpFilterLayer* layer)
++{
++  auto* impl = dynamic_cast<GLib::FilterLayer*>(FilterLayerInterface::cast(layer));
++  return (impl->is_waiting_to_be_processed() ? 1 : 0) |
++         (impl->waiting_for_runner ? 2 : 0);
++}
+diff --git a/app/tests/test-xcf.c b/app/tests/test-xcf.c
+index dc071cb190..047601bda3 100644
+--- a/app/tests/test-xcf.c
++++ b/app/tests/test-xcf.c
+@@ -977,6 +977,251 @@ gimp_assert_mainimage (GimpImage *image,
+  *  - Make sure that the information put into a #GimpImage is not lost
+  *    when the #GimpImage is written to a file and then read again
+  **/
++/* Controlled inputs, executed against the pinned legacy application core.
++ * Instrumentation only: no CloneLayer implementation changes. */
++#include "core/gimpclonelayer.h"
++#include "core/gimpcontainer.h"
++#include "core/gimppickable.h"
++#include "core/gimpprojection.h"
++
++static void
++capture_clone_fixture (Gimp *gimp, gboolean group_source)
++{
++  const gchar *directory = g_getenv ("GIMP_PAINTER_FIXTURE_DIR");
++  GimpImage *image = gimp_create_image (gimp, 64, 64, GIMP_RGB, FALSE);
++  GimpLayer *group = gimp_group_layer_new (image);
++  GimpLayer *source = gimp_layer_new (image, 24, 20, GIMP_RGBA_IMAGE,
++                                    "source child", 1.0, GIMP_NORMAL_MODE);
++  GimpLayer *clone;
++  GimpRGB red = { 0.75, 0.125, 0.25, 1.0 };
++  GimpPlugInProcedure *proc;
++  GimpImage *loaded;
++  GimpLayer *loaded_clone;
++  GimpLayer *loaded_source;
++  gchar *filename;
++  GError *error = NULL;
++  GimpPDBStatusType status;
++
++  gimp_object_set_name (GIMP_OBJECT (group), "source group");
++  g_assert (gimp_image_add_layer (image, group, NULL, 0, FALSE));
++  g_assert (gimp_image_add_layer (image, source, group, 0, FALSE));
++  gimp_item_set_offset (GIMP_ITEM (source), 8, 7);
++  gimp_drawable_fill (GIMP_DRAWABLE (source), &red, NULL);
++  gimp_drawable_update (GIMP_DRAWABLE (source), 0, 0, 24, 20);
++  gimp_pickable_flush (GIMP_PICKABLE (gimp_image_get_projection (image)));
++
++  clone = gimp_clone_layer_new (image, group_source ? group : source,
++                               24, 20, "clone", 1.0, GIMP_NORMAL_MODE);
++  g_assert (gimp_image_add_layer (image, clone, NULL, 0, FALSE));
++  gimp_item_set_offset (GIMP_ITEM (clone), 32, 30);
++  g_assert (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (clone)) ==
++            (group_source ? group : source));
++  g_print ("CAPTURE_CLONE kind=%s width=%d height=%d x=%d y=%d pickable_opacity=%d\n",
++           group_source ? "group" : "normal-in-group",
++           gimp_item_get_width (GIMP_ITEM (clone)),
++           gimp_item_get_height (GIMP_ITEM (clone)),
++           gimp_item_get_offset_x (GIMP_ITEM (clone)),
++           gimp_item_get_offset_y (GIMP_ITEM (clone)),
++           gimp_pickable_get_opacity_at (GIMP_PICKABLE (clone), 0, 0));
++
++  filename = g_build_filename (directory, group_source ? "clone-group.xcf" : "clone-normal-in-group.xcf", NULL);
++  proc = file_procedure_find (gimp->plug_in_manager->save_procs, filename, &error);
++  g_assert_no_error (error);
++  g_assert (proc != NULL);
++  status = file_save (gimp, image, NULL, filename, proc, GIMP_RUN_NONINTERACTIVE,
++                      FALSE, FALSE, FALSE, &error);
++  g_assert_no_error (error);
++  g_assert_cmpint (status, ==, GIMP_PDB_SUCCESS);
++  loaded = gimp_test_load_image (gimp, filename);
++  g_assert (loaded != NULL);
++  loaded_clone = GIMP_LAYER (gimp_container_get_child_by_index (gimp_image_get_layers (loaded), 0));
++  g_assert (GIMP_IS_CLONE_LAYER (loaded_clone));
++  loaded_source = gimp_clone_layer_get_source (GIMP_CLONE_LAYER (loaded_clone));
++  g_assert (loaded_source != NULL);
++  g_assert_cmpstr (gimp_object_get_name (loaded_source), ==,
++                   group_source ? "source group" : "source child");
++  g_assert_cmpint (GIMP_IS_GROUP_LAYER (loaded_source), ==, group_source);
++  g_print ("CAPTURE_CLONE_REOPEN kind=%s type=%s source=%s source_type=%s width=%d height=%d x=%d y=%d\n",
++           group_source ? "group" : "normal-in-group", G_OBJECT_TYPE_NAME (loaded_clone),
++           gimp_object_get_name (loaded_source), G_OBJECT_TYPE_NAME (loaded_source),
++           gimp_item_get_width (GIMP_ITEM (loaded_clone)),
++           gimp_item_get_height (GIMP_ITEM (loaded_clone)),
++           gimp_item_get_offset_x (GIMP_ITEM (loaded_clone)),
++           gimp_item_get_offset_y (GIMP_ITEM (loaded_clone)));
++  g_free (filename);
++  /* Let process teardown reclaim the two test images, retaining borrowed sources. */
++}
++
++#include "core/gimplayermask.h"
++
++static void
++capture_clone_state (const gchar *label, GimpLayer *source, GimpLayer *clone)
++{
++  guchar s[4] = {0}, c[4] = {0};
++  gimp_drawable_update (GIMP_DRAWABLE (source), 0, 0,
++                        gimp_item_get_width (GIMP_ITEM (source)),
++                        gimp_item_get_height (GIMP_ITEM (source)));
++  g_assert (gimp_pickable_get_pixel_at (GIMP_PICKABLE (source), 0, 0, s));
++  g_assert (gimp_pickable_get_pixel_at (GIMP_PICKABLE (clone), 0, 0, c));
++  g_print ("CLONE_PIXEL %s source_rgba=%u,%u,%u,%u clone_rgba=%u,%u,%u,%u source_xy=%d,%d clone_xy=%d,%d source_wh=%d,%d clone_wh=%d,%d\n",
++           label, s[0],s[1],s[2],s[3],c[0],c[1],c[2],c[3],
++           gimp_item_get_offset_x (GIMP_ITEM (source)), gimp_item_get_offset_y (GIMP_ITEM (source)),
++           gimp_item_get_offset_x (GIMP_ITEM (clone)), gimp_item_get_offset_y (GIMP_ITEM (clone)),
++           gimp_item_get_width (GIMP_ITEM (source)), gimp_item_get_height (GIMP_ITEM (source)),
++           gimp_item_get_width (GIMP_ITEM (clone)), gimp_item_get_height (GIMP_ITEM (clone)));
++}
++
++static void
++capture_clone_semantics (Gimp *gimp)
++{
++  GimpImage *image = gimp_create_image (gimp, 64, 64, GIMP_RGB, FALSE);
++  GimpLayer *source = gimp_layer_new (image, 16, 16, GIMP_RGBA_IMAGE, "pixel source", 0.5, GIMP_NORMAL_MODE);
++  GimpLayer *other = gimp_layer_new (image, 16, 16, GIMP_RGBA_IMAGE, "other source", 1.0, GIMP_NORMAL_MODE);
++  GimpLayer *later;
++  GimpLayer *clone;
++  GimpLayerMask *mask;
++  GimpRGB color = {0.8,0.2,0.4,128.0/255.0};
++  GimpRGB gray = {128.0/255.0,128.0/255.0,128.0/255.0,1.0};
++  GError *error = NULL;
++  g_assert (gimp_image_add_layer (image, source, NULL, 0, FALSE));
++  g_assert (gimp_image_add_layer (image, other, NULL, 1, FALSE));
++  gimp_drawable_fill (GIMP_DRAWABLE (source), &color, NULL);
++  clone = gimp_clone_layer_new (image, source, 16,16,"pixel clone",1.0,GIMP_NORMAL_MODE);
++  g_assert (gimp_image_add_layer (image, clone, NULL, 0, FALSE));
++  gimp_item_set_offset (GIMP_ITEM (clone),32,30);
++  capture_clone_state ("opacity_half_alpha_128", source, clone);
++
++  mask = gimp_layer_create_mask (source, GIMP_ADD_WHITE_MASK, NULL);
++  gimp_drawable_fill (GIMP_DRAWABLE (mask), &gray, NULL);
++  g_assert (gimp_layer_add_mask (source, mask, FALSE, &error) == mask);
++  g_assert_no_error (error);
++  gimp_layer_mask_set_apply (mask, TRUE, FALSE);
++  capture_clone_state ("applied_mask_128", source, clone);
++  gimp_layer_mask_set_show (mask, TRUE, FALSE);
++  capture_clone_state ("show_mask", source, clone);
++  gimp_layer_mask_set_show (mask, FALSE, FALSE);
++  gimp_item_set_visible (GIMP_ITEM (source), FALSE, FALSE);
++  capture_clone_state ("hidden_source", source, clone);
++  gimp_item_set_visible (GIMP_ITEM (source), TRUE, FALSE);
++  gimp_layer_set_mode (source, GIMP_MULTIPLY_MODE, FALSE);
++  capture_clone_state ("multiply_source", source, clone);
++
++  gimp_item_set_offset (GIMP_ITEM (source),5,7);
++  capture_clone_state ("same_size_source_move", source, clone);
++  gimp_item_resize (GIMP_ITEM (source), gimp_get_user_context (gimp),20,18,-2,-3);
++  capture_clone_state ("source_resize", source, clone);
++  gimp_item_scale (GIMP_ITEM (clone),13,9,-5,4,GIMP_INTERPOLATION_NONE,NULL);
++  capture_clone_state ("clone_scale_noop", source, clone);
++
++  gimp_clone_layer_set_source_by_name (GIMP_CLONE_LAYER (clone), "later source");
++  gimp_clone_layer_set_source (GIMP_CLONE_LAYER (clone), other);
++  g_print ("CLONE_REFERENCE pending_missing_after_direct=%s\n",
++           gimp_object_get_name (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (clone))));
++  later = gimp_layer_new (image,16,16,GIMP_RGBA_IMAGE,"later source",1.0,GIMP_NORMAL_MODE);
++  g_assert (gimp_image_add_layer (image,later,NULL,0,FALSE));
++  g_print ("CLONE_REFERENCE pending_resolved_after_insert=%s\n",
++           gimp_object_get_name (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (clone))));
++  gimp_clone_layer_set_source (GIMP_CLONE_LAYER (clone),source);
++  g_print ("CLONE_REFERENCE direct_after_successful_resolution=%s\n",
++           gimp_object_get_name (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (clone))));
++}
++
++#include "core/gimpfilterlayer.h"
++#include "pdb/gimppdb.h"
++#include "pdb/gimpprocedure.h"
++extern gint gimp_filter_layer_capture_pending (GimpFilterLayer *layer);
++
++static void
++capture_filter_fixture (Gimp *gimp)
++{
++  const gchar *directory = g_getenv ("GIMP_PAINTER_FIXTURE_DIR");
++  GimpImage *image = gimp_create_image (gimp,64,64,GIMP_RGB,FALSE);
++  GimpLayer *source = gimp_layer_new (image,24,20,GIMP_RGBA_IMAGE,"edge source",1.0,GIMP_NORMAL_MODE);
++  GimpLayer *filter = gimp_filter_layer_new (image,64,64,"edge filter",0.2,GIMP_DIFFERENCE_MODE);
++  GimpRGB color = {0.8,0.2,0.4,1.0};
++  GimpProcedure *procedure = gimp_pdb_lookup_procedure (gimp->pdb,"plug-in-edge");
++  GValueArray *defaults;
++  GArray *args;
++  GArray *read_args;
++  guint i;
++  gint64 deadline;
++  gint previous = -1;
++  gchar *filename;
++  GimpPlugInProcedure *save_proc;
++  GError *error = NULL;
++  GimpImage *loaded;
++  GimpLayer *loaded_filter;
++  guchar pixel[4] = {0};
++
++  g_assert (procedure != NULL);
++  defaults = gimp_procedure_get_arguments (procedure);
++  g_assert_cmpuint (defaults->n_values, ==, 6);
++  args = g_array_sized_new(FALSE,TRUE,sizeof(GValue),defaults->n_values);
++  g_array_set_clear_func(args,(GDestroyNotify)g_value_unset);
++  g_array_set_size(args,defaults->n_values);
++  for(i=0;i<defaults->n_values;i++)
++    {
++      GValue *value = &g_array_index(args,GValue,i);
++      g_value_init(value,G_VALUE_TYPE(&defaults->values[i]));
++      g_value_copy(&defaults->values[i],value);
++    }
++  g_value_set_int(&g_array_index(args,GValue,0),GIMP_RUN_NONINTERACTIVE);
++  g_value_set_double(&g_array_index(args,GValue,3),2.0);
++  g_value_set_int(&g_array_index(args,GValue,4),1);
++  g_value_set_int(&g_array_index(args,GValue,5),0);
++  g_value_array_free(defaults);
++  g_assert(gimp_image_add_layer(image,source,NULL,0,FALSE));
++  gimp_item_set_offset(GIMP_ITEM(source),8,7);
++  gimp_drawable_fill(GIMP_DRAWABLE(source),&color,NULL);
++  g_assert(gimp_image_add_layer(image,filter,NULL,0,FALSE));
++  gimp_filter_layer_set_procedure(GIMP_FILTER_LAYER(filter),"plug-in-edge",args);
++  g_array_unref(args);
++  gimp_drawable_update(GIMP_DRAWABLE(source),0,0,24,20);
++  gimp_pickable_flush(GIMP_PICKABLE(gimp_image_get_projection(image)));
++  deadline = g_get_monotonic_time() + 30 * G_USEC_PER_SEC;
++  while (g_get_monotonic_time() < deadline)
++    {
++      gint pending;
++      while (g_main_context_iteration(NULL,FALSE)) {}
++      gimp_pickable_flush(GIMP_PICKABLE(gimp_image_get_projection(image)));
++      g_assert(gimp_pickable_get_pixel_at(GIMP_PICKABLE(gimp_image_get_projection(image)),12,12,pixel));
++      pending = gimp_filter_layer_capture_pending(GIMP_FILTER_LAYER(filter));
++      if (pending != previous)
++        {
++          g_print("FILTER_STATE time_us=%" G_GINT64_FORMAT " pending=%d completions=%d\n",
++                   g_get_monotonic_time(),pending,
++                   GPOINTER_TO_INT(g_object_get_data(G_OBJECT(filter),"migration-capture-completions")));
++          previous=pending;
++        }
++      if (!pending && g_object_get_data(G_OBJECT(filter),"migration-capture-completions"))
++        break;
++      g_usleep(1000);
++    }
++  g_assert_cmpint(gimp_filter_layer_capture_pending(GIMP_FILTER_LAYER(filter)), ==, 0);
++  g_assert(g_object_get_data(G_OBJECT(filter),"migration-capture-completions") != NULL);
++  g_assert(gimp_pickable_get_pixel_at(GIMP_PICKABLE(filter),12,12,pixel));
++  g_print("FILTER_CACHE_PIXEL x=12 y=12 rgba=%u,%u,%u,%u\n",pixel[0],pixel[1],pixel[2],pixel[3]);
++  filename=g_build_filename(directory,"filter-edge.xcf",NULL);
++  save_proc=file_procedure_find(gimp->plug_in_manager->save_procs,filename,&error);
++  g_assert_no_error(error);
++  g_assert_cmpint(file_save(gimp,image,NULL,filename,save_proc,GIMP_RUN_NONINTERACTIVE,FALSE,FALSE,FALSE,&error),==,GIMP_PDB_SUCCESS);
++  g_assert_no_error(error);
++  loaded=gimp_test_load_image(gimp,filename);
++  g_assert(loaded != NULL);
++  loaded_filter=GIMP_LAYER(gimp_container_get_child_by_index(gimp_image_get_layers(loaded),0));
++  g_assert(GIMP_IS_FILTER_LAYER(loaded_filter));
++  g_assert_cmpstr(gimp_filter_layer_get_procedure(GIMP_FILTER_LAYER(loaded_filter)),==,"plug-in-edge");
++  read_args=gimp_filter_layer_get_procedure_args(GIMP_FILTER_LAYER(loaded_filter));
++  g_assert_cmpuint(read_args->len,==,6);
++  g_assert_cmpfloat(g_value_get_double(&g_array_index(read_args,GValue,3)),==,2.0);
++  g_assert_cmpint(g_value_get_int(&g_array_index(read_args,GValue,4)),==,1);
++  g_assert_cmpint(g_value_get_int(&g_array_index(read_args,GValue,5)),==,0);
++  g_print("LEGACY_FILTER_CAPTURE_COMPLETE procedure=plug-in-edge args=6 amount=2 wrap=1 algorithm=0\n");
++  /* read_args is a legacy shallow value copy; these six values are scalar. */
++  g_array_unref(read_args);
++  g_free(filename);
++}
++
+ int
+ main (int    argc,
+       char **argv)
+@@ -986,6 +1231,18 @@ main (int    argc,
+ 
+   g_thread_init (NULL);
+   g_type_init ();
++  if (g_getenv ("GIMP_PAINTER_FIXTURE_DIR"))
++    {
++      g_mkdir_with_parents (g_getenv ("GIMP_PAINTER_FIXTURE_DIR"), 0700);
++      gimp = gimp_init_for_testing ();
++      capture_clone_fixture (gimp, FALSE);
++      capture_clone_fixture (gimp, TRUE);
++      capture_clone_semantics (gimp);
++      if (g_getenv ("GIMP_PAINTER_CAPTURE_FILTER"))
++        capture_filter_fixture (gimp);
++      g_print ("LEGACY_CLONE_CAPTURE_COMPLETE\n");
++      return 0;
++    }
+   g_test_init (&argc, &argv, NULL);
+ 
+   gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",

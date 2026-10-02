@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "origin": "controlled input executed by real legacy application/core",
+  "build_report": "../../baseline/legacy/build-report.json",
+  "build_report_sha256": "30143f703a99de765f739f3b80aeed24a802a92c4f750c5ec6444ca071487bc1",
+  "captures": {
+    "ordinary": {
+      "binary_sha256": "fefc8fa5190592780b5bd880226a99344268b07074b294431903583e9b5013c8",
+      "script": "ordinary-layer.scm",
+      "log": "ordinary-capture.log",
+      "exit_code": 0,
+      "reopen": "passed"
+    },
+    "clone": {
+      "binary_sha256": "4a078ca6bd8b6323e89ec571c1a81b4f9bf9b72916d98b21eeaa40503cdc8cf1",
+      "instrumentation_patch": "capture-instrumentation.patch",
+      "log": "clone-capture.log",
+      "exit_code": 0,
+      "reopen": "passed"
+    },
+    "filter": {
+      "binary_sha256": "6bf8c940ffe190a7ede0e93321351c956b7a60fbf3008eb6fad139544f48608b",
+      "instrumentation_patch": "capture-instrumentation-filter.patch",
+      "log": "filter-capture.log",
+      "exit_code": 139,
+      "writer": "passed after real async filter completion",
+      "reopen": "segmentation fault",
+      "independent_uninstrumented_reopen": {
+        "binary_sha256": "fefc8fa5190592780b5bd880226a99344268b07074b294431903583e9b5013c8",
+        "log": "filter-uninstrumented-reopen.log",
+        "exit_code": 139
+      }
+    }
+  },
+  "files": {
+    "README.md": {
+      "bytes": 6725,
+      "sha256": "17c0916663adac411fb3df06f7854c8677037a432a8b12d94452f1679d2db54b"
+    },
+    "capture-instrumentation-filter.patch": {
+      "bytes": 15116,
+      "sha256": "bca77e0dfed2132490e80469955c6cfd5df3f0e55cddf9769bead3207eca67ee"
+    },
+    "capture-instrumentation.patch": {
+      "bytes": 16654,
+      "sha256": "08ebb741421ba96fdd7439f937e8dbeef0304e94e3726723303d38f1e994bddb"
+    },
+    "clone-capture.log": {
+      "bytes": 9981,
+      "sha256": "756d26d61a5a162a3b8615759066ac179292752b869abd2792d969d8dba361d3"
+    },
+    "clone-dissolve-alpha.bin": {
+      "bytes": 256,
+      "sha256": "e391af9278f0852484c254d50220eca234a3b257f98ddc489ba402ac9182f9eb"
+    },
+    "clone-group.xcf": {
+      "bytes": 1164,
+      "sha256": "6953b26108bb89196c96c2d1a5d38ddd73883c43ba4918a8693d48f867add11e"
+    },
+    "clone-normal-in-group.xcf": {
+      "bytes": 1148,
+      "sha256": "0fb12d0345bf6c6685562944dae91fb3cc79e84122bb2e67080164d79846d038"
+    },
+    "expectations.json": {
+      "bytes": 6542,
+      "sha256": "695b9fcb207d5d60fb1b8aa6d2a5f276d027d1163ed7213104a348c7c64d28a9"
+    },
+    "filter-capture.log": {
+      "bytes": 11902,
+      "sha256": "8131bcee9e1e79c699affff59daa0d5395582070997b6769f750e3a95ed08033"
+    },
+    "filter-edge.xcf": {
+      "bytes": 1612,
+      "sha256": "9e6f93077e32c239b5d7dca1424bcb513aab98561f6b68a86026a7f0fd566e2a"
+    },
+    "filter-uninstrumented-reopen.log": {
+      "bytes": 9742,
+      "sha256": "15fc2a6eb8e5a89d1f4301b9d7cb5369b4cb185d1761d2ad9fda640ce4c19815"
+    },
+    "ordinary-capture.log": {
+      "bytes": 14289,
+      "sha256": "6a9e2147a31ede3b0063266b542c5b8f8ec1041643ce05e744b401804e2620bc"
+    },
+    "ordinary-layer.scm": {
+      "bytes": 4666,
+      "sha256": "8834b86006035d006a8f16162c98c6cec457fb71455cace85f04f4b7707e2f00"
+    },
+    "ordinary-layers-reopened.png": {
+      "bytes": 1506,
+      "sha256": "cab651f088a8d46bb9963f96a775dd739ea42f62cc31205b5ec8a75b3baf6ff6"
+    },
+    "ordinary-layers.png": {
+      "bytes": 1506,
+      "sha256": "cab651f088a8d46bb9963f96a775dd739ea42f62cc31205b5ec8a75b3baf6ff6"
+    },
+    "ordinary-layers.xcf": {
+      "bytes": 3411,
+      "sha256": "9079ee063d3bf138d374560d961343b6e31d6eb3bf32ffcb80ec9caeb364b722"
+    }
+  }
+}

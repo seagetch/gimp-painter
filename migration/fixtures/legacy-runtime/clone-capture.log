@@ -1,0 +1,204 @@
+
+(process:394): GLib-GObject-CRITICAL **: 08:33:29.670: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:394): GLib-GObject-CRITICAL **: 08:33:29.670: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55e1b53f36b0:  set ignore_undos=0
+create clone instance type=55e1b5443c20
+CloneLayer::class_init
+GimpCloneLayer: Set properties_base to 18
+CloneLayer::iface_init<GimpPickableInterface>
+new_instance::cloned=0x55e1b52d6fa0[layer=0x55e1b52d6fa0]
+CAPTURE_CLONE kind=normal-in-group width=24 height=20 x=32 y=30 pickable_opacity=0
+Becomes save version=4
+xcf_save[231] prop_type=33
+xcf_save[235] length=0
+xcf_save[239] target_name=source child
+xcf_save[24a] PROP_END
+xcf_save[235] length=25
+xcf_save[252]: layer_props: PROP_END
+xcf_save_layer[25a]: done: save_layer_props
+xcf_save_layer[25a]: done: save_offset=262
+xcf_save_layer[25e]: done: save_layer_mask_offset
+xcf_save_layer[262]: xcf_save_hierarchy
+xcf_save[262] hierarchy:: write width=24
+xcf_save[266] hierarchy:: write height=20
+xcf_save[26a] hierarchy:: write bpp=4
+xcf_save[26e] hierarchy:: write nlevels=2
+xcf_save[276] hierarchy::level=0
+xcf_save_layer[296]: done: xcf_save_hierarchy
+xcf_save[34f]: layer_props: PROP_END
+xcf_save_layer[357]: done: save_layer_props
+xcf_save_layer[357]: done: save_offset=35f
+xcf_save_layer[35b]: done: save_layer_mask_offset
+xcf_save_layer[35f]: xcf_save_hierarchy
+xcf_save[35f] hierarchy:: write width=24
+xcf_save[363] hierarchy:: write height=20
+xcf_save[367] hierarchy:: write bpp=4
+xcf_save[36b] hierarchy:: write nlevels=2
+xcf_save[373] hierarchy::level=0
+xcf_save_layer[383]: done: xcf_save_hierarchy
+xcf_save[438]: layer_props: PROP_END
+xcf_save_layer[440]: done: save_layer_props
+xcf_save_layer[440]: done: save_offset=448
+xcf_save_layer[444]: done: save_layer_mask_offset
+xcf_save_layer[448]: xcf_save_hierarchy
+xcf_save[448] hierarchy:: write width=24
+xcf_save[44c] hierarchy:: write height=20
+xcf_save[450] hierarchy:: write bpp=4
+xcf_save[454] hierarchy:: write nlevels=2
+xcf_save[45c] hierarchy::level=0
+xcf_save_layer[47c]: done: xcf_save_hierarchy
+xcf_load[177]: image: PROP_END
+xcf_load_layer
+xcf_load_props: PROP_FILTER_SPEC
+create clone instance type=55e1b5443c20
+new_instance::cloned=0x55e1b54576f0[layer=0x55e1b54576f0]
+xcf_load[239] target_name=source child
+xcf_load_clone_specs
+xcf_load[24a] value_type=0
+0:XCF_FILTER_END
+CloneLayer::set_source_by_name(source child)
+xcf_load[252]: layer_props: PROP_END
+xcf_load_layer[25a]: done: load_layer_props
+xcf_load_layer[25a]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[25a]: read: hierarchy_offset  =262
+xcf_load_layer[25e]: read: layer_mask_offset  =0
+xcf_load_layer[262]: read: load_hierarchy
+xcf_load[262] hierarchy:: read width=24
+xcf_load[266] hierarchy:: read height=20
+xcf_load[26a] hierarchy:: read bpp=4
+tile_manager: width=24, height=20, bpp=4
+xcf_load[26e] hierarchy:: read offset=630
+xcf_load[276] hierarchy:: xcf_load_levelxcf_load[286] hierarchy:: done: xcf_load_levelxcf_load_layer
+xcf_load[34f]: layer_props: PROP_END
+xcf_load_layer[357]: done: load_layer_props
+xcf_load_layer[357]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[357]: read: hierarchy_offset  =35f
+xcf_load_layer[35b]: read: layer_mask_offset  =0
+xcf_load_layer
+xcf_load[438]: layer_props: PROP_END
+xcf_load_layer[440]: done: load_layer_props
+xcf_load_layer[440]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[440]: read: hierarchy_offset  =448
+xcf_load_layer[444]: read: layer_mask_offset  =0
+xcf_load_layer[448]: read: load_hierarchy
+xcf_load[448] hierarchy:: read width=24
+xcf_load[44c] hierarchy:: read height=20
+xcf_load[450] hierarchy:: read bpp=4
+tile_manager: width=24, height=20, bpp=4
+xcf_load[454] hierarchy:: read offset=1116
+xcf_load[45c] hierarchy:: xcf_load_levelxcf_load[46c] hierarchy:: done: xcf_load_levelCAPTURE_CLONE_REOPEN kind=normal-in-group type=GimpCloneLayer source=source child source_type=GimpLayer width=24 height=20 x=32 y=30
+create clone instance type=55e1b5443c20
+new_instance::cloned=0x55e1b545e4f0[layer=0x55e1b545e4f0]
+CAPTURE_CLONE kind=group width=24 height=20 x=32 y=30 pickable_opacity=0
+Becomes save version=4
+xcf_save[231] prop_type=33
+xcf_save[235] length=0
+xcf_save[239] target_name=source group
+xcf_save[24a] PROP_END
+xcf_save[235] length=25
+xcf_save[252]: layer_props: PROP_END
+xcf_save_layer[25a]: done: save_layer_props
+xcf_save_layer[25a]: done: save_offset=262
+xcf_save_layer[25e]: done: save_layer_mask_offset
+xcf_save_layer[262]: xcf_save_hierarchy
+xcf_save[262] hierarchy:: write width=24
+xcf_save[266] hierarchy:: write height=20
+xcf_save[26a] hierarchy:: write bpp=4
+xcf_save[26e] hierarchy:: write nlevels=2
+xcf_save[276] hierarchy::level=0
+xcf_save_layer[296]: done: xcf_save_hierarchy
+xcf_save[34f]: layer_props: PROP_END
+xcf_save_layer[357]: done: save_layer_props
+xcf_save_layer[357]: done: save_offset=35f
+xcf_save_layer[35b]: done: save_layer_mask_offset
+xcf_save_layer[35f]: xcf_save_hierarchy
+xcf_save[35f] hierarchy:: write width=24
+xcf_save[363] hierarchy:: write height=20
+xcf_save[367] hierarchy:: write bpp=4
+xcf_save[36b] hierarchy:: write nlevels=2
+xcf_save[373] hierarchy::level=0
+xcf_save_layer[393]: done: xcf_save_hierarchy
+xcf_save[448]: layer_props: PROP_END
+xcf_save_layer[450]: done: save_layer_props
+xcf_save_layer[450]: done: save_offset=458
+xcf_save_layer[454]: done: save_layer_mask_offset
+xcf_save_layer[458]: xcf_save_hierarchy
+xcf_save[458] hierarchy:: write width=24
+xcf_save[45c] hierarchy:: write height=20
+xcf_save[460] hierarchy:: write bpp=4
+xcf_save[464] hierarchy:: write nlevels=2
+xcf_save[46c] hierarchy::level=0
+xcf_save_layer[48c]: done: xcf_save_hierarchy
+xcf_load[177]: image: PROP_END
+xcf_load_layer
+xcf_load_props: PROP_FILTER_SPEC
+create clone instance type=55e1b5443c20
+new_instance::cloned=0x55e1b5466fd0[layer=0x55e1b5466fd0]
+xcf_load[239] target_name=source group
+xcf_load_clone_specs
+xcf_load[24a] value_type=0
+0:XCF_FILTER_END
+CloneLayer::set_source_by_name(source group)
+xcf_load[252]: layer_props: PROP_END
+xcf_load_layer[25a]: done: load_layer_props
+xcf_load_layer[25a]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[25a]: read: hierarchy_offset  =262
+xcf_load_layer[25e]: read: layer_mask_offset  =0
+xcf_load_layer[262]: read: load_hierarchy
+xcf_load[262] hierarchy:: read width=24
+xcf_load[266] hierarchy:: read height=20
+xcf_load[26a] hierarchy:: read bpp=4
+tile_manager: width=24, height=20, bpp=4
+xcf_load[26e] hierarchy:: read offset=630
+xcf_load[276] hierarchy:: xcf_load_levelxcf_load[286] hierarchy:: done: xcf_load_levelxcf_load_layer
+xcf_load[34f]: layer_props: PROP_END
+xcf_load_layer[357]: done: load_layer_props
+xcf_load_layer[357]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[357]: read: hierarchy_offset  =35f
+xcf_load_layer[35b]: read: layer_mask_offset  =0
+xcf_load_layer
+xcf_load[448]: layer_props: PROP_END
+xcf_load_layer[450]: done: load_layer_props
+xcf_load_layer[450]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[450]: read: hierarchy_offset  =458
+xcf_load_layer[454]: read: layer_mask_offset  =0
+xcf_load_layer[458]: read: load_hierarchy
+xcf_load[458] hierarchy:: read width=24
+xcf_load[45c] hierarchy:: read height=20
+xcf_load[460] hierarchy:: read bpp=4
+tile_manager: width=24, height=20, bpp=4
+xcf_load[464] hierarchy:: read offset=1132
+xcf_load[46c] hierarchy:: xcf_load_levelxcf_load[47c] hierarchy:: done: xcf_load_levelCAPTURE_CLONE_REOPEN kind=group type=GimpCloneLayer source=source group source_type=GimpGroupLayer width=24 height=20 x=32 y=30
+create clone instance type=55e1b5443c20
+new_instance::cloned=0x55e1b5475960[layer=0x55e1b5475960]
+CLONE_PIXEL opacity_half_alpha_128 source_rgba=204,51,102,128 clone_rgba=204,51,102,64 source_xy=0,0 clone_xy=32,30 source_wh=16,16 clone_wh=16,16
+CLONE_PIXEL applied_mask_128 source_rgba=204,51,102,128 clone_rgba=204,51,102,32 source_xy=0,0 clone_xy=32,30 source_wh=16,16 clone_wh=16,16
+CLONE_PIXEL show_mask source_rgba=204,51,102,128 clone_rgba=128,128,128,255 source_xy=0,0 clone_xy=32,30 source_wh=16,16 clone_wh=16,16
+CLONE_PIXEL hidden_source source_rgba=204,51,102,128 clone_rgba=204,51,102,32 source_xy=0,0 clone_xy=32,30 source_wh=16,16 clone_wh=16,16
+CLONE_PIXEL multiply_source source_rgba=204,51,102,128 clone_rgba=204,51,102,32 source_xy=0,0 clone_xy=32,30 source_wh=16,16 clone_wh=16,16
+CLONE_PIXEL dissolve_source source_rgba=204,51,102,128 clone_rgba=204,51,102,0 source_xy=0,0 clone_xy=32,30 source_wh=16,16 clone_wh=16,16
+CLONE_DISSOLVE nonzero=35 bytes=256 sha256=e391af9278f0852484c254d50220eca234a3b257f98ddc489ba402ac9182f9eb first_rows=00ff00ff0000ff00000000000000000000ffff000000ff000000000000000000
+CLONE_PIXEL same_size_source_move source_rgba=204,51,102,128 clone_rgba=204,51,102,32 source_xy=5,7 clone_xy=32,30 source_wh=16,16 clone_wh=16,16
+push_undo: GimpDrawableModUndo=48
+resize
+push_undo: GimpDrawableModUndo=48
+push_undo: GimpDrawableModUndo=48
+CLONE_PIXEL source_resize source_rgba=204,51,102,128 clone_rgba=204,51,102,32 source_xy=7,10 clone_xy=34,33 source_wh=20,18 clone_wh=20,18
+CLONE_PIXEL clone_scale_noop source_rgba=204,51,102,128 clone_rgba=204,51,102,32 source_xy=7,10 clone_xy=34,33 source_wh=20,18 clone_wh=20,18
+CloneLayer::set_source_by_name(later source)
+resize
+push_undo: GimpDrawableModUndo=48
+CLONE_REFERENCE pending_missing_after_direct=other source
+CLONE_REFERENCE pending_resolved_after_insert=later source
+resize
+push_undo: GimpDrawableModUndo=48
+CLONE_REFERENCE direct_after_successful_resolution=pixel source
+push_undo: GimpLayerUndo=56
+CLONE_UNDO after_remove source_pointer_same=1 source_attached=0
+CLONE_UNDO after_undo source_pointer_same=1 source_attached=1
+CLONE_PIXEL after_source_delete_undo source_rgba=204,51,102,128 clone_rgba=204,51,102,32 source_xy=7,10 clone_xy=34,33 source_wh=20,18 clone_wh=20,18
+LEGACY_CLONE_CAPTURE_COMPLETE
+
+(script-fu:417): LibGimpBase-WARNING **: 08:33:30.247: script-fu: gimp_wire_read(): error
