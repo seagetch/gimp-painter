@@ -98,9 +98,9 @@ std::size_t FilterScheduler::next_count (std::size_t offset) const noexcept
 {
   const auto remaining = request_.width * request_.height - offset;
   const auto x = offset % request_.width;
-  if (x || request_.width > pixel_budget)
-    return std::min ({remaining, request_.width - x, pixel_budget});
-  return std::min (remaining, (pixel_budget / request_.width) * request_.width);
+  if (x || request_.width > pixel_budget_)
+    return std::min ({remaining, request_.width - x, pixel_budget_});
+  return std::min (remaining, (pixel_budget_ / request_.width) * request_.width);
 }
 bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
                             const Commit& commit) noexcept

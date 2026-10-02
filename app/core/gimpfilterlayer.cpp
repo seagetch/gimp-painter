@@ -32,6 +32,7 @@ extern "C" {
 #include <algorithm>
 #include <cmath>
 #include <memory>
+#include <limits>
 #include <set>
 #include <string>
 #include <utility>
@@ -55,6 +56,9 @@ struct BytesFree { void operator() (GBytes *p) const noexcept { if (p) g_bytes_u
 struct ArgsFree { void operator() (GimpValueArray *p) const noexcept { if (p) gimp_value_array_unref (p); } };
 using BytesRef = std::unique_ptr<GBytes, BytesFree>;
 using ArgsRef = std::unique_ptr<GimpValueArray, ArgsFree>;
+struct CloneReferenceFree
+{ void operator() (GimpCloneLayerReference *p) const noexcept { gimp_clone_layer_reference_free (p); } };
+using CloneReference = std::unique_ptr<GimpCloneLayerReference, CloneReferenceFree>;
 struct Callback
 {
   explicit Callback (GimpFilterLayer *layer)
@@ -79,6 +83,8 @@ void reordered (GimpContainer *, GimpObject *, gint, gint, gpointer);
 void dependency_update (GimpDrawable *, gint, gint, gint, gint, gpointer);
 void dependency_active (GimpFilter *, gpointer);
 void dependency_status (GimpFilterLayer *, gpointer);
+void graph_status (GimpFilterLayer *, gpointer);
+void graph_update (GimpDrawable *, gint, gint, gint, gint, gpointer);
 void owner_ancestry (GimpViewable *, gpointer);
 void owner_removed (GimpItem *, gpointer);
 void owner_size (GimpViewable *, gpointer);
@@ -98,6 +104,9 @@ struct FilterImpl
     scheduler.close ();
     pending.close ();
     dependencies.clear ();
+    graph_connections.clear ();
+    graph_filters.clear ();
+    graph_clones.clear ();
     own_connections.clear ();
     image_connection.close ();
     profile_connection.close ();
@@ -162,6 +171,7 @@ struct FilterImpl
   }
   void refresh_connections ()
   {
+    graph_valid = false;
     dependencies.clear ();
     GimpContainer *container = current_stack ();
     stack = WeakRef<GObject> (ObjectRef<GObject>::retain (G_OBJECT (container)));
@@ -194,7 +204,7 @@ struct FilterImpl
         if (child == GIMP_OBJECT (owner)) continue;
         dependencies.push_back (connect (G_OBJECT (child), "update", G_CALLBACK (dependency_update)));
         dependencies.push_back (connect (G_OBJECT (child), "active-changed", G_CALLBACK (dependency_active)));
-        watch_descendant_status (child);
+        if (below (GIMP_ITEM (child))) watch_descendant_status (child);
       }
   }
   bool below (GimpItem *item)
@@ -209,15 +219,53 @@ struct FilterImpl
   }
   void invalidate ()
   {
+    graph_valid = false;
+    read_budget = 1024;
     scheduler.invalidate ();
     staged.reset ();
     schedule ();
     g_signal_emit_by_name (owner, "filter-state-changed");
   }
+  void dependency_dirty ()
+  {
+    /* A waiting generation has captured no input. Repeated paths through a
+     * dependency DAG must not emit another WAITING signal and recursively
+     * amplify the same edit across every ancestor. */
+    if (scheduler.state () == FilterScheduler::State::waiting)
+      { graph_valid = false; read_budget = 1024; schedule (); }
+    else
+      invalidate ();
+  }
   void structure_changed ()
   { refresh_connections (); schedule (); }
+  void definition_installed ()
+  {
+    if (definition_revision == std::numeric_limits<std::uint64_t>::max ())
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition revision exhausted");
+    ++definition_revision;
+  }
+  bool definition_current (std::uint64_t binding_token, std::uint64_t revision) const
+  {
+    auto *store = BindingStore::find (G_OBJECT (owner));
+    return store && store->accepts (binding_token) && definition_revision == revision;
+  }
+  bool publish_definition ()
+  {
+    auto& store = BindingStore::require (G_OBJECT (owner));
+    const auto token = store.generation (), revision = definition_revision;
+    configure ();
+    if (!definition_current (token, revision)) return false;
+    for (const char *property : {"filter-procedure", "filter-arguments", "filter-original-definition"})
+      {
+        g_object_notify (G_OBJECT (owner), property);
+        if (!definition_current (token, revision)) return false;
+      }
+    return true;
+  }
   void configure ()
   {
+    graph_valid = false;
+    read_budget = 1024;
     FilterScheduler::Request request;
     request.width = gimp_item_get_width (GIMP_ITEM (owner));
     request.height = gimp_item_get_height (GIMP_ITEM (owner));
@@ -291,68 +339,150 @@ struct FilterImpl
       }
     pending.schedule ();
   }
-  bool dependency_cycle (GimpLayer *layer, std::set<GimpLayer *>& path, std::size_t& visited)
+  struct FilterDependency
   {
-    if (layer == GIMP_LAYER (owner) || !path.insert (layer).second || ++visited > 4096) return true;
-    bool cycle = false;
-    if (GIMP_IS_CLONE_LAYER (layer))
+    WeakRef<GObject> object;
+    std::uint64_t generation;
+  };
+  struct CloneDependency { WeakRef<GObject> object, source; bool had_source; };
+  bool validate_graph ()
+  {
+    graph_connections.clear ();
+    graph_filters.clear ();
+    graph_clones.clear ();
+    const auto invalid = [&] {
+      graph_connections.clear (); graph_filters.clear (); graph_clones.clear (); return false;
+    };
+    auto container = stack.lock ();
+    if (!container || !GIMP_IS_LIST (container.get ())) return invalid ();
+    GList *root = g_list_find (GIMP_LIST (container.get ())->queue->head, owner);
+    if (!root) return invalid ();
+    struct Frame { GimpLayer *layer; GList *next = nullptr; GimpLayer *source = nullptr; bool entered = false; };
+    std::vector<Frame> frames;
+    std::vector<CloneReference> clone_snapshots;
+    std::set<GimpLayer *> path, complete;
+    std::size_t visited = 0;
+    for (root = root->next; root; root = root->next)
       {
-        GimpLayer *source = gimp_clone_layer_get_source (GIMP_CLONE_LAYER (layer));
-        if (source) cycle = dependency_cycle (source, path, visited);
-      }
-    else if (GIMP_IS_FILTER_LAYER (layer))
-      {
-        GimpContainer *container = gimp_item_get_container (GIMP_ITEM (layer));
-        const int index = container ? gimp_container_get_child_index (container, GIMP_OBJECT (layer)) : -1;
-        for (int i = index + 1; container && index >= 0 && i < gimp_container_get_n_children (container); ++i)
+        auto *layer = GIMP_LAYER (root->data);
+        if (!gimp_item_get_visible (GIMP_ITEM (layer))) continue;
+        frames.push_back ({layer});
+        while (!frames.empty ())
           {
-            GimpLayer *child = GIMP_LAYER (gimp_container_get_child_by_index (container, i));
-            if (gimp_item_get_visible (GIMP_ITEM (child)) && dependency_cycle (child, path, visited)) { cycle = true; break; }
+            Frame& frame = frames.back ();
+            layer = frame.layer;
+            if (!frame.entered)
+              {
+                if (complete.count (layer)) { frames.pop_back (); continue; }
+                if (layer == GIMP_LAYER (owner) || !path.insert (layer).second || ++visited > 4096) return invalid ();
+                frame.entered = true;
+                if (GIMP_IS_CLONE_LAYER (layer))
+                  {
+                    CloneReference reference (gimp_clone_layer_dup_reference (GIMP_CLONE_LAYER (layer), nullptr));
+                    if (!reference) return invalid ();
+                    frame.source = reference->source;
+                    graph_clones.push_back ({WeakRef<GObject> (ObjectRef<GObject>::retain (G_OBJECT (layer))),
+                      WeakRef<GObject> (ObjectRef<GObject>::retain (G_OBJECT (frame.source))), frame.source != nullptr});
+                    /* Also observe clones reached through another clone, whose
+                     * referenced image may be outside our own layer stack. */
+                    graph_connections.push_back (connect (G_OBJECT (layer), "update", G_CALLBACK (graph_update)));
+                    clone_snapshots.push_back (std::move (reference));
+                  }
+                else if (GIMP_IS_FILTER_LAYER (layer))
+                  {
+                    graph_filters.push_back ({WeakRef<GObject> (ObjectRef<GObject>::retain (G_OBJECT (layer))),
+                      gimp_filter_layer_get_generation (GIMP_FILTER_LAYER (layer))});
+                    graph_connections.push_back (connect (G_OBJECT (layer), "filter-state-changed", G_CALLBACK (graph_status)));
+                    auto *children = gimp_item_get_container (GIMP_ITEM (layer));
+                    if (children && GIMP_IS_LIST (children))
+                      {
+                        GList *self = g_list_find (GIMP_LIST (children)->queue->head, layer);
+                        frame.next = self ? self->next : nullptr;
+                      }
+                  }
+                else if (auto *children = gimp_viewable_get_children (GIMP_VIEWABLE (layer)))
+                  {
+                    if (!GIMP_IS_LIST (children)) return invalid ();
+                    frame.next = GIMP_LIST (children)->queue->head;
+                  }
+              }
+            if (frame.source)
+              {
+                auto *source = frame.source;
+                frame.source = nullptr;
+                /* Clone renders its source even when that source is hidden. */
+                frames.push_back ({source});
+                continue;
+              }
+            while (frame.next && !gimp_item_get_visible (GIMP_ITEM (frame.next->data))) frame.next = frame.next->next;
+            if (frame.next)
+              {
+                auto *child = GIMP_LAYER (frame.next->data);
+                frame.next = frame.next->next;
+                frames.push_back ({child});
+                continue;
+              }
+            path.erase (layer);
+            complete.insert (layer);
+            frames.pop_back ();
           }
       }
-    else if (GimpContainer *children = gimp_viewable_get_children (GIMP_VIEWABLE (layer)))
-      {
-        for (int i = 0; i < gimp_container_get_n_children (children); ++i)
-          {
-            GimpLayer *child = GIMP_LAYER (gimp_container_get_child_by_index (children, i));
-            if (gimp_item_get_visible (GIMP_ITEM (child)) && dependency_cycle (child, path, visited)) { cycle = true; break; }
-          }
-      }
-    path.erase (layer);
-    return cycle;
-  }
-  bool dependency_ready (GimpLayer *layer, bool& failed)
-  {
-    if (!gimp_item_get_visible (GIMP_ITEM (layer))) return true;
-    if (GIMP_IS_FILTER_LAYER (layer))
-      {
-        const auto state = gimp_filter_layer_get_state (GIMP_FILTER_LAYER (layer));
-        if (state == GIMP_FILTER_LAYER_FAILED || state == GIMP_FILTER_LAYER_CLOSED) failed = true;
-        return state == GIMP_FILTER_LAYER_CLEAN;
-      }
-    if (GimpContainer *children = gimp_viewable_get_children (GIMP_VIEWABLE (layer)))
-      {
-        for (int i = 0; i < gimp_container_get_n_children (children); ++i)
-          if (!dependency_ready (GIMP_LAYER (gimp_container_get_child_by_index (children, i)), failed)) return false;
-      }
+    graph_valid = true;
     return true;
   }
   bool ready (bool& failed)
   {
-    auto container = stack.lock ();
-    if (!container) return false;
-    const auto index = gimp_container_get_child_index (GIMP_CONTAINER (container.get ()), GIMP_OBJECT (owner));
-    if (index < 0) return false;
-    for (int i = index + 1; i < gimp_container_get_n_children (GIMP_CONTAINER (container.get ())); ++i)
+    if (!graph_valid && !validate_graph ()) { failed = true; return false; }
+    /* Validation is cached, but not ownership or freshness. Weak endpoints,
+     * live clone targets and Filter states/generations are checked at every
+     * scheduling checkpoint, including a missed or manually suppressed signal. */
+    bool changed = false, all_ready = true;
+    for (const auto& entry : graph_clones)
       {
-        GimpLayer *child = GIMP_LAYER (gimp_container_get_child_by_index (GIMP_CONTAINER (container.get ()), i));
-        std::set<GimpLayer *> path;
-        std::size_t visited = 0;
-        if (gimp_item_get_visible (GIMP_ITEM (child)) && dependency_cycle (child, path, visited))
-          { failed = true; return false; }
-        if (!dependency_ready (child, failed)) return false;
+        auto object = entry.object.lock (), source = entry.source.lock ();
+        CloneReference reference (object ? gimp_clone_layer_dup_reference (GIMP_CLONE_LAYER (object.get ()), nullptr) : nullptr);
+        if (!reference || (entry.had_source && !source) || source.get () != G_OBJECT (reference->source))
+          { changed = true; break; }
       }
-    return true;
+    if (!changed)
+      for (const auto& entry : graph_filters)
+        {
+          auto object = entry.object.lock ();
+          if (!object) { changed = true; break; }
+          auto *filter = GIMP_FILTER_LAYER (object.get ());
+          const auto state = gimp_filter_layer_get_state (filter);
+          if (state == GIMP_FILTER_LAYER_FAILED || state == GIMP_FILTER_LAYER_CLOSED) { failed = true; return false; }
+          if (entry.generation != gimp_filter_layer_get_generation (filter)) { changed = true; break; }
+          if (state != GIMP_FILTER_LAYER_CLEAN) all_ready = false;
+        }
+    if (changed)
+      {
+        /* All owned snapshots and iteration references above have ended.
+         * Invalidation emits user callbacks: do not traverse again afterwards
+         * in this quantum. A fresh scheduled turn checks owner/generation. */
+        graph_recheck = true;
+        invalidate ();
+        return false;
+      }
+    return all_ready;
+  }
+  bool input_current (std::uint64_t generation)
+  {
+    if (generation != scheduler.generation () || scheduler.state () != FilterScheduler::State::preparing) return false;
+    bool failed = false;
+    const bool current = ready (failed);
+    if (failed) scheduler.reject ("Filter dependency failed, is cyclic, or exceeds the graph limit");
+    else if (!current && generation == scheduler.generation () && scheduler.state () == FilterScheduler::State::preparing)
+      invalidate ();
+    return current && generation == scheduler.generation () && scheduler.state () == FilterScheduler::State::preparing;
+  }
+  static void tune_budget (std::size_t count, gint64 elapsed, std::size_t& budget)
+  {
+    /* Cost depends on the lower graph, not just pixel count. Begin with a
+     * small probe; only grow after a cheap measured sample, and damp changes.
+     * This is cooperative latency control, not a hard real-time guarantee. */
+    if (elapsed > 4000) budget = std::max (std::size_t (1024), count / 2);
+    else if (elapsed < 2000) budget = std::min (std::size_t (FilterScheduler::pixel_budget), budget * 2);
   }
   const Babl *encoded_format () const
   {
@@ -370,12 +500,13 @@ struct FilterImpl
   }
   bool step ()
   {
+    const auto started_at = g_get_monotonic_time ();
     if (topology_dirty) refresh_connections ();
     if (!gimp_item_is_attached (GIMP_ITEM (owner)) || gimp_item_is_removed (GIMP_ITEM (owner)) ||
         !gimp_item_get_visible (GIMP_ITEM (owner)))
       return scheduler.step (false, {}, {}, {});
-    const auto started_at = g_get_monotonic_time ();
     const auto previous = scheduler.state ();
+    scheduler.set_pixel_budget (previous == FilterScheduler::State::importing ? import_budget : read_budget);
     /* The genuine 2.8 reference is encoded RGB8. Do not silently quantize
      * float/linear/gray/indexed inputs and claim the same transformation.
      * Already loaded caches remain usable; unsupported reruns retain them. */
@@ -384,16 +515,26 @@ struct FilterImpl
          gimp_drawable_get_precision (GIMP_DRAWABLE (owner)) != GIMP_PRECISION_U8_NON_LINEAR))
       scheduler.reject ("Legacy filter execution currently requires non-linear RGB U8; original definition and cache are retained");
     bool failed = false;
+    graph_recheck = false;
     const bool dependencies_ready = ready (failed);
+    if (scheduler.state () == FilterScheduler::State::closed) return false;
     if (failed) scheduler.reject ("Filter dependency failed, is cyclic, or exceeds the graph limit");
     bool again = scheduler.step (dependencies_ready,
       [&] (std::size_t offset, std::size_t count, FilterScheduler::Bytes& input) {
+        const auto read_started = g_get_monotonic_time ();
+        const auto generation = scheduler.generation ();
+        auto image = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (GIMP_ITEM (owner))));
+        if (!image) throw Error (GIMP_PAINTER_ERROR_CLOSED, "Layer image was closed");
         auto container = stack.lock ();
         if (!container) throw Error (GIMP_PAINTER_ERROR_CLOSED, "Layer stack was removed");
         /* Build the existing stack graph outside operator evaluation, then
          * sample only this layer's input proxy: precisely the lower stack. */
         gimp_filter_stack_get_graph (GIMP_FILTER_STACK (container.get ()));
+        /* Node construction can emit callbacks or resolve a pending reference.
+         * Do not evaluate a graph exposed by such a change until revalidated. */
+        if (!input_current (generation)) return;
         GeglNode *node = gimp_filter_get_node (GIMP_FILTER (owner));
+        if (!input_current (generation)) return;
         GeglNode *below_node = gegl_node_get_input_proxy (node, "input");
         auto rect = rectangle (offset, count);
         rect.x += gimp_item_get_offset_x (GIMP_ITEM (owner));
@@ -401,9 +542,12 @@ struct FilterImpl
         const auto size = input.size ();
         input.resize (size + count * 4);
         gegl_node_blit (below_node, 1.0, &rect, encoded_format (), input.data () + size,
-                        GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_DEFAULT);
+                        GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_CACHE);
+        if (!input_current (generation)) return;
+        tune_budget (count, g_get_monotonic_time () - read_started, read_budget);
       },
       [&] (std::size_t offset, std::size_t count, const std::uint8_t *pixels) {
+        const auto import_started = g_get_monotonic_time ();
         if (!offset)
           {
             GeglRectangle extent {0, 0, gimp_item_get_width (GIMP_ITEM (owner)), gimp_item_get_height (GIMP_ITEM (owner))};
@@ -411,6 +555,7 @@ struct FilterImpl
           }
         auto rect = rectangle (offset, count);
         gegl_buffer_set (GEGL_BUFFER (staged.get ()), &rect, 0, encoded_format (), pixels, GEGL_AUTO_ROWSTRIDE);
+        tune_budget (count, g_get_monotonic_time () - import_started, import_budget);
       },
       [&] (std::uint64_t token) {
         if (token != scheduler.generation ()) return;
@@ -423,43 +568,66 @@ struct FilterImpl
         if (scheduler.state () == FilterScheduler::State::closed || token != scheduler.generation ()) return;
         gimp_drawable_update (GIMP_DRAWABLE (owner), 0, 0,
                               gimp_item_get_width (GIMP_ITEM (owner)), gimp_item_get_height (GIMP_ITEM (owner)));
+        if (scheduler.state () == FilterScheduler::State::closed || token != scheduler.generation ()) return;
+        /* Drawable invalidation alone only queues projection damage. Notify
+         * displays after asynchronous completion too, or a previously rendered
+         * transparent/older cache remains on screen until the next user edit.
+         * Image flush schedules chunked projection; it does not wait for it. */
+        auto image = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (GIMP_ITEM (owner))));
+        if (image) gimp_image_flush (GIMP_IMAGE (image.get ()));
       });
     if (scheduler.state () == FilterScheduler::State::closed) return false;
     maximum_quantum_us = std::max (maximum_quantum_us, g_get_monotonic_time () - started_at);
     if (previous != scheduler.state ()) g_signal_emit_by_name (owner, "filter-state-changed");
-    return again;
+    return again || graph_recheck;
   }
   GimpFilterLayer *owner;
   std::string procedure;
   BytesRef raw;
   std::shared_ptr<const FilterArguments> args;
+  std::uint64_t definition_revision = 0;
   FilterScheduler scheduler;
   FairDispatcher::Ticket pending;
   WeakRef<GObject> stack;
   ObjectRef<GObject> staged;
-  std::vector<Connection> own_connections, dependencies;
+  std::vector<Connection> own_connections, dependencies, graph_connections;
+  std::vector<FilterDependency> graph_filters;
+  std::vector<CloneDependency> graph_clones;
+  bool graph_valid = false, graph_recheck = false;
   Connection image_connection, profile_connection;
   std::vector<WeakRef<GObject>> lower_objects;
   bool topology_dirty = false;
   gint64 maximum_quantum_us = 0;
+  std::size_t read_budget = 1024, import_budget = FilterScheduler::pixel_budget;
 };
-void topology_changed (GimpContainer *, GimpObject *, gpointer data)
-{ visit (data, [] (FilterImpl& impl) { impl.structure_changed (); }); }
-void reordered (GimpContainer *, GimpObject *, gint, gint, gpointer data)
-{ visit (data, [] (FilterImpl& impl) { impl.structure_changed (); }); }
+void topology_changed (GimpContainer *container, GimpObject *, gpointer data)
+{ visit (data, [&] (FilterImpl& impl) {
+    if (container != impl.current_stack ()) impl.invalidate ();
+    impl.structure_changed ();
+  }); }
+void reordered (GimpContainer *container, GimpObject *, gint, gint, gpointer data)
+{ topology_changed (container, nullptr, data); }
 void dependency_update (GimpDrawable *source, gint, gint, gint, gint, gpointer data)
-{ visit (data, [&] (FilterImpl& impl) { if (impl.below (GIMP_ITEM (source))) impl.invalidate (); }); }
+{ visit (data, [&] (FilterImpl& impl) { if (impl.below (GIMP_ITEM (source))) impl.dependency_dirty (); }); }
 void dependency_active (GimpFilter *source, gpointer data)
-{ visit (data, [&] (FilterImpl& impl) { if (impl.below (GIMP_ITEM (source))) impl.invalidate (); }); }
+{ visit (data, [&] (FilterImpl& impl) { if (impl.below (GIMP_ITEM (source))) impl.dependency_dirty (); }); }
 void dependency_status (GimpFilterLayer *source, gpointer data)
 { visit (data, [&] (FilterImpl& impl) {
     if (impl.below (GIMP_ITEM (source)))
       {
         const auto state = gimp_filter_layer_get_state (source);
-        if (state == GIMP_FILTER_LAYER_WAITING || state == GIMP_FILTER_LAYER_CANCELLING) impl.invalidate ();
+        if (state == GIMP_FILTER_LAYER_WAITING || state == GIMP_FILTER_LAYER_CANCELLING) impl.dependency_dirty ();
         else impl.schedule ();
       }
   }); }
+void graph_status (GimpFilterLayer *source, gpointer data)
+{ visit (data, [&] (FilterImpl& impl) {
+    const auto state = gimp_filter_layer_get_state (source);
+    if (state == GIMP_FILTER_LAYER_WAITING || state == GIMP_FILTER_LAYER_CANCELLING) impl.dependency_dirty ();
+    else impl.schedule ();
+  }); }
+void graph_update (GimpDrawable *, gint, gint, gint, gint, gpointer data)
+{ visit (data, [] (FilterImpl& impl) { impl.dependency_dirty (); }); }
 void owner_ancestry (GimpViewable *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { impl.structure_changed (); }); }
 void owner_removed (GimpItem *, gpointer data)
@@ -514,13 +682,11 @@ void undo_pop (GimpUndo *undo, GimpUndoMode mode, GimpUndoAccumulator *accum)
   boundary_void (nullptr, [&] {
     BindingStore::require (G_OBJECT (undo)).with<FilterUndoSlot> ([&] (FilterUndoImpl& snapshot) {
       BindingStore::require (G_OBJECT (GIMP_ITEM_UNDO (undo)->item)).with<FilterSlot> ([&] (FilterImpl& impl) {
+        impl.definition_installed ();
         impl.procedure.swap (snapshot.procedure);
         impl.raw.swap (snapshot.raw);
         impl.args.swap (snapshot.args);
-        impl.configure ();
-        g_object_notify (G_OBJECT (impl.owner), "filter-procedure");
-        g_object_notify (G_OBJECT (impl.owner), "filter-arguments");
-        g_object_notify (G_OBJECT (impl.owner), "filter-original-definition");
+        impl.publish_definition ();
       });
     });
   });
@@ -639,11 +805,17 @@ static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
 {
   return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
     if (!GIMP_IS_FILTER_LAYER (layer)) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected FilterLayer");
+    auto owner_pin = ObjectRef<GObject>::retain (G_OBJECT (layer));
+    auto image_pin = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (GIMP_ITEM (layer))));
     std::string name = procedure ? procedure : "";
     BytesRef bytes (raw ? g_bytes_ref (raw) : nullptr);
     std::shared_ptr<const FilterArguments> arguments = imported ? *imported :
                                                        args ? std::make_shared<FilterArguments> (args) : nullptr;
     BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([&] (FilterImpl& impl) {
+      const auto binding_token = BindingStore::require (G_OBJECT (layer)).generation ();
+      const auto revision = impl.definition_revision;
+      if (impl.definition_revision == std::numeric_limits<std::uint64_t>::max ())
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition revision exhausted");
       if (push_undo && gimp_item_is_attached (GIMP_ITEM (layer)))
         {
           auto *undo = gimp_image_undo_push (gimp_item_get_image (GIMP_ITEM (layer)),
@@ -653,11 +825,14 @@ static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
           if (undo && reinterpret_cast<GimpFilterLayerUndo *> (undo)->binding_failed)
             throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition Undo construction failed");
         }
+      if (!impl.definition_current (binding_token, revision))
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition target changed during Undo creation");
+      impl.definition_installed ();
+      const auto installed_revision = impl.definition_revision;
       impl.procedure = std::move (name); impl.raw = std::move (bytes); impl.args = std::move (arguments);
-      impl.attach (); impl.configure ();
-      g_object_notify (G_OBJECT (layer), "filter-procedure");
-      g_object_notify (G_OBJECT (layer), "filter-arguments");
-      g_object_notify (G_OBJECT (layer), "filter-original-definition");
+      impl.attach ();
+      if (!impl.definition_current (binding_token, installed_revision) || !impl.publish_definition ())
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition target changed during notification");
     });
     return TRUE;
   });
@@ -683,6 +858,8 @@ GimpFilterLayerState gimp_filter_layer_get_state (GimpFilterLayer *layer)
 { FILTER_READ (GimpFilterLayerState, GIMP_FILTER_LAYER_CLOSED, static_cast<GimpFilterLayerState> (impl.scheduler.state ())); }
 gchar *gimp_filter_layer_dup_error (GimpFilterLayer *layer)
 { FILTER_READ (gchar *, static_cast<gchar *> (nullptr), g_strdup (impl.scheduler.error ().c_str ())); }
+guint64 gimp_filter_layer_get_definition_revision (GimpFilterLayer *layer)
+{ FILTER_READ (guint64, guint64 (0), impl.definition_revision); }
 guint64 gimp_filter_layer_get_generation (GimpFilterLayer *layer)
 { FILTER_READ (guint64, guint64 (0), impl.scheduler.generation ()); }
 guint64 gimp_filter_layer_get_cache_generation (GimpFilterLayer *layer)

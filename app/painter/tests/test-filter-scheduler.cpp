@@ -65,6 +65,52 @@ static void bounded_chunks ()
       g_assert_cmpuint (h.imported.size (), ==, width * 257 * 4);
     }
 }
+static void adjustable_chunk_budget ()
+{
+  for (auto budget : {std::size_t (0), std::size_t (1), std::size_t (37), std::size_t (65536)})
+    {
+      Harness h;
+      h.configure (257,3); h.scheduler.set_pixel_budget (budget); h.finish ();
+      const auto cap = std::min (std::max (budget,std::size_t (1)),std::size_t (FilterScheduler::pixel_budget));
+      g_assert_cmpuint (h.max_chunk, <=, cap);
+      g_assert_cmpuint (h.imported.size (), ==, 257 * 3 * 4);
+      g_assert_cmpuint (h.scheduler.starts (), ==, 1); g_assert_cmpuint (h.commits, ==, 1);
+    }
+  FilterScheduler s;
+  const std::size_t width = 40001, height = 3;
+  std::size_t read_offset = 0, import_offset = 0, expected_cap = 17;
+  unsigned reads = 0, imports = 0, commits = 0;
+  s.set_request ({width,height,[] (const FilterScheduler::Bytes& input,std::atomic<bool>&,FilterScheduler::Bytes& output) {
+    output = input; return true;
+  }});
+  s.set_pixel_budget (expected_cap);
+  const auto generation = s.generation ();
+  const auto deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 10;
+  do
+    {
+      s.step (true,
+        [&] (std::size_t offset,std::size_t count,FilterScheduler::Bytes& out) {
+          g_assert_cmpuint (offset, ==, read_offset); g_assert_cmpuint (count, >, 0);
+          g_assert_cmpuint (count, <=, expected_cap);
+          g_assert_true (count <= width - offset % width || (offset % width == 0 && count % width == 0));
+          out.insert (out.end (),count * 4,42); read_offset += count;
+          expected_cap = ++reads % 2 ? 32768 : 17; s.set_pixel_budget (expected_cap);
+        },
+        [&] (std::size_t offset,std::size_t count,const std::uint8_t *bytes) {
+          g_assert_cmpuint (offset, ==, import_offset); g_assert_cmpuint (count, >, 0);
+          g_assert_cmpuint (count, <=, expected_cap);
+          for (std::size_t i = 0; i < count * 4; ++i) g_assert_cmpuint (bytes[i], ==, 42);
+          import_offset += count; expected_cap = ++imports % 2 ? 32768 : 17; s.set_pixel_budget (expected_cap);
+        },
+        [&] (std::uint64_t) { ++commits; });
+      if (s.settled ()) break;
+      g_usleep (100);
+    }
+  while (g_get_monotonic_time () < deadline);
+  g_assert_true (s.settled ()); g_assert_cmpuint (commits, ==, 1);
+  g_assert_cmpuint (s.generation (), ==, generation);
+  g_assert_cmpuint (read_offset, ==, width * height); g_assert_cmpuint (import_offset, ==, width * height);
+}
 static void dependency_priority ()
 {
   Harness low, high; low.configure (); high.configure ();
@@ -332,7 +378,7 @@ int main (int argc, char **argv)
   ADD (saved_generation_boundaries); ADD (commit_failure_does_not_certify_cache); ADD (obsolete_read_failure_preserves_new_edit);
   ADD (saved_cache_generations); ADD (restored_cache_rejects_colliding_old_job);
   ADD (rejected_worker_is_not_settled_until_done); ADD (reject_during_read); ADD (reject_during_import); ADD (closed_request_is_inert);
-  ADD (completed_cache); ADD (bounded_chunks); ADD (dependency_priority);
+  ADD (adjustable_chunk_budget); ADD (completed_cache); ADD (bounded_chunks); ADD (dependency_priority);
   ADD (cancel_request_is_not_completion); ADD (changes_during_preparation); ADD (changes_during_import);
   ADD (failures_do_not_retry); ADD (close_does_not_wait); ADD (loaded_cache_not_reexecuted);
   ADD (invalid_request_and_result); ADD (reentry_at_commit);

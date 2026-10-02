@@ -36,6 +36,10 @@ public:
   ~FilterScheduler () noexcept { close (); }
   FilterScheduler (const FilterScheduler&) = delete;
   FilterScheduler& operator= (const FilterScheduler&) = delete;
+  /* The adapter may tune quantum size between chunks; this changes neither
+   * raster geometry nor generation. Zero clamps to one, oversized to the cap. */
+  void set_pixel_budget (std::size_t pixels) noexcept
+  { pixel_budget_ = pixels == 0 ? 1 : pixels > pixel_budget ? pixel_budget : pixels; }
   void invalidate () noexcept;
   void set_request (Request request);
   void mark_loaded () noexcept;
@@ -62,7 +66,7 @@ private:
   Request request_;
   std::shared_ptr<Job> job_;
   Bytes input_;
-  std::size_t cursor_ = 0;
+  std::size_t cursor_ = 0, pixel_budget_ = pixel_budget;
   std::uint64_t generation_ = 0, work_generation_ = 0, cache_generation_ = 0, starts_ = 0;
   State state_ = State::clean;
   bool dirty_ = false, cache_complete_ = true;

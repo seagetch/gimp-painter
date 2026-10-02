@@ -37,6 +37,20 @@ static void test_broken_filter_init (TestBrokenFilter *filter)
   g_object_weak_ref (G_OBJECT (filter),broken_filter_weak,NULL);
   gimp_painter_binding_close (G_OBJECT (filter),NULL);
 }
+typedef struct { GimpLayer parent; GimpCloneLayer *pending; gboolean resolved; } TestResolvingLayer;
+typedef struct { GimpLayerClass parent; } TestResolvingLayerClass;
+GType test_resolving_layer_get_type (void);
+G_DEFINE_TYPE (TestResolvingLayer,test_resolving_layer,GIMP_TYPE_LAYER)
+static GeglNode *test_resolving_layer_get_node (GimpFilter *filter)
+{
+  TestResolvingLayer *layer = (TestResolvingLayer *) filter;
+  if (layer->pending && !layer->resolved)
+    { layer->resolved = TRUE; gimp_clone_layer_get_source (layer->pending); }
+  return GIMP_FILTER_CLASS (test_resolving_layer_parent_class)->get_node (filter);
+}
+static void test_resolving_layer_class_init (TestResolvingLayerClass *klass)
+{ GIMP_FILTER_CLASS (klass)->get_node = test_resolving_layer_get_node; }
+static void test_resolving_layer_init (TestResolvingLayer *layer) {}
 static GimpImage *image_new (gint w, gint h)
 { return gimp_image_new (gimp, w, h, GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR); }
 static GimpLayer *source_new (GimpImage *image, GimpLayer *parent, gint w, gint h)
@@ -131,6 +145,39 @@ static void automatic_updates_and_self_exclusion (void)
   g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, count+1);
   g_object_unref (image);
 }
+static void count_image_flush (GimpImage *image, gboolean invalidate_preview, gpointer data)
+{ ++*(guint *) data; }
+static void completion_flushes_image_projection (void)
+{
+  GimpImage *image = image_new (256,1024);
+  GimpLayer *source = source_new (image,NULL,256,1024);
+  GimpLayer *clone;
+  GimpFilterLayer *filter;
+  GeglBuffer *projection;
+  guchar value[4];
+  guint flushes = 0;
+  fill (source,255,255,255,255);
+  clone = gimp_clone_layer_new (image,source,256,1024,"Background clone",1,GIMP_LAYER_MODE_PAINTER_NORMAL);
+  gimp_image_add_layer (image,clone,NULL,0,FALSE);
+  filter = GIMP_FILTER_LAYER (gimp_filter_layer_new (image,256,1024,"Replace edge",1,GIMP_LAYER_MODE_PAINTER_REPLACE));
+  gimp_image_add_layer (image,GIMP_LAYER (filter),NULL,0,FALSE); define_edge (filter);
+  /* A display has already rendered the initially empty completed cache. */
+  gimp_pickable_flush (GIMP_PICKABLE (image));
+  projection = gimp_pickable_get_buffer (GIMP_PICKABLE (image));
+  gegl_buffer_get (projection,GEGL_RECTANGLE (32,32,1,1),1.0,babl_format ("R'G'B'A u8"),value,
+                  GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+  g_assert_cmpuint (value[3], ==, 0);
+  g_signal_connect (image,"flush",G_CALLBACK (count_image_flush),&flushes);
+  settle (filter); spin_ms (30);
+  pixel (GIMP_LAYER (filter),0,0,0,255);
+  /* No explicit image/pickable flush here: completion must notify the display. */
+  g_assert_cmpuint (flushes, >, 0);
+  gegl_buffer_get (projection,GEGL_RECTANGLE (32,32,1,1),1.0,babl_format ("R'G'B'A u8"),value,
+                  GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+  g_assert_cmpuint (value[0], ==, 0); g_assert_cmpuint (value[1], ==, 0);
+  g_assert_cmpuint (value[2], ==, 0); g_assert_cmpuint (value[3], ==, 255);
+  g_object_unref (image);
+}
 static void saved_definition_is_separate (void)
 {
   const guchar original[] = {0,0,0,1,0xfe,0x89,0,0xff,0};
@@ -181,6 +228,30 @@ static void dependency_order (void)
   g_assert_cmpuint (gimp_filter_layer_get_run_count (lower), ==, lower_count+1);
   g_assert_cmpuint (gimp_filter_layer_get_run_count (upper), ==, upper_count+1);
   spin_ms (30); g_assert_cmpuint (gimp_filter_layer_get_run_count (upper), ==, upper_count+1);
+  g_object_unref (image);
+}
+static void count_filter_state (GimpFilterLayer *layer, gpointer data)
+{ ++*(guint *) data; }
+static void long_chain_coalesces_state_notifications (void)
+{
+  GimpImage *image = image_new (16,16);
+  GimpLayer *source = source_new (image,NULL,16,16);
+  GimpFilterLayer *layers[20];
+  guint notifications = 0;
+  fill (source,55,127,240,255);
+  for (guint i = 0; i < G_N_ELEMENTS (layers); ++i) layers[i] = filter_new (image,NULL,16,16);
+  settle (layers[G_N_ELEMENTS (layers)-1]);
+  for (guint i = 0; i < G_N_ELEMENTS (layers); ++i)
+    {
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (layers[i]), ==, 1);
+      g_signal_connect (layers[i],"filter-state-changed",G_CALLBACK (count_filter_state),&notifications);
+    }
+  fill (source,240,55,127,255); settle (layers[G_N_ELEMENTS (layers)-1]);
+  for (guint i = 0; i < G_N_ELEMENTS (layers); ++i)
+    g_assert_cmpuint (gimp_filter_layer_get_run_count (layers[i]), ==, 2);
+  g_test_message ("20-filter chain state notifications for one source edit: %u",notifications);
+  g_assert_cmpuint (notifications, <, G_N_ELEMENTS (layers) * 8);
+  pixel (GIMP_LAYER (layers[G_N_ELEMENTS (layers)-1]),0,0,0,255);
   g_object_unref (image);
 }
 static void group_scope (void)
@@ -368,6 +439,303 @@ static void clone_filter_dependency_cycle (void)
   gimp_image_remove_layer (image,clone,FALSE,NULL); settle (filter);
   g_object_unref (image);
 }
+static void clone_filter_dependency_order (void)
+{
+  GimpImage *source_image = image_new (128,512), *image = image_new (32,32);
+  GimpLayer *source = source_new (source_image,NULL,128,512);
+  GimpFilterLayer *lower = filter_new (source_image,NULL,128,512), *upper;
+  GimpLayer *clone = gimp_clone_layer_new (image,GIMP_LAYER (lower),32,32,"cross-image filter source",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+  fill (source,55,127,240,255);
+  gimp_image_add_layer (image,clone,NULL,0,FALSE);
+  upper = filter_new (image,NULL,32,32);
+  settle (upper);
+  g_assert_cmpint (gimp_filter_layer_get_state (lower), ==, GIMP_FILTER_LAYER_CLEAN);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (upper), ==, 1);
+  pixel (GIMP_LAYER (upper),0,0,0,255);
+  fill (source,240,55,127,255); settle (upper);
+  g_assert_cmpint (gimp_filter_layer_get_state (lower), ==, GIMP_FILTER_LAYER_CLEAN);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (upper), ==, 2);
+  g_object_unref (image); g_object_unref (source_image);
+}
+static void cached_dependency_close_before_start (void)
+{
+  GimpImage *source_image = image_new (16,16), *image = image_new (256,512);
+  GimpLayer *source = source_new (source_image,NULL,16,16);
+  GimpFilterLayer *lower = filter_new (source_image,NULL,16,16), *upper;
+  GimpLayer *clone;
+  fill (source,55,127,240,255); settle (lower);
+  clone = gimp_clone_layer_new (image,GIMP_LAYER (lower),256,512,"retained dependency",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+  gimp_image_add_layer (image,clone,NULL,0,FALSE);
+  upper = filter_new (image,NULL,256,512);
+  while (gimp_filter_layer_get_state (upper) == GIMP_FILTER_LAYER_WAITING)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  g_assert_cmpint (gimp_filter_layer_get_state (upper), ==, GIMP_FILTER_LAYER_PREPARING);
+  /* Explicit close emits no Filter state notification; cached validation must
+   * still inspect live state before launching or importing any work. */
+  gimp_painter_binding_close (G_OBJECT (lower),NULL); spin_ms (30);
+  g_assert_cmpint (gimp_filter_layer_get_state (upper), ==, GIMP_FILTER_LAYER_FAILED);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (upper), ==, 0);
+  g_object_unref (image); g_object_unref (source_image);
+}
+static void cross_image_filter_cycle_has_no_signal_loop (void)
+{
+  GimpImage *a = image_new (16,16), *b = image_new (16,16);
+  GimpFilterLayer *fa = filter_new (a,NULL,16,16), *fb = filter_new (b,NULL,16,16);
+  GimpLayer *ca = gimp_clone_layer_new (a,GIMP_LAYER (fb),16,16,"cycle a",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+  GimpLayer *cb = gimp_clone_layer_new (b,GIMP_LAYER (fa),16,16,"cycle b",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+  gimp_image_add_layer (a,ca,NULL,1,FALSE); gimp_image_add_layer (b,cb,NULL,1,FALSE);
+  spin_ms (30);
+  g_assert_cmpint (gimp_filter_layer_get_state (fa), ==, GIMP_FILTER_LAYER_FAILED);
+  g_assert_cmpint (gimp_filter_layer_get_state (fb), ==, GIMP_FILTER_LAYER_FAILED);
+  define_edge (fa); spin_ms (30);
+  g_assert_cmpint (gimp_filter_layer_get_state (fa), ==, GIMP_FILTER_LAYER_FAILED);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (fa), ==, 0);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (fb), ==, 0);
+  g_object_unref (a); g_object_unref (b);
+}
+
+typedef struct { GimpImage *image; GimpLayer *clone; gboolean close; gboolean called; } PendingResolution;
+static void mutate_on_pending_resolution (GimpDrawable *drawable, gint x, gint y, gint w, gint h, gpointer data)
+{
+  PendingResolution *mutation = data;
+  if (mutation->called) return;
+  mutation->called = TRUE;
+  if (mutation->close)
+    {
+      GimpImage *image = mutation->image; mutation->image = NULL;
+      g_object_unref (image);
+    }
+  else
+    gimp_image_remove_layer (mutation->image,mutation->clone,FALSE,NULL);
+}
+static void dependency_walk_does_not_resolve_pending_names (void)
+{
+  for (guint close = 0; close < 2; ++close)
+    {
+      GimpImage *image = image_new (16,16);
+      GimpLayer *source = source_new (image,NULL,16,16);
+      GimpLayer *clone = gimp_clone_layer_new (image,NULL,16,16,"pending clone",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+      GimpFilterLayer *filter;
+      PendingResolution mutation = {image,clone,close,FALSE};
+      gimp_object_set_name (GIMP_OBJECT (source),"pending target"); fill (source,55,127,240,255);
+      gimp_image_add_layer (image,clone,NULL,0,FALSE); g_object_ref (clone);
+      gimp_clone_layer_set_source_by_name (GIMP_CLONE_LAYER (clone),"pending target");
+      g_signal_connect (clone,"update",G_CALLBACK (mutate_on_pending_resolution),&mutation);
+      filter = filter_new (image,NULL,16,16); g_object_ref (filter);
+      settle (filter);
+      g_assert_false (mutation.called);
+      g_assert_cmpint (gimp_clone_layer_get_source_state (GIMP_CLONE_LAYER (clone)), ==, GIMP_CLONE_SOURCE_PENDING);
+      /* Resolution remains an explicit legacy getter action outside borrowed
+       * traversal. Its callback may remove the clone or close the image. */
+      gimp_clone_layer_get_source (GIMP_CLONE_LAYER (clone));
+      g_assert_true (mutation.called);
+      if (close)
+        {
+          g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
+          g_assert_null (gimp_item_get_image (GIMP_ITEM (filter)));
+        }
+      else
+        { settle (filter); g_object_unref (mutation.image); }
+      g_object_unref (clone); g_object_unref (filter); spin_ms (5);
+    }
+}
+static void suppress_clone_update (GimpDrawable *drawable, gint x, gint y, gint w, gint h, gpointer data)
+{ if (*(gboolean *) data) g_signal_stop_emission_by_name (drawable,"update"); }
+typedef struct { GimpImage *image; gboolean armed; gboolean called; } CloseOnDependency;
+static void close_on_dependency_invalidation (GimpFilterLayer *filter, gpointer data)
+{
+  CloseOnDependency *state = data;
+  if (state->armed && !state->called && gimp_filter_layer_get_state (filter) == GIMP_FILTER_LAYER_WAITING)
+    {
+      GimpImage *image = state->image; state->image = NULL; state->called = TRUE;
+      g_object_unref (image);
+    }
+}
+static void changed_dependency_invalidation_can_close_owner (void)
+{
+  GimpImage *sources = image_new (16,16), *image = image_new (256,512);
+  GimpLayer *a = source_new (sources,NULL,16,16), *b = source_new (sources,NULL,16,16);
+  GimpLayer *clone = gimp_clone_layer_new (image,a,256,512,"silent source change",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+  GimpFilterLayer *filter;
+  gboolean suppress = FALSE;
+  CloseOnDependency state = {image,FALSE,FALSE};
+  gint64 deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+  fill (a,55,127,240,255); fill (b,127,55,240,255);
+  gimp_image_add_layer (image,clone,NULL,0,FALSE);
+  g_signal_connect (clone,"update",G_CALLBACK (suppress_clone_update),&suppress);
+  filter = filter_new (image,NULL,256,512); g_object_ref (filter);
+  g_signal_connect (filter,"filter-state-changed",G_CALLBACK (close_on_dependency_invalidation),&state);
+  while (gimp_filter_layer_get_state (filter) == GIMP_FILTER_LAYER_WAITING && g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_PREPARING);
+  suppress = TRUE; gimp_clone_layer_set_source (GIMP_CLONE_LAYER (clone),b); suppress = FALSE;
+  state.armed = TRUE;
+  while (!state.called && g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  g_assert_true (state.called);
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
+  g_assert_null (gimp_item_get_image (GIMP_ITEM (filter)));
+  g_object_unref (filter); g_object_unref (sources); spin_ms (10);
+}
+
+static void pending_cycle_resolved_during_graph_read_is_discarded (void)
+{
+  for (guint suppress_signal = 0; suppress_signal < 2; ++suppress_signal)
+    {
+      gboolean suppress = FALSE;
+      GimpImage *image = image_new (16,16);
+      TestResolvingLayer *source = (TestResolvingLayer *) gimp_drawable_new (
+        test_resolving_layer_get_type (),image,"late resolver",0,0,16,16,gimp_image_get_layer_format (image,TRUE));
+      GimpLayer *clone = gimp_clone_layer_new (image,NULL,16,16,"pending cycle",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+      GimpFilterLayer *filter;
+      gint64 deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 10;
+      gimp_image_add_layer (image,GIMP_LAYER (source),NULL,0,FALSE); fill (GIMP_LAYER (source),55,127,240,255);
+      gimp_image_add_layer (image,clone,NULL,0,FALSE);
+      gimp_clone_layer_set_source_by_name (GIMP_CLONE_LAYER (clone),"cycle filter");
+      g_signal_connect (clone,"update",G_CALLBACK (suppress_clone_update),&suppress);
+      filter = filter_new (image,NULL,16,16); gimp_object_set_name (GIMP_OBJECT (filter),"cycle filter");
+      source->pending = GIMP_CLONE_LAYER (clone); suppress = suppress_signal;
+      g_assert_null (gimp_filter_peek_node (GIMP_FILTER (source)));
+      while (gimp_filter_layer_get_state (filter) != GIMP_FILTER_LAYER_FAILED && g_get_monotonic_time () < deadline)
+        { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+      g_assert_true (source->resolved);
+      g_assert_cmpint (gimp_clone_layer_get_source_state (GIMP_CLONE_LAYER (clone)), ==, GIMP_CLONE_SOURCE_LIVE);
+      g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_FAILED);
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
+      spin_ms (15); g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
+      g_object_unref (image);
+    }
+}
+static void definition_revision_separates_cache_updates (void)
+{
+  GimpImage *image = image_new (8,8);
+  GimpLayer *source = source_new (image,NULL,8,8);
+  GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+  GimpFilterArgumentsSnapshot *empty;
+  GimpFilterLayerSnapshot cache;
+  GimpValueArray *args;
+  guint64 revision = gimp_filter_layer_get_definition_revision (filter);
+  GError *error = NULL;
+  gint opaque = 0;
+  g_assert_cmpuint (revision, ==, 1);
+  fill (source,55,127,240,255); settle (filter);
+  gimp_filter_layer_invalidate (filter); settle (filter);
+  gimp_filter_layer_mark_as_loaded (filter);
+  g_assert_true (gimp_filter_layer_get_snapshot_state (filter,&cache));
+  g_assert_true (gimp_filter_layer_restore_snapshot_state (filter,&cache,&error)); g_assert_no_error (error);
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, revision);
+  g_assert_true (gimp_filter_layer_set_definition (filter,"plug-in-edge",NULL,NULL,&error)); g_assert_no_error (error);
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, ++revision);
+  args = gimp_value_array_new_from_types (NULL,G_TYPE_POINTER,&opaque,G_TYPE_NONE);
+  g_assert_false (gimp_filter_layer_set_definition (filter,"opaque",NULL,args,&error));
+  g_assert_nonnull (error); g_clear_error (&error); gimp_value_array_unref (args);
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, revision);
+  empty = gimp_filter_arguments_snapshot_import (0,NULL,&error); g_assert_no_error (error); g_assert_nonnull (empty);
+  g_assert_true (gimp_filter_layer_set_definition_with_snapshot (filter,"plug-in-edge",NULL,empty,&error));
+  g_assert_no_error (error); gimp_filter_arguments_snapshot_free (empty);
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, ++revision);
+  args = edge_args ();
+  g_assert_true (gimp_filter_layer_edit_definition (filter,"plug-in-edge",NULL,args,&error));
+  g_assert_no_error (error); gimp_value_array_unref (args);
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, ++revision);
+  g_assert_true (gimp_image_undo (image));
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, ++revision);
+  g_assert_true (gimp_image_redo (image));
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, ++revision);
+  settle (filter); g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, revision);
+  g_object_unref (image);
+}
+
+typedef struct { GimpFilterLayer *filter; gboolean replace; gboolean called; guint late_notifies; } DefinitionReentry;
+static void definition_reentered (DefinitionReentry *state)
+{
+  if (state->called) return;
+  state->called = TRUE;
+  if (state->replace)
+    {
+      GimpValueArray *args = edge_args ();
+      g_value_set_double (gimp_value_array_index (args,3),7.0);
+      g_assert_true (gimp_filter_layer_set_definition (state->filter,"plug-in-edge",NULL,args,NULL));
+      gimp_value_array_unref (args);
+    }
+  else
+    g_assert_true (gimp_painter_binding_close (G_OBJECT (state->filter),NULL));
+}
+static void definition_dirty_reentry (GimpImage *image, GimpDirtyMask dirty, gpointer data)
+{ definition_reentered (data); }
+static void definition_undo_event_reentry (GimpImage *image, GimpUndoEvent event, GimpUndo *undo, gpointer data)
+{ if (event == GIMP_UNDO_EVENT_UNDO_PUSHED) definition_reentered (data); }
+static void definition_status_reentry (GimpFilterLayer *filter, gpointer data)
+{ definition_reentered (data); }
+static void definition_notify_reentry (GObject *object, GParamSpec *spec, gpointer data)
+{ definition_reentered (data); }
+static void definition_notify_count (GObject *object, GParamSpec *spec, gpointer data)
+{ DefinitionReentry *state = data; if (state->called) ++state->late_notifies; }
+static void observe_definition_notifies (GimpFilterLayer *filter, DefinitionReentry *state)
+{
+  g_signal_connect (filter,"notify::filter-procedure",G_CALLBACK (definition_notify_count),state);
+  g_signal_connect (filter,"notify::filter-arguments",G_CALLBACK (definition_notify_count),state);
+  g_signal_connect (filter,"notify::filter-original-definition",G_CALLBACK (definition_notify_count),state);
+}
+static void definition_edit_stops_after_undo_close (void)
+{
+  for (guint phase = 0; phase < 3; ++phase)
+    {
+      GimpImage *image = image_new (8,8);
+      GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+      GimpValueArray *args = edge_args ();
+      DefinitionReentry state = {filter,FALSE,FALSE,0};
+      GError *error = NULL;
+      if (phase == 1) gimp_image_undo_freeze (image);
+      observe_definition_notifies (filter,&state);
+      if (phase == 2) g_signal_connect (image,"undo-event",G_CALLBACK (definition_undo_event_reentry),&state);
+      else g_signal_connect (image,"dirty",G_CALLBACK (definition_dirty_reentry),&state);
+      g_assert_false (gimp_filter_layer_edit_definition (filter,"plug-in-edge",NULL,args,&error));
+      g_assert_nonnull (error); g_clear_error (&error); gimp_value_array_unref (args);
+      g_assert_true (state.called); g_assert_cmpuint (state.late_notifies, ==, 0);
+      g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
+      g_object_unref (image);
+    }
+}
+static void definition_edit_preserves_reentered_install (void)
+{
+  GimpImage *image = image_new (8,8);
+  GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+  GimpValueArray *args = edge_args (), *saved;
+  DefinitionReentry state = {filter,TRUE,FALSE,0};
+  GError *error = NULL;
+  guint64 revision = gimp_filter_layer_get_definition_revision (filter);
+  g_signal_connect (image,"dirty",G_CALLBACK (definition_dirty_reentry),&state);
+  g_value_set_double (gimp_value_array_index (args,3),3.0);
+  g_assert_false (gimp_filter_layer_edit_definition (filter,"plug-in-edge",NULL,args,&error));
+  g_assert_nonnull (error); g_clear_error (&error); gimp_value_array_unref (args);
+  g_assert_true (state.called);
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, revision+1);
+  saved = gimp_filter_layer_dup_args (filter);
+  g_assert_cmpfloat (g_value_get_double (gimp_value_array_index (saved,3)), ==, 7.0);
+  gimp_value_array_unref (saved); g_object_unref (image);
+}
+static void definition_notifications_stop_after_close (void)
+{
+  for (guint phase = 0; phase < 2; ++phase)
+    {
+      GimpImage *image = image_new (8,8);
+      GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+      GimpValueArray *args = edge_args ();
+      DefinitionReentry state = {filter,FALSE,FALSE,0};
+      GError *error = NULL;
+      observe_definition_notifies (filter,&state);
+      if (phase) g_signal_connect (filter,"notify::filter-procedure",G_CALLBACK (definition_notify_reentry),&state);
+      else g_signal_connect (filter,"filter-state-changed",G_CALLBACK (definition_status_reentry),&state);
+      g_assert_false (gimp_filter_layer_set_definition (filter,"plug-in-edge",NULL,args,&error));
+      g_assert_nonnull (error); g_clear_error (&error); gimp_value_array_unref (args);
+      g_assert_true (state.called); g_assert_cmpuint (state.late_notifies, ==, 0);
+      g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
+      g_object_unref (image);
+    }
+}
+
 static gboolean heartbeat (gpointer data)
 { guint *counter = data; ++*counter; return G_SOURCE_CONTINUE; }
 static void main_context_remains_responsive (void)
@@ -386,6 +754,81 @@ static void main_context_remains_responsive (void)
                   g_get_monotonic_time () - start,gimp_filter_layer_get_max_quantum_us (filter),beats);
   g_assert_cmpuint (beats, >, 5);
   pixel (GIMP_LAYER (filter),0,0,0,255);
+  g_object_unref (image);
+}
+
+typedef struct { gint64 previous; GArray *intervals; } HeartbeatLatency;
+static gboolean sample_heartbeat_latency (gpointer data)
+{
+  HeartbeatLatency *samples = data;
+  gint64 now = g_get_monotonic_time (), interval = now - samples->previous;
+  samples->previous = now; g_array_append_val (samples->intervals,interval);
+  return G_SOURCE_CONTINUE;
+}
+static gint compare_latency (gconstpointer a, gconstpointer b)
+{
+  gint64 left = *(const gint64 *) a, right = *(const gint64 *) b;
+  return (left > right) - (left < right);
+}
+static void complex_graph_remains_responsive (void)
+{
+  GimpImage *image = image_new (1024,1024);
+  GimpFilterLayer *filter;
+  GimpLayer *top_source = NULL;
+  for (guint i = 0; i < 64; ++i)
+    {
+      top_source = source_new (image,NULL,1024,1024);
+      fill (top_source,55+i,127,240,255);
+      if (i) gimp_layer_set_opacity (top_source,0.5,FALSE);
+    }
+  filter = filter_new (image,NULL,1024,1024);
+  for (guint phase = 0; phase < 2; ++phase)
+    {
+      HeartbeatLatency samples = {0,g_array_new (FALSE,FALSE,sizeof (gint64))};
+      gint64 start;
+      guint timer;
+      if (phase) fill (top_source,55,240,127,255);
+      start = samples.previous = g_get_monotonic_time ();
+      timer = g_timeout_add (2,sample_heartbeat_latency,&samples);
+      settle (filter); g_source_remove (timer);
+      g_assert_cmpuint (samples.intervals->len, >, 5);
+      g_array_sort (samples.intervals,compare_latency);
+      g_test_message ("complex-graph phase=%s width=1024 height=1024 layers=64 wall_us=%" G_GINT64_FORMAT
+        " max_quantum_us=%" G_GINT64_FORMAT " heartbeat_samples=%u heartbeat_p50_us=%" G_GINT64_FORMAT
+        " heartbeat_p95_us=%" G_GINT64_FORMAT " heartbeat_p99_us=%" G_GINT64_FORMAT " heartbeat_max_us=%" G_GINT64_FORMAT,
+        phase ? "edit" : "first",g_get_monotonic_time () - start,gimp_filter_layer_get_max_quantum_us (filter),samples.intervals->len,
+        g_array_index (samples.intervals,gint64,samples.intervals->len/2),
+        g_array_index (samples.intervals,gint64,samples.intervals->len*95/100),
+        g_array_index (samples.intervals,gint64,samples.intervals->len*99/100),
+        g_array_index (samples.intervals,gint64,samples.intervals->len-1));
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, phase+1);
+      pixel (GIMP_LAYER (filter),0,0,0,255);
+      g_array_unref (samples.intervals);
+    }
+  g_object_unref (image);
+}
+static void cached_graph_tracks_clone_reassignment (void)
+{
+  GimpImage *a = image_new (16,16), *b = image_new (128,512), *image = image_new (256,512);
+  GimpLayer *sa = source_new (a,NULL,16,16), *sb = source_new (b,NULL,128,512);
+  GimpFilterLayer *fa = filter_new (a,NULL,16,16), *fb = filter_new (b,NULL,128,512), *upper;
+  GimpLayer *clone;
+  guint64 generation;
+  fill (sa,55,127,240,255); settle (fa); fill (sb,127,55,240,255);
+  clone = gimp_clone_layer_new (image,GIMP_LAYER (fa),256,512,"changing dependency",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+  gimp_image_add_layer (image,clone,NULL,0,FALSE); upper = filter_new (image,NULL,256,512);
+  while (gimp_filter_layer_get_state (upper) == GIMP_FILTER_LAYER_WAITING)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  g_assert_cmpint (gimp_filter_layer_get_state (upper), ==, GIMP_FILTER_LAYER_PREPARING);
+  generation = gimp_filter_layer_get_generation (upper);
+  gimp_clone_layer_set_source (GIMP_CLONE_LAYER (clone),GIMP_LAYER (fb));
+  g_assert_cmpuint (gimp_filter_layer_get_generation (upper), >, generation);
+  settle (upper);
+  g_assert_cmpint (gimp_filter_layer_get_state (fb), ==, GIMP_FILTER_LAYER_CLEAN);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (upper), ==, 1);
+  g_object_unref (a); g_object_unref (b); spin_ms (10);
+  g_assert_null (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (clone)));
+  settle (upper);
   g_object_unref (image);
 }
 
@@ -964,6 +1407,40 @@ static void image_close_reentry_during_commit (void)
   g_object_unref (filter);
 }
 
+static void close_image_on_flush (GimpImage *image, gboolean invalidate_preview, gpointer data)
+{
+  CloseDuringCommit *state = data;
+  if (state->image)
+    {
+      GimpImage *image = state->image; state->image = NULL; g_object_unref (image);
+      /* Completion holds the image only through this signal call. Observe
+       * actual disconnect below, not merely this last outside-ref release. */
+    }
+}
+static void image_disconnected_during_flush (GimpImage *image, gpointer data)
+{ ((CloseDuringCommit *) data)->closed = TRUE; }
+static void count_late_filter_status (GimpFilterLayer *filter, gpointer data)
+{ CloseDuringCommit *state = data; if (state->closed) ++state->late_updates; }
+static void image_close_reentry_during_completion_flush (void)
+{
+  GimpImage *image = image_new (16,16);
+  GimpLayer *source = source_new (image,NULL,16,16);
+  GimpFilterLayer *filter = filter_new (image,NULL,16,16);
+  CloseDuringCommit state = {image,FALSE,0};
+  gint64 deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 10;
+  g_object_ref (filter); fill (source,255,0,0,255);
+  g_signal_connect (image,"flush",G_CALLBACK (close_image_on_flush),&state);
+  g_signal_connect (image,"disconnect",G_CALLBACK (image_disconnected_during_flush),&state);
+  g_signal_connect (filter,"update",G_CALLBACK (count_late_update),&state);
+  g_signal_connect (filter,"filter-state-changed",G_CALLBACK (count_late_filter_status),&state);
+  while (!state.closed && g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  g_assert_true (state.closed); g_assert_null (gimp_item_get_image (GIMP_ITEM (filter)));
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
+  spin_ms (30); g_assert_cmpuint (state.late_updates, ==, 0);
+  pixel (GIMP_LAYER (filter),0,0,0,255); g_object_unref (filter);
+}
+
 int main (int argc, char **argv)
 {
   int result;
@@ -971,9 +1448,14 @@ int main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
-  ADD (image_close_reentry_during_commit); ADD (retained_handle_after_image_close); ADD (argument_value_dag_is_bounded); ADD (typed_argument_import_preserves_descriptors); ADD (argument_import_validation);
+  ADD (image_close_reentry_during_completion_flush); ADD (image_close_reentry_during_commit); ADD (retained_handle_after_image_close); ADD (argument_value_dag_is_bounded); ADD (typed_argument_import_preserves_descriptors); ADD (argument_import_validation);
   ADD (typed_argument_snapshot_survives_expiration); ADD (saved_snapshot_generation_restore); ADD (small_image_finishes_during_large_preparation); ADD (image_close_during_worker);
   ADD (sustained_edits_converge); ADD (oversized_execution_preserves_definition);
+  ADD (definition_edit_stops_after_undo_close); ADD (definition_edit_preserves_reentered_install); ADD (definition_notifications_stop_after_close);
+  ADD (pending_cycle_resolved_during_graph_read_is_discarded); ADD (definition_revision_separates_cache_updates);
+  ADD (dependency_walk_does_not_resolve_pending_names); ADD (changed_dependency_invalidation_can_close_owner);
+  ADD (completion_flushes_image_projection); ADD (long_chain_coalesces_state_notifications); ADD (complex_graph_remains_responsive); ADD (cached_graph_tracks_clone_reassignment);
+  ADD (clone_filter_dependency_order); ADD (cached_dependency_close_before_start); ADD (cross_image_filter_cycle_has_no_signal_loop);
   ADD (gaussian_native_srgb); ADD (gaussian_native_adobe); ADD (profile_reassignment_discards_worker); ADD (unsupported_precision_retains_cache);
   ADD (gaussian_legacy_fixture); ADD (duplicate_failure_releases_partial); ADD (definition_undo_redo); ADD (hidden_filter_and_offset); ADD (cpp_header_layout); ADD (clone_filter_dependency_cycle); ADD (main_context_remains_responsive);
   ADD (object_arguments_do_not_cycle); ADD (expired_object_records_and_reassignment);

@@ -55,6 +55,18 @@ implementation store.
   maximum-accepted lineage → edit → snapshot → reopen are tested. Absolute saved
   counters never become runtime job tokens. Active jobs are cancelled before
   normalization. Execution states are not resumed literally
+- `gimp_filter_layer_get_definition_revision()` is a separate, session-local
+  same-object equality token. It changes for each definition installation,
+  explicit NULL args, import, edit, Undo/Redo and duplicate installation. Cache
+  restoration and lower-layer updates leave it unchanged. An XCF adapter can
+  preserve unreadable saved argument metadata only while the loaded definition
+  remains untouched. The token is not persisted or restored; exhaustion rejects
+  further installations instead of wrapping
+- Definition edits pin their owner/image through callbacks. Binding generation
+  and definition revision are checked around Undo creation, attachment,
+  configuration and each property notification. Closure stops publication;
+  reentered newer definitions are not overwritten. Tests cover ordinary/frozen
+  Undo dirty callbacks, undo-event closure and configuration/property reentry
 
 ## Scheduler and source boundary
 
@@ -80,7 +92,12 @@ procedures; regional optimization is not claimed. Requests over 64 Mi pixels are
 reported unsupported instead of overflowing allocations. UI work is dispatched
 at priority 150 by one 2 ms FIFO source shared across layers and images. Each
 source callback processes one bounded quantum, then rotates that ticket to the
-back of the queue. Default-priority input can preempt between quanta rather than
+back of the queue. Preparation starts at 1,024 pixels per changed generation;
+read/import budgets are separate and adapt with 2–4 ms hysteresis between 1,024
+and the absolute 32,768-pixel maximum. Native lower-node cache sampling requests fresh cache data; it never uses
+the GEGL dirty-cache flag. Pixel bounds do not bound
+arbitrary GEGL operator cost or cold format setup. Default-priority input can
+preempt between quanta rather than
 waiting behind a batch of ready per-layer timers. The dispatcher contains no
 GObject or implementation store; adapters carry weak generation tokens. Lower visible FilterLayers must settle
 first; child groups are traversed and completion/failure signals wake waiters.
@@ -95,13 +112,38 @@ GimpDrawable buffer is replaced only after the result has been fully imported.
 GEGL/pickable evaluation merely reads that committed cache and never starts or
 waits for a job. The previous completed cache can remain displayed while a newer
 generation is pending; upper FilterLayers cannot consume it as current input.
+After a guarded completed-buffer swap and drawable invalidation, completion also
+sends `gimp_image_flush()`. That schedules the host's asynchronous projection
+chunks without waiting. Drawable invalidation alone left the native canvas
+showing an initially transparent Replace cache until another user action. The
+regression pre-renders that cache, verifies both cache and image projection after
+completion without a test-side flush, and tests image-close reentry from flush.
 
 A generation change during preparation, worker execution or staged import
 invalidates the old work. A cancelled worker must finish before a replacement
 starts. Close detaches the UI immediately and lets the independent worker finish
 without any callback into a dead layer. Errors and dependency cycles (including
 CloneLayer references back to a FilterLayer) stop the same-generation retry loop.
-Cycle inspection is bounded to 4,096 visited nodes per dependency traversal.
+Cycle inspection now uses an iterative unique-node walk with one 4,096-node
+budget for the entire reachable graph, including Clone references into other
+images. Successful topology validation is cached. Weak endpoint/source identity,
+Filter state and generation are checked each quantum; content/topology edits,
+source reassignment/expiration and owner format/profile changes invalidate it.
+Clone inspection uses owned nonresolving reference snapshots; saved pending
+names cannot execute callbacks in borrowed traversal. If a changed reference is
+detected without a signal, invalidation occurs after iterator/snapshot scopes
+end and revalidation waits until the next dispatcher quantum. Tests resolve a
+pending name explicitly with remove/close callbacks and close the owner from
+fallback invalidation. Graph construction and completed input reads recheck
+nonresolving dependency snapshots before work can launch. A test resolves a
+pending name into a self-cycle from a layer get-node hook, both with ordinary
+notifications and suppressed Clone update signals: no worker starts and the
+cycle fails without recursive GEGL evaluation. A failed traversal disconnects
+its partial subscriptions, avoiding signal cycles
+in a malformed cross-image graph. Twenty-layer chains coalesce already-waiting
+dependency notifications rather than amplifying a single edit through every DAG
+path. Cross-image pending dependencies, an explicitly closed dependency with no
+state signal, reassignment/expiration and edit-after-cycle failure are tested.
 
 ## Confirmed execution route and PDB audit
 
@@ -170,12 +212,12 @@ an acceptable shortcut to procedure compatibility.
 
 ## Tests and measurements
 
-- `app/painter/tests/test-filter-scheduler.cpp`: 20 pure scheduler tests including
+- `app/painter/tests/test-filter-scheduler.cpp`: 21 pure scheduler tests including
   cancellation versus completion, no duplicate launch, edits during preparation
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 36 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 51 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release
@@ -190,7 +232,7 @@ an acceptable shortcut to procedure compatibility.
   ptrace restrictions prevent it from running; explicit weak-finalization tests
   cover the image/layer/argument ownership cycles. The JSON lists actual units
 - `run_filter_scheduler_sanitizers.py` and `filter-scheduler-sanitizers.json`
-  independently instrument all 20 scheduler regressions with ASan/UBSan
+  independently instrument all 21 scheduler regressions with ASan/UBSan
 - `fair-dispatcher.hpp`, `test-fair-dispatcher.cpp`, and
   `run_fair_dispatcher_sanitizers.py`: eight FIFO/input-priority/reentry/teardown
   regressions, independently passing strict C++14 and ASan/UBSan
@@ -212,8 +254,23 @@ a failed/rejected worker is still completing cancellation.
 A simple 2048×1536 single-layer run measured roughly 0.81–0.85 s end-to-end,
 8.9–9.7 ms maximum owner-thread quantum and 364–367 serviced 2 ms heartbeats in
 normal tests. These are observations on this execution environment, not a fixed
-reference-machine p95/p99 acceptance gate. More complex lower graphs, many
-images and sustained painting still need their own workloads and thresholds.
+reference-machine p95/p99 acceptance gate.
+
+`run_filter_latency_measurements.py` / `filter-layer-latency.json` run the actual
+1024×1024, 64-partially-opaque-layer workload in three fresh GIMP processes,
+recording first use and an edit in the same graph. The report records source
+hashes, reproducibility-only environment, wall times, cumulative Filter quantum
+maximum and per-phase 2 ms heartbeat p50/p95/p99/max intervals. Host load is
+uncontrolled. Earlier exploratory fixed-budget runs reached about 40 ms warm
+quanta; cache-enabled adaptive sampling reduced one comparable warm observation
+to 9.94 ms (1.40 s total versus 0.67 s fixed-budget), but outliers remained.
+Fresh-process first GEGL sampling also showed 80–102 ms stalls during exploration;
+this unresolved cold-path cost must not be hidden by quoting warm measurements.
+The report retains every quantified first/edit phase for its exact source and
+executable hashes. Repeated measurements still show heartbeat outliers above
+100 ms, including edit phases; the observations are not a fixed-machine
+acceptance gate. More complex
+operators, many images and sustained painting still need workloads and limits.
 
 ## Remaining work and non-claims
 

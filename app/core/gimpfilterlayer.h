@@ -104,6 +104,11 @@ void        gimp_filter_layer_mark_as_loaded (GimpFilterLayer *);
 void        gimp_filter_layer_invalidate     (GimpFilterLayer *);
 GimpFilterLayerState gimp_filter_layer_get_state (GimpFilterLayer *);
 gchar *     gimp_filter_layer_dup_error      (GimpFilterLayer *);
+/* Session-local token for this layer's definition installations, including
+ * explicit NULL args, imports and Undo/Redo. Compare only within the same live
+ * object; never persist as lineage. Cache/dependency invalidations do not change
+ * it. Zero means no definition installation (or an unavailable closed binding). */
+guint64     gimp_filter_layer_get_definition_revision (GimpFilterLayer *);
 guint64     gimp_filter_layer_get_generation (GimpFilterLayer *);
 guint64     gimp_filter_layer_get_cache_generation (GimpFilterLayer *);
 guint64     gimp_filter_layer_get_run_count  (GimpFilterLayer *);
