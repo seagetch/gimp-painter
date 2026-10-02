@@ -1,0 +1,99 @@
+{
+  "format": 1,
+  "purpose": "Build/runtime evidence matrix, not a support or release declaration",
+  "upstream_series": "GIMP 3.0",
+  "source_of_requirements": [
+    "tasks.md sections 32\u201338",
+    "migration/design.md",
+    "migration/support-policy.md"
+  ],
+  "linux_x86_64": {
+    "host": "Debian GNU/Linux 13 (trixie)",
+    "compiler": "14.2.0",
+    "cxx_compiler": "14.2.0",
+    "host_glibc": "glibc 2.41",
+    "host_python": "Python 3.13.5",
+    "dependency_lock": "migration/baseline/debian13-package-lock.json",
+    "optional_http_lock": "migration/baseline/httpd-debian13-package-lock.json",
+    "meson_build": "build-debian13",
+    "build_kind": "debugoptimized; optional auto_features disabled",
+    "executed": [
+      "workspace-only Meson DESTDIR install",
+      "ELF runtime closure discovery",
+      "archive-checksum/package/license ownership mapping",
+      "177 Painter brush + 8 preset inventory",
+      "eleven packaging safety unit tests",
+      "418 fresh-path ELF resolutions",
+      "5255 runtime file seals",
+      "version startup",
+      "console fill/save/reopen",
+      "native GTK X11 Painter MyPaint drawing/save/close/reopen/exit0",
+      "numbered archive split/reassembly hashes",
+      "BASE_ABI-only runtime fallback replay and candidate source/submodule race regressions"
+    ],
+    "pending": [
+      "final committed aggregate relink and package refresh",
+      "fresh-profile toolrc warning regression after new Painter Smudge default entry"
+    ],
+    "not_executed": [
+      "clean cache-free release build",
+      "clean independent machine install",
+      "Wayland input",
+      "physical tablet pressure/tilt/fixed-position input",
+      "all legacy corpus acceptance",
+      "performance acceptance",
+      "source-delivery/license distribution gate"
+    ],
+    "blocked": [
+      "syscall path audit: ptrace prohibited in this environment",
+      "dependency source-index fetch verification: web tool could not access tested Debian source URLs"
+    ],
+    "evidence": "migration/packaging/prototype-validation.json (declared prototype only)"
+  },
+  "windows_x86_64": {
+    "status": "not executed; no Windows executor or toolchain run",
+    "required": [
+      "pin C/C++ compiler/runtime/dependency architecture",
+      "Meson build and symbol export/import",
+      "UTF-8/native filename tests",
+      "runtime DLL closure on clean machine",
+      "pen/tablet input",
+      "legacy XCF resource round-trip",
+      "FilterLayer cancel/close/nonblocking behavior",
+      "package license/source manifest"
+    ]
+  },
+  "macos_arm64": {
+    "status": "not executed; no macOS executor or SDK run",
+    "required": [
+      "pin SDK/compiler/deployment target/dependencies",
+      "native build",
+      "bundle resources and dylib relocation",
+      "pen/modifier/HiDPI input",
+      "legacy XCF resource round-trip",
+      "FilterLayer cancel/close/nonblocking behavior",
+      "unsigned package then authorized signing/notarization",
+      "package license/source manifest"
+    ]
+  },
+  "macos_x86_64": {
+    "status": "not executed; no macOS executor or SDK run",
+    "required": "same native gates as macOS arm64"
+  },
+  "macos_universal": {
+    "status": "not built",
+    "required": "both architectures separately validated before combining and revalidating universal bundle"
+  },
+  "other_architectures": {
+    "status": "not supported by inference",
+    "examples": [
+      "Windows arm64",
+      "Linux arm64"
+    ]
+  },
+  "later_gimp_series": {
+    "status": "not validated",
+    "required": "version-specific internal API audit, build and compatibility/drawing regressions"
+  },
+  "release_statement": "No WBS32\u201338 completion is asserted from this matrix. Record actual evidence and preserve unexecuted distinctions."
+}

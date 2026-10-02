@@ -1,0 +1,90 @@
+{
+  "format": 1,
+  "source_commit": "faebd07b41b11eab9a56e7a54251dc32d1e04552",
+  "prototype": "prototype-not-a-release",
+  "bundle_manifest_sha256": "13019d7ea4a55933ec2f47f6baa49af79d22a08b434dd73bc340bfdbc97cb349",
+  "verified_files": 5255,
+  "elf_objects": 418,
+  "relocation": "fresh path with spaces and Japanese characters",
+  "environment": "explicit minimum whitelist; no build/dependency tree variables",
+  "resource_syscall_audit": {
+    "available": false,
+    "unavailable_reason": "strace: test_ptrace_get_syscall_info: PTRACE_TRACEME: Operation not permitted\nstrace: ptrace(PTRACE_TRACEME, ...): Operation not permitted\nstrace: PTRACE_SETOPTIONS: Operation not permitted\nstrace: cleanup: waitpid(-1, __WALL): No child processes"
+  },
+  "runs": [
+    {
+      "name": "version",
+      "exit_code": 0,
+      "passed": true,
+      "log": "version.log",
+      "file_trace_available": false,
+      "build_path_accesses": []
+    },
+    {
+      "name": "console-create-fill-save-reopen",
+      "exit_code": 0,
+      "passed": true,
+      "log": "console-create-fill-save-reopen.log",
+      "file_trace_available": false,
+      "build_path_accesses": []
+    }
+  ],
+  "all_passed": true,
+  "not_covered": [
+    "native GUI drawing",
+    "X11 pen",
+    "Wayland",
+    "Windows",
+    "macOS",
+    "physical tablet",
+    "full legacy corpus"
+  ],
+  "xcf": {
+    "bytes": 1292,
+    "sha256": "52b6566340e03bb76cd105ff72d27071e251016e4b666958199607013dfb43c8"
+  },
+  "native_gui": {
+    "passed": true,
+    "entrypoint": "AppRun --new-instance --no-splash",
+    "runtime_location": "fresh relocated path containing spaces and Japanese characters",
+    "profile": "separate HOME/XDG config/cache/data directories",
+    "steps": [
+      "launch GTK3 native X11 instance",
+      "dismiss Welcome",
+      "create1920x1080 RGB8 image",
+      "select Painter MyPaint, 2B_pencil",
+      "draw native pointer zigzag stroke",
+      "Save/Save As XCF",
+      "close image",
+      "ordinary Open exact XCF",
+      "visually verify retained stroke",
+      "Quit"
+    ],
+    "exit_code": 0,
+    "original_windows_preserved": [
+      39845895,
+      27262980
+    ],
+    "observations": [
+      "first-run system toolrc reports missing added tools, then toolbox is populated",
+      "112 unsupported host fonts ignored",
+      "nonfatal GTK file-chooser and accessibility warnings observed; no crash",
+      "accessibility snapshots could lag visual updates; fresh screenshot verified final reopen"
+    ],
+    "xcf": {
+      "bytes": 57244,
+      "sha256": "09c543b52eeae0d47c91f575088f41135fd449ad7f0d96ca6b1f0ef44e2f4b87"
+    },
+    "evidence_source": "fresh native CUA screenshots and exact terminal PACKAGE_GUI_EXIT=0",
+    "not_claimed": [
+      "pen pressure/tilt",
+      "Wayland",
+      "Undo",
+      "latest precision/filter source coverage",
+      "whole-port acceptance"
+    ]
+  },
+  "source_build_correspondence": "not established: immutable prototype02 predates final precision/filter relink",
+  "test_script_sha256": "fd0d660d498798c48e567eab641b8625bacb9e74be688bd80a0054653a57be3f",
+  "base_abi_only_host_fallback_verified": true
+}

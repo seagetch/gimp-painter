@@ -1,0 +1,41 @@
+#!/bin/sh
+# Relocatable Debian 13 prototype. Do not source the developer's build environment.
+set -eu
+HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+LIB="$HERE/usr/lib/x86_64-linux-gnu"
+DEPLIB="$HERE/deps/usr/lib/x86_64-linux-gnu"
+export PATH="$HERE/usr/bin:/usr/bin:/bin"
+export LD_LIBRARY_PATH="$LIB:$DEPLIB:$DEPLIB/blas:$DEPLIB/lapack"
+export GI_TYPELIB_PATH="$LIB/girepository-1.0:$DEPLIB/girepository-1.0"
+export PYTHONPATH="$HERE/deps/usr/lib/python3/dist-packages:$LIB/gimp/3.0/python"
+export XDG_DATA_DIRS="$HERE/usr/share:$HERE/deps/usr/share:/usr/share"
+export BABL_PATH="$DEPLIB/babl-0.1"
+export GEGL_PATH="$DEPLIB/gegl-0.4"
+export GIO_MODULE_DIR="$DEPLIB/gio/modules"
+export GTK_EXE_PREFIX="$HERE/deps/usr"
+export GTK_DATA_PREFIX="$HERE/deps/usr"
+export GTK_PATH="$DEPLIB/gtk-3.0"
+export GIMP_PAINTER_BUNDLE="$HERE"
+export GSETTINGS_SCHEMA_DIR="$HERE/deps/usr/share/glib-2.0/schemas"
+export GIMP3_DATADIR="$HERE/usr/share/gimp/3.0"
+export GIMP3_LOCALEDIR="$HERE/usr/share/locale"
+export GIMP3_SYSCONFDIR="$HERE/usr/etc/gimp/3.0"
+export GIMP3_PLUGINDIR="$LIB/gimp/3.0"
+# Separate profile from the user's normal GIMP installation; override explicitly if needed.
+export GIMP3_DIRECTORY="${GIMP_PAINTER_PROFILE:-${XDG_CONFIG_HOME:-$HOME/.config}/gimp-painter-prototype/3.0}"
+export GIMP3_CACHEDIR="${GIMP_PAINTER_CACHE:-${XDG_CACHE_HOME:-$HOME/.cache}/gimp-painter-prototype}"
+mkdir -p "$GIMP3_CACHEDIR"
+# Loader caches contain absolute paths and are rebuilt locally after relocation.
+GDK_PIXBUF_MODULEDIR="$DEPLIB/gdk-pixbuf-2.0/2.10.0/loaders"
+export GDK_PIXBUF_MODULEDIR
+GDK_PIXBUF_MODULE_FILE="$GIMP3_CACHEDIR/pixbuf-loaders.cache"
+export GDK_PIXBUF_MODULE_FILE
+"$DEPLIB/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders" > "$GDK_PIXBUF_MODULE_FILE"
+GTK_IM_MODULE_FILE="$GIMP3_CACHEDIR/gtk-immodules.cache"
+export GTK_IM_MODULE_FILE
+"$DEPLIB/libgtk-3-0t64/gtk-query-immodules-3.0" "$DEPLIB"/gtk-3.0/3.0.0/immodules/*.so > "$GTK_IM_MODULE_FILE"
+if [ "${1:-}" = --console ]; then
+  shift
+  exec "$HERE/usr/bin/gimp-console-3.0" "$@"
+fi
+exec "$HERE/usr/bin/gimp-3.0" "$@"

@@ -1169,6 +1169,7 @@
 | 34.003 | [ ] | X11 入力を試験する | 34.002 | ペン・popup・回転が動く |
 | 34.004 | [ ] | Wayland 入力を試験する | 34.003 | 座標・focus・popup 復帰が動く |
 | 34.005 | [ ] | clean 環境 package を作る | 34.004 | 作業ディレクトリ外から起動 |
+| 34.005/runtime-prototype | [x] | Linuxの隔離・再配置runtime梱包と検証手順を実装する | 03.009, 04.002/common-foundation | 5255file/418ELF・177brush/8presetをseal、別日本語pathでversion/Save再読込と実GTK stroke保存再開、11helper安全検査合格。prototypeのみでfinal source/binary一致・配布source/license・release/platform gateは未完了 |
 | 34.005/license-manifest | [ ] | 実配布依存の版とlicense noticeを収集する | 34.005, 01.011 | 各OSの実リンク・同梱ライブラリーと資産を実source hashへ対応し、旧台帳の未取得noticeを解消してpackageへ添付する |
 | 34.006 | [ ] | C/C++ compile CI を登録する | 34.005 | 主要 OS で全追加 module を検査 |
 | 34.007 | [ ] | bridge 単体試験を CI に登録する | 34.006 | 寿命と例外の回帰を検知 |

@@ -1,0 +1,84 @@
+{
+  "format": 1,
+  "staging_authorized": false,
+  "publication_authorized": false,
+  "files": {
+    "etc/toolrc": {
+      "bytes": 6590,
+      "sha256": "bceb72ff7f30ccfd7ce23d7944622c8dbed7a3a59b88ef2e98bf5fb9845c82e1"
+    },
+    "tools/package-linux-runtime.py": {
+      "bytes": 21499,
+      "sha256": "bddf808e0113d437bb7ed8f1fc517a686a20c3e4309456140fe3f84d53f2ec2b"
+    },
+    "tools/test-linux-runtime.py": {
+      "bytes": 6836,
+      "sha256": "fd0d660d498798c48e567eab641b8625bacb9e74be688bd80a0054653a57be3f"
+    },
+    "tools/split-runtime-artifact.py": {
+      "bytes": 4506,
+      "sha256": "1973298ac4f5cbc12a8370edd0be905d4a20417fd1fc58ecc2fd0cb1d7aad63e"
+    },
+    "migration/tests/test_linux_runtime_package.py": {
+      "bytes": 5822,
+      "sha256": "a1294bdebba97918896d976dbf1bacfd4ebb72e277750005bdf9fe8f17b8eb1e"
+    },
+    "migration/packaging/AppRun": {
+      "bytes": 2074,
+      "sha256": "9f079ed230607950b970c2d3f33068f76345a4122265d99508146fe40f510424"
+    },
+    "migration/packaging/README-linux.txt": {
+      "bytes": 2737,
+      "sha256": "47f80d1cb77ac0f22287a5e875cf9fd0fe0cee8883a025804327b3ab941c49ae"
+    },
+    "migration/packaging/README.md": {
+      "bytes": 7370,
+      "sha256": "77a170582e94af6633f28971fa99d607b76f9fd913f0e1c3bbfc85b47a676c9e"
+    },
+    "migration/packaging/platform-build-manifest.json": {
+      "bytes": 3785,
+      "sha256": "8c6657f8a453ed67106f2a20cb41f2388c263dcc878bf898f804cbed1cdbd0ae"
+    },
+    "migration/packaging/prototype-validation.json": {
+      "bytes": 3136,
+      "sha256": "1cd7483b8154914d862859ca556a000bdc07e825332a77e3e023b13410a522b1"
+    }
+  },
+  "validation": [
+    "eleven packaging helper tests passed",
+    "split/join byte roundtrip and tamper/overwrite guards passed",
+    "Python syntax compilation passed",
+    "POSIX launcher syntax passed",
+    "prototype relocation/version/batch/native GUI roundtrip passed with declared limitations",
+    "BASE_ABI-only418-ELF relocation smoke replay passed",
+    "new untracked source and pinned gimp-data commit/content race regressions passed"
+  ],
+  "artifacts": {
+    "runtime_archive": {
+      "bytes": 111502741,
+      "sha256": "9c805f301d57ca9a1b90bba2690e40936c2cdc050143ab41c43d472a600837d0",
+      "parts": 6,
+      "parts_directory": "runtime-numbered-parts"
+    },
+    "source_archive": {
+      "bytes": 51569450,
+      "sha256": "ba85e77b02100e1703ea5a61e8d7ac25ef11c2d969801bc38617681bb67454a3",
+      "parts": 3,
+      "parts_directory": "source-numbered-parts"
+    },
+    "gimp_data_archive": {
+      "bytes": 11366302,
+      "sha256": "434a0444114e12646bab11c6c9584b3a12e64453660f395100fafb27e1d52d64",
+      "parts": 1,
+      "parts_directory": "data-source-numbered-parts"
+    }
+  },
+  "limitations": [
+    "candidate not refreshed against final aggregate source/binaries",
+    "dependency source availability/licensing not cleared",
+    "Windows/macOS/Wayland/tablet not run",
+    "ptrace syscall audit prohibited",
+    "toolrc resource fix awaits refreshed native startup",
+    "Prototype02 predates expanded upstream notice copying; final refreshed package must include every source-notice path"
+  ]
+}
