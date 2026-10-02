@@ -1,5 +1,5 @@
 symbol	cpp_definition	header_declaration	caller_or_registration	classification	ownership_or_risk	followup_task	status
-features_entry_point	app/gimp-features.cpp:70	app/gimp-features.h:32	app/app.c:175	C_DIRECT	Registers feature factories against the Gimp owner at startup	04.018/feature-entry-point	DONE
+features_entry_point	app/gimp-features.cpp:70	app/gimp-features.h:32	app/app.c:175	C_DIRECT	Registers feature factories against the Gimp owner at startup	30.016/feature-entry-point	DONE
 preset_factory_gui_prefs_entry_point	app/presets/preset-factory-gui.cpp:233	app/presets/preset-factory-gui.h:45	app/dialogs/preferences-dialog.c:2865	C_DIRECT	New GArray is consumed then g_array_unref at preferences-dialog.c:2889	28.014/preset-preferences	DONE
 preset_factory_gui_dialogs_actions_entry_point	app/presets/preset-factory-gui.cpp:240	app/presets/preset-factory-gui.h:47	app/actions/dialogs-actions.c:335	C_DIRECT	Adds action entries; legacy code reads entry->name before null check	28.014/preset-dialog-actions	DONE
 preset_factory_gui_action_group_entry_point	app/presets/preset-factory-gui.cpp:247	app/presets/preset-factory-gui.h:46	app/presets/preset-factory-gui.cpp:216	C_CALLBACK	C action factory retains callback; registration and teardown need GIMP 3 audit	28.014/preset-action-group	DONE

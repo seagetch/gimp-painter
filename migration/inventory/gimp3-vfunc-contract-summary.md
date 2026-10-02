@@ -34,7 +34,7 @@ GTK/GLib は監査表にリンクした GNOME 公開ヘッダーの固定版を�
 保証できない。旧 `GClassWrapper` の property callback は catch 後に
 `exit(1)` を実行するため、`05.013/legacy-exit-removal` で置換する。
 全111件の移植先で失敗の戻し方と破棄経路を確かめる作業は
-`05.013/all-vfunc-exception-containment` の完了条件に含める。
+`38.004/all-vfunc-exception-containment` の完了条件に含める。
 
 ## 描画への影響
 

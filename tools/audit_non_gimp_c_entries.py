@@ -13,7 +13,7 @@ OUTPUT = Path("migration/inventory/non-gimp-c-entry-review.tsv")
 EXPECTED = {
     "features_entry_point": (
         "app/gimp-features.cpp:70", "app/gimp-features.h:32",
-        "app/app.c:175", "C_DIRECT", "04.018/feature-entry-point",
+        "app/app.c:175", "C_DIRECT", "30.016/feature-entry-point",
         "Registers feature factories against the Gimp owner at startup"),
     "preset_factory_gui_prefs_entry_point": (
         "app/presets/preset-factory-gui.cpp:233",
