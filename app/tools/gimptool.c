@@ -725,6 +725,9 @@ gimp_tool_button_press (GimpTool            *tool,
   g_return_if_fail (coords != NULL);
   g_return_if_fail (GIMP_IS_DISPLAY (display));
 
+  /* Subclass callbacks can release the caller's final reference. */
+  g_object_ref (tool);
+
   GIMP_TOOL_GET_CLASS (tool)->button_press (tool, coords, time, state,
                                             press_type, display);
 
@@ -750,6 +753,8 @@ gimp_tool_button_press (GimpTool            *tool,
           tool->in_click_distance   = FALSE;
         }
     }
+
+  g_object_unref (tool);
 }
 
 static gboolean

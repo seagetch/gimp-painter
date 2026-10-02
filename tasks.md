@@ -290,6 +290,7 @@
 | 05.002 | [x] | ハンドルの所有規約を定義する | 05.001 | retain・adopt・sink の差を記載 |
 | 05.003 | [x] | ハンドルの copy/move 規約を定義する | 05.002 | 参照数増減と moved-from 状態を記載 |
 | 05.003/retained-item-lifetime | [x] | 所有handleがImage/Gimpを越えるItem寿命を修正する | 14.015/reference-undo-snapshot | imageとID-table ownerをweak追跡しreplace/移動/終了を対称解除。37通常/focused sanitizer、実Gimp終了後のitem解放を検証。no-font既知guardを明示 |
+| 05.003/native-tool-press-lease | [x] | 公開tool press呼出し後処理までownerを保持する | 05.003/retained-item-lifetime | subclass callbackが最後の外部refを解放する実public wrapper再現が通常/3unit ASan・UBSan合格。subclass return後のcontrol/座標bookkeeping UAFをoperation leaseで防止。実device配送は別gate |
 | 05.004 | [x] | 短期借用の規約を定義する | 05.003, 05.004/bound-method-lifetime | 保存不可・非同期持出し不可の境界を明示 |
 | 05.004/bound-method-lifetime | [x] | 旧 BoundMethod の借用 object 寿命を新 API に定義する | 05.003, 01.005/indirect-callback-owners | `operator[]` から返る callable が object の参照を持たないことを考慮し、保持・遅延使用を禁止または weak/strong handle へ移す |
 | 05.005 | [x] | C++ メソッドと C 入口を対応付ける | 05.004 | 同じ操作の第二実装を作らない対応表がある |

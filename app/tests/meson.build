@@ -42,6 +42,7 @@ app_tests = [
   'gimp-painter-mybrush',
   'gimp-painter-mybrush-factory',
   'gimpidtable',
+  'gimp-tool-owner',
 #'session-2-8-compatibility-multi-window',
 #'session-2-8-compatibility-single-window',
 #'single-window-mode',
