@@ -20,7 +20,8 @@ static Gimp *gimp;
 static guchar *read_fixture (const gchar *name)
 {
   gchar *path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),
-                                   "migration/fixtures/legacy-modes", name, NULL);
+                                   g_str_has_prefix (name,"mode-0-") || g_str_has_prefix (name,"mode-3-") ?
+                                   "migration/fixtures/legacy-normal-multiply" : "migration/fixtures/legacy-modes", name, NULL);
   gchar *bytes = NULL;
   gsize size = 0;
   g_assert_true (g_file_get_contents (path, &bytes, &size, NULL));
@@ -30,14 +31,16 @@ static guchar *read_fixture (const gchar *name)
 }
 static void genuine_projection_and_kernel (void)
 {
+  static const guint raw_modes[] = {0,3,23,24,25,26,27,28,29};
   static const gint opacities[] = {100,50,0,100,50,100,1,99};
   static const gint masks[] = {-1,-1,-1,128,128,0,254,1};
   const Babl *format = babl_format ("R'G'B'A u8");
   const GeglRectangle rect = {0,0,8,8};
   guchar *a = read_fixture ("backdrop.rgba"), *b = read_fixture ("source.rgba");
-  for (guint raw = 23; raw <= 29; ++raw)
+  for (guint mode_index = 0; mode_index < G_N_ELEMENTS (raw_modes); ++mode_index)
     for (guint c = 0; c < G_N_ELEMENTS (masks); ++c)
       {
+        guint raw = raw_modes[mode_index];
         gchar *mask_name = masks[c] < 0 ? g_strdup ("none") : g_strdup_printf ("%d", masks[c]);
         gchar *name = g_strdup_printf ("mode-%u-o%d-m%s-projection.rgba",raw,opacities[c],mask_name);
         guchar *expected = read_fixture (name), actual[256], kernel[256], mask_bytes[64];
@@ -52,7 +55,7 @@ static void genuine_projection_and_kernel (void)
         g_assert_true (gimp_painter_layer_mode_to_legacy (mode, &roundtrip));
         g_assert_cmpuint (roundtrip, ==, raw);
         for (guint p = 0; p < 64; ++p)
-          gimp_painter_legacy_composite_u8 (a+4*p,b+4*p,kernel+4*p,opacities[c]*255/100,m,raw);
+          gimp_painter_legacy_composite_u8 (a+4*p,b+4*p,kernel+4*p,opacities[c]*255/100,masks[c] < 0 ? 256 : m,raw);
         g_assert_cmpmem (kernel,sizeof kernel,expected,256);
         gegl_buffer_set (ab,&rect,0,format,a,GEGL_AUTO_ROWSTRIDE);
         gegl_buffer_set (bb,&rect,0,format,b,GEGL_AUTO_ROWSTRIDE);

@@ -26,6 +26,16 @@ class ModeFixtures(unittest.TestCase):
             data = (FIX/output['output']).read_bytes()
             self.assertEqual(len(data), 8*8*4)
             self.assertEqual(hashlib.sha256(data).hexdigest(), output['sha256'])
+    def test_normal_multiply_capture(self):
+        folder = FIX.parent / 'legacy-normal-multiply'
+        report = json.loads((folder/'capture-report.json').read_text())
+        self.assertEqual(report['exit_code'], 0)
+        self.assertEqual(len(report['outputs']), 32)
+        self.assertEqual({r['mode'] for r in report['outputs']}, {0,3})
+        for name, record in json.loads((folder/'manifest.json').read_text()).items():
+            data = (folder/name).read_bytes()
+            self.assertEqual(len(data), record['size'], name)
+            self.assertEqual(hashlib.sha256(data).hexdigest(), record['sha256'], name)
     def test_projection_and_merge_are_not_conflated(self):
         name = 'mode-25-o100-mnone'
         self.assertNotEqual((FIX/(name+'.rgba')).read_bytes(),

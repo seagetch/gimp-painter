@@ -155,6 +155,8 @@ gimp_layer_mode_get_type (void)
     { GIMP_LAYER_MODE_PAINTER_DST_IN, "GIMP_LAYER_MODE_PAINTER_DST_IN", "painter-dst-in" },
     { GIMP_LAYER_MODE_PAINTER_SRC_OUT, "GIMP_LAYER_MODE_PAINTER_SRC_OUT", "painter-src-out" },
     { GIMP_LAYER_MODE_PAINTER_DST_OUT, "GIMP_LAYER_MODE_PAINTER_DST_OUT", "painter-dst-out" },
+    { GIMP_LAYER_MODE_PAINTER_NORMAL, "GIMP_LAYER_MODE_PAINTER_NORMAL", "painter-normal" },
+    { GIMP_LAYER_MODE_PAINTER_MULTIPLY, "GIMP_LAYER_MODE_PAINTER_MULTIPLY", "painter-multiply" },
     { 0, NULL, NULL }
   };
 
@@ -303,6 +305,8 @@ gimp_layer_mode_get_type (void)
     { GIMP_LAYER_MODE_PAINTER_DST_IN, NC_("layer-mode", "DST IN (Painter legacy)"), NULL },
     { GIMP_LAYER_MODE_PAINTER_SRC_OUT, NC_("layer-mode", "SRC OUT (Painter legacy)"), NULL },
     { GIMP_LAYER_MODE_PAINTER_DST_OUT, NC_("layer-mode", "DST OUT (Painter legacy)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_NORMAL, NC_("layer-mode", "Normal (Painter legacy)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_MULTIPLY, NC_("layer-mode", "Multiply (Painter legacy)"), NULL },
     { 0, NULL, NULL }
   };
 

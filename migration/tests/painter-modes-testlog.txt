@@ -1,19 +1,35 @@
-Log of Meson test suite run on 2026-10-02T10:13:40.345459
+Log of Meson test suite run on 2026-10-02T10:29:48.606889
 
 Inherited environment omitted; see whitelisted JSON reproducibility variables.
 
 ==================================== 1/1 =====================================
 test:         gimp:app / painter-layer-modes
-start time:   01:13:40
-duration:     3.49s
+start time:   01:29:48
+duration:     4.00s
 result:       exit status 0
-command:      GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common UI_TEST=yes GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=119 LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-layer-modes
+command:      GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UI_TEST=yes GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 MALLOC_PERTURB_=220 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-layer-modes
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02S14a209f7b0bbe119bed022584c3c6b77
+# random seed: R02S7e4e46f972d4c14a1e3dfcbdc3d661ff
 # GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
 1..1
 # Start of painter-layer-modes tests
+# reference mode-0-o100-mnone-projection.rgba
+# reference mode-0-o50-mnone-projection.rgba
+# reference mode-0-o0-mnone-projection.rgba
+# reference mode-0-o100-m128-projection.rgba
+# reference mode-0-o50-m128-projection.rgba
+# reference mode-0-o100-m0-projection.rgba
+# reference mode-0-o1-m254-projection.rgba
+# reference mode-0-o99-m1-projection.rgba
+# reference mode-3-o100-mnone-projection.rgba
+# reference mode-3-o50-mnone-projection.rgba
+# reference mode-3-o0-mnone-projection.rgba
+# reference mode-3-o100-m128-projection.rgba
+# reference mode-3-o50-m128-projection.rgba
+# reference mode-3-o100-m0-projection.rgba
+# reference mode-3-o1-m254-projection.rgba
+# reference mode-3-o99-m1-projection.rgba
 # reference mode-23-o100-mnone-projection.rgba
 # reference mode-23-o50-mnone-projection.rgba
 # reference mode-23-o0-mnone-projection.rgba
@@ -71,7 +87,7 @@ TAP version 14
 # reference mode-29-o1-m254-projection.rgba
 # reference mode-29-o99-m1-projection.rgba
 ok 1 /painter-layer-modes/genuine_projection_and_kernel
-# slow test /painter-layer-modes/genuine_projection_and_kernel executed in 2.08 secs
+# slow test /painter-layer-modes/genuine_projection_and_kernel executed in 2.57 secs
 # End of painter-layer-modes tests
 # GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
 ----------------------------------- stderr -----------------------------------

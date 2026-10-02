@@ -27,13 +27,43 @@ gimp_painter_legacy_composite_u8 (const guint8 backdrop[4], const guint8 source[
                                   guint8 out[4], guint opacity, guint mask,
                                   guint raw_mode)
 {
-  const guint8 *a = backdrop, *b = source;
-  guint8 temp[4];
+  guint8 left[4], right[4], temp[4];
+  const guint8 *a = left, *b = right;
+  const gboolean has_mask = mask != 256;
   guint alpha, k;
-  g_return_if_fail (raw_mode >= 23 && raw_mode <= 29);
-  g_return_if_fail (opacity <= 255 && mask <= 255);
-  if (raw_mode == 27 || raw_mode == 29) { a = source; b = backdrop; }
+  g_return_if_fail (raw_mode == 0 || raw_mode == 3 || (raw_mode >= 23 && raw_mode <= 29));
+  g_return_if_fail (opacity <= 255 && mask <= 256);
+  memcpy (left, backdrop, 4); memcpy (right, source, 4);
+  if (!has_mask) mask = 255;
+  if (raw_mode == 27 || raw_mode == 29) { a = right; b = left; }
   memcpy (out, a, 4);
+  if (raw_mode == 0 || raw_mode == 3)
+    {
+      guint source_alpha, new_alpha;
+      if (raw_mode == 3)
+        {
+          for (k = 0; k < 3; ++k) temp[k] = mult (a[k], b[k]);
+          temp[3] = MIN (a[3], b[3]);
+          b = temp;
+        }
+      source_alpha = has_mask ? (opacity == 255 ? mult (b[3], mask) :
+                                                   mult3 (b[3], mask, opacity)) :
+                                mult (b[3], opacity);
+      new_alpha = a[3] + mult (255 - a[3], source_alpha);
+      if (source_alpha && new_alpha)
+        {
+          if (source_alpha == new_alpha) memcpy (out, b, 3);
+          else
+            {
+              gfloat ratio = (gfloat) source_alpha / new_alpha;
+              gfloat complement = 1.0 - ratio;
+              for (k = 0; k < 3; ++k)
+                out[k] = (guint8) (b[k] * ratio + a[k] * complement + 0.0001);
+            }
+        }
+      out[3] = raw_mode == 0 || !a[3] ? new_alpha : a[3];
+      return;
+    }
   if (raw_mode == 23 || raw_mode == 25)
     {
       alpha = mult3 (b[3], mask, opacity);
@@ -65,6 +95,8 @@ gimp_painter_layer_mode_from_legacy (guint32 raw, GimpLayerMode *mode)
 {
   G_STATIC_ASSERT (GIMP_LAYER_MODE_COLOR_ERASE_LEGACY == 22);
   g_return_val_if_fail (mode != NULL, FALSE);
+  if (raw == 0) { *mode = GIMP_LAYER_MODE_PAINTER_NORMAL; return TRUE; }
+  if (raw == 3) { *mode = GIMP_LAYER_MODE_PAINTER_MULTIPLY; return TRUE; }
   if (raw <= 22) { *mode = (GimpLayerMode) raw; return TRUE; }
   if (raw <= 29)
     { *mode = GIMP_LAYER_MODE_PAINTER_ERASE + (raw - 23); return TRUE; }
@@ -74,12 +106,18 @@ gboolean
 gimp_painter_layer_mode_to_legacy (GimpLayerMode mode, guint32 *raw)
 {
   g_return_val_if_fail (raw != NULL, FALSE);
+  if (mode == GIMP_LAYER_MODE_PAINTER_NORMAL) { *raw = 0; return TRUE; }
+  if (mode == GIMP_LAYER_MODE_PAINTER_MULTIPLY) { *raw = 3; return TRUE; }
   if (mode >= 0 && mode <= GIMP_LAYER_MODE_COLOR_ERASE_LEGACY)
     { *raw = mode; return TRUE; }
   if (mode >= GIMP_LAYER_MODE_PAINTER_ERASE && mode <= GIMP_LAYER_MODE_PAINTER_DST_OUT)
     { *raw = 23 + mode - GIMP_LAYER_MODE_PAINTER_ERASE; return TRUE; }
   return FALSE;
 }
+
+gboolean
+gimp_painter_layer_mode_is_compatibility (GimpLayerMode mode)
+{ return mode >= GIMP_LAYER_MODE_PAINTER_ERASE && mode <= GIMP_LAYER_MODE_PAINTER_MULTIPLY; }
 
 static guint byte (gfloat value)
 {
@@ -130,7 +168,7 @@ process (GeglOperation *op, void *in_p, void *aux_p, void *mask_p, void *out_p,
   gfloat *out = out_p;
   guint raw = 0, opacity = (guint) CLAMP (layer_mode->prop_opacity * 255.0, 0.0, 255.0);
   glong n;
-  if (!gimp_painter_layer_mode_to_legacy (layer_mode->layer_mode, &raw) || raw < 23)
+  if (!gimp_painter_layer_mode_to_legacy (layer_mode->layer_mode, &raw) || !gimp_painter_layer_mode_is_compatibility (layer_mode->layer_mode))
     return FALSE;
   for (n = 0; n < samples; ++n)
     {
@@ -150,7 +188,7 @@ process (GeglOperation *op, void *in_p, void *aux_p, void *mask_p, void *out_p,
           d[3] = mask ? mult3 (opacity, b[3], m) : mult (opacity, b[3]);
         }
       else
-        gimp_painter_legacy_composite_u8 (a, b, d, opacity, m, raw);
+        gimp_painter_legacy_composite_u8 (a, b, d, opacity, mask ? m : 256, raw);
       for (k = 0; k < 4; ++k) out[4*n+k] = d[k] / 255.0f;
     }
   return TRUE;

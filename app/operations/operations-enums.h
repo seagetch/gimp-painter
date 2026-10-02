@@ -141,6 +141,9 @@ typedef enum
   GIMP_LAYER_MODE_PAINTER_SRC_OUT, /*< desc="SRC OUT (Painter legacy)" >*/
   GIMP_LAYER_MODE_PAINTER_DST_OUT, /*< desc="DST OUT (Painter legacy)" >*/
 
+  GIMP_LAYER_MODE_PAINTER_NORMAL, /*< desc="Normal (Painter legacy)" >*/
+  GIMP_LAYER_MODE_PAINTER_MULTIPLY, /*< desc="Multiply (Painter legacy)" >*/
+
   /*  Layer mode menu separator  */
   GIMP_LAYER_MODE_SEPARATOR = -1         /*< pdb-skip, skip                                                 >*/
 } GimpLayerMode;

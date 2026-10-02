@@ -917,6 +917,28 @@ static const GimpLayerModeInfo layer_mode_infos[] =
     .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
     .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
     .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
+  { GIMP_LAYER_MODE_PAINTER_NORMAL,
+    .op_name = "gimp:painter-legacy-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_LEGACY |
+             GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
+  { GIMP_LAYER_MODE_PAINTER_MULTIPLY,
+    .op_name = "gimp:painter-legacy-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_LEGACY |
+             GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
   }
 };
 
@@ -992,6 +1014,8 @@ static const GimpLayerMode layer_mode_group_default[] =
 
 static const GimpLayerMode layer_mode_group_legacy[] =
 {
+  GIMP_LAYER_MODE_PAINTER_NORMAL,
+  GIMP_LAYER_MODE_PAINTER_MULTIPLY,
   GIMP_LAYER_MODE_PAINTER_ERASE,
   GIMP_LAYER_MODE_PAINTER_REPLACE,
   GIMP_LAYER_MODE_PAINTER_ANTI_ERASE,

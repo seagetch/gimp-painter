@@ -5,8 +5,9 @@ replace, anti-erase, SRC IN, DST IN, SRC OUT and DST OUT. The new named
 `GIMP_LAYER_MODE_PAINTER_*` values append after all upstream values, including
 the private anti-erase value; no preexisting enum changes value. Explicit
 `gimp_painter_layer_mode_from_legacy` and reverse functions own wire conversion.
-Current raw 0–22 use matching upstream legacy identities, but full pixel parity
-of those upstream floating-point operations is NOT established by this slice.
+Raw 0 and 3 now map to additional exact Painter Normal/Multiply identities;
+the other raw 0–22 values retain matching upstream legacy identities. Full pixel
+parity of every remaining upstream floating-point mode is still unestablished.
 
 One registered `gimp:painter-legacy-mode` GEGL operation implements these seven
 identities. It plugs into the normal layer-mode registry, process function,
@@ -57,3 +58,23 @@ and zoom paths, newly saved mode metadata, and old 0–22 exact rounding. In
 particular, the ordinary legacy XCF projection still differs from the current
 upstream legacy Multiply/Normal pipeline by at most 1 RGB on 910 pixels. A direct
 old projection capture confirmed this is real, not a merge/projection mismatch.
+
+
+## Normal/Multiply refinement
+
+The same kernel/node now implements raw 0 and 3 using the historical byte alpha,
+integer multiply and truncated floating color interpolation. Sixteen additional
+real scenes in `legacy-normal-multiply` bring the combined suite to 72 exact
+projection cases in each of the three execution contexts. Normal and Multiply
+use distinct new IDs and the reverse mapping retains their old wire meanings;
+`gimp_painter_layer_mode_is_compatibility` identifies all nine explicit modes.
+The byte kernel also handles either input aliasing its output by copying inputs
+before modification. Mask 256 is the explicit no-mask sentinel, preserving the
+old separate no-mask/full-opacity-mask arithmetic branches.
+
+Application policy and exact historical XCF image checks are owned by the XCF
+reader integration. The ordinary fixture's 910-pixel gap is closed with this
+mapping: all 7,680 pixels match the real old direct projection. A shared-layout
+file's canonical historical interpretation does not prove arbitrary authorship;
+explicit standard recovery remains available and modern typed scalar records
+retain modern identities. See the reader contract for its source-backed tests.
