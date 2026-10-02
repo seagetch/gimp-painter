@@ -7,6 +7,11 @@ branch. Shared foundations remain `app/painter/BindingStore`, `ObjectRef`,
 `Connection`, and `Source`. There is no legacy Interface/NewGClass or second
 implementation store.
 
+Current point mappings, normalized-double native precision, original Gaussian alias
+editing and the 108-row source/runtime inventory are specified in
+[`filter-native-execution.md`](filter-native-execution.md). Those bounded extensions
+do not complete general PDB/process isolation or responsiveness acceptance.
+
 ## Actual integration
 
 - `app/core/gimpfilterlayer.{h,cpp}` registers a real `GimpLayer` subclass with
@@ -293,7 +298,7 @@ while a worker is pending discards that generation and publishes a fresh result.
 These are targeted native-encoding transfer tests against genuine old reference
 bytes; the captures themselves were unprofiled, not a new old-ICC capture.
 
-Execution admits non-linear RGB and Gray U8. Native Gray input is sampled as
+Exact old-byte execution admits non-linear RGB and Gray U8. Native Gray input is sampled as
 `Y'A u8`, then Y is replicated across the channel-independent byte kernel;
 result import extracts Y and alpha without an RGB-to-Gray color conversion.
 `migration/fixtures/legacy-gray-filter/` contains 77 genuine old-PDB Gray and
@@ -308,8 +313,8 @@ Unsupported reruns explicitly fail while retaining definitions and committed
 cache; loading an existing completed cache does not discard it or attempt
 quantization. The old edge and Gaussian registrations accept RGB*/GRAY*, not
 indexed, and both actual indexed probes fail as recorded in the Gray corpus.
-High precision and linear U8 are modern extensions without a 2.8 byte-level
-oracle and still require an explicit conversion contract.
+High precision and linear/perceptual storage use the explicit modern extension
+in `filter-native-execution.md`; they have no 2.8 byte-level oracle.
 
 Stored procedure names and string arguments from XCF are untrusted input.
 Execution must stay an explicit allowlist of side-effect-free transformation
@@ -418,35 +423,30 @@ executable hashes. Repeated measurements still show heartbeat outliers above
 fixed-machine acceptance gate. More complex
 operators, many images and sustained painting still need workloads and limits.
 
-## Required configured spill-space boundary
+## Configured spill-space boundary
 
-The present admission pool accounts for feature working memory and job count,
-not spill-file capacity. Storage errors retain the old cache, but this alone
-does not prevent an oversized workload from consuming available swap space.
-Before claiming disk-resource protection, a separate trusted application setting
-must bound reserved logical spill bytes across all active jobs: checked `8*w*h`
-for Edge/input+output and `12*w*h` for Gaussian when vertical transpose scratch
-is needed (otherwise `8*w*h`). Persisted procedure arguments cannot override it.
-Temporary contention must queue fairly without losing dirty work; a request
-larger than the configured limit must fail once with its definition/cache intact.
-A reservation remains held through cancellation until worker files are closed.
-Worker-side filesystem free-space checks can reject clearly impossible work,
-but are advisory because other processes and GEGL may consume space concurrently;
-actual I/O/flush failures remain checked. Native GEGL caches and OS filesystem
-backing remain separately accounted. This configured disk policy is defined
-here as required follow-on work and is not yet implemented.
+The trusted config-owned memory/job/spill pool is now implemented and tested;
+see `filter-spill-admission.md`. Byte Edge/point/identity reserves `8*w*h` logical
+file bytes and vertical Gaussian `12*w*h`; the double extension uses `64*w*h`
+and `96*w*h`. Temporary contention queues fairly, an oversized request fails
+once, and a reservation remains held until worker files close. The independent
+worker checks available filesystem space and actual I/O/flush failures. These
+are logical per-application reservations, not OS-exclusive space or total
+GIMP/GEGL/system memory/disk guarantees.
 
 ## Remaining work and non-claims
 
-- The two bundled canonical names and four Gaussian aliases have explicit
-  compatibility executors. Other legacy PDB names retain definitions but report
-  unsupported execution. This is not arbitrary legacy PDB compatibility
-- The existing Filter editor preserves alias definitions as “keep”; direct
-  editing of their original flag/two-radius forms remains a UI follow-on.
-  Selecting canonical Gaussian is an explicit definition replacement, not
-  evidence that original alias editing is complete
-- A complete mapping inventory beyond bundled presets, plug-in process adapter,
-  crash handling and unresponsive external-procedure isolation are outstanding
+- Nine literal names have explicit compatibility executors: Edge, canonical
+  Gaussian, four Gaussian aliases and three point operations. Other names retain
+  definitions/cache and report unsupported execution. This is not generic PDB
+  compatibility
+- The common-store Filter editor now edits original Gaussian flag/two-radius
+  forms and the point mappings. Unknown or unsupported shapes stay on Keep;
+  choosing another procedure remains an explicit definition replacement
+- The source/runtime inventory has 108 rows, with 99 execution routes still
+  unaccepted. Source-eligible scripts require runtime/context review. The general
+  plug-in process adapter, crash handling and unresponsive-procedure isolation
+  remain outstanding
 - The old reader's image-ID/GValue-pointer crash is a negative fixture; safely
   retaining those bytes does not turn it into a successful legacy round trip
 - Normal Open/XCF persistence and creation/menu/editor UI are validated by their

@@ -14,7 +14,10 @@ at most the configured sum of live declared spill bytes. Requests are FIFO acros
 both byte dimensions. Edge and identity requests reserve input plus result
 (8 bytes/pixel); vertical Gaussian processing also reserves its transposed scratch
 (12 bytes/pixel). All arithmetic is checked with 64-bit spill accounting, including
-requests larger than 4 GiB. The file wrapper charges logical extents, not sparse
+requests larger than 4 GiB. The normalized-double extension multiplies those byte-raster reservations by
+eight (64 or 96 bytes/pixel) and uses the same pool and quota. See
+`filter-native-execution.md` for its explicit arithmetic and admission contract.
+The file wrapper charges logical extents, not sparse
 physical blocks. A scratch extent is released only after its file closes, allowing
 sequential scratch reuse but rejecting a processor that exceeds its declaration.
 

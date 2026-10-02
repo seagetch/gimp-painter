@@ -36,7 +36,8 @@ inline std::uint8_t clamp_byte (double value)
   return static_cast<std::uint8_t> (value);
 }
 
-inline std::uint8_t detect (const std::uint8_t *data, int mode, double amount)
+template<class Sample, class Sum>
+inline double detect_value (const Sample *data, int mode, double amount)
 {
   static const int vertical[6][9] =
   {
@@ -71,30 +72,41 @@ inline std::uint8_t detect (const std::uint8_t *data, int mode, double amount)
 
   if (mode == 1)
     {
-      int maximum = 0;
+      Sum maximum = 0;
       for (const auto& mask : compass)
         {
-          int value = 0;
+          Sum value = 0;
           for (int i = 0; i < 9; ++i)
             value += mask[i] * data[i];
           maximum = std::max (maximum, value);
         }
-      return clamp_byte (amount * maximum);
+      return amount * maximum;
     }
 
-  int v_grad = 0;
+  Sum v_grad = 0;
   for (int i = 0; i < 9; ++i)
     v_grad += vertical[mode][i] * data[i];
 
   if (mode == 5)
-    return clamp_byte (v_grad * amount);
+    return v_grad * amount;
 
-  int h_grad = 0;
+  Sum h_grad = 0;
   for (int i = 0; i < 9; ++i)
     h_grad += horizontal[mode][i] * data[i];
 
-  return clamp_byte (std::sqrt (v_grad * v_grad * amount +
-                               h_grad * h_grad * amount));
+  return std::sqrt (v_grad * v_grad * amount + h_grad * h_grad * amount);
+}
+
+inline std::uint8_t detect (const std::uint8_t *data, int mode, double amount)
+{ return clamp_byte (detect_value<std::uint8_t, int> (data, mode, amount)); }
+
+/* Modern precision extension: the same normalized detector, without the old
+ * byte truncation. The defined detector saturation remains [0,1]. */
+inline double detect_real (const double *data, int mode, double amount)
+{
+  const double value = detect_value<double,double> (data,mode,amount);
+  if (std::isnan (value)) throw std::invalid_argument ("Native edge arithmetic overflow");
+  return std::max (0.0,std::min (1.0,value));
 }
 
 /* The neighborhood only needs an offset of -1, 0, or 1. Keeping coordinates

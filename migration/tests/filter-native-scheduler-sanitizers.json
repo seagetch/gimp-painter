@@ -1,0 +1,48 @@
+{
+  "scope": "Independent FilterScheduler and regression tests; GLib/system libraries uninstrumented",
+  "sources": [
+    "app/painter/filter-raster.cpp",
+    "app/painter/filter-spool.cpp",
+    "app/painter/filter-scheduler.cpp",
+    "app/painter/tests/test-filter-scheduler.cpp"
+  ],
+  "source_sha256": {
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-spool.cpp": "0e728ae088515993c57d56616bc95e3641cdcd06c27bcc72dddd5d592a1847ad",
+    "app/painter/filter-scheduler.cpp": "57e002306cedbc48e42efa67b61a99e397809425cb85c28895e5b2a9544b5414",
+    "app/painter/tests/test-filter-scheduler.cpp": "8ce8787123b2fe26de6091cff3a8cc751209626ce5d66ed5b1d9927917034dba"
+  },
+  "command": [
+    "g++",
+    "-std=c++14",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-g",
+    "-O1",
+    "-pthread",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "-frtti",
+    "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-raster.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-spool.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-scheduler.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/tests/test-filter-scheduler.cpp",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+    "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+    "-pthread",
+    "-lglib-2.0",
+    "-o",
+    "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-scheduler-sanitizers/painter-filter-scheduler"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "leak_detection": false,
+  "exit_code": 0,
+  "stdout": "TAP version 14\n# random seed: R02Sccfc81a02c4a4fcb7b93813357d67870\n1..37\n# Start of painter-filter-scheduler tests\nok 1 /painter-filter-scheduler/recursive_step_does_not_consume_another_chunk\nok 2 /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry\n# slow test /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry executed in 3.04 secs\nok 3 /painter-filter-scheduler/spool_reentrant_read_cancellation\nok 4 /painter-filter-scheduler/spool_cancel_request_is_not_completion\nok 5 /painter-filter-scheduler/spool_change_during_import\nok 6 /painter-filter-scheduler/spool_read_failure_cancels_unsealed_worker\nok 7 /painter-filter-scheduler/spool_result_failure_never_commits\nok 8 /painter-filter-scheduler/spool_large_metadata_is_bounded_preparation\nok 9 /painter-filter-scheduler/spool_close_during_import_keeps_callback_bytes\nok 10 /painter-filter-scheduler/admission_waits_without_reading_and_resumes_fifo\nok 11 /painter-filter-scheduler/admission_cancel_retains_worker_reservation\nok 12 /painter-filter-scheduler/admission_edit_and_dependency_wait_release_preparation\nok 13 /painter-filter-scheduler/admission_failure_and_loaded_cache_release\nok 14 /painter-filter-scheduler/saved_generation_boundaries\nok 15 /painter-filter-scheduler/commit_failure_does_not_certify_cache\nok 16 /painter-filter-scheduler/obsolete_read_failure_preserves_new_edit\nok 17 /painter-filter-scheduler/saved_cache_generations\nok 18 /painter-filter-scheduler/restored_cache_rejects_colliding_old_job\nok 19 /painter-filter-scheduler/rejected_worker_is_not_settled_until_done\nok 20 /painter-filter-scheduler/reject_during_read\nok 21 /painter-filter-scheduler/reject_during_import\nok 22 /painter-filter-scheduler/closed_request_is_inert\nok 23 /painter-filter-scheduler/adjustable_chunk_budget\n# slow test /painter-filter-scheduler/adjustable_chunk_budget executed in 0.61 secs\nok 24 /painter-filter-scheduler/completed_cache\nok 25 /painter-filter-scheduler/bounded_chunks\nok 26 /painter-filter-scheduler/dependency_priority\nok 27 /painter-filter-scheduler/cancel_request_is_not_completion\nok 28 /painter-filter-scheduler/changes_during_preparation\nok 29 /painter-filter-scheduler/changes_during_import\nok 30 /painter-filter-scheduler/failures_do_not_retry\nok 31 /painter-filter-scheduler/close_does_not_wait\nok 32 /painter-filter-scheduler/loaded_cache_not_reexecuted\nok 33 /painter-filter-scheduler/invalid_request_and_result\nok 34 /painter-filter-scheduler/reentry_at_commit\nok 35 /painter-filter-scheduler/admission_switch_keeps_restored_cache\nok 36 /painter-filter-scheduler/native_stride_vector_and_spool\nok 37 /painter-filter-scheduler/invalid_stride_never_reads\n# End of painter-filter-scheduler tests\n",
+  "stderr": ""
+}

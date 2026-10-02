@@ -32,7 +32,7 @@ def validate(root=ROOT, matrix=None):
                 if len(matched)!=1 or matched[0]['result']!='OK':errors.append(name+': native target failed')
                 output=matched[0]['stdout'] if matched else ''
             else:
-                if data.get('status','PASS')!='PASS' or data.get('exit_code',0)!=0 or data.get('changed_after_compile',[]):errors.append(name+': failed/stale report '+report)
+                if data.get('status','PASS')!='PASS' or data.get('exit_code',0)!=0 or any(data.get(key,[]) for key in ('changed_after_compile','changed_during_build','changed_during_run','changed_after_run')):errors.append(name+': failed/stale report '+report)
                 output=data.get('stdout','')+'\n'+'\n'.join(data.get('output',[]))
                 for src in row['implementation_paths']:
                     digest=data.get('source_sha256',{}).get(src)

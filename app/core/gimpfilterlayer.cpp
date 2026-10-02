@@ -19,6 +19,7 @@ extern "C" {
 #include "gimpitemundo.h"
 #include "gimppickable.h"
 #include "gimpprojectable.h"
+#include "gegl/gimp-babl.h"
 }
 #include "gimp-painter-type-traits.hpp"
 #include "gimpfilterlayer-arguments.hpp"
@@ -30,10 +31,12 @@ extern "C" {
 #include "painter/filter-edge.hpp"
 #include "painter/filter-gauss.hpp"
 #include "painter/filter-raster-kernels.hpp"
+#include "painter/filter-native-kernels.hpp"
 #include "painter/gimp-painter-binding.h"
 #include "painter/source.hpp"
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <memory>
 #include <limits>
 #include <set>
@@ -288,13 +291,15 @@ struct FilterImpl
     FilterScheduler::Request request;
     request.width = gimp_item_get_width (GIMP_ITEM (owner));
     request.height = gimp_item_get_height (GIMP_ITEM (owner));
-    const bool spill = request.height && request.width > (1024 * 1024) / request.height;
+    const bool real = real_samples ();
+    request.bytes_per_pixel = real ? 32 : 4;
+    const bool spill = request.height && request.width > (4 * 1024 * 1024 / request.bytes_per_pixel) / request.height;
     if (spill)
       {
         /* Independent queues + transpose/coefficient bookkeeping + worst IIR
          * line state. GEGL input/staging tiles use the host shared cache/swap
          * budget; no full input or result vector is allocated by this route. */
-        const std::uint64_t peak = 8 * 1024 * 1024 + std::uint64_t (std::max (request.width, request.height)) * 72;
+        const std::uint64_t peak = (real ? 16 : 8) * 1024 * 1024 + std::uint64_t (std::max (request.width, request.height)) * (real ? 128 : 72);
         request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
       }
     else if (request.height && request.width <= FilterScheduler::maximum_pixels / request.height)
@@ -302,8 +307,8 @@ struct FilterImpl
         /* Input/result/staging plus maximum Gaussian IIR line buffers. The
          * 2 MiB allowance covers bounded RLE coefficients and native chunks.
          * Existing completed GEGL caches remain the host's own swap policy. */
-        const std::uint64_t peak = std::uint64_t (request.width) * request.height * 12 +
-                                  std::uint64_t (std::max (request.width, request.height)) * 72 + 2 * 1024 * 1024;
+        const std::uint64_t peak = std::uint64_t (request.width) * request.height * (real ? 128 : 12) +
+                                  std::uint64_t (std::max (request.width, request.height)) * (real ? 128 : 72) + 2 * 1024 * 1024;
         request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
       }
     if (procedure == "plug-in-edge" && args &&
@@ -333,6 +338,18 @@ struct FilterImpl
                     std::atomic<bool>& cancel, const FilterRasterFactory&) {
                     return filter_edge_raster (input, width, height, options, cancel, output);
                   };
+                if (real)
+                  {
+                    FilterNativeProcess process = [width,height,options] (FilterRaster& input, FilterRaster& output,
+                      std::atomic<bool>& cancel, const FilterRasterFactory&) {
+                      return filter_edge_real_raster (input,output,width,height,options,cancel);
+                    };
+                    request.process = [process] (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel,
+                                                  FilterScheduler::Bytes& output) {
+                      return filter_native_vector (input,cancel,output,process);
+                    };
+                    if (spill) request.raster_process = std::move (process);
+                  }
               }
           }
       }
@@ -343,7 +360,7 @@ struct FilterImpl
         const bool flags = procedure == "plug-in-gauss-iir" || procedure == "plug-in-gauss-rle";
         const bool canonical = procedure == "plug-in-gauss";
         const auto floating = [] (const GValue *value) { return G_VALUE_HOLDS_DOUBLE (value) || G_VALUE_HOLDS_FLOAT (value); };
-        const auto real = [] (const GValue *value) { return G_VALUE_HOLDS_DOUBLE (value) ? g_value_get_double (value) : g_value_get_float (value); };
+        const auto argument_real = [] (const GValue *value) { return G_VALUE_HOLDS_DOUBLE (value) ? g_value_get_double (value) : g_value_get_float (value); };
         if (args->size () == (flags || canonical ? 6 : 5))
           {
             const GValue *a = args->at (3), *b = args->at (4), *c = args->size () == 6 ? args->at (5) : nullptr;
@@ -354,7 +371,7 @@ struct FilterImpl
                 valid = valid && G_VALUE_HOLDS_INT (b) && G_VALUE_HOLDS_INT (c);
                 if (valid)
                   {
-                    const auto radius = real (a);
+                    const auto radius = argument_real (a);
                     valid = std::isfinite (radius) && radius > 0;
                     options.horizontal = g_value_get_int (b) ? radius : 0;
                     options.vertical = g_value_get_int (c) ? radius : 0;
@@ -365,7 +382,7 @@ struct FilterImpl
                 valid = valid && floating (b) && (!canonical || G_VALUE_HOLDS_INT (c));
                 if (valid)
                   {
-                    options.horizontal = real (a); options.vertical = real (b);
+                    options.horizontal = argument_real (a); options.vertical = argument_real (b);
                     valid = std::isfinite (options.horizontal) && std::isfinite (options.vertical) &&
                             (options.horizontal > 0 || options.vertical > 0);
                   }
@@ -380,7 +397,7 @@ struct FilterImpl
               {
                 const bool identity = flags && options.horizontal == 0 && options.vertical == 0;
                 if (spill) {
-                  const std::uint64_t multiplier = options.vertical > 0 ? 12 : 8;
+                  const std::uint64_t multiplier = request.bytes_per_pixel * (options.vertical > 0 ? 3 : 2);
                   if (std::uint64_t (request.width) > std::numeric_limits<std::uint64_t>::max () / multiplier / request.height)
                     throw std::invalid_argument ("Gaussian spill reservation exceeds64-bit accounting");
                   request.peak_spill_bytes = std::uint64_t (request.width) * request.height * multiplier;
@@ -408,8 +425,39 @@ struct FilterImpl
                       }
                     output.flush (); return !cancel.load (std::memory_order_relaxed);
                   };
+                if (real && !identity)
+                  {
+                    FilterNativeProcess process = [width,height,options] (FilterRaster& input, FilterRaster& output,
+                      std::atomic<bool>& cancel, const FilterRasterFactory& scratch) {
+                      return filter_gauss_real_raster (input,output,width,height,options,cancel,scratch);
+                    };
+                    request.process = [process] (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel,
+                                                  FilterScheduler::Bytes& output) {
+                      return filter_native_vector (input,cancel,output,process);
+                    };
+                    if (spill) request.raster_process = std::move (process);
+                  }
               }
           }
+      }
+    else if (args &&
+             ((procedure == "plug-in-vinvert" && args->size () == 3 && !gray ()) ||
+              (procedure == "plug-in-max-rgb" && args->size () == 4 && !gray () && G_VALUE_HOLDS_INT (args->at (3))) ||
+              (procedure == "plug-in-threshold-alpha" && args->size () == 4 && G_VALUE_HOLDS_INT (args->at (3)))))
+      {
+        const auto operation = procedure == "plug-in-vinvert" ? FilterPoint::value_invert :
+          procedure == "plug-in-max-rgb" ? FilterPoint::max_rgb : FilterPoint::threshold_alpha;
+        const auto argument = args->size () == 4 ? g_value_get_int (args->at (3)) : 0;
+        const auto width = request.width, height = request.height;
+        FilterNativeProcess process = [width,height,operation,argument,real] (FilterRaster& input, FilterRaster& output,
+          std::atomic<bool>& cancel, const FilterRasterFactory&) {
+          return filter_point_raster (input,output,width,height,operation,argument,real,cancel);
+        };
+        request.process = [process] (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel,
+                                      FilterScheduler::Bytes& output) {
+          return filter_native_vector (input,cancel,output,process);
+        };
+        if (spill) request.raster_process = std::move (process);
       }
     scheduler.set_request (std::move (request));
     staged.reset ();
@@ -657,8 +705,14 @@ struct FilterImpl
   }
   bool gray () const
   { return gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_GRAY; }
+  bool real_samples () const
+  { return gimp_drawable_get_precision (GIMP_DRAWABLE (owner)) != GIMP_PRECISION_U8_NON_LINEAR; }
   const Babl *encoded_format () const
   {
+    if (real_samples ())
+      return gimp_babl_format (gray () ? GIMP_GRAY : GIMP_RGB,
+        gimp_babl_precision (GIMP_COMPONENT_TYPE_DOUBLE, gimp_drawable_get_trc (GIMP_DRAWABLE (owner))), TRUE,
+        babl_format_get_space (gimp_drawable_get_format (GIMP_DRAWABLE (owner))));
     /* Legacy plug-ins calculate on encoded native bytes, not a conversion to
      * default sRGB. Input and import must use the same drawable color space. */
     return babl_format_with_space (gray () ? "Y'A u8" : "R'G'B'A u8",
@@ -729,13 +783,12 @@ struct FilterImpl
       }
     }
     scheduler.set_pixel_budget (previous == FilterScheduler::State::importing ? import_budget : read_budget);
-    /* The genuine 2.8 references use native encoded RGB/Gray bytes. Do not
-     * silently quantize float/linear/indexed inputs and claim compatibility.
-     * Already loaded caches remain usable; unsupported reruns retain them. */
+    /* Legacy RGB/Gray U8 nonlinear stays on the byte oracle. Other native
+     * RGB/Gray precisions/TRCs use the documented double extension. Indexed
+     * palette semantics cannot be represented by an independent RGBA cache. */
     if (previous != FilterScheduler::State::clean && previous != FilterScheduler::State::failed &&
-        ((gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) != GIMP_RGB && !gray ()) ||
-         gimp_drawable_get_precision (GIMP_DRAWABLE (owner)) != GIMP_PRECISION_U8_NON_LINEAR))
-      scheduler.reject ("Legacy filter execution currently requires non-linear RGB/Gray U8; original definition and cache are retained");
+        gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) != GIMP_RGB && !gray ())
+      scheduler.reject ("Filter execution requires RGB or Gray; indexed definition and cache are retained");
     bool failed = false;
     graph_recheck = false;
     const bool dependencies_ready = ready (failed);
@@ -773,8 +826,23 @@ struct FilterImpl
         rect.x += gimp_item_get_offset_x (GIMP_ITEM (owner));
         rect.y += gimp_item_get_offset_y (GIMP_ITEM (owner));
         const auto size = input.size ();
-        input.resize (size + count * 4);
-        if (gray ())
+        const bool real = real_samples ();
+        input.resize (size + count * (real ? 32 : 4));
+        if (real)
+          {
+            /* Aligned staging avoids treating byte-vector storage as live
+             * double objects. Gray channels are replicated without conversion. */
+            std::vector<double> native (count * (gray () ? 2 : 4));
+            gegl_node_blit (below_node,1.0,&rect,encoded_format (),native.data (),GEGL_AUTO_ROWSTRIDE,GEGL_BLIT_CACHE);
+            if (gray ())
+              for (std::size_t i = 0; i < count; ++i)
+                {
+                  const double rgba[] = {native[i*2],native[i*2],native[i*2],native[i*2+1]};
+                  std::memcpy (input.data ()+size+i*32,rgba,32);
+                }
+            else std::memcpy (input.data ()+size,native.data (),count*32);
+          }
+        else if (gray ())
           {
             /* Gray is one encoded channel, not RGB luminance. Replication lets
              * the channel-independent legacy kernels retain their exact byte
@@ -803,7 +871,21 @@ struct FilterImpl
             staged = ObjectRef<GObject>::adopt (G_OBJECT (gegl_buffer_new (&extent, gimp_drawable_get_format (GIMP_DRAWABLE (owner)))));
           }
         auto rect = rectangle (offset, count);
-        if (gray ())
+        if (real_samples ())
+          {
+            std::vector<double> native (count * (gray () ? 2 : 4));
+            if (gray ())
+              for (std::size_t i = 0; i < count; ++i)
+                {
+                  double rgba[4]; std::memcpy (rgba,pixels+i*32,32);
+                  if (rgba[0] != rgba[1] || rgba[0] != rgba[2])
+                    throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,"Native Gray executor returned unequal channels");
+                  native[i*2]=rgba[0]; native[i*2+1]=rgba[3];
+                }
+            else std::memcpy (native.data (),pixels,count*32);
+            gegl_buffer_set (GEGL_BUFFER (staged.get ()),&rect,0,encoded_format (),native.data (),GEGL_AUTO_ROWSTRIDE);
+          }
+        else if (gray ())
           {
             std::vector<std::uint8_t> native (count * 2);
             for (std::size_t i = 0; i < count; ++i)

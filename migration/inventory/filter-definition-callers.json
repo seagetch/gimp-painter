@@ -1,0 +1,127 @@
+[
+  {
+    "source": "app/core/gimpfilterlayer.cpp",
+    "line": 166,
+    "code": "virtual void            set_procedure(const char* proc_name, GArray* args = NULL);"
+  },
+  {
+    "source": "app/core/gimpfilterlayer.cpp",
+    "line": 170,
+    "code": "virtual void            set_procedure_arg(int index, GValue value);"
+  },
+  {
+    "source": "app/core/gimpfilterlayer.cpp",
+    "line": 366,
+    "code": "FilterLayerInterface::cast(new_item)->set_procedure(get_procedure(), get_procedure_args());"
+  },
+  {
+    "source": "app/core/gimpfilterlayer.cpp",
+    "line": 630,
+    "code": "void GLib::FilterLayer::set_procedure(const char* proc_name, GArray* _args)"
+  },
+  {
+    "source": "app/core/gimpfilterlayer.cpp",
+    "line": 634,
+    "code": "g_print(\"FilterLayer::set_procedure(%s), Cleanup existing runner.\\n\", proc_name);"
+  },
+  {
+    "source": "app/core/gimpfilterlayer.cpp",
+    "line": 687,
+    "code": "void GLib::FilterLayer::set_procedure_arg(int index, GValue value)"
+  },
+  {
+    "source": "app/core/gimpfilterlayer.cpp",
+    "line": 1203,
+    "code": "gimp_filter_layer_set_procedure  (GimpFilterLayer* layer,"
+  },
+  {
+    "source": "app/core/gimpfilterlayer.cpp",
+    "line": 1207,
+    "code": "FilterLayerInterface::cast(layer)->set_procedure (proc_name, args);"
+  },
+  {
+    "source": "app/core/gimpfilterlayer.h",
+    "line": 56,
+    "code": "void             gimp_filter_layer_set_procedure  (GimpFilterLayer* layer,"
+  },
+  {
+    "source": "app/core/gimpfilterlayer.h",
+    "line": 75,
+    "code": "virtual void                    set_procedure(const char* proc_name, GArray* args = NULL) = 0;"
+  },
+  {
+    "source": "app/core/gimpfilterlayer.h",
+    "line": 79,
+    "code": "virtual void                    set_procedure_arg(int index, GValue value) = 0;"
+  },
+  {
+    "source": "app/presets/layer-preset.cpp",
+    "line": 477,
+    "code": "filter_layer->set_procedure(proc_name, proc_args);"
+  },
+  {
+    "source": "app/widgets/gimplayerpopup.cpp",
+    "line": 152,
+    "code": "GtkWidget* create_filter_list(IObject<GimpLayer> layer) {"
+  },
+  {
+    "source": "app/widgets/gimplayerpopup.cpp",
+    "line": 1043,
+    "code": "it.add (this->create_filter_list(layer), [this](auto it) {"
+  },
+  {
+    "source": "app/widgets/gimplayerpopup.cpp",
+    "line": 1099,
+    "code": "filter_layer->set_procedure(this->proc_name, this->proc_args);"
+  },
+  {
+    "source": "app/xcf/xcf-load.c",
+    "line": 989,
+    "code": "case PROP_FILTER_SPEC:"
+  },
+  {
+    "source": "app/xcf/xcf-load.c",
+    "line": 1002,
+    "code": "g_print(\"xcf_load_props: PROP_FILTER_SPEC\\n\");"
+  },
+  {
+    "source": "app/xcf/xcf-load.c",
+    "line": 1048,
+    "code": "gimp_filter_layer_set_procedure (GIMP_FILTER_LAYER(filter), filter_name, proc_args);"
+  },
+  {
+    "source": "app/xcf/xcf-load.c",
+    "line": 1065,
+    "code": "g_print(\"xcf_load_props: PROP_FILTER_SPEC\\n\");"
+  },
+  {
+    "source": "app/xcf/xcf-save.c",
+    "line": 662,
+    "code": "xcf_check_error (xcf_save_prop (info, image, PROP_FILTER_SPEC, error, filter_name, args));"
+  },
+  {
+    "source": "app/xcf/xcf-save.c",
+    "line": 1255,
+    "code": "case PROP_FILTER_SPEC:"
+  },
+  {
+    "source": "app/xcf/xcf-private.h",
+    "line": 122,
+    "code": "PROP_FILTER_SPEC        = 32,"
+  },
+  {
+    "source": "data/layer-presets/watercolor.json",
+    "line": 23,
+    "code": "\"name\": \"plug-in-edge\","
+  },
+  {
+    "source": "data/layer-presets/test.json",
+    "line": 15,
+    "code": "\"name\": \"plug-in-edge\","
+  },
+  {
+    "source": "data/layer-presets/test2.json",
+    "line": 20,
+    "code": "\"name\": \"plug-in-gauss\","
+  }
+]

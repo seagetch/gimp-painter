@@ -3,6 +3,7 @@
  * This editor only invokes explicitly supported compatibility executors. */
 #include "config.h"
 #include <math.h>
+#include <string>
 #include <gegl.h>
 #include <gtk/gtk.h>
 extern "C" {
@@ -51,6 +52,10 @@ struct PainterLayerDialog
   GtkWidget *horizontal = nullptr;
   GtkWidget *vertical = nullptr;
   GtkWidget *method = nullptr;
+  GtkWidget *point_argument = nullptr;
+  GtkWidget *radius = nullptr;
+  GtkWidget *horizontal_flag = nullptr;
+  GtkWidget *vertical_flag = nullptr;
   GtkWidget *status = nullptr;
   GtkWidget *error = nullptr;
   gint       row = 0;
@@ -449,9 +454,21 @@ painter_filter_choice_changed (PainterLayerDialog *state)
   const gchar       *id;
   if (state->closed) return;
   id = gtk_combo_box_get_active_id (GTK_COMBO_BOX (state->choice));
+  /* Stack/sensitivity signals can synchronously change the selection. Keep
+   * its string independently alive across those reentrant widget calls. */
+  const std::string selection = id ? id : "keep";
+  id = selection.c_str ();
   auto parameters = ObjectRef<GObject>::retain (G_OBJECT (state->parameters));
-  gtk_stack_set_visible_child_name (GTK_STACK (parameters.get ()), id ? id : "keep");
-  state->dirty = TRUE;
+  const bool flags = id && (!strcmp (id,"gauss-iir") || !strcmp (id,"gauss-rle"));
+  const bool fixed = id && g_str_has_prefix (id,"gauss-");
+  const bool point = id && (!strcmp (id,"vinvert") || !strcmp (id,"max-rgb") || !strcmp (id,"threshold-alpha"));
+  gtk_stack_set_visible_child_name (GTK_STACK (parameters.get ()),
+    point ? "point" : flags ? "gauss-flags" : fixed ? "gauss" : id ? id : "keep");
+  if (state->closed || g_strcmp0 (gtk_combo_box_get_active_id (GTK_COMBO_BOX (state->choice)),id)) return;
+  gtk_widget_set_sensitive (state->method, !fixed);
+  if (state->closed || g_strcmp0 (gtk_combo_box_get_active_id (GTK_COMBO_BOX (state->choice)),id)) return;
+  gtk_widget_set_sensitive (state->point_argument, point && strcmp (id,"vinvert"));
+  if (!state->closed) state->dirty = TRUE;
 }
 
 static void
@@ -590,6 +607,14 @@ painter_filter_load (PainterLayerDialog *state,
   gdouble        first, second;
   const GValue  *a, *b, *c;
   gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "keep");
+  if ((!g_strcmp0 (procedure,"plug-in-vinvert") && count == 3) ||
+      ((!g_strcmp0 (procedure,"plug-in-max-rgb") || !g_strcmp0 (procedure,"plug-in-threshold-alpha")) &&
+       count == 4 && G_VALUE_HOLDS_INT (gimp_value_array_index (args,3))))
+    {
+      if (count == 4) gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->point_argument),g_value_get_int (gimp_value_array_index (args,3)));
+      gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice),procedure + strlen ("plug-in-"));
+      goto out;
+    }
   if (count != 5 && count != 6) goto out;
   a = gimp_value_array_index (args, 3);
   b = gimp_value_array_index (args, 4);
@@ -604,7 +629,7 @@ painter_filter_load (PainterLayerDialog *state,
       gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "edge");
     }
   else if (! g_strcmp0 (procedure, "plug-in-gauss") && count == 6 &&
-           painter_filter_number (a, 0, 500, &first) && painter_filter_number (b, 0, 500, &second) &&
+           painter_filter_number (a, -500, 500, &first) && painter_filter_number (b, -500, 500, &second) &&
            (first > 0 || second > 0) && G_VALUE_HOLDS_INT (c) &&
            g_value_get_int (c) >= 0 && g_value_get_int (c) <= 1)
     {
@@ -612,6 +637,24 @@ painter_filter_load (PainterLayerDialog *state,
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->vertical), second);
       gtk_combo_box_set_active (GTK_COMBO_BOX (state->method), g_value_get_int (c));
       gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "gauss");
+    }
+  else if ((!g_strcmp0 (procedure,"plug-in-gauss-iir") || !g_strcmp0 (procedure,"plug-in-gauss-rle")) &&
+           count == 6 && painter_filter_number (a,0,500,&first) && first > 0 &&
+           G_VALUE_HOLDS_INT (b) && G_VALUE_HOLDS_INT (c))
+    {
+      gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->radius),first);
+      gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->horizontal_flag),g_value_get_int (b));
+      gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->vertical_flag),g_value_get_int (c));
+      gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice),procedure + strlen ("plug-in-"));
+    }
+  else if ((!g_strcmp0 (procedure,"plug-in-gauss-iir2") || !g_strcmp0 (procedure,"plug-in-gauss-rle2")) &&
+           count == 5 && painter_filter_number (a,-500,500,&first) &&
+           painter_filter_number (b,-500,500,&second) && (first > 0 || second > 0))
+    {
+      gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->horizontal),first);
+      gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->vertical),second);
+      gtk_combo_box_set_active (GTK_COMBO_BOX (state->method),!g_strcmp0 (procedure,"plug-in-gauss-rle2"));
+      gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice),procedure + strlen ("plug-in-"));
     }
 out:
   g_free (procedure);
@@ -654,6 +697,23 @@ painter_filter_response (PainterLayerDialog *state,
         G_TYPE_INT, gtk_combo_box_get_active (GTK_COMBO_BOX (state->wrap)) + 1,
         G_TYPE_INT, gtk_combo_box_get_active (GTK_COMBO_BOX (state->edge)), G_TYPE_NONE);
     }
+  else if (g_str_equal (choice,"vinvert") || g_str_equal (choice,"max-rgb") || g_str_equal (choice,"threshold-alpha"))
+    {
+      procedure = g_str_equal (choice,"vinvert") ? "plug-in-vinvert" :
+        g_str_equal (choice,"max-rgb") ? "plug-in-max-rgb" : "plug-in-threshold-alpha";
+      args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,gimp_image_get_id (image),G_TYPE_INT,0,
+        G_TYPE_INT,gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (state->point_argument)),G_TYPE_NONE);
+      if (g_str_equal (choice,"vinvert")) gimp_value_array_truncate (args,3);
+    }
+  else if (g_str_equal (choice,"gauss-iir") || g_str_equal (choice,"gauss-rle"))
+    {
+      const gdouble radius = gtk_spin_button_get_value (GTK_SPIN_BUTTON (state->radius));
+      if (radius <= 0) { painter_dialog_error (state, _("The blur radius must be greater than zero.")); goto out; }
+      procedure = g_str_equal (choice,"gauss-iir") ? "plug-in-gauss-iir" : "plug-in-gauss-rle";
+      args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,gimp_image_get_id (image),G_TYPE_INT,0,
+        G_TYPE_DOUBLE,radius,G_TYPE_INT,gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (state->horizontal_flag)),
+        G_TYPE_INT,gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (state->vertical_flag)),G_TYPE_NONE);
+    }
   else
     {
       gdouble horizontal = gtk_spin_button_get_value (GTK_SPIN_BUTTON (state->horizontal));
@@ -663,11 +723,13 @@ painter_filter_response (PainterLayerDialog *state,
           painter_dialog_error (state, _("At least one blur radius must be greater than zero."));
           goto out;
         }
-      procedure = "plug-in-gauss";
+      procedure = g_str_equal (choice,"gauss-iir2") ? "plug-in-gauss-iir2" :
+                  g_str_equal (choice,"gauss-rle2") ? "plug-in-gauss-rle2" : "plug-in-gauss";
       args = gimp_value_array_new_from_types (NULL, G_TYPE_INT, 1,
         G_TYPE_INT, gimp_image_get_id (image), G_TYPE_INT, 0,
         G_TYPE_DOUBLE, horizontal, G_TYPE_DOUBLE, vertical,
         G_TYPE_INT, gtk_combo_box_get_active (GTK_COMBO_BOX (state->method)), G_TYPE_NONE);
+      if (strcmp (procedure,"plug-in-gauss")) gimp_value_array_truncate (args,5);
     }
   if (state->editing)
     {
@@ -679,7 +741,8 @@ painter_filter_response (PainterLayerDialog *state,
           guint count = old_args ? gimp_value_array_length (old_args) : 0;
           /* Preserve the exact existing array shape/types when it is supported,
            * including float arguments and edge's historical five-slot form. */
-          if (args && (count == 6 || (g_str_equal (choice, "edge") && count == 5)))
+          if (args && (count == static_cast<guint> (gimp_value_array_length (args)) ||
+              (count == 5 && g_str_equal (choice,"edge"))))
             {
               gboolean compatible = TRUE;
               for (guint i = 3; i < count; i++)
@@ -705,7 +768,7 @@ painter_filter_response (PainterLayerDialog *state,
                     }
                   /* Selecting a non-Sobel algorithm explicitly extends the
                    * five-slot legacy form; retaining Sobel leaves it intact. */
-                  if (count == 5 && gtk_combo_box_get_active (GTK_COMBO_BOX (state->edge)) != 0)
+                  if (count == 5 && g_str_equal (choice,"edge") && gtk_combo_box_get_active (GTK_COMBO_BOX (state->edge)) != 0)
                     gimp_value_array_append (old_args, gimp_value_array_index (args, 5));
                   gimp_value_array_unref (args);
                   args = old_args;
@@ -807,6 +870,13 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "keep", layer ? _("Keep saved definition") : _("No filter (configure later)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "edge", _("Edge Detect (Painter compatibility)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "gauss", _("Gaussian Blur (Painter compatibility)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"gauss-iir",_("Gaussian IIR (radius and integer axis flags)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"gauss-rle",_("Gaussian RLE (radius and integer axis flags)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"gauss-iir2",_("Gaussian IIR2 (two radii)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"gauss-rle2",_("Gaussian RLE2 (two radii)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"vinvert",_("Value Invert (Painter compatibility)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"max-rgb",_("Maximum/Minimum RGB (Painter compatibility)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"threshold-alpha",_("Threshold Alpha (Painter compatibility)"));
       state->parameters = gtk_stack_new ();
       gtk_stack_set_homogeneous (GTK_STACK (state->parameters), FALSE);
       gtk_grid_attach (GTK_GRID (state->grid), state->parameters, 0, state->row++, 2, 1);
@@ -837,12 +907,25 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       gtk_grid_set_row_spacing (GTK_GRID (grid), 8);
       gtk_grid_set_column_spacing (GTK_GRID (grid), 8);
       gtk_stack_add_named (GTK_STACK (state->parameters), grid, "gauss");
-      state->horizontal = painter_dialog_spin (state, _("_Horizontal radius:"), "painter-gauss-horizontal", 0, 500, 5, 3);
-      state->vertical = painter_dialog_spin (state, _("_Vertical radius:"), "painter-gauss-vertical", 0, 500, 5, 3);
+      state->horizontal = painter_dialog_spin (state, _("_Horizontal radius:"), "painter-gauss-horizontal", -500, 500, 5, 3);
+      state->vertical = painter_dialog_spin (state, _("_Vertical radius:"), "painter-gauss-vertical", -500, 500, 5, 3);
       state->method = painter_dialog_field (state, _("_Method:"), gtk_combo_box_text_new (), "painter-gauss-method");
       gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->method), "IIR");
       gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->method), "RLE");
       gtk_combo_box_set_active (GTK_COMBO_BOX (state->method), 0);
+      state->grid = grid = gtk_grid_new (); state->row = 0;
+      gtk_grid_set_row_spacing (GTK_GRID (grid),8); gtk_grid_set_column_spacing (GTK_GRID (grid),8);
+      gtk_stack_add_named (GTK_STACK (state->parameters),grid,"gauss-flags");
+      state->radius = painter_dialog_spin (state,_("_Radius:"),"painter-gauss-radius",0,500,5,3);
+      state->horizontal_flag = painter_dialog_spin (state,_("_Horizontal flag (0 disables):"),
+        "painter-gauss-horizontal-flag",G_MININT,G_MAXINT,1,0);
+      state->vertical_flag = painter_dialog_spin (state,_("_Vertical flag (0 disables):"),
+        "painter-gauss-vertical-flag",G_MININT,G_MAXINT,1,0);
+      state->grid = grid = gtk_grid_new (); state->row = 0;
+      gtk_grid_set_row_spacing (GTK_GRID (grid),8); gtk_grid_set_column_spacing (GTK_GRID (grid),8);
+      gtk_stack_add_named (GTK_STACK (state->parameters),grid,"point");
+      state->point_argument = painter_dialog_spin (state,_("_Integer argument:"),"painter-point-argument",G_MININT,G_MAXINT,1,0);
+      painter_dialog_field (state,NULL,gtk_label_new (_("Maximum RGB: positive selects maximum, otherwise minimum.\nThreshold Alpha: alpha byte threshold (normally 0–255).\nValue Invert has no additional argument.")),"painter-point-help");
       state->grid = main_grid; state->row = row;
       state->status = painter_dialog_field (state, NULL, gtk_label_new (NULL), "painter-filter-status");
       gtk_label_set_line_wrap (GTK_LABEL (state->status), TRUE);
@@ -866,6 +949,10 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       painter_dialog_connect (state, state->horizontal, "value-changed", G_CALLBACK (painter_filter_dirty));
       painter_dialog_connect (state, state->vertical, "value-changed", G_CALLBACK (painter_filter_dirty));
       painter_dialog_connect (state, state->method, "changed", G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect (state,state->point_argument,"value-changed",G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect (state,state->radius,"value-changed",G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect (state,state->horizontal_flag,"value-changed",G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect (state,state->vertical_flag,"value-changed",G_CALLBACK (painter_filter_dirty));
       painter_dialog_connect (state, state->dialog, "response", G_CALLBACK (painter_filter_response_received));
     },
     [&] (PainterLayerDialog& state) {

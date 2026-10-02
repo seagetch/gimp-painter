@@ -609,6 +609,48 @@ static void admission_switch_keeps_restored_cache ()
   g_assert_cmpuint(after.cache_generation,==,before.cache_generation);g_assert_true(after.cache_complete);
   g_assert_true(scheduler.state()==FilterScheduler::State::clean);
 }
+static void native_stride_vector_and_spool ()
+{
+  for (bool spill : {false,true}) for (std::size_t stride : {std::size_t (1),std::size_t (8),std::size_t (32)})
+    {
+      FilterScheduler scheduler;
+      FilterScheduler::Request request;
+      request.width=37; request.height=11; request.bytes_per_pixel=stride;
+      request.process=[] (const FilterScheduler::Bytes& input,std::atomic<bool>&,FilterScheduler::Bytes& output) {output=input;return true;};
+      if (spill) request.raster_process=[] (FilterRaster& input,FilterRaster& output,std::atomic<bool>&,const FilterRasterFactory&) {
+        FilterScheduler::Bytes bytes(input.size ()); input.read (0,bytes.size (),bytes.data ()); output.write (0,bytes.size (),bytes.data ()); return true;
+      };
+      request.spool_directory=spool_directory;
+      scheduler.set_request (request); scheduler.set_pixel_budget (13);
+      FilterScheduler::Bytes actual; unsigned commits=0;
+      const auto deadline=g_get_monotonic_time ()+10*G_TIME_SPAN_SECOND;
+      while (!scheduler.settled () && g_get_monotonic_time ()<deadline)
+        {
+          scheduler.step (true,[&] (std::size_t offset,std::size_t count,FilterScheduler::Bytes& bytes) {
+            for (std::size_t i=0;i<count*stride;++i) bytes.push_back ((offset*stride+i)%251);
+          },[&] (std::size_t offset,std::size_t count,const std::uint8_t *bytes) {
+            g_assert_cmpuint (offset*stride,==,actual.size ()); actual.insert (actual.end (),bytes,bytes+count*stride);
+          },[&] (std::uint64_t) {++commits;});
+          g_usleep (100);
+        }
+      g_assert_true (scheduler.settled ()); g_assert_cmpuint (commits,==,1);
+      g_assert_cmpuint (actual.size (),==,37*11*stride);
+      for (std::size_t i=0;i<actual.size ();++i) g_assert_cmpuint (actual[i],==,i%251);
+    }
+}
+static void invalid_stride_never_reads ()
+{
+  for (std::size_t stride : {std::size_t (0),std::size_t (33),std::numeric_limits<std::size_t>::max ()})
+    {
+      FilterScheduler scheduler; FilterScheduler::Request request;
+      request.width=2;request.height=2;request.bytes_per_pixel=stride;
+      request.process=[] (const FilterScheduler::Bytes&,std::atomic<bool>&,FilterScheduler::Bytes&) {g_error ("invalid stride launched");return false;};
+      scheduler.set_request (request);
+      scheduler.step (true,[] (std::size_t,std::size_t,FilterScheduler::Bytes&) {g_error ("invalid stride read");},{},{});
+      g_assert_true (scheduler.state ()==FilterScheduler::State::failed);g_assert_cmpuint (scheduler.starts (),==,0);
+    }
+}
+
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, nullptr);
@@ -628,7 +670,7 @@ int main (int argc, char **argv)
   ADD (cancel_request_is_not_completion); ADD (changes_during_preparation); ADD (changes_during_import);
   ADD (failures_do_not_retry); ADD (close_does_not_wait); ADD (loaded_cache_not_reexecuted);
   ADD (invalid_request_and_result); ADD (reentry_at_commit);
-  ADD (admission_switch_keeps_restored_cache);
+  ADD (admission_switch_keeps_restored_cache); ADD (native_stride_vector_and_spool); ADD (invalid_stride_never_reads);
   const auto result = g_test_run ();
   g_assert_cmpint (g_rmdir (spool_directory.c_str ()), ==, 0);
   return result;

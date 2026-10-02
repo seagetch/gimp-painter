@@ -63,11 +63,11 @@ private:
 }
 struct FilterSpool::State
 {
-  State (std::size_t w, std::size_t h, std::string path, Process processor, WorkAdmission::Lease admitted)
-    : lease (std::move (admitted)), width (w), height (h), directory (std::move (path)), process (std::move (processor)) {}
+  State (std::size_t w, std::size_t h, std::string path, Process processor, WorkAdmission::Lease admitted, std::size_t stride)
+    : lease (std::move (admitted)), width (w), height (h), bytes_per_pixel (stride), directory (std::move (path)), process (std::move (processor)) {}
   // Release admission only after all buffers/closures have been destroyed.
   WorkAdmission::Lease lease;
-  std::size_t width, height;
+  std::size_t width, height, bytes_per_pixel;
   std::string directory;
   Process process;
   ChunkQueue input, output;
@@ -89,13 +89,13 @@ struct FilterSpool::State
     if (cancelled.load (std::memory_order_relaxed)) return false;
     const auto pixels = width * height;
     const auto reservation = lease ? lease.reserved_spill_bytes () : std::numeric_limits<std::uint64_t>::max ();
-    const auto minimum = std::uint64_t (pixels) * 8;
+    const auto minimum = std::uint64_t (pixels) * bytes_per_pixel * 2;
     if (lease && filter_available_space (directory) < reservation)
       throw std::runtime_error ("Insufficient available filesystem space for the admitted filter job");
     auto quota = std::make_shared<DiskQuota> ();quota->limit = reservation;
     if (minimum > reservation) throw std::runtime_error ("Filter input and result exceed the admitted spill reservation");
-    ReservedRaster snapshot (quota, directory, std::uint64_t (pixels) * 4);
-    ReservedRaster result (quota, directory, std::uint64_t (pixels) * 4);
+    ReservedRaster snapshot (quota, directory, std::uint64_t (pixels) * bytes_per_pixel);
+    ReservedRaster result (quota, directory, std::uint64_t (pixels) * bytes_per_pixel);
     std::size_t received = 0;
     for (;;)
       {
@@ -103,11 +103,11 @@ struct FilterSpool::State
         auto chunk = input.pop ();
         if (chunk)
           {
-            const auto count = chunk->bytes.size () / 4;
-            if (chunk->offset != received || !count || chunk->bytes.size () % 4 ||
+            const auto count = chunk->bytes.size () / bytes_per_pixel;
+            if (chunk->offset != received || !count || chunk->bytes.size () % bytes_per_pixel ||
                 count > pixel_budget || count > pixels - received)
               throw std::invalid_argument ("Invalid input spool chunk");
-            snapshot.write (std::uint64_t (received) * 4, chunk->bytes.size (), chunk->bytes.data ());
+            snapshot.write (std::uint64_t (received) * bytes_per_pixel, chunk->bytes.size (), chunk->bytes.data ());
             received += count;
           }
         else if (sealed.load (std::memory_order_acquire))
@@ -135,8 +135,8 @@ struct FilterSpool::State
         const auto x = offset % width;
         const auto count = x || width > pixel_budget ? std::min ({pixels - offset, width - x, pixel_budget}) :
                            std::min (pixels - offset, (pixel_budget / width) * width);
-        std::unique_ptr<Chunk> chunk (new Chunk {offset,Bytes (count * 4)});
-        result.read (std::uint64_t (offset) * 4, count * 4, chunk->bytes.data ());
+        std::unique_ptr<Chunk> chunk (new Chunk {offset,Bytes (count * bytes_per_pixel)});
+        result.read (std::uint64_t (offset) * bytes_per_pixel, count * bytes_per_pixel, chunk->bytes.data ());
         while (!output.push (chunk))
           {
             if (cancelled.load (std::memory_order_relaxed)) return false;
@@ -148,12 +148,12 @@ struct FilterSpool::State
   }
 };
 FilterSpool::FilterSpool (std::size_t width, std::size_t height, const std::string& directory,
-                         Process process, WorkAdmission::Lease lease)
+                         Process process, WorkAdmission::Lease lease, std::size_t bytes_per_pixel)
 {
-  if (!width || !height || width > std::numeric_limits<std::size_t>::max () / height ||
-      std::uint64_t (width) > std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / 4 / height || !process)
+  if (!bytes_per_pixel || bytes_per_pixel > 32 || !width || !height || width > std::numeric_limits<std::size_t>::max () / height ||
+      std::uint64_t (width) > std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / bytes_per_pixel / height || !process)
     throw std::invalid_argument ("Invalid filter spool request");
-  auto state = std::make_shared<State> (width,height,directory,std::move (process),std::move (lease));
+  auto state = std::make_shared<State> (width,height,directory,std::move (process),std::move (lease),bytes_per_pixel);
   std::thread worker ([state] {
     try { state->success = state->run (); }
     catch (const std::exception& e) { try { state->error = e.what (); } catch (...) {} }
@@ -170,8 +170,8 @@ bool FilterSpool::can_submit () const noexcept
 bool FilterSpool::submit (std::size_t offset, Bytes& bytes)
 {
   if (owner_ != std::this_thread::get_id ()) throw std::logic_error ("Filter spool producer used outside owner thread");
-  const auto count = bytes.size () / 4;
-  if (offset != submitted_ || bytes.size () % 4 || !count || count > pixel_budget ||
+  const auto count = bytes.size () / state_->bytes_per_pixel;
+  if (offset != submitted_ || bytes.size () % state_->bytes_per_pixel || !count || count > pixel_budget ||
       count > state_->width * state_->height - submitted_ || sealed_)
     throw std::invalid_argument ("Invalid owner spool chunk");
   if (!can_submit ()) return false;

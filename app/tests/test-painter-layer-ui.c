@@ -279,6 +279,98 @@ static void filter_preserve_float_shape (void)
   g_assert_cmpfloat (g_value_get_float (gimp_value_array_index (args, 3)), ==, 3.5);
   gimp_value_array_unref (args); settle (GIMP_FILTER_LAYER (layer)); g_object_unref (image);
 }
+static void filter_gaussian_alias_forms (void)
+{
+  const gchar *names[]={"plug-in-gauss-iir","plug-in-gauss-rle","plug-in-gauss-iir2","plug-in-gauss-rle2"};
+  for(guint i=0;i<G_N_ELEMENTS(names);++i)
+    {
+      GimpImage *image=new_image();
+      GimpLayer *layer=gimp_filter_layer_new(image,16,16,"alias",1,GIMP_LAYER_MODE_PAINTER_REPLACE);
+      GimpValueArray *args;
+      GBytes *raw=g_bytes_new_static("alias original metadata",23),*retained;
+      gchar *name;
+      GtkWidget *dialog;
+      guint64 revision;
+      new_source(image,NULL,"source");gimp_image_add_layer(image,layer,NULL,0,FALSE);
+      args=i<2?gimp_value_array_new_from_types(NULL,G_TYPE_INT,7,G_TYPE_INT,123,G_TYPE_INT,456,
+        G_TYPE_FLOAT,2.5,G_TYPE_INT,-9,G_TYPE_INT,0,G_TYPE_NONE):
+        gimp_value_array_new_from_types(NULL,G_TYPE_INT,7,G_TYPE_INT,123,G_TYPE_INT,456,
+        G_TYPE_FLOAT,2.5,G_TYPE_DOUBLE,-2.,G_TYPE_NONE);
+      g_assert_true(gimp_filter_layer_set_definition(GIMP_FILTER_LAYER(layer),names[i],raw,args,NULL));
+      gimp_value_array_unref(args);revision=gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(layer));
+      dialog=new_filter_dialog(image,layer);
+      g_assert_cmpstr(gtk_combo_box_get_active_id(GTK_COMBO_BOX(field(dialog,"painter-filter-choice"))),==,names[i]+8);
+      gtk_dialog_response(GTK_DIALOG(dialog),GTK_RESPONSE_OK);g_object_unref(dialog);
+      g_assert_cmpuint(gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(layer)),==,revision);
+      dialog=new_filter_dialog(image,layer);
+      number(dialog,i<2?"painter-gauss-radius":"painter-gauss-horizontal",3.75);
+      gtk_dialog_response(GTK_DIALOG(dialog),GTK_RESPONSE_OK);g_object_unref(dialog);
+      name=gimp_filter_layer_dup_procedure(GIMP_FILTER_LAYER(layer));g_assert_cmpstr(name,==,names[i]);g_free(name);
+      args=gimp_filter_layer_dup_args(GIMP_FILTER_LAYER(layer));
+      g_assert_cmpuint(gimp_value_array_length(args),==,i<2?6:5);
+      g_assert_cmpint(g_value_get_int(gimp_value_array_index(args,0)),==,7);
+      g_assert_cmpint(g_value_get_int(gimp_value_array_index(args,1)),==,123);
+      g_assert_cmpint(g_value_get_int(gimp_value_array_index(args,2)),==,456);
+      g_assert_true(G_VALUE_HOLDS_FLOAT(gimp_value_array_index(args,3)));
+      g_assert_cmpfloat(g_value_get_float(gimp_value_array_index(args,3)),==,3.75);
+      if(i<2) {g_assert_cmpint(g_value_get_int(gimp_value_array_index(args,4)),==,-9);g_assert_cmpint(g_value_get_int(gimp_value_array_index(args,5)),==,0);}
+      else {g_assert_true(G_VALUE_HOLDS_DOUBLE(gimp_value_array_index(args,4)));g_assert_cmpfloat(g_value_get_double(gimp_value_array_index(args,4)),==,-2);}
+      gimp_value_array_unref(args);
+      retained=gimp_filter_layer_ref_definition(GIMP_FILTER_LAYER(layer));g_assert_true(g_bytes_equal(raw,retained));g_bytes_unref(retained);
+      g_assert_true(gimp_image_undo(image));args=gimp_filter_layer_dup_args(GIMP_FILTER_LAYER(layer));
+      g_assert_cmpfloat(g_value_get_float(gimp_value_array_index(args,3)),==,2.5);gimp_value_array_unref(args);
+      g_assert_true(gimp_image_redo(image));settle(GIMP_FILTER_LAYER(layer));
+      g_bytes_unref(raw);g_object_unref(image);
+    }
+}
+
+static void filter_point_creation_and_edit (void)
+{
+  const gchar *choices[]={"vinvert","max-rgb","threshold-alpha"};
+  for(guint i=0;i<3;++i)
+    {
+      GimpImage *image=new_image();
+      GtkWidget *dialog;
+      GimpFilterLayer *filter;
+      GimpValueArray *args;
+      gchar *procedure,*expected=g_strconcat("plug-in-",choices[i],NULL);
+      new_source(image,NULL,"source");dialog=new_filter_dialog(image,NULL);
+      choice(dialog,"painter-filter-choice",choices[i]);
+      if(i)number(dialog,"painter-point-argument",i==1?-9:127);
+      gtk_dialog_response(GTK_DIALOG(dialog),GTK_RESPONSE_OK);g_object_unref(dialog);
+      filter=GIMP_FILTER_LAYER(gimp_image_get_selected_layers(image)->data);g_assert_true(GIMP_IS_FILTER_LAYER(filter));
+      settle(filter);procedure=gimp_filter_layer_dup_procedure(filter);g_assert_cmpstr(procedure,==,expected);g_free(procedure);
+      args=gimp_filter_layer_dup_args(filter);g_assert_cmpuint(gimp_value_array_length(args),==,i?4:3);gimp_value_array_unref(args);
+      dialog=new_filter_dialog(image,GIMP_LAYER(filter));
+      g_assert_cmpstr(gtk_combo_box_get_active_id(GTK_COMBO_BOX(field(dialog,"painter-filter-choice"))),==,choices[i]);
+      if(i)number(dialog,"painter-point-argument",i==1?3:255);
+      gtk_dialog_response(GTK_DIALOG(dialog),GTK_RESPONSE_OK);g_object_unref(dialog);settle(filter);
+      args=gimp_filter_layer_dup_args(filter);
+      if(i)g_assert_cmpint(g_value_get_int(gimp_value_array_index(args,3)),==,i==1?3:255);
+      gimp_value_array_unref(args);g_free(expected);g_object_unref(image);
+    }
+}
+
+static void filter_choice_replace_during_stack_notify (GObject *object,GParamSpec *spec,gpointer data)
+{
+  GtkWidget *dialog=data;
+  GtkWidget *combo=field(dialog,"painter-filter-choice");
+  if(!g_strcmp0(gtk_combo_box_get_active_id(GTK_COMBO_BOX(combo)),"gauss"))
+    gtk_combo_box_set_active_id(GTK_COMBO_BOX(combo),"max-rgb");
+}
+static void filter_choice_reentry_preserves_latest (void)
+{
+  GimpImage *image=new_image();
+  GtkWidget *dialog=new_filter_dialog(image,NULL);
+  GtkWidget *stack=gtk_widget_get_parent(gtk_widget_get_parent(field(dialog,"painter-point-argument")));
+  g_assert_true(GTK_IS_STACK(stack));
+  g_signal_connect(stack,"notify::visible-child-name",G_CALLBACK(filter_choice_replace_during_stack_notify),dialog);
+  choice(dialog,"painter-filter-choice","gauss");
+  g_assert_cmpstr(gtk_combo_box_get_active_id(GTK_COMBO_BOX(field(dialog,"painter-filter-choice"))),==,"max-rgb");
+  g_assert_true(gtk_widget_get_sensitive(field(dialog,"painter-point-argument")));
+  gtk_dialog_response(GTK_DIALOG(dialog),GTK_RESPONSE_CANCEL);g_object_unref(dialog);g_object_unref(image);
+}
+
 static void dialog_lifetimes (void)
 {
   GimpImage *image;
@@ -690,7 +782,7 @@ int main (int argc, char **argv)
   g_test_add_data_func ("/painter-layer-ui/detached_child_widgets", GINT_TO_POINTER (TRUE), child_widget_lifetimes);
   g_test_add_data_func ("/painter-layer-ui/clone_response_close_reentry", GINT_TO_POINTER (FALSE), response_close_reentry);
   g_test_add_data_func ("/painter-layer-ui/filter_response_close_reentry", GINT_TO_POINTER (TRUE), response_close_reentry);
-  ADD (filter_creation_close_reentry);
+  ADD (filter_creation_close_reentry); ADD (filter_gaussian_alias_forms); ADD (filter_point_creation_and_edit); ADD (filter_choice_reentry_preserves_latest);
   ADD (clone_refresh_close_reentry); ADD (filter_non_utf8_preview);
   ADD (dialog_binding_close); ADD (filter_choice_last_owner_reentry);
   ADD (filter_status_last_owner_reentry); ADD (dialog_destroy_last_owner_reentry);

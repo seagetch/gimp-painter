@@ -191,7 +191,7 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
             { const std::string message = job_->error; job_.reset (); fail (message.c_str ()); return false; }
           else
             {
-              if (job_->output.size () != request_.width * request_.height * 4)
+              if (job_->output.size () != request_.width * request_.height * request_.bytes_per_pixel)
                 { job_.reset (); fail ("Filter returned an invalid result size"); return false; }
               state_ = State::importing;
               cursor_ = 0;
@@ -210,17 +210,19 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
         }
       if (state_ == State::waiting)
         {
-          if (!request_.width || !request_.height ||
+          if (!request_.bytes_per_pixel || request_.bytes_per_pixel > 32 || !request_.width || !request_.height ||
               request_.width > std::numeric_limits<std::size_t>::max () / request_.height ||
-              std::uint64_t (request_.width) > std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / 4 / request_.height ||
-              (!request_.raster_process && request_.width > maximum_pixels / request_.height))
+              std::uint64_t (request_.width) > std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / request_.bytes_per_pixel / request_.height ||
+              (!request_.raster_process &&
+               (request_.width > maximum_pixels / request_.height ||
+                request_.width * request_.height > std::numeric_limits<std::size_t>::max () / request_.bytes_per_pixel / 2)))
             { fail ("Filter input exceeds the bounded raster size"); return false; }
           if (!request_.process && !request_.raster_process)
             { fail ("Saved filter procedure or argument mapping is unsupported"); return false; }
           if (!admission_ticket_)
             admission_ticket_ = admission_->request (std::max (request_.peak_bytes,
-                                                              request_.raster_process ? pixel_budget * 4 * 6 : request_.width * request_.height * 8),
-              request_.raster_process ? std::max (request_.peak_spill_bytes, std::uint64_t (request_.width) * request_.height * 8) : 0);
+                                                              request_.raster_process ? pixel_budget * request_.bytes_per_pixel * 6 : request_.width * request_.height * request_.bytes_per_pixel * 2),
+              request_.raster_process ? std::max (request_.peak_spill_bytes, std::uint64_t (request_.width) * request_.height * request_.bytes_per_pixel * 2) : 0);
           admission_lease_ = admission_ticket_.try_acquire ();
           /* Resource contention is waiting, never a failure or a lost dirty
            * generation. The owner's normal paced dispatcher retries fairly. */
@@ -232,11 +234,11 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
               auto job = std::make_shared<Job> ();
               job->generation = work_generation_;
               job->spool.reset (new FilterSpool (request_.width, request_.height, request_.spool_directory,
-                                                 request_.raster_process, std::move (admission_lease_)));
+                                                 request_.raster_process, std::move (admission_lease_), request_.bytes_per_pixel));
               job_ = std::move (job);
             }
           else
-            input_.reserve (request_.width * request_.height * 4);
+            input_.reserve (request_.width * request_.height * request_.bytes_per_pixel);
           state_ = State::preparing;
         }
       if (state_ == State::preparing)
@@ -250,11 +252,11 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
            * mutable chunk independent of the admitted aggregate so reentry
            * cannot retain unaccounted storage or invalidate its data pointer. */
           Bytes chunk;
-          chunk.reserve (count * 4);
+          chunk.reserve (count * request_.bytes_per_pixel);
           read (cursor_, count, chunk);
           if (generation_ != token || state_ != State::preparing)
             return state_ != State::closed && (dirty_ || bool (job_));
-          if (chunk.size () != count * 4)
+          if (chunk.size () != count * request_.bytes_per_pixel)
             { fail ("Input producer returned an invalid chunk size"); return bool (job_); }
           if (collecting && collecting->spool)
             {
@@ -302,17 +304,17 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
                       if (job->spool->done ()) throw std::runtime_error ("Spool returned an incomplete result");
                       return true;
                     }
-                  if (job->chunk->bytes.empty () || job->chunk->bytes.size () % 4 ||
+                  if (job->chunk->bytes.empty () || job->chunk->bytes.size () % request_.bytes_per_pixel ||
                       job->chunk->offset > request_.width * request_.height ||
-                      job->chunk_used >= job->chunk->bytes.size () / 4 ||
+                      job->chunk_used >= job->chunk->bytes.size () / request_.bytes_per_pixel ||
                       job->chunk_used > request_.width * request_.height - job->chunk->offset ||
                       job->chunk->offset + job->chunk_used != cursor_ ||
-                      job->chunk->bytes.size () / 4 > request_.width * request_.height - job->chunk->offset)
+                      job->chunk->bytes.size () / request_.bytes_per_pixel > request_.width * request_.height - job->chunk->offset)
                     throw std::runtime_error ("Spool returned an invalid result chunk");
-                  count = std::min (count, job->chunk->bytes.size () / 4 - job->chunk_used);
-                  pixels = job->chunk->bytes.data () + job->chunk_used * 4;
+                  count = std::min (count, job->chunk->bytes.size () / request_.bytes_per_pixel - job->chunk_used);
+                  pixels = job->chunk->bytes.data () + job->chunk_used * request_.bytes_per_pixel;
                 }
-              else pixels = job->output.data () + cursor_ * 4;
+              else pixels = job->output.data () + cursor_ * request_.bytes_per_pixel;
               import (cursor_, count, pixels);
               if (state_ == State::closed) return false;
               if (token != generation_ || state_ != State::importing) return dirty_ || bool (job_);
@@ -320,7 +322,7 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
               if (job->spool)
                 {
                   job->chunk_used += count;
-                  if (job->chunk_used == job->chunk->bytes.size () / 4) job->chunk.reset ();
+                  if (job->chunk_used == job->chunk->bytes.size () / request_.bytes_per_pixel) job->chunk.reset ();
                 }
             }
           if (cursor_ < request_.width * request_.height) return true;

@@ -1,0 +1,45 @@
+TAP version 14
+# random seed: R02Sccfc81a02c4a4fcb7b93813357d67870
+1..37
+# Start of painter-filter-scheduler tests
+ok 1 /painter-filter-scheduler/recursive_step_does_not_consume_another_chunk
+ok 2 /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry
+# slow test /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry executed in 3.04 secs
+ok 3 /painter-filter-scheduler/spool_reentrant_read_cancellation
+ok 4 /painter-filter-scheduler/spool_cancel_request_is_not_completion
+ok 5 /painter-filter-scheduler/spool_change_during_import
+ok 6 /painter-filter-scheduler/spool_read_failure_cancels_unsealed_worker
+ok 7 /painter-filter-scheduler/spool_result_failure_never_commits
+ok 8 /painter-filter-scheduler/spool_large_metadata_is_bounded_preparation
+ok 9 /painter-filter-scheduler/spool_close_during_import_keeps_callback_bytes
+ok 10 /painter-filter-scheduler/admission_waits_without_reading_and_resumes_fifo
+ok 11 /painter-filter-scheduler/admission_cancel_retains_worker_reservation
+ok 12 /painter-filter-scheduler/admission_edit_and_dependency_wait_release_preparation
+ok 13 /painter-filter-scheduler/admission_failure_and_loaded_cache_release
+ok 14 /painter-filter-scheduler/saved_generation_boundaries
+ok 15 /painter-filter-scheduler/commit_failure_does_not_certify_cache
+ok 16 /painter-filter-scheduler/obsolete_read_failure_preserves_new_edit
+ok 17 /painter-filter-scheduler/saved_cache_generations
+ok 18 /painter-filter-scheduler/restored_cache_rejects_colliding_old_job
+ok 19 /painter-filter-scheduler/rejected_worker_is_not_settled_until_done
+ok 20 /painter-filter-scheduler/reject_during_read
+ok 21 /painter-filter-scheduler/reject_during_import
+ok 22 /painter-filter-scheduler/closed_request_is_inert
+ok 23 /painter-filter-scheduler/adjustable_chunk_budget
+# slow test /painter-filter-scheduler/adjustable_chunk_budget executed in 0.61 secs
+ok 24 /painter-filter-scheduler/completed_cache
+ok 25 /painter-filter-scheduler/bounded_chunks
+ok 26 /painter-filter-scheduler/dependency_priority
+ok 27 /painter-filter-scheduler/cancel_request_is_not_completion
+ok 28 /painter-filter-scheduler/changes_during_preparation
+ok 29 /painter-filter-scheduler/changes_during_import
+ok 30 /painter-filter-scheduler/failures_do_not_retry
+ok 31 /painter-filter-scheduler/close_does_not_wait
+ok 32 /painter-filter-scheduler/loaded_cache_not_reexecuted
+ok 33 /painter-filter-scheduler/invalid_request_and_result
+ok 34 /painter-filter-scheduler/reentry_at_commit
+ok 35 /painter-filter-scheduler/admission_switch_keeps_restored_cache
+ok 36 /painter-filter-scheduler/native_stride_vector_and_spool
+ok 37 /painter-filter-scheduler/invalid_stride_never_reads
+# End of painter-filter-scheduler tests
+

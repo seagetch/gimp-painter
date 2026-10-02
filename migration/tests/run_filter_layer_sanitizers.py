@@ -31,7 +31,7 @@ wanted = {"app/config/gimpgeglconfig.c", "app/config/gimppainterfilterconfig.cpp
           "app/tests/test-gimp-filter-layout.cpp", "app/painter/binding-store.cpp",
           "app/painter/gimp-painter-binding.cpp", "app/painter/gimp-painter-error.cpp",
           "app/painter/filter-scheduler.cpp", "app/painter/filter-edge.cpp",
-          "app/painter/filter-gauss.cpp", "app/painter/filter-raster.cpp",
+          "app/painter/filter-gauss.cpp", "app/painter/filter-native-kernels.cpp", "app/painter/filter-raster.cpp",
           "app/painter/filter-spool.cpp", "app/painter/filter-raster-kernels.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-session.cpp"}
@@ -43,7 +43,7 @@ report["rtti_compatibility_only_sources"] = sorted(rtti_only)
 report["scope"] += "; config-owned memory/spill admission and native persistence tests; listed RTTI-only sources are not instrumented"
 source_hashes = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in sorted(wanted | {"app/core/gimpfilterlayer.h", "app/core/gimpfilterlayer-arguments.hpp",
     "app/painter/filter-scheduler.hpp", "app/painter/filter-spool.hpp", "app/painter/filter-raster.hpp",
-    "app/painter/filter-edge-kernel-private.hpp", "app/painter/filter-gauss-kernel-private.hpp",
+    "app/painter/filter-edge-kernel-private.hpp", "app/painter/filter-gauss-kernel-private.hpp", "app/painter/filter-native-kernels.hpp",
     "app/painter/work-admission.hpp", "app/painter/fair-dispatcher.hpp",
     "app/config/gimppainterfilterconfig.h", "app/config/gimppainterfilterconfig.hpp",
     "app/paint/gimppaintcore.h", "app/paint/gimpbrushcore.h", "app/paint/gimppaintoptions.h"})}

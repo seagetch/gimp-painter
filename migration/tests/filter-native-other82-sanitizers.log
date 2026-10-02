@@ -1,0 +1,389 @@
+TAP version 14
+# random seed: R02S10e8b6f98c629c11afed278a2be415f8
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+1..83
+# Start of gimp-filter-layer tests
+ok 1 /gimp-filter-layer/configuration-admission
+ok 2 /gimp-filter-layer/spill_budget_failure_preserves_cache_and_retries
+# slow test /gimp-filter-layer/spill_budget_failure_preserves_cache_and_retries executed in 0.92 secs
+ok 3 /gimp-filter-layer/image_close_during_undo_callbacks
+ok 4 /gimp-filter-layer/image_close_during_redo_callbacks
+ok 5 /gimp-filter-layer/image_close_during_strong_undo_callbacks
+ok 6 /gimp-filter-layer/image_close_during_strong_redo_callbacks
+ok 7 /gimp-filter-layer/image_close_reentry_during_completion_flush
+ok 8 /gimp-filter-layer/image_close_reentry_during_commit
+ok 9 /gimp-filter-layer/retained_handle_after_image_close
+ok 10 /gimp-filter-layer/argument_value_dag_is_bounded
+ok 11 /gimp-filter-layer/typed_argument_import_preserves_descriptors
+ok 12 /gimp-filter-layer/argument_import_validation
+ok 13 /gimp-filter-layer/typed_argument_snapshot_survives_expiration
+ok 14 /gimp-filter-layer/hiding_during_import_releases_abandoned_work
+# slow test /gimp-filter-layer/hiding_during_import_releases_abandoned_work executed in 0.92 secs
+ok 15 /gimp-filter-layer/concurrent_admission_resumes_after_image_close
+# slow test /gimp-filter-layer/concurrent_admission_resumes_after_image_close executed in 1.38 secs
+ok 16 /gimp-filter-layer/saved_snapshot_generation_restore
+ok 17 /gimp-filter-layer/small_image_finishes_during_large_preparation
+# slow test /gimp-filter-layer/small_image_finishes_during_large_preparation executed in 2.40 secs
+ok 18 /gimp-filter-layer/image_close_during_worker
+ok 19 /gimp-filter-layer/sustained_edits_converge
+ok 20 /gimp-filter-layer/spill_sustained_edits_converge
+# slow test /gimp-filter-layer/spill_sustained_edits_converge executed in 0.79 secs
+ok 21 /gimp-filter-layer/spill_storage_failure_preserves_cache
+# slow test /gimp-filter-layer/spill_storage_failure_preserves_cache executed in 0.75 secs
+ok 22 /gimp-filter-layer/large_spill_execution_finishes # SKIP by request (-s option)
+ok 23 /gimp-filter-layer/spill_gaussian_native_gray
+# slow test /gimp-filter-layer/spill_gaussian_native_gray executed in 13.86 secs
+ok 24 /gimp-filter-layer/spill_gaussian_native_rgb
+# slow test /gimp-filter-layer/spill_gaussian_native_rgb executed in 16.28 secs
+ok 25 /gimp-filter-layer/duplicate_preserves_cache_freshness
+ok 26 /gimp-filter-layer/opaque_arguments_duplicate_and_undo
+ok 27 /gimp-filter-layer/opaque_arguments_never_execute
+ok 28 /gimp-filter-layer/empty_opaque_arguments_are_distinct
+ok 29 /gimp-filter-layer/retired_definition_payload_reentry
+ok 30 /gimp-filter-layer/duplicate_reentry_cannot_certify_new_definition
+ok 31 /gimp-filter-layer/definition_edit_stops_after_undo_close
+ok 32 /gimp-filter-layer/definition_edit_preserves_reentered_install
+ok 33 /gimp-filter-layer/definition_notifications_stop_after_close
+ok 34 /gimp-filter-layer/pending_cycle_resolved_during_graph_read_is_discarded
+ok 35 /gimp-filter-layer/definition_revision_separates_cache_updates
+ok 36 /gimp-filter-layer/dependency_walk_does_not_resolve_pending_names
+ok 37 /gimp-filter-layer/changed_dependency_invalidation_can_close_owner
+ok 38 /gimp-filter-layer/full_quantum_includes_state_callbacks
+ok 39 /gimp-filter-layer/cold_graph_nodes_are_prepared_one_per_quantum
+ok 40 /gimp-filter-layer/node_preparation_survives_callback_mutation
+ok 41 /gimp-filter-layer/completion_flushes_image_projection
+ok 42 /gimp-filter-layer/spill_completion_flushes_image_projection
+# slow test /gimp-filter-layer/spill_completion_flushes_image_projection executed in 0.88 secs
+# 20-filter chain state notifications for one source edit: 60
+ok 43 /gimp-filter-layer/long_chain_coalesces_state_notifications
+# slow test /gimp-filter-layer/long_chain_coalesces_state_notifications executed in 1.23 secs
+# complex-graph phase=first width=1024 height=1024 layers=64 wall_us=5321712 max_quantum_us=55560 max_graph_us=5355 max_read_us=55328 heartbeat_samples=1613 heartbeat_p50_us=2710 heartbeat_p95_us=6502 heartbeat_p99_us=11614 heartbeat_max_us=56648
+# complex-graph phase=edit width=1024 height=1024 layers=64 wall_us=4829769 max_quantum_us=204501 max_graph_us=5355 max_read_us=203888 heartbeat_samples=1380 heartbeat_p50_us=2798 heartbeat_p95_us=5141 heartbeat_p99_us=11653 heartbeat_max_us=204881
+ok 44 /gimp-filter-layer/complex_graph_remains_responsive
+# slow test /gimp-filter-layer/complex_graph_remains_responsive executed in 10.35 secs
+ok 45 /gimp-filter-layer/cached_graph_tracks_clone_reassignment
+ok 46 /gimp-filter-layer/clone_filter_dependency_order
+ok 47 /gimp-filter-layer/cached_dependency_close_before_start
+ok 48 /gimp-filter-layer/cross_image_filter_cycle_has_no_signal_loop
+ok 49 /gimp-filter-layer/gray_native_default
+ok 50 /gimp-filter-layer/gray_native_linear_profile
+# slow test /gimp-filter-layer/gray_native_linear_profile executed in 1.95 secs
+ok 51 /gimp-filter-layer/gray_native_lab_profile
+ok 52 /gimp-filter-layer/gray_without_source_alpha
+ok 53 /gimp-filter-layer/gaussian_native_srgb
+ok 54 /gimp-filter-layer/gaussian_native_adobe
+ok 55 /gimp-filter-layer/profile_reassignment_discards_worker
+# Original point output RGBA-9x8-plug-in-vinvert-0.raw
+# Original point output RGBA-9x8-plug-in-max-rgb--2.raw
+# Original point output RGBA-9x8-plug-in-max-rgb-0.raw
+# Original point output RGBA-9x8-plug-in-max-rgb-1.raw
+# Original point output RGBA-9x8-plug-in-max-rgb-3.raw
+# Original point output RGBA-9x8-plug-in-threshold-alpha--1.raw
+# Original point output RGBA-9x8-plug-in-threshold-alpha-0.raw
+# Original point output RGBA-9x8-plug-in-threshold-alpha-127.raw
+# Original point output RGBA-9x8-plug-in-threshold-alpha-255.raw
+# Original point output RGBA-9x8-plug-in-threshold-alpha-256.raw
+# Original point output RGBA-1x1-plug-in-vinvert-0.raw
+# Original point output RGBA-1x1-plug-in-max-rgb--2.raw
+# Original point output RGBA-1x1-plug-in-max-rgb-0.raw
+# Original point output RGBA-1x1-plug-in-max-rgb-1.raw
+# Original point output RGBA-1x1-plug-in-max-rgb-3.raw
+# Original point output RGBA-1x1-plug-in-threshold-alpha--1.raw
+# Original point output RGBA-1x1-plug-in-threshold-alpha-0.raw
+# Original point output RGBA-1x1-plug-in-threshold-alpha-127.raw
+# Original point output RGBA-1x1-plug-in-threshold-alpha-255.raw
+# Original point output RGBA-1x1-plug-in-threshold-alpha-256.raw
+# Original point output RGBA-67x66-plug-in-vinvert-0.raw
+# Original point output RGBA-67x66-plug-in-max-rgb--2.raw
+# Original point output RGBA-67x66-plug-in-max-rgb-0.raw
+# Original point output RGBA-67x66-plug-in-max-rgb-1.raw
+# Original point output RGBA-67x66-plug-in-max-rgb-3.raw
+# Original point output RGBA-67x66-plug-in-threshold-alpha--1.raw
+# Original point output RGBA-67x66-plug-in-threshold-alpha-0.raw
+# Original point output RGBA-67x66-plug-in-threshold-alpha-127.raw
+# Original point output RGBA-67x66-plug-in-threshold-alpha-255.raw
+# Original point output RGBA-67x66-plug-in-threshold-alpha-256.raw
+# Original point output RGB-9x8-plug-in-vinvert-0.raw
+# Original point output RGB-9x8-plug-in-max-rgb--2.raw
+# Original point output RGB-9x8-plug-in-max-rgb-0.raw
+# Original point output RGB-9x8-plug-in-max-rgb-1.raw
+# Original point output RGB-9x8-plug-in-max-rgb-3.raw
+# Original point output LA-9x8-plug-in-threshold-alpha--1.raw
+# Original point output LA-9x8-plug-in-threshold-alpha-0.raw
+# Original point output LA-9x8-plug-in-threshold-alpha-127.raw
+# Original point output LA-9x8-plug-in-threshold-alpha-255.raw
+# Original point output LA-9x8-plug-in-threshold-alpha-256.raw
+ok 56 /gimp-filter-layer/genuine_point_filter_transfer
+# slow test /gimp-filter-layer/genuine_point_filter_transfer executed in 1.01 secs
+ok 57 /gimp-filter-layer/native_precision_loaded_cache_and_rerun
+# Native transfer base=0 component=100 trc=0
+# Native transfer base=1 component=100 trc=0
+# Native transfer base=0 component=100 trc=2
+# Native transfer base=1 component=100 trc=2
+# Native transfer base=0 component=200 trc=0
+# Native transfer base=1 component=200 trc=0
+# Native transfer base=0 component=200 trc=1
+# Native transfer base=1 component=200 trc=1
+# Native transfer base=0 component=200 trc=2
+# Native transfer base=1 component=200 trc=2
+# Native transfer base=0 component=300 trc=0
+# Native transfer base=1 component=300 trc=0
+# Native transfer base=0 component=300 trc=1
+# Native transfer base=1 component=300 trc=1
+# Native transfer base=0 component=300 trc=2
+# Native transfer base=1 component=300 trc=2
+# Native transfer base=0 component=500 trc=0
+# Native transfer base=1 component=500 trc=0
+# Native transfer base=0 component=500 trc=1
+# Native transfer base=1 component=500 trc=1
+# Native transfer base=0 component=500 trc=2
+# Native transfer base=1 component=500 trc=2
+# Native transfer base=0 component=600 trc=0
+# Native transfer base=1 component=600 trc=0
+# Native transfer base=0 component=600 trc=1
+# Native transfer base=1 component=600 trc=1
+# Native transfer base=0 component=600 trc=2
+# Native transfer base=1 component=600 trc=2
+# Native transfer base=0 component=700 trc=0
+# Native transfer base=1 component=700 trc=0
+# Native transfer base=0 component=700 trc=1
+# Native transfer base=1 component=700 trc=1
+# Native transfer base=0 component=700 trc=2
+# Native transfer base=1 component=700 trc=2
+ok 58 /gimp-filter-layer/native_precision_point_and_gaussian_transfer
+# slow test /gimp-filter-layer/native_precision_point_and_gaussian_transfer executed in 4.57 secs
+ok 59 /gimp-filter-layer/native_precision_spill_transfer
+# slow test /gimp-filter-layer/native_precision_spill_transfer executed in 1.09 secs
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-0.75-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-0.75-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-0.75-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-0.75-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-0.75-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-2.5-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-2.5-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-2.5-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-2.5-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-2.5-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-25-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-25-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-25-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-25-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-25-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2-25-25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2-2.5-7.25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2-0-25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2-0.25-0.75.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2-1-5.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-0.75-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-0.75-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-0.75-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-0.75-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-0.75-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-2.5-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-2.5-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-2.5-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-2.5-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-2.5-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-25-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-25-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-25-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-25-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-25-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2-25-25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2-2.5-7.25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2-0-25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2-0.25-0.75.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2-1-5.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-0.75-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-0.75-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-0.75-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-0.75-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-0.75-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-2.5-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-2.5-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-2.5-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-2.5-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-2.5-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-25-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-25-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-25-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-25-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-25-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2-25-25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2-2.5-7.25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2-0-25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2-0.25-0.75.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2-1-5.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-0.75-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-0.75-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-0.75-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-0.75-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-0.75-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-2.5-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-2.5-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-2.5-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-2.5-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-2.5-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-25-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-25-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-25-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-25-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-25-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2-25-25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2-2.5-7.25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2-0-25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2-0.25-0.75.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2-1-5.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/tile-rgb-gauss-iir-2.5-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/tile-rgb-gauss-iir2-2.5-7.25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/tile-rgb-gauss-rle-2.5-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/tile-rgb-gauss-rle2-2.5-7.25.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2--1.1-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2--5-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2--17-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2-3--2.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2-3--5.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2-3--17.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--1.1-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--2-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--5-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--17-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--2-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--5-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--17-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2--1.1-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2--5-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2--17-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2-3--2.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2-3--5.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2-3--17.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--1.1-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--2-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--5-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--17-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--2-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--5-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--17-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2--1.1-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2--5-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2--17-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2-3--2.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2-3--5.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2-3--17.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--1.1-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--2-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--5-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--17-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--2-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--5-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--17-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2--1.1-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2--5-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2--17-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2-3--2.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2-3--5.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2-3--17.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--1.1-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--2-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--5-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--17-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--2-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--5-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--17-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2--1.1-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2--5-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2--17-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2-3--2.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2-3--5.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2-3--17.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--1.1-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--2-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--5-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--17-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--2-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--5-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--17-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2--1.1-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2--5-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2--17-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2-3--2.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2-3--5.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2-3--17.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--1.1-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--2-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--5-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--17-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--2-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--5-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--17-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2--1.1-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2--5-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2--17-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2-3--2.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2-3--5.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2-3--17.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--1.1-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--2-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--5-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--17-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--2-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--5-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--17-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2--1.1-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2--5-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2--17-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2-3--2.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2-3--5.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2-3--17.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--1.1-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--2-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--5-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--17-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--2-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--5-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--17-1.ya
+ok 60 /gimp-filter-layer/gaussian_alias_and_negative_fixtures
+# slow test /gimp-filter-layer/gaussian_alias_and_negative_fixtures executed in 4.23 secs
+ok 61 /gimp-filter-layer/gaussian_alias_failures_preserve_cache
+ok 62 /gimp-filter-layer/gaussian_alias_identity_spills
+ok 63 /gimp-filter-layer/gaussian_legacy_fixture
+ok 64 /gimp-filter-layer/duplicate_failure_releases_partial
+ok 65 /gimp-filter-layer/definition_undo_redo
+# slow test /gimp-filter-layer/definition_undo_redo executed in 1.33 secs
+ok 66 /gimp-filter-layer/hidden_filter_and_offset
+ok 67 /gimp-filter-layer/cpp_header_layout
+ok 68 /gimp-filter-layer/clone_filter_dependency_cycle
+# 2048x1536 evaluation wall=4160664us; largest main-context quantum=20649us; 2ms heartbeat=1653
+ok 69 /gimp-filter-layer/main_context_remains_responsive
+# slow test /gimp-filter-layer/main_context_remains_responsive executed in 4.21 secs
+ok 70 /gimp-filter-layer/object_arguments_do_not_cycle
+ok 71 /gimp-filter-layer/expired_object_records_and_reassignment
+ok 72 /gimp-filter-layer/object_array_arguments_do_not_dangle
+ok 73 /gimp-filter-layer/removal_and_undo
+ok 74 /gimp-filter-layer/lower_group_failure_and_recovery
+ok 75 /gimp-filter-layer/independent_type_and_edge
+ok 76 /gimp-filter-layer/automatic_updates_and_self_exclusion
+ok 77 /gimp-filter-layer/saved_definition_is_separate
+ok 78 /gimp-filter-layer/loaded_cache
+ok 79 /gimp-filter-layer/dependency_order
+# slow test /gimp-filter-layer/dependency_order executed in 0.99 secs
+ok 80 /gimp-filter-layer/group_scope
+ok 81 /gimp-filter-layer/completed_buffer_only
+ok 82 /gimp-filter-layer/close_during_preparation
+ok 83 /gimp-filter-layer/duplicate_keeps_definition
+# End of gimp-filter-layer tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+
+

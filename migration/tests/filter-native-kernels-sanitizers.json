@@ -1,0 +1,50 @@
+{
+  "scope": "Independent point/normalized-double kernels and raster storage, real original PDB byte fixtures and modern analytical checks; GLib/system libraries uninstrumented",
+  "sources": [
+    "app/painter/filter-raster.cpp",
+    "app/painter/filter-native-kernels.cpp",
+    "app/painter/tests/test-filter-native-kernels.cpp"
+  ],
+  "source_sha256": {
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-native-kernels.cpp": "511591b1502fdf93fa4c44125e725eab1f4814f465ff3e4bf4dff1c7863ea5f1",
+    "app/painter/tests/test-filter-native-kernels.cpp": "30b61fb038e2c3c3477228874aa7c3592c48a89cce340533935e9e90e008365f",
+    "app/painter/filter-edge-kernel-private.hpp": "e48ac6f29c3af18bba60252b7b7676663e055d866ae6ddd2eee9faa41c6587bd",
+    "app/painter/filter-gauss-kernel-private.hpp": "8f9a9e3cc7d336a0d021d8aee387ab96116a8b771acb8fc893693bc0f82c9f2f",
+    "app/painter/filter-native-kernels.hpp": "d8225ade52257119e80c92cb8a62ba0fd1ecd4c987fa5723ab9eec427b4fd796",
+    "app/painter/filter-raster.hpp": "065083d88ddbcf21fed56f813c796b5ac933cc14b6da8457ed76104afdbfc50b"
+  },
+  "command": [
+    "g++",
+    "-std=c++14",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-g",
+    "-O1",
+    "-pthread",
+    "-fsanitize=address,undefined,float-cast-overflow",
+    "-fno-omit-frame-pointer",
+    "-frtti",
+    "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-raster.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-native-kernels.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/tests/test-filter-native-kernels.cpp",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+    "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+    "-pthread",
+    "-lglib-2.0",
+    "-o",
+    "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-native-sanitizers/painter-filter-native-kernels"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined",
+    "float-cast-overflow"
+  ],
+  "leak_detection": false,
+  "exit_code": 0,
+  "stdout": "TAP version 14\n# random seed: R02S8148be400f68b3fde3a8b6f12064427d\n1..6\n# Start of filter-native tests\n# 40 real original PDB point outputs matched byte-for-byte\nok 1 /filter-native/genuine_point_corpus\nok 2 /filter-native/real_point_equations\nok 3 /filter-native/real_edge_ramp_and_hidden\nok 4 /filter-native/real_gauss_constant_and_impulse\nok 5 /filter-native/native_rejection_and_cancel\nok 6 /filter-native/native_transpose\n# End of filter-native tests\n",
+  "stderr": ""
+}

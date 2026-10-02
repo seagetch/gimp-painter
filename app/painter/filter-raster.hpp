@@ -53,11 +53,14 @@ private:
 };
 
 /* Exact byte transpose, not a pixel/color conversion. Production tiles are
- * bounded to 1024x1024 RGBA pixels (4 MiB plus one 4 KiB line). A smaller tile
+ * bounded to1024x1024 pixels with1..32 bytes per pixel (at most32MiB
+ * plus one32KiB line). The live RGBA8 route uses4MiB; the double route
+ * selects256-square tiles (2MiB). A smaller tile
  * side supports boundary regression tests. Input and output must not alias.
  * Cancellation/failure can leave this private output partial, never published. */
 bool transpose_filter_rgba (FilterRaster& input, FilterRaster& output,
                             std::size_t width, std::size_t height,
-                            std::atomic<bool>& cancel, std::size_t tile_side = 1024);
+                            std::atomic<bool>& cancel, std::size_t tile_side = 1024,
+                            std::size_t bytes_per_pixel = 4);
 } // namespace GimpPainter
 #endif

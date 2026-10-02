@@ -127,14 +127,14 @@ void TemporaryFilterRaster::flush ()
 }
 bool transpose_filter_rgba (FilterRaster& input, FilterRaster& output,
                             std::size_t width, std::size_t height,
-                            std::atomic<bool>& cancel, std::size_t side)
+                            std::atomic<bool>& cancel, std::size_t side, std::size_t bytes_per_pixel)
 {
-  if (!width || !height || !side || side > 1024 || &input == &output ||
-      std::uint64_t (width) > std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / 4 / height ||
-      input.size () != std::uint64_t (width) * height * 4 || output.size () != input.size ())
+  if (!bytes_per_pixel || bytes_per_pixel > 32 || !width || !height || !side || side > 1024 || &input == &output ||
+      std::uint64_t (width) > std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / bytes_per_pixel / height ||
+      input.size () != std::uint64_t (width) * height * bytes_per_pixel || output.size () != input.size ())
     throw std::invalid_argument ("Invalid filter transpose extent/storage");
   if (cancel.load (std::memory_order_relaxed)) return false;
-  std::vector<std::uint8_t> tile (side * side * 4), column (side * 4);
+  std::vector<std::uint8_t> tile (side * side * bytes_per_pixel), column (side * bytes_per_pixel);
   for (std::size_t y = 0; y < height; y += std::min (side, height - y))
     for (std::size_t x = 0; x < width; x += std::min (side, width - x))
       {
@@ -142,14 +142,14 @@ bool transpose_filter_rgba (FilterRaster& input, FilterRaster& output,
         for (std::size_t row = 0; row < rows; ++row)
           {
             if (cancel.load (std::memory_order_relaxed)) return false;
-            input.read ((std::uint64_t (y + row) * width + x) * 4, columns * 4, tile.data () + row * columns * 4);
+            input.read ((std::uint64_t (y + row) * width + x) * bytes_per_pixel, columns * bytes_per_pixel, tile.data () + row * columns * bytes_per_pixel);
           }
         for (std::size_t col = 0; col < columns; ++col)
           {
             if (cancel.load (std::memory_order_relaxed)) return false;
             for (std::size_t row = 0; row < rows; ++row)
-              std::copy_n (tile.data () + (row * columns + col) * 4, 4, column.data () + row * 4);
-            output.write ((std::uint64_t (x + col) * height + y) * 4, rows * 4, column.data ());
+              std::copy_n (tile.data () + (row * columns + col) * bytes_per_pixel, bytes_per_pixel, column.data () + row * bytes_per_pixel);
+            output.write ((std::uint64_t (x + col) * height + y) * bytes_per_pixel, rows * bytes_per_pixel, column.data ());
           }
       }
   output.flush ();

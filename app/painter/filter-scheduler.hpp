@@ -32,6 +32,9 @@ public:
     FilterSpool::Process raster_process {};
     std::string spool_directory {};
     std::uint64_t peak_spill_bytes = 0; // includes input, result and transpose scratch
+    /* Owned packed bytes, not a Babl/GEGL object. RGBA8 defaults to four;
+     * normalized-double RGBA uses32. The scheduler never interprets samples. */
+    std::size_t bytes_per_pixel = 4;
   };
   struct Snapshot
   {
@@ -40,7 +43,7 @@ public:
   };
   /* Offset and count are pixels, always a contiguous portion of one scanline
    * or a whole number of scanlines. Each call is <= pixel_budget. Read receives
-   * an empty, independently owned chunk and must append exactly count*4 bytes. */
+   * an empty, independently owned chunk and must append exactly count*request.bytes_per_pixel bytes. */
   using Read = std::function<void (std::size_t, std::size_t, Bytes&)>;
   using Import = std::function<void (std::size_t, std::size_t, const std::uint8_t *)>;
   using Commit = std::function<void (std::uint64_t)>;

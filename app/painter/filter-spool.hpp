@@ -25,7 +25,7 @@ public:
   enum class Phase { collecting, processing, exporting, complete };
   static constexpr std::size_t pixel_budget = 32768;
   FilterSpool (std::size_t width, std::size_t height, const std::string& directory,
-               Process process, WorkAdmission::Lease lease);
+               Process process, WorkAdmission::Lease lease, std::size_t bytes_per_pixel = 4);
   ~FilterSpool () noexcept;
   FilterSpool (const FilterSpool&) = delete;
   FilterSpool& operator= (const FilterSpool&) = delete;

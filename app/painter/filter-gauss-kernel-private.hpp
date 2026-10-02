@@ -15,6 +15,7 @@
 #include <limits>
 #include <stdexcept>
 #include <vector>
+#include <type_traits>
 namespace GimpPainter { namespace FilterGaussDetail {
 using Bytes = std::vector<std::uint8_t>;
 
@@ -206,9 +207,21 @@ struct Iir
         numerical_limit ();
   }
 
-  void process (const Bytes& src, Bytes& dest, Check& check)
+  template<class Sample>
+  void process (const std::vector<Sample>& src, std::vector<Sample>& dest, Check& check)
   {
     const auto length = src.size () / 4;
+    double dc_gain = 1.0;
+    if (std::is_floating_point<Sample>::value)
+      {
+        /* The old fourth-order approximation is not exactly unity at DC.
+         * Modern precision removes byte rounding and explicitly normalizes
+         * this gain so a constant image does not brighten on every rerun. */
+        long double numerator = 0, denominator = 1;
+        for (int i = 0; i < 5; ++i) { numerator += np[i] + nm[i]; denominator += dp[i]; }
+        dc_gain = static_cast<double> (numerator / denominator);
+        if (!std::isfinite (dc_gain) || dc_gain <= 0) numerical_limit ();
+      }
     for (std::size_t i = 0; i < src.size (); ++i)
       {
         check.step ();
@@ -241,22 +254,24 @@ struct Iir
     for (std::size_t i = 0; i < src.size (); ++i)
       {
         check.step ();
-        const double sum = positive[i] + negative[i];
+        const double sum = (positive[i] + negative[i]) / dc_gain;
         if (!std::isfinite (sum))
           numerical_limit ();
         /* IIR truncates, in contrast to both alpha conversions and RLE. */
-        dest[i] = static_cast<std::uint8_t>
-          (std::max (0.0, std::min (255.0, sum)));
+        dest[i] = static_cast<Sample>
+          (std::max (0.0, std::min (std::is_integral<Sample>::value ? 255.0 : 1.0, sum)));
       }
   }
 };
 
-struct Rle
+template<class Sample>
+struct RleKernel
 {
   int length, total;
-  std::vector<int> curve, prefix, pixels, repeats;
+  std::vector<int> curve, prefix, repeats;
+  std::vector<Sample> pixels;
 
-  Rle (double radius, std::size_t size, Check& check)
+  RleKernel (double radius, std::size_t size, Check& check)
   {
     const double sigma = sigma_for (radius);
     const double sigma2 = 2 * sigma * sigma;
@@ -293,7 +308,7 @@ struct Rle
     repeats.resize (pixels.size ());
   }
 
-  void process (const Bytes& src, Bytes& dest, Check& check)
+  void process (const std::vector<Sample>& src, std::vector<Sample>& dest, Check& check)
   {
     const int size = static_cast<int> (src.size () / 4);
     const int padded = size + 2 * length;
@@ -318,7 +333,8 @@ struct Rle
         for (int x = 0; x < size; ++x)
           {
             check.step ();
-            int value = total / 2;
+            using Sum = typename std::conditional<std::is_integral<Sample>::value, int, double>::type;
+            Sum value = std::is_integral<Sample>::value ? total / 2 : 0;
             if (encoded)
               {
                 for (int i = 0; i < 2 * length; )
@@ -339,12 +355,15 @@ struct Rle
                               pixels[x + length - i]) * curve[i];
                   }
               }
-            dest[x * 4 + channel] = static_cast<std::uint8_t>
-              (std::min (255, value / total));
+            dest[x * 4 + channel] = static_cast<Sample>
+              (std::max (Sum (0),std::min (Sum (std::is_integral<Sample>::value ? 255 : 1), value / total)));
           }
       }
   }
 };
+
+using Rle = RleKernel<std::uint8_t>;
+using RleReal = RleKernel<double>;
 
 } } // namespace GimpPainter::FilterGaussDetail
 #endif

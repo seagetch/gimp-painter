@@ -9,6 +9,7 @@
 #include "libgimpmath/gimpmath.h"
 #include "libgimpcolor/gimpcolor.h"
 #include "core/core-types.h"
+#include "gegl/gimp-babl.h"
 #include "widgets/widgets-types.h"
 #include "core/gimp.h"
 #include "core/gimpfilterlayer.h"
@@ -1504,7 +1505,52 @@ static void gray_native_linear_profile (void) { native_gray_fixture (1,TRUE); }
 static void gray_native_lab_profile (void) { native_gray_fixture (2,TRUE); }
 static void gray_without_source_alpha (void) { native_gray_fixture (0,FALSE); }
 
-static void unsupported_precision_retains_cache (void)
+static void genuine_point_filter_transfer (void)
+{
+  gchar *path=g_build_filename(g_getenv("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration/fixtures/legacy-filter-points/fixtures.tsv",NULL);
+  gchar *manifest=NULL,**lines;
+  guint count=0;
+  g_assert_true(g_file_get_contents(path,&manifest,NULL,NULL));g_free(path);lines=g_strsplit(manifest,"\n",-1);
+  for(guint row=0;lines[row];++row)
+    {
+      gchar **fields,*input=NULL,*expected=NULL,*name;
+      gint argument,width,height,channels;
+      GimpImage *image;
+      GimpLayer *source;
+      GimpFilterLayer *filter;
+      const Babl *format;
+      GimpValueArray *args,*retained;
+      gsize input_size,expected_size;
+      guchar *actual;
+      if(!lines[row][0] || lines[row][0]=='#')continue;
+      fields=g_strsplit(lines[row],"\t",-1);g_assert_cmpuint(g_strv_length(fields),==,7);
+      argument=atoi(fields[1]);width=atoi(fields[2]);height=atoi(fields[3]);channels=atoi(fields[4]);
+      image=gimp_image_new(gimp,width,height,channels==2?GIMP_GRAY:GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+      format=gimp_image_get_layer_format(image,channels!=3);
+      source=gimp_layer_new(image,width,height,format,"original point input",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+      gimp_image_add_layer(image,source,NULL,0,FALSE);
+      path=g_build_filename(g_getenv("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration/fixtures/legacy-filter-points",fields[5],NULL);
+      g_assert_true(g_file_get_contents(path,&input,&input_size,NULL));g_free(path);
+      g_assert_cmpuint(input_size,==,width*height*channels);
+      gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(source)),GEGL_RECTANGLE(0,0,width,height),0,format,input,GEGL_AUTO_ROWSTRIDE);g_free(input);
+      filter=filter_new(image,NULL,width,height);
+      args=gimp_value_array_new_from_types(NULL,G_TYPE_INT,7,G_TYPE_INT,123,G_TYPE_INT,456,G_TYPE_INT,argument,G_TYPE_NONE);
+      if(!strcmp(fields[0],"plug-in-vinvert"))gimp_value_array_truncate(args,3);
+      g_assert_true(gimp_filter_layer_set_definition(filter,fields[0],NULL,args,NULL));settle(filter);
+      name=gimp_filter_layer_dup_procedure(filter);g_assert_cmpstr(name,==,fields[0]);g_free(name);
+      retained=gimp_filter_layer_dup_args(filter);g_assert_cmpuint(gimp_value_array_length(retained),==,gimp_value_array_length(args));
+      g_assert_cmpint(g_value_get_int(gimp_value_array_index(retained,0)),==,7);
+      gimp_value_array_unref(retained);gimp_value_array_unref(args);
+      path=g_build_filename(g_getenv("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration/fixtures/legacy-filter-points",fields[6],NULL);
+      g_assert_true(g_file_get_contents(path,&expected,&expected_size,NULL));g_free(path);actual=g_malloc(expected_size);
+      gegl_buffer_get(gimp_drawable_get_buffer(GIMP_DRAWABLE(filter)),GEGL_RECTANGLE(0,0,width,height),1,format,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      g_test_message("Original point output %s",fields[6]);g_assert_cmpmem(actual,expected_size,expected,expected_size);
+      g_free(actual);g_free(expected);g_strfreev(fields);g_object_unref(image);++count;
+    }
+  g_assert_cmpuint(count,==,40);g_strfreev(lines);g_free(manifest);
+}
+
+static void native_precision_loaded_cache_and_rerun (void)
 {
   static const struct { GimpImageBaseType base; GimpPrecision precision; } cases[] = {
     {GIMP_RGB,GIMP_PRECISION_FLOAT_LINEAR}, {GIMP_RGB,GIMP_PRECISION_U16_NON_LINEAR},
@@ -1524,15 +1570,98 @@ static void unsupported_precision_retains_cache (void)
       g_bytes_unref (raw); gimp_value_array_unref (args);
       gimp_filter_layer_mark_as_loaded (filter); spin_ms (5);
       g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLEAN);
-      gimp_filter_layer_invalidate (filter); spin_ms (10);
-      g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_FAILED);
-      g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
-      g_assert_true (cache == gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)));
+      gimp_filter_layer_invalidate (filter); settle (filter);
+      g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLEAN);
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 1);
+      g_assert_true (cache != gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)));
       message = gimp_filter_layer_dup_error (filter);
-      g_assert_nonnull (strstr (message,"requires non-linear RGB/Gray U8")); g_free (message);
+      g_assert_true (!message || !*message); g_free (message);
       saved = gimp_filter_layer_ref_definition (filter);
       g_assert_cmpmem (g_bytes_get_data (saved,NULL),g_bytes_get_size (saved),original,sizeof original);
       g_bytes_unref (saved); g_object_unref (cache); g_object_unref (image);
+    }
+}
+
+static void native_precision_point_and_gaussian_transfer (void)
+{
+  const GimpComponentType types[] = {GIMP_COMPONENT_TYPE_U8,GIMP_COMPONENT_TYPE_U16,GIMP_COMPONENT_TYPE_U32,
+    GIMP_COMPONENT_TYPE_HALF,GIMP_COMPONENT_TYPE_FLOAT,GIMP_COMPONENT_TYPE_DOUBLE};
+  const GimpTRCType trcs[] = {GIMP_TRC_LINEAR,GIMP_TRC_NON_LINEAR,GIMP_TRC_PERCEPTUAL};
+  for (guint t=0;t<G_N_ELEMENTS(types);++t) for (guint r=0;r<G_N_ELEMENTS(trcs);++r) for (guint gray=0;gray<2;++gray)
+    {
+      const GimpPrecision precision=gimp_babl_precision(types[t],trcs[r]);
+      GimpImage *image;
+      GimpLayer *source;
+      GimpFilterLayer *filter;
+      const Babl *format;
+      const guint channels=gray?2:4;
+      const gdouble values[]={.123456789,.456789123,.812345678,1};
+      gdouble stored[4]={0},actual[4]={0};
+      const gdouble tolerance=types[t]==GIMP_COMPONENT_TYPE_U8?1./255+.000001:
+        types[t]==GIMP_COMPONENT_TYPE_HALF?.001:types[t]==GIMP_COMPONENT_TYPE_U16?2./65535:1e-6;
+      GeglColor *color;
+      GimpValueArray *args;
+      if (precision==GIMP_PRECISION_U8_NON_LINEAR) continue; // exact legacy fixture matrix owns this path
+      image=gimp_image_new(gimp,9,8,gray?GIMP_GRAY:GIMP_RGB,precision);
+      format=gimp_babl_format(gray?GIMP_GRAY:GIMP_RGB,gimp_babl_precision(GIMP_COMPONENT_TYPE_DOUBLE,trcs[r]),TRUE,
+        babl_format_get_space(gimp_image_get_layer_format(image,TRUE)));
+      source=gimp_layer_new(image,9,8,gimp_image_get_layer_format(image,TRUE),"native precision source",1,GIMP_LAYER_MODE_NORMAL);
+      gimp_image_add_layer(image,source,NULL,0,FALSE);
+      color=gegl_color_new(NULL);
+      if(gray) { const gdouble ya[]={values[0],1};gegl_color_set_pixel(color,format,ya); }
+      else gegl_color_set_pixel(color,format,values);
+      gegl_buffer_set_color(gimp_drawable_get_buffer(GIMP_DRAWABLE(source)),NULL,color);g_object_unref(color);
+      gegl_buffer_get(gimp_drawable_get_buffer(GIMP_DRAWABLE(source)),GEGL_RECTANGLE(0,0,1,1),1,format,stored,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      filter=filter_new(image,NULL,9,8);
+      args=gimp_value_array_new_from_types(NULL,G_TYPE_INT,1,G_TYPE_INT,0,G_TYPE_INT,0,G_TYPE_INT,127,G_TYPE_NONE);
+      if(!gray) gimp_value_array_truncate(args,3);
+      g_assert_true(gimp_filter_layer_set_definition(filter,gray?"plug-in-threshold-alpha":"plug-in-vinvert",NULL,args,NULL));
+      gimp_value_array_unref(args);settle(filter);
+      gegl_buffer_get(gimp_drawable_get_buffer(GIMP_DRAWABLE(filter)),GEGL_RECTANGLE(0,0,1,1),1,format,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      g_test_message("Native transfer base=%u component=%d trc=%d",gray,types[t],trcs[r]);
+      for(guint c=0;c<channels;++c)
+        g_assert_cmpfloat_with_epsilon(actual[c],c==channels-1?1:gray?stored[c]:(1-stored[2])*stored[c]/stored[2],tolerance);
+      for(gint method=0;method<2;++method)
+        {
+          args=gimp_value_array_new_from_types(NULL,G_TYPE_INT,1,G_TYPE_INT,0,G_TYPE_INT,0,
+            G_TYPE_DOUBLE,2.5,G_TYPE_DOUBLE,7.25,G_TYPE_INT,method,G_TYPE_NONE);
+          g_assert_true(gimp_filter_layer_set_definition(filter,"plug-in-gauss",NULL,args,NULL));
+          gimp_value_array_unref(args);settle(filter);
+          gegl_buffer_get(gimp_drawable_get_buffer(GIMP_DRAWABLE(filter)),GEGL_RECTANGLE(4,4,1,1),1,format,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+          for(guint c=0;c<channels;++c) g_assert_cmpfloat_with_epsilon(actual[c],stored[c],tolerance);
+        }
+      g_assert_cmpuint(gimp_filter_layer_get_run_count(filter),==,3);
+      g_object_unref(image);
+    }
+}
+
+static void native_precision_spill_transfer (void)
+{
+  const gint width=513,height=257; // >4MiB of packed RGBA doubles
+  for(guint gray=0;gray<2;++gray)
+    {
+      GimpImage *image=gimp_image_new(gimp,width,height,gray?GIMP_GRAY:GIMP_RGB,GIMP_PRECISION_FLOAT_LINEAR);
+      const Babl *format=gimp_babl_format(gray?GIMP_GRAY:GIMP_RGB,GIMP_PRECISION_DOUBLE_LINEAR,TRUE,
+        babl_format_get_space(gimp_image_get_layer_format(image,TRUE)));
+      const gdouble rgba[]={.123456789,.345678912,.712345678,1},ya[]={.123456789,1};
+      const gdouble *expected=gray?ya:rgba;
+      const guint channels=gray?2:4;
+      GimpLayer *source=gimp_layer_new(image,width,height,gimp_image_get_layer_format(image,TRUE),"native spill source",1,GIMP_LAYER_MODE_NORMAL);
+      GimpFilterLayer *filter;
+      GeglColor *color=gegl_color_new(NULL);
+      gdouble *actual=g_new(gdouble,width*height*channels);
+      gimp_image_add_layer(image,source,NULL,0,FALSE);
+      gegl_color_set_pixel(color,format,expected);gegl_buffer_set_color(gimp_drawable_get_buffer(GIMP_DRAWABLE(source)),NULL,color);g_object_unref(color);
+      filter=filter_new(image,NULL,width,height);
+      for(gint method=0;method<2;++method)
+        {
+          GimpValueArray *args=gimp_value_array_new_from_types(NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,
+            G_TYPE_DOUBLE,2.5,G_TYPE_DOUBLE,7.25,G_TYPE_INT,method,G_TYPE_NONE);
+          g_assert_true(gimp_filter_layer_set_definition(filter,"plug-in-gauss",NULL,args,NULL));gimp_value_array_unref(args);settle(filter);
+          gegl_buffer_get(gimp_drawable_get_buffer(GIMP_DRAWABLE(filter)),GEGL_RECTANGLE(0,0,width,height),1,format,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+          for(gsize i=0;i<(gsize)width*height*channels;++i)g_assert_cmpfloat_with_epsilon(actual[i],expected[i%channels],1e-6);
+        }
+      g_assert_cmpuint(gimp_filter_layer_get_run_count(filter),==,2);g_free(actual);g_object_unref(image);
     }
 }
 
@@ -1621,6 +1750,8 @@ static void image_close_during_worker (void)
   g_object_weak_ref (G_OBJECT (filter),weak_finalized,&finalized);
   while (gimp_filter_layer_get_state (filter) != GIMP_FILTER_LAYER_RUNNING && g_get_monotonic_time () < deadline)
     { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  if (gimp_filter_layer_get_state (filter) == GIMP_FILTER_LAYER_FAILED)
+    { gchar *message=gimp_filter_layer_dup_error(filter);g_test_message("Worker setup failed: %s",message);g_free(message); }
   g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_RUNNING);
   start = g_get_monotonic_time ();
   g_object_unref (image);
@@ -2229,7 +2360,7 @@ int main (int argc, char **argv)
   ADD (completion_flushes_image_projection); ADD (spill_completion_flushes_image_projection); ADD (long_chain_coalesces_state_notifications); ADD (complex_graph_remains_responsive); ADD (cached_graph_tracks_clone_reassignment);
   ADD (clone_filter_dependency_order); ADD (cached_dependency_close_before_start); ADD (cross_image_filter_cycle_has_no_signal_loop);
   ADD (gray_native_default); ADD (gray_native_linear_profile); ADD (gray_native_lab_profile); ADD (gray_without_source_alpha);
-  ADD (gaussian_native_srgb); ADD (gaussian_native_adobe); ADD (profile_reassignment_discards_worker); ADD (unsupported_precision_retains_cache);
+  ADD (gaussian_native_srgb); ADD (gaussian_native_adobe); ADD (profile_reassignment_discards_worker); ADD (genuine_point_filter_transfer); ADD (native_precision_loaded_cache_and_rerun); ADD (native_precision_point_and_gaussian_transfer); ADD (native_precision_spill_transfer);
   ADD (gaussian_alias_and_negative_fixtures); ADD (gaussian_alias_failures_preserve_cache); ADD (gaussian_alias_identity_spills);
   ADD (gaussian_legacy_fixture); ADD (duplicate_failure_releases_partial); ADD (definition_undo_redo); ADD (hidden_filter_and_offset); ADD (cpp_header_layout); ADD (clone_filter_dependency_cycle); ADD (main_context_remains_responsive);
   ADD (object_arguments_do_not_cycle); ADD (expired_object_records_and_reassignment);

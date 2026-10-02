@@ -557,10 +557,10 @@
         "/gimp-filter-layer/retained_handle_after_image_close"
       ],
       "reports": [
-        "migration/tests/filter-admission-native.json",
-        "migration/tests/filter-admission-native-sanitizers.json"
+        "migration/tests/filter-native-foundation-normal.json",
+        "migration/tests/filter-native-other82-sanitizers.json"
       ],
-      "scope_or_gap": "Actual Filter job independently owns inputs/results/cancel/lease; image close preserves worker safety. Other feature-specific async jobs require their own acceptance."
+      "scope_or_gap": "Actual Filter job independently owns inputs/results/cancel/lease; image close preserves worker safety. Refreshed exact-source normal and 82-case sanitizer snapshot exclude the separately measured huge fixture; huge-image memory/latency gates and other feature-specific async jobs remain separate."
     },
     {
       "id": "06.029",
@@ -851,10 +851,10 @@
         "/gimp-filter-layer/retained_handle_after_image_close"
       ],
       "reports": [
-        "migration/tests/filter-admission-native.json",
-        "migration/tests/filter-admission-native-sanitizers.json"
+        "migration/tests/filter-native-foundation-normal.json",
+        "migration/tests/filter-native-other82-sanitizers.json"
       ],
-      "scope_or_gap": "Actual Filter job independently owns inputs/results/cancel/lease; image close preserves worker safety. Other feature-specific async jobs require their own acceptance."
+      "scope_or_gap": "Actual Filter job independently owns inputs/results/cancel/lease; image close preserves worker safety. Refreshed exact-source normal and 82-case sanitizer snapshot exclude the separately measured huge fixture; huge-image memory/latency gates and other feature-specific async jobs remain separate."
     },
     {
       "id": "07.013",
