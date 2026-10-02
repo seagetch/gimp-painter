@@ -24,6 +24,7 @@ extern "C" {
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/filter-scheduler.hpp"
+#include "painter/fair-dispatcher.hpp"
 #include "painter/filter-edge.hpp"
 #include "painter/filter-gauss.hpp"
 #include "painter/gimp-painter-binding.h"
@@ -83,6 +84,8 @@ void owner_removed (GimpItem *, gpointer);
 void owner_size (GimpViewable *, gpointer);
 void owner_offset (GObject *, GParamSpec *, gpointer);
 void owner_active (GimpFilter *, gpointer);
+void owner_image_changed (GObject *, GParamSpec *, gpointer);
+void image_disconnected (GimpObject *, gpointer);
 
 struct FilterImpl
 {
@@ -94,6 +97,7 @@ struct FilterImpl
     pending.close ();
     dependencies.clear ();
     own_connections.clear ();
+    image_connection.close ();
     staged.reset ();
     stack.reset ();
     lower_objects.clear ();
@@ -115,7 +119,15 @@ struct FilterImpl
     own_connections.push_back (connect (G_OBJECT (owner), "notify::offset-x", G_CALLBACK (owner_offset)));
     own_connections.push_back (connect (G_OBJECT (owner), "notify::offset-y", G_CALLBACK (owner_offset)));
     own_connections.push_back (connect (G_OBJECT (owner), "active-changed", G_CALLBACK (owner_active)));
+    own_connections.push_back (connect (G_OBJECT (owner), "notify::image", G_CALLBACK (owner_image_changed)));
+    watch_image ();
     refresh_connections ();
+  }
+  void watch_image ()
+  {
+    image_connection.close ();
+    if (GimpImage *image = gimp_item_get_image (GIMP_ITEM (owner)))
+      image_connection = connect (G_OBJECT (image), "disconnect", G_CALLBACK (image_disconnected));
   }
   GimpContainer *current_stack ()
   {
@@ -256,13 +268,20 @@ struct FilterImpl
   }
   void schedule ()
   {
-    if (pending.active () || scheduler.state () == FilterScheduler::State::closed) return;
-    auto callback = std::make_shared<Callback> (owner);
-    pending = Source::timeout (nullptr, 2, 150, [callback] {
-      bool again = false;
-      visit (callback.get (), [&] (FilterImpl& impl) { again = impl.step (); });
-      return again;
-    });
+    if (scheduler.state () == FilterScheduler::State::closed) return;
+    /* A single source rotates one bounded quantum across all layers/images.
+     * Multiple ready images cannot form an unbounded same-priority timer batch. */
+    static FairDispatcher dispatcher (nullptr, 2, 150);
+    if (!pending.valid ())
+      {
+        auto callback = std::make_shared<Callback> (owner);
+        pending = dispatcher.ticket ([callback] {
+          bool again = false;
+          visit (callback.get (), [&] (FilterImpl& impl) { again = impl.step (); });
+          return again;
+        });
+      }
+    pending.schedule ();
   }
   bool dependency_cycle (GimpLayer *layer, std::set<GimpLayer *>& path, std::size_t& visited)
   {
@@ -377,9 +396,13 @@ struct FilterImpl
         /* Swap a fully imported buffer. No partial result is visible to the
          * drawable source, save code, projection, or an upper FilterLayer. */
         gimp_drawable_set_buffer_full (GIMP_DRAWABLE (owner), FALSE, nullptr, GEGL_BUFFER (completed.get ()), nullptr, FALSE);
+        /* Buffer notification may synchronously close the image or edit the
+         * definition. Never publish a later drawable update for that token. */
+        if (scheduler.state () == FilterScheduler::State::closed || token != scheduler.generation ()) return;
         gimp_drawable_update (GIMP_DRAWABLE (owner), 0, 0,
                               gimp_item_get_width (GIMP_ITEM (owner)), gimp_item_get_height (GIMP_ITEM (owner)));
       });
+    if (scheduler.state () == FilterScheduler::State::closed) return false;
     maximum_quantum_us = std::max (maximum_quantum_us, g_get_monotonic_time () - started_at);
     if (previous != scheduler.state ()) g_signal_emit_by_name (owner, "filter-state-changed");
     return again;
@@ -389,10 +412,11 @@ struct FilterImpl
   BytesRef raw;
   std::shared_ptr<const FilterArguments> args;
   FilterScheduler scheduler;
-  Source pending;
+  FairDispatcher::Ticket pending;
   WeakRef<GObject> stack;
   ObjectRef<GObject> staged;
   std::vector<Connection> own_connections, dependencies;
+  Connection image_connection;
   std::vector<WeakRef<GObject>> lower_objects;
   bool topology_dirty = false;
   gint64 maximum_quantum_us = 0;
@@ -424,6 +448,10 @@ void owner_offset (GObject *, GParamSpec *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { impl.invalidate (); }); }
 void owner_active (GimpFilter *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { impl.invalidate (); }); }
+void owner_image_changed (GObject *, GParamSpec *, gpointer data)
+{ visit (data, [] (FilterImpl& impl) { impl.watch_image (); impl.structure_changed (); impl.invalidate (); }); }
+void image_disconnected (GimpObject *, gpointer data)
+{ visit (data, [] (FilterImpl& impl) { gimp_painter_binding_close (G_OBJECT (impl.owner), nullptr); }); }
 struct FilterUndoImpl
 {
   void close () noexcept { raw.reset (); args.reset (); }
@@ -437,7 +465,7 @@ void undo_constructed (GObject *object)
   G_OBJECT_CLASS (gimp_filter_layer_undo_parent_class)->constructed (object);
   auto *undo = reinterpret_cast<GimpFilterLayerUndo *> (object);
   if (!undo->binding_failed)
-    undo->binding_failed = !boundary<gboolean> (nullptr, FALSE, [&] {
+    undo->binding_failed = !boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
       auto& store = BindingStore::require (object);
       store.initialize<FilterUndoSlot> ([&] (FilterUndoImpl& snapshot) {
         BindingStore::require (G_OBJECT (GIMP_ITEM_UNDO (object)->item)).read<FilterSlot> ([&] (const FilterImpl& impl) {
@@ -477,7 +505,7 @@ void constructed (GObject *object)
     G_OBJECT_CLASS (gimp_filter_layer_parent_class)->constructed (object);
   auto *layer = GIMP_FILTER_LAYER (object);
   if (!layer->binding_failed)
-    layer->binding_failed = !boundary<gboolean> (nullptr, FALSE, [&] {
+    layer->binding_failed = !boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
       auto& store = BindingStore::require (object);
       store.initialize<FilterSlot> ([] (FilterImpl&) {});
       store.activate ();
@@ -529,7 +557,7 @@ static void gimp_filter_layer_undo_class_init (GimpFilterLayerUndoClass *klass)
 }
 static void gimp_filter_layer_undo_init (GimpFilterLayerUndo *undo)
 {
-  undo->binding_failed = !boundary<gboolean> (nullptr, FALSE, [&] {
+  undo->binding_failed = !boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
     BindingStore::ensure (G_OBJECT (undo)).emplace<FilterUndoSlot> (); return TRUE;
   });
 }
@@ -556,7 +584,7 @@ static void gimp_filter_layer_class_init (GimpFilterLayerClass *klass)
 }
 static void gimp_filter_layer_init (GimpFilterLayer *layer)
 {
-  layer->binding_failed = !boundary<gboolean> (nullptr, FALSE, [&] {
+  layer->binding_failed = !boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
     BindingStore::ensure (G_OBJECT (layer)).emplace<FilterSlot> (layer); return TRUE;
   });
 }
@@ -580,13 +608,15 @@ GimpLayer *gimp_filter_layer_new (GimpImage *image, gint width, gint height, con
   });
 }
 static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
-                                GBytes *raw, const GimpValueArray *args, bool push_undo, GError **error)
+                                GBytes *raw, const GimpValueArray *args, bool push_undo, GError **error,
+                                const std::shared_ptr<const FilterArguments> *imported = nullptr)
 {
-  return boundary<gboolean> (error, FALSE, [&] {
+  return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
     if (!GIMP_IS_FILTER_LAYER (layer)) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected FilterLayer");
     std::string name = procedure ? procedure : "";
     BytesRef bytes (raw ? g_bytes_ref (raw) : nullptr);
-    std::shared_ptr<const FilterArguments> arguments = args ? std::make_shared<FilterArguments> (args) : nullptr;
+    std::shared_ptr<const FilterArguments> arguments = imported ? *imported :
+                                                       args ? std::make_shared<FilterArguments> (args) : nullptr;
     BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([&] (FilterImpl& impl) {
       if (push_undo && gimp_item_is_attached (GIMP_ITEM (layer)))
         {
@@ -645,7 +675,7 @@ void gimp_filter_layer_invalidate (GimpFilterLayer *layer)
 gboolean gimp_filter_layer_get_argument_reference (GimpFilterLayer *layer, guint argument, guint element,
                                                   GType *type, gint64 *id, gboolean *expired)
 {
-  return boundary<gboolean> (nullptr, FALSE, [&] {
+  return boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
     if (!GIMP_IS_FILTER_LAYER (layer)) return FALSE;
     return BindingStore::require (G_OBJECT (layer)).read<FilterSlot> ([&] (const FilterImpl& impl) -> gboolean {
       const auto *ref = impl.args ? impl.args->reference (argument, element) : nullptr;
@@ -656,4 +686,110 @@ gboolean gimp_filter_layer_get_argument_reference (GimpFilterLayer *layer, guint
       return TRUE;
     });
   });
+}
+
+gboolean gimp_filter_layer_get_snapshot_state (GimpFilterLayer *layer, GimpFilterLayerSnapshot *snapshot)
+{
+  return boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
+    if (!GIMP_IS_FILTER_LAYER (layer) || !snapshot) return FALSE;
+    return BindingStore::require (G_OBJECT (layer)).read<FilterSlot> ([&] (const FilterImpl& impl) -> gboolean {
+      const auto saved = impl.scheduler.snapshot ();
+      *snapshot = {1, saved.generation, saved.cache_generation, saved.cache_complete,
+                   static_cast<GimpFilterLayerState> (impl.scheduler.state ())};
+      return TRUE;
+    });
+  });
+}
+gboolean gimp_filter_layer_restore_snapshot_state (GimpFilterLayer *layer,
+                                                   const GimpFilterLayerSnapshot *snapshot, GError **error)
+{
+  return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
+    if (!GIMP_IS_FILTER_LAYER (layer)) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected FilterLayer");
+    if (!snapshot || snapshot->version != 1 ||
+        (snapshot->cache_complete != FALSE && snapshot->cache_complete != TRUE) ||
+        snapshot->state < GIMP_FILTER_LAYER_CLEAN || snapshot->state > GIMP_FILTER_LAYER_CLOSED ||
+        snapshot->cache_generation > snapshot->generation || snapshot->generation > G_MAXINT64)
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Invalid FilterLayer snapshot schema");
+    BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([&] (FilterImpl& impl) {
+      impl.scheduler.restore_cache ({snapshot->generation, snapshot->cache_generation, bool (snapshot->cache_complete)});
+      impl.staged.reset ();
+      impl.schedule ();
+      g_signal_emit_by_name (impl.owner, "filter-state-changed");
+    });
+    return TRUE;
+  });
+}
+
+struct _GimpFilterArgumentsSnapshot
+{
+  explicit _GimpFilterArgumentsSnapshot (std::shared_ptr<const FilterArguments> arguments)
+    : arguments (std::move (arguments)) {}
+  std::shared_ptr<const FilterArguments> arguments;
+};
+GimpFilterArgumentsSnapshot *gimp_filter_layer_snapshot_arguments (GimpFilterLayer *layer)
+{
+  return boundary<GimpFilterArgumentsSnapshot *> (nullptr, nullptr, [&] {
+    if (!GIMP_IS_FILTER_LAYER (layer)) return static_cast<GimpFilterArgumentsSnapshot *> (nullptr);
+    return BindingStore::require (G_OBJECT (layer)).read<FilterSlot> ([&] (const FilterImpl& impl) -> GimpFilterArgumentsSnapshot * {
+      return impl.args ? new GimpFilterArgumentsSnapshot (impl.args) : nullptr;
+    });
+  });
+}
+void gimp_filter_arguments_snapshot_free (GimpFilterArgumentsSnapshot *snapshot) { delete snapshot; }
+guint gimp_filter_arguments_snapshot_count (const GimpFilterArgumentsSnapshot *snapshot)
+{ return snapshot ? snapshot->arguments->size () : 0; }
+GType gimp_filter_arguments_snapshot_type (const GimpFilterArgumentsSnapshot *snapshot, guint argument)
+{
+  return snapshot && argument < snapshot->arguments->size () ?
+         G_VALUE_TYPE (snapshot->arguments->at (argument)) : G_TYPE_INVALID;
+}
+gboolean gimp_filter_arguments_snapshot_value (const GimpFilterArgumentsSnapshot *snapshot, guint argument, GValue *value)
+{
+  return boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
+    if (!snapshot || !value || G_IS_VALUE (value) || argument >= snapshot->arguments->size () ||
+        !snapshot->arguments->scalar (argument)) return FALSE;
+    const GValue *source = snapshot->arguments->at (argument);
+    g_value_init (value, G_VALUE_TYPE (source)); g_value_copy (source, value);
+    return TRUE;
+  });
+}
+guint gimp_filter_arguments_snapshot_reference_count (const GimpFilterArgumentsSnapshot *snapshot, guint argument)
+{ return snapshot ? snapshot->arguments->reference_count (argument) : 0; }
+gboolean gimp_filter_arguments_snapshot_reference (const GimpFilterArgumentsSnapshot *snapshot, guint argument,
+                                                   guint element, GimpFilterArgumentReference *reference)
+{
+  return boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
+    const auto *ref = snapshot ? snapshot->arguments->reference (argument, element) : nullptr;
+    if (!ref || !reference) return FALSE;
+    *reference = {ref->type, ref->id, ref->had_object, ref->had_object && !ref->target.lock ()};
+    return TRUE;
+  });
+}
+GimpFilterArgumentsSnapshot *gimp_filter_arguments_snapshot_nested (const GimpFilterArgumentsSnapshot *snapshot, guint argument)
+{
+  return boundary<GimpFilterArgumentsSnapshot *> (nullptr, nullptr, [&] {
+    auto nested = snapshot ? snapshot->arguments->nested (argument) : nullptr;
+    return nested ? new GimpFilterArgumentsSnapshot (std::move (nested)) : nullptr;
+  });
+}
+
+gboolean gimp_filter_arguments_snapshot_is_null (const GimpFilterArgumentsSnapshot *snapshot, guint argument)
+{
+  return snapshot && argument < snapshot->arguments->size () && snapshot->arguments->is_null (argument);
+}
+
+GimpFilterArgumentsSnapshot *gimp_filter_arguments_snapshot_import (guint count,
+                                                                   const GimpFilterArgumentSpec *specs, GError **error)
+{
+  return boundary<GimpFilterArgumentsSnapshot *> (error, nullptr, [&] {
+    std::size_t remaining = 65536;
+    auto arguments = std::make_shared<FilterArguments> (count, specs, 0, remaining);
+    return new GimpFilterArgumentsSnapshot (std::move (arguments));
+  });
+}
+gboolean gimp_filter_layer_set_definition_with_snapshot (GimpFilterLayer *layer, const gchar *procedure,
+                                                         GBytes *raw, const GimpFilterArgumentsSnapshot *snapshot, GError **error)
+{
+  std::shared_ptr<const FilterArguments> arguments = snapshot ? snapshot->arguments : nullptr;
+  return set_definition (layer, procedure, raw, nullptr, false, error, &arguments);
 }

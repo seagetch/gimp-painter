@@ -21,11 +21,11 @@ build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
 output = build / "filter-sanitizers"
 output.mkdir(exist_ok=True)
-report = {"scope": "FilterLayer, argument/Undo state, group duplication, edge/Gauss executors, scheduler, C/C++ tests, and shared BindingStore; remaining GIMP/dependencies uninstrumented",
+report = {"scope": "FilterLayer, argument/Undo state, common item owner lifetime, group duplication, edge/Gauss executors, scheduler, C/C++ tests, and shared BindingStore; remaining GIMP/dependencies uninstrumented",
           "sanitizers": ["address", "undefined"], "leak_detection": False, "instrumented_cpp_rtti": True,
           "sources": [], "commands": []}
 flags = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-O1"]
-wanted = {"app/core/gimpfilterlayer.cpp", "app/core/gimpgrouplayer.c", "app/tests/test-gimp-filter-layer.c",
+wanted = {"app/core/gimpfilterlayer.cpp", "app/core/gimpitem.c", "app/core/gimpgrouplayer.c", "app/tests/test-gimp-filter-layer.c",
           "app/tests/test-gimp-filter-layout.cpp", "app/painter/binding-store.cpp",
           "app/painter/gimp-painter-binding.cpp", "app/painter/gimp-painter-error.cpp",
           "app/painter/filter-scheduler.cpp", "app/painter/filter-edge.cpp",

@@ -35,7 +35,26 @@ implementation store.
   pointers. Nested value arrays are bounded and recursively converted. Opaque
   boxed/pointer arguments are rejected transactionally; raw-only definitions
   remain supported for unknown conversions. Unknown executable values are not
-  silently fabricated
+  silently fabricated. Ordinary GValue-array input is also capped at 65,536 total
+  nodes/references, preventing exponential expansion of a compact nested DAG
+- Writer snapshots enumerate every slot's type, scalar value, null/empty state,
+  object-reference descriptor and nested array even after targets expire.
+  Snapshots retain immutable values and IDs; liveness is queried at access time.
+  The import path accepts explicit optional resolved targets and preserves
+  unresolved IDs without guessing bindings. It bounds depth to 32 and the total
+  slots plus reference descriptors to 65,536, and rejects inconsistent shapes,
+  types, null flags or binding an expired descriptor. Import into a layer creates
+  no Undo and does not rematerialize expired objects
+- `GimpFilterLayerSnapshot` version 1 supplies current/committed generations,
+  cache completeness and diagnostic execution state. The loader normalizes
+  validated saved lineage into a fresh runtime epoch after all pixels/topology:
+  a complete equal-generation cache stays clean;
+  a stale/incomplete cache requests one fresh evaluation. Stored counters are
+  restricted to 0..G_MAXINT64 with cache <= current. UINT64_MAX and future cache
+  tokens are rejected transactionally; zero, invalidation after rejection, and
+  maximum-accepted lineage → edit → snapshot → reopen are tested. Absolute saved
+  counters never become runtime job tokens. Active jobs are cancelled before
+  normalization. Execution states are not resumed literally
 
 ## Scheduler and source boundary
 
@@ -59,7 +78,11 @@ Changes coalesce to a full-raster dirty generation rather than accumulating an
 unbounded list of dirty rectangles. This is correct for the supported whole-image
 procedures; regional optimization is not claimed. Requests over 64 Mi pixels are
 reported unsupported instead of overflowing allocations. UI work is dispatched
-at priority 150 in 2 ms timer quanta. Lower visible FilterLayers must settle
+at priority 150 by one 2 ms FIFO source shared across layers and images. Each
+source callback processes one bounded quantum, then rotates that ticket to the
+back of the queue. Default-priority input can preempt between quanta rather than
+waiting behind a batch of ready per-layer timers. The dispatcher contains no
+GObject or implementation store; adapters carry weak generation tokens. Lower visible FilterLayers must settle
 first; child groups are traversed and completion/failure signals wake waiters.
 Above-layer pixel changes and this layer's own cache publication do not restart
 it. Topology snapshots avoid restarting merely because an unrelated layer was
@@ -119,12 +142,12 @@ prove the entire GIMP 3 lower-stack projection equals the old projection.
 
 ## Tests and measurements
 
-- `app/painter/tests/test-filter-scheduler.cpp`: 14 pure scheduler tests including
+- `app/painter/tests/test-filter-scheduler.cpp`: 20 pure scheduler tests including
   cancellation versus completion, no duplicate launch, edits during preparation
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 21 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 32 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release
@@ -139,7 +162,24 @@ prove the entire GIMP 3 lower-stack projection equals the old projection.
   ptrace restrictions prevent it from running; explicit weak-finalization tests
   cover the image/layer/argument ownership cycles. The JSON lists actual units
 - `run_filter_scheduler_sanitizers.py` and `filter-scheduler-sanitizers.json`
-  independently instrument all 14 scheduler regressions with ASan/UBSan
+  independently instrument all 20 scheduler regressions with ASan/UBSan
+- `fair-dispatcher.hpp`, `test-fair-dispatcher.cpp`, and
+  `run_fair_dispatcher_sanitizers.py`: eight FIFO/input-priority/reentry/teardown
+  regressions, independently passing strict C++14 and ASan/UBSan
+
+Actual GIMP fairness/teardown cases additionally check that a 16×16 image
+finishes while a 2048×1536 image is still preparing input, twenty repeated lower
+edits converge to the final measured Sobel pixel, and image/source/layer objects
+are finalized immediately when closed during a Gaussian worker. Retained public
+Filter handles are also tested with queued/running work: image disconnect closes
+the binding and prevents later publication, while the common GimpItem weak-image
+link makes subsequent image lookup/finalization safe. A buffer-notify callback
+that closes the image during the final swap is also covered: no later drawable
+update or state notification is emitted for the closed binding. An 8193×8193
+sparse layer preserves its definition and reports the explicit execution-size
+limit without starting a worker. This last test is a bounded failure check, not
+proof that large-image execution is complete. `settled()` also stays false while
+a failed/rejected worker is still completing cancellation.
 
 A simple 2048×1536 single-layer run measured roughly 0.81–0.85 s end-to-end,
 8.9–9.7 ms maximum owner-thread quantum and 364–367 serviced 2 ms heartbeats in
@@ -157,12 +197,15 @@ images and sustained painting still need their own workloads and thresholds.
   crash handling and unresponsive external-procedure isolation are outstanding
 - The old reader's image-ID/GValue-pointer crash is a negative fixture; safely
   retaining those bytes does not turn it into a successful legacy round trip
-- Normal Open/XCF persistence integration and definition/cache save-generation
-  reconciliation are separate changes. Core tests are not save/reopen proof
+- Normal Open/XCF persistence integration remains a separate change. This slice
+  supplies and tests typed argument and generation snapshot/import primitives;
+  core tests alone are not save/reopen proof
 - There is no new creation/menu/editor UI or GimpProgress adapter in this slice
 - Whole lower-stack parity (especially custom modes, masks, component visibility,
   group/passthrough behavior, high precision and indexed inputs), sustained input,
-  cross-image fairness, maximum topology traversal cost and reference-machine
-  latency percentiles remain broader compatibility gates
+  high-contention multi-image CPU/memory admission, maximum topology traversal
+  cost and reference-machine latency percentiles remain broader compatibility
+  gates. FIFO owner-thread fairness is tested; arbitrary worker/process workloads
+  and removal of the 64-Mi-pixel whole-raster execution limit remain outstanding
 - The baseline `save-and-export` test failure is unrelated; this record does not
   claim the entire upstream app suite is green

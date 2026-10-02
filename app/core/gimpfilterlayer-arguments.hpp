@@ -31,13 +31,20 @@ class FilterArguments
     Value value;
     std::vector<FilterArgumentReference> objects;
     std::shared_ptr<const FilterArguments> nested;
+    bool null_container = false;
   };
 public:
   explicit FilterArguments (const GimpValueArray *args, unsigned depth = 0)
+  { std::size_t remaining = 65536; initialize_values (args, depth, remaining); }
+  FilterArguments (const GimpValueArray *args, unsigned depth, std::size_t& remaining)
+  { initialize_values (args, depth, remaining); }
+private:
+  void initialize_values (const GimpValueArray *args, unsigned depth, std::size_t& remaining)
   {
     if (depth > 32) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Nested filter arguments exceed the limit");
     const auto n = gimp_value_array_length (args);
-    if (n > 65536) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Too many filter arguments");
+    if (n < 0 || std::size_t (n) > remaining) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Too many filter arguments");
+    remaining -= n;
     arguments_.reserve (n);
     for (int i = 0; i < n; ++i)
       {
@@ -45,20 +52,26 @@ public:
         Argument arg;
         arg.value = Value (G_VALUE_TYPE (value));
         if (G_VALUE_HOLDS_OBJECT (value))
-          arg.objects.emplace_back (G_OBJECT (g_value_get_object (value)), G_VALUE_TYPE (value));
+          {
+            if (!remaining) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Too many object references");
+            --remaining;
+            arg.objects.emplace_back (G_OBJECT (g_value_get_object (value)), G_VALUE_TYPE (value));
+          }
         else if (GIMP_VALUE_HOLDS_CORE_OBJECT_ARRAY (value))
           {
             auto **array = static_cast<GObject **> (g_value_get_boxed (value));
+            arg.null_container = array == nullptr;
             for (std::size_t j = 0; array && array[j]; ++j)
               {
-                if (j >= 65536) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Too many object references");
+                if (!remaining) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Too many object references");
+                --remaining;
                 arg.objects.emplace_back (array[j], G_TYPE_OBJECT);
               }
           }
         else if (GIMP_VALUE_HOLDS_VALUE_ARRAY (value))
           {
             auto *array = static_cast<const GimpValueArray *> (g_value_get_boxed (value));
-            if (array) arg.nested = std::make_shared<FilterArguments> (array, depth + 1);
+            if (array) arg.nested = std::make_shared<FilterArguments> (array, depth + 1, remaining);
           }
         else
           {
@@ -76,8 +89,96 @@ public:
         arguments_.push_back (std::move (arg));
       }
   }
+public:
+  FilterArguments (guint count, const GimpFilterArgumentSpec *specs, unsigned depth, std::size_t& remaining)
+  {
+    if (depth > 32 || count > remaining || (count && !specs))
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter argument import exceeds structural limits");
+    remaining -= count;
+    arguments_.reserve (count);
+    for (guint i = 0; i < count; ++i)
+      {
+        const auto& spec = specs[i];
+        if (spec.is_null != FALSE && spec.is_null != TRUE)
+          throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Invalid argument null flag");
+        Argument arg;
+        arg.value = Value (spec.value_type);
+        if (G_VALUE_HOLDS_OBJECT (arg.value.get ()) || GIMP_VALUE_HOLDS_CORE_OBJECT_ARRAY (arg.value.get ()))
+          {
+            const bool single = G_VALUE_HOLDS_OBJECT (arg.value.get ());
+            if (spec.n_children || (single && spec.n_references != 1) ||
+                (!single && spec.is_null && spec.n_references) || spec.n_references > remaining ||
+                (spec.n_references && !spec.references))
+              throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Invalid imported reference shape");
+            remaining -= spec.n_references;
+            arg.null_container = spec.is_null;
+            for (guint j = 0; j < spec.n_references; ++j)
+              {
+                const auto& ref = spec.references[j];
+                GObject *target = spec.targets ? spec.targets[j] : nullptr;
+                if ((ref.was_set != FALSE && ref.was_set != TRUE) ||
+                    (ref.expired != FALSE && ref.expired != TRUE) ||
+                    (!ref.was_set && ref.expired) ||
+                    !g_type_is_a (ref.object_type, G_TYPE_OBJECT) ||
+                    (single && !g_type_is_a (ref.object_type, spec.value_type)) ||
+                    (single && bool (spec.is_null) == bool (ref.was_set)) ||
+                    (!single && !ref.was_set) ||
+                    (target && (!ref.was_set || ref.expired ||
+                                !G_TYPE_CHECK_INSTANCE_TYPE (target, ref.object_type))))
+                  throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Invalid imported object descriptor or target");
+                arg.objects.emplace_back (target, ref.object_type);
+                arg.objects.back ().type = ref.object_type;
+                arg.objects.back ().id = ref.id;
+                arg.objects.back ().had_object = ref.was_set;
+              }
+          }
+        else if (GIMP_VALUE_HOLDS_VALUE_ARRAY (arg.value.get ()))
+          {
+            if (spec.n_references || (spec.is_null && spec.n_children))
+              throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Invalid nested argument shape");
+            if (!spec.is_null)
+              arg.nested = std::make_shared<FilterArguments> (spec.n_children, spec.children, depth + 1, remaining);
+          }
+        else
+          {
+            if (spec.n_children || spec.n_references || !spec.value || !G_IS_VALUE (spec.value) ||
+                G_VALUE_TYPE (spec.value) != spec.value_type)
+              throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Imported scalar has the wrong GValue type");
+            const auto type = spec.value_type;
+            if (G_VALUE_HOLDS_POINTER (spec.value) || G_VALUE_HOLDS_PARAM (spec.value) ||
+                (G_VALUE_HOLDS_BOXED (spec.value) && type != G_TYPE_BYTES && type != G_TYPE_STRV &&
+                 type != GIMP_TYPE_ARRAY && type != GIMP_TYPE_INT32_ARRAY && type != GIMP_TYPE_DOUBLE_ARRAY))
+              throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Unsupported imported scalar type");
+            g_value_copy (spec.value, arg.value.get ());
+          }
+        arguments_.push_back (std::move (arg));
+        if (is_null (i) != bool (spec.is_null))
+          throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Imported null flag conflicts with its value");
+      }
+  }
   std::size_t size () const noexcept { return arguments_.size (); }
   const GValue *at (std::size_t i) const { return arguments_.at (i).value.get (); }
+  std::size_t reference_count (std::size_t argument) const
+  { return argument < arguments_.size () ? arguments_[argument].objects.size () : 0; }
+  std::shared_ptr<const FilterArguments> nested (std::size_t argument) const
+  { return argument < arguments_.size () ? arguments_[argument].nested : nullptr; }
+  bool is_null (std::size_t argument) const
+  {
+    const auto& arg = arguments_.at (argument);
+    const auto *value = arg.value.get ();
+    if (G_VALUE_HOLDS_OBJECT (value)) return !arg.objects[0].had_object;
+    if (GIMP_VALUE_HOLDS_CORE_OBJECT_ARRAY (value)) return arg.null_container;
+    if (GIMP_VALUE_HOLDS_VALUE_ARRAY (value)) return !arg.nested;
+    if (G_VALUE_HOLDS_STRING (value)) return g_value_get_string (value) == nullptr;
+    if (G_VALUE_HOLDS_BOXED (value)) return g_value_get_boxed (value) == nullptr;
+    if (G_VALUE_HOLDS_VARIANT (value)) return g_value_get_variant (value) == nullptr;
+    return false;
+  }
+  bool scalar (std::size_t argument) const
+  {
+    const auto *value = at (argument);
+    return !G_VALUE_HOLDS_OBJECT (value) && !GIMP_VALUE_HOLDS_CORE_OBJECT_ARRAY (value) && !GIMP_VALUE_HOLDS_VALUE_ARRAY (value);
+  }
   const FilterArgumentReference *reference (std::size_t argument, std::size_t element) const
   {
     if (argument >= arguments_.size () || element >= arguments_[argument].objects.size ()) return nullptr;
@@ -96,7 +197,7 @@ public:
                 auto target = arg.objects[0].target.lock ();
                 g_value_set_object (value.get (), target.get ());
               }
-            else if (GIMP_VALUE_HOLDS_CORE_OBJECT_ARRAY (value.get ()))
+            else if (GIMP_VALUE_HOLDS_CORE_OBJECT_ARRAY (value.get ()) && !arg.null_container)
               {
                 std::vector<GObject *> pointers;
                 std::vector<ObjectRef<GObject>> leases;

@@ -641,6 +641,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 17.001 | [ ] | 状態遷移表を作る | 15.014, 16.023 | dirty・入力準備・依存待ち・予約・実行・反映・失敗を列挙 |
+| 17.001/fair-checkpoint-state | [x] | 公平dispatchと保存状態/世代の安全な境界を接続する | 15.001/core-scheduler-edge, 16.003/gauss-executor, 05.003/retained-item-lifetime | FIFO/input優先・owner終了・buffer通知再入を処理し、stored世代とruntime epochを分離。32 app/20 scheduler/8 dispatcher通常・focused sanitizer。大画像spool/全性能/色空間gateは未完了 |
 | 17.001/filter-end-timeout-contract | [ ] | FilterLayer の遅延終了通知の所有権を定義する | 17.001, 01.005/deferred-sources | source ID、所有者寿命、close とキャンセルの順序、通知の一回性を状態遷移表へ明記 |
 | 17.002 | [ ] | 更新イベントの入力を実装する | 17.001 | 下層画素・設定・階層変更を分類 |
 | 17.003 | [ ] | 上層変更の除外を実装する | 17.002 | 無関係な変更で再評価しない |

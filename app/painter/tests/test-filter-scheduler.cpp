@@ -5,6 +5,7 @@
 #include <atomic>
 #include <chrono>
 #include <memory>
+#include <limits>
 #include <stdexcept>
 #include <thread>
 using namespace GimpPainter;
@@ -210,11 +211,127 @@ static void closed_request_is_inert ()
   g_assert_cmpuint (s.starts (), ==, 0);
 }
 
+
+static void rejected_worker_is_not_settled_until_done ()
+{
+  auto release = std::make_shared<std::atomic<bool>> (false);
+  Harness h;
+  h.configure (1,1,[release] (const FilterScheduler::Bytes&, std::atomic<bool>&, FilterScheduler::Bytes&) {
+    while (!release->load ()) std::this_thread::yield ();
+    return false;
+  });
+  h.step (); h.scheduler.reject ("dependency failed");
+  g_assert_true (h.scheduler.state () == State::failed);
+  g_assert_true (h.scheduler.has_worker ()); g_assert_false (h.scheduler.settled ());
+  for (int i = 0; i < 5; ++i) h.step ();
+  g_assert_false (h.scheduler.settled ()); g_assert_cmpuint (h.commits, ==, 0);
+  release->store (true); h.finish ();
+  g_assert_true (h.scheduler.settled ()); g_assert_false (h.scheduler.has_worker ());
+  g_assert_cmpuint (h.scheduler.starts (), ==, 1); g_assert_cmpuint (h.commits, ==, 0);
+}
+
+
+static void saved_cache_generations ()
+{
+  Harness h; h.configure ();
+  h.scheduler.restore_cache ({42,41,true});
+  const auto restored_generation = h.scheduler.generation ();
+  g_assert_cmpuint (restored_generation, !=, 42);
+  g_assert_true (h.scheduler.state () == State::waiting); h.finish ();
+  g_assert_cmpuint (h.scheduler.generation (), ==, restored_generation);
+  g_assert_cmpuint (h.scheduler.cache_generation (), ==, restored_generation);
+  g_assert_cmpuint (h.commits, ==, 1);
+  h.scheduler.restore_cache ({100,100,true});
+  g_assert_false (h.step ()); g_assert_cmpuint (h.commits, ==, 1);
+  h.scheduler.restore_cache ({100,100,false}); h.finish ();
+  g_assert_cmpuint (h.commits, ==, 2); g_assert_true (h.scheduler.snapshot ().cache_complete);
+  const auto valid_generation = h.scheduler.generation ();
+  bool failed = false;
+  try { h.scheduler.restore_cache ({2,3,true}); } catch (const std::invalid_argument&) { failed = true; }
+  g_assert_true (failed); g_assert_cmpuint (h.scheduler.generation (), ==, valid_generation);
+}
+static void restored_cache_rejects_colliding_old_job ()
+{
+  auto release = std::make_shared<std::atomic<bool>> (false);
+  Harness h; h.configure (1,1,[release] (const FilterScheduler::Bytes& in, std::atomic<bool>&, FilterScheduler::Bytes& out) {
+    while (!release->load ()) std::this_thread::yield ();
+    out = in; return true;
+  });
+  h.step ();
+  const auto token = h.scheduler.generation ();
+  h.scheduler.restore_cache ({token,token,true});
+  g_assert_cmpuint (h.scheduler.generation (), !=, token);
+  release->store (true); h.finish ();
+  g_assert_cmpuint (h.commits, ==, 0); g_assert_cmpuint (h.scheduler.starts (), ==, 1);
+  g_assert_true (h.scheduler.state () == State::clean);
+}
+
+
+static void commit_failure_does_not_certify_cache ()
+{
+  FilterScheduler s; unsigned attempts = 0;
+  s.set_request ({1,1,[] (const FilterScheduler::Bytes& in, std::atomic<bool>&, FilterScheduler::Bytes& out) { out = in; return true; }});
+  const auto deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 5;
+  while (!s.settled () && g_get_monotonic_time () < deadline)
+    {
+      s.step (true,[] (std::size_t, std::size_t, FilterScheduler::Bytes& out) { out.resize (4); },
+        [] (std::size_t, std::size_t, const std::uint8_t *) {},
+        [&] (std::uint64_t) { ++attempts; throw std::runtime_error ("publication failed"); });
+      g_usleep (100);
+    }
+  g_assert_true (s.state () == State::failed); g_assert_cmpuint (attempts, ==, 1);
+  g_assert_false (s.snapshot ().cache_complete); g_assert_cmpuint (s.cache_generation (), ==, 0);
+  for (int i = 0; i < 5; ++i) g_assert_false (s.step (true, {}, {}, {}));
+}
+static void obsolete_read_failure_preserves_new_edit ()
+{
+  Harness h; h.configure (1,1);
+  g_assert_true (h.scheduler.step (true,
+    [&] (std::size_t, std::size_t, FilterScheduler::Bytes&) { h.scheduler.invalidate (); throw std::runtime_error ("obsolete read failed"); },
+    {}, {}));
+  g_assert_true (h.scheduler.state () == State::waiting);
+  h.value = 97; h.finish ();
+  g_assert_cmpuint (h.commits, ==, 1);
+  for (auto value : h.imported) g_assert_cmpuint (value, ==, 97);
+}
+
+
+static void saved_generation_boundaries ()
+{
+  Harness h; h.configure (1,1);
+  h.scheduler.restore_cache ({0,0,true});
+  g_assert_true (h.scheduler.settled ());
+  g_assert_cmpuint (h.scheduler.generation (), ==, h.scheduler.cache_generation ());
+  h.scheduler.invalidate ();
+  const auto previous = h.scheduler.generation ();
+  bool rejected = false;
+  try { h.scheduler.restore_cache ({0,1,true}); } catch (const std::invalid_argument&) { rejected = true; }
+  g_assert_true (rejected); g_assert_cmpuint (h.scheduler.generation (), ==, previous);
+  rejected = false;
+  try { h.scheduler.restore_cache ({std::numeric_limits<std::uint64_t>::max (),0,true}); }
+  catch (const std::invalid_argument&) { rejected = true; }
+  g_assert_true (rejected); g_assert_cmpuint (h.scheduler.generation (), ==, previous);
+  h.scheduler.invalidate (); g_assert_cmpuint (h.scheduler.generation (), ==, previous + 1);
+  h.finish ();
+  const auto maximum = std::uint64_t (std::numeric_limits<std::int64_t>::max ());
+  h.scheduler.restore_cache ({maximum,maximum,true});
+  g_assert_cmpuint (h.scheduler.generation (), <, maximum);
+  h.scheduler.invalidate ();
+  const auto saved = h.scheduler.snapshot ();
+  g_assert_cmpuint (saved.generation, !=, saved.cache_generation);
+  Harness reopened; reopened.configure (1,1); reopened.scheduler.restore_cache (saved);
+  g_assert_true (reopened.scheduler.state () == State::waiting);
+  reopened.finish ();
+  g_assert_cmpuint (reopened.scheduler.generation (), ==, reopened.scheduler.cache_generation ());
+}
+
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, nullptr);
 #define ADD(name) g_test_add_func ("/painter-filter-scheduler/" #name, name)
-  ADD (reject_during_read); ADD (reject_during_import); ADD (closed_request_is_inert);
+  ADD (saved_generation_boundaries); ADD (commit_failure_does_not_certify_cache); ADD (obsolete_read_failure_preserves_new_edit);
+  ADD (saved_cache_generations); ADD (restored_cache_rejects_colliding_old_job);
+  ADD (rejected_worker_is_not_settled_until_done); ADD (reject_during_read); ADD (reject_during_import); ADD (closed_request_is_inert);
   ADD (completed_cache); ADD (bounded_chunks); ADD (dependency_priority);
   ADD (cancel_request_is_not_completion); ADD (changes_during_preparation); ADD (changes_during_import);
   ADD (failures_do_not_retry); ADD (close_does_not_wait); ADD (loaded_cache_not_reexecuted);

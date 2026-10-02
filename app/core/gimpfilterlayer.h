@@ -13,6 +13,22 @@ typedef enum {
   GIMP_FILTER_LAYER_RUNNING, GIMP_FILTER_LAYER_CANCELLING, GIMP_FILTER_LAYER_IMPORTING,
   GIMP_FILTER_LAYER_FAILED, GIMP_FILTER_LAYER_CLOSED
 } GimpFilterLayerState;
+typedef struct
+{
+  guint32 version;                 /* currently 1 */
+  guint64 generation;
+  guint64 cache_generation;
+  gboolean cache_complete;
+  GimpFilterLayerState state;      /* diagnostic saved state; never resumed literally */
+} GimpFilterLayerSnapshot;
+/* Snapshot performs no evaluation. Restore is a loader-only checkpoint AFTER
+ * definition, saved pixels and ALL layer topology have been restored. A complete
+ * equal-generation cache stays clean; stale/incomplete cache schedules once.
+ * Counters are normalized into a fresh runtime epoch; numerical equality with
+ * stored counters is not promised. Their fresh/stale relationship is preserved.
+ * In-flight jobs are cancelled/discarded, never resumed or waited for. */
+gboolean gimp_filter_layer_get_snapshot_state (GimpFilterLayer *, GimpFilterLayerSnapshot *);
+gboolean gimp_filter_layer_restore_snapshot_state (GimpFilterLayer *, const GimpFilterLayerSnapshot *, GError **);
 GType       gimp_filter_layer_get_type       (void) G_GNUC_CONST;
 GimpLayer * gimp_filter_layer_new            (GimpImage *, gint, gint, const gchar *, gdouble, GimpLayerMode);
 /* Serialized definition is the complete original PROP_FILTER_SPEC payload.
@@ -32,6 +48,58 @@ GimpValueArray *gimp_filter_layer_dup_args   (GimpFilterLayer *);
  * Dup_args returns null for expired object arrays instead of dangling pointers. */
 gboolean gimp_filter_layer_get_argument_reference (GimpFilterLayer *, guint argument, guint element,
                                                   GType *type, gint64 *id, gboolean *expired);
+/* Immutable typed snapshot for writers. Null root means no converted argument
+ * model was supplied; original raw bytes may still contain unsupported arguments.
+ * A nonnull snapshot with count zero means an explicitly empty argument array. Descriptor
+ * and nested access never requires a live referenced object. Get_value copies
+ * only scalar/known non-object values into a zero-initialized GValue; objects,
+ * object arrays and nested arrays use the descriptor/nested APIs instead.
+ * Every returned snapshot is independently owned and must be freed. Main-thread
+ * API; types/values/reference IDs remain immutable after edits. Reference expiration
+ * is queried at access time. */
+typedef struct _GimpFilterArgumentsSnapshot GimpFilterArgumentsSnapshot;
+typedef struct
+{
+  GType object_type;
+  gint64 id;
+  gboolean was_set;
+  gboolean expired;
+} GimpFilterArgumentReference;
+/* Recursive import description. Scalar value must have exactly value_type.
+ * Object slots require one descriptor; object arrays carry n_references. The
+ * optional equally-sized targets array binds explicitly resolved live objects;
+ * expired/unset descriptors cannot be bound. Nested arrays use children.
+ * is_null preserves null versus empty arrays/strings. Borrowed inputs are never
+ * retained; imported object links are weak. Limits: depth 32, total slots plus
+ * references 65536. Unknown GTypes must stay in the outer raw metadata. */
+typedef struct _GimpFilterArgumentSpec GimpFilterArgumentSpec;
+struct _GimpFilterArgumentSpec
+{
+  GType value_type;
+  gboolean is_null;
+  const GValue *value;
+  guint n_references;
+  const GimpFilterArgumentReference *references;
+  GObject * const *targets;
+  guint n_children;
+  const GimpFilterArgumentSpec *children;
+};
+GimpFilterArgumentsSnapshot *gimp_filter_arguments_snapshot_import (guint n_arguments,
+                                                                   const GimpFilterArgumentSpec *, GError **);
+gboolean gimp_filter_layer_set_definition_with_snapshot (GimpFilterLayer *, const gchar *procedure,
+                                                         GBytes *serialized_definition,
+                                                         const GimpFilterArgumentsSnapshot *, GError **);
+GimpFilterArgumentsSnapshot *gimp_filter_layer_snapshot_arguments (GimpFilterLayer *);
+void     gimp_filter_arguments_snapshot_free (GimpFilterArgumentsSnapshot *);
+guint    gimp_filter_arguments_snapshot_count (const GimpFilterArgumentsSnapshot *);
+GType    gimp_filter_arguments_snapshot_type (const GimpFilterArgumentsSnapshot *, guint argument);
+gboolean gimp_filter_arguments_snapshot_is_null (const GimpFilterArgumentsSnapshot *, guint argument);
+gboolean gimp_filter_arguments_snapshot_value (const GimpFilterArgumentsSnapshot *, guint argument, GValue *value);
+guint    gimp_filter_arguments_snapshot_reference_count (const GimpFilterArgumentsSnapshot *, guint argument);
+gboolean gimp_filter_arguments_snapshot_reference (const GimpFilterArgumentsSnapshot *, guint argument,
+                                                   guint element, GimpFilterArgumentReference *);
+GimpFilterArgumentsSnapshot *gimp_filter_arguments_snapshot_nested (const GimpFilterArgumentsSnapshot *, guint argument);
+
 void        gimp_filter_layer_mark_as_loaded (GimpFilterLayer *);
 void        gimp_filter_layer_invalidate     (GimpFilterLayer *);
 GimpFilterLayerState gimp_filter_layer_get_state (GimpFilterLayer *);

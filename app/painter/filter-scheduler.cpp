@@ -2,6 +2,7 @@
 #include "filter-scheduler.hpp"
 #include <algorithm>
 #include <stdexcept>
+#include <limits>
 #include <thread>
 #include <utility>
 
@@ -15,12 +16,21 @@ struct FilterScheduler::Job
   bool success = false;
   std::uint64_t generation = 0;
 };
+void FilterScheduler::advance_generation () noexcept
+{
+  /* Persisted counters never become live job tokens. Keep generated snapshots
+   * inside the wire range even if a runtime epoch is eventually exhausted. */
+  if (generation_ >= std::uint64_t (std::numeric_limits<std::int64_t>::max ()))
+    { generation_ = 1; cache_generation_ = 0; }
+  else
+    ++generation_;
+}
 void FilterScheduler::cancel () noexcept
 { if (job_) job_->cancelled.store (true, std::memory_order_relaxed); }
 void FilterScheduler::invalidate () noexcept
 {
   if (state_ == State::closed) return;
-  ++generation_;
+  advance_generation ();
   dirty_ = true;
   error_.clear ();
   cancel ();
@@ -35,21 +45,41 @@ void FilterScheduler::set_request (Request request)
 void FilterScheduler::mark_loaded () noexcept
 {
   if (state_ == State::closed) return;
-  ++generation_;
+  advance_generation ();
   cancel ();
   dirty_ = false;
   cache_generation_ = generation_;
+  cache_complete_ = true;
   state_ = job_ ? State::cancelling : State::clean;
   cursor_ = 0;
   input_.clear ();
   error_.clear ();
 }
+void FilterScheduler::restore_cache (const Snapshot& saved)
+{
+  if (state_ == State::closed)
+    throw std::invalid_argument ("Cannot restore a closed filter scheduler");
+  if (saved.cache_generation > saved.generation ||
+      saved.generation > std::uint64_t (std::numeric_limits<std::int64_t>::max ()))
+    throw std::invalid_argument ("Invalid saved filter generations");
+  cancel ();
+  advance_generation ();
+  cache_complete_ = saved.cache_complete;
+  dirty_ = !cache_complete_ || saved.generation != saved.cache_generation;
+  /* The stored relationship carries meaning; the absolute persisted counter
+   * is untrusted diagnostic lineage, not a runtime freshness capability. */
+  cache_generation_ = dirty_ ? 0 : generation_;
+  cursor_ = 0;
+  input_.clear ();
+  error_.clear ();
+  state_ = job_ ? State::cancelling : dirty_ ? State::waiting : State::clean;
+}
 void FilterScheduler::reject (const char *message) noexcept
-{ if (state_ != State::closed) { ++generation_; cancel (); fail (message); } }
+{ if (state_ != State::closed) { advance_generation (); cancel (); fail (message); } }
 void FilterScheduler::close () noexcept
 {
   if (state_ == State::closed) return;
-  ++generation_;
+  advance_generation ();
   cancel ();
   job_.reset (); // worker owns the job independently; no join/wait or UI access
   input_.clear ();
@@ -76,6 +106,7 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
                             const Commit& commit) noexcept
 {
   if (state_ == State::closed) return false;
+  const auto operation_generation = generation_;
   try
     {
       if (job_ && state_ != State::importing)
@@ -155,16 +186,36 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
           if (token != generation_ || state_ != State::importing) return dirty_ || bool (job_);
           cursor_ += count;
           if (cursor_ < request_.width * request_.height) return true;
-          /* Publish state before update signals can reenter invalidation. */
-          dirty_ = false; state_ = State::clean; cache_generation_ = token;
+          /* Publish metadata before the atomic buffer swap emits update
+           * signals. If an adapter throws, do not certify an unknown cache. */
+          const auto previous_cache_generation = cache_generation_;
+          dirty_ = false; state_ = State::clean; cache_generation_ = token; cache_complete_ = true;
           job_.reset ();
-          commit (token);
+          try { commit (token); }
+          catch (...)
+            {
+              if (state_ != State::closed)
+                {
+                  cache_complete_ = false;
+                  if (cache_generation_ == token) cache_generation_ = previous_cache_generation;
+                  if (generation_ != token && state_ == State::clean)
+                    { dirty_ = true; state_ = State::waiting; }
+                }
+              throw;
+            }
           return dirty_;
         }
       return false;
     }
-  catch (const std::exception& e) { if (state_ != State::closed) { job_.reset (); fail (e.what ()); } }
-  catch (...) { if (state_ != State::closed) { job_.reset (); fail ("Filter scheduling failed"); } }
-  return false;
+  catch (const std::exception& e)
+    {
+      if (state_ != State::closed && generation_ == operation_generation) { job_.reset (); fail (e.what ()); }
+    }
+  catch (...)
+    {
+      if (state_ != State::closed && generation_ == operation_generation) { job_.reset (); fail ("Filter scheduling failed"); }
+    }
+  /* An obsolete callback failure must not erase an edit made by reentry. */
+  return state_ != State::closed && (dirty_ || bool (job_));
 }
 } // namespace GimpPainter

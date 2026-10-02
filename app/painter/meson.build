@@ -46,7 +46,7 @@ test('painter-foundation', painter_foundation_test,
 )
 
 # The feature scheduler and exact legacy-edge executor own no GIMP objects.
-foreach feature : ['filter-scheduler', 'filter-edge', 'filter-gauss']
+foreach feature : ['filter-scheduler', 'filter-edge', 'filter-gauss', 'fair-dispatcher']
   feature_test = executable('painter-' + feature,
     'tests/test-' + feature + '.cpp',
     dependencies: [painter_dep, painter_threads],

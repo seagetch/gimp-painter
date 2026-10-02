@@ -19,6 +19,11 @@ public:
   using Process = std::function<bool (const Bytes&, std::atomic<bool>&, Bytes&)>;
   enum class State { clean, waiting, preparing, running, cancelling, importing, failed, closed };
   struct Request { std::size_t width = 0, height = 0; Process process; };
+  struct Snapshot
+  {
+    std::uint64_t generation = 0, cache_generation = 0;
+    bool cache_complete = true;
+  };
   /* Offset and count are pixels, always a contiguous portion of one scanline
    * or a whole number of scanlines. Each call is <= pixel_budget. */
   using Read = std::function<void (std::size_t, std::size_t, Bytes&)>;
@@ -34,13 +39,15 @@ public:
   void invalidate () noexcept;
   void set_request (Request request);
   void mark_loaded () noexcept;
+  Snapshot snapshot () const noexcept { return {generation_, cache_generation_, cache_complete_}; }
+  void restore_cache (const Snapshot&);
   void reject (const char *message) noexcept;
   void close () noexcept;
   /* One bounded main-thread quantum. False means no further quanta are needed.
    * Dependency waiters sleep until their dependency signal schedules a step. */
   bool step (bool dependencies_ready, const Read&, const Import&, const Commit&) noexcept;
   State state () const noexcept { return state_; }
-  bool settled () const noexcept { return state_ == State::clean || state_ == State::failed; }
+  bool settled () const noexcept { return !job_ && (state_ == State::clean || state_ == State::failed); }
   bool has_worker () const noexcept { return bool (job_); }
   std::uint64_t generation () const noexcept { return generation_; }
   std::uint64_t cache_generation () const noexcept { return cache_generation_; }
@@ -49,6 +56,7 @@ public:
 private:
   struct Job;
   std::size_t next_count (std::size_t offset) const noexcept;
+  void advance_generation () noexcept;
   void cancel () noexcept;
   void fail (const char *) noexcept;
   Request request_;
@@ -57,7 +65,7 @@ private:
   std::size_t cursor_ = 0;
   std::uint64_t generation_ = 0, work_generation_ = 0, cache_generation_ = 0, starts_ = 0;
   State state_ = State::clean;
-  bool dirty_ = false;
+  bool dirty_ = false, cache_complete_ = true;
   std::string error_;
 };
 } // namespace GimpPainter

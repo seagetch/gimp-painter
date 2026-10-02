@@ -1,0 +1,39 @@
+{
+  "scope": "FairDispatcher, Source, and regression tests; GLib/GObject/system libraries uninstrumented",
+  "sources": [
+    "app/painter/gimp-painter-error.cpp",
+    "app/painter/tests/test-fair-dispatcher.cpp"
+  ],
+  "command": [
+    "g++",
+    "-std=c++14",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-g",
+    "-O1",
+    "-pthread",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "-frtti",
+    "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/gimp-painter-error.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/tests/test-fair-dispatcher.cpp",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+    "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+    "-pthread",
+    "-lgobject-2.0",
+    "-lglib-2.0",
+    "-o",
+    "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/fair-dispatcher-sanitizers/painter-fair-dispatcher"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "leak_detection": false,
+  "exit_code": 0,
+  "stdout": "TAP version 14\n# random seed: R02Sa16fdb262780db13c9074ff4bc9ca3bb\n1..8\n# Start of painter-fair-dispatcher tests\nok 1 /painter-fair-dispatcher/capture_destruction_can_replace_ticket\nok 2 /painter-fair-dispatcher/cancel_then_schedule_replaces_source\nok 3 /painter-fair-dispatcher/input_preempts_next_quantum\nok 4 /painter-fair-dispatcher/fifo_one_quantum\nok 5 /painter-fair-dispatcher/cancel_during_callback\nok 6 /painter-fair-dispatcher/schedule_during_callback\nok 7 /painter-fair-dispatcher/dispatcher_close_invalidates_tickets\nok 8 /painter-fair-dispatcher/exception_does_not_stall_others\n# End of painter-fair-dispatcher tests\n",
+  "stderr": ""
+}
