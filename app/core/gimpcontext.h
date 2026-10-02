@@ -100,7 +100,11 @@ struct _GimpContext
   GimpImagefile        *imagefile;
   gchar                *imagefile_name;
 
+#ifdef __cplusplus
+  GimpTemplate         *template_object;
+#else
   GimpTemplate         *template;
+#endif
   gchar                *template_name;
 
   GimpLineArt          *line_art;
@@ -150,7 +154,7 @@ struct _GimpContextClass
   void (* imagefile_changed)  (GimpContext          *context,
                                GimpImagefile        *imagefile);
   void (* template_changed)   (GimpContext          *context,
-                               GimpTemplate         *template);
+                               GimpTemplate         *template_object);
 
   void (* prop_name_changed)  (GimpContext          *context,
                                GimpContextPropType   prop);
@@ -161,7 +165,7 @@ GType         gimp_context_get_type          (void) G_GNUC_CONST;
 
 GimpContext * gimp_context_new               (Gimp                *gimp,
                                               const gchar         *name,
-                                              GimpContext         *template);
+                                              GimpContext         *template_object);
 
 GimpContext * gimp_context_get_parent        (GimpContext         *context);
 void          gimp_context_set_parent        (GimpContext         *context,
@@ -360,7 +364,7 @@ void             gimp_context_imagefile_changed   (GimpContext     *context);
 /*  template  */
 GimpTemplate   * gimp_context_get_template        (GimpContext     *context);
 void             gimp_context_set_template        (GimpContext     *context,
-                                                   GimpTemplate    *template);
+                                                   GimpTemplate    *template_object);
 void             gimp_context_template_changed    (GimpContext     *context);
 
 /*  line art  */

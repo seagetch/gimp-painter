@@ -37,7 +37,12 @@ struct _GimpDrawable
 {
   GimpItem             parent_instance;
 
+  /* C++ keyword-safe spelling; the C and C++ layouts are identical. */
+#ifdef __cplusplus
+  GimpDrawablePrivate *priv;
+#else
   GimpDrawablePrivate *private;
+#endif
 };
 
 struct _GimpDrawableClass

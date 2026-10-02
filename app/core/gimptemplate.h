@@ -70,32 +70,32 @@ GType               gimp_template_get_type            (void) G_GNUC_CONST;
 
 GimpTemplate      * gimp_template_new                 (const gchar  *name);
 
-void                gimp_template_set_from_image      (GimpTemplate *template,
+void                gimp_template_set_from_image      (GimpTemplate *template_object,
                                                        GimpImage    *image);
 
-gint                gimp_template_get_width           (GimpTemplate *template);
-gint                gimp_template_get_height          (GimpTemplate *template);
-GimpUnit          * gimp_template_get_unit            (GimpTemplate *template);
+gint                gimp_template_get_width           (GimpTemplate *template_object);
+gint                gimp_template_get_height          (GimpTemplate *template_object);
+GimpUnit          * gimp_template_get_unit            (GimpTemplate *template_object);
 
-gdouble             gimp_template_get_resolution_x    (GimpTemplate *template);
-gdouble             gimp_template_get_resolution_y    (GimpTemplate *template);
-GimpUnit          * gimp_template_get_resolution_unit (GimpTemplate *template);
+gdouble             gimp_template_get_resolution_x    (GimpTemplate *template_object);
+gdouble             gimp_template_get_resolution_y    (GimpTemplate *template_object);
+GimpUnit          * gimp_template_get_resolution_unit (GimpTemplate *template_object);
 
-GimpImageBaseType   gimp_template_get_base_type       (GimpTemplate *template);
-GimpPrecision       gimp_template_get_precision       (GimpTemplate *template);
+GimpImageBaseType   gimp_template_get_base_type       (GimpTemplate *template_object);
+GimpPrecision       gimp_template_get_precision       (GimpTemplate *template_object);
 
-GimpColorProfile  * gimp_template_get_color_profile   (GimpTemplate *template);
+GimpColorProfile  * gimp_template_get_color_profile   (GimpTemplate *template_object);
 GimpColorProfile  * gimp_template_get_simulation_profile
-                                                      (GimpTemplate *template);
+                                                      (GimpTemplate *template_object);
 GimpColorRenderingIntent gimp_template_get_simulation_intent
-                                                      (GimpTemplate *template);
-gboolean            gimp_template_get_simulation_bpc  (GimpTemplate *template);
+                                                      (GimpTemplate *template_object);
+gboolean            gimp_template_get_simulation_bpc  (GimpTemplate *template_object);
 
-GimpFillType        gimp_template_get_fill_type       (GimpTemplate *template);
+GimpFillType        gimp_template_get_fill_type       (GimpTemplate *template_object);
 
-const gchar       * gimp_template_get_comment         (GimpTemplate *template);
+const gchar       * gimp_template_get_comment         (GimpTemplate *template_object);
 
-guint64             gimp_template_get_initial_size    (GimpTemplate *template);
+guint64             gimp_template_get_initial_size    (GimpTemplate *template_object);
 
 
 #endif /* __GIMP_TEMPLATE__ */

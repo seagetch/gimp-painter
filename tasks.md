@@ -248,6 +248,8 @@
 | 03.008 | [x] | 基準版の標準試験を実行する | 03.007 | 既存失敗と移植起因の失敗を区別可能。基準版 app suite 4/5 成功、`save-and-export` は移植前から失敗（`migration/baseline/standard-tests.md`） |
 | 03.009 | [x] | ビルドキャッシュの再現条件を記録する | 03.008 | cache 無効の clean build 手順を保持（`migration/baseline/linux-build.md`） |
 
+2026-10-02の並行化：04.003は既存C headerの可読性監査なので、全feature登録ではなく01.017の確定source台帳と04.002/common-foundationの混在compiler環境を入力とする。未実装featureのheader/link検証とG1全区分完了条件は維持する。
+
 ### 04 C/C++ 混在ビルドの接続
 
 主対象：app の Meson と C 公開境界
@@ -257,7 +259,7 @@
 | 04.001 | [x] | 独自 C++ モジュールの配置を決める | 01.017, 03.009 | GLib/GObjectのみの共通bridgeとcore・paint・PDB・UI・presetsの依存方向、C公開ヘッダーとprivate C++配置を記録（`migration/contracts/module-layout.md`） |
 | 04.002 | [ ] | C++ ソースを Meson の対象へ登録する | 04.001 | 既存 C ソースを C++ として再コンパイルせず追加できる |
 | 04.002/common-foundation | [x] | 共通C++基盤を実appと最小混在試験へ接続する | 04.001 | GObject-only static library、C入口とGimp.dispose、明示C++ link、31寿命/例外試験を統合。通常・ASan/UBSan・Meson・install後smokeに合格（`migration/tests/painter-integration.json`）。旧機能全登録は親04.002に残す |
-| 04.003 | [ ] | C ヘッダーの C++ 可読性を監査する | 04.002 | 予約語・暗黙変換・宣言順などの衝突を一覧化 |
+| 04.003 | [x] | C ヘッダーの C++ 可読性を監査する | 04.002/common-foundation, 01.017 | 既存42 header経路・89 hunk義務を監査し予約語/flags変換を修正。C/C++二重include、全18macro展開とABI配置の88 probe合格（`migration/contracts/c-header-audit.md`）。後続feature追加headerと他platformは各作業で検証 |
 | 04.004 | [ ] | C 公開ヘッダーの linkage を整える | 04.003 | C と C++ の両方から include できる |
 | 04.005 | [ ] | C++ 専用ヘッダーの公開範囲を制限する | 04.004 | C の translation unit に template・STL が漏れない |
 | 04.006 | [ ] | 相互呼出しの最小試験を作る | 04.005 | C→C++→C の値とエラーが往復する |

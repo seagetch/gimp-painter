@@ -22,10 +22,10 @@
 GimpTemplate * gimp_image_new_get_last_template (Gimp            *gimp,
                                                  GimpImage       *image);
 void           gimp_image_new_set_last_template (Gimp            *gimp,
-                                                 GimpTemplate    *template);
+                                                 GimpTemplate    *template_object);
 
 GimpImage    * gimp_image_new_from_template     (Gimp            *gimp,
-                                                 GimpTemplate    *template,
+                                                 GimpTemplate    *template_object,
                                                  GimpContext     *context);
 GimpImage    * gimp_image_new_from_drawable     (Gimp            *gimp,
                                                  GimpDrawable    *drawable);

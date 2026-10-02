@@ -40,7 +40,11 @@ struct _GimpCanvasItem
 {
   GimpObject             parent_instance;
 
+#ifdef __cplusplus
+  GimpCanvasItemPrivate *priv;
+#else
   GimpCanvasItemPrivate *private;
+#endif
 };
 
 struct _GimpCanvasItemClass
