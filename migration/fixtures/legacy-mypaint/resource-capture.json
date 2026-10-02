@@ -1,0 +1,21 @@
+{
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "behavior_source_sha256": {
+    "app/core/gimpmypaintbrush-load.cpp": "c4b6db71f25b7f3c503624d410fd3b2775a16370e169fb2c7d606db20b87322b",
+    "app/core/gimpmypaintbrush.cpp": "caa934e55a4414574893393e68fe71b4acef9d34dcb1ccc6f0df3369aae54a89",
+    "app/core/gimpmypaintbrush-private.hpp": "0d378f1ae0e89e564b7558a5f32393b7b284293c4dd9d468b4dfa9c1a9652118",
+    "app/core/mypaintbrush-mapping.hpp": "6756243f09fb455eeee7dfea1c2ae85b1a596bddf26c6974f4c5c762a1f86830",
+    "app/core/mypaintbrush-brushsettings.c": "bc734413af37338972d73bb8e9c70daab14bb9a897728b4170e17068168fa0b2"
+  },
+  "harness_source": "capture-resource.cpp",
+  "scope": "Actual legacy GimpMypaintBrush loader and private model invoked from separate headless harness linked against existing rebuilt application archives. No port decoder used by oracle. Numeric and curve values are float storage, rendered as hexadecimal double for exact comparison. Not UI/tablet/rendered pixel parity.",
+  "resources": 177,
+  "records": 81420,
+  "binary_sha256": "1723145b160cb389daefae8d0506d7fe20efef562c6faef873c20a299fac4bd6",
+  "core_archive_sha256": "1f94682694062183e1b629939790ec8c63f8789fced494f311261474a423c165",
+  "oracle_values_sha256": "bcd0bd609500d74c5338426c0d784c15eb1d4d3e1d478589d349419796627d4a",
+  "port_values_sha256": "bcd0bd609500d74c5338426c0d784c15eb1d4d3e1d478589d349419796627d4a",
+  "equal": true,
+  "build_environment": "/workspace/shared/gimp-legacy-build/env.sh",
+  "rebuild_notes": "Uses already documented Debian legacy build overlays from migration/baseline/legacy/build-report.json; no feature/loader source modified for capture."
+}

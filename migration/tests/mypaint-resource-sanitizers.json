@@ -1,0 +1,14 @@
+{
+  "asan": true,
+  "ubsan": true,
+  "lsan": "unavailable: LeakSanitizer fatal error under ptrace; rerun with detect_leaks=0 passed",
+  "scope": "Standalone resource/evaluator module, eight test cases and 177 corpus resources; not full application-core sanitizer coverage",
+  "command": "ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 resource-sanitize data/painter-mypaint-brushes",
+  "compiler_flags": [
+    "-std=c++14",
+    "-O1",
+    "-g",
+    "-fno-omit-frame-pointer",
+    "-fsanitize=address,undefined"
+  ]
+}

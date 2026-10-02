@@ -1,0 +1,5 @@
+# Preserve whitespace in byte-exact restored resource assets and legacy math
+# bodies so their provenance and numerical comparison remain straightforward.
+data/painter-mypaint-brushes/** whitespace=-blank-at-eol
+app/paint/painter-mypaint/legacy-brush.hpp whitespace=-blank-at-eol
+app/paint/painter-mypaint/surface.hpp whitespace=-blank-at-eol

@@ -1,0 +1,18 @@
+{
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "oracle_source_sha256": {
+    "app/paint/mypaintbrush-brush.hpp": "bc8b24293d8b85e9f956dab40b8c6bfaa2f43ca626715e08a3627f7043c6e8b4",
+    "app/paint/mypaintbrush-surface.hpp": "e20ab3582cbabfb8f3e8c74bc8ccd5eb0d95bcda581c4c3306eeaab40c550aa0",
+    "app/core/mypaintbrush-mapping.hpp": "6756243f09fb455eeee7dfea1c2ae85b1a596bddf26c6974f4c5c762a1f86830",
+    "libgimpcolor/gimpcolorspace.c": "c71dbe629ff318b5e721b523a687c63a5b4cb390dd9f51f5e3fc04c034c051cd"
+  },
+  "equal": true,
+  "legacy_sha256": "92d218f705de2a80a29c4917d31334d8238b542d4dae01f16fd35902ffe20d68",
+  "port_sha256": "92d218f705de2a80a29c4917d31334d8238b542d4dae01f16fd35902ffe20d68",
+  "trace_bytes": 5637911,
+  "stats": {
+    "legacy": "177 brushes + 1 synthetic; 27392 dabs, 3172 samples",
+    "port": "177 brushes + 1 synthetic; 27392 dabs, 3172 samples"
+  },
+  "scope": "Compiled original Brush evaluator and installed GIMP 2.8 color library versus port. Shared port Resource decoder; deterministic synthetic Surface responses, actual 177 brush settings plus extended synthetic scenario. Not old application drawable rendering or GUI/tablet validation."
+}

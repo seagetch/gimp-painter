@@ -38,6 +38,7 @@ app_tests = [
   'core',
   'gimp-clone-layer',
   'gimp-filter-layer',
+  'gimp-painter-mybrush',
   'gimpidtable',
 #'session-2-8-compatibility-multi-window',
 #'session-2-8-compatibility-single-window',

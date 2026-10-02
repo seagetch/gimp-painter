@@ -5,9 +5,12 @@ extern "C" {
 #include "gimpclonelayer.h"
 #include "gimpclonelayerundo.h"
 #include "gimpfilterlayer.h"
+#include "gimppaintermybrush.h"
 }
 #include "painter/object-ref.hpp"
 namespace GimpPainter {
+template<> struct TypeTraits<GimpPainterMybrush>
+{ static GType type () noexcept { return GIMP_TYPE_PAINTER_MYBRUSH; } };
 template<> struct TypeTraits<GimpLayer>
 { static GType type () noexcept { return GIMP_TYPE_LAYER; } };
 template<> struct TypeTraits<GimpFilterLayer>

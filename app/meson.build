@@ -1,6 +1,8 @@
 rootAppInclude = include_directories('.')
 
 subdir('painter')
+subdir('paint/painter-brush-settings')
+subdir('paint/painter-mypaint')
 subdir('actions')
 subdir('core')
 subdir('dialogs')
@@ -96,6 +98,7 @@ gimpconsole_deps = [
 console_libapps = [
     libappcore,
     libapppainter,
+    painter_mypaint,
     libappfile,
     libappfiledata,
     libappgegl,
@@ -112,6 +115,7 @@ console_libapps = [
 ]
 
 libapp_dep = declare_dependency(
+  link_whole: painter_mypaint,
   dependencies: [
     gimpconsole_deps,
     gtk3,
