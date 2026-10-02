@@ -28,7 +28,8 @@ continuation and exact pre-refactor oracles are documented in
 `native-brush-interpolation.md`. Search steps have a candidate budget of 4096. Completed
 publication and cancellation request asynchronous image/display refresh. Native
 COMMIT seals active input and lets the queued transaction finish; the automatic
-HALT immediately following COMMIT does not discard it. A later explicit HALT or
+HALT following each COMMIT (including nested COMMIT callbacks) does not discard
+it. A later explicit HALT or
 owner close invalidates the queue and stops its source. Connection detachment,
 revision checks, native-core leases and Source rearming protect reentrant close,
 rollback, and replacement-input callbacks.
@@ -45,16 +46,18 @@ unfinished painting is a remaining compatibility gate.
 The image's `query-pending-paint` signal is a pure read with OR accumulation and
 an explicit emitter lifetime lease. The tool answers for unadmitted envelopes;
 the core separately answers for active/deferred-cleanup native transactions.
-The generic Save/Save As/export entry, generic PDB file-save entry, direct
-file-exporter process entry, direct XCF
-entry/stream, initial writer and final XCF replacement checkpoint refuse with a
-BUSY error while painting is pending. Refusal leaves the destination and queued
-painting intact. The user can retry after painting completes. A save-progress
-callback that starts painting is also checked before committing replacement.
+The low-level Save/export entry, generic PDB file-save entry, direct file-exporter
+process entry, direct XCF entry/stream, initial writer and final XCF replacement
+checkpoint refuse with a BUSY error while painting is pending. Refusal leaves the
+destination and queued painting intact. A save-progress callback that starts
+painting is also checked before committing replacement.
 
-This is an interim safety behavior. Automatic save continuation, with ownership
-of the destination, progress UI and cancellation, is not implemented. It must
-not be described as full asynchronous Save compatibility.
+GUI Save/Save As/export now retain the accepted destination, procedure, flags and
+UI completion in an owned continuation, as documented in `deferred-save.md`.
+The image saving signal seals accepted input without canceling painting. A late
+BUSY retries the same request after the pure pending query clears. Save-and-close
+closes only after actual successful completion. Direct/PDB callers still receive
+BUSY; the file writer itself remains synchronous once paint waiting is complete.
 
 ## Performance and unclosed gates
 

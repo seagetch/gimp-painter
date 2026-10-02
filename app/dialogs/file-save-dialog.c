@@ -49,6 +49,7 @@
 #include "display/gimpdisplayshell.h"
 
 #include "file-save-dialog.h"
+#include "file-save-deferred.h"
 
 #include "gimp-log.h"
 #include "gimp-intl.h"
@@ -141,6 +142,66 @@ file_save_dialog_confirm_overwrite (GtkWidget *dialog,
     return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM;
 }
 
+typedef struct
+{
+  GWeakRef dialog;
+  GWeakRef display;
+  GimpImage *image;
+  GFile *file;
+  gboolean is_save;
+  gboolean save_a_copy;
+  gboolean close_after;
+} SaveDialogCompletion;
+
+static void
+file_save_dialog_completion_free (gpointer data)
+{
+  SaveDialogCompletion *completion = data;
+  g_weak_ref_clear (&completion->dialog);
+  g_weak_ref_clear (&completion->display);
+  g_object_unref (completion->image);
+  g_object_unref (completion->file);
+  g_free (completion);
+}
+
+static void
+file_save_dialog_completed (gboolean success, gpointer data)
+{
+  SaveDialogCompletion *completion = data;
+  GtkWidget *dialog = g_weak_ref_get (&completion->dialog);
+  GimpImage *image = completion->image;
+  GimpDisplay *display;
+  if (! dialog) return;
+
+  if (success)
+    {
+      if (completion->is_save && completion->save_a_copy)
+        gimp_image_set_save_a_copy_file (image, completion->file);
+      g_object_set_data_full (G_OBJECT (image->gimp),
+                              completion->is_save ? GIMP_FILE_SAVE_LAST_FILE_KEY : GIMP_FILE_EXPORT_LAST_FILE_KEY,
+                              g_object_ref (completion->file), (GDestroyNotify) g_object_unref);
+      gimp_image_flush (image);
+      display = g_weak_ref_get (&completion->display);
+      if (completion->close_after && display &&
+          gimp_display_get_image (display) == image && ! gimp_image_is_dirty (image))
+        gimp_display_close (display);
+      g_clear_object (&display);
+      gtk_widget_destroy (dialog);
+    }
+  else
+    {
+      GFile *parent_dir = g_file_get_parent (completion->file);
+      if (parent_dir)
+        {
+          gtk_file_chooser_set_current_folder_file (GTK_FILE_CHOOSER (dialog), parent_dir, NULL);
+          g_object_unref (parent_dir);
+        }
+      gtk_widget_show (dialog);
+      gimp_file_dialog_set_sensitive (GIMP_FILE_DIALOG (dialog), TRUE);
+    }
+  g_object_unref (dialog);
+}
+
 static void
 file_save_dialog_response (GtkWidget *dialog,
                            gint       response_id,
@@ -150,6 +211,7 @@ file_save_dialog_response (GtkWidget *dialog,
   GFile               *file;
   gchar               *basename;
   GimpPlugInProcedure *save_proc;
+  GimpImage           *held_image;
 
   if (GIMP_IS_SAVE_DIALOG (dialog))
     {
@@ -168,8 +230,8 @@ file_save_dialog_response (GtkWidget *dialog,
       return;
     }
 
+  held_image = g_object_ref (file_dialog->image);
   g_object_ref (file_dialog);
-  g_object_ref (file_dialog->image);
 
   switch (file_save_dialog_check_file (dialog, gimp,
                                        &file, &basename, &save_proc))
@@ -179,13 +241,16 @@ file_save_dialog_response (GtkWidget *dialog,
 
     case CHECK_URI_OK:
       {
-        GimpImage    *image              = file_dialog->image;
+        GimpImage    *image              = held_image;
         GimpProgress *progress           = GIMP_PROGRESS (dialog);
         GimpDisplay  *display_to_close   = NULL;
         gboolean      xcf_compression    = FALSE;
         gboolean      is_save_dialog     = GIMP_IS_SAVE_DIALOG (dialog);
         gboolean      close_after_saving = FALSE;
         gboolean      save_a_copy        = FALSE;
+        SaveDialogCompletion *completion = NULL;
+        GimpPlugInProcedure *procedure = NULL;
+        GimpProgress *progress_lease = NULL;
 
         if (is_save_dialog)
           {
@@ -194,103 +259,78 @@ file_save_dialog_response (GtkWidget *dialog,
             save_a_copy        = GIMP_SAVE_DIALOG (dialog)->save_a_copy;
           }
 
-        gimp_file_dialog_set_sensitive (file_dialog, FALSE);
+        if (! file_dialog->progress || file_dialog->image != held_image)
+          goto save_request_out;
 
         if (GIMP_IS_SAVE_DIALOG (dialog))
           xcf_compression = GIMP_SAVE_DIALOG (dialog)->compression;
         else
-          xcf_compression = gimp_image_get_xcf_compression (image);
-
-        /* Hide the file dialog while exporting, avoid dialogs piling
-         * up, even more as some formats have preview features, so the
-         * file dialog is just blocking the view.
-         */
-        if  (GIMP_IS_EXPORT_DIALOG (dialog))
           {
-            gtk_widget_hide (dialog);
+            xcf_compression = gimp_image_get_xcf_compression (image);
             progress = GIMP_PROGRESS (GIMP_EXPORT_DIALOG (dialog)->display);
           }
 
-        g_signal_connect (dialog, "destroy",
-                          G_CALLBACK (gtk_widget_destroyed),
-                          &dialog);
+        /* Retain exact request resources before widget notifications can close
+         * the dialog or replace the originating display. */
+        procedure = g_object_ref (save_proc);
+        if (progress) progress_lease = g_object_ref (progress);
 
-        if (file_save_dialog_save_image (progress,
-                                         gimp,
-                                         image,
-                                         file,
-                                         save_proc,
-                                         GIMP_RUN_INTERACTIVE,
-                                         is_save_dialog && ! save_a_copy,
-                                         FALSE,
-                                         GIMP_IS_EXPORT_DIALOG (dialog),
-                                         xcf_compression,
-                                         FALSE))
+        completion = g_new0 (SaveDialogCompletion, 1);
+        g_weak_ref_init (&completion->dialog, dialog);
+        g_weak_ref_init (&completion->display, display_to_close);
+        completion->image = g_object_ref (image);
+        completion->file = g_object_ref (file);
+        completion->is_save = is_save_dialog;
+        completion->save_a_copy = save_a_copy;
+        completion->close_after = close_after_saving;
+
+        gimp_file_dialog_set_sensitive (file_dialog, FALSE);
+        if (! file_dialog->progress || file_dialog->image != held_image)
+          goto save_request_out;
+
+        /* The original export dialog stays hidden while native export runs. */
+        if (GIMP_IS_EXPORT_DIALOG (dialog))
+          gtk_widget_hide (dialog);
+        if (! file_dialog->progress || file_dialog->image != held_image)
+          goto save_request_out;
+
+        /* Keep Cancel available while waiting; it cancels this save request,
+         * without cancelling or dropping the pending painting. */
+        {
+          GtkWidget *cancel_button = gtk_dialog_get_widget_for_response (GTK_DIALOG (dialog),
+                                                                         GTK_RESPONSE_CANCEL);
+          if (cancel_button)
+            {
+              /* Avoid GTK's borrowed response-widget walk if a notification
+               * destroys the dialog while enabling its Cancel button. */
+              g_object_ref (cancel_button);
+              gtk_widget_set_sensitive (cancel_button, TRUE);
+              g_object_unref (cancel_button);
+            }
+        }
+        if (! file_dialog->progress || file_dialog->image != held_image)
+          goto save_request_out;
+        file_save_dialog_save_image_async (G_OBJECT (dialog), progress_lease, gimp,
+                                            image, file, procedure,
+                                            GIMP_RUN_INTERACTIVE,
+                                            is_save_dialog && ! save_a_copy,
+                                            FALSE, GIMP_IS_EXPORT_DIALOG (dialog),
+                                            xcf_compression, FALSE,
+                                            file_save_dialog_completed, completion,
+                                            file_save_dialog_completion_free);
+        completion = NULL; /* operation owns it, including immediate completion */
+
+      save_request_out:
+        if (completion)
           {
-            /* Save was successful, now store the URI in a couple of
-             * places that depend on it being the user that made a
-             * save. Lower-level URI management is handled in
-             * file_save()
-             */
-            if (is_save_dialog)
-              {
-                if (save_a_copy)
-                  gimp_image_set_save_a_copy_file (image, file);
-
-                g_object_set_data_full (G_OBJECT (image->gimp),
-                                        GIMP_FILE_SAVE_LAST_FILE_KEY,
-                                        g_object_ref (file),
-                                        (GDestroyNotify) g_object_unref);
-              }
-            else
-              {
-                g_object_set_data_full (G_OBJECT (image->gimp),
-                                        GIMP_FILE_EXPORT_LAST_FILE_KEY,
-                                        g_object_ref (file),
-                                        (GDestroyNotify) g_object_unref);
-              }
-
-            /*  make sure the menus are updated with the keys we've just set  */
-            gimp_image_flush (image);
-
-            /* Handle close-after-saving */
-            if (close_after_saving && display_to_close &&
-                ! gimp_image_is_dirty (gimp_display_get_image (display_to_close)))
-              {
-                gimp_display_close (display_to_close);
-              }
-
-            if (dialog)
-              gtk_widget_destroy (dialog);
+            file_save_dialog_completion_free (completion);
+            if (file_dialog->progress)
+              gimp_file_dialog_set_sensitive (file_dialog, TRUE);
           }
-        else
-          {
-            if (dialog)
-              {
-                GFile *parent_dir = g_file_get_parent (file);
-
-                /* XXX Not sure why, but after reshowing the file
-                 * chooser dialog, the displayed name is correct, but
-                 * the parent directory is the current working dir.
-                 * Force it to be the expected folder.
-                 */
-                gtk_file_chooser_set_current_folder_file (GTK_FILE_CHOOSER (dialog),
-                                                          parent_dir, NULL);
-                gtk_widget_show (dialog);
-                g_object_unref (parent_dir);
-              }
-          }
-
+        g_clear_object (&progress_lease);
+        g_clear_object (&procedure);
         g_object_unref (file);
         g_free (basename);
-
-        if (dialog)
-          {
-            gimp_file_dialog_set_sensitive (file_dialog, TRUE);
-            g_signal_handlers_disconnect_by_func (dialog,
-                                                  G_CALLBACK (gtk_widget_destroyed),
-                                                  &dialog);
-          }
       }
       break;
 
@@ -303,7 +343,7 @@ file_save_dialog_response (GtkWidget *dialog,
       break;
     }
 
-  g_object_unref (file_dialog->image);
+  g_object_unref (held_image);
   g_object_unref (file_dialog);
 }
 
@@ -794,7 +834,7 @@ file_save_dialog_use_extension (GtkWidget *save_dialog,
 }
 
 gboolean
-file_save_dialog_save_image (GimpProgress        *progress,
+file_save_dialog_save_image_pending (GimpProgress        *progress,
                              Gimp                *gimp,
                              GimpImage           *image,
                              GFile               *file,
@@ -804,12 +844,15 @@ file_save_dialog_save_image (GimpProgress        *progress,
                              gboolean             export_backward,
                              gboolean             export_forward,
                              gboolean             xcf_compression,
-                             gboolean             verbose_cancel)
+                             gboolean             verbose_cancel,
+                             gboolean            *pending_paint)
 {
   GimpPDBStatusType  status;
   GError            *error   = NULL;
   GList             *list;
   gboolean           success = FALSE;
+
+  if (pending_paint) *pending_paint = FALSE;
 
   for (list = gimp_action_groups_from_name ("file");
        list;
@@ -825,7 +868,8 @@ file_save_dialog_save_image (GimpProgress        *progress,
    * weak pointer to avoid sending an error message to an already-freed
    * GimpProgress. See #11922.
    */
-  g_object_add_weak_pointer (G_OBJECT (progress), (gpointer *) &progress);
+  if (progress)
+    g_object_add_weak_pointer (G_OBJECT (progress), (gpointer *) &progress);
 
   status = file_save (gimp, image, progress, file,
                       save_proc, run_mode,
@@ -847,7 +891,9 @@ file_save_dialog_save_image (GimpProgress        *progress,
 
     default:
       {
-        if (progress)
+        if (pending_paint && g_error_matches (error, G_IO_ERROR, G_IO_ERROR_BUSY))
+          *pending_paint = TRUE;
+        else if (progress)
           gimp_message (gimp, G_OBJECT (progress), GIMP_MESSAGE_ERROR,
                         _("Saving '%s' failed:\n\n%s"),
                         gimp_file_get_utf8_name (file),
@@ -868,4 +914,19 @@ file_save_dialog_save_image (GimpProgress        *progress,
     }
 
   return success;
+}
+
+/* Compatibility entry point for callers that explicitly require synchronous
+ * completion. As before, pending paint is reported as a failed save. */
+gboolean
+file_save_dialog_save_image (GimpProgress *progress, Gimp *gimp, GimpImage *image,
+                             GFile *file, GimpPlugInProcedure *procedure,
+                             GimpRunMode run_mode, gboolean change_saved_state,
+                             gboolean export_backward, gboolean export_forward,
+                             gboolean xcf_compression, gboolean verbose_cancel)
+{
+  return file_save_dialog_save_image_pending (progress, gimp, image, file, procedure,
+                                               run_mode, change_saved_state,
+                                               export_backward, export_forward,
+                                               xcf_compression, verbose_cancel, NULL);
 }

@@ -622,6 +622,22 @@ gimp_file_dialog_add_extra_widget (GimpFileDialog *dialog,
                       widget, expand, fill, padding);
 }
 
+/* gtk_dialog_set_response_sensitive() walks borrowed response widgets. A
+ * sensitivity notification can destroy the dialog during that walk, including
+ * header-bar action widgets. Keep the complete native widget tree alive until
+ * this operation has unwound, while still observing destruction immediately. */
+static void
+gimp_file_dialog_hold_widget (GtkWidget *widget,
+                              gpointer   data)
+{
+  GPtrArray *widgets = data;
+
+  g_ptr_array_add (widgets, g_object_ref (widget));
+  if (GTK_IS_CONTAINER (widget))
+    gtk_container_forall (GTK_CONTAINER (widget),
+                           gimp_file_dialog_hold_widget, widgets);
+}
+
 void
 gimp_file_dialog_set_sensitive (GimpFileDialog *dialog,
                                 gboolean        sensitive)
@@ -629,6 +645,7 @@ gimp_file_dialog_set_sensitive (GimpFileDialog *dialog,
   GtkWidget *content_area;
   GList     *children;
   GList     *list;
+  GPtrArray *widget_refs;
 
   g_return_if_fail (GIMP_IS_FILE_DIALOG (dialog));
 
@@ -636,12 +653,18 @@ gimp_file_dialog_set_sensitive (GimpFileDialog *dialog,
   if (! dialog->progress)
     return;
 
+  widget_refs = g_ptr_array_new_with_free_func (g_object_unref);
+  gimp_file_dialog_hold_widget (GTK_WIDGET (dialog), widget_refs);
+
   content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
 
   children = gtk_container_get_children (GTK_CONTAINER (content_area));
 
   for (list = children; list; list = g_list_next (list))
     {
+      if (! dialog->progress)
+        break;
+
       /*  skip the last item (the action area) */
       if (! g_list_next (list))
         break;
@@ -654,13 +677,20 @@ gimp_file_dialog_set_sensitive (GimpFileDialog *dialog,
 
   g_list_free (children);
 
-  gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-                                     GTK_RESPONSE_CANCEL, sensitive);
-  gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-                                     GTK_RESPONSE_OK, sensitive);
+  if (dialog->progress)
+    gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+                                       GTK_RESPONSE_CANCEL, sensitive);
+  if (dialog->progress)
+    gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+                                       GTK_RESPONSE_OK, sensitive);
 
-  dialog->busy     = ! sensitive;
-  dialog->canceled = FALSE;
+  if (dialog->progress)
+    {
+      dialog->busy     = ! sensitive;
+      dialog->canceled = FALSE;
+    }
+
+  g_ptr_array_unref (widget_refs);
 }
 
 void

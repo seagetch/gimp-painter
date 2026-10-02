@@ -23,7 +23,7 @@
 
 
 GtkWidget * file_save_dialog_new        (Gimp                *gimp,
-                                         gboolean             export);
+                                         gboolean             export_image);
 
 gboolean    file_save_dialog_save_image (GimpProgress        *progress_and_handler,
                                          Gimp                *gimp,

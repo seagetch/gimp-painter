@@ -59,6 +59,7 @@
 
 #include "dialogs/dialogs.h"
 #include "dialogs/file-save-dialog.h"
+#include "dialogs/file-save-deferred.h"
 
 #include "actions.h"
 #include "file-commands.h"
@@ -218,6 +219,44 @@ file_open_recent_cmd_callback (GimpAction *action,
     }
 }
 
+typedef struct
+{
+  GWeakRef display;
+  GimpImage *image;
+  gboolean close_after;
+} FileSaveCommandCompletion;
+
+static void
+file_save_command_completed (gboolean success, gpointer data)
+{
+  FileSaveCommandCompletion *completion = data;
+  GimpDisplay *display = g_weak_ref_get (&completion->display);
+  if (success && completion->close_after && display &&
+      gimp_display_get_image (display) == completion->image &&
+      ! gimp_image_is_dirty (completion->image))
+    gimp_display_close (display);
+  g_clear_object (&display);
+}
+
+static void
+file_save_command_completion_free (gpointer data)
+{
+  FileSaveCommandCompletion *completion = data;
+  g_weak_ref_clear (&completion->display);
+  g_object_unref (completion->image);
+  g_free (completion);
+}
+
+static FileSaveCommandCompletion *
+file_save_command_completion_new (GimpDisplay *display, GimpImage *image, gboolean close_after)
+{
+  FileSaveCommandCompletion *completion = g_new0 (FileSaveCommandCompletion, 1);
+  g_weak_ref_init (&completion->display, display);
+  completion->image = g_object_ref (image);
+  completion->close_after = close_after;
+  return completion;
+}
+
 void
 file_save_cmd_callback (GimpAction *action,
                         GVariant   *value,
@@ -230,22 +269,37 @@ file_save_cmd_callback (GimpAction *action,
   GimpSaveMode  save_mode;
   GFile        *file  = NULL;
   gboolean      saved = FALSE;
+  g_autoptr (GObject) display_lease = NULL;
+  g_autoptr (GObject) image_lease = NULL;
+  g_autoptr (GFile) file_lease = NULL;
+  gboolean pending_paint;
   return_if_no_gimp (gimp, data);
   return_if_no_display (display, data);
   return_if_no_widget (widget, data);
 
   image = gimp_display_get_image (display);
 
+  display_lease = g_object_ref (G_OBJECT (display));
+  image_lease = g_object_ref (G_OBJECT (image));
+
   save_mode = (GimpSaveMode) g_variant_get_int32 (value);
 
   file = gimp_image_get_file (image);
+  if (file) file_lease = g_object_ref (file);
 
   switch (save_mode)
     {
     case GIMP_SAVE_MODE_SAVE:
     case GIMP_SAVE_MODE_SAVE_AND_CLOSE:
+      /* The pure query may reenter UI code, replace the image file, or close
+       * the display. Keep the requested file alive and reject a stale owner. */
+      pending_paint = gimp_image_has_pending_paint (image);
+      if (gimp_display_get_image (display) != image ||
+          ! gimp_display_get_shell (display))
+        break;
+
       /*  Only save if the image has been modified, or if it is new.  */
-      if ((gimp_image_is_dirty (image) ||
+      if ((pending_paint || gimp_image_is_dirty (image) ||
            ! GIMP_GUI_CONFIG (image->gimp->config)->trust_dirty_flag) ||
           file == NULL)
         {
@@ -279,13 +333,15 @@ file_save_cmd_callback (GimpAction *action,
 
           if (valid_file && save_proc)
             {
-              saved = file_save_dialog_save_image (GIMP_PROGRESS (display),
+              file_save_dialog_save_image_async (G_OBJECT (display), GIMP_PROGRESS (display),
                                                    gimp, image, file,
                                                    save_proc,
                                                    GIMP_RUN_WITH_LAST_VALS,
                                                    TRUE, FALSE, FALSE,
                                                    gimp_image_get_xcf_compression (image),
-                                                   TRUE);
+                                                   TRUE, file_save_command_completed,
+                                                   file_save_command_completion_new (display, image, save_mode == GIMP_SAVE_MODE_SAVE_AND_CLOSE),
+                                                   file_save_command_completion_free);
               break;
             }
 
@@ -354,13 +410,15 @@ file_save_cmd_callback (GimpAction *action,
 
         if (file && export_proc)
           {
-            saved = file_save_dialog_save_image (GIMP_PROGRESS (display),
+            file_save_dialog_save_image_async (G_OBJECT (display), GIMP_PROGRESS (display),
                                                  gimp, image, file,
                                                  export_proc,
                                                  GIMP_RUN_WITH_LAST_VALS,
                                                  FALSE,
                                                  overwrite, ! overwrite,
-                                                 FALSE, TRUE);
+                                                 FALSE, TRUE, file_save_command_completed,
+                                                 file_save_command_completion_new (display, image, FALSE),
+                                                 file_save_command_completion_free);
           }
       }
       break;

@@ -966,6 +966,7 @@
 | 27.012/native-tool-controller | [x] | Fillの実GTK入力・旧shortcut・自動描画と保存前flightを接続する | 27.009/native-paint-transaction | 25 native GTK/26unit focused sanitizer合格。実appの選択/paint/Undo/Redo/XCF保存を確認。未完入力を保持しSave/export/PDB/XCFはBUSY安全拒否。2K/512brush通常max32.640msを記録、完全有界補間・自動Save継続・pipe順序は未完了 |
 | 27.010/bounded-interpolation | [x] | native補間とinput admissionを応答可能な単位へ分割する | 27.012/native-tool-controller | 180現行native scenario/8883recordが同期と5pause予算で4655000 bytes一致、旧Fill36snapshotを3mode完全一致。25core/26GTK通常・focused sanitizer合格。49999998300候補から1dab、1e9px入力を非展開で取消し。全準備/queue/pipe/Save境界は別gate |
 | 27.010/owned-save-continuation | [ ] | pending paint後の保存継続を所有付きで実装する | 27.012/native-tool-controller | destination/progress/cancelを保持し未完strokeを破棄せず完了後に一回だけSave/exportを継続、reentryと画像closeも検証する |
+| 27.012/owned-save-continuation | [x] | 受理済みpaintを失わずGUI Save/export/Save-and-closeを自動継続する | 27.009/native-start-preflight, 04.011/sanitizer-rtti-scope | Save13実GTK/34unit sanitizer、Fill26実GTK/30unit sanitizerと全build合格。immutable宛先・実dialog cancel/destruction・再入/owner寿命・nested COMMIT・保存再open/Undoを検証。低位/PDB BUSYは維持、実file書込同期と全paint latency/memory/pipeは別gate |
 | 27.013 | [ ] | 範囲外回込みの試験を作る | 27.012 | 全体探索後の mask 適用との差を検出 |
 | 27.013/gegl-render-regression | [ ] | 塗りつぶしブラシの探索・paint 合成・GEGL 表示の比較試験を作る | 27.013, 27.007/paintcore-gegl-compose | 旧筆跡の画素と画面を比較し offset・縮小・回転・grow・Undo と再描画を検証 |
 | 27.014 | [ ] | 選択外回込みの試験を作る | 27.013 | 探索境界の意味を検証 |

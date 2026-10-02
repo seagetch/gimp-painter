@@ -75,6 +75,7 @@ template<class F> void with (GimpTool *tool, F function)
 void changed (GObject *, gpointer);
 void notified (GObject *, GParamSpec *, gpointer);
 void dirtied (GimpImage *, GimpDirtyMask, gpointer);
+void saving (GimpImage *, gpointer);
 gboolean pending_paint (GimpImage *, gpointer);
 void updated (GimpDrawable *, gint, gint, gint, gint, gpointer);
 
@@ -86,7 +87,8 @@ struct Controller {
   WeakRef<GObject> display;
   std::deque<std::shared_ptr<Stroke>> strokes;
   std::shared_ptr<Stroke> input;
-  bool closed = false, dispatching = false, committing = false, keep_next_halt = false;
+  bool closed = false, dispatching = false, committing = false;
+  unsigned commit_halts = 0;
   std::uint64_t revision = 0;
 
   void invalidate (bool notify = false) noexcept {
@@ -136,6 +138,7 @@ struct Controller {
     connect (G_OBJECT (image), "clean", G_CALLBACK (dirtied));
     connect (G_OBJECT (image), "precision-changed", G_CALLBACK (changed));
     connect (G_OBJECT (image), "query-pending-paint", G_CALLBACK (pending_paint));
+    connect (G_OBJECT (image), "saving", G_CALLBACK (saving));
   }
   bool work_available () const {
     if (closed || strokes.empty ()) return false;
@@ -259,16 +262,29 @@ void dispose (GObject *object) {
   gimp_painter_binding_close (object, nullptr);
   G_OBJECT_CLASS (gimp_fill_brush_tool_parent_class)->dispose (object);
 }
+void saving (GimpImage *image, gpointer data) {
+  auto *tool = GIMP_TOOL (data);
+  with (tool, [&] (Controller& self) {
+    if (self.closed || !self.input) return;
+    auto display = self.display.lock ();
+    // BrushTool preserves native state by default, so the generic tool manager
+    // intentionally skips its saving notification. Seal this owner's accepted
+    // input ourselves without changing that global preservation policy.
+    if (display && gimp_display_get_image (GIMP_DISPLAY (display.get ())) == image)
+      gimp_tool_control (tool, GIMP_TOOL_ACTION_COMMIT, GIMP_DISPLAY (display.get ()));
+  });
+}
 void control (GimpTool *tool, GimpToolAction action, GimpDisplay *display) {
   if (action == GIMP_TOOL_ACTION_COMMIT) with (tool, [] (Controller& self) {
     if (self.input) { self.input->released = true; self.input.reset (); }
     /* gimp_tool_control() always follows this vfunc with one HALT. Preserve
-     * the sealed asynchronous transaction across that automatic HALT only. */
-    self.keep_next_halt = true;
+     * the sealed asynchronous transaction across those automatic HALTs,
+     * including nested COMMIT callbacks, without consuming a later HALT. */
+    ++self.commit_halts;
     self.schedule ();
   });
   if (action == GIMP_TOOL_ACTION_HALT) with (tool, [] (Controller& self) {
-    if (self.keep_next_halt) self.keep_next_halt = false;
+    if (self.commit_halts) --self.commit_halts;
     else self.invalidate (true);
   });
   GIMP_TOOL_CLASS (gimp_fill_brush_tool_parent_class)->control (tool, action, display);

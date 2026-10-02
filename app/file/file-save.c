@@ -238,7 +238,7 @@ file_save (Gimp                *gimp,
         }
 
       g_file_delete (local_file, NULL, NULL);
-      g_object_unref (local_file);
+      g_clear_object (&local_file);
     }
 
   if (status == GIMP_PDB_SUCCESS)
@@ -316,6 +316,13 @@ file_save (Gimp                *gimp,
   gimp_image_flush (image);
 
  out:
+  /* A late pending-paint refusal can leave only remote preparation alive. */
+  if (local_file)
+    {
+      g_file_delete (local_file, NULL, NULL);
+      g_clear_object (&local_file);
+    }
+  g_clear_object (&options);
   g_object_unref (orig_file);
   g_object_unref (image);
 

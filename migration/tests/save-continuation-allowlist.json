@@ -1,0 +1,102 @@
+{
+  "status": "Frozen tested owned Save continuation checkpoint; no worker commit or push",
+  "manifest": "migration/tests/save-continuation-allowlist.json",
+  "whole_file_allowlist": [
+    "app/actions/file-commands.c",
+    "app/dialogs/file-save-deferred.cpp",
+    "app/dialogs/file-save-deferred.h",
+    "app/dialogs/file-save-dialog.c",
+    "app/dialogs/file-save-dialog.h",
+    "app/file/file-save.c",
+    "app/tools/gimpfillbrushtool.cpp",
+    "app/widgets/gimpfiledialog.c",
+    "app/tests/test-painter-save-continuation.cpp",
+    "migration/tests/build_save_continuation_sanitizers.py",
+    "migration/tests/build_fill_brush_ui_sanitizers.py",
+    "migration/contracts/deferred-save.md",
+    "migration/contracts/fill-brush-tool.md",
+    "migration/tests/save-continuation-native.txt",
+    "migration/tests/save-continuation-sanitizers.txt",
+    "migration/tests/fill-saving-native.txt",
+    "migration/tests/fill-saving-sanitizers.txt",
+    "migration/tests/save-continuation-full-build.txt",
+    "migration/tests/save-continuation-sanitizer-build.json",
+    "migration/tests/fill-saving-sanitizer-build.json"
+  ],
+  "whole_file_sha256": {
+    "app/actions/file-commands.c": "2df43f1f2f17a6d9b4cf702407a40fdd33761011294765c31e5388bcf677af84",
+    "app/dialogs/file-save-deferred.cpp": "076ab5e3edbd884bf69fd707264e7c11b42bd65e90095d65401f159600232c0d",
+    "app/dialogs/file-save-deferred.h": "10f85af424c9c5fd21b0a90af309fff4386d0b0dfbb8b75fd1ef99a66c5536cc",
+    "app/dialogs/file-save-dialog.c": "c71e725c486b1f5b3b9f2eaa3a8be28d5003a89717879a2ae269e0594cef5234",
+    "app/dialogs/file-save-dialog.h": "d94776eeaaf0f1aee81a466187b042d9a8a1980bbeaa75265842366fa7bd47f4",
+    "app/file/file-save.c": "93206215274f087287ed2bb15d1e3e89df94c309ddfdec38e8f2f8b1209a06cd",
+    "app/tools/gimpfillbrushtool.cpp": "9f4df2c3a0598292f1b7a3202985302eea9ff7c56096a03c0c205792925c64a6",
+    "app/widgets/gimpfiledialog.c": "31b05208e8274399547a1c8f6252e2d92ac267397b8db34154ae87abddd9d53d",
+    "app/tests/test-painter-save-continuation.cpp": "be5683ddee5de667b3b43b77b56c0fb29708072d77cafe81f6bcd459a7107d88",
+    "migration/tests/build_save_continuation_sanitizers.py": "0fab68d0176ca1bc07208d9ca883795fa0775251733baafafeff5bbffc7c02ac",
+    "migration/tests/build_fill_brush_ui_sanitizers.py": "d9552db9d07cfa63139b3f3d18ce643384fae86aa2bda5cc1924ba5c9184015d",
+    "migration/contracts/deferred-save.md": "3fcae87893fd451eea0ba06367da678050713e31b258fad06bdc9367c1c27478",
+    "migration/contracts/fill-brush-tool.md": "df04186bee590043580ce6874f7e3062632e8f4e7b060431a8cc4ee3535355ec",
+    "migration/tests/save-continuation-native.txt": "bb6864dad2fc97b4cc3b9e7edf06d6b510d59795ba9e55ba7acc9d3db92f0993",
+    "migration/tests/save-continuation-sanitizers.txt": "47f38a243b311e9a5730643574577636b47acdebd227e340a72fcaa975853adc",
+    "migration/tests/fill-saving-native.txt": "e38009acedc16b45d910fd3e16fd3dc0b0bf9a4f94947a69ea87490a0eef01cb",
+    "migration/tests/fill-saving-sanitizers.txt": "8a800142257d30068e4f7b3ddb99a1877920caaa2fc9a8ed7f9316fb7eefd096",
+    "migration/tests/save-continuation-full-build.txt": "b4c13ff4350feec6d8aca51780ce1967494f933a7418d326d9d79ad91e3afc96",
+    "migration/tests/save-continuation-sanitizer-build.json": "663d51309131149d0e2e93ab56d30fbb903a16ebcc1fe25f3a3e61e3c23f6f45",
+    "migration/tests/fill-saving-sanitizer-build.json": "c9a88ddfa126ff72ad7d216e9f65ea758be118de34fe555673e1e68d6bfacd69"
+  },
+  "shared_edits": {
+    "app/dialogs/meson.build": [
+      "Add only 'file-save-deferred.cpp' to libappdialogs_sources",
+      "Add only cpp_args: painter_cpp_args to the libappdialogs target"
+    ],
+    "app/tests/meson.build": {
+      "add_only_block": "painter_save_continuation_test = executable('painter-save-continuation',\n  'test-painter-save-continuation.cpp', 'tests.c',\n  dependencies: [libapp_dep, painter_bounded_fill_dep, appstream],\n  link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])\ntest('painter-save-continuation', painter_save_continuation_test,\n  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),\n        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),\n        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',\n        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)\n",
+      "block_sha256": "b2d43437bb83f95ef8c65bad2e35f77bbdde8bb9a3cfa07bc8c6913138a7b083"
+    },
+    "po/POTFILES.in": [
+      "Add only app/dialogs/file-save-deferred.cpp"
+    ]
+  },
+  "external_build_dependency": {
+    "path": "migration/tests/painter_sanitizer_scope.py",
+    "owner": "MyPaint resource/engine worker",
+    "sha256": "a050cd5fea3fb0f15e9b4a46531a213bc64b1bcc0344b091212571a6b5d09402",
+    "instruction": "Commit this shared helper with its owner before this checkpoint; do not add unrelated MyPaint changes to this allowlist",
+    "tested_helper_snapshot": "migration/fixtures/sanitizer-rtti-discovery/initial-cpp-only.py.gz",
+    "current_helper_note": "542d4d7d9f preserves the exact tested cpp-only helper and adds independently metadata-tested C++ suffix discovery; historical runtime unit lists remain unchanged."
+  },
+  "results": {
+    "full_normal_ninja": "PASS",
+    "save_normal_groups": 13,
+    "save_sanitized_groups": 13,
+    "save_instrumented_units": 34,
+    "save_rtti_only_units": 20,
+    "fill_normal_groups": 26,
+    "fill_sanitized_groups": 26,
+    "fill_instrumented_units": 30,
+    "fill_rtti_only_units": 21,
+    "native_exit_codes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "sanitizers": [
+      "address",
+      "undefined including vptr",
+      "float-cast-overflow"
+    ],
+    "leak_detection": false,
+    "native_shared_lock": "/workspace/shared/gimp-painter-build.lock",
+    "provenance": "All owned and instrumented sources matched through the native runs. Tile widget changed after linking as RTTI-only compatibility input; its exact built hash and later delta are preserved in both build reports. Normal executable hashes still matched after all four runs."
+  },
+  "remaining_fill_gates": [
+    "Total phase latency and admission remain unbounded: brush/resource copying, projection snapshots, one native dab, GEGL I/O/publication and cancellation cleanup; current normal 2048-square/512-brush maximum complete main iteration was 67932 microseconds, not a frame guarantee.",
+    "Raw input queue and bounded-search frontier/GEGL storage have no proved bounded-memory admission or spill; no arbitrary drop/cap was introduced.",
+    "Brush-pipe runtime current/index sequencing across per-stroke cloned resources needs an actual old comparison and state carry.",
+    "Complete old Shift-line/smoothing behavior and full tablet/platform coverage remain open.",
+    "Generic native Stroke Path integration remains explicitly unsupported for Fill. The one-shot PaintCore preflight rejects unowned direct/reentrant starts safely; this is not generic-path completion.",
+    "GUI Save waiting is owned and automatic; after waiting, native file writing remains synchronous. Direct/PDB/XCF low-level callers still receive explicit BUSY rather than an unowned delayed result."
+  ]
+}
