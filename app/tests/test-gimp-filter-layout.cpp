@@ -72,6 +72,25 @@ extern "C" void gimp_test_filter_cpp_config (Gimp *application)
   auto other = GimpPainter::filter_admission_for_config (second);
   g_assert_true (pool != other);
   g_assert_cmpuint (pool->limits ().spill_bytes, ==, UINT64_C(8)*1024*1024*1024);
+  const guint64 boundaries[] = {0, UINT64_C(8)*1024*1024*1024,
+                               UINT64_C(9)*1024*1024*1024+123,
+                               GIMP_MAX_MEMSIZE, GIMP_MAX_MEMSIZE+1,
+                               (UINT64_C(1)<<53)+1, G_MAXUINT64};
+  for (guint64 boundary : boundaries)
+    {
+      g_object_set (first,"painter-filter-spill-size",boundary,nullptr);
+      guint64 value = 0;
+      g_object_get (first,"painter-filter-spill-size",&value,nullptr);
+      g_assert_cmpuint (value, ==, boundary);
+      g_assert_cmpuint (pool->limits ().spill_bytes, ==, boundary);
+      gchar *saved = gimp_config_serialize_to_string (GIMP_CONFIG (first),nullptr);
+      GError *parse_error = nullptr;
+      g_assert_true (gimp_config_deserialize_string (GIMP_CONFIG (second),saved,-1,nullptr,&parse_error));
+      g_assert_no_error (parse_error); g_free (saved);
+      g_object_get (second,"painter-filter-spill-size",&value,nullptr);
+      g_assert_cmpuint (value, ==, boundary);
+      g_assert_cmpuint (other->limits ().spill_bytes, ==, boundary);
+    }
   const guint64 bytes = UINT64_C(9)*1024*1024*1024+123;
   g_object_set (first,"painter-filter-spill-size",bytes,nullptr);
   gchar *text = gimp_config_serialize_to_string (GIMP_CONFIG (first),nullptr);

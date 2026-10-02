@@ -7,6 +7,16 @@ file-backed jobs, while small in-memory jobs and completed saved caches remain u
 The existing resource preferences page exposes this limit. No native instance/class
 layout changes and no second private implementation storage are introduced.
 
+The Preferences editor uses an exact decimal-byte entry bound to the same
+uint64 property. The standard memory spin button has a 4 TiB ceiling and cannot
+represent this disk quota's full range. Opening Preferences must not reduce a
+saved quota: zero, the 8 GiB default, values above 4 TiB and 2^53, and UINT64_MAX
+remain exact. Invalid, fractional, signed, suffixed, blank or overflowing entry
+text leaves the last valid value untouched, displays an error and disables OK
+until corrected or reset. Cancel restores the original quota, including values
+above 4 TiB. This UI restriction to explicit decimal bytes does not change the
+existing serialized memsize syntax, backend accounting or overflow checks.
+
 ## Accounting and scheduling
 
 The pool admits at most two workers, at most 1 GiB declared working memory, and

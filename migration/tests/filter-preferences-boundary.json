@@ -1,0 +1,194 @@
+{
+  "scope": "Exact uint64 Painter filter temporary-storage Preferences boundary; no property range/backend quota change",
+  "sealed_at_utc": "2026-10-02T14:38:42Z",
+  "base_head": "484c1e20641c2f8a9125f9c38d1acc49824293ae",
+  "owned_source_sha256": {
+    "app/dialogs/preferences-dialog.c": "36e036484f13fc1d8271e6ed2f1bb589a4fe694cd5b13b310cf549425f46f3c4",
+    "app/tests/test-layer-presets-ui.c": "66f5e7f6b09ac13df1965c964e96182bd4bf7367aa38bfd26a169e4df53745dd",
+    "app/tests/test-gimp-filter-layout.cpp": "37ea275310cc7c9a749cebb11b57b1e70d1cc98bb468196651a89a377fc4fb60",
+    "migration/contracts/filter-spill-admission.md": "b06f489f185e0efa331828238d03efac852c78177523c5320b61cec016043b5a"
+  },
+  "unchanged_backend_source_sha256": {
+    "app/config/gimpgeglconfig.c": "9a88ef495155eaa308304b00ab9f4f64800a156d472c316cdadac64b0941f748",
+    "app/config/gimppainterfilterconfig.cpp": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+    "app/painter/work-admission.hpp": "d483512981f42b90c68fc4f3e11ae4f03f4e8e74612a483b3f9d20394d96dfbf",
+    "app/painter/tests/test-work-admission.cpp": "dfea75b460016351f2eaa984cd11bf2e7fdfb2b43d1a4b21848109cd954a1133"
+  },
+  "normal": [
+    {
+      "target": "gimp:app / gimp-filter-layer",
+      "result": "OK",
+      "cases": 83,
+      "seconds": 55.87299466133118
+    },
+    {
+      "target": "gimp:painter / painter-filter-scheduler",
+      "result": "OK",
+      "cases": 37,
+      "seconds": 4.272341966629028
+    },
+    {
+      "target": "gimp:painter / painter-work-admission",
+      "result": "OK",
+      "cases": 13,
+      "seconds": 0.014977216720581055
+    },
+    {
+      "target": "gimp:painter / painter-filter-raster",
+      "result": "OK",
+      "cases": 7,
+      "seconds": 1.8389968872070312
+    },
+    {
+      "target": "gimp:painter / painter-filter-spool",
+      "result": "OK",
+      "cases": 11,
+      "seconds": 0.1248772144317627
+    },
+    {
+      "target": "gimp:app / layer-presets-ui",
+      "result": "OK",
+      "cases": 4,
+      "seconds": 13.34565782546997
+    },
+    {
+      "target": "gimp:app / painter-mypaint-editor",
+      "result": "OK",
+      "cases": 12,
+      "seconds": 18.13923215866089
+    }
+  ],
+  "normal_source_and_binary_fingerprints_unchanged": true,
+  "normal_fingerprints": {
+    "head": "484c1e20641c2f8a9125f9c38d1acc49824293ae",
+    "source_sha256": {
+      "app/dialogs/preferences-dialog.c": "36e036484f13fc1d8271e6ed2f1bb589a4fe694cd5b13b310cf549425f46f3c4",
+      "app/tests/test-layer-presets-ui.c": "66f5e7f6b09ac13df1965c964e96182bd4bf7367aa38bfd26a169e4df53745dd",
+      "app/tests/test-gimp-filter-layout.cpp": "37ea275310cc7c9a749cebb11b57b1e70d1cc98bb468196651a89a377fc4fb60",
+      "app/config/gimpgeglconfig.c": "9a88ef495155eaa308304b00ab9f4f64800a156d472c316cdadac64b0941f748",
+      "app/config/gimppainterfilterconfig.cpp": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+      "app/painter/work-admission.hpp": "d483512981f42b90c68fc4f3e11ae4f03f4e8e74612a483b3f9d20394d96dfbf",
+      "app/painter/tests/test-work-admission.cpp": "dfea75b460016351f2eaa984cd11bf2e7fdfb2b43d1a4b21848109cd954a1133"
+    },
+    "executable_sha256": {
+      "app/tests/layer-presets-ui": "70786dd9c0e686f9f4cb3a3dbd88d27f1183196a25e22f4762f46b1a8229d14a",
+      "app/tests/painter-mypaint-editor": "a7c5d9c71276df95f0268f1adf0e2dc2fe883f5e83736639a26166d103ead069",
+      "app/tests/gimp-filter-layer": "b23c65cc2024473157efc3248a896e7d5bb8737ba157810cce2214f6d8fe1407",
+      "app/painter/painter-work-admission": "9354c34cd3ba23db1f8fd346854b80c1af629ecc97feeca5e10a67c16a88b466",
+      "app/painter/painter-filter-raster": "540860e4a94bf1efe1caa21cd7257b17010dafcfe4343531330012c2c62d3f05",
+      "app/painter/painter-filter-spool": "3f217a37b131a7446c44679b4c24c957c0d37734e95f36aa063a043a94394e72",
+      "app/painter/painter-filter-scheduler": "b507b49fa49e19debc3469fef1121c231515011594f1057b16140d00d5c16f43"
+    }
+  },
+  "sanitizer": {
+    "exit_code": 0,
+    "cases": 4,
+    "instrumented_sources": [
+      "app/dialogs/preferences-dialog.c",
+      "app/tests/test-layer-presets-ui.c"
+    ],
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "leak_detection": false,
+    "scope": "Only preferences-dialog.c and test-layer-presets-ui.c instrumented; GIMP backend and dependencies uninstrumented",
+    "executable_sha256": "aa31c3fe6d69a0a2c7f55c929d7f37fb986a717fd9f38ed3ed135e70ad09b9f2",
+    "source_sha256": {
+      "app/dialogs/preferences-dialog.c": "36e036484f13fc1d8271e6ed2f1bb589a4fe694cd5b13b310cf549425f46f3c4",
+      "app/tests/test-layer-presets-ui.c": "66f5e7f6b09ac13df1965c964e96182bd4bf7367aa38bfd26a169e4df53745dd"
+    },
+    "changed_after_run": []
+  },
+  "regressions": [
+    "8 GiB default, zero, >4 GiB, 4 TiB, 4 TiB+1, 2^53+1 and UINT64_MAX serialization/pool round trips",
+    "Exact bytes entry edits, model notifications, invalid/overflow no-mutation, visible error and disabled OK",
+    "Cancel/reopen preserves full-range original values; retained entry during icon-notification dialog destruction",
+    "Original Preferences registration cases and both complete native GUI executables"
+  ],
+  "retained_failures": [
+    {
+      "stage": "initial build command",
+      "exit_code": 1,
+      "cause": "Incorrect app/painter/tests target path; Ninja rejected before compilation",
+      "evidence": "build.log"
+    },
+    {
+      "stage": "initial native run",
+      "results": [
+        {
+          "target": "gimp:app / gimp-filter-layer",
+          "result": "OK"
+        },
+        {
+          "target": "gimp:painter / painter-filter-scheduler",
+          "result": "OK"
+        },
+        {
+          "target": "gimp:painter / painter-work-admission",
+          "result": "OK"
+        },
+        {
+          "target": "gimp:painter / painter-filter-raster",
+          "result": "OK"
+        },
+        {
+          "target": "gimp:painter / painter-filter-spool",
+          "result": "OK"
+        },
+        {
+          "target": "gimp:app / layer-presets-ui",
+          "result": "FAIL"
+        },
+        {
+          "target": "gimp:app / painter-mypaint-editor",
+          "result": "OK"
+        }
+      ],
+      "cause": "All three initial layer-presets cases passed, then test-side final config restoration left autosave queued into disposed Gimp context; fixed by draining native main context before returning from test",
+      "evidence": "native.jsonl"
+    }
+  ],
+  "limitations": [
+    "Only seven affected/adjacent normal targets rerun; not a new 108-target aggregate pass",
+    "Focused sanitizer covers exactly two C translation units; backend and dependencies uninstrumented; no leak-detection claim",
+    "Linux native GTK only; platform, disk exhaustion, broader compatibility and responsiveness gates unchanged",
+    "Preexisting nonfatal writable-folder/search-path warning and plugin dummy-file diagnostics retained"
+  ],
+  "evidence_archive": "migration/tests/filter-preferences-boundary-evidence.tar.gz",
+  "evidence_sha256": "85f9e55cac3145245f0146d711374e469b4b2543e3c821d937d235f8c70326e2",
+  "evidence_member_sha256": {
+    "before.json": "752420fb462fa22a8b8c54def5d704f8e610e85d4aa743403411760cc246703f",
+    "after.json": "752420fb462fa22a8b8c54def5d704f8e610e85d4aa743403411760cc246703f",
+    "native.jsonl": "27853677b41de3f2a1131749965da9455ee5f6a689e2f0de00b705e42fb3e3f2",
+    "native.txt": "2396a1eda78eff913685f78928bcae4dc1b1f4e7b28c044d66017cc1e5f4ddab",
+    "native-console.log": "da18f6cc2ee13a3efb9f46d1c08b56bf7a313a709c1d0cd4e61ba57d275d7932",
+    "native-exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "build.log": "6c66229b5a25d8cde8652da8faf3d76e5a7054bec2079959c6981692b49d0090",
+    "build-exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "build-second.log": "fd80a44a6281914e7670bcd9e42112c1deadb3d141bd4ea7da4a620f141fa1a8",
+    "build-second-exit.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "build-final.log": "3beebd2906648475726742a56fcd133ec925a52a7d78e53327be9524ccc8f2a4",
+    "build-final-exit.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "build-sanitizers.log": "8b477bce7508b83f4528aca5353213a7a64166eeef0f59feff122e1d59e2c3c0",
+    "build-sanitizers-exit.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "snapshot.py": "4c7ea7aad65183bd711479750b5ed612ff13c79b13be2b404bdb8cb5924114ac",
+    "run-native.sh": "96e5ca7a57e5287dcbbcffd5b8ab43353f97f7da0fd1da77bd6adc79df24cf2b",
+    "run-final.sh": "589433ed2fe57fd51040aaac62f63bb6222e700ecfedca24e64aaa25ac004fdd",
+    "build-sanitizers.py": "00a9cf4428a5635bf87dca50f86b4e02f464c8ad1c85f791f257041427133c65",
+    "run-sanitizers.py": "7428b64451d3f21a7051a567516d01df073ba1a2a9de8a1ef89eaf9f2443f560",
+    "run-sanitizers.sh": "c14a51775e0ca2decae0977e9efb25fa5c795219114e59120497d26a372e400e",
+    "final/before.json": "d74fd3dbaa91a4294cc3cff54093370d2945afaa856d10a502e02dc70e34ab82",
+    "final/after.json": "d74fd3dbaa91a4294cc3cff54093370d2945afaa856d10a502e02dc70e34ab82",
+    "final/native.jsonl": "a9cbba47fc49fff9e9cf7c46f0ae57483257c504954348a8f0393b5bf04daba3",
+    "final/native.txt": "6ffa13e9887c8bddbee354f66822a19dfa48b3efb0e9a4fcf37ccb9c03e0797d",
+    "final/native-console.log": "9f6080f02f458ff8cecb2853300c1d7b710811579e95008c14e0692ddf92f4ed",
+    "final/native-exit.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "sanitizers/build.json": "5d6a06ba3e536db9d375a23c30ef2cd2c005ec305466cec8f9b4cb5aee8de377",
+    "sanitizers/run.json": "3cb9a0c950f7da5dc17c82cec200d48565d52e27a28862338d91a48e85ce6196",
+    "sanitizers/native.log": "f6b425a44b5d328300bec62be222bed1a4a0b8312a3b8f415dc380e125ac0bbb",
+    "sanitizers/native-exit.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  "build_and_test_lock": "/workspace/shared/gimp-painter-build.lock",
+  "source_frozen": true
+}

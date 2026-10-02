@@ -1130,6 +1130,71 @@ prefs_help_func (const gchar *help_id,
   gimp_standard_help_func (help_id, NULL);
 }
 
+static void
+prefs_filter_storage_feedback (GtkWidget *entry,
+                               gboolean   valid)
+{
+  GtkStyleContext *style = gtk_widget_get_style_context (entry);
+  GtkWidget       *dialog = gtk_widget_get_toplevel (entry);
+
+  /* Icon notifications may close the dialog while an outside owner retains
+   * the entry. Keep local borrows alive and recheck its toplevel afterward. */
+  g_object_ref (entry);
+  g_object_ref (style);
+  g_object_ref (dialog);
+
+  gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY,
+                                     valid ? NULL : GIMP_ICON_DIALOG_WARNING);
+  gtk_entry_set_icon_tooltip_text (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY,
+                                   valid ? NULL :
+                                   _("Enter a whole number of bytes from 0 to 18446744073709551615. The last valid value is unchanged."));
+  if (valid)
+    gtk_style_context_remove_class (style, GTK_STYLE_CLASS_ERROR);
+  else
+    gtk_style_context_add_class (style, GTK_STYLE_CLASS_ERROR);
+
+  if (GTK_IS_DIALOG (dialog) &&
+      ! gtk_widget_in_destruction (dialog) &&
+      gtk_widget_get_toplevel (entry) == dialog)
+    gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog), GTK_RESPONSE_OK,
+                                        valid);
+
+  g_object_unref (dialog);
+  g_object_unref (style);
+  g_object_unref (entry);
+}
+
+static gboolean
+prefs_filter_storage_to_text (GBinding     *binding,
+                              const GValue *source,
+                              GValue       *target,
+                              gpointer      data)
+{
+  g_value_take_string (target,
+                        g_strdup_printf ("%" G_GUINT64_FORMAT,
+                                         g_value_get_uint64 (source)));
+  prefs_filter_storage_feedback (data, TRUE);
+  return TRUE;
+}
+
+static gboolean
+prefs_filter_storage_from_text (GBinding     *binding,
+                                const GValue *source,
+                                GValue       *target,
+                                gpointer      data)
+{
+  guint64  bytes;
+  gboolean valid;
+
+  valid = g_ascii_string_to_unsigned (g_value_get_string (source), 10,
+                                       0, G_MAXUINT64, &bytes, NULL);
+  prefs_filter_storage_feedback (data, valid);
+  if (valid)
+    g_value_set_uint64 (target, bytes);
+
+  return valid;
+}
+
 static GtkWidget *
 prefs_dialog_new (Gimp       *gimp,
                   GimpConfig *config)
@@ -1250,9 +1315,22 @@ prefs_dialog_new (Gimp       *gimp,
                          GTK_GRID (grid), 5, size_group);
 #endif /* ENABLE_MP */
 
-  prefs_memsize_entry_add (object, "painter-filter-spill-size",
-                           _("Painter filter temporary _storage:"),
-                           GTK_GRID (grid), 6, size_group);
+  /* This disk quota retains the full uint64 range, including saved values
+   * beyond GimpMemsizeEntry's 4 TiB ceiling. A decimal entry and checked
+   * native binding avoid both floating-point rounding and silent clamping. */
+  entry = gtk_entry_new ();
+  gtk_widget_set_name (entry, "painter-filter-spill-size");
+  gtk_entry_set_width_chars (GTK_ENTRY (entry), 20);
+  gtk_entry_set_max_width_chars (GTK_ENTRY (entry), 20);
+  gtk_widget_set_tooltip_text (entry,
+                               _("Maximum temporary storage in bytes; zero disables file-backed Painter filter jobs"));
+  g_object_bind_property_full (object, "painter-filter-spill-size", entry, "text",
+                               G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE,
+                               prefs_filter_storage_to_text,
+                               prefs_filter_storage_from_text, entry, NULL);
+  prefs_widget_add_aligned (entry,
+                            _("Painter filter temporary _storage (bytes):"),
+                            GTK_GRID (grid), 6, TRUE, size_group);
 
   /*  Internet access  */
 #ifdef CHECK_UPDATE

@@ -135,12 +135,140 @@ static void preferences_and_registration (void)
       gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL); gtk_widget_destroy (dialog); g_object_unref (dialog);
     }
 }
+static GtkWidget *filter_storage_entry (GtkWidget *widget)
+{
+  if (GTK_IS_ENTRY (widget) &&
+      g_strcmp0 (gtk_widget_get_name (widget), "painter-filter-spill-size") == 0)
+    return widget;
+  if (GTK_IS_CONTAINER (widget))
+    {
+      GList *children = gtk_container_get_children (GTK_CONTAINER (widget));
+      GtkWidget *found = NULL;
+      for (GList *l = children; l && !found; l = l->next)
+        found = filter_storage_entry (l->data);
+      g_list_free (children);
+      return found;
+    }
+  return NULL;
+}
+static void assert_storage_text (GtkWidget *entry, guint64 value)
+{
+  gchar *expected = g_strdup_printf ("%" G_GUINT64_FORMAT, value);
+  g_assert_cmpstr (gtk_entry_get_text (GTK_ENTRY (entry)), ==, expected);
+  g_free (expected);
+}
+static void filter_storage_preferences (void)
+{
+  const guint64 initial[] = {G_GUINT64_CONSTANT (8)*1024*1024*1024,
+                             GIMP_MAX_MEMSIZE+1, G_MAXUINT64};
+  const guint64 values[] = {0, G_GUINT64_CONSTANT (9)*1024*1024*1024+123,
+                            GIMP_MAX_MEMSIZE, GIMP_MAX_MEMSIZE+1,
+                            (G_GUINT64_CONSTANT (1)<<53)+1, G_MAXUINT64};
+  const gchar *invalid[] = {"", "-1", "+1", "1.5", " 1", "1 ", "8G",
+                            "18446744073709551616", "999999999999999999999999"};
+  guint64 original;
+
+  gimp_set_focused_once (gimp);
+  g_object_get (gimp->edit_config, "painter-filter-spill-size", &original, NULL);
+  for (guint i = 0; i < G_N_ELEMENTS (initial); ++i)
+    {
+      GtkWidget *dialog;
+      GtkWidget *entry;
+      GtkWidget *ok;
+      GObject   *copy;
+      guint64    value;
+
+      g_object_set (gimp->edit_config, "painter-filter-spill-size", initial[i], NULL);
+      dialog = preferences_dialog_create (gimp); g_object_ref_sink (dialog);
+      entry = filter_storage_entry (dialog);
+      g_assert_nonnull (entry); g_assert_true (gtk_widget_get_visible (entry));
+      assert_storage_text (entry, initial[i]);
+      copy = g_object_get_data (G_OBJECT (dialog), "config-copy");
+      ok = gtk_dialog_get_widget_for_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+      for (guint j = 0; j < G_N_ELEMENTS (values); ++j)
+        {
+          gchar *text = g_strdup_printf ("%" G_GUINT64_FORMAT, values[j]);
+          gtk_entry_set_text (GTK_ENTRY (entry), text); g_free (text);
+          g_object_get (copy, "painter-filter-spill-size", &value, NULL);
+          g_assert_cmpuint (value, ==, values[j]);
+          g_object_get (gimp->edit_config, "painter-filter-spill-size", &value, NULL);
+          g_assert_cmpuint (value, ==, values[j]);
+          g_assert_null (gtk_entry_get_icon_name (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY));
+          g_assert_true (gtk_widget_get_sensitive (ok));
+        }
+      for (guint j = 0; j < G_N_ELEMENTS (invalid); ++j)
+        {
+          gtk_entry_set_text (GTK_ENTRY (entry), invalid[j]);
+          g_object_get (copy, "painter-filter-spill-size", &value, NULL);
+          g_assert_cmpuint (value, ==, G_MAXUINT64);
+          g_object_get (gimp->edit_config, "painter-filter-spill-size", &value, NULL);
+          g_assert_cmpuint (value, ==, G_MAXUINT64);
+          g_assert_nonnull (gtk_entry_get_icon_name (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY));
+          g_assert_true (gtk_style_context_has_class (gtk_widget_get_style_context (entry), GTK_STYLE_CLASS_ERROR));
+          g_assert_false (gtk_widget_get_sensitive (ok));
+        }
+      /* External/reset notification clears invalid feedback and preserves every
+       * bit. Cancel then restores the original value, including oversized ones. */
+      g_object_set (copy, "painter-filter-spill-size", initial[i], NULL);
+      assert_storage_text (entry, initial[i]);
+      g_assert_null (gtk_entry_get_icon_name (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY));
+      g_assert_true (gtk_widget_get_sensitive (ok));
+      gtk_entry_set_text (GTK_ENTRY (entry), "0");
+      gtk_entry_set_text (GTK_ENTRY (entry), "invalid before cancel");
+      g_object_add_weak_pointer (G_OBJECT (entry), (gpointer *) &entry);
+      gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
+      gtk_widget_destroy (dialog); g_object_unref (dialog); g_assert_null (entry);
+      g_object_get (gimp->edit_config, "painter-filter-spill-size", &value, NULL);
+      g_assert_cmpuint (value, ==, initial[i]);
+      dialog = preferences_dialog_create (gimp); g_object_ref_sink (dialog);
+      entry = filter_storage_entry (dialog); g_assert_nonnull (entry);
+      assert_storage_text (entry, initial[i]);
+      gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
+      gtk_widget_destroy (dialog); g_object_unref (dialog);
+    }
+  g_object_set (gimp->edit_config, "painter-filter-spill-size", original, NULL);
+  /* Restore via the real autosave lifecycle while its Gimp owner/context is
+   * still alive, rather than leaving the idle save for application disposal. */
+  gimp_test_run_mainloop_until_idle ();
+}
+static void close_preferences_from_icon (GObject    *entry,
+                                        GParamSpec *pspec,
+                                        gpointer    data)
+{
+  GtkWidget *dialog = data;
+  g_signal_handlers_disconnect_by_func (entry, close_preferences_from_icon, data);
+  gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
+  gtk_widget_destroy (dialog);
+  g_object_unref (dialog);
+}
+static void filter_storage_reentrant_close (void)
+{
+  GtkWidget *dialog;
+  GtkWidget *entry;
+  GObject   *weak_entry;
+
+  gimp_set_focused_once (gimp);
+  dialog = preferences_dialog_create (gimp); g_object_ref_sink (dialog);
+  entry = filter_storage_entry (dialog); g_assert_nonnull (entry);
+  g_object_ref (entry);
+  weak_entry = G_OBJECT (entry);
+  g_object_add_weak_pointer (weak_entry, (gpointer *) &weak_entry);
+  g_object_add_weak_pointer (G_OBJECT (dialog), (gpointer *) &dialog);
+  g_signal_connect (entry, "notify::secondary-icon-name",
+                    G_CALLBACK (close_preferences_from_icon), dialog);
+  gtk_entry_set_text (GTK_ENTRY (entry), "overflow during notification");
+  g_assert_null (dialog);
+  g_object_unref (entry); g_assert_null (weak_entry);
+  gimp_test_run_mainloop_until_idle ();
+}
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL); if (!gtk_init_check (&argc, &argv)) return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path (); gimp = gimp_init_for_gui_testing (TRUE);
   g_test_add_func ("/layer-presets-ui/selection-actions-lifetime", selection_actions_lifetime);
   g_test_add_func ("/layer-presets-ui/preferences-registration", preferences_and_registration);
+  g_test_add_func ("/layer-presets-ui/filter-storage-preferences", filter_storage_preferences);
+  g_test_add_func ("/layer-presets-ui/filter-storage-reentrant-close", filter_storage_reentrant_close);
   g_application_run (gimp->app, 0, NULL);
   gint result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
   g_application_quit (G_APPLICATION (gimp->app)); g_clear_object (&gimp->app); return result;
