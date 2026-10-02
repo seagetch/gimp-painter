@@ -240,6 +240,7 @@ libappwidgets_sources = [
   'gimptoolpreseteditor.c',
   'gimptoolpresetfactoryview.c',
   'gimplayerpresetview.c',
+  'gimppaintermybrusheditor.cpp',
   'gimptranslationstore.c',
   'gimpuimanager.c',
   'gimpundoeditor.c',
@@ -280,7 +281,9 @@ libappwidgets = static_library('appwidgets',
   libappwidgets_sources,
   include_directories: [ rootInclude, rootAppInclude, ],
   c_args: '-DG_LOG_DOMAIN="Gimp-Widgets"',
+  cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'],
   dependencies: [
-    gegl, gtk3, gexiv2,
+    gegl, gtk3, gexiv2, painter_mypaint_surface_dep,
   ],
 )

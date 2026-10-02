@@ -14,7 +14,7 @@ extern "C" {
 #include "core/gimpprojection.h"
 #include "core/gimptoolinfo.h"
 #include "display/gimpdisplay.h"
-#include "widgets/gimpcontainercombobox.h"
+#include "widgets/gimppaintermybrusheditor.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpwidgets-utils.h"
 #include "gimpcoloroptions.h"
@@ -263,17 +263,13 @@ void draw(GimpDrawTool*draw_tool)
     gimp_draw_tool_add_arc(draw_tool,FALSE,coords.x-radius,coords.y-radius,2*radius,2*radius,0,2*G_PI);
   });
 }
-std::string property_name(const char*s){std::string name(s);std::replace(name.begin(),name.end(),'_','-');return name;}
 GtkWidget*options_gui(GimpToolOptions*options)
 {
-  auto*box=gimp_tool_options_gui(options);auto*context=GIMP_CONTEXT(options);
-  auto*selector=gimp_container_combo_box_new(gimp_data_factory_get_container(context->gimp->painter_mybrush_factory),context,32,1);
-  gtk_box_pack_start(GTK_BOX(box),selector,FALSE,FALSE,0);gtk_widget_show(selector);
-  auto*expander=gtk_expander_new(_("Extended brush settings"));auto*settings=gtk_box_new(GTK_ORIENTATION_VERTICAL,4);gtk_container_add(GTK_CONTAINER(expander),settings);gtk_box_pack_start(GTK_BOX(box),expander,FALSE,FALSE,0);
-  for(const auto&s:painter_mypaint_settings){auto name=property_name(s.internal_name);auto*widget=gimp_prop_spin_scale_new(G_OBJECT(options),name.c_str(),.01,.1,3);gtk_widget_set_tooltip_text(widget,_(s.tooltip));gtk_box_pack_start(GTK_BOX(settings),widget,FALSE,FALSE,0);}
-  for(const auto&s:painter_mypaint_switches){auto name=property_name(s.internal_name);auto*widget=gimp_prop_check_button_new(G_OBJECT(options),name.c_str(),_(s.displayed_name));gtk_box_pack_start(GTK_BOX(settings),widget,FALSE,FALSE,0);}
-  for(const auto&s:painter_mypaint_texts){auto name=property_name(s.internal_name);auto*label=gtk_label_new(_(s.displayed_name));auto*entry=gimp_prop_entry_new(G_OBJECT(options),name.c_str(),-1);gtk_box_pack_start(GTK_BOX(settings),label,FALSE,FALSE,0);gtk_box_pack_start(GTK_BOX(settings),entry,FALSE,FALSE,0);}
-  gtk_widget_show_all(expander);return box;
+  auto*box=gimp_tool_options_gui(options);GError*error=nullptr;
+  auto*editor=gimp_painter_mybrush_editor_new(GIMP_CONTEXT(options),FALSE,&error);
+  if(editor){gtk_box_pack_start(GTK_BOX(box),editor,FALSE,FALSE,0);gtk_widget_show(editor);}
+  else{auto*label=gtk_label_new(error?error->message:_("Unable to open the painter brush editor"));gtk_box_pack_start(GTK_BOX(box),label,FALSE,FALSE,0);gtk_widget_show(label);g_clear_error(&error);}
+  return box;
 }
 }
 static void gimp_painter_mybrush_tool_class_init(GimpPainterMybrushToolClass*klass)

@@ -311,4 +311,6 @@ GtkWidget * dialogs_tool_preset_editor_get      (GimpDialogFactory *factory,
 
 GtkWidget *dialogs_layer_preset_list_view_new (GimpDialogFactory *, GimpContext *, GimpUIManager *, gint);
 
+GtkWidget *dialogs_painter_mypaint_editor_new (GimpDialogFactory *, GimpContext *, GimpUIManager *, gint);
+
 #endif /* __DIALOGS_CONSTRUCTORS_H__ */

@@ -1,0 +1,31 @@
+{
+  "scope": "Exact dependency versions compiled into the37-source focused editor sanitizer before independent backend commits. These snapshots are evidence, not replacements for current production source.",
+  "base_head": "6c8bf318b2683cf77f46697d942899e53e30443a",
+  "sanitizer_report": "migration/tests/mypaint-editor-sanitizers-build.json",
+  "snapshots": [
+    {
+      "source": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "sha256": "9d77a0b9f7333d85dce7c10990c9e795d0af4ed46333a18f8d5e63d82315eb28",
+      "snapshot": "migration/fixtures/mypaint-editor-dependency-snapshots/app__paint__painter-mypaint-surface__gimp-painter-session.cpp.gz",
+      "head_sha256": "9702c157de0bff4989b8d3f690c74f341c8a817f61eb63ed03d49218a676d27e"
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/gimp-painter-session.h",
+      "sha256": "5fa6df07eebf2f55e71dac5835afe45ca1700179db2c0bba52cb62e7f53dafb4",
+      "snapshot": "migration/fixtures/mypaint-editor-dependency-snapshots/app__paint__painter-mypaint-surface__gimp-painter-session.h.gz",
+      "head_sha256": "4009e673a8c4e4723d461171e3d0ccb1f88673a5bb24d76f1d8ed5a6de8ce636"
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/paint-core.cpp",
+      "sha256": "540d8ff783d79aea1d7f5094b4e1c1f6402ffc882cc6261c4a44bdc196cb26f0",
+      "snapshot": "migration/fixtures/mypaint-editor-dependency-snapshots/app__paint__painter-mypaint-surface__paint-core.cpp.gz",
+      "head_sha256": "51fc961c5ee8a93f955b0157725f863e53bd7e34307f4f25a4d8a63d6aecaf81"
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/paint-core.hpp",
+      "sha256": "b15af1bb310a6f8f9fbf2dc57b6604192ec72af3ace4295214cb8201d0544f96",
+      "snapshot": "migration/fixtures/mypaint-editor-dependency-snapshots/app__paint__painter-mypaint-surface__paint-core.hpp.gz",
+      "head_sha256": "3ef0569ed121984eb60422dc2b66cb194654fd1d15023eedd85509e370ab3233"
+    }
+  ]
+}

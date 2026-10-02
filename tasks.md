@@ -882,6 +882,7 @@
 | 24.015/mypaint-editor-create | [ ] | MyPaint editor の生成条件と options を修正する | 24.014, 24.001/editor-context-contract | `GimpContext` への誤った `GIMP_IS_MYPAINT_OPTIONS` 判定と NULL options の参照を排除し、正しいブラシを表示する |
 | 24.016 | [ ] | 横型 GUI を共通部品へ接続する | 24.015 | 旧操作を削らず重複実装を排除 |
 | 24.017 | [ ] | editor の往復試験を実行する | 24.016 | 編集→保存→再選択で全設定が一致 |
+| 24.017/native-editor-workflow | [x] | 共通MyPaint editorの縦横dock・popup・全設定保存と旧previewを接続する | 24.012/private-preview-resources, 24.001/application-history | 12実GTK/37source focused sanitizerとmanual視認1、全45/5/2設定・9curve入力・range/enable・factory操作・再入を検証。実旧16preview/33record/8389189 bytes完全一致、4fixture確認。検証時の未commit依存4sourceを保存し全app/実device/platform/177全renderは別gate |
 | 24.017/mypaint-editor-constructor-test | [ ] | MyPaint editor の起動・破棄を検証する | 24.016, 24.015/mypaint-editor-create | 有効 context と未選択・無効 context の各ケースで作成結果、ブラシ表示、エラー処理、破棄後の参照数を確認 |
 
 ### 25 回転・反転・スナップ

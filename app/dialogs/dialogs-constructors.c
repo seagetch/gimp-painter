@@ -63,6 +63,7 @@
 #include "widgets/gimptooloptionseditor.h"
 #include "widgets/gimptoolpresetfactoryview.h"
 #include "widgets/gimplayerpresetview.h"
+#include "widgets/gimppaintermybrusheditor.h"
 #include "widgets/gimptoolpreseteditor.h"
 #include "widgets/gimpundoeditor.h"
 #include "widgets/gimppathtreeview.h"
@@ -922,4 +923,15 @@ GtkWidget *dialogs_layer_preset_list_view_new (GimpDialogFactory *factory,
                                               GimpUIManager *manager, gint size)
 {
   return gimp_layer_preset_view_new (context, size, menus_get_global_menu_factory (context->gimp));
+}
+
+GtkWidget *dialogs_painter_mypaint_editor_new (GimpDialogFactory *factory,
+                                             GimpContext *context,
+                                             GimpUIManager *manager, gint size)
+{
+  GError *error = NULL;
+  GtkWidget *editor = gimp_painter_mybrush_editor_new (context, FALSE, &error);
+  if (error)
+    { gimp_message_literal (context->gimp, NULL, GIMP_MESSAGE_ERROR, error->message); g_clear_error (&error); }
+  return editor;
 }
