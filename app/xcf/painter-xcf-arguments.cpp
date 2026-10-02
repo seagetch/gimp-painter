@@ -296,6 +296,11 @@ using Snapshot = std::unique_ptr<GimpFilterArgumentsSnapshot, SnapshotFree>;
 const gchar *safe_image_name (GimpImage *image)
 {
   if (!image) return nullptr;
+  /* Display strings for remote root URLs can include query/userinfo text.
+   * Do not derive a diagnostic image name from any remote file handle. */
+  for (GFile *file : {gimp_image_get_file (image), gimp_image_get_imported_file (image),
+                     gimp_image_get_exported_file (image)})
+    if (file && !g_file_is_native (file)) return nullptr;
   const gchar *name = gimp_image_get_display_name (image);
   /* Only an already-visible basename, never a file URI/path or userinfo. */
   return name && !std::strstr (name, "://") && !std::strchr (name, '/') &&

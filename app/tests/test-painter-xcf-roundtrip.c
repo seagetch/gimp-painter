@@ -737,7 +737,7 @@ static GVariant *external_origins (GimpItem *item)
   GVariant *record=capsule(item),*origins=g_variant_lookup_value(record,"external-reference-origins",G_VARIANT_TYPE("aa{sv}"));
   g_assert_nonnull(origins);g_variant_unref(record);return origins;
 }
-static void external_references_remain_unresolved (void)
+static void external_reference_scene (guint scene)
 {
   GimpImage *external=gimp_image_new(gimp,2,2,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
   GimpImage *image=gimp_image_new(gimp,2,2,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR),*copy;
@@ -748,7 +748,7 @@ static void external_references_remain_unresolved (void)
   GimpFilterArgumentSpec spec={0};GimpFilterArgumentsSnapshot *args;GError *error=NULL;
   GVariant *clone_origin,*filter_origin;gint64 external_id=gimp_image_get_id(external),source_id=gimp_item_get_id(GIMP_ITEM(source));
   const guint8 source_pixel[]={191,32,64,255},local_pixel[]={9,8,7,255},filter_pixel[]={17,18,19,255};
-  display_file=g_file_new_for_uri("https://unit-user:unit-secret@example.invalid/private/source.xcf");
+  display_file=g_file_new_for_uri(scene ? "https://example.invalid/?access_token=unit-secret" : "https://unit-user:unit-secret@example.invalid/private/source.xcf");
   gimp_image_set_file(external,display_file);g_object_unref(display_file); /* no file/network lookup */
   gimp_image_add_layer(external,source,NULL,0,FALSE);gimp_image_add_layer(image,local,NULL,0,FALSE);
   gimp_item_set_tattoo(GIMP_ITEM(local),(guint32)source_id); /* diagnostic-ID collision trap */
@@ -804,6 +804,75 @@ static void external_references_remain_unresolved (void)
   g_variant_unref(clone_origin);g_variant_unref(filter_origin);gimp_filter_arguments_snapshot_free(args);
   g_object_unref(copy);g_object_unref(image);g_file_delete(file,NULL,NULL);g_object_unref(file);
 }
+static void external_references_remain_unresolved (void)
+{ external_reference_scene(0);external_reference_scene(1); }
+static void wire32 (guint8 *bytes, gsize offset, guint32 value)
+{ value=GUINT32_TO_BE(value);memcpy(bytes+offset,&value,4); }
+static GFile *synthetic_capsule_file (GBytes *capsule_bytes)
+{
+  guint8 original[124]={0};gsize blob_size,extra;const guint8 *blob=g_bytes_get_data(capsule_bytes,&blob_size);
+  const gchar *name="gimp-painter-item";guint32 name_size=strlen(name)+1;guint8 *bytes;GFile *file=temporary_file();
+  memcpy(original,"gimp xcf v010",13);wire32(original,14,1);wire32(original,18,1);wire32(original,26,GIMP_PRECISION_U8_NON_LINEAR);
+  wire32(original,38,50);wire32(original,50,1);wire32(original,54,1);wire32(original,58,1);wire32(original,62,2);original[66]='L';
+  wire32(original,76,84);wire32(original,84,1);wire32(original,88,1);wire32(original,92,4);wire32(original,96,104);
+  wire32(original,104,1);wire32(original,108,1);wire32(original,112,120);original[120]=9;original[121]=8;original[122]=7;original[123]=255;
+  extra=20+name_size+blob_size;bytes=g_malloc0(sizeof original+extra);memcpy(bytes,original,68);memcpy(bytes+68+extra,original+68,sizeof original-68);
+  wire32(bytes,68,21);wire32(bytes,72,extra-8);wire32(bytes,76,name_size);memcpy(bytes+80,name,name_size);
+  wire32(bytes,80+name_size,GIMP_PARASITE_PERSISTENT);wire32(bytes,84+name_size,blob_size);memcpy(bytes+88+name_size,blob,blob_size);
+  wire32(bytes,76+extra,84+extra);wire32(bytes,96+extra,104+extra);wire32(bytes,112+extra,120+extra);
+  g_assert_true(g_file_replace_contents(file,(gchar*)bytes,sizeof original+extra,NULL,FALSE,G_FILE_CREATE_NONE,NULL,NULL,NULL));g_free(bytes);return file;
+}
+static GBytes *schema_capsule (guint scene)
+{
+  const guint8 magic[12]={'G','P','X','C','F',0,0,0,1,0,0,0};
+  GVariantBuilder builder;GVariant *value;GByteArray *wire=g_byte_array_new();
+  g_variant_builder_init(&builder,G_VARIANT_TYPE_VARDICT);
+  g_variant_builder_add(&builder,"{sv}","version",g_variant_new_uint32(1));
+  if(scene==0)g_variant_builder_add(&builder,"{sv}","version",g_variant_new_uint32(2));
+  if(scene==3)g_variant_builder_add(&builder,"{sv}","kind",g_variant_new_uint32(77));
+  else g_variant_builder_add(&builder,"{sv}","kind",g_variant_new_string(scene==2?"future-layer":scene==4?"clone":"ordinary"));
+  if(scene==4)g_variant_builder_add(&builder,"{sv}","kind",g_variant_new_string("ordinary"));
+  g_variant_builder_add(&builder,"{sv}","id",g_variant_new_uint32(2));
+  g_variant_builder_add(&builder,"{sv}","future-field",g_variant_new_uint32(11));
+  if(scene==1)g_variant_builder_add(&builder,"{sv}","future-field",g_variant_new_uint32(22));
+  value=g_variant_ref_sink(g_variant_builder_end(&builder));g_assert_true(g_variant_is_normal_form(value));
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  {GVariant *swapped=g_variant_byteswap(value);g_variant_unref(value);value=swapped;}
+#endif
+  g_byte_array_append(wire,magic,sizeof magic);g_byte_array_append(wire,g_variant_get_data(value),g_variant_get_size(value));g_variant_unref(value);
+  return g_byte_array_free_to_bytes(wire);
+}
+static void ambiguous_and_unknown_capsule_schema (void)
+{
+  for(guint scene=0;scene<5;++scene)
+    {
+      GBytes *expected=schema_capsule(scene);GFile *input=synthetic_capsule_file(expected),*output=temporary_file();
+      GimpImage *image=load(input),*copy;GimpLayer *item=layer(image,"L");
+      const GimpParasite *parasite;const void *actual,*wanted;guint32 actual_size;gsize wanted_size;GError *error=NULL;
+      GimpPlugInProcedure *proc=GIMP_PLUG_IN_PROCEDURE(gimp_pdb_lookup_procedure(gimp->pdb,"gimp-xcf-save"));
+      g_assert_false(GIMP_IS_CLONE_LAYER(item));g_assert_false(GIMP_IS_FILTER_LAYER(item));pixel(item,9,8,7,255);
+      parasite=gimp_item_parasite_find(GIMP_ITEM(item),"gimp-painter-item");actual=gimp_parasite_get_data(parasite,&actual_size);wanted=g_bytes_get_data(expected,&wanted_size);
+      g_assert_cmpmem(actual,actual_size,wanted,wanted_size);
+      if(scene==0||scene==1||scene==4)
+        {
+          sentinel_write(output);
+          g_assert_cmpint(file_save(gimp,image,NULL,output,proc,GIMP_RUN_NONINTERACTIVE,FALSE,FALSE,FALSE,&error),==,GIMP_PDB_EXECUTION_ERROR);
+          g_assert_nonnull(error);g_assert_nonnull(strstr(error->message,"Duplicate Painter metadata key"));g_clear_error(&error);sentinel_check(output);
+        }
+      else
+        {
+          gimp_object_set_name(GIMP_OBJECT(item),"opaque edit");gimp_layer_set_opacity(item,.5,FALSE);save(image,output);copy=load(output);item=layer(copy,"opaque edit");
+          parasite=gimp_item_parasite_find(GIMP_ITEM(item),"gimp-painter-item");actual=gimp_parasite_get_data(parasite,&actual_size);
+          g_assert_cmpmem(actual,actual_size,wanted,wanted_size);g_assert_cmpfloat(gimp_layer_get_opacity(item),==,.5);pixel(item,9,8,7,255);
+          g_assert_nonnull(gimp_item_parasite_find(GIMP_ITEM(item),"gimp-painter-origin"));
+          /* An opaque active kind must not silently swallow a new custom mode. */
+          gimp_layer_set_mode(item,GIMP_LAYER_MODE_PAINTER_NORMAL,FALSE);sentinel_write(output);
+          g_assert_cmpint(file_save(gimp,copy,NULL,output,proc,GIMP_RUN_NONINTERACTIVE,FALSE,FALSE,FALSE,&error),==,GIMP_PDB_EXECUTION_ERROR);
+          g_assert_nonnull(error);g_clear_error(&error);sentinel_check(output);g_object_unref(copy);
+        }
+      g_object_unref(image);g_bytes_unref(expected);g_file_delete(input,NULL,NULL);g_file_delete(output,NULL,NULL);g_object_unref(input);g_object_unref(output);
+    }
+}
 int main (int argc, char **argv)
 {
   int result;
@@ -825,6 +894,7 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-xcf-roundtrip/replace_uninterpreted_arguments", replace_uninterpreted_arguments);
   g_test_add_func ("/painter-xcf-roundtrip/opaque_argument_shapes", opaque_argument_shapes);
   g_test_add_func ("/painter-xcf-roundtrip/external_references_remain_unresolved", external_references_remain_unresolved);
+  g_test_add_func ("/painter-xcf-roundtrip/ambiguous_and_unknown_capsule_schema", ambiguous_and_unknown_capsule_schema);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

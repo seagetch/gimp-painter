@@ -521,6 +521,7 @@
 | 12.015 | [ ] | 独自型の構造往復を試験する | 12.014 | 階層・参照・引数・未知情報が一致 |
 | 12.015/opaque-preservation | [x] | 未知引数の複製/Undoと欠落参照・image originを往復する | 12.001/preservation-writer, 15.008/opaque-definition-state | 32通常/14 focused sanitizer合格。実supported実行後Undoの元画素、未変更duplicateのactive opaque、欠落ID無再結合/保持、path/全型array、明示marker判定を検証 |
 | 12.015/external-reference-preservation | [x] | 外部Clone/Filter参照を明示未解決descriptorとして保存する | 12.015/opaque-preservation | 33通常/15 focused ASan+UBSan合格。in-session参照不変・cache保持・同名同IDの無誤結合・元image終了後resaveを検証。URI/path/credentialを格納せず外部探索しない |
+| 12.015/capsule-schema-preservation | [x] | duplicate keyと未知kindを無損失で拒否/保持する | 12.015/external-reference-preservation | 34通常/16 focused sanitizer合格。normal-form重複keyは置換前拒否、未知/型不正kindはopaqueで再保存保持、remote URI/query名を診断metadataから除外。compile/run hash安定を記録 |
 | 12.015/clone-unresolved-roundtrip | [ ] | 未解決 CloneLayer 参照を往復試験する | 12.014, 12.002/clone-unresolved-write | 保存前に source が NULL の fixture を保存・再読込し、参照名を欠落させず crash しない |
 | 12.015/filter-args-roundtrip | [ ] | FilterLayer の引数所有権と往復を試験する | 12.014, 12.003/filter-args-ownership | 複数の型付き引数を繰返し保存・再読込し、値一致と一時領域の解放を確認する |
 | 12.016 | [ ] | 保存中断からの回復を試験する | 12.015 | 元作品が開け、編集状態を誤って保存済みにしない |

@@ -17,7 +17,10 @@ encodings. Otherwise upstream version selection remains applicable.
 
 Each namespace contains 12 magic/version bytes `47 50 58 43 46 00 00 00 01 00 00
 00`, followed by canonical, little-endian GVariant `a{sv}` serialization. Parsers
-validate normal form, dictionary version `uint32(1)`, field types and bounds.
+validate normal form, unique dictionary keys, dictionary version `uint32(1)`,
+field types and bounds. Normal form alone does not make duplicate keys
+unambiguous. Any duplicate key, including an unknown key, retains the original
+capsule but prevents rewriting; preflight fails before replacing a destination.
 Unaligned wire storage is copied from GVariant's aligned serialization. The
 image dictionary also has `dialect = "gimp-painter-standard-v1"`. A complete
 image-property sequence with a recognized marker can choose standard parsing
@@ -25,7 +28,7 @@ before later object-work limits. Later duplicate namespace declarations take
 precedence. Explicit recovery selection overrides the marker. The marker is not
 a prerequisite for opening existing standard files.
 
-Unknown dictionary fields survive v1 edits. Unknown future namespace bytes on
+Unknown dictionary fields survive v1 edits. Unknown future namespace bytes or unknown/missing/wrong-typed item kinds on
 an ordinary proxy remain byte-for-byte intact and warn on loading. They cannot
 be overwritten with current Clone/Filter/custom-mode semantics: preflight fails
 before destination replacement. `gimp-painter-origin` is a separate v1 archive
@@ -115,8 +118,9 @@ An explicit future UI relink may choose a source, but the loader never guesses.
 `external-reference-origins` stores diagnostic role, declared/actual types,
 original object/image runtime IDs and optional already-visible object/image names.
 Runtime IDs are provenance, not persistent lookup authority. Image names are
-restricted to safe display basenames; no derived file paths/URIs or credential
-userinfo are stored. Unknown object internals are still not fabricated: objects
+omitted whenever a source, import or export file handle is nonlocal. Local
+display names are restricted to safe basenames; no derived file paths/URIs,
+credential userinfo or remote root-query text are stored. Unknown object internals are still not fabricated: objects
 without a supported image/item identity require opaque preservation or explicit
 preflight failure.
 
@@ -224,3 +228,26 @@ local tattoos. It verifies live bindings remain unchanged during save, then
 unresolved descriptors and exact caches survive repeated reload/resave and
 closure of the original external image before resaving the live original. A
 synthetic credential-bearing source URI is not copied into any saved bytes.
+
+
+## Schema and source-name privacy checkpoint
+
+Normal application coverage is 34 cases (XCF 4, Open 14, roundtrip 16); all 16
+focused ASan+UBSan roundtrip cases pass. Evidence is
+`migration/tests/painter-xcf-schema-{meson.txt,testlog.txt,testlog.json,sanitizers.json}`.
+The schema test exercises duplicate version, duplicate unknown field, duplicate
+kind, unknown string kind and wrong-typed kind. Duplicate dictionaries cannot be
+rewritten through a potentially different lookup/canonicalization interpretation.
+Unknown item kinds remain ordinary proxies whose capsule and separate origin
+archive survive edits and another save/open. Assigning custom semantics to such
+a proxy refuses before replacement. External-reference scenes test both a
+credential-bearing path URI and a root URI with a credential-like query.
+
+The focused runner now instruments 21 translation units, including the shared
+Filter scheduler and exact Edge/Gauss kernels. Focused C++ objects enable RTTI
+and precede private native archives with their original members omitted, avoiding
+mixed instrumented/uninstrumented COMDAT ownership. UBSan vptr checks remain
+enabled; no diagnostic suppression is used. WorkAdmission is header-only coverage.
+Source and interface-header hashes are captured at compilation and checked after
+testing; the checkpoint has no changed sources. Remaining upstream libraries and
+dependencies are still uninstrumented, and leak detection is disabled.

@@ -91,6 +91,19 @@ Variant decode (const GimpParasite *parasite)
 #if G_BYTE_ORDER == G_BIG_ENDIAN
   value.reset (g_variant_byteswap (value.get ()));
 #endif
+  /* Normal form permits duplicate a{sv} keys. Lookup sees the first while
+   * GVariantDict would overwrite it with the last, so never reinterpret or
+   * rewrite an ambiguous capsule, including duplicated unknown fields. */
+  const gsize count = g_variant_n_children (value.get ());
+  if (count > 65536) fail ("Painter metadata exceeds the field-work limit; original capsule is retained");
+  std::unordered_set<std::string> keys;
+  for (gsize i = 0; i < count; ++i)
+    {
+      Variant entry (g_variant_get_child_value (value.get (), i));
+      Variant key (g_variant_get_child_value (entry.get (), 0));
+      if (!keys.emplace (g_variant_get_string (key.get (), nullptr)).second)
+        fail ("Duplicate Painter metadata key; original capsule is retained and cannot be safely rewritten");
+    }
   guint32 version;
   if (!g_variant_lookup (value.get (), "version", "u", &version) || version != 1) return {};
   return value;
@@ -259,11 +272,19 @@ Variant unpack_opaque_arguments (GBytes *bytes)
   Variant child (g_variant_get_child_value (wrapper.get (), 0));
   return Variant (g_variant_get_variant (child.get ()));
 }
+bool known_item_kind (GVariant *value)
+{
+  const gchar *kind = nullptr;
+  return value && g_variant_lookup (value, "kind", "&s", &kind) &&
+         (!std::strcmp (kind, "ordinary") || !std::strcmp (kind, "clone") || !std::strcmp (kind, "filter"));
+}
 Parasite fallback_origin (GObject *object)
 {
   const auto *semantic = GIMP_IS_IMAGE (object) ? gimp_image_parasite_find (GIMP_IMAGE (object), image_name)
                                                : gimp_item_parasite_find (GIMP_ITEM (object), item_name);
-  if (!semantic || decode (semantic)) return {};
+  if (!semantic) return {};
+  Variant semantic_value = decode (semantic);
+  if (semantic_value && (GIMP_IS_IMAGE (object) || known_item_kind (semantic_value.get ()))) return {};
   const auto *existing = GIMP_IS_IMAGE (object) ? gimp_image_parasite_find (GIMP_IMAGE (object), origin_name)
                                                : gimp_item_parasite_find (GIMP_ITEM (object), origin_name);
   Variant base = decode (existing);
@@ -287,11 +308,11 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
 {
   const auto *existing = gimp_item_parasite_find (item, item_name);
   Variant base = decode (existing);
-  if (existing && !base)
+  if (existing && (!base || !known_item_kind (base.get ())))
     {
       if (GIMP_IS_CLONE_LAYER (item) || GIMP_IS_FILTER_LAYER (item) ||
           (GIMP_IS_LAYER (item) && gimp_painter_layer_mode_is_compatibility (gimp_layer_get_mode (GIMP_LAYER (item)))))
-        fail ("Unknown Painter extension version cannot be overwritten with edited custom semantics");
+        fail ("Unknown Painter extension version or kind cannot be overwritten with edited custom semantics");
       return Parasite (gimp_parasite_copy (existing));
     }
   Dictionary dict (base.get ());
