@@ -1,0 +1,105 @@
+{
+  "native_test_log": "/workspace/shared/fill-ui-native-20261002-053048.log",
+  "native_surface": "Cloud Linux GTK desktop, DISPLAY=:0 (not exec namespace)",
+  "test_count": 25,
+  "exit_code": 0,
+  "scope": "real GUI application initialization, native tool vfuncs and signals, pixel/Undo/Redo and destination byte assertions",
+  "limitations": [
+    "not physical tablet or all-platform coverage",
+    "not a total UI latency or bounded-memory admission claim",
+    "automatic Save continuation is not implemented; explicit BUSY preserves queued painting and destination",
+    "animated brush-pipe sequencing and independent old-runtime Shift/smoothing oracles remain open",
+    "uninstrumented remaining host/dependencies; known fixture plugin/data-path diagnostics retained"
+  ],
+  "manual_gui": {
+    "profile": "/workspace/shared/fill-ui-interactive-profile",
+    "app_window": 41943047,
+    "checks": [
+      "bracketright selects Fill Brush",
+      "mouse drag paints",
+      "one Ctrl+Z restores blank image",
+      "Ctrl+Y restores stroke",
+      "Rate50 and Eraser mode controls visible",
+      "erase with alpha removes connected dark patch",
+      "completed stroke saved through native Save dialog",
+      "isolated app closed; original demo and Chromium preserved"
+    ],
+    "saved_file": "/workspace/shared/fill-manual.xcf",
+    "saved_file_sha256": "382eb53ea6b7e535cee3003294c629b003ee17b6727547fea9b3f4c1523b9ab9"
+  },
+  "normal": {
+    "log": "migration/tests/fill-brush-ui-native.txt",
+    "tests": 25,
+    "exit_code": 0
+  },
+  "sanitizers": {
+    "log": "migration/tests/fill-brush-ui-sanitizers.txt",
+    "tests": 25,
+    "exit_code": 0,
+    "kinds": [
+      "address",
+      "undefined",
+      "float-cast-overflow"
+    ],
+    "vptr_enabled": true,
+    "leak_detection": false,
+    "instrumented_translation_units": 26,
+    "build_report": "migration/tests/fill-brush-ui-sanitizer-build.json",
+    "executable_sha256": "71d4696970686c7edae7d3a0dc6c14b522819acdeda7d7cff7c41b78eb956198",
+    "source_hashes_unchanged_at_run_end": true
+  },
+  "measurements": {
+    "normal": [
+      "# latency image=128x128 brush=120 points=21 press_us=2132 release_us=1 max_main_iteration_us=9321 elapsed_us=198273 iterations=170; no total latency/admission bound claimed",
+      "# latency image=2048x2048 brush=512 points=21 press_us=2658 release_us=1 max_main_iteration_us=32640 elapsed_us=1569573 iterations=881 peak_rss_before_kib=418960 peak_rss_after_kib=418960; includes native snapshot/publication/GTK, no total bound claimed",
+      "# raw_input_queue points=10001 admission_us=11603 cancellation_cleanup_us=988 peak_rss_kib=418960; no arbitrary queue cap, bounded-memory admission remains open"
+    ],
+    "sanitized": [
+      "# latency image=128x128 brush=120 points=21 press_us=3164 release_us=2 max_main_iteration_us=27373 elapsed_us=440877 iterations=138; no total latency/admission bound claimed",
+      "# latency image=2048x2048 brush=512 points=21 press_us=4818 release_us=3 max_main_iteration_us=88917 elapsed_us=4109552 iterations=879 peak_rss_before_kib=804552 peak_rss_after_kib=804552; includes native snapshot/publication/GTK, no total bound claimed",
+      "# raw_input_queue points=10001 admission_us=32464 cancellation_cleanup_us=1371 peak_rss_kib=804552; no arbitrary queue cap, bounded-memory admission remains open"
+    ]
+  },
+  "sources_sha256": {
+    "app/paint/painter-bounded-fill/search.hpp": "08bc04598126fa34f96eb27022242ef92c6e1056f2f60ad5793dc0c5d8068a0e",
+    "app/tools/gimpfillbrushtool.cpp": "3962d8b9c7c4afe017d319994d65190ab957f2b4ca7a5236b6cbf6586f55ef63",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h": "a714dd1306aea247ee82adfa5fdb2956f8da029f4829deb14ad97dd2e6403e01",
+    "app/plug-in/gimppluginprocedure.c": "61707ca3fd250a5f39eca5a7df461c795c8570b99aef15302141e24c51694b7a",
+    "app/xcf/xcf.c": "df79ecfabe1f44f3083dd99989e5cbe922deacf47535b9cf4fcb0a8cbb981099",
+    "app/paint/gimpfillbrush.h": "8c559ab9988599e52a20e67f41443f7b16721cb21866f5ee35deb47170844e51",
+    "app/paint/gimpbrushcore.c": "cde86627a8ae34c9f6f1e8cc46f73bca2078d22143897ac8c52157d3a6c1741a",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/paint/gimppaintcore-loops.cc": "d4be1c9ff6a1bdc4f2818e9f13933403a0597a657c2efe33240c3a40d0894f40",
+    "app/painter/binding-store.hpp": "72ccd52c058c15d456517c8ed9a8cf9ec98ca14d08e277bf68f3e40febb7f1f9",
+    "app/operations/layer-modes/gimp-layer-modes.c": "9d0914ab636054d312997227c4f569feb9a8854d76b1a6d94d1faaf05cbbfd64",
+    "app/actions/tools-actions.c": "58e866a43ca4c7ccb092a5f1f6f8e159bb3fad0275b256c140653dea797c3a5d",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "9702c157de0bff4989b8d3f690c74f341c8a817f61eb63ed03d49218a676d27e",
+    "app/tools/gimp-tools.c": "a7231cf0b2826f6b0c0e0b84e7d6c999b51431fe5e3df97313337547b3e884b8",
+    "app/core/gimpimage.h": "b73b98c7fda216f90f91f0280b298fac00114a3c9e7684a612dcbf808af52272",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.h": "4009e673a8c4e4723d461171e3d0ccb1f88673a5bb24d76f1d8ed5a6de8ce636",
+    "app/pdb/file-cmds.c": "35287520871f182b9c6e290dc136fd7f6e00bb4e4a9b52736bc8b12bebe995df",
+    "app/core/gimpimage-undo.c": "789b12d448f9790e87164c3b84880937b21d8da76368416b4729b8176849d183",
+    "app/painter/source.hpp": "627136e9747edbd589023d420767697f5fcd2b20feeb96fd1d9c524bb1490334",
+    "app/paint/gimpfillbrush.cpp": "0185b239e75208ac73018fc3959f2ff02e8a9bb26ad5ea87f9cc0d879aa3d5dd",
+    "app/tools/gimppainttool.c": "718529f24de3816e14170ef202ad87e08cca915f1f4463e428ab4e6a14f62089",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/tools/gimpbrushtool.c": "8f2dd287d26250cc4ba44acc895012bc4df2caa677de62fade6c4ac9f38016f5",
+    "app/file/file-save.c": "beb49a8f6bee0cb96cd4860f89f73ea0ae0294121c45d7b2ec92b84d762ad2fc",
+    "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28",
+    "app/tests/test-painter-fill-brush-ui.cpp": "e7de0ccabf4c5d9139116c9bb21d81ad6448a7669a16ffeef91b8e336fcad147",
+    "app/tools/gimpfillbrushtool.h": "647892ec4fe94d202c1ad7999b1f6ead3d002c6f6f9fd35f2b743574b110f173",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/core/gimpitem.c": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e",
+    "app/core/gimpimage.c": "88cf26998cf9b591d1e13301f3422606ada64c58e9be31a20b4fe9593adb6f73",
+    "app/painter/connection.hpp": "cf3fb4127a0726340492972c17c34d1bc3047a3c4d52bae44d15ba0741fb9708",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "3c7f46d1765addfee8c5735d01e95100e254f7c4a8f922339cbddf439814bb63",
+    "app/paint/painter-bounded-fill/search.cpp": "9aefd9e47b15b8dd9eecc531df1be0bc8ac6c2c511bd6a488256b15d47ece254",
+    "app/painter/object-ref.hpp": "46006b8f2bc6216e6486fa473fe10ffbc9311c3550825b82798b0858165f8dac",
+    "app/xcf/xcf-save.c": "27ea5cbb1fa4452823ba09c7785f8810669940b54904354633eb6baa82de6cd1",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.hpp": "bea0eb0341fecaa0f7bc66e95b02f3697b29a0d97450e3dfcdbe40e0e0e574b3",
+    "app/paint/gimppaintcore.c": "5750b36bc9289c7c68f23beeaef6ce690e0379d0ece2e1faeb185845ef8a1948",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.hpp": "ae5c72c55d831d4e313da48fa7229a258a004d337a33c8242f205fda97aa22b7"
+  },
+  "menu_source_sha256": "0ca727e466b4bd3c6b1b19afac3f7ff5449e6151aaa22565c4a492f490461853",
+  "generated_menu_has_fill_action": true
+}

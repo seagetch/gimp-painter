@@ -948,6 +948,9 @@
 | 27.012 | [ ] | tool options を移植する | 27.011 | 旧 rate・eraser-mode・継承描画設定を編集・保存し、固定閾値を新規 UI 設定と混同しない。rate の実効性を旧版で測定 |
 | 27.012/legacy-brush-oracle | [x] | 旧Fill Brush実strokeのrate・paint/erase・Undoを採取する | 27.004/runtime-search-foundation | 12実旧native stroke/36全画素snapshotを保存。rate0/50/100は4組すべて完全一致、Undo初期画素・Redo結果一致。4 fixture試験合格。現行tool比較は未完了 |
 | 27.012/legacy-dab-origin | [x] | 旧stroke fixtureの補間原点と実dab列を固定する | 27.012/legacy-brush-oracle | 初回stamp後last_coordsを設定した正しい旧tool初期化へ修正し初期harnessを保持。透明vfunc観測24dabと36全画素snapshotが同一、4fixture試験合格。現行stroke比較は後続gate |
+| 27.012/native-tool-controller | [x] | Fillの実GTK入力・旧shortcut・自動描画と保存前flightを接続する | 27.009/native-paint-transaction | 25 native GTK/26unit focused sanitizer合格。実appの選択/paint/Undo/Redo/XCF保存を確認。未完入力を保持しSave/export/PDB/XCFはBUSY安全拒否。2K/512brush通常max32.640msを記録、完全有界補間・自動Save継続・pipe順序は未完了 |
+| 27.010/bounded-interpolation | [ ] | native補間とinput admissionを応答可能な単位へ分割する | 27.012/native-tool-controller | 長い単一motionでもdab数に比例したowner-thread停止をせず、旧dab位置/軸/spacing/pipe順序と全入力を保持して実測する |
+| 27.010/owned-save-continuation | [ ] | pending paint後の保存継続を所有付きで実装する | 27.012/native-tool-controller | destination/progress/cancelを保持し未完strokeを破棄せず完了後に一回だけSave/exportを継続、reentryと画像closeも検証する |
 | 27.013 | [ ] | 範囲外回込みの試験を作る | 27.012 | 全体探索後の mask 適用との差を検出 |
 | 27.013/gegl-render-regression | [ ] | 塗りつぶしブラシの探索・paint 合成・GEGL 表示の比較試験を作る | 27.013, 27.007/paintcore-gegl-compose | 旧筆跡の画素と画面を比較し offset・縮小・回転・grow・Undo と再描画を検証 |
 | 27.014 | [ ] | 選択外回込みの試験を作る | 27.013 | 探索境界の意味を検証 |

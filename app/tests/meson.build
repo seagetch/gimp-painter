@@ -241,3 +241,13 @@ if not meson.is_cross_build()
             'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 60)
   endforeach
 endif
+
+# Real native owner-context Fill Brush tool lifecycle, including queued input.
+fill_brush_ui_test = executable('painter-fill-brush-ui', 'test-painter-fill-brush-ui.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_bounded_fill_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('painter-fill-brush-ui', fill_brush_ui_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

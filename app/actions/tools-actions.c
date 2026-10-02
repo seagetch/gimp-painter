@@ -351,7 +351,7 @@ static const GimpEnumActionEntry tools_size_actions[] =
     GIMP_ACTION_SELECT_PREVIOUS, FALSE,
     NULL },
   { "tools-size-increase", GIMP_ICON_DIALOG_TOOL_OPTIONS,
-    NC_("tools-action", "Tool's Size: Increase by 1"), NULL, { "bracketright", NULL }, NULL,
+    NC_("tools-action", "Tool's Size: Increase by 1"), NULL, { NULL }, NULL,
     GIMP_ACTION_SELECT_NEXT, FALSE,
     NULL },
   { "tools-size-decrease-skip", GIMP_ICON_DIALOG_TOOL_OPTIONS,

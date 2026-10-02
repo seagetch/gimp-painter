@@ -89,7 +89,23 @@ file_save (Gimp                *gimp,
   g_object_ref (image);
   g_object_ref (orig_file);
 
+  if (gimp_image_has_pending_paint (image))
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_BUSY,
+                           _("Painting is still in progress. Wait for the stroke to finish, then save or export again."));
+      goto out;
+    }
+
   gimp_image_saving (image);
+
+  /* Saving handlers may start or seal a pending tool operation. */
+  if (gimp_image_has_pending_paint (image))
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_BUSY,
+                           _("Painting is still in progress. Wait for the stroke to finish, then save or export again."));
+      goto out;
+    }
+
 
   /* XXX - In the future, we'll pass special generic export options this
    * way (e.g. crops, resize, filter run at export or others).
@@ -179,6 +195,14 @@ file_save (Gimp                *gimp,
         }
 
       g_free (my_path);
+    }
+
+  /* Remote mount/export preparation may have processed nested UI events. */
+  if (gimp_image_has_pending_paint (image))
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_BUSY,
+                           _("Painting is still in progress. Wait for the stroke to finish, then save or export again."));
+      goto out;
     }
 
   return_vals =

@@ -243,6 +243,14 @@ file_save_invoker (GimpProcedure         *procedure,
   gint                 custom_args_start = 3;
   gint                 i;
 
+  if (gimp_image_has_pending_paint (g_value_get_object (gimp_value_array_index (args, 1))))
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_BUSY,
+                           "Painting is still in progress. Wait for the stroke to finish, then save or export again.");
+      return gimp_procedure_get_return_values (procedure, FALSE,
+                                               error ? *error : NULL);
+    }
+
   file = g_value_get_object (gimp_value_array_index (args, 2));
 
   file_proc = gimp_plug_in_manager_file_procedure_find (gimp->plug_in_manager,

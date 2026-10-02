@@ -32,6 +32,7 @@
 #include "gimpconvolve.h"
 #include "gimpdodgeburn.h"
 #include "gimperaser.h"
+#include "gimpfillbrush.h"
 #include "gimpheal.h"
 #include "gimpink.h"
 #include "gimpmybrushcore.h"
@@ -69,6 +70,7 @@ gimp_paint_init (Gimp *gimp)
     gimp_ink_register,
     gimp_airbrush_register,
     gimp_eraser_register,
+    gimp_fill_brush_register,
     gimp_paintbrush_register,
     gimp_pencil_register
   };

@@ -461,6 +461,26 @@ gimp_plug_in_procedure_validate_args (GimpPlugInProcedure *proc,
                                       GimpValueArray      *args,
                                       GError             **error)
 {
+  /* Named exporters can be invoked directly, bypassing file_save(). Refuse
+   * before starting a process while a native asynchronous stroke is pending.
+   * Loaders have a file, rather than an image, in their second argument. */
+  if (proc->file_proc && gimp_value_array_length (args) > 1)
+    {
+      const GValue *value = gimp_value_array_index (args, 1);
+
+      if (G_VALUE_HOLDS (value, GIMP_TYPE_IMAGE))
+        {
+          GimpImage *image = g_value_get_object (value);
+
+          if (image && gimp_image_has_pending_paint (image))
+            {
+              g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_BUSY,
+                                   _("Painting is still in progress. Wait for the stroke to finish, then save or export again."));
+              return FALSE;
+            }
+        }
+    }
+
 #if 0
   GimpProcedure *procedure = GIMP_PROCEDURE (proc);
   GValue        *uri_value = NULL;

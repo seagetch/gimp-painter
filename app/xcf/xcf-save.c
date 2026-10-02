@@ -307,6 +307,13 @@ xcf_save_image (XcfInfo    *info,
   gboolean write_paths = FALSE;
   GError  *tmp_error   = NULL;
 
+  if (gimp_image_has_pending_paint (image))
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_BUSY,
+                           _("Painting is still in progress. Wait for the stroke to finish, then save again."));
+      return FALSE;
+    }
+
   /* write out the tag information for the image */
   if (info->file_version > 0)
     {

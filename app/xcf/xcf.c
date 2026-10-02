@@ -469,7 +469,8 @@ xcf_save_stream_prepared (Gimp           *gimp,
     }
 
   success = xcf_save_image (&info, image, &my_error);
-  if (success && !xcf_painter_save_unchanged (prepared))
+  if (success && (!xcf_painter_save_unchanged (prepared) ||
+                  gimp_image_has_pending_paint (image)))
     {
       success = FALSE;
       g_set_error_literal (&my_error, G_IO_ERROR, G_IO_ERROR_BUSY,
@@ -500,6 +501,7 @@ xcf_save_stream_prepared (Gimp           *gimp,
     }
   /* A progress callback can edit or cancel even at the closing checkpoint. */
   if (success && (!xcf_painter_save_unchanged (prepared) ||
+                  gimp_image_has_pending_paint (image) ||
                   g_cancellable_is_cancelled (info.painter_cancellable)))
     {
       success = FALSE;
@@ -537,15 +539,25 @@ xcf_save_stream (Gimp *gimp, GimpImage *image, GOutputStream *output,
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (output), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-  prepared = xcf_painter_prepare_save (image, error);
+  g_object_ref (image);
+  if (gimp_image_has_pending_paint (image))
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_BUSY,
+                           _("Painting is still in progress. Wait for the stroke to finish, then save again."));
+      prepared = NULL;
+    }
+  else
+    prepared = xcf_painter_prepare_save (image, error);
   if (!prepared)
     {
       GCancellable *cancel = g_cancellable_new ();
       g_cancellable_cancel (cancel); g_output_stream_close (output, cancel, NULL); g_object_unref (cancel);
+      g_object_unref (image);
       return FALSE;
     }
   success = xcf_save_stream_prepared (gimp, image, output, output_file, progress, prepared, error);
   xcf_painter_free_save (prepared);
+  g_object_unref (image);
   return success;
 }
 
@@ -620,7 +632,14 @@ xcf_save_invoker (GimpProcedure         *procedure,
   image = g_value_get_object (gimp_value_array_index (args, 1));
   file  = g_value_get_object (gimp_value_array_index (args, 2));
 
-  prepared = xcf_painter_prepare_save (image, error);
+  if (gimp_image_has_pending_paint (image))
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_BUSY,
+                           _("Painting is still in progress. Wait for the stroke to finish, then save again."));
+      prepared = NULL;
+    }
+  else
+    prepared = xcf_painter_prepare_save (image, error);
   if (!prepared)
     {
       return_vals = gimp_procedure_get_return_values (procedure, FALSE, error ? *error : NULL);

@@ -57,6 +57,7 @@
 #include "gimpellipseselecttool.h"
 #include "gimperasertool.h"
 #include "gimpfliptool.h"
+#include "gimpfillbrushtool.h"
 #include "gimpfreeselecttool.h"
 #include "gimpforegroundselecttool.h"
 #include "gimpfuzzyselecttool.h"
@@ -177,6 +178,7 @@ gimp_tools_init (Gimp *gimp)
     gimp_seamless_clone_tool_register,
     gimp_text_tool_register,
     gimp_bucket_fill_tool_register,
+    gimp_fill_brush_tool_register,
     gimp_gradient_tool_register,
     gimp_pencil_tool_register,
     gimp_paintbrush_tool_register,
@@ -686,6 +688,10 @@ gimp_tools_register (GType                   tool_type,
   else if (tool_type == GIMP_TYPE_PAINTBRUSH_TOOL)
     {
       paint_core_name = "gimp-paintbrush";
+    }
+  else if (tool_type == GIMP_TYPE_FILL_BRUSH_TOOL)
+    {
+      paint_core_name = "gimp-bucket-fill-brush";
     }
   else if (tool_type == GIMP_TYPE_ERASER_TOOL)
     {

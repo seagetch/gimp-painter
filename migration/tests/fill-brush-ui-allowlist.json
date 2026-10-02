@@ -1,0 +1,76 @@
+{
+  "status": "frozen tested checkpoint; no commits or pushes by worker",
+  "whole_file_allowlist": [
+    "app/tools/gimpfillbrushtool.cpp",
+    "app/tools/gimpfillbrushtool.h",
+    "app/tests/test-painter-fill-brush-ui.cpp",
+    "app/actions/tools-actions.c",
+    "app/file/file-save.c",
+    "app/pdb/file-cmds.c",
+    "pdb/groups/file.pdb",
+    "app/plug-in/gimppluginprocedure.c",
+    "app/xcf/xcf.c",
+    "app/xcf/xcf-save.c",
+    "migration/contracts/fill-brush-tool.md",
+    "migration/tests/build_fill_brush_ui_sanitizers.py",
+    "migration/tests/fill-brush-ui-native-checkpoint.json",
+    "migration/tests/fill-brush-ui-native.txt",
+    "migration/tests/fill-brush-ui-sanitizer-build.json",
+    "migration/tests/fill-brush-ui-sanitizers.txt"
+  ],
+  "whole_file_sha256": {
+    "app/tools/gimpfillbrushtool.cpp": "3962d8b9c7c4afe017d319994d65190ab957f2b4ca7a5236b6cbf6586f55ef63",
+    "app/tools/gimpfillbrushtool.h": "647892ec4fe94d202c1ad7999b1f6ead3d002c6f6f9fd35f2b743574b110f173",
+    "app/tests/test-painter-fill-brush-ui.cpp": "e7de0ccabf4c5d9139116c9bb21d81ad6448a7669a16ffeef91b8e336fcad147",
+    "app/actions/tools-actions.c": "58e866a43ca4c7ccb092a5f1f6f8e159bb3fad0275b256c140653dea797c3a5d",
+    "app/file/file-save.c": "beb49a8f6bee0cb96cd4860f89f73ea0ae0294121c45d7b2ec92b84d762ad2fc",
+    "app/pdb/file-cmds.c": "35287520871f182b9c6e290dc136fd7f6e00bb4e4a9b52736bc8b12bebe995df",
+    "pdb/groups/file.pdb": "35a424b6b965dbdad66f514e415ab3c78ca7be84c6a4ca0defd3d5dd72a33e19",
+    "app/plug-in/gimppluginprocedure.c": "61707ca3fd250a5f39eca5a7df461c795c8570b99aef15302141e24c51694b7a",
+    "app/xcf/xcf.c": "df79ecfabe1f44f3083dd99989e5cbe922deacf47535b9cf4fcb0a8cbb981099",
+    "app/xcf/xcf-save.c": "27ea5cbb1fa4452823ba09c7785f8810669940b54904354633eb6baa82de6cd1",
+    "migration/contracts/fill-brush-tool.md": "7d00c17071bd10c59b09ca25af53824a28ba606406440a1ed52a0ce8699be6f0",
+    "migration/tests/build_fill_brush_ui_sanitizers.py": "bc2d0c0b921ff4db186edb7e694a015f6321586b26393a565db349823bce150a",
+    "migration/tests/fill-brush-ui-native-checkpoint.json": "c2dbcb3e0ed488bbe22e3a7be8b173fd0a541cb8285a3db72ff4e0c1bb318cae",
+    "migration/tests/fill-brush-ui-native.txt": "db7821410f2f58b2af46b5da679e8f499e585d88023ab3831f3176cea507509a",
+    "migration/tests/fill-brush-ui-sanitizer-build.json": "7f68789810337bbf8b455875572264f06f11b790bc63dd685ef2d1ed90a73ee6",
+    "migration/tests/fill-brush-ui-sanitizers.txt": "d8ede4d5f07c6c140becb7b37781ca1ab48c15f17353665ada9635c07c12ca55"
+  },
+  "shared_file_hunk_allowlist": {
+    "app/tools/gimp-tools.c": [
+      "gimpfillbrushtool.h include",
+      "gimp_fill_brush_tool_register array entry",
+      "GIMP_TYPE_FILL_BRUSH_TOOL paint_core_name mapping"
+    ],
+    "app/tools/meson.build": [
+      "gimpfillbrushtool.cpp source entry only"
+    ],
+    "app/paint/gimp-paint.c": [
+      "gimpfillbrush.h include",
+      "gimp_fill_brush_register array entry"
+    ],
+    "app/tests/meson.build": [
+      "fill_brush_ui_test executable and test stanza only"
+    ],
+    "etc/toolrc": [
+      "gimp-bucket-fill-brush-tool entry only"
+    ],
+    "po/POTFILES.in": [
+      "app/paint/gimpfillbrush.cpp",
+      "app/tools/gimpfillbrushtool.cpp"
+    ],
+    "menus/image-menu.ui.in.in": [
+      "app.tools-bucket-fill-brush menu item only"
+    ]
+  },
+  "excluded_parent_core_checkpoint": [
+    "app/paint/gimpfillbrush.cpp",
+    "app/paint/gimpfillbrush.h",
+    "app/core/gimpimage.c",
+    "app/core/gimpimage.h",
+    "app/tests/test-gimp-fill-brush.cpp"
+  ],
+  "excluded_other_worker_changes": "All MyPaint, Layer Preset, Filter scheduler/raster, common base-tool owner lease and their Meson/registry entries",
+  "evidence_manifest": "migration/tests/fill-brush-ui-native-checkpoint.json",
+  "self": "migration/tests/fill-brush-ui-allowlist.json"
+}
