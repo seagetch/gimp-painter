@@ -39,7 +39,7 @@ headers = [
     "app/core/core-types.h", "app/core/core-enums.h", "app/core/gimpimage.h",
     "app/core/gimpimage-private.h", "app/core/gimpclonelayer.h",
     "app/core/gimpfilterlayer.h", "app/core/gimpfilterlayer-arguments.hpp",
-    "app/core/gimp-painter-provenance.h", "app/xcf/xcf-private.h",
+    "app/core/gimp-painter-provenance.h", "app/xcf/xcf-private.h", "app/xcf/xcf.h",
     "app/xcf/painter-xcf-preserve.h", "app/xcf/painter-xcf-arguments.hpp",
     "app/painter/object-ref.hpp", "app/painter/connection.hpp",
     "app/painter/binding-store.hpp", "app/painter/filter-scheduler.hpp",

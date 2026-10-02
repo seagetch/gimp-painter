@@ -22,6 +22,14 @@
 void        xcf_init        (Gimp           *gimp);
 void        xcf_exit        (Gimp           *gimp);
 
+/* Registered save procedure, without changing the image's file or dirty state.
+ * This is best-effort recovery, not an async-signal-safe operation.
+ */
+gboolean    xcf_save_recovery_image (Gimp      *gimp,
+                                     GimpImage *image,
+                                     GFile     *file,
+                                     GError   **error);
+
 GimpImage * xcf_load_stream (Gimp           *gimp,
                              GInputStream   *input,
                              GFile          *input_file,

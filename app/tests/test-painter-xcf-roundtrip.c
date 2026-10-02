@@ -873,6 +873,172 @@ static void ambiguous_and_unknown_capsule_schema (void)
       g_object_unref(image);g_bytes_unref(expected);g_file_delete(input,NULL,NULL);g_file_delete(output,NULL,NULL);g_object_unref(input);g_object_unref(output);
     }
 }
+static void
+compare_layer_cache (GimpLayer *first,
+                     GimpLayer *second)
+{
+  const gint width = gimp_item_get_width (GIMP_ITEM (first));
+  const gint height = gimp_item_get_height (GIMP_ITEM (first));
+  const gsize size = (gsize) width * height * 4;
+  guint8 *before = g_malloc (size);
+  guint8 *after = g_malloc (size);
+
+  g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (second)), ==, width);
+  g_assert_cmpint (gimp_item_get_height (GIMP_ITEM (second)), ==, height);
+  gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (first)),
+                   GEGL_RECTANGLE (0, 0, width, height), 1,
+                   babl_format ("R'G'B'A u8"), before, GEGL_AUTO_ROWSTRIDE,
+                   GEGL_ABYSS_NONE);
+  gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (second)),
+                   GEGL_RECTANGLE (0, 0, width, height), 1,
+                   babl_format ("R'G'B'A u8"), after, GEGL_AUTO_ROWSTRIDE,
+                   GEGL_ABYSS_NONE);
+  g_assert_cmpmem (before, size, after, size);
+  g_free (before);
+  g_free (after);
+}
+
+static void
+recovery_registered_save (void)
+{
+  const gchar *fixtures[] = {
+    "legacy-runtime/clone-normal-in-group.xcf",
+    "legacy-runtime/clone-group.xcf",
+    "legacy-runtime/filter-edge.xcf"
+  };
+
+  for (guint scene = 0; scene < G_N_ELEMENTS (fixtures); ++scene)
+    {
+      GimpImage *image = fixture (fixtures[scene]);
+      GFile *backup = temporary_file ();
+      GFile *original = g_object_ref (gimp_image_get_file (image));
+      GBytes *original_bytes = g_file_load_bytes (original, NULL, NULL, NULL);
+      GError *error = NULL;
+      GimpImage *copy;
+      GList *layers = gimp_image_get_layer_list (image);
+      GimpLayer *custom = NULL;
+      GimpLayer *restored;
+      gint dirty;
+      gint64 dirty_time;
+
+      for (GList *p = layers; p; p = p->next)
+        if (scene == 2 ? GIMP_IS_FILTER_LAYER (p->data) : GIMP_IS_CLONE_LAYER (p->data))
+          custom = p->data;
+      g_list_free (layers);
+      g_assert_nonnull (custom);
+      gimp_layer_set_opacity (custom, .375, FALSE);
+      gimp_image_dirty (image, GIMP_DIRTY_IMAGE);
+      dirty = gimp_image_is_dirty (image);
+      dirty_time = gimp_image_get_dirty_time (image);
+      g_assert_cmpint (dirty, !=, 0);
+
+      /* This is the same helper used by the fatal-error backup loop.  It must
+       * invoke the actual registered three-argument procedure, not file_save.
+       */
+      g_assert_true (xcf_save_recovery_image (gimp, image, backup, &error));
+      g_assert_no_error (error);
+      g_assert_cmpint (gimp_image_is_dirty (image), ==, dirty);
+      g_assert_cmpint (gimp_image_get_dirty_time (image), ==, dirty_time);
+      g_assert_true (gimp_image_get_file (image) == original);
+      {
+        GBytes *after = g_file_load_bytes (original, NULL, NULL, &error);
+        g_assert_no_error (error);
+        g_assert_true (g_bytes_equal (original_bytes, after));
+        g_bytes_unref (after);
+      }
+      copy = load (backup);
+      restored = layer (copy, gimp_object_get_name (custom));
+      g_assert_nonnull (restored);
+      g_assert_cmpfloat (gimp_layer_get_opacity (restored), ==, .375);
+      compare_layer_cache (custom, restored);
+      compare_projection (image, copy);
+      if (scene < 2)
+        {
+          g_assert_true (GIMP_IS_CLONE_LAYER (restored));
+          g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (restored)) ==
+                         layer (copy, scene ? "source group" : "source child"));
+          pixel (restored, 191, 32, 64, 255);
+        }
+      else
+        {
+          GBytes *before, *after;
+          GimpValueArray *args;
+          gchar *procedure;
+          g_assert_true (GIMP_IS_FILTER_LAYER (restored));
+          procedure = gimp_filter_layer_dup_procedure (GIMP_FILTER_LAYER (restored));
+          g_assert_cmpstr (procedure, ==, "plug-in-edge");
+          g_free (procedure);
+          before = gimp_filter_layer_ref_definition (GIMP_FILTER_LAYER (custom));
+          after = gimp_filter_layer_ref_definition (GIMP_FILTER_LAYER (restored));
+          g_assert_cmpuint (g_bytes_get_size (after), ==, 89);
+          g_assert_true (g_bytes_equal (before, after));
+          g_bytes_unref (before);
+          g_bytes_unref (after);
+          args = gimp_filter_layer_dup_args (GIMP_FILTER_LAYER (restored));
+          g_assert_nonnull (args);
+          g_assert_cmpint (gimp_value_array_length (args), ==, 6);
+          g_assert_cmpfloat (g_value_get_double (gimp_value_array_index (args, 3)), ==, 2);
+          gimp_value_array_unref (args);
+          g_assert_cmpuint (gimp_filter_layer_get_run_count (GIMP_FILTER_LAYER (restored)), ==, 0);
+          g_assert_cmpint (gimp_filter_layer_get_state (GIMP_FILTER_LAYER (restored)), ==,
+                           GIMP_FILTER_LAYER_CLEAN);
+        }
+      g_object_unref (copy);
+      g_bytes_unref (original_bytes);
+      g_object_unref (original);
+      g_object_unref (image);
+      g_file_delete (backup, NULL, NULL);
+      g_object_unref (backup);
+    }
+}
+
+static void
+recovery_failed_save (void)
+{
+  GimpImage *image = fixture ("legacy-runtime/clone-normal-in-group.xcf");
+  GFile *original = g_object_ref (gimp_image_get_file (image));
+  GFile *backup = temporary_file ();
+  GFile *invalid_child = g_file_get_child (backup, "cannot-save.xcf");
+  GBytes *duplicate = schema_capsule (0);
+  gsize size;
+  const void *bytes = g_bytes_get_data (duplicate, &size);
+  GimpParasite *parasite;
+  GError *error = NULL;
+  gint dirty;
+
+  gimp_image_dirty (image, GIMP_DIRTY_IMAGE);
+  dirty = gimp_image_is_dirty (image);
+  sentinel_write (backup);
+  /* Real destination-open failure through the registered procedure. */
+  g_assert_false (xcf_save_recovery_image (gimp, image, invalid_child, &error));
+  g_assert_nonnull (error);
+  g_clear_error (&error);
+  sentinel_check (backup);
+  g_assert_cmpint (gimp_image_is_dirty (image), ==, dirty);
+  g_assert_true (gimp_image_get_file (image) == original);
+
+  /* Metadata refusal must also return failure with the original temporary
+   * destination untouched, including the fatal caller's NULL-error path.
+   */
+  parasite = gimp_parasite_new ("gimp-painter-item", GIMP_PARASITE_PERSISTENT, size, bytes);
+  gimp_item_parasite_attach (GIMP_ITEM (layer (image, "clone")), parasite, FALSE);
+  gimp_parasite_free (parasite);
+  g_assert_false (xcf_save_recovery_image (gimp, image, backup, &error));
+  g_assert_nonnull (error);
+  g_assert_nonnull (strstr (error->message, "Duplicate Painter metadata key"));
+  g_clear_error (&error);
+  g_assert_false (xcf_save_recovery_image (gimp, image, backup, NULL));
+  sentinel_check (backup);
+  g_assert_cmpint (gimp_image_is_dirty (image), ==, dirty);
+  g_assert_true (gimp_image_get_file (image) == original);
+  g_bytes_unref (duplicate);
+  g_object_unref (invalid_child);
+  g_object_unref (original);
+  g_object_unref (image);
+  g_file_delete (backup, NULL, NULL);
+  g_object_unref (backup);
+}
+
 int main (int argc, char **argv)
 {
   int result;
@@ -895,6 +1061,8 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-xcf-roundtrip/opaque_argument_shapes", opaque_argument_shapes);
   g_test_add_func ("/painter-xcf-roundtrip/external_references_remain_unresolved", external_references_remain_unresolved);
   g_test_add_func ("/painter-xcf-roundtrip/ambiguous_and_unknown_capsule_schema", ambiguous_and_unknown_capsule_schema);
+  g_test_add_func ("/painter-xcf-roundtrip/recovery_registered_save", recovery_registered_save);
+  g_test_add_func ("/painter-xcf-roundtrip/recovery_failed_save", recovery_failed_save);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

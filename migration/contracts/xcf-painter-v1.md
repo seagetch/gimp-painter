@@ -251,3 +251,33 @@ enabled; no diagnostic suppression is used. WorkAdmission is header-only coverag
 Source and interface-header hashes are captured at compilation and checked after
 testing; the checkpoint has no changed sources. Remaining upstream libraries and
 dependencies are still uninstrumented, and leak detection is disabled.
+
+
+## Registered recovery-save route
+
+Normal application coverage is 36 cases (XCF 4, Open 14, roundtrip 18); all 18
+focused ASan+UBSan roundtrip cases pass. Evidence is
+`migration/tests/painter-xcf-recovery-{meson.txt,testlog.txt,testlog.json,sanitizers.json}`.
+
+`xcf_save_recovery_image()` invokes the registered `gimp-xcf-save` procedure with
+the current three arguments: run mode, image and destination file. It inspects
+the PDB return status and releases the returned value array. It bypasses the
+ordinary `file_save()` wrapper so the live image keeps its original file
+association and dirty state. `app/errors.c` uses the same helper and renames the
+temporary backup only after a successful save. An obsolete drawable-array
+argument can no longer shift the file argument or cause a failed save to publish
+a stale temporary file.
+
+The real application test reopens backups of both genuine Clone fixtures and the
+Filter fixture. It checks source identity, metadata, exact committed layer caches
+and projection, Filter raw bytes/typed arguments and zero initial executions.
+Original source bytes, file association, dirty counter and dirty time remain
+unchanged. Actual destination-open failure, metadata preflight refusal and the
+crash caller's null-error path preserve a sentinel and return failure. The
+production crash call site compiles in the native application archive. This
+remains best-effort fatal recovery, not async-signal-safe recovery or a newly
+implemented autosave schedule.
+
+See [xcf-remaining-gates.md](xcf-remaining-gates.md) for the audited residual
+implementation and application gates, especially transactional validation of
+malformed known-v1 semantic fields.

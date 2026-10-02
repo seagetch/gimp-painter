@@ -39,6 +39,8 @@
 #include "plug-in/gimppluginmanager.h"
 #include "plug-in/gimppluginprocedure.h"
 
+#include "pdb/gimppdb.h"
+
 #include "xcf.h"
 #include "xcf-private.h"
 #include "xcf-load.h"
@@ -244,6 +246,49 @@ void
 xcf_exit (Gimp *gimp)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
+}
+
+gboolean
+xcf_save_recovery_image (Gimp       *gimp,
+                         GimpImage  *image,
+                         GFile      *file,
+                         GError    **error)
+{
+  GimpValueArray *return_vals;
+  gboolean        success = FALSE;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  /* Call the registered three-argument procedure directly.  The file_save()
+   * wrapper is deliberately inappropriate here: recovery must not mark the
+   * live image clean or replace its original file association.
+   */
+  return_vals = gimp_pdb_execute_procedure_by_name (gimp->pdb,
+                                                    gimp_get_user_context (gimp),
+                                                    NULL, error,
+                                                    "gimp-xcf-save",
+                                                    GIMP_TYPE_RUN_MODE, GIMP_RUN_NONINTERACTIVE,
+                                                    GIMP_TYPE_IMAGE,    image,
+                                                    G_TYPE_FILE,        file,
+                                                    G_TYPE_NONE);
+  if (return_vals)
+    {
+      if (gimp_value_array_length (return_vals) > 0 &&
+          G_VALUE_HOLDS_ENUM (gimp_value_array_index (return_vals, 0)))
+        success = g_value_get_enum (gimp_value_array_index (return_vals, 0)) ==
+                  GIMP_PDB_SUCCESS;
+
+      gimp_value_array_unref (return_vals);
+    }
+
+  if (! success && error && ! *error)
+    g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                         _("Failed to save recovery image"));
+
+  return success;
 }
 
 static void

@@ -46,7 +46,7 @@
 
 #include "config/gimpcoreconfig.h"
 
-#include "pdb/gimppdb.h"
+#include "xcf/xcf.h"
 
 #include "errors.h"
 #include "gimp-log.h"
@@ -479,17 +479,11 @@ gimp_eek (const gchar *reason,
           backup_path[num_idx + 1] = '0' + ((i/10) % 10);
           backup_path[num_idx]     = '0' + ((i/100) % 10);
 
-          /* Saving. */
-          gimp_pdb_execute_procedure_by_name (the_errors_gimp->pdb,
-                                              gimp_get_user_context (the_errors_gimp),
-                                              NULL, NULL,
-                                              "gimp-xcf-save",
-                                              GIMP_TYPE_RUN_MODE,          GIMP_RUN_NONINTERACTIVE,
-                                              GIMP_TYPE_IMAGE,             image,
-                                              GIMP_TYPE_CORE_OBJECT_ARRAY, NULL,
-                                              G_TYPE_FILE,                 backup_file,
-                                              G_TYPE_NONE);
-          g_rename (g_file_peek_path (backup_file), backup_path);
+          /* Best effort in the already-failing process.  Never publish an old
+           * temporary file as this image's backup when the save failed.
+           */
+          if (xcf_save_recovery_image (the_errors_gimp, image, backup_file, NULL))
+            g_rename (g_file_peek_path (backup_file), backup_path);
           i++;
         }
     }
