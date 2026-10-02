@@ -396,3 +396,32 @@ test('gimp-painter-batch', painter_batch_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Real old one-byte Gray-u8 sessions, including actual alpha lock and erasing.
+painter_gray_trace = executable('painter-mypaint-gray-session-trace',
+  'painter-mypaint-gray-session-trace.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-legacy-gray-session', painter_brush_settings_python,
+    args: [meson.project_source_root() / 'migration/tests/compare_mypaint_gray_sessions.py',
+           meson.project_source_root() / 'migration/fixtures/legacy-mypaint-gray-session/session-values.tsv.gz',
+           painter_gray_trace],
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 120)
+  test('painter-mypaint-gray-session-fixtures', painter_brush_settings_python,
+    args: [meson.project_source_root() / 'migration/tests/test_mypaint_gray_session_fixtures.py'],
+    suite: 'painter', is_parallel: false, timeout: 60)
+endif
+
+
+painter_gray_test = executable('gimp-painter-gray', 'test-gimp-painter-gray.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('gimp-painter-gray', painter_gray_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

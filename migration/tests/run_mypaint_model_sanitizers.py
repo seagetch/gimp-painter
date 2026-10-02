@@ -18,10 +18,12 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("build", type=Path)
 parser.add_argument("--report", type=Path, required=True)
-parser.add_argument("--target", choices=["options", "session", "hover", "preview", "rgb", "surface", "batch"], required=True)
+parser.add_argument("--target", choices=["options", "session", "hover", "preview", "rgb", "surface", "batch", "gray", "gray-oracle"], required=True)
 args = parser.parse_args()
-target = "painter-mypaint-rgb-session-trace" if args.target == "rgb" else "gimp-painter-" + args.target
-test_source = "app/tests/painter-mypaint-rgb-session-trace.cpp" if args.target == "rgb" else "app/tests/test-" + target + ".cpp"
+oracle = args.target in ("rgb", "gray-oracle")
+color_model = "gray" if args.target == "gray-oracle" else "rgb"
+target = "painter-mypaint-" + color_model + "-session-trace" if oracle else "gimp-painter-" + args.target
+test_source = "app/tests/" + target + ".cpp" if oracle else "app/tests/test-" + target + ".cpp"
 build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
 output = build / ("mypaint-" + args.target + "-sanitizers")
@@ -135,14 +137,15 @@ env.update({"GIMP_TESTING_ABS_TOP_SRCDIR": str(root),
             "UI_TEST": "yes", "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
             "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"})
 result = subprocess.run([str(exe)], cwd=build, env=env, capture_output=True, text=True)
-if args.target == "rgb":
-    expected = gzip.decompress((root / "migration/fixtures/legacy-mypaint-rgb-session/session-values.tsv.gz").read_bytes())
-    actual = b"\n".join(line.encode() for line in result.stdout.splitlines() if line.startswith("RGB_SESSION_")) + b"\n"
-    report["rgb_oracle"] = {"equal": actual == expected, "records": len(actual.splitlines()),
+if oracle:
+    prefix = color_model.upper() + "_SESSION_"
+    expected = gzip.decompress((root / ("migration/fixtures/legacy-mypaint-" + color_model + "-session/session-values.tsv.gz")).read_bytes())
+    actual = b"\n".join(line.encode() for line in result.stdout.splitlines() if line.startswith(prefix)) + b"\n"
+    report[color_model + "_oracle"] = {"equal": actual == expected, "records": len(actual.splitlines()),
                             "bytes": len(actual), "sha256": hashlib.sha256(actual).hexdigest()}
-    result.stdout = "\n".join(line for line in result.stdout.splitlines() if not line.startswith("RGB_SESSION_")) + "\n"
+    result.stdout = "\n".join(line for line in result.stdout.splitlines() if not line.startswith(prefix)) + "\n"
     result.returncode = result.returncode or int(actual != expected)
-    report["scope"] += "; full 96-scene independent old RGB session pixel/Undo/Redo comparison"
+    report["scope"] += "; independent old " + color_model + " full-session pixel/Undo/Redo comparison"
 changed = [name for name, digest in hashes.items()
            if hashlib.sha256((root / name).read_bytes()).hexdigest() != digest]
 changed += [name for name, digest in headers.items()

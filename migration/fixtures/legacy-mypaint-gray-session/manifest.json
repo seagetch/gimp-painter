@@ -1,0 +1,130 @@
+{
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "scope": "48 real old incremental native one-byte Gray scenes, exact private native port comparison; separate unsupported-path negative probes",
+  "files": {
+    "README.md": {
+      "bytes": 3033,
+      "sha256": "b602bad176391cd46720b3b308944f7d694b8931ae461b7381ea8b9df39d6ee5"
+    },
+    "capture-gray.cpp": {
+      "bytes": 6234,
+      "sha256": "94a482c134c303a16bb4586ef13aabab98cd6884e7c4cfad7b7e3572a7c16d49"
+    },
+    "gray-alpha-build.log.gz": {
+      "bytes": 843,
+      "sha256": "5c040c6bad1709ae2c436dcd51bca495b3534483de1d19c00f91de02d0a637e1"
+    },
+    "gray-alpha-link.sh.gz": {
+      "bytes": 950,
+      "sha256": "54a5688103c6a8b9c993c3e7c751024b765ede2257960011d2b56f2eb2002f74"
+    },
+    "gray-alpha-probe.cpp": {
+      "bytes": 6261,
+      "sha256": "bbe0606742ede559def706f2b7922a93feaac9e5eb4c57029da6a9959728dd93"
+    },
+    "gray-alpha-run0.stderr.gz": {
+      "bytes": 542,
+      "sha256": "bf5eb83a87ed6d8d8182030b3105a0a5b6fa8518014d376fd3bafcf17f0962e7"
+    },
+    "gray-alpha-run0.stdout.gz": {
+      "bytes": 2527,
+      "sha256": "88e78525021c6acdc4ab266c1e17bcf0c691e901dd7e5a48d738651943e67387"
+    },
+    "gray-alpha-run1.stderr.gz": {
+      "bytes": 540,
+      "sha256": "29fcf8b5867efb13fa3b68a6e9814d572f808fd52a25a510511be77ea8467e71"
+    },
+    "gray-alpha-run1.stdout.gz": {
+      "bytes": 2527,
+      "sha256": "cfaaab5166cfa2282ec8f2208e73dc6613652f5f96dc1840b20ad51054c60358"
+    },
+    "gray-floating-build.log.gz": {
+      "bytes": 843,
+      "sha256": "a5a0999805c7467a784b27e0dc7d67cdb87d555d7c49c8973cd643b7ffed31a9"
+    },
+    "gray-floating-link.sh.gz": {
+      "bytes": 952,
+      "sha256": "eca3d49c455b24c76e924edb90dd43b9532b64a1d6103e2966c3df7195a7b16a"
+    },
+    "gray-floating-probe.cpp": {
+      "bytes": 6232,
+      "sha256": "d54ccb724406c1d16e9cd46740e2a1c4ffefad81181cda58ef45327fa66c7db1"
+    },
+    "gray-floating-run0.stderr.gz": {
+      "bytes": 542,
+      "sha256": "24976d856b219e775eab3f3cfb4e3b0039d4431fd325df1cae79071364732084"
+    },
+    "gray-floating-run0.stdout.gz": {
+      "bytes": 1716,
+      "sha256": "9d8e4537fbd0d50ec805015a6e98d06768bcd206981bf4fb1b392cb7b5681a7c"
+    },
+    "gray-floating-run1.stderr.gz": {
+      "bytes": 542,
+      "sha256": "caba61200c906a683350b20fb747b7d0b34b2f343e6cd49e513680ffaa2f24a6"
+    },
+    "gray-floating-run1.stdout.gz": {
+      "bytes": 1717,
+      "sha256": "51f3649f9975aa2b3dc445d7679146df06dbf6a3067cbc26375ba14d56add27a"
+    },
+    "negative-probe-report.json": {
+      "bytes": 7642,
+      "sha256": "5649053cdd5f81d072d4a61976d4a8ce5a3adba29250aace8198aa3680a26119"
+    },
+    "negative-probe.py": {
+      "bytes": 3425,
+      "sha256": "43342616fc02a227d9e185860445195f6504e868b967b2b0be0cd12f6ebc3a90"
+    },
+    "old-build.log.gz": {
+      "bytes": 836,
+      "sha256": "77efde64fb478bb86bfadc26d988a2fc164ed85386b116ac3628df55aa3d9317"
+    },
+    "old-capture-report.json": {
+      "bytes": 4070,
+      "sha256": "4287036e31e1b48204262ee7494d6588dc3534a92f9399e7f76fbb8b37399816"
+    },
+    "old-link.sh.gz": {
+      "bytes": 946,
+      "sha256": "72a3b53774f1a8384bc12ee6db8d391890e881b211fd8c0d39485735d8094b77"
+    },
+    "old-runtime.log.gz": {
+      "bytes": 536,
+      "sha256": "3bc1f5377013df0f2790b5c02981c3f3b7fb08bca7a322a21e4d252dace8c406"
+    },
+    "old-runtime.stderr.gz": {
+      "bytes": 544,
+      "sha256": "e0d90f07820a1b9d55247158e775672c2ac91d8f37b2111d816bcf9d4a17c54c"
+    },
+    "private-build-port.py": {
+      "bytes": 3386,
+      "sha256": "e6ae6c63ca9e1dc355b2adda7939ba61f8236da4f670f4ec109513c822f032a5"
+    },
+    "private-build.log.gz": {
+      "bytes": 295,
+      "sha256": "d1e31b460ca2936e349eefe0bfc63d11924cf203f53955d698bfe68933d85377"
+    },
+    "private-comparison.json": {
+      "bytes": 14074,
+      "sha256": "6628ea25a9f5fb3d7411c59badffe2c9395eda9848e7beb4a88f909682b90e70"
+    },
+    "private-gegl-surface-gray.cpp": {
+      "bytes": 14373,
+      "sha256": "9b5c71c3d0ae149f7a59e141b9e0e0ea5a43e0a3bfa4dd625d85ca0ecb298dac"
+    },
+    "private-runtime.log.gz": {
+      "bytes": 21,
+      "sha256": "34d5848c995803cfd00c2f7f02d807e2069b51ffca60a40f05d2d7229ef13b69"
+    },
+    "private-runtime.stderr.gz": {
+      "bytes": 579,
+      "sha256": "8178110e68e5097aabf94c935aa46ad032c9a3ed669a7a1dc902b6ceb36da8cb"
+    },
+    "session-base.myb": {
+      "bytes": 53,
+      "sha256": "c54947594631ae701cf49a4498a143423db385ec3db6d9ed57b4a800b3d08839"
+    },
+    "session-values.tsv.gz": {
+      "bytes": 128220,
+      "sha256": "cacfea6f3260573b4c640734e28ad490f5bd75867e4bd07be498e1caf5bec788"
+    }
+  }
+}

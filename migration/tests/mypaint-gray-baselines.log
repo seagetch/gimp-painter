@@ -1,0 +1,21 @@
+ninja: Entering directory `build-debian13'
+[1/14] Generating git-version.h.in.1 with a custom command
+[2/14] Generating git-version.h.in.2 with a custom command
+[3/14] Generating git-version.h with a custom command
+[4/7] Linking target app/tests/painter-mypaint-rgb-session-trace
+[5/7] Linking target app/tests/painter-mypaint-session-trace
+[6/7] Linking target app/tests/gimp-painter-batch
+[7/7] Linking target app/tests/gimp-painter-surface
+1/4 gimp:app / gimp-painter-surface                   OK               1.81s
+2/4 gimp:painter / painter-mypaint-legacy-session     OK               2.31s
+3/4 gimp:painter / painter-mypaint-legacy-rgb-session OK               4.37s
+4/4 gimp:app / gimp-painter-batch                     OK               1.74s
+
+Ok:                 4
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0
+
+Full log written to /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/meson-logs/testlog.txt

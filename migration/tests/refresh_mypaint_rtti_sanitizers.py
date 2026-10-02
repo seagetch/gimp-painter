@@ -44,6 +44,14 @@ for command in archives:
 subprocess.run(link,cwd=build,check=True)
 env=dict(os.environ);env.update({'GIMP_TESTING_ABS_TOP_SRCDIR':str(root),'GIMP_TESTING_ABS_TOP_BUILDDIR':str(build),'GIMP_TESTING_PLUGINDIRS':str(build/'plug-ins/common'),'UI_TEST':'yes','ASAN_OPTIONS':'detect_leaks=0:halt_on_error=1:abort_on_error=1','UBSAN_OPTIONS':'halt_on_error=1:print_stacktrace=1'})
 result=subprocess.run([str(exe)],cwd=build,env=env,capture_output=True,text=True)
+for color_model in ('rgb','gray'):
+    if color_model+'_oracle' not in report:continue
+    prefix=color_model.upper()+'_SESSION_'
+    actual=b'\n'.join(line.encode() for line in result.stdout.splitlines() if line.startswith(prefix))+b'\n'
+    expected=gzip.decompress((root/('migration/fixtures/legacy-mypaint-'+color_model+'-session/session-values.tsv.gz')).read_bytes())
+    report[color_model+'_oracle']={'equal':actual==expected,'records':len(actual.splitlines()),'bytes':len(actual),'sha256':hashlib.sha256(actual).hexdigest()}
+    result.stdout='\n'.join(line for line in result.stdout.splitlines() if not line.startswith(prefix))+'\n'
+    result.returncode=result.returncode or int(actual!=expected)
 report['refresh']={'predecessor':prior.name,'predecessor_sha256':hashlib.sha256(prior.read_bytes()).hexdigest(),'prior_changed_during_run':report.get('changed_during_run',[]),'rtti_sources_recompiled':sorted(changed),'commands':commands+archives+[link],'runner_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
 report.update({'exit_code':result.returncode,'stdout':result.stdout,'stderr':result.stderr,'sources_sha256':current,'changed_during_run':[n for n,h in {**current,**headers}.items() if sha(n)!=h],'executable_sha256':hashlib.sha256(exe.read_bytes()).hexdigest()})
 path.write_text(json.dumps(report,indent=2)+'\n');print(result.stdout)
