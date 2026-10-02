@@ -464,6 +464,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 11.001 | [ ] | 形式 probe を実装する | 08.020, 10.018, 15.014, 14.018 | 読取り状態を汚さず旧・標準候補を判定 |
+| 11.001/byte-record-foundation | [x] | 不変byte列の候補probeと拡張record decoderを実装する | 10.001/wire-framing-audit, 04.002/common-foundation | 旧/標準候補を独立budgetで判定し曖昧/資源制限を維持、Filter/Clone raw範囲と衝突enum意味を保存。144142通常・ASan/UBSan assertion合格。normal Openは親作業に残す |
 | 11.002 | [ ] | 旧ヘッダー decoder を実装する | 11.001 | 旧 v4 で属性列の開始位置を正しく取得 |
 | 11.003 | [ ] | 属性長の境界検査を実装する | 11.002 | 切断・overflow・範囲外参照を検出 |
 | 11.004 | [ ] | 旧 mode decoder を実装する | 11.003 | 全7モードを正しい内部値へ変換 |

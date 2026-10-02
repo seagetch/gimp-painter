@@ -1,0 +1,21 @@
+ninja: Entering directory `build-debian13'
+[1/2] Compiling C++ object app/xcf/painter-xcf-compat-test.p/tests_test-painter-xcf-compat.cpp.o
+[2/2] Linking target app/xcf/painter-xcf-compat-test
+1/1 gimp:painter / painter-xcf-compat RUNNING       
+>>> MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=86 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/xcf/painter-xcf-compat-test /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-runtime /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/gimp3-baseline.xcf
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+synthetic: ambiguity, limits, truncation, offsets, unknown/duplicate records, wire quirks, mutations passed
+genuine: ordinary/shared, two clone/painter, negative filter raw recovery, standard v011 passed
+144142 checks passed; metadata decoder only, app open/roundtrip NOT tested
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+1/1 gimp:painter / painter-xcf-compat OK              0.03s
+
+
+Ok:                 1   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/meson-logs/testlog.txt
