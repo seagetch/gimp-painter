@@ -165,6 +165,22 @@ read failure discards staging and keeps the previous cache. Private raster files
 are destroyed before completion is visible. See `filter-storage.md` and the
 kernel evidence for component resource bounds and platform limitations.
 
+Cold graph preparation first snapshots active stack nodes, including layers above
+the Filter and children before group parents. It constructs at most one cold
+layer node per dispatcher quantum, holds an owned endpoint/image across the
+vfunc, and returns before reconsidering any callback-mutated snapshot. Planning
+uses no resolving Clone getter. Removal, definition replacement and image/binding
+closure during construction are tested, as is later resolution to a Filter cycle.
+The host eagerly initializes twelve Babl conversion fishes during its first
+layer-mode preparation. The adapter primes those same immutable cache entries,
+in the host's order, for default/native image spaces in timed owner-thread steps.
+This does not evaluate pixels, change color conversion or move GObjects to a
+worker. A single Babl call or custom node can still exceed the 2 ms target.
+Read-only graph/read timing maxima separate setup from subsequent GEGL sampling;
+the whole-step scope also includes state-change observers, early returns and local
+destructors, with a deliberately slow observer regression. All maxima are
+cumulative observations, not acceptance thresholds.
+
 The input is read from this layer's input proxy in the already-built parent
 stack graph. Preparation happens outside operator evaluation. All input reads,
 GObject calls and GeglBuffer updates remain on the owner thread. The current
@@ -286,7 +302,7 @@ an acceptable shortcut to procedure compatibility.
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 72 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 75 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release
@@ -339,12 +355,13 @@ is still completing cancellation.
 `run_filter_spill_measurements.py` / `filter-spill-measurements.json` record
 three fresh-process 8193×8193 runs against the exact live-adapter source/executable
 hashes. Configured test swap is on overlayfs. All runs complete and verify the
-far-corner pixel, taking 12.34–12.79 seconds of filter work; the 2 ms heartbeat
-p95 is 2.21–2.28 ms and p99 is 3.20–3.52 ms. Maximum intervals remain
-89–119 ms. Whole-process peak RSS is 1,393,392–1,393,692 KiB (about 1.33 GiB),
+far-corner pixel, taking 12.40–12.82 seconds of filter work; the 2 ms heartbeat
+p95 is 2.21–2.25 ms and p99 is 3.09–4.25 ms. Maximum intervals are
+23.1–31.6 ms with cooperative cold preparation (previously 89–119 ms).
+Whole-process peak RSS is 1,393,368–1,393,928 KiB (about 1.33 GiB),
 including resident GIMP/GEGL tiles and other host allocations, and excluding OS
 filesystem cache/backing. Bounded worker queues/files therefore do not certify
-low total application/system memory. Final image unref takes 99.5–133.9 ms in
+low total application/system memory. Final image unref takes 92.4–106.7 ms in
 these completed-image cases: nonwaiting worker cancellation does not bound host
 GEGL/cache destruction cost. These are shared-host observations of a sparse
 single-layer Edge workload, not dense/complex/multi-image or Windows acceptance.
@@ -363,14 +380,35 @@ maximum and per-phase 2 ms heartbeat p50/p95/p99/max intervals. Host load is
 uncontrolled. Earlier exploratory fixed-budget runs reached about 40 ms warm
 quanta; cache-enabled adaptive sampling reduced one comparable warm observation
 to 9.94 ms (1.40 s total versus 0.67 s fixed-budget), but outliers remained.
-Fresh-process first GEGL sampling also showed 80–102 ms stalls during exploration;
-this unresolved cold-path cost must not be hidden by quoting warm measurements.
+Earlier cold layer-node construction showed 80–102 ms stalls. Cooperative node
+planning and Babl cache preparation now measure 25.2–29.0 ms maximum graph/setup
+quanta in the three fresh processes, but individual Babl calls remain synchronous
+and later GEGL read quanta reach 54.8 ms. The scope timer includes callbacks and
+local destructors; graph/read maxima report separate subspans.
 The report retains every quantified first/edit phase for its exact source and
 executable hashes. Repeated measurements still show heartbeat outliers above
 100 ms, including edit phases; the current three-run first/edit samples reach
-141.4 ms maximum and 81.0 ms p99 in an edit phase. These observations are not a
+129.7 ms maximum and 24.1 ms p99 in edit phases. These observations are not a
 fixed-machine acceptance gate. More complex
 operators, many images and sustained painting still need workloads and limits.
+
+## Required configured spill-space boundary
+
+The present admission pool accounts for feature working memory and job count,
+not spill-file capacity. Storage errors retain the old cache, but this alone
+does not prevent an oversized workload from consuming available swap space.
+Before claiming disk-resource protection, a separate trusted application setting
+must bound reserved logical spill bytes across all active jobs: checked `8*w*h`
+for Edge/input+output and `12*w*h` for Gaussian when vertical transpose scratch
+is needed (otherwise `8*w*h`). Persisted procedure arguments cannot override it.
+Temporary contention must queue fairly without losing dirty work; a request
+larger than the configured limit must fail once with its definition/cache intact.
+A reservation remains held through cancellation until worker files are closed.
+Worker-side filesystem free-space checks can reject clearly impossible work,
+but are advisory because other processes and GEGL may consume space concurrently;
+actual I/O/flush failures remain checked. Native GEGL caches and OS filesystem
+backing remain separately accounted. This configured disk policy is defined
+here as required follow-on work and is not yet implemented.
 
 ## Remaining work and non-claims
 

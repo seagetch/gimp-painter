@@ -57,6 +57,7 @@ public:
   { pixel_budget_ = pixels == 0 ? 1 : pixels > pixel_budget ? pixel_budget : pixels; }
   void invalidate () noexcept;
   void set_request (Request request);
+  bool has_processor () const noexcept { return bool (request_.process) || bool (request_.raster_process); }
   bool uses_spool () const noexcept { return bool (request_.raster_process); }
   void set_spool_directory (std::string directory)
   { if (state_ != State::closed) request_.spool_directory = std::move (directory); }

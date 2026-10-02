@@ -53,6 +53,24 @@ static GeglNode *test_resolving_layer_get_node (GimpFilter *filter)
 static void test_resolving_layer_class_init (TestResolvingLayerClass *klass)
 { GIMP_FILTER_CLASS (klass)->get_node = test_resolving_layer_get_node; }
 static void test_resolving_layer_init (TestResolvingLayer *layer) {}
+typedef struct { GimpLayer parent; void (*created) (GimpLayer *, gpointer); gpointer data; } TestPreparingLayer;
+typedef struct { GimpLayerClass parent; } TestPreparingLayerClass;
+GType test_preparing_layer_get_type (void);
+G_DEFINE_TYPE (TestPreparingLayer,test_preparing_layer,GIMP_TYPE_LAYER)
+static GeglNode *test_preparing_layer_get_node (GimpFilter *filter)
+{
+  TestPreparingLayer *layer = (TestPreparingLayer *) filter;
+  GeglNode *node = GIMP_FILTER_CLASS (test_preparing_layer_parent_class)->get_node (filter);
+  if (layer->created)
+    {
+      void (*callback) (GimpLayer *, gpointer) = layer->created;
+      layer->created = NULL; callback (GIMP_LAYER (layer),layer->data);
+    }
+  return node;
+}
+static void test_preparing_layer_class_init (TestPreparingLayerClass *klass)
+{ GIMP_FILTER_CLASS (klass)->get_node = test_preparing_layer_get_node; }
+static void test_preparing_layer_init (TestPreparingLayer *layer) {}
 static GimpImage *image_new (gint w, gint h)
 { return gimp_image_new (gimp, w, h, GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR); }
 static GimpLayer *source_new (GimpImage *image, GimpLayer *parent, gint w, gint h)
@@ -933,6 +951,116 @@ static gint compare_latency (gconstpointer a, gconstpointer b)
   gint64 left = *(const gint64 *) a, right = *(const gint64 *) b;
   return (left > right) - (left < right);
 }
+static void cold_graph_nodes_are_prepared_one_per_quantum (void)
+{
+  GimpImage *image = image_new (8,8);
+  GimpFilterLayer *filter;
+  GimpLayer *layers[29];
+  guint ready = 0;
+  const gint64 deadline = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
+  for (guint i = 0; i < 24; ++i) layers[i] = source_new (image,NULL,8,8);
+  filter = filter_new (image,NULL,8,8); layers[24] = GIMP_LAYER (filter);
+  // The host builds its complete stack, including active layers above us.
+  for (guint i = 25; i < G_N_ELEMENTS (layers); ++i) layers[i] = source_new (image,NULL,8,8);
+  for (guint i = 0; i < G_N_ELEMENTS (layers); ++i) g_assert_null (gimp_filter_peek_node (GIMP_FILTER (layers[i])));
+  while (gimp_filter_layer_get_state (filter) == GIMP_FILTER_LAYER_WAITING && g_get_monotonic_time () < deadline)
+    {
+      guint now = 0;
+      g_main_context_iteration (NULL,FALSE);
+      for (guint i = 0; i < G_N_ELEMENTS (layers); ++i) now += gimp_filter_peek_node (GIMP_FILTER (layers[i])) != NULL;
+      g_assert_cmpuint (now, >=, ready); g_assert_cmpuint (now-ready, <=, 1); ready = now;
+      g_usleep (100);
+    }
+  g_assert_cmpuint (ready, ==, G_N_ELEMENTS (layers));
+  settle (filter); pixel (GIMP_LAYER (filter),0,0,0,0);
+  g_object_unref (image);
+}
+typedef struct { GimpImage *image; GimpLayer *victim; GimpFilterLayer *filter; guint mode; gboolean called; } PreparingReentry;
+static void prepare_node_reentry (GimpLayer *layer, gpointer data)
+{
+  PreparingReentry *state = data;
+  state->called = TRUE;
+  if (state->mode == 0)
+    {
+      GimpValueArray *args = edge_args ();
+      gimp_image_remove_layer (state->image,state->victim,FALSE,NULL);
+      g_value_set_double (gimp_value_array_index (args,3),4.0);
+      g_assert_true (gimp_filter_layer_set_definition (state->filter,"plug-in-edge",NULL,args,NULL));
+      gimp_value_array_unref (args);
+    }
+  else if (state->mode == 1)
+    {
+      gimp_painter_binding_close (G_OBJECT (state->filter),NULL);
+      g_clear_object (&state->image);
+    }
+  else gimp_image_remove_layer (state->image,layer,FALSE,NULL);
+}
+static void node_preparation_survives_callback_mutation (void)
+{
+  for (guint mode = 0; mode < 3; ++mode)
+    {
+      GimpImage *image = image_new (8,8);
+      GimpLayer *victim = source_new (image,NULL,8,8);
+      GimpFilterLayer *filter;
+      TestPreparingLayer *source = (TestPreparingLayer *) gimp_drawable_new (test_preparing_layer_get_type (),
+        image,"preparation callback",0,0,8,8,babl_format ("R'G'B'A u8"));
+      PreparingReentry state = {image,victim,NULL,mode,FALSE};
+      gint image_finalized = 0;
+      const gint64 deadline = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
+      g_object_weak_ref (G_OBJECT (image),weak_finalized,&image_finalized);
+      source->created = prepare_node_reentry; source->data = &state;
+      gimp_image_add_layer (image,GIMP_LAYER (source),NULL,0,FALSE);
+      filter = filter_new (image,NULL,8,8); state.filter = filter; g_object_ref (filter);
+      while (!state.called && g_get_monotonic_time () < deadline)
+        { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+      g_assert_true (state.called);
+      if (mode == 1)
+        {
+          g_assert_cmpint (image_finalized, ==, 1);
+          g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
+          g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
+        }
+      else
+        {
+          settle (filter); g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 1);
+          pixel (GIMP_LAYER (filter),0,0,0,0);
+          if (mode == 0)
+            {
+              GimpValueArray *args = gimp_filter_layer_dup_args (filter);
+              g_assert_cmpfloat (g_value_get_double (gimp_value_array_index (args,3)), ==, 4.0);
+              gimp_value_array_unref (args);
+            }
+          g_object_unref (image);
+        }
+      g_object_unref (filter);
+    }
+}
+typedef struct { gint64 before, elapsed; } QuantumCallback;
+static void slow_clean_observer (GimpFilterLayer *filter, gpointer data)
+{
+  QuantumCallback *state = data;
+  if (!state->elapsed && gimp_filter_layer_get_state (filter) == GIMP_FILTER_LAYER_CLEAN)
+    {
+      const gint64 started = g_get_monotonic_time ();
+      state->before = gimp_filter_layer_get_max_quantum_us (filter);
+      g_usleep (MIN (state->before + 20000,2 * G_TIME_SPAN_SECOND));
+      state->elapsed = g_get_monotonic_time () - started;
+    }
+}
+static void full_quantum_includes_state_callbacks (void)
+{
+  GimpImage *image = image_new (8,8);
+  GimpLayer *source = source_new (image,NULL,8,8);
+  GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+  QuantumCallback state = {0,0};
+  gimp_filter_get_node (GIMP_FILTER (source)); gimp_filter_get_node (GIMP_FILTER (filter));
+  g_signal_connect (filter,"filter-state-changed",G_CALLBACK (slow_clean_observer),&state);
+  settle (filter);
+  g_assert_cmpint (state.elapsed, >=, 20000);
+  g_assert_cmpint (gimp_filter_layer_get_max_quantum_us (filter), >=, state.elapsed);
+  g_assert_cmpint (gimp_filter_layer_get_max_quantum_us (filter), >, state.before);
+  g_object_unref (image);
+}
 static void complex_graph_remains_responsive (void)
 {
   GimpImage *image = image_new (1024,1024);
@@ -957,9 +1085,11 @@ static void complex_graph_remains_responsive (void)
       g_assert_cmpuint (samples.intervals->len, >, 5);
       g_array_sort (samples.intervals,compare_latency);
       g_test_message ("complex-graph phase=%s width=1024 height=1024 layers=64 wall_us=%" G_GINT64_FORMAT
-        " max_quantum_us=%" G_GINT64_FORMAT " heartbeat_samples=%u heartbeat_p50_us=%" G_GINT64_FORMAT
+        " max_quantum_us=%" G_GINT64_FORMAT " max_graph_us=%" G_GINT64_FORMAT " max_read_us=%" G_GINT64_FORMAT
+        " heartbeat_samples=%u heartbeat_p50_us=%" G_GINT64_FORMAT
         " heartbeat_p95_us=%" G_GINT64_FORMAT " heartbeat_p99_us=%" G_GINT64_FORMAT " heartbeat_max_us=%" G_GINT64_FORMAT,
-        phase ? "edit" : "first",g_get_monotonic_time () - start,gimp_filter_layer_get_max_quantum_us (filter),samples.intervals->len,
+        phase ? "edit" : "first",g_get_monotonic_time () - start,gimp_filter_layer_get_max_quantum_us (filter),
+        gimp_filter_layer_get_max_graph_quantum_us (filter),gimp_filter_layer_get_max_read_quantum_us (filter),samples.intervals->len,
         g_array_index (samples.intervals,gint64,samples.intervals->len/2),
         g_array_index (samples.intervals,gint64,samples.intervals->len*95/100),
         g_array_index (samples.intervals,gint64,samples.intervals->len*99/100),
@@ -1916,6 +2046,7 @@ int main (int argc, char **argv)
   ADD (definition_edit_stops_after_undo_close); ADD (definition_edit_preserves_reentered_install); ADD (definition_notifications_stop_after_close);
   ADD (pending_cycle_resolved_during_graph_read_is_discarded); ADD (definition_revision_separates_cache_updates);
   ADD (dependency_walk_does_not_resolve_pending_names); ADD (changed_dependency_invalidation_can_close_owner);
+  ADD (full_quantum_includes_state_callbacks); ADD (cold_graph_nodes_are_prepared_one_per_quantum); ADD (node_preparation_survives_callback_mutation);
   ADD (completion_flushes_image_projection); ADD (spill_completion_flushes_image_projection); ADD (long_chain_coalesces_state_notifications); ADD (complex_graph_remains_responsive); ADD (cached_graph_tracks_clone_reassignment);
   ADD (clone_filter_dependency_order); ADD (cached_dependency_close_before_start); ADD (cross_image_filter_cycle_has_no_signal_loop);
   ADD (gray_native_default); ADD (gray_native_linear_profile); ADD (gray_native_lab_profile); ADD (gray_without_source_alpha);

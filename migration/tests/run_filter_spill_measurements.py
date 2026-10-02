@@ -31,7 +31,7 @@ command = [str(exe), "--verbose", "-p", "/gimp-filter-layer/large_spill_executio
 env = dict(os.environ)
 env.update(GIMP_TESTING_ABS_TOP_SRCDIR=str(root), GIMP_TESTING_ABS_TOP_BUILDDIR=str(build),
            GIMP_TESTING_PLUGINDIRS=str(build / "plug-ins/common"), UI_TEST="yes")
-sources = ["app/core/gimpfilterlayer.cpp", "app/painter/filter-scheduler.cpp", "app/painter/filter-scheduler.hpp",
+sources = ["app/core/gimpfilterlayer.cpp", "app/core/gimpfilterlayer.h", "app/painter/filter-scheduler.cpp", "app/painter/filter-scheduler.hpp",
            "app/painter/filter-spool.cpp", "app/painter/filter-spool.hpp", "app/painter/filter-raster.cpp",
            "app/painter/filter-raster.hpp", "app/painter/filter-raster-kernels.cpp", "app/painter/filter-raster-kernels.hpp",
            "app/painter/work-admission.hpp", "app/tests/test-gimp-filter-layer.c", "app/tests/test-gimp-filter-layout.cpp"]
@@ -43,7 +43,7 @@ report = {"scope": "Actual GIMP 8193x8193 RGB U8 Edge spill, sparse opaque far c
           "head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
           "limits": ["Linux child RSS includes its resident GIMP/GEGL heap but excludes kernel filesystem cache/backing.",
                      "Configured test swap is build/filter-spill-cache, not implicit /tmp; production uses its configured expanded GEGL swap path.",
-                     "Shared host load is uncontrolled; heartbeat p95/p99/max are observations, not latency acceptance thresholds.",
+                     "Shared host load is uncontrolled; heartbeat p95/p99/max are observations, not latency acceptance thresholds. max_quantum_us now covers full callback/destructor scope.",
                      "This is one sparse large Edge workload; dense/complex graphs, many simultaneous images and native Windows remain separate gates."],
           "environment": {key: env[key] for key in ("GIMP_DEPS_DIRECTORY", "GEGL_THREADS", "BABL_TOLERANCE",
               "GIMP_TESTING_ABS_TOP_SRCDIR", "GIMP_TESTING_ABS_TOP_BUILDDIR", "GIMP_TESTING_PLUGINDIRS", "UI_TEST") if key in env}}

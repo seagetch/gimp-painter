@@ -34,7 +34,10 @@ wanted = {"app/core/gimpfilterlayer.cpp", "app/core/gimpimage-undo.c", "app/core
           "app/painter/filter-spool.cpp", "app/painter/filter-raster-kernels.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-session.cpp"}
-source_hashes = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in sorted(wanted)}
+source_hashes = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in sorted(wanted | {"app/core/gimpfilterlayer.h", "app/core/gimpfilterlayer-arguments.hpp",
+    "app/painter/filter-scheduler.hpp", "app/painter/filter-spool.hpp", "app/painter/filter-raster.hpp",
+    "app/painter/filter-edge-kernel-private.hpp", "app/painter/filter-gauss-kernel-private.hpp",
+    "app/painter/work-admission.hpp", "app/painter/fair-dispatcher.hpp"})}
 report["source_sha256"] = source_hashes
 replacements = {}
 extra = []

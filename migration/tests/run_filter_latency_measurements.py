@@ -33,12 +33,12 @@ report = {"scope": "Real GIMP 1024x1024, 64 partially opaque legacy-Normal lower
           "source_sha256": {}, "executable_sha256": hashlib.sha256((build / "app/tests/gimp-filter-layer").read_bytes()).hexdigest(),
           "command": command, "runs": [],
           "limits": ["Fresh-process first includes cold graph/format setup; edit uses that same graph after a source edit.",
-                     "max_quantum_us is cumulative per FilterLayer; heartbeat percentiles are per phase.",
+                     "max_quantum_us covers the full Filter step including state callbacks and local destructors; graph/read maxima are subspans. All are cumulative; heartbeat percentiles are per phase.",
                      "Shared host load is uncontrolled; this is an observation, not p95/p99 acceptance certification.",
                      "This complex graph is at the small-vector cutoff; large spill resource/latency evidence is separate. Cold graph latency remains outstanding."],
           "environment": {k: env[k] for k in ("GIMP_DEPS_DIRECTORY", "GEGL_THREADS", "BABL_TOLERANCE",
               "GIMP_TESTING_ABS_TOP_SRCDIR", "GIMP_TESTING_ABS_TOP_BUILDDIR", "GIMP_TESTING_PLUGINDIRS", "UI_TEST") if k in env}}
-for name in ("app/core/gimpfilterlayer.cpp", "app/painter/filter-scheduler.cpp",
+for name in ("app/core/gimpfilterlayer.cpp", "app/core/gimpfilterlayer.h", "app/painter/filter-scheduler.cpp",
              "app/painter/filter-scheduler.hpp", "app/tests/test-gimp-filter-layer.c"):
     report["source_sha256"][name] = hashlib.sha256((root / name).read_bytes()).hexdigest()
 for run in range(args.runs):

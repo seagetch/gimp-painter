@@ -112,7 +112,10 @@ guint64     gimp_filter_layer_get_definition_revision (GimpFilterLayer *);
 guint64     gimp_filter_layer_get_generation (GimpFilterLayer *);
 guint64     gimp_filter_layer_get_cache_generation (GimpFilterLayer *);
 guint64     gimp_filter_layer_get_run_count  (GimpFilterLayer *);
+/* Cumulative observed owner-thread maxima; diagnostics, not latency bounds. */
 gint64      gimp_filter_layer_get_max_quantum_us (GimpFilterLayer *);
+gint64      gimp_filter_layer_get_max_graph_quantum_us (GimpFilterLayer *);
+gint64      gimp_filter_layer_get_max_read_quantum_us (GimpFilterLayer *);
 /* Opaque argument-model bytes are mutually exclusive with converted arguments.
  * They are retained without inspection and never used for execution. Nonnull
  * zero-length bytes are distinct from no opaque model. Loader setter: no Undo.

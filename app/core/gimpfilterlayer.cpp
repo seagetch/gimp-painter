@@ -108,6 +108,7 @@ struct FilterImpl
     graph_connections.clear ();
     graph_filters.clear ();
     graph_clones.clear ();
+    graph_nodes.clear ();
     own_connections.clear ();
     image_connection.close ();
     profile_connection.close ();
@@ -385,13 +386,89 @@ struct FilterImpl
     std::uint64_t generation;
   };
   struct CloneDependency { WeakRef<GObject> object, source; bool had_source; };
+  bool plan_graph_nodes ()
+  {
+    graph_nodes.clear (); graph_node_cursor = 0; graph_fish_cursor = 0;
+    auto container = stack.lock ();
+    if (!container || !GIMP_IS_LIST (container.get ())) return false;
+    /* Node construction is the expensive part of the host stack's synchronous
+     * get_graph(). Snapshot a child-before-parent plan without entering any
+     * get_node vfunc or resolving Clone references during borrowed traversal.
+     * Include active layers above us: the host links the entire stack. */
+    struct Frame { GimpFilter *filter; GList *next = nullptr; bool entered = false; };
+    std::vector<Frame> frames;
+    std::set<GimpFilter *> visited;
+    for (GList *root = GIMP_LIST (container.get ())->queue->head; root; root = root->next)
+      {
+        auto *filter = GIMP_FILTER (root->data);
+        if (!gimp_filter_get_active (filter)) continue;
+        frames.push_back ({filter});
+        while (!frames.empty ())
+          {
+            Frame& frame = frames.back ();
+            if (!frame.entered)
+              {
+                if (gimp_filter_peek_node (frame.filter)) { frames.pop_back (); continue; }
+                if (!visited.insert (frame.filter).second || visited.size () > 4096) return false;
+                frame.entered = true;
+                if (auto *children = gimp_viewable_get_children (GIMP_VIEWABLE (frame.filter)))
+                  {
+                    if (!GIMP_IS_LIST (children)) return false;
+                    frame.next = GIMP_LIST (children)->queue->head;
+                  }
+              }
+            while (frame.next && !gimp_filter_get_active (GIMP_FILTER (frame.next->data))) frame.next = frame.next->next;
+            if (frame.next)
+              {
+                auto *child = GIMP_FILTER (frame.next->data); frame.next = frame.next->next;
+                frames.push_back ({child}); continue;
+              }
+            graph_nodes.emplace_back (ObjectRef<GObject>::retain (G_OBJECT (frame.filter)));
+            frames.pop_back ();
+          }
+      }
+    return true;
+  }
+  bool prepare_graph_quantum ()
+  {
+    /* The host layer-mode prepare eagerly creates all twelve conversion fishes
+     * in one call. Prime the same immutable Babl cache entries cooperatively for
+     * default and native image spaces; no pixels or graph state are evaluated.
+     * This is a performance hint only: host nodes still prepare their own exact
+     * formats, including any other space a custom operation requests. */
+    const auto started = g_get_monotonic_time ();
+    static const char *formats[] = {"RGBA float", "R~G~B~A float", "R'G'B'A float", "CIE Lab alpha float"};
+    static const unsigned pairs[12][2] = {{0,1},{0,2},{0,3},{2,0},{1,0},{1,3},{2,3},{3,0},{3,1},{3,2},{1,2},{2,1}};
+    while (graph_fish_cursor < 24)
+      {
+        const auto index = graph_fish_cursor++;
+        const auto from = pairs[index % 12][0], to = pairs[index % 12][1];
+        const Babl *space = index < 12 ? nullptr : babl_format_get_space (gimp_drawable_get_format (GIMP_DRAWABLE (owner)));
+        babl_fish (babl_format_with_space (formats[from],space), babl_format_with_space (formats[to],space));
+        if (g_get_monotonic_time () - started >= 2000) return true;
+      }
+    while (graph_node_cursor < graph_nodes.size ())
+      {
+        // Publish the cursor and end every vector borrow before callback entry.
+        auto object = graph_nodes[graph_node_cursor++].lock ();
+        if (!object) { graph_valid = false; return true; }
+        if (gimp_filter_peek_node (GIMP_FILTER (object.get ()))) continue;
+        auto image = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (GIMP_ITEM (owner))));
+        if (!image) { scheduler.close (); return false; }
+        gimp_filter_get_node (GIMP_FILTER (object.get ()));
+        // Reentry may clear the whole plan, invalidate dependencies or close.
+        // Do not consult old plan indices/references or read pixels this turn.
+        return true;
+      }
+    return false;
+  }
   bool validate_graph ()
   {
     graph_connections.clear ();
     graph_filters.clear ();
     graph_clones.clear ();
     const auto invalid = [&] {
-      graph_connections.clear (); graph_filters.clear (); graph_clones.clear (); return false;
+      graph_connections.clear (); graph_filters.clear (); graph_clones.clear (); graph_nodes.clear (); return false;
     };
     auto container = stack.lock ();
     if (!container || !GIMP_IS_LIST (container.get ())) return invalid ();
@@ -467,6 +544,7 @@ struct FilterImpl
             frames.pop_back ();
           }
       }
+    if (!plan_graph_nodes ()) return invalid ();
     graph_valid = true;
     return true;
   }
@@ -562,7 +640,15 @@ struct FilterImpl
   }
   bool step ()
   {
-    const auto started_at = g_get_monotonic_time ();
+    /* Include every early return, callback and local destructor. Recording
+     * before state-change emission hid synchronous observer/teardown cost. The
+     * BindingStore borrow keeps this implementation alive through scope exit. */
+    struct QuantumTimer
+    {
+      gint64& maximum;
+      gint64 started = g_get_monotonic_time ();
+      ~QuantumTimer () noexcept { maximum = std::max (maximum, g_get_monotonic_time () - started); }
+    } timer { maximum_quantum_us };
     if (topology_dirty) refresh_connections ();
     if (!gimp_item_is_attached (GIMP_ITEM (owner)) || gimp_item_is_removed (GIMP_ITEM (owner)) ||
         !gimp_item_get_visible (GIMP_ITEM (owner)))
@@ -595,6 +681,17 @@ struct FilterImpl
     const bool dependencies_ready = ready (failed);
     if (scheduler.state () == FilterScheduler::State::closed) return false;
     if (failed) scheduler.reject ("Filter dependency failed, is cyclic, or exceeds the graph limit");
+    if (dependencies_ready && scheduler.state () == FilterScheduler::State::waiting && scheduler.has_processor ())
+      {
+        const auto preparing_started = g_get_monotonic_time ();
+        const bool prepared_one = prepare_graph_quantum ();
+        maximum_graph_us = std::max (maximum_graph_us, g_get_monotonic_time () - preparing_started);
+        if (prepared_one)
+          {
+            return scheduler.state () != FilterScheduler::State::closed;
+          }
+      }
+    if (scheduler.state () == FilterScheduler::State::closed) return false;
     bool again = scheduler.step (dependencies_ready,
       [&] (std::size_t offset, std::size_t count, FilterScheduler::Bytes& input) {
         const auto read_started = g_get_monotonic_time ();
@@ -635,6 +732,7 @@ struct FilterImpl
           gegl_node_blit (below_node, 1.0, &rect, encoded_format (), input.data () + size,
                           GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_CACHE);
         if (!input_current (generation)) return;
+        maximum_read_us = std::max (maximum_read_us, g_get_monotonic_time () - read_started);
         tune_budget (count, g_get_monotonic_time () - read_started, read_budget);
       },
       [&] (std::size_t offset, std::size_t count, const std::uint8_t *pixels) {
@@ -668,7 +766,6 @@ struct FilterImpl
       });
     if (scheduler.state () == FilterScheduler::State::closed) return false;
     if (scheduler.state () != FilterScheduler::State::importing) staged.reset ();
-    maximum_quantum_us = std::max (maximum_quantum_us, g_get_monotonic_time () - started_at);
     if (previous != scheduler.state ()) g_signal_emit_by_name (owner, "filter-state-changed");
     return again || graph_recheck;
   }
@@ -684,11 +781,13 @@ struct FilterImpl
   std::vector<Connection> own_connections, dependencies, graph_connections;
   std::vector<FilterDependency> graph_filters;
   std::vector<CloneDependency> graph_clones;
+  std::vector<WeakRef<GObject>> graph_nodes;
+  std::size_t graph_node_cursor = 0, graph_fish_cursor = 0;
   bool graph_valid = false, graph_recheck = false;
   Connection image_connection, profile_connection;
   std::vector<WeakRef<GObject>> lower_objects;
   bool topology_dirty = false;
-  gint64 maximum_quantum_us = 0;
+  gint64 maximum_quantum_us = 0, maximum_graph_us = 0, maximum_read_us = 0;
   std::size_t read_budget = 1024, import_budget = FilterScheduler::pixel_budget;
 };
 void topology_changed (GimpContainer *container, GimpObject *, gpointer data)
@@ -1027,6 +1126,10 @@ guint64 gimp_filter_layer_get_run_count (GimpFilterLayer *layer)
 { FILTER_READ (guint64, guint64 (0), impl.scheduler.starts ()); }
 gint64 gimp_filter_layer_get_max_quantum_us (GimpFilterLayer *layer)
 { FILTER_READ (gint64, gint64 (0), impl.maximum_quantum_us); }
+gint64 gimp_filter_layer_get_max_graph_quantum_us (GimpFilterLayer *layer)
+{ FILTER_READ (gint64, gint64 (0), impl.maximum_graph_us); }
+gint64 gimp_filter_layer_get_max_read_quantum_us (GimpFilterLayer *layer)
+{ FILTER_READ (gint64, gint64 (0), impl.maximum_read_us); }
 #undef FILTER_READ
 void gimp_filter_layer_mark_as_loaded (GimpFilterLayer *layer)
 { boundary_void (nullptr, [&] { BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([] (FilterImpl& impl) {

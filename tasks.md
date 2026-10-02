@@ -660,6 +660,7 @@
 | 17.001/undo-owner-lifetime | [x] | callback中の最終image参照解放でもUndo stackを保護する | 17.001/bounded-admission, 12.015/external-reference-preservation | 67 actual app通常/focused sanitizer、12 phaseのordinary/strong Undo/Redo再入を検証。隣接Clone37/XCF16とnative GTK16合格。旧failure/source hash保持 |
 | 17.001/filter-end-timeout-contract | [ ] | FilterLayer の遅延終了通知の所有権を定義する | 17.001, 01.005/deferred-sources | source ID、所有者寿命、close とキャンセルの順序、通知の一回性を状態遷移表へ明記 |
 | 17.001/live-spill-execution | [x] | spill転送を実FilterLayerの準備/worker/反映へ接続する | 17.001/bounded-admission, 16.003/spill-components | 72 actual app/34scheduler通常・17unit focused sanitizer合格。8193²実Edge完走と1025²RGB/Gray両Gauss byte比較・世代/取消し/失敗leaseを検証。3実測12.34–12.79s、heartbeat最大89–119ms/RSS約1.33GiB/最終unref最大133.9msを明示、全latency/総資源gate未完了 |
+| 17.001/cold-graph-quanta | [x] | cold graph準備を所有付きdispatchへ分割し全step時間を測る | 17.001/live-spill-execution | 75 actual app通常/17unit focused sanitizerと10target合格。node/変換cache準備を分割し変更/削除/最終owner/遅いobserverを検証。8193²heartbeat最大23.1–31.6ms、複雑graphは最大129.7ms、close最大106.7ms/RSS約1.33GiB。全応答性/総disk予算は未達と明示 |
 | 17.002 | [ ] | 更新イベントの入力を実装する | 17.001 | 下層画素・設定・階層変更を分類 |
 | 17.003 | [ ] | 上層変更の除外を実装する | 17.002 | 無関係な変更で再評価しない |
 | 17.004 | [ ] | 可視下層の依存検出を実装する | 17.003 | 評価前に未確定依存を識別 |
