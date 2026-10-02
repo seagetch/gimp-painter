@@ -1,0 +1,1016 @@
+{
+  "schema_version": 1,
+  "origin": "parsed real legacy application-core log, not synthetic expected output",
+  "records": [
+    {
+      "record": "UNDO_STATE",
+      "case": "no-mask",
+      "step": "baseline",
+      "source_wh": [
+        16,
+        16
+      ],
+      "source_xy": [
+        5,
+        7
+      ],
+      "clone_wh": [
+        16,
+        16
+      ],
+      "clone_xy": [
+        32,
+        30
+      ],
+      "mask": 0,
+      "undo_depth": 0,
+      "redo_depth": 0,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "no-mask",
+      "step": "resized",
+      "source_wh": [
+        20,
+        18
+      ],
+      "source_xy": [
+        7,
+        10
+      ],
+      "clone_wh": [
+        20,
+        18
+      ],
+      "clone_xy": [
+        34,
+        33
+      ],
+      "mask": 0,
+      "undo_depth": 1,
+      "redo_depth": 0,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "resized",
+      "stack": "undo",
+      "path": "0",
+      "gtype": "GimpUndoStack",
+      "undo_type": 22,
+      "item": "-",
+      "children": 2
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "resized",
+      "stack": "undo",
+      "path": "0/0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        16,
+        16
+      ],
+      "saved_xy": [
+        32,
+        30
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "resized",
+      "stack": "undo",
+      "path": "0/1",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "source",
+      "children": 0,
+      "saved_wh": [
+        16,
+        16
+      ],
+      "saved_xy": [
+        5,
+        7
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_ACTION",
+      "case": "no-mask",
+      "step": "undo1",
+      "returned": 1
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "no-mask",
+      "step": "undo1",
+      "source_wh": [
+        16,
+        16
+      ],
+      "source_xy": [
+        5,
+        7
+      ],
+      "clone_wh": [
+        16,
+        16
+      ],
+      "clone_xy": [
+        30,
+        27
+      ],
+      "mask": 0,
+      "undo_depth": 2,
+      "redo_depth": 1,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "undo1",
+      "stack": "undo",
+      "path": "0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        32,
+        30
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "undo1",
+      "stack": "redo",
+      "path": "0",
+      "gtype": "GimpUndoStack",
+      "undo_type": 22,
+      "item": "-",
+      "children": 2
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "undo1",
+      "stack": "redo",
+      "path": "0/0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "source",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        7,
+        10
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "undo1",
+      "stack": "redo",
+      "path": "0/1",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        34,
+        33
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_ACTION",
+      "case": "no-mask",
+      "step": "redo1",
+      "returned": 1
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "no-mask",
+      "step": "redo1",
+      "source_wh": [
+        20,
+        18
+      ],
+      "source_xy": [
+        7,
+        10
+      ],
+      "clone_wh": [
+        20,
+        18
+      ],
+      "clone_xy": [
+        34,
+        33
+      ],
+      "mask": 0,
+      "undo_depth": 4,
+      "redo_depth": 0,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "redo1",
+      "stack": "undo",
+      "path": "0",
+      "gtype": "GimpUndoStack",
+      "undo_type": 22,
+      "item": "-",
+      "children": 2
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "redo1",
+      "stack": "undo",
+      "path": "0/0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        32,
+        30
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "redo1",
+      "stack": "undo",
+      "path": "0/1",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "source",
+      "children": 0,
+      "saved_wh": [
+        16,
+        16
+      ],
+      "saved_xy": [
+        5,
+        7
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_ACTION",
+      "case": "no-mask",
+      "step": "undo2",
+      "returned": 1
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "no-mask",
+      "step": "undo2",
+      "source_wh": [
+        16,
+        16
+      ],
+      "source_xy": [
+        5,
+        7
+      ],
+      "clone_wh": [
+        16,
+        16
+      ],
+      "clone_xy": [
+        30,
+        27
+      ],
+      "mask": 0,
+      "undo_depth": 4,
+      "redo_depth": 1,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "undo2",
+      "stack": "undo",
+      "path": "0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        32,
+        30
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "undo2",
+      "stack": "redo",
+      "path": "0",
+      "gtype": "GimpUndoStack",
+      "undo_type": 22,
+      "item": "-",
+      "children": 2
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "undo2",
+      "stack": "redo",
+      "path": "0/0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "source",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        7,
+        10
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "undo2",
+      "stack": "redo",
+      "path": "0/1",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        34,
+        33
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_ACTION",
+      "case": "no-mask",
+      "step": "redo2",
+      "returned": 1
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "no-mask",
+      "step": "redo2",
+      "source_wh": [
+        20,
+        18
+      ],
+      "source_xy": [
+        7,
+        10
+      ],
+      "clone_wh": [
+        20,
+        18
+      ],
+      "clone_xy": [
+        34,
+        33
+      ],
+      "mask": 0,
+      "undo_depth": 6,
+      "redo_depth": 0,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "redo2",
+      "stack": "undo",
+      "path": "0",
+      "gtype": "GimpUndoStack",
+      "undo_type": 22,
+      "item": "-",
+      "children": 2
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "redo2",
+      "stack": "undo",
+      "path": "0/0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        32,
+        30
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "no-mask",
+      "step": "redo2",
+      "stack": "undo",
+      "path": "0/1",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "source",
+      "children": 0,
+      "saved_wh": [
+        16,
+        16
+      ],
+      "saved_xy": [
+        5,
+        7
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "white-mask",
+      "step": "baseline",
+      "source_wh": [
+        16,
+        16
+      ],
+      "source_xy": [
+        5,
+        7
+      ],
+      "clone_wh": [
+        16,
+        16
+      ],
+      "clone_xy": [
+        32,
+        30
+      ],
+      "mask": 1,
+      "mask_wh": [
+        16,
+        16
+      ],
+      "mask_xy": [
+        32,
+        30
+      ],
+      "undo_depth": 0,
+      "redo_depth": 0,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "white-mask",
+      "step": "resized",
+      "source_wh": [
+        20,
+        18
+      ],
+      "source_xy": [
+        7,
+        10
+      ],
+      "clone_wh": [
+        20,
+        18
+      ],
+      "clone_xy": [
+        34,
+        33
+      ],
+      "mask": 1,
+      "mask_wh": [
+        16,
+        16
+      ],
+      "mask_xy": [
+        32,
+        30
+      ],
+      "undo_depth": 1,
+      "redo_depth": 0,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "resized",
+      "stack": "undo",
+      "path": "0",
+      "gtype": "GimpUndoStack",
+      "undo_type": 22,
+      "item": "-",
+      "children": 2
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "resized",
+      "stack": "undo",
+      "path": "0/0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        16,
+        16
+      ],
+      "saved_xy": [
+        32,
+        30
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "resized",
+      "stack": "undo",
+      "path": "0/1",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "source",
+      "children": 0,
+      "saved_wh": [
+        16,
+        16
+      ],
+      "saved_xy": [
+        5,
+        7
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_ACTION",
+      "case": "white-mask",
+      "step": "undo1",
+      "returned": 1
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "white-mask",
+      "step": "undo1",
+      "source_wh": [
+        16,
+        16
+      ],
+      "source_xy": [
+        5,
+        7
+      ],
+      "clone_wh": [
+        16,
+        16
+      ],
+      "clone_xy": [
+        30,
+        27
+      ],
+      "mask": 1,
+      "mask_wh": [
+        16,
+        16
+      ],
+      "mask_xy": [
+        32,
+        30
+      ],
+      "undo_depth": 2,
+      "redo_depth": 1,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "undo1",
+      "stack": "undo",
+      "path": "0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        32,
+        30
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "undo1",
+      "stack": "redo",
+      "path": "0",
+      "gtype": "GimpUndoStack",
+      "undo_type": 22,
+      "item": "-",
+      "children": 2
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "undo1",
+      "stack": "redo",
+      "path": "0/0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "source",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        7,
+        10
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "undo1",
+      "stack": "redo",
+      "path": "0/1",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        34,
+        33
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_ACTION",
+      "case": "white-mask",
+      "step": "redo1",
+      "returned": 1
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "white-mask",
+      "step": "redo1",
+      "source_wh": [
+        20,
+        18
+      ],
+      "source_xy": [
+        7,
+        10
+      ],
+      "clone_wh": [
+        20,
+        18
+      ],
+      "clone_xy": [
+        34,
+        33
+      ],
+      "mask": 1,
+      "mask_wh": [
+        16,
+        16
+      ],
+      "mask_xy": [
+        32,
+        30
+      ],
+      "undo_depth": 4,
+      "redo_depth": 0,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "redo1",
+      "stack": "undo",
+      "path": "0",
+      "gtype": "GimpUndoStack",
+      "undo_type": 22,
+      "item": "-",
+      "children": 2
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "redo1",
+      "stack": "undo",
+      "path": "0/0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        32,
+        30
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "redo1",
+      "stack": "undo",
+      "path": "0/1",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "source",
+      "children": 0,
+      "saved_wh": [
+        16,
+        16
+      ],
+      "saved_xy": [
+        5,
+        7
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_ACTION",
+      "case": "white-mask",
+      "step": "undo2",
+      "returned": 1
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "white-mask",
+      "step": "undo2",
+      "source_wh": [
+        16,
+        16
+      ],
+      "source_xy": [
+        5,
+        7
+      ],
+      "clone_wh": [
+        16,
+        16
+      ],
+      "clone_xy": [
+        30,
+        27
+      ],
+      "mask": 1,
+      "mask_wh": [
+        16,
+        16
+      ],
+      "mask_xy": [
+        32,
+        30
+      ],
+      "undo_depth": 4,
+      "redo_depth": 1,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "undo2",
+      "stack": "undo",
+      "path": "0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        32,
+        30
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "undo2",
+      "stack": "redo",
+      "path": "0",
+      "gtype": "GimpUndoStack",
+      "undo_type": 22,
+      "item": "-",
+      "children": 2
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "undo2",
+      "stack": "redo",
+      "path": "0/0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "source",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        7,
+        10
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "undo2",
+      "stack": "redo",
+      "path": "0/1",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        34,
+        33
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_ACTION",
+      "case": "white-mask",
+      "step": "redo2",
+      "returned": 1
+    },
+    {
+      "record": "UNDO_STATE",
+      "case": "white-mask",
+      "step": "redo2",
+      "source_wh": [
+        20,
+        18
+      ],
+      "source_xy": [
+        7,
+        10
+      ],
+      "clone_wh": [
+        20,
+        18
+      ],
+      "clone_xy": [
+        34,
+        33
+      ],
+      "mask": 1,
+      "mask_wh": [
+        16,
+        16
+      ],
+      "mask_xy": [
+        32,
+        30
+      ],
+      "undo_depth": 6,
+      "redo_depth": 0,
+      "group_count": 0
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "redo2",
+      "stack": "undo",
+      "path": "0",
+      "gtype": "GimpUndoStack",
+      "undo_type": 22,
+      "item": "-",
+      "children": 2
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "redo2",
+      "stack": "undo",
+      "path": "0/0",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "clone",
+      "children": 0,
+      "saved_wh": [
+        20,
+        18
+      ],
+      "saved_xy": [
+        32,
+        30
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    },
+    {
+      "record": "UNDO_NODE",
+      "case": "white-mask",
+      "step": "redo2",
+      "stack": "undo",
+      "path": "0/1",
+      "gtype": "GimpDrawableModUndo",
+      "undo_type": 48,
+      "item": "source",
+      "children": 0,
+      "saved_wh": [
+        16,
+        16
+      ],
+      "saved_xy": [
+        5,
+        7
+      ],
+      "copy_tiles": 0,
+      "image_type": 1
+    }
+  ]
+}

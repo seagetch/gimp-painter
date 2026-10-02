@@ -1,0 +1,26 @@
+make: Entering directory '/workspace/scratch/5b5281e79681/gimp-painter-legacy/app/tests'
+  CC       test-xcf.o
+test-xcf.c: In function ‘main’:
+test-xcf.c:1129:3: warning: ‘g_thread_init’ is deprecated [-Wdeprecated-declarations]
+ 1129 |   g_thread_init (NULL);
+      |   ^~~~~~~~~~~~~
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib.h:115,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib/gprintf.h:23,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib/gstdio.h:24,
+                 from test-xcf.c:20:
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib/deprecated/gthread.h:271:10: note: declared here
+  271 | void     g_thread_init                   (gpointer vtable);
+      |          ^~~~~~~~~~~~~
+test-xcf.c:1130:3: warning: ‘g_type_init’ is deprecated [-Wdeprecated-declarations]
+ 1130 |   g_type_init ();
+      |   ^~~~~~~~~~~
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib-object.h:24,
+                 from /workspace/shared/gimp-legacy-build/prefix/include/gegl-0.3/gegl.h:22,
+                 from test-xcf.c:22:
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:737:23: note: declared here
+  737 | void                  g_type_init                    (void);
+      |                       ^~~~~~~~~~~
+  CCLD     test-xcf
+make: Leaving directory '/workspace/scratch/5b5281e79681/gimp-painter-legacy/app/tests'
