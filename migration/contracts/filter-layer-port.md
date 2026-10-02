@@ -140,6 +140,34 @@ capture report for the exact sources, executable and tested parameter matrix.
 This proves the compatibility executor on those RGBA8 cases; it does not alone
 prove the entire GIMP 3 lower-stack projection equals the old projection.
 
+## Encoded color and execution admission
+
+Input sampling and result import use RGBA8 in the drawable's native Babl color
+space. An unqualified sRGB format was incorrect: the Adobe RGB opaque Gaussian
+fixture differed in 208 of 288 bytes before this correction. Both Gaussian
+methods now match all reference bytes under sRGB and Adobe RGB. Profile and
+format changes invalidate prepared/running/staged work. Reassigning profiles
+while a worker is pending discards that generation and publishes a fresh result.
+These are targeted native-encoding transfer tests against genuine old reference
+bytes; the captures themselves were unprofiled, not a new old-ICC capture.
+
+Execution is currently admitted only for non-linear RGB U8. Unsupported reruns
+explicitly fail while retaining their definitions and committed cache; loading
+an existing completed cache does not discard it or attempt quantization. The old
+edge and Gaussian registrations accept RGB*/GRAY*, not indexed. Therefore Gray
+execution remains a valid-old-format migration requirement. High precision and
+linear U8 are modern extensions without a 2.8 byte-level oracle and require an
+explicit conversion contract. This temporary guard is not a compatibility claim
+or a permanent removal of old Gray support.
+
+Stored procedure names and string arguments from XCF are untrusted input.
+Execution must stay an explicit allowlist of side-effect-free transformation
+mappings or use an independently reviewed isolation boundary. Looking up an
+arbitrary existing PDB/script/eval/file procedure and invoking it while opening
+an image would permit code execution or file writes. Unsupported definitions
+and cache are retained with a visible failure state; arbitrary dispatch is not
+an acceptable shortcut to procedure compatibility.
+
 ## Tests and measurements
 
 - `app/painter/tests/test-filter-scheduler.cpp`: 20 pure scheduler tests including
@@ -147,7 +175,7 @@ prove the entire GIMP 3 lower-stack projection equals the old projection.
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 32 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 36 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release

@@ -85,6 +85,8 @@ void owner_size (GimpViewable *, gpointer);
 void owner_offset (GObject *, GParamSpec *, gpointer);
 void owner_active (GimpFilter *, gpointer);
 void owner_image_changed (GObject *, GParamSpec *, gpointer);
+void owner_format_changed (GimpDrawable *, gpointer);
+void image_profile_changed (GObject *, gpointer);
 void image_disconnected (GimpObject *, gpointer);
 
 struct FilterImpl
@@ -98,6 +100,7 @@ struct FilterImpl
     dependencies.clear ();
     own_connections.clear ();
     image_connection.close ();
+    profile_connection.close ();
     staged.reset ();
     stack.reset ();
     lower_objects.clear ();
@@ -120,14 +123,19 @@ struct FilterImpl
     own_connections.push_back (connect (G_OBJECT (owner), "notify::offset-y", G_CALLBACK (owner_offset)));
     own_connections.push_back (connect (G_OBJECT (owner), "active-changed", G_CALLBACK (owner_active)));
     own_connections.push_back (connect (G_OBJECT (owner), "notify::image", G_CALLBACK (owner_image_changed)));
+    own_connections.push_back (connect (G_OBJECT (owner), "format-changed", G_CALLBACK (owner_format_changed)));
     watch_image ();
     refresh_connections ();
   }
   void watch_image ()
   {
     image_connection.close ();
+    profile_connection.close ();
     if (GimpImage *image = gimp_item_get_image (GIMP_ITEM (owner)))
-      image_connection = connect (G_OBJECT (image), "disconnect", G_CALLBACK (image_disconnected));
+      {
+        image_connection = connect (G_OBJECT (image), "disconnect", G_CALLBACK (image_disconnected));
+        profile_connection = connect (G_OBJECT (image), "profile-changed", G_CALLBACK (image_profile_changed));
+      }
   }
   GimpContainer *current_stack ()
   {
@@ -346,6 +354,13 @@ struct FilterImpl
       }
     return true;
   }
+  const Babl *encoded_format () const
+  {
+    /* Legacy plug-ins calculate on encoded native bytes, not a conversion to
+     * default sRGB. Input and import must use the same drawable color space. */
+    return babl_format_with_space ("R'G'B'A u8",
+      babl_format_get_space (gimp_drawable_get_format (GIMP_DRAWABLE (owner))));
+  }
   GeglRectangle rectangle (std::size_t offset, std::size_t count)
   {
     const int width = gimp_item_get_width (GIMP_ITEM (owner));
@@ -361,6 +376,13 @@ struct FilterImpl
       return scheduler.step (false, {}, {}, {});
     const auto started_at = g_get_monotonic_time ();
     const auto previous = scheduler.state ();
+    /* The genuine 2.8 reference is encoded RGB8. Do not silently quantize
+     * float/linear/gray/indexed inputs and claim the same transformation.
+     * Already loaded caches remain usable; unsupported reruns retain them. */
+    if (previous != FilterScheduler::State::clean && previous != FilterScheduler::State::failed &&
+        (gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) != GIMP_RGB ||
+         gimp_drawable_get_precision (GIMP_DRAWABLE (owner)) != GIMP_PRECISION_U8_NON_LINEAR))
+      scheduler.reject ("Legacy filter execution currently requires non-linear RGB U8; original definition and cache are retained");
     bool failed = false;
     const bool dependencies_ready = ready (failed);
     if (failed) scheduler.reject ("Filter dependency failed, is cyclic, or exceeds the graph limit");
@@ -378,7 +400,7 @@ struct FilterImpl
         rect.y += gimp_item_get_offset_y (GIMP_ITEM (owner));
         const auto size = input.size ();
         input.resize (size + count * 4);
-        gegl_node_blit (below_node, 1.0, &rect, babl_format ("R'G'B'A u8"), input.data () + size,
+        gegl_node_blit (below_node, 1.0, &rect, encoded_format (), input.data () + size,
                         GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_DEFAULT);
       },
       [&] (std::size_t offset, std::size_t count, const std::uint8_t *pixels) {
@@ -388,7 +410,7 @@ struct FilterImpl
             staged = ObjectRef<GObject>::adopt (G_OBJECT (gegl_buffer_new (&extent, gimp_drawable_get_format (GIMP_DRAWABLE (owner)))));
           }
         auto rect = rectangle (offset, count);
-        gegl_buffer_set (GEGL_BUFFER (staged.get ()), &rect, 0, babl_format ("R'G'B'A u8"), pixels, GEGL_AUTO_ROWSTRIDE);
+        gegl_buffer_set (GEGL_BUFFER (staged.get ()), &rect, 0, encoded_format (), pixels, GEGL_AUTO_ROWSTRIDE);
       },
       [&] (std::uint64_t token) {
         if (token != scheduler.generation ()) return;
@@ -416,7 +438,7 @@ struct FilterImpl
   WeakRef<GObject> stack;
   ObjectRef<GObject> staged;
   std::vector<Connection> own_connections, dependencies;
-  Connection image_connection;
+  Connection image_connection, profile_connection;
   std::vector<WeakRef<GObject>> lower_objects;
   bool topology_dirty = false;
   gint64 maximum_quantum_us = 0;
@@ -450,6 +472,10 @@ void owner_active (GimpFilter *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { impl.invalidate (); }); }
 void owner_image_changed (GObject *, GParamSpec *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { impl.watch_image (); impl.structure_changed (); impl.invalidate (); }); }
+void owner_format_changed (GimpDrawable *, gpointer data)
+{ visit (data, [] (FilterImpl& impl) { impl.configure (); }); }
+void image_profile_changed (GObject *, gpointer data)
+{ visit (data, [] (FilterImpl& impl) { impl.invalidate (); }); }
 void image_disconnected (GimpObject *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { gimp_painter_binding_close (G_OBJECT (impl.owner), nullptr); }); }
 struct FilterUndoImpl

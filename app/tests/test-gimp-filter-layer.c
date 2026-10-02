@@ -6,12 +6,14 @@
 #include <stddef.h>
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
+#include "libgimpcolor/gimpcolor.h"
 #include "core/core-types.h"
 #include "widgets/widgets-types.h"
 #include "core/gimp.h"
 #include "core/gimpfilterlayer.h"
 #include "core/gimpclonelayer.h"
 #include "core/gimpimage.h"
+#include "core/gimpimage-color-profile.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpgrouplayer.h"
 #include "core/gimplayer-new.h"
@@ -506,6 +508,101 @@ static void gaussian_legacy_fixture (void)
 }
 
 
+/* The captured reference bytes have no ICC conversion. Assigning a profile
+ * changes their interpretation, never the encoded arithmetic of the old PDB. */
+static void native_gaussian_fixture (gboolean adobe, gboolean reassign_running)
+{
+  GimpImage *image = image_new (9,8);
+  GimpColorProfile *profile = adobe ? gimp_color_profile_new_rgb_adobe () : gimp_color_profile_new_rgb_srgb ();
+  GimpLayer *source;
+  GimpFilterLayer *filter;
+  const Babl *native;
+  gchar *path, *input = NULL, *expected = NULL;
+  gsize input_size, expected_size;
+  guchar actual[9*8*4];
+  GError *error = NULL;
+  g_assert_true (gimp_image_set_color_profile (image,profile,&error)); g_assert_no_error (error);
+  g_object_unref (profile);
+  native = gimp_image_get_layer_format (image,TRUE);
+  source = gimp_layer_new (image,9,8,native,"native encoded source",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+  gimp_image_add_layer (image,source,NULL,0,FALSE);
+  path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),
+                           "migration/fixtures/legacy-gauss/input-opaque.rgba",NULL);
+  g_assert_true (g_file_get_contents (path,&input,&input_size,NULL)); g_free (path);
+  g_assert_cmpuint (input_size, ==, sizeof actual);
+  gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)),GEGL_RECTANGLE (0,0,9,8),0,
+                  native,input,GEGL_AUTO_ROWSTRIDE); g_free (input);
+  gimp_drawable_update (GIMP_DRAWABLE (source),0,0,9,8);
+  filter = filter_new (image,NULL,9,8);
+  for (gint method = 0; method < 2; ++method)
+    {
+      GimpValueArray *args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,
+        G_TYPE_DOUBLE,25.0,G_TYPE_DOUBLE,25.0,G_TYPE_INT,method,G_TYPE_NONE);
+      g_assert_true (gimp_filter_layer_set_definition (filter,"plug-in-gauss",NULL,args,NULL));
+      gimp_value_array_unref (args);
+      if (reassign_running)
+        {
+          guint64 generation;
+          gint64 deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 20;
+          while (gimp_filter_layer_get_state (filter) != GIMP_FILTER_LAYER_RUNNING && g_get_monotonic_time () < deadline)
+            { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+          g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_RUNNING);
+          generation = gimp_filter_layer_get_generation (filter);
+          profile = method ? gimp_color_profile_new_rgb_srgb () : gimp_color_profile_new_rgb_adobe ();
+          g_assert_true (gimp_image_assign_color_profile (image,profile,NULL,&error)); g_assert_no_error (error);
+          g_object_unref (profile);
+          g_assert_cmpuint (gimp_filter_layer_get_generation (filter), >, generation);
+          g_assert_cmpuint (gimp_filter_layer_get_cache_generation (filter), !=, gimp_filter_layer_get_generation (filter));
+        }
+      settle (filter);
+      native = gimp_drawable_get_format (GIMP_DRAWABLE (filter));
+      g_assert_true (native == gimp_image_get_layer_format (image,TRUE));
+      path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration/fixtures/legacy-gauss",
+        method ? "gauss-opaque-h25-v25-m1.rgba" : "gauss-opaque-h25-v25-m0.rgba",NULL);
+      g_assert_true (g_file_get_contents (path,&expected,&expected_size,NULL)); g_free (path);
+      gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)),GEGL_RECTANGLE (0,0,9,8),1.0,
+                      native,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      g_assert_cmpmem (actual,sizeof actual,expected,expected_size); g_free (expected);
+    }
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, reassign_running ? 4 : 2);
+  g_object_unref (image);
+}
+static void gaussian_native_srgb (void) { native_gaussian_fixture (FALSE,FALSE); }
+static void gaussian_native_adobe (void) { native_gaussian_fixture (TRUE,FALSE); }
+static void profile_reassignment_discards_worker (void) { native_gaussian_fixture (FALSE,TRUE); }
+
+static void unsupported_precision_retains_cache (void)
+{
+  static const struct { GimpImageBaseType base; GimpPrecision precision; } cases[] = {
+    {GIMP_RGB,GIMP_PRECISION_FLOAT_LINEAR}, {GIMP_RGB,GIMP_PRECISION_U16_NON_LINEAR},
+    {GIMP_RGB,GIMP_PRECISION_U8_LINEAR}, {GIMP_GRAY,GIMP_PRECISION_U8_NON_LINEAR}
+  };
+  static const guchar original[] = {0,255,12,27,36};
+  for (guint i = 0; i < G_N_ELEMENTS (cases); ++i)
+    {
+      GimpImage *image = gimp_image_new (gimp,8,8,cases[i].base,cases[i].precision);
+      GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+      GimpValueArray *args = edge_args ();
+      GBytes *raw = g_bytes_new_static (original,sizeof original), *saved;
+      GeglBuffer *cache = gimp_drawable_get_buffer (GIMP_DRAWABLE (filter));
+      gchar *message;
+      g_object_ref (cache);
+      g_assert_true (gimp_filter_layer_set_definition (filter,"plug-in-edge",raw,args,NULL));
+      g_bytes_unref (raw); gimp_value_array_unref (args);
+      gimp_filter_layer_mark_as_loaded (filter); spin_ms (5);
+      g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLEAN);
+      gimp_filter_layer_invalidate (filter); spin_ms (10);
+      g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_FAILED);
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
+      g_assert_true (cache == gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)));
+      message = gimp_filter_layer_dup_error (filter);
+      g_assert_nonnull (strstr (message,"requires non-linear RGB U8")); g_free (message);
+      saved = gimp_filter_layer_ref_definition (filter);
+      g_assert_cmpmem (g_bytes_get_data (saved,NULL),g_bytes_get_size (saved),original,sizeof original);
+      g_bytes_unref (saved); g_object_unref (cache); g_object_unref (image);
+    }
+}
+
 static void small_image_finishes_during_large_preparation (void)
 {
   GimpImage *large = image_new (2048,1536), *small = image_new (16,16);
@@ -877,6 +974,7 @@ int main (int argc, char **argv)
   ADD (image_close_reentry_during_commit); ADD (retained_handle_after_image_close); ADD (argument_value_dag_is_bounded); ADD (typed_argument_import_preserves_descriptors); ADD (argument_import_validation);
   ADD (typed_argument_snapshot_survives_expiration); ADD (saved_snapshot_generation_restore); ADD (small_image_finishes_during_large_preparation); ADD (image_close_during_worker);
   ADD (sustained_edits_converge); ADD (oversized_execution_preserves_definition);
+  ADD (gaussian_native_srgb); ADD (gaussian_native_adobe); ADD (profile_reassignment_discards_worker); ADD (unsupported_precision_retains_cache);
   ADD (gaussian_legacy_fixture); ADD (duplicate_failure_releases_partial); ADD (definition_undo_redo); ADD (hidden_filter_and_offset); ADD (cpp_header_layout); ADD (clone_filter_dependency_cycle); ADD (main_context_remains_responsive);
   ADD (object_arguments_do_not_cycle); ADD (expired_object_records_and_reassignment);
   ADD (object_array_arguments_do_not_dangle); ADD (removal_and_undo); ADD (lower_group_failure_and_recovery);

@@ -613,6 +613,7 @@
 | 16.002 | [ ] | 現行内部 PDB API の型を確定する | 16.001 | 公開 libgimp API と本体内部 API を混同しない |
 | 16.003 | [ ] | 旧 procedure 名の変換を実装する | 16.002 | 改名された手順を同じ意味へ解決 |
 | 16.003/gauss-executor | [x] | 同梱presetの旧Gaussian実行を復元する | 15.001/core-scheduler-edge | plug-in-gaussのIIR/RLE・分数/片軸半径・旧shadow mergeを実装し104実旧PDB fixtureにbyte一致。実FilterLayer両methodと21 app通常/focused sanitizer合格 |
+| 16.003/native-color-transfer | [x] | 旧Filterのnative符号化色空間と世代変更を保持する | 16.003/gauss-executor, 17.001/fair-checkpoint-state | sRGB/Adobe RGB両Gaussianと実行中profile変更を含む36 app通常/focused sanitizer合格。Gray/高精度の再実行は一時的に明示失敗し元定義/cacheを保持、対応gateは未完了 |
 | 16.004 | [ ] | 非対応 procedure の互換実行経路を設計する | 16.003 | 代替実装か互換プラグインへ割当し未割当を残さない |
 | 16.005 | [ ] | 旧整数引数の変換を実装する | 16.004 | 幅・符号・範囲を保持 |
 | 16.006 | [ ] | 旧実数引数の変換を実装する | 16.005 | 精度と特殊値の扱いを固定 |
