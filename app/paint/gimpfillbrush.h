@@ -1,0 +1,33 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+#ifndef GIMP_FILL_BRUSH_H
+#define GIMP_FILL_BRUSH_H
+#include "paint-types.h"
+#include "gimpbrushcore.h"
+#include "gimppaintoptions.h"
+G_BEGIN_DECLS
+#define GIMP_TYPE_FILL_BRUSH (gimp_fill_brush_get_type())
+#define GIMP_FILL_BRUSH(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj),GIMP_TYPE_FILL_BRUSH,GimpFillBrush))
+#define GIMP_IS_FILL_BRUSH(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj),GIMP_TYPE_FILL_BRUSH))
+#define GIMP_TYPE_FILL_BRUSH_OPTIONS (gimp_fill_brush_options_get_type())
+typedef struct { GimpBrushCore parent; gboolean binding_failed; } GimpFillBrush;
+typedef struct { GimpBrushCoreClass parent; } GimpFillBrushClass;
+typedef struct { GimpPaintOptions parent; gboolean binding_failed; } GimpFillBrushOptions;
+typedef struct { GimpPaintOptionsClass parent; } GimpFillBrushOptionsClass;
+GType gimp_fill_brush_get_type(void) G_GNUC_CONST;
+GType gimp_fill_brush_options_get_type(void) G_GNUC_CONST;
+void gimp_fill_brush_register (Gimp *gimp, GimpPaintRegisterCallback callback);
+gboolean gimp_fill_brush_begin (GimpFillBrush *brush, GimpDrawable *drawable,
+                                GimpPaintOptions *options, const GimpCoords *coords,
+                                GError **error);
+gboolean gimp_fill_brush_motion (GimpFillBrush *brush, const GimpCoords *coords,
+                                 guint32 time, GError **error);
+/* FALSE without error means queued work remains. Cancellation may be requested
+ * reentrantly; it is applied after the current native callback unwinds. */
+gboolean gimp_fill_brush_finish (GimpFillBrush *brush, gboolean commit, GError **error);
+/* Native owner-thread drain. Finish the native transaction only after TRUE.
+ * FALSE without error means queued work; failures/cancellation publish no dab. */
+gboolean gimp_fill_brush_step(GimpFillBrush *brush, gsize budget, GError **error);
+/* Cancel the entire transaction, rolling back any already-published dabs. */
+void gimp_fill_brush_cancel_pending(GimpFillBrush *brush);
+G_END_DECLS
+#endif

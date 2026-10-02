@@ -34,6 +34,7 @@ libapppaint_sources = [
   'gimpdodgeburnoptions.c',
   'gimperaser.c',
   'gimperaseroptions.c',
+  'gimpfillbrush.cpp',
   'gimpheal.c',
   'gimpink-blob.c',
   'gimpink.c',
@@ -66,6 +67,6 @@ libapppaint = static_library('apppaint',
   include_directories: [ rootInclude, rootAppInclude, ],
   c_args: '-DG_LOG_DOMAIN="Gimp-Paint"',
   dependencies: [
-    cairo, gegl, gdk_pixbuf, gexiv2, libmypaint,
+    cairo, gegl, gdk_pixbuf, gexiv2, libmypaint, painter_bounded_fill_dep,
   ],
 )

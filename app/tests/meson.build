@@ -210,3 +210,34 @@ test('gimp-painter-hover', painter_hover_test,
     'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
     'UI_TEST=yes',
   ], suite: 'app', is_parallel: false, timeout: 60)
+
+
+# Native Fill Brush transaction trace against pinned old real paint/Undo output.
+painter_fill_trace = executable('painter-fill-brush-trace',
+  'painter-fill-brush-trace.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_bounded_fill_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'])
+
+fill_core_test = executable('gimp-fill-brush', 'test-gimp-fill-brush.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_bounded_fill_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('gimp-fill-brush', fill_core_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)
+
+if not meson.is_cross_build()
+  foreach fill_variant : ['', 'queued']
+    test('painter-fill-brush-legacy' + fill_variant, painter_brush_settings_python,
+      args: [meson.project_source_root() / 'migration/tests/compare_fill_brush.py',
+             meson.project_source_root() / 'migration/fixtures/legacy-fill-brush/pixels.tsv.gz',
+             painter_fill_trace] + (fill_variant == '' ? [] : [fill_variant]),
+      env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+            'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+            'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+            'GIMP3_DIRECTORY=' + meson.project_build_root() / 'app/tests/gimpdir-output',
+            'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 60)
+  endforeach
+endif

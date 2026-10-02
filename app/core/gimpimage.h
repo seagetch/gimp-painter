@@ -174,6 +174,7 @@ GimpPlugInProcedure * gimp_image_get_load_proc   (GimpImage          *image);
 void            gimp_image_set_save_proc         (GimpImage          *image,
                                                   GimpPlugInProcedure *proc);
 GimpPlugInProcedure * gimp_image_get_save_proc   (GimpImage          *image);
+gboolean        gimp_image_has_pending_paint      (GimpImage          *image);
 void            gimp_image_saving                (GimpImage          *image);
 void            gimp_image_saved                 (GimpImage          *image,
                                                   GFile              *file);

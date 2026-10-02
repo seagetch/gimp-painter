@@ -120,6 +120,7 @@ enum
   CLEAN,
   DIRTY,
   SAVING,
+  QUERY_PENDING_PAINT,
   SAVED,
   EXPORTED,
   GUIDE_ADDED,
@@ -463,6 +464,14 @@ gimp_image_class_init (GimpImageClass *klass)
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   GIMP_TYPE_DIRTY_MASK);
+
+  /* Read-only preflight for asynchronous native paint owners. A true answer
+   * defers saving before opening/replacing a destination; input is preserved. */
+  gimp_image_signals[QUERY_PENDING_PAINT] =
+    g_signal_new ("query-pending-paint",
+                  G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST, 0,
+                  g_signal_accumulator_true_handled, NULL,
+                  NULL, G_TYPE_BOOLEAN, 0);
 
   gimp_image_signals[SAVING] =
     g_signal_new ("saving",
@@ -4170,6 +4179,18 @@ gimp_image_get_dirty_time (GimpImage *image)
  * Emits the "saving" signal, indicating that @image is about to be saved,
  * or exported.
  */
+gboolean
+gimp_image_has_pending_paint (GimpImage *image)
+{
+  gboolean pending = FALSE;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_object_ref (image);
+  g_signal_emit (image, gimp_image_signals[QUERY_PENDING_PAINT], 0, &pending);
+  g_object_unref (image);
+  return pending;
+}
+
 void
 gimp_image_saving (GimpImage *image)
 {
