@@ -1,0 +1,1242 @@
+  Installing layer-presets-path with default = ${gimp_dir}/layer-presets:${gimp_data_dir}/layer-presets
+  Installing layer-presets-path-writable with default = ${gimp_dir}/layer-presets
+GimpCoreConfig: Set properties_base to 62
+  Installed set_property_handler
+  Installed get_property_handler
+Installed::N4GLib13GClassWrapperINS_11UseCStructsI15_GimpBaseConfig15_GimpCoreConfigEEE9WithClassE-> prop=layer-presets-path, id=62
+  Kept set_property_handler
+  Kept get_property_handler
+Installed::N4GLib13GClassWrapperINS_11UseCStructsI15_GimpBaseConfig15_GimpCoreConfigEEE9WithClassE-> prop=layer-presets-path-writable, id=63
+Install ConfigExtender.
+set::readonly path to `${gimp_dir}/layer-presets:${gimp_data_dir}/layer-presets'
+set::writable path to `${gimp_dir}/layer-presets'
+Install ConfigExtender.
+set::readonly path to `${gimp_dir}/layer-presets:${gimp_data_dir}/layer-presets'
+set::writable path to `${gimp_dir}/layer-presets'
+
+(gimp-2.8:8): GLib-GObject-CRITICAL **: 15:57:52.409: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(gimp-2.8:8): GLib-GObject-CRITICAL **: 15:57:52.409: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+get::readonly path
+get::readonly path
+get::writable path
+get::writable path
+
+(gimp-2.8:8): GLib-GObject-CRITICAL **: 15:57:52.410: g_object_set_is_valid_property: object class 'GeglConfig' has no property named 'cache-size'
+GimpJsonResource: Set properties_base to 8
+  Installed set_property_handler
+  Installed get_property_handler
+Installed::N4GLib13GClassWrapperINS_11UseCStructsI9_GimpData17_GimpJsonResourceEEE9WithClassE-> prop=root, id=8
+Feature::entry_point: add restore/exit on initialize.
+Failed to parse tag cache: No such file or directory
+
+(gimp-2.8:8): Gimp-Widgets-CRITICAL **: 15:57:52.417: gimp_dialog_factory_get_singleton: assertion 'gimp_toplevel_factory != NULL' failed
+PresetGuiFactory::on_restore::GimpDialogFactory=(nil)
+
+(gimp-2.8:8): Gimp-Widgets-CRITICAL **: 15:57:52.419: gimp_dialog_factory_register_entry: assertion 'GIMP_IS_DIALOG_FACTORY (factory)' failed
+PresetGuiFactory::on_restore::end
+
+(gimp-2.8:8): Gimp-Widgets-CRITICAL **: 15:57:52.419: gimp_action_factory_group_register: assertion 'GIMP_IS_ACTION_FACTORY (factory)' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfa964790:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfaa8fbb0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_INPUT=rgb-odd TYPE=1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_INPUT=gray-odd TYPE=3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_INPUT=rgb-even TYPE=1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_INPUT=gray-even TYPE=3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-iir2--1.1-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-iir2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-iir2--5-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:53.800: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-iir2--17-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-iir2-3--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-iir2-3--5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:54.006: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-iir2-3--17
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss--1.1-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss--2-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss--5-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:54.191: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss--17-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-3--2-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-3--5-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:54.339: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-3--17-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-rle2--1.1-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-rle2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-rle2--5-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:54.527: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-rle2--17-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-rle2-3--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-rle2-3--5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:54.651: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-rle2-3--17
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss--1.1-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss--2-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss--5-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:54.806: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss--17-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-3--2-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-3--5-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:54.926: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-odd-gauss-3--17-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-iir2--1.1-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-iir2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-iir2--5-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:55.087: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-iir2--17-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-iir2-3--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-iir2-3--5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:55.230: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-iir2-3--17
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss--1.1-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss--2-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss--5-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:55.402: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss--17-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-3--2-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-3--5-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:55.534: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-3--17-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-rle2--1.1-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-rle2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-rle2--5-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:55.737: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-rle2--17-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-rle2-3--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-rle2-3--5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:55.899: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-rle2-3--17
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss--1.1-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss--2-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss--5-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.095: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss--17-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-3--2-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-3--5-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.235: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-odd-gauss-3--17-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-iir2--1.1-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-iir2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.359: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-iir2--5-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.402: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-iir2--17-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-iir2-3--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.508: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-iir2-3--5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.566: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-iir2-3--17
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss--1.1-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss--2-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.697: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss--5-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.733: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss--17-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-3--2-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.813: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-3--5-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.865: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-3--17-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-rle2--1.1-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-rle2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:56.983: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-rle2--5-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.015: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-rle2--17-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-rle2-3--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.102: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-rle2-3--5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.143: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-rle2-3--17
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss--1.1-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss--2-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.275: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss--5-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.322: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss--17-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-3--2-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.428: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-3--5-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.489: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-even-gauss-3--17-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-iir2--1.1-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-iir2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.611: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-iir2--5-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.681: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-iir2--17-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-iir2-3--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.776: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-iir2-3--5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.818: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-iir2-3--17
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss--1.1-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss--2-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:57.946: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss--5-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.030: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss--17-3-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-3--2-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.119: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-3--5-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.181: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-3--17-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-rle2--1.1-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-rle2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.328: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-rle2--5-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.361: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-rle2--17-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-rle2-3--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.439: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-rle2-3--5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.482: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-rle2-3--17
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss--1.1-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss--2-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.603: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss--5-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.643: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss--17-3-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-3--2-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.743: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-3--5-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+
+(gimp-2.8:8): Gimp-Core-CRITICAL **: 15:57:58.819: gimp_drawable_merge_shadow_tiles: assertion 'drawable->private->shadow != NULL' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfab90f70:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-even-gauss-3--17-1
+
+batch command executed successfully
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x561dfaa8fbb0:  set ignore_undos=0

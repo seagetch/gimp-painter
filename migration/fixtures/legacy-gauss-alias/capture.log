@@ -1,0 +1,1031 @@
+  Installing layer-presets-path with default = ${gimp_dir}/layer-presets:${gimp_data_dir}/layer-presets
+  Installing layer-presets-path-writable with default = ${gimp_dir}/layer-presets
+GimpCoreConfig: Set properties_base to 62
+  Installed set_property_handler
+  Installed get_property_handler
+Installed::N4GLib13GClassWrapperINS_11UseCStructsI15_GimpBaseConfig15_GimpCoreConfigEEE9WithClassE-> prop=layer-presets-path, id=62
+  Kept set_property_handler
+  Kept get_property_handler
+Installed::N4GLib13GClassWrapperINS_11UseCStructsI15_GimpBaseConfig15_GimpCoreConfigEEE9WithClassE-> prop=layer-presets-path-writable, id=63
+Install ConfigExtender.
+set::readonly path to `${gimp_dir}/layer-presets:${gimp_data_dir}/layer-presets'
+set::writable path to `${gimp_dir}/layer-presets'
+Install ConfigExtender.
+set::readonly path to `${gimp_dir}/layer-presets:${gimp_data_dir}/layer-presets'
+set::writable path to `${gimp_dir}/layer-presets'
+
+(gimp-2.8:6): GLib-GObject-CRITICAL **: 15:44:28.919: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(gimp-2.8:6): GLib-GObject-CRITICAL **: 15:44:28.919: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+get::readonly path
+get::readonly path
+get::writable path
+get::writable path
+
+(gimp-2.8:6): GLib-GObject-CRITICAL **: 15:44:28.920: g_object_set_is_valid_property: object class 'GeglConfig' has no property named 'cache-size'
+GimpJsonResource: Set properties_base to 8
+  Installed set_property_handler
+  Installed get_property_handler
+Installed::N4GLib13GClassWrapperINS_11UseCStructsI9_GimpData17_GimpJsonResourceEEE9WithClassE-> prop=root, id=8
+Feature::entry_point: add restore/exit on initialize.
+Failed to parse tag cache: No such file or directory
+
+(gimp-2.8:6): Gimp-Widgets-CRITICAL **: 15:44:28.925: gimp_dialog_factory_get_singleton: assertion 'gimp_toplevel_factory != NULL' failed
+PresetGuiFactory::on_restore::GimpDialogFactory=(nil)
+
+(gimp-2.8:6): Gimp-Widgets-CRITICAL **: 15:44:28.926: gimp_dialog_factory_register_entry: assertion 'GIMP_IS_DIALOG_FACTORY (factory)' failed
+PresetGuiFactory::on_restore::end
+
+(gimp-2.8:6): Gimp-Widgets-CRITICAL **: 15:44:28.926: gimp_action_factory_group_register: assertion 'GIMP_IS_ACTION_FACTORY (factory)' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9badca0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9cdb430:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_INPUT=rgb TYPE=1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_INPUT=gray TYPE=3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_INPUT=tile-rgb TYPE=1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-0.75-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-0.75-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-0.75-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-0.75-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-0.75-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-2.5-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-2.5-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-2.5-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-2.5-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-2.5-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-25-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-25-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-25-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-25-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir-25-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir2-25-25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir2-2.5-7.25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir2-0-25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir2-0.25-0.75
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-iir2-1-5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-0.75-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-0.75-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-0.75-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-0.75-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-0.75-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-2.5-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-2.5-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-2.5-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-2.5-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-2.5-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-25-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-25-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-25-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-25-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle-25-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle2-25-25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle2-2.5-7.25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle2-0-25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle2-0.25-0.75
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=rgb-gauss-rle2-1-5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-0.75-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-0.75-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-0.75-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-0.75-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-0.75-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-2.5-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-2.5-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-2.5-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-2.5-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-2.5-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-25-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-25-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-25-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-25-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir-25-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir2-25-25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir2-2.5-7.25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir2-0-25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir2-0.25-0.75
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-iir2-1-5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-0.75-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-0.75-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-0.75-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-0.75-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-0.75-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-2.5-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-2.5-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-2.5-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-2.5-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-2.5-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-25-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-25-1-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-25-0-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-25-0-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle-25-2--3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle2-25-25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle2-2.5-7.25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle2-0-25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle2--2-3
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle2-0.25-0.75
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=gray-gauss-rle2-1-5
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=tile-rgb-gauss-iir-2.5-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=tile-rgb-gauss-iir2-2.5-7.25
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=tile-rgb-gauss-rle-2.5-1-1
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpDrawableUndo=47
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+script-fu-Warning: ALIAS_DONE=tile-rgb-gauss-rle2-2.5-7.25
+
+batch command executed successfully
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9cdb430:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+script-fu-Warning: ALIAS_REJECT_START=plug-in-gauss-iir-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9ddb2c0:  set ignore_undos=0
+batch command experienced an execution error:
+Error: (/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-iir-0.scm : 5) Procedure execution of plug-in-gauss-iir failed on invalid input arguments 
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9cdb430:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9df78b0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+script-fu-Warning: ALIAS_REJECT_START=plug-in-gauss-iir--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9df78b0:  set ignore_undos=0
+batch command experienced an execution error:
+Error: (/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-iir--2.scm : 5) Procedure execution of plug-in-gauss-iir failed on invalid input arguments 
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9cdb430:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9dff860:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+script-fu-Warning: ALIAS_REJECT_START=plug-in-gauss-iir2-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9dff860:  set ignore_undos=0
+batch command experienced an execution error:
+Error: (/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-iir2-0.scm : 5) Procedure execution of plug-in-gauss-iir2 failed on invalid input arguments 
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9cdb430:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e084c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+script-fu-Warning: ALIAS_REJECT_START=plug-in-gauss-iir2--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e084c0:  set ignore_undos=0
+batch command experienced an execution error:
+Error: (/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-iir2--2.scm : 5) Procedure execution of plug-in-gauss-iir2 failed on invalid input arguments 
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9cdb430:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e12900:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+script-fu-Warning: ALIAS_REJECT_START=plug-in-gauss-rle-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e12900:  set ignore_undos=0
+batch command experienced an execution error:
+Error: (/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-rle-0.scm : 5) Procedure execution of plug-in-gauss-rle failed on invalid input arguments 
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e12900:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e084c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+script-fu-Warning: ALIAS_REJECT_START=plug-in-gauss-rle--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e084c0:  set ignore_undos=0
+batch command experienced an execution error:
+Error: (/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-rle--2.scm : 5) Procedure execution of plug-in-gauss-rle failed on invalid input arguments 
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e12900:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e084c0:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+script-fu-Warning: ALIAS_REJECT_START=plug-in-gauss-rle2-0
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e084c0:  set ignore_undos=0
+batch command experienced an execution error:
+Error: (/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-rle2-0.scm : 5) Procedure execution of plug-in-gauss-rle2 failed on invalid input arguments 
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e12900:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e23d10:  set ignore_undos=0
+push_undo: GimpLayerUndo=55
+script-fu-Warning: ALIAS_REJECT_START=plug-in-gauss-rle2--2
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e23d10:  set ignore_undos=0
+batch command experienced an execution error:
+Error: (/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-rle2--2.scm : 5) Procedure execution of plug-in-gauss-rle2 failed on invalid input arguments 
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5614c9e23d10:  set ignore_undos=0

@@ -250,7 +250,31 @@ integer RLE methods, the old radius-to-sigma conversion, per-pass alpha rounding
 small-radius RLE fallback and the RLE endpoint asymmetry. Its 104 genuine PDB
 captures cover the bundled test2 preset's 25/25/method-0 call. The actual
 FilterLayer integration additionally compares both methods byte-for-byte on
-an opaque captured input. Alias procedure names are not yet mapped.
+an opaque captured input. Four additional explicit names are supported:
+`plug-in-gauss-iir`, `plug-in-gauss-rle`, `plug-in-gauss-iir2`, and
+`plug-in-gauss-rle2`. The single-radius forms retain their original integer flags
+(including noncanonical truthy values); both disabled flags are a successful
+identity when the radius is positive. The two-radius forms retain five argument
+slots and use a fixed method. Conversion never rewrites the saved name, argument
+types/order/values or original bytes. No arbitrary PDB lookup is introduced.
+
+The new real-old corpus exposed a previously incorrect negative-axis assumption:
+`1 + ceil(radius)` can shrink the disabled axis. A nonempty remaining region
+leaves an unwritten transparent shadow border, so original RGB survives while
+border alpha becomes zero. A zero/negative remaining region writes no shadow;
+on a fresh drawable the old PDB returns success with identical input pixels,
+while logging its missing-shadow assertion. The port preserves these pixels
+without reproducing that internal diagnostic. Overflowing old signed-int region
+arithmetic is rejected safely. These are whole, unselected RGBA/Gray-alpha
+semantics, not a claim about selections or stale external shadow storage.
+
+`legacy-gauss-alias` contributes 88 genuine output buffers and eight calling-error
+probes; `legacy-gauss-negative` contributes 112 more genuine buffers. All seven
+input load/export checks preserve native bytes. Both vector and file-backed
+kernels compare all 200 buffers; the actual GIMP typed adapter also checks every
+byte plus definition preservation. Failed argument shapes/numerical limits keep
+the prior cache without idle retries, and both successful identity aliases run
+through the live spill transport above one Mi pixels.
 
 `migration/fixtures/legacy-edge/` contains 76 genuine old-PDB input/output cases,
 all compared byte-for-byte by `painter-filter-edge`. See its README and hashed
@@ -302,7 +326,7 @@ an acceptable shortcut to procedure compatibility.
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 75 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 78 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release
@@ -352,8 +376,9 @@ edits, and configured-directory failure/cache retention followed by explicit
 retry are tested as well. `settled()` stays false while a failed/rejected worker
 is still completing cancellation.
 
-`run_filter_spill_measurements.py` / `filter-spill-measurements.json` record
-three fresh-process 8193×8193 runs against the exact live-adapter source/executable
+`run_filter_spill_measurements.py` / `filter-spill-measurements.json` retain
+the cold-graph checkpoint’s exact-source historical observations, before alias
+adapter changes. They record three fresh-process 8193×8193 runs against the exact live-adapter source/executable
 hashes. Configured test swap is on overlayfs. All runs complete and verify the
 far-corner pixel, taking 12.40–12.82 seconds of filter work; the 2 ms heartbeat
 p95 is 2.21–2.25 ms and p99 is 3.09–4.25 ms. Maximum intervals are
@@ -372,7 +397,8 @@ simple 2048×1536 single-layer run were roughly 0.81–0.85 s end-to-end,
 normal tests. These are observations on this execution environment, not a fixed
 reference-machine p95/p99 acceptance gate.
 
-`run_filter_latency_measurements.py` / `filter-layer-latency.json` run the actual
+`run_filter_latency_measurements.py` / `filter-layer-latency.json` likewise retain
+the cold-graph checkpoint’s exact-source historical observations of the actual
 1024×1024, 64-partially-opaque-layer workload in three fresh GIMP processes,
 recording first use and an edit in the same graph. The report records source
 hashes, reproducibility-only environment, wall times, cumulative Filter quantum
@@ -412,10 +438,13 @@ here as required follow-on work and is not yet implemented.
 
 ## Remaining work and non-claims
 
-- The two canonical procedure names in bundled filter presets (`plug-in-edge`
-  and `plug-in-gauss`) have explicit compatibility executors. Other legacy PDB
-  names, including Gaussian aliases, retain definitions but report unsupported
-  execution. This is not arbitrary legacy PDB compatibility
+- The two bundled canonical names and four Gaussian aliases have explicit
+  compatibility executors. Other legacy PDB names retain definitions but report
+  unsupported execution. This is not arbitrary legacy PDB compatibility
+- The existing Filter editor preserves alias definitions as “keep”; direct
+  editing of their original flag/two-radius forms remains a UI follow-on.
+  Selecting canonical Gaussian is an explicit definition replacement, not
+  evidence that original alias editing is complete
 - A complete mapping inventory beyond bundled presets, plug-in process adapter,
   crash handling and unresponsive external-procedure isolation are outstanding
 - The old reader's image-ID/GValue-pointer crash is a negative fixture; safely

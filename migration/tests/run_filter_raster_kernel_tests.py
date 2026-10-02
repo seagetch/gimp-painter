@@ -29,6 +29,8 @@ headers = ["app/painter/filter-edge.hpp", "app/painter/filter-gauss.hpp", "app/p
 test = "app/painter/tests/test-filter-raster-kernels.cpp"
 fixtures = [root / "migration/fixtures" / corpus / "fixtures.tsv" for corpus in
             ["legacy-edge", "legacy-gauss", "legacy-gray-filter"]]
+alias_manifests = [root / "migration/fixtures" / corpus / "fixtures.tsv" for corpus in
+                   ["legacy-gauss-alias", "legacy-gauss-negative"]]
 flags = ["-std=c++14", "-Wall", "-Wextra", "-Werror", "-g", "-pthread",
          "-I" + str(root / "app/painter")]
 flags += (["-O1", "-fsanitize=address,undefined,float-cast-overflow", "-fno-omit-frame-pointer", "-frtti"]
@@ -67,6 +69,10 @@ for name, units, manifest in [
     all_sources.append(test_source)
     compile_run("standalone-filter-" + name, units + [test_source], [manifest])
 
+alias_test = "app/painter/tests/test-filter-gauss-alias.cpp"
+all_sources.append(alias_test)
+compile_run("standalone-filter-gauss-alias", sources + [alias_test], alias_manifests, True)
+
 # An isolated run has no vector oracle or whole-raster fixture allocation, so
 # its process high-water mark can independently support the static heap bound.
 bounded_rss = None
@@ -83,7 +89,7 @@ if not args.sanitize and hasattr(os, "wait4"):
     if not exit_code:
         bounded_rss = usage.ru_maxrss
     print(stdout_file.read_text(), end="")
-fixture_files = {path for manifest in fixtures for path in manifest.parent.iterdir()
+fixture_files = {path for manifest in fixtures + alias_manifests for path in manifest.parent.iterdir()
                  if path.suffix in {".tsv", ".rgba", ".y", ".ya"}}
 report = {
     "scope": "Exact independent worker kernels and original standalone vector APIs; no GIMP adapter/scheduler coverage",
@@ -94,7 +100,8 @@ report = {
     "source_sha256": {source: hashlib.sha256((root / source).read_bytes()).hexdigest() for source in all_sources},
     "fixture_sha256": {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
                        for path in sorted(fixture_files)},
-    "runtime_corpus_cases": {"edge_rgb": 76, "gauss_rgb": 104, "gray_grayalpha": 77},
+    "runtime_corpus_cases": {"edge_rgb": 76, "gauss_rgb": 104, "gray_grayalpha": 77, "gauss_alias": 88, "gauss_negative_region": 112},
+    "generated_parity_cases": {"edge": 126, "gauss": 86, "negative_region_chunks": 8},
     "allocation_bounds": {
         "edge_stack_bytes": 16408,
         "gaussian_peak_heap_bytes_excluding_objects_stdio_allocator":

@@ -99,7 +99,7 @@ void small_goldens ()
 void axis_fallback_and_alpha ()
 {
   const auto input = fixture (9, 8);
-  for (const double disabled : { -17.0, -0.5, 0.0 })
+  for (const double disabled : { -1.0, -0.5, 0.0 })
     {
       require (run (input, 9, 8, { disabled, 25, 0 }) ==
                run (input, 9, 8, { 0, 25, 1 }),
@@ -168,6 +168,8 @@ void validation_and_aliasing ()
     }
   invalid (input, 1, 1, { std::numeric_limits<double>::max (), 2, 0 });
   invalid (input, 1, 1, { 2, std::numeric_limits<double>::max (), 1 });
+  invalid (input, 1, 1, { -std::numeric_limits<double>::max (), 2, 0 });
+  invalid (input, 1, 1, { 2, -2147483648.0, 1 }); // old region subtraction overflow
   invalid (input, 1, 1, { 50000, 2, 1 }); // legacy i*i and accumulator overflow
   invalid (input, 1, 1, { 45000, 2, 1 }); // defined curve, overflowing accumulator
 

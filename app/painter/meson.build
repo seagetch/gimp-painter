@@ -49,7 +49,7 @@ test('painter-foundation', painter_foundation_test,
 )
 
 # The feature scheduler and exact legacy-edge executor own no GIMP objects.
-foreach feature : ['filter-scheduler', 'filter-edge', 'filter-gauss', 'filter-gray', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels']
+foreach feature : ['filter-scheduler', 'filter-edge', 'filter-gauss', 'filter-gray', 'filter-gauss-alias', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels']
   feature_test = executable('painter-' + feature,
     'tests/test-' + feature + '.cpp',
     dependencies: [painter_dep, painter_threads],
@@ -61,6 +61,9 @@ foreach feature : ['filter-scheduler', 'filter-edge', 'filter-gauss', 'filter-gr
     feature_args = [meson.project_source_root() / 'migration/fixtures/legacy-edge/fixtures.tsv']
   elif feature == 'filter-gauss'
     feature_args = [meson.project_source_root() / 'migration/fixtures/legacy-gauss/fixtures.tsv']
+  elif feature == 'filter-gauss-alias'
+    feature_args = [meson.project_source_root() / 'migration/fixtures/legacy-gauss-alias/fixtures.tsv',
+                    meson.project_source_root() / 'migration/fixtures/legacy-gauss-negative/fixtures.tsv']
   elif feature == 'filter-raster-kernels'
     feature_args = [meson.project_source_root() / 'migration/fixtures/legacy-edge/fixtures.tsv',
                     meson.project_source_root() / 'migration/fixtures/legacy-gauss/fixtures.tsv',

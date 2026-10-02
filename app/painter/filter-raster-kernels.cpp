@@ -85,7 +85,8 @@ void gaussian_pass (FilterRaster& input, FilterRaster& output,
 }
 
 void shadow_merge (FilterRaster& input, FilterRaster& output,
-                   std::uint64_t size, Check& check)
+                   std::uint64_t size, std::size_t width,
+                   const FilterGaussDetail::Region& region, Check& check)
 {
   const std::size_t chunk = 64 * 1024;
   Bytes original (chunk), result (chunk);
@@ -99,7 +100,11 @@ void shadow_merge (FilterRaster& input, FilterRaster& output,
       for (std::size_t i = 0; i < count; i += 4)
         {
           check.step ();
-          if (!result[i + 3])
+          if (region.empty)
+            std::copy_n (original.data () + i, 4, result.data () + i);
+          else if (region.cropped && !region.contains ((offset + i) / 4,width))
+            { std::copy_n (original.data () + i, 3, result.data () + i); result[i + 3] = 0; }
+          else if (!result[i + 3])
             std::copy_n (original.data () + i, 3, result.data () + i);
         }
       check.now ();
@@ -181,6 +186,7 @@ bool filter_gauss_raster (FilterRaster& input,
       (options.horizontal <= 0.0 && options.vertical <= 0.0) ||
       options.method < 0 || options.method > 1)
     throw std::invalid_argument ("Invalid legacy Gaussian options");
+  const auto region = FilterGaussDetail::legacy_region (width,height,options.horizontal,options.vertical);
   Check check { cancel };
   try
     {
@@ -208,7 +214,7 @@ bool filter_gauss_raster (FilterRaster& input,
       if (options.horizontal > 0)
         gaussian_pass (options.vertical > 0 ? output : input, output,
                        width, height, options.horizontal, iir, check);
-      shadow_merge (input, output, size, check);
+      shadow_merge (input, output, size, width, region, check);
       check.now ();
       output.flush ();
       check.now ();

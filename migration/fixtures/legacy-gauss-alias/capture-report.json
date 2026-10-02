@@ -1,0 +1,1827 @@
+{
+  "schema_version": 1,
+  "captured_utc": "2026-10-02T06:44:45.427228+00:00",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "entry_point": "Actual pinned old Gaussian alias PDB, whole unselected native RGB/Gray U8 drawable; no XCF reader",
+  "command": [
+    "/workspace/shared/gimp-legacy-build/prefix/bin/gimp-2.8",
+    "--no-interface",
+    "--no-data",
+    "--no-fonts",
+    "--no-splash",
+    "--new-instance",
+    "--batch-interpreter=plug-in-script-fu-eval",
+    "-b",
+    "(load \"/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/capture.scm\")",
+    "-b",
+    "(load \"/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-iir-0.scm\")",
+    "-b",
+    "(load \"/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-iir--2.scm\")",
+    "-b",
+    "(load \"/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-iir2-0.scm\")",
+    "-b",
+    "(load \"/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-iir2--2.scm\")",
+    "-b",
+    "(load \"/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-rle-0.scm\")",
+    "-b",
+    "(load \"/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-rle--2.scm\")",
+    "-b",
+    "(load \"/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-rle2-0.scm\")",
+    "-b",
+    "(load \"/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/plug-in-gauss-rle2--2.scm\")",
+    "-b",
+    "(gimp-quit 0)"
+  ],
+  "environment": {
+    "HOME": "/workspace/shared/gimp-legacy-build/runtime-gauss-alias",
+    "GIMP2_DIRECTORY": "/workspace/shared/gimp-legacy-build/runtime-gauss-alias/profile",
+    "BABL_PATH": "/workspace/shared/gimp-legacy-build/prefix/lib/babl-0.1",
+    "LEGACY_BUILD_ROOT": "/workspace/shared/gimp-legacy-build"
+  },
+  "executables": {
+    "/workspace/shared/gimp-legacy-build/prefix/bin/gimp-2.8": "fefc8fa5190592780b5bd880226a99344268b07074b294431903583e9b5013c8",
+    "/workspace/shared/gimp-legacy-build/prefix/lib/gimp/2.0/plug-ins/blur-gauss": "26f3c6381a2e0241e6b3dc6890e611fe7d9bf34a9db75117e42c02d1c1978f40",
+    "/workspace/shared/gimp-legacy-build/prefix/lib/gimp/2.0/plug-ins/file-png": "7adb2a2cad462481e47a4dfc9c72d8bf6e07c22885d5145ff787c3e87d8021e5"
+  },
+  "exit_code": 0,
+  "source_sha256": "83ab1e084081f8675a512849f7f2847e5538f697ed5ec06a657132ddfa5b47d4",
+  "script_sha256": "7385e07c7e21401587c83545259db27a455e27ca017b895212cc41564b702022",
+  "log_sha256": "a4f19ddfd2a4bbfde2ce58a61bc84ae254b731db7684cb34a7232bba71962f1d",
+  "inputs": [
+    {
+      "label": "rgb",
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "mode": "RGBA",
+      "raw": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "unchanged": true,
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "loaded_png_sha256": "0913bb7adb0e0e74cc89a3584f478cc4876ac866e896cf8e02121a274fbddc89"
+    },
+    {
+      "label": "gray",
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "mode": "LA",
+      "raw": "input-gray.ya",
+      "png": "input-gray.png",
+      "unchanged": true,
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "loaded_png_sha256": "eb8b9336ad1d0991c461fd6011554f037d25be121a58190912622e7822d0f621"
+    },
+    {
+      "label": "tile-rgb",
+      "width": 67,
+      "height": 66,
+      "channels": 4,
+      "mode": "RGBA",
+      "raw": "input-tile-rgb.rgba",
+      "png": "input-tile-rgb.png",
+      "unchanged": true,
+      "input_sha256": "a748ca41fe063d9fcdd8f45a580763052918a26ff20c6c9db862cd9cf9768137",
+      "loaded_png_sha256": "0c8c4d2a202ce6e127266ce50abe7d9c0ec9a9536a9cb886704bfb2f7a7b4c38"
+    }
+  ],
+  "cases": [
+    {
+      "id": "rgb-gauss-iir-0.75-1-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0.75,
+        1,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-0.75-1-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "b97398ffe706956685f4d5f84ed7076330a647e7f98b3ba0fb77ea9ddcc2ca57",
+      "png_sha256": "26bc673f1edd7daa759a99f30423c859d8a944033190c98ed33af95b2cc14ace"
+    },
+    {
+      "id": "rgb-gauss-iir-0.75-1-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0.75,
+        1,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-0.75-1-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "61f92869a18a7b6db10be8f068069c0352b523d26a7d61740e4d330af2a9bf06",
+      "png_sha256": "2bca5a2de633b92a3c684972ea509b49d955b90ceca51ea51e7da19406b70137"
+    },
+    {
+      "id": "rgb-gauss-iir-0.75-0-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0.75,
+        0,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-0.75-0-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "8bcfbdee5d64ac514e391c0e3679477a5fce869224dd8096b2973520c1812823",
+      "png_sha256": "364f11669da9fe83d8ad1405d4e938b7048ae2ce4bec01a9943089a6040810a3"
+    },
+    {
+      "id": "rgb-gauss-iir-0.75-0-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0.75,
+        0,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-0.75-0-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "png_sha256": "0913bb7adb0e0e74cc89a3584f478cc4876ac866e896cf8e02121a274fbddc89"
+    },
+    {
+      "id": "rgb-gauss-iir-0.75-2--3",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0.75,
+        2,
+        -3
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-0.75-2--3.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "b97398ffe706956685f4d5f84ed7076330a647e7f98b3ba0fb77ea9ddcc2ca57",
+      "png_sha256": "26bc673f1edd7daa759a99f30423c859d8a944033190c98ed33af95b2cc14ace"
+    },
+    {
+      "id": "rgb-gauss-iir-2.5-1-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        1,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-2.5-1-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "f186317aba835762775a8133fca1fcfca516a59553bcfebc022af7104705fcc9",
+      "png_sha256": "11e592b472d38fb33a59d1355b434ad993fc348df9ae3000b7fe0c0d438a111d"
+    },
+    {
+      "id": "rgb-gauss-iir-2.5-1-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        1,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-2.5-1-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "c0e7b6a1a2acf4a50705d7885f2f9f6f6ac209f21c9fa431c43be68b48e3a557",
+      "png_sha256": "e73ff79e606ba0e9133ccb6179adc17463adb71c28eb0126601f8eabc3a19e51"
+    },
+    {
+      "id": "rgb-gauss-iir-2.5-0-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        0,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-2.5-0-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "5fd323fd49fb09aa01dd9bacae8c4c1e564fd6ee126f0c4491112fe0636f7b21",
+      "png_sha256": "901cb10202632041bd780ecbf2b7f05193e57d5d12a464f97aad47a3ba0511ff"
+    },
+    {
+      "id": "rgb-gauss-iir-2.5-0-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        0,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-2.5-0-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "png_sha256": "0913bb7adb0e0e74cc89a3584f478cc4876ac866e896cf8e02121a274fbddc89"
+    },
+    {
+      "id": "rgb-gauss-iir-2.5-2--3",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        2,
+        -3
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-2.5-2--3.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "f186317aba835762775a8133fca1fcfca516a59553bcfebc022af7104705fcc9",
+      "png_sha256": "11e592b472d38fb33a59d1355b434ad993fc348df9ae3000b7fe0c0d438a111d"
+    },
+    {
+      "id": "rgb-gauss-iir-25-1-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        25,
+        1,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-25-1-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "590cddee1155d15baa289f258cc1581cd96648aafb5ee01715f5a40ae7e49276",
+      "png_sha256": "db7ab7aa3bcc0fa05afa67e79e3829c614f8e5c1bde2d687ca409a443e70bb98"
+    },
+    {
+      "id": "rgb-gauss-iir-25-1-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        25,
+        1,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-25-1-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "12fd35c4a9d80ad995616a9a36343b7146272bce52585557713109c7908047ca",
+      "png_sha256": "98b2726e8eab7607aa2f43a4c0dcc6d583cc20488bbeeb0b003636c890a84b4f"
+    },
+    {
+      "id": "rgb-gauss-iir-25-0-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        25,
+        0,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-25-0-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "a98b2ba2e46bf94755dda65a003191ae2f5a7ea8cc5b0a1c64ec07bc4ab42ab2",
+      "png_sha256": "a3bb299922bfc988c9583eec94163b23b1b04233350124580b7f478f69e78cd3"
+    },
+    {
+      "id": "rgb-gauss-iir-25-0-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        25,
+        0,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-25-0-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "png_sha256": "0913bb7adb0e0e74cc89a3584f478cc4876ac866e896cf8e02121a274fbddc89"
+    },
+    {
+      "id": "rgb-gauss-iir-25-2--3",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        25,
+        2,
+        -3
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir-25-2--3.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "590cddee1155d15baa289f258cc1581cd96648aafb5ee01715f5a40ae7e49276",
+      "png_sha256": "db7ab7aa3bcc0fa05afa67e79e3829c614f8e5c1bde2d687ca409a443e70bb98"
+    },
+    {
+      "id": "rgb-gauss-iir2-25-25",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        25,
+        25
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir2-25-25.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "590cddee1155d15baa289f258cc1581cd96648aafb5ee01715f5a40ae7e49276",
+      "png_sha256": "db7ab7aa3bcc0fa05afa67e79e3829c614f8e5c1bde2d687ca409a443e70bb98"
+    },
+    {
+      "id": "rgb-gauss-iir2-2.5-7.25",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        2.5,
+        7.25
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir2-2.5-7.25.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "b6fcb03125d52fdb95fb508a7b76cb63438fd5154e8dc76d4c7065b54abd428a",
+      "png_sha256": "08c2f1a430c5972d6a2887feac275def5acf25baba097571be4da71d6dac5a21"
+    },
+    {
+      "id": "rgb-gauss-iir2-0-25",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        0,
+        25
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir2-0-25.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "a98b2ba2e46bf94755dda65a003191ae2f5a7ea8cc5b0a1c64ec07bc4ab42ab2",
+      "png_sha256": "a3bb299922bfc988c9583eec94163b23b1b04233350124580b7f478f69e78cd3"
+    },
+    {
+      "id": "rgb-gauss-iir2--2-3",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        -2,
+        3
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir2--2-3.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "62fb1fcb2ed7e740d2cacdcac4060cef92143ef63c43456b87987e0a457ad5fc",
+      "png_sha256": "40c355746aa719f83239db597897692dcc26ec67fdaf738a8e0d2ef68ced4ef1"
+    },
+    {
+      "id": "rgb-gauss-iir2-0.25-0.75",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        0.25,
+        0.75
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir2-0.25-0.75.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "fe5250a83e08fa554f620be7f912fb8aa5f1d9e33ff8fb05aff6b27a74bba191",
+      "png_sha256": "f3da7c925f0017ba4014f1fd4c61b039b59ea4ddb88bf7b92a6836bbe3092a0d"
+    },
+    {
+      "id": "rgb-gauss-iir2-1-5",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        1,
+        5
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-iir2-1-5.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "c256e8462ececbf6ff703ffe17b8162a4ff8ea578f0042b08e8b12c88775e427",
+      "png_sha256": "7010c4a41f281ddd1ec4278e98e72ac1019209a70dad11eb73cea4da912153d3"
+    },
+    {
+      "id": "rgb-gauss-rle-0.75-1-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0.75,
+        1,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-0.75-1-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "b97398ffe706956685f4d5f84ed7076330a647e7f98b3ba0fb77ea9ddcc2ca57",
+      "png_sha256": "26bc673f1edd7daa759a99f30423c859d8a944033190c98ed33af95b2cc14ace"
+    },
+    {
+      "id": "rgb-gauss-rle-0.75-1-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0.75,
+        1,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-0.75-1-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "61f92869a18a7b6db10be8f068069c0352b523d26a7d61740e4d330af2a9bf06",
+      "png_sha256": "2bca5a2de633b92a3c684972ea509b49d955b90ceca51ea51e7da19406b70137"
+    },
+    {
+      "id": "rgb-gauss-rle-0.75-0-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0.75,
+        0,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-0.75-0-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "8bcfbdee5d64ac514e391c0e3679477a5fce869224dd8096b2973520c1812823",
+      "png_sha256": "364f11669da9fe83d8ad1405d4e938b7048ae2ce4bec01a9943089a6040810a3"
+    },
+    {
+      "id": "rgb-gauss-rle-0.75-0-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0.75,
+        0,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-0.75-0-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "png_sha256": "0913bb7adb0e0e74cc89a3584f478cc4876ac866e896cf8e02121a274fbddc89"
+    },
+    {
+      "id": "rgb-gauss-rle-0.75-2--3",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0.75,
+        2,
+        -3
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-0.75-2--3.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "b97398ffe706956685f4d5f84ed7076330a647e7f98b3ba0fb77ea9ddcc2ca57",
+      "png_sha256": "26bc673f1edd7daa759a99f30423c859d8a944033190c98ed33af95b2cc14ace"
+    },
+    {
+      "id": "rgb-gauss-rle-2.5-1-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        1,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-2.5-1-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "6f8c7090d8e1e8e34dd5f2638d643be403387fa086b9de1e20fdc708d0d4ddb9",
+      "png_sha256": "24e4c2374f2f6379d6b463e2bc662df87d0a9296d5ee7b8750e7ad770fc8bf3f"
+    },
+    {
+      "id": "rgb-gauss-rle-2.5-1-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        1,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-2.5-1-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "c0e7b6a1a2acf4a50705d7885f2f9f6f6ac209f21c9fa431c43be68b48e3a557",
+      "png_sha256": "e73ff79e606ba0e9133ccb6179adc17463adb71c28eb0126601f8eabc3a19e51"
+    },
+    {
+      "id": "rgb-gauss-rle-2.5-0-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        0,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-2.5-0-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "5fd323fd49fb09aa01dd9bacae8c4c1e564fd6ee126f0c4491112fe0636f7b21",
+      "png_sha256": "901cb10202632041bd780ecbf2b7f05193e57d5d12a464f97aad47a3ba0511ff"
+    },
+    {
+      "id": "rgb-gauss-rle-2.5-0-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        0,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-2.5-0-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "png_sha256": "0913bb7adb0e0e74cc89a3584f478cc4876ac866e896cf8e02121a274fbddc89"
+    },
+    {
+      "id": "rgb-gauss-rle-2.5-2--3",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        2,
+        -3
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-2.5-2--3.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "6f8c7090d8e1e8e34dd5f2638d643be403387fa086b9de1e20fdc708d0d4ddb9",
+      "png_sha256": "24e4c2374f2f6379d6b463e2bc662df87d0a9296d5ee7b8750e7ad770fc8bf3f"
+    },
+    {
+      "id": "rgb-gauss-rle-25-1-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        25,
+        1,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-25-1-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "101185c962ca554c9208dc40358e5c00e635b600bb3530fbab8ae8ed5c2ae46d",
+      "png_sha256": "c4408630fc955b83b343432d56835753915a1a154eba90f1548a6f9579b98e4c"
+    },
+    {
+      "id": "rgb-gauss-rle-25-1-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        25,
+        1,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-25-1-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "12fd35c4a9d80ad995616a9a36343b7146272bce52585557713109c7908047ca",
+      "png_sha256": "98b2726e8eab7607aa2f43a4c0dcc6d583cc20488bbeeb0b003636c890a84b4f"
+    },
+    {
+      "id": "rgb-gauss-rle-25-0-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        25,
+        0,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-25-0-1.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "a98b2ba2e46bf94755dda65a003191ae2f5a7ea8cc5b0a1c64ec07bc4ab42ab2",
+      "png_sha256": "a3bb299922bfc988c9583eec94163b23b1b04233350124580b7f478f69e78cd3"
+    },
+    {
+      "id": "rgb-gauss-rle-25-0-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        25,
+        0,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-25-0-0.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "png_sha256": "0913bb7adb0e0e74cc89a3584f478cc4876ac866e896cf8e02121a274fbddc89"
+    },
+    {
+      "id": "rgb-gauss-rle-25-2--3",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        25,
+        2,
+        -3
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle-25-2--3.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "101185c962ca554c9208dc40358e5c00e635b600bb3530fbab8ae8ed5c2ae46d",
+      "png_sha256": "c4408630fc955b83b343432d56835753915a1a154eba90f1548a6f9579b98e4c"
+    },
+    {
+      "id": "rgb-gauss-rle2-25-25",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        25,
+        25
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle2-25-25.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "101185c962ca554c9208dc40358e5c00e635b600bb3530fbab8ae8ed5c2ae46d",
+      "png_sha256": "c4408630fc955b83b343432d56835753915a1a154eba90f1548a6f9579b98e4c"
+    },
+    {
+      "id": "rgb-gauss-rle2-2.5-7.25",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        2.5,
+        7.25
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle2-2.5-7.25.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "5524284209aa14c93e68b9e32fd9c1bed2e2d54973095bdce3e16631cbe276f5",
+      "png_sha256": "1df0d8360d928676d020e266e93c873c4556986f605b045f5a1e4b51d6a8d451"
+    },
+    {
+      "id": "rgb-gauss-rle2-0-25",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        0,
+        25
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle2-0-25.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "a98b2ba2e46bf94755dda65a003191ae2f5a7ea8cc5b0a1c64ec07bc4ab42ab2",
+      "png_sha256": "a3bb299922bfc988c9583eec94163b23b1b04233350124580b7f478f69e78cd3"
+    },
+    {
+      "id": "rgb-gauss-rle2--2-3",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        -2,
+        3
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle2--2-3.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "62fb1fcb2ed7e740d2cacdcac4060cef92143ef63c43456b87987e0a457ad5fc",
+      "png_sha256": "40c355746aa719f83239db597897692dcc26ec67fdaf738a8e0d2ef68ced4ef1"
+    },
+    {
+      "id": "rgb-gauss-rle2-0.25-0.75",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        0.25,
+        0.75
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle2-0.25-0.75.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "fe5250a83e08fa554f620be7f912fb8aa5f1d9e33ff8fb05aff6b27a74bba191",
+      "png_sha256": "f3da7c925f0017ba4014f1fd4c61b039b59ea4ddb88bf7b92a6836bbe3092a0d"
+    },
+    {
+      "id": "rgb-gauss-rle2-1-5",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        1,
+        5
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 4,
+      "input": "input-rgb.rgba",
+      "png": "input-rgb.png",
+      "output": "rgb-gauss-rle2-1-5.rgba",
+      "input_sha256": "9bd4a408feb65c1524cd9c097e932bb766978889b6cf355250fef8d2e7bf4d0f",
+      "output_sha256": "c256e8462ececbf6ff703ffe17b8162a4ff8ea578f0042b08e8b12c88775e427",
+      "png_sha256": "7010c4a41f281ddd1ec4278e98e72ac1019209a70dad11eb73cea4da912153d3"
+    },
+    {
+      "id": "gray-gauss-iir-0.75-1-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0.75,
+        1,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-0.75-1-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "dd7d65fbc2359edccb404d75ce2934606c62d7212a5a264b9381969f6086d8a8",
+      "png_sha256": "4cfdb4859d8cc8d4cfb73ad2a6c79c03b59279715578f44a266623028caf7482"
+    },
+    {
+      "id": "gray-gauss-iir-0.75-1-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0.75,
+        1,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-0.75-1-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "066b5a80d2212de96978ba4feaf0ec33130d1977627581cb1d6b8b3dd46be99e",
+      "png_sha256": "d9211dab1c733006f865d2930def8cfaf29c4ffe7b94d10f6f0245321930aa8f"
+    },
+    {
+      "id": "gray-gauss-iir-0.75-0-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0.75,
+        0,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-0.75-0-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "c68ed1e492a89387cbfd30acbe3d4f0dcced494d4026b3161caadd371235bce5",
+      "png_sha256": "be0083c3f63e90eef7e302ac5292c068e6cddb607c9eb9416000e5916d4cf8dd"
+    },
+    {
+      "id": "gray-gauss-iir-0.75-0-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0.75,
+        0,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-0.75-0-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "png_sha256": "eb8b9336ad1d0991c461fd6011554f037d25be121a58190912622e7822d0f621"
+    },
+    {
+      "id": "gray-gauss-iir-0.75-2--3",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0.75,
+        2,
+        -3
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-0.75-2--3.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "dd7d65fbc2359edccb404d75ce2934606c62d7212a5a264b9381969f6086d8a8",
+      "png_sha256": "4cfdb4859d8cc8d4cfb73ad2a6c79c03b59279715578f44a266623028caf7482"
+    },
+    {
+      "id": "gray-gauss-iir-2.5-1-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        1,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-2.5-1-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "01b2f9d26ed5a46b647447d5efac7454dfbdd771d63aed8f51021145a463300d",
+      "png_sha256": "14aa8b8d2e2d71794204eb07d57dc55f0e291c04aec5561a0c573b8cc20a2f5c"
+    },
+    {
+      "id": "gray-gauss-iir-2.5-1-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        1,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-2.5-1-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "9181d059f800512609a53e6eeaedd7db98538fe9a9d6d4c0067be4743095a2d9",
+      "png_sha256": "7de468251021008ca3b1b300e17f22cc1af87e35f448be369096759caa071ef3"
+    },
+    {
+      "id": "gray-gauss-iir-2.5-0-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        0,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-2.5-0-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "1acd8e49f003e315a15768a4fef45f9cf0318ec0ba3bc413051bef3a591be64e",
+      "png_sha256": "2974ba8a752472c8f9c14c49544b797db9ab7604542892cf0384e12ffee0ed7b"
+    },
+    {
+      "id": "gray-gauss-iir-2.5-0-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        0,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-2.5-0-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "png_sha256": "eb8b9336ad1d0991c461fd6011554f037d25be121a58190912622e7822d0f621"
+    },
+    {
+      "id": "gray-gauss-iir-2.5-2--3",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        2,
+        -3
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-2.5-2--3.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "01b2f9d26ed5a46b647447d5efac7454dfbdd771d63aed8f51021145a463300d",
+      "png_sha256": "14aa8b8d2e2d71794204eb07d57dc55f0e291c04aec5561a0c573b8cc20a2f5c"
+    },
+    {
+      "id": "gray-gauss-iir-25-1-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        25,
+        1,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-25-1-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "70856cc2a9ac0d3bb8deb66517ed4dad3f8634138f304455f5bba2a17d63f920",
+      "png_sha256": "4b3c46400be78bd8487d1e0b5dfef461ff145924db4b295f9cf972f45cea8389"
+    },
+    {
+      "id": "gray-gauss-iir-25-1-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        25,
+        1,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-25-1-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "ce50bf7a83fc64634fa37336d498b45bc25f67a3b0fb7ee48ebf8a04127c6d40",
+      "png_sha256": "6f2ca0b30bf58ceb8147bbfebebc614ff17804a9b24e6aeccbce2532053aa5c5"
+    },
+    {
+      "id": "gray-gauss-iir-25-0-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        25,
+        0,
+        1
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-25-0-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "6b5cb06f0ed99f976b1232e5d46a688d4c73f600336efe3a85a0f1d301bbce2a",
+      "png_sha256": "9eece86a8870cd7835dfc085835f08d7509b975e649b2031355a07c0bcaf3cc2"
+    },
+    {
+      "id": "gray-gauss-iir-25-0-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        25,
+        0,
+        0
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-25-0-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "png_sha256": "eb8b9336ad1d0991c461fd6011554f037d25be121a58190912622e7822d0f621"
+    },
+    {
+      "id": "gray-gauss-iir-25-2--3",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        25,
+        2,
+        -3
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir-25-2--3.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "70856cc2a9ac0d3bb8deb66517ed4dad3f8634138f304455f5bba2a17d63f920",
+      "png_sha256": "4b3c46400be78bd8487d1e0b5dfef461ff145924db4b295f9cf972f45cea8389"
+    },
+    {
+      "id": "gray-gauss-iir2-25-25",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        25,
+        25
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir2-25-25.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "70856cc2a9ac0d3bb8deb66517ed4dad3f8634138f304455f5bba2a17d63f920",
+      "png_sha256": "4b3c46400be78bd8487d1e0b5dfef461ff145924db4b295f9cf972f45cea8389"
+    },
+    {
+      "id": "gray-gauss-iir2-2.5-7.25",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        2.5,
+        7.25
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir2-2.5-7.25.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "e6ec1f15f4e17797acf32d55fce55e295133816c5290831ed253caba47e6dc0d",
+      "png_sha256": "c866b8f44e3f22cda323d5f9f390ff9d93e374c5c93bc69bfca14a0db84e0cee"
+    },
+    {
+      "id": "gray-gauss-iir2-0-25",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        0,
+        25
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir2-0-25.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "6b5cb06f0ed99f976b1232e5d46a688d4c73f600336efe3a85a0f1d301bbce2a",
+      "png_sha256": "9eece86a8870cd7835dfc085835f08d7509b975e649b2031355a07c0bcaf3cc2"
+    },
+    {
+      "id": "gray-gauss-iir2--2-3",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        -2,
+        3
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir2--2-3.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "5c2bccd40c8acfeec6352ee0aa5255a0a84c84adb2189959f47f8c0f64877d07",
+      "png_sha256": "f7a7dc58b188717b27d27219fb055086b5448eaf193f17296acbd50baa775e55"
+    },
+    {
+      "id": "gray-gauss-iir2-0.25-0.75",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        0.25,
+        0.75
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir2-0.25-0.75.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "403fa2a3d8ead1887253d69b43a9365356be06f2be39c12304c06be1b16056ae",
+      "png_sha256": "35bf22b63d3ee4ae2f246034e32780fcf3b082fff0730a58c5d5e7aad9a198b8"
+    },
+    {
+      "id": "gray-gauss-iir2-1-5",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        1,
+        5
+      ],
+      "method": 0,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-iir2-1-5.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "925a680efecfe4f90ca0b0580331b12d7172ea201742d44a11f7c1e8be14ba14",
+      "png_sha256": "1b18bbf5bd17dbb3d6a47352e8f508f4cd60a49246dd13ab2721fa8da53880eb"
+    },
+    {
+      "id": "gray-gauss-rle-0.75-1-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0.75,
+        1,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-0.75-1-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "dd7d65fbc2359edccb404d75ce2934606c62d7212a5a264b9381969f6086d8a8",
+      "png_sha256": "4cfdb4859d8cc8d4cfb73ad2a6c79c03b59279715578f44a266623028caf7482"
+    },
+    {
+      "id": "gray-gauss-rle-0.75-1-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0.75,
+        1,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-0.75-1-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "066b5a80d2212de96978ba4feaf0ec33130d1977627581cb1d6b8b3dd46be99e",
+      "png_sha256": "d9211dab1c733006f865d2930def8cfaf29c4ffe7b94d10f6f0245321930aa8f"
+    },
+    {
+      "id": "gray-gauss-rle-0.75-0-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0.75,
+        0,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-0.75-0-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "c68ed1e492a89387cbfd30acbe3d4f0dcced494d4026b3161caadd371235bce5",
+      "png_sha256": "be0083c3f63e90eef7e302ac5292c068e6cddb607c9eb9416000e5916d4cf8dd"
+    },
+    {
+      "id": "gray-gauss-rle-0.75-0-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0.75,
+        0,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-0.75-0-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "png_sha256": "eb8b9336ad1d0991c461fd6011554f037d25be121a58190912622e7822d0f621"
+    },
+    {
+      "id": "gray-gauss-rle-0.75-2--3",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0.75,
+        2,
+        -3
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-0.75-2--3.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "dd7d65fbc2359edccb404d75ce2934606c62d7212a5a264b9381969f6086d8a8",
+      "png_sha256": "4cfdb4859d8cc8d4cfb73ad2a6c79c03b59279715578f44a266623028caf7482"
+    },
+    {
+      "id": "gray-gauss-rle-2.5-1-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        1,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-2.5-1-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "741af07754014db1f1612aa0678c26b173c16765277116c7e6cdd9915b7c3ef2",
+      "png_sha256": "bfd563a860abb914262c0d9638e2a7033c6ec880740514205697c19b97ea6763"
+    },
+    {
+      "id": "gray-gauss-rle-2.5-1-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        1,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-2.5-1-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "9181d059f800512609a53e6eeaedd7db98538fe9a9d6d4c0067be4743095a2d9",
+      "png_sha256": "7de468251021008ca3b1b300e17f22cc1af87e35f448be369096759caa071ef3"
+    },
+    {
+      "id": "gray-gauss-rle-2.5-0-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        0,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-2.5-0-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "1acd8e49f003e315a15768a4fef45f9cf0318ec0ba3bc413051bef3a591be64e",
+      "png_sha256": "2974ba8a752472c8f9c14c49544b797db9ab7604542892cf0384e12ffee0ed7b"
+    },
+    {
+      "id": "gray-gauss-rle-2.5-0-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        0,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-2.5-0-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "png_sha256": "eb8b9336ad1d0991c461fd6011554f037d25be121a58190912622e7822d0f621"
+    },
+    {
+      "id": "gray-gauss-rle-2.5-2--3",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        2,
+        -3
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-2.5-2--3.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "741af07754014db1f1612aa0678c26b173c16765277116c7e6cdd9915b7c3ef2",
+      "png_sha256": "bfd563a860abb914262c0d9638e2a7033c6ec880740514205697c19b97ea6763"
+    },
+    {
+      "id": "gray-gauss-rle-25-1-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        25,
+        1,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-25-1-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "e8bc529ef6b6af7ac803194343707a45a033d2992e09423f04a6bb9803402f37",
+      "png_sha256": "c1e7dcce2eaa672f5b511a66a5260a317587540c926517e34187480d9f42b94f"
+    },
+    {
+      "id": "gray-gauss-rle-25-1-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        25,
+        1,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-25-1-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "ce50bf7a83fc64634fa37336d498b45bc25f67a3b0fb7ee48ebf8a04127c6d40",
+      "png_sha256": "6f2ca0b30bf58ceb8147bbfebebc614ff17804a9b24e6aeccbce2532053aa5c5"
+    },
+    {
+      "id": "gray-gauss-rle-25-0-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        25,
+        0,
+        1
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-25-0-1.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "6b5cb06f0ed99f976b1232e5d46a688d4c73f600336efe3a85a0f1d301bbce2a",
+      "png_sha256": "9eece86a8870cd7835dfc085835f08d7509b975e649b2031355a07c0bcaf3cc2"
+    },
+    {
+      "id": "gray-gauss-rle-25-0-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        25,
+        0,
+        0
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-25-0-0.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "png_sha256": "eb8b9336ad1d0991c461fd6011554f037d25be121a58190912622e7822d0f621"
+    },
+    {
+      "id": "gray-gauss-rle-25-2--3",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        25,
+        2,
+        -3
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle-25-2--3.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "e8bc529ef6b6af7ac803194343707a45a033d2992e09423f04a6bb9803402f37",
+      "png_sha256": "c1e7dcce2eaa672f5b511a66a5260a317587540c926517e34187480d9f42b94f"
+    },
+    {
+      "id": "gray-gauss-rle2-25-25",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        25,
+        25
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle2-25-25.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "e8bc529ef6b6af7ac803194343707a45a033d2992e09423f04a6bb9803402f37",
+      "png_sha256": "c1e7dcce2eaa672f5b511a66a5260a317587540c926517e34187480d9f42b94f"
+    },
+    {
+      "id": "gray-gauss-rle2-2.5-7.25",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        2.5,
+        7.25
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle2-2.5-7.25.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "7e56e7e30036a9d285e035c3f0ecf4084a09d446fbd4295d9240134fae430717",
+      "png_sha256": "037ac14e316fecc6fdd367850591f909672f2f985866291b54e4fe15d862f9f4"
+    },
+    {
+      "id": "gray-gauss-rle2-0-25",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        0,
+        25
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle2-0-25.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "6b5cb06f0ed99f976b1232e5d46a688d4c73f600336efe3a85a0f1d301bbce2a",
+      "png_sha256": "9eece86a8870cd7835dfc085835f08d7509b975e649b2031355a07c0bcaf3cc2"
+    },
+    {
+      "id": "gray-gauss-rle2--2-3",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        -2,
+        3
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle2--2-3.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "5c2bccd40c8acfeec6352ee0aa5255a0a84c84adb2189959f47f8c0f64877d07",
+      "png_sha256": "f7a7dc58b188717b27d27219fb055086b5448eaf193f17296acbd50baa775e55"
+    },
+    {
+      "id": "gray-gauss-rle2-0.25-0.75",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        0.25,
+        0.75
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle2-0.25-0.75.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "403fa2a3d8ead1887253d69b43a9365356be06f2be39c12304c06be1b16056ae",
+      "png_sha256": "35bf22b63d3ee4ae2f246034e32780fcf3b082fff0730a58c5d5e7aad9a198b8"
+    },
+    {
+      "id": "gray-gauss-rle2-1-5",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        1,
+        5
+      ],
+      "method": 1,
+      "width": 9,
+      "height": 8,
+      "channels": 2,
+      "input": "input-gray.ya",
+      "png": "input-gray.png",
+      "output": "gray-gauss-rle2-1-5.ya",
+      "input_sha256": "c265c91124fe2fa8f084bc2b247c7bec2af682a9571733fd8cb69ff82a71fad5",
+      "output_sha256": "925a680efecfe4f90ca0b0580331b12d7172ea201742d44a11f7c1e8be14ba14",
+      "png_sha256": "1b18bbf5bd17dbb3d6a47352e8f508f4cd60a49246dd13ab2721fa8da53880eb"
+    },
+    {
+      "id": "tile-rgb-gauss-iir-2.5-1-1",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        2.5,
+        1,
+        1
+      ],
+      "method": 0,
+      "width": 67,
+      "height": 66,
+      "channels": 4,
+      "input": "input-tile-rgb.rgba",
+      "png": "input-tile-rgb.png",
+      "output": "tile-rgb-gauss-iir-2.5-1-1.rgba",
+      "input_sha256": "a748ca41fe063d9fcdd8f45a580763052918a26ff20c6c9db862cd9cf9768137",
+      "output_sha256": "721d2e78d5e9305733613db4dc2620c24d6aab33444ad3fed1bf5d21e1b00004",
+      "png_sha256": "06880624c06e7e600af7eb14eb708de685722f6839b577d7cf7f04174a4f656a"
+    },
+    {
+      "id": "tile-rgb-gauss-iir2-2.5-7.25",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        2.5,
+        7.25
+      ],
+      "method": 0,
+      "width": 67,
+      "height": 66,
+      "channels": 4,
+      "input": "input-tile-rgb.rgba",
+      "png": "input-tile-rgb.png",
+      "output": "tile-rgb-gauss-iir2-2.5-7.25.rgba",
+      "input_sha256": "a748ca41fe063d9fcdd8f45a580763052918a26ff20c6c9db862cd9cf9768137",
+      "output_sha256": "39171c62342187dea364b3144d289683dca227c35220b206889cba1304eea77a",
+      "png_sha256": "b6dc555ac94a06cf89916dae4de40ee824c221cc4b9a906a588039c5c3019051"
+    },
+    {
+      "id": "tile-rgb-gauss-rle-2.5-1-1",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        2.5,
+        1,
+        1
+      ],
+      "method": 1,
+      "width": 67,
+      "height": 66,
+      "channels": 4,
+      "input": "input-tile-rgb.rgba",
+      "png": "input-tile-rgb.png",
+      "output": "tile-rgb-gauss-rle-2.5-1-1.rgba",
+      "input_sha256": "a748ca41fe063d9fcdd8f45a580763052918a26ff20c6c9db862cd9cf9768137",
+      "output_sha256": "e302ca0f795d52c5d607f3d77a1852100a0f81aa8e6a375a375c7e9cf690cd5a",
+      "png_sha256": "ef801cd951e1c1e8543d6a26bfb5e6ccb9426fe0edd6d5e48f2fc7f67d7edecb"
+    },
+    {
+      "id": "tile-rgb-gauss-rle2-2.5-7.25",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        2.5,
+        7.25
+      ],
+      "method": 1,
+      "width": 67,
+      "height": 66,
+      "channels": 4,
+      "input": "input-tile-rgb.rgba",
+      "png": "input-tile-rgb.png",
+      "output": "tile-rgb-gauss-rle2-2.5-7.25.rgba",
+      "input_sha256": "a748ca41fe063d9fcdd8f45a580763052918a26ff20c6c9db862cd9cf9768137",
+      "output_sha256": "85a291045543f6d3029373f0fa6e4769ad4047d258944cb848421e7cc96cd06f",
+      "png_sha256": "49f64ef026588ccf5a71dfcd3988d021045ae4123ec6e8a39e6ff4d6134e8712"
+    }
+  ],
+  "negative": [
+    {
+      "id": "plug-in-gauss-iir-0",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        0,
+        1,
+        1
+      ],
+      "calling_error": true,
+      "script_sha256": "49ebdeb9ba48ce0178864c51a84bcd1e2f3403a8f198145fcb93f6b7eca7f749"
+    },
+    {
+      "id": "plug-in-gauss-iir--2",
+      "procedure": "plug-in-gauss-iir",
+      "options": [
+        -2,
+        1,
+        1
+      ],
+      "calling_error": true,
+      "script_sha256": "1bf1f9a98f1363db814532ef20a3e4073e0122e4c6bd9528296dfaa432b1fc61"
+    },
+    {
+      "id": "plug-in-gauss-iir2-0",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        0,
+        0
+      ],
+      "calling_error": true,
+      "script_sha256": "6cba2da176d6dbf382610b2e59b2fc5c5308ef07e1f2c55953796d2cac199f00"
+    },
+    {
+      "id": "plug-in-gauss-iir2--2",
+      "procedure": "plug-in-gauss-iir2",
+      "options": [
+        -2,
+        -2
+      ],
+      "calling_error": true,
+      "script_sha256": "4ba37c1aa55ef74765a190a46afee8ee2905c567c1b0e71c6201b70f519d4cbd"
+    },
+    {
+      "id": "plug-in-gauss-rle-0",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        0,
+        1,
+        1
+      ],
+      "calling_error": true,
+      "script_sha256": "2afde449c4debb9a48025035dd883903b7e4ed275e60b624b528d97924624d81"
+    },
+    {
+      "id": "plug-in-gauss-rle--2",
+      "procedure": "plug-in-gauss-rle",
+      "options": [
+        -2,
+        1,
+        1
+      ],
+      "calling_error": true,
+      "script_sha256": "935f638f2b6a327aeba348a1a4051fafb073d83285806896df155c913ab48eff"
+    },
+    {
+      "id": "plug-in-gauss-rle2-0",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        0,
+        0
+      ],
+      "calling_error": true,
+      "script_sha256": "2858ccf03187ba966042f72aec0520e5fb8cf9473f6b625809ae71ab7a66b2e9"
+    },
+    {
+      "id": "plug-in-gauss-rle2--2",
+      "procedure": "plug-in-gauss-rle2",
+      "options": [
+        -2,
+        -2
+      ],
+      "calling_error": true,
+      "script_sha256": "8b849ad9350d6625cc9416ac6426e35bb59e00b3b637e8c216570020ecd62c97"
+    }
+  ],
+  "case_count": 88,
+  "expected_case_count": 88,
+  "errors": [],
+  "fixtures_tsv_sha256": "f1cb665da657186c2873cef8a7b19a18aa241ec457da098d47cd641b6703dd24",
+  "status": "passed"
+}

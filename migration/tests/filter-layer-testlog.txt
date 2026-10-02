@@ -1,18 +1,18 @@
-Log of Meson test suite run on 2026-10-02T15:29:05.138219
+Log of Meson test suite run on 2026-10-02T16:32:37.197617
 
 Inherited environment omitted; see whitelisted JSON reproducibility variables.
 
-==================================== 1/10 ====================================
+==================================== 1/11 ====================================
 test:         gimp:app / gimp-filter-layer
-start time:   06:29:05
-duration:     32.33s
+start time:   07:32:37
+duration:     53.02s
 result:       exit status 0
-command:      GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=41 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UI_TEST=yes GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-filter-layer
+command:      LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=40 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UI_TEST=yes ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-filter-layer
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02Sf776dc8e50ed514376ff343c97be0d2e
+# random seed: R02S58dbd96e88b140cb78d098d02b5ff1a3
 # GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
-1..75
+1..78
 # Start of gimp-filter-layer tests
 ok 1 /gimp-filter-layer/image_close_during_undo_callbacks
 ok 2 /gimp-filter-layer/image_close_during_redo_callbacks
@@ -27,22 +27,21 @@ ok 10 /gimp-filter-layer/argument_import_validation
 ok 11 /gimp-filter-layer/typed_argument_snapshot_survives_expiration
 ok 12 /gimp-filter-layer/hiding_during_import_releases_abandoned_work
 ok 13 /gimp-filter-layer/concurrent_admission_resumes_after_image_close
-# slow test /gimp-filter-layer/concurrent_admission_resumes_after_image_close executed in 0.55 secs
 ok 14 /gimp-filter-layer/saved_snapshot_generation_restore
 ok 15 /gimp-filter-layer/small_image_finishes_during_large_preparation
-# slow test /gimp-filter-layer/small_image_finishes_during_large_preparation executed in 0.73 secs
+# slow test /gimp-filter-layer/small_image_finishes_during_large_preparation executed in 0.63 secs
 ok 16 /gimp-filter-layer/image_close_during_worker
 ok 17 /gimp-filter-layer/sustained_edits_converge
 ok 18 /gimp-filter-layer/spill_sustained_edits_converge
 ok 19 /gimp-filter-layer/spill_storage_failure_preserves_cache
-# large-spill width=8193 height=8193 pixels=67125249 wall_us=13324891 max_quantum_us=59110 heartbeat_samples=5836 heartbeat_p50_us=2080 heartbeat_p95_us=2337 heartbeat_p99_us=3427 heartbeat_max_us=59636
-# large-spill-close wall_us=107446
+# large-spill width=8193 height=8193 pixels=67125249 wall_us=17734616 max_quantum_us=212890 heartbeat_samples=6791 heartbeat_p50_us=2084 heartbeat_p95_us=2284 heartbeat_p99_us=5141 heartbeat_max_us=213261
+# large-spill-close wall_us=138998
 ok 20 /gimp-filter-layer/large_spill_execution_finishes
-# slow test /gimp-filter-layer/large_spill_execution_finishes executed in 13.44 secs
+# slow test /gimp-filter-layer/large_spill_execution_finishes executed in 17.88 secs
 ok 21 /gimp-filter-layer/spill_gaussian_native_gray
-# slow test /gimp-filter-layer/spill_gaussian_native_gray executed in 2.17 secs
+# slow test /gimp-filter-layer/spill_gaussian_native_gray executed in 2.99 secs
 ok 22 /gimp-filter-layer/spill_gaussian_native_rgb
-# slow test /gimp-filter-layer/spill_gaussian_native_rgb executed in 2.36 secs
+# slow test /gimp-filter-layer/spill_gaussian_native_rgb executed in 2.59 secs
 ok 23 /gimp-filter-layer/duplicate_preserves_cache_freshness
 ok 24 /gimp-filter-layer/opaque_arguments_duplicate_and_undo
 ok 25 /gimp-filter-layer/opaque_arguments_never_execute
@@ -63,47 +62,251 @@ ok 39 /gimp-filter-layer/completion_flushes_image_projection
 ok 40 /gimp-filter-layer/spill_completion_flushes_image_projection
 # 20-filter chain state notifications for one source edit: 60
 ok 41 /gimp-filter-layer/long_chain_coalesces_state_notifications
-# slow test /gimp-filter-layer/long_chain_coalesces_state_notifications executed in 1.12 secs
-# complex-graph phase=first width=1024 height=1024 layers=64 wall_us=963775 max_quantum_us=44456 max_graph_us=534 max_read_us=42350 heartbeat_samples=330 heartbeat_p50_us=2256 heartbeat_p95_us=4909 heartbeat_p99_us=6457 heartbeat_max_us=44815
-# complex-graph phase=edit width=1024 height=1024 layers=64 wall_us=1080417 max_quantum_us=44456 max_graph_us=534 max_read_us=42350 heartbeat_samples=253 heartbeat_p50_us=2738 heartbeat_p95_us=5307 heartbeat_p99_us=78951 heartbeat_max_us=104697
+# slow test /gimp-filter-layer/long_chain_coalesces_state_notifications executed in 1.11 secs
+# complex-graph phase=first width=1024 height=1024 layers=64 wall_us=5412860 max_quantum_us=43286 max_graph_us=697 max_read_us=40870 heartbeat_samples=1161 heartbeat_p50_us=4248 heartbeat_p95_us=7698 heartbeat_p99_us=12749 heartbeat_max_us=44908
+# complex-graph phase=edit width=1024 height=1024 layers=64 wall_us=4520142 max_quantum_us=43286 max_graph_us=697 max_read_us=40870 heartbeat_samples=999 heartbeat_p50_us=4025 heartbeat_p95_us=7070 heartbeat_p99_us=11256 heartbeat_max_us=90549
 ok 42 /gimp-filter-layer/complex_graph_remains_responsive
-# slow test /gimp-filter-layer/complex_graph_remains_responsive executed in 2.07 secs
+# slow test /gimp-filter-layer/complex_graph_remains_responsive executed in 9.96 secs
 ok 43 /gimp-filter-layer/cached_graph_tracks_clone_reassignment
 ok 44 /gimp-filter-layer/clone_filter_dependency_order
 ok 45 /gimp-filter-layer/cached_dependency_close_before_start
 ok 46 /gimp-filter-layer/cross_image_filter_cycle_has_no_signal_loop
 ok 47 /gimp-filter-layer/gray_native_default
 ok 48 /gimp-filter-layer/gray_native_linear_profile
-# slow test /gimp-filter-layer/gray_native_linear_profile executed in 1.28 secs
+# slow test /gimp-filter-layer/gray_native_linear_profile executed in 1.15 secs
 ok 49 /gimp-filter-layer/gray_native_lab_profile
 ok 50 /gimp-filter-layer/gray_without_source_alpha
 ok 51 /gimp-filter-layer/gaussian_native_srgb
 ok 52 /gimp-filter-layer/gaussian_native_adobe
 ok 53 /gimp-filter-layer/profile_reassignment_discards_worker
 ok 54 /gimp-filter-layer/unsupported_precision_retains_cache
-ok 55 /gimp-filter-layer/gaussian_legacy_fixture
-ok 56 /gimp-filter-layer/duplicate_failure_releases_partial
-ok 57 /gimp-filter-layer/definition_undo_redo
-ok 58 /gimp-filter-layer/hidden_filter_and_offset
-ok 59 /gimp-filter-layer/cpp_header_layout
-ok 60 /gimp-filter-layer/clone_filter_dependency_cycle
-# 2048x1536 evaluation wall=655320us; largest main-context quantum=33774us; 2ms heartbeat=292
-ok 61 /gimp-filter-layer/main_context_remains_responsive
-# slow test /gimp-filter-layer/main_context_remains_responsive executed in 0.66 secs
-ok 62 /gimp-filter-layer/object_arguments_do_not_cycle
-ok 63 /gimp-filter-layer/expired_object_records_and_reassignment
-ok 64 /gimp-filter-layer/object_array_arguments_do_not_dangle
-ok 65 /gimp-filter-layer/removal_and_undo
-ok 66 /gimp-filter-layer/lower_group_failure_and_recovery
-ok 67 /gimp-filter-layer/independent_type_and_edge
-ok 68 /gimp-filter-layer/automatic_updates_and_self_exclusion
-ok 69 /gimp-filter-layer/saved_definition_is_separate
-ok 70 /gimp-filter-layer/loaded_cache
-ok 71 /gimp-filter-layer/dependency_order
-ok 72 /gimp-filter-layer/group_scope
-ok 73 /gimp-filter-layer/completed_buffer_only
-ok 74 /gimp-filter-layer/close_during_preparation
-ok 75 /gimp-filter-layer/duplicate_keeps_definition
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-0.75-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-0.75-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-0.75-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-0.75-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-0.75-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-2.5-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-2.5-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-2.5-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-2.5-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-2.5-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-25-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-25-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-25-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-25-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir-25-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2-25-25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2-2.5-7.25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2-0-25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2-0.25-0.75.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-iir2-1-5.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-0.75-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-0.75-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-0.75-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-0.75-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-0.75-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-2.5-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-2.5-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-2.5-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-2.5-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-2.5-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-25-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-25-1-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-25-0-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-25-0-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle-25-2--3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2-25-25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2-2.5-7.25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2-0-25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2-0.25-0.75.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/rgb-gauss-rle2-1-5.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-0.75-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-0.75-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-0.75-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-0.75-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-0.75-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-2.5-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-2.5-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-2.5-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-2.5-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-2.5-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-25-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-25-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-25-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-25-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir-25-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2-25-25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2-2.5-7.25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2-0-25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2-0.25-0.75.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-iir2-1-5.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-0.75-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-0.75-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-0.75-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-0.75-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-0.75-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-2.5-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-2.5-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-2.5-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-2.5-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-2.5-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-25-1-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-25-1-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-25-0-1.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-25-0-0.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle-25-2--3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2-25-25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2-2.5-7.25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2-0-25.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2-0.25-0.75.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/gray-gauss-rle2-1-5.ya
+# old Gaussian PDB buffer: legacy-gauss-alias/tile-rgb-gauss-iir-2.5-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/tile-rgb-gauss-iir2-2.5-7.25.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/tile-rgb-gauss-rle-2.5-1-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-alias/tile-rgb-gauss-rle2-2.5-7.25.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2--1.1-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2--5-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2--17-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2-3--2.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2-3--5.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-iir2-3--17.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--1.1-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--2-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--5-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--17-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--2-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--5-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--17-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2--1.1-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2--5-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2--17-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2-3--2.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2-3--5.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-rle2-3--17.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--1.1-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--2-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--5-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss--17-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--2-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--5-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-odd-gauss-3--17-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2--1.1-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2--5-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2--17-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2-3--2.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2-3--5.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-iir2-3--17.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--1.1-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--2-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--5-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--17-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--2-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--5-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--17-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2--1.1-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2--5-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2--17-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2-3--2.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2-3--5.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-rle2-3--17.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--1.1-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--2-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--5-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss--17-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--2-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--5-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-odd-gauss-3--17-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2--1.1-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2--5-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2--17-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2-3--2.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2-3--5.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-iir2-3--17.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--1.1-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--2-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--5-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--17-3-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--2-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--5-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--17-0.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2--1.1-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2--2-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2--5-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2--17-3.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2-3--2.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2-3--5.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-rle2-3--17.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--1.1-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--2-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--5-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss--17-3-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--2-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--5-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/rgb-even-gauss-3--17-1.rgba
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2--1.1-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2--5-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2--17-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2-3--2.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2-3--5.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-iir2-3--17.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--1.1-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--2-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--5-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--17-3-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--2-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--5-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--17-0.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2--1.1-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2--2-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2--5-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2--17-3.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2-3--2.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2-3--5.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-rle2-3--17.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--1.1-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--2-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--5-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss--17-3-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--2-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--5-1.ya
+# old Gaussian PDB buffer: legacy-gauss-negative/gray-even-gauss-3--17-1.ya
+ok 55 /gimp-filter-layer/gaussian_alias_and_negative_fixtures
+# slow test /gimp-filter-layer/gaussian_alias_and_negative_fixtures executed in 7.74 secs
+ok 56 /gimp-filter-layer/gaussian_alias_failures_preserve_cache
+ok 57 /gimp-filter-layer/gaussian_alias_identity_spills
+ok 58 /gimp-filter-layer/gaussian_legacy_fixture
+ok 59 /gimp-filter-layer/duplicate_failure_releases_partial
+ok 60 /gimp-filter-layer/definition_undo_redo
+ok 61 /gimp-filter-layer/hidden_filter_and_offset
+ok 62 /gimp-filter-layer/cpp_header_layout
+ok 63 /gimp-filter-layer/clone_filter_dependency_cycle
+# 2048x1536 evaluation wall=611195us; largest main-context quantum=25927us; 2ms heartbeat=278
+ok 64 /gimp-filter-layer/main_context_remains_responsive
+# slow test /gimp-filter-layer/main_context_remains_responsive executed in 0.62 secs
+ok 65 /gimp-filter-layer/object_arguments_do_not_cycle
+ok 66 /gimp-filter-layer/expired_object_records_and_reassignment
+ok 67 /gimp-filter-layer/object_array_arguments_do_not_dangle
+ok 68 /gimp-filter-layer/removal_and_undo
+ok 69 /gimp-filter-layer/lower_group_failure_and_recovery
+ok 70 /gimp-filter-layer/independent_type_and_edge
+ok 71 /gimp-filter-layer/automatic_updates_and_self_exclusion
+ok 72 /gimp-filter-layer/saved_definition_is_separate
+ok 73 /gimp-filter-layer/loaded_cache
+ok 74 /gimp-filter-layer/dependency_order
+ok 75 /gimp-filter-layer/group_scope
+ok 76 /gimp-filter-layer/completed_buffer_only
+ok 77 /gimp-filter-layer/close_during_preparation
+ok 78 /gimp-filter-layer/duplicate_keeps_definition
 # End of gimp-filter-layer tests
 # GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
 ----------------------------------- stderr -----------------------------------
@@ -180,47 +383,26 @@ You have a writable data folder configured, but this folder is not part of your 
 
 ==============================================================================
 
-==================================== 2/10 ====================================
+==================================== 2/11 ====================================
 test:         gimp:painter / painter-filter-edge
-start time:   06:29:37
-duration:     0.17s
+start time:   07:33:30
+duration:     0.06s
 result:       exit status 0
-command:      MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=74 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-edge /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-edge/fixtures.tsv
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=232 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-edge /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-edge/fixtures.tsv
 ----------------------------------- stdout -----------------------------------
 Legacy executable byte comparisons: 76 passed
 Edge compatibility unit tests passed
 ==============================================================================
 
-==================================== 3/10 ====================================
-test:         gimp:painter / painter-filter-gauss
-start time:   06:29:37
-duration:     0.18s
-result:       exit status 0
-command:      MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=106 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gauss /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss/fixtures.tsv
------------------------------------ stdout -----------------------------------
-Legacy executable byte comparisons: 104 passed
-Gaussian compatibility unit tests passed
-==============================================================================
-
-==================================== 4/10 ====================================
-test:         gimp:painter / painter-filter-gray
-start time:   06:29:37
-duration:     0.20s
-result:       exit status 0
-command:      MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=62 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gray /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv
------------------------------------ stdout -----------------------------------
-Legacy executable native Gray/Gray-alpha byte comparisons: 77 passed
-==============================================================================
-
-==================================== 5/10 ====================================
+==================================== 3/11 ====================================
 test:         gimp:painter / painter-fair-dispatcher
-start time:   06:29:37
-duration:     0.21s
+start time:   07:33:30
+duration:     0.04s
 result:       exit status 0
-command:      MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=15 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-fair-dispatcher
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=189 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-fair-dispatcher
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02S77251315610ecf6565d78d7fc522ba98
+# random seed: R02Sd4dc07ca1454f5b1ced95221eb7a0135
 1..8
 # Start of painter-fair-dispatcher tests
 ok 1 /painter-fair-dispatcher/capture_destruction_can_replace_ticket
@@ -234,15 +416,15 @@ ok 8 /painter-fair-dispatcher/exception_does_not_stall_others
 # End of painter-fair-dispatcher tests
 ==============================================================================
 
-==================================== 6/10 ====================================
+==================================== 4/11 ====================================
 test:         gimp:painter / painter-work-admission
-start time:   06:29:37
-duration:     0.22s
+start time:   07:33:30
+duration:     0.03s
 result:       exit status 0
-command:      MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=39 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-work-admission
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=68 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-work-admission
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02S394273eb83be07b6d63a119f83b86889
+# random seed: R02Sece91c4dae203f86716a16ba06628c28
 1..9
 # Start of work-admission tests
 ok 1 /work-admission/fifo_and_jobs
@@ -257,15 +439,36 @@ ok 9 /work-admission/wrong_thread_is_rejected
 # End of work-admission tests
 ==============================================================================
 
-==================================== 7/10 ====================================
-test:         gimp:painter / painter-filter-spool
-start time:   06:29:37
-duration:     0.18s
+==================================== 5/11 ====================================
+test:         gimp:painter / painter-filter-gray
+start time:   07:33:30
+duration:     0.07s
 result:       exit status 0
-command:      MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=50 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-spool
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=26 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gray /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv
+----------------------------------- stdout -----------------------------------
+Legacy executable native Gray/Gray-alpha byte comparisons: 77 passed
+==============================================================================
+
+==================================== 6/11 ====================================
+test:         gimp:painter / painter-filter-gauss
+start time:   07:33:30
+duration:     0.15s
+result:       exit status 0
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=146 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gauss /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss/fixtures.tsv
+----------------------------------- stdout -----------------------------------
+Legacy executable byte comparisons: 104 passed
+Gaussian compatibility unit tests passed
+==============================================================================
+
+==================================== 7/11 ====================================
+test:         gimp:painter / painter-filter-spool
+start time:   07:33:30
+duration:     0.12s
+result:       exit status 0
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=25 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-spool
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02S1f849b1337271bc040a6a73ea5ebdd27
+# random seed: R02S9b42e6e99104fd98f94f9227f4536bec
 1..9
 # Start of filter-spool tests
 ok 1 /filter-spool/roundtrip_and_output_geometry
@@ -280,15 +483,26 @@ ok 9 /filter-spool/invalid_input_is_transactional
 # End of filter-spool tests
 ==============================================================================
 
-==================================== 8/10 ====================================
-test:         gimp:painter / painter-filter-raster
-start time:   06:29:37
-duration:     1.50s
+==================================== 8/11 ====================================
+test:         gimp:painter / painter-filter-gauss-alias
+start time:   07:33:30
+duration:     0.31s
 result:       exit status 0
-command:      MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=110 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-raster
+command:      MALLOC_PERTURB_=200 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gauss-alias /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/fixtures.tsv /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-negative/fixtures.tsv
+----------------------------------- stdout -----------------------------------
+Generated negative-region parity across 64-KiB merge boundaries: 8 passed
+Matched 200 genuine old native buffers (88 alias + 112 canonical/alias negative regions), vector and file-backed; 12 disabled-axis identities
+==============================================================================
+
+==================================== 9/11 ====================================
+test:         gimp:painter / painter-filter-raster
+start time:   07:33:30
+duration:     1.38s
+result:       exit status 0
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=165 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-raster
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02S572d072bb3fa237ad62236c395e56f8b
+# random seed: R02Sebf9c0f93dcca3024929064a0919dbee
 1..6
 # Start of filter-raster tests
 ok 1 /filter-raster/native_bytes_and_cleanup
@@ -296,17 +510,17 @@ ok 2 /filter-raster/large_sparse_offset
 ok 3 /filter-raster/invalid_access_and_unwritten_read
 ok 4 /filter-raster/worker_affinity
 ok 5 /filter-raster/tiled_transpose_and_roundtrip
-# slow test /filter-raster/tiled_transpose_and_roundtrip executed in 1.48 secs
+# slow test /filter-raster/tiled_transpose_and_roundtrip executed in 1.37 secs
 ok 6 /filter-raster/cancelled_or_failed_output_stays_private
 # End of filter-raster tests
 ==============================================================================
 
-==================================== 9/10 ====================================
+=================================== 10/11 ====================================
 test:         gimp:painter / painter-filter-raster-kernels
-start time:   06:29:37
-duration:     3.30s
+start time:   07:33:30
+duration:     3.01s
 result:       exit status 0
-command:      MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=204 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-raster-kernels /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-edge/fixtures.tsv /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss/fixtures.tsv /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=206 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-raster-kernels /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-edge/fixtures.tsv /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss/fixtures.tsv /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv
 ----------------------------------- stdout -----------------------------------
 Edge genuine old runtime + vector + disk byte comparisons: 76 passed
 Gaussian genuine old runtime + vector + disk byte comparisons: 104 passed
@@ -318,20 +532,20 @@ Bounded disk case: dimensions=4099x1281 raster_bytes=21003276 gaussian_scratch_p
 Spill-backed filter kernel tests passed
 ==============================================================================
 
-=================================== 10/10 ====================================
+=================================== 11/11 ====================================
 test:         gimp:painter / painter-filter-scheduler
-start time:   06:29:37
-duration:     4.98s
+start time:   07:33:30
+duration:     3.72s
 result:       exit status 0
-command:      MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=59 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-scheduler
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=89 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-scheduler
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02S1ca914e7040b4d6c64922de9a50c2ed8
+# random seed: R02Sfcfea2f2c54cee72054a55e442af3098
 1..34
 # Start of painter-filter-scheduler tests
 ok 1 /painter-filter-scheduler/recursive_step_does_not_consume_another_chunk
 ok 2 /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry
-# slow test /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry executed in 3.73 secs
+# slow test /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry executed in 2.52 secs
 ok 3 /painter-filter-scheduler/spool_reentrant_read_cancellation
 ok 4 /painter-filter-scheduler/spool_cancel_request_is_not_completion
 ok 5 /painter-filter-scheduler/spool_change_during_import
@@ -353,7 +567,7 @@ ok 20 /painter-filter-scheduler/reject_during_read
 ok 21 /painter-filter-scheduler/reject_during_import
 ok 22 /painter-filter-scheduler/closed_request_is_inert
 ok 23 /painter-filter-scheduler/adjustable_chunk_budget
-# slow test /painter-filter-scheduler/adjustable_chunk_budget executed in 0.56 secs
+# slow test /painter-filter-scheduler/adjustable_chunk_budget executed in 0.54 secs
 ok 24 /painter-filter-scheduler/completed_cache
 ok 25 /painter-filter-scheduler/bounded_chunks
 ok 26 /painter-filter-scheduler/dependency_priority
@@ -369,7 +583,7 @@ ok 34 /painter-filter-scheduler/reentry_at_commit
 ==============================================================================
 
 
-Ok:                 10
+Ok:                 11
 Expected Fail:      0
 Fail:               0
 Unexpected Pass:    0

@@ -330,30 +330,71 @@ struct FilterImpl
               }
           }
       }
-    else if (procedure == "plug-in-gauss" && args && args->size () == 6)
+    else if (args && (procedure == "plug-in-gauss" || procedure == "plug-in-gauss-iir" ||
+                      procedure == "plug-in-gauss-rle" || procedure == "plug-in-gauss-iir2" ||
+                      procedure == "plug-in-gauss-rle2"))
       {
-        const GValue *horizontal = args->at (3), *vertical = args->at (4), *method = args->at (5);
-        if ((G_VALUE_HOLDS_DOUBLE (horizontal) || G_VALUE_HOLDS_FLOAT (horizontal)) &&
-            (G_VALUE_HOLDS_DOUBLE (vertical) || G_VALUE_HOLDS_FLOAT (vertical)) && G_VALUE_HOLDS_INT (method))
+        const bool flags = procedure == "plug-in-gauss-iir" || procedure == "plug-in-gauss-rle";
+        const bool canonical = procedure == "plug-in-gauss";
+        const auto floating = [] (const GValue *value) { return G_VALUE_HOLDS_DOUBLE (value) || G_VALUE_HOLDS_FLOAT (value); };
+        const auto real = [] (const GValue *value) { return G_VALUE_HOLDS_DOUBLE (value) ? g_value_get_double (value) : g_value_get_float (value); };
+        if (args->size () == (flags || canonical ? 6 : 5))
           {
-            GaussOptions options {
-              G_VALUE_HOLDS_DOUBLE (horizontal) ? g_value_get_double (horizontal) : g_value_get_float (horizontal),
-              G_VALUE_HOLDS_DOUBLE (vertical) ? g_value_get_double (vertical) : g_value_get_float (vertical),
-              g_value_get_int (method)
-            };
-            if (std::isfinite (options.horizontal) && std::isfinite (options.vertical) &&
-                (options.horizontal > 0 || options.vertical > 0) && options.method >= 0 && options.method <= 1)
+            const GValue *a = args->at (3), *b = args->at (4), *c = args->size () == 6 ? args->at (5) : nullptr;
+            GaussOptions options;
+            bool valid = floating (a);
+            if (flags)
               {
-                auto width = request.width, height = request.height;
-                request.process = [width, height, options] (const FilterScheduler::Bytes& input,
-                                                            std::atomic<bool>& cancel,
-                                                            FilterScheduler::Bytes& output) {
-                  return filter_gauss (input, width, height, options, cancel, output);
+                valid = valid && G_VALUE_HOLDS_INT (b) && G_VALUE_HOLDS_INT (c);
+                if (valid)
+                  {
+                    const auto radius = real (a);
+                    valid = std::isfinite (radius) && radius > 0;
+                    options.horizontal = g_value_get_int (b) ? radius : 0;
+                    options.vertical = g_value_get_int (c) ? radius : 0;
+                  }
+              }
+            else
+              {
+                valid = valid && floating (b) && (!canonical || G_VALUE_HOLDS_INT (c));
+                if (valid)
+                  {
+                    options.horizontal = real (a); options.vertical = real (b);
+                    valid = std::isfinite (options.horizontal) && std::isfinite (options.vertical) &&
+                            (options.horizontal > 0 || options.vertical > 0);
+                  }
+              }
+            if (valid)
+              {
+                options.method = canonical ? g_value_get_int (c) :
+                  (procedure == "plug-in-gauss-rle" || procedure == "plug-in-gauss-rle2" ? 1 : 0);
+                valid = options.method >= 0 && options.method <= 1;
+              }
+            if (valid)
+              {
+                const bool identity = flags && options.horizontal == 0 && options.vertical == 0;
+                const auto width = request.width, height = request.height;
+                request.process = [width, height, options, identity] (const FilterScheduler::Bytes& input,
+                                                                      std::atomic<bool>& cancel,
+                                                                      FilterScheduler::Bytes& output) {
+                  if (!identity) return filter_gauss (input, width, height, options, cancel, output);
+                  if (cancel.load (std::memory_order_relaxed)) return false;
+                  FilterScheduler::Bytes copy (input);
+                  if (cancel.load (std::memory_order_relaxed)) return false;
+                  output.swap (copy); return true;
                 };
                 if (spill)
-                  request.raster_process = [width, height, options] (FilterRaster& input, FilterRaster& output,
+                  request.raster_process = [width, height, options, identity] (FilterRaster& input, FilterRaster& output,
                     std::atomic<bool>& cancel, const FilterRasterFactory& scratch) {
-                    return filter_gauss_raster (input, width, height, options, cancel, output, scratch);
+                    if (!identity) return filter_gauss_raster (input, width, height, options, cancel, output, scratch);
+                    FilterScheduler::Bytes chunk (FilterScheduler::pixel_budget * 4);
+                    for (std::uint64_t offset = 0; offset < input.size ();)
+                      {
+                        if (cancel.load (std::memory_order_relaxed)) return false;
+                        const auto count = std::size_t (std::min (std::uint64_t (chunk.size ()),input.size () - offset));
+                        input.read (offset,count,chunk.data ()); output.write (offset,count,chunk.data ()); offset += count;
+                      }
+                    output.flush (); return !cancel.load (std::memory_order_relaxed);
                   };
               }
           }

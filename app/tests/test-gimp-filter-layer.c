@@ -1210,6 +1210,143 @@ static void duplicate_failure_releases_partial (void)
 }
 
 
+static guint gaussian_procedure_corpus (const gchar *corpus)
+{
+  gchar *path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration/fixtures",corpus,"fixtures.tsv",NULL);
+  gchar *manifest = NULL;
+  gchar **lines;
+  guint cases = 0;
+  g_assert_true (g_file_get_contents (path,&manifest,NULL,NULL)); g_free (path);
+  lines = g_strsplit (manifest,"\n",-1);
+  for (guint row = 0; lines[row]; ++row)
+    {
+      gchar **fields;
+      gint width, height, channels, options;
+      gdouble a, b, c;
+      GimpImage *image;
+      GimpLayer *source;
+      GimpFilterLayer *filter;
+      GimpValueArray *args, *saved;
+      GBytes *raw, *retained;
+      const Babl *format;
+      gchar *input = NULL, *expected = NULL, *procedure;
+      guchar *actual;
+      gsize input_size, expected_size;
+      if (!lines[row][0] || lines[row][0] == '#') continue;
+      fields = g_strsplit (lines[row],"\t",-1); g_assert_cmpuint (g_strv_length (fields), ==, 10);
+      width = atoi (fields[1]); height = atoi (fields[2]); channels = atoi (fields[3]); options = atoi (fields[4]);
+      a = g_ascii_strtod (fields[5],NULL); b = g_ascii_strtod (fields[6],NULL); c = g_ascii_strtod (fields[7],NULL);
+      g_assert_cmpint (width, >, 0); g_assert_cmpint (width, <=, 128);
+      g_assert_cmpint (height, >, 0); g_assert_cmpint (height, <=, 128);
+      g_assert_true (channels == 2 || channels == 4);
+      g_test_message ("old Gaussian PDB buffer: %s/%s",corpus,fields[9]);
+      image = gimp_image_new (gimp,width,height,channels == 2 ? GIMP_GRAY : GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+      format = gimp_image_get_layer_format (image,TRUE); g_assert_cmpint (babl_format_get_bytes_per_pixel (format), ==, channels);
+      source = gimp_layer_new (image,width,height,format,"old alias input",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+      gimp_image_add_layer (image,source,NULL,0,FALSE);
+      path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration/fixtures",corpus,fields[8],NULL);
+      g_assert_true (g_file_get_contents (path,&input,&input_size,NULL)); g_free (path);
+      g_assert_cmpuint (input_size, ==, width*height*channels);
+      gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)),GEGL_RECTANGLE (0,0,width,height),0,format,input,GEGL_AUTO_ROWSTRIDE);
+      g_free (input); gimp_drawable_update (GIMP_DRAWABLE (source),0,0,width,height);
+      filter = filter_new (image,NULL,width,height);
+      if (!strcmp (fields[0],"plug-in-gauss"))
+        args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,
+          G_TYPE_DOUBLE,a,G_TYPE_DOUBLE,b,G_TYPE_INT,(gint)c,G_TYPE_NONE);
+      else if (options == 2)
+        args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,
+          G_TYPE_DOUBLE,a,G_TYPE_DOUBLE,b,G_TYPE_NONE);
+      else
+        args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,
+          G_TYPE_DOUBLE,a,G_TYPE_INT,(gint)b,G_TYPE_INT,(gint)c,G_TYPE_NONE);
+      raw = g_bytes_new_static ("original alias bytes",20);
+      g_assert_true (gimp_filter_layer_set_definition (filter,fields[0],raw,args,NULL));
+      g_bytes_unref (raw); gimp_value_array_unref (args); settle (filter);
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 1);
+      procedure = gimp_filter_layer_dup_procedure (filter); g_assert_cmpstr (procedure, ==, fields[0]); g_free (procedure);
+      saved = gimp_filter_layer_dup_args (filter); g_assert_cmpuint (gimp_value_array_length (saved), ==, 3+options);
+      g_assert_cmpfloat (g_value_get_double (gimp_value_array_index (saved,3)), ==, a);
+      if (options == 3 && strcmp (fields[0],"plug-in-gauss"))
+        { g_assert_cmpint (g_value_get_int (gimp_value_array_index (saved,4)), ==, (gint)b); g_assert_cmpint (g_value_get_int (gimp_value_array_index (saved,5)), ==, (gint)c); }
+      gimp_value_array_unref (saved);
+      retained = gimp_filter_layer_ref_definition (filter); g_assert_cmpmem (g_bytes_get_data (retained,NULL),g_bytes_get_size (retained),"original alias bytes",20); g_bytes_unref (retained);
+      path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration/fixtures",corpus,fields[9],NULL);
+      g_assert_true (g_file_get_contents (path,&expected,&expected_size,NULL)); g_free (path);
+      actual = g_malloc (input_size);
+      gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)),GEGL_RECTANGLE (0,0,width,height),1.0,format,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      g_assert_cmpmem (actual,input_size,expected,expected_size);
+      g_free (actual); g_free (expected); g_object_unref (image); g_strfreev (fields); ++cases;
+    }
+  g_strfreev (lines); g_free (manifest); return cases;
+}
+static void gaussian_alias_and_negative_fixtures (void)
+{
+  g_assert_cmpuint (gaussian_procedure_corpus ("legacy-gauss-alias"), ==, 88);
+  g_assert_cmpuint (gaussian_procedure_corpus ("legacy-gauss-negative"), ==, 112);
+}
+static void gaussian_alias_failures_preserve_cache (void)
+{
+  const gchar *names[] = {"plug-in-gauss-iir","plug-in-gauss-rle","plug-in-gauss-iir2","plug-in-gauss-rle2"};
+  for (guint index = 0; index < 12; ++index)
+    {
+      const guint which = index < 8 ? index / 2 : 0;
+      const gdouble radius = index < 8 ? (index % 2 ? -2.0 : 0.0) : 2.0;
+      GimpImage *image = image_new (8,8);
+      GimpLayer *source = source_new (image,NULL,8,8);
+      GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+      GimpValueArray *args;
+      const gchar *name = names[which];
+      GBytes *raw = g_bytes_new_static ("retained bad alias",18), *retained;
+      fill (source,255,255,255,255); fill (GIMP_LAYER (filter),17,31,95,255); gimp_filter_layer_mark_as_loaded (filter);
+      if (which < 2)
+        args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,G_TYPE_DOUBLE,radius,G_TYPE_INT,1,G_TYPE_INT,1,G_TYPE_NONE);
+      else
+        args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,G_TYPE_DOUBLE,radius,G_TYPE_DOUBLE,radius,G_TYPE_NONE);
+      if (index == 8)
+        { GValue *value = gimp_value_array_index (args,4); g_value_unset (value); g_value_init (value,G_TYPE_DOUBLE); g_value_set_double (value,1.0); }
+      if (index == 9) name = "plug-in-gauss-iir2"; /* extra argument slot */
+      if (index == 10) name = "plug-in-gauss-iir-unknown";
+      if (index == 11)
+        {
+          gimp_value_array_unref (args); name = "plug-in-gauss-iir2";
+          args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,G_TYPE_DOUBLE,-2147483648.0,G_TYPE_DOUBLE,2.0,G_TYPE_NONE);
+        }
+      g_assert_true (gimp_filter_layer_set_definition (filter,name,raw,args,NULL)); g_bytes_unref (raw); gimp_value_array_unref (args);
+      {
+        const gint64 deadline = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
+        while (gimp_filter_layer_get_state (filter) != GIMP_FILTER_LAYER_FAILED && g_get_monotonic_time () < deadline)
+          { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+      }
+      g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_FAILED);
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, index == 11 ? 1 : 0);
+      pixel (GIMP_LAYER (filter),17,31,95,255);
+      retained = gimp_filter_layer_ref_definition (filter); g_assert_cmpmem (g_bytes_get_data (retained,NULL),g_bytes_get_size (retained),"retained bad alias",18); g_bytes_unref (retained);
+      spin_ms (10); g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_FAILED);
+      g_object_unref (image);
+    }
+}
+static void gaussian_alias_identity_spills (void)
+{
+  GimpImage *image = image_new (1025,1025);
+  GimpLayer *source = source_new (image,NULL,1025,1025);
+  GimpFilterLayer *filter = filter_new (image,NULL,1025,1025);
+  const gchar *names[] = {"plug-in-gauss-iir","plug-in-gauss-rle"};
+  fill (source,51,73,101,255);
+  for (guint method = 0; method < 2; ++method)
+    {
+      GimpValueArray *args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,
+        G_TYPE_DOUBLE,0.75,G_TYPE_INT,0,G_TYPE_INT,0,G_TYPE_NONE);
+      guchar far[4];
+      g_assert_true (gimp_filter_layer_set_definition (filter,names[method],NULL,args,NULL)); gimp_value_array_unref (args);
+      settle (filter); g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, method+1);
+      pixel (GIMP_LAYER (filter),51,73,101,255);
+      gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)),GEGL_RECTANGLE (1024,1024,1,1),1.0,
+        babl_format ("R'G'B'A u8"),far,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      g_assert_cmpint (far[0], ==, 51); g_assert_cmpint (far[1], ==, 73); g_assert_cmpint (far[2], ==, 101); g_assert_cmpint (far[3], ==, 255);
+    }
+  g_object_unref (image);
+}
+
 static void gaussian_legacy_fixture (void)
 {
   GimpImage *image = image_new (9,8);
@@ -2051,6 +2188,7 @@ int main (int argc, char **argv)
   ADD (clone_filter_dependency_order); ADD (cached_dependency_close_before_start); ADD (cross_image_filter_cycle_has_no_signal_loop);
   ADD (gray_native_default); ADD (gray_native_linear_profile); ADD (gray_native_lab_profile); ADD (gray_without_source_alpha);
   ADD (gaussian_native_srgb); ADD (gaussian_native_adobe); ADD (profile_reassignment_discards_worker); ADD (unsupported_precision_retains_cache);
+  ADD (gaussian_alias_and_negative_fixtures); ADD (gaussian_alias_failures_preserve_cache); ADD (gaussian_alias_identity_spills);
   ADD (gaussian_legacy_fixture); ADD (duplicate_failure_releases_partial); ADD (definition_undo_redo); ADD (hidden_filter_and_offset); ADD (cpp_header_layout); ADD (clone_filter_dependency_cycle); ADD (main_context_remains_responsive);
   ADD (object_arguments_do_not_cycle); ADD (expired_object_records_and_reassignment);
   ADD (object_array_arguments_do_not_dangle); ADD (removal_and_undo); ADD (lower_group_failure_and_recovery);

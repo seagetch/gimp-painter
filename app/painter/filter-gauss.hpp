@@ -23,6 +23,10 @@ struct GaussOptions
  * input RGB wherever output alpha is zero. No selection/color conversion.
  * Either radius <= 1 selects RLE for BOTH axes, even if method is IIR.
  * A nonpositive radius disables that axis; at least one must be positive.
+ * Below -1, the old region arithmetic also removes border rows/columns from
+ * processing. A nonempty region clears excluded alpha (retaining original RGB);
+ * an empty region leaves the original pixels unchanged. Checked old-coordinate
+ * overflow is rejected. These are full, unselected RGBA drawable semantics.
  *
  * Throws std::invalid_argument for invalid dimensions/byte count, nonfinite
  * radii, unsupported methods, or calculations outside defined legacy limits

@@ -36,6 +36,39 @@ struct Check
   }
 };
 
+/* With a negative disabled axis, old gauss() computes an expansion of
+ * 1 + ceil(radius). Values below -1 therefore shrink that axis. For a nonempty
+ * region its unwritten shadow border is transparent; an empty region performs
+ * no shadow writes and leaves the original drawable unchanged. */
+struct Region
+{
+  std::size_t left, top, right, bottom;
+  bool empty, cropped;
+  bool contains (std::uint64_t pixel, std::size_t width) const noexcept
+  {
+    const auto x = pixel % width, y = pixel / width;
+    return x >= left && x < right && y >= top && y < bottom;
+  }
+};
+inline Region legacy_region (std::size_t width, std::size_t height, double horizontal, double vertical)
+{
+  const auto margin = [] (std::size_t length, double radius) {
+    const double extra = 1.0 + std::ceil (radius);
+    if (radius >= -1.0) return std::size_t (0);
+    /* These casts/subtractions were gint arithmetic in the old entry point.
+     * Preserve defined negative/empty regions, not out-of-range conversions. */
+    if (!std::isfinite (extra) || extra <= std::numeric_limits<int>::min ())
+      throw std::invalid_argument ("Gaussian region exceeds defined legacy coordinates");
+    const auto value = static_cast<std::uint64_t> (-extra);
+    if (value * 2 > std::uint64_t (std::numeric_limits<int>::max ()) + length + 1)
+      throw std::invalid_argument ("Gaussian region exceeds defined legacy coordinates");
+    return std::size_t (value);
+  };
+  const auto x = margin (width,horizontal), y = margin (height,vertical);
+  const bool empty = x * 2 >= width || y * 2 >= height;
+  return {x,y,empty ? 0 : width-x,empty ? 0 : height-y,empty,x != 0 || y != 0};
+}
+
 inline void numerical_limit ()
 {
   throw std::invalid_argument ("Gaussian radius exceeds defined legacy arithmetic");

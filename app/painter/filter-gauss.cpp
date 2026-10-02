@@ -67,6 +67,7 @@ bool filter_gauss (const Bytes& input,
       options.method < 0 || options.method > 1)
     throw std::invalid_argument ("Invalid legacy Gaussian options");
 
+  const auto region = legacy_region (width,height,options.horizontal,options.vertical);
   Check check { cancel };
   try
     {
@@ -100,7 +101,11 @@ bool filter_gauss (const Bytes& input,
         {
           check.step ();
           /* Full-opacity REPLACE_INTEN shadow merge from paint-funcs.c. */
-          if (result[i + 3] == 0)
+          if (region.empty)
+            std::copy_n (input.data () + i, 4, result.data () + i);
+          else if (region.cropped && !region.contains (i / 4,width))
+            { std::copy_n (input.data () + i, 3, result.data () + i); result[i + 3] = 0; }
+          else if (result[i + 3] == 0)
             std::copy_n (input.data () + i, 3, result.data () + i);
         }
       check.now ();

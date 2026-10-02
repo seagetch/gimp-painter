@@ -15,7 +15,10 @@ entry points and their strong publication guarantee remain available.
 - Gaussian preserves the legacy vertical-before-horizontal order, IIR/RLE
   method fallback, fractional radii, premultiply/separate byte rounding after
   each pass, RLE encoded/nonencoded endpoint asymmetry, and final original-RGB
-  shadow merge wherever output alpha is zero.
+  shadow merge wherever output alpha is zero. Genuine negative-radius fixtures
+  additionally preserve the old shrunken-region behavior: excluded border alpha
+  becomes zero with original RGB retained, while empty regions leave the entire
+  fresh input unchanged. Old coordinate overflow is rejected
 - Gaussian transposes exact RGBA bytes in 1024x1024 tiles, processes the now
   contiguous vertical lines, and transposes back. A horizontal pass follows.
   There are no per-pixel column file reads or color conversions.
@@ -69,6 +72,17 @@ invalid dimensions/options/storage, alias rejection, and synthetic sparse
 addresses beyond 4 GiB. Width/height one and boundaries immediately below, at,
 and above the 1024-pixel tile side are included.
 
+`test-filter-gauss-alias.cpp` adds 200 genuine buffers (88 alias-shape cases and
+112 canonical/alias negative-region cases), compared through both vector and
+real file-backed paths. Twelve single-radius both-disabled identities are
+separate from the canonical/two-radius argument rule. All 48 empty-region
+reference calls preserve input and retain the old missing-shadow diagnostic in
+capture evidence. Eight generated mixed-alpha negative-region cases cross the
+64-KiB shadow-merge chunk boundary. This brings the genuine corpus total to 457
+and generated parity total to 220. Captured PDB shapes are translated according
+to the audited entry points here; actual GIMP typed-argument behavior has a
+separate full-app test gate.
+
 The 4099x1281 bounded-workspace case uses only chunked file I/O, with no raster
 vector. Each raster is 21,003,276 bytes. It verifies one Gaussian scratch raster,
 correct output, cleanup, Edge I/O bounded to 4104 bytes per call, and strip-scale
@@ -76,8 +90,8 @@ rather than pixel-scale I/O counts. The normal evidence report records an
 isolated process peak RSS when the platform supports `wait4`; RSS includes
 libraries, stack, allocator and stdio in addition to algorithm buffers.
 
-`run_filter_raster_kernel_tests.py` builds and runs the new test plus all three
-original standalone vector programs. `filter-raster-kernels.json` and
+`run_filter_raster_kernel_tests.py` builds and runs both raster/corpus tests
+plus all three original standalone vector programs. `filter-raster-kernels.json` and
 `filter-raster-kernel-sanitizers.json` record commands, source/corpus hashes,
 outputs, and bounds. The sanitizer run covers AddressSanitizer,
 UndefinedBehaviorSanitizer, and float-cast-overflow. LeakSanitizer cannot operate

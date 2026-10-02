@@ -626,6 +626,7 @@
 | 16.003/native-color-transfer | [x] | 旧Filterのnative符号化色空間と世代変更を保持する | 16.003/gauss-executor, 17.001/fair-checkpoint-state | sRGB/Adobe RGB両Gaussianと実行中profile変更を含む36 app通常/focused sanitizer合格。Gray/高精度の再実行は一時的に明示失敗し元定義/cacheを保持、対応gateは未完了 |
 | 16.003/native-gray-transfer | [x] | Gray/Gray-alphaの旧native値を色変換なしで実行する | 16.003/native-color-transfer, 15.008/opaque-definition-state | 77実旧PDB出力完全一致、9入力roundtripとindexed拒否を記録。61 actual app通常/focused sanitizer、Gray単体ASan/UBSan/float-cast-overflow合格。高精度/linearは別gate |
 | 16.003/spill-components | [x] | 独立raster・有界転送queue・旧演算をspill対応する | 16.003/native-gray-transfer, 17.001/bounded-admission | storage6/transport9と257実旧・212追加・234失敗注入が通常/sanitizer合格。64bit addressing・transpose・cancel/cleanupを検証。tmpfs/RSS境界とWindows未検証を明示、live大画像gateは未完了 |
+| 16.003/gauss-alias-regions | [x] | 旧Gaussian alias全4名と負半径region・identityを保持する | 17.001/cold-graph-quanta | 78 actual app通常/17unit focused sanitizer、11target合格。457実旧buffer/220追加/234取消し失敗と4GiB超を通常/sanitizer比較。小さい負領域の透明borderとempty identity、両flag offを保持。alias直接UI編集とdisk予算・全latencyは別gate |
 | 16.004 | [ ] | 非対応 procedure の互換実行経路を設計する | 16.003 | 代替実装か互換プラグインへ割当し未割当を残さない |
 | 16.005 | [ ] | 旧整数引数の変換を実装する | 16.004 | 幅・符号・範囲を保持 |
 | 16.006 | [ ] | 旧実数引数の変換を実装する | 16.005 | 精度と特殊値の扱いを固定 |
