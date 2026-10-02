@@ -304,3 +304,12 @@ definition generation, cache generation/completeness, and unknown extension
 versions. The numeric legacy property/mode values cannot be emitted into a modern
 namespace. Designing a record alone does not implement atomic save, ownership,
 execution-time snapshots, or edit/save/reopen. Those gates remain open.
+
+### String-bound diagnostic refinement
+
+A string length beyond the available source is `truncated` before considering
+its configured string budget. Raising a budget cannot supply absent bytes;
+reporting such a scalar-as-string interpretation as merely resource-limited
+would conceal structural evidence. An actually present string exceeding the
+budget remains `limit`. `migration/tests/xcf-string-bounds.txt` records 144,144
+normal and ASan/UBSan assertions after this refinement (LSan disabled).

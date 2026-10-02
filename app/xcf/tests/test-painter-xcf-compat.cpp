@@ -306,6 +306,15 @@ static void synthetic_cases ()
   l = Limits (); l.max_records = 1;
   CHECK (decode_filter (bytes (wire), { 0, wire.size () }, FilterPolicy::legacy_reader, l).diagnostic.status == Status::limit);
 
+  // Impossible bytes must not masquerade as a resource-limited candidate.
+  wire.clear (); u32 (wire, 0x3f800000); end (wire);
+  e = decode_clone (bytes (wire), { 0, wire.size () });
+  CHECK (e.diagnostic.status == Status::truncated);
+  wire.clear (); str (wire, "present"); end (wire);
+  Limits tiny; tiny.max_string_bytes = 2;
+  e = decode_clone (bytes (wire), { 0, wire.size () }, tiny);
+  CHECK (e.diagnostic.status == Status::limit);
+
   // Missing NUL is preserved, not repaired as the old xcf_read_string does.
   wire.clear (); str (wire, "name"); wire.back () = 'x'; end (wire);
   e = decode_clone (bytes (wire), { 0, wire.size () });

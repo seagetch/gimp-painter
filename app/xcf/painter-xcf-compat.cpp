@@ -85,6 +85,11 @@ public:
     WireString s;
     s.encoded.offset = pos_;
     const auto length = u32 ();
+    /* An impossible read is structural truncation, not evidence that the
+     * candidate could succeed with a larger work budget. This matters when
+     * standard scalar bits are examined as a legacy string length. */
+    if (length > end_ - pos_)
+      fail (Status::truncated, pos_ - 4, "string exceeds available bytes");
     if (length > budget_.limits.max_string_bytes)
       fail (Status::limit, pos_ - 4, "string budget exceeded");
     s.bytes = { pos_, length };
