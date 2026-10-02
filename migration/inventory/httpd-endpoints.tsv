@@ -1,0 +1,17 @@
+route	methods	input	legacy_effect	gimp3_implementation	caller_evidence	status
+/<name>	GET (legacy direct any-method)	path name	intended Hello,name; legacy token syntax mismatch	httpd-resource.cpp Router::dispatch	factories only; active Soup router recognizes braces	NORMAL_AND_SANITIZER_PASS
+/api/v1/pdb/	GET	no body	Swagger2 PDB catalogue	httpd-pdb.cpp Pdb::handle	RESTPDB::get selects OAS2	NORMAL_AND_SANITIZER_PASS
+/api/v1/pdb/{name}	GET	procedure name	Swagger2 path item	httpd-pdb.cpp publish	RESTPDB::get	NORMAL_AND_SANITIZER_PASS
+/api/v1/pdb/{name}	POST	JSON context+arguments	PDB execute; context+values	httpd-pdb.cpp native GimpValueArray conversion	RESTPDB::post and ProcedureRunner	NORMAL_AND_SANITIZER_PASS
+/api/v1/images/**	GET	ID/name direct-child hierarchy	info including clone/filter/group	httpd-images.cpp Images::info	RESTImageTree::get/get_info	NORMAL_AND_SANITIZER_PASS
+/api/v1/images/**/%23info	GET	final operation token	image/layer information	httpd-images.cpp Images::handle	RESTImageTree::parse_path	NORMAL_AND_SANITIZER_PASS
+/api/v1/images/**/%23data	GET	image/layer	PNG viewable rendering	httpd-images.cpp Images::pixels	RESTImageTree::get_data	NORMAL_AND_SANITIZER_PASS
+/api/v1/images/**/%23preview	GET	image/layer	JPEG fit128px	httpd-images.cpp Images::pixels	RESTImageTree::get_data	NORMAL_AND_SANITIZER_PASS
+/api/v1/images/**	PUT	JSON boundary/type/name/attributes	new root image or sibling normal layer; several parsed fields ignored	httpd-images.cpp Images::create	RESTImageTree::put and JsonConverter	NORMAL_AND_SANITIZER_PASS
+/api/v1/images/**/%23info	PUT	JSON boundary/type/name/attributes	same as default PUT	httpd-images.cpp Images::create	RESTImageTree::put	NORMAL_AND_SANITIZER_PASS
+/api/v1/images/**/%23data	PUT	image MIME body or multipart	pixbuf import as image/sibling layer	httpd.cpp multipart extraction; httpd-images.cpp import	RESTImageTree::put and DataConverter	NORMAL_AND_SANITIZER_PASS
+/api/v1/navigation	POST	JSON context and message/webhook_uri/message_id	nonmodal guide; OK webhook context	httpd.cpp State::navigation and httpd-navigation.cpp NativeGuide	GUI factory; sole gimp_image_window_activate_navigation_bar caller	NORMAL_AND_SANITIZER_GTK_PASS
+/api/v1/pdb/**	PUT,DELETE	any	legacy empty method	405 explicit	RESTPDB::put/del	NORMAL_AND_SANITIZER_PASS
+/api/v1/images/**	POST,DELETE	any	legacy empty method	405 explicit	RESTImageTree::post/del	NORMAL_AND_SANITIZER_PASS
+/api/v1/images/**/%23preview	PUT	any	legacy empty branch	405 explicit	RESTImageTree::put	NORMAL_AND_SANITIZER_PASS
+/api/v1/navigation	GET,PUT,DELETE	any	legacy empty methods	405 explicit	NavigationGuide::get/put/del	NORMAL_AND_SANITIZER_PASS

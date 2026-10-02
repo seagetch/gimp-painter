@@ -1,0 +1,123 @@
+{
+  "scope": "Optional HTTP/REST family WBS31.001-31.010 including31.008/router-lifetime; no push or persistent activation",
+  "date_utc": "2026-10-02",
+  "repository_head_at_handoff": "7c2a5784fb0841e199354db1ba9fa9e04e0aa5c5",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "allowlist": "migration/tests/httpd-allowlist.json",
+  "production_and_test_sources_sha256": {
+    "app/app.c": "e07dda868d6424ffa57f456ba79682152c2eb104a0aa9e2828fc0e40f3a6ddbf",
+    "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+    "app/core/gimp.h": "fc12b4e37853eb6050dacaf635bc542222faea51ab2393546af0eb23a63f20b9",
+    "app/httpd/httpd-images.cpp": "084e0fe355b97a806e9fb021bcfa73881a9a917203bbfdafe0dd609103554631",
+    "app/httpd/httpd-navigation.cpp": "3c08a702de3a9873b0513dcf9f572284820bcac1a8dfbf7e51fd31fb98cda5fc",
+    "app/httpd/httpd-pdb.cpp": "745a694918a67bd15962e7dd035dd78d14183d4a07f01c7c50e5a80014329a97",
+    "app/httpd/httpd-private.hpp": "b7f3c61fc051cba67ada742cc72ceefd882f9b8c341b50bad1744e02a3f79644",
+    "app/httpd/httpd-resource.cpp": "1b048f9cdea036e50d7fa54becaa37bb08d7f4685cca281b08e9ab5321232651",
+    "app/httpd/httpd-resource.hpp": "54e854a08d78913d65851e11719d9bbda3ca94787677788f31d71da826eea2e1",
+    "app/httpd/httpd.cpp": "22450de1872fe672f6f20ba1a220abba5e52f32a2d7cb1ccbecdd77e046682df",
+    "app/httpd/httpd.h": "df38f3538af72118ffa32ea8eabc57737d9e10045ec4c72c10c38881d4274227",
+    "app/httpd/meson.build": "eb97d0699129977c1ae76985d25304b08b6f57e36216d972d74ba92474dbb66a",
+    "app/meson.build": "006de987e1ba09090175c955f8a8dc084928de1db0089cfc6b2f77048deb6b01",
+    "app/tests/meson.build": "247d9ed20cdeb9c6f6b839a4c3f578b7e7a790ccecf7806bc9bed91a027c3fb2",
+    "app/tests/test-painter-http-ui.cpp": "3aefbba3476e7329526f8f5e9528c9e267158b4ead7a11675ab5dbe4991be713",
+    "app/tests/test-painter-http.cpp": "d889d82baf1cf9dbb1f09a3d4d9d6e0c5b9ad372ea7976bf339d626be78cac6d",
+    "meson.build": "5d3c2a0e0d663807367b23d47e0053aa94c57a47e6f2b1860c610574b89ece59",
+    "meson_options.txt": "06d6c582b2cb3b8b0c4070778c6e98e3c773f35cff845555302609cae449958d",
+    "migration/baseline/httpd-debian13-package-lock.json": "06a70bb364c5db775968a28a16307a8a5169f0bd64fa86a4e1b8d9f9e5f6cfcb",
+    "migration/contracts/httpd.md": "04d8959be6499a8360ad36539c301fb4e15eaaf94b1a40d9a9c25b31636fb325",
+    "migration/inventory/httpd-callers.txt": "a7bb431e72ea02c49fa398d5c4796659b7e99c8b9cbd38a6414bc1b3fceab633",
+    "migration/inventory/httpd-endpoints.tsv": "9188c8079c78fd5a9fcc54a09e461d5d950a1f50552832a35c02432a7265d02c",
+    "migration/inventory/httpd-legacy-source-hashes.json": "6e61991dfc3fd43e3d3c495536d2d7afc6fcae4793361eb63d9cec1970ceacf6",
+    "migration/inventory/httpd-network-callers.txt": "fd8ecaa3c6be7d912c26fb34a7e96fda6359d7ca1c1f17726964112017022f68",
+    "migration/tests/build_httpd_sanitizers.py": "5cb791c27f7f67519968213dfc0a8bea95300489bccf7eca4e722e3c7f735f4c",
+    "migration/tests/run_http_checks.sh": "acbe667adb4cb17fbccaedb33884c739799374621d2b5f6e449848bbe828be9c",
+    "migration/tests/run_http_disabled.sh": "ea31c2d6ab66d02a19704b51ff8a9f094daf3f52407b3c8ba7b479b9608923a6",
+    "migration/tests/verify_http_disabled.py": "f5f08f5ce6c272082f6aacdb62cc5fd67c8d9435a4cbcdcd8fc185368a8309d3"
+  },
+  "evidence_sha256": {
+    "migration/tests/httpd-normal.log": "c6df2226ca948f6ae300b93631303ae40bd64c7c08be8a2a04ad298a274d43f0",
+    "migration/tests/httpd-sanitizers.log": "b419e6acce7fc6ea7a476738044cd1686721050e30f47be476d19a411f3ae6f1",
+    "migration/tests/httpd-disabled-runtime.log": "2aa6620f36e5601d1b191de6fd5e78cbf092a7fd8cf56c1a5c9bc4b0b3d93a21",
+    "migration/tests/httpd-disabled-link.json": "51ab54ff7e6f7308521fc22f02deca81e7efefd55cfecdd8756ff0d67fa573fb",
+    "migration/tests/httpd-full-build.log": "5986a9b06382fdd4612f3dab36475d621bbb552c94336e759c294245aabceb1e",
+    "migration/tests/httpd-disabled-build.log": "92f680b8899e7dc1e465e2b1e0f21ce7a6fcbef2e1a5f0ed51ee574747704cb7",
+    "migration/tests/httpd-disabled-menu-build.log": "f0e7200b1151ca14cfb01cd8bc2f96bd95d400ee38ebe6dee062915b1cf57467",
+    "migration/tests/httpd-dconf-environment-failure.log": "9485ca7b55d1020a875e521dc81279eaf09f4dc2b9821c5ddeca2c90e404aa85",
+    "migration/tests/httpd-sanitizer-build.json": "1733bf6bce9a8fca4ce14747391ca39b76a27333b2e6ca69b5fc3d76e8203520",
+    "migration/tests/httpd-before-metadata-sanitizer-build.json": "f1e59823827591d2041f436732886927f5e16c765e627f33a65a525e0911997b",
+    "migration/tests/httpd-sanitizer-build.log": "da9d7b07e1b74c1e71823e4dcdd419617571a708bf0456c46310c040fe5859cb",
+    "migration/tests/httpd-sanitizer-refresh.log": "98d8fdc1452def56358754e6bec2e238046123302065b18003721a6a55d5af13",
+    "migration/tests/httpd-tested-sources.tar.gz": "c13b17755a062810ce809835923074eab69f9857e8d945cf53ddbf82ea94e5ec",
+    "migration/tests/httpd-snapshot-recovery.json": "a5ffef9821c8e3fe266c489fb49e0a98699130455e95bbd9e0009c807c3c071d",
+    "migration/tests/httpd-source-freeze.txt": "b3e2c7fdf9a7fa35072c355b8cd37b10d0653f06ea71c01b4bc010042cd2c688"
+  },
+  "verification": {
+    "normal_enabled": {
+      "native_cases": 17,
+      "real_gtk_cases": 6,
+      "status": "PASS"
+    },
+    "focused_sanitizers": {
+      "native_cases": 17,
+      "real_gtk_cases": 6,
+      "instrumented_units": 19,
+      "rtti_only_units": 38,
+      "changed_during_build": [],
+      "leak_detection": false,
+      "status": "PASS",
+      "runtime_basis": "Immutable matching source archive and executable hashes; current own HTTP implementation/tests also match"
+    },
+    "disabled_build": {
+      "http_sources": [],
+      "http_config_defined": false,
+      "executables": {
+        "gimp-3.0": {
+          "soup_needed": false,
+          "http_start_symbol": false
+        },
+        "gimp-console-3.0": {
+          "soup_needed": false,
+          "http_start_symbol": false
+        }
+      },
+      "status": "PASS"
+    },
+    "disabled_runtime": {
+      "painting_surface_cases": 10,
+      "xcf_save_read_cases": 20,
+      "real_gtk_canvas_cases": 19,
+      "status": "PASS"
+    },
+    "source_archive": "migration/tests/httpd-tested-sources.tar.gz",
+    "snapshot_recovery": {
+      "exact_sha256_verified": true,
+      "recovered_compatibility_inputs": {
+        "app/paint/painter-mypaint-surface/gegl-surface.hpp": "HEAD",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp": "HEAD",
+        "app/paint/painter-mypaint-surface/paint-core.cpp": "HEAD"
+      },
+      "git_blob_ids": {
+        "app/paint/painter-mypaint-surface/gegl-surface.hpp": "9c5d6f3778c09bd7fb305d5c2ac6bc2686657735",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp": "8167a22bbfe686ca99b46406ec80440763808e30",
+        "app/paint/painter-mypaint-surface/paint-core.cpp": "d802227c860d0e9821770c7a2fae6da2824ebaec"
+      }
+    }
+  },
+  "safety": {
+    "persistent_listener_started": false,
+    "only_ephemeral_loopback_tests": true,
+    "system_security_settings_changed": false,
+    "protected_home_access_retried": false,
+    "protocol_changes_documented": "migration/contracts/httpd.md"
+  },
+  "known_environment_messages": [
+    "Standalone harness reports its writable test data directory is not in its search path on exit; zero statuses are explicit",
+    "Fresh disabled GTK harness required generated image-menu.ui and dockable-menu.ui; rebuilt before passing49-case repeat",
+    "Initial dconf read-only home error preserved; parent-authorized per-process memory settings and proxy-free loopback clients avoid that unrelated path"
+  ],
+  "remaining_gates": [
+    "Aggregate current-tree verification after other active migration families finish",
+    "Other supported OS/toolchain builds and native platform-specific UI/socket behavior",
+    "Unprovided out-of-tree clients must adapt to documented explicit activation, bearer, numeric-host/no-Origin and webhook-origin policy"
+  ]
+}

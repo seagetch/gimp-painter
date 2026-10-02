@@ -22,6 +22,9 @@ subdir('tools')
 subdir('vectors')
 subdir('widgets')
 subdir('xcf')
+if painter_http_enabled
+  subdir('httpd')
+endif
 
 
 # For app/config
@@ -115,6 +118,11 @@ console_libapps = [
     libappxcf,
 ]
 
+if painter_http_enabled
+  console_libapps += libapphttpd
+  gimpconsole_deps += painter_http_soup
+endif
+
 libapp_dep = declare_dependency(
   link_whole: painter_mypaint,
   dependencies: [
@@ -159,6 +167,10 @@ gui_libapps = [
   libappwidgets,
   libgimpwidgets,
 ]
+
+if painter_http_enabled
+  gui_libapps += libapphttpdgui
+endif
 
 # Executables
 

@@ -1,0 +1,361 @@
+ninja: Entering directory `build-http-disabled'
+[0/1] Regenerating build files
+The Meson build system
+Version: 1.7.0
+Source dir: /workspace/scratch/5b5281e79681/gimp-painter
+Build dir: /workspace/scratch/5b5281e79681/gimp-painter/build-http-disabled
+Build type: native build
+Project name: gimp
+Project version: 3.0.9
+C compiler for the host machine: cc (gcc 14.2.0 "cc (Debian 14.2.0-19) 14.2.0")
+C linker for the host machine: cc ld.bfd 2.44
+C++ compiler for the host machine: c++ (gcc 14.2.0 "c++ (Debian 14.2.0-19) 14.2.0")
+C++ linker for the host machine: c++ ld.bfd 2.44
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Program python3 found: YES (/usr/bin/python3)
+../meson.build:134: WARNING: Module SIMD has no backwards or forwards compatibility and might not exist in future releases.
+Message: Host machine cpu family: x86_64
+Message: Host os: linux
+Compiler for C supports arguments -mmmx: YES (cached)
+Compiler for C supports arguments -msse: YES (cached)
+Compiler for C supports arguments -msse2: YES (cached)
+Compiler for C supports arguments -msse4.1: YES (cached)
+Compiler for C supports arguments -fdiagnostics-show-option: YES (cached)
+Compiler for C supports arguments -fno-common: YES (cached)
+Compiler for C supports arguments -Wformat: YES (cached)
+Compiler for C supports arguments -Wformat-security: YES (cached)
+Compiler for C supports arguments -Winit-self: YES (cached)
+Compiler for C supports arguments -Wlogical-op: YES (cached)
+Compiler for C supports arguments -Wmissing-declarations: YES (cached)
+Compiler for C supports arguments -Wmissing-format-attribute: YES (cached)
+Compiler for C supports arguments -Wpointer-arith: YES (cached)
+Compiler for C supports arguments -Wreturn-type: YES (cached)
+Compiler for C supports arguments -Wtype-limits: YES (cached)
+Compiler for C supports arguments -Wabsolute-value: YES (cached)
+Compiler for C supports arguments -Wdeclaration-after-statement: YES (cached)
+Compiler for C supports arguments -Wenum-conversion: YES (cached)
+Compiler for C supports arguments -Wliteral-conversion: NO (cached)
+Compiler for C supports arguments -Wno-strict-prototypes: YES (cached)
+Compiler for C supports arguments -Wold-style-definition: YES (cached)
+Compiler for C supports arguments -Wparentheses-equality: NO (cached)
+Compiler for C supports arguments -W#pragma-messages: NO (cached)
+Compiler for C supports arguments -Wsometimes-uninitialized: NO (cached)
+Compiler for C supports arguments -Wtautological-unsigned-enum-zero-compare: NO (cached)
+Compiler for C supports arguments -Wunneeded-internal-declaration: NO (cached)
+Compiler for C supports arguments -Wunused-function: YES (cached)
+Compiler for C supports arguments -Wunused-value: YES (cached)
+Compiler for C supports arguments -Werror=implicit-function-declaration: YES (cached)
+Library m found: YES
+Library dl found: YES
+Dependency atk found: YES 2.56.2 (cached)
+Dependency babl-0.1 found: YES 0.1.114 (cached)
+Dependency cairo found: YES 1.18.4 (cached)
+Dependency fontconfig found: YES 2.15.0 (cached)
+Dependency freetype2 found: YES 26.2.20 (cached)
+Dependency gdk-pixbuf-2.0 found: YES 2.42.12 (cached)
+Dependency gegl-0.4 found: YES 0.4.62 (cached)
+Dependency exiv2 found: YES 0.28.5 (cached)
+Dependency gexiv2 found: YES 0.14.3 (cached)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Dependency gio-unix-2.0 found: YES 2.84.4 (cached)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Dependency gobject-introspection-1.0 found: YES 1.84.0 (cached)
+Dependency gobject-2.0 found: YES 2.84.4 (cached)
+Dependency gmodule-no-export-2.0 found: YES 2.84.4 (cached)
+Dependency gtk+-3.0 found: YES 3.24.49 (cached)
+Dependency gdk-3.0 found: YES 3.24.49 (cached)
+Dependency harfbuzz found: YES 10.2.0 (cached)
+Dependency json-glib-1.0 found: YES 1.10.6 (cached)
+Dependency libsoup-3.0 skipped: feature painter-http disabled
+Dependency lcms2 found: YES 2.16 (cached)
+Dependency libmypaint found: YES 1.6.0 (cached)
+Dependency mypaint-brushes-1.0 found: YES 1.3.1 (cached)
+Dependency pango found: YES 1.56.3 (cached)
+Dependency pangocairo found: YES 1.56.3 (cached)
+Dependency pangoft2 found: YES 1.56.3 (cached)
+Checking if "pango is built with libthai support" with dependency pango runs: YES
+Dependency librsvg-2.0 found: YES 2.60.0 (cached)
+Dependency appstream found: YES 1.0.5 (cached)
+Dependency libarchive found: YES 3.7.4 (cached)
+Library backtrace found: YES
+Has header "execinfo.h" : YES (cached)
+Library execinfo found: NO
+Has header "execinfo.h" : YES (cached)
+Dependency x11 found: YES 1.8.12 (cached)
+Dependency xmu found: YES 1.1.3 (cached)
+Dependency xext found: YES 1.3.4 (cached)
+Dependency xfixes found: YES 6.0.0 (cached)
+Has header "X11/Xmu/WinUtil.h" with dependencies xext, xmu: YES (cached)
+Has header "X11/extensions/shape.h" with dependencies xext, xmu: YES (cached)
+Checking for function "XmuClientWindow" with dependencies xext, xmu: YES (cached)
+Checking for function "XShapeGetRectangles" with dependencies xext, xmu: YES (cached)
+Has header "X11/extensions/shape.h" : YES (cached)
+Has header "X11/Xmu/WinUtil.h" : YES (cached)
+Dependency libtiff-4 found: YES 4.7.0 (cached)
+Dependency libjpeg found: YES 2.1.5 (cached)
+Dependency zlib found: YES 1.3.1 (cached)
+Library bz2 found: YES
+Dependency liblzma found: YES 5.8.1 (cached)
+Library gs skipped: feature ghostscript disabled
+Dependency libpng found: YES 1.6.48 (cached)
+Dependency libmng skipped: feature mng disabled
+Library mng skipped: feature mng disabled
+Library aa skipped: feature aa disabled
+Dependency xpm skipped: feature xpm disabled
+Has header "qoi.h" : NO (cached)
+Dependency libiff skipped: feature ilbm disabled
+Dependency libilbm skipped: feature ilbm disabled
+Has header "libilbm/ilbm.h" skipped: feature ilbm disabled
+Dependency OpenEXR skipped: feature openexr disabled
+Dependency libwebp skipped: feature webp disabled
+Dependency libwebpmux skipped: feature webp disabled
+Dependency libwebpdemux skipped: feature webp disabled
+Dependency libheif skipped: feature heif disabled
+Compiler for language vala skipped: feature vala disabled
+Dependency poppler-glib found: YES 25.03.0 (cached)
+Dependency poppler-data found: YES 0.4.12 (cached)
+Dependency cairo-pdf skipped: feature cairo-pdf disabled
+Dependency libwmf skipped: feature wmf disabled
+Dependency libopenjp2 skipped: feature jpeg2000 disabled
+Dependency libjxl skipped: feature jpeg-xl disabled
+Dependency libjxl_threads skipped: feature jpeg-xl disabled
+Dependency xcursor skipped: feature xcursor disabled
+Dependency alsa skipped: feature alsa disabled
+Dependency cfitsio skipped: feature fits disabled
+Program xdg-email found: YES (/usr/bin/xdg-email)
+Dependency iso-codes found: YES 4.18.0 (cached)
+Program perl found: YES (/usr/bin/perl)
+Message: Found Python 3.13
+Message: Found PyGObject: true
+Program gjs found: NO
+Program xmllint found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/xmllint)
+Program xsltproc found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/xsltproc)
+Program desktop-file-validate found: YES (/usr/bin/desktop-file-validate)
+Program appstreamcli skipped: feature appdata-test disabled
+Program g-ir-compiler found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/g-ir-compiler)
+Program gi-docgen skipped: feature gi-docgen disabled
+Dependency shared-mime-info found: YES 2.4 (cached)
+Program xvfb-run skipped: feature headless-tests disabled
+Program dbus-run-session skipped: feature headless-tests disabled
+Program tools/extract-vector-icon.sh found: YES (/workspace/scratch/5b5281e79681/gimp-painter/tools/extract-vector-icon.sh)
+Program tools/generate-news found: YES (/workspace/scratch/5b5281e79681/gimp-painter/tools/generate-news)
+Program tools/gimppath2svg.py found: YES (/workspace/scratch/5b5281e79681/gimp-painter/tools/gimppath2svg.py)
+Program tools/module-dependencies.py found: YES (/workspace/scratch/5b5281e79681/gimp-painter/tools/module-dependencies.py)
+Program tools/meson_install_subdir.py found: YES (/workspace/scratch/5b5281e79681/gimp-painter/tools/meson_install_subdir.py)
+Program tools/gimp-mkenums found: YES (/workspace/scratch/5b5281e79681/gimp-painter/tools/gimp-mkenums)
+Program /workspace/scratch/5b5281e79681/gimp-painter/tools/meson-mkenums.py found: YES (/usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/tools/meson-mkenums.py)
+Dependency openmp skipped: feature openmp disabled
+Checking for function "alloca" : YES (cached)
+Checking for function "dcgettext" : YES (cached)
+Checking for function "difftime" : YES (cached)
+Checking for function "fsync" : YES (cached)
+Checking for function "getaddrinfo" : YES (cached)
+Checking for function "getnameinfo" : YES (cached)
+Checking for function "gettext" : YES (cached)
+Checking for function "mmap" : YES (cached)
+Checking for function "rint" : YES (cached)
+Checking for function "thr_self" : NO (cached)
+Checking for function "vfork" : YES (cached)
+Header "libintl.h" has symbol "bind_textdomain_codeset" : YES (cached)
+Header "libintl.h" has symbol "vprintf" : NO (cached)
+Has header "alloca.h" : YES (cached)
+Has header "dlfcn.h" : YES (cached)
+Has header "fcntl.h" : YES (cached)
+Has header "ieeefp.h" : NO (cached)
+Has header "inttypes.h" : YES (cached)
+Has header "locale.h" : YES (cached)
+Has header "math.h" : YES (cached)
+Has header "memory.h" : YES (cached)
+Has header "stdint.h" : YES (cached)
+Has header "stdlib.h" : YES (cached)
+Has header "string.h" : YES (cached)
+Has header "strings.h" : YES (cached)
+Has header "sys/param.h" : YES (cached)
+Has header "sys/prctl.h" : YES (cached)
+Has header "sys/select.h" : YES (cached)
+Has header "sys/stat.h" : YES (cached)
+Has header "sys/thr.h" : NO (cached)
+Has header "sys/time.h" : YES (cached)
+Has header "sys/times.h" : YES (cached)
+Has header "sys/types.h" : YES (cached)
+Has header "sys/wait.h" : YES (cached)
+Has header "unistd.h" : YES (cached)
+Has header "sys/mman.h" : YES (cached)
+Has header "sys/ipc.h" : YES (cached)
+Has header "sys/shm.h" : YES (cached)
+Checking if "shmctl IPC_RMID allows subsequent attaches" runs: YES
+Program git found: YES (/usr/bin/git)
+Configuring INSTALL using configuration
+Configuring config.h using configuration
+Configuring gimpversion.h using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program meson-enumgen.py found: YES (/usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/pdb/meson-enumgen.py)
+Program meson-pdbgen.py found: YES (/usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/pdb/meson-pdbgen.py)
+Program meson-enumcode.py found: YES (/usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/pdb/meson-enumcode.py)
+Program msgfmt found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/msgfmt)
+Program msginit found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/msginit)
+Program msgmerge found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/msgmerge)
+Program xgettext found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/xgettext)
+Configuring gimp-release using configuration
+Configuring gimprc using configuration
+Program bash skipped: feature bash-completion disabled
+Dependency bash-completion skipped: feature bash-completion disabled
+Configuring dockable-dialogs-menuitems.ui using configuration
+Configuring dockable-menu.ui.in using configuration
+Configuring app-dialogs-menuitems.ui using configuration
+Configuring image-menu.ui.in using configuration
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Dependency librsvg-2.0 found: YES 2.60.0 (cached)
+Configuring gimp-tool-cursors.gresource.xml using configuration
+Configuring gimp-color-picker-cursors.gresource.xml using configuration
+Found pkg-config: YES (/workspace/shared/gimp-build-deps/bin/pkg-config) 1.8.1
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Configuring gimp-core-pixbufs.gresource.xml with command
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Configuring gimp-icon-pixbufs.gresource.xml with command
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Configuring gimp-core-pixbufs.gresource.xml with command
+Configuring gimp-icon-pixbufs.gresource.xml with command
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-genmarshal found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-genmarshal)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-genmarshal found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-genmarshal)
+Dependency gobject-introspection-1.0 found: YES 1.84.0 (cached)
+Dependency gobject-introspection-1.0 found: YES 1.84.0 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/x86_64-linux-gnu-g-ir-scanner found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/x86_64-linux-gnu-g-ir-scanner)
+Dependency gobject-introspection-1.0 found: YES 1.84.0 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/x86_64-linux-gnu-g-ir-compiler found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/x86_64-linux-gnu-g-ir-compiler)
+Configuring org.gimp.extension.goat-exercises.metainfo.xml.in using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Program flex found: NO
+Program bison found: NO
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Configuring pagecurl-icons.gresource.xml with command
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+Configuring screenshot-icons.gresource.xml with command
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-compile-resources)
+WARNING: You should add the boolean check kwarg to the run_command call.
+         It currently defaults to false,
+         but it will default to true in meson 2.0.
+         See also: https://github.com/mesonbuild/meson/issues/9300
+Dependency threads found: YES unknown (cached)
+Compiler for C++ supports arguments -fexceptions: YES (cached)
+Compiler for C++ supports arguments -fno-rtti: YES (cached)
+Program python3 found: YES (/usr/bin/python3)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/glib-genmarshal found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/glib-genmarshal)
+Compiler supports sse2: YES
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-build-deps/root/usr/bin/gdbus-codegen found: YES (/workspace/shared/gimp-build-deps/root/usr/bin/gdbus-codegen)
+Compiler supports sse2: YES
+Compiler supports sse2: YES
+Compiler supports sse41: YES
+Configuring gimp.desktop.in using configuration
+Cleaning... 0 files.
+Configuring org.gimp.GIMP.appdata.xml.in using configuration
+Program tools/in-build-gimp.py found: YES (/usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py)
+Program /workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/libgimp-run-python-test.py found: YES (/usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/libgimp-run-python-test.py)
+Program ./libgimp-run-python-test.py found: YES (/usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py)
+Program ./libgimp-run-c-test.py found: YES (/usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py)
+Configuring gimptool-3.0.1 using configuration
+Configuring gimprc-3.0.5 using configuration
+Configuring gimp-console-3.0.1 using configuration
+Configuring gimp-3.0.1 using configuration
+Message: Extra Binaries:
+  gimp-console:        true
+
+Optional Features:
+  Check updates at startup:      false
+  Language selection:            true
+  Vector icons:                  true
+  Dr. Mingw (Win32):             false
+  Relocatable Bundle:            false
+  Default ICC directory (Linux): /usr/share/color/icc
+  32-bit DLL folder (Win32):     32/bin
+  Dashboard backtraces:          partially detailed (missing: libunwind)
+  Debug symbols format:          native
+  Binary symlinks:               false
+  OpenMP:                        false
+  Bash Completion:               disabled
+
+Optional Plug-Ins:
+  Ascii Art:           false
+  Ghostscript:         false
+  JPEG 2000:           false
+  JPEG XL:             false
+  MNG:                 false
+  OpenEXR:             false
+  WebP:                false
+  HEIC:                import: false - export: false
+  AVIF:                import: false - export: false
+  PDF (export):        false
+  Print:               true
+  Javascript plug-ins: false
+  Vala plug-ins:       false
+  TWAIN (Win32):       false
+  WMF:                 false
+  X11 Mouse Cursor:    false
+  XPM:                 false
+  Quite-OK Image:      false
+  Amiga IFF/ILBM:      false
+  Email:               true (/usr/bin/xdg-email)
+  FITS:                false
+
+Experimental Plug-Ins (discouraged except for developers):
+  Lua plug-ins:        false
+
+Unmaintained Plug-Ins (discouraged except for developers):
+  Help Browser:        false
+  Webpage:             false
+
+Optional Modules:
+  ALSA (MIDI Input):   false
+  Linux Input:         false (GUdev support: false)
+  DirectInput (Win32): false
+
+Tests:
+  Use xvfb-run         false
+  Test appdata         false
+
+Documentation:
+  libgimp API Reference: false
+
+Bug report URL: https://gitlab.gnome.org/GNOME/gimp/issues/new
+Message: 
+    NOTE: if you plan on packaging GIMP for distribution, it is recommended
+    to override the bug report URL with option:
+      -Dbug-report-url=https://example.com/
+    so that you can filter packaging bugs from core bugs before reporting upstream.
+  
+Build targets in project: 989
+
+gimp 3.0.9
+
+  User defined options
+    auto_features: disabled
+    libunwind    : false
+    painter-http : disabled
+    prefix       : /workspace/scratch/5b5281e79681/.build-prefix-debian13
+
+Found ninja-1.12.1 at /workspace/shared/gimp-build-deps/root/usr/bin/ninja
+[1/2] Generating menus/image-menu.ui with a custom command
+ninja: Entering directory `build-http-disabled'
+[1/1] Generating menus/dockable-menu.ui with a custom command

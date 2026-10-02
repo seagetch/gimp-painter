@@ -1,0 +1,97 @@
+afa43fae:app/display/gimpimagewindow.c:105:typedef struct _NavigationGuide NavigationGuide;
+afa43fae:app/display/gimpimagewindow.c:106:struct _NavigationGuide {
+afa43fae:app/display/gimpimagewindow.c:139:  NavigationGuide    guide; /* gimp-painter-2.8 */
+afa43fae:app/display/gimpimagewindow.c:2523:gimp_image_window_activate_navigation_bar (GimpImageWindow *window,
+afa43fae:app/display/gimpimagewindow.h:103:void                gimp_image_window_activate_navigation_bar (GimpImageWindow *window,
+afa43fae:app/gimp-features.cpp:59:    httpd_get_factory,
+afa43fae:app/gimp-features.cpp:61:    httpd_get_gui_factory,
+afa43fae:app/httpd/httpd-features-gui.cpp:37:  CXXPointer<RESTD> rest_daemon;
+afa43fae:app/httpd/httpd-features-gui.cpp:47:GIMP::Feature* httpd_get_gui_factory()
+afa43fae:app/httpd/httpd-features-gui.cpp:57:  rest_daemon = new RESTD(gimp);
+afa43fae:app/httpd/httpd-features-gui.cpp:60:  rest_daemon->route("/<name>", RESTD::delegator([&](auto matched, auto gimp, auto msg, auto context) {
+afa43fae:app/httpd/httpd-features-gui.cpp:72:  auto pdb_factory              = new RESTPDBFactory;
+afa43fae:app/httpd/httpd-features-gui.cpp:74:  auto image_tree_factory       = new RESTImageTreeFactory;
+afa43fae:app/httpd/httpd-features-gui.cpp:76:  auto navigation_guide_factory = new NavigationGuideFactory;
+afa43fae:app/httpd/httpd-features-gui.cpp:78:  rest_daemon->route("/api/v1/pdb/", pdb_factory);
+afa43fae:app/httpd/httpd-features-gui.cpp:79:  rest_daemon->route("/api/v1/pdb/{name}", pdb_factory);
+afa43fae:app/httpd/httpd-features-gui.cpp:80:  rest_daemon->route("/api/v1/images/**", image_tree_factory);
+afa43fae:app/httpd/httpd-features-gui.cpp:81:  rest_daemon->route("/api/v1/navigation", navigation_guide_factory);
+afa43fae:app/httpd/httpd-features-gui.h:26:GIMP::Feature* httpd_get_gui_factory();
+afa43fae:app/httpd/httpd-features.cpp:37:  CXXPointer<RESTD> rest_daemon;
+afa43fae:app/httpd/httpd-features.cpp:47:GIMP::Feature* httpd_get_factory()
+afa43fae:app/httpd/httpd-features.cpp:58:  rest_daemon = new RESTD(gimp);
+afa43fae:app/httpd/httpd-features.cpp:59:  rest_daemon->route("/<name>", RESTD::delegator([&](auto matched, auto gimp, auto msg, auto context) {
+afa43fae:app/httpd/httpd-features.cpp:70:  auto pdb_factory              = new RESTPDBFactory;
+afa43fae:app/httpd/httpd-features.cpp:71:  auto image_tree_factory       = new RESTImageTreeFactory;
+afa43fae:app/httpd/httpd-features.cpp:72:  rest_daemon->route("/api/v1/pdb/", pdb_factory);
+afa43fae:app/httpd/httpd-features.cpp:73:  rest_daemon->route("/api/v1/pdb/{name}", pdb_factory);
+afa43fae:app/httpd/httpd-features.cpp:74:  rest_daemon->route("/api/v1/images/**", image_tree_factory);
+afa43fae:app/httpd/httpd-features.h:26:GIMP::Feature* httpd_get_factory();
+afa43fae:app/httpd/httpd.cpp:47:/// Class RESTD
+afa43fae:app/httpd/httpd.cpp:50:RESTD::handle_request(SoupServer*        server,
+afa43fae:app/httpd/httpd.cpp:56:  g_print("RESTD::handle_request: %s\n", path);
+afa43fae:app/httpd/httpd.cpp:60:RESTD&
+afa43fae:app/httpd/httpd.cpp:61:RESTD::route(const gchar* path, RESTResourceFactory* factory) {
+afa43fae:app/httpd/httpd.cpp:66:RESTD&
+afa43fae:app/httpd/httpd.cpp:67:RESTD::route(const gchar* path, RESTD::Delegator* d) {
+afa43fae:app/httpd/httpd.cpp:74:/// Class RESTDResourceFactory
+afa43fae:app/httpd/httpd.cpp:77:RESTResourceFactory::handle_request(RESTD::Router::Matched* matched,
+afa43fae:app/httpd/httpd.cpp:88:/// Class RESTDResource
+afa43fae:app/httpd/httpd.h:48:class RESTD : public HTTPD {
+afa43fae:app/httpd/httpd.h:57:  enum { HTTP_PORT = 8920 }; // Mayoi is god ;)
+afa43fae:app/httpd/httpd.h:59:  RESTD(Gimp* gimp) : HTTPD(gimp), router() { };
+afa43fae:app/httpd/httpd.h:60:  virtual ~RESTD() { };
+afa43fae:app/httpd/httpd.h:69:  RESTD& route(const gchar* path, RESTResourceFactory* factory);
+afa43fae:app/httpd/httpd.h:70:  RESTD& route(const gchar* path, Delegator* d);
+afa43fae:app/httpd/httpd.h:78:}; // class RESTD
+afa43fae:app/httpd/httpd.h:87:  RESTD::Router::Matched* matched;
+afa43fae:app/httpd/httpd.h:102:               RESTD::Router::Matched* m,
+afa43fae:app/httpd/httpd.h:125:  void handle_request(RESTD::Router::Matched* matched, Gimp* gimp, SoupMessage* msg, SoupClientContext* context);
+afa43fae:app/httpd/httpd.h:126:  virtual RESTResource* create(Gimp* gimp, RESTD::Router::Matched* matched, SoupMessage* msg, SoupClientContext* context) = 0;
+afa43fae:app/httpd/navigation-guide.cpp:93:  GLib::CString  webhook_uri;
+afa43fae:app/httpd/navigation-guide.cpp:151:        this->webhook_uri  = g_strdup (args_json["webhook_uri"]);
+afa43fae:app/httpd/navigation-guide.cpp:174:struct NavigationGuideContext {
+afa43fae:app/httpd/navigation-guide.cpp:178:void on_guide_finished (NavigationGuideContext* navi_context)
+afa43fae:app/httpd/navigation-guide.cpp:180:  if (navi_context->arg_conf && navi_context->arg_conf->webhook_uri) {
+afa43fae:app/httpd/navigation-guide.cpp:185:    g_print("uri=%s, id=%s, result=%s\n", navi_context->arg_conf->webhook_uri.ptr(), navi_context->arg_conf->message_id.ptr(), result_text.ptr());
+afa43fae:app/httpd/navigation-guide.cpp:193:    hook_msg = soup_message_new("POST", navi_context->arg_conf->webhook_uri.ptr());
+afa43fae:app/httpd/navigation-guide.cpp:206:class NavigationGuide : public RESTResource {
+afa43fae:app/httpd/navigation-guide.cpp:209:  NavigationGuide(Gimp* gimp, RESTD::Router::Matched* matched, SoupMessage* msg, SoupClientContext* context) :
+afa43fae:app/httpd/navigation-guide.cpp:219:NavigationGuideFactory::create(Gimp* gimp,
+afa43fae:app/httpd/navigation-guide.cpp:220:                             RESTD::Router::Matched* matched,
+afa43fae:app/httpd/navigation-guide.cpp:224:  return new NavigationGuide(gimp, matched, msg, context);
+afa43fae:app/httpd/navigation-guide.cpp:228:void NavigationGuide::get()
+afa43fae:app/httpd/navigation-guide.cpp:235:void NavigationGuide::put()
+afa43fae:app/httpd/navigation-guide.cpp:241:void NavigationGuide::post()
+afa43fae:app/httpd/navigation-guide.cpp:261:    NavigationGuideContext* guide_context = g_new0(NavigationGuideContext,1);
+afa43fae:app/httpd/navigation-guide.cpp:269:          gimp_image_window_activate_navigation_bar (window, guide_context->arg_conf->message_text, NULL, G_CALLBACK(on_guide_finished), guide_context);
+afa43fae:app/httpd/navigation-guide.cpp:279:void NavigationGuide::del()
+afa43fae:app/httpd/navigation-guide.h:13:class NavigationGuideFactory : public RESTResourceFactory {
+afa43fae:app/httpd/navigation-guide.h:15:  virtual RESTResource* create(Gimp* gimp, RESTD::Router::Matched* matched, SoupMessage* msg, SoupClientContext* context);
+afa43fae:app/httpd/rest-image-tree.cpp:243:class RESTImageTree : public RESTResource {
+afa43fae:app/httpd/rest-image-tree.cpp:254:  RESTImageTree(Gimp* gimp, RESTD::Router::Matched* matched, SoupMessage* msg, SoupClientContext* context) :
+afa43fae:app/httpd/rest-image-tree.cpp:264:RESTImageTreeFactory::create(Gimp* gimp,
+afa43fae:app/httpd/rest-image-tree.cpp:265:                             RESTD::Router::Matched* matched,
+afa43fae:app/httpd/rest-image-tree.cpp:269:  return new RESTImageTree(gimp, matched, msg, context);
+afa43fae:app/httpd/rest-image-tree.cpp:274:RESTImageTree::get_info(GLib::IObject<GimpItem> item) {
+afa43fae:app/httpd/rest-image-tree.cpp:367:RESTImageTree::get_data(GLib::IObject<GimpItem> item, const gchar* format, gint max_size)
+afa43fae:app/httpd/rest-image-tree.cpp:436:RESTImageTree::put_data(GLib::IObject<GimpItem> item, Args... args)
+afa43fae:app/httpd/rest-image-tree.cpp:497:RESTImageTree::parse_path(const gchar* path, GLib::IObject<GimpItem>& item, EMethodId& method_id)
+afa43fae:app/httpd/rest-image-tree.cpp:572:void RESTImageTree::get()
+afa43fae:app/httpd/rest-image-tree.cpp:601:void RESTImageTree::put()
+afa43fae:app/httpd/rest-image-tree.cpp:664:void RESTImageTree::post()
+afa43fae:app/httpd/rest-image-tree.cpp:669:void RESTImageTree::del()
+afa43fae:app/httpd/rest-image-tree.h:13:class RESTImageTreeFactory : public RESTResourceFactory {
+afa43fae:app/httpd/rest-image-tree.h:15:  virtual RESTResource* create(Gimp* gimp, RESTD::Router::Matched* matched, SoupMessage* msg, SoupClientContext* context);
+afa43fae:app/httpd/rest-pdb.cpp:192:      it["host"] = "localhost:8920";
+afa43fae:app/httpd/rest-pdb.cpp:193:      it["basePath"] = "/api/v1/pdb";
+afa43fae:app/httpd/rest-pdb.cpp:470:          it["url"] = "http://localhost:8920/api/v1/pdb";
+afa43fae:app/httpd/rest-pdb.cpp:998:void RESTPDB::get()
+afa43fae:app/httpd/rest-pdb.cpp:1034:void RESTPDB::put()
+afa43fae:app/httpd/rest-pdb.cpp:1040:void RESTPDB::post()
+afa43fae:app/httpd/rest-pdb.cpp:1096:void RESTPDB::del()
+afa43fae:app/httpd/rest-pdb.h:26:class RESTPDB : public RESTResource {
+afa43fae:app/httpd/rest-pdb.h:28:  RESTPDB(Gimp* gimp, RESTD::Router::Matched* matched, SoupMessage* msg, SoupClientContext* context) :
+afa43fae:app/httpd/rest-pdb.h:36:class RESTPDBFactory : public RESTResourceFactory {
+afa43fae:app/httpd/rest-pdb.h:38:  virtual RESTResource* create(Gimp* gimp, RESTD::Router::Matched* matched, SoupMessage* msg, SoupClientContext* context) {
+afa43fae:app/httpd/rest-pdb.h:39:    return new RESTPDB(gimp, matched, msg, context);

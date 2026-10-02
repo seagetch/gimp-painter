@@ -140,6 +140,9 @@ struct _Gimp
 
   /*  GUI focus occured. See gtk#7534.  */
   gboolean                focused_once;
+
+  /* Optional service owner; implementation is in its typed BindingStore. */
+  GObject                *painter_httpd;
 };
 
 struct _GimpClass

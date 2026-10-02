@@ -382,6 +382,10 @@ gimp_dispose (GObject *object)
   Gimp   *gimp = GIMP (object);
   GError *binding_error = NULL;
 
+  if (gimp->painter_httpd)
+    g_object_run_dispose (gimp->painter_httpd);
+  g_clear_object (&gimp->painter_httpd);
+
   /* Stop painter-owned callbacks before their contexts/resources disappear.
    * This is a no-op until a feature has explicitly installed a binding store. */
   if (! gimp_painter_binding_close (object, &binding_error))

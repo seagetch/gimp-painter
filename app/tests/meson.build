@@ -547,3 +547,27 @@ if not meson.is_cross_build()
     args: [meson.project_source_root() / 'migration/tests/test_brush_geometry_fixtures.py'],
     suite: 'painter', is_parallel: false, timeout: 60)
 endif
+
+if painter_http_enabled
+  painter_http_test = executable('painter-http', 'test-painter-http.cpp', 'tests.c',
+    dependencies: [libapp_dep, appstream, json_glib, painter_http_soup],
+    link_with: apptests_links, cpp_args: painter_cpp_args,
+    override_options: ['cpp_std=c++14'])
+  test('painter-http', painter_http_test,
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes', 'GSETTINGS_BACKEND=memory'], suite: 'painter', is_parallel: false, timeout: 90)
+endif
+
+if painter_http_enabled
+  painter_http_ui_test = executable('painter-http-ui', 'test-painter-http-ui.cpp', 'tests.c',
+    dependencies: [libapp_dep, appstream, json_glib, painter_http_soup],
+    link_with: [apptests_links, libapphttpdgui], cpp_args: painter_cpp_args,
+    override_options: ['cpp_std=c++14'])
+  test('painter-http-ui', painter_http_ui_test,
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes', 'GSETTINGS_BACKEND=memory'], suite: 'painter', is_parallel: false, timeout: 90)
+endif

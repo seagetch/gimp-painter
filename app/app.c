@@ -59,6 +59,9 @@
 #include "core/gimpimage.h"
 
 #include "file/file-open.h"
+#ifdef HAVE_PAINTER_HTTP
+#include "httpd/httpd.h"
+#endif
 
 #ifndef GIMP_CONSOLE_COMPILATION
 #include <gtk/gtk.h>
@@ -399,6 +402,22 @@ app_activate_callback (GimpCoreApp *app,
   /*  Load all data files */
   gimp_restore (gimp, update_status_func, &font_error);
 
+#ifdef HAVE_PAINTER_HTTP
+  {
+    GError *http_error = NULL;
+    gimp->painter_httpd = gimp_painter_httpd_from_environment (gimp, &http_error);
+#ifndef GIMP_CONSOLE_COMPILATION
+    if (gimp->painter_httpd && !gimp->no_interface)
+      gimp_painter_httpd_enable_navigation (gimp->painter_httpd);
+#endif
+    if (http_error)
+      {
+        g_printerr ("Optional Painter HTTP service: %s\n", http_error->message);
+        g_clear_error (&http_error);
+      }
+  }
+#endif
+
   /*  enable autosave late so we don't autosave when the
    *  monitor resolution is set in gui_init()
    */
@@ -556,6 +575,9 @@ app_exit_after_callback (Gimp         *gimp,
   if (gimp->be_verbose)
     g_print ("EXIT: %s\n", G_STRFUNC);
 
+  if (gimp->painter_httpd)
+    g_object_run_dispose (gimp->painter_httpd);
+  g_clear_object (&gimp->painter_httpd);
   g_application_quit (G_APPLICATION (app));
 
   return FALSE;

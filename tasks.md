@@ -1092,6 +1092,7 @@
 
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
+| 31.001/optional-http-runtime | [x] | optional HTTP/RESTの全endpoint・native PDB/画像/案内UIを接続する | 01.017, 30.001/layer-create-edit, 30.013/public-mode-identity | source/caller台帳、17native+6GTK通常/19unit sanitizer＋38 RTTI-only合格。disabled実buildでSoup照会/依存/起動symbolゼロ、描画10/XCF20/Canvas19合格。認証loopback/明示webhook設定と旧ordinal境界を保持・安全変更明記。外部client/platform/aggregateは別gate |
 | 31.001 | [ ] | HTTP の全 endpoint を列挙する | 01.017, 30.017 | 利用側・入力・副作用・返値を記録 |
 | 31.002 | [ ] | HTTP 利用元を照合する | 31.001 | 既存 UI や資産からの隠れた依存を検出 |
 | 31.003 | [ ] | HTTP の任意ビルド境界を実装する | 31.002 | core 機能に必須依存を作らない |

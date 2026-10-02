@@ -528,6 +528,11 @@ endif
 
 json_glib_minver  = '1.2.6'
 json_glib         = dependency('json-glib-1.0',      version: '>='+json_glib_minver)
+
+# Entire optional transport is absent from ordinary painting/save builds.
+painter_http_soup = dependency('libsoup-3.0', version: '>=3.2', required: get_option('painter-http'))
+painter_http_enabled = painter_http_soup.found()
+conf.set('HAVE_PAINTER_HTTP', painter_http_enabled)
 lcms_minver       = '2.8'
 lcms              = dependency('lcms2',              version: '>='+lcms_minver)
 libmypaint_minver = '1.3.0'

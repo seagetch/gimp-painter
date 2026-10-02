@@ -70,3 +70,6 @@ option('javascript',        type: 'feature', value: 'auto', description: 'Instal
 option('lua',               type: 'boolean', value: false,  description: 'Install Lua plug-ins (experimental)')
 
 option('debug-self-in-build', type: 'boolean', value: false, description: 'Run in-build GIMP within gdb for debugging purpose')
+
+option('painter-http', type: 'feature', value: 'disabled',
+       description: 'Optional authenticated loopback Painter HTTP/REST service')

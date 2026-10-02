@@ -1,0 +1,26 @@
+afa43fae:app/base/glib-cxx-utils.hpp:506:    gchar* operator [](int index) const { return g_match_info_fetch(obj, index); };
+afa43fae:app/base/soup-cxx-utils.hpp:35:class ISoupSession : public GLib::IObject<SoupSession> {
+afa43fae:app/base/soup-cxx-utils.hpp:36:  using super = GLib::IObject<SoupSession>;
+afa43fae:app/base/soup-cxx-utils.hpp:38:  using Handler = Delegators::Delegator<void(SoupSession*, SoupMessage*)>;
+afa43fae:app/base/soup-cxx-utils.hpp:69:    void callback(SoupSession* session, SoupMessage* message, gpointer user_data) {
+afa43fae:app/base/soup-cxx-utils.hpp:70:      ISoupSession i_session(session);
+afa43fae:app/base/soup-cxx-utils.hpp:90:  ISoupSession() : super() { };
+afa43fae:app/base/soup-cxx-utils.hpp:91:  ISoupSession(SoupSession* session) : super(session) { };
+afa43fae:app/base/soup-cxx-utils.hpp:92:  ISoupSession(const ISoupSession& session) : super(session.obj) { };
+afa43fae:app/base/soup-cxx-utils.hpp:97:    SoupSession* session = SOUP_SESSION(obj);
+afa43fae:app/base/soup-cxx-utils.hpp:98:    soup_session_queue_message (session, msg, Defferred::callback, defferred);
+afa43fae:app/base/soup-cxx-utils.hpp:103:    SoupSession* session = SOUP_SESSION(obj);
+afa43fae:app/base/soup-cxx-utils.hpp:104:    soup_session_abort (session);
+afa43fae:app/base/soup-cxx-utils.hpp:108:    SoupSession* session = SOUP_SESSION(obj);
+afa43fae:app/base/soup-cxx-utils.hpp:109:    soup_session_cancel_message (session, msg, status);
+afa43fae:app/httpd/navigation-guide.cpp:187:    SoupSession* session = soup_session_new_with_options(SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_SNIFFER, NULL);
+afa43fae:app/httpd/navigation-guide.cpp:189:    soup_session_add_feature(session, SOUP_SESSION_FEATURE(logger));
+afa43fae:app/httpd/navigation-guide.cpp:199:    gint status = soup_session_send_message (session, hook_msg);
+afa43fae:app/httpd/rest-pdb.cpp:192:      it["host"] = "localhost:8920";
+afa43fae:app/httpd/rest-pdb.cpp:470:          it["url"] = "http://localhost:8920/api/v1/pdb";
+afa43fae:plug-ins/script-fu/ftx/README:75:        telnet localhost 9000
+afa43fae:plug-ins/script-fu/script-fu-server.c:256:                    params[1].data.d_string : "127.0.0.1",
+afa43fae:plug-ins/script-fu/script-fu-server.c:860:  gtk_entry_set_text (GTK_ENTRY (sint.ip_entry), "127.0.0.1");
+afa43fae:plug-ins/script-fu/script-fu-server.c:888:                           "127.0.0.1 (especially 0.0.0.0) can allow "
+afa43fae:plug-ins/script-fu/servertest.py:7:   print >>sys.stderr, "       (if omitted connect to localhost, port 10008)"
+afa43fae:plug-ins/script-fu/servertest.py:10:HOST = "localhost"
