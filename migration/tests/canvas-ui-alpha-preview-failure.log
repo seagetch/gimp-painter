@@ -1,0 +1,245 @@
+Cloud/native GTK display: :0; mode: asan
+Requested GTK scale: 1
+ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e  app/widgets/gimppainterlayertiles.cpp
+9a11dde5057ca30d47563d67734c995a17303fb49947ff0ba64ac623ae7ab659  app/display/gimppaintercanvasui.cpp
+fa8cb41ec1934e53103d6ff5c773acea8c4bfa0d5f9c27daae2c2795d7531d6a  app/tests/test-painter-canvas-ui.c
+ce10ab94750b55d81a3e793ab4f65187c9385af4fef5fd8b04471960409adfc9  /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-canvas-ui-asan
+TAP version 14
+# random seed: R02S3432bf9c0531989725a14198cb113e5e
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+Application icon missing: /workspace/scratch/5b5281e79681/gimp-painter/desktop/16x16/gimp.png (Failed to open file “/workspace/scratch/5b5281e79681/gimp-painter/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/scratch/5b5281e79681/gimp-painter/desktop/32x32/gimp.png (Failed to open file “/workspace/scratch/5b5281e79681/gimp-painter/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/scratch/5b5281e79681/gimp-painter/desktop/48x48/gimp.png (Failed to open file “/workspace/scratch/5b5281e79681/gimp-painter/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/scratch/5b5281e79681/gimp-painter/desktop/64x64/gimp.png (Failed to open file “/workspace/scratch/5b5281e79681/gimp-painter/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/scratch/5b5281e79681/gimp-painter/desktop/scalable/gimp.svg (Failed to open file “/workspace/scratch/5b5281e79681/gimp-painter/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/scratch/5b5281e79681/gimp-painter/desktop/256x256/gimp.png
+GIMP-Warning: Error while parsing '/workspace/scratch/5b5281e79681/.build-prefix-debian13/etc/gimp/3.0/toolrc' in line 183: missing tools in toolrc file
+
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/gradient-map.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/film.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/align-layers.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/animation-optimize.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/animation-play.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/busy-dialog.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/border-average.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/checkerboard.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/cml-explorer.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/colormap-remap.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/compose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/crop-zealous.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/contrast-retinex.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/curve-bend.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/decompose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/depth-merge.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/despeckle.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/destripe.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-cel.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-compressor.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-csource.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-dicom.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-farbfeld.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gif-export.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gbr.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gegl.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gih.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gif-load.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-glob.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-html-table.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-header.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pat.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pcx.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pdf-load.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pix.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pnm.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-png.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-psp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-sunras.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-raw-data.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-tga.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-svg.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-xbm.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-wbmp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/grid.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-xwd.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/guillotine.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/nl-filter.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/hot.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/jigsaw.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/plugin-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/procedure-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/qbist.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/sample-colorize.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/smooth-palette.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/sparkle.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/tile-small.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/sphere-designer.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/tile.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/unit-editor.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/van-gogh-lic.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/warp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/wavelet-decompose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/web-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-desktop-link.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/mail.dummy' in plug-in directory.
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+gui_dbus_name_lost: the name "org.gimp.GIMP.UI" could not be acquired on the bus.
+1..18
+# Start of painter-canvas-ui tests
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-canvas-ui/selection_and_visibility
+# slow test /painter-canvas-ui/selection_and_visibility executed in 0.96 secs
+ok 2 /painter-canvas-ui/group_move_and_undo
+../app/widgets/gimpviewrenderer.c:1382:34: runtime error: load of address 0x7ffd247c9580 with insufficient space for an object of type 'const guchar'
+0x7ffd247c9580: note: pointer points here
+ 00 00 00 00  00 00 00 00 00 00 00 00  00 b2 00 8d 0f bf cb 9a  00 4d 63 00 10 52 00 00  00 00 00 00
+              ^
+    #0 0x561861e6ab89 in gimp_view_render_temp_buf_to_surface ../app/widgets/gimpviewrenderer.c:1382
+    #1 0x561861e6ab89 in gimp_view_renderer_render_temp_buf ../app/widgets/gimpviewrenderer.c:980
+    #2 0x561861e9bda6 in gimp_view_renderer_image_render ../app/widgets/gimpviewrendererimage.c:166
+    #3 0x561861e62b68 in gimp_view_renderer_real_draw ../app/widgets/gimpviewrenderer.c:767
+    #4 0x561861e683b4 in gimp_view_renderer_draw ../app/widgets/gimpviewrenderer.c:667
+    #5 0x7fe5a762a8bf in gtk_cell_renderer_render (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xf98bf) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #6 0x7fe5a762030a  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xef30a) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #7 0x7fe5a76232ee  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xf22ee) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #8 0x7fe5a761fddb  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xeeddb) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #9 0x7fe5a78806d3  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x34f6d3) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #10 0x7fe5a7876e01  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x345e01) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #11 0x7fe5a778f3c3  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x25e3c3) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #12 0x7fe5a7861d85  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x330d85) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #13 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #14 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #15 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #16 0x7fe5a76e8ce4  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1b7ce4) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #17 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #18 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #19 0x7fe5a76e8ba4  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1b7ba4) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #20 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #21 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #22 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #23 0x7fe5a7602877  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd1877) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #24 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #25 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #26 0x7fe5a7603d54  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd2d54) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #27 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #28 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #29 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #30 0x7fe5a7602877  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd1877) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #31 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #32 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #33 0x7fe5a7603d54  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd2d54) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #34 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #35 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #36 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #37 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #38 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #39 0x7fe5a775e12d  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x22d12d) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #40 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #41 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #42 0x7fe5a7606aa5  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd5aa5) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #43 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #44 0x7fe5a775cd13  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x22bd13) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #45 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #46 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #47 0x7fe5a776bbdd  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x23abdd) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #48 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #49 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #50 0x7fe5a776ba74  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x23aa74) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #51 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #52 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #53 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #54 0x7fe5a7602877  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd1877) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #55 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #56 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #57 0x7fe5a7603d54  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd2d54) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #58 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #59 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #60 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #61 0x7fe5a7602877  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd1877) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #62 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #63 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #64 0x7fe5a7603d54  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd2d54) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #65 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #66 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #67 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #68 0x7fe5a7602877  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd1877) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #69 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #70 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #71 0x7fe5a7603d54  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd2d54) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #72 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #73 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #74 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #75 0x7fe5a7602877  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd1877) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #76 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #77 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #78 0x7fe5a7603d54  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd2d54) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #79 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #80 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #81 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #82 0x7fe5a7602877  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd1877) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #83 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #84 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #85 0x7fe5a7603d54  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd2d54) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #86 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #87 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #88 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #89 0x7fe5a7602877  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd1877) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #90 0x7fe5a7659b80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x128b80) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #91 0x7fe5a7660738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12f738) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #92 0x7fe5a7603d54  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0xd2d54) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #93 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #94 0x7fe5a765338c in gtk_container_propagate_draw (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x12238c) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #95 0x7fe5a76534ac  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x1224ac) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #96 0x7fe5a788c83b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x35b83b) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #97 0x7fe5a789b0af  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x36a0af) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #98 0x7fe5a7739094 in gtk_main_do_event (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0+0x208094) (BuildId: d54786f1fa09b343b302a9725f239075bbf0d0eb)
+    #99 0x7fe5a74615c8  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0+0x405c8) (BuildId: 943fd0bfcc4de782df82f67ca22a630258235a86)
+    #100 0x7fe5a7470738  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0+0x4f738) (BuildId: 943fd0bfcc4de782df82f67ca22a630258235a86)
+    #101 0x7fe5a7472355  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0+0x51355) (BuildId: 943fd0bfcc4de782df82f67ca22a630258235a86)
+    #102 0x7fe5a747256b  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0+0x5156b) (BuildId: 943fd0bfcc4de782df82f67ca22a630258235a86)
+    #103 0x7fe5a863bb80  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x17b80) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #104 0x7fe5a86518b7  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x2d8b7) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #105 0x7fe5a86575a5 in g_signal_emit_valist (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x335a5) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #106 0x7fe5a8657662 in g_signal_emit (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x33662) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #107 0x7fe5a746a43d  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0+0x4943d) (BuildId: 943fd0bfcc4de782df82f67ca22a630258235a86)
+    #108 0x7fe5a745627a  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0+0x3527a) (BuildId: 943fd0bfcc4de782df82f67ca22a630258235a86)
+    #109 0x7fe5a852a50d  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x5f50d) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #110 0x7fe5a8527484  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x5c484) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #111 0x7fe5a85296b6  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x5e6b6) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #112 0x7fe5a8529e1f in g_main_context_iteration (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x5ee1f) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #113 0x5618619e602f in drain ../app/tests/test-painter-canvas-ui.c:42
+    #114 0x5618619e759f in image_switch_disconnect ../app/tests/test-painter-canvas-ui.c:84
+    #115 0x7fe5a85570d8  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c0d8) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #116 0x7fe5a8557052  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c052) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #117 0x7fe5a85575e1 in g_test_run_suite (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c5e1) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #118 0x7fe5a8557667 in g_test_run (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x8c667) (BuildId: 4b881c2eb20a863a8c8f695345453dd32248ffb4)
+    #119 0x5618619eb6bc in gimp_test_app_activate_callback ../app/tests/tests.c:131
+    #120 0x5618619eb6bc in gimp_test_app_activate_callback ../app/tests/tests.c:112
+    #121 0x7fe5a863b94f in g_closure_invoke (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x1794f) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #122 0x7fe5a864fd42  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x2bd42) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #123 0x7fe5a8651768  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x2d768) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #124 0x7fe5a86575a5 in g_signal_emit_valist (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x335a5) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #125 0x7fe5a8657662 in g_signal_emit (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x33662) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #126 0x7fe5a82a2c9f  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0+0xeac9f) (BuildId: 3ce726657438ad76057056c7ad7132e4855e3567)
+    #127 0x7fe5a82a2e37 in g_application_run (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0+0xeae37) (BuildId: 3ce726657438ad76057056c7ad7132e4855e3567)
+    #128 0x5618619eb094 in main ../app/tests/test-painter-canvas-ui.c:354
+    #129 0x7fe5a66f8ca7  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6+0x29ca7) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #130 0x7fe5a66f8d64 in __libc_start_main (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6+0x29d64) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #131 0x5618619e5f30 in _start (/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-canvas-ui-asan+0xdcff30) (BuildId: 4aa06b0e62be3027b4008b3652a77a168239a65c)
+
+PAINTER_CANVAS_EXIT=1

@@ -159,7 +159,12 @@ gimp_view_renderer_image_render (GimpViewRenderer *renderer,
           if (view_height < renderer->height)
             render_buf_y = (renderer->height - view_height) / 2;
 
-          if (rendererimage->channel != -1)
+          if (rendererimage->channel == GIMP_CHANNEL_ALPHA)
+            /* Indexed image previews are expanded to RGBA, unlike the
+             * two-component index/alpha storage used by the image. */
+            component_index = babl_format_get_n_components
+              (gimp_temp_buf_get_format (render_buf)) - 1;
+          else if (rendererimage->channel != -1)
             component_index =
               gimp_image_get_component_index (image, rendererimage->channel);
 

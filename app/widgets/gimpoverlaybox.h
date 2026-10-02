@@ -68,6 +68,13 @@ void        gimp_overlay_box_set_child_opacity   (GimpOverlayBox *box,
                                                   GtkWidget      *child,
                                                   gdouble         opacity);
 
+/* Visual translucency alone must never change whether controls accept input. */
+void        gimp_overlay_box_set_child_input_pass_through (GimpOverlayBox *box,
+                                                           GtkWidget      *child,
+                                                           gboolean        pass_through);
+gboolean    gimp_overlay_box_get_child_input_pass_through (GimpOverlayBox *box,
+                                                           GtkWidget      *child);
+
 void        gimp_overlay_box_scroll              (GimpOverlayBox *box,
                                                   gint            offset_x,
                                                   gint            offset_y);

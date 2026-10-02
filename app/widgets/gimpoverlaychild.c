@@ -491,6 +491,9 @@ gimp_overlay_child_pick (GimpOverlayBox   *box,
   g_return_val_if_fail (GIMP_IS_OVERLAY_BOX (box), FALSE);
   g_return_val_if_fail (child != NULL, FALSE);
 
+  if (child->input_pass_through)
+    return FALSE;
+
   gimp_overlay_child_from_embedder (child->window,
                                     box_x, box_y,
                                     &child_x, &child_y,

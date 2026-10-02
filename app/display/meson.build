@@ -75,6 +75,7 @@ libappdisplay_sources = [
   'gimpdisplayshell-rotate-dialog.c',
   'gimpdisplayshell-rotate.c',
   'gimppainternavigation.c',
+  'gimppaintercanvasui.cpp',
   'gimpdisplayshell-rulers.c',
   'gimpdisplayshell-scale-dialog.c',
   'gimpdisplayshell-scale.c',

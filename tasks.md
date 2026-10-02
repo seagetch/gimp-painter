@@ -1013,6 +1013,7 @@
 |---|:---:|---|---|---|
 | 29.001 | [ ] | overlay の配置 model を移植する | 08.020, 14.020, 15.014, 24.017 | 画像表示と独立して位置を保持 |
 | 29.001/preview-idle-lifetime-contract | [ ] | layer preview idle の捕捉寿命を定義する | 29.001, 01.005/deferred-sources | preview と viewable の所有・破棄順、再予約時の旧 source 解除を明記 |
+| 29.001/native-canvas-tiles | [x] | 実canvas overlay・layer/tool tiles・色とnative optionsを接続する | 30.001/layer-create-edit, 30.010/native-profile-migration, 24.017/native-editor-workflow | 実GTK19/52unit sanitizer19/HiDPI19合格。pointer選択/DND/Undo・Clone popup・黒赤描画・portraitを視認。alpha previewの上流bounds不具合を修正しRGBA/Gray pixel検査。full options共有は実装、旧compact toolbar/persist overlay/実tabletは未完了 |
 | 29.002 | [ ] | layer tile の表示を移植する | 29.001 | 名前・preview・選択状態が一致 |
 | 29.002/add-timeout-owner | [ ] | layer tile の長押し timeout を安全に終了する | 29.002, 06.019, 01.007/cpp-ownership | callback 実行中に自身の handler を破棄せず、押下・移動・離上・widget 破棄の各順序で popup が重複せず source を解除する |
 | 29.003 | [ ] | layer tile の可視切替を実装する | 29.002 | 状態と projection が同期 |

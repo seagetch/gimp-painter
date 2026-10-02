@@ -41,6 +41,7 @@
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimppaintercanvasui.h"
 #include "display/gimpdisplayshell-appearance.h"
 #include "display/gimpdisplayshell-scale.h"
 #include "display/gimpimagewindow.h"
@@ -297,6 +298,13 @@ static const GimpToggleActionEntry view_toggle_actions[] =
     view_toggle_menubar_cmd_callback,
     TRUE,
     GIMP_HELP_VIEW_SHOW_MENUBAR },
+
+  { "view-painter-canvas-ui", NULL,
+    NC_("view-action", "Painter Canvas Controls"), NULL, { NULL },
+    NC_("view-action", "Show layer tiles, colors, tools and controls on the canvas"),
+    view_painter_canvas_ui_cmd_callback,
+    FALSE,
+    GIMP_HELP_VIEW_SHOW_RULERS },
 
   { "view-show-rulers", NULL,
     NC_("view-action", "Show R_ulers"), NULL, { "<primary><shift>R", NULL },
@@ -956,6 +964,8 @@ view_actions_update (GimpActionGroup *group,
 
   SET_SENSITIVE ("view-show-menubar",    image);
   SET_ACTIVE    ("view-show-menubar",    display && options->show_menubar);
+  SET_SENSITIVE ("view-painter-canvas-ui", image);
+  SET_ACTIVE    ("view-painter-canvas-ui", display && gimp_painter_canvas_ui_get_visible (shell));
   SET_SENSITIVE ("view-show-rulers",     image);
   SET_ACTIVE    ("view-show-rulers",     display && options->show_rulers);
   SET_SENSITIVE ("view-show-scrollbars", image);

@@ -61,6 +61,7 @@
 #include "tools/tool_manager.h"
 
 #include "gimpcanvas.h"
+#include "gimppaintercanvasui.h"
 #include "gimpcanvascanvasboundary.h"
 #include "gimpcanvaslayerboundary.h"
 #include "gimpdisplay.h"
@@ -829,6 +830,8 @@ gimp_display_shell_constructed (GObject *object)
 
   /* This was only useful during construction and should not be further used. */
   shell->priv->initial_monitor = NULL;
+
+  gimp_painter_canvas_ui_init (shell);
 }
 
 static void
@@ -836,6 +839,7 @@ gimp_display_shell_dispose (GObject *object)
 {
   GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (object);
 
+  gimp_painter_canvas_ui_close (shell);
   gimp_display_shell_reset_perspective_snap (shell);
   if (shell->display && gimp_display_get_shell (shell->display))
     gimp_display_shell_disconnect (shell);

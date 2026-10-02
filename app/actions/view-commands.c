@@ -46,6 +46,7 @@
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplay-foreach.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimppaintercanvasui.h"
 #include "display/gimpdisplayshell-appearance.h"
 #include "display/gimpdisplayshell-filter-dialog.h"
 #include "display/gimpdisplayshell-rotate.h"
@@ -352,8 +353,8 @@ view_dot_for_dot_cmd_callback (GimpAction *action,
 
 void
 view_flip_horizontally_cmd_callback (GimpAction *action,
-                                     GVariant   *value,
-                                     gpointer    data)
+                                    GVariant   *value,
+                                    gpointer    data)
 {
   GimpDisplay      *display;
   GimpDisplayShell *shell;
@@ -483,8 +484,8 @@ view_reset_cmd_callback (GimpAction *action,
 
 void
 view_scroll_horizontal_cmd_callback (GimpAction *action,
-                                     GVariant   *value,
-                                     gpointer    data)
+                                    GVariant   *value,
+                                    gpointer    data)
 {
   GimpDisplayShell     *shell;
   GtkAdjustment        *adj;
@@ -543,8 +544,8 @@ view_scroll_vertical_cmd_callback (GimpAction *action,
 
 void
 view_navigation_window_cmd_callback (GimpAction *action,
-                                     GVariant   *value,
-                                     gpointer    data)
+                                    GVariant   *value,
+                                    gpointer    data)
 {
   Gimp             *gimp;
   GimpDisplayShell *shell;
@@ -810,6 +811,16 @@ view_toggle_menubar_cmd_callback (GimpAction *action,
 }
 
 void
+view_painter_canvas_ui_cmd_callback (GimpAction *action,
+                                    GVariant   *value,
+                                    gpointer    data)
+{
+  GimpDisplayShell *shell;
+  return_if_no_shell (shell, data);
+  gimp_painter_canvas_ui_set_visible (shell, g_variant_get_boolean (value));
+}
+
+void
 view_toggle_rulers_cmd_callback (GimpAction *action,
                                  GVariant   *value,
                                  gpointer    data)
@@ -828,8 +839,8 @@ view_toggle_rulers_cmd_callback (GimpAction *action,
 
 void
 view_toggle_scrollbars_cmd_callback (GimpAction *action,
-                                     GVariant   *value,
-                                     gpointer    data)
+                                    GVariant   *value,
+                                    gpointer    data)
 {
   GimpDisplayShell *shell;
   gboolean          active;

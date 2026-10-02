@@ -487,6 +487,23 @@ gimp_overlay_box_set_child_opacity (GimpOverlayBox *box,
     }
 }
 
+void
+gimp_overlay_box_set_child_input_pass_through (GimpOverlayBox *box,
+                                                GtkWidget      *widget,
+                                                gboolean        pass_through)
+{
+  GimpOverlayChild *child = gimp_overlay_child_find (box, widget);
+  if (child) child->input_pass_through = !!pass_through;
+}
+
+gboolean
+gimp_overlay_box_get_child_input_pass_through (GimpOverlayBox *box,
+                                                GtkWidget      *widget)
+{
+  GimpOverlayChild *child = gimp_overlay_child_find (box, widget);
+  return child ? child->input_pass_through : FALSE;
+}
+
 /**
  * gimp_overlay_box_scroll:
  * @box: the #GimpOverlayBox widget to scroll.

@@ -37,6 +37,7 @@ struct _GimpOverlayChild
 
   gdouble         angle;
   gdouble         opacity;
+  gboolean        input_pass_through; /* independent of visual opacity */
 
   /* updated in size_allocate */
   cairo_matrix_t  matrix;

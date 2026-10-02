@@ -1207,6 +1207,10 @@ gimp_view_render_temp_buf_to_surface (GimpViewRenderer *renderer,
   temp_buf_width  = gimp_temp_buf_get_width  (temp_buf);
   temp_buf_height = gimp_temp_buf_get_height (temp_buf);
 
+  g_return_if_fail (channel >= -1 &&
+                    channel < babl_format_get_n_components (temp_buf_format));
+
+
   /*  Here are the different cases this functions handles correctly:
    *  1)  Offset temp_buf which does not necessarily cover full image area
    *  2)  Color conversion of temp_buf if it is gray and image is color
@@ -1365,12 +1369,19 @@ gimp_view_render_temp_buf_to_surface (GimpViewRenderer *renderer,
 
       dest += y * dest_stride + x * 4;
 
+      /* Preserve alpha while converting color components for display.  The
+       * caller indexes the source format, where gray alpha is component 1
+       * rather than component 3.  An RGB-only row would overread alpha at 3. */
+      if (babl_format_has_alpha (temp_buf_format) &&
+          channel == babl_format_get_n_components (temp_buf_format) - 1)
+        channel = 3;
+
       fish = babl_fish (temp_buf_format,
-                        babl_format ("R~G~B~ u8"));
+                        babl_format ("R~G~B~A u8"));
 
       for (i = 0; i < height; i++)
         {
-          guchar        line[width * 3];
+          guchar        line[width * 4];
           const guchar *s = line;
           guint32      *d = (guint32*) dest;
           gint          j;
@@ -1379,9 +1390,9 @@ gimp_view_render_temp_buf_to_surface (GimpViewRenderer *renderer,
 
           for (j = 0; j < width; j++)
             {
-              *d = s[channel] | s[channel] << 8 | s[channel] << 16;
+              *d = 0xff000000u | s[channel] | s[channel] << 8 | s[channel] << 16;
 
-              s += 3;
+              s += 4;
               d += 1;
             }
 

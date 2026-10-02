@@ -39,6 +39,7 @@ app_tests = [
   'gimp-clone-layer',
   'gimp-filter-layer',
   'painter-layer-ui',
+  'painter-canvas-ui',
   'gimp-painter-mybrush',
   'gimp-painter-mybrush-factory',
   'gimpidtable',
