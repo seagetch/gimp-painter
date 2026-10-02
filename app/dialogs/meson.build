@@ -38,7 +38,7 @@ libappdialogs_sources = [
   'keyboard-shortcuts-dialog.c',
   'layer-add-mask-dialog.c',
   'layer-options-dialog.c',
-  'painter-layer-dialog.c',
+  'painter-layer-dialog.cpp',
   'lebl-dialog.c',
   'metadata-rotation-import-dialog.c',
   'module-dialog.c',

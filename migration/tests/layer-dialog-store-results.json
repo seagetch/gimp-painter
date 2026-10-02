@@ -1,0 +1,160 @@
+{
+  "scope": "31.016 native Painter layer dialog controller ownership; concurrent working tree source archive is authoritative, not a claim about later combined-tree edits",
+  "mechanism": "One typed DialogSlot on existing GimpViewableDialog in common BindingStore; scoped initialize/with; weak generation hooks; Connection close from GtkWidget destroy; no arbitrary controller qdata",
+  "source_archive": "migration/tests/layer-dialog-store-sources-e508d4e4d095df3a.tar.gz",
+  "source_archive_sha256": "8b1c107d6446f4941923dde3dd2dc6d1daae7de74b33a801754b27c06fa311ca",
+  "sanitizer_build_report": "migration/tests/layer-dialog-store-sanitizer-build.json",
+  "sanitizer_build_report_sha256": "b60295497e02b16ea5d1f2ed90d441a39607cc8597bdbf2257effc63a1b2b90c",
+  "instrumented_sources": [
+    "app/actions/layers-actions.c",
+    "app/actions/layers-commands.c",
+    "app/dialogs/painter-layer-dialog.cpp",
+    "app/painter/binding-store.cpp",
+    "app/painter/gimp-painter-binding.cpp",
+    "app/painter/gimp-painter-error.cpp",
+    "app/tests/test-painter-layer-ui.c"
+  ],
+  "rtti_only_sources": [
+    "app/config/gimppainterfilterconfig.cpp",
+    "app/dialogs/file-save-deferred.cpp",
+    "app/httpd/httpd-images.cpp",
+    "app/httpd/httpd-navigation.cpp",
+    "app/httpd/httpd-pdb.cpp",
+    "app/httpd/httpd-resource.cpp",
+    "app/httpd/httpd.cpp",
+    "app/paint/gimpbrushcore-loops.cc",
+    "app/paint/gimpfillbrush.cpp",
+    "app/paint/gimppaintcore-loops.cc",
+    "app/paint/gimppainterbrushgeometry.cpp",
+    "app/paint/gimppainterpaintgate.cpp",
+    "app/paint/gimppainterpaper-paste.cpp",
+    "app/paint/gimppainterpaper.cpp",
+    "app/paint/gimppaintersmudge.cpp",
+    "app/paint/painter-bounded-fill/search.cpp",
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+    "app/paint/painter-mypaint-surface/gimp-resources.cpp",
+    "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp",
+    "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp",
+    "app/paint/painter-mypaint-surface/paint-core.cpp",
+    "app/paint/painter-mypaint/engine.cpp",
+    "app/paint/painter-mypaint/resource.cpp",
+    "app/painter/filter-edge.cpp",
+    "app/painter/filter-gauss.cpp",
+    "app/painter/filter-raster-kernels.cpp",
+    "app/painter/filter-raster.cpp",
+    "app/painter/filter-scheduler.cpp",
+    "app/painter/filter-spool.cpp",
+    "app/tools/gimpfillbrushtool.cpp",
+    "app/tools/gimppaintermybrushtool.cpp",
+    "app/tools/gimppaintersmudgetool.cpp",
+    "app/tools/gimpperspectiveguidetool.cpp",
+    "app/widgets/gimppaintercompactoptions.cpp",
+    "app/widgets/gimppainterlayertiles.cpp",
+    "app/widgets/gimppaintermybrusheditor.cpp",
+    "app/xcf/painter-xcf-arguments.cpp",
+    "app/xcf/painter-xcf-compat.cpp",
+    "app/xcf/painter-xcf-load.cpp",
+    "app/xcf/painter-xcf-preserve.cpp"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined (including vptr)"
+  ],
+  "leak_detection": false,
+  "runtime": {
+    "normal": {
+      "passed": 21,
+      "exit": 0,
+      "cases": [
+        "/painter-layer-ui/clone_creation_source_reentry",
+        "/painter-layer-ui/clone_creation_and_parent",
+        "/painter-layer-ui/clone_edit_cancel_undo_live",
+        "/painter-layer-ui/clone_deleted_source_and_cycle",
+        "/painter-layer-ui/filter_create_cancel_and_validate",
+        "/painter-layer-ui/filter_preserve_unknown_and_undo",
+        "/painter-layer-ui/filter_preserve_float_shape",
+        "/painter-layer-ui/dialog_lifetimes",
+        "/painter-layer-ui/action_enablement",
+        "/painter-layer-ui/retained_child_widgets",
+        "/painter-layer-ui/detached_child_widgets",
+        "/painter-layer-ui/clone_response_close_reentry",
+        "/painter-layer-ui/filter_response_close_reentry",
+        "/painter-layer-ui/filter_creation_close_reentry",
+        "/painter-layer-ui/clone_refresh_close_reentry",
+        "/painter-layer-ui/filter_non_utf8_preview",
+        "/painter-layer-ui/dialog_binding_close",
+        "/painter-layer-ui/filter_choice_last_owner_reentry",
+        "/painter-layer-ui/filter_status_last_owner_reentry",
+        "/painter-layer-ui/dialog_destroy_last_owner_reentry",
+        "/painter-layer-ui/dialog_factory_reentry"
+      ],
+      "log": "migration/tests/layer-dialog-store-normal.log",
+      "log_sha256": "262c228cfef2336415beb535c14150f4f6b8e0b9485ef8131a3734a1fa5bc07b",
+      "executable_sha256": "bd0efa0de6ae831e950e5862f1fa313a48e717b6e81ff5767e5d11e26d4662bc"
+    },
+    "asan": {
+      "passed": 21,
+      "exit": 0,
+      "cases": [
+        "/painter-layer-ui/clone_creation_source_reentry",
+        "/painter-layer-ui/clone_creation_and_parent",
+        "/painter-layer-ui/clone_edit_cancel_undo_live",
+        "/painter-layer-ui/clone_deleted_source_and_cycle",
+        "/painter-layer-ui/filter_create_cancel_and_validate",
+        "/painter-layer-ui/filter_preserve_unknown_and_undo",
+        "/painter-layer-ui/filter_preserve_float_shape",
+        "/painter-layer-ui/dialog_lifetimes",
+        "/painter-layer-ui/action_enablement",
+        "/painter-layer-ui/retained_child_widgets",
+        "/painter-layer-ui/detached_child_widgets",
+        "/painter-layer-ui/clone_response_close_reentry",
+        "/painter-layer-ui/filter_response_close_reentry",
+        "/painter-layer-ui/filter_creation_close_reentry",
+        "/painter-layer-ui/clone_refresh_close_reentry",
+        "/painter-layer-ui/filter_non_utf8_preview",
+        "/painter-layer-ui/dialog_binding_close",
+        "/painter-layer-ui/filter_choice_last_owner_reentry",
+        "/painter-layer-ui/filter_status_last_owner_reentry",
+        "/painter-layer-ui/dialog_destroy_last_owner_reentry",
+        "/painter-layer-ui/dialog_factory_reentry"
+      ],
+      "log": "migration/tests/layer-dialog-store-asan.log",
+      "log_sha256": "5df7b2ceebf50631dccd94e5ea63ee96bc4c3c852750da06827e892c31c6adcd",
+      "executable_sha256": "6f50d22986be9cfe5cd1136385380d8b43cbb3793550025c3b0637697c16fe92"
+    }
+  },
+  "retained_failed_builds": [
+    {
+      "log": "migration/tests/layer-dialog-store-initial-build.log",
+      "exit": 1,
+      "reason": "Initial C-to-C++ migration needed explicit native ACTIVE_PARENT sentinel cast; corrected before successful focused build"
+    },
+    {
+      "log": "migration/tests/layer-dialog-store-build.log",
+      "exit": 1,
+      "reason": "Concurrent geometry gimppaintbrush source briefly lacked its new declaration include; owner corrected before final link"
+    }
+  ],
+  "passed_builds": [
+    "migration/tests/layer-dialog-store-focused-build.log",
+    "migration/tests/layer-dialog-store-build-final.log",
+    "migration/tests/layer-dialog-store-sanitizer-build.log",
+    "migration/tests/layer-dialog-store-factory-build.log"
+  ],
+  "limitations": [
+    "Linux actual native GTK display only; no Windows/macOS/tablet claim",
+    "Only listed translation units instrumented; GTK and other core/dependencies not instrumented",
+    "Leak sanitizer disabled",
+    "Existing isolated test-profile writable-directory shutdown diagnostic present in both exit0 runs"
+  ],
+  "factory_review": {
+    "correction": "Lease every input before native construction; release input leases while dialog is still leased, then destroy inactive results before returning NULL",
+    "coverage": [
+      "GtkWidget show during native g_object_new drops last external image ref",
+      "Activated initial Clone selection closes common store without native destroy; factory returns NULL and weak window pointer expires"
+    ],
+    "prior_evidence": "migration/tests/layer-dialog-store-initial20-results.json"
+  }
+}

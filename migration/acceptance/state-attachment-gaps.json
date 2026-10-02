@@ -1,5 +1,5 @@
 {
-  "scope": "Tracked remaining custom attachment review; provenance implementation verified, dialog controller verification pending; parent31.016 dependencies unchanged",
+  "scope": "Known migration-added custom attachment sites have component runtime ownership proof; WBS31.016 parent dependencies and all-feature acceptance remain separate.",
   "rows": [
     {
       "source": "app/core/gimp-painter-provenance.h:21",
@@ -31,9 +31,11 @@
     {
       "source": "app/dialogs/painter-layer-dialog.c:129",
       "statement": "g_object_set_data_full (G_OBJECT (state->dialog), \"painter-layer-dialog\",",
-      "state": "OPEN",
+      "state": "COMPONENT_VERIFIED",
       "wbs": "31.016",
-      "required_action": "Move owned dialog implementation to the common typed store with scoped call leases"
+      "required_action": "Closed by one typed DialogSlot on native viewable dialog, weak generation hooks and scoped common-store borrows",
+      "evidence": "migration/tests/layer-dialog-store-results.json",
+      "scope": "21native GTK cases normal and7instrumented/42RTTI-only ASan+UBSan; factory leases, destroy/close, retained child callbacks and original behavior"
     },
     {
       "source": "app/xcf/painter-xcf-load.cpp:305",
@@ -154,7 +156,7 @@
     }
   ],
   "excluded_existing_upstream_protocol": "file-save-dialog.c GIMP_FILE_SAVE_LAST_FILE_KEY/GIMP_FILE_EXPORT_LAST_FILE_KEY is the native last-file context protocol; do not remove or reinterpret it as an independent Painter Impl",
-  "rule": "This ledger records unresolved design/WBS work, not a second GClass implementation claim and not permission to discard metadata",
+  "rule": "Historical free-form statements are retained as the audit trail. Runtime proof covers the typed provenance child and dialog controller, not permission to discard data or to check dependency-gated parent rows.",
   "prior_source_sha256": {
     "app/core/gimp-painter-provenance.h": "b46a02f0529b648561d6de80aac7e1d03f66a95bb17b921161b38d084498a8f4",
     "app/dialogs/painter-layer-dialog.c": "c098e14707b11f31f9e69b32ac93321a7fcc25fa4720ac97ed532ce4cdc4694f",
@@ -167,6 +169,7 @@
     "app/core/gimp-painter-provenance-private.h": "4932144713d8345ca358f6fd3a3a68967143e34d7dc0ad4f7efd6b5b2a55e473",
     "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
     "app/xcf/painter-xcf-load.cpp": "7c140f8101add926eb75a8b9d0334c249b5c07cdf81e1da96c49c1a8d4122a08",
-    "app/xcf/painter-xcf-preserve.cpp": "681f4a31fb87dacdeadc6e5dd3fa384cec0faeff6be8dbf1551ff079344ff44b"
+    "app/xcf/painter-xcf-preserve.cpp": "681f4a31fb87dacdeadc6e5dd3fa384cec0faeff6be8dbf1551ff079344ff44b",
+    "app/dialogs/painter-layer-dialog.cpp": "0b86614badc4763d94a7a61f04d8b1179e212e21ff01b103e88ffb89e6967264"
   }
 }

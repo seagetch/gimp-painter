@@ -147,3 +147,74 @@ Full generic procedure editors/executors, the canvas popup/tile view,
 platform/tablet QA, translated locale visual QA, comprehensive display timing,
 and all-workflow XCF round trips remain separate gates. No Windows/macOS/tablet
 claim follows from these Linux GTK tests.
+
+## Unified controller ownership (31.016)
+
+The production controller is now `app/dialogs/painter-layer-dialog.cpp`, with
+unchanged C entry points in a C-linkage header and matching Meson/POT paths.
+The native `GimpViewableDialog` owns one typed `DialogSlot` in the existing
+`BindingStore`. There is no independent `painter-layer-dialog` data key,
+second store, or raw implementation pointer in signal closure data.
+
+Construction happens through `emplace` and a scoped `initialize`; ordinary
+callbacks dispatch only after activation and obtain a scoped `with` borrow.
+Every signal registration is a `Connection`. Its small closure payload contains
+only a weak native-owner reference and generation, copied before invoking any
+reentrant UI/core code. The operation keeps a strong owner lease, so a callback
+can destroy the dialog and drop the caller's last reference without invalidating
+the in-flight borrow. No owner ref is retained by the implementation itself.
+
+`GtkWidget::destroy` explicitly invokes the shared idempotent close operation
+before child teardown. Close invalidates callback generations, disconnects
+connections and clears image/layer weak references; slot destruction remains a
+finalization responsibility. This does not assume any generic GObject dispose
+signal. A direct `gimp_painter_binding_close(dialog)` also makes the controller
+inert while native widgets remain alive. The Clone/Filter argument loading,
+unknown-byte preservation, validation, source identity and Undo paths are still
+the same production functions. The list model and synchronously notifying
+stack/status/error widgets have operation-local leases during reentry.
+
+Five additional native cases extend the sixteen-case suite:
+
+16. Explicit common close, repeated close/destroy, detached callback and retained
+    native response on new Filter, edited Filter and Clone, with no late mutation
+17. Filter choice callback destroys and drops the last dialog owner from a
+    nested stack-visible-child notification
+18. Filter status callback destroys and drops the last dialog owner from a
+    nested label notification; late model signals remain harmless
+19. Real image disconnect destroys and drops the last external dialog reference
+    while the owner-leased signal callback is still running
+20. Factory reentry drops the last external image reference during native child
+    construction; initial activated source selection also common-closes the
+    controller without directly destroying the window. Both return NULL with
+    expired weak dialog pointers and no orphan native window
+
+Verification evidence and exact tested source snapshots are recorded separately
+from the earlier sixteen-case evidence above. The new sanitizer builder
+instruments the dialog, layer actions/commands, test and common BindingStore
+lifecycle. Remaining production C++ is rebuilt only for compatible RTTI/vptr
+metadata, replacing every thin-archive alias; the report distinguishes these
+units from instrumented sources. Upstream GTK and other core/dependencies remain
+uninstrumented and leak detection remains disabled. A content-addressed immutable
+source archive and binary/source SHA-256 hashes bind each result to its actual
+build rather than claiming later concurrent tree edits were tested.
+
+All twenty-one cases passed in both the normal and focused ASan+UBSan/vptr native
+GTK runs on 2026-10-02, each with exit 0. Results are in
+`migration/tests/layer-dialog-store-results.json`; runtime logs are
+`layer-dialog-store-normal.log` and `layer-dialog-store-asan.log`. The immutable
+source archive is `layer-dialog-store-sources-e508d4e4d095df3a.tar.gz`, with
+complete build scope/commands/hashes in `layer-dialog-store-sanitizer-build.json`.
+The known isolated test-profile writable-directory shutdown diagnostic appears
+in both passing runs. Initial C++ sentinel-cast and concurrent incomplete-header
+build failures were preserved rather than overwritten; neither is represented
+as a runtime pass. `git diff --check` passes for this controller slice.
+
+Factory review extended the original twenty-case seal with input-reference and
+inactive-result cleanup. All four inputs (image, layer, context, parent) are
+leased before native construction, then explicitly released while the dialog
+lease remains alive before the final active check. A controller closed during
+construction/activation is destroyed before NULL is returned. The original
+20+20 passing logs, manifest, sanitizer report and immutable archive remain under
+`layer-dialog-store-initial20-*` and `layer-dialog-store-sources-5688a88ed8f79615.tar.gz`; they
+are historical evidence and do not claim to cover this final factory fix.

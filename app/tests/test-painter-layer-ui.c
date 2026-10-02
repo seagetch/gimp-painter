@@ -17,6 +17,7 @@
 #include "core/gimpgrouplayer.h"
 #include "core/gimplayer-new.h"
 #include "core/gimpchannel.h"
+#include "widgets/gimpviewabledialog.h"
 #include "widgets/gimpaction.h"
 #include "widgets/gimpactiongroup.h"
 #include "actions/layers-actions.h"
@@ -507,6 +508,172 @@ static void filter_creation_close_reentry (void)
   g_assert_cmpint (gimp_image_get_n_layers (image), ==, 1);
   g_object_unref (image);
 }
+/* A controller closed through the common lifecycle API must become inert even
+ * while the native dialog and independently retained controls remain alive. */
+static void dialog_binding_close (void)
+{
+  for (guint kind = 0; kind < 3; kind++)
+    {
+      GimpImage *image = new_image ();
+      GimpLayer *source = new_source (image, NULL, "source");
+      GimpLayer *layer = kind == 1 ?
+        gimp_clone_layer_new (image, source, 0, 0, "clone", 1, GIMP_LAYER_MODE_PAINTER_NORMAL) :
+        kind == 2 ? gimp_filter_layer_new (image, 16, 16, "filter", 1, GIMP_LAYER_MODE_PAINTER_REPLACE) : NULL;
+      GtkWidget *dialog, *child;
+      gpointer weak_dialog;
+      gint layers;
+      if (layer) gimp_image_add_layer (image, layer, NULL, 0, FALSE);
+      dialog = kind == 1 ? new_clone_dialog (image, layer) : new_filter_dialog (image, layer);
+      if (kind == 1) choice (dialog, "painter-clone-source", "none");
+      else choice (dialog, "painter-filter-choice", "edge");
+      child = g_object_ref (field (dialog, kind == 1 ? "painter-clone-refresh" : "painter-edge-amount"));
+      gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (child)), child);
+      layers = gimp_image_get_n_layers (image);
+      g_assert_true (gimp_painter_binding_close (G_OBJECT (dialog), NULL));
+      g_assert_true (gimp_painter_binding_close (G_OBJECT (dialog), NULL));
+      g_signal_emit_by_name (child, kind == 1 ? "clicked" : "value-changed");
+      gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+      g_assert_cmpint (gimp_image_get_n_layers (image), ==, layers);
+      if (kind == 1)
+        g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (layer)) == source);
+      if (kind == 2)
+        {
+          gchar *procedure = gimp_filter_layer_dup_procedure (GIMP_FILTER_LAYER (layer));
+          g_assert_true (!procedure || !*procedure);
+          g_free (procedure);
+        }
+      weak_dialog = dialog;
+      g_object_add_weak_pointer (G_OBJECT (dialog), &weak_dialog);
+      gtk_widget_destroy (dialog);
+      gtk_widget_destroy (dialog);
+      g_object_unref (dialog);
+      g_assert_null (weak_dialog);
+      g_signal_emit_by_name (child, kind == 1 ? "clicked" : "value-changed");
+      gtk_widget_destroy (child); g_object_unref (child); g_object_unref (image);
+    }
+}
+
+static void close_editor_on_notify (GObject *object, GParamSpec *pspec, gpointer data)
+{
+  close_editor_on_choice (NULL, data);
+}
+
+static void filter_choice_last_owner_reentry (void)
+{
+  GimpImage *image = new_image ();
+  GtkWidget *dialog = new_filter_dialog (image, NULL);
+  GtkWidget *combo = g_object_ref (field (dialog, "painter-filter-choice"));
+  GtkWidget *stack = gtk_widget_get_parent (gtk_widget_get_parent (field (dialog, "painter-edge-amount")));
+  gpointer weak_dialog = dialog;
+  g_assert_true (GTK_IS_STACK (stack));
+  g_object_add_weak_pointer (G_OBJECT (dialog), &weak_dialog);
+  g_signal_connect (stack, "notify::visible-child-name", G_CALLBACK (close_editor_on_notify), &dialog);
+  gtk_combo_box_set_active_id (GTK_COMBO_BOX (combo), "edge");
+  g_assert_null (dialog); g_assert_null (weak_dialog);
+  g_signal_emit_by_name (combo, "changed");
+  g_object_unref (combo); g_object_unref (image);
+}
+
+static void filter_status_last_owner_reentry (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *layer = gimp_filter_layer_new (image, 16, 16, "filter", 1, GIMP_LAYER_MODE_PAINTER_REPLACE);
+  GtkWidget *dialog;
+  gpointer weak_dialog;
+  gimp_image_add_layer (image, layer, NULL, 0, FALSE);
+  dialog = new_filter_dialog (image, layer); weak_dialog = dialog;
+  g_object_add_weak_pointer (G_OBJECT (dialog), &weak_dialog);
+  gtk_label_set_text (GTK_LABEL (field (dialog, "painter-filter-status")), "force a fresh status notification");
+  g_signal_connect (field (dialog, "painter-filter-status"), "notify::label", G_CALLBACK (close_editor_on_notify), &dialog);
+  g_signal_emit_by_name (layer, "filter-state-changed");
+  g_assert_null (dialog); g_assert_null (weak_dialog);
+  g_signal_emit_by_name (layer, "filter-state-changed");
+  g_object_unref (image);
+}
+
+static void dialog_destroy_last_owner_reentry (void)
+{
+  GimpImage *image = new_image ();
+  GtkWidget *dialog = new_filter_dialog (image, NULL);
+  GtkWidget *child = g_object_ref (field (dialog, "painter-filter-choice"));
+  gpointer weak_dialog = dialog;
+  g_object_add_weak_pointer (G_OBJECT (dialog), &weak_dialog);
+  g_signal_connect (dialog, "destroy", G_CALLBACK (close_editor_on_choice), &dialog);
+  /* The image's real disconnect emits destroy, then the external handler drops
+   * the last caller reference while the owner-leased callback is still active. */
+  g_object_unref (image);
+  g_assert_null (dialog); g_assert_null (weak_dialog);
+  g_signal_emit_by_name (child, "changed");
+  g_object_unref (child);
+}
+
+typedef struct
+{
+  GimpImage *image;
+  gpointer weak_dialog;
+  gboolean close_only;
+  gboolean called;
+} FactoryReentry;
+
+static gboolean factory_reentry_hook (GSignalInvocationHint *hint,
+                                       guint n_values, const GValue *values,
+                                       gpointer data)
+{
+  FactoryReentry *state = data;
+  GtkWidget *widget = g_value_get_object (&values[0]);
+  GtkWidget *dialog;
+  if (state->called) return TRUE;
+  if (state->close_only &&
+      (! GTK_IS_COMBO_BOX (widget) ||
+       g_strcmp0 (gtk_widget_get_name (widget), "painter-clone-source")))
+    return TRUE;
+  dialog = gtk_widget_get_toplevel (widget);
+  if (! GIMP_IS_VIEWABLE_DIALOG (dialog)) return TRUE;
+  state->called = TRUE;
+  state->weak_dialog = dialog;
+  g_object_add_weak_pointer (G_OBJECT (dialog), &state->weak_dialog);
+  if (state->close_only)
+    {
+      /* The initial source selection runs after slot activation. Common close
+       * does not destroy a native window: the factory must clean it up. */
+      g_assert_true (gimp_painter_binding_close (G_OBJECT (dialog), NULL));
+    }
+  else
+    {
+      /* The first native child show runs inside g_object_new, before the
+       * factory can initialize its slot. Drop the last outside image owner. */
+      g_clear_object (&state->image);
+    }
+  return TRUE;
+}
+
+static void dialog_factory_reentry (void)
+{
+  for (guint close_only = 0; close_only < 2; close_only++)
+    {
+      GimpImage *image = new_image ();
+      GimpLayer *source = new_source (image, NULL, "source");
+      GimpLayer *clone = gimp_clone_layer_new (image, source, 0, 0, "clone", 1, GIMP_LAYER_MODE_PAINTER_NORMAL);
+      FactoryReentry state = { image, NULL, close_only, FALSE };
+      gpointer weak_image = image;
+      GtkWidget *dialog;
+      guint signal = g_signal_lookup (close_only ? "changed" : "show",
+                                       close_only ? GTK_TYPE_COMBO_BOX : GTK_TYPE_WIDGET);
+      gulong hook;
+      gimp_image_add_layer (image, clone, NULL, 0, FALSE);
+      g_object_add_weak_pointer (G_OBJECT (image), &weak_image);
+      hook = g_signal_add_emission_hook (signal, 0, factory_reentry_hook, &state, NULL);
+      dialog = painter_clone_layer_dialog_new (image, clone, gimp_get_user_context (gimp), parent);
+      g_signal_remove_emission_hook (signal, hook);
+      g_assert_true (state.called);
+      g_assert_null (dialog);
+      g_assert_null (state.weak_dialog);
+      if (close_only) g_clear_object (&state.image);
+      g_assert_null (state.image);
+      g_assert_null (weak_image);
+    }
+}
+
 int main (int argc, char **argv)
 {
   int result;
@@ -525,6 +692,9 @@ int main (int argc, char **argv)
   g_test_add_data_func ("/painter-layer-ui/filter_response_close_reentry", GINT_TO_POINTER (TRUE), response_close_reentry);
   ADD (filter_creation_close_reentry);
   ADD (clone_refresh_close_reentry); ADD (filter_non_utf8_preview);
+  ADD (dialog_binding_close); ADD (filter_choice_last_owner_reentry);
+  ADD (filter_status_last_owner_reentry); ADD (dialog_destroy_last_owner_reentry);
+  ADD (dialog_factory_reentry);
   result = g_test_run ();
   gtk_widget_destroy (parent); g_object_unref (parent);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");

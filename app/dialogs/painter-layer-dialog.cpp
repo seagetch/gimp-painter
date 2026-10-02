@@ -5,6 +5,7 @@
 #include <math.h>
 #include <gegl.h>
 #include <gtk/gtk.h>
+extern "C" {
 #include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 #include "dialogs-types.h"
@@ -19,52 +20,130 @@
 #include "widgets/gimpviewabledialog.h"
 #include "painter-layer-dialog.h"
 #include "gimp-intl.h"
+}
+#include "painter/binding-store.hpp"
+#include "painter/connection.hpp"
+#include "painter/gimp-painter-binding.h"
 
-typedef struct
+using namespace GimpPainter;
+
+namespace {
+
+/* The native dialog owns exactly one typed implementation. Helpers borrow it
+ * only inside initialize()/with(); no closure or qdata key owns a raw Impl. */
+struct PainterLayerDialog
 {
   GWeakRef   image;
   GWeakRef   layer;
-  gboolean   editing;
-  gboolean   closed;
-  gboolean   dirty;
-  GtkWidget *dialog;
-  GtkWidget *grid;
-  GtkWidget *name;
-  GtkWidget *width;
-  GtkWidget *height;
-  GtkWidget *choice;
-  GtkWidget *parameters;
-  GtkWidget *amount;
-  GtkWidget *wrap;
-  GtkWidget *edge;
-  GtkWidget *horizontal;
-  GtkWidget *vertical;
-  GtkWidget *method;
-  GtkWidget *status;
-  GtkWidget *error;
-  gint       row;
-} PainterLayerDialog;
+  gboolean   editing = 0;
+  gboolean   closed = 0;
+  gboolean   dirty = 0;
+  GtkWidget *dialog = nullptr;
+  GtkWidget *grid = nullptr;
+  GtkWidget *name = nullptr;
+  GtkWidget *width = nullptr;
+  GtkWidget *height = nullptr;
+  GtkWidget *choice = nullptr;
+  GtkWidget *parameters = nullptr;
+  GtkWidget *amount = nullptr;
+  GtkWidget *wrap = nullptr;
+  GtkWidget *edge = nullptr;
+  GtkWidget *horizontal = nullptr;
+  GtkWidget *vertical = nullptr;
+  GtkWidget *method = nullptr;
+  GtkWidget *status = nullptr;
+  GtkWidget *error = nullptr;
+  gint       row = 0;
+  std::vector<Connection> connections;
 
-static PainterLayerDialog *
-painter_dialog_get (GtkWidget *dialog)
+  PainterLayerDialog (GtkWidget *owner, GimpImage *image, GimpLayer *layer)
+    : editing (layer != nullptr), dialog (owner)
+  {
+    g_weak_ref_init (&this->image, image);
+    g_weak_ref_init (&this->layer, layer);
+  }
+  ~PainterLayerDialog () noexcept
+  {
+    close ();
+    g_weak_ref_clear (&image);
+    g_weak_ref_clear (&layer);
+  }
+  void close () noexcept
+  {
+    if (closed) return;
+    closed = TRUE;
+    /* Invalidate before disconnecting: a callback already on the stack retains
+     * its scoped store borrow, but must stop touching destroyed children. */
+    auto old_connections = std::move (connections);
+    g_weak_ref_set (&image, nullptr);
+    g_weak_ref_set (&layer, nullptr);
+  }
+};
+
+struct DialogSlot : SlotSpec<GObject, PainterLayerDialog>
 {
-  return g_object_get_data (G_OBJECT (dialog), "painter-layer-dialog");
+  static GType owner_type () { return GIMP_TYPE_VIEWABLE_DIALOG; }
+};
+
+struct DialogHook
+{
+  WeakRef<GObject> owner;
+  std::uint64_t generation;
+  explicit DialogHook (GtkWidget *dialog)
+    : owner (ObjectRef<GObject>::retain (G_OBJECT (dialog))),
+      generation (BindingStore::require (G_OBJECT (dialog)).generation ()) {}
+};
+
+static void
+painter_dialog_hook_free (gpointer data, GClosure *)
+{
+  delete static_cast<DialogHook *> (data);
 }
 
 static void
-painter_dialog_free (gpointer data)
+painter_dialog_connect (PainterLayerDialog *state,
+                        gpointer            emitter,
+                        const gchar        *signal,
+                        GCallback           callback)
 {
-  PainterLayerDialog *state = data;
-  g_weak_ref_clear (&state->image);
-  g_weak_ref_clear (&state->layer);
-  g_free (state);
+  auto hook = std::unique_ptr<DialogHook> (new DialogHook (state->dialog));
+  auto connection = Connection::connect (ObjectRef<GObject>::retain (G_OBJECT (emitter)),
+                                         signal, callback, hook.get (), painter_dialog_hook_free);
+  hook.release (); // Connection now owns the hook even if vector growth throws.
+  state->connections.push_back (std::move (connection));
+}
+
+template<class Function>
+static void
+painter_dialog_dispatch (gpointer data, Function&& function) noexcept
+{
+  boundary_void (nullptr, [&] {
+    auto *hook = static_cast<DialogHook *> (data);
+    auto owner = hook->owner.lock ();
+    const auto generation = hook->generation;
+    /* Copy all callback data before invoking UI/core code. close() can remove
+     * this very closure while signal emission is still in progress. */
+    if (!owner) return;
+    auto *store = BindingStore::find (owner.get ());
+    if (store && store->accepts (generation))
+      store->with<DialogSlot> (std::forward<Function> (function));
+  });
 }
 
 static void
-painter_dialog_destroy (GtkWidget *dialog,
-                        gpointer   data)
+painter_dialog_destroy (GtkWidget *dialog, gpointer)
 {
-  painter_dialog_get (dialog)->closed = TRUE;
+  /* GtkWidget::destroy is the actual lifecycle boundary. GObject has no
+   * generic dispose signal, and final qdata destruction is too late. */
+  gimp_painter_binding_close (G_OBJECT (dialog), nullptr);
+}
+
+static void
+painter_dialog_image_disconnect (GimpImage *, gpointer data)
+{
+  painter_dialog_dispatch (data, [] (PainterLayerDialog& state) {
+    gtk_widget_destroy (state.dialog);
+  });
 }
 
 static void
@@ -74,7 +153,8 @@ painter_dialog_error (PainterLayerDialog *state,
   gchar *valid;
   if (state->closed) return;
   valid = g_utf8_make_valid (message, -1);
-  gtk_label_set_text (GTK_LABEL (state->error), valid);
+  auto error = ObjectRef<GObject>::retain (G_OBJECT (state->error));
+  gtk_label_set_text (GTK_LABEL (error.get ()), valid);
   g_free (valid);
   if (! state->closed) gtk_widget_show (state->error);
 }
@@ -106,55 +186,88 @@ painter_dialog_spin (PainterLayerDialog *state,
   return painter_dialog_field (state, label, spin, name);
 }
 
-static PainterLayerDialog *
+template<class Initialize, class Activate>
+static GtkWidget *
 painter_dialog_new (GimpImage   *image,
                     GimpLayer   *layer,
                     GimpContext *context,
                     GtkWidget   *parent,
                     const gchar *title,
                     const gchar *role,
-                    const gchar *description)
+                    const gchar *description,
+                    Initialize&& initialize,
+                    Activate&&   activate) noexcept
 {
-  PainterLayerDialog *state = g_new0 (PainterLayerDialog, 1);
-  GtkWidget         *content;
-
-  g_weak_ref_init (&state->image, image);
-  g_weak_ref_init (&state->layer, layer);
-  state->editing = layer != NULL;
-  state->dialog = gimp_viewable_dialog_new (
-    g_list_prepend (NULL, layer ? GIMP_VIEWABLE (layer) : GIMP_VIEWABLE (image)),
-    context, title, role, GIMP_ICON_LAYER, description, parent,
-    gimp_standard_help_func, GIMP_HELP_LAYER_EDIT,
-    _("_Cancel"), GTK_RESPONSE_CANCEL, _("_OK"), GTK_RESPONSE_OK, NULL);
-  g_object_set_data_full (G_OBJECT (state->dialog), "painter-layer-dialog",
-                          state, painter_dialog_free);
-  g_signal_connect (state->dialog, "destroy", G_CALLBACK (painter_dialog_destroy), NULL);
-  /* Item removal closes edits; image disconnect must also close dialogs whose
-   * item is temporarily retained by Undo, a view or another caller. */
-  g_signal_connect_object (image, "disconnect", G_CALLBACK (gtk_widget_destroy),
-                           state->dialog, G_CONNECT_SWAPPED);
-  gtk_dialog_set_default_response (GTK_DIALOG (state->dialog), GTK_RESPONSE_OK);
-  content = gtk_dialog_get_content_area (GTK_DIALOG (state->dialog));
-  state->grid = gtk_grid_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (state->grid), 12);
-  gtk_grid_set_column_spacing (GTK_GRID (state->grid), 8);
-  gtk_grid_set_row_spacing (GTK_GRID (state->grid), 8);
-  gtk_box_pack_start (GTK_BOX (content), state->grid, TRUE, TRUE, 0);
-  state->error = gtk_label_new (NULL);
-  gtk_label_set_line_wrap (GTK_LABEL (state->error), TRUE);
-  gtk_label_set_xalign (GTK_LABEL (state->error), 0);
-  gtk_widget_set_name (state->error, "painter-layer-error");
-  gtk_box_pack_start (GTK_BOX (content), state->error, FALSE, FALSE, 8);
-  return state;
+  GtkWidget *dialog = nullptr;
+  return boundary<GtkWidget *> (nullptr, nullptr, [&] {
+    /* Native construction/property/show signals are reentrant too. An outside
+     * callback may drop the caller's last input reference before new() returns. */
+    auto image_lease = ObjectRef<GObject>::retain (G_OBJECT (image));
+    auto layer_lease = ObjectRef<GObject>::retain (G_OBJECT (layer));
+    auto context_lease = ObjectRef<GObject>::retain (G_OBJECT (context));
+    auto parent_lease = ObjectRef<GObject>::retain (G_OBJECT (parent));
+    auto release_inputs = [&] {
+      parent_lease.reset ();
+      context_lease.reset ();
+      layer_lease.reset ();
+      image_lease.reset ();
+    };
+    dialog = gimp_viewable_dialog_new (
+      g_list_prepend (NULL, layer ? GIMP_VIEWABLE (layer) : GIMP_VIEWABLE (image)),
+      context, title, role, GIMP_ICON_LAYER, description, parent,
+      gimp_standard_help_func, GIMP_HELP_LAYER_EDIT,
+      _("_Cancel"), GTK_RESPONSE_CANCEL, _("_OK"), GTK_RESPONSE_OK, NULL);
+    auto owner = ObjectRef<GObject>::retain (G_OBJECT (dialog));
+    try
+      {
+        auto& store = BindingStore::ensure (owner.get ());
+        store.emplace<DialogSlot> (dialog, image, layer);
+        store.initialize<DialogSlot> ([&] (PainterLayerDialog& value) {
+          auto *state = &value;
+          GtkWidget *content;
+          state->connections.push_back (Connection::connect (owner, "destroy",
+            G_CALLBACK (painter_dialog_destroy), nullptr, nullptr));
+          painter_dialog_connect (state, image, "disconnect", G_CALLBACK (painter_dialog_image_disconnect));
+          gtk_dialog_set_default_response (GTK_DIALOG (state->dialog), GTK_RESPONSE_OK);
+          content = gtk_dialog_get_content_area (GTK_DIALOG (state->dialog));
+          state->grid = gtk_grid_new ();
+          gtk_container_set_border_width (GTK_CONTAINER (state->grid), 12);
+          gtk_grid_set_column_spacing (GTK_GRID (state->grid), 8);
+          gtk_grid_set_row_spacing (GTK_GRID (state->grid), 8);
+          gtk_box_pack_start (GTK_BOX (content), state->grid, TRUE, TRUE, 0);
+          state->error = gtk_label_new (NULL);
+          gtk_label_set_line_wrap (GTK_LABEL (state->error), TRUE);
+          gtk_label_set_xalign (GTK_LABEL (state->error), 0);
+          gtk_widget_set_name (state->error, "painter-layer-error");
+          gtk_box_pack_start (GTK_BOX (content), state->error, FALSE, FALSE, 8);
+          initialize (value);
+        });
+        store.activate ();
+        store.with<DialogSlot> (std::forward<Activate> (activate));
+        /* Input release can itself disconnect the image or destroy the parent.
+         * Keep the dialog lease until this final lifecycle check has finished. */
+        release_inputs ();
+        if (store.state () != BindingStore::State::active)
+          {
+            gtk_widget_destroy (dialog);
+            return static_cast<GtkWidget *> (nullptr);
+          }
+        return dialog;
+      }
+    catch (...)
+      {
+        gtk_widget_destroy (dialog);
+        release_inputs ();
+        throw;
+      }
+  });
 }
 
 static void
-painter_clone_refresh (GtkWidget *button,
-                       GtkWidget *dialog)
+painter_clone_refresh (PainterLayerDialog *state)
 {
-  PainterLayerDialog *state = painter_dialog_get (dialog);
-  GimpImage         *image = g_weak_ref_get (&state->image);
-  GimpLayer         *layer = g_weak_ref_get (&state->layer);
+  GimpImage         *image = GIMP_IMAGE (g_weak_ref_get (&state->image));
+  GimpLayer         *layer = GIMP_LAYER (g_weak_ref_get (&state->layer));
   gchar             *active = NULL;
   gchar             *source_name = NULL;
   gchar             *description = NULL;
@@ -187,7 +300,7 @@ painter_clone_refresh (GtkWidget *button,
     g_object_ref (iter->data);
   for (iter = layers; iter && ! state->closed; iter = iter->next)
     {
-      GimpItem *item = iter->data;
+      GimpItem *item = GIMP_ITEM (iter->data);
       GimpItem *ancestor;
       gchar    *id;
       gchar    *label;
@@ -228,11 +341,10 @@ out:
 }
 
 static void
-painter_clone_response (GtkWidget *dialog,
-                        gint       response,
-                        gpointer   data)
+painter_clone_response (PainterLayerDialog *state,
+                        gint                response)
 {
-  PainterLayerDialog *state = data;
+  GtkWidget         *dialog = state->dialog;
   GimpImage         *image = NULL;
   GimpLayer         *layer = NULL;
   GimpItem          *source = NULL;
@@ -240,13 +352,11 @@ painter_clone_response (GtkWidget *dialog,
   GError            *error = NULL;
   gboolean           success;
 
-  /* Core notifications can destroy the widgets and drop the outside dialog
-   * reference. Keep its state alive, but never mistake that lease for live UI. */
-  g_object_ref (dialog);
+  /* The dispatcher/store lease keeps this borrow alive across core reentry. */
   if (response != GTK_RESPONSE_OK)
     goto close;
-  image = g_weak_ref_get (&state->image);
-  layer = g_weak_ref_get (&state->layer);
+  image = GIMP_IMAGE (g_weak_ref_get (&state->image));
+  layer = GIMP_LAYER (g_weak_ref_get (&state->layer));
   if (state->closed || ! image || ! layer ||
       gimp_item_get_image (GIMP_ITEM (layer)) != image ||
       ! gimp_item_is_attached (GIMP_ITEM (layer)))
@@ -280,8 +390,25 @@ out:
   g_clear_error (&error);
   g_clear_object (&image);
   g_clear_object (&layer);
-  g_object_unref (dialog);
 }
+
+static void
+painter_clone_refresh_clicked (GtkButton *, gpointer data)
+{
+  painter_dialog_dispatch (data, [] (PainterLayerDialog& state) {
+    painter_clone_refresh (&state);
+  });
+}
+
+static void
+painter_clone_response_received (GtkDialog *, gint response, gpointer data)
+{
+  painter_dialog_dispatch (data, [&] (PainterLayerDialog& state) {
+    painter_clone_response (&state, response);
+  });
+}
+
+} // namespace
 
 GtkWidget *
 painter_clone_layer_dialog_new (GimpImage   *image,
@@ -289,47 +416,48 @@ painter_clone_layer_dialog_new (GimpImage   *image,
                                 GimpContext *context,
                                 GtkWidget   *parent)
 {
-  PainterLayerDialog *state;
-  GtkWidget         *refresh;
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_CLONE_LAYER (layer), NULL);
-  state = painter_dialog_new (image, layer, context, parent,
-                              _("Clone Layer Source"), "gimp-clone-layer-source",
-                              _("Choose the layer or group this clone follows"));
-  state->choice = painter_dialog_field (state, _("_Source:"), gtk_combo_box_text_new (), "painter-clone-source");
-  refresh = painter_dialog_field (state, NULL, gtk_button_new_with_mnemonic (_("_Refresh Sources")), "painter-clone-refresh");
-  g_signal_connect_object (refresh, "clicked", G_CALLBACK (painter_clone_refresh), state->dialog, 0);
-  g_signal_connect (state->dialog, "response", G_CALLBACK (painter_clone_response), state);
-  painter_clone_refresh (NULL, state->dialog);
-  gtk_widget_show_all (state->grid);
-  return state->dialog;
+  return painter_dialog_new (image, layer, context, parent,
+    _("Clone Layer Source"), "gimp-clone-layer-source",
+    _("Choose the layer or group this clone follows"),
+    [] (PainterLayerDialog& value) {
+      auto *state = &value;
+      state->choice = painter_dialog_field (state, _("_Source:"), gtk_combo_box_text_new (), "painter-clone-source");
+      GtkWidget *refresh = painter_dialog_field (state, NULL, gtk_button_new_with_mnemonic (_("_Refresh Sources")), "painter-clone-refresh");
+      painter_dialog_connect (state, refresh, "clicked", G_CALLBACK (painter_clone_refresh_clicked));
+      painter_dialog_connect (state, state->dialog, "response", G_CALLBACK (painter_clone_response_received));
+    },
+    [] (PainterLayerDialog& state) {
+      painter_clone_refresh (&state);
+      if (!state.closed) gtk_widget_show_all (state.grid);
+    });
+}
+
+namespace {
+static void
+painter_filter_dirty (GtkWidget *, gpointer data)
+{
+  painter_dialog_dispatch (data, [] (PainterLayerDialog& state) {
+    state.dirty = TRUE;
+  });
 }
 
 static void
-painter_filter_dirty (GtkWidget *widget,
-                      GtkWidget *dialog)
+painter_filter_choice_changed (PainterLayerDialog *state)
 {
-  PainterLayerDialog *state = painter_dialog_get (dialog);
-  if (! state->closed) state->dirty = TRUE;
-}
-
-static void
-painter_filter_choice_changed (GtkWidget *widget,
-                               GtkWidget *dialog)
-{
-  PainterLayerDialog *state = painter_dialog_get (dialog);
   const gchar       *id;
   if (state->closed) return;
   id = gtk_combo_box_get_active_id (GTK_COMBO_BOX (state->choice));
-  gtk_stack_set_visible_child_name (GTK_STACK (state->parameters), id ? id : "keep");
+  auto parameters = ObjectRef<GObject>::retain (G_OBJECT (state->parameters));
+  gtk_stack_set_visible_child_name (GTK_STACK (parameters.get ()), id ? id : "keep");
   state->dirty = TRUE;
 }
 
 static void
-painter_filter_status (GimpFilterLayer *layer,
-                       GtkWidget       *dialog)
+painter_filter_status (PainterLayerDialog *state,
+                       GimpFilterLayer    *layer)
 {
-  PainterLayerDialog *state = painter_dialog_get (dialog);
   gchar             *error;
   gchar             *valid;
   const gchar       *text;
@@ -343,7 +471,8 @@ painter_filter_status (GimpFilterLayer *layer,
     default: text = _("Updating in the background…"); break;
     }
   valid = g_utf8_make_valid (text, -1);
-  gtk_label_set_text (GTK_LABEL (state->status), valid);
+  auto status = ObjectRef<GObject>::retain (G_OBJECT (state->status));
+  gtk_label_set_text (GTK_LABEL (status.get ()), valid);
   g_free (valid);
   g_free (error);
 }
@@ -409,7 +538,7 @@ painter_filter_details (PainterLayerDialog *state,
   if (raw && g_bytes_get_size (raw))
     {
       gsize size, i;
-      const guchar *bytes = g_bytes_get_data (raw, &size);
+      const guchar *bytes = static_cast<const guchar *> (g_bytes_get_data (raw, &size));
       g_string_append (text, _("\nOriginal metadata (hex preview):\n"));
       for (i = 0; i < MIN (size, 4096); i++)
         g_string_append_printf (text, "%02x%s", bytes[i], i % 16 == 15 ? "\n" : " ");
@@ -490,11 +619,10 @@ out:
 }
 
 static void
-painter_filter_response (GtkWidget *dialog,
-                         gint       response,
-                         gpointer   data)
+painter_filter_response (PainterLayerDialog *state,
+                         gint                response)
 {
-  PainterLayerDialog *state = data;
+  GtkWidget         *dialog = state->dialog;
   GimpImage         *image = NULL;
   GimpLayer         *layer = NULL;
   GimpValueArray    *args = NULL;
@@ -504,11 +632,10 @@ painter_filter_response (GtkWidget *dialog,
   GBytes            *raw = NULL;
   gboolean           success = TRUE;
 
-  g_object_ref (dialog);
   if (response != GTK_RESPONSE_OK)
     goto close;
-  image = g_weak_ref_get (&state->image);
-  layer = g_weak_ref_get (&state->layer);
+  image = GIMP_IMAGE (g_weak_ref_get (&state->image));
+  layer = GIMP_LAYER (g_weak_ref_get (&state->layer));
   if (state->closed || ! image || (state->editing &&
       (! layer || gimp_item_get_image (GIMP_ITEM (layer)) != image ||
        ! gimp_item_is_attached (GIMP_ITEM (layer)))))
@@ -605,7 +732,7 @@ painter_filter_response (GtkWidget *dialog,
           success = gimp_filter_layer_set_definition (GIMP_FILTER_LAYER (layer), procedure, NULL, args, &error);
           if (state->closed) goto close;
           if (success)
-            success = gimp_image_add_layer (image, layer, GIMP_IMAGE_ACTIVE_PARENT, -1, TRUE);
+            success = gimp_image_add_layer (image, layer, static_cast<GimpLayer *> (GIMP_IMAGE_ACTIVE_PARENT), -1, TRUE);
         }
       else success = FALSE;
     }
@@ -624,8 +751,33 @@ out:
   g_clear_error (&error);
   g_clear_object (&image);
   g_clear_object (&layer);
-  g_object_unref (dialog);
 }
+
+static void
+painter_filter_choice_received (GtkComboBox *, gpointer data)
+{
+  painter_dialog_dispatch (data, [] (PainterLayerDialog& state) {
+    painter_filter_choice_changed (&state);
+  });
+}
+
+static void
+painter_filter_status_received (GimpFilterLayer *layer, gpointer data)
+{
+  painter_dialog_dispatch (data, [&] (PainterLayerDialog& state) {
+    painter_filter_status (&state, layer);
+  });
+}
+
+static void
+painter_filter_response_received (GtkDialog *, gint response, gpointer data)
+{
+  painter_dialog_dispatch (data, [&] (PainterLayerDialog& state) {
+    painter_filter_response (&state, response);
+  });
+}
+
+} // namespace
 
 GtkWidget *
 painter_filter_layer_dialog_new (GimpImage   *image,
@@ -633,91 +785,94 @@ painter_filter_layer_dialog_new (GimpImage   *image,
                                  GimpContext *context,
                                  GtkWidget   *parent)
 {
-  PainterLayerDialog *state;
-  GtkWidget         *main_grid;
-  GtkWidget         *grid;
-  gint               row;
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (layer == NULL || GIMP_IS_FILTER_LAYER (layer), NULL);
-  state = painter_dialog_new (image, layer, context, parent,
-                              layer ? _("Edit Filter Layer") : _("New Filter Layer"),
-                              "gimp-painter-filter-layer",
-                              _("Filter the visible layers below this layer"));
-  if (! layer)
-    {
-      state->name = painter_dialog_field (state, _("_Name:"), gtk_entry_new (), "painter-filter-name");
-      gtk_entry_set_text (GTK_ENTRY (state->name), _("Filter Layer"));
-      gtk_entry_set_activates_default (GTK_ENTRY (state->name), TRUE);
-      state->width = painter_dialog_spin (state, _("_Width (pixels):"), "painter-filter-width", 1, GIMP_MAX_IMAGE_SIZE, gimp_image_get_width (image), 0);
-      state->height = painter_dialog_spin (state, _("_Height (pixels):"), "painter-filter-height", 1, GIMP_MAX_IMAGE_SIZE, gimp_image_get_height (image), 0);
-    }
-  state->choice = painter_dialog_field (state, _("_Filter:"), gtk_combo_box_text_new (), "painter-filter-choice");
-  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "keep", layer ? _("Keep saved definition") : _("No filter (configure later)"));
-  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "edge", _("Edge Detect (Painter compatibility)"));
-  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "gauss", _("Gaussian Blur (Painter compatibility)"));
-  state->parameters = gtk_stack_new ();
-  gtk_stack_set_homogeneous (GTK_STACK (state->parameters), FALSE);
-  gtk_grid_attach (GTK_GRID (state->grid), state->parameters, 0, state->row++, 2, 1);
-  grid = gtk_label_new (_("Saved procedures and arguments remain intact. Only listed compatibility filters can be executed here."));
-  gtk_label_set_line_wrap (GTK_LABEL (grid), TRUE);
-  gtk_label_set_max_width_chars (GTK_LABEL (grid), 60);
-  gtk_stack_add_named (GTK_STACK (state->parameters), grid, "keep");
-  main_grid = state->grid; row = state->row;
-  state->grid = grid = gtk_grid_new (); state->row = 0;
-  gtk_grid_set_row_spacing (GTK_GRID (grid), 8);
-  gtk_grid_set_column_spacing (GTK_GRID (grid), 8);
-  gtk_stack_add_named (GTK_STACK (state->parameters), grid, "edge");
-  state->amount = painter_dialog_spin (state, _("_Amount:"), "painter-edge-amount", 0, 10, 2, 3);
-  state->wrap = painter_dialog_field (state, _("_Border:"), gtk_combo_box_text_new (), "painter-edge-wrap");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->wrap), _("Wrap"));
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->wrap), _("Smear"));
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->wrap), _("Black"));
-  gtk_combo_box_set_active (GTK_COMBO_BOX (state->wrap), 1);
-  state->edge = painter_dialog_field (state, _("_Algorithm:"), gtk_combo_box_text_new (), "painter-edge-method");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), "Sobel");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), "Prewitt");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), "Gradient");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), "Roberts");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), _("Differential"));
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), "Laplace");
-  gtk_combo_box_set_active (GTK_COMBO_BOX (state->edge), 0);
-  state->grid = grid = gtk_grid_new (); state->row = 0;
-  gtk_grid_set_row_spacing (GTK_GRID (grid), 8);
-  gtk_grid_set_column_spacing (GTK_GRID (grid), 8);
-  gtk_stack_add_named (GTK_STACK (state->parameters), grid, "gauss");
-  state->horizontal = painter_dialog_spin (state, _("_Horizontal radius:"), "painter-gauss-horizontal", 0, 500, 5, 3);
-  state->vertical = painter_dialog_spin (state, _("_Vertical radius:"), "painter-gauss-vertical", 0, 500, 5, 3);
-  state->method = painter_dialog_field (state, _("_Method:"), gtk_combo_box_text_new (), "painter-gauss-method");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->method), "IIR");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->method), "RLE");
-  gtk_combo_box_set_active (GTK_COMBO_BOX (state->method), 0);
-  state->grid = main_grid; state->row = row;
-  state->status = painter_dialog_field (state, NULL, gtk_label_new (NULL), "painter-filter-status");
-  gtk_label_set_line_wrap (GTK_LABEL (state->status), TRUE);
-  gtk_label_set_max_width_chars (GTK_LABEL (state->status), 60);
-  gtk_label_set_xalign (GTK_LABEL (state->status), 0);
-  gtk_widget_show_all (state->grid);
-  if (layer)
-    {
-      painter_filter_load (state, GIMP_FILTER_LAYER (layer));
-      painter_filter_details (state, GIMP_FILTER_LAYER (layer));
-      painter_filter_status (GIMP_FILTER_LAYER (layer), state->dialog);
-      g_signal_connect_object (layer, "filter-state-changed", G_CALLBACK (painter_filter_status), state->dialog, 0);
-    }
-  else
-    gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "keep");
-  painter_filter_choice_changed (state->choice, state->dialog);
-  state->dirty = FALSE;
-  /* A retained/reparented child can outlive the dialog. The object closure
-   * disconnects at owner disposal and leases the dialog during each callback. */
-  g_signal_connect_object (state->choice, "changed", G_CALLBACK (painter_filter_choice_changed), state->dialog, 0);
-  g_signal_connect_object (state->amount, "value-changed", G_CALLBACK (painter_filter_dirty), state->dialog, 0);
-  g_signal_connect_object (state->wrap, "changed", G_CALLBACK (painter_filter_dirty), state->dialog, 0);
-  g_signal_connect_object (state->edge, "changed", G_CALLBACK (painter_filter_dirty), state->dialog, 0);
-  g_signal_connect_object (state->horizontal, "value-changed", G_CALLBACK (painter_filter_dirty), state->dialog, 0);
-  g_signal_connect_object (state->vertical, "value-changed", G_CALLBACK (painter_filter_dirty), state->dialog, 0);
-  g_signal_connect_object (state->method, "changed", G_CALLBACK (painter_filter_dirty), state->dialog, 0);
-  g_signal_connect (state->dialog, "response", G_CALLBACK (painter_filter_response), state);
-  gtk_widget_show_all (state->grid);
-  return state->dialog;
+  return painter_dialog_new (image, layer, context, parent,
+    layer ? _("Edit Filter Layer") : _("New Filter Layer"),
+    "gimp-painter-filter-layer", _("Filter the visible layers below this layer"),
+    [&] (PainterLayerDialog& value) {
+      auto *state = &value;
+      GtkWidget *main_grid;
+      GtkWidget *grid;
+      gint row;
+      if (! layer)
+        {
+          state->name = painter_dialog_field (state, _("_Name:"), gtk_entry_new (), "painter-filter-name");
+          gtk_entry_set_text (GTK_ENTRY (state->name), _("Filter Layer"));
+          gtk_entry_set_activates_default (GTK_ENTRY (state->name), TRUE);
+          state->width = painter_dialog_spin (state, _("_Width (pixels):"), "painter-filter-width", 1, GIMP_MAX_IMAGE_SIZE, gimp_image_get_width (image), 0);
+          state->height = painter_dialog_spin (state, _("_Height (pixels):"), "painter-filter-height", 1, GIMP_MAX_IMAGE_SIZE, gimp_image_get_height (image), 0);
+        }
+      state->choice = painter_dialog_field (state, _("_Filter:"), gtk_combo_box_text_new (), "painter-filter-choice");
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "keep", layer ? _("Keep saved definition") : _("No filter (configure later)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "edge", _("Edge Detect (Painter compatibility)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "gauss", _("Gaussian Blur (Painter compatibility)"));
+      state->parameters = gtk_stack_new ();
+      gtk_stack_set_homogeneous (GTK_STACK (state->parameters), FALSE);
+      gtk_grid_attach (GTK_GRID (state->grid), state->parameters, 0, state->row++, 2, 1);
+      grid = gtk_label_new (_("Saved procedures and arguments remain intact. Only listed compatibility filters can be executed here."));
+      gtk_label_set_line_wrap (GTK_LABEL (grid), TRUE);
+      gtk_label_set_max_width_chars (GTK_LABEL (grid), 60);
+      gtk_stack_add_named (GTK_STACK (state->parameters), grid, "keep");
+      main_grid = state->grid; row = state->row;
+      state->grid = grid = gtk_grid_new (); state->row = 0;
+      gtk_grid_set_row_spacing (GTK_GRID (grid), 8);
+      gtk_grid_set_column_spacing (GTK_GRID (grid), 8);
+      gtk_stack_add_named (GTK_STACK (state->parameters), grid, "edge");
+      state->amount = painter_dialog_spin (state, _("_Amount:"), "painter-edge-amount", 0, 10, 2, 3);
+      state->wrap = painter_dialog_field (state, _("_Border:"), gtk_combo_box_text_new (), "painter-edge-wrap");
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->wrap), _("Wrap"));
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->wrap), _("Smear"));
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->wrap), _("Black"));
+      gtk_combo_box_set_active (GTK_COMBO_BOX (state->wrap), 1);
+      state->edge = painter_dialog_field (state, _("_Algorithm:"), gtk_combo_box_text_new (), "painter-edge-method");
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), "Sobel");
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), "Prewitt");
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), "Gradient");
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), "Roberts");
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), _("Differential"));
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->edge), "Laplace");
+      gtk_combo_box_set_active (GTK_COMBO_BOX (state->edge), 0);
+      state->grid = grid = gtk_grid_new (); state->row = 0;
+      gtk_grid_set_row_spacing (GTK_GRID (grid), 8);
+      gtk_grid_set_column_spacing (GTK_GRID (grid), 8);
+      gtk_stack_add_named (GTK_STACK (state->parameters), grid, "gauss");
+      state->horizontal = painter_dialog_spin (state, _("_Horizontal radius:"), "painter-gauss-horizontal", 0, 500, 5, 3);
+      state->vertical = painter_dialog_spin (state, _("_Vertical radius:"), "painter-gauss-vertical", 0, 500, 5, 3);
+      state->method = painter_dialog_field (state, _("_Method:"), gtk_combo_box_text_new (), "painter-gauss-method");
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->method), "IIR");
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (state->method), "RLE");
+      gtk_combo_box_set_active (GTK_COMBO_BOX (state->method), 0);
+      state->grid = main_grid; state->row = row;
+      state->status = painter_dialog_field (state, NULL, gtk_label_new (NULL), "painter-filter-status");
+      gtk_label_set_line_wrap (GTK_LABEL (state->status), TRUE);
+      gtk_label_set_max_width_chars (GTK_LABEL (state->status), 60);
+      gtk_label_set_xalign (GTK_LABEL (state->status), 0);
+      gtk_widget_show_all (state->grid);
+      if (layer)
+        {
+          painter_filter_load (state, GIMP_FILTER_LAYER (layer));
+          painter_filter_details (state, GIMP_FILTER_LAYER (layer));
+          painter_dialog_connect (state, layer, "filter-state-changed", G_CALLBACK (painter_filter_status_received));
+        }
+      else
+        gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "keep");
+      /* Hooks are installed during construction but dispatch only after the
+       * whole slot is activated. Retained/reparented children hold no Impl. */
+      painter_dialog_connect (state, state->choice, "changed", G_CALLBACK (painter_filter_choice_received));
+      painter_dialog_connect (state, state->amount, "value-changed", G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect (state, state->wrap, "changed", G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect (state, state->edge, "changed", G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect (state, state->horizontal, "value-changed", G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect (state, state->vertical, "value-changed", G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect (state, state->method, "changed", G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect (state, state->dialog, "response", G_CALLBACK (painter_filter_response_received));
+    },
+    [&] (PainterLayerDialog& state) {
+      if (layer) painter_filter_status (&state, GIMP_FILTER_LAYER (layer));
+      if (state.closed) return;
+      painter_filter_choice_changed (&state);
+      state.dirty = FALSE;
+      if (!state.closed) gtk_widget_show_all (state.grid);
+    });
 }

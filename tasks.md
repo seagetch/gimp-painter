@@ -1109,6 +1109,7 @@
 | 31.014 | [ ] | 旧 glib-cxx interface 利用を除去する | 31.013 | 新ハンドル以外の利用入口がゼロ |
 | 31.015 | [ ] | 旧 private Impl 配置を除去する | 31.014 | NewGClass placement new と二重所有がゼロ |
 | 31.016/typed-provenance-store | [x] | XCF由来値の自由なdata keyを型付き共通store所有へ統合する | 04.002/foundation-acceptance-matrix, 12.015/native-recovery-save | 固定型childの単一slot、既存private C参照のみでpublic ABI不変・active store再登録なし。copy白名簿/不変record snapshot/close/最終ref/finalize再入を含む42通常・25unit sanitizer＋36 RTTI-only合格。dialog/全source-familyと全保存fieldは別gate |
+| 31.016/dialog-common-store | [x] | Clone/Filter dialog所有をtyped storeと弱callbackへ統合する | 31.016/typed-provenance-store, 30.001/layer-create-edit | 旧16case維持、close/retained child/最終owner/factory input lease/orphan防止を含む21実GTK通常・7unit sanitizer＋42 RTTI-only合格。原C facadeと保存引数/Undo経路不変、自由key削除。全source-family parent依存は別gate |
 | 31.016 | [ ] | 自由な qdata 付加を除去する | 31.015 | 共通 store 以外の独自状態登録がゼロ |
 | 31.017 | [ ] | 旧 TileManager/PixelRegion 依存を除去する | 31.016 | 移植対象に旧画素基盤への依存がない |
 | 31.018 | [ ] | 空ファイルとバックアップを除去する | 31.017 | ビルド対象と実装参照が残っていない |
