@@ -116,9 +116,9 @@ Passing independent foundation tests does not close that all-feature requirement
 
 ## Type and slot inventory
 
-`cpp-handle-registry.tsv` assigns one named handle contract to all 87 distinct
+`cpp-handle-registry.tsv` assigns one named handle contract to all 90 distinct
 legacy declared/runtime types found in pinned C++ traits, cpp-types.tsv and the
-macro-generated GType inventory. Repeated declarations and underscored C struct
+macro-generated GType inventory and explicit C-entry owners. Repeated declarations and underscored C struct
 aliases are consolidated. The table's implementation column deliberately stays
 TODO until that feature adapter is compiled and tested. Removed GdkDrawable has
 an explicit GTK3 window/Cairo route; ImageGenerator is retained in the ledger

@@ -2,6 +2,8 @@ legacy_type	declared_at	kind	handle	contract	implementation
 GObject	app/base/glib-cxx-bridge.hpp:12;app/core/gimpclonelayer.cpp:23;app/core/gimpclonelayerundo.cpp:21;app/core/gimpfilterlayer.cpp:23;app/core/gimpperspectiveguide.cpp:24;app/display/gimpcanvasperspectiveguide.cpp:24;app/presets/gimpjsonresource.cpp:23;app/presets/layer-preset.cpp:23;app/presets/preset-factory-gui.cpp:23;app/presets/preset-factory.cpp:23	DECLARE_GTK_CLASS	GObjectRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GdkDrawable	app/base/glib-cxx-bridge.hpp:25	DECLARE_GTK_CLASS	GdkWindowRef + scoped Cairo context	GTK3 removed GdkDrawable; window GObject ownership and Cairo drawing lifetime are distinct; preserve UI operations through29/30 adapters	TODO
 GdkScreen	app/base/glib-cxx-bridge.hpp:26	DECLARE_GTK_CLASS	GdkScreenRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
+Gimp	app/gimp-features.cpp:70	C-entry owner	ApplicationRef	ObjectRef typed ownership; named methods delegate to one C entry; TypeTraits uses current GType	TODO
+GimpActionGroup	app/presets/preset-factory-gui.cpp:240	C-entry owner	ActionGroupRef	ObjectRef typed ownership; named methods delegate to one C entry; TypeTraits uses current GType	TODO
 GimpBaseConfig	app/config/gimpbaseconfig.h:57	DECLARE_GTK_CLASS	BaseConfigRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpBrush	app/core/gimpbrush.h:147	DECLARE_GTK_CLASS	BrushRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpBrushCore	app/paint/gimpbrushcore.h:174	DECLARE_GTK_CLASS	BrushCoreRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
@@ -22,6 +24,7 @@ GimpCoreConfig	app/config/gimpcoreconfig.h:109	DECLARE_GTK_CLASS	CoreConfigRef	O
 GimpData	app/core/gimpdata.h:122	DECLARE_GTK_CLASS	DataRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpDataFactory	app/core/gimpdatafactory.h:112	DECLARE_GTK_CAST	DataFactoryRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpDataFactoryView	app/widgets/gimpdatafactoryview.h:75	DECLARE_GTK_CLASS	DataFactoryViewRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
+GimpDisplayShell	app/display/gimpdisplayshell-overlays.cpp:601	C-entry owner	DisplayShellRef	ObjectRef typed ownership; named methods delegate to one C entry; TypeTraits uses current GType	TODO
 GimpDrawTool	app/tools/gimpdrawtool.h:258	DECLARE_GTK_CLASS	DrawToolRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpDrawable	app/core/gimpdrawable.h:247	DECLARE_GTK_CLASS	DrawableRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpDrawableStack	app/core/gimpdrawablestack.h:63	DECLARE_GTK_CLASS	DrawableStackRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
@@ -51,7 +54,7 @@ GimpPerspectiveGuide	app/core/gimpperspectiveguide.cpp:84;app/core/gimpperspecti
 GimpPerspectiveGuideOptions	app/tools/gimpperspectiveguidetool.cpp:109;app/tools/gimpperspectiveguidetool.cpp:112	DECLARE_GTK_CLASS;custom-runtime-type	PerspectiveGuideOptionsRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpPerspectiveGuideTool	app/tools/gimpperspectiveguidetool.cpp:224;app/tools/gimpperspectiveguidetool.h:57	DECLARE_GTK_CLASS;custom-runtime-type	PerspectiveGuideToolRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpPickable	app/core/gimppickable.h:82	DECLARE_GIMP_INTERFACE	PickableRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
-GimpPopover2	app/widgets/popupper.cpp:102	custom-runtime-type	Popover2Ref	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
+GimpPopover2	app/widgets/popupper.cpp:102	custom-runtime-type	PopoverRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpProcedure	app/pdb/gimpprocedure.h:148	DECLARE_GTK_CAST	ProcedureRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpProgress	app/core/gimpprogress.h:97	DECLARE_GIMP_INTERFACE	ProgressRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
 GimpProjectable	app/core/gimpprojectable.h:94	DECLARE_GIMP_INTERFACE	ProjectableRef	ObjectRef typed ownership; named operations delegate to one C entry; TypeTraits uses current GType	TODO
