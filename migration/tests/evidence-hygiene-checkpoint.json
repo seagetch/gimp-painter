@@ -1,0 +1,71 @@
+{
+  "scope": "Unpublished test-evidence environment minimization; runtime/application sources and structured test results unchanged",
+  "base_unchanged": "1b69d5c73868ad6070240e7f7a8744dbf56f8cf6",
+  "original_tip": "bcce5025ac8ef32b8a924a92253cc0c16ea4ca36",
+  "sanitized_tip": "7c2a5784fb0841e199354db1ba9fa9e04e0aa5c5",
+  "commits": [
+    {
+      "original": "de2770f3a29bee88d33fb10595c71b210575ac39",
+      "sanitized": "77b6322ac0619485edf29a7c243b5a1e07a3188a",
+      "changed_paths": [
+        "migration/tests/mypaint-pipe-allowlist.json",
+        "migration/tests/mypaint-pipe-baselines.json",
+        "migration/tests/mypaint-pipe-final-baselines.jsonl"
+      ],
+      "structured_results_preserved": true
+    },
+    {
+      "original": "b71bac0833bab57047d87b0de302c1b14445c106",
+      "sanitized": "fbec12a9aa6e106b68ffb6ca546449afe8360bec",
+      "changed_paths": [
+        "migration/tests/mypaint-pipe-allowlist.json",
+        "migration/tests/mypaint-pipe-baselines.json",
+        "migration/tests/mypaint-pipe-final-baselines.jsonl",
+        "migration/tests/provenance-checkpoint.json",
+        "migration/tests/provenance-native-initial.jsonl",
+        "migration/tests/provenance-native.jsonl"
+      ],
+      "structured_results_preserved": true
+    },
+    {
+      "original": "99660bede4a11432814d9b44e632493ffc59c9fd",
+      "sanitized": "8a09714efa6f0aa3d97c45a99bd59d67938f98d3",
+      "changed_paths": [
+        "migration/tests/mypaint-pipe-allowlist.json",
+        "migration/tests/mypaint-pipe-baselines.json",
+        "migration/tests/mypaint-pipe-final-baselines.jsonl",
+        "migration/tests/provenance-checkpoint.json",
+        "migration/tests/provenance-native-initial.jsonl",
+        "migration/tests/provenance-native.jsonl"
+      ],
+      "structured_results_preserved": true
+    },
+    {
+      "original": "bcce5025ac8ef32b8a924a92253cc0c16ea4ca36",
+      "sanitized": "7c2a5784fb0841e199354db1ba9fa9e04e0aa5c5",
+      "changed_paths": [
+        "migration/tests/mypaint-pipe-allowlist.json",
+        "migration/tests/mypaint-pipe-baselines.json",
+        "migration/tests/mypaint-pipe-final-baselines.jsonl",
+        "migration/tests/provenance-checkpoint.json",
+        "migration/tests/provenance-native-initial.jsonl",
+        "migration/tests/provenance-native.jsonl"
+      ],
+      "structured_results_preserved": true
+    }
+  ],
+  "application_and_runtime_sources_identical": true,
+  "structured_test_results_preserved": true,
+  "current_history_and_recursive_recovery_scan": {
+    "inherited_metadata_markers": 0,
+    "recognized_credential_patterns": 0
+  },
+  "earlier_recovery_affected": false,
+  "reproduction_source_sha256": {
+    "migration/tests/sanitize_filter_evidence.py": "235c69486e4b983480f402b38c8ce3cd4761c0084ab04e0f26b69f404c5cdf1e",
+    "migration/tests/test_evidence_sanitizer.py": "b2377fcefbab8fdfab0556441a1e509ab14b70c857098f7f03d01a38b14901ac",
+    "migration/tests/evidence-sanitizer-tests.log": "74c03fc16fde9a2dfeff03db0ec8f472a5a8dfed04e9e982a912b4b7f64faee3"
+  },
+  "tests_passed": 7,
+  "limits": "Pattern/key-name scan is not a proof that arbitrary opaque strings can never contain secrets. Only an explicit reproducibility environment whitelist is retained."
+}
