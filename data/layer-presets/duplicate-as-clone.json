@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "name": "Clone layer",
+  "desc": "foobar",
+
+  "source-layer" : {
+    "type": "any",       "#": "group, filter, clone, normal, any",
+    "alpha": true
+  },
+
+  "replacement-layer" : [
+    { 
+      "target": "new",
+      "name":  "New Layer",
+      "type":  "clone",
+      "source": "source",
+      "boundary": "source"
+    },
+    { 
+      "target": "source"
+    }
+  ]
+}

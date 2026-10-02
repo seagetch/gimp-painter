@@ -92,6 +92,7 @@
 #include "text-tool-actions.h"
 #include "tool-options-actions.h"
 #include "tool-presets-actions.h"
+#include "layer-presets-actions.h"
 #include "tool-preset-editor-actions.h"
 #include "tools-actions.h"
 #include "vector-toolpath-actions.h"
@@ -180,6 +181,8 @@ static const GimpActionFactoryEntry action_groups[] =
   { "gradients", N_("Gradients"), GIMP_ICON_GRADIENT,
     gradients_actions_setup,
     gradients_actions_update },
+  { "layer-presets", N_("Layer Presets"), GIMP_ICON_LAYER,
+    layer_presets_actions_setup, layer_presets_actions_update },
   { "tool-presets", N_("Tool Presets"), GIMP_ICON_TOOL_PRESET,
     tool_presets_actions_setup,
     tool_presets_actions_update },

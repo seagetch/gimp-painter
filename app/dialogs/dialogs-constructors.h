@@ -309,4 +309,6 @@ GtkWidget * dialogs_tool_preset_editor_get      (GimpDialogFactory *factory,
                                                  gint               view_size);
 
 
+GtkWidget *dialogs_layer_preset_list_view_new (GimpDialogFactory *, GimpContext *, GimpUIManager *, gint);
+
 #endif /* __DIALOGS_CONSTRUCTORS_H__ */

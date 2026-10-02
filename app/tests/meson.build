@@ -252,3 +252,19 @@ test('painter-fill-brush-ui', fill_brush_ui_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+layer_presets_test = executable('gimp-layer-presets', 'test-gimp-layer-presets.c', 'tests.c',
+  dependencies: [libapp_dep, json_glib, appstream], link_with: apptests_links)
+test('gimp-layer-presets', layer_presets_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 90)
+
+layer_presets_ui_test = executable('layer-presets-ui', 'test-layer-presets-ui.c', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links)
+test('layer-presets-ui', layer_presets_ui_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

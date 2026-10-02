@@ -237,6 +237,12 @@ const GimpStringActionEntry dialogs_dockable_actions[] =
     "gimp-palette-editor",
     GIMP_HELP_PALETTE_EDIT },
 
+  { "dialogs-layer-presets", GIMP_ICON_LAYER,
+    NC_("dialogs-action", "Layer Presets Dialog"),
+    NC_("dialogs-action", "Layer Presets"), { NULL },
+    NC_("dialogs-action", "Open layer presets dialog"),
+    "gimp-layer-preset-list", NULL },
+
   { "dialogs-tool-presets", GIMP_ICON_TOOL_PRESET,
     NC_("dialogs-action", "Tool Pre_sets Dialog"),
     NC_("dialogs-action", "Tool Pre_sets"),

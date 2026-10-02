@@ -32,6 +32,7 @@ ui_menus_files = files(
   'tool-options-menu.ui',
   'tool-preset-editor-menu.ui',
   'tool-presets-menu.ui',
+  'layer-presets-menu.ui',
   'undo-menu.ui',
   'vector-toolpath-menu.ui',
 )

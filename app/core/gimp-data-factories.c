@@ -55,6 +55,7 @@
 #include "gimppatternclipboard.h"
 #include "gimptagcache.h"
 #include "gimptoolpreset.h"
+#include "gimplayerpreset.h"
 #include "gimptoolpreset-load.h"
 
 #include "text/gimpfont.h"
@@ -239,6 +240,16 @@ gimp_data_factories_init (Gimp *gimp)
                                        GIMP_TOOL_PRESET_FILE_EXTENSION,
                                        TRUE);
 
+  gimp->layer_preset_factory =
+    gimp_data_loader_factory_new (gimp, GIMP_TYPE_LAYER_PRESET,
+                                  "layer-presets-path", "layer-presets-path-writable",
+                                  "layer-preset-paths", NULL, NULL);
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->layer_preset_factory),
+                               "layer preset factory");
+  gimp_data_loader_factory_add_loader (gimp->layer_preset_factory,
+                                       "Painter Layer Preset", gimp_layer_preset_load,
+                                       ".json", TRUE);
+
   gimp->tag_cache = gimp_tag_cache_new ();
 }
 
@@ -305,6 +316,9 @@ gimp_data_factories_clear (Gimp *gimp)
   if (gimp->font_factory)
     gimp_data_factory_data_free (gimp->font_factory);
 
+  if (gimp->layer_preset_factory)
+    gimp_data_factory_data_free (gimp->layer_preset_factory);
+
   if (gimp->tool_preset_factory)
     gimp_data_factory_data_free (gimp->tool_preset_factory);
 }
@@ -323,6 +337,7 @@ gimp_data_factories_exit (Gimp *gimp)
   g_clear_object (&gimp->palette_factory);
   g_clear_object (&gimp->font_factory);
   g_clear_object (&gimp->tool_preset_factory);
+  g_clear_object (&gimp->layer_preset_factory);
   g_clear_object (&gimp->tag_cache);
 }
 
@@ -398,6 +413,7 @@ gimp_data_factories_get_memsize (Gimp   *gimp,
                                       gui_size);
   memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->font_factory),
                                       gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->layer_preset_factory), gui_size);
   memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->tool_preset_factory),
                                       gui_size);
 
@@ -421,6 +437,7 @@ gimp_data_factories_data_clean (Gimp *gimp)
   gimp_data_factory_data_clean (gimp->palette_factory);
   gimp_data_factory_data_clean (gimp->font_factory);
   gimp_data_factory_data_clean (gimp->tool_preset_factory);
+  gimp_data_factory_data_clean (gimp->layer_preset_factory);
 }
 
 void
@@ -500,6 +517,9 @@ gimp_data_factories_load (Gimp               *gimp,
                                 gimp_data_factory_get_container (gimp->font_factory));
   gimp_tag_cache_add_container (gimp->tag_cache,
                                 gimp_data_factory_get_container (gimp->tool_preset_factory));
+  gimp_data_factory_data_init (gimp->layer_preset_factory, gimp->user_context, gimp->no_data);
+  gimp_tag_cache_add_container (gimp->tag_cache,
+                                gimp_data_factory_get_container (gimp->layer_preset_factory));
 }
 
 void
@@ -518,6 +538,7 @@ gimp_data_factories_save (Gimp *gimp)
   gimp_data_factory_data_save (gimp->palette_factory);
   gimp_data_factory_data_save (gimp->font_factory);
   gimp_data_factory_data_save (gimp->tool_preset_factory);
+  gimp_data_factory_data_save (gimp->layer_preset_factory);
 
   gimp_palettes_save (gimp);
 }

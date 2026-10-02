@@ -54,6 +54,7 @@ enum
   PROP_PATTERN_PATHS,
   PROP_GRADIENT_PATHS,
   PROP_PALETTE_PATHS,
+  PROP_LAYER_PRESET_PATHS,
   PROP_TOOL_PRESET_PATHS,
   PROP_SPLASH_PATHS,
   PROP_THEME_PATHS,
@@ -88,6 +89,7 @@ struct _GimpExtensionManagerPrivate
   GList      *pattern_paths;
   GList      *gradient_paths;
   GList      *palette_paths;
+  GList      *layer_preset_paths;
   GList      *tool_preset_paths;
   GList      *splash_paths;
   GList      *theme_paths;
@@ -178,6 +180,10 @@ gimp_extension_manager_class_init (GimpExtensionManagerClass *klass)
                                                          GIMP_PARAM_READWRITE));
   g_object_class_install_property (object_class, PROP_TOOL_PRESET_PATHS,
                                    g_param_spec_pointer ("tool-preset-paths",
+                                                         NULL, NULL,
+                                                         GIMP_PARAM_READWRITE));
+  g_object_class_install_property (object_class, PROP_LAYER_PRESET_PATHS,
+                                   g_param_spec_pointer ("layer-preset-paths",
                                                          NULL, NULL,
                                                          GIMP_PARAM_READWRITE));
   g_object_class_install_property (object_class, PROP_SPLASH_PATHS,
@@ -434,6 +440,8 @@ gimp_extension_manager_finalize (GObject *object)
   manager->p->palette_paths = NULL;
   g_list_free_full (manager->p->tool_preset_paths, g_object_unref);
   manager->p->tool_preset_paths = NULL;
+  g_list_free_full (manager->p->layer_preset_paths, g_object_unref);
+  manager->p->layer_preset_paths = NULL;
   g_list_free_full (manager->p->plug_in_paths, g_object_unref);
   manager->p->plug_in_paths = NULL;
   g_list_free_full (manager->p->splash_paths, g_object_unref);
@@ -484,6 +492,10 @@ gimp_extension_manager_set_property (GObject      *object,
     case PROP_TOOL_PRESET_PATHS:
       g_list_free_full (manager->p->tool_preset_paths, g_object_unref);
       manager->p->tool_preset_paths = g_value_get_pointer (value);
+      break;
+    case PROP_LAYER_PRESET_PATHS:
+      g_list_free_full (manager->p->layer_preset_paths, g_object_unref);
+      manager->p->layer_preset_paths = g_value_get_pointer (value);
       break;
     case PROP_SPLASH_PATHS:
       g_list_free_full (manager->p->splash_paths, g_object_unref);
@@ -537,6 +549,9 @@ gimp_extension_manager_get_property (GObject      *object,
       break;
     case PROP_TOOL_PRESET_PATHS:
       g_value_set_pointer (value, manager->p->tool_preset_paths);
+      break;
+    case PROP_LAYER_PRESET_PATHS:
+      g_value_set_pointer (value, manager->p->layer_preset_paths);
       break;
     case PROP_SPLASH_PATHS:
       g_value_set_pointer (value, manager->p->splash_paths);

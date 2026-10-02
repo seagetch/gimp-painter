@@ -1,0 +1,14 @@
+{
+  "version":1,
+  "name": "Crop with selection",
+  "desc": "foobar",
+  "source-layer": {
+    "type": "any",           "#":"group, filter, clone, normal, any"
+  },
+  "replacement-layer":[
+    {
+      "target":   "source",
+      "boundary": "selection"
+    }
+  ]
+}

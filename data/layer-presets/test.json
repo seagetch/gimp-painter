@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "name": "test1",
+  "desc": "foobar",
+
+  "source-layer" : {
+    "type": "filter",          "#": "group, filter, clone, normal, any"
+  },
+
+  "replacement-layer" : [
+    { 
+      "target": "source",
+      "mode": "difference-mode",    "#": "LayerModeEffects",
+      "filter": {
+        "name": "plug-in-edge",
+        "args": [{},{},{},{"type":"FLOAT","value": 2},{"type":"INT32", "value":1},{"type":"INT32","value":0}]
+      } 
+    }
+  ]
+}

@@ -62,6 +62,7 @@
 #include "widgets/gimptoolbox.h"
 #include "widgets/gimptooloptionseditor.h"
 #include "widgets/gimptoolpresetfactoryview.h"
+#include "widgets/gimplayerpresetview.h"
 #include "widgets/gimptoolpreseteditor.h"
 #include "widgets/gimpundoeditor.h"
 #include "widgets/gimppathtreeview.h"
@@ -914,4 +915,11 @@ dialogs_tool_preset_editor_get (GimpDialogFactory *factory,
 {
   return gimp_tool_preset_editor_new (context,
                                       menus_get_global_menu_factory (context->gimp));
+}
+
+GtkWidget *dialogs_layer_preset_list_view_new (GimpDialogFactory *factory,
+                                              GimpContext *context,
+                                              GimpUIManager *manager, gint size)
+{
+  return gimp_layer_preset_view_new (context, size, menus_get_global_menu_factory (context->gimp));
 }

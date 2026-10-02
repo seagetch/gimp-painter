@@ -1,0 +1,26 @@
+PRESET	crop-with-selection.json	/0	normal	source	4	0.59999999999999998	12	15	20	17	1	0
+PRESET_UNDO	crop-with-selection.json	0
+PRESET	duplicate-as-clone.json	/0	clone	New Layer	0	1	7	9	40	30	0	1
+PRESET	duplicate-as-clone.json	/1	normal	source	4	0.59999999999999998	7	9	40	30	1	0
+PRESET_UNDO	duplicate-as-clone.json	0
+PRESET	duplicate-as-normal.json	/0	normal	source copy	0	1	7	9	40	30	0	0
+PRESET	duplicate-as-normal.json	/1	normal	source	4	0.59999999999999998	7	9	40	30	1	0
+PRESET_UNDO	duplicate-as-normal.json	0
+PRESET	new-anime-layer.json	/0	group	New group	4	0.59999999999999998	7	9	40	30	0	0
+PRESET	new-anime-layer.json	/0/0	clone	mask	27	1	7	9	40	30	0	1
+PRESET	new-anime-layer.json	/0/1	normal	shadow	3	1	7	9	40	30	0	0
+PRESET	new-anime-layer.json	/0/2	normal	source	0	1	7	9	40	30	1	0
+PRESET_UNDO	new-anime-layer.json	0
+PRESET	new-cropped-layer.json	/0	normal	new-layer	0	1	12	15	20	17	0	0
+PRESET	new-cropped-layer.json	/1	normal	source	0	1	7	9	40	30	1	0
+PRESET_UNDO	new-cropped-layer.json	0
+PRESET	test.json	/0	filter	source	6	0.59999999999999998	7	9	40	30	1	0	
+PRESET_UNDO	test.json	0
+PRESET	test2.json	/0	filter	New Layer	24	0.5	7	9	40	30	0	0	plug-in-gauss	GimpInt32:0	GimpImageID:0	GimpDrawableID:0	gdouble:25	gdouble:25	GimpInt32:0
+PRESET	test2.json	/1	filter	source	4	0.69999999999999996	7	9	40	30	1	0	
+PRESET_UNDO	test2.json	0
+PRESET	watercolor.json	/0	group	New group	4	0.59999999999999998	7	9	40	30	0	0
+PRESET	watercolor.json	/0/0	filter	mask	6	0.20000000000000001	7	9	40	30	0	0	plug-in-edge	GimpInt32:0	GimpImageID:0	GimpDrawableID:0	gdouble:2	GimpInt32:1	GimpInt32:0
+PRESET	watercolor.json	/0/1	normal	source	0	1	7	9	40	30	1	0
+PRESET_UNDO	watercolor.json	0
+LAYER_PRESET_CAPTURE_COMPLETE

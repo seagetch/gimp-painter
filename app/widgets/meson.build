@@ -239,6 +239,7 @@ libappwidgets_sources = [
   'gimptoolpalette.c',
   'gimptoolpreseteditor.c',
   'gimptoolpresetfactoryview.c',
+  'gimplayerpresetview.c',
   'gimptranslationstore.c',
   'gimpuimanager.c',
   'gimpundoeditor.c',

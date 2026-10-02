@@ -62,6 +62,8 @@ struct _GimpCoreConfig
   gchar                  *palette_path_writable;
   gchar                  *gradient_path;
   gchar                  *gradient_path_writable;
+  gchar                  *layer_presets_path;
+  gchar                  *layer_presets_path_writable;
   gchar                  *tool_preset_path;
   gchar                  *tool_preset_path_writable;
   gchar                  *font_path;

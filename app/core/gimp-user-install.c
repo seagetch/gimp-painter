@@ -99,6 +99,7 @@ gimp_user_install_items[] =
   { "palettes",        USER_INSTALL_MKDIR },
   { "patterns",        USER_INSTALL_MKDIR },
   { "tool-presets",    USER_INSTALL_MKDIR },
+  { "layer-presets",   USER_INSTALL_MKDIR },
   { "plug-ins",        USER_INSTALL_MKDIR },
   { "modules",         USER_INSTALL_MKDIR },
   { "interpreters",    USER_INSTALL_MKDIR },

@@ -78,6 +78,8 @@ enum
   PROP_PALETTE_PATH_WRITABLE,
   PROP_GRADIENT_PATH,
   PROP_GRADIENT_PATH_WRITABLE,
+  PROP_LAYER_PRESETS_PATH,
+  PROP_LAYER_PRESETS_PATH_WRITABLE,
   PROP_TOOL_PRESET_PATH,
   PROP_TOOL_PRESET_PATH_WRITABLE,
   PROP_FONT_PATH,
@@ -438,6 +440,26 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          "tool-preset-path-writable",
                          "Writable tool preset path",
                          TOOL_PRESET_PATH_WRITABLE_BLURB,
+                         GIMP_CONFIG_PATH_DIR_LIST, path,
+                         GIMP_PARAM_STATIC_STRINGS |
+                         GIMP_CONFIG_PARAM_CONFIRM);
+  g_free (path);
+
+  path = gimp_config_build_data_path ("layer-presets");
+  GIMP_CONFIG_PROP_PATH (object_class, PROP_LAYER_PRESETS_PATH,
+                         "layer-presets-path",
+                         "Layer preset path",
+                         "Folders searched for Painter layer presets.",
+                         GIMP_CONFIG_PATH_DIR_LIST, path,
+                         GIMP_PARAM_STATIC_STRINGS |
+                         GIMP_CONFIG_PARAM_CONFIRM);
+  g_free (path);
+
+  path = gimp_config_build_writable_path ("layer-presets");
+  GIMP_CONFIG_PROP_PATH (object_class, PROP_LAYER_PRESETS_PATH_WRITABLE,
+                         "layer-presets-path-writable",
+                         "Writable layer preset path",
+                         "Folders used to save editable Painter layer presets.",
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
                          GIMP_CONFIG_PARAM_CONFIRM);
@@ -916,6 +938,8 @@ gimp_core_config_finalize (GObject *object)
   g_free (core_config->palette_path_writable);
   g_free (core_config->gradient_path);
   g_free (core_config->gradient_path_writable);
+  g_free (core_config->layer_presets_path);
+  g_free (core_config->layer_presets_path_writable);
   g_free (core_config->tool_preset_path);
   g_free (core_config->tool_preset_path_writable);
   g_free (core_config->font_path);
@@ -1036,6 +1060,12 @@ gimp_core_config_set_property (GObject      *object,
     case PROP_GRADIENT_PATH_WRITABLE:
       g_set_str (&core_config->gradient_path_writable,
                  g_value_get_string (value));
+      break;
+    case PROP_LAYER_PRESETS_PATH:
+      g_set_str (&core_config->layer_presets_path, g_value_get_string (value));
+      break;
+    case PROP_LAYER_PRESETS_PATH_WRITABLE:
+      g_set_str (&core_config->layer_presets_path_writable, g_value_get_string (value));
       break;
     case PROP_TOOL_PRESET_PATH:
       g_set_str (&core_config->tool_preset_path,
@@ -1339,6 +1369,12 @@ gimp_core_config_get_property (GObject    *object,
       break;
     case PROP_GRADIENT_PATH_WRITABLE:
       g_value_set_string (value, core_config->gradient_path_writable);
+      break;
+    case PROP_LAYER_PRESETS_PATH:
+      g_value_set_string (value, core_config->layer_presets_path);
+      break;
+    case PROP_LAYER_PRESETS_PATH_WRITABLE:
+      g_value_set_string (value, core_config->layer_presets_path_writable);
       break;
     case PROP_TOOL_PRESET_PATH:
       g_value_set_string (value, core_config->tool_preset_path);

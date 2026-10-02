@@ -77,6 +77,7 @@
 #include "gimptemplate.h"
 #include "gimptoolinfo.h"
 #include "gimptoolpreset.h"
+#include "gimplayerpreset.h"
 #include "gimptreeproxy.h"
 
 #include "text/gimpfont.h"
@@ -1339,6 +1340,8 @@ gimp_get_data_factory (Gimp  *gimp,
     return gimp->mybrush_factory;
   else if (g_type_is_a (data_type, GIMP_TYPE_PAINTER_MYBRUSH))
     return gimp->painter_mybrush_factory;
+  else if (g_type_is_a (data_type, GIMP_TYPE_LAYER_PRESET))
+    return gimp->layer_preset_factory;
   else if (g_type_is_a (data_type, GIMP_TYPE_TOOL_PRESET))
     return gimp->tool_preset_factory;
 

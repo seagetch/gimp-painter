@@ -965,6 +965,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 28.001 | [ ] | preset JSON の全件 schema を抽出する | 12.016, 13.014, 14.020, 15.014, 16.023 | キー・型・既定値・参照規則を記録 |
+| 28.001/native-presets | [x] | 全同梱preset・資源/実適用・Undo・GTK導線を接続する | 14.015/reference-undo-snapshot, 15.008/opaque-definition-state, 12.001/preservation-writer, 27.009/native-paint-transaction | 8実旧construction完全一致、11 native/ASan・UBSan core、2実GTK/同sanitizer合格。未知JSON独立copy・原source順序・単一Undo・既存history保持rollback・編集可能XCF・factory/prefs/action-cache寿命を検証。最終name/parent修正後はcore再試験、GTK証跡は直前版。全platform/実install gateは別 |
 | 28.002 | [ ] | JSON 資源 model を移植する | 28.001 | 未知項目を保持 |
 | 28.003 | [ ] | preset factory を移植する | 28.002 | 検索パス・読込み・選択を接続 |
 | 28.004 | [ ] | 通常 layer の生成を実装する | 28.003 | 属性と順序を定義どおり作る |

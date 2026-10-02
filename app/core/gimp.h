@@ -110,6 +110,7 @@ struct _Gimp
   GimpDataFactory        *palette_factory;
   GimpDataFactory        *font_factory;
   GimpDataFactory        *tool_preset_factory;
+  GimpDataFactory        *layer_preset_factory;
 
   GimpTagCache           *tag_cache;
 

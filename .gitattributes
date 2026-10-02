@@ -11,3 +11,8 @@ migration/tests/perspective-event-reentry-before-fix.txt whitespace=-blank-at-eo
 
 # Preserve the exact shared arithmetic extraction covered by recorded hashes.
 app/painter/filter-edge-kernel-private.hpp whitespace=-blank-at-eol
+
+# Preserve exact restored preset assets and genuine legacy capture records.
+data/layer-presets/*.json whitespace=-blank-at-eol
+migration/fixtures/legacy-layer-presets/construction.tsv whitespace=-blank-at-eol
+migration/fixtures/legacy-layer-presets/runtime-build.log whitespace=-blank-at-eol

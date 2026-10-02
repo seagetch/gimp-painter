@@ -82,6 +82,7 @@ libappactions_sources = [
   'tool-preset-editor-actions.c',
   'tool-preset-editor-commands.c',
   'tool-presets-actions.c',
+  'layer-presets-actions.c',
   'tool-presets-commands.c',
   'tools-actions.c',
   'tools-commands.c',

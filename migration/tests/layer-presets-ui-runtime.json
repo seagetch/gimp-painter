@@ -1,0 +1,41 @@
+{
+  "kind": "native GTK GimpApplication preset acceptance on the dot cloud desktop",
+  "native_exit_code": 0,
+  "sanitized_exit_code": 0,
+  "native_test_cases": 2,
+  "sanitized_test_cases": 2,
+  "sanitizers": [
+    "address",
+    "undefined",
+    "vptr"
+  ],
+  "leak_detection": false,
+  "instrumented_scope": "Layer preset native JSON model/applier, GTK dock/actions, shared BindingStore, image Undo/group and native UI lifecycle tests; remaining GIMP and dependencies uninstrumented",
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "3c7f46d1765addfee8c5735d01e95100e254f7c4a8f922339cbddf439814bb63",
+    "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+    "app/actions/layer-presets-actions.c": "740d7b1e9de1e4ec7bfc7ac1f5930190390172026befdaf635e787b2969d0f7d",
+    "app/core/gimpundostack.c": "5786a794927f6f0df7a523d575f456c03ae20983cda55434f91884cc5a85a74e",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "9702c157de0bff4989b8d3f690c74f341c8a817f61eb63ed03d49218a676d27e",
+    "app/widgets/gimplayerpresetview.c": "46a8763177097b16102f06481bab4750ebaa978757eda86030e5c34b4c2c9ced",
+    "app/core/gimplayerpreset-apply.cpp": "ad199beaf03dc3ffe18ea3848516c5c20bd14815c91e05d2bc9935bc264ef7cb",
+    "app/core/gimpgrouplayer.c": "9513fd1a56dd306f19dae35d13fb45cc3010a322b11ccc558c17c6954318a3fc",
+    "app/tests/test-layer-presets-ui.c": "875698d164cb296b3238afa45412b3f20e81d8a053e4031949361778013eedc4",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/core/gimpimage-undo.c": "789b12d448f9790e87164c3b84880937b21d8da76368416b4729b8176849d183",
+    "app/core/gimpitem.c": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3"
+  },
+  "native_executable_sha256": "33cceb2694da304d6271e8346300d222e318b8717272f07ff89f77a680fb55f9",
+  "sanitized_executable_sha256": "5359b6346d272de37cd57b4b31e66dc8955792357c2e2436f81453b8bab22ace",
+  "tests": [
+    "three complete dock selection/apply/refresh and cached action-group weak-finalization cycles; NULL/zero actions safe",
+    "dialog action/factory registration; twice construct native preferences, locate layer preset path page, Cancel and destroy"
+  ],
+  "fixture_initialization": "gimp_set_focused_once initializes the deferred native device manager, matching first real app focus; earlier missing-focus runs failed teardown and are not claimed as successful",
+  "warnings": "Shared test profile emits a nonfatal writable-folder/search-path warning at exit. Plugin dummy-file skips and normal debug output are retained. No warning is suppressed.",
+  "native_log": "layer-presets-ui-native.txt",
+  "sanitized_log": "layer-presets-ui-sanitized.txt",
+  "subsequent_core_review": "The recorded GTK runs precede the narrow owned Undo-name snapshot and retained/revalidated preflight-parent fixes. Final core normal and ASan/UBSan/vptr eleven-case tests cover those fixes; this file retains the exact prior GUI source hashes and is not a rerun claim."
+}

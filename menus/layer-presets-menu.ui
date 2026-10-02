@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<interface>
+  <menu id="/layer-presets-popup">
+    <submenu>
+      <attribute name="label" translatable="yes" context="layer-presets-action">Layer Presets Menu</attribute>
+      <attribute name="icon">gimp-layer</attribute>
+      <item><attribute name="action">layer-presets.layer-presets-apply</attribute></item>
+      <item><attribute name="action">layer-presets.layer-presets-refresh</attribute></item>
+    </submenu>
+  </menu>
+</interface>

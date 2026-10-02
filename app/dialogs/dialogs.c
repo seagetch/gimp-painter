@@ -361,6 +361,8 @@ static const GimpDialogFactoryEntry entries[] =
   LISTGRID (buffer, buffer,
             N_("Buffers"), NULL, GIMP_ICON_BUFFER,
             GIMP_HELP_BUFFER_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
+  DOCKABLE ("gimp-layer-preset-list", N_("Layer Presets"), NULL, GIMP_ICON_LAYER,
+            NULL, dialogs_layer_preset_list_view_new, GIMP_VIEW_SIZE_SMALL, FALSE),
   LISTGRID (tool-preset, tool_preset,
             N_("Tool Presets"), NULL, GIMP_ICON_TOOL_PRESET,
             GIMP_HELP_TOOL_PRESET_DIALOG, GIMP_VIEW_SIZE_MEDIUM),

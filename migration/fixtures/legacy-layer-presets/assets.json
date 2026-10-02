@@ -1,0 +1,175 @@
+{
+  "kind": "static exhaustive bundled JSON audit; not runtime parity evidence",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "asset_count": 8,
+  "assets": [
+    {
+      "path": "data/layer-presets/crop-with-selection.json",
+      "name": "Crop with selection",
+      "sha256": "5ebaa5cb8d0a1d058b10374043ebadd17a1808b11f44923398068562c0e5d7c3",
+      "bytes": 264
+    },
+    {
+      "path": "data/layer-presets/duplicate-as-clone.json",
+      "name": "Clone layer",
+      "sha256": "56cd37c30e962d642adc5c6c07cebd6d721c8a261b5f00e3360045306842d090",
+      "bytes": 388
+    },
+    {
+      "path": "data/layer-presets/duplicate-as-normal.json",
+      "name": "Duplicate as normal layer",
+      "sha256": "1e7140c86105599f471db956ced355f06c75b5e8dccad0a54429ba3d02adbd1b",
+      "bytes": 348
+    },
+    {
+      "path": "data/layer-presets/new-anime-layer.json",
+      "name": "New Anime layer",
+      "sha256": "30d6ff23a16102a9379b45f18864f310350fc769a5718682097b29596650a4e6",
+      "bytes": 909
+    },
+    {
+      "path": "data/layer-presets/new-cropped-layer.json",
+      "name": "New Layer with cropped by selection",
+      "sha256": "e9239124b826e417845227101cbffa273e03c99704399bc0c566e8648ee03431",
+      "bytes": 547
+    },
+    {
+      "path": "data/layer-presets/test.json",
+      "name": "test1",
+      "sha256": "553d4d4721b7b44d697de0b8eee962228d819602e9346e0da5f6212a04dd1bf0",
+      "bytes": 458
+    },
+    {
+      "path": "data/layer-presets/test2.json",
+      "name": "test2",
+      "sha256": "1edfa18ab97344d4d32b2eab80f893b3a1bcaef3015b8762abb4bc4f0b15122e",
+      "bytes": 796
+    },
+    {
+      "path": "data/layer-presets/watercolor.json",
+      "name": "New Watercolor layer",
+      "sha256": "c635144e40d7b04d82b884831b61faaa90d8a4a12f2dd7eb6afa9785811da583",
+      "bytes": 874
+    }
+  ],
+  "field_types": {
+    "$": [
+      "object"
+    ],
+    "$.desc": [
+      "string"
+    ],
+    "$.name": [
+      "string"
+    ],
+    "$.replacement-layer": [
+      "array"
+    ],
+    "$.replacement-layer[]": [
+      "object"
+    ],
+    "$.replacement-layer[].#": [
+      "string"
+    ],
+    "$.replacement-layer[].boundary": [
+      "string"
+    ],
+    "$.replacement-layer[].children": [
+      "array"
+    ],
+    "$.replacement-layer[].children[]": [
+      "object"
+    ],
+    "$.replacement-layer[].children[].boundary": [
+      "string"
+    ],
+    "$.replacement-layer[].children[].filter": [
+      "object"
+    ],
+    "$.replacement-layer[].children[].filter.args": [
+      "array"
+    ],
+    "$.replacement-layer[].children[].filter.args[]": [
+      "object"
+    ],
+    "$.replacement-layer[].children[].filter.args[].type": [
+      "string"
+    ],
+    "$.replacement-layer[].children[].filter.args[].value": [
+      "integer"
+    ],
+    "$.replacement-layer[].children[].filter.name": [
+      "string"
+    ],
+    "$.replacement-layer[].children[].mode": [
+      "string"
+    ],
+    "$.replacement-layer[].children[].name": [
+      "string"
+    ],
+    "$.replacement-layer[].children[].opacity": [
+      "number"
+    ],
+    "$.replacement-layer[].children[].source": [
+      "string"
+    ],
+    "$.replacement-layer[].children[].target": [
+      "string"
+    ],
+    "$.replacement-layer[].children[].type": [
+      "string"
+    ],
+    "$.replacement-layer[].filter": [
+      "object"
+    ],
+    "$.replacement-layer[].filter.args": [
+      "array"
+    ],
+    "$.replacement-layer[].filter.args[]": [
+      "object"
+    ],
+    "$.replacement-layer[].filter.args[].type": [
+      "string"
+    ],
+    "$.replacement-layer[].filter.args[].value": [
+      "integer"
+    ],
+    "$.replacement-layer[].filter.name": [
+      "string"
+    ],
+    "$.replacement-layer[].mode": [
+      "string"
+    ],
+    "$.replacement-layer[].name": [
+      "string"
+    ],
+    "$.replacement-layer[].opacity": [
+      "number",
+      "string"
+    ],
+    "$.replacement-layer[].source": [
+      "string"
+    ],
+    "$.replacement-layer[].target": [
+      "string"
+    ],
+    "$.replacement-layer[].type": [
+      "string"
+    ],
+    "$.source-layer": [
+      "object"
+    ],
+    "$.source-layer.#": [
+      "string"
+    ],
+    "$.source-layer.alpha": [
+      "boolean"
+    ],
+    "$.source-layer.type": [
+      "string"
+    ],
+    "$.version": [
+      "integer"
+    ]
+  }
+}

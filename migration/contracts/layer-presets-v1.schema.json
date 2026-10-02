@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gimp-painter:layer-presets-v1",
+  "title": "Painter layer preset version 1",
+  "type": "object",
+  "required": [
+    "version",
+    "source-layer",
+    "replacement-layer"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "desc": {
+      "type": "string"
+    },
+    "#": {},
+    "source-layer": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "enum": [
+            "normal",
+            "group",
+            "filter",
+            "clone",
+            "any"
+          ]
+        },
+        "alpha": {
+          "type": "boolean"
+        }
+      }
+    },
+    "replacement-layer": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/layer"
+      }
+    }
+  },
+  "$defs": {
+    "layer": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "target": {
+          "enum": [
+            "new",
+            "source"
+          ],
+          "default": "new"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "normal",
+            "group",
+            "filter",
+            "clone"
+          ],
+          "default": "normal"
+        },
+        "source": {
+          "type": "string",
+          "description": "source and legacy # prefix resolve to the original source"
+        },
+        "boundary": {
+          "oneOf": [
+            {
+              "enum": [
+                "source",
+                "selection",
+                "full"
+              ]
+            },
+            {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "integer"
+              }
+            }
+          ]
+        },
+        "mode": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 29
+            }
+          ]
+        },
+        "opacity": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "const": "source"
+            }
+          ]
+        },
+        "alpha": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "const": "source"
+            }
+          ],
+          "description": "Retained legacy construction no-op"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/layer"
+          }
+        },
+        "filter": {
+          "$ref": "#/$defs/filter"
+        },
+        "#": {}
+      }
+    },
+    "filter": {
+      "type": "object",
+      "required": [
+        "name",
+        "args"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "value": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

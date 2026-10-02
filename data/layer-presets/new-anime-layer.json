@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "name": "New Anime layer",
+  "desc": "foobar",
+
+  "source-layer" : {
+    "type": "any",           "#": "group, filter, clone, normal, any",
+    "alpha": true
+  },
+
+  "replacement-layer" : [
+    { 
+      "target":  "new",
+      "name":    "New group",
+      "type":    "group",
+      "opacity": "source",
+      "mode":    "source",
+      "children": [
+        {
+          "target": "new",
+          "name":   "mask",
+          "type":   "clone",
+          "mode":   "dst-in-mode",
+          "source": "source",
+          "opacity": 1.0,
+          "boundary": "source"
+        },
+        {
+          "target":  "new",
+          "name":    "shadow",
+          "type":    "normal",
+          "mode":    "multiply-mode",
+          "boundary": "source"
+        },
+        {
+          "target":  "source",
+          "mode":   "normal-mode",
+          "opacity": 1.0
+        }
+      ]
+    }
+  ]
+}

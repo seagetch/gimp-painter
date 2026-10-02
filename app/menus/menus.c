@@ -248,6 +248,10 @@ menus_init (Gimp *gimp)
                                       NULL);
 
 
+  gimp_menu_factory_manager_register (global_menu_factory, "<LayerPresets>",
+                                      "layer-presets", NULL,
+                                      "/layer-presets-popup", "layer-presets-menu", NULL, NULL);
+
   gimp_menu_factory_manager_register (global_menu_factory, "<ToolPresets>",
                                       "tool-presets",
                                       "plug-in",
