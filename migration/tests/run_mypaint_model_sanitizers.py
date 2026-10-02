@@ -18,12 +18,12 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("build", type=Path)
 parser.add_argument("--report", type=Path, required=True)
-parser.add_argument("--target", choices=["options", "session", "hover", "preview", "rgb", "surface", "batch", "gray", "gray-oracle", "gray-extension"], required=True)
+parser.add_argument("--target", choices=["options", "session", "hover", "preview", "rgb", "surface", "batch", "gray", "gray-oracle", "gray-extension", "pipe"], required=True)
 args = parser.parse_args()
 oracle = args.target in ("rgb", "gray-oracle")
 color_model = "gray" if args.target == "gray-oracle" else "rgb"
-target = "painter-mypaint-" + color_model + "-session-trace" if oracle else "gimp-painter-" + args.target
-test_source = "app/tests/" + target + ".cpp" if oracle else "app/tests/test-" + target + ".cpp"
+target = "painter-mypaint-pipe-trace" if args.target == "pipe" else "painter-mypaint-" + color_model + "-session-trace" if oracle else "gimp-painter-" + args.target
+test_source = "app/tests/" + target + ".cpp" if oracle or args.target == "pipe" else "app/tests/test-" + target + ".cpp"
 build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
 output = build / ("mypaint-" + args.target + "-sanitizers")
@@ -48,8 +48,12 @@ wanted = {"app/paint/painter-mypaint-surface/gegl-surface.cpp",
 if args.target == "batch":
     wanted |= {"app/paint/gimppainterpaintgate.cpp", "app/paint/gimppaintcore-stroke.c"}
     report["scope"] += "; atomic batch and actual native generic stroke/path/boundary dispatch"
+if args.target == "pipe":
+    wanted |= {"app/core/gimpbrushpipe.c"}
+    report["scope"] += "; real warmed native pipe selector/pixels/Undo/RNG comparison including release tails"
 if args.target == "preview":
-    wanted |= {"app/core/gimpbrushpipe.c", "app/core/gimpbrushgenerated.c"}
+    wanted |= {"app/core/gimpbrushpipe.c", "app/core/gimpbrushgenerated.c",
+               "app/core/gimpbrushclipboard.c", "app/core/gimpbuffer.c"}
     report["scope"] += "; preview additionally instruments native pipe/generated duplication and isolated selector tests"
 instrumented = set(wanted)
 rtti_only = bridge_rtti_sources(root, build) - instrumented
@@ -59,10 +63,19 @@ report["rtti_compatibility_only_sources"] = sorted(rtti_only)
 report["scope"] += "; listed RTTI-only production bridge owners are recompiled for compatible vptr metadata, without sanitizer instrumentation"
 hashes = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in wanted}
 headers = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in [
-    "app/paint/gimppaintcore.h", "app/paint/gimpbrushcore.h", "app/paint/gimppaintoptions.h"]}
+    "app/paint/gimppaintcore.h", "app/paint/gimpbrushcore.h", "app/paint/gimppaintoptions.h",
+    "app/core/gimp.h", "app/config/gimpcoreconfig.h", "app/operations/operations-enums.h", "app/core/gimpbrush.h", "app/core/gimpbrush-private.h", "app/core/gimpbrushpipe.h"]}
 report["native_abi_headers_sha256"] = dict(headers)
-algorithm_headers = {"app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp":
-    hashlib.sha256((root / "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp").read_bytes()).hexdigest()}
+algorithm_headers = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in [
+    "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp",
+    "app/paint/painter-mypaint-surface/gimp-resources.hpp",
+    "app/paint/painter-mypaint-surface/paint-core.hpp",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.h",
+    "app/paint/painter-mypaint/legacy-brush.hpp", "app/paint/painter-mypaint/engine.hpp",
+    "app/paint/painter-mypaint/resource.hpp", "app/paint/painter-mypaint/surface.hpp"]}
+if args.target == "pipe":
+    name = "migration/fixtures/legacy-mypaint-pipe/capture-pipe.cpp"
+    algorithm_headers[name] = hashlib.sha256((root / name).read_bytes()).hexdigest()
 report["algorithm_headers_sha256"] = algorithm_headers
 headers.update(algorithm_headers)
 replacements = {}
@@ -141,6 +154,11 @@ env.update({"GIMP_TESTING_ABS_TOP_SRCDIR": str(root),
             "UI_TEST": "yes", "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
             "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"})
 result = subprocess.run([str(exe)], cwd=build, env=env, capture_output=True, text=True)
+if args.target == "pipe":
+    from compare_mypaint_pipe import compare
+    report["pipe_oracle"] = compare(gzip.decompress((root / "migration/fixtures/legacy-mypaint-pipe/pipe-values.tsv.gz").read_bytes()), result.stdout.encode())
+    result.returncode = result.returncode or int(not report["pipe_oracle"]["equal"])
+    result.stdout = "\n".join(line for line in result.stdout.splitlines() if not line.startswith("PIPE_")) + "\n"
 if oracle:
     prefix = color_model.upper() + "_SESSION_"
     expected = gzip.decompress((root / ("migration/fixtures/legacy-mypaint-" + color_model + "-session/session-values.tsv.gz")).read_bytes())

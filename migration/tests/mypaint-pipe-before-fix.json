@@ -1,0 +1,119 @@
+{
+  "equal": false,
+  "expected_records": 1409,
+  "actual_records": 1201,
+  "actual_record_types": {
+    "PIPE_SELECT": 752,
+    "PIPE_STATE": 208,
+    "PIPE_PIX": 208,
+    "PIPE_UNDO": 16,
+    "PIPE_RNG": 16,
+    "PIPE_CAPTURE_COMPLETE": 1
+  },
+  "compared_sha256": "bbdfb5ff25c1e08a09f2ef40b872ba24ee9b5cc0be29e4f3497d23961ac06272",
+  "raw_sha256": "d16395e147b5b2bb438d395a5f3f91815d823369256f29435e0078a06bae0794",
+  "unused_last_coordinate_differences": 2,
+  "mismatches": [
+    {
+      "record": 28,
+      "expected": "PIPE_SELECT 0 4 20 A 0 1 27 24 0.5 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_STATE 0 hover-split 19 0 0 0 0 2"
+    },
+    {
+      "record": 29,
+      "expected": "PIPE_SELECT 0 4 21 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_PIX 0 hover-split 000000a013030db126061ac2390927d34c0c34e45f0f41f572124ea685155bb7981868c8ab1b75d9be1e82ead1218ffbe4249cacf727a9bd0a2ab6ce1d2dc3df3030d0f04333dda15636eab26939f"
+    },
+    {
+      "record": 30,
+      "expected": "PIPE_SELECT 0 4 22 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_STATE 0 hover-idle 19 0 0 0 0 2"
+    },
+    {
+      "record": 31,
+      "expected": "PIPE_SELECT 0 4 23 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_PIX 0 hover-idle 000000a013030db126061ac2390927d34c0c34e45f0f41f572124ea685155bb7981868c8ab1b75d9be1e82ead1218ffbe4249cacf727a9bd0a2ab6ce1d2dc3df3030d0f04333dda15636eab26939f7"
+    },
+    {
+      "record": 32,
+      "expected": "PIPE_SELECT 0 4 24 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_STATE 0 idle-finish 19 0 0 0 0 2"
+    },
+    {
+      "record": 33,
+      "expected": "PIPE_SELECT 0 4 25 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_PIX 0 idle-finish 000000a013030db126061ac2390927d34c0c34e45f0f41f572124ea685155bb7981868c8ab1b75d9be1e82ead1218ffbe4249cacf727a9bd0a2ab6ce1d2dc3df3030d0f04333dda15636eab26939f"
+    },
+    {
+      "record": 34,
+      "expected": "PIPE_SELECT 0 4 26 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_SELECT 0 7 20 A 0 1 0 0 1 0 0 0 0 29 22 0.65 -0.8 0.75 0.9 0.75"
+    },
+    {
+      "record": 35,
+      "expected": "PIPE_SELECT 0 4 27 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_SELECT 0 7 21 A 0 1 29 22 0.65 -0.8 0.75 0.9 0.75 29 22 0.65 -0.8 0.75 0.9 0.75"
+    },
+    {
+      "record": 36,
+      "expected": "PIPE_SELECT 0 4 28 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_SELECT 0 7 22 A 0 1 29 22 0.65 -0.8 0.75 0.9 0.75 29 22 0.65 -0.8 0.75 0.9 0.75"
+    },
+    {
+      "record": 37,
+      "expected": "PIPE_SELECT 0 4 29 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_SELECT 0 7 23 A 0 1 29 22 0.65 -0.8 0.75 0.9 0.75 29 22 0.65 -0.8 0.75 0.9 0.75"
+    },
+    {
+      "record": 38,
+      "expected": "PIPE_SELECT 0 4 30 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_SELECT 0 7 24 A 0 1 29 22 0.65 -0.8 0.75 0.9 0.75 29 22 0.65 -0.8 0.75 0.9 0.75"
+    },
+    {
+      "record": 39,
+      "expected": "PIPE_SELECT 0 4 31 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_SELECT 0 7 25 A 0 1 29 22 0.65 -0.8 0.75 0.9 0.75 29 22 0.65 -0.8 0.75 0.9 0.75"
+    },
+    {
+      "record": 40,
+      "expected": "PIPE_SELECT 0 4 32 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 34 28 0 -0.8 0.75 0.43 0.4",
+      "actual": "PIPE_STATE 0 repeated 25 0 0 0 0 3"
+    },
+    {
+      "record": 41,
+      "expected": "PIPE_STATE 0 hover-split 32 0 0 0 0 1",
+      "actual": "PIPE_PIX 0 repeated 000000a013030db126061ac2390927d34c0c34e45f0f41f572124ea685155bb7981868c8ab1b75d9be1e82ead1218ffbe4249cacf727a9bd0a2ab6ce1d2dc3df3030d0f04333dda15636eab26939f7c3"
+    },
+    {
+      "record": 42,
+      "expected": "PIPE_PIX 0 hover-split 000000a013030db126061ac2390927d34c0c34e45f0f41f572124ea685155bb7981868c8ab1b75d9be1e82ead1218ffbe4249cacf727a9bd0a2ab6ce1d2dc3df3030d0f04333dda15636eab26939f",
+      "actual": "PIPE_STATE 0 undo 25 0 0 0 0 2"
+    },
+    {
+      "record": 43,
+      "expected": "PIPE_STATE 0 hover-idle 32 0 0 0 0 2",
+      "actual": "PIPE_PIX 0 undo 000000a013030db126061ac2390927d34c0c34e45f0f41f572124ea685155bb7981868c8ab1b75d9be1e82ead1218ffbe4249cacf727a9bd0a2ab6ce1d2dc3df3030d0f04333dda15636eab26939f7c37c3c"
+    },
+    {
+      "record": 44,
+      "expected": "PIPE_PIX 0 hover-idle 000000a013030db126061ac2390927d34c0c34e45f0f41f572124ea685155bb7981868c8ab1b75d9be1e82ead1218ffbe4249cacf727a9bd0a2ab6ce1d2dc3df3030d0f04333dda15636eab26939f7",
+      "actual": "PIPE_STATE 0 redo 25 0 0 0 0 3"
+    },
+    {
+      "record": 45,
+      "expected": "PIPE_STATE 0 idle-finish 32 0 0 0 0 2",
+      "actual": "PIPE_PIX 0 redo 000000a013030db126061ac2390927d34c0c34e45f0f41f572124ea685155bb7981868c8ab1b75d9be1e82ead1218ffbe4249cacf727a9bd0a2ab6ce1d2dc3df3030d0f04333dda15636eab26939f7c37c3c"
+    },
+    {
+      "record": 46,
+      "expected": "PIPE_PIX 0 idle-finish 000000a013030db126061ac2390927d34c0c34e45f0f41f572124ea685155bb7981868c8ab1b75d9be1e82ead1218ffbe4249cacf727a9bd0a2ab6ce1d2dc3df3030d0f04333dda15636eab26939f",
+      "actual": "PIPE_UNDO 0 1 1"
+    },
+    {
+      "record": 47,
+      "expected": "PIPE_SELECT 0 7 33 A 0 1 34 28 0 -0.8 0.75 0.43 0.4 29 22 0.65 -0.8 0.75 0.9 0.75",
+      "actual": "PIPE_SELECT 0 9 26 B 0 1 0 0 1 0 0 0 0 26 18 0.8 -0.8 0.75 0.9 0.75"
+    }
+  ],
+  "different_records": 1382
+}

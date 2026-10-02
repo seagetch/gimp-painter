@@ -26,12 +26,24 @@ template<> struct TypeTraits<GimpPaintOptions> { static GType type () noexcept {
 template<> struct TypeTraits<GimpDrawable> { static GType type () noexcept { return GIMP_TYPE_DRAWABLE; } };
 namespace MyPaint {
 namespace {
-class SamplingSurface final : public Surface {
+class HoverSurface final : public Surface {
   GeglSurface& source_;
+  Engine* tail_;
 public:
-  explicit SamplingSurface(GeglSurface&source):source_(source){}
-  bool draw_dab(float,float,float,float,float,float,float,float,float,float,float,float,float,float,float) override
-  { return false; }
+  HoverSurface(GeglSurface&source,Engine*tail):source_(source),tail_(tail){}
+  bool draw_dab(float x,float y,float radius,float r,float g,float b,float opaque,
+                float hardness,float alpha,float aspect,float angle,float lock_alpha,
+                float colorize,float grain,float contrast) override
+  {
+    // A real preceding press can leave interpolated positive-pressure dabs
+    // before this zero-pressure input is reached. Preserve that release tail,
+    // including native pipe selection and the evaluator's split timing. Once
+    // pressure reaches zero, even constant-opacity brushes remain sample-only.
+    // No transient hover adapter is ever allowed to start a paint transaction.
+    return tail_ && tail_->state(STATE_PRESSURE)>0 &&
+      source_.draw_dab(x,y,radius,r,g,b,opaque,hardness,alpha,aspect,angle,
+                       lock_alpha,colorize,grain,contrast);
+  }
   void get_color(float x,float y,float radius,float*r,float*g,float*b,float*a,
                  float hardness,float aspect,float angle,float grain,float contrast) override
   { source_.get_color(x,y,radius,r,g,b,a,hardness,aspect,angle,grain,contrast); }
@@ -253,7 +265,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
         }
         if(lifecycle==epoch&&!cancel_requested&&!finish_requested) {
           logical_begin(d);GimpCoords hover_coords=coords;hover_coords.pressure=0;
-          owners->set_coords(hover_coords);SamplingSurface sample_surface(*raster);
+          owners->set_coords(hover_coords);HoverSurface sample_surface(*raster,transient?nullptr:&engine);
           split=engine.stroke_to(sample_surface,coords.x,coords.y,0,coords.xtilt,coords.ytilt,dt);
           if(transient)read+=raster->bytes_read();
         }

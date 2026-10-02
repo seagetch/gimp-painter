@@ -32,7 +32,7 @@ wanted = {"app/paint/painter-mypaint-surface/gegl-surface.cpp",
           "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp",
           "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp",
           "app/paint/gimppaintcore.c", "app/core/gimpdrawable.c", "app/core/gimpbrush.c",
-          "app/core/gimppattern.c", "app/core/gimpdata.c",
+          "app/core/gimppattern.c", "app/core/gimpdata.c", "app/core/gimpbrushpipe.c",
           "app/core/gimpimage.c", "app/core/gimpitem.c", "app/core/gimpimage-undo.c", "app/core/gimpviewable.c",
           "app/core/gimpobject.c", "app/core/gimpresource.c", "app/tests/test-painter-mypaint-tool.cpp",
           "app/tools/gimppaintermybrushtool.cpp", "app/tools/gimptool.c",
@@ -47,7 +47,10 @@ headers={"app/tools/gimppaintermybrushtool.h", "app/tools/gimppaintermybrushtool
          "app/paint/painter-mypaint-surface/gimp-painter-options.hpp", "app/paint/painter-mypaint-surface/gimp-painter-session.h",
          "app/paint/painter-mypaint-surface/gimp-painter-session.hpp", "app/painter/binding-store.hpp", "app/painter/object-ref.hpp", "app/painter/connection.hpp"}
 wanted |= {"app/file/file-save.c", "app/xcf/xcf-save.c", "app/xcf/xcf-load.c", "app/core/gimpimage-convert-type.c"}
-headers |= {"app/paint/gimppaintcore.h", "app/paint/gimpbrushcore.h", "app/paint/gimppaintoptions.h", "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp"}
+headers |= {"app/core/gimp.h", "app/config/gimpcoreconfig.h", "app/operations/operations-enums.h", "app/core/gimpbrush.h", "app/core/gimpbrush-private.h", "app/core/gimpbrushpipe.h",
+            "app/paint/painter-mypaint/legacy-brush.hpp", "app/paint/painter-mypaint/engine.hpp",
+            "app/paint/painter-mypaint/resource.hpp", "app/paint/painter-mypaint/surface.hpp",
+            "app/paint/painter-mypaint-surface/gimp-resources.hpp", "app/paint/gimppaintcore.h", "app/paint/gimpbrushcore.h", "app/paint/gimppaintoptions.h", "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp"}
 report["scope"] += "; native Gray/Gray-alpha conversion, actual XCF Save/reload and Undo/Redo workflow"
 instrumented = set(wanted)
 rtti_only = bridge_rtti_sources(root, build) - instrumented

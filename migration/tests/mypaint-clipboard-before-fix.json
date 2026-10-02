@@ -1,0 +1,9 @@
+{
+  "exit_code": 134,
+  "test": "/painter-preview/clipboard-brush-snapshot",
+  "observed_error": "Painter preview cannot isolate this brush subclass",
+  "test_source_sha256": "83d6eb212743eefec5d38f9407c06ffdf3f3a1f493d357590346a218ec334e00",
+  "resource_source_before_sha256": "e06f7e6409e4d8b18aefe8e3949f734977e82a97c3375173170527cbad8c13e2",
+  "resource_source_before_commit": "989ec4616f",
+  "scope": "Same valid built-in clipboard stimulus before the exact-type preview whitelist. Raw diagnostic log is preserved; this is an expected failing regression, not a sanitizer pass."
+}

@@ -495,3 +495,25 @@ if not meson.is_cross_build()
             'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 120)
   endforeach
 endif
+
+# Active native brush pipes: independent warmed legacy pixels and selector state.
+painter_pipe_trace = executable('painter-mypaint-pipe-trace',
+  'painter-mypaint-pipe-trace.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links,
+  cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'],
+)
+if not meson.is_cross_build()
+  test('painter-mypaint-legacy-pipe', painter_brush_settings_python,
+    args: [meson.project_source_root() / 'migration/tests/compare_mypaint_pipe.py',
+           meson.project_source_root() / 'migration/fixtures/legacy-mypaint-pipe/pipe-values.tsv.gz',
+           painter_pipe_trace],
+    env: [
+      'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+      'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+      'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+      'GIMP3_DIRECTORY=' + meson.project_build_root() / 'app/tests/gimpdir-output',
+      'UI_TEST=yes',
+    ], suite: 'painter', is_parallel: false, timeout: 60)
+endif

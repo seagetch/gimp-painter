@@ -3,6 +3,7 @@
 #include <gegl.h>
 #include <gtk/gtk.h>
 #include <vector>
+#include <cstring>
 extern "C" {
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -13,6 +14,10 @@ extern "C" {
 #include "config/gimpdisplayconfig.h"
 #include "core/gimp.h"
 #include "core/gimpcontainer.h"
+#include "core/gimpbrush.h"
+#include "core/gimpbrushpipe.h"
+#include "core/gimpbrush-private.h"
+#include "core/gimptempbuf.h"
 #include "core/gimpcontext.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
@@ -89,7 +94,7 @@ static void hover_default_pressure()
 static void pressure_and_undo()
 {
   Scene s;const auto before=s.pixels();s.coords.pressure=0;s.motion(false);s.press();s.coords.pressure=.2;s.motion(true,0);s.coords.pressure=.9;s.motion(true,0);s.motion(true,75);
-  auto painted=s.pixels();g_assert_true(painted!=before);s.release();gimp_tool_control(s.tool,GIMP_TOOL_ACTION_COMMIT,s.display);
+  auto painted=s.pixels();g_assert_true(painted!=before);s.release();painted=s.pixels();gimp_tool_control(s.tool,GIMP_TOOL_ACTION_COMMIT,s.display);
   g_assert_cmpint(s.depth(),==,1);g_assert_true(gimp_image_undo(s.image));g_assert_true(s.pixels()==before);g_assert_true(gimp_image_redo(s.image));g_assert_true(s.pixels()==painted);
   s.coords.x=80;s.motion(false);g_assert_true(s.pixels()==painted);g_assert_cmpint(s.depth(),==,1);
 }
@@ -141,16 +146,25 @@ static void image_change_finishes_old()
 {
   Scene s;const auto before=s.pixels();s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);g_assert_true(s.pixels()!=before);
   const auto painted=s.pixels();
-  auto*other=gimp_image_new(gimp,128,128,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);gimp_display_set_image(s.display,other);
+  auto*other=gimp_image_new(gimp,128,128,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+  // Native HALT synthesizes a release before control(). Give it a defined
+  // positive elapsed interval so the test cannot accidentally omit the tail.
+  s.tool->last_pointer_time-=100;gimp_display_set_image(s.display,other);
   // Native display replacement HALTs the active tool before replacing image;
   // the legacy tool's HALT commits, rather than silently discarding this stroke.
-  g_assert_true(s.pixels()==painted);g_assert_cmpint(s.depth(),==,1);g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));
-  gimp_display_set_image(s.display,s.image);g_object_unref(other);s.motion(false);g_assert_true(s.pixels()==painted);g_assert_cmpint(s.depth(),==,1);
+  const auto released=s.pixels();g_assert_true(released!=before);
+  for(std::size_t i=3;i<released.size();i+=4)g_assert_cmpuint(released[i],>=,painted[i]);
+  g_assert_cmpint(s.depth(),==,1);g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));
+  g_assert_true(gimp_image_undo(s.image));g_assert_true(s.pixels()==before);g_assert_true(gimp_image_redo(s.image));g_assert_true(s.pixels()==released);
+  gimp_display_set_image(s.display,s.image);g_object_unref(other);s.motion(false);g_assert_true(s.pixels()==released);g_assert_cmpint(s.depth(),==,1);
 }
 static void saving_finishes_pending()
 {
-  Scene s;s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);auto before=s.pixels();g_assert_true(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));
-  g_assert_false(gimp_image_has_pending_paint(s.image));gimp_image_saving(s.image);g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));g_assert_true(s.pixels()==before);g_assert_cmpint(s.depth(),==,1);s.release();
+  Scene s;const auto initial=s.pixels();s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);auto before=s.pixels();g_assert_true(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));
+  g_assert_false(gimp_image_has_pending_paint(s.image));s.tool->last_pointer_time-=100;gimp_image_saving(s.image);
+  const auto saved=s.pixels();g_assert_true(saved!=initial);
+  for(std::size_t i=3;i<saved.size();i+=4)g_assert_cmpuint(saved[i],>=,before[i]);
+  g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));g_assert_cmpint(s.depth(),==,1);s.release();g_assert_true(s.pixels()==saved);
 }
 static void save_preflight_on_update(GimpDrawable*,gint,gint,gint,gint,gpointer data)
 {auto&s=*static_cast<During*>(data);if(s.fired)return;s.fired=true;g_assert_true(gimp_image_has_pending_paint(s.scene->image));}
@@ -207,11 +221,13 @@ static void gray_tool_save_roundtrip()
     gimp_drawable_update(s.drawable,0,0,128,128);gimp_image_undo_free(s.image);
     g_object_set(s.options,"non-incremental",floating,"stroke-opacity",.37,nullptr);
     s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);
-    const auto painted=native_pixels(s.drawable);g_assert_true(painted!=initial);
+    auto painted=native_pixels(s.drawable);g_assert_true(painted!=initial);
     g_assert_true(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));
     auto*procedure=gimp_pdb_lookup_procedure(gimp->pdb,"gimp-xcf-save");g_assert_true(GIMP_IS_PLUG_IN_PROCEDURE(procedure));
     GFileIOStream*io=nullptr;auto*file=g_file_new_tmp("painter-gray-tool-XXXXXX.xcf",&io,&error);g_assert_no_error(error);g_assert_nonnull(file);g_assert_true(g_io_stream_close(G_IO_STREAM(io),nullptr,&error));g_assert_no_error(error);g_object_unref(io);
+    s.tool->last_pointer_time-=100; // Save COMMIT also delivers the pending release tail.
     g_assert_cmpint(file_save(gimp,s.image,nullptr,file,GIMP_PLUG_IN_PROCEDURE(procedure),GIMP_RUN_NONINTERACTIVE,TRUE,FALSE,FALSE,&error),==,GIMP_PDB_SUCCESS);g_assert_no_error(error);
+    painted=native_pixels(s.drawable);g_assert_true(painted!=initial);
     g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));g_assert_cmpint(s.depth(),==,1);g_assert_true(native_pixels(s.drawable)==painted);
     if(gimp_tool_control_is_active(s.tool->control))s.release();
     auto*stream=g_file_read(file,nullptr,&error);g_assert_no_error(error);auto*loaded=xcf_load_stream(gimp,G_INPUT_STREAM(stream),file,nullptr,&error);g_assert_no_error(error);g_assert_nonnull(loaded);g_object_unref(stream);
@@ -220,6 +236,34 @@ static void gray_tool_save_roundtrip()
     g_assert_true(gimp_image_undo(s.image));g_assert_true(native_pixels(s.drawable)==initial);g_assert_true(gimp_image_redo(s.image));g_assert_true(native_pixels(s.drawable)==painted);
     g_assert_true(g_file_delete(file,nullptr,&error));g_assert_no_error(error);g_object_unref(file);
   }
+}
+
+static void pipe_release_save_roundtrip()
+{
+  Scene s;GError*error=nullptr;
+  auto*pipe=GIMP_BRUSH_PIPE(g_object_new(GIMP_TYPE_BRUSH_PIPE,"name","Active tool pipe",nullptr));
+  pipe->n_brushes=4;pipe->brushes=g_new0(GimpBrush*,4);
+  for(int i=0;i<4;++i){auto*b=GIMP_BRUSH(g_object_new(GIMP_TYPE_BRUSH,"name","Active tool cell",nullptr));b->priv->mask=gimp_temp_buf_new(5,3,babl_format("Y u8"));std::memset(gimp_temp_buf_get_data(b->priv->mask),60+i*60,15);pipe->brushes[i]=b;}
+  g_assert_true(gimp_brush_pipe_set_params(pipe,nullptr));pipe->current=pipe->brushes[0];GIMP_BRUSH(pipe)->priv->mask=pipe->brushes[0]->priv->mask;
+  gimp_context_set_brush(GIMP_CONTEXT(s.options),GIMP_BRUSH(pipe));g_object_set(s.options,"use-gimp-brushmark",TRUE,nullptr);
+  const auto initial=s.pixels();s.motion(false);s.press();s.coords.x+=8;s.motion(true,75);
+  const auto pressed=s.pixels();g_assert_true(pressed!=initial);
+  // Actual registered release dispatch must preserve the delayed tail.
+  s.coords.x+=12;s.time+=100;s.release();const auto released=s.pixels();g_assert_true(released!=pressed);
+  const int index=pipe->index[0];auto*child=pipe->current;
+  g_assert_true(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));
+  auto*procedure=gimp_pdb_lookup_procedure(gimp->pdb,"gimp-xcf-save");g_assert_true(GIMP_IS_PLUG_IN_PROCEDURE(procedure));
+  GFileIOStream*io=nullptr;auto*file=g_file_new_tmp("painter-pipe-tool-XXXXXX.xcf",&io,&error);g_assert_no_error(error);g_assert_nonnull(file);
+  g_assert_true(g_io_stream_close(G_IO_STREAM(io),nullptr,&error));g_assert_no_error(error);g_object_unref(io);
+  g_assert_cmpint(file_save(gimp,s.image,nullptr,file,GIMP_PLUG_IN_PROCEDURE(procedure),GIMP_RUN_NONINTERACTIVE,TRUE,FALSE,FALSE,&error),==,GIMP_PDB_SUCCESS);g_assert_no_error(error);
+  g_assert_true(s.pixels()==released);g_assert_cmpint(pipe->index[0],==,index);g_assert_true(pipe->current==child);g_assert_cmpint(GIMP_BRUSH(pipe)->priv->use_count,==,0);
+  g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));g_assert_cmpint(s.depth(),==,1);
+  auto*stream=g_file_read(file,nullptr,&error);g_assert_no_error(error);auto*loaded=xcf_load_stream(gimp,G_INPUT_STREAM(stream),file,nullptr,&error);g_assert_no_error(error);g_assert_nonnull(loaded);g_object_unref(stream);
+  auto*layers=gimp_image_get_layer_list(loaded);g_assert_nonnull(layers);g_assert_true(native_pixels(GIMP_DRAWABLE(layers->data))==released);g_list_free(layers);g_object_unref(loaded);
+  g_assert_true(gimp_image_undo(s.image));g_assert_true(s.pixels()==initial);g_assert_cmpint(pipe->index[0],==,index);g_assert_true(pipe->current==child);
+  g_assert_true(gimp_image_redo(s.image));g_assert_true(s.pixels()==released);g_assert_cmpint(pipe->index[0],==,index);g_assert_true(pipe->current==child);
+  for(int i=0;i<5;++i){s.coords.x+=2;s.motion(false,100);g_assert_true(s.pixels()==released);g_assert_cmpint(pipe->index[0],==,index);}
+  g_assert_true(g_file_delete(file,nullptr,&error));g_assert_no_error(error);g_object_unref(file);g_object_unref(pipe);
 }
 
 int main(int argc,char**argv)
@@ -239,5 +283,6 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-tool/public-press-last-ref",public_press_drops_last_ref);
   g_test_add_func("/painter-tool/last-ref-without-halt",last_ref_without_halt_rolls_back);
   g_test_add_func("/painter-tool/gray-native-save-roundtrip",gray_tool_save_roundtrip);
+  g_test_add_func("/painter-tool/pipe-release-save-roundtrip",pipe_release_save_roundtrip);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
 }

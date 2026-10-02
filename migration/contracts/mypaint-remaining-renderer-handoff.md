@@ -59,46 +59,23 @@ oracle exists because the pinned old application is a byte renderer.
 
 ## 2. Active brush-pipe state across logical boundaries
 
-A concrete source-level lifetime difference remains to validate:
+The real-old warmed capture and demonstrated release-tail fix are documented in
+`mypaint-active-pipe-release.md`. The coordinate-lifetime difference is real, but
+both native built-in selectors ignore last_coords, so no speculative coordinate
+carry owner was added. Active resource indices/current-child and global RNG stay
+native; preview keeps its private copies and RNG.
 
-- Old `gimpmypaintcore.cpp::split_stroke()` ends the session but retains its
-  Surface until the drawable changes
-- Old `gimpmypaintcore-surface.cpp` stores `last_coords`/`current_coords` on that
-  persistent Surface; begin/end do not reset them
-- Old `gimpmypaintcore-brushfeature.hpp::prepare_brush()` calls native
-  `gimp_brush_select_brush(last,current)` and then copies current into last
-- New `GimpResources::Impl` initializes both coordinates to defaults, while
-  `PaintCore::end()` and `retire_segment()` retire the resource provider;
-  subsequent logical segments construct a new provider
+The capture instead exposed a real defect: unconditional inactive draw rejection
+lost positive-pressure interpolated release dabs and their native pipe selections.
+Hover now preserves that tail only within an already active transaction; cold
+and settled zero-pressure hover remain sampling-only, including constant-opacity
+brushes. The raw coordinate difference remains visible in the records and the
+comparator explicitly counts it while checking all consumed axes/native state.
 
-Native pipe indices/current-child and global RNG remain on the actual active
-brush object, but adapter coordinate carry can therefore differ at a split.
-This is a source-grounded risk, not yet an independently observed pixel delta.
-Preview uses a deliberately private deep copy/RNG and must stay isolated.
-
-Next bounded steps:
-
-1. Capture actual old active-pipe output and state using the existing old
-   archives, not only direct new selector tests. Cover all selection modes,
-   sample/dab count, sampling-only hover, pressure/tilt/direction, explicit and
-   evaluator-driven splits, Save/idle finish, Undo/Redo, drawable/resource
-   switches and repeated strokes. Record full pixels plus child/index state.
-2. Handle old cold setup honestly: its Surface constructor does not initialize
-   those coordinate fields. A defined warmed stimulus can first use a constant
-   selector to establish coordinates, then switch selector mode. Preserve the
-   cold/setup limitation separately instead of reproducing uninitialized data.
-3. If the predicted carry difference is confirmed, keep a small explicit
-   selection-state value on the existing controller/session, and share it with
-   transient resource providers. Reset only at independently established
-   boundaries. Do not clone active pipes, reseed their random stream per segment,
-   or restore their state merely because pixel Undo occurred without evidence.
-4. Keep begin/end-use balance, callback reentry, resource replacement and image
-   lifetime tests. Use existing ObjectRef/BindingStore ownership; no second
-   global singleton, qdata bridge or alternate GClass system.
-
-Precision/ICC is a substantial renderer/API integration slice with two
-acceptance stages. Pipe carry is a smaller state-lifetime/oracle slice, but its
-old capture must precede changing reset semantics. Neither is closed by the
-current byte-format success. Aggregate old-profile/open/edit/Save workflows
-should continue alongside these bounded gaps; physical/platform gates remain
-explicit rather than inferred from Linux harnesses.
+The bounded native scope is eight built-in selection modes with current input
+axes, smudge/no-smudge sampling, explicit/evaluator-driven splits, finish,
+resource switches, warmed drawable switch, pixel Undo/Redo and external RNG
+continuity. Port GTK adds actual release→XCF Save/reload. Custom subclasses that
+consume previous coordinates, undefined old cold setup, physical input and other
+platforms remain unclaimed. Native precision/ICC remains the substantial renderer
+slice described above; byte-format and pipe success do not close that gate.

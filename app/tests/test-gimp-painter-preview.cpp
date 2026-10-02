@@ -12,6 +12,8 @@ extern "C" {
 #include "core/gimpbrush.h"
 #include "core/gimpbrush-private.h"
 #include "core/gimpbrushpipe.h"
+#include "core/gimpbrushclipboard.h"
+#include "core/gimpbuffer.h"
 #include "core/gimppattern.h"
 #include "core/gimptempbuf.h"
 #include "tests.h"
@@ -75,6 +77,32 @@ static void snapshot_child_and_paper()
   g_object_unref(context);g_object_unref(pipe);g_object_unref(paper);g_assert_true(brush_gone);g_assert_true(paper_gone);
   g_assert_true(render(fresh)!=reference); // adapters keep only their private snapshots
 }
+static void clipboard_brush_snapshot()
+{
+  g_assert_null(gimp_get_clipboard_object(gimp));
+  for(bool mask_only:{false,true}) {
+    auto*buffer=gegl_buffer_new(GEGL_RECTANGLE(0,0,3,3),babl_format("R'G'B'A u8"));
+    guchar black[36];for(int i=0;i<9;++i){black[i*4]=black[i*4+1]=black[i*4+2]=0;black[i*4+3]=255;}
+    gegl_buffer_set(buffer,GEGL_RECTANGLE(0,0,3,3),0,babl_format("R'G'B'A u8"),black,GEGL_AUTO_ROWSTRIDE);
+    auto*input=gimp_buffer_new(buffer,"Test clipboard",0,0,FALSE);gimp_set_clipboard_buffer(gimp,input);
+    auto*brush=GIMP_BRUSH(gimp_brush_clipboard_new(gimp,mask_only));
+    auto*context=gimp_context_new(gimp,"clipboard brush preview",nullptr);gimp_context_set_brush(context,brush);
+    // This exact built-in subtype duplicates to a deep plain GimpBrush.
+    auto*duplicate=GIMP_BRUSH(gimp_data_duplicate(GIMP_DATA(brush)));g_assert_cmpuint(G_OBJECT_TYPE(duplicate),==,GIMP_TYPE_BRUSH);
+    g_assert_true(duplicate->priv->mask!=brush->priv->mask);g_object_unref(duplicate);
+    GimpResources snapshot(context,settings(),GimpResources::Purpose::Preview);
+    const auto expected=render(snapshot);bool painted=false;for(std::size_t i=3;i<expected.size();i+=4)painted|=expected[i]>0;g_assert_true(painted);
+    guchar white[36];for(int i=0;i<9;++i){white[i*4]=white[i*4+1]=white[i*4+2]=255;white[i*4+3]=0;}
+    auto*replacement_buffer=gegl_buffer_new(GEGL_RECTANGLE(0,0,3,3),babl_format("R'G'B'A u8"));
+    gegl_buffer_set(replacement_buffer,GEGL_RECTANGLE(0,0,3,3),0,babl_format("R'G'B'A u8"),white,GEGL_AUTO_ROWSTRIDE);
+    auto*replacement=gimp_buffer_new(replacement_buffer,"Changed clipboard",0,0,FALSE);gimp_set_clipboard_buffer(gimp,replacement);
+    for(int i=0;i<9;++i)g_assert_cmpuint(gimp_temp_buf_get_data(brush->priv->mask)[i],==,0);
+    g_assert_true(render(snapshot)==expected);GimpResources fresh(context,settings(),GimpResources::Purpose::Preview);g_assert_true(render(fresh)!=expected);
+    bool gone=false;g_object_weak_ref(G_OBJECT(brush),mark_gone,&gone);g_object_unref(context);g_object_unref(brush);g_assert_true(gone);
+    gimp_set_clipboard_buffer(gimp,nullptr);g_object_unref(input);g_object_unref(replacement);g_object_unref(buffer);g_object_unref(replacement_buffer);
+    g_assert_true(render(snapshot)==expected); // Native clipboard/source is gone.
+  }
+}
 static void stroke_selection_remains_native()
 {
   auto*pipe=pipe_new(PIPE_SELECT_INCREMENTAL);auto*context=gimp_context_new(gimp,"stroke selector",nullptr);gimp_context_set_brush(context,GIMP_BRUSH(pipe));
@@ -90,6 +118,7 @@ static void rejects_unisolated_or_invalid()
 {
   auto*context=gimp_context_new(gimp,"preview invalid",nullptr);
   auto*custom=GIMP_BRUSH(g_object_new(preview_custom_brush_get_type(),"name","Unknown selector",nullptr));
+  custom->priv->mask=gimp_temp_buf_new(3,3,babl_format("Y u8"));std::memset(gimp_temp_buf_get_data(custom->priv->mask),255,9);
   gimp_context_set_brush(context,custom);bool rejected=false;
   try{GimpResources preview(context,settings(),GimpResources::Purpose::Preview);}catch(const std::invalid_argument&){rejected=true;}
   g_assert_true(rejected);g_assert_cmpint(custom->priv->use_count,==,0);g_object_unref(custom);
@@ -106,6 +135,7 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-preview/pipe-modes-private",pipe_modes_private_deterministic);
   g_test_add_func("/painter-preview/snapshot-child-paper",snapshot_child_and_paper);
   g_test_add_func("/painter-preview/stroke-native",stroke_selection_remains_native);
+  g_test_add_func("/painter-preview/clipboard-brush-snapshot",clipboard_brush_snapshot);
   g_test_add_func("/painter-preview/reject-unisolated-invalid",rejects_unisolated_or_invalid);
   const int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }

@@ -76,6 +76,44 @@ static void active_hover_preserves_logical_split()
   g_assert_false(gimp_painter_session_is_active(session));g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,1);g_assert_true(pixels(drawable)==painted);
   g_object_unref(session);g_object_unref(options);g_object_unref(image);
 }
+// Hover is sample-only at zero evaluator pressure, but a preceding real press
+// owns its delayed positive-pressure release tail in the same transaction.
+struct ReleaseCancel {MyPaint::PaintCore*core;bool fired=false;};
+static void cancel_release_update(GimpDrawable*,gint,gint,gint,gint,gpointer data)
+{auto*state=static_cast<ReleaseCancel*>(data);state->fired=true;state->core->cancel();}
+static void positive_pressure_release_tail()
+{
+  for(bool floating:{false,true})for(bool constant:{false,true}) {
+    auto*options=options_new();
+    auto settings=PainterOptionsRef::retain(options).snapshot();
+    settings.set_switch(BRUSH_NON_INCREMENTAL,floating);
+    settings.set_base_value(BRUSH_OPAQUE_MULTIPLY,constant?1:0);
+    settings.set_curve(BRUSH_OPAQUE_MULTIPLY,INPUT_PRESSURE,constant?std::vector<MyPaint::Point>{}:std::vector<MyPaint::Point>{{0,0},{1,1}});
+    GimpImage*image;auto*layer=layer_new(&image);auto*d=GIMP_DRAWABLE(layer);const auto initial=pixels(d);
+    MyPaint::PaintCore core(GIMP_PAINT_OPTIONS(options),settings);
+    GimpCoords c=GIMP_COORDS_DEFAULT_VALUES;c.x=16;c.y=16;c.pressure=0;
+    core.stroke_to(d,.01,c);c.pressure=.85;core.stroke_to(d,.075,c);
+    const auto pressed=pixels(d);g_assert_true(pressed!=initial);
+    c.x+=8;c.y+=3;c.pressure=1; // Default mouse pressure must be ignored on hover.
+    core.hover_to(d,.2,c);const auto released=pixels(d);g_assert_true(released!=pressed);
+    for(int i=0;i<5;++i){c.x+=2;core.hover_to(d,.1,c);g_assert_true(pixels(d)==released);}
+    core.finish();g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,1);
+    g_assert_true(gimp_image_undo(image));g_assert_true(pixels(d)==initial);
+    g_assert_true(gimp_image_redo(image));g_assert_true(pixels(d)==released);
+    // Finish must not resurrect residual positive-pressure engine state.
+    c.pressure=.8;core.stroke_to(d,.08,c);core.finish();const auto finished=pixels(d);
+    core.hover_to(d,.2,c);g_assert_true(pixels(d)==finished);g_assert_false(core.active());
+    // Cancel also prevents a subsequent hover from rebuilding a paint segment.
+    core.stroke_to(d,.08,c);core.cancel();core.hover_to(d,.2,c);g_assert_true(pixels(d)==finished);
+    const auto depth=gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image));
+    core.stroke_to(d,.08,c);ReleaseCancel cancel{&core};
+    auto handler=g_signal_connect(d,"update",G_CALLBACK(cancel_release_update),&cancel);
+    c.x+=8;core.hover_to(d,.2,c);g_signal_handler_disconnect(d,handler);
+    g_assert_true(cancel.fired);g_assert_false(core.active());g_assert_true(pixels(d)==finished);
+    g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,depth);
+    g_object_unref(options);g_object_unref(image);
+  }
+}
 static void mark_gone(gpointer data,GObject*){*static_cast<bool*>(data)=true;}
 static void hover_releases_old_image()
 {
@@ -137,6 +175,7 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-hover/logical-idle-split",active_hover_preserves_logical_split);
   g_test_add_func("/painter-hover/release-image",hover_releases_old_image);
   g_test_add_func("/painter-hover/closed",close_rejects_hover);
+  g_test_add_func("/painter-hover/positive-pressure-release-tail",positive_pressure_release_tail);
   g_test_add_func("/painter-hover/resource-reentry",resource_setup_reentry);
   g_test_add_func("/painter-hover/resource-selector-pressure",resource_selector_hover_pressure);
   int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;

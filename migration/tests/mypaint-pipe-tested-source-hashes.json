@@ -1,0 +1,414 @@
+{
+  "base_head": "36eff9767fc7d69ae024a7fc09bb4dad3672ec62",
+  "sources_sha256": {
+    "app/config/gimpcoreconfig.h": "9ccf07952bb54284c6fefe27e9ba721db4a05283e9af37a72c4c4c106fd341d1",
+    "app/config/gimppainterfilterconfig.cpp": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+    "app/core/gimp.h": "fc12b4e37853eb6050dacaf635bc542222faea51ab2393546af0eb23a63f20b9",
+    "app/core/gimpbrush-private.h": "7bb04fe31fc8d24979979567822288dc6007d1e5b35fed189bd0a98172e7ed3a",
+    "app/core/gimpbrush.c": "e99eea2c270b4dd1a896c67d0249672b4850b3e487fa7649942481ea25eaecdc",
+    "app/core/gimpbrush.h": "71d75d87ecd8de35b65b6ec730d22de0d7085f8310492f02208cecf632d7391d",
+    "app/core/gimpbrushclipboard.c": "0e0dafec9b60073b002b6a48a06787c0ba0117b85140c9c47e194a745cb29ae3",
+    "app/core/gimpbrushgenerated.c": "5d57d5dbfe695bd328ec2a32c98f5fc7ad5c7d9a5761276a6a505fd5e9972dcc",
+    "app/core/gimpbrushpipe.c": "1b2baeb1503e0de74ccfc61f4e684239e34db9b4cb5a58a462f1cfa01ac9cfc4",
+    "app/core/gimpbrushpipe.h": "fcb4f5ce5c9183379b752800927d62f321e973f8e5248a7176ebc8e807b09859",
+    "app/core/gimpbuffer.c": "b96e7608e735d549e2a56b95d840ca722c58d97fcc99adc4cd804d1135d67984",
+    "app/core/gimpcontext.c": "fc1b1ff6c4f9c5470c53b8fa991774639e5ef9c1abf011c245ec3699ae854ab7",
+    "app/core/gimpdata.c": "4b47bc0b58940a0d7bc697885db3f133e6d5f668442a0db2cff340031b599599",
+    "app/core/gimpdrawable.c": "e2ba45059fc33256ee103dbcabd6936ff07912a0437848fa58e4b6149b75553b",
+    "app/core/gimpimage-convert-type.c": "87333252556cdee1dc0c5b246b32f615531a6f6a52b84d89611cb4f8a549ac87",
+    "app/core/gimpimage-undo.c": "789b12d448f9790e87164c3b84880937b21d8da76368416b4729b8176849d183",
+    "app/core/gimpimage.c": "88cf26998cf9b591d1e13301f3422606ada64c58e9be31a20b4fe9593adb6f73",
+    "app/core/gimpitem.c": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e",
+    "app/core/gimpobject.c": "23317d6cec60d25b32d8b2f3b0becc7b9a6d1728d9fce220ae9acfb4761d598a",
+    "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+    "app/core/gimppattern.c": "b4db243a22d2950b21e5b36e7f2e35d6ef611bfc47c3107ecf60e01c316dc753",
+    "app/core/gimpresource.c": "3fa43dd283390547c102921b9329b1173f292e4dbff94e29ac17fe57c0ed70d4",
+    "app/core/gimptoolinfo.c": "0aeded0c6ae0c1a247829c96b1608fe14f01f83b48d605308e7f4ada7c1d6bab",
+    "app/core/gimpviewable.c": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3",
+    "app/dialogs/file-save-deferred.cpp": "076ab5e3edbd884bf69fd707264e7c11b42bd65e90095d65401f159600232c0d",
+    "app/display/gimpdisplay.c": "59dbb5a4431fb61e17c563f056d37910838229e09c8cd46a1f0525ba563d59be",
+    "app/file/file-save.c": "93206215274f087287ed2bb15d1e3e89df94c309ddfdec38e8f2f8b1209a06cd",
+    "app/httpd/httpd-images.cpp": "4b43d979c4782bb0aacf653c0f9bcb25f11f5a835153e3a4dfb6bf279e9c5439",
+    "app/httpd/httpd-navigation.cpp": "89c9f6fd4e615e53d1c79dc94c4bfe58649858c9e44c37fe12a92535abe7f768",
+    "app/httpd/httpd-pdb.cpp": "284b822cba5ba6db38f64dbca7a9b33c58d588d289b0e03390806ac8fde16cc7",
+    "app/httpd/httpd-resource.cpp": "3fc73bd2aae4fc06e903657beb872cf68bd9c6910c612685f279f5a6e7eec7d8",
+    "app/httpd/httpd.cpp": "4d77b346b61c05845d92b3786c424f3d26d8396a7726b5fcc52f21bf81d099ca",
+    "app/operations/operations-enums.h": "705e86499fb0fecdf6a58d6a0860e9d419fe1a196f2c27dc8052e75352023ddb",
+    "app/paint/gimpbrushcore-loops.cc": "09ec00079950e2748a2061050fc59dbfefd6c1aa92d753954c1771d3cb80faf8",
+    "app/paint/gimpbrushcore.h": "02808076ac5fdaf850651249fc7323c29eb10d84ec8ea836d56b98d1ae69dfd7",
+    "app/paint/gimpfillbrush.cpp": "8968587fe8117e6662e552ebeb4324ff9822a282f1e4c8343d5a47043b44b628",
+    "app/paint/gimppaintcore-loops.cc": "d4be1c9ff6a1bdc4f2818e9f13933403a0597a657c2efe33240c3a40d0894f40",
+    "app/paint/gimppaintcore.c": "306710d7b6ae412e7e12bcedaf85b5f9bd4b43de2a7f424dca2bb82a9c6a16be",
+    "app/paint/gimppaintcore.h": "ebb93d0364e3fb37d54613afa6b9f730cc224264658362a59d8117bec735a07c",
+    "app/paint/gimppainterpaintgate.cpp": "75adea53979cc68b940db96304bc5ee3a1c77c569a09f781b0a26eb13eb2f41f",
+    "app/paint/gimppainterpaper-paste.cpp": "67fc908e03d298214fdb8c2e3b2412b4e267f22198ae4d7f1b696c6f4e819c9d",
+    "app/paint/gimppainterpaper.cpp": "e837d31afa91d36eb239650045b77a87a5700f422286beda2d694de07064ec6f",
+    "app/paint/gimppaintersmudge.cpp": "a4b3d35b237bfe46deae0609fe12c2484908249713a49611a464edc53abd61e4",
+    "app/paint/gimppaintoptions.h": "b732455a807e02c1f7f4ce7a686bdbf588250c51c52d8d081d56bff2af213d0a",
+    "app/paint/painter-bounded-fill/search.cpp": "9aefd9e47b15b8dd9eecc531df1be0bc8ac6c2c511bd6a488256b15d47ece254",
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "8ad7afa2277250baae36c8937566e3f017bd2a2f26a640a30acd6aaa591dc508",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "2126a82d73b1abb30ec7031449ec615a358b735584dd824b0c8c3840069ea813",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h": "a714dd1306aea247ee82adfa5fdb2956f8da029f4829deb14ad97dd2e6403e01",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.hpp": "ae5c72c55d831d4e313da48fa7229a258a004d337a33c8242f205fda97aa22b7",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.h": "4f53e90cf9902dd84b7b85f3417689d54c68b1ac8008c9eb181915e89f085345",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.hpp": "bea0eb0341fecaa0f7bc66e95b02f3697b29a0d97450e3dfcdbe40e0e0e574b3",
+    "app/paint/painter-mypaint-surface/gimp-resources.cpp": "5ff2f3454005a1673c4bc3079884ae19972e09f6117512641258b00310b170da",
+    "app/paint/painter-mypaint-surface/gimp-resources.hpp": "0d4a462f16f736cd65454b57c57c4fd4d0b54fe606ac1b8de900d2ef11c136a2",
+    "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp": "c10d67a6bc00d21f433e8f69ea83b58ca7327e5e7572176aeb533e2e47f04884",
+    "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp": "7c5da8fc893ae23073ceaae7be68d96e5eaafe2f1fa85d4991617ecafdc1cef2",
+    "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp": "a2c86b97e7b6ba5e253c8f6b0c79be3100d541a125b68ffe893a6e70e80568d2",
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "621d420b1ce8b4c83cb1e7fdbfaae43546eee4e8866d3079d6570b4f79a77030",
+    "app/paint/painter-mypaint-surface/paint-core.hpp": "8f127f5d8905655e532a5c79000627d93347b7d7a4a4cfdcb1f1ec1b0451b8f3",
+    "app/paint/painter-mypaint/engine.cpp": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a",
+    "app/paint/painter-mypaint/engine.hpp": "3c24a2d737d369b34aa6919445b371add80cf826a8e4c22bc18677b8edeed3a9",
+    "app/paint/painter-mypaint/legacy-brush.hpp": "1971ad70ff17ad0a2311cf3c4ec105f730c6a0ae87c96958e7b7ffdfa71ed4fc",
+    "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+    "app/paint/painter-mypaint/resource.hpp": "281565b674f2fa055ca954f4bc9c8b1a73fee36399c60daeee5fe2ecacf94e0c",
+    "app/paint/painter-mypaint/surface.hpp": "7c6214b1dafee3eb3cc2643842c11e9b419eea02433d997f9903d64e12237595",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "72ccd52c058c15d456517c8ed9a8cf9ec98ca14d08e277bf68f3e40febb7f1f9",
+    "app/painter/connection.hpp": "cf3fb4127a0726340492972c17c34d1bc3047a3c4d52bae44d15ba0741fb9708",
+    "app/painter/filter-edge.cpp": "8366b14c980d6b9db472a83071859f15403681e469841e04ba3010a7ad8a7af6",
+    "app/painter/filter-gauss.cpp": "025565dcfffc90d2de06614e127bd0530e70ce6fac6b4b4839c8171bbb4a0c0b",
+    "app/painter/filter-raster-kernels.cpp": "fe2b4880c97952dfd33d798a2a38c01dba10b0b226335f35b3e7dc7101a78a23",
+    "app/painter/filter-raster.cpp": "4b6337d71103cbdbde5161abdf830172e38bd3122cbcbb91409275e40bfe9ed0",
+    "app/painter/filter-scheduler.cpp": "fe6c8fdb49e93d503e84e819eef27fa4eb2060e59188f6e574b0a153e7762b7b",
+    "app/painter/filter-spool.cpp": "5fb87a5c088be50f9328824b4a181e6d39e70d4a82656f22f1ab9c54405ce2ba",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/object-ref.hpp": "46006b8f2bc6216e6486fa473fe10ffbc9311c3550825b82798b0858165f8dac",
+    "app/tests/painter-mypaint-pipe-trace.cpp": "479675dd7c9dd781433ebb79fa5c189b2aca57dd00b4bb81cd372a68fefd3af0",
+    "app/tests/test-gimp-painter-hover.cpp": "5c209ef45a899f4235cf09d6529c71a2c0acf9fcb3f535ca538e04ea3bfef011",
+    "app/tests/test-gimp-painter-preview.cpp": "83d6eb212743eefec5d38f9407c06ffdf3f3a1f493d357590346a218ec334e00",
+    "app/tests/test-painter-mypaint-tool.cpp": "0b9a1de458e12242fd2cabd703bde6a37c59953011d83d5cd33d9d91b2f1c8c3",
+    "app/tools/gimpcolortool.c": "7063d040ab0d6ff1a6fc8fa6998105b208d88f4478b8c74e4bbc5106397270b1",
+    "app/tools/gimpdrawtool.c": "9602d5fd2cc8125b368668d3dd4cb179bd2ee41d80809610a58d523453aea312",
+    "app/tools/gimpfillbrushtool.cpp": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+    "app/tools/gimppaintermybrushtool.cpp": "2b6a54cabe22fbb3b8cd113c8a3231955407ca67519822c0eb673c6f03575c90",
+    "app/tools/gimppaintermybrushtool.h": "7ecef834398caedfa24516d6fa89828d7f1779ac20690c324b3ba538ef6027e0",
+    "app/tools/gimppaintermybrushtool.hpp": "e3122c4cdf41d64b6eb204c07fc5fdb830a10d7352de925e544caab168790cde",
+    "app/tools/gimppaintersmudgetool.cpp": "c11e2e2413baaebd86f03a2a9e6f9726c2b965162a442e0714236c39354163d1",
+    "app/tools/gimpperspectiveguidetool.cpp": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b",
+    "app/tools/gimptool.c": "de30576df39b394985b358ab9a238df330a97fcb396f4e7e37232e052219136b",
+    "app/tools/gimptool.h": "44a1f27c449be3cad009912bb1457c37bffc5c18d72a5d22b9fd0642eef1145c",
+    "app/widgets/gimppaintercompactoptions.cpp": "23ce6ae0da80a63c0d47391f0d614e6a1d4814f25d5b0a351e6d060e1a5edb53",
+    "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+    "app/widgets/gimppaintermybrusheditor.cpp": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+    "app/xcf/painter-xcf-arguments.cpp": "0f82ba82ffe732b3270bc307ad000c602d377a3cf5fece79d4421b1f0f2d2463",
+    "app/xcf/painter-xcf-compat.cpp": "169b0dc7f774188b263ed55997817c3060291395f18f635a5e2f0cd8131043df",
+    "app/xcf/painter-xcf-load.cpp": "5e1dd8f297c8cd5da998cc71a5f5ff5fb55d58b68d10b017c1f40ff876456a80",
+    "app/xcf/painter-xcf-preserve.cpp": "de3c2fad02f396d95f0d1c60a32762efc3081b800d8e503e21aac00c5d237c3f",
+    "app/xcf/xcf-load.c": "5d92029b4b7bbef5879f02b5c6e710ddd27d5bc9b02f5d88ccef1f322b06ad43",
+    "app/xcf/xcf-save.c": "27ea5cbb1fa4452823ba09c7785f8810669940b54904354633eb6baa82de6cd1",
+    "migration/fixtures/legacy-mypaint-pipe/capture-pipe.cpp": "31ffd15a0adee4417bb3a16a88077a4350affffc804f720ab0469e2f94da9fa6"
+  },
+  "source_provenance": {
+    "app/config/gimpcoreconfig.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/config/gimppainterfilterconfig.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimp.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpbrush-private.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpbrush.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpbrush.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpbrushclipboard.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpbrushgenerated.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpbrushpipe.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpbrushpipe.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpbuffer.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpcontext.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpdata.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpdrawable.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpimage-convert-type.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpimage-undo.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpimage.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpitem.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpobject.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimppaintermybrush.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimppattern.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpresource.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimptoolinfo.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/core/gimpviewable.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/dialogs/file-save-deferred.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/display/gimpdisplay.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/file/file-save.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/httpd/httpd-images.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/httpd/httpd-navigation.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/httpd/httpd-pdb.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/httpd/httpd-resource.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/httpd/httpd.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/operations/operations-enums.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/gimpbrushcore-loops.cc": {
+      "kind": "git",
+      "revision": "36eff9767fc7d69ae024a7fc09bb4dad3672ec62",
+      "reason": "Unrelated ordinary-geometry RTTI dependency edited after completed compilation; exact prior tested Git blob recovered without reverting the current source."
+    },
+    "app/paint/gimpbrushcore.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/gimpfillbrush.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/gimppaintcore-loops.cc": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/gimppaintcore.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/gimppaintcore.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/gimppainterpaintgate.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/gimppainterpaper-paste.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/gimppainterpaper.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/gimppaintersmudge.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/gimppaintoptions.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-bounded-fill/search.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/gimp-painter-options.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/gimp-painter-session.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/gimp-painter-session.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/gimp-resources.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/gimp-resources.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/paint-core.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint-surface/paint-core.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint/engine.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint/engine.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint/legacy-brush.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint/resource.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint/resource.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/paint/painter-mypaint/surface.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/binding-store.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/binding-store.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/connection.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/filter-edge.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/filter-gauss.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/filter-raster-kernels.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/filter-raster.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/filter-scheduler.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/filter-spool.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/gimp-painter-binding.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/gimp-painter-error.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/painter/object-ref.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tests/painter-mypaint-pipe-trace.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tests/test-gimp-painter-hover.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tests/test-gimp-painter-preview.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tests/test-painter-mypaint-tool.cpp": {
+      "kind": "test-only-refresh",
+      "reason": "Release-aware final-pixel assertions; production objects preserved unchanged from the original private build."
+    },
+    "app/tools/gimpcolortool.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tools/gimpdrawtool.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tools/gimpfillbrushtool.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tools/gimppaintermybrushtool.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tools/gimppaintermybrushtool.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tools/gimppaintermybrushtool.hpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tools/gimppaintersmudgetool.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tools/gimpperspectiveguidetool.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tools/gimptool.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/tools/gimptool.h": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/widgets/gimppaintercompactoptions.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/widgets/gimppainterlayertiles.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/widgets/gimppaintermybrusheditor.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/xcf/painter-xcf-arguments.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/xcf/painter-xcf-compat.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/xcf/painter-xcf-load.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/xcf/painter-xcf-preserve.cpp": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/xcf/xcf-load.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "app/xcf/xcf-save.c": {
+      "kind": "working-tree-at-archive"
+    },
+    "migration/fixtures/legacy-mypaint-pipe/capture-pipe.cpp": {
+      "kind": "working-tree-at-archive"
+    }
+  }
+}

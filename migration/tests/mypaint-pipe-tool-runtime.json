@@ -1,0 +1,22 @@
+{
+  "runs": {
+    "normal": {
+      "exit_code": 0,
+      "groups": 15,
+      "executable_sha256": "c868b21ed1bec39634be871d59904156cb13b7847379e242a3fcc1210365d379",
+      "log": "migration/tests/mypaint-pipe-tool-frozen-normal.log",
+      "log_sha256": "8a382c4dcf57e78dccd8a0d09d82bde8baaf086688fec42dc07b43f13ad3eccc"
+    },
+    "asan": {
+      "exit_code": 0,
+      "groups": 15,
+      "executable_sha256": "8584ca83982a678a53ebc0b1406e4f1cfad39c977db3b5b87d5221bda6cca564",
+      "log": "migration/tests/mypaint-pipe-tool-frozen-asan.log",
+      "log_sha256": "1a6d44c7877cc0128e0bb98c63709bbafe8b751dc11a68dd2f968b366d8858ae"
+    }
+  },
+  "build_report": "migration/tests/mypaint-pipe-tool-sanitizers-build.json",
+  "sanitizer_instrumented": 38,
+  "rtti_only": 30,
+  "unresolved_observation": "One earlier native empty-display teardown critical failed without a stack; diagnostic and final frozen canonical/ASan replays did not reproduce. Native close/empty-shell coverage retained."
+}

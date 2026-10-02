@@ -1,0 +1,53 @@
+ninja: Entering directory `build-debian13'
+[1/24] Generating git-version.h.in.1 with a custom command
+[2/24] Generating git-version.h.in.2 with a custom command
+[3/24] Generating git-version.h with a custom command
+[4/19] Compiling C object app/core/libappcore.a.p/gimp.c.o
+[5/19] Linking static target app/core/libappcore.a
+[6/19] Compiling C object app/libapp.a.p/app.c.o
+[7/19] Linking static target app/libapp.a
+[8/19] Compiling C++ object app/httpd/libapphttpd.a.p/httpd.cpp.o
+../app/httpd/httpd.cpp: In member function ‘void {anonymous}::State::close()’:
+../app/httpd/httpd.cpp:38:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   38 |     if(closed)return;closed=true;++guide_generation;
+      |     ^~
+../app/httpd/httpd.cpp:38:22: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   38 |     if(closed)return;closed=true;++guide_generation;
+      |                      ^~~~~~
+../app/httpd/httpd.cpp:43:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   43 |     if(server)soup_server_disconnect(SOUP_SERVER(server.get()));server.reset();
+      |     ^~
+../app/httpd/httpd.cpp:43:65: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   43 |     if(server)soup_server_disconnect(SOUP_SERVER(server.get()));server.reset();
+      |                                                                 ^~~~~~
+../app/httpd/httpd.cpp:44:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   44 |     if(session)soup_session_abort(SOUP_SESSION(session.get()));session.reset();router.reset();token.clear();
+      |     ^~
+../app/httpd/httpd.cpp:44:64: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   44 |     if(session)soup_session_abort(SOUP_SESSION(session.get()));session.reset();router.reset();token.clear();
+      |                                                                ^~~~~~~
+../app/httpd/httpd.cpp: In member function ‘GimpPainter::Http::Response {anonymous}::State::navigation(Gimp*, const GimpPainter::Http::Request&)’:
+../app/httpd/httpd.cpp:72:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   72 |     if(!guide_factory||g->no_interface)throw Failure(503,"Navigation requires GUI");auto n=parse(r.body);auto c=context(g,member(n.get(),"context"));if(!c.display)throw Failure(404,"No active display");auto*a=member(n.get(),"arguments");auto message=text(member(a,"message"));if(message.size()>65536)throw Failure(413,"Navigation message too long");std::string hook;auto*hook_node=member(a,"webhook_uri",false);if(hook_node&&!JSON_NODE_HOLDS_NULL(hook_node))hook=text(hook_node);
+      |     ^~
+../app/httpd/httpd.cpp:72:85: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   72 |     if(!guide_factory||g->no_interface)throw Failure(503,"Navigation requires GUI");auto n=parse(r.body);auto c=context(g,member(n.get(),"context"));if(!c.display)throw Failure(404,"No active display");auto*a=member(n.get(),"arguments");auto message=text(member(a,"message"));if(message.size()>65536)throw Failure(413,"Navigation message too long");std::string hook;auto*hook_node=member(a,"webhook_uri",false);if(hook_node&&!JSON_NODE_HOLDS_NULL(hook_node))hook=text(hook_node);
+      |                                                                                     ^~~~
+../app/httpd/httpd.cpp: In lambda function:
+../app/httpd/httpd.cpp:89:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   89 |   if(!GIMP_IS_GIMP(g)||port>65535||!token||strlen(token)<32||strlen(token)>256)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"HTTP requires an application, a port, and a 32..256 character token");for(auto*p=token;*p;++p)if(!g_ascii_isalnum(*p)&&*p!='-'&&*p!='_')throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"HTTP token must be URL-safe");
+      |   ^~
+../app/httpd/httpd.cpp:89:196: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   89 |   if(!GIMP_IS_GIMP(g)||port>65535||!token||strlen(token)<32||strlen(token)>256)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"HTTP requires an application, a port, and a 32..256 character token");for(auto*p=token;*p;++p)if(!g_ascii_isalnum(*p)&&*p!='-'&&*p!='_')throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"HTTP token must be URL-safe");
+      |                                                                                                                                                                                                    ^~~
+[9/19] Linking static target app/httpd/libapphttpd.a
+[10/19] Linking target app/tests/gimp-painter-preview
+[11/19] Linking target app/tests/gimp-painter-session
+[12/19] Linking target app/tests/gimp-painter-gray-extension
+[13/19] Linking target app/tests/painter-mypaint-tool
+[14/19] Linking target app/tests/gimp-painter-hover
+[15/19] Linking target app/tests/painter-mypaint-pipe-trace
+[16/19] Linking target app/tests/painter-mypaint-rgb-session-trace
+[17/19] Linking target app/tests/painter-mypaint-gray-session-trace
+[18/19] Linking target app/tests/gimp-painter-batch
+[19/19] Linking target app/tests/painter-mypaint-session-trace

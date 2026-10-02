@@ -794,6 +794,7 @@
 | 21.001/atomic-generic-strokes | [x] | 実native stroke/path/boundaryを既存MyPaint Sessionの原子的batchへ接続する | 21.018/native-rgb-surface, 04.011/sanitizer-rtti-scope | 13 native/28source focused sanitizer＋24 RTTI-only合格。複数subpath全rollback・旧Undo/Redo保持・push_undo=false・Options最終ref・座標state実native比較を検証。interactive8/6と旧129/385record再確認。実PDB transport/GTK集約・Gray/precision等は別gate |
 | 21.002 | [ ] | GIMP ブラシ mask の取得を実装する | 21.001 | 旧形状と資源選択を保持 |
 | 21.002/resource-owner | [ ] | Surface のブラシと紙目の参照・使用期間を対称にする | 21.002, 01.007/cpp-ownership | 同一資源の再設定、NULL 切替、Surface 先行終了時に begin_use/end_use と ref/unref を一回ずつ対応付ける |
+| 21.002/native-pipe-release | [x] | native pipeの状態/RNGとpressure-zero入力前の正筆圧tail・Clipboard previewを保持する | 21.018/gray-tool-save-roundtrip, 24.012/private-preview-resources | 全8selector/32旧scene/416画像/2817recordsの消費状態・画素がexact。normal9suiteと3focused sanitizer、実GTK15/38unit sanitizer15合格。cold非累積旧crash/未使用previous coords差とempty-shell単発fatalを保存、ICC/precisionは別gate |
 | 21.003 | [ ] | GIMP ブラシ mask の変形を実装する | 21.002 | サイズ・角度・縦横比を反映 |
 | 21.004 | [ ] | 形状 mask の押印を実装する | 21.003 | ブラシ coverage を画素へ反映 |
 | 21.005 | [ ] | 通常採色の重みを実装する | 21.004 | 硬さ・縦横比・角度を使用 |

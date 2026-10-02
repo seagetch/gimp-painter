@@ -44,6 +44,11 @@ for command in archives:
 subprocess.run(link,cwd=build,check=True)
 env=dict(os.environ);env.update({'GIMP_TESTING_ABS_TOP_SRCDIR':str(root),'GIMP_TESTING_ABS_TOP_BUILDDIR':str(build),'GIMP_TESTING_PLUGINDIRS':str(build/'plug-ins/common'),'UI_TEST':'yes','ASAN_OPTIONS':'detect_leaks=0:halt_on_error=1:abort_on_error=1','UBSAN_OPTIONS':'halt_on_error=1:print_stacktrace=1'})
 result=subprocess.run([str(exe)],cwd=build,env=env,capture_output=True,text=True)
+if 'pipe_oracle' in report:
+    from compare_mypaint_pipe import compare
+    report['pipe_oracle']=compare(gzip.decompress((root/'migration/fixtures/legacy-mypaint-pipe/pipe-values.tsv.gz').read_bytes()),result.stdout.encode())
+    result.returncode=result.returncode or int(not report['pipe_oracle']['equal'])
+    result.stdout='\n'.join(line for line in result.stdout.splitlines() if not line.startswith('PIPE_'))+'\n'
 for color_model in ('rgb','gray'):
     if color_model+'_oracle' not in report:continue
     prefix=color_model.upper()+'_SESSION_'

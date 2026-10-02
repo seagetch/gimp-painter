@@ -9,6 +9,7 @@ extern "C" {
 #include "core/gimp.h"
 #include "core/gimpbrush.h"
 #include "core/gimpbrushgenerated.h"
+#include "core/gimpbrushclipboard.h"
 #include "core/gimpbrushpipe.h"
 #include "core/gimpcontext.h"
 #include "core/gimpcontainer.h"
@@ -111,7 +112,8 @@ void validate_preview_brush(GimpBrush *brush,unsigned depth=0)
   // Native duplicate deeply copies these built-in brush types. Unknown virtual
   // selectors need an explicit isolation contract before running in previews.
   const auto type=G_OBJECT_TYPE(brush);
-  if(type!=GIMP_TYPE_BRUSH&&type!=GIMP_TYPE_BRUSH_GENERATED&&type!=GIMP_TYPE_BRUSH_PIPE)
+  if(type!=GIMP_TYPE_BRUSH&&type!=GIMP_TYPE_BRUSH_GENERATED&&
+     type!=GIMP_TYPE_BRUSH_PIPE&&type!=GIMP_TYPE_BRUSH_CLIPBOARD)
     throw std::invalid_argument("Painter preview cannot isolate this brush subclass");
   if(!GIMP_IS_BRUSH_PIPE(brush))return;
   auto*pipe=GIMP_BRUSH_PIPE(brush);

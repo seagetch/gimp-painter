@@ -1,0 +1,91 @@
+{
+  "scope": "Native active MyPaint pipe/release-tail continuity plus exact built-in Clipboard brush preview isolation",
+  "base_head_at_seal": "1b69d5c73868ad6070240e7f7a8744dbf56f8cf6",
+  "production_files": [
+    "app/paint/painter-mypaint-surface/paint-core.cpp",
+    "app/paint/painter-mypaint-surface/gimp-resources.cpp"
+  ],
+  "source_freeze": {
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "621d420b1ce8b4c83cb1e7fdbfaae43546eee4e8866d3079d6570b4f79a77030",
+    "app/paint/painter-mypaint-surface/paint-core.hpp": "8f127f5d8905655e532a5c79000627d93347b7d7a4a4cfdcb1f1ec1b0451b8f3",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.h": "4f53e90cf9902dd84b7b85f3417689d54c68b1ac8008c9eb181915e89f085345",
+    "app/paint/painter-mypaint-surface/gimp-resources.cpp": "5ff2f3454005a1673c4bc3079884ae19972e09f6117512641258b00310b170da",
+    "app/tests/painter-mypaint-pipe-trace.cpp": "479675dd7c9dd781433ebb79fa5c189b2aca57dd00b4bb81cd372a68fefd3af0",
+    "app/tests/test-gimp-painter-hover.cpp": "5c209ef45a899f4235cf09d6529c71a2c0acf9fcb3f535ca538e04ea3bfef011",
+    "app/tests/test-gimp-painter-preview.cpp": "83d6eb212743eefec5d38f9407c06ffdf3f3a1f493d357590346a218ec334e00",
+    "app/tests/test-painter-mypaint-tool.cpp": "0b9a1de458e12242fd2cabd703bde6a37c59953011d83d5cd33d9d91b2f1c8c3",
+    "migration/fixtures/legacy-mypaint-pipe/capture-pipe.cpp": "31ffd15a0adee4417bb3a16a88077a4350affffc804f720ab0469e2f94da9fa6"
+  },
+  "normal_suites": 9,
+  "fixture_checks": 13,
+  "old_oracle": {
+    "equal": true,
+    "expected_records": 2817,
+    "actual_records": 2817,
+    "actual_record_types": {
+      "PIPE_SELECT": 1920,
+      "PIPE_STATE": 416,
+      "PIPE_PIX": 416,
+      "PIPE_UNDO": 32,
+      "PIPE_RNG": 32,
+      "PIPE_CAPTURE_COMPLETE": 1
+    },
+    "compared_sha256": "6a7dc72d84f0e0f7d8581bb35496e8c3596adeaa2c5d5756d7d2b9b2e98517d9",
+    "raw_sha256": "fd7bb54a5e67873d795ff0ab398639db2932868fb0481e42993a34002c2fa594",
+    "unused_last_coordinate_differences": 192,
+    "mismatches": [],
+    "different_records": 0,
+    "exit_code": 0
+  },
+  "sanitizer_reports": {
+    "mypaint-pipe-sanitizers.json": {
+      "exit_code": 0,
+      "instrumented_sources": 27,
+      "rtti_only_sources": 32,
+      "sha256": "b5fc435b0d5abd02a7d2cb7f73645484b936f9fbe507d91ca96e4e3cb8d62401"
+    },
+    "mypaint-pipe-hover-sanitizers.json": {
+      "exit_code": 0,
+      "instrumented_sources": 26,
+      "rtti_only_sources": 32,
+      "sha256": "a6845678edb3a02f8a1b55a280add30cf4b3a425cecda492db0a9d5c2496f54e"
+    },
+    "mypaint-clipboard-sanitizers.json": {
+      "exit_code": 0,
+      "instrumented_sources": 30,
+      "rtti_only_sources": 32,
+      "sha256": "ee520bfe90b2776a6c852357a5023c0235d339621b6e3841a47e936ef0dbd88d"
+    }
+  },
+  "tool_runtime": {
+    "normal": {
+      "exit_code": 0,
+      "groups": 15,
+      "executable_sha256": "c868b21ed1bec39634be871d59904156cb13b7847379e242a3fcc1210365d379",
+      "log": "migration/tests/mypaint-pipe-tool-frozen-normal.log",
+      "log_sha256": "8a382c4dcf57e78dccd8a0d09d82bde8baaf086688fec42dc07b43f13ad3eccc"
+    },
+    "asan": {
+      "exit_code": 0,
+      "groups": 15,
+      "executable_sha256": "8584ca83982a678a53ebc0b1406e4f1cfad39c977db3b5b87d5221bda6cca564",
+      "log": "migration/tests/mypaint-pipe-tool-frozen-asan.log",
+      "log_sha256": "1a6d44c7877cc0128e0bb98c63709bbafe8b751dc11a68dd2f968b366d8858ae"
+    }
+  },
+  "source_archive": {
+    "path": "migration/tests/mypaint-pipe-tested-sources.tar.gz",
+    "sha256": "8ddb8f22f0a11ce3c3cc3700dda91db32eb42319ed903fb597f4656fca8c5d05",
+    "sources": 101
+  },
+  "remaining_gaps": [
+    "Intermittent native last-image/empty-shell teardown critical, no stack captured; retained failure and successful diagnostic/canonical/ASan nonreproductions.",
+    "Arbitrary custom brush selectors consuming previous coordinates, undefined old cold setup, arbitrary ICC/precision, physical tablets and other platforms."
+  ],
+  "notes": [
+    "No active pipe cloning, coordinate-state owner, global RNG reseed, Undo state restore or second BindingStore route.",
+    "Raw previous-coordinate differences are reported separately; both built-in native selectors ignore last_coords.",
+    "Cold nonincremental old drawable-switch crash is preserved and excluded; successful scenes warm each target incrementally.",
+    "Production sources in the focused archive are the actually compiled versions, not later unrelated working-tree edits."
+  ]
+}

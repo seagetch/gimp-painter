@@ -19,14 +19,15 @@ need explicit migration without stealing the standard Paintbrush shortcut.
 Full-motion tracking and exact motion mode receive inactive samples and
 stationary/equal-timestamp pressure changes. Button/control state, rather than
 pressure alone, selects painting. Inactive input advances the same evaluator and
-shape-aware color sampling through the sampling-only Surface; it cannot write
-pixels or make empty Undo entries. Both evaluator and ordinary brush selector
+shape-aware color sampling. Cold/settled hover cannot write pixels or make empty
+Undo entries. Following a real press, positive-pressure interpolated release
+dabs finish through the already active Surface; see `mypaint-active-pipe-release.md`. Both evaluator and ordinary brush selector
 receive hover pressure zero, while tilt and the other copied device axes remain
 available. Image-space press coordinates are retained intact, then only x/y are
 translated to the selected drawable's local coordinates for the session.
 
-Normal release supplies an inactive sample and preserves the old evaluator's
-logical split timing. It does not force an extra Undo group. Reentrant release
+Normal release supplies a zero-pressure inactive sample and preserves the old
+evaluator's positive-pressure interpolation tail and logical split timing. It does not force an extra Undo group. Reentrant release
 queues one inactive sample until the active sample unwinds. HALT/COMMIT finishes
 the pending group; cancel rolls it back. Cancel wins when both requests occur
 during one sample. A stop requested while native start is freezing previews
