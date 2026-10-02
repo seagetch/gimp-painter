@@ -945,6 +945,7 @@
 | 26.010 | [ ] | 定規編集 Undo を接続する | 26.009 | 追加・移動・削除を復元 |
 | 26.011 | [ ] | 定規の保存対象を照合して接続する | 26.010 | 旧保存・非保存の境界を変更せず対応 |
 | 26.012 | [ ] | 画像切替と終了を接続する | 26.011 | 別画像の点や signal を保持しない |
+| 26.012/empty-display-toolrc-regression | [x] | 最終画像終了tickと旧toolrcの定規UI統合を修復する | 26.008/production-event-route, 30.010/native-profile-migration | queued resizeの実native停止/stackを再現し空shellで解除、元v1fixtureのgroups/orderを保ち新Painter4toolを追加。4target39case・全UI10反復70case・2C unit限定ASan/UBSan7case合格。全aggregate/platformは別gate |
 | 26.013 | [ ] | 定規と補正の併用を試験する | 26.012 | 順序と描き味が一致 |
 | 26.014 | [ ] | 3消失点と表示変換を試験する | 26.013 | 回転・反転中も期待方向に拘束 |
 

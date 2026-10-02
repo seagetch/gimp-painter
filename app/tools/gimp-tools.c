@@ -557,11 +557,16 @@ gimp_tools_deserialize (Gimp          *gimp,
             {
               if (file_version == GIMP_PAINTER_MIGRATED_TOOLRC_VERSION ||
                   tool_info->experimental ||
-                  tool_info->tool_type == GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL)
+                  tool_info->tool_type == GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL ||
+                  tool_info->tool_type == GIMP_TYPE_FILL_BRUSH_TOOL ||
+                  tool_info->tool_type == GIMP_TYPE_PAINTER_MYBRUSH_TOOL ||
+                  tool_info->tool_type == GIMP_TYPE_PAINTER_SMUDGE_TOOL)
                 {
                   /* The structured old-profile importer marks its toolrc so
                    * new stable tools can be appended without throwing away
                    * the user's existing order, groups and active selections.
+                   * The stable Painter tools added to GIMP 3 must likewise
+                   * preserve groups from an existing version-1 toolrc.
                    * Normal serialization returns to the current version. */
                   gimp_container_add (container, GIMP_OBJECT (tool_info));
                 }

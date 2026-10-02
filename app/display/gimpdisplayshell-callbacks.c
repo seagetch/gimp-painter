@@ -141,6 +141,21 @@ gimp_display_shell_canvas_tick (GtkWidget     *widget,
   GimpDisplayShell *shell = tick->shell;
   GtkAllocation     allocation;
 
+  /* The last display survives closing its image.  A resize tick queued
+   * before the close must not perform image calculations on the empty shell.
+   * Clear pending centering too, so it cannot suppress drawing the drop zone.
+   */
+  if (! shell->display ||
+      ! gimp_display_get_shell (shell->display) ||
+      ! gimp_display_get_image (shell->display))
+    {
+      shell->size_allocate_from_configure_event = FALSE;
+      shell->size_allocate_center_image = FALSE;
+      gtk_widget_set_size_request (widget, -1, -1);
+
+      return G_SOURCE_REMOVE;
+    }
+
   gtk_widget_get_allocation (widget, &allocation);
 
   if ((tick->prev_width  != allocation.width) ||

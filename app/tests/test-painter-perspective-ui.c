@@ -21,6 +21,7 @@
 #include "core/gimpundostack.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimpdisplayshell-callbacks.h"
 #include "display/gimpdisplayshell-rotate.h"
 #include "display/gimpdisplayshell-scale.h"
 #include "display/gimpdisplayshell-transform.h"
@@ -85,6 +86,55 @@ static void add_move_remove_undo(void)
   g_assert_cmpint(gimp_perspective_guide_get_vanish_point_length(gimp_image_get_perspective_guide(image)),==,2);check_point(1,200,240);
   g_assert_true(gimp_image_undo(image));check_point(1,89,109);check_point(2,200,240);
   close_image();
+}
+static void mark_frame_painted (GdkFrameClock *clock, gboolean *painted)
+{
+  *painted = TRUE;
+}
+static void close_with_pending_resize (void)
+{
+  GtkAllocation allocation;
+  GdkFrameClock *clock;
+  gboolean painted = FALSE;
+  gulong handler;
+  gint64 deadline;
+
+  create_image ();
+  klass->modifier_key (tool, GDK_SHIFT_MASK, TRUE, GDK_SHIFT_MASK, shell->display);
+  click (24, 36, GDK_SHIFT_MASK);
+  check_point (0, 24, 36);
+  gtk_widget_get_allocation (shell->canvas, &allocation);
+  g_assert_cmpint (allocation.width, >, 64);
+  clock = gtk_widget_get_frame_clock (shell->canvas);
+  g_assert_nonnull (clock);
+  handler = g_signal_connect (clock, "after-paint",
+                              G_CALLBACK (mark_frame_painted), &painted);
+
+  /* Queue the same deferred resize work as a window configure event, then
+   * close the last image before the frame clock is allowed to run it. */
+  shell->zoom_on_resize = FALSE;
+  shell->size_allocate_from_configure_event = TRUE;
+  shell->size_allocate_center_image = TRUE;
+  shell->disp_width = allocation.width - 1;
+  gimp_display_shell_canvas_size_allocate (shell->canvas, &allocation, shell);
+  close_image ();
+  g_assert_null (gimp_display_get_image (shell->display));
+  g_assert_null (gimp_canvas_item_get_extents (shell->perspective_guide));
+  gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_PAINT);
+  deadline = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
+  while (! painted && g_get_monotonic_time () < deadline)
+    gimp_test_run_temp_mainloop (10);
+  g_assert_true (painted);
+  g_assert_false (shell->size_allocate_from_configure_event);
+  g_assert_false (shell->size_allocate_center_image);
+  g_signal_handler_disconnect (clock, handler);
+
+  /* Reusing the retained empty display must still accept a new image. */
+  create_image ();
+  klass->modifier_key (tool, GDK_SHIFT_MASK, TRUE, GDK_SHIFT_MASK, shell->display);
+  click (32, 48, GDK_SHIFT_MASK);
+  check_point (0, 32, 48);
+  close_image ();
 }
 static void cancel_and_hit_transforms(void)
 {
@@ -187,7 +237,26 @@ static void old_toolrc_preserves_groups(void)
   g_assert_cmpstr(gimp_tool_group_get_active_tool(GIMP_TOOL_GROUP(first)),==,"gimp-move-tool");
   children=gimp_viewable_get_children(GIMP_VIEWABLE(first));g_assert_cmpint(gimp_container_get_n_children(children),==,2);
   g_assert_cmpstr(gimp_object_get_name(gimp_container_get_child_by_index(children,1)),==,"gimp-align-tool");
-  g_assert_nonnull(gimp_container_get_child_by_name(items,"gimp-perspective-guide-tool"));
+  {
+    const gchar *new_tools[] = {
+      "gimp-perspective-guide-tool", "gimp-bucket-fill-brush-tool",
+      "gimp-painter-mypaint-tool", "gimp-painter-smudge-tool"
+    };
+    GimpObject *second = gimp_container_get_child_by_index (items, 1);
+    GimpObject *last_old = gimp_container_get_child_by_name (items, "gimp-gegl-tool");
+    g_assert_nonnull (last_old);
+    g_assert_true (GIMP_IS_TOOL_GROUP (second));
+    g_assert_cmpstr (gimp_tool_group_get_active_tool (GIMP_TOOL_GROUP (second)),
+                     ==, "gimp-rect-select-tool");
+    for (guint i = 0; i < G_N_ELEMENTS (new_tools); i++)
+      {
+        GimpObject *added = gimp_container_get_child_by_name (items, new_tools[i]);
+        g_assert_null (g_strstr_len (text, -1, new_tools[i]));
+        g_assert_nonnull (added);
+        g_assert_cmpint (gimp_container_get_child_index (items, added), >,
+                         gimp_container_get_child_index (items, last_old));
+      }
+  }
   gimp_scanner_unref(scanner);g_free(text);
 }
 int main(int argc,char **argv)
@@ -195,6 +264,7 @@ int main(int argc,char **argv)
   gint result;g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   g_test_add_func("/perspective-ui/add-move-remove-undo",add_move_remove_undo);
+  g_test_add_func("/perspective-ui/close-pending-resize",close_with_pending_resize);
   g_test_add_func("/perspective-ui/cancel-hit-transforms",cancel_and_hit_transforms);
   g_test_add_func("/perspective-ui/overlay-extents-replace",overlay_extents_and_replace);
   g_test_add_func("/perspective-ui/overlay-pixels-image-switch",overlay_pixels_and_image_switch);
