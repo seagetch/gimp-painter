@@ -218,6 +218,7 @@
 | 02.004 | [x] | 通常レイヤーの旧 XCF fixture を作る | 02.003 | 属性・画像・期待値を保存 |
 | 02.005 | [x] | CloneLayer の旧 XCF fixture を作る | 02.004 | 参照元種類と階層を識別したファイルを保存 |
 | 02.006 | [ ] | FilterLayer の旧 XCF fixture を作る | 02.005 | procedure・引数・キャッシュ・下層を含むファイルを保存 |
+| 02.006/writer-negative-fixture | [x] | 実旧FilterLayerの実行・保存とreader失敗を記録する | 02.005 | 実plug-in-edge非同期完了後のcache・6引数を旧writerで保存し、旧readerの再読込segfaultを別途再現（`migration/fixtures/legacy-runtime/`）。成功往復の代用にしない |
 | 02.007 | [ ] | 複合レイヤー作品を fixture 化する | 02.006 | アニメ塗り・水彩の再編集操作記録を保存 |
 | 02.008 | [x] | 同梱ブラシ資産を固定する | 00.001 | 177 個の myb の version と hash を保存。固定 commit の386資産を Git blob ID・SHA256・出典へ対応（`migration/fixtures/legacy-source/`）。旧版実行を必要としない独立採取へ依存を明示変更 |
 | 02.009 | [x] | 筆跡入力の記録形式を定義する | 02.008 | 全GimpCoords・原時刻・筆圧・傾き・方向・RNGのfloat保存bitと実seed・初期状態・資産・出力hashを表現（`migration/fixtures/strokes/FORMAT.md`）。11形式試験に合格。実測採取は02.010 |
