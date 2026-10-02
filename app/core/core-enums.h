@@ -643,6 +643,8 @@ typedef enum /*< pdb-skip >*/
   GIMP_UNDO_FILTER_REORDER,              /*< desc="Reorder effect"                 >*/
   GIMP_UNDO_FILTER_MODIFIED,             /*< desc="Effect modification"            >*/
 
+  GIMP_UNDO_FILTER_LAYER_DEFINITION,    /*< desc="Filter layer definition"          >*/
+
   GIMP_UNDO_CANT                         /*< desc="Not undoable"                   >*/
 } GimpUndoType;
 

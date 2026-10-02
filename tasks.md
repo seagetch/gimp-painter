@@ -576,6 +576,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 15.001 | [ ] | procedure 定義の所有モデルを実装する | 08.020, 09.017, 10.018 | 名前と型付き引数を独立に保持 |
+| 15.001/core-scheduler-edge | [x] | 独立FilterLayerと世代scheduler・edge互換実行を統合する | 14.001/core-implementation, 05.010, 02.006/writer-negative-fixture | 定義/raw値/weak引数とUndo、完成cacheのみGEGL公開、依存順・非待機cancel・分割入出力を実装。20 app/14 scheduler/76実旧edge比較とfocused sanitizer合格。全PDB/XCF/UI/性能gateは未完了 |
 | 15.001/gvalue-deep-copy | [ ] | FilterLayer の GValue 配列を深くコピーする | 15.001, 01.007/gvalue | 元 GValueArray と保存先を独立に解放し、getter の値を正しく返す |
 | 15.001/pdb-temporary-gvalue | [ ] | PDB 一時 GValue の破棄を保証する | 15.001, 01.007/gvalue | 変換用一時値を全経路で unset し、引数配列との所有権を分ける |
 | 15.002 | [ ] | 引数の旧値と実行値を分離する | 15.001 | 変換後も保存された元情報を失わない |

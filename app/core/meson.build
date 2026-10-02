@@ -50,6 +50,7 @@ libappcore_sources = [
   'gimp-utils.c',
   'gimp.c',
   'gimpclonelayer.cpp',
+  'gimpfilterlayer.cpp',
   'gimpasync.c',
   'gimpasyncset.c',
   'gimpauxitem.c',

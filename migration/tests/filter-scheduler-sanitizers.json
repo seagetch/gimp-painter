@@ -1,0 +1,38 @@
+{
+  "scope": "Independent FilterScheduler and regression tests; GLib/system libraries uninstrumented",
+  "sources": [
+    "app/painter/filter-scheduler.cpp",
+    "app/painter/tests/test-filter-scheduler.cpp"
+  ],
+  "command": [
+    "g++",
+    "-std=c++14",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-g",
+    "-O1",
+    "-pthread",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "-frtti",
+    "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-scheduler.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/tests/test-filter-scheduler.cpp",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+    "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+    "-pthread",
+    "-lglib-2.0",
+    "-o",
+    "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-scheduler-sanitizers/painter-filter-scheduler"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "leak_detection": false,
+  "exit_code": 0,
+  "stdout": "TAP version 14\n# random seed: R02S0e62eddcdea5bf7f0d5669d3f3fdfb07\n1..14\n# Start of painter-filter-scheduler tests\nok 1 /painter-filter-scheduler/reject_during_read\nok 2 /painter-filter-scheduler/reject_during_import\nok 3 /painter-filter-scheduler/closed_request_is_inert\nok 4 /painter-filter-scheduler/completed_cache\nok 5 /painter-filter-scheduler/bounded_chunks\nok 6 /painter-filter-scheduler/dependency_priority\nok 7 /painter-filter-scheduler/cancel_request_is_not_completion\nok 8 /painter-filter-scheduler/changes_during_preparation\nok 9 /painter-filter-scheduler/changes_during_import\nok 10 /painter-filter-scheduler/failures_do_not_retry\nok 11 /painter-filter-scheduler/close_does_not_wait\nok 12 /painter-filter-scheduler/loaded_cache_not_reexecuted\nok 13 /painter-filter-scheduler/invalid_request_and_result\nok 14 /painter-filter-scheduler/reentry_at_commit\n# End of painter-filter-scheduler tests\n",
+  "stderr": ""
+}

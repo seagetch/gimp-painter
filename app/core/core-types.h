@@ -168,6 +168,8 @@ typedef struct _GimpChannel                     GimpChannel;
 typedef struct _GimpLayerMask                   GimpLayerMask;
 typedef struct _GimpSelection                   GimpSelection;
 typedef struct _GimpLayer                       GimpLayer;
+typedef struct _GimpFilterLayer                 GimpFilterLayer;
+typedef struct _GimpFilterLayerClass            GimpFilterLayerClass;
 typedef struct _GimpCloneLayer                  GimpCloneLayer;
 typedef struct _GimpCloneLayerClass             GimpCloneLayerClass;
 typedef struct _GimpGroupLayer                  GimpGroupLayer;

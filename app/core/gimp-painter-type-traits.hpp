@@ -3,11 +3,14 @@
 #define GIMP_CORE_PAINTER_TYPE_TRAITS_HPP
 extern "C" {
 #include "gimpclonelayer.h"
+#include "gimpfilterlayer.h"
 }
 #include "painter/object-ref.hpp"
 namespace GimpPainter {
 template<> struct TypeTraits<GimpLayer>
 { static GType type () noexcept { return GIMP_TYPE_LAYER; } };
+template<> struct TypeTraits<GimpFilterLayer>
+{ static GType type () noexcept { return GIMP_TYPE_FILTER_LAYER; } };
 template<> struct TypeTraits<GimpCloneLayer>
 { static GType type () noexcept { return GIMP_TYPE_CLONE_LAYER; } };
 }

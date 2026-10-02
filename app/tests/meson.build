@@ -37,6 +37,7 @@ apptests_links += libapptestutils
 app_tests = [
   'core',
   'gimp-clone-layer',
+  'gimp-filter-layer',
   'gimpidtable',
 #'session-2-8-compatibility-multi-window',
 #'session-2-8-compatibility-single-window',
@@ -55,6 +56,7 @@ foreach test_name : app_tests
     'test-@0@.c'.format(test_name),
     'tests.c',
     test_name == 'gimp-clone-layer' ? ['test-gimp-clone-layout.cpp'] : [],
+    test_name == 'gimp-filter-layer' ? ['test-gimp-filter-layout.cpp'] : [],
     dependencies: [ libapp_dep, appstream ],
     link_with: apptests_links,
   )
