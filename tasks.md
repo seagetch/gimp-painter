@@ -835,6 +835,7 @@
 | 23.001/runtime-old-strokes | [x] | 独立Smudgeの旧実描画・蓄積・blending出力を採取する | 02.003, 04.002/common-foundation | 48実旧scene/192全native画素snapshotをRGB/Gray・alpha有無・rate・色混合・size dynamicsで採取し、独立再実行2952800 bytes完全一致。全Undo/Redo一致・4fixture試験合格。現行Flow同等性・移植は未完了 |
 | 23.001/blending-dynamics-model | [x] | 独立blending-outputとnative曲線往復を復元する | 23.001/runtime-old-strokes | 既存enumをずらさず旧value11/nick・aggregateを追加しFlowと分離。5 native/5unit ASan・UBSan合格。空curveのnull/zero長memcpy・memcmpも実検出してguard、旧property・curve roundtripとcopy独立を確認。Smudge toolは別gate |
 | 23.002 | [ ] | Smudge の蓄積 buffer を移植する | 23.001 | 初期採色と更新が一致 |
+| 23.002/native-byte-kernels | [x] | 旧Smudge蓄積・shade・native描画の別々の数式を保持する | 23.001/runtime-old-strokes | 1024実旧caseの全byte重み/RGB/Gray/alpha/選択を採取し891487 bytesが通常/ASan・UBSan・float-cast-overflow完全一致。PaintCore replaceとLayer Replaceの異なる半透明/透明色roundingを維持。native全stroke/toolは後続gate |
 | 23.003 | [ ] | Smudge の色混合を移植する | 23.002 | 旧 blending-output を再現 |
 | 23.004 | [ ] | Smudge のサイズ変化を処理する | 23.003 | 蓄積 buffer の再配置が一致 |
 | 23.005 | [ ] | Smudge の設定 UI と保存を接続する | 23.004 | 値が描画と往復に反映 |

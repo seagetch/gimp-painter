@@ -1,0 +1,73 @@
+{
+  "scope": "Exact legacy accumulation, shading and native paint composition kernels; one C++ test translation unit plus header; no full app claim",
+  "sanitizers": [
+    "address",
+    "undefined",
+    "float-cast-overflow"
+  ],
+  "leak_detection": false,
+  "sources_sha256": {
+    "app/paint/painter-smudge/legacy-pixels.hpp": "b36d1fb9ddfeb9619ed57ad407466b6566ae8ef22d59a6a4bd3269e4ad672097",
+    "app/paint/painter-smudge/tests/pixels-trace.cpp": "c11dd1ce4c254ad531c77c24c283be3bb6a7c2b600890f0451301bb14efde987"
+  },
+  "changed_during_run": [],
+  "commands": [
+    [
+      "c++",
+      "-Iapp/paint/painter-smudge/painter-smudge-pixels-trace.p",
+      "-Iapp/paint/painter-smudge",
+      "-I../app/paint/painter-smudge",
+      "-fdiagnostics-color=always",
+      "-D_GLIBCXX_ASSERTIONS=1",
+      "-D_FILE_OFFSET_BITS=64",
+      "-Wall",
+      "-Winvalid-pch",
+      "-std=c++14",
+      "-O2",
+      "-g",
+      "-fdiagnostics-show-option",
+      "-fno-common",
+      "-Wformat",
+      "-Wformat-security",
+      "-Winit-self",
+      "-Wlogical-op",
+      "-Wmissing-declarations",
+      "-Wmissing-format-attribute",
+      "-Wpointer-arith",
+      "-Wreturn-type",
+      "-Wtype-limits",
+      "-DHAVE_CONFIG_H",
+      "-fexceptions",
+      "-fno-rtti",
+      "-MD",
+      "-MQ",
+      "app/paint/painter-smudge/painter-smudge-pixels-trace.p/tests_pixels-trace.cpp.o",
+      "-MF",
+      "app/paint/painter-smudge/painter-smudge-pixels-trace.p/tests_pixels-trace.cpp.o.d",
+      "-o",
+      "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/smudge-pixels-sanitizers/pixels-trace.o",
+      "-c",
+      "../app/paint/painter-smudge/tests/pixels-trace.cpp",
+      "-fsanitize=address,undefined,float-cast-overflow",
+      "-fno-omit-frame-pointer",
+      "-O1"
+    ],
+    [
+      "c++",
+      "-fsanitize=address,undefined,float-cast-overflow",
+      "-fno-omit-frame-pointer",
+      "-O1",
+      "-o",
+      "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/smudge-pixels-sanitizers/painter-smudge-pixels-trace",
+      "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/smudge-pixels-sanitizers/pixels-trace.o",
+      "-Wl,--as-needed",
+      "-Wl,--no-undefined"
+    ]
+  ],
+  "exit_code": 0,
+  "stderr": "",
+  "exact_legacy_match": true,
+  "expected_bytes": 891487,
+  "cases": 1024,
+  "expected_sha256": "d9b2a37d978bbda7f1ee5e05e63f0e5bcba21ffcd698b0c853e4ca67f2e800de"
+}

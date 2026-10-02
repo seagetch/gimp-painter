@@ -20,6 +20,8 @@ stamp_paint_enums = custom_target('stamp-paint-enums.h',
   build_by_default: true
 )
 
+subdir('painter-smudge')
+
 libapppaint_sources = [
   'gimp-paint.c',
   'gimpairbrush.c',
