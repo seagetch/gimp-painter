@@ -96,3 +96,14 @@ close 02.001. A modern GEGL0.4 development package cannot satisfy `gegl-0.3`.
   and provenance remain coupled to captures
 - 02.015: this recovery procedure is available; the aggregate section gate
   stays open until the required runtime and provenance work is completed
+
+## Recovery update
+
+The later 2026-10-01 recovery successfully built and installed the old source,
+then ran headless drawing and normal/CloneLayer save/reopen captures. See
+`legacy/README.md` and `legacy/build-report.json` for the pinned dependency lock,
+explicit adaptations, real outputs and remaining failures. The initial dated
+probe above is historical; it is no longer the current dependency availability
+status. FilterLayer execution/save succeeded, but the reference reader crashes
+on its output, so successful FilterLayer roundtrip and later runtime gates
+remain unverified.

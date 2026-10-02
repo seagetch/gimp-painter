@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-01T23:30:26.402847+00:00",
+  "scope": "Linux x86_64 source-build reference with explicitly recorded modern-toolchain adaptations",
+  "source": {
+    "gimp": "afa43fae3e920210146abed514f136fd49f671b5",
+    "babl": "e92ced2c54250af1dddb58f76ff1678d74a30dcf",
+    "gegl": "29254dcd875d271043aba57d0e6ebc48ec63c013"
+  },
+  "package_lock": {
+    "path": "debian13-package-lock.json",
+    "sha256": "553f4051b91626bc2f5470373fd3e8d67c8d61ec62103b2addcab7a16492129f"
+  },
+  "versions": {
+    "gimp": "2.8.23",
+    "babl": "0.1.46",
+    "gegl": "0.3.34",
+    "gtk2": "2.24.33",
+    "glib": "2.84.4",
+    "gcc": "14.2.0",
+    "autoconf": "2.72",
+    "automake": "1.17"
+  },
+  "reference_binary": {
+    "path": "/workspace/shared/gimp-legacy-build/prefix/bin/gimp-2.8",
+    "bytes": 39357960,
+    "sha256": "fefc8fa5190592780b5bd880226a99344268b07074b294431903583e9b5013c8"
+  },
+  "capture_binary": {
+    "path": "../gimp-painter-legacy/app/tests/test-xcf",
+    "sha256": "6bf8c940ffe190a7ede0e93321351c956b7a60fbf3008eb6fad139544f48608b",
+    "scope": "initial clone and FilterLayer capture harness before later Dissolve/Undo probes"
+  },
+  "reference_patches": {
+    "gegl-gtkdoc-regeneration.patch": "a421efe7a591c5737d6513e37e5e798622acaa010cc5b28e296cf15d7e06c08d",
+    "gimp-autoconf72-quoting.patch": "4e6d5d1deedb98e9b4ef49ab248a928b1829f3125aad32b5d330c1a230461afe",
+    "gimp-backtrace-declaration.patch": "364e7bb754511655b6101786a4a114c6d4c9c61b3cea77da905ce98009976502",
+    "gimp-glib-atomic-qualifier.patch": "243a6ba3c8621e5dfba3f5cad6d76de14215d05a5af3441f25d72b7af077d55a",
+    "gimp-overlay-declaration.patch": "a8cb4e6ced128a7a778e91c7139a1fde21e8294aaa3bcf4b4cc10b93a3e3ab44",
+    "gimp-preset-type-deduction.patch": "1671b04f7014e4cd5d6dc2e754318cf8188dd62708f08553d8faa39fab7a39c2"
+  },
+  "tool_hashes": {
+    "/usr/bin/gcc-14": "a23ecab8ff08f09ad8c80602c2c5df7f49e09c25905cb8975902e101bf72635f",
+    "/usr/bin/g++-14": "6b3696e4dcb85e1c949c732a02befa50e3983ecf94ce7e8e58d9d503b954b79d",
+    "/usr/bin/ld": "d2766988b6a1b1d1518cdc09242e726d1f24e151e16410ada3092b11ffd9081b",
+    "/usr/bin/make": "8a229baf64671988cfb5af43ba3070c6ce7214cf32bcf96155115559d1466fa7"
+  },
+  "host_compiler_matches_downloaded_package_bytes": true,
+  "gimp_make_overrides": {
+    "CFLAGS": "-g -O2 -fcommon -Wall -Wdeclaration-after-statement -Wmissing-prototypes -Werror=missing-prototypes -Wstrict-prototypes -Wmissing-declarations -Winit-self -Wpointer-arith -Wold-style-definition -Wmissing-format-attribute -Wformat-security -fno-common -fdiagnostics-show-option   -Wno-error=incompatible-pointer-types",
+    "CXXFLAGS": "-g -O2 -include type_traits"
+  },
+  "gegl_CFLAGS": "-g -O3 -mmmx -msse -ftree-vectorize -ffast-math -fcommon",
+  "build_and_install_exit_codes": {
+    "babl": 0,
+    "gegl": 0,
+    "gimp": 0
+  },
+  "tests": {
+    "babl": {
+      "passed": 23,
+      "failed": 0,
+      "note": "explicit TESTS_ENVIRONMENT avoids legacy Makefile single-dollar path expansion"
+    },
+    "gegl_simple": {
+      "passed": 28,
+      "skipped": 2,
+      "failed": 1,
+      "failure": "test-gegl-tile set_data_full frees allocation with mismatched allocator; original source retained"
+    },
+    "gimp_original_test_xcf": {
+      "exit_code": 133,
+      "outcome": "startup GValue critical is fatal under GLib test runner"
+    },
+    "ordinary_batch_capture": {
+      "exit_code": 0,
+      "completed": true,
+      "reopen_assertions_passed": true
+    },
+    "clone_harness_capture": {
+      "exit_code": 0,
+      "completed": true,
+      "reopen_assertions_passed": true
+    },
+    "filter_harness_capture": {
+      "exit_code": 139,
+      "filter_execution_and_save_completed": true,
+      "reopen": "segmentation fault"
+    },
+    "filter_uninstrumented_reopen": {
+      "exit_code": 139,
+      "reopen": "segmentation fault"
+    },
+    "gui_startup": {
+      "outcome": "not verified: Xvfb could not create a local listening socket"
+    }
+  },
+  "log_archive": {
+    "path": "build-logs.tar.gz",
+    "sha256": "dc5fc7b9d376797682641ba4412d21489383a12bea21b7fbc3444240b769e3af"
+  },
+  "limits": [
+    "Not a historical binary-identical environment; dependencies and adaptations are pinned and recorded",
+    "No GUI or tablet-device interaction validation",
+    "Filter writer fixture is a negative legacy-reader case; do not count as successful FilterLayer roundtrip",
+    "Startup GValue, obsolete GEGL cache-size, and headless GUI registration warnings are preserved in logs"
+  ],
+  "clone_capture_binary": {
+    "path": "../gimp-painter-legacy/app/tests/.libs/test-xcf",
+    "sha256": "4a078ca6bd8b6323e89ec571c1a81b4f9bf9b72916d98b21eeaa40503cdc8cf1",
+    "scope": "final clone capture including Dissolve alpha grid and source delete/Undo"
+  }
+}
