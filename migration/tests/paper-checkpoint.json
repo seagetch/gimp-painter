@@ -1,0 +1,110 @@
+{
+  "scope": "Ordinary paper runtime checkpoint; shared legacy-origin geometry remains separate",
+  "production_and_test_source_sha256": {
+    "app/paint/gimpbrushcore-loops.cc": "09ec00079950e2748a2061050fc59dbfefd6c1aa92d753954c1771d3cb80faf8",
+    "app/paint/gimpbrushcore.c": "da0ec86f4d350b5c43f0f5f5d2d5825efa9523abfc12abd9a2e9ca55cda173ed",
+    "app/paint/gimpbrushcore.h": "02808076ac5fdaf850651249fc7323c29eb10d84ec8ea836d56b98d1ae69dfd7",
+    "app/paint/gimppaintoptions.c": "5144f9a3cf0b16c4204fcb4bf9de4c9e6e5a957e0ff060f8d160a6fc4693e79f",
+    "app/paint/gimppaintoptions.h": "b732455a807e02c1f7f4ce7a686bdbf588250c51c52d8d081d56bff2af213d0a",
+    "app/paint/gimppainterpaper.cpp": "e837d31afa91d36eb239650045b77a87a5700f422286beda2d694de07064ec6f",
+    "app/paint/gimppainterpaper.h": "589ac40248ef57f2ece0f5d9af87c88ae7a58f1c4a3e09f774c7f748775e4250",
+    "app/paint/gimppainterpaper-paste.cpp": "67fc908e03d298214fdb8c2e3b2412b4e267f22198ae4d7f1b696c6f4e819c9d",
+    "app/paint/gimppainterpaper-paste.h": "665366b6af83289096533552843f9c4b2f32a172ebdb0f10edf8d5960d4b547a",
+    "app/paint/gimppaintersmudge.cpp": "a4b3d35b237bfe46deae0609fe12c2484908249713a49611a464edc53abd61e4",
+    "app/paint/gimpfillbrush.cpp": "8968587fe8117e6662e552ebeb4324ff9822a282f1e4c8343d5a47043b44b628",
+    "app/paint/painter-mypaint-surface/gimp-resources.cpp": "e06f7e6409e4d8b18aefe8e3949f734977e82a97c3375173170527cbad8c13e2",
+    "app/tools/gimppaintoptions-gui.c": "eafa36b7f7eda259124622abbd35251659b0f8adfce87cbe1fb3e2738f75be93",
+    "app/tools/gimpfillbrushtool.cpp": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+    "app/tools/gimppaintersmudgetool.cpp": "c11e2e2413baaebd86f03a2a9e6f9726c2b965162a442e0714236c39354163d1",
+    "app/tests/test-painter-paper.cpp": "e67161d1a40e37a60ad492b04099ea6e31018c970a9c9505079e5a777e7ac5e4",
+    "app/tests/test-painter-paper-ui.cpp": "6d9779b631851dd2e82196ffb3ef0a2db91b757a08c7a07a74b54afd392068a2",
+    "app/tests/painter-paper-trace.cpp": "360a5b0fbbc560fce6f2e3cb79f927838caf5ceba5fdde539fb538b6b4b61d6a",
+    "app/tests/painter-smudge-trace.cpp": "86b06db8ba41eb1c1a71d41cb373e7a0cddd03df6ca4b383284942bd5a99677b",
+    "app/tests/painter-fill-brush-trace.cpp": "8b4b9d15a7273dbf07f24b9d7ac4bef3b7d92ea6583fdd329b786716717a2772"
+  },
+  "sanitizer_source_header_count": 76,
+  "sanitizer_instrumented_units": 29,
+  "sanitizer_rtti_only_units": 28,
+  "source_drift": [],
+  "native_unit_cases": 12,
+  "native_gtk_cases": 7,
+  "sanitized_gtk_cases": 7,
+  "defined_ordinary_mode_scenes": 384,
+  "ordinary_base_scenes": 24,
+  "smudge_scenes": 48,
+  "smudge_owned_routes": 2,
+  "fill_scenes": 12,
+  "fill_owned_routes": 3,
+  "old_mask_cases": 216,
+  "old_transformed_mask_kernel_cases": 1296,
+  "normal_full_build": "passed",
+  "evidence_sha256": {
+    "migration/tests/paper-native.json": "d30ae82e8aa0e209cdb80505971ae6d819ffb4f76034c778f2392475e7eee06e",
+    "migration/tests/paper-sanitizer-build-final.json": "be994790e77adb7ce3d9e3705de4ae832cc0808aaf293eda301ab23f496ae7d8",
+    "migration/tests/paper-sanitizers-final.json": "d61732f5b96815422141f2e6b2a10c47817d560fb3a8ed9c669690807e05108e",
+    "migration/tests/paper-ui-normal.txt": "cef2c83385c4ba27a828eb09aa3c575a723b1d651c361f7ab355f503fae89c66",
+    "migration/tests/paper-ui-sanitizers.txt": "4d423e5be949fb2a23ef370e628e0c5c5811669d53055c6f0ca3804e3a315ceb",
+    "migration/tests/paper-final-full-build.txt": "3ebd326f31556dfeec2986d03a27f2daf4ae7112c6239df58be6d5e4cfa572d6",
+    "migration/tests/paper-tested-sources.tar.gz": "fedbb0e8506040cff1ab52bc23f295c2fb6b3524d3693b6fd56c3709f49a12cc",
+    "migration/fixtures/legacy-paper/runtime.json": "41b9bc21dd97a6c1fde905f5feb5d40f81e56336985164da826cf0f4e9b529d7",
+    "migration/fixtures/legacy-paper-modes/runtime.json": "a2b0d2faec6c8e9b358d346ce9e677fd02d2e5331a22fcf9b7cb4621c032ed7c",
+    "migration/fixtures/legacy-paper-transform/runtime.json": "060920fb09ded097b92e7799956950476b6ec2c1610c7e31b6373a56b298e915",
+    "migration/fixtures/legacy-paper-smudge/runtime.json": "93db507180a859237b7d6d7e5059bf813f6f735f04f6689fc66f2ad4d9bb5ab2",
+    "migration/fixtures/legacy-paper-fill/runtime.json": "b4175cdb5d0cb232db1702867b573f808006a0866857bef669f190cde7246272",
+    "migration/tests/paper-fixture-validation.txt": "62de378b578bd9359bba17c522ca345559491d42db29b8ad2e5b545550797c8a",
+    "migration/tests/paper-meson.txt": "906c8579348270c4c5ba8a9091f5bf4224aaab8c0b1c26702f4b27238ade173d",
+    "migration/tests/paper-meson.json": "27e78d38e7a092b00b5d438982e76122090cb7c85b7358469521d452bd8caf5e",
+    "migration/contracts/ordinary-paper.md": "da1802c05be0a6ac4b98376cf0fd5fe340f10bd358f874d0f09f4ec5126304e2"
+  },
+  "remaining_gates": [
+    "Shared explicit-legacy-origin option geometry for transformed/generated native strokes",
+    "Real pen/tablet, Windows, macOS and full-host leak checks",
+    "Final aggregate recheck after later shared source/ABI changes"
+  ],
+  "notes": [
+    "Opaque old DST-IN/OUT channel-layout corruption is excluded from the old oracle; deterministic safe extension documented",
+    "Native GTK save-folder/startup fixture warnings retained; exit0 and no sanitizer findings",
+    "No real-tablet, Windows/macOS, or LSan claim",
+    "Recognized built-in clipboard paper duplicate is admitted; unknown subclasses still rejected. Source mutation/finalization and queued GTK snapshots covered."
+  ],
+  "independent_legacy_repeats": {
+    "legacy-paper": {
+      "normalized_bytes": 1064475,
+      "normalized_sha256": "cd8adf70c6842592e994c83cc3ce57c7e783d736976913084d291e1cdc860b5b",
+      "binary_sha256": "f4e11022d98edb45a1f6e4bade9c7603038c3b5074c902161dd907f8287e42b4",
+      "exit_code": 0
+    },
+    "legacy-paper-modes": {
+      "normalized_bytes": 15154143,
+      "normalized_sha256": "04b9bb8b31b428fa7bb7f048aa84928293d6e84498f195b606380bfa4556c082",
+      "binary_sha256": "f4e11022d98edb45a1f6e4bade9c7603038c3b5074c902161dd907f8287e42b4",
+      "exit_code": 0
+    },
+    "legacy-paper-transform": {
+      "normalized_bytes": 2202155,
+      "normalized_sha256": "7a2ef9bcae7d7c396d64adaad3f1d6645cf3b12ec5a3d388df7f2d8354f18238",
+      "binary_sha256": "f4e11022d98edb45a1f6e4bade9c7603038c3b5074c902161dd907f8287e42b4",
+      "exit_code": 0
+    },
+    "legacy-paper-smudge": {
+      "normalized_bytes": 2952800,
+      "normalized_sha256": "616886e5a419b78e256dc362883c3ac9441cef88271c479268372ead8cafee0e",
+      "binary_sha256": "51235127d958c6e325ff7bf19e8c33830ecf58dcd2f574821e908a401b2039ee",
+      "exit_code": 0
+    },
+    "legacy-paper-fill": {
+      "normalized_bytes": 1814962,
+      "normalized_sha256": "0b9bace1040edc4bcebf8b0b81b893fb3523c5b69316bf6e364283b8254917c6",
+      "binary_sha256": "30e6be6b9d5fc913ea1a5756ac9488ddf9718a5ac45917f5b99b5b1297dbc988",
+      "exit_code": 0
+    }
+  },
+  "fixture_validation_tests": 4,
+  "registered_meson_tests": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0
+  },
+  "source_drift_after_capture": [],
+  "checkpoint_utc": "2026-10-02T10:49:26.247305+00:00"
+}

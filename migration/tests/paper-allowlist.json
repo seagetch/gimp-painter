@@ -1,0 +1,98 @@
+{
+  "owned_files": [
+    "app/paint/gimpbrushcore-loops.cc",
+    "app/paint/gimpbrushcore.c",
+    "app/paint/gimpbrushcore.h",
+    "app/paint/gimppaintoptions.c",
+    "app/paint/gimppaintoptions.h",
+    "app/paint/gimppainterpaper.cpp",
+    "app/paint/gimppainterpaper.h",
+    "app/paint/gimppainterpaper-paste.cpp",
+    "app/paint/gimppainterpaper-paste.h",
+    "app/paint/gimppaintersmudge.cpp",
+    "app/paint/gimpfillbrush.cpp",
+    "app/paint/painter-mypaint-surface/gimp-resources.cpp",
+    "app/tools/gimppaintoptions-gui.c",
+    "app/tools/gimpfillbrushtool.cpp",
+    "app/tools/gimppaintersmudgetool.cpp",
+    "app/tests/test-painter-paper.cpp",
+    "app/tests/test-painter-paper-ui.cpp",
+    "app/tests/painter-paper-trace.cpp",
+    "app/tests/painter-smudge-trace.cpp",
+    "app/tests/painter-fill-brush-trace.cpp"
+  ],
+  "shared_meson_hunks": {
+    "app/paint/meson.build": [
+      "gimppainterpaper-paste.cpp"
+    ],
+    "app/paint/painter-mypaint-surface/meson.build": [
+      "../gimppainterpaper.cpp"
+    ],
+    "app/tests/meson.build": [
+      "painter_paper_trace",
+      "painter_paper_test",
+      "painter_paper_ui_test",
+      "foreach case : ['legacy-paper', 'legacy-paper-modes']"
+    ]
+  },
+  "supporting_paths": [
+    "migration/contracts/ordinary-paper.md",
+    "migration/fixtures/legacy-paper/",
+    "migration/fixtures/legacy-paper-modes/",
+    "migration/fixtures/legacy-paper-transform/",
+    "migration/fixtures/legacy-paper-smudge/",
+    "migration/fixtures/legacy-paper-fill/",
+    "migration/fixtures/paper-pre-abi/"
+  ],
+  "source_sha256": {
+    "app/paint/gimpbrushcore-loops.cc": "09ec00079950e2748a2061050fc59dbfefd6c1aa92d753954c1771d3cb80faf8",
+    "app/paint/gimpbrushcore.c": "da0ec86f4d350b5c43f0f5f5d2d5825efa9523abfc12abd9a2e9ca55cda173ed",
+    "app/paint/gimpbrushcore.h": "02808076ac5fdaf850651249fc7323c29eb10d84ec8ea836d56b98d1ae69dfd7",
+    "app/paint/gimppaintoptions.c": "5144f9a3cf0b16c4204fcb4bf9de4c9e6e5a957e0ff060f8d160a6fc4693e79f",
+    "app/paint/gimppaintoptions.h": "b732455a807e02c1f7f4ce7a686bdbf588250c51c52d8d081d56bff2af213d0a",
+    "app/paint/gimppainterpaper.cpp": "e837d31afa91d36eb239650045b77a87a5700f422286beda2d694de07064ec6f",
+    "app/paint/gimppainterpaper.h": "589ac40248ef57f2ece0f5d9af87c88ae7a58f1c4a3e09f774c7f748775e4250",
+    "app/paint/gimppainterpaper-paste.cpp": "67fc908e03d298214fdb8c2e3b2412b4e267f22198ae4d7f1b696c6f4e819c9d",
+    "app/paint/gimppainterpaper-paste.h": "665366b6af83289096533552843f9c4b2f32a172ebdb0f10edf8d5960d4b547a",
+    "app/paint/gimppaintersmudge.cpp": "a4b3d35b237bfe46deae0609fe12c2484908249713a49611a464edc53abd61e4",
+    "app/paint/gimpfillbrush.cpp": "8968587fe8117e6662e552ebeb4324ff9822a282f1e4c8343d5a47043b44b628",
+    "app/paint/painter-mypaint-surface/gimp-resources.cpp": "e06f7e6409e4d8b18aefe8e3949f734977e82a97c3375173170527cbad8c13e2",
+    "app/tools/gimppaintoptions-gui.c": "eafa36b7f7eda259124622abbd35251659b0f8adfce87cbe1fb3e2738f75be93",
+    "app/tools/gimpfillbrushtool.cpp": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+    "app/tools/gimppaintersmudgetool.cpp": "c11e2e2413baaebd86f03a2a9e6f9726c2b965162a442e0714236c39354163d1",
+    "app/tests/test-painter-paper.cpp": "e67161d1a40e37a60ad492b04099ea6e31018c970a9c9505079e5a777e7ac5e4",
+    "app/tests/test-painter-paper-ui.cpp": "6d9779b631851dd2e82196ffb3ef0a2db91b757a08c7a07a74b54afd392068a2",
+    "app/tests/painter-paper-trace.cpp": "360a5b0fbbc560fce6f2e3cb79f927838caf5ceba5fdde539fb538b6b4b61d6a",
+    "app/tests/painter-smudge-trace.cpp": "86b06db8ba41eb1c1a71d41cb373e7a0cddd03df6ca4b383284942bd5a99677b",
+    "app/tests/painter-fill-brush-trace.cpp": "8b4b9d15a7273dbf07f24b9d7ac4bef3b7d92ea6583fdd329b786716717a2772"
+  },
+  "remaining_gates": [
+    "Shared explicit-legacy-origin option geometry for transformed/generated native strokes",
+    "Real pen/tablet, Windows, macOS and full-host leak checks",
+    "Final aggregate recheck after later shared source/ABI changes"
+  ],
+  "supporting_files": [
+    "migration/tests/build_paper_sanitizers.py",
+    "migration/tests/capture_paper.py",
+    "migration/tests/capture_paper_modes.py",
+    "migration/tests/capture_paper_transform.py",
+    "migration/tests/capture_paper_smudge.py",
+    "migration/tests/capture_paper_fill.py",
+    "migration/tests/compare_paper.py",
+    "migration/tests/run_paper_checks.py",
+    "migration/tests/run_paper_ui.sh",
+    "migration/tests/test_paper_fixtures.py",
+    "migration/tests/paper-native.json",
+    "migration/tests/paper-sanitizer-build-final.json",
+    "migration/tests/paper-sanitizers-final.json",
+    "migration/tests/paper-allowlist.json",
+    "migration/tests/paper-checkpoint.json",
+    "migration/tests/paper-ui-normal.txt",
+    "migration/tests/paper-ui-sanitizers.txt",
+    "migration/tests/paper-final-full-build.txt",
+    "migration/tests/paper-tested-sources.tar.gz",
+    "migration/tests/paper-fixture-validation.txt",
+    "migration/tests/paper-meson.txt",
+    "migration/tests/paper-meson.json"
+  ]
+}

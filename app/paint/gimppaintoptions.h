@@ -105,6 +105,9 @@ struct _GimpPaintOptions
 
   gboolean                  hard;
 
+  /* Legacy ordinary-brush paper uses the context pattern at native scale. */
+  gboolean                  use_texture;
+
   gboolean                  expand_use;
   gdouble                   expand_amount;
   GimpFillType              expand_fill_type;

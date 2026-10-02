@@ -109,6 +109,7 @@ enum
 
   PROP_APPLICATION_MODE,
   PROP_HARD,
+  PROP_USE_TEXTURE,
 
   PROP_USE_JITTER,
   PROP_JITTER_AMOUNT,
@@ -299,6 +300,13 @@ gimp_paint_options_class_init (GimpPaintOptionsClass *klass)
                          GIMP_TYPE_PAINT_APPLICATION_MODE,
                          DEFAULT_APPLICATION_MODE,
                          GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_USE_TEXTURE,
+                            "use-texture",
+                            _("Texture"),
+                            _("Apply the selected pattern to the brush mask"),
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_HARD,
                             "hard",
@@ -602,6 +610,10 @@ gimp_paint_options_set_property (GObject      *object,
     case PROP_APPLICATION_MODE:
       options->application_mode = g_value_get_enum (value);
       break;
+    case PROP_USE_TEXTURE:
+      options->use_texture = g_value_get_boolean (value);
+      break;
+
     case PROP_HARD:
       options->hard = g_value_get_boolean (value);
       break;
@@ -761,6 +773,10 @@ gimp_paint_options_get_property (GObject    *object,
     case PROP_APPLICATION_MODE:
       g_value_set_enum (value, options->application_mode);
       break;
+    case PROP_USE_TEXTURE:
+      g_value_set_boolean (value, options->use_texture);
+      break;
+
     case PROP_HARD:
       g_value_set_boolean (value, options->hard);
       break;
@@ -1260,7 +1276,8 @@ static const gchar *brush_props[] =
   "brush-link-aspect-ratio",
   "brush-link-spacing",
   "brush-link-hardness",
-  "brush-lock-to-view"
+  "brush-lock-to-view",
+  "use-texture"
 };
 
 static const gchar *dynamics_props[] =

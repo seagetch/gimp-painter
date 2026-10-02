@@ -21,6 +21,7 @@ extern "C" {
 #include "core/gimpsymmetry.h"
 #include "core/gimptempbuf.h"
 #include "gimpfillbrush.h"
+#include "gimppainterpaper-paste.h"
 #include "operations/layer-modes/gimp-layer-modes.h"
 }
 #include "painter/binding-store.hpp"
@@ -269,8 +270,11 @@ gboolean gimp_fill_brush_step(GimpFillBrush*self,gsize budget,GError**error){ret
   Temp mask(gimp_temp_buf_new(origin.width,origin.height,babl_format("Y u8")));GeglRectangle source={dab->rect.x+ox,dab->rect.y+oy,origin.width,origin.height};gegl_buffer_get(dab->search->result(),&source,1,babl_format("Y u8"),gimp_temp_buf_get_data(mask.get()),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
   g_set_object(&core->paint_buffer,pixels.get());core->paint_buffer_x=dab->rect.x;core->paint_buffer_y=dab->rect.y;
   auto watch=impl.target_watch;watch->owned_write.store(true,std::memory_order_release);
-  gimp_paint_core_paste(core,mask.get(),0,0,d,dab->opacity,dab->image_opacity,dab->mode,GIMP_PAINT_CONSTANT);
+  GError *paper_error=nullptr;
+  if(!gimp_painter_paper_paste(core,mask.get(),0,0,d,dab->opacity,dab->image_opacity,dab->mode,GIMP_PAINT_CONSTANT,&paper_error))
+    gimp_paint_core_paste(core,mask.get(),0,0,d,dab->opacity,dab->image_opacity,dab->mode,GIMP_PAINT_CONSTANT);
   watch->owned_write.store(false,std::memory_order_release);
+  if(paper_error){std::string message(paper_error->message);g_clear_error(&paper_error);throw std::runtime_error(message);}
   if(impl.cancel_requested||impl.closed){finish_frame(impl,false);return TRUE;}
   if(revision!=impl.revision)throw std::runtime_error("Fill invalidated during publication");
   return (!impl.segment&&(!impl.pending||impl.pending->empty()));

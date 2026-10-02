@@ -14,7 +14,9 @@ extern "C" {
 #include "core/gimpcontainer.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimppattern.h"
+#include "core/gimppatternclipboard.h"
 #include "core/gimptempbuf.h"
+#include "paint/gimppainterpaper.h"
 }
 #include "legacy-mask-transform.hpp"
 #include "legacy-generated-mask.hpp"
@@ -80,15 +82,14 @@ struct PaperCache {
   std::shared_ptr<const Texture> get()
   {
     if(!cached) {
-      auto *mask=gimp_pattern_get_mask(pattern.get());
-      if(!mask)throw std::invalid_argument("Painter paper has no pixel data");
-      const auto *format=gimp_temp_buf_get_format(mask);
-      const int channels=babl_format_get_bytes_per_pixel(format);
-      if(babl_format_get_type(format,0)!=babl_type("u8") || channels<1 || channels>4)
-        throw std::invalid_argument("Painter paper requires original byte channels");
-      auto fresh=std::make_shared<Texture>();fresh->width=gimp_temp_buf_get_width(mask);fresh->height=gimp_temp_buf_get_height(mask);
-      fresh->values.resize(std::size_t(fresh->width)*fresh->height);const auto*bytes=gimp_temp_buf_get_data(mask);
-      for(std::size_t i=0;i<fresh->values.size();++i)fresh->values[i]=bytes[i*channels];
+      GimpPainterPaperView paper {}; GError *error = nullptr;
+      if (!gimp_painter_paper_get_view (pattern.get (), &paper, &error)) {
+        std::string message (error ? error->message : "Invalid painter paper");
+        g_clear_error (&error); throw std::invalid_argument (message);
+      }
+      auto fresh=std::make_shared<Texture>();fresh->width=paper.width;fresh->height=paper.height;
+      fresh->values.resize(std::size_t(fresh->width)*fresh->height);
+      for(std::size_t i=0;i<fresh->values.size();++i)fresh->values[i]=paper.data[i*paper.channels];
       cached=std::move(fresh);
     }
     return cached;
@@ -240,7 +241,8 @@ void GimpResources::set_pattern(GimpPattern *pattern)
   if(impl_->paper&&impl_->paper->pattern.get()==pattern)return;
   ObjectRef<GimpPattern> snapshot;
   if(pattern&&impl_->purpose==Purpose::Preview) {
-    if(G_OBJECT_TYPE(pattern)!=GIMP_TYPE_PATTERN)
+    if(G_OBJECT_TYPE(pattern)!=GIMP_TYPE_PATTERN &&
+       G_OBJECT_TYPE(pattern)!=GIMP_TYPE_PATTERN_CLIPBOARD)
       throw std::invalid_argument("Painter preview cannot isolate this paper subclass");
     snapshot=ObjectRef<GimpPattern>::adopt(GIMP_PATTERN(gimp_data_duplicate(GIMP_DATA(pattern))));
     if(!snapshot)throw std::invalid_argument("Painter preview paper cannot be duplicated");

@@ -21,6 +21,7 @@ extern "C" {
 #include "core/gimplayer-new.h"
 #include "core/gimpbrush.h"
 #include "core/gimpdynamics.h"
+#include "core/gimppattern.h"
 #include "core/gimpchannel.h"
 #include "core/gimpchannel-select.h"
 #include "paint/paint-types.h"
@@ -33,6 +34,7 @@ extern "C" {
 #define HEIGHT 70
 static void dump(int id,const char*phase,GimpDrawable*d){guchar p[WIDTH*HEIGHT*4];gegl_buffer_get(gimp_drawable_get_buffer(d),GEGL_RECTANGLE(0,0,WIDTH,HEIGHT),1,babl_format("R'G'B'A u8"),p,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);printf("BRUSH %d %s ",id,phase);for(unsigned i=0;i<sizeof p;++i)printf("%02x",p[i]);puts("");}
 int main(int argc,char**argv){
+ const bool use_paper=g_getenv("PAINTER_FILL_PAPER_FIXTURE")!=nullptr;
  const bool async=argc>1&&g_str_equal(argv[1],"async");
  const bool queued=argc>1&&!async;
  auto motion=async?gimp_fill_brush_motion_begin:gimp_fill_brush_motion;
@@ -45,6 +47,14 @@ int main(int argc,char**argv){
   GimpPaintOptions*options=GIMP_PAINT_OPTIONS(g_object_new(options_type,"gimp",gimp,"rate",(double)((id%3)*50),"eraser-mode",(id/3)%2,"brush-size",23.0,NULL));
   double fgv[]={.8,.15,.35,1},bgv[]={.1,.2,.3,1};GeglColor*fg=gegl_color_new(NULL),*bg=gegl_color_new(NULL);gegl_color_set_pixel(fg,babl_format("R'G'B'A double"),fgv);gegl_color_set_pixel(bg,babl_format("R'G'B'A double"),bgv);gimp_context_set_foreground(GIMP_CONTEXT(options),fg);gimp_context_set_background(GIMP_CONTEXT(options),bg);g_object_unref(fg);g_object_unref(bg);gimp_context_set_paint_mode(GIMP_CONTEXT(options),GIMP_LAYER_MODE_PAINTER_NORMAL);gimp_context_set_opacity(GIMP_CONTEXT(options),.65);
   GimpBrush*brush=GIMP_BRUSH(g_object_new(GIMP_TYPE_BRUSH,"name","fill-mask",NULL));brush->priv->mask=gimp_temp_buf_new(23,23,babl_format("Y u8"));guchar*bm=gimp_temp_buf_get_data(brush->priv->mask);for(int y=0;y<23;++y)for(int x=0;x<23;++x){int dx=x-11,dy=y-11;bm[y*23+x]=dx*dx+dy*dy<90?255:0;}
+
+  if(use_paper){
+    g_object_set(options,"use-texture",TRUE,nullptr);
+    auto*paper=GIMP_PATTERN(g_object_new(GIMP_TYPE_PATTERN,"name","fill paper",nullptr));
+    g_clear_pointer(&paper->mask,gimp_temp_buf_unref);paper->mask=gimp_temp_buf_new(5,3,babl_format("R'G'B' u8"));
+    auto*pm=gimp_temp_buf_get_data(paper->mask);for(int y=0;y<3;++y)for(int x=0;x<5;++x)for(int b=0;b<3;++b)pm[(y*5+x)*3+b]=(x*57+y*31+b*83)%256;
+    gimp_context_set_pattern(GIMP_CONTEXT(options),paper);g_object_unref(paper);
+  }
   gimp_context_set_brush(GIMP_CONTEXT(options),brush);GimpDynamics*dyn=GIMP_DYNAMICS(g_object_new(GIMP_TYPE_DYNAMICS,"name","fill-no-dynamics",NULL));gimp_context_set_dynamics(GIMP_CONTEXT(options),dyn);
   GimpPaintCore*core=GIMP_PAINT_CORE(g_object_new(type,"undo-desc","fill oracle",NULL));GimpCoords c=GIMP_COORDS_DEFAULT_VALUES;c.x=43;c.y=40;c.pressure=1;GError*error=NULL;
   gimp_image_undo_free(image);g_assert(gimp_fill_brush_begin(GIMP_FILL_BRUSH(core),d,options,&c,&error));g_assert_no_error(error);

@@ -38,6 +38,7 @@
 #include "core/gimpdynamicsoutput.h"
 #include "core/gimperror.h"
 #include "core/gimpimage.h"
+#include "core/gimppattern.h"
 #include "core/gimpsymmetry.h"
 #include "core/gimptempbuf.h"
 
@@ -46,6 +47,8 @@
 #include "gimpbrushcore-kernels.h"
 
 #include "gimppaintoptions.h"
+#include "gimppainterpaper.h"
+#include "gimppainterpaper-paste.h"
 
 #include "gimp-intl.h"
 
@@ -56,6 +59,7 @@ enum
 {
   SET_BRUSH,
   SET_DYNAMICS,
+  SET_TEXTURE,
   LAST_SIGNAL
 };
 
@@ -99,6 +103,9 @@ static void      gimp_brush_core_real_set_brush     (GimpBrushCore    *core,
 static void      gimp_brush_core_real_set_dynamics  (GimpBrushCore    *core,
                                                      GimpDynamics     *dynamics);
 
+static void      gimp_brush_core_real_set_texture   (GimpBrushCore *core,
+                                                     GimpPattern   *texture);
+
 static gdouble   gimp_brush_core_get_angle          (GimpBrushCore     *core);
 static gboolean  gimp_brush_core_get_reflect        (GimpBrushCore     *core);
 
@@ -141,6 +148,12 @@ gimp_brush_core_class_init (GimpBrushCoreClass *klass)
                   G_TYPE_NONE, 1,
                   GIMP_TYPE_DYNAMICS);
 
+  core_signals[SET_TEXTURE] =
+    g_signal_new ("set-texture",
+                  G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GimpBrushCoreClass, set_texture),
+                  NULL, NULL, NULL, G_TYPE_NONE, 1, GIMP_TYPE_PATTERN);
+
   object_class->finalize                    = gimp_brush_core_finalize;
 
   paint_core_class->start                   = gimp_brush_core_start;
@@ -155,6 +168,7 @@ gimp_brush_core_class_init (GimpBrushCoreClass *klass)
 
   klass->set_brush                          = gimp_brush_core_real_set_brush;
   klass->set_dynamics                       = gimp_brush_core_real_set_dynamics;
+  klass->set_texture                        = gimp_brush_core_real_set_texture;
 }
 
 static void
@@ -221,6 +235,8 @@ gimp_brush_core_finalize (GObject *object)
   GimpBrushCore *core = GIMP_BRUSH_CORE (object);
   gint           i, j;
 
+  g_clear_object (&core->texture);
+  g_clear_pointer (&core->texturized_brush, gimp_temp_buf_unref);
   g_clear_pointer (&core->pressure_brush, gimp_temp_buf_unref);
 
   for (i = 0; i < BRUSH_CORE_SOLID_SUBSAMPLE; i++)
@@ -375,6 +391,15 @@ gimp_brush_core_start (GimpPaintCore     *paint_core,
                                                                      "Dynamics Off"));
       gimp_brush_core_set_dynamics (core, dynamics_off);
       g_object_unref (dynamics_off);
+    }
+
+  gimp_brush_core_set_texture (core, paint_options->use_texture ?
+                               gimp_context_get_pattern (context) : NULL);
+  if (core->texture)
+    {
+      GimpPainterPaperView paper;
+      if (! gimp_painter_paper_get_view (core->texture, &paper, error))
+        return FALSE;
     }
 
   if (! core->main_brush)
@@ -1154,6 +1179,23 @@ gimp_brush_core_paste_canvas (GimpBrushCore            *core,
       off_x = (x < 0) ? -x : 0;
       off_y = (y < 0) ? -y : 0;
 
+      if (core->texture)
+        {
+          GError *error = NULL;
+          gboolean handled = gimp_painter_paper_paste (paint_core, brush_mask,
+                                                       off_x, off_y, drawable,
+                                                       brush_opacity, image_opacity,
+                                                       paint_mode, mode, &error);
+          if (error)
+            {
+              g_warning ("Unable to apply painter paper paint: %s", error->message);
+              g_clear_error (&error);
+              return; /* Failure must never fall back to untextured publication. */
+            }
+          if (handled)
+            return;
+        }
+
       gimp_paint_core_paste (paint_core, brush_mask,
                              off_x, off_y,
                              drawable,
@@ -1277,6 +1319,58 @@ gimp_brush_core_transform_mask (GimpBrushCore *core,
   return core->transform_brush;
 }
 
+static void
+gimp_brush_core_real_set_texture (GimpBrushCore *core, GimpPattern *texture)
+{
+  /* Retain the replacement before releasing the previous reference. */
+  if (g_set_object (&core->texture, texture))
+    {
+      core->subsample_cache_invalid = TRUE;
+      g_clear_pointer (&core->texturized_brush, gimp_temp_buf_unref);
+    }
+}
+
+void
+gimp_brush_core_set_texture (GimpBrushCore *core, GimpPattern *texture)
+{
+  g_return_if_fail (GIMP_IS_BRUSH_CORE (core));
+  g_return_if_fail (texture == NULL || GIMP_IS_PATTERN (texture));
+  /* Pattern finalization and signal observers can reenter or release the
+   * caller's final references. Keep both arguments alive until all callbacks
+   * and the default setter (including cache invalidation) have returned. */
+  g_object_ref (core);
+  if (texture)
+    g_object_ref (texture);
+  g_signal_emit (core, core_signals[SET_TEXTURE], 0, texture);
+  if (texture)
+    g_object_unref (texture);
+  g_object_unref (core);
+}
+
+const GimpTempBuf *
+gimp_brush_core_texturize_mask (GimpBrushCore *core, const GimpTempBuf *mask,
+                                gdouble x, gdouble y)
+{
+  GimpTempBuf *result;
+  GError *error = NULL;
+
+  g_return_val_if_fail (GIMP_IS_BRUSH_CORE (core), NULL);
+  g_return_val_if_fail (mask != NULL, NULL);
+  if (! core->texture)
+    return mask;
+
+  result = gimp_painter_paper_texturize (core->texture, mask, x, y, &error);
+  if (! result)
+    {
+      g_warning ("Unable to apply painter paper: %s", error->message);
+      g_clear_error (&error);
+      return NULL;
+    }
+  g_clear_pointer (&core->texturized_brush, gimp_temp_buf_unref);
+  core->texturized_brush = result;
+  return result;
+}
+
 const GimpTempBuf *
 gimp_brush_core_get_brush_mask (GimpBrushCore            *core,
                                 const GimpCoords         *coords,
@@ -1284,6 +1378,7 @@ gimp_brush_core_get_brush_mask (GimpBrushCore            *core,
                                 gdouble                   dynamic_force)
 {
   const GimpTempBuf *mask;
+  const GimpTempBuf *selected = NULL;
 
   if (dynamic_force <= 0.0)
     return NULL;
@@ -1296,24 +1391,27 @@ gimp_brush_core_get_brush_mask (GimpBrushCore            *core,
   switch (brush_hardness)
     {
     case GIMP_BRUSH_SOFT:
-      return gimp_brush_core_subsample_mask (core, mask,
+      selected = gimp_brush_core_subsample_mask (core, mask,
                                              coords->x,
                                              coords->y);
       break;
 
     case GIMP_BRUSH_HARD:
-      return gimp_brush_core_solidify_mask (core, mask,
+      selected = gimp_brush_core_solidify_mask (core, mask,
                                             coords->x,
                                             coords->y);
       break;
 
     case GIMP_BRUSH_PRESSURE:
-      return gimp_brush_core_pressurize_mask (core, mask,
+      selected = gimp_brush_core_pressurize_mask (core, mask,
                                               coords->x,
                                               coords->y,
                                               dynamic_force);
       break;
     }
+
+  if (selected)
+    return gimp_brush_core_texturize_mask (core, selected, coords->x, coords->y);
 
   g_return_val_if_reached (NULL);
 }

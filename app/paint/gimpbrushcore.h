@@ -44,6 +44,8 @@ struct _GimpBrushCore
   GimpBrush         *main_brush;
   GimpBrush         *brush;
   GimpDynamics      *dynamics;
+  GimpPattern       *texture;
+  GimpTempBuf       *texturized_brush;
   gdouble            spacing;
   gdouble            scale;
   gdouble            aspect_ratio;
@@ -92,6 +94,8 @@ struct _GimpBrushCoreClass
                          GimpBrush     *brush);
   void (* set_dynamics) (GimpBrushCore *core,
                          GimpDynamics  *brush);
+  void (* set_texture)  (GimpBrushCore *core,
+                         GimpPattern   *texture);
 };
 
 
@@ -126,6 +130,18 @@ void   gimp_brush_core_set_brush      (GimpBrushCore            *core,
 
 void   gimp_brush_core_set_dynamics   (GimpBrushCore            *core,
                                        GimpDynamics             *dynamics);
+
+void   gimp_brush_core_set_texture    (GimpBrushCore *core,
+                                       GimpPattern   *texture);
+/* Applies paper after soft/hard/pressure selection. The returned mask belongs
+ * to core, remains valid until the next call or texture replacement, and never
+ * aliases the input unless texture is disabled. Also used by legacy Smudge's
+ * byte-exact mask selector. */
+const GimpTempBuf *gimp_brush_core_texturize_mask
+                                      (GimpBrushCore      *core,
+                                       const GimpTempBuf *mask,
+                                       gdouble            x,
+                                       gdouble            y);
 
 void   gimp_brush_core_paste_canvas   (GimpBrushCore            *core,
                                        GimpDrawable             *drawable,

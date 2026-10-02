@@ -13,6 +13,8 @@ extern "C" {
 #include "core/gimpdrawable.h"
 #include "core/gimpdynamics.h"
 #include "core/gimpimage.h"
+#include "core/gimppattern.h"
+#include "core/gimppatternclipboard.h"
 #include "core/gimptoolinfo.h"
 #include "paint/gimpfillbrush.h"
 #include "display/gimpdisplay.h"
@@ -303,6 +305,16 @@ ObjectRef<GimpPaintOptions> freeze_options (GimpTool *tool) {
   if (auto *dynamics = gimp_context_get_dynamics (context)) {
     GimpData *copy = gimp_data_duplicate (GIMP_DATA (dynamics));
     gimp_context_set_dynamics (context, GIMP_DYNAMICS (copy)); g_object_unref (copy);
+  }
+  if (frozen.get ()->use_texture) {
+    if (auto *pattern = gimp_context_get_pattern (context)) {
+      if (G_OBJECT_TYPE (pattern) != GIMP_TYPE_PATTERN &&
+          G_OBJECT_TYPE (pattern) != GIMP_TYPE_PATTERN_CLIPBOARD)
+        throw std::invalid_argument ("Queued paper requires an isolatable native pattern");
+      GimpData *copy = gimp_data_duplicate (GIMP_DATA (pattern));
+      if (!copy) throw std::runtime_error ("Paper pattern could not be copied");
+      gimp_context_set_pattern (context, GIMP_PATTERN (copy)); g_object_unref (copy);
+    }
   }
   return frozen;
 }

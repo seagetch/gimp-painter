@@ -1,0 +1,132 @@
+ninja: Entering directory `build-debian13'
+[1/287] Generating symbol file libgimp/libgimp-3.0.so.0.8.1.p/libgimp-3.0.so.0.8.1.symbols
+[2/272] Generating symbol file libgimp/libgimpui-3.0.so.0.8.1.p/libgimpui-3.0.so.0.8.1.symbols
+[3/78] Generating symbol file plug-ins/script-fu/libscriptfu/libgimp-scriptfu-3.0.so.0.8.1.p/libgimp-scriptfu-3.0.so.0.8.1.symbols
+[4/73] Generating git-version.h.in.1 with a custom command
+[5/73] Generating git-version.h.in.2 with a custom command
+[6/73] Generating git-version.h with a custom command
+[7/64] Compiling C object app/tests/painter-compact-options.p/test-painter-compact-options.c.o
+../app/tests/test-painter-compact-options.c: In function ‘gather’:
+../app/tests/test-painter-compact-options.c:40:5: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+   40 |     for(GList *i=children;i;i=i->next)gather(i->data,result);g_list_free(children);
+      |     ^~~
+../app/tests/test-painter-compact-options.c:40:62: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+   40 |     for(GList *i=children;i;i=i->next)gather(i->data,result);g_list_free(children);
+      |                                                              ^~~~~~~~~~~
+../app/tests/test-painter-compact-options.c: In function ‘find’:
+../app/tests/test-painter-compact-options.c:44:49: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   44 |   GPtrArray *a=g_ptr_array_new();gather(root,a);GtkWidget *result=NULL;
+      |                                                 ^~~~~~~~~
+../app/tests/test-painter-compact-options.c: In function ‘inventory_all_registered_tools’:
+../app/tests/test-painter-compact-options.c:63:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   63 |     GPtrArray *original=g_ptr_array_new();gather(gui,original);
+      |     ^~~~~~~~~
+../app/tests/test-painter-compact-options.c:64:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   64 |     GPtrArray *parents=g_ptr_array_new();for(guint n=0;n<original->len;n++)g_ptr_array_add(parents,gtk_widget_get_parent(g_ptr_array_index(original,n)));
+      |     ^~~~~~~~~
+../app/tests/test-painter-compact-options.c:65:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   65 |     GList *order=gtk_container_get_children(GTK_CONTAINER(gui));
+      |     ^~~~~
+../app/tests/test-painter-compact-options.c:67:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   67 |     GPtrArray *after=g_ptr_array_new();gather(gui,after);
+      |     ^~~~~~~~~
+../app/tests/test-painter-compact-options.c:75:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   75 |     GList *restored=gtk_container_get_children(GTK_CONTAINER(gui));g_assert_cmpuint(g_list_length(order),==,g_list_length(restored));
+      |     ^~~~~
+../app/tests/test-painter-compact-options.c: In function ‘paint_bidirectional_reset_and_resource’:
+../app/tests/test-painter-compact-options.c:83:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   83 |   GtkWidget *gui=gimp_tools_get_tool_options_gui(tool->tool_options);
+      |   ^~~~~~~~~
+../app/tests/test-painter-compact-options.c:88:56: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   88 |   gtk_spin_button_set_value(GTK_SPIN_BUTTON(size),51.);gdouble value=0;g_object_get(tool->tool_options,"brush-size",&value,NULL);g_assert_cmpfloat(value,==,51.);
+      |                                                        ^~~~~~~
+../app/tests/test-painter-compact-options.c:89:65: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   89 |   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(texture),TRUE);gboolean enabled=FALSE;g_object_get(tool->tool_options,"use-texture",&enabled,NULL);g_assert_true(enabled);
+      |                                                                 ^~~~~~~~
+../app/tests/test-painter-compact-options.c:90:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   90 |   GtkWidget *arrow=find(gui,"painter-compact-use-texture",GTK_TYPE_MENU_BUTTON);g_assert_nonnull(arrow);g_assert_true(gtk_widget_get_sensitive(arrow));
+      |   ^~~~~~~~~
+../app/tests/test-painter-compact-options.c:92:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   92 |   GimpBrush *brush=GIMP_BRUSH(gimp_brush_get_standard(GIMP_CONTEXT(tool->tool_options)));gimp_context_set_brush(GIMP_CONTEXT(tool->tool_options),brush);
+      |   ^~~~~~~~~
+../app/tests/test-painter-compact-options.c:93:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   93 |   GPtrArray *all=g_ptr_array_new();gather(gui,all);guint matched=0;
+      |   ^~~~~~~~~
+../app/tests/test-painter-compact-options.c:93:52: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   93 |   GPtrArray *all=g_ptr_array_new();gather(gui,all);guint matched=0;
+      |                                                    ^~~~~
+../app/tests/test-painter-compact-options.c: In function ‘popup_repeat’:
+../app/tests/test-painter-compact-options.c:103:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  103 |   if(old)gtk_container_remove(GTK_CONTAINER(old),gui);gtk_container_add(GTK_CONTAINER(window),gui);gtk_widget_show_all(window);
+      |   ^~
+../app/tests/test-painter-compact-options.c:103:55: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  103 |   if(old)gtk_container_remove(GTK_CONTAINER(old),gui);gtk_container_add(GTK_CONTAINER(window),gui);gtk_widget_show_all(window);
+      |                                                       ^~~~~~~~~~~~~~~~~
+../app/tests/test-painter-compact-options.c:106:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  106 |     GtkWidget *button=find(gui,"painter-compact-brush",GTK_TYPE_MENU_BUTTON);g_assert_nonnull(button);
+      |     ^~~~~~~~~
+../app/tests/test-painter-compact-options.c: In function ‘fresh_owner_lifecycle’:
+../app/tests/test-painter-compact-options.c:117:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  117 |     GtkWidget *body=gimp_prop_spin_scale_new(G_OBJECT(tool->tool_options),"jitter-amount",.1,1.,2);
+      |     ^~~~~~~~~
+../app/tests/test-painter-compact-options.c: In function ‘main’:
+../app/tests/test-painter-compact-options.c:133:39: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  133 |   g_application_run(gimp->app,0,NULL);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
+      |                                       ^~~
+[8/64] Generating libgimp/check-def-files with a custom command
+[9/64] Compiling C++ object app/tests/painter-paper.p/test-painter-paper.cpp.o
+[10/64] Compiling C++ object app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o
+[11/64] Linking static target app/widgets/libappwidgets.a
+[12/64] Linking target app-tools/gimp-debug-tool-3.0
+[13/64] Compiling C++ object app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o
+[14/64] Linking static target app/display/libappdisplay.a
+[15/64] Linking target app/tests/core
+[16/64] Linking target app/tests/gimp-filter-layer
+[17/64] Linking target app/tests/gimp-clone-layer
+[18/64] Linking target app/gimp-3.0
+[19/64] Linking target app/tests/painter-canvas-ui
+[20/64] Linking target app/tests/painter-layer-ui
+[21/64] Linking target app/tests/painter-compact-options
+[22/64] Linking target app/tests/gimp-painter-mybrush
+[23/64] Linking target app/tests/gimp-painter-mybrush-factory
+[24/64] Linking target app/tests/gimpidtable
+[25/64] Linking target app/tests/gimp-painter-context
+[26/64] Linking target app/tests/gimp-tool-owner
+[27/64] Linking target app/tests/xcf
+[28/64] Linking target app/tests/painter-xcf-open
+[29/64] Linking target app/tests/painter-xcf-roundtrip
+[30/64] Linking target app/tests/painter-layer-modes
+[31/64] Linking target app/tests/painter-dynamics
+[32/64] Linking target app/tests/painter-navigation-ui
+[33/64] Linking target app/tests/painter-navigation-events
+[34/64] Linking target app/tests/painter-perspective
+[35/64] Linking target app/tests/painter-perspective-events
+[36/64] Linking target app/tests/painter-perspective-ui
+[37/64] Linking target app/tests/gimp-painter-surface
+[38/64] Linking target app/tests/painter-mypaint-session-trace
+[39/64] Linking target app/tests/painter-fill-brush-trace
+[40/64] Linking target app/tests/gimp-painter-options
+[41/64] Linking target app/tests/gimp-painter-session
+[42/64] Linking target app/tests/gimp-fill-brush
+[43/64] Linking target app/tests/gimp-painter-hover
+[44/64] Linking target app/tests/painter-fill-brush-ui
+[45/64] Linking target app/tests/painter-mypaint-tool
+[46/64] Linking target app/tests/gimp-layer-presets
+[47/64] Linking target app/tests/layer-presets-ui
+[48/64] Linking target app/tests/painter-smudge-trace
+[49/64] Linking target app/tests/painter-brush-interpolation-trace
+[50/64] Linking target app/tests/painter-mypaint-editor
+[51/64] Linking target app/tests/gimp-painter-preview
+[52/64] Linking target app/tests/painter-save-continuation
+[53/64] Linking target app/tests/painter-mypaint-rgb-session-trace
+[54/64] Linking target app/tests/gimp-painter-smudge
+[55/64] Linking target app/tests/gimp-painter-batch
+[56/64] Linking target app/tests/painter-profile-native
+[57/64] Linking target app/tests/painter-paper-trace
+[58/64] Linking target app/tests/painter-paper
+[59/64] Linking target app/tests/gimp-painter-gray
+[60/64] Linking target app/tests/painter-smudge-ui
+[61/64] Linking target app/tests/painter-mypaint-gray-session-trace
+[62/64] Linking target app/tests/painter-paper-ui
+[63/64] Linking target app/tests/painter-mypaint-pipe-trace
+[64/64] Linking target app/tests/gimp-painter-gray-extension

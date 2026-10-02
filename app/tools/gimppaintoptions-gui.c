@@ -225,6 +225,22 @@ gimp_paint_options_gui (GimpToolOptions *tool_options)
       gtk_widget_show (frame);
     }
 
+  /* The shared options widget also serves Fill Brush, legacy Smudge and the
+   * compact canvas UI; there is only one texture model and selector. */
+  if (g_type_is_a (tool_type, GIMP_TYPE_BRUSH_TOOL))
+    {
+      GtkWidget *pattern;
+      GtkWidget *frame;
+
+      pattern = gimp_prop_pattern_box_new (NULL, GIMP_CONTEXT (options),
+                                           NULL, 2, "pattern-view-type",
+                                           "pattern-view-size");
+      frame = gimp_prop_expanding_frame_new (config, "use-texture",
+                                             NULL, pattern, NULL);
+      gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+      gtk_widget_show (frame);
+    }
+
   /*  the "smooth stroke" options  */
   if (g_type_is_a (tool_type, GIMP_TYPE_PAINT_TOOL))
     {

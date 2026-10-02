@@ -456,3 +456,41 @@ test('painter-profile-native', painter_profile_native,
     'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
     'UI_TEST=yes',
   ], suite: 'painter', is_parallel: false, timeout: 120)
+
+painter_paper_trace = executable('painter-paper-trace', 'painter-paper-trace.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+
+painter_paper_test = executable('painter-paper', 'test-painter-paper.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('painter-paper', painter_paper_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 120)
+
+painter_paper_ui_test = executable('painter-paper-ui', 'test-painter-paper-ui.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('painter-paper-ui', painter_paper_ui_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 120)
+
+if not meson.is_cross_build()
+  foreach case : ['legacy-paper', 'legacy-paper-modes']
+    paper_args = [meson.project_source_root() / 'migration/tests/compare_paper.py',
+                  meson.project_source_root() / 'migration/fixtures' / case / 'pixels.tsv.gz',
+                  painter_paper_trace]
+    if case == 'legacy-paper-modes'
+      paper_args += ['--modes']
+    endif
+    test('painter-' + case, painter_brush_settings_python, args: paper_args,
+      env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+            'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+            'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+            'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 120)
+  endforeach
+endif

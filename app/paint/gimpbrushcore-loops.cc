@@ -18,6 +18,7 @@
 #include "config.h"
 
 #include <string.h>
+#include <cmath>
 
 #include <gegl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -115,7 +116,8 @@ gimp_brush_core_subsample_mask_impl (const GimpTempBuf *mask,
                                      gint               dest_offset_x,
                                      gint               dest_offset_y,
                                      gint               index1,
-                                     gint               index2)
+                                     gint               index2,
+                                     gboolean           legacy_paper)
 {
   using value_type  = typename Subsample<T>::value_type;
   using kernel_type = typename Subsample<T>::kernel_type;
@@ -187,7 +189,9 @@ gimp_brush_core_subsample_mask_impl (const GimpTempBuf *mask,
           d = (value_type *) gimp_temp_buf_get_data (dest) +
               (i + dest_offset_y) * dest_width;
           for (j = 0; j < dest_width; j++)
-            *d++ = subsample.round (accum[0][j]);
+            *d++ = legacy_paper ?
+                   (value_type) ((accum[0][j] + 127) / 256) :
+                   subsample.round (accum[0][j]);
 
           rotate_pointers (accum, KERNEL_HEIGHT);
 
@@ -290,13 +294,13 @@ gimp_brush_core_subsample_mask (GimpBrushCore     *core,
     {
       gimp_brush_core_subsample_mask_impl<guchar> (mask, dest,
                                                    dest_offset_x, dest_offset_y,
-                                                   index1, index2);
+                                                   index1, index2, core->texture != NULL);
     }
   else if (mask_format == babl_format ("Y float"))
     {
       gimp_brush_core_subsample_mask_impl<gfloat> (mask, dest,
                                                    dest_offset_x, dest_offset_y,
-                                                   index1, index2);
+                                                   index1, index2, FALSE);
     }
   else
     {
@@ -490,6 +494,34 @@ gimp_brush_core_pressurize_mask (GimpBrushCore     *core,
   subsample_mask = gimp_brush_core_subsample_mask (core,
                                                    brush_mask,
                                                    x, y);
+
+  /* Painter's byte paper consumes the old pressure mask, whose accumulated
+   * double lookup truncates (modern SimplePressure rounds). Keep float masks
+   * and ordinary non-paper brushes on the native high-precision path. */
+  if (core->texture &&
+      gimp_temp_buf_get_format (subsample_mask) == babl_format ("Y u8"))
+    {
+      if (! std::isfinite (pressure) || pressure < 0.0)
+        return NULL;
+      if (std::floor (pressure * 100 + 0.5) == 50.0)
+        return subsample_mask;
+      guchar map[256];
+      gdouble value = 0;
+      for (gint i = 0; i < 256; ++i, value += pressure + pressure)
+        map[i] = value > 255 ? 255 : (guchar) value;
+      g_clear_pointer (&core->pressure_brush, gimp_temp_buf_unref);
+      core->pressure_brush =
+        gimp_temp_buf_new (gimp_temp_buf_get_width (subsample_mask),
+                           gimp_temp_buf_get_height (subsample_mask),
+                           babl_format ("Y u8"));
+      const guchar *source = gimp_temp_buf_get_data (subsample_mask);
+      guchar *dest = gimp_temp_buf_get_data (core->pressure_brush);
+      const gsize count = (gsize) gimp_temp_buf_get_width (subsample_mask) *
+                         gimp_temp_buf_get_height (subsample_mask);
+      for (gsize i = 0; i < count; ++i)
+        dest[i] = map[source[i]];
+      return core->pressure_brush;
+    }
 
   /* Special case pressure = 0.5 */
   if (fabs (pressure - 0.5) <= EPSILON)

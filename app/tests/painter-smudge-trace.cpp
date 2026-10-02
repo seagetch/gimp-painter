@@ -20,6 +20,7 @@ extern "C" {
 #include "core/gimplayer-new.h"
 #include "core/gimpbrush.h"
 #include "core/gimpdynamics.h"
+#include "core/gimppattern.h"
 #include "core/gimpchannel.h"
 #include "core/gimpchannel-select.h"
 #include "paint/paint-types.h"
@@ -40,6 +41,7 @@ static void dump(int id,const char*phase,GimpDrawable*d){
  puts("");
 }
 int main(int argc,char**argv){
+ const bool use_paper=g_getenv("PAINTER_SMUDGE_PAPER_FIXTURE")!=nullptr;
  const bool queued=argc>1&&std::strcmp(argv[1],"owned")==0;
  Gimp*gimp=gimp_init_for_testing();
  const char* formats[]={"Y' u8","Y'A u8","R'G'B' u8","R'G'B'A u8"};
@@ -62,6 +64,14 @@ int main(int argc,char**argv){
   brush->priv->mask=gimp_temp_buf_new(17,17,babl_format("Y u8"));guchar*bm=gimp_temp_buf_get_data(brush->priv->mask);
   for(int y=0;y<17;++y)for(int x=0;x<17;++x){int dx=x-8,dy=y-8;bm[y*17+x]=dx*dx+dy*dy<49?255:0;}
   gimp_context_set_brush(GIMP_CONTEXT(options),brush);
+  if(use_paper){
+    g_object_set(options,"use-texture",TRUE,nullptr);
+    auto*paper=GIMP_PATTERN(g_object_new(GIMP_TYPE_PATTERN,"name","smudge paper",nullptr));
+    g_clear_pointer(&paper->mask,gimp_temp_buf_unref);paper->mask=gimp_temp_buf_new(5,3,babl_format(formats[shape]));
+    auto*pm=gimp_temp_buf_get_data(paper->mask);for(int y=0;y<3;++y)for(int x=0;x<5;++x)for(int b=0;b<channels;++b)pm[(y*5+x)*channels+b]=(x*57+y*31+b*83)%256;
+    gimp_context_set_pattern(GIMP_CONTEXT(options),paper);g_object_unref(paper);
+  }
+
   GimpDynamics*dyn=GIMP_DYNAMICS(g_object_new(GIMP_TYPE_DYNAMICS,"name","smudge-dynamics",NULL));
   g_object_set(gimp_dynamics_get_output(dyn,GIMP_DYNAMICS_OUTPUT_BLENDING),"use-pressure",TRUE,NULL);
   if(dynamic)g_object_set(gimp_dynamics_get_output(dyn,GIMP_DYNAMICS_OUTPUT_SIZE),"use-pressure",TRUE,NULL);

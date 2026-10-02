@@ -406,7 +406,8 @@ void motion (GimpPaintCore* core, GimpDrawable* drawable, GimpPaintOptions* opti
       legacy_mask = legacy_subsample (transformed, coords.x, coords.y, force, brush_mode == GIMP_BRUSH_PRESSURE);
       mask = legacy_mask.get ();
     }
-    if (!mask) return;
+    if (mask) mask = gimp_brush_core_texturize_mask (brush, mask, coords.x, coords.y);
+    if (!mask) throw std::runtime_error ("Legacy Smudge paper mask could not be generated");
     const int mx = int (std::floor (coords.x)) - (gimp_temp_buf_get_width (mask) >> 1);
     const int my = int (std::floor (coords.y)) - (gimp_temp_buf_get_height (mask) >> 1);
     const auto* mask_data = gimp_temp_buf_get_data (mask);

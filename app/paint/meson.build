@@ -58,6 +58,7 @@ libapppaint_sources = [
   'gimpperspectivecloneoptions.c',
   'gimpsmudge.c',
   'gimppaintersmudge.cpp',
+  'gimppainterpaper-paste.cpp',
   'gimpsmudgeoptions.c',
   'gimpsourcecore.c',
   'gimpsourceoptions.c',
