@@ -811,6 +811,7 @@
 | 21.018 | [ ] | 色精度別の Surface を検証する | 21.017 | 旧形式再現と高精度動作を区別 |
 | 21.018/native-rgb-surface | [x] | 実旧RGB u8 Surfaceとerase・alpha lockを一致させる | 21.001/registered-tool | 96実旧scene/288全画像/385recordが21575701 bytes通常と26source focused sanitizerで一致、RGBA129recordとSurface10群を再確認。16非累積fully-locked無変化sceneの旧Undoも保持。Gray/高精度・generic path・全GTKは別gate |
 | 21.018/native-gray-surface | [x] | 実旧1byte Gray Surfaceの描画・Undo/Redoを保持する | 21.018/native-rgb-surface, 04.011/sanitizer-rtti-scope | 48実旧scene/193record・3599558bytes完全一致、native4と各26source sanitizer合格。Gray-alpha/非累積の旧未定義経路は明示拒否し次の定義拡張へ分離。全app linkとSurface10/generic13/RGBA129/RGB385再合格 |
+| 21.018/defined-gray-alpha | [x] | 旧未定義のGray-alpha/非累積へnative2byteの安全な意味を与える | 21.018/native-gray-surface | 180scalar invariantと192paired native session/Undo/Redo、透明erase/lock/cancelが通常・26source focused sanitizer＋26 RTTI-only合格。旧193/129/385recordを独立再確認。旧oracle同等とは主張せずhighprecision/TRC/ICC・実GTKは別gate |
 | 21.019 | [ ] | 固定入力の筆跡比較を実行する | 21.018 | 形状採色・透明境界・非累積・opacity を個別比較 |
 | 21.020 | [ ] | 押印の遅延とコピー量を計測する | 21.019 | 一 dab ごとの画像全体コピーがない |
 

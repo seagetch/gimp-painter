@@ -55,11 +55,13 @@ static void unsupported_precision_policy()
     auto*buffer=gegl_buffer_new(GEGL_RECTANGLE(0,0,4,4),babl_format(name));bool rejected=false;try{GeglSurface surface(buffer);}catch(const std::invalid_argument&){rejected=true;}g_assert_true(rejected);g_object_unref(buffer);
   }
 }
-static void pending_gray_modes_refuse_before_start()
+static void native_gray_nonincremental()
 {
-  // Temporary bounded checkpoint: undefined old two-byte paths are explicit.
-  auto*buffer=gegl_buffer_new(GEGL_RECTANGLE(0,0,4,4),babl_format("Y'A u8"));bool rejected=false;try{GeglSurface surface(buffer);}catch(const std::invalid_argument&){rejected=true;}g_assert_true(rejected);g_object_unref(buffer);
-  Scene s;const auto before=s.pixels();auto r=resource();r.set_switch(BRUSH_NON_INCREMENTAL,true);PaintCore core(s.options,r);rejected=false;try{stroke(core,s.drawable);}catch(const std::invalid_argument&){rejected=true;}g_assert_true(rejected);g_assert_false(core.active());g_assert_true(s.pixels()==before);g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(s.image)),==,0);g_assert_false(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(s.drawable)));
+  Scene s;const auto before=s.pixels();auto r=resource();r.set_switch(BRUSH_NON_INCREMENTAL,true);r.set_base_value(BRUSH_STROKE_OPACITY,.37);
+  PaintCore core(s.options,r);stroke(core,s.drawable);core.finish();const auto painted=s.pixels();
+  g_assert_true(painted!=before);g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(s.image)),==,1);
+  g_assert_true(gimp_image_undo(s.image));g_assert_true(s.pixels()==before);g_assert_true(gimp_image_redo(s.image));g_assert_true(s.pixels()==painted);
+  g_assert_false(core.active());g_assert_false(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(s.drawable)));
 }
 int main(int argc,char**argv)
 {
@@ -67,6 +69,6 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-gray/native-undo-cancel",native_gray_undo_cancel);
   g_test_add_func("/painter-gray/red-component-sampling",red_channel_and_gray_sampling);
   g_test_add_func("/painter-gray/precision-policy",unsupported_precision_policy);
-  g_test_add_func("/painter-gray/undefined-old-modes-preflight",pending_gray_modes_refuse_before_start);
+  g_test_add_func("/painter-gray/defined-nonincremental",native_gray_nonincremental);
   const int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }

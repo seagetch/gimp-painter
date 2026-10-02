@@ -25,7 +25,7 @@ changed={n for n in initial if initial[n]!=current[n]}
 if not changed:raise SystemExit('No changed source requires refresh')
 if not changed <= set(report['rtti_compatibility_only_sources']):raise SystemExit('Instrumented sources changed; full rebuild required')
 if not set(report.get('changed_during_run',[])) <= set(report['rtti_compatibility_only_sources']):raise SystemExit('Prior build had a non-RTTI source/header change')
-headers=report['native_abi_headers_sha256']
+headers={**report['native_abi_headers_sha256'],**report.get('algorithm_headers_sha256',{})}
 if any(sha(n)!=h for n,h in headers.items()):raise SystemExit('Native ABI header changed; full rebuild required')
 prior=path.with_name(path.stem+'-pre-refresh.json.gz');prior.write_bytes(gzip.compress(raw,mtime=0))
 commands=[]

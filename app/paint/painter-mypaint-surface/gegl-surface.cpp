@@ -3,6 +3,7 @@
  */
 #include "gegl-surface.hpp"
 #include "legacy-pixel-modes.hpp"
+#include "gray-alpha-pixels.hpp"
 #include "painter/object-ref.hpp"
 #include <algorithm>
 #include <cmath>
@@ -34,9 +35,11 @@ struct GeglSurface::Impl {
     floating_format = babl_format_with_space ("R'G'B'A u8", babl_format_get_space (native));
     const auto *rgb = babl_format_with_space ("R'G'B' u8", babl_format_get_space (native));
     const auto *gray = babl_format_with_space ("Y' u8", babl_format_get_space (native));
-    if (native != floating_format && native != rgb && native != gray)
-      throw std::invalid_argument ("Legacy Surface currently requires nonlinear Gray/RGB/RGBA u8; refusing precision conversion");
+    const auto *gray_alpha = babl_format_with_space ("Y'A u8", babl_format_get_space (native));
+    if (native != floating_format && native != rgb && native != gray && native != gray_alpha)
+      throw std::invalid_argument ("Legacy Surface currently requires nonlinear Gray/Gray-alpha/RGB/RGBA u8; refusing precision conversion");
     format=native;channels=babl_format_get_bytes_per_pixel(native);
+    if(channels<=2)floating_format=gray_alpha;
   }
   std::vector<guchar> read (GeglBuffer *buffer, const GeglRectangle& rect)
   {
@@ -144,7 +147,7 @@ void GeglSurface::set_texture_provider (TextureProvider provider)
 void GeglSurface::set_selection (GeglBuffer *mask,int x,int y)
 { impl_->selection = ObjectRef<GeglBuffer>::retain (mask); impl_->offset_x=x; impl_->offset_y=y; }
 void GeglSurface::set_non_incremental (bool value)
-{ if (impl_->active) throw std::logic_error ("Cannot change accumulation mode mid-session"); if(value && impl_->channels==1) throw std::invalid_argument("Native Gray nonincremental extension is not yet enabled"); impl_->non_incremental=value; }
+{ if (impl_->active) throw std::logic_error ("Cannot change accumulation mode mid-session"); impl_->non_incremental=value; }
 void GeglSurface::set_stroke_opacity (float value) { finite(value); impl_->opacity=clamp(value); }
 void GeglSurface::set_background (float r,float g,float b)
 { for (auto v:{r,g,b}) finite(v); impl_->background[0]=r;impl_->background[1]=g;impl_->background[2]=b; }
@@ -192,15 +195,29 @@ bool GeglSurface::draw_dab (float x,float y,float radius,float r,float g,float b
   Iter iter(dab.mask.data(),color,pixels.data(),pixels.data(),rect.width,rect.height,rect.width,rect.width*channels,rect.width*channels,1,channels,channels);
   float normal=1.f;normal*=1.f-lock_alpha;normal*=1.f-colorize;
   if (normal) {
-    if (alpha==1.f) draw_dab_pixels_BlendMode_Normal(iter,normal*opaque);
-    else draw_dab_pixels_BlendMode_Normal_and_Eraser(iter,alpha,normal*opaque,impl_->background[0],impl_->background[1],impl_->background[2]);
+    if(channels==2) {
+      if(alpha==1.f)GrayAlpha::normal(iter,normal*opaque);
+      else GrayAlpha::erase(iter,alpha,normal*opaque);
+    } else {
+      if (alpha==1.f) draw_dab_pixels_BlendMode_Normal(iter,normal*opaque);
+      else draw_dab_pixels_BlendMode_Normal_and_Eraser(iter,alpha,normal*opaque,impl_->background[0],impl_->background[1],impl_->background[2]);
+    }
   }
-  if (lock_alpha) draw_dab_pixels_BlendMode_LockAlpha(iter,lock_alpha*opaque);
+  if(lock_alpha) {
+    if(channels==2)GrayAlpha::lock_alpha(iter,lock_alpha*opaque);
+    else draw_dab_pixels_BlendMode_LockAlpha(iter,lock_alpha*opaque);
+  }
   impl_->write(target,rect,pixels);
   if (impl_->non_incremental) {
     auto original=impl_->read(impl_->initial.get(),rect);auto result=impl_->read(impl_->target.get(),rect);
-    BrushPixelIteratorForPlainData<PixmapBrushmarkIterator,guchar,guchar> copy(pixels.data(),nullptr,original.data(),result.data(),rect.width,rect.height,rect.width*4,rect.width*impl_->channels,rect.width*impl_->channels,4,impl_->channels,impl_->channels);
-    draw_dab_pixels_BlendMode_Normal_and_Eraser(copy,1.f,impl_->opacity,impl_->background[0],impl_->background[1],impl_->background[2]);
+    if(impl_->channels<=2) {
+      BrushPixelIteratorForPlainData<GrayAlpha::Pixmap,guchar,guchar> copy(pixels.data(),nullptr,original.data(),result.data(),rect.width,rect.height,rect.width*2,rect.width*impl_->channels,rect.width*impl_->channels,2,impl_->channels,impl_->channels);
+      if(impl_->channels==2)GrayAlpha::erase(copy,1.f,impl_->opacity);
+      else draw_dab_pixels_BlendMode_Normal_and_Eraser(copy,1.f,impl_->opacity,impl_->background[0],impl_->background[1],impl_->background[2]);
+    } else {
+      BrushPixelIteratorForPlainData<PixmapBrushmarkIterator,guchar,guchar> copy(pixels.data(),nullptr,original.data(),result.data(),rect.width,rect.height,rect.width*4,rect.width*impl_->channels,rect.width*impl_->channels,4,impl_->channels,impl_->channels);
+      draw_dab_pixels_BlendMode_Normal_and_Eraser(copy,1.f,impl_->opacity,impl_->background[0],impl_->background[1],impl_->background[2]);
+    }
     impl_->write(impl_->target.get(),rect,result);
   }
   if (!impl_->dirty.width) impl_->dirty=rect;else gegl_rectangle_bounding_box(&impl_->dirty,&impl_->dirty,&rect);
@@ -229,7 +246,8 @@ void GeglSurface::get_color (float x,float y,float radius,float *r,float *g,floa
       const int index=row*rect.width+col;
       BrushPixelIteratorForPlainData<ColoredBrushmarkIterator,float,float> iter(dab.mask.data()+index,color,pixels.data()+index*channels,pixels.data()+index*channels,bw,bh,rect.width,rect.width*channels,rect.width*channels,1,channels,channels);
       float sw=0,sr=0,sg=0,sb=0,sa=0;
-      get_color_pixels_accumulate(iter,&sw,&sr,&sg,&sb,&sa);
+      if(channels==2)GrayAlpha::accumulate(iter,&sw,&sr,&sg,&sb,&sa);
+      else get_color_pixels_accumulate(iter,&sw,&sr,&sg,&sb,&sa);
       weight+=sw;red+=sr;green+=sg;blue+=sb;alpha+=sa;
       col+=bw;
     }

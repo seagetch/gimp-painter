@@ -18,7 +18,7 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("build", type=Path)
 parser.add_argument("--report", type=Path, required=True)
-parser.add_argument("--target", choices=["options", "session", "hover", "preview", "rgb", "surface", "batch", "gray", "gray-oracle"], required=True)
+parser.add_argument("--target", choices=["options", "session", "hover", "preview", "rgb", "surface", "batch", "gray", "gray-oracle", "gray-extension"], required=True)
 args = parser.parse_args()
 oracle = args.target in ("rgb", "gray-oracle")
 color_model = "gray" if args.target == "gray-oracle" else "rgb"
@@ -60,7 +60,11 @@ report["scope"] += "; listed RTTI-only production bridge owners are recompiled f
 hashes = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in wanted}
 headers = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in [
     "app/paint/gimppaintcore.h", "app/paint/gimpbrushcore.h", "app/paint/gimppaintoptions.h"]}
-report["native_abi_headers_sha256"] = headers
+report["native_abi_headers_sha256"] = dict(headers)
+algorithm_headers = {"app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp":
+    hashlib.sha256((root / "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp").read_bytes()).hexdigest()}
+report["algorithm_headers_sha256"] = algorithm_headers
+headers.update(algorithm_headers)
 replacements = {}
 extra = []
 archive_replacements = {}

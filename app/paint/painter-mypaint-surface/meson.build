@@ -30,3 +30,13 @@ foreach part : ['surface', 'generated']
       args: args, suite: 'painter', timeout: 60)
   endif
 endforeach
+
+# Defined two-byte Gray equations, independent of GIMP transaction fixtures.
+painter_gray_equations = executable('painter-gray-alpha-equations',
+  'tests/gray-alpha-equations.cpp', include_directories: [rootAppInclude],
+  dependencies: [glib], cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-gray-alpha-equations', painter_gray_equations,
+    suite: 'painter', timeout: 30)
+endif

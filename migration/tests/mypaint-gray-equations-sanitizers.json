@@ -1,0 +1,37 @@
+{
+  "scope": "180 synthetic scalar Gray-alpha versus existing RGBA red/alpha equations and weighted sampling; exact two-byte alpha accessor. No old Gray-alpha equivalence claim.",
+  "sanitizers": [
+    "address",
+    "undefined",
+    "float-cast-overflow"
+  ],
+  "leak_detection": false,
+  "compile_command": [
+    "c++",
+    "-std=c++14",
+    "-g",
+    "-O1",
+    "-fsanitize=address,undefined,float-cast-overflow",
+    "-fno-omit-frame-pointer",
+    "-I/workspace/scratch/5b5281e79681/gimp-painter/app",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/paint/painter-mypaint-surface/tests/gray-alpha-equations.cpp",
+    "-o",
+    "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/mypaint-gray-equations-sanitizers/gray-alpha-equations",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+    "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+    "-pthread",
+    "-lglib-2.0"
+  ],
+  "sources_sha256": {
+    "app/paint/painter-mypaint-surface/tests/gray-alpha-equations.cpp": "40ca2910d814ac7da04f715bcbabf54964c26d8dcd0b0f3528c1522da45260c0",
+    "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp": "c10d67a6bc00d21f433e8f69ea83b58ca7327e5e7572176aeb533e2e47f04884",
+    "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp": "1e02871cd3e40227d492432bea98b6c36d5369a2d3eb63d3e111b6d432266af2",
+    "app/paint/painter-mypaint-surface/legacy-pixel.hpp": "53b98a5f26f81a4869091b776ceeb9667e9caf16057da4a6e1eec368b5c81a42"
+  },
+  "changed_during_run": [],
+  "executable_sha256": "3aa32bc446e306d0d3bc48ab04e9e5fedfa89e207d5374e645a60bd9d51f468c",
+  "exit_code": 0,
+  "stdout": "180 Gray-alpha red/alpha equation and sampling comparisons passed\n",
+  "stderr": ""
+}

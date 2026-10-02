@@ -32,12 +32,12 @@ diagnostics for Gray-alpha (no visible change), and 52 for Gray nonincremental
 build, but repeatability does not supply defined missing two-byte semantics.
 These probes are negative observations, never part of the positive oracle.
 
-This incremental checkpoint explicitly refuses Gray-alpha and Gray
-nonincremental before native start, with no pixel or Undo mutation. They remain
-active implementation work. The next extension will use the original
-one-channel and RGBA equations with correct two-byte alpha access, documented
-zero-alpha behavior, invariant tests and modern native Undo/Redo. It will not
-claim old equivalence for the undefined paths.
+The initial incremental checkpoint explicitly refused Gray-alpha and Gray
+nonincremental before native start, with no pixel or Undo mutation. That
+historical boundary is now superseded by the defined safe extension described
+in `mypaint-gray-safe-extension.md`: original one-channel and RGBA equations,
+correct two-byte alpha access, explicit zero-alpha behavior and modern native
+Undo/Redo. It does not claim old equivalence for the undefined paths.
 
 The byte renderer also explicitly rejects linear/high-precision formats rather
 than silently quantizing. Native nonlinear format support does not by itself
