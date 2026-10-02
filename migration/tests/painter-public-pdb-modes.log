@@ -1,0 +1,145 @@
+{
+  "scope": "Public C/C++ Painter mode identity against native app and unchanged upstream values; generated PDB table verified, not PDB transport/pixel acceptance",
+  "source_sha256": {
+    "app/operations/operations-enums.h": "705e86499fb0fecdf6a58d6a0860e9d419fe1a196f2c27dc8052e75352023ddb",
+    "libgimp/gimpenums.h": "a8c0c2c60932008c52918599a6c481b2cbec50f88258aabee42ed5c79b25cc0e",
+    "migration/baseline/layer-mode-values.json": "340597ea124e73b2cdaa1b1ad9bc4b30a9d1c7b26f32c1970dc26b6281d39979",
+    "tools/check_painter_public_modes.py": "6183bbfe4117e2e6d0ae43d90dfdeb158db340566efd6a1cff8c9b07162389ec",
+    "pdb/enumgen.pl": "cd6b937ee66744deadbd64b198bf6b580cee4c3ed11a6825012d568ea1553290",
+    "pdb/enumcode.pl": "60445fb2ac0dde89016b3a1b4737520dc31159f84eeaf8fdf8984c749a6b9816",
+    "pdb/enums.pl": "453830048c5c6163fdbfb7de21a36368668a81bcf8f3e4002d25401c32600882"
+  },
+  "public_modes": 72,
+  "generated_pdb_modes": 72,
+  "generated_pdb_contiguous": 0,
+  "upstream_modes": 65,
+  "painter_modes": {
+    "GIMP_LAYER_MODE_PAINTER_ERASE": 64,
+    "GIMP_LAYER_MODE_PAINTER_REPLACE": 65,
+    "GIMP_LAYER_MODE_PAINTER_ANTI_ERASE": 66,
+    "GIMP_LAYER_MODE_PAINTER_SRC_IN": 67,
+    "GIMP_LAYER_MODE_PAINTER_DST_IN": 68,
+    "GIMP_LAYER_MODE_PAINTER_SRC_OUT": 69,
+    "GIMP_LAYER_MODE_PAINTER_DST_OUT": 70,
+    "GIMP_LAYER_MODE_PAINTER_NORMAL": 71,
+    "GIMP_LAYER_MODE_PAINTER_MULTIPLY": 72
+  },
+  "errors": [],
+  "probes": [
+    {
+      "header": "app/operations/operations-enums.h",
+      "language": "c",
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/workspace/scratch/5b5281e79681/gimp-painter",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+        "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-x",
+        "c",
+        "-fsyntax-only",
+        "-"
+      ],
+      "exit_code": 0,
+      "stderr": ""
+    },
+    {
+      "header": "app/operations/operations-enums.h",
+      "language": "c++",
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/workspace/scratch/5b5281e79681/gimp-painter",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+        "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-x",
+        "c++",
+        "-fsyntax-only",
+        "-"
+      ],
+      "exit_code": 0,
+      "stderr": ""
+    },
+    {
+      "header": "libgimp/gimpenums.h",
+      "language": "c",
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/workspace/scratch/5b5281e79681/gimp-painter",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+        "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-x",
+        "c",
+        "-fsyntax-only",
+        "-"
+      ],
+      "exit_code": 0,
+      "stderr": ""
+    },
+    {
+      "header": "libgimp/gimpenums.h",
+      "language": "c++",
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/workspace/scratch/5b5281e79681/gimp-painter",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+        "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-x",
+        "c++",
+        "-fsyntax-only",
+        "-"
+      ],
+      "exit_code": 0,
+      "stderr": ""
+    }
+  ],
+  "runtime": {
+    "command": [
+      "cc",
+      "-std=c11",
+      "-I/workspace/scratch/5b5281e79681/gimp-painter",
+      "/tmp/painter-public-modes-zxvy67_2/probe.c",
+      "-L/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimp",
+      "-Wl,-rpath,/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimp",
+      "-lgimp-3.0",
+      "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+      "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+      "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+      "-pthread",
+      "-lgobject-2.0",
+      "-lglib-2.0",
+      "-o",
+      "/tmp/painter-public-modes-zxvy67_2/probe"
+    ],
+    "runtime_library_path": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimp:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu",
+    "library": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimp/libgimp-3.0.so.0.8.1",
+    "library_sha256": "3b9ef020977efcd341fd05386a12e8e5c347687b409615897277c976191aa627",
+    "link_exit": 0,
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "passed": true
+}

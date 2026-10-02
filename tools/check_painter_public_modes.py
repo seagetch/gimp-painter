@@ -22,11 +22,27 @@ def modes(text):
         result[name.strip()]=value
     return result
 
+def pdb_modes(text):
+    section=text.split('    GimpLayerMode =>\n',1)[1].split('\n    GimpConvertDitherType =>',1)[0]
+    values={name:int(value) for name,value in re.findall(r"(GIMP_LAYER_MODE_\w+)\s*=>\s*'(-?\d+)'",section)}
+    contiguous=int(re.search(r'contig\s*=>\s*(\d+)',section).group(1))
+    return values,contiguous
+
+def check_pdb(pdb,public):
+    values,contiguous=pdb
+    errors=[]
+    if values!=public:errors.append('Generated PDB mode table differs from public enum')
+    ordered=sorted(public.values())
+    expected=int(ordered==list(range(ordered[0],ordered[-1]+1)))
+    if contiguous!=expected:errors.append('Generated PDB enum contiguity flag ignores hidden slots')
+    return errors
+
 def check(compile_probes=False, runtime_build=None):
     paths=['app/operations/operations-enums.h','libgimp/gimpenums.h']
     app,public=[modes((ROOT/p).read_text()) for p in paths]
     baseline=json.loads((ROOT/'migration/baseline/layer-mode-values.json').read_text())['values']
-    errors=[]
+    pdb=pdb_modes((ROOT/'pdb/enums.pl').read_text())
+    errors=check_pdb(pdb,public)
     for name,value in public.items():
         if app.get(name)!=value:errors.append(f'{name}: public={value}, app={app.get(name)}')
     for name,value in baseline.items():
@@ -62,7 +78,7 @@ def check(compile_probes=False, runtime_build=None):
             run=subprocess.run([str(exe)],env=env,text=True,capture_output=True) if linked.returncode==0 else linked
             runtime=dict(command=command,runtime_library_path=env['LD_LIBRARY_PATH'],library=str(library.resolve()),library_sha256=hashlib.sha256(library.read_bytes()).hexdigest(),link_exit=linked.returncode,exit_code=run.returncode,stdout=run.stdout,stderr=linked.stderr+run.stderr)
             if linked.returncode or run.returncode:errors.append('Native public GType enum values differ')
-    return dict(scope='Public C/C++ Painter mode identity against native app and unchanged upstream values; not PDB transport/pixel acceptance',source_sha256={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths+['migration/baseline/layer-mode-values.json','tools/check_painter_public_modes.py','pdb/enumgen.pl','pdb/enumcode.pl']},public_modes=len(public),upstream_modes=len(baseline),painter_modes=expected,errors=errors,probes=probes,runtime=runtime,passed=not errors)
+    return dict(scope='Public C/C++ Painter mode identity against native app and unchanged upstream values; generated PDB table verified, not PDB transport/pixel acceptance',source_sha256={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths+['migration/baseline/layer-mode-values.json','tools/check_painter_public_modes.py','pdb/enumgen.pl','pdb/enumcode.pl','pdb/enums.pl']},public_modes=len(public),generated_pdb_modes=len(pdb[0]),generated_pdb_contiguous=pdb[1],upstream_modes=len(baseline),painter_modes=expected,errors=errors,probes=probes,runtime=runtime,passed=not errors)
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--compile',action='store_true');p.add_argument('--report',type=Path);p.add_argument('--runtime-build',type=Path);a=p.parse_args();r=check(a.compile,a.runtime_build)
     if a.report:a.report.write_text(json.dumps(r,indent=2)+'\n')

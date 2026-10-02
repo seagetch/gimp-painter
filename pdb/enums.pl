@@ -717,7 +717,7 @@ package Gimp::CodeGen::enums;
 		       GIMP_LAYER_COMPOSITE_INTERSECTION => '4' }
 	},
     GimpLayerMode =>
-	{ contig => 1,
+	{ contig => 0,
 	  header => 'operations/operations-enums.h',
 	  symbols => [ qw(GIMP_LAYER_MODE_NORMAL_LEGACY
 			  GIMP_LAYER_MODE_DISSOLVE
@@ -845,15 +845,15 @@ package Gimp::CodeGen::enums;
 		       GIMP_LAYER_MODE_SPLIT => '60',
 		       GIMP_LAYER_MODE_PASS_THROUGH => '61',
 		       GIMP_LAYER_MODE_REPLACE => '62',
-		       GIMP_LAYER_MODE_PAINTER_ERASE => '63',
-		       GIMP_LAYER_MODE_PAINTER_REPLACE => '64',
-		       GIMP_LAYER_MODE_PAINTER_ANTI_ERASE => '65',
-		       GIMP_LAYER_MODE_PAINTER_SRC_IN => '66',
-		       GIMP_LAYER_MODE_PAINTER_DST_IN => '67',
-		       GIMP_LAYER_MODE_PAINTER_SRC_OUT => '68',
-		       GIMP_LAYER_MODE_PAINTER_DST_OUT => '69',
-		       GIMP_LAYER_MODE_PAINTER_NORMAL => '70',
-		       GIMP_LAYER_MODE_PAINTER_MULTIPLY => '71' }
+		       GIMP_LAYER_MODE_PAINTER_ERASE => '64',
+		       GIMP_LAYER_MODE_PAINTER_REPLACE => '65',
+		       GIMP_LAYER_MODE_PAINTER_ANTI_ERASE => '66',
+		       GIMP_LAYER_MODE_PAINTER_SRC_IN => '67',
+		       GIMP_LAYER_MODE_PAINTER_DST_IN => '68',
+		       GIMP_LAYER_MODE_PAINTER_SRC_OUT => '69',
+		       GIMP_LAYER_MODE_PAINTER_DST_OUT => '70',
+		       GIMP_LAYER_MODE_PAINTER_NORMAL => '71',
+		       GIMP_LAYER_MODE_PAINTER_MULTIPLY => '72' }
 	},
     GimpConvertDitherType =>
 	{ contig => 1,

@@ -27,3 +27,16 @@ explicitly selects build-tree libgimp and records its checksum and limited
 library-path reproducibility information. The final compile and runtime probes
 pass. This is API identity acceptance, not a claim that every PDB transport or
 Script-Fu legacy alias is implemented or tested.
+
+## Generated PDB table closure
+
+The source-tree `pdb/enums.pl` generated table is also retained in Git. It must
+match all72 public values and declare the set noncontiguous because hidden
+native slot63 is absent. The generator already produced the corrected64–72
+Painter values; this follow-on commits that generated result and extends the
+same checker to reject table/header divergence and an incorrect contiguity flag.
+The four C11/C++14 compile probes and built libgimp GEnumClass check pass again,
+plus four Python checks including deliberate old-shift, hidden-mode and
+contiguity mutations. This verifies code-generation metadata, not every PDB or
+Script-Fu transport call. Original pre-correction and first-checkpoint reports
+remain unchanged; `painter-public-pdb-modes.json` records this exact follow-on.
