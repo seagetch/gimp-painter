@@ -12,6 +12,7 @@ struct _GimpPainterMybrush { GimpData parent_instance; gboolean binding_failed; 
 struct _GimpPainterMybrushClass { GimpDataClass parent_class; };
 GType gimp_painter_mybrush_get_type (void) G_GNUC_CONST;
 GimpData *gimp_painter_mybrush_new (GimpContext *context, const gchar *name);
+GimpData *gimp_painter_mybrush_get_standard (GimpContext *context);
 GList *gimp_painter_mybrush_load (GimpContext *context, GFile *file, GInputStream *input, GError **error);
 gchar *gimp_painter_mybrush_dup_json (GimpPainterMybrush *brush, GError **error);
 gboolean gimp_painter_mybrush_set_json (GimpPainterMybrush *brush, const gchar *json, GError **error);

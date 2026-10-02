@@ -153,7 +153,7 @@ gimp_data_factories_init (Gimp *gimp)
                                   "painter-mypaint-brush-path-writable",
                                   "mypaint-brush-paths",
                                   gimp_painter_mybrush_new,
-                                  NULL);
+                                  gimp_painter_mybrush_get_standard);
   gimp_object_set_static_name (GIMP_OBJECT (gimp->painter_mybrush_factory),
                                "painter mypaint brush factory");
   gimp_data_loader_factory_add_loader (gimp->painter_mybrush_factory,

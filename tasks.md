@@ -732,6 +732,7 @@
 | 19.012 | [ ] | writer のメタデータ出力を実装する | 19.011 | 未知情報と参照を保持 |
 | 19.013 | [ ] | data factory を接続する | 19.012 | 検索パス・読込み・更新を処理 |
 | 19.013/dedicated-factory | [x] | 拡張brushの独立factoryと配布pathを接続する | 19.001/resource-foundation | 実appで177読込→複製改名保存/再読込178→削除177、標準MyPaint件数不変を確認。全asset install登録、tool/editorは別gate |
+| 19.013/native-context-resource | [x] | 拡張brushを独立context property・継承・保存へ接続する | 19.013/dedicated-factory | 4 native通常/12source focused sanitizer合格。型/通知/継承・旧mypaint-brush別名読込・欠落名保存・finalizer再入とstale通知抑制を検証。標準MyPaint不変、登録tool/editorは別gate |
 | 19.013/preview-contract | [ ] | 拡張ブラシのサイズ・preview を GIMP 3 契約へ移す | 19.013, 01.005/gimp3-brush-callbacks | get_size の成功時に幅・高さを必ず設定し、GimpTempBuf と GeglColor の preview を所有権込みで検証 |
 | 19.013/icon-buffer | [ ] | MyPaint アイコンの画素バッファーを安全に所有する | 19.013, 01.007/icon-buffer | surface と data の破棄を結び、実 stride の領域を確保し、同一 surface の再設定を安全にする |
 | 19.014 | [ ] | ブラシの複製・改名・削除を接続する | 19.013 | 資源所有と保存先が整合 |

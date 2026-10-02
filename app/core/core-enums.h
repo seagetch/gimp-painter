@@ -720,8 +720,9 @@ typedef enum  /*< pdb-skip, skip >*/
   GIMP_CONTEXT_PROP_IMAGEFILE   = 19,
   GIMP_CONTEXT_PROP_TEMPLATE    = 20,
   GIMP_CONTEXT_PROP_EXPAND      = 21,
+  GIMP_CONTEXT_PROP_PAINTER_MYBRUSH = 22,
 
-  GIMP_CONTEXT_PROP_LAST        = GIMP_CONTEXT_PROP_TEMPLATE
+  GIMP_CONTEXT_PROP_LAST        = GIMP_CONTEXT_PROP_PAINTER_MYBRUSH
 } GimpContextPropType;
 
 
@@ -747,6 +748,7 @@ typedef enum  /*< pdb-skip, skip >*/
   GIMP_CONTEXT_PROP_MASK_IMAGEFILE   = 1 << 19,
   GIMP_CONTEXT_PROP_MASK_TEMPLATE    = 1 << 20,
   GIMP_CONTEXT_PROP_MASK_EXPAND      = 1 << 21,
+  GIMP_CONTEXT_PROP_MASK_PAINTER_MYBRUSH = 1 << 22,
 
   /*  aliases  */
   GIMP_CONTEXT_PROP_MASK_PAINT = (GIMP_CONTEXT_PROP_MASK_FOREGROUND |
@@ -764,6 +766,7 @@ typedef enum  /*< pdb-skip, skip >*/
                                   GIMP_CONTEXT_PROP_MASK_TOOL        |
                                   GIMP_CONTEXT_PROP_MASK_PAINT_INFO  |
                                   GIMP_CONTEXT_PROP_MASK_MYBRUSH     |
+                                  GIMP_CONTEXT_PROP_MASK_PAINTER_MYBRUSH |
                                   GIMP_CONTEXT_PROP_MASK_PALETTE     |
                                   GIMP_CONTEXT_PROP_MASK_FONT        |
                                   GIMP_CONTEXT_PROP_MASK_TOOL_PRESET |

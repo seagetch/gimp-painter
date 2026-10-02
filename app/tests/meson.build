@@ -55,6 +55,7 @@ app_tests = [
   'painter-navigation-events',
   'painter-perspective',
   'painter-perspective-ui',
+  'gimp-painter-context',
 ]
 
 # Prevent parallel builds for the tests

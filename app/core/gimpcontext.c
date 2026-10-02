@@ -48,6 +48,7 @@
 #include "gimpimage.h"
 #include "gimplineart.h"
 #include "gimpmybrush.h"
+#include "gimppaintermybrush.h"
 #include "gimppaintinfo.h"
 #include "gimppalette.h"
 #include "gimppattern.h"
@@ -201,6 +202,17 @@ static void gimp_context_mybrush_list_thaw   (GimpContainer    *container,
 static void gimp_context_real_set_mybrush    (GimpContext      *context,
                                               GimpMybrush      *brush);
 
+/*  painter_mybrush  */
+static void gimp_context_painter_mybrush_dirty       (GimpPainterMybrush      *brush,
+                                              GimpContext      *context);
+static void gimp_context_painter_mybrush_removed     (GimpContainer    *brush_list,
+                                              GimpPainterMybrush      *brush,
+                                              GimpContext      *context);
+static void gimp_context_painter_mybrush_list_thaw   (GimpContainer    *container,
+                                              GimpContext      *context);
+static void gimp_context_real_set_painter_mybrush    (GimpContext      *context,
+                                              GimpPainterMybrush      *brush);
+
 /*  pattern  */
 static void gimp_context_pattern_dirty       (GimpPattern      *pattern,
                                               GimpContext      *context);
@@ -306,7 +318,8 @@ static gpointer gimp_context_find_object     (GimpContext      *context,
 enum
 {
   GIMP_CONTEXT_PROP_0,
-  GIMP_CONTEXT_PROP_GIMP
+  GIMP_CONTEXT_PROP_GIMP,
+  GIMP_CONTEXT_PROP_PAINTER_MYBRUSH_LEGACY = 23
 
   /*  remaining values are in core-enums.h  (GimpContextPropType)  */
 };
@@ -334,6 +347,8 @@ enum
   BUFFER_CHANGED,
   IMAGEFILE_CHANGED,
   TEMPLATE_CHANGED,
+  DUMMY_EXPAND, /* bit21 is a paint-options mask, not a context property */
+  PAINTER_MYBRUSH_CHANGED,
   PROP_NAME_CHANGED,
   LAST_SIGNAL
 };
@@ -360,7 +375,9 @@ static const gchar * const gimp_context_prop_names[] =
   "tool-preset",
   "buffer",
   "imagefile",
-  "template"
+  "template",
+  NULL, /* GIMP_CONTEXT_PROP_EXPAND remains reserved */
+  "painter-mybrush"
 };
 
 static GType gimp_context_prop_types[] =
@@ -385,6 +402,8 @@ static GType gimp_context_prop_types[] =
   0,
   0,
   0,
+  0,
+  G_TYPE_NONE, /* reserved EXPAND */
   0
 };
 
@@ -507,6 +526,15 @@ gimp_context_class_init (GimpContextClass *klass)
                   G_TYPE_NONE, 1,
                   GIMP_TYPE_MYBRUSH);
 
+  gimp_context_signals[PAINTER_MYBRUSH_CHANGED] =
+    g_signal_new ("painter-mybrush-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpContextClass, painter_mybrush_changed),
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1,
+                  GIMP_TYPE_PAINTER_MYBRUSH);
+
   gimp_context_signals[PATTERN_CHANGED] =
     g_signal_new ("pattern-changed",
                   G_TYPE_FROM_CLASS (klass),
@@ -607,6 +635,7 @@ gimp_context_class_init (GimpContextClass *klass)
   klass->brush_changed           = NULL;
   klass->dynamics_changed        = NULL;
   klass->mybrush_changed         = NULL;
+  klass->painter_mybrush_changed = NULL;
   klass->pattern_changed         = NULL;
   klass->gradient_changed        = NULL;
   klass->palette_changed         = NULL;
@@ -623,6 +652,7 @@ gimp_context_class_init (GimpContextClass *klass)
   gimp_context_prop_types[GIMP_CONTEXT_PROP_BRUSH]       = GIMP_TYPE_BRUSH;
   gimp_context_prop_types[GIMP_CONTEXT_PROP_DYNAMICS]    = GIMP_TYPE_DYNAMICS;
   gimp_context_prop_types[GIMP_CONTEXT_PROP_MYBRUSH]     = GIMP_TYPE_MYBRUSH;
+  gimp_context_prop_types[GIMP_CONTEXT_PROP_PAINTER_MYBRUSH] = GIMP_TYPE_PAINTER_MYBRUSH;
   gimp_context_prop_types[GIMP_CONTEXT_PROP_PATTERN]     = GIMP_TYPE_PATTERN;
   gimp_context_prop_types[GIMP_CONTEXT_PROP_GRADIENT]    = GIMP_TYPE_GRADIENT;
   gimp_context_prop_types[GIMP_CONTEXT_PROP_PALETTE]     = GIMP_TYPE_PALETTE;
@@ -715,6 +745,19 @@ gimp_context_class_init (GimpContextClass *klass)
                            GIMP_TYPE_MYBRUSH,
                            GIMP_PARAM_STATIC_STRINGS);
 
+  GIMP_CONFIG_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_PAINTER_MYBRUSH,
+                           gimp_context_prop_names[GIMP_CONTEXT_PROP_PAINTER_MYBRUSH],
+                           _("MyPaint Brush"),
+                           _("MyPaint Brush"),
+                           GIMP_TYPE_PAINTER_MYBRUSH,
+                           GIMP_PARAM_STATIC_STRINGS);
+
+  /* Read old painter tool/context files, but write the distinct modern key. */
+  GIMP_CONFIG_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_PAINTER_MYBRUSH_LEGACY,
+                           "mypaint-brush", NULL, NULL,
+                           GIMP_TYPE_PAINTER_MYBRUSH,
+                           GIMP_PARAM_STATIC_STRINGS);
+
   GIMP_CONFIG_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_PATTERN,
                            gimp_context_prop_names[GIMP_CONTEXT_PROP_PATTERN],
                            _("Pattern"),
@@ -799,6 +842,9 @@ gimp_context_init (GimpContext *context)
 
   context->mybrush         = NULL;
   context->mybrush_name    = NULL;
+  context->painter_mybrush = NULL;
+  context->painter_mybrush_name = NULL;
+  context->painter_mybrush_revision = 0;
 
   context->pattern         = NULL;
   context->pattern_name    = NULL;
@@ -906,6 +952,14 @@ gimp_context_constructed (GObject *object)
                            G_CALLBACK (gimp_context_mybrush_list_thaw),
                            object, 0);
 
+  container = gimp_data_factory_get_container (gimp->painter_mybrush_factory);
+  g_signal_connect_object (container, "remove",
+                           G_CALLBACK (gimp_context_painter_mybrush_removed),
+                           object, 0);
+  g_signal_connect_object (container, "thaw",
+                           G_CALLBACK (gimp_context_painter_mybrush_list_thaw),
+                           object, 0);
+
   container = gimp_data_factory_get_container (gimp->pattern_factory);
   g_signal_connect_object (container, "remove",
                            G_CALLBACK (gimp_context_pattern_removed),
@@ -990,6 +1044,7 @@ gimp_context_dispose (GObject *object)
   g_clear_object (&context->brush);
   g_clear_object (&context->dynamics);
   g_clear_object (&context->mybrush);
+  g_clear_object (&context->painter_mybrush);
   g_clear_object (&context->pattern);
   g_clear_object (&context->gradient);
   g_clear_object (&context->palette);
@@ -1016,6 +1071,7 @@ gimp_context_finalize (GObject *object)
   g_clear_pointer (&context->brush_name,       g_free);
   g_clear_pointer (&context->dynamics_name,    g_free);
   g_clear_pointer (&context->mybrush_name,     g_free);
+  g_clear_pointer (&context->painter_mybrush_name, g_free);
   g_clear_pointer (&context->pattern_name,     g_free);
   g_clear_pointer (&context->gradient_name,    g_free);
   g_clear_pointer (&context->palette_name,     g_free);
@@ -1077,6 +1133,11 @@ gimp_context_set_property (GObject      *object,
       break;
     case GIMP_CONTEXT_PROP_MYBRUSH:
       gimp_context_set_mybrush (context, g_value_get_object (value));
+      break;
+
+    case GIMP_CONTEXT_PROP_PAINTER_MYBRUSH_LEGACY:
+    case GIMP_CONTEXT_PROP_PAINTER_MYBRUSH:
+      gimp_context_set_painter_mybrush (context, g_value_get_object (value));
       break;
     case GIMP_CONTEXT_PROP_PATTERN:
       gimp_context_set_pattern (context, g_value_get_object (value));
@@ -1154,6 +1215,11 @@ gimp_context_get_property (GObject    *object,
     case GIMP_CONTEXT_PROP_MYBRUSH:
       g_value_set_object (value, gimp_context_get_mybrush (context));
       break;
+
+    case GIMP_CONTEXT_PROP_PAINTER_MYBRUSH_LEGACY:
+    case GIMP_CONTEXT_PROP_PAINTER_MYBRUSH:
+      g_value_set_object (value, gimp_context_get_painter_mybrush (context));
+      break;
     case GIMP_CONTEXT_PROP_PATTERN:
       g_value_set_object (value, gimp_context_get_pattern (context));
       break;
@@ -1196,6 +1262,7 @@ gimp_context_get_memsize (GimpObject *object,
   memsize += gimp_string_get_memsize (context->brush_name);
   memsize += gimp_string_get_memsize (context->dynamics_name);
   memsize += gimp_string_get_memsize (context->mybrush_name);
+  memsize += gimp_string_get_memsize (context->painter_mybrush_name);
   memsize += gimp_string_get_memsize (context->pattern_name);
   memsize += gimp_string_get_memsize (context->palette_name);
   memsize += gimp_string_get_memsize (context->font_name);
@@ -1260,6 +1327,7 @@ gimp_context_serialize_property (GimpConfig       *config,
     case GIMP_CONTEXT_PROP_BRUSH:
     case GIMP_CONTEXT_PROP_DYNAMICS:
     case GIMP_CONTEXT_PROP_MYBRUSH:
+    case GIMP_CONTEXT_PROP_PAINTER_MYBRUSH:
     case GIMP_CONTEXT_PROP_PATTERN:
     case GIMP_CONTEXT_PROP_GRADIENT:
     case GIMP_CONTEXT_PROP_PALETTE:
@@ -1274,7 +1342,11 @@ gimp_context_serialize_property (GimpConfig       *config,
 
   gimp_config_writer_open (writer, pspec->name);
 
-  if (serialize_obj)
+  if (property_id == GIMP_CONTEXT_PROP_PAINTER_MYBRUSH &&
+      context->painter_mybrush_name &&
+      serialize_obj == GIMP_OBJECT (gimp_painter_mybrush_get_standard (context)))
+    gimp_config_writer_string (writer, context->painter_mybrush_name);
+  else if (serialize_obj)
     gimp_config_writer_string (writer, gimp_object_get_name (serialize_obj));
   else
     gimp_config_writer_print (writer, "NULL", 4);
@@ -1328,6 +1400,13 @@ gimp_context_deserialize_property (GimpConfig *object,
       container = gimp_data_factory_get_container (context->gimp->mybrush_factory);
       standard  = gimp_mybrush_get_standard (context);
       name_loc  = &context->mybrush_name;
+      break;
+
+    case GIMP_CONTEXT_PROP_PAINTER_MYBRUSH_LEGACY:
+    case GIMP_CONTEXT_PROP_PAINTER_MYBRUSH:
+      container = gimp_data_factory_get_container (context->gimp->painter_mybrush_factory);
+      standard  = gimp_painter_mybrush_get_standard (context);
+      name_loc  = &context->painter_mybrush_name;
       break;
 
     case GIMP_CONTEXT_PROP_PATTERN:
@@ -1413,6 +1492,7 @@ gimp_context_duplicate (GimpConfig *config)
   COPY_NAME (context, new, brush_name);
   COPY_NAME (context, new, dynamics_name);
   COPY_NAME (context, new, mybrush_name);
+  COPY_NAME (context, new, painter_mybrush_name);
   COPY_NAME (context, new, pattern_name);
   COPY_NAME (context, new, gradient_name);
   COPY_NAME (context, new, palette_name);
@@ -1439,6 +1519,7 @@ gimp_context_copy (GimpConfig  *src,
   COPY_NAME (src_context, dest_context, brush_name);
   COPY_NAME (src_context, dest_context, dynamics_name);
   COPY_NAME (src_context, dest_context, mybrush_name);
+  COPY_NAME (src_context, dest_context, painter_mybrush_name);
   COPY_NAME (src_context, dest_context, pattern_name);
   COPY_NAME (src_context, dest_context, gradient_name);
   COPY_NAME (src_context, dest_context, palette_name);
@@ -1601,7 +1682,7 @@ gimp_context_define_properties (GimpContext         *context,
   g_return_if_fail (GIMP_IS_CONTEXT (context));
 
   for (prop = GIMP_CONTEXT_PROP_FIRST; prop <= GIMP_CONTEXT_PROP_LAST; prop++)
-    if ((1 << prop) & prop_mask)
+    if (prop != GIMP_CONTEXT_PROP_EXPAND && ((1 << prop) & prop_mask))
       gimp_context_define_property (context, prop, defined);
 }
 
@@ -1689,6 +1770,11 @@ gimp_context_copy_property (GimpContext         *src,
       COPY_NAME (src, dest, mybrush_name);
       break;
 
+    case GIMP_CONTEXT_PROP_PAINTER_MYBRUSH:
+      gimp_context_real_set_painter_mybrush (dest, src->painter_mybrush);
+      COPY_NAME (src, dest, painter_mybrush_name);
+      break;
+
     case GIMP_CONTEXT_PROP_PATTERN:
       gimp_context_real_set_pattern (dest, src->pattern);
       COPY_NAME (src, dest, pattern_name);
@@ -1745,7 +1831,7 @@ gimp_context_copy_properties (GimpContext         *src,
   g_return_if_fail (GIMP_IS_CONTEXT (dest));
 
   for (prop = GIMP_CONTEXT_PROP_FIRST; prop <= GIMP_CONTEXT_PROP_LAST; prop++)
-    if ((1 << prop) & prop_mask)
+    if (prop != GIMP_CONTEXT_PROP_EXPAND && ((1 << prop) & prop_mask))
       gimp_context_copy_property (src, dest, prop);
 }
 
@@ -1762,7 +1848,8 @@ gimp_context_type_to_property (GType type)
 
   for (prop = GIMP_CONTEXT_PROP_FIRST; prop <= GIMP_CONTEXT_PROP_LAST; prop++)
     {
-      if (g_type_is_a (type, gimp_context_prop_types[prop]))
+      if (prop != GIMP_CONTEXT_PROP_EXPAND &&
+          g_type_is_a (type, gimp_context_prop_types[prop]))
         return prop;
     }
 
@@ -1776,7 +1863,8 @@ gimp_context_type_to_prop_name (GType type)
 
   for (prop = GIMP_CONTEXT_PROP_FIRST; prop <= GIMP_CONTEXT_PROP_LAST; prop++)
     {
-      if (g_type_is_a (type, gimp_context_prop_types[prop]))
+      if (prop != GIMP_CONTEXT_PROP_EXPAND &&
+          g_type_is_a (type, gimp_context_prop_types[prop]))
         return gimp_context_prop_names[prop];
     }
 
@@ -1790,7 +1878,8 @@ gimp_context_type_to_signal_name (GType type)
 
   for (prop = GIMP_CONTEXT_PROP_FIRST; prop <= GIMP_CONTEXT_PROP_LAST; prop++)
     {
-      if (g_type_is_a (type, gimp_context_prop_types[prop]))
+      if (prop != GIMP_CONTEXT_PROP_EXPAND &&
+          g_type_is_a (type, gimp_context_prop_types[prop]))
         return g_signal_name (gimp_context_signals[prop]);
     }
 
@@ -2942,6 +3031,131 @@ gimp_context_real_set_mybrush (GimpContext *context,
 
   g_object_notify (G_OBJECT (context), "mybrush");
   gimp_context_mybrush_changed (context);
+}
+
+
+/*  painter_mybrush  *****************************************************************/
+
+GimpPainterMybrush *
+gimp_context_get_painter_mybrush (GimpContext *context)
+{
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+
+  return context->painter_mybrush;
+}
+
+void
+gimp_context_set_painter_mybrush (GimpContext *context,
+                          GimpPainterMybrush *brush)
+{
+  g_return_if_fail (GIMP_IS_CONTEXT (context));
+  g_return_if_fail (brush == NULL || GIMP_IS_PAINTER_MYBRUSH (brush));
+
+  context_find_defined (context, GIMP_CONTEXT_PROP_PAINTER_MYBRUSH);
+
+  gimp_context_real_set_painter_mybrush (context, brush);
+}
+
+void
+gimp_context_painter_mybrush_changed (GimpContext *context)
+{
+  g_return_if_fail (GIMP_IS_CONTEXT (context));
+
+  g_signal_emit (context,
+                 gimp_context_signals[PAINTER_MYBRUSH_CHANGED], 0,
+                 context->painter_mybrush);
+}
+
+static void
+gimp_context_painter_mybrush_dirty (GimpPainterMybrush *brush,
+                            GimpContext *context)
+{
+  if (!context->gimp || brush != context->painter_mybrush)
+    return;
+
+  g_set_str (&context->painter_mybrush_name, gimp_object_get_name (brush));
+
+  g_signal_emit (context, gimp_context_signals[PROP_NAME_CHANGED], 0,
+                 GIMP_CONTEXT_PROP_PAINTER_MYBRUSH);
+}
+
+static void
+gimp_context_painter_mybrush_list_thaw (GimpContainer *container,
+                                GimpContext   *context)
+{
+  GimpPainterMybrush *brush;
+
+  brush = gimp_context_find_object (context, container,
+                                    context->painter_mybrush_name,
+                                    gimp_painter_mybrush_get_standard (context));
+
+  gimp_context_real_set_painter_mybrush (context, brush);
+}
+
+static void
+gimp_context_painter_mybrush_removed (GimpContainer *container,
+                                     GimpPainterMybrush *brush,
+                                     GimpContext *context)
+{
+  if (brush == context->painter_mybrush)
+    {
+      guint64 revision;
+      GimpPainterMybrush *old;
+      g_object_ref (context);
+      g_signal_handlers_disconnect_by_func (brush,
+                                            gimp_context_painter_mybrush_dirty,
+                                            context);
+      old = context->painter_mybrush;
+      context->painter_mybrush = NULL;
+      revision = ++context->painter_mybrush_revision;
+      g_object_unref (old);
+      if (revision == context->painter_mybrush_revision && context->gimp &&
+          !gimp_container_frozen (container))
+        gimp_context_painter_mybrush_list_thaw (container, context);
+      g_object_unref (context);
+    }
+}
+
+
+static void
+gimp_context_real_set_painter_mybrush (GimpContext *context,
+                                      GimpPainterMybrush *brush)
+{
+  GimpPainterMybrush *old;
+  guint64 revision;
+
+  if (!context->gimp || context->painter_mybrush == brush)
+    return;
+
+  /* Publish a coherent selection before releasing the old resource: a resource
+   * finalizer or notify listener may reenter, or drop the caller's last context
+   * reference. Suppress the outer stale notification after a nested change. */
+  g_object_ref (context);
+  if (brush)
+    g_object_ref (brush);
+  old = context->painter_mybrush;
+  if (old)
+    g_signal_handlers_disconnect_by_func (old,
+                                          gimp_context_painter_mybrush_dirty,
+                                          context);
+  context->painter_mybrush = brush;
+  revision = ++context->painter_mybrush_revision;
+  if (brush != GIMP_PAINTER_MYBRUSH (gimp_painter_mybrush_get_standard (context)))
+    {
+      g_clear_pointer (&context->painter_mybrush_name, g_free);
+      if (brush)
+        context->painter_mybrush_name = g_strdup (gimp_object_get_name (brush));
+    }
+  if (brush)
+    g_signal_connect_object (brush, "name-changed",
+                             G_CALLBACK (gimp_context_painter_mybrush_dirty),
+                             context, 0);
+  g_clear_object (&old);
+  if (revision == context->painter_mybrush_revision && context->gimp)
+    g_object_notify (G_OBJECT (context), "painter-mybrush");
+  if (revision == context->painter_mybrush_revision && context->gimp)
+    gimp_context_painter_mybrush_changed (context);
+  g_object_unref (context);
 }
 
 

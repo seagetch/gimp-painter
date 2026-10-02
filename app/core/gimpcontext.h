@@ -79,6 +79,10 @@ struct _GimpContext
   GimpMybrush          *mybrush;
   gchar                *mybrush_name;
 
+  GimpPainterMybrush   *painter_mybrush;
+  gchar                *painter_mybrush_name;
+  guint64               painter_mybrush_revision;
+
   GimpPattern          *pattern;
   gchar                *pattern_name;
 
@@ -155,6 +159,9 @@ struct _GimpContextClass
                                GimpImagefile        *imagefile);
   void (* template_changed)   (GimpContext          *context,
                                GimpTemplate         *template_object);
+
+  void (* painter_mybrush_changed) (GimpContext *context,
+                                    GimpPainterMybrush *brush);
 
   void (* prop_name_changed)  (GimpContext          *context,
                                GimpContextPropType   prop);
@@ -307,6 +314,12 @@ GimpMybrush    * gimp_context_get_mybrush         (GimpContext     *context);
 void             gimp_context_set_mybrush         (GimpContext     *context,
                                                    GimpMybrush     *brush);
 void             gimp_context_mybrush_changed     (GimpContext     *context);
+
+
+/*  extended painter brush, separate from upstream MyPaint  */
+GimpPainterMybrush * gimp_context_get_painter_mybrush (GimpContext *context);
+void gimp_context_set_painter_mybrush (GimpContext *context, GimpPainterMybrush *brush);
+void gimp_context_painter_mybrush_changed (GimpContext *context);
 
 
 /*  pattern  */

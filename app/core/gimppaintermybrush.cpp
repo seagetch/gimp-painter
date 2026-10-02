@@ -142,6 +142,18 @@ GimpData *gimp_painter_mybrush_new (GimpContext *, const gchar *name)
     return GIMP_DATA (owner.release ());
   });
 }
+GimpData *gimp_painter_mybrush_get_standard (GimpContext *context)
+{
+  static GimpData *standard = nullptr;
+  if (!standard) {
+    standard = gimp_painter_mybrush_new (context, "Painter Standard");
+    if (!standard) return nullptr;
+    gimp_data_clean (standard);
+    gimp_data_make_internal (standard, "gimp-painter-mybrush-standard");
+    g_object_add_weak_pointer (G_OBJECT (standard), reinterpret_cast<gpointer *> (&standard));
+  }
+  return standard;
+}
 GList *gimp_painter_mybrush_load (GimpContext *context, GFile *file, GInputStream *input, GError **error)
 {
   return boundary<GList *> (error, nullptr, [&] {
