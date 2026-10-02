@@ -224,6 +224,35 @@ gimp_motion_buffer_end_stroke (GimpMotionBuffer *buffer)
   gimp_motion_buffer_event_queue_timeout (buffer);
 }
 
+void
+gimp_motion_buffer_cancel_stroke (GimpMotionBuffer *buffer)
+{
+  g_return_if_fail (GIMP_IS_MOTION_BUFFER (buffer));
+  if (buffer->event_delay_timeout)
+    {
+      g_source_remove (buffer->event_delay_timeout);
+      buffer->event_delay_timeout = 0;
+    }
+  buffer->event_delay = FALSE;
+  g_array_set_size (buffer->event_queue, 0);
+  g_array_set_size (buffer->event_history, 0);
+}
+
+void
+gimp_motion_buffer_set_stroke_origin (GimpMotionBuffer *buffer,
+                                      const GimpCoords *origin,
+                                      guint32 time)
+{
+  g_return_if_fail (GIMP_IS_MOTION_BUFFER (buffer));
+  g_return_if_fail (origin != NULL);
+  gimp_motion_buffer_cancel_stroke (buffer);
+  buffer->last_coords = *origin;
+  buffer->last_read_motion_time = time;
+  /* Preserve the previously evaluated velocity time base and smoothing
+   * state, as begin_stroke does. Only the coordinate comparison origin and
+   * interpolation history change for a delayed ruler press. */
+}
+
 /**
  * gimp_motion_buffer_motion_event:
  * @buffer:
@@ -297,8 +326,11 @@ gimp_motion_buffer_motion_event (GimpMotionBuffer *buffer,
        */
       filter = MIN (1.0 / scale_x, 1.0 / scale_y) / 2.0;
 
+      /* Painter brushes react to stationary pressure changes, including
+       * samples sharing a timestamp with their predecessor. */
       if (fabs (delta_x) < filter &&
-          fabs (delta_y) < filter)
+          fabs (delta_y) < filter &&
+          last_dir_event.pressure == coords->pressure)
         {
           return FALSE;
         }

@@ -27,6 +27,7 @@
 
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
+#include "gimpdisplayshell-tool-events.h"
 #include "gimpdisplayshell-autoscroll.h"
 #include "gimpdisplayshell-scroll.h"
 #include "gimpdisplayshell-transform.h"
@@ -167,10 +168,13 @@ gimp_display_shell_autoscroll_timeout (gpointer data)
                                           x, y, width, height);
         }
 
-      tool_manager_motion_active (display->gimp,
-                                  &image_coords,
-                                  info->time, info->state,
-                                  display);
+      if (shell->perspective_pending || shell->perspective_locked)
+        gimp_display_shell_perspective_motion (shell, &image_coords,
+                                               info->time, info->state, TRUE);
+      else if (gimp_tool_control_is_active (active_tool->control) ||
+               active_tool->want_full_motion_tracking)
+        tool_manager_motion_active (display->gimp, &image_coords,
+                                    info->time, info->state, display);
 
       return TRUE;
     }

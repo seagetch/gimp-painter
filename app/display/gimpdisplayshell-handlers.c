@@ -56,6 +56,8 @@
 #include "gimpcanvassamplepoint.h"
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
+#include "gimpdisplayshell-tool-events.h"
+#include "gimpmotionbuffer.h"
 #include "gimpdisplayshell-appearance.h"
 #include "gimpdisplayshell-callbacks.h"
 #include "gimpdisplayshell-expose.h"
@@ -181,6 +183,21 @@ static void  gimp_display_shell_display_changed_handler     (GimpContext      *c
                                                              GimpDisplayShell *shell);
 
 
+static void
+gimp_display_shell_perspective_tool_changed (GimpContext *context,
+                                              GimpToolInfo *tool_info,
+                                              GimpDisplayShell *shell)
+{
+  gimp_display_shell_reset_perspective_snap (shell);
+  gimp_motion_buffer_cancel_stroke (shell->motion_buffer);
+}
+
+static void
+gimp_display_shell_perspective_guide_changed (GimpImage *image, GimpDisplayShell *shell)
+{
+  gimp_display_shell_reset_perspective_snap (shell);
+}
+
 /*  public functions  */
 
 void
@@ -200,12 +217,17 @@ gimp_display_shell_connect (GimpDisplayShell *shell)
 
   g_return_if_fail (GIMP_IS_IMAGE (image));
 
+  g_signal_connect (image, "perspective-guide-changed",
+                    G_CALLBACK (gimp_display_shell_perspective_guide_changed), shell);
+
   paths = gimp_image_get_paths (image);
 
   config       = shell->display->config;
   color_config = GIMP_CORE_CONFIG (config)->color_management;
 
   user_context = gimp_get_user_context (shell->display->gimp);
+  g_signal_connect (user_context, "tool-changed",
+                    G_CALLBACK (gimp_display_shell_perspective_tool_changed), shell);
 
   g_signal_connect (image, "clean",
                     G_CALLBACK (gimp_display_shell_clean_dirty_handler),
@@ -445,12 +467,19 @@ gimp_display_shell_disconnect (GimpDisplayShell *shell)
 
   g_return_if_fail (GIMP_IS_IMAGE (image));
 
+  g_signal_handlers_disconnect_by_func (image,
+    gimp_display_shell_perspective_guide_changed, shell);
+  gimp_motion_buffer_cancel_stroke (shell->motion_buffer);
+
   paths = gimp_image_get_paths (image);
 
   config       = shell->display->config;
   color_config = GIMP_CORE_CONFIG (config)->color_management;
 
   user_context = gimp_get_user_context (shell->display->gimp);
+  gimp_display_shell_reset_perspective_snap (shell);
+  g_signal_handlers_disconnect_by_func (user_context,
+    gimp_display_shell_perspective_tool_changed, shell);
 
   gimp_canvas_layer_boundary_set_layers (GIMP_CANVAS_LAYER_BOUNDARY (shell->layer_boundary),
                                          NULL);

@@ -903,6 +903,7 @@
 | 26.006 | [ ] | 消失点 hit test を移植する | 26.005 | 画面縮尺を考慮して選択 |
 | 26.007 | [ ] | 描画方向の決定を移植する | 26.006 | 旧判定距離と優先方向が一致 |
 | 26.008 | [ ] | 筆跡拘束を移植する | 26.007 | 確定方向へ入力座標を射影 |
+| 26.008/production-event-route | [x] | 定規の遅延開始・全motion・解除をnative eventへ接続する | 26.001/model-editor-checkpoint, 25.011/native-event-route | core9/UI6/events9/navigation4の28通常/28 focused sanitizer合格。32px拘束・history/autoscroll・tool/image再入・Escape・hover圧・statusbarを検証。実tablet/全brush smoothing/symmetry併用は別gate |
 | 26.009 | [ ] | stroke 終了時の拘束解除を実装する | 26.008 | 次の stroke に状態が漏れない |
 | 26.010 | [ ] | 定規編集 Undo を接続する | 26.009 | 追加・移動・削除を復元 |
 | 26.011 | [ ] | 定規の保存対象を照合して接続する | 26.010 | 旧保存・非保存の境界を変更せず対応 |

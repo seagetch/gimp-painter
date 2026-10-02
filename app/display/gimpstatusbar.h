@@ -70,6 +70,7 @@ struct _GimpStatusbar
   GtkWidget           *cursor_label;
   GtkWidget           *unit_combo;
   GtkWidget           *scale_combo;
+  GtkWidget           *perspective_snap_toggle;
   GtkWidget           *rotate_widget;
   GtkWidget           *rotate_label;
   GtkWidget           *horizontal_flip_icon;

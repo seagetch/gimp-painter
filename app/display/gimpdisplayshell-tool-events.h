@@ -19,6 +19,16 @@
 #define __GIMP_DISPLAY_SHELL_TOOL_EVENTS_H__
 
 
+void       gimp_display_shell_set_perspective_snap    (GimpDisplayShell *shell,
+                                                       gboolean          enabled);
+void       gimp_display_shell_reset_perspective_snap  (GimpDisplayShell *shell);
+/* Shared production route for live and historical image-coordinate samples. */
+gboolean   gimp_display_shell_perspective_motion      (GimpDisplayShell *shell,
+                                                       GimpCoords       *coords,
+                                                       guint32           time,
+                                                       GdkModifierType   state,
+                                                       gboolean          event_fill);
+
 gboolean   gimp_display_shell_events                  (GtkWidget        *widget,
                                                        GdkEvent         *event,
                                                        GimpDisplayShell *shell);

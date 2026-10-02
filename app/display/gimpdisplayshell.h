@@ -216,6 +216,19 @@ struct _GimpDisplayShell
   gboolean           button1_release_pending;
   const gchar       *space_shaded_tool;
 
+  /* Session-only perspective constraint. Owned C references prevent stale
+   * pending input from crossing a tool/image/guide lifetime boundary. */
+  guint64            painter_motion_generation;
+  gboolean           snap_perspective;
+  gboolean           perspective_pending;
+  gboolean           perspective_locked;
+  GimpCoords         perspective_origin;
+  guint32            perspective_last_motion_time;
+  gdouble            perspective_angle;
+  GObject           *perspective_tool;
+  GimpImage         *perspective_image;
+  GimpPerspectiveGuide *perspective_model;
+
   /* Modifier action currently ON. */
   GimpModifierAction mod_action;
   gchar             *mod_action_desc;

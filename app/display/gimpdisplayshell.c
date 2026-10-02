@@ -836,6 +836,7 @@ gimp_display_shell_dispose (GObject *object)
 {
   GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (object);
 
+  gimp_display_shell_reset_perspective_snap (shell);
   if (shell->display && gimp_display_get_shell (shell->display))
     gimp_display_shell_disconnect (shell);
 

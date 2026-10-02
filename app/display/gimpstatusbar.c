@@ -43,6 +43,7 @@
 
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
+#include "gimpdisplayshell-tool-events.h"
 #include "gimpdisplayshell-scale.h"
 #include "gimpimagewindow.h"
 #include "gimpscalecombobox.h"
@@ -236,6 +237,14 @@ gimp_statusbar_progress_iface_init (GimpProgressInterface *iface)
 }
 
 static void
+gimp_statusbar_perspective_toggled (GtkToggleButton *button, GimpStatusbar *statusbar)
+{
+  if (statusbar->shell)
+    gimp_display_shell_set_perspective_snap (statusbar->shell,
+                                            gtk_toggle_button_get_active (button));
+}
+
+static void
 gimp_statusbar_init (GimpStatusbar *statusbar)
 {
   GtkWidget     *hbox;
@@ -334,6 +343,15 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
   g_signal_connect (statusbar->scale_combo, "entry-activated",
                     G_CALLBACK (gimp_statusbar_scale_activated),
                     statusbar);
+
+  statusbar->perspective_snap_toggle = gtk_toggle_button_new_with_label (_("Snap to perspective"));
+  gtk_widget_set_name (statusbar->perspective_snap_toggle, "painter-perspective-snap");
+  gtk_widget_set_can_focus (statusbar->perspective_snap_toggle, FALSE);
+  gtk_button_set_relief (GTK_BUTTON (statusbar->perspective_snap_toggle), GTK_RELIEF_NONE);
+  gtk_box_pack_start (GTK_BOX (hbox), statusbar->perspective_snap_toggle, FALSE, FALSE, 0);
+  gtk_widget_show (statusbar->perspective_snap_toggle);
+  g_signal_connect (statusbar->perspective_snap_toggle, "toggled",
+                    G_CALLBACK (gimp_statusbar_perspective_toggled), statusbar);
 
   /* Shell transform status */
   statusbar->rotate_widget = gtk_event_box_new ();
@@ -1283,6 +1301,7 @@ gimp_statusbar_set_shell (GimpStatusbar    *statusbar,
     }
 
   statusbar->shell = shell;
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (statusbar->perspective_snap_toggle), shell->snap_perspective);
 
   g_signal_connect_object (statusbar->shell, "scaled",
                            G_CALLBACK (gimp_statusbar_shell_scaled),

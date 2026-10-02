@@ -81,6 +81,11 @@ void       gimp_motion_buffer_begin_stroke         (GimpMotionBuffer *buffer,
                                                     guint32           time,
                                                     GimpCoords       *last_motion);
 void       gimp_motion_buffer_end_stroke           (GimpMotionBuffer *buffer);
+/* Discard queued/delayed samples when their tool or image is replaced. */
+void       gimp_motion_buffer_cancel_stroke        (GimpMotionBuffer *buffer);
+void       gimp_motion_buffer_set_stroke_origin    (GimpMotionBuffer *buffer,
+                                                    const GimpCoords *origin,
+                                                    guint32           time);
 
 gboolean   gimp_motion_buffer_motion_event         (GimpMotionBuffer *buffer,
                                                     GimpCoords       *coords,

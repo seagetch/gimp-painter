@@ -35,6 +35,7 @@
 #include "core/gimp-filter-history.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
+#include "core/gimpimage-perspective-guide.h"
 #include "core/gimpimage-pick-item.h"
 #include "core/gimpitem.h"
 
@@ -160,6 +161,122 @@ static gboolean   gimp_display_triggers_context_menu          (const GdkEvent   
                                                                gboolean           force);
 
 
+/* The press and the activation sample intentionally remain separate: legacy
+ * rulers wait for 32 scaled pixels, then begin at the saved full origin. */
+static gboolean
+gimp_display_shell_begin_perspective_tool (GimpDisplayShell *shell,
+                                           GimpCoords       *coords,
+                                           guint32           time,
+                                           GdkModifierType   state)
+{
+  Gimp *gimp = gimp_display_get_gimp (shell->display);
+  GimpTool *tool;
+  GimpCoords last_motion;
+  gboolean active;
+
+  tool = tool_manager_get_active (gimp);
+  if (! tool) return FALSE;
+  g_object_ref (tool);
+  if (!gimp_display_shell_initialize_tool (shell, coords, state) ||
+      tool_manager_get_active (gimp) != tool)
+    { g_object_unref (tool); return FALSE; }
+  if (gimp_tool_control_get_motion_mode (tool->control) == GIMP_MOTION_MODE_EXACT)
+    gdk_window_set_event_compression (gtk_widget_get_window (shell->canvas), FALSE);
+  gimp_motion_buffer_begin_stroke (shell->motion_buffer, time, &last_motion);
+  coords->velocity = last_motion.velocity;
+  coords->direction = last_motion.direction;
+  if (shell->perspective_locked)
+    gimp_motion_buffer_set_stroke_origin (shell->motion_buffer, coords, time);
+  /* A tool may synchronously switch image or tool from button_press. */
+  tool_manager_button_press_active (gimp, coords, time, state,
+                                    GIMP_BUTTON_PRESS_NORMAL, shell->display);
+  active = tool_manager_get_active (gimp) == tool &&
+           gimp_tool_control_is_active (tool->control);
+  g_object_unref (tool);
+  return active;
+}
+
+static gboolean
+gimp_display_shell_perspective_valid (GimpDisplayShell *shell, GimpTool *tool)
+{
+  GimpImage *image = gimp_display_get_image (shell->display);
+  return shell->snap_perspective && tool && !tool->disable_lazy_snap &&
+         shell->perspective_tool == G_OBJECT (tool) &&
+         shell->perspective_image == image && image &&
+         shell->perspective_model == gimp_image_get_perspective_guide (image) &&
+         shell->perspective_model &&
+         gimp_perspective_guide_get_vanish_point_length (shell->perspective_model) > 0;
+}
+
+void
+gimp_display_shell_reset_perspective_snap (GimpDisplayShell *shell)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  ++shell->painter_motion_generation;
+  if ((shell->perspective_pending || shell->perspective_locked) && shell->motion_buffer)
+    gimp_motion_buffer_cancel_stroke (shell->motion_buffer);
+  shell->perspective_pending = FALSE;
+  shell->perspective_locked = FALSE;
+  shell->perspective_origin = (GimpCoords) { 0 };
+  shell->perspective_angle = 0;
+  shell->perspective_last_motion_time = 0;
+  g_clear_object (&shell->perspective_tool);
+  g_clear_object (&shell->perspective_image);
+  g_clear_object (&shell->perspective_model);
+}
+
+void
+gimp_display_shell_set_perspective_snap (GimpDisplayShell *shell, gboolean enabled)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->snap_perspective = !!enabled;
+  if (!enabled) gimp_display_shell_reset_perspective_snap (shell);
+  if (shell->statusbar && GIMP_STATUSBAR (shell->statusbar)->perspective_snap_toggle)
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (GIMP_STATUSBAR (shell->statusbar)->perspective_snap_toggle), !!enabled);
+}
+
+gboolean
+gimp_display_shell_perspective_motion (GimpDisplayShell *shell,
+                                       GimpCoords       *coords,
+                                       guint32           time,
+                                       GdkModifierType   state,
+                                       gboolean          event_fill)
+{
+  GimpTool *tool;
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+  g_return_val_if_fail (coords != NULL, FALSE);
+  if (!shell->display) return FALSE;
+  tool = tool_manager_get_active (gimp_display_get_gimp (shell->display));
+  if ((shell->perspective_pending || shell->perspective_locked) &&
+      (!gimp_display_shell_perspective_valid (shell, tool) || !(state & GDK_BUTTON1_MASK)))
+    gimp_display_shell_reset_perspective_snap (shell);
+  if (!tool) return FALSE;
+  if (shell->perspective_pending)
+    {
+      shell->perspective_last_motion_time = time;
+      if (gimp_perspective_guide_snap_angle (shell->perspective_model,
+            shell->perspective_origin.x, shell->perspective_origin.y,
+            coords->x, coords->y, shell->scale_x, shell->scale_y, &shell->perspective_angle))
+        {
+          GimpCoords origin = shell->perspective_origin;
+          shell->perspective_pending = FALSE;
+          shell->perspective_locked = TRUE;
+          if (!gimp_display_shell_begin_perspective_tool (shell, &origin, time, state))
+            gimp_display_shell_reset_perspective_snap (shell);
+        }
+      return FALSE; /* The threshold-crossing sample was also dropped by the old route. */
+    }
+  if (shell->perspective_locked)
+    gimp_perspective_guide_constrain (shell->perspective_angle,
+      shell->perspective_origin.x, shell->perspective_origin.y, &coords->x, &coords->y);
+  if (!gimp_tool_control_is_active (tool->control) && !tool->want_full_motion_tracking) return FALSE;
+  if (!gimp_motion_buffer_motion_event (shell->motion_buffer, coords, time, event_fill)) return FALSE;
+  g_object_ref (shell);
+  gimp_motion_buffer_request_stroke (shell->motion_buffer, state, time);
+  g_object_unref (shell);
+  return TRUE;
+}
+
 /*  public functions  */
 
 gboolean
@@ -201,7 +318,8 @@ gimp_display_shell_events (GtkWidget        *widget,
          */
         if (kevent->state & GDK_BUTTON1_MASK)
           {
-            if (kevent->keyval == GDK_KEY_Shift_L   ||
+            if ((kevent->keyval == GDK_KEY_Escape && shell->perspective_pending) ||
+                kevent->keyval == GDK_KEY_Shift_L   ||
                 kevent->keyval == GDK_KEY_Shift_R   ||
                 kevent->keyval == GDK_KEY_Control_L ||
                 kevent->keyval == GDK_KEY_Control_R ||
@@ -553,41 +671,31 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                                    GDK_BUTTON_RELEASE_MASK))
               return TRUE;
 
-            if (gimp_display_shell_initialize_tool (shell,
-                                                    &image_coords, state))
-              {
-                GimpTool       *active_tool;
-                GimpMotionMode  motion_mode;
-                GimpCoords      last_motion;
-
-                active_tool = tool_manager_get_active (gimp);
-                motion_mode = gimp_tool_control_get_motion_mode (active_tool->control);
-
-                if (motion_mode == GIMP_MOTION_MODE_EXACT)
-                  {
-                    /* enable motion compression for the canvas window for the
-                     * duration of the stroke
-                     */
-                    gdk_window_set_event_compression (gtk_widget_get_window (canvas), FALSE);
-                  }
-
-                /* Use the last evaluated velocity&direction instead of the
-                 * button_press event's ones because the click is
-                 * usually at the same spot as the last motion event
-                 * which would give us bogus derivate dynamics.
-                 */
-                gimp_motion_buffer_begin_stroke (shell->motion_buffer, time,
-                                                 &last_motion);
-
-                image_coords.velocity = last_motion.velocity;
-                image_coords.direction = last_motion.direction;
-
-                tool_manager_button_press_active (gimp,
-                                                  &image_coords,
-                                                  time, state,
-                                                  GIMP_BUTTON_PRESS_NORMAL,
-                                                  display);
-              }
+            {
+              GimpTool *active_tool = tool_manager_get_active (gimp);
+              GimpPerspectiveGuide *guide = gimp_image_get_perspective_guide (image);
+              gimp_display_shell_reset_perspective_snap (shell);
+              if (shell->snap_perspective && active_tool && !active_tool->disable_lazy_snap &&
+                  guide && gimp_perspective_guide_get_vanish_point_length (guide) > 0)
+                {
+                  /* Flush any full-tracking hover before arming a new origin. */
+                  gimp_motion_buffer_end_stroke (shell->motion_buffer);
+                  /* A prior hover curve must not seed interpolation off the
+                   * newly chosen ruler. Keep last_coords' derived dynamics. */
+                  gimp_motion_buffer_cancel_stroke (shell->motion_buffer);
+                  shell->perspective_origin = image_coords;
+                  shell->perspective_last_motion_time = time;
+                  shell->perspective_tool = g_object_ref (G_OBJECT (active_tool));
+                  shell->perspective_image = g_object_ref (image);
+                  shell->perspective_model = g_object_ref (guide);
+                  shell->perspective_pending = TRUE;
+                }
+              else
+                {
+                  /* No valid guide must not swallow an ordinary click. */
+                  gimp_display_shell_begin_perspective_tool (shell, &image_coords, time, state);
+                }
+            }
           }
         else
           {
@@ -699,6 +807,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
         if (bevent->button == 1 && shell->button1_release_pending)
           {
+            gimp_display_shell_reset_perspective_snap (shell);
             gimp_display_shell_released (shell, event, NULL);
             return TRUE;
           }
@@ -719,6 +828,10 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             if (! shell->grab_seat || shell->mod_action != GIMP_MODIFIER_ACTION_NONE)
               return TRUE;
 
+            if (shell->perspective_locked && gimp_display_shell_perspective_valid (shell, active_tool))
+              gimp_perspective_guide_constrain (shell->perspective_angle,
+                shell->perspective_origin.x, shell->perspective_origin.y, &image_coords.x, &image_coords.y);
+
             if (active_tool &&
                 (! gimp_image_is_empty (image) ||
                  gimp_tool_control_get_handle_empty_image (active_tool->control)))
@@ -736,6 +849,8 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                                         display);
                   }
               }
+
+            gimp_display_shell_reset_perspective_snap (shell);
 
             /*  update the tool's modifier state because it didn't get
              *  key events while BUTTON1 was down
@@ -867,6 +982,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
     case GDK_MOTION_NOTIFY:
       {
         GdkEventMotion *mevent = (GdkEventMotion *) event;
+        GimpTool       *active_tool = tool_manager_get_active (gimp);
 
         if (gimp->busy)
           return TRUE;
@@ -886,17 +1002,15 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
             gimp_display_shell_handle_scrolling (shell,
                                                  state, mevent->x, mevent->y);
           }
-        else if (state & GDK_BUTTON1_MASK)
+        else if ((state & GDK_BUTTON1_MASK) || shell->perspective_pending ||
+                 (active_tool && active_tool->want_full_motion_tracking))
           {
-            GimpTool       *active_tool;
-            GimpMotionMode  motion_mode;
+            GimpMotionMode motion_mode = active_tool ?
+              gimp_tool_control_get_motion_mode (active_tool->control) : GIMP_MOTION_MODE_COMPRESS;
 
-            active_tool = tool_manager_get_active (gimp);
-            motion_mode = gimp_tool_control_get_motion_mode (
-                            active_tool->control);
-
-            if (active_tool                                        &&
-                gimp_tool_control_is_active (active_tool->control) &&
+            if (active_tool &&
+                (shell->perspective_pending || active_tool->want_full_motion_tracking ||
+                 gimp_tool_control_is_active (active_tool->control)) &&
                 (! gimp_image_is_empty (image) ||
                  gimp_tool_control_get_handle_empty_image (active_tool->control)))
               {
@@ -907,7 +1021,8 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                 /*  if the first mouse button is down, check for automatic
                  *  scrolling...
                  */
-                if ((mevent->x < 0                 ||
+                if ((state & GDK_BUTTON1_MASK) &&
+                    (mevent->x < 0                 ||
                      mevent->y < 0                 ||
                      mevent->x > shell->disp_width ||
                      mevent->y > shell->disp_height) &&
@@ -925,9 +1040,11 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                  * risk losing some.
                  */
                 last_motion_time =
+                  shell->perspective_pending ? shell->perspective_last_motion_time :
                   gimp_motion_buffer_get_last_motion_time (shell->motion_buffer);
 
-                if (motion_mode == GIMP_MOTION_MODE_EXACT     &&
+                if ((gint32) (mevent->time - last_motion_time) > 1 &&
+                    motion_mode == GIMP_MOTION_MODE_EXACT     &&
                     shell->display->config->use_event_history &&
                     gdk_device_get_history (mevent->device, mevent->window,
                                             last_motion_time + 1,
@@ -936,6 +1053,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
                                             &n_history_events))
                   {
                     GimpDeviceInfo *device;
+                    guint64         generation = shell->painter_motion_generation;
                     gint            i;
 
                     device = gimp_device_info_get_by_device (mevent->device);
@@ -953,15 +1071,12 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
                         /* Early removal of useless events saves CPU time.
                          */
-                        if (gimp_motion_buffer_motion_event (shell->motion_buffer,
-                                                             &image_coords,
-                                                             history_events[i]->time,
-                                                             TRUE))
-                          {
-                            gimp_motion_buffer_request_stroke (shell->motion_buffer,
-                                                               state,
-                                                               history_events[i]->time);
-                          }
+                        gimp_display_shell_perspective_motion (shell, &image_coords,
+                          history_events[i]->time, state, TRUE);
+                        /* A callback replaced the recipient; discard the
+                         * remainder of this device-history batch. */
+                        if (generation != shell->painter_motion_generation)
+                          break;
                       }
 
                     gdk_device_free_history (history_events, n_history_events);
@@ -972,21 +1087,17 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
                     /* Early removal of useless events saves CPU time.
                      */
-                    if (gimp_motion_buffer_motion_event (shell->motion_buffer,
-                                                         &image_coords,
-                                                         time,
-                                                         event_fill))
-                      {
-                        gimp_motion_buffer_request_stroke (shell->motion_buffer,
-                                                           state,
-                                                           time);
-                      }
+                    gimp_display_shell_perspective_motion (shell, &image_coords,
+                                                           time, state, event_fill);
                   }
               }
           }
 
-        if (! (state &
-               (GDK_BUTTON1_MASK | GDK_BUTTON2_MASK | GDK_BUTTON3_MASK)))
+        /* A delayed begin or motion callback may replace and destroy the
+         * recipient. Never use the pointer captured before delivery here. */
+        active_tool = tool_manager_get_active (gimp);
+        if (!(active_tool && active_tool->want_full_motion_tracking) &&
+            ! (state & (GDK_BUTTON1_MASK | GDK_BUTTON2_MASK | GDK_BUTTON3_MASK)))
           {
             /* Early removal of useless events saves CPU time.
              * Pass event_fill = FALSE since we are only hovering.
@@ -1012,6 +1123,12 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
         GimpTool    *active_tool;
 
         active_tool = tool_manager_get_active (gimp);
+
+        if (kevent->keyval == GDK_KEY_Escape && shell->perspective_pending)
+          {
+            gimp_display_shell_reset_perspective_snap (shell);
+            return TRUE;
+          }
 
         if (state & GDK_BUTTON1_MASK)
           {
@@ -1484,8 +1601,8 @@ gimp_display_shell_buffer_stroke (GimpMotionBuffer *buffer,
 
   active_tool = tool_manager_get_active (gimp);
 
-  if (active_tool &&
-      gimp_tool_control_is_active (active_tool->control))
+  if (active_tool && !shell->perspective_pending &&
+      (gimp_tool_control_is_active (active_tool->control) || active_tool->want_full_motion_tracking))
     {
       tool_manager_motion_active (gimp,
                                   coords, time, state,

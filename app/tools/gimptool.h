@@ -49,6 +49,9 @@ struct _GimpTool
 
   GimpToolControl *control;
 
+  gboolean         want_full_motion_tracking; /* deliver hover/stationary axes */
+  gboolean         disable_lazy_snap;         /* ruler editing bypasses constraint */
+
   GimpDisplay     *display;     /*  pointer to currently active display    */
   GList           *drawables;   /*  list of the tool's current drawables   */
 

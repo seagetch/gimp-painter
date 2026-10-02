@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-02",
+  "scope": "Production perspective event/lazy-start/constraint/statusbar and full-motion delivery checkpoint; follows1f8376bfed",
+  "normal_cases": {
+    "core": 9,
+    "editor_overlay": 6,
+    "perspective_events": 9,
+    "navigation_regression": 4
+  },
+  "asan_ubsan_cases": {
+    "core": 9,
+    "editor_overlay": 6,
+    "perspective_events": 9,
+    "navigation_regression": 4
+  },
+  "all_exit_codes": 0,
+  "native_gui": "Real cloud Linux GTK/X11 display; final PERSPECTIVE_ALL_NATIVE_EXIT=0 visibly verified through CUA. Existing unrelated app/browser preserved.",
+  "app_link": "app/gimp-3.0 linked successfully",
+  "sanitizer_scope": "Model/common bridge/image owner/editor/overlay plus native event/statusbar/autoscroll/motion/base-tool adapters and tests; other upstream/dependencies uninstrumented; app-level leak detection disabled",
+  "fixed_regressions": [
+    "Escape blocked by button-down event filter",
+    "previous hover interpolation entering a constrained stroke",
+    "repeated endpoints compared against prior stroke rather than saved origin",
+    "stale active-tool pointer after reentrant delayed begin",
+    "queued samples and remaining history batch after recipient replacement"
+  ],
+  "known_setup_messages": "Missing optional icons/plugin dummy notices, D-Bus test instance message, and configured writable-folder save warning; no test assertion or sanitizer finding in final runs",
+  "limitations": [
+    "No physical tablet or driver history-acquisition replay",
+    "Recorded tool and shared history-sample route; every brush engine smoothing/symmetry composition remains a broader gate",
+    "App-level leak detection disabled; selected feature/native adapters instrumented, not entire dependency stack"
+  ],
+  "source_sha256": {
+    "app/display/gimpdisplayshell-autoscroll.c": "ed4714b61b00f0b079f575f867dd244b1b6af12b2ecaeefa35f0deea4d2feca8",
+    "app/display/gimpdisplayshell-handlers.c": "84655fc3ea029bbd8c62d93192f47aa8071816e5fb3c3501a786e14e40f06011",
+    "app/display/gimpdisplayshell-tool-events.c": "c94b047e59a1a908723bcd8545a3b4e09d02b43211a25ef47a64b7124047219d",
+    "app/display/gimpdisplayshell-tool-events.h": "1cd4e13dde0081549f613b564e4795fdc45a5ad1c9065d2821f96b90197d49a8",
+    "app/display/gimpdisplayshell.c": "cfa4dfa1019cdc15ef7b718bd6b6dff17b9e3186d27f30d80cc9b0d2e6f7d0d6",
+    "app/display/gimpdisplayshell.h": "4be134951015d0ed819c4ff6505e878e1220bf05ec0d1f25c51bd295456af61a",
+    "app/display/gimpmotionbuffer.c": "d5a140c305073cfa5fc898f76521df35a0ef88caf639c4167acc11c5679fb0a5",
+    "app/display/gimpmotionbuffer.h": "6df7ec6b7812bfd2b6dd754e2a4fafb7ffdefe7de042d63f7d7a0cd8c326e7ea",
+    "app/display/gimpstatusbar.c": "9c7ea1bd3bb133f9caf8cbd416ec11d6da9436830668fe45cdfc8382a051edd3",
+    "app/display/gimpstatusbar.h": "7ed7a0290bb9b8bb6ac2b8250517ace1f71a9a54a5dad7a6f0320d1c2763c87f",
+    "app/tools/gimptool.c": "1cea2acf0ca20ee8fe274ff826200992be7751b4cde45fc3fdc753120a0de0d5",
+    "app/tools/gimptool.h": "44a1f27c449be3cad009912bb1457c37bffc5c18d72a5d22b9fd0642eef1145c",
+    "app/tools/gimpperspectiveguidetool.cpp": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b",
+    "app/tests/test-painter-perspective-events.c": "168f22b90d9ce5bb16c42992ab7ad70abb88d3514919a3593261cec363660d39",
+    "app/tests/meson.build": "f4d1c0dc8a3198c1544f0352d15211b37d3fbbbc5dd9f17d1e22f1414c951f94"
+  },
+  "evidence_sha256": {
+    "migration/tests/perspective-final-painter-perspective-ui.txt": "2b638a940db3f6204e0c58b9d8a076414d476c8747850bc5f768231af4ef8ea0",
+    "migration/tests/perspective-final-painter-perspective-ui-asan.txt": "76b9d9b762cfdc87d26c2d8c7ddfd3f5af14dcf8d20cc3f5a942f709d640af12",
+    "migration/tests/perspective-final-painter-perspective-events.txt": "8dbced47f40514a44a22a49dde2b6d1313be8d7bec99c4e28530ea1aab60ea02",
+    "migration/tests/perspective-final-painter-perspective-events-asan.txt": "83e1325592bf9c639359e75f5484eeaf3f04d2faa390c3f3ea4301021e867991",
+    "migration/tests/perspective-final-painter-navigation-events.txt": "7eca8eff6bb37bcd8d12be1ab29c7b7ea286e7d405768a3bcec44e5a16be8083",
+    "migration/tests/perspective-final-painter-navigation-events-asan.txt": "2c670a974f327bbe0bcb8dd20587c94a85e06d32c9e9a0a70a212d845af82c26",
+    "migration/tests/perspective-event-core.txt": "2c3dbc9c7e0d372d3b971e27a096f173f1304bdc53fbb6e285a0673eee39db26",
+    "migration/tests/perspective-event-core.json": "ed9f8f8e520aaf606e4dce97043371154064a21f45f19bb1b977ff78239df1cd",
+    "migration/tests/perspective-event-core-sanitizers.txt": "9edefdeee67b1081e5ad8e601ecbfafaf820a9bda673cb7f82c3939eb5e67772"
+  },
+  "binaries_sha256": {
+    "build-debian13/app/gimp-3.0": "0e0ad064ec4cd4f13582515afa8ed1e5439c00e79235af3cee183cd2691b8ab8",
+    "build-debian13/app/tests/painter-perspective-ui": "c5e2bb806a5234cc37bcd6c6392c62880a4145233eb77430b904bab54a90aa83",
+    "build-debian13/app/tests/painter-perspective-ui-asan": "132fbad58967358df2f2c0684c34f121baa4988540bbc6f4c64b41bf3570e391",
+    "build-debian13/app/tests/painter-perspective-events": "3a359823452f66c9c3ca9e4203d93889540fc89383d901d59ec56eb7f21a0721",
+    "build-debian13/app/tests/painter-perspective-events-asan": "cd93ca8bc10c85a6db818ebc314d6297e9f65ddc86eca8f4abeb037b4171ba8e",
+    "build-debian13/app/tests/painter-navigation-events": "a35eaa49f0933c04884c73e347c619efe4fcd62d85462e65fadc53d2d51adc8a",
+    "build-debian13/app/tests/painter-navigation-events-asan": "5725b65fabf39e6809314b181caeba972d46706a6e8c120ff5e0e42e9511ed32"
+  }
+}

@@ -55,6 +55,7 @@ app_tests = [
   'painter-navigation-events',
   'painter-perspective',
   'painter-perspective-ui',
+  'painter-perspective-events',
   'gimp-painter-context',
 ]
 

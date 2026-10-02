@@ -207,6 +207,7 @@ static void gimp_perspective_guide_tool_init (GimpPerspectiveGuideTool *guide)
   guide->binding_failed = !boundary<bool> (nullptr, false, [&] {
     BindingStore::ensure (G_OBJECT (guide)).emplace<ToolSlot> (tool); return true;
   });
+  tool->disable_lazy_snap = TRUE;
   gimp_tool_control_set_handle_empty_image (tool->control, TRUE);
   gimp_tool_control_set_snap_to (tool->control, FALSE);
   gimp_tool_control_set_precision (tool->control, GIMP_CURSOR_PRECISION_SUBPIXEL);
