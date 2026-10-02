@@ -770,6 +770,7 @@
 |---|:---:|---|---|---|
 | 21.001 | [ ] | 通常形状の押印を実装する | 09.017, 20.018 | 硬さ・半径・alpha が一致 |
 | 21.001/native-surface-session | [x] | 旧押印演算をGEGL Surfaceとnative paint transactionへ接続する | 20.004/evaluator-comparison, 19.013/dedicated-factory, 05.003/retained-item-lifetime | 148実旧Surface/24bitmap mask/72generated mask一致、9 native通常と22source sanitizer合格。開始/終了再入・selection・Undo・資源寿命を検証。実旧full-session画素/tool/高精度は別gate |
+| 21.001/full-session-oracle | [x] | 実旧applicationのstroke・Undo・Redo画素を比較する | 21.001/native-surface-session | 32scenario/96RGBA snapshot/129recordの9587537 bytesが完全一致。旧cold crashを別保存しwarm-upを明示。11 fixture試験合格、登録tool・ICC/高精度は未完了 |
 | 21.002 | [ ] | GIMP ブラシ mask の取得を実装する | 21.001 | 旧形状と資源選択を保持 |
 | 21.002/resource-owner | [ ] | Surface のブラシと紙目の参照・使用期間を対称にする | 21.002, 01.007/cpp-ownership | 同一資源の再設定、NULL 切替、Surface 先行終了時に begin_use/end_use と ref/unref を一回ずつ対応付ける |
 | 21.003 | [ ] | GIMP ブラシ mask の変形を実装する | 21.002 | サイズ・角度・縦横比を反映 |

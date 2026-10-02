@@ -84,10 +84,9 @@ paint-core/tool/editor adapters remain later gates.
   Private rewritten thin archives cover all aliases; production objects untouched.
 - Full application link and focused Meson results are recorded separately.
 
-**Actual old full paint-session pixels are still pending.** The separate exact
-TempBuf Surface and native GIMP3 transaction tests cannot establish that parity.
-Next capture directly drives the pinned GimpMypaintCore on real drawables with
-incremental/nonincremental, distinct opacity, selection, brush/paper, smudge and
-64-pixel tile-boundary scenarios, then compares finish and Undo/Redo pixels.
-Brush-pipe selection, large tile sampling, all precision modes, live hardware,
-GUI and Windows/macOS likewise remain unverified.
+A subsequent independently sealed full-session comparison now passes for 32
+warmed pinned-old scenarios and 96 complete native RGBA snapshots. See
+`mypaint-full-session-comparison.md`. The distinction remains important: these
+warmed old references do not establish old cold-start equivalence (cold old
+nonincremental crashes), arbitrary ICC/high precision, brush pipes, all177 rendered
+brushes, live GUI/hardware or Windows/macOS behavior.

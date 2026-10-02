@@ -1,0 +1,46 @@
+{
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "scope": "32 synthetic warmed pinned old GimpMypaintCore/drawable/Undo scenarios compared with cold new PaintCore. Cold old nonincremental failure is a separate negative observation, never a passing compatibility oracle.",
+  "scenarios": 32,
+  "snapshots": 96,
+  "dimensions": [
+    130,
+    96,
+    4
+  ],
+  "records": 129,
+  "values_bytes": 9587537,
+  "equal": true,
+  "old_sha256": "64151e3ab6d087da421493ee6e66da7660f41f0bc6f893f1504609269b212779",
+  "new_sha256": "64151e3ab6d087da421493ee6e66da7660f41f0bc6f893f1504609269b212779",
+  "source_feature_sha256": {
+    "app/paint/gimpmypaintcore.cpp": "56cd5b1f0d0a951f6d1e3e843677edc3914a8f330f6e6ec721988b0b0a6a3835",
+    "app/paint/gimpmypaintcore.hpp": "02beeb6377381ddc3f293891063c558b4a62790fc16ab6669325d51f6d30d64e",
+    "app/paint/gimpmypaintcore-surface.cpp": "5a59199b90b344adb09b4a3914bb6af180c6526179eb74ebf27f43a96b368669",
+    "app/paint/gimpmypaintcore-drawablefeature.hpp": "6eb9434216b09585e6a45ed591ae5c2831cc032af5f1afca9c4c3e9f5dfcb283",
+    "app/paint/gimpmypaintoptions.cpp": "2c72f9fbe9a9a6c3d42c838c4d92b2f6d1c3d15ab9cdeecb77f32ae3fce3dc0b",
+    "app/paint/mypaintbrush-stroke.cpp": "9948c9197e21c45a8fd294b13699b61a19e09f3624d7bc937ea1ca5e10da768d",
+    "app/paint/mypaintbrush-brush.hpp": "bc8b24293d8b85e9f956dab40b8c6bfaa2f43ca626715e08a3627f7043c6e8b4",
+    "app/core/gimpmypaintbrush-load.cpp": "c4b6db71f25b7f3c503624d410fd3b2775a16370e169fb2c7d606db20b87322b",
+    "app/core/gimpmypaintbrush.cpp": "caa934e55a4414574893393e68fe71b4acef9d34dcb1ccc6f0df3369aae54a89",
+    "app/tools/gimpmypainttool.cpp": "5eb3b12ea369bdc70a4729efa7e98ab131eca66349f83ec05ebe57c4b179bba1"
+  },
+  "binary_sha256": {
+    "capture-session": "a86c0c8ce4e1a1f565d3c49e71c00b6f29d7ae34fad8af7d76615a6e354abe51",
+    "capture-cold": "90ca2b1f269274653458de64a982d11d9eb37448987bac289a055a229dd7c336",
+    "capture-cold-trace": "16bccc9be679a79ed9d7defaac36d8b6b95689abe34e2a03564a9f778c356ee3",
+    "port-session": "63f42027226343e6a53d77cb42f9d703085a22f75e39b899d268ffbd1b5baac2"
+  },
+  "archives_sha256": {
+    "app/paint/libapppaint.a": "859d50d4e8fef9eff5258959760e727433991640b992482d7d725f1fa4cc7005",
+    "app/core/libappcore.a": "1f94682694062183e1b629939790ec8c63f8789fced494f311261474a423c165",
+    "app/base/libappbase.a": "9a7be7673c09d98ea5e758fc0ce8b8b4a29634d9beff232f31b0a36907fde58a",
+    "app/paint-funcs/libapppaint-funcs.a": "b44b3e6aac98f03c047361bfb06226050baeee4b1b431e7deb31f0c23676c740"
+  },
+  "known_runtime_diagnostics": [
+    "Old startup g_value_set_object and pagecurl registration diagnostics; one old g_param_spec_unref diagnostic in warmed capture, preserved in full stderr.",
+    "Cold valid-loader nonincremental attempt and diagnostic-only-backtrace attempt both exit139; stack points to gimp_item_get_height from Surface begin_session.",
+    "Initial new comparator missing-header compile failure and missing-executable run are retained.",
+    "First runnable comparator used GEGL rgb() string colors, mismatching old nonlinear GimpRGB; alpha bytes matched but RGB did not. Explicit nonlinear double pixels reproduce the intended stimuli and every final record then matches."
+  ]
+}

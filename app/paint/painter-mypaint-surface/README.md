@@ -54,9 +54,11 @@ representable resource dimensions above the removed arbitrary bounds. They also
 reject recursive start/configure, defer start-time cancel/finish, keep images alive
 through freeze/thaw/Undo dirty callbacks, and safely unwind drawable removal.
 
-This is **not yet an old full paint-session pixel comparison**. Real legacy
-GimpMypaintCore/drawable/selection/Undo session captures are the next gate. Further
-gates include large tiled sampling, brush-pipe selection equivalence, RGB/gray and
-higher precision targets, registered options/tool/editor, options-change stroke
-splits, symmetry and actual GUI/tablet/platform tests. No broader parity follows
-from these small byte fixtures. See `migration/contracts/mypaint-surface-session.md`.
+A subsequent independent full-session comparison now matches 129 records / 96
+130×96 RGBA snapshots from 32 actual **warmed** old core/drawable/Undo scenarios,
+including smudge and old tile boundaries. The new sessions start cold safely;
+the old cold nonincremental failure is separately retained. See
+`migration/contracts/mypaint-full-session-comparison.md` for exact scope and
+provenance. Arbitrary ICC/color-space and precision modes, brush-pipe selection,
+all177 rendered brush scenes, options/tool/editor registration and actual
+GUI/tablet/platform behavior remain separate gates.
