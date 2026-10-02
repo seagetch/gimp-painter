@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gimp-painter stroke capture v1",
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "coords": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "pressure": {
+          "type": "number"
+        },
+        "xtilt": {
+          "type": "number"
+        },
+        "ytilt": {
+          "type": "number"
+        },
+        "wheel": {
+          "type": "number"
+        },
+        "velocity": {
+          "type": "number"
+        },
+        "direction": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "pressure",
+        "xtilt",
+        "ytilt",
+        "wheel",
+        "velocity",
+        "direction"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "evidence_kind": {
+      "enum": [
+        "synthetic-format-test",
+        "legacy-runtime-capture"
+      ]
+    },
+    "source_commit": {
+      "const": "afa43fae3e920210146abed514f136fd49f671b5"
+    },
+    "capture_boundary": {
+      "const": "GimpMypaintCore::stroke_to-before-Brush::stroke_to"
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "operator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "captured_utc": {
+          "type": "string",
+          "minLength": 1
+        },
+        "build_manifest": {
+          "$ref": "#/$defs/artifact"
+        },
+        "instrumentation_patch": {
+          "$ref": "#/$defs/artifact"
+        },
+        "capture_log": {
+          "$ref": "#/$defs/artifact"
+        }
+      },
+      "required": [
+        "operator",
+        "captured_utc",
+        "build_manifest",
+        "instrumentation_patch",
+        "capture_log"
+      ],
+      "additionalProperties": false
+    },
+    "brush": {
+      "type": "object",
+      "properties": {
+        "source_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "effective_settings": {
+          "$ref": "#/$defs/artifact"
+        }
+      },
+      "required": [
+        "source_path",
+        "sha256",
+        "effective_settings"
+      ],
+      "additionalProperties": false
+    },
+    "surface": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "pixel_format": {
+          "type": "string",
+          "minLength": 1
+        },
+        "color_space": {
+          "type": "string",
+          "minLength": 1
+        },
+        "alpha_convention": {
+          "enum": [
+            "straight",
+            "premultiplied"
+          ]
+        },
+        "initial_pixels": {
+          "$ref": "#/$defs/artifact"
+        },
+        "resource_manifest": {
+          "$ref": "#/$defs/artifact"
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "pixel_format",
+        "color_space",
+        "alpha_convention",
+        "initial_pixels",
+        "resource_manifest"
+      ],
+      "additionalProperties": false
+    },
+    "engine_state": {
+      "type": "object",
+      "properties": {
+        "state_f32_bits": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}$"
+          }
+        },
+        "state_names": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rng_seed_uint32": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "reset_requested": {
+          "type": "boolean"
+        },
+        "stroke_total_painting_time": {
+          "type": "number",
+          "minimum": 0
+        },
+        "stroke_current_idling_time": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "state_f32_bits",
+        "state_names",
+        "rng_seed_uint32",
+        "reset_requested",
+        "stroke_total_painting_time",
+        "stroke_current_idling_time"
+      ],
+      "additionalProperties": false
+    },
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "sequence": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "monotonic_ns": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "dtime_s": {
+            "type": "number"
+          },
+          "coords": {
+            "$ref": "#/$defs/coords"
+          },
+          "phase": {
+            "enum": [
+              "begin",
+              "motion",
+              "end"
+            ]
+          },
+          "modifier_state": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "engine_split_after": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "sequence",
+          "monotonic_ns",
+          "dtime_s",
+          "coords",
+          "phase",
+          "modifier_state",
+          "engine_split_after"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "checkpoint_sequence": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pixels": {
+            "$ref": "#/$defs/artifact"
+          },
+          "editable_document": {
+            "$ref": "#/$defs/artifact"
+          }
+        },
+        "required": [
+          "checkpoint_sequence",
+          "pixels",
+          "editable_document"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "evidence_kind",
+    "source_commit",
+    "capture_boundary",
+    "provenance",
+    "brush",
+    "surface",
+    "engine_state",
+    "events",
+    "results"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "evidence_kind": {
+            "const": "legacy-runtime-capture"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "results": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}
