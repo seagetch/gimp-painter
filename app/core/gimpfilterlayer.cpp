@@ -280,6 +280,15 @@ struct FilterImpl
     FilterScheduler::Request request;
     request.width = gimp_item_get_width (GIMP_ITEM (owner));
     request.height = gimp_item_get_height (GIMP_ITEM (owner));
+    if (request.height && request.width <= FilterScheduler::maximum_pixels / request.height)
+      {
+        /* Input/result/staging plus maximum Gaussian IIR line buffers. The
+         * 2 MiB allowance covers bounded RLE coefficients and native chunks.
+         * Existing completed GEGL caches remain the host's own swap policy. */
+        const std::uint64_t peak = std::uint64_t (request.width) * request.height * 12 +
+                                  std::uint64_t (std::max (request.width, request.height)) * 72 + 2 * 1024 * 1024;
+        request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+      }
     if (procedure == "plug-in-edge" && args &&
         (args->size () == 5 || args->size () == 6))
       {
@@ -537,7 +546,11 @@ struct FilterImpl
     if (topology_dirty) refresh_connections ();
     if (!gimp_item_is_attached (GIMP_ITEM (owner)) || gimp_item_is_removed (GIMP_ITEM (owner)) ||
         !gimp_item_get_visible (GIMP_ITEM (owner)))
-      return scheduler.step (false, {}, {}, {});
+      {
+        const bool again = scheduler.step (false, {}, {}, {});
+        if (scheduler.state () != FilterScheduler::State::importing) staged.reset ();
+        return again;
+      }
     const auto previous = scheduler.state ();
     scheduler.set_pixel_budget (previous == FilterScheduler::State::importing ? import_budget : read_budget);
     /* The genuine 2.8 references use native encoded RGB/Gray bytes. Do not
@@ -624,6 +637,7 @@ struct FilterImpl
         publish_buffer (GEGL_BUFFER (completed.get ()), token, true);
       });
     if (scheduler.state () == FilterScheduler::State::closed) return false;
+    if (scheduler.state () != FilterScheduler::State::importing) staged.reset ();
     maximum_quantum_us = std::max (maximum_quantum_us, g_get_monotonic_time () - started_at);
     if (previous != scheduler.state ()) g_signal_emit_by_name (owner, "filter-state-changed");
     return again || graph_recheck;

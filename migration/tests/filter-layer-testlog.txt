@@ -1,18 +1,18 @@
-Log of Meson test suite run on 2026-10-02T12:58:40.559786
+Log of Meson test suite run on 2026-10-02T13:16:09.132959
 
 Inherited environment omitted; see whitelisted JSON reproducibility variables.
 
-==================================== 1/6 =====================================
+==================================== 1/7 =====================================
 test:         gimp:app / gimp-filter-layer
-start time:   03:58:40
-duration:     12.34s
+start time:   04:16:09
+duration:     15.07s
 result:       exit status 0
-command:      MALLOC_PERTURB_=120 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter UI_TEST=yes MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-filter-layer
+command:      GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=169 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common MESON_TEST_ITERATION=1 UI_TEST=yes GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-filter-layer
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02Sa7befb410d13f16c12d29f03bb1c2742
+# random seed: R02S787da88202500685ac1077860d25b257
 # GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
-1..61
+1..63
 # Start of gimp-filter-layer tests
 ok 1 /gimp-filter-layer/image_close_reentry_during_completion_flush
 ok 2 /gimp-filter-layer/image_close_reentry_during_commit
@@ -21,70 +21,72 @@ ok 4 /gimp-filter-layer/argument_value_dag_is_bounded
 ok 5 /gimp-filter-layer/typed_argument_import_preserves_descriptors
 ok 6 /gimp-filter-layer/argument_import_validation
 ok 7 /gimp-filter-layer/typed_argument_snapshot_survives_expiration
-ok 8 /gimp-filter-layer/saved_snapshot_generation_restore
-ok 9 /gimp-filter-layer/small_image_finishes_during_large_preparation
-# slow test /gimp-filter-layer/small_image_finishes_during_large_preparation executed in 0.85 secs
-ok 10 /gimp-filter-layer/image_close_during_worker
-ok 11 /gimp-filter-layer/sustained_edits_converge
-ok 12 /gimp-filter-layer/oversized_execution_preserves_definition
-ok 13 /gimp-filter-layer/duplicate_preserves_cache_freshness
-ok 14 /gimp-filter-layer/opaque_arguments_duplicate_and_undo
-ok 15 /gimp-filter-layer/opaque_arguments_never_execute
-ok 16 /gimp-filter-layer/empty_opaque_arguments_are_distinct
-ok 17 /gimp-filter-layer/retired_definition_payload_reentry
-ok 18 /gimp-filter-layer/duplicate_reentry_cannot_certify_new_definition
-ok 19 /gimp-filter-layer/definition_edit_stops_after_undo_close
-ok 20 /gimp-filter-layer/definition_edit_preserves_reentered_install
-ok 21 /gimp-filter-layer/definition_notifications_stop_after_close
-ok 22 /gimp-filter-layer/pending_cycle_resolved_during_graph_read_is_discarded
-ok 23 /gimp-filter-layer/definition_revision_separates_cache_updates
-ok 24 /gimp-filter-layer/dependency_walk_does_not_resolve_pending_names
-ok 25 /gimp-filter-layer/changed_dependency_invalidation_can_close_owner
-ok 26 /gimp-filter-layer/completion_flushes_image_projection
+ok 8 /gimp-filter-layer/hiding_during_import_releases_abandoned_work
+ok 9 /gimp-filter-layer/concurrent_admission_resumes_after_image_close
+ok 10 /gimp-filter-layer/saved_snapshot_generation_restore
+ok 11 /gimp-filter-layer/small_image_finishes_during_large_preparation
+# slow test /gimp-filter-layer/small_image_finishes_during_large_preparation executed in 1.18 secs
+ok 12 /gimp-filter-layer/image_close_during_worker
+ok 13 /gimp-filter-layer/sustained_edits_converge
+ok 14 /gimp-filter-layer/oversized_execution_preserves_definition
+ok 15 /gimp-filter-layer/duplicate_preserves_cache_freshness
+ok 16 /gimp-filter-layer/opaque_arguments_duplicate_and_undo
+ok 17 /gimp-filter-layer/opaque_arguments_never_execute
+ok 18 /gimp-filter-layer/empty_opaque_arguments_are_distinct
+ok 19 /gimp-filter-layer/retired_definition_payload_reentry
+ok 20 /gimp-filter-layer/duplicate_reentry_cannot_certify_new_definition
+ok 21 /gimp-filter-layer/definition_edit_stops_after_undo_close
+ok 22 /gimp-filter-layer/definition_edit_preserves_reentered_install
+ok 23 /gimp-filter-layer/definition_notifications_stop_after_close
+ok 24 /gimp-filter-layer/pending_cycle_resolved_during_graph_read_is_discarded
+ok 25 /gimp-filter-layer/definition_revision_separates_cache_updates
+ok 26 /gimp-filter-layer/dependency_walk_does_not_resolve_pending_names
+ok 27 /gimp-filter-layer/changed_dependency_invalidation_can_close_owner
+ok 28 /gimp-filter-layer/completion_flushes_image_projection
 # 20-filter chain state notifications for one source edit: 60
-ok 27 /gimp-filter-layer/long_chain_coalesces_state_notifications
-# slow test /gimp-filter-layer/long_chain_coalesces_state_notifications executed in 1.12 secs
-# complex-graph phase=first width=1024 height=1024 layers=64 wall_us=687753 max_quantum_us=41662 heartbeat_samples=230 heartbeat_p50_us=2656 heartbeat_p95_us=4422 heartbeat_p99_us=6430 heartbeat_max_us=43064
-# complex-graph phase=edit width=1024 height=1024 layers=64 wall_us=979961 max_quantum_us=41662 heartbeat_samples=228 heartbeat_p50_us=2649 heartbeat_p95_us=4749 heartbeat_p99_us=71813 heartbeat_max_us=132724
-ok 28 /gimp-filter-layer/complex_graph_remains_responsive
-# slow test /gimp-filter-layer/complex_graph_remains_responsive executed in 1.77 secs
-ok 29 /gimp-filter-layer/cached_graph_tracks_clone_reassignment
-ok 30 /gimp-filter-layer/clone_filter_dependency_order
-ok 31 /gimp-filter-layer/cached_dependency_close_before_start
-ok 32 /gimp-filter-layer/cross_image_filter_cycle_has_no_signal_loop
-ok 33 /gimp-filter-layer/gray_native_default
-ok 34 /gimp-filter-layer/gray_native_linear_profile
-ok 35 /gimp-filter-layer/gray_native_lab_profile
-# slow test /gimp-filter-layer/gray_native_lab_profile executed in 0.70 secs
-ok 36 /gimp-filter-layer/gray_without_source_alpha
-ok 37 /gimp-filter-layer/gaussian_native_srgb
-ok 38 /gimp-filter-layer/gaussian_native_adobe
-# slow test /gimp-filter-layer/gaussian_native_adobe executed in 0.79 secs
-ok 39 /gimp-filter-layer/profile_reassignment_discards_worker
-ok 40 /gimp-filter-layer/unsupported_precision_retains_cache
-ok 41 /gimp-filter-layer/gaussian_legacy_fixture
-ok 42 /gimp-filter-layer/duplicate_failure_releases_partial
-ok 43 /gimp-filter-layer/definition_undo_redo
-ok 44 /gimp-filter-layer/hidden_filter_and_offset
-ok 45 /gimp-filter-layer/cpp_header_layout
-ok 46 /gimp-filter-layer/clone_filter_dependency_cycle
-# 2048x1536 evaluation wall=797491us; largest main-context quantum=34192us; 2ms heartbeat=363
-ok 47 /gimp-filter-layer/main_context_remains_responsive
-# slow test /gimp-filter-layer/main_context_remains_responsive executed in 0.80 secs
-ok 48 /gimp-filter-layer/object_arguments_do_not_cycle
-ok 49 /gimp-filter-layer/expired_object_records_and_reassignment
-ok 50 /gimp-filter-layer/object_array_arguments_do_not_dangle
-ok 51 /gimp-filter-layer/removal_and_undo
-ok 52 /gimp-filter-layer/lower_group_failure_and_recovery
-ok 53 /gimp-filter-layer/independent_type_and_edge
-ok 54 /gimp-filter-layer/automatic_updates_and_self_exclusion
-ok 55 /gimp-filter-layer/saved_definition_is_separate
-ok 56 /gimp-filter-layer/loaded_cache
-ok 57 /gimp-filter-layer/dependency_order
-ok 58 /gimp-filter-layer/group_scope
-ok 59 /gimp-filter-layer/completed_buffer_only
-ok 60 /gimp-filter-layer/close_during_preparation
-ok 61 /gimp-filter-layer/duplicate_keeps_definition
+ok 29 /gimp-filter-layer/long_chain_coalesces_state_notifications
+# slow test /gimp-filter-layer/long_chain_coalesces_state_notifications executed in 1.09 secs
+# complex-graph phase=first width=1024 height=1024 layers=64 wall_us=1399309 max_quantum_us=37361 heartbeat_samples=441 heartbeat_p50_us=2727 heartbeat_p95_us=5876 heartbeat_p99_us=9224 heartbeat_max_us=39381
+# complex-graph phase=edit width=1024 height=1024 layers=64 wall_us=1906681 max_quantum_us=37361 heartbeat_samples=494 heartbeat_p50_us=2844 heartbeat_p95_us=5944 heartbeat_p99_us=11762 heartbeat_max_us=130674
+ok 30 /gimp-filter-layer/complex_graph_remains_responsive
+# slow test /gimp-filter-layer/complex_graph_remains_responsive executed in 3.33 secs
+ok 31 /gimp-filter-layer/cached_graph_tracks_clone_reassignment
+ok 32 /gimp-filter-layer/clone_filter_dependency_order
+ok 33 /gimp-filter-layer/cached_dependency_close_before_start
+ok 34 /gimp-filter-layer/cross_image_filter_cycle_has_no_signal_loop
+ok 35 /gimp-filter-layer/gray_native_default
+ok 36 /gimp-filter-layer/gray_native_linear_profile
+ok 37 /gimp-filter-layer/gray_native_lab_profile
+# slow test /gimp-filter-layer/gray_native_lab_profile executed in 0.62 secs
+ok 38 /gimp-filter-layer/gray_without_source_alpha
+ok 39 /gimp-filter-layer/gaussian_native_srgb
+ok 40 /gimp-filter-layer/gaussian_native_adobe
+# slow test /gimp-filter-layer/gaussian_native_adobe executed in 0.76 secs
+ok 41 /gimp-filter-layer/profile_reassignment_discards_worker
+ok 42 /gimp-filter-layer/unsupported_precision_retains_cache
+ok 43 /gimp-filter-layer/gaussian_legacy_fixture
+ok 44 /gimp-filter-layer/duplicate_failure_releases_partial
+ok 45 /gimp-filter-layer/definition_undo_redo
+ok 46 /gimp-filter-layer/hidden_filter_and_offset
+ok 47 /gimp-filter-layer/cpp_header_layout
+ok 48 /gimp-filter-layer/clone_filter_dependency_cycle
+# 2048x1536 evaluation wall=906902us; largest main-context quantum=35225us; 2ms heartbeat=395
+ok 49 /gimp-filter-layer/main_context_remains_responsive
+# slow test /gimp-filter-layer/main_context_remains_responsive executed in 0.91 secs
+ok 50 /gimp-filter-layer/object_arguments_do_not_cycle
+ok 51 /gimp-filter-layer/expired_object_records_and_reassignment
+ok 52 /gimp-filter-layer/object_array_arguments_do_not_dangle
+ok 53 /gimp-filter-layer/removal_and_undo
+ok 54 /gimp-filter-layer/lower_group_failure_and_recovery
+ok 55 /gimp-filter-layer/independent_type_and_edge
+ok 56 /gimp-filter-layer/automatic_updates_and_self_exclusion
+ok 57 /gimp-filter-layer/saved_definition_is_separate
+ok 58 /gimp-filter-layer/loaded_cache
+ok 59 /gimp-filter-layer/dependency_order
+ok 60 /gimp-filter-layer/group_scope
+ok 61 /gimp-filter-layer/completed_buffer_only
+ok 62 /gimp-filter-layer/close_during_preparation
+ok 63 /gimp-filter-layer/duplicate_keeps_definition
 # End of gimp-filter-layer tests
 # GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
 ----------------------------------- stderr -----------------------------------
@@ -161,26 +163,36 @@ You have a writable data folder configured, but this folder is not part of your 
 
 ==============================================================================
 
-==================================== 2/6 =====================================
+==================================== 2/7 =====================================
 test:         gimp:painter / painter-filter-edge
-start time:   03:58:52
+start time:   04:16:24
 duration:     0.03s
 result:       exit status 0
-command:      MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=64 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-edge /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-edge/fixtures.tsv
+command:      ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=77 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-edge /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-edge/fixtures.tsv
 ----------------------------------- stdout -----------------------------------
 Legacy executable byte comparisons: 76 passed
 Edge compatibility unit tests passed
 ==============================================================================
 
-==================================== 3/6 =====================================
+==================================== 3/7 =====================================
+test:         gimp:painter / painter-filter-gray
+start time:   04:16:24
+duration:     0.02s
+result:       exit status 0
+command:      ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=82 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gray /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv
+----------------------------------- stdout -----------------------------------
+Legacy executable native Gray/Gray-alpha byte comparisons: 77 passed
+==============================================================================
+
+==================================== 4/7 =====================================
 test:         gimp:painter / painter-fair-dispatcher
-start time:   03:58:52
+start time:   04:16:24
 duration:     0.01s
 result:       exit status 0
-command:      MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=47 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-fair-dispatcher
+command:      ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=23 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-fair-dispatcher
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02S774590f481c6e728bd7383564fcf368b
+# random seed: R02S9aa01b52a73b814a1e192b7e4f414967
 1..8
 # Start of painter-fair-dispatcher tests
 ok 1 /painter-fair-dispatcher/capture_destruction_can_replace_ticket
@@ -194,65 +206,82 @@ ok 8 /painter-fair-dispatcher/exception_does_not_stall_others
 # End of painter-fair-dispatcher tests
 ==============================================================================
 
-==================================== 4/6 =====================================
-test:         gimp:painter / painter-filter-gray
-start time:   03:58:52
-duration:     0.02s
+==================================== 5/7 =====================================
+test:         gimp:painter / painter-work-admission
+start time:   04:16:24
+duration:     0.01s
 result:       exit status 0
-command:      MALLOC_PERTURB_=44 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gray /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv
+command:      ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=86 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-work-admission
 ----------------------------------- stdout -----------------------------------
-Legacy executable native Gray/Gray-alpha byte comparisons: 77 passed
+TAP version 14
+# random seed: R02S59b44567ce5782682579f7cf2751a650
+1..9
+# Start of work-admission tests
+ok 1 /work-admission/fifo_and_jobs
+ok 2 /work-admission/byte_limit_and_no_overtaking
+ok 3 /work-admission/cancelled_requests
+ok 4 /work-admission/repeated_edits_do_not_accumulate_queue_nodes
+ok 5 /work-admission/releases_on_worker
+ok 6 /work-admission/owner_can_close_without_waiting
+ok 7 /work-admission/moves_release_exactly_once
+ok 8 /work-admission/invalid_limits_and_requests
+ok 9 /work-admission/wrong_thread_is_rejected
+# End of work-admission tests
 ==============================================================================
 
-==================================== 5/6 =====================================
+==================================== 6/7 =====================================
 test:         gimp:painter / painter-filter-gauss
-start time:   03:58:52
-duration:     0.06s
+start time:   04:16:24
+duration:     0.07s
 result:       exit status 0
-command:      MALLOC_PERTURB_=119 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gauss /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss/fixtures.tsv
+command:      ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 MALLOC_PERTURB_=178 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gauss /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss/fixtures.tsv
 ----------------------------------- stdout -----------------------------------
 Legacy executable byte comparisons: 104 passed
 Gaussian compatibility unit tests passed
 ==============================================================================
 
-==================================== 6/6 =====================================
+==================================== 7/7 =====================================
 test:         gimp:painter / painter-filter-scheduler
-start time:   03:58:52
-duration:     0.97s
+start time:   04:16:24
+duration:     1.06s
 result:       exit status 0
-command:      MALLOC_PERTURB_=115 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-scheduler
+command:      ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=238 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-scheduler
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02Sc9a36ca30306d4a89c2915106780b0fd
-1..21
+# random seed: R02S858e2e5ab93987283d4f47c6aca7aded
+1..25
 # Start of painter-filter-scheduler tests
-ok 1 /painter-filter-scheduler/saved_generation_boundaries
-ok 2 /painter-filter-scheduler/commit_failure_does_not_certify_cache
-ok 3 /painter-filter-scheduler/obsolete_read_failure_preserves_new_edit
-ok 4 /painter-filter-scheduler/saved_cache_generations
-ok 5 /painter-filter-scheduler/restored_cache_rejects_colliding_old_job
-ok 6 /painter-filter-scheduler/rejected_worker_is_not_settled_until_done
-ok 7 /painter-filter-scheduler/reject_during_read
-ok 8 /painter-filter-scheduler/reject_during_import
-ok 9 /painter-filter-scheduler/closed_request_is_inert
-ok 10 /painter-filter-scheduler/adjustable_chunk_budget
+ok 1 /painter-filter-scheduler/admission_waits_without_reading_and_resumes_fifo
+ok 2 /painter-filter-scheduler/admission_cancel_retains_worker_reservation
+ok 3 /painter-filter-scheduler/admission_edit_and_dependency_wait_release_preparation
+ok 4 /painter-filter-scheduler/admission_failure_and_loaded_cache_release
+ok 5 /painter-filter-scheduler/saved_generation_boundaries
+ok 6 /painter-filter-scheduler/commit_failure_does_not_certify_cache
+ok 7 /painter-filter-scheduler/obsolete_read_failure_preserves_new_edit
+ok 8 /painter-filter-scheduler/saved_cache_generations
+ok 9 /painter-filter-scheduler/restored_cache_rejects_colliding_old_job
+ok 10 /painter-filter-scheduler/rejected_worker_is_not_settled_until_done
+ok 11 /painter-filter-scheduler/reject_during_read
+ok 12 /painter-filter-scheduler/reject_during_import
+ok 13 /painter-filter-scheduler/closed_request_is_inert
+ok 14 /painter-filter-scheduler/adjustable_chunk_budget
 # slow test /painter-filter-scheduler/adjustable_chunk_budget executed in 0.55 secs
-ok 11 /painter-filter-scheduler/completed_cache
-ok 12 /painter-filter-scheduler/bounded_chunks
-ok 13 /painter-filter-scheduler/dependency_priority
-ok 14 /painter-filter-scheduler/cancel_request_is_not_completion
-ok 15 /painter-filter-scheduler/changes_during_preparation
-ok 16 /painter-filter-scheduler/changes_during_import
-ok 17 /painter-filter-scheduler/failures_do_not_retry
-ok 18 /painter-filter-scheduler/close_does_not_wait
-ok 19 /painter-filter-scheduler/loaded_cache_not_reexecuted
-ok 20 /painter-filter-scheduler/invalid_request_and_result
-ok 21 /painter-filter-scheduler/reentry_at_commit
+ok 15 /painter-filter-scheduler/completed_cache
+ok 16 /painter-filter-scheduler/bounded_chunks
+ok 17 /painter-filter-scheduler/dependency_priority
+ok 18 /painter-filter-scheduler/cancel_request_is_not_completion
+ok 19 /painter-filter-scheduler/changes_during_preparation
+ok 20 /painter-filter-scheduler/changes_during_import
+ok 21 /painter-filter-scheduler/failures_do_not_retry
+ok 22 /painter-filter-scheduler/close_does_not_wait
+ok 23 /painter-filter-scheduler/loaded_cache_not_reexecuted
+ok 24 /painter-filter-scheduler/invalid_request_and_result
+ok 25 /painter-filter-scheduler/reentry_at_commit
 # End of painter-filter-scheduler tests
 ==============================================================================
 
 
-Ok:                 6
+Ok:                 7
 Expected Fail:      0
 Fail:               0
 Unexpected Pass:    0

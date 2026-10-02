@@ -12,6 +12,8 @@ using namespace GimpPainter;
 using State = FilterScheduler::State;
 struct Harness
 {
+  Harness () = default;
+  explicit Harness (std::shared_ptr<WorkAdmission> admission) : scheduler (std::move (admission)) {}
   FilterScheduler scheduler;
   FilterScheduler::Bytes imported;
   unsigned reads = 0, imports = 0, commits = 0;
@@ -371,10 +373,87 @@ static void saved_generation_boundaries ()
   g_assert_cmpuint (reopened.scheduler.generation (), ==, reopened.scheduler.cache_generation ());
 }
 
+static void admission_waits_without_reading_and_resumes_fifo ()
+{
+  auto pool = std::make_shared<WorkAdmission> (WorkAdmission::Limits {1,1024});
+  auto release = std::make_shared<std::atomic<bool>> (false);
+  Harness first (pool), second (pool), third (pool);
+  first.configure (1,1,[release] (const FilterScheduler::Bytes& in,std::atomic<bool>&,FilterScheduler::Bytes& out) {
+    while (!release->load ()) std::this_thread::yield ();
+    out = in; return true;
+  });
+  second.configure (1,1); third.configure (1,1);
+  first.step (); second.step (); third.step ();
+  g_assert_cmpuint (pool->active_jobs (), ==, 1);
+  g_assert_cmpuint (second.reads, ==, 0); g_assert_cmpuint (third.reads, ==, 0);
+  g_assert_true (second.scheduler.state () == State::waiting);
+  g_assert_cmpstr (second.scheduler.error ().c_str (), ==, "");
+  release->store (true); first.finish ();
+  third.step (); g_assert_cmpuint (third.reads, ==, 0);
+  second.finish (); third.finish ();
+  g_assert_cmpuint (second.commits, ==, 1); g_assert_cmpuint (third.commits, ==, 1);
+  g_assert_cmpuint (pool->active_jobs (), ==, 0); g_assert_cmpuint (pool->active_bytes (), ==, 0);
+}
+static void admission_cancel_retains_worker_reservation ()
+{
+  auto pool = std::make_shared<WorkAdmission> (WorkAdmission::Limits {1,1024});
+  auto release = std::make_shared<std::atomic<bool>> (false);
+  auto ended = std::make_shared<std::atomic<bool>> (false);
+  auto first = std::unique_ptr<Harness> (new Harness (pool));
+  first->configure (1,1,[release,ended] (const FilterScheduler::Bytes&,std::atomic<bool>&,FilterScheduler::Bytes&) {
+    while (!release->load ()) std::this_thread::yield ();
+    ended->store (true); return false;
+  });
+  first->step ();
+  Harness second (pool); second.configure (1,1); second.step ();
+  first.reset (); // must not wait or release running bytes too soon
+  for (unsigned i = 0; i < 100; ++i) second.step ();
+  g_assert_cmpuint (second.reads, ==, 0); g_assert_cmpuint (pool->active_jobs (), ==, 1);
+  release->store (true); second.finish ();
+  g_assert_true (ended->load ()); g_assert_cmpuint (second.commits, ==, 1);
+}
+static void admission_edit_and_dependency_wait_release_preparation ()
+{
+  auto pool = std::make_shared<WorkAdmission> (WorkAdmission::Limits {1,32768});
+  Harness first (pool), second (pool);
+  first.configure (16,16); first.scheduler.set_pixel_budget (1);
+  first.step (); g_assert_true (first.scheduler.state () == State::preparing);
+  second.configure (1,1); second.step (); g_assert_cmpuint (second.reads, ==, 0);
+  first.scheduler.invalidate (); // allocation and lease released on edit
+  g_assert_cmpuint (pool->active_jobs (), ==, 0);
+  first.step (); g_assert_true (first.scheduler.state () == State::waiting); // second owns FIFO position
+  second.finish ();
+  first.step (); g_assert_true (first.scheduler.state () == State::preparing);
+  first.ready = false; first.step ();
+  g_assert_cmpuint (pool->active_jobs (), ==, 0);
+  first.ready = true; first.finish (); g_assert_cmpuint (first.commits, ==, 1);
+}
+static void admission_failure_and_loaded_cache_release ()
+{
+  auto pool = std::make_shared<WorkAdmission> (WorkAdmission::Limits {1,1024});
+  Harness failed (pool), next (pool);
+  failed.configure (1,1,[] (const FilterScheduler::Bytes&,std::atomic<bool>&,FilterScheduler::Bytes&) -> bool {
+    throw std::runtime_error ("expected worker failure");
+  });
+  failed.finish (); g_assert_true (failed.scheduler.state () == State::failed);
+  g_assert_cmpuint (pool->active_jobs (), ==, 0);
+  next.configure (4,4); next.scheduler.set_pixel_budget (1); next.step ();
+  g_assert_cmpuint (pool->active_jobs (), ==, 1);
+  next.scheduler.mark_loaded (); g_assert_cmpuint (pool->active_jobs (), ==, 0);
+  next.scheduler.invalidate (); next.finish (); g_assert_cmpuint (next.commits, ==, 1);
+  next.scheduler.set_request ({1,1,{},1025}); next.finish (); // unsupported proc fails before admission
+  next.configure (16,16); next.finish (); // minimum working bytes cannot fit
+  g_assert_true (next.scheduler.state () == State::failed);
+  g_assert_nonnull (strstr (next.scheduler.error ().c_str (),"admission memory limit"));
+  g_assert_cmpuint (pool->active_jobs (), ==, 0);
+}
+
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, nullptr);
 #define ADD(name) g_test_add_func ("/painter-filter-scheduler/" #name, name)
+  ADD (admission_waits_without_reading_and_resumes_fifo); ADD (admission_cancel_retains_worker_reservation);
+  ADD (admission_edit_and_dependency_wait_release_preparation); ADD (admission_failure_and_loaded_cache_release);
   ADD (saved_generation_boundaries); ADD (commit_failure_does_not_certify_cache); ADD (obsolete_read_failure_preserves_new_edit);
   ADD (saved_cache_generations); ADD (restored_cache_rejects_colliding_old_job);
   ADD (rejected_worker_is_not_settled_until_done); ADD (reject_during_read); ADD (reject_during_import); ADD (closed_request_is_inert);

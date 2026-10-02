@@ -1264,6 +1264,61 @@ static void unsupported_precision_retains_cache (void)
     }
 }
 
+static void hiding_during_import_releases_abandoned_work (void)
+{
+  GimpImage *image = image_new (768,768);
+  GimpFilterLayer *filter;
+  gint64 deadline;
+  fill (source_new (image,NULL,768,768),55,123,240,255);
+  filter = filter_new (image,NULL,768,768);
+  deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 20;
+  while (gimp_filter_layer_get_state (filter) != GIMP_FILTER_LAYER_IMPORTING && g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_IMPORTING);
+  gimp_item_set_visible (GIMP_ITEM (filter),FALSE,FALSE);
+  spin_ms (15);
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_WAITING);
+  g_assert_cmpuint (gimp_filter_layer_get_cache_generation (filter), !=, gimp_filter_layer_get_generation (filter));
+  gimp_item_set_visible (GIMP_ITEM (filter),TRUE,FALSE);
+  settle (filter); pixel (GIMP_LAYER (filter),0,0,0,255);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 2);
+  g_object_unref (image);
+}
+
+static void concurrent_admission_resumes_after_image_close (void)
+{
+  GimpImage *images[3];
+  GimpFilterLayer *filters[3];
+  gint64 deadline;
+  guint64 queued_generation;
+  for (guint i = 0; i < 3; ++i)
+    {
+      images[i] = image_new (1024,1024);
+      fill (source_new (images[i],NULL,1024,1024),17 + i,31,93,255);
+      filters[i] = filter_new (images[i],NULL,1024,1024);
+    }
+  deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 10;
+  while ((gimp_filter_layer_get_state (filters[0]) != GIMP_FILTER_LAYER_PREPARING ||
+          gimp_filter_layer_get_state (filters[1]) != GIMP_FILTER_LAYER_PREPARING) &&
+         g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  g_assert_cmpint (gimp_filter_layer_get_state (filters[0]), ==, GIMP_FILTER_LAYER_PREPARING);
+  g_assert_cmpint (gimp_filter_layer_get_state (filters[1]), ==, GIMP_FILTER_LAYER_PREPARING);
+  spin_ms (10);
+  g_assert_cmpint (gimp_filter_layer_get_state (filters[2]), ==, GIMP_FILTER_LAYER_WAITING);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filters[2]), ==, 0);
+  for (guint i = 0; i < 20; ++i) gimp_filter_layer_invalidate (filters[2]);
+  queued_generation = gimp_filter_layer_get_generation (filters[2]);
+  g_object_unref (images[0]); // releases preparation without waiting or dropping third's work
+  settle (filters[2]); settle (filters[1]);
+  g_assert_cmpuint (gimp_filter_layer_get_generation (filters[2]), ==, queued_generation);
+  g_assert_cmpuint (gimp_filter_layer_get_cache_generation (filters[2]), ==, queued_generation);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filters[2]), ==, 1);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filters[1]), ==, 1);
+  pixel (GIMP_LAYER (filters[2]),0,0,0,255);
+  g_object_unref (images[1]); g_object_unref (images[2]);
+}
+
 static void small_image_finishes_during_large_preparation (void)
 {
   GimpImage *large = image_new (2048,1536), *small = image_new (16,16);
@@ -1667,7 +1722,7 @@ int main (int argc, char **argv)
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
   ADD (image_close_reentry_during_completion_flush); ADD (image_close_reentry_during_commit); ADD (retained_handle_after_image_close); ADD (argument_value_dag_is_bounded); ADD (typed_argument_import_preserves_descriptors); ADD (argument_import_validation);
-  ADD (typed_argument_snapshot_survives_expiration); ADD (saved_snapshot_generation_restore); ADD (small_image_finishes_during_large_preparation); ADD (image_close_during_worker);
+  ADD (typed_argument_snapshot_survives_expiration); ADD (hiding_during_import_releases_abandoned_work); ADD (concurrent_admission_resumes_after_image_close); ADD (saved_snapshot_generation_restore); ADD (small_image_finishes_during_large_preparation); ADD (image_close_during_worker);
   ADD (sustained_edits_converge); ADD (oversized_execution_preserves_definition);
   ADD (duplicate_preserves_cache_freshness); ADD (opaque_arguments_duplicate_and_undo); ADD (opaque_arguments_never_execute); ADD (empty_opaque_arguments_are_distinct);
   ADD (retired_definition_payload_reentry); ADD (duplicate_reentry_cannot_certify_new_definition);

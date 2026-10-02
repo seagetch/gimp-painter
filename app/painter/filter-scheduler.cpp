@@ -7,8 +7,23 @@
 #include <utility>
 
 namespace GimpPainter {
+namespace {
+std::shared_ptr<WorkAdmission> default_admission ()
+{
+  /* One pool for the application owner thread. Leases keep independent pool
+   * state alive when closed layers leave cancelled workers finishing. */
+  static auto pool = std::make_shared<WorkAdmission> (WorkAdmission::Limits {2, 1024 * 1024 * 1024});
+  return pool;
+}
+}
+FilterScheduler::FilterScheduler () : admission_ (default_admission ()) {}
+FilterScheduler::FilterScheduler (std::shared_ptr<WorkAdmission> admission)
+  : admission_ (std::move (admission))
+{ if (!admission_) throw std::invalid_argument ("Filter scheduler has no work admission pool"); }
 struct FilterScheduler::Job
 {
+  /* Declare the lease before buffers so it releases after their destruction. */
+  WorkAdmission::Lease lease;
   std::atomic<bool> cancelled { false }, done { false };
   Bytes input, output;
   Process process;
@@ -27,6 +42,14 @@ void FilterScheduler::advance_generation () noexcept
 }
 void FilterScheduler::cancel () noexcept
 { if (job_) job_->cancelled.store (true, std::memory_order_relaxed); }
+void FilterScheduler::release_preparation () noexcept
+{
+  /* clear() alone retained a whole-raster allocation after edits/close, which
+   * would escape admission accounting. Release storage before its lease. */
+  Bytes ().swap (input_);
+  admission_ticket_.close ();
+  admission_lease_.close ();
+}
 void FilterScheduler::invalidate () noexcept
 {
   if (state_ == State::closed) return;
@@ -38,7 +61,7 @@ void FilterScheduler::invalidate () noexcept
    * while an old worker is still running, even after a cancellation request. */
   state_ = job_ ? State::cancelling : State::waiting;
   cursor_ = 0;
-  input_.clear ();
+  release_preparation ();
 }
 void FilterScheduler::set_request (Request request)
 { if (state_ != State::closed) { request_ = std::move (request); invalidate (); } }
@@ -52,7 +75,7 @@ void FilterScheduler::mark_loaded () noexcept
   cache_complete_ = true;
   state_ = job_ ? State::cancelling : State::clean;
   cursor_ = 0;
-  input_.clear ();
+  release_preparation ();
   error_.clear ();
 }
 void FilterScheduler::restore_cache (const Snapshot& saved)
@@ -70,7 +93,7 @@ void FilterScheduler::restore_cache (const Snapshot& saved)
    * is untrusted diagnostic lineage, not a runtime freshness capability. */
   cache_generation_ = dirty_ ? 0 : generation_;
   cursor_ = 0;
-  input_.clear ();
+  release_preparation ();
   error_.clear ();
   state_ = job_ ? State::cancelling : dirty_ ? State::waiting : State::clean;
 }
@@ -82,7 +105,7 @@ void FilterScheduler::close () noexcept
   advance_generation ();
   cancel ();
   job_.reset (); // worker owns the job independently; no join/wait or UI access
-  input_.clear ();
+  release_preparation ();
   dirty_ = false;
   state_ = State::closed;
 }
@@ -90,7 +113,7 @@ void FilterScheduler::fail (const char *message) noexcept
 {
   try { error_ = message; } catch (...) {}
   dirty_ = false; // a new edit may retry; idle time alone never retries failure
-  input_.clear ();
+  release_preparation ();
   cursor_ = 0;
   state_ = State::failed;
 }
@@ -130,7 +153,7 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
         {
           /* A dependency can become dirty even without replacing our request. */
           if (state_ == State::importing) job_.reset ();
-          input_.clear (); cursor_ = 0; state_ = State::waiting;
+          release_preparation (); cursor_ = 0; state_ = State::waiting;
           return false;
         }
       if (state_ == State::waiting)
@@ -140,7 +163,13 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
             { fail ("Filter input exceeds the bounded raster size"); return false; }
           if (!request_.process)
             { fail ("Saved filter procedure or argument mapping is unsupported"); return false; }
-          input_.clear ();
+          if (!admission_ticket_)
+            admission_ticket_ = admission_->request (std::max (request_.peak_bytes,
+                                                              request_.width * request_.height * 8));
+          admission_lease_ = admission_ticket_.try_acquire ();
+          /* Resource contention is waiting, never a failure or a lost dirty
+           * generation. The owner's normal paced dispatcher retries fairly. */
+          if (!admission_lease_) return true;
           input_.reserve (request_.width * request_.height * 4);
           cursor_ = 0;
           work_generation_ = generation_;
@@ -149,15 +178,22 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
       if (state_ == State::preparing)
         {
           const auto count = next_count (cursor_);
-          const auto before = input_.size ();
-          read (cursor_, count, input_);
-          if (generation_ != work_generation_ || state_ != State::preparing)
+          const auto token = work_generation_;
+          /* A callback can invalidate/close the scheduler. Keep its bounded
+           * mutable chunk independent of the admitted aggregate so reentry
+           * cannot retain unaccounted storage or invalidate its data pointer. */
+          Bytes chunk;
+          chunk.reserve (count * 4);
+          read (cursor_, count, chunk);
+          if (generation_ != token || state_ != State::preparing)
             return state_ != State::closed && (dirty_ || bool (job_));
-          if (input_.size () != before + count * 4)
+          if (chunk.size () != count * 4)
             { fail ("Input producer returned an invalid chunk size"); return false; }
+          input_.insert (input_.end (), chunk.begin (), chunk.end ());
           cursor_ += count;
           if (cursor_ < request_.width * request_.height) return true;
           auto job = std::make_shared<Job> ();
+          job->lease = std::move (admission_lease_);
           job->input = std::move (input_);
           job->process = request_.process;
           job->generation = work_generation_;

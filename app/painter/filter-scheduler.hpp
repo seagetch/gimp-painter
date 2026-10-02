@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FILTER_SCHEDULER_HPP
 #define GIMP_PAINTER_FILTER_SCHEDULER_HPP
+#include "work-admission.hpp"
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
@@ -18,21 +19,30 @@ public:
   using Bytes = std::vector<std::uint8_t>;
   using Process = std::function<bool (const Bytes&, std::atomic<bool>&, Bytes&)>;
   enum class State { clean, waiting, preparing, running, cancelling, importing, failed, closed };
-  struct Request { std::size_t width = 0, height = 0; Process process; };
+  struct Request
+  {
+    std::size_t width = 0, height = 0;
+    Process process;
+    /* Includes input/result plus executor scratch and adapter staging. Zero
+     * declares the two-raster minimum used by simple independent processors. */
+    std::size_t peak_bytes = 0;
+  };
   struct Snapshot
   {
     std::uint64_t generation = 0, cache_generation = 0;
     bool cache_complete = true;
   };
   /* Offset and count are pixels, always a contiguous portion of one scanline
-   * or a whole number of scanlines. Each call is <= pixel_budget. */
+   * or a whole number of scanlines. Each call is <= pixel_budget. Read receives
+   * an empty, independently owned chunk and must append exactly count*4 bytes. */
   using Read = std::function<void (std::size_t, std::size_t, Bytes&)>;
   using Import = std::function<void (std::size_t, std::size_t, const std::uint8_t *)>;
   using Commit = std::function<void (std::uint64_t)>;
   static constexpr std::size_t pixel_budget = 256 * 128;
   static constexpr std::size_t maximum_pixels = 64 * 1024 * 1024;
 
-  FilterScheduler () = default;
+  FilterScheduler ();
+  explicit FilterScheduler (std::shared_ptr<WorkAdmission>);
   ~FilterScheduler () noexcept { close (); }
   FilterScheduler (const FilterScheduler&) = delete;
   FilterScheduler& operator= (const FilterScheduler&) = delete;
@@ -62,7 +72,11 @@ private:
   std::size_t next_count (std::size_t offset) const noexcept;
   void advance_generation () noexcept;
   void cancel () noexcept;
+  void release_preparation () noexcept;
   void fail (const char *) noexcept;
+  std::shared_ptr<WorkAdmission> admission_;
+  WorkAdmission::Ticket admission_ticket_;
+  WorkAdmission::Lease admission_lease_;
   Request request_;
   std::shared_ptr<Job> job_;
   Bytes input_;

@@ -1,0 +1,36 @@
+{
+  "scope": "WorkAdmission and nine regression tests; GLib/system libraries uninstrumented",
+  "sources": [
+    "app/painter/tests/test-work-admission.cpp"
+  ],
+  "command": [
+    "g++",
+    "-std=c++14",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-g",
+    "-O1",
+    "-pthread",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "-frtti",
+    "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/tests/test-work-admission.cpp",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+    "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+    "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+    "-pthread",
+    "-lglib-2.0",
+    "-o",
+    "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/work-admission-sanitizers/painter-work-admission"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "leak_detection": false,
+  "exit_code": 0,
+  "stdout": "TAP version 14\n# random seed: R02S098b3f726a27306068887753bcd6cbf2\n1..9\n# Start of work-admission tests\nok 1 /work-admission/fifo_and_jobs\nok 2 /work-admission/byte_limit_and_no_overtaking\nok 3 /work-admission/cancelled_requests\nok 4 /work-admission/repeated_edits_do_not_accumulate_queue_nodes\nok 5 /work-admission/releases_on_worker\nok 6 /work-admission/owner_can_close_without_waiting\nok 7 /work-admission/moves_release_exactly_once\nok 8 /work-admission/invalid_limits_and_requests\nok 9 /work-admission/wrong_thread_is_rejected\n# End of work-admission tests\n",
+  "stderr": ""
+}

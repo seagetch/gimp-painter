@@ -102,7 +102,22 @@ GEGL graph, UI object, slot borrow or main-thread callback.
 Changes coalesce to a full-raster dirty generation rather than accumulating an
 unbounded list of dirty rectangles. This is correct for the supported whole-image
 procedures; regional optimization is not claimed. Requests over 64 Mi pixels are
-reported unsupported instead of overflowing allocations. UI work is dispatched
+reported unsupported instead of overflowing allocations. A shared owner-thread
+FIFO admission pool permits at most two active preparation/worker/import jobs
+and 1 GiB of declared working storage. Each supported adapter reserves its
+input, result and staging footprint plus worst-case Gaussian line/coefficient
+scratch. Existing completed GEGL caches remain subject to the host's cache/swap
+policy; this is not a bound on total GIMP memory or arbitrary callables.
+Contention stays waiting without reading pixels, failing, or losing dirty work.
+The existing paced dispatcher retries; FIFO prevents smaller later requests
+from starving a larger front request. Preparation edits/dependency waits release
+both allocation and lease (vector clear alone retained capacity). Read callbacks
+receive independent bounded chunks, so reentrant invalidation cannot invalidate
+their data or retain abandoned aggregate capacity. Hidden/dependency-waiting
+layers discard private abandoned staging buffers as well. Closed or
+cancelled workers keep their own lease until their independent storage is
+actually destroyed. Owner cancellation unlinks queued entries in O(1), so
+repeated edits behind a busy request cannot accumulate tombstones. UI work is dispatched
 at priority 150 by one 2 ms FIFO source shared across layers and images. Each
 source callback processes one bounded quantum, then rotates that ticket to the
 back of the queue. Preparation starts at 1,024 pixels per changed generation;
@@ -234,12 +249,12 @@ an acceptable shortcut to procedure compatibility.
 
 ## Tests and measurements
 
-- `app/painter/tests/test-filter-scheduler.cpp`: 21 pure scheduler tests including
+- `app/painter/tests/test-filter-scheduler.cpp`: 25 pure scheduler tests including
   cancellation versus completion, no duplicate launch, edits during preparation
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 61 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 63 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release
@@ -258,7 +273,14 @@ an acceptable shortcut to procedure compatibility.
   ptrace restrictions prevent it from running; explicit weak-finalization tests
   cover the image/layer/argument ownership cycles. The JSON lists actual units
 - `run_filter_scheduler_sanitizers.py` and `filter-scheduler-sanitizers.json`
-  independently instrument all 21 scheduler regressions with ASan/UBSan
+  independently instrument all 25 scheduler regressions with ASan/UBSan
+- `work-admission.hpp`, `test-work-admission.cpp`, and
+  `run_work_admission_sanitizers.py`: nine strict-C++14 and ASan/UBSan cases
+  cover FIFO/byte/job limits, cancellation, 100,000 queued edits, worker-thread
+  release, owner destruction without waiting, move ownership and thread guards.
+  Four scheduler cases exercise admission through real preparation/cancellation/
+  import lifecycle; an actual GIMP case queues a third image, coalesces edits,
+  closes a preparing image and verifies the queued latest generation completes
 - `fair-dispatcher.hpp`, `test-fair-dispatcher.cpp`, and
   `run_fair_dispatcher_sanitizers.py`: eight FIFO/input-priority/reentry/teardown
   regressions, independently passing strict C++14 and ASan/UBSan
@@ -314,8 +336,8 @@ operators, many images and sustained painting still need workloads and limits.
 - There is no new creation/menu/editor UI or GimpProgress adapter in this slice
 - Whole lower-stack parity (especially custom modes, masks, component visibility,
   group/passthrough behavior, high precision and indexed inputs), sustained input,
-  high-contention multi-image CPU/memory admission, maximum topology traversal
-  cost and reference-machine latency percentiles remain broader compatibility
+  spill-backed large-raster execution, measured high-contention multi-image
+  workloads, maximum topology traversal cost and reference-machine latency percentiles remain broader compatibility
   gates. FIFO owner-thread fairness is tested; arbitrary worker/process workloads
   and removal of the 64-Mi-pixel whole-raster execution limit remain outstanding
 - The baseline `save-and-export` test failure is unrelated; this record does not
