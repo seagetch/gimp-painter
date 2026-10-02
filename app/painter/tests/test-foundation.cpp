@@ -236,6 +236,7 @@ void painter_test_register ()
   painter_test_register_resources ();
   painter_test_register_gobject ();
   painter_test_register_reentry ();
+  painter_test_register_hierarchy ();
   g_test_add_func ("/painter/ref/copy-move-adopt-retain", references);
   g_test_add_func ("/painter/ref/floating-sink", floating);
   g_test_add_func ("/painter/ref/weak", weak_handles);

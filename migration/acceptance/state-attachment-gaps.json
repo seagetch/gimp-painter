@@ -1,0 +1,132 @@
+{
+  "scope": "Known remaining custom attachment sites in four committed migration paths; not exhaustive of concurrent uncommitted UI/profile code",
+  "source_sha256": {
+    "app/core/gimp-painter-provenance.h": "b46a02f0529b648561d6de80aac7e1d03f66a95bb17b921161b38d084498a8f4",
+    "app/dialogs/painter-layer-dialog.c": "c098e14707b11f31f9e69b32ac93321a7fcc25fa4720ac97ed532ce4cdc4694f",
+    "app/xcf/painter-xcf-load.cpp": "5e1dd8f297c8cd5da998cc71a5f5ff5fb55d58b68d10b017c1f40ff876456a80",
+    "app/xcf/painter-xcf-preserve.cpp": "de3c2fad02f396d95f0d1c60a32762efc3081b800d8e503e21aac00c5d237c3f"
+  },
+  "rows": [
+    {
+      "source": "app/core/gimp-painter-provenance.h:21",
+      "statement": "if (bytes) g_object_set_data_full (target, bytes_keys[i], g_bytes_ref (bytes), (GDestroyNotify) g_bytes_unref);",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/core/gimp-painter-provenance.h:26",
+      "statement": "if (text) g_object_set_data_full (target, text_keys[i], g_strdup (text), g_free);",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/core/gimp-painter-provenance.h:29",
+      "statement": "if (records) g_object_set_data_full (target, \"gimp-painter-xcf-unknown-records\",",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/dialogs/painter-layer-dialog.c:129",
+      "statement": "g_object_set_data_full (G_OBJECT (state->dialog), \"painter-layer-dialog\",",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move owned dialog implementation to the common typed store with scoped call leases"
+    },
+    {
+      "source": "app/xcf/painter-xcf-load.cpp:305",
+      "statement": "g_object_set_data_full (G_OBJECT (replacement), \"gimp-painter-xcf-extension\", raw,",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-load.cpp:307",
+      "statement": "g_object_set_data_full (G_OBJECT (replacement), \"gimp-painter-xcf-original-name\", name, g_free);",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-load.cpp:334",
+      "statement": "g_object_set_data_full (G_OBJECT (image), original_key, g_bytes_ref (info->painter_source),",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-load.cpp:336",
+      "statement": "g_object_set_data (G_OBJECT (image), \"gimp-painter-xcf-dialect\",",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-load.cpp:363",
+      "statement": "g_object_set_data_full (object, offset_key, value, g_free);",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-preserve.cpp:711",
+      "statement": "g_object_set_data (G_OBJECT (item.first), \"gimp-painter-xcf-save-id\", g_hash_table_lookup (save->ids, item.first));",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-preserve.cpp:715",
+      "statement": "g_object_set_data_full (entry.first, external_key, g_bytes_ref (entry.second.get ()),",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-preserve.cpp:751",
+      "statement": "g_object_set_data_full (object, \"gimp-painter-xcf-unknown-records\", g_ptr_array_ref (records),",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-preserve.cpp:760",
+      "statement": "g_object_set_data_full (object, \"gimp-painter-xcf-original-type\",",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-preserve.cpp:768",
+      "statement": "g_object_set_data_full (object, \"gimp-painter-xcf-object-header\", g_bytes_new_from_bytes (info->painter_source, begin, end - begin),",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-preserve.cpp:775",
+      "statement": "g_object_set_data_full (object, records_key, g_bytes_new_from_bytes (info->painter_source, begin, end - begin),",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-preserve.cpp:851",
+      "statement": "if (original) g_object_set_data_full (G_OBJECT (*layer), \"gimp-painter-xcf-original-name\", original.release (), g_free);",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    },
+    {
+      "source": "app/xcf/painter-xcf-preserve.cpp:852",
+      "statement": "g_object_set_data_full (G_OBJECT (*layer), restore_key, dict.release (), reinterpret_cast<GDestroyNotify> (g_variant_unref));",
+      "state": "OPEN",
+      "wbs": "31.016",
+      "required_action": "Move immutable provenance/transient serialization attachment ownership to typed common state without losing bytes, context or copy semantics"
+    }
+  ],
+  "excluded_existing_upstream_protocol": "file-save-dialog.c GIMP_FILE_SAVE_LAST_FILE_KEY/GIMP_FILE_EXPORT_LAST_FILE_KEY is the native last-file context protocol; do not remove or reinterpret it as an independent Painter Impl",
+  "rule": "This ledger records unresolved design/WBS work, not a second GClass implementation claim and not permission to discard metadata"
+}

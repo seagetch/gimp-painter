@@ -11,9 +11,9 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULE = ROOT / 'app/painter'
-C_SOURCES = ['tests/test-c-api.c', 'tests/test-fixture.c']
+C_SOURCES = ['tests/test-c-api.c', 'tests/test-fixture.c', 'tests/test-hierarchy.c']
 CPP_SOURCES = ['gimp-painter-error.cpp', 'gimp-painter-binding.cpp', 'binding-store.cpp']
-TEST_CPP = ['tests/test-foundation.cpp', 'tests/test-resources.cpp', 'tests/test-gobject.cpp', 'tests/test-reentry.cpp']
+TEST_CPP = ['tests/test-foundation.cpp', 'tests/test-resources.cpp', 'tests/test-gobject.cpp', 'tests/test-reentry.cpp', 'tests/test-hierarchy.cpp']
 C_HEADERS = ['gimp-painter-error.h', 'gimp-painter-binding.h']
 CPP_HEADERS = ['boundary.hpp', 'object-ref.hpp', 'binding-store.hpp',
                'resources.hpp', 'connection.hpp', 'source.hpp']
@@ -73,7 +73,7 @@ def run(build, sanitizer, leak_check=False):
     library_objects = []
     for name in C_SOURCES + CPP_SOURCES + TEST_CPP:
         source = MODULE / name
-        output = build / (source.stem + '.o')
+        output = build / (source.name + '.o')
         is_c = source.suffix == '.c'
         execute((cc if is_c else cxx) + flags +
                 (['-std=c11'] if is_c else ['-std=c++14', '-fno-rtti']) +
@@ -92,12 +92,16 @@ def run(build, sanitizer, leak_check=False):
         environment['UBSAN_OPTIONS'] = 'halt_on_error=1:print_stacktrace=1'
     output = execute([str(executable)], env=environment)
     print(output, end='')
+    tracked = [MODULE / name for name in C_SOURCES + CPP_SOURCES + TEST_CPP + C_HEADERS + CPP_HEADERS +
+               ['tests/test-c-api.h', 'tests/test-fixture.h', 'tests/test-hierarchy.h', 'tests/test-registry.hpp']]
+    tracked.append(Path(__file__).resolve())
     return {'status': 'PASS', 'scope': 'standalone painter foundation, not full GIMP or legacy compatibility',
             'sanitizers': (['address', 'undefined'] + (['leak'] if leak_check else [])) if sanitizer else [],
             'leak_check': 'enabled' if leak_check else 'not run',
+            'compiled_sources': ['app/painter/' + name for name in C_SOURCES + CPP_SOURCES + TEST_CPP],
             'commands': commands, 'output': outputs,
             'source_sha256': {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
-                              for path in sorted([*MODULE.rglob('*'), Path(__file__).resolve()]) if path.is_file()}}
+                              for path in sorted(set(tracked))}}
 
 
 def main():

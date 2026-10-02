@@ -5,3 +5,4 @@ void painter_test_register_resources ();
 void painter_test_register_gobject ();
 void painter_test_register_reentry ();
 #endif
+void painter_test_register_hierarchy ();

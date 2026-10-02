@@ -33,6 +33,8 @@ painter_dep = declare_dependency(
 painter_foundation_test = executable('painter-foundation',
   'tests/test-c-api.c',
   'tests/test-fixture.c',
+  'tests/test-hierarchy.c',
+  'tests/test-hierarchy.cpp',
   'tests/test-foundation.cpp',
   'tests/test-resources.cpp',
   'tests/test-gobject.cpp',

@@ -1,0 +1,955 @@
+{
+  "scope": "All WBS06/07 rows, component acceptance separate from unchecked dependency-gated WBS status",
+  "rows": [
+    {
+      "id": "06.001",
+      "task": "ObjectRef の retain factory を実装する",
+      "dependencies": "05.014",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/object-ref.hpp"
+      ],
+      "test_ids": [
+        "/painter/ref/copy-move-adopt-retain",
+        "/painter/reentry/ref-move"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.002",
+      "task": "ObjectRef の adopt factory を実装する",
+      "dependencies": "06.001",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/object-ref.hpp"
+      ],
+      "test_ids": [
+        "/painter/ref/copy-move-adopt-retain",
+        "/painter/reentry/ref-move"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.003",
+      "task": "ObjectRef の sink factory を実装する",
+      "dependencies": "06.002",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/object-ref.hpp"
+      ],
+      "test_ids": [
+        "/painter/ref/floating-sink",
+        "/painter/ref/copy-move-adopt-retain"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.004",
+      "task": "ObjectRef の copy/move を実装する",
+      "dependencies": "06.003",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/object-ref.hpp"
+      ],
+      "test_ids": [
+        "/painter/ref/copy-move-adopt-retain",
+        "/painter/reentry/ref-move"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.005",
+      "task": "ObjectRef の型検査を実装する",
+      "dependencies": "06.004",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/object-ref.hpp"
+      ],
+      "test_ids": [
+        "/painter/gobject/type-rejection"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.006",
+      "task": "weak handle を実装する",
+      "dependencies": "06.005",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/object-ref.hpp"
+      ],
+      "test_ids": [
+        "/painter/ref/weak"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.007",
+      "task": "BindingStore の qdata 登録を実装する",
+      "dependencies": "06.006",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/store/lifecycle",
+        "/painter/store/multiple-slots",
+        "/painter/reentry/constructor-duplicate"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.008",
+      "task": "typed slot の登録を実装する",
+      "dependencies": "06.007",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/store/lifecycle",
+        "/painter/store/multiple-slots",
+        "/painter/reentry/constructor-duplicate"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.009",
+      "task": "typed slot の取得を実装する",
+      "dependencies": "06.008",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/store/lifecycle",
+        "/painter/store/multiple-slots",
+        "/painter/reentry/constructor-duplicate"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.010",
+      "task": "Impl の所有と解放を実装する",
+      "dependencies": "06.009",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/store/lifecycle",
+        "/painter/store/multiple-slots",
+        "/painter/reentry/constructor-duplicate"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.011",
+      "task": "close の状態遷移を実装する",
+      "dependencies": "06.010",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/store/lifecycle",
+        "/painter/store/multiple-slots",
+        "/painter/reentry/constructor-duplicate"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.012",
+      "task": "呼出し中の再入保護を実装する",
+      "dependencies": "06.011",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/store/reentrant-close",
+        "/painter/reentry/constructor-owner-loss"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.013",
+      "task": "C 入口の例外変換を実装する",
+      "dependencies": "06.012",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/boundary.hpp",
+        "app/painter/gimp-painter-binding.cpp"
+      ],
+      "test_ids": [
+        "/painter/boundary/c-close",
+        "/painter/boundary/exception",
+        "/painter/hierarchy/interface-exception"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.014",
+      "task": "vfunc の型付き trampoline を実装する",
+      "dependencies": "06.013",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/tests/test-fixture.c",
+        "app/painter/tests/test-gobject.cpp"
+      ],
+      "test_ids": [
+        "/painter/gobject/property-dispose-finalize"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Exact-signature C callbacks and C++ slot dispatch; not proof of every legacy vfunc adapter."
+    },
+    {
+      "id": "06.015",
+      "task": "property の転送を実装する",
+      "dependencies": "06.014",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/tests/test-fixture.c",
+        "app/painter/tests/test-gobject.cpp"
+      ],
+      "test_ids": [
+        "/painter/gobject/property-dispose-finalize"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Exact-signature C callbacks and C++ slot dispatch; not proof of every legacy vfunc adapter."
+    },
+    {
+      "id": "06.016",
+      "task": "GInterface の登録 adapter を実装する",
+      "dependencies": "06.015",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/tests/test-hierarchy.c",
+        "app/painter/tests/test-hierarchy.cpp"
+      ],
+      "test_ids": [
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/interface-exception"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Native GInterface and class registration are separate; interface dispatch reaches the same typed slots with exception conversion."
+    },
+    {
+      "id": "06.017",
+      "task": "Connection の所有管理を実装する",
+      "dependencies": "06.016",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/connection.hpp"
+      ],
+      "test_ids": [
+        "/painter/signal/lifetime-blocks",
+        "/painter/signal/after-order",
+        "/painter/signal/reentrant-disconnect",
+        "/painter/reentry/connection-move",
+        "/painter/reentry/receiver-deletion"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "New Connection owns weak emitter and handler ID; no copied signal-name allocation to leak. All legacy call-site mapping remains separate."
+    },
+    {
+      "id": "06.018",
+      "task": "Connection の block/unblock を実装する",
+      "dependencies": "06.017",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/connection.hpp"
+      ],
+      "test_ids": [
+        "/painter/signal/lifetime-blocks",
+        "/painter/signal/after-order",
+        "/painter/signal/reentrant-disconnect",
+        "/painter/reentry/connection-move",
+        "/painter/reentry/receiver-deletion"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "New Connection owns weak emitter and handler ID; no copied signal-name allocation to leak. All legacy call-site mapping remains separate."
+    },
+    {
+      "id": "06.019",
+      "task": "idle source の所有管理を実装する",
+      "dependencies": "06.018",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/source.hpp"
+      ],
+      "test_ids": [
+        "/painter/source/cancel-repeat",
+        "/painter/source/self-close",
+        "/painter/source/exception",
+        "/painter/reentry/source-move"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.020",
+      "task": "GValue の所有 wrapper を実装する",
+      "dependencies": "06.019",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/resources.hpp"
+      ],
+      "test_ids": [
+        "/painter/resources/value-assignment",
+        "/painter/reentry/value-reset-move"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.020/value-assignment",
+      "task": "GValue wrapper の再代入を安全にする",
+      "dependencies": "06.020, 01.007/value-wrapper",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/resources.hpp"
+      ],
+      "test_ids": [
+        "/painter/resources/value-assignment",
+        "/painter/reentry/value-reset-move"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.021",
+      "task": "GLib 配列と文字列の所有 wrapper を実装する",
+      "dependencies": "06.020",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/resources.hpp"
+      ],
+      "test_ids": [
+        "/painter/resources/array-assignment",
+        "/painter/reentry/array-move"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.021/array-reassignment",
+      "task": "配列 wrapper の再代入を安全にする",
+      "dependencies": "06.021, 01.007/array-wrapper",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/resources.hpp"
+      ],
+      "test_ids": [
+        "/painter/resources/array-assignment",
+        "/painter/reentry/array-move"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.022",
+      "task": "mutex guard の置換を実装する",
+      "dependencies": "06.021",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/resources.hpp"
+      ],
+      "test_ids": [
+        "/painter/resources/mutex-exception"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "06.023",
+      "task": "GTK DSL を新ハンドルへ接続する",
+      "dependencies": "06.022",
+      "state": "PARTIAL",
+      "implementation_paths": [
+        "app/widgets/gimppaintermybrusheditor.cpp"
+      ],
+      "test_ids": [],
+      "reports": [],
+      "scope_or_gap": "GTK DSL replacement is feature-specific; canvas compact horizontal toolbar and complete old Definer/Packer call-site disposition remain open."
+    },
+    {
+      "id": "06.024",
+      "task": "qdata lookup の処理単位を制限する",
+      "dependencies": "06.023",
+      "state": "PARTIAL",
+      "implementation_paths": [
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+        "app/core/gimpfilterlayer.cpp"
+      ],
+      "test_ids": [],
+      "reports": [],
+      "scope_or_gap": "Major renderer pixel loops consume resolved plain state, but all source-ledger paths still require one-resolution-per-operation review."
+    },
+    {
+      "id": "06.025",
+      "task": "派生型と基底型の slot 解決を実装する",
+      "dependencies": "06.024",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/tests/test-hierarchy.c",
+        "app/painter/tests/test-hierarchy.cpp"
+      ],
+      "test_ids": [
+        "/painter/hierarchy/properties-interface"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Actual base/derived GTypes share one store with distinct slots of the same Impl type; inherited and own properties plus interface reads roundtrip."
+    },
+    {
+      "id": "06.026",
+      "task": "継承 property の委譲を実装する",
+      "dependencies": "06.025",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/tests/test-hierarchy.c",
+        "app/painter/tests/test-hierarchy.cpp"
+      ],
+      "test_ids": [
+        "/painter/hierarchy/properties-interface"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Actual base/derived GTypes share one store with distinct slots of the same Impl type; inherited and own properties plus interface reads roundtrip."
+    },
+    {
+      "id": "06.027",
+      "task": "終了フックの順序を実装する",
+      "dependencies": "06.026",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/tests/test-hierarchy.c",
+        "app/painter/tests/test-hierarchy.cpp"
+      ],
+      "test_ids": [
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/reentry/finalizing-close-read"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Derived/base hooks and repeated parent dispose reentry close each slot once; const closed reads are allowed, finalizing reads are rejected."
+    },
+    {
+      "id": "06.028",
+      "task": "非同期 job の独立状態を実装する",
+      "dependencies": "06.027",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/filter-scheduler.cpp",
+        "app/painter/filter-spool.cpp",
+        "app/core/gimpfilterlayer.cpp"
+      ],
+      "test_ids": [
+        "/gimp-filter-layer/image_close_during_worker",
+        "/gimp-filter-layer/retained_handle_after_image_close"
+      ],
+      "reports": [
+        "migration/tests/filter-admission-native.json",
+        "migration/tests/filter-admission-native-sanitizers.json"
+      ],
+      "scope_or_gap": "Actual Filter job independently owns inputs/results/cancel/lease; image close preserves worker safety. Other feature-specific async jobs require their own acceptance."
+    },
+    {
+      "id": "06.029",
+      "task": "構築失敗の解放経路を実装する",
+      "dependencies": "06.028",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/store/construction-failure",
+        "/painter/reentry/constructor-close",
+        "/painter/reentry/constructor-duplicate",
+        "/painter/reentry/constructor-owner-loss"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Slot construction and prohibited constructor callback failures are injected; feature-specific GType class initialization audit remains separate."
+    },
+    {
+      "id": "07.001",
+      "task": "retain/adopt/sink を試験する",
+      "dependencies": "06.029",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/object-ref.hpp"
+      ],
+      "test_ids": [
+        "/painter/ref/floating-sink",
+        "/painter/ref/copy-move-adopt-retain"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "07.002",
+      "task": "copy/move/null を試験する",
+      "dependencies": "07.001",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/object-ref.hpp"
+      ],
+      "test_ids": [
+        "/painter/ref/copy-move-adopt-retain",
+        "/painter/reentry/ref-move"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "07.003",
+      "task": "誤型と未登録 slot を試験する",
+      "dependencies": "07.002",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/object-ref.hpp",
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/gobject/type-rejection",
+        "/painter/store/lifecycle"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "07.004",
+      "task": "多重 slot の終了を試験する",
+      "dependencies": "07.003",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/store/multiple-slots",
+        "/painter/hierarchy/properties-interface"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "07.005",
+      "task": "構築中 property を試験する",
+      "dependencies": "07.004",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/tests/test-fixture.c",
+        "app/painter/tests/test-gobject.cpp"
+      ],
+      "test_ids": [
+        "/painter/gobject/property-dispose-finalize"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Exact-signature C callbacks and C++ slot dispatch; not proof of every legacy vfunc adapter."
+    },
+    {
+      "id": "07.006",
+      "task": "dispose の再実行を試験する",
+      "dependencies": "07.005",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/gobject/property-dispose-finalize",
+        "/painter/hierarchy/parent-dispose-reentry"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "07.007",
+      "task": "signal 中の close を試験する",
+      "dependencies": "07.006",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/store/reentrant-close",
+        "/painter/reentry/constructor-owner-loss"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "07.008",
+      "task": "接続先先行破棄を試験する",
+      "dependencies": "07.007",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/connection.hpp"
+      ],
+      "test_ids": [
+        "/painter/signal/lifetime-blocks",
+        "/painter/signal/after-order",
+        "/painter/signal/reentrant-disconnect",
+        "/painter/reentry/connection-move",
+        "/painter/reentry/receiver-deletion"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "New Connection owns weak emitter and handler ID; no copied signal-name allocation to leak. All legacy call-site mapping remains separate."
+    },
+    {
+      "id": "07.008/untracked-signals",
+      "task": "返却 Connection を捨てる接続を追跡可能にする",
+      "dependencies": "07.008, 01.008",
+      "state": "PARTIAL",
+      "implementation_paths": [
+        "app/painter/connection.hpp"
+      ],
+      "test_ids": [],
+      "reports": [],
+      "scope_or_gap": "Connection primitive teardown passes; all old connect_noret/unretained call-site mappings are not yet accepted."
+    },
+    {
+      "id": "07.008/connection-name",
+      "task": "Connection の signal 名を解放する",
+      "dependencies": "07.008, 01.007/connection-signal",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/connection.hpp"
+      ],
+      "test_ids": [
+        "/painter/signal/lifetime-blocks",
+        "/painter/signal/after-order",
+        "/painter/signal/reentrant-disconnect",
+        "/painter/reentry/connection-move",
+        "/painter/reentry/receiver-deletion"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "New Connection owns weak emitter and handler ID; no copied signal-name allocation to leak. All legacy call-site mapping remains separate."
+    },
+    {
+      "id": "07.009",
+      "task": "投入済み callback の失効を試験する",
+      "dependencies": "07.008",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/source.hpp",
+        "app/painter/object-ref.hpp"
+      ],
+      "test_ids": [
+        "/painter/store/lifecycle",
+        "/painter/ref/weak",
+        "/painter/source/cancel-repeat",
+        "/painter/source/self-close"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Generation invalidation and cancelled callback ownership are verified in common fixtures; per-feature queued callback audit is separate."
+    },
+    {
+      "id": "07.010",
+      "task": "例外の境界変換を試験する",
+      "dependencies": "07.009",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/boundary.hpp",
+        "app/painter/gimp-painter-binding.cpp"
+      ],
+      "test_ids": [
+        "/painter/boundary/c-close",
+        "/painter/boundary/exception",
+        "/painter/hierarchy/interface-exception"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+    },
+    {
+      "id": "07.011",
+      "task": "weak handle と終了状態を試験する",
+      "dependencies": "07.010",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/source.hpp",
+        "app/painter/object-ref.hpp"
+      ],
+      "test_ids": [
+        "/painter/store/lifecycle",
+        "/painter/ref/weak",
+        "/painter/source/cancel-repeat",
+        "/painter/source/self-close"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Generation invalidation and cancelled callback ownership are verified in common fixtures; per-feature queued callback audit is separate."
+    },
+    {
+      "id": "07.012",
+      "task": "worker 完了と画像終了の競合を試験する",
+      "dependencies": "07.011",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/filter-scheduler.cpp",
+        "app/painter/filter-spool.cpp",
+        "app/core/gimpfilterlayer.cpp"
+      ],
+      "test_ids": [
+        "/gimp-filter-layer/image_close_during_worker",
+        "/gimp-filter-layer/retained_handle_after_image_close"
+      ],
+      "reports": [
+        "migration/tests/filter-admission-native.json",
+        "migration/tests/filter-admission-native-sanitizers.json"
+      ],
+      "scope_or_gap": "Actual Filter job independently owns inputs/results/cancel/lease; image close preserves worker safety. Other feature-specific async jobs require their own acceptance."
+    },
+    {
+      "id": "07.013",
+      "task": "bridge の sanitizer 試験を実行する",
+      "dependencies": "07.012",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/object-ref.hpp",
+        "app/painter/resources.hpp",
+        "app/painter/connection.hpp",
+        "app/painter/source.hpp"
+      ],
+      "test_ids": [
+        "/painter/store/lifecycle",
+        "/painter/hierarchy/parent-dispose-reentry"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Linux ASan/UBSan only, with source/compile proof; LeakSanitizer is not a pass and no cross-platform acceptance is implied."
+    },
+    {
+      "id": "07.014",
+      "task": "最小混在 executable を各 OS でリンクする",
+      "dependencies": "07.013",
+      "state": "OPEN",
+      "implementation_paths": [],
+      "test_ids": [],
+      "reports": [],
+      "scope_or_gap": "No native Windows/macOS mixed-executable build/link/runtime result. Linux proof cannot satisfy the all-platform gate."
+    },
+    {
+      "id": "07.015",
+      "task": "派生階層の取得を試験する",
+      "dependencies": "07.014",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/tests/test-hierarchy.c",
+        "app/painter/tests/test-hierarchy.cpp"
+      ],
+      "test_ids": [
+        "/painter/hierarchy/properties-interface"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Actual base/derived GTypes share one store with distinct slots of the same Impl type; inherited and own properties plus interface reads roundtrip."
+    },
+    {
+      "id": "07.016",
+      "task": "構築失敗を注入して試験する",
+      "dependencies": "07.015",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp"
+      ],
+      "test_ids": [
+        "/painter/store/construction-failure",
+        "/painter/reentry/constructor-close",
+        "/painter/reentry/constructor-duplicate",
+        "/painter/reentry/constructor-owner-loss"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Slot construction and prohibited constructor callback failures are injected; feature-specific GType class initialization audit remains separate."
+    },
+    {
+      "id": "07.017",
+      "task": "親 dispose の再入を試験する",
+      "dependencies": "07.016",
+      "state": "COMPONENT_VERIFIED",
+      "implementation_paths": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/tests/test-hierarchy.c",
+        "app/painter/tests/test-hierarchy.cpp"
+      ],
+      "test_ids": [
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/reentry/finalizing-close-read"
+      ],
+      "reports": [
+        "migration/tests/painter-foundation-acceptance-native.json",
+        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+      ],
+      "scope_or_gap": "Derived/base hooks and repeated parent dispose reentry close each slot once; const closed reads are allowed, finalizing reads are rejected."
+    }
+  ]
+}

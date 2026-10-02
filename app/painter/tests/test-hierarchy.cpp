@@ -1,0 +1,94 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+#include "test-hierarchy.h"
+#include "test-registry.hpp"
+#include "binding-store.hpp"
+#include <array>
+namespace GimpPainter {
+template<> struct TypeTraits<PainterHierarchyBase> { static GType type () { return painter_hierarchy_base_get_type (); } };
+template<> struct TypeTraits<PainterHierarchyChild> { static GType type () { return painter_hierarchy_child_get_type (); } };
+template<> struct TypeTraits<PainterReadable> { static GType type () { return painter_readable_get_type (); } };
+}
+using namespace GimpPainter;
+namespace {
+struct Stats { int constructed=0,destroyed=0,parent_calls=0; bool reenter=false; int closed_count=0; std::array<int,2> closed {{0,0}}; };
+Stats stats;
+struct Impl {
+  explicit Impl (int tag):tag(tag) { ++stats.constructed; }
+  ~Impl () { ++stats.destroyed; }
+  void close () noexcept { g_assert_cmpint (stats.closed_count,<,2); stats.closed[stats.closed_count++]=tag; }
+  int tag,value=-1;
+};
+struct BaseSlot:SlotSpec<PainterHierarchyBase,Impl>{};
+struct ChildSlot:SlotSpec<PainterHierarchyChild,Impl>{};
+auto child () -> ObjectRef<PainterHierarchyChild> {
+  return ObjectRef<PainterHierarchyChild>::adopt (static_cast<PainterHierarchyChild*> (g_object_new (painter_hierarchy_child_get_type (),"base-value",17,"child-value",31,nullptr)));
+}
+void hierarchy_properties_interface ()
+{
+  stats={};
+  {
+    auto defaults=ObjectRef<PainterHierarchyChild>::adopt (static_cast<PainterHierarchyChild*> (g_object_new (painter_hierarchy_child_get_type (),nullptr)));
+    g_assert_cmpint (painter_hierarchy_get (G_OBJECT(defaults.get()),FALSE),==,7);
+    g_assert_cmpint (painter_hierarchy_get (G_OBJECT(defaults.get()),TRUE),==,9);
+  }
+  stats={};
+  auto owner=child (); auto base=ObjectRef<PainterHierarchyBase>::retain (reinterpret_cast<PainterHierarchyBase*>(owner.get ()));
+  auto readable=ObjectRef<PainterReadable>::retain (reinterpret_cast<PainterReadable*>(owner.get ()));
+  g_assert_cmpint (stats.constructed,==,2);
+  auto& store=BindingStore::require (G_OBJECT (owner.get ()));
+  g_assert_cmpint (store.read<BaseSlot> ([] (const Impl& s){return s.value;}),==,17);
+  g_assert_cmpint (store.read<ChildSlot> ([] (const Impl& s){return s.value;}),==,31);
+  GError *error=nullptr; g_assert_cmpint (painter_readable_read (readable.get (),&error),==,48);g_assert_no_error (error);
+  g_object_set (owner.get (),"base-value",3,"child-value",11,nullptr);
+  gint inherited=0,own=0;g_object_get (owner.get (),"base-value",&inherited,"child-value",&own,nullptr);
+  g_assert_cmpint (inherited,==,3);g_assert_cmpint (own,==,11);
+  owner.reset ();base.reset ();g_assert_cmpint (stats.destroyed,==,0);readable.reset ();
+  g_assert_cmpint (stats.destroyed,==,2);g_assert_true ((stats.closed==std::array<int,2>({{2,1}})));
+}
+void interface_exception_boundary ()
+{
+  stats={};auto owner=child ();GError* error=nullptr;
+  g_object_set (owner.get (),"child-value",13,nullptr);
+  g_assert_cmpint (painter_readable_read (reinterpret_cast<PainterReadable*>(owner.get ()),&error),==,-1);
+  g_assert_error (error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_EXCEPTION);g_clear_error (&error);
+  g_object_set (owner.get (),"child-value",14,nullptr);
+  g_assert_cmpint (painter_readable_read (reinterpret_cast<PainterReadable*>(owner.get ()),&error),==,31);g_assert_no_error (error);
+}
+void parent_dispose_reentry ()
+{
+  stats={};auto owner=child ();stats.reenter=true;
+  g_object_run_dispose (G_OBJECT (owner.get ()));g_object_run_dispose (G_OBJECT (owner.get ()));
+  g_assert_true ((stats.closed==std::array<int,2>({{2,1}})));g_assert_cmpint (stats.parent_calls,>=,3);
+  g_assert_cmpint (stats.destroyed,==,0);owner.reset ();g_assert_cmpint (stats.destroyed,==,2);
+}
+}
+void painter_hierarchy_init_binding (GObject *owner,gboolean is_child)
+{
+  GError* error=nullptr;boundary_void (&error,[&]{auto& store=BindingStore::ensure (owner);if(is_child)store.emplace<ChildSlot>(2);else store.emplace<BaseSlot>(1);});g_assert_no_error (error);
+}
+void painter_hierarchy_activate_binding (GObject *owner)
+{ GError* error=nullptr;boundary_void (&error,[&]{BindingStore::require(owner).activate();});g_assert_no_error(error); }
+void painter_hierarchy_set (GObject *owner,gboolean is_child,gint value)
+{
+  GError* error=nullptr;boundary_void (&error,[&]{auto& store=BindingStore::require(owner);auto set=[value](Impl& i){i.value=value;};
+    if(store.state()==BindingStore::State::constructing){if(is_child)store.initialize<ChildSlot>(set);else store.initialize<BaseSlot>(set);}
+    else {if(is_child)store.with<ChildSlot>(set);else store.with<BaseSlot>(set);}});g_assert_no_error(error);
+}
+gint painter_hierarchy_get (GObject *owner,gboolean is_child)
+{ GError* error=nullptr;auto value=boundary<gint>(&error,-1,[&]{auto& store=BindingStore::require(owner);auto read=[](const Impl& s){return s.value;};return is_child?store.read<ChildSlot>(read):store.read<BaseSlot>(read);});g_assert_no_error(error);return value; }
+gint painter_hierarchy_read (PainterReadable *owner,GError **error)
+{ return boundary<gint>(error,-1,[&]{int base=painter_hierarchy_get(G_OBJECT(owner),FALSE),child=painter_hierarchy_get(G_OBJECT(owner),TRUE);if(child==13)throw std::runtime_error("interface failure");return base+child;}); }
+void painter_hierarchy_parent_dispose (GObject *owner)
+{
+  ++stats.parent_calls;
+  g_assert_true(BindingStore::require(owner).state()==BindingStore::State::closed);
+  g_assert_cmpint(painter_hierarchy_get(owner,FALSE),>=,0);
+  if(G_TYPE_CHECK_INSTANCE_TYPE(owner,painter_hierarchy_child_get_type()))g_assert_cmpint(painter_hierarchy_get(owner,TRUE),>=,0);
+  if(stats.reenter){stats.reenter=false;g_object_run_dispose(owner);}
+}
+void painter_test_register_hierarchy ()
+{
+  g_test_add_func("/painter/hierarchy/properties-interface",hierarchy_properties_interface);
+  g_test_add_func("/painter/hierarchy/interface-exception",interface_exception_boundary);
+  g_test_add_func("/painter/hierarchy/parent-dispose-reentry",parent_dispose_reentry);
+}
