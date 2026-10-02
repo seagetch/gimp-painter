@@ -97,6 +97,30 @@ struct _GimpBrushCoreClass
 
 GType  gimp_brush_core_get_type       (void) G_GNUC_CONST;
 
+/* One shared native interpolation algorithm. The ordinary vfunc drains it
+ * synchronously; owner-context tools can yield after a bounded number of dabs.
+ * Caller keeps core/drawables/options stable and alive until free. No callback
+ * or object ownership escapes into this plain numerical continuation. */
+/* Numerical continuation only. Caller retains core, drawables and options,
+ * keeps them stable, and serializes owner-thread calls. begin does no painting;
+ * step emits no more than dab_budget native paint callbacks. NULL from begin
+ * means the computed count is nonfinite or outside its signed 64-bit domain.
+ * This does not bound the work performed by an individual paint callback. */
+#define GIMP_BRUSH_INTERPOLATION_RESUMABLE 1
+typedef struct _GimpBrushCoreInterpolation GimpBrushCoreInterpolation;
+GimpBrushCoreInterpolation *gimp_brush_core_interpolation_begin
+                                      (GimpBrushCore *core, GList *drawables,
+                                       GimpPaintOptions *options,
+                                       const GimpCoords *coords, guint32 time);
+gboolean gimp_brush_core_interpolation_step
+                                      (GimpBrushCore *core, GList *drawables,
+                                       GimpPaintOptions *options,
+                                       GimpBrushCoreInterpolation *state,
+                                       gsize dab_budget);
+void     gimp_brush_core_interpolation_free (GimpBrushCoreInterpolation *state);
+guint64  gimp_brush_core_interpolation_remaining
+                                      (const GimpBrushCoreInterpolation *state);
+
 void   gimp_brush_core_set_brush      (GimpBrushCore            *core,
                                        GimpBrush                *brush);
 

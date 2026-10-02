@@ -374,9 +374,19 @@ static void latency_sample () {
   g_assert_false(s.pending());g_assert_cmpint(s.depth(),==,1);
   g_test_message("latency image=128x128 brush=120 points=21 press_us=%" G_GINT64_FORMAT " release_us=%" G_GINT64_FORMAT " max_main_iteration_us=%" G_GINT64_FORMAT " elapsed_us=%" G_GINT64_FORMAT " iterations=%u; no total latency/admission bound claimed",press_us,release_us,max_dispatch,g_get_monotonic_time()-total_start,count);
 }
+static void long_event_yields () {
+  Scene s;gimp_brush_set_spacing(gimp_context_get_brush(GIMP_CONTEXT(s.options)),1);
+  g_object_set(s.options,"brush-size",15.0,nullptr);
+  g_object_set(gimp_dynamics_get_output(gimp_context_get_dynamics(GIMP_CONTEXT(s.options)),GIMP_DYNAMICS_OUTPUT_SPACING),"use-pressure",TRUE,nullptr);
+  s.press();s.await_paint();gint64 start=g_get_monotonic_time();s.motion(1e9,32);s.release();gint64 admission=g_get_monotonic_time()-start;
+  gint64 maximum=0;for(int n=0;n<100;++n){start=g_get_monotonic_time();g_main_context_iteration(nullptr,FALSE);maximum=std::max(maximum,g_get_monotonic_time()-start);}
+  g_assert_true(s.pending());gimp_tool_control(s.tool,GIMP_TOOL_ACTION_HALT,s.display);s.drain();g_assert(s.pixels()==s.initial);g_assert_cmpint(s.depth(),==,0);
+  g_test_message("billion-pixel event admission_us=%" G_GINT64_FORMAT " max_100_iteration_us=%" G_GINT64_FORMAT "; still pending before explicit cancel, no segment expansion loop",admission,maximum);
+}
 int main(int argc,char**argv) {
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  g_test_add_func("/fill-ui/long-event-yields",long_event_yields);
   g_test_add_func("/fill-ui/registration-options",registration_options);
   g_test_add_func("/fill-ui/foreground-picker",foreground_picker);
   g_test_add_func("/fill-ui/queued-settings-undo",queued_settings_undo);

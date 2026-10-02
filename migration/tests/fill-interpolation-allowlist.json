@@ -1,0 +1,98 @@
+{
+  "status": "Fill/BrushCore sources frozen for checkpoint. Do not include uncommitted Save continuation work.",
+  "whole_file_allowlist": [
+    "app/paint/gimpbrushcore.c",
+    "app/paint/gimpbrushcore.h",
+    "app/paint/gimpfillbrush.cpp",
+    "app/paint/gimpfillbrush.h",
+    "app/tools/gimpfillbrushtool.cpp",
+    "app/tests/painter-brush-interpolation-trace.cpp",
+    "app/tests/painter-fill-brush-trace.cpp",
+    "app/tests/test-gimp-fill-brush.cpp",
+    "app/tests/test-painter-fill-brush-ui.cpp",
+    "migration/tests/compare_native_interpolation.py",
+    "migration/tests/run_fill_brush_sanitizers.py",
+    "migration/tests/build_fill_brush_ui_sanitizers.py",
+    "migration/contracts/native-brush-interpolation.md",
+    "migration/tests/fill-interpolation-core-sanitizers.json",
+    "migration/tests/fill-interpolation-ui-sanitizer-build.json",
+    "migration/tests/fill-interpolation-ui-native.txt",
+    "migration/tests/fill-interpolation-ui-sanitizers.txt",
+    "migration/tests/fill-interpolation-core-native.txt",
+    "migration/fixtures/native-brush-interpolation/README.md",
+    "migration/fixtures/native-brush-interpolation/runtime.json",
+    "migration/fixtures/native-brush-interpolation/runtime.stderr",
+    "migration/fixtures/native-brush-interpolation/runtime.stdout.gz",
+    "migration/fixtures/native-brush-interpolation/trace.tsv.gz"
+  ],
+  "whole_file_sha256": {
+    "app/paint/gimpbrushcore.c": "c7fb54032bbd3b3fe2da1274962c4ed8dcfacf5abe2632fd1b9977b5f8dfd418",
+    "app/paint/gimpbrushcore.h": "6e81d87bb887af20b6964a55e865f7d881f20d6da40f87c671d73d0fca3fff67",
+    "app/paint/gimpfillbrush.cpp": "07aad05358c69aa9a23b6332bad7a362e3a0ccf1da8add6eef298155305fe9b0",
+    "app/paint/gimpfillbrush.h": "0c072cc3a208c90d1629d45ebb44f00c8d03bdaaa3d612ddc48802c0513c0445",
+    "app/tools/gimpfillbrushtool.cpp": "4e69f4170ee9a99c670865af5aa76d1169331e2e01bcf5056bbd4cc1a3317d7b",
+    "app/tests/painter-brush-interpolation-trace.cpp": "469279905a96e8611890a701a5aa0e45520dcc4c78e203f1f88c0c957b756e93",
+    "app/tests/painter-fill-brush-trace.cpp": "b3f0988c06db2caffe3fcd6be8d85e391ae520172748b945f3ad06f5e05a3a4b",
+    "app/tests/test-gimp-fill-brush.cpp": "57ecc858bfee031a0e3e614eefaad4d9ab856284cfceae7f7a4d877c37130237",
+    "app/tests/test-painter-fill-brush-ui.cpp": "a7472a03f1437bc1c1650756a094b97cfb3d8e548b499f4e0f0ccee61a1d7415",
+    "migration/tests/compare_native_interpolation.py": "791ab6d2fff67826d3b2c4b2d8da1459b0ddb34d80c83062e6d0783af55ba427",
+    "migration/tests/run_fill_brush_sanitizers.py": "a51a64ce7e0a6401f66ea10d44ca1193cd6b405b5cf39dc2a403908f9cb96ad8",
+    "migration/tests/build_fill_brush_ui_sanitizers.py": "a1feab5c60fd30555d4f09ef852248bedfe8ddf51f18057a1530fcf8940a574f",
+    "migration/contracts/native-brush-interpolation.md": "aaa66aa6a5b165ddafcf0e567c1666d410f9afc88fc293a9a896cfa2ac8958f4",
+    "migration/tests/fill-interpolation-core-sanitizers.json": "3d37f0c7ef4bbbf406543d46f7ec8868ea81ae980927d7bdfa309800ed26f54f",
+    "migration/tests/fill-interpolation-ui-sanitizer-build.json": "885cf7e64d5f55c96d47aace3a76ee013bdf2932e2f0bfdad02e3fcba4f757a7",
+    "migration/tests/fill-interpolation-ui-native.txt": "9f56714736a18df4e4ce7f78a41b1ab91ff42c0029f5186c0571275f4ef0ab3e",
+    "migration/tests/fill-interpolation-ui-sanitizers.txt": "ec60464ed3651423a9496d499f5d7f83a4417e575a93ed99dd1ad73836751fdd",
+    "migration/tests/fill-interpolation-core-native.txt": "199cddf93f00d5322580d535c211f990a260e0f593ba69d255d8b80371dec76a",
+    "migration/fixtures/native-brush-interpolation/README.md": "cf68404bca039dbfafc342c30435dd0908103c088ddf15c5f66b246e0bdb9722",
+    "migration/fixtures/native-brush-interpolation/runtime.json": "2fca902136c6888e672abba0ffc22cf6f5255982df608aef59d990c600569992",
+    "migration/fixtures/native-brush-interpolation/runtime.stderr": "b9e9345875f246072eb4ffeb4f98fec7f2d530ba7d9f7e43fa8ae1fc485d1cdb",
+    "migration/fixtures/native-brush-interpolation/runtime.stdout.gz": "445d365a24f99b59246dfe4828b2e10dbaa5840b3d5693d9c233e8c92e71e737",
+    "migration/fixtures/native-brush-interpolation/trace.tsv.gz": "445d365a24f99b59246dfe4828b2e10dbaa5840b3d5693d9c233e8c92e71e737"
+  },
+  "shared_file_hunk_allowlist": {
+    "app/tests/meson.build": [
+      "add async to existing Fill legacy variants",
+      "native_interpolation_trace executable and painter-native-interpolation test stanza only"
+    ]
+  },
+  "results": {
+    "core_native": 25,
+    "core_sanitized": 25,
+    "old_stroke_modes": [
+      "synchronous-per-motion",
+      "synchronous-fully-queued",
+      "resumable-per-motion"
+    ],
+    "old_stroke_bytes_each": 1814962,
+    "native_interpolation_scenarios": 180,
+    "native_interpolation_records": 8883,
+    "native_interpolation_bytes_each": 4655000,
+    "native_interpolation_budgets": [
+      0,
+      1,
+      2,
+      7,
+      31,
+      4096
+    ],
+    "gui_native": 26,
+    "gui_sanitized": 26,
+    "wide_native_candidate_count": 49999998300,
+    "gui_billion_pixel_event": {
+      "normal_admission_us": 63,
+      "normal_max_100_iteration_us": 4573,
+      "sanitized_admission_us": 83,
+      "sanitized_max_100_iteration_us": 16331
+    },
+    "gui_source_sha256": {
+      "app/tools/gimpfillbrushtool.cpp": "4e69f4170ee9a99c670865af5aa76d1169331e2e01bcf5056bbd4cc1a3317d7b",
+      "app/tests/test-painter-fill-brush-ui.cpp": "a7472a03f1437bc1c1650756a094b97cfb3d8e548b499f4e0f0ccee61a1d7415"
+    }
+  },
+  "scope": "Native interpolation is structurally resumable; total snapshot/resource/publication latency, raw input/frontier memory admission, pipe state and complete old Shift/smoothing compatibility remain open. Save continuation is separate pending work.",
+  "external_source_changes_since_sanitizer_build": [
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp"
+  ],
+  "external_source_note": "MyPaint editor is adding application history in Options. Tested binary and original source hashes retained; refresh of its instrumented owner is being coordinated. Fill/BrushCore source hashes match both GUI runs."
+}

@@ -162,8 +162,9 @@ struct Controller {
     GError *error = nullptr;
     bool ok = true;
     /* There is deliberately no drain loop. Each owner-context dispatch performs
-     * only one phase. Search candidates have a budget, while native start,
-     * interpolation, publication and cleanup have separately measured costs.
+     * only one phase. Interpolation advances at most one dab and search
+     * candidates have a budget. Native start, mask generation, publication
+     * and cleanup have separately measured costs.
      * This is not a claim of a total UI latency or memory bound. */
     if (!stroke->started) {
       stroke->core = ObjectRef<GimpFillBrush>::adopt (GIMP_FILL_BRUSH (
@@ -183,7 +184,7 @@ struct Controller {
         gimp_paint_core_smooth_coords (GIMP_PAINT_CORE (stroke->core.get ()),
                                       stroke->options.get (), &event.coords);
       stroke->first_input = false;
-      ok = gimp_fill_brush_motion (stroke->core.get (), &event.coords, event.time, &error);
+      ok = gimp_fill_brush_motion_begin (stroke->core.get (), &event.coords, event.time, &error);
       stroke->draining = ok;
     } else if (stroke->released) {
       committing = true;
@@ -381,6 +382,30 @@ void oper_update (GimpTool *tool, const GimpCoords *coords, GdkModifierType stat
   });
   GIMP_TOOL_CLASS (gimp_fill_brush_tool_parent_class)->oper_update (tool, coords, state, proximity, display);
 }
+void draw (GimpDrawTool *draw_tool) {
+  auto *paint = GIMP_PAINT_TOOL (draw_tool);
+  // Canvas cursor/path properties have a smaller numerical domain than valid
+  // paint input. Omit an unrepresentable off-canvas preview, without changing
+  // or dropping the accepted stroke coordinates.
+  auto representable = [] (double x, double y) {
+    return std::isfinite (x) && std::isfinite (y) &&
+           std::abs (x) <= GIMP_MAX_IMAGE_SIZE && std::abs (y) <= GIMP_MAX_IMAGE_SIZE;
+  };
+  if (!representable (paint->cursor_x, paint->cursor_y) ||
+      (paint->draw_line && !representable (paint->core->last_coords.x, paint->core->last_coords.y))) return;
+  GIMP_DRAW_TOOL_CLASS (gimp_fill_brush_tool_parent_class)->draw (draw_tool);
+}
+GimpCanvasItem *outline (GimpPaintTool *paint, GimpDisplay *display, double x, double y) {
+  auto *brush = GIMP_BRUSH_CORE (paint->core);
+  if (brush->main_brush && brush->scale > 0.0) {
+    int width, height;
+    gimp_brush_transform_size (brush->main_brush, brush->scale, brush->aspect_ratio,
+                               brush->angle, brush->reflect, &width, &height);
+    if (std::abs (x - width / 2.0) > GIMP_MAX_IMAGE_SIZE ||
+        std::abs (y - height / 2.0) > GIMP_MAX_IMAGE_SIZE) return nullptr;
+  }
+  return GIMP_PAINT_TOOL_CLASS (gimp_fill_brush_tool_parent_class)->get_outline (paint, display, x, y);
+}
 GtkWidget *options_gui (GimpToolOptions *options) {
   GtkWidget *box = gimp_paint_options_gui (options);
   GtkWidget *rate = gimp_prop_spin_scale_new (G_OBJECT (options), "rate", 1, 10, 1);
@@ -394,6 +419,8 @@ static void gimp_fill_brush_tool_class_init (GimpFillBrushToolClass *klass) {
   auto *object = G_OBJECT_CLASS (klass); object->constructed = constructed; object->dispose = dispose;
   auto *tool = GIMP_TOOL_CLASS (klass); tool->control = control; tool->button_press = press;
   tool->button_release = release; tool->motion = motion; tool->oper_update = oper_update;
+  GIMP_DRAW_TOOL_CLASS (klass)->draw = draw;
+  GIMP_PAINT_TOOL_CLASS (klass)->get_outline = outline;
 }
 static void gimp_fill_brush_tool_init (GimpFillBrushTool *tool) {
   tool->binding_failed = !boundary<bool> (nullptr, false, [&] {

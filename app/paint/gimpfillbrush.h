@@ -21,6 +21,14 @@ gboolean gimp_fill_brush_begin (GimpFillBrush *brush, GimpDrawable *drawable,
                                 GError **error);
 gboolean gimp_fill_brush_motion (GimpFillBrush *brush, const GimpCoords *coords,
                                  guint32 time, GError **error);
+/* Owner-thread resumable admission: only copies the accepted event. The caller
+ * must keep the stroke options/resources immutable until step returns TRUE, and
+ * must drain the prior event before submitting another. step expands at most one
+ * native dab, or searches at most budget candidates, per call. Native snapshot,
+ * mask generation and publication are separate (not bounded by this contract).
+ * The original motion API above remains synchronous for compatibility callers. */
+gboolean gimp_fill_brush_motion_begin (GimpFillBrush *brush, const GimpCoords *coords,
+                                      guint32 time, GError **error);
 /* FALSE without error means queued work remains. Cancellation may be requested
  * reentrantly; it is applied after the current native callback unwinds. */
 gboolean gimp_fill_brush_finish (GimpFillBrush *brush, gboolean commit, GError **error);

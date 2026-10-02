@@ -22,8 +22,10 @@ Admission waits for the preceding envelope's native transaction to finish, so
 its projection snapshot includes earlier committed painting. Selection, target,
 display and image changes invalidate incompatible pending work explicitly.
 
-A Source invocation performs one begin, motion/interpolation, search step, or
-native finish phase. Search steps have a candidate budget of 4096. Completed
+A Source invocation performs one begin, raw-event admission, one resumable
+native interpolation candidate, search step, or native finish phase. The shared
+continuation and exact pre-refactor oracles are documented in
+`native-brush-interpolation.md`. Search steps have a candidate budget of 4096. Completed
 publication and cancellation request asynchronous image/display refresh. Native
 COMMIT seals active input and lets the queued transaction finish; the automatic
 HALT immediately following COMMIT does not discard it. A later explicit HALT or
@@ -58,9 +60,11 @@ not be described as full asynchronous Save compatibility.
 
 This integration yields between phases; that is not a total nonblocking or
 bounded-memory guarantee. Press resource duplication, projection/snapshot
-preparation, one native interpolation, GEGL I/O/publication, flushing and cleanup
+preparation, one native dab, GEGL I/O/publication, flushing and cleanup
 can each exceed a frame budget. The raw-input queue has no arbitrary dropping
-limit, and a single long interpolated motion can still create many dabs. Native
+limit, while a long GUI motion now stays as numerical continuation rather than
+materializing all dabs. Direct synchronous compatibility callers still drain
+the shared iterator synchronously. Native
 measurements include input admission, complete main-context iterations,
 publication/rollback, a larger image and queued-input cancellation. They report
 actual costs rather than inferring latency from the search pixel budget.

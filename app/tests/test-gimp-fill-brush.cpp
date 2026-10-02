@@ -25,6 +25,7 @@ extern "C" {
 #include "tests.h"
 }
 static Gimp*gimp;
+static bool asynchronous=false;
 struct Scene {
  GimpImage*image;GimpLayer*layer;GimpFillBrush*brush;GimpPaintOptions*options;
  bool image_owned=true;std::vector<guchar> initial;GimpCoords coords=GIMP_COORDS_DEFAULT_VALUES;
@@ -44,7 +45,7 @@ struct Scene {
  ~Scene(){if(brush)g_object_unref(brush);g_object_unref(options);g_object_unref(layer);if(image){g_object_remove_weak_pointer(G_OBJECT(image),(gpointer*)&image);if(image_owned)g_object_unref(image);}}
  std::vector<guchar> pixels(){std::vector<guchar>p(initial.size());gegl_buffer_get(gimp_drawable_get_buffer(GIMP_DRAWABLE(layer)),GEGL_RECTANGLE(0,0,64,64),1,babl_format("R'G'B'A u8"),p.data(),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);return p;}
  void begin(){GError*error=nullptr;g_assert_true(gimp_fill_brush_begin(brush,GIMP_DRAWABLE(layer),options,&coords,&error));g_assert_no_error(error);g_assert_true(gimp_image_has_pending_paint(image));}
- void motion(){GError*error=nullptr;g_assert_true(gimp_fill_brush_motion(brush,&coords,0,&error));g_assert_no_error(error);}
+ void motion(){GError*error=nullptr;g_assert_true((asynchronous?gimp_fill_brush_motion_begin:gimp_fill_brush_motion)(brush,&coords,0,&error));g_assert_no_error(error);}
  void drain(){GError*error=nullptr;while(!gimp_fill_brush_step(brush,17,&error))g_assert_no_error(error);g_assert_no_error(error);}
  void finish(bool commit){GError*error=nullptr;g_assert_true(gimp_fill_brush_finish(brush,commit,&error));g_assert_no_error(error);}
  void drop_image(){g_assert_true(image_owned);image_owned=false;g_object_unref(image);}
@@ -83,4 +84,29 @@ static void stale_geometry_format_lock(){
 static void query_during_start(GObject*o,GParamSpec*,gpointer data){auto*s=static_cast<Scene*>(data);if(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(o)))g_assert_true(gimp_image_has_pending_paint(s->image));}
 static void query_on_update(GimpDrawable*,gint,gint,gint,gint,gpointer data){auto*s=static_cast<Scene*>(data);g_assert_true(gimp_image_has_pending_paint(s->image));}
 static void pending_query_lifetime(){Scene s;g_assert_false(gimp_image_has_pending_paint(s.image));auto start=g_signal_connect(s.layer,"notify::frozen",G_CALLBACK(query_during_start),&s);s.begin();g_signal_handler_disconnect(s.layer,start);auto update=g_signal_connect(s.layer,"update",G_CALLBACK(query_on_update),&s);s.motion();s.drain();g_signal_handler_disconnect(s.layer,update);g_assert_true(gimp_image_has_pending_paint(s.image));update=g_signal_connect(s.layer,"update",G_CALLBACK(query_on_update),&s);auto*b=s.brush;s.brush=nullptr;g_object_unref(b);g_signal_handler_disconnect(s.layer,update);g_assert_false(gimp_image_has_pending_paint(s.image));g_assert(s.pixels()==s.initial);}
-int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gimp=gimp_init_for_testing();g_test_add_func("/fill-core/normal-reuse",normal_reuse);g_test_add_func("/fill-core/cancel-before-after",cancel_before_after);g_test_add_func("/fill-core/dispose-rollback",dispose_rolls_back);g_test_add_func("/fill-core/starting-cancel",starting_cancel);g_test_add_func("/fill-core/publication-cancel",publication_cancel);g_test_add_func("/fill-core/caller-core-loss",caller_core_loss);g_test_add_func("/fill-core/caller-image-loss",caller_image_loss);g_test_add_func("/fill-core/detached-target",detached_target);g_test_add_func("/fill-core/invalid-coordinates",invalid_coordinates);g_test_add_func("/fill-core/stale-external-pixels",stale_external_pixels);g_test_add_func("/fill-core/stale-geometry-format-lock",stale_geometry_format_lock);g_test_add_func("/fill-core/pending-query-lifetime",pending_query_lifetime);return g_test_run();}
+template<void (*Test)()> static void run_async(){asynchronous=true;Test();asynchronous=false;}
+static void wide_native_interpolation(){
+ Scene s;gimp_brush_set_spacing(gimp_context_get_brush(GIMP_CONTEXT(s.options)),1);g_object_set(s.options,"brush-size",1.0,nullptr);
+ g_object_set(gimp_dynamics_get_output(gimp_context_get_dynamics(GIMP_CONTEXT(s.options)),GIMP_DYNAMICS_OUTPUT_SPACING),"use-pressure",TRUE,nullptr);
+ s.begin();s.motion();s.drain();s.coords.x=1e9;GList drawables={s.layer,nullptr,nullptr};
+ auto*core=GIMP_BRUSH_CORE(s.brush);auto*job=gimp_brush_core_interpolation_begin(core,&drawables,s.options,&s.coords,1);g_assert_nonnull(job);
+ auto count=gimp_brush_core_interpolation_remaining(job);g_assert_cmpuint(count,>,G_MAXINT);
+ g_assert_false(gimp_brush_core_interpolation_step(core,&drawables,s.options,job,0));g_assert_cmpuint(gimp_brush_core_interpolation_remaining(job),==,count);
+ g_assert_false(gimp_brush_core_interpolation_step(core,&drawables,s.options,job,1));g_assert_cmpuint(gimp_brush_core_interpolation_remaining(job),==,count-1);
+ g_test_message("native continuation candidates: %" G_GUINT64_FORMAT ", one emitted",count);gimp_brush_core_interpolation_free(job);s.finish(false);g_assert(s.pixels()==s.initial);
+}
+static void resumable_long_event(){
+ Scene s;gimp_brush_set_spacing(gimp_context_get_brush(GIMP_CONTEXT(s.options)),1);
+ g_object_set(s.options,"brush-size",1.0,nullptr);
+ g_object_set(gimp_dynamics_get_output(gimp_context_get_dynamics(GIMP_CONTEXT(s.options)),GIMP_DYNAMICS_OUTPUT_SPACING),"use-pressure",TRUE,nullptr);
+ s.begin();GError*error=nullptr;g_assert_true(gimp_fill_brush_motion_begin(s.brush,&s.coords,0,&error));g_assert_no_error(error);s.drain();
+ auto*core=GIMP_PAINT_CORE(s.brush);const auto before=core->cur_coords;
+ s.coords.x=1e9;const auto start=g_get_monotonic_time();
+ g_assert_true(gimp_fill_brush_motion_begin(s.brush,&s.coords,20,&error));g_assert_no_error(error);
+ g_test_message("long event admission: %" G_GINT64_FORMAT " us",g_get_monotonic_time()-start);
+ g_assert_cmpfloat(core->cur_coords.x,==,before.x);g_assert_false(gimp_fill_brush_step(s.brush,0,&error));g_assert_cmpfloat(core->cur_coords.x,==,before.x);
+ g_assert_false(gimp_fill_brush_motion_begin(s.brush,&s.coords,21,&error));g_assert_nonnull(error);g_clear_error(&error);
+ for(int i=0;i<8;++i){g_assert_false(gimp_fill_brush_step(s.brush,17,&error));g_assert_no_error(error);g_assert_cmpfloat(core->cur_coords.x,<,100);}
+ g_assert_false(gimp_fill_brush_finish(s.brush,TRUE,&error));g_assert_no_error(error);s.finish(false);g_assert(s.pixels()==s.initial);g_assert_false(gimp_image_has_pending_paint(s.image));
+}
+int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gimp=gimp_init_for_testing();g_test_add_func("/fill-core/resumable-long-event",resumable_long_event);g_test_add_func("/fill-core/wide-native-interpolation",wide_native_interpolation);g_test_add_func("/fill-core/normal-reuse",normal_reuse);g_test_add_func("/fill-core/cancel-before-after",cancel_before_after);g_test_add_func("/fill-core/dispose-rollback",dispose_rolls_back);g_test_add_func("/fill-core/starting-cancel",starting_cancel);g_test_add_func("/fill-core/publication-cancel",publication_cancel);g_test_add_func("/fill-core/caller-core-loss",caller_core_loss);g_test_add_func("/fill-core/caller-image-loss",caller_image_loss);g_test_add_func("/fill-core/detached-target",detached_target);g_test_add_func("/fill-core/invalid-coordinates",invalid_coordinates);g_test_add_func("/fill-core/stale-external-pixels",stale_external_pixels);g_test_add_func("/fill-core/stale-geometry-format-lock",stale_geometry_format_lock);g_test_add_func("/fill-core/pending-query-lifetime",pending_query_lifetime);g_test_add_func("/fill-core-async/normal-reuse",run_async<normal_reuse>);g_test_add_func("/fill-core-async/cancel-before-after",run_async<cancel_before_after>);g_test_add_func("/fill-core-async/dispose-rollback",run_async<dispose_rolls_back>);g_test_add_func("/fill-core-async/publication-cancel",run_async<publication_cancel>);g_test_add_func("/fill-core-async/caller-core-loss",run_async<caller_core_loss>);g_test_add_func("/fill-core-async/caller-image-loss",run_async<caller_image_loss>);g_test_add_func("/fill-core-async/detached-target",run_async<detached_target>);g_test_add_func("/fill-core-async/invalid-coordinates",run_async<invalid_coordinates>);g_test_add_func("/fill-core-async/stale-external-pixels",run_async<stale_external_pixels>);g_test_add_func("/fill-core-async/stale-geometry-format-lock",run_async<stale_geometry_format_lock>);g_test_add_func("/fill-core-async/pending-query-lifetime",run_async<pending_query_lifetime>);return g_test_run();}

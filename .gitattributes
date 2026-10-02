@@ -16,3 +16,6 @@ app/painter/filter-edge-kernel-private.hpp whitespace=-blank-at-eol
 data/layer-presets/*.json whitespace=-blank-at-eol
 migration/fixtures/legacy-layer-presets/construction.tsv whitespace=-blank-at-eol
 migration/fixtures/legacy-layer-presets/runtime-build.log whitespace=-blank-at-eol
+
+# Keep the captured pre-refactor stderr byte-for-byte, including its final blank.
+migration/fixtures/native-brush-interpolation/runtime.stderr whitespace=-blank-at-eof

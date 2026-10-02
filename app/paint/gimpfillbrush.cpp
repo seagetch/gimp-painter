@@ -74,12 +74,18 @@ void validate_coords(const GimpCoords*coords) {
  for(double value:values)if(!std::isfinite(value))throw std::invalid_argument("Nonfinite Fill input coordinate or axis");
  if(std::abs(coords->x)>G_MAXINT/2||std::abs(coords->y)>G_MAXINT/2)throw std::invalid_argument("Fill coordinates exceed safe bounds");
 }
+struct InterpolationDelete { void operator()(GimpBrushCoreInterpolation*s)const {gimp_brush_core_interpolation_free(s);} };
+struct Segment {
+ GimpCoords coords;guint32 time;bool first;
+ std::unique_ptr<GimpBrushCoreInterpolation,InterpolationDelete> interpolation;
+};
 struct BrushImpl;
 void finish_frame (BrushImpl& impl, bool commit);
 struct BrushImpl {
  explicit BrushImpl(GimpFillBrush* value):owner(value){}
  GimpFillBrush* owner;
  std::shared_ptr<const Fill::Snapshot> snapshot;
+ std::shared_ptr<Segment> segment;
  std::unique_ptr<std::deque<std::shared_ptr<Dab>>> pending;
  ObjectRef<GimpImage> image;ObjectRef<GimpDrawable> drawable;ObjectRef<GimpPaintOptions> options;
  ObjectRef<GeglBuffer> observed_buffer;
@@ -88,10 +94,10 @@ struct BrushImpl {
  const Babl* original_format=nullptr;
  int original_width=0,original_height=0,original_x=0,original_y=0;
  std::string error;
- bool closed=false,preparing=false,draining=false,starting=false,ending=false;
+ bool closed=false,preparing=false,draining=false,interpolating=false,starting=false,ending=false;
  bool started=false,first=true,cancel_requested=false;
  std::uint64_t revision=0;
- void clear_dabs(){++revision;auto retired=std::move(pending);auto old_snapshot=std::move(snapshot);error.clear();}
+ void clear_dabs(){++revision;auto old_segment=std::move(segment);auto retired=std::move(pending);auto old_snapshot=std::move(snapshot);error.clear();}
  void release_frame(){clear_dabs();auto old_connection=std::move(target_connection);auto old_query=std::move(paint_query_connection);auto old_watch=std::move(target_watch);if(old_watch)old_watch->busy.store(false,std::memory_order_release);old_query.close();old_connection.close();auto old_buffer=std::move(observed_buffer);auto old_options=std::move(options);auto old_drawable=std::move(drawable);auto old_image=std::move(image);}
  void close()noexcept {
   closed=true;cancel_requested=true;
@@ -118,7 +124,7 @@ void constructed(GObject*o){G_OBJECT_CLASS(gimp_fill_brush_parent_class)->constr
 void dispose(GObject*o){gimp_painter_binding_close(o,nullptr);G_OBJECT_CLASS(gimp_fill_brush_parent_class)->dispose(o);}
 void queue_dab(GimpFillBrush*self,BrushImpl&impl,GimpDrawable*d,GimpPaintOptions*options,GimpSymmetry*sym){
  if(impl.closed)throw std::runtime_error("Fill owner is closed");
- if(impl.preparing||impl.draining)throw std::runtime_error("Fill transaction is transitioning");
+ if(impl.preparing||(impl.draining&&!impl.interpolating))throw std::runtime_error("Fill transaction is transitioning");
  struct Preparing{bool&value;Preparing(bool&v):value(v){value=true;}~Preparing(){value=false;}} preparing(impl.preparing);
  const auto revision=impl.revision;
  if(gimp_symmetry_get_size(sym)!=1)throw std::runtime_error("Fill symmetry requires its own compatibility integration");
@@ -212,7 +218,32 @@ gboolean gimp_fill_brush_step(GimpFillBrush*self,gsize budget,GError**error){ret
   try {
   if(impl.started&&!target_current(impl))throw std::runtime_error("Fill target changed; current pixels and geometry preserved");
   const auto revision=impl.revision;
-  if((!impl.pending||impl.pending->empty()))return TRUE;
+  if(!budget)return (!impl.segment&&(!impl.pending||impl.pending->empty()));
+  if((!impl.pending||impl.pending->empty())){
+   if(!impl.segment)return TRUE;
+   // A segment owns only numerical continuation state. Keep a local lease
+   // because paint preparation may close/invalidate the owner reentrantly.
+   auto segment=impl.segment;auto drawable=impl.drawable;auto options=impl.options;
+   auto*core=GIMP_PAINT_CORE(self);GList list={drawable.get(),nullptr,nullptr};
+   struct Interpolating{bool&v;Interpolating(bool&b):v(b){v=true;}~Interpolating(){v=false;}} interpolating(impl.interpolating);
+   bool done=false;
+   if(segment->first){
+    gimp_paint_core_set_current_coords(core,&segment->coords);
+    gimp_paint_core_paint(core,&list,options.get(),GIMP_PAINT_STATE_MOTION,segment->time);
+    gimp_paint_core_set_last_coords(core,&segment->coords);done=true;
+   }else{
+    if(!segment->interpolation){
+     segment->interpolation.reset(gimp_brush_core_interpolation_begin(GIMP_BRUSH_CORE(self),&list,options.get(),&segment->coords,segment->time));
+     if(!segment->interpolation)throw std::runtime_error("Fill interpolation count is not representable");
+    }
+    done=gimp_brush_core_interpolation_step(GIMP_BRUSH_CORE(self),&list,options.get(),segment->interpolation.get(),1);
+   }
+   if(impl.cancel_requested||impl.closed){finish_frame(impl,false);return TRUE;}
+   if(!impl.error.empty())throw std::runtime_error(impl.error);
+   if(revision!=impl.revision)throw std::runtime_error("Fill invalidated during interpolation");
+   if(done)impl.segment.reset();
+   return (!impl.segment&&(!impl.pending||impl.pending->empty()));
+  }
   auto dab=impl.pending->front();
   if(dab->search->step(budget)!=Fill::Search::State::Complete)return FALSE;
   impl.pending->pop_front();auto*core=GIMP_PAINT_CORE(self);auto*d=dab->drawable.get();
@@ -226,7 +257,7 @@ gboolean gimp_fill_brush_step(GimpFillBrush*self,gsize budget,GError**error){ret
   watch->owned_write.store(false,std::memory_order_release);
   if(impl.cancel_requested||impl.closed){finish_frame(impl,false);return TRUE;}
   if(revision!=impl.revision)throw std::runtime_error("Fill invalidated during publication");
-  return (!impl.pending||impl.pending->empty());
+  return (!impl.segment&&(!impl.pending||impl.pending->empty()));
   } catch (...) {finish_frame(impl,false);throw;}
  });});}
 void gimp_fill_brush_cancel_pending(GimpFillBrush*self){boundary_void(nullptr,[&]{BindingStore::require(G_OBJECT(self)).with<BrushSlot>([](BrushImpl&impl){impl.cancel_requested=true;if(!impl.starting&&!impl.preparing&&!impl.draining&&!impl.ending)finish_frame(impl,false);});});}
@@ -252,7 +283,7 @@ gboolean gimp_fill_brush_begin(GimpFillBrush*self,GimpDrawable*d,GimpPaintOption
 }
 gboolean gimp_fill_brush_motion(GimpFillBrush*self,const GimpCoords*coords,guint32 time,GError**error) {
  return boundary<gboolean>(error,FALSE,[&]()->gboolean{validate_coords(coords);return BindingStore::require(G_OBJECT(self)).with<BrushSlot>([&](BrushImpl&impl)->gboolean{
-  if(!impl.started||impl.closed||impl.starting||impl.ending||impl.preparing||impl.draining)throw std::runtime_error("Fill motion outside active transaction");
+  if(!impl.started||impl.closed||impl.starting||impl.ending||impl.preparing||impl.draining||impl.segment)throw std::runtime_error("Fill motion outside active transaction or while a segment is pending");
   if(!target_current(impl)){finish_frame(impl,false);throw std::runtime_error("Fill target changed; current pixels and geometry preserved");}
   auto image=impl.image;auto drawable=impl.drawable;auto options=impl.options;auto*core=GIMP_PAINT_CORE(self);GList list={drawable.get(),nullptr,nullptr};
   if(impl.first){impl.first=false;gimp_paint_core_set_current_coords(core,coords);gimp_paint_core_paint(core,&list,options.get(),GIMP_PAINT_STATE_MOTION,time);gimp_paint_core_set_last_coords(core,coords);}
@@ -262,12 +293,20 @@ gboolean gimp_fill_brush_motion(GimpFillBrush*self,const GimpCoords*coords,guint
   return TRUE;
  });});
 }
+gboolean gimp_fill_brush_motion_begin(GimpFillBrush*self,const GimpCoords*coords,guint32 time,GError**error) {
+ return boundary<gboolean>(error,FALSE,[&]()->gboolean{validate_coords(coords);return BindingStore::require(G_OBJECT(self)).with<BrushSlot>([&](BrushImpl&impl)->gboolean{
+  if(!impl.started||impl.closed||impl.starting||impl.ending||impl.preparing||impl.draining||impl.segment||(impl.pending&&!impl.pending->empty()))throw std::runtime_error("Fill asynchronous motion requires a drained active transaction");
+  if(!target_current(impl)){finish_frame(impl,false);throw std::runtime_error("Fill target changed; current pixels and geometry preserved");}
+  auto segment=std::make_shared<Segment>();segment->coords=*coords;segment->time=time;segment->first=impl.first;
+  impl.segment=std::move(segment);impl.first=false;return TRUE;
+ });});
+}
 gboolean gimp_fill_brush_finish(GimpFillBrush*self,gboolean commit,GError**error) {
  return boundary<gboolean>(error,FALSE,[&]()->gboolean{return BindingStore::require(G_OBJECT(self)).with<BrushSlot>([&](BrushImpl&impl)->gboolean{
   if(!commit)impl.cancel_requested=true;
   if(impl.starting||impl.ending||impl.preparing||impl.draining)return FALSE;
   if(impl.started&&!target_current(impl)){finish_frame(impl,false);throw std::runtime_error("Fill target changed; current pixels and geometry preserved");}
-  if(commit&&impl.pending&&!impl.pending->empty())return FALSE;
+  if(commit&&(impl.segment||(impl.pending&&!impl.pending->empty())))return FALSE;
   finish_frame(impl,commit);return TRUE;
  });});
 }

@@ -33,7 +33,9 @@ extern "C" {
 #define HEIGHT 70
 static void dump(int id,const char*phase,GimpDrawable*d){guchar p[WIDTH*HEIGHT*4];gegl_buffer_get(gimp_drawable_get_buffer(d),GEGL_RECTANGLE(0,0,WIDTH,HEIGHT),1,babl_format("R'G'B'A u8"),p,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);printf("BRUSH %d %s ",id,phase);for(unsigned i=0;i<sizeof p;++i)printf("%02x",p[i]);puts("");}
 int main(int argc,char**argv){
- const bool queued=argc>1; (void)argv;
+ const bool async=argc>1&&g_str_equal(argv[1],"async");
+ const bool queued=argc>1&&!async;
+ auto motion=async?gimp_fill_brush_motion_begin:gimp_fill_brush_motion;
  Gimp*gimp=gimp_init_for_testing();
  GType type=GIMP_TYPE_FILL_BRUSH,options_type=GIMP_TYPE_FILL_BRUSH_OPTIONS;g_assert(type);g_assert(options_type);
  for(int id=0;id<12;++id){
@@ -46,9 +48,9 @@ int main(int argc,char**argv){
   gimp_context_set_brush(GIMP_CONTEXT(options),brush);GimpDynamics*dyn=GIMP_DYNAMICS(g_object_new(GIMP_TYPE_DYNAMICS,"name","fill-no-dynamics",NULL));gimp_context_set_dynamics(GIMP_CONTEXT(options),dyn);
   GimpPaintCore*core=GIMP_PAINT_CORE(g_object_new(type,"undo-desc","fill oracle",NULL));GimpCoords c=GIMP_COORDS_DEFAULT_VALUES;c.x=43;c.y=40;c.pressure=1;GError*error=NULL;
   gimp_image_undo_free(image);g_assert(gimp_fill_brush_begin(GIMP_FILL_BRUSH(core),d,options,&c,&error));g_assert_no_error(error);
-  g_assert(gimp_fill_brush_motion(GIMP_FILL_BRUSH(core),&c,0,&error));g_assert_no_error(error);
+  g_assert(motion(GIMP_FILL_BRUSH(core),&c,0,&error));g_assert_no_error(error);
   if(!queued)while(!gimp_fill_brush_step(GIMP_FILL_BRUSH(core),1024,&error))g_assert_no_error(error);
-  for(int n=1;n<=5;++n){c.x+=2;c.y+=.5;g_assert(gimp_fill_brush_motion(GIMP_FILL_BRUSH(core),&c,n*20,&error));g_assert_no_error(error);if(!queued)while(!gimp_fill_brush_step(GIMP_FILL_BRUSH(core),1024,&error))g_assert_no_error(error);}
+  for(int n=1;n<=5;++n){c.x+=2;c.y+=.5;g_assert(motion(GIMP_FILL_BRUSH(core),&c,n*20,&error));g_assert_no_error(error);if(!queued)while(!gimp_fill_brush_step(GIMP_FILL_BRUSH(core),1024,&error))g_assert_no_error(error);}
   while(!gimp_fill_brush_step(GIMP_FILL_BRUSH(core),37,&error))g_assert_no_error(error);
   g_assert(gimp_fill_brush_finish(GIMP_FILL_BRUSH(core),TRUE,&error));g_assert_no_error(error);
   dump(id,"finish",d);g_assert(gimp_image_undo(image));dump(id,"undo",d);g_assert(gimp_image_redo(image));dump(id,"redo",d);

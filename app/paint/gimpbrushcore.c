@@ -444,14 +444,39 @@ gimp_avoid_exact_integer (gdouble *x)
     }
 }
 
-static void
-gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
-                             GList            *drawables,
-                             GimpPaintOptions *paint_options,
-                             guint32           time)
+/* Dab counts can exceed 32 bits for a long finite segment with dynamic
+ * spacing. Reject an unrepresentable numerical state rather than overflowing
+ * a cast or silently truncating accepted geometry. Coordinate stripe arithmetic
+ * remains double precision, as are the native endpoint calculations. */
+static gboolean
+gimp_brush_core_interpolation_count (gdouble value, gint64 *count)
 {
-  GimpBrushCore      *core  = GIMP_BRUSH_CORE (paint_core);
-  GimpImage          *image = gimp_item_get_image (GIMP_ITEM (drawables->data));
+  if (! isfinite (value) || value < -0x1p63 || value >= 0x1p63)
+    return FALSE;
+  *count = (gint64) value;
+  return TRUE;
+}
+
+struct _GimpBrushCoreInterpolation
+{
+  GimpCoords last_coords, current_coords;
+  GimpVector2 delta_vec;
+  gdouble delta_pressure, delta_xtilt, delta_ytilt, delta_wheel, delta_velocity;
+  gdouble temp_direction, t0, dt, initial, dist, total, pixel_dist, pixel_initial;
+  gint64 n, num_points;
+  guint32 time;
+  gboolean complete, single;
+};
+
+GimpBrushCoreInterpolation *
+gimp_brush_core_interpolation_begin (GimpBrushCore    *core,
+                                    GList            *drawables,
+                                    GimpPaintOptions *paint_options,
+                                    const GimpCoords *coords,
+                                    guint32           time)
+{
+  GimpPaintCore      *paint_core = GIMP_PAINT_CORE (core);
+  GimpImage          *image;
   GimpDynamicsOutput *spacing_output;
   GimpCoords          last_coords;
   GimpCoords          current_coords;
@@ -462,7 +487,8 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
   gdouble             delta_velocity;
   gdouble             temp_direction;
   GimpVector2         temp_vec;
-  gint                n, num_points;
+  gint64              num_points;
+  gdouble             n, point_count;
   gdouble             t0, dt, tn;
   gdouble             st_factor, st_offset;
   gdouble             initial;
@@ -472,11 +498,24 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
   gdouble             pixel_initial;
   gdouble             xd, yd;
   gdouble             mag;
-  gdouble             dyn_spacing = core->spacing;
+  gdouble             dyn_spacing;
   gdouble             fade_point;
   gboolean            use_dyn_spacing;
 
-  g_return_if_fail (GIMP_IS_BRUSH (core->brush));
+  GimpBrushCoreInterpolation *result;
+
+  g_return_val_if_fail (GIMP_IS_BRUSH_CORE (core), NULL);
+  g_return_val_if_fail (drawables != NULL, NULL);
+  g_return_val_if_fail (GIMP_IS_PAINT_OPTIONS (paint_options), NULL);
+  g_return_val_if_fail (GIMP_IS_BRUSH (core->brush), NULL);
+  g_return_val_if_fail (coords != NULL, NULL);
+
+  image = gimp_item_get_image (GIMP_ITEM (drawables->data));
+  dyn_spacing = core->spacing;
+  result = g_new0 (GimpBrushCoreInterpolation, 1);
+  result->complete = TRUE;
+  result->time = time;
+  paint_core->cur_coords = *coords;
 
   gimp_paint_core_get_last_coords (paint_core, &last_coords);
   gimp_paint_core_get_current_coords (paint_core, &current_coords);
@@ -503,7 +542,7 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
       ! delta_ytilt    &&
       ! delta_wheel    &&
       ! delta_velocity)
-    return;
+    return result;
 
   pixel_dist    = gimp_vector2_length (&delta_vec);
   pixel_initial = paint_core->pixel_dist;
@@ -513,14 +552,12 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
    */
   if (core->scale == 0.0)
     {
-      gimp_paint_core_set_last_coords (paint_core, &current_coords);
-
-      gimp_paint_core_paint (paint_core, drawables, paint_options,
-                             GIMP_PAINT_STATE_MOTION, time);
-
-      paint_core->pixel_dist = pixel_initial + pixel_dist; /* Don't forget to update pixel distance*/
-
-      return;
+      result->single = TRUE;
+      result->complete = FALSE;
+      result->current_coords = current_coords;
+      result->pixel_initial = pixel_initial;
+      result->pixel_dist = pixel_dist;
+      return result;
     }
 
   /* Handle dynamic spacing */
@@ -585,16 +622,18 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
 
   if (use_dyn_spacing)
     {
-      gint s0;
+      gdouble s0;
 
-      num_points = dist / dyn_spacing;
+      point_count = trunc (dist / dyn_spacing);
+      if (! gimp_brush_core_interpolation_count (point_count, &num_points))
+        goto invalid;
 
-      s0 = (gint) floor (st_offset + 0.5);
+      s0 = floor (st_offset + 0.5);
       t0 = (s0 - st_offset) / st_factor;
       dt = dyn_spacing / dist;
 
       if (num_points == 0)
-        return;
+        return result;
     }
   else if (fabs (st_factor) > dist / core->spacing)
     {
@@ -609,9 +648,11 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
        */
 
       dt = core->spacing / dist;
-      n = (gint) (initial / core->spacing + 1.0 + EPSILON);
+      n = trunc (initial / core->spacing + 1.0 + EPSILON);
       t0 = (n * core->spacing - initial) / dist;
-      num_points = 1 + (gint) floor ((1 + EPSILON - t0) / dt);
+      point_count = 1 + floor ((1 + EPSILON - t0) / dt);
+      if (! gimp_brush_core_interpolation_count (point_count, &num_points))
+        goto invalid;
 
       /* if we arnt going to paint anything this time and the brush
        * has only moved on one axis return without updating the brush
@@ -621,7 +662,7 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
        */
 
       if (num_points == 0 && (delta_vec.x == 0 || delta_vec.y == 0))
-        return;
+        return result;
     }
   else if (fabs (st_factor) < EPSILON)
     {
@@ -634,13 +675,13 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
       gimp_paint_core_set_current_coords (paint_core, &current_coords);
 
       /* ... but go along with the current pressure, tilt and wheel */
-      return;
+      return result;
     }
   else
     {
       gint direction = st_factor > 0 ? 1 : -1;
-      gint x, y;
-      gint s0, sn;
+      gdouble x, y;
+      gdouble s0, sn;
 
       /*  Choose the first and last stripe to paint.
        *    FIRST PRIORITY is to avoid gaps painting with a 1x1 aliasing
@@ -658,17 +699,17 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
       /*  Basic case: round the beginning and ending point to nearest
        *  stripe center.
        */
-      s0 = (gint) floor (st_offset + 0.5);
-      sn = (gint) floor (st_offset + st_factor + 0.5);
+      s0 = floor (st_offset + 0.5);
+      sn = floor (st_offset + st_factor + 0.5);
 
       t0 = (s0 - st_offset) / st_factor;
       tn = (sn - st_offset) / st_factor;
 
-      x = (gint) floor (last_coords.x + t0 * delta_vec.x);
-      y = (gint) floor (last_coords.y + t0 * delta_vec.y);
+      x = floor (last_coords.x + t0 * delta_vec.x);
+      y = floor (last_coords.y + t0 * delta_vec.y);
 
-      if (t0 < 0.0 && !( x == (gint) floor (last_coords.x) &&
-                         y == (gint) floor (last_coords.y) ))
+      if (t0 < 0.0 && !( x == floor (last_coords.x) &&
+                         y == floor (last_coords.y) ))
         {
           /*  Exception A: If the first stripe's brush position is
            *  EXTRApolated into a different pixel square than the
@@ -676,8 +717,8 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
            */
           s0 += direction;
         }
-      else if (x == (gint) floor (paint_core->last_paint.x) &&
-               y == (gint) floor (paint_core->last_paint.y))
+      else if (x == floor (paint_core->last_paint.x) &&
+               y == floor (paint_core->last_paint.y))
         {
           /*  Exception B: If first stripe's brush position is within the
            *  same pixel square as the last plot of the previous line,
@@ -686,11 +727,11 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
           s0 += direction;
         }
 
-      x = (gint) floor (last_coords.x + tn * delta_vec.x);
-      y = (gint) floor (last_coords.y + tn * delta_vec.y);
+      x = floor (last_coords.x + tn * delta_vec.x);
+      y = floor (last_coords.y + tn * delta_vec.y);
 
-      if (tn > 1.0 && !( x == (gint) floor (current_coords.x) &&
-                         y == (gint) floor (current_coords.y)))
+      if (tn > 1.0 && !( x == floor (current_coords.x) &&
+                         y == floor (current_coords.y)))
         {
           /*  Exception C: If the last stripe's brush position is
            *  EXTRApolated into a different pixel square than the
@@ -702,7 +743,9 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
       t0 = (s0 - st_offset) / st_factor;
       tn = (sn - st_offset) / st_factor;
       dt         =     direction * 1.0 / st_factor;
-      num_points = 1 + direction * (sn - s0);
+      point_count = 1 + direction * (sn - s0);
+      if (! gimp_brush_core_interpolation_count (point_count, &num_points))
+        goto invalid;
 
       if (num_points >= 1)
         {
@@ -717,12 +760,93 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
           if (tn < 1)
             total = initial + tn * dist;
 
-          total = core->spacing * (gint) (total / core->spacing + 0.5);
+          total = core->spacing * trunc (total / core->spacing + 0.5);
           total += (1.0 - tn) * dist;
         }
     }
 
-  for (n = 0; n < num_points; n++)
+  result->complete = FALSE;
+  result->last_coords = last_coords;
+  result->current_coords = current_coords;
+  result->delta_vec = delta_vec;
+  result->delta_pressure = delta_pressure;
+  result->delta_xtilt = delta_xtilt;
+  result->delta_ytilt = delta_ytilt;
+  result->delta_wheel = delta_wheel;
+  result->delta_velocity = delta_velocity;
+  result->temp_direction = temp_direction;
+  result->t0 = t0;
+  result->dt = dt;
+  result->initial = initial;
+  result->dist = dist;
+  result->total = total;
+  result->pixel_dist = pixel_dist;
+  result->pixel_initial = pixel_initial;
+  result->num_points = num_points;
+  return result;
+
+invalid:
+  g_free (result);
+  return NULL;
+}
+
+gboolean
+gimp_brush_core_interpolation_step (GimpBrushCore              *core,
+                                   GList                      *drawables,
+                                   GimpPaintOptions           *paint_options,
+                                   GimpBrushCoreInterpolation *state,
+                                   gsize                       dab_budget)
+{
+  GimpPaintCore *paint_core = GIMP_PAINT_CORE (core);
+  GimpImage *image;
+  GimpCoords last_coords, current_coords;
+  GimpVector2 delta_vec;
+  gdouble delta_pressure, delta_xtilt, delta_ytilt, delta_wheel, delta_velocity;
+  gdouble temp_direction, t0, dt, initial, dist, total, pixel_dist, pixel_initial;
+  gdouble fade_point;
+  gint64 n, num_points;
+  guint32 time;
+  gsize emitted = 0;
+
+  g_return_val_if_fail (GIMP_IS_BRUSH_CORE (core), TRUE);
+  g_return_val_if_fail (drawables != NULL, TRUE);
+  g_return_val_if_fail (GIMP_IS_PAINT_OPTIONS (paint_options), TRUE);
+  g_return_val_if_fail (state != NULL, TRUE);
+  image = gimp_item_get_image (GIMP_ITEM (drawables->data));
+  if (state->complete) return TRUE;
+  if (!dab_budget) return FALSE;
+
+  if (state->single)
+    {
+      gimp_paint_core_set_last_coords (paint_core, &state->current_coords);
+      gimp_paint_core_paint (paint_core, drawables, paint_options,
+                            GIMP_PAINT_STATE_MOTION, state->time);
+      paint_core->pixel_dist = state->pixel_initial + state->pixel_dist;
+      state->complete = TRUE;
+      return TRUE;
+    }
+
+  last_coords = state->last_coords;
+  current_coords = state->current_coords;
+  delta_vec = state->delta_vec;
+  delta_pressure = state->delta_pressure;
+  delta_xtilt = state->delta_xtilt;
+  delta_ytilt = state->delta_ytilt;
+  delta_wheel = state->delta_wheel;
+  delta_velocity = state->delta_velocity;
+  temp_direction = state->temp_direction;
+  t0 = state->t0;
+  dt = state->dt;
+  initial = state->initial;
+  dist = state->dist;
+  total = state->total;
+  pixel_dist = state->pixel_dist;
+  pixel_initial = state->pixel_initial;
+  num_points = state->num_points;
+  n = state->n;
+  time = state->time;
+
+  for (; n < num_points && emitted < dab_budget; n++, emitted++)
     {
       gdouble t = t0 + n * dt;
       gdouble p = (gdouble) n / num_points;
@@ -783,6 +907,10 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
                              GIMP_PAINT_STATE_MOTION, time);
     }
 
+  state->n = n;
+  state->current_coords = current_coords;
+  if (n < num_points) return FALSE;
+
   current_coords.x        = last_coords.x        + delta_vec.x;
   current_coords.y        = last_coords.y        + delta_vec.y;
   current_coords.pressure = last_coords.pressure + delta_pressure;
@@ -800,6 +928,38 @@ gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
 
   paint_core->distance   = total;
   paint_core->pixel_dist = pixel_initial + pixel_dist;
+  state->complete = TRUE;
+  return TRUE;
+}
+
+void
+gimp_brush_core_interpolation_free (GimpBrushCoreInterpolation *state)
+{
+  g_free (state);
+}
+
+guint64
+gimp_brush_core_interpolation_remaining (const GimpBrushCoreInterpolation *state)
+{
+  if (!state || state->complete) return 0;
+  if (state->single) return 1;
+  return state->num_points > state->n ? state->num_points - state->n : 0;
+}
+
+static void
+gimp_brush_core_interpolate (GimpPaintCore    *paint_core,
+                            GList            *drawables,
+                            GimpPaintOptions *paint_options,
+                            guint32           time)
+{
+  GimpBrushCore *core = GIMP_BRUSH_CORE (paint_core);
+  GimpBrushCoreInterpolation *state = gimp_brush_core_interpolation_begin (
+    core, drawables, paint_options, &paint_core->cur_coords, time);
+
+  if (!state) return;
+  while (!gimp_brush_core_interpolation_step (core, drawables, paint_options,
+                                             state, G_MAXSIZE)) {}
+  gimp_brush_core_interpolation_free (state);
 }
 
 static GeglBuffer *
