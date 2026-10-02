@@ -45,6 +45,7 @@ app_tests = [
 #'tools',
 #'ui',
   'xcf',
+  'painter-layer-modes',
 ]
 
 # Prevent parallel builds for the tests

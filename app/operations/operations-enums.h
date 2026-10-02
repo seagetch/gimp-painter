@@ -132,6 +132,15 @@ typedef enum
   /*  Internal modes, not available to the PDB, must be kept at the end  */
   GIMP_LAYER_MODE_ANTI_ERASE,            /*< pdb-skip, desc="Anti erase"                                    >*/
 
+  /* Painter legacy identities append without reusing/changing upstream values. */
+  GIMP_LAYER_MODE_PAINTER_ERASE, /*< desc="Erase (Painter legacy)" >*/
+  GIMP_LAYER_MODE_PAINTER_REPLACE, /*< desc="Replace (Painter legacy)" >*/
+  GIMP_LAYER_MODE_PAINTER_ANTI_ERASE, /*< desc="Anti erase (Painter legacy)" >*/
+  GIMP_LAYER_MODE_PAINTER_SRC_IN, /*< desc="SRC IN (Painter legacy)" >*/
+  GIMP_LAYER_MODE_PAINTER_DST_IN, /*< desc="DST IN (Painter legacy)" >*/
+  GIMP_LAYER_MODE_PAINTER_SRC_OUT, /*< desc="SRC OUT (Painter legacy)" >*/
+  GIMP_LAYER_MODE_PAINTER_DST_OUT, /*< desc="DST OUT (Painter legacy)" >*/
+
   /*  Layer mode menu separator  */
   GIMP_LAYER_MODE_SEPARATOR = -1         /*< pdb-skip, skip                                                 >*/
 } GimpLayerMode;

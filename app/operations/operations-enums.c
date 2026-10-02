@@ -148,6 +148,13 @@ gimp_layer_mode_get_type (void)
     { GIMP_LAYER_MODE_PASS_THROUGH, "GIMP_LAYER_MODE_PASS_THROUGH", "pass-through" },
     { GIMP_LAYER_MODE_REPLACE, "GIMP_LAYER_MODE_REPLACE", "replace" },
     { GIMP_LAYER_MODE_ANTI_ERASE, "GIMP_LAYER_MODE_ANTI_ERASE", "anti-erase" },
+    { GIMP_LAYER_MODE_PAINTER_ERASE, "GIMP_LAYER_MODE_PAINTER_ERASE", "painter-erase" },
+    { GIMP_LAYER_MODE_PAINTER_REPLACE, "GIMP_LAYER_MODE_PAINTER_REPLACE", "painter-replace" },
+    { GIMP_LAYER_MODE_PAINTER_ANTI_ERASE, "GIMP_LAYER_MODE_PAINTER_ANTI_ERASE", "painter-anti-erase" },
+    { GIMP_LAYER_MODE_PAINTER_SRC_IN, "GIMP_LAYER_MODE_PAINTER_SRC_IN", "painter-src-in" },
+    { GIMP_LAYER_MODE_PAINTER_DST_IN, "GIMP_LAYER_MODE_PAINTER_DST_IN", "painter-dst-in" },
+    { GIMP_LAYER_MODE_PAINTER_SRC_OUT, "GIMP_LAYER_MODE_PAINTER_SRC_OUT", "painter-src-out" },
+    { GIMP_LAYER_MODE_PAINTER_DST_OUT, "GIMP_LAYER_MODE_PAINTER_DST_OUT", "painter-dst-out" },
     { 0, NULL, NULL }
   };
 
@@ -289,6 +296,13 @@ gimp_layer_mode_get_type (void)
     { GIMP_LAYER_MODE_PASS_THROUGH, NC_("layer-mode", "Pass through"), NULL },
     { GIMP_LAYER_MODE_REPLACE, NC_("layer-mode", "Replace"), NULL },
     { GIMP_LAYER_MODE_ANTI_ERASE, NC_("layer-mode", "Anti erase"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_ERASE, NC_("layer-mode", "Erase (Painter legacy)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_REPLACE, NC_("layer-mode", "Replace (Painter legacy)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_ANTI_ERASE, NC_("layer-mode", "Anti erase (Painter legacy)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_SRC_IN, NC_("layer-mode", "SRC IN (Painter legacy)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_DST_IN, NC_("layer-mode", "DST IN (Painter legacy)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_SRC_OUT, NC_("layer-mode", "SRC OUT (Painter legacy)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_DST_OUT, NC_("layer-mode", "DST OUT (Painter legacy)"), NULL },
     { 0, NULL, NULL }
   };
 
