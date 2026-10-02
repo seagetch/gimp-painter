@@ -1,0 +1,15 @@
+{
+  "scope": "Evidence validation only; no staging, packaging, source writes or build actions",
+  "helper_source_sha256": "9b568ddeac52d4fb85d53bf6cb0c80edfdd7876f97d221386f47c42a363a4fe5",
+  "raw_registry_hash_sealed": true,
+  "archived_registry_hash_sealed": true,
+  "all_108_registered_targets_matched_exactly": true,
+  "sanitized_registry_preserves_target_identity_and_commands": true,
+  "baseline_exemptions_absent": true,
+  "all_passed_consistent": true,
+  "helper_require_same_freshness": "passed",
+  "candidate_gate_outcome": "rejected",
+  "candidate_gate_reason": "Aggregate gate must pass and identify this exact source commit",
+  "strict_full_pass_guard_outcome": "rejected",
+  "strict_full_pass_guard_reason": "Aggregate gate must have a clean exit and all integrity checks, without baseline exemptions"
+}

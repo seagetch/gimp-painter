@@ -1,0 +1,63 @@
+{
+  "archive": "evidence.tar.xz",
+  "bytes": 742340,
+  "sha256": "abee37951f57c30e75cadfe36ffa9f3aa8da2db85c6009233abe21ba65221a9e",
+  "source_commit": "996297f09f1b4715b149b2c4fcdfeca1d99fb3d6",
+  "source_tree": "bee0399705e5da64730e3c28614715d1e5f1731a",
+  "published_equal_tree_commit": "13b795a27a6fdd4178c7152e56c8ecb5f3d9420d",
+  "files": {
+    "README.txt": {
+      "bytes": 8238,
+      "sha256": "ef5c3c3de904f37f45491b6df50e9c222bbb3bb45f8a423bddf79a3d4bd9b1ff"
+    },
+    "aggregate-gate.json": {
+      "bytes": 8484333,
+      "sha256": "2f3343b869f7c74104d25456bf590fb531e1ac4466ca57a69b1a5cc9736809f9"
+    },
+    "console.log": {
+      "bytes": 23956,
+      "sha256": "457db2eea1f4b7922445a7cc8fd52365fd4575bdd0df66e9ffc1f80f884294c4"
+    },
+    "executable-check.json": {
+      "bytes": 69022,
+      "sha256": "eb5ab11e8df74156e68dcdd20b251dd8442d0ae8aa00ce071b0e2678fe29458e"
+    },
+    "full-build.log": {
+      "bytes": 3986,
+      "sha256": "09ce1fa9476c774709bbc42867bc95cb4101f37adaf7efa2c7e202edf4389bd9"
+    },
+    "manifest.json": {
+      "bytes": 1578,
+      "sha256": "342bede2f40eaa572c22a5c7deeb94efe66ddf0b17a83bd21f7d3fa718467cd1"
+    },
+    "meson.jsonl": {
+      "bytes": 1330607,
+      "sha256": "faa7ba081dc23439b0818186dc071421d9f77d9236a593c8b857c720ecfb717f"
+    },
+    "meson.txt": {
+      "bytes": 1222706,
+      "sha256": "e39a1f8cb656a6c4f4323bc6bfd1d89362f0a87002743413e7bc0f3a35c707e8"
+    },
+    "registered-tests.json": {
+      "bytes": 123513,
+      "sha256": "7b7a78a7c0a30f8bcb1568de0a38c1bfb6bca516b792ae8eae462efb5ad609c0"
+    },
+    "source-and-binary-after.json": {
+      "bytes": 1066752,
+      "sha256": "6155366a3604b3eaf319fe294295ec3b9e1dc31ca86bfb99c2c066e73db0f124"
+    },
+    "source-and-binary-before.json": {
+      "bytes": 1066546,
+      "sha256": "9544a9931095a1f2ac5787b4a40f92ae49cc345df8cc36068b596a559d9746ac"
+    },
+    "summary.json": {
+      "bytes": 11883,
+      "sha256": "377bad68a86ec23269b9dd4d2cb7cd377bf337be795586186c0e95896ed33282"
+    },
+    "validation.json": {
+      "bytes": 818,
+      "sha256": "8bd98c0fbf83c030e261330e5400fc9f8ed0d224888edadf8c828d0c9d1f922c"
+    }
+  },
+  "scope": "Immutable sanitized aggregate evidence, including full indexed gate and complete build freshness snapshots; no raw profiles, environment dumps, binaries or screenshots"
+}

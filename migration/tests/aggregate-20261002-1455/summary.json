@@ -1,0 +1,314 @@
+{
+  "source_commit": "996297f09f1b4715b149b2c4fcdfeca1d99fb3d6",
+  "source_tree": "bee0399705e5da64730e3c28614715d1e5f1731a",
+  "all_passed": false,
+  "coverage_complete": true,
+  "registered_tests": 108,
+  "recorded_results": 108,
+  "result_counts": {
+    "OK": 107,
+    "FAIL": 1
+  },
+  "suite_counts": {
+    "gimp:C": {
+      "registered": 6,
+      "outcomes": {
+        "OK": 6
+      }
+    },
+    "gimp:app": {
+      "registered": 42,
+      "outcomes": {
+        "OK": 41,
+        "FAIL": 1
+      }
+    },
+    "gimp:desktop": {
+      "registered": 1,
+      "outcomes": {
+        "OK": 1
+      }
+    },
+    "gimp:libgimp": {
+      "registered": 12,
+      "outcomes": {
+        "OK": 12
+      }
+    },
+    "gimp:painter": {
+      "registered": 53,
+      "outcomes": {
+        "OK": 53
+      }
+    },
+    "gimp:python3": {
+      "registered": 6,
+      "outcomes": {
+        "OK": 6
+      }
+    }
+  },
+  "integrity_checks": {
+    "expected_source_commit": true,
+    "expected_source_tree": true,
+    "commit_unchanged": true,
+    "tree_unchanged": true,
+    "tracked_tree_clean_before_and_after": true,
+    "tracked_files_unchanged": true,
+    "preexisting_elf_files_unchanged": true,
+    "all_new_elf_entries_are_verified_private_test_profile_aliases": true,
+    "test_registry_unchanged": true,
+    "full_default_build_succeeded": true,
+    "all_default_executable_outputs_present": true,
+    "source_unchanged_across_default_build": true,
+    "build_freshness_identical": true,
+    "native_display_present": true
+  },
+  "registry_sha256": "9af27e0114a4760bbd3b6cd3a8dbb89050ae655081afbe96ec5deb4ea17503ac",
+  "archived_registry_sha256": "7b7a78a7c0a30f8bcb1568de0a38c1bfb6bca516b792ae8eae462efb5ad609c0",
+  "build_inputs": {
+    "app/gimp-3.0": {
+      "sha256": "7a0c51b0d306cc01558278feaf4be90c83f2a6bf74858d2277619eaa0049a0b0",
+      "sha256_after": "7a0c51b0d306cc01558278feaf4be90c83f2a6bf74858d2277619eaa0049a0b0"
+    },
+    "app/gimp-console-3.0": {
+      "sha256": "306f9947e81d852209697e06e9ca94a4ff540b5279fd0e6ed2f3dad851cd39b4",
+      "sha256_after": "306f9947e81d852209697e06e9ca94a4ff540b5279fd0e6ed2f3dad851cd39b4"
+    }
+  },
+  "build": {
+    "command": [
+      "ninja",
+      "-C",
+      "build-debian13"
+    ],
+    "exit_status": 0,
+    "started_utc": "2026-10-02T14:58:33Z",
+    "finished_utc": "2026-10-02T14:59:36Z",
+    "declared_executables": 203,
+    "default_executables": 201,
+    "present_executables": 201,
+    "missing_default_executables": [],
+    "nondefault_missing_executables": [
+      {
+        "name": "test-preview-area",
+        "path": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets/test-preview-area",
+        "build_by_default": false,
+        "exists": false,
+        "elf": false,
+        "executable": false,
+        "sha256": null
+      },
+      {
+        "name": "test-operations",
+        "path": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/operations/tests/test-operations",
+        "build_by_default": false,
+        "exists": false,
+        "elf": false,
+        "executable": false,
+        "sha256": null
+      }
+    ]
+  },
+  "lock": {
+    "path": "/workspace/shared/gimp-painter-build.lock",
+    "acquired_utc": "2026-10-02T14:58:29Z",
+    "released_utc": "2026-10-02T15:09:33Z",
+    "coverage": "source preflight, complete default build, before snapshot, full aggregate, after snapshot"
+  },
+  "freshness_seal": {
+    "identical": true,
+    "concrete_ninja_outputs": 3003,
+    "build_metadata_entries": 48,
+    "install_inputs": 2682,
+    "tracked_source_files": 8754,
+    "before_snapshot_sha256": "744fd539a7bd5ac3483bf273ddc6bdca2abbd30e471f28810a5ed000c31c9513",
+    "after_snapshot_sha256": "744fd539a7bd5ac3483bf273ddc6bdca2abbd30e471f28810a5ed000c31c9513"
+  },
+  "nonclean_targets": [
+    {
+      "registry_index": 53,
+      "name": "save-and-export",
+      "meson_name": "gimp:app / save-and-export",
+      "result": "FAIL",
+      "classification": "known_upstream_baseline_failure_still_fails",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault",
+        "Traceback (most recent call last):",
+        "AttributeError: 'NoneType' object has no attribute 'equal'"
+      ]
+    },
+    {
+      "registry_index": 97,
+      "name": "color-parser",
+      "meson_name": "gimp:libgimp+python3 / color-parser",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 98,
+      "name": "color-parser",
+      "meson_name": "gimp:libgimp+C / color-parser",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 99,
+      "name": "export-options",
+      "meson_name": "gimp:libgimp+python3 / export-options",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 100,
+      "name": "export-options",
+      "meson_name": "gimp:libgimp+C / export-options",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 101,
+      "name": "image",
+      "meson_name": "gimp:libgimp+python3 / image",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 102,
+      "name": "image",
+      "meson_name": "gimp:libgimp+C / image",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 103,
+      "name": "palette",
+      "meson_name": "gimp:libgimp+python3 / palette",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 104,
+      "name": "palette",
+      "meson_name": "gimp:libgimp+C / palette",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 105,
+      "name": "selection-float",
+      "meson_name": "gimp:libgimp+python3 / selection-float",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 106,
+      "name": "selection-float",
+      "meson_name": "gimp:libgimp+C / selection-float",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 107,
+      "name": "unit",
+      "meson_name": "gimp:libgimp+python3 / unit",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 108,
+      "name": "unit",
+      "meson_name": "gimp:libgimp+C / unit",
+      "result": "OK",
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    }
+  ]
+}

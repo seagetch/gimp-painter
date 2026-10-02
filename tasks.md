@@ -1188,7 +1188,7 @@
 | 34.013 | [ ] | 生成物の差分検査を登録する | 34.012 | enum/PDB 等の再生成漏れを検出 |
 | 34.014 | [ ] | 資源 manifest の検査を登録する | 34.013 | 同梱ファイルの欠落と未登録を検出 |
 | 34.015 | [ ] | ログと失敗 fixture を保存する | 34.014 | 再現に必要な入力と版が残る |
-| 34.015/frozen-linux-aggregate | [ ] | commit固定の全Linux登録targetを一括検証する | 03.009, 34.005/runtime-prototype | e109524cca固定で108全targetをserial実行、104 OK/4 FAIL/skip・timeoutゼロ。source8742/既存ELF414不変。新規GUI3失敗と既存Save/Script-Fu不具合を保持しgate false、修正後再集約は未完了 |
+| 34.015/frozen-linux-aggregate | [ ] | commit固定の全Linux登録targetを一括検証する | 03.009, 34.005/runtime-prototype | 修正後996297f09f（公開13b795a27aと同一tree）を全buildし108全targetをserial実行、107 OK/1 FAIL/skip・timeoutゼロ。GUI3失敗は解消、3003具体output等の前後seal不変。既存Saveと12件Script-Fu診断を保持してgate false、最終clean集約は未完了 |
 
 ### 35 GIMP 3.x の版間適合
 
