@@ -1,0 +1,38 @@
+TAP version 14
+# random seed: R02S27b9dfed3c89a3234864d545d63447f6
+1..7
+# Start of precision tests
+# format=RGB u8 model=RGB bytes=3 space=sRGB
+# format=RGBA u8 model=RGBA bytes=4 space=sRGB
+# format=R'G'B' u8 model=R'G'B' bytes=3 space=sRGB
+# format=R'G'B'A u8 model=R'G'B'A bytes=4 space=sRGB
+# format=R~G~B~ u8 model=R~G~B~ bytes=3 space=sRGB
+# format=R~G~B~A u8 model=R~G~B~A bytes=4 space=sRGB
+# format=Y u8 model=Y bytes=1 space=sRGB
+# format=YA u8 model=YA bytes=2 space=sRGB
+# format=Y' u8 model=Y' bytes=1 space=sRGB
+# format=Y'A u8 model=Y'A bytes=2 space=sRGB
+# format=Y~ u8 model=Y~ bytes=1 space=sRGB
+# format=Y~A u8 model=Y~A bytes=2 space=sRGB
+# format=RGB u16 model=RGB bytes=6 space=sRGB
+# format=RGBA u16 model=RGBA bytes=8 space=sRGB
+# format=R'G'B' u16 model=R'G'B' bytes=6 space=sRGB
+# format=R'G'B'A u16 model=R'G'B'A bytes=8 space=sRGB
+# format=R~G~B~ u16 model=R~G~B~ bytes=6 space=sRGB
+# format=R~G~B~A u16 model=R~G~B~A bytes=8 space=sRGB
+# format=Y u16 model=Y bytes=2 space=sRGB
+# format=YA u16 model=YA bytes=4 space=sRGB
+# format=Y' u16 model=Y' bytes=2 space=sRGB
+# format=Y'A u16 model=Y'A bytes=4 space=sRGB
+# format=Y~ u16 model=Y~ bytes=2 space=sRGB
+# format=Y~A u16 model=Y~A bytes=4 space=sRGB
+# format=RGB u32 model=RGB bytes=12 space=sRGB
+# format=RGBA u32 model=RGBA bytes=16 space=sRGB
+# format=R'G'B' u32 model=R'G'B' bytes=12 space=sRGB
+# format=R'G'B'A u32 model=R'G'B'A bytes=16 space=sRGB
+# format=R~G~B~ u32 model=R~G~B~ bytes=12 space=sRGB
+# format=R~G~B~A u32 model=R~G~B~A bytes=16 space=sRGB
+**
+ERROR:app/paint/painter-mypaint-surface/tests/native-precision.cpp:36:void format_matrix(): assertion failed (component(after.data(),type) == expected (+/- epsilon)): (0.625000014 == 0.625)
+not ok /precision/72-formats - ERROR:app/paint/painter-mypaint-surface/tests/native-precision.cpp:36:void format_matrix(): assertion failed (component(after.data(),type) == expected (+/- epsilon)): (0.625000014 == 0.625)
+Bail out!

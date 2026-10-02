@@ -1,0 +1,57 @@
+{
+  "scope": "Native GIMP Session matrix and actual native GTK painting/XCF workflows; synthetic GDK events, not physical tablet hardware",
+  "session": {
+    "normal": {
+      "groups": 2,
+      "matrix_cells": 144,
+      "exit_code": 0,
+      "log": "migration/tests/mypaint-precision-native-final.log",
+      "log_sha256": "b1e717da46f7a5b9eb7e2ec73ea434a985fce13332ad09252293347f82fd7bb7",
+      "executable_sha256": "1d73995d438033ddd01485ef448ea4991aa2f85d9d08b2873fcd998b9a08407d"
+    },
+    "asan": {
+      "groups": 2,
+      "matrix_cells": 144,
+      "exit_code": 0,
+      "log": "migration/tests/mypaint-precision-sanitizers.log",
+      "log_sha256": "59744447cbbcebd06582fe1af617c015046af4f63b7bd0b7733dddd90df3d8e8",
+      "executable_sha256": "194cc9df4f2ac6a021c38f9a89dd9a1803dd35c4da5cdda6dc23004a118444d8"
+    }
+  },
+  "gtk": {
+    "normal": {
+      "groups": 16,
+      "precision_cases": 18,
+      "exit_code": 0,
+      "log": "migration/tests/mypaint-precision-tool-normal-all.log",
+      "log_sha256": "0751ccaf6572ca8c2111fdfe00df532b5a24c687e6900d83854e812fc36f7822",
+      "executable_sha256": "e6637359f65b4aaf0292faaa8a4595237bda09ec5de0819180312d65c3e8921a"
+    },
+    "asan": {
+      "groups": 16,
+      "precision_cases": 18,
+      "exit_code": 0,
+      "log": "migration/tests/mypaint-precision-tool-asan-all.log",
+      "log_sha256": "306e2912a1a48dbcf1ad7a5ae1474a5f1f9f9495a0adc616e236cb4fe0f9bd1c",
+      "executable_sha256": "d85a27051e6148a4f2aa60dfaf2b31c9325884845a4345a33837359b3c64e408"
+    }
+  },
+  "focused_builds": [
+    "migration/tests/mypaint-precision-sanitizers-build.json",
+    "migration/tests/mypaint-precision-tool-sanitizers-build.json"
+  ],
+  "instrumented_sources_per_build": 38,
+  "rtti_only_sources_per_build": 32,
+  "source_snapshot": "migration/tests/mypaint-precision-sanitizer-source-snapshot.tar.gz",
+  "known_diagnostics": [
+    "Native test teardown emits the existing nonfatal test-directory save warning; XCF Save return codes and reloaded pixels/profile are asserted separately.",
+    "Retained evaluator emits its existing negative internal-step time diagnostic during repeated synthetic atomic operations; timings and pixel/Undo results are retained, not filtered."
+  ],
+  "unclaimed": [
+    "arbitrary ICC classes beyond native GIMP/Babl construction and documented profile matrix",
+    "physical tablet input",
+    "other operating systems",
+    "whole-application sanitizer coverage",
+    "leak detection"
+  ]
+}

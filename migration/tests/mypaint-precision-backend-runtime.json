@@ -1,0 +1,39 @@
+{
+  "scope": "Native scalar codec, GEGL wide surface, 72 formats with independent normal/erase/lock/nonincremental and native-byte/LSB invariants; Babl/GEGL/LCMS dependencies uninstrumented",
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "f089684771f01c2dc9983687b32cb80fcfb31eec451a5f8707ef054b3bd94a81",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "0ffb0f9071bc34bfdf9c4473da5e3279eadba4f3ae39ed99e74260aeb77a5666",
+    "app/paint/painter-mypaint-surface/native-pixels.hpp": "2b089246a097b55d1df0dd876b91d7f509c2d3f6eb8eca28ba9e2c4ad37f7b7b",
+    "app/paint/painter-mypaint-surface/tests/native-precision.cpp": "8e4c33a34a9a3f6331998ec9c79f705d43f1c5292145f6da5778cbe68c845b35",
+    "app/painter/object-ref.hpp": "46006b8f2bc6216e6486fa473fe10ffbc9311c3550825b82798b0858165f8dac",
+    "app/paint/painter-mypaint/surface.hpp": "7c6214b1dafee3eb3cc2643842c11e9b419eea02433d997f9903d64e12237595"
+  },
+  "sanitizers": [
+    "address",
+    "undefined",
+    "float-cast-overflow"
+  ],
+  "leak_detection": false,
+  "dependencies": {
+    "babl": "0.1.114",
+    "gegl": "0.4.62",
+    "lcms2": "2.16"
+  },
+  "compile_command": "c++ -std=c++14 -g -O1 -fsanitize=address,undefined,float-cast-overflow -fno-omit-frame-pointer -Iapp app/paint/painter-mypaint-surface/tests/native-precision.cpp app/paint/painter-mypaint-surface/gegl-surface.cpp -o build-debian13/app/paint/painter-mypaint-surface/painter-mypaint-native-precision-asan -I/workspace/shared/gimp-build-deps/root/usr/include/gegl-0.4 -I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0 -I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6 -I/workspace/shared/gimp-build-deps/root/usr/include/libmount -I/workspace/shared/gimp-build-deps/root/usr/include/blkid -I/workspace/shared/gimp-build-deps/root/usr/include/gio-unix-2.0 -I/workspace/shared/gimp-build-deps/root/usr/include/json-glib-1.0 -I/workspace/shared/gimp-build-deps/root/usr/include/babl-0.1 -pthread -lgegl-0.4 -lgegl-npd-0.4 -Wl,--export-dynamic -lgmodule-2.0 -lglib-2.0 -ljson-glib-1.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lbabl-0.1 -llcms2 -llcms2_fast_float -llcms2_threaded -pthread -lm",
+  "runs": {
+    "normal": {
+      "exit_code": 0,
+      "groups": 7,
+      "log": "migration/tests/mypaint-precision-backend-final.log",
+      "log_sha256": "4b2e3b667e67cd75a9ee7c0256183f8f6e82f84bc511597286d5adde99bb783d",
+      "executable_sha256": "56340a0be9d3ac81f3659f9548975123b9da58cd263163383c14c7edb79db2c2"
+    },
+    "asan": {
+      "exit_code": 0,
+      "groups": 7,
+      "log": "migration/tests/mypaint-precision-backend-sanitizers.log",
+      "log_sha256": "6d7293111d41d5e4da1fa51f3138fd09bf6307bea1103cbfc7039956a07a08b5",
+      "executable_sha256": "09f0d832e6ed0300f40314157b63a3328695b3a8c36d5ceb802501a62fb13d5b"
+    }
+  }
+}

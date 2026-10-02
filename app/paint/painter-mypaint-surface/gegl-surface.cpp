@@ -4,6 +4,7 @@
 #include "gegl-surface.hpp"
 #include "legacy-pixel-modes.hpp"
 #include "gray-alpha-pixels.hpp"
+#include "native-pixels.hpp"
 #include "painter/object-ref.hpp"
 #include <algorithm>
 #include <cmath>
@@ -27,19 +28,16 @@ struct GeglSurface::Impl {
   GeglRectangle dirty = {0,0,0,0};
   std::size_t read_bytes = 0, written_bytes = 0;
   const Babl *format,*floating_format;
+  NativePixel::Format native;
+  double wide_background[4] = {1,1,1,1};
   int channels;
-  explicit Impl (GeglBuffer *buffer) : target (ObjectRef<GeglBuffer>::retain (buffer))
+  explicit Impl (GeglBuffer *buffer)
+    : target (ObjectRef<GeglBuffer>::retain (buffer)),
+      native (buffer ? gegl_buffer_get_format (buffer) : throw std::invalid_argument ("Expected target GeglBuffer"))
   {
-    if (!target) throw std::invalid_argument ("Expected target GeglBuffer");
-    const auto *native = gegl_buffer_get_format (buffer);
-    floating_format = babl_format_with_space ("R'G'B'A u8", babl_format_get_space (native));
-    const auto *rgb = babl_format_with_space ("R'G'B' u8", babl_format_get_space (native));
-    const auto *gray = babl_format_with_space ("Y' u8", babl_format_get_space (native));
-    const auto *gray_alpha = babl_format_with_space ("Y'A u8", babl_format_get_space (native));
-    if (native != floating_format && native != rgb && native != gray && native != gray_alpha)
-      throw std::invalid_argument ("Legacy Surface currently requires nonlinear Gray/Gray-alpha/RGB/RGBA u8; refusing precision conversion");
-    format=native;channels=babl_format_get_bytes_per_pixel(native);
-    if(channels<=2)floating_format=gray_alpha;
+    format=native.native;channels=native.components;
+    floating_format=native.legacy ? babl_format_with_space (channels<=2?"Y'A u8":"R'G'B'A u8",babl_format_get_space(format)) : native.with_alpha_double();
+    native.color(1,1,1,wide_background);
   }
   std::vector<guchar> read (GeglBuffer *buffer, const GeglRectangle& rect)
   {
@@ -55,6 +53,7 @@ struct GeglSurface::Impl {
   struct Dab {
     GeglRectangle rect = {0,0,0,0};
     std::vector<float> mask;
+    std::vector<double> wide_mask;
     bool shaped = false;
     int paper_width = 0, paper_height = 0;
   };
@@ -99,11 +98,22 @@ struct GeglSurface::Impl {
     }
     const int w = result.rect.width, h = result.rect.height;
     result.mask.resize (std::size_t (w)*h);
+    if(!native.legacy)result.wide_mask.resize(std::size_t(w)*h);
     std::vector<guchar> selected;
+    std::vector<double> wide_selected;
     if (selection) {
-      selected.resize (std::size_t (w)*h); auto rect = result.rect; rect.x += offset_x; rect.y += offset_y;
-      gegl_buffer_get (selection.get (),&rect,1,babl_format ("Y u8"),selected.data (),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
-      read_bytes += selected.size ();
+      auto rect = result.rect; rect.x += offset_x; rect.y += offset_y;
+      if(native.legacy){
+        selected.resize (std::size_t (w)*h);
+        gegl_buffer_get (selection.get (),&rect,1,babl_format ("Y u8"),selected.data (),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+        read_bytes += selected.size ();
+      }else{
+        NativePixel::Format mask_format(gegl_buffer_get_format(selection.get()));
+        if(std::strcmp(babl_get_name(babl_format_get_model(mask_format.native)),"Y"))
+          throw std::invalid_argument("Painter selection must have linear scalar coverage");
+        const auto bytes=read(selection.get(),rect);wide_selected.resize(std::size_t(w)*h);
+        for(std::size_t i=0;i<wide_selected.size();++i){const double v=mask_format.decode(bytes.data()+i*mask_format.bytes);NativePixel::finite(v);wide_selected[i]=NativePixel::unit(v);}
+      }
     }
     float slope1 = -(1.0/hardness-1.0), offset2 = hardness != 1.f ? hardness/(1.0-hardness) : 0;
     float slope2 = hardness != 1.f ? -hardness/(1.0-hardness) : 0;
@@ -120,6 +130,15 @@ struct GeglSurface::Impl {
         if (distance > 1.f) alpha = 0;
         else { alpha = distance <= hardness ? 1.f : offset2; alpha += distance*(distance <= hardness ? slope1 : slope2); }
       }
+      if(!native.legacy){
+        double coverage=result.shaped?double(transformed.pixels[(py-by)*bw+px-bx])/255.:NativePixel::unit(alpha);
+        if(selection)coverage*=wide_selected[row*w+col];
+        if(!paper.values.empty()&&(!sampling||result.shaped)){
+          const int tx=((px%paper.width)+paper.width)%paper.width,ty=((py%paper.height)+paper.height)%paper.height;
+          coverage=NativePixel::unit(coverage*(double(paper.values[ty*paper.width+tx])/255.+grain)*contrast);
+        }
+        result.wide_mask[row*w+col]=coverage;
+      }else{
       if (selection) alpha = clamp (alpha*(float(selected[row*w+col])/255.f)); else alpha = clamp (alpha);
       // Pinned ellipse sampling ignores paper; GIMP-mask sampling includes it.
       if (!paper.values.empty () && (!sampling || result.shaped)) {
@@ -127,10 +146,62 @@ struct GeglSurface::Impl {
         alpha = clamp (alpha*(float(paper.values[ty*paper.width+tx])/255.f+grain)*contrast);
       }
       if (!result.shaped && alpha*65535.f < 1.f) alpha = 0.f;
+      }
       result.mask[row*w+col] = alpha;
     }
     return result;
   }
+  bool draw_wide(const Dab&dab,double r,double g,double b,double opaque,double alpha,double lock_alpha,double colorize)
+  {
+    double color[4];native.color(r,g,b,color);
+    auto*destination=non_incremental?floating.get():target.get();
+    NativePixel::Format dest_format(gegl_buffer_get_format(destination));
+    auto pixels=read(destination,dab.rect);
+    bool accumulated=false;
+    for(std::size_t i=0;i<dab.wide_mask.size();++i){
+      const double coverage=dab.wide_mask[i];if(!coverage||((1-lock_alpha)*(1-colorize)==0&&lock_alpha==0))continue;
+      double pixel[4];auto*p=pixels.data()+i*dest_format.bytes;dest_format.read(p,pixel);
+      NativePixel::blend(pixel,color,wide_background,coverage*opaque*(1-lock_alpha)*(1-colorize),alpha,dest_format.alpha);
+      NativePixel::lock(pixel,color,coverage*opaque*lock_alpha,dest_format.alpha);
+      accumulated=dest_format.write(p,pixel)||accumulated;
+    }
+    if(!accumulated)return false;
+    if(!non_incremental){write(target.get(),dab.rect,pixels);return true;}
+    auto original=read(initial.get(),dab.rect),result=read(target.get(),dab.rect);
+    bool changed=false;
+    for(std::size_t i=0;i<dab.wide_mask.size();++i){
+      if(!dab.wide_mask[i])continue;
+      double source[4],pixel[4];dest_format.read(pixels.data()+i*dest_format.bytes,source);
+      if(!source[3]||!opacity){
+        auto*out=result.data()+i*native.bytes;const auto*before=original.data()+i*native.bytes;
+        if(std::memcmp(out,before,native.bytes)){std::memcpy(out,before,native.bytes);changed=true;}
+        continue;
+      }
+      native.read(original.data()+i*native.bytes,pixel);
+      NativePixel::blend(pixel,source,wide_background,source[3]*opacity,1.,native.alpha);
+      changed=native.write(result.data()+i*native.bytes,pixel)||changed;
+    }
+    // No writes occur until the whole dab and displayed result have validated.
+    write(floating.get(),dab.rect,pixels);
+    if(changed)write(target.get(),dab.rect,result);
+    return changed;
+  }
+  void sample_wide(const Dab&dab,float*r,float*g,float*b,float*a)
+  {
+    const auto pixels=read(target.get(),dab.rect);
+    double weight=0,alpha=0,color[3]={0,0,0};
+    for(std::size_t i=0;i<dab.wide_mask.size();++i){
+      const double coverage=dab.wide_mask[i];if(!coverage)continue;
+      double pixel[4];native.read(pixels.data()+i*native.bytes,pixel);NativePixel::finite(pixel[3]);
+      weight+=coverage;const double contribution=coverage*NativePixel::unit(pixel[3]);if(!contribution)continue;
+      const double total=alpha+contribution;
+      for(int c=0;c<3;++c){NativePixel::finite(pixel[c]);color[c]=NativePixel::mix(color[c],pixel[c],contribution/total);}
+      alpha=total;
+    }
+    if(weight>0&&alpha>0){double sampled[4],input[4]={color[0],color[1],color[2],alpha/weight};native.sample(input,sampled);
+      *r=float(NativePixel::unit(sampled[0]));*g=float(NativePixel::unit(sampled[1]));*b=float(NativePixel::unit(sampled[2]));*a=float(NativePixel::unit(input[3]));}
+  }
+
 };
 GeglSurface::GeglSurface (GeglBuffer *buffer) : impl_ (new Impl (buffer)) {}
 GeglSurface::~GeglSurface () = default;
@@ -149,8 +220,27 @@ void GeglSurface::set_selection (GeglBuffer *mask,int x,int y)
 void GeglSurface::set_non_incremental (bool value)
 { if (impl_->active) throw std::logic_error ("Cannot change accumulation mode mid-session"); impl_->non_incremental=value; }
 void GeglSurface::set_stroke_opacity (float value) { finite(value); impl_->opacity=clamp(value); }
-void GeglSurface::set_background (float r,float g,float b)
-{ for (auto v:{r,g,b}) finite(v); impl_->background[0]=r;impl_->background[1]=g;impl_->background[2]=b; }
+void GeglSurface::set_background (double r,double g,double b)
+{
+  for (auto v : {r,g,b}) NativePixel::finite(v);
+  if (impl_->native.legacy) {
+    // Historical byte blending assumes normalized, float-representable RGB.
+    // Clamp out-of-gamut ICC coordinates before casting, retaining every old
+    // in-range result. Nonfinite input was rejected before publishing anything.
+    const float background[3] = {float(NativePixel::unit(r)),
+                                 float(NativePixel::unit(g)),
+                                 float(NativePixel::unit(b))};
+    std::copy(background,background+3,impl_->background);
+  } else {
+    // Color conversion can reject finite input if its result is nonfinite.
+    // Keep the previous background intact on failure; legacy floats are unused.
+    double background[4];
+    impl_->native.color(r,g,b,background);
+    std::copy(background,background+4,impl_->wide_background);
+  }
+}
+const Babl* GeglSurface::evaluation_format(GeglBuffer*buffer)
+{ return NativePixel::Format(gegl_buffer_get_format(buffer)).evaluation; }
 void GeglSurface::set_dirty_callback (std::function<void(const GeglRectangle&)> callback) { impl_->notify=std::move(callback); }
 const GeglRectangle& GeglSurface::dirty () const { return impl_->dirty; }
 std::size_t GeglSurface::bytes_read () const { return impl_->read_bytes; }
@@ -187,6 +277,12 @@ bool GeglSurface::draw_dab (float x,float y,float radius,float r,float g,float b
   if (!opaque) return false;
   auto dab=impl_->coverage(x,y,radius,hardness,aspect,angle,grain,contrast,false);
   const auto rect=dab.rect; if (!rect.width || !rect.height) return false;
+  if(!impl_->native.legacy){
+    if(!impl_->draw_wide(dab,r,g,b,opaque,alpha,lock_alpha,colorize))return false;
+    if(!impl_->dirty.width)impl_->dirty=rect;else gegl_rectangle_bounding_box(&impl_->dirty,&impl_->dirty,&rect);
+    if(impl_->notify)impl_->notify(rect);
+    return true;
+  }
   auto *target=impl_->non_incremental ? impl_->floating.get() : impl_->target.get();
   auto pixels=impl_->read(target,rect); float color[4]={r,g,b,alpha};
   const int channels=babl_format_get_bytes_per_pixel(gegl_buffer_get_format(target));
@@ -230,6 +326,7 @@ void GeglSurface::get_color (float x,float y,float radius,float *r,float *g,floa
   *r=0;*g=1;*b=0;*a=0;
   auto dab=impl_->coverage(x,y,radius,hardness,aspect,angle,grain,contrast,true);const auto rect=dab.rect;
   if (!rect.width || !rect.height) return;
+  if(!impl_->native.legacy){impl_->sample_wide(dab,r,g,b,a);return;}
   auto pixels=impl_->read(impl_->target.get(),rect);float color[4]{};
   const int channels=impl_->channels;
   using namespace LegacyPixel;

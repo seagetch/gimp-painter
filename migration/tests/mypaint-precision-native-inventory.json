@@ -1,0 +1,1306 @@
+{
+  "constructed_native_cells": 144,
+  "gimp_precisions": 18,
+  "profiles": {
+    "builtin": "GIMP matching built-in RGB/Gray",
+    "custom": "GIMP Adobe RGB / D50 Gray Lab TRC"
+  },
+  "cells": [
+    {
+      "precision": 100,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "RGB u8",
+      "component": 100,
+      "trc": 0
+    },
+    {
+      "precision": 100,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "RGB u8-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 100,
+      "trc": 0
+    },
+    {
+      "precision": 100,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "RGBA u8",
+      "component": 100,
+      "trc": 0
+    },
+    {
+      "precision": 100,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "RGBA u8-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 100,
+      "trc": 0
+    },
+    {
+      "precision": 100,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y u8",
+      "component": 100,
+      "trc": 0
+    },
+    {
+      "precision": 100,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y u8-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 100,
+      "trc": 0
+    },
+    {
+      "precision": 100,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "YA u8",
+      "component": 100,
+      "trc": 0
+    },
+    {
+      "precision": 100,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "YA u8-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 100,
+      "trc": 0
+    },
+    {
+      "precision": 150,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R'G'B' u8",
+      "component": 100,
+      "trc": 1
+    },
+    {
+      "precision": 150,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R'G'B' u8-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 100,
+      "trc": 1
+    },
+    {
+      "precision": 150,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R'G'B'A u8",
+      "component": 100,
+      "trc": 1
+    },
+    {
+      "precision": 150,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R'G'B'A u8-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 100,
+      "trc": 1
+    },
+    {
+      "precision": 150,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y' u8",
+      "component": 100,
+      "trc": 1
+    },
+    {
+      "precision": 150,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y' u8-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 100,
+      "trc": 1
+    },
+    {
+      "precision": 150,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y'A u8",
+      "component": 100,
+      "trc": 1
+    },
+    {
+      "precision": 150,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y'A u8-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 100,
+      "trc": 1
+    },
+    {
+      "precision": 175,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R~G~B~ u8",
+      "component": 100,
+      "trc": 2
+    },
+    {
+      "precision": 175,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R~G~B~ u8-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 100,
+      "trc": 2
+    },
+    {
+      "precision": 175,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R~G~B~A u8",
+      "component": 100,
+      "trc": 2
+    },
+    {
+      "precision": 175,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R~G~B~A u8-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 100,
+      "trc": 2
+    },
+    {
+      "precision": 175,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y~ u8",
+      "component": 100,
+      "trc": 2
+    },
+    {
+      "precision": 175,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y~ u8-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 100,
+      "trc": 2
+    },
+    {
+      "precision": 175,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y~A u8",
+      "component": 100,
+      "trc": 2
+    },
+    {
+      "precision": 175,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y~A u8-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 100,
+      "trc": 2
+    },
+    {
+      "precision": 200,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "RGB u16",
+      "component": 200,
+      "trc": 0
+    },
+    {
+      "precision": 200,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "RGB u16-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 200,
+      "trc": 0
+    },
+    {
+      "precision": 200,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "RGBA u16",
+      "component": 200,
+      "trc": 0
+    },
+    {
+      "precision": 200,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "RGBA u16-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 200,
+      "trc": 0
+    },
+    {
+      "precision": 200,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y u16",
+      "component": 200,
+      "trc": 0
+    },
+    {
+      "precision": 200,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y u16-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 200,
+      "trc": 0
+    },
+    {
+      "precision": 200,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "YA u16",
+      "component": 200,
+      "trc": 0
+    },
+    {
+      "precision": 200,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "YA u16-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 200,
+      "trc": 0
+    },
+    {
+      "precision": 250,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R'G'B' u16",
+      "component": 200,
+      "trc": 1
+    },
+    {
+      "precision": 250,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R'G'B' u16-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 200,
+      "trc": 1
+    },
+    {
+      "precision": 250,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R'G'B'A u16",
+      "component": 200,
+      "trc": 1
+    },
+    {
+      "precision": 250,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R'G'B'A u16-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 200,
+      "trc": 1
+    },
+    {
+      "precision": 250,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y' u16",
+      "component": 200,
+      "trc": 1
+    },
+    {
+      "precision": 250,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y' u16-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 200,
+      "trc": 1
+    },
+    {
+      "precision": 250,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y'A u16",
+      "component": 200,
+      "trc": 1
+    },
+    {
+      "precision": 250,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y'A u16-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 200,
+      "trc": 1
+    },
+    {
+      "precision": 275,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R~G~B~ u16",
+      "component": 200,
+      "trc": 2
+    },
+    {
+      "precision": 275,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R~G~B~ u16-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 200,
+      "trc": 2
+    },
+    {
+      "precision": 275,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R~G~B~A u16",
+      "component": 200,
+      "trc": 2
+    },
+    {
+      "precision": 275,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R~G~B~A u16-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 200,
+      "trc": 2
+    },
+    {
+      "precision": 275,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y~ u16",
+      "component": 200,
+      "trc": 2
+    },
+    {
+      "precision": 275,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y~ u16-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 200,
+      "trc": 2
+    },
+    {
+      "precision": 275,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y~A u16",
+      "component": 200,
+      "trc": 2
+    },
+    {
+      "precision": 275,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y~A u16-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 200,
+      "trc": 2
+    },
+    {
+      "precision": 300,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "RGB u32",
+      "component": 300,
+      "trc": 0
+    },
+    {
+      "precision": 300,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "RGB u32-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 300,
+      "trc": 0
+    },
+    {
+      "precision": 300,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "RGBA u32",
+      "component": 300,
+      "trc": 0
+    },
+    {
+      "precision": 300,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "RGBA u32-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 300,
+      "trc": 0
+    },
+    {
+      "precision": 300,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y u32",
+      "component": 300,
+      "trc": 0
+    },
+    {
+      "precision": 300,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y u32-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 300,
+      "trc": 0
+    },
+    {
+      "precision": 300,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "YA u32",
+      "component": 300,
+      "trc": 0
+    },
+    {
+      "precision": 300,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "YA u32-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 300,
+      "trc": 0
+    },
+    {
+      "precision": 350,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R'G'B' u32",
+      "component": 300,
+      "trc": 1
+    },
+    {
+      "precision": 350,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R'G'B' u32-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 300,
+      "trc": 1
+    },
+    {
+      "precision": 350,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R'G'B'A u32",
+      "component": 300,
+      "trc": 1
+    },
+    {
+      "precision": 350,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R'G'B'A u32-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 300,
+      "trc": 1
+    },
+    {
+      "precision": 350,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y' u32",
+      "component": 300,
+      "trc": 1
+    },
+    {
+      "precision": 350,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y' u32-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 300,
+      "trc": 1
+    },
+    {
+      "precision": 350,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y'A u32",
+      "component": 300,
+      "trc": 1
+    },
+    {
+      "precision": 350,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y'A u32-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 300,
+      "trc": 1
+    },
+    {
+      "precision": 375,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R~G~B~ u32",
+      "component": 300,
+      "trc": 2
+    },
+    {
+      "precision": 375,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R~G~B~ u32-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 300,
+      "trc": 2
+    },
+    {
+      "precision": 375,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R~G~B~A u32",
+      "component": 300,
+      "trc": 2
+    },
+    {
+      "precision": 375,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R~G~B~A u32-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 300,
+      "trc": 2
+    },
+    {
+      "precision": 375,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y~ u32",
+      "component": 300,
+      "trc": 2
+    },
+    {
+      "precision": 375,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y~ u32-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 300,
+      "trc": 2
+    },
+    {
+      "precision": 375,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y~A u32",
+      "component": 300,
+      "trc": 2
+    },
+    {
+      "precision": 375,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y~A u32-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 300,
+      "trc": 2
+    },
+    {
+      "precision": 500,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "RGB half",
+      "component": 500,
+      "trc": 0
+    },
+    {
+      "precision": 500,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "RGB half-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 500,
+      "trc": 0
+    },
+    {
+      "precision": 500,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "RGBA half",
+      "component": 500,
+      "trc": 0
+    },
+    {
+      "precision": 500,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "RGBA half-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 500,
+      "trc": 0
+    },
+    {
+      "precision": 500,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y half",
+      "component": 500,
+      "trc": 0
+    },
+    {
+      "precision": 500,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y half-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 500,
+      "trc": 0
+    },
+    {
+      "precision": 500,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "YA half",
+      "component": 500,
+      "trc": 0
+    },
+    {
+      "precision": 500,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "YA half-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 500,
+      "trc": 0
+    },
+    {
+      "precision": 550,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R'G'B' half",
+      "component": 500,
+      "trc": 1
+    },
+    {
+      "precision": 550,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R'G'B' half-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 500,
+      "trc": 1
+    },
+    {
+      "precision": 550,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R'G'B'A half",
+      "component": 500,
+      "trc": 1
+    },
+    {
+      "precision": 550,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R'G'B'A half-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 500,
+      "trc": 1
+    },
+    {
+      "precision": 550,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y' half",
+      "component": 500,
+      "trc": 1
+    },
+    {
+      "precision": 550,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y' half-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 500,
+      "trc": 1
+    },
+    {
+      "precision": 550,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y'A half",
+      "component": 500,
+      "trc": 1
+    },
+    {
+      "precision": 550,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y'A half-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 500,
+      "trc": 1
+    },
+    {
+      "precision": 575,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R~G~B~ half",
+      "component": 500,
+      "trc": 2
+    },
+    {
+      "precision": 575,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R~G~B~ half-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 500,
+      "trc": 2
+    },
+    {
+      "precision": 575,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R~G~B~A half",
+      "component": 500,
+      "trc": 2
+    },
+    {
+      "precision": 575,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R~G~B~A half-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 500,
+      "trc": 2
+    },
+    {
+      "precision": 575,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y~ half",
+      "component": 500,
+      "trc": 2
+    },
+    {
+      "precision": 575,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y~ half-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 500,
+      "trc": 2
+    },
+    {
+      "precision": 575,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y~A half",
+      "component": 500,
+      "trc": 2
+    },
+    {
+      "precision": 575,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y~A half-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 500,
+      "trc": 2
+    },
+    {
+      "precision": 600,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "RGB float",
+      "component": 600,
+      "trc": 0
+    },
+    {
+      "precision": 600,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "RGB float-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 600,
+      "trc": 0
+    },
+    {
+      "precision": 600,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "RGBA float",
+      "component": 600,
+      "trc": 0
+    },
+    {
+      "precision": 600,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "RGBA float-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 600,
+      "trc": 0
+    },
+    {
+      "precision": 600,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y float",
+      "component": 600,
+      "trc": 0
+    },
+    {
+      "precision": 600,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y float-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 600,
+      "trc": 0
+    },
+    {
+      "precision": 600,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "YA float",
+      "component": 600,
+      "trc": 0
+    },
+    {
+      "precision": 600,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "YA float-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 600,
+      "trc": 0
+    },
+    {
+      "precision": 650,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R'G'B' float",
+      "component": 600,
+      "trc": 1
+    },
+    {
+      "precision": 650,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R'G'B' float-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 600,
+      "trc": 1
+    },
+    {
+      "precision": 650,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R'G'B'A float",
+      "component": 600,
+      "trc": 1
+    },
+    {
+      "precision": 650,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R'G'B'A float-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 600,
+      "trc": 1
+    },
+    {
+      "precision": 650,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y' float",
+      "component": 600,
+      "trc": 1
+    },
+    {
+      "precision": 650,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y' float-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 600,
+      "trc": 1
+    },
+    {
+      "precision": 650,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y'A float",
+      "component": 600,
+      "trc": 1
+    },
+    {
+      "precision": 650,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y'A float-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 600,
+      "trc": 1
+    },
+    {
+      "precision": 675,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R~G~B~ float",
+      "component": 600,
+      "trc": 2
+    },
+    {
+      "precision": 675,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R~G~B~ float-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 600,
+      "trc": 2
+    },
+    {
+      "precision": 675,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R~G~B~A float",
+      "component": 600,
+      "trc": 2
+    },
+    {
+      "precision": 675,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R~G~B~A float-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 600,
+      "trc": 2
+    },
+    {
+      "precision": 675,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y~ float",
+      "component": 600,
+      "trc": 2
+    },
+    {
+      "precision": 675,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y~ float-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 600,
+      "trc": 2
+    },
+    {
+      "precision": 675,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y~A float",
+      "component": 600,
+      "trc": 2
+    },
+    {
+      "precision": 675,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y~A float-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 600,
+      "trc": 2
+    },
+    {
+      "precision": 700,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "RGB double",
+      "component": 700,
+      "trc": 0
+    },
+    {
+      "precision": 700,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "RGB double-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 700,
+      "trc": 0
+    },
+    {
+      "precision": 700,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "RGBA double",
+      "component": 700,
+      "trc": 0
+    },
+    {
+      "precision": 700,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "RGBA double-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 700,
+      "trc": 0
+    },
+    {
+      "precision": 700,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y double",
+      "component": 700,
+      "trc": 0
+    },
+    {
+      "precision": 700,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y double-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 700,
+      "trc": 0
+    },
+    {
+      "precision": 700,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "YA double",
+      "component": 700,
+      "trc": 0
+    },
+    {
+      "precision": 700,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "YA double-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 700,
+      "trc": 0
+    },
+    {
+      "precision": 750,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R'G'B' double",
+      "component": 700,
+      "trc": 1
+    },
+    {
+      "precision": 750,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R'G'B' double-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 700,
+      "trc": 1
+    },
+    {
+      "precision": 750,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R'G'B'A double",
+      "component": 700,
+      "trc": 1
+    },
+    {
+      "precision": 750,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R'G'B'A double-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 700,
+      "trc": 1
+    },
+    {
+      "precision": 750,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y' double",
+      "component": 700,
+      "trc": 1
+    },
+    {
+      "precision": 750,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y' double-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 700,
+      "trc": 1
+    },
+    {
+      "precision": 750,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y'A double",
+      "component": 700,
+      "trc": 1
+    },
+    {
+      "precision": 750,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y'A double-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 700,
+      "trc": 1
+    },
+    {
+      "precision": 775,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "R~G~B~ double",
+      "component": 700,
+      "trc": 2
+    },
+    {
+      "precision": 775,
+      "base_type": 0,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "R~G~B~ double-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 700,
+      "trc": 2
+    },
+    {
+      "precision": 775,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "R~G~B~A double",
+      "component": 700,
+      "trc": 2
+    },
+    {
+      "precision": 775,
+      "base_type": 0,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "R~G~B~A double-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218",
+      "component": 700,
+      "trc": 2
+    },
+    {
+      "precision": 775,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "builtin",
+      "native_format": "Y~ double",
+      "component": 700,
+      "trc": 2
+    },
+    {
+      "precision": 775,
+      "base_type": 1,
+      "alpha": false,
+      "profile": "custom",
+      "native_format": "Y~ double-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 700,
+      "trc": 2
+    },
+    {
+      "precision": 775,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "builtin",
+      "native_format": "Y~A double",
+      "component": 700,
+      "trc": 2
+    },
+    {
+      "precision": 775,
+      "base_type": 1,
+      "alpha": true,
+      "profile": "custom",
+      "native_format": "Y~A double-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.",
+      "component": 700,
+      "trc": 2
+    }
+  ]
+}

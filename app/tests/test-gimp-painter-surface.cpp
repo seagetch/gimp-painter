@@ -166,7 +166,7 @@ static void rejected_snapshot_and_format()
   g_assert_true(rejected);
   surface.begin_session();surface.draw_dab(8,8,3,1,0,0,1,1);surface.cancel_session();
   g_object_unref(buffer);
-  auto*high=gegl_buffer_new(GEGL_RECTANGLE(0,0,16,16),babl_format("R'G'B'A float"));rejected=false;
+  auto*high=gegl_buffer_new(GEGL_RECTANGLE(0,0,16,16),babl_format("CIE Lab float"));rejected=false;
   try{GeglSurface unsupported(high);}catch(const std::invalid_argument&){rejected=true;}
   g_assert_true(rejected);g_object_unref(high);
 }

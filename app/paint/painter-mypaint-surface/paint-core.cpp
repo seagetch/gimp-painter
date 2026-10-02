@@ -154,7 +154,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
     auto previous=logical_target.lock();
     if(logical&&previous.get()==d)return;
     engine.new_stroke();double rgba[4];
-    gegl_color_get_pixel(gimp_context_get_foreground(GIMP_CONTEXT(options.get())),babl_format("R'G'B'A double"),rgba);
+    gegl_color_get_pixel(gimp_context_get_foreground(GIMP_CONTEXT(options.get())),GeglSurface::evaluation_format(gimp_drawable_get_buffer(d)),rgba);
     engine.set_foreground(rgba[0],rgba[1],rgba[2]);
     if(GIMP_IS_LAYER(d))engine.set_base_value(BRUSH_LOCK_ALPHA,gimp_layer_get_lock_alpha(GIMP_LAYER(d))?1.f:0.f);
     logical=true;logical_target=WeakRef<GimpDrawable>(ObjectRef<GimpDrawable>::retain(d));
@@ -177,7 +177,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
       auto owners=std::make_shared<GimpResources>(GIMP_CONTEXT(options.get()),resource);
       raster->set_non_incremental(engine.non_incremental());raster->set_stroke_opacity(engine.stroke_opacity());owners->attach(*raster);
       double rgba[4];
-      gegl_color_get_pixel(gimp_context_get_background(GIMP_CONTEXT(options.get())),babl_format("R'G'B'A double"),rgba);
+      gegl_color_get_pixel(gimp_context_get_background(GIMP_CONTEXT(options.get())),GeglSurface::evaluation_format(gimp_drawable_get_buffer(d)),rgba);
       raster->set_background(rgba[0],rgba[1],rgba[2]);
       if(!gimp_item_is_attached(GIMP_ITEM(d))||gimp_item_get_image(GIMP_ITEM(d))!=image.get())
         throw std::invalid_argument("Drawable changed during resource setup");

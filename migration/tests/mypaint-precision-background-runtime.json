@@ -1,0 +1,71 @@
+{
+  "scope": "Bounded background setter review correction; byte finite RGB is clamped before float conversion, wide conversion commits temporary doubles only after validation",
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "e7ac2ab7781f9a278c1b4296424d353ef30758a79fa2ddddc5ae70fa342b3c2c",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "0ffb0f9071bc34bfdf9c4473da5e3279eadba4f3ae39ed99e74260aeb77a5666",
+    "app/paint/painter-mypaint-surface/native-pixels.hpp": "2b089246a097b55d1df0dd876b91d7f509c2d3f6eb8eca28ba9e2c4ad37f7b7b",
+    "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp": "1e02871cd3e40227d492432bea98b6c36d5369a2d3eb63d3e111b6d432266af2",
+    "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp": "c10d67a6bc00d21f433e8f69ea83b58ca7327e5e7572176aeb533e2e47f04884",
+    "app/paint/painter-mypaint-surface/tests/native-precision.cpp": "b362b6c1e9f508522d7344de94f69cbc57584e6684d5d8a64073d35deb2c9d4d",
+    "app/painter/object-ref.hpp": "46006b8f2bc6216e6486fa473fe10ffbc9311c3550825b82798b0858165f8dac",
+    "app/paint/painter-mypaint/surface.hpp": "7c6214b1dafee3eb3cc2643842c11e9b419eea02433d997f9903d64e12237595"
+  },
+  "source_snapshot": "migration/tests/mypaint-precision-background-sources.tar.gz",
+  "backend_sanitizers": [
+    "address",
+    "undefined",
+    "float-cast-overflow"
+  ],
+  "leak_detection": false,
+  "runs": {
+    "backend_normal": {
+      "exit_code": 0,
+      "groups": 8,
+      "log": "migration/tests/mypaint-precision-background-normal.log",
+      "log_sha256": "bbf50cb1d4117497a345fbc9779c080ae22b389bd35e9dd159868a556b5fb7a5",
+      "executable_sha256": "63f5f3405a5cf1710d372f161757b6b63b1e00457547459f1fb8847c604c2b71"
+    },
+    "backend_asan": {
+      "exit_code": 0,
+      "groups": 8,
+      "log": "migration/tests/mypaint-precision-background-sanitizers.log",
+      "log_sha256": "079503eac978e8280006fe107aca486a39fc2dec85f8afbe17c855af4345eeab",
+      "executable_sha256": "232afbc368315b17a51bbbe33beb8e17acd0844ef161d98d82642468c444d2b4"
+    },
+    "native_normal": {
+      "exit_code": 0,
+      "groups": 2,
+      "log": "migration/tests/mypaint-precision-background-native-normal.log",
+      "log_sha256": "4a6f12a0058813669b382cb4edbe0e2b5d186e981182f8db452c38daf51d898c",
+      "executable_sha256": "cf51f7de8dee2b1600b7ed3c5c21657139c5d034e94e11de394fb0068920e4ba",
+      "matrix_cells": 144
+    }
+  },
+  "prior_native_gtk_proof": "migration/tests/mypaint-precision-native-runtime.json",
+  "prior_native_gtk_scope": "Pre-review setter source retained in prior source archives; not relabelled as testing this setter change",
+  "source_snapshot_sha256": "3958b285729d7ae65a3599b22e3d06d07a90dcfec343e630859b5729c54a7dd7",
+  "backend_compile_command": "c++ -std=c++14 -g -O1 -fsanitize=address,undefined,float-cast-overflow -fno-omit-frame-pointer -Iapp app/paint/painter-mypaint-surface/tests/native-precision.cpp app/paint/painter-mypaint-surface/gegl-surface.cpp -o build-debian13/app/paint/painter-mypaint-surface/painter-mypaint-native-precision-asan -I/workspace/shared/gimp-build-deps/root/usr/include/gegl-0.4 -I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0 -I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6 -I/workspace/shared/gimp-build-deps/root/usr/include/libmount -I/workspace/shared/gimp-build-deps/root/usr/include/blkid -I/workspace/shared/gimp-build-deps/root/usr/include/gio-unix-2.0 -I/workspace/shared/gimp-build-deps/root/usr/include/json-glib-1.0 -I/workspace/shared/gimp-build-deps/root/usr/include/babl-0.1 -pthread -lgegl-0.4 -lgegl-npd-0.4 -Wl,--export-dynamic -lgmodule-2.0 -lglib-2.0 -ljson-glib-1.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lbabl-0.1 -llcms2 -llcms2_fast_float -llcms2_threaded -pthread -lm",
+  "backend_run_environment": {
+    "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "normal_build_commands": [
+    "ninja -C build-debian13 -j3 app/paint/painter-mypaint-surface/painter-mypaint-native-precision",
+    "ninja -C build-debian13 -j3 app/tests/painter-mypaint-precision"
+  ],
+  "native_run_environment": {
+    "GIMP_TESTING_ABS_TOP_SRCDIR": "/workspace/scratch/5b5281e79681/gimp-painter",
+    "GIMP_TESTING_ABS_TOP_BUILDDIR": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13",
+    "GIMP_TESTING_PLUGINDIRS": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common",
+    "UI_TEST": "yes"
+  },
+  "native_sanitizer_relink": {
+    "status": "failed_to_link",
+    "exit_code": 1,
+    "log": "migration/tests/mypaint-precision-background-native-build.log",
+    "log_sha256": "b7f2cf414f3cae2b9e4093227ff91028341f13b69f18a5f9f1ecdf4073a8eca7",
+    "command": "python3 migration/tests/refresh_mypaint_precision_surface.py build-debian13 --predecessor migration/tests/mypaint-precision-sanitizers-build.json --report migration/tests/mypaint-precision-background-native-build.json",
+    "reason": "Shared gimpfilterlayer object now references filter_native_vector; predecessor private Filter archive lacks the new symbol. No native sanitizer executable or pass is claimed for this setter delta. Prior native/GTK sanitizer source snapshots remain unchanged.",
+    "refresh_script_sha256": "9c316108e07cd9fe417cde7c026115c96095d55084c252fd41e4743286957a2d"
+  }
+}

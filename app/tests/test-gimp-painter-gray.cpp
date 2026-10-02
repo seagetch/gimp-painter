@@ -50,9 +50,9 @@ static void red_channel_and_gray_sampling()
 }
 static void unsupported_precision_policy()
 {
-  // This byte renderer refuses native precision/TRC conversion before painting.
+  // Native precision/TRC now has a separate double extension; no layer conversion.
   for(const char*name:{"Y u8","Y' u16","Y float","Y' float","Y' half","RGB u8","RGBA u8","R'G'B' u16","R'G'B'A u16","RGBA float","R'G'B'A float","R'G'B'A half"}){
-    auto*buffer=gegl_buffer_new(GEGL_RECTANGLE(0,0,4,4),babl_format(name));bool rejected=false;try{GeglSurface surface(buffer);}catch(const std::invalid_argument&){rejected=true;}g_assert_true(rejected);g_object_unref(buffer);
+    auto*buffer=gegl_buffer_new(GEGL_RECTANGLE(0,0,4,4),babl_format(name));GeglSurface surface(buffer);g_assert_true(gegl_buffer_get_format(buffer)==babl_format(name));g_object_unref(buffer);
   }
 }
 static void native_gray_nonincremental()

@@ -41,3 +41,12 @@ if not meson.is_cross_build()
   test('painter-gray-alpha-equations', painter_gray_equations,
     suite: 'painter', timeout: 30)
 endif
+
+# Native precision is a defined extension with independent scalar/ICC expectations.
+painter_native_precision = executable('painter-mypaint-native-precision',
+  'tests/native-precision.cpp', dependencies: [painter_mypaint_surface_dep, lcms],
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-native-precision', painter_native_precision,
+    suite: 'painter', timeout: 60)
+endif

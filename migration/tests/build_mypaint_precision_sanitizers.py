@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build focused MyPaint native GTK instrumentation; run on the native display.
+"""Build focused MyPaint native precision Session instrumentation.
 
 Hold /workspace/shared/gimp-painter-build.lock. Private archives leave production untouched.
 """
@@ -17,12 +17,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument("build", type=Path)
 parser.add_argument("--report", type=Path, required=True)
 args = parser.parse_args()
-target = "painter-mypaint-tool"
+target = "painter-mypaint-precision"
 build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
-output = build / "mypaint-tool-sanitizers"
+output = build / "mypaint-precision-sanitizers"
 output.mkdir(exist_ok=True)
-report = {"scope": "Native MyPaint GTK tool, generated options and single-slot session, reentrant lifecycle, core Tool/DrawTool/ColorTool/Display, extended paint/Surface and explicit generic-path refusal; remaining GIMP/dependencies uninstrumented",
+report = {"scope": "Native MyPaint precision Session matrix, atomic segments, cancellation and Undo/Redo, extended paint/Surface and linked native owners; remaining GIMP/dependencies uninstrumented",
           "sanitizers": ["address", "undefined", "float-cast-overflow"], "leak_detection": False, "instrumented_cpp_rtti": True,
           "sources": [], "commands": []}
 flags = ["-fsanitize=address,undefined,float-cast-overflow", "-fno-omit-frame-pointer", "-O1"]
@@ -34,7 +34,7 @@ wanted = {"app/paint/painter-mypaint-surface/gegl-surface.cpp",
           "app/paint/gimppaintcore.c", "app/core/gimpdrawable.c", "app/core/gimpbrush.c",
           "app/core/gimppattern.c", "app/core/gimpdata.c", "app/core/gimpbrushpipe.c",
           "app/core/gimpimage.c", "app/core/gimpitem.c", "app/core/gimpimage-undo.c", "app/core/gimpviewable.c",
-          "app/core/gimpobject.c", "app/core/gimpresource.c", "app/tests/test-painter-mypaint-tool.cpp",
+          "app/core/gimpobject.c", "app/core/gimpresource.c", "app/tests/test-painter-mypaint-precision.cpp",
           "app/tools/gimppaintermybrushtool.cpp", "app/tools/gimptool.c",
           "app/tools/gimpdrawtool.c", "app/tools/gimpcolortool.c", "app/display/gimpdisplay.c",
           "app/paint/gimppainterpaintgate.cpp", "app/core/gimptoolinfo.c", "app/core/gimpcontext.c", "app/core/gimppaintermybrush.cpp",
@@ -51,7 +51,7 @@ headers |= {"app/core/gimp.h", "app/config/gimpcoreconfig.h", "app/operations/op
             "app/paint/painter-mypaint/legacy-brush.hpp", "app/paint/painter-mypaint/engine.hpp",
             "app/paint/painter-mypaint/resource.hpp", "app/paint/painter-mypaint/surface.hpp",
             "app/paint/painter-mypaint-surface/gimp-resources.hpp", "app/paint/gimppaintcore.h", "app/paint/gimpbrushcore.h", "app/paint/gimppaintoptions.h", "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp"}
-report["scope"] += "; native Gray/Gray-alpha conversion, actual XCF Save/reload and Undo/Redo workflow"
+report["scope"] += "; all native precisions and RGB/Gray channel models with builtin/non-default profiles, atomic failure and callback cancellation"
 instrumented = set(wanted)
 rtti_only = bridge_rtti_sources(root, build) - instrumented
 wanted |= rtti_only
@@ -131,7 +131,7 @@ subprocess.run(link, cwd=build, check=True)
 changed=[name for name,digest in hashes.items() if hashlib.sha256((root/name).read_bytes()).hexdigest()!=digest]
 report.update({"sources_sha256":hashes,"changed_during_build":changed,
                "executable":str(exe),"executable_sha256":hashlib.sha256(exe.read_bytes()).hexdigest(),
-               "run_status":"Not run by builder; requires native GTK display"})
+               "run_status":"Not run by builder; run native Session matrix separately"})
 args.report.write_text(json.dumps(report,indent=2)+"\n")
 if changed:raise RuntimeError("Instrumented source changed during the build")
 print(exe)

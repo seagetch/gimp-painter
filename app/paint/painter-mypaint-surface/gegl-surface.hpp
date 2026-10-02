@@ -15,8 +15,8 @@ struct Texture {
   int width = 0, height = 0;
   std::vector<unsigned char> values; // exact first channel of old pattern bytes
 };
-/* First rendering adapter: exact legacy byte RGB/RGBA semantics on GeglBuffer.
- * Higher precision formats are refused explicitly until their own path exists.
+/* Exact historical nonlinear-byte rendering plus a native-TRC double extension.
+ * Native storage is retained; evaluator colors use drawable-space nonlinear RGB.
  * Shape transformation/resource selection is injected and separately tested. */
 class GeglSurface : public Surface
 {
@@ -33,7 +33,8 @@ public:
   void set_selection (GeglBuffer *selection, int drawable_offset_x, int drawable_offset_y);
   void set_non_incremental (bool value);
   void set_stroke_opacity (float value);
-  void set_background (float r, float g, float b);
+  void set_background (double r, double g, double b);
+  static const Babl* evaluation_format (GeglBuffer *target);
   void set_dirty_callback (std::function<void (const GeglRectangle&)> callback);
   const GeglRectangle& dirty () const;
   std::size_t bytes_read () const;

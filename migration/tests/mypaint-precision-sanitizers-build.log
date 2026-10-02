@@ -1,0 +1,25 @@
+In file included from [01m[K../app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../app/paint/painter-mypaint/legacy-brush.hpp:397:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  397 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../app/core/gimpimage.c:[m[K In function ‘[01m[Kgimp_image_get_xcf_version[m[K’:
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_ERASE[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+ 2864 |       [01;35m[Kswitch[m[K (gimp_layer_get_mode (layer))
+      |       [01;35m[K^~~~~~[m[K
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_REPLACE[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_ANTI_ERASE[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_SRC_IN[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_DST_IN[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_SRC_OUT[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_DST_OUT[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_NORMAL[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_MULTIPLY[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-mypaint-precision-asan

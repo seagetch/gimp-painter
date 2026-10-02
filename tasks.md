@@ -816,6 +816,7 @@
 | 21.018/native-gray-surface | [x] | 実旧1byte Gray Surfaceの描画・Undo/Redoを保持する | 21.018/native-rgb-surface, 04.011/sanitizer-rtti-scope | 48実旧scene/193record・3599558bytes完全一致、native4と各26source sanitizer合格。Gray-alpha/非累積の旧未定義経路は明示拒否し次の定義拡張へ分離。全app linkとSurface10/generic13/RGBA129/RGB385再合格 |
 | 21.018/defined-gray-alpha | [x] | 旧未定義のGray-alpha/非累積へnative2byteの安全な意味を与える | 21.018/native-gray-surface | 180scalar invariantと192paired native session/Undo/Redo、透明erase/lock/cancelが通常・26source focused sanitizer＋26 RTTI-only合格。旧193/129/385recordを独立再確認。旧oracle同等とは主張せずhighprecision/TRC/ICC・実GTKは別gate |
 | 21.018/gray-tool-save-roundtrip | [x] | 実GTK拡張MyPaintでGray4種の描画・XCF保存再読込を検証する | 21.018/defined-gray-alpha, 21.001/registered-tool | native14/37source focused sanitizer＋24 RTTI-only合格。Gray/Gray-alpha×累積/非累積のpress-motion・実XCF Save・native byte再読込・Undo/Redo一致。D65gray/sRGB TRCを実行し任意ICC/高精度/実tabletは未主張 |
+| 21.018/native-precision-trc-icc | [x] | native72formatとTRC/ICC境界へ既存MyPaint Surfaceを拡張する | 21.018/gray-tool-save-roundtrip, 21.002/native-pipe-release | native scalar codecでu32/doubleLSB保持、144profile cell・18precision実GTK/XCFを初期通常/38unit sanitizer＋32 RTTI-onlyで確認、旧4corpus不変。setter review後backend8通常/sanitizerとnative144通常再合格。post-review全native/GTK sanitizerのcoherent aggregateは別gate |
 | 21.019 | [ ] | 固定入力の筆跡比較を実行する | 21.018 | 形状採色・透明境界・非累積・opacity を個別比較 |
 | 21.020 | [ ] | 押印の遅延とコピー量を計測する | 21.019 | 一 dab ごとの画像全体コピーがない |
 

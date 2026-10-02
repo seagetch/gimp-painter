@@ -1,0 +1,91 @@
+ninja: Entering directory `build-debian13'
+[1/31] Generating git-version.h.in.1 with a custom command
+[2/31] Generating git-version.h.in.2 with a custom command
+[3/31] Generating git-version.h with a custom command
+[4/25] Compiling C++ object app/paint/painter-mypaint-surface/painter-mypaint-native-precision.p/tests_native-precision.cpp.o
+In file included from ../app/paint/painter-mypaint-surface/tests/native-precision.cpp:5:
+../app/paint/painter-mypaint-surface/native-pixels.hpp: In function ‘void GimpPainter::MyPaint::NativePixel::blend(double*, const double*, const double*, double, double, bool)’:
+../app/paint/painter-mypaint-surface/native-pixels.hpp:113:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  113 |   if(!t)return;source_alpha=unit(source_alpha);
+      |   ^~
+../app/paint/painter-mypaint-surface/native-pixels.hpp:113:16: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  113 |   if(!t)return;source_alpha=unit(source_alpha);
+      |                ^~~~~~~~~~~~
+../app/paint/painter-mypaint-surface/native-pixels.hpp: In function ‘void GimpPainter::MyPaint::NativePixel::lock(double*, const double*, double, bool)’:
+../app/paint/painter-mypaint-surface/native-pixels.hpp:120:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  120 |   if(!t)return;if(alpha){finite(pixel[3]);if(unit(pixel[3])==0)return;}
+      |   ^~
+../app/paint/painter-mypaint-surface/native-pixels.hpp:120:16: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  120 |   if(!t)return;if(alpha){finite(pixel[3]);if(unit(pixel[3])==0)return;}
+      |                ^~
+[5/25] Compiling C++ object app/paint/painter-mypaint-surface/painter-mypaint-surface-trace.p/tests_surface-trace.cpp.o
+[6/25] Compiling C++ object app/tests/painter-mypaint-session-trace.p/painter-mypaint-session-trace.cpp.o
+[7/25] Compiling C++ object app/tests/gimp-painter-session.p/test-gimp-painter-session.cpp.o
+[8/25] Compiling C++ object app/tests/gimp-painter-preview.p/test-gimp-painter-preview.cpp.o
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib-object.h:24,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/gioenums.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/giotypes.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/gio.h:28,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gdk/gdkapplaunchcontext.h:28,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gdk/gdk.h:32,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gtk/gtk.h:30,
+                 from ../app/tests/test-gimp-painter-preview.cpp:3:
+../app/tests/test-gimp-painter-preview.cpp:114:34: warning: no previous declaration for ‘GType preview_custom_brush_get_type()’ [-Wmissing-declarations]
+  114 | G_DEFINE_TYPE(PreviewCustomBrush,preview_custom_brush,GIMP_TYPE_BRUSH)
+      |                                  ^~~~~~~~~~~~~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:2305:1: note: in definition of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE’
+ 2305 | type_name##_get_type (void) \
+      | ^~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:2053:61: note: in expansion of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:1834:61: note: in expansion of macro ‘G_DEFINE_TYPE_EXTENDED’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~
+../app/tests/test-gimp-painter-preview.cpp:114:1: note: in expansion of macro ‘G_DEFINE_TYPE’
+  114 | G_DEFINE_TYPE(PreviewCustomBrush,preview_custom_brush,GIMP_TYPE_BRUSH)
+      | ^~~~~~~~~~~~~
+[9/25] Compiling C++ object app/tests/gimp-painter-hover.p/test-gimp-painter-hover.cpp.o
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib-object.h:24,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/gioenums.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/giotypes.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/gio.h:28,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gdk/gdkapplaunchcontext.h:28,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gdk/gdk.h:32,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gtk/gtk.h:30,
+                 from ../app/tests/test-gimp-painter-hover.cpp:3:
+../app/tests/test-gimp-painter-hover.cpp:138:26: warning: no previous declaration for ‘GType hover_brush_get_type()’ [-Wmissing-declarations]
+  138 | G_DEFINE_TYPE(HoverBrush,hover_brush,GIMP_TYPE_BRUSH)
+      |                          ^~~~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:2305:1: note: in definition of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE’
+ 2305 | type_name##_get_type (void) \
+      | ^~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:2053:61: note: in expansion of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:1834:61: note: in expansion of macro ‘G_DEFINE_TYPE_EXTENDED’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~
+../app/tests/test-gimp-painter-hover.cpp:138:1: note: in expansion of macro ‘G_DEFINE_TYPE’
+  138 | G_DEFINE_TYPE(HoverBrush,hover_brush,GIMP_TYPE_BRUSH)
+      | ^~~~~~~~~~~~~
+[10/25] Compiling C++ object app/tests/painter-mypaint-rgb-session-trace.p/painter-mypaint-rgb-session-trace.cpp.o
+[11/25] Compiling C++ object app/tests/painter-mypaint-gray-session-trace.p/painter-mypaint-gray-session-trace.cpp.o
+[12/25] Compiling C++ object app/tests/gimp-painter-gray-extension.p/test-gimp-painter-gray-extension.cpp.o
+[13/25] Linking target app/paint/painter-mypaint-surface/painter-mypaint-surface-trace
+[14/25] Linking target app/paint/painter-mypaint-surface/painter-mypaint-native-precision
+[15/25] Compiling C++ object app/tests/gimp-painter-batch.p/test-gimp-painter-batch.cpp.o
+[16/25] Compiling C++ object app/tests/painter-mypaint-pipe-trace.p/painter-mypaint-pipe-trace.cpp.o
+[17/25] Linking target app/tests/painter-mypaint-session-trace
+[18/25] Linking target app/tests/gimp-painter-session
+[19/25] Linking target app/tests/gimp-painter-hover
+[20/25] Linking target app/tests/gimp-painter-preview
+[21/25] Linking target app/tests/painter-mypaint-rgb-session-trace
+[22/25] Linking target app/tests/gimp-painter-batch
+[23/25] Linking target app/tests/painter-mypaint-gray-session-trace
+[24/25] Linking target app/tests/gimp-painter-gray-extension
+[25/25] Linking target app/tests/painter-mypaint-pipe-trace

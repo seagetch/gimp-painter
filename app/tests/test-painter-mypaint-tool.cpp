@@ -7,6 +7,7 @@
 extern "C" {
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
+#include "libgimpcolor/gimpcolor.h"
 #include "libgimpwidgets/gimpwidgets.h"
 #include "core/core-types.h"
 #include "display/display-types.h"
@@ -23,6 +24,9 @@ extern "C" {
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpimage-convert-type.h"
+#include "core/gimpimage-convert-precision.h"
+#include "core/gimpimage-color-profile.h"
+#include "gegl/gimp-babl.h"
 #include "core/gimplayer.h"
 #include "pdb/gimppdb.h"
 #include "plug-in/gimppluginprocedure.h"
@@ -181,7 +185,11 @@ static void outline_and_projection()
   const gint64 deadline=g_get_monotonic_time()+G_TIME_SPAN_SECOND;
   while(draw->last_draw_time==last_draw&&g_get_monotonic_time()<deadline)g_main_context_iteration(nullptr,FALSE);
   g_assert_cmpuint(draw->last_draw_time,>,last_draw);auto*after=gimp_canvas_item_get_extents(draw->item);g_assert_nonnull(after);g_assert_false(cairo_region_equal(before,after));cairo_region_destroy(before);cairo_region_destroy(after);
-  guchar color[4]={};g_assert_true(gimp_pickable_get_pixel_at(GIMP_PICKABLE(gimp_image_get_projection(s.image)),50,32,babl_format("R'G'B'A u8"),color));g_assert_cmpint(color[0],>,0);s.release();
+  guchar native[4]={};g_assert_true(gimp_pickable_get_pixel_at(GIMP_PICKABLE(s.drawable),50,32,babl_format("R'G'B'A u8"),native));g_assert_cmpint(native[0],>,0);
+  // Projection rendering is scheduled separately from DrawTool's outline timer.
+  // The Pickable API explicitly flushes pending projection invalidations.
+  auto*projection=GIMP_PICKABLE(gimp_image_get_projection(s.image));gimp_pickable_flush(projection);
+  guchar color[4]={};g_assert_true(gimp_pickable_get_pixel_at(projection,50,32,babl_format("R'G'B'A u8"),color));g_assert_cmpint(color[0],>,0);s.release();
 }
 static void drop_on_preview_freeze(GObject*object,GParamSpec*,gpointer data)
 {
@@ -238,6 +246,40 @@ static void gray_tool_save_roundtrip()
   }
 }
 
+static void precision_tool_save_roundtrip()
+{
+  const GimpPrecision precisions[]={GIMP_PRECISION_U8_LINEAR,GIMP_PRECISION_U8_NON_LINEAR,GIMP_PRECISION_U8_PERCEPTUAL,
+    GIMP_PRECISION_U16_LINEAR,GIMP_PRECISION_U16_NON_LINEAR,GIMP_PRECISION_U16_PERCEPTUAL,
+    GIMP_PRECISION_U32_LINEAR,GIMP_PRECISION_U32_NON_LINEAR,GIMP_PRECISION_U32_PERCEPTUAL,
+    GIMP_PRECISION_HALF_LINEAR,GIMP_PRECISION_HALF_NON_LINEAR,GIMP_PRECISION_HALF_PERCEPTUAL,
+    GIMP_PRECISION_FLOAT_LINEAR,GIMP_PRECISION_FLOAT_NON_LINEAR,GIMP_PRECISION_FLOAT_PERCEPTUAL,
+    GIMP_PRECISION_DOUBLE_LINEAR,GIMP_PRECISION_DOUBLE_NON_LINEAR,GIMP_PRECISION_DOUBLE_PERCEPTUAL};
+  for(unsigned index=0;index<G_N_ELEMENTS(precisions);++index){
+    Scene s;GError*error=nullptr;const bool gray=index%2,alpha=(index/2)%2,floating=(index/3)%2,custom=index%3;
+    if(gray){g_assert_true(gimp_image_convert_type(s.image,GIMP_GRAY,nullptr,nullptr,&error));g_assert_no_error(error);}
+    if(!alpha)gimp_layer_remove_alpha(GIMP_LAYER(s.drawable),GIMP_CONTEXT(s.options));
+    if(gimp_image_get_precision(s.image)!=precisions[index])gimp_image_convert_precision(s.image,precisions[index],GEGL_DITHER_NONE,GEGL_DITHER_NONE,GEGL_DITHER_NONE,nullptr);
+    if(custom){auto*profile=gray?gimp_color_profile_new_d50_gray_lab_trc():gimp_color_profile_new_rgb_adobe();g_assert_true(gimp_image_assign_color_profile(s.image,profile,nullptr,&error));g_assert_no_error(error);g_object_unref(profile);}
+    auto*profile=gimp_image_get_color_profile(s.image);if(!profile)profile=gimp_image_get_builtin_color_profile(s.image);g_object_ref(profile);
+    auto*buffer=gimp_drawable_get_buffer(s.drawable);const auto*format=gegl_buffer_get_format(buffer);g_assert_cmpint(gimp_babl_format_get_precision(format),==,precisions[index]);
+    auto*fill=gegl_color_new("rgba(0.2,0.3,0.4,0.6)");gegl_buffer_set_color(buffer,nullptr,fill);g_object_unref(fill);
+    const auto initial=native_pixels(s.drawable);gimp_drawable_update(s.drawable,0,0,128,128);gimp_image_undo_free(s.image);
+    g_object_set(s.options,"non-incremental",floating,"stroke-opacity",.37,nullptr);
+    auto*shell=gimp_display_get_shell(s.display);shell->display->config->use_event_history=FALSE;gtk_widget_grab_focus(shell->canvas);gimp_display_shell_scale(shell,GIMP_ZOOM_TO,1,GIMP_ZOOM_FOCUS_IMAGE_CENTER);
+    gimp_test_run_mainloop_until_idle();send_button(s,GDK_BUTTON_PRESS,0,32,32);g_assert_true(gimp_tool_control_is_active(s.tool->control));s.coords.x=52;s.coords.y=32;s.coords.pressure=.85;s.motion(true,75);
+    g_assert_true(native_pixels(s.drawable)!=initial);g_assert_true(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));
+    auto*procedure=gimp_pdb_lookup_procedure(gimp->pdb,"gimp-xcf-save");g_assert_true(GIMP_IS_PLUG_IN_PROCEDURE(procedure));GFileIOStream*io=nullptr;auto*file=g_file_new_tmp("painter-precision-tool-XXXXXX.xcf",&io,&error);g_assert_no_error(error);g_assert_nonnull(file);g_assert_true(g_io_stream_close(G_IO_STREAM(io),nullptr,&error));g_assert_no_error(error);g_object_unref(io);
+    s.tool->last_pointer_time-=100;
+    g_assert_cmpint(file_save(gimp,s.image,nullptr,file,GIMP_PLUG_IN_PROCEDURE(procedure),GIMP_RUN_NONINTERACTIVE,TRUE,FALSE,FALSE,&error),==,GIMP_PDB_SUCCESS);g_assert_no_error(error);
+    const auto painted=native_pixels(s.drawable);g_assert_true(painted!=initial);g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));g_assert_cmpint(s.depth(),==,1);
+    send_button(s,GDK_BUTTON_RELEASE,GDK_BUTTON1_MASK,52,32);
+    auto*stream=g_file_read(file,nullptr,&error);g_assert_no_error(error);auto*loaded=xcf_load_stream(gimp,G_INPUT_STREAM(stream),file,nullptr,&error);g_assert_no_error(error);g_assert_nonnull(loaded);g_object_unref(stream);
+    g_assert_cmpint(gimp_image_get_precision(loaded),==,precisions[index]);g_assert_cmpint(gimp_image_get_base_type(loaded),==,gray?GIMP_GRAY:GIMP_RGB);auto*layers=gimp_image_get_layer_list(loaded);g_assert_nonnull(layers);auto*d=GIMP_DRAWABLE(layers->data);auto*loaded_format=gegl_buffer_get_format(gimp_drawable_get_buffer(d));g_assert_cmpstr(babl_format_get_encoding(loaded_format),==,babl_format_get_encoding(format));g_assert_true(native_pixels(d)==painted);auto*loaded_profile=gimp_image_get_color_profile(loaded);if(!loaded_profile)loaded_profile=gimp_image_get_builtin_color_profile(loaded);g_assert_true(gimp_color_profile_is_equal(profile,loaded_profile));g_list_free(layers);g_object_unref(loaded);
+    g_assert_true(gimp_image_undo(s.image));g_assert_true(native_pixels(s.drawable)==initial);g_assert_true(gimp_image_redo(s.image));g_assert_true(native_pixels(s.drawable)==painted);
+    g_test_message("GTK/XCF precision=%d gray=%d alpha=%d nonincremental=%d custom-profile=%d format=%s",precisions[index],gray,alpha,floating,custom,babl_get_name(format));g_assert_true(g_file_delete(file,nullptr,&error));g_assert_no_error(error);g_object_unref(file);g_object_unref(profile);
+  }
+}
+
 static void pipe_release_save_roundtrip()
 {
   Scene s;GError*error=nullptr;
@@ -284,5 +326,6 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-tool/last-ref-without-halt",last_ref_without_halt_rolls_back);
   g_test_add_func("/painter-tool/gray-native-save-roundtrip",gray_tool_save_roundtrip);
   g_test_add_func("/painter-tool/pipe-release-save-roundtrip",pipe_release_save_roundtrip);
+  g_test_add_func("/painter-tool/precision-native-save-roundtrip",precision_tool_save_roundtrip);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
 }
