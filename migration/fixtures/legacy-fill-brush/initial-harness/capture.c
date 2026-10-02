@@ -40,7 +40,7 @@ int main(void){
   GimpBrush*brush=g_object_new(GIMP_TYPE_BRUSH,"name","fill-mask",NULL);guchar zero=0;brush->mask=temp_buf_new(23,23,1,0,0,&zero);guchar*bm=temp_buf_get_data(brush->mask);for(int y=0;y<23;++y)for(int x=0;x<23;++x){int dx=x-11,dy=y-11;bm[y*23+x]=dx*dx+dy*dy<90?255:0;}
   gimp_context_set_brush(GIMP_CONTEXT(options),brush);GimpDynamics*dyn=g_object_new(GIMP_TYPE_DYNAMICS,"name","fill-no-dynamics",NULL);gimp_context_set_dynamics(GIMP_CONTEXT(options),dyn);
   GimpPaintCore*core=g_object_new(type,"undo-desc","fill oracle",NULL);GimpCoords c=GIMP_COORDS_DEFAULT_VALUES;c.x=40;c.y=35;c.pressure=1;GError*error=NULL;
-  gimp_image_undo_free(image);g_assert(gimp_paint_core_start(core,d,options,&c,&error));g_assert_no_error(error);gimp_paint_core_paint(core,d,options,GIMP_PAINT_STATE_INIT,0);gimp_paint_core_paint(core,d,options,GIMP_PAINT_STATE_MOTION,0);gimp_paint_core_set_last_coords(core,&c);
+  gimp_image_undo_free(image);g_assert(gimp_paint_core_start(core,d,options,&c,&error));g_assert_no_error(error);gimp_paint_core_paint(core,d,options,GIMP_PAINT_STATE_INIT,0);gimp_paint_core_paint(core,d,options,GIMP_PAINT_STATE_MOTION,0);
   for(int n=1;n<=5;++n){c.x+=2;c.y+=.5;gimp_paint_core_interpolate(core,d,options,&c,n*20);}
   gimp_paint_core_paint(core,d,options,GIMP_PAINT_STATE_FINISH,120);gimp_paint_core_finish(core,d,TRUE);dump(id,"finish",d);g_assert(gimp_image_undo(image));dump(id,"undo",d);g_assert(gimp_image_redo(image));dump(id,"redo",d);
   gimp_paint_core_cleanup(core);g_object_unref(core);g_object_unref(dyn);g_object_unref(brush);g_object_unref(options);g_object_unref(image);

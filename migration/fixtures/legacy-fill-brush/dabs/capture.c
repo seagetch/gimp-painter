@@ -22,16 +22,23 @@
 #include "core/gimpchannel-select.h"
 #include "paint/paint-types.h"
 #include "paint/gimppaintcore.h"
+#include "paint/gimpbrushcore.h"
 #include "paint/gimppaintoptions.h"
 #include "tests.h"
 void gimp_bucket_fill_brush_tool_register (gpointer unused, gpointer gimp);
 #define WIDTH 90
 #define HEIGHT 70
 static void dump(int id,const char*phase,GimpDrawable*d){guchar p[WIDTH*HEIGHT*4];tile_manager_read_pixel_data(gimp_drawable_get_tiles(d),0,0,WIDTH-1,HEIGHT-1,p,WIDTH*4);printf("BRUSH %d %s ",id,phase);for(unsigned i=0;i<sizeof p;++i)printf("%02x",p[i]);puts("");}
+static void (*original_paint)(GimpPaintCore*,GimpDrawable*,GimpPaintOptions*,const GimpCoords*,GimpPaintState,guint32);
+static int current_case;
+static void observe_paint(GimpPaintCore*c,GimpDrawable*d,GimpPaintOptions*o,const GimpCoords*xy,GimpPaintState state,guint32 time){
+ if(state==GIMP_PAINT_STATE_MOTION)printf("DAB %d %.17g %.17g %.17g %.17g\n",current_case,xy->x,xy->y,GIMP_BRUSH_CORE(c)->spacing,GIMP_BRUSH_CORE(c)->scale);
+ original_paint(c,d,o,xy,state,time);
+}
 int main(void){
  Gimp*gimp=gimp_init_for_testing();gimp_bucket_fill_brush_tool_register(NULL,gimp);
- GType type=g_type_from_name("GimpBucketFillBrush"),options_type=g_type_from_name("GimpBucketFillBrushOptions");g_assert(type);g_assert(options_type);
- for(int id=0;id<12;++id){
+ GType type=g_type_from_name("GimpBucketFillBrush"),options_type=g_type_from_name("GimpBucketFillBrushOptions");g_assert(type);g_assert(options_type);GimpPaintCoreClass*klass=g_type_class_ref(type);original_paint=klass->paint;klass->paint=observe_paint;
+ for(int id=0;id<12;++id){current_case=id;
   GimpImage*image=gimp_image_new(gimp,100,80,GIMP_RGB);GimpLayer*layer=gimp_layer_new(image,WIDTH,HEIGHT,GIMP_RGBA_IMAGE,"fill-oracle",1,GIMP_NORMAL_MODE);gimp_image_add_layer(image,layer,NULL,0,FALSE);gimp_item_set_offset(GIMP_ITEM(layer),3,5);GimpDrawable*d=GIMP_DRAWABLE(layer);
   guchar p[WIDTH*HEIGHT*4];for(int y=0;y<HEIGHT;++y)for(int x=0;x<WIDTH;++x){int i=(y*WIDTH+x)*4;guchar v=(x==47&&y>4&&y<65)?200:70;p[i]=v;p[i+1]=v+15;p[i+2]=v+30;p[i+3]=255;}tile_manager_write_pixel_data(gimp_drawable_get_tiles(d),0,0,WIDTH-1,HEIGHT-1,p,WIDTH*4);
   if(id/6)gimp_channel_select_rectangle(gimp_image_get_mask(image),40,0,60,80,GIMP_CHANNEL_OP_REPLACE,FALSE,0,0,FALSE);
