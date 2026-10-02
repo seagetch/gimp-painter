@@ -13,6 +13,7 @@ libapppainter = static_library('apppainter',
   'binding-store.cpp',
   'filter-scheduler.cpp',
   'filter-edge.cpp',
+  'filter-gauss.cpp',
   dependencies: [gobject, painter_threads],
   include_directories: painter_include,
   cpp_args: painter_cpp_args,
@@ -45,14 +46,20 @@ test('painter-foundation', painter_foundation_test,
 )
 
 # The feature scheduler and exact legacy-edge executor own no GIMP objects.
-foreach feature : ['filter-scheduler', 'filter-edge']
+foreach feature : ['filter-scheduler', 'filter-edge', 'filter-gauss']
   feature_test = executable('painter-' + feature,
     'tests/test-' + feature + '.cpp',
     dependencies: [painter_dep, painter_threads],
     cpp_args: painter_cpp_args,
     override_options: ['cpp_std=c++14'],
   )
+  feature_args = []
+  if feature == 'filter-edge'
+    feature_args = [meson.project_source_root() / 'migration/fixtures/legacy-edge/fixtures.tsv']
+  elif feature == 'filter-gauss'
+    feature_args = [meson.project_source_root() / 'migration/fixtures/legacy-gauss/fixtures.tsv']
+  endif
   test('painter-' + feature, feature_test,
-    args: feature == 'filter-edge' ? [meson.project_source_root() / 'migration/fixtures/legacy-edge/fixtures.tsv'] : [],
+    args: feature_args,
     suite: 'painter', timeout: 60)
 endforeach

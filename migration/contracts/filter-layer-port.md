@@ -104,6 +104,13 @@ semantics. It supports all six algorithms, all three border modes, five-argument
 Sobel default and six-argument form. It preserves the old minimum amount clamp,
 integer truncation, channel arithmetic and alpha-zero hidden RGB behavior.
 
+`filter-gauss.{hpp,cpp}` ports canonical `plug-in-gauss` with both IIR and
+integer RLE methods, the old radius-to-sigma conversion, per-pass alpha rounding,
+small-radius RLE fallback and the RLE endpoint asymmetry. Its 104 genuine PDB
+captures cover the bundled test2 preset's 25/25/method-0 call. The actual
+FilterLayer integration additionally compares both methods byte-for-byte on
+an opaque captured input. Alias procedure names are not yet mapped.
+
 `migration/fixtures/legacy-edge/` contains 76 genuine old-PDB input/output cases,
 all compared byte-for-byte by `painter-filter-edge`. See its README and hashed
 capture report for the exact sources, executable and tested parameter matrix.
@@ -117,7 +124,7 @@ prove the entire GIMP 3 lower-stack projection equals the old projection.
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 20 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 21 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release
@@ -142,10 +149,10 @@ images and sustained painting still need their own workloads and thresholds.
 
 ## Remaining work and non-claims
 
-- `plug-in-gauss` is also present in the old `test2.json` preset. Its exact
-  executor/fixture port is being implemented separately; do not infer support
-  until its integration and parity tests land. Other legacy PDB procedures still
-  retain their definitions but report unsupported execution
+- The two canonical procedure names in bundled filter presets (`plug-in-edge`
+  and `plug-in-gauss`) have explicit compatibility executors. Other legacy PDB
+  names, including Gaussian aliases, retain definitions but report unsupported
+  execution. This is not arbitrary legacy PDB compatibility
 - A complete mapping inventory beyond bundled presets, plug-in process adapter,
   crash handling and unresponsive external-procedure isolation are outstanding
 - The old reader's image-ID/GValue-pointer crash is a negative fixture; safely

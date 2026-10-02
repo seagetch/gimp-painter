@@ -25,6 +25,7 @@ extern "C" {
 #include "painter/connection.hpp"
 #include "painter/filter-scheduler.hpp"
 #include "painter/filter-edge.hpp"
+#include "painter/filter-gauss.hpp"
 #include "painter/gimp-painter-binding.h"
 #include "painter/source.hpp"
 #include <algorithm>
@@ -221,6 +222,29 @@ struct FilterImpl
                                                             std::atomic<bool>& cancel,
                                                             FilterScheduler::Bytes& output) {
                   return filter_edge (input, width, height, options, cancel, output);
+                };
+              }
+          }
+      }
+    else if (procedure == "plug-in-gauss" && args && args->size () == 6)
+      {
+        const GValue *horizontal = args->at (3), *vertical = args->at (4), *method = args->at (5);
+        if ((G_VALUE_HOLDS_DOUBLE (horizontal) || G_VALUE_HOLDS_FLOAT (horizontal)) &&
+            (G_VALUE_HOLDS_DOUBLE (vertical) || G_VALUE_HOLDS_FLOAT (vertical)) && G_VALUE_HOLDS_INT (method))
+          {
+            GaussOptions options {
+              G_VALUE_HOLDS_DOUBLE (horizontal) ? g_value_get_double (horizontal) : g_value_get_float (horizontal),
+              G_VALUE_HOLDS_DOUBLE (vertical) ? g_value_get_double (vertical) : g_value_get_float (vertical),
+              g_value_get_int (method)
+            };
+            if (std::isfinite (options.horizontal) && std::isfinite (options.vertical) &&
+                (options.horizontal > 0 || options.vertical > 0) && options.method >= 0 && options.method <= 1)
+              {
+                auto width = request.width, height = request.height;
+                request.process = [width, height, options] (const FilterScheduler::Bytes& input,
+                                                            std::atomic<bool>& cancel,
+                                                            FilterScheduler::Bytes& output) {
+                  return filter_gauss (input, width, height, options, cancel, output);
                 };
               }
           }

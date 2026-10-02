@@ -1,5 +1,5 @@
 {
-  "scope": "FilterLayer, group duplication, C/C++ test adapters, and shared BindingStore; remaining GIMP/dependencies uninstrumented",
+  "scope": "FilterLayer, argument/Undo state, group duplication, edge/Gauss executors, scheduler, C/C++ tests, and shared BindingStore; remaining GIMP/dependencies uninstrumented",
   "sanitizers": [
     "address",
     "undefined"
@@ -12,6 +12,7 @@
     "app/painter/binding-store.cpp",
     "app/painter/filter-scheduler.cpp",
     "app/painter/filter-edge.cpp",
+    "app/painter/filter-gauss.cpp",
     "app/core/gimpfilterlayer.cpp",
     "app/core/gimpgrouplayer.c",
     "app/tests/test-gimp-filter-layer.c",
@@ -223,6 +224,48 @@
       "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-sanitizers/filter-edge.cpp.o",
       "-c",
       "../app/painter/filter-edge.cpp",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-O1",
+      "-frtti"
+    ],
+    [
+      "c++",
+      "-Iapp/painter/libapppainter.a.p",
+      "-Iapp/painter",
+      "-I../app/painter",
+      "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+      "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+      "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+      "-fvisibility=hidden",
+      "-fdiagnostics-color=always",
+      "-D_GLIBCXX_ASSERTIONS=1",
+      "-D_FILE_OFFSET_BITS=64",
+      "-Wall",
+      "-Winvalid-pch",
+      "-std=c++14",
+      "-O2",
+      "-g",
+      "-fdiagnostics-show-option",
+      "-fno-common",
+      "-Wformat",
+      "-Wformat-security",
+      "-Winit-self",
+      "-Wlogical-op",
+      "-Wmissing-declarations",
+      "-Wmissing-format-attribute",
+      "-Wpointer-arith",
+      "-Wreturn-type",
+      "-Wtype-limits",
+      "-DHAVE_CONFIG_H",
+      "-fPIC",
+      "-pthread",
+      "-fexceptions",
+      "-fno-rtti",
+      "-o",
+      "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-sanitizers/filter-gauss.cpp.o",
+      "-c",
+      "../app/painter/filter-gauss.cpp",
       "-fsanitize=address,undefined",
       "-fno-omit-frame-pointer",
       "-O1",
@@ -758,7 +801,8 @@
       "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-sanitizers/gimp-painter-binding.cpp.o",
       "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-sanitizers/binding-store.cpp.o",
       "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-sanitizers/filter-scheduler.cpp.o",
-      "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-sanitizers/filter-edge.cpp.o"
+      "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-sanitizers/filter-edge.cpp.o",
+      "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-sanitizers/filter-gauss.cpp.o"
     ],
     [
       "c++",
@@ -860,6 +904,6 @@
     ]
   ],
   "exit_code": 0,
-  "stdout": "TAP version 14\n# random seed: R02Sffa46d1840e1e12daaf726bdea05978d\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n1..20\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/duplicate_failure_releases_partial\nok 2 /gimp-filter-layer/definition_undo_redo\n# slow test /gimp-filter-layer/definition_undo_redo executed in 0.77 secs\nok 3 /gimp-filter-layer/hidden_filter_and_offset\nok 4 /gimp-filter-layer/cpp_header_layout\nok 5 /gimp-filter-layer/clone_filter_dependency_cycle\n# 2048x1536 evaluation wall=3250562us; largest main-context quantum=3291us; 2ms heartbeat=1557\nok 6 /gimp-filter-layer/main_context_remains_responsive\n# slow test /gimp-filter-layer/main_context_remains_responsive executed in 3.25 secs\nok 7 /gimp-filter-layer/object_arguments_do_not_cycle\nok 8 /gimp-filter-layer/expired_object_records_and_reassignment\nok 9 /gimp-filter-layer/object_array_arguments_do_not_dangle\nok 10 /gimp-filter-layer/removal_and_undo\nok 11 /gimp-filter-layer/lower_group_failure_and_recovery\nok 12 /gimp-filter-layer/independent_type_and_edge\nok 13 /gimp-filter-layer/automatic_updates_and_self_exclusion\nok 14 /gimp-filter-layer/saved_definition_is_separate\nok 15 /gimp-filter-layer/loaded_cache\nok 16 /gimp-filter-layer/dependency_order\n# slow test /gimp-filter-layer/dependency_order executed in 1.03 secs\nok 17 /gimp-filter-layer/group_scope\nok 18 /gimp-filter-layer/completed_buffer_only\n# slow test /gimp-filter-layer/completed_buffer_only executed in 0.54 secs\nok 19 /gimp-filter-layer/close_during_preparation\nok 20 /gimp-filter-layer/duplicate_keeps_definition\n# End of gimp-filter-layer tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+  "stdout": "TAP version 14\n# random seed: R02S0f9e7483d918d70e6d037e39cc376fa9\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n1..21\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/gaussian_legacy_fixture\nok 2 /gimp-filter-layer/duplicate_failure_releases_partial\nok 3 /gimp-filter-layer/definition_undo_redo\n# slow test /gimp-filter-layer/definition_undo_redo executed in 0.74 secs\nok 4 /gimp-filter-layer/hidden_filter_and_offset\nok 5 /gimp-filter-layer/cpp_header_layout\nok 6 /gimp-filter-layer/clone_filter_dependency_cycle\n# 2048x1536 evaluation wall=3347344us; largest main-context quantum=5249us; 2ms heartbeat=1581\nok 7 /gimp-filter-layer/main_context_remains_responsive\n# slow test /gimp-filter-layer/main_context_remains_responsive executed in 3.35 secs\nok 8 /gimp-filter-layer/object_arguments_do_not_cycle\nok 9 /gimp-filter-layer/expired_object_records_and_reassignment\nok 10 /gimp-filter-layer/object_array_arguments_do_not_dangle\nok 11 /gimp-filter-layer/removal_and_undo\nok 12 /gimp-filter-layer/lower_group_failure_and_recovery\nok 13 /gimp-filter-layer/independent_type_and_edge\nok 14 /gimp-filter-layer/automatic_updates_and_self_exclusion\nok 15 /gimp-filter-layer/saved_definition_is_separate\nok 16 /gimp-filter-layer/loaded_cache\nok 17 /gimp-filter-layer/dependency_order\n# slow test /gimp-filter-layer/dependency_order executed in 0.95 secs\nok 18 /gimp-filter-layer/group_scope\nok 19 /gimp-filter-layer/completed_buffer_only\n# slow test /gimp-filter-layer/completed_buffer_only executed in 0.55 secs\nok 20 /gimp-filter-layer/close_during_preparation\nok 21 /gimp-filter-layer/duplicate_keeps_definition\n# End of gimp-filter-layer tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
   "stderr": "Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/gradient-map.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/film.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/align-layers.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/animation-optimize.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/animation-play.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/busy-dialog.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/border-average.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/checkerboard.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/cml-explorer.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/colormap-remap.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/compose.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/crop-zealous.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/contrast-retinex.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/curve-bend.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/decompose.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/depth-merge.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/despeckle.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/destripe.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-cel.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-compressor.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-csource.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-dicom.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-farbfeld.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gif-export.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gbr.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gegl.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gih.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gif-load.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-glob.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-html-table.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-header.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pat.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pcx.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pdf-load.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pix.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pnm.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-png.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-psp.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-sunras.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-raw-data.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-tga.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-svg.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-xbm.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-wbmp.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/grid.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-xwd.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/guillotine.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/nl-filter.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/hot.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/jigsaw.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/plugin-browser.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/procedure-browser.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/qbist.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/sample-colorize.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/smooth-palette.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/sparkle.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/tile-small.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/sphere-designer.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/tile.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/unit-editor.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/van-gogh-lic.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/warp.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/wavelet-decompose.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/web-browser.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-desktop-link.dummy' in plug-in directory.\nSkipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/mail.dummy' in plug-in directory.\nGIMP-Error: Failed to save data:\n\nYou have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.\n\n"
 }

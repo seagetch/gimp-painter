@@ -471,6 +471,40 @@ static void duplicate_failure_releases_partial (void)
   g_object_unref (image);
 }
 
+
+static void gaussian_legacy_fixture (void)
+{
+  GimpImage *image = image_new (9,8);
+  GimpLayer *source = source_new (image,NULL,9,8);
+  GimpFilterLayer *filter = filter_new (image,NULL,9,8);
+  gchar *path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),
+                                 "migration/fixtures/legacy-gauss/input-opaque.rgba",NULL);
+  gchar *input = NULL, *expected = NULL;
+  gsize input_size, expected_size;
+  guchar result[9*8*4];
+  GimpValueArray *args;
+  g_assert_true (g_file_get_contents (path,&input,&input_size,NULL)); g_free (path);
+  g_assert_cmpuint (input_size, ==, sizeof result);
+  gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)),GEGL_RECTANGLE (0,0,9,8),0,
+                  babl_format ("R'G'B'A u8"),input,GEGL_AUTO_ROWSTRIDE); g_free (input);
+  gimp_drawable_update (GIMP_DRAWABLE (source),0,0,9,8);
+  for (gint method = 0; method < 2; ++method)
+    {
+      args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,
+                                             G_TYPE_DOUBLE,25.0,G_TYPE_DOUBLE,25.0,G_TYPE_INT,method,G_TYPE_NONE);
+      g_assert_true (gimp_filter_layer_set_definition (filter,"plug-in-gauss",NULL,args,NULL));
+      gimp_value_array_unref (args); settle (filter);
+      path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration/fixtures/legacy-gauss",
+                               method ? "gauss-opaque-h25-v25-m1.rgba" : "gauss-opaque-h25-v25-m0.rgba",NULL);
+      g_assert_true (g_file_get_contents (path,&expected,&expected_size,NULL)); g_free (path);
+      gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)),GEGL_RECTANGLE (0,0,9,8),1.0,
+                      babl_format ("R'G'B'A u8"),result,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      g_assert_cmpmem (result,sizeof result,expected,expected_size); g_free (expected);
+    }
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 2);
+  g_object_unref (image);
+}
+
 int main (int argc, char **argv)
 {
   int result;
@@ -478,7 +512,7 @@ int main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
-  ADD (duplicate_failure_releases_partial); ADD (definition_undo_redo); ADD (hidden_filter_and_offset); ADD (cpp_header_layout); ADD (clone_filter_dependency_cycle); ADD (main_context_remains_responsive);
+  ADD (gaussian_legacy_fixture); ADD (duplicate_failure_releases_partial); ADD (definition_undo_redo); ADD (hidden_filter_and_offset); ADD (cpp_header_layout); ADD (clone_filter_dependency_cycle); ADD (main_context_remains_responsive);
   ADD (object_arguments_do_not_cycle); ADD (expired_object_records_and_reassignment);
   ADD (object_array_arguments_do_not_dangle); ADD (removal_and_undo); ADD (lower_group_failure_and_recovery);
   ADD (independent_type_and_edge); ADD (automatic_updates_and_self_exclusion);

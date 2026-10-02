@@ -606,6 +606,7 @@
 | 16.001 | [ ] | 使用 procedure の全件対応表を作る | 04.019, 15.014 | fixture・preset の名前と現行実装を対応 |
 | 16.002 | [ ] | 現行内部 PDB API の型を確定する | 16.001 | 公開 libgimp API と本体内部 API を混同しない |
 | 16.003 | [ ] | 旧 procedure 名の変換を実装する | 16.002 | 改名された手順を同じ意味へ解決 |
+| 16.003/gauss-executor | [x] | 同梱presetの旧Gaussian実行を復元する | 15.001/core-scheduler-edge | plug-in-gaussのIIR/RLE・分数/片軸半径・旧shadow mergeを実装し104実旧PDB fixtureにbyte一致。実FilterLayer両methodと21 app通常/focused sanitizer合格 |
 | 16.004 | [ ] | 非対応 procedure の互換実行経路を設計する | 16.003 | 代替実装か互換プラグインへ割当し未割当を残さない |
 | 16.005 | [ ] | 旧整数引数の変換を実装する | 16.004 | 幅・符号・範囲を保持 |
 | 16.006 | [ ] | 旧実数引数の変換を実装する | 16.005 | 精度と特殊値の扱いを固定 |
