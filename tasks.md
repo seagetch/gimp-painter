@@ -545,6 +545,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 14.001 | [ ] | source の所有と監視を実装する | 08.020, 09.017, 10.018 | 旧仕様に沿う参照が close で解除される |
+| 14.001/core-implementation | [x] | CloneLayerの実core型・参照追従を統合する | 04.003, 05.010, 02.005/resize-undo-capture | 単一store/typed handle・GEGL完成画素・source/name・group duplicate再対応付け・resize Undo/maskを実装し21通常/ASan/UBSan試験合格。XCF/UI/参照変更Undo等は親区分に残す |
 | 14.002 | [ ] | 名前による旧 source 解決を実装する | 14.001 | 探索順と同名の解決が fixture と一致 |
 | 14.003 | [ ] | source レイヤーの画素追従を実装する | 14.002 | 編集領域が clone に更新される |
 | 14.003/gegl-source-node | [ ] | CloneLayer の参照画素を GEGL source node に接続する | 14.003, 09.013/gegl-graph-invalidation | source の変更 ROI、offset、参照解除が projection の再評価へ届く |

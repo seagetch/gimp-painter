@@ -35,6 +35,7 @@
 
 #include "gimpdrawable-filters.h"
 #include "gimpgrouplayer.h"
+#include "gimpclonelayer.h"
 #include "gimpgrouplayerundo.h"
 #include "gimpimage.h"
 #include "gimpimage-undo.h"
@@ -565,9 +566,12 @@ gimp_group_layer_is_position_locked (GimpItem  *item,
                                                              FALSE);
 }
 
+/* Build the complete map before remapping any CloneLayer references.  In
+ * particular, nested groups may refer to a later sibling or to the root. */
 static GimpItem *
-gimp_group_layer_duplicate (GimpItem *item,
-                            GType     new_type)
+gimp_group_layer_duplicate_aux (GimpItem  *item,
+                                GType      new_type,
+                                GHashTable *copy_refs)
 {
   GimpItem *new_item;
 
@@ -584,6 +588,7 @@ gimp_group_layer_duplicate (GimpItem *item,
       GList                 *list;
 
       gimp_group_layer_suspend_resize (new_group, FALSE);
+      g_hash_table_insert (copy_refs, item, new_item);
 
       for (list = gimp_item_stack_get_item_iter (GIMP_ITEM_STACK (private->children));
            list;
@@ -593,7 +598,23 @@ gimp_group_layer_duplicate (GimpItem *item,
           GimpItem      *new_child;
           GimpLayerMask *mask;
 
-          new_child = gimp_item_duplicate (child, G_TYPE_FROM_INSTANCE (child));
+          if (GIMP_IS_GROUP_LAYER (child))
+            new_child = gimp_group_layer_duplicate_aux (child,
+                                                        G_TYPE_FROM_INSTANCE (child),
+                                                        copy_refs);
+          else
+            {
+              new_child = gimp_item_duplicate (child, G_TYPE_FROM_INSTANCE (child));
+              g_hash_table_insert (copy_refs, child, new_child);
+            }
+
+          if (! new_child)
+            {
+              /* The incomplete tree owns the already inserted copies.  The
+               * map is borrowed and is discarded by the outer caller. */
+              g_object_unref (new_item);
+              return NULL;
+            }
 
           gimp_object_set_name (GIMP_OBJECT (new_child),
                                 gimp_object_get_name (child));
@@ -623,6 +644,48 @@ gimp_group_layer_duplicate (GimpItem *item,
 
       gimp_group_layer_resume_resize (new_group, FALSE);
     }
+
+  return new_item;
+}
+
+static void
+gimp_group_layer_remap_clone_layers (GimpGroupLayer *group,
+                                     GHashTable     *copy_refs)
+{
+  GList *list;
+
+  for (list = gimp_item_stack_get_item_iter (GIMP_ITEM_STACK (GET_PRIVATE (group)->children));
+       list;
+       list = g_list_next (list))
+    {
+      GimpItem *child = list->data;
+
+      if (GIMP_IS_GROUP_LAYER (child))
+        gimp_group_layer_remap_clone_layers (GIMP_GROUP_LAYER (child), copy_refs);
+      else if (GIMP_IS_CLONE_LAYER (child))
+        {
+          GimpLayer *source;
+          GimpLayer *replacement;
+
+          source = gimp_clone_layer_get_source (GIMP_CLONE_LAYER (child));
+          replacement = g_hash_table_lookup (copy_refs, source);
+          if (replacement)
+            gimp_clone_layer_set_source (GIMP_CLONE_LAYER (child), replacement);
+        }
+    }
+}
+
+static GimpItem *
+gimp_group_layer_duplicate (GimpItem *item,
+                            GType     new_type)
+{
+  GHashTable *copy_refs = g_hash_table_new (g_direct_hash, g_direct_equal);
+  GimpItem   *new_item;
+
+  new_item = gimp_group_layer_duplicate_aux (item, new_type, copy_refs);
+  if (GIMP_IS_GROUP_LAYER (new_item))
+    gimp_group_layer_remap_clone_layers (GIMP_GROUP_LAYER (new_item), copy_refs);
+  g_hash_table_unref (copy_refs);
 
   return new_item;
 }
