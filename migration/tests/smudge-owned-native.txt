@@ -1,0 +1,129 @@
+Log of Meson test suite run on 2026-10-02T16:31:21.319325
+
+Inherited environment omitted; see whitelisted JSON reproducibility variables.
+
+==================================== 1/3 =====================================
+test:         gimp:painter / painter-smudge-legacy-strokes
+start time:   07:31:21
+duration:     3.81s
+result:       exit status 0
+command:      MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common UI_TEST=yes MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu MALLOC_PERTURB_=39 /usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_smudge_strokes.py /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-smudge/pixels.tsv.gz app/tests/painter-smudge-trace
+----------------------------------- stdout -----------------------------------
+Exact legacy Smudge stroke/Undo: 2952800 bytes, 193 records
+==============================================================================
+
+==================================== 2/3 =====================================
+test:         gimp:app / gimp-painter-smudge
+start time:   07:31:25
+duration:     3.60s
+result:       exit status 0
+command:      MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common UI_TEST=yes MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=137 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-smudge
+----------------------------------- stdout -----------------------------------
+TAP version 14
+# random seed: R02S6c1f091c4b4bb203cce4612eaccfc4a1
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+1..10
+# Start of painter tests
+# Start of smudge tests
+ok 1 /painter/smudge/reuse-undo
+ok 2 /painter/smudge/cancel
+ok 3 /painter/smudge/dispose
+ok 4 /painter/smudge/start-cancel
+ok 5 /painter/smudge/publication-cancel
+ok 6 /painter/smudge/core-loss
+ok 7 /painter/smudge/image-loss
+ok 8 /painter/smudge/invalid-axes
+ok 9 /painter/smudge/external-edit
+ok 10 /painter/smudge/invalid-vfunc
+# End of smudge tests
+# End of painter tests
+----------------------------------- stderr -----------------------------------
+Failed to parse tag cache: No such file or directory
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/gradient-map.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/film.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/align-layers.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/animation-optimize.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/animation-play.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/busy-dialog.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/border-average.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/checkerboard.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/cml-explorer.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/colormap-remap.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/compose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/crop-zealous.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/contrast-retinex.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/curve-bend.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/decompose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/depth-merge.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/despeckle.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/destripe.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-cel.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-compressor.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-csource.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-dicom.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-farbfeld.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gif-export.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gbr.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gegl.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gih.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-gif-load.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-glob.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-html-table.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-header.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pat.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pcx.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pdf-load.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pix.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-pnm.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-png.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-psp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-sunras.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-raw-data.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-tga.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-svg.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-xbm.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-wbmp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/grid.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-xwd.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/guillotine.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/nl-filter.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/hot.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/jigsaw.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/plugin-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/procedure-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/qbist.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/sample-colorize.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/smooth-palette.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/sparkle.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/tile-small.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/sphere-designer.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/tile.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/unit-editor.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/van-gogh-lic.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/warp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/wavelet-decompose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/web-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/file-desktop-link.dummy' in plug-in directory.
+Skipping unknown file '/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/mail.dummy' in plug-in directory.
+GIMP-Error: Could not create directory '/home/agent/.config/GIMP/3.0' for '/home/agent/.config/GIMP/3.0/pluginrc': Error creating directory /home/agent/.config/GIMP: Read-only file system
+
+==============================================================================
+
+==================================== 3/3 =====================================
+test:         gimp:painter / painter-smudge-owned-strokes
+start time:   07:31:28
+duration:     3.90s
+result:       exit status 0
+command:      MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common UI_TEST=yes MALLOC_PERTURB_=17 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu /usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_smudge_strokes.py /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-smudge/pixels.tsv.gz app/tests/painter-smudge-trace owned
+----------------------------------- stdout -----------------------------------
+Exact legacy Smudge stroke/Undo: 2952800 bytes, 193 records
+==============================================================================
+
+
+Ok:                 3
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0

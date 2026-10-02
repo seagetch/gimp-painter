@@ -322,3 +322,36 @@ if not meson.is_cross_build()
     args: [meson.project_source_root() / 'migration/tests/test_mypaint_rgb_session_fixtures.py'],
     suite: 'painter', is_parallel: false, timeout: 60)
 endif
+
+painter_smudge_trace = executable('painter-smudge-trace', 'painter-smudge-trace.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-smudge-legacy-strokes', painter_brush_settings_python,
+    args: [meson.project_source_root() / 'migration/tests/compare_smudge_strokes.py',
+           meson.project_source_root() / 'migration/fixtures/legacy-smudge/pixels.tsv.gz',
+           painter_smudge_trace],
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 120)
+endif
+
+painter_smudge_test = executable('gimp-painter-smudge', 'test-gimp-painter-smudge.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('gimp-painter-smudge', painter_smudge_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+if not meson.is_cross_build()
+  test('painter-smudge-owned-strokes', painter_brush_settings_python,
+    args: [meson.project_source_root() / 'migration/tests/compare_smudge_strokes.py',
+           meson.project_source_root() / 'migration/fixtures/legacy-smudge/pixels.tsv.gz',
+           painter_smudge_trace, 'owned'],
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 120)
+endif
