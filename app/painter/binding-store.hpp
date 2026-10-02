@@ -67,6 +67,7 @@ public:
   template<class Slot, class Function>
   auto initialize (Function&& function) -> decltype (function (std::declval<typename Slot::Impl&> ()))
   {
+    check_borrow_result<Slot, decltype (function (std::declval<typename Slot::Impl&> ()))> ();
     check_thread ();
     if (state_ != State::constructing)
       throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Initialization after construction");
@@ -86,6 +87,7 @@ public:
   template<class Slot, class Function>
   auto with (Function&& function) -> decltype (function (std::declval<typename Slot::Impl&> ()))
   {
+    check_borrow_result<Slot, decltype (function (std::declval<typename Slot::Impl&> ()))> ();
     check_thread ();
     if (state_ != State::active)
       throw Error (state_ == State::constructing ? GIMP_PAINTER_ERROR_INVALID_STATE
@@ -98,6 +100,7 @@ public:
   template<class Slot, class Function>
   auto read (Function&& function) -> decltype (function (std::declval<const typename Slot::Impl&> ()))
   {
+    check_borrow_result<Slot, decltype (function (std::declval<const typename Slot::Impl&> ()))> ();
     check_thread ();
     if (finalizing_)
       throw Error (GIMP_PAINTER_ERROR_CLOSED, "Owner is finalizing");
@@ -106,6 +109,15 @@ public:
   }
 
 private:
+  template<class Slot, class Result> static void check_borrow_result () noexcept
+  {
+    static_assert (!std::is_reference<Result>::value,
+                   "BindingStore borrow must not escape as a reference");
+    static_assert (!(std::is_pointer<Result>::value &&
+                     std::is_same<typename std::remove_cv<typename std::remove_pointer<Result>::type>::type,
+                                  typename Slot::Impl>::value),
+                   "BindingStore borrow must not escape as an Impl pointer");
+  }
   struct EntryBase
   {
     explicit EntryBase (const void *identity) : id (identity) {}

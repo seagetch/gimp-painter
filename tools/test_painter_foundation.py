@@ -23,11 +23,15 @@ def run(build, sanitizer, leak_check=False):
     commands = []
     outputs = []
 
-    def execute(argv, *, input=None, env=None):
+    def execute(argv, *, input=None, env=None, expected_error=None):
         result = subprocess.run(argv, input=input, text=True, stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT, env=env)
         commands.append([str(arg) for arg in argv])
         outputs.append(result.stdout)
+        if expected_error:
+            if result.returncode == 0 or expected_error not in result.stdout:
+                raise RuntimeError('Expected compile-time borrow rejection: ' + result.stdout)
+            return result.stdout
         if result.returncode:
             raise RuntimeError(f'{shlex.join(map(str, argv))}\n{result.stdout}')
         return result.stdout
@@ -48,6 +52,23 @@ def run(build, sanitizer, leak_check=False):
             execute(compiler + flags + [standard] + cflags + includes +
                     ['-x', language, '-fsyntax-only', '-'],
                     input=f'#include "{header}"\n#include "{header}"\n')
+    # The internal synchronous borrow must not become a returned Impl pointer
+    # or reference. C object pointers required by real C APIs remain permitted.
+    for method in ('initialize', 'with', 'read'):
+        for result in ('pointer', 'reference'):
+            const = 'const ' if method == 'read' else ''
+            suffix = '*' if result == 'pointer' else '&'
+            expression = '&impl' if result == 'pointer' else 'impl'
+            probe = ('#include "binding-store.hpp"\n'
+                     'using namespace GimpPainter;\n'
+                     'struct Impl { void close() noexcept {} };\n'
+                     'struct Slot : SlotSpec<GObject, Impl> {};\n'
+                     'void probe(BindingStore& store) { store.' + method +
+                     '<Slot>([](' + const + 'Impl& impl) -> ' + const + 'Impl' + suffix +
+                     ' { return ' + expression + '; }); }\n')
+            execute(cxx + flags + ['-std=c++14'] + cflags + includes +
+                    ['-x', 'c++', '-fsyntax-only', '-'], input=probe,
+                    expected_error='BindingStore borrow must not escape')
     objects = []
     library_objects = []
     for name in C_SOURCES + CPP_SOURCES + TEST_CPP:
@@ -76,7 +97,7 @@ def run(build, sanitizer, leak_check=False):
             'leak_check': 'enabled' if leak_check else 'not run',
             'commands': commands, 'output': outputs,
             'source_sha256': {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
-                              for path in sorted(MODULE.rglob('*')) if path.is_file()}}
+                              for path in sorted([*MODULE.rglob('*'), Path(__file__).resolve()]) if path.is_file()}}
 
 
 def main():

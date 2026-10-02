@@ -285,8 +285,8 @@
 | 05.001 | [x] | 型付きハンドルの型一覧を定義する | 01.017, 04.002/common-foundation | 旧traits・全独自型・C入口ownerの90型に一意な名前付きhandleを定義し、76 C入口への単一路を照合（`migration/contracts/cpp-handle-registry.tsv`）。各feature実装は別途未完了 |
 | 05.002 | [x] | ハンドルの所有規約を定義する | 05.001 | retain・adopt・sink の差を記載 |
 | 05.003 | [x] | ハンドルの copy/move 規約を定義する | 05.002 | 参照数増減と moved-from 状態を記載 |
-| 05.004 | [ ] | 短期借用の規約を定義する | 05.003 | 保存不可・非同期持出し不可の境界を明示 |
-| 05.004/bound-method-lifetime | [ ] | 旧 BoundMethod の借用 object 寿命を新 API に定義する | 05.004, 01.005/indirect-callback-owners | `operator[]` から返る callable が object の参照を持たないことを考慮し、保持・遅延使用を禁止または weak/strong handle へ移す |
+| 05.004 | [ ] | 短期借用の規約を定義する | 05.003, 05.004/bound-method-lifetime | 保存不可・非同期持出し不可の境界を明示 |
+| 05.004/bound-method-lifetime | [x] | 旧 BoundMethod の借用 object 寿命を新 API に定義する | 05.003, 01.005/indirect-callback-owners | `operator[]` から返る callable が object の参照を持たないことを考慮し、保持・遅延使用を禁止または weak/strong handle へ移す |
 | 05.005 | [ ] | C++ メソッドと C 入口を対応付ける | 05.004 | 同じ操作の第二実装を作らない対応表がある |
 | 05.006 | [ ] | 型付き slot の宣言形式を定義する | 05.005 | GType・Impl 型・key・close 方針が固定される |
 | 05.007 | [ ] | BindingStore の登録規約を定義する | 05.006 | 一 object 一 store、重複登録・稼働中置換の扱いを明記 |

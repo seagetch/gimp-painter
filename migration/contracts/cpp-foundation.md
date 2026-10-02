@@ -32,6 +32,9 @@ GIMP initialization, never by C++ global constructors.
   Empty, self-copy and self-move are valid. Destruction drops exactly one reference.
 - `get()` and values supplied by a binding lease are synchronous borrowed values.
   They must not outlive the handle/lease or be captured into deferred callbacks.
+  BindingStore additionally rejects returned references and direct Impl pointers
+  at compile time. Capturing a borrow indirectly still violates this contract
+  and must be reviewed; a compiler check is not a proof against arbitrary captures.
   An asynchronous completion uses a weak owner and a generation token; the worker
   owns only independent input, output and cancellation state.
 - Type validation is against `TypeTraits<T>::type()`, using GType ancestry rather

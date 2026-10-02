@@ -14,7 +14,8 @@ The standalone runner compiles C translation units using the C compiler, C++
 using C++14 with RTTI disabled, archives the production bridge, then links the
 C-main executable with the C++ runtime. Every common header is independently
 included twice; the C entry headers are tested under both languages. All builds
-use warnings as errors. The integrated Meson target uses the same production
+use warnings as errors. Six negative C++ compilation probes additionally reject
+returning a borrowed Impl pointer or reference from initialize/with/read. The integrated Meson target uses the same production
 files and tests, under `meson test -C build --suite painter`.
 
 The 31 cases test reference adoption/retention/sinking and copy/move/null;
