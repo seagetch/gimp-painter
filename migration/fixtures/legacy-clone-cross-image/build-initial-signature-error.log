@@ -1,0 +1,38 @@
+make: Entering directory '/workspace/scratch/5b5281e79681/gimp-painter-legacy/app/tests'
+  CC       test-xcf.o
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib-object.h:24,
+                 from /workspace/shared/gimp-legacy-build/prefix/include/gegl-0.3/gegl.h:22,
+                 from test-xcf.c:22:
+test-xcf.c: In function ‘capture_clone_cross_image’:
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:2673:42: error: too many arguments to function ‘((GimpItemClass *)((GTypeInstance *)source)->g_class)->convert’
+ 2673 | #define _G_TYPE_IGC(ip, gt, ct)         ((ct*) (((GTypeInstance*) ip)->g_class))
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:571:66: note: in expansion of macro ‘_G_TYPE_IGC’
+  571 | #define G_TYPE_INSTANCE_GET_CLASS(instance, g_type, c_type)     (_G_TYPE_IGC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+../../app/core/gimpitem.h:30:36: note: in expansion of macro ‘G_TYPE_INSTANCE_GET_CLASS’
+   30 | #define GIMP_ITEM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ITEM, GimpItemClass))
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~
+test-xcf.c:1211:3: note: in expansion of macro ‘GIMP_ITEM_GET_CLASS’
+ 1211 |   GIMP_ITEM_GET_CLASS (source)->convert (GIMP_ITEM (source), destination, GIMP_TYPE_LAYER);
+      |   ^~~~~~~~~~~~~~~~~~~
+test-xcf.c: In function ‘main’:
+test-xcf.c:1243:3: warning: ‘g_thread_init’ is deprecated [-Wdeprecated-declarations]
+ 1243 |   g_thread_init (NULL);
+      |   ^~~~~~~~~~~~~
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib.h:115,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib/gprintf.h:23,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib/gstdio.h:24,
+                 from test-xcf.c:20:
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib/deprecated/gthread.h:271:10: note: declared here
+  271 | void     g_thread_init                   (gpointer vtable);
+      |          ^~~~~~~~~~~~~
+test-xcf.c:1244:3: warning: ‘g_type_init’ is deprecated [-Wdeprecated-declarations]
+ 1244 |   g_type_init ();
+      |   ^~~~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:737:23: note: declared here
+  737 | void                  g_type_init                    (void);
+      |                       ^~~~~~~~~~~
+make: *** [Makefile:1463: test-xcf.o] Error 1
+make: Leaving directory '/workspace/scratch/5b5281e79681/gimp-painter-legacy/app/tests'

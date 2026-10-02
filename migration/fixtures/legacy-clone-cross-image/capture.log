@@ -1,0 +1,58 @@
+
+(process:9): GLib-GObject-CRITICAL **: 10:57:42.104: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:9): GLib-GObject-CRITICAL **: 10:57:42.104: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55686aad6560:  set ignore_undos=0
+create clone instance type=55686ab27830
+CloneLayer::class_init
+GimpCloneLayer: Set properties_base to 18
+CloneLayer::iface_init<GimpPickableInterface>
+new_instance::cloned=0x55686a9cff60[layer=0x55686a9cff60]
+CROSS_REF step=direct-copy source_original=1 clone_destination=1 same_source=1
+CROSS_PIXEL step=direct-copy target=copy rgba=204,51,102,128 wh=16,16 xy=32,30
+CROSS_PIXEL step=source-red target=original rgba=255,0,0,255 wh=16,16 xy=32,30
+CROSS_PIXEL step=source-red target=copy rgba=255,0,0,255 wh=16,16 xy=32,30
+create clone instance type=55686ab27830
+new_instance::cloned=0x55686ab2bc30[layer=0x55686ab2bc30]
+create clone instance type=55686ab27830
+new_instance::cloned=0x55686ab2c820[layer=0x55686ab2c820]
+Detected source is 0
+Detected source is 55686ab2ff70
+Replacing source for inside
+
+(process:9): Gimp-Core-CRITICAL **: 10:57:43.590: gimp_drawable_project_region: assertion 'gimp_item_is_attached (GIMP_ITEM (drawable))' failed
+CROSS_REF step=group-copy inside_destination=1 internal_remapped=1 external_original=1 original_unchanged=1
+CROSS_PIXEL step=group-copy target=internal rgba=0,0,255,255 wh=16,16 xy=0,0
+CROSS_PIXEL step=group-copy target=external rgba=255,0,0,255 wh=16,16 xy=0,0
+CROSS_PIXEL step=original-inside-yellow target=original-internal rgba=255,255,0,255 wh=16,16 xy=0,0
+CROSS_PIXEL step=original-inside-yellow target=copied-internal rgba=0,0,255,255 wh=16,16 xy=0,0
+CROSS_PIXEL step=copied-inside-cyan target=original-internal rgba=255,255,0,255 wh=16,16 xy=0,0
+CROSS_PIXEL step=copied-inside-cyan target=copied-internal rgba=0,255,255,255 wh=16,16 xy=0,0
+CROSS_REF step=source-relocated source_destination=1 original_same_source=1 copy_same_source=1 group_external_same_source=1
+CROSS_PIXEL step=source-relocated-green target=original rgba=0,255,0,255 wh=16,16 xy=32,30
+CROSS_PIXEL step=source-relocated-green target=copy rgba=0,255,0,255 wh=16,16 xy=32,30
+CROSS_PIXEL step=source-relocated-green target=group-external rgba=0,255,0,255 wh=16,16 xy=0,0
+CROSS_REF step=original-closed copy_same_source=1 group_external_same_source=1 internal_remapped=1
+CROSS_PIXEL step=original-closed-magenta target=copy rgba=255,0,255,255 wh=16,16 xy=32,30
+CROSS_PIXEL step=original-closed-magenta target=group-external rgba=255,0,255,255 wh=16,16 xy=0,0
+CROSS_PIXEL step=original-closed-magenta target=group-internal rgba=0,255,255,255 wh=16,16 xy=0,0
+
+(process:9): GLib-GObject-CRITICAL **: 10:57:43.591: instance with invalid (NULL) class pointer
+
+(process:9): GLib-GObject-CRITICAL **: 10:57:43.591: g_signal_handler_find: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+
+(process:9): GLib-GObject-CRITICAL **: 10:57:43.591: instance with invalid (NULL) class pointer
+
+(process:9): GLib-GObject-CRITICAL **: 10:57:43.591: g_signal_handler_find: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+
+(process:9): GLib-GObject-CRITICAL **: 10:57:43.591: instance with invalid (NULL) class pointer
+
+(process:9): GLib-GObject-CRITICAL **: 10:57:43.591: g_signal_handler_find: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+
+(process:9): GLib-GObject-CRITICAL **: 10:57:43.591: instance with invalid (NULL) class pointer
+
+(process:9): GLib-GObject-CRITICAL **: 10:57:43.591: g_signal_handler_find: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+CLONE_CROSS_IMAGE_CAPTURE_COMPLETE
+
+(script-fu:32): LibGimpBase-WARNING **: 10:57:43.597: script-fu: gimp_wire_read(): error

@@ -1,0 +1,402 @@
+diff --git a/app/base/glib-cxx-impl.hpp b/app/base/glib-cxx-impl.hpp
+index a2ad35e37a..23d6faed9c 100644
+--- a/app/base/glib-cxx-impl.hpp
++++ b/app/base/glib-cxx-impl.hpp
+@@ -517,7 +517,7 @@ gint NewGClass<name, CStructs, Impl, IFaces...>::private_offset = 0;
+ 
+ template <char const* name, typename CStructs, typename Impl, typename... IFaces>
+ inline GType NewGClass<name, CStructs, Impl, IFaces...>::get_type (void) {
+-  static volatile gsize g_define_type_id__volatile = 0;
++  static gsize g_define_type_id__volatile = 0;
+   if (g_once_init_enter (&g_define_type_id__volatile)) {
+     GType g_define_type_id =
+         g_type_register_static_simple (CStructs::ParentTraits::get_type(),
+diff --git a/app/core/gimpfilterlayer.cpp b/app/core/gimpfilterlayer.cpp
+index 9141c8c7ea..7be38b6eea 100644
+--- a/app/core/gimpfilterlayer.cpp
++++ b/app/core/gimpfilterlayer.cpp
+@@ -769,6 +769,11 @@ void GLib::FilterLayer::end()
+   }
+ 
+   notify_filter_end();
++  if (g_getenv("GIMP_PAINTER_CAPTURE_FILTER")) {
++    gint n = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(g_object), "migration-capture-completions"));
++    g_object_set_data(G_OBJECT(g_object), "migration-capture-completions", GINT_TO_POINTER(n + 1));
++    g_print("FILTER_COMPLETE time_us=%" G_GINT64_FORMAT " name=%s\n", g_get_monotonic_time(), gimp_object_get_name(g_object));
++  }
+ }
+ 
+ gboolean GLib::FilterLayer::is_active()
+@@ -1207,3 +1212,11 @@ gimp_filter_layer_mark_as_loaded (GimpFilterLayer* layer)
+ {
+   FilterLayerInterface::cast(layer)->mark_as_loaded ();
+ }
++
++/* Read-only capture instrumentation, excluded from the reference app binary. */
++extern "C" gint gimp_filter_layer_capture_pending(GimpFilterLayer* layer)
++{
++  auto* impl = dynamic_cast<GLib::FilterLayer*>(FilterLayerInterface::cast(layer));
++  return (impl->is_waiting_to_be_processed() ? 1 : 0) |
++         (impl->waiting_for_runner ? 2 : 0);
++}
+diff --git a/app/display/gimpdisplayshell-callbacks.c b/app/display/gimpdisplayshell-callbacks.c
+index 79ebbff0a9..b76264704f 100644
+--- a/app/display/gimpdisplayshell-callbacks.c
++++ b/app/display/gimpdisplayshell-callbacks.c
+@@ -35,6 +35,7 @@
+ #include "gimpcanvasitem.h"
+ #include "gimpdisplay.h"
+ #include "gimpdisplayshell.h"
++#include "gimpdisplayshell-overlays.h"
+ #include "gimpdisplayshell-appearance.h"
+ #include "gimpdisplayshell-callbacks.h"
+ #include "gimpdisplayshell-draw.h"
+diff --git a/app/display/gimpimagewindow.c b/app/display/gimpimagewindow.c
+index 04ffaff8c1..af370bab04 100644
+--- a/app/display/gimpimagewindow.c
++++ b/app/display/gimpimagewindow.c
+@@ -62,6 +62,8 @@
+ #include "gimpdisplay-foreach.h"
+ #include "gimpcanvas.h"
+ #include "gimpdisplayshell.h"
++#include "gimpdisplayshell-overlays.h"
++#include "gimpdisplayshell-rotate.h"
+ #include "gimpdisplayshell-appearance.h"
+ #include "gimpdisplayshell-close.h"
+ #include "gimpdisplayshell-scroll.h"
+diff --git a/app/presets/preset-factory-gui.cpp b/app/presets/preset-factory-gui.cpp
+index c2f8bae620..d3219c6f8e 100644
+--- a/app/presets/preset-factory-gui.cpp
++++ b/app/presets/preset-factory-gui.cpp
+@@ -206,7 +206,7 @@ PresetGuiFactory::restore (Gimp               *gimp,
+     g_print("PresetGuiFactory::on_restore::end\n");
+ 
+     // Action group entry initialization
+-    PresetGuiConfig::ActionGroupEntry* action_group_entry = gui_config->get_action_group_entry();
++    auto* action_group_entry = gui_config->get_action_group_entry();
+ 
+     if (action_group_entry)
+       gimp_action_factory_group_register (global_action_factory,
+diff --git a/app/signals.c b/app/signals.c
+index 57b3b27fd4..a04c5a6b9b 100644
+--- a/app/signals.c
++++ b/app/signals.c
+@@ -18,6 +18,9 @@
+ #include "config.h"
+ 
+ #include <signal.h>
++#ifdef HAVE_EXECINFO_H
++#include <execinfo.h>
++#endif
+ 
+ #include <glib-object.h>
+ 
+diff --git a/app/tests/test-xcf.c b/app/tests/test-xcf.c
+index dc071cb190..ed400c2d7f 100644
+--- a/app/tests/test-xcf.c
++++ b/app/tests/test-xcf.c
+@@ -977,6 +977,262 @@ gimp_assert_mainimage (GimpImage *image,
+  *  - Make sure that the information put into a #GimpImage is not lost
+  *    when the #GimpImage is written to a file and then read again
+  **/
++/* Ordinary RGB editing observations against the pinned legacy core.
++ * All state is read through public APIs or declared, GType-checked Undo fields.
++ * No implementation is replaced, and no ideal geometry is asserted.
++ */
++#include "base/tile-manager.h"
++#include "core/gimpclonelayer.h"
++#include "core/gimpcontainer.h"
++#include "core/gimpdrawablemodundo.h"
++#include "core/gimpimage-undo.h"
++#include "core/gimpitemundo.h"
++#include "core/gimplayermask.h"
++#include "core/gimpundostack.h"
++
++static void
++capture_undo_node (const gchar *scene,
++                   const gchar *step,
++                   const gchar *stack_name,
++                   const gchar *path,
++                   GimpUndo    *undo)
++{
++  const gchar *item_name = "-";
++  gint children = 0;
++  gint i;
++
++  if (GIMP_IS_ITEM_UNDO (undo))
++    item_name = gimp_object_get_name (GIMP_ITEM_UNDO (undo)->item);
++  if (GIMP_IS_UNDO_STACK (undo))
++    children = gimp_container_get_n_children (GIMP_UNDO_STACK (undo)->undos);
++
++  g_print ("UNDO_NODE case=%s step=%s stack=%s path=%s gtype=%s undo_type=%d item=%s children=%d",
++           scene, step, stack_name, path, G_OBJECT_TYPE_NAME (undo),
++           undo->undo_type, item_name, children);
++  if (GIMP_IS_DRAWABLE_MOD_UNDO (undo))
++    {
++      GimpDrawableModUndo *mod = GIMP_DRAWABLE_MOD_UNDO (undo);
++      g_print (" saved_wh=%d,%d saved_xy=%d,%d copy_tiles=%d image_type=%d",
++               tile_manager_width (mod->tiles), tile_manager_height (mod->tiles),
++               mod->offset_x, mod->offset_y, mod->copy_tiles, mod->type);
++    }
++  g_print ("\n");
++
++  for (i = 0; i < children; i++)
++    {
++      GimpUndo *child = GIMP_UNDO (gimp_container_get_child_by_index (
++                                   GIMP_UNDO_STACK (undo)->undos, i));
++      gchar *child_path = g_strdup_printf ("%s/%d", path, i);
++      capture_undo_node (scene, step, stack_name, child_path, child);
++      g_free (child_path);
++    }
++}
++
++static void
++capture_resize_state (const gchar *scene,
++                      const gchar *step,
++                      GimpImage   *image,
++                      GimpLayer   *source,
++                      GimpLayer   *clone)
++{
++  GimpLayerMask *mask = gimp_layer_get_mask (clone);
++  GimpUndoStack *undo_stack = gimp_image_get_undo_stack (image);
++  GimpUndoStack *redo_stack = gimp_image_get_redo_stack (image);
++  GimpUndo *top;
++
++  g_print ("UNDO_STATE case=%s step=%s source_wh=%d,%d source_xy=%d,%d clone_wh=%d,%d clone_xy=%d,%d mask=%d",
++           scene, step,
++           gimp_item_get_width (GIMP_ITEM (source)),
++           gimp_item_get_height (GIMP_ITEM (source)),
++           gimp_item_get_offset_x (GIMP_ITEM (source)),
++           gimp_item_get_offset_y (GIMP_ITEM (source)),
++           gimp_item_get_width (GIMP_ITEM (clone)),
++           gimp_item_get_height (GIMP_ITEM (clone)),
++           gimp_item_get_offset_x (GIMP_ITEM (clone)),
++           gimp_item_get_offset_y (GIMP_ITEM (clone)), mask != NULL);
++  if (mask)
++    g_print (" mask_wh=%d,%d mask_xy=%d,%d",
++             gimp_item_get_width (GIMP_ITEM (mask)),
++             gimp_item_get_height (GIMP_ITEM (mask)),
++             gimp_item_get_offset_x (GIMP_ITEM (mask)),
++             gimp_item_get_offset_y (GIMP_ITEM (mask)));
++  g_print (" undo_depth=%d redo_depth=%d group_count=%d\n",
++           gimp_undo_stack_get_depth (undo_stack),
++           gimp_undo_stack_get_depth (redo_stack),
++           gimp_image_get_undo_group_count (image));
++
++  top = gimp_undo_stack_peek (undo_stack);
++  if (top)
++    capture_undo_node (scene, step, "undo", "0", top);
++  top = gimp_undo_stack_peek (redo_stack);
++  if (top)
++    capture_undo_node (scene, step, "redo", "0", top);
++}
++
++static void
++capture_clone_resize_undo (Gimp *gimp, gboolean with_mask)
++{
++  const gchar *scene = with_mask ? "white-mask" : "no-mask";
++  GimpImage *image = gimp_create_image (gimp, 64, 64, GIMP_RGB, FALSE);
++  GimpLayer *source = gimp_layer_new (image, 16, 16, GIMP_RGBA_IMAGE,
++                                    "source", 1.0, GIMP_NORMAL_MODE);
++  GimpLayer *clone;
++  GimpRGB color = { 0.8, 0.2, 0.4, 1.0 };
++  GError *error = NULL;
++  gint cycle;
++
++  g_assert (gimp_image_add_layer (image, source, NULL, 0, FALSE));
++  gimp_drawable_fill (GIMP_DRAWABLE (source), &color, NULL);
++  clone = gimp_clone_layer_new (image, source, 16, 16, "clone", 1.0,
++                               GIMP_NORMAL_MODE);
++  g_assert (gimp_image_add_layer (image, clone, NULL, 0, FALSE));
++  gimp_item_set_offset (GIMP_ITEM (clone), 32, 30);
++  if (with_mask)
++    {
++      GimpLayerMask *mask = gimp_layer_create_mask (clone, GIMP_ADD_WHITE_MASK, NULL);
++      g_assert (mask != NULL);
++      g_assert (gimp_layer_add_mask (clone, mask, FALSE, &error) == mask);
++      g_assert_no_error (error);
++      gimp_object_set_name (GIMP_OBJECT (mask), "clone-mask");
++    }
++  gimp_item_set_offset (GIMP_ITEM (source), 5, 7);
++  gimp_drawable_update (GIMP_DRAWABLE (source), 0, 0, 16, 16);
++  gimp_image_undo_free (image);
++  capture_resize_state (scene, "baseline", image, source, clone);
++
++  gimp_item_resize (GIMP_ITEM (source), gimp_get_user_context (gimp),
++                    20, 18, -2, -3);
++  capture_resize_state (scene, "resized", image, source, clone);
++  for (cycle = 1; cycle <= 2; cycle++)
++    {
++      gchar *step = g_strdup_printf ("undo%d", cycle);
++      gboolean result = gimp_image_undo (image);
++      g_print ("UNDO_ACTION case=%s step=%s returned=%d\n", scene, step, result);
++      capture_resize_state (scene, step, image, source, clone);
++      g_free (step);
++      step = g_strdup_printf ("redo%d", cycle);
++      result = gimp_image_redo (image);
++      g_print ("UNDO_ACTION case=%s step=%s returned=%d\n", scene, step, result);
++      capture_resize_state (scene, step, image, source, clone);
++      g_free (step);
++    }
++  g_print ("CLONE_RESIZE_UNDO_CASE_COMPLETE case=%s\n", scene);
++}
++
++/* Ordinary RGB-to-RGB copy and relocation observations. No core behavior edits. */
++static GimpLayer *
++cross_child (GimpLayer *group, const gchar *name)
++{
++  return GIMP_LAYER (gimp_container_get_child_by_name
++    (gimp_viewable_get_children (GIMP_VIEWABLE (group)), name));
++}
++static void
++cross_fill (GimpLayer *layer, gdouble r, gdouble g, gdouble b, gdouble a)
++{
++  GimpRGB color = {r, g, b, a};
++  gimp_drawable_fill (GIMP_DRAWABLE (layer), &color, NULL);
++  gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, 16, 16);
++}
++static void
++cross_pixel (const gchar *step, const gchar *target, GimpLayer *layer)
++{
++  guchar value[4] = {0, 0, 0, 0};
++  tile_manager_read_pixel_data_1 (gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
++                                 0, 0, value);
++  g_print ("CROSS_PIXEL step=%s target=%s rgba=%u,%u,%u,%u wh=%d,%d xy=%d,%d\n",
++           step, target, value[0], value[1], value[2], value[3],
++           gimp_item_get_width (GIMP_ITEM (layer)), gimp_item_get_height (GIMP_ITEM (layer)),
++           gimp_item_get_offset_x (GIMP_ITEM (layer)), gimp_item_get_offset_y (GIMP_ITEM (layer)));
++}
++static GimpLayer *
++cross_clone (GimpImage *image, GimpLayer *parent, const gchar *name, GimpLayer *source)
++{
++  GimpLayer *clone = gimp_clone_layer_new (image, source, 16, 16, name, 1.0, GIMP_NORMAL_MODE);
++  g_assert (clone != NULL);
++  g_assert (gimp_image_add_layer (image, clone, parent, 0, FALSE));
++  return clone;
++}
++static void
++capture_clone_cross_image (Gimp *gimp)
++{
++  GimpImage *original = gimp_create_image (gimp, 64, 64, GIMP_RGB, FALSE);
++  GimpImage *destination = gimp_create_image (gimp, 64, 64, GIMP_RGB, FALSE);
++  GimpLayer *source = gimp_layer_new (original, 16, 16, GIMP_RGBA_IMAGE,
++                                     "source", 1.0, GIMP_NORMAL_MODE);
++  GimpLayer *clone, *copy, *group, *inside, *internal_clone, *group_copy;
++  GimpLayer *copied_inside, *copied_internal, *copied_external;
++  g_assert (gimp_image_add_layer (original, source, NULL, 0, FALSE));
++  cross_fill (source, 0.8, 0.2, 0.4, 0.5);
++  clone = cross_clone (original, NULL, "direct", source);
++  gimp_item_set_offset (GIMP_ITEM (clone), 32, 30);
++  copy = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (clone), destination, GIMP_TYPE_CLONE_LAYER));
++  g_assert (copy != NULL);
++  g_assert (gimp_image_add_layer (destination, copy, NULL, 0, FALSE));
++  g_print ("CROSS_REF step=direct-copy source_original=%d clone_destination=%d same_source=%d\n",
++           gimp_item_get_image (GIMP_ITEM (source)) == original,
++           gimp_item_get_image (GIMP_ITEM (copy)) == destination,
++           gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copy)) == source);
++  cross_pixel ("direct-copy", "copy", copy);
++  cross_fill (source, 1.0, 0.0, 0.0, 1.0);
++  cross_pixel ("source-red", "original", clone);
++  cross_pixel ("source-red", "copy", copy);
++
++  group = gimp_group_layer_new (original);
++  g_assert (gimp_image_add_layer (original, group, NULL, 0, FALSE));
++  inside = gimp_layer_new (original, 16, 16, GIMP_RGBA_IMAGE, "inside", 1.0, GIMP_NORMAL_MODE);
++  g_assert (gimp_image_add_layer (original, inside, group, 0, FALSE));
++  cross_fill (inside, 0.0, 0.0, 1.0, 1.0);
++  internal_clone = cross_clone (original, group, "internal", inside);
++  cross_clone (original, group, "external", source);
++  group_copy = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (group), destination, GIMP_TYPE_GROUP_LAYER));
++  g_assert (group_copy != NULL);
++  g_assert (gimp_image_add_layer (destination, group_copy, NULL, 0, FALSE));
++  copied_inside = cross_child (group_copy, "inside");
++  copied_internal = cross_child (group_copy, "internal");
++  copied_external = cross_child (group_copy, "external");
++  g_assert (copied_inside && copied_internal && copied_external);
++  g_print ("CROSS_REF step=group-copy inside_destination=%d internal_remapped=%d external_original=%d original_unchanged=%d\n",
++           gimp_item_get_image (GIMP_ITEM (copied_inside)) == destination,
++           gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copied_internal)) == copied_inside,
++           gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copied_external)) == source,
++           gimp_clone_layer_get_source (GIMP_CLONE_LAYER (internal_clone)) == inside);
++  cross_pixel ("group-copy", "internal", copied_internal);
++  cross_pixel ("group-copy", "external", copied_external);
++  cross_fill (inside, 1.0, 1.0, 0.0, 1.0);
++  cross_pixel ("original-inside-yellow", "original-internal", internal_clone);
++  cross_pixel ("original-inside-yellow", "copied-internal", copied_internal);
++  cross_fill (copied_inside, 0.0, 1.0, 1.0, 1.0);
++  cross_pixel ("copied-inside-cyan", "original-internal", internal_clone);
++  cross_pixel ("copied-inside-cyan", "copied-internal", copied_internal);
++
++  g_object_ref (source);
++  gimp_image_remove_layer (original, source, FALSE, NULL);
++  gimp_item_unset_removed (GIMP_ITEM (source));
++  GIMP_ITEM_GET_CLASS (source)->convert (GIMP_ITEM (source), destination);
++  g_assert (gimp_image_add_layer (destination, source, NULL, 0, FALSE));
++  g_object_unref (source);
++  g_print ("CROSS_REF step=source-relocated source_destination=%d original_same_source=%d copy_same_source=%d group_external_same_source=%d\n",
++           gimp_item_get_image (GIMP_ITEM (source)) == destination,
++           gimp_clone_layer_get_source (GIMP_CLONE_LAYER (clone)) == source,
++           gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copy)) == source,
++           gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copied_external)) == source);
++  cross_fill (source, 0.0, 1.0, 0.0, 1.0);
++  cross_pixel ("source-relocated-green", "original", clone);
++  cross_pixel ("source-relocated-green", "copy", copy);
++  cross_pixel ("source-relocated-green", "group-external", copied_external);
++  g_object_unref (original);
++  g_print ("CROSS_REF step=original-closed copy_same_source=%d group_external_same_source=%d internal_remapped=%d\n",
++           gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copy)) == source,
++           gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copied_external)) == source,
++           gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copied_internal)) == copied_inside);
++  cross_fill (source, 1.0, 0.0, 1.0, 1.0);
++  cross_pixel ("original-closed-magenta", "copy", copy);
++  cross_pixel ("original-closed-magenta", "group-external", copied_external);
++  cross_pixel ("original-closed-magenta", "group-internal", copied_internal);
++  g_object_unref (destination);
++  g_print ("CLONE_CROSS_IMAGE_CAPTURE_COMPLETE\n");
++}
++
+ int
+ main (int    argc,
+       char **argv)
+@@ -986,6 +1242,20 @@ main (int    argc,
+ 
+   g_thread_init (NULL);
+   g_type_init ();
++  if (g_getenv ("GIMP_PAINTER_CAPTURE_CLONE_CROSS_IMAGE"))
++    {
++      gimp = gimp_init_for_testing ();
++      capture_clone_cross_image (gimp);
++      return 0;
++    }
++  if (g_getenv ("GIMP_PAINTER_CAPTURE_CLONE_UNDO"))
++    {
++      gimp = gimp_init_for_testing ();
++      capture_clone_resize_undo (gimp, FALSE);
++      capture_clone_resize_undo (gimp, TRUE);
++      g_print ("CLONE_RESIZE_UNDO_CAPTURE_COMPLETE\n");
++      return 0;
++    }
+   g_test_init (&argc, &argv, NULL);
+ 
+   gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
+diff --git a/configure.ac b/configure.ac
+index f47f24a189..fb1fdda870 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1747,11 +1747,11 @@ AC_ARG_WITH(linux-input, [  --without-linux-input   don't build linux input even
+ 
+ have_linux_input="no (linux input support disabled)"
+ if test "x$with_linux_input" != "xno"; then
+-  AC_CHECK_HEADER(linux/input.h,
+-	AC_CHECK_DECL(KEY_OK,
+-		have_linux_input=yes,
+-		have_linux_input="no (needs Linux 2.6)",
+-		[#include <linux/input.h>]))
++  AC_CHECK_HEADER([linux/input.h],
++        [AC_CHECK_DECL([KEY_OK],
++                [have_linux_input=yes],
++                [have_linux_input="no (needs Linux 2.6)"],
++                [#include <linux/input.h>])])
+ fi
+ 
+ AM_CONDITIONAL(HAVE_LINUX_INPUT, test "x$have_linux_input" = xyes)

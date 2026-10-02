@@ -787,46 +787,88 @@ static void clone_owner_image_relocation (void)
   pixel (GIMP_LAYER (clone), 0, 255, 0, 255);
   g_object_unref (destination);
 }
+static void cross_trace_pixel (const gchar *step, const gchar *target, GimpLayer *layer,
+                               gint r, gint g, gint b, gint a)
+{
+  guchar value[4];
+  gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)), GEGL_RECTANGLE (0, 0, 1, 1),
+                    1.0, babl_format ("R'G'B'A u8"), value, GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+  g_assert_cmpint (value[0], ==, r); g_assert_cmpint (value[1], ==, g);
+  g_assert_cmpint (value[2], ==, b); g_assert_cmpint (value[3], ==, a);
+  g_test_message ("CROSS_PIXEL step=%s target=%s rgba=%d,%d,%d,%d wh=%d,%d xy=%d,%d",
+                  step, target, value[0], value[1], value[2], value[3],
+                  gimp_item_get_width (GIMP_ITEM (layer)), gimp_item_get_height (GIMP_ITEM (layer)),
+                  gimp_item_get_offset_x (GIMP_ITEM (layer)), gimp_item_get_offset_y (GIMP_ITEM (layer)));
+}
 static void cross_image_copy_and_move (void)
 {
-  GimpImage *original = new_image ();
-  GimpImage *destination = new_image ();
+  GimpImage *original = gimp_image_new (gimp, 64, 64, GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR);
+  GimpImage *destination = gimp_image_new (gimp, 64, 64, GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR);
   GimpLayer *source = new_layer (original, "source", NULL, 0);
   GimpCloneLayer *clone = new_clone (original, source);
-  GimpLayer *copy;
-  GimpLayer *group, *inside, *internal_clone, *group_copy;
+  GimpLayer *copy, *group, *inside, *internal_clone, *group_copy;
+  GimpLayer *copied_inside, *copied_internal, *copied_external;
   fill (source, 204, 51, 102, 128);
+  gimp_item_set_offset (GIMP_ITEM (clone), 32, 30);
   copy = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (clone), destination, GIMP_TYPE_CLONE_LAYER));
-  gimp_image_add_layer (destination, copy, NULL, 0, FALSE);
+  g_assert_true (gimp_image_add_layer (destination, copy, NULL, 0, FALSE));
   g_assert_true (gimp_item_get_image (GIMP_ITEM (copy)) == destination);
+  g_assert_true (gimp_item_get_image (GIMP_ITEM (source)) == original);
   g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copy)) == source);
-  pixel (copy, 204, 51, 102, 128);
+  g_test_message ("CROSS_REF step=direct-copy source_original=1 clone_destination=1 same_source=1");
+  cross_trace_pixel ("direct-copy", "copy", copy, 204, 51, 102, 128);
   fill (source, 255, 0, 0, 255);
-  pixel (copy, 255, 0, 0, 255);
+  cross_trace_pixel ("source-red", "original", GIMP_LAYER (clone), 255, 0, 0, 255);
+  cross_trace_pixel ("source-red", "copy", copy, 255, 0, 0, 255);
   group = gimp_group_layer_new (original);
-  gimp_image_add_layer (original, group, NULL, 0, FALSE);
+  g_assert_true (gimp_image_add_layer (original, group, NULL, 0, FALSE));
   inside = new_layer (original, "inside", group, 0);
+  fill (inside, 0, 0, 255, 255);
   internal_clone = add_clone_child (original, group, "internal", inside);
   add_clone_child (original, group, "external", source);
   group_copy = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (group), destination, GIMP_TYPE_GROUP_LAYER));
-  gimp_image_add_layer (destination, group_copy, NULL, 0, FALSE);
-  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (child_named (group_copy, "internal"))) == child_named (group_copy, "inside"));
-  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (child_named (group_copy, "external"))) == source);
-  g_assert_true (gimp_item_get_image (GIMP_ITEM (child_named (group_copy, "inside"))) == destination);
+  g_assert_true (gimp_image_add_layer (destination, group_copy, NULL, 0, FALSE));
+  copied_inside = child_named (group_copy, "inside");
+  copied_internal = child_named (group_copy, "internal");
+  copied_external = child_named (group_copy, "external");
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copied_internal)) == copied_inside);
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copied_external)) == source);
+  g_assert_true (gimp_item_get_image (GIMP_ITEM (copied_inside)) == destination);
   g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (internal_clone)) == inside);
+  g_test_message ("CROSS_REF step=group-copy inside_destination=1 internal_remapped=1 external_original=1 original_unchanged=1");
+  cross_trace_pixel ("group-copy", "internal", copied_internal, 0, 0, 255, 255);
+  cross_trace_pixel ("group-copy", "external", copied_external, 255, 0, 0, 255);
+  fill (inside, 255, 255, 0, 255);
+  cross_trace_pixel ("original-inside-yellow", "original-internal", internal_clone, 255, 255, 0, 255);
+  cross_trace_pixel ("original-inside-yellow", "copied-internal", copied_internal, 0, 0, 255, 255);
+  fill (copied_inside, 0, 255, 255, 255);
+  cross_trace_pixel ("copied-inside-cyan", "original-internal", internal_clone, 255, 255, 0, 255);
+  cross_trace_pixel ("copied-inside-cyan", "copied-internal", copied_internal, 0, 255, 255, 255);
   /* Ordinary source relocation keeps the same live identity. */
   g_object_ref (source);
   gimp_image_remove_layer (original, source, FALSE, NULL);
   gimp_item_unset_removed (GIMP_ITEM (source));
   GIMP_ITEM_GET_CLASS (source)->convert (GIMP_ITEM (source), destination, GIMP_TYPE_LAYER);
-  gimp_image_add_layer (destination, source, NULL, 0, FALSE);
+  g_assert_true (gimp_image_add_layer (destination, source, NULL, 0, FALSE));
   g_object_unref (source);
+  g_assert_true (gimp_item_get_image (GIMP_ITEM (source)) == destination);
   g_assert_true (gimp_clone_layer_get_source (clone) == source);
   g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copy)) == source);
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copied_external)) == source);
+  g_test_message ("CROSS_REF step=source-relocated source_destination=1 original_same_source=1 copy_same_source=1 group_external_same_source=1");
   fill (source, 0, 255, 0, 255);
-  pixel (GIMP_LAYER (clone), 0, 255, 0, 255); pixel (copy, 0, 255, 0, 255);
+  cross_trace_pixel ("source-relocated-green", "original", GIMP_LAYER (clone), 0, 255, 0, 255);
+  cross_trace_pixel ("source-relocated-green", "copy", copy, 0, 255, 0, 255);
+  cross_trace_pixel ("source-relocated-green", "group-external", copied_external, 0, 255, 0, 255);
   g_object_unref (original);
   g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copy)) == source);
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copied_external)) == source);
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copied_internal)) == copied_inside);
+  g_test_message ("CROSS_REF step=original-closed copy_same_source=1 group_external_same_source=1 internal_remapped=1");
+  fill (source, 255, 0, 255, 255);
+  cross_trace_pixel ("original-closed-magenta", "copy", copy, 255, 0, 255, 255);
+  cross_trace_pixel ("original-closed-magenta", "group-external", copied_external, 255, 0, 255, 255);
+  cross_trace_pixel ("original-closed-magenta", "group-internal", copied_internal, 0, 255, 255, 255);
   g_object_unref (destination);
 }
 static void inherited_precision_conversion_undo (void)

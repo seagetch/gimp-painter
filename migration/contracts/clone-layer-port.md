@@ -158,8 +158,15 @@ Ordinary precision conversion uses inherited image/drawable Undo and is tested
 through u8-nonlinear to float-linear conversion and replay. The dormant legacy
 Clone conversion Undo helper was not a live caller path and is not revived.
 Current RGB-to-RGB direct/group copy and source relocation tests preserve direct
-external identity and remap copied internal group references. Their dedicated
-genuine legacy cross-image trace remains pending.
+external identity and remap copied internal group references. The separately
+sealed `legacy-clone-cross-image` package captures the same scene in the real
+old application. `compare_clone_cross_image.py` compares all 19 records exactly:
+4 reference-identity groups and 15 pixel/geometry samples, including independent
+internal-source edits, live source relocation, original-image closure and later
+updates. `clone-cross-image-comparison.json` binds both logs by SHA-256. No
+Clone implementation change was needed for this comparison. Original startup,
+transient unattached-projection and dangling-pointer teardown warnings remain in
+the legacy log; the port's weak lifetime repair intentionally avoids the latter.
 
 ## Verification
 
@@ -191,9 +198,10 @@ trailing-whitespace normalization), then run the sanitizer script with build dir
   UI callers; unchanged ordinary setters do not add reference Undo
 - This slice does not add a UI command or register CloneLayer in layer creation
   menus. Core GType registration is on demand
-- Indexed fixtures, component-visibility changes, arbitrary cross-image moves,
-  full transform/resize Undo ordering and compound saved artworks remain to be
-  compared with genuine old runtime cases
+- Indexed fixtures, component-visibility changes, cross-image workflows beyond
+  the measured ordinary RGB direct/group copy and live source relocation, full
+  transform/resize Undo ordering and compound saved artworks remain broader
+  comparison work
 - Source-driven resize now records the legacy clone DrawableModUndo and keeps the
   clone-owned mask geometry unchanged. The ordinary RGB case with/without white
   clone mask is verified for two Undo/Redo cycles, including the old non-ideal

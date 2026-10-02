@@ -1,4 +1,4 @@
-Log of Meson test suite run on 2026-10-02T10:54:11.833320
+Log of Meson test suite run on 2026-10-02T11:06:53.127148
 
 Reproducibility environment (explicit allowlist only):
 {
@@ -21,13 +21,13 @@ Reproducibility environment (explicit allowlist only):
 
 ==================================== 1/1 =====================================
 test:         gimp:app / gimp-clone-layer
-start time:   01:54:11
-duration:     4.33s
+start time:   02:06:53
+duration:     3.95s
 result:       exit status 0
-command:      GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=90 UI_TEST=yes /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-clone-layer
+command:      GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 MALLOC_PERTURB_=196 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common UI_TEST=yes UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu MESON_TEST_ITERATION=1 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-clone-layer
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02S1ba15b4398860d846a5998a45f907794
+# random seed: R02Scceba97f7a7336208c73921e8d813bd3
 # GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
 1..37
 # Start of gimp-clone-layer tests
@@ -35,7 +35,7 @@ ok 1 /gimp-clone-layer/retained_items_image_destroy
 ok 2 /gimp-clone-layer/retained_item_same_gimp_relocation
 ok 3 /gimp-clone-layer/replaced_item_weak_identity_transfer
 ok 4 /gimp-clone-layer/retained_item_gimp_lifetime
-# slow test /gimp-clone-layer/retained_item_gimp_lifetime executed in 2.13 secs
+# slow test /gimp-clone-layer/retained_item_gimp_lifetime executed in 1.99 secs
 ok 5 /gimp-clone-layer/serialization_reference_snapshot_and_restore
 ok 6 /gimp-clone-layer/undo_source_image_relocation
 ok 7 /gimp-clone-layer/clone_owner_image_relocation
@@ -46,6 +46,25 @@ ok 11 /gimp-clone-layer/source_reference_undo_all_states
 ok 12 /gimp-clone-layer/source_reference_undo_preserves_pending_live
 ok 13 /gimp-clone-layer/source_reference_undo_renamed_then_expired
 ok 14 /gimp-clone-layer/source_reference_undo_expired_cross_image
+# CROSS_REF step=direct-copy source_original=1 clone_destination=1 same_source=1
+# CROSS_PIXEL step=direct-copy target=copy rgba=204,51,102,128 wh=16,16 xy=32,30
+# CROSS_PIXEL step=source-red target=original rgba=255,0,0,255 wh=16,16 xy=32,30
+# CROSS_PIXEL step=source-red target=copy rgba=255,0,0,255 wh=16,16 xy=32,30
+# CROSS_REF step=group-copy inside_destination=1 internal_remapped=1 external_original=1 original_unchanged=1
+# CROSS_PIXEL step=group-copy target=internal rgba=0,0,255,255 wh=16,16 xy=0,0
+# CROSS_PIXEL step=group-copy target=external rgba=255,0,0,255 wh=16,16 xy=0,0
+# CROSS_PIXEL step=original-inside-yellow target=original-internal rgba=255,255,0,255 wh=16,16 xy=0,0
+# CROSS_PIXEL step=original-inside-yellow target=copied-internal rgba=0,0,255,255 wh=16,16 xy=0,0
+# CROSS_PIXEL step=copied-inside-cyan target=original-internal rgba=255,255,0,255 wh=16,16 xy=0,0
+# CROSS_PIXEL step=copied-inside-cyan target=copied-internal rgba=0,255,255,255 wh=16,16 xy=0,0
+# CROSS_REF step=source-relocated source_destination=1 original_same_source=1 copy_same_source=1 group_external_same_source=1
+# CROSS_PIXEL step=source-relocated-green target=original rgba=0,255,0,255 wh=16,16 xy=32,30
+# CROSS_PIXEL step=source-relocated-green target=copy rgba=0,255,0,255 wh=16,16 xy=32,30
+# CROSS_PIXEL step=source-relocated-green target=group-external rgba=0,255,0,255 wh=16,16 xy=0,0
+# CROSS_REF step=original-closed copy_same_source=1 group_external_same_source=1 internal_remapped=1
+# CROSS_PIXEL step=original-closed-magenta target=copy rgba=255,0,255,255 wh=16,16 xy=32,30
+# CROSS_PIXEL step=original-closed-magenta target=group-external rgba=255,0,255,255 wh=16,16 xy=0,0
+# CROSS_PIXEL step=original-closed-magenta target=group-internal rgba=0,255,255,255 wh=16,16 xy=0,0
 ok 15 /gimp-clone-layer/cross_image_copy_and_move
 ok 16 /gimp-clone-layer/inherited_precision_conversion_undo
 # RESIZE_TRACE mask=0 stage=baseline source_wh=16,16 source_xy=5,7 clone_wh=16,16 clone_xy=32,30 mask_wh=0,0 undo=0 redo=0

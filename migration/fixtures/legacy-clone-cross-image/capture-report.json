@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "capture_date": "2026-10-02",
+  "scope": "ordinary RGB-to-RGB direct/group copy, source relocation, original image closure",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "binary": {
+    "path": "/workspace/scratch/5b5281e79681/gimp-painter-legacy/app/tests/.libs/test-xcf",
+    "bytes": 38917752,
+    "sha256": "ab5fb12ad056919cd4eadc75b31fbb09f12ef8149ef828d941e46d57bca27a72"
+  },
+  "build_report": "../../baseline/legacy/build-report.json",
+  "build_report_sha256": "30143f703a99de765f739f3b80aeed24a802a92c4f750c5ec6444ca071487bc1",
+  "build_command": "make -C app/tests test-xcf CFLAGS=\"$(cat /workspace/shared/gimp-legacy-build/gimp-cflags.txt)\" CXXFLAGS='-g -O2 -include type_traits' LIBS='../gimp-features.o -lstdc++ ../presets/libapppresets.a -ljson-glib-1.0' ",
+  "build_environment": "build-env.sh",
+  "build_exit_code": 0,
+  "capture_command": "bash /workspace/shared/gimp-legacy-clone-cross-image/run-capture.sh",
+  "capture_exit_code": 0,
+  "source_overlay": "source-overlay.patch",
+  "modified_source_hashes": {
+    "app/base/glib-cxx-impl.hpp": "1aa2fc55ed146e8f1d865f83678ccec3167e9df9a14ef19f8ee707f2025c686f",
+    "app/core/gimpfilterlayer.cpp": "a7398609bebba4716bbfca07b8ae17ca63b187232ec4228c3e143d8eb86d261f",
+    "app/display/gimpdisplayshell-callbacks.c": "ad222c5d32278f5aa227e32d4699709e9054c3ba8f90d07f949c319320212565",
+    "app/display/gimpimagewindow.c": "ddcc08a455c98c488cb8b2340e300deb942b2c5f3bac2d270e14f68c03883f78",
+    "app/presets/preset-factory-gui.cpp": "c6d13c350df447f291d4408ce05c430e64cdd909555faa7fa32881b77b4e28de",
+    "app/signals.c": "b09db201145850b1404221b9d266fb7760d5541fd620845052fde00f3ef3e11e",
+    "app/tests/test-xcf.c": "fbd82ff091ba1f377896c48e65ecf2eadcf44d0c4f7dac225e311f5674ac21fc",
+    "configure.ac": "baeaf228a8975176b5dd2c4aaa84653bf8051942d89e68bfbb1fd41eb7e60cc4"
+  },
+  "unmodified_behavior_source_hashes": {
+    "app/core/gimpclonelayer.cpp": "3e4ea9bc3f77379989a81c35fe0ace8ad3fe0763c0d66c2765e361ce504ff4bb",
+    "app/core/gimpgrouplayer.c": "66dbca9480720c4bad1983e4bb2ede63dcc6f89f2be479a2f097e4d44553bfea",
+    "app/core/gimpitem.c": "ab94cf266e03ebbd5d7802b6bc6cddd1d8070a54cddbe822dbcd78a1618c60b0",
+    "app/core/gimplayer.c": "3da1fffe7178ae3434aeaa06da5e09919ed033fb9cb73f3122f9cc2c00dc1b54",
+    "app/core/gimplayer-project.c": "d40b8f6326b9bba02b9f535499eddcc59f0e03f530f450c5aeb19120542a9f80",
+    "app/core/gimpdrawablemodundo.c": "967a767196c380a69ccb686c7bf99a85e107fb6000134e5c9952dae0539b7476",
+    "app/core/gimpundostack.c": "79fe01d1123b27d6d2ada110d9b7ae1934d04b436e1f2747e3a356fb5755b907",
+    "app/core/gimpimage-undo.c": "546fb725f9fc07f2ff92c4c74202f67b49981f18181f0c93de45964f746cd9fc"
+  },
+  "observations": {
+    "reference_records": 4,
+    "pixel_geometry_records": 15,
+    "all_reference_predicates_true": true
+  },
+  "limits": [
+    "Existing documented reference rebuild, not historical binary-identical runtime",
+    "Valid RGB solid fills and direct/group identity observations; no GUI, indexed, Gray, precision or format round-trip claim",
+    "Raw original startup, projection and teardown warnings retained"
+  ]
+}

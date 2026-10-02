@@ -572,6 +572,7 @@
 | 14.016 | [ ] | source 削除の Undo を接続する | 14.015 | 復元後に追従が再開 |
 | 14.017 | [ ] | 画像終了時の解除を実装する | 14.016 | 遅延通知が clone を触らない |
 | 14.018 | [ ] | 参照が別画像へ移る操作を処理する | 14.017 | コピー・移動の旧意味と矛盾しない |
+| 14.018/genuine-rgb-comparison | [x] | 実旧版の画像間Clone複製・参照移動を比較する | 14.001/core-implementation, 14.015/reference-undo-snapshot, 05.003/retained-item-lifetime | RGB direct/group複製・内部/外部参照・移動・元画像終了後更新の19記録が実旧版と完全一致、37 app通常/focused sanitizer合格。未測定画像型/GUI等は別gate |
 | 14.019 | [ ] | CloneLayer の機能試験を実行する | 14.018, 13.014 | 位置・階層・参照・複製・削除の全 fixture に一致 |
 | 14.020 | [ ] | CloneLayer の保存後再編集を試験する | 14.019, 12.016 | 再読込後の source 編集が反映される |
 
