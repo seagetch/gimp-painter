@@ -3,11 +3,13 @@
 import gzip,hashlib,json
 from pathlib import Path
 root=Path(__file__).resolve().parents[2]
-for fixture,count in [('legacy-brush-geometry',288),('legacy-brush-geometry-pixmap',48)]:
+for fixture,count in [('legacy-brush-geometry',288),('legacy-brush-geometry-pixmap',48),('legacy-brush-geometry-angle-tie',144)]:
  folder=root/'migration/fixtures'/fixture;report=json.loads((folder/'runtime.json').read_text())
  assert report['commit']=='afa43fae3e920210146abed514f136fd49f671b5' and report['exit_code']==0
  assert hashlib.sha256((root/report['harness_source']).read_bytes()).hexdigest()==report['harness_sha256']
- rows=gzip.decompress((folder/'pixels.tsv.gz').read_bytes()).decode().splitlines();assert rows[-1]=='GEOMETRY_CAPTURE_COMPLETE';assert len(rows)==4*count+1
+ rows=gzip.decompress((folder/'pixels.tsv.gz').read_bytes()).decode().splitlines();assert rows[-1]=='GEOMETRY_CAPTURE_COMPLETE'
+ axes=[row for row in rows if row.startswith('GEOMETRY_AXES ')];assert len(axes)==(1 if fixture.endswith('angle-tie') else 0)
+ rows=[row for row in rows if not row.startswith('GEOMETRY_AXES ')];assert len(rows)==4*count+1
  grouped={}
  for row in rows[:-1]:
   tag,ident,phase,channels,hexdata=row.split();assert tag=='GEOMETRY_STROKE';data=bytes.fromhex(hexdata);assert len(data)==48*40*int(channels)

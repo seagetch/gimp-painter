@@ -68,9 +68,18 @@ and constant/incremental application are distributed across those cases.
 The original unmarked GIMP3 executable independently captured the same288 scenes
 before implementation, including selected paper and Painter modes.
 
-Normal runtime proof passes336 exact old full strokes, all2,592 actual old
-transformed mask records, all288 untouched-modern scenes and seven native
-property/reset/default/cache/invalid-domain/dynamics cases. Existing ordinary
-paper/mode, queued Smudge and three-route Fill regressions also pass. Focused
-ASan/UBSan/vptr and native GTK profile integration are being sealed separately.
-No real tablet or other-platform proof is implied by these byte comparisons.
+Normal and focused ASan/UBSan/vptr proof pass336 exact old full strokes,
+all2,592 actual old transformed mask records, all288 untouched-modern scenes
+and seven native property/reset/default/cache/invalid-domain/dynamics cases.
+Real GTK profile integration passes nine normal and nine instrumented tests.
+The focused build instruments26 units and separately rebuilds37 production
+C++ units for compatible RTTI/vptr metadata; it does not claim full-host
+instrumentation. LeakSanitizer is disabled in this environment.
+
+Existing ordinary paper/mode, queued Smudge and three-route Fill regressions,
+five dynamics tests and all four registered geometry Meson targets pass.
+An additional normal-only oracle captures144 two-spike generated strokes and
+native axes at0.0625 degrees. It rules out a suspected rounding-name difference:
+GIMP3 deliberately defines RINT as floor(x+.5), matching old ROUND for valid
+positive native angles. No speculative production correction was made.
+No real tablet or other-platform proof is implied by these comparisons.

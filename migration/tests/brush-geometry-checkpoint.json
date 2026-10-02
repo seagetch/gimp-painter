@@ -10,7 +10,8 @@
     "default_curve_values": 1028,
     "paper_regression_routes": 8,
     "dynamics_cases": 5,
-    "native_profile_cases": 9
+    "native_profile_cases": 9,
+    "registered_meson_targets": 4
   },
   "sanitizers": {
     "native_cases": 7,
@@ -137,13 +138,25 @@
     "brush-geometry-native-seal.log": "777f8c2e4a6774de1eaa874bcbd3de1816b313b9991e2bbbad77e42ba7a3f073",
     "brush-geometry-paper-regression.json": "0b997c7ebb172de172891767b5485fc09ee0b3362bcefcdbd5a9d080e1caa692",
     "brush-geometry-dynamics-regression.log": "489812964372868a808cc4daccd10a8ac7572be031ddc20fd36787b0d0be8644",
-    "brush-geometry-fixtures.log": "1cc1627add748ceb91528fdda92d1703a27b87a346c2495893a7a1b5850ce063",
+    "brush-geometry-fixtures.log": "87c2f1236bc47e22ff2080e029b9d2e6aa380d00ad8932376fcaf174fc426147",
     "brush-geometry-modern-before.json": "b02218094d19227818fbf219b12d316a1a65f801a29125ce90885917e46b6356",
-    "brush-geometry-modern-before.tsv.gz": "50f8a2395457ba71574e0f352929ef9b822feeb65c431ad4b8f6c7c1d5af0a2e"
+    "brush-geometry-modern-before.tsv.gz": "50f8a2395457ba71574e0f352929ef9b822feeb65c431ad4b8f6c7c1d5af0a2e",
+    "brush-geometry-angle-normal.json": "52f2dae905917dfab659f1200dcad887ff685d11dbb5b679e47c4f6c7090ec57",
+    "brush-geometry-meson.json": "fc557e76eb0c5ece47ce476b768c788c863fc13cad457af56de733b78c55e075",
+    "brush-geometry-meson.txt": "e0f38e5004627184f14f57ccb0148e6f48c47447b281f0d93cc60d497410a71f"
   },
   "remaining_gates": [
-    "Generated native half-millidegree axis-rounding edge capture is being investigated separately",
-    "Final registered Meson aggregate run pending",
-    "Real tablet, Windows and macOS remain outside this Linux proof"
-  ]
+    "Real tablet, Windows and macOS remain outside this Linux proof",
+    "Global migration and packaging gates remain coordinator-owned; no demonstrated ordinary-geometry defect remains in this slice"
+  ],
+  "implementation_commit": "99660bede4",
+  "supplement": {
+    "normal_only_old_generated_strokes": 144,
+    "native_axis_records": 1,
+    "records": 578,
+    "exact": true,
+    "production_changed": false,
+    "finding": "GIMP3 RINT intentionally expands to floor(x+.5); pinned ROUND and current native axes agree for the valid positive native-angle tie tested",
+    "report": "migration/tests/brush-geometry-angle-normal.json"
+  }
 }
