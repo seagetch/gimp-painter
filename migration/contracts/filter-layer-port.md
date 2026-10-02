@@ -197,8 +197,8 @@ prove the entire GIMP 3 lower-stack projection equals the old projection.
 
 ## Encoded color and execution admission
 
-Input sampling and result import use RGBA8 in the drawable's native Babl color
-space. An unqualified sRGB format was incorrect: the Adobe RGB opaque Gaussian
+Input sampling and result import use RGBA8 or Gray-alpha8 in the drawable's
+native Babl color space. An unqualified sRGB format was incorrect: the Adobe RGB opaque Gaussian
 fixture differed in 208 of 288 bytes before this correction. Both Gaussian
 methods now match all reference bytes under sRGB and Adobe RGB. Profile and
 format changes invalidate prepared/running/staged work. Reassigning profiles
@@ -206,14 +206,23 @@ while a worker is pending discards that generation and publishes a fresh result.
 These are targeted native-encoding transfer tests against genuine old reference
 bytes; the captures themselves were unprofiled, not a new old-ICC capture.
 
-Execution is currently admitted only for non-linear RGB U8. Unsupported reruns
-explicitly fail while retaining their definitions and committed cache; loading
-an existing completed cache does not discard it or attempt quantization. The old
-edge and Gaussian registrations accept RGB*/GRAY*, not indexed. Therefore Gray
-execution remains a valid-old-format migration requirement. High precision and
-linear U8 are modern extensions without a 2.8 byte-level oracle and require an
-explicit conversion contract. This temporary guard is not a compatibility claim
-or a permanent removal of old Gray support.
+Execution admits non-linear RGB and Gray U8. Native Gray input is sampled as
+`Y'A u8`, then Y is replicated across the channel-independent byte kernel;
+result import extracts Y and alpha without an RGB-to-Gray color conversion.
+`migration/fixtures/legacy-gray-filter/` contains 77 genuine old-PDB Gray and
+Gray-alpha outputs: all detectors/borders, both Gaussian methods, degenerate
+sizes, tile boundaries, hidden Gray, low alpha and plain Gray without alpha.
+Every byte matches the independent executors. Actual GIMP tests compare opaque
+reference pixels under default, custom linear and custom Lab Gray profiles,
+and with a source without alpha. This establishes native channel transfer, not
+all lower-stack composition or an old profiled-image oracle.
+
+Unsupported reruns explicitly fail while retaining definitions and committed
+cache; loading an existing completed cache does not discard it or attempt
+quantization. The old edge and Gaussian registrations accept RGB*/GRAY*, not
+indexed, and both actual indexed probes fail as recorded in the Gray corpus.
+High precision and linear U8 are modern extensions without a 2.8 byte-level
+oracle and still require an explicit conversion contract.
 
 Stored procedure names and string arguments from XCF are untrusted input.
 Execution must stay an explicit allowlist of side-effect-free transformation
@@ -230,12 +239,16 @@ an acceptable shortcut to procedure compatibility.
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 57 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 61 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release
 - `app/tests/test-gimp-filter-layout.cpp`: actual C/C++ layout comparison and
   named owning handle construction in that same test executable
+- `app/painter/tests/test-filter-gray.cpp`: 77 native Gray/Gray-alpha byte
+  comparisons against the actual old executable; `run_filter_gray_sanitizers.py`
+  independently instruments both kernels and this corpus, including float-cast
+  overflow checks
 - `migration/tests/filter-layer-testlog.{txt,json}`: normal Meson results
 - `migration/tests/run_filter_layer_sanitizers.py` and
   `filter-layer-sanitizers.json`: reproducible focused ASan/UBSan run. Private

@@ -495,11 +495,13 @@ struct FilterImpl
     if (elapsed > 4000) budget = std::max (std::size_t (1024), count / 2);
     else if (elapsed < 2000) budget = std::min (std::size_t (FilterScheduler::pixel_budget), budget * 2);
   }
+  bool gray () const
+  { return gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_GRAY; }
   const Babl *encoded_format () const
   {
     /* Legacy plug-ins calculate on encoded native bytes, not a conversion to
      * default sRGB. Input and import must use the same drawable color space. */
-    return babl_format_with_space ("R'G'B'A u8",
+    return babl_format_with_space (gray () ? "Y'A u8" : "R'G'B'A u8",
       babl_format_get_space (gimp_drawable_get_format (GIMP_DRAWABLE (owner))));
   }
   GeglRectangle rectangle (std::size_t offset, std::size_t count)
@@ -538,13 +540,13 @@ struct FilterImpl
       return scheduler.step (false, {}, {}, {});
     const auto previous = scheduler.state ();
     scheduler.set_pixel_budget (previous == FilterScheduler::State::importing ? import_budget : read_budget);
-    /* The genuine 2.8 reference is encoded RGB8. Do not silently quantize
-     * float/linear/gray/indexed inputs and claim the same transformation.
+    /* The genuine 2.8 references use native encoded RGB/Gray bytes. Do not
+     * silently quantize float/linear/indexed inputs and claim compatibility.
      * Already loaded caches remain usable; unsupported reruns retain them. */
     if (previous != FilterScheduler::State::clean && previous != FilterScheduler::State::failed &&
-        (gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) != GIMP_RGB ||
+        ((gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) != GIMP_RGB && !gray ()) ||
          gimp_drawable_get_precision (GIMP_DRAWABLE (owner)) != GIMP_PRECISION_U8_NON_LINEAR))
-      scheduler.reject ("Legacy filter execution currently requires non-linear RGB U8; original definition and cache are retained");
+      scheduler.reject ("Legacy filter execution currently requires non-linear RGB/Gray U8; original definition and cache are retained");
     bool failed = false;
     graph_recheck = false;
     const bool dependencies_ready = ready (failed);
@@ -572,8 +574,23 @@ struct FilterImpl
         rect.y += gimp_item_get_offset_y (GIMP_ITEM (owner));
         const auto size = input.size ();
         input.resize (size + count * 4);
-        gegl_node_blit (below_node, 1.0, &rect, encoded_format (), input.data () + size,
-                        GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_CACHE);
+        if (gray ())
+          {
+            /* Gray is one encoded channel, not RGB luminance. Replication lets
+             * the channel-independent legacy kernels retain their exact byte
+             * arithmetic without introducing an ICC RGB/Gray conversion. */
+            std::vector<std::uint8_t> native (count * 2);
+            gegl_node_blit (below_node, 1.0, &rect, encoded_format (), native.data (),
+                            GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_CACHE);
+            for (std::size_t i = 0; i < count; ++i)
+              {
+                input[size + i * 4] = input[size + i * 4 + 1] = input[size + i * 4 + 2] = native[i * 2];
+                input[size + i * 4 + 3] = native[i * 2 + 1];
+              }
+          }
+        else
+          gegl_node_blit (below_node, 1.0, &rect, encoded_format (), input.data () + size,
+                          GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_CACHE);
         if (!input_current (generation)) return;
         tune_budget (count, g_get_monotonic_time () - read_started, read_budget);
       },
@@ -585,7 +602,20 @@ struct FilterImpl
             staged = ObjectRef<GObject>::adopt (G_OBJECT (gegl_buffer_new (&extent, gimp_drawable_get_format (GIMP_DRAWABLE (owner)))));
           }
         auto rect = rectangle (offset, count);
-        gegl_buffer_set (GEGL_BUFFER (staged.get ()), &rect, 0, encoded_format (), pixels, GEGL_AUTO_ROWSTRIDE);
+        if (gray ())
+          {
+            std::vector<std::uint8_t> native (count * 2);
+            for (std::size_t i = 0; i < count; ++i)
+              {
+                if (pixels[i * 4] != pixels[i * 4 + 1] || pixels[i * 4] != pixels[i * 4 + 2])
+                  throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Legacy Gray executor returned unequal channels");
+                native[i * 2] = pixels[i * 4];
+                native[i * 2 + 1] = pixels[i * 4 + 3];
+              }
+            gegl_buffer_set (GEGL_BUFFER (staged.get ()), &rect, 0, encoded_format (), native.data (), GEGL_AUTO_ROWSTRIDE);
+          }
+        else
+          gegl_buffer_set (GEGL_BUFFER (staged.get ()), &rect, 0, encoded_format (), pixels, GEGL_AUTO_ROWSTRIDE);
         tune_budget (count, g_get_monotonic_time () - import_started, import_budget);
       },
       [&] (std::uint64_t token) {

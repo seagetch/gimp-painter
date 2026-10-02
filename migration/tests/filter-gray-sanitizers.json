@@ -1,0 +1,46 @@
+{
+  "scope": "Independent Edge/Gauss kernels and 77 genuine native Gray/Gray-alpha corpus cases; system libraries uninstrumented",
+  "sources": [
+    "app/painter/filter-edge.cpp",
+    "app/painter/filter-gauss.cpp",
+    "app/painter/tests/test-filter-gray.cpp"
+  ],
+  "command": [
+    "g++",
+    "-std=c++14",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-g",
+    "-O1",
+    "-pthread",
+    "-fsanitize=address,undefined,float-cast-overflow",
+    "-fno-omit-frame-pointer",
+    "-frtti",
+    "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-edge.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-gauss.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/tests/test-filter-gray.cpp",
+    "-o",
+    "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-gray-sanitizers/painter-filter-gray"
+  ],
+  "test_command": [
+    "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-gray-sanitizers/painter-filter-gray",
+    "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv"
+  ],
+  "source_sha256": {
+    "app/painter/filter-edge.cpp": "a35017aa27349108bf3b3dd34bc534c2ae4cf7de923f2acd2fccad4193927bd4",
+    "app/painter/filter-gauss.cpp": "8c3c67e3517ee1881ed15bc61b2c040ae63548a44a75f0834df0e41a895bc568",
+    "app/painter/tests/test-filter-gray.cpp": "7aaebd3878c30be8be615b18772317326595003e816385aea9d5ae7037c16575"
+  },
+  "manifest_sha256": "7efffd87e557e59634dbd54210bdf12018be25703eea9a5c595d92e6140a2669",
+  "sanitizers": [
+    "address",
+    "undefined",
+    "float-cast-overflow"
+  ],
+  "leak_detection": false,
+  "exit_code": 0,
+  "stdout": "Legacy executable native Gray/Gray-alpha byte comparisons: 77 passed\n",
+  "stderr": ""
+}

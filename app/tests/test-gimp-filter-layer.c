@@ -1173,11 +1173,70 @@ static void gaussian_native_srgb (void) { native_gaussian_fixture (FALSE,FALSE);
 static void gaussian_native_adobe (void) { native_gaussian_fixture (TRUE,FALSE); }
 static void profile_reassignment_discards_worker (void) { native_gaussian_fixture (FALSE,TRUE); }
 
+/* Native Gray transfer is deliberately not an RGB conversion. The captured
+ * old executable worked on Y/YA bytes; profiles change their interpretation,
+ * not its channel arithmetic. Exercise both kernels and both Gaussian paths. */
+static void native_gray_fixture (gint profile_kind, gboolean alpha)
+{
+  GimpImage *image = gimp_image_new (gimp,9,8,GIMP_GRAY,GIMP_PRECISION_U8_NON_LINEAR);
+  GimpColorProfile *profile = NULL;
+  GimpLayer *source;
+  GimpFilterLayer *filter;
+  const Babl *native;
+  gchar *path, *input = NULL, *expected = NULL;
+  gsize input_size, expected_size;
+  guchar actual[9*8*2], source_y[9*8];
+  GError *error = NULL;
+  if (profile_kind == 1) profile = gimp_color_profile_new_d65_gray_linear ();
+  if (profile_kind == 2) profile = gimp_color_profile_new_d50_gray_lab_trc ();
+  if (profile)
+    {
+      g_assert_true (gimp_image_set_color_profile (image,profile,&error)); g_assert_no_error (error);
+      g_object_unref (profile);
+    }
+  native = gimp_image_get_layer_format (image,alpha);
+  source = gimp_layer_new (image,9,8,native,"native Gray source",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+  gimp_image_add_layer (image,source,NULL,0,FALSE);
+  path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),
+                          "migration/fixtures/legacy-gray-filter/input-opaque.ya",NULL);
+  g_assert_true (g_file_get_contents (path,&input,&input_size,NULL)); g_free (path);
+  g_assert_cmpuint (input_size, ==, sizeof actual);
+  for (guint i = 0; i < G_N_ELEMENTS (source_y); ++i) source_y[i] = input[i*2];
+  gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)),GEGL_RECTANGLE (0,0,9,8),0,
+                  native,alpha ? (gpointer) input : (gpointer) source_y,GEGL_AUTO_ROWSTRIDE); g_free (input);
+  gimp_drawable_update (GIMP_DRAWABLE (source),0,0,9,8);
+  filter = filter_new (image,NULL,9,8);
+  for (gint variant = 0; variant < 3; ++variant)
+    {
+      GimpValueArray *args = variant == 2 ? edge_args () :
+        gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,
+          G_TYPE_DOUBLE,25.0,G_TYPE_DOUBLE,25.0,G_TYPE_INT,variant,G_TYPE_NONE);
+      g_assert_true (gimp_filter_layer_set_definition (filter,variant == 2 ? "plug-in-edge" : "plug-in-gauss",NULL,args,NULL));
+      gimp_value_array_unref (args); settle (filter);
+      native = gimp_drawable_get_format (GIMP_DRAWABLE (filter));
+      g_assert_true (native == gimp_image_get_layer_format (image,TRUE));
+      g_assert_cmpint (babl_format_get_bytes_per_pixel (native), ==, 2);
+      path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration/fixtures/legacy-gray-filter",
+        variant == 2 ? "edge-opaque-m0-w2-a2.ya" :
+          (variant ? "gauss-opaque-h25-v25-m1.ya" : "gauss-opaque-h25-v25-m0.ya"),NULL);
+      g_assert_true (g_file_get_contents (path,&expected,&expected_size,NULL)); g_free (path);
+      gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)),GEGL_RECTANGLE (0,0,9,8),1.0,
+                      native,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      g_assert_cmpmem (actual,sizeof actual,expected,expected_size); g_free (expected);
+    }
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 3);
+  g_object_unref (image);
+}
+static void gray_native_default (void) { native_gray_fixture (0,TRUE); }
+static void gray_native_linear_profile (void) { native_gray_fixture (1,TRUE); }
+static void gray_native_lab_profile (void) { native_gray_fixture (2,TRUE); }
+static void gray_without_source_alpha (void) { native_gray_fixture (0,FALSE); }
+
 static void unsupported_precision_retains_cache (void)
 {
   static const struct { GimpImageBaseType base; GimpPrecision precision; } cases[] = {
     {GIMP_RGB,GIMP_PRECISION_FLOAT_LINEAR}, {GIMP_RGB,GIMP_PRECISION_U16_NON_LINEAR},
-    {GIMP_RGB,GIMP_PRECISION_U8_LINEAR}, {GIMP_GRAY,GIMP_PRECISION_U8_NON_LINEAR}
+    {GIMP_RGB,GIMP_PRECISION_U8_LINEAR}, {GIMP_GRAY,GIMP_PRECISION_FLOAT_LINEAR}
   };
   static const guchar original[] = {0,255,12,27,36};
   for (guint i = 0; i < G_N_ELEMENTS (cases); ++i)
@@ -1198,7 +1257,7 @@ static void unsupported_precision_retains_cache (void)
       g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
       g_assert_true (cache == gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)));
       message = gimp_filter_layer_dup_error (filter);
-      g_assert_nonnull (strstr (message,"requires non-linear RGB U8")); g_free (message);
+      g_assert_nonnull (strstr (message,"requires non-linear RGB/Gray U8")); g_free (message);
       saved = gimp_filter_layer_ref_definition (filter);
       g_assert_cmpmem (g_bytes_get_data (saved,NULL),g_bytes_get_size (saved),original,sizeof original);
       g_bytes_unref (saved); g_object_unref (cache); g_object_unref (image);
@@ -1617,6 +1676,7 @@ int main (int argc, char **argv)
   ADD (dependency_walk_does_not_resolve_pending_names); ADD (changed_dependency_invalidation_can_close_owner);
   ADD (completion_flushes_image_projection); ADD (long_chain_coalesces_state_notifications); ADD (complex_graph_remains_responsive); ADD (cached_graph_tracks_clone_reassignment);
   ADD (clone_filter_dependency_order); ADD (cached_dependency_close_before_start); ADD (cross_image_filter_cycle_has_no_signal_loop);
+  ADD (gray_native_default); ADD (gray_native_linear_profile); ADD (gray_native_lab_profile); ADD (gray_without_source_alpha);
   ADD (gaussian_native_srgb); ADD (gaussian_native_adobe); ADD (profile_reassignment_discards_worker); ADD (unsupported_precision_retains_cache);
   ADD (gaussian_legacy_fixture); ADD (duplicate_failure_releases_partial); ADD (definition_undo_redo); ADD (hidden_filter_and_offset); ADD (cpp_header_layout); ADD (clone_filter_dependency_cycle); ADD (main_context_remains_responsive);
   ADD (object_arguments_do_not_cycle); ADD (expired_object_records_and_reassignment);
