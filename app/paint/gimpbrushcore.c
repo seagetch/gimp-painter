@@ -47,6 +47,7 @@
 #include "gimpbrushcore-kernels.h"
 
 #include "gimppaintoptions.h"
+#include "gimppainterbrushgeometry.h"
 #include "gimppainterpaper.h"
 #include "gimppainterpaper-paste.h"
 
@@ -117,7 +118,21 @@ static void      gimp_brush_core_invalidate_cache   (GimpBrush         *brush,
                                                      GimpBrushCore     *core);
 
 
-G_DEFINE_TYPE (GimpBrushCore, gimp_brush_core, GIMP_TYPE_PAINT_CORE)
+typedef struct
+{
+  GimpTempBuf *buffer;
+  GimpBrush *brush; /* borrowed key, never dereferenced; main_brush owns children */
+  gdouble scale, aspect, angle, hardness;
+  gboolean reflect, valid;
+} LegacyTransform;
+
+typedef struct
+{
+  gboolean enabled;
+  LegacyTransform mask, pixmap;
+} GimpBrushCorePrivate;
+
+G_DEFINE_TYPE_WITH_PRIVATE (GimpBrushCore, gimp_brush_core, GIMP_TYPE_PAINT_CORE)
 
 #define parent_class gimp_brush_core_parent_class
 
@@ -234,6 +249,10 @@ gimp_brush_core_finalize (GObject *object)
 {
   GimpBrushCore *core = GIMP_BRUSH_CORE (object);
   gint           i, j;
+
+  GimpBrushCorePrivate *priv = gimp_brush_core_get_instance_private (core);
+  g_clear_pointer (&priv->mask.buffer, gimp_temp_buf_unref);
+  g_clear_pointer (&priv->pixmap.buffer, gimp_temp_buf_unref);
 
   g_clear_object (&core->texture);
   g_clear_pointer (&core->texturized_brush, gimp_temp_buf_unref);
@@ -378,6 +397,9 @@ gimp_brush_core_start (GimpPaintCore     *paint_core,
   GimpImage     *image   = NULL;
 
   g_return_val_if_fail (drawables != NULL, FALSE);
+
+  gimp_painter_brush_geometry_enable (core,
+    gimp_painter_brush_geometry_options (paint_options));
 
   gimp_brush_core_set_brush (core, gimp_context_get_brush (context));
 
@@ -1006,11 +1028,20 @@ gimp_brush_core_get_paint_buffer (GimpPaintCore    *paint_core,
   gint           offset_change_x, offset_change_y;
   GimpCoords     new_coords;
 
-  gimp_brush_transform_size (core->brush,
-                             core->scale, core->aspect_ratio,
-                             gimp_brush_core_get_angle (core),
-                             gimp_brush_core_get_reflect (core),
-                             &brush_width, &brush_height);
+  if (gimp_painter_brush_geometry_enabled (core))
+    {
+      const GimpTempBuf *mask = gimp_brush_core_transform_mask (core, core->brush);
+      if (! mask)
+        return NULL;
+      brush_width = gimp_temp_buf_get_width (mask);
+      brush_height = gimp_temp_buf_get_height (mask);
+    }
+  else
+    gimp_brush_transform_size (core->brush,
+                               core->scale, core->aspect_ratio,
+                               gimp_brush_core_get_angle (core),
+                               gimp_brush_core_get_reflect (core),
+                               &brush_width, &brush_height);
 
   if (paint_width)
     *paint_width  = brush_width;
@@ -1097,8 +1128,12 @@ static void
 gimp_brush_core_real_set_brush (GimpBrushCore *core,
                                 GimpBrush     *brush)
 {
+  GimpBrushCorePrivate *priv = gimp_brush_core_get_instance_private (core);
   if (brush == core->main_brush)
     return;
+
+  priv->mask.valid = priv->pixmap.valid = FALSE;
+  priv->mask.brush = priv->pixmap.brush = NULL;
 
   if (core->main_brush)
     {
@@ -1179,7 +1214,7 @@ gimp_brush_core_paste_canvas (GimpBrushCore            *core,
       off_x = (x < 0) ? -x : 0;
       off_y = (y < 0) ? -y : 0;
 
-      if (core->texture)
+      if (core->texture || gimp_painter_brush_geometry_enabled (core))
         {
           GError *error = NULL;
           gboolean handled = gimp_painter_paper_paste (paint_core, brush_mask,
@@ -1254,6 +1289,9 @@ static void
 gimp_brush_core_invalidate_cache (GimpBrush     *brush,
                                   GimpBrushCore *core)
 {
+  GimpBrushCorePrivate *priv = gimp_brush_core_get_instance_private (core);
+  priv->mask.valid = priv->pixmap.valid = FALSE;
+
   /* Make sure we don't cache data for a brush that has changed */
 
   core->subsample_cache_invalid = TRUE;
@@ -1279,6 +1317,9 @@ gimp_brush_core_get_angle (GimpBrushCore *core)
   else
     angle += core->symmetry_angle;
 
+  if (gimp_painter_brush_geometry_enabled (core))
+    return angle;
+
   angle = fmod (angle, 1.0);
 
   if (angle < 0.0)
@@ -1293,6 +1334,63 @@ gimp_brush_core_get_reflect (GimpBrushCore *core)
   return core->reflect ^ core->symmetry_reflect;
 }
 
+gboolean
+gimp_painter_brush_geometry_enabled (GimpBrushCore *core)
+{
+  g_return_val_if_fail (GIMP_IS_BRUSH_CORE (core), FALSE);
+  return ((GimpBrushCorePrivate *) gimp_brush_core_get_instance_private (core))->enabled;
+}
+
+void
+gimp_painter_brush_geometry_enable (GimpBrushCore *core, gboolean enabled)
+{
+  GimpBrushCorePrivate *priv;
+  g_return_if_fail (GIMP_IS_BRUSH_CORE (core));
+  priv = gimp_brush_core_get_instance_private (core);
+  if (priv->enabled != !!enabled)
+    {
+      priv->enabled = !!enabled;
+      priv->mask.valid = priv->pixmap.valid = FALSE;
+      core->transform_brush = core->transform_pixmap = NULL;
+      core->subsample_cache_invalid = core->solid_cache_invalid = TRUE;
+    }
+}
+
+static const GimpTempBuf *
+gimp_brush_core_legacy_transform (GimpBrushCore *core, GimpBrush *brush,
+                                  gboolean pixmap)
+{
+  GimpBrushCorePrivate *priv = gimp_brush_core_get_instance_private (core);
+  LegacyTransform *cache = pixmap ? &priv->pixmap : &priv->mask;
+  const gdouble angle = gimp_brush_core_get_angle (core);
+  const gboolean reflect = gimp_brush_core_get_reflect (core);
+  GimpTempBuf *result;
+  GError *error = NULL;
+
+  if (cache->valid && cache->brush == brush && cache->scale == core->scale &&
+      cache->aspect == core->aspect_ratio && cache->angle == angle &&
+      cache->hardness == core->hardness && cache->reflect == reflect)
+    return cache->buffer;
+
+  result = gimp_painter_brush_geometry_transform (brush, core->scale,
+    core->aspect_ratio, angle, reflect, core->hardness, pixmap, &error);
+  if (! result)
+    {
+      g_warning ("Unable to transform legacy brush: %s", error ? error->message : "Unknown error");
+      g_clear_error (&error);
+      cache->valid = FALSE;
+      return NULL;
+    }
+  /* Allocate before freeing the previous buffer; pointer reuse must not hide
+   * a changed stamp from the existing subsample/solid cache invalidation. */
+  g_clear_pointer (&cache->buffer, gimp_temp_buf_unref);
+  cache->buffer = result; cache->brush = brush;
+  cache->scale = core->scale; cache->aspect = core->aspect_ratio;
+  cache->angle = angle; cache->hardness = core->hardness;
+  cache->reflect = reflect; cache->valid = TRUE;
+  return cache->buffer;
+}
+
 static const GimpTempBuf *
 gimp_brush_core_transform_mask (GimpBrushCore *core,
                                 GimpBrush     *brush)
@@ -1302,7 +1400,10 @@ gimp_brush_core_transform_mask (GimpBrushCore *core,
   if (core->scale <= 0.0)
     return NULL;
 
-  mask = gimp_brush_transform_mask (brush,
+  if (gimp_painter_brush_geometry_enabled (core))
+    mask = gimp_brush_core_legacy_transform (core, brush, FALSE);
+  else
+    mask = gimp_brush_transform_mask (brush,
                                     core->scale,
                                     core->aspect_ratio,
                                     gimp_brush_core_get_angle (core),
@@ -1424,7 +1525,10 @@ gimp_brush_core_get_brush_pixmap (GimpBrushCore *core)
   if (core->scale <= 0.0)
     return NULL;
 
-  pixmap = gimp_brush_transform_pixmap (core->brush,
+  if (gimp_painter_brush_geometry_enabled (core))
+    pixmap = gimp_brush_core_legacy_transform (core, core->brush, TRUE);
+  else
+    pixmap = gimp_brush_transform_pixmap (core->brush,
                                         core->scale,
                                         core->aspect_ratio,
                                         gimp_brush_core_get_angle (core),
@@ -1446,12 +1550,23 @@ gimp_brush_core_eval_transform_dynamics (GimpBrushCore     *core,
                                          GimpPaintOptions  *paint_options,
                                          const GimpCoords  *coords)
 {
+  gimp_painter_brush_geometry_enable (core,
+    gimp_painter_brush_geometry_options (paint_options));
+
   if (core->main_brush)
     {
       gdouble max_side;
 
-      max_side = MAX (gimp_brush_get_width  (core->main_brush),
-                      gimp_brush_get_height (core->main_brush));
+      if (gimp_painter_brush_geometry_enabled (core))
+        {
+          gint width, height;
+          if (! gimp_painter_brush_geometry_size (core->main_brush, &width, &height, NULL))
+            { core->scale = -1; return; }
+          max_side = MAX (width, height);
+        }
+      else
+        max_side = MAX (gimp_brush_get_width  (core->main_brush),
+                        gimp_brush_get_height (core->main_brush));
 
       core->scale = paint_options->brush_size / max_side;
 
@@ -1593,6 +1708,19 @@ gimp_brush_core_color_area_with_pixmap (GimpBrushCore    *core,
     mask = gimp_brush_core_transform_mask (core, core->brush);
   else
     mask = NULL;
+
+  if (gimp_painter_brush_geometry_enabled (core))
+    {
+      GError *error = NULL;
+      if (! gimp_painter_brush_geometry_color (pixmap, mask, area, coords,
+                                               area_x, area_y, &error))
+        {
+          g_warning ("Unable to color legacy brush: %s", error ? error->message : "Unknown error");
+          g_clear_error (&error);
+          gegl_buffer_clear (area, NULL);
+        }
+      return;
+    }
 
   /*  Calculate upper left corner of brush as in
    *  gimp_paint_core_get_paint_area.  Ugly to have to do this here, too.

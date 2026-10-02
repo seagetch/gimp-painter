@@ -826,6 +826,7 @@
 |---|:---:|---|---|---|
 | 22.001 | [ ] | 紙目座標の仕様を固定する | 09.017, 20.018 | 画像・layer・stroke の原点と位相を記録 |
 | 22.001/native-paper-runtime | [x] | 通常BrushCoreと共有Texture・queued Fill/Smudgeへ旧紙目演算を接続する | 23.005/native-smudge-tool, 27.010/bounded-interpolation, 21.018/native-gray-surface | native12/GTK7通常・29source sanitizer＋28 RTTI-only合格。216mask/1296変形入力・24+384定義済通常scene/Smudge48×2/Fill12×3 exact。Clipboard snapshotとsignal最終ref/失敗no-fallbackを検証。旧未定義DSTは安全拡張、geometry全体/platform/tabletは未完了 |
+| 22.001/native-legacy-geometry | [x] | 旧profile由来の通常brush geometry・既定curve・pixmapを保持する | 22.001/native-paper-runtime, 30.010/native-profile-migration | 2592旧mask/336旧全strokeとUndoRedoがexact、288未指定modern scene不変。native7/26unit sanitizer＋37 RTTI-only、GTK profile9通常/sanitizer合格。固定marker/private POD/cacheとstateless mathで二重Implなし。追加angle tie/aggregate/platformは別gate |
 | 22.002 | [ ] | 紙目資源の読取りを接続する | 22.001 | 階調・alpha・反復を旧仕様と一致 |
 | 22.003 | [ ] | 紙目 mask の生成を実装する | 22.002 | grain と contrast の数値を反映 |
 | 22.004 | [ ] | 動的紙目の dab 更新を実装する | 22.003 | 入力カーブ変化が dab ごとに反映 |

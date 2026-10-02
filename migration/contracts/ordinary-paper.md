@@ -107,10 +107,10 @@ this adapter does not replace that contract.
   rate0/50/100, selection and Undo/Redo
 - `legacy-paper-transform`:1,296 paired actual old masks including3 bitmap
   and3 generated shapes, scale/angle/aspect changes and negative x. These are
-  exact inputs for paper-kernel/phase verification. Full transformed/generated
-  GIMP3 BrushCore geometry is a separate legacy-origin-options follow-on;
-  this fixture does not claim that ordinary modern geometry matches the old
-  native brush transform
+  exact inputs for paper-kernel/phase verification. Explicit
+  `painter-legacy-brush-geometry` options now consume all2,592 records including
+  the untextured masks through the separate geometry adapter; see
+  `ordinary-brush-geometry.md`. Ordinary unmarked modern geometry is unchanged
 
 `run_paper_checks.py` compares every supported pixel record and all2 Smudge/
 3 Fill owned routes; `compare_paper.py` registers normal/mode comparisons in

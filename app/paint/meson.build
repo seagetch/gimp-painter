@@ -47,6 +47,7 @@ libapppaint_sources = [
   'gimpmybrushoptions.c',
   'gimpmybrushsurface.c',
   'gimppaintbrush.c',
+  'gimppainterbrushgeometry.cpp',
   'gimppaintcore-loops.cc',
   'gimppaintcore-stroke.c',
   'gimppaintcore.c',

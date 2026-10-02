@@ -518,3 +518,32 @@ if not meson.is_cross_build()
       'UI_TEST=yes',
     ], suite: 'painter', is_parallel: false, timeout: 60)
 endif
+
+# Explicit-provenance ordinary geometry: real old and untouched-modern oracles.
+painter_brush_geometry_trace = executable('painter-brush-geometry-trace', 'painter-brush-geometry-trace.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+painter_brush_geometry_test = executable('painter-brush-geometry', 'test-painter-brush-geometry.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('painter-brush-geometry', painter_brush_geometry_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes', 'GSETTINGS_BACKEND=memory'], suite: 'painter', is_parallel: false, timeout: 120)
+if not meson.is_cross_build()
+  foreach geometry_case : ['strokes', 'pixmap']
+    test('painter-brush-geometry-' + geometry_case, painter_brush_settings_python,
+      args: [meson.project_source_root() / 'migration/tests/compare_brush_geometry.py',
+             painter_brush_geometry_trace,
+             '--report', meson.current_build_dir() / ('brush-geometry-' + geometry_case + '.json')] +
+            (geometry_case == 'pixmap' ? ['--pixmap'] : []),
+      env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+            'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+            'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+            'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 180)
+  endforeach
+  test('painter-brush-geometry-fixtures', painter_brush_settings_python,
+    args: [meson.project_source_root() / 'migration/tests/test_brush_geometry_fixtures.py'],
+    suite: 'painter', is_parallel: false, timeout: 60)
+endif

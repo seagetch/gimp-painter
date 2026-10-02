@@ -63,15 +63,20 @@ new Normal changes the compositor. The importer materializes `painter-normal`
 for old contexts/options without an explicit mode. The named old enum table is
 used; no numeric coincidence is treated as compatibility.
 
-Old BrushCore read native brush spacing; modern non-GUI preset objects otherwise
-start at .1. Old generated-mask hardness multiplied native brush hardness, while
-modern ordinary BrushCore treats its base hardness as absolute. One-shot config
-bridges resolve these missing values from the selected brush, after the brush
-reference has loaded. They add no instance field or new ownership store, return
-false when read and save their resulting numeric options normally. Explicit
-spacing/hardness/link fields are not replaced. Painter Smudge's exact old mask
-helper already multiplies native hardness, so its hardness is not normalized.
-Painter MyPaint's independent engine is not normalized this way either.
+Old BrushCore read native brush spacing. Proven ordinary BrushCore option and
+preset records now materialize `painter-legacy-brush-geometry` before their brush
+fields; ordinary modern options, Painter MyPaint and dedicated Painter Smudge
+are not inferred from mode or paper settings. The persistent boolean selects
+the original generated/bitmap geometry, including native angle/aspect and
+multiplicative hardness, and survives normal saving and brush-option copying.
+One-shot config bridges resolve missing spacing and hardness after the brush
+reference has loaded. Marked ordinary geometry keeps hardness as multiplier1,
+so native hardness is applied exactly once. Unmarked options retain the modern
+absolute native-hardness normalization. The one-shot properties return false
+when read and save resulting numeric options normally. Explicit spacing,
+hardness, link and provenance fields are not replaced. Painter Smudge's own
+exact old mask helper already multiplies native hardness and is not normalized;
+Painter MyPaint's independent engine is not normalized either.
 
 `save-tool-options` was false by default in the pinned old application. Missing
 old option files are therefore supplied with only the implied mode/native brush

@@ -33,6 +33,7 @@ extern "C"
 #include "core/gimptempbuf.h"
 
 #include "gimpbrushcore.h"
+#include "gimppainterbrushgeometry.h"
 #include "gimpbrushcore-loops.h"
 
 } /* extern "C" */
@@ -294,7 +295,7 @@ gimp_brush_core_subsample_mask (GimpBrushCore     *core,
     {
       gimp_brush_core_subsample_mask_impl<guchar> (mask, dest,
                                                    dest_offset_x, dest_offset_y,
-                                                   index1, index2, core->texture != NULL);
+                                                   index1, index2, core->texture != NULL || gimp_painter_brush_geometry_enabled (core));
     }
   else if (mask_format == babl_format ("Y float"))
     {
@@ -498,7 +499,7 @@ gimp_brush_core_pressurize_mask (GimpBrushCore     *core,
   /* Painter's byte paper consumes the old pressure mask, whose accumulated
    * double lookup truncates (modern SimplePressure rounds). Keep float masks
    * and ordinary non-paper brushes on the native high-precision path. */
-  if (core->texture &&
+  if ((core->texture || gimp_painter_brush_geometry_enabled (core)) &&
       gimp_temp_buf_get_format (subsample_mask) == babl_format ("Y u8"))
     {
       if (! std::isfinite (pressure) || pressure < 0.0)

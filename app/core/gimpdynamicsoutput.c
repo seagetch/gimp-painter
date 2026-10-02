@@ -27,6 +27,7 @@
 #include "core-types.h"
 
 #include "paint/gimppaintoptions.h"
+#include "paint/gimppainterbrushgeometry.h"
 
 
 #include "gimpcurve.h"
@@ -449,6 +450,43 @@ gimp_dynamics_output_is_enabled (GimpDynamicsOutput *output)
           private->use_fade);
 }
 
+/* The pinned default smooth curve was calculated as a cubic straight line;
+ * modern default construction leaves no control points and exact linear
+ * samples. Recreate the old two sample values only for an explicitly legacy
+ * empty default smooth curve. Curves with points already carry their own
+ * original samples. Shared curves and modern lookups are never changed. */
+static gdouble
+gimp_dynamics_output_legacy_neutral_sample (gint index, gint count)
+{
+  const gdouble t = (gdouble) index / (count - 1);
+  return (1 - t) * (1 - t) * t +
+         2 * (1 - t) * t * t + t * t * t;
+}
+
+static gdouble
+gimp_dynamics_output_map_value (GimpCurve *curve, gdouble value,
+                                GimpPaintOptions *options)
+{
+  if (! options || ! gimp_painter_brush_geometry_options (options) ||
+      curve->n_points != 0 || curve->curve_type != GIMP_CURVE_SMOOTH)
+    return gimp_curve_map_value (curve, value);
+
+  if (value > 0.0 && value < 1.0)
+    {
+      gdouble f;
+      gint index;
+      value *= curve->n_samples - 1;
+      index = (gint) value;
+      f = value - index;
+      return (1.0 - f) * gimp_dynamics_output_legacy_neutral_sample (index, curve->n_samples) +
+             f * gimp_dynamics_output_legacy_neutral_sample (index + 1, curve->n_samples);
+    }
+  else if (value >= 1.0)
+    return 1.0;
+  else
+    return 0.0;
+}
+
 gdouble
 gimp_dynamics_output_get_linear_value (GimpDynamicsOutput *output,
                                        const GimpCoords   *coords,
@@ -462,30 +500,30 @@ gimp_dynamics_output_get_linear_value (GimpDynamicsOutput *output,
 
   if (private->use_pressure)
     {
-      total += gimp_curve_map_value (private->pressure_curve,
-                                     coords->pressure);
+      total += gimp_dynamics_output_map_value (private->pressure_curve,
+                                     coords->pressure, options);
       factors++;
     }
 
   if (private->use_velocity)
     {
-      total += gimp_curve_map_value (private->velocity_curve,
-                                    (1.0 - coords->velocity));
+      total += gimp_dynamics_output_map_value (private->velocity_curve,
+                                    (1.0 - coords->velocity), options);
       factors++;
     }
 
   if (private->use_direction)
     {
-      total += gimp_curve_map_value (private->direction_curve,
-                                     fmod (coords->direction + 0.5, 1));
+      total += gimp_dynamics_output_map_value (private->direction_curve,
+                                     fmod (coords->direction + 0.5, 1), options);
       factors++;
     }
 
   if (private->use_tilt)
     {
-      total += gimp_curve_map_value (private->tilt_curve,
+      total += gimp_dynamics_output_map_value (private->tilt_curve,
                                      (1.0 - sqrt (SQR (coords->xtilt) +
-                                      SQR (coords->ytilt))));
+                                      SQR (coords->ytilt))), options);
       factors++;
     }
 
@@ -495,20 +533,20 @@ gimp_dynamics_output_get_linear_value (GimpDynamicsOutput *output,
 
       wheel = coords->wheel;
 
-      total += gimp_curve_map_value (private->wheel_curve, wheel);
+      total += gimp_dynamics_output_map_value (private->wheel_curve, wheel, options);
       factors++;
     }
 
   if (private->use_random)
     {
-      total += gimp_curve_map_value (private->random_curve,
-                                     g_random_double_range (0.0, 1.0));
+      total += gimp_dynamics_output_map_value (private->random_curve,
+                                     g_random_double_range (0.0, 1.0), options);
       factors++;
     }
 
   if (private->use_fade)
     {
-      total += gimp_curve_map_value (private->fade_curve, fade_point);
+      total += gimp_dynamics_output_map_value (private->fade_curve, fade_point, options);
 
       factors++;
     }
@@ -537,22 +575,22 @@ gimp_dynamics_output_get_angular_value (GimpDynamicsOutput *output,
 
   if (private->use_pressure)
     {
-      total += gimp_curve_map_value (private->pressure_curve,
-                                     coords->pressure);
+      total += gimp_dynamics_output_map_value (private->pressure_curve,
+                                     coords->pressure, options);
       factors++;
     }
 
   if (private->use_velocity)
     {
-      total += gimp_curve_map_value (private->velocity_curve,
-                                    (1.0 - coords->velocity));
+      total += gimp_dynamics_output_map_value (private->velocity_curve,
+                                    (1.0 - coords->velocity), options);
       factors++;
     }
 
   if (private->use_direction)
     {
-      gdouble angle = gimp_curve_map_value (private->direction_curve,
-                                            coords->direction);
+      gdouble angle = gimp_dynamics_output_map_value (private->direction_curve,
+                                            coords->direction, options);
 
       if (options->brush_lock_to_view)
         {
@@ -602,7 +640,7 @@ gimp_dynamics_output_get_angular_value (GimpDynamicsOutput *output,
       while (tilt < 0.0)
         tilt += 1.0;
 
-      total += gimp_curve_map_value (private->tilt_curve, tilt);
+      total += gimp_dynamics_output_map_value (private->tilt_curve, tilt, options);
       factors++;
     }
 
@@ -610,20 +648,20 @@ gimp_dynamics_output_get_angular_value (GimpDynamicsOutput *output,
     {
       gdouble angle = 1.0 - fmod(0.5 + coords->wheel, 1);
 
-      total += gimp_curve_map_value (private->wheel_curve, angle);
+      total += gimp_dynamics_output_map_value (private->wheel_curve, angle, options);
       factors++;
     }
 
   if (private->use_random)
     {
-      total += gimp_curve_map_value (private->random_curve,
-                                     g_random_double_range (0.0, 1.0));
+      total += gimp_dynamics_output_map_value (private->random_curve,
+                                     g_random_double_range (0.0, 1.0), options);
       factors++;
     }
 
   if (private->use_fade)
     {
-      total += gimp_curve_map_value (private->fade_curve, fade_point);
+      total += gimp_dynamics_output_map_value (private->fade_curve, fade_point, options);
 
       factors++;
     }
@@ -653,22 +691,22 @@ gimp_dynamics_output_get_aspect_value (GimpDynamicsOutput *output,
 
   if (private->use_pressure)
     {
-      total += gimp_curve_map_value (private->pressure_curve,
-                                     coords->pressure);
+      total += gimp_dynamics_output_map_value (private->pressure_curve,
+                                     coords->pressure, options);
       factors++;
     }
 
   if (private->use_velocity)
     {
-      total += gimp_curve_map_value (private->velocity_curve,
-                                     coords->velocity);
+      total += gimp_dynamics_output_map_value (private->velocity_curve,
+                                     coords->velocity, options);
       factors++;
     }
 
   if (private->use_direction)
     {
-      gdouble direction = gimp_curve_map_value (private->direction_curve,
-                                                coords->direction);
+      gdouble direction = gimp_dynamics_output_map_value (private->direction_curve,
+                                                coords->direction, options);
 
       if (((direction > 0.875) && (direction <= 1.0)) ||
           ((direction > 0.0) && (direction < 0.125))  ||
@@ -683,8 +721,8 @@ gimp_dynamics_output_get_aspect_value (GimpDynamicsOutput *output,
     {
       gdouble tilt_value =  MAX (fabs (coords->xtilt), fabs (coords->ytilt));
 
-      tilt_value = gimp_curve_map_value (private->tilt_curve,
-                                         tilt_value);
+      tilt_value = gimp_dynamics_output_map_value (private->tilt_curve,
+                                         tilt_value, options);
 
       total += tilt_value;
 
@@ -693,8 +731,8 @@ gimp_dynamics_output_get_aspect_value (GimpDynamicsOutput *output,
 
   if (private->use_wheel)
     {
-      gdouble wheel = gimp_curve_map_value (private->wheel_curve,
-                                            coords->wheel);
+      gdouble wheel = gimp_dynamics_output_map_value (private->wheel_curve,
+                                            coords->wheel, options);
 
       if (((wheel > 0.875) && (wheel <= 1.0)) ||
           ((wheel > 0.0) && (wheel < 0.125))  ||
@@ -708,8 +746,8 @@ gimp_dynamics_output_get_aspect_value (GimpDynamicsOutput *output,
 
   if (private->use_random)
     {
-      gdouble random = gimp_curve_map_value (private->random_curve,
-                                             g_random_double_range (0.0, 1.0));
+      gdouble random = gimp_dynamics_output_map_value (private->random_curve,
+                                             g_random_double_range (0.0, 1.0), options);
 
       total += random;
       factors++;
@@ -717,7 +755,7 @@ gimp_dynamics_output_get_aspect_value (GimpDynamicsOutput *output,
 
   if (private->use_fade)
     {
-      total += gimp_curve_map_value (private->fade_curve, fade_point);
+      total += gimp_dynamics_output_map_value (private->fade_curve, fade_point, options);
 
       factors++;
     }

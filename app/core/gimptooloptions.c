@@ -244,8 +244,14 @@ gimp_tool_options_set_property (GObject      *object,
           GimpBrush *brush = gimp_context_get_brush (GIMP_CONTEXT (options));
           if (property && G_IS_PARAM_SPEC_DOUBLE (property) && brush)
             {
-              gdouble number = property_id == PROP_PAINTER_LEGACY_SPACING ?
+              gboolean legacy_geometry = FALSE;
+              gdouble number;
+              if (g_object_class_find_property (G_OBJECT_GET_CLASS (object),
+                                                 "painter-legacy-brush-geometry"))
+                g_object_get (object, "painter-legacy-brush-geometry", &legacy_geometry, NULL);
+              number = property_id == PROP_PAINTER_LEGACY_SPACING ?
                 (gdouble) gimp_brush_get_spacing (brush) / 100.0 :
+                legacy_geometry ? 1.0 :
                 GIMP_IS_BRUSH_GENERATED (brush) ?
                 gimp_brush_generated_get_hardness (GIMP_BRUSH_GENERATED (brush)) : 1.0;
               g_object_set (options, name, number, NULL);

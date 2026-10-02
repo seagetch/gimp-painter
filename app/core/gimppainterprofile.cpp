@@ -237,6 +237,9 @@ void convert(const std::vector<Node>&nodes,const std::string&kind,std::vector<Ed
       std::string defaults;
       if(a->value!="GimpPainterDeviceOptions" && !contains_property(n.children,"paint-mode"))
         defaults+="\n(paint-mode painter-normal)";
+      if(old_brush_options(a->value) && a->value!="GimpSmudgeOptions" &&
+         !contains_property(n.children,"painter-legacy-brush-geometry"))
+        edits.push_back({a->end,a->end,"\n(painter-legacy-brush-geometry yes)"});
       if(old_brush_options(a->value) && !explicit_spacing(n.children))
         defaults+="\n(painter-legacy-native-spacing yes)";
       if(old_brush_options(a->value) && a->value!="GimpSmudgeOptions" && !explicit_hardness(n.children))
@@ -270,6 +273,8 @@ std::string transform(const std::string&input,const std::string&kind,bool origin
   if((kind=="contextrc" || kind.compare(0,13,"tool-options/")==0) && !contains_property(nodes,"paint-mode"))
     output+="\n(paint-mode painter-normal)\n";
   if(kind.compare(0,13,"tool-options/")==0 && old_brush_tool(kind.substr(13))) {
+    if(kind.substr(13)!="gimp-smudge-tool" && !contains_property(nodes,"painter-legacy-brush-geometry"))
+      output="(painter-legacy-brush-geometry yes)\n"+output;
     if(!explicit_spacing(nodes))output+="\n(painter-legacy-native-spacing yes)\n";
     if(kind.substr(13)!="gimp-smudge-tool" && !explicit_hardness(nodes))
       output+="\n(painter-legacy-native-hardness yes)\n";
@@ -457,6 +462,7 @@ extern "C" gboolean gimp_painter_profile_migrate(const gchar*source,const gchar*
           const auto path=join("tool-options",tool(name));
           std::string defaults="# Implicit defaults from legacy toolrc\n(paint-mode painter-normal)\n";
           if(old_brush_tool(name)) {
+            if(name!="gimp-smudge-tool")defaults+="(painter-legacy-brush-geometry yes)\n";
             defaults+="(painter-legacy-native-spacing yes)\n";
             if(name!="gimp-smudge-tool")defaults+="(painter-legacy-native-hardness yes)\n";
           }

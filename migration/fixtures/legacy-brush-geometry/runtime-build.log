@@ -1,0 +1,37 @@
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtkobject.h:37,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtkwidget.h:36,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtkcontainer.h:35,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtkbin.h:35,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtkwindow.h:36,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtkdialog.h:35,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtkaboutdialog.h:32,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtk.h:33,
+                 from /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-brush-geometry/capture.c:4:
+/workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtktypeutils.h:236:1: warning: ‘GTypeDebugFlags’ is deprecated [-Wdeprecated-declarations]
+  236 | void            gtk_type_init   (GTypeDebugFlags    debug_flags);
+      | ^~~~
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib-object.h:24,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/gioenums.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/giotypes.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/gio.h:28,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gdk/gdk.h:32,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtk.h:32:
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:725:1: note: declared here
+  725 | {
+      | ^
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtktoolitem.h:31,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtktoolbutton.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtkmenutoolbutton.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtk.h:126:
+/workspace/shared/gimp-build-deps/root/usr/include/gtk-2.0/gtk/gtktooltips.h:73:3: warning: ‘GTimeVal’ is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+   73 |   GTimeVal last_popdown;
+      |   ^~~~~~~~
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib/galloca.h:34,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib.h:32,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gbinding.h:30:
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib/gtypes.h:580:8: note: declared here
+  580 | struct _GTimeVal
+      |        ^~~~~~~~~

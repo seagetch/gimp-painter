@@ -37,6 +37,7 @@
 
 #include "gimpbrushcore.h"
 #include "gimppaintoptions.h"
+#include "gimppainterbrushgeometry.h"
 
 #include "gimp-intl.h"
 
@@ -110,6 +111,7 @@ enum
   PROP_APPLICATION_MODE,
   PROP_HARD,
   PROP_USE_TEXTURE,
+  PROP_PAINTER_LEGACY_BRUSH_GEOMETRY,
 
   PROP_USE_JITTER,
   PROP_JITTER_AMOUNT,
@@ -171,8 +173,14 @@ static gboolean     gimp_paint_options_copy              (GimpConfig       *src,
 static void         gimp_paint_options_reset             (GimpConfig       *config);
 
 
+typedef struct
+{
+  gboolean legacy_brush_geometry;
+} GimpPaintOptionsPrivate;
+
 G_DEFINE_TYPE_WITH_CODE (GimpPaintOptions, gimp_paint_options,
                          GIMP_TYPE_TOOL_OPTIONS,
+                         G_ADD_PRIVATE (GimpPaintOptions)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
                                                 gimp_paint_options_config_iface_init))
 
@@ -193,6 +201,10 @@ gimp_paint_options_class_init (GimpPaintOptionsClass *klass)
   object_class->get_property    = gimp_paint_options_get_property;
 
   context_class->brush_changed  = gimp_paint_options_brush_changed;
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_PAINTER_LEGACY_BRUSH_GEOMETRY,
+                            "painter-legacy-brush-geometry", NULL, NULL,
+                            FALSE, GIMP_PARAM_STATIC_STRINGS);
 
   g_object_class_install_property (object_class, PROP_PAINT_INFO,
                                    g_param_spec_object ("paint-info",
@@ -568,6 +580,10 @@ gimp_paint_options_set_property (GObject      *object,
       options->use_applicator = g_value_get_boolean (value);
       break;
 
+    case PROP_PAINTER_LEGACY_BRUSH_GEOMETRY:
+      ((GimpPaintOptionsPrivate *) gimp_paint_options_get_instance_private (options))->legacy_brush_geometry = g_value_get_boolean (value);
+      break;
+
     case PROP_BRUSH_SIZE:
       options->brush_size = g_value_get_double (value);
       break;
@@ -729,6 +745,10 @@ gimp_paint_options_get_property (GObject    *object,
 
     case PROP_USE_APPLICATOR:
       g_value_set_boolean (value, options->use_applicator);
+      break;
+
+    case PROP_PAINTER_LEGACY_BRUSH_GEOMETRY:
+      g_value_set_boolean (value, gimp_painter_brush_geometry_options (options));
       break;
 
     case PROP_BRUSH_SIZE:
@@ -1136,7 +1156,13 @@ gimp_paint_options_set_default_brush_size (GimpPaintOptions *paint_options,
       gint height;
       gint width;
 
-      gimp_brush_transform_size (brush, 1.0, 0.0, 0.0, FALSE, &width, &height);
+      if (gimp_painter_brush_geometry_options (paint_options))
+        {
+          if (! gimp_painter_brush_geometry_size (brush, &width, &height, NULL))
+            return;
+        }
+      else
+        gimp_brush_transform_size (brush, 1.0, 0.0, 0.0, FALSE, &width, &height);
 
       g_object_set (paint_options,
                     "brush-size", (gdouble) MAX (height, width),
@@ -1154,7 +1180,8 @@ gimp_paint_options_set_default_brush_angle (GimpPaintOptions *paint_options,
   if (! brush)
     brush = gimp_context_get_brush (GIMP_CONTEXT (paint_options));
 
-  if (GIMP_IS_BRUSH_GENERATED (brush))
+  if (GIMP_IS_BRUSH_GENERATED (brush) &&
+      ! gimp_painter_brush_geometry_options (paint_options))
     {
       GimpBrushGenerated *generated_brush = GIMP_BRUSH_GENERATED (brush);
 
@@ -1180,7 +1207,8 @@ gimp_paint_options_set_default_brush_aspect_ratio (GimpPaintOptions *paint_optio
   if (! brush)
     brush = gimp_context_get_brush (GIMP_CONTEXT (paint_options));
 
-  if (GIMP_IS_BRUSH_GENERATED (brush))
+  if (GIMP_IS_BRUSH_GENERATED (brush) &&
+      ! gimp_painter_brush_geometry_options (paint_options))
     {
       GimpBrushGenerated *generated_brush = GIMP_BRUSH_GENERATED (brush);
       gdouble             ratio;
@@ -1229,7 +1257,8 @@ gimp_paint_options_set_default_brush_hardness (GimpPaintOptions *paint_options,
   if (! brush)
     brush = gimp_context_get_brush (GIMP_CONTEXT (paint_options));
 
-  if (GIMP_IS_BRUSH_GENERATED (brush))
+  if (GIMP_IS_BRUSH_GENERATED (brush) &&
+      ! gimp_painter_brush_geometry_options (paint_options))
     {
       GimpBrushGenerated *generated_brush = GIMP_BRUSH_GENERATED (brush);
 
@@ -1265,6 +1294,7 @@ gimp_paint_options_enable_dynamics (GimpPaintOptions *paint_options,
 
 static const gchar *brush_props[] =
 {
+  "painter-legacy-brush-geometry",
   "brush-size",
   "brush-angle",
   "brush-aspect-ratio",
@@ -1393,4 +1423,12 @@ gimp_paint_options_copy_props (GimpPaintOptions    *src,
       while (n_props--)
         g_value_unset (&values[n_props]);
     }
+}
+
+/* Kept in native private data: this boolean is not a C++ implementation owner. */
+gboolean
+gimp_painter_brush_geometry_options (GimpPaintOptions *options)
+{
+  g_return_val_if_fail (GIMP_IS_PAINT_OPTIONS (options), FALSE);
+  return ((GimpPaintOptionsPrivate *) gimp_paint_options_get_instance_private (options))->legacy_brush_geometry;
 }

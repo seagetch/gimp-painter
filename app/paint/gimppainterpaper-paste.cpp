@@ -8,6 +8,7 @@ extern "C" {
 #include "gimppainterpaper-paste.h"
 #include "gimpairbrush.h"
 #include "gimpbrushcore.h"
+#include "gimppainterbrushgeometry.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimptempbuf.h"
@@ -26,7 +27,8 @@ gimp_painter_paper_paste (GimpPaintCore *core, const GimpTempBuf *mask,
                           GimpLayerMode paint_mode, GimpPaintApplicationMode mode,
                           GError **error)
 {
-  if (!GIMP_IS_BRUSH_CORE (core) || !GIMP_BRUSH_CORE (core)->texture ||
+  if (!GIMP_IS_BRUSH_CORE (core) ||
+      (!GIMP_BRUSH_CORE (core)->texture && !gimp_painter_brush_geometry_enabled (GIMP_BRUSH_CORE (core))) ||
       !gimp_painter_layer_mode_is_compatibility (paint_mode) ||
       gimp_image_get_precision (gimp_item_get_image (GIMP_ITEM (drawable))) !=
         GIMP_PRECISION_U8_NON_LINEAR)

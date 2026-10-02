@@ -41,6 +41,7 @@
 #include "core/gimptempbuf.h"
 
 #include "gimppaintbrush.h"
+#include "gimppainterbrushgeometry.h"
 #include "gimppaintoptions.h"
 
 #include "gimp-intl.h"
@@ -325,7 +326,8 @@ _gimp_paintbrush_motion (GimpPaintCore    *paint_core,
        * (unless using an applicator, which currently modifies the paint buffer
        * in-place).
        */
-      if (paint_core->applicators                  ||
+      if ((paint_pixmap && gimp_painter_brush_geometry_enabled (brush_core)) ||
+          paint_core->applicators                  ||
           paint_buffer != paintbrush->paint_buffer ||
           paint_pixmap != paintbrush->paint_pixmap ||
           (! paint_pixmap &&
@@ -351,7 +353,8 @@ _gimp_paintbrush_motion (GimpPaintCore    *paint_core,
                                                     paint_buffer,
                                                     paint_buffer_x,
                                                     paint_buffer_y,
-                                                    FALSE);
+                                                    gimp_painter_brush_geometry_enabled (brush_core) &&
+                                                    gimp_paint_options_get_brush_mode (paint_options) == GIMP_BRUSH_SOFT);
           else
             gegl_buffer_set_color (paint_buffer, NULL, paint_color);
         }

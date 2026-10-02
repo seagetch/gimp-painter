@@ -135,9 +135,9 @@ static void old_native_brush_defaults () {
     auto*text=convert(old.c_str(),"preset");auto*preset=GIMP_TOOL_PRESET(g_object_new(GIMP_TYPE_TOOL_PRESET,"gimp",gimp,nullptr));deserialize(GIMP_CONFIG(preset),text);g_free(text);return preset;
   };
   auto*preset=load("");gdouble spacing=0,hardness=0;g_object_get(preset->tool_options,"brush-spacing",&spacing,"brush-hardness",&hardness,nullptr);
-  g_assert_cmpfloat_with_epsilon(spacing,.37,1e-6);g_assert_cmpfloat_with_epsilon(hardness,.42,1e-6);
+  g_assert_cmpfloat_with_epsilon(spacing,.37,1e-6);g_assert_cmpfloat_with_epsilon(hardness,1.0,1e-6);
   auto*text=gimp_config_serialize_to_string(GIMP_CONFIG(preset),nullptr);g_assert_null(strstr(text,"(painter-legacy-native-spacing yes)"));g_assert_null(strstr(text,"(painter-legacy-native-hardness yes)"));
-  auto*copy=GIMP_TOOL_PRESET(g_object_new(GIMP_TYPE_TOOL_PRESET,"gimp",gimp,nullptr));deserialize(GIMP_CONFIG(copy),text);g_free(text);g_object_get(copy->tool_options,"brush-spacing",&spacing,"brush-hardness",&hardness,nullptr);g_assert_cmpfloat_with_epsilon(spacing,.37,1e-6);g_assert_cmpfloat_with_epsilon(hardness,.42,1e-6);g_object_unref(copy);g_object_unref(preset);
+  auto*copy=GIMP_TOOL_PRESET(g_object_new(GIMP_TYPE_TOOL_PRESET,"gimp",gimp,nullptr));deserialize(GIMP_CONFIG(copy),text);g_free(text);g_object_get(copy->tool_options,"brush-spacing",&spacing,"brush-hardness",&hardness,nullptr);g_assert_cmpfloat_with_epsilon(spacing,.37,1e-6);g_assert_cmpfloat_with_epsilon(hardness,1.0,1e-6);g_object_unref(copy);g_object_unref(preset);
   preset=load("(brush-spacing .73) (brush-hardness .91)");g_object_get(preset->tool_options,"brush-spacing",&spacing,"brush-hardness",&hardness,nullptr);g_assert_cmpfloat_with_epsilon(spacing,.73,1e-6);g_assert_cmpfloat_with_epsilon(hardness,.91,1e-6);g_object_unref(preset);
   gimp_container_remove(container,GIMP_OBJECT(brush));g_object_unref(brush);
 }
