@@ -80,6 +80,15 @@ implementation store.
   copy current. Tests cover ordinary/frozen Undo dirty callbacks, undo-event
   closure, configuration/property reentry, retired-payload callbacks, and stale,
   incomplete and reentered duplicates
+- Image Undo/Redo holds an operation-local image lease through stack pop and
+  deferred notification thaw. Strong Undo/Redo holds the lease across every pop
+  and records weak-Undo classification before callback entry, never revisiting
+  a borrowed Undo pointer afterward. This fixes a reproduced fatal invalid redo
+  stack when a clean callback released the last outside image reference.
+  Ordinary/strong Undo and Redo each exercise clean/dirty, undo-event, and
+  deferred-notify last-owner release; strong event cases also clear history.
+  Explicit disposal/reentrant arbitrary history mutation beyond these cases is
+  not a general upstream Undo reentrancy guarantee
 
 ## Scheduler and source boundary
 
@@ -254,7 +263,7 @@ an acceptable shortcut to procedure compatibility.
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 63 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 67 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release

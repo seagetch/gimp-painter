@@ -159,7 +159,7 @@ gboolean
 gimp_image_strong_undo (GimpImage *image)
 {
   GimpImagePrivate *private;
-  GimpUndo         *undo;
+  gboolean          weak;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
 
@@ -168,16 +168,22 @@ gimp_image_strong_undo (GimpImage *image)
   g_return_val_if_fail (private->pushing_undo_group == GIMP_UNDO_GROUP_NONE,
                         FALSE);
 
-  undo = gimp_undo_stack_peek (private->undo_stack);
+  /* Keep the complete multi-pop operation alive across user callbacks. */
+  g_object_ref (image);
+  weak = gimp_undo_is_weak (gimp_undo_stack_peek (private->undo_stack));
 
   gimp_image_undo (image);
 
-  while (gimp_undo_is_weak (undo))
+  while (weak)
     {
-      undo = gimp_undo_stack_peek (private->undo_stack);
-      if (gimp_undo_is_weak (undo))
+      /* A callback may clear history. Do not dereference a borrowed Undo
+       * from the previous pop after control has returned from that callback. */
+      weak = gimp_undo_is_weak (gimp_undo_stack_peek (private->undo_stack));
+      if (weak)
         gimp_image_undo (image);
     }
+
+  g_object_unref (image);
 
   return TRUE;
 }
@@ -192,7 +198,7 @@ gboolean
 gimp_image_strong_redo (GimpImage *image)
 {
   GimpImagePrivate *private;
-  GimpUndo         *undo;
+  gboolean          weak;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
 
@@ -201,16 +207,22 @@ gimp_image_strong_redo (GimpImage *image)
   g_return_val_if_fail (private->pushing_undo_group == GIMP_UNDO_GROUP_NONE,
                         FALSE);
 
-  undo = gimp_undo_stack_peek (private->redo_stack);
+  /* Keep the complete multi-pop operation alive across user callbacks. */
+  g_object_ref (image);
+  weak = gimp_undo_is_weak (gimp_undo_stack_peek (private->redo_stack));
 
   gimp_image_redo (image);
 
-  while (gimp_undo_is_weak (undo))
+  while (weak)
     {
-      undo = gimp_undo_stack_peek (private->redo_stack);
-      if (gimp_undo_is_weak (undo))
+      /* A callback may clear history. Do not dereference a borrowed Undo
+       * from the previous pop after control has returned from that callback. */
+      weak = gimp_undo_is_weak (gimp_undo_stack_peek (private->redo_stack));
+      if (weak)
         gimp_image_redo (image);
     }
+
+  g_object_unref (image);
 
   return TRUE;
 }
@@ -472,6 +484,10 @@ gimp_image_undo_pop_stack (GimpImage     *image,
   GimpUndo            *undo;
   GimpUndoAccumulator  accum = { 0, };
 
+  /* clean/dirty, undo-event and deferred notify handlers may release the
+   * caller's last image reference. Its stacks must survive the entire pop,
+   * including the final notification thaw. This lease is operation-local. */
+  g_object_ref (image);
   g_object_freeze_notify (G_OBJECT (image));
 
   undo = gimp_undo_stack_pop_undo (undo_stack, undo_mode, &accum);
@@ -510,6 +526,7 @@ gimp_image_undo_pop_stack (GimpImage     *image,
     }
 
   g_object_thaw_notify (G_OBJECT (image));
+  g_object_unref (image);
 }
 
 static void

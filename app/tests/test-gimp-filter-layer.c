@@ -1714,6 +1714,65 @@ static void image_close_reentry_during_completion_flush (void)
   pixel (GIMP_LAYER (filter),0,0,0,255); g_object_unref (filter);
 }
 
+typedef struct { gboolean called, notify_phase, clear_history; } UndoOwnerRelease;
+static void undo_owner_release (GimpImage *image, UndoOwnerRelease *state)
+{
+  if (state->called) return;
+  state->called = TRUE;
+  if (state->clear_history) gimp_image_undo_free (image);
+  g_object_unref (image);
+}
+static void undo_owner_dirty_clean (GimpImage *image, GimpDirtyMask mask, gpointer data)
+{
+  UndoOwnerRelease *state = data;
+  if (state->notify_phase) g_object_notify (G_OBJECT (image),"width");
+  else undo_owner_release (image,state);
+}
+static void undo_owner_event (GimpImage *image, GimpUndoEvent event, GimpUndo *undo, gpointer data)
+{
+  if (event == GIMP_UNDO_EVENT_UNDO || event == GIMP_UNDO_EVENT_REDO)
+    undo_owner_release (image,data);
+}
+static void undo_owner_notify (GObject *image, GParamSpec *spec, gpointer data)
+{ undo_owner_release (GIMP_IMAGE (image),data); }
+static void undo_owner_lifetime (gboolean redo, gboolean strong)
+{
+  for (guint phase = 0; phase < 3; ++phase)
+    {
+      GimpImage *image = image_new (8,8);
+      GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+      GimpValueArray *args = edge_args ();
+      UndoOwnerRelease state = {FALSE,phase == 2,strong && phase == 1};
+      gint finalized = 0;
+      g_assert_true (gimp_filter_layer_edit_definition (filter,"plug-in-edge",NULL,args,NULL));
+      gimp_value_array_unref (args);
+      if (strong)
+        {
+          gimp_item_set_visible (GIMP_ITEM (filter),FALSE,TRUE);
+          gimp_item_set_visible (GIMP_ITEM (filter),TRUE,TRUE);
+        }
+      if (redo) g_assert_true (strong ? gimp_image_strong_undo (image) : gimp_image_undo (image));
+      g_object_ref (filter);
+      g_object_weak_ref (G_OBJECT (image),weak_finalized,&finalized);
+      if (phase == 1) g_signal_connect (image,"undo-event",G_CALLBACK (undo_owner_event),&state);
+      else
+        {
+          g_signal_connect (image,redo ? "dirty" : "clean",G_CALLBACK (undo_owner_dirty_clean),&state);
+          if (state.notify_phase) g_signal_connect (image,"notify::width",G_CALLBACK (undo_owner_notify),&state);
+        }
+      g_assert_true (redo ? (strong ? gimp_image_strong_redo (image) : gimp_image_redo (image)) :
+                            (strong ? gimp_image_strong_undo (image) : gimp_image_undo (image)));
+      g_assert_true (state.called); g_assert_cmpint (finalized, ==, 1);
+      g_assert_null (gimp_item_get_image (GIMP_ITEM (filter)));
+      g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
+      g_object_unref (filter);
+    }
+}
+static void image_close_during_undo_callbacks (void) { undo_owner_lifetime (FALSE,FALSE); }
+static void image_close_during_redo_callbacks (void) { undo_owner_lifetime (TRUE,FALSE); }
+static void image_close_during_strong_undo_callbacks (void) { undo_owner_lifetime (FALSE,TRUE); }
+static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetime (TRUE,TRUE); }
+
 int main (int argc, char **argv)
 {
   int result;
@@ -1721,6 +1780,8 @@ int main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
+  ADD (image_close_during_undo_callbacks); ADD (image_close_during_redo_callbacks);
+  ADD (image_close_during_strong_undo_callbacks); ADD (image_close_during_strong_redo_callbacks);
   ADD (image_close_reentry_during_completion_flush); ADD (image_close_reentry_during_commit); ADD (retained_handle_after_image_close); ADD (argument_value_dag_is_bounded); ADD (typed_argument_import_preserves_descriptors); ADD (argument_import_validation);
   ADD (typed_argument_snapshot_survives_expiration); ADD (hiding_during_import_releases_abandoned_work); ADD (concurrent_admission_resumes_after_image_close); ADD (saved_snapshot_generation_restore); ADD (small_image_finishes_during_large_preparation); ADD (image_close_during_worker);
   ADD (sustained_edits_converge); ADD (oversized_execution_preserves_definition);

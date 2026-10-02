@@ -651,6 +651,7 @@
 | 17.001/fair-checkpoint-state | [x] | 公平dispatchと保存状態/世代の安全な境界を接続する | 15.001/core-scheduler-edge, 16.003/gauss-executor, 05.003/retained-item-lifetime | FIFO/input優先・owner終了・buffer通知再入を処理し、stored世代とruntime epochを分離。32 app/20 scheduler/8 dispatcher通常・focused sanitizer。大画像spool/全性能/色空間gateは未完了 |
 | 17.001/dependency-publication | [x] | Clone経由依存と非同期投影通知・再入を安全に接続する | 17.001/fair-checkpoint-state, 16.003/native-color-transfer, 14.015/reference-undo-snapshot | 51実app通常/focused sanitizer、21 scheduler合格。非解決snapshotで依存検証、遅延cycle/通知中close/定義Undo再入と自動canvas更新を処理。実測p99/maxの大きなstallは未解決 |
 | 17.001/bounded-admission | [x] | 複数Filterのsnapshot/worker資源を公平FIFOで制限する | 17.001/dependency-publication, 16.003/native-gray-transfer | 63 actual app・25 scheduler・9 admission通常/focused sanitizer合格。2job/宣言1GiB上限、cancel worker寿命・待機自動再開・staging/chunk破棄を検証。spill/巨大画像/全latencyは未完了 |
+| 17.001/undo-owner-lifetime | [x] | callback中の最終image参照解放でもUndo stackを保護する | 17.001/bounded-admission, 12.015/external-reference-preservation | 67 actual app通常/focused sanitizer、12 phaseのordinary/strong Undo/Redo再入を検証。隣接Clone37/XCF16とnative GTK16合格。旧failure/source hash保持 |
 | 17.001/filter-end-timeout-contract | [ ] | FilterLayer の遅延終了通知の所有権を定義する | 17.001, 01.005/deferred-sources | source ID、所有者寿命、close とキャンセルの順序、通知の一回性を状態遷移表へ明記 |
 | 17.002 | [ ] | 更新イベントの入力を実装する | 17.001 | 下層画素・設定・階層変更を分類 |
 | 17.003 | [ ] | 上層変更の除外を実装する | 17.002 | 無関係な変更で再評価しない |
