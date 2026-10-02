@@ -15,7 +15,7 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("build", type=Path)
 parser.add_argument("--report", type=Path, required=True)
-parser.add_argument("--target", choices=["options", "session"], required=True)
+parser.add_argument("--target", choices=["options", "session", "hover"], required=True)
 args = parser.parse_args()
 target = "gimp-painter-" + args.target
 build = args.build.resolve()

@@ -782,6 +782,7 @@
 | 21.001/native-surface-session | [x] | 旧押印演算をGEGL Surfaceとnative paint transactionへ接続する | 20.004/evaluator-comparison, 19.013/dedicated-factory, 05.003/retained-item-lifetime | 148実旧Surface/24bitmap mask/72generated mask一致、9 native通常と22source sanitizer合格。開始/終了再入・selection・Undo・資源寿命を検証。実旧full-session画素/tool/高精度は別gate |
 | 21.001/full-session-oracle | [x] | 実旧applicationのstroke・Undo・Redo画素を比較する | 21.001/native-surface-session | 32scenario/96RGBA snapshot/129recordの9587537 bytesが完全一致。旧cold crashを別保存しwarm-upを明示。11 fixture試験合格、登録tool・ICC/高精度は未完了 |
 | 21.001/options-session-adapter | [x] | 全拡張optionsと単一slot native session adapterを接続する | 21.001/full-session-oracle, 19.013/native-context-resource | 8 options/6 session通常・26source focused sanitizer合格。curve編集/commit競合・閉鎖snapshot・brush/paper名双方向・欠落名保持・旧論理Undo分割/通知再入を検証。Surface9と129旧record再確認、tool/hover/editor未完了 |
+| 21.001/sampling-only-hover | [x] | hoverでengine採色状態を進め画素/空Undoを書かない | 21.001/options-session-adapter | 5 native通常/26source focused sanitizer合格。定数opacity/pressure0・1でも無描画、既存transactionを旧logical splitまで維持し旧image解放・close再入を検証。Surface9/session6/旧129record再合格 |
 | 21.002 | [ ] | GIMP ブラシ mask の取得を実装する | 21.001 | 旧形状と資源選択を保持 |
 | 21.002/resource-owner | [ ] | Surface のブラシと紙目の参照・使用期間を対称にする | 21.002, 01.007/cpp-ownership | 同一資源の再設定、NULL 切替、Surface 先行終了時に begin_use/end_use と ref/unref を一回ずつ対応付ける |
 | 21.003 | [ ] | GIMP ブラシ mask の変形を実装する | 21.002 | サイズ・角度・縦横比を反映 |

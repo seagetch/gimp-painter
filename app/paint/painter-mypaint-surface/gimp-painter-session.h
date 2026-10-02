@@ -15,6 +15,8 @@ struct _GimpPainterSessionClass {GimpObjectClass parent_class;};
 GType gimp_painter_session_get_type (void) G_GNUC_CONST;
 GimpPainterSession *gimp_painter_session_new (GimpPainterMybrushOptions *options,GError **error);
 gboolean gimp_painter_session_stroke_to (GimpPainterSession *session,GimpDrawable *drawable,gdouble seconds,const GimpCoords *coords,gboolean *split,GError **error);
+/* Sampling-only input, preserving the evaluator's logical split timing. */
+gboolean gimp_painter_session_hover_to (GimpPainterSession *session,GimpDrawable *drawable,gdouble seconds,const GimpCoords *coords,gboolean *split,GError **error);
 gboolean gimp_painter_session_finish (GimpPainterSession *session,GError **error);
 gboolean gimp_painter_session_cancel (GimpPainterSession *session,GError **error);
 gboolean gimp_painter_session_is_active (GimpPainterSession *session);

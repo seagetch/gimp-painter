@@ -17,6 +17,9 @@ public:
   PaintCore& operator= (const PaintCore&) = delete;
   void configure (const Resource& resource);
   bool stroke_to (GimpDrawable *drawable, double seconds, const GimpCoords& coords);
+  // Advance the same evaluator with zero pressure and real color sampling,
+  // but no dabs or new native transaction. Existing logical splits still apply.
+  bool hover_to (GimpDrawable *drawable, double seconds, const GimpCoords& coords);
   void finish ();
   void cancel ();
   bool active () const;

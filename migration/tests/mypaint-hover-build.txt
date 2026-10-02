@@ -1,0 +1,49 @@
+ninja: Entering directory `/workspace/scratch/5b5281e79681/gimp-painter/build-debian13'
+[1/16] Generating git-version.h.in.1 with a custom command
+[2/16] Generating git-version.h.in.2 with a custom command
+[3/16] Generating git-version.h with a custom command
+[4/10] Compiling C++ object app/tests/gimp-painter-hover.p/test-gimp-painter-hover.cpp.o
+In file included from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/glib-object.h:24,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/gioenums.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/giotypes.h:30,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gio/gio.h:28,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gdk/gdkapplaunchcontext.h:28,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gdk/gdk.h:32,
+                 from /workspace/shared/gimp-build-deps/root/usr/include/gtk-3.0/gtk/gtk.h:30,
+                 from ../app/tests/test-gimp-painter-hover.cpp:3:
+../app/tests/test-gimp-painter-hover.cpp:99:26: warning: no previous declaration for ‘GType hover_brush_get_type()’ [-Wmissing-declarations]
+   99 | G_DEFINE_TYPE(HoverBrush,hover_brush,GIMP_TYPE_BRUSH)
+      |                          ^~~~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:2305:1: note: in definition of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE’
+ 2305 | type_name##_get_type (void) \
+      | ^~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:2053:61: note: in expansion of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0/gobject/gtype.h:1834:61: note: in expansion of macro ‘G_DEFINE_TYPE_EXTENDED’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~
+../app/tests/test-gimp-painter-hover.cpp:99:1: note: in expansion of macro ‘G_DEFINE_TYPE’
+   99 | G_DEFINE_TYPE(HoverBrush,hover_brush,GIMP_TYPE_BRUSH)
+      | ^~~~~~~~~~~~~
+[5/10] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o
+[6/10] Linking static target app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a
+[7/10] Linking target app/tests/gimp-painter-surface
+[8/10] Linking target app/tests/painter-mypaint-session-trace
+[9/10] Linking target app/tests/gimp-painter-hover
+[10/10] Linking target app/tests/gimp-painter-session
+1/4 gimp:app / gimp-painter-surface               OK              1.69s
+2/4 gimp:painter / painter-mypaint-legacy-session OK              2.31s
+3/4 gimp:app / gimp-painter-session               OK              1.63s
+4/4 gimp:app / gimp-painter-hover                 OK              1.47s
+
+Ok:                 4
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0
+
+Full log written to /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/meson-logs/testlog.txt

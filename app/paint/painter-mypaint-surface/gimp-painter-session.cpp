@@ -143,6 +143,10 @@ gboolean gimp_painter_session_stroke_to(GimpPainterSession*session,GimpDrawable*
 {
   return boundary<gboolean>(error,FALSE,[&]() -> gboolean{if(!coords)throw std::invalid_argument("Expected input coordinates");operate(session,true,[&](PaintCore&core){const bool result=core.stroke_to(drawable,seconds,*coords);if(split)*split=result;});return TRUE;});
 }
+gboolean gimp_painter_session_hover_to(GimpPainterSession*session,GimpDrawable*drawable,gdouble seconds,const GimpCoords*coords,gboolean*split,GError**error)
+{
+  return boundary<gboolean>(error,FALSE,[&]() -> gboolean{if(!coords)throw std::invalid_argument("Expected input coordinates");operate(session,true,[&](PaintCore&core){const bool result=core.hover_to(drawable,seconds,*coords);if(split)*split=result;});return TRUE;});
+}
 gboolean gimp_painter_session_finish(GimpPainterSession*session,GError**error)
 {return boundary<gboolean>(error,FALSE,[&]() -> gboolean{operate(session,false,[](PaintCore&core){core.finish();});return TRUE;});}
 gboolean gimp_painter_session_cancel(GimpPainterSession*session,GError**error)
