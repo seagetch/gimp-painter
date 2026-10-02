@@ -77,3 +77,8 @@ foreach feature : ['filter-scheduler', 'filter-edge', 'filter-gauss', 'filter-gr
     args: feature_args,
     suite: 'painter', timeout: 60)
 endforeach
+
+# A hidden app-only enum slot must never shift the public plug-in identities.
+test('painter-public-mode-abi', python,
+  args: [meson.project_source_root() / 'tools/check_painter_public_modes.py'],
+  depends: [stamp_enumcode], suite: 'painter', timeout: 30)

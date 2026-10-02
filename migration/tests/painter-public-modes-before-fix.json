@@ -1,0 +1,33 @@
+{
+  "scope": "Public C/C++ Painter mode identity against native app and unchanged upstream values; not PDB transport/pixel acceptance",
+  "source_sha256": {
+    "app/operations/operations-enums.h": "8b322af33e2aa6f38030ab63b2e153e0ae9a2843e0b89e7c76b2cfc40065ffb5",
+    "libgimp/gimpenums.h": "995ce19ac88c4f5c7bd6400ca20c0054878c7e0fc524946289465f9f07b1a3ce"
+  },
+  "public_modes": 72,
+  "upstream_modes": 65,
+  "painter_modes": {
+    "GIMP_LAYER_MODE_PAINTER_ERASE": 64,
+    "GIMP_LAYER_MODE_PAINTER_REPLACE": 65,
+    "GIMP_LAYER_MODE_PAINTER_ANTI_ERASE": 66,
+    "GIMP_LAYER_MODE_PAINTER_SRC_IN": 67,
+    "GIMP_LAYER_MODE_PAINTER_DST_IN": 68,
+    "GIMP_LAYER_MODE_PAINTER_SRC_OUT": 69,
+    "GIMP_LAYER_MODE_PAINTER_DST_OUT": 70,
+    "GIMP_LAYER_MODE_PAINTER_NORMAL": 71,
+    "GIMP_LAYER_MODE_PAINTER_MULTIPLY": 72
+  },
+  "errors": [
+    "GIMP_LAYER_MODE_PAINTER_ERASE: public=63, app=64",
+    "GIMP_LAYER_MODE_PAINTER_REPLACE: public=64, app=65",
+    "GIMP_LAYER_MODE_PAINTER_ANTI_ERASE: public=65, app=66",
+    "GIMP_LAYER_MODE_PAINTER_SRC_IN: public=66, app=67",
+    "GIMP_LAYER_MODE_PAINTER_DST_IN: public=67, app=68",
+    "GIMP_LAYER_MODE_PAINTER_SRC_OUT: public=68, app=69",
+    "GIMP_LAYER_MODE_PAINTER_DST_OUT: public=69, app=70",
+    "GIMP_LAYER_MODE_PAINTER_NORMAL: public=70, app=71",
+    "GIMP_LAYER_MODE_PAINTER_MULTIPLY: public=71, app=72"
+  ],
+  "probes": [],
+  "passed": false
+}

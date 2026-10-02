@@ -1073,6 +1073,7 @@
 | 30.012 | [ ] | 追加 PDB 手順を現行形式へ登録する | 30.011 | 引数と戻り値が現行 caller から使える |
 | 30.012/scheme-mode-constants | [ ] | Script-Fuの旧独自合成定数を現行APIへ対応する | 30.011, 01.015 | ERASE・REPLACE・ANTI-ERASE・SRC/DST IN/OUTの名前を保持し、衝突する旧数値を現行modeへ明示変換して呼出しと合成を試験する |
 | 30.013 | [ ] | 生成された PDB コードを更新する | 30.012 | 生成元と成果物に乖離がない |
+| 30.013/public-mode-identity | [x] | 非公開enum slotによるlibgimp Painter mode値のずれを修正する | 10.005/native-paint-mode-route, 04.003 | 実generator出力63–71がapp64–72と不一致な9件を記録しfirst=64で修正。上流65値不変・公開72名一致をC11/C++14四probe・実libgimp GEnumClass・登録Meson検査で確認。全PDB/Script-Fu transportは別gate |
 | 30.014 | [ ] | 追加 UI 文字列を翻訳対象へ登録する | 30.013 | 日本語・英語で未表示や欠落がない |
 | 30.015 | [ ] | ヘルプ ID と操作説明を接続する | 30.014 | 独自設定の意味を参照できる |
 | 30.016 | [ ] | 起動・終了順を統合する | 30.015 | 資源と UI の終了で stale callback がない |

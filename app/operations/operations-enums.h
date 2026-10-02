@@ -133,7 +133,9 @@ typedef enum
   GIMP_LAYER_MODE_ANTI_ERASE,            /*< pdb-skip, desc="Anti erase"                                    >*/
 
   /* Painter legacy identities append without reusing/changing upstream values. */
-  GIMP_LAYER_MODE_PAINTER_ERASE, /*< desc="Erase (Painter legacy)" >*/
+  /* The public enum generator omits pdb-skip entries. Keep the hidden
+   * upstream ANTI_ERASE slot63 reserved explicitly in public metadata too. */
+  GIMP_LAYER_MODE_PAINTER_ERASE = 64, /*< desc="Erase (Painter legacy)" >*/
   GIMP_LAYER_MODE_PAINTER_REPLACE, /*< desc="Replace (Painter legacy)" >*/
   GIMP_LAYER_MODE_PAINTER_ANTI_ERASE, /*< desc="Anti erase (Painter legacy)" >*/
   GIMP_LAYER_MODE_PAINTER_SRC_IN, /*< desc="SRC IN (Painter legacy)" >*/
