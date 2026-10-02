@@ -341,6 +341,11 @@ _("If enabled, the move tool sets the edited layer or path as active.  " \
 
 #define MYPAINT_BRUSH_PATH_WRITABLE_BLURB ""
 
+#define PAINTER_MYPAINT_BRUSH_PATH_BLURB \
+_("Sets the folder search path for extended gimp-painter MyPaint brushes.")
+#define PAINTER_MYPAINT_BRUSH_PATH_WRITABLE_BLURB \
+_("Sets the folders in which edited extended MyPaint brushes can be saved.")
+
 #define NAVIGATION_PREVIEW_SIZE_BLURB \
 _("Sets the size of the navigation preview available in the lower right " \
   "corner of the image window.")

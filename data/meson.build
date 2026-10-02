@@ -7,6 +7,9 @@ subdir('tags')
 subdir('tips')
 subdir('tool-presets')
 
+# Exact pinned painter assets, including previews and original license notices.
+install_subdir('painter-mypaint-brushes', install_dir: gimpdatadir)
+
 
 meson.add_install_script(python, '-c',
   'from pathlib import Path; import sys, os; destdir = os.environ.get("MESON_INSTALL_DESTDIR_PREFIX"); (Path(destdir) / sys.argv[1] / "fonts").mkdir(parents=True, exist_ok=True)',

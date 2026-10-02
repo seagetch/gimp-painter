@@ -14,6 +14,8 @@ public:
   Engine (const Engine&) = delete;
   Engine& operator= (const Engine&) = delete;
   void configure (const Resource& resource);
+  void set_base_value (int index, float value);
+  void set_foreground (double r, double g, double b);
   void reset ();
   void new_stroke ();
   bool stroke_to (Surface& surface, float x, float y, float pressure,

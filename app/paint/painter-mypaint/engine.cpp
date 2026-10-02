@@ -22,6 +22,20 @@ void Engine::configure (const Resource& r)
   impl_->opacity = r.base_value (BRUSH_STROKE_OPACITY);
   impl_->non_incremental = r.switch_value (BRUSH_NON_INCREMENTAL);
 }
+void Engine::set_base_value (int id, float value)
+{
+  if (id < 0 || id >= BRUSH_MAPPING_COUNT || !std::isfinite(value))
+    throw std::invalid_argument("Invalid runtime brush setting");
+  impl_->brush.set_base_value(id,value);
+  if (id == BRUSH_STROKE_OPACITY) impl_->opacity=value;
+}
+void Engine::set_foreground (double r,double g,double b)
+{
+  if (!std::isfinite(r)||!std::isfinite(g)||!std::isfinite(b)) throw std::invalid_argument("Invalid foreground color");
+  Legacy::GimpRGB rgb;rgb.r=r;rgb.g=g;rgb.b=b;Legacy::GimpHSV hsv;
+  Legacy::gimp_rgb_to_hsv(&rgb,&hsv);
+  set_base_value(BRUSH_COLOR_H,hsv.h);set_base_value(BRUSH_COLOR_S,hsv.s);set_base_value(BRUSH_COLOR_V,hsv.v);
+}
 void Engine::reset () { impl_->brush.reset (); }
 void Engine::new_stroke () { impl_->brush.new_stroke (); }
 bool Engine::stroke_to (Surface& surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime)

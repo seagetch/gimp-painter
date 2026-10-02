@@ -1,3 +1,5 @@
+subdir('painter-mypaint-surface')
+
 stamp_paint_enums = custom_target('stamp-paint-enums.h',
   input : [
     files(

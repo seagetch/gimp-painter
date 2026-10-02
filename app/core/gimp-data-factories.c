@@ -47,6 +47,7 @@
 #include "gimpgradient.h"
 #include "gimpmybrush-load.h"
 #include "gimpmybrush.h"
+#include "gimppaintermybrush.h"
 #include "gimppalette-load.h"
 #include "gimppalette.h"
 #include "gimppattern-load.h"
@@ -139,6 +140,25 @@ gimp_data_factories_init (Gimp *gimp)
                                        gimp_mybrush_load,
                                        GIMP_MYBRUSH_FILE_EXTENSION,
                                        FALSE);
+
+  /* Extended painter brushes own their settings and evaluator. The standard
+   * MyPaint factory remains separate and continues using upstream libmypaint.
+   * Extension .myb directories are shared deliberately; default/user paths are
+   * distinct so bundled painter assets never replace standard brush resources.
+   */
+  gimp->painter_mybrush_factory =
+    gimp_data_loader_factory_new (gimp,
+                                  GIMP_TYPE_PAINTER_MYBRUSH,
+                                  "painter-mypaint-brush-path",
+                                  "painter-mypaint-brush-path-writable",
+                                  "mypaint-brush-paths",
+                                  gimp_painter_mybrush_new,
+                                  NULL);
+  gimp_object_set_static_name (GIMP_OBJECT (gimp->painter_mybrush_factory),
+                               "painter mypaint brush factory");
+  gimp_data_loader_factory_add_loader (gimp->painter_mybrush_factory,
+                                       "Painter MyPaint Brush",
+                                       gimp_painter_mybrush_load, ".myb", TRUE);
 
   gimp->pattern_factory =
     gimp_data_loader_factory_new (gimp,
@@ -270,6 +290,9 @@ gimp_data_factories_clear (Gimp *gimp)
   if (gimp->mybrush_factory)
     gimp_data_factory_data_free (gimp->mybrush_factory);
 
+  if (gimp->painter_mybrush_factory)
+    gimp_data_factory_data_free (gimp->painter_mybrush_factory);
+
   if (gimp->pattern_factory)
     gimp_data_factory_data_free (gimp->pattern_factory);
 
@@ -294,6 +317,7 @@ gimp_data_factories_exit (Gimp *gimp)
   g_clear_object (&gimp->brush_factory);
   g_clear_object (&gimp->dynamics_factory);
   g_clear_object (&gimp->mybrush_factory);
+  g_clear_object (&gimp->painter_mybrush_factory);
   g_clear_object (&gimp->pattern_factory);
   g_clear_object (&gimp->gradient_factory);
   g_clear_object (&gimp->palette_factory);
@@ -364,6 +388,8 @@ gimp_data_factories_get_memsize (Gimp   *gimp,
                                       gui_size);
   memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->mybrush_factory),
                                       gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->painter_mybrush_factory),
+                                      gui_size);
   memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->pattern_factory),
                                       gui_size);
   memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->gradient_factory),
@@ -389,6 +415,7 @@ gimp_data_factories_data_clean (Gimp *gimp)
   gimp_data_factory_data_clean (gimp->brush_factory);
   gimp_data_factory_data_clean (gimp->dynamics_factory);
   gimp_data_factory_data_clean (gimp->mybrush_factory);
+  gimp_data_factory_data_clean (gimp->painter_mybrush_factory);
   gimp_data_factory_data_clean (gimp->pattern_factory);
   gimp_data_factory_data_clean (gimp->gradient_factory);
   gimp_data_factory_data_clean (gimp->palette_factory);
@@ -415,6 +442,9 @@ gimp_data_factories_load (Gimp               *gimp,
   /*  initialize the list of mypaint brushes    */
   status_callback (NULL, _("MyPaint Brushes"), 0.2);
   gimp_data_factory_data_init (gimp->mybrush_factory, gimp->user_context,
+                               gimp->no_data);
+  status_callback (NULL, _("Painter MyPaint Brushes"), 0.25);
+  gimp_data_factory_data_init (gimp->painter_mybrush_factory, gimp->user_context,
                                gimp->no_data);
 
   /*  initialize the list of gimp patterns   */
@@ -459,6 +489,8 @@ gimp_data_factories_load (Gimp               *gimp,
   gimp_tag_cache_add_container (gimp->tag_cache,
                                 gimp_data_factory_get_container (gimp->mybrush_factory));
   gimp_tag_cache_add_container (gimp->tag_cache,
+                                gimp_data_factory_get_container (gimp->painter_mybrush_factory));
+  gimp_tag_cache_add_container (gimp->tag_cache,
                                 gimp_data_factory_get_container (gimp->pattern_factory));
   gimp_tag_cache_add_container (gimp->tag_cache,
                                 gimp_data_factory_get_container (gimp->gradient_factory));
@@ -480,6 +512,7 @@ gimp_data_factories_save (Gimp *gimp)
   gimp_data_factory_data_save (gimp->brush_factory);
   gimp_data_factory_data_save (gimp->dynamics_factory);
   gimp_data_factory_data_save (gimp->mybrush_factory);
+  gimp_data_factory_data_save (gimp->painter_mybrush_factory);
   gimp_data_factory_data_save (gimp->pattern_factory);
   gimp_data_factory_data_save (gimp->gradient_factory);
   gimp_data_factory_data_save (gimp->palette_factory);

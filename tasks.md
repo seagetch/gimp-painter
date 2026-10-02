@@ -726,6 +726,7 @@
 | 19.011/output-stream-save | [ ] | 拡張 myb writer を現行 GimpData.save の stream 契約へ移す | 19.011, 01.005/gimp3-brush-callbacks | 渡された GOutputStream に JSON を書き、出力失敗を呼出元へ返し、アイコン保存との整合と再読込みを確認 |
 | 19.012 | [ ] | writer のメタデータ出力を実装する | 19.011 | 未知情報と参照を保持 |
 | 19.013 | [ ] | data factory を接続する | 19.012 | 検索パス・読込み・更新を処理 |
+| 19.013/dedicated-factory | [x] | 拡張brushの独立factoryと配布pathを接続する | 19.001/resource-foundation | 実appで177読込→複製改名保存/再読込178→削除177、標準MyPaint件数不変を確認。全asset install登録、tool/editorは別gate |
 | 19.013/preview-contract | [ ] | 拡張ブラシのサイズ・preview を GIMP 3 契約へ移す | 19.013, 01.005/gimp3-brush-callbacks | get_size の成功時に幅・高さを必ず設定し、GimpTempBuf と GeglColor の preview を所有権込みで検証 |
 | 19.013/icon-buffer | [ ] | MyPaint アイコンの画素バッファーを安全に所有する | 19.013, 01.007/icon-buffer | surface と data の破棄を結び、実 stride の領域を確保し、同一 surface の再設定を安全にする |
 | 19.014 | [ ] | ブラシの複製・改名・削除を接続する | 19.013 | 資源所有と保存先が整合 |
@@ -766,6 +767,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 21.001 | [ ] | 通常形状の押印を実装する | 09.017, 20.018 | 硬さ・半径・alpha が一致 |
+| 21.001/native-surface-session | [x] | 旧押印演算をGEGL Surfaceとnative paint transactionへ接続する | 20.004/evaluator-comparison, 19.013/dedicated-factory, 05.003/retained-item-lifetime | 148実旧Surface/24bitmap mask/72generated mask一致、9 native通常と22source sanitizer合格。開始/終了再入・selection・Undo・資源寿命を検証。実旧full-session画素/tool/高精度は別gate |
 | 21.002 | [ ] | GIMP ブラシ mask の取得を実装する | 21.001 | 旧形状と資源選択を保持 |
 | 21.002/resource-owner | [ ] | Surface のブラシと紙目の参照・使用期間を対称にする | 21.002, 01.007/cpp-ownership | 同一資源の再設定、NULL 切替、Surface 先行終了時に begin_use/end_use と ref/unref を一回ずつ対応付ける |
 | 21.003 | [ ] | GIMP ブラシ mask の変形を実装する | 21.002 | サイズ・角度・縦横比を反映 |

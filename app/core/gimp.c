@@ -70,6 +70,7 @@
 #include "gimplist.h"
 #include "gimpmarshal.h"
 #include "gimpmybrush.h"
+#include "gimppaintermybrush.h"
 #include "gimppalette.h"
 #include "gimpparasitelist.h"
 #include "gimppattern.h"
@@ -1336,6 +1337,8 @@ gimp_get_data_factory (Gimp  *gimp,
     return gimp->dynamics_factory;
   else if (g_type_is_a (data_type, GIMP_TYPE_MYBRUSH))
     return gimp->mybrush_factory;
+  else if (g_type_is_a (data_type, GIMP_TYPE_PAINTER_MYBRUSH))
+    return gimp->painter_mybrush_factory;
   else if (g_type_is_a (data_type, GIMP_TYPE_TOOL_PRESET))
     return gimp->tool_preset_factory;
 

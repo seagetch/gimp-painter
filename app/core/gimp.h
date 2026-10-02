@@ -104,6 +104,7 @@ struct _Gimp
   GimpDataFactory        *brush_factory;
   GimpDataFactory        *dynamics_factory;
   GimpDataFactory        *mybrush_factory;
+  GimpDataFactory        *painter_mybrush_factory;
   GimpDataFactory        *pattern_factory;
   GimpDataFactory        *gradient_factory;
   GimpDataFactory        *palette_factory;

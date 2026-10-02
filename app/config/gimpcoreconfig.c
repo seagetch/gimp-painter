@@ -70,6 +70,8 @@ enum
   PROP_DYNAMICS_PATH_WRITABLE,
   PROP_MYPAINT_BRUSH_PATH,
   PROP_MYPAINT_BRUSH_PATH_WRITABLE,
+  PROP_PAINTER_MYPAINT_BRUSH_PATH,
+  PROP_PAINTER_MYPAINT_BRUSH_PATH_WRITABLE,
   PROP_PATTERN_PATH,
   PROP_PATTERN_PATH_WRITABLE,
   PROP_PALETTE_PATH,
@@ -341,6 +343,24 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
                          GIMP_CONFIG_PARAM_CONFIRM);
+  g_free (path);
+
+  path = gimp_config_build_data_path ("painter-mypaint-brushes");
+  GIMP_CONFIG_PROP_PATH (object_class, PROP_PAINTER_MYPAINT_BRUSH_PATH,
+                         "painter-mypaint-brush-path",
+                         "Painter MyPaint brush path",
+                         PAINTER_MYPAINT_BRUSH_PATH_BLURB,
+                         GIMP_CONFIG_PATH_DIR_LIST, path,
+                         GIMP_PARAM_STATIC_STRINGS | GIMP_CONFIG_PARAM_CONFIRM);
+  g_free (path);
+
+  path = gimp_config_build_writable_path ("painter-mypaint-brushes");
+  GIMP_CONFIG_PROP_PATH (object_class, PROP_PAINTER_MYPAINT_BRUSH_PATH_WRITABLE,
+                         "painter-mypaint-brush-path-writable",
+                         "Writable Painter MyPaint brush path",
+                         PAINTER_MYPAINT_BRUSH_PATH_WRITABLE_BLURB,
+                         GIMP_CONFIG_PATH_DIR_LIST, path,
+                         GIMP_PARAM_STATIC_STRINGS | GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_data_path ("patterns");
@@ -888,6 +908,8 @@ gimp_core_config_finalize (GObject *object)
   g_free (core_config->dynamics_path_writable);
   g_free (core_config->mypaint_brush_path);
   g_free (core_config->mypaint_brush_path_writable);
+  g_free (core_config->painter_mypaint_brush_path);
+  g_free (core_config->painter_mypaint_brush_path_writable);
   g_free (core_config->pattern_path);
   g_free (core_config->pattern_path_writable);
   g_free (core_config->palette_path);
@@ -984,6 +1006,12 @@ gimp_core_config_set_property (GObject      *object,
     case PROP_MYPAINT_BRUSH_PATH_WRITABLE:
       g_set_str (&core_config->mypaint_brush_path_writable,
                  g_value_get_string (value));
+      break;
+    case PROP_PAINTER_MYPAINT_BRUSH_PATH:
+      g_set_str (&core_config->painter_mypaint_brush_path, g_value_get_string (value));
+      break;
+    case PROP_PAINTER_MYPAINT_BRUSH_PATH_WRITABLE:
+      g_set_str (&core_config->painter_mypaint_brush_path_writable, g_value_get_string (value));
       break;
     case PROP_PATTERN_PATH:
       g_set_str (&core_config->pattern_path,
@@ -1287,6 +1315,12 @@ gimp_core_config_get_property (GObject    *object,
       break;
     case PROP_MYPAINT_BRUSH_PATH_WRITABLE:
       g_value_set_string (value, core_config->mypaint_brush_path_writable);
+      break;
+    case PROP_PAINTER_MYPAINT_BRUSH_PATH:
+      g_value_set_string (value, core_config->painter_mypaint_brush_path);
+      break;
+    case PROP_PAINTER_MYPAINT_BRUSH_PATH_WRITABLE:
+      g_value_set_string (value, core_config->painter_mypaint_brush_path_writable);
       break;
     case PROP_PATTERN_PATH:
       g_value_set_string (value, core_config->pattern_path);

@@ -54,6 +54,8 @@ struct _GimpCoreConfig
   gchar                  *dynamics_path_writable;
   gchar                  *mypaint_brush_path;
   gchar                  *mypaint_brush_path_writable;
+  gchar                  *painter_mypaint_brush_path;
+  gchar                  *painter_mypaint_brush_path_writable;
   gchar                  *pattern_path;
   gchar                  *pattern_path_writable;
   gchar                  *palette_path;

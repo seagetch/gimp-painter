@@ -1,0 +1,25 @@
+ninja: Entering directory `/workspace/scratch/5b5281e79681/gimp-painter/build-debian13'
+[1/15] Linking target app/paint/painter-mypaint-surface/painter-mypaint-generated-trace
+[2/15] Linking target app/paint/painter-mypaint-surface/painter-mypaint-surface-trace
+[3/15] Generating git-version.h.in.1 with a custom command
+[4/15] Compiling C object app/tests/gimp-painter-mybrush-factory.p/tests.c.o
+[5/15] Generating git-version.h.in.2 with a custom command
+[6/15] Compiling C object app/tests/gimp-painter-mybrush-factory.p/test-gimp-painter-mybrush-factory.c.o
+[7/15] Generating git-version.h with a custom command
+[8/8] Linking target app/tests/gimp-painter-mybrush-factory
+1/7 gimp:app / gimp-painter-mybrush-factory         OK              2.41s
+2/7 gimp:painter / painter-mypaint-legacy-generated OK              0.05s
+3/7 gimp:painter / painter-mypaint-legacy-decoder   OK              0.15s
+4/7 gimp:painter / painter-mypaint-legacy-surface   OK              0.17s
+5/7 gimp:painter / painter-mypaint-resource         OK              0.23s
+6/7 gimp:painter / painter-mypaint-legacy-engine    OK              0.32s
+7/7 gimp:app / gimp-painter-surface                 OK              1.64s
+
+Ok:                 7
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0
+
+Full log written to /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/meson-logs/testlog.txt

@@ -107,6 +107,7 @@ console_libapps = [
     libapplayermodeslegacy,
     libappoperations,
     libapppaint,
+    painter_mypaint_surface,
     libapppdb,
     libappplugin,
     libapptext,
