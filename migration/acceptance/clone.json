@@ -1,0 +1,780 @@
+{
+  "kind": "WBS14 component acceptance with immutable historical integration evidence",
+  "prepared_utc": "2026-10-02T13:37:00Z",
+  "scope": "All 26 WBS14 rows. Core source freshness checked; historical XCF/GUI reports join exact source archives. This reconciliation does not rerun applications or close dependency/release gates.",
+  "global_gates": [
+    "Required predecessor WBS gates remain authoritative",
+    "Verify matching source hashes: Clone sanitizer uses verified_input_sha256; provenance has own snapshot mapping",
+    "Historical clone-layer-port.md remaining XCF/UI statements describe its earlier slice; join newer provenance/dialog evidence",
+    "Whole-app and Windows/macOS/tablet checks not inferred from Linux focused tests",
+    "Historical XCF and GUI source archives are authoritative for those runs; current evolving XCF/GUI sources require the later combined-tree aggregate.",
+    "COMPONENT_VERIFIED concerns each stated component scope, not every prerequisite or broader fixture family."
+  ],
+  "reports": {
+    "migration/tests/clone-layer-testlog.json": "30149c6e1191cb02ba9b42621fd729dd426e0657ef9dd2f56d078ee8140e2c97",
+    "migration/tests/clone-layer-sanitizers.json": "371c80d4aace622d3351e9ac6351252fc9c1eb17474ccc466da612c5d03142cb",
+    "migration/tests/clone-cross-image-comparison.json": "8322ce82b9ec25a26b1b87a5882cb0bd5ec7d4e35653de76682f89259f333201",
+    "migration/tests/provenance-checkpoint.json": "aaa48c9e8cc4f6d069fd0fe08ca620dee2b891580743c395d09c3f400fcbcfb9",
+    "migration/tests/provenance-sanitizers.json": "2994d6ff00564dc598fa6ce845875556a5cddef931f05817a9d9db9b43c68143",
+    "migration/tests/layer-dialog-store-results.json": "7d7a4da0e8b550721f21732d50488f7f97bc08156578b6ff370db578906947e8",
+    "migration/tests/provenance-native.jsonl": "3e811fc86c2dc309e0a8dff77b204918eeac6ce9269e0d358344140c078ab127",
+    "migration/tests/layer-dialog-store-sanitizer-build.json": "b60295497e02b16ea5d1f2ed90d441a39607cc8597bdbf2257effc63a1b2b90c",
+    "migration/tests/layer-dialog-store-normal.log": "262c228cfef2336415beb535c14150f4f6b8e0b9485ef8131a3734a1fa5bc07b",
+    "migration/tests/layer-dialog-store-asan.log": "5df7b2ceebf50631dccd94e5ea63ee96bc4c3c852750da06827e892c31c6adcd"
+  },
+  "rows": [
+    {
+      "id": "14.001",
+      "title": "source の所有と監視を実装する",
+      "existing_checkbox": false,
+      "dependencies": "08.020, 09.017, 10.018",
+      "acceptance_condition": "旧仕様に沿う参照が close で解除される",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/source_lifetime_and_detach",
+        "/gimp-clone-layer/freeze_and_close",
+        "/gimp-clone-layer/frozen_source_disposal",
+        "/gimp-clone-layer/inert_construction"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.001/core-implementation",
+      "title": "CloneLayerの実core型・参照追従を統合する",
+      "existing_checkbox": true,
+      "dependencies": "04.003, 05.010, 02.005/resize-undo-capture",
+      "acceptance_condition": "単一store/typed handle・GEGL完成画素・source/name・group duplicate再対応付け・resize Undo/maskを実装し21通常/ASan/UBSan試験合格。XCF/UI/参照変更Undo等は親区分に残す",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/cpp_header_layout",
+        "/gimp-clone-layer/projected_pixels",
+        "/gimp-clone-layer/group_duplicate_complete_hierarchy",
+        "/gimp-clone-layer/source_resize_undo_legacy_fixture"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.002",
+      "title": "名前による旧 source 解決を実装する",
+      "existing_checkbox": false,
+      "dependencies": "14.001",
+      "acceptance_condition": "探索順と同名の解決が fixture と一致",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/recursive_first_match",
+        "/gimp-clone-layer/deferred_name"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.003",
+      "title": "source レイヤーの画素追従を実装する",
+      "existing_checkbox": false,
+      "dependencies": "14.002",
+      "acceptance_condition": "編集領域が clone に更新される",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/partial_update_and_graph",
+        "/gimp-clone-layer/projected_pixels",
+        "/gimp-clone-layer/reentrant_source_replace"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.003/gegl-source-node",
+      "title": "CloneLayer の参照画素を GEGL source node に接続する",
+      "existing_checkbox": false,
+      "dependencies": "14.003, 09.013/gegl-graph-invalidation",
+      "acceptance_condition": "source の変更 ROI、offset、参照解除が projection の再評価へ届く",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/partial_update_and_graph",
+        "/gimp-clone-layer/offset_size_and_noop_transforms",
+        "/gimp-clone-layer/source_lifetime_and_detach"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.003/clone-pickable-opacity",
+      "title": "CloneLayer の不透明度照会を現行型へ接続する",
+      "existing_checkbox": false,
+      "dependencies": "14.002, 01.005/gimp3-layer-slots",
+      "acceptance_condition": "旧 gint 返却のゼロ透明を現行 gdouble 契約で保ち、参照画素・子レイヤー表示への影響を試験",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/projected_pixels"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "projected_pixels explicitly asserts gimp_pickable_get_opacity_at(clone,1,1) equals 0.0 and compares projected reference pixels.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.004",
+      "title": "source グループの追従を実装する",
+      "existing_checkbox": false,
+      "dependencies": "14.003",
+      "acceptance_condition": "子の変更と合成が更新される",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/duplicate_and_group_update",
+        "/gimp-clone-layer/group_duplicate_complete_hierarchy"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.005",
+      "title": "source の座標・サイズ追従を実装する",
+      "existing_checkbox": false,
+      "dependencies": "14.004",
+      "acceptance_condition": "移動と resize の見え方が一致",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/offset_size_and_noop_transforms",
+        "/gimp-clone-layer/source_resize_undo_legacy_fixture"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.006",
+      "title": "clone 自身の座標処理を実装する",
+      "existing_checkbox": false,
+      "dependencies": "14.005",
+      "acceptance_condition": "source 座標との合成が一致",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/offset_size_and_noop_transforms"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.006/editability-contract",
+      "title": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "existing_checkbox": false,
+      "dependencies": "14.005, 01.005/gimp3-layer-slots",
+      "acceptance_condition": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/offset_size_and_noop_transforms"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "Native assertions establish content-locked, position-unlocked, direct offset preservation, and inherited transform no-op behavior; historical GUI creation asserts the Clone is selected.",
+      "qualifications": [],
+      "additional_dialog_tests": [
+        "/painter-layer-ui/clone_creation_and_parent"
+      ]
+    },
+    {
+      "id": "14.007",
+      "title": "source の可視性・合成変更を処理する",
+      "existing_checkbox": false,
+      "dependencies": "14.006",
+      "acceptance_condition": "旧版の更新範囲と表示が一致",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/projected_pixels",
+        "/gimp-clone-layer/dissolve_legacy_fixture"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [
+        "Component-visibility-change fixtures and wider source modes remain explicit in historical contract."
+      ],
+      "state": "PARTIAL",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.008",
+      "title": "source 改名を処理する",
+      "existing_checkbox": false,
+      "dependencies": "14.007",
+      "acceptance_condition": "既存参照を旧仕様に沿って維持",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/deferred_name",
+        "/gimp-clone-layer/source_reference_undo_renamed_then_expired"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.009",
+      "title": "同名 source を処理する",
+      "existing_checkbox": false,
+      "dependencies": "14.008",
+      "acceptance_condition": "保存前後で別レイヤーへ変わらない",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/recursive_first_match",
+        "/gimp-clone-layer/serialization_reference_snapshot_and_restore"
+      ],
+      "additional_roundtrip_tests": [
+        "/painter-xcf-roundtrip/clones_edit_save_reopen",
+        "/painter-xcf-roundtrip/missing_clone_id_and_pending_name"
+      ],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json",
+        "migration/tests/provenance-checkpoint.json",
+        "migration/tests/provenance-sanitizers.json"
+      ],
+      "gaps": [
+        "The positive same-name stable-ID roundtrip fixture is implemented in the current field-matrix work but has not yet been sealed into this acceptance checkpoint; earlier tests prove lookup ordering and missing-ID non-retargeting only."
+      ],
+      "state": "PARTIAL",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.010",
+      "title": "clone の複製を実装する",
+      "existing_checkbox": false,
+      "dependencies": "14.009",
+      "acceptance_condition": "複製先の source が旧仕様と一致",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/duplicate_and_group_update",
+        "/gimp-clone-layer/serialization_reference_snapshot_and_restore"
+      ],
+      "additional_roundtrip_tests": [
+        "/painter-xcf-roundtrip/duplicate_unknown_records"
+      ],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json",
+        "migration/tests/provenance-checkpoint.json",
+        "migration/tests/provenance-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.011",
+      "title": "group の複製を実装する",
+      "existing_checkbox": false,
+      "dependencies": "14.010",
+      "acceptance_condition": "内部・外部参照の扱いが旧版と一致",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/group_duplicate_internal_reference",
+        "/gimp-clone-layer/group_duplicate_complete_hierarchy"
+      ],
+      "additional_roundtrip_tests": [
+        "/painter-xcf-roundtrip/duplicate_image_unknown_origin"
+      ],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json",
+        "migration/tests/provenance-checkpoint.json",
+        "migration/tests/provenance-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.012",
+      "title": "source の削除を処理する",
+      "existing_checkbox": false,
+      "dependencies": "14.011",
+      "acceptance_condition": "旧挙動を保持し stale pointer を残さない",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/source_lifetime_and_detach",
+        "/gimp-clone-layer/frozen_source_disposal"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.013",
+      "title": "source の差替えを実装する",
+      "existing_checkbox": false,
+      "dependencies": "14.012",
+      "acceptance_condition": "旧接続解除と新接続が一度ずつ行われる",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/reentrant_source_replace",
+        "/gimp-clone-layer/thaw_reentry_close_and_replace"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.014",
+      "title": "参照循環の旧挙動を照合して処理する",
+      "existing_checkbox": false,
+      "dependencies": "14.013",
+      "acceptance_condition": "旧版で有効な参照を壊さず無限更新を防ぐ",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/cycles"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [
+        "Current cycle suppression is intentional safety repair; no claim historical infinite callback had defined pixel semantics."
+      ],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.015",
+      "title": "clone の変更 Undo を実装する",
+      "existing_checkbox": false,
+      "dependencies": "14.014",
+      "acceptance_condition": "source と参照状態を復元",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/source_reference_undo_live",
+        "/gimp-clone-layer/source_reference_undo_all_states",
+        "/gimp-clone-layer/source_reference_undo_preserves_pending_live",
+        "/gimp-clone-layer/source_reference_undo_dependent_clone",
+        "/gimp-clone-layer/source_reference_undo_close_reentry"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [
+        "Legacy setters intentionally do not add Undo; opt-in APIs and GUI integration supply editable references. Compound histories remain separate."
+      ],
+      "additional_dialog_tests": [
+        "/painter-layer-ui/clone_edit_cancel_undo_live"
+      ]
+    },
+    {
+      "id": "14.015/reference-undo-snapshot",
+      "title": "opt-in参照Undoと非変更snapshotを実装する",
+      "existing_checkbox": true,
+      "dependencies": "14.001/core-implementation, 05.010",
+      "acceptance_condition": "旧setterの履歴なしを保ち、live/pending/expired/none・cache/位置・stable ID未解決を別APIで復元。33通常/focused sanitizer。別画像操作/保存の全gateと共通Item寿命fixは未完了",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/serialization_reference_snapshot_and_restore",
+        "/gimp-clone-layer/source_reference_undo_all_states"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.016",
+      "title": "source 削除の Undo を接続する",
+      "existing_checkbox": false,
+      "dependencies": "14.015",
+      "acceptance_condition": "復元後に追従が再開",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/source_delete_undo"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.017",
+      "title": "画像終了時の解除を実装する",
+      "existing_checkbox": false,
+      "dependencies": "14.016",
+      "acceptance_condition": "遅延通知が clone を触らない",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/retained_items_image_destroy",
+        "/gimp-clone-layer/retained_item_gimp_lifetime",
+        "/gimp-clone-layer/freeze_and_close",
+        "/gimp-clone-layer/source_reference_undo_expired_cross_image"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.018",
+      "title": "参照が別画像へ移る操作を処理する",
+      "existing_checkbox": false,
+      "dependencies": "14.017",
+      "acceptance_condition": "コピー・移動の旧意味と矛盾しない",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/cross_image_copy_and_move",
+        "/gimp-clone-layer/undo_source_image_relocation",
+        "/gimp-clone-layer/clone_owner_image_relocation",
+        "/gimp-clone-layer/inherited_precision_conversion_undo"
+      ],
+      "additional_roundtrip_tests": [
+        "/painter-xcf-roundtrip/external_references_remain_unresolved"
+      ],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json",
+        "migration/tests/provenance-checkpoint.json",
+        "migration/tests/provenance-sanitizers.json",
+        "migration/tests/clone-cross-image-comparison.json"
+      ],
+      "gaps": [
+        "Exact old cross-image comparison measured ordinary RGB only; other image bases/precision/GUI operations not blanket accepted."
+      ],
+      "state": "PARTIAL",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.018/genuine-rgb-comparison",
+      "title": "実旧版の画像間Clone複製・参照移動を比較する",
+      "existing_checkbox": true,
+      "dependencies": "14.001/core-implementation, 14.015/reference-undo-snapshot, 05.003/retained-item-lifetime",
+      "acceptance_condition": "RGB direct/group複製・内部/外部参照・移動・元画像終了後更新の19記録が実旧版と完全一致、37 app通常/focused sanitizer合格。未測定画像型/GUI等は別gate",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/cross_image_copy_and_move"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json",
+        "migration/tests/clone-cross-image-comparison.json"
+      ],
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.019",
+      "title": "CloneLayer の機能試験を実行する",
+      "existing_checkbox": false,
+      "dependencies": "14.018, 13.014",
+      "acceptance_condition": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/projected_pixels",
+        "/gimp-clone-layer/partial_update_and_graph",
+        "/gimp-clone-layer/double_precision_and_trc",
+        "/gimp-clone-layer/gray_and_high_precision",
+        "/gimp-clone-layer/cycles"
+      ],
+      "additional_roundtrip_tests": [],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json"
+      ],
+      "gaps": [
+        "Indexed fixtures, compound transform/resize histories, cross-image non-RGB and prerequisite13.014 complete compositor gate remain open."
+      ],
+      "state": "PARTIAL",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": []
+    },
+    {
+      "id": "14.020",
+      "title": "CloneLayer の保存後再編集を試験する",
+      "existing_checkbox": false,
+      "dependencies": "14.019, 12.016",
+      "acceptance_condition": "再読込後の source 編集が反映される",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/serialization_reference_snapshot_and_restore"
+      ],
+      "additional_roundtrip_tests": [
+        "/painter-xcf-roundtrip/clones_edit_save_reopen",
+        "/painter-xcf-roundtrip/missing_clone_id_and_pending_name"
+      ],
+      "reports": [
+        "migration/tests/clone-layer-testlog.json",
+        "migration/tests/clone-layer-sanitizers.json",
+        "migration/tests/provenance-checkpoint.json",
+        "migration/tests/provenance-sanitizers.json"
+      ],
+      "gaps": [
+        "Full saved artwork matrix and prerequisite12.016 remain open; representative roundtrip tests do not close every field/platform."
+      ],
+      "state": "PARTIAL",
+      "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
+      "qualifications": [],
+      "additional_dialog_tests": [
+        "/painter-layer-ui/clone_edit_cancel_undo_live"
+      ]
+    }
+  ],
+  "current_core_sources_sha256": {
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/tests/test-gimp-clone-layer.c": "1da8f5f81067352bd5548e3de2acf19f54f4d69b74d93b69fc517f68f0eef662",
+    "app/tests/test-gimp-clone-layout.cpp": "1adb4c3275ca9323957b224142b276f036d9e6eee7f012cea55535907434826c",
+    "app/core/gimpclonelayer.h": "988baaa69210d5171eb29920146abb78d77cbc1d505f8b0aae45d06500aad73e",
+    "app/core/gimpclonelayer-handle.hpp": "7f600ac98917818b1e69cbf59ca386db14e7b8c5b313904a197dc0ee782d740b",
+    "app/core/gimpclonelayerundo.h": "8df8bf1465ac3df39781b4ecacc9a623d273c9ab13a3856e53e2a1ee74779231"
+  },
+  "historical_snapshots": {
+    "xcf": {
+      "archive": "migration/tests/provenance-tested-sources.tar.gz",
+      "sha256": "399f53e81d2928397004d39687aa3d962b23e5a4d9815dff0ec29f08507e2b0a",
+      "test_source": "app/tests/test-painter-xcf-roundtrip.c",
+      "test_source_sha256": "796f4cab7e72f702777c03b41cd3b3b5ed26fb168905b7b3227527acae9f5053",
+      "source_report": "migration/tests/provenance-sanitizers.json"
+    },
+    "dialog": {
+      "archive": "migration/tests/layer-dialog-store-sources-e508d4e4d095df3a.tar.gz",
+      "sha256": "8b1c107d6446f4941923dde3dd2dc6d1daae7de74b33a801754b27c06fa311ca",
+      "test_source": "app/tests/test-painter-layer-ui.c",
+      "test_source_sha256": "c0349815c8ebf87741d127ea93ee6fabe10f6aec232d7da6a4fb633da7aee7eb",
+      "source_report": "migration/tests/layer-dialog-store-sanitizer-build.json"
+    }
+  }
+}

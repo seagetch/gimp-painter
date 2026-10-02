@@ -190,14 +190,21 @@ lock: build `app/tests/gimp-clone-layer`, run Meson test `gimp-clone-layer` with
 logs using `save_clone_test_evidence.py` (explicit environment allowlist and
 trailing-whitespace normalization), then run the sanitizer script with build directory and `--report` output path.
 
-## Remaining work; do not infer broad task completion
+## Integration status and remaining work
 
-- XCF reader/writer integration, old/new format detection, persisted source-state
-  representation and save/reopen/edit verification remain separate work
-- The opt-in source-reference Undo APIs are ready for future editable-reference
-  UI callers; unchanged ordinary setters do not add reference Undo
-- This slice does not add a UI command or register CloneLayer in layer creation
-  menus. Core GType registration is on demand
+The original core slice ended before XCF and GUI integration. Those historical
+limitations are now superseded by the explicitly joined evidence in
+`migration/acceptance/clone.json`: the provenance checkpoint includes normal and
+sanitized Save/reopen/source-edit, missing-ID non-retargeting, duplication and
+external-reference tests; the common-store dialog checkpoint includes real
+creation/selection, source editing and opt-in reference Undo. Ordinary legacy
+setters still do not add reference Undo. Both integration reports retain their
+exact source archives; they are not claims that a later combined tree has been
+retested. The matrix validates all26 WBS14 obligations and preserves their original
+dependency gates rather than automatically checking the parent tasks.
+
+- The complete saved-field matrix, positive same-name internal stable-ID
+  checkpoint and combined-tree aggregate remain separate acceptance work
 - Indexed fixtures, component-visibility changes, cross-image workflows beyond
   the measured ordinary RGB direct/group copy and live source relocation, full
   transform/resize Undo ordering and compound saved artworks remain broader

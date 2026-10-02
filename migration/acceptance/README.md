@@ -39,11 +39,25 @@ Later work extends the matrix to the90 legacy handle contracts,76 C entries and
 remaining feature families. Unresolved mappings must remain visible rather than
 being dropped or filled with generic success language.
 
-`state-attachment-gaps.json` additionally preserves the known remaining free-form
-Painter layer-dialog/XCF attachment sites under31.016. This is an unresolved
-architecture obligation, not a signal to drop provenance, unknown payloads or
-saved references. Native last-file context keys remain a separate upstream
-protocol. The scoped scan does not pretend to cover every uncommitted feature.
+`state-attachment-gaps.json` preserves the 17 historical free-form Painter
+layer-dialog/XCF attachment sites under31.016. Their replacements now have typed
+common-store ownership, native lifecycle/copy tests and focused sanitizer proof.
+The parent architecture gate and all-feature acceptance remain open. Native
+last-file context keys remain a separate upstream protocol; this replacement
+does not discard provenance, unknown payloads or saved references.
+
+`clone.json` covers all26 WBS14 rows:21 have verified component evidence and5
+retain explicit fixture or integration gaps. It joins the37-case Clone core
+report, the earlier42-case provenance/XCF checkpoint and21-case dialog checkpoint.
+The latter two are **historical compiled snapshots**, not tests of the currently
+evolving combined XCF/GUI tree. Their sealed source archives make that distinction
+checkable. The Clone core implementation/test hashes still match the measured
+source. `check_clone_acceptance.py` checks source/report seals, complete WBS
+coverage, unchanged dependency/acceptance text, and named normal/sanitizer tests;
+`test_clone_acceptance.py` has8 positive/negative checks. This is evidence
+reconciliation, not a newly executed application run. The remaining component
+visibility, positive same-name persistence checkpoint, indexed/compound and
+non-RGB cross-image fixtures stay explicit, along with aggregate/platform gates.
 
 The first hierarchy build exposed a standalone runner basename collision:
 `test-hierarchy.c` and `test-hierarchy.cpp` overwrote the same object output.

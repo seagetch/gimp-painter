@@ -1,0 +1,47 @@
+{
+  "scope": "WBS14 evidence reconciliation only; no application rerun",
+  "inputs_sha256": {
+    "migration/acceptance/clone.json": "78900a2844ab001e2562f71e4a4d48a04b3fe29fa681099f4a4c801c679e6744",
+    "tools/check_clone_acceptance.py": "a76ef4d8709787577d29b1c1ee16b75a278407f12cd77b31d48df42d8ceefb54",
+    "tools/test_clone_acceptance.py": "1644a6b753637010dff172dea61785781801ff8361f15b337af7017e02456547"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python",
+        "tools/check_clone_acceptance.py"
+      ],
+      "exit_code": 0,
+      "stdout": "WBS14: all 26 component rows reconciled; core source and historical XCF/GUI evidence verified. Dependency, remaining fixture and current aggregate gates stay open.\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python",
+        "tools/test_clone_acceptance.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.524s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "python",
+        "tools/check_tasks.py"
+      ],
+      "exit_code": 0,
+      "stdout": "WBS dependencies, states, and completion evidence: OK\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python",
+        "tools/check_painter_contracts.py"
+      ],
+      "exit_code": 0,
+      "stdout": "90 unique typed-handle contracts; 76 C entries map to a single C++ route; feature implementation not claimed\n",
+      "stderr": ""
+    }
+  ],
+  "known_separate_gate": "Current Filter WIP invalidates older foundation rows06.028/07.012 source hashes; owning worker will supply refreshed compiled evidence. This reconciliation does not mark them passed."
+}
