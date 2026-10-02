@@ -920,6 +920,7 @@
 | 27.003 | [ ] | 固定閾値と色許容差の判定を移植する | 27.002 | 旧ブラシの固定閾値 30、色差と透明領域の扱いが一致 |
 | 27.004 | [ ] | ブラシ内の探索を実装する | 27.003 | 領域探索が brush 外へ出ない |
 | 27.004/gegl-bounded-search | [ ] | snapshot・固定開始色・矩形・ブラシ mask を受ける GEGL buffer 有界探索入口を実装する | 27.004 | 範囲外経由の回込みを許さず旧色判定・coverage・grow と一致 |
+| 27.004/runtime-search-foundation | [x] | 旧有界探索・距離penalty・growをGEGL独立jobで比較する | 01.016/bucket-selection-source, 04.002/common-foundation | 128実旧search/grow scenario・257record完全一致、5通常/ASan/UBSan/float-cast-overflow不変条件と3 fixture検査合格。snapshot・step予算・取消しを検証。tool合成/全UI待時間/queue admissionは未完了 |
 | 27.005 | [ ] | 選択境界内の探索を実装する | 27.004 | 探索自体が選択外を経由しない |
 | 27.005/selection-threshold-contract | [ ] | 選択maskの旧距離penaltyと閾値境界を保持して試験する | 27.004, 01.016/bucket-selection-source | 0/部分/全coverage・閾値0/30/100/255・透過seed・offsetを旧実行fixtureと比較し、単純なboolean境界や探索後clipへ置換せず探索と最終描画の意味を維持する |
 | 27.005/selection-barrier | [ ] | 選択 mask を探索中の通過条件に接続する | 27.005, 01.016/bucket-selection-source | 選択外経由の連結を除外し部分選択の coverage を旧結果と比較 |

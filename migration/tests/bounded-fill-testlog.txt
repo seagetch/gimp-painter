@@ -1,0 +1,40 @@
+Log of Meson test suite run on 2026-10-02T13:05:31.017495
+
+Inherited environment omitted; see whitelisted JSON reproducibility variables.
+
+==================================== 1/2 =====================================
+test:         gimp:painter / painter-bounded-fill
+start time:   04:05:31
+duration:     0.18s
+result:       exit status 0
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=253 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-bounded-fill/painter-bounded-fill-test
+----------------------------------- stdout -----------------------------------
+TAP version 14
+# random seed: R02Sc7f3eff39d9b8f562578916b148e6a4c
+1..5
+# Start of fill tests
+ok 1 /fill/barriers
+ok 2 /fill/immutable
+ok 3 /fill/connectivity-grow
+ok 4 /fill/cancellation
+ok 5 /fill/validation
+# End of fill tests
+==============================================================================
+
+==================================== 2/2 =====================================
+test:         gimp:painter / painter-bounded-fill-legacy
+start time:   04:05:31
+duration:     0.68s
+result:       exit status 0
+command:      UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=57 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /usr/bin/python3 /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-bounded-fill/../painter-mypaint/tests/compare-trace.py /workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-bounded-fill/masks.tsv.gz app/paint/painter-bounded-fill/painter-bounded-fill-trace
+----------------------------------- stdout -----------------------------------
+Exact pinned-runtime trace match: 4663098 bytes, 257 records
+==============================================================================
+
+
+Ok:                 2
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0
