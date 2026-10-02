@@ -85,7 +85,8 @@ struct _GimpItemPrivate
   gint              ID;                          /*  provides a unique ID        */
   guint32           tattoo;                      /*  provides a permanent ID     */
 
-  GimpImage        *image;                       /*  item owner                  */
+  GimpImage        *image;                       /*  weak item owner             */
+  Gimp             *id_owner;                    /*  weak ID-table owner         */
 
   GimpParasiteList *parasites;                   /*  Plug-in parasite data       */
 
@@ -113,6 +114,8 @@ struct _GimpItemPrivate
 
 static void       gimp_item_constructed             (GObject        *object);
 static void       gimp_item_finalize                (GObject        *object);
+static void       gimp_item_clear_image             (GimpItem       *item);
+static void       gimp_item_release_id              (GimpItem       *item);
 static void       gimp_item_set_property            (GObject        *object,
                                                      guint           property_id,
                                                      const GValue   *value,
@@ -378,11 +381,8 @@ gimp_item_finalize (GObject *object)
       private->offset_nodes = NULL;
     }
 
-  if (private->image && private->image->gimp)
-    {
-      gimp_id_table_remove (private->image->gimp->item_table, private->ID);
-      private->image = NULL;
-    }
+  gimp_item_clear_image (GIMP_ITEM (object));
+  gimp_item_release_id (GIMP_ITEM (object));
 
   g_clear_object (&private->parasites);
 
@@ -611,6 +611,27 @@ gimp_item_real_duplicate (GimpItem *item,
   if (gimp_item_can_lock_visibility (new_item))
     gimp_item_set_lock_visibility (new_item, gimp_item_get_lock_visibility (item),
                                    FALSE);
+
+  /* Imported source records are immutable shared byte views. Keep their
+   * provenance across item duplication without copying large metadata buffers
+   * or depending on any file-format implementation. Current item state remains
+   * authoritative; these records are only a lossless origin archive. */
+  {
+    const gchar *keys[] = { "gimp-painter-xcf-property-records",
+                            "gimp-painter-xcf-extension",
+                            "gimp-painter-xcf-object-header" };
+    guint i;
+    for (i = 0; i < G_N_ELEMENTS (keys); i++)
+      {
+        GBytes *bytes = g_object_get_data (G_OBJECT (item), keys[i]);
+        if (bytes)
+          g_object_set_data_full (G_OBJECT (new_item), keys[i], g_bytes_ref (bytes),
+                                  (GDestroyNotify) g_bytes_unref);
+      }
+    if (g_object_get_data (G_OBJECT (item), "gimp-painter-xcf-original-name"))
+      g_object_set_data_full (G_OBJECT (new_item), "gimp-painter-xcf-original-name",
+                              g_strdup (g_object_get_data (G_OBJECT (item), "gimp-painter-xcf-original-name")), g_free);
+  }
 
   return new_item;
 }
@@ -2032,6 +2053,40 @@ gimp_item_get_image (GimpItem *item)
   return GET_PRIVATE (item)->image;
 }
 
+/* Item ownership is main-thread confined. These weak pointers never acquire a
+ * strong reference while Gimp/Image is disposing (in particular at refcount 0).
+ * An externally retained item can therefore outlive either owner safely. */
+static void
+gimp_item_clear_image (GimpItem *item)
+{
+  GimpItemPrivate *private = GET_PRIVATE (item);
+
+  if (private->image)
+    g_object_remove_weak_pointer (G_OBJECT (private->image),
+                                  (gpointer *) &private->image);
+  private->image = NULL;
+}
+
+static void
+gimp_item_release_id (GimpItem *item)
+{
+  GimpItemPrivate *private = GET_PRIVATE (item);
+
+  if (private->id_owner)
+    {
+      /* The table may already have been cleared during Gimp shutdown, or the
+       * entry may have been transferred by gimp_item_replace_item(). */
+      if (private->id_owner->item_table && private->ID &&
+          gimp_id_table_lookup (private->id_owner->item_table, private->ID) == item)
+        gimp_id_table_remove (private->id_owner->item_table, private->ID);
+
+      g_object_remove_weak_pointer (G_OBJECT (private->id_owner),
+                                    (gpointer *) &private->id_owner);
+    }
+  private->id_owner = NULL;
+  private->ID = 0;
+}
+
 void
 gimp_item_set_image (GimpItem  *item,
                      GimpImage *image)
@@ -2050,8 +2105,12 @@ gimp_item_set_image (GimpItem  *item,
 
   g_object_freeze_notify (G_OBJECT (item));
 
-  if (private->ID == 0)
+  if (private->id_owner != image->gimp || private->ID == 0)
     {
+      gimp_item_release_id (item);
+      private->id_owner = image->gimp;
+      g_object_add_weak_pointer (G_OBJECT (private->id_owner),
+                                 (gpointer *) &private->id_owner);
       private->ID = gimp_id_table_insert (image->gimp->item_table, item);
 
       g_object_notify_by_pspec (G_OBJECT (item), gimp_item_props[PROP_ID]);
@@ -2062,7 +2121,9 @@ gimp_item_set_image (GimpItem  *item,
       private->tattoo = gimp_image_get_new_tattoo (image);
     }
 
+  gimp_item_clear_image (item);
   private->image = image;
+  g_object_add_weak_pointer (G_OBJECT (image), (gpointer *) &private->image);
   g_object_notify_by_pspec (G_OBJECT (item), gimp_item_props[PROP_IMAGE]);
 
   g_object_thaw_notify (G_OBJECT (item));
@@ -2100,25 +2161,28 @@ gimp_item_replace_item (GimpItem *item,
   g_return_if_fail (! gimp_item_is_attached (item));
   g_return_if_fail (! gimp_item_is_removed (item));
   g_return_if_fail (GIMP_IS_ITEM (replace));
+  g_return_if_fail (item != replace);
+  g_return_if_fail (GIMP_IS_IMAGE (gimp_item_get_image (replace)));
 
   private = GET_PRIVATE (item);
 
   gimp_object_set_name (GIMP_OBJECT (item), gimp_object_get_name (replace));
 
-  if (private->ID)
-    gimp_id_table_remove (gimp_item_get_image (item)->gimp->item_table,
-                          gimp_item_get_id (item));
-
-  private->ID = gimp_item_get_id (replace);
-  gimp_id_table_replace (gimp_item_get_image (item)->gimp->item_table,
-                         gimp_item_get_id (item),
-                         item);
-
   /* Set image before tattoo so that the explicitly set tattoo overrides
-   * the one implicitly set when setting the image
-   */
+   * the one implicitly set when setting the image. Transfer the ID only after
+   * choosing the destination table, including across Gimp contexts. */
+  g_object_freeze_notify (G_OBJECT (item));
   gimp_item_set_image (item, gimp_item_get_image (replace));
-  GET_PRIVATE (replace)->image  = NULL;
+  gimp_item_release_id (item);
+  private->id_owner = GET_PRIVATE (replace)->id_owner;
+  g_object_add_weak_pointer (G_OBJECT (private->id_owner),
+                             (gpointer *) &private->id_owner);
+  private->ID = gimp_item_get_id (replace);
+  gimp_id_table_replace (private->id_owner->item_table, private->ID, item);
+  gimp_item_clear_image (replace);
+  gimp_item_release_id (replace);
+  g_object_notify_by_pspec (G_OBJECT (item), gimp_item_props[PROP_ID]);
+  g_object_thaw_notify (G_OBJECT (item));
 
   gimp_item_set_tattoo (item, gimp_item_get_tattoo (replace));
   gimp_item_set_tattoo (replace, 0);

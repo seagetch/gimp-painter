@@ -40,3 +40,19 @@ extern "C" void gimp_test_clone_cpp_layout (gsize size, gsize offset, GimpCloneL
   name = handle.source_name ();
   g_assert_cmpstr (name.get (), ==, "unresolved via C++ handle");
 }
+
+extern "C" void gimp_test_clone_retained_image (GimpImage *image, GimpCloneLayer *clone);
+extern "C" void gimp_test_clone_retained_image (GimpImage *image, GimpCloneLayer *clone)
+{
+  auto handle = GimpPainter::CloneLayerRef::retain (clone);
+  auto source = handle.source ();
+  g_assert_true (static_cast<bool> (source));
+  g_object_unref (image);
+  g_assert_null (gimp_item_get_image (GIMP_ITEM (handle.get ())));
+  g_assert_null (gimp_item_get_image (GIMP_ITEM (source.get ())));
+  g_assert_false (static_cast<bool> (handle.source ()));
+  GError *error = nullptr;
+  g_assert_false (gimp_clone_layer_set_source_full (handle.get (), nullptr, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED);
+  g_clear_error (&error);
+}

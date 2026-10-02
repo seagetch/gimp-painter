@@ -1,4 +1,4 @@
-Log of Meson test suite run on 2026-10-02T10:38:28.145018
+Log of Meson test suite run on 2026-10-02T10:54:11.833320
 
 Reproducibility environment (explicit allowlist only):
 {
@@ -8,7 +8,7 @@ Reproducibility environment (explicit allowlist only):
   "BABL_PATH": "/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/babl-0.1",
   "GIMP_DEPS_DIRECTORY": "/workspace/shared/gimp-build-deps",
   "GIMP_DEPS_ROOT": "/workspace/shared/gimp-build-deps/root",
-  "LD_LIBRARY_PATH": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu",
+  "LD_LIBRARY_PATH": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu",
   "LC_CTYPE": "C.UTF-8",
   "LC_ALL": "C.UTF-8",
   "PATH": "/workspace/scratch/5b5281e79681/.build-prefix-debian13/bin:/workspace/shared/gimp-build-deps/bin:/usr/bin:/workspace/shared/gimp-build-deps/root/usr/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -21,28 +21,33 @@ Reproducibility environment (explicit allowlist only):
 
 ==================================== 1/1 =====================================
 test:         gimp:app / gimp-clone-layer
-start time:   01:38:28
-duration:     2.12s
+start time:   01:54:11
+duration:     4.33s
 result:       exit status 0
-command:      MALLOC_PERTURB_=124 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 UI_TEST=yes MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-clone-layer
+command:      GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/5b5281e79681/gimp-painter GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13 MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 LD_LIBRARY_PATH=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpbase:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmath:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpwidgets:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpmodule:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpconfig:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpcolor:/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/libgimpthumb:/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu:/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_PLUGINDIRS=/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=90 UI_TEST=yes /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-clone-layer
 ----------------------------------- stdout -----------------------------------
 TAP version 14
-# random seed: R02S8dd23fd8350bca609e500d7811813b36
+# random seed: R02S1ba15b4398860d846a5998a45f907794
 # GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
-1..33
+1..37
 # Start of gimp-clone-layer tests
-ok 1 /gimp-clone-layer/serialization_reference_snapshot_and_restore
-ok 2 /gimp-clone-layer/undo_source_image_relocation
-ok 3 /gimp-clone-layer/clone_owner_image_relocation
-ok 4 /gimp-clone-layer/source_reference_undo_dependent_clone
-ok 5 /gimp-clone-layer/source_reference_undo_close_reentry
-ok 6 /gimp-clone-layer/source_reference_undo_live
-ok 7 /gimp-clone-layer/source_reference_undo_all_states
-ok 8 /gimp-clone-layer/source_reference_undo_preserves_pending_live
-ok 9 /gimp-clone-layer/source_reference_undo_renamed_then_expired
-ok 10 /gimp-clone-layer/source_reference_undo_expired_cross_image
-ok 11 /gimp-clone-layer/cross_image_copy_and_move
-ok 12 /gimp-clone-layer/inherited_precision_conversion_undo
+ok 1 /gimp-clone-layer/retained_items_image_destroy
+ok 2 /gimp-clone-layer/retained_item_same_gimp_relocation
+ok 3 /gimp-clone-layer/replaced_item_weak_identity_transfer
+ok 4 /gimp-clone-layer/retained_item_gimp_lifetime
+# slow test /gimp-clone-layer/retained_item_gimp_lifetime executed in 2.13 secs
+ok 5 /gimp-clone-layer/serialization_reference_snapshot_and_restore
+ok 6 /gimp-clone-layer/undo_source_image_relocation
+ok 7 /gimp-clone-layer/clone_owner_image_relocation
+ok 8 /gimp-clone-layer/source_reference_undo_dependent_clone
+ok 9 /gimp-clone-layer/source_reference_undo_close_reentry
+ok 10 /gimp-clone-layer/source_reference_undo_live
+ok 11 /gimp-clone-layer/source_reference_undo_all_states
+ok 12 /gimp-clone-layer/source_reference_undo_preserves_pending_live
+ok 13 /gimp-clone-layer/source_reference_undo_renamed_then_expired
+ok 14 /gimp-clone-layer/source_reference_undo_expired_cross_image
+ok 15 /gimp-clone-layer/cross_image_copy_and_move
+ok 16 /gimp-clone-layer/inherited_precision_conversion_undo
 # RESIZE_TRACE mask=0 stage=baseline source_wh=16,16 source_xy=5,7 clone_wh=16,16 clone_xy=32,30 mask_wh=0,0 undo=0 redo=0
 # RESIZE_TRACE mask=0 stage=resized source_wh=20,18 source_xy=7,10 clone_wh=20,18 clone_xy=34,33 mask_wh=0,0 undo=1 redo=0
 # UNDO_NODE depth=0 type=GimpUndoStack undo_type=27 item=-
@@ -113,27 +118,27 @@ ok 12 /gimp-clone-layer/inherited_precision_conversion_undo
 # UNDO_BUFFER depth=1 wh=20,18 xy=32,30
 # UNDO_NODE depth=1 type=GimpDrawableModUndo undo_type=60 item=resize source
 # UNDO_BUFFER depth=1 wh=16,16 xy=5,7
-ok 13 /gimp-clone-layer/source_resize_undo_legacy_fixture
-ok 14 /gimp-clone-layer/group_duplicate_complete_hierarchy
-ok 15 /gimp-clone-layer/double_precision_and_trc
-ok 16 /gimp-clone-layer/thaw_reentry_close_and_replace
-ok 17 /gimp-clone-layer/dissolve_legacy_fixture
-ok 18 /gimp-clone-layer/gray_and_high_precision
-ok 19 /gimp-clone-layer/frozen_source_disposal
-ok 20 /gimp-clone-layer/group_duplicate_internal_reference
-ok 21 /gimp-clone-layer/inert_construction
-ok 22 /gimp-clone-layer/reentrant_source_replace
-ok 23 /gimp-clone-layer/cpp_header_layout
-ok 24 /gimp-clone-layer/projected_pixels
-ok 25 /gimp-clone-layer/partial_update_and_graph
-ok 26 /gimp-clone-layer/deferred_name
-ok 27 /gimp-clone-layer/recursive_first_match
-ok 28 /gimp-clone-layer/offset_size_and_noop_transforms
-ok 29 /gimp-clone-layer/source_delete_undo
-ok 30 /gimp-clone-layer/source_lifetime_and_detach
-ok 31 /gimp-clone-layer/freeze_and_close
-ok 32 /gimp-clone-layer/cycles
-ok 33 /gimp-clone-layer/duplicate_and_group_update
+ok 17 /gimp-clone-layer/source_resize_undo_legacy_fixture
+ok 18 /gimp-clone-layer/group_duplicate_complete_hierarchy
+ok 19 /gimp-clone-layer/double_precision_and_trc
+ok 20 /gimp-clone-layer/thaw_reentry_close_and_replace
+ok 21 /gimp-clone-layer/dissolve_legacy_fixture
+ok 22 /gimp-clone-layer/gray_and_high_precision
+ok 23 /gimp-clone-layer/frozen_source_disposal
+ok 24 /gimp-clone-layer/group_duplicate_internal_reference
+ok 25 /gimp-clone-layer/inert_construction
+ok 26 /gimp-clone-layer/reentrant_source_replace
+ok 27 /gimp-clone-layer/cpp_header_layout
+ok 28 /gimp-clone-layer/projected_pixels
+ok 29 /gimp-clone-layer/partial_update_and_graph
+ok 30 /gimp-clone-layer/deferred_name
+ok 31 /gimp-clone-layer/recursive_first_match
+ok 32 /gimp-clone-layer/offset_size_and_noop_transforms
+ok 33 /gimp-clone-layer/source_delete_undo
+ok 34 /gimp-clone-layer/source_lifetime_and_detach
+ok 35 /gimp-clone-layer/freeze_and_close
+ok 36 /gimp-clone-layer/cycles
+ok 37 /gimp-clone-layer/duplicate_and_group_update
 # End of gimp-clone-layer tests
 # GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
 ----------------------------------- stderr -----------------------------------

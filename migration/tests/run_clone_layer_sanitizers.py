@@ -21,11 +21,11 @@ build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
 output = build / "clone-sanitizers"
 output.mkdir(exist_ok=True)
-report = {"scope": "CloneLayer, group duplication, C/C++ test adapters, and shared BindingStore; remaining GIMP/dependencies uninstrumented",
+report = {"scope": "CloneLayer, GimpItem lifetime, group duplication, C/C++ test adapters, and shared BindingStore; remaining GIMP/dependencies uninstrumented",
           "sanitizers": ["address", "undefined"], "leak_detection": False,
           "sources": [], "commands": []}
 flags = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-O1"]
-wanted = {"app/core/gimpclonelayer.cpp", "app/core/gimpgrouplayer.c", "app/tests/test-gimp-clone-layer.c",
+wanted = {"app/core/gimpitem.c", "app/core/gimpclonelayer.cpp", "app/core/gimpgrouplayer.c", "app/tests/test-gimp-clone-layer.c",
           "app/tests/test-gimp-clone-layout.cpp", "app/painter/binding-store.cpp",
           "app/painter/gimp-painter-binding.cpp", "app/painter/gimp-painter-error.cpp"}
 replacements = {}

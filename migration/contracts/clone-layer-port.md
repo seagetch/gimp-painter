@@ -150,8 +150,9 @@ The XCF codec is integrated separately using this API.
 
 Owner and source image disconnect/relocation connections close an owner binding
 or expire a closed-image source while retaining readable metadata. These guard
-feature callbacks; upstream GimpItem's raw image pointer still needs the separate
-approved common lifetime fix for finalizing externally retained layer objects.
+feature callbacks. The separately scoped GimpItem lifetime repair now tracks its
+image and ID-table owner with main-thread weak pointers. The retained-handle
+regressions and limits are documented in `gimp-item-lifetime.md`.
 
 Ordinary precision conversion uses inherited image/drawable Undo and is tested
 through u8-nonlinear to float-linear conversion and replay. The dormant legacy
@@ -162,7 +163,7 @@ genuine legacy cross-image trace remains pending.
 
 ## Verification
 
-- `app/tests/test-gimp-clone-layer.c`: 33 full-GIMP integration cases
+- `app/tests/test-gimp-clone-layer.c`: 37 full-GIMP integration cases
 - `app/tests/test-gimp-clone-layout.cpp`: C++ typed factories/return and actual
   C/C++ struct layout, included in the same executable
 - `migration/tests/clone-layer-testlog.{txt,json}`: normal Meson results, including
@@ -170,7 +171,7 @@ genuine legacy cross-image trace remains pending.
   captured legacy source-resize Undo behavior
 - `migration/tests/clone-layer-sanitizers.json`: focused ASan/UBSan results
 - `migration/tests/run_clone_layer_sanitizers.py`: reproducible instrumentation
-  of CloneLayer, group duplication, test adapters and shared BindingStore, linked to the existing
+  of CloneLayer, GimpItem lifetime, group duplication, test adapters and shared BindingStore, linked to the existing
   full GIMP test harness. Remaining upstream/dependency code is uninstrumented;
   leak detection is disabled. This is not a whole-GIMP sanitizer claim.
   Instrumenting existing group code at `-O1` emits a `mask_buffer` may-be-
