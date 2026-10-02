@@ -283,7 +283,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 05.001 | [x] | 型付きハンドルの型一覧を定義する | 01.017, 04.002/common-foundation | 旧traits・全独自型・C入口ownerの90型に一意な名前付きhandleを定義し、76 C入口への単一路を照合（`migration/contracts/cpp-handle-registry.tsv`）。各feature実装は別途未完了 |
-| 05.002 | [ ] | ハンドルの所有規約を定義する | 05.001 | retain・adopt・sink の差を記載 |
+| 05.002 | [x] | ハンドルの所有規約を定義する | 05.001 | retain・adopt・sink の差を記載 |
 | 05.003 | [ ] | ハンドルの copy/move 規約を定義する | 05.002 | 参照数増減と moved-from 状態を記載 |
 | 05.004 | [ ] | 短期借用の規約を定義する | 05.003 | 保存不可・非同期持出し不可の境界を明示 |
 | 05.004/bound-method-lifetime | [ ] | 旧 BoundMethod の借用 object 寿命を新 API に定義する | 05.004, 01.005/indirect-callback-owners | `operator[]` から返る callable が object の参照を持たないことを考慮し、保持・遅延使用を禁止または weak/strong handle へ移す |
