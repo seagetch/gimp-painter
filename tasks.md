@@ -216,7 +216,7 @@
 | 02.002 | [x] | 旧版のビルド手順を再現する | 02.001 | 固定afa43faeと明示build適合patchからGIMP2.8.23をbuild/installしbinary hashと全stage logを保存（`migration/baseline/legacy/build-report.json`）。完成recipeの第二clean replayは未実施 |
 | 02.003 | [x] | 旧版の起動と描画を確認する | 02.002 | 隔離profileの実旧版をheadless起動し、新規96×80画像と制御された一筆・PNG・XCFを記録（`migration/fixtures/legacy-runtime/`）。GUI/ペンdevice操作は未検証 |
 | 02.004 | [x] | 通常レイヤーの旧 XCF fixture を作る | 02.003 | 属性・画像・期待値を保存 |
-| 02.005 | [ ] | CloneLayer の旧 XCF fixture を作る | 02.004 | 参照元種類と階層を識別したファイルを保存 |
+| 02.005 | [x] | CloneLayer の旧 XCF fixture を作る | 02.004 | 参照元種類と階層を識別したファイルを保存 |
 | 02.006 | [ ] | FilterLayer の旧 XCF fixture を作る | 02.005 | procedure・引数・キャッシュ・下層を含むファイルを保存 |
 | 02.007 | [ ] | 複合レイヤー作品を fixture 化する | 02.006 | アニメ塗り・水彩の再編集操作記録を保存 |
 | 02.008 | [x] | 同梱ブラシ資産を固定する | 00.001 | 177 個の myb の version と hash を保存。固定 commit の386資産を Git blob ID・SHA256・出典へ対応（`migration/fixtures/legacy-source/`）。旧版実行を必要としない独立採取へ依存を明示変更 |
