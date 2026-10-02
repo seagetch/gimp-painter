@@ -276,10 +276,28 @@ static void drawable_removal_during_native_callbacks()
     g_signal_handler_disconnect(layer,id);g_object_unref(layer);g_object_unref(options);g_object_unref(image);
   }
 }
+static void rgb_native_cancel_undo()
+{
+  for(bool floating:{false,true})for(bool eraser:{false,true}) {
+    auto*image=gimp_image_new(gimp,64,48,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+    const auto*format=babl_format("R'G'B' u8");auto*layer=gimp_layer_new(image,64,48,format,"RGB paint target",1,GIMP_LAYER_MODE_NORMAL);
+    g_assert_true(gimp_image_add_layer(image,layer,nullptr,0,FALSE));auto*drawable=GIMP_DRAWABLE(layer);auto*buffer=gimp_drawable_get_buffer(drawable);
+    std::vector<guchar>initial(64*48*3,120);gegl_buffer_set(buffer,GEGL_RECTANGLE(0,0,64,48),0,format,initial.data(),GEGL_AUTO_ROWSTRIDE);
+    const auto read=[&]{std::vector<guchar>out(initial.size());gegl_buffer_get(gimp_drawable_get_buffer(drawable),GEGL_RECTANGLE(0,0,64,48),1,format,out.data(),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);return out;};
+    auto*options=options_new();auto resource=settings(floating);resource.set_base_value(BRUSH_ERASER,eraser?.65:0);gimp_image_undo_free(image);
+    PaintCore core(options,resource);stroke(core,drawable);g_assert_true(read()!=initial);core.cancel();g_assert_true(read()==initial);
+    g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,0);g_assert_false(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(layer)));
+    stroke(core,drawable);core.finish();const auto painted=read();g_assert_true(painted!=initial);g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,1);
+    g_assert_true(gimp_image_undo(image));g_assert_true(read()==initial);g_assert_true(gimp_image_redo(image));g_assert_true(read()==painted);
+    g_assert_false(gimp_drawable_has_alpha(drawable));g_assert_cmpint(babl_format_get_bytes_per_pixel(gegl_buffer_get_format(gimp_drawable_get_buffer(drawable))),==,3);
+    g_object_unref(options);g_object_unref(image);
+  }
+}
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
   g_test_add_func("/painter-surface/session-undo-cancel",session_undo_and_cancel);
+  g_test_add_func("/painter-surface/rgb-cancel-undo",rgb_native_cancel_undo);
   g_test_add_func("/painter-surface/stationary-selection",stationary_and_selection);
   g_test_add_func("/painter-surface/resource-lifetime-missing",resources_lifetime_and_missing);
   g_test_add_func("/painter-surface/paper-invalidation",paper_invalidation);

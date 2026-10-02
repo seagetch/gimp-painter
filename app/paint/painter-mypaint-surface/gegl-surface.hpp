@@ -15,7 +15,7 @@ struct Texture {
   int width = 0, height = 0;
   std::vector<unsigned char> values; // exact first channel of old pattern bytes
 };
-/* First rendering adapter: exact legacy byte RGBA semantics on GeglBuffer.
+/* First rendering adapter: exact legacy byte RGB/RGBA semantics on GeglBuffer.
  * Higher precision formats are refused explicitly until their own path exists.
  * Shape transformation/resource selection is injected and separately tested. */
 class GeglSurface : public Surface

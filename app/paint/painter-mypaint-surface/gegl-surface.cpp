@@ -25,23 +25,28 @@ struct GeglSurface::Impl {
   int offset_x = 0, offset_y = 0;
   GeglRectangle dirty = {0,0,0,0};
   std::size_t read_bytes = 0, written_bytes = 0;
-  const Babl *format;
+  const Babl *format,*floating_format;
+  int channels;
   explicit Impl (GeglBuffer *buffer) : target (ObjectRef<GeglBuffer>::retain (buffer))
   {
     if (!target) throw std::invalid_argument ("Expected target GeglBuffer");
     const auto *native = gegl_buffer_get_format (buffer);
-    format = babl_format_with_space ("R'G'B'A u8", babl_format_get_space (native));
-    if (native != format) throw std::invalid_argument ("Legacy Surface currently requires nonlinear RGBA u8; refusing precision conversion");
+    floating_format = babl_format_with_space ("R'G'B'A u8", babl_format_get_space (native));
+    const auto *rgb = babl_format_with_space ("R'G'B' u8", babl_format_get_space (native));
+    if (native != floating_format && native != rgb)
+      throw std::invalid_argument ("Legacy Surface currently requires nonlinear RGB/RGBA u8; refusing precision conversion");
+    format=native;channels=babl_format_get_bytes_per_pixel(native);
   }
   std::vector<guchar> read (GeglBuffer *buffer, const GeglRectangle& rect)
   {
-    std::vector<guchar> pixels (std::size_t (rect.width)*rect.height*4);
-    gegl_buffer_get (buffer,&rect,1,format,pixels.data (),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+    const auto *buffer_format=gegl_buffer_get_format(buffer);
+    std::vector<guchar> pixels (std::size_t (rect.width)*rect.height*babl_format_get_bytes_per_pixel(buffer_format));
+    gegl_buffer_get (buffer,&rect,1,buffer_format,pixels.data (),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
     read_bytes += pixels.size (); return pixels;
   }
   void write (GeglBuffer *buffer, const GeglRectangle& rect, const std::vector<guchar>& pixels)
   {
-    gegl_buffer_set (buffer,&rect,0,format,pixels.data (),GEGL_AUTO_ROWSTRIDE); written_bytes += pixels.size ();
+    gegl_buffer_set (buffer,&rect,0,gegl_buffer_get_format(buffer),pixels.data (),GEGL_AUTO_ROWSTRIDE); written_bytes += pixels.size ();
   }
   struct Dab {
     GeglRectangle rect = {0,0,0,0};
@@ -155,7 +160,7 @@ void GeglSurface::begin_session_from (GeglBuffer *before)
                  !gegl_rectangle_equal(gegl_buffer_get_extent(before),gegl_buffer_get_extent(impl_->target.get()))))
     throw std::invalid_argument("Incompatible paint-core snapshot");
   auto initial=before?ObjectRef<GeglBuffer>::retain(before):ObjectRef<GeglBuffer>::adopt(gegl_buffer_dup(impl_->target.get()));
-  auto floating=impl_->non_incremental?ObjectRef<GeglBuffer>::adopt(gegl_buffer_new(gegl_buffer_get_extent(impl_->target.get()),impl_->format)):ObjectRef<GeglBuffer>();
+  auto floating=impl_->non_incremental?ObjectRef<GeglBuffer>::adopt(gegl_buffer_new(gegl_buffer_get_extent(impl_->target.get()),impl_->floating_format)):ObjectRef<GeglBuffer>();
   impl_->initial=std::move(initial);impl_->floating=std::move(floating);
   impl_->active=true;impl_->dirty={0,0,0,0};impl_->read_bytes=impl_->written_bytes=0;
 }
@@ -180,9 +185,10 @@ bool GeglSurface::draw_dab (float x,float y,float radius,float r,float g,float b
   const auto rect=dab.rect; if (!rect.width || !rect.height) return false;
   auto *target=impl_->non_incremental ? impl_->floating.get() : impl_->target.get();
   auto pixels=impl_->read(target,rect); float color[4]={r,g,b,alpha};
+  const int channels=babl_format_get_bytes_per_pixel(gegl_buffer_get_format(target));
   using namespace LegacyPixel;
   using Iter=BrushPixelIteratorForPlainData<ColoredBrushmarkIterator,float,float>;
-  Iter iter(dab.mask.data(),color,pixels.data(),pixels.data(),rect.width,rect.height,rect.width,rect.width*4,rect.width*4,1,4,4);
+  Iter iter(dab.mask.data(),color,pixels.data(),pixels.data(),rect.width,rect.height,rect.width,rect.width*channels,rect.width*channels,1,channels,channels);
   float normal=1.f;normal*=1.f-lock_alpha;normal*=1.f-colorize;
   if (normal) {
     if (alpha==1.f) draw_dab_pixels_BlendMode_Normal(iter,normal*opaque);
@@ -192,7 +198,7 @@ bool GeglSurface::draw_dab (float x,float y,float radius,float r,float g,float b
   impl_->write(target,rect,pixels);
   if (impl_->non_incremental) {
     auto original=impl_->read(impl_->initial.get(),rect);auto result=impl_->read(impl_->target.get(),rect);
-    BrushPixelIteratorForPlainData<PixmapBrushmarkIterator,guchar,guchar> copy(pixels.data(),nullptr,original.data(),result.data(),rect.width,rect.height,rect.width*4,rect.width*4,rect.width*4,4,4,4);
+    BrushPixelIteratorForPlainData<PixmapBrushmarkIterator,guchar,guchar> copy(pixels.data(),nullptr,original.data(),result.data(),rect.width,rect.height,rect.width*4,rect.width*impl_->channels,rect.width*impl_->channels,4,impl_->channels,impl_->channels);
     draw_dab_pixels_BlendMode_Normal_and_Eraser(copy,1.f,impl_->opacity,impl_->background[0],impl_->background[1],impl_->background[2]);
     impl_->write(impl_->target.get(),rect,result);
   }
@@ -207,6 +213,7 @@ void GeglSurface::get_color (float x,float y,float radius,float *r,float *g,floa
   auto dab=impl_->coverage(x,y,radius,hardness,aspect,angle,grain,contrast,true);const auto rect=dab.rect;
   if (!rect.width || !rect.height) return;
   auto pixels=impl_->read(impl_->target.get(),rect);float color[4]{};
+  const int channels=impl_->channels;
   using namespace LegacyPixel;
   float weight=0,red=0,green=0,blue=0,alpha=0;
   // Legacy PixelRegion processing splits at closed-loop paper boundaries even
@@ -219,7 +226,7 @@ void GeglSurface::get_color (float x,float y,float radius,float *r,float *g,floa
       const int bw=!dab.paper_width?rect.width-col:
         std::min(rect.width-col,dab.paper_width-(((rect.x+col)%dab.paper_width+dab.paper_width)%dab.paper_width));
       const int index=row*rect.width+col;
-      BrushPixelIteratorForPlainData<ColoredBrushmarkIterator,float,float> iter(dab.mask.data()+index,color,pixels.data()+index*4,pixels.data()+index*4,bw,bh,rect.width,rect.width*4,rect.width*4,1,4,4);
+      BrushPixelIteratorForPlainData<ColoredBrushmarkIterator,float,float> iter(dab.mask.data()+index,color,pixels.data()+index*channels,pixels.data()+index*channels,bw,bh,rect.width,rect.width*channels,rect.width*channels,1,channels,channels);
       float sw=0,sr=0,sg=0,sb=0,sa=0;
       get_color_pixels_accumulate(iter,&sw,&sr,&sg,&sb,&sa);
       weight+=sw;red+=sr;green+=sg;blue+=sb;alpha+=sa;

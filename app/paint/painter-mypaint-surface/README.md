@@ -4,9 +4,9 @@ Pinned reference: seagetch/gimp-painter
 `afa43fae3e920210146abed514f136fd49f671b5`.
 
 This module is registered with Meson and owns a real current GimpPaintCore
-transaction through the common typed ObjectRef machinery. It is a C++ session
-controller, not yet a registered paint-core/tool/options/editor GObject adapter.
-Those future adapters must use the existing single-slot BindingStore foundation.
+transaction through the common typed ObjectRef machinery. Native options,
+session and interactive tool adapters now use the existing single-slot
+BindingStore foundation; the shared editor is being verified separately.
 
 ## Rendering and ownership
 
@@ -18,7 +18,7 @@ Those future adapters must use the existing single-slot BindingStore foundation.
   observed from the pinned x86 runtime, avoiding its undefined NaN-to-byte cast.
 - `gegl-surface.cpp` uses actual GeglBuffer ROI reads/writes, one stroke snapshot,
   a separate floating buffer, the original accumulation/composite order and byte
-  RGBA math. Other target formats are explicitly refused, never silently reduced.
+  RGB/RGBA math. Other target formats are explicitly refused, never silently reduced.
   Snapshot validation finishes before publishing an active session.
 - Ellipse sampling ignores paper coverage; shaped sampling includes it. Both
   preserve the old paper-wrap partition of floating sample sums. A real old
@@ -46,22 +46,28 @@ old-code executions with synthetic stimuli**, not historical user artwork:
 snapshots), 24 bitmap-mask assertions and 72 generated-transform masks. The port
 computes masks itself; measured masks are assertions, not injected render inputs.
 
-Nine native GIMP3 cases exercise incremental/nonincremental real transactions,
+Ten native GIMP3 cases exercise incremental/nonincremental real transactions,
 exact Undo/Redo pixels, cancel/repeated cancel/destruction, preview thaw, stationary
 pressure with selection, resource lifetime and missing references, paper dirty
 invalidation, rejected snapshot/precision, finite transparent lock-alpha and
 representable resource dimensions above the removed arbitrary bounds. They also
 reject recursive start/configure, defer start-time cancel/finish, keep images alive
 through freeze/thaw/Undo dirty callbacks, and safely unwind drawable removal.
+The added RGB case verifies native three-channel retention, cancel and Undo/Redo
+with erasing in both accumulation modes.
 
 A subsequent independent full-session comparison now matches 129 records / 96
 130×96 RGBA snapshots from 32 actual **warmed** old core/drawable/Undo scenarios,
 including smudge and old tile boundaries. The new sessions start cold safely;
 the old cold nonincremental failure is separately retained. See
 `migration/contracts/mypaint-full-session-comparison.md` for exact scope and
-provenance. Arbitrary ICC/color-space and precision modes, brush-pipe selection,
-all177 rendered brush scenes, options/tool/editor registration and actual
-GUI/tablet/platform behavior remain separate gates.
+provenance. A second independent RGB-u8 comparison matches 96 warmed scenarios,
+288 complete images and 385 records, including eraser and actual layer alpha
+lock; see `migration/contracts/mypaint-rgb-surface.md`. Registered tool native
+GTK cases and isolated preview resources have their own contracts. Arbitrary
+ICC/color-space and precision modes, active brush-pipe selection parity, all177
+rendered brush scenes, complete editor workflows and physical tablet/platform
+behavior remain separate gates.
 
 ## Native model and adapter
 

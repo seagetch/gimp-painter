@@ -90,3 +90,9 @@ warmed pinned-old scenarios and 96 complete native RGBA snapshots. See
 warmed old references do not establish old cold-start equivalence (cold old
 nonincremental crashes), arbitrary ICC/high precision, brush pipes, all177 rendered
 brushes, live GUI/hardware or Windows/macOS behavior.
+
+
+The subsequent `mypaint-rgb-surface.md` checkpoint adds native nonlinear RGB-u8
+without alpha insertion, with an independent 96-scene old-session oracle and
+native cancel/Undo/Redo checks. The original RGBA evidence above keeps its own
+scope; other models/precisions and arbitrary ICC remain open.

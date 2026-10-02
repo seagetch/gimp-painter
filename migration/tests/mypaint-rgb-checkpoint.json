@@ -1,0 +1,25 @@
+{
+  "scope": "Production native nonlinear RGB-u8 extension, exact independent old96/385 plus baseline RGBA32/129, two focused sanitizer gates and app/native-tool link. No GTK rerun claimed in this component.",
+  "owned_sources_sha256": {
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "c531be3205f5e68416fc5e10a51801cfd4f9aa4028f136ac2d5a33bb146a6340",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "cd2072f2bd50dfb8eee498d2eb77b79d9dd7ad8af024744362c783e012f8821f",
+    "app/paint/painter-mypaint-surface/README.md": "f83b612859def5e449c6120906020bdb06ba6c30c4ab80f9a03226c369fd2a9e",
+    "app/tests/painter-mypaint-rgb-session-trace.cpp": "c9792594968e55ae563ec48fad1cbb0808a10d17c336edacfb309f23e1fc8e3f",
+    "app/tests/test-gimp-painter-surface.cpp": "617daf8f1134404d91077453ba18c8bd8c3b77d3ae0f081e1f0fc08537b2b740",
+    "migration/tests/run_mypaint_model_sanitizers.py": "5facad6d5d30969eb737bb3df546bf11308e4f0147207da0675344bd9ef17274",
+    "migration/tests/compare_mypaint_rgb_sessions.py": "c07d982986d4f7e744df745372e87146ceaaa649deab3593e8f657061d9d6e95",
+    "migration/tests/capture_mypaint_rgb_sessions.py": "677d5432bb05f11d794b6931830cbd645e8fc8d3a1bd1a42504b98d5b08c9e7a",
+    "migration/tests/test_mypaint_rgb_session_fixtures.py": "a401309f0f23eaa2edbf315ae38867e49ce1c3f3e1f74093432626f98eadf23c",
+    "migration/contracts/mypaint-rgb-surface.md": "d1038255f05f8a8f1a30b760bd22ee17ebd5c84f1cd417ed4a5ee04d5edb0866",
+    "migration/contracts/mypaint-surface-session.md": "26d2c9c220b73cfe2c21c19c7bfa3520072810daf18594e85c027df50ab8c9f8"
+  },
+  "sanitizer_current_source_checks": {
+    "mypaint-rgb-sanitizers.json": true,
+    "mypaint-rgb-surface-sanitizers.json": true
+  },
+  "normal_report": "mypaint-rgb-native.json",
+  "old_fixture_manifest_sha256": "31ab78c9e26abdf748890b0b4a8bfea6cb57f22dcf957a8a2e3550e132166783",
+  "app_executable_sha256": "3a6babaa42fdd3be0080bb4d68ffb1663def292cfbb0402943e96d2720ca70c7",
+  "native_tool_executable_sha256": "1c8a48a49b55e01b6882a7f279d698714965cee014928f209119e76428a8ba21",
+  "shared_meson_scope": "Only painter_rgb_trace and its two tests; exclude other workers and editor changes."
+}

@@ -303,3 +303,22 @@ test('gimp-painter-preview', painter_preview_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)
+
+# Real old RGB-u8 sessions, including actual alpha lock and erasing.
+painter_rgb_trace = executable('painter-mypaint-rgb-session-trace',
+  'painter-mypaint-rgb-session-trace.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-legacy-rgb-session', painter_brush_settings_python,
+    args: [meson.project_source_root() / 'migration/tests/compare_mypaint_rgb_sessions.py',
+           meson.project_source_root() / 'migration/fixtures/legacy-mypaint-rgb-session/session-values.tsv.gz',
+           painter_rgb_trace],
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 120)
+  test('painter-mypaint-rgb-session-fixtures', painter_brush_settings_python,
+    args: [meson.project_source_root() / 'migration/tests/test_mypaint_rgb_session_fixtures.py'],
+    suite: 'painter', is_parallel: false, timeout: 60)
+endif

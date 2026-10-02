@@ -6,6 +6,7 @@ LeakSanitizer is disabled; nonlisted application/dependency code is uninstrument
 """
 import argparse
 import hashlib
+import gzip
 import json
 import os
 from pathlib import Path
@@ -16,9 +17,10 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("build", type=Path)
 parser.add_argument("--report", type=Path, required=True)
-parser.add_argument("--target", choices=["options", "session", "hover", "preview"], required=True)
+parser.add_argument("--target", choices=["options", "session", "hover", "preview", "rgb", "surface"], required=True)
 args = parser.parse_args()
-target = "gimp-painter-" + args.target
+target = "painter-mypaint-rgb-session-trace" if args.target == "rgb" else "gimp-painter-" + args.target
+test_source = "app/tests/painter-mypaint-rgb-session-trace.cpp" if args.target == "rgb" else "app/tests/test-" + target + ".cpp"
 build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
 output = build / ("mypaint-" + args.target + "-sanitizers")
@@ -35,7 +37,7 @@ wanted = {"app/paint/painter-mypaint-surface/gegl-surface.cpp",
           "app/paint/gimppaintcore.c", "app/core/gimpdrawable.c", "app/core/gimpbrush.c",
           "app/core/gimppattern.c", "app/core/gimpdata.c",
           "app/core/gimpimage.c", "app/core/gimpitem.c", "app/core/gimpimage-undo.c", "app/core/gimpviewable.c",
-          "app/core/gimpobject.c", "app/core/gimpresource.c", "app/tests/test-" + target + ".cpp", "app/core/gimpcontext.c", "app/core/gimppaintermybrush.cpp",
+          "app/core/gimpobject.c", "app/core/gimpresource.c", test_source, "app/core/gimpcontext.c", "app/core/gimppaintermybrush.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
           "app/paint/painter-mypaint/resource.cpp", "app/paint/painter-mypaint/engine.cpp",
@@ -119,6 +121,14 @@ env.update({"GIMP_TESTING_ABS_TOP_SRCDIR": str(root),
             "UI_TEST": "yes", "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
             "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"})
 result = subprocess.run([str(exe)], cwd=build, env=env, capture_output=True, text=True)
+if args.target == "rgb":
+    expected = gzip.decompress((root / "migration/fixtures/legacy-mypaint-rgb-session/session-values.tsv.gz").read_bytes())
+    actual = b"\n".join(line.encode() for line in result.stdout.splitlines() if line.startswith("RGB_SESSION_")) + b"\n"
+    report["rgb_oracle"] = {"equal": actual == expected, "records": len(actual.splitlines()),
+                            "bytes": len(actual), "sha256": hashlib.sha256(actual).hexdigest()}
+    result.stdout = "\n".join(line for line in result.stdout.splitlines() if not line.startswith("RGB_SESSION_")) + "\n"
+    result.returncode = result.returncode or int(actual != expected)
+    report["scope"] += "; full 96-scene independent old RGB session pixel/Undo/Redo comparison"
 changed = [name for name, digest in hashes.items()
            if hashlib.sha256((root / name).read_bytes()).hexdigest() != digest]
 report.update({"exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr,
