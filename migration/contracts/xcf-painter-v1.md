@@ -279,5 +279,42 @@ remains best-effort fatal recovery, not async-signal-safe recovery or a newly
 implemented autosave schedule.
 
 See [xcf-remaining-gates.md](xcf-remaining-gates.md) for the audited residual
-implementation and application gates, especially transactional validation of
-malformed known-v1 semantic fields.
+implementation and application gates, including native owner/context corruption and full application lifecycle checks.
+
+
+## Transactional semantic-envelope checkpoint
+
+Normal application coverage is 38 cases (XCF 4, Open 14, roundtrip 20); all 20
+focused ASan+UBSan roundtrip cases pass with stable source/header hashes.
+Evidence is `migration/tests/painter-xcf-semantic-schema-{meson.txt,testlog.txt,
+testlog.json,sanitizers.json,before.json}`. The isolated pre-fix preservation
+translation unit from commit `c15722e45b` fails both new tests at their first
+invalid scene: a custom layer was constructed. This controlled before/after
+comparison uses the current application harness, not a complete old-commit build.
+No shared source or native archive was replaced for the comparison.
+
+Filter cache/definition envelopes and Clone reference envelopes are validated
+before changing the ordinary layer into a custom type. Required fields cannot
+be silently defaulted; Filter counters require `cache-generation <= generation
+<= G_MAXINT64`, and diagnostic state must be a known enum. Clone state is checked
+against pending-name presence, declared source ID and expiration. Missing targets
+remain an explicit unresolved-reference case rather than a malformed envelope.
+Optional source names remain optional; an empty pending name remains distinct
+from no pending name. The core diagnostic source-name snapshot normalizes an
+absent recorded name to an empty string, without inventing a target.
+
+Common legacy-mode and original-name fields are also checked before replacement.
+An invalid envelope stays an inert ordinary proxy retaining the exact capsule and
+committed pixels. Its ordinary edits and duplicates can be saved/reopened while
+keeping that capsule intact; applying new custom semantics refuses before
+replacing the destination. Modern Filters are never marked loaded by the legacy
+finish pass or an exception catch. Only successful validated snapshot restoration
+certifies their cache freshness. Unreadable typed argument models continue to use
+the separate core opaque-definition path.
+
+Coverage includes 24 invalid Filter/common-field scenes, 18 invalid Clone scenes,
+three valid maximum-counter states and four valid missing/empty Clone-name states.
+The invalid scenes include missing/wrong types and semantically inconsistent
+state/counters, with exact bytes/pixels through duplication and repeated saves.
+Valid complete, stale and incomplete caches preserve their relationships after
+runtime-epoch normalization.

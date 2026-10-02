@@ -1039,6 +1039,325 @@ recovery_failed_save (void)
   g_object_unref (backup);
 }
 
+static GBytes *
+invalid_filter_capsule (GVariant *base,
+                        guint     scene)
+{
+  static const guint8 magic[] = {'G','P','X','C','F',0,0,0,1,0,0,0};
+  const gchar *fields[] = {"generation", "cache-generation", "cache-complete", "saved-state"};
+  GVariantDict dict;
+  GVariant *value;
+  GByteArray *wire = g_byte_array_new ();
+
+  g_variant_dict_init (&dict, base);
+  g_variant_dict_insert (&dict, "generation", "t", G_GUINT64_CONSTANT (5));
+  g_variant_dict_insert (&dict, "cache-generation", "t", G_GUINT64_CONSTANT (5));
+  g_variant_dict_insert (&dict, "cache-complete", "b", TRUE);
+  g_variant_dict_insert (&dict, "saved-state", "u", GIMP_FILTER_LAYER_CLEAN);
+  if (scene < 8)
+    {
+      if (scene % 2) g_variant_dict_insert (&dict, fields[scene / 2], "s", "wrong type");
+      else g_variant_dict_remove (&dict, fields[scene / 2]);
+    }
+  else if (scene == 8) g_variant_dict_insert (&dict, "saved-state", "u", GIMP_FILTER_LAYER_CLOSED + 1);
+  else if (scene == 9) g_variant_dict_insert (&dict, "cache-generation", "t", G_GUINT64_CONSTANT (6));
+  else if (scene == 10) g_variant_dict_insert (&dict, "generation", "t", G_MAXUINT64);
+  else if (scene == 11) g_variant_dict_remove (&dict, "has-definition");
+  else if (scene == 12) g_variant_dict_insert (&dict, "has-definition", "s", "wrong type");
+  else if (scene == 13) g_variant_dict_remove (&dict, "has-arguments");
+  else if (scene == 14) g_variant_dict_insert (&dict, "has-arguments", "s", "wrong type");
+  else if (scene == 15) g_variant_dict_insert (&dict, "definition", "s", "wrong type");
+  else if (scene == 16) g_variant_dict_remove (&dict, "definition");
+  else if (scene == 17) g_variant_dict_insert (&dict, "procedure", "u", 77);
+  else if (scene == 20) g_variant_dict_insert (&dict, "legacy-mode", "u", 9999);
+  else if (scene == 21) g_variant_dict_insert (&dict, "legacy-mode", "s", "wrong type");
+  else if (scene == 22) g_variant_dict_insert (&dict, "original-source-name", "u", 77);
+  else if (scene >= 24)
+    {
+      g_variant_dict_insert (&dict, "generation", "t", (guint64) G_MAXINT64);
+      g_variant_dict_insert (&dict, "cache-generation", "t", (guint64) G_MAXINT64 - (scene == 25));
+      g_variant_dict_insert (&dict, "cache-complete", "b", scene != 26);
+    }
+  else
+    {
+      const guint8 bad_name[] = {'a', 0, 'b', 0};
+      g_variant_dict_insert_value (&dict, scene == 23 ? "original-source-name" : "procedure",
+                                    g_variant_new_fixed_array (G_VARIANT_TYPE_BYTE,
+                                                               bad_name, scene == 18 ? 1 : sizeof bad_name, 1));
+    }
+  value = g_variant_ref_sink (g_variant_dict_end (&dict));
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  { GVariant *swapped = g_variant_byteswap (value); g_variant_unref (value); value = swapped; }
+#endif
+  g_byte_array_append (wire, magic, sizeof magic);
+  g_byte_array_append (wire, g_variant_get_data (value), g_variant_get_size (value));
+  g_variant_unref (value);
+  return g_byte_array_free_to_bytes (wire);
+}
+
+static void
+assert_opaque_capsule (GimpLayer *item,
+                       GBytes    *expected)
+{
+  const GimpParasite *parasite;
+  const void *actual, *wanted;
+  guint32 actual_size;
+  gsize wanted_size;
+
+  g_assert_false (GIMP_IS_FILTER_LAYER (item));
+  g_assert_false (GIMP_IS_CLONE_LAYER (item));
+  parasite = gimp_item_parasite_find (GIMP_ITEM (item), "gimp-painter-item");
+  g_assert_nonnull (parasite);
+  actual = gimp_parasite_get_data (parasite, &actual_size);
+  wanted = g_bytes_get_data (expected, &wanted_size);
+  g_assert_cmpmem (actual, actual_size, wanted, wanted_size);
+  pixel (item, 9, 8, 7, 255);
+}
+
+static void
+malformed_filter_cache_stays_opaque (void)
+{
+  GimpImage *original = fixture ("legacy-runtime/filter-edge.xcf");
+  GFile *seed_file = temporary_file ();
+  GimpImage *seed;
+  GimpLayer *filter = NULL;
+  GVariant *base;
+  GList *layers;
+
+  save (original, seed_file);
+  seed = load (seed_file);
+  layers = gimp_image_get_layer_list (seed);
+  for (GList *p = layers; p; p = p->next)
+    if (GIMP_IS_FILTER_LAYER (p->data)) filter = p->data;
+  g_list_free (layers);
+  g_assert_nonnull (filter);
+  base = capsule (GIMP_ITEM (filter));
+
+  for (guint scene = 0; scene < 24; ++scene)
+    {
+      GBytes *expected = invalid_filter_capsule (base, scene);
+      GFile *input = synthetic_capsule_file (expected);
+      GFile *output = temporary_file ();
+      GimpImage *image = load (input);
+      GimpLayer *item = layer (image, "L");
+      GimpLayer *duplicate;
+      GError *error = NULL;
+      GimpPlugInProcedure *proc = GIMP_PLUG_IN_PROCEDURE (gimp_pdb_lookup_procedure (gimp->pdb, "gimp-xcf-save"));
+
+      g_test_message ("Malformed Filter scene %u remains an ordinary opaque proxy", scene);
+      assert_opaque_capsule (item, expected);
+      /* There is no executable Filter and no cache freshness to certify. */
+      while (g_main_context_iteration (NULL, FALSE));
+      assert_opaque_capsule (item, expected);
+      duplicate = GIMP_LAYER (gimp_item_duplicate (GIMP_ITEM (item), GIMP_TYPE_LAYER));
+      gimp_object_set_name (GIMP_OBJECT (duplicate), "opaque duplicate");
+      gimp_image_add_layer (image, duplicate, NULL, 0, FALSE);
+      gimp_object_set_name (GIMP_OBJECT (item), "opaque edit");
+      gimp_layer_set_opacity (item, .5, FALSE);
+      for (guint repeat = 0; repeat < 2; ++repeat)
+        {
+          GimpImage *copy;
+          save (image, output);
+          copy = load (output);
+          g_object_unref (image);
+          image = copy;
+          item = layer (image, "opaque edit");
+          assert_opaque_capsule (item, expected);
+          assert_opaque_capsule (layer (image, "opaque duplicate"), expected);
+          g_assert_cmpfloat (gimp_layer_get_opacity (item), ==, .5);
+          g_assert_nonnull (gimp_item_parasite_find (GIMP_ITEM (item), "gimp-painter-origin"));
+        }
+      /* A new custom mode must not overwrite the malformed active semantics. */
+      gimp_layer_set_mode (item, GIMP_LAYER_MODE_PAINTER_NORMAL, FALSE);
+      sentinel_write (output);
+      g_assert_cmpint (file_save (gimp, image, NULL, output, proc, GIMP_RUN_NONINTERACTIVE,
+                                  FALSE, FALSE, FALSE, &error), ==, GIMP_PDB_EXECUTION_ERROR);
+      g_assert_nonnull (error);
+      g_clear_error (&error);
+      sentinel_check (output);
+      g_object_unref (image);
+      g_bytes_unref (expected);
+      g_file_delete (input, NULL, NULL);
+      g_file_delete (output, NULL, NULL);
+      g_object_unref (input);
+      g_object_unref (output);
+    }
+  /* Valid boundary counters still load; only freshness relationships survive
+   * normalization, not the persisted runtime token values themselves. */
+  for (guint scene = 24; scene < 27; ++scene)
+    {
+      GBytes *bytes = invalid_filter_capsule (base, scene);
+      GFile *file = synthetic_capsule_file (bytes);
+      GimpImage *image = load (file);
+      for (guint repeat = 0; repeat < 2; ++repeat)
+        {
+          GimpLayer *item = layer (image, "L");
+          GimpFilterLayerSnapshot state;
+          GimpImage *copy;
+          g_assert_true (GIMP_IS_FILTER_LAYER (item));
+          pixel (item, 9, 8, 7, 255);
+          g_assert_true (gimp_filter_layer_get_snapshot_state (GIMP_FILTER_LAYER (item), &state));
+          g_assert_cmpint (state.cache_complete && state.cache_generation == state.generation, ==, scene == 24);
+          g_assert_cmpint (state.cache_complete, ==, scene != 26);
+          g_assert_cmpuint (gimp_filter_layer_get_run_count (GIMP_FILTER_LAYER (item)), ==, 0);
+          save (image, file);
+          copy = load (file);
+          g_object_unref (image);
+          image = copy;
+        }
+      g_object_unref (image);
+      g_bytes_unref (bytes);
+      g_file_delete (file, NULL, NULL);
+      g_object_unref (file);
+    }
+  g_variant_unref (base);
+  g_object_unref (seed);
+  g_object_unref (original);
+  g_file_delete (seed_file, NULL, NULL);
+  g_object_unref (seed_file);
+}
+
+static GBytes *
+clone_schema_capsule (GVariant *base,
+                      guint     scene)
+{
+  static const guint8 magic[] = {'G','P','X','C','F',0,0,0,1,0,0,0};
+  const gchar *fields[] = {"source-id", "source-state", "source-expired", "allow-name-lookup"};
+  GVariantDict dict;
+  GVariant *value;
+  GByteArray *wire = g_byte_array_new ();
+  const guint8 pending[] = {'p', 0};
+  const guint8 bad_name[] = {'a', 0, 'b', 0};
+
+  g_variant_dict_init (&dict, base);
+  if (scene < 8)
+    {
+      if (scene % 2) g_variant_dict_insert (&dict, fields[scene / 2], "s", "wrong type");
+      else g_variant_dict_remove (&dict, fields[scene / 2]);
+    }
+  else if (scene == 8) g_variant_dict_insert (&dict, "source-state", "u", GIMP_CLONE_SOURCE_EXPIRED + 1);
+  else if (scene == 9) g_variant_dict_insert (&dict, "source-id", "u", 0);
+  else if (scene == 10) g_variant_dict_insert (&dict, "source-expired", "b", TRUE);
+  else if (scene == 11) g_variant_dict_insert (&dict, "source-state", "u", GIMP_CLONE_SOURCE_NONE);
+  else if (scene == 12 || scene == 13)
+    g_variant_dict_insert (&dict, scene == 12 ? "pending-name" : "source-name", "u", 77);
+  else if (scene == 14 || scene == 15)
+    g_variant_dict_insert_value (&dict, scene == 14 ? "pending-name" : "source-name",
+                                  g_variant_new_fixed_array (G_VARIANT_TYPE_BYTE, bad_name,
+                                                             scene == 14 ? 1 : sizeof bad_name, 1));
+  else if (scene == 16)
+    g_variant_dict_insert_value (&dict, "pending-name",
+                                  g_variant_new_fixed_array (G_VARIANT_TYPE_BYTE, pending, sizeof pending, 1));
+  else if (scene == 17)
+    {
+      g_variant_dict_insert (&dict, "source-id", "u", 0);
+      g_variant_dict_insert (&dict, "source-state", "u", GIMP_CLONE_SOURCE_EXPIRED);
+    }
+  else
+    {
+      g_variant_dict_remove (&dict, "source-name");
+      if (scene > 18)
+        {
+          g_variant_dict_insert (&dict, "source-id", "u", 0);
+          g_variant_dict_insert (&dict, "source-state", "u", scene == 20 ? GIMP_CLONE_SOURCE_NONE : GIMP_CLONE_SOURCE_PENDING);
+          g_variant_dict_insert (&dict, "source-expired", "b", scene == 19);
+          g_variant_dict_insert (&dict, "allow-name-lookup", "b", FALSE);
+          if (scene != 20)
+            g_variant_dict_insert_value (&dict, "pending-name",
+                                          g_variant_new_fixed_array (G_VARIANT_TYPE_BYTE,
+                                                                     scene == 21 ? pending + 1 : pending,
+                                                                     scene == 21 ? 1 : sizeof pending, 1));
+        }
+    }
+  value = g_variant_ref_sink (g_variant_dict_end (&dict));
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  { GVariant *swapped = g_variant_byteswap (value); g_variant_unref (value); value = swapped; }
+#endif
+  g_byte_array_append (wire, magic, sizeof magic);
+  g_byte_array_append (wire, g_variant_get_data (value), g_variant_get_size (value));
+  g_variant_unref (value);
+  return g_byte_array_free_to_bytes (wire);
+}
+
+static void
+malformed_clone_reference_stays_opaque (void)
+{
+  GimpImage *original = fixture ("legacy-runtime/clone-normal-in-group.xcf");
+  GFile *seed_file = temporary_file ();
+  GimpImage *seed;
+  GVariant *base;
+
+  save (original, seed_file);
+  seed = load (seed_file);
+  base = capsule (GIMP_ITEM (layer (seed, "clone")));
+  for (guint scene = 0; scene < 22; ++scene)
+    {
+      GBytes *expected = clone_schema_capsule (base, scene);
+      GFile *file = synthetic_capsule_file (expected);
+      GimpImage *image = load (file);
+      for (guint repeat = 0; repeat < 2; ++repeat)
+        {
+          GimpLayer *item = layer (image, "L");
+          GimpImage *copy;
+          if (scene < 18)
+            assert_opaque_capsule (item, expected);
+          else
+            {
+              GimpCloneLayerReference *reference;
+              g_assert_true (GIMP_IS_CLONE_LAYER (item));
+              reference = gimp_clone_layer_dup_reference (GIMP_CLONE_LAYER (item), NULL);
+              g_assert_null (reference->source);
+              /* The core snapshot represents an absent diagnostic name as
+               * an empty string, while absence of a pending name stays NULL. */
+              g_assert_cmpstr (reference->source_name, ==, "");
+              g_assert_false (reference->allow_name_lookup);
+              g_assert_cmpint (reference->source_expired, ==, scene == 18 || scene == 19);
+              g_assert_cmpint (reference->state, ==, scene == 18 ? GIMP_CLONE_SOURCE_EXPIRED :
+                               scene == 20 ? GIMP_CLONE_SOURCE_NONE : GIMP_CLONE_SOURCE_PENDING);
+              g_assert_cmpstr (reference->pending_name, ==, scene == 19 ? "p" : scene == 21 ? "" : NULL);
+              gimp_clone_layer_reference_free (reference);
+              pixel (item, 9, 8, 7, 255);
+            }
+          gimp_layer_set_opacity (item, .5, FALSE);
+          save (image, file);
+          copy = load (file);
+          g_object_unref (image);
+          image = copy;
+        }
+      if (scene < 18)
+        {
+          GimpLayer *proxy = layer (image, "L");
+          GimpLayer *duplicate = GIMP_LAYER (gimp_item_duplicate (GIMP_ITEM (proxy), GIMP_TYPE_LAYER));
+          GError *error = NULL;
+          GimpPlugInProcedure *proc = GIMP_PLUG_IN_PROCEDURE (gimp_pdb_lookup_procedure (gimp->pdb, "gimp-xcf-save"));
+          GimpImage *copy;
+          gimp_object_set_name (GIMP_OBJECT (duplicate), "opaque duplicate");
+          gimp_image_add_layer (image, duplicate, NULL, 0, FALSE);
+          save (image, file);
+          copy = load (file);
+          assert_opaque_capsule (layer (copy, "L"), expected);
+          assert_opaque_capsule (layer (copy, "opaque duplicate"), expected);
+          gimp_layer_set_mode (proxy, GIMP_LAYER_MODE_PAINTER_NORMAL, FALSE);
+          sentinel_write (file);
+          g_assert_cmpint (file_save (gimp, image, NULL, file, proc, GIMP_RUN_NONINTERACTIVE,
+                                      FALSE, FALSE, FALSE, &error), ==, GIMP_PDB_EXECUTION_ERROR);
+          g_assert_nonnull (error);
+          g_clear_error (&error);
+          sentinel_check (file);
+          g_object_unref (copy);
+        }
+      g_object_unref (image);
+      g_bytes_unref (expected);
+      g_file_delete (file, NULL, NULL);
+      g_object_unref (file);
+    }
+  g_variant_unref (base);
+  g_object_unref (seed);
+  g_object_unref (original);
+  g_file_delete (seed_file, NULL, NULL);
+  g_object_unref (seed_file);
+}
+
 int main (int argc, char **argv)
 {
   int result;
@@ -1063,6 +1382,8 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-xcf-roundtrip/ambiguous_and_unknown_capsule_schema", ambiguous_and_unknown_capsule_schema);
   g_test_add_func ("/painter-xcf-roundtrip/recovery_registered_save", recovery_registered_save);
   g_test_add_func ("/painter-xcf-roundtrip/recovery_failed_save", recovery_failed_save);
+  g_test_add_func ("/painter-xcf-roundtrip/malformed_filter_cache_stays_opaque", malformed_filter_cache_stays_opaque);
+  g_test_add_func ("/painter-xcf-roundtrip/malformed_clone_reference_stays_opaque", malformed_clone_reference_stays_opaque);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

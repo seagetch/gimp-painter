@@ -4,32 +4,24 @@ Audited 2026-10-02 after the reader, native v1 writer, opaque-definition,
 external-reference, capsule-schema and registered recovery-save checkpoints.
 This is an implementation/test handoff, not completion of tasks 10–12.
 
-## First: known-v1 malformed semantic fields
+## Native envelope validation now covered
 
-`app/xcf/painter-xcf-preserve.cpp`, `xcf_painter_restore_layer()` and
-`xcf_painter_restore_bindings()` require a transactional malformed-v1 audit.
-The source currently converts the ordinary proxy before validating every
-semantic field. A Filter definition is installed before cache fields are
-validated; the `std::exception` recovery branch then calls
-`gimp_filter_layer_mark_as_loaded()`. Thus the control flow can certify an
-unvalidated cache and a later save can rewrite the imported fields from a
-partially restored model. This control flow is source-confirmed; a dedicated
-corrupted-cache runtime fixture is still required.
+The earlier Filter definition-before-cache-validation defect is fixed. Filter
+cache fields, counter relationships, definition flags/bytes and name encodings
+are validated before custom construction; Clone fields/state and optional names
+are likewise checked before construction. Common mode and original-name fields
+are checked before replacement. Invalid active envelopes remain ordinary opaque
+proxies and cannot be rewritten as edited custom semantics. Native Filter
+freshness is applied only from a validated snapshot, with no catch-and-mark-loaded
+fallback. The current application tests cover 42 invalid envelope scenes and
+seven valid boundary/name scenes, including exact duplicate/edit/resave retention.
 
-Next acceptance checks:
-
-- Missing/wrong-typed procedure, presence flags, definition bytes, generation,
-  cache completeness and state, plus invalid counter relationships
-- Missing/wrong-typed Clone ID/state/name-policy fields and conflicting kinds
-- Unknown legacy mode on ordinary and custom layers
-- No partial executable definition or falsely fresh cache after a failure
-- Retain the exact active capsule and committed pixels, either as an inert
-  opaque proxy or another explicitly preserved unsupported state
-- Duplicate, edit, Undo, save and reopen without silently turning malformed
-  active semantics into default/empty valid semantics
-
-Duplicate dictionary keys and unknown/wrong-typed item kinds already have real
-Open/Save coverage. That does not validate every field in a known v1 kind.
+Remaining adversarial review should cover incompatible native owner contexts
+(for example custom-layer metadata placed on group/channel/path records),
+post-validation allocation/adapter failures and property-order/context conflicts.
+The envelope checkpoint does not claim a blanket audit of every construction
+failure or every namespace/owner combination. Preserve active semantics rather
+than merely archiving the original bytes when adding those recovery paths.
 
 ## Saved-field inventory and ordinary semantics
 

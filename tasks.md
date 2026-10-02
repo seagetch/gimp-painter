@@ -523,6 +523,7 @@
 | 12.015/external-reference-preservation | [x] | 外部Clone/Filter参照を明示未解決descriptorとして保存する | 12.015/opaque-preservation | 33通常/15 focused ASan+UBSan合格。in-session参照不変・cache保持・同名同IDの無誤結合・元image終了後resaveを検証。URI/path/credentialを格納せず外部探索しない |
 | 12.015/capsule-schema-preservation | [x] | duplicate keyと未知kindを無損失で拒否/保持する | 12.015/external-reference-preservation | 34通常/16 focused sanitizer合格。normal-form重複keyは置換前拒否、未知/型不正kindはopaqueで再保存保持、remote URI/query名を診断metadataから除外。compile/run hash安定を記録 |
 | 12.015/native-recovery-save | [x] | crash backupを現行3引数XCF procedureへ接続する | 12.015/capsule-schema-preservation | 36通常/18 focused sanitizer合格。Clone/Filter/cache/rawのbackup再Open、dirty/file不変、原file保持・失敗時無renameを検証。既存crash処理のasync-signal安全性を新規保証しない |
+| 12.015/semantic-envelope-validation | [x] | 既知Filter/Clone envelopeを型変換前に検証する | 12.015/native-recovery-save | 38通常/20 focused sanitizer合格。Filter24/Clone18不正sceneと有効境界7sceneでopaque保持・無誤fresh・duplicate/resaveを確認。旧unitで両欠陥を再現し証跡保持 |
 | 12.015/clone-unresolved-roundtrip | [ ] | 未解決 CloneLayer 参照を往復試験する | 12.014, 12.002/clone-unresolved-write | 保存前に source が NULL の fixture を保存・再読込し、参照名を欠落させず crash しない |
 | 12.015/filter-args-roundtrip | [ ] | FilterLayer の引数所有権と往復を試験する | 12.014, 12.003/filter-args-ownership | 複数の型付き引数を繰返し保存・再読込し、値一致と一時領域の解放を確認する |
 | 12.016 | [ ] | 保存中断からの回復を試験する | 12.015 | 元作品が開け、編集状態を誤って保存済みにしない |

@@ -278,13 +278,106 @@ bool known_item_kind (GVariant *value)
   return value && g_variant_lookup (value, "kind", "&s", &kind) &&
          (!std::strcmp (kind, "ordinary") || !std::strcmp (kind, "clone") || !std::strcmp (kind, "filter"));
 }
+void validate_optional_name (GVariant *dict, const gchar *key)
+{
+  Variant name (g_variant_lookup_value (dict, key, nullptr));
+  if (!name) return;
+  if (!g_variant_is_of_type (name.get (), G_VARIANT_TYPE_BYTESTRING))
+    fail ("Invalid Painter name type; original capsule remains inert");
+  gsize size;
+  const auto *data = static_cast<const gchar *> (g_variant_get_fixed_array (name.get (), &size, 1));
+  if (!size || data[size - 1] || std::memchr (data, 0, size - 1))
+    fail ("Invalid Painter name encoding; original capsule remains inert");
+}
+bool item_legacy_mode (GVariant *dict, GimpLayerMode *mode)
+{
+  Variant raw (g_variant_lookup_value (dict, "legacy-mode", nullptr));
+  if (!raw) return false;
+  if (!g_variant_is_of_type (raw.get (), G_VARIANT_TYPE_UINT32) ||
+      !gimp_painter_layer_mode_from_legacy (g_variant_get_uint32 (raw.get ()), mode))
+    fail ("Invalid Painter legacy mode; original capsule remains inert");
+  return true;
+}
+void validate_common_item_record (GVariant *dict)
+{
+  GimpLayerMode mode;
+  item_legacy_mode (dict, &mode);
+  validate_optional_name (dict, "original-source-name");
+}
+GimpFilterLayerSnapshot filter_cache_state (GVariant *dict)
+{
+  GimpFilterLayerSnapshot state = {}; state.version = 1;
+  guint32 saved_state;
+  if (!g_variant_lookup (dict, "generation", "t", &state.generation) ||
+      !g_variant_lookup (dict, "cache-generation", "t", &state.cache_generation) ||
+      !g_variant_lookup (dict, "cache-complete", "b", &state.cache_complete) ||
+      !g_variant_lookup (dict, "saved-state", "u", &saved_state) ||
+      saved_state > GIMP_FILTER_LAYER_CLOSED ||
+      state.generation > G_MAXINT64 || state.cache_generation > state.generation)
+    fail ("Invalid Filter cache state; original capsule remains inert");
+  state.state = static_cast<GimpFilterLayerState> (saved_state);
+  return state;
+}
+void validate_filter_record (GVariant *dict)
+{
+  filter_cache_state (dict);
+  gboolean has_definition, has_arguments;
+  if (!g_variant_lookup (dict, "has-definition", "b", &has_definition) ||
+      !g_variant_lookup (dict, "has-arguments", "b", &has_arguments))
+    fail ("Invalid Filter definition presence flags; original capsule remains inert");
+  if (has_definition)
+    {
+      Variant definition (g_variant_lookup_value (dict, "definition", G_VARIANT_TYPE_BYTESTRING));
+      if (!definition) fail ("Invalid Filter definition bytes; original capsule remains inert");
+    }
+  validate_optional_name (dict, "procedure");
+  /* An unreadable active argument model has a separate lossless opaque path.
+   * Do not reject or silently replace it with an empty converted model here.
+   */
+}
+void validate_clone_record (GVariant *dict)
+{
+  guint32 id, state;
+  gboolean expired, allow_lookup;
+  if (!g_variant_lookup (dict, "source-id", "u", &id) ||
+      !g_variant_lookup (dict, "source-state", "u", &state) ||
+      !g_variant_lookup (dict, "source-expired", "b", &expired) ||
+      !g_variant_lookup (dict, "allow-name-lookup", "b", &allow_lookup) ||
+      state > GIMP_CLONE_SOURCE_EXPIRED)
+    fail ("Invalid Clone reference fields; original capsule remains inert");
+  validate_optional_name (dict, "pending-name");
+  validate_optional_name (dict, "source-name");
+  Variant pending (g_variant_lookup_value (dict, "pending-name", G_VARIANT_TYPE_BYTESTRING));
+  const guint32 expected = pending ? GIMP_CLONE_SOURCE_PENDING :
+    id && !expired ? GIMP_CLONE_SOURCE_LIVE : expired ? GIMP_CLONE_SOURCE_EXPIRED : GIMP_CLONE_SOURCE_NONE;
+  if (state != expected)
+    fail ("Inconsistent Clone reference state; original capsule remains inert");
+  /* A missing target is not malformed: after topology restoration it becomes
+   * explicitly expired, retaining the original ID without guessed rebinding.
+   * Names are optional; an explicitly empty pending name is still pending.
+   */
+}
+bool supported_item_record (GVariant *value)
+{
+  if (!known_item_kind (value)) return false;
+  const gchar *kind = nullptr;
+  g_variant_lookup (value, "kind", "&s", &kind);
+  try
+    {
+      validate_common_item_record (value);
+      if (!std::strcmp (kind, "filter")) validate_filter_record (value);
+      if (!std::strcmp (kind, "clone")) validate_clone_record (value);
+    }
+  catch (const std::runtime_error &) { return false; }
+  return true;
+}
 Parasite fallback_origin (GObject *object)
 {
   const auto *semantic = GIMP_IS_IMAGE (object) ? gimp_image_parasite_find (GIMP_IMAGE (object), image_name)
                                                : gimp_item_parasite_find (GIMP_ITEM (object), item_name);
   if (!semantic) return {};
   Variant semantic_value = decode (semantic);
-  if (semantic_value && (GIMP_IS_IMAGE (object) || known_item_kind (semantic_value.get ()))) return {};
+  if (semantic_value && (GIMP_IS_IMAGE (object) || supported_item_record (semantic_value.get ()))) return {};
   const auto *existing = GIMP_IS_IMAGE (object) ? gimp_image_parasite_find (GIMP_IMAGE (object), origin_name)
                                                : gimp_item_parasite_find (GIMP_ITEM (object), origin_name);
   Variant base = decode (existing);
@@ -308,11 +401,11 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
 {
   const auto *existing = gimp_item_parasite_find (item, item_name);
   Variant base = decode (existing);
-  if (existing && (!base || !known_item_kind (base.get ())))
+  if (existing && (!base || !supported_item_record (base.get ())))
     {
       if (GIMP_IS_CLONE_LAYER (item) || GIMP_IS_FILTER_LAYER (item) ||
           (GIMP_IS_LAYER (item) && gimp_painter_layer_mode_is_compatibility (gimp_layer_get_mode (GIMP_LAYER (item)))))
-        fail ("Unknown Painter extension version or kind cannot be overwritten with edited custom semantics");
+        fail ("Unknown Painter extension version, kind or invalid semantic state cannot be overwritten with edited custom semantics");
       return Parasite (gimp_parasite_copy (existing));
     }
   Dictionary dict (base.get ());
@@ -718,6 +811,16 @@ extern "C" gboolean xcf_painter_restore_layer (XcfInfo *info, GimpImage *image, 
       const bool clone = !std::strcmp (kind, "clone"), filter = !std::strcmp (kind, "filter");
       if (!clone && !filter && std::strcmp (kind, "ordinary"))
         { load_warning (info, "unknown layer kind"); return TRUE; }
+      /* Validate the complete cache/definition envelope before replacing the
+       * inert ordinary proxy. A malformed cache must never become executable
+       * or be certified fresh by a catch-and-mark-loaded recovery path.
+       */
+      validate_common_item_record (dict.get ());
+      if (filter) validate_filter_record (dict.get ());
+      if (clone) validate_clone_record (dict.get ());
+      GimpLayerMode mapped;
+      const bool has_mode = item_legacy_mode (dict.get (), &mapped);
+      std::unique_ptr<gchar, decltype (&g_free)> original (read_string (dict.get (), "original-source-name"), g_free);
       if (clone || filter)
         {
           GimpLayer *old = *layer;
@@ -744,15 +847,8 @@ extern "C" gboolean xcf_painter_restore_layer (XcfInfo *info, GimpImage *image, 
           retarget (info, old, replacement);
           g_object_ref_sink (old); g_object_unref (old); *layer = replacement;
         }
-      guint32 mode;
-      if (g_variant_lookup (dict.get (), "legacy-mode", "u", &mode))
-        {
-          GimpLayerMode mapped;
-          if (!gimp_painter_layer_mode_from_legacy (mode, &mapped)) fail ("Unknown legacy composition mode");
-          gimp_layer_set_mode (*layer, mapped, FALSE);
-        }
-      gchar *original = read_string (dict.get (), "original-source-name");
-      if (original) g_object_set_data_full (G_OBJECT (*layer), "gimp-painter-xcf-original-name", original, g_free);
+      if (has_mode) gimp_layer_set_mode (*layer, mapped, FALSE);
+      if (original) g_object_set_data_full (G_OBJECT (*layer), "gimp-painter-xcf-original-name", original.release (), g_free);
       g_object_set_data_full (G_OBJECT (*layer), restore_key, dict.release (), reinterpret_cast<GDestroyNotify> (g_variant_unref));
       return TRUE;
     }
@@ -771,6 +867,7 @@ extern "C" void xcf_painter_restore_bindings (XcfInfo *info, GimpImage *image)
         {
           if (GIMP_IS_CLONE_LAYER (object))
             {
+              validate_clone_record (dict);
               GimpCloneLayerReference reference = {};
               guint32 id, state;
               if (!g_variant_lookup (dict, "source-id", "u", &id) ||
@@ -795,6 +892,8 @@ extern "C" void xcf_painter_restore_bindings (XcfInfo *info, GimpImage *image)
           else if (GIMP_IS_FILTER_LAYER (object))
             {
               auto *filter = GIMP_FILTER_LAYER (object);
+              validate_filter_record (dict);
+              GimpFilterLayerSnapshot state = filter_cache_state (dict);
               std::unique_ptr<gchar, decltype (&g_free)> name (read_string (dict, "procedure"), g_free);
               gboolean has_definition = FALSE, has_args = FALSE;
               g_variant_lookup (dict, "has-definition", "b", &has_definition);
@@ -819,20 +918,12 @@ extern "C" void xcf_painter_restore_bindings (XcfInfo *info, GimpImage *image)
                 : gimp_filter_layer_set_definition_with_snapshot (filter, name.get (), definition.get (), arguments.get (), &error);
               if (!restored)
                 { if (error) g_error_free (error); fail ("Filter definition could not be restored"); }
-              GimpFilterLayerSnapshot state = {}; state.version = 1;
-              guint32 saved_state;
-              if (!g_variant_lookup (dict, "generation", "t", &state.generation) ||
-                  !g_variant_lookup (dict, "cache-generation", "t", &state.cache_generation) ||
-                  !g_variant_lookup (dict, "cache-complete", "b", &state.cache_complete) ||
-                  !g_variant_lookup (dict, "saved-state", "u", &saved_state) || saved_state > GIMP_FILTER_LAYER_CLOSED)
-                fail ("Invalid Filter cache state");
-              state.state = static_cast<GimpFilterLayerState> (saved_state);
               if (!gimp_filter_layer_restore_snapshot_state (filter, &state, &error))
                 { if (error) g_error_free (error); fail ("Filter cache generation could not be restored"); }
             }
         }
       catch (const std::exception &exception)
-        { if (GIMP_IS_FILTER_LAYER (object)) gimp_filter_layer_mark_as_loaded (GIMP_FILTER_LAYER (object)); load_warning (info, exception.what ()); }
+        { load_warning (info, exception.what ()); }
       catch (...) { load_warning (info, "allocation failure"); }
     }
   g_list_free (layers);

@@ -341,7 +341,12 @@ xcf_painter_finish_image (XcfInfo *info, GimpImage *image)
     {
       if (GIMP_IS_CLONE_LAYER (p->data) &&
           !g_object_get_data (G_OBJECT (p->data), "gimp-painter-xcf-modern-definition")) gimp_clone_layer_get_source (GIMP_CLONE_LAYER (p->data));
-      if (GIMP_IS_FILTER_LAYER (p->data)) gimp_filter_layer_mark_as_loaded (GIMP_FILTER_LAYER (p->data));
+      /* Native v1 caches receive freshness only from their validated snapshot,
+       * after definition restoration. Legacy files have no generation record.
+       */
+      if (GIMP_IS_FILTER_LAYER (p->data) &&
+          !g_object_get_data (G_OBJECT (p->data), "gimp-painter-xcf-modern-definition"))
+        gimp_filter_layer_mark_as_loaded (GIMP_FILTER_LAYER (p->data));
     }
   g_list_free (layers);
   xcf_painter_restore_bindings (info, image);
