@@ -828,6 +828,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 23.001 | [ ] | 旧 blending-output の式を抽出する | 02.015, 09.017 | Flow/Rate と区別した仕様を記録 |
+| 23.001/runtime-old-strokes | [x] | 独立Smudgeの旧実描画・蓄積・blending出力を採取する | 02.003, 04.002/common-foundation | 48実旧scene/192全native画素snapshotをRGB/Gray・alpha有無・rate・色混合・size dynamicsで採取し、独立再実行2952800 bytes完全一致。全Undo/Redo一致・4fixture試験合格。現行Flow同等性・移植は未完了 |
 | 23.002 | [ ] | Smudge の蓄積 buffer を移植する | 23.001 | 初期採色と更新が一致 |
 | 23.003 | [ ] | Smudge の色混合を移植する | 23.002 | 旧 blending-output を再現 |
 | 23.004 | [ ] | Smudge のサイズ変化を処理する | 23.003 | 蓄積 buffer の再配置が一致 |
