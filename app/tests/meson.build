@@ -293,3 +293,13 @@ test('painter-native-interpolation', painter_brush_settings_python,
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'GIMP3_DIRECTORY=' + meson.project_build_root() / 'app/tests/gimpdir-output',
         'UI_TEST=yes'], suite: 'painter', is_parallel: false, timeout: 120)
+
+# Preview snapshots isolate native pipe selection and process-global randomness.
+painter_preview_test = executable('gimp-painter-preview', 'test-gimp-painter-preview.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('gimp-painter-preview', painter_preview_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)

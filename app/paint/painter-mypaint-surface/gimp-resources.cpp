@@ -9,6 +9,7 @@ extern "C" {
 #include "core/gimp.h"
 #include "core/gimpbrush.h"
 #include "core/gimpbrushgenerated.h"
+#include "core/gimpbrushpipe.h"
 #include "core/gimpcontext.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpdatafactory.h"
@@ -18,6 +19,7 @@ extern "C" {
 #include "legacy-mask-transform.hpp"
 #include "legacy-generated-mask.hpp"
 #include "painter/connection.hpp"
+#include <algorithm>
 #include <cmath>
 #include <cstring>
 namespace GimpPainter {
@@ -103,20 +105,74 @@ std::pair<int,int> original_size(GimpBrush *brush)
   if(!mask)throw std::invalid_argument("Painter brush has no pixel data");
   return {gimp_temp_buf_get_width(mask),gimp_temp_buf_get_height(mask)};
 }
+void validate_preview_brush(GimpBrush *brush,unsigned depth=0)
+{
+  // Native duplicate deeply copies these built-in brush types. Unknown virtual
+  // selectors need an explicit isolation contract before running in previews.
+  const auto type=G_OBJECT_TYPE(brush);
+  if(type!=GIMP_TYPE_BRUSH&&type!=GIMP_TYPE_BRUSH_GENERATED&&type!=GIMP_TYPE_BRUSH_PIPE)
+    throw std::invalid_argument("Painter preview cannot isolate this brush subclass");
+  if(!GIMP_IS_BRUSH_PIPE(brush))return;
+  auto*pipe=GIMP_BRUSH_PIPE(brush);
+  if(depth>=64||pipe->n_brushes<1||!pipe->brushes||pipe->dimension<1||
+     !pipe->rank||!pipe->stride||!pipe->select||!pipe->index)
+    throw std::invalid_argument("Painter preview requires a valid brush pipe");
+  gint64 maximum_index=0;
+  for(int i=0;i<pipe->dimension;++i) {
+    if(pipe->rank[i]<1||pipe->stride[i]<0)
+      throw std::invalid_argument("Painter preview requires valid brush pipe dimensions");
+    maximum_index+=gint64(pipe->stride[i])*(pipe->rank[i]-1);
+    if(maximum_index>G_MAXINT)
+      throw std::invalid_argument("Painter preview brush pipe indices exceed native selector bounds");
+  }
+  for(int i=0;i<pipe->n_brushes;++i) {
+    if(!pipe->brushes[i])throw std::invalid_argument("Painter preview brush pipe has an empty cell");
+    validate_preview_brush(pipe->brushes[i],depth+1);
+  }
+}
+void reset_preview_pipe(GimpBrush *brush)
+{
+  if(!GIMP_IS_BRUSH_PIPE(brush))return;
+  auto*pipe=GIMP_BRUSH_PIPE(brush);
+  std::fill(pipe->index,pipe->index+pipe->dimension,0);
+  // Native duplicate already sets current/mask to its deep-copied first child.
+  for(int i=0;i<pipe->n_brushes;++i)reset_preview_pipe(pipe->brushes[i]);
+}
 }
 struct GimpResources::Impl {
   ResourceResolution resolution;
+  Purpose purpose=Purpose::Stroke;
+  std::unique_ptr<GRand,decltype(&g_rand_free)> random{nullptr,g_rand_free};
   std::unique_ptr<BrushUse> brush;
   std::shared_ptr<PaperCache> paper;
   std::vector<std::shared_ptr<BitmapCache>> bitmaps;
   GimpCoords last=GIMP_COORDS_DEFAULT_VALUES,current=GIMP_COORDS_DEFAULT_VALUES;
+  GimpBrush* select(GimpBrush*root)
+  {
+    if(purpose!=Purpose::Preview||!GIMP_IS_BRUSH_PIPE(root))
+      return gimp_brush_select_brush(root,&last,&current);
+    auto*pipe=GIMP_BRUSH_PIPE(root);
+    // Reuse native selection for every mode. Only random dimensions need a
+    // private stream: the native implementation otherwise consumes global RNG.
+    struct Modes {
+      GimpBrushPipe*pipe;std::vector<PipeSelectModes> values;
+      explicit Modes(GimpBrushPipe*p):pipe(p),values(p->select,p->select+p->dimension){}
+      ~Modes(){std::copy(values.begin(),values.end(),pipe->select);}
+    } modes(pipe);
+    if(pipe->n_brushes>1)for(int i=0;i<pipe->dimension;++i)
+      if(pipe->select[i]==PIPE_SELECT_RANDOM) {
+        pipe->index[i]=g_rand_int_range(random.get(),0,pipe->rank[i]);
+        pipe->select[i]=PIPE_SELECT_CONSTANT;
+      }
+    return gimp_brush_select_brush(root,&last,&current);
+  }
   ShapeMask transform(float radius,float hardness,float aspect,float angle)
   {
     if(!brush || !brush->owner) throw std::logic_error("No painter brush resource");
     auto*root=brush->owner.get();const auto size=original_size(root);
     const int diameter=std::max(size.first,size.second);
     if(diameter<1)throw std::invalid_argument("Empty painter brush resource");
-    auto selected=ObjectRef<GimpBrush>::retain(gimp_brush_select_brush(root,&last,&current));last=current;
+    auto selected=ObjectRef<GimpBrush>::retain(select(root));last=current;
     if(!selected)throw std::invalid_argument("GIMP brush selection returned no brush");
     const float scale=radius*2/diameter,gimp_aspect=20*(1.0-(1.0/aspect));
     if(GIMP_IS_BRUSH_GENERATED(selected.get())) {
@@ -137,6 +193,8 @@ struct GimpResources::Impl {
 GimpResources::GimpResources(GimpContext *context,const Resource&resource,Purpose purpose):impl_(std::make_shared<Impl>())
 {
   auto ctx=ObjectRef<GimpContext>::retain(context);if(!ctx)throw std::invalid_argument("Expected GimpContext");
+  impl_->purpose=purpose;
+  if(purpose==Purpose::Preview)impl_->random.reset(g_rand_new_with_seed(12345));
   auto& r=impl_->resolution;
   r.requested_brush=resource.text_value(BRUSH_BRUSHMARK_NAME);r.requested_texture=resource.text_value(BRUSH_TEXTURE_NAME);
   if(resource.switch_value(BRUSH_USE_GIMP_BRUSHMARK)) {
@@ -165,12 +223,29 @@ ResourceResolution GimpResources::resolution() const{return impl_->resolution;}
 void GimpResources::set_brush(GimpBrush *brush)
 {
   if(impl_->brush&&impl_->brush->owner.get()==brush)return;
+  ObjectRef<GimpBrush> snapshot;
+  if(brush&&impl_->purpose==Purpose::Preview) {
+    validate_preview_brush(brush);
+    snapshot=ObjectRef<GimpBrush>::adopt(GIMP_BRUSH(gimp_data_duplicate(GIMP_DATA(brush))));
+    if(!snapshot)throw std::invalid_argument("Painter preview brush cannot be duplicated");
+    reset_preview_pipe(snapshot.get());brush=snapshot.get();
+    g_rand_set_seed(impl_->random.get(),12345);
+    impl_->last=impl_->current=GimpCoords GIMP_COORDS_DEFAULT_VALUES;
+  }
   auto replacement=brush?std::unique_ptr<BrushUse>(new BrushUse(brush)):nullptr;
   auto old=std::move(impl_->brush);auto caches=std::move(impl_->bitmaps);impl_->brush=std::move(replacement);
 }
 void GimpResources::set_pattern(GimpPattern *pattern)
 {
   if(impl_->paper&&impl_->paper->pattern.get()==pattern)return;
+  ObjectRef<GimpPattern> snapshot;
+  if(pattern&&impl_->purpose==Purpose::Preview) {
+    if(G_OBJECT_TYPE(pattern)!=GIMP_TYPE_PATTERN)
+      throw std::invalid_argument("Painter preview cannot isolate this paper subclass");
+    snapshot=ObjectRef<GimpPattern>::adopt(GIMP_PATTERN(gimp_data_duplicate(GIMP_DATA(pattern))));
+    if(!snapshot)throw std::invalid_argument("Painter preview paper cannot be duplicated");
+    pattern=snapshot.get();
+  }
   auto replacement=pattern?std::make_shared<PaperCache>(pattern):nullptr;if(replacement)replacement->connect(replacement);
   impl_->paper=std::move(replacement);
 }

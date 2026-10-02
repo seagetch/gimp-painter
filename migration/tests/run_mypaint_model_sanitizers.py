@@ -5,6 +5,7 @@ Hold /tmp/gimp-painter-build.lock. Production objects are never replaced.
 LeakSanitizer is disabled; nonlisted application/dependency code is uninstrumented.
 """
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -15,7 +16,7 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("build", type=Path)
 parser.add_argument("--report", type=Path, required=True)
-parser.add_argument("--target", choices=["options", "session", "hover"], required=True)
+parser.add_argument("--target", choices=["options", "session", "hover", "preview"], required=True)
 args = parser.parse_args()
 target = "gimp-painter-" + args.target
 build = args.build.resolve()
@@ -39,6 +40,10 @@ wanted = {"app/paint/painter-mypaint-surface/gegl-surface.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
           "app/paint/painter-mypaint/resource.cpp", "app/paint/painter-mypaint/engine.cpp",
           "app/painter/binding-store.cpp", "app/painter/gimp-painter-binding.cpp", "app/painter/gimp-painter-error.cpp"}
+if args.target == "preview":
+    wanted |= {"app/core/gimpbrushpipe.c", "app/core/gimpbrushgenerated.c"}
+    report["scope"] += "; preview additionally instruments native pipe/generated duplication and isolated selector tests"
+hashes = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in wanted}
 replacements = {}
 extra = []
 archive_replacements = {}
@@ -114,9 +119,13 @@ env.update({"GIMP_TESTING_ABS_TOP_SRCDIR": str(root),
             "UI_TEST": "yes", "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
             "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"})
 result = subprocess.run([str(exe)], cwd=build, env=env, capture_output=True, text=True)
-report.update({"exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr})
+changed = [name for name, digest in hashes.items()
+           if hashlib.sha256((root / name).read_bytes()).hexdigest() != digest]
+report.update({"exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr,
+               "sources_sha256": hashes, "changed_during_run": changed,
+               "executable_sha256": hashlib.sha256(exe.read_bytes()).hexdigest()})
 args.report.write_text(json.dumps(report, indent=2) + "\n")
 print(result.stdout)
 if result.returncode:
     print(result.stderr, file=sys.stderr)
-sys.exit(result.returncode)
+sys.exit(result.returncode or bool(changed))

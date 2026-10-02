@@ -18,6 +18,9 @@ struct ResourceResolution {
 class GimpResources
 {
 public:
+  // Preview deep-copies native brush/pipe children and paper. Each new brush
+  // snapshot resets private pipe indices and uses its own fixed-seed RNG;
+  // original resources and the process-global random stream are untouched.
   enum class Purpose { Stroke, Preview };
   GimpResources (GimpContext *context, const Resource& resource, Purpose purpose = Purpose::Stroke);
   ~GimpResources ();

@@ -871,6 +871,7 @@
 | 24.010 | [ ] | ブラシ履歴 model を移植する | 24.009 | 編集中状態と保存資源を区別 |
 | 24.011 | [ ] | 履歴選択の復元を実装する | 24.010 | 独自値・曲線・参照を全復元 |
 | 24.012 | [ ] | preview 入力を固定する | 24.011 | 同設定で同じ試し描きを生成 |
+| 24.012/private-preview-resources | [x] | previewのbrush/paper/pipe/RNG状態を実strokeから分離する | 24.001/application-history, 21.001/registered-tool | 4 native/28source focused sanitizer合格。8pipe mode・child/paper deep copy・元状態/use-count/global RNG非変更・unknown selector拒否を検証。Surface9/旧129record再確認。検証時PaintCore headerも保存し後続ABI変更のaggregate再試験、旧widget preview画素は別gate |
 | 24.013 | [ ] | preview 描画を実装する | 24.012 | 紙目・Smudge・非累積を含む独自設定が反映 |
 | 24.014 | [ ] | preview 更新の取消しを実装する | 24.013 | 古い設定の結果を表示しない |
 | 24.015 | [ ] | dock と popup の共有 UI を接続する | 24.014 | 二重保存・二重通知がない |
