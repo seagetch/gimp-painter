@@ -6,6 +6,7 @@
 #include "libgimpbase/gimpbase.h"
 #include "widgets/widgets-types.h"
 #include "core/gimp.h"
+#include "core/gimp-painter-provenance.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpclonelayer.h"
 #include "core/gimpfilterlayer.h"
@@ -199,9 +200,10 @@ static void duplicate_unknown_records (void)
   input = g_memory_input_stream_new_from_data (data,size,NULL);
   image = xcf_load_stream (gimp,input,NULL,NULL,&error); g_assert_no_error (error); g_assert_nonnull (image);
   g_object_unref (input); original = GIMP_ITEM (layer (image,"clone"));
-  expected = g_bytes_ref (g_object_get_data (G_OBJECT (original),"gimp-painter-xcf-property-records"));
+  expected = gimp_painter_provenance_ref_bytes (G_OBJECT (original), GIMP_PAINTER_PROVENANCE_PROPERTIES);
   copy = GIMP_LAYER (gimp_item_duplicate (original,GIMP_TYPE_CLONE_LAYER));
-  g_assert_true (g_bytes_equal (expected,g_object_get_data (G_OBJECT (copy),"gimp-painter-xcf-property-records")));
+  { GBytes *actual = gimp_painter_provenance_ref_bytes (G_OBJECT (copy), GIMP_PAINTER_PROVENANCE_PROPERTIES);
+    g_assert_true (g_bytes_equal (expected, actual)); g_bytes_unref (actual); }
   gimp_object_set_name (GIMP_OBJECT (copy),"edited duplicate");
   gimp_layer_set_opacity (copy,.25,FALSE); gimp_image_add_layer (image,copy,NULL,0,FALSE);
   copy = GIMP_LAYER (gimp_item_duplicate (original,GIMP_TYPE_LAYER));
@@ -244,12 +246,12 @@ static void newly_unknown_records_and_future_capsule (void)
   GimpImage *image=gimp_image_new(gimp,4,4,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR),*copy;
   GimpLayer *item=gimp_layer_new(image,4,4,babl_format("R'G'B'A u8"),"future layer",1,GIMP_LAYER_MODE_NORMAL);
   GFile *file=temporary_file();gchar *data;gsize length,raw_length,begin=G_MAXSIZE,record_offset=G_MAXSIZE;
-  GBytes *properties;const guint8 *raw;
+  g_autoptr(GBytes) properties = NULL;const guint8 *raw;
   const guint8 future[]={ 'G','P','X','C','F',0,0,0,2,0,0,0,0xab,0xcd,0xef };
   const guint8 unknown[]={0xf0,0x0d,0xba,0xbf,0,0,0,4,0,0,0,7};
   gimp_image_add_layer(image,item,NULL,0,FALSE);gimp_item_set_color_tag(GIMP_ITEM(item),GIMP_COLOR_TAG_GRAY,FALSE);
   save(image,file);g_object_unref(image);image=load(file);item=layer(image,"future layer");
-  properties=g_object_get_data(G_OBJECT(item),"gimp-painter-xcf-property-records");raw=g_bytes_get_data(properties,&raw_length);
+  properties=gimp_painter_provenance_ref_bytes (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_PROPERTIES);raw=g_bytes_get_data(properties,&raw_length);
   g_assert_true(g_file_load_contents(file,NULL,&data,&length,NULL,NULL));
   for(gsize i=0;i+raw_length<=length;++i)if(!memcmp(data+i,raw,raw_length)){begin=i;break;}
   g_assert_cmpuint(begin,!=,G_MAXSIZE);
@@ -543,9 +545,10 @@ static void duplicate_image_unknown_origin (void)
     }
   g_assert_true(changed);input=g_memory_input_stream_new_from_data(data,size,NULL);
   image=xcf_load_stream(gimp,input,NULL,NULL,&error);g_assert_no_error(error);g_assert_nonnull(image);g_object_unref(input);
-  expected=g_bytes_ref(g_object_get_data(G_OBJECT(image),"gimp-painter-xcf-property-records"));
+  expected=gimp_painter_provenance_ref_bytes (G_OBJECT (image), GIMP_PAINTER_PROVENANCE_PROPERTIES);
   copy=gimp_image_duplicate(image);g_assert_nonnull(copy);
-  g_assert_true(g_bytes_equal(expected,g_object_get_data(G_OBJECT(copy),"gimp-painter-xcf-property-records")));
+  { GBytes *actual = gimp_painter_provenance_ref_bytes (G_OBJECT (copy), GIMP_PAINTER_PROVENANCE_PROPERTIES);
+    g_assert_true (g_bytes_equal (expected, actual)); g_bytes_unref (actual); }
   save(copy,file);reopened=load(file);
   {GVariant *record=parasite_capsule(gimp_image_parasite_find(reopened,"gimp-painter-image"));
    GVariant *raw=g_variant_lookup_value(record,"original-properties",G_VARIANT_TYPE_BYTESTRING);gsize actual_size,wanted_size;

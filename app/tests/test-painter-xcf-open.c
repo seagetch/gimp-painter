@@ -6,6 +6,7 @@
 #include "libgimpbase/gimpbase.h"
 #include "widgets/widgets-types.h"
 #include "core/gimp.h"
+#include "core/gimp-painter-provenance.h"
 #include "core/gimpchannel.h"
 #include "core/gimpclonelayer.h"
 #include "core/gimpfilterlayer.h"
@@ -161,8 +162,8 @@ static void clones (void)
       g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_LIVE);
       g_assert_cmpstr (gimp_object_get_name (gimp_clone_layer_get_source (clone)), ==,
                        i ? "source group" : "source child");
-      g_assert_cmpstr (g_object_get_data (G_OBJECT (clone), "gimp-painter-xcf-original-name"), ==,
-                       i ? "source group" : "source child");
+      { gchar *name = gimp_painter_provenance_dup_text (G_OBJECT (clone), GIMP_PAINTER_PROVENANCE_NAME);
+        g_assert_cmpstr (name, ==, i ? "source group" : "source child"); g_free (name); }
       pixel (GIMP_LAYER (clone), 0, 0, 191, 32, 64, 255);
       original_exact (image, names[i]);
       g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, 0);

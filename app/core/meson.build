@@ -39,6 +39,7 @@ libappcore_sources = [
   'gimp-palettes.c',
   'gimp-parallel.cc',
   'gimp-parasites.c',
+  'gimp-painter-provenance.cpp',
   'gimp-spawn.c',
   'gimp-tags.c',
   'gimp-templates.c',

@@ -28,6 +28,7 @@
 
 #include "gimp-memsize.h"
 #include "gimpobject.h"
+#include "gimp-painter-provenance-private.h"
 
 #include "gimp-debug.h"
 
@@ -50,6 +51,9 @@ struct _GimpObjectPrivate
 {
   gchar *name;
   gchar *normalized;
+  GObject *painter_provenance; /* typed child; its payload uses BindingStore */
+  guint  painter_provenance_closed : 1;
+  guint  painter_provenance_finalizing : 1;
   guint  static_name  : 1;
   guint  disconnected : 1;
 };
@@ -144,6 +148,13 @@ gimp_object_dispose (GObject *object)
 {
   GimpObject *gimp_object = GIMP_OBJECT (object);
 
+  if (! gimp_object->p->painter_provenance_closed)
+    {
+      gimp_object->p->painter_provenance_closed = TRUE;
+      if (gimp_object->p->painter_provenance)
+        g_object_run_dispose (gimp_object->p->painter_provenance);
+    }
+
   if (! gimp_object->p->disconnected)
     {
       g_signal_emit (object, object_signals[DISCONNECT], 0);
@@ -157,6 +168,8 @@ gimp_object_dispose (GObject *object)
 static void
 gimp_object_finalize (GObject *object)
 {
+  GIMP_OBJECT (object)->p->painter_provenance_finalizing = TRUE;
+  g_clear_object (&GIMP_OBJECT (object)->p->painter_provenance);
   gimp_object_name_free (GIMP_OBJECT (object));
 
   gimp_debug_remove_instance (object);
@@ -535,4 +548,40 @@ gimp_object_real_get_memsize (GimpObject *object,
     memsize += gimp_string_get_memsize (object->p->name);
 
   return memsize + gimp_g_object_get_memsize ((GObject *) object);
+}
+
+/* Internal typed ownership seam. No caller can attach an arbitrary state
+ * object, replace an active child, or create one after owner shutdown. */
+GObject *
+_gimp_object_ref_painter_provenance (GObject *owner)
+{
+  GObject *child;
+  if (! owner || ! GIMP_IS_OBJECT (owner)) return NULL;
+  child = GIMP_OBJECT (owner)->p->painter_provenance;
+  return child ? g_object_ref (child) : NULL;
+}
+
+gboolean
+_gimp_object_attach_painter_provenance (GObject *owner, GObject *child)
+{
+  GimpObject *object;
+  if (! owner || ! GIMP_IS_OBJECT (owner) || ! child ||
+      G_OBJECT_TYPE (child) != gimp_painter_provenance_get_type ())
+    return FALSE;
+  object = GIMP_OBJECT (owner);
+  if (object->p->painter_provenance_closed || object->p->painter_provenance)
+    return FALSE;
+  object->p->painter_provenance = g_object_ref (child);
+  return TRUE;
+}
+
+GObject *
+_gimp_object_lease_painter_provenance_owner (GObject *owner, gboolean writing)
+{
+  GimpObject *object;
+  if (! owner || ! GIMP_IS_OBJECT (owner)) return NULL;
+  object = GIMP_OBJECT (owner);
+  if (object->p->painter_provenance_finalizing ||
+      (writing && object->p->painter_provenance_closed)) return NULL;
+  return g_object_ref (owner);
 }

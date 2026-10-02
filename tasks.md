@@ -1106,6 +1106,7 @@
 | 31.013 | [ ] | 重複 editor 実装を除去する | 31.012 | 共通 model と部品への接続が残る |
 | 31.014 | [ ] | 旧 glib-cxx interface 利用を除去する | 31.013 | 新ハンドル以外の利用入口がゼロ |
 | 31.015 | [ ] | 旧 private Impl 配置を除去する | 31.014 | NewGClass placement new と二重所有がゼロ |
+| 31.016/typed-provenance-store | [x] | XCF由来値の自由なdata keyを型付き共通store所有へ統合する | 04.002/foundation-acceptance-matrix, 12.015/native-recovery-save | 固定型childの単一slot、既存private C参照のみでpublic ABI不変・active store再登録なし。copy白名簿/不変record snapshot/close/最終ref/finalize再入を含む42通常・25unit sanitizer＋36 RTTI-only合格。dialog/全source-familyと全保存fieldは別gate |
 | 31.016 | [ ] | 自由な qdata 付加を除去する | 31.015 | 共通 store 以外の独自状態登録がゼロ |
 | 31.017 | [ ] | 旧 TileManager/PixelRegion 依存を除去する | 31.016 | 移植対象に旧画素基盤への依存がない |
 | 31.018 | [ ] | 空ファイルとバックアップを除去する | 31.017 | ビルド対象と実装参照が残っていない |

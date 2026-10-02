@@ -2,31 +2,41 @@
 #ifndef GIMP_PAINTER_PROVENANCE_H
 #define GIMP_PAINTER_PROVENANCE_H
 #include <glib-object.h>
-/* Immutable import provenance, never current model/definition state. This
- * lower-level helper has no dependency on a file-format module or C++ store. */
-static inline void
-gimp_painter_copy_provenance (GObject *source, GObject *target)
-{
-  const gchar *bytes_keys[] = { "gimp-painter-xcf-property-records",
-                                "gimp-painter-xcf-extension",
-                                "gimp-painter-xcf-object-header",
-                                "gimp-painter-xcf-external-origins" };
-  const gchar *text_keys[] = { "gimp-painter-xcf-original-name",
-                               "gimp-painter-xcf-original-type" };
-  guint i;
-  GPtrArray *records;
-  for (i = 0; i < G_N_ELEMENTS (bytes_keys); ++i)
-    {
-      GBytes *bytes = (GBytes *) g_object_get_data (source, bytes_keys[i]);
-      if (bytes) g_object_set_data_full (target, bytes_keys[i], g_bytes_ref (bytes), (GDestroyNotify) g_bytes_unref);
-    }
-  for (i = 0; i < G_N_ELEMENTS (text_keys); ++i)
-    {
-      const gchar *text = (const gchar *) g_object_get_data (source, text_keys[i]);
-      if (text) g_object_set_data_full (target, text_keys[i], g_strdup (text), g_free);
-    }
-  records = (GPtrArray *) g_object_get_data (source, "gimp-painter-xcf-unknown-records");
-  if (records) g_object_set_data_full (target, "gimp-painter-xcf-unknown-records",
-                                      g_ptr_array_ref (records), (GDestroyNotify) g_ptr_array_unref);
-}
+G_BEGIN_DECLS
+/* Fixed, typed value fields. No arbitrary key/type association is accepted.
+ * Getters return an independent reference/copy; they never create a component.
+ * All calls belong to the native object's main thread. */
+typedef enum {
+  GIMP_PAINTER_PROVENANCE_PROPERTIES,
+  GIMP_PAINTER_PROVENANCE_EXTENSION,
+  GIMP_PAINTER_PROVENANCE_HEADER,
+  GIMP_PAINTER_PROVENANCE_EXTERNAL,
+  GIMP_PAINTER_PROVENANCE_ORIGINAL,
+  GIMP_PAINTER_PROVENANCE_N_BYTES
+} GimpPainterProvenanceBytes;
+typedef enum {
+  GIMP_PAINTER_PROVENANCE_NAME,
+  GIMP_PAINTER_PROVENANCE_TYPE,
+  GIMP_PAINTER_PROVENANCE_N_TEXT
+} GimpPainterProvenanceText;
+GBytes   *gimp_painter_provenance_ref_bytes (GObject *, GimpPainterProvenanceBytes);
+gboolean  gimp_painter_provenance_set_bytes (GObject *, GimpPainterProvenanceBytes, GBytes *);
+gchar    *gimp_painter_provenance_dup_text (GObject *, GimpPainterProvenanceText);
+gboolean  gimp_painter_provenance_set_text (GObject *, GimpPainterProvenanceText, const gchar *);
+/* Arrays are snapshots of GBytes references, never shared mutable containers. */
+GPtrArray *gimp_painter_provenance_ref_records (GObject *);
+gboolean  gimp_painter_provenance_set_records (GObject *, GPtrArray *);
+GVariant *gimp_painter_provenance_ref_definition (GObject *);
+gboolean  gimp_painter_provenance_set_definition (GObject *, GVariant *);
+gboolean  gimp_painter_provenance_has_definition (GObject *);
+gboolean  gimp_painter_provenance_get_offset (GObject *, guint64 *);
+gboolean  gimp_painter_provenance_set_offset (GObject *, guint64);
+gint      gimp_painter_provenance_get_dialect (GObject *);
+gboolean  gimp_painter_provenance_set_dialect (GObject *, gint);
+guint32   gimp_painter_provenance_get_save_id (GObject *);
+gboolean  gimp_painter_provenance_set_save_id (GObject *, guint32);
+/* Copies only immutable import provenance. No whole-file snapshot, current
+ * definition, dialect, original offset or last-save ID is transferred. */
+void      gimp_painter_copy_provenance (GObject *source, GObject *target);
+G_END_DECLS
 #endif

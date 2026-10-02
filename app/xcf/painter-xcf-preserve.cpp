@@ -31,6 +31,7 @@ extern "C" {
 #include "painter-xcf-arguments.hpp"
 #include "painter/object-ref.hpp"
 #include "painter/connection.hpp"
+#include "painter/resources.hpp"
 #include <algorithm>
 #include <cstring>
 #include <memory>
@@ -43,12 +44,13 @@ namespace {
 const char image_name[] = "gimp-painter-image";
 const char item_name[] = "gimp-painter-item";
 const char origin_name[] = "gimp-painter-origin";
-const char records_key[] = "gimp-painter-xcf-property-records";
-const char restore_key[] = "gimp-painter-xcf-modern-definition";
 const guint8 magic[12] = {'G','P','X','C','F',0,0,0, 1,0,0,0};
 constexpr gsize max_blob = 256u * 1024u * 1024u - 4096u;
 struct ParasiteFree { void operator() (GimpParasite *p) const { if (p) gimp_parasite_free (p); } };
 struct VariantFree { void operator() (GVariant *p) const { if (p) g_variant_unref (p); } };
+struct RecordsFree { void operator() (GPtrArray *p) const { if (p) g_ptr_array_unref (p); } };
+using Records = std::unique_ptr<GPtrArray, RecordsFree>;
+using GimpPainter::String;
 struct BytesFree { void operator() (GBytes *p) const { if (p) g_bytes_unref (p); } };
 struct ArgsFree { void operator() (GimpValueArray *p) const { if (p) gimp_value_array_unref (p); } };
 struct CloneFree { void operator() (GimpCloneLayerReference *p) const { if (p) gimp_clone_layer_reference_free (p); } };
@@ -146,7 +148,6 @@ gchar *read_string (GVariant *dict, const char *key)
   if (!size || data[size - 1] || std::memchr (data, 0, size - 1)) fail ("Malformed Painter name");
   return static_cast<gchar *> (g_memdup2 (data, size));
 }
-const char external_key[] = "gimp-painter-xcf-external-origins";
 const char external_field[] = "external-reference-origins";
 Bytes little_endian_bytes (GVariant *value)
 {
@@ -161,9 +162,9 @@ void merge_external_origins (Dictionary &dict, GObject *object, GVariant *incomi
   Variant existing (g_variant_dict_lookup_value (&dict.dict, external_field, G_VARIANT_TYPE ("aa{sv}")));
   if (!existing && g_variant_dict_contains (&dict.dict, external_field)) fail ("Invalid external reference provenance");
   Variant cached;
-  if (auto *bytes = static_cast<GBytes *> (g_object_get_data (object, external_key)))
+  if (auto bytes = Bytes (gimp_painter_provenance_ref_bytes (object, GIMP_PAINTER_PROVENANCE_EXTERNAL)))
     {
-      cached.reset (g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("aa{sv}"), bytes, FALSE)));
+      cached.reset (g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("aa{sv}"), bytes.get (), FALSE)));
       if (!g_variant_is_normal_form (cached.get ())) fail ("Invalid retained external reference provenance");
 #if G_BYTE_ORDER == G_BIG_ENDIAN
       cached.reset (g_variant_byteswap (cached.get ()));
@@ -208,30 +209,30 @@ void preserve_records (Dictionary &dict, GObject *object)
 {
   merge_external_origins (dict, object, nullptr);
   if (!g_variant_dict_contains (&dict.dict, "original-owner"))
-    if (auto *type = static_cast<const gchar *> (g_object_get_data (object, "gimp-painter-xcf-original-type")))
-      dict.put ("original-owner", g_variant_new_string (type));
+    if (auto type = String (gimp_painter_provenance_dup_text (object, GIMP_PAINTER_PROVENANCE_TYPE)))
+      dict.put ("original-owner", g_variant_new_string (type.get ()));
   if (!g_variant_dict_contains (&dict.dict, "original-header"))
-    if (auto *raw = static_cast<GBytes *> (g_object_get_data (object, "gimp-painter-xcf-object-header")))
-      dict.put ("original-header", byte_array (raw));
+    if (auto raw = Bytes (gimp_painter_provenance_ref_bytes (object, GIMP_PAINTER_PROVENANCE_HEADER)))
+      dict.put ("original-header", byte_array (raw.get ()));
   /* An existing archive is retained, not replaced with the newly generated
    * standard record containing that archive (which would grow recursively). */
   if (!g_variant_dict_contains (&dict.dict, "original-properties"))
-    if (auto *raw = static_cast<GBytes *> (g_object_get_data (object, records_key)))
-      dict.put ("original-properties", byte_array (raw));
-  auto *unknown = static_cast<GPtrArray *> (g_object_get_data (object, "gimp-painter-xcf-unknown-records"));
+    if (auto raw = Bytes (gimp_painter_provenance_ref_bytes (object, GIMP_PAINTER_PROVENANCE_PROPERTIES)))
+      dict.put ("original-properties", byte_array (raw.get ()));
+  Records unknown (gimp_painter_provenance_ref_records (object));
   if (unknown && unknown->len)
     {
       gsize size = 0;
       for (guint i = 0; i < unknown->len; ++i)
         {
-          const gsize part = g_bytes_get_size (static_cast<GBytes *> (g_ptr_array_index (unknown, i)));
+          const gsize part = g_bytes_get_size (static_cast<GBytes *> (g_ptr_array_index (unknown.get (), i)));
           if (part > max_blob - size) fail ("Opaque property archive exceeds the XCF parasite size limit");
           size += part;
         }
       std::vector<guint8> current (size); gsize offset = 0;
       for (guint i = 0; i < unknown->len; ++i)
         {
-          gsize part; const void *data = g_bytes_get_data (static_cast<GBytes *> (g_ptr_array_index (unknown, i)), &part);
+          gsize part; const void *data = g_bytes_get_data (static_cast<GBytes *> (g_ptr_array_index (unknown.get (), i)), &part);
           std::memcpy (current.data () + offset, data, part); offset += part;
         }
       Variant old (g_variant_dict_lookup_value (&dict.dict, "opaque-record-sequences", G_VARIANT_TYPE ("aay")));
@@ -412,8 +413,8 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
   dict.put ("version", g_variant_new_uint32 (1));
   dict.put ("id", g_variant_new_uint32 (GPOINTER_TO_UINT (g_hash_table_lookup (ids, item))));
   preserve_records (dict, G_OBJECT (item));
-  if (auto *origin = static_cast<GBytes *> (g_object_get_data (G_OBJECT (item), "gimp-painter-xcf-extension")))
-    dict.put ("original-extension", byte_array (origin));
+  if (auto origin = Bytes (gimp_painter_provenance_ref_bytes (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_EXTENSION)))
+    dict.put ("original-extension", byte_array (origin.get ()));
   guint32 mode;
   if (GIMP_IS_LAYER (item) && gimp_painter_layer_mode_is_compatibility (gimp_layer_get_mode (GIMP_LAYER (item))) &&
       gimp_painter_layer_mode_to_legacy (gimp_layer_get_mode (GIMP_LAYER (item)), &mode))
@@ -456,10 +457,10 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
       dict.put ("allow-name-lookup", g_variant_new_boolean (ref->allow_name_lookup));
       nullable_string (dict, "pending-name", ref->pending_name);
       nullable_string (dict, "source-name", ref->source_name);
-      const auto *original = static_cast<const gchar *> (g_object_get_data (G_OBJECT (item), "gimp-painter-xcf-original-name"));
-      if (original) nullable_string (dict, "original-source-name", original);
-      if (auto *raw = static_cast<GBytes *> (g_object_get_data (G_OBJECT (item), "gimp-painter-xcf-extension")))
-        dict.put ("original-extension", byte_array (raw));
+      String original (gimp_painter_provenance_dup_text (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_NAME));
+      if (original) nullable_string (dict, "original-source-name", original.get ());
+      if (auto raw = Bytes (gimp_painter_provenance_ref_bytes (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_EXTENSION)))
+        dict.put ("original-extension", byte_array (raw.get ()));
     }
   else if (GIMP_IS_FILTER_LAYER (item))
     {
@@ -611,7 +612,7 @@ extern "C" XcfPainterSave *xcf_painter_prepare_save (GimpImage *image, GError **
        * normalize only colliding/zero values, without mutating live items. */
       for (auto *item : all)
         {
-          const guint32 id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (item), "gimp-painter-xcf-save-id"));
+          const guint32 id = gimp_painter_provenance_get_save_id (G_OBJECT (item));
           if (id && !used.count (id)) assign (item, id);
         }
       /* Reserve every still-unique native tattoo before allocating repairs,
@@ -708,12 +709,11 @@ extern "C" gboolean xcf_painter_save_needs_v11 (XcfPainterSave *save) { return s
 extern "C" void xcf_painter_commit_save (XcfPainterSave *save)
 {
   for (const auto &item : save->items)
-    g_object_set_data (G_OBJECT (item.first), "gimp-painter-xcf-save-id", g_hash_table_lookup (save->ids, item.first));
+    gimp_painter_provenance_set_save_id (G_OBJECT (item.first), GPOINTER_TO_UINT (g_hash_table_lookup (save->ids, item.first)));
   /* Retain diagnostic provenance if a live external target later expires,
    * without changing the live binding, definition or native parasite list. */
   for (const auto &entry : save->external_origins)
-    g_object_set_data_full (entry.first, external_key, g_bytes_ref (entry.second.get ()),
-                            reinterpret_cast<GDestroyNotify> (g_bytes_unref));
+    gimp_painter_provenance_set_bytes (entry.first, GIMP_PAINTER_PROVENANCE_EXTERNAL, entry.second.get ());
 }
 extern "C" guint32 xcf_painter_saved_id (XcfPainterSave *save, GimpItem *item)
 { return save ? GPOINTER_TO_UINT (g_hash_table_lookup (save->ids, item)) : gimp_item_get_tattoo (item); }
@@ -748,32 +748,32 @@ extern "C" void xcf_painter_capture_unknown (XcfInfo *info, GPtrArray *records, 
 }
 extern "C" void xcf_painter_set_unknown_records (GObject *object, GPtrArray *records)
 {
-  g_object_set_data_full (object, "gimp-painter-xcf-unknown-records", g_ptr_array_ref (records),
-                          reinterpret_cast<GDestroyNotify> (g_ptr_array_unref));
+  gimp_painter_provenance_set_records (object, records);
 }
 static void capture_origin_type (GObject *object)
 {
-  if (!g_object_get_data (object, "gimp-painter-xcf-original-type"))
+  String existing (gimp_painter_provenance_dup_text (object, GIMP_PAINTER_PROVENANCE_TYPE));
+  if (!existing)
     {
       const char *context = GIMP_IS_IMAGE (object) ? "image" : GIMP_IS_LAYER (object) ? "layer" :
                             GIMP_IS_CHANNEL (object) ? "channel" : GIMP_IS_ITEM (object) ? "path" : "object";
-      g_object_set_data_full (object, "gimp-painter-xcf-original-type",
-                              g_strconcat (context, ":", G_OBJECT_TYPE_NAME (object), nullptr), g_free);
+      String name (g_strconcat (context, ":", G_OBJECT_TYPE_NAME (object), nullptr));
+      gimp_painter_provenance_set_text (object, GIMP_PAINTER_PROVENANCE_TYPE, name.get ());
     }
 }
 extern "C" void xcf_painter_capture_header (XcfInfo *info, GObject *object, goffset begin, goffset end)
 {
   if (!info->painter_source || begin < 0 || end < begin || static_cast<guint64> (end) > g_bytes_get_size (info->painter_source)) return;
   capture_origin_type (object);
-  g_object_set_data_full (object, "gimp-painter-xcf-object-header", g_bytes_new_from_bytes (info->painter_source, begin, end - begin),
-                          reinterpret_cast<GDestroyNotify> (g_bytes_unref));
+  Bytes raw (g_bytes_new_from_bytes (info->painter_source, begin, end - begin));
+  gimp_painter_provenance_set_bytes (object, GIMP_PAINTER_PROVENANCE_HEADER, raw.get ());
 }
 extern "C" void xcf_painter_capture_properties (XcfInfo *info, GObject *object, goffset begin, goffset end)
 {
   if (!info->painter_source || begin < 0 || end < begin || static_cast<guint64> (end) > g_bytes_get_size (info->painter_source)) return;
   capture_origin_type (object);
-  g_object_set_data_full (object, records_key, g_bytes_new_from_bytes (info->painter_source, begin, end - begin),
-                          reinterpret_cast<GDestroyNotify> (g_bytes_unref));
+  Bytes raw (g_bytes_new_from_bytes (info->painter_source, begin, end - begin));
+  gimp_painter_provenance_set_bytes (object, GIMP_PAINTER_PROVENANCE_PROPERTIES, raw.get ());
 }
 namespace {
 void load_warning (XcfInfo *info, const char *message)
@@ -848,8 +848,10 @@ extern "C" gboolean xcf_painter_restore_layer (XcfInfo *info, GimpImage *image, 
           g_object_ref_sink (old); g_object_unref (old); *layer = replacement;
         }
       if (has_mode) gimp_layer_set_mode (*layer, mapped, FALSE);
-      if (original) g_object_set_data_full (G_OBJECT (*layer), "gimp-painter-xcf-original-name", original.release (), g_free);
-      g_object_set_data_full (G_OBJECT (*layer), restore_key, dict.release (), reinterpret_cast<GDestroyNotify> (g_variant_unref));
+      if (original && !gimp_painter_provenance_set_text (G_OBJECT (*layer), GIMP_PAINTER_PROVENANCE_NAME, original.get ()))
+        fail ("Could not retain Painter source name");
+      if (!gimp_painter_provenance_set_definition (G_OBJECT (*layer), dict.get ()))
+        fail ("Could not retain Painter definition");
       return TRUE;
     }
   catch (const std::exception &exception) { load_warning (info, exception.what ()); return TRUE; }
@@ -861,7 +863,8 @@ extern "C" void xcf_painter_restore_bindings (XcfInfo *info, GimpImage *image)
   for (GList *p = layers; p; p = p->next)
     {
       auto *object = G_OBJECT (p->data);
-      auto *dict = static_cast<GVariant *> (g_object_get_data (object, restore_key));
+      Variant definition (gimp_painter_provenance_ref_definition (object));
+      auto *dict = definition.get ();
       if (!dict) continue;
       try
         {

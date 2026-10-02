@@ -17,6 +17,7 @@ extern "C" {
 #include "core/core-types.h"
 #include "core/gimp.h"
 #include "core/gimpimage.h"
+#include "core/gimp-painter-provenance.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpclonelayer.h"
 #include "core/gimpfilterlayer.h"
@@ -30,8 +31,6 @@ extern "C" {
 #include "painter-xcf-compat.hpp"
 namespace compat = gimp::painter::xcf;
 namespace {
-const char original_key[] = "gimp-painter-xcf-original";
-const char offset_key[] = "gimp-painter-xcf-original-offset";
 struct Snapshot
 {
   GFile *file = nullptr;
@@ -302,9 +301,10 @@ xcf_painter_load_extension (XcfInfo *info, GimpImage *image, GimpLayer **layer,
           if (args) gimp_value_array_unref (args);
         }
       else ok = gimp_clone_layer_set_source_name_full (GIMP_CLONE_LAYER (replacement), name, nullptr);
-      g_object_set_data_full (G_OBJECT (replacement), "gimp-painter-xcf-extension", raw,
-                              reinterpret_cast<GDestroyNotify> (g_bytes_unref));
-      g_object_set_data_full (G_OBJECT (replacement), "gimp-painter-xcf-original-name", name, g_free);
+      ok = gimp_painter_provenance_set_bytes (G_OBJECT (replacement), GIMP_PAINTER_PROVENANCE_EXTENSION, raw) && ok;
+      ok = gimp_painter_provenance_set_text (G_OBJECT (replacement), GIMP_PAINTER_PROVENANCE_NAME, name) && ok;
+      g_bytes_unref (raw);
+      g_free (name);
       if (!ok)
         { g_object_ref_sink (replacement); g_object_unref (replacement); return FALSE; }
       for (GList *p = info->selected_layers; p; p = p->next) if (p->data == old) p->data = replacement;
@@ -331,21 +331,20 @@ xcf_painter_load_mode (GimpLayer *layer, guint32 raw)
 extern "C" void
 xcf_painter_finish_image (XcfInfo *info, GimpImage *image)
 {
-  g_object_set_data_full (G_OBJECT (image), original_key, g_bytes_ref (info->painter_source),
-                          reinterpret_cast<GDestroyNotify> (g_bytes_unref));
-  g_object_set_data (G_OBJECT (image), "gimp-painter-xcf-dialect",
-                     GINT_TO_POINTER (info->painter_legacy ? XCF_PAINTER_DIALECT_LEGACY : XCF_PAINTER_DIALECT_STANDARD));
+  gimp_painter_provenance_set_bytes (G_OBJECT (image), GIMP_PAINTER_PROVENANCE_ORIGINAL, info->painter_source);
+  gimp_painter_provenance_set_dialect (G_OBJECT (image),
+    info->painter_legacy ? XCF_PAINTER_DIALECT_LEGACY : XCF_PAINTER_DIALECT_STANDARD);
   gimp_image_undo_freeze (image);
   GList *layers = gimp_image_get_layer_list (image);
   for (GList *p = layers; p; p = p->next)
     {
       if (GIMP_IS_CLONE_LAYER (p->data) &&
-          !g_object_get_data (G_OBJECT (p->data), "gimp-painter-xcf-modern-definition")) gimp_clone_layer_get_source (GIMP_CLONE_LAYER (p->data));
+          !gimp_painter_provenance_has_definition (G_OBJECT (p->data))) gimp_clone_layer_get_source (GIMP_CLONE_LAYER (p->data));
       /* Native v1 caches receive freshness only from their validated snapshot,
        * after definition restoration. Legacy files have no generation record.
        */
       if (GIMP_IS_FILTER_LAYER (p->data) &&
-          !g_object_get_data (G_OBJECT (p->data), "gimp-painter-xcf-modern-definition"))
+          !gimp_painter_provenance_has_definition (G_OBJECT (p->data)))
         gimp_filter_layer_mark_as_loaded (GIMP_FILTER_LAYER (p->data));
     }
   g_list_free (layers);
@@ -354,18 +353,13 @@ xcf_painter_finish_image (XcfInfo *info, GimpImage *image)
 }
 extern "C" GBytes *xcf_painter_ref_original (GimpImage *image)
 {
-  auto *bytes = static_cast<GBytes *> (g_object_get_data (G_OBJECT (image), original_key));
-  return bytes ? g_bytes_ref (bytes) : nullptr;
+  return gimp_painter_provenance_ref_bytes (G_OBJECT (image), GIMP_PAINTER_PROVENANCE_ORIGINAL);
 }
 extern "C" void xcf_painter_record_offset (GObject *object, goffset offset)
 {
-  auto *value = g_new (guint64, 1); *value = offset;
-  g_object_set_data_full (object, offset_key, value, g_free);
+  gimp_painter_provenance_set_offset (object, offset);
 }
 extern "C" gboolean xcf_painter_original_offset (GObject *object, guint64 *offset)
 {
-  auto *value = static_cast<guint64 *> (g_object_get_data (object, offset_key));
-  if (!value) return FALSE;
-  if (offset) *offset = *value;
-  return TRUE;
+  return gimp_painter_provenance_get_offset (object, offset);
 }
