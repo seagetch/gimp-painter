@@ -61,6 +61,7 @@ enum
   PROP_USE_BRUSH,
   PROP_USE_DYNAMICS,
   PROP_USE_MYBRUSH,
+  PROP_USE_PAINTER_MYBRUSH,
   PROP_USE_GRADIENT,
   PROP_USE_PATTERN,
   PROP_USE_PALETTE,
@@ -194,6 +195,12 @@ gimp_tool_preset_class_init (GimpToolPresetClass *klass)
                             DEFAULT_USE_PALETTE,
                             GIMP_PARAM_STATIC_STRINGS);
 
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_USE_PAINTER_MYBRUSH,
+                            "use-painter-mypaint-brush",
+                            "Apply stored Painter MyPaint brush",
+                            NULL, TRUE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
   GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_USE_GRADIENT,
                             "use-gradient",
                             _("Apply stored gradient"),
@@ -285,6 +292,9 @@ gimp_tool_preset_set_property (GObject      *object,
     case PROP_USE_PALETTE:
       tool_preset->use_palette = g_value_get_boolean (value);
       break;
+    case PROP_USE_PAINTER_MYBRUSH:
+      tool_preset->use_painter_mybrush = g_value_get_boolean (value);
+      break;
     case PROP_USE_GRADIENT:
       tool_preset->use_gradient = g_value_get_boolean (value);
       break;
@@ -340,6 +350,9 @@ gimp_tool_preset_get_property (GObject    *object,
       break;
     case PROP_USE_PALETTE:
       g_value_set_boolean (value, tool_preset->use_palette);
+      break;
+    case PROP_USE_PAINTER_MYBRUSH:
+      g_value_set_boolean (value, tool_preset->use_painter_mybrush);
       break;
     case PROP_USE_GRADIENT:
       g_value_set_boolean (value, tool_preset->use_gradient);
@@ -421,7 +434,10 @@ gimp_tool_preset_deserialize_property (GimpConfig *config,
             type_name = g_strdup ("GimpTransformGridOptions");
           }
 
-        type = g_type_from_name (type_name);
+        if (g_strcmp0 (type_name, "GimpPainterDeviceOptions") == 0)
+          type = GIMP_TYPE_PAINTER_DEVICE_OPTIONS;
+        else
+          type = g_type_from_name (type_name);
 
         if (! type)
           {
@@ -459,6 +475,7 @@ gimp_tool_preset_deserialize_property (GimpConfig *config,
                                       GIMP_CONTEXT_PROP_MASK_BRUSH    |
                                       GIMP_CONTEXT_PROP_MASK_DYNAMICS |
                                       GIMP_CONTEXT_PROP_MASK_MYBRUSH  |
+                                      GIMP_CONTEXT_PROP_MASK_PAINTER_MYBRUSH |
                                       GIMP_CONTEXT_PROP_MASK_PATTERN  |
                                       GIMP_CONTEXT_PROP_MASK_GRADIENT |
                                       GIMP_CONTEXT_PROP_MASK_PALETTE  |
@@ -562,6 +579,9 @@ gimp_tool_preset_set_options (GimpToolPreset  *preset,
 
       if (! (serialize_props & GIMP_CONTEXT_PROP_MASK_MYBRUSH))
         g_object_set (preset, "use-mypaint-brush", FALSE, NULL);
+
+      if (! (serialize_props & GIMP_CONTEXT_PROP_MASK_PAINTER_MYBRUSH))
+        g_object_set (preset, "use-painter-mypaint-brush", FALSE, NULL);
 
       if (! (serialize_props & GIMP_CONTEXT_PROP_MASK_GRADIENT))
         g_object_set (preset, "use-gradient", FALSE, NULL);
@@ -688,6 +708,9 @@ gimp_tool_preset_get_prop_mask (GimpToolPreset *preset)
 
   if (preset->use_mybrush)
     use_props |= (GIMP_CONTEXT_PROP_MASK_MYBRUSH & serialize_props);
+
+  if (preset->use_painter_mybrush)
+    use_props |= (GIMP_CONTEXT_PROP_MASK_PAINTER_MYBRUSH & serialize_props);
 
   if (preset->use_pattern)
     use_props |= (GIMP_CONTEXT_PROP_MASK_PATTERN & serialize_props);

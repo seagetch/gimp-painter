@@ -1023,6 +1023,9 @@ gimp_device_info_save_tool (GimpDeviceInfo *info)
                 "use-mypaint-brush",
                 (serialize_props & GIMP_CONTEXT_PROP_MASK_MYBRUSH) != 0,
 
+                "use-painter-mypaint-brush",
+                (serialize_props & GIMP_CONTEXT_PROP_MASK_PAINTER_MYBRUSH) != 0,
+
                 "use-gradient",
                 (serialize_props & GIMP_CONTEXT_PROP_MASK_GRADIENT) != 0,
 

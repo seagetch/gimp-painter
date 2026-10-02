@@ -56,6 +56,11 @@ struct _GimpToolOptionsClass
 
 GType      gimp_tool_options_get_type      (void) G_GNUC_CONST;
 
+/* Legacy devices stored context only. This empty subtype intentionally has no
+ * brush-engine option properties to reset during a device switch. */
+#define GIMP_TYPE_PAINTER_DEVICE_OPTIONS (gimp_painter_device_options_get_type ())
+GType      gimp_painter_device_options_get_type (void) G_GNUC_CONST;
+
 void       gimp_tool_options_set_gui_mode  (GimpToolOptions   *tool_options,
                                             gboolean           gui_mode);
 gboolean   gimp_tool_options_get_gui_mode  (GimpToolOptions   *tool_options);

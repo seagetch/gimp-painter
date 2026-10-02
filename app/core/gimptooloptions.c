@@ -27,6 +27,8 @@
 
 #include "gimp.h"
 #include "gimperror.h"
+#include "gimpbrush.h"
+#include "gimpbrushgenerated.h"
 #include "gimptoolinfo.h"
 #include "gimptooloptions.h"
 
@@ -37,7 +39,9 @@ enum
 {
   PROP_0,
   PROP_TOOL,
-  PROP_TOOL_INFO
+  PROP_TOOL_INFO,
+  PROP_PAINTER_LEGACY_SPACING,
+  PROP_PAINTER_LEGACY_HARDNESS
 };
 
 
@@ -83,6 +87,14 @@ gimp_tool_options_class_init (GimpToolOptionsClass *klass)
                                                         GIMP_TYPE_TOOL_INFO,
                                                         GIMP_PARAM_READWRITE));
 
+  /* One-shot config bridge, appended after the old brush reference. No state
+   * or ABI field is added: the resulting numeric spacing is saved normally. */
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_PAINTER_LEGACY_SPACING,
+                            "painter-legacy-native-spacing", NULL, NULL,
+                            FALSE, GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_PAINTER_LEGACY_HARDNESS,
+                            "painter-legacy-native-hardness", NULL, NULL,
+                            FALSE, GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -115,11 +127,36 @@ gimp_tool_options_dispose (GObject *object)
  *  a) load an option's tool-info from disk in many cases
  *  b) screwed up in the past and saved the wrong tool-info in some cases
  */
+typedef struct { GimpToolOptions parent_instance; } GimpPainterDeviceOptions;
+typedef struct { GimpToolOptionsClass parent_class; } GimpPainterDeviceOptionsClass;
+
+G_DEFINE_TYPE (GimpPainterDeviceOptions, gimp_painter_device_options,
+               GIMP_TYPE_TOOL_OPTIONS)
+
+static void
+gimp_painter_device_options_class_init (GimpPainterDeviceOptionsClass *klass)
+{
+}
+
+static void
+gimp_painter_device_options_init (GimpPainterDeviceOptions *options)
+{
+}
+
 static GimpToolInfo *
 gimp_tool_options_check_tool_info (GimpToolOptions *options,
                                    GimpToolInfo    *tool_info,
                                    gboolean         warn)
 {
+  if (G_OBJECT_TYPE (options) == GIMP_TYPE_PAINTER_DEVICE_OPTIONS)
+    {
+      /* A migrated 2.8 device has only a GimpContext snapshot. It must be
+       * allowed to remember any registered tool without masquerading as that
+       * tool's complete options type and overwriting its numerical settings. */
+      return tool_info ? tool_info :
+             gimp_tool_info_get_standard (GIMP_CONTEXT (options)->gimp);
+    }
+
   if (tool_info && G_OBJECT_TYPE (options) == tool_info->tool_options_type)
     {
       return tool_info;
@@ -197,6 +234,25 @@ gimp_tool_options_set_property (GObject      *object,
       }
       break;
 
+    case PROP_PAINTER_LEGACY_SPACING:
+    case PROP_PAINTER_LEGACY_HARDNESS:
+      if (g_value_get_boolean (value))
+        {
+          const gchar *name = property_id == PROP_PAINTER_LEGACY_SPACING ?
+                              "brush-spacing" : "brush-hardness";
+          GParamSpec *property = g_object_class_find_property (G_OBJECT_GET_CLASS (object), name);
+          GimpBrush *brush = gimp_context_get_brush (GIMP_CONTEXT (options));
+          if (property && G_IS_PARAM_SPEC_DOUBLE (property) && brush)
+            {
+              gdouble number = property_id == PROP_PAINTER_LEGACY_SPACING ?
+                (gdouble) gimp_brush_get_spacing (brush) / 100.0 :
+                GIMP_IS_BRUSH_GENERATED (brush) ?
+                gimp_brush_generated_get_hardness (GIMP_BRUSH_GENERATED (brush)) : 1.0;
+              g_object_set (options, name, number, NULL);
+            }
+        }
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -219,6 +275,11 @@ gimp_tool_options_get_property (GObject    *object,
 
     case PROP_TOOL_INFO:
       g_value_set_object (value, options->tool_info);
+      break;
+
+    case PROP_PAINTER_LEGACY_SPACING:
+    case PROP_PAINTER_LEGACY_HARDNESS:
+      g_value_set_boolean (value, FALSE);
       break;
 
     default:

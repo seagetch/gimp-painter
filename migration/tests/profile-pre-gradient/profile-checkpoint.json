@@ -1,0 +1,76 @@
+{
+  "date_utc": "2026-10-02T10:22:38.572769+00:00",
+  "baseline_head": "cb42d4c6ad15581e0ce6de15c8df778e744ae903",
+  "results": {
+    "parser_normal": {
+      "passed": 7,
+      "exit": 0
+    },
+    "parser_asan_ubsan": {
+      "passed": 7,
+      "exit": 0
+    },
+    "native_normal": {
+      "passed": 9,
+      "exit": 0
+    },
+    "native_focused_asan_ubsan": {
+      "passed": 9,
+      "exit": 0
+    }
+  },
+  "sanitizer_scope": "11 focused units: importer, real installer, group/context/options/preset/config/device readers and native tests; remaining host/dependencies uninstrumented; LSan disabled",
+  "sources_sha256": {
+    "app/core/gimptooloptions.h": "e15372a7fb3d00ddbd7f04fbfd8fd5681b8bb23b3c8dc385a3d233f3e4383856",
+    "app/core/gimptoolpreset.h": "1354429081f79fef2e784f3092563adb948ae6973e1f0f5815c651cec70c943f",
+    "app/core/gimptoolgroup.h": "e1c2145af924311f3eab1f590f01b435e637c130be8efa3eac5d0128ef3172e1",
+    "app/core/gimpcontext.c": "fc1b1ff6c4f9c5470c53b8fa991774639e5ef9c1abf011c245ec3699ae854ab7",
+    "app/tools/gimp-tools.c": "8e5c56ce9447b751e2cc9947ca8b065331dd4a754d6b340f8607e2dbc1e26c8e",
+    "app/paint/gimppaintoptions.h": "b732455a807e02c1f7f4ce7a686bdbf588250c51c52d8d081d56bff2af213d0a",
+    "app/paint/gimpbrushcore.h": "02808076ac5fdaf850651249fc7323c29eb10d84ec8ea836d56b98d1ae69dfd7",
+    "app/widgets/gimpdeviceinfo.h": "c7bce087c9aa4b96835ff7d74313b5f385eb3eaf066c3d52ef3bb87bda608606",
+    "app/core/gimptoolpreset.c": "7af2edc99b0a59dca3a4ce81584ae7c9c19694a2063b70e9493d1749c52dbfc0",
+    "app/config/gimpcoreconfig.h": "2eef8518c1ed08ed06f892f56e335f2f79b1ff472c23d327e601966fbe09e31f",
+    "app/widgets/gimpdeviceinfo.c": "19cf0a2c3450588ce47c076514dc3cf3b17cb2903dd896956e6518a677fa5327",
+    "app/core/gimppainterprofile.h": "b0e3f32fd2e8dbd5ee0ba8da74421959ea3a26053b38d85e5e6988452800006b",
+    "app/painter/gio-type-traits.hpp": "b9e6ce2a86ac5811783cac5c65cc3bd11bc512735b3b56442dcc49ab399a0af4",
+    "app/core/gimptooloptions.c": "08723b1f5134e89ded777bd45e9c5197f8cfb6f9ba65270df70d6699bfc47b71",
+    "app/painter/object-ref.hpp": "46006b8f2bc6216e6486fa473fe10ffbc9311c3550825b82798b0858165f8dac",
+    "app/core/gimppainterprofile.cpp": "cf2e6c7c47c5059e9be46e8215dc4fed703fcbaf6630ba5de866d761efe66783",
+    "app/tools/gimp-tool-options-manager.c": "4d94e24df1c19751f7a8036c9db94a35c56519c8037bcb3a82c93a4bda9b630c",
+    "app/config/gimpcoreconfig.c": "e44160e4a67515109cadd4a4a4ae10747cac9f51f132e4037377fe2ae65b6dc9",
+    "app/painter/resources.hpp": "8265ca64628465872ea815c578a59711e563708cb4041a251482d237a7ef8d13",
+    "app/core/gimpcontext.h": "6d18d69c2313fe503e0c133cded4799094df81b826ea97170579b5b334d75146",
+    "app/painter/boundary.hpp": "3023d89825dc146aefd9f8451ba986f211f42fd9b677cc147b84ed71e2119ff4",
+    "app/tests/test-painter-profile-native.cpp": "4166b268a6c1f7f926d2a84a3ba31f7cdbc97f81257df3c37078eebc7fd31d21",
+    "app/core/gimp-user-install.c": "6b5911fc5a36c28092e420b9e83b7c6701ba9544bf61b75e536a49c6df5ef633",
+    "app/core/gimptoolgroup.c": "e121154e6b76aaf750386a367dd24e2c82d9a534199e10771638727a9b8c9a46"
+  },
+  "changed_after_native_runs": [],
+  "additional_test_sources_sha256": {
+    "app/tests/test-painter-profile-parser.cpp": "49dd7de9cab6d4cab00ad1cd1107bfca44ec60b51a515ff9f9bda1e9dfec4c36"
+  },
+  "binaries_sha256": {
+    "build-debian13/app/tests/painter-profile-native": "84b23dc932f0171b30ec86e4d1b2bff6953668886ebf4f4d81ab5b5af7171e94",
+    "build-debian13/profile-sanitizers/painter-profile-native": "366eb683127b7c4a71ad58613804c4030713b2be00a206681627112ce7301829",
+    "build-debian13/app/tests/painter-profile-parser": "551e8dc9e82f593377e29ef58ec2c9061a3298465a1f8ffba180d30b4a650283",
+    "build-debian13/profile-sanitizers/painter-profile-parser": "a126b3f5a39d70738139d9949582e4dc60b1f4118fc8ef8883d20dd82ec4ccda"
+  },
+  "evidence_sha256": {
+    "migration/tests/profile-native.log": "931ae0f46386a7d2c3dcc20f7b2b79601de44867995144243a6232bffd0fa6b5",
+    "migration/tests/profile-native-sanitizers.log": "7ed90aeea56a2cf01dab27e1067d0f546a7de5c4d223e7236bc3f8d1db9df094",
+    "migration/tests/profile-parser-normal.log": "9144f506880527deb029e62d21195e2cb81cc69806b4373e76ff2238ad5071ea",
+    "migration/tests/profile-parser-sanitizers.log": "2015d6a16e0d9e4774bb45956c15a5359f408411c9ec48bd37638e9f37d6bb4a",
+    "migration/tests/profile-tested-sources.tar.gz": "7ced0bb0b78e0578c7cdd8c70917d512cf40fce57d83369958753fdfd0cdb719"
+  },
+  "legacy_writer_fixture_files_verified": 53,
+  "legacy_writer_seed_files_verified": 6,
+  "limitations": [
+    "The entire host/dependency stack is not sanitized; LSan disabled.",
+    "Known harness-only data search/writable mismatch diagnostic is retained; see contract.",
+    "Unknown original fields remain byte-exact in archive, not guaranteed in a separately exported modern preset.",
+    "Old group expanded was never serialized.",
+    "No physical tablet reconnect, crash resume or interactive existing-profile importer claim.",
+    "Full legacy generated/dynamic geometry remains separate renderer work."
+  ]
+}

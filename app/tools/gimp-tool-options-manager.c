@@ -166,6 +166,9 @@ gimp_tool_options_manager_init (Gimp *gimp)
   g_signal_connect (gimp->config, "notify::global-font",
                     G_CALLBACK (tool_options_manager_global_notify),
                     manager);
+  g_signal_connect (gimp->config, "notify::global-painter-mypaint-brush",
+                    G_CALLBACK (tool_options_manager_global_notify),
+                    manager);
   g_signal_connect (gimp->config, "notify::global-expand",
                     G_CALLBACK (tool_options_manager_global_notify),
                     manager);
@@ -255,6 +258,8 @@ tool_options_manager_get_global_props (GimpCoreConfig *config)
     global_props |= GIMP_CONTEXT_PROP_MASK_FONT;
   if (config->global_expand)
     global_props |= GIMP_CONTEXT_PROP_MASK_EXPAND;
+  if (config->global_painter_mypaint_brush)
+    global_props |= GIMP_CONTEXT_PROP_MASK_PAINTER_MYBRUSH;
 
   return global_props;
 }

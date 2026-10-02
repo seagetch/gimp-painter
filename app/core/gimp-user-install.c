@@ -46,6 +46,7 @@
 #endif
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
@@ -55,6 +56,7 @@
 #include "gimp-templates.h"
 #include "gimp-tags.h"
 #include "gimp-user-install.h"
+#include "gimppainterprofile.h"
 
 #include "gimp-intl.h"
 
@@ -72,6 +74,7 @@ struct _GimpUserInstall
   gint                    scale_factor;
 
   gboolean                migrate;
+  gboolean                painter_origin;
 
   GimpUserInstallLogFunc  log;
   gpointer                log_data;
@@ -403,6 +406,7 @@ user_install_detect_old (GimpUserInstall *install,
                     migrate = g_file_test (snap_dir, G_FILE_TEST_IS_DIR);
 
                   if (! migrate                                           &&
+                      g_getenv ("SNAP") != NULL                            &&
                       g_file_test (g_getenv ("SNAP"), G_FILE_TEST_IS_DIR) &&
                       g_getenv ("SNAP_USER_DATA") != NULL)
                     {
@@ -604,6 +608,11 @@ user_install_file_copy (GimpUserInstall    *install,
   GError   *error = NULL;
   gboolean  success;
 
+  /* Never replace an edited destination during migration, including retries.
+   * A symlink is also an existing destination, even when its target is absent. */
+  if (g_file_test (dest, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_SYMLINK))
+    return TRUE;
+
   user_install_log (install, _("Copying file '%s' from '%s'..."),
                     gimp_filename_to_utf8 (dest),
                     gimp_filename_to_utf8 (source));
@@ -698,7 +707,10 @@ user_update_menurc_over20 (const GMatchInfo *matched_value,
   if (strlen (ignore_match) == 0)
     {
       /* "*-paste-as-new" renamed to "*-paste-as-new-image" */
-      if (g_strcmp0 (action_match, "buffers-paste-as-new") == 0)
+      if (install->painter_origin &&
+          gimp_painter_profile_action (action_match) != action_match)
+        new_action_name = g_strdup (gimp_painter_profile_action (action_match));
+      else if (g_strcmp0 (action_match, "buffers-paste-as-new") == 0)
         new_action_name = g_strdup ("buffers-paste-as-new-image");
       else if (g_strcmp0 (action_match, "edit-paste-as-new") == 0)
         new_action_name = g_strdup ("edit-paste-as-new-image");
@@ -847,6 +859,10 @@ user_update_post_process_menurc_over20 (gpointer user_data)
     { "view-zoom-2-1",  "2",     "KP_2" },
     { "view-zoom-1-1",  "1",     "KP_1" }
   };
+
+  /* GIMP3 shortcuts format1 accepts the version form anywhere in the file. */
+  if (install->painter_origin)
+    g_string_append (string, "\n(file-version 1)\n");
 
   for (gint i = 0; i < G_N_ELEMENTS (gimp_2_accels); i++)
     {
@@ -1362,6 +1378,25 @@ user_install_migrate_files (GimpUserInstall *install)
   gchar        dest[1024];
   GimpRc      *gimprc;
   GError      *error = NULL;
+  gboolean     keep_gimprc;
+
+  g_snprintf (dest, sizeof (dest), "%s%c%s", gimp_directory (), G_DIR_SEPARATOR, "gimprc");
+  keep_gimprc = g_file_test (dest, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_SYMLINK);
+
+  install->painter_origin = gimp_painter_profile_detect (install->old_dir);
+  if (install->painter_origin &&
+      ! gimp_painter_profile_migrate (install->old_dir, gimp_directory (), &error))
+    {
+      user_install_log_error (install, &error);
+      return FALSE;
+    }
+
+  if (! install->painter_origin && install->old_major == 2 &&
+      ! gimp_painter_profile_preserve (install->old_dir, gimp_directory (), &error))
+    {
+      user_install_log_error (install, &error);
+      return FALSE;
+    }
 
   dir = g_dir_open (install->old_dir, 0, &error);
 
@@ -1375,6 +1410,9 @@ user_install_migrate_files (GimpUserInstall *install)
     {
       gchar       *source   = g_build_filename (install->old_dir, basename, NULL);
       const gchar *new_dest = NULL;
+
+      if (install->painter_origin && gimp_painter_profile_handles (basename))
+        goto next_file;
 
       if (g_file_test (source, G_FILE_TEST_IS_REGULAR))
         {
@@ -1490,15 +1528,29 @@ user_install_migrate_files (GimpUserInstall *install)
   g_snprintf (dest, sizeof (dest), "%s%c%s",
               gimp_directory (), G_DIR_SEPARATOR, "tmp");
 
-  user_install_mkdir (install, dest);
+  if (! g_file_test (dest, G_FILE_TEST_IS_DIR))
+    user_install_mkdir (install, dest);
   g_dir_close (dir);
 
   gimp_templates_migrate (install->old_dir);
 
-  gimprc = gimp_rc_new (install->gimp, NULL, NULL, FALSE);
-  gimp_rc_migrate (gimprc);
-  gimp_rc_save (gimprc);
-  g_object_unref (gimprc);
+  if (! keep_gimprc)
+    {
+      gimprc = gimp_rc_new (install->gimp, NULL, NULL, FALSE);
+      gimp_rc_migrate (gimprc);
+      if (install->painter_origin)
+        {
+          gchar *paths = gimp_painter_profile_resource_paths (install->old_dir, &error);
+          if (paths)
+            {
+              gimp_config_deserialize_string (GIMP_CONFIG (gimprc), paths, -1, NULL, &error);
+              g_free (paths);
+            }
+          user_install_log_error (install, &error);
+        }
+      gimp_rc_save (gimprc);
+      g_object_unref (gimprc);
+    }
 
   return TRUE;
 }

@@ -47,6 +47,7 @@ enum
 {
   PROP_0,
   PROP_ACTIVE_TOOL,
+  PROP_EXPANDED,
   PROP_CHILDREN
 };
 
@@ -54,6 +55,7 @@ enum
 struct _GimpToolGroupPrivate
 {
   gchar         *active_tool;
+  gboolean       expanded;
   GimpContainer *children;
 };
 
@@ -135,6 +137,13 @@ gimp_tool_group_class_init (GimpToolGroupClass *klass)
                            NULL,
                            GIMP_PARAM_STATIC_STRINGS);
 
+  /* The old Painter group kept this state at runtime but did not serialize it.
+   * Default TRUE therefore matches every genuine old saved profile. */
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_EXPANDED,
+                            "expanded", NULL, NULL,
+                            TRUE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
   GIMP_CONFIG_PROP_OBJECT (object_class, PROP_CHILDREN,
                            "children", NULL, NULL,
                            GIMP_TYPE_CONTAINER,
@@ -146,6 +155,7 @@ static void
 gimp_tool_group_init (GimpToolGroup *tool_group)
 {
   tool_group->priv = gimp_tool_group_get_instance_private (tool_group);
+  tool_group->priv->expanded = TRUE;
 
   tool_group->priv->children = g_object_new (GIMP_TYPE_LIST,
                                              "child-type", GIMP_TYPE_TOOL_INFO,
@@ -186,6 +196,10 @@ gimp_tool_group_get_property (GObject    *object,
       g_value_set_string (value, tool_group->priv->active_tool);
       break;
 
+    case PROP_EXPANDED:
+      g_value_set_boolean (value, tool_group->priv->expanded);
+      break;
+
     case PROP_CHILDREN:
       g_value_set_object (value, tool_group->priv->children);
       break;
@@ -217,6 +231,11 @@ gimp_tool_group_set_property (GObject      *object,
       g_free (tool_group->priv->active_tool);
 
       tool_group->priv->active_tool = g_value_dup_string (value);
+      break;
+
+    case PROP_EXPANDED:
+      gimp_tool_group_set_expanded (GIMP_VIEWABLE (tool_group),
+                                    g_value_get_boolean (value));
       break;
 
     case PROP_CHILDREN:
@@ -274,14 +293,24 @@ static void
 gimp_tool_group_set_expanded (GimpViewable *viewable,
                               gboolean      expand)
 {
-  if (! expand)
-    gimp_viewable_expanded_changed (viewable);
+  GimpToolGroup *tool_group = GIMP_TOOL_GROUP (viewable);
+
+  expand = !! expand;
+  if (tool_group->priv->expanded != expand)
+    {
+      /* Either notification can remove the last external group owner. */
+      g_object_ref (tool_group);
+      tool_group->priv->expanded = expand;
+      gimp_viewable_expanded_changed (viewable);
+      g_object_notify (G_OBJECT (tool_group), "expanded");
+      g_object_unref (tool_group);
+    }
 }
 
 static gboolean
 gimp_tool_group_get_expanded (GimpViewable *viewable)
 {
-  return TRUE;
+  return GIMP_TOOL_GROUP (viewable)->priv->expanded;
 }
 
 static void

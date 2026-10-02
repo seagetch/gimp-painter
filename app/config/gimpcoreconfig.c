@@ -87,6 +87,7 @@ enum
   PROP_DEFAULT_BRUSH,
   PROP_DEFAULT_DYNAMICS,
   PROP_DEFAULT_MYPAINT_BRUSH,
+  PROP_DEFAULT_PAINTER_MYPAINT_BRUSH,
   PROP_DEFAULT_PATTERN,
   PROP_DEFAULT_PALETTE,
   PROP_DEFAULT_GRADIENT,
@@ -99,6 +100,7 @@ enum
   PROP_GLOBAL_GRADIENT,
   PROP_GLOBAL_FONT,
   PROP_GLOBAL_EXPAND,
+  PROP_GLOBAL_PAINTER_MYPAINT_BRUSH,
   PROP_DEFAULT_IMAGE,
   PROP_DEFAULT_GRID,
   PROP_UNDO_LEVELS,
@@ -503,6 +505,20 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                            DEFAULT_MYPAINT_BRUSH_BLURB,
                            GIMP_DEFAULT_MYPAINT_BRUSH,
                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_STRING (object_class, PROP_DEFAULT_PAINTER_MYPAINT_BRUSH,
+                           "default-painter-mypaint-brush",
+                           "Default Painter MyPaint brush",
+                           "Default brush in the independent Painter MyPaint resource family",
+                           "Standard",
+                           GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_GLOBAL_PAINTER_MYPAINT_BRUSH,
+                            "global-painter-mypaint-brush",
+                            "Share Painter MyPaint brush",
+                            "Share the selected Painter MyPaint brush between tool contexts",
+                            TRUE,
+                            GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_PROP_STRING (object_class, PROP_DEFAULT_PATTERN,
                            "default-pattern",
@@ -947,6 +963,7 @@ gimp_core_config_finalize (GObject *object)
   g_free (core_config->default_brush);
   g_free (core_config->default_dynamics);
   g_free (core_config->default_mypaint_brush);
+  g_free (core_config->default_painter_mypaint_brush);
   g_free (core_config->default_pattern);
   g_free (core_config->default_palette);
   g_free (core_config->default_gradient);
@@ -1094,6 +1111,12 @@ gimp_core_config_set_property (GObject      *object,
     case PROP_DEFAULT_MYPAINT_BRUSH:
       g_set_str (&core_config->default_mypaint_brush,
                  g_value_get_string (value));
+      break;
+    case PROP_DEFAULT_PAINTER_MYPAINT_BRUSH:
+      g_set_str (&core_config->default_painter_mypaint_brush, g_value_get_string (value));
+      break;
+    case PROP_GLOBAL_PAINTER_MYPAINT_BRUSH:
+      core_config->global_painter_mypaint_brush = g_value_get_boolean (value);
       break;
     case PROP_DEFAULT_PATTERN:
       g_set_str (&core_config->default_pattern,
@@ -1396,6 +1419,12 @@ gimp_core_config_get_property (GObject    *object,
       break;
     case PROP_DEFAULT_MYPAINT_BRUSH:
       g_value_set_string (value, core_config->default_mypaint_brush);
+      break;
+    case PROP_DEFAULT_PAINTER_MYPAINT_BRUSH:
+      g_value_set_string (value, core_config->default_painter_mypaint_brush);
+      break;
+    case PROP_GLOBAL_PAINTER_MYPAINT_BRUSH:
+      g_value_set_boolean (value, core_config->global_painter_mypaint_brush);
       break;
     case PROP_DEFAULT_PATTERN:
       g_value_set_string (value, core_config->default_pattern);

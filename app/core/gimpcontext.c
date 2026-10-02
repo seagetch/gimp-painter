@@ -3085,6 +3085,10 @@ gimp_context_painter_mybrush_list_thaw (GimpContainer *container,
 {
   GimpPainterMybrush *brush;
 
+  if (! context->painter_mybrush_name)
+    context->painter_mybrush_name = g_strdup (
+      GIMP_CORE_CONFIG (context->gimp->config)->default_painter_mypaint_brush);
+
   brush = gimp_context_find_object (context, container,
                                     context->painter_mybrush_name,
                                     gimp_painter_mybrush_get_standard (context));

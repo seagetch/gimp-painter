@@ -71,6 +71,7 @@ struct _GimpCoreConfig
   gchar                  *default_brush;
   gchar                  *default_dynamics;
   gchar                  *default_mypaint_brush;
+  gchar                  *default_painter_mypaint_brush;
   gchar                  *default_pattern;
   gchar                  *default_palette;
   gchar                  *default_tool_preset;
@@ -83,6 +84,7 @@ struct _GimpCoreConfig
   gboolean                global_gradient;
   gboolean                global_font;
   gboolean                global_expand;
+  gboolean                global_painter_mypaint_brush;
   GimpTemplate           *default_image;
   GimpGrid               *default_grid;
   gint                    levels_of_undo;

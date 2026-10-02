@@ -34,6 +34,7 @@
 #include "core/gimpcontext.h"
 #include "core/gimplist.h"
 #include "core/gimptoolgroup.h"
+#include "core/gimppainterprofile.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimptooloptions.h"
 
@@ -513,7 +514,8 @@ gimp_tools_deserialize (Gimp          *gimp,
 
       return FALSE;
     }
-  else if (file_version != TOOL_RC_FILE_VERSION)
+  else if (file_version != TOOL_RC_FILE_VERSION &&
+           file_version != GIMP_PAINTER_MIGRATED_TOOLRC_VERSION)
     {
       g_scanner_error (scanner, "wrong toolrc file format version");
 
@@ -553,12 +555,14 @@ gimp_tools_deserialize (Gimp          *gimp,
 
           if (! tool_info->hidden && ! g_hash_table_contains (tools, tool_info))
             {
-              if (tool_info->experimental ||
+              if (file_version == GIMP_PAINTER_MIGRATED_TOOLRC_VERSION ||
+                  tool_info->experimental ||
                   tool_info->tool_type == GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL)
                 {
-                  /* Append new Painter rulers without discarding an existing
-                   * user's tool groups. Experimental tools use the same path.
-                   */
+                  /* The structured old-profile importer marks its toolrc so
+                   * new stable tools can be appended without throwing away
+                   * the user's existing order, groups and active selections.
+                   * Normal serialization returns to the current version. */
                   gimp_container_add (container, GIMP_OBJECT (tool_info));
                 }
               else
@@ -808,6 +812,8 @@ gimp_tools_copy_structure (Gimp          *gimp,
       if (GIMP_IS_TOOL_GROUP (src_tool_item))
         {
           dest_tool_item = GIMP_TOOL_ITEM (gimp_tool_group_new ());
+          gimp_object_set_name (GIMP_OBJECT (dest_tool_item),
+                                gimp_object_get_name (src_tool_item));
 
           gimp_tools_copy_structure (
             gimp,
@@ -815,9 +821,21 @@ gimp_tools_copy_structure (Gimp          *gimp,
             gimp_viewable_get_children (GIMP_VIEWABLE (dest_tool_item)),
             tools);
 
-          gimp_tool_group_set_active_tool (
-            GIMP_TOOL_GROUP (dest_tool_item),
-            gimp_tool_group_get_active_tool (GIMP_TOOL_GROUP (src_tool_item)));
+          {
+            const gchar *active = gimp_tool_group_get_active_tool (
+              GIMP_TOOL_GROUP (src_tool_item));
+            GimpContainer *children = gimp_viewable_get_children (
+              GIMP_VIEWABLE (dest_tool_item));
+
+            /* An obsolete tool may no longer have a runtime implementation.
+             * Its original record remains in the migration archive; retain
+             * the group's first valid selection instead of emitting a critical. */
+            if (! active || gimp_container_get_child_by_name (children, active))
+              gimp_tool_group_set_active_tool (GIMP_TOOL_GROUP (dest_tool_item), active);
+
+            gimp_viewable_set_expanded (GIMP_VIEWABLE (dest_tool_item),
+              gimp_viewable_get_expanded (GIMP_VIEWABLE (src_tool_item)));
+          }
         }
       else
         {

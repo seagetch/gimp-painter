@@ -1066,6 +1066,7 @@
 | 30.008/tool-options-delete-result | [ ] | 旧tool options削除の成否判定を修正して移植する | 30.007, 01.013 | g_unlinkの反転した条件を持ち込まず、削除成功・ENOENT・権限等の失敗を区別し設定と通知を検証する |
 | 30.009 | [ ] | 新規ユーザーの資源初期化を接続する | 30.008 | 同梱ブラシ・紙目・preset が使用可能 |
 | 30.010 | [ ] | 既存ユーザーの資源移行を実装する | 30.009 | ユーザー編集済み資源を上書きしない |
+| 30.010/native-profile-migration | [x] | Painter由来の旧設定を実first-runと登録済みtool/deviceへ移す | 21.001/registered-tool, 23.005/native-smudge-tool, 04.003 | 実旧writer53file+6seedを区別しparser8/nativeGTK9が通常・focused sanitizer合格。原本SHA archive・編集済み非上書き・group/context/device/options/custom shortcut/Gradient filename再読込を検証。実hardware同名identity・crash recovery・全旧geometryは未完了 |
 | 30.011 | [ ] | 資源検索パスを接続する | 30.010 | install prefix と user path の双方を解決 |
 | 30.012 | [ ] | 追加 PDB 手順を現行形式へ登録する | 30.011 | 引数と戻り値が現行 caller から使える |
 | 30.012/scheme-mode-constants | [ ] | Script-Fuの旧独自合成定数を現行APIへ対応する | 30.011, 01.015 | ERASE・REPLACE・ANTI-ERASE・SRC/DST IN/OUTの名前を保持し、衝突する旧数値を現行modeへ明示変換して呼出しと合成を試験する |
