@@ -1,0 +1,13 @@
+diff --git a/app/base/glib-cxx-impl.hpp b/app/base/glib-cxx-impl.hpp
+index a2ad35e37a..23d6faed9c 100644
+--- a/app/base/glib-cxx-impl.hpp
++++ b/app/base/glib-cxx-impl.hpp
+@@ -517,7 +517,7 @@ gint NewGClass<name, CStructs, Impl, IFaces...>::private_offset = 0;
+ 
+ template <char const* name, typename CStructs, typename Impl, typename... IFaces>
+ inline GType NewGClass<name, CStructs, Impl, IFaces...>::get_type (void) {
+-  static volatile gsize g_define_type_id__volatile = 0;
++  static gsize g_define_type_id__volatile = 0;
+   if (g_once_init_enter (&g_define_type_id__volatile)) {
+     GType g_define_type_id =
+         g_type_register_static_simple (CStructs::ParentTraits::get_type(),

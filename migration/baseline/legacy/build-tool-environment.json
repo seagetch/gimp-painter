@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "scope": "Linux x86_64 Debian13 local-prefix build-tool relocation",
+  "dependency_directory": "/workspace/shared/gimp-build-deps",
+  "output_directory": "/workspace/shared/gimp-legacy-build",
+  "input_sha256": {
+    "/workspace/shared/gimp-build-deps/root/usr/bin/autoconf": "301f41936a575a0fe4b50cfd34db9f4e59a30dcd57b65804df1011c4d92e01e7",
+    "/workspace/shared/gimp-build-deps/root/usr/bin/autoheader": "0cd2b7775188a6fba6106e1025f0f2ac6a40fb98fde62523eea53b93c62a8a77",
+    "/workspace/shared/gimp-build-deps/root/usr/bin/autom4te": "d28bf791b0c8397c759f7203d67c5ed5faeedc1078a2bc8eaf03da6a363a456f",
+    "/workspace/shared/gimp-build-deps/root/usr/bin/automake-1.17": "fd7801c6141889fc3063ece94e5e7af20c33467efdf590849fa0f6cab7270139",
+    "/workspace/shared/gimp-build-deps/root/usr/bin/aclocal-1.17": "637dbab4e9789082b6395fb4a6b971b6df3dfa5a7c89e9aeb630d57b02aa13bd",
+    "/workspace/shared/gimp-build-deps/root/usr/bin/libtoolize": "0b977fb33a47231b681c2cc27ded46daae3ecb9336f0f3df1e66784040dcef36",
+    "/workspace/shared/gimp-build-deps/root/usr/bin/intltoolize": "ee8690c5575721116602de74a470e84d687ce4b8a67c843fca984aeb4d6b11dd",
+    "/workspace/shared/gimp-build-deps/root/usr/bin/gtkdocize": "8c759a296db2903a42db2c4798f8abd0904c50c955963b7fdbe7589c8f23950d",
+    "/workspace/shared/gimp-build-deps/root/usr/bin/autopoint": "7136afc45d0ae6a4b802c73bda1d6ebc10e608e68b9baf12913a9ca8e99d8f27",
+    "/workspace/shared/gimp-build-deps/root/usr/bin/m4": "24066e3ebc4b7a0eeb33b3d50e108afcfd384f1f01dd1797fa0423d5494cce16",
+    "/workspace/shared/gimp-build-deps/root/usr/share/autoconf/autom4te.cfg": "a72748b80a0aa61a968f662fc07fedf2002ff5fd325692f882070c564a351662",
+    "/workspace/shared/gimp-build-deps/env.sh": "b0323d0318a818220b85b3acdfe5a0154818687f43037e99325bcfc9fd467920"
+  },
+  "generated_sha256": {
+    "bin/intltoolize": "b42c67a7979f9ca30040392020a7851e117570529d1cdc56b5755c68cc305c60",
+    "bin/gtkdocize": "b08cd32637775d9aaa83ad84b9c6cd8c52211b14503158d9ffeb967b40886d8d",
+    "bin/libtoolize": "65e3a06ba91cde3c5ecee9a71ceedee0eb2eed4975727e944e50df2671f44b1e",
+    "bin/automake": "65d27e03fad1104551f0b0b09c23a7a92fe9d06429c2937e216f8007f96e1b9b",
+    "bin/aclocal": "9dfbf6e1473f791c03b645b078e0ab977d79106be0d61a353ecf86e4acb10b69",
+    "autom4te.cfg": "a7bf873add5d36b7525b899ced1b04dd1955dd93bf97809571c51095ab829cdf",
+    "env.sh": "40ce7e57b43bdf54929d3ed11f4713a8d9bad8d201db942e1957a2a212760c97"
+  },
+  "limitations": [
+    "Not a completed legacy application build or runtime validation",
+    "Requires exact signed Debian package lock and source pins recorded separately"
+  ]
+}
