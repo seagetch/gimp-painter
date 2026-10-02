@@ -645,6 +645,8 @@ typedef enum /*< pdb-skip >*/
 
   GIMP_UNDO_FILTER_LAYER_DEFINITION,    /*< desc="Filter layer definition"          >*/
 
+  GIMP_UNDO_CLONE_LAYER_SOURCE,         /*< desc="Clone layer source"              >*/
+
   GIMP_UNDO_CANT                         /*< desc="Not undoable"                   >*/
 } GimpUndoType;
 

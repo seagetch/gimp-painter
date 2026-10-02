@@ -12,10 +12,12 @@
 #include "widgets/widgets-types.h"
 #include "core/gimp.h"
 #include "core/gimpclonelayer.h"
+#include "core/gimpclonelayerundo.h"
 #include "core/gimpcontext.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
+#include "core/gimpimage-convert-precision.h"
 #include "core/gimpundostack.h"
 #include "core/gimpitemundo.h"
 #include "core/gimpdrawablemodundo.h"
@@ -431,6 +433,421 @@ static void group_duplicate_complete_hierarchy (void)
 #undef SOURCE
   g_object_unref (copy); g_object_unref (image);
 }
+static void source_reference_undo_live (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *first = new_layer (image, "first", NULL, 0);
+  GimpLayer *second = new_layer (image, "second", NULL, 1);
+  GimpCloneLayer *clone = new_clone (image, first);
+  GimpContext *context = gimp_context_new (gimp, "Test", NULL);
+  GError *error = NULL;
+  fill (first, 255, 0, 0, 255); fill (second, 0, 0, 255, 255);
+  gimp_item_resize (GIMP_ITEM (second), context, GIMP_FILL_TRANSPARENT, 20, 18, 0, 0);
+  gimp_item_set_offset (GIMP_ITEM (clone), 32, 30);
+  gimp_image_undo_free (image);
+  g_assert_true (gimp_clone_layer_set_source_with_undo (clone, second, "Change source", &error));
+  g_assert_no_error (error);
+  {
+    GimpUndo *group = gimp_undo_stack_peek (gimp_image_get_undo_stack (image));
+    g_assert_true (GIMP_IS_UNDO_STACK (group));
+    g_assert_true (GIMP_IS_CLONE_LAYER_UNDO (gimp_container_get_child_by_index (GIMP_UNDO_STACK (group)->undos, 0)));
+  }
+  g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, 1);
+  g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (clone)), ==, 20);
+  pixel (GIMP_LAYER (clone), 0, 0, 255, 255);
+  /* Restoring a live source projects its current pixels, not stale cached paint. */
+  fill (first, 0, 255, 0, 255);
+  for (gint cycle = 0; cycle < 2; ++cycle)
+    {
+      g_assert_true (gimp_image_undo (image));
+      g_assert_true (gimp_clone_layer_get_source (clone) == first);
+      g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_LIVE);
+      g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (clone)), ==, 16);
+      g_assert_cmpint (gimp_item_get_offset_x (GIMP_ITEM (clone)), ==, 32);
+      pixel (GIMP_LAYER (clone), 0, 255, 0, 255);
+      g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, 0);
+      g_assert_true (gimp_image_redo (image));
+      g_assert_true (gimp_clone_layer_get_source (clone) == second);
+      g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (clone)), ==, 20);
+      pixel (GIMP_LAYER (clone), 0, 0, 255, 255);
+      g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, 1);
+    }
+  g_object_unref (context); g_object_unref (image);
+}
+static void source_reference_undo_dependent_clone (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *first = new_layer (image, "first", NULL, 0);
+  GimpLayer *second = new_layer (image, "second", NULL, 1);
+  GimpCloneLayer *clone = new_clone (image, first);
+  GimpCloneLayer *dependent = new_clone (image, GIMP_LAYER (clone));
+  GimpContext *context = gimp_context_new (gimp, "Test", NULL);
+  GError *error = NULL;
+  fill (first, 255, 0, 0, 255); fill (second, 0, 0, 255, 255);
+  gimp_item_resize (GIMP_ITEM (second), context, GIMP_FILL_TRANSPARENT, 20, 18, 0, 0);
+  gimp_image_undo_free (image);
+  g_assert_true (gimp_clone_layer_set_source_with_undo (clone, second, NULL, &error));
+  g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, 1);
+  g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (dependent)), ==, 20);
+  g_assert_true (gimp_image_undo (image));
+  g_assert_true (gimp_clone_layer_get_source (clone) == first);
+  g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (dependent)), ==, 16);
+  pixel (GIMP_LAYER (dependent), 255, 0, 0, 255);
+  g_assert_true (gimp_image_redo (image));
+  g_assert_true (gimp_clone_layer_get_source (clone) == second);
+  g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (dependent)), ==, 20);
+  pixel (GIMP_LAYER (dependent), 0, 0, 255, 255);
+  g_assert_no_error (error);
+  g_object_unref (context); g_object_unref (image);
+}
+static void close_clone_on_dirty (GimpImage *image, GimpDirtyMask dirty, gpointer data)
+{ gimp_painter_binding_close (G_OBJECT (data), NULL); }
+static void source_reference_undo_close_reentry (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *source = new_layer (image, "source", NULL, 0);
+  GimpCloneLayer *clone = new_clone (image, NULL);
+  GError *error = NULL;
+  gulong id;
+  fill (GIMP_LAYER (clone), 0, 0, 255, 255);
+  fill (source, 255, 0, 0, 255);
+  id = g_signal_connect (image, "dirty", G_CALLBACK (close_clone_on_dirty), clone);
+  g_assert_false (gimp_clone_layer_set_source_with_undo (clone, source, NULL, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED);
+  g_clear_error (&error);
+  g_signal_handler_disconnect (image, id);
+  g_assert_cmpint (gimp_image_get_undo_group_count (image), ==, 0);
+  pixel (GIMP_LAYER (clone), 0, 0, 255, 255);
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  g_object_unref (image);
+}
+static void source_reference_undo_all_states (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *first = new_layer (image, "first", NULL, 0);
+  GimpLayer *second = new_layer (image, "second", NULL, 1);
+  GimpCloneLayer *clone = new_clone (image, NULL);
+  GError *error = NULL;
+  gchar *name;
+  fill (first, 255, 0, 0, 255); fill (second, 0, 255, 0, 255);
+  fill (GIMP_LAYER (clone), 0, 0, 255, 255);
+  gimp_image_undo_free (image);
+  g_assert_true (gimp_clone_layer_set_source_with_undo (clone, first, NULL, &error));
+  g_assert_true (gimp_image_undo (image));
+  g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_NONE);
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  pixel (GIMP_LAYER (clone), 0, 0, 255, 255);
+  g_assert_true (gimp_image_redo (image));
+  gimp_image_undo_free (image);
+  gimp_clone_layer_set_source_by_name (clone, "still missing");
+  g_assert_true (gimp_clone_layer_set_source_with_undo (clone, second, NULL, &error));
+  g_assert_true (gimp_image_undo (image));
+  g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_PENDING);
+  name = gimp_clone_layer_dup_source_name (clone);
+  g_assert_cmpstr (name, ==, "still missing"); g_free (name);
+  g_assert_true (gimp_clone_layer_get_source (clone) == first);
+  g_assert_true (gimp_image_redo (image));
+  g_assert_true (gimp_clone_layer_get_source (clone) == second);
+  gimp_image_undo_free (image);
+  gimp_clone_layer_set_source (clone, NULL);
+  g_assert_true (gimp_clone_layer_set_source_name_with_undo (clone, "new pending", NULL, &error));
+  g_assert_true (gimp_image_undo (image));
+  name = gimp_clone_layer_dup_source_name (clone);
+  g_assert_cmpstr (name, ==, "still missing"); g_free (name);
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  g_assert_true (gimp_image_redo (image));
+  name = gimp_clone_layer_dup_source_name (clone);
+  g_assert_cmpstr (name, ==, "new pending"); g_free (name);
+  gimp_clone_layer_set_source_by_name (clone, NULL);
+  gimp_clone_layer_set_source (clone, second);
+  gimp_image_undo_free (image);
+  gimp_image_remove_layer (image, second, FALSE, NULL);
+  g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_EXPIRED);
+  g_assert_true (gimp_clone_layer_set_source_with_undo (clone, first, NULL, &error));
+  g_assert_true (gimp_image_undo (image));
+  g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_EXPIRED);
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  name = gimp_clone_layer_dup_source_name (clone);
+  g_assert_cmpstr (name, ==, "second"); g_free (name);
+  pixel (GIMP_LAYER (clone), 0, 255, 0, 255);
+  g_assert_true (gimp_image_redo (image));
+  g_assert_true (gimp_clone_layer_get_source (clone) == first);
+  g_assert_no_error (error);
+  g_object_unref (image);
+}
+static void source_reference_undo_preserves_pending_live (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *first = new_layer (image, "first", NULL, 0);
+  GimpLayer *second = new_layer (image, "second", NULL, 1);
+  GimpLayer *future;
+  GimpCloneLayer *clone = new_clone (image, first);
+  GError *error = NULL;
+  fill (first, 255, 0, 0, 255); fill (second, 0, 255, 0, 255);
+  gimp_clone_layer_set_source_by_name (clone, "future source");
+  gimp_image_undo_free (image);
+  g_assert_true (gimp_clone_layer_set_source_with_undo (clone, second, NULL, &error));
+  future = new_layer (image, "future source", NULL, 0);
+  fill (future, 0, 0, 255, 255);
+  g_assert_true (gimp_image_undo (image));
+  while (g_main_context_iteration (NULL, FALSE));
+  /* Replay itself must not resolve an originally pending name. */
+  g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_PENDING);
+  pixel (GIMP_LAYER (clone), 255, 0, 0, 255);
+  g_assert_true (gimp_clone_layer_get_source (clone) == future);
+  pixel (GIMP_LAYER (clone), 0, 0, 255, 255);
+  g_assert_no_error (error);
+  g_object_unref (image);
+}
+static void source_reference_undo_renamed_then_expired (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *first = new_layer (image, "first", NULL, 0);
+  GimpLayer *second = new_layer (image, "second", NULL, 1);
+  GimpCloneLayer *clone = new_clone (image, first);
+  GError *error = NULL;
+  gchar *name;
+  fill (first, 255, 0, 0, 255); fill (second, 0, 255, 0, 255);
+  gimp_image_undo_free (image);
+  g_assert_true (gimp_clone_layer_set_source_with_undo (clone, second, NULL, &error));
+  gimp_object_set_name (GIMP_OBJECT (first), "renamed source");
+  g_assert_true (gimp_image_undo (image));
+  g_assert_true (gimp_clone_layer_get_source (clone) == first);
+  gimp_image_remove_layer (image, first, FALSE, NULL);
+  name = gimp_clone_layer_dup_source_name (clone);
+  g_assert_cmpstr (name, ==, "renamed source"); g_free (name);
+  g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_EXPIRED);
+  g_assert_true (gimp_image_redo (image));
+  g_assert_true (gimp_clone_layer_get_source (clone) == second);
+  g_assert_true (gimp_image_undo (image));
+  new_layer (image, "renamed source", NULL, 0);
+  g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_EXPIRED);
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  pixel (GIMP_LAYER (clone), 255, 0, 0, 255);
+  g_assert_no_error (error);
+  g_object_unref (image);
+}
+static void source_reference_undo_expired_cross_image (void)
+{
+  GimpImage *source_image = new_image ();
+  GimpImage *image = new_image ();
+  GimpLayer *source = new_layer (source_image, "remote source", NULL, 0);
+  GimpLayer *replacement = new_layer (image, "replacement", NULL, 0);
+  GimpCloneLayer *clone = new_clone (image, source);
+  GError *error = NULL;
+  gchar *name;
+  fill (source, 255, 0, 0, 255); fill (replacement, 0, 255, 0, 255);
+  gimp_image_undo_free (image);
+  g_assert_true (gimp_clone_layer_set_source_with_undo (clone, replacement, NULL, &error));
+  /* The snapshot must not prolong a foreign layer beyond its image lifetime. */
+  g_object_unref (source_image);
+  g_assert_true (gimp_image_undo (image));
+  g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_EXPIRED);
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  name = gimp_clone_layer_dup_source_name (clone);
+  g_assert_cmpstr (name, ==, "remote source"); g_free (name);
+  pixel (GIMP_LAYER (clone), 255, 0, 0, 255);
+  g_assert_true (gimp_image_redo (image));
+  g_assert_true (gimp_clone_layer_get_source (clone) == replacement);
+  pixel (GIMP_LAYER (clone), 0, 255, 0, 255);
+  g_assert_no_error (error);
+  g_object_unref (image);
+}
+static void count_source_update (GimpDrawable *drawable, gint x, gint y, gint w, gint h, gpointer data)
+{ ++*((gint *) data); }
+static void serialization_reference_snapshot_and_restore (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *source = new_layer (image, "target", NULL, 0);
+  GimpCloneLayer *clone = new_clone (image, NULL);
+  GimpCloneLayerReference *snapshot;
+  GimpCloneLayerReference metadata = { 0 };
+  GimpItem *copy;
+  gint updates = 0;
+  gulong update_handler;
+  GError *error = NULL;
+  fill (source, 255, 0, 0, 255);
+  fill (GIMP_LAYER (clone), 0, 0, 255, 255);
+  update_handler = g_signal_connect (source, "update", G_CALLBACK (count_source_update), &updates);
+  gimp_clone_layer_set_source_by_name (clone, "target");
+  snapshot = gimp_clone_layer_dup_reference (clone, &error);
+  g_assert_no_error (error);
+  g_assert_null (snapshot->source);
+  g_assert_cmpstr (snapshot->pending_name, ==, "target");
+  g_assert_cmpint (snapshot->state, ==, GIMP_CLONE_SOURCE_PENDING);
+  g_assert_true (snapshot->allow_name_lookup);
+  g_assert_cmpint (updates, ==, 0);
+  pixel (GIMP_LAYER (clone), 0, 0, 255, 255);
+  gimp_clone_layer_reference_free (snapshot);
+  metadata.source = source;
+  metadata.source_name = "target";
+  metadata.pending_name = "unresolved pending";
+  metadata.state = GIMP_CLONE_SOURCE_PENDING;
+  metadata.allow_name_lookup = FALSE;
+  g_assert_true (gimp_clone_layer_restore_reference (clone, &metadata, &error));
+  /* Restore is metadata-only and must preserve cache and source callbacks. */
+  g_assert_cmpint (updates, ==, 0);
+  pixel (GIMP_LAYER (clone), 0, 0, 255, 255);
+  snapshot = gimp_clone_layer_dup_reference (clone, &error);
+  g_assert_true (snapshot->source == source);
+  g_assert_cmpstr (snapshot->pending_name, ==, "unresolved pending");
+  g_assert_false (snapshot->allow_name_lookup);
+  gimp_clone_layer_reference_free (snapshot);
+  gimp_drawable_update (GIMP_DRAWABLE (source), 0, 0, 16, 16);
+  pixel (GIMP_LAYER (clone), 255, 0, 0, 255);
+  metadata.source = NULL; metadata.pending_name = NULL;
+  metadata.source_expired = TRUE; metadata.state = GIMP_CLONE_SOURCE_EXPIRED;
+  g_assert_true (gimp_clone_layer_restore_reference (clone, &metadata, &error));
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  copy = gimp_item_duplicate (GIMP_ITEM (clone), GIMP_TYPE_CLONE_LAYER);
+  g_object_ref_sink (copy);
+  snapshot = gimp_clone_layer_dup_reference (GIMP_CLONE_LAYER (copy), &error);
+  g_assert_cmpint (snapshot->state, ==, GIMP_CLONE_SOURCE_EXPIRED);
+  g_assert_cmpstr (snapshot->source_name, ==, "target");
+  g_assert_false (snapshot->allow_name_lookup);
+  gimp_clone_layer_reference_free (snapshot); g_object_unref (copy);
+  metadata.pending_name = "target"; metadata.state = GIMP_CLONE_SOURCE_PENDING;
+  g_assert_true (gimp_clone_layer_restore_reference (clone, &metadata, &error));
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  copy = gimp_item_duplicate (GIMP_ITEM (clone), GIMP_TYPE_CLONE_LAYER);
+  g_object_ref_sink (copy);
+  g_assert_null (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copy)));
+  snapshot = gimp_clone_layer_dup_reference (GIMP_CLONE_LAYER (copy), &error);
+  g_assert_cmpint (snapshot->state, ==, GIMP_CLONE_SOURCE_PENDING);
+  g_assert_false (snapshot->allow_name_lookup);
+  gimp_clone_layer_reference_free (snapshot); g_object_unref (copy);
+  gimp_image_undo_free (image);
+  g_assert_true (gimp_clone_layer_set_source_name_with_undo (clone, "target", NULL, &error));
+  g_assert_true (gimp_clone_layer_get_source (clone) == source);
+  g_assert_true (gimp_image_undo (image));
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  snapshot = gimp_clone_layer_dup_reference (clone, &error);
+  g_assert_false (snapshot->allow_name_lookup);
+  gimp_clone_layer_reference_free (snapshot);
+  fill (source, 0, 255, 0, 255);
+  pixel (GIMP_LAYER (clone), 255, 0, 0, 255);
+  /* An explicit legacy/user name assignment re-enables the old lookup rule. */
+  gimp_clone_layer_set_source_by_name (clone, "target");
+  g_assert_true (gimp_clone_layer_get_source (clone) == source);
+  pixel (GIMP_LAYER (clone), 0, 255, 0, 255);
+  metadata.state = GIMP_CLONE_SOURCE_LIVE;
+  g_assert_false (gimp_clone_layer_restore_reference (clone, &metadata, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_INVALID_STATE);
+  g_clear_error (&error);
+  g_assert_true (gimp_clone_layer_get_source (clone) == source);
+  g_signal_handler_disconnect (source, update_handler);
+  g_object_unref (image);
+}
+static void undo_source_image_relocation (void)
+{
+  GimpImage *original = new_image ();
+  GimpImage *destination = new_image ();
+  GimpLayer *source = new_layer (original, "source", NULL, 0);
+  GimpLayer *replacement = new_layer (destination, "replacement", NULL, 0);
+  GimpCloneLayer *clone = new_clone (destination, source);
+  GError *error = NULL;
+  fill (source, 255, 0, 0, 255); fill (replacement, 0, 255, 0, 255);
+  gimp_image_undo_free (destination);
+  g_assert_true (gimp_clone_layer_set_source_with_undo (clone, replacement, NULL, &error));
+  g_object_ref (source);
+  gimp_image_remove_layer (original, source, FALSE, NULL);
+  gimp_item_unset_removed (GIMP_ITEM (source));
+  GIMP_ITEM_GET_CLASS (source)->convert (GIMP_ITEM (source), destination, GIMP_TYPE_LAYER);
+  gimp_image_add_layer (destination, source, NULL, 0, FALSE);
+  g_object_unref (source);
+  g_object_unref (original);
+  g_assert_true (gimp_image_undo (destination));
+  g_assert_true (gimp_clone_layer_get_source (clone) == source);
+  pixel (GIMP_LAYER (clone), 255, 0, 0, 255);
+  g_assert_true (gimp_image_redo (destination));
+  g_assert_true (gimp_clone_layer_get_source (clone) == replacement);
+  g_assert_no_error (error);
+  g_object_unref (destination);
+}
+static void clone_owner_image_relocation (void)
+{
+  GimpImage *original = new_image ();
+  GimpImage *destination = new_image ();
+  GimpLayer *source = new_layer (original, "source", NULL, 0);
+  GimpLayer *replacement = new_layer (destination, "replacement", NULL, 0);
+  GimpCloneLayer *clone = new_clone (original, source);
+  GError *error = NULL;
+  fill (source, 255, 0, 0, 255); fill (replacement, 0, 255, 0, 255);
+  g_object_ref (clone);
+  gimp_image_remove_layer (original, GIMP_LAYER (clone), FALSE, NULL);
+  gimp_item_unset_removed (GIMP_ITEM (clone));
+  GIMP_ITEM_GET_CLASS (clone)->convert (GIMP_ITEM (clone), destination, GIMP_TYPE_CLONE_LAYER);
+  gimp_image_add_layer (destination, GIMP_LAYER (clone), NULL, 0, FALSE);
+  g_object_unref (clone);
+  g_object_unref (original);
+  g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_EXPIRED);
+  g_assert_true (gimp_clone_layer_set_source_full (clone, replacement, &error));
+  g_assert_no_error (error);
+  pixel (GIMP_LAYER (clone), 0, 255, 0, 255);
+  g_object_unref (destination);
+}
+static void cross_image_copy_and_move (void)
+{
+  GimpImage *original = new_image ();
+  GimpImage *destination = new_image ();
+  GimpLayer *source = new_layer (original, "source", NULL, 0);
+  GimpCloneLayer *clone = new_clone (original, source);
+  GimpLayer *copy;
+  GimpLayer *group, *inside, *internal_clone, *group_copy;
+  fill (source, 204, 51, 102, 128);
+  copy = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (clone), destination, GIMP_TYPE_CLONE_LAYER));
+  gimp_image_add_layer (destination, copy, NULL, 0, FALSE);
+  g_assert_true (gimp_item_get_image (GIMP_ITEM (copy)) == destination);
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copy)) == source);
+  pixel (copy, 204, 51, 102, 128);
+  fill (source, 255, 0, 0, 255);
+  pixel (copy, 255, 0, 0, 255);
+  group = gimp_group_layer_new (original);
+  gimp_image_add_layer (original, group, NULL, 0, FALSE);
+  inside = new_layer (original, "inside", group, 0);
+  internal_clone = add_clone_child (original, group, "internal", inside);
+  add_clone_child (original, group, "external", source);
+  group_copy = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (group), destination, GIMP_TYPE_GROUP_LAYER));
+  gimp_image_add_layer (destination, group_copy, NULL, 0, FALSE);
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (child_named (group_copy, "internal"))) == child_named (group_copy, "inside"));
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (child_named (group_copy, "external"))) == source);
+  g_assert_true (gimp_item_get_image (GIMP_ITEM (child_named (group_copy, "inside"))) == destination);
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (internal_clone)) == inside);
+  /* Ordinary source relocation keeps the same live identity. */
+  g_object_ref (source);
+  gimp_image_remove_layer (original, source, FALSE, NULL);
+  gimp_item_unset_removed (GIMP_ITEM (source));
+  GIMP_ITEM_GET_CLASS (source)->convert (GIMP_ITEM (source), destination, GIMP_TYPE_LAYER);
+  gimp_image_add_layer (destination, source, NULL, 0, FALSE);
+  g_object_unref (source);
+  g_assert_true (gimp_clone_layer_get_source (clone) == source);
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copy)) == source);
+  fill (source, 0, 255, 0, 255);
+  pixel (GIMP_LAYER (clone), 0, 255, 0, 255); pixel (copy, 0, 255, 0, 255);
+  g_object_unref (original);
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (copy)) == source);
+  g_object_unref (destination);
+}
+static void inherited_precision_conversion_undo (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *source = new_layer (image, "source", NULL, 0);
+  GimpCloneLayer *clone = new_clone (image, source);
+  fill (source, 204, 51, 102, 128);
+  gimp_image_undo_free (image);
+  gimp_image_convert_precision (image, GIMP_PRECISION_FLOAT_LINEAR,
+    GEGL_DITHER_NONE, GEGL_DITHER_NONE, GEGL_DITHER_NONE, NULL);
+  g_assert_cmpint (gimp_drawable_get_precision (GIMP_DRAWABLE (clone)), ==, GIMP_PRECISION_FLOAT_LINEAR);
+  g_assert_true (gimp_clone_layer_get_source (clone) == source);
+  g_assert_true (gimp_image_undo (image));
+  g_assert_cmpint (gimp_drawable_get_precision (GIMP_DRAWABLE (clone)), ==, GIMP_PRECISION_U8_NON_LINEAR);
+  pixel (GIMP_LAYER (clone), 204, 51, 102, 128);
+  g_assert_true (gimp_image_redo (image));
+  g_assert_cmpint (gimp_drawable_get_precision (GIMP_DRAWABLE (clone)), ==, GIMP_PRECISION_FLOAT_LINEAR);
+  fill (source, 255, 0, 0, 255);
+  pixel (GIMP_LAYER (clone), 255, 0, 0, 255);
+  g_object_unref (image);
+}
 static void trace_undo_tree (GimpUndo *undo, gint depth)
 {
   if (!undo) return;
@@ -743,6 +1160,13 @@ int main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-clone-layer/" #name, name)
+  ADD (serialization_reference_snapshot_and_restore); ADD (undo_source_image_relocation);
+  ADD (clone_owner_image_relocation);
+  ADD (source_reference_undo_dependent_clone); ADD (source_reference_undo_close_reentry);
+  ADD (source_reference_undo_live); ADD (source_reference_undo_all_states);
+  ADD (source_reference_undo_preserves_pending_live); ADD (source_reference_undo_renamed_then_expired);
+  ADD (source_reference_undo_expired_cross_image); ADD (cross_image_copy_and_move);
+  ADD (inherited_precision_conversion_undo);
   ADD (source_resize_undo_legacy_fixture); ADD (group_duplicate_complete_hierarchy);
   ADD (double_precision_and_trc); ADD (thaw_reentry_close_and_replace);
   ADD (dissolve_legacy_fixture); ADD (gray_and_high_precision);

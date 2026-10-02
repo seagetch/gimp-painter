@@ -11,11 +11,14 @@ extern "C" {
 #include "core-types.h"
 #include "gimp.h"
 #include "gimpclonelayer.h"
+#include "gimpclonelayerundo.h"
 #include "gimpcontainer.h"
 #include "gimpimage.h"
+#include "gimpimage-undo.h"
 #include "gimplayermask.h"
 #include "gimppickable.h"
 #include "gegl/gimp-babl.h"
+#include "gegl/gimp-gegl-utils.h"
 }
 #include "painter/binding-store.hpp"
 #include "gimp-painter-type-traits.hpp"
@@ -36,6 +39,7 @@ using namespace GimpPainter;
 static void gimp_clone_layer_pickable_init (GimpPickableInterface *iface);
 G_DEFINE_TYPE_WITH_CODE (GimpCloneLayer, gimp_clone_layer, GIMP_TYPE_LAYER,
                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_PICKABLE, gimp_clone_layer_pickable_init))
+G_DEFINE_TYPE (GimpCloneLayerUndo, gimp_clone_layer_undo, GIMP_TYPE_ITEM_UNDO)
 
 namespace {
 struct CloneImpl;
@@ -43,9 +47,10 @@ struct CloneSlot : SlotSpec<GimpCloneLayer, CloneImpl> {};
 bool depends_on (GimpLayer *, GimpLayer *, std::set<GimpLayer *>&);
 struct Flag
 {
-  explicit Flag (bool& flag) : flag (flag) { flag = true; }
-  ~Flag () { flag = false; }
+  explicit Flag (bool& flag) : flag (flag), previous (flag) { flag = true; }
+  ~Flag () { flag = previous; }
   bool& flag;
+  bool previous;
 };
 
 struct Callback
@@ -102,6 +107,16 @@ const std::array<guint32, 4096>& dissolve_seeds ()
   return seeds;
 }
 
+struct ReferenceState
+{
+  WeakRef<GimpLayer> source;
+  WeakRef<GObject> source_image;
+  ObjectRef<GObject> buffer;
+  std::string pending_name, record_name;
+  bool pending = false, expired = false, had_source = false, allow_name_lookup = true;
+  gint x = 0, y = 0, previous_x = 0, previous_y = 0, previous_w = 0, previous_h = 0;
+};
+
 struct CloneImpl
 {
   explicit CloneImpl (GimpCloneLayer *owner) : owner (owner) {}
@@ -110,6 +125,12 @@ struct CloneImpl
   {
     ++reference_generation;
     pending_refresh.close ();
+    owner_image_connection.close ();
+    owner_image_changed_connection.close ();
+    source_image_connection.close ();
+    source_image_changed_connection.close ();
+    owner_image.reset ();
+    source_image.reset ();
     update_connection.close ();
     freeze_connection.close ();
     name_connection.close ();
@@ -120,7 +141,9 @@ struct CloneImpl
   }
   GimpLayer *get_source ()
   {
-    if (has_pending_name && !resolving)
+    if (!owner_image.lock ())
+      { BindingStore::require (G_OBJECT (owner)).close (); return nullptr; }
+    if (has_pending_name && allow_name_lookup && !resolving)
       {
         Flag resolving_guard (resolving);
         GimpImage *image = gimp_item_get_image (GIMP_ITEM (owner));
@@ -141,8 +164,8 @@ struct CloneImpl
   void set_name (const char *name)
   {
     has_pending_name = name != nullptr;
+    allow_name_lookup = true;
     pending_name = name ? name : "";
-    if (name) record_name = name;
   }
   gchar *dup_name () const
   {
@@ -153,11 +176,16 @@ struct CloneImpl
   void remember_name ()
   {
     auto ref = source.lock ();
-    if (ref) record_name = gimp_object_get_name (ref.get ());
+    if (ref) { const char *name = gimp_object_get_name (ref.get ()); record_name = name ? name : ""; }
   }
-  void set_source (GimpLayer *layer);
+  ReferenceState capture () const;
+  bool restore (const ReferenceState& state);
+  void set_source (GimpLayer *layer, bool emit_update = true);
+  void attach_owner_image ();
+  void attach_source_image ();
+  void watch_owner_image ();
   void defer_refresh ();
-  void update (GimpDrawable *drawable, gint x, gint y, gint width, gint height);
+  void update (GimpDrawable *drawable, gint x, gint y, gint width, gint height, bool resolve_name = true);
   void mirror_freeze (GObject *object)
   {
     std::set<GimpLayer *> seen;
@@ -169,12 +197,15 @@ struct CloneImpl
     else gimp_viewable_preview_thaw (GIMP_VIEWABLE (owner));
   }
   GimpCloneLayer *owner;              // owner owns this slot
-  WeakRef<GObject> source;
+  WeakRef<GObject> source, owner_image, source_image;
+  Connection owner_image_connection, owner_image_changed_connection;
+  Connection source_image_connection, source_image_changed_connection;
   Connection update_connection, freeze_connection, name_connection, disconnect_connection;
   std::uint64_t reference_generation = 0;
   Source pending_refresh;
   std::string pending_name, record_name;
-  bool source_expired = false;
+  bool allow_name_lookup = true;
+  bool source_expired = false, restoring = false, editing_reference = false;
   bool has_pending_name = false, resolving = false, updating = false, mirrored_freeze = false;
   gint previous_x = 0, previous_y = 0, previous_width = 0, previous_height = 0;
 };
@@ -185,6 +216,12 @@ void source_frozen (GObject *source, GParamSpec *, gpointer data)
 { visit_callback (data, [&] (CloneImpl& impl) { impl.mirror_freeze (source); }); }
 void source_disconnected (GimpObject *, gpointer data)
 { visit_callback (data, [] (CloneImpl& impl) { impl.set_source (nullptr); if (!impl.source.lock ()) impl.source_expired = true; }); }
+void owner_image_disconnected (GimpObject *, gpointer data)
+{ visit_callback (data, [] (CloneImpl& impl) { BindingStore::require (G_OBJECT (impl.owner)).close (); }); }
+void owner_image_changed (GObject *, GParamSpec *, gpointer data)
+{ visit_callback (data, [] (CloneImpl& impl) { impl.attach_owner_image (); }); }
+void source_image_changed (GObject *, GParamSpec *, gpointer data)
+{ visit_callback (data, [] (CloneImpl& impl) { impl.attach_source_image (); }); }
 void source_renamed (GimpObject *, gpointer data)
 { visit_callback (data, [] (CloneImpl& impl) { impl.remember_name (); }); }
 Connection connect (GimpCloneLayer *owner, const ObjectRef<GObject>& emitter,
@@ -195,25 +232,66 @@ Connection connect (GimpCloneLayer *owner, const ObjectRef<GObject>& emitter,
   token.release ();
   return connection;
 }
-void CloneImpl::set_source (GimpLayer *layer)
+void CloneImpl::attach_owner_image ()
+{
+  auto image = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (GIMP_ITEM (owner))));
+  WeakRef<GObject> weak (image);
+  Connection connection;
+  if (image) connection = connect (owner, image, "disconnect", G_CALLBACK (owner_image_disconnected));
+  owner_image_connection = std::move (connection);
+  owner_image = std::move (weak);
+}
+void CloneImpl::watch_owner_image ()
+{
+  owner_image_changed_connection = connect (owner, ObjectRef<GObject>::retain (G_OBJECT (owner)),
+                                             "notify::image", G_CALLBACK (owner_image_changed));
+  attach_owner_image ();
+}
+void CloneImpl::attach_source_image ()
+{
+  auto current_source = source.lock ();
+  auto image = ObjectRef<GObject>::retain (current_source ?
+    G_OBJECT (gimp_item_get_image (GIMP_ITEM (current_source.get ()))) : nullptr);
+  WeakRef<GObject> weak (image);
+  Connection connection;
+  if (image) connection = connect (owner, image, "disconnect", G_CALLBACK (source_disconnected));
+  source_image_connection = std::move (connection);
+  source_image = std::move (weak);
+  if (updating)
+    { ++reference_generation; defer_refresh (); }
+}
+void CloneImpl::set_source (GimpLayer *layer, bool emit_update)
 {
   if (layer && !GIMP_IS_LAYER (layer))
     throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Clone source must be a layer");
+  if (!owner_image.lock ())
+    {
+      BindingStore::require (G_OBJECT (owner)).close ();
+      throw Error (GIMP_PAINTER_ERROR_CLOSED, "Clone owning image is closed");
+    }
   /* Stage allocations and connections before replacing the live reference. */
   auto ref = ObjectRef<GObject>::retain (G_OBJECT (layer));
   WeakRef<GObject> replacement (ref);
-  Connection new_update, new_freeze, new_name, new_disconnect;
+  Connection new_update, new_freeze, new_name, new_disconnect, new_image_changed, new_image_disconnect;
+  WeakRef<GObject> new_image;
   if (layer)
     {
       new_update = connect (owner, ref, "update", G_CALLBACK (source_update));
       new_freeze = connect (owner, ref, "notify::frozen", G_CALLBACK (source_frozen));
       new_name = connect (owner, ref, "name-changed", G_CALLBACK (source_renamed));
       new_disconnect = connect (owner, ref, "disconnect", G_CALLBACK (source_disconnected));
+      new_image_changed = connect (owner, ref, "notify::image", G_CALLBACK (source_image_changed));
+      auto image = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (GIMP_ITEM (layer))));
+      new_image = WeakRef<GObject> (image);
+      if (image) new_image_disconnect = connect (owner, image, "disconnect", G_CALLBACK (source_disconnected));
     }
   update_connection = std::move (new_update);
   freeze_connection = std::move (new_freeze);
   name_connection = std::move (new_name);
   disconnect_connection = std::move (new_disconnect);
+  source_image_changed_connection = std::move (new_image_changed);
+  source_image_connection = std::move (new_image_disconnect);
+  source_image = std::move (new_image);
   source = std::move (replacement);
   const auto generation = ++reference_generation;
   const auto binding_generation = BindingStore::require (G_OBJECT (owner)).generation ();
@@ -232,6 +310,8 @@ void CloneImpl::set_source (GimpLayer *layer)
   previous_height = gimp_item_get_height (GIMP_ITEM (layer));
   mirror_freeze (G_OBJECT (layer));
   if (!current ()) return;
+  /* Metadata restoration deliberately skips this legacy side effect. */
+  if (!emit_update) return;
   /* This is an observable legacy side effect, not just a private refresh. */
   gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, previous_width, previous_height);
   if (current () && updating) defer_refresh ();
@@ -363,12 +443,12 @@ bool project (GimpLayer *layer, GeglBuffer *destination, const GeglRectangle& re
   return true;
 }
 
-void CloneImpl::update (GimpDrawable *drawable, gint x, gint y, gint width, gint height)
+void CloneImpl::update (GimpDrawable *drawable, gint x, gint y, gint width, gint height, bool resolve_name)
 {
-  if (updating) return;
+  if (updating || restoring) return;
   /* Legacy update_size() calls get_source(): an update can trigger a pending
    * name resolution too, including the update emitted by a direct setter. */
-  if (has_pending_name && !resolving) get_source ();
+  if (resolve_name && has_pending_name && !resolving) get_source ();
   auto ref = source.lock ();
   if (!ref || ref.get () != G_OBJECT (drawable)) return;
   std::set<GimpLayer *> seen;
@@ -387,7 +467,7 @@ void CloneImpl::update (GimpDrawable *drawable, gint x, gint y, gint width, gint
                                                          gimp_drawable_get_format (GIMP_DRAWABLE (owner)))));
       gegl_buffer_copy (gimp_drawable_get_buffer (GIMP_DRAWABLE (owner)), nullptr, GEGL_ABYSS_NONE,
                         GEGL_BUFFER (buffer.get ()), nullptr);
-      gimp_drawable_set_buffer (GIMP_DRAWABLE (owner), gimp_item_is_attached (GIMP_ITEM (owner)),
+      gimp_drawable_set_buffer (GIMP_DRAWABLE (owner), !editing_reference && gimp_item_is_attached (GIMP_ITEM (owner)),
                                 nullptr, GEGL_BUFFER (buffer.get ()));
       if (reference_generation != generation) return;
       /* The old automatic path passed NULL context. Its mask resize was
@@ -422,6 +502,185 @@ void CloneImpl::update (GimpDrawable *drawable, gint x, gint y, gint width, gint
   gimp_drawable_update (GIMP_DRAWABLE (owner), clipped.x, clipped.y, clipped.width, clipped.height);
 }
 
+ReferenceState CloneImpl::capture () const
+{
+  ReferenceState state;
+  auto ref = source.lock ();
+  auto source_lease = ObjectRef<GimpLayer>::adopt (ref ? GIMP_LAYER (ref.release ()) : nullptr);
+  state.had_source = static_cast<bool> (source_lease);
+  state.source = WeakRef<GimpLayer> (source_lease);
+  state.source_image = WeakRef<GObject> (source_image.lock ());
+  auto *buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (owner));
+  if (!buffer) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Clone has no pixel buffer");
+  state.buffer = ObjectRef<GObject>::adopt (G_OBJECT (gimp_gegl_buffer_dup (buffer)));
+  state.pending_name = pending_name;
+  state.record_name = record_name;
+  state.pending = has_pending_name;
+  state.allow_name_lookup = allow_name_lookup;
+  state.expired = source_expired;
+  state.x = gimp_item_get_offset_x (GIMP_ITEM (owner));
+  state.y = gimp_item_get_offset_y (GIMP_ITEM (owner));
+  state.previous_x = previous_x; state.previous_y = previous_y;
+  state.previous_w = previous_width; state.previous_h = previous_height;
+  return state;
+}
+
+bool CloneImpl::restore (const ReferenceState& state)
+{
+  std::string restored_pending = state.pending_name, restored_record = state.record_name;
+  auto& store = BindingStore::require (G_OBJECT (owner));
+  const auto binding_generation = store.generation ();
+  Flag edit (editing_reference);
+  auto restored_source = state.source.lock ();
+  auto restored_image = state.source_image.lock ();
+  if (!restored_image) restored_source.reset ();
+  {
+    Flag restore_guard (restoring);
+    const auto expected = reference_generation + 1;
+    set_source (restored_source.get ());
+    if (reference_generation != expected || !store.accepts (binding_generation))
+      {
+        if (store.accepts (binding_generation)) defer_refresh ();
+        return false;
+      }
+    pending_name.swap (restored_pending);
+    if (!restored_source) record_name.swap (restored_record);
+    has_pending_name = state.pending;
+    allow_name_lookup = state.allow_name_lookup;
+    source_expired = state.expired || (state.had_source && !restored_source);
+    previous_x = state.previous_x; previous_y = state.previous_y;
+    previous_width = state.previous_w; previous_height = state.previous_h;
+    GeglRectangle bounds = { state.x, state.y, 0, 0 };
+    gimp_drawable_set_buffer_full (GIMP_DRAWABLE (owner), FALSE, nullptr,
+                                  GEGL_BUFFER (state.buffer.get ()), &bounds, TRUE);
+    if (reference_generation != expected || !store.accepts (binding_generation))
+      {
+        if (store.accepts (binding_generation)) defer_refresh ();
+        return false;
+      }
+  }
+  /* A live restored reference reflects its source's current pixels. Avoid
+   * resolving a pending name merely as a side effect of replay: the complete
+   * pending+live distinction is restored until a real update/getter occurs. */
+  const auto restored_generation = reference_generation;
+  if (restored_source) update (GIMP_DRAWABLE (restored_source.get ()), 0, 0, -1, -1, false);
+  return reference_generation == restored_generation && store.accepts (binding_generation);
+}
+
+struct ReferenceUndoImpl
+{
+  ReferenceState saved;
+  Connection source_image_changed_connection;
+  void watch_source (GObject *owner);
+  void close () noexcept
+  {
+    source_image_changed_connection.close ();
+    saved.source.reset (); saved.source_image.reset (); saved.buffer.reset ();
+    saved.pending_name.clear (); saved.record_name.clear ();
+  }
+};
+struct ReferenceUndoSlot : SlotSpec<GimpCloneLayerUndo, ReferenceUndoImpl> {};
+struct UndoCallback
+{
+  explicit UndoCallback (GObject *object) : owner (ObjectRef<GObject>::retain (object)),
+    generation (BindingStore::require (object).generation ()) {}
+  WeakRef<GObject> owner;
+  std::uint64_t generation;
+};
+void undo_callback_free (gpointer data, GClosure *) { delete static_cast<UndoCallback *> (data); }
+void undo_source_image_changed (GObject *source, GParamSpec *, gpointer data)
+{
+  boundary_void (nullptr, [&] {
+    auto *callback = static_cast<UndoCallback *> (data);
+    auto owner = callback->owner.lock ();
+    if (!owner) return;
+    auto *store = BindingStore::find (owner.get ());
+    if (!store || !store->accepts (callback->generation)) return;
+    store->with<ReferenceUndoSlot> ([&] (ReferenceUndoImpl& impl) {
+      auto current = impl.saved.source.lock ();
+      if (G_OBJECT (current.get ()) == source)
+        impl.saved.source_image = WeakRef<GObject> (ObjectRef<GObject>::retain (
+          G_OBJECT (gimp_item_get_image (GIMP_ITEM (source)))));
+    });
+  });
+}
+void ReferenceUndoImpl::watch_source (GObject *owner)
+{
+  auto source = saved.source.lock ();
+  Connection connection;
+  if (source)
+    {
+      std::unique_ptr<UndoCallback> token (new UndoCallback (owner));
+      connection = Connection::connect (ObjectRef<GObject>::retain (G_OBJECT (source.get ())),
+        "notify::image", G_CALLBACK (undo_source_image_changed), token.get (), undo_callback_free);
+      token.release ();
+    }
+  source_image_changed_connection = std::move (connection);
+}
+void reference_undo_constructed (GObject *object)
+{
+  G_OBJECT_CLASS (gimp_clone_layer_undo_parent_class)->constructed (object);
+  auto *undo = GIMP_CLONE_LAYER_UNDO (object);
+  if (!undo->binding_failed)
+    undo->binding_failed = !boundary<gboolean> (nullptr, FALSE, [&] {
+      GimpItem *item = GIMP_ITEM_UNDO (object)->item;
+      if (!GIMP_IS_CLONE_LAYER (item) || GIMP_UNDO (object)->undo_type != GIMP_UNDO_CLONE_LAYER_SOURCE)
+        throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Clone reference Undo requires a CloneLayer");
+      auto& store = BindingStore::require (object);
+      store.initialize<ReferenceUndoSlot> ([&] (ReferenceUndoImpl& snapshot) {
+        snapshot.saved = BindingStore::require (G_OBJECT (item)).with<CloneSlot> (
+          [] (CloneImpl& impl) { return impl.capture (); });
+      });
+      store.activate ();
+      store.with<ReferenceUndoSlot> ([&] (ReferenceUndoImpl& impl) { impl.watch_source (object); });
+      return TRUE;
+    });
+  if (undo->binding_failed) gimp_painter_binding_close (object, nullptr);
+}
+void reference_undo_dispose (GObject *object)
+{
+  gimp_painter_binding_close (object, nullptr);
+  G_OBJECT_CLASS (gimp_clone_layer_undo_parent_class)->dispose (object);
+}
+void reference_undo_free (GimpUndo *undo, GimpUndoMode mode)
+{
+  gimp_painter_binding_close (G_OBJECT (undo), nullptr);
+  GIMP_UNDO_CLASS (gimp_clone_layer_undo_parent_class)->free (undo, mode);
+}
+void reference_undo_pop (GimpUndo *undo, GimpUndoMode mode, GimpUndoAccumulator *accum)
+{
+  boundary_void (nullptr, [&] {
+    auto *store = BindingStore::find (G_OBJECT (undo));
+    if (!store || store->state () != BindingStore::State::active) return;
+    const auto generation = store->generation ();
+    store->with<ReferenceUndoSlot> ([&] (ReferenceUndoImpl& snapshot) {
+      auto target = ObjectRef<GObject>::retain (G_OBJECT (GIMP_ITEM_UNDO (undo)->item));
+      auto *target_store = target ? BindingStore::find (target.get ()) : nullptr;
+      if (!target_store || target_store->state () != BindingStore::State::active) return;
+      GIMP_UNDO_CLASS (gimp_clone_layer_undo_parent_class)->pop (undo, mode, accum);
+      if (!store->accepts (generation)) return;
+      target_store->with<CloneSlot> ([&] (CloneImpl& impl) {
+        ReferenceState current = impl.capture ();
+        if (impl.restore (snapshot.saved))
+          { snapshot.saved = std::move (current); snapshot.watch_source (G_OBJECT (undo)); }
+      });
+    });
+  });
+}
+gint64 reference_undo_memsize (GimpObject *object, gint64 *gui)
+{
+  return boundary<gint64> (nullptr, 0, [&] {
+    gint64 memory = BindingStore::require (G_OBJECT (object)).read<ReferenceUndoSlot> (
+      [] (const ReferenceUndoImpl& impl) -> gint64 {
+        auto *buffer = GEGL_BUFFER (impl.saved.buffer.get ());
+        return impl.saved.pending_name.capacity () + impl.saved.record_name.capacity () +
+          (buffer ? static_cast<gint64> (gegl_buffer_get_width (buffer)) * gegl_buffer_get_height (buffer) *
+                    babl_format_get_bytes_per_pixel (gegl_buffer_get_format (buffer)) : 0);
+      });
+    return memory + GIMP_OBJECT_CLASS (gimp_clone_layer_undo_parent_class)->get_memsize (object, gui);
+  });
+}
+
 void constructed (GObject *object)
 {
   if (G_OBJECT_CLASS (gimp_clone_layer_parent_class)->constructed)
@@ -432,6 +691,7 @@ void constructed (GObject *object)
       auto& store = BindingStore::require (object);
       store.initialize<CloneSlot> ([] (CloneImpl&) {}); // require the registered slot
       store.activate ();
+      store.with<CloneSlot> ([] (CloneImpl& impl) { impl.watch_owner_image (); });
       return TRUE;
     });
   if (layer->binding_failed) gimp_painter_binding_close (object, nullptr);
@@ -455,13 +715,18 @@ GimpItem *duplicate (GimpItem *item, GType type)
         auto *original = GIMP_CLONE_LAYER (item);
         GimpLayer *source = gimp_clone_layer_get_source (original);
         gimp_clone_layer_set_source (GIMP_CLONE_LAYER (copy), source);
-        /* Legacy drops unresolved text here. Preserve otherwise unresolvable
-         * records instead of silently destroying saved information. */
-        if (gimp_clone_layer_get_source_state (original) == GIMP_CLONE_SOURCE_PENDING)
-          {
-            String name (gimp_clone_layer_dup_source_name (original));
-            gimp_clone_layer_set_source_by_name (GIMP_CLONE_LAYER (copy), name.get ());
-          }
+        /* Retain pending/live/expired metadata and protected stable-ID policy.
+         * The legacy getter above still performs allowed lazy resolution. */
+        std::unique_ptr<GimpCloneLayerReference, decltype (&gimp_clone_layer_reference_free)>
+          reference (gimp_clone_layer_dup_reference (original, nullptr), gimp_clone_layer_reference_free);
+        if (reference)
+          BindingStore::require (G_OBJECT (copy)).with<CloneSlot> ([&] (CloneImpl& impl) {
+            impl.has_pending_name = reference->pending_name != nullptr;
+            impl.pending_name = reference->pending_name ? reference->pending_name : "";
+            impl.record_name = reference->source_name ? reference->source_name : "";
+            impl.source_expired = reference->source_expired;
+            impl.allow_name_lookup = reference->allow_name_lookup;
+          });
       }
     return copy;
   });
@@ -475,6 +740,22 @@ void rotate (GimpItem *, GimpContext *, GimpRotationType, gdouble, gdouble, gboo
 void transform (GimpItem *, GimpContext *, const GimpMatrix3 *, GimpTransformDirection,
                 GimpInterpolationType, GimpTransformResize, GimpProgress *) {}
 } // namespace
+
+static void gimp_clone_layer_undo_class_init (GimpCloneLayerUndoClass *klass)
+{
+  G_OBJECT_CLASS (klass)->constructed = reference_undo_constructed;
+  G_OBJECT_CLASS (klass)->dispose = reference_undo_dispose;
+  GIMP_OBJECT_CLASS (klass)->get_memsize = reference_undo_memsize;
+  GIMP_UNDO_CLASS (klass)->pop = reference_undo_pop;
+  GIMP_UNDO_CLASS (klass)->free = reference_undo_free;
+}
+static void gimp_clone_layer_undo_init (GimpCloneLayerUndo *undo)
+{
+  undo->binding_failed = !boundary<gboolean> (nullptr, FALSE, [&] {
+    BindingStore::ensure (G_OBJECT (undo)).emplace<ReferenceUndoSlot> ();
+    return TRUE;
+  });
+}
 
 static void gimp_clone_layer_class_init (GimpCloneLayerClass *klass)
 {
@@ -571,5 +852,136 @@ GimpCloneSourceState gimp_clone_layer_get_source_state (GimpCloneLayer *layer)
       if (impl.source.lock ()) return GIMP_CLONE_SOURCE_LIVE;
       return impl.source_expired ? GIMP_CLONE_SOURCE_EXPIRED : GIMP_CLONE_SOURCE_NONE;
     });
+  });
+}
+
+namespace {
+class ReferenceEditGroup
+{
+public:
+  ReferenceEditGroup (GimpImage *image, const char *description)
+    : image_ (ObjectRef<GObject>::retain (G_OBJECT (image)))
+  {
+    if (image) begun_ = gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_ITEM_PROPERTIES, description);
+  }
+  ~ReferenceEditGroup () noexcept
+  { if (begun_) gimp_image_undo_group_end (GIMP_IMAGE (image_.get ())); }
+private:
+  ObjectRef<GObject> image_;
+  bool begun_ = false;
+};
+
+gboolean edit_reference (GimpCloneLayer *layer, GimpLayer *source, const gchar *name,
+                         bool by_name, const gchar *description, GError **error)
+{
+  return boundary<gboolean> (error, FALSE, [&] {
+    if (!GIMP_IS_CLONE_LAYER (layer) || (!by_name && source && !GIMP_IS_LAYER (source)))
+      throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected CloneLayer and layer source");
+    std::string copied_name = name ? name : "";
+    BindingStore::require (G_OBJECT (layer)).with<CloneSlot> ([&] (CloneImpl& impl) {
+      if (!gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)))
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Clone has no pixel buffer");
+      auto& store = BindingStore::require (G_OBJECT (layer));
+      const auto generation = store.generation ();
+      const auto reference_generation = impl.reference_generation;
+      if (impl.restoring)
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Reference edit during Undo replay");
+      const bool attached = gimp_item_is_attached (GIMP_ITEM (layer));
+      /* Other clones can resize synchronously when this clone's buffer changes.
+       * Keep those legacy cache records in the same user-visible operation. */
+      ReferenceEditGroup group (attached ? gimp_item_get_image (GIMP_ITEM (layer)) : nullptr,
+                                 description ? description : "Clone layer source");
+      if (!store.accepts (generation) || impl.reference_generation != reference_generation)
+        throw Error (GIMP_PAINTER_ERROR_CLOSED, "Clone changed while starting reference edit");
+      if (attached)
+        {
+          GimpUndo *undo = gimp_image_undo_push (gimp_item_get_image (GIMP_ITEM (layer)),
+            GIMP_TYPE_CLONE_LAYER_UNDO, GIMP_UNDO_CLONE_LAYER_SOURCE,
+            description ? description : "Clone layer source",
+            GimpDirtyMask (GIMP_DIRTY_ITEM | GIMP_DIRTY_ITEM_META | GIMP_DIRTY_DRAWABLE),
+            "item", layer, nullptr);
+          if (undo && GIMP_CLONE_LAYER_UNDO (undo)->binding_failed)
+            throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Clone reference Undo construction failed");
+        }
+      if (!store.accepts (generation))
+        throw Error (GIMP_PAINTER_ERROR_CLOSED, "Clone closed during reference Undo creation");
+      if (impl.reference_generation != reference_generation)
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Clone source replaced during Undo creation");
+      Flag edit (impl.editing_reference);
+      if (by_name) impl.set_name (name ? copied_name.c_str () : nullptr);
+      else impl.set_source (source);
+    });
+    return TRUE;
+  });
+}
+}
+gboolean gimp_clone_layer_set_source_with_undo (GimpCloneLayer *layer, GimpLayer *source,
+                                               const gchar *description, GError **error)
+{ return edit_reference (layer, source, nullptr, false, description, error); }
+gboolean gimp_clone_layer_set_source_name_with_undo (GimpCloneLayer *layer, const gchar *name,
+                                                    const gchar *description, GError **error)
+{ return edit_reference (layer, nullptr, name, true, description, error); }
+
+GimpCloneLayerReference *gimp_clone_layer_dup_reference (GimpCloneLayer *layer, GError **error)
+{
+  return boundary<GimpCloneLayerReference *> (error, nullptr, [&] {
+    if (!GIMP_IS_CLONE_LAYER (layer)) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected CloneLayer");
+    return BindingStore::require (G_OBJECT (layer)).read<CloneSlot> ([] (const CloneImpl& impl) {
+      std::unique_ptr<GimpCloneLayerReference, decltype (&gimp_clone_layer_reference_free)>
+        result (g_new0 (GimpCloneLayerReference, 1), gimp_clone_layer_reference_free);
+      auto source = impl.source.lock ();
+      auto source_image = impl.source_image.lock ();
+      const bool expired = impl.source_expired || (source && !source_image);
+      if (!source_image) source.reset ();
+      result->source = source ? GIMP_LAYER (source.release ()) : nullptr;
+      result->pending_name = impl.has_pending_name ? g_strdup (impl.pending_name.c_str ()) : nullptr;
+      const char *name = result->source ? gimp_object_get_name (result->source) : impl.record_name.c_str ();
+      result->source_name = g_strdup (name ? name : "");
+      result->source_expired = expired;
+      result->allow_name_lookup = impl.allow_name_lookup;
+      result->state = impl.has_pending_name ? GIMP_CLONE_SOURCE_PENDING :
+        result->source ? GIMP_CLONE_SOURCE_LIVE : expired ? GIMP_CLONE_SOURCE_EXPIRED : GIMP_CLONE_SOURCE_NONE;
+      return result.release ();
+    });
+  });
+}
+void gimp_clone_layer_reference_free (GimpCloneLayerReference *reference)
+{
+  if (!reference) return;
+  g_clear_object (&reference->source);
+  g_free (reference->pending_name);
+  g_free (reference->source_name);
+  g_free (reference);
+}
+
+gboolean gimp_clone_layer_restore_reference (GimpCloneLayer *layer,
+                                             const GimpCloneLayerReference *reference,
+                                             GError **error)
+{
+  return boundary<gboolean> (error, FALSE, [&] {
+    if (!GIMP_IS_CLONE_LAYER (layer) || !reference ||
+        (reference->source && !GIMP_IS_LAYER (reference->source)))
+      throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected CloneLayer reference metadata");
+    const GimpCloneSourceState expected_state = reference->pending_name ? GIMP_CLONE_SOURCE_PENDING :
+      reference->source ? GIMP_CLONE_SOURCE_LIVE : reference->source_expired ? GIMP_CLONE_SOURCE_EXPIRED : GIMP_CLONE_SOURCE_NONE;
+    if (reference->state != expected_state || (reference->source && reference->source_expired))
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Inconsistent Clone reference metadata");
+    std::string pending = reference->pending_name ? reference->pending_name : "";
+    std::string recorded = reference->source_name ? reference->source_name : "";
+    BindingStore::require (G_OBJECT (layer)).with<CloneSlot> ([&] (CloneImpl& impl) {
+      auto& store = BindingStore::require (G_OBJECT (layer));
+      const auto generation = store.generation ();
+      const auto expected = impl.reference_generation + 1;
+      Flag restoring (impl.restoring);
+      impl.set_source (reference->source, false);
+      if (!store.accepts (generation) || impl.reference_generation != expected)
+        throw Error (GIMP_PAINTER_ERROR_CLOSED, "Clone changed while restoring metadata");
+      impl.pending_name.swap (pending);
+      if (!reference->source) impl.record_name.swap (recorded);
+      impl.has_pending_name = reference->pending_name != nullptr;
+      impl.allow_name_lookup = reference->allow_name_lookup;
+      impl.source_expired = reference->source_expired;
+    });
+    return TRUE;
   });
 }

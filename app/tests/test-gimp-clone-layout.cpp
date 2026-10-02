@@ -7,6 +7,7 @@ extern "C" {
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 #include "core/core-types.h"
+#include "core/gimpimage-undo.h"
 }
 #include "core/gimpclonelayer-handle.hpp"
 #include <cstddef>
@@ -31,4 +32,11 @@ extern "C" void gimp_test_clone_cpp_layout (gsize size, gsize offset, GimpCloneL
   auto name = handle.source_name ();
   g_assert_cmpstr (name.get (), ==, "unresolved via C++ handle");
   g_assert_false (static_cast<bool> (handle.source ()));
+  auto reference = handle.reference ();
+  g_assert_cmpint (reference->state, ==, GIMP_CLONE_SOURCE_PENDING);
+  handle.restore_reference (*reference);
+  handle.set_source_name_with_undo ("undoable C++ name");
+  g_assert_true (gimp_image_undo (gimp_item_get_image (GIMP_ITEM (layer))));
+  name = handle.source_name ();
+  g_assert_cmpstr (name.get (), ==, "unresolved via C++ handle");
 }

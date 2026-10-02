@@ -1289,6 +1289,7 @@ gimp_undo_type_get_type (void)
     { GIMP_UNDO_FILTER_REORDER, "GIMP_UNDO_FILTER_REORDER", "filter-reorder" },
     { GIMP_UNDO_FILTER_MODIFIED, "GIMP_UNDO_FILTER_MODIFIED", "filter-modified" },
     { GIMP_UNDO_FILTER_LAYER_DEFINITION, "GIMP_UNDO_FILTER_LAYER_DEFINITION", "filter-layer-definition" },
+    { GIMP_UNDO_CLONE_LAYER_SOURCE, "GIMP_UNDO_CLONE_LAYER_SOURCE", "clone-layer-source" },
     { GIMP_UNDO_CANT, "GIMP_UNDO_CANT", "cant" },
     { 0, NULL, NULL }
   };
@@ -1403,6 +1404,7 @@ gimp_undo_type_get_type (void)
     { GIMP_UNDO_FILTER_REORDER, NC_("undo-type", "Reorder effect"), NULL },
     { GIMP_UNDO_FILTER_MODIFIED, NC_("undo-type", "Effect modification"), NULL },
     { GIMP_UNDO_FILTER_LAYER_DEFINITION, NC_("undo-type", "Filter layer definition"), NULL },
+    { GIMP_UNDO_CLONE_LAYER_SOURCE, NC_("undo-type", "Clone layer source"), NULL },
     { GIMP_UNDO_CANT, NC_("undo-type", "Not undoable"), NULL },
     { 0, NULL, NULL }
   };

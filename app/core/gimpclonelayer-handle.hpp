@@ -9,6 +9,9 @@ extern "C" {
 
 namespace GimpPainter {
 /* A named, owning public handle. No Impl pointer or generic interface cast. */
+struct CloneReferenceFree
+{ void operator() (GimpCloneLayerReference *value) const noexcept { gimp_clone_layer_reference_free (value); } };
+using CloneReference = std::unique_ptr<GimpCloneLayerReference, CloneReferenceFree>;
 class CloneLayerRef
 {
 public:
@@ -37,6 +40,28 @@ public:
   {
     GError *error = nullptr;
     if (!gimp_clone_layer_set_source_name_full (get (), name, &error)) fail (error);
+  }
+  void set_source_with_undo (GimpLayer *source, const char *description = nullptr) const
+  {
+    GError *error = nullptr;
+    if (!gimp_clone_layer_set_source_with_undo (get (), source, description, &error)) fail (error);
+  }
+  void set_source_name_with_undo (const char *name, const char *description = nullptr) const
+  {
+    GError *error = nullptr;
+    if (!gimp_clone_layer_set_source_name_with_undo (get (), name, description, &error)) fail (error);
+  }
+  CloneReference reference () const
+  {
+    GError *error = nullptr;
+    auto *result = gimp_clone_layer_dup_reference (get (), &error);
+    if (!result) fail (error);
+    return CloneReference (result);
+  }
+  void restore_reference (const GimpCloneLayerReference& reference) const
+  {
+    GError *error = nullptr;
+    if (!gimp_clone_layer_restore_reference (get (), &reference, &error)) fail (error);
   }
   ObjectRef<GimpLayer> source () const
   { return ObjectRef<GimpLayer>::retain (gimp_clone_layer_get_source (get ())); }

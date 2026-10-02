@@ -123,9 +123,46 @@ undo. The old NULL-context mask resize emitted guard warnings; the port preserve
 its no-resize result without calling that invalid API. The earlier history-free
 cache resize and mask auto-resize were corrected after this runtime comparison.
 
+## Explicit reference edits and persistence snapshot
+
+The legacy source setters keep their original no-reference-Undo behavior. New
+opt-in `set_source_with_undo` and `set_source_name_with_undo` APIs use
+`GimpCloneLayerUndo`, a `GimpItemUndo` subtype whose state lives in the same
+BindingStore framework. They preserve none, live, expired, pending, and
+pending-plus-live states, the last source name, lookup policy, cached pixels,
+geometry and previous source geometry. Weak source/image identities prevent an
+Undo record from keeping a foreign image alive. Rename, source relocation while
+unbound, closed foreign images, repeated replay and close-during-edit are tested.
+Live replay refreshes current source pixels without opportunistically resolving
+a pending name. A reference edit groups dependent clone cache Undo records as
+one user operation and avoids a duplicate cache record on the edited clone.
+Legacy dependent cache-resize replay may still grow history; this is not a
+universal history-growth repair.
+
+`dup_reference` returns a retained source plus copied names and state without
+resolving names, updating pixels, or emitting signals. `restore_reference`
+validates and installs that metadata without projection, resizing or Undo.
+The `allow_name_lookup` flag lets versioned stable-ID loading preserve a missing
+ID as unresolved even when an unrelated same-name layer exists. Explicit legacy
+name assignment enables lookup again. Snapshot, restore, direct duplicate and
+Undo all preserve this policy, including pending-plus-live and expired metadata.
+The XCF codec is integrated separately using this API.
+
+Owner and source image disconnect/relocation connections close an owner binding
+or expire a closed-image source while retaining readable metadata. These guard
+feature callbacks; upstream GimpItem's raw image pointer still needs the separate
+approved common lifetime fix for finalizing externally retained layer objects.
+
+Ordinary precision conversion uses inherited image/drawable Undo and is tested
+through u8-nonlinear to float-linear conversion and replay. The dormant legacy
+Clone conversion Undo helper was not a live caller path and is not revived.
+Current RGB-to-RGB direct/group copy and source relocation tests preserve direct
+external identity and remap copied internal group references. Their dedicated
+genuine legacy cross-image trace remains pending.
+
 ## Verification
 
-- `app/tests/test-gimp-clone-layer.c`: 21 full-GIMP integration cases
+- `app/tests/test-gimp-clone-layer.c`: 33 full-GIMP integration cases
 - `app/tests/test-gimp-clone-layout.cpp`: C++ typed factories/return and actual
   C/C++ struct layout, included in the same executable
 - `migration/tests/clone-layer-testlog.{txt,json}`: normal Meson results, including
@@ -141,16 +178,16 @@ cache resize and mask auto-resize were corrected after this runtime comparison.
   the new remapping code has no such warning and the normal build is clean
 
 Reproduce with the project build environment loaded, holding the shared build
-lock: build `app/tests/gimp-clone-layer`, run Meson test `gimp-clone-layer`, then
-run the sanitizer script with build directory and `--report` output path.
+lock: build `app/tests/gimp-clone-layer`, run Meson test `gimp-clone-layer` with `--logbase clone-layer`, save the matching
+logs using `save_clone_test_evidence.py` (explicit environment allowlist and
+trailing-whitespace normalization), then run the sanitizer script with build directory and `--report` output path.
 
 ## Remaining work; do not infer broad task completion
 
 - XCF reader/writer integration, old/new format detection, persisted source-state
   representation and save/reopen/edit verification remain separate work
-- Source assignment has no new Undo entry, matching the old setter. A dedicated
-  source/reference Undo type and the legacy unused/broken conversion Undo
-  require their own current-API implementation and tests
+- The opt-in source-reference Undo APIs are ready for future editable-reference
+  UI callers; unchanged ordinary setters do not add reference Undo
 - This slice does not add a UI command or register CloneLayer in layer creation
   menus. Core GType registration is on demand
 - Indexed fixtures, component-visibility changes, arbitrary cross-image moves,
