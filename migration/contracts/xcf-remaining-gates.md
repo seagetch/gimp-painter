@@ -23,7 +23,17 @@ The envelope checkpoint does not claim a blanket audit of every construction
 failure or every namespace/owner combination. Preserve active semantics rather
 than merely archiving the original bytes when adding those recovery paths.
 
-## Saved-field inventory and ordinary semantics
+## Saved-field checkpoint
+
+The field/owner/default ledger is now `../inventory/xcf-field-acceptance.tsv`,
+with exact assertion/fixture and remaining-scope columns. See
+[xcf-field-acceptance.md](xcf-field-acceptance.md). This adds genuine old text,
+unit/palette/path fixtures, editable text/config checks, locks/attributes across
+native owners, profiles/metadata, item sets, modern effects, wrong-owner capsules,
+explicit large-retained-record Save refusal, and actual active Filter Save cases.
+The ledger distinguishes coverage from the remaining adversarial/platform gates.
+
+## Historical saved-field inventory and ordinary semantics
 
 `migration/inventory/xcf-wire-records.tsv` is the source-grounded wire inventory,
 not a completed field-by-field application roundtrip matrix. Existing tests

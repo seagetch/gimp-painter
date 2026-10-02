@@ -17,6 +17,8 @@ typedef enum {
 typedef enum {
   GIMP_PAINTER_PROVENANCE_NAME,
   GIMP_PAINTER_PROVENANCE_TYPE,
+  /* Retained unsupported native effects forbid a lossy Save. Static diagnostic. */
+  GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL,
   GIMP_PAINTER_PROVENANCE_N_TEXT
 } GimpPainterProvenanceText;
 GBytes   *gimp_painter_provenance_ref_bytes (GObject *, GimpPainterProvenanceBytes);

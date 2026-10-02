@@ -11,12 +11,12 @@ p=argparse.ArgumentParser();p.add_argument('build',type=Path);p.add_argument('--
 root=Path(__file__).resolve().parents[2];build=a.build.resolve();out=build/'provenance-sanitizers';out.mkdir(exist_ok=True)
 targets=['painter-provenance','painter-xcf-open','painter-xcf-roundtrip']
 sources={'app/painter/binding-store.cpp','app/painter/gimp-painter-binding.cpp','app/painter/gimp-painter-error.cpp',
- 'app/core/gimpobject.c','app/core/gimp-painter-provenance.cpp','app/core/gimpitem.c','app/core/gimpimage-duplicate.c','app/core/gimpclonelayer.cpp','app/core/gimpfilterlayer.cpp',
+ 'app/core/gimpobject.c','app/core/gimpdrawablefilter.c','app/core/gimp-painter-provenance.cpp','app/core/gimpitem.c','app/core/gimpimage-duplicate.c','app/core/gimpclonelayer.cpp','app/core/gimpfilterlayer.cpp',
  'app/xcf/xcf.c','app/xcf/xcf-load.c','app/xcf/xcf-read.c','app/xcf/xcf-seek.c','app/xcf/xcf-save.c','app/xcf/xcf-write.c',
  'app/xcf/painter-xcf-preserve.cpp','app/xcf/painter-xcf-load.cpp','app/xcf/painter-xcf-compat.cpp','app/xcf/painter-xcf-arguments.cpp',
- 'app/painter/filter-scheduler.cpp','app/painter/filter-edge.cpp','app/painter/filter-gauss.cpp',
+ *{p.relative_to(root).as_posix() for p in (root/'app/painter').glob('filter*.cpp')},
  *{'app/tests/test-'+x+'.c' for x in targets}}
-headers={'app/core/gimpobject.h','app/core/gimp-painter-provenance.h','app/core/gimp-painter-provenance-private.h',
+headers={'app/tests/test-painter-xcf-fields.inc','app/tests/test-painter-xcf-active.inc','app/core/gimpdrawablefilter.h','app/core/gimpobject.h','app/core/gimp-painter-provenance.h','app/core/gimp-painter-provenance-private.h',
  'app/core/core-types.h','app/core/core-enums.h','app/core/gimpimage.h','app/core/gimpimage-private.h','app/core/gimpclonelayer.h','app/core/gimpfilterlayer.h','app/core/gimpfilterlayer-arguments.hpp',
  'app/xcf/xcf-private.h','app/xcf/xcf.h','app/xcf/painter-xcf-preserve.h','app/xcf/painter-xcf-load.h','app/xcf/painter-xcf-arguments.hpp',
  *{p.relative_to(root).as_posix() for p in (root/'app/painter').glob('*.hpp')},'migration/tests/painter_sanitizer_scope.py','migration/tests/build_provenance_sanitizers.py'}

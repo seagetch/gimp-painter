@@ -1,0 +1,59 @@
+{
+  "base_head": "0317eedd01b8ddd9d54055d3eff7ba52bc7d6a76",
+  "normal_results": {
+    "xcf": 4,
+    "painter-xcf-open": 14,
+    "painter-xcf-roundtrip": 33,
+    "painter-provenance": 8
+  },
+  "all_normal_pass": true,
+  "field_rows": 185,
+  "native_precision_scenes": 72,
+  "wrong_owner_scenes": 10,
+  "new_focused_sanitizers": "pending; earlier sanitizer checkpoints do not validate these changes",
+  "hash_timing": "Owned file hashes sampled after the successful normal build/run. No owned implementation/test source changed during that final build/run. This is not a complete dependency provenance claim.",
+  "files_sha256": {
+    "app/core/gimp-painter-provenance.h": "064d1609df61ada6ca05f49c069e5a2f74446937e693ffcc5c8435df0ebde402",
+    "app/core/gimpdrawablefilter.c": "6ad6910e7dcc8e7ae746b5d409c79ea0649bc53c704e9355c2daf7d14a9810a0",
+    "app/tests/test-painter-xcf-roundtrip.c": "95ed02bb387c6bb9c995be690cbcc6c2efdd7a2a39e82989a503ab20b779507e",
+    "app/tests/test-painter-xcf-fields.inc": "659344a7abd91abf78cb5da2efd3ad3202c3727d9353eb4b447ec076c2858dd6",
+    "app/tests/test-painter-xcf-active.inc": "6e31d401e9a2eded9514a6a8b8dd2dfa55471af5a12ceb7bc8a945c449d46e07",
+    "app/xcf/painter-xcf-preserve.cpp": "53164ffc8fae095498aaba11c88dd7ff7f9745991f87fe6a8f2a23f3e470b244",
+    "app/xcf/painter-xcf-preserve.h": "cf19d07e781ea0d9e9023c997a4d8d345c5df19b32fb5dfc5b0ab498d312e05b",
+    "app/xcf/xcf-load.c": "feff3cc57062ffc4327212c950e56611043dddabd60cca110cfe2b053d77ef9d",
+    "app/xcf/xcf-save.c": "085f33242d8fcb25acfab33b60db8995b7844837767aa37422407b640311ee11",
+    "app/xcf/xcf-private.h": "981962f9d26fbd46a80213d75615907e97ce953b05844cc156e5e4f257c3d9f4",
+    "app/xcf/xcf.c": "04311b88b73d5f0d0a06886821b019429c10a856b48790c060305e2907bc5522",
+    "migration/tests/build_provenance_sanitizers.py": "ce742ee7121519ebe4613f434194522f6f63ee05c4252ed423ff081617bcf430",
+    "migration/tests/build_xcf_field_matrix.py": "a2eb7479a963b0d63e74a3f14281a3e7fee88f0783aa742ce04343a68883f294",
+    "migration/inventory/xcf-field-acceptance.tsv": "faf4c72fd8846063a990fd4bd254317d07375d556536b49a724acfe12e10cfe8",
+    "migration/contracts/xcf-field-acceptance.md": "557d1b74d824ff57a44f9f558c58a910f728deb5da9605c6d93805e59bb34319",
+    "migration/contracts/xcf-remaining-gates.md": "9870dfefe5bf3f33efdb3c5fdfe53dee814353978583b3d5acaedeb27af14cd9",
+    "migration/contracts/provenance-store.md": "7bca81b1745e0e6841337635e3f7e87f180f2e3b919e745f78f76af19d3e65a8",
+    "migration/tests/painter-xcf-fields-before.txt": "7ba9e2c9992e303a9c225adb5c04570a19bdc6d6bf214cf7ffbbbd26ed0a9324",
+    "migration/tests/painter-xcf-fields-effect-before.txt": "a55427443f3fdec78a32dbba5bfdfa3de99af536f11639ab74b8e81c7322db30",
+    "migration/tests/painter-xcf-fields-checkpoint-build.log": "568647fdde9eeb240c02327b2372d2b9a21707cb7221e57b9799e4c9d118333a",
+    "migration/tests/painter-xcf-fields-checkpoint.txt": "df98a36d6fc562b35bff27563c60c32a90fa1d6f5040f77cbc187c2fbc43af9f",
+    "migration/tests/painter-xcf-fields-checkpoint.json": "27ae72714a82c2757053faa19a9cb85883045e8944901fd92dc0e95b667ebedd",
+    "migration/fixtures/legacy-xcf-fields/README.md": "619c37e785196777433ab1e947c3e1a27fa1ddc80ffc40864be44cbd7a016c53",
+    "migration/fixtures/legacy-xcf-fields/capture-executed.scm": "9f7c2f88d53f79015c9e32984b99a9d8cf0cba326370f37afa540c5c43e3225d",
+    "migration/fixtures/legacy-xcf-fields/capture.log": "a2e6179af2e8740779c8bc1e50e80a9bd5674cb13abdda21e188303fc0bebd35",
+    "migration/fixtures/legacy-xcf-fields/capture.scm": "384d3abf6b90465136a535751de31953f561875a43f4c46a4adf0d33472acb1e",
+    "migration/fixtures/legacy-xcf-fields/indexed-fields.xcf": "d8114cdcaddc282f99f6bc4fd0c5a27eb7fa4701a6edcd0a166313cfba652336",
+    "migration/fixtures/legacy-xcf-fields/manifest.json": "2a2c1a76cc2cb9e3688793cbaf705420e98424bd85ddccf3e790ecb330ec1f6a",
+    "migration/fixtures/legacy-xcf-fields/rgb-fields.xcf": "a096d27e263f54996d96a84cb0e75323bd3c23b826acd2e130b073ceed123122"
+  },
+  "executables_sha256": {
+    "xcf": "db1c4f07315e424f288470c570e624e92d2ef9c537060ec798598e5538bb2e38",
+    "painter-xcf-open": "a2f8d611d0205d58de1837faa401a1a66ed1dd44f54d3e04ff8c1fb4b3acabc2",
+    "painter-xcf-roundtrip": "5b2c1af850ee1e1004852dec04167e5f2b57b850f289a939dbe65aaa9698f9ef",
+    "painter-provenance": "ebcbe21f758f1b1a25ef8a6a5bacfd9ee014a8f124b12529029a22d43972fc64"
+  },
+  "remaining": [
+    "No editable opaque native-effect model; missing/unsafe/version-mismatched operation makes Save refuse rather than drop saved definition",
+    "Per-capsule limit256MiB-4096; larger retained record preflight-refused, no chunking",
+    "Exhaustive malformed known-property ordering/recursive tile graphs/platform failures remain",
+    "Real big-endian and cross-platform temporary-file behavior unverified",
+    "New focused sanitizer run remains pending"
+  ]
+}

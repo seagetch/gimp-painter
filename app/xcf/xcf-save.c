@@ -36,6 +36,7 @@
 #include "gegl/gimp-gegl-tile-compat.h"
 
 #include "core/gimp.h"
+#include "core/gimp-painter-provenance.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpchannel.h"
 #include "core/gimpdrawable.h"
@@ -640,10 +641,13 @@ xcf_save_image_props (XcfInfo    *info,
 
   info->layer_sets = gimp_image_get_stored_item_sets (image, GIMP_TYPE_LAYER);
   info->channel_sets = gimp_image_get_stored_item_sets (image, GIMP_TYPE_CHANNEL);
+  info->path_sets = gimp_image_get_stored_item_sets (image, GIMP_TYPE_PATH);
 
   for (iter = info->layer_sets; iter; iter = iter->next)
     xcf_check_error (xcf_save_prop (info, image, PROP_ITEM_SET, error, iter->data), ;);
   for (iter = info->channel_sets; iter; iter = iter->next)
+    xcf_check_error (xcf_save_prop (info, image, PROP_ITEM_SET, error, iter->data), ;);
+  for (iter = info->path_sets; iter; iter = iter->next)
     xcf_check_error (xcf_save_prop (info, image, PROP_ITEM_SET, error, iter->data), ;);
 
   xcf_check_error (xcf_save_prop (info, image, PROP_END, error), ;);
@@ -868,6 +872,8 @@ xcf_save_effect_props (XcfInfo      *info,
                        GimpFilter   *filter,
                        GError      **error)
 {
+  g_autoptr(GPtrArray) unknown_records = gimp_painter_provenance_ref_records (G_OBJECT (filter));
+  GError *tmp_error = NULL;
   GParamSpec **pspecs;
   guint        n_pspecs;
   GeglNode    *node;
@@ -880,10 +886,13 @@ xcf_save_effect_props (XcfInfo      *info,
   xcf_check_error (xcf_save_prop (info, image, PROP_MODE, error,
                                   gimp_drawable_filter_get_paint_mode (GIMP_DRAWABLE_FILTER (filter))), ;);
   xcf_check_error (xcf_save_prop (info, image, PROP_BLEND_SPACE, error,
+                                  gimp_drawable_filter_get_paint_mode (GIMP_DRAWABLE_FILTER (filter)),
                                   gimp_drawable_filter_get_blend_space (GIMP_DRAWABLE_FILTER (filter))), ;);
   xcf_check_error (xcf_save_prop (info, image, PROP_COMPOSITE_SPACE, error,
+                                  gimp_drawable_filter_get_paint_mode (GIMP_DRAWABLE_FILTER (filter)),
                                   gimp_drawable_filter_get_composite_space (GIMP_DRAWABLE_FILTER (filter))), ;);
   xcf_check_error (xcf_save_prop (info, image, PROP_COMPOSITE_MODE, error,
+                                  gimp_drawable_filter_get_paint_mode (GIMP_DRAWABLE_FILTER (filter)),
                                   gimp_drawable_filter_get_composite_mode (GIMP_DRAWABLE_FILTER (filter))), ;);
   xcf_check_error (xcf_save_prop (info, image, PROP_FILTER_CLIP, error,
                                   gimp_drawable_filter_get_clip (GIMP_DRAWABLE_FILTER (filter))), ;);
@@ -966,6 +975,21 @@ xcf_save_effect_props (XcfInfo      *info,
   g_free (operation);
   g_free (pspecs);
 
+  /* Unknown effect properties stay in their original owner context.  These
+   * are the bounded raw records retained by the common provenance component,
+   * not executable GEGL arguments or an independent serialization backend. */
+  if (unknown_records)
+    for (guint i = 0; i < unknown_records->len; ++i)
+      {
+        gsize size;
+        const guint8 *bytes = g_bytes_get_data (g_ptr_array_index (unknown_records, i), &size);
+        for (gsize offset = 0; offset < size; )
+          {
+            const gint chunk = MIN (size - offset, (gsize) 65536);
+            xcf_write_int8_check_error (info, bytes + offset, chunk, ;);
+            offset += chunk;
+          }
+      }
   xcf_check_error (xcf_save_prop (info, image, PROP_END, error), ;);
 
   return TRUE;
@@ -978,6 +1002,7 @@ xcf_save_path_props (XcfInfo      *info,
                      GError      **error)
 {
   GimpParasiteList *parasites;
+  GList *iter;
 
   if (g_list_find (gimp_image_get_selected_paths (image), vectors))
     xcf_check_error (xcf_save_prop (info, image, PROP_SELECTED_PATH, error), ;);
@@ -991,6 +1016,9 @@ xcf_save_path_props (XcfInfo      *info,
   xcf_check_error (xcf_save_prop (info, image, PROP_LOCK_POSITION, error,
                                   gimp_item_get_lock_position (GIMP_ITEM (vectors))), ;);
 
+  xcf_check_error (xcf_save_prop (info, image, PROP_LOCK_VISIBILITY, error,
+                                  gimp_item_get_lock_visibility (GIMP_ITEM (vectors))), ;);
+
   xcf_check_error (xcf_save_prop (info, image, PROP_TATTOO, error,
                                   xcf_painter_saved_id (info->painter_save_state, GIMP_ITEM (vectors))), ;);
 
@@ -1003,8 +1031,7 @@ xcf_save_path_props (XcfInfo      *info,
                       xcf_painter_origin_parasite (info->painter_save_state, G_OBJECT (vectors)), error), ;);
     }
 
-#if 0
-  for (iter = info->vectors_sets; iter; iter = iter->next)
+  for (iter = info->path_sets; iter; iter = iter->next)
     {
       GimpItemList *set = iter->data;
 
@@ -1014,12 +1041,11 @@ xcf_save_path_props (XcfInfo      *info,
 
           if (g_list_find (items, GIMP_ITEM (vectors)))
             xcf_check_error (xcf_save_prop (info, image, PROP_ITEM_SET_ITEM, error,
-                                            g_list_position (info->layer_sets, iter)), ;);
+                                            g_list_position (info->path_sets, iter)), ;);
 
           g_list_free (items);
         }
     }
-#endif
 
   xcf_check_error (xcf_save_prop (info, image, PROP_END, error), ;);
 
@@ -1845,7 +1871,8 @@ xcf_save_prop (XcfInfo    *info,
 
             case FILTER_PROP_FLOAT:
               {
-                gfloat value = g_value_get_double (&filter_value);
+                gfloat value = G_VALUE_HOLDS_FLOAT (&filter_value) ?
+                  g_value_get_float (&filter_value) : g_value_get_double (&filter_value);
 
                 xcf_write_float_check_error (info, &value, 1, va_end (args));
               }

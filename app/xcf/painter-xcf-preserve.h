@@ -23,6 +23,7 @@ void      xcf_painter_capture_unknown (XcfInfo *, GPtrArray *, goffset, goffset)
 void      xcf_painter_set_unknown_records (GObject *, GPtrArray *);
 void      xcf_painter_capture_header (XcfInfo *, GObject *, goffset, goffset);
 void      xcf_painter_capture_properties (XcfInfo *, GObject *, goffset, goffset);
+void      xcf_painter_retarget_layer (XcfInfo *, GimpLayer *, GimpLayer *);
 gboolean  xcf_painter_restore_layer (XcfInfo *, GimpImage *, GimpLayer **);
 void      xcf_painter_restore_bindings (XcfInfo *, GimpImage *);
 #endif

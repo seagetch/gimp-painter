@@ -75,3 +75,12 @@ checkpoint separately labels supplemental native ABI headers sampled after the
 run, and seals them with the selected inputs in an immutable source archive.
 The initial seven-case normal result is retained separately from the final
 eight-case run after the finalization guard was added.
+
+## Saved-field extension
+
+The fixed text-field enum additionally carries a SAVE_REFUSAL diagnostic for
+unsupported or unreadable native GEGL effects. It is copied with immutable
+provenance so image/item duplication cannot bypass a lossy-Save refusal. It is
+not another attachment mechanism or an executable definition, and is not written
+as a new serialization namespace. Native effect unknown property sequences use
+the existing immutable-record field and the ordinary XCF effect writer.

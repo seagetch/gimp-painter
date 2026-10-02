@@ -45,6 +45,7 @@
 #include "gegl/gimp-gegl-utils.h"
 
 #include "gimp.h"
+#include "gimp-painter-provenance.h"
 #include "gimpchannel.h"
 #include "gimpdrawable-filters.h"
 #include "gimpdrawablefilter.h"
@@ -520,6 +521,7 @@ gimp_drawable_filter_duplicate (GimpDrawable       *drawable,
   g_free (pspecs);
 
   filter = gimp_drawable_filter_new (drawable, undo_desc, node, icon_name);
+  gimp_painter_copy_provenance (G_OBJECT (prior_filter), G_OBJECT (filter));
   g_object_unref (node);
 
   gimp_drawable_filter_set_clip (filter, prior_filter->clip);

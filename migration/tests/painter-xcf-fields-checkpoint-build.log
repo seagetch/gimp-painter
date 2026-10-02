@@ -1,0 +1,24 @@
+ninja: Entering directory `build-debian13'
+[1/16] Compiling C object app/core/libappcore.a.p/gimpcoords-interpolate.c.o
+[2/16] Generating git-version.h.in.1 with a custom command
+[3/16] Generating git-version.h.in.2 with a custom command
+[4/16] Linking static target app/core/libappcore.a
+[5/16] Generating git-version.h with a custom command
+[6/10] Linking target app/tests/painter-provenance
+[7/10] Linking target app/tests/xcf
+[8/10] Linking target app/tests/painter-xcf-open
+[9/10] Compiling C object app/tests/painter-xcf-roundtrip.p/test-painter-xcf-roundtrip.c.o
+[10/10] Linking target app/tests/painter-xcf-roundtrip
+1/4 gimp:app / xcf                   OK              3.07s
+2/4 gimp:app / painter-xcf-open      OK              2.38s
+3/4 gimp:app / painter-xcf-roundtrip OK             15.69s
+4/4 gimp:app / painter-provenance    OK              0.05s
+
+Ok:                 4
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0
+
+Full log written to /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/meson-logs/painter-xcf-fields-checkpoint.txt

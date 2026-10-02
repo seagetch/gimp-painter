@@ -1361,6 +1361,9 @@ malformed_clone_reference_stays_opaque (void)
   g_object_unref (seed_file);
 }
 
+#include "test-painter-xcf-fields.inc"
+#include "test-painter-xcf-active.inc"
+
 int main (int argc, char **argv)
 {
   int result;
@@ -1387,6 +1390,19 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-xcf-roundtrip/recovery_failed_save", recovery_failed_save);
   g_test_add_func ("/painter-xcf-roundtrip/malformed_filter_cache_stays_opaque", malformed_filter_cache_stays_opaque);
   g_test_add_func ("/painter-xcf-roundtrip/malformed_clone_reference_stays_opaque", malformed_clone_reference_stays_opaque);
+  g_test_add_func ("/painter-xcf-fields/all_owner_attributes", fields_all_owner_attributes);
+  g_test_add_func ("/painter-xcf-fields/legacy_text_and_units", fields_legacy_text_and_units);
+  g_test_add_func ("/painter-xcf-fields/profiles_palettes_metadata", fields_profiles_palettes_metadata);
+  g_test_add_func ("/painter-xcf-fields/wrong_owner_capsules", fields_wrong_owner_capsules);
+  g_test_add_func ("/painter-xcf-fields/retained_metadata_bound", fields_retained_metadata_bound);
+  g_test_add_func ("/painter-xcf-active/running_save_close_reopen", filter_running_save_close_reopen);
+  g_test_add_func ("/painter-xcf-active/importing_save_close_reopen", filter_importing_save_close_reopen);
+  g_test_add_func ("/painter-xcf-fields/modern_effect_records", fields_modern_effect_records);
+  g_test_add_func ("/painter-xcf-fields/unsupported_effect_refuses_save", fields_unsupported_effect_refuses_save);
+  g_test_add_func ("/painter-xcf-fields/modern_effect_argument_families", fields_modern_effect_argument_families);
+  g_test_add_func ("/painter-xcf-fields/clone_duplicate_name_identity", fields_clone_duplicate_name_identity);
+  g_test_add_func ("/painter-xcf-fields/absent_native_properties", fields_absent_native_properties);
+  g_test_add_func ("/painter-xcf-fields/native_precision_and_compression", fields_native_precision_and_compression);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

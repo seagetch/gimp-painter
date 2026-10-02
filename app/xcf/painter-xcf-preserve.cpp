@@ -15,8 +15,11 @@ extern "C" {
 #include "core/gimpimage-undo.h"
 #include "core/gimpselection.h"
 #include "core/gimpitem.h"
+#include "core/gimpitemlist.h"
 #include "core/gimp-painter-provenance.h"
 #include "core/gimpcontainer.h"
+#include "core/gimpdrawable-filters.h"
+#include "core/gimpdrawablefilter.h"
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
 #include "core/gimpclonelayer.h"
@@ -358,7 +361,7 @@ void validate_clone_record (GVariant *dict)
    * Names are optional; an explicitly empty pending name is still pending.
    */
 }
-bool supported_item_record (GVariant *value)
+bool supported_item_record (GVariant *value, GimpItem *owner)
 {
   if (!known_item_kind (value)) return false;
   const gchar *kind = nullptr;
@@ -366,6 +369,13 @@ bool supported_item_record (GVariant *value)
   try
     {
       validate_common_item_record (value);
+      const bool custom = std::strcmp (kind, "ordinary") != 0;
+      if (custom && (!GIMP_IS_LAYER (owner) || GIMP_IS_GROUP_LAYER (owner) || g_type_is_a (G_OBJECT_TYPE (owner), g_type_from_name ("GimpTextLayer")) ||
+                     gimp_item_parasite_find (owner, "gimp-text-layer") ||
+                     gimp_item_parasite_find (owner, "plug-in-gdyntext/data")))
+        return false;
+      Variant mode (g_variant_lookup_value (value, "legacy-mode", nullptr));
+      if (mode && !GIMP_IS_LAYER (owner)) return false;
       if (!std::strcmp (kind, "filter")) validate_filter_record (value);
       if (!std::strcmp (kind, "clone")) validate_clone_record (value);
     }
@@ -378,7 +388,7 @@ Parasite fallback_origin (GObject *object)
                                                : gimp_item_parasite_find (GIMP_ITEM (object), item_name);
   if (!semantic) return {};
   Variant semantic_value = decode (semantic);
-  if (semantic_value && (GIMP_IS_IMAGE (object) || supported_item_record (semantic_value.get ()))) return {};
+  if (semantic_value && (GIMP_IS_IMAGE (object) || supported_item_record (semantic_value.get (), GIMP_ITEM (object)))) return {};
   const auto *existing = GIMP_IS_IMAGE (object) ? gimp_image_parasite_find (GIMP_IMAGE (object), origin_name)
                                                : gimp_item_parasite_find (GIMP_ITEM (object), origin_name);
   Variant base = decode (existing);
@@ -402,7 +412,7 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
 {
   const auto *existing = gimp_item_parasite_find (item, item_name);
   Variant base = decode (existing);
-  if (existing && (!base || !supported_item_record (base.get ())))
+  if (existing && (!base || !supported_item_record (base.get (), item)))
     {
       if (GIMP_IS_CLONE_LAYER (item) || GIMP_IS_FILTER_LAYER (item) ||
           (GIMP_IS_LAYER (item) && gimp_painter_layer_mode_is_compatibility (gimp_layer_get_mode (GIMP_LAYER (item)))))
@@ -600,6 +610,17 @@ extern "C" XcfPainterSave *xcf_painter_prepare_save (GimpImage *image, GError **
         {
           collect (GIMP_ITEM (p->data));
           if (GIMP_IS_LAYER (p->data)) if (auto *mask = gimp_layer_get_mask (GIMP_LAYER (p->data))) collect (GIMP_ITEM (mask));
+          if (GIMP_IS_DRAWABLE (p->data))
+            {
+              GimpContainer *effects = gimp_drawable_get_filters (GIMP_DRAWABLE (p->data));
+              for (gint i = 0; i < gimp_container_get_n_children (effects); ++i)
+                {
+                  GimpObject *effect = gimp_container_get_child_by_index (effects, i);
+                  if (GIMP_IS_DRAWABLE_FILTER (effect))
+                    if (auto *mask = gimp_drawable_filter_get_mask (GIMP_DRAWABLE_FILTER (effect)))
+                      collect (GIMP_ITEM (mask));
+                }
+            }
         }
       if (auto *selection = gimp_image_get_mask (image)) collect (GIMP_ITEM (selection));
       std::unordered_set<guint32> used;
@@ -633,6 +654,8 @@ extern "C" XcfPainterSave *xcf_painter_prepare_save (GimpImage *image, GError **
           }
       for (auto *item : all)
         {
+          if (auto refusal = String (gimp_painter_provenance_dup_text (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL)))
+            fail (refusal.get ());
           result->items.emplace (item, item_record (image, item, result->ids));
           {
             Variant record = decode (result->items.at (item).get ());
@@ -786,6 +809,26 @@ void retarget (XcfInfo *info, GimpLayer *old, GimpLayer *replacement)
   for (GList *p = info->selected_layers; p; p = p->next) if (p->data == old) p->data = replacement;
   for (GList *p = info->linked_layers; p; p = p->next) if (p->data == old) p->data = replacement;
   if (info->floating_sel == old) info->floating_sel = replacement;
+  /* Item-set membership is parsed before the carrier is replaced.  The list
+   * owns borrowed item identities and has no mutating replacement API; rebuild
+   * each affected still-private construction-time set before freeing the proxy. */
+  for (GList *p = info->layer_sets; p; p = p->next)
+    {
+      auto *set = GIMP_ITEM_LIST (p->data);
+      if (!set || gimp_item_list_is_pattern (set, nullptr)) continue;
+      GList *items = gimp_item_list_get_items (set, nullptr);
+      GList *member = g_list_find (items, old);
+      if (member)
+        {
+          member->data = replacement;
+          GimpItemList *updated = gimp_item_list_named_new (gimp_item_get_image (GIMP_ITEM (replacement)),
+                                                           gimp_item_list_get_item_type (set),
+                                                           gimp_object_get_name (set), items);
+          p->data = updated;
+          g_object_unref (set);
+        }
+      g_list_free (items);
+    }
 }
 GimpLayer *find_layer_id (GimpImage *image, guint32 id)
 {
@@ -798,6 +841,8 @@ GimpLayer *find_layer_id (GimpImage *image, guint32 id)
   g_list_free (layers); return result;
 }
 }
+extern "C" void xcf_painter_retarget_layer (XcfInfo *info, GimpLayer *old, GimpLayer *replacement)
+{ retarget (info, old, replacement); }
 extern "C" gboolean xcf_painter_restore_layer (XcfInfo *info, GimpImage *image, GimpLayer **layer)
 {
   try
@@ -815,6 +860,8 @@ extern "C" gboolean xcf_painter_restore_layer (XcfInfo *info, GimpImage *image, 
        * inert ordinary proxy. A malformed cache must never become executable
        * or be certified fresh by a catch-and-mark-loaded recovery path.
        */
+      if (!supported_item_record (dict.get (), GIMP_ITEM (*layer)))
+        fail ("Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert");
       validate_common_item_record (dict.get ());
       if (filter) validate_filter_record (dict.get ());
       if (clone) validate_clone_record (dict.get ());

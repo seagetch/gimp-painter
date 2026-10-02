@@ -100,6 +100,7 @@
 typedef struct
 {
   GeglNode              *operation;
+  GPtrArray             *unknown_records;
   gchar                 *name;
   gchar                 *icon_name;
   gchar                 *operation_name;
@@ -320,6 +321,7 @@ xcf_load_image (Gimp     *gimp,
   /* Order matters for item sets. */
   info->layer_sets = g_list_reverse (info->layer_sets);
   info->channel_sets = g_list_reverse (info->channel_sets);
+  info->path_sets = g_list_reverse (info->path_sets);
 
   /* check for simulation intent parasite */
   parasite = gimp_image_parasite_find (GIMP_IMAGE (image),
@@ -941,28 +943,9 @@ xcf_load_image (Gimp     *gimp,
     }
   if (info->linked_paths)
     {
-      /* It is kind of ugly but vectors are really implemented as
-       * exception in our XCF spec and building over it seems like a
-       * mistake. Since I'm seriously not sure this would be much of an
-       * issue, I'll let it as it for now.
-       * Note that it's still possible to multi-select paths. It's only
-       * not possible to store these selections.
-       *
-       * Only warn for more than 1 linked path. Less is kind of
-       * pointless and doesn't deserve worrying people for no reason.
-       */
-      if (g_list_length (info->linked_paths) > 1)
-        g_printerr ("xcf: some paths were linked. "
-                    "GIMP does not support linked paths since version 3.0.\n");
-
-#if 0
-      GimpItemList *set;
-
-      set = gimp_item_list_named_new (image, GIMP_TYPE_PATH,
-                                      _("Linked Paths"),
-                                      info->linked_paths);
+      GimpItemList *set = gimp_item_list_named_new (image, GIMP_TYPE_PATH,
+                                                   _("Linked Paths"), info->linked_paths);
       gimp_image_store_item_set (image, set);
-#endif
       g_clear_pointer (&info->linked_paths, g_list_free);
     }
 
@@ -979,6 +962,9 @@ xcf_load_image (Gimp     *gimp,
         gimp_image_store_item_set (image, iter->data);
     }
   g_clear_pointer (&info->channel_sets, g_list_free);
+  for (iter = g_list_last (info->path_sets); iter; iter = iter->prev)
+    if (iter->data) gimp_image_store_item_set (image, iter->data);
+  g_clear_pointer (&info->path_sets, g_list_free);
 
   if (info->file)
     gimp_image_set_file (image, info->file);
@@ -1105,7 +1091,10 @@ xcf_load_add_effects (XcfInfo   *info,
             {
               FilterData *data = iter->data;
 
-              if (! data->unsupported_operation)
+              if (data->unsupported_operation)
+                gimp_painter_provenance_set_text (G_OBJECT (layer), GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL,
+                  "An unsupported native GEGL effect was retained in the original XCF; Save would discard its definition and is refused before destination replacement");
+              else
                 {
                   GimpDrawableFilter *filter = NULL;
 
@@ -1116,6 +1105,7 @@ xcf_load_add_effects (XcfInfo   *info,
                                                      data->name, data->operation,
                                                      data->icon_name);
 
+                  xcf_painter_set_unknown_records (G_OBJECT (filter), data->unknown_records);
                   gimp_drawable_filter_set_opacity (filter, data->opacity);
                   gimp_drawable_filter_set_mode (filter, data->paint_mode,
                                                  data->blend_space,
@@ -1591,10 +1581,12 @@ xcf_load_image_props (XcfInfo   *info,
 
             if (itype == 0)
               item_type = GIMP_TYPE_LAYER;
-            else
+            else if (itype == 1)
               item_type = GIMP_TYPE_CHANNEL;
+            else
+              item_type = GIMP_TYPE_PATH;
 
-            if (itype > 1)
+            if (itype > 2)
               {
                 g_printerr ("xcf: unsupported item set '%s' type: %d (skipping)\n",
                             label ? label : "unnamed", itype);
@@ -1640,8 +1632,11 @@ xcf_load_image_props (XcfInfo   *info,
              */
             if (item_type == GIMP_TYPE_LAYER)
               info->layer_sets = g_list_prepend (info->layer_sets, set);
-            else
+            else if (item_type == GIMP_TYPE_CHANNEL)
               info->channel_sets = g_list_prepend (info->channel_sets, set);
+            else
+              info->path_sets = g_list_prepend (info->path_sets, set);
+            g_free (label);
           }
           break;
 
@@ -2323,7 +2318,15 @@ xcf_load_channel_props (XcfInfo      *info,
 
             xcf_read_float (info, &opacity, 1);
 
-            gimp_channel_set_opacity (*channel, opacity, FALSE);
+            /* Preserve a modern float alpha before later COLOR records;
+             * the default channel color is byte-formatted and its normal
+             * alpha setter deliberately preserves that quantized format. */
+            {
+              gdouble rgba[4];
+              gegl_color_get_pixel ((*channel)->color, babl_format ("R'G'B'A double"), rgba);
+              rgba[3] = CLAMP (opacity, 0.0, 1.0);
+              gegl_color_set_pixel ((*channel)->color, babl_format ("R'G'B'A double"), rgba);
+            }
           }
           break;
 
@@ -2414,9 +2417,10 @@ xcf_load_channel_props (XcfInfo      *info,
 
             xcf_read_int8 (info, (guint8 *) col, 3);
 
-            gegl_color_set_pixel ((*channel)->color, babl_format ("R'G'B' u8"), col);
-
-            gimp_channel_set_opacity (*channel, opacity, FALSE);
+            {
+              const gdouble rgba[] = {col[0] / 255.0, col[1] / 255.0, col[2] / 255.0, opacity};
+              gegl_color_set_pixel ((*channel)->color, babl_format ("R'G'B'A double"), rgba);
+            }
           }
           break;
 
@@ -2431,9 +2435,10 @@ xcf_load_channel_props (XcfInfo      *info,
             xcf_read_float (info, col, 3);
 
             /* TODO: is the channel color in sRGB or in the image's color space? */
-            gegl_color_set_pixel ((*channel)->color, babl_format ("R'G'B' float"), col);
-
-            gimp_channel_set_opacity (*channel, opacity, FALSE);
+            {
+              const gdouble rgba[] = {col[0], col[1], col[2], opacity};
+              gegl_color_set_pixel ((*channel)->color, babl_format ("R'G'B'A double"), rgba);
+            }
           }
           break;
 
@@ -2527,6 +2532,7 @@ xcf_load_effect_props (XcfInfo      *info,
   while (TRUE)
     {
       goffset next_prop;
+      const goffset record_begin = info->cp;
 
       if (! xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
@@ -2575,9 +2581,15 @@ xcf_load_effect_props (XcfInfo      *info,
 
             xcf_read_int32 (info, (guint32 *) &blend_space, 1);
 
-            /* TODO: Revisit when blend space can be set
-             * on filter effects */
-            blend_space = GIMP_LAYER_COLOR_SPACE_AUTO;
+            /* Match the layer record's stable AUTO encoding: a negative
+             * value records the concrete mapping used when saving. */
+            if (blend_space == G_MININT32) return FALSE;
+            if (blend_space < 0)
+              {
+                blend_space = -blend_space;
+                if (blend_space == gimp_layer_mode_get_blend_space (filter->paint_mode))
+                  blend_space = GIMP_LAYER_COLOR_SPACE_AUTO;
+              }
 
             filter->blend_space = blend_space;
           }
@@ -2589,9 +2601,15 @@ xcf_load_effect_props (XcfInfo      *info,
 
             xcf_read_int32 (info, (guint32 *) &composite_space, 1);
 
-            /* TODO: Revisit when composite space can be set
-             * on filter effects */
-            composite_space = GIMP_LAYER_COLOR_SPACE_AUTO;
+            /* Match the layer record's stable AUTO encoding: a negative
+             * value records the concrete mapping used when saving. */
+            if (composite_space == G_MININT32) return FALSE;
+            if (composite_space < 0)
+              {
+                composite_space = -composite_space;
+                if (composite_space == gimp_layer_mode_get_composite_space (filter->paint_mode))
+                  composite_space = GIMP_LAYER_COLOR_SPACE_AUTO;
+              }
 
             filter->composite_space = composite_space;
           }
@@ -2603,9 +2621,15 @@ xcf_load_effect_props (XcfInfo      *info,
 
             xcf_read_int32 (info, (guint32 *) &composite_mode, 1);
 
-            /* TODO: Revisit when composite mode can be set
-             * on filter effects */
-            composite_mode = GIMP_LAYER_COMPOSITE_AUTO;
+            /* Match the layer record's stable AUTO encoding: a negative
+             * value records the concrete mapping used when saving. */
+            if (composite_mode == G_MININT32) return FALSE;
+            if (composite_mode < 0)
+              {
+                composite_mode = -composite_mode;
+                if (composite_mode == gimp_layer_mode_get_composite_mode (filter->paint_mode))
+                  composite_mode = GIMP_LAYER_COMPOSITE_AUTO;
+              }
 
             filter->composite_mode = composite_mode;
           }
@@ -2648,6 +2672,25 @@ xcf_load_effect_props (XcfInfo      *info,
                 valid_prop_value = FALSE;
                 goto set_or_seek_node_property;
               }
+
+            /* A known name is not enough: malformed wire tags must not
+             * select an incompatible GValue setter for the installed property.
+             * Keep the complete record inert instead of emitting a critical or
+             * silently substituting a current default for its saved bytes. */
+            switch (filter_type)
+              {
+              case FILTER_PROP_INT:    valid_prop_value = pspec->value_type == G_TYPE_INT; break;
+              case FILTER_PROP_UINT:   valid_prop_value = pspec->value_type == G_TYPE_UINT; break;
+              case FILTER_PROP_BOOL:   valid_prop_value = pspec->value_type == G_TYPE_BOOLEAN; break;
+              case FILTER_PROP_FLOAT:  valid_prop_value = pspec->value_type == G_TYPE_FLOAT || pspec->value_type == G_TYPE_DOUBLE; break;
+              case FILTER_PROP_STRING: valid_prop_value = pspec->value_type == G_TYPE_STRING; break;
+              case FILTER_PROP_ENUM:   valid_prop_value = g_type_is_a (pspec->value_type, G_TYPE_ENUM); break;
+              case FILTER_PROP_CONFIG: valid_prop_value = g_type_is_a (pspec->value_type, GIMP_TYPE_CONFIG); break;
+              case FILTER_PROP_COLOR:  valid_prop_value = g_type_is_a (pspec->value_type, GEGL_TYPE_COLOR); break;
+              default:                 valid_prop_value = FALSE; break;
+              }
+            if (! valid_prop_value)
+              goto set_or_seek_node_property;
 
             switch (filter_type)
               {
@@ -2869,9 +2912,14 @@ set_or_seek_node_property:
               gegl_node_set_property (filter->operation, filter_prop_name,
                                       &filter_prop_value);
             else
-              xcf_seek_pos (info, next_prop, NULL);
+              {
+                if (! xcf_seek_pos (info, next_prop, NULL))
+                  { g_free (filter_prop_name); return FALSE; }
+                xcf_painter_capture_unknown (info, filter->unknown_records, record_begin, info->cp);
+              }
 
-            g_value_unset (&filter_prop_value);
+            if (G_VALUE_TYPE (&filter_prop_value))
+              g_value_unset (&filter_prop_value);
             g_free (filter_prop_name);
           }
           break;
@@ -2892,6 +2940,7 @@ set_or_seek_node_property:
 #endif
           if (! xcf_skip_unknown_prop (info, prop_size))
             return FALSE;
+          xcf_painter_capture_unknown (info, filter->unknown_records, record_begin, info->cp);
         }
     }
 
@@ -3027,14 +3076,13 @@ xcf_load_path_props (XcfInfo    *info,
           }
           break;
 
-#if 0
         case PROP_ITEM_SET_ITEM:
             {
               GimpItemList *set;
               guint32       n;
 
               xcf_read_int32 (info, &n, 1);
-              set = g_list_nth_data (info->vectors_sets, n);
+              set = g_list_nth_data (info->path_sets, n);
               if (set == NULL)
                 g_printerr ("xcf: unknown path set: %d (skipping)\n", n);
               else if (! g_type_is_a (G_TYPE_FROM_INSTANCE (*vectors),
@@ -3042,11 +3090,10 @@ xcf_load_path_props (XcfInfo    *info,
                 g_printerr ("xcf: path '%s' cannot be added to item set '%s' with item type %s (skipping)\n",
                             gimp_object_get_name (*vectors), gimp_object_get_name (set),
                             g_type_name (gimp_item_list_get_item_type (set)));
-              else
+              else if (! gimp_item_list_is_pattern (set, NULL))
                 gimp_item_list_add (set, GIMP_ITEM (*vectors));
             }
           break;
-#endif
 
         default:
 #ifdef GIMP_UNSTABLE
@@ -3241,6 +3288,7 @@ xcf_load_layer (XcfInfo    *info,
     GimpLayer *carrier = g_object_ref (layer);
   if (gimp_text_layer_xcf_load_hack (&layer))
     {
+      xcf_painter_retarget_layer (info, carrier, layer);
       gimp_painter_copy_provenance (G_OBJECT (carrier), G_OBJECT (layer));
       gimp_text_layer_set_xcf_flags (GIMP_TEXT_LAYER (layer),
                                      text_layer_flags);
@@ -3367,6 +3415,8 @@ xcf_load_layer (XcfInfo    *info,
       if (! filter_data)
         {
           (*n_broken_effects)++;
+          gimp_painter_provenance_set_text (G_OBJECT (layer), GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL,
+            "An unreadable native GEGL effect was retained in the original XCF; Save would discard its definition and is refused before destination replacement");
         }
       else
         {
@@ -3528,6 +3578,7 @@ xcf_load_effect (XcfInfo      *info,
   GType        op_type;
 
   filter = g_new0 (FilterData, 1);
+  filter->unknown_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
 
   /* Effect name */
   xcf_read_string (info, &string, 1);
@@ -3660,6 +3711,7 @@ xcf_load_effect (XcfInfo      *info,
 static void
 xcf_load_free_effect (FilterData *data)
 {
+  g_clear_pointer (&data->unknown_records, g_ptr_array_unref);
   g_free (data->name);
   g_free (data->icon_name);
   g_free (data->operation_name);

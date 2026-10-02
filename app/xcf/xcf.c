@@ -396,6 +396,8 @@ xcf_load_stream_with_dialect (Gimp              *gimp,
   for (GList *p = info.channel_sets; p; p = p->next) if (p->data) g_object_unref (p->data);
   g_list_free (info.layer_sets);
   g_list_free (info.channel_sets);
+  for (GList *p = info.path_sets; p; p = p->next) if (p->data) g_object_unref (p->data);
+  g_list_free (info.path_sets);
   if (cancel_id) g_signal_handler_disconnect (progress, cancel_id);
   g_clear_object (&info.painter_cancellable);
   if (progress) gimp_progress_end (progress);

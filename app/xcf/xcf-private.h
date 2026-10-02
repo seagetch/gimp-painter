@@ -140,6 +140,7 @@ struct _XcfInfo
 
   GList              *layer_sets;
   GList              *channel_sets;
+  GList              *path_sets;
 
   GimpDrawable       *floating_sel_drawable;
   GimpLayer          *floating_sel;
