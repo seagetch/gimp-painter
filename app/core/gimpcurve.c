@@ -601,15 +601,15 @@ gimp_curve_equal (GimpConfig *a,
     return FALSE;
 
   if (a_curve->n_points != b_curve->n_points ||
-      memcmp (a_curve->points, b_curve->points,
-              sizeof (GimpCurvePoint) * a_curve->n_points))
+      (a_curve->n_points && memcmp (a_curve->points, b_curve->points,
+                                  sizeof (GimpCurvePoint) * a_curve->n_points)))
     {
       return FALSE;
     }
 
   if (a_curve->n_samples != b_curve->n_samples ||
-      memcmp (a_curve->samples, b_curve->samples,
-              sizeof (gdouble) * a_curve->n_samples))
+      (a_curve->n_samples && memcmp (a_curve->samples, b_curve->samples,
+                                   sizeof (gdouble) * a_curve->n_samples)))
     {
       return FALSE;
     }
@@ -913,10 +913,11 @@ gimp_curve_add_point (GimpCurve *curve,
 
   points = g_new0 (GimpCurvePoint, curve->n_points + 1);
 
-  memcpy (points,         curve->points,
-          point * sizeof (GimpCurvePoint));
-  memcpy (points + point + 1, curve->points + point,
-          (curve->n_points - point) * sizeof (GimpCurvePoint));
+  if (point > 0)
+    memcpy (points, curve->points, point * sizeof (GimpCurvePoint));
+  if (curve->n_points > point)
+    memcpy (points + point + 1, curve->points + point,
+            (curve->n_points - point) * sizeof (GimpCurvePoint));
 
   points[point].x    = x;
   points[point].y    = y;
@@ -947,10 +948,11 @@ gimp_curve_delete_point (GimpCurve *curve,
 
   points = g_new0 (GimpCurvePoint, curve->n_points - 1);
 
-  memcpy (points,         curve->points,
-          point * sizeof (GimpCurvePoint));
-  memcpy (points + point, curve->points + point + 1,
-          (curve->n_points - point - 1) * sizeof (GimpCurvePoint));
+  if (point > 0)
+    memcpy (points, curve->points, point * sizeof (GimpCurvePoint));
+  if (curve->n_points > point + 1)
+    memcpy (points + point, curve->points + point + 1,
+            (curve->n_points - point - 1) * sizeof (GimpCurvePoint));
 
   g_free (curve->points);
 

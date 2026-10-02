@@ -287,6 +287,7 @@ typedef enum  /*< pdb-skip >*/
   GIMP_DYNAMICS_OUTPUT_RATE,         /*< desc="Rate"         >*/
   GIMP_DYNAMICS_OUTPUT_FLOW,         /*< desc="Flow"         >*/
   GIMP_DYNAMICS_OUTPUT_JITTER,       /*< desc="Jitter"       >*/
+  GIMP_DYNAMICS_OUTPUT_BLENDING,     /*< desc="Blending"     >*/
 } GimpDynamicsOutputType;
 
 

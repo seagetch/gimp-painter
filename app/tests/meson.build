@@ -52,6 +52,7 @@ app_tests = [
   'painter-xcf-open',
   'painter-xcf-roundtrip',
   'painter-layer-modes',
+  'painter-dynamics',
   'painter-navigation-ui',
   'painter-navigation-events',
   'painter-perspective',

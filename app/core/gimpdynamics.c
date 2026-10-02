@@ -53,7 +53,8 @@ enum
   PROP_SPACING_OUTPUT,
   PROP_RATE_OUTPUT,
   PROP_FLOW_OUTPUT,
-  PROP_JITTER_OUTPUT
+  PROP_JITTER_OUTPUT,
+  PROP_BLENDING_OUTPUT
 };
 
 
@@ -72,6 +73,7 @@ struct _GimpDynamicsPrivate
   GimpDynamicsOutput *angle_output;
   GimpDynamicsOutput *jitter_output;
   GimpDynamicsOutput *spacing_output;
+  GimpDynamicsOutput *blending_output;
 };
 
 #define GET_PRIVATE(output) \
@@ -194,6 +196,12 @@ gimp_dynamics_class_init (GimpDynamicsClass *klass)
                            GIMP_TYPE_DYNAMICS_OUTPUT,
                            GIMP_CONFIG_PARAM_AGGREGATE);
 
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_BLENDING_OUTPUT,
+                           "blending-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
+
   GIMP_CONFIG_PROP_OBJECT (object_class, PROP_SPACING_OUTPUT,
                            "spacing-output",
                            NULL, NULL,
@@ -256,6 +264,11 @@ gimp_dynamics_init (GimpDynamics *dynamics)
                                  "jitter-output",
                                  GIMP_DYNAMICS_OUTPUT_JITTER);
 
+  private->blending_output =
+    gimp_dynamics_create_output (dynamics,
+                                 "blending-output",
+                                 GIMP_DYNAMICS_OUTPUT_BLENDING);
+
   private->spacing_output =
     gimp_dynamics_create_output (dynamics,
                                  "spacing-output",
@@ -278,6 +291,7 @@ gimp_dynamics_finalize (GObject *object)
   g_clear_object (&private->angle_output);
   g_clear_object (&private->jitter_output);
   g_clear_object (&private->spacing_output);
+  g_clear_object (&private->blending_output);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -346,6 +360,11 @@ gimp_dynamics_set_property (GObject      *object,
     case PROP_JITTER_OUTPUT:
       src_output  = g_value_get_object (value);
       dest_output = private->jitter_output;
+      break;
+
+    case PROP_BLENDING_OUTPUT:
+      src_output  = g_value_get_object (value);
+      dest_output = private->blending_output;
       break;
 
     case PROP_SPACING_OUTPUT:
@@ -418,6 +437,10 @@ gimp_dynamics_get_property (GObject    *object,
 
     case PROP_JITTER_OUTPUT:
       g_value_set_object (value, private->jitter_output);
+      break;
+
+    case PROP_BLENDING_OUTPUT:
+      g_value_set_object (value, private->blending_output);
       break;
 
     case PROP_SPACING_OUTPUT:
@@ -550,6 +573,10 @@ gimp_dynamics_get_output (GimpDynamics           *dynamics,
 
     case GIMP_DYNAMICS_OUTPUT_JITTER:
       return private->jitter_output;
+      break;
+
+    case GIMP_DYNAMICS_OUTPUT_BLENDING:
+      return private->blending_output;
       break;
 
     case GIMP_DYNAMICS_OUTPUT_SPACING:
