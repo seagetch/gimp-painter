@@ -1,0 +1,2964 @@
+{
+  "schema_version": 1,
+  "scope": "all_registered_meson_tests_frozen_linux_normal_build",
+  "source_commit": "e109524cca95639d65ec8b0f4ba0f1fbd6e45a98",
+  "source_tree": "d90ca1a4a8040f94f0e55f791d0a76de2c36166c",
+  "all_passed": false,
+  "command": [
+    "meson",
+    "test",
+    "-C",
+    "build-debian13",
+    "--no-rebuild",
+    "--num-processes",
+    "1",
+    "--timeout-multiplier",
+    "3",
+    "--print-errorlogs",
+    "--logbase",
+    "frozen-aggregate-20261002-1404"
+  ],
+  "execution_surface": "Linux X11 GTK desktop; native test executables",
+  "environment": {
+    "UI_TEST": "yes",
+    "GSETTINGS_BACKEND": "memory",
+    "GIMP3_DIRECTORY": "/workspace/shared/painter-frozen-aggregate-20261002-1404/profiles/gimp",
+    "GIMP_DEPS_DIRECTORY": "/workspace/shared/gimp-build-deps"
+  },
+  "started_utc": "2026-10-02T14:06:22Z",
+  "finished_utc": "2026-10-02T14:15:33Z",
+  "meson_exit_status": 4,
+  "meson_version": "1.7.0",
+  "registry_sha256": "9af27e0114a4760bbd3b6cd3a8dbb89050ae655081afbe96ec5deb4ea17503ac",
+  "registered_tests": 108,
+  "recorded_results": 108,
+  "coverage_complete": true,
+  "result_counts": {
+    "OK": 104,
+    "FAIL": 4
+  },
+  "suite_counts": {
+    "gimp:painter": {
+      "registered": 53,
+      "outcomes": {
+        "OK": 53
+      }
+    },
+    "gimp:app": {
+      "registered": 42,
+      "outcomes": {
+        "OK": 38,
+        "FAIL": 4
+      }
+    },
+    "gimp:libgimp": {
+      "registered": 12,
+      "outcomes": {
+        "OK": 12
+      }
+    },
+    "gimp:desktop": {
+      "registered": 1,
+      "outcomes": {
+        "OK": 1
+      }
+    }
+  },
+  "integrity_checks": {
+    "expected_source_commit": true,
+    "expected_source_tree": true,
+    "commit_unchanged": true,
+    "tree_unchanged": true,
+    "tracked_tree_clean_before_and_after": true,
+    "tracked_files_unchanged": true,
+    "preexisting_elf_files_unchanged": true,
+    "all_new_elf_entries_are_verified_private_test_profile_aliases": true,
+    "test_registry_unchanged": true
+  },
+  "tracked_file_count": 8742,
+  "elf_file_count": 414,
+  "changed_tracked_files": [],
+  "elf_inventory_identical": false,
+  "changed_elf_inventory_paths": [
+    "build-debian13/.GIMP3-build-config-slp56u/tmp_python/python3"
+  ],
+  "changed_preexisting_elf_files": [],
+  "new_private_test_profile_interpreter_aliases": [
+    {
+      "path": "build-debian13/.GIMP3-build-config-slp56u/tmp_python/python3",
+      "target": "/usr/bin/python3",
+      "sha256": "889c603f0d17cb54060951bcf4c4f9b8c9ebd9e52b392c70209bbb9755d797d9",
+      "classification": "new_private_test_profile_interpreter_alias"
+    }
+  ],
+  "unmatched_results": [],
+  "build_inputs": {
+    "app/gimp-3.0": {
+      "sha256": "ee352462a068be000041820d15c62fee40ea55daed957b9187f57f7dd2dcda1a",
+      "sha256_after": "ee352462a068be000041820d15c62fee40ea55daed957b9187f57f7dd2dcda1a"
+    },
+    "app/gimp-console-3.0": {
+      "sha256": "5d4a54b2006c3eb2ab5828da59eeaa9f4ffa7314b3a2c769d3983e753afc02f6",
+      "sha256_after": "5d4a54b2006c3eb2ab5828da59eeaa9f4ffa7314b3a2c769d3983e753afc02f6"
+    }
+  },
+  "known_baseline_sources": [
+    "migration/baseline/standard-tests.md",
+    "migration/baseline/debian13/README.md",
+    "migration/baseline/debian13/build-environment.json"
+  ],
+  "baseline_exemptions_applied": false,
+  "limitations": [
+    "This is the normal, non-sanitized aggregate suite only. Earlier combined ASan and huge ASan SIGKILL limitations are not resolved by this run.",
+    "All 108 registered tests were requested without exclusions. Any baseline failure or skipped subtest remains explicit and blocks all_passed.",
+    "The global GIMP3_DIRECTORY and XDG config/cache/data/TMPDIR are dedicated test roots. Registered native tests additionally use their built-in source fixture profile and build-debian13/app/tests/gimpdir-output; the in-build Python runner creates unique build-local profiles. No user profile is used.",
+    "Ninja dry-run alone reports PHONY git-version custom-command work before restat even immediately after the successful full default build. The current packaging candidate no-work predicate is overstrict; this distinction does not override any actual test failure.",
+    "Before launch, native inventory contained no original Gimp window 39845895. The existing Chromium window/new tab was preserved; no browser navigation or tab closure was performed."
+  ],
+  "targets": [
+    {
+      "registry_index": 1,
+      "name": "core",
+      "meson_name": "gimp:app / core",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/core"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/core"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.0700795650482178,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 2,
+      "name": "gimp-clone-layer",
+      "meson_name": "gimp:app / gimp-clone-layer",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-clone-layer"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-clone-layer"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 3.931474208831787,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 3,
+      "name": "gimp-filter-layer",
+      "meson_name": "gimp:app / gimp-filter-layer",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-filter-layer"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-filter-layer"
+      ],
+      "registered_timeout_seconds": 180,
+      "effective_timeout_seconds": 540,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 51.258883237838745,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 4,
+      "name": "painter-layer-ui",
+      "meson_name": "gimp:app / painter-layer-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-layer-ui"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-layer-ui"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 7.591741561889648,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 5,
+      "name": "painter-canvas-ui",
+      "meson_name": "gimp:app / painter-canvas-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-canvas-ui"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-canvas-ui"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 13.453453779220581,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 6,
+      "name": "painter-compact-options",
+      "meson_name": "gimp:app / painter-compact-options",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-compact-options"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-compact-options"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 10.341764450073242,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 7,
+      "name": "gimp-painter-mybrush",
+      "meson_name": "gimp:app / gimp-painter-mybrush",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-mybrush"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-mybrush"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 3.1496284008026123,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 8,
+      "name": "gimp-painter-mybrush-factory",
+      "meson_name": "gimp:app / gimp-painter-mybrush-factory",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-mybrush-factory"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-mybrush-factory"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.8148372173309326,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 9,
+      "name": "gimpidtable",
+      "meson_name": "gimp:app / gimpidtable",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimpidtable"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimpidtable"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.08460831642150879,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 10,
+      "name": "gimp-tool-owner",
+      "meson_name": "gimp:app / gimp-tool-owner",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-tool-owner"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-tool-owner"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.099705934524536,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 11,
+      "name": "xcf",
+      "meson_name": "gimp:app / xcf",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/xcf"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/xcf"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.9279425144195557,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 12,
+      "name": "painter-xcf-open",
+      "meson_name": "gimp:app / painter-xcf-open",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-xcf-open"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-xcf-open"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.3876264095306396,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 13,
+      "name": "painter-xcf-roundtrip",
+      "meson_name": "gimp:app / painter-xcf-roundtrip",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-xcf-roundtrip"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-xcf-roundtrip"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 12.464998006820679,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 14,
+      "name": "painter-provenance",
+      "meson_name": "gimp:app / painter-provenance",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-provenance"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-provenance"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.1100151538848877,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 15,
+      "name": "painter-layer-modes",
+      "meson_name": "gimp:app / painter-layer-modes",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-layer-modes"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-layer-modes"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 4.514729976654053,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 16,
+      "name": "painter-dynamics",
+      "meson_name": "gimp:app / painter-dynamics",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-dynamics"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-dynamics"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.2554664611816406,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 17,
+      "name": "painter-navigation-ui",
+      "meson_name": "gimp:app / painter-navigation-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-navigation-ui"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-navigation-ui"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.1386418342590332,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 18,
+      "name": "painter-navigation-events",
+      "meson_name": "gimp:app / painter-navigation-events",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-navigation-events"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-navigation-events"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 3.494260787963867,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 19,
+      "name": "painter-perspective",
+      "meson_name": "gimp:app / painter-perspective",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-perspective"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-perspective"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.8638873100280762,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 20,
+      "name": "painter-perspective-ui",
+      "meson_name": "gimp:app / painter-perspective-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-perspective-ui"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-perspective-ui"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "FAIL",
+      "returncode": -5,
+      "duration_seconds": 4.014904737472534,
+      "classification": "failure_requires_investigation",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "Bail out!"
+      ],
+      "failure_evidence": [
+        "not ok /perspective-ui/add-move-remove-undo - Gimp-Core-FATAL-CRITICAL: gimp_image_get_resolution: assertion 'GIMP_IS_IMAGE (image)' failed",
+        "Bail out!"
+      ]
+    },
+    {
+      "registry_index": 21,
+      "name": "painter-perspective-events",
+      "meson_name": "gimp:app / painter-perspective-events",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-perspective-events"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-perspective-events"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 5.71489953994751,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 22,
+      "name": "gimp-painter-context",
+      "meson_name": "gimp:app / gimp-painter-context",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-context"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-context"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.120034694671631,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 23,
+      "name": "painter-foundation",
+      "meson_name": "gimp:painter / painter-foundation",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-foundation"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-foundation"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.018384933471679688,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 24,
+      "name": "painter-filter-scheduler",
+      "meson_name": "gimp:painter / painter-filter-scheduler",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-scheduler"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-scheduler"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 4.690737724304199,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 25,
+      "name": "painter-filter-edge",
+      "meson_name": "gimp:painter / painter-filter-edge",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-edge",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-edge/fixtures.tsv"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-edge",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-edge/fixtures.tsv"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.05741548538208008,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 26,
+      "name": "painter-filter-gauss",
+      "meson_name": "gimp:painter / painter-filter-gauss",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gauss",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss/fixtures.tsv"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gauss",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss/fixtures.tsv"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.09770512580871582,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 27,
+      "name": "painter-filter-gray",
+      "meson_name": "gimp:painter / painter-filter-gray",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gray",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gray",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.06048870086669922,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 28,
+      "name": "painter-filter-gauss-alias",
+      "meson_name": "gimp:painter / painter-filter-gauss-alias",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gauss-alias",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/fixtures.tsv",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-negative/fixtures.tsv"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-gauss-alias",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-alias/fixtures.tsv",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss-negative/fixtures.tsv"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.313030481338501,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 29,
+      "name": "painter-fair-dispatcher",
+      "meson_name": "gimp:painter / painter-fair-dispatcher",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-fair-dispatcher"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-fair-dispatcher"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.0241396427154541,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 30,
+      "name": "painter-work-admission",
+      "meson_name": "gimp:painter / painter-work-admission",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-work-admission"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-work-admission"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.03328847885131836,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 31,
+      "name": "painter-filter-raster",
+      "meson_name": "gimp:painter / painter-filter-raster",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-raster"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-raster"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.8781402111053467,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 32,
+      "name": "painter-filter-spool",
+      "meson_name": "gimp:painter / painter-filter-spool",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-spool"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-spool"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.12380146980285645,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 33,
+      "name": "painter-filter-raster-kernels",
+      "meson_name": "gimp:painter / painter-filter-raster-kernels",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-raster-kernels",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-edge/fixtures.tsv",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss/fixtures.tsv",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-raster-kernels",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-edge/fixtures.tsv",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gauss/fixtures.tsv",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-gray-filter/fixtures.tsv"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 3.544846296310425,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 34,
+      "name": "painter-filter-native-kernels",
+      "meson_name": "gimp:painter / painter-filter-native-kernels",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-native-kernels",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-filter-points/fixtures.tsv"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/painter/painter-filter-native-kernels",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-filter-points/fixtures.tsv"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.024189472198486328,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 35,
+      "name": "painter-public-mode-abi",
+      "meson_name": "gimp:painter / painter-public-mode-abi",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/check_painter_public_modes.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/check_painter_public_modes.py"
+      ],
+      "registered_timeout_seconds": 30,
+      "effective_timeout_seconds": 90,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.12778472900390625,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 36,
+      "name": "painter-brush-metadata-c",
+      "meson_name": "gimp:painter / painter-brush-metadata-c",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-brush-settings/painter-brush-metadata-c"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-brush-settings/painter-brush-metadata-c"
+      ],
+      "registered_timeout_seconds": 30,
+      "effective_timeout_seconds": 90,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.008944034576416016,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 37,
+      "name": "painter-brush-metadata-cpp",
+      "meson_name": "gimp:painter / painter-brush-metadata-cpp",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-brush-settings/painter-brush-metadata-cpp"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-brush-settings/painter-brush-metadata-cpp"
+      ],
+      "registered_timeout_seconds": 30,
+      "effective_timeout_seconds": 90,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.007640838623046875,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 38,
+      "name": "painter-brush-generator",
+      "meson_name": "gimp:painter / painter-brush-generator",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "-B",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-brush-settings/tests/test-generate.py",
+        "--cc-arg=cc",
+        "--cxx-arg=c++"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "-B",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-brush-settings/tests/test-generate.py",
+        "--cc-arg=cc",
+        "--cxx-arg=c++"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.039820671081543,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 39,
+      "name": "painter-mypaint-resource",
+      "meson_name": "gimp:painter / painter-mypaint-resource",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-mypaint/painter-mypaint-resource",
+        "/workspace/scratch/5b5281e79681/gimp-painter/data/painter-mypaint-brushes"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-mypaint/painter-mypaint-resource",
+        "/workspace/scratch/5b5281e79681/gimp-painter/data/painter-mypaint-brushes"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.35964107513427734,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 40,
+      "name": "painter-mypaint-legacy-decoder",
+      "meson_name": "gimp:painter / painter-mypaint-legacy-decoder",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-mypaint/tests/compare-trace.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint/resource-values.tsv.gz",
+        "app/paint/painter-mypaint/painter-mypaint-resource-trace",
+        "/workspace/scratch/5b5281e79681/gimp-painter/data/painter-mypaint-brushes"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-mypaint/tests/compare-trace.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint/resource-values.tsv.gz",
+        "app/paint/painter-mypaint/painter-mypaint-resource-trace",
+        "/workspace/scratch/5b5281e79681/gimp-painter/data/painter-mypaint-brushes"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.17271995544433594,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 41,
+      "name": "painter-mypaint-legacy-engine",
+      "meson_name": "gimp:painter / painter-mypaint-legacy-engine",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-mypaint/tests/compare-trace.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint/engine.trace.gz",
+        "app/paint/painter-mypaint/painter-mypaint-engine-trace",
+        "/workspace/scratch/5b5281e79681/gimp-painter/data/painter-mypaint-brushes"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-mypaint/tests/compare-trace.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint/engine.trace.gz",
+        "app/paint/painter-mypaint/painter-mypaint-engine-trace",
+        "/workspace/scratch/5b5281e79681/gimp-painter/data/painter-mypaint-brushes"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.3033778667449951,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 42,
+      "name": "painter-navigation",
+      "meson_name": "gimp:painter / painter-navigation",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/display/painter-navigation",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-navigation/rotation.tsv",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-zoom/zoom.tsv"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/display/painter-navigation",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-navigation/rotation.tsv",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-zoom/zoom.tsv"
+      ],
+      "registered_timeout_seconds": 30,
+      "effective_timeout_seconds": 90,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.03017735481262207,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 43,
+      "name": "painter-bounded-fill-legacy",
+      "meson_name": "gimp:painter / painter-bounded-fill-legacy",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-bounded-fill/../painter-mypaint/tests/compare-trace.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-bounded-fill/masks.tsv.gz",
+        "app/paint/painter-bounded-fill/painter-bounded-fill-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-bounded-fill/../painter-mypaint/tests/compare-trace.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-bounded-fill/masks.tsv.gz",
+        "app/paint/painter-bounded-fill/painter-bounded-fill-trace"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.894343376159668,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 44,
+      "name": "painter-bounded-fill",
+      "meson_name": "gimp:painter / painter-bounded-fill",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-bounded-fill/painter-bounded-fill-test"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-bounded-fill/painter-bounded-fill-test"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.1840379238128662,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 45,
+      "name": "painter-mypaint-legacy-surface",
+      "meson_name": "gimp:painter / painter-mypaint-legacy-surface",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-mypaint-surface/../painter-mypaint/tests/compare-trace.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-surface/surface-values.tsv.gz",
+        "app/paint/painter-mypaint-surface/painter-mypaint-surface-trace",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-surface/shape-masks.tsv"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-mypaint-surface/../painter-mypaint/tests/compare-trace.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-surface/surface-values.tsv.gz",
+        "app/paint/painter-mypaint-surface/painter-mypaint-surface-trace",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-surface/shape-masks.tsv"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.21299028396606445,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 46,
+      "name": "painter-mypaint-legacy-generated",
+      "meson_name": "gimp:painter / painter-mypaint-legacy-generated",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-mypaint-surface/../painter-mypaint/tests/compare-trace.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-surface/generated-values.tsv.gz",
+        "app/paint/painter-mypaint-surface/painter-mypaint-generated-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/../app/paint/painter-mypaint-surface/../painter-mypaint/tests/compare-trace.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-surface/generated-values.tsv.gz",
+        "app/paint/painter-mypaint-surface/painter-mypaint-generated-trace"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.07057976722717285,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 47,
+      "name": "painter-gray-alpha-equations",
+      "meson_name": "gimp:painter / painter-gray-alpha-equations",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-mypaint-surface/painter-gray-alpha-equations"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-mypaint-surface/painter-gray-alpha-equations"
+      ],
+      "registered_timeout_seconds": 30,
+      "effective_timeout_seconds": 90,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.016075611114501953,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 48,
+      "name": "painter-mypaint-native-precision",
+      "meson_name": "gimp:painter / painter-mypaint-native-precision",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-mypaint-surface/painter-mypaint-native-precision"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/paint/painter-mypaint-surface/painter-mypaint-native-precision"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.3641507625579834,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 49,
+      "name": "painter-smudge-legacy-pixels",
+      "meson_name": "gimp:painter / painter-smudge-legacy-pixels",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_smudge_pixels.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-smudge-pixels/pixels.tsv.gz",
+        "app/paint/painter-smudge/painter-smudge-pixels-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_smudge_pixels.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-smudge-pixels/pixels.tsv.gz",
+        "app/paint/painter-smudge/painter-smudge-pixels-trace"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.1321089267730713,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 50,
+      "name": "painter-xcf-compat",
+      "meson_name": "gimp:painter / painter-xcf-compat",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/xcf/painter-xcf-compat-test",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-runtime",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/gimp3-baseline.xcf"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/xcf/painter-xcf-compat-test",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-runtime",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/gimp3-baseline.xcf"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.030121803283691406,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 51,
+      "name": "app-config",
+      "meson_name": "gimp:app / app-config",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/config/test-config"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/config/test-config"
+      ],
+      "registered_timeout_seconds": 30,
+      "effective_timeout_seconds": 90,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.08530330657958984,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 52,
+      "name": "validate-desktop",
+      "meson_name": "gimp:desktop / validate-desktop",
+      "suites": [
+        "gimp:desktop"
+      ],
+      "registered_command": [
+        "/usr/bin/desktop-file-validate",
+        "desktop/gimp.desktop"
+      ],
+      "actual_command": [
+        "/usr/bin/desktop-file-validate",
+        "desktop/gimp.desktop"
+      ],
+      "registered_timeout_seconds": 30,
+      "effective_timeout_seconds": 90,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.013495206832885742,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 53,
+      "name": "save-and-export",
+      "meson_name": "gimp:app / save-and-export",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/app/tests/test-save-and-export.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/app/tests/test-save-and-export.py"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "FAIL",
+      "returncode": 1,
+      "duration_seconds": 12.497925996780396,
+      "classification": "known_upstream_baseline_failure_still_fails",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault",
+        "AttributeError: 'NoneType' object has no attribute 'equal'"
+      ]
+    },
+    {
+      "registry_index": 54,
+      "name": "gimp-painter-surface",
+      "meson_name": "gimp:app / gimp-painter-surface",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-surface"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-surface"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.9245572090148926,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 55,
+      "name": "painter-mypaint-legacy-session",
+      "meson_name": "gimp:painter / painter-mypaint-legacy-session",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_mypaint_sessions.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-session/session-values.tsv.gz",
+        "app/tests/painter-mypaint-session-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_mypaint_sessions.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-session/session-values.tsv.gz",
+        "app/tests/painter-mypaint-session-trace"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 3.0187244415283203,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 56,
+      "name": "gimp-painter-options",
+      "meson_name": "gimp:app / gimp-painter-options",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-options"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-options"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.8134634494781494,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 57,
+      "name": "gimp-painter-session",
+      "meson_name": "gimp:app / gimp-painter-session",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-session"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-session"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.311624526977539,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 58,
+      "name": "gimp-painter-hover",
+      "meson_name": "gimp:app / gimp-painter-hover",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-hover"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-hover"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.6406354904174805,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 59,
+      "name": "gimp-fill-brush",
+      "meson_name": "gimp:app / gimp-fill-brush",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-fill-brush"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-fill-brush"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 7.060406923294067,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 60,
+      "name": "painter-fill-brush-legacy",
+      "meson_name": "gimp:painter / painter-fill-brush-legacy",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_fill_brush.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-fill-brush/pixels.tsv.gz",
+        "app/tests/painter-fill-brush-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_fill_brush.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-fill-brush/pixels.tsv.gz",
+        "app/tests/painter-fill-brush-trace"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 5.00539231300354,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 61,
+      "name": "painter-fill-brush-legacyqueued",
+      "meson_name": "gimp:painter / painter-fill-brush-legacyqueued",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_fill_brush.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-fill-brush/pixels.tsv.gz",
+        "app/tests/painter-fill-brush-trace",
+        "queued"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_fill_brush.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-fill-brush/pixels.tsv.gz",
+        "app/tests/painter-fill-brush-trace",
+        "queued"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.4188475608825684,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 62,
+      "name": "painter-fill-brush-legacyasync",
+      "meson_name": "gimp:painter / painter-fill-brush-legacyasync",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_fill_brush.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-fill-brush/pixels.tsv.gz",
+        "app/tests/painter-fill-brush-trace",
+        "async"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_fill_brush.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-fill-brush/pixels.tsv.gz",
+        "app/tests/painter-fill-brush-trace",
+        "async"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.590070962905884,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 63,
+      "name": "painter-fill-brush-ui",
+      "meson_name": "gimp:app / painter-fill-brush-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-fill-brush-ui"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-fill-brush-ui"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 10.669897317886353,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 64,
+      "name": "gimp-layer-presets",
+      "meson_name": "gimp:app / gimp-layer-presets",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-layer-presets"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-layer-presets"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.807060956954956,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 65,
+      "name": "layer-presets-ui",
+      "meson_name": "gimp:app / layer-presets-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/layer-presets-ui"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/layer-presets-ui"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "FAIL",
+      "returncode": -5,
+      "duration_seconds": 3.8614182472229004,
+      "classification": "failure_requires_investigation",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "Bail out!"
+      ],
+      "failure_evidence": [
+        "not ok /layer-presets-ui/preferences-registration - LibGimpWidgets-FATAL-CRITICAL: gimp_prop_memsize_entry_new: assertion 'uint64_spec->maximum <= GIMP_MAX_MEMSIZE' failed",
+        "Bail out!"
+      ]
+    },
+    {
+      "registry_index": 66,
+      "name": "painter-mypaint-tool",
+      "meson_name": "gimp:app / painter-mypaint-tool",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-mypaint-tool"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-mypaint-tool"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 61.17847037315369,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 67,
+      "name": "painter-native-interpolation",
+      "meson_name": "gimp:painter / painter-native-interpolation",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_native_interpolation.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/native-brush-interpolation/trace.tsv.gz",
+        "app/tests/painter-brush-interpolation-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_native_interpolation.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/native-brush-interpolation/trace.tsv.gz",
+        "app/tests/painter-brush-interpolation-trace"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 11.327567338943481,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 68,
+      "name": "gimp-painter-preview",
+      "meson_name": "gimp:app / gimp-painter-preview",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-preview"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-preview"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.5088331699371338,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 69,
+      "name": "painter-mypaint-legacy-rgb-session",
+      "meson_name": "gimp:painter / painter-mypaint-legacy-rgb-session",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_mypaint_rgb_sessions.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-rgb-session/session-values.tsv.gz",
+        "app/tests/painter-mypaint-rgb-session-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_mypaint_rgb_sessions.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-rgb-session/session-values.tsv.gz",
+        "app/tests/painter-mypaint-rgb-session-trace"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 5.209248304367065,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 70,
+      "name": "painter-mypaint-rgb-session-fixtures",
+      "meson_name": "gimp:painter / painter-mypaint-rgb-session-fixtures",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/test_mypaint_rgb_session_fixtures.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/test_mypaint_rgb_session_fixtures.py"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.3595895767211914,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 71,
+      "name": "painter-smudge-legacy-strokes",
+      "meson_name": "gimp:painter / painter-smudge-legacy-strokes",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_smudge_strokes.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-smudge/pixels.tsv.gz",
+        "app/tests/painter-smudge-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_smudge_strokes.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-smudge/pixels.tsv.gz",
+        "app/tests/painter-smudge-trace"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.8887219429016113,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 72,
+      "name": "gimp-painter-smudge",
+      "meson_name": "gimp:app / gimp-painter-smudge",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-smudge"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-smudge"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.6234040260314941,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 73,
+      "name": "painter-smudge-owned-strokes",
+      "meson_name": "gimp:painter / painter-smudge-owned-strokes",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_smudge_strokes.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-smudge/pixels.tsv.gz",
+        "app/tests/painter-smudge-trace",
+        "owned"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_smudge_strokes.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-smudge/pixels.tsv.gz",
+        "app/tests/painter-smudge-trace",
+        "owned"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.7898011207580566,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 74,
+      "name": "painter-mypaint-editor",
+      "meson_name": "gimp:app / painter-mypaint-editor",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-mypaint-editor"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-mypaint-editor"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "FAIL",
+      "returncode": -5,
+      "duration_seconds": 13.762829780578613,
+      "classification": "failure_requires_investigation",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "Bail out!"
+      ],
+      "failure_evidence": [
+        "not ok /painter-editor/07-registration - LibGimpWidgets-FATAL-CRITICAL: gimp_prop_memsize_entry_new: assertion 'uint64_spec->maximum <= GIMP_MAX_MEMSIZE' failed",
+        "Bail out!"
+      ]
+    },
+    {
+      "registry_index": 75,
+      "name": "painter-mypaint-preview-fixture",
+      "meson_name": "gimp:painter / painter-mypaint-preview-fixture",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "-B",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/test_mypaint_preview_fixture.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "-B",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/test_mypaint_preview_fixture.py"
+      ],
+      "registered_timeout_seconds": 30,
+      "effective_timeout_seconds": 90,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.18426847457885742,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 76,
+      "name": "painter-smudge-ui",
+      "meson_name": "gimp:app / painter-smudge-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-smudge-ui"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-smudge-ui"
+      ],
+      "registered_timeout_seconds": 180,
+      "effective_timeout_seconds": 540,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 6.701297760009766,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 77,
+      "name": "painter-save-continuation",
+      "meson_name": "gimp:app / painter-save-continuation",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-save-continuation"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-save-continuation"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 9.636107206344604,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 78,
+      "name": "gimp-painter-batch",
+      "meson_name": "gimp:app / gimp-painter-batch",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-batch"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-batch"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.9673643112182617,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 79,
+      "name": "painter-mypaint-legacy-gray-session",
+      "meson_name": "gimp:painter / painter-mypaint-legacy-gray-session",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_mypaint_gray_sessions.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-gray-session/session-values.tsv.gz",
+        "app/tests/painter-mypaint-gray-session-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_mypaint_gray_sessions.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-gray-session/session-values.tsv.gz",
+        "app/tests/painter-mypaint-gray-session-trace"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.8935754299163818,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 80,
+      "name": "painter-mypaint-gray-session-fixtures",
+      "meson_name": "gimp:painter / painter-mypaint-gray-session-fixtures",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/test_mypaint_gray_session_fixtures.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/test_mypaint_gray_session_fixtures.py"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.10715103149414062,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 81,
+      "name": "gimp-painter-gray",
+      "meson_name": "gimp:app / gimp-painter-gray",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-gray"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-gray"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.8458325862884521,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 82,
+      "name": "gimp-painter-gray-extension",
+      "meson_name": "gimp:app / gimp-painter-gray-extension",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-gray-extension"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/gimp-painter-gray-extension"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 6.544126749038696,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 83,
+      "name": "painter-profile-parser",
+      "meson_name": "gimp:painter / painter-profile-parser",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-profile-parser"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-profile-parser"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.07045602798461914,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 84,
+      "name": "painter-profile-native",
+      "meson_name": "gimp:painter / painter-profile-native",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-profile-native"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-profile-native"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 3.3898627758026123,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 85,
+      "name": "painter-paper",
+      "meson_name": "gimp:painter / painter-paper",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-paper"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-paper"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.1741490364074707,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 86,
+      "name": "painter-paper-ui",
+      "meson_name": "gimp:painter / painter-paper-ui",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-paper-ui"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-paper-ui"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 5.886063575744629,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 87,
+      "name": "painter-legacy-paper",
+      "meson_name": "gimp:painter / painter-legacy-paper",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_paper.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-paper/pixels.tsv.gz",
+        "app/tests/painter-paper-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_paper.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-paper/pixels.tsv.gz",
+        "app/tests/painter-paper-trace"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.2212843894958496,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 88,
+      "name": "painter-legacy-paper-modes",
+      "meson_name": "gimp:painter / painter-legacy-paper-modes",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_paper.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-paper-modes/pixels.tsv.gz",
+        "app/tests/painter-paper-trace",
+        "--modes"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_paper.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-paper-modes/pixels.tsv.gz",
+        "app/tests/painter-paper-trace",
+        "--modes"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 8.752477407455444,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 89,
+      "name": "painter-mypaint-legacy-pipe",
+      "meson_name": "gimp:painter / painter-mypaint-legacy-pipe",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_mypaint_pipe.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-pipe/pipe-values.tsv.gz",
+        "app/tests/painter-mypaint-pipe-trace"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_mypaint_pipe.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/fixtures/legacy-mypaint-pipe/pipe-values.tsv.gz",
+        "app/tests/painter-mypaint-pipe-trace"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.8393118381500244,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 90,
+      "name": "painter-brush-geometry",
+      "meson_name": "gimp:painter / painter-brush-geometry",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-brush-geometry"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-brush-geometry"
+      ],
+      "registered_timeout_seconds": 120,
+      "effective_timeout_seconds": 360,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.0999300479888916,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 91,
+      "name": "painter-brush-geometry-strokes",
+      "meson_name": "gimp:painter / painter-brush-geometry-strokes",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_brush_geometry.py",
+        "app/tests/painter-brush-geometry-trace",
+        "--report",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/brush-geometry-strokes.json"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_brush_geometry.py",
+        "app/tests/painter-brush-geometry-trace",
+        "--report",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/brush-geometry-strokes.json"
+      ],
+      "registered_timeout_seconds": 180,
+      "effective_timeout_seconds": 540,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 18.286123275756836,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 92,
+      "name": "painter-brush-geometry-pixmap",
+      "meson_name": "gimp:painter / painter-brush-geometry-pixmap",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_brush_geometry.py",
+        "app/tests/painter-brush-geometry-trace",
+        "--report",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/brush-geometry-pixmap.json",
+        "--pixmap"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/compare_brush_geometry.py",
+        "app/tests/painter-brush-geometry-trace",
+        "--report",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/brush-geometry-pixmap.json",
+        "--pixmap"
+      ],
+      "registered_timeout_seconds": 180,
+      "effective_timeout_seconds": 540,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.724592924118042,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 93,
+      "name": "painter-brush-geometry-fixtures",
+      "meson_name": "gimp:painter / painter-brush-geometry-fixtures",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/test_brush_geometry_fixtures.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/test_brush_geometry_fixtures.py"
+      ],
+      "registered_timeout_seconds": 60,
+      "effective_timeout_seconds": 180,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.1795198917388916,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 94,
+      "name": "painter-http",
+      "meson_name": "gimp:painter / painter-http",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-http"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-http"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 1.9069631099700928,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 95,
+      "name": "painter-http-ui",
+      "meson_name": "gimp:painter / painter-http-ui",
+      "suites": [
+        "gimp:painter"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-http-ui"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-http-ui"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 8.271771430969238,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 96,
+      "name": "painter-mypaint-precision",
+      "meson_name": "gimp:app / painter-mypaint-precision",
+      "suites": [
+        "gimp:app"
+      ],
+      "registered_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-mypaint-precision"
+      ],
+      "actual_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/painter-mypaint-precision"
+      ],
+      "registered_timeout_seconds": 180,
+      "effective_timeout_seconds": 540,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 12.579537868499756,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": []
+    },
+    {
+      "registry_index": 97,
+      "name": "color-parser",
+      "meson_name": "gimp:libgimp+python3 / color-parser",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-color-parser.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-color-parser.py"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 12.4834144115448,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 98,
+      "name": "color-parser",
+      "meson_name": "gimp:libgimp+C / color-parser",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-color-parser.c",
+        "test-color-parser"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-color-parser.c",
+        "test-color-parser"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 12.113475561141968,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 99,
+      "name": "export-options",
+      "meson_name": "gimp:libgimp+python3 / export-options",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-export-options.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-export-options.py"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 14.794162273406982,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 100,
+      "name": "export-options",
+      "meson_name": "gimp:libgimp+C / export-options",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-export-options.c",
+        "test-export-options"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-export-options.c",
+        "test-export-options"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 14.770816087722778,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 101,
+      "name": "image",
+      "meson_name": "gimp:libgimp+python3 / image",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-image.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-image.py"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 10.43953800201416,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 102,
+      "name": "image",
+      "meson_name": "gimp:libgimp+C / image",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-image.c",
+        "test-image"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-image.c",
+        "test-image"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 12.414852380752563,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 103,
+      "name": "palette",
+      "meson_name": "gimp:libgimp+python3 / palette",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-palette.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-palette.py"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 13.649700403213501,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 104,
+      "name": "palette",
+      "meson_name": "gimp:libgimp+C / palette",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-palette.c",
+        "test-palette"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-palette.c",
+        "test-palette"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 9.278494119644165,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 105,
+      "name": "selection-float",
+      "meson_name": "gimp:libgimp+python3 / selection-float",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-selection-float.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-selection-float.py"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 8.618892431259155,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 106,
+      "name": "selection-float",
+      "meson_name": "gimp:libgimp+C / selection-float",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-selection-float.c",
+        "test-selection-float"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-selection-float.c",
+        "test-selection-float"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 9.476603984832764,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 107,
+      "name": "unit",
+      "meson_name": "gimp:libgimp+python3 / unit",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-unit.py"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-python-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-unit.py"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 12.536874294281006,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    },
+    {
+      "registry_index": 108,
+      "name": "unit",
+      "meson_name": "gimp:libgimp+C / unit",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "registered_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-unit.c",
+        "test-unit"
+      ],
+      "actual_command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/./libgimp-run-c-test.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter/libgimp/tests/test-unit.c",
+        "test-unit"
+      ],
+      "registered_timeout_seconds": 90,
+      "effective_timeout_seconds": 270,
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 10.127230405807495,
+      "classification": "meson_pass_with_known_baseline_script_fu_crash_not_clean_pass",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ],
+      "failure_evidence": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu: fatal error: Segmentation fault"
+      ]
+    }
+  ]
+}
