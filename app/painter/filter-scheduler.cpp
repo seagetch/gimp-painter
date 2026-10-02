@@ -73,6 +73,15 @@ void FilterScheduler::invalidate () noexcept
   cursor_ = 0;
   release_preparation ();
 }
+void FilterScheduler::set_admission (std::shared_ptr<WorkAdmission> pool)
+{
+  if (!pool) throw std::invalid_argument ("Filter scheduler has no admission pool");
+  if (state_ == State::closed || pool == admission_) return;
+  // Selecting accounting for an inert/restored cache is not a pixel edit.
+  // Only an in-flight preparation/job needs a replacement generation.
+  if (job_ || admission_ticket_ || admission_lease_) invalidate ();
+  admission_ = std::move (pool);
+}
 void FilterScheduler::set_request (Request request)
 { if (state_ != State::closed) { request_ = std::move (request); invalidate (); } }
 void FilterScheduler::mark_loaded () noexcept
@@ -150,6 +159,7 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
   const auto operation_generation = generation_;
   try
     {
+      if (admission_->closed () && state_ != State::failed) reject ("Filter resource configuration is closed");
       if (job_ && job_->spool)
         {
           auto& spool = *job_->spool;
@@ -209,7 +219,8 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
             { fail ("Saved filter procedure or argument mapping is unsupported"); return false; }
           if (!admission_ticket_)
             admission_ticket_ = admission_->request (std::max (request_.peak_bytes,
-                                                              request_.raster_process ? pixel_budget * 4 * 6 : request_.width * request_.height * 8));
+                                                              request_.raster_process ? pixel_budget * 4 * 6 : request_.width * request_.height * 8),
+              request_.raster_process ? std::max (request_.peak_spill_bytes, std::uint64_t (request_.width) * request_.height * 8) : 0);
           admission_lease_ = admission_ticket_.try_acquire ();
           /* Resource contention is waiting, never a failure or a lost dirty
            * generation. The owner's normal paced dispatcher retries fairly. */

@@ -3,8 +3,9 @@
 
 Run after building app/tests/gimp-filter-layer, with the build environment loaded.
 Does not claim to instrument all upstream GIMP/dependencies. Original build
-objects are never replaced. Hold /tmp/gimp-painter-build.lock when sharing it.
+objects are never replaced. Hold /workspace/shared/gimp-painter-build.lock when sharing it.
 """
+from painter_sanitizer_scope import bridge_rtti_sources, CXX_SUFFIXES
 import argparse
 import hashlib
 import json
@@ -26,7 +27,7 @@ report = {"scope": "FilterLayer, argument/Undo state, image Undo operation lifet
           "sanitizers": ["address", "undefined"], "leak_detection": False, "instrumented_cpp_rtti": True,
           "sources": [], "commands": []}
 flags = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-O1"]
-wanted = {"app/core/gimpfilterlayer.cpp", "app/core/gimpimage-undo.c", "app/core/gimpitem.c", "app/core/gimpgrouplayer.c", "app/tests/test-gimp-filter-layer.c",
+wanted = {"app/config/gimpgeglconfig.c", "app/config/gimppainterfilterconfig.cpp", "app/core/gimpfilterlayer.cpp", "app/core/gimpimage-undo.c", "app/core/gimpitem.c", "app/core/gimpgrouplayer.c", "app/tests/test-gimp-filter-layer.c",
           "app/tests/test-gimp-filter-layout.cpp", "app/painter/binding-store.cpp",
           "app/painter/gimp-painter-binding.cpp", "app/painter/gimp-painter-error.cpp",
           "app/painter/filter-scheduler.cpp", "app/painter/filter-edge.cpp",
@@ -34,10 +35,18 @@ wanted = {"app/core/gimpfilterlayer.cpp", "app/core/gimpimage-undo.c", "app/core
           "app/painter/filter-spool.cpp", "app/painter/filter-raster-kernels.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-session.cpp"}
+instrumented = set(wanted)
+rtti_only = bridge_rtti_sources(root, build) - instrumented
+wanted |= rtti_only
+report["instrumented_sources"] = sorted(instrumented)
+report["rtti_compatibility_only_sources"] = sorted(rtti_only)
+report["scope"] += "; config-owned memory/spill admission and native persistence tests; listed RTTI-only sources are not instrumented"
 source_hashes = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in sorted(wanted | {"app/core/gimpfilterlayer.h", "app/core/gimpfilterlayer-arguments.hpp",
     "app/painter/filter-scheduler.hpp", "app/painter/filter-spool.hpp", "app/painter/filter-raster.hpp",
     "app/painter/filter-edge-kernel-private.hpp", "app/painter/filter-gauss-kernel-private.hpp",
-    "app/painter/work-admission.hpp", "app/painter/fair-dispatcher.hpp"})}
+    "app/painter/work-admission.hpp", "app/painter/fair-dispatcher.hpp",
+    "app/config/gimppainterfilterconfig.h", "app/config/gimppainterfilterconfig.hpp",
+    "app/paint/gimppaintcore.h", "app/paint/gimpbrushcore.h", "app/paint/gimppaintoptions.h"})}
 report["source_sha256"] = source_hashes
 replacements = {}
 extra = []
@@ -66,8 +75,9 @@ for entry in commands:
         cleaned.append(arg)
     obj = output / (source.name + ".o")
     cleaned[cleaned.index("-o") + 1] = str(obj)
-    cleaned += flags
-    if source.suffix == ".cpp":
+    if relative not in rtti_only:
+        cleaned += flags
+    if source.suffix in CXX_SUFFIXES:
         cleaned += ["-frtti"] # consistent shared_ptr COMDAT RTTI for UBSan vptr
 
     report["sources"].append(relative)
@@ -87,14 +97,14 @@ link = [replacements.get(arg, arg) for arg in link]
 # Replace instrumented members inside private thin archives. Leaving the old
 # members available can pull in their RTTI COMDAT symbols and duplicate feature
 # definitions when -frtti is used for the vptr sanitizer.
-for archive in ["app/core/libappcore.a", "app/painter/libapppainter.a",
-                "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a"]:
+absolute_replacements = {str((build / key).resolve()): value for key,value in archive_replacements.items()}
+for archive in sorted(set(arg for arg in link if arg.endswith(".a") and (build / arg).resolve().is_relative_to(build))):
     members = subprocess.check_output(["ar", "t", archive], cwd=build, text=True).splitlines()
-    rewritten = []
-    for member in members:
-        member_path = str((build / member).resolve())
-        rewritten.append(archive_replacements.get(member, member_path))
-    sanitized_archive = output / Path(archive).name
+    absolute_members = [str((build / member).resolve()) for member in members]
+    if not any(member in absolute_replacements for member in absolute_members):
+        continue
+    rewritten = [absolute_replacements.get(member, member) for member in absolute_members]
+    sanitized_archive = output / archive.replace("/", "_")
     if sanitized_archive.exists():
         sanitized_archive.unlink()
     command = ["ar", "crsT", str(sanitized_archive)] + rewritten

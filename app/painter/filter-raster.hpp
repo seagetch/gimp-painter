@@ -24,6 +24,10 @@ public:
   virtual void flush () = 0;
 };
 
+/* Worker-only advisory capacity query. Other processes may race it; actual
+ * writes/flush failures remain authoritative. Never call on the UI thread. */
+std::uint64_t filter_available_space (const std::string& directory);
+
 using FilterRasterFactory = std::function<std::unique_ptr<FilterRaster> (std::uint64_t)>;
 
 /* An exclusive mode-0600 temporary file, unlinked immediately on POSIX and

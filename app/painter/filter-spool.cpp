@@ -11,6 +11,28 @@
 #include <utility>
 namespace GimpPainter {
 namespace {
+/* Per-job enforcement of the declared logical file extent. File closes
+ * before its local charge releases; the global lease outlives every file. */
+struct DiskQuota { std::uint64_t limit, used = 0; };
+struct FileCharge {
+  std::shared_ptr<DiskQuota> quota;std::uint64_t bytes;
+  FileCharge (std::shared_ptr<DiskQuota> q, std::uint64_t n):quota(std::move(q)),bytes(n) {
+    if (bytes > quota->limit - quota->used) throw std::runtime_error ("Filter exceeded its declared spill reservation");
+    quota->used += bytes;
+  }
+  ~FileCharge () noexcept { quota->used -= bytes; }
+};
+class ReservedRaster final : public FilterRaster {
+  FileCharge charge;
+  TemporaryFilterRaster file;
+public:
+  ReservedRaster (std::shared_ptr<DiskQuota> quota, const std::string& directory, std::uint64_t bytes)
+    : charge(std::move(quota),bytes),file(directory,bytes) {}
+  std::uint64_t size () const noexcept override { return file.size (); }
+  void read (std::uint64_t offset, std::size_t count, std::uint8_t* bytes) override { file.read(offset,count,bytes); }
+  void write (std::uint64_t offset, std::size_t count, const std::uint8_t* bytes) override { file.write(offset,count,bytes); }
+  void flush () override { file.flush (); }
+};
 /* SPSC ownership transfer. Each side owns its cursor; neither side touches a
  * handed-over Chunk again. Destruction happens after both sides have stopped. */
 class ChunkQueue
@@ -66,8 +88,14 @@ struct FilterSpool::State
   {
     if (cancelled.load (std::memory_order_relaxed)) return false;
     const auto pixels = width * height;
-    TemporaryFilterRaster snapshot (directory, std::uint64_t (pixels) * 4);
-    TemporaryFilterRaster result (directory, std::uint64_t (pixels) * 4);
+    const auto reservation = lease ? lease.reserved_spill_bytes () : std::numeric_limits<std::uint64_t>::max ();
+    const auto minimum = std::uint64_t (pixels) * 8;
+    if (lease && filter_available_space (directory) < reservation)
+      throw std::runtime_error ("Insufficient available filesystem space for the admitted filter job");
+    auto quota = std::make_shared<DiskQuota> ();quota->limit = reservation;
+    if (minimum > reservation) throw std::runtime_error ("Filter input and result exceed the admitted spill reservation");
+    ReservedRaster snapshot (quota, directory, std::uint64_t (pixels) * 4);
+    ReservedRaster result (quota, directory, std::uint64_t (pixels) * 4);
     std::size_t received = 0;
     for (;;)
       {
@@ -95,8 +123,8 @@ struct FilterSpool::State
     if (cancelled.load (std::memory_order_relaxed)) return false;
     started.store (true, std::memory_order_release);
     phase.store (Phase::processing, std::memory_order_release);
-    FilterRasterFactory factory = [this] (std::uint64_t bytes) {
-      return std::unique_ptr<FilterRaster> (new TemporaryFilterRaster (directory,bytes));
+    FilterRasterFactory factory = [this,quota] (std::uint64_t bytes) {
+      return std::unique_ptr<FilterRaster> (new ReservedRaster (quota,directory,bytes));
     };
     if (!process (snapshot,result,cancelled,factory) || cancelled.load (std::memory_order_relaxed)) return false;
     result.flush (); // never export a deferred write error as a complete result

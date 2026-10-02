@@ -24,6 +24,7 @@
 #include "painter/gimp-painter-binding.h"
 #include "tests.h"
 #include "gimp-app-test-utils.h"
+void gimp_test_filter_cpp_config (Gimp *application);
 void gimp_test_filter_cpp_layout (gsize size, gsize offset, GimpFilterLayer *layer);
 GBytes *gimp_test_filter_cpp_gauss_reference (const guint8 *native, gsize width, gsize height, guint channels, gint method);
 static Gimp *gimp;
@@ -1698,6 +1699,45 @@ static void spill_storage_failure_preserves_cache (void)
   g_object_unref (cache); g_object_unref (image);
 }
 
+static void configuration_admission (void) { gimp_test_filter_cpp_config (gimp); }
+
+static void spill_budget_failure_preserves_cache_and_retries (void)
+{
+  GimpImage *image = image_new (1025,1025);
+  GimpLayer *source = source_new (image,NULL,1025,1025);
+  GimpFilterLayer *filter;
+  guint64 original = 0, generation, runs;
+  gint64 deadline;
+  gchar *message;
+  g_object_get (gimp->config,"painter-filter-spill-size",&original,NULL);
+  fill (source,31,47,93,255); filter = filter_new (image,NULL,1025,1025);
+  fill (GIMP_LAYER (filter),11,22,33,255); gimp_filter_layer_mark_as_loaded (filter);
+  generation = gimp_filter_layer_get_generation (filter);
+  g_object_set (gimp->config,"painter-filter-spill-size",(guint64) 0,NULL);
+  spin_ms (20); pixel (GIMP_LAYER (filter),11,22,33,255);
+  g_assert_cmpuint (gimp_filter_layer_get_generation (filter), ==, generation);
+  gimp_filter_layer_invalidate (filter);
+  deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+  while (gimp_filter_layer_get_state (filter) != GIMP_FILTER_LAYER_FAILED && g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_FAILED);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
+  pixel (GIMP_LAYER (filter),11,22,33,255);
+  message = gimp_filter_layer_dup_error (filter); g_assert_nonnull (strstr (message,"spill")); g_free (message);
+  { /* Disabling disk jobs must not disable small in-memory filters. */
+    GimpImage *small = image_new (16,16); GimpLayer *layer = source_new (small,NULL,16,16);
+    GimpFilterLayer *small_filter; fill (layer,23,57,92,255);
+    small_filter = filter_new (small,NULL,16,16); settle (small_filter); g_object_unref (small);
+  }
+  g_object_set (gimp->config,"painter-filter-spill-size",original,NULL);
+  settle (filter); pixel (GIMP_LAYER (filter),0,0,0,255);
+  runs = gimp_filter_layer_get_run_count (filter); generation = gimp_filter_layer_get_generation (filter);
+  g_object_set (gimp->config,"painter-filter-spill-size",(guint64) 0,NULL);
+  spin_ms (20); g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, runs);
+  g_assert_cmpuint (gimp_filter_layer_get_generation (filter), ==, generation);
+  g_object_set (gimp->config,"painter-filter-spill-size",original,NULL); g_object_unref (image);
+}
+
 static void generated_spill_gaussian_fixture (gboolean gray)
 {
   const gint width = 1025, height = 1025;
@@ -2173,6 +2213,8 @@ int main (int argc, char **argv)
   }
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
+  g_test_add_func ("/gimp-filter-layer/configuration-admission",configuration_admission);
+  ADD (spill_budget_failure_preserves_cache_and_retries);
   ADD (image_close_during_undo_callbacks); ADD (image_close_during_redo_callbacks);
   ADD (image_close_during_strong_undo_callbacks); ADD (image_close_during_strong_redo_callbacks);
   ADD (image_close_reentry_during_completion_flush); ADD (image_close_reentry_during_commit); ADD (retained_handle_after_image_close); ADD (argument_value_dag_is_bounded); ADD (typed_argument_import_preserves_descriptors); ADD (argument_import_validation);

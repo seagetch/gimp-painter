@@ -91,13 +91,22 @@ static void cancelled_or_failed_output_stays_private ()
   cancel.store (false);
   g_assert_true (transpose_filter_rgba (input,output,2,2,cancel));
 }
+static void available_capacity_is_advisory ()
+{
+  g_assert_cmpuint (filter_available_space (directory), >, 0);
+  unsigned caught = 0;
+  try { filter_available_space (directory + "/missing"); } catch (const std::runtime_error&) { ++caught; }
+  try { filter_available_space (""); } catch (const std::invalid_argument&) { ++caught; }
+  try { filter_available_space (std::string ("a\0b",3)); } catch (const std::invalid_argument&) { ++caught; }
+  g_assert_cmpuint (caught, ==, 3);
+}
 int main (int argc, char **argv)
 {
   g_test_init (&argc,&argv,nullptr);
   gchar *path = g_dir_make_tmp ("painter-raster-test-XXXXXX",nullptr);
   g_assert_nonnull (path); directory = path; g_free (path);
 #define ADD(name) g_test_add_func ("/filter-raster/" #name,name)
-  ADD (native_bytes_and_cleanup); ADD (large_sparse_offset); ADD (invalid_access_and_unwritten_read);
+  ADD (available_capacity_is_advisory); ADD (native_bytes_and_cleanup); ADD (large_sparse_offset); ADD (invalid_access_and_unwritten_read);
   ADD (worker_affinity); ADD (tiled_transpose_and_roundtrip); ADD (cancelled_or_failed_output_stays_private);
   const int result = g_test_run ();
   g_assert_cmpint (g_rmdir (directory.c_str ()), ==, 0);

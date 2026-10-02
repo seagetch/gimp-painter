@@ -7,14 +7,20 @@
 extern "C" {
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
+#include "libgimpconfig/gimpconfig.h"
+#include "config/config-types.h"
+#include "config/gimpgeglconfig.h"
+#include "config/gimprc.h"
 #include "core/core-types.h"
 #include "core/gimpfilterlayer.h"
 #include "core/gimpimage.h"
+void gimp_test_filter_cpp_config (Gimp *application);
 void gimp_test_filter_cpp_layout (gsize size, gsize offset, GimpFilterLayer *layer);
 GBytes *gimp_test_filter_cpp_gauss_reference (const guint8 *native, gsize width, gsize height, guint channels, gint method);
 }
 #include "core/gimpfilterlayer-handle.hpp"
 #include "painter/filter-gauss.hpp"
+#include "config/gimppainterfilterconfig.hpp"
 #include <atomic>
 #include <algorithm>
 #include <vector>
@@ -56,4 +62,31 @@ extern "C" GBytes *gimp_test_filter_cpp_gauss_reference (const guint8 *native, g
       return g_bytes_new (gray.data (),gray.size ());
     }
   return g_bytes_new (output.data (),output.size ());
+}
+
+extern "C" void gimp_test_filter_cpp_config (Gimp *application)
+{
+  auto *first = G_OBJECT (g_object_new (GIMP_TYPE_RC,"gimp",application,nullptr));
+  auto *second = G_OBJECT (g_object_new (GIMP_TYPE_RC,"gimp",application,nullptr));
+  auto pool = GimpPainter::filter_admission_for_config (first);
+  auto other = GimpPainter::filter_admission_for_config (second);
+  g_assert_true (pool != other);
+  g_assert_cmpuint (pool->limits ().spill_bytes, ==, UINT64_C(8)*1024*1024*1024);
+  const guint64 bytes = UINT64_C(9)*1024*1024*1024+123;
+  g_object_set (first,"painter-filter-spill-size",bytes,nullptr);
+  gchar *text = gimp_config_serialize_to_string (GIMP_CONFIG (first),nullptr);
+  GError *error = nullptr;
+  g_assert_true (gimp_config_deserialize_string (GIMP_CONFIG (second),text,-1,nullptr,&error));
+  g_assert_no_error (error); g_free (text);
+  g_assert_cmpuint (other->limits ().spill_bytes, ==, bytes);
+  auto ticket = pool->request (1,bytes); auto lease = ticket.try_acquire ();
+  g_object_set (first,"painter-filter-spill-size",guint64(0),nullptr);
+  g_assert_cmpuint (pool->active_spill_bytes (), ==, bytes);
+  g_assert_cmpuint (other->limits ().spill_bytes, ==, bytes);
+  g_object_run_dispose (first); g_object_run_dispose (first);
+  g_assert_true (pool->closed ()); g_assert_false (other->closed ());
+  unsigned caught=0; try { pool->request (1); } catch (const std::runtime_error&) { ++caught; }
+  g_assert_cmpuint (caught, ==, 1); lease.close ();
+  g_assert_cmpuint (pool->active_spill_bytes (), ==, 0);
+  g_object_unref (first); g_object_unref (second); g_assert_true (other->closed ());
 }

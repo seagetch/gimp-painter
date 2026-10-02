@@ -1250,6 +1250,10 @@ prefs_dialog_new (Gimp       *gimp,
                          GTK_GRID (grid), 5, size_group);
 #endif /* ENABLE_MP */
 
+  prefs_memsize_entry_add (object, "painter-filter-spill-size",
+                           _("Painter filter temporary _storage:"),
+                           GTK_GRID (grid), 6, size_group);
+
   /*  Internet access  */
 #ifdef CHECK_UPDATE
   if (gimp_version_check_update ())

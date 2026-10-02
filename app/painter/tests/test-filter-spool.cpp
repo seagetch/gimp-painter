@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <chrono>
 #include <memory>
+#include <limits>
 #include <stdexcept>
 #include <thread>
 using namespace GimpPainter;
@@ -98,7 +99,7 @@ static void cancellation_while_output_is_full ()
 static void close_keeps_worker_lease_until_completion ()
 {
   auto pool = std::make_shared<WorkAdmission> (WorkAdmission::Limits {1,1024});
-  auto ticket = pool->request (1024); auto lease = ticket.try_acquire ();
+  auto ticket = pool->request (1024, 8); auto lease = ticket.try_acquire ();
   auto release = std::make_shared<std::atomic<bool>> (false), started = std::make_shared<std::atomic<bool>> (false);
   auto spool = std::unique_ptr<FilterSpool> (new FilterSpool (1,1,directory,
     [release,started] (FilterRaster&,FilterRaster&,std::atomic<bool>&,const FilterRasterFactory&) {
@@ -170,12 +171,53 @@ static void owner_api_thread_guards ()
   }); other.join (); g_assert_cmpuint (caught, ==, 2);
   spool.cancel (); wait_done (spool);
 }
+static void admitted_extent_quota_and_scratch_reuse ()
+{
+  for (unsigned budget : {7,8,12})
+    {
+      auto pool = std::make_shared<WorkAdmission> (WorkAdmission::Limits {1,1024,budget});
+      auto ticket = pool->request (1024,budget);
+      {
+        FilterSpool spool (1,1,directory,[] (FilterRaster& in,FilterRaster& out,std::atomic<bool>&,const FilterRasterFactory& factory) {
+          guint8 bytes[4]; in.read (0,4,bytes);
+          for (unsigned i = 0; i != 3; ++i)
+            { auto scratch = factory (4); scratch->write (0,4,bytes); scratch->flush (); scratch->read (0,4,bytes); }
+          out.write (0,4,bytes); return true;
+        },ticket.try_acquire ());
+        Bytes bytes (4,23); if (spool.submit (0,bytes)) spool.seal_input ();
+        wait_done (spool);
+        g_assert_cmpuint (pool->active_spill_bytes (), ==, budget);
+        g_assert_cmpint (spool.succeeded (), ==, budget == 12);
+        g_assert_cmpint (spool.started (), ==, budget >= 8);
+        auto result = spool.take_result ();
+        if (budget == 12) { g_assert_nonnull (result.get ()); g_assert_cmpuint (result->bytes[0], ==, 23); }
+        else { g_assert_null (result.get ()); g_assert_nonnull (strstr (spool.error ().c_str (),"reservation")); }
+      }
+      const auto deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND;
+      while (pool->active_jobs () && g_get_monotonic_time () < deadline) g_usleep (100);
+      g_assert_cmpuint (pool->active_spill_bytes (), ==, 0); g_assert_cmpuint (pool->active_jobs (), ==, 0);
+    }
+}
+static void filesystem_capacity_refusal_releases_lease ()
+{
+  auto pool = std::make_shared<WorkAdmission> (WorkAdmission::Limits {1,1024});
+  auto ticket = pool->request (1024,std::numeric_limits<std::uint64_t>::max ());
+  {
+    FilterSpool spool (1,1,directory,copy_process (),ticket.try_acquire ());
+    wait_done (spool); g_assert_false (spool.started ()); g_assert_false (spool.succeeded ());
+    g_assert_nonnull (strstr (spool.error ().c_str (),"filesystem space"));
+  }
+  const auto deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND;
+  while (pool->active_jobs () && g_get_monotonic_time () < deadline) g_usleep (100);
+  g_assert_cmpuint (pool->active_spill_bytes (), ==, 0);
+}
 int main (int argc, char **argv)
 {
   g_test_init (&argc,&argv,nullptr);
   gchar *path = g_dir_make_tmp ("painter-spool-test-XXXXXX",nullptr);
   g_assert_nonnull (path); directory = path; g_free (path);
 #define ADD(name) g_test_add_func ("/filter-spool/" #name,name)
+  ADD (admitted_extent_quota_and_scratch_reuse); ADD (filesystem_capacity_refusal_releases_lease);
   ADD (roundtrip_and_output_geometry); ADD (missing_directory_fails_without_start); ADD (cancellation_while_collecting);
   ADD (cancellation_while_output_is_full); ADD (close_keeps_worker_lease_until_completion);
   ADD (result_read_failure_never_certifies_partial_output); ADD (owner_api_thread_guards);

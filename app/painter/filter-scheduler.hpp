@@ -31,6 +31,7 @@ public:
      * the whole-vector raster limit. Location is trusted app configuration. */
     FilterSpool::Process raster_process {};
     std::string spool_directory {};
+    std::uint64_t peak_spill_bytes = 0; // includes input, result and transpose scratch
   };
   struct Snapshot
   {
@@ -55,6 +56,7 @@ public:
    * raster geometry nor generation. Zero clamps to one, oversized to the cap. */
   void set_pixel_budget (std::size_t pixels) noexcept
   { pixel_budget_ = pixels == 0 ? 1 : pixels > pixel_budget ? pixel_budget : pixels; }
+  void set_admission (std::shared_ptr<WorkAdmission>);
   void invalidate () noexcept;
   void set_request (Request request);
   bool has_processor () const noexcept { return bool (request_.process) || bool (request_.raster_process); }

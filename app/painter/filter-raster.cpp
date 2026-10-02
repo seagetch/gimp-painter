@@ -11,8 +11,13 @@
 #include <vector>
 #ifdef G_OS_WIN32
 #include <io.h>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
 #else
 #include <unistd.h>
+#include <sys/statvfs.h>
 #endif
 
 namespace GimpPainter {
@@ -22,6 +27,31 @@ namespace {
   throw std::runtime_error (std::string ("Filter temporary raster ") + operation +
                            ": " + (errno ? g_strerror (errno) : "unexpected end or incomplete I/O"));
 }
+}
+std::uint64_t filter_available_space (const std::string& directory)
+{
+  if (directory.empty () || directory.find ('\0') != std::string::npos)
+    throw std::invalid_argument ("Invalid filter spill directory");
+#ifdef G_OS_WIN32
+  // Quota-aware64-bit API, including UTF-8/UNC paths. Native Windows tests remain required.
+  // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getdiskfreespaceexw
+  std::string path = directory;
+  if (path.back () != '/' && path.back () != '\\') path += '\\';
+  std::unique_ptr<gunichar2, decltype (&g_free)> wide (g_utf8_to_utf16 (path.c_str (), -1, nullptr, nullptr, nullptr), g_free);
+  if (!wide) throw std::invalid_argument ("Invalid UTF-8 filter spill directory");
+  ULARGE_INTEGER available;
+  if (!GetDiskFreeSpaceExW (reinterpret_cast<LPCWSTR> (wide.get ()), &available, nullptr, nullptr))
+    throw std::runtime_error ("Filter filesystem capacity query failed");
+  return available.QuadPart;
+#else
+  struct statvfs data;
+  if (statvfs (directory.c_str (), &data) != 0) io_error ("filesystem capacity query failed");
+  const auto unit = std::uint64_t (data.f_frsize ? data.f_frsize : data.f_bsize);
+  const auto blocks = std::uint64_t (data.f_bavail);
+  if (!unit) throw std::runtime_error ("Filter filesystem has no allocation unit");
+  return blocks > std::numeric_limits<std::uint64_t>::max () / unit ?
+    std::numeric_limits<std::uint64_t>::max () : blocks * unit;
+#endif
 }
 TemporaryFilterRaster::TemporaryFilterRaster (const std::string& directory, std::uint64_t size)
   : size_ (size), thread_ (std::this_thread::get_id ())

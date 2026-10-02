@@ -1,0 +1,67 @@
+{
+  "scope": "Config-owned FilterLayer memory/spill FIFO admission, bounded file extent and advisory worker capacity check",
+  "sealed_at_utc": "2026-10-02T10:06:57.936637+00:00",
+  "base_head": "2c9e557853513f63d3b74b3f404cc63f6074740e",
+  "owned_sources_sha256": {
+    "app/config/gimpgeglconfig.c": "9a88ef495155eaa308304b00ab9f4f64800a156d472c316cdadac64b0941f748",
+    "app/config/meson.build": "1a9fbdee1c204ff281d9b82b78b57c8ddb398b0b646353421a6c5f38725eae55",
+    "app/config/gimppainterfilterconfig.cpp": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+    "app/config/gimppainterfilterconfig.h": "91c6442e057efc2434332a4d0fa6899460f3772439592bd4e495002596cc1998",
+    "app/config/gimppainterfilterconfig.hpp": "2a6f2bd8397f82dec5c8361756589941395e15c75b3782afad8e58125e75024d",
+    "app/core/gimpfilterlayer.cpp": "cad3f3fd1841204c5f546b7f8d9ebfae930c1572f987a8e221e0521df55efc85",
+    "app/dialogs/preferences-dialog.c": "d8a281c67411f8ce32365cb158d4ffa8a796800d9c7b2092adbda09134c7e249",
+    "app/painter/filter-raster.cpp": "4b6337d71103cbdbde5161abdf830172e38bd3122cbcbb91409275e40bfe9ed0",
+    "app/painter/filter-raster.hpp": "63a348ddc3783c8f2691ea26207c15ed5027650c56a3e9fdc1ed46741b2bc498",
+    "app/painter/filter-spool.cpp": "5fb87a5c088be50f9328824b4a181e6d39e70d4a82656f22f1ab9c54405ce2ba",
+    "app/painter/filter-scheduler.cpp": "fe6c8fdb49e93d503e84e819eef27fa4eb2060e59188f6e574b0a153e7762b7b",
+    "app/painter/filter-scheduler.hpp": "cdaf83315d3ec37fa15c4078d8479bac67a41d4cb21b159556385942a6d61cd2",
+    "app/painter/work-admission.hpp": "d483512981f42b90c68fc4f3e11ae4f03f4e8e74612a483b3f9d20394d96dfbf",
+    "app/painter/tests/test-filter-raster.cpp": "68cb63b8fc4b21e85ae3acc8ede94de32d0b1af02370bc27c1326a13c52016af",
+    "app/painter/tests/test-filter-spool.cpp": "befacf7bd2e2668f3d6f3228814365406ba7d8b2f0f62b98f0884d1a67568c08",
+    "app/painter/tests/test-filter-scheduler.cpp": "0c7458ab1091120500b4b145cc2f5d7979984a66ce770ce5c08ada84f099c436",
+    "app/painter/tests/test-work-admission.cpp": "dfea75b460016351f2eaa984cd11bf2e7fdfb2b43d1a4b21848109cd954a1133",
+    "app/tests/test-gimp-filter-layer.c": "5294883a28d019f262af007f58d249a80651a3104eff7c84c15e4eb26822892a",
+    "app/tests/test-gimp-filter-layout.cpp": "bf36912d40271c59207d90da2d58b818805e390447d9fbbac1357c65283d2590",
+    "migration/contracts/filter-spill-admission.md": "d4e2fc283a80b3e888a25fed9ebc570f543183a95177628d2f0e3fb413fb6e41",
+    "migration/tests/run_filter_layer_sanitizers.py": "3bc29aea7ec011b4020179c760d7aa494906c85b61a54b072c7a2bcebc43f738",
+    "migration/tests/run_filter_admission_sanitizers.py": "9763a1d936c35c43f4cce0194617e80b4bfd4f945efa78af472b9d7dc15d700b",
+    "migration/tests/refresh_filter_admission_sanitizers.py": "aef09e71ebf4d447aecbe438484022342dcc822701388fb8c9116e99c5b048e5"
+  },
+  "normal": [
+    [
+      "gimp:app / gimp-filter-layer",
+      "OK",
+      42.65745258331299
+    ],
+    [
+      "gimp:painter / painter-work-admission",
+      "OK",
+      0.036614418029785156
+    ],
+    [
+      "gimp:painter / painter-filter-spool",
+      "OK",
+      0.09729647636413574
+    ],
+    [
+      "gimp:painter / painter-filter-raster",
+      "OK",
+      1.4746677875518799
+    ],
+    [
+      "gimp:painter / painter-filter-scheduler",
+      "OK",
+      4.001167297363281
+    ]
+  ],
+  "sanitizers": "80 native cases,19 instrumented+26 RTTI-only;13 admission/7 raster/11 spool/35 scheduler independent cases",
+  "shared_hunks": [
+    "app/tests/meson.build: only gimp-filter-layer aggregate timeout180 (individual convergence deadlines unchanged)"
+  ],
+  "limitations": [
+    "Linux only; Windows filesystem API branch not run",
+    "Advisory space check does not reserve OS blocks; per-process logical quota excludes filesystem overhead/other apps",
+    "No global GEGL memory or unconditional low-latency claim; measured final close215ms remains open",
+    "Historical failed cache-generation and test-initialization runs retained;60-second suite timeout retained"
+  ]
+}

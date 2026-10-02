@@ -601,6 +601,14 @@ static void recursive_step_does_not_consume_another_chunk ()
     }
 }
 
+static void admission_switch_keeps_restored_cache ()
+{
+  FilterScheduler scheduler;scheduler.mark_loaded();auto before=scheduler.snapshot();
+  scheduler.set_admission(std::make_shared<WorkAdmission>(WorkAdmission::Limits{1,1024,0}));
+  auto after=scheduler.snapshot();g_assert_cmpuint(after.generation,==,before.generation);
+  g_assert_cmpuint(after.cache_generation,==,before.cache_generation);g_assert_true(after.cache_complete);
+  g_assert_true(scheduler.state()==FilterScheduler::State::clean);
+}
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, nullptr);
@@ -620,6 +628,7 @@ int main (int argc, char **argv)
   ADD (cancel_request_is_not_completion); ADD (changes_during_preparation); ADD (changes_during_import);
   ADD (failures_do_not_retry); ADD (close_does_not_wait); ADD (loaded_cache_not_reexecuted);
   ADD (invalid_request_and_result); ADD (reentry_at_commit);
+  ADD (admission_switch_keeps_restored_cache);
   const auto result = g_test_run ();
   g_assert_cmpint (g_rmdir (spool_directory.c_str ()), ==, 0);
   return result;

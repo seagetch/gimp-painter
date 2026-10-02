@@ -14,6 +14,7 @@ extern "C" {
 #include "gimpcontainer.h"
 #include "gimpfilterstack.h"
 #include "gimpimage.h"
+#include "gimp.h"
 #include "gimpimage-undo.h"
 #include "gimpitemundo.h"
 #include "gimppickable.h"
@@ -24,6 +25,7 @@ extern "C" {
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/filter-scheduler.hpp"
+#include "config/gimppainterfilterconfig.hpp"
 #include "painter/fair-dispatcher.hpp"
 #include "painter/filter-edge.hpp"
 #include "painter/filter-gauss.hpp"
@@ -94,6 +96,7 @@ void owner_active (GimpFilter *, gpointer);
 void owner_image_changed (GObject *, GParamSpec *, gpointer);
 void owner_format_changed (GimpDrawable *, gpointer);
 void image_profile_changed (GObject *, gpointer);
+void filter_budget_changed (GObject *, GParamSpec *, gpointer);
 void image_disconnected (GimpObject *, gpointer);
 
 struct FilterImpl
@@ -112,6 +115,7 @@ struct FilterImpl
     own_connections.clear ();
     image_connection.close ();
     profile_connection.close ();
+    config_connection.close ();
     staged.reset ();
     stack.reset ();
     lower_objects.clear ();
@@ -142,10 +146,12 @@ struct FilterImpl
   {
     image_connection.close ();
     profile_connection.close ();
+    config_connection.close ();
     if (GimpImage *image = gimp_item_get_image (GIMP_ITEM (owner)))
       {
         image_connection = connect (G_OBJECT (image), "disconnect", G_CALLBACK (image_disconnected));
         profile_connection = connect (G_OBJECT (image), "profile-changed", G_CALLBACK (image_profile_changed));
+        config_connection = connect (G_OBJECT (image->gimp->config), "notify::painter-filter-spill-size", G_CALLBACK (filter_budget_changed));
       }
   }
   GimpContainer *current_stack ()
@@ -373,6 +379,12 @@ struct FilterImpl
             if (valid)
               {
                 const bool identity = flags && options.horizontal == 0 && options.vertical == 0;
+                if (spill) {
+                  const std::uint64_t multiplier = options.vertical > 0 ? 12 : 8;
+                  if (std::uint64_t (request.width) > std::numeric_limits<std::uint64_t>::max () / multiplier / request.height)
+                    throw std::invalid_argument ("Gaussian spill reservation exceeds64-bit accounting");
+                  request.peak_spill_bytes = std::uint64_t (request.width) * request.height * multiplier;
+                }
                 const auto width = request.width, height = request.height;
                 request.process = [width, height, options, identity] (const FilterScheduler::Bytes& input,
                                                                       std::atomic<bool>& cancel,
@@ -709,6 +721,13 @@ struct FilterImpl
         std::unique_ptr<gchar, decltype (&g_free)> guard (directory, g_free);
         scheduler.set_spool_directory (directory ? directory : "");
       }
+    if (auto* image = gimp_item_get_image (GIMP_ITEM (owner))) {
+      try { scheduler.set_admission (filter_admission_for_config (G_OBJECT (image->gimp->config))); }
+      catch (const std::exception& error) {
+        if (scheduler.state () != FilterScheduler::State::failed) scheduler.reject (error.what ());
+        return scheduler.step (false, {}, {}, {});
+      }
+    }
     scheduler.set_pixel_budget (previous == FilterScheduler::State::importing ? import_budget : read_budget);
     /* The genuine 2.8 references use native encoded RGB/Gray bytes. Do not
      * silently quantize float/linear/indexed inputs and claim compatibility.
@@ -825,7 +844,7 @@ struct FilterImpl
   std::vector<WeakRef<GObject>> graph_nodes;
   std::size_t graph_node_cursor = 0, graph_fish_cursor = 0;
   bool graph_valid = false, graph_recheck = false;
-  Connection image_connection, profile_connection;
+  Connection image_connection, profile_connection, config_connection;
   std::vector<WeakRef<GObject>> lower_objects;
   bool topology_dirty = false;
   gint64 maximum_quantum_us = 0, maximum_graph_us = 0, maximum_read_us = 0;
@@ -865,6 +884,10 @@ void owner_removed (GimpItem *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { impl.invalidate (); }); }
 void owner_size (GimpViewable *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { impl.configure (); }); }
+void filter_budget_changed (GObject *, GParamSpec *, gpointer data)
+{ visit (data, [] (FilterImpl& impl) {
+    if (impl.scheduler.state () != FilterScheduler::State::clean) impl.invalidate ();
+  }); }
 void owner_offset (GObject *, GParamSpec *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { impl.invalidate (); }); }
 void owner_active (GimpFilter *, gpointer data)

@@ -30,6 +30,8 @@
 
 #include "gimprc-blurbs.h"
 #include "gimpgeglconfig.h"
+#include "gimppainterfilterconfig.h"
+#include "painter/gimp-painter-binding.h"
 
 #include "core/gimp-utils.h"
 
@@ -52,6 +54,7 @@ enum
   PROP_NUM_PROCESSORS,
   PROP_TILE_CACHE_SIZE,
   PROP_USE_OPENCL,
+  PROP_PAINTER_FILTER_SPILL_SIZE,
 
   /* ignored, only for backward compatibility: */
   PROP_STINGY_MEMORY_USE
@@ -59,6 +62,7 @@ enum
 
 
 static void   gimp_gegl_config_constructed  (GObject             *object);
+static void   gimp_gegl_config_dispose      (GObject             *object);
 static void   gimp_gegl_config_finalize     (GObject             *object);
 static void   gimp_gegl_config_set_property (GObject             *object,
                                              guint                property_id,
@@ -86,6 +90,7 @@ gimp_gegl_config_class_init (GimpGeglConfigClass *klass)
   parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructed  = gimp_gegl_config_constructed;
+  object_class->dispose      = gimp_gegl_config_dispose;
   object_class->finalize     = gimp_gegl_config_finalize;
   object_class->set_property = gimp_gegl_config_set_property;
   object_class->get_property = gimp_gegl_config_get_property;
@@ -156,6 +161,13 @@ gimp_gegl_config_class_init (GimpGeglConfigClass *klass)
                             FALSE,
                             GIMP_PARAM_STATIC_STRINGS);
 
+  GIMP_CONFIG_PROP_MEMSIZE (object_class, PROP_PAINTER_FILTER_SPILL_SIZE,
+                            "painter-filter-spill-size",
+                            "Painter filter temporary storage",
+                            "Maximum logical temporary bytes reserved across automatic Painter filter jobs; zero disables file-backed jobs",
+                            0, G_MAXUINT64, ((guint64) 8) * 1024 * 1024 * 1024,
+                            GIMP_PARAM_STATIC_STRINGS);
+
   /*  only for backward compatibility:  */
   GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_STINGY_MEMORY_USE,
                             "stingy-memory-use",
@@ -167,6 +179,7 @@ gimp_gegl_config_class_init (GimpGeglConfigClass *klass)
 static void
 gimp_gegl_config_init (GimpGeglConfig *config)
 {
+  gimp_painter_filter_config_init (G_OBJECT (config));
 }
 
 static void
@@ -174,7 +187,15 @@ gimp_gegl_config_constructed (GObject *object)
 {
   G_OBJECT_CLASS (parent_class)->constructed (object);
 
+  gimp_painter_filter_config_activate (object);
   gimp_debug_add_instance (object, G_OBJECT_GET_CLASS (object));
+}
+
+static void
+gimp_gegl_config_dispose (GObject *object)
+{
+  gimp_painter_binding_close (object, NULL);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -215,6 +236,10 @@ gimp_gegl_config_set_property (GObject      *object,
 
     case PROP_NUM_PROCESSORS:
       gegl_config->num_processors = g_value_get_int (value);
+      break;
+
+    case PROP_PAINTER_FILTER_SPILL_SIZE:
+      gimp_painter_filter_config_set_spill (object, g_value_get_uint64 (value));
       break;
 
     case PROP_TILE_CACHE_SIZE:
@@ -259,6 +284,10 @@ gimp_gegl_config_get_property (GObject    *object,
 
     case PROP_NUM_PROCESSORS:
       g_value_set_int (value, gegl_config->num_processors);
+      break;
+
+    case PROP_PAINTER_FILTER_SPILL_SIZE:
+      g_value_set_uint64 (value, gimp_painter_filter_config_get_spill (object));
       break;
 
     case PROP_TILE_CACHE_SIZE:
