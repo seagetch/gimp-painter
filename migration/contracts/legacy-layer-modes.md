@@ -78,3 +78,22 @@ mapping: all 7,680 pixels match the real old direct projection. A shared-layout
 file's canonical historical interpretation does not prove arbitrary authorship;
 explicit standard recovery remains available and modern typed scalar records
 retain modern identities. See the reader contract for its source-backed tests.
+
+## Native PaintCore direct dispatch
+
+The cached operation returned by `gimp_layer_mode_get_operation()` is also
+called directly by native PaintCore, without a GEGL source graph, prepare, or
+parent-process pass. It now explicitly marks that route, accepts the supplied
+ROI as its source coverage, and reads the effective `opacity` field that the
+paint loops set. Graph evaluation continues to honor its real auxiliary extent
+and uses the parent-adjusted effective opacity, including an absent mask in a
+requested ROI. Direct calls must not be treated as a bottom graph layer.
+
+The pinned drawable paint path scales opacity by255.999; projection scales it
+by255.0. The direct adapter preserves that difference instead of changing the
+projection oracle. A216-case direct-call matrix (nine modes, six opacities,
+four mask states,64 pixels each) exercises cached dispatch, while all72 real
+old projection cases still pass. The operation, cached registry and test harness
+pass focused ASan/UBSan. This fixes the discovered native Painter Normal no-op
+caused by an empty unprepared source extent. The developing Fill Brush's actual
+native paint/Undo comparison is a separate integration gate.

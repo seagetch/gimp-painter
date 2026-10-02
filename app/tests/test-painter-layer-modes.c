@@ -13,6 +13,7 @@
 #include "core/gimplayermask.h"
 #include "core/gimppickable.h"
 #include "operations/operations-types.h"
+#include "operations/layer-modes/gimp-layer-modes.h"
 #include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
 #include "tests.h"
 #include "gimp-app-test-utils.h"
@@ -105,6 +106,32 @@ static void genuine_projection_and_kernel (void)
       }
   g_free(a);g_free(b);
 }
+static void direct_paint_operation (void)
+{
+  static const guint raw_modes[] = {0,3,23,24,25,26,27,28,29};
+  static const double opacities[] = {0,.1,.5,.65,.99,1};
+  static const gint masks[] = {-1,0,128,255};
+  guchar *a = read_fixture ("backdrop.rgba"), *b = read_fixture ("source.rgba");
+  const GeglRectangle rect = {13,27,64,1};
+  for (guint k=0;k<G_N_ELEMENTS(raw_modes);++k)
+    for (guint j=0;j<G_N_ELEMENTS(opacities);++j)
+      for (guint m=0;m<G_N_ELEMENTS(masks);++m)
+        {
+          GimpLayerMode mode; gfloat in[256],aux[256],out[256],mask[64];
+          gimp_painter_layer_mode_from_legacy(raw_modes[k],&mode);
+          GimpOperationLayerMode *operation = GIMP_OPERATION_LAYER_MODE(gimp_layer_mode_get_operation(mode));
+          operation->opacity = opacities[j];
+          for (guint i=0;i<256;++i) { in[i]=a[i]/255.f; aux[i]=b[i]/255.f; }
+          for (guint i=0;i<64;++i) mask[i]=masks[m]/255.f;
+          g_assert_true(operation->function(GEGL_OPERATION(operation),in,aux,masks[m]<0?NULL:mask,out,64,&rect,0));
+          for (guint i=0;i<64;++i) {
+            guchar expected[4];
+            gimp_painter_legacy_composite_u8(a+4*i,b+4*i,expected,(guint)(opacities[j]*255.999),masks[m]<0?256:masks[m],raw_modes[k]);
+            for (guint c=0;c<4;++c) g_assert_cmpfloat(out[4*i+c],==,expected[c]/255.f);
+          }
+        }
+  g_free(a);g_free(b);
+}
 int main (int argc, char **argv)
 {
   int result;
@@ -112,6 +139,7 @@ int main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
   g_test_add_func ("/painter-layer-modes/genuine_projection_and_kernel",genuine_projection_and_kernel);
+  g_test_add_func ("/painter-layer-modes/direct_paint_operation",direct_paint_operation);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");
   gimp_exit (gimp,TRUE); return result;

@@ -6,6 +6,7 @@ Does not claim to instrument all upstream GIMP/dependencies. Original build
 objects are never replaced. Hold /tmp/gimp-painter-build.lock when sharing it.
 """
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -21,11 +22,12 @@ build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
 output = build / "layer-mode-sanitizers"
 output.mkdir(exist_ok=True)
-report = {"scope": "Painter legacy operation and C app test; remaining upstream GIMP/GEGL/dependencies uninstrumented",
+report = {"scope": "Painter legacy operation, cached direct-mode dispatch and C app test; remaining upstream GIMP/GEGL/dependencies uninstrumented",
           "sanitizers": ["address", "undefined"], "leak_detection": False, "instrumented_cpp_rtti": False,
           "sources": [], "commands": []}
 flags = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-O1"]
 wanted = {"app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "app/operations/layer-modes/gimp-layer-modes.c",
           "app/tests/test-painter-layer-modes.c"}
 replacements = {}
 extra = []
@@ -75,7 +77,7 @@ link = [replacements.get(arg, arg) for arg in link]
 # Replace instrumented members inside private thin archives. Leaving the old
 # members available can pull in their RTTI COMDAT symbols and duplicate feature
 # definitions when -frtti is used for the vptr sanitizer.
-for archive in ["app/operations/layer-modes-legacy/libapplayermodeslegacy.a"]:
+for archive in ["app/operations/layer-modes-legacy/libapplayermodeslegacy.a", "app/operations/layer-modes/libapplayermodes.a"]:
     members = subprocess.check_output(["ar", "t", archive], cwd=build, text=True).splitlines()
     rewritten = []
     for member in members:
@@ -98,6 +100,7 @@ env.update({"GIMP_TESTING_ABS_TOP_SRCDIR": str(root),
             "UI_TEST": "yes", "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
             "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"})
 result = subprocess.run([str(exe)], cwd=build, env=env, capture_output=True, text=True)
+report["source_sha256"] = {p: hashlib.sha256((root/p).read_bytes()).hexdigest() for p in wanted}
 report.update({"exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr})
 args.report.write_text(json.dumps(report, indent=2) + "\n")
 print(result.stdout)

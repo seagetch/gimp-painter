@@ -32,6 +32,7 @@
 #include "gimpoperationlayermode-blend.h"
 
 #include "gimp-layer-modes.h"
+#include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
 
 
 typedef struct _GimpLayerModeInfo GimpLayerModeInfo;
@@ -1436,6 +1437,8 @@ gimp_layer_mode_get_operation (GimpLayerMode mode)
           layer_mode->blend_space     = gimp_layer_mode_get_blend_space (mode);
           layer_mode->composite_space = gimp_layer_mode_get_composite_space (mode);
           layer_mode->composite_mode  = gimp_layer_mode_get_paint_composite_mode (mode);
+          if (gimp_painter_layer_mode_is_compatibility (mode))
+            gimp_painter_legacy_prepare_direct (operation);
         }
     }
 

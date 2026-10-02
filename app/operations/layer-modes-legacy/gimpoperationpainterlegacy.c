@@ -119,6 +119,13 @@ gboolean
 gimp_painter_layer_mode_is_compatibility (GimpLayerMode mode)
 { return mode >= GIMP_LAYER_MODE_PAINTER_ERASE && mode <= GIMP_LAYER_MODE_PAINTER_MULTIPLY; }
 
+void
+gimp_painter_legacy_prepare_direct (GeglOperation *operation)
+{
+  g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (operation, GIMP_TYPE_OPERATION_PAINTER_LEGACY));
+  ((GimpOperationPainterLegacy *) operation)->direct_paint = TRUE;
+}
+
 static guint byte (gfloat value)
 {
   if (! isfinite (value) || value <= 0.0f) return 0;
@@ -166,7 +173,11 @@ process (GeglOperation *op, void *in_p, void *aux_p, void *mask_p, void *out_p,
   GimpOperationLayerMode *layer_mode = (gpointer) op;
   const gfloat *in = in_p, *aux = aux_p, *mask = mask_p;
   gfloat *out = out_p;
-  guint raw = 0, opacity = (guint) CLAMP (layer_mode->prop_opacity * 255.0, 0.0, 255.0);
+  /* Projection used opacity*255; old drawable paint used opacity*255.999.
+   * PaintCore supplies effective opacity directly and bypasses GEGL prepare. */
+  guint raw = 0, opacity = (guint) CLAMP (self->direct_paint ?
+                                       layer_mode->opacity * 255.999 :
+                                       layer_mode->opacity * 255.0, 0.0, 255.0);
   glong n;
   if (!gimp_painter_layer_mode_to_legacy (layer_mode->layer_mode, &raw) || !gimp_painter_layer_mode_is_compatibility (layer_mode->layer_mode))
     return FALSE;
@@ -177,12 +188,13 @@ process (GeglOperation *op, void *in_p, void *aux_p, void *mask_p, void *out_p,
       gint x = roi->x + n % roi->width, y = roi->y + n / roi->width;
       /* Old combine_regions only visits the layer rectangle. Transparent
        * pixels inside that rectangle are still meaningful for replace/IN. */
-      if (x < self->source_extent.x || y < self->source_extent.y ||
+      if (!self->direct_paint &&
+          (x < self->source_extent.x || y < self->source_extent.y ||
           (gint64) x >= (gint64) self->source_extent.x + self->source_extent.width ||
-          (gint64) y >= (gint64) self->source_extent.y + self->source_extent.height)
+          (gint64) y >= (gint64) self->source_extent.y + self->source_extent.height))
         { memcpy (out + 4*n, in + 4*n, 4 * sizeof (gfloat)); continue; }
       for (k = 0; k < 4; ++k) { a[k] = byte (in[4*n+k]); b[k] = byte (aux[4*n+k]); }
-      if (layer_mode->is_last_node)
+      if (!self->direct_paint && layer_mode->is_last_node)
         {
           memcpy (d, b, 4);
           d[3] = mask ? mult3 (opacity, b[3], m) : mult (opacity, b[3]);

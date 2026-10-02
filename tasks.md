@@ -447,6 +447,7 @@
 | 10.005 | [ ] | 旧 mode23〜29の対応を固定する | 10.004 | 数値の直接流用を禁止した対応表がある |
 | 10.005/gegl-byte-operators | [x] | 衝突する旧7modeを明示IDとGEGL byte演算へ接続する | 10.001/wire-framing-audit, 04.003 | upstream値を変えず独立modeを追加。56実旧projection fixtureをC kernel/GEGL graph/実GimpImageで全RGBA byte比較し通常/focused ASan/UBSan合格。高精度・全mode・新保存は別gate |
 | 10.005/normal-multiply-parity | [x] | 共通旧Normal/Multiplyのbyte丸めを復元する | 10.005/gegl-byte-operators | 追加16実旧sceneを含む72ケースがC kernel/GEGL/実imageで通常とfocused sanitizerに一致。共有旧形式のXCFでは別途canonical解釈を検証しmodernの意味を保持 |
+| 10.005/native-paint-mode-route | [x] | Painter modeをPaintCore直接dispatchと旧opacity演算へ接続する | 10.005/normal-multiply-parity | 未prepare graph境界による無描画を修正しeffective opacity/255.999を使用。216直接caseと72実旧projectionが通常/3unit focused sanitizer合格。Fill実stroke統合は別gate |
 | 10.006 | [ ] | FilterLayer 引数の wire 型を列挙する | 10.005 | 整数・浮動小数点・文字列・参照・未対応型を区別 |
 | 10.007 | [ ] | INT16 の writer/reader 不整合を確定する | 10.006 | サイズ宣言と実書込みの両方を fixture 化 |
 | 10.008 | [ ] | 文字列型の不整合を確定する | 10.007 | 実際に旧 reader が読める表現を記録 |

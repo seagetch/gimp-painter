@@ -12,9 +12,12 @@ struct _GimpOperationPainterLegacy
 {
   GimpOperationLayerMode parent_instance;
   GeglRectangle source_extent;
+  gboolean direct_paint;
 };
 struct _GimpOperationPainterLegacyClass { GimpOperationLayerModeClass parent_class; };
 GType gimp_operation_painter_legacy_get_type (void) G_GNUC_CONST;
+/* Cached PaintCore execution has no source graph or GEGL parent-process pass. */
+void gimp_painter_legacy_prepare_direct (GeglOperation *operation);
 /* Wire numbers are decoded explicitly, never cast into modern colliding enums. */
 gboolean gimp_painter_layer_mode_is_compatibility (GimpLayerMode mode);
 gboolean gimp_painter_layer_mode_from_legacy (guint32 raw, GimpLayerMode *mode);
