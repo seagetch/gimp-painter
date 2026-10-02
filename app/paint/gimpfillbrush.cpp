@@ -27,6 +27,7 @@ extern "C" {
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/gimp-painter-binding.h"
+#include "painter-native-stroking.hpp"
 #include "painter-bounded-fill/search.hpp"
 #include "gimp-intl.h"
 #include <algorithm>
@@ -92,6 +93,8 @@ struct BrushImpl {
  ObjectRef<GeglBuffer> observed_buffer;
  Connection target_connection,paint_query_connection;
  std::shared_ptr<TargetWatch> target_watch;
+ std::shared_ptr<NativeStrokeWatch> generic_stroke;
+ bool push_undo=true;
  const Babl* original_format=nullptr;
  int original_width=0,original_height=0,original_x=0,original_y=0;
  std::string error;
@@ -124,7 +127,7 @@ void observe_target(BrushImpl&impl) {
 struct BrushSlot:SlotSpec<GimpFillBrush,BrushImpl>{};
 gboolean check_start(GimpPaintCore*core,GList*,GimpPaintOptions*,const GimpCoords*,GError**error){
  return boundary<gboolean>(error,FALSE,[&]()->gboolean{return BindingStore::require(G_OBJECT(core)).with<BrushSlot>([&](BrushImpl&impl)->gboolean{
-  if(!impl.start_permit||!impl.starting||impl.closed){g_set_error_literal(error,G_IO_ERROR,G_IO_ERROR_NOT_SUPPORTED,"Fill Brush requires its resumable stroke adapter; generic stroking is not integrated");return FALSE;}
+  if(!impl.start_permit||!impl.starting||impl.closed){g_set_error_literal(error,G_IO_ERROR,G_IO_ERROR_NOT_SUPPORTED,"Fill Brush requires its resumable stroke adapter; bare native start is unsupported");return FALSE;}
   // Consume before native start performs any allocation, mutation or callback.
   impl.start_permit=false;impl.native_start_armed=true;return TRUE;
  });});
@@ -141,6 +144,7 @@ void constructed(GObject*o){G_OBJECT_CLASS(gimp_fill_brush_parent_class)->constr
 void dispose(GObject*o){gimp_painter_binding_close(o,nullptr);G_OBJECT_CLASS(gimp_fill_brush_parent_class)->dispose(o);}
 void queue_dab(GimpFillBrush*self,BrushImpl&impl,GimpDrawable*d,GimpPaintOptions*options,GimpSymmetry*sym){
  if(impl.closed)throw std::runtime_error("Fill owner is closed");
+ if(impl.generic_stroke)impl.generic_stroke->check();
  if(impl.preparing||(impl.draining&&!impl.interpolating))throw std::runtime_error("Fill transaction is transitioning");
  struct Preparing{bool&value;Preparing(bool&v):value(v){value=true;}~Preparing(){value=false;}} preparing(impl.preparing);
  const auto revision=impl.revision;
@@ -155,6 +159,7 @@ void queue_dab(GimpFillBrush*self,BrushImpl&impl,GimpDrawable*d,GimpPaintOptions
  if(!impl.snapshot){
   auto*pickable=GIMP_PICKABLE(gimp_image_get_projection(owner.get()));gimp_pickable_flush(pickable);
   if(impl.closed||revision!=impl.revision||!gimp_item_is_attached(GIMP_ITEM(d)))throw std::runtime_error("Fill changed during projection flush");
+  if(impl.generic_stroke)impl.generic_stroke->check();
   auto*src=gimp_pickable_get_buffer(pickable);const bool gray=gimp_image_get_base_type(owner.get())==GIMP_GRAY;const Babl*format=babl_format_with_space(gray?"Y'A u8":"R'G'B'A u8",babl_format_get_space(gegl_buffer_get_format(src)));
   auto copy=ObjectRef<GeglBuffer>::adopt(gegl_buffer_new(gegl_buffer_get_extent(src),format));gegl_buffer_copy(src,nullptr,GEGL_ABYSS_NONE,copy.get(),nullptr);
   impl.snapshot=std::make_shared<Fill::Snapshot>(copy.get(),gray?2:4,true,int(coords.x)+ox,int(coords.y)+oy);impl.image=owner;impl.drawable=target;
@@ -207,14 +212,18 @@ void finish_frame (BrushImpl& impl, bool commit) {
  impl.started=false;
  auto image=impl.image;auto drawable=impl.drawable;auto options=impl.options;
  auto*core=GIMP_PAINT_CORE(impl.owner);GList list={drawable.get(),nullptr,nullptr};
- const bool unchanged=target_current(impl,false);
- impl.target_connection.close();
  impl.clear_dabs();
  if(!impl.closed)gimp_paint_core_paint(core,&list,options.get(),GIMP_PAINT_STATE_FINISH,0);
+ const bool unchanged=target_current(impl,false);
+ impl.target_connection.close();
+ const bool accepted=commit&&!impl.cancel_requested&&!impl.closed&&
+   (!impl.generic_stroke||!impl.generic_stroke->invalid.load())&&unchanged&&
+   gimp_item_is_attached(GIMP_ITEM(drawable.get()));
+ if(accepted&&impl.generic_stroke){impl.generic_stroke->sealed.store(true);impl.generic_stroke->committed=true;}
  if(!unchanged)
   gimp_paint_core_finish(core,&list,FALSE); // preserve independently changed data, never stale rollback
- else if(commit&&!impl.cancel_requested&&gimp_item_is_attached(GIMP_ITEM(drawable.get())))
-  gimp_paint_core_finish(core,&list,TRUE);
+ else if(accepted)
+  gimp_paint_core_finish(core,&list,impl.push_undo);
  else if(core->x1==core->x2||core->y1==core->y2)gimp_paint_core_finish(core,&list,FALSE);
  else gimp_paint_core_cancel(core,&list);
  release_native_scratch(core);impl.release_frame();
@@ -289,7 +298,7 @@ gboolean gimp_fill_brush_begin(GimpFillBrush*self,GimpDrawable*d,GimpPaintOption
   auto target=ObjectRef<GimpDrawable>::retain(d);if(!target||!gimp_item_is_attached(GIMP_ITEM(d)))throw std::invalid_argument("Detached Fill drawable");
   auto image=ObjectRef<GimpImage>::retain(gimp_item_get_image(GIMP_ITEM(d)));
   if(gimp_item_is_content_locked(GIMP_ITEM(d),nullptr))throw std::invalid_argument("Fill drawable is locked");
-  impl.release_frame();impl.drawable=target;impl.image=image;impl.options=ObjectRef<GimpPaintOptions>::retain(options);impl.starting=true;impl.cancel_requested=false;impl.first=true;
+  impl.release_frame();impl.drawable=target;impl.image=image;impl.options=ObjectRef<GimpPaintOptions>::retain(options);impl.starting=true;impl.cancel_requested=false;impl.first=true;impl.push_undo=true;
   try{observe_target(impl);}catch(...){impl.starting=false;impl.release_frame();throw;}
   auto*core=GIMP_PAINT_CORE(self);GList list={d,nullptr,nullptr};GError*native_error=nullptr;
   impl.start_permit=true;
@@ -336,4 +345,42 @@ void gimp_fill_brush_register (Gimp *gimp, GimpPaintRegisterCallback callback)
 {
  callback(gimp,GIMP_TYPE_FILL_BRUSH,GIMP_TYPE_FILL_BRUSH_OPTIONS,
           "gimp-bucket-fill-brush",_("Fill Brush"),"gimp-tool-bucket-fill");
+}
+
+/* Raw Stroke, native Path and Boundary all arrive with image-space coordinates.
+ * The existing owner APIs perform the one per-family offset conversion. */
+gboolean gimp_fill_brush_stroke (GimpPaintCore* core, GimpDrawable* drawable,
+                                 GimpPaintOptions* options, const GimpPaintStrokeSegment* segments,
+                                 gsize count, gboolean push_undo, GError** error) {
+ return boundary<gboolean>(error,FALSE,[&]()->gboolean {
+  auto owner=ObjectRef<GimpFillBrush>::retain(GIMP_FILL_BRUSH(core));
+  auto target=ObjectRef<GimpDrawable>::retain(drawable);
+  auto option_lease=ObjectRef<GimpPaintOptions>::retain(options);
+  auto image=ObjectRef<GimpImage>::retain(gimp_item_get_image(GIMP_ITEM(drawable)));
+  const auto*first=native_stroke_validate(segments,count,validate_coords);
+  return BindingStore::require(G_OBJECT(core)).with<BrushSlot>([&](BrushImpl&impl)->gboolean {
+   if(impl.generic_stroke||impl.started||impl.starting||impl.ending||impl.preparing||impl.draining||impl.closed)
+    throw std::runtime_error("Fill transaction is already active or transitioning");
+   if(!image||gimp_image_has_pending_paint(image.get()))throw std::runtime_error("Image already has pending paint");
+   auto watch=NativeStrokeWatch::create(options);
+   auto guard=native_stroke_guard(core,impl.generic_stroke,watch,[&]{finish_frame(impl,false);});
+   native_stroke_checked([&](GError**failure){return gimp_fill_brush_begin(owner.get(),drawable,options,first,failure);});
+   impl.push_undo=push_undo;core->last_coords=*first;
+   auto current=[&]{watch->check();if(impl.closed||impl.cancel_requested||!impl.started)throw std::runtime_error("Fill generic stroke cancelled");};
+   current();
+   native_stroke_segments(segments,count,watch,[&](const GimpCoords*coords){
+    current();
+    struct Transition { bool& value;Transition(bool&v):value(v){value=true;}~Transition(){value=false;} } transition(impl.preparing);
+    GList list={drawable,nullptr,nullptr};
+    gimp_paint_core_paint(core,&list,options,GIMP_PAINT_STATE_FINISH,0);current();
+    core->cur_coords=*coords;core->last_coords=*coords;impl.first=true;
+    gimp_paint_core_paint(core,&list,options,GIMP_PAINT_STATE_INIT,0);current();
+   },[&](const GimpCoords*coords,GError**failure){current();return gimp_fill_brush_motion_begin(owner.get(),coords,0,failure);},
+   [&](GError**failure){current();return gimp_fill_brush_step(owner.get(),4096,failure);});
+   current();
+   native_stroke_checked([&](GError**failure){return gimp_fill_brush_finish(owner.get(),TRUE,failure);});
+   if(!watch->committed)throw std::runtime_error("Fill generic stroke cancelled before commit");
+   return TRUE;
+  });
+ });
 }

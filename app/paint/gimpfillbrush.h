@@ -3,6 +3,7 @@
 #define GIMP_FILL_BRUSH_H
 #include "paint-types.h"
 #include "gimpbrushcore.h"
+#include "gimppaintcore-stroke.h"
 #include "gimppaintoptions.h"
 G_BEGIN_DECLS
 #define GIMP_TYPE_FILL_BRUSH (gimp_fill_brush_get_type())
@@ -16,7 +17,7 @@ typedef struct { GimpPaintOptionsClass parent; } GimpFillBrushOptionsClass;
 GType gimp_fill_brush_get_type(void) G_GNUC_CONST;
 GType gimp_fill_brush_options_get_type(void) G_GNUC_CONST;
 void gimp_fill_brush_register (Gimp *gimp, GimpPaintRegisterCallback callback);
-/* Generic GimpPaintCore stroking is explicitly refused until integrated. */
+/* Bare native start remains refused; generic strokes use the owned facade. */
 gboolean gimp_fill_brush_begin (GimpFillBrush *brush, GimpDrawable *drawable,
                                 GimpPaintOptions *options, const GimpCoords *coords,
                                 GError **error);
@@ -38,5 +39,8 @@ gboolean gimp_fill_brush_finish (GimpFillBrush *brush, gboolean commit, GError *
 gboolean gimp_fill_brush_step(GimpFillBrush *brush, gsize budget, GError **error);
 /* Cancel the entire transaction, rolling back any already-published dabs. */
 void gimp_fill_brush_cancel_pending(GimpFillBrush *brush);
+/* One owned native transaction across all prepared subpaths. */
+gboolean gimp_fill_brush_stroke (GimpPaintCore*, GimpDrawable*, GimpPaintOptions*,
+                                const GimpPaintStrokeSegment*, gsize, gboolean push_undo, GError**);
 G_END_DECLS
 #endif

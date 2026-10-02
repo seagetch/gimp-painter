@@ -28,12 +28,14 @@ extern "C" {
 #include "paint/gimppaintcore.h"
 #include "paint/gimppaintoptions.h"
 #include "tests.h"
+#include "painter-owned-stroke-trace.h"
 }
 
 #define WIDTH 90
 #define HEIGHT 70
 static void dump(int id,const char*phase,GimpDrawable*d){guchar p[WIDTH*HEIGHT*4];gegl_buffer_get(gimp_drawable_get_buffer(d),GEGL_RECTANGLE(0,0,WIDTH,HEIGHT),1,babl_format("R'G'B'A u8"),p,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);printf("BRUSH %d %s ",id,phase);for(unsigned i=0;i<sizeof p;++i)printf("%02x",p[i]);puts("");}
 int main(int argc,char**argv){
+ const char*generic_route=g_getenv("PAINTER_OWNED_GENERIC_ROUTE");
  const bool use_paper=g_getenv("PAINTER_FILL_PAPER_FIXTURE")!=nullptr;
  const bool async=argc>1&&g_str_equal(argv[1],"async");
  const bool queued=argc>1&&!async;
@@ -57,12 +59,15 @@ int main(int argc,char**argv){
   }
   gimp_context_set_brush(GIMP_CONTEXT(options),brush);GimpDynamics*dyn=GIMP_DYNAMICS(g_object_new(GIMP_TYPE_DYNAMICS,"name","fill-no-dynamics",NULL));gimp_context_set_dynamics(GIMP_CONTEXT(options),dyn);
   GimpPaintCore*core=GIMP_PAINT_CORE(g_object_new(type,"undo-desc","fill oracle",NULL));GimpCoords c=GIMP_COORDS_DEFAULT_VALUES;c.x=43;c.y=40;c.pressure=1;GError*error=NULL;
-  gimp_image_undo_free(image);g_assert(gimp_fill_brush_begin(GIMP_FILL_BRUSH(core),d,options,&c,&error));g_assert_no_error(error);
+  gimp_image_undo_free(image);
+  if(generic_route){g_assert(owned_trace_stroke(generic_route,core,d,options,c,FALSE,FALSE,&error));g_assert_no_error(error);}
+  else {g_assert(gimp_fill_brush_begin(GIMP_FILL_BRUSH(core),d,options,&c,&error));g_assert_no_error(error);
   g_assert(motion(GIMP_FILL_BRUSH(core),&c,0,&error));g_assert_no_error(error);
   if(!queued)while(!gimp_fill_brush_step(GIMP_FILL_BRUSH(core),1024,&error))g_assert_no_error(error);
   for(int n=1;n<=5;++n){c.x+=2;c.y+=.5;g_assert(motion(GIMP_FILL_BRUSH(core),&c,n*20,&error));g_assert_no_error(error);if(!queued)while(!gimp_fill_brush_step(GIMP_FILL_BRUSH(core),1024,&error))g_assert_no_error(error);}
   while(!gimp_fill_brush_step(GIMP_FILL_BRUSH(core),37,&error))g_assert_no_error(error);
   g_assert(gimp_fill_brush_finish(GIMP_FILL_BRUSH(core),TRUE,&error));g_assert_no_error(error);
+  }
   dump(id,"finish",d);g_assert(gimp_image_undo(image));dump(id,"undo",d);g_assert(gimp_image_redo(image));dump(id,"redo",d);
   gimp_paint_core_cleanup(core);g_object_unref(core);g_object_unref(dyn);g_object_unref(brush);g_object_unref(options);g_object_unref(image);
  }puts("FILL_BRUSH_CAPTURE_COMPLETE");return 0;

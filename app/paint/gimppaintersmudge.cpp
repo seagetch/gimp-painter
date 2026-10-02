@@ -27,6 +27,7 @@ extern "C" {
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/gimp-painter-binding.h"
+#include "painter-native-stroking.hpp"
 #include "painter-smudge/legacy-pixels.hpp"
 #include "painter-mypaint-surface/legacy-mask-transform.hpp"
 #include "painter-mypaint-surface/legacy-generated-mask.hpp"
@@ -72,6 +73,8 @@ struct State {
   ObjectRef<GeglBuffer> observed;
   Connection buffer_connection, pending_connection;
   std::shared_ptr<Watch> watch;
+  std::shared_ptr<NativeStrokeWatch> generic_stroke;
+  bool push_undo = true;
   const Babl* format = nullptr;
   int width = 0, height = 0, offset_x = 0, offset_y = 0;
   int size = 0;
@@ -181,7 +184,7 @@ gboolean check_start (GimpPaintCore* core, GList*, GimpPaintOptions*, const Gimp
     coordinates_valid (coords);
     return BindingStore::require (G_OBJECT (core)).with<SmudgeSlot> ([&] (State& state) -> gboolean {
       if (state.closed || state.active || state.processing || state.ending || !state.starting || !state.start_permit)
-        throw std::runtime_error ("Painter Smudge requires its owned stroke adapter; generic stroking is not integrated");
+        throw std::runtime_error ("Painter Smudge requires its owned stroke adapter; bare native start is unsupported");
       state.start_permit = false;state.native_start_armed = true;return TRUE;
     });
   });
@@ -320,6 +323,7 @@ void motion (GimpPaintCore* core, GimpDrawable* drawable, GimpPaintOptions* opti
   GimpCoords coords = *gimp_symmetry_get_origin (symmetry);
   int ox, oy;gimp_item_get_offset (GIMP_ITEM (drawable), &ox, &oy);if (!state.local_coordinates) { coords.x -= ox;coords.y -= oy; }coordinates_valid (&coords);
   const auto current = [&] {
+    if (state.generic_stroke) state.generic_stroke->check ();
     int x, y;gimp_item_get_offset (GIMP_ITEM (drawable), &x, &y);
     if (state.closed || state.cancel_requested || state.revision != revision || !gimp_item_is_attached (GIMP_ITEM (drawable)) ||
         gimp_item_get_image (GIMP_ITEM (drawable)) != image.get () || gimp_item_is_content_locked (GIMP_ITEM (drawable), nullptr) ||
@@ -515,10 +519,13 @@ void finish_frame (State& state, bool commit) {
   struct Ending { bool& value;~Ending () { value = false; } } ending {state.ending};
   auto image = state.image;auto drawable = state.drawable;auto options = state.options;
   auto* core = GIMP_PAINT_CORE (state.owner);GList list = {drawable.get (), nullptr, nullptr};
-  const bool safe = frame_current (state, false);state.buffer_connection.close ();
   if (!state.closed) gimp_paint_core_paint (core, &list, GIMP_PAINT_OPTIONS (options.get ()), GIMP_PAINT_STATE_FINISH, 0);
+  const bool safe = frame_current (state, false);state.buffer_connection.close ();
+  const bool accepted = commit && !state.cancel_requested && !state.closed && state.error.empty () && safe &&
+    (!state.generic_stroke || !state.generic_stroke->invalid.load ()) && gimp_item_is_attached (GIMP_ITEM (drawable.get ()));
+  if (accepted && state.generic_stroke) { state.generic_stroke->sealed.store (true);state.generic_stroke->committed = true; }
   if (!safe || core->x1 == core->x2 || core->y1 == core->y2) gimp_paint_core_finish (core, &list, FALSE);
-  else if (commit && !state.cancel_requested && state.error.empty ()) gimp_paint_core_finish (core, &list, TRUE);
+  else if (accepted) gimp_paint_core_finish (core, &list, state.push_undo);
   else gimp_paint_core_cancel (core, &list);
   release_scratch (core);state.release_frame ();
 }
@@ -566,7 +573,7 @@ gboolean gimp_painter_smudge_begin (GimpPainterSmudge* smudge, GimpDrawable* dra
       auto query = std::unique_ptr<std::shared_ptr<Watch>> (new std::shared_ptr<Watch> (state.watch));
       state.watch->busy.store (true, std::memory_order_release);
       state.pending_connection = Connection::connect (ObjectRef<GObject>::retain (G_OBJECT (image.get ())), "query-pending-paint", G_CALLBACK (pending_paint), query.get (), release_watch);query.release ();
-      state.first = true;state.cancel_requested = false;state.error.clear ();state.starting = true;
+      state.first = true;state.cancel_requested = false;state.push_undo = true;state.error.clear ();state.starting = true;
       auto* core = GIMP_PAINT_CORE (smudge);GList list = {drawable, nullptr, nullptr};GError* native_error = nullptr;
       state.start_permit = true;
       const bool started = gimp_paint_core_start (core, &list, options, coords, &native_error);state.start_permit = false;state.native_start_armed = false;state.starting = false;
@@ -655,6 +662,42 @@ gboolean gimp_painter_smudge_finish (GimpPainterSmudge* smudge, gboolean commit,
       if (state.active && !frame_current (state)) { finish_frame (state, false);throw std::runtime_error ("Legacy Smudge target changed; independent pixels preserved"); }
       const std::string failure = state.error;finish_frame (state, commit);
       if (commit && !failure.empty ()) throw std::runtime_error (failure);
+      return TRUE;
+    });
+  });
+}
+
+gboolean gimp_painter_smudge_stroke (GimpPaintCore* core, GimpDrawable* drawable,
+                                     GimpPaintOptions* options, const GimpPaintStrokeSegment* segments,
+                                     gsize count, gboolean push_undo, GError** error) {
+  return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
+    auto owner = ObjectRef<GimpPainterSmudge>::retain (GIMP_PAINTER_SMUDGE (core));
+    auto target = ObjectRef<GimpDrawable>::retain (drawable);
+    auto option_lease = ObjectRef<GObject>::retain (G_OBJECT (options));
+    auto image = ObjectRef<GimpImage>::retain (gimp_item_get_image (GIMP_ITEM (drawable)));
+    const auto* first = native_stroke_validate (segments, count, coordinates_valid);
+    return BindingStore::require (G_OBJECT (core)).with<SmudgeSlot> ([&] (State& state) -> gboolean {
+      if (state.generic_stroke || state.active || state.starting || state.processing || state.ending || state.closed)
+        throw std::runtime_error ("Legacy Smudge already active or closed");
+      if (!image || gimp_image_has_pending_paint (image.get ())) throw std::runtime_error ("Image already has pending paint");
+      auto watch = NativeStrokeWatch::create (options);
+      auto guard = native_stroke_guard (core, state.generic_stroke, watch, [&] { finish_frame (state, false); });
+      native_stroke_checked ([&] (GError** failure) { return gimp_painter_smudge_begin (owner.get (), drawable, options, first, failure); });
+      state.push_undo = push_undo;core->last_coords = *first;
+      auto current = [&] { watch->check ();if (state.closed || state.cancel_requested || !state.active) throw std::runtime_error ("Legacy Smudge generic stroke cancelled"); };
+      current ();
+      native_stroke_segments (segments, count, watch, [&] (const GimpCoords* coords) {
+        current ();
+        struct Transition { bool& value;Transition(bool&v):value(v){value=true;}~Transition(){value=false;} } transition(state.processing);
+        GList list = {drawable, nullptr, nullptr};
+        gimp_paint_core_paint (core, &list, options, GIMP_PAINT_STATE_FINISH, 0);current ();
+        core->cur_coords = *coords;core->last_coords = *coords;state.first = true;
+        gimp_paint_core_paint (core, &list, options, GIMP_PAINT_STATE_INIT, 0);current ();
+      }, [&] (const GimpCoords* coords, GError** failure) { current ();return gimp_painter_smudge_motion_begin (owner.get (), coords, 0, failure); },
+      [&] (GError** failure) { current ();return gimp_painter_smudge_step (owner.get (), failure); });
+      current ();
+      native_stroke_checked ([&] (GError** failure) { return gimp_painter_smudge_finish (owner.get (), TRUE, failure); });
+      if (!watch->committed) throw std::runtime_error ("Legacy Smudge generic stroke cancelled before commit");
       return TRUE;
     });
   });

@@ -1,0 +1,75 @@
+{
+  "commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "scope": "Real legacy generic Stroke, Vectors and Boundary, two disconnected image-space subpaths; Fill 12 RGB/selection/rate/erase and Smudge 48 Y/YA/RGB/RGBA/blending/rate/dynamics scenes per route; old compatibility environment unchanged; no GUI claim",
+  "old_sources_sha256": {
+    "app/paint/gimppaintcore-stroke.c": "2198f95722caa43864a0ef99d6495d349ac3930036488d087d3e264ca88bc62d",
+    "app/paint/gimpsmudge.c": "3f41729a4e3920d3e0abda1e1afb37eaf2d866cf184ffd168bb28381e817eff1",
+    "app/tools/gimpbucketfillbrushtool.cpp": "6fe77ccee728d3959aba54bbf4971b81cf6804de4791ed1fc615cbc8e690ee59"
+  },
+  "runs": [
+    {
+      "family": "fill-brush",
+      "route": "raw",
+      "exit_code": 0,
+      "records": 37,
+      "bytes": 1814962,
+      "sha256": "6341528d069e328358db649f82a60c9966f7638b4481f9ec851d37f7a28a46c6",
+      "binary_sha256": "4d28d2acc76241f39b491e77a919d89bc4dd0589fa47ba5f7237d1c40b2a53ad"
+    },
+    {
+      "family": "fill-brush",
+      "route": "path",
+      "exit_code": 0,
+      "records": 37,
+      "bytes": 1814962,
+      "sha256": "2ebca621a371dea2604815ca0436bfd71f12d72800112214673a033adb3fdf7f",
+      "binary_sha256": "4d28d2acc76241f39b491e77a919d89bc4dd0589fa47ba5f7237d1c40b2a53ad"
+    },
+    {
+      "family": "fill-brush",
+      "route": "boundary",
+      "exit_code": 0,
+      "records": 37,
+      "bytes": 1814962,
+      "sha256": "ccad9bf5dadd69b7702165e2576591ffc9507b51663bc9b8d90087ddd8ac744b",
+      "binary_sha256": "4d28d2acc76241f39b491e77a919d89bc4dd0589fa47ba5f7237d1c40b2a53ad"
+    },
+    {
+      "family": "smudge",
+      "route": "raw",
+      "exit_code": 0,
+      "records": 193,
+      "bytes": 2952800,
+      "sha256": "4a547ca7fc7545be3d248930feface0eac700302ab5b27063424a4e0f12d50ae",
+      "binary_sha256": "356313664c1475b74a1cca4ae13afeeed2fe86036fc154d822c53ea5c4c07037"
+    },
+    {
+      "family": "smudge",
+      "route": "path",
+      "exit_code": 0,
+      "records": 193,
+      "bytes": 2952800,
+      "sha256": "493b43af06e2bca812e6c3b51687644b9d620f5711494ef162795decfeb0272c",
+      "binary_sha256": "356313664c1475b74a1cca4ae13afeeed2fe86036fc154d822c53ea5c4c07037"
+    },
+    {
+      "family": "smudge",
+      "route": "boundary",
+      "exit_code": 0,
+      "records": 193,
+      "bytes": 2952800,
+      "sha256": "353b8ba671bf5952a5878d4647eadf6651dbad15b197628d5c5ca93eba2c9af1",
+      "binary_sha256": "356313664c1475b74a1cca4ae13afeeed2fe86036fc154d822c53ea5c4c07037"
+    }
+  ],
+  "capture_sources_sha256": {
+    "migration/fixtures/legacy-owned-generic/capture-fill-brush.c": "898e9df34afcd3a523fa8410266346b85eabfb281ad0f1763e2bc43fd58da214",
+    "migration/fixtures/legacy-owned-generic/capture-smudge.c": "35a34e6d740cbc07a0af6908c9babde199d77cf9b39b7693284807b52f3b65b4",
+    "app/tests/painter-owned-stroke-trace.h": "12f4562bdc9c7f1007a7d3ad9deb22a81c2cedd84b9857b5123c9f433b701480"
+  },
+  "legacy_archives_sha256": {
+    "app/paint/libapppaint.a": "859d50d4e8fef9eff5258959760e727433991640b992482d7d725f1fa4cc7005",
+    "app/core/libappcore.a": "1f94682694062183e1b629939790ec8c63f8789fced494f311261474a423c165",
+    "app/tools/libapptools.a": "58a395f6f8cad5c0cc8695d3e6be265962990c4cbd83848504038b0c1e400114"
+  }
+}

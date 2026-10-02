@@ -79,7 +79,11 @@ gimp_coords_interpolate_bezier_internal (const GimpCoords  bezier_pt[4],
   GimpCoords subdivided[8];
   gdouble    middle_t = (start_t + end_t) / 2;
 
-  subdivided[0] = bezier_pt[0];
+  /* Coordinate arithmetic mixes paint axes only.  Seed view metadata too:
+   * native Path consumers validate every axis, and uninitialized xscale,
+   * yscale, angle or reflect values must never escape in generated points. */
+  for (gint i = 0; i < G_N_ELEMENTS (subdivided); i++)
+    subdivided[i] = bezier_pt[0];
   subdivided[6] = bezier_pt[3];
 
   /* if (!depth) g_printerr ("Hit recursion depth limit!\n"); */

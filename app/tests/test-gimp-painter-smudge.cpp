@@ -24,6 +24,14 @@ extern "C" {
 #include "paint/gimppaintersmudge.h"
 #include "painter/gimp-painter-binding.h"
 #include "tests.h"
+#include "core/gimpboundary.h"
+#include "core/gimpchannel.h"
+#include "core/gimpchannel-select.h"
+#include "core/gimpdata.h"
+#include "vectors/gimppath.h"
+#include "vectors/gimpstroke.h"
+#include "vectors/gimpbezierstroke.h"
+#include "painter/gimp-painter-binding.h"
 }
 static Gimp* gimp;
 struct Scene {
@@ -48,7 +56,7 @@ struct Scene {
     auto* color=gegl_color_new("red");gimp_context_set_foreground(GIMP_CONTEXT(options),color);g_object_unref(color);
     core=GIMP_PAINTER_SMUDGE(g_object_new(GIMP_TYPE_PAINTER_SMUDGE,"undo-desc","smudge test",nullptr));coords.x=32;coords.y=27;coords.pressure=1;gimp_image_undo_free(image);
   }
-  ~Scene(){if(core)g_object_unref(core);g_object_unref(options);g_object_unref(layer);if(image){g_object_remove_weak_pointer(G_OBJECT(image),reinterpret_cast<gpointer*>(&image));if(owns_image)g_object_unref(image);}}
+  ~Scene(){if(core)g_object_unref(core);if(options)g_object_unref(options);g_object_unref(layer);if(image){g_object_remove_weak_pointer(G_OBJECT(image),reinterpret_cast<gpointer*>(&image));if(owns_image)g_object_unref(image);}}
   std::vector<guchar> pixels(){std::vector<guchar> result(initial.size());gegl_buffer_get(gimp_drawable_get_buffer(GIMP_DRAWABLE(layer)),GEGL_RECTANGLE(0,0,64,48),1,babl_format("R'G'B'A u8"),result.data(),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);return result;}
   void begin(){GError* error=nullptr;g_assert_true(gimp_painter_smudge_begin(core,GIMP_DRAWABLE(layer),options,&coords,&error));g_assert_no_error(error);}
   void motion(){GError* error=nullptr;g_assert_true(gimp_painter_smudge_motion(core,&coords,0,&error));g_assert_no_error(error);}
@@ -89,4 +97,9 @@ static void unowned_start_refused () {
   g_assert_false(GIMP_PAINT_CORE_GET_CLASS(core)->start(core,&list,s.options,&s.coords,&error));g_assert_nonnull(error);g_clear_error(&error);
   g_assert_null(core->stroke_buffer);g_assert(s.pixels()==s.initial);g_assert_false(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(s.layer)));
 }
-int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gimp=gimp_init_for_testing();g_test_add_func("/painter/smudge/reuse-undo",reuse_and_undo);g_test_add_func("/painter/smudge/cancel",cancel);g_test_add_func("/painter/smudge/dispose",dispose);g_test_add_func("/painter/smudge/start-cancel",start_cancel);g_test_add_func("/painter/smudge/publication-cancel",publication_cancel);g_test_add_func("/painter/smudge/core-loss",caller_core_loss);g_test_add_func("/painter/smudge/image-loss",caller_image_loss);g_test_add_func("/painter/smudge/invalid-axes",invalid_axes);g_test_add_func("/painter/smudge/external-edit",external_edit);g_test_add_func("/painter/smudge/invalid-vfunc",invalid_vfunc);g_test_add_func("/painter/smudge/paused-segment",paused_segment);g_test_add_func("/painter/smudge/nested-native-start",nested_native_start);g_test_add_func("/painter/smudge/unowned-start-refused",unowned_start_refused);return g_test_run();}
+static GimpPaintCore* generic_core(Scene&s){return GIMP_PAINT_CORE(s.core);}
+static void generic_cancel(Scene&s){gimp_painter_smudge_cancel_pending(s.core);}
+static void generic_drop_core(Scene&s){auto*core=s.core;s.core=nullptr;g_object_unref(core);}
+static void generic_drain(Scene&s){(void)s;}
+#include "test-painter-owned-strokes.inc"
+int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gimp=gimp_init_for_testing();g_test_add_func("/painter/smudge/reuse-undo",reuse_and_undo);g_test_add_func("/painter/smudge/cancel",cancel);g_test_add_func("/painter/smudge/dispose",dispose);g_test_add_func("/painter/smudge/start-cancel",start_cancel);g_test_add_func("/painter/smudge/publication-cancel",publication_cancel);g_test_add_func("/painter/smudge/core-loss",caller_core_loss);g_test_add_func("/painter/smudge/image-loss",caller_image_loss);g_test_add_func("/painter/smudge/invalid-axes",invalid_axes);g_test_add_func("/painter/smudge/external-edit",external_edit);g_test_add_func("/painter/smudge/invalid-vfunc",invalid_vfunc);g_test_add_func("/painter/smudge/paused-segment",paused_segment);g_test_add_func("/painter/smudge/nested-native-start",nested_native_start);g_test_add_func("/painter/smudge/unowned-start-refused",unowned_start_refused);register_generic_tests();return g_test_run();}

@@ -3,6 +3,7 @@
 #define GIMP_PAINTER_SMUDGE_H
 #include "paint-types.h"
 #include "gimpbrushcore.h"
+#include "gimppaintcore-stroke.h"
 #include "gimppaintoptions.h"
 G_BEGIN_DECLS
 #define GIMP_TYPE_PAINTER_SMUDGE (gimp_painter_smudge_get_type ())
@@ -26,5 +27,8 @@ gboolean gimp_painter_smudge_step (GimpPainterSmudge*, GError**);
 void gimp_painter_smudge_cancel_pending (GimpPainterSmudge*);
 gboolean gimp_painter_smudge_motion (GimpPainterSmudge*, const GimpCoords*, guint32, GError**);
 gboolean gimp_painter_smudge_finish (GimpPainterSmudge*, gboolean commit, GError**);
+/* One owned native transaction across all prepared subpaths. */
+gboolean gimp_painter_smudge_stroke (GimpPaintCore*, GimpDrawable*, GimpPaintOptions*,
+                                const GimpPaintStrokeSegment*, gsize, gboolean push_undo, GError**);
 G_END_DECLS
 #endif

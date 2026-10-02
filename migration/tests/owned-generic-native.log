@@ -1,0 +1,40 @@
+ninja: Entering directory `build-debian13'
+[1/18] Generating git-version.h.in.1 with a custom command
+[2/18] Generating git-version.h.in.2 with a custom command
+[3/18] Generating git-version.h with a custom command
+[4/12] Compiling C++ object app/tests/painter-fill-brush-trace.p/painter-fill-brush-trace.cpp.o
+[5/12] Compiling C++ object app/tests/painter-smudge-trace.p/painter-smudge-trace.cpp.o
+../app/tests/painter-smudge-trace.cpp: In function ‘int main(int, char**)’:
+../app/tests/painter-smudge-trace.cpp:81:117: warning: unused variable ‘list’ [-Wunused-variable]
+   81 |   GimpPaintCore*core=GIMP_PAINT_CORE(g_object_new(GIMP_TYPE_PAINTER_SMUDGE,"undo-desc","smudge oracle",NULL));GList list={d,NULL,NULL};
+      |                                                                                                                     ^~~~
+[6/12] Linking target app/tests/painter-fill-brush-trace
+[7/12] Compiling C++ object app/tests/gimp-fill-brush.p/test-gimp-fill-brush.cpp.o
+[8/12] Compiling C++ object app/tests/gimp-painter-smudge.p/test-gimp-painter-smudge.cpp.o
+[9/12] Linking target app/tests/painter-smudge-trace
+[10/12] Linking target app/tests/gimp-fill-brush
+[11/12] Linking target app/tests/gimp-painter-smudge
+[12/12] Linking target app/tests/gimp-painter-batch
+1/8 gimp:app / gimp-fill-brush                     OK               4.22s
+2/8 gimp:painter / painter-fill-brush-legacy       OK               2.59s
+3/8 gimp:painter / painter-fill-brush-legacyqueued OK               2.98s
+4/8 gimp:painter / painter-fill-brush-legacyasync  OK               2.45s
+5/8 gimp:painter / painter-smudge-legacy-strokes   OK               1.93s
+6/8 gimp:app / gimp-painter-smudge                 OK               1.93s
+7/8 gimp:painter / painter-smudge-owned-strokes    OK               1.84s
+8/8 gimp:app / gimp-painter-batch                  OK               1.68s
+
+Ok:                 8   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/meson-logs/testlog.txt
+fill-brush/raw: exit=0, exact=True
+fill-brush/path: exit=0, exact=True
+fill-brush/boundary: exit=0, exact=True
+smudge/raw: exit=0, exact=True
+smudge/path: exit=0, exact=True
+smudge/boundary: exit=0, exact=True

@@ -93,3 +93,9 @@ profile handoffs remain necessary in addition to that lock.
 
 Gray/Gray+alpha, higher precision policy, arbitrary ICC, full active brush-pipe
 parity and physical tablet/platform acceptance remain separate renderer gates.
+
+## Owned generic entrypoints follow-on
+
+Raw Stroke, native Path and Boundary now use the same existing Fill/Smudge owned
+transactions across all subpaths. See `owned-generic-stroking.md` for the scoped
+implementation, independent old entrypoint fixtures and exact checkpoint gates.

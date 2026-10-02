@@ -36,6 +36,8 @@
 #include "gimppaintcore-stroke.h"
 #include "gimppaintoptions.h"
 #include "gimppainterpaintgate.h"
+#include "gimpfillbrush.h"
+#include "gimppaintersmudge.h"
 #include "core/gimpimage.h"
 
 #include "gimp-intl.h"
@@ -48,14 +50,17 @@ static void gimp_paint_core_stroke_emulate_dynamics (GimpCoords *coords,
 static const GimpCoords default_coords = GIMP_COORDS_DEFAULT_VALUES;
 
 /* Preparation stays native and is shared by transaction-owning backends.
- * Add future Fill/Smudge dispatch here; standard cores keep their old path. */
+ * The owned backends share one preparation; standard cores keep their old path. */
 typedef gboolean (*OwnedStrokeFunc) (GimpPaintCore *, GimpDrawable *, GimpPaintOptions *,
                                     const GimpPaintStrokeSegment *, gsize,
                                     gboolean, GError **);
 static OwnedStrokeFunc
 owned_stroke_backend (GimpPaintCore *core)
 {
-  return GIMP_IS_PAINTER_PAINT_GATE (core) ? gimp_painter_paint_gate_stroke : NULL;
+  if (GIMP_IS_PAINTER_PAINT_GATE (core)) return gimp_painter_paint_gate_stroke;
+  if (GIMP_IS_FILL_BRUSH (core)) return gimp_fill_brush_stroke;
+  if (GIMP_IS_PAINTER_SMUDGE (core)) return gimp_painter_smudge_stroke;
+  return NULL;
 }
 
 static gboolean
@@ -183,8 +188,25 @@ gimp_paint_core_stroke_boundary (GimpPaintCore      *core,
   g_return_val_if_fail (bound_segs != NULL && n_bound_segs > 0, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  stroke_segs = gimp_boundary_sort (bound_segs, n_bound_segs,
-                                    &n_stroke_segs);
+  owned = owned_stroke_backend (core);
+  if (owned)
+    {
+      /* The native sorter writes its visited bits despite a const signature.
+       * Own that scratch state, never mutate the caller's boundary storage. */
+      GimpBoundSeg *scratch;
+      if (n_bound_segs > G_MAXINT - 4)
+        {
+          g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                               "Boundary coordinate count is not representable");
+          return FALSE;
+        }
+      scratch = g_memdup2 (bound_segs, (gsize) n_bound_segs * sizeof (*scratch));
+      stroke_segs = gimp_boundary_sort (scratch, n_bound_segs, &n_stroke_segs);
+      g_free (scratch);
+    }
+  else
+    stroke_segs = gimp_boundary_sort (bound_segs, n_bound_segs,
+                                      &n_stroke_segs);
 
   if (n_stroke_segs == 0)
     return TRUE;
@@ -201,8 +223,8 @@ gimp_paint_core_stroke_boundary (GimpPaintCore      *core,
   /* we offset all coordinates by 0.5 to align the brush with the path */
 
   coords[n_coords]   = default_coords;
-  coords[n_coords].x = (gdouble) (stroke_segs[0].x1 + offset_x + 0.5);
-  coords[n_coords].y = (gdouble) (stroke_segs[0].y1 + offset_y + 0.5);
+  coords[n_coords].x = (gdouble) ((gdouble) stroke_segs[0].x1 + offset_x + 0.5);
+  coords[n_coords].y = (gdouble) ((gdouble) stroke_segs[0].y1 + offset_y + 0.5);
 
   n_coords++;
 
@@ -216,8 +238,8 @@ gimp_paint_core_stroke_boundary (GimpPaintCore      *core,
              stroke_segs[seg].y2 != -1)
         {
           coords[n_coords]   = default_coords;
-          coords[n_coords].x = (gdouble) (stroke_segs[seg].x1 + offset_x + 0.5);
-          coords[n_coords].y = (gdouble) (stroke_segs[seg].y1 + offset_y + 0.5);
+          coords[n_coords].x = (gdouble) ((gdouble) stroke_segs[seg].x1 + offset_x + 0.5);
+          coords[n_coords].y = (gdouble) ((gdouble) stroke_segs[seg].y1 + offset_y + 0.5);
 
           n_coords++;
           seg++;
@@ -273,8 +295,8 @@ gimp_paint_core_stroke_boundary (GimpPaintCore      *core,
       seg++;
 
       coords[n_coords]   = default_coords;
-      coords[n_coords].x = (gdouble) (stroke_segs[seg].x1 + offset_x + 0.5);
-      coords[n_coords].y = (gdouble) (stroke_segs[seg].y1 + offset_y + 0.5);
+      coords[n_coords].x = (gdouble) ((gdouble) stroke_segs[seg].x1 + offset_x + 0.5);
+      coords[n_coords].y = (gdouble) ((gdouble) stroke_segs[seg].y1 + offset_y + 0.5);
 
       n_coords++;
     }

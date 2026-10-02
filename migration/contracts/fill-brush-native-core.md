@@ -88,3 +88,9 @@ preparation, mask transformation, whole-dab composition, destruction, pending
 queue memory or I/O. End-to-end large-stroke responsiveness/admission and actual
 GUI input lifecycle remain open; the controller must preserve queued input and
 settings and invalidate safely on intervening external document edits.
+
+## Owned generic entrypoints follow-on
+
+Raw Stroke, native Path and Boundary now use the same existing Fill/Smudge owned
+transactions across all subpaths. See `owned-generic-stroking.md` for the scoped
+implementation, independent old entrypoint fixtures and exact checkpoint gates.

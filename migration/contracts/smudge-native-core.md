@@ -55,3 +55,9 @@ The registered-tool follow-on adds one-dab continuations, image pending queries
 and one-shot native-start admission. The old raw numerical entry is no longer a
 supported unowned production call: current fixtures compare owned synchronous
 and owned stepped routes. See `smudge-tool-controller.md` for that checkpoint.
+
+## Owned generic entrypoints follow-on
+
+Raw Stroke, native Path and Boundary now use the same existing Fill/Smudge owned
+transactions across all subpaths. See `owned-generic-stroking.md` for the scoped
+implementation, independent old entrypoint fixtures and exact checkpoint gates.
