@@ -30,6 +30,7 @@
 #include "core/core-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpcontainer.h"
 #include "core/gimpimage.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpparamspecs.h"
@@ -44,6 +45,7 @@
 #include "xcf-read.h"
 #include "xcf-save.h"
 #include "painter-xcf-load.h"
+#include "painter-xcf-preserve.h"
 
 #include "gimp-intl.h"
 
@@ -355,18 +357,22 @@ xcf_load_stream_with_dialect (Gimp              *gimp,
   return image;
 }
 
-gboolean
-xcf_save_stream (Gimp           *gimp,
+static gboolean
+xcf_save_stream_prepared (Gimp           *gimp,
                  GimpImage      *image,
                  GOutputStream  *output,
                  GFile          *output_file,
                  GimpProgress   *progress,
+                 XcfPainterSave *prepared,
                  GError        **error)
 {
   XcfInfo       info     = { 0, };
   const gchar  *filename;
   gboolean      success  = FALSE;
   GError       *my_error = NULL;
+  GError       *close_error = NULL;
+  gboolean      closed;
+  gulong        cancel_id = 0;
   GCancellable *cancellable;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
@@ -375,17 +381,6 @@ xcf_save_stream (Gimp           *gimp,
   g_return_val_if_fail (output_file == NULL || G_IS_FILE (output_file), FALSE);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-
-  if (! xcf_painter_can_save (image, error))
-    {
-      /* Also protect callers of the direct stream API. GFile replacement is
-       * aborted rather than committed when its stream is closed cancelled. */
-      GCancellable *cancel = g_cancellable_new ();
-      g_cancellable_cancel (cancel);
-      g_output_stream_close (output, cancel, NULL);
-      g_object_unref (cancel);
-      return FALSE;
-    }
 
   if (output_file)
     filename = gimp_file_get_utf8_name (output_file);
@@ -398,6 +393,8 @@ xcf_save_stream (Gimp           *gimp,
   info.bytes_per_offset = 4;
   info.progress         = progress;
   info.file             = output_file;
+  info.painter_save_state = prepared;
+  info.painter_cancellable = g_cancellable_new ();
 
   if (gimp_image_get_xcf_compression (image))
     info.compression = COMPRESS_ZLIB;
@@ -409,13 +406,35 @@ xcf_save_stream (Gimp           *gimp,
                                                   COMPRESS_ZLIB,
                                                   NULL, NULL, NULL);
 
+  if (xcf_painter_save_needs_v11 (prepared))
+    info.file_version = MAX (info.file_version, 11);
+
+  /* Deprecated image-level path encodings cannot carry every item's modern
+   * metadata and normalized identity. Use standard standalone path records. */
+  if (gimp_container_get_n_children (gimp_image_get_paths (image)) > 0)
+    info.file_version = MAX (info.file_version, 18);
+
   if (info.file_version >= 11)
     info.bytes_per_offset = 8;
 
   if (progress)
-    gimp_progress_start (progress, FALSE, _("Saving '%s'"), filename);
+    {
+      cancel_id = g_signal_connect (progress, "cancel", G_CALLBACK (xcf_cancel_load), info.painter_cancellable);
+      gimp_progress_start (progress, TRUE, _("Saving '%s'"), filename);
+    }
 
   success = xcf_save_image (&info, image, &my_error);
+  if (success && !xcf_painter_save_unchanged (prepared))
+    {
+      success = FALSE;
+      g_set_error_literal (&my_error, G_IO_ERROR, G_IO_ERROR_BUSY,
+                           "The image changed during saving; the destination was not changed. Save again to include your edits.");
+    }
+  if (success && g_cancellable_is_cancelled (info.painter_cancellable))
+    {
+      success = FALSE;
+      g_set_error_literal (&my_error, G_IO_ERROR, G_IO_ERROR_CANCELLED, "Saving was cancelled");
+    }
 
   cancellable = g_cancellable_new ();
   if (success)
@@ -434,19 +453,56 @@ xcf_save_stream (Gimp           *gimp,
        */
       g_cancellable_cancel (cancellable);
     }
-  success = g_output_stream_close (info.output, cancellable, &my_error);
+  /* A progress callback can edit or cancel even at the closing checkpoint. */
+  if (success && (!xcf_painter_save_unchanged (prepared) ||
+                  g_cancellable_is_cancelled (info.painter_cancellable)))
+    {
+      success = FALSE;
+      g_set_error_literal (&my_error, G_IO_ERROR,
+                           g_cancellable_is_cancelled (info.painter_cancellable) ? G_IO_ERROR_CANCELLED : G_IO_ERROR_BUSY,
+                           "Saving was cancelled or the image changed; the destination was not changed");
+      g_cancellable_cancel (cancellable);
+    }
+  closed = g_output_stream_close (info.output, cancellable, &close_error);
+  if (!my_error && close_error) { my_error = close_error; close_error = NULL; }
+  g_clear_error (&close_error);
+  success = success && closed;
+  if (success) xcf_painter_commit_save (prepared);
   g_object_unref (cancellable);
 
   if (! success && my_error)
     g_propagate_prefixed_error (error, my_error,
                                 _("Error writing '%s': "), filename);
 
+  if (cancel_id) g_signal_handler_disconnect (progress, cancel_id);
+  g_clear_object (&info.painter_cancellable);
   if (progress)
     gimp_progress_end (progress);
 
   return success;
 }
 
+
+gboolean
+xcf_save_stream (Gimp *gimp, GimpImage *image, GOutputStream *output,
+                 GFile *output_file, GimpProgress *progress, GError **error)
+{
+  XcfPainterSave *prepared;
+  gboolean success;
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail (G_IS_OUTPUT_STREAM (output), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  prepared = xcf_painter_prepare_save (image, error);
+  if (!prepared)
+    {
+      GCancellable *cancel = g_cancellable_new ();
+      g_cancellable_cancel (cancel); g_output_stream_close (output, cancel, NULL); g_object_unref (cancel);
+      return FALSE;
+    }
+  success = xcf_save_stream_prepared (gimp, image, output, output_file, progress, prepared, error);
+  xcf_painter_free_save (prepared);
+  return success;
+}
 
 /*  private functions  */
 
@@ -512,13 +568,15 @@ xcf_save_invoker (GimpProcedure         *procedure,
   GOutputStream  *output;
   gboolean        success  = FALSE;
   GError         *my_error = NULL;
+  XcfPainterSave *prepared;
 
   gimp_set_busy (gimp);
 
   image = g_value_get_object (gimp_value_array_index (args, 1));
   file  = g_value_get_object (gimp_value_array_index (args, 2));
 
-  if (! xcf_painter_can_save (image, error))
+  prepared = xcf_painter_prepare_save (image, error);
+  if (!prepared)
     {
       return_vals = gimp_procedure_get_return_values (procedure, FALSE, error ? *error : NULL);
       gimp_unset_busy (gimp);
@@ -531,7 +589,7 @@ xcf_save_invoker (GimpProcedure         *procedure,
 
   if (output)
     {
-      success = xcf_save_stream (gimp, image, output, file, progress, error);
+      success = xcf_save_stream_prepared (gimp, image, output, file, progress, prepared, error);
 
       g_object_unref (output);
     }
@@ -541,6 +599,8 @@ xcf_save_invoker (GimpProcedure         *procedure,
                                   _("Error creating '%s': "),
                                   gimp_file_get_utf8_name (file));
     }
+
+  xcf_painter_free_save (prepared);
 
   return_vals = gimp_procedure_get_return_values (procedure, success,
                                                   error ? *error : NULL);

@@ -148,8 +148,10 @@ struct _XcfInfo
   gint                file_version;
 
   gboolean            painter_legacy;
+  gboolean            painter_historical_modes;
   GBytes             *painter_source;
   GCancellable       *painter_cancellable;
+  gpointer            painter_save_state;
 };
 
 

@@ -72,6 +72,7 @@
 #include "vectors/gimppath-compat.h"
 
 #include "xcf-private.h"
+#include "painter-xcf-preserve.h"
 #include "xcf-read.h"
 #include "xcf-save.h"
 #include "xcf-seek.h"
@@ -469,6 +470,25 @@ xcf_save_image (XcfInfo    *info,
 }
 
 static gboolean
+xcf_save_painter_parasites (XcfInfo          *info,
+                            GimpImage        *image,
+                            GimpParasiteList *existing,
+                            GimpParasite     *extension,
+                            GimpParasite     *origin,
+                            GError          **error)
+{
+  GimpParasiteList *list = gimp_parasite_list_copy (existing);
+  gboolean success;
+  if (extension) gimp_parasite_list_add (list, extension);
+  if (origin) gimp_parasite_list_add (list, origin);
+  success = xcf_save_prop (info, image, PROP_PARASITES, error, list);
+  if (extension) gimp_parasite_free (extension);
+  if (origin) gimp_parasite_free (origin);
+  g_object_unref (list);
+  return success;
+}
+
+static gboolean
 xcf_save_image_props (XcfInfo    *info,
                       GimpImage  *image,
                       GError    **error)
@@ -517,7 +537,7 @@ xcf_save_image_props (XcfInfo    *info,
                                   xres, yres), ;);
 
   xcf_check_error (xcf_save_prop (info, image, PROP_TATTOO, error,
-                                  gimp_image_get_tattoo_state (image)), ;);
+                                  xcf_painter_saved_tattoo_state (info->painter_save_state, image)), ;);
 
   if (gimp_unit_is_built_in (unit))
     xcf_check_error (xcf_save_prop (info, image, PROP_UNIT, error, unit), ;);
@@ -580,10 +600,11 @@ xcf_save_image_props (XcfInfo    *info,
         }
     }
 
-  if (gimp_parasite_list_length (private->parasites) > 0)
+  if (gimp_parasite_list_length (private->parasites) > 0 || info->painter_save_state)
     {
-      xcf_check_error (xcf_save_prop (info, image, PROP_PARASITES, error,
-                                      private->parasites), ;);
+      xcf_check_error (xcf_save_painter_parasites (info, image, private->parasites,
+                      xcf_painter_image_parasite (info->painter_save_state),
+                      xcf_painter_origin_parasite (info->painter_save_state, G_OBJECT (image)), error), ;);
     }
 
   if (grid_parasite)
@@ -698,7 +719,7 @@ xcf_save_layer_props (XcfInfo    *info,
   xcf_check_error (xcf_save_prop (info, image, PROP_OFFSETS, error,
                                   offset_x, offset_y), ;);
   xcf_check_error (xcf_save_prop (info, image, PROP_MODE, error,
-                                  gimp_layer_get_mode (layer)), ;);
+                                  xcf_painter_standard_mode (gimp_layer_get_mode (layer))), ;);
   xcf_check_error (xcf_save_prop (info, image, PROP_BLEND_SPACE, error,
                                   gimp_layer_get_mode (layer),
                                   gimp_layer_get_blend_space (layer)), ;);
@@ -709,7 +730,7 @@ xcf_save_layer_props (XcfInfo    *info,
                                   gimp_layer_get_mode (layer),
                                   gimp_layer_get_composite_mode (layer)), ;);
   xcf_check_error (xcf_save_prop (info, image, PROP_TATTOO, error,
-                                  gimp_item_get_tattoo (GIMP_ITEM (layer))), ;);
+                                  xcf_painter_saved_id (info->painter_save_state, GIMP_ITEM (layer))), ;);
 
   if (GIMP_IS_TEXT_LAYER (layer) && GIMP_TEXT_LAYER (layer)->text)
     {
@@ -738,10 +759,11 @@ xcf_save_layer_props (XcfInfo    *info,
 
   parasites = gimp_item_get_parasites (GIMP_ITEM (layer));
 
-  if (gimp_parasite_list_length (parasites) > 0)
+  if (gimp_parasite_list_length (parasites) > 0 || info->painter_save_state)
     {
-      xcf_check_error (xcf_save_prop (info, image, PROP_PARASITES, error,
-                                      parasites), ;);
+      xcf_check_error (xcf_save_painter_parasites (info, image, parasites,
+                      xcf_painter_item_parasite (info->painter_save_state, GIMP_ITEM (layer)),
+                      xcf_painter_origin_parasite (info->painter_save_state, G_OBJECT (layer)), error), ;);
     }
 
   for (iter = info->layer_sets; iter; iter = iter->next)
@@ -801,14 +823,15 @@ xcf_save_channel_props (XcfInfo      *info,
   xcf_check_error (xcf_save_prop (info, image, PROP_FLOAT_COLOR, error,
                                   channel->color), ;);
   xcf_check_error (xcf_save_prop (info, image, PROP_TATTOO, error,
-                                  gimp_item_get_tattoo (GIMP_ITEM (channel))), ;);
+                                  xcf_painter_saved_id (info->painter_save_state, GIMP_ITEM (channel))), ;);
 
   parasites = gimp_item_get_parasites (GIMP_ITEM (channel));
 
-  if (gimp_parasite_list_length (parasites) > 0)
+  if (gimp_parasite_list_length (parasites) > 0 || info->painter_save_state)
     {
-      xcf_check_error (xcf_save_prop (info, image, PROP_PARASITES, error,
-                                      parasites), ;);
+      xcf_check_error (xcf_save_painter_parasites (info, image, parasites,
+                      xcf_painter_item_parasite (info->painter_save_state, GIMP_ITEM (channel)),
+                      xcf_painter_origin_parasite (info->painter_save_state, G_OBJECT (channel)), error), ;);
     }
 
   for (iter = info->channel_sets; iter; iter = iter->next)
@@ -962,14 +985,15 @@ xcf_save_path_props (XcfInfo      *info,
                                   gimp_item_get_lock_position (GIMP_ITEM (vectors))), ;);
 
   xcf_check_error (xcf_save_prop (info, image, PROP_TATTOO, error,
-                                  gimp_item_get_tattoo (GIMP_ITEM (vectors))), ;);
+                                  xcf_painter_saved_id (info->painter_save_state, GIMP_ITEM (vectors))), ;);
 
   parasites = gimp_item_get_parasites (GIMP_ITEM (vectors));
 
-  if (gimp_parasite_list_length (parasites) > 0)
+  if (gimp_parasite_list_length (parasites) > 0 || info->painter_save_state)
     {
-      xcf_check_error (xcf_save_prop (info, image, PROP_PARASITES, error,
-                                      parasites), ;);
+      xcf_check_error (xcf_save_painter_parasites (info, image, parasites,
+                      xcf_painter_item_parasite (info->painter_save_state, GIMP_ITEM (vectors)),
+                      xcf_painter_origin_parasite (info->painter_save_state, G_OBJECT (vectors)), error), ;);
     }
 
 #if 0
@@ -2000,7 +2024,7 @@ xcf_save_layer (XcfInfo    *info,
   xcf_write_string_check_error (info, (gchar **) &string, 1, ;);
 
   /* write out the layer properties */
-  xcf_save_layer_props (info, image, layer, error);
+  xcf_check_error (xcf_save_layer_props (info, image, layer, error), ;);
 
   /* write out the layer tile hierarchy and effects */
   offset = info->cp + (2 + num_effects + 1) * info->bytes_per_offset;
@@ -2016,7 +2040,7 @@ xcf_save_layer (XcfInfo    *info,
     xcf_write_zero_offset_check_error (info, 1, ;);
 
   xcf_check_error (xcf_save_buffer (info, image,
-                                    gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                                    xcf_painter_saved_buffer (info->painter_save_state, GIMP_DRAWABLE (layer)),
                                     error), ;);
 
   offset = info->cp;
@@ -2112,14 +2136,14 @@ xcf_save_channel (XcfInfo      *info,
   xcf_write_string_check_error (info, (gchar **) &string, 1, ;);
 
   /* write out the channel properties */
-  xcf_save_channel_props (info, image, channel, error);
+  xcf_check_error (xcf_save_channel_props (info, image, channel, error), ;);
 
   /* write out the channel tile hierarchy */
   offset = info->cp + info->bytes_per_offset;
   xcf_write_offset_check_error (info, &offset, 1, ;);
 
   xcf_check_error (xcf_save_buffer (info, image,
-                                    gimp_drawable_get_buffer (GIMP_DRAWABLE (channel)),
+                                    xcf_painter_saved_buffer (info->painter_save_state, GIMP_DRAWABLE (channel)),
                                     error), ;);
 
   return TRUE;

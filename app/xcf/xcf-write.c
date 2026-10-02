@@ -44,7 +44,7 @@ xcf_write_int8 (XcfInfo       *info,
   if (count > 0)
     {
       if (! g_output_stream_write_all (info->output, data, count,
-                                       &bytes_written, NULL, &my_error))
+                                       &bytes_written, info->painter_cancellable, &my_error))
         {
           g_propagate_prefixed_error (error, my_error,
                                       _("Error writing XCF: "));

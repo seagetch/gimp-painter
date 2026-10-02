@@ -37,6 +37,7 @@
 #include "gegl/gimp-gegl-tile-compat.h"
 
 #include "core/gimp.h"
+#include "core/gimp-painter-provenance.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpdrawable-filters.h"
 #include "core/gimpdrawable-private.h" /* eek */
@@ -83,6 +84,7 @@
 #include "xcf-seek.h"
 #include "xcf-utils.h"
 #include "painter-xcf-load.h"
+#include "painter-xcf-preserve.h"
 
 #include "gimp-log.h"
 #include "gimp-intl.h"
@@ -302,6 +304,8 @@ xcf_load_image (Gimp     *gimp,
 
   image = gimp_create_image (gimp, width, height, image_type, precision,
                              FALSE);
+
+  xcf_painter_capture_header (info, G_OBJECT (image), 0, info->cp);
 
   gimp_image_undo_disable (image);
 
@@ -1148,23 +1152,29 @@ static gboolean
 xcf_load_image_props (XcfInfo   *info,
                       GimpImage *image)
 {
+  const goffset props_begin = info->cp;
+  g_autoptr(GPtrArray) unknown_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
   PropType prop_type;
   guint32  prop_size;
 
   while (TRUE)
     {
+      const goffset property_begin = info->cp;
       if (! xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
 
       if (info->painter_legacy && prop_type > 31)
         {
           if (! xcf_skip_unknown_prop (info, prop_size)) return FALSE;
+          xcf_painter_capture_unknown (info, unknown_records, property_begin, info->cp);
           continue;
         }
 
       switch (prop_type)
         {
         case PROP_END:
+          xcf_painter_set_unknown_records (G_OBJECT (image), unknown_records);
+          xcf_painter_capture_properties (info, G_OBJECT (image), props_begin, info->cp);
           return TRUE;
 
         case PROP_COLORMAP:
@@ -1642,6 +1652,7 @@ xcf_load_image_props (XcfInfo   *info,
 #endif
           if (! xcf_skip_unknown_prop (info, prop_size))
             return FALSE;
+          xcf_painter_capture_unknown (info, unknown_records, property_begin, info->cp);
           break;
         }
     }
@@ -1660,11 +1671,14 @@ xcf_load_layer_props (XcfInfo    *info,
                       guint32    *text_layer_flags,
                       guint32    *group_layer_flags)
 {
+  const goffset props_begin = info->cp;
+  g_autoptr(GPtrArray) unknown_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
   PropType prop_type;
   guint32  prop_size;
 
   while (TRUE)
     {
+      const goffset property_begin = info->cp;
       if (! xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
 
@@ -1679,12 +1693,15 @@ xcf_load_layer_props (XcfInfo    *info,
       if (info->painter_legacy && prop_type > 33)
         {
           if (! xcf_skip_unknown_prop (info, prop_size)) return FALSE;
+          xcf_painter_capture_unknown (info, unknown_records, property_begin, info->cp);
           continue;
         }
 
       switch (prop_type)
         {
         case PROP_END:
+          xcf_painter_set_unknown_records (G_OBJECT (*layer), unknown_records);
+          xcf_painter_capture_properties (info, G_OBJECT (*layer), props_begin, info->cp);
           return TRUE;
 
         case PROP_ACTIVE_LAYER:
@@ -1847,7 +1864,7 @@ xcf_load_layer_props (XcfInfo    *info,
 
             xcf_read_int32 (info, (guint32 *) &mode, 1);
 
-            if (info->painter_legacy)
+            if (info->painter_historical_modes)
               {
                 if (! xcf_painter_load_mode (*layer, (guint32) mode))
                   return FALSE;
@@ -2010,6 +2027,8 @@ xcf_load_layer_props (XcfInfo    *info,
             info->linked_layers = g_list_remove (info->linked_layers, *layer);
 
             group = gimp_group_layer_new (image);
+            if (info->painter_historical_modes)
+              gimp_layer_set_mode (group, GIMP_LAYER_MODE_PAINTER_NORMAL, FALSE);
 
             gimp_object_set_name (GIMP_OBJECT (group),
                                   gimp_object_get_name (*layer));
@@ -2083,6 +2102,7 @@ xcf_load_layer_props (XcfInfo    *info,
 #endif
           if (! xcf_skip_unknown_prop (info, prop_size))
             return FALSE;
+          xcf_painter_capture_unknown (info, unknown_records, property_begin, info->cp);
           break;
         }
     }
@@ -2196,23 +2216,29 @@ xcf_load_channel_props (XcfInfo      *info,
                         GimpChannel **channel,
                         gboolean      is_mask)
 {
+  const goffset props_begin = info->cp;
+  g_autoptr(GPtrArray) unknown_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
   PropType prop_type;
   guint32  prop_size;
 
   while (TRUE)
     {
+      const goffset property_begin = info->cp;
       if (! xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
 
       if (info->painter_legacy && prop_type > 31)
         {
           if (! xcf_skip_unknown_prop (info, prop_size)) return FALSE;
+          xcf_painter_capture_unknown (info, unknown_records, property_begin, info->cp);
           continue;
         }
 
       switch (prop_type)
         {
         case PROP_END:
+          xcf_painter_set_unknown_records (G_OBJECT (*channel), unknown_records);
+          xcf_painter_capture_properties (info, G_OBJECT (*channel), props_begin, info->cp);
           return TRUE;
 
         case PROP_ACTIVE_CHANNEL:
@@ -2483,6 +2509,7 @@ xcf_load_channel_props (XcfInfo      *info,
 #endif
           if (! xcf_skip_unknown_prop (info, prop_size))
             return FALSE;
+          xcf_painter_capture_unknown (info, unknown_records, property_begin, info->cp);
           break;
         }
     }
@@ -2876,17 +2903,22 @@ xcf_load_path_props (XcfInfo    *info,
                      GimpImage  *image,
                      GimpPath  **vectors)
 {
+  const goffset props_begin = info->cp;
+  g_autoptr(GPtrArray) unknown_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
   PropType prop_type;
   guint32  prop_size;
 
   while (TRUE)
     {
+      const goffset property_begin = info->cp;
       if (! xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
 
       switch (prop_type)
         {
         case PROP_END:
+          xcf_painter_set_unknown_records (G_OBJECT (*vectors), unknown_records);
+          xcf_painter_capture_properties (info, G_OBJECT (*vectors), props_begin, info->cp);
           return TRUE;
 
         case PROP_SELECTED_PATH:
@@ -3023,6 +3055,7 @@ xcf_load_path_props (XcfInfo    *info,
 #endif
           if (! xcf_skip_unknown_prop (info, prop_size))
             return FALSE;
+          xcf_painter_capture_unknown (info, unknown_records, property_begin, info->cp);
           break;
         }
     }
@@ -3056,6 +3089,7 @@ xcf_load_layer (XcfInfo    *info,
                 gint       *n_broken_effects)
 {
   goffset            original_offset = info->cp;
+  goffset            header_end;
   GimpLayer         *layer;
   GimpLayerMask     *layer_mask;
   goffset            hierarchy_offset;
@@ -3091,6 +3125,7 @@ xcf_load_layer (XcfInfo    *info,
   xcf_read_int32  (info, (guint32 *) &height, 1);
   xcf_read_int32  (info, (guint32 *) &type,   1);
   xcf_read_string (info,             &name,   1);
+  header_end = info->cp;
 
   GIMP_LOG (XCF, "width=%d, height=%d, type=%d, name='%s'",
             width, height, type, name);
@@ -3176,8 +3211,8 @@ xcf_load_layer (XcfInfo    *info,
   /* create a new layer */
   layer = gimp_layer_new (image, width, height,
                           format, name,
-                          GIMP_OPACITY_OPAQUE, info->painter_legacy ?
-                          GIMP_LAYER_MODE_NORMAL_LEGACY : GIMP_LAYER_MODE_NORMAL);
+                          GIMP_OPACITY_OPAQUE, info->painter_historical_modes ?
+                          GIMP_LAYER_MODE_PAINTER_NORMAL : GIMP_LAYER_MODE_NORMAL);
   g_free (name);
   if (! layer)
     return NULL;
@@ -3186,6 +3221,9 @@ xcf_load_layer (XcfInfo    *info,
   if (! xcf_load_layer_props (info, image, &layer, item_path,
                               &apply_mask, &edit_mask, &show_mask,
                               &text_layer_flags, &group_layer_flags))
+    goto error;
+
+  if (! xcf_painter_restore_layer (info, image, &layer))
     goto error;
 
   GIMP_LOG (XCF, "layer props loaded");
@@ -3197,8 +3235,13 @@ xcf_load_layer (XcfInfo    *info,
   linked   = g_list_find (info->linked_layers, layer);
   floating = (info->floating_sel == layer);
 
+  /* Retain the original carrier through the text-layer replacement so its
+   * immutable provenance survives the subclass construction transaction. */
+  {
+    GimpLayer *carrier = g_object_ref (layer);
   if (gimp_text_layer_xcf_load_hack (&layer))
     {
+      gimp_painter_copy_provenance (G_OBJECT (carrier), G_OBJECT (layer));
       gimp_text_layer_set_xcf_flags (GIMP_TEXT_LAYER (layer),
                                      text_layer_flags);
 
@@ -3215,6 +3258,8 @@ xcf_load_layer (XcfInfo    *info,
       if (floating)
         info->floating_sel = layer;
     }
+    g_object_unref (carrier);
+  }
 
   /* if this is not the floating selection, we can fix the layer's
    * space already now, the function will do nothing if we already
@@ -3354,6 +3399,7 @@ xcf_load_layer (XcfInfo    *info,
   if (is_fs_drawable)
     info->floating_sel_drawable = GIMP_DRAWABLE (layer);
 
+  xcf_painter_capture_header (info, G_OBJECT (layer), original_offset, header_end);
   xcf_painter_record_offset (G_OBJECT (layer), original_offset);
   return layer;
 
@@ -3377,6 +3423,7 @@ xcf_load_channel (XcfInfo   *info,
                   GimpImage *image)
 {
   goffset            original_offset = info->cp;
+  goffset            header_end;
   GimpChannel *channel;
   goffset      hierarchy_offset;
   gint         width;
@@ -3401,6 +3448,7 @@ xcf_load_channel (XcfInfo   *info,
     }
 
   xcf_read_string (info, &name, 1);
+  header_end = info->cp;
   GIMP_LOG (XCF, "Channel width=%d, height=%d, name='%s'",
             width, height, name);
 
@@ -3439,6 +3487,7 @@ xcf_load_channel (XcfInfo   *info,
   if (is_fs_drawable)
     info->floating_sel_drawable = GIMP_DRAWABLE (channel);
 
+  xcf_painter_capture_header (info, G_OBJECT (channel), original_offset, header_end);
   xcf_painter_record_offset (G_OBJECT (channel), original_offset);
   return channel;
 
@@ -3787,6 +3836,7 @@ xcf_load_layer_mask (XcfInfo   *info,
                      GimpImage *image)
 {
   goffset            original_offset = info->cp;
+  goffset            header_end;
   GimpLayerMask *layer_mask;
   GimpChannel   *channel;
   GList         *iter;
@@ -3814,6 +3864,7 @@ xcf_load_layer_mask (XcfInfo   *info,
     }
 
   xcf_read_string (info, &name, 1);
+  header_end = info->cp;
   GIMP_LOG (XCF, "Layer mask width=%d, height=%d, name='%s'",
             width, height, name);
 
@@ -3855,6 +3906,7 @@ xcf_load_layer_mask (XcfInfo   *info,
   if (is_fs_drawable)
     info->floating_sel_drawable = GIMP_DRAWABLE (layer_mask);
 
+  xcf_painter_capture_header (info, G_OBJECT (layer_mask), original_offset, header_end);
   xcf_painter_record_offset (G_OBJECT (layer_mask), original_offset);
   return layer_mask;
 

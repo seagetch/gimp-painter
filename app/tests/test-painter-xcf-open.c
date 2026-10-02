@@ -105,7 +105,7 @@ static void ordinary (void)
   g_assert_cmpint (gimp_item_get_offset_x (GIMP_ITEM (paint)), ==, 9);
   g_assert_cmpint (gimp_item_get_offset_y (GIMP_ITEM (paint)), ==, 7);
   g_assert_cmpfloat (gimp_layer_get_opacity (paint), ==, 191.0 / 255.0);
-  g_assert_cmpint (gimp_layer_get_mode (paint), ==, GIMP_LAYER_MODE_MULTIPLY_LEGACY);
+  g_assert_cmpint (gimp_layer_get_mode (paint), ==, GIMP_LAYER_MODE_PAINTER_MULTIPLY);
   g_assert_nonnull (gimp_layer_get_mask (paint));
   g_assert_cmpint (gimp_container_get_n_children (gimp_image_get_channels (image)), ==, 1);
   gimp_image_get_resolution (image, &xres, &yres);
@@ -141,11 +141,8 @@ static void ordinary_projection_exact_gate (void)
       }
   g_test_message ("Exact ordinary projection comparison: %u/7680 different pixels, max channel delta %u",
                    differences, maximum);
-  /* Guard against a larger loader regression without declaring a tolerance
-   * to be visual parity. The exact gate remains explicitly incomplete. */
-  g_assert_cmpuint (maximum, <=, 1);
-  if (differences)
-    g_test_incomplete ("Exact legacy ordinary projection parity remains open: current GIMP3 compositing rounds differently");
+  g_assert_cmpuint (maximum, ==, 0);
+  g_assert_cmpuint (differences, ==, 0);
   g_object_unref (reference); g_free (path); g_free (projection); g_object_unref (image);
 }
 static void clones (void)
@@ -302,6 +299,27 @@ static void ambiguity_and_failures (void)
 }
 static void put32 (guint8 *data, guint offset, guint32 value)
 { value = GUINT32_TO_BE (value); memcpy (data + offset, &value, 4); }
+static void absent_mode_historical_default (void)
+{
+  guint8 data[120] = {0};
+  GError *error = NULL;
+  GimpImage *image;
+  memcpy (data, "gimp xcf v003", 13);
+  put32 (data, 14, 1); put32 (data, 18, 1); put32 (data, 34, 46);
+  put32 (data, 46, 1); put32 (data, 50, 1); put32 (data, 54, 1);
+  put32 (data, 58, 2); data[62] = 'L'; put32 (data, 72, 80);
+  put32 (data, 80, 1); put32 (data, 84, 1); put32 (data, 88, 4); put32 (data, 92, 100);
+  put32 (data, 100, 1); put32 (data, 104, 1); put32 (data, 108, 116);
+  data[116] = 255; data[119] = 128;
+  image = open_bytes (data, sizeof data, XCF_PAINTER_DIALECT_AUTO, &error);
+  g_assert_no_error (error); g_assert_nonnull (image);
+  g_assert_cmpint (gimp_layer_get_mode (find_layer (image, "L")), ==, GIMP_LAYER_MODE_PAINTER_NORMAL);
+  g_object_unref (image);
+  image = open_bytes (data, sizeof data, XCF_PAINTER_DIALECT_STANDARD, &error);
+  g_assert_no_error (error); g_assert_nonnull (image);
+  g_assert_cmpint (gimp_layer_get_mode (find_layer (image, "L")), ==, GIMP_LAYER_MODE_NORMAL);
+  g_object_unref (image);
+}
 static void dual_valid_short_extension (void)
 {
   /* Synthetic v3: standard33/float0 and legacy33/NULL source both have valid
@@ -385,13 +403,15 @@ static void large_source (void)
   g_assert_cmpuint (temporary_snapshots (), ==, snapshots);
   g_free (bytes); g_free (path);
 }
-static void save_refusal_preserves_destination (void)
+static void unknown_extension_preserves_destination (void)
 {
   GimpImage *image = open_fixture ("legacy-runtime/clone-normal-in-group.xcf");
   GFileIOStream *io;
   GError *error = NULL;
   GFile *file = g_file_new_tmp ("painter-save-sentinel-XXXXXX", &io, &error);
   GimpPlugInProcedure *proc = GIMP_PLUG_IN_PROCEDURE (gimp_pdb_lookup_procedure (gimp->pdb, "gimp-xcf-save"));
+  GimpLayer *clone = find_layer (image, "clone");
+  GimpParasite *unknown;
   const gchar sentinel[] = "unchanged existing destination";
   gchar *contents;
   gsize size;
@@ -399,9 +419,12 @@ static void save_refusal_preserves_destination (void)
   g_assert_true (g_output_stream_write_all (g_io_stream_get_output_stream (G_IO_STREAM (io)),
                                             sentinel, sizeof sentinel, NULL, NULL, &error));
   g_assert_true (g_io_stream_close (G_IO_STREAM (io), NULL, &error)); g_object_unref (io);
+  /* Never overwrite an unknown version's custom semantics. */
+  unknown = gimp_parasite_new ("gimp-painter-item", GIMP_PARASITE_PERSISTENT, 3, "v99");
+  gimp_item_parasite_attach (GIMP_ITEM (clone), unknown, FALSE); gimp_parasite_free (unknown);
   g_assert_cmpint (file_save (gimp, image, NULL, file, proc, GIMP_RUN_NONINTERACTIVE,
                               FALSE, FALSE, FALSE, &error), !=, GIMP_PDB_SUCCESS);
-  g_assert_nonnull (strstr (error->message, "preservation writer")); g_clear_error (&error);
+  g_assert_nonnull (strstr (error->message, "Unknown Painter extension")); g_clear_error (&error);
   g_assert_true (g_file_load_contents (file, NULL, &contents, &size, NULL, &error));
   g_assert_cmpmem (contents, size, sentinel, sizeof sentinel);
   g_free (contents); g_file_delete (file, NULL, NULL); g_object_unref (file); g_object_unref (image);
@@ -413,7 +436,7 @@ int main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/painter-xcf-open/" #name, name)
-  ADD (save_refusal_preserves_destination); ADD (dual_valid_short_extension); ADD (ambiguity_and_failures); ADD (unresolved_and_length_recovery); ADD (large_source);
+  ADD (absent_mode_historical_default); ADD (unknown_extension_preserves_destination); ADD (dual_valid_short_extension); ADD (ambiguity_and_failures); ADD (unresolved_and_length_recovery); ADD (large_source);
   ADD (ordinary); ADD (ordinary_projection_exact_gate); ADD (clones); ADD (filter_recovery); ADD (standard); ADD (recovery_handlers); ADD (cancel);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");

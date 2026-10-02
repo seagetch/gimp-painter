@@ -30,6 +30,7 @@
 
 #include "gimp.h"
 #include "gimp-parasites.h"
+#include "gimp-painter-provenance.h"
 #include "gimpchannel.h"
 #include "gimpcontainer.h"
 #include "gimpidtable.h"
@@ -612,26 +613,7 @@ gimp_item_real_duplicate (GimpItem *item,
     gimp_item_set_lock_visibility (new_item, gimp_item_get_lock_visibility (item),
                                    FALSE);
 
-  /* Imported source records are immutable shared byte views. Keep their
-   * provenance across item duplication without copying large metadata buffers
-   * or depending on any file-format implementation. Current item state remains
-   * authoritative; these records are only a lossless origin archive. */
-  {
-    const gchar *keys[] = { "gimp-painter-xcf-property-records",
-                            "gimp-painter-xcf-extension",
-                            "gimp-painter-xcf-object-header" };
-    guint i;
-    for (i = 0; i < G_N_ELEMENTS (keys); i++)
-      {
-        GBytes *bytes = g_object_get_data (G_OBJECT (item), keys[i]);
-        if (bytes)
-          g_object_set_data_full (G_OBJECT (new_item), keys[i], g_bytes_ref (bytes),
-                                  (GDestroyNotify) g_bytes_unref);
-      }
-    if (g_object_get_data (G_OBJECT (item), "gimp-painter-xcf-original-name"))
-      g_object_set_data_full (G_OBJECT (new_item), "gimp-painter-xcf-original-name",
-                              g_strdup (g_object_get_data (G_OBJECT (item), "gimp-painter-xcf-original-name")), g_free);
-  }
+  gimp_painter_copy_provenance (G_OBJECT (item), G_OBJECT (new_item));
 
   return new_item;
 }

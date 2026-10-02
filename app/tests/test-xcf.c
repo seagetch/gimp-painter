@@ -53,6 +53,7 @@
 #include "core/gimpimage-sample-points.h"
 #include "core/gimplayer.h"
 #include "core/gimplayer-new.h"
+#include "core/gimppickable.h"
 #include "core/gimpsamplepoint.h"
 #include "core/gimpselection.h"
 
@@ -169,7 +170,8 @@ static GimpImage * gimp_create_mainimage                       (Gimp            
 static void        gimp_assert_mainimage                       (GimpImage       *image,
                                                                 gboolean         with_unusual_stuff,
                                                                 gboolean         compat_paths,
-                                                                gboolean         use_gimp_2_8_features);
+                                                                gboolean         use_gimp_2_8_features,
+                                                                gboolean         historical_modes);
 
 
 /**
@@ -241,7 +243,25 @@ load_gimp_2_6_file (gconstpointer data)
   gimp_assert_mainimage (image,
                          FALSE /*with_unusual_stuff*/,
                          FALSE /*compat_paths*/,
-                         FALSE /*use_gimp_2_8_features*/);
+                         FALSE /*use_gimp_2_8_features*/,
+                         TRUE /*historical_modes*/);
+
+  /* Genuine old-runtime projection of this exact historical fixture. */
+  {
+    gchar *path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),
+                                     "migration/fixtures/legacy-upstream-projection/upstream-projection.rgba", NULL);
+    gchar *expected;
+    gsize size;
+    guint8 actual[GIMP_MAINIMAGE_WIDTH * GIMP_MAINIMAGE_HEIGHT * 4];
+    g_assert_true (g_file_get_contents (path, &expected, &size, NULL));
+    gimp_pickable_flush (GIMP_PICKABLE (image));
+    gegl_buffer_get (gimp_pickable_get_buffer (GIMP_PICKABLE (image)),
+                     GEGL_RECTANGLE (0, 0, GIMP_MAINIMAGE_WIDTH, GIMP_MAINIMAGE_HEIGHT),
+                     1, babl_format ("R'G'B'A u8"), actual, GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+    g_assert_cmpmem (actual, sizeof actual, expected, size);
+    g_free (expected); g_free (path);
+  }
+
 }
 
 /**
@@ -321,7 +341,8 @@ gimp_write_and_read_file (Gimp     *gimp,
   gimp_assert_mainimage (image,
                          with_unusual_stuff,
                          compat_paths,
-                         use_gimp_2_8_features);
+                         use_gimp_2_8_features,
+                         FALSE /*historical_modes*/);
 
   /* Write to file */
   file_handle = g_file_open_tmp ("gimp-test-XXXXXX.xcf", &filename, NULL);
@@ -355,7 +376,8 @@ gimp_write_and_read_file (Gimp     *gimp,
   gimp_assert_mainimage (loaded_image,
                          with_unusual_stuff,
                          compat_paths,
-                         use_gimp_2_8_features);
+                         use_gimp_2_8_features,
+                         FALSE /*historical_modes*/);
 
   g_file_delete (file, NULL, NULL);
   g_object_unref (file);
@@ -732,7 +754,8 @@ static void
 gimp_assert_mainimage (GimpImage *image,
                        gboolean   with_unusual_stuff,
                        gboolean   compat_paths,
-                       gboolean   use_gimp_2_8_features)
+                       gboolean   use_gimp_2_8_features,
+                       gboolean   historical_modes)
 {
   const GimpParasite *parasite               = NULL;
   gchar              *parasite_data          = NULL;
@@ -791,7 +814,7 @@ gimp_assert_mainimage (GimpImage *image,
                      GIMP_MAINIMAGE_LAYER1_OPACITY);
   g_assert_cmpint (gimp_layer_get_mode (layer),
                    ==,
-                   GIMP_MAINIMAGE_LAYER1_MODE);
+                   historical_modes ? GIMP_LAYER_MODE_PAINTER_NORMAL : GIMP_MAINIMAGE_LAYER1_MODE);
   layer = gimp_image_get_layer_by_name (image,
                                         GIMP_MAINIMAGE_LAYER2_NAME);
   g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (layer)),
@@ -811,7 +834,7 @@ gimp_assert_mainimage (GimpImage *image,
                      GIMP_MAINIMAGE_LAYER2_OPACITY);
   g_assert_cmpint (gimp_layer_get_mode (layer),
                    ==,
-                   GIMP_MAINIMAGE_LAYER2_MODE);
+                   historical_modes ? GIMP_LAYER_MODE_PAINTER_MULTIPLY : GIMP_MAINIMAGE_LAYER2_MODE);
 
   /* Guides, note that we rely on internal ordering */
   iter = gimp_image_get_guides (image);

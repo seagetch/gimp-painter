@@ -1,7 +1,8 @@
 # Legacy XCF application Open integration
 
-Status: implementation/verification in progress, 2026-10-02. This is a reader
-checkpoint, not completion of migration sections 10–12 or edit/save/reopen.
+Status: reader plus writer checkpoint, 2026-10-02. This is not completion of
+migration sections 10–12. The versioned writer/roundtrip contract is
+[xcf-painter-v1.md](xcf-painter-v1.md).
 The source-level wire contract is [xcf-compatibility.md](xcf-compatibility.md).
 
 ## Application path and dialect decisions
@@ -64,8 +65,8 @@ ordering, duplicates, raw names and opaque payloads. Custom objects additionally
 retain their exact consumed extension payload, and Clone retains the normalized
 original lookup name independently of the subsequently bound source. Filter's
 own definition API stores the raw payload. These are in-memory source/definition
-ownership guarantees; a persistent writer and duplication of opaque provenance
-are separate unfinished gates.
+ownership guarantees. The v1 writer additionally archives original property/header
+records and custom definitions; item duplication retains immutable provenance.
 
 Seeking validates the target against the source size. Unknown property skipping
 checks bounds and seeks rather than allocating the declared size. Short reads
@@ -101,14 +102,22 @@ resolution. Clone fixtures have correct live source identity and exact saved
 RGBA191,32,64,255 pixels, and imported-source edits update the clone. Filter cache
 pixel12,12 is RGBA0,0,0,255 and opening does not start an initial rerun.
 
-Exact ordinary appearance remains an explicit open gate: the current GIMP3
-projection differs from the old exported merged PNG in910/7680 pixels, maximum
-channel difference1, with alpha identical. This is not accepted as exact parity;
-old direct-projection evidence and stage-specific rounding analysis are pending.
-No full writer, ordinary/custom edit-save-reopen, broad malformed tile corpus,
-GUI interaction timing or all saved metadata audit is claimed by this checkpoint.
+The ordinary fixture and genuine upstream `gimp-2-6-file.xcf` now match sealed
+old-runtime direct projections byte-for-byte. Shared-layout v0–3 streams use
+canonical historical arithmetic for common legacy mode identities, including
+Normal when MODE is absent; this is a representation policy, not proof of an
+arbitrary writer's origin. Current standard low-version saves contain modern
+32/33 properties and retain upstream Normal/Multiply identities. Explicit
+standard recovery retains its ordinary interpretation; genuinely dual-valid
+extension streams still require a choice. The former 910-pixel, maximum-one-step
+rounding discrepancy is closed by dedicated historical Normal/Multiply operators.
 
-Reader checkpoint verification:
+Current normal coverage is upstream XCF 4/4, application Open 13/13 (including the
+strict exact-pixel assertion), and the separate writer roundtrip suite. Full
+writer format, fault coverage and remaining scope are documented separately.
+
+Historical reader checkpoint verification (commit 231ba6e625, superseded where
+noted above):
 
 - Normal Meson: upstream XCF4/4 cases pass; application Open11/12 cases pass,
   with the separate exact ordinary projection test explicitly TODO/incomplete

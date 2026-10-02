@@ -1,6 +1,8 @@
 libappxcf_sources = [
   'painter-xcf-compat.cpp',
   'painter-xcf-load.cpp',
+  'painter-xcf-preserve.cpp',
+  'painter-xcf-arguments.cpp',
   'xcf-load.c',
   'xcf-read.c',
   'xcf-save.c',

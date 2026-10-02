@@ -23,6 +23,7 @@ extern "C" {
 #include "core/gimpprogress.h"
 #include "xcf-private.h"
 #include "painter-xcf-load.h"
+#include "painter-xcf-preserve.h"
 #include "xcf-seek.h"
 #include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
 }
@@ -191,15 +192,32 @@ xcf_painter_prepare (XcfInfo *info, XcfPainterDialect requested, GError **error)
       if (bytes.size < 26)
         { g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED, "Truncated XCF header"); return FALSE; }
       const auto result = compat::probe (bytes);
-      if (requested == XCF_PAINTER_DIALECT_AUTO)
+      gint declared_dialect = -1;
+      /* An explicit versioned namespace identifies our standard-XCF extension
+       * independently of structural ambiguity or later object-work limits.
+       * Require the complete image-property sequence so later duplicates can
+       * override earlier markers exactly as the application reader does. */
+      if (!result.standard.image_properties.empty () && result.standard.image_properties.back ().tag == 0)
+        for (const auto &property : result.standard.image_properties)
+          if (property.tag == 21)
+            {
+              const gint marker = xcf_painter_provenance_in_parasites (info->painter_source,
+                                             property.payload.offset, property.payload.size);
+              if (marker >= 0) declared_dialect = marker;
+            }
+      if (requested == XCF_PAINTER_DIALECT_AUTO && declared_dialect == 1)
+        info->painter_legacy = FALSE;
+      else if (requested == XCF_PAINTER_DIALECT_AUTO)
         {
           switch (result.selection)
             {
             case compat::Selection::legacy_candidate:
               info->painter_legacy = TRUE;
               break;
-            case compat::Selection::standard_candidate:
             case compat::Selection::shared_layout:
+              info->painter_historical_modes = TRUE;
+              break;
+            case compat::Selection::standard_candidate:
             case compat::Selection::unsupported:
               break;
             default:
@@ -223,6 +241,7 @@ xcf_painter_prepare (XcfInfo *info, XcfPainterDialect requested, GError **error)
             }
         }
       else info->painter_legacy = requested == XCF_PAINTER_DIALECT_LEGACY;
+      if (info->painter_legacy) info->painter_historical_modes = TRUE;
       if (info->painter_legacy && result.legacy.diagnostic.status == compat::Status::unsupported)
         { g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED, "Legacy Painter recovery supports XCF versions 0 through 4"); return FALSE; }
       info->input = g_memory_input_stream_new_from_bytes (info->painter_source);
@@ -320,10 +339,12 @@ xcf_painter_finish_image (XcfInfo *info, GimpImage *image)
   GList *layers = gimp_image_get_layer_list (image);
   for (GList *p = layers; p; p = p->next)
     {
-      if (GIMP_IS_CLONE_LAYER (p->data)) gimp_clone_layer_get_source (GIMP_CLONE_LAYER (p->data));
+      if (GIMP_IS_CLONE_LAYER (p->data) &&
+          !g_object_get_data (G_OBJECT (p->data), "gimp-painter-xcf-modern-definition")) gimp_clone_layer_get_source (GIMP_CLONE_LAYER (p->data));
       if (GIMP_IS_FILTER_LAYER (p->data)) gimp_filter_layer_mark_as_loaded (GIMP_FILTER_LAYER (p->data));
     }
   g_list_free (layers);
+  xcf_painter_restore_bindings (info, image);
   gimp_image_undo_thaw (image);
 }
 extern "C" GBytes *xcf_painter_ref_original (GimpImage *image)
@@ -342,24 +363,4 @@ extern "C" gboolean xcf_painter_original_offset (GObject *object, guint64 *offse
   if (!value) return FALSE;
   if (offset) *offset = *value;
   return TRUE;
-}
-
-/* Temporary safety gate until the versioned preservation writer is installed.
- * Check before opening a replacement file, not after writing a partial XCF. */
-extern "C" gboolean xcf_painter_can_save (GimpImage *image, GError **error)
-{
-  GList *layers = gimp_image_get_layer_list (image);
-  bool custom = false;
-  for (GList *p = layers; p && !custom; p = p->next)
-    {
-      guint32 mode = 0;
-      custom = GIMP_IS_CLONE_LAYER (p->data) || GIMP_IS_FILTER_LAYER (p->data) ||
-        (gimp_painter_layer_mode_to_legacy (gimp_layer_get_mode (GIMP_LAYER (p->data)), &mode) && mode >= 23);
-    }
-  g_list_free (layers);
-  if (custom)
-    g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                         "Saving Painter layers or modes is not enabled until their preservation writer is ready. "
-                         "The destination was not changed; keep this image open to retain your edits.");
-  return !custom;
 }

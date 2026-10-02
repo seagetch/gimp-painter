@@ -47,6 +47,7 @@ app_tests = [
 #'ui',
   'xcf',
   'painter-xcf-open',
+  'painter-xcf-roundtrip',
   'painter-layer-modes',
   'painter-navigation-ui',
 ]

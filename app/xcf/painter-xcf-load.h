@@ -14,7 +14,6 @@ GimpImage *xcf_load_stream_with_dialect (Gimp *, GInputStream *, GFile *,
 /* Exact immutable original bytes, including unrecognized records. Caller owns
  * the returned reference. Object offsets identify original owning records. */
 GBytes   *xcf_painter_ref_original (GimpImage *);
-gboolean  xcf_painter_can_save (GimpImage *, GError **);
 gboolean  xcf_painter_original_offset (GObject *, guint64 *);
 
 #ifdef __XCF_PRIVATE_H__

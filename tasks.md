@@ -501,6 +501,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 12.001 | [ ] | 独自レイヤー識別の writer を実装する | 09.017, 11.023 | 新 reader が型を再構築可能 |
+| 12.001/preservation-writer | [x] | 標準XCF containerに独自型・参照・raw originを保存して再構築する | 11.020/first-application-route, 10.005/normal-multiply-parity, 14.015/reference-undo-snapshot, 17.001/fair-checkpoint-state | 27通常/10 focused sanitizer合格。旧Clone/Filter・未知記録・型付き引数・exact画素往復、cancel/失敗時既存file保持。外部live参照/全metadata/GUI等は別gate |
 | 12.002 | [ ] | CloneLayer 参照の writer を実装する | 12.001 | 旧解決結果と元記録を保持 |
 | 12.002/clone-unresolved-write | [ ] | 未解決 CloneLayer の元の参照名を保存する | 12.001, 11.018 | source pointer が NULL でも名前の dereference をせず、旧 source name を保存する。別レイヤーへ勝手につながない |
 | 12.003 | [ ] | FilterLayer 定義の writer を実装する | 12.002 | procedure と型・順序・値を保持 |
