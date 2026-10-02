@@ -29,7 +29,7 @@ checklist expands those actions before the inventory gate closes.
   changes `g_unlink (...) != 0` into `! g_unlink (...) != 0`. Do not propagate
   the reversed success/error test; cover success, ENOENT and genuine errors
 - `30.017/brush-preview-generator`: preserve the brush-label/preview script's
-  generated asset purpose using a verified current batch path
+  generated asset purpose using a verified ImageMagick path
 
 The late startup and exhaustive-vfunc verification children were moved to
 `30.016/feature-entry-point` and `38.004/all-vfunc-exception-containment` so a

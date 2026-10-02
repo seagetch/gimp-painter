@@ -199,7 +199,7 @@
 | 01.012/counterexamples | [x] | 実ソース式の筆圧・丸め・属性番号反例を実行する | 01.011 | C99で切り出した両式をrint/floor両経路で実行し、静止筆圧の差と32/33属性衝突を確認。GIMP全体replayの代用にしない |
 | 01.013 | [x] | 各差分を WBS に割り当てる | 01.012 | 全2,489 hunk・947変更pathと402資産/manifestをsource blob・範囲・hash付きで具体的WBSと検証先へ割当。未割当ゼロ、3子タスク追加（`migration/inventory/wbs-assignment.md`）。実装は未完了 |
 | 01.014 | [x] | 不要候補を分類する | 01.013 | 全947 pathを固定blobで確認し、空linker carrier・非空backup・生成物16件・コメント等のみ9件・live editor・placeholder・Ruby generator・実presetを分離（`migration/inventory/cleanup-candidates.md`）。削除は未実施 |
-| 01.015 | [ ] | C++ 以外の補助スクリプトを照合する | 01.014 | Python・Scheme・生成ツール等の旧差分に移植先または廃止根拠がある |
+| 01.015 | [x] | C++ 以外の補助スクリプトを照合する | 01.014 | 全37 auxiliary path・83 hunkと6生成関係を照合。Ruby/Bash/Perl・Scheme定数・未変更Python依存を対応し、欠落generatorと旧dispatch生成不整合を記録（`migration/inventory/auxiliary-scripts.md`） |
 | 01.016 | [ ] | 標準 paint の独自差分を照合する | 01.015 | paintbrush・dynamics・bucket fill・context の各 hunk を機能タスクへ割当 |
 | 01.016/bucket-selection-source | [ ] | 旧標準 bucket fill の選択境界差分を現行全域探索と照合する | 01.015, 01.005/fill-brush-boundary | 選択外を通る回込み、透過と開始位置を含め旧変更 hunk と移植先の接続先を一件ずつ記録 |
 | 01.017 | [ ] | 全差分の粒度を検査する | 01.016 | 一行の割当が複数の未実装変更を隠す場合は個別子タスクへ展開 |
@@ -982,13 +982,15 @@
 | 30.010 | [ ] | 既存ユーザーの資源移行を実装する | 30.009 | ユーザー編集済み資源を上書きしない |
 | 30.011 | [ ] | 資源検索パスを接続する | 30.010 | install prefix と user path の双方を解決 |
 | 30.012 | [ ] | 追加 PDB 手順を現行形式へ登録する | 30.011 | 引数と戻り値が現行 caller から使える |
+| 30.012/scheme-mode-constants | [ ] | Script-Fuの旧独自合成定数を現行APIへ対応する | 30.011, 01.015 | ERASE・REPLACE・ANTI-ERASE・SRC/DST IN/OUTの名前を保持し、衝突する旧数値を現行modeへ明示変換して呼出しと合成を試験する |
 | 30.013 | [ ] | 生成された PDB コードを更新する | 30.012 | 生成元と成果物に乖離がない |
 | 30.014 | [ ] | 追加 UI 文字列を翻訳対象へ登録する | 30.013 | 日本語・英語で未表示や欠落がない |
 | 30.015 | [ ] | ヘルプ ID と操作説明を接続する | 30.014 | 独自設定の意味を参照できる |
 | 30.016 | [ ] | 起動・終了順を統合する | 30.015 | 資源と UI の終了で stale callback がない |
 | 30.016/feature-entry-point | [ ] | 旧 features_entry_point の起動時登録を現行初期化へ接続する | 04.018, 28.003 | GUI/console と HTTPD 条件分岐、Gimp 所有者、initialize/restore/exit の接続と解除を検証 |
 | 30.017 | [ ] | インストール資産の一覧を生成する | 30.016 | 必要ファイルの欠落を検出できる |
-| 30.017/brush-preview-generator | [ ] | 旧ブラシlabel・preview生成スクリプトを現行batchへ接続する | 30.016, 01.013 | label-brush-mypaint.shの入力・template・出力関係を保持し、GIMP3で生成・再読込み・manifest一致を試験する |
+| 30.017/brush-manifest-generator | [ ] | Ruby版ブラシmanifest生成をMeson資源台帳へ置き換える | 30.016, 01.015 | Makefile.am.skelのmyb・preview列挙とsortを保持し、全同梱資産・root未対preview・noticeの欠落を検査する |
+| 30.017/brush-preview-generator | [ ] | ImageMagickの旧ブラシpreviewラベル生成を維持する | 30.016, 01.015 | label-brush-mypaint.shのcaption・border・resizeと上書き対象を保持し、空白等のfilename・画素出力・manifest一致を試験する。GIMP batch依存と混同しない |
 
 ### 31 周辺機能と重複実装の整理
 

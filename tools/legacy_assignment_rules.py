@@ -89,7 +89,9 @@ profile('icons', 'Icon/theme resource', '30.003 30.017', '29.020 34.014', 'Regis
 profile('translation', 'User-visible strings and translation', '30.014 30.015', '29.020 34.002', 'Register source strings and retain Japanese translations/help meaning for all preserved controls.')
 profile('menus', 'Brush/dialog menu registrations', '30.001 30.005', '24.017 29.020', 'Keep action/menu IDs and the editor/brush dialog entry points aligned with current actions.')
 profile('packaging', 'Legacy packaging and pinned dependencies', '32.001 33.001 34.005 34.005/license-manifest', '32.012 33.009 34.002', 'Old Flatpak instructions/patches are evidence for reproducibility; replace obsolete runtimes only with verified current packaging.')
-profile('scripts', 'Auxiliary resource-generation script', '30.017/brush-preview-generator', '34.013 34.014', 'Retain script purpose and generated asset relationships; replace unavailable legacy batch/Python syntax with a tested current path.')
+profile('scripts', 'ImageMagick brush preview labeling', '30.017/brush-preview-generator', '34.013 34.014', 'Retain the in-place ImageMagick caption/border/resize operation; quote resource filenames and verify output assets without inventing a GIMP batch dependency.')
+profile('manifest-generator', 'Ruby brush installation-manifest generator', '30.017/brush-manifest-generator', '34.013 34.014', 'Preserve globbed myb and _prev.png membership and deterministic sorting when replacing generated Autotools asset lists with Meson manifests.')
+profile('scheme-modes', 'Script-Fu legacy compositing constants', '30.012/scheme-mode-constants', '13.013 34.013 36.004', 'Preserve seven Script-Fu names and translate their mode meaning explicitly instead of reusing conflicting old integer values.')
 profile('tool-delete', 'Tool-option deletion result', '30.008/tool-options-delete-result', '30.008/tool-options-delete-result', 'Correct the inverted legacy unlink error condition; test successful removal, absent file and genuine failure without deleting unrelated state.')
 
 FILES = {}
@@ -214,6 +216,9 @@ def path_profile(path):
     p = PurePosixPath(path)
     if path in FILES: return FILES[path]
     if p.name == '.gitignore': return 'cleanup'
+    if path == 'data/mypaint-brushes/Makefile.am.skel': return 'manifest-generator'
+    if path == 'plug-ins/script-fu/scheme-wrapper.c': return 'scheme-modes'
+    if path == 'tools/pdbgen/enums.pl': return 'mode-enum'
     if p.name.startswith('Makefile.am'):
         return 'assets-manifest' if path.startswith(('data/','themes/','etc/')) else 'build'
     if path == 'configure.ac': return 'build-config'
