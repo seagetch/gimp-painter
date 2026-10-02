@@ -58,6 +58,11 @@ def verify():
     handle_names = {r['handle'] for r in handles}
     for row in entries:
         operation = row['cpp_operation']
+        method = operation.rsplit('::', 1)[-1]
+        if method in {'new', 'delete', 'register', 'class', 'struct', 'template',
+                      'operator', 'return', 'default', 'private', 'public',
+                      'protected', 'this', 'throw', 'try', 'catch', 'using', 'typename'}:
+            errors.append('reserved C++ operation name: ' + operation)
         if operation.startswith('TypeTraits<'):
             if operation.split('<', 1)[1].split('>', 1)[0] not in types:
                 errors.append('unknown C type in TypeTraits route: ' + operation)
