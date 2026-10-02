@@ -113,5 +113,14 @@ guint64     gimp_filter_layer_get_generation (GimpFilterLayer *);
 guint64     gimp_filter_layer_get_cache_generation (GimpFilterLayer *);
 guint64     gimp_filter_layer_get_run_count  (GimpFilterLayer *);
 gint64      gimp_filter_layer_get_max_quantum_us (GimpFilterLayer *);
+/* Opaque argument-model bytes are mutually exclusive with converted arguments.
+ * They are retained without inspection and never used for execution. Nonnull
+ * zero-length bytes are distinct from no opaque model. Loader setter: no Undo.
+ * Ordinary definition/snapshot setters explicitly clear this opaque state.
+ * Duplicate and definition Undo/Redo preserve it. Getter returns an owned ref. */
+gboolean gimp_filter_layer_set_definition_with_opaque_arguments (GimpFilterLayer *, const gchar *procedure,
+                                                                GBytes *serialized_definition,
+                                                                GBytes *opaque_arguments, GError **);
+GBytes *gimp_filter_layer_ref_opaque_arguments (GimpFilterLayer *);
 G_END_DECLS
 #endif

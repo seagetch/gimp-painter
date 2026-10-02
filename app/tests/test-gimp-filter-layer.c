@@ -677,6 +677,7 @@ static void observe_definition_notifies (GimpFilterLayer *filter, DefinitionReen
   g_signal_connect (filter,"notify::filter-procedure",G_CALLBACK (definition_notify_count),state);
   g_signal_connect (filter,"notify::filter-arguments",G_CALLBACK (definition_notify_count),state);
   g_signal_connect (filter,"notify::filter-original-definition",G_CALLBACK (definition_notify_count),state);
+  g_signal_connect (filter,"notify::filter-opaque-arguments",G_CALLBACK (definition_notify_count),state);
 }
 static void definition_edit_stops_after_undo_close (void)
 {
@@ -734,6 +735,164 @@ static void definition_notifications_stop_after_close (void)
       g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
       g_object_unref (image);
     }
+}
+
+static void assert_opaque (GimpFilterLayer *filter, GBytes *expected)
+{
+  GBytes *actual = gimp_filter_layer_ref_opaque_arguments (filter);
+  g_assert_nonnull (actual); g_assert_true (g_bytes_equal (actual,expected)); g_bytes_unref (actual);
+  g_assert_null (gimp_filter_layer_snapshot_arguments (filter));
+  g_assert_null (gimp_filter_layer_dup_args (filter));
+}
+static void opaque_arguments_duplicate_and_undo (void)
+{
+  static const guchar opaque_data[] = {0xff,0,0x80,3,0,27};
+  static const guchar raw_data[] = {32,0,89,0xff};
+  GimpImage *image = image_new (8,8);
+  GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+  GBytes *opaque = g_bytes_new_static (opaque_data,sizeof opaque_data), *raw = g_bytes_new_static (raw_data,sizeof raw_data), *saved;
+  GimpItem *copy;
+  GimpValueArray *args = edge_args ();
+  fill (GIMP_LAYER (filter),31,47,93,255);
+  g_assert_true (gimp_filter_layer_set_definition_with_opaque_arguments (filter,"plug-in-edge",raw,opaque,NULL));
+  gimp_filter_layer_mark_as_loaded (filter); assert_opaque (filter,opaque);
+  saved = gimp_filter_layer_ref_definition (filter); g_assert_true (g_bytes_equal (saved,raw)); g_bytes_unref (saved);
+  copy = gimp_item_duplicate (GIMP_ITEM (filter),GIMP_TYPE_FILTER_LAYER);
+  g_assert_nonnull (copy); assert_opaque (GIMP_FILTER_LAYER (copy),opaque);
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (GIMP_FILTER_LAYER (copy)), >, 0);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (GIMP_FILTER_LAYER (copy)), ==, 0);
+  g_object_unref (copy);
+  g_assert_true (gimp_filter_layer_edit_definition (filter,"plug-in-edge",NULL,args,NULL));
+  g_assert_null (gimp_filter_layer_ref_opaque_arguments (filter));
+  g_assert_cmpint (gimp_object_get_memsize (GIMP_OBJECT (gimp_undo_stack_peek (gimp_image_get_undo_stack (image))),NULL), >=, 8*8*4);
+  settle (filter); pixel (GIMP_LAYER (filter),0,0,0,0);
+  g_assert_true (gimp_image_undo (image)); assert_opaque (filter,opaque);
+  pixel (GIMP_LAYER (filter),31,47,93,255);
+  spin_ms (15); pixel (GIMP_LAYER (filter),31,47,93,255);
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_FAILED);
+  g_assert_cmpuint (gimp_filter_layer_get_cache_generation (filter), !=, gimp_filter_layer_get_generation (filter));
+  saved = gimp_filter_layer_ref_definition (filter); g_assert_true (g_bytes_equal (saved,raw)); g_bytes_unref (saved);
+  g_assert_true (gimp_image_redo (image)); g_assert_null (gimp_filter_layer_ref_opaque_arguments (filter));
+  g_assert_null (gimp_filter_layer_ref_definition (filter));
+  settle (filter); pixel (GIMP_LAYER (filter),0,0,0,0);
+  gimp_value_array_unref (args); g_bytes_unref (opaque); g_bytes_unref (raw); g_object_unref (image);
+}
+static void duplicate_preserves_cache_freshness (void)
+{
+  for (guint phase = 0; phase < 3; ++phase)
+    {
+      GimpImage *image = image_new (8,8);
+      GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+      GBytes *opaque = g_bytes_new_static ("opaque",6);
+      GimpFilterLayerSnapshot saved = {1,10,phase == 2 ? 10 : 9,phase != 0,GIMP_FILTER_LAYER_RUNNING}, observed;
+      GimpItem *copy;
+      fill (GIMP_LAYER (filter),31,47,93,255);
+      g_assert_true (gimp_filter_layer_set_definition_with_opaque_arguments (filter,"unknown",NULL,opaque,NULL));
+      g_assert_true (gimp_filter_layer_restore_snapshot_state (filter,&saved,NULL));
+      copy = gimp_item_duplicate (GIMP_ITEM (filter),GIMP_TYPE_FILTER_LAYER); g_assert_nonnull (copy);
+      g_assert_true (gimp_filter_layer_get_snapshot_state (GIMP_FILTER_LAYER (copy),&observed));
+      g_assert_cmpint (observed.cache_complete, ==, saved.cache_complete);
+      g_assert_cmpint (observed.generation == observed.cache_generation, ==, phase == 2);
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (GIMP_FILTER_LAYER (copy)), ==, 0);
+      pixel (GIMP_LAYER (copy),31,47,93,255); assert_opaque (GIMP_FILTER_LAYER (copy),opaque);
+      g_object_unref (copy); g_bytes_unref (opaque); g_object_unref (image);
+    }
+}
+static void opaque_arguments_never_execute (void)
+{
+  GimpImage *image = image_new (8,8);
+  GimpLayer *source = source_new (image,NULL,8,8);
+  GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+  GBytes *opaque = g_bytes_new_static ("unavailable canonical model",27);
+  guint64 runs;
+  fill (source,55,127,240,255); settle (filter); runs = gimp_filter_layer_get_run_count (filter);
+  fill (GIMP_LAYER (filter),17,18,19,255);
+  g_assert_true (gimp_filter_layer_set_definition_with_opaque_arguments (filter,"plug-in-edge",NULL,opaque,NULL));
+  gimp_filter_layer_mark_as_loaded (filter); spin_ms (5);
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLEAN);
+  gimp_filter_layer_invalidate (filter); spin_ms (20);
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_FAILED);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, runs);
+  assert_opaque (filter,opaque); pixel (GIMP_LAYER (filter),17,18,19,255);
+  g_bytes_unref (opaque); g_object_unref (image);
+}
+static void empty_opaque_arguments_are_distinct (void)
+{
+  GimpImage *image = image_new (8,8);
+  GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+  GBytes *empty = g_bytes_new_static ("",0), *property = NULL;
+  GimpFilterArgumentsSnapshot *converted = gimp_filter_arguments_snapshot_import (0,NULL,NULL), *snapshot;
+  g_assert_true (gimp_filter_layer_set_definition_with_opaque_arguments (filter,"future",NULL,empty,NULL));
+  assert_opaque (filter,empty);
+  g_object_get (filter,"filter-opaque-arguments",&property,NULL);
+  g_assert_nonnull (property); g_assert_cmpuint (g_bytes_get_size (property), ==, 0); g_bytes_unref (property);
+  g_assert_true (gimp_filter_layer_set_definition (filter,"future",NULL,NULL,NULL));
+  g_assert_null (gimp_filter_layer_ref_opaque_arguments (filter));
+  g_assert_true (gimp_filter_layer_set_definition_with_opaque_arguments (filter,"future",NULL,empty,NULL));
+  g_assert_true (gimp_filter_layer_set_definition_with_snapshot (filter,"future",NULL,converted,NULL));
+  g_assert_null (gimp_filter_layer_ref_opaque_arguments (filter));
+  snapshot = gimp_filter_layer_snapshot_arguments (filter); g_assert_nonnull (snapshot);
+  g_assert_cmpuint (gimp_filter_arguments_snapshot_count (snapshot), ==, 0);
+  gimp_filter_arguments_snapshot_free (snapshot); gimp_filter_arguments_snapshot_free (converted);
+  g_bytes_unref (empty); g_object_unref (image);
+}
+typedef struct { GimpFilterLayer *filter; gboolean called; } PayloadReentry;
+static void retired_payload_install_definition (gpointer data)
+{
+  PayloadReentry *state = data;
+  GimpValueArray *args = edge_args ();
+  GBytes *raw = g_bytes_new_static ("inner",5);
+  state->called = TRUE;
+  g_value_set_double (gimp_value_array_index (args,3),7.0);
+  g_assert_true (gimp_filter_layer_set_definition (state->filter,"plug-in-edge",raw,args,NULL));
+  g_bytes_unref (raw); gimp_value_array_unref (args);
+}
+static void retired_definition_payload_reentry (void)
+{
+  GimpImage *image = image_new (8,8);
+  GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+  PayloadReentry state = {filter,FALSE};
+  GBytes *raw = g_bytes_new_with_free_func ("retired",7,retired_payload_install_definition,&state);
+  GBytes *opaque = g_bytes_new_static ("opaque",6), *saved;
+  GimpValueArray *args = edge_args (), *values;
+  g_assert_true (gimp_filter_layer_set_definition_with_opaque_arguments (filter,"old",raw,opaque,NULL));
+  g_bytes_unref (raw); g_bytes_unref (opaque); g_assert_false (state.called);
+  g_value_set_double (gimp_value_array_index (args,3),3.0);
+  g_assert_true (gimp_filter_layer_set_definition (filter,"plug-in-edge",NULL,args,NULL));
+  g_assert_true (state.called); g_assert_null (gimp_filter_layer_ref_opaque_arguments (filter));
+  values = gimp_filter_layer_dup_args (filter);
+  g_assert_cmpfloat (g_value_get_double (gimp_value_array_index (values,3)), ==, 7.0);
+  saved = gimp_filter_layer_ref_definition (filter);
+  g_assert_cmpmem (g_bytes_get_data (saved,NULL),g_bytes_get_size (saved),"inner",5);
+  g_bytes_unref (saved); gimp_value_array_unref (values); gimp_value_array_unref (args); g_object_unref (image);
+}
+typedef struct { GimpFilterLayer *original; GimpFilterLayer *copy; } DuplicateReentry;
+static gboolean replace_duplicate_definition (GSignalInvocationHint *hint, guint n_values, const GValue *values, gpointer data)
+{
+  DuplicateReentry *state = data;
+  GimpFilterLayer *filter = g_value_get_object (values);
+  if (filter != state->original && !state->copy)
+    {
+      GimpValueArray *args = edge_args ();
+      state->copy = g_object_ref (filter);
+      g_value_set_double (gimp_value_array_index (args,3),7.0);
+      g_assert_true (gimp_filter_layer_set_definition (filter,"plug-in-edge",NULL,args,NULL));
+      gimp_value_array_unref (args);
+    }
+  return TRUE;
+}
+static void duplicate_reentry_cannot_certify_new_definition (void)
+{
+  GimpImage *image = image_new (8,8);
+  GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+  DuplicateReentry state = {filter,NULL};
+  guint signal = g_signal_lookup ("filter-state-changed",GIMP_TYPE_FILTER_LAYER);
+  gulong hook = g_signal_add_emission_hook (signal,0,replace_duplicate_definition,&state,NULL);
+  GimpItem *copy = gimp_item_duplicate (GIMP_ITEM (filter),GIMP_TYPE_FILTER_LAYER);
+  g_signal_remove_emission_hook (signal,hook);
+  g_assert_null (copy); g_assert_nonnull (state.copy);
+  g_assert_cmpuint (gimp_filter_layer_get_generation (state.copy), !=, gimp_filter_layer_get_cache_generation (state.copy));
+  g_object_unref (state.copy); g_object_unref (image);
 }
 
 static gboolean heartbeat (gpointer data)
@@ -1451,6 +1610,8 @@ int main (int argc, char **argv)
   ADD (image_close_reentry_during_completion_flush); ADD (image_close_reentry_during_commit); ADD (retained_handle_after_image_close); ADD (argument_value_dag_is_bounded); ADD (typed_argument_import_preserves_descriptors); ADD (argument_import_validation);
   ADD (typed_argument_snapshot_survives_expiration); ADD (saved_snapshot_generation_restore); ADD (small_image_finishes_during_large_preparation); ADD (image_close_during_worker);
   ADD (sustained_edits_converge); ADD (oversized_execution_preserves_definition);
+  ADD (duplicate_preserves_cache_freshness); ADD (opaque_arguments_duplicate_and_undo); ADD (opaque_arguments_never_execute); ADD (empty_opaque_arguments_are_distinct);
+  ADD (retired_definition_payload_reentry); ADD (duplicate_reentry_cannot_certify_new_definition);
   ADD (definition_edit_stops_after_undo_close); ADD (definition_edit_preserves_reentered_install); ADD (definition_notifications_stop_after_close);
   ADD (pending_cycle_resolved_during_graph_read_is_discarded); ADD (definition_revision_separates_cache_updates);
   ADD (dependency_walk_does_not_resolve_pending_names); ADD (changed_dependency_invalidation_can_close_owner);

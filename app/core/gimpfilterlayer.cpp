@@ -249,13 +249,24 @@ struct FilterImpl
     auto *store = BindingStore::find (G_OBJECT (owner));
     return store && store->accepts (binding_token) && definition_revision == revision;
   }
-  bool publish_definition ()
+  bool publish_definition (GeglBuffer *restore_buffer = nullptr, bool cache_complete = true)
   {
     auto& store = BindingStore::require (G_OBJECT (owner));
     const auto token = store.generation (), revision = definition_revision;
     configure ();
     if (!definition_current (token, revision)) return false;
-    for (const char *property : {"filter-procedure", "filter-arguments", "filter-original-definition"})
+    if (restore_buffer)
+      {
+        /* Undo owns the old committed pixels, not a claim about current lower
+         * content. Keep them visible, but only a successful rerun certifies
+         * freshness. In particular, an opaque model must never inherit the
+         * newer procedure's pixels or be marked complete/current by Undo. */
+        scheduler.restore_cache ({1, 0, cache_complete});
+        staged.reset (); schedule ();
+        publish_buffer (restore_buffer, scheduler.generation (), false);
+        if (!definition_current (token, revision)) return false;
+      }
+    for (const char *property : {"filter-procedure", "filter-arguments", "filter-original-definition", "filter-opaque-arguments"})
       {
         g_object_notify (G_OBJECT (owner), property);
         if (!definition_current (token, revision)) return false;
@@ -498,6 +509,26 @@ struct FilterImpl
     return { x, y, int (count < std::size_t (width) ? count : width),
              int (count < std::size_t (width) ? 1 : count / width) };
   }
+  void publish_buffer (GeglBuffer *completed, std::uint64_t token, bool flush)
+  {
+    if (token != scheduler.generation () || scheduler.state () == FilterScheduler::State::closed) return;
+    /* Swap a fully imported buffer. No partial result is visible to the
+     * drawable source, save code, projection, or an upper FilterLayer. */
+    gimp_drawable_set_buffer_full (GIMP_DRAWABLE (owner), FALSE, nullptr, completed, nullptr, FALSE);
+    /* Buffer notification may synchronously close the image or edit the
+     * definition. Never publish a later drawable update for that token. */
+    if (scheduler.state () == FilterScheduler::State::closed || token != scheduler.generation ()) return;
+    gimp_drawable_update (GIMP_DRAWABLE (owner), 0, 0,
+                          gimp_item_get_width (GIMP_ITEM (owner)), gimp_item_get_height (GIMP_ITEM (owner)));
+    if (scheduler.state () == FilterScheduler::State::closed || token != scheduler.generation ()) return;
+    /* Asynchronous completion also flushes the image, scheduling chunked
+     * projection without waiting. Synchronous Undo uses its caller's flush. */
+    if (flush)
+      {
+        auto image = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (GIMP_ITEM (owner))));
+        if (image) gimp_image_flush (GIMP_IMAGE (image.get ()));
+      }
+  }
   bool step ()
   {
     const auto started_at = g_get_monotonic_time ();
@@ -560,21 +591,7 @@ struct FilterImpl
       [&] (std::uint64_t token) {
         if (token != scheduler.generation ()) return;
         auto completed = std::move (staged);
-        /* Swap a fully imported buffer. No partial result is visible to the
-         * drawable source, save code, projection, or an upper FilterLayer. */
-        gimp_drawable_set_buffer_full (GIMP_DRAWABLE (owner), FALSE, nullptr, GEGL_BUFFER (completed.get ()), nullptr, FALSE);
-        /* Buffer notification may synchronously close the image or edit the
-         * definition. Never publish a later drawable update for that token. */
-        if (scheduler.state () == FilterScheduler::State::closed || token != scheduler.generation ()) return;
-        gimp_drawable_update (GIMP_DRAWABLE (owner), 0, 0,
-                              gimp_item_get_width (GIMP_ITEM (owner)), gimp_item_get_height (GIMP_ITEM (owner)));
-        if (scheduler.state () == FilterScheduler::State::closed || token != scheduler.generation ()) return;
-        /* Drawable invalidation alone only queues projection damage. Notify
-         * displays after asynchronous completion too, or a previously rendered
-         * transparent/older cache remains on screen until the next user edit.
-         * Image flush schedules chunked projection; it does not wait for it. */
-        auto image = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (GIMP_ITEM (owner))));
-        if (image) gimp_image_flush (GIMP_IMAGE (image.get ()));
+        publish_buffer (GEGL_BUFFER (completed.get ()), token, true);
       });
     if (scheduler.state () == FilterScheduler::State::closed) return false;
     maximum_quantum_us = std::max (maximum_quantum_us, g_get_monotonic_time () - started_at);
@@ -583,7 +600,7 @@ struct FilterImpl
   }
   GimpFilterLayer *owner;
   std::string procedure;
-  BytesRef raw;
+  BytesRef raw, opaque_arguments;
   std::shared_ptr<const FilterArguments> args;
   std::uint64_t definition_revision = 0;
   FilterScheduler scheduler;
@@ -648,9 +665,11 @@ void image_disconnected (GimpObject *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { gimp_painter_binding_close (G_OBJECT (impl.owner), nullptr); }); }
 struct FilterUndoImpl
 {
-  void close () noexcept { raw.reset (); args.reset (); }
+  ObjectRef<GObject> buffer;
+  bool cache_complete = false;
+  void close () noexcept { raw.reset (); opaque_arguments.reset (); args.reset (); buffer.reset (); }
   std::string procedure;
-  BytesRef raw;
+  BytesRef raw, opaque_arguments;
   std::shared_ptr<const FilterArguments> args;
 };
 struct FilterUndoSlot : SlotSpec<GimpFilterLayerUndo, FilterUndoImpl> {};
@@ -666,6 +685,11 @@ void undo_constructed (GObject *object)
           snapshot.procedure = impl.procedure;
           snapshot.raw = BytesRef (impl.raw ? g_bytes_ref (impl.raw.get ()) : nullptr);
           snapshot.args = impl.args;
+          snapshot.opaque_arguments = BytesRef (impl.opaque_arguments ? g_bytes_ref (impl.opaque_arguments.get ()) : nullptr);
+          GeglBuffer *buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (impl.owner));
+          if (!buffer) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter has no committed cache");
+          snapshot.buffer = ObjectRef<GObject>::adopt (G_OBJECT (gegl_buffer_dup (buffer)));
+          snapshot.cache_complete = impl.scheduler.snapshot ().cache_complete;
         });
       });
       store.activate (); return TRUE;
@@ -682,14 +706,46 @@ void undo_pop (GimpUndo *undo, GimpUndoMode mode, GimpUndoAccumulator *accum)
   boundary_void (nullptr, [&] {
     BindingStore::require (G_OBJECT (undo)).with<FilterUndoSlot> ([&] (FilterUndoImpl& snapshot) {
       BindingStore::require (G_OBJECT (GIMP_ITEM_UNDO (undo)->item)).with<FilterSlot> ([&] (FilterImpl& impl) {
+        auto current = ObjectRef<GObject>::adopt (G_OBJECT (gegl_buffer_dup (gimp_drawable_get_buffer (GIMP_DRAWABLE (impl.owner)))));
         impl.definition_installed ();
+        auto restored = std::move (snapshot.buffer);
+        const bool complete = snapshot.cache_complete;
+        snapshot.buffer = std::move (current);
+        snapshot.cache_complete = impl.scheduler.snapshot ().cache_complete;
         impl.procedure.swap (snapshot.procedure);
         impl.raw.swap (snapshot.raw);
         impl.args.swap (snapshot.args);
-        impl.publish_definition ();
+        impl.opaque_arguments.swap (snapshot.opaque_arguments);
+        impl.publish_definition (GEGL_BUFFER (restored.get ()), complete);
       });
     });
   });
+}
+gint64 undo_memsize (GimpObject *object, gint64 *gui)
+{
+  const auto retained = boundary<gint64> (nullptr, 0, [&] {
+    auto *store = BindingStore::find (G_OBJECT (object));
+    if (!store || store->state () != BindingStore::State::active) return gint64 (0);
+    return store->read<FilterUndoSlot> ([] (const FilterUndoImpl& snapshot) {
+      const std::uint64_t limit = G_MAXINT64;
+      std::uint64_t size = sizeof (snapshot);
+      const auto add = [&] (std::uint64_t bytes) { size = bytes > limit - size ? limit : size + bytes; };
+      add (snapshot.procedure.capacity ());
+      if (snapshot.raw) add (g_bytes_get_size (snapshot.raw.get ()));
+      if (snapshot.opaque_arguments) add (g_bytes_get_size (snapshot.opaque_arguments.get ()));
+      if (snapshot.buffer)
+        {
+          auto *buffer = GEGL_BUFFER (snapshot.buffer.get ());
+          std::uint64_t area = gegl_buffer_get_width (buffer);
+          const std::uint64_t height = gegl_buffer_get_height (buffer), bpp = babl_format_get_bytes_per_pixel (gegl_buffer_get_format (buffer));
+          area = height && area > limit / height ? limit : area * height;
+          add (bpp && area > limit / bpp ? limit : area * bpp);
+        }
+      return gint64 (size);
+    });
+  });
+  const auto base = GIMP_OBJECT_CLASS (gimp_filter_layer_undo_parent_class)->get_memsize (object, gui);
+  return retained > G_MAXINT64 - base ? G_MAXINT64 : retained + base;
 }
 void constructed (GObject *object)
 {
@@ -714,6 +770,7 @@ void get_property (GObject *object, guint property_id, GValue *value, GParamSpec
     case 2: g_value_take_string (value, gimp_filter_layer_dup_procedure (layer)); break;
     case 3: g_value_take_boxed (value, gimp_filter_layer_dup_args (layer)); break;
     case 4: g_value_take_boxed (value, gimp_filter_layer_ref_definition (layer)); break;
+    case 5: g_value_take_boxed (value, gimp_filter_layer_ref_opaque_arguments (layer)); break;
     default: G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, spec);
     }
 }
@@ -727,12 +784,26 @@ GimpItem *duplicate (GimpItem *item, GType type)
     if (GIMP_IS_FILTER_LAYER (copy))
       BindingStore::require (G_OBJECT (item)).read<FilterSlot> ([&] (const FilterImpl& impl) {
         BindingStore::require (G_OBJECT (copy)).with<FilterSlot> ([&] (FilterImpl& duplicate_impl) {
-          duplicate_impl.procedure = impl.procedure;
-          duplicate_impl.raw = BytesRef (impl.raw ? g_bytes_ref (impl.raw.get ()) : nullptr);
-          duplicate_impl.args = impl.args;
+          std::string name = impl.procedure;
+          BytesRef raw (impl.raw ? g_bytes_ref (impl.raw.get ()) : nullptr);
+          BytesRef opaque (impl.opaque_arguments ? g_bytes_ref (impl.opaque_arguments.get ()) : nullptr);
+          auto arguments = impl.args;
+          const auto token = BindingStore::require (G_OBJECT (copy)).generation ();
+          const auto cache = impl.scheduler.snapshot ();
+          duplicate_impl.definition_installed ();
+          const auto revision = duplicate_impl.definition_revision;
+          /* Publish all fields before retired payload deleters can reenter. */
+          duplicate_impl.procedure.swap (name);
+          duplicate_impl.raw.swap (raw);
+          duplicate_impl.opaque_arguments.swap (opaque);
+          duplicate_impl.args.swap (arguments);
           duplicate_impl.attach ();
+          if (!duplicate_impl.definition_current (token, revision))
+            throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter duplicate changed during attachment");
           duplicate_impl.configure ();
-          duplicate_impl.scheduler.mark_loaded ();
+          if (!duplicate_impl.definition_current (token, revision))
+            throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter duplicate changed during configuration");
+          duplicate_impl.scheduler.restore_cache (cache);
         });
       });
     return GIMP_ITEM (partial.release ());
@@ -746,6 +817,7 @@ static void gimp_filter_layer_undo_class_init (GimpFilterLayerUndoClass *klass)
   G_OBJECT_CLASS (klass)->constructed = undo_constructed;
   G_OBJECT_CLASS (klass)->dispose = undo_dispose;
   GIMP_UNDO_CLASS (klass)->pop = undo_pop;
+  GIMP_OBJECT_CLASS (klass)->get_memsize = undo_memsize;
 }
 static void gimp_filter_layer_undo_init (GimpFilterLayerUndo *undo)
 {
@@ -767,6 +839,9 @@ static void gimp_filter_layer_class_init (GimpFilterLayerClass *klass)
     g_param_spec_boxed ("filter-arguments", "Filter arguments", "Resolved copy of saved execution arguments", GIMP_TYPE_VALUE_ARRAY, G_PARAM_READABLE));
   g_object_class_install_property (object, 4,
     g_param_spec_boxed ("filter-original-definition", "Original definition", "Unmodified original serialized definition", G_TYPE_BYTES, G_PARAM_READABLE));
+  g_object_class_install_property (object, 5,
+    g_param_spec_boxed ("filter-opaque-arguments", "Opaque arguments", "Unavailable converted argument model, retained uninterpreted",
+                        G_TYPE_BYTES, G_PARAM_READABLE));
   GIMP_ITEM_CLASS (klass)->duplicate = duplicate;
   GIMP_ITEM_CLASS (klass)->is_content_locked = content_locked;
   GIMP_VIEWABLE_CLASS (klass)->default_icon_name = "gimp-gegl";
@@ -801,7 +876,8 @@ GimpLayer *gimp_filter_layer_new (GimpImage *image, gint width, gint height, con
 }
 static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
                                 GBytes *raw, const GimpValueArray *args, bool push_undo, GError **error,
-                                const std::shared_ptr<const FilterArguments> *imported = nullptr)
+                                const std::shared_ptr<const FilterArguments> *imported = nullptr,
+                                GBytes *opaque_arguments = nullptr)
 {
   return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
     if (!GIMP_IS_FILTER_LAYER (layer)) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected FilterLayer");
@@ -809,6 +885,7 @@ static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
     auto image_pin = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (GIMP_ITEM (layer))));
     std::string name = procedure ? procedure : "";
     BytesRef bytes (raw ? g_bytes_ref (raw) : nullptr);
+    BytesRef opaque (opaque_arguments ? g_bytes_ref (opaque_arguments) : nullptr);
     std::shared_ptr<const FilterArguments> arguments = imported ? *imported :
                                                        args ? std::make_shared<FilterArguments> (args) : nullptr;
     BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([&] (FilterImpl& impl) {
@@ -829,7 +906,10 @@ static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
         throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition target changed during Undo creation");
       impl.definition_installed ();
       const auto installed_revision = impl.definition_revision;
-      impl.procedure = std::move (name); impl.raw = std::move (bytes); impl.args = std::move (arguments);
+      /* Byte payloads can have caller-supplied destruction callbacks. Keep
+       * the retired definition alive until the whole replacement is published. */
+      impl.procedure.swap (name); impl.raw.swap (bytes);
+      impl.args.swap (arguments); impl.opaque_arguments.swap (opaque);
       impl.attach ();
       if (!impl.definition_current (binding_token, installed_revision) || !impl.publish_definition ())
         throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition target changed during notification");
@@ -843,6 +923,9 @@ gboolean gimp_filter_layer_set_definition (GimpFilterLayer *layer, const gchar *
 gboolean gimp_filter_layer_edit_definition (GimpFilterLayer *layer, const gchar *procedure,
                                            GBytes *raw, const GimpValueArray *args, GError **error)
 { return set_definition (layer, procedure, raw, args, true, error); }
+gboolean gimp_filter_layer_set_definition_with_opaque_arguments (GimpFilterLayer *layer, const gchar *procedure,
+                                                                GBytes *raw, GBytes *opaque, GError **error)
+{ return set_definition (layer, procedure, raw, nullptr, false, error, nullptr, opaque); }
 #define FILTER_READ(type, fallback, expression) \
   return boundary<type> (nullptr, fallback, [&] { \
     if (!GIMP_IS_FILTER_LAYER (layer)) return fallback; \
@@ -852,6 +935,8 @@ gchar *gimp_filter_layer_dup_procedure (GimpFilterLayer *layer)
 { FILTER_READ (gchar *, static_cast<gchar *> (nullptr), g_strdup (impl.procedure.c_str ())); }
 GBytes *gimp_filter_layer_ref_definition (GimpFilterLayer *layer)
 { FILTER_READ (GBytes *, static_cast<GBytes *> (nullptr), impl.raw ? g_bytes_ref (impl.raw.get ()) : nullptr); }
+GBytes *gimp_filter_layer_ref_opaque_arguments (GimpFilterLayer *layer)
+{ FILTER_READ (GBytes *, static_cast<GBytes *> (nullptr), impl.opaque_arguments ? g_bytes_ref (impl.opaque_arguments.get ()) : nullptr); }
 GimpValueArray *gimp_filter_layer_dup_args (GimpFilterLayer *layer)
 { FILTER_READ (GimpValueArray *, static_cast<GimpValueArray *> (nullptr), impl.args ? impl.args->copy_values () : nullptr); }
 GimpFilterLayerState gimp_filter_layer_get_state (GimpFilterLayer *layer)

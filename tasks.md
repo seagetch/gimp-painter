@@ -598,6 +598,7 @@
 | 15.006/editability-contract | [ ] | FilterLayer の編集可否を現行ロック規約へ対応付ける | 15.005, 01.005/gimp3-layer-slots | 廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証 |
 | 15.007 | [ ] | loaded 状態を実装する | 15.006 | 保存済み cache の初回表示を区別 |
 | 15.008 | [ ] | 定義変更の世代を実装する | 15.007 | procedure/引数変更で結果を失効 |
+| 15.008/opaque-definition-state | [x] | 未解釈引数と確定cacheをdefinition所有へ統一する | 17.001/dependency-publication, 12.001/preservation-writer | 57 app通常/focused sanitizer合格。opaque bytesの複製/Undo/明示clear、実行後Undoで元cache復元、stale保持と再入を検証。file統合は次子作業 |
 | 15.009 | [ ] | 依存構造の世代を実装する | 15.008 | 並替え・移動で結果を失効 |
 | 15.010 | [ ] | FilterLayer の複製を実装する | 15.009 | 定義は複製し実行中 runner は共有しない |
 | 15.011 | [ ] | 設定変更の Undo を実装する | 15.010 | 旧定義と再評価状態を復元 |

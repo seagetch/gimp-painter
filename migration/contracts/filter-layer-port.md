@@ -18,8 +18,11 @@ implementation store.
 - `gimp_filter_layer_set_definition()` is the no-Undo loader/model setter.
   `gimp_filter_layer_edit_definition()` records a dedicated
   `GIMP_UNDO_FILTER_LAYER_DEFINITION` entry. Its own GObject implementation also
-  uses BindingStore; Undo/Redo swaps immutable definition snapshots and requests
-  reevaluation from current lower content, never sharing an active runner
+  uses BindingStore; Undo/Redo swaps definition and COW committed-buffer
+  snapshots, restores original pixels conservatively stale, and requests
+  reevaluation from current lower content, never sharing an active runner.
+  Unsupported/opaque definitions retain those original pixels without a worker.
+  Retained buffer and serialized payload sizes participate in Undo accounting
 - The procedure string, original serialized bytes, converted argument model,
   current generation and committed-cache generation are separate records.
   `filter-procedure`, `filter-arguments` and `filter-original-definition` are
@@ -35,7 +38,12 @@ implementation store.
   pointers. Nested value arrays are bounded and recursively converted. Opaque
   boxed/pointer arguments are rejected transactionally; raw-only definitions
   remain supported for unknown conversions. Unknown executable values are not
-  silently fabricated. Ordinary GValue-array input is also capped at 65,536 total
+  silently fabricated. A separate optional opaque-argument GBytes record carries
+  an unavailable converted model without inspecting or executing it. Nonnull
+  zero-byte records are distinct from no opaque model. Loader installation,
+  duplication and definition Undo/Redo preserve it; ordinary definition/snapshot
+  setters explicitly clear it. It is distinct from the complete old PROP payload.
+  Ordinary GValue-array input is also capped at 65,536 total
   nodes/references, preventing exponential expansion of a compact nested DAG
 - Writer snapshots enumerate every slot's type, scalar value, null/empty state,
   object-reference descriptor and nested array even after targets expire.
@@ -65,8 +73,13 @@ implementation store.
 - Definition edits pin their owner/image through callbacks. Binding generation
   and definition revision are checked around Undo creation, attachment,
   configuration and each property notification. Closure stops publication;
-  reentered newer definitions are not overwritten. Tests cover ordinary/frozen
-  Undo dirty callbacks, undo-event closure and configuration/property reentry
+  reentered newer definitions are not overwritten. All replacement fields are
+  published before caller-supplied retired-byte payload destructors run.
+  Duplication checks reentry before certifying the copied cache and normalizes
+  the original freshness/completeness relationship instead of marking every
+  copy current. Tests cover ordinary/frozen Undo dirty callbacks, undo-event
+  closure, configuration/property reentry, retired-payload callbacks, and stale,
+  incomplete and reentered duplicates
 
 ## Scheduler and source boundary
 
@@ -217,7 +230,7 @@ an acceptable shortcut to procedure compatibility.
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 51 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 57 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release
