@@ -29,6 +29,7 @@
 #include "vectors/gimppath.h"
 
 #include "gimp.h"
+#include "gimp-painter-provenance.h"
 #include "gimpchannel.h"
 #include "gimpguide.h"
 #include "gimpimage.h"
@@ -556,6 +557,8 @@ gimp_image_duplicate_parasites (GimpImage *image,
 {
   GimpImagePrivate *private     = GIMP_IMAGE_GET_PRIVATE (image);
   GimpImagePrivate *new_private = GIMP_IMAGE_GET_PRIVATE (new_image);
+
+  gimp_painter_copy_provenance (G_OBJECT (image), G_OBJECT (new_image));
 
   if (private->parasites)
     {

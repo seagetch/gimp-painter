@@ -112,7 +112,7 @@ standard recovery retains its ordinary interpretation; genuinely dual-valid
 extension streams still require a choice. The former 910-pixel, maximum-one-step
 rounding discrepancy is closed by dedicated historical Normal/Multiply operators.
 
-Current normal coverage is upstream XCF 4/4, application Open 13/13 (including the
+Current normal coverage is upstream XCF 4/4, application Open 14/14 (including the
 strict exact-pixel assertion), and the separate writer roundtrip suite. Full
 writer format, fault coverage and remaining scope are documented separately.
 

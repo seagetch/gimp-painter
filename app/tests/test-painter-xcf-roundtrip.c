@@ -11,6 +11,8 @@
 #include "core/gimpfilterlayer.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-new.h"
+#include "core/gimpimage-duplicate.h"
+#include "vectors/gimppath.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimplayer.h"
 #include "core/gimplayer-new.h"
@@ -64,6 +66,9 @@ static void pixel (GimpLayer *layer, guint8 r, guint8 g, guint8 b, guint8 a)
   guint8 actual[4], expected[] = {r,g,b,a};
   gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)), GEGL_RECTANGLE (0,0,1,1), 1,
                    babl_format ("R'G'B'A u8"), actual, GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+  if(memcmp(actual,expected,4))
+    g_test_message("Pixel in %s: actual %u,%u,%u,%u expected %u,%u,%u,%u",gimp_object_get_name(layer),
+                   actual[0],actual[1],actual[2],actual[3],r,g,b,a);
   g_assert_cmpmem (actual, 4, expected, 4);
 }
 static void clones_edit_save_reopen (void)
@@ -139,9 +144,8 @@ static void filter_cache_and_arguments (void)
   g_object_unref (copy); g_object_unref (image); g_file_delete (file, NULL, NULL); g_object_unref (file);
 }
 
-static GVariant *capsule (GimpItem *item)
+static GVariant *parasite_capsule (const GimpParasite *parasite)
 {
-  const GimpParasite *parasite = gimp_item_parasite_find (item, "gimp-painter-item");
   const guint8 *data;
   guint32 size;
   GBytes *bytes;
@@ -152,6 +156,8 @@ static GVariant *capsule (GimpItem *item)
   value = g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE_VARDICT, bytes, FALSE));
   g_bytes_unref (bytes); g_assert_true (g_variant_is_normal_form (value)); return value;
 }
+static GVariant *capsule (GimpItem *item)
+{ return parasite_capsule (gimp_item_parasite_find (item,"gimp-painter-item")); }
 static void compare_projection (GimpImage *first, GimpImage *second)
 {
   const gint w = gimp_image_get_width (first), h = gimp_image_get_height (first);
@@ -279,11 +285,12 @@ static void typed_nested_expired_arguments (void)
   GimpImage *image = gimp_image_new (gimp,4,4,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR), *copy;
   GimpLayer *source = gimp_layer_new (image,4,4,babl_format("R'G'B'A u8"),"typed source",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
   GimpLayer *filter = gimp_filter_layer_new (image,4,4,"typed filter",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+  GimpPath *vector = gimp_path_new (image,"typed path");
   GFile *file = temporary_file ();
   GValue values[16] = {G_VALUE_INIT}, nested_values[2] = {G_VALUE_INIT};
   GimpFilterArgumentSpec specs[16] = {{0}}, children[3] = {{0}};
-  GimpFilterArgumentReference refs[3] = {{0}}, expired = {GIMP_TYPE_LAYER,70707,TRUE,TRUE};
-  GObject *targets[3] = {G_OBJECT(image),G_OBJECT(source),NULL};
+  GimpFilterArgumentReference refs[4] = {{0}}, expired = {GIMP_TYPE_LAYER,70707,TRUE,TRUE};
+  GObject *targets[4] = {G_OBJECT(image),G_OBJECT(source),NULL,G_OBJECT(vector)};
   GimpFilterArgumentsSnapshot *args,*restored,*nested;
   GError *error=NULL;
   const guint8 raw_data[]={'o','p','a','q','u','e',0,'d','e','f'};
@@ -298,6 +305,7 @@ static void typed_nested_expired_arguments (void)
   guint64 nan_bits=G_GUINT64_CONSTANT(0x7ff8000011223344); gdouble nan_value;
   guint32 float_bits=0x7fc01234; gfloat float_value;
   gimp_image_add_layer(image,source,NULL,0,FALSE); gimp_image_add_layer(image,filter,NULL,0,FALSE);
+  gimp_image_add_path(image,vector,NULL,0,FALSE);
   for(guint i=0;i<16;++i)
     { specs[i].value_type=types[i]; if(i<8||i>=12) { g_value_init(&values[i],types[i]); specs[i].value=&values[i]; } }
   g_value_set_int(&values[0],-123); memcpy(&nan_value,&nan_bits,8); g_value_set_double(&values[1],nan_value);
@@ -307,7 +315,8 @@ static void typed_nested_expired_arguments (void)
   refs[0]=(GimpFilterArgumentReference){GIMP_TYPE_IMAGE,gimp_image_get_id(image),TRUE,FALSE};
   refs[1]=(GimpFilterArgumentReference){GIMP_TYPE_LAYER,gimp_item_get_id(GIMP_ITEM(source)),TRUE,FALSE};
   refs[2]=(GimpFilterArgumentReference){GIMP_TYPE_LAYER,919191,TRUE,TRUE};
-  specs[8].n_references=3;specs[8].references=refs;specs[8].targets=targets;
+  refs[3]=(GimpFilterArgumentReference){GIMP_TYPE_PATH,gimp_item_get_id(GIMP_ITEM(vector)),TRUE,FALSE};
+  specs[8].n_references=4;specs[8].references=refs;specs[8].targets=targets;
   specs[9].is_null=TRUE;
   g_value_init(&nested_values[0],G_TYPE_BOOLEAN);g_value_set_boolean(&nested_values[0],TRUE);
   g_value_init(&nested_values[1],G_TYPE_UINT64);g_value_set_uint64(&nested_values[1],G_MAXUINT64);
@@ -334,18 +343,33 @@ static void typed_nested_expired_arguments (void)
       g_assert_true(gimp_filter_arguments_snapshot_value(restored,1,&value));nan_value=g_value_get_double(&value);{guint64 bits;memcpy(&bits,&nan_value,8);g_assert_cmpuint(bits,==,nan_bits);}g_value_unset(&value);
       g_assert_true(gimp_filter_arguments_snapshot_value(restored,2,&value));g_assert_cmpstr(g_value_get_string(&value),==,"opaque\xff string");g_value_unset(&value);
       g_assert_true(gimp_filter_arguments_snapshot_is_null(restored,3));
+      g_assert_true(gimp_filter_arguments_snapshot_value(restored,4,&value));
+      {gchar **actual=g_value_get_boxed(&value);g_assert_cmpstr(actual[0],==,"alpha");g_assert_cmpstr(actual[1],==,"beta");g_assert_null(actual[2]);}g_value_unset(&value);
+      g_assert_true(gimp_filter_arguments_snapshot_value(restored,5,&value));
+      {gsize length;const gint32 *actual=gimp_value_get_int32_array(&value,&length);g_assert_cmpuint(length,==,3);g_assert_cmpmem(actual,length*sizeof*actual,ints,sizeof ints);}g_value_unset(&value);
+      g_assert_true(gimp_filter_arguments_snapshot_value(restored,6,&value));
+      {gsize length;const gdouble *actual=gimp_value_get_double_array(&value,&length);g_assert_cmpuint(length,==,3);g_assert_cmpmem(actual,length*sizeof*actual,doubles,sizeof doubles);}g_value_unset(&value);
+      g_assert_true(gimp_filter_arguments_snapshot_value(restored,7,&value));g_assert_true(g_bytes_equal(bytes,g_value_get_boxed(&value)));g_value_unset(&value);
       g_assert_true(gimp_filter_arguments_snapshot_reference(restored,8,0,&reference));g_assert_cmpint(reference.id,==,gimp_image_get_id(copy));g_assert_false(reference.expired);
       g_assert_true(gimp_filter_arguments_snapshot_reference(restored,8,1,&reference));g_assert_cmpint(reference.id,==,gimp_item_get_id(GIMP_ITEM(layer(copy,"typed source"))));
       g_assert_true(gimp_filter_arguments_snapshot_reference(restored,8,2,&reference));g_assert_true(reference.expired);g_assert_cmpint(reference.id,==,919191);
+      g_assert_true(gimp_filter_arguments_snapshot_reference(restored,8,3,&reference));
+      {GList *paths=gimp_image_get_path_list(copy);g_assert_cmpuint(g_list_length(paths),==,1);
+       g_assert_cmpint(reference.id,==,gimp_item_get_id(GIMP_ITEM(paths->data)));g_assert_false(reference.expired);
+       g_assert_nonnull(gimp_item_parasite_find(GIMP_ITEM(paths->data),"gimp-painter-item"));g_list_free(paths);}
       g_assert_true(gimp_filter_arguments_snapshot_is_null(restored,9));g_assert_false(gimp_filter_arguments_snapshot_is_null(restored,10));
       g_assert_cmpuint(gimp_filter_arguments_snapshot_reference_count(restored,10),==,0);
       nested=gimp_filter_arguments_snapshot_nested(restored,11);g_assert_nonnull(nested);
       g_assert_cmpuint(gimp_filter_arguments_snapshot_count(nested),==,3);
       g_assert_true(gimp_filter_arguments_snapshot_reference(nested,2,0,&reference));g_assert_true(reference.expired);g_assert_cmpint(reference.id,==,70707);
+      g_assert_true(gimp_filter_arguments_snapshot_value(nested,0,&value));g_assert_true(g_value_get_boolean(&value));g_value_unset(&value);
+      g_assert_true(gimp_filter_arguments_snapshot_value(nested,1,&value));g_assert_cmpuint(g_value_get_uint64(&value),==,G_MAXUINT64);g_value_unset(&value);
       gimp_filter_arguments_snapshot_free(nested);
       g_assert_true(gimp_filter_arguments_snapshot_value(restored,12,&value));g_assert_true(g_variant_equal(g_value_get_variant(&value),g_value_get_variant(&values[12])));g_value_unset(&value);
       g_assert_true(gimp_filter_arguments_snapshot_value(restored,13,&value));float_value=g_value_get_float(&value);{guint32 bits;memcpy(&bits,&float_value,4);g_assert_cmpuint(bits,==,float_bits);}g_value_unset(&value);
       g_assert_true(gimp_filter_arguments_snapshot_is_null(restored,14));g_assert_false(gimp_filter_arguments_snapshot_is_null(restored,15));
+      g_assert_true(gimp_filter_arguments_snapshot_value(restored,15,&value));
+      {gchar **actual=g_value_get_boxed(&value);g_assert_nonnull(actual);g_assert_null(actual[0]);}g_value_unset(&value);
       definition=gimp_filter_layer_ref_definition(GIMP_FILTER_LAYER(filter));g_assert_true(g_bytes_equal(raw,definition));g_bytes_unref(definition);
       gimp_filter_arguments_snapshot_free(restored);g_object_unref(image);image=copy;
     }
@@ -506,6 +530,202 @@ static void save_observer_ownership (void)
     }
   g_object_unref(image);
 }
+static void duplicate_image_unknown_origin (void)
+{
+  gchar *filename=path("legacy-runtime/ordinary-layers.xcf"),*data;gsize size;gboolean changed=FALSE;
+  GError *error=NULL;GInputStream *input;GimpImage *image,*copy,*reopened;GBytes *expected;GFile *file=temporary_file();
+  g_assert_true(g_file_get_contents(filename,&data,&size,NULL));
+  for(gsize i=26;i+8<=size;)
+    {
+      guint32 type,length;memcpy(&type,data+i,4);memcpy(&length,data+i+4,4);type=GUINT32_FROM_BE(type);length=GUINT32_FROM_BE(length);
+      if(type==19&&length==8){guint32 unknown=GUINT32_TO_BE(0xf00dbabc);memcpy(data+i,&unknown,4);changed=TRUE;break;}
+      g_assert_cmpuint(length,<=,size-i-8);if(!type)break;i+=8+length;
+    }
+  g_assert_true(changed);input=g_memory_input_stream_new_from_data(data,size,NULL);
+  image=xcf_load_stream(gimp,input,NULL,NULL,&error);g_assert_no_error(error);g_assert_nonnull(image);g_object_unref(input);
+  expected=g_bytes_ref(g_object_get_data(G_OBJECT(image),"gimp-painter-xcf-property-records"));
+  copy=gimp_image_duplicate(image);g_assert_nonnull(copy);
+  g_assert_true(g_bytes_equal(expected,g_object_get_data(G_OBJECT(copy),"gimp-painter-xcf-property-records")));
+  save(copy,file);reopened=load(file);
+  {GVariant *record=parasite_capsule(gimp_image_parasite_find(reopened,"gimp-painter-image"));
+   GVariant *raw=g_variant_lookup_value(record,"original-properties",G_VARIANT_TYPE_BYTESTRING);gsize actual_size,wanted_size;
+   const void *actual=g_variant_get_fixed_array(raw,&actual_size,1),*wanted=g_bytes_get_data(expected,&wanted_size);
+   g_assert_cmpmem(actual,actual_size,wanted,wanted_size);g_variant_unref(raw);g_variant_unref(record);}
+  g_object_unref(reopened);g_object_unref(copy);g_object_unref(image);g_bytes_unref(expected);
+  g_free(data);g_free(filename);g_file_delete(file,NULL,NULL);g_object_unref(file);
+}
+static void missing_clone_id_and_pending_name (void)
+{
+  GimpImage *image=fixture("legacy-runtime/clone-normal-in-group.xcf"),*copy;GFile *file=temporary_file();
+  GimpCloneLayer *clone;GVariant *record,*id;guint32 size;const guint8 *capsule_bytes;gsize length,found=G_MAXSIZE;gchar *data;
+  save(image,file);copy=load(file);clone=GIMP_CLONE_LAYER(layer(copy,"clone"));record=capsule(GIMP_ITEM(clone));
+  id=g_variant_lookup_value(record,"source-id",G_VARIANT_TYPE_UINT32);g_assert_nonnull(id);
+  capsule_bytes=gimp_parasite_get_data(gimp_item_parasite_find(GIMP_ITEM(clone),"gimp-painter-item"),&size);
+  g_assert_true(g_file_load_contents(file,NULL,&data,&length,NULL,NULL));
+  for(gsize i=0;i+size<=length;++i)if(!memcmp(data+i,capsule_bytes,size)){found=i;break;}
+  g_assert_cmpuint(found,!=,G_MAXSIZE);
+  {const guint8 *base=g_variant_get_data(record),*field=g_variant_get_data(id);gsize offset=field-base;guint32 missing=GUINT32_TO_LE(0xffffffff);
+   g_assert_cmpuint(offset+4,<=,g_variant_get_size(record));memcpy(data+found+12+offset,&missing,4);}
+  g_assert_true(g_file_replace_contents(file,data,length,NULL,FALSE,G_FILE_CREATE_NONE,NULL,NULL,NULL));
+  g_free(data);g_variant_unref(id);g_variant_unref(record);g_object_unref(copy);copy=load(file);
+  clone=GIMP_CLONE_LAYER(layer(copy,"clone"));g_assert_nonnull(layer(copy,"source child"));g_assert_null(gimp_clone_layer_get_source(clone));
+  for(guint repeat=0;repeat<2;++repeat)
+    {
+      GimpCloneLayerReference *reference=gimp_clone_layer_dup_reference(clone,NULL);g_assert_nonnull(reference);
+      g_assert_true(reference->source_expired);g_assert_false(reference->allow_name_lookup);g_assert_cmpstr(reference->source_name,==,"source child");
+      gimp_clone_layer_reference_free(reference);pixel(GIMP_LAYER(clone),191,32,64,255);
+      save(copy,file);g_object_unref(copy);copy=load(file);clone=GIMP_CLONE_LAYER(layer(copy,"clone"));g_assert_null(gimp_clone_layer_get_source(clone));
+      {GVariant *saved=capsule(GIMP_ITEM(clone));guint32 unresolved,active;
+       g_assert_true(g_variant_lookup(saved,"unresolved-source-id","u",&unresolved));g_assert_cmpuint(unresolved,==,0xffffffff);
+       g_assert_true(g_variant_lookup(saved,"source-id","u",&active));g_assert_cmpuint(active,==,0);g_variant_unref(saved);}
+    }
+  gimp_clone_layer_set_source_by_name(clone,"unresolved pending source");g_assert_null(gimp_clone_layer_get_source(clone));
+  save(copy,file);g_object_unref(copy);copy=load(file);clone=GIMP_CLONE_LAYER(layer(copy,"clone"));
+  {GimpCloneLayerReference *reference=gimp_clone_layer_dup_reference(clone,NULL);g_assert_null(reference->source);
+   g_assert_cmpstr(reference->pending_name,==,"unresolved pending source");g_assert_true(reference->allow_name_lookup);gimp_clone_layer_reference_free(reference);}
+  g_object_unref(copy);g_object_unref(image);g_file_delete(file,NULL,NULL);g_object_unref(file);
+}
+static void assert_active_argument_type (GimpItem *item, const gchar *expected)
+{
+  GVariant *record=capsule(item);gboolean present=FALSE;
+  g_assert_true(g_variant_lookup(record,"has-arguments","b",&present));g_assert_cmpint(present,==,expected!=NULL);
+  if(expected)
+    {
+      GVariant *args=g_variant_lookup_value(record,"arguments",G_VARIANT_TYPE("a(sbv)")),*entry,*type;
+      g_assert_nonnull(args);entry=g_variant_get_child_value(args,0);type=g_variant_get_child_value(entry,0);
+      g_assert_cmpstr(g_variant_get_string(type,NULL),==,expected);
+      g_variant_unref(type);g_variant_unref(entry);g_variant_unref(args);
+    }
+  g_variant_unref(record);
+}
+static void replace_uninterpreted_arguments (void)
+{
+  GimpImage *image=gimp_image_new(gimp,4,4,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR),*copy;
+  GimpLayer *filter=gimp_filter_layer_new(image,4,4,"opaque filter",1,GIMP_LAYER_MODE_NORMAL);
+  GFile *file=temporary_file();GValue value=G_VALUE_INIT;GimpValueArray *args=gimp_value_array_new(1);
+  GBytes *definition=g_bytes_new_static("RAW_ORIGIN",10);GVariant *record,*arguments,*entry,*type;
+  const guint8 *capsule_bytes;guint32 size;gchar *data;gsize length,found=G_MAXSIZE;
+  g_value_init(&value,G_TYPE_INT);g_value_set_int(&value,17);gimp_value_array_append(args,&value);g_value_unset(&value);
+  gimp_image_add_layer(image,filter,NULL,0,FALSE);
+  g_assert_true(gimp_filter_layer_set_definition(GIMP_FILTER_LAYER(filter),"unavailable-opaque",definition,args,NULL));
+  {const guint8 cache[]={31,47,93,255};gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(filter)),GEGL_RECTANGLE(0,0,1,1),0,babl_format("R'G'B'A u8"),cache,GEGL_AUTO_ROWSTRIDE);}
+  gimp_filter_layer_mark_as_loaded(GIMP_FILTER_LAYER(filter));save(image,file);copy=load(file);filter=layer(copy,"opaque filter");
+  record=capsule(GIMP_ITEM(filter));arguments=g_variant_lookup_value(record,"arguments",G_VARIANT_TYPE("a(sbv)"));
+  entry=g_variant_get_child_value(arguments,0);type=g_variant_get_child_value(entry,0);g_assert_cmpstr(g_variant_get_string(type,NULL),==,"gint");
+  capsule_bytes=gimp_parasite_get_data(gimp_item_parasite_find(GIMP_ITEM(filter),"gimp-painter-item"),&size);
+  g_assert_true(g_file_load_contents(file,NULL,&data,&length,NULL,NULL));
+  for(gsize i=0;i+size<=length;++i)if(!memcmp(data+i,capsule_bytes,size)){found=i;break;}
+  g_assert_cmpuint(found,!=,G_MAXSIZE);
+  {const guint8 *base=g_variant_get_data(record),*field=g_variant_get_data(type);gsize offset=field-base;
+   g_assert_cmpuint(offset+5,<=,g_variant_get_size(record));memcpy(data+found+12+offset,"xxxx",4);}
+  g_assert_true(g_file_replace_contents(file,data,length,NULL,FALSE,G_FILE_CREATE_NONE,NULL,NULL,NULL));g_free(data);
+  g_variant_unref(type);g_variant_unref(entry);g_variant_unref(arguments);g_variant_unref(record);g_object_unref(copy);copy=load(file);
+  filter=layer(copy,"opaque filter");g_assert_null(gimp_filter_layer_snapshot_arguments(GIMP_FILTER_LAYER(filter)));
+  /* Dependency topology may change cache state but does not replace a definition. */
+  {guint64 revision=gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(filter));
+   GimpLayer *lower=gimp_layer_new(copy,4,4,babl_format("R'G'B'A u8"),"lower",1,GIMP_LAYER_MODE_NORMAL);
+   gimp_image_add_layer(copy,lower,NULL,1,FALSE);g_assert_cmpuint(gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(filter)),==,revision);}
+  save(copy,file);g_object_unref(copy);copy=load(file);filter=layer(copy,"opaque filter");
+  record=capsule(GIMP_ITEM(filter));{gboolean present=FALSE;g_assert_true(g_variant_lookup(record,"has-arguments","b",&present));g_assert_true(present);}g_variant_unref(record);
+  {GimpLayer *duplicate=GIMP_LAYER(gimp_item_duplicate(GIMP_ITEM(filter),GIMP_TYPE_FILTER_LAYER));
+   GBytes *first=gimp_filter_layer_ref_opaque_arguments(GIMP_FILTER_LAYER(filter));
+   GBytes *second=gimp_filter_layer_ref_opaque_arguments(GIMP_FILTER_LAYER(duplicate));
+   g_assert_nonnull(first);g_assert_nonnull(second);g_assert_true(g_bytes_equal(first,second));g_bytes_unref(first);g_bytes_unref(second);
+   gimp_object_set_name(GIMP_OBJECT(duplicate),"unreadable duplicate");gimp_image_add_layer(copy,duplicate,NULL,0,FALSE);}
+  /* Duplication alone must preserve the active opaque model, not only archive it. */
+  save(copy,file);g_object_unref(copy);copy=load(file);filter=layer(copy,"opaque filter");
+  assert_active_argument_type(GIMP_ITEM(filter),"xxxx");
+  assert_active_argument_type(GIMP_ITEM(layer(copy,"unreadable duplicate")),"xxxx");
+  pixel(filter,31,47,93,255);pixel(layer(copy,"unreadable duplicate"),31,47,93,255);
+  /* Explicit clear is undoable. Each state is saved and reopened independently
+   * while the original image retains its Undo/Redo history. */
+  gimp_image_undo_free(copy);
+  g_assert_true(gimp_filter_layer_edit_definition(GIMP_FILTER_LAYER(filter),"unavailable-opaque",definition,NULL,NULL));
+  save(copy,file);
+  {GimpImage *cleared=load(file);assert_active_argument_type(GIMP_ITEM(layer(cleared,"opaque filter")),NULL);
+   assert_active_argument_type(GIMP_ITEM(layer(cleared,"unreadable duplicate")),"xxxx");g_object_unref(cleared);}
+  g_assert_true(gimp_image_undo(copy));save(copy,file);
+  {GimpImage *undone=load(file);assert_active_argument_type(GIMP_ITEM(layer(undone,"opaque filter")),"xxxx");
+   pixel(layer(undone,"opaque filter"),31,47,93,255);g_object_unref(undone);}
+  g_assert_true(gimp_image_redo(copy));save(copy,file);g_object_unref(copy);copy=load(file);filter=layer(copy,"opaque filter");
+  record=capsule(GIMP_ITEM(filter));
+  {gboolean present=TRUE;g_assert_true(g_variant_lookup(record,"has-arguments","b",&present));g_assert_false(present);}
+  arguments=g_variant_lookup_value(record,"original-argument-model",G_VARIANT_TYPE("a(sbv)"));g_assert_nonnull(arguments);
+  entry=g_variant_get_child_value(arguments,0);type=g_variant_get_child_value(entry,0);g_assert_cmpstr(g_variant_get_string(type,NULL),==,"xxxx");
+  g_variant_unref(type);g_variant_unref(entry);g_variant_unref(arguments);g_variant_unref(record);
+  g_assert_null(gimp_filter_layer_snapshot_arguments(GIMP_FILTER_LAYER(filter)));
+  assert_active_argument_type(GIMP_ITEM(layer(copy,"unreadable duplicate")),"xxxx");
+  {GBytes *raw=gimp_filter_layer_ref_definition(GIMP_FILTER_LAYER(filter));g_assert_true(g_bytes_equal(raw,definition));g_bytes_unref(raw);}
+  /* A completed supported edit overwrites the cache. Undo back to opaque
+   * semantics must restore its committed pixels because it cannot recompute. */
+  {
+    GBytes *opaque=gimp_filter_layer_ref_opaque_arguments(GIMP_FILTER_LAYER(layer(copy,"unreadable duplicate")));
+    GimpValueArray *edge=gimp_value_array_new(6);GValue option=G_VALUE_INIT;
+    g_assert_nonnull(opaque);
+    g_assert_true(gimp_filter_layer_set_definition_with_opaque_arguments(GIMP_FILTER_LAYER(filter),"unavailable-opaque",definition,opaque,NULL));
+    g_bytes_unref(opaque);gimp_filter_layer_mark_as_loaded(GIMP_FILTER_LAYER(filter));gimp_image_undo_free(copy);
+    for(guint i=0;i<6;++i)
+      {g_value_init(&option,i==3?G_TYPE_DOUBLE:G_TYPE_INT);
+       if(i==3)g_value_set_double(&option,2);else g_value_set_int(&option,i==4?1:0);
+       gimp_value_array_append(edge,&option);g_value_unset(&option);}
+    g_assert_true(gimp_filter_layer_edit_definition(GIMP_FILTER_LAYER(filter),"plug-in-edge",definition,edge,NULL));
+    gimp_value_array_unref(edge);
+    {gint64 deadline=g_get_monotonic_time()+3000000;
+     while(gimp_filter_layer_get_state(GIMP_FILTER_LAYER(filter))!=GIMP_FILTER_LAYER_CLEAN&&g_get_monotonic_time()<deadline)
+       {while(g_main_context_iteration(NULL,FALSE));g_usleep(1000);}
+     g_assert_cmpint(gimp_filter_layer_get_state(GIMP_FILTER_LAYER(filter)),==,GIMP_FILTER_LAYER_CLEAN);}
+    g_assert_cmpuint(gimp_filter_layer_get_run_count(GIMP_FILTER_LAYER(filter)),>,0);pixel(filter,0,0,0,0);
+    g_assert_true(gimp_image_undo(copy));pixel(filter,31,47,93,255);
+    save(copy,file);
+    {GimpImage *undone=load(file);GimpLayer *restored=layer(undone,"opaque filter");
+     assert_active_argument_type(GIMP_ITEM(restored),"xxxx");pixel(restored,31,47,93,255);g_object_unref(undone);}
+  }
+  g_value_set_int(gimp_value_array_index(args,0),55);
+  g_assert_true(gimp_filter_layer_set_definition(GIMP_FILTER_LAYER(filter),"unavailable-opaque",definition,args,NULL));
+  save(copy,file);g_object_unref(copy);copy=load(file);filter=layer(copy,"opaque filter");
+  {GimpValueArray *restored=gimp_filter_layer_dup_args(GIMP_FILTER_LAYER(filter));g_assert_nonnull(restored);
+   g_assert_cmpint(g_value_get_int(gimp_value_array_index(restored,0)),==,55);gimp_value_array_unref(restored);}
+  g_object_unref(copy);g_object_unref(image);g_bytes_unref(definition);gimp_value_array_unref(args);g_file_delete(file,NULL,NULL);g_object_unref(file);
+}
+static void opaque_argument_shapes (void)
+{
+  for(guint scene=0;scene<2;++scene)
+    {
+      GimpImage *image=gimp_image_new(gimp,2,2,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR),*copy;
+      GimpLayer *filter=gimp_filter_layer_new(image,2,2,"opaque shape",1,GIMP_LAYER_MODE_NORMAL);
+      GVariant *wrapper=g_variant_ref_sink(g_variant_new_maybe(G_VARIANT_TYPE_VARIANT,
+                          scene?g_variant_new_variant(g_variant_new_string("retained opaque value")):NULL));
+      GBytes *opaque;GFile *file=temporary_file();
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+      {GVariant *swapped=g_variant_byteswap(wrapper);g_variant_unref(wrapper);wrapper=swapped;}
+#endif
+      opaque=g_variant_get_data_as_bytes(wrapper);g_variant_unref(wrapper);
+      gimp_image_add_layer(image,filter,NULL,0,FALSE);
+      g_assert_true(gimp_filter_layer_set_definition_with_opaque_arguments(GIMP_FILTER_LAYER(filter),"unavailable-shape",NULL,opaque,NULL));
+      gimp_filter_layer_mark_as_loaded(GIMP_FILTER_LAYER(filter));
+      for(guint repeat=0;repeat<2;++repeat)
+        {
+          GBytes *restored;GVariant *record,*model;gboolean present=FALSE;
+          save(image,file);copy=load(file);filter=layer(copy,"opaque shape");
+          restored=gimp_filter_layer_ref_opaque_arguments(GIMP_FILTER_LAYER(filter));g_assert_nonnull(restored);
+          g_assert_true(g_bytes_equal(restored,opaque));g_bytes_unref(restored);
+          record=capsule(GIMP_ITEM(filter));g_assert_true(g_variant_lookup(record,"has-arguments","b",&present));g_assert_true(present);
+          model=g_variant_lookup_value(record,"arguments",NULL);
+          if(scene){g_assert_nonnull(model);g_assert_cmpstr(g_variant_get_string(model,NULL),==,"retained opaque value");g_variant_unref(model);}
+          else g_assert_null(model);
+          g_variant_unref(record);g_assert_cmpuint(gimp_filter_layer_get_run_count(GIMP_FILTER_LAYER(filter)),==,0);
+          g_object_unref(image);image=copy;
+        }
+      /* Invalid caller-owned opaque bytes must fail before destination replacement. */
+      {GBytes *invalid=g_bytes_new_static("BAD",3);GError *error=NULL;
+       GimpPlugInProcedure *proc=GIMP_PLUG_IN_PROCEDURE(gimp_pdb_lookup_procedure(gimp->pdb,"gimp-xcf-save"));
+       g_assert_true(gimp_filter_layer_set_definition_with_opaque_arguments(GIMP_FILTER_LAYER(filter),"unavailable-shape",NULL,invalid,NULL));
+       sentinel_write(file);
+       g_assert_cmpint(file_save(gimp,image,NULL,file,proc,GIMP_RUN_NONINTERACTIVE,FALSE,FALSE,FALSE,&error),==,GIMP_PDB_EXECUTION_ERROR);
+       g_assert_nonnull(error);g_clear_error(&error);sentinel_check(file);g_bytes_unref(invalid);}
+      g_bytes_unref(opaque);g_object_unref(image);g_file_delete(file,NULL,NULL);g_object_unref(file);
+    }
+}
 int main (int argc, char **argv)
 {
   int result;
@@ -522,6 +742,10 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-xcf-roundtrip/injected_write_failures", injected_write_failures);
   g_test_add_func ("/painter-xcf-roundtrip/save_observer_ownership", save_observer_ownership);
   g_test_add_func ("/painter-xcf-roundtrip/low_level_reentrant_definitions", low_level_reentrant_definitions);
+  g_test_add_func ("/painter-xcf-roundtrip/duplicate_image_unknown_origin", duplicate_image_unknown_origin);
+  g_test_add_func ("/painter-xcf-roundtrip/missing_clone_id_and_pending_name", missing_clone_id_and_pending_name);
+  g_test_add_func ("/painter-xcf-roundtrip/replace_uninterpreted_arguments", replace_uninterpreted_arguments);
+  g_test_add_func ("/painter-xcf-roundtrip/opaque_argument_shapes", opaque_argument_shapes);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

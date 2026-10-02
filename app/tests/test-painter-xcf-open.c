@@ -12,6 +12,7 @@
 #include "core/gimpcontainer.h"
 #include "core/gimpgrouplayer.h"
 #include "core/gimpimage.h"
+#include "core/gimpimage-new.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpundostack.h"
 #include "core/gimplayer.h"
@@ -26,6 +27,7 @@
 #include "file/file-save.h"
 #include "xcf/xcf.h"
 #include "xcf/painter-xcf-load.h"
+#include "xcf/painter-xcf-preserve.h"
 #include "tests.h"
 #include "gimp-app-test-utils.h"
 static Gimp *gimp;
@@ -348,6 +350,34 @@ static void dual_valid_short_extension (void)
       g_object_unref (image);
     }
 }
+static void explicit_provenance_resolves_ambiguity (void)
+{
+  guint8 original[148]={0};GError *error=NULL;GimpImage *image,*empty;
+  XcfPainterSave *snapshot;GimpParasite *marker;const guint8 *blob;guint32 blob_size;
+  const gchar *name="gimp-painter-image";guint32 name_size=strlen(name)+1;gsize extra;guint8 *data;
+  memcpy(original,"gimp xcf v003",13);put32(original,14,1);put32(original,18,1);put32(original,34,46);
+  put32(original,46,1);put32(original,50,1);put32(original,54,1);put32(original,58,2);original[62]='L';
+  put32(original,64,33);put32(original,68,4);put32(original,84,108);put32(original,100,108);
+  put32(original,108,1);put32(original,112,1);put32(original,116,4);put32(original,120,128);
+  put32(original,128,1);put32(original,132,1);put32(original,136,144);original[144]=original[147]=255;
+  empty=gimp_image_new(gimp,1,1,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+  snapshot=xcf_painter_prepare_save(empty,&error);g_assert_no_error(error);g_assert_nonnull(snapshot);
+  marker=xcf_painter_image_parasite(snapshot);blob=gimp_parasite_get_data(marker,&blob_size);
+  extra=8+4+name_size+4+4+blob_size;data=g_malloc0(sizeof original+extra);
+  memcpy(data,original,26);memcpy(data+26+extra,original+26,sizeof original-26);
+  put32(data,26,21);put32(data,30,extra-8);put32(data,34,name_size);memcpy(data+38,name,name_size);
+  put32(data,38+name_size,GIMP_PARASITE_PERSISTENT);put32(data,42+name_size,blob_size);memcpy(data+46+name_size,blob,blob_size);
+  put32(data,34+extra,46+extra);put32(data,84+extra,108+extra);put32(data,100+extra,108+extra);
+  put32(data,120+extra,128+extra);put32(data,136+extra,144+extra);
+  image=open_bytes(data,sizeof original+extra,XCF_PAINTER_DIALECT_AUTO,&error);g_assert_no_error(error);g_assert_nonnull(image);
+  g_assert_false(GIMP_IS_CLONE_LAYER(find_layer(image,"L")));g_object_unref(image);
+  image=open_bytes(data,sizeof original+extra,XCF_PAINTER_DIALECT_LEGACY,&error);g_assert_no_error(error);g_assert_nonnull(image);
+  g_assert_true(GIMP_IS_CLONE_LAYER(find_layer(image,"L")));g_object_unref(image);
+  data[46+name_size+8]=2; /* Unsupported marker cannot manufacture evidence. */
+  image=open_bytes(data,sizeof original+extra,XCF_PAINTER_DIALECT_AUTO,&error);
+  g_assert_null(image);g_assert_nonnull(strstr(error->message,"dialect"));g_clear_error(&error);
+  g_free(data);gimp_parasite_free(marker);xcf_painter_free_save(snapshot);g_object_unref(empty);
+}
 static void unresolved_and_length_recovery (void)
 {
   gchar *path = fixture_path ("legacy-runtime/clone-normal-in-group.xcf"), *bytes;
@@ -436,7 +466,7 @@ int main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/painter-xcf-open/" #name, name)
-  ADD (absent_mode_historical_default); ADD (unknown_extension_preserves_destination); ADD (dual_valid_short_extension); ADD (ambiguity_and_failures); ADD (unresolved_and_length_recovery); ADD (large_source);
+  ADD (absent_mode_historical_default); ADD (unknown_extension_preserves_destination); ADD (dual_valid_short_extension); ADD (explicit_provenance_resolves_ambiguity); ADD (ambiguity_and_failures); ADD (unresolved_and_length_recovery); ADD (large_source);
   ADD (ordinary); ADD (ordinary_projection_exact_gate); ADD (clones); ADD (filter_recovery); ADD (standard); ADD (recovery_handlers); ADD (cancel);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");

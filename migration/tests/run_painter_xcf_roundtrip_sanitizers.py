@@ -21,12 +21,12 @@ build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
 output = build / "painter-xcf-roundtrip-sanitizers"
 output.mkdir(exist_ok=True)
-report = {"scope": "XCF load/save/typed metadata/probe/source/seek/read/write, Clone/Filter adapters, test harness and shared BindingStore; remaining GIMP/dependencies uninstrumented",
+report = {"scope": "XCF load/save/typed metadata/probe/source/seek/read/write, Clone/Filter and image-duplication adapters, test harness and shared BindingStore; remaining GIMP/dependencies uninstrumented",
           "sanitizers": ["address", "undefined"], "leak_detection": False,
           "sources": [], "commands": []}
 flags = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-O1"]
 wanted = {"app/xcf/xcf.c", "app/xcf/xcf-load.c", "app/xcf/xcf-read.c", "app/xcf/xcf-seek.c",
-          "app/xcf/xcf-save.c", "app/xcf/xcf-write.c", "app/xcf/painter-xcf-preserve.cpp", "app/xcf/painter-xcf-arguments.cpp", "app/core/gimpitem.c",
+          "app/xcf/xcf-save.c", "app/xcf/xcf-write.c", "app/xcf/painter-xcf-preserve.cpp", "app/xcf/painter-xcf-arguments.cpp", "app/core/gimpitem.c", "app/core/gimpimage-duplicate.c",
           "app/xcf/painter-xcf-load.cpp", "app/xcf/painter-xcf-compat.cpp",
           "app/tests/test-painter-xcf-roundtrip.c", "app/core/gimpclonelayer.cpp", "app/core/gimpfilterlayer.cpp",
           "app/painter/binding-store.cpp", "app/painter/gimp-painter-binding.cpp", "app/painter/gimp-painter-error.cpp"}

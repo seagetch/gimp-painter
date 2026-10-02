@@ -177,6 +177,28 @@ void preserve_records (Dictionary &dict, GObject *object)
       dict.put ("opaque-record-sequences", g_variant_builder_end (&history));
     }
 }
+/* The core owns this uninterpreted current model without knowing XCF. A
+ * nullable variant preserves an absent field as distinct from any field value. */
+Bytes pack_opaque_arguments (GVariant *value)
+{
+  Variant wrapper (g_variant_ref_sink (g_variant_new_maybe (G_VARIANT_TYPE_VARIANT,
+                                      value ? g_variant_new_variant (value) : nullptr)));
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  wrapper.reset (g_variant_byteswap (wrapper.get ()));
+#endif
+  return Bytes (g_variant_get_data_as_bytes (wrapper.get ()));
+}
+Variant unpack_opaque_arguments (GBytes *bytes)
+{
+  Variant wrapper (g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("mv"), bytes, FALSE)));
+  if (!g_variant_is_normal_form (wrapper.get ())) fail ("Malformed opaque argument model; destination was not changed");
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  wrapper.reset (g_variant_byteswap (wrapper.get ()));
+#endif
+  if (!g_variant_n_children (wrapper.get ())) return {};
+  Variant child (g_variant_get_child_value (wrapper.get (), 0));
+  return Variant (g_variant_get_variant (child.get ()));
+}
 Parasite fallback_origin (GObject *object)
 {
   const auto *semantic = GIMP_IS_IMAGE (object) ? gimp_image_parasite_find (GIMP_IMAGE (object), image_name)
@@ -237,6 +259,14 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
           ref->source_expired = TRUE; ref->allow_name_lookup = FALSE;
           ref->state = ref->pending_name ? GIMP_CLONE_SOURCE_PENDING : GIMP_CLONE_SOURCE_EXPIRED;
         }
+      /* A missing file identity is evidence, not an active binding candidate.
+       * Keep it separately so later additions can never revive it by accident. */
+      if (!ref->source && ref->source_expired && base)
+        {
+          guint32 missing = 0;
+          if (g_variant_lookup (base.get (), "source-id", "u", &missing) && missing)
+            dict.put ("unresolved-source-id", g_variant_new_uint32 (missing));
+        }
       dict.put ("source-id", g_variant_new_uint32 (source_id));
       dict.put ("source-state", g_variant_new_uint32 (ref->state));
       dict.put ("source-expired", g_variant_new_boolean (ref->source_expired));
@@ -260,8 +290,26 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
       dict.put ("has-definition", g_variant_new_boolean (definition != nullptr));
       dict.put ("definition", byte_array (definition.get ()));
       Snapshot args (gimp_filter_layer_snapshot_arguments (filter));
-      if (args || !g_object_get_data (G_OBJECT (item), "gimp-painter-xcf-arguments-uninterpreted"))
+      Bytes opaque (gimp_filter_layer_ref_opaque_arguments (filter));
+      if (opaque)
         {
+          if (args) fail ("Filter has conflicting converted and opaque argument models");
+          Variant value = unpack_opaque_arguments (opaque.get ());
+          dict.put ("has-arguments", g_variant_new_boolean (TRUE));
+          if (value) dict.put ("arguments", value.get ());
+          else g_variant_dict_remove (&dict.dict, "arguments");
+        }
+      else
+        {
+          gboolean imported_arguments = FALSE;
+          if (base) g_variant_lookup (base.get (), "has-arguments", "b", &imported_arguments);
+          if (imported_arguments && !g_variant_dict_contains (&dict.dict, "original-argument-model"))
+            {
+              Variant original (g_variant_lookup_value (base.get (), "arguments", nullptr));
+              if (original) dict.put ("original-argument-model", original.get ());
+              Variant original_procedure (g_variant_lookup_value (base.get (), "procedure", nullptr));
+              if (original_procedure) dict.put ("original-argument-procedure", original_procedure.get ());
+            }
           dict.put ("has-arguments", g_variant_new_boolean (args != nullptr));
           Variant encoded_args (GimpPainterXcf::encode_snapshot (args.get (), image, ids));
           dict.put ("arguments", encoded_args.get ());
@@ -624,7 +672,7 @@ extern "C" void xcf_painter_restore_bindings (XcfInfo *info, GimpImage *image)
               reference.state = static_cast<GimpCloneSourceState> (state);
               g_variant_lookup (dict, "source-expired", "b", &reference.source_expired);
               g_variant_lookup (dict, "allow-name-lookup", "b", &reference.allow_name_lookup);
-              reference.source = find_layer_id (image, id);
+              reference.source = reference.source_expired ? nullptr : find_layer_id (image, id);
               std::unique_ptr<gchar, decltype (&g_free)> pending (read_string (dict, "pending-name"), g_free);
               std::unique_ptr<gchar, decltype (&g_free)> name (read_string (dict, "source-name"), g_free);
               reference.pending_name = pending.get (); reference.source_name = name.get ();
@@ -647,18 +695,22 @@ extern "C" void xcf_painter_restore_bindings (XcfInfo *info, GimpImage *image)
               Variant definition_value (g_variant_lookup_value (dict, "definition", G_VARIANT_TYPE_BYTESTRING));
               Bytes definition (has_definition ? variant_bytes (definition_value.get ()) : nullptr);
               Snapshot arguments;
+              Bytes opaque_arguments;
               if (has_args)
                 {
-                  Variant value (g_variant_lookup_value (dict, "arguments", G_VARIANT_TYPE ("a(sbv)")));
+                  Variant value (g_variant_lookup_value (dict, "arguments", nullptr));
                   try { if (!value) fail ("Invalid arguments"); arguments.reset (GimpPainterXcf::decode_snapshot (value.get (), image)); }
                   catch (const std::exception &exception)
                     {
-                      g_object_set_data (object, "gimp-painter-xcf-arguments-uninterpreted", GINT_TO_POINTER (1));
+                      opaque_arguments = pack_opaque_arguments (value.get ());
                       load_warning (info, exception.what ());
                     }
                 }
               GError *error = nullptr;
-              if (!gimp_filter_layer_set_definition_with_snapshot (filter, name.get (), definition.get (), arguments.get (), &error))
+              const gboolean restored = opaque_arguments
+                ? gimp_filter_layer_set_definition_with_opaque_arguments (filter, name.get (), definition.get (), opaque_arguments.get (), &error)
+                : gimp_filter_layer_set_definition_with_snapshot (filter, name.get (), definition.get (), arguments.get (), &error);
+              if (!restored)
                 { if (error) g_error_free (error); fail ("Filter definition could not be restored"); }
               GimpFilterLayerSnapshot state = {}; state.version = 1;
               guint32 saved_state;

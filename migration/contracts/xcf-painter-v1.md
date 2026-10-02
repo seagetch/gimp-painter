@@ -57,8 +57,9 @@ to an ordinary layer does not turn it back into a Clone on reopening.
 The complete imported source remains owned by the in-memory reader snapshot.
 The writer archives property/header/extension records, not another full original
 XCF and pixel hierarchy inside each new XCF. Modern GEGL effect-specific unknown
-records, arbitrary malformed tile recovery, image-duplication provenance and the
-complete historical metadata inventory remain separate audit gates.
+records, arbitrary malformed tile recovery and the complete historical metadata
+inventory remain separate audit gates. Image Duplicate now copies the same
+immutable image-level provenance, independently of native parasites.
 
 ## Stable references and cache state
 
@@ -110,7 +111,7 @@ reference descriptors are supported. Persisting live cross-image references
 without rebinding by a coincidental local name remains an explicit migration
 gate; this refusal is not a permanent feature policy or a full save-compatibility
 claim. Image-level duplication of unsaved origin metadata and edits replacing an
-uninterpreted argument model remain targeted follow-on checks.
+uninterpreted argument model are covered by the follow-on checkpoint below.
 
 ## Save transaction and failure
 
@@ -159,3 +160,40 @@ ASan/UBSan diagnostics. Sixteen save snapshot prepare/free cycles verify observe
 removal before transaction destruction, followed by live-object edits. The writer
 uses common ObjectRef and Connection ownership, staging connections before vector
 publication so allocation failure disconnects safely. Expected unknown-version recovery warning is exercised.
+
+
+## Preservation follow-on checkpoint
+
+Normal application coverage is 32 cases (XCF 4, Open 14, roundtrip 14); all 14
+focused ASan+UBSan roundtrip cases also pass. The focus now includes
+`gimpimage-duplicate.c`. Evidence is `painter-xcf-preservation-{meson.txt,
+testlog.txt,testlog.json,sanitizers.json}` in `migration/tests/`.
+
+- A valid explicit dialect marker resolves a genuinely dual-valid byte stream;
+  explicit legacy recovery still wins, and an unknown marker does not resolve it
+- Missing Clone IDs are retained as `unresolved-source-id` diagnostics with an
+  inactive source ID. Neither matching names nor subsequently reused IDs can
+  activate them; unresolved pending-name state is retained separately
+- Image Duplicate → Save → Open retains unknown image-level records
+- Typed model checks cover all sixteen scalar/array slots, nested values, expired
+  descriptors, and a live path identity across repeated saves
+- Unreadable typed models are current immutable opaque argument payloads owned
+  by the Filter definition itself, separately from raw `PROP_FILTER_SPEC` and
+  converted arguments. A nullable canonical variant wrapper retains a missing
+  field distinctly from any field value. Duplicate without editing retains the
+  current unknown model. Explicit null replacement clears it; definition Undo
+  restores it and Redo clears it. This does not depend on an XCF qdata/revision
+  heuristic. Save/reopen checks cover each state and meaningful cached pixels.
+  A real supported Edge replacement completes before Undo; Undo restores the
+  earlier opaque buffer and conservatively marks it stale, rather than claiming
+  the newer procedure's cache belongs to the old definition. Missing fields,
+  wrong-typed fields and nonnull zero-byte opaque wrappers remain distinct;
+  invalid caller-owned wrappers fail before destination replacement
+- The first replaced imported model/procedure is separately retained as
+  `original-argument-model` / `original-argument-procedure`; later explicit typed
+  values win over this archival state
+
+Opaque argument models are never executed or fabricated as empty converted
+arguments. This checkpoint does not turn unsupported definitions into executable
+procedures. The core definition-revision getter remains a runtime-only API and is
+not persisted or used as cache/job lineage.
