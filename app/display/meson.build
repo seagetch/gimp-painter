@@ -29,6 +29,7 @@ libappdisplay_sources = [
   'gimpcanvasgrid.c',
   'gimpcanvasgroup.c',
   'gimpcanvasguide.c',
+  'gimpcanvasperspectiveguide.cpp',
   'gimpcanvashandle.c',
   'gimpcanvasitem-utils.c',
   'gimpcanvasitem.c',

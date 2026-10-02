@@ -93,6 +93,7 @@ libapptools_sources = [
   'gimppenciltool.c',
   'gimpperspectiveclonetool.c',
   'gimpperspectivetool.c',
+  'gimpperspectiveguidetool.cpp',
   'gimppolygonselecttool.c',
   'gimprectangleoptions.c',
   'gimprectangleselectoptions.c',

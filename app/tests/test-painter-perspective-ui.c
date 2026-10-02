@@ -1,0 +1,205 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+#include "config.h"
+#include <math.h>
+#include <gegl.h>
+#include <gtk/gtk.h>
+#include "libgimpbase/gimpbase.h"
+#include "libgimpwidgets/gimpwidgets.h"
+#include "libgimpconfig/gimpconfig.h"
+#include "core/core-types.h"
+#include "display/display-types.h"
+#include "tools/tools-types.h"
+#include "core/gimp.h"
+#include "core/gimpcontainer.h"
+#include "core/gimpimage.h"
+#include "core/gimpimage-undo.h"
+#include "core/gimpimage-perspective-guide.h"
+#include "core/gimptoolinfo.h"
+#include "core/gimptoolgroup.h"
+#include "core/gimplist.h"
+#include "tools/gimp-tools.h"
+#include "core/gimpundostack.h"
+#include "display/gimpdisplay.h"
+#include "display/gimpdisplayshell.h"
+#include "display/gimpdisplayshell-rotate.h"
+#include "display/gimpdisplayshell-scale.h"
+#include "display/gimpdisplayshell-transform.h"
+#include "display/gimpcanvasitem.h"
+#include "tools/gimpperspectiveguidetool.h"
+#include "tools/gimptoolcontrol.h"
+#include "gimpcoreapp.h"
+#include "gimp-app-test-utils.h"
+#include "tests.h"
+static Gimp *gimp;
+static GimpDisplayShell *shell;
+static GimpImage *image;
+static GimpTool *tool;
+static GimpToolClass *klass;
+static void create_image(void)
+{
+  GimpToolInfo *info;
+  gimp_set_focused_once(gimp);gimp_test_utils_create_image(gimp,256,256);gimp_test_run_mainloop_until_idle();
+  g_assert_cmpuint(g_list_length(gimp_get_display_iter(gimp)),==,1);
+  shell=gimp_display_get_shell(gimp_get_display_iter(gimp)->data);image=gimp_display_get_image(shell->display);
+  info=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,"gimp-perspective-guide-tool"));
+  g_assert_nonnull(info);tool=g_object_new(GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL,"tool-info",info,NULL);klass=GIMP_TOOL_GET_CLASS(tool);
+}
+static void close_image(void)
+{
+  GimpDisplay *display=shell->display;
+  gimp_tool_control(tool,GIMP_TOOL_ACTION_HALT,display);g_object_unref(tool);
+  g_object_unref(image);gimp_display_close(display);gimp_test_run_mainloop_until_idle();
+}
+static void click(gdouble x,gdouble y,GdkModifierType state)
+{
+  GimpCoords coords={0};coords.x=x;coords.y=y;
+  klass->oper_update(tool,&coords,state,TRUE,shell->display);
+  klass->button_press(tool,&coords,0,state,GIMP_BUTTON_PRESS_NORMAL,shell->display);
+  klass->button_release(tool,&coords,0,state,GIMP_BUTTON_RELEASE_NORMAL,shell->display);
+  g_assert_false(gimp_tool_control_is_active(tool->control));
+}
+static void check_point(gint index,gdouble ex,gdouble ey)
+{
+  gdouble x,y;GimpPerspectiveGuide *guide=gimp_image_get_perspective_guide(image);
+  g_assert_nonnull(guide);g_assert_true(gimp_perspective_guide_get_vanish_points(guide,index,&x,&y));
+  g_assert_cmpfloat(x,==,ex);g_assert_cmpfloat(y,==,ey);
+}
+static void add_move_remove_undo(void)
+{
+  GimpCoords coords={0};gint depth;
+  create_image();click(10,20,0);g_assert_null(gimp_image_get_perspective_guide(image));
+  klass->modifier_key(tool,GDK_SHIFT_MASK,TRUE,GDK_SHIFT_MASK,shell->display);
+  click(10,20,GDK_SHIFT_MASK);click(70,90,GDK_SHIFT_MASK);click(200,240,GDK_SHIFT_MASK);click(250,250,GDK_SHIFT_MASK);
+  g_assert_cmpint(gimp_perspective_guide_get_vanish_point_length(gimp_image_get_perspective_guide(image)),==,3);
+  check_point(0,10,20);check_point(1,70,90);check_point(2,200,240);
+  klass->modifier_key(tool,GDK_SHIFT_MASK,FALSE,0,shell->display);
+  depth=gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image));
+  coords.x=70;coords.y=90;klass->button_press(tool,&coords,0,0,GIMP_BUTTON_PRESS_NORMAL,shell->display);
+  for(gint i=0;i<10;++i){coords.x=80+i;coords.y=100+i;klass->motion(tool,&coords,0,GDK_BUTTON1_MASK,shell->display);}
+  klass->button_release(tool,&coords,0,0,GIMP_BUTTON_RELEASE_NORMAL,shell->display);check_point(1,89,109);
+  g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,depth+1);
+  g_assert_true(gimp_image_undo(image));check_point(1,70,90);g_assert_true(gimp_image_redo(image));check_point(1,89,109);
+  /* Hover updates after undo/redo must adopt the current model. */
+  klass->oper_update(tool,&coords,0,TRUE,shell->display);
+  klass->modifier_key(tool,GDK_CONTROL_MASK,TRUE,GDK_CONTROL_MASK,shell->display);click(89,109,GDK_CONTROL_MASK);
+  g_assert_cmpint(gimp_perspective_guide_get_vanish_point_length(gimp_image_get_perspective_guide(image)),==,2);check_point(1,200,240);
+  g_assert_true(gimp_image_undo(image));check_point(1,89,109);check_point(2,200,240);
+  close_image();
+}
+static void cancel_and_hit_transforms(void)
+{
+  GimpCoords coords={0};GimpPerspectiveGuide *guide;gdouble zooms[]={0.25,1,4};
+  create_image();guide=gimp_perspective_guide_new(0);gimp_perspective_guide_add_vanish_points(guide,80,90);gimp_image_set_perspective_guide(image,guide);g_object_unref(guide);
+  for(guint z=0;z<G_N_ELEMENTS(zooms);++z)for(guint flip=0;flip<4;++flip)
+    {
+      gimp_display_shell_scale(shell,GIMP_ZOOM_TO,zooms[z],GIMP_ZOOM_FOCUS_IMAGE_CENTER);
+      gimp_display_shell_rotate_to(shell,37);gimp_display_shell_flip(shell,flip&1,flip&2);
+      coords.x=80+20/shell->scale_x;coords.y=90;
+      klass->oper_update(tool,&coords,0,TRUE,shell->display);klass->button_press(tool,&coords,0,0,GIMP_BUTTON_PRESS_NORMAL,shell->display);
+      coords.x=150;coords.y=160;klass->motion(tool,&coords,0,0,shell->display);klass->button_release(tool,&coords,0,0,GIMP_BUTTON_RELEASE_NORMAL,shell->display);check_point(0,80,90);
+      coords.x=80;coords.y=90;klass->button_press(tool,&coords,0,0,GIMP_BUTTON_PRESS_NORMAL,shell->display);
+      coords.x=150;coords.y=160;klass->motion(tool,&coords,0,0,shell->display);check_point(0,150,160);
+      klass->button_release(tool,&coords,0,0,GIMP_BUTTON_RELEASE_CANCEL,shell->display);check_point(0,80,90);
+      g_assert_cmpint(GIMP_DRAW_TOOL(tool)->paused_count,==,0);
+    }
+  close_image();
+}
+static void overlay_extents_and_replace(void)
+{
+  GimpPerspectiveGuide *guide;const gdouble points[][2]={{10,20},{500,220},{100,-150}};
+  create_image();g_assert_nonnull(shell->perspective_guide);
+  g_assert_null(gimp_canvas_item_get_extents(shell->perspective_guide));
+  guide=gimp_perspective_guide_new(0);gimp_image_set_perspective_guide(image,guide);
+  for(gint n=0;n<3;++n)
+    {
+      gimp_perspective_guide_add_vanish_points(guide,points[n][0],points[n][1]);
+      for(guint flip=0;flip<4;++flip)
+        {
+          cairo_region_t *region;gimp_display_shell_rotate_to(shell,63);gimp_display_shell_flip(shell,flip&1,flip&2);
+          region=gimp_canvas_item_get_extents(shell->perspective_guide);g_assert_nonnull(region);
+          for(gint i=0;i<=n;++i){gdouble x,y;gimp_canvas_item_transform_xy_f(shell->perspective_guide,points[i][0],points[i][1],&x,&y);g_assert_true(cairo_region_contains_point(region,(gint)floor(x),(gint)floor(y)));}
+          cairo_region_destroy(region);
+        }
+    }
+  gimp_image_set_perspective_guide(image,NULL);g_assert_null(gimp_canvas_item_get_extents(shell->perspective_guide));
+  /* A disconnected old guide cannot restore the overlay. */
+  gimp_perspective_guide_set_vanish_points(guide,0,999,999);g_assert_null(gimp_canvas_item_get_extents(shell->perspective_guide));
+  g_object_unref(guide);close_image();
+}
+static void overlay_pixels_and_image_switch(void)
+{
+  GimpPerspectiveGuide *guide,*other_guide;
+  GimpImage *other;
+  const gdouble zooms[]={0.25,1,4};
+  create_image();guide=gimp_perspective_guide_new(0);
+  gimp_perspective_guide_add_vanish_points(guide,128,128);gimp_image_set_perspective_guide(image,guide);
+  for(guint z=0;z<G_N_ELEMENTS(zooms);++z)for(guint flip=0;flip<4;++flip)
+    {
+      cairo_surface_t *surface;cairo_t *cr;gdouble x,y;gboolean painted=FALSE;
+      gimp_display_shell_scale(shell,GIMP_ZOOM_TO,zooms[z],GIMP_ZOOM_FOCUS_IMAGE_CENTER);
+      gimp_display_shell_rotate_to(shell,37);gimp_display_shell_flip(shell,flip&1,flip&2);
+      surface=cairo_image_surface_create(CAIRO_FORMAT_ARGB32,shell->disp_width,shell->disp_height);cr=cairo_create(surface);
+      if(shell->rotate_transform)cairo_transform(cr,shell->rotate_transform);
+      gimp_canvas_item_draw(shell->perspective_guide,cr);cairo_destroy(cr);cairo_surface_flush(surface);
+      gimp_display_shell_transform_xy_f(shell,128,128,&x,&y);
+      for(gint py=MAX(0,(gint)y-12);py<MIN(shell->disp_height,(gint)y+13);++py)
+        for(gint px=MAX(0,(gint)x-12);px<MIN(shell->disp_width,(gint)x+13);++px)
+          if(((guint32*)(cairo_image_surface_get_data(surface)+py*cairo_image_surface_get_stride(surface)))[px])painted=TRUE;
+      g_assert_true(painted);g_assert_cmpint(cairo_surface_status(surface),==,CAIRO_STATUS_SUCCESS);cairo_surface_destroy(surface);
+    }
+  other=gimp_image_new(gimp,256,256,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+  other_guide=gimp_perspective_guide_new(0);gimp_perspective_guide_add_vanish_points(other_guide,64,96);gimp_image_set_perspective_guide(other,other_guide);
+  gimp_display_set_image(shell->display,other);
+  {
+    cairo_region_t *before=gimp_canvas_item_get_extents(shell->perspective_guide),*after;
+    g_assert_nonnull(before);gimp_perspective_guide_set_vanish_points(guide,0,9999,9999);
+    after=gimp_canvas_item_get_extents(shell->perspective_guide);g_assert_true(cairo_region_equal(before,after));cairo_region_destroy(before);cairo_region_destroy(after);
+  }
+  gimp_image_set_perspective_guide(other,NULL);g_assert_null(gimp_canvas_item_get_extents(shell->perspective_guide));
+  gimp_display_set_image(shell->display,image);{cairo_region_t *region=gimp_canvas_item_get_extents(shell->perspective_guide);g_assert_nonnull(region);cairo_region_destroy(region);}
+  g_object_unref(other_guide);g_object_unref(other);g_object_unref(guide);close_image();
+}
+static void registration_and_external_replace(void)
+{
+  GimpToolInfo *info;guint guide_key,gradient_key;GdkModifierType guide_mod,gradient_mod;
+  GimpCoords coords={0};GimpPerspectiveGuide *replacement;
+  create_image();
+  info=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,"gimp-perspective-guide-tool"));gtk_accelerator_parse(info->menu_accel,&guide_key,&guide_mod);
+  info=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,"gimp-gradient-tool"));gtk_accelerator_parse(info->menu_accel,&gradient_key,&gradient_mod);
+  g_assert_cmpuint(guide_key,==,GDK_KEY_g);g_assert_cmpuint(gradient_key,==,GDK_KEY_l);g_assert_cmpuint(guide_mod,==,0);g_assert_cmpuint(gradient_mod,==,0);
+  for(gint i=0;i<gimp_container_get_n_children(gimp->tool_info_list);++i){guint key;GdkModifierType mod;info=GIMP_TOOL_INFO(gimp_container_get_child_by_index(gimp->tool_info_list,i));gtk_accelerator_parse(info->menu_accel ? info->menu_accel : "",&key,&mod);if(key==guide_key && mod==guide_mod)g_assert_cmpstr(gimp_object_get_name(info),==,"gimp-perspective-guide-tool");if(key==gradient_key && mod==gradient_mod)g_assert_cmpstr(gimp_object_get_name(info),==,"gimp-gradient-tool");}
+  klass->modifier_key(tool,GDK_SHIFT_MASK,TRUE,GDK_SHIFT_MASK,shell->display);click(10,20,GDK_SHIFT_MASK);klass->modifier_key(tool,GDK_SHIFT_MASK,FALSE,0,shell->display);
+  coords.x=10;coords.y=20;klass->button_press(tool,&coords,0,0,GIMP_BUTTON_PRESS_NORMAL,shell->display);coords.x=30;coords.y=40;klass->motion(tool,&coords,0,0,shell->display);
+  replacement=gimp_perspective_guide_new(0);gimp_perspective_guide_add_vanish_points(replacement,100,110);gimp_image_set_perspective_guide(image,replacement);
+  klass->button_release(tool,&coords,0,0,GIMP_BUTTON_RELEASE_CANCEL,shell->display);g_assert_true(gimp_image_get_perspective_guide(image)==replacement);check_point(0,100,110);
+  g_object_unref(replacement);close_image();
+}
+static void old_toolrc_preserves_groups(void)
+{
+  gchar *text=NULL,*path=g_build_filename(g_getenv("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration","fixtures","legacy-perspective","gimp3-before-ruler-toolrc",NULL);
+  GError *error=NULL;GScanner *scanner;GimpContainer *items=gimp->tool_item_list;GimpObject *first;GimpContainer *children;
+  g_assert_true(g_file_get_contents(path,&text,NULL,&error));g_assert_no_error(error);g_free(path);
+  scanner=gimp_scanner_new_string(text,-1,&error);g_assert_no_error(error);
+  /* Move the live tool infos only after detaching their existing groups, as reset does. */
+  gimp_container_clear(items);
+  g_assert_true(gimp_tools_deserialize(gimp,items,scanner));g_assert_no_error(error);
+  first=gimp_container_get_child_by_index(items,0);g_assert_true(GIMP_IS_TOOL_GROUP(first));
+  g_assert_cmpstr(gimp_tool_group_get_active_tool(GIMP_TOOL_GROUP(first)),==,"gimp-move-tool");
+  children=gimp_viewable_get_children(GIMP_VIEWABLE(first));g_assert_cmpint(gimp_container_get_n_children(children),==,2);
+  g_assert_cmpstr(gimp_object_get_name(gimp_container_get_child_by_index(children,1)),==,"gimp-align-tool");
+  g_assert_nonnull(gimp_container_get_child_by_name(items,"gimp-perspective-guide-tool"));
+  gimp_scanner_unref(scanner);g_free(text);
+}
+int main(int argc,char **argv)
+{
+  gint result;g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
+  gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  g_test_add_func("/perspective-ui/add-move-remove-undo",add_move_remove_undo);
+  g_test_add_func("/perspective-ui/cancel-hit-transforms",cancel_and_hit_transforms);
+  g_test_add_func("/perspective-ui/overlay-extents-replace",overlay_extents_and_replace);
+  g_test_add_func("/perspective-ui/overlay-pixels-image-switch",overlay_pixels_and_image_switch);
+  g_test_add_func("/perspective-ui/registration-external-replace",registration_and_external_replace);
+  g_test_add_func("/perspective-ui/old-toolrc-preserves-groups",old_toolrc_preserves_groups);
+  g_application_run(gimp->app,0,NULL);result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
+  g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
+}

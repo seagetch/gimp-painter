@@ -30,6 +30,7 @@
 #include "gimpcanvascanvasboundary.h"
 #include "gimpcanvascursor.h"
 #include "gimpcanvasgrid.h"
+#include "gimpcanvasperspectiveguide.h"
 #include "gimpcanvaslayerboundary.h"
 #include "gimpcanvaspassepartout.h"
 #include "gimpcanvasproxygroup.h"
@@ -76,6 +77,10 @@ gimp_display_shell_items_init (GimpDisplayShell *shell)
   g_object_set (shell->grid, "grid-style", TRUE, NULL);
   gimp_display_shell_add_item (shell, shell->grid);
   g_object_unref (shell->grid);
+
+  shell->perspective_guide = gimp_canvas_perspective_guide_new (shell);
+  gimp_display_shell_add_item (shell, shell->perspective_guide);
+  g_object_unref (shell->perspective_guide);
 
   shell->guides = gimp_canvas_proxy_group_new (shell);
   gimp_display_shell_add_item (shell, shell->guides);
@@ -133,6 +138,7 @@ gimp_display_shell_items_free (GimpDisplayShell *shell)
       shell->paths           = NULL;
       shell->grid            = NULL;
       shell->guides          = NULL;
+      shell->perspective_guide = NULL;
       shell->sample_points   = NULL;
       shell->canvas_boundary = NULL;
       shell->layer_boundary  = NULL;

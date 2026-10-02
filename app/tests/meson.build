@@ -53,6 +53,8 @@ app_tests = [
   'painter-layer-modes',
   'painter-navigation-ui',
   'painter-navigation-events',
+  'painter-perspective',
+  'painter-perspective-ui',
 ]
 
 # Prevent parallel builds for the tests

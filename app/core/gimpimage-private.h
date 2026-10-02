@@ -102,6 +102,9 @@ struct _GimpImagePrivate
   GeglNode          *graph;                 /*  GEGL projection graph        */
   GeglNode          *visible_mask;          /*  component visibility node    */
 
+  GimpPerspectiveGuide *perspective_guide; /* owned session-only ruler */
+  gboolean             perspective_guide_disposing;
+
   GList             *symmetries;            /*  Painting symmetries          */
   GimpSymmetry      *active_symmetry;       /*  Active symmetry              */
 

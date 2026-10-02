@@ -79,6 +79,7 @@
 #include "gimppenciltool.h"
 #include "gimpperspectiveclonetool.h"
 #include "gimpperspectivetool.h"
+#include "gimpperspectiveguidetool.h"
 #include "gimpthresholdtool.h"
 #include "gimprectangleselecttool.h"
 #include "gimprotatetool.h"
@@ -164,6 +165,7 @@ gimp_tools_init (Gimp *gimp)
     gimp_shear_tool_register,
     gimp_handle_transform_tool_register,
     gimp_perspective_tool_register,
+    gimp_perspective_guide_tool_register,
     gimp_transform_3d_tool_register,
     gimp_flip_tool_register,
     gimp_cage_tool_register,
@@ -545,10 +547,11 @@ gimp_tools_deserialize (Gimp          *gimp,
 
           if (! tool_info->hidden && ! g_hash_table_contains (tools, tool_info))
             {
-              if (tool_info->experimental)
+              if (tool_info->experimental ||
+                  tool_info->tool_type == GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL)
                 {
-                  /* if an experimental tool is not in the file, just add it to
-                   * the tool-item list.
+                  /* Append new Painter rulers without discarding an existing
+                   * user's tool groups. Experimental tools use the same path.
                    */
                   gimp_container_add (container, GIMP_OBJECT (tool_info));
                 }

@@ -124,6 +124,7 @@ struct _GimpDisplayShell
   GimpCanvasItem    *preview_items;    /*  item for previews                  */
   GimpCanvasItem    *paths;            /*  item proxy of paths                */
   GimpCanvasItem    *grid;             /*  item proxy of the grid             */
+  GimpCanvasItem    *perspective_guide;
   GimpCanvasItem    *guides;           /*  item proxies of guides             */
   GimpCanvasItem    *sample_points;    /*  item proxies of sample points      */
   GimpCanvasItem    *canvas_boundary;  /*  item for the cabvas boundary       */

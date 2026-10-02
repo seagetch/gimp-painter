@@ -53,6 +53,7 @@
 #include "gimpguide.h"
 #include "gimpidtable.h"
 #include "gimpimage.h"
+#include "gimpimage-perspective-guide.h"
 #include "gimpimage-color-profile.h"
 #include "gimpimage-colormap.h"
 #include "gimpimage-guides.h"
@@ -488,6 +489,9 @@ gimp_image_class_init (GimpImageClass *klass)
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   G_TYPE_FILE);
+
+  g_signal_new ("perspective-guide-changed", G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
   gimp_image_signals[GUIDE_ADDED] =
     g_signal_new ("guide-added",
@@ -1107,6 +1111,8 @@ gimp_image_dispose (GObject *object)
 {
   GimpImage        *image   = GIMP_IMAGE (object);
   GimpImagePrivate *private = GIMP_IMAGE_GET_PRIVATE (image);
+
+  gimp_image_perspective_guide_dispose (image);
 
   if (private->palette)
     gimp_image_colormap_dispose (image);
