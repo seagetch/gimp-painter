@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Build focused MyPaint native GTK instrumentation; run on the native display.
 
-Hold /tmp/gimp-painter-build.lock. Private archives leave production untouched.
+Hold /workspace/shared/gimp-painter-build.lock. Private archives leave production untouched.
 """
 import hashlib
+from painter_sanitizer_scope import bridge_rtti_sources, CXX_SUFFIXES
 import argparse
 import json
 import os
@@ -37,7 +38,7 @@ wanted = {"app/paint/painter-mypaint-surface/gegl-surface.cpp",
           "app/core/gimp.c", "app/core/gimpdatafactory.c", "app/core/gimpbrushpipe.c",
           "app/tools/gimppaintermybrushtool.cpp", "app/tools/gimptool.c",
           "app/tools/gimpdrawtool.c", "app/tools/gimpcolortool.c", "app/display/gimpdisplay.c",
-          "app/paint/gimppainterpaintgate.c", "app/core/gimptoolinfo.c", "app/core/gimpcontext.c", "app/core/gimppaintermybrush.cpp",
+          "app/paint/gimppainterpaintgate.cpp", "app/core/gimptoolinfo.c", "app/core/gimpcontext.c", "app/core/gimppaintermybrush.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
           "app/paint/painter-mypaint/resource.cpp", "app/paint/painter-mypaint/engine.cpp",
@@ -46,6 +47,12 @@ headers={"app/paint/gimppaintcore.h", "app/core/gimpbrushpipe.h", "app/paint/pai
          "app/paint/painter-mypaint-surface/paint-core.hpp", "app/paint/painter-mypaint-surface/gimp-painter-options.h",
          "app/paint/painter-mypaint-surface/gimp-painter-options.hpp", "app/paint/painter-mypaint-surface/gimp-painter-session.h",
          "app/paint/painter-mypaint-surface/gimp-painter-session.hpp", "app/painter/binding-store.hpp", "app/painter/object-ref.hpp", "app/painter/connection.hpp"}
+instrumented = set(wanted)
+rtti_only = bridge_rtti_sources(root, build) - instrumented
+wanted |= rtti_only
+report["instrumented_sources"] = sorted(instrumented)
+report["rtti_compatibility_only_sources"] = sorted(rtti_only)
+report["scope"] += "; listed RTTI-only production bridge owners are recompiled for compatible vptr metadata, without sanitizer instrumentation"
 hashes={name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in wanted|headers}
 replacements = {}
 extra = []
@@ -74,8 +81,9 @@ for entry in commands:
         cleaned.append(arg)
     obj = output / (source.name + ".o")
     cleaned[cleaned.index("-o") + 1] = str(obj)
-    cleaned += flags
-    if source.suffix == ".cpp":
+    if relative not in rtti_only:
+        cleaned += flags
+    if source.suffix in CXX_SUFFIXES:
         cleaned += ["-frtti"] # consistent shared_ptr COMDAT RTTI for UBSan vptr
 
     report["sources"].append(relative)

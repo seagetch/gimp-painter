@@ -18,6 +18,14 @@
 #ifndef __GIMP_PAINT_CORE_STROKE_H__
 #define __GIMP_PAINT_CORE_STROKE_H__
 
+/* Immutable prepared native coordinates, shared by owned transaction backends.
+ * The caller owns the coordinate storage for the duration of dispatch. */
+typedef struct
+{
+  const GimpCoords *coords;
+  gsize             n_coords;
+} GimpPaintStrokeSegment;
+
 
 gboolean   gimp_paint_core_stroke          (GimpPaintCore      *core,
                                             GimpDrawable       *drawable,

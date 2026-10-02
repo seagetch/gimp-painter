@@ -22,6 +22,11 @@ public:
   bool hover_to (GimpDrawable *drawable, double seconds, const GimpCoords& coords);
   void finish ();
   void cancel ();
+  // Generic operations use one native snapshot while logical evaluator/Surface
+  // segments remain separate. Interactive callers keep the default behavior.
+  void begin_batch (bool push_undo, const char *undo_description = nullptr);
+  void next_segment ();
+  void end_batch (bool commit);
   bool active () const;
   ResourceResolution resolution () const;
   std::size_t bytes_read () const;

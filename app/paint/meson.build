@@ -43,7 +43,7 @@ libapppaint_sources = [
   'gimpinkoptions.c',
   'gimpinkundo.c',
   'gimpmybrushcore.c',
-  'gimppainterpaintgate.c',
+  'gimppainterpaintgate.cpp',
   'gimpmybrushoptions.c',
   'gimpmybrushsurface.c',
   'gimppaintbrush.c',
@@ -70,7 +70,8 @@ libapppaint = static_library('apppaint',
   libapppaint_sources,
   include_directories: [ rootInclude, rootAppInclude, ],
   c_args: '-DG_LOG_DOMAIN="Gimp-Paint"',
+  cpp_args: painter_cpp_args,
   dependencies: [
-    cairo, gegl, gdk_pixbuf, gexiv2, libmypaint, painter_bounded_fill_dep,
+    cairo, gegl, gdk_pixbuf, gexiv2, libmypaint, painter_bounded_fill_dep, painter_mypaint_surface_dep,
   ],
 )

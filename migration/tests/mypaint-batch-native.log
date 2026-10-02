@@ -1,0 +1,28 @@
+ninja: Entering directory `build-debian13'
+[1/13] Generating git-version.h.in.1 with a custom command
+[2/13] Generating git-version.h.in.2 with a custom command
+[3/13] Generating git-version.h with a custom command
+[4/13] Compiling C object app/core/libappcore.a.p/gimp-user-install.c.o
+[5/13] Linking static target app/core/libappcore.a
+[6/13] Compiling C object app/libapp.a.p/gimp-version.c.o
+[7/13] Linking static target app/libapp.a
+[8/13] Compiling C object app/dialogs/libappdialogs.a.p/about-dialog.c.o
+[9/13] Compiling C object app/display/libappdisplay.a.p/gimpdisplayshell-callbacks.c.o
+[10/13] Linking static target app/dialogs/libappdialogs.a
+[11/13] Linking static target app/display/libappdisplay.a
+[12/13] Compiling C++ object app/tests/gimp-painter-batch.p/test-gimp-painter-batch.cpp.o
+[13/13] Linking target app/tests/gimp-painter-batch
+1/5 gimp:painter / painter-mypaint-legacy-session     OK               2.39s
+2/5 gimp:app / gimp-painter-session                   OK               1.65s
+3/5 gimp:app / gimp-painter-hover                     OK               1.66s
+4/5 gimp:painter / painter-mypaint-legacy-rgb-session OK               6.77s
+5/5 gimp:app / gimp-painter-batch                     OK               2.79s
+
+Ok:                 5
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0
+
+Full log written to /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/meson-logs/testlog.txt

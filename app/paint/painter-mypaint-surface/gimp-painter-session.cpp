@@ -165,6 +165,23 @@ gboolean gimp_painter_session_finish(GimpPainterSession*session,GError**error)
 {return stop(session,true,error);}
 gboolean gimp_painter_session_cancel(GimpPainterSession*session,GError**error)
 {return stop(session,false,error);}
+gboolean gimp_painter_session_begin_batch(GimpPainterSession*session,gboolean push_undo,GError**error)
+{return gimp_painter_session_begin_named_batch(session,push_undo,nullptr,error);}
+gboolean gimp_painter_session_begin_named_batch(GimpPainterSession*session,gboolean push_undo,const gchar*description,GError**error)
+{return boundary<gboolean>(error,FALSE,[&]() -> gboolean{operate(session,true,[&](PaintCore&core){core.begin_batch(push_undo,description);});return TRUE;});}
+gboolean gimp_painter_session_next_segment(GimpPainterSession*session,GError**error)
+{return boundary<gboolean>(error,FALSE,[&]() -> gboolean{operate(session,true,[](PaintCore&core){core.next_segment();});return TRUE;});}
+gboolean gimp_painter_session_end_batch(GimpPainterSession*session,gboolean commit,GError**error)
+{
+  return boundary<gboolean>(error,FALSE,[&]() -> gboolean{
+    operate(session,false,[&](PaintCore&core){
+      // A settings change aborts the immutable operation. Once rollback/end
+      // completes, reconcile the current options for a future independent call.
+      store(session).with<SessionSlot>([](SessionImpl&i){i.pending=true;});
+      core.end_batch(commit);
+    });return TRUE;
+  });
+}
 gboolean gimp_painter_session_is_active(GimpPainterSession*session)
 {return boundary<gboolean>(nullptr,FALSE,[&]{return store(session).read<SessionSlot>([](const SessionImpl&i)->gboolean{return i.core&&i.core->active();});});}
 gchar*gimp_painter_session_dup_error(GimpPainterSession*session)

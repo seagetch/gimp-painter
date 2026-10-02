@@ -19,6 +19,11 @@ gboolean gimp_painter_session_stroke_to (GimpPainterSession *session,GimpDrawabl
 gboolean gimp_painter_session_hover_to (GimpPainterSession *session,GimpDrawable *drawable,gdouble seconds,const GimpCoords *coords,gboolean *split,GError **error);
 gboolean gimp_painter_session_finish (GimpPainterSession *session,GError **error);
 gboolean gimp_painter_session_cancel (GimpPainterSession *session,GError **error);
+/* One atomic generic operation, with independent logical Surface segments. */
+gboolean gimp_painter_session_begin_batch (GimpPainterSession *session,gboolean push_undo,GError **error);
+gboolean gimp_painter_session_begin_named_batch (GimpPainterSession *session,gboolean push_undo,const gchar *undo_description,GError **error);
+gboolean gimp_painter_session_next_segment (GimpPainterSession *session,GError **error);
+gboolean gimp_painter_session_end_batch (GimpPainterSession *session,gboolean commit,GError **error);
 gboolean gimp_painter_session_is_active (GimpPainterSession *session);
 gchar *gimp_painter_session_dup_error (GimpPainterSession *session);
 G_END_DECLS

@@ -35,6 +35,8 @@
 #include "gimppaintcore.h"
 #include "gimppaintcore-stroke.h"
 #include "gimppaintoptions.h"
+#include "gimppainterpaintgate.h"
+#include "core/gimpimage.h"
 
 #include "gimp-intl.h"
 
@@ -44,6 +46,48 @@ static void gimp_paint_core_stroke_emulate_dynamics (GimpCoords *coords,
 
 
 static const GimpCoords default_coords = GIMP_COORDS_DEFAULT_VALUES;
+
+/* Preparation stays native and is shared by transaction-owning backends.
+ * Add future Fill/Smudge dispatch here; standard cores keep their old path. */
+typedef gboolean (*OwnedStrokeFunc) (GimpPaintCore *, GimpDrawable *, GimpPaintOptions *,
+                                    const GimpPaintStrokeSegment *, gsize,
+                                    gboolean, GError **);
+static OwnedStrokeFunc
+owned_stroke_backend (GimpPaintCore *core)
+{
+  return GIMP_IS_PAINTER_PAINT_GATE (core) ? gimp_painter_paint_gate_stroke : NULL;
+}
+
+static gboolean
+owned_stroke_arrays (OwnedStrokeFunc backend, GimpPaintCore *core,
+                     GimpDrawable *drawable, GimpPaintOptions *options,
+                     GPtrArray *arrays, gboolean push_undo, GError **error)
+{
+  GimpPaintStrokeSegment *segments = g_new0 (GimpPaintStrokeSegment, arrays->len);
+  gboolean result;
+  for (guint i = 0; i < arrays->len; i++)
+    {
+      GArray *coords = g_ptr_array_index (arrays, i);
+      segments[i].coords = (const GimpCoords *) coords->data;
+      segments[i].n_coords = coords->len;
+    }
+  result = backend (core, drawable, options, segments, arrays->len, push_undo, error);
+  g_free (segments);
+  return result;
+}
+
+static void
+owned_array_free (gpointer data)
+{
+  g_array_unref (data);
+}
+
+static gpointer
+owned_stroke_ref (gconstpointer data, gpointer user_data)
+{
+  return g_object_ref ((gpointer) data);
+}
+
 
 
 gboolean
@@ -65,6 +109,13 @@ gimp_paint_core_stroke (GimpPaintCore     *core,
   g_return_val_if_fail (strokes != NULL, FALSE);
   g_return_val_if_fail (n_strokes > 0, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (owned_stroke_backend (core))
+    {
+      GimpPaintStrokeSegment segment = { strokes, n_strokes };
+      return owned_stroke_backend (core) (core, drawable, paint_options,
+                                          &segment, 1, push_undo, error);
+    }
 
   drawables = g_list_prepend (NULL, drawable);
 
@@ -122,6 +173,8 @@ gimp_paint_core_stroke_boundary (GimpPaintCore      *core,
   gint          n_coords;
   gint          seg;
   gint          s;
+  OwnedStrokeFunc owned;
+  GPtrArray    *segments = NULL;
 
   g_return_val_if_fail (GIMP_IS_PAINT_CORE (core), FALSE);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), FALSE);
@@ -135,6 +188,10 @@ gimp_paint_core_stroke_boundary (GimpPaintCore      *core,
 
   if (n_stroke_segs == 0)
     return TRUE;
+
+  owned = owned_stroke_backend (core);
+  if (owned)
+    segments = g_ptr_array_new_with_free_func (owned_array_free);
 
   coords = g_new0 (GimpCoords, n_bound_segs + 4);
 
@@ -174,7 +231,14 @@ gimp_paint_core_stroke_boundary (GimpPaintCore      *core,
       if (emulate_dynamics)
         gimp_paint_core_stroke_emulate_dynamics (coords, n_coords);
 
-      if (initialized ||
+      if (owned)
+        {
+          GArray *copy = g_array_sized_new (FALSE, FALSE, sizeof (GimpCoords), n_coords);
+          g_array_append_vals (copy, coords, n_coords);
+          g_ptr_array_add (segments, copy);
+          initialized = TRUE;
+        }
+      else if (initialized ||
           gimp_paint_core_start (core, drawables, paint_options, &coords[0],
                                  error))
         {
@@ -215,7 +279,13 @@ gimp_paint_core_stroke_boundary (GimpPaintCore      *core,
       n_coords++;
     }
 
-  if (initialized)
+  if (owned)
+    {
+      initialized = owned_stroke_arrays (owned, core, drawable, paint_options,
+                                         segments, push_undo, error);
+      g_ptr_array_unref (segments);
+    }
+  else if (initialized)
     {
       gimp_paint_core_finish (core, drawables, push_undo);
 
@@ -243,6 +313,10 @@ gimp_paint_core_stroke_path (GimpPaintCore     *core,
   gboolean  initialized = FALSE;
   gboolean  due_to_lack_of_points = FALSE;
   gint      off_x, off_y;
+  OwnedStrokeFunc owned;
+  GPtrArray *segments = NULL;
+  GList     *owned_strokes = NULL;
+  GimpImage *owned_image = NULL;
 
   g_return_val_if_fail (GIMP_IS_PAINT_CORE (core), FALSE);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), FALSE);
@@ -251,11 +325,25 @@ gimp_paint_core_stroke_path (GimpPaintCore     *core,
   g_return_val_if_fail (GIMP_IS_PATH (path), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
+  owned = owned_stroke_backend (core);
+  if (owned)
+    {
+      /* Retain the objects and a stable stroke list before invoking virtual
+       * interpolation. Pixel writes begin only after all arrays are prepared. */
+      g_object_ref (core);
+      g_object_ref (paint_options);
+      g_object_ref (drawable);
+      g_object_ref (path);
+      owned_image = g_object_ref (gimp_item_get_image (GIMP_ITEM (drawable)));
+      owned_strokes = g_list_copy_deep (path->strokes->head, owned_stroke_ref, NULL);
+      segments = g_ptr_array_new_with_free_func (owned_array_free);
+    }
+
   gimp_item_get_offset (GIMP_ITEM (path),  &off_x, &off_y);
 
   drawables = g_list_prepend (NULL, drawable);
 
-  for (stroke = path->strokes->head;
+  for (stroke = owned ? owned_strokes : path->strokes->head;
        stroke;
        stroke = stroke->next)
     {
@@ -279,7 +367,15 @@ gimp_paint_core_stroke_path (GimpPaintCore     *core,
             gimp_paint_core_stroke_emulate_dynamics ((GimpCoords *) coords->data,
                                                      coords->len);
 
-          if (initialized ||
+          if (owned)
+            {
+              /* Transfer storage: g_array_free() clears data even when an
+               * extra wrapper reference exists, so a ref alone is not enough. */
+              g_ptr_array_add (segments, coords);
+              coords = NULL;
+              initialized = TRUE;
+            }
+          else if (initialized ||
               gimp_paint_core_start (core, drawables, paint_options,
                                      &g_array_index (coords, GimpCoords, 0),
                                      error))
@@ -320,6 +416,25 @@ gimp_paint_core_stroke_path (GimpPaintCore     *core,
 
       if (coords)
         g_array_free (coords, TRUE);
+    }
+
+  if (owned)
+    {
+      if (initialized)
+        initialized = owned_stroke_arrays (owned, core, drawable, paint_options,
+                                           segments, push_undo, error);
+      else
+        g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                             _("Not enough points to stroke"));
+      g_ptr_array_unref (segments);
+      g_list_free_full (owned_strokes, g_object_unref);
+      g_list_free (drawables);
+      g_object_unref (path);
+      g_object_unref (drawable);
+      g_object_unref (owned_image);
+      g_object_unref (paint_options);
+      g_object_unref (core);
+      return initialized;
     }
 
   if (initialized)

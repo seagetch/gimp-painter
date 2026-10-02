@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Run focused options/session ASan+UBSan with private full-GIMP archives.
 
-Hold /tmp/gimp-painter-build.lock. Production objects are never replaced.
+Hold /workspace/shared/gimp-painter-build.lock. Production objects are never replaced.
 LeakSanitizer is disabled; nonlisted application/dependency code is uninstrumented.
 """
+from painter_sanitizer_scope import bridge_rtti_sources, CXX_SUFFIXES
 import argparse
 import hashlib
 import gzip
@@ -17,7 +18,7 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("build", type=Path)
 parser.add_argument("--report", type=Path, required=True)
-parser.add_argument("--target", choices=["options", "session", "hover", "preview", "rgb", "surface"], required=True)
+parser.add_argument("--target", choices=["options", "session", "hover", "preview", "rgb", "surface", "batch"], required=True)
 args = parser.parse_args()
 target = "painter-mypaint-rgb-session-trace" if args.target == "rgb" else "gimp-painter-" + args.target
 test_source = "app/tests/painter-mypaint-rgb-session-trace.cpp" if args.target == "rgb" else "app/tests/test-" + target + ".cpp"
@@ -42,10 +43,22 @@ wanted = {"app/paint/painter-mypaint-surface/gegl-surface.cpp",
           "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
           "app/paint/painter-mypaint/resource.cpp", "app/paint/painter-mypaint/engine.cpp",
           "app/painter/binding-store.cpp", "app/painter/gimp-painter-binding.cpp", "app/painter/gimp-painter-error.cpp"}
+if args.target == "batch":
+    wanted |= {"app/paint/gimppainterpaintgate.cpp", "app/paint/gimppaintcore-stroke.c"}
+    report["scope"] += "; atomic batch and actual native generic stroke/path/boundary dispatch"
 if args.target == "preview":
     wanted |= {"app/core/gimpbrushpipe.c", "app/core/gimpbrushgenerated.c"}
     report["scope"] += "; preview additionally instruments native pipe/generated duplication and isolated selector tests"
+instrumented = set(wanted)
+rtti_only = bridge_rtti_sources(root, build) - instrumented
+wanted |= rtti_only
+report["instrumented_sources"] = sorted(instrumented)
+report["rtti_compatibility_only_sources"] = sorted(rtti_only)
+report["scope"] += "; listed RTTI-only production bridge owners are recompiled for compatible vptr metadata, without sanitizer instrumentation"
 hashes = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in wanted}
+headers = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in [
+    "app/paint/gimppaintcore.h", "app/paint/gimpbrushcore.h", "app/paint/gimppaintoptions.h"]}
+report["native_abi_headers_sha256"] = headers
 replacements = {}
 extra = []
 archive_replacements = {}
@@ -73,8 +86,9 @@ for entry in commands:
         cleaned.append(arg)
     obj = output / (source.name + ".o")
     cleaned[cleaned.index("-o") + 1] = str(obj)
-    cleaned += flags
-    if source.suffix == ".cpp":
+    if relative not in rtti_only:
+        cleaned += flags
+    if source.suffix in CXX_SUFFIXES:
         cleaned += ["-frtti"] # consistent shared_ptr COMDAT RTTI for UBSan vptr
 
     report["sources"].append(relative)
@@ -131,6 +145,8 @@ if args.target == "rgb":
     report["scope"] += "; full 96-scene independent old RGB session pixel/Undo/Redo comparison"
 changed = [name for name, digest in hashes.items()
            if hashlib.sha256((root / name).read_bytes()).hexdigest() != digest]
+changed += [name for name, digest in headers.items()
+            if hashlib.sha256((root / name).read_bytes()).hexdigest() != digest]
 report.update({"exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr,
                "sources_sha256": hashes, "changed_during_run": changed,
                "executable_sha256": hashlib.sha256(exe.read_bytes()).hexdigest()})
