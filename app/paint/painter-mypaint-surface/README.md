@@ -62,3 +62,12 @@ the old cold nonincremental failure is separately retained. See
 provenance. Arbitrary ICC/color-space and precision modes, brush-pipe selection,
 all177 rendered brush scenes, options/tool/editor registration and actual
 GUI/tablet/platform behavior remain separate gates.
+
+## Native model and adapter
+
+`gimp-painter-options.*` supplies generated native properties, complete editable
+curves/JSON, draft conflict handling, history and ordinary brush/paper selection.
+`gimp-painter-session.*` is the single-slot GimpObject owner of the validated
+controller, with deferred settings changes and explicit invalid-brush refusal.
+See `migration/contracts/mypaint-options-session.md` for lifecycle test scope and
+the remaining registered tool/editor gates.

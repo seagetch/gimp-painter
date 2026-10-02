@@ -1,0 +1,36 @@
+ninja: Entering directory `build-debian13'
+[1/10] Generating git-version.h.in.1 with a custom command
+[2/10] Generating git-version.h.in.2 with a custom command
+[3/10] Generating git-version.h with a custom command
+[4/10] Compiling C object app/libapp.a.p/gimp-version.c.o
+[5/10] Linking static target app/libapp.a
+[6/10] Compiling C object app/dialogs/libappdialogs.a.p/about-dialog.c.o
+[7/10] Compiling C object app/display/libappdisplay.a.p/gimpdisplayshell-callbacks.c.o
+[8/10] Linking static target app/dialogs/libappdialogs.a
+[9/10] Linking static target app/display/libappdisplay.a
+[10/10] Linking target app/gimp-3.0
+ninja: Entering directory `/workspace/scratch/5b5281e79681/gimp-painter/build-debian13'
+[1/17] Generating git-version.h.in.1 with a custom command
+[2/17] Compiling C object app/tests/painter-mypaint-session-trace.p/tests.c.o
+[3/17] Generating git-version.h.in.2 with a custom command
+[4/17] Generating git-version.h with a custom command
+[5/11] Compiling C object app/tests/gimp-painter-surface.p/tests.c.o
+[6/11] Compiling C++ object app/tests/painter-mypaint-session-trace.p/painter-mypaint-session-trace.cpp.o
+[7/11] Compiling C++ object app/tests/gimp-painter-surface.p/test-gimp-painter-surface.cpp.o
+[8/11] Linking target app/tests/gimp-painter-options
+[9/11] Linking target app/tests/gimp-painter-session
+[10/11] Linking target app/tests/painter-mypaint-session-trace
+[11/11] Linking target app/tests/gimp-painter-surface
+1/4 gimp:app / gimp-painter-surface               OK              1.55s
+2/4 gimp:painter / painter-mypaint-legacy-session OK              2.15s
+3/4 gimp:app / gimp-painter-options               OK              1.42s
+4/4 gimp:app / gimp-painter-session               OK              1.51s
+
+Ok:                 4
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0
+
+Full log written to /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/meson-logs/testlog.txt
