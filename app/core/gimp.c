@@ -40,6 +40,7 @@
 #include "plug-in/gimppluginmanager-restore.h"
 
 #include "paint/gimp-paint.h"
+#include "painter/gimp-painter-binding.h"
 
 #include "xcf/xcf.h"
 #include "file-data/file-data.h"
@@ -376,7 +377,16 @@ gimp_get_property (GObject    *object,
 static void
 gimp_dispose (GObject *object)
 {
-  Gimp *gimp = GIMP (object);
+  Gimp   *gimp = GIMP (object);
+  GError *binding_error = NULL;
+
+  /* Stop painter-owned callbacks before their contexts/resources disappear.
+   * This is a no-op until a feature has explicitly installed a binding store. */
+  if (! gimp_painter_binding_close (object, &binding_error))
+    {
+      g_warning ("Painter shutdown failed: %s", binding_error->message);
+      g_clear_error (&binding_error);
+    }
 
   if (gimp->be_verbose)
     g_print ("EXIT: %s\n", G_STRFUNC);

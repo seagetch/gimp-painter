@@ -1,5 +1,6 @@
 rootAppInclude = include_directories('.')
 
+subdir('painter')
 subdir('actions')
 subdir('core')
 subdir('dialogs')
@@ -94,6 +95,7 @@ gimpconsole_deps = [
 
 console_libapps = [
     libappcore,
+    libapppainter,
     libappfile,
     libappfiledata,
     libappgegl,
@@ -209,6 +211,7 @@ if enable_console_bin
       rootInclude,
       rootAppInclude,
     ],
+    link_language: 'cpp',
     win_subsystem: 'console',
     link_args: link_args,
     install: true,
@@ -224,6 +227,7 @@ gimpmain_exe = executable(gimpmain_exe_name,
     app_libgimps,
     gui_libapps,
   ],
+  link_language: 'cpp',
   win_subsystem: 'windows',
   install: true,
 )

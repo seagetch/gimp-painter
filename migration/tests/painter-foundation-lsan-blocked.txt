@@ -1,0 +1,43 @@
+TAP version 14
+# random seed: R02Sd9e9b57ba36f5de93812ab8bd9038ea4
+1..20
+# Start of painter tests
+# Start of resources tests
+ok 1 /painter/resources/value-assignment
+ok 2 /painter/resources/array-assignment
+ok 3 /painter/resources/mutex-exception
+# End of resources tests
+# Start of signal tests
+ok 4 /painter/signal/lifetime-blocks
+ok 5 /painter/signal/after-order
+# End of signal tests
+# Start of source tests
+ok 6 /painter/source/cancel-repeat
+ok 7 /painter/source/self-close
+ok 8 /painter/source/exception
+# End of source tests
+# Start of gobject tests
+ok 9 /painter/gobject/property-dispose-finalize
+ok 10 /painter/gobject/type-rejection
+# End of gobject tests
+# Start of ref tests
+ok 11 /painter/ref/copy-move-adopt-retain
+ok 12 /painter/ref/floating-sink
+ok 13 /painter/ref/weak
+# End of ref tests
+# Start of store tests
+ok 14 /painter/store/lifecycle
+ok 15 /painter/store/multiple-slots
+ok 16 /painter/store/reentrant-close
+ok 17 /painter/store/construction-failure
+ok 18 /painter/store/thread-rejection
+# End of store tests
+# Start of boundary tests
+ok 19 /painter/boundary/c-close
+ok 20 /painter/boundary/exception
+# End of boundary tests
+# End of painter tests
+==6==LeakSanitizer has encountered a fatal error.
+==6==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==6==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+exit_code=1
