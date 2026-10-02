@@ -53,6 +53,7 @@ libapptools_sources = [
   'gimpflipoptions.c',
   'gimpfliptool.c',
   'gimpfillbrushtool.cpp',
+  'gimppaintersmudgetool.cpp',
   'gimpforegroundselectoptions.c',
   'gimpforegroundselecttool.c',
   'gimpforegroundselecttoolundo.c',

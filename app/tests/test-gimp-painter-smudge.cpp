@@ -68,4 +68,25 @@ static void caller_image_loss(){Scene s;s.begin();s.motion();g_signal_connect(s.
 static void invalid_axes(){Scene s;double GimpCoords::*axes[]={&GimpCoords::x,&GimpCoords::y,&GimpCoords::pressure,&GimpCoords::xtilt,&GimpCoords::ytilt,&GimpCoords::wheel,&GimpCoords::distance,&GimpCoords::rotation,&GimpCoords::slider,&GimpCoords::velocity,&GimpCoords::direction,&GimpCoords::xscale,&GimpCoords::yscale,&GimpCoords::angle};for(auto axis:axes){auto c=s.coords;c.*axis=std::numeric_limits<double>::quiet_NaN();GError*error=nullptr;g_assert_false(gimp_painter_smudge_begin(s.core,GIMP_DRAWABLE(s.layer),s.options,&c,&error));g_assert_nonnull(error);g_clear_error(&error);}s.begin();s.motion();for(auto axis:axes){auto c=s.coords;c.*axis=std::numeric_limits<double>::infinity();GError*error=nullptr;g_assert_false(gimp_painter_smudge_motion(s.core,&c,1,&error));g_assert_nonnull(error);g_clear_error(&error);}s.finish(false);g_assert(s.pixels()==s.initial);}
 static void external_edit(){Scene s;s.begin();s.motion();auto* color=gegl_color_new("blue");gegl_buffer_set_color(gimp_drawable_get_buffer(GIMP_DRAWABLE(s.layer)),GEGL_RECTANGLE(0,0,5,5),color);g_object_unref(color);auto edited=s.pixels();s.coords.x+=3;GError*error=nullptr;g_assert_false(gimp_painter_smudge_motion(s.core,&s.coords,1,&error));g_assert_nonnull(error);g_clear_error(&error);g_assert(s.pixels()==edited);}
 static void invalid_vfunc(){Scene s;GIMP_PAINT_CORE_GET_CLASS(s.core)->paint(GIMP_PAINT_CORE(s.core),nullptr,s.options,nullptr,GIMP_PAINT_STATE_MOTION,0);auto*error=gimp_painter_smudge_dup_error(s.core);g_assert_nonnull(error);g_free(error);g_assert(s.pixels()==s.initial);}
-int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gimp=gimp_init_for_testing();g_test_add_func("/painter/smudge/reuse-undo",reuse_and_undo);g_test_add_func("/painter/smudge/cancel",cancel);g_test_add_func("/painter/smudge/dispose",dispose);g_test_add_func("/painter/smudge/start-cancel",start_cancel);g_test_add_func("/painter/smudge/publication-cancel",publication_cancel);g_test_add_func("/painter/smudge/core-loss",caller_core_loss);g_test_add_func("/painter/smudge/image-loss",caller_image_loss);g_test_add_func("/painter/smudge/invalid-axes",invalid_axes);g_test_add_func("/painter/smudge/external-edit",external_edit);g_test_add_func("/painter/smudge/invalid-vfunc",invalid_vfunc);return g_test_run();}
+static void paused_segment () {
+  Scene s;s.begin();g_assert_true(gimp_image_has_pending_paint(s.image));s.motion();
+  s.coords.x=1e9;GError* error=nullptr;
+  g_assert_true(gimp_painter_smudge_motion_begin(s.core,&s.coords,1,&error));g_assert_no_error(error);
+  g_assert_false(gimp_painter_smudge_finish(s.core,TRUE,&error));g_assert_no_error(error);
+  for(int n=0;n<8;++n){g_assert_false(gimp_painter_smudge_step(s.core,&error));g_assert_no_error(error);}
+  gimp_painter_smudge_cancel_pending(s.core);g_assert(s.pixels()==s.initial);g_assert_false(gimp_image_has_pending_paint(s.image));
+}
+static void nested_native_start () {
+  Scene s;s.begin();s.motion();auto* core=GIMP_PAINT_CORE(s.core);auto* buffer=core->stroke_buffer;auto coords=core->cur_coords;
+  GList list={s.layer,nullptr,nullptr};GError* error=nullptr;auto next=coords;next.x+=18;
+  g_assert_false(gimp_paint_core_start(core,&list,s.options,&next,&error));g_assert_nonnull(error);g_clear_error(&error);
+  g_assert_true(buffer==core->stroke_buffer);g_assert_cmpfloat(core->cur_coords.x,==,coords.x);s.finish(false);g_assert(s.pixels()==s.initial);
+}
+static void unowned_start_refused () {
+  Scene s;GList list={s.layer,nullptr,nullptr};GError*error=nullptr;
+  auto*core=GIMP_PAINT_CORE(s.core);
+  g_assert_false(gimp_paint_core_start(core,&list,s.options,&s.coords,&error));g_assert_nonnull(error);g_clear_error(&error);
+  g_assert_false(GIMP_PAINT_CORE_GET_CLASS(core)->start(core,&list,s.options,&s.coords,&error));g_assert_nonnull(error);g_clear_error(&error);
+  g_assert_null(core->stroke_buffer);g_assert(s.pixels()==s.initial);g_assert_false(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(s.layer)));
+}
+int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gimp=gimp_init_for_testing();g_test_add_func("/painter/smudge/reuse-undo",reuse_and_undo);g_test_add_func("/painter/smudge/cancel",cancel);g_test_add_func("/painter/smudge/dispose",dispose);g_test_add_func("/painter/smudge/start-cancel",start_cancel);g_test_add_func("/painter/smudge/publication-cancel",publication_cancel);g_test_add_func("/painter/smudge/core-loss",caller_core_loss);g_test_add_func("/painter/smudge/image-loss",caller_image_loss);g_test_add_func("/painter/smudge/invalid-axes",invalid_axes);g_test_add_func("/painter/smudge/external-edit",external_edit);g_test_add_func("/painter/smudge/invalid-vfunc",invalid_vfunc);g_test_add_func("/painter/smudge/paused-segment",paused_segment);g_test_add_func("/painter/smudge/nested-native-start",nested_native_start);g_test_add_func("/painter/smudge/unowned-start-refused",unowned_start_refused);return g_test_run();}

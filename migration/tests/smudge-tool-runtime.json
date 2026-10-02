@@ -1,0 +1,37 @@
+{
+  "scope": "Actual registered native GTK tool, not full-port or total latency/memory guarantee",
+  "normal_cases": 26,
+  "sanitized_cases": 26,
+  "instrumented_ui_sources": 30,
+  "instrumented_core_sources": 17,
+  "native_core_groups": 13,
+  "legacy_owned_routes": [
+    "synchronous",
+    "one-dab stepped"
+  ],
+  "legacy_records_each": 193,
+  "legacy_bytes_each": 2952800,
+  "normal_exit": 0,
+  "sanitized_exit": 0,
+  "sources_sha256": {
+    "app/tests/painter-smudge-trace.cpp": "a191e65084e93bb4d49d237136bc04759cbb38597074c051caf94f95d90e0416",
+    "app/paint/gimppaintersmudge.cpp": "a191318a723049ceccbabd2e6be730f0c7d4bb488902c2f5021de1ba6122abcc",
+    "app/tests/test-gimp-painter-smudge.cpp": "a6e0fc0c1c2be9d79ca2606af573ba203a8d9c8680f255e44f50861fb25999b5",
+    "app/tests/test-painter-smudge-ui.cpp": "7c4d6131f21c2e2e308ac6c50a25d4d540163ab680eefe7efeb3f1d9a0676c4f",
+    "app/tools/gimppaintersmudgetool.h": "3eb4b66c4a6aac3f497b1ecc594dc4aabe92af56f300a957136897ac4e74e9d6",
+    "app/tools/gimppaintersmudgetool.cpp": "0ccee50bd1876bf91604f17937dcf56beb8f92bdee7f0ccf4f8ecc39a462501d",
+    "app/paint/gimppaintersmudge.h": "0b7196d6016ff1aa082dd55f1f1f15b93750bb2d627bcfd1b73320da79a529a3"
+  },
+  "sanitizer_build": "migration/tests/smudge-ui-sanitizers-build.json",
+  "dependency_snapshot_manifest": "migration/fixtures/smudge-tool-dependency-snapshots/manifest.json",
+  "shared_lock_cross_surface_probe": "Native nonblocking flock refused exec-held lock: status=1",
+  "limitations": [
+    "Whole application/dependency instrumentation and LSan not claimed",
+    "Original normal26 run used explicit profile handoff before verified cross-surface lock; final30-source run uses shared lock",
+    "Raw-input queue, complete dab work, pipe/paper/precision/ICC/symmetry, profile migration and generic stroke gates remain"
+  ],
+  "initial_failures": {
+    "normal": "Inherited Fill assertion expected pure blue; corrected to independently verified old Replace coverage 255*255/65536 (1,1,254 for original80)",
+    "sanitizer": "Startup uninstrumented registered Fill Options had no RTTI; consistent sibling-owner instrumentation fixes failure, vptr stays enabled"
+  }
+}

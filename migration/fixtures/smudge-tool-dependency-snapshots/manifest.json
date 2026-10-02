@@ -1,0 +1,47 @@
+{
+  "base_head": "7c08e4660feae5ba50bb085408fea88e5920e726",
+  "scope": "Exact uncommitted instrumented dependency sources, not full host/dependency snapshot. Restore together with recorded source versions to reproduce the focused build. Production importer and atomic backend belong to separate checkpoints.",
+  "snapshots": [
+    {
+      "source": "app/paint/gimppainterpaintgate.h",
+      "sha256": "8c29e4a1a5273f2f904c842fdcc67c925d1ff620ec888ebb88c07f305a81979a",
+      "snapshot": "migration/fixtures/smudge-tool-dependency-snapshots/app__paint__gimppainterpaintgate.h.gz"
+    },
+    {
+      "source": "app/paint/gimppainterpaintgate.hpp",
+      "sha256": "a894c3284cb4c39a5eafb0c3057156395577313e4c0d09899c38e96511cbd0df",
+      "snapshot": "migration/fixtures/smudge-tool-dependency-snapshots/app__paint__gimppainterpaintgate.hpp.gz"
+    },
+    {
+      "source": "app/paint/gimppainterpaintgate.cpp",
+      "sha256": "75adea53979cc68b940db96304bc5ee3a1c77c569a09f781b0a26eb13eb2f41f",
+      "snapshot": "migration/fixtures/smudge-tool-dependency-snapshots/app__paint__gimppainterpaintgate.cpp.gz"
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "sha256": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431",
+      "snapshot": "migration/fixtures/smudge-tool-dependency-snapshots/app__paint__painter-mypaint-surface__gimp-painter-session.cpp.gz"
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/gimp-painter-session.h",
+      "sha256": "5e16e8f1150c48a610752971ce91a00d33ed5e88aa9186ba5f26595cd9a07902",
+      "snapshot": "migration/fixtures/smudge-tool-dependency-snapshots/app__paint__painter-mypaint-surface__gimp-painter-session.h.gz"
+    },
+    {
+      "source": "app/file/file-save.c",
+      "sha256": "93206215274f087287ed2bb15d1e3e89df94c309ddfdec38e8f2f8b1209a06cd",
+      "snapshot": "migration/fixtures/smudge-tool-dependency-snapshots/app__file__file-save.c.gz"
+    },
+    {
+      "source": "app/tools/gimp-tools.c",
+      "sha256": "3bebaa23ebd86f3dcb901ab48af6ea35528af0c9736086c75bfb6542a99736b0",
+      "snapshot": "migration/fixtures/smudge-tool-dependency-snapshots/app__tools__gimp-tools.c.gz"
+    },
+    {
+      "source": "app/core/gimppainterprofile.h",
+      "sha256": "fd30176d2195e110e69c87dfe883eb475956cc69229b93f954dd5039f34c8abf",
+      "snapshot": "migration/fixtures/smudge-tool-dependency-snapshots/app__core__gimppainterprofile.h.gz",
+      "scope": "declaration dependency for independently implemented profile hook"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+Cloud/native GTK display: :0; mode: asan
+a191318a723049ceccbabd2e6be730f0c7d4bb488902c2f5021de1ba6122abcc  app/paint/gimppaintersmudge.cpp
+0ccee50bd1876bf91604f17937dcf56beb8f92bdee7f0ccf4f8ecc39a462501d  app/tools/gimppaintersmudgetool.cpp
+7c4d6131f21c2e2e308ac6c50a25d4d540163ab680eefe7efeb3f1d9a0676c4f  app/tests/test-painter-smudge-ui.cpp
+115b4091cc6c822e06373fad53fe3a203fc4c3035dd4e9df59dd9ae2ceacd2bc  /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/smudge-ui-sanitizers/painter-smudge-ui
+TAP version 14
+# random seed: R02Sd7e2e6805e2b8ab56f1e759f9595bcce
+../app/painter/binding-store.cpp:68:16: runtime error: member access within address 0x50300003d060 which does not point to an object of type 'EntryBase'
+0x50300003d060: note: object has invalid vptr
+ 00 00 00 00  90 9b 2a ca 67 55 00 00  f7 8d 13 ca 67 55 00 00  10 52 03 00 20 50 00 00  00 be be be
+              ^~~~~~~~~~~~~~~~~~~~~~~
+              invalid vptr
+    #0 0x5567c98be860 in GimpPainter::BindingStore::entry(void const*) const ../app/painter/binding-store.cpp:68
+    #1 0x5567c9d03aee in lookup<(anonymous namespace)::OptionsSlot> ../app/painter/binding-store.hpp:148
+    #2 0x5567c9d03aee in initialize<(anonymous namespace)::OptionsSlot, (anonymous namespace)::options_set(GObject*, guint, const GValue*, GParamSpec*)::<lambda()>::<lambda((anonymous namespace)::Settings&)>&> ../app/painter/binding-store.hpp:75
+    #3 0x5567c9d03aee in operator() ../app/paint/gimpfillbrush.cpp:51
+    #4 0x5567c9d03aee in boundary_void<(anonymous namespace)::options_set(GObject*, guint, const GValue*, GParamSpec*)::<lambda()> > ../app/painter/boundary.hpp:49
+    #5 0x5567c9d03aee in options_set ../app/paint/gimpfillbrush.cpp:51
+    #6 0x7fa2605963a7  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x1c3a7) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #7 0x7fa260597c37  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x1dc37) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #8 0x7fa26059a6fa in g_object_new_valist (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x206fa) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #9 0x7fa26059aa4c in g_object_new (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x20a4c) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #10 0x5567c9d27e9b in gimp_paint_options_new ../app/paint/gimppaintoptions.c:960
+    #11 0x5567c9c22f9e in gimp_paint_info_new ../app/core/gimppaintinfo.c:121
+    #12 0x5567c9cf18ca in gimp_paint_register ../app/paint/gimp-paint.c:134
+    #13 0x5567c9cf1ad7 in gimp_paint_init ../app/paint/gimp-paint.c:94
+    #14 0x5567c9b56c7d in gimp_constructed ../app/core/gimp.c:321
+    #15 0x7fa260597c55  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x1dc55) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #16 0x7fa26059a6fa in g_object_new_valist (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x206fa) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #17 0x7fa26059aa4c in g_object_new (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0+0x20a4c) (BuildId: 765f13ef7fd604fb084c7603dd4c0e101e024d00)
+    #18 0x5567c9b57355 in gimp_new ../app/core/gimp.c:639
+    #19 0x5567c98e3af0 in gimp_init_for_gui_testing_internal ../app/tests/tests.c:174
+    #20 0x5567c98c4bd8 in main ../app/tests/test-painter-smudge-ui.cpp:388
+    #21 0x7fa25e64eca7  (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6+0x29ca7) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #22 0x7fa25e64ed64 in __libc_start_main (/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6+0x29d64) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #23 0x5567c98bd910 in _start (/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/smudge-ui-sanitizers/painter-smudge-ui+0x5c5910) (BuildId: be0eba21748143e4194a7d866cd0ac978ee3d3ca)
+
+PAINTER_SMUDGE_EXIT=1

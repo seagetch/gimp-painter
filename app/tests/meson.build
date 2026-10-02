@@ -368,3 +368,12 @@ test('painter-mypaint-editor', painter_editor_test,
 test('painter-mypaint-preview-fixture', painter_brush_settings_python,
   args: ['-B', meson.project_source_root() / 'migration/tests/test_mypaint_preview_fixture.py'],
   suite: 'painter', timeout: 30)
+
+painter_smudge_ui_test = executable('painter-smudge-ui', 'test-painter-smudge-ui.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('painter-smudge-ui', painter_smudge_ui_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 180)

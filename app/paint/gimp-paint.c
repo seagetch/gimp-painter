@@ -33,6 +33,7 @@
 #include "gimpdodgeburn.h"
 #include "gimperaser.h"
 #include "gimpfillbrush.h"
+#include "gimppaintersmudge.h"
 #include "gimpheal.h"
 #include "gimpink.h"
 #include "gimpmybrushcore.h"
@@ -73,6 +74,7 @@ gimp_paint_init (Gimp *gimp)
     gimp_airbrush_register,
     gimp_eraser_register,
     gimp_fill_brush_register,
+    gimp_painter_smudge_register,
     gimp_paintbrush_register,
     gimp_pencil_register
   };

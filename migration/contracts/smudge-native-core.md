@@ -50,3 +50,8 @@ drawables are accepted; high precision, indexed, symmetry, pipe selection and
 wider ICC/brush matrix require explicit integration. Full-dab vectors and mask
 transforms are not yet memory-admitted/chunked; the current geometry ceiling is
 not a bounded-memory guarantee. Do not mark WBS23 complete from this checkpoint.
+
+The registered-tool follow-on adds one-dab continuations, image pending queries
+and one-shot native-start admission. The old raw numerical entry is no longer a
+supported unowned production call: current fixtures compare owned synchronous
+and owned stepped routes. See `smudge-tool-controller.md` for that checkpoint.

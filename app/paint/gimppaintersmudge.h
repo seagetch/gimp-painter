@@ -7,6 +7,7 @@
 G_BEGIN_DECLS
 #define GIMP_TYPE_PAINTER_SMUDGE (gimp_painter_smudge_get_type ())
 #define GIMP_PAINTER_SMUDGE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PAINTER_SMUDGE, GimpPainterSmudge))
+#define GIMP_IS_PAINTER_SMUDGE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PAINTER_SMUDGE))
 #define GIMP_TYPE_PAINTER_SMUDGE_OPTIONS (gimp_painter_smudge_options_get_type ())
 typedef struct { GimpBrushCore parent; gboolean binding_failed; } GimpPainterSmudge;
 typedef struct { GimpBrushCoreClass parent; } GimpPainterSmudgeClass;
@@ -19,6 +20,10 @@ gchar* gimp_painter_smudge_dup_error (GimpPainterSmudge *smudge);
 /* Owner-context transaction API. Renderer errors cancel rather than commit a
  * partial stroke; external raster changes never receive stale undo pixels. */
 gboolean gimp_painter_smudge_begin (GimpPainterSmudge*, GimpDrawable*, GimpPaintOptions*, const GimpCoords*, GError**);
+/* Accept without expanding the segment; step emits at most one native dab. */
+gboolean gimp_painter_smudge_motion_begin (GimpPainterSmudge*, const GimpCoords*, guint32, GError**);
+gboolean gimp_painter_smudge_step (GimpPainterSmudge*, GError**);
+void gimp_painter_smudge_cancel_pending (GimpPainterSmudge*);
 gboolean gimp_painter_smudge_motion (GimpPainterSmudge*, const GimpCoords*, guint32, GError**);
 gboolean gimp_painter_smudge_finish (GimpPainterSmudge*, gboolean commit, GError**);
 G_END_DECLS

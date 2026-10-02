@@ -40,7 +40,7 @@ static void dump(int id,const char*phase,GimpDrawable*d){
  puts("");
 }
 int main(int argc,char**argv){
- const bool owned=argc>1&&std::strcmp(argv[1],"owned")==0;
+ const bool queued=argc>1&&std::strcmp(argv[1],"owned")==0;
  Gimp*gimp=gimp_init_for_testing();
  const char* formats[]={"Y' u8","Y'A u8","R'G'B' u8","R'G'B'A u8"};
  for(int id=0;id<48;++id){
@@ -69,10 +69,14 @@ int main(int argc,char**argv){
   GimpPaintCore*core=GIMP_PAINT_CORE(g_object_new(GIMP_TYPE_PAINTER_SMUDGE,"undo-desc","smudge oracle",NULL));GList list={d,NULL,NULL};
   GimpCoords c=GIMP_COORDS_DEFAULT_VALUES;c.x=26;c.y=27;c.pressure=.7;GError*error=NULL;
   gimp_image_undo_free(image);dump(id,"initial",d);
-  if(owned){g_assert(gimp_painter_smudge_begin(GIMP_PAINTER_SMUDGE(core),d,options,&c,&error));g_assert_no_error(error);g_assert(gimp_painter_smudge_motion(GIMP_PAINTER_SMUDGE(core),&c,0,&error));g_assert_no_error(error);}
-  else{g_assert(gimp_paint_core_start(core,&list,options,&c,&error));g_assert_no_error(error);gimp_paint_core_paint(core,&list,options,GIMP_PAINT_STATE_INIT,0);gimp_paint_core_paint(core,&list,options,GIMP_PAINT_STATE_MOTION,0);gimp_paint_core_set_last_coords(core,&c);}
-  for(int n=1;n<=7;++n){c.x+=2.5;c.y+=(n%2?1:-1);c.pressure=dynamic?(n%3==0?.25:n%3==1?1:.6):.7;if(owned){g_assert(gimp_painter_smudge_motion(GIMP_PAINTER_SMUDGE(core),&c,n*20,&error));g_assert_no_error(error);}else gimp_paint_core_interpolate(core,&list,options,&c,n*20);}
-  if(owned){g_assert(gimp_painter_smudge_finish(GIMP_PAINTER_SMUDGE(core),TRUE,&error));g_assert_no_error(error);}else{gimp_paint_core_paint(core,&list,options,GIMP_PAINT_STATE_FINISH,160);gimp_paint_core_finish(core,&list,TRUE);}
+  g_assert(gimp_painter_smudge_begin(GIMP_PAINTER_SMUDGE(core),d,options,&c,&error));g_assert_no_error(error);
+  auto move=[&](guint32 time){
+    if(queued){g_assert(gimp_painter_smudge_motion_begin(GIMP_PAINTER_SMUDGE(core),&c,time,&error));g_assert_no_error(error);while(!gimp_painter_smudge_step(GIMP_PAINTER_SMUDGE(core),&error)){g_assert_no_error(error);}g_assert_no_error(error);}
+    else{g_assert(gimp_painter_smudge_motion(GIMP_PAINTER_SMUDGE(core),&c,time,&error));g_assert_no_error(error);}
+  };
+  move(0);
+  for(int n=1;n<=7;++n){c.x+=2.5;c.y+=(n%2?1:-1);c.pressure=dynamic?(n%3==0?.25:n%3==1?1:.6):.7;move(n*20);}
+  g_assert(gimp_painter_smudge_finish(GIMP_PAINTER_SMUDGE(core),TRUE,&error));g_assert_no_error(error);
   gchar*message=gimp_painter_smudge_dup_error(GIMP_PAINTER_SMUDGE(core));if(message)g_error("Smudge error: %s",message);
   dump(id,"finish",d);g_assert(gimp_image_undo(image));dump(id,"undo",d);g_assert(gimp_image_redo(image));dump(id,"redo",d);
   gimp_paint_core_cleanup(core);g_object_unref(core);g_object_unref(dyn);g_object_unref(brush);g_object_unref(options);g_object_unref(image);

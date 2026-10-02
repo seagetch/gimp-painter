@@ -58,6 +58,7 @@
 #include "gimperasertool.h"
 #include "gimpfliptool.h"
 #include "gimpfillbrushtool.h"
+#include "gimppaintersmudgetool.h"
 #include "gimpfreeselecttool.h"
 #include "gimpforegroundselecttool.h"
 #include "gimpfuzzyselecttool.h"
@@ -180,6 +181,7 @@ gimp_tools_init (Gimp *gimp)
     gimp_text_tool_register,
     gimp_bucket_fill_tool_register,
     gimp_fill_brush_tool_register,
+    gimp_painter_smudge_tool_register,
     gimp_gradient_tool_register,
     gimp_pencil_tool_register,
     gimp_paintbrush_tool_register,
@@ -718,6 +720,10 @@ gimp_tools_register (GType                   tool_type,
   else if (tool_type == GIMP_TYPE_CONVOLVE_TOOL)
     {
       paint_core_name = "gimp-convolve";
+    }
+  else if (tool_type == GIMP_TYPE_PAINTER_SMUDGE_TOOL)
+    {
+      paint_core_name = "gimp-painter-smudge";
     }
   else if (tool_type == GIMP_TYPE_SMUDGE_TOOL)
     {
