@@ -933,6 +933,7 @@
 | 27.010 | [ ] | 大領域探索の実行量を制限する | 27.009 | 取消しと UI 入力へ戻れる |
 | 27.011 | [ ] | 塗りつぶしの Undo を接続する | 27.010 | 一操作で元画像へ復元 |
 | 27.012 | [ ] | tool options を移植する | 27.011 | 旧 rate・eraser-mode・継承描画設定を編集・保存し、固定閾値を新規 UI 設定と混同しない。rate の実効性を旧版で測定 |
+| 27.012/legacy-brush-oracle | [x] | 旧Fill Brush実strokeのrate・paint/erase・Undoを採取する | 27.004/runtime-search-foundation | 12実旧native stroke/36全画素snapshotを保存。rate0/50/100は4組すべて完全一致、Undo初期画素・Redo結果一致。4 fixture試験合格。現行tool比較は未完了 |
 | 27.013 | [ ] | 範囲外回込みの試験を作る | 27.012 | 全体探索後の mask 適用との差を検出 |
 | 27.013/gegl-render-regression | [ ] | 塗りつぶしブラシの探索・paint 合成・GEGL 表示の比較試験を作る | 27.013, 27.007/paintcore-gegl-compose | 旧筆跡の画素と画面を比較し offset・縮小・回転・grow・Undo と再描画を検証 |
 | 27.014 | [ ] | 選択外回込みの試験を作る | 27.013 | 探索境界の意味を検証 |
