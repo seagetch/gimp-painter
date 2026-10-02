@@ -94,6 +94,12 @@ profile('manifest-generator', 'Ruby brush installation-manifest generator', '30.
 profile('scheme-modes', 'Script-Fu legacy compositing constants', '30.012/scheme-mode-constants', '13.013 34.013 36.004', 'Preserve seven Script-Fu names and translate their mode meaning explicitly instead of reusing conflicting old integer values.')
 profile('tool-delete', 'Tool-option deletion result', '30.008/tool-options-delete-result', '30.008/tool-options-delete-result', 'Correct the inverted legacy unlink error condition; test successful removal, absent file and genuine failure without deleting unrelated state.')
 
+profile('brush-context', 'Extended brush context value and resource identity', '19.013 19.014 30.007 30.008 30.011', '19.015 24.017 36.019', 'Preserve custom brush object/name, notify, copy, thaw/removal and fallback without replacing it with an unextended standard MyBrush.')
+profile('fill-input', 'Bounded fill source/seed/offset preparation', '27.001/snapshot-contract 27.002 27.004/gegl-bounded-search 27.005/selection-threshold-contract', '27.013 27.014 27.015', 'Retain explicit input pixels/start color, selection bounds, source/mask offsets and transparent seed policy.')
+profile('fill-iterator', 'Bounded fill traversal and iterator lifetime', '09.003 27.004/gegl-bounded-search 27.006 27.010', '09.016 27.013 27.014 27.015', 'Replace the three-region tile iterator with bounded GEGL traversal; preserve scanline connectivity and release every acquired region.')
+profile('fill-coverage', 'Fill distance and soft selection penalty', '27.003 27.005/selection-barrier 27.005/selection-threshold-contract 27.006', '27.013 27.014 27.015', 'Preserve distance, transparency and coverage formula; zero selection is not an unconditional barrier at every legacy threshold.')
+profile('device-identity', 'Input device unique-name identity', '30.007/device-name-identity', '23.015 36.019', 'Compare duplicate-device names and restored per-device state before accepting the old unique-names policy.')
+
 FILES = {}
 def files(key, *names):
     for name in names:
@@ -131,11 +137,11 @@ group('brush-settings','app/core','mypaintbrush-brushsettings.c mypaintbrush-bru
 group('ruler','app/core','gimpperspectiveguide.cpp gimpperspectiveguide.h gimpimage-perspective-guide.c gimpimage-perspective-guide.h gimpimage-private.h gimpimage-snap.c gimpimage-snap.h')
 group('tool-group','app/core','gimptoolgroup.c gimptoolgroup.h gimptoolitem.c gimptoolitem.h gimptoolinfo.c gimptoolinfo.h')
 group('config','app/core','gimptooloptions.c gimptooloptions.h gimp-user-install.c')
-group('texture','app/core','gimpdynamics.c gimpdynamics.h gimpdynamicsoutput.h')
+group('smudge','app/core','gimpdynamics.c gimpdynamics.h gimpdynamicsoutput.h')
 group('bucket-selection','app/core','gimpdrawable-bucket-fill.c')
 group('fill','app/core','gimpimage-contiguous-region.c gimpimage-contiguous-region.h')
 group('mode-enum','app/core','gimplayer.c')
-group('config','app/core','gimpcontext.c gimpcontext.h')
+group('brush-context','app/core','gimpcontext.c gimpcontext.h')
 group('init','app/core','gimp.c gimp.h core-types.h core-enums.c core-enums.h gimpimage.c gimpimage.h')
 group('cleanup','app/core','gimpdrawableundo.c')
 group('brush-shape','app/paint','gimpmypaintcore-brushfeature.hpp')
@@ -149,7 +155,7 @@ group('brush-engine','app/paint','mypaintbrush-brush.hpp mypaintbrush-stroke.cpp
 group('texture','app/paint','gimpbrushcore.c gimpbrushcore.h gimppaintoptions.c gimppaintoptions.h')
 group('smudge','app/paint','gimpsmudge.c gimpsmudge.h gimpsmudgeoptions.c gimpsmudgeoptions.h')
 group('editability','app/paint','gimppaintcore.c gimppaintcore.h')
-group('core-hooks','app/paint','gimpink.c gimpink.h')
+group('pressure','app/paint','gimpink.c gimpink.h')
 group('init','app/paint','gimp-paint.c gimp-paint.h paint-types.h')
 group('cleanup','app/paint','gimpmypaintcore.h.bak')
 group('brush-surface','app/paint-funcs','mypaint-brushmodes.hpp')
@@ -176,7 +182,7 @@ group('ruler','app/tools','gimpperspectiveguidetool.cpp gimpperspectiveguidetool
 group('fill','app/tools','gimpbucketfillbrushtool.cpp gimpbucketfillbrushtool.h')
 group('placeholder','app/tools','gimpimagegeneratortool.cpp gimpimagegeneratortool.h')
 group('tool-group','app/tools','gimp-tools.c gimp-tools.h')
-group('pressure','app/tools','gimppainttool.c')
+group('editability','app/tools','gimppainttool.c')
 group('core-hooks','app/tools','gimptool.c gimptool.h')
 group('brush-list','app/widgets','gimpmypaintbrushfactoryview.c gimpmypaintbrushfactoryview.h gimpmypaintbrushselect.c gimpmypaintbrushselect.h')
 group('brush-editor','app/widgets','gimpmypaintbrusheditor.cpp gimpmypaintbrusheditor.h gimpcurveview.c gimpcurveview.h')
@@ -254,6 +260,24 @@ OVERRIDES = {
     'app/core/gimpgrouplayer.c': {3:'invalidation',8:'invalidation'},
     'app/core/gimpimage.c': {1:'ruler',2:'ruler',3:'ruler',4:'ruler',5:'invalidation',6:'invalidation',7:'invalidation',8:'invalidation',9:'invalidation'},
     'app/core/gimptooloptions.c': {7:'tool-delete'},
+    'app/core/core-enums.c': {1:'preset-apply',2:'brush-undo',3:'brush-undo',4:'preset-apply',5:'brush-undo',6:'brush-undo',7:'smudge',8:'smudge'},
+    'app/core/core-enums.h': {1:'preset-apply',2:'brush-undo',3:'brush-undo',4:'smudge',5:'brush-context',6:'brush-context',7:'brush-context',8:'brush-context'},
+    'app/core/gimpcontext.c': {i:'cpp-header' for i in (11,14,15,23,25,26,27,28,29,30,31,32,33)},
+    'app/core/gimpcontext.h': {i:'cpp-header' for i in (2,4,5,7,8)},
+    'app/paint/gimppaintcore.c': {1:'cleanup',2:'cleanup'},
+    'app/paint/gimppaintcore.h': {1:'pressure'},
+    'app/paint/gimppaintoptions.c': {1:'pressure',8:'cleanup'},
+    'app/paint/gimppaintoptions.h': {1:'pressure',5:'pressure'},
+    'app/paint/gimpbrushcore.c': {3:'cleanup',4:'cleanup',7:'cleanup',12:'smudge',15:'cleanup',18:'pressure',19:'pressure',20:'pressure',29:'smudge'},
+    'app/paint/gimpbrushcore.h': {3:'smudge'},
+    'app/widgets/gimpdevicemanager.c': {1:'device-identity'},
+    'app/widgets/gimpdynamicsoutputeditor.c': {1:'cleanup',2:'cleanup',3:'cleanup'},
+    'app/core/gimpimage-contiguous-region.c': {
+        **{i:'fill-iterator' for i in (1,3,4,6,25,26,27,28,29,30,34,35,36,37,38,41,42,43,44,45,46,47,48,51,52,53,54,57,58,59,60,61,62,63)},
+        **{i:'fill-coverage' for i in (2,5,17,19,21,22,23,24,31,32,39,40,49,50,56)},
+        **{i:'fill-input' for i in (8,9,10,11,12,13,14,15,16,18)},
+        **{i:'cleanup' for i in (7,20,33,55)},
+    },
 }
 
 

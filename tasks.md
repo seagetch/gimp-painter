@@ -200,8 +200,8 @@
 | 01.013 | [x] | 各差分を WBS に割り当てる | 01.012 | 全2,489 hunk・947変更pathと402資産/manifestをsource blob・範囲・hash付きで具体的WBSと検証先へ割当。未割当ゼロ、3子タスク追加（`migration/inventory/wbs-assignment.md`）。実装は未完了 |
 | 01.014 | [x] | 不要候補を分類する | 01.013 | 全947 pathを固定blobで確認し、空linker carrier・非空backup・生成物16件・コメント等のみ9件・live editor・placeholder・Ruby generator・実presetを分離（`migration/inventory/cleanup-candidates.md`）。削除は未実施 |
 | 01.015 | [x] | C++ 以外の補助スクリプトを照合する | 01.014 | 全37 auxiliary path・83 hunkと6生成関係を照合。Ruby/Bash/Perl・Scheme定数・未変更Python依存を対応し、欠落generatorと旧dispatch生成不整合を記録（`migration/inventory/auxiliary-scripts.md`） |
-| 01.016 | [ ] | 標準 paint の独自差分を照合する | 01.015 | paintbrush・dynamics・bucket fill・context の各 hunk を機能タスクへ割当 |
-| 01.016/bucket-selection-source | [ ] | 旧標準 bucket fill の選択境界差分を現行全域探索と照合する | 01.015, 01.005/fill-brush-boundary | 選択外を通る回込み、透過と開始位置を含め旧変更 hunk と移植先の接続先を一件ずつ記録 |
+| 01.016 | [x] | 標準 paint の独自差分を照合する | 01.015, 01.016/bucket-selection-source | paintbrush・Smudge・dynamics・context・bucket・入力36pathの306hunkを全変更行と固定移植先へ対応（`migration/inventory/standard-paint-contracts.md`）。実行互換性は後続試験 |
+| 01.016/bucket-selection-source | [x] | 旧標準 bucket fill の選択境界差分を現行全域探索と照合する | 01.015, 01.005/fill-brush-boundary | source mask入力・境界・alpha・offset・探索後clipとの差を確認。旧C式の6試験で部分coverageと閾値255の通過反例を検証、実作品fixtureは27.005/selection-threshold-contractへ追跡 |
 | 01.017 | [ ] | 全差分の粒度を検査する | 01.016 | 一行の割当が複数の未実装変更を隠す場合は個別子タスクへ展開 |
 
 ### 02 旧版の再現環境と比較データ
@@ -880,6 +880,7 @@
 | 27.004 | [ ] | ブラシ内の探索を実装する | 27.003 | 領域探索が brush 外へ出ない |
 | 27.004/gegl-bounded-search | [ ] | snapshot・固定開始色・矩形・ブラシ mask を受ける GEGL buffer 有界探索入口を実装する | 27.004 | 範囲外経由の回込みを許さず旧色判定・coverage・grow と一致 |
 | 27.005 | [ ] | 選択境界内の探索を実装する | 27.004 | 探索自体が選択外を経由しない |
+| 27.005/selection-threshold-contract | [ ] | 選択maskの旧距離penaltyと閾値境界を保持して試験する | 27.004, 01.016/bucket-selection-source | 0/部分/全coverage・閾値0/30/100/255・透過seed・offsetを旧実行fixtureと比較し、単純なboolean境界や探索後clipへ置換せず探索と最終描画の意味を維持する |
 | 27.005/selection-barrier | [ ] | 選択 mask を探索中の通過条件に接続する | 27.005, 01.016/bucket-selection-source | 選択外経由の連結を除外し部分選択の coverage を旧結果と比較 |
 | 27.006 | [ ] | 連結規則を移植する | 27.005 | 隣接・斜め・境界条件が一致 |
 | 27.007 | [ ] | 塗りの coverage を接続する | 27.006 | mask と opacity を旧順序で適用 |
@@ -976,6 +977,7 @@
 | 30.005/shell-reparent-ref | [ ] | display shell の移動時参照を対称にする | 30.005, 01.007/c-state | 空 display 分岐の一時参照を解放し、通常の移動・閉鎖を反復して shell を破棄できる |
 | 30.006 | [ ] | 独自設定の gimprc serialization を実装する | 30.005 | 型・既定値・旧キー変換が一致 |
 | 30.007 | [ ] | context の独自値を接続する | 30.006 | tool 切替と画像切替で正しい設定 |
+| 30.007/device-name-identity | [ ] | 入力deviceのunique-nameと保存状態を照合して移植する | 30.006, 01.016 | 同名の複数device・再接続・設定再読込みで旧unique-names変更の意味を保持し、別deviceの筆圧設定とcontextを混同しない |
 | 30.008 | [ ] | 旧 tool preset の移行を実装する | 30.007 | 独自ブラシと紙目設定を保持 |
 | 30.008/tool-options-delete-result | [ ] | 旧tool options削除の成否判定を修正して移植する | 30.007, 01.013 | g_unlinkの反転した条件を持ち込まず、削除成功・ENOENT・権限等の失敗を区別し設定と通知を検証する |
 | 30.009 | [ ] | 新規ユーザーの資源初期化を接続する | 30.008 | 同梱ブラシ・紙目・preset が使用可能 |
