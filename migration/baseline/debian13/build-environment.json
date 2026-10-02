@@ -1,0 +1,136 @@
+{
+  "recorded_utc": "2026-10-01T23:06:00.418011+00:00",
+  "baseline_source_commit": "665e71270326c7162c6a325d297e4dd983f9c0a2",
+  "destination_upstream_commit": "95f6410f25c5186686db7a489d79c1e79187cd41",
+  "source_condition": "No tracked app, libgimp*, or root meson.build modifications through completion of baseline tests; new painter sources were unregistered and not compiled.",
+  "gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "distribution": "Debian GNU/Linux 13 (trixie)",
+  "architecture": "x86_64",
+  "compiler": "14.2.0",
+  "cpp_compiler": "14.2.0",
+  "meson": "1.7.0",
+  "ninja": "1.12.1",
+  "package_versions": {
+    "glib-2.0": "2.84.4",
+    "gobject-2.0": "2.84.4",
+    "gtk+-3.0": "3.24.49",
+    "gtk+-2.0": "2.24.33",
+    "gegl-0.4": "0.4.62",
+    "babl-0.1": "0.1.114",
+    "gexiv2": "0.14.3",
+    "libmypaint": "1.6.0",
+    "mypaint-brushes-1.0": "1.3.1",
+    "gobject-introspection-1.0": "1.84.0"
+  },
+  "dependency_lock": "../debian13-package-lock.json",
+  "dependency_lock_sha256": "553f4051b91626bc2f5470373fd3e8d67c8d61ec62103b2addcab7a16492129f",
+  "package_archives_verified": 560,
+  "dependency_replay": {
+    "status": "PASS",
+    "mode": "offline; all locked archives SHA-256 validated before fresh extraction",
+    "directory": "/workspace/shared/gimp-build-deps-replay",
+    "gobject_cpp_compile_link_run": "PASS",
+    "python_gi_import": "PASS"
+  },
+  "configure": {
+    "status": "PASS",
+    "build_directory": "build-debian13",
+    "targets": 908,
+    "options": [
+      "-Dauto_features=disabled",
+      "-Dlibunwind=false"
+    ]
+  },
+  "compile": {
+    "status": "PASS",
+    "exit_code": 0,
+    "command": "meson compile -C build-debian13 -j 4",
+    "initial_build_directory_was_new": true,
+    "incremental_retries_for_dependency_relocation": true,
+    "clean_build_with_final_recipe": "NOT RUN"
+  },
+  "install": {
+    "status": "PASS",
+    "exit_code": 0,
+    "prefix": "/workspace/scratch/5b5281e79681/.build-prefix-debian13"
+  },
+  "elf_verification": {
+    "checked_elf_executables": 122,
+    "unbuilt_targets": [],
+    "invalid_executables": [],
+    "repaired_executable_permissions": [],
+    "optional_unbuilt_targets": [
+      "libgimpwidgets/test-preview-area",
+      "app/operations/tests/test-operations"
+    ]
+  },
+  "smoke": {
+    "status": "PASS",
+    "exit_code": 0,
+    "marker": "BASELINE_CREATE_FILL_SAVE_REOPEN_OK",
+    "scope": "Create RGB image, fill layer, save XCF, reopen, assert layer count/name",
+    "xcf_bytes": 1087,
+    "xcf_sha256": "e9622c6bb195ec5de7a4e00d1bd558527b43b728fdefae8b721d589c8cc7c9ae",
+    "xcf_local_path": "/workspace/shared/gimp-build-deps/smoke/baseline-smoke.xcf"
+  },
+  "app_suite": {
+    "passed": [
+      "core",
+      "gimpidtable",
+      "xcf",
+      "app-config"
+    ],
+    "failed": [
+      "save-and-export"
+    ],
+    "exit_code": 1,
+    "failure": "AttributeError at test-save-and-export.py batch line71: image.get_imported_file() is None",
+    "additional_observation": "script-fu segmentation fault during save-and-export",
+    "matches_historical_observations": "../standard-tests.md"
+  },
+  "not_verified": [
+    "GUI interaction",
+    "painter-specific migration compatibility",
+    "stroke replay",
+    "sanitizer coverage of full GIMP",
+    "clean compile with final recipe"
+  ],
+  "warnings": [
+    "Nonfatal GLib g_file_test filename!=NULL startup critical in installed smoke",
+    "112 unsupported fonts ignored",
+    "App tests report writable-data-folder/search-path mismatch"
+  ],
+  "logs": {
+    "meson-setup.log": {
+      "local_path": "/workspace/shared/gimp-build-deps/meson-setup.log",
+      "sha256": "422312475b11f0422fa9d2b00e7c413b1f3ae199bb1eb01bd8c6fa55f1e67982"
+    },
+    "meson-compile.log": {
+      "local_path": "/workspace/shared/gimp-build-deps/meson-compile.log",
+      "sha256": "b8de1f766431225b0c2d0ba5e53794e04896c92bcb026f9b63db5d823e3b4eae"
+    },
+    "meson-install.log": {
+      "local_path": "/workspace/shared/gimp-build-deps/meson-install.log",
+      "sha256": "2b5e0f2729d36628c2507c7b14db9db1c168400d147e8b3141f0c892c6b0ab1f"
+    },
+    "smoke.log": {
+      "local_path": "/workspace/shared/gimp-build-deps/smoke.log",
+      "sha256": "b61614e617714bbcb2907f176dd64e8b380a9b8ae5e5157786ef33b7e16fe915"
+    },
+    "meson-tests.log": {
+      "local_path": "/workspace/shared/gimp-build-deps/meson-tests.log",
+      "sha256": "d5be28238850ffce59c96d1198691309b5c58fe6d68893457df02efc62edcf01"
+    },
+    "replay.log": {
+      "local_path": "/workspace/shared/gimp-build-deps/replay.log",
+      "sha256": "e82c587178c9519c4115a1785d2f8f74ab24b862ceb192a4f0af7a42483aea07"
+    }
+  },
+  "gimp_project_version": "3.0.9",
+  "bootstrap_unit_tests": {
+    "passed": 4,
+    "failed": 0
+  },
+  "gettext_private_its": "PASS"
+}
