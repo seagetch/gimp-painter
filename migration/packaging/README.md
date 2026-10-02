@@ -68,14 +68,93 @@ so its manifest always marks the corresponding source as incomplete.
 `--candidate --source-archive --aggregate-gate FILE` additionally requires
 clean committed source, no untracked source files, unchanged pinned gimp-data content, and a passing gate JSON with
 `source_commit` equal to the exact HEAD, `all_passed: true`, and `build_inputs`
-with SHA-256 entries for `app/gimp-3.0` and `app/gimp-console-3.0`. A Ninja dry-run
-must also report no pending default-target work. This is a local
+with SHA-256 entries for `app/gimp-3.0` and `app/gimp-console-3.0`. It also requires
+identical `build_freshness.before` and `build_freshness.after` snapshots around the
+full aggregate, captured with the recipe's `capture_freshness_snapshot()` helper.
+Old gates without these snapshots fail closed. The gate must use full aggregate
+schema version 1 (`all_registered_meson_tests_frozen_linux_normal_build`). Its
+registry hash, counts and each indexed target's name, suites and registered/actual
+command must match the current Meson registry. Coverage must be complete, the
+Meson exit status zero, every integrity flag true, and baseline exemptions absent.
+Each target must explicitly be `OK`, return zero, and be classified `passed`, with
+empty skipped-subtest, runtime-crash and failure-evidence arrays. Reported result
+and suite totals are cross-checked against that coverage. Missing fields,
+unmatched results, baseline failures, skipped subtests and Meson-OK Script-Fu
+crashes all block staging even if `all_passed` was mistakenly set to true.
+`registry_sha256` retains the exact raw `BUILD/meson-info/intro-tests.json` hash
+captured for the aggregate, as in the version-1 aggregate generator. It is not
+the hash of an archived `registered-tests.json`: that separate evidence copy may
+be pretty-printed or have its environment metadata minimized. Such sanitization
+must preserve the raw hash field and target identity/command fields; the package
+guard never hashes the sanitized archive to compare it with the raw registry.
+This is a local
 package candidate, not authorization to publish or a claim that all-platform
 acceptance is complete. Immediately before sealing, the recipe rechecks the source inventory, newly
 created untracked source files, and the gimp-data commit/content snapshot.
 Refresh the package and every smoke check after any
 source or executable change. Include the build and executable hashes from the
 package manifest in the final aggregate report.
+
+### Aggregate freshness identity
+
+Hold `/workspace/shared/gimp-painter-build.lock` across the completed default build,
+both snapshot captures, the full aggregate, and candidate packaging. Stop other
+source/build writers for this interval. Capture the first snapshot **after** the
+complete default build and immediately before the tests. Capture the second
+immediately after the full aggregate. The tests must not silently rebuild between
+captures; any changed state requires another complete build and aggregate.
+
+The aggregate driver can load the helper without invoking packaging:
+
+```python
+import importlib.util
+from pathlib import Path
+
+repository = Path("/path/to/gimp-painter").resolve()
+build = repository / "build-debian13"
+spec = importlib.util.spec_from_file_location(
+    "package_linux", repository / "tools/package-linux-runtime.py")
+recipe = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(recipe)
+
+before = recipe.capture_freshness_snapshot(build, repository)
+# Run the full aggregate here, recording every exit status without exceptions.
+after = recipe.capture_freshness_snapshot(build, repository)
+recipe.require_same_freshness(before, after, "aggregate")
+gate["build_freshness"] = {"before": before, "after": after}
+# Keep source_commit, exact executable build_inputs, and all_passed unchanged.
+# all_passed may be true only when every required aggregate check passed.
+```
+
+The snapshots seal every concrete Ninja target (including intermediate and
+non-default outputs), Ninja target/expanded-command fingerprints, generated Ninja
+files, Meson configuration and command payloads, installed inputs/trees, tracked
+source content/modes/links, untracked source inventory, and pinned gimp-data.
+File timestamps/inodes and Ninja's `.ninja_log`/`.ninja_deps` bookkeeping are not
+artifact identities. Missing outputs are represented explicitly; a previously
+missing output appearing during convergence also invalidates the seal.
+
+Candidate packaging compares its current state to that seal, runs ordinary
+`ninja -C BUILD`, and compares again **before staging anything**. This allows
+Ninja to apply PHONY/restat pruning that a dry-run cannot observe. There is no
+textual "no work" waiver or target-name exception. A failed command, or any
+changed source, graph/command, binary, generated header, resource, mode, link or
+configuration invalidates the candidate, even if Ninja exits successfully. The
+resulting changed build must be retested; it is never relabelled as tested.
+The recipe checks the same seal again at the end of staging and records the
+convergence command, exit status and snapshot hash in the package evidence.
+
+The focused safety suite uses only private temporary Ninja projects:
+
+```sh
+export GIMP_DEPS_DIRECTORY=/workspace/shared/gimp-build-deps
+. tools/linux-debian13-env.sh
+python3 migration/tests/test_linux_runtime_package.py -v
+```
+
+These fixture checks are packaging-guard evidence, not a GIMP aggregate pass or
+a final package candidate. Historical prototype artifacts and their validation
+results retain their original identities.
 
 `--archive` writes a zstd-compressed tar with sorted entries, normalized uid/gid
 and the source commit timestamp, plus SHA256SUMS. This normalizes archive metadata;

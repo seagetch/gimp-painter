@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Stage a Debian 13 runtime from a completed build, without rebuilding/installing system files.
+"""Stage a Debian 13 runtime from a completed build, without installing system files.
 
 Use the shared build lock around this command. This is a prototype by default.
 Final candidates require a clean, committed source and an explicit aggregate gate.
+Their normal Ninja convergence check must not change any aggregate-sealed inputs
+or outputs; changed build artifacts require another aggregate.
 Only Meson-installed files and allowlisted dependency runtime assets enter the bundle.
 """
 from __future__ import annotations
@@ -29,6 +31,11 @@ DEPENDENCY_TREES += ['usr/lib/python3/dist-packages/gi',
     'usr/share/mypaint-data', 'usr/share/icons/Adwaita',
     'usr/share/icons/hicolor', 'usr/share/glib-2.0/schemas', 'usr/share/gtk-3.0',
     f'usr/lib/{TRIPLET}/libgtk-3-0t64/gtk-query-immodules-3.0']
+AGGREGATE_INTEGRITY_CHECKS = {
+    'expected_source_commit', 'expected_source_tree', 'commit_unchanged',
+    'tree_unchanged', 'tracked_tree_clean_before_and_after', 'tracked_files_unchanged',
+    'preexisting_elf_files_unchanged',
+    'all_new_elf_entries_are_verified_private_test_profile_aliases', 'test_registry_unchanged'}
 
 
 def command(argv, **kwargs):
@@ -85,6 +92,178 @@ def assert_snapshot_unchanged(sources_before, sources_after, data_before, data_a
         raise RuntimeError('Source inventory/content changed during candidate staging')
     if data_before != data_after:
         raise RuntimeError('Pinned gimp-data commit/content changed during candidate staging')
+
+
+def path_fingerprint(path, ancestors=frozenset()):
+    """Seal bytes, permissions and links, but not timestamps or inode numbers."""
+    if path.is_symlink():
+        return {'symlink': os.readlink(path), 'content': path_fingerprint(path.resolve(), ancestors)}
+    if path.is_file():
+        return {'sha256': sha(path), 'bytes': path.stat().st_size,
+                'mode': oct(path.stat().st_mode & 0o777)}
+    if path.is_dir():
+        resolved = path.resolve()
+        if resolved in ancestors:
+            raise RuntimeError(f'Circular freshness input directory: {path}')
+        return {'directory': {p.name: path_fingerprint(p, ancestors | {resolved}) for p in sorted(path.iterdir())},
+                'mode': oct(path.stat().st_mode & 0o777)}
+    if not path.exists():
+        return {'missing': True}
+    raise RuntimeError(f'Unsupported freshness input type: {path}')
+
+
+def capture_freshness_snapshot(build, repository=REPO):
+    """Capture immediately before AND after the aggregate, under the build lock.
+
+    This is an identity seal, not a substitute for a successful full build/test.
+    Ninja's .ninja_log/.ninja_deps bookkeeping and file timestamps are not sealed.
+    Every concrete graph output is sealed, including missing custom outputs and
+    non-default targets. Meson configuration/command payloads and installed source
+    trees are sealed too; Ninja's expanded default commands are stored as a hash,
+    never as an inherited environment dump.
+    """
+    build, repository = Path(build).resolve(), Path(repository).resolve()
+    target_text = command(['ninja', '-C', build, '-t', 'targets', 'all'])
+    targets = {}
+    for line in target_text.splitlines():
+        name, separator, rule = line.rpartition(': ')
+        if not separator:
+            raise RuntimeError('Cannot parse Ninja target inventory')
+        if rule != 'phony':
+            targets[name] = path_fingerprint(build/name)
+    metadata = {'config.h', 'build.ninja'}
+    metadata.update(str(p.relative_to(build)) for p in build.rglob('*.ninja'))
+    for directory in ['meson-info', 'meson-private']:
+        metadata.update(str(p.relative_to(build)) for p in (build/directory).rglob('*')
+                        if p.is_file() or p.is_symlink())
+    # The plan has actual install inputs; intro-installed also contains relative
+    # link names that are not files at the build root. Seal both metadata files,
+    # but enumerate content from the plan rather than mistaking links for inputs.
+    plan = json.loads((build/'meson-info/intro-install_plan.json').read_text())
+    install_inputs = {}
+    for section in plan.values():
+        for name in section:
+            path = Path(name)
+            if not path.is_absolute():
+                raise RuntimeError(f'Expected absolute Meson install input: {name}')
+            install_inputs[name] = path_fingerprint(path)
+    tracked = command(['git', 'ls-files', '-z'], cwd=repository).split('\0')
+    # Gitlinks are represented by their pinned repository state below, not by
+    # recursively collecting their .git metadata or untracked work directories.
+    tracked_files = {name: path_fingerprint(repository/name) for name in tracked
+                     if name and ((repository/name).is_symlink() or not (repository/name).is_dir())}
+    expanded_commands = command(['ninja', '-C', build, '-t', 'commands'])
+    return {'format': 1, 'build_directory': str(build),
+            'ninja_targets_sha256': hashlib.sha256(target_text.encode()).hexdigest(),
+            'ninja_commands_sha256': hashlib.sha256(expanded_commands.encode()).hexdigest(),
+            'build_outputs': targets,
+            'build_metadata': {name: path_fingerprint(build/name) for name in sorted(metadata)},
+            'install_inputs': install_inputs,
+            'source_commit': command(['git', 'rev-parse', 'HEAD'], cwd=repository),
+            'tracked_source_files': tracked_files,
+            'source_inventory': source_inventory(repository),
+            'gimp_data': data_state(repository/'gimp-data')}
+
+
+def require_same_freshness(expected, actual, phase):
+    if expected != actual:
+        sections = sorted(name for name in expected.keys() | actual.keys()
+                          if expected.get(name) != actual.get(name))
+        raise RuntimeError(f'Candidate {phase} changed aggregate-sealed state '
+                           f'({", ".join(sections)}); compile/retest before packaging')
+
+
+def require_full_aggregate_coverage(gate, build):
+    """Cross-check the full aggregate schema; all_passed alone is not evidence."""
+    # Version-1 registry_sha256 seals these raw bytes, independently of the
+    # sanitized/pretty-printed registered-tests.json archived for distribution.
+    registry_path = build/'meson-info/intro-tests.json'
+    registry = json.loads(registry_path.read_text())
+    targets = gate.get('targets')
+    count = len(registry)
+    if (gate.get('schema_version') != 1 or
+            gate.get('scope') != 'all_registered_meson_tests_frozen_linux_normal_build' or
+            gate.get('coverage_complete') is not True or not count or
+            not isinstance(targets, list) or len(targets) != count or
+            any(type(gate.get(key)) is not int or gate[key] != count
+                for key in ['registered_tests', 'recorded_results']) or
+            gate.get('registry_sha256') != sha(registry_path) or
+            gate.get('unmatched_results') != []):
+        raise RuntimeError('Aggregate gate must prove complete coverage of the current Meson test registry')
+    checks = gate.get('integrity_checks', {})
+    if (type(gate.get('meson_exit_status')) is not int or gate['meson_exit_status'] != 0 or
+            gate.get('baseline_exemptions_applied') is not False or
+            not isinstance(checks, dict) or not AGGREGATE_INTEGRITY_CHECKS <= checks.keys() or
+            any(value is not True for value in checks.values()) or
+            gate.get('changed_tracked_files') != [] or
+            gate.get('changed_preexisting_elf_files') != []):
+        raise RuntimeError('Aggregate gate must have a clean exit and all integrity checks, without baseline exemptions')
+    indexed = {}
+    for target in targets:
+        if not isinstance(target, dict) or type(target.get('registry_index')) is not int:
+            raise RuntimeError('Aggregate gate target is missing its unique Meson registry index')
+        index = target['registry_index']
+        if index in indexed or not 1 <= index <= count:
+            raise RuntimeError('Aggregate gate has duplicate or invalid Meson registry indexes')
+        indexed[index] = target
+    suites = {}
+    for index, registered in enumerate(registry, 1):
+        target = indexed[index]
+        if (target.get('name') != registered['name'] or
+                target.get('suites') != registered['suite'] or
+                target.get('registered_command') != registered['cmd'] or
+                target.get('actual_command') != registered['cmd']):
+            raise RuntimeError(f'Aggregate gate target does not match Meson registry entry {index}')
+        if (target.get('result') != 'OK' or type(target.get('returncode')) is not int or
+                target['returncode'] != 0 or target.get('classification') != 'passed' or
+                'status' in target or any(target.get(key) != [] for key in
+                ['tap_skipped_subtests', 'runtime_crash_diagnostics', 'failure_evidence'])):
+            raise RuntimeError(f'Aggregate gate target {index} must pass without failures, skips or runtime crashes')
+        for suite in registered['suite']:
+            suites[suite] = suites.get(suite, 0) + 1
+    suite_counts = {suite: {'registered': size, 'outcomes': {'OK': size}}
+                    for suite, size in suites.items()}
+    if gate.get('result_counts') != {'OK': count} or gate.get('suite_counts') != suite_counts:
+        raise RuntimeError('Aggregate gate result/suite totals contradict its complete passing target coverage')
+
+
+def require_aggregate_gate(gate, commit, build):
+    if gate.get('source_commit') != commit or gate.get('all_passed') is not True:
+        raise RuntimeError('Aggregate gate must pass and identify this exact source commit')
+    require_full_aggregate_coverage(gate, build)
+    for rel in ['app/gimp-3.0', 'app/gimp-console-3.0']:
+        tested = gate.get('build_inputs', {}).get(rel, {})
+        if tested.get('sha256') != sha(build/rel):
+            raise RuntimeError(f'Aggregate gate must seal the exact tested executable: {rel}')
+    freshness = gate.get('build_freshness', {})
+    if not isinstance(freshness, dict):
+        raise RuntimeError('Aggregate gate requires before/after build_freshness snapshots; retest before packaging')
+    before, after = freshness.get('before'), freshness.get('after')
+    required = {'format', 'build_directory', 'ninja_targets_sha256', 'ninja_commands_sha256',
+                'build_outputs', 'build_metadata', 'install_inputs', 'source_commit',
+                'tracked_source_files', 'source_inventory', 'gimp_data'}
+    if not isinstance(before, dict) or before.get('format') != 1 or not required <= before.keys() or not isinstance(after, dict):
+        raise RuntimeError('Aggregate gate requires complete before/after build_freshness snapshots; retest before packaging')
+    require_same_freshness(before, after, 'aggregate')
+    return after
+
+
+def verify_build_freshness(build, repository, expected):
+    """Let Ninja resolve PHONY/restat edges; never accept changed build artifacts.
+
+    A dry-run cannot observe restat pruning, even immediately after a successful
+    build. Running the ordinary default build supplies that proof. Any changed
+    bytes, mode, link, graph, command or input invalidate the tested state, even
+    when Ninja succeeds. Nothing may be staged until both comparisons pass.
+    """
+    require_same_freshness(expected, capture_freshness_snapshot(build, repository), 'pre-build')
+    argv = ['ninja', '-C', str(build)]
+    result = subprocess.run(argv, capture_output=True, text=True)
+    if result.returncode:
+        raise RuntimeError('Candidate default-target convergence failed; compile/retest before packaging')
+    require_same_freshness(expected, capture_freshness_snapshot(build, repository), 'default build')
+    return {'command': argv, 'exit_code': result.returncode,
+            'snapshot_sha256': hashlib.sha256(json.dumps(expected, sort_keys=True).encode()).hexdigest()}, result.stdout + result.stderr
 
 
 def copy_runtime(source, target):
@@ -158,19 +337,18 @@ def main():
         if dirty or untracked_sources or initial_data['dirty'] or initial_data['inventory']['untracked'] or not args.aggregate_gate or not args.source_archive:
             parser.error('Candidate requires clean committed source, --aggregate-gate and reviewed --source-archive')
         gate = json.loads(args.aggregate_gate.read_text())
-        if gate.get('source_commit') != commit or gate.get('all_passed') is not True:
-            parser.error('Aggregate gate must pass and identify this exact source commit')
-        for rel in ['app/gimp-3.0', 'app/gimp-console-3.0']:
-            tested = gate.get('build_inputs', {}).get(rel, {})
-            if tested.get('sha256') != sha(build/rel):
-                parser.error(f'Aggregate gate must seal the exact tested executable: {rel}')
-        freshness = subprocess.run(['ninja', '-C', str(build), '-n'], capture_output=True, text=True)
-        if freshness.returncode or 'no work to do.' not in freshness.stdout:
-            parser.error('Candidate build has pending default-target work; compile/retest before packaging')
+        try:
+            tested_freshness = require_aggregate_gate(gate, commit, build)
+            freshness_evidence, freshness_log = verify_build_freshness(build, REPO, tested_freshness)
+        except RuntimeError as error:
+            parser.error(str(error))
     output.mkdir(parents=True)
     stage, bundle = output/'destdir', output/'gimp-painter-linux-x86_64'
     logs = output/'evidence'
     logs.mkdir()
+    if args.candidate:
+        json_write(logs/'build-freshness.json', freshness_evidence)
+        (logs/'build-freshness.log').write_text(freshness_log)
     recipe = output/'recipe'
     recipe.mkdir()
     for rel in ['tools/package-linux-runtime.py', 'tools/test-linux-runtime.py',
@@ -363,6 +541,8 @@ def main():
         for rel in ['app/gimp-3.0','app/gimp-console-3.0']:
             if gate['build_inputs'][rel]['sha256']!=manifest['build_inputs'][rel]['sha256']:
                 raise RuntimeError('Tested binary changed during candidate staging')
+        require_same_freshness(tested_freshness, capture_freshness_snapshot(build, REPO), 'staging')
+        manifest['build_freshness'] = freshness_evidence
     forbidden_names = {'.git', '.aws', '.codex', '.agents', '__pycache__', '.env'}
     for path in bundle.rglob('*'):
         if any(part in forbidden_names for part in path.relative_to(bundle).parts) or path.suffix=='.pyc':

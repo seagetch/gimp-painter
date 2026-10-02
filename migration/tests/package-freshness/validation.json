@@ -1,0 +1,74 @@
+{
+  "scope": "Packaging guard only; private synthetic Ninja fixtures and read-only actual-gate rejection probes, not a GIMP aggregate or candidate",
+  "supersedes": "/workspace/shared/painter-package-freshness-20261002-1433/validation.json",
+  "setup_commands": [
+    "export GIMP_DEPS_DIRECTORY=/workspace/shared/gimp-build-deps",
+    ". tools/linux-debian13-env.sh"
+  ],
+  "tests": {
+    "run": 32,
+    "passed": 32,
+    "skipped": 0,
+    "application_coverage": false
+  },
+  "checks": [
+    {
+      "name": "fixture-tests",
+      "command": [
+        "python3",
+        "migration/tests/test_linux_runtime_package.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "fixture-tests.log"
+    },
+    {
+      "name": "python-compile",
+      "command": [
+        "python3",
+        "-m",
+        "py_compile",
+        "tools/package-linux-runtime.py",
+        "migration/tests/test_linux_runtime_package.py"
+      ],
+      "exit_code": 0,
+      "log": "python-compile.log"
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "tools/package-linux-runtime.py",
+        "migration/tests/test_linux_runtime_package.py",
+        "migration/packaging/README.md"
+      ],
+      "exit_code": 0,
+      "log": "diff-check.log"
+    }
+  ],
+  "actual_gate_negative_probes": {
+    "passed": 3,
+    "report": "actual-gate-rejections.json"
+  },
+  "frozen_allowlist": {
+    "tools/package-linux-runtime.py": "9b568ddeac52d4fb85d53bf6cb0c80edfdd7876f97d221386f47c42a363a4fe5",
+    "migration/tests/test_linux_runtime_package.py": "83192c3d745c3634cdb1e1cbf540ea1a4ca70f80cffb144f83bf7e6c8af7e66b",
+    "migration/packaging/README.md": "bf4cc6287d60bb7a688e3f733477dd5f09e667bbac1bde209cd4f20ecfbde8f2"
+  },
+  "unchanged_historical_artifact": {
+    "path": "migration/packaging/prototype-validation.json",
+    "sha256": "1cd7483b8154914d862859ca556a000bdc07e825332a77e3e023b13410a522b1"
+  },
+  "not_performed": [
+    "full GIMP build",
+    "full GIMP aggregate",
+    "package staging",
+    "upload",
+    "git stage",
+    "commit",
+    "push"
+  ]
+}

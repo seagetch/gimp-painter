@@ -1,0 +1,37 @@
+test_all_passed_cannot_hide_failure_skip_crash_or_false_totals (__main__.FreshnessTests.test_all_passed_cannot_hide_failure_skip_crash_or_false_totals) ... ok
+test_all_passed_cannot_hide_incomplete_or_mismatched_registry (__main__.FreshnessTests.test_all_passed_cannot_hide_incomplete_or_mismatched_registry) ... ok
+test_bookkeeping_and_timestamp_churn_are_not_artifact_changes (__main__.FreshnessTests.test_bookkeeping_and_timestamp_churn_are_not_artifact_changes) ... ok
+test_changed_bytes_during_convergence_require_retest (__main__.FreshnessTests.test_changed_bytes_during_convergence_require_retest) ... ok
+test_changed_command_is_rejected_even_if_output_would_be_identical (__main__.FreshnessTests.test_changed_command_is_rejected_even_if_output_would_be_identical) ... ok
+test_configuration_and_command_payload_changes_are_rejected (__main__.FreshnessTests.test_configuration_and_command_payload_changes_are_rejected) ... ok
+test_failed_aggregate_never_becomes_eligible (__main__.FreshnessTests.test_failed_aggregate_never_becomes_eligible) ... ok
+test_failed_ninja_check_is_rejected (__main__.FreshnessTests.test_failed_ninja_check_is_rejected) ... ok
+test_installed_tree_addition_and_circular_link_are_rejected (__main__.FreshnessTests.test_installed_tree_addition_and_circular_link_are_rejected) ... ok
+test_missing_output_is_rejected (__main__.FreshnessTests.test_missing_output_is_rejected) ... ok
+test_mode_change_is_rejected (__main__.FreshnessTests.test_mode_change_is_rejected) ... ok
+test_new_graph_output_is_rejected (__main__.FreshnessTests.test_new_graph_output_is_rejected) ... ok
+test_old_or_incomplete_gate_is_rejected (__main__.FreshnessTests.test_old_or_incomplete_gate_is_rejected) ... ok
+test_phony_restat_is_accepted_despite_predicted_descendants (__main__.FreshnessTests.test_phony_restat_is_accepted_despite_predicted_descendants) ... ok
+test_resource_or_secondary_output_change_is_rejected (__main__.FreshnessTests.test_resource_or_secondary_output_change_is_rejected) ... ok
+test_sanitized_registry_archive_does_not_replace_raw_registry_hash (__main__.FreshnessTests.test_sanitized_registry_archive_does_not_replace_raw_registry_hash) ... ok
+test_source_change_is_rejected_before_build (__main__.FreshnessTests.test_source_change_is_rejected_before_build) ... ok
+test_state_changed_during_aggregate_is_rejected (__main__.FreshnessTests.test_state_changed_during_aggregate_is_rejected) ... ok
+test_symlink_change_is_rejected (__main__.FreshnessTests.test_symlink_change_is_rejected) ... ok
+test_untracked_source_is_rejected (__main__.FreshnessTests.test_untracked_source_is_rejected) ... ok
+test_wrong_commit_or_tested_executable_is_rejected (__main__.FreshnessTests.test_wrong_commit_or_tested_executable_is_rejected) ... ok
+test_absolute_usr_link_becomes_relative (__main__.PackageTests.test_absolute_usr_link_becomes_relative) ... ok
+test_absolute_usr_link_requires_bundled_target (__main__.PackageTests.test_absolute_usr_link_requires_bundled_target) ... ok
+test_default_toolrc_contains_all_painter_tools_once (__main__.PackageTests.test_default_toolrc_contains_all_painter_tools_once) ... ok
+test_elf_probe_ignores_links_and_plain_files (__main__.PackageTests.test_elf_probe_ignores_links_and_plain_files) ... ok
+test_gimp_data_commit_and_content_are_rechecked (__main__.PackageTests.test_gimp_data_commit_and_content_are_rechecked) ... ok
+test_inventory_seals_content_mode_and_relative_link (__main__.PackageTests.test_inventory_seals_content_mode_and_relative_link) ... ok
+test_ldd_path_with_spaces_and_unicode (__main__.PackageTests.test_ldd_path_with_spaces_and_unicode) ... ok
+test_new_untracked_source_is_rechecked (__main__.PackageTests.test_new_untracked_source_is_rechecked) ... ok
+test_only_baseline_host_abi_is_accepted (__main__.PackageTests.test_only_baseline_host_abi_is_accepted) ... ok
+test_runtime_copy_omits_caches_and_build_metadata (__main__.PackageTests.test_runtime_copy_omits_caches_and_build_metadata) ... ok
+test_runtime_symlinks_cannot_escape (__main__.PackageTests.test_runtime_symlinks_cannot_escape) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 3.469s
+
+OK

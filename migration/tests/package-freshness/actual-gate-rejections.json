@@ -1,0 +1,25 @@
+{
+  "mode": "Read-only checks; all synthetic gate changes stayed in memory and were never saved or used to stage",
+  "source_gate": "/workspace/shared/painter-frozen-aggregate-20261002-1404/deliverable/aggregate-gate.json",
+  "source_gate_sha256": "a8cbc5bd852df661c66627b8685a59d0c6f225f9972c891e32e95f08abd1e3a1",
+  "source_gate_unchanged": true,
+  "registry_raw_sha256": "9af27e0114a4760bbd3b6cd3a8dbb89050ae655081afbe96ec5deb4ea17503ac",
+  "archived_sanitized_registry_sha256": "7b7a78a7c0a30f8bcb1568de0a38c1bfb6bca516b792ae8eae462efb5ad609c0",
+  "probes": [
+    {
+      "name": "Actual failed gate with only all_passed flipped",
+      "rejected": true,
+      "reason": "Aggregate gate must have a clean exit and all integrity checks, without baseline exemptions"
+    },
+    {
+      "name": "Failed targets remain after summary boolean and exit code are cleared in memory",
+      "rejected": true,
+      "reason": "Aggregate gate target 20 must pass without failures, skips or runtime crashes"
+    },
+    {
+      "name": "Meson-OK Script-Fu crashes remain after failed targets and totals are cleared in memory",
+      "rejected": true,
+      "reason": "Aggregate gate target 97 must pass without failures, skips or runtime crashes"
+    }
+  ]
+}
