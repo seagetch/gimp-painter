@@ -40,6 +40,7 @@ app_tests = [
   'gimp-filter-layer',
   'painter-layer-ui',
   'painter-canvas-ui',
+  'painter-compact-options',
   'gimp-painter-mybrush',
   'gimp-painter-mybrush-factory',
   'gimpidtable',

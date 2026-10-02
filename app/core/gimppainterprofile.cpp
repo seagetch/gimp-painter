@@ -274,6 +274,11 @@ std::string transform(const std::string&input,const std::string&kind,bool origin
     if(kind.substr(13)!="gimp-smudge-tool" && !explicit_hardness(nodes))
       output+="\n(painter-legacy-native-hardness yes)\n";
   }
+  // The pinned Painter overlay had no preference: it was always shown.
+  // Materialize that proven behavior in a new native preference, never infer
+  // a source key and never override an explicit imported value.
+  if(kind=="gimprc" && !contains_property(nodes,"painter-canvas-ui"))
+    output+="\n(painter-canvas-ui yes)\n";
   return output;
 }
 using File=GimpPainter::ObjectRef<GFile>;
@@ -436,6 +441,11 @@ extern "C" gboolean gimp_painter_profile_migrate(const gchar*source,const gchar*
     directory(destination);
     Import importer{source,destination,"Painter profile migration v1\nOriginal bytes are retained permanently. Unknown fields may be ignored by modern loaders.\nExpanded tool-group state was not written by the pinned legacy serializer.\n",0};
     for(const auto*name:{"toolrc","contextrc","devicerc","gimprc","tool-options","tool-presets"}) importer.entry(name,name,true,0);
+    // A proven Painter profile can legitimately omit gimprc entirely. The
+    // no-overwrite writer preserves any destination created/edited previously.
+    if(!g_file_query_exists(file(join(source,"gimprc")).get(),nullptr) &&
+       write_new(join(destination,"gimprc"),"# Implicit legacy Painter canvas behavior\n(painter-canvas-ui yes)\n"))
+      importer.report+="implicit-canvas-default from proven Painter origin\n";
     // save-tool-options was FALSE by default in the old application. Even a
     // marker-only migrated file must resolve native brush spacing at startup.
     auto old_toolrc=file(join(source,"toolrc"));

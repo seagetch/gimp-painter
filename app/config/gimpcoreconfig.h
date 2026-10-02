@@ -125,6 +125,7 @@ struct _GimpCoreConfig
   gint                    last_revision;
 
   gchar                  *config_version;
+  gboolean                painter_canvas_ui;
 };
 
 struct _GimpCoreConfigClass

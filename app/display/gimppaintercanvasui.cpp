@@ -8,6 +8,7 @@ extern "C" {
 #include "libgimpwidgets/gimpwidgets.h"
 #include "display-types.h"
 #include "core/gimp.h"
+#include "config/gimpcoreconfig.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
@@ -23,6 +24,7 @@ extern "C" {
 #include "widgets/gimpfgbgeditor.h"
 #include "widgets/gimppainterlayertiles.h"
 #include "widgets/gimppaintermybrusheditor.h"
+#include "widgets/gimppaintercompactoptions.h"
 #include "widgets/gimpdocked.h"
 #include "widgets/gimpwidgets-utils.h"
 #include "widgets/gimppropwidgets.h"
@@ -62,7 +64,7 @@ struct Canvas {
   ObjectRef<GObject> popup, dock, dock_host, dock_options, canvas;
   Connection popup_connection;
   Connection dock_parent_destroy, dock_destroy;
-  bool dock_parent_alive = true, dock_alive = true;
+  bool dock_parent_alive = true, dock_alive = true, dock_compact = false;
   WeakRef<GObject> dock_parent;
   gint dock_position = -1;
   gboolean dock_expand = TRUE, dock_fill = TRUE;
@@ -83,6 +85,7 @@ struct Canvas {
   void rebuild_tools ();
   void schedule_tools ();
   bool attach (GtkWidget *widget);
+  bool attach_options (bool compact);
   void detach () noexcept;
 };
 template<class F> void use (GObject *owner, F&& f) noexcept {
@@ -234,6 +237,7 @@ void Canvas::create () {
   tools=gtk_box_new(GTK_ORIENTATION_VERTICAL,0);gtk_container_add(GTK_CONTAINER(toolscroll),tools);if(!frame(*this,toolscroll))return;
   bar=gtk_box_new(GTK_ORIENTATION_HORIZONTAL,3);
   action_button(*this,bar,_("Undo"),"painter-canvas-undo");action_button(*this,bar,_("Redo"),"painter-canvas-redo");
+  action_button(*this,bar,_("Compact Options"),"painter-canvas-compact");
   action_button(*this,bar,_("Tool Options"),"painter-canvas-options");action_button(*this,bar,_("MyPaint Editor"),"painter-canvas-mypaint");
   action_button(*this,bar,_("Hide"),"painter-canvas-hide");
   GtkWidget *bar_scroll=gtk_scrolled_window_new(nullptr,nullptr);
@@ -264,6 +268,7 @@ void Canvas::show (bool value) {
   visible=value;
   if(value)create();
   if(closed)return;
+  if(value && image() && !dock)attach_options(true);
   std::vector<ObjectRef<GObject>> snapshot;
   for(auto&panel:panels)snapshot.push_back(panel.frame);
   for(auto&panel:snapshot){if(closed)return;auto*w=GTK_WIDGET(panel.get());if(value&&image())gtk_widget_show_all(w);else gtk_widget_hide(w);}
@@ -292,7 +297,14 @@ void Canvas::layout () {
   int bw=gtk_widget_get_allocated_width(GTK_WIDGET(panels[3].frame.get()));
   int bh=gtk_widget_get_allocated_height(GTK_WIDGET(panels[3].frame.get()));
   place(3,std::max(60,(w-bw)/2),h-bh,std::max(1,std::min(w-164,650)),-1);
-  if(dock_host){int dw=std::max(180,std::min(color_width,w-180));
+  if(dock_host && dock_compact) {
+    const auto orientation = portrait ? GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL;
+    if(dock && dock_options)gimp_painter_compact_options_set(GTK_WIDGET(dock.get()),GIMP_TOOL_OPTIONS(dock_options.get()),TRUE,orientation,nullptr);
+    const int dw=portrait?std::min(260,std::max(120,w-164)):std::max(1,w-164);
+    const int dh=portrait?std::max(120,h-color_height-80):72;
+    gimp_overlay_box_set_child_position(overlay(),GTK_WIDGET(dock_host.get()),64,portrait?color_height+8:std::max(0,h-bh-dh-4));
+    gtk_widget_set_size_request(GTK_WIDGET(dock_host.get()),dw,dh);
+  } else if(dock_host){int dw=std::max(180,std::min(color_width,w-180));
     gimp_overlay_box_set_child_position(overlay(),GTK_WIDGET(dock_host.get()),portrait?64:std::max(64,w-104-dw),portrait?0:color_height+8);
     gtk_widget_set_size_request(GTK_WIDGET(dock_host.get()),dw,std::max(160,(portrait?color_height:h-color_height-70)));
   }
@@ -372,10 +384,8 @@ void Canvas::rebuild_tools () {
   if (dock_options) {
     auto *tool = gimp_context_get_tool(ctx());
     if (tool && G_OBJECT(tool->tool_options) != dock_options.get()) {
-      detach();
-      if (auto *gui = gimp_tools_get_tool_options_gui(tool->tool_options)) {
-        attach(gui);dock_options=ObjectRef<GObject>::retain(G_OBJECT(tool->tool_options));
-      }
+      const bool compact=dock_compact;
+      detach();attach_options(compact);
     }
   }
   layout();
@@ -423,8 +433,26 @@ bool Canvas::attach (GtkWidget*widget) {
   gimp_overlay_box_set_child_opacity(overlay(),GTK_WIDGET(dock_host.get()),.85);
   gtk_widget_show_all(GTK_WIDGET(dock_host.get()));layout();return true;
 }
+bool Canvas::attach_options (bool compact) {
+  auto *tool=gimp_context_get_tool(ctx());
+  if(!tool || !tool->tool_options)return false;
+  auto *gui=gimp_tools_get_tool_options_gui(tool->tool_options);
+  if(!gui || !attach(gui))return false;
+  dock_options=ObjectRef<GObject>::retain(G_OBJECT(tool->tool_options));dock_compact=compact;
+  if(compact){
+    GError *error=nullptr;
+    if(!gimp_painter_compact_options_set(gui,tool->tool_options,TRUE,GTK_ORIENTATION_HORIZONTAL,&error)){
+      if(error){gimp_message_literal(ctx()->gimp,G_OBJECT(shell),GIMP_MESSAGE_ERROR,error->message);g_clear_error(&error);}
+      detach();return false;
+    }
+  }
+  layout();return true;
+}
 void Canvas::detach () noexcept {
   auto old=std::move(dock);auto host=std::move(dock_host);auto parent=dock_parent.lock();
+  if(dock_compact && old && dock_options && dock_alive)
+    gimp_painter_compact_options_set(GTK_WIDGET(old.get()),GIMP_TOOL_OPTIONS(dock_options.get()),FALSE,GTK_ORIENTATION_HORIZONTAL,nullptr);
+  dock_compact=false;
   dock_parent.reset();dock_options.reset();dock_parent_destroy.close();dock_destroy.close();
   if(!old)return;
   auto*widget=GTK_WIDGET(old.get());
@@ -441,7 +469,7 @@ void Canvas::detach () noexcept {
   dock_position=-1;
 }
 void Canvas::action (const std::string&name) {
-  if(name=="painter-canvas-hide"){show(false);return;}
+  if(name=="painter-canvas-hide"){g_object_set(ctx()->gimp->config,"painter-canvas-ui",FALSE,nullptr);show(false);return;}
   if(!image())return;
   if(name=="painter-canvas-undo"){gimp_image_undo(image());gimp_image_flush(image());}
   else if(name=="painter-canvas-redo"){gimp_image_redo(image());gimp_image_flush(image());}
@@ -455,10 +483,10 @@ void Canvas::action (const std::string&name) {
       popup_connection=std::move(temporary.front());
     }
     if(error){gimp_message_literal(ctx()->gimp,G_OBJECT(shell),GIMP_MESSAGE_ERROR,error->message);g_clear_error(&error);}
-  }else if(name=="painter-canvas-options") {
-    if(dock){detach();return;}
-    auto*tool=gimp_context_get_tool(ctx());
-    if(tool&&tool->tool_options){auto*gui=gimp_tools_get_tool_options_gui(tool->tool_options);if(gui&&attach(gui))dock_options=ObjectRef<GObject>::retain(G_OBJECT(tool->tool_options));}
+  }else if(name=="painter-canvas-options" || name=="painter-canvas-compact") {
+    const bool compact=name=="painter-canvas-compact";
+    if(dock && dock_compact==compact){detach();return;}
+    attach_options(compact);
   }
   gtk_widget_grab_focus(shell->canvas);
 }
@@ -472,6 +500,7 @@ void gimp_painter_canvas_ui_init (GimpDisplayShell *shell) {
       connect(s,s.signals,G_OBJECT(s.shell->canvas),"event",G_CALLBACK(event));
       connect(s,s.signals,G_OBJECT(s.shell->display),"notify::image",G_CALLBACK(image_changed));
       connect(s,s.signals,G_OBJECT(s.ctx()),"tool-changed",G_CALLBACK(tool_changed));
+      s.show(s.ctx()->gimp->config->painter_canvas_ui);
     });
   }catch(const std::exception&e){g_warning("Cannot initialize painter canvas: %s",e.what());}
 }

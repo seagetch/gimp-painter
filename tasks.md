@@ -1032,6 +1032,7 @@
 | 29.008/icon-null | [ ] | tile icon 生成失敗時の NULL 経路を処理する | 29.002, 29.008, 01.007/cpp-ownership | layer/tool 両 tile の icon 未登録・render 失敗時に NULL を unref せず、代替表示を確認 |
 | 29.009 | [ ] | tool group を接続する | 29.008 | 旧分類と現行 action の対応が明確 |
 | 29.010/toolbar-ref-balance | [ ] | toolbar の再表示と終了時の参照数を修正する | 29.010, 01.007/toolbar-ref | hide 時の余剰参照をなくし、移動・反復表示・破棄を検証する |
+| 29.010/native-compact-runtime | [x] | 一つのnative ToolOptions GUIを可逆な横型・縦型popoversへ接続する | 29.001/native-canvas-tiles, 30.010/native-profile-migration | 50登録GUI/2868widgetのidentity・親順序・packing復元、12family/12破棄loop、native編集を通常8/sanitizer8/scale2 8＋実demo確認。旧Painter暗黙Canvas表示をprovenance付き移行し設定保存。後続geometry/HTTP/XCFを含むaggregateは別gate |
 | 29.010 | [ ] | 操作バーを移植する | 29.009 | 旧 action を呼び UI 状態を反映 |
 | 29.010/standard-tool-options | [ ] | 標準ツールの横型・コンパクト操作部品を保持して共有化する | 29.009, 01.013 | hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する |
 | 29.011 | [ ] | 縦長配置を移植する | 29.010 | 部品の機能を削らず再配置 |

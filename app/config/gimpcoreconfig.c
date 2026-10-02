@@ -58,6 +58,7 @@ enum
   PROP_LANGUAGE,
   PROP_PREV_LANGUAGE,
   PROP_CONFIG_VERSION,
+  PROP_PAINTER_CANVAS_UI,
   PROP_INTERPOLATION_TYPE,
   PROP_DEFAULT_THRESHOLD,
   PROP_PLUG_IN_PATH,
@@ -218,6 +219,13 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                            CONFIG_VERSION_BLURB,
                            NULL,
                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_PAINTER_CANVAS_UI,
+                            "painter-canvas-ui",
+                            _("Painter Canvas UI"),
+                            _("Show Painter canvas controls in new image windows"),
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_PROP_ENUM (object_class, PROP_INTERPOLATION_TYPE,
                          "interpolation-type",
@@ -1230,6 +1238,9 @@ gimp_core_config_set_property (GObject      *object,
             g_set_str (&core_config->last_known_release, version);
         }
       break;
+    case PROP_PAINTER_CANVAS_UI:
+      core_config->painter_canvas_ui = g_value_get_boolean (value);
+      break;
     case PROP_CONFIG_VERSION:
       g_set_str (&core_config->config_version,
                  g_value_get_string (value));
@@ -1518,6 +1529,9 @@ gimp_core_config_get_property (GObject    *object,
       break;
     case PROP_LAST_KNOWN_RELEASE:
       g_value_set_string (value, core_config->last_known_release);
+      break;
+    case PROP_PAINTER_CANVAS_UI:
+      g_value_set_boolean (value, core_config->painter_canvas_ui);
       break;
     case PROP_CONFIG_VERSION:
       g_value_set_string (value, core_config->config_version);

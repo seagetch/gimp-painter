@@ -116,6 +116,23 @@ static void symlinks_and_nested_destination () {
   link=g_file_new_for_path((dst2+"/painter-migration").c_str());g_assert_true(g_file_make_symbolic_link(link,other.c_str(),nullptr,&error));g_assert_no_error(error);g_object_unref(link);
   g_assert_false(gimp_painter_profile_migrate(src.c_str(),dst2.c_str(),&error));g_assert_nonnull(error);g_clear_error(&error);g_assert_false(g_file_test((other+"/originals").c_str(),G_FILE_TEST_EXISTS));remove_tree(root);
 }
+static void canvas_behavior_default () {
+  auto value=converted("# old defaults\n","gimprc");
+  g_assert_nonnull(strstr(value.c_str(),"(painter-canvas-ui yes)"));
+  value=converted("(painter-canvas-ui no)","gimprc");
+  g_assert_true(value=="(painter-canvas-ui no)");
+  GError *error=nullptr;
+  auto *unchanged=gimp_painter_profile_transform("# ambiguous origin\n","gimprc",FALSE,&error);
+  g_assert_no_error(error);g_assert_cmpstr(unchanged,==,"# ambiguous origin\n");g_free(unchanged);
+  auto *tmp=g_dir_make_tmp("painter-canvas-profile-XXXXXX",nullptr);std::string root(tmp);g_free(tmp);
+  auto src=root+"/old",dst=root+"/new";
+  put(src,"toolrc","(file-version 1) (GimpToolInfo \"gimp-mypaint-tool\")");
+  g_assert_true(gimp_painter_profile_migrate(src.c_str(),dst.c_str(),&error));g_assert_no_error(error);
+  g_assert_nonnull(strstr(get(dst,"gimprc").c_str(),"(painter-canvas-ui yes)"));
+  put(dst,"gimprc","(painter-canvas-ui no)");
+  g_assert_true(gimp_painter_profile_migrate(src.c_str(),dst.c_str(),&error));g_assert_no_error(error);
+  g_assert_true(get(dst,"gimprc")=="(painter-canvas-ui no)");remove_tree(root);
+}
 int main(int argc,char**argv) {
   g_test_init(&argc,&argv,nullptr);
   g_test_add_func("/painter-profile/structured-mapping",structured_mapping);
@@ -126,5 +143,6 @@ int main(int argc,char**argv) {
   g_test_add_func("/painter-profile/symlink-nested-rejection",symlinks_and_nested_destination);
   g_test_add_func("/painter-profile/options-only-origin",options_only_provenance);
   g_test_add_func("/painter-profile/blend-filename-options",blend_filename_options);
+  g_test_add_func("/painter-profile/canvas-behavior-default",canvas_behavior_default);
   return g_test_run();
 }

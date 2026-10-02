@@ -1,0 +1,48 @@
+{
+  "legacy_head": "afa43fae3e920210146abed514f136fd49f671b5",
+  "upstream_base": "a61915a8e62aad8855cd8c620bdb7195a25ffb90",
+  "sources": [
+    {
+      "path": "app/tools/gimptooloptions-gui.c",
+      "git_blob": "c0f732882e457ffaa3ef3b154623ff58a4ee7bf2",
+      "sha256": "036d9d5f6a8dccbdbc657768f2f593108d3c03434bea62fddd0fc1866076d7d6"
+    },
+    {
+      "path": "app/widgets/gimptooloptionstoolbar.c",
+      "git_blob": "f65ba197f2d572b4926a59ca239df0efa675286b",
+      "sha256": "df7cb7d779428569ba52c6be4f022fd78ef38f81de10d4d4d69d84802fc1105e"
+    },
+    {
+      "path": "app/tools/gimppaintoptions-gui.c",
+      "git_blob": "64cd82d6995fd93f1e9329ca8ad0c42a64fb21bf",
+      "sha256": "06093c0e705bf23e3c48c62292944aa6ab8afb1d066eabae532e876603cce1e6"
+    },
+    {
+      "path": "app/tools/gimpbrushoptions-gui.c",
+      "git_blob": "fdd5d93c008db5cd1e34bf8a38044b1db59005b0",
+      "sha256": "643fc6ada74a8fcf958ed9b38c315d8d19e4a5611199724d1d46bf980f7a114f"
+    },
+    {
+      "path": "app/tools/gimpdynamicsoptions-gui.c",
+      "git_blob": "9e14a9fac4588c0770cf656c7133a8ff9e2d43f3",
+      "sha256": "5283fe4df077f6fec319d7043fe24b5c9f0ad675b56dc2b32540ecb528de13dd"
+    },
+    {
+      "path": "app/tools/gimpmypaintoptions-gui.cpp",
+      "git_blob": "15bba77f91de8f0491aa345e52152406c859d6e0",
+      "sha256": "4e91b22f60dfa80f4d8a87672aa5ff545c909f18eb3cc2926413c1cbc5abb020"
+    },
+    {
+      "path": "app/tools/gimpforegroundselectoptions.c",
+      "git_blob": "38d5b7cdcef41bf7ece342d7ed9b300d3107af6e",
+      "sha256": "50509890cb179351c25cff9aed9eb7430e485d8b0fc42365aba113492e562a8f"
+    },
+    {
+      "path": "app/display/gimpdisplayshell-overlays.cpp",
+      "git_blob": "6794e74e3d999beb905a31318c0ae631e70eeb6b",
+      "sha256": "6395a905e4c2e5c4ffefdacae04d17769156b23ae984c494239644cb44c39b8d"
+    }
+  ],
+  "foreground_painter_diff_sha256": "1b68cec1b35caa9ac7d8a27718da542912634ae8aaf888f80ad7d5204e8f0789",
+  "foreground_scope": "Painter changes GUI wrappers/grouping only; property registration/set/get and algorithm remain ordinary upstream GIMP2.8; native3 matting controls retained without invented SIOX mappings."
+}
