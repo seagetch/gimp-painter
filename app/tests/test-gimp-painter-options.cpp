@@ -57,8 +57,9 @@ static void history_and_config_roundtrip()
   gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),a.get());GError*error=nullptr;
   const char*json="{\"version\":3,\"settings\":{\"opaque\":{\"base_value\":0.7,\"inputs\":{\"pressure\":[[0,0],[1,0.4]]}}},\"switches\":{\"non_incremental\":true},\"texts\":{\"texture_name\":\"absent-paper\"},\"unknown\":{\"remember\":23}}";
   g_assert_true(gimp_painter_mybrush_options_set_json(options,json,&error));g_assert_no_error(error);auto before=PainterOptionsRef::retain(options).snapshot().encode();
-  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),b.get());g_assert_cmpuint(gimp_painter_mybrush_options_history_size(options),==,1);
-  g_assert_true(gimp_painter_mybrush_options_restore_history(options,0,&error));g_assert_no_error(error);g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==before);
+  const guint start=gimp_painter_mybrush_options_history_size(options);
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),b.get());g_assert_cmpuint(gimp_painter_mybrush_options_history_size(options),==,start+1);
+  g_assert_true(gimp_painter_mybrush_options_restore_history(options,start,&error));g_assert_no_error(error);g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==before);
   String config(gimp_config_serialize_to_string(GIMP_CONFIG(options),nullptr));g_assert_nonnull(config.get());auto*copy=options_new();
   g_assert_true(gimp_config_deserialize_string(GIMP_CONFIG(copy),config.get(),-1,nullptr,&error));g_assert_no_error(error);g_assert_true(PainterOptionsRef::retain(copy).snapshot().encode()==before);
   auto*duplicate=GIMP_PAINTER_MYBRUSH_OPTIONS(gimp_config_duplicate(GIMP_CONFIG(options)));g_assert_nonnull(duplicate);g_assert_true(PainterOptionsRef::retain(duplicate).snapshot().encode()==before);
@@ -78,7 +79,11 @@ static void closed_and_invalid_curves()
   auto*options=options_new();const auto before=PainterOptionsRef::retain(options).snapshot().encode();GError*error=nullptr;
   const GimpVector2 invalid[]={{1,0},{0,1}};g_assert_false(gimp_painter_mybrush_options_set_curve(options,BRUSH_OPAQUE,INPUT_PRESSURE,invalid,2,&error));g_assert_nonnull(error);g_clear_error(&error);
   g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==before);g_assert_true(gimp_painter_binding_close(G_OBJECT(options),&error));g_assert_no_error(error);
-  g_assert_null(gimp_painter_mybrush_options_dup_json(options,&error));g_assert_error(error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_CLOSED);g_clear_error(&error);g_object_unref(options);
+  g_assert_null(gimp_painter_mybrush_options_dup_json(options,&error));g_assert_error(error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_CLOSED);g_clear_error(&error);
+  g_assert_cmpuint(gimp_painter_mybrush_options_history_size(options),==,0);
+  g_assert_null(gimp_painter_mybrush_options_history_name(options,0));
+  g_assert_false(gimp_painter_mybrush_options_restore_history(options,0,&error));
+  g_assert_error(error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_CLOSED);g_clear_error(&error);g_object_unref(options);
 }
 static void named_resources()
 {
@@ -119,6 +124,49 @@ static void commit_closes_options()
   const auto expected=PainterOptionsRef::retain(options).snapshot().encode();auto id=g_signal_connect(source.get(),"settings-changed",G_CALLBACK(close_during_commit),options);GError*error=nullptr;
   g_assert_true(gimp_painter_mybrush_options_commit(options,&error));g_assert_no_error(error);g_assert_true(source.snapshot().encode()==expected);g_signal_handler_disconnect(source.get(),id);g_object_unref(options);
 }
+static void shared_application_history()
+{
+  auto*first=options_new();auto*second=options_new();
+  auto a=PainterMybrushRef::create("cross-options-source"),b=PainterMybrushRef::create("cross-options-next");
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(first),a.get());
+  const auto draft=Resource::decode("{\"version\":3,\"unknown\":{\"cross_options\":true},\"settings\":{\"texture_grain\":{\"base_value\":0,\"inputs\":{\"custom\":[[-1,0],[0,0.5],[1,1]]}}},\"texts\":{\"texture_name\":\"missing cross-options paper\"}}");
+  g_assert_true(gimp_painter_mybrush_options_set_json(first,draft.encode().c_str(),nullptr));
+  const auto before=gimp_painter_mybrush_options_history_size(second);
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(first),b.get());
+  g_assert_cmpuint(gimp_painter_mybrush_options_history_size(second),==,before+1);
+  guint notifications=0;
+  g_signal_connect(second,"history-changed",G_CALLBACK(+[](GimpPainterMybrushOptions*,gpointer p){++*static_cast<guint*>(p);}),&notifications);
+  while(g_main_context_pending(nullptr))g_main_context_iteration(nullptr,FALSE);
+  g_assert_cmpuint(notifications,>,0);
+  g_object_unref(first); // history is application-owned, not first-view-owned
+  GError*error=nullptr;g_assert_true(gimp_painter_mybrush_options_restore_history(second,before,&error));g_assert_no_error(error);
+  g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(second))==a.get());
+  g_assert_true(PainterOptionsRef::retain(second).snapshot().encode()==draft.encode());
+  auto*ordinary=gimp_context_new(gimp,"cross-options-context",nullptr);
+  gimp_context_set_painter_mybrush(ordinary,b.get());
+  auto*third=options_new();gimp_context_set_parent(GIMP_CONTEXT(third),ordinary);
+  g_assert_cmpuint(gimp_painter_mybrush_options_history_size(third),==,gimp_painter_mybrush_options_history_size(second));
+  g_assert_true(gimp_painter_mybrush_options_restore_history(third,before,&error));g_assert_no_error(error);
+  g_assert_true(PainterOptionsRef::retain(third).snapshot().encode()==draft.encode());
+  g_object_unref(third);g_object_unref(ordinary);g_object_unref(second);
+}
+static void shared_history_application_close()
+{
+  auto*first=options_new();auto*second=options_new();
+  GObject*weak=nullptr;
+  {
+    auto source=PainterMybrushRef::create("history-close-owned");weak=G_OBJECT(source.get());
+    g_object_add_weak_pointer(weak,reinterpret_cast<gpointer*>(&weak));
+    gimp_context_set_painter_mybrush(GIMP_CONTEXT(first),source.get());g_object_set(first,"opaque",.147,nullptr);
+    gimp_context_set_painter_mybrush(GIMP_CONTEXT(first),GIMP_PAINTER_MYBRUSH(gimp_painter_mybrush_get_standard(GIMP_CONTEXT(first))));
+  }
+  g_object_unref(first);g_assert_nonnull(weak);
+  const auto count=gimp_painter_mybrush_options_history_size(second);g_assert_cmpuint(count,>,0);
+  g_assert_true(gimp_painter_binding_close(G_OBJECT(gimp),nullptr));
+  g_assert_null(weak);g_assert_cmpuint(gimp_painter_mybrush_options_history_size(second),==,0);
+  while(g_main_context_pending(nullptr))g_main_context_iteration(nullptr,FALSE);
+  g_object_unref(second);g_assert_true(gimp_painter_binding_close(G_OBJECT(gimp),nullptr));
+}
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
@@ -130,5 +178,7 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-options/named-resources",named_resources);
   g_test_add_func("/painter-options/selection-reentry",selection_reentry);
   g_test_add_func("/painter-options/commit-close",commit_closes_options);
+  g_test_add_func("/painter-options/cross-options-history",shared_application_history);
+  g_test_add_func("/painter-options/application-history-close",shared_history_application_close);
   int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }

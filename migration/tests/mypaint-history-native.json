@@ -1,0 +1,11 @@
+{
+  "result": "10/10 native Options tests passed",
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "2126a82d73b1abb30ec7031449ec615a358b735584dd824b0c8c3840069ea813",
+    "app/tests/test-gimp-painter-options.cpp": "c78142dac1fb94676ecd8f3922ba1e1c3efe59822a3c53b519578c0a38a39e45"
+  },
+  "command": "meson test -C build-debian13 gimp-painter-options --print-errorlogs",
+  "stdout": "mypaint-history-native.txt",
+  "scope": "8 existing model/lifecycle cases plus cross-independent-Options/context shared history and application-close reclamation. Not full GTK or full process sanitizer proof.",
+  "closed_history_regression": "NULL history-name and CLOSED restore on explicitly closed Options are included in the existing negative case"
+}

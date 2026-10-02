@@ -18,8 +18,16 @@ conflicting draft. It is explicitly separate from filesystem save. Config copy,
 duplicate and serialization retain the full draft, including unknown fields and
 curves; no ordinary-property ordering can overwrite the final JSON model.
 
-Selecting another brush records an edited draft in an unbounded per-options
-history. Resource selection publishes the complete replacement before dropping
+Selecting another brush records an edited draft in an unbounded application-owned
+history shared by independent Options objects and contexts. One typed application
+slot in the common BindingStore owns the history; no process singleton or second
+bridge is created. Owned sources and lossless snapshots survive closing an editor
+or Options object. Application closure cancels queued weak-generation history
+notifications and releases retained resources, including reentrant finalizers.
+Closed Options history access returns zero/NULL or an explicit CLOSED error.
+Currently the first Options initializes the sole application slot before
+activating its store. Future Gimp-owned features must extend this shared
+application initialization, not register a late slot in an already active store. Resource selection publishes the complete replacement before dropping
 old references, so a finalizer can safely select a newer resource. Notifications
 are revision-gated. External edits update a clean draft or flag a dirty draft's
 conflict. Closing during resource commit and last-reference release during
@@ -50,10 +58,15 @@ ownership survives a callback closing or dropping the last adapter reference.
 
 ## Verification and limits
 
-Eight native options cases cover generated properties, draft/curve/commit and
+Ten native options cases cover generated properties, draft/curve/commit and
 conflict behavior, history plus config copy/duplicate/round trip, notification
 last-reference release, closed/invalid-curve access, bidirectional shape/paper,
-old-resource finalizer selection reentry and close during memory commit.
+old-resource finalizer selection reentry and close during memory commit. The two
+additional cases verify cross-independent-Options/context restoration and shared
+history notifications, survival after the originating Options closes, and
+application-close resource reclamation. `mypaint-history-native.json` and
+`mypaint-history-sanitizers.json` record the exact source scope and hashes; all ten
+cases pass natively and under focused ASan/UBSan/float-cast-overflow.
 
 Eight native adapter cases cover exact pixels against the existing controller for
 incremental and nonincremental strokes; real Undo splitting and unsupported

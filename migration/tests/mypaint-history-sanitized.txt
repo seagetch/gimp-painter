@@ -1,0 +1,69 @@
+ninja: Entering directory `build-debian13'
+[1/23] Generating git-version.h.in.1 with a custom command
+[2/23] Generating git-version.h.in.2 with a custom command
+[3/23] Generating git-version.h with a custom command
+[4/17] Compiling C++ object app/painter/libapppainter.a.p/filter-raster-kernels.cpp.o
+[5/17] Compiling C++ object app/painter/libapppainter.a.p/filter-gauss.cpp.o
+[6/17] Linking static target app/painter/libapppainter.a
+[7/17] Compiling C++ object app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o
+[8/17] Linking static target app/paint/libapppaint.a
+[9/17] Compiling C++ object app/tests/gimp-painter-options.p/test-gimp-painter-options.cpp.o
+[10/17] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o
+[11/17] Linking static target app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a
+[12/17] Compiling C++ object app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o
+[13/17] Linking static target app/widgets/libappwidgets.a
+[14/17] Compiling C++ object app/core/libappcore.a.p/gimpfilterlayer.cpp.o
+[15/17] Linking static target app/core/libappcore.a
+[16/17] Linking target app/tests/painter-mypaint-editor
+[17/17] Linking target app/tests/gimp-painter-options
+ninja: Entering directory `/workspace/scratch/5b5281e79681/gimp-painter/build-debian13'
+[1/10] Generating git-version.h.in.1 with a custom command
+[2/10] Generating git-version.h.in.2 with a custom command
+[3/10] Generating git-version.h with a custom command
+1/1 gimp:app / gimp-painter-options OK              1.52s
+
+Ok:                 1
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0
+
+Full log written to /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/meson-logs/testlog.txt
+In file included from [01m[K../app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../app/paint/painter-mypaint/legacy-brush.hpp:397:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  397 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../app/core/gimpimage.c:[m[K In function ‘[01m[Kgimp_image_get_xcf_version[m[K’:
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_ERASE[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+ 2864 |       [01;35m[Kswitch[m[K (gimp_layer_get_mode (layer))
+      |       [01;35m[K^~~~~~[m[K
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_REPLACE[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_ANTI_ERASE[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_SRC_IN[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_DST_IN[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_SRC_OUT[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_DST_OUT[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_NORMAL[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_MULTIPLY[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+TAP version 14
+# random seed: R02Sb2c36680cb8b7db925a3559b75676831
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+1..10
+# Start of painter-options tests
+ok 1 /painter-options/generated-properties
+ok 2 /painter-options/edit-curve-commit-conflict
+ok 3 /painter-options/history-config
+ok 4 /painter-options/notification-last-ref
+ok 5 /painter-options/closed-invalid-curve
+ok 6 /painter-options/named-resources
+ok 7 /painter-options/selection-reentry
+ok 8 /painter-options/commit-close
+ok 9 /painter-options/cross-options-history
+ok 10 /painter-options/application-history-close
+# End of painter-options tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

@@ -17,9 +17,14 @@ extern "C" {
 #include "core/gimppaintermybrush-handle.hpp"
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
+#include "painter/source.hpp"
 #include "painter/gimp-painter-binding.h"
 #include "mypaintbrush-settings-data.h"
 #include <algorithm>
+namespace GimpPainter {
+template<> struct TypeTraits<Gimp>
+{ static GType type () noexcept { return GIMP_TYPE_GIMP; } };
+}
 using namespace GimpPainter;
 using MyPaint::Resource;
 static void config_iface_init(GimpConfigInterface*iface);
@@ -34,18 +39,77 @@ struct History {
   Resource resource;
   std::string name;
 };
+/* Legacy history was a process singleton. Share it across every Options in
+ * one application while keeping test/application instances and teardown apart.
+ * The application's existing BindingStore is the only ownership bridge. */
+struct HistoryState : std::enable_shared_from_this<HistoryState> {
+  struct Observer { WeakRef<GimpPainterMybrushOptions> owner; std::uint64_t generation; };
+  std::vector<History> entries;
+  std::vector<Observer> observers;
+  Source notification;
+  bool closed = false;
+  void observe (GimpPainterMybrushOptions *options) {
+    observers.erase (std::remove_if (observers.begin (), observers.end (),
+      [](const Observer& observer) { return !observer.owner.lock (); }), observers.end ());
+    observers.push_back ({WeakRef<GimpPainterMybrushOptions> (ObjectRef<GimpPainterMybrushOptions>::retain (options)),
+                          BindingStore::require (G_OBJECT (options)).generation ()});
+  }
+  void push (History value) {
+    if (closed) return;
+    entries.push_back (std::move (value));
+    if (notification.active ()) return;
+    std::weak_ptr<HistoryState> weak = shared_from_this ();
+    notification = Source::idle (nullptr, G_PRIORITY_DEFAULT_IDLE, [weak] {
+      auto state = weak.lock (); if (!state || state->closed) return false;
+      /* Callbacks can create/close Options and grow the observer vector. Never
+       * iterate that vector through a signal emission. */
+      struct Target { ObjectRef<GimpPainterMybrushOptions> owner; std::uint64_t generation; };
+      const auto revision = state->entries.size ();
+      std::vector<Target> targets;
+      for (const auto& observer : state->observers)
+        if (auto owner = observer.owner.lock ()) targets.push_back ({std::move (owner), observer.generation});
+      for (const auto& target : targets) {
+        if (state->closed) break;
+        auto *binding = BindingStore::find (G_OBJECT (target.owner.get ()));
+        if (binding && binding->accepts (target.generation))
+          g_signal_emit_by_name (target.owner.get (), "history-changed");
+      }
+      return !state->closed && state->entries.size () != revision;
+    });
+  }
+  void close () noexcept {
+    if (closed) return;
+    closed = true; notification.close (); observers.clear ();
+    auto old = std::move (entries); // publish empty before resource finalizers
+  }
+};
+struct ApplicationHistory {
+  std::shared_ptr<HistoryState> state = std::make_shared<HistoryState> ();
+  void close () noexcept { state->close (); }
+};
+struct ApplicationHistorySlot : SlotSpec<Gimp, ApplicationHistory> {};
+std::shared_ptr<HistoryState> application_history (Gimp *gimp) {
+  if (!GIMP_IS_GIMP (gimp)) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Painter history requires an application");
+  auto *binding = BindingStore::find (G_OBJECT (gimp));
+  if (!binding) {
+    binding = &BindingStore::ensure (G_OBJECT (gimp));
+    binding->emplace<ApplicationHistorySlot> ();
+    binding->activate ();
+  }
+  return binding->with<ApplicationHistorySlot> ([] (ApplicationHistory& history) { return history.state; });
+}
 struct OptionsImpl {
   Resource draft;
   ObjectRef<GimpPainterMybrush> selected;
   std::string baseline;
   Connection changed;
-  std::vector<History> history;
+  std::shared_ptr<HistoryState> history = std::make_shared<HistoryState> ();
   std::uint64_t revision=0;
   bool dirty=false,conflict=false,committing=false;
   void remember () {
-    if(dirty)history.push_back({selected,draft,selected&&gimp_object_get_name(selected.get())?gimp_object_get_name(selected.get()):"Unsaved painter brush"});
+    if(dirty && history)history->push({selected,draft,selected&&gimp_object_get_name(selected.get())?gimp_object_get_name(selected.get()):"Unsaved painter brush"});
   }
-  void close () noexcept {changed.close();selected.reset();history.clear();}
+  void close () noexcept {changed.close();selected.reset();history.reset();}
 };
 struct OptionsSlot : SlotSpec<GimpPainterMybrushOptions,OptionsImpl> {};
 BindingStore& store(GimpPainterMybrushOptions*o)
@@ -182,6 +246,12 @@ void constructed(GObject*object)
   auto*options=GIMP_PAINTER_MYBRUSH_OPTIONS(object);
   if(!options->binding_failed)options->binding_failed=!boundary<bool>(nullptr,false,[&]{
     store(options).activate();
+    auto shared_history=application_history(GIMP_CONTEXT(options)->gimp);
+    shared_history->observe(options);
+    store(options).with<OptionsSlot>([&](OptionsImpl&i){
+      for(auto& entry:i.history->entries)shared_history->push(std::move(entry));
+      i.history=std::move(shared_history);
+    });
     auto*context=GIMP_CONTEXT(options);auto*selected=gimp_context_get_painter_mybrush(context);
     if(!selected&&gimp_get_user_context(context->gimp))selected=gimp_context_get_painter_mybrush(gimp_get_user_context(context->gimp));
     if(!selected)selected=GIMP_PAINTER_MYBRUSH(gimp_painter_mybrush_get_standard(context));
@@ -281,6 +351,7 @@ static void gimp_painter_mybrush_options_class_init(GimpPainterMybrushOptionsCla
   properties[PROP_DIRTY]=g_param_spec_boolean("painter-dirty","Edited painter brush",nullptr,FALSE,G_PARAM_READABLE);
   properties[PROP_CONFLICT]=g_param_spec_boolean("painter-conflict","Saved brush changed",nullptr,FALSE,G_PARAM_READABLE);
   for(unsigned i=1;i<=PROP_CONFLICT;++i)g_object_class_install_property(object,i,properties[i]);
+  g_signal_new("history-changed",G_TYPE_FROM_CLASS(klass),G_SIGNAL_RUN_LAST,0,nullptr,nullptr,nullptr,G_TYPE_NONE,0);
   g_signal_new("settings-changed",G_TYPE_FROM_CLASS(klass),G_SIGNAL_RUN_LAST,0,nullptr,nullptr,nullptr,G_TYPE_NONE,0);
 }
 static void gimp_painter_mybrush_options_init(GimpPainterMybrushOptions*options)
@@ -333,13 +404,13 @@ gboolean gimp_painter_mybrush_options_commit(GimpPainterMybrushOptions*options,G
   });
 }
 guint gimp_painter_mybrush_options_history_size(GimpPainterMybrushOptions*options)
-{return boundary<guint>(nullptr,0,[&]{return store(options).read<OptionsSlot>([](const OptionsImpl&i){return guint(i.history.size());});});}
+{return boundary<guint>(nullptr,0,[&]{return store(options).read<OptionsSlot>([](const OptionsImpl&i){return i.history ? guint(i.history->entries.size()) : 0;});});}
 gchar*gimp_painter_mybrush_options_history_name(GimpPainterMybrushOptions*options,guint index)
-{return boundary<gchar*>(nullptr,nullptr,[&]{return store(options).read<OptionsSlot>([&](const OptionsImpl&i){return g_strdup(i.history.at(index).name.c_str());});});}
+{return boundary<gchar*>(nullptr,nullptr,[&]{return store(options).with<OptionsSlot>([&](const OptionsImpl&i){return g_strdup(i.history->entries.at(index).name.c_str());});});}
 gboolean gimp_painter_mybrush_options_restore_history(GimpPainterMybrushOptions*options,guint index,GError**error)
 {
   return boundary<gboolean>(error,FALSE,[&]() -> gboolean{
-    auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(options);auto saved=store(options).read<OptionsSlot>([&](const OptionsImpl&i){return i.history.at(index);});
+    auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(options);auto saved=store(options).with<OptionsSlot>([&](const OptionsImpl&i){return i.history->entries.at(index);});
     if(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options))==saved.source.get())store(options).with<OptionsSlot>([](OptionsImpl&i){i.remember();});
     else gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),saved.source.get());
     if(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options))!=saved.source.get())throw std::runtime_error("Brush selection changed while restoring history");
