@@ -46,6 +46,9 @@ headers={"app/tools/gimppaintermybrushtool.h", "app/tools/gimppaintermybrushtool
          "app/paint/painter-mypaint-surface/paint-core.hpp", "app/paint/painter-mypaint-surface/gimp-painter-options.h",
          "app/paint/painter-mypaint-surface/gimp-painter-options.hpp", "app/paint/painter-mypaint-surface/gimp-painter-session.h",
          "app/paint/painter-mypaint-surface/gimp-painter-session.hpp", "app/painter/binding-store.hpp", "app/painter/object-ref.hpp", "app/painter/connection.hpp"}
+wanted |= {"app/file/file-save.c", "app/xcf/xcf-save.c", "app/xcf/xcf-load.c", "app/core/gimpimage-convert-type.c"}
+headers |= {"app/paint/gimppaintcore.h", "app/paint/gimpbrushcore.h", "app/paint/gimppaintoptions.h", "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp"}
+report["scope"] += "; native Gray/Gray-alpha conversion, actual XCF Save/reload and Undo/Redo workflow"
 instrumented = set(wanted)
 rtti_only = bridge_rtti_sources(root, build) - instrumented
 wanted |= rtti_only

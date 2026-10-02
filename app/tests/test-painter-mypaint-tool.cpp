@@ -17,6 +17,12 @@ extern "C" {
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
+#include "core/gimpimage-convert-type.h"
+#include "core/gimplayer.h"
+#include "pdb/gimppdb.h"
+#include "plug-in/gimppluginprocedure.h"
+#include "file/file-save.h"
+#include "xcf/xcf.h"
 #include "core/gimppickable.h"
 #include "core/gimpprojection.h"
 #include "display/gimpcanvasitem.h"
@@ -182,6 +188,40 @@ static void last_ref_without_halt_rolls_back()
   const auto before=s.pixels();s.motion(false);s.press();auto id=g_signal_connect(s.drawable,"update",G_CALLBACK(drop_without_halt),&s.tool);s.coords.x+=20;s.motion(true,75);
   g_assert_null(s.tool);g_assert_true(finalized);g_assert_true(s.pixels()==before);g_assert_cmpint(s.depth(),==,0);g_signal_handler_disconnect(s.drawable,id);s.tool=selected;
 }
+static std::vector<guchar> native_pixels(GimpDrawable*d)
+{
+  auto*buffer=gimp_drawable_get_buffer(d);const auto*format=gegl_buffer_get_format(buffer);
+  std::vector<guchar>p(128*128*babl_format_get_bytes_per_pixel(format));
+  gegl_buffer_get(buffer,GEGL_RECTANGLE(0,0,128,128),1,format,p.data(),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);return p;
+}
+static void gray_tool_save_roundtrip()
+{
+  for(bool alpha:{false,true})for(bool floating:{false,true}){
+    Scene s;GError*error=nullptr;
+    g_assert_true(gimp_image_convert_type(s.image,GIMP_GRAY,nullptr,nullptr,&error));g_assert_no_error(error);
+    if(!alpha)gimp_layer_remove_alpha(GIMP_LAYER(s.drawable),GIMP_CONTEXT(s.options));
+    auto*buffer=gimp_drawable_get_buffer(s.drawable);const auto*format=gegl_buffer_get_format(buffer);
+    const int channels=babl_format_get_bytes_per_pixel(format);g_assert_cmpint(channels,==,alpha?2:1);
+    std::vector<guchar>initial(128*128*channels);for(std::size_t i=0;i<initial.size();i+=channels){initial[i]=32;if(alpha)initial[i+1]=80;}
+    gegl_buffer_set(buffer,GEGL_RECTANGLE(0,0,128,128),0,format,initial.data(),GEGL_AUTO_ROWSTRIDE);
+    gimp_drawable_update(s.drawable,0,0,128,128);gimp_image_undo_free(s.image);
+    g_object_set(s.options,"non-incremental",floating,"stroke-opacity",.37,nullptr);
+    s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);
+    const auto painted=native_pixels(s.drawable);g_assert_true(painted!=initial);
+    g_assert_true(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));
+    auto*procedure=gimp_pdb_lookup_procedure(gimp->pdb,"gimp-xcf-save");g_assert_true(GIMP_IS_PLUG_IN_PROCEDURE(procedure));
+    GFileIOStream*io=nullptr;auto*file=g_file_new_tmp("painter-gray-tool-XXXXXX.xcf",&io,&error);g_assert_no_error(error);g_assert_nonnull(file);g_assert_true(g_io_stream_close(G_IO_STREAM(io),nullptr,&error));g_assert_no_error(error);g_object_unref(io);
+    g_assert_cmpint(file_save(gimp,s.image,nullptr,file,GIMP_PLUG_IN_PROCEDURE(procedure),GIMP_RUN_NONINTERACTIVE,TRUE,FALSE,FALSE,&error),==,GIMP_PDB_SUCCESS);g_assert_no_error(error);
+    g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));g_assert_cmpint(s.depth(),==,1);g_assert_true(native_pixels(s.drawable)==painted);
+    if(gimp_tool_control_is_active(s.tool->control))s.release();
+    auto*stream=g_file_read(file,nullptr,&error);g_assert_no_error(error);auto*loaded=xcf_load_stream(gimp,G_INPUT_STREAM(stream),file,nullptr,&error);g_assert_no_error(error);g_assert_nonnull(loaded);g_object_unref(stream);
+    g_assert_cmpint(gimp_image_get_base_type(loaded),==,GIMP_GRAY);auto*layers=gimp_image_get_layer_list(loaded);g_assert_nonnull(layers);auto*d=GIMP_DRAWABLE(layers->data);
+    g_assert_cmpint(babl_format_get_bytes_per_pixel(gegl_buffer_get_format(gimp_drawable_get_buffer(d))),==,channels);g_assert_true(native_pixels(d)==painted);g_list_free(layers);g_object_unref(loaded);
+    g_assert_true(gimp_image_undo(s.image));g_assert_true(native_pixels(s.drawable)==initial);g_assert_true(gimp_image_redo(s.image));g_assert_true(native_pixels(s.drawable)==painted);
+    g_assert_true(g_file_delete(file,nullptr,&error));g_assert_no_error(error);g_object_unref(file);
+  }
+}
+
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
@@ -198,5 +238,6 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-tool/outline-projection",outline_and_projection);
   g_test_add_func("/painter-tool/public-press-last-ref",public_press_drops_last_ref);
   g_test_add_func("/painter-tool/last-ref-without-halt",last_ref_without_halt_rolls_back);
+  g_test_add_func("/painter-tool/gray-native-save-roundtrip",gray_tool_save_roundtrip);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
 }

@@ -111,3 +111,16 @@ Windows and macOS acceptance are not established by this checkpoint. Inactive
 hover currently creates transient resource adapters, so full pipe sequence and
 previous-coordinate behavior requires its own comparison. Sampling-only hover
 is an intentional safety correction, separate from active-stroke pixel parity.
+
+## Native Gray XCF workflow follow-on
+
+The registered GTK suite now has14 groups. Its added group covers all four
+Gray/Gray-alpha and incremental/nonincremental combinations through native
+image conversion, registered public tool press/motion, actual `gimp-xcf-save`,
+XCF reload, native-format byte comparison, Undo and Redo. Save finishes the
+pending logical stroke once. Both normal14 and ASan/UBSan/vptr14 exit0, with
+37 instrumented and24 RTTI-only sources plus15 checked headers; LSan is off.
+Exact source snapshots and raw diagnostics accompany the workflow report.
+The input remains synthetic Tool API events on a real GTK display, not a
+physical tablet test. Built-in D65 Grayscale/sRGB TRC is exercised; arbitrary
+ICC and high-precision work remain in `mypaint-remaining-renderer-handoff.md`.
