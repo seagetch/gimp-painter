@@ -270,6 +270,7 @@
 | 04.009/json-dependency | [ ] | JSON reader/writer の直接リンク依存を登録する | 04.009, 01.011 | JSON-GLib のinclude/linkをcore・presetsへ明示し、他依存を外しても未解決symbolが出ない |
 | 04.010 | [ ] | 例外方針を compiler 設定に反映する | 04.009 | C++ 内部での扱いと C 境界での捕捉が一致 |
 | 04.011 | [ ] | RTTI 使用箇所を分離する | 04.010 | 移行用 dynamic_cast の条件と新 API の非依存を記録 |
+| 04.011/sanitizer-rtti-scope | [x] | focused sanitizerのRTTI補完範囲を実compile DBから区別する | 04.002/common-foundation | 3 metadata試験でC++各suffix・command/arguments・production境界を確認。-fno-rtti補完はRTTI-onlyとinstrumentedを区別しvptrを無効化しない。過去cpp-only helperをSHA付き保存し拡張closureの全runtime合格は主張しない |
 | 04.012 | [ ] | symbol visibility を設定する | 04.011 | 必要な C 入口のみ公開し、内部 C++ ABI を配布契約にしない |
 | 04.013 | [ ] | enum 等の生成規則を Meson に接続する | 04.012 | 生成元変更で C/C++ 両方の対象が再ビルドされる |
 | 04.013/brush-setting-generator | [x] | 旧MyPaint設定の生成元を復元する | 04.002/common-foundation, 01.010 | 旧treeにないgenerate.pyの代わりに名前・index・型・既定値の正本を定め、103定数と設定tableを再生成し差分検査する |
