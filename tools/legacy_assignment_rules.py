@@ -100,6 +100,15 @@ profile('fill-iterator', 'Bounded fill traversal and iterator lifetime', '09.003
 profile('fill-coverage', 'Fill distance and soft selection penalty', '27.003 27.005/selection-barrier 27.005/selection-threshold-contract 27.006', '27.013 27.014 27.015', 'Preserve distance, transparency and coverage formula; zero selection is not an unconditional barrier at every legacy threshold.')
 profile('device-identity', 'Input device unique-name identity', '30.007/device-name-identity', '23.015 36.019', 'Compare duplicate-device names and restored per-device state before accepting the old unique-names policy.')
 
+profile('resource-registration', 'Extended brush factory lifecycle and search paths', '08.005 19.013 19.014 30.009 30.011 30.016', '19.015 24.017 36.019', 'Register the extended loader/factory and preserve restore, save, disposal and configured resource paths.')
+profile('factory-registration', 'Generic JSON/preset resource factory registration', '28.003 30.016', '28.013 28.015 36.019', 'Preserve factory-table key lookup and lifetime separately from tool-group and brush registration.')
+profile('core-type-declarations', 'Custom core type declarations and registration', '04.003 04.004 08.001', '04.014 04.017', 'Preserve each declared resource, layer, guide and tool type in the C/GObject registry without leaking C++ templates.')
+profile('tool-registration', 'Custom tool registration in the shared manager', '08.008 08.010 08.012 30.003 30.004', '23.015 26.014 27.015 29.020', 'Register MyPaint, perspective guide and bucket brush in the current manager with correct options/core associations.')
+profile('event-compression', 'Ordered motion compression and event reinjection', '23.009 23.014/event-compression-order', '23.015 29.020', 'Retain motion-event ownership and stop/reinject non-motion events in order; do not lose release, key, crossing or device changes.')
+profile('ruler-input', 'Perspective lazy snap and paint-event ordering', '23.012 26.007 26.008 26.009 23.014', '23.015 26.013 26.014', 'Preserve direction-lock threshold, deferred begin_tool, full-motion tracking and stroke release state.')
+profile('view-gesture', 'Drag rotate/zoom and transformed pan gestures', '25.001 25.002 25.003 25.004 25.005 25.006 25.007 25.008 25.009 25.009/drag-zoom-scroll', '25.011 25.012 29.020', 'Keep shift/control entry conditions, drag zoom distance and transformed pan origins alongside rotation/snap state.')
+profile('mirror-key', 'Mirrored horizontal keyboard input', '25.008/mirrored-arrow-input', '25.011 29.020', 'Preserve Left/Right key remapping only in mirrored display state and verify press/release and tool event routing.')
+
 FILES = {}
 def files(key, *names):
     for name in names:
@@ -260,6 +269,23 @@ OVERRIDES = {
     'app/core/gimpgrouplayer.c': {3:'invalidation',8:'invalidation'},
     'app/core/gimpimage.c': {1:'ruler',2:'ruler',3:'ruler',4:'ruler',5:'invalidation',6:'invalidation',7:'invalidation',8:'invalidation',9:'invalidation'},
     'app/core/gimptooloptions.c': {7:'tool-delete'},
+    'app/core/core-types.h': {i:'core-type-declarations' for i in range(1,6)},
+    'app/core/gimp.c': {1:'resource-registration',2:'tool-group',3:'factory-registration',4:'tool-group',5:'resource-registration',6:'resource-registration',7:'resource-registration',8:'factory-registration',9:'resource-registration',10:'tool-group',11:'factory-registration'},
+    'app/core/gimp.h': {1:'resource-registration',2:'core-type-declarations',3:'tool-group',4:'tool-group',5:'factory-registration'},
+    'app/tools/gimp-tools.c': {3:'fill',4:'placeholder',5:'ruler',6:'brush-tool',9:'toolbar',11:'tool-registration',12:'tool-registration',13:'placeholder',19:'toolbar',20:'toolbar',21:'toolbar',22:'toolbar',28:'toolbar',29:'toolbar',30:'toolbar',38:'toolbar',40:'toolbar'},
+    'app/display/gimpdisplayshell-tool-events.c': {
+        **{i:'view-gesture' for i in (1,3,4,6,7,19,22,25,28,29,30,31,32,43,44,45,46,47)},
+        **{i:'ruler-input' for i in (2,5,9,20,21,24,33,34,35,36,37,38,39,42)},
+        **{i:'event-compression' for i in (8,10,26,27,51,52)},
+        **{i:'cleanup' for i in (11,12,18,50)},40:'mirror-key',48:'toolbar',49:'toolbar',
+    },
+    'app/widgets/gimpwidgets-constructors.c': {i:'mode-enum' for i in range(1,6)},
+    'app/widgets/gimpdnd.c': {i:'tool-group' for i in range(1,16)},
+    'app/widgets/gimpdnd.h': {1:'tool-group'},
+    'app/widgets/gimpselectiondata.c': {i:'tool-group' for i in range(1,5)},
+    'app/widgets/gimpselectiondata.h': {1:'tool-group'},
+    'app/dialogs/dialogs-constructors.c': {1:'brush-list',2:'brush-editor',3:'brush-list',4:'brush-list',5:'brush-editor'},
+    'app/dialogs/dialogs.c': {1:'brush-list',2:'brush-editor'},
     'app/core/core-enums.c': {1:'preset-apply',2:'brush-undo',3:'brush-undo',4:'preset-apply',5:'brush-undo',6:'brush-undo',7:'smudge',8:'smudge'},
     'app/core/core-enums.h': {1:'preset-apply',2:'brush-undo',3:'brush-undo',4:'smudge',5:'brush-context',6:'brush-context',7:'brush-context',8:'brush-context'},
     'app/core/gimpcontext.c': {i:'cpp-header' for i in (11,14,15,23,25,26,27,28,29,30,31,32,33)},

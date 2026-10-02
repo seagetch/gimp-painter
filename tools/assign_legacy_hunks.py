@@ -40,9 +40,9 @@ def tsv(fields, rows):
     out=io.StringIO(); w=csv.DictWriter(out,fields,delimiter='\t',lineterminator='\n')
     w.writeheader(); w.writerows(rows); return out.getvalue()
 
-def task_catalog():
+def task_catalog(path=None):
     result={}
-    for line in (ROOT/'tasks.md').read_text().splitlines():
+    for line in (Path(path) if path else ROOT/'tasks.md').read_text().splitlines():
         if not re.match(r'^\| \d{2}\.\d{3}',line):continue
         cells=[c.strip() for c in line.split('|')[1:-1]]
         if len(cells)==5: result[cells[0]]=dict(title=cells[2], acceptance=cells[4])

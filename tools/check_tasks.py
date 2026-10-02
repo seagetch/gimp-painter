@@ -130,6 +130,8 @@ def validate(tasks_path: Path, evidence_path: Path) -> list[str]:
                     any(r['status'] != 'DONE' or not r['legacy_site'] or not r['target_site']
                         or not r['behavior_evidence'] or not r['followup'] for r in reviews)):
                 errors.append('01.012: incomplete upstream contract checklist')
+    from check_legacy_ledgers import validate_ledgers
+    errors.extend(validate_ledgers(rows, tasks_path, evidence_path))
     return errors
 
 

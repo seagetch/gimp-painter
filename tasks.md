@@ -202,7 +202,7 @@
 | 01.015 | [x] | C++ 以外の補助スクリプトを照合する | 01.014 | 全37 auxiliary path・83 hunkと6生成関係を照合。Ruby/Bash/Perl・Scheme定数・未変更Python依存を対応し、欠落generatorと旧dispatch生成不整合を記録（`migration/inventory/auxiliary-scripts.md`） |
 | 01.016 | [x] | 標準 paint の独自差分を照合する | 01.015, 01.016/bucket-selection-source | paintbrush・Smudge・dynamics・context・bucket・入力36pathの306hunkを全変更行と固定移植先へ対応（`migration/inventory/standard-paint-contracts.md`）。実行互換性は後続試験 |
 | 01.016/bucket-selection-source | [x] | 旧標準 bucket fill の選択境界差分を現行全域探索と照合する | 01.015, 01.005/fill-brush-boundary | source mask入力・境界・alpha・offset・探索後clipとの差を確認。旧C式の6試験で部分coverageと閾値255の通過反例を検証、実作品fixtureは27.005/selection-threshold-contractへ追跡 |
-| 01.017 | [ ] | 全差分の粒度を検査する | 01.016 | 一行の割当が複数の未実装変更を隠す場合は個別子タスクへ展開 |
+| 01.017 | [x] | 全差分の粒度を検査する | 01.016 | 2,891 sourceチェックを16,153実装・6,881検証の単一WBS義務へ展開し全23,034実行行をTODOで分離。複合event・factory・tool登録を分割、欠落/重複/根拠なしDONEをgateで拒否（`migration/inventory/granularity-audit.md`） |
 
 ### 02 旧版の再現環境と比較データ
 
@@ -797,6 +797,7 @@
 | 23.012 | [ ] | 定規と補正の順序を実装する | 23.011 | 拘束後の入力が旧動作と一致 |
 | 23.013 | [ ] | 対称描画との順序を接続する | 23.012 | 現行機能と併用して座標が破綻しない |
 | 23.014 | [ ] | tool 切替・focus loss の取消しを接続する | 23.013 | 途中 stroke と pointer 状態を解放 |
+| 23.014/event-compression-order | [ ] | motion圧縮と非motionイベント再投入の順序を維持する | 23.013, 01.017 | 旧compress_motionとnext_event経路を現行入力へ接続し、pen up・key・crossing・device切替が欠落せずイベント所有が一回解放される |
 | 23.015 | [ ] | ペン入力の回帰試験を実行する | 23.014 | 連続・微小・固定筆圧・pen up を比較 |
 
 ### 24 ブラシ editor・履歴・プレビュー
@@ -841,7 +842,9 @@
 | 25.006 | [ ] | 15度の丸めを実装する | 25.005 | 正負と半刻みの期待値が一致 |
 | 25.007 | [ ] | 0/360度の境界を処理する | 25.006 | 角度飛びと方向反転がない |
 | 25.008 | [ ] | 表示反転中の方向を移植する | 25.007 | 旧水平反転時の計算と一致 |
+| 25.008/mirrored-arrow-input | [ ] | 表示反転中の左右キー入力を移植する | 25.007, 01.017 | mirrored時のLeft/Right変換と非反転時の不変を、押下・解除・toolへの転送・回転併用で試験する |
 | 25.009 | [ ] | 現行表示行列へ接続する | 25.008 | canvas と overlay が同じ角度を使用 |
+| 25.009/drag-zoom-scroll | [ ] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |
 | 25.010 | [ ] | 回転 reset action を接続する | 25.009 | 状態と UI 表示が一致 |
 | 25.011 | [ ] | modifier を含む操作試験を実行する | 25.010 | 記録した全キー遷移の期待角に一致 |
 | 25.012 | [ ] | ペン・マウスの両方を試験する | 25.011 | 入力デバイスで snap 条件が変わらない |

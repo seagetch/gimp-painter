@@ -18,8 +18,8 @@ repetitive controls, packaging and assets. An unknown path, changed hunk range,
 missing source section, undefined WBS action, missing verification action or
 changed generated output fails validation. Whole-file additions may require
 several independent actions; this is explicit in the task list, not a claim
-that a whole file is one implementation step. The subsequent 01.017 work-item
-checklist expands those actions before the inventory gate closes.
+that a whole file is one implementation step. The 01.017 work-item
+checklist expands those actions separately; see `legacy-port-work-items.tsv`.
 
 ## Newly explicit work
 
