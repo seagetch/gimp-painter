@@ -1,0 +1,6 @@
+(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE "/workspace/scratch/5b5281e79681/gimp-painter/app/tests/files/gimp-2-6-file.xcf" "/workspace/scratch/5b5281e79681/gimp-painter/app/tests/files/gimp-2-6-file.xcf")))
+       (visible (car (gimp-layer-new-from-visible image image "projection"))))
+  (gimp-image-insert-layer image visible 0 0)
+  (file-png-save2 RUN-NONINTERACTIVE image visible "/workspace/shared/legacy-upstream-projection/upstream-projection.png" "/workspace/shared/legacy-upstream-projection/upstream-projection.png" 0 9 0 0 0 0 0 0 1)
+  (gimp-image-delete image)
+  (gimp-message "UPSTREAM_PROJECTION_DONE"))

@@ -1,0 +1,90 @@
+  Installing layer-presets-path with default = ${gimp_dir}/layer-presets:${gimp_data_dir}/layer-presets
+  Installing layer-presets-path-writable with default = ${gimp_dir}/layer-presets
+GimpCoreConfig: Set properties_base to 62
+  Installed set_property_handler
+  Installed get_property_handler
+Installed::N4GLib13GClassWrapperINS_11UseCStructsI15_GimpBaseConfig15_GimpCoreConfigEEE9WithClassE-> prop=layer-presets-path, id=62
+  Kept set_property_handler
+  Kept get_property_handler
+Installed::N4GLib13GClassWrapperINS_11UseCStructsI15_GimpBaseConfig15_GimpCoreConfigEEE9WithClassE-> prop=layer-presets-path-writable, id=63
+Install ConfigExtender.
+set::readonly path to `${gimp_dir}/layer-presets:${gimp_data_dir}/layer-presets'
+set::writable path to `${gimp_dir}/layer-presets'
+Install ConfigExtender.
+set::readonly path to `${gimp_dir}/layer-presets:${gimp_data_dir}/layer-presets'
+set::writable path to `${gimp_dir}/layer-presets'
+
+(gimp-2.8:9): GLib-GObject-CRITICAL **: 10:23:57.739: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(gimp-2.8:9): GLib-GObject-CRITICAL **: 10:23:57.740: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+get::readonly path
+get::readonly path
+get::writable path
+get::writable path
+
+(gimp-2.8:9): GLib-GObject-CRITICAL **: 10:23:57.741: g_object_set_is_valid_property: object class 'GeglConfig' has no property named 'cache-size'
+GimpJsonResource: Set properties_base to 8
+  Installed set_property_handler
+  Installed get_property_handler
+Installed::N4GLib13GClassWrapperINS_11UseCStructsI9_GimpData17_GimpJsonResourceEEE9WithClassE-> prop=root, id=8
+Feature::entry_point: add restore/exit on initialize.
+
+(gimp-2.8:9): Gimp-Widgets-CRITICAL **: 10:23:57.747: gimp_dialog_factory_get_singleton: assertion 'gimp_toplevel_factory != NULL' failed
+PresetGuiFactory::on_restore::GimpDialogFactory=(nil)
+
+(gimp-2.8:9): Gimp-Widgets-CRITICAL **: 10:23:57.747: gimp_dialog_factory_register_entry: assertion 'GIMP_IS_DIALOG_FACTORY (factory)' failed
+PresetGuiFactory::on_restore::end
+
+(gimp-2.8:9): Gimp-Widgets-CRITICAL **: 10:23:57.747: gimp_action_factory_group_register: assertion 'GIMP_IS_ACTION_FACTORY (factory)' failed
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x557f79aa2630:  set ignore_undos=0
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x557f79ac2280:  set ignore_undos=0
+xcf_load[33f]: image: PROP_END
+xcf_load_layer
+xcf_load[3ea]: layer_props: PROP_END
+xcf_load_layer[3f2]: done: load_layer_props
+xcf_load_layer[3f2]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[3f2]: read: hierarchy_offset  =3fa
+xcf_load_layer[3f6]: read: layer_mask_offset  =43a
+xcf_load_layer[3fa]: read: load_hierarchy
+xcf_load[3fa] hierarchy:: read width=25
+xcf_load[3fe] hierarchy:: read height=251
+xcf_load[402] hierarchy:: read bpp=3
+tile_manager: width=25, height=251, bpp=3
+xcf_load[406] hierarchy:: read offset=1046
+xcf_load[416] hierarchy:: xcf_load_levelxcf_load[422] hierarchy:: done: xcf_load_levelxcf_load[4a5] hierarchy:: read width=25
+xcf_load[4a9] hierarchy:: read height=251
+xcf_load[4ad] hierarchy:: read bpp=1
+tile_manager: width=25, height=251, bpp=1
+xcf_load[4b1] hierarchy:: read offset=1217
+xcf_load[4c1] hierarchy:: xcf_load_levelxcf_load[4dd] hierarchy:: done: xcf_load_levelxcf_load_layer
+xcf_load[598]: layer_props: PROP_END
+xcf_load_layer[5a0]: done: load_layer_props
+xcf_load_layer[5a0]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[5a0]: read: hierarchy_offset  =5a8
+xcf_load_layer[5a4]: read: layer_mask_offset  =0
+xcf_load_layer[5a8]: read: load_hierarchy
+xcf_load[5a8] hierarchy:: read width=50
+xcf_load[5ac] hierarchy:: read height=51
+xcf_load[5b0] hierarchy:: read bpp=4
+tile_manager: width=50, height=51, bpp=4
+xcf_load[5b4] hierarchy:: read offset=1468
+xcf_load[5bc] hierarchy:: xcf_load_levelxcf_load[5c8] hierarchy:: done: xcf_load_levelxcf_load[638] hierarchy:: read width=100
+xcf_load[63c] hierarchy:: read height=90
+xcf_load[640] hierarchy:: read bpp=1
+tile_manager: width=100, height=90, bpp=1
+xcf_load[644] hierarchy:: read offset=1616
+xcf_load[650] hierarchy:: xcf_load_levelxcf_load[65c] hierarchy:: done: xcf_load_levelxcf_load[6de] hierarchy:: read width=100
+xcf_load[6e2] hierarchy:: read height=90
+xcf_load[6e6] hierarchy:: read bpp=1
+tile_manager: width=100, height=90, bpp=1
+xcf_load[6ea] hierarchy:: read offset=1782
+xcf_load[6f6] hierarchy:: xcf_load_levelxcf_load[712] hierarchy:: done: xcf_load_levelpush_undo: GimpLayerUndo=55
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x557f79ccc030:  set ignore_undos=0
+script-fu-Warning: UPSTREAM_PROJECTION_DONE
+
+batch command executed successfully
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x557f79ac2280:  set ignore_undos=0
