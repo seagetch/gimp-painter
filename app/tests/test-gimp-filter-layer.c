@@ -4,6 +4,7 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include <stddef.h>
+#include <glib/gstdio.h>
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 #include "libgimpcolor/gimpcolor.h"
@@ -24,6 +25,7 @@
 #include "tests.h"
 #include "gimp-app-test-utils.h"
 void gimp_test_filter_cpp_layout (gsize size, gsize offset, GimpFilterLayer *layer);
+GBytes *gimp_test_filter_cpp_gauss_reference (const guint8 *native, gsize width, gsize height, guint channels, gint method);
 static Gimp *gimp;
 static gint broken_filter_finalized;
 typedef struct { GimpFilterLayer parent; } TestBrokenFilter;
@@ -147,19 +149,19 @@ static void automatic_updates_and_self_exclusion (void)
 }
 static void count_image_flush (GimpImage *image, gboolean invalidate_preview, gpointer data)
 { ++*(guint *) data; }
-static void completion_flushes_image_projection (void)
+static void projection_completion_for_size (gint width, gint height)
 {
-  GimpImage *image = image_new (256,1024);
-  GimpLayer *source = source_new (image,NULL,256,1024);
+  GimpImage *image = image_new (width,height);
+  GimpLayer *source = source_new (image,NULL,width,height);
   GimpLayer *clone;
   GimpFilterLayer *filter;
   GeglBuffer *projection;
   guchar value[4];
   guint flushes = 0;
   fill (source,255,255,255,255);
-  clone = gimp_clone_layer_new (image,source,256,1024,"Background clone",1,GIMP_LAYER_MODE_PAINTER_NORMAL);
+  clone = gimp_clone_layer_new (image,source,width,height,"Background clone",1,GIMP_LAYER_MODE_PAINTER_NORMAL);
   gimp_image_add_layer (image,clone,NULL,0,FALSE);
-  filter = GIMP_FILTER_LAYER (gimp_filter_layer_new (image,256,1024,"Replace edge",1,GIMP_LAYER_MODE_PAINTER_REPLACE));
+  filter = GIMP_FILTER_LAYER (gimp_filter_layer_new (image,width,height,"Replace edge",1,GIMP_LAYER_MODE_PAINTER_REPLACE));
   gimp_image_add_layer (image,GIMP_LAYER (filter),NULL,0,FALSE); define_edge (filter);
   /* A display has already rendered the initially empty completed cache. */
   gimp_pickable_flush (GIMP_PICKABLE (image));
@@ -178,6 +180,8 @@ static void completion_flushes_image_projection (void)
   g_assert_cmpuint (value[2], ==, 0); g_assert_cmpuint (value[3], ==, 255);
   g_object_unref (image);
 }
+static void completion_flushes_image_projection (void) { projection_completion_for_size (256,1024); }
+static void spill_completion_flushes_image_projection (void) { projection_completion_for_size (1100,1024); }
 static void saved_definition_is_separate (void)
 {
   const guchar original[] = {0,0,0,1,0xfe,0x89,0,0xff,0};
@@ -1336,9 +1340,9 @@ static void small_image_finishes_during_large_preparation (void)
 static void image_close_during_worker (void)
 {
   gint finalized = 0;
-  GimpImage *image = image_new (1024,1024);
-  GimpLayer *source = source_new (image,NULL,1024,1024);
-  GimpFilterLayer *filter = filter_new (image,NULL,1024,1024);
+  GimpImage *image = image_new (1025,1025);
+  GimpLayer *source = source_new (image,NULL,1025,1025);
+  GimpFilterLayer *filter = filter_new (image,NULL,1025,1025);
   GimpValueArray *args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,
     G_TYPE_DOUBLE,25.0,G_TYPE_DOUBLE,25.0,G_TYPE_INT,0,G_TYPE_NONE);
   gint64 deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 20, start;
@@ -1367,11 +1371,11 @@ static gboolean edit_lower_repeatedly (gpointer data)
   g_object_unref (color); gimp_drawable_update (GIMP_DRAWABLE (editing->source),0,0,128,512);
   return editing->updates < 20;
 }
-static void sustained_edits_converge (void)
+static void edits_converge_for_size (gint width, gint height)
 {
-  GimpImage *image = image_new (256,512);
-  GimpLayer *source = source_new (image,NULL,256,512);
-  GimpFilterLayer *filter = filter_new (image,NULL,256,512);
+  GimpImage *image = image_new (width,height);
+  GimpLayer *source = source_new (image,NULL,width,height);
+  GimpFilterLayer *filter = filter_new (image,NULL,width,height);
   Editing editing = {source,0};
   guchar value[4];
   guint timer;
@@ -1392,18 +1396,134 @@ static void sustained_edits_converge (void)
   g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), <, 20);
   g_object_unref (image);
 }
-static void oversized_execution_preserves_definition (void)
+static void sustained_edits_converge (void) { edits_converge_for_size (256,512); }
+static void spill_sustained_edits_converge (void) { edits_converge_for_size (1025,1025); }
+
+static void spill_storage_failure_preserves_cache (void)
 {
-  GimpImage *image = image_new (8193,8193);
-  GimpFilterLayer *filter = filter_new (image,NULL,8193,8193);
-  gchar *error, *name;
-  spin_ms (15);
+  GimpImage *image = image_new (1025,1025);
+  GimpLayer *source = source_new (image,NULL,1025,1025);
+  GimpFilterLayer *filter;
+  GeglBuffer *cache;
+  gchar *original_directory = NULL, *failing_directory, *message;
+  gint64 deadline;
+  fill (source,31,47,93,255); filter = filter_new (image,NULL,1025,1025);
+  fill (GIMP_LAYER (filter),11,22,33,255); gimp_filter_layer_mark_as_loaded (filter);
+  cache = g_object_ref (gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)));
+  g_object_get (gegl_config (),"swap",&original_directory,NULL);
+  failing_directory = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_BUILDDIR"),"filter-spill-cache","removed-spool-directory",NULL);
+  g_assert_cmpint (g_mkdir_with_parents (failing_directory,0700), ==, 0);
+  g_object_set (gegl_config (),"swap",failing_directory,NULL);
+  g_assert_cmpint (g_rmdir (failing_directory), ==, 0);
+  gimp_filter_layer_invalidate (filter);
+  deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+  while (gimp_filter_layer_get_state (filter) != GIMP_FILTER_LAYER_FAILED && g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
   g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_FAILED);
   g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
-  error = gimp_filter_layer_dup_error (filter); g_assert_nonnull (strstr (error,"bounded raster size")); g_free (error);
-  name = gimp_filter_layer_dup_procedure (filter); g_assert_cmpstr (name, ==, "plug-in-edge"); g_free (name);
-  g_object_unref (image);
+  g_assert_true (cache == gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)));
+  pixel (GIMP_LAYER (filter),11,22,33,255);
+  message = gimp_filter_layer_dup_error (filter); g_assert_nonnull (strstr (message,"temporary raster")); g_free (message);
+  spin_ms (20); g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
+  g_object_set (gegl_config (),"swap",original_directory,NULL); g_free (original_directory); g_free (failing_directory);
+  gimp_filter_layer_invalidate (filter); settle (filter); pixel (GIMP_LAYER (filter),0,0,0,255);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 1);
+  g_object_unref (cache); g_object_unref (image);
 }
+
+static void generated_spill_gaussian_fixture (gboolean gray)
+{
+  const gint width = 1025, height = 1025;
+  const guint channels = gray ? 2 : 4;
+  const gsize bytes = (gsize) width * height * channels;
+  GimpImage *image = gimp_image_new (gimp,width,height,gray ? GIMP_GRAY : GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+  GimpColorProfile *profile = gray ? gimp_color_profile_new_d50_gray_lab_trc () : gimp_color_profile_new_rgb_adobe ();
+  GimpLayer *source;
+  GimpFilterLayer *filter;
+  GError *error = NULL;
+  const Babl *native;
+  gchar *path, *fixture = NULL;
+  gsize fixture_size;
+  guchar *input = g_malloc (bytes), *actual = g_malloc (bytes);
+  g_assert_true (gimp_image_set_color_profile (image,profile,&error)); g_assert_no_error (error); g_object_unref (profile);
+  native = gimp_image_get_layer_format (image,TRUE);
+  source = gimp_layer_new (image,width,height,native,"generated native spill source",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+  gimp_image_add_layer (image,source,NULL,0,FALSE);
+  path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),gray ?
+    "migration/fixtures/legacy-gray-filter/input-opaque.ya" : "migration/fixtures/legacy-gauss/input-opaque.rgba",NULL);
+  g_assert_true (g_file_get_contents (path,&fixture,&fixture_size,NULL)); g_free (path);
+  g_assert_cmpuint (fixture_size, ==, 9*8*channels);
+  for (gint y = 0; y < height; ++y)
+    for (gint x = 0; x < width; ++x)
+      memcpy (input+((gsize) y*width+x)*channels,fixture+((y%8)*9+x%9)*channels,channels);
+  g_free (fixture);
+  gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)),GEGL_RECTANGLE (0,0,width,height),0,native,input,GEGL_AUTO_ROWSTRIDE);
+  gimp_drawable_update (GIMP_DRAWABLE (source),0,0,width,height);
+  filter = filter_new (image,NULL,width,height);
+  for (gint method = 0; method < 2; ++method)
+    {
+      GBytes *expected = gimp_test_filter_cpp_gauss_reference (input,width,height,channels,method);
+      GimpValueArray *args = gimp_value_array_new_from_types (NULL,G_TYPE_INT,1,G_TYPE_INT,123,G_TYPE_INT,456,
+        G_TYPE_DOUBLE,25.0,G_TYPE_DOUBLE,25.0,G_TYPE_INT,method,G_TYPE_NONE);
+      g_assert_true (gimp_filter_layer_set_definition (filter,"plug-in-gauss",NULL,args,NULL)); gimp_value_array_unref (args);
+      settle (filter);
+      gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)),GEGL_RECTANGLE (0,0,width,height),1.0,
+                      native,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      g_assert_cmpmem (actual,bytes,g_bytes_get_data (expected,NULL),g_bytes_get_size (expected)); g_bytes_unref (expected);
+    }
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 2);
+  g_free (input); g_free (actual); g_object_unref (image);
+}
+static void spill_gaussian_native_gray (void) { generated_spill_gaussian_fixture (TRUE); }
+static void spill_gaussian_native_rgb (void) { generated_spill_gaussian_fixture (FALSE); }
+
+static void large_spill_execution_finishes (void)
+{
+  GimpImage *image = image_new (8193,8193);
+  GimpLayer *source = source_new (image,NULL,8193,8193);
+  GimpFilterLayer *filter;
+  GeglColor *white = gegl_color_new ("white");
+  guchar far_pixel[4];
+  gchar *name;
+  HeartbeatLatency samples = {0,g_array_new (FALSE,FALSE,sizeof (gint64))};
+  guint timer;
+  gint64 started, deadline, closing_started;
+  gegl_buffer_set_color (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)),GEGL_RECTANGLE (8191,8191,2,2),white);
+  g_object_unref (white); gimp_drawable_update (GIMP_DRAWABLE (source),8191,8191,2,2);
+  filter = filter_new (image,NULL,8193,8193);
+  started = samples.previous = g_get_monotonic_time (); deadline = started + 120 * G_TIME_SPAN_SECOND;
+  timer = g_timeout_add (2,sample_heartbeat_latency,&samples);
+  while (g_get_monotonic_time () < deadline && gimp_filter_layer_get_state (filter) != GIMP_FILTER_LAYER_CLEAN &&
+         gimp_filter_layer_get_state (filter) != GIMP_FILTER_LAYER_FAILED)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  g_source_remove (timer);
+  if (gimp_filter_layer_get_state (filter) == GIMP_FILTER_LAYER_FAILED)
+    { gchar *error = gimp_filter_layer_dup_error (filter); g_error ("Large spill failed: %s",error); }
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLEAN);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 1);
+  g_assert_cmpuint (gimp_filter_layer_get_cache_generation (filter), ==, gimp_filter_layer_get_generation (filter));
+  pixel (GIMP_LAYER (filter),0,0,0,0);
+  gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)),GEGL_RECTANGLE (8192,8192,1,1),1.0,
+                  babl_format ("R'G'B'A u8"),far_pixel,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+  g_assert_cmpint (far_pixel[0], ==, 0); g_assert_cmpint (far_pixel[1], ==, 0);
+  g_assert_cmpint (far_pixel[2], ==, 0); g_assert_cmpint (far_pixel[3], ==, 255);
+  name = gimp_filter_layer_dup_procedure (filter); g_assert_cmpstr (name, ==, "plug-in-edge"); g_free (name);
+  g_assert_cmpuint (samples.intervals->len, >, 10);
+  g_array_sort (samples.intervals,compare_latency);
+  g_test_message ("large-spill width=8193 height=8193 pixels=67125249 wall_us=%" G_GINT64_FORMAT
+    " max_quantum_us=%" G_GINT64_FORMAT " heartbeat_samples=%u heartbeat_p50_us=%" G_GINT64_FORMAT
+    " heartbeat_p95_us=%" G_GINT64_FORMAT " heartbeat_p99_us=%" G_GINT64_FORMAT " heartbeat_max_us=%" G_GINT64_FORMAT,
+    g_get_monotonic_time ()-started,gimp_filter_layer_get_max_quantum_us (filter),samples.intervals->len,
+    g_array_index (samples.intervals,gint64,samples.intervals->len/2),
+    g_array_index (samples.intervals,gint64,samples.intervals->len*95/100),
+    g_array_index (samples.intervals,gint64,samples.intervals->len*99/100),
+    g_array_index (samples.intervals,gint64,samples.intervals->len-1));
+  g_array_unref (samples.intervals);
+  closing_started = g_get_monotonic_time ();
+  g_object_unref (image);
+  g_test_message ("large-spill-close wall_us=%" G_GINT64_FORMAT,g_get_monotonic_time ()-closing_started);
+}
+
 
 
 static void saved_snapshot_generation_restore (void)
@@ -1609,13 +1729,14 @@ static void count_update (GimpDrawable *drawable, gint x, gint y, gint width, gi
 { ++*(guint *) data; }
 static void retained_handle_after_image_close (void)
 {
-  for (gint running = 0; running < 2; ++running)
+  for (gint running = 0; running < 3; ++running)
     {
       gint finalized = 0;
       guint updates = 0, after_close;
-      GimpImage *image = image_new (1024,1024);
-      GimpLayer *source = source_new (image,NULL,1024,1024);
-      GimpFilterLayer *filter = filter_new (image,NULL,1024,1024);
+      const gint side = running == 2 ? 1100 : 1024;
+      GimpImage *image = image_new (side,side);
+      GimpLayer *source = source_new (image,NULL,side,side);
+      GimpFilterLayer *filter = filter_new (image,NULL,side,side);
       guint64 cache_generation, starts;
       gint64 deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 20;
       g_object_ref (filter); /* independent public owning handle outlives image */
@@ -1778,19 +1899,24 @@ int main (int argc, char **argv)
   int result;
   g_test_init (&argc,&argv,NULL);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");
+  {
+    gchar *cache = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_BUILDDIR"),"filter-spill-cache",NULL);
+    g_assert_cmpint (g_mkdir_with_parents (cache,0700), ==, 0);
+    g_setenv ("GIMP3_CACHEDIR",cache,TRUE); g_free (cache);
+  }
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
   ADD (image_close_during_undo_callbacks); ADD (image_close_during_redo_callbacks);
   ADD (image_close_during_strong_undo_callbacks); ADD (image_close_during_strong_redo_callbacks);
   ADD (image_close_reentry_during_completion_flush); ADD (image_close_reentry_during_commit); ADD (retained_handle_after_image_close); ADD (argument_value_dag_is_bounded); ADD (typed_argument_import_preserves_descriptors); ADD (argument_import_validation);
   ADD (typed_argument_snapshot_survives_expiration); ADD (hiding_during_import_releases_abandoned_work); ADD (concurrent_admission_resumes_after_image_close); ADD (saved_snapshot_generation_restore); ADD (small_image_finishes_during_large_preparation); ADD (image_close_during_worker);
-  ADD (sustained_edits_converge); ADD (oversized_execution_preserves_definition);
+  ADD (sustained_edits_converge); ADD (spill_sustained_edits_converge); ADD (spill_storage_failure_preserves_cache); ADD (large_spill_execution_finishes); ADD (spill_gaussian_native_gray); ADD (spill_gaussian_native_rgb);
   ADD (duplicate_preserves_cache_freshness); ADD (opaque_arguments_duplicate_and_undo); ADD (opaque_arguments_never_execute); ADD (empty_opaque_arguments_are_distinct);
   ADD (retired_definition_payload_reentry); ADD (duplicate_reentry_cannot_certify_new_definition);
   ADD (definition_edit_stops_after_undo_close); ADD (definition_edit_preserves_reentered_install); ADD (definition_notifications_stop_after_close);
   ADD (pending_cycle_resolved_during_graph_read_is_discarded); ADD (definition_revision_separates_cache_updates);
   ADD (dependency_walk_does_not_resolve_pending_names); ADD (changed_dependency_invalidation_can_close_owner);
-  ADD (completion_flushes_image_projection); ADD (long_chain_coalesces_state_notifications); ADD (complex_graph_remains_responsive); ADD (cached_graph_tracks_clone_reassignment);
+  ADD (completion_flushes_image_projection); ADD (spill_completion_flushes_image_projection); ADD (long_chain_coalesces_state_notifications); ADD (complex_graph_remains_responsive); ADD (cached_graph_tracks_clone_reassignment);
   ADD (clone_filter_dependency_order); ADD (cached_dependency_close_before_start); ADD (cross_image_filter_cycle_has_no_signal_loop);
   ADD (gray_native_default); ADD (gray_native_linear_profile); ADD (gray_native_lab_profile); ADD (gray_without_source_alpha);
   ADD (gaussian_native_srgb); ADD (gaussian_native_adobe); ADD (profile_reassignment_discards_worker); ADD (unsupported_precision_retains_cache);

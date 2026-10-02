@@ -6,6 +6,7 @@ Does not claim to instrument all upstream GIMP/dependencies. Original build
 objects are never replaced. Hold /tmp/gimp-painter-build.lock when sharing it.
 """
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -21,7 +22,7 @@ build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
 output = build / "filter-sanitizers"
 output.mkdir(exist_ok=True)
-report = {"scope": "FilterLayer, argument/Undo state, image Undo operation lifetime, common item owner lifetime, group duplication, edge/Gauss executors, scheduler, C/C++ tests, and shared BindingStore; remaining GIMP/dependencies uninstrumented",
+report = {"scope": "FilterLayer, argument/Undo state, image Undo operation lifetime, common item owner lifetime, group duplication, edge/Gauss raster/spool executors, scheduler, startup MyPaint Options/session RTTI boundary, C/C++ tests, and shared BindingStore; remaining GIMP/dependencies uninstrumented",
           "sanitizers": ["address", "undefined"], "leak_detection": False, "instrumented_cpp_rtti": True,
           "sources": [], "commands": []}
 flags = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-O1"]
@@ -29,7 +30,12 @@ wanted = {"app/core/gimpfilterlayer.cpp", "app/core/gimpimage-undo.c", "app/core
           "app/tests/test-gimp-filter-layout.cpp", "app/painter/binding-store.cpp",
           "app/painter/gimp-painter-binding.cpp", "app/painter/gimp-painter-error.cpp",
           "app/painter/filter-scheduler.cpp", "app/painter/filter-edge.cpp",
-          "app/painter/filter-gauss.cpp"}
+          "app/painter/filter-gauss.cpp", "app/painter/filter-raster.cpp",
+          "app/painter/filter-spool.cpp", "app/painter/filter-raster-kernels.cpp",
+          "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+          "app/paint/painter-mypaint-surface/gimp-painter-session.cpp"}
+source_hashes = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in sorted(wanted)}
+report["source_sha256"] = source_hashes
 replacements = {}
 extra = []
 archive_replacements = {}
@@ -78,7 +84,8 @@ link = [replacements.get(arg, arg) for arg in link]
 # Replace instrumented members inside private thin archives. Leaving the old
 # members available can pull in their RTTI COMDAT symbols and duplicate feature
 # definitions when -frtti is used for the vptr sanitizer.
-for archive in ["app/core/libappcore.a", "app/painter/libapppainter.a"]:
+for archive in ["app/core/libappcore.a", "app/painter/libapppainter.a",
+                "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a"]:
     members = subprocess.check_output(["ar", "t", archive], cwd=build, text=True).splitlines()
     rewritten = []
     for member in members:
@@ -101,9 +108,11 @@ env.update({"GIMP_TESTING_ABS_TOP_SRCDIR": str(root),
             "UI_TEST": "yes", "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
             "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"})
 result = subprocess.run([str(exe)], cwd=build, env=env, capture_output=True, text=True)
+report["changed_after_compile"] = [name for name, digest in source_hashes.items()
+    if hashlib.sha256((root / name).read_bytes()).hexdigest() != digest]
 report.update({"exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr})
 args.report.write_text(json.dumps(report, indent=2) + "\n")
 print(result.stdout)
 if result.returncode:
     print(result.stderr, file=sys.stderr)
-sys.exit(result.returncode)
+sys.exit(result.returncode or bool(report["changed_after_compile"]))

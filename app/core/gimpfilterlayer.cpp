@@ -27,6 +27,7 @@ extern "C" {
 #include "painter/fair-dispatcher.hpp"
 #include "painter/filter-edge.hpp"
 #include "painter/filter-gauss.hpp"
+#include "painter/filter-raster-kernels.hpp"
 #include "painter/gimp-painter-binding.h"
 #include "painter/source.hpp"
 #include <algorithm>
@@ -280,7 +281,16 @@ struct FilterImpl
     FilterScheduler::Request request;
     request.width = gimp_item_get_width (GIMP_ITEM (owner));
     request.height = gimp_item_get_height (GIMP_ITEM (owner));
-    if (request.height && request.width <= FilterScheduler::maximum_pixels / request.height)
+    const bool spill = request.height && request.width > (1024 * 1024) / request.height;
+    if (spill)
+      {
+        /* Independent queues + transpose/coefficient bookkeeping + worst IIR
+         * line state. GEGL input/staging tiles use the host shared cache/swap
+         * budget; no full input or result vector is allocated by this route. */
+        const std::uint64_t peak = 8 * 1024 * 1024 + std::uint64_t (std::max (request.width, request.height)) * 72;
+        request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+      }
+    else if (request.height && request.width <= FilterScheduler::maximum_pixels / request.height)
       {
         /* Input/result/staging plus maximum Gaussian IIR line buffers. The
          * 2 MiB allowance covers bounded RLE coefficients and native chunks.
@@ -311,6 +321,11 @@ struct FilterImpl
                                                             FilterScheduler::Bytes& output) {
                   return filter_edge (input, width, height, options, cancel, output);
                 };
+                if (spill)
+                  request.raster_process = [width, height, options] (FilterRaster& input, FilterRaster& output,
+                    std::atomic<bool>& cancel, const FilterRasterFactory&) {
+                    return filter_edge_raster (input, width, height, options, cancel, output);
+                  };
               }
           }
       }
@@ -334,6 +349,11 @@ struct FilterImpl
                                                             FilterScheduler::Bytes& output) {
                   return filter_gauss (input, width, height, options, cancel, output);
                 };
+                if (spill)
+                  request.raster_process = [width, height, options] (FilterRaster& input, FilterRaster& output,
+                    std::atomic<bool>& cancel, const FilterRasterFactory& scratch) {
+                    return filter_gauss_raster (input, width, height, options, cancel, output, scratch);
+                  };
               }
           }
       }
@@ -552,6 +572,16 @@ struct FilterImpl
         return again;
       }
     const auto previous = scheduler.state ();
+    if (previous == FilterScheduler::State::waiting && scheduler.uses_spool ())
+      {
+        /* This is the expanded, trusted application swap setting, not an XCF
+         * path argument or an implicit /tmp (which may be RAM-backed). The
+         * worker copies it at admission; no owner-side file I/O is performed. */
+        gchar *directory = nullptr;
+        g_object_get (gegl_config (), "swap", &directory, nullptr);
+        std::unique_ptr<gchar, decltype (&g_free)> guard (directory, g_free);
+        scheduler.set_spool_directory (directory ? directory : "");
+      }
     scheduler.set_pixel_budget (previous == FilterScheduler::State::importing ? import_budget : read_budget);
     /* The genuine 2.8 references use native encoded RGB/Gray bytes. Do not
      * silently quantize float/linear/indexed inputs and claim compatibility.

@@ -93,8 +93,10 @@ implementation store.
 ## Scheduler and source boundary
 
 `app/painter/filter-scheduler.{hpp,cpp}` is independent of GIMP and GObject.
-Workers own only independent byte vectors, a callable over scalar options and
-atomic cancellation/completion flags. They never retain a GIMP image, drawable,
+Workers own only independent byte storage, a callable over scalar options and
+atomic cancellation/completion flags. Small rasters use vectors; above one Mi
+pixels the mapped Edge/Gaussian adapter uses worker-owned spill files and bounded
+input/result queues. They never retain a GIMP image, drawable,
 GEGL graph, UI object, slot borrow or main-thread callback.
 
 | State | Checkpoint and transition |
@@ -110,13 +112,18 @@ GEGL graph, UI object, slot borrow or main-thread callback.
 
 Changes coalesce to a full-raster dirty generation rather than accumulating an
 unbounded list of dirty rectangles. This is correct for the supported whole-image
-procedures; regional optimization is not claimed. Requests over 64 Mi pixels are
-reported unsupported instead of overflowing allocations. A shared owner-thread
+procedures; regional optimization is not claimed. The generic vector API retains
+its 64-Mi-pixel allocation check, but mapped live Edge/Gaussian layers use spill
+execution above one Mi pixels and no longer inherit that refusal. Raster extent,
+64-bit file offsets, per-line legacy numerical limits, allocation and storage
+failures are checked. A shared owner-thread
 FIFO admission pool permits at most two active preparation/worker/import jobs
-and 1 GiB of declared working storage. Each supported adapter reserves its
-input, result and staging footprint plus worst-case Gaussian line/coefficient
-scratch. Existing completed GEGL caches remain subject to the host's cache/swap
-policy; this is not a bound on total GIMP memory or arbitrary callables.
+and 1 GiB of declared feature working storage. Small vector jobs reserve their
+input, result and staging footprint plus worst-case Gaussian scratch. Spill jobs
+reserve bounded queues/transpose bookkeeping plus 72 times their maximum axis
+for IIR state; GEGL-managed input/staging/committed tiles retain the host's shared
+cache/swap policy. OS filesystem cache/backing is separate. This is not a bound
+on total GIMP/system memory or arbitrary callables.
 Contention stays waiting without reading pixels, failing, or losing dirty work.
 The existing paced dispatcher retries; FIFO prevents smaller later requests
 from starving a larger front request. Preparation edits/dependency waits release
@@ -141,6 +148,22 @@ first; child groups are traversed and completion/failure signals wake waiters.
 Above-layer pixel changes and this layer's own cache publication do not restart
 it. Topology snapshots avoid restarting merely because an unrelated layer was
 added above. Hidden FilterLayers retain dirty work until shown.
+
+For spill jobs, admission starts an independent I/O worker to collect bounded
+chunks. Procedure start is counted separately, only after a complete sealed
+snapshot is flushed. The owner never performs spill file I/O or waits on the
+worker. Each direction has two queue slots; current producer/consumer chunks are
+also bounded. The directory is the expanded current GEGL swap setting copied
+before launch, never an XCF argument or an implicit `/tmp`. Cancellation retains
+the job/lease until actual completion, including input collection and output
+draining. Result chunks may be imported into private staging while the worker
+reads them, but only a successful entire transfer permits publication. Malformed
+input keeps the dispatch continuation alive until collecting-worker cancellation
+completes and releases admission; the regression follows the actual returned
+continuation flag instead of unconditionally polling a settled state. A later
+read failure discards staging and keeps the previous cache. Private raster files
+are destroyed before completion is visible. See `filter-storage.md` and the
+kernel evidence for component resource bounds and platform limitations.
 
 The input is read from this layer's input proxy in the already-built parent
 stack graph. Preparation happens outside operator evaluation. All input reads,
@@ -258,12 +281,12 @@ an acceptable shortcut to procedure compatibility.
 
 ## Tests and measurements
 
-- `app/painter/tests/test-filter-scheduler.cpp`: 25 pure scheduler tests including
+- `app/painter/tests/test-filter-scheduler.cpp`: 34 pure scheduler tests including
   cancellation versus completion, no duplicate launch, edits during preparation
   and import, exception handling/no automatic retry, bounded chunks, loaded cache,
   dependency priority, nonwaiting destruction, read/import rejection, inert closed
   requests and commit reentry
-- `app/tests/test-gimp-filter-layer.c`: 67 real-GIMP cases as of this record,
+- `app/tests/test-gimp-filter-layer.c`: 72 real-GIMP cases as of this record,
   including cache publication, chain/group ordering, cycle recovery, visibility,
   offset, removal/Undo, definition Undo/Redo, raw unknown data, weak-finalization
   counters for object-valued arguments and Undo, signal teardown and failed-duplicate temporary release
@@ -282,7 +305,7 @@ an acceptable shortcut to procedure compatibility.
   ptrace restrictions prevent it from running; explicit weak-finalization tests
   cover the image/layer/argument ownership cycles. The JSON lists actual units
 - `run_filter_scheduler_sanitizers.py` and `filter-scheduler-sanitizers.json`
-  independently instrument all 25 scheduler regressions with ASan/UBSan
+  independently instrument all 34 scheduler regressions with ASan/UBSan
 - `work-admission.hpp`, `test-work-admission.cpp`, and
   `run_work_admission_sanitizers.py`: nine strict-C++14 and ASan/UBSan cases
   cover FIFO/byte/job limits, cancellation, 100,000 queued edits, worker-thread
@@ -303,12 +326,31 @@ the binding and prevents later publication, while the common GimpItem weak-image
 link makes subsequent image lookup/finalization safe. A buffer-notify callback
 that closes the image during the final swap is also covered: no later drawable
 update or state notification is emitted for the closed binding. An 8193×8193
-sparse layer preserves its definition and reports the explicit execution-size
-limit without starting a worker. This last test is a bounded failure check, not
-proof that large-image execution is complete. `settled()` also stays false while
-a failed/rejected worker is still completing cancellation.
+layer now completes one real spill-backed Edge run, preserves its definition and
+verifies both a transparent first pixel and an opaque far-edge result. Generated
+1025×1025 RGB Adobe/Gray Lab-profile images compare every byte against the
+existing vector Gaussian route for both methods. These are live transfer tests,
+not new old-runtime captures. Retained handles and image teardown also exercise
+running spill workers. Streamed image projection refresh, twenty repeated source
+edits, and configured-directory failure/cache retention followed by explicit
+retry are tested as well. `settled()` stays false while a failed/rejected worker
+is still completing cancellation.
 
-A simple 2048×1536 single-layer run measured roughly 0.81–0.85 s end-to-end,
+`run_filter_spill_measurements.py` / `filter-spill-measurements.json` record
+three fresh-process 8193×8193 runs against the exact live-adapter source/executable
+hashes. Configured test swap is on overlayfs. All runs complete and verify the
+far-corner pixel, taking 12.34–12.79 seconds of filter work; the 2 ms heartbeat
+p95 is 2.21–2.28 ms and p99 is 3.20–3.52 ms. Maximum intervals remain
+89–119 ms. Whole-process peak RSS is 1,393,392–1,393,692 KiB (about 1.33 GiB),
+including resident GIMP/GEGL tiles and other host allocations, and excluding OS
+filesystem cache/backing. Bounded worker queues/files therefore do not certify
+low total application/system memory. Final image unref takes 99.5–133.9 ms in
+these completed-image cases: nonwaiting worker cancellation does not bound host
+GEGL/cache destruction cost. These are shared-host observations of a sparse
+single-layer Edge workload, not dense/complex/multi-image or Windows acceptance.
+
+Earlier vector-only measurements before adaptive/spill integration for a
+simple 2048×1536 single-layer run were roughly 0.81–0.85 s end-to-end,
 8.9–9.7 ms maximum owner-thread quantum and 364–367 serviced 2 ms heartbeats in
 normal tests. These are observations on this execution environment, not a fixed
 reference-machine p95/p99 acceptance gate.
@@ -325,8 +367,9 @@ Fresh-process first GEGL sampling also showed 80–102 ms stalls during explorat
 this unresolved cold-path cost must not be hidden by quoting warm measurements.
 The report retains every quantified first/edit phase for its exact source and
 executable hashes. Repeated measurements still show heartbeat outliers above
-100 ms, including edit phases; the observations are not a fixed-machine
-acceptance gate. More complex
+100 ms, including edit phases; the current three-run first/edit samples reach
+141.4 ms maximum and 81.0 ms p99 in an edit phase. These observations are not a
+fixed-machine acceptance gate. More complex
 operators, many images and sustained painting still need workloads and limits.
 
 ## Remaining work and non-claims
@@ -339,15 +382,15 @@ operators, many images and sustained painting still need workloads and limits.
   crash handling and unresponsive external-procedure isolation are outstanding
 - The old reader's image-ID/GValue-pointer crash is a negative fixture; safely
   retaining those bytes does not turn it into a successful legacy round trip
-- Normal Open/XCF persistence integration remains a separate change. This slice
-  supplies and tests typed argument and generation snapshot/import primitives;
-  core tests alone are not save/reopen proof
-- There is no new creation/menu/editor UI or GimpProgress adapter in this slice
+- Normal Open/XCF persistence and creation/menu/editor UI are validated by their
+  separate modules/evidence. This core slice supplies typed argument and
+  generation primitives; these core tests alone are not save/reopen or GTK proof.
+  A GimpProgress adapter remains separate
 - Whole lower-stack parity (especially custom modes, masks, component visibility,
-  group/passthrough behavior, high precision and indexed inputs), sustained input,
-  spill-backed large-raster execution, measured high-contention multi-image
+  group/passthrough behavior and high precision), sustained input,
+  dense/complex spill-backed large rasters, measured high-contention multi-image
   workloads, maximum topology traversal cost and reference-machine latency percentiles remain broader compatibility
   gates. FIFO owner-thread fairness is tested; arbitrary worker/process workloads
-  and removal of the 64-Mi-pixel whole-raster execution limit remain outstanding
+  and exhaustive maximum-size/platform resource behavior remain outstanding
 - The baseline `save-and-export` test failure is unrelated; this record does not
   claim the entire upstream app suite is green

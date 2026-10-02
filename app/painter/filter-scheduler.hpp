@@ -2,6 +2,7 @@
 #ifndef GIMP_PAINTER_FILTER_SCHEDULER_HPP
 #define GIMP_PAINTER_FILTER_SCHEDULER_HPP
 #include "work-admission.hpp"
+#include "filter-spool.hpp"
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
@@ -26,6 +27,10 @@ public:
     /* Includes input/result plus executor scratch and adapter staging. Zero
      * declares the two-raster minimum used by simple independent processors. */
     std::size_t peak_bytes = 0;
+    /* Optional bounded, worker-owned spill route. Only this route can exceed
+     * the whole-vector raster limit. Location is trusted app configuration. */
+    FilterSpool::Process raster_process {};
+    std::string spool_directory {};
   };
   struct Snapshot
   {
@@ -52,6 +57,9 @@ public:
   { pixel_budget_ = pixels == 0 ? 1 : pixels > pixel_budget ? pixel_budget : pixels; }
   void invalidate () noexcept;
   void set_request (Request request);
+  bool uses_spool () const noexcept { return bool (request_.raster_process); }
+  void set_spool_directory (std::string directory)
+  { if (state_ != State::closed) request_.spool_directory = std::move (directory); }
   void mark_loaded () noexcept;
   Snapshot snapshot () const noexcept { return {generation_, cache_generation_, cache_complete_}; }
   void restore_cache (const Snapshot&);
@@ -83,7 +91,7 @@ private:
   std::size_t cursor_ = 0, pixel_budget_ = pixel_budget;
   std::uint64_t generation_ = 0, work_generation_ = 0, cache_generation_ = 0, starts_ = 0;
   State state_ = State::clean;
-  bool dirty_ = false, cache_complete_ = true;
+  bool dirty_ = false, cache_complete_ = true, stepping_ = false;
   std::string error_;
 };
 } // namespace GimpPainter

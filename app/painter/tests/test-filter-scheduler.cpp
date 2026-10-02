@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "filter-scheduler.hpp"
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <algorithm>
 #include <atomic>
 #include <chrono>
@@ -10,6 +11,7 @@
 #include <thread>
 using namespace GimpPainter;
 using State = FilterScheduler::State;
+static std::string spool_directory;
 struct Harness
 {
   Harness () = default;
@@ -27,6 +29,23 @@ struct Harness
       out = in; return true;
     };
     scheduler.set_request ({w, h, std::move (process)});
+  }
+  void configure_spool (std::size_t w = 32, std::size_t h = 32, FilterSpool::Process process = {})
+  {
+    if (!process) process = [] (FilterRaster& in, FilterRaster& out, std::atomic<bool>& cancel, const FilterRasterFactory&) {
+      FilterSpool::Bytes bytes (32768*4);
+      for (std::uint64_t offset = 0; offset < in.size ();)
+        {
+          if (cancel.load ()) return false;
+          const auto count = std::size_t (std::min (std::uint64_t (bytes.size ()),in.size ()-offset));
+          in.read (offset,count,bytes.data ()); out.write (offset,count,bytes.data ()); offset += count;
+        }
+      return true;
+    };
+    FilterScheduler::Request request;
+    request.width = w; request.height = h; request.peak_bytes = 1024*1024;
+    request.raster_process = std::move (process); request.spool_directory = spool_directory;
+    scheduler.set_request (std::move (request));
   }
   bool step ()
   {
@@ -448,10 +467,150 @@ static void admission_failure_and_loaded_cache_release ()
   g_assert_cmpuint (pool->active_jobs (), ==, 0);
 }
 
+static void spool_completed_cache_and_chunk_geometry ()
+{
+  for (auto budget : {std::size_t (17), std::size_t (32768)})
+    {
+      Harness h; h.configure_spool (40001,3); h.scheduler.set_pixel_budget (budget); h.finish ();
+      g_assert_cmpuint (h.commits, ==, 1); g_assert_cmpuint (h.scheduler.starts (), ==, 1);
+      g_assert_cmpuint (h.max_chunk, <=, budget); g_assert_cmpuint (h.imported.size (), ==, 40001*3*4);
+      for (auto byte : h.imported) g_assert_cmpuint (byte, ==, 17);
+    }
+}
+static void spool_reentrant_read_cancellation ()
+{
+  Harness h; h.configure_spool (256,257);
+  h.scheduler.step (true,[&] (std::size_t,std::size_t count,FilterScheduler::Bytes& bytes) {
+    bytes.resize (count*4,17); auto *owned = bytes.data (); h.scheduler.invalidate ();
+    owned[0] = 42; // independent read chunk must stay alive across invalidation
+  },{},{ });
+  h.value = 93; h.finish ();
+  g_assert_cmpuint (h.commits, ==, 1); g_assert_cmpuint (h.scheduler.starts (), ==, 1);
+  for (auto byte : h.imported) g_assert_cmpuint (byte, ==, 93);
+}
+static void spool_cancel_request_is_not_completion ()
+{
+  auto started = std::make_shared<std::atomic<bool>> (false), release = std::make_shared<std::atomic<bool>> (false);
+  Harness h; h.configure_spool (1,1,[started,release] (FilterRaster& in,FilterRaster& out,std::atomic<bool>& cancel,const FilterRasterFactory&) {
+    started->store (true);
+    while (!release->load ()) std::this_thread::yield ();
+    if (cancel.load ()) return false;
+    std::uint8_t pixel[4]; in.read (0,4,pixel); out.write (0,4,pixel); return true;
+  });
+  const auto deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+  while (h.scheduler.state () != State::running && g_get_monotonic_time () < deadline) { h.step (); g_usleep (100); }
+  g_assert_true (started->load ()); g_assert_true (h.scheduler.state () == State::running);
+  h.scheduler.invalidate ();
+  for (unsigned i = 0; i < 100; ++i) h.step ();
+  g_assert_cmpuint (h.scheduler.starts (), ==, 1); g_assert_cmpuint (h.commits, ==, 0);
+  h.value = 67; release->store (true); h.finish ();
+  g_assert_cmpuint (h.scheduler.starts (), ==, 2); g_assert_cmpuint (h.commits, ==, 1);
+  for (auto byte : h.imported) g_assert_cmpuint (byte, ==, 67);
+}
+static void spool_change_during_import ()
+{
+  Harness h; h.configure_spool (256,257); h.scheduler.set_pixel_budget (256);
+  const auto deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+  while (!h.imports && g_get_monotonic_time () < deadline) { h.step (); g_usleep (100); }
+  g_assert_cmpuint (h.imports, >, 0); g_assert_cmpuint (h.commits, ==, 0);
+  h.scheduler.invalidate (); h.value = 123; h.finish ();
+  g_assert_cmpuint (h.scheduler.starts (), ==, 2); g_assert_cmpuint (h.commits, ==, 1);
+  for (auto byte : h.imported) g_assert_cmpuint (byte, ==, 123);
+}
+static void spool_read_failure_cancels_unsealed_worker ()
+{
+  auto admission = std::make_shared<WorkAdmission> (WorkAdmission::Limits {1,1024*1024});
+  Harness h (admission); h.configure_spool (2,2);
+  bool again = h.scheduler.step (true,[] (std::size_t,std::size_t,FilterScheduler::Bytes&) {},{},{});
+  // Follow the actual dispatch contract; do not hide a dropped continuation by
+  // independently polling settled(). The retained collecting worker must drain
+  // cancellation and release its admission without a new edit or owner close.
+  g_assert_true (again);
+  const auto deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+  while (again && g_get_monotonic_time () < deadline)
+    { g_usleep (100); again = h.step (); }
+  g_assert_false (again); g_assert_true (h.scheduler.settled ());
+  g_assert_true (h.scheduler.state () == State::failed);
+  g_assert_cmpuint (admission->active_jobs (), ==, 0);
+  g_assert_cmpuint (admission->active_bytes (), ==, 0);
+  g_assert_cmpuint (h.scheduler.starts (), ==, 0); g_assert_cmpuint (h.commits, ==, 0);
+  g_assert_nonnull (strstr (h.scheduler.error ().c_str (),"invalid chunk size"));
+  h.configure_spool (); h.finish (); g_assert_cmpuint (h.commits, ==, 1);
+}
+static void spool_result_failure_never_commits ()
+{
+  Harness h; h.configure (); h.finish ();
+  const auto cache_generation = h.scheduler.cache_generation ();
+  h.configure_spool (32768,4,[] (FilterRaster&,FilterRaster& out,std::atomic<bool>&,const FilterRasterFactory&) {
+    FilterSpool::Bytes incomplete (32768*4,17); out.write (0,incomplete.size (),incomplete.data ()); return true;
+  });
+  h.finish (); g_assert_true (h.scheduler.state () == State::failed);
+  g_assert_cmpuint (h.commits, ==, 1); g_assert_cmpuint (h.scheduler.cache_generation (), ==, cache_generation);
+  g_assert_nonnull (strstr (h.scheduler.error ().c_str (),"read failed"));
+  for (unsigned i = 0; i < 100; ++i) g_assert_false (h.step ());
+}
+static void spool_large_metadata_is_bounded_preparation ()
+{
+  Harness h; h.configure_spool (8193,8193); h.scheduler.set_pixel_budget (1); h.step ();
+  g_assert_true (h.scheduler.state () == State::preparing); g_assert_cmpuint (h.max_chunk, ==, 1);
+  g_assert_cmpuint (h.scheduler.starts (), ==, 0);
+  h.scheduler.close (); g_assert_true (h.scheduler.state () == State::closed);
+}
+static void spool_close_during_import_keeps_callback_bytes ()
+{
+  Harness h; h.configure_spool (32,32);
+  const auto deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+  bool closed = false;
+  while (!closed && g_get_monotonic_time () < deadline)
+    {
+      h.scheduler.step (true,[] (std::size_t,std::size_t count,FilterScheduler::Bytes& bytes) { bytes.assign (count*4,93); },
+        [&] (std::size_t,std::size_t count,const std::uint8_t *bytes) {
+          h.scheduler.close (); closed = true;
+          for (std::size_t i = 0; i < count*4; ++i) g_assert_cmpuint (bytes[i], ==, 93);
+        },[] (std::uint64_t) { g_error ("closed spool published"); });
+      g_usleep (100);
+    }
+  g_assert_true (closed);
+}
+
+static void recursive_step_does_not_consume_another_chunk ()
+{
+  for (bool spool : {false,true})
+    {
+      Harness h;
+      if (spool) h.configure_spool (3,1); else h.configure (3,1);
+      h.scheduler.set_pixel_budget (1);
+      unsigned nested_reads = 0, commits = 0;
+      FilterScheduler::Bytes observed;
+      const auto deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+      while (!h.scheduler.settled () && g_get_monotonic_time () < deadline)
+        {
+          h.scheduler.step (true,[&] (std::size_t,std::size_t count,FilterScheduler::Bytes& bytes) {
+            h.scheduler.step (true,[&] (std::size_t,std::size_t nested_count,FilterScheduler::Bytes& nested) {
+              ++nested_reads; nested.assign (nested_count*4,99);
+            },{},{});
+            bytes.assign (count*4,17);
+          },[&] (std::size_t,std::size_t count,const std::uint8_t *bytes) {
+            observed.insert (observed.end (),bytes,bytes+count*4);
+          },[&] (std::uint64_t) { ++commits; });
+          g_usleep (100);
+        }
+      g_assert_true (h.scheduler.settled ()); g_assert_cmpuint (nested_reads, ==, 0);
+      g_assert_cmpuint (commits, ==, 1); g_assert_cmpuint (observed.size (), ==, 12);
+      for (auto byte : observed) g_assert_cmpuint (byte, ==, 17);
+    }
+}
+
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, nullptr);
+  gchar *directory = g_dir_make_tmp ("painter-scheduler-spool-XXXXXX",nullptr);
+  g_assert_nonnull (directory); spool_directory = directory; g_free (directory);
 #define ADD(name) g_test_add_func ("/painter-filter-scheduler/" #name, name)
+  ADD (recursive_step_does_not_consume_another_chunk); ADD (spool_completed_cache_and_chunk_geometry); ADD (spool_reentrant_read_cancellation);
+  ADD (spool_cancel_request_is_not_completion); ADD (spool_change_during_import);
+  ADD (spool_read_failure_cancels_unsealed_worker); ADD (spool_result_failure_never_commits);
+  ADD (spool_large_metadata_is_bounded_preparation); ADD (spool_close_during_import_keeps_callback_bytes);
   ADD (admission_waits_without_reading_and_resumes_fifo); ADD (admission_cancel_retains_worker_reservation);
   ADD (admission_edit_and_dependency_wait_release_preparation); ADD (admission_failure_and_loaded_cache_release);
   ADD (saved_generation_boundaries); ADD (commit_failure_does_not_certify_cache); ADD (obsolete_read_failure_preserves_new_edit);
@@ -461,5 +620,7 @@ int main (int argc, char **argv)
   ADD (cancel_request_is_not_completion); ADD (changes_during_preparation); ADD (changes_during_import);
   ADD (failures_do_not_retry); ADD (close_does_not_wait); ADD (loaded_cache_not_reexecuted);
   ADD (invalid_request_and_result); ADD (reentry_at_commit);
-  return g_test_run ();
+  const auto result = g_test_run ();
+  g_assert_cmpint (g_rmdir (spool_directory.c_str ()), ==, 0);
+  return result;
 }

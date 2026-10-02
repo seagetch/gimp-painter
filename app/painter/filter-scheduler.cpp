@@ -27,6 +27,10 @@ struct FilterScheduler::Job
   std::atomic<bool> cancelled { false }, done { false };
   Bytes input, output;
   Process process;
+  std::unique_ptr<FilterSpool> spool;
+  std::unique_ptr<FilterSpool::Chunk> chunk;
+  std::size_t chunk_used = 0;
+  bool counted = false;
   std::string error;
   bool success = false;
   std::uint64_t generation = 0;
@@ -41,7 +45,13 @@ void FilterScheduler::advance_generation () noexcept
     ++generation_;
 }
 void FilterScheduler::cancel () noexcept
-{ if (job_) job_->cancelled.store (true, std::memory_order_relaxed); }
+{
+  if (job_)
+    {
+      job_->cancelled.store (true, std::memory_order_relaxed);
+      if (job_->spool) job_->spool->cancel ();
+    }
+}
 void FilterScheduler::release_preparation () noexcept
 {
   /* clear() alone retained a whole-raster allocation after edits/close, which
@@ -111,6 +121,7 @@ void FilterScheduler::close () noexcept
 }
 void FilterScheduler::fail (const char *message) noexcept
 {
+  cancel ();
   try { error_ = message; } catch (...) {}
   dirty_ = false; // a new edit may retry; idle time alone never retries failure
   release_preparation ();
@@ -129,10 +140,38 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
                             const Commit& commit) noexcept
 {
   if (state_ == State::closed) return false;
+  if (stepping_) return dirty_ || bool (job_);
+  struct StepGuard
+  {
+    bool& active;
+    explicit StepGuard (bool& value) : active (value) { active = true; }
+    ~StepGuard () { active = false; }
+  } guard (stepping_);
   const auto operation_generation = generation_;
   try
     {
-      if (job_ && state_ != State::importing)
+      if (job_ && job_->spool)
+        {
+          auto& spool = *job_->spool;
+          if (spool.started () && !job_->counted) { job_->counted = true; ++starts_; }
+          if (state_ == State::failed && !dirty_)
+            { if (!spool.done ()) return true; job_.reset (); return false; }
+          if (job_->generation != generation_ || job_->cancelled.load (std::memory_order_relaxed))
+            {
+              if (!spool.done ()) return true;
+              job_.reset (); state_ = dirty_ ? State::waiting : State::clean;
+            }
+          else if (spool.done () && !spool.succeeded ())
+            {
+              const std::string message = spool.error ().empty () ? "Filter spool failed or was cancelled" : spool.error ();
+              job_.reset (); fail (message.c_str ()); return false;
+            }
+          else if (spool.phase () == FilterSpool::Phase::exporting || spool.done ())
+            { if (state_ != State::importing) { state_ = State::importing; cursor_ = 0; } }
+          else if (spool.started ())
+            { state_ = State::running; return true; }
+        }
+      if (job_ && !job_->spool && state_ != State::importing)
         {
           if (!job_->done.load (std::memory_order_acquire)) return true;
           if (state_ == State::failed && !dirty_) { job_.reset (); return false; }
@@ -151,6 +190,9 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
       if (!dirty_) return false;
       if (!ready)
         {
+          /* A spill worker may still be draining output. Cancel it and retain
+           * its lease until completion before replacing the generation. */
+          if (job_ && job_->spool) { invalidate (); return true; }
           /* A dependency can become dirty even without replacing our request. */
           if (state_ == State::importing) job_.reset ();
           release_preparation (); cursor_ = 0; state_ = State::waiting;
@@ -159,24 +201,38 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
       if (state_ == State::waiting)
         {
           if (!request_.width || !request_.height ||
-              request_.width > maximum_pixels / request_.height)
+              request_.width > std::numeric_limits<std::size_t>::max () / request_.height ||
+              std::uint64_t (request_.width) > std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / 4 / request_.height ||
+              (!request_.raster_process && request_.width > maximum_pixels / request_.height))
             { fail ("Filter input exceeds the bounded raster size"); return false; }
-          if (!request_.process)
+          if (!request_.process && !request_.raster_process)
             { fail ("Saved filter procedure or argument mapping is unsupported"); return false; }
           if (!admission_ticket_)
             admission_ticket_ = admission_->request (std::max (request_.peak_bytes,
-                                                              request_.width * request_.height * 8));
+                                                              request_.raster_process ? pixel_budget * 4 * 6 : request_.width * request_.height * 8));
           admission_lease_ = admission_ticket_.try_acquire ();
           /* Resource contention is waiting, never a failure or a lost dirty
            * generation. The owner's normal paced dispatcher retries fairly. */
           if (!admission_lease_) return true;
-          input_.reserve (request_.width * request_.height * 4);
           cursor_ = 0;
           work_generation_ = generation_;
+          if (request_.raster_process)
+            {
+              auto job = std::make_shared<Job> ();
+              job->generation = work_generation_;
+              job->spool.reset (new FilterSpool (request_.width, request_.height, request_.spool_directory,
+                                                 request_.raster_process, std::move (admission_lease_)));
+              job_ = std::move (job);
+            }
+          else
+            input_.reserve (request_.width * request_.height * 4);
           state_ = State::preparing;
         }
       if (state_ == State::preparing)
         {
+          auto collecting = job_; // callback closure cannot destroy an active transport
+          if (collecting && collecting->spool &&
+              (cursor_ == request_.width * request_.height || !collecting->spool->can_submit ())) return true;
           const auto count = next_count (cursor_);
           const auto token = work_generation_;
           /* A callback can invalidate/close the scheduler. Keep its bounded
@@ -188,7 +244,14 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
           if (generation_ != token || state_ != State::preparing)
             return state_ != State::closed && (dirty_ || bool (job_));
           if (chunk.size () != count * 4)
-            { fail ("Input producer returned an invalid chunk size"); return false; }
+            { fail ("Input producer returned an invalid chunk size"); return bool (job_); }
+          if (collecting && collecting->spool)
+            {
+              if (!collecting->spool->submit (cursor_, chunk)) return true;
+              cursor_ += count;
+              if (cursor_ == request_.width * request_.height) collecting->spool->seal_input ();
+              return true;
+            }
           input_.insert (input_.end (), chunk.begin (), chunk.end ());
           cursor_ += count;
           if (cursor_ < request_.width * request_.height) return true;
@@ -214,14 +277,45 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
       if (state_ == State::importing)
         {
           const auto token = generation_;
-          const auto count = next_count (cursor_);
           /* Keep worker bytes alive if a main-thread callback closes us. */
           auto job = job_;
-          import (cursor_, count, job->output.data () + cursor_ * 4);
-          if (state_ == State::closed) return false;
-          if (token != generation_ || state_ != State::importing) return dirty_ || bool (job_);
-          cursor_ += count;
+          if (cursor_ < request_.width * request_.height)
+            {
+              auto count = next_count (cursor_);
+              const std::uint8_t *pixels;
+              if (job->spool)
+                {
+                  if (!job->chunk) { job->chunk = job->spool->take_result (); job->chunk_used = 0; }
+                  if (!job->chunk)
+                    {
+                      if (job->spool->done ()) throw std::runtime_error ("Spool returned an incomplete result");
+                      return true;
+                    }
+                  if (job->chunk->bytes.empty () || job->chunk->bytes.size () % 4 ||
+                      job->chunk->offset > request_.width * request_.height ||
+                      job->chunk_used >= job->chunk->bytes.size () / 4 ||
+                      job->chunk_used > request_.width * request_.height - job->chunk->offset ||
+                      job->chunk->offset + job->chunk_used != cursor_ ||
+                      job->chunk->bytes.size () / 4 > request_.width * request_.height - job->chunk->offset)
+                    throw std::runtime_error ("Spool returned an invalid result chunk");
+                  count = std::min (count, job->chunk->bytes.size () / 4 - job->chunk_used);
+                  pixels = job->chunk->bytes.data () + job->chunk_used * 4;
+                }
+              else pixels = job->output.data () + cursor_ * 4;
+              import (cursor_, count, pixels);
+              if (state_ == State::closed) return false;
+              if (token != generation_ || state_ != State::importing) return dirty_ || bool (job_);
+              cursor_ += count;
+              if (job->spool)
+                {
+                  job->chunk_used += count;
+                  if (job->chunk_used == job->chunk->bytes.size () / 4) job->chunk.reset ();
+                }
+            }
           if (cursor_ < request_.width * request_.height) return true;
+          if (job->spool && !job->spool->done ()) return true;
+          if (job->spool && !job->spool->succeeded ())
+            throw std::runtime_error ("Spool result transfer failed");
           /* Publish metadata before the atomic buffer swap emits update
            * signals. If an adapter throws, do not certify an unknown cache. */
           const auto previous_cache_generation = cache_generation_;
@@ -245,11 +339,11 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
     }
   catch (const std::exception& e)
     {
-      if (state_ != State::closed && generation_ == operation_generation) { job_.reset (); fail (e.what ()); }
+      if (state_ != State::closed && generation_ == operation_generation) { cancel (); if (!job_ || !job_->spool || job_->spool->done ()) job_.reset (); fail (e.what ()); }
     }
   catch (...)
     {
-      if (state_ != State::closed && generation_ == operation_generation) { job_.reset (); fail ("Filter scheduling failed"); }
+      if (state_ != State::closed && generation_ == operation_generation) { cancel (); if (!job_ || !job_->spool || job_->spool->done ()) job_.reset (); fail ("Filter scheduling failed"); }
     }
   /* An obsolete callback failure must not erase an edit made by reentry. */
   return state_ != State::closed && (dirty_ || bool (job_));

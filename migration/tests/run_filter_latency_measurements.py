@@ -35,7 +35,7 @@ report = {"scope": "Real GIMP 1024x1024, 64 partially opaque legacy-Normal lower
           "limits": ["Fresh-process first includes cold graph/format setup; edit uses that same graph after a source edit.",
                      "max_quantum_us is cumulative per FilterLayer; heartbeat percentiles are per phase.",
                      "Shared host load is uncontrolled; this is an observation, not p95/p99 acceptance certification.",
-                     "Whole-raster 64-Mi-pixel bound and cold graph latency remain outstanding."],
+                     "This complex graph is at the small-vector cutoff; large spill resource/latency evidence is separate. Cold graph latency remains outstanding."],
           "environment": {k: env[k] for k in ("GIMP_DEPS_DIRECTORY", "GEGL_THREADS", "BABL_TOLERANCE",
               "GIMP_TESTING_ABS_TOP_SRCDIR", "GIMP_TESTING_ABS_TOP_BUILDDIR", "GIMP_TESTING_PLUGINDIRS", "UI_TEST") if k in env}}
 for name in ("app/core/gimpfilterlayer.cpp", "app/painter/filter-scheduler.cpp",
@@ -55,8 +55,12 @@ for run in range(args.runs):
         report["status"] = "failed"
         args.report.write_text(json.dumps(report, indent=2) + "\n")
         raise SystemExit(result.returncode or 1)
-report["status"] = "passed"
+report["changed_after_run"] = [name for name, digest in report["source_sha256"].items()
+    if hashlib.sha256((root / name).read_bytes()).hexdigest() != digest]
+report["status"] = "failed" if report["changed_after_run"] else "passed"
 args.report.write_text(json.dumps(report, indent=2) + "\n")
 for run in report["runs"]:
     for observation in run["observations"]:
         print(json.dumps({"run": run["run"], **observation}))
+
+raise SystemExit(0 if report["status"] == "passed" else 1)
