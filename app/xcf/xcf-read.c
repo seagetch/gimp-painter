@@ -18,6 +18,7 @@
 #include "config.h"
 
 #include <gio/gio.h>
+#include <string.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -45,7 +46,10 @@ xcf_read_int8 (XcfInfo *info,
   if (count > 0)
     {
       g_input_stream_read_all (info->input, data, count,
-                               &bytes_read, NULL, NULL);
+                               &bytes_read, info->painter_cancellable, NULL);
+      /* Short reads must never expose uninitialized stack values to parsers. */
+      if (bytes_read < (gsize) count)
+        memset (data + bytes_read, 0, count - bytes_read);
 
       info->cp += bytes_read;
     }

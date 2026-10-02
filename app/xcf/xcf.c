@@ -43,6 +43,7 @@
 #include "xcf-load.h"
 #include "xcf-read.h"
 #include "xcf-save.h"
+#include "painter-xcf-load.h"
 
 #include "gimp-intl.h"
 
@@ -101,6 +102,7 @@ xcf_init (Gimp *gimp)
   GimpPlugInProcedure *proc;
   GFile               *file;
   GimpProcedure       *procedure;
+  gint                 dialect;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
@@ -169,68 +171,84 @@ xcf_init (Gimp *gimp)
   gimp_plug_in_manager_add_procedure (gimp->plug_in_manager, proc);
   g_object_unref (procedure);
 
-  /*  gimp-xcf-load  */
-  file = g_file_new_for_path ("gimp-xcf-load");
-  procedure = gimp_plug_in_procedure_new (GIMP_PDB_PROC_TYPE_PLUGIN, file);
-  g_object_unref (file);
+  /* Recovery handlers are selectable in ordinary Open, but have no magic,
+   * suffix or MIME match and are therefore never chosen automatically. */
+  for (dialect = 0; dialect < 3; dialect++)
+    {
+      const gchar *load_name = dialect == 0 ? "gimp-xcf-load" :
+                               dialect == 1 ? "gimp-xcf-load-standard" : "gimp-xcf-load-painter";
+      file = g_file_new_for_path (load_name);
+      procedure = gimp_plug_in_procedure_new (GIMP_PDB_PROC_TYPE_PLUGIN, file);
+      g_object_unref (file);
 
-  procedure->proc_type    = GIMP_PDB_PROC_TYPE_INTERNAL;
-  procedure->marshal_func = xcf_load_invoker;
+      procedure->proc_type    = GIMP_PDB_PROC_TYPE_INTERNAL;
+      procedure->marshal_func = xcf_load_invoker;
 
-  proc = GIMP_PLUG_IN_PROCEDURE (procedure);
-  proc->menu_label = g_strdup (_("GIMP XCF image"));
-  gimp_plug_in_procedure_set_icon (proc, GIMP_ICON_TYPE_ICON_NAME,
-                                   (const guint8 *) "gimp-wilber",
-                                   strlen ("gimp-wilber") + 1,
-                                   NULL);
-  gimp_plug_in_procedure_set_image_types (proc, NULL);
-  gimp_plug_in_procedure_set_file_proc (proc, "xcf", "",
-                                        "0,string,gimp\\040xcf\\040");
-  gimp_plug_in_procedure_set_mime_types (proc, "image/x-xcf");
-  gimp_plug_in_procedure_set_handles_remote (proc);
+      proc = GIMP_PLUG_IN_PROCEDURE (procedure);
+      proc->menu_label = g_strdup (dialect == 0 ? _("GIMP XCF image") :
+                                   dialect == 1 ? _("GIMP XCF image (standard recovery)") :
+                                                  _("GIMP Painter XCF image (legacy recovery)"));
+      gimp_plug_in_procedure_set_icon (proc, GIMP_ICON_TYPE_ICON_NAME,
+                                       (const guint8 *) "gimp-wilber",
+                                       strlen ("gimp-wilber") + 1,
+                                       NULL);
+      gimp_plug_in_procedure_set_image_types (proc, NULL);
+      gimp_plug_in_procedure_set_file_proc (proc, dialect == 0 ? "xcf" : "", "",
+                                            dialect == 0 ? "0,string,gimp\\040xcf\\040" : NULL);
+      if (dialect == 0)
+        gimp_plug_in_procedure_set_mime_types (proc, "image/x-xcf");
+      gimp_plug_in_procedure_set_handles_remote (proc);
 
-  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-xcf-load");
-  gimp_procedure_set_static_help (procedure,
-                                  "Loads file saved in the .xcf file format",
-                                  "The XCF file format has been designed "
-                                  "specifically for loading and saving "
-                                  "tiled and layered images in GIMP. "
-                                  "This procedure will load the specified "
-                                  "file.",
-                                  NULL);
-  gimp_procedure_set_static_attribution (procedure,
-                                         "Spencer Kimball & Peter Mattis",
-                                         "Spencer Kimball & Peter Mattis",
-                                         "1995-1996");
+      gimp_object_set_static_name (GIMP_OBJECT (procedure), load_name);
+      gimp_procedure_set_static_help (procedure,
+                                      "Loads file saved in the .xcf file format",
+                                      "The XCF file format has been designed "
+                                      "specifically for loading and saving "
+                                      "tiled and layered images in GIMP. "
+                                      "This procedure will load the specified "
+                                      "file.",
+                                      NULL);
+      gimp_procedure_set_static_attribution (procedure,
+                                             "Spencer Kimball & Peter Mattis",
+                                             "Spencer Kimball & Peter Mattis",
+                                             "1995-1996");
 
-  gimp_procedure_add_argument (procedure,
-                               gimp_param_spec_enum ("run-mode",
-                                                     "Dummy Param",
-                                                     "Dummy parameter",
-                                                     GIMP_TYPE_RUN_MODE,
-                                                     GIMP_RUN_INTERACTIVE,
-                                                     GIMP_PARAM_READWRITE));
-  gimp_procedure_add_argument (procedure,
-                               g_param_spec_object ("file",
-                                                    "File",
-                                                    "The file to load",
-                                                    G_TYPE_FILE,
-                                                  GIMP_PARAM_READWRITE));
+      gimp_procedure_add_argument (procedure,
+                                   gimp_param_spec_enum ("run-mode",
+                                                         "Dummy Param",
+                                                         "Dummy parameter",
+                                                         GIMP_TYPE_RUN_MODE,
+                                                         GIMP_RUN_INTERACTIVE,
+                                                         GIMP_PARAM_READWRITE));
+      gimp_procedure_add_argument (procedure,
+                                   g_param_spec_object ("file",
+                                                        "File",
+                                                        "The file to load",
+                                                        G_TYPE_FILE,
+                                                      GIMP_PARAM_READWRITE));
 
-  gimp_procedure_add_return_value (procedure,
-                                   gimp_param_spec_image ("image",
-                                                          "Image",
-                                                          "Output image",
-                                                          FALSE,
-                                                          GIMP_PARAM_READWRITE));
-  gimp_plug_in_manager_add_procedure (gimp->plug_in_manager, proc);
-  g_object_unref (procedure);
+      gimp_procedure_add_return_value (procedure,
+                                       gimp_param_spec_image ("image",
+                                                              "Image",
+                                                              "Output image",
+                                                              FALSE,
+                                                              GIMP_PARAM_READWRITE));
+      gimp_plug_in_manager_add_procedure (gimp->plug_in_manager, proc);
+      g_object_unref (procedure);
+    }
 }
 
 void
 xcf_exit (Gimp *gimp)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
+}
+
+static void
+xcf_cancel_load (GimpProgress *progress,
+                 GCancellable *cancellable)
+{
+  g_cancellable_cancel (cancellable);
 }
 
 GimpImage *
@@ -240,11 +258,23 @@ xcf_load_stream (Gimp          *gimp,
                  GimpProgress  *progress,
                  GError       **error)
 {
-  XcfInfo      info  = { 0, };
-  const gchar *filename;
+  return xcf_load_stream_with_dialect (gimp, input, input_file, progress,
+                                        XCF_PAINTER_DIALECT_AUTO, error);
+}
+
+GimpImage *
+xcf_load_stream_with_dialect (Gimp              *gimp,
+                              GInputStream      *input,
+                              GFile             *input_file,
+                              GimpProgress      *progress,
+                              XcfPainterDialect  dialect,
+                              GError           **error)
+{
+  XcfInfo      info = { 0, };
   GimpImage   *image = NULL;
-  gchar        id[14];
-  gboolean     success;
+  gchar        id[14] = { 0, };
+  gulong       cancel_id = 0;
+  gboolean     prepared = FALSE;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (G_IS_INPUT_STREAM (input), NULL);
@@ -252,71 +282,76 @@ xcf_load_stream (Gimp          *gimp,
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  if (input_file)
-    filename = gimp_file_get_utf8_name (input_file);
-  else
-    filename = _("Memory Stream");
-
-  info.gimp             = gimp;
-  info.input            = input;
-  info.seekable         = G_SEEKABLE (input);
+  info.gimp = gimp;
+  info.input = input;
   info.bytes_per_offset = 4;
-  info.progress         = progress;
-  info.file             = input_file;
-  info.compression      = COMPRESS_NONE;
-
+  info.progress = progress;
+  info.file = input_file;
+  info.painter_cancellable = g_cancellable_new ();
   if (progress)
-    gimp_progress_start (progress, FALSE, _("Opening '%s'"), filename);
-
-  success = TRUE;
-
-  xcf_read_int8 (&info, (guint8 *) id, 14);
-
-  if (! g_str_has_prefix (id, "gimp xcf "))
     {
-      success = FALSE;
+      cancel_id = g_signal_connect (progress, "cancel", G_CALLBACK (xcf_cancel_load),
+                                     info.painter_cancellable);
+      gimp_progress_start (progress, TRUE, _("Opening '%s'"),
+                            input_file ? gimp_file_get_utf8_name (input_file) : _("Memory Stream"));
     }
-  else if (strcmp (id + 9, "file") == 0)
-    {
-      info.file_version = 0;
-    }
-  else if (id[9]  == 'v' &&
-           id[13] == '\0')
-    {
-      info.file_version = atoi (id + 10);
-    }
+
+  prepared = xcf_painter_prepare (&info, dialect, error);
+  if (! prepared)
+    goto out;
+  if (xcf_read_int8 (&info, (guint8 *) id, sizeof id) != sizeof id ||
+      memcmp (id, "gimp xcf ", 9) || id[13] != '\0')
+    goto invalid_header;
+  if (! strcmp (id + 9, "file"))
+    info.file_version = 0;
+  else if (id[9] == 'v' && g_ascii_isdigit (id[10]) &&
+           g_ascii_isdigit (id[11]) && g_ascii_isdigit (id[12]))
+    info.file_version = atoi (id + 10);
   else
+    goto invalid_header;
+  if (info.file_version >= G_N_ELEMENTS (xcf_loaders))
     {
-      success = FALSE;
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("XCF error: unsupported XCF file version %d encountered"), info.file_version);
+      goto out;
     }
-
-  if (info.file_version >= 11)
+  if (! info.painter_legacy && info.file_version >= 11)
     info.bytes_per_offset = 8;
+  image = (*(xcf_loaders[info.file_version])) (gimp, &info, error);
+  if (image && ! g_cancellable_is_cancelled (info.painter_cancellable))
+    xcf_painter_finish_image (&info, image);
+  goto out;
 
-  if (success)
+ invalid_header:
+  g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED, _("Invalid XCF header"));
+ out:
+  if (g_cancellable_is_cancelled (info.painter_cancellable))
     {
-      if (info.file_version >= 0 &&
-          info.file_version < G_N_ELEMENTS (xcf_loaders))
-        {
-          image = (*(xcf_loaders[info.file_version])) (gimp, &info, error);
-
-          if (! image)
-            success = FALSE;
-
-          g_input_stream_close (info.input, NULL, NULL);
-        }
-      else
-        {
-          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                       _("XCF error: unsupported XCF file version %d "
-                         "encountered"), info.file_version);
-          success = FALSE;
-        }
+      g_clear_object (&image);
+      if (error) g_clear_error (error);
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CANCELLED, _("Opening the XCF image was cancelled"));
     }
-
-  if (progress)
-    gimp_progress_end (progress);
-
+  if (prepared)
+    {
+      g_input_stream_close (info.input, NULL, NULL);
+      g_object_unref (info.input);
+    }
+  g_input_stream_close (input, NULL, NULL);
+  g_clear_pointer (&info.painter_source, g_bytes_unref);
+  g_clear_pointer (&info.selected_layers, g_list_free);
+  g_clear_pointer (&info.selected_channels, g_list_free);
+  g_clear_pointer (&info.selected_vectors, g_list_free);
+  g_clear_pointer (&info.linked_layers, g_list_free);
+  g_clear_pointer (&info.linked_channels, g_list_free);
+  g_clear_pointer (&info.linked_paths, g_list_free);
+  /* Uncommitted item-set objects are owned by the load transaction. */
+  for (GList *p = info.layer_sets; p; p = p->next) if (p->data) g_object_unref (p->data);
+  for (GList *p = info.channel_sets; p; p = p->next) if (p->data) g_object_unref (p->data);
+  g_list_free (info.layer_sets);
+  g_list_free (info.channel_sets);
+  if (cancel_id) g_signal_handler_disconnect (progress, cancel_id);
+  g_clear_object (&info.painter_cancellable);
+  if (progress) gimp_progress_end (progress);
   return image;
 }
 
@@ -340,6 +375,17 @@ xcf_save_stream (Gimp           *gimp,
   g_return_val_if_fail (output_file == NULL || G_IS_FILE (output_file), FALSE);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (! xcf_painter_can_save (image, error))
+    {
+      /* Also protect callers of the direct stream API. GFile replacement is
+       * aborted rather than committed when its stream is closed cancelled. */
+      GCancellable *cancel = g_cancellable_new ();
+      g_cancellable_cancel (cancel);
+      g_output_stream_close (output, cancel, NULL);
+      g_object_unref (cancel);
+      return FALSE;
+    }
 
   if (output_file)
     filename = gimp_file_get_utf8_name (output_file);
@@ -426,7 +472,11 @@ xcf_load_invoker (GimpProcedure         *procedure,
 
   if (input)
     {
-      image = xcf_load_stream (gimp, input, file, progress, error);
+      const gchar *name = gimp_object_get_name (procedure);
+      XcfPainterDialect dialect = ! strcmp (name, "gimp-xcf-load-painter")
+        ? XCF_PAINTER_DIALECT_LEGACY : ! strcmp (name, "gimp-xcf-load-standard")
+        ? XCF_PAINTER_DIALECT_STANDARD : XCF_PAINTER_DIALECT_AUTO;
+      image = xcf_load_stream_with_dialect (gimp, input, file, progress, dialect, error);
 
       g_object_unref (input);
     }
@@ -467,6 +517,13 @@ xcf_save_invoker (GimpProcedure         *procedure,
 
   image = g_value_get_object (gimp_value_array_index (args, 1));
   file  = g_value_get_object (gimp_value_array_index (args, 2));
+
+  if (! xcf_painter_can_save (image, error))
+    {
+      return_vals = gimp_procedure_get_return_values (procedure, FALSE, error ? *error : NULL);
+      gimp_unset_busy (gimp);
+      return return_vals;
+    }
 
   output = G_OUTPUT_STREAM (g_file_replace (file,
                                             NULL, FALSE, G_FILE_CREATE_NONE,

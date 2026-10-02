@@ -1,8 +1,9 @@
 # Painter XCF byte-decoder contract
 
-Status: metadata/probe groundwork, 2026-10-02. This is **not** a working legacy
-Open implementation or a successful migrated save/reopen test. Tasks 10–12 must
-not be marked complete as a group on this evidence.
+Status: pure metadata/probe module, 2026-10-02. Application Open integration
+is separately described in `xcf-open-integration.md`; this module alone is not
+a successful migrated save/reopen test. Tasks 10–12 must not be marked complete
+as a group on this evidence.
 
 ## Sources and scope
 
@@ -91,7 +92,9 @@ make a version/first-word heuristic unsafe.
    temporary objects. Never share partial layers between candidate attempts
 6. Do not save over the input during detection or recovery
 
-No branch of this Open contract has been wired into `xcf_load_image()` yet.
+The separate `painter-xcf-load.cpp` application adapter now wires candidate and
+explicit-recovery paths into normal Open. See `xcf-open-integration.md` for
+verified cases and the remaining exact-pixel and writer gates.
 
 ## 2. Records, ordering and field collisions
 

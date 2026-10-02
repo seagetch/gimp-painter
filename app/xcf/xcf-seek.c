@@ -32,6 +32,17 @@ xcf_seek_pos (XcfInfo  *info,
               goffset   pos,
               GError  **error)
 {
+  if (info->painter_cancellable &&
+      g_cancellable_set_error_if_cancelled (info->painter_cancellable, error))
+    return FALSE;
+  if (info->painter_source &&
+      (pos < 0 || (guint64) pos > g_bytes_get_size (info->painter_source)))
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           "XCF offset exceeds input size");
+      return FALSE;
+    }
+
   if (info->cp != pos)
     {
       GError *my_error = NULL;
@@ -39,7 +50,7 @@ xcf_seek_pos (XcfInfo  *info,
       info->cp = pos;
 
       if (! g_seekable_seek (info->seekable, info->cp, G_SEEK_SET,
-                             NULL, &my_error))
+                             info->painter_cancellable, &my_error))
         {
           g_propagate_prefixed_error (error, my_error,
                                       _("Could not seek in XCF file: "));

@@ -82,6 +82,7 @@
 #include "xcf-read.h"
 #include "xcf-seek.h"
 #include "xcf-utils.h"
+#include "painter-xcf-load.h"
 
 #include "gimp-log.h"
 #include "gimp-intl.h"
@@ -244,7 +245,7 @@ xcf_load_image (Gimp     *gimp,
       height = 1;
     }
 
-  if (info->file_version >= 4)
+  if (! info->painter_legacy && info->file_version >= 4)
     {
       gint p;
 
@@ -966,14 +967,14 @@ xcf_load_image (Gimp     *gimp,
       if (iter->data)
         gimp_image_store_item_set (image, iter->data);
     }
-  g_list_free (info->layer_sets);
+  g_clear_pointer (&info->layer_sets, g_list_free);
 
   for (iter = g_list_last (info->channel_sets); iter; iter = iter->prev)
     {
       if (iter->data)
         gimp_image_store_item_set (image, iter->data);
     }
-  g_list_free (info->channel_sets);
+  g_clear_pointer (&info->channel_sets, g_list_free);
 
   if (info->file)
     gimp_image_set_file (image, info->file);
@@ -989,6 +990,9 @@ xcf_load_image (Gimp     *gimp,
   return image;
 
  error:
+  if (g_cancellable_is_cancelled (info->painter_cancellable))
+    goto hard_error;
+
   if (num_successful_elements == 0)
     goto hard_error;
 
@@ -1151,6 +1155,12 @@ xcf_load_image_props (XcfInfo   *info,
     {
       if (! xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
+
+      if (info->painter_legacy && prop_type > 31)
+        {
+          if (! xcf_skip_unknown_prop (info, prop_size)) return FALSE;
+          continue;
+        }
 
       switch (prop_type)
         {
@@ -1658,6 +1668,20 @@ xcf_load_layer_props (XcfInfo    *info,
       if (! xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
 
+      if (info->painter_legacy && (prop_type == 32 || prop_type == 33))
+        {
+          if (! xcf_painter_load_extension (info, image, layer, prop_type, prop_size))
+            return FALSE;
+          continue;
+        }
+      /* Properties introduced after the legacy reader remain opaque in this
+       * dialect, even if their tag now names a modern property. */
+      if (info->painter_legacy && prop_type > 33)
+        {
+          if (! xcf_skip_unknown_prop (info, prop_size)) return FALSE;
+          continue;
+        }
+
       switch (prop_type)
         {
         case PROP_END:
@@ -1823,6 +1847,13 @@ xcf_load_layer_props (XcfInfo    *info,
 
             xcf_read_int32 (info, (guint32 *) &mode, 1);
 
+            if (info->painter_legacy)
+              {
+                if (! xcf_painter_load_mode (*layer, (guint32) mode))
+                  return FALSE;
+                break;
+              }
+
             if (mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
               mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
 
@@ -1975,6 +2006,8 @@ xcf_load_layer_props (XcfInfo    *info,
 
             if (*layer == info->floating_sel)
               info->floating_sel = NULL;
+
+            info->linked_layers = g_list_remove (info->linked_layers, *layer);
 
             group = gimp_group_layer_new (image);
 
@@ -2170,6 +2203,12 @@ xcf_load_channel_props (XcfInfo      *info,
     {
       if (! xcf_load_prop (info, &prop_type, &prop_size))
         return FALSE;
+
+      if (info->painter_legacy && prop_type > 31)
+        {
+          if (! xcf_skip_unknown_prop (info, prop_size)) return FALSE;
+          continue;
+        }
 
       switch (prop_type)
         {
@@ -2996,6 +3035,9 @@ xcf_load_prop (XcfInfo  *info,
                PropType *prop_type,
                guint32  *prop_size)
 {
+  if (info->painter_cancellable && g_cancellable_is_cancelled (info->painter_cancellable))
+    return FALSE;
+
   if (G_UNLIKELY (xcf_read_int32 (info, (guint32 *) prop_type, 1) != 4))
     return FALSE;
 
@@ -3013,6 +3055,7 @@ xcf_load_layer (XcfInfo    *info,
                 GList     **item_path,
                 gint       *n_broken_effects)
 {
+  goffset            original_offset = info->cp;
   GimpLayer         *layer;
   GimpLayerMask     *layer_mask;
   goffset            hierarchy_offset;
@@ -3133,7 +3176,8 @@ xcf_load_layer (XcfInfo    *info,
   /* create a new layer */
   layer = gimp_layer_new (image, width, height,
                           format, name,
-                          GIMP_OPACITY_OPAQUE, GIMP_LAYER_MODE_NORMAL);
+                          GIMP_OPACITY_OPAQUE, info->painter_legacy ?
+                          GIMP_LAYER_MODE_NORMAL_LEGACY : GIMP_LAYER_MODE_NORMAL);
   g_free (name);
   if (! layer)
     return NULL;
@@ -3310,10 +3354,12 @@ xcf_load_layer (XcfInfo    *info,
   if (is_fs_drawable)
     info->floating_sel_drawable = GIMP_DRAWABLE (layer);
 
+  xcf_painter_record_offset (G_OBJECT (layer), original_offset);
   return layer;
 
  error:
   info->selected_layers = g_list_remove (info->selected_layers, layer);
+  info->linked_layers = g_list_remove (info->linked_layers, layer);
 
   if (info->floating_sel == layer)
     info->floating_sel = NULL;
@@ -3330,6 +3376,7 @@ static GimpChannel *
 xcf_load_channel (XcfInfo   *info,
                   GimpImage *image)
 {
+  goffset            original_offset = info->cp;
   GimpChannel *channel;
   goffset      hierarchy_offset;
   gint         width;
@@ -3392,6 +3439,7 @@ xcf_load_channel (XcfInfo   *info,
   if (is_fs_drawable)
     info->floating_sel_drawable = GIMP_DRAWABLE (channel);
 
+  xcf_painter_record_offset (G_OBJECT (channel), original_offset);
   return channel;
 
  error:
@@ -3738,6 +3786,7 @@ static GimpLayerMask *
 xcf_load_layer_mask (XcfInfo   *info,
                      GimpImage *image)
 {
+  goffset            original_offset = info->cp;
   GimpLayerMask *layer_mask;
   GimpChannel   *channel;
   GList         *iter;
@@ -3806,6 +3855,7 @@ xcf_load_layer_mask (XcfInfo   *info,
   if (is_fs_drawable)
     info->floating_sel_drawable = GIMP_DRAWABLE (layer_mask);
 
+  xcf_painter_record_offset (G_OBJECT (layer_mask), original_offset);
   return layer_mask;
 
  error:
@@ -4724,6 +4774,16 @@ xcf_skip_unknown_prop (XcfInfo *info,
 {
   guint8 buf[16];
   guint  amount;
+
+  /* The immutable snapshot has already been read successfully. Skipping an
+   * opaque record can seek in constant space/time after validating its bound. */
+  if (info->painter_source)
+    {
+      gsize length = g_bytes_get_size (info->painter_source);
+      if (info->cp < 0 || (guint64) info->cp > length || size > length - info->cp)
+        return FALSE;
+      return xcf_seek_pos (info, info->cp + size, NULL);
+    }
 
   while (size > 0)
     {

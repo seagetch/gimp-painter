@@ -45,6 +45,7 @@ app_tests = [
 #'tools',
 #'ui',
   'xcf',
+  'painter-xcf-open',
   'painter-layer-modes',
 ]
 

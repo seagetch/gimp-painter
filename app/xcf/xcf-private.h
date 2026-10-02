@@ -146,6 +146,10 @@ struct _XcfInfo
   goffset             floating_sel_offset;
   XcfCompressionType  compression;
   gint                file_version;
+
+  gboolean            painter_legacy;
+  GBytes             *painter_source;
+  GCancellable       *painter_cancellable;
 };
 
 
