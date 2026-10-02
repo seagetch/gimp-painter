@@ -8,3 +8,6 @@ app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp whitespace=-blank-at-eo
 
 # Exact ASan failure transcript retains its standard legend whitespace.
 migration/tests/perspective-event-reentry-before-fix.txt whitespace=-blank-at-eol
+
+# Preserve the exact shared arithmetic extraction covered by recorded hashes.
+app/painter/filter-edge-kernel-private.hpp whitespace=-blank-at-eol

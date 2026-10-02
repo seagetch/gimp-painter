@@ -1,0 +1,89 @@
+{
+  "scope": "Six worker-only temporary-raster/transpose cases and nine bounded input/result transport cases; GLib/system libraries uninstrumented; no live GIMP large-image gate claimed",
+  "source_sha256": {
+    "app/painter/filter-raster.cpp": "006d9cc62e1f58907a869beacc7e48473f3d4375801949d959ee52a0ea3fe11e",
+    "app/painter/filter-raster.hpp": "b3db1503d4bee7a92a616a14ab0484709be2b99f9117f32e17ccb86f6602fe0a",
+    "app/painter/filter-spool.cpp": "44d257bd1eb7780d4712c59ababadf469096f771a1bac3dc703d943a13f63225",
+    "app/painter/filter-spool.hpp": "c0b77509a00059f5fe71dbaf5f350d7025267d5b08bfe52b0c885c35795336da",
+    "app/painter/tests/test-filter-raster.cpp": "a1498b644892a1f70d96af1da31be105e9cae590449eaccdf8d9f38d167f0bfb",
+    "app/painter/tests/test-filter-spool.cpp": "d3054ca964921d6bd9c1172f9b2c433add60fd67bc5cc9f1ff3e6cca7c619277",
+    "app/painter/work-admission.hpp": "aa7773b6ae42b2ac36802b3011928bb8de5849cf41e7880c86521415063f1232",
+    "migration/tests/run_filter_storage_tests.py": "e5a156f61eea325ab2d32b4aa04aec3b877959a107bb5a0b17d99691ac21e8bd"
+  },
+  "changed_after_compile": [],
+  "sanitizers": [],
+  "leak_detection": false,
+  "runs": [
+    {
+      "name": "raster",
+      "translation_units": [
+        "app/painter/filter-raster.cpp",
+        "app/painter/tests/test-filter-raster.cpp"
+      ],
+      "compile_command": [
+        "g++",
+        "-std=c++14",
+        "-D_FILE_OFFSET_BITS=64",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+        "-O2",
+        "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-raster.cpp",
+        "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/tests/test-filter-raster.cpp",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+        "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-lglib-2.0",
+        "-o",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-storage-tests/painter-filter-raster"
+      ],
+      "test_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-storage-tests/painter-filter-raster"
+      ],
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02Se915ad6f07bc840765ac3b852fa12988\n1..6\n# Start of filter-raster tests\nok 1 /filter-raster/native_bytes_and_cleanup\nok 2 /filter-raster/large_sparse_offset\nok 3 /filter-raster/invalid_access_and_unwritten_read\nok 4 /filter-raster/worker_affinity\nok 5 /filter-raster/tiled_transpose_and_roundtrip\n# slow test /filter-raster/tiled_transpose_and_roundtrip executed in 1.46 secs\nok 6 /filter-raster/cancelled_or_failed_output_stays_private\n# End of filter-raster tests\n",
+      "stderr": ""
+    },
+    {
+      "name": "spool",
+      "translation_units": [
+        "app/painter/filter-raster.cpp",
+        "app/painter/filter-spool.cpp",
+        "app/painter/tests/test-filter-spool.cpp"
+      ],
+      "compile_command": [
+        "g++",
+        "-std=c++14",
+        "-D_FILE_OFFSET_BITS=64",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+        "-O2",
+        "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-raster.cpp",
+        "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-spool.cpp",
+        "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/tests/test-filter-spool.cpp",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/glib-2.0",
+        "-I/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/shared/gimp-build-deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-lglib-2.0",
+        "-o",
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-storage-tests/painter-filter-spool"
+      ],
+      "test_command": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/filter-storage-tests/painter-filter-spool"
+      ],
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02S8aeca294bec3801c34aaff301b4ef1a1\n1..9\n# Start of filter-spool tests\nok 1 /filter-spool/roundtrip_and_output_geometry\nok 2 /filter-spool/missing_directory_fails_without_start\nok 3 /filter-spool/cancellation_while_collecting\nok 4 /filter-spool/cancellation_while_output_is_full\nok 5 /filter-spool/close_keeps_worker_lease_until_completion\nok 6 /filter-spool/result_read_failure_never_certifies_partial_output\nok 7 /filter-spool/owner_api_thread_guards\nok 8 /filter-spool/processing_exception_is_reported\nok 9 /filter-spool/invalid_input_is_transactional\n# End of filter-spool tests\n",
+      "stderr": ""
+    }
+  ],
+  "all_passed": true
+}
