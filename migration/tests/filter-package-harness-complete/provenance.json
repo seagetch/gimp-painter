@@ -1,0 +1,120 @@
+{
+  "status": "passed",
+  "errors": [],
+  "exit_code": 0,
+  "seconds": 9.844495104000089,
+  "command": [
+    "/usr/bin/python3",
+    "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+    "--new-instance",
+    "--no-interface",
+    "--no-data",
+    "--no-fonts",
+    "--no-splash",
+    "--batch-interpreter=python-fu-eval",
+    "-b",
+    "-",
+    "--quit"
+  ],
+  "expected_executables": {
+    "console": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-console-3.0",
+    "helper": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+    "plugin": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds"
+  },
+  "observed_helpers": [
+    {
+      "pid": 1544,
+      "state": "R",
+      "parent": 16,
+      "group": 1544,
+      "start_ticks": 863676,
+      "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+        "--filter-worker-v1",
+        "/tmp/package-smoke-development-1bo72h1i/cache/gimp/3.0/gimp-filter-AFBUW3"
+      ]
+    }
+  ],
+  "observed_plugins": [
+    {
+      "pid": 1608,
+      "state": "R",
+      "parent": 1544,
+      "group": 1544,
+      "start_ticks": 863697,
+      "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+        "-gimp",
+        "277",
+        "8",
+        "7",
+        "-query",
+        "0"
+      ]
+    },
+    {
+      "pid": 1714,
+      "state": "S",
+      "parent": 1544,
+      "group": 1544,
+      "start_ticks": 863739,
+      "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+        "-gimp",
+        "277",
+        "11",
+        "9",
+        "-run",
+        "0"
+      ]
+    }
+  ],
+  "wrong_installation": [],
+  "survivors": [],
+  "leftover_profiles": [],
+  "events": [
+    {
+      "event": "READY",
+      "monotonic": 8635.64080164,
+      "image": 1
+    },
+    {
+      "event": "INVALIDATED",
+      "monotonic": 8635.661347141,
+      "image": 1
+    },
+    {
+      "event": "EXACT_OUTPUT",
+      "monotonic": 8639.938441648,
+      "sha256": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1"
+    },
+    {
+      "event": "SAVED_REOPENED",
+      "monotonic": 8640.346887684,
+      "sha256": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1"
+    }
+  ],
+  "batch_result": {
+    "status": "passed",
+    "expected_sha256": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1",
+    "saved_xcf": "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-package-harness-complete/batch-result.xcf",
+    "saved_bytes": 426918,
+    "saved_sha256": "f49d49b4bb29398aad975b7a014b0388822ed3c3afa3101a53d5d944b2fa0c1c",
+    "scope": "Explicit lower update, complete genuine-old Blinds pixels, Save and reopen; not a complete editing or GUI test"
+  },
+  "fixture_sha256": "1e4af7adedcba4626c55b1b3a750c195b77e8a0b04c89047360a5911b5b4380c",
+  "oracle_sha256": "5f4362b4a16c4c17080dddc41ef0058d3f1295c226067ae99a2aa6959f3ffffb",
+  "batch_source_sha256": "70e58df275f463c9c1ba41b92e9b1b329155dddf47e2fbb0fcbf9423e2868033",
+  "observer_source_sha256": "efb0aa5d1daed55ccaf15816bbe904e1c876cea34f9ac002dc0f43f5d4f7ec71",
+  "console_log_sha256": "f22bb34158ef6cf989b820987e33a84e2414b0d7089bf2e85ba8f965455e4613",
+  "executed_binary_sha256": {
+    "console": "d72ac7f17951592dd782df9bf9a939b6af1cfe70842d3409b1feeabe6521749f",
+    "helper": "f319eda5bc65aead448a9162faea7bf2cce7a176f4d86b3504da10fb9c5b590c",
+    "plugin": "a1664e8d26daa5cfb628815df381c66c7693a310dca18ee628092fe51a292417"
+  },
+  "binary_hashes_unchanged": true,
+  "evidence_scope": "Harness development on existing normal build only; not installed/relocated package or current-source aggregate"
+}

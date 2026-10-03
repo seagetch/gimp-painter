@@ -6,12 +6,18 @@ console create/fill/save/reopen; it never claims actual GUI or pen coverage.
 """
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
 import re
 import shutil
 import subprocess
+
+
+_filter_spec = importlib.util.spec_from_file_location('installed_filter', Path(__file__).resolve().parent/'check_installed_filter.py')
+filter_smoke = importlib.util.module_from_spec(_filter_spec)
+_filter_spec.loader.exec_module(filter_smoke)
 
 
 BASE_ABI = {'ld-linux-x86-64.so.2', 'libc.so.6', 'libm.so.6', 'libmvec.so.1',
@@ -117,6 +123,14 @@ def main():
                      'file_trace_available':trace_file.exists(),'build_path_accesses':forbidden_hits})
         if not passed:
             print(contents)
+    filter_report = filter_smoke.run([app, '--console'], env,
+        filter_smoke.installed_executables(relocated), output/'installed-filter')
+    runs.append({'name':'installed-filter-exact-save-reopen',
+                 'exit_code':filter_report['exit_code'],
+                 'passed':filter_report['status']=='passed',
+                 'report':'installed-filter/report.json',
+                 'observed_installed_helper':bool(filter_report['observed_helpers']),
+                 'observed_installed_plugin':bool(filter_report['observed_plugins'])})
     report={'format':1,'source_commit':manifest['source_commit'],'prototype':manifest['status'],
         'bundle_manifest_sha256':digest(source/'build-manifest.json'),
         'verified_files':verified,'elf_objects':checked_elf,'relocation':'fresh path with spaces and Japanese characters',

@@ -1182,6 +1182,7 @@
 | 34.005 | [ ] | clean 環境 package を作る | 34.004 | 作業ディレクトリ外から起動 |
 | 34.005/runtime-prototype | [x] | Linuxの隔離・再配置runtime梱包と検証手順を実装する | 03.009, 04.002/common-foundation | 5255file/418ELF・177brush/8presetをseal、別日本語pathでversion/Save再読込と実GTK stroke保存再開、11helper安全検査合格。prototypeのみでfinal source/binary一致・配布source/license・release/platform gateは未完了 |
 | 34.005/tested-freshness-gate | [x] | PHONY/restatと実変更を区別する梱包gateを検証する | 34.005/runtime-prototype | 全source/output/graph/command/install inputの集約前後sealを要求しNinja収束後も同一でなければstage前拒否。32fixtureと実失敗gate3改竄拒否合格。旧gateや104/4結果を合格へ変えず、実Gimp新集約/候補作成は未実行 |
+| 34.005/installed-filter-smoke | [ ] | 再配置runtimeで実Filter process・旧画素・Save再読込を検証する | 34.005/runtime-prototype, 16.003/isolated-blinds-route | 新検査器は通常buildで実helper/plugin・4096²実旧byte・Save再読込を確認、32recipe検査合格。再配置selectorと実install試験は未完了 |
 | 34.005/license-manifest | [ ] | 実配布依存の版とlicense noticeを収集する | 34.005, 01.011 | 各OSの実リンク・同梱ライブラリーと資産を実source hashへ対応し、旧台帳の未取得noticeを解消してpackageへ添付する |
 | 34.006 | [ ] | C/C++ compile CI を登録する | 34.005 | 主要 OS で全追加 module を検査 |
 | 34.007 | [ ] | bridge 単体試験を CI に登録する | 34.006 | 寿命と例外の回帰を検知 |

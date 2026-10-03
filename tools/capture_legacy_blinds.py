@@ -67,7 +67,7 @@ def gray_background(source: Path) -> tuple[int, dict[str, float]]:
     return value, coefficients
 
 
-def prepare(out: Path, gray: int) -> tuple[list[dict], list[dict]]:
+def prepare(out: Path, gray: int, package_smoke: bool = False) -> tuple[list[dict], list[dict]]:
     inputs, cases, script = [], [], ["; Actual pinned legacy Blinds PDB byte capture."]
 
     def load(filename: str) -> str:
@@ -79,17 +79,21 @@ def prepare(out: Path, gray: int) -> tuple[list[dict], list[dict]]:
         path = quote(out / filename)
         return f"(file-png-save2 RUN-NONINTERACTIVE image layer {path} {path} 0 9 0 0 0 0 0 0 1)"
 
-    for mode in ("RGBA", "LA"):
+    for mode in (("RGBA",) if package_smoke else ("RGBA", "LA")):
         channels = 4 if mode == "RGBA" else 2
-        for width, height in GEOMETRIES:
+        for width, height in (((4096, 4096),) if package_smoke else GEOMETRIES):
             label = f"{mode}-{width}x{height}"
-            data = bytearray()
-            for y in range(height):
-                for x in range(width):
-                    rgb = ((x * 37 + y * 61 + 11) % 256,
-                           (x * 97 + y * 43 + 61) % 256,
-                           (x * 13 + y * 173 + 137) % 256)
-                    data.extend((rgb if mode == "RGBA" else rgb[:1]) + ((0, 1, 127, 255)[(x + 3 * y) % 4],))
+            if package_smoke:
+                # Matches the explicit lower layer of quit-blinds-1.xcf.
+                data = bytes((118, 71, 199, 255)) * (width * height)
+            else:
+                data = bytearray()
+                for y in range(height):
+                    for x in range(width):
+                        rgb = ((x * 37 + y * 61 + 11) % 256,
+                               (x * 97 + y * 43 + 61) % 256,
+                               (x * 13 + y * 173 + 137) % 256)
+                        data.extend((rgb if mode == "RGBA" else rgb[:1]) + ((0, 1, 127, 255)[(x + 3 * y) % 4],))
             generated = "input-" + label + ".raw"
             loaded = "loaded-" + label + ".raw"
             png = "input-" + label + ".png"
@@ -100,9 +104,9 @@ def prepare(out: Path, gray: int) -> tuple[list[dict], list[dict]]:
                                loaded_png="loaded-" + label + ".png", generated_sha256=sha(out / generated)))
             script.append(load(png) + "\n " + save("loaded-" + label + ".png") +
                           f'\n (gimp-message "BLINDS_INPUT_LOADED={label}") (gimp-image-delete image))')
-            for orientation in (0, 1):
-                for angle, segments in PARAMETERS:
-                    for transparent in TRANSPARENCY:
+            for orientation in ((1,) if package_smoke else (0, 1)):
+                for angle, segments in (((67, 7),) if package_smoke else PARAMETERS):
+                    for transparent in ((1,) if package_smoke else TRANSPARENCY):
                         ident = f"{label}-a{angle}-s{segments}-o{orientation}-t{transparent}"
                         bg = BACKGROUND if mode == "RGBA" else (gray,) * 3
                         case = dict(id=ident, procedure="plug-in-blinds", mode=mode,
@@ -116,7 +120,7 @@ def prepare(out: Path, gray: int) -> tuple[list[dict], list[dict]]:
                                       f"\n (plug-in-blinds RUN-NONINTERACTIVE image layer {angle} {segments} {orientation} {transparent})" +
                                       f'\n (gimp-message "BLINDS_PDB_DONE={ident}")\n ' + save(case["output_png"]) +
                                       f'\n (gimp-message "BLINDS_CASE_DONE={ident}") (gimp-image-delete image))')
-    assert len(cases) == 320
+    assert len(cases) == (1 if package_smoke else 320)
     (out / "capture.scm").write_text("\n\n".join(script) + "\n")
     (out / "fixtures.tsv").write_text("# " + " ".join(COLUMNS) + "\n" + "".join(
         "\t".join(str(case[key]) for key in COLUMNS) + "\n" for case in cases))
@@ -175,6 +179,7 @@ def run_capture(command: list[str], env: dict[str, str], logfile: Path,
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--capture", action="store_true")
+    parser.add_argument("--package-smoke", action="store_true", help="One actual old4096-square constant-source case for installed-runtime verification")
     parser.add_argument("--output", type=Path, default=ROOT / "migration/fixtures/legacy-blinds")
     parser.add_argument("--legacy-source", type=Path, default=ROOT.parent / "gimp-painter-legacy")
     parser.add_argument("--legacy-prefix", type=Path, default=Path("/workspace/shared/gimp-legacy-build/prefix"))
@@ -195,7 +200,7 @@ def main() -> int:
             raise SystemExit("Legacy oracle source has local changes: " + name)
     gray, coefficients = gray_background(source)
     out.mkdir(parents=True, exist_ok=True)
-    inputs, cases = prepare(out, gray)
+    inputs, cases = prepare(out, gray, args.package_smoke)
     (out / "capture-plan.json").write_text(json.dumps(dict(schema_version=1, source_commit=commit,
         background_rgb=BACKGROUND, background_gray=gray, gray_coefficients=coefficients,
         inputs=inputs, cases=cases), indent=2) + "\n")

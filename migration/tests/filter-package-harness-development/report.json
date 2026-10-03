@@ -1,0 +1,133 @@
+{
+  "status": "failed",
+  "errors": [
+    "A Filter executable was resolved outside the intended runtime"
+  ],
+  "exit_code": 0,
+  "seconds": 9.711480644000403,
+  "command": [
+    "/usr/bin/python3",
+    "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+    "--new-instance",
+    "--no-interface",
+    "--no-data",
+    "--no-fonts",
+    "--no-splash",
+    "--batch-interpreter=python-fu-eval",
+    "-b",
+    "-",
+    "--quit"
+  ],
+  "expected_executables": {
+    "console": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-console-3.0",
+    "helper": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+    "plugin": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds"
+  },
+  "observed_helpers": [
+    {
+      "pid": 1523,
+      "state": "R",
+      "parent": 17,
+      "group": 1523,
+      "start_ticks": 848576,
+      "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+        "--filter-worker-v1",
+        "/tmp/package-smoke-development-84nlbokx/cache/gimp/3.0/gimp-filter-RICUW3"
+      ]
+    }
+  ],
+  "observed_plugins": [
+    {
+      "pid": 1609,
+      "state": "R",
+      "parent": 1523,
+      "group": 1523,
+      "start_ticks": 848603,
+      "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+        "-gimp",
+        "277",
+        "8",
+        "7",
+        "-query",
+        "0"
+      ]
+    },
+    {
+      "pid": 1746,
+      "state": "S",
+      "parent": 1523,
+      "group": 1523,
+      "start_ticks": 848657,
+      "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+        "-gimp",
+        "277",
+        "11",
+        "9",
+        "-run",
+        "0"
+      ]
+    }
+  ],
+  "wrong_installation": [
+    {
+      "pid": 450,
+      "state": "R",
+      "parent": 17,
+      "group": 9,
+      "start_ticks": 848151,
+      "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/blinds/blinds",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/blinds/blinds",
+        "-gimp",
+        "277",
+        "70",
+        "69",
+        "-query",
+        "1"
+      ]
+    }
+  ],
+  "survivors": [],
+  "leftover_profiles": [],
+  "events": [
+    {
+      "event": "READY",
+      "monotonic": 8484.662242917,
+      "image": 1
+    },
+    {
+      "event": "INVALIDATED",
+      "monotonic": 8484.67268619,
+      "image": 1
+    },
+    {
+      "event": "EXACT_OUTPUT",
+      "monotonic": 8488.960553068,
+      "sha256": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1"
+    },
+    {
+      "event": "SAVED_REOPENED",
+      "monotonic": 8489.343002715,
+      "sha256": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1"
+    }
+  ],
+  "batch_result": {
+    "status": "passed",
+    "expected_sha256": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1",
+    "saved_xcf": "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-package-harness-development/batch-result.xcf",
+    "saved_bytes": 426918,
+    "saved_sha256": "f49d49b4bb29398aad975b7a014b0388822ed3c3afa3101a53d5d944b2fa0c1c",
+    "scope": "Explicit lower update, complete genuine-old Blinds pixels, Save and reopen; not a complete editing or GUI test"
+  },
+  "fixture_sha256": "1e4af7adedcba4626c55b1b3a750c195b77e8a0b04c89047360a5911b5b4380c",
+  "oracle_sha256": "5f4362b4a16c4c17080dddc41ef0058d3f1295c226067ae99a2aa6959f3ffffb",
+  "batch_source_sha256": "70e58df275f463c9c1ba41b92e9b1b329155dddf47e2fbb0fcbf9423e2868033",
+  "observer_source_sha256": "487221eb26e896e3975bebf737245bcb4953069bb288f0ebe607fa41996373d4",
+  "console_log_sha256": "13bb0c54f7208c38f4c6aaaccb06ecf9ca011a46f8d573d4cb5ea29cefb4e76c"
+}

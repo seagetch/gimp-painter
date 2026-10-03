@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "status": "genuine-old-oracle-only; relocated runtime not yet tested",
+  "fixture": "migration/tests/filter-active-quit-pdb/fixtures/quit-blinds-1.xcf",
+  "fixture_sha256": "1e4af7adedcba4626c55b1b3a750c195b77e8a0b04c89047360a5911b5b4380c",
+  "source_pixel": [
+    118,
+    71,
+    199,
+    255
+  ],
+  "prior_cache_pixel": [
+    13,
+    30,
+    47,
+    255
+  ],
+  "width": 4096,
+  "height": 4096,
+  "procedure": "plug-in-blinds",
+  "arguments": [
+    67,
+    7,
+    1,
+    1
+  ],
+  "expected_rgba_sha256": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1",
+  "expected_first_row_sha256": "17c418f19cdcee77c907838c6b443b6f8f33108bbab54fa4bd93cf6d2f49c38a",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "archive": "migration/fixtures/legacy-blinds-package-smoke.tar.gz",
+  "archive_sha256": "394a16423c27ef0e1a553edba4d1d902b91cdb11b43774fe0c222c802f45fe95",
+  "archive_members": {
+    ".gitattributes": "a11f0c1c32a3251aa75d20de87cb4e37a7dc04ee8089a4e474c77cdd921aa281",
+    "RGBA-4096x4096-a67-s7-o1-t1.png": "04bc6f0b6a3b4ed59fb465328276a65221af9f81f61f14802a69280e638b11e4",
+    "RGBA-4096x4096-a67-s7-o1-t1.raw": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1",
+    "capture-plan.json": "44c2b5a95f02745a5c3b86d2b5a638835d558c8d8737852a66511f5ae5cb0a80",
+    "capture-report.json": "f30e27b834f03cd36700ff54107d67af29cedf668a716844e5a373159e7074ef",
+    "capture.log": "73305e0b1a7ea7b322040c8cca1936d0f1437ca0c72dad870e0ab8de06abe6f2",
+    "capture.scm": "161e9c3a43afbe647de1df2c4ea0b28c1e88692a041f435da8af2532acfdf883",
+    "fixtures.tsv": "22a297d7870d744b0b488d98acd227f79408e43820afd09104d8f974fc871d37",
+    "input-RGBA-4096x4096.png": "3259e94b63ccbf7514198c59d4f538cd40c7d24c3aad353c9fb7e8bf6c73cc3f",
+    "input-RGBA-4096x4096.raw": "693fa9d284c5794225bc3353e5457a0dcae8ed20d9d54fa2e191f73f99c7c9e2",
+    "loaded-RGBA-4096x4096.png": "d2d41fb03d4b1e0b56122d014c890af828cf4a7f9c79841908e49f21ee96b507",
+    "loaded-RGBA-4096x4096.raw": "693fa9d284c5794225bc3353e5457a0dcae8ed20d9d54fa2e191f73f99c7c9e2"
+  },
+  "capture_passed": true
+}

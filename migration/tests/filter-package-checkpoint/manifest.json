@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "scope": "Installed Filter verification infrastructure and actual-old oracle; installed-runtime acceptance is still pending",
+  "source_and_evidence_sha256": {
+    "migration/fixtures/legacy-blinds-package-smoke.json": "5f4362b4a16c4c17080dddc41ef0058d3f1295c226067ae99a2aa6959f3ffffb",
+    "migration/fixtures/legacy-blinds-package-smoke.tar.gz": "394a16423c27ef0e1a553edba4d1d902b91cdb11b43774fe0c222c802f45fe95",
+    "migration/tests/filter-package-checkpoint/recipe-tests.log": "d6c037ecbd2f4d8e1dabf15d5409a4426f8efc168827f610b7a3c658ec9bbc32",
+    "migration/tests/filter-package-harness-complete/batch-result.json": "ffee6fac51795aea2044707711c397103fda58582aecbae1d65e265a9dfda3f9",
+    "migration/tests/filter-package-harness-complete/batch-result.xcf": "f49d49b4bb29398aad975b7a014b0388822ed3c3afa3101a53d5d944b2fa0c1c",
+    "migration/tests/filter-package-harness-complete/batch.executed.py": "70e58df275f463c9c1ba41b92e9b1b329155dddf47e2fbb0fcbf9423e2868033",
+    "migration/tests/filter-package-harness-complete/console.log": "f22bb34158ef6cf989b820987e33a84e2414b0d7089bf2e85ba8f965455e4613",
+    "migration/tests/filter-package-harness-complete/events.jsonl": "c0e383fbd87c70318dbf2926c41ff35061147957a8e471d2a76761dccf68e423",
+    "migration/tests/filter-package-harness-complete/observer.executed.py": "efb0aa5d1daed55ccaf15816bbe904e1c876cea34f9ac002dc0f43f5d4f7ec71",
+    "migration/tests/filter-package-harness-complete/provenance.json": "372832140843be30af733d1b46e352b7bf5f49da5715b47de75fc461b411e8ba",
+    "migration/tests/filter-package-harness-complete/report.json": "b8d284de232ca78621f06ed49ba8401f101cf1d3d1926763a7179beed8d1cd58",
+    "migration/tests/filter-package-harness-complete/start": "c92a473fa292576c99783dae5578229b86da2bbca73a6fccb4c2580504a2d572",
+    "migration/tests/filter-package-harness-development/batch-result.json": "3b6e63eca913e9af9757ec4fced2d8530d859f3698efaf409a0c5c5267e4d7f8",
+    "migration/tests/filter-package-harness-development/batch-result.xcf": "f49d49b4bb29398aad975b7a014b0388822ed3c3afa3101a53d5d944b2fa0c1c",
+    "migration/tests/filter-package-harness-development/batch.executed.py": "70e58df275f463c9c1ba41b92e9b1b329155dddf47e2fbb0fcbf9423e2868033",
+    "migration/tests/filter-package-harness-development/console.log": "13bb0c54f7208c38f4c6aaaccb06ecf9ca011a46f8d573d4cb5ea29cefb4e76c",
+    "migration/tests/filter-package-harness-development/events.jsonl": "f8f65cb7deb4f3647fd44c3a2dc5838270951c60c1f95ef15b268ed27869945b",
+    "migration/tests/filter-package-harness-development/observer.executed.py": "487221eb26e896e3975bebf737245bcb4953069bb288f0ebe607fa41996373d4",
+    "migration/tests/filter-package-harness-development/provenance.json": "2eb31af3fd07c558036d4aa7dc27a49a2a8da95eaaf8ba436170a6624b5d3817",
+    "migration/tests/filter-package-harness-development/report.json": "90c3733c23da4e6c2ff67a80d619eb46def601e22c33ba8ce47c90be13de44d2",
+    "migration/tests/filter-package-harness-development/start": "c92a473fa292576c99783dae5578229b86da2bbca73a6fccb4c2580504a2d572",
+    "migration/tests/filter-package-smoke.py": "70e58df275f463c9c1ba41b92e9b1b329155dddf47e2fbb0fcbf9423e2868033",
+    "tools/capture_legacy_blinds.py": "ca1375f7c9a6c7d7982be037492ff3b2c78f509aa5c069495da43d34aeddadfd",
+    "tools/check_installed_filter.py": "efb0aa5d1daed55ccaf15816bbe904e1c876cea34f9ac002dc0f43f5d4f7ec71",
+    "tools/package-linux-runtime.py": "3c5fae6e12b9e9f6536ffdee5d87c5996bc0fefbba75a66d0f2b2a7381b1be76",
+    "tools/test-linux-runtime.py": "7d39d2dec594c82eef0cdae95e360e51b7ad9993bb09e626f4322f073083dcff",
+    "migration/tests/filter-package-checkpoint/default-capture-validation.json": "b80888753249e720e15e2a366312b9413ed5ede1c93a1ee52689f6659557af71"
+  },
+  "verification": {
+    "recipe_tests": 32,
+    "recipe_skips": 0,
+    "actual_old_pdb_cases": 1,
+    "existing_normal_build_harness": "passed; exact4096-square output, actual helper/native plugin observation, Save/reopen",
+    "first_harness_attempt": "Observer overcounted an unrelated startup plug-in query alias; preserved as failed",
+    "relocated_application_run": "not yet run",
+    "whole_source_correspondence": "not established by development harness; exact executed binary identities stayed unchanged",
+    "unchanged_default_preparation": "10 input pairs and320 rows byte-identical to existing corpus"
+  },
+  "limitations": [
+    "Normal console logs preserve known startup/configuration and shutdown-context diagnostics; no whole-GIMP leak-free claim",
+    "The helper smoke covers one RGBA nonlinear byte case, not all Filter procedures or contexts",
+    "Path selectors and native v2 integration have separate evidence and are not part of this checkpoint"
+  ]
+}

@@ -352,7 +352,12 @@ def main():
     recipe = output/'recipe'
     recipe.mkdir()
     for rel in ['tools/package-linux-runtime.py', 'tools/test-linux-runtime.py',
-                'migration/packaging/AppRun', 'migration/packaging/README-linux.txt']:
+                'migration/packaging/AppRun', 'migration/packaging/README-linux.txt',
+                'tools/check_installed_filter.py', 'tools/check_filter_active_quit.py',
+                'migration/tests/baseline-smoke.py', 'migration/tests/filter-package-smoke.py',
+                'migration/fixtures/legacy-blinds-package-smoke.json',
+                'migration/fixtures/legacy-blinds-package-smoke.tar.gz',
+                'migration/tests/filter-active-quit-pdb/fixtures/quit-blinds-1.xcf']:
         copy_runtime(REPO/rel, recipe/rel)
     json_write(recipe/'recipe-files.json', inventory(recipe))
     # Capture only this explicit command output, never full process environments.
