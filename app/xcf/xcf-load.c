@@ -164,9 +164,10 @@ static GimpPath      * xcf_load_path          (XcfInfo       *info,
 static GimpLayerMask * xcf_load_layer_mask    (XcfInfo       *info,
                                                GimpImage     *image);
 static gboolean        xcf_load_buffer        (XcfInfo       *info,
-                                               GeglBuffer    *buffer);
+                                               GimpDrawable  *drawable);
 static gboolean        xcf_load_level         (XcfInfo       *info,
-                                               GeglBuffer    *buffer);
+                                               GeglBuffer    *buffer,
+                                               guint         *complete_tiles);
 static gboolean        xcf_load_tile          (XcfInfo       *info,
                                                GeglBuffer    *buffer,
                                                GeglRectangle *tile_rect,
@@ -232,9 +233,10 @@ xcf_load_image (Gimp     *gimp,
   GList              *iter;
 
   /* read in the image width, height and type */
-  xcf_read_int32 (info, (guint32 *) &width, 1);
-  xcf_read_int32 (info, (guint32 *) &height, 1);
-  xcf_read_int32 (info, (guint32 *) &image_type, 1);
+  if (xcf_read_int32 (info, (guint32 *) &width, 1) != 4 ||
+      xcf_read_int32 (info, (guint32 *) &height, 1) != 4 ||
+      xcf_read_int32 (info, (guint32 *) &image_type, 1) != 4)
+    goto hard_error;
   if (image_type < GIMP_RGB || image_type > GIMP_INDEXED)
     goto hard_error;
 
@@ -252,7 +254,8 @@ xcf_load_image (Gimp     *gimp,
     {
       gint p;
 
-      xcf_read_int32 (info, (guint32 *) &p, 1);
+      if (xcf_read_int32 (info, (guint32 *) &p, 1) != 4)
+        goto hard_error;
 
       if (info->file_version == 4)
         {
@@ -614,7 +617,7 @@ xcf_load_image (Gimp     *gimp,
         {
           GIMP_LOG (XCF, "Failed to read layer offset"
                     " at offset: %" G_GOFFSET_FORMAT, info->cp);
-          break;
+          goto error;
         }
 
       /* if the offset is 0 then we are at the end
@@ -766,7 +769,7 @@ xcf_load_image (Gimp     *gimp,
         {
           GIMP_LOG (XCF, "Failed to read channel offset"
                     " at offset: %" G_GOFFSET_FORMAT, info->cp);
-          break;
+          goto error;
         }
 
       /* if the offset is 0 then we are at the end
@@ -851,7 +854,7 @@ xcf_load_image (Gimp     *gimp,
             {
               GIMP_LOG (XCF, "Failed to read path offset"
                         " at offset: %" G_GOFFSET_FORMAT, info->cp);
-              break;
+              goto error;
             }
 
           /* if the offset is 0 then we are at the end
@@ -998,6 +1001,8 @@ xcf_load_image (Gimp     *gimp,
                         _("This XCF file is corrupt!  I have loaded as much "
                           "of it as I can, but it is incomplete."));
 
+  gimp_painter_provenance_set_text (G_OBJECT (image), GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL,
+    "This image was recovered from an incomplete XCF; Save would discard original data and is refused before destination replacement");
   xcf_load_add_masks (image);
   xcf_load_add_effects (info, image);
 
@@ -2005,39 +2010,25 @@ xcf_load_layer_props (XcfInfo    *info,
 
         case PROP_GROUP_ITEM:
           {
-            GimpLayer *group;
-            gboolean   is_selected_layer;
+            GimpLayer *old = *layer;
+            GimpLayer *group = gimp_group_layer_new (image);
 
-            /* We're going to delete *layer, Don't leave its pointers
-             * in @info.  After that, we'll restore them back with the
-             * new pointer. See bug #767873.
-             */
-            is_selected_layer = (g_list_find (info->selected_layers, *layer ) != NULL);
-            if (is_selected_layer)
-              info->selected_layers = g_list_remove (info->selected_layers, *layer);
-
-            if (*layer == info->floating_sel)
-              info->floating_sel = NULL;
-
-            info->linked_layers = g_list_remove (info->linked_layers, *layer);
-
-            group = gimp_group_layer_new (image);
-            if (info->painter_historical_modes)
-              gimp_layer_set_mode (group, GIMP_LAYER_MODE_PAINTER_NORMAL, FALSE);
-
-            gimp_object_set_name (GIMP_OBJECT (group),
-                                  gimp_object_get_name (*layer));
-
-            g_object_ref_sink (*layer);
-            g_object_unref (*layer);
+            /* This marker may follow every other property. Transfer native
+             * identity, parasites and item attributes before retiring the
+             * carrier, then preserve layer-only attributes explicitly. */
+            gimp_item_replace_item (GIMP_ITEM (group), GIMP_ITEM (old));
+            gimp_layer_set_opacity (group, gimp_layer_get_opacity (old), FALSE);
+            gimp_layer_set_mode (group, gimp_layer_get_mode (old), FALSE);
+            gimp_layer_set_blend_space (group, gimp_layer_get_blend_space (old), FALSE);
+            gimp_layer_set_composite_space (group, gimp_layer_get_composite_space (old), FALSE);
+            gimp_layer_set_composite_mode (group, gimp_layer_get_composite_mode (old), FALSE);
+            gimp_painter_copy_provenance (G_OBJECT (old), G_OBJECT (group));
+            xcf_painter_retarget_layer (info, old, group);
+            if (info->floating_sel == group)
+              info->floating_sel = NULL; /* groups cannot be floating selections */
+            g_object_ref_sink (old);
+            g_object_unref (old);
             *layer = group;
-
-            if (is_selected_layer)
-              info->selected_layers = g_list_prepend (info->selected_layers, *layer);
-
-            /* Don't restore info->floating_sel because group layers
-             * can't be floating selections
-             */
           }
           break;
 
@@ -3168,9 +3159,10 @@ xcf_load_layer (XcfInfo    *info,
   is_fs_drawable = (info->cp == info->floating_sel_offset);
 
   /* read in the layer width, height, type and name */
-  xcf_read_int32  (info, (guint32 *) &width,  1);
-  xcf_read_int32  (info, (guint32 *) &height, 1);
-  xcf_read_int32  (info, (guint32 *) &type,   1);
+  if (xcf_read_int32 (info, (guint32 *) &width, 1) != 4 ||
+      xcf_read_int32 (info, (guint32 *) &height, 1) != 4 ||
+      xcf_read_int32 (info, (guint32 *) &type, 1) != 4)
+    return NULL;
   xcf_read_string (info,             &name,   1);
   header_end = info->cp;
 
@@ -3318,10 +3310,11 @@ xcf_load_layer (XcfInfo    *info,
 
   /* read the hierarchy and layer mask offsets */
   cur_offset = info->cp;
-  xcf_read_offset (info, &hierarchy_offset,  1);
-  xcf_read_offset (info, &layer_mask_offset, 1);
-  if (info->file_version >= 20)
-    xcf_read_offset (info, &effects_offset,  1);
+  if (xcf_read_offset (info, &hierarchy_offset, 1) != info->bytes_per_offset ||
+      xcf_read_offset (info, &layer_mask_offset, 1) != info->bytes_per_offset ||
+      (info->file_version >= 20 &&
+       xcf_read_offset (info, &effects_offset, 1) != info->bytes_per_offset))
+    goto error;
 
   /* read in the hierarchy (ignore it for group layers, both as an
    * optimization and because the hierarchy's extents don't match
@@ -3329,18 +3322,12 @@ xcf_load_layer (XcfInfo    *info,
    */
   if (! gimp_viewable_get_children (GIMP_VIEWABLE (layer)))
     {
-      if (hierarchy_offset < cur_offset)
-        {
-          GIMP_LOG (XCF, "Invalid layer hierarchy offset!");
-          goto error;
-        }
       if (! xcf_seek_pos (info, hierarchy_offset, NULL))
         goto error;
 
       GIMP_LOG (XCF, "loading buffer");
 
-      if (! xcf_load_buffer (info,
-                             gimp_drawable_get_buffer (GIMP_DRAWABLE (layer))))
+      if (! xcf_load_buffer (info, GIMP_DRAWABLE (layer)))
         goto error;
 
       GIMP_LOG (XCF, "buffer loaded");
@@ -3359,11 +3346,6 @@ xcf_load_layer (XcfInfo    *info,
   /* read in the layer mask */
   if (layer_mask_offset != 0)
     {
-      if (layer_mask_offset < cur_offset)
-        {
-          GIMP_LOG (XCF, "Invalid layer mask offset!");
-          goto error;
-        }
       if (! xcf_seek_pos (info, layer_mask_offset, NULL))
         goto error;
 
@@ -3437,7 +3419,7 @@ xcf_load_layer (XcfInfo    *info,
         {
           GIMP_LOG (XCF, "Failed to read effects offset"
                     " at offset: %" G_GOFFSET_FORMAT, info->cp);
-          break;
+          goto error;
         }
     }
 
@@ -3480,7 +3462,6 @@ xcf_load_channel (XcfInfo   *info,
   gint         height;
   gboolean     is_fs_drawable;
   gchar       *name;
-  goffset      cur_offset;
 
   /* check and see if this is the drawable the floating selection
    *  is attached to. if it is then we'll do the attachment in our caller.
@@ -3488,8 +3469,9 @@ xcf_load_channel (XcfInfo   *info,
   is_fs_drawable = (info->cp == info->floating_sel_offset);
 
   /* read in the layer width, height and name */
-  xcf_read_int32 (info, (guint32 *) &width,  1);
-  xcf_read_int32 (info, (guint32 *) &height, 1);
+  if (xcf_read_int32 (info, (guint32 *) &width, 1) != 4 ||
+      xcf_read_int32 (info, (guint32 *) &height, 1) != 4)
+    return NULL;
   if (width <= 0 || height <= 0 ||
       width > GIMP_MAX_IMAGE_SIZE || height > GIMP_MAX_IMAGE_SIZE)
     {
@@ -3515,21 +3497,14 @@ xcf_load_channel (XcfInfo   *info,
   xcf_progress_update (info);
 
   /* read the hierarchy offset */
-  cur_offset = info->cp;
-  xcf_read_offset (info, &hierarchy_offset, 1);
-
-  if (hierarchy_offset < cur_offset)
-    {
-      GIMP_LOG (XCF, "Invalid hierarchy offset!");
-      goto error;
-    }
+  if (xcf_read_offset (info, &hierarchy_offset, 1) != info->bytes_per_offset)
+    goto error;
 
   /* read in the hierarchy */
   if (! xcf_seek_pos (info, hierarchy_offset, NULL))
     goto error;
 
-  if (! xcf_load_buffer (info,
-                         gimp_drawable_get_buffer (GIMP_DRAWABLE (channel))))
+  if (! xcf_load_buffer (info, GIMP_DRAWABLE (channel)))
     goto error;
 
   xcf_progress_update (info);
@@ -3897,8 +3872,7 @@ xcf_load_layer_mask (XcfInfo   *info,
   gint           height;
   gboolean       is_fs_drawable;
   gchar         *name;
-  GeglColor     *color = gegl_color_new ("black");
-  goffset        cur_offset;
+  GeglColor     *color;
 
   /* check and see if this is the drawable the floating selection
    *  is attached to. if it is then we'll do the attachment in our caller.
@@ -3906,8 +3880,9 @@ xcf_load_layer_mask (XcfInfo   *info,
   is_fs_drawable = (info->cp == info->floating_sel_offset);
 
   /* read in the layer width, height and name */
-  xcf_read_int32 (info, (guint32 *) &width,  1);
-  xcf_read_int32 (info, (guint32 *) &height, 1);
+  if (xcf_read_int32 (info, (guint32 *) &width, 1) != 4 ||
+      xcf_read_int32 (info, (guint32 *) &height, 1) != 4)
+    return NULL;
   if (width <= 0 || height <= 0 ||
       width > GIMP_MAX_IMAGE_SIZE || height > GIMP_MAX_IMAGE_SIZE)
     {
@@ -3921,6 +3896,7 @@ xcf_load_layer_mask (XcfInfo   *info,
             width, height, name);
 
   /* create a new layer mask */
+  color = gegl_color_new ("black");
   layer_mask = gimp_layer_mask_new (image, width, height, name, color);
   g_object_unref (color);
   g_free (name);
@@ -3935,21 +3911,14 @@ xcf_load_layer_mask (XcfInfo   *info,
   xcf_progress_update (info);
 
   /* read the hierarchy offset */
-  cur_offset = info->cp;
-  xcf_read_offset (info, &hierarchy_offset, 1);
-
-  if (hierarchy_offset < cur_offset)
-    {
-      GIMP_LOG (XCF, "Invalid hierarchy offset!");
-      goto error;
-    }
+  if (xcf_read_offset (info, &hierarchy_offset, 1) != info->bytes_per_offset)
+    goto error;
 
   /* read in the hierarchy */
   if (! xcf_seek_pos (info, hierarchy_offset, NULL))
     goto error;
 
-  if (! xcf_load_buffer (info,
-                         gimp_drawable_get_buffer (GIMP_DRAWABLE (layer_mask))))
+  if (! xcf_load_buffer (info, GIMP_DRAWABLE (layer_mask)))
     goto error;
 
   xcf_progress_update (info);
@@ -3979,63 +3948,58 @@ xcf_load_layer_mask (XcfInfo   *info,
 }
 
 static gboolean
-xcf_load_buffer (XcfInfo    *info,
-                 GeglBuffer *buffer)
+xcf_load_buffer (XcfInfo      *info,
+                 GimpDrawable *drawable)
 {
-  const Babl *format;
+  GeglBuffer *buffer = gimp_drawable_get_buffer (drawable);
+  const Babl *format = gegl_buffer_get_format (buffer);
   goffset     offset;
   gint        width;
   gint        height;
   gint        bpp;
-  goffset     cur_offset;
+  guint       complete_tiles = 0;
 
-  format = gegl_buffer_get_format (buffer);
-
-  xcf_read_int32 (info, (guint32 *) &width,  1);
-  xcf_read_int32 (info, (guint32 *) &height, 1);
-  xcf_read_int32 (info, (guint32 *) &bpp,    1);
-
-  /* make sure the values in the file correspond to the values
-   *  calculated when the GeglBuffer was created.
-   */
-  if (width  != gegl_buffer_get_width (buffer)  ||
+  if (xcf_read_int32 (info, (guint32 *) &width, 1) != 4 ||
+      xcf_read_int32 (info, (guint32 *) &height, 1) != 4 ||
+      xcf_read_int32 (info, (guint32 *) &bpp, 1) != 4 ||
+      width  != gegl_buffer_get_width (buffer) ||
       height != gegl_buffer_get_height (buffer) ||
-      bpp    != babl_format_get_bytes_per_pixel (format))
+      bpp    != babl_format_get_bytes_per_pixel (format) ||
+      xcf_read_offset (info, &offset, 1) != info->bytes_per_offset || !offset)
     return FALSE;
 
-  cur_offset = info->cp;
-  xcf_read_offset (info, &offset, 1); /* top level */
-
-  if (offset < cur_offset)
-    {
-      GIMP_LOG (XCF, "Invalid buffer offset!");
-      return FALSE;
-    }
-
-  /* seek to the level offset */
+  /* XCF addresses are absolute: hierarchy, level and tile records need not
+   * follow their referring records, and raw data may legally alias bytes. */
   if (! xcf_seek_pos (info, offset, NULL))
     return FALSE;
 
-  /* read in the level */
-  if (! xcf_load_level (info, buffer))
-    return FALSE;
-
-  /* discard levels below first.
-   */
+  if (! xcf_load_level (info, buffer, &complete_tiles))
+    {
+      const gchar *reason = "This drawable has incomplete XCF pixels; Save would discard original data and is refused before destination replacement";
+      if (! complete_tiles)
+        return FALSE;
+      /* Retain only complete tiles already committed to the buffer. A bad
+       * later tile must not discard the entire recoverable drawable. */
+      gimp_painter_provenance_set_text (G_OBJECT (drawable), GIMP_PAINTER_PROVENANCE_INCOMPLETE_PIXELS, reason);
+      gimp_painter_provenance_set_text (G_OBJECT (drawable), GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL, reason);
+      gimp_painter_provenance_set_text (G_OBJECT (gimp_item_get_image (GIMP_ITEM (drawable))),
+                                      GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL, reason);
+      gimp_message_literal (info->gimp, G_OBJECT (info->progress), GIMP_MESSAGE_WARNING,
+                            "This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.");
+    }
 
   return TRUE;
 }
 
-
 static gboolean
 xcf_load_level (XcfInfo    *info,
-                GeglBuffer *buffer)
+                GeglBuffer *buffer,
+                guint      *complete_tiles)
 {
   const Babl *format;
   gint        bpp;
   goffset     saved_pos;
   goffset     offset;
-  goffset     offset2;
   goffset     max_data_length;
   gint        n_tile_rows;
   gint        n_tile_cols;
@@ -4048,10 +4012,9 @@ xcf_load_level (XcfInfo    *info,
   format = gegl_buffer_get_format (buffer);
   bpp    = babl_format_get_bytes_per_pixel (format);
 
-  xcf_read_int32 (info, (guint32 *) &width,  1);
-  xcf_read_int32 (info, (guint32 *) &height, 1);
-
-  if (width  != gegl_buffer_get_width (buffer) ||
+  if (xcf_read_int32 (info, (guint32 *) &width, 1) != 4 ||
+      xcf_read_int32 (info, (guint32 *) &height, 1) != 4 ||
+      width  != gegl_buffer_get_width (buffer) ||
       height != gegl_buffer_get_height (buffer))
     return FALSE;
 
@@ -4098,34 +4061,12 @@ xcf_load_level (XcfInfo    *info,
        */
       saved_pos = info->cp;
 
-      /* read in the offset of the next tile so we can calculate the amount
-       * of data needed for this tile
-       */
-      if (xcf_read_offset (info, &offset2, 1) < info->bytes_per_offset)
-        {
-          GIMP_LOG (XCF, "Failed to read tile offset"
-                    " at offset: %" G_GOFFSET_FORMAT, info->cp);
-          return FALSE;
-        }
-
-      /* if the offset is 0 then we need to read in the maximum possible
-       * allowing for negative compression
-       */
-      if (offset2 == 0)
-        offset2 = offset + max_data_length;
-
-      /* seek to the tile offset */
+      /* A following table entry is another absolute address, not an end
+       * boundary. Tiles may be stored backwards, aliased, or interspersed with
+       * structure. Each decoder is bounded by its maximum encoded tile size
+       * and stops after producing exactly the expected pixels. */
       if (! xcf_seek_pos (info, offset, NULL))
         return FALSE;
-
-      if (offset2 < offset || offset2 - offset > max_data_length)
-        {
-          gimp_message (info->gimp, G_OBJECT (info->progress),
-                        GIMP_MESSAGE_ERROR,
-                        "invalid tile data length: %" G_GOFFSET_FORMAT,
-                        offset2 - offset);
-          return FALSE;
-        }
 
       /* get buffer rectangle to write to */
       gimp_gegl_buffer_get_tile_rect (buffer,
@@ -4143,12 +4084,12 @@ xcf_load_level (XcfInfo    *info,
           break;
         case COMPRESS_RLE:
           if (! xcf_load_tile_rle (info, buffer, &rect, format,
-                                   offset2 - offset))
+                                   max_data_length))
             fail = TRUE;
           break;
         case COMPRESS_ZLIB:
           if (! xcf_load_tile_zlib (info, buffer, &rect, format,
-                                    offset2 - offset))
+                                    max_data_length))
             fail = TRUE;
           break;
         case COMPRESS_FRACTAL:
@@ -4166,6 +4107,7 @@ xcf_load_level (XcfInfo    *info,
       if (fail)
         return FALSE;
 
+      (*complete_tiles)++;
       GIMP_LOG (XCF, "loaded tile %d/%d", i + 1, ntiles);
 
       /* restore the saved position so we'll be ready to
@@ -4206,14 +4148,16 @@ xcf_load_tile (XcfInfo       *info,
 
   if (info->file_version <= 11)
     {
-      xcf_read_int8 (info, tile_data, tile_size);
+      if (xcf_read_int8 (info, tile_data, tile_size) != tile_size)
+        return FALSE;
     }
   else
     {
       gint n_components = babl_format_get_n_components (format);
 
-      xcf_read_component (info, bpp / n_components, tile_data,
-                          tile_size / bpp * n_components);
+      if (xcf_read_component (info, bpp / n_components, tile_data,
+                              tile_size / bpp * n_components) != tile_size)
+        return FALSE;
     }
 
   if (! xcf_data_is_zero (tile_data, tile_size))
@@ -4242,14 +4186,10 @@ xcf_load_tile_rle (XcfInfo       *info,
   guchar *xcfodata;
   guchar *xcfdatalimit;
 
-  /* Workaround for bug #357809: avoid crashing on g_malloc() and skip
-   * this tile (return TRUE without storing data) as if it did not
-   * contain any data.  It is better than returning FALSE, which would
-   * skip the whole hierarchy while there may still be some valid
-   * tiles in the file.
-   */
+  /* Empty payloads are damaged tiles, not complete transparent tiles. The
+   * caller retains any earlier complete tiles without certifying this one. */
   if (data_length <= 0)
-    return TRUE;
+    return FALSE;
 
   xcfdata = xcfodata = g_alloca (data_length);
 
@@ -4261,7 +4201,7 @@ xcf_load_tile_rle (XcfInfo       *info,
   info->cp += bytes_read;
 
   if (bytes_read == 0)
-    return TRUE;
+    return FALSE;
 
   xcfdatalimit = &xcfodata[bytes_read - 1];
 
@@ -4301,12 +4241,12 @@ xcf_load_tile_rle (XcfInfo       *info,
               count += length;
               size -= length;
 
-              if (size < 0)
+              if (length <= 0 || size < 0)
                 {
                   goto bogus_rle;
                 }
 
-              if (&xcfdata[length-1] > xcfdatalimit)
+              if (length <= 0 || (gsize) length > (gsize) (xcfdatalimit - xcfdata + 1))
                 {
                   goto bogus_rle;
                 }
@@ -4335,7 +4275,7 @@ xcf_load_tile_rle (XcfInfo       *info,
               count += length;
               size -= length;
 
-              if (size < 0)
+              if (length <= 0 || size < 0)
                 {
                   goto bogus_rle;
                 }
@@ -4393,14 +4333,10 @@ xcf_load_tile_zlib (XcfInfo       *info,
   gsize     bytes_read;
   guchar   *xcfdata;
 
-  /* Workaround for bug #357809: avoid crashing on g_malloc() and skip
-   * this tile (return TRUE without storing data) as if it did not
-   * contain any data.  It is better than returning FALSE, which would
-   * skip the whole hierarchy while there may still be some valid
-   * tiles in the file.
-   */
+  /* Empty payloads are damaged tiles, not complete transparent tiles. The
+   * caller retains any earlier complete tiles without certifying this one. */
   if (data_length <= 0)
-    return TRUE;
+    return FALSE;
 
   xcfdata = g_alloca (data_length);
 
@@ -4412,7 +4348,7 @@ xcf_load_tile_zlib (XcfInfo       *info,
   info->cp += bytes_read;
 
   if (bytes_read == 0)
-    return TRUE;
+    return FALSE;
 
   strm.next_out  = tile_data;
   strm.avail_out = tile_size;
@@ -4456,6 +4392,12 @@ xcf_load_tile_zlib (XcfInfo       *info,
           inflateEnd (&strm);
           return FALSE;
         }
+    }
+
+  if (strm.total_out != (uLong) tile_size)
+    {
+      inflateEnd (&strm);
+      return FALSE;
     }
 
   if (! xcf_data_is_zero (tile_data, tile_size))

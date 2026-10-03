@@ -496,6 +496,7 @@
 | 11.019 | [ ] | 読込み取消しと途中失敗を処理する | 11.018 | 生成済み object と buffer を解放 |
 | 11.020 | [ ] | 通常の開く処理に reader を接続する | 11.019 | 事前変換なしで旧 XCF が開く |
 | 11.020/first-application-route | [x] | 実旧XCFを通常Openと明示recoveryへ接続する | 11.001/byte-record-foundation, 14.001/core-implementation, 15.001/core-scheduler-edge, 10.005/gegl-byte-operators | 旧Clone/Filter型・raw記録・参照/cacheを復元しcancelと曖昧形式を処理。upstream4/4、Open11通過/1 exact画素TODO、focused sanitizer確認。writerと全metadata/画素gateは未完了 |
+| 11.020/property-order-partial-recovery | [x] | 属性順序と不完全XCFの回復・保存拒否を実装する | 11.020/first-application-route, 17.022/explicit-owner-cancel | 通常5suiteと246 focused ASan/UBSan合格。144合法配置・alias・短tile・後続破損・反復marker・Clone/Filter/group属性・duplicate原bytesを検証。381入力seal、全malformed/effect/resource/platformは別gate |
 | 11.021 | [ ] | 標準 XCF の既存経路を維持する | 11.020 | probe による誤認と標準属性欠落がない |
 | 11.022 | [ ] | 画像単位の情報を復元する | 11.021 | 台帳で保存される解像度・単位・palette・profile 等を保持 |
 | 11.023 | [ ] | 階層 offset と tile offset を検査する | 11.022 | 循環・範囲外・巨大確保を避けつつ旧可読データを受理 |
@@ -691,7 +692,7 @@
 | 17.020 | [ ] | 自己更新の除外を実装する | 17.019 | 結果通知から無限再起動しない |
 | 17.021 | [ ] | 古い結果の廃棄を実装する | 17.020 | 新世代の確定画素へ書き戻さない |
 | 17.022 | [ ] | cancel 完了の再起動判断を実装する | 17.021 | 最新 dirty を失わず予約を解除 |
-| 17.022/explicit-owner-cancel | [ ] | Filterの明示cancel入口で確定cacheとdefinitionを保持する | 17.001/configured-spill-budget | 復旧後のnative2試験で待機/準備/実行/反映中取消しと通知再入を確認。focused sanitizerと全source acceptanceの再検証は未完了 |
+| 17.022/explicit-owner-cancel | [x] | Filterの明示cancel入口で確定cacheとdefinitionを保持する | 17.001/configured-spill-budget | native2試験とfocused ASan/UBSan2試験で待機/準備/実行/反映中取消し、cache/raw保持、通知再入を確認。381入力seal一致。全Filter/aggregate/platformは別gate |
 | 17.023 | [ ] | 失敗時の再試行制限を実装する | 17.022 | 同じ失敗で無限ループしない |
 | 17.024 | [ ] | 終了判定を実装する | 17.023 | 最新世代反映済・dirty無・依存待ち無・実行無を判定 |
 | 17.025 | [ ] | 保存との同期点を接続する | 17.024, 12.016 | UI を止めず一貫した保存 snapshot を渡す |

@@ -53,6 +53,7 @@ app_tests = [
 #'ui',
   'xcf',
   'painter-xcf-open',
+  'painter-xcf-adversarial',
   'painter-xcf-roundtrip',
   'painter-provenance',
   'painter-layer-modes',

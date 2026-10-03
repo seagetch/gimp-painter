@@ -596,6 +596,8 @@ extern "C" XcfPainterSave *xcf_painter_prepare_save (GimpImage *image, GError **
 {
   try
     {
+      if (auto refusal = String (gimp_painter_provenance_dup_text (G_OBJECT (image), GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL)))
+        fail (refusal.get ());
       std::unique_ptr<XcfPainterSave> result (new XcfPainterSave);
       result->image = image_record (image);
       if (auto origin = fallback_origin (G_OBJECT (image))) result->origins.emplace (G_OBJECT (image), std::move (origin));

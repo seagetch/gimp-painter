@@ -1,0 +1,111 @@
+{
+  "base": "3e30c05726039550cc09c0d68a3f1207a099c708",
+  "verification": "Fresh reconstructed source and complete new normal/sanitizer snapshot; preceding incomplete snapshots retained as historical",
+  "normal_suites": 5,
+  "adversarial_normal_cases": 246,
+  "adversarial_sanitizer_cases": 246,
+  "cancel_sanitizer_cases": 2,
+  "instrumented_sources": 31,
+  "rtti_only_sources": 34,
+  "snapshot_inputs": 381,
+  "source_archive": {
+    "path": "migration/tests/xcf-reconstructed-sealed-inputs.tar.gz",
+    "sha256": "f26ffdc5506b27b112deb9f7f5368ac076fc7ff82f60dd9c6e6b8fa07d8091f9",
+    "bytes": 612379
+  },
+  "shared_meson_scope": "Only painter-xcf-adversarial line; hash refers to archived/staged bytes, not subsequent independent worktree changes",
+  "files": [
+    {
+      "path": "app/core/gimp-painter-provenance.h",
+      "sha256": "bf06e9d64920986d2bce2859aeaeef471a4db495fa8479eb825ebdb77624eb31"
+    },
+    {
+      "path": "app/core/gimpimage-duplicate.c",
+      "sha256": "219b4811150628cf07dab7fc68639323c477a52d46aa7717ca1e45aa9cf1490b"
+    },
+    {
+      "path": "app/tests/meson.build",
+      "sha256": "391e6920ab4534cc1973380c87dd715e3477e0ff8a9b899d991a0fd91763c81d"
+    },
+    {
+      "path": "app/tests/test-painter-xcf-adversarial.c",
+      "sha256": "208d6b47c45935362a5dda880812ae89bd321a03518a4f9438bbb065840770b7"
+    },
+    {
+      "path": "app/xcf/painter-xcf-load.cpp",
+      "sha256": "9599eb7b82696fb8684638cb3d2ae9561458bc6cfe1ec2788f1cf7218996d5cb"
+    },
+    {
+      "path": "app/xcf/painter-xcf-preserve.cpp",
+      "sha256": "ff7d0049d5ea41ecaf587e1193400a8e23731087577426c50e8d6e772221b6de"
+    },
+    {
+      "path": "app/xcf/xcf-load.c",
+      "sha256": "d131d3c0cf1b6670a304a329cc4170636fe67285ee3347b10e5cee6f2c56d6c6"
+    },
+    {
+      "path": "migration/contracts/xcf-adversarial-recovery.md",
+      "sha256": "e0c4d0e657ecbe746f747361f27e649f080d4b8a74a0bf46ff11e1b82877ac32"
+    },
+    {
+      "path": "migration/tests/run_painter_xcf_adversarial_sanitizers.py",
+      "sha256": "de91e21a2dcfb9ddb250050116e9b2f859c6876d357a6a6aa593e2707de66f1f"
+    },
+    {
+      "path": "migration/tests/seal_xcf_recovery_evidence.py",
+      "sha256": "06f04fe94361a959a1622f9a14755b740b799d963a78672237579d9d3c27ca61"
+    },
+    {
+      "path": "migration/tests/xcf-reconstructed-adversarial-sanitizers-initial-rtti-failure.json",
+      "sha256": "a726fa39653efdd6c38147ac9518e30222e4b0b8f495419e5534c4b5486f0cf4"
+    },
+    {
+      "path": "migration/tests/xcf-reconstructed-adversarial-sanitizers.json",
+      "sha256": "ef4473c90e1c3015bf24e728803eb8cb630093d3b526c83e441839bae9249418"
+    },
+    {
+      "path": "migration/tests/xcf-reconstructed-build.log",
+      "sha256": "6a75b466402c8a4a267b6453e5e8c5f39613d52bf8ec7dd2a6d0af2530e9cf3f"
+    },
+    {
+      "path": "migration/tests/xcf-reconstructed-historical-input-drift.json",
+      "sha256": "1822daeba2a56e1284c1ff1ded8992f7dcee0d2b496a5b574258f0f89ea41275"
+    },
+    {
+      "path": "migration/tests/xcf-reconstructed-historical-matching-inputs.tar.gz",
+      "sha256": "c4baba6c219bd4c98a30ee031f31d2a8239e610ca8200dc922cd2e942b768b1c"
+    },
+    {
+      "path": "migration/tests/xcf-reconstructed-normal.json",
+      "sha256": "1ac0c01b3dbfa2d4744526eabe6714e13e88860524785de991258fc0017b023d"
+    },
+    {
+      "path": "migration/tests/xcf-reconstructed-sealed-inputs.tar.gz",
+      "sha256": "f26ffdc5506b27b112deb9f7f5368ac076fc7ff82f60dd9c6e6b8fa07d8091f9"
+    },
+    {
+      "path": "migration/tests/xcf-reconstructed-sealed-sanitizers.json",
+      "sha256": "e4a929d6391c6eae15b7aa768ae20a787f9461ddf1505bb7794e79941a31f6b1"
+    },
+    {
+      "path": "migration/tests/xcf-reconstructed-sealed-verification.json",
+      "sha256": "344f94c9843e5cabcf861a1093991ebde2b6b0e4f194acdaf61a28f94b2feb8d"
+    },
+    {
+      "path": "migration/tests/xcf-repeated-marker-before.log",
+      "sha256": "47cfeb9aa52abb4e39c80d32a924ca0eb73717f7f9394f7f9159dd45b4c16a69"
+    },
+    {
+      "path": "migration/tests/xcf-seal-attempt1/xcf-evidence-seal.log",
+      "sha256": "41a106d8db8f232cd62dc02575a415ecf2f71e86f3485b4f7ac2c76500c13f44"
+    },
+    {
+      "path": "migration/tests/xcf-seal-attempt1/xcf-reconstructed-sealed-inputs.tar.gz",
+      "sha256": "7c5dbdeb9102262bc19e2b423c5ee22d066d60404e69933878f99b3338e71de2"
+    },
+    {
+      "path": "migration/tests/xcf-seal-attempt1/xcf-reconstructed-sealed-verification.json",
+      "sha256": "8a501404e320ad2a60ee0953298f10ee0d13bac32bef56495a350ecbdf43d9c1"
+    }
+  ]
+}

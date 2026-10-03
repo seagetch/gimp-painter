@@ -276,8 +276,10 @@ xcf_painter_load_extension (XcfInfo *info, GimpImage *image, GimpLayer **layer,
        * layer, with saved pixels. No invalid GValue or guessed argument is used. */
       gchar *name = normalized_name (bytes, ext.name);
       GimpLayer *old = *layer;
-      const int x = gimp_item_get_offset_x (GIMP_ITEM (old));
-      const int y = gimp_item_get_offset_y (GIMP_ITEM (old));
+      const auto blend = gimp_layer_get_blend_space (old);
+      const auto composite_space = gimp_layer_get_composite_space (old);
+      const auto composite_mode = gimp_layer_get_composite_mode (old);
+      const gboolean lock_alpha = gimp_layer_get_lock_alpha (old);
       const int width = gimp_item_get_width (GIMP_ITEM (old));
       const int height = gimp_item_get_height (GIMP_ITEM (old));
       GimpLayer *replacement = tag == 32
@@ -286,8 +288,9 @@ xcf_painter_load_extension (XcfInfo *info, GimpImage *image, GimpLayer **layer,
         : gimp_clone_layer_new (image, nullptr, width, height, gimp_object_get_name (old),
                                  gimp_layer_get_opacity (old), gimp_layer_get_mode (old));
       if (!replacement) { g_free (name); return FALSE; }
-      gimp_item_set_offset (GIMP_ITEM (replacement), x, y);
-      gimp_item_set_visible (GIMP_ITEM (replacement), gimp_item_get_visible (GIMP_ITEM (old)), FALSE);
+      /* Retain older carrier records first; the newly parsed marker must win
+       * for current extension/name provenance if a file repeats the marker. */
+      gimp_painter_copy_provenance (G_OBJECT (old), G_OBJECT (replacement));
       GeglBuffer *buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0, width, height),
                                            gimp_drawable_get_format (GIMP_DRAWABLE (old)));
       gimp_drawable_set_buffer (GIMP_DRAWABLE (replacement), FALSE, nullptr, buffer);
@@ -307,9 +310,12 @@ xcf_painter_load_extension (XcfInfo *info, GimpImage *image, GimpLayer **layer,
       g_free (name);
       if (!ok)
         { g_object_ref_sink (replacement); g_object_unref (replacement); return FALSE; }
-      for (GList *p = info->selected_layers; p; p = p->next) if (p->data == old) p->data = replacement;
-      for (GList *p = info->linked_layers; p; p = p->next) if (p->data == old) p->data = replacement;
-      if (info->floating_sel == old) info->floating_sel = nullptr;
+      gimp_item_replace_item (GIMP_ITEM (replacement), GIMP_ITEM (old));
+      gimp_layer_set_blend_space (replacement, blend, FALSE);
+      gimp_layer_set_composite_space (replacement, composite_space, FALSE);
+      gimp_layer_set_composite_mode (replacement, composite_mode, FALSE);
+      if (gimp_layer_can_lock_alpha (replacement)) gimp_layer_set_lock_alpha (replacement, lock_alpha, FALSE);
+      xcf_painter_retarget_layer (info, old, replacement);
       g_object_ref_sink (old); g_object_unref (old);
       *layer = replacement;
       return xcf_seek_pos (info, range.offset + range.size, nullptr);
@@ -349,6 +355,27 @@ xcf_painter_finish_image (XcfInfo *info, GimpImage *image)
     }
   g_list_free (layers);
   xcf_painter_restore_bindings (info, image);
+  layers = gimp_image_get_layer_list (image);
+  for (GList *p = layers; p; p = p->next)
+    if (GIMP_IS_FILTER_LAYER (p->data))
+      {
+        gchar *incomplete = gimp_painter_provenance_dup_text (G_OBJECT (p->data), GIMP_PAINTER_PROVENANCE_INCOMPLETE_PIXELS);
+        if (incomplete)
+          {
+            auto *filter = GIMP_FILTER_LAYER (p->data);
+            GimpFilterLayerSnapshot state;
+            if (gimp_filter_layer_get_snapshot_state (filter, &state))
+              {
+                state.cache_complete = FALSE;
+                gimp_filter_layer_restore_snapshot_state (filter, &state, nullptr);
+              }
+            /* A partial imported cache must not be overwritten by work queued
+             * while restoring the definition or attaching it to the image. */
+            gimp_filter_layer_cancel (filter);
+            g_free (incomplete);
+          }
+      }
+  g_list_free (layers);
   gimp_image_undo_thaw (image);
 }
 extern "C" GBytes *xcf_painter_ref_original (GimpImage *image)

@@ -1,0 +1,24 @@
+{
+  "historical_report": "migration/tests/xcf-reconstructed-adversarial-sanitizers.json",
+  "historical_report_sha256": "ef4473c90e1c3015bf24e728803eb8cb630093d3b526c83e441839bae9249418",
+  "recorded_input_count": 143,
+  "matching_input_count": 141,
+  "missing_historical_inputs": [
+    {
+      "path": "app/core/gimpfilterlayer.cpp",
+      "recorded_sha256": "b85184c9a6e23b3a4a6e31aa1678ff97c137927258facb6eef7103f8b787669f",
+      "current_sha256": "b229b21d0ec4e69660526da72822071d4e9f849cc298c22b04dc1b6ea2c8e38a"
+    },
+    {
+      "path": "app/painter/filter-process.cpp",
+      "recorded_sha256": "d3cf09225249d35fde076189d85279245b81ac8717d7a88eede85d2c19a6aeda",
+      "current_sha256": "df35b6ad577a798f81af6a1294eaf2c43191cd37f0cd75d329d9e3a9378775c5"
+    }
+  ],
+  "complete_historical_source_snapshot": false,
+  "archive": {
+    "path": "migration/tests/xcf-reconstructed-historical-matching-inputs.tar.gz",
+    "sha256": "c4baba6c219bd4c98a30ee031f31d2a8239e610ca8200dc922cd2e942b768b1c",
+    "bytes": 376834
+  }
+}

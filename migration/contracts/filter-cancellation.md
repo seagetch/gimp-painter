@@ -20,7 +20,8 @@ plug-in dummy-file and writable-data-folder diagnostics; this is not a clean
 full-application result.
 
 This source was reimplemented after runtime replacement; it is not a recovery of
-the lost unpublished original commit or its test logs. Focused sanitizer and
-whole current-source Filter acceptance remain pending. Foundation rows06.028
+the lost unpublished original commit or its test logs. Both cases subsequently passed focused ASan/UBSan with381 immutable source
+inputs in `xcf-reconstructed-sealed-verification.json`. Whole current-source
+Filter acceptance remains pending. Foundation rows06.028
 and07.012 retain their historical reports but are now partial until refreshed
 against the changed Filter source. Their parent dependencies remain unchanged.

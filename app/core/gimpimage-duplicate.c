@@ -36,6 +36,7 @@
 #include "gimpimage-color-profile.h"
 #include "gimpimage-colormap.h"
 #include "gimpimage-duplicate.h"
+#include "gimpfilterlayer.h"
 #include "gimpimage-grid.h"
 #include "gimpimage-guides.h"
 #include "gimpimage-metadata.h"
@@ -183,6 +184,24 @@ gimp_image_duplicate (GimpImage *image)
    * like a workaround than a real fix. But it will do for now.
    */
   gimp_image_flush (new_image);
+
+  /* Recovered pixels stay available for inspection in a duplicate. Attaching
+   * duplicate Filter layers may have queued work; don't let that overwrite a
+   * partial imported cache before the user can recover it. */
+  {
+    GList *layers = gimp_image_get_layer_list (new_image);
+    for (GList *p = layers; p; p = p->next)
+      if (GIMP_IS_FILTER_LAYER (p->data))
+        {
+          gchar *incomplete = gimp_painter_provenance_dup_text (G_OBJECT (p->data), GIMP_PAINTER_PROVENANCE_INCOMPLETE_PIXELS);
+          if (incomplete)
+            {
+              gimp_filter_layer_cancel (GIMP_FILTER_LAYER (p->data));
+              g_free (incomplete);
+            }
+        }
+    g_list_free (layers);
+  }
 
   return new_image;
 }
@@ -559,6 +578,18 @@ gimp_image_duplicate_parasites (GimpImage *image,
   GimpImagePrivate *new_private = GIMP_IMAGE_GET_PRIVATE (new_image);
 
   gimp_painter_copy_provenance (G_OBJECT (image), G_OBJECT (new_image));
+  {
+    gchar *refusal = gimp_painter_provenance_dup_text (G_OBJECT (image), GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL);
+    if (refusal)
+      {
+        /* A recovered copy must retain independently owned source bytes even
+         * after the original image closes; duplication cannot enable Save. */
+        GBytes *original = gimp_painter_provenance_ref_bytes (G_OBJECT (image), GIMP_PAINTER_PROVENANCE_ORIGINAL);
+        gimp_painter_provenance_set_bytes (G_OBJECT (new_image), GIMP_PAINTER_PROVENANCE_ORIGINAL, original);
+        g_clear_pointer (&original, g_bytes_unref);
+        g_free (refusal);
+      }
+  }
 
   if (private->parasites)
     {

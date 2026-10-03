@@ -17,8 +17,10 @@ typedef enum {
 typedef enum {
   GIMP_PAINTER_PROVENANCE_NAME,
   GIMP_PAINTER_PROVENANCE_TYPE,
-  /* Retained unsupported native effects forbid a lossy Save. Static diagnostic. */
+  /* Incomplete recovery or unsupported native effects forbid lossy Save. */
   GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL,
+  /* A partial tile recovery is never a complete Filter cache. */
+  GIMP_PAINTER_PROVENANCE_INCOMPLETE_PIXELS,
   GIMP_PAINTER_PROVENANCE_N_TEXT
 } GimpPainterProvenanceText;
 GBytes   *gimp_painter_provenance_ref_bytes (GObject *, GimpPainterProvenanceBytes);
