@@ -53,68 +53,44 @@ file_load_invoker (GimpProcedure         *procedure,
                    const GimpValueArray  *args,
                    GError               **error)
 {
-  GimpValueArray      *new_args;
-  GimpValueArray      *return_vals;
-  GimpPlugInProcedure *file_proc;
-  GimpProcedure       *proc;
-  GFile               *file;
-  gint                 i;
+  GimpValueArray    *return_vals;
+  GimpImage         *image;
+  GFile             *file;
+  GimpRunMode        run_mode;
+  GimpPDBStatusType  status;
 
+  run_mode = g_value_get_enum (gimp_value_array_index (args, 0));
   file = g_value_get_object (gimp_value_array_index (args, 1));
 
   if (! file)
     return gimp_procedure_get_return_values (procedure, FALSE,
                                              error ? *error : NULL);
 
-  file_proc = gimp_plug_in_manager_file_procedure_find (gimp->plug_in_manager,
-                                                        GIMP_FILE_PROCEDURE_GROUP_OPEN,
-                                                        file, error);
+  /* Use the same open pipeline as the UI: it associates native/imported
+   * files, applies import policy and restores a clean, undo-enabled image.
+   */
+  image = file_open_image (gimp, context, progress, file,
+                          0, 0, FALSE, NULL, run_mode,
+                          &status, NULL, error);
 
-  if (! file_proc)
-    return gimp_procedure_get_return_values (procedure, FALSE,
-                                             error ? *error : NULL);
-
-  proc = GIMP_PROCEDURE (file_proc);
-
-  new_args = gimp_procedure_get_arguments (proc);
-
-  g_value_transform (gimp_value_array_index (args, 0),
-                     gimp_value_array_index (new_args, 0));
-  g_value_transform (gimp_value_array_index (args, 1),
-                     gimp_value_array_index (new_args, 1));
-
-  for (i = 2; i < proc->num_args; i++)
-    if (GIMP_IS_PARAM_SPEC_CHOICE (proc->args[i]))
-      {
-        GParamSpecString *string_spec = G_PARAM_SPEC_STRING (proc->args[i]);
-
-        g_value_set_static_string (gimp_value_array_index (new_args, i),
-                                   string_spec->default_value);
-      }
-    else if (G_IS_PARAM_SPEC_STRING (proc->args[i]))
-      {
-        g_value_set_static_string (gimp_value_array_index (new_args, i), "");
-      }
-
-  return_vals =
-    gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
-                                             context, progress, error,
-                                             gimp_object_get_name (proc),
-                                             new_args);
-
-  gimp_value_array_unref (new_args);
-
-  if (g_value_get_enum (gimp_value_array_index (return_vals, 0)) ==
-      GIMP_PDB_SUCCESS)
+  /* Generic handlers may legitimately succeed without an image, but this
+   * public procedure promises to return one.
+   */
+  if (status == GIMP_PDB_SUCCESS && ! image)
     {
-      if (gimp_value_array_length (return_vals) > 1 &&
-          GIMP_VALUE_HOLDS_IMAGE (gimp_value_array_index (return_vals, 1)))
-        {
-          GimpImage *image =
-            g_value_get_object (gimp_value_array_index (return_vals, 1));
-          gimp_image_set_load_proc (image, file_proc);
-        }
+      status = GIMP_PDB_EXECUTION_ERROR;
+      if (error && ! *error)
+        g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                             "File loader returned success without an image");
     }
+
+  return_vals = gimp_procedure_get_return_values (procedure,
+                                                 status == GIMP_PDB_SUCCESS,
+                                                 error ? *error : NULL);
+  g_value_set_enum (gimp_value_array_index (return_vals, 0), status);
+
+  if (status == GIMP_PDB_SUCCESS)
+    g_value_set_object (gimp_value_array_index (return_vals, 1), image);
 
   return return_vals;
 }

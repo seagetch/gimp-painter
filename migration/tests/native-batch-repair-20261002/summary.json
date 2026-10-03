@@ -1,0 +1,140 @@
+{
+  "new_implementation_on_restored_published_head": "3e30c05726039550cc09c0d68a3f1207a099c708",
+  "historical_aggregate_unchanged_and_failing": true,
+  "normal": {
+    "targets": 16,
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0,
+    "diagnostic_scan_clean": true,
+    "checks": [
+      {
+        "name": "gimp:app / file-load-pipeline",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:app / save-and-export",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:app / in-build-gimp-wrapper",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:app / script-fu-startup",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+python3 / color-parser",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+C / color-parser",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+python3 / export-options",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+C / export-options",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+python3 / image",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+C / image",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+python3 / palette",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+C / palette",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+python3 / selection-float",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+C / selection-float",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+python3 / unit",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      },
+      {
+        "name": "gimp:libgimp+C / unit",
+        "result": "OK",
+        "crash_or_critical_diagnostics": false
+      }
+    ]
+  },
+  "focused_sanitizer": {
+    "passed": true,
+    "native_cases": 6,
+    "script_fu_cases": 7,
+    "instrumented_c_units": 5,
+    "flags": [
+      "address",
+      "undefined"
+    ],
+    "leak_detection": false,
+    "uninstrumented_dependencies": true,
+    "source_before_after_match": true,
+    "overlay_library_resolution_verified": true,
+    "complete_input_closure_unchanged": true,
+    "archived_project_generated_source_files": 282,
+    "external_header_fingerprints": 879,
+    "immutable_source_archive_sha256": "8c7ca2d584716eb57af7ced51a8211af398393158a9f9e90307d952d3d50e6d0"
+  },
+  "staged_production_scripts": 41,
+  "staged_init_compatibility_scripts": 5,
+  "wrapper_tests": 5,
+  "earlier_new_attempts": [
+    {
+      "name": "initial normal focused run",
+      "targets": 16,
+      "passed": 15,
+      "failed": 1,
+      "reason": "New Script-Fu harness relied on Scheme init helper for empty paths and exposed a genuine no-fonts shutdown nullunref."
+    },
+    {
+      "name": "corrected startup before font fix linked",
+      "cases": 7,
+      "passed": 0,
+      "reason": "All seven reached success markers but correctly failed on the fontfactory shutdown critical."
+    },
+    {
+      "name": "first focused sanitizer overlay execution",
+      "tests_started": false,
+      "reason": "Native executable dependency search path omitted extracted libappstream; runner environment merge corrected before rerun."
+    }
+  ],
+  "shutdown_fix": "app/text/gimpfontfactory.c clears nullable pango_context with g_clear_object; old -d/-fQuit critical and symbolized stack retained; final normal/sanitizer startup cases retain that actual invocation.",
+  "limits": [
+    "Focused targets only, not the full registered aggregate",
+    "Other project objects and third-party libraries remain uninstrumented; LeakSanitizer disabled",
+    "Not a Windows, macOS, hardware, relocation or release-acceptance result"
+  ]
+}

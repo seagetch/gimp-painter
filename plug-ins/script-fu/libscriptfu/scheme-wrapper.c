@@ -642,7 +642,7 @@ ts_load_main_init_script (gchar *dir)
 }
 
 /* Load certain Scheme init scripts from certain directories.
- * Loads from two directories, user and sys, in that order.
+ * Searches configured directories in their configured order.
  * Only loads from directories named "scriptfu-init.""
  * Only loads a small set of named files, not all .scm files in the directory.
  * Only loads the first set of init scripts found,
@@ -667,8 +667,8 @@ ts_load_init_and_compatibility_scripts (GList *paths)
       return;
     }
 
-  /* paths is a list of dirs known by ScriptFu, user specific and system wide.
-   * The order is important, and this first searches user specific directories.
+  /* The first configured directory containing init.scm wins.  Do not infer
+   * user/system roles from positions in this possibly empty search path.
    */
   for (GList *list = paths; list; list = g_list_next (list))
     {

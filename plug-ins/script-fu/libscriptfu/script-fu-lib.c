@@ -240,10 +240,9 @@ script_fu_register_post_command_callback (void (*func) (void))
 /*
  * Return list of paths to directories containing .scm and .init scripts.
  *
- * List has two elements, in this order:
- *    directory for user scripts
- *    directory for system-wide scripts, distributed with GIMP
- * The dirs usually contain: plugins, init scripts, and utility scripts.
+ * Preserve the configured order, which may contain zero, one or many dirs.
+ * The default searches user scripts before system scripts.  These dirs may
+ * contain plugins, init scripts, and utility scripts.
  *
  * The returned type is GList of GFile.
  * Caller must free the returned list.
@@ -262,7 +261,7 @@ script_fu_search_path (void)
       path = gimp_config_path_expand_to_files (path_str, &error);
       g_free (path_str);
 
-      if (! path)
+      if (error)
         {
           g_warning ("Can't convert script-fu-path to filesystem encoding: %s",
                      error->message);
@@ -302,16 +301,10 @@ script_fu_get_init_subdirectory (GFile *dir)
 gchar *
 script_fu_sys_init_directory (void)
 {
-  GList *paths = script_fu_search_path ();
-  GList *list_element;
-  gchar *result_path;
+  GFile *dir = gimp_data_directory_file ("scripts", NULL);
+  gchar *result_path = script_fu_get_init_subdirectory (dir);
 
-  /* The second list element is the sys scripts dir. */
-  list_element = g_list_next (paths);
-
-  result_path = script_fu_get_init_subdirectory (list_element->data);
-
-  g_list_free_full (paths, (GDestroyNotify) g_object_unref);
+  g_object_unref (dir);
 
   return result_path;
 }
@@ -322,16 +315,10 @@ script_fu_sys_init_directory (void)
 gchar *
 script_fu_user_init_directory (void)
 {
-  GList *paths = script_fu_search_path ();
-  GList *list_element;
-  gchar *result_path;
+  GFile *dir = gimp_directory_file ("scripts", NULL);
+  gchar *result_path = script_fu_get_init_subdirectory (dir);
 
-  /* The first list element is the user scripts dir. */
-  list_element = paths;
-
-  result_path = script_fu_get_init_subdirectory (list_element->data);
-
-  g_list_free_full (paths, (GDestroyNotify) g_object_unref);
+  g_object_unref (dir);
 
   return result_path;
 }

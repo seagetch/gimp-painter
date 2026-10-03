@@ -1,0 +1,33 @@
+INFO: temporary GIMP configuration directory: /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/.GIMP3-build-config-z4dfgxge
+RUNNING: /workspace/shared/native-batch-sanitize/gimp-console-before-font-fix -nidfs --batch-interpreter=plug-in-script-fu-eval -b (+ 1 1) --quit
+Failed to parse tag cache: No such file or directory
+
+(script-fu:178): scriptfu-WARNING **: 08:26:48.620: script_fu_add_resource_arg declared resource name is invalid Default
+
+(script-fu:178): scriptfu-WARNING **: 08:26:48.622: script_fu_add_resource_arg declared resource name is invalid Incandescent
+
+(script-fu:178): scriptfu-WARNING **: 08:26:48.624: script_fu_add_resource_arg declared resource name is invalid Coffee
+GIMP-Warning: Welcome to GIMP 3.0.9!
+
+batch command executed successfully
+GIMP-Error: Failed to save data:
+
+You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.
+
+
+(gimp:10): GLib-GObject-CRITICAL **: 08:26:49.492: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+DIAGNOSTIC_FATAL_CRITICAL_STACK
+/workspace/shared/native-batch-sanitize/critical-backtrace.so(+0x11e2) [0x7fb32ee3d1e2]
+/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6(+0x3fd70) [0x7fb32dadfd70]
+/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0(g_logv+0x30a) [0x7fb32eae135a]
+/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0(g_log+0x93) [0x7fb32eae15c3]
+/workspace/shared/native-batch-sanitize/gimp-console-before-font-fix(+0x2b497e) [0x56253769397e]
+/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0(g_object_unref+0x2ee) [0x7fb32ebf04fe]
+/workspace/shared/native-batch-sanitize/gimp-console-before-font-fix(gimp_data_factories_exit+0x112) [0x562537522a52]
+/workspace/shared/native-batch-sanitize/gimp-console-before-font-fix(+0xc9875) [0x5625374a8875]
+/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0(g_object_unref+0x2ee) [0x7fb32ebf04fe]
+/workspace/shared/native-batch-sanitize/gimp-console-before-font-fix(app_run+0x20f) [0x56253748d5af]
+/workspace/shared/native-batch-sanitize/gimp-console-before-font-fix(main+0x373) [0x56253748b133]
+/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6(+0x29ca8) [0x7fb32dac9ca8]
+/workspace/shared/gimp-build-deps/root/usr/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x85) [0x7fb32dac9d65]
+/workspace/shared/native-batch-sanitize/gimp-console-before-font-fix(_start+0x21) [0x56253748b221]

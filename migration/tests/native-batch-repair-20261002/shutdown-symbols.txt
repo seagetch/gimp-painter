@@ -1,0 +1,11 @@
+Pre-fix console SHA-256: 9fe24d946aebe43cf20aad64528804c0da701f17342aebdac48830c2dbf31fce
+
+SIGTRAP diagnostic with G_DEBUG=fatal-criticals and the included backtrace preload.
+The unmodified failure was a nonfatal GLib-GObject critical. The diagnostic
+turns that critical into a stop to capture its stack; diagnostic exit133 is expected.
+
+addr2line -e gimp-console-before-font-fix -f -C 0x2b497e 0xc9875
+gimp_font_factory_finalize
+app/text/gimpfontfactory.c:221
+gimp_finalize
+app/core/gimp.c:456

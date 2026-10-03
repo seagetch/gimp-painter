@@ -2011,6 +2011,7 @@ if meson.can_run_host_binaries() and have_gobject_introspection
   gimp_run_env.prepend('LD_LIBRARY_PATH', meson.global_build_root() / 'libgimpmodule')
   gimp_run_env.prepend('LD_LIBRARY_PATH', meson.global_build_root() / 'libgimpthumb')
   gimp_run_env.prepend('LD_LIBRARY_PATH', meson.global_build_root() / 'libgimpwidgets')
+  gimp_run_env.prepend('LD_LIBRARY_PATH', meson.global_build_root() / 'plug-ins/script-fu/libscriptfu')
 
   if platform_windows
     # On Windows, DLL are found through PATH rather than LD_LIBRARY_PATH.
@@ -2022,6 +2023,7 @@ if meson.can_run_host_binaries() and have_gobject_introspection
     gimp_run_env.prepend('PATH', meson.global_build_root() / 'libgimpmodule')
     gimp_run_env.prepend('PATH', meson.global_build_root() / 'libgimpthumb')
     gimp_run_env.prepend('PATH', meson.global_build_root() / 'libgimpwidgets')
+    gimp_run_env.prepend('PATH', meson.global_build_root() / 'plug-ins/script-fu/libscriptfu')
   elif platform_osx
     gimp_exe_depends += [patched_libgimp_gir, patched_libgimpui_gir]
 

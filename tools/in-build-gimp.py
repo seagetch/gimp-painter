@@ -1,110 +1,151 @@
 #!/usr/bin/env python3
+"""Run the current build with an isolated, disposable GIMP profile."""
+import json
 import os
-import random
+from pathlib import Path
 import re
 import shutil
-import string
 import subprocess
 import sys
 import tempfile
-from pathlib import Path
 
-try:
-  GIMP_GLOBAL_BUILD_ROOT = os.environ.get("GIMP_GLOBAL_BUILD_ROOT", ".")
 
-  suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=6))
-  GIMP3_DIRECTORY = os.path.join(GIMP_GLOBAL_BUILD_ROOT, f".GIMP3-build-config-{suffix}")
-  os.makedirs(GIMP3_DIRECTORY, mode=0o700, exist_ok=False)
-  os.environ["GIMP3_DIRECTORY"] = GIMP3_DIRECTORY
-  print(f"INFO: temporary GIMP configuration directory: {GIMP3_DIRECTORY}")
+def has_config_override(arguments):
+    """Recognize config options without interpreting batch text as options."""
+    value_options = {
+        '--batch', '--batch-interpreter', '--session', '--pdb-compat-mode',
+        '--stack-trace-mode', '--display', '--name', '--class',
+    }
+    arguments = iter(arguments)
+    for argument in arguments:
+        if argument == '--':
+            break
+        option = argument.split('=', 1)[0]
+        if option in ('--gimprc', '--system-gimprc'):
+            return True
+        if option in value_options:
+            if '=' not in argument:
+                next(arguments, None)
+        elif argument.startswith('-') and not argument.startswith('--'):
+            for index, short_option in enumerate(argument[1:], 1):
+                if short_option == 'g':
+                    return True
+                if short_option == 'b':
+                    if index == len(argument) - 1:
+                        next(arguments, None)
+                    break
+    return False
 
-  # Earlier code used to set DYLD_LIBRARY_PATH environment variable instead, but
-  # it didn't work on contributor's builds because of System Integrity
-  # Protection (SIP), though it did work in the CI which had older macOS.
-  # So, we just set LC_RPATH on binaries, but this restrict us to only one
-  # target at a time. See: #14236 and gimp-data/images/logo/meson.build
-  rpath_array = [f"{GIMP_GLOBAL_BUILD_ROOT}/libgimp",
-                 f"{GIMP_GLOBAL_BUILD_ROOT}/libgimpbase",
-                 f"{GIMP_GLOBAL_BUILD_ROOT}/libgimpcolor",
-                 f"{GIMP_GLOBAL_BUILD_ROOT}/libgimpconfig",
-                 f"{GIMP_GLOBAL_BUILD_ROOT}/libgimpmath",
-                 f"{GIMP_GLOBAL_BUILD_ROOT}/libgimpmodule",
-                 f"{GIMP_GLOBAL_BUILD_ROOT}/libgimpthumb",
-                 f"{GIMP_GLOBAL_BUILD_ROOT}/libgimpwidgets"]
 
-  if "GIMP_TEMP_UPDATE_RPATH" in os.environ:
-    for binary in os.environ["GIMP_TEMP_UPDATE_RPATH"].split(":"):
-      result = subprocess.run(['otool', '-l', binary], stdout=subprocess.PIPE)
-      out = result.stdout.decode('utf-8', errors='replace')
-      regex = re.findall(r'path (.+?) \(offset', out)
-      for new_rpath in rpath_array:
-        if not new_rpath in regex:
-          subprocess.run(["install_name_tool", "-add_rpath", new_rpath, binary], check=True)
+def stage_script_fu(source_root, build_root, profile):
+    """Copy exactly Meson's installed extension and initialization scripts.
 
-  #Ensure the same python from meson.build (GIMP_PYTHON_WITH_GI) is used by plugins
-  #This is needed because GIMP_PYTHON_WITH_GI can not coincide with python3 from shebang
-  #(on MacPorts, there is no python3 symlink, so we would misuse Xcode python3 without GI)
-  python_symlink = shutil.which("python3")
-  pygobject_found=False
-  different_python=False
-  if python_symlink and not os.path.samefile(python_symlink, os.environ.get("GIMP_PYTHON_WITH_GI")):
-    result = subprocess.run([python_symlink,"-c","import sys, gi; version='3.0'; sys.exit(gi.check_version(version))"], check=False)
-    pygobject_found = (result.returncode == 0)
-  if not python_symlink or (python_symlink and not pygobject_found):
-    different_python=True
-    tmp_path = os.path.join(GIMP3_DIRECTORY, "tmp_python")
-    os.makedirs(tmp_path, exist_ok=True)
-    tmp_symlink = os.path.join(tmp_path, "python3")
-    if not os.path.exists(tmp_symlink):
-      os.symlink(os.environ.get("GIMP_PYTHON_WITH_GI"), tmp_symlink)
-    os.environ["PATH"] = tmp_path + os.pathsep + os.environ.get("PATH", "")
+    Source tests and standalone interpreter plug-ins are not extension scripts.
+    Using the install map keeps this list authoritative without recursively
+    scanning the source tree or loading stale scripts from an installed GIMP.
+    """
+    source_scripts = (source_root / 'plug-ins/script-fu/scripts').resolve()
+    with (build_root / 'meson-info/intro-installed.json').open() as stream:
+        installed = json.load(stream)
+    staged = []
+    for source, destination in sorted(installed.items()):
+        source = Path(source)
+        destination = Path(destination)
+        if source.suffix != '.scm':
+            continue
+        if (source.parent == source_scripts and
+                destination.parent.name == 'scripts'):
+            relative = Path(source.name)
+        elif (source.parent == source_scripts / 'init' and
+              destination.parent.name == 'scriptfu-init'):
+            relative = Path('scriptfu-init') / source.name
+        else:
+            continue
+        target = profile / 'scripts' / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
+        staged.append(relative.as_posix())
+    if 'scriptfu-init/init.scm' not in staged:
+        raise RuntimeError('Meson install map contains no Script-Fu init.scm')
+    return staged
 
-  if "GIMP_DEBUG_SELF" in os.environ and shutil.which("gdb"):
-    print(f"RUNNING: gdb --batch -x {os.environ['GIMP_GLOBAL_SOURCE_ROOT']}/tools/debug-in-build-gimp.py --args {os.environ['GIMP_SELF_IN_BUILD']} {' '.join(sys.argv[1:])}")
-    subprocess.run(["gdb","--return-child-result","--batch","-x",f"{os.environ['GIMP_GLOBAL_SOURCE_ROOT']}/tools/debug-in-build-gimp.py","--args", os.environ["GIMP_SELF_IN_BUILD"]] + sys.argv[1:], stdin=sys.stdin, check=True)
-  else:
-    print(f"RUNNING: {os.environ['GIMP_SELF_IN_BUILD']} {' '.join(sys.argv[1:])}")
-    subprocess.run([os.environ["GIMP_SELF_IN_BUILD"]] + sys.argv[1:],stdin=sys.stdin, check=True)
 
-  if different_python:
-    os.environ["PATH"] = os.pathsep.join([p for p in os.environ["PATH"].split(os.pathsep) if p != tmp_path])
-    shutil.rmtree(tmp_path, ignore_errors=True)
+def main(arguments):
+    build_root = Path(os.environ.get('GIMP_GLOBAL_BUILD_ROOT', '.')).resolve()
+    source_root = Path(os.environ['GIMP_GLOBAL_SOURCE_ROOT']).resolve()
+    environment = os.environ.copy()
+    added_rpaths = []
+    rpath_array = [str(build_root / library) for library in (
+        'libgimp', 'libgimpbase', 'libgimpcolor', 'libgimpconfig',
+        'libgimpmath', 'libgimpmodule', 'libgimpthumb', 'libgimpwidgets',
+        'plug-ins/script-fu/libscriptfu',
+    )]
 
-  if "GIMP_TEMP_UPDATE_RPATH" in os.environ:
-    for binary in os.environ["GIMP_TEMP_UPDATE_RPATH"].split(":"):
-      result = subprocess.run(['otool', '-l', binary], stdout=subprocess.PIPE)
-      out = result.stdout.decode('utf-8', errors='replace')
-      regex = re.findall(r'path (.+?) \(offset', out)
-      for new_rpath in rpath_array:
-        if new_rpath in regex:
-          subprocess.run(["install_name_tool", "-delete_rpath", new_rpath, binary], check=True)
+    # TemporaryDirectory creates a private directory and removes it even when
+    # the child fails. Neither the caller's profile nor config files are edited.
+    with tempfile.TemporaryDirectory(prefix='.GIMP3-build-config-',
+                                     dir=build_root) as temporary:
+        profile = Path(temporary)
+        environment['GIMP3_DIRECTORY'] = str(profile)
+        print(f'INFO: temporary GIMP configuration directory: {profile}', flush=True)
+        stage_script_fu(source_root, build_root, profile)
+        if not has_config_override(arguments):
+            (profile / 'gimprc').write_text(
+                '(script-fu-path "${gimp_dir}/scripts")\n', encoding='utf-8')
 
-  # Clean-up the temporary config directory after each usage, yet making sure we
-  # don't get tricked by weird redirections or anything of the sort. In particular
-  # we check that this is a directory with user permission, not a symlink, and
-  # that it's inside inside the project build's root.
-  if "GIMP3_DIRECTORY" in os.environ and os.path.isdir(GIMP3_DIRECTORY):
-    if os.path.islink(GIMP3_DIRECTORY):
-      print(f"ERROR: $GIMP3_DIRECTORY ({GIMP3_DIRECTORY}) should not be a symlink.")
-      sys.exit(1)
-    used_dir_prefix = str(Path(GIMP3_DIRECTORY).resolve().as_posix())[:-6]
-    tmpl_dir_prefix = f"{Path(os.environ['GIMP_GLOBAL_BUILD_ROOT']).resolve().as_posix()}/.GIMP3-build-config-"
-    if used_dir_prefix != tmpl_dir_prefix:
-      print(f"ERROR: $GIMP3_DIRECTORY ({GIMP3_DIRECTORY}) should be under the build directory with a specific prefix.")
-      print(f'       "{used_dir_prefix}" != "{tmpl_dir_prefix}"')
-      sys.exit(1)
-    print(f"INFO: Running: shutil.rmtree({GIMP3_DIRECTORY})")
-    shutil.rmtree(GIMP3_DIRECTORY)
-  elif not os.access(GIMP3_DIRECTORY, os.W_OK):
-    print(f"ERROR: $GIMP3_DIRECTORY ({GIMP3_DIRECTORY}) does not belong to the user")
-    sys.exit(1)
-  else:
-    print(f"ERROR: $GIMP3_DIRECTORY ({GIMP3_DIRECTORY}) is not a directory")
-    sys.exit(1)
+        try:
+            # macOS SIP prevents DYLD_LIBRARY_PATH from selecting these libs.
+            # Restore only the rpaths that this invocation actually added.
+            for binary in environment.get('GIMP_TEMP_UPDATE_RPATH', '').split(':'):
+                if not binary:
+                    continue
+                result = subprocess.run(['otool', '-l', binary],
+                                        stdout=subprocess.PIPE, check=True)
+                existing = re.findall(r'path (.+?) \(offset',
+                                      result.stdout.decode('utf-8', errors='replace'))
+                for new_rpath in rpath_array:
+                    if new_rpath not in existing:
+                        subprocess.run(['install_name_tool', '-add_rpath',
+                                        new_rpath, binary], check=True)
+                        added_rpaths.append((binary, new_rpath))
 
-except subprocess.CalledProcessError as e:
-  print(f"Command failed with exit code {e.returncode}: {e.cmd}")
-  sys.exit(e.returncode)
-except Exception as e:
-  print(f"Error: {str(e)}")
-  sys.exit(1)
+            # Ensure plug-ins use Meson's Python when the default lacks GI.
+            configured_python = environment.get('GIMP_PYTHON_WITH_GI', sys.executable)
+            default_python = shutil.which('python3')
+            needs_python = default_python is None
+            if default_python and not os.path.samefile(default_python, configured_python):
+                probe = subprocess.run([
+                    default_python, '-c',
+                    "import sys, gi; sys.exit(gi.check_version('3.0'))",
+                ], check=False)
+                needs_python = probe.returncode != 0
+            if needs_python:
+                python_directory = profile / 'tmp_python'
+                python_directory.mkdir()
+                (python_directory / 'python3').symlink_to(configured_python)
+                environment['PATH'] = (str(python_directory) + os.pathsep +
+                                       environment.get('PATH', ''))
+
+            command = [environment['GIMP_SELF_IN_BUILD'], *arguments]
+            if 'GIMP_DEBUG_SELF' in environment and shutil.which('gdb'):
+                command = [
+                    'gdb', '--return-child-result', '--batch', '-x',
+                    str(source_root / 'tools/debug-in-build-gimp.py'),
+                    '--args', *command,
+                ]
+            print('RUNNING: ' + ' '.join(command), flush=True)
+            result = subprocess.run(command, stdin=sys.stdin, env=environment,
+                                    check=False)
+            return result.returncode if result.returncode >= 0 else 128 - result.returncode
+        finally:
+            for binary, new_rpath in reversed(added_rpaths):
+                subprocess.run(['install_name_tool', '-delete_rpath',
+                                new_rpath, binary], check=True)
+
+
+if __name__ == '__main__':
+    try:
+        sys.exit(main(sys.argv[1:]))
+    except (OSError, RuntimeError, ValueError, subprocess.CalledProcessError) as error:
+        print(f'Error: {error}', file=sys.stderr)
+        sys.exit(1)

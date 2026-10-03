@@ -36,6 +36,7 @@ apptests_links += libapptestutils
 # proper way.
 app_tests = [
   'core',
+  'file-load-pipeline',
   'gimp-clone-layer',
   'gimp-filter-layer',
   'painter-layer-ui',
@@ -134,6 +135,13 @@ foreach testinfo : tests
          timeout: 90)
   endif
 endforeach
+
+test('in-build-gimp-wrapper', python,
+  args: ['-B', meson.project_source_root() / 'migration/tests/test_in_build_gimp.py'],
+  suite: 'app', is_parallel: false, timeout: 60)
+test('script-fu-startup', python,
+  args: ['-B', meson.project_source_root() / 'migration/tests/test_script_fu_startup.py'],
+  env: test_env, suite: 'app', is_parallel: false, timeout: 480)
 
 painter_surface_test = executable('gimp-painter-surface',
   'test-gimp-painter-surface.cpp', 'tests.c',
