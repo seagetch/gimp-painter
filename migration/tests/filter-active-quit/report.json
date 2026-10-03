@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "started_utc": "2026-10-02T23:57:06.407134+00:00",
+  "finished_utc": "2026-10-02T23:58:32.613704+00:00",
+  "executable_sha256": {
+    "app/tests/filter-quit-fixture": "cc3bd17c8fe3c3f9029ddb9f335586573d51852c2c5c62a753e2eb55c5bc12c2",
+    "app/gimp-console-3.0": "d3e4eb73e8398ded5629ec62a824b98c169b02199ce23a962156ba2b66e84004",
+    "app/gimp-painter-filter-worker": "55b3647ce019f2dbc39aceeb00c1eb21da76d4130ca5179b148e19eaa5c4c618",
+    "plug-ins/common/blinds": "a1664e8d26daa5cfb628815df381c66c7693a310dca18ee628092fe51a292417"
+  },
+  "executable_sha256_after": {
+    "app/tests/filter-quit-fixture": "cc3bd17c8fe3c3f9029ddb9f335586573d51852c2c5c62a753e2eb55c5bc12c2",
+    "app/gimp-console-3.0": "d3e4eb73e8398ded5629ec62a824b98c169b02199ce23a962156ba2b66e84004",
+    "app/gimp-painter-filter-worker": "55b3647ce019f2dbc39aceeb00c1eb21da76d4130ca5179b148e19eaa5c4c618",
+    "plug-ins/common/blinds": "a1664e8d26daa5cfb628815df381c66c7693a310dca18ee628092fe51a292417"
+  },
+  "source_sha256": {
+    "app/tests/test-filter-quit-fixture.cpp": "24ab8602af5501e3aa8fb158672764e3a73c5e8395150062ce92e97b925d2c39",
+    "app/core/gimpfilterlayer.cpp": "bd362d28cedf1fa82fd98df84d7608009aa0a0b155f45684f23fea666badd616",
+    "app/core/gimpfilterexit.cpp": "f73c61c7c1c6df341fdc0dade72c8693096bfeafa15f306b0ca8bbdb203143a9",
+    "app/core/gimpfilterprocedure.cpp": "5702e021df8b43914b7448067fd9321585285cc4e311e2cfd7773e7d64981a39",
+    "app/painter/filter-process.cpp": "df35b6ad577a798f81af6a1294eaf2c43191cd37f0cd75d329d9e3a9378775c5",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/filter-scheduler.cpp": "34184d48d320e3376e119552704b69c76832f45cf11e198f7a7924e6f22736c6",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-wire.cpp": "224d162b3c38c4fa39ec8dc387f5c85d7a903b0f939ea4ef4fac5601e12d9095",
+    "app/painter/filter-procedure.hpp": "d02dbe562f6e66f135de2379b214afd9fcb7bcb7c924a0647276706ae414500d",
+    "app/core/gimpfilterprocedure.hpp": "c2a2d7f1b1aacb9e52926ad255e7b7a180fa0c8125d74703f57a2eca750df2a9",
+    "app/config/gimppainterfilterconfig.cpp": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+    "tools/check_filter_active_quit.py": "48acfcb31f83dc114b43f68068794a84f1d2a9166a61a5022a5f8f2f702e2499",
+    "tools/in-build-gimp.py": "31967038e80c654d6666323c74fe89a4ca20fe6e2ae541b964156a52ed17b3d8",
+    "app/painter-filter-worker.cpp": "157649b7a6863f9e1bffbd7660cc473343be773696d3385d75a9fba60cc04b65",
+    "app/app.c": "4766e5da054a26829d96b58245021321d294354bac1b180fc9afeba49a15e91b"
+  },
+  "source_sha256_after": {
+    "app/tests/test-filter-quit-fixture.cpp": "24ab8602af5501e3aa8fb158672764e3a73c5e8395150062ce92e97b925d2c39",
+    "app/core/gimpfilterlayer.cpp": "bd362d28cedf1fa82fd98df84d7608009aa0a0b155f45684f23fea666badd616",
+    "app/core/gimpfilterexit.cpp": "f73c61c7c1c6df341fdc0dade72c8693096bfeafa15f306b0ca8bbdb203143a9",
+    "app/core/gimpfilterprocedure.cpp": "5702e021df8b43914b7448067fd9321585285cc4e311e2cfd7773e7d64981a39",
+    "app/painter/filter-process.cpp": "df35b6ad577a798f81af6a1294eaf2c43191cd37f0cd75d329d9e3a9378775c5",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/filter-scheduler.cpp": "34184d48d320e3376e119552704b69c76832f45cf11e198f7a7924e6f22736c6",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-wire.cpp": "224d162b3c38c4fa39ec8dc387f5c85d7a903b0f939ea4ef4fac5601e12d9095",
+    "app/painter/filter-procedure.hpp": "d02dbe562f6e66f135de2379b214afd9fcb7bcb7c924a0647276706ae414500d",
+    "app/core/gimpfilterprocedure.hpp": "c2a2d7f1b1aacb9e52926ad255e7b7a180fa0c8125d74703f57a2eca750df2a9",
+    "app/config/gimppainterfilterconfig.cpp": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+    "tools/check_filter_active_quit.py": "48acfcb31f83dc114b43f68068794a84f1d2a9166a61a5022a5f8f2f702e2499",
+    "tools/in-build-gimp.py": "31967038e80c654d6666323c74fe89a4ca20fe6e2ae541b964156a52ed17b3d8",
+    "app/painter-filter-worker.cpp": "157649b7a6863f9e1bffbd7660cc473343be773696d3385d75a9fba60cc04b65",
+    "app/app.c": "4766e5da054a26829d96b58245021321d294354bac1b180fc9afeba49a15e91b"
+  },
+  "observer_sha256": "48acfcb31f83dc114b43f68068794a84f1d2a9166a61a5022a5f8f2f702e2499",
+  "fixture_command": [
+    "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/filter-quit-fixture",
+    "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/fixtures",
+    "4096"
+  ],
+  "fixture_sha256": {
+    "quit-blinds-1.xcf": "1e4af7adedcba4626c55b1b3a750c195b77e8a0b04c89047360a5911b5b4380c",
+    "quit-blinds-2.xcf": "95afc864367ffeaa97b4114064190947de097589a3c0c54287d8cb50862e34c7"
+  },
+  "trials": [
+    {
+      "jobs": 1,
+      "dimension": 4096,
+      "status": "failed",
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "--new-instance",
+        "--no-interface",
+        "--no-data",
+        "--no-fonts",
+        "--no-splash",
+        "--gimprc",
+        "/tmp/active-quit-1-cz7awkkv/gimprc",
+        "--batch-interpreter=python-fu-eval",
+        "-b",
+        "exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-1/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-1/batch.py', 'exec'))",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/fixtures/quit-blinds-1.xcf"
+      ],
+      "main_pid": null,
+      "wrapper_pid": 37,
+      "exit_code": -9,
+      "quit_seconds": null,
+      "total_seconds": 39.84819053400042,
+      "active_helpers_at_quit": [],
+      "native_children_at_quit": [],
+      "observed_processes": [
+        {
+          "pid": 37,
+          "state": "S",
+          "parent": 2,
+          "group": 37,
+          "start_ticks": 426513,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "/usr/bin/python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+            "--new-instance",
+            "--no-interface",
+            "--no-data",
+            "--no-fonts",
+            "--no-splash",
+            "--gimprc",
+            "/tmp/active-quit-1-cz7awkkv/gimprc",
+            "--batch-interpreter=python-fu-eval",
+            "-b",
+            "exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-1/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-1/batch.py', 'exec'))",
+            "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/fixtures/quit-blinds-1.xcf"
+          ]
+        }
+      ],
+      "observed_groups": [
+        37
+      ],
+      "survivors": [],
+      "surviving_groups": [
+        37
+      ],
+      "private_profiles": [],
+      "leftover_profiles": [],
+      "events_file": "jobs-1/events.json",
+      "console_log": "jobs-1/console.log",
+      "console_log_sha256": "d63ce0104ae15c17c65625ed1042bba58eabf1a7570c43692b00a84e159c6a7d",
+      "batch_source_sha256": "968b9a68da1db5f34b1e9ec238ce3d73d2a71948e735e8f84b739644db392bad",
+      "errors": [
+        "Batch observer handshake timed out",
+        "Missing READY, explicit invalidation, actual active child, or Quit evidence",
+        "Console/wrapper exit status -9",
+        "Measured Quit exceeded bound or was not measured",
+        "Observed child processes or their process groups survived Quit"
+      ]
+    },
+    {
+      "jobs": 2,
+      "dimension": 4096,
+      "status": "failed",
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "--new-instance",
+        "--no-interface",
+        "--no-data",
+        "--no-fonts",
+        "--no-splash",
+        "--gimprc",
+        "/tmp/active-quit-2-py_8zyz4/gimprc",
+        "--batch-interpreter=python-fu-eval",
+        "-b",
+        "exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-2/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-2/batch.py', 'exec'))",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/fixtures/quit-blinds-1.xcf",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/fixtures/quit-blinds-2.xcf"
+      ],
+      "main_pid": null,
+      "wrapper_pid": 225,
+      "exit_code": -9,
+      "quit_seconds": null,
+      "total_seconds": 40.08887805499944,
+      "active_helpers_at_quit": [],
+      "native_children_at_quit": [],
+      "observed_processes": [
+        {
+          "pid": 225,
+          "state": "S",
+          "parent": 2,
+          "group": 225,
+          "start_ticks": 430498,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "/usr/bin/python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+            "--new-instance",
+            "--no-interface",
+            "--no-data",
+            "--no-fonts",
+            "--no-splash",
+            "--gimprc",
+            "/tmp/active-quit-2-py_8zyz4/gimprc",
+            "--batch-interpreter=python-fu-eval",
+            "-b",
+            "exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-2/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-2/batch.py', 'exec'))",
+            "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/fixtures/quit-blinds-1.xcf",
+            "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/fixtures/quit-blinds-2.xcf"
+          ]
+        }
+      ],
+      "observed_groups": [
+        225
+      ],
+      "survivors": [],
+      "surviving_groups": [
+        225
+      ],
+      "private_profiles": [],
+      "leftover_profiles": [],
+      "events_file": "jobs-2/events.json",
+      "console_log": "jobs-2/console.log",
+      "console_log_sha256": "2ed80db93f34a120ef9ec3ded14a7a856137fa1ca9a1c39371dd885f96fad627",
+      "batch_source_sha256": "16152a579122a773cff4d78d9a7c1fffd0a9a964400ace395bea4466153fa980",
+      "errors": [
+        "Batch observer handshake timed out",
+        "Missing READY, explicit invalidation, actual active child, or Quit evidence",
+        "Console/wrapper exit status -9",
+        "Measured Quit exceeded bound or was not measured",
+        "Console diagnostic: batch command experienced",
+        "Console diagnostic: Traceback (most recent call last)",
+        "Observed child processes or their process groups survived Quit"
+      ]
+    }
+  ],
+  "failed_batch_control": {
+    "command": [
+      "/usr/bin/python3",
+      "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+      "--new-instance",
+      "--no-interface",
+      "--no-data",
+      "--no-fonts",
+      "--no-splash",
+      "--batch-interpreter=python-fu-eval",
+      "-b",
+      "raise RuntimeError('QUIT_EXPECTED_BATCH_FAILURE')",
+      "--quit"
+    ],
+    "expected_exit_code": 64,
+    "actual_exit_code": 64,
+    "log_sha256": "cddedf06f3db38e2fb331648d47ce545e44d01b633d6158a3e7fa6ae22c58e71"
+  },
+  "errors": [
+    "jobs-1: Batch observer handshake timed out",
+    "jobs-1: Missing READY, explicit invalidation, actual active child, or Quit evidence",
+    "jobs-1: Console/wrapper exit status -9",
+    "jobs-1: Measured Quit exceeded bound or was not measured",
+    "jobs-1: Observed child processes or their process groups survived Quit",
+    "jobs-2: Batch observer handshake timed out",
+    "jobs-2: Missing READY, explicit invalidation, actual active child, or Quit evidence",
+    "jobs-2: Console/wrapper exit status -9",
+    "jobs-2: Measured Quit exceeded bound or was not measured",
+    "jobs-2: Console diagnostic: batch command experienced",
+    "jobs-2: Console diagnostic: Traceback (most recent call last)",
+    "jobs-2: Observed child processes or their process groups survived Quit"
+  ]
+}

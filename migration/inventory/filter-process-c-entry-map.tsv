@@ -1,0 +1,8 @@
+entry	source	owner_and_thread	boundary	lifetime
+gimp_filter_exit_init	app/core/gimpfilterexit.cpp	GApplication main owner	boundary_void; typed ExitSlot	One common BindingStore; timeout weakly references owner
+gimp_filter_exit_quit	app/core/gimpfilterexit.cpp	GApplication main owner	Exception-contained C facade; explicit fallback diagnostic	Worker lifetime token independent of GObject; no UI join
+gimp_filter_exit_is_requested	app/core/gimpfilterexit.cpp	GApplication main owner	boundary<gboolean>; typed read	No returned implementation borrow
+gimp_batch_exit_after_callback	app/core/gimp-batch.c	Synchronous accepted exit emission	Exact gboolean(Gimp*,gboolean,gboolean*) callback	Transient stack flag; handler disconnected before stack expires
+progress_start/end/is_active/set_text/set_value/get_value/pulse/message	app/core/gimpfilterprocedure.cpp	Private helper main owner	Exact GimpProgress vfunc signatures; contained typed slot access	Private progress GObject uses common BindingStore; no parent object or callback
+PluginLifetimes::opened	app/core/gimpfilterprocedure.cpp	Private helper main owner	noexcept signal trampoline; exact manager/plugin/data args	Typed weak plug-in handles; scoped connection and child-watch drain
+group_setup	app/painter/filter-process.cpp	POSIX post-fork pre-exec child	Only setpgid and _exit; no allocations or GObject access	Dedicated group established before helper executes

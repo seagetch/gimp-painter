@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "scope": "320 actual legacy Blinds PDB byte comparisons only",
+  "oracle_cases": 320,
+  "oracle_failures": 0,
+  "native_helper": "build-debian13/app/gimp-painter-filter-worker",
+  "capture_report": "migration/fixtures/legacy-blinds/capture-report.json",
+  "lock": "/workspace/shared/gimp-painter-build.lock",
+  "diagnostic_source": "/workspace/shared/filter-blinds-native-probe-source.cpp",
+  "diagnostic_log": "/workspace/shared/filter-blinds-probe.log",
+  "identity_smoke": "12 odd-fan identity assumptions were diagnosed as invalid; none count as passing identity evidence. The last diagnostic log line saying 12 identities passed is an uncorrected diagnostic counter, not acceptance.",
+  "hash_scope": "Recorded at completion while production source freeze was still held; no separately recorded before/after hash pair for this exploratory comparison. Official focused checks will record pairs.",
+  "source_sha256": {
+    "app/painter/filter-wire.cpp": "224d162b3c38c4fa39ec8dc387f5c85d7a903b0f939ea4ef4fac5601e12d9095",
+    "app/painter/filter-wire.hpp": "9ca92c107ab13b6dee48b9c736599a678413b05b61f5d77c10c3862633801310",
+    "app/painter/filter-process.cpp": "df35b6ad577a798f81af6a1294eaf2c43191cd37f0cd75d329d9e3a9378775c5",
+    "app/painter/filter-process.hpp": "ca117c16536e23daaadc77a5fe7ef493b0b11389a8e68cd261b37eb34454815f",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/filter-procedure.hpp": "d02dbe562f6e66f135de2379b214afd9fcb7bcb7c924a0647276706ae414500d",
+    "app/core/gimpfilterprocedure.cpp": "5702e021df8b43914b7448067fd9321585285cc4e311e2cfd7773e7d64981a39",
+    "app/core/gimpfilterprocedure.hpp": "c2a2d7f1b1aacb9e52926ad255e7b7a180fa0c8125d74703f57a2eca750df2a9",
+    "app/painter-filter-worker.cpp": "157649b7a6863f9e1bffbd7660cc473343be773696d3385d75a9fba60cc04b65",
+    "plug-ins/common/blinds.c": "20841f666d1479b516045b6953c7007c17524aecb54c2e393df4752ab69c9943"
+  },
+  "binary_sha256": {
+    "build-debian13/app/gimp-painter-filter-worker": "d4f02fb1008f78e8d0b2069bc94f6fb312315b15cd9a8b5849953c54df35f426",
+    "build-debian13/plug-ins/common/blinds": "a1664e8d26daa5cfb628815df381c66c7693a310dca18ee628092fe51a292417"
+  }
+}

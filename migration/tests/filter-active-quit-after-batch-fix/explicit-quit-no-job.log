@@ -1,0 +1,21 @@
+INFO: temporary GIMP configuration directory: /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/.GIMP3-build-config-bq47zd24
+RUNNING: /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-console-3.0 --new-instance --no-interface --no-data --no-fonts --no-splash --batch-interpreter=python-fu-eval -b from gi.repository import Gimp; print('QUIT_EMPTY_CONTROL_READY', flush=True); Gimp.quit(True)
+Failed to parse tag cache: No such file or directory
+
+(script-fu:6420): scriptfu-WARNING **: 09:10:13.303: script_fu_add_resource_arg declared resource name is invalid Default
+
+(script-fu:6420): scriptfu-WARNING **: 09:10:13.305: script_fu_add_resource_arg declared resource name is invalid Incandescent
+
+(script-fu:6420): scriptfu-WARNING **: 09:10:13.307: script_fu_add_resource_arg declared resource name is invalid Coffee
+GIMP-Warning: Welcome to GIMP 3.0.9!
+
+QUIT_EMPTY_CONTROL_READY
+batch command experienced a calling error:
+Traceback (most recent call last):
+  File "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/python-eval/python-eval.py", line 42, in code_eval
+    exec(code, globals())
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+TypeError: Gimp.quit() takes exactly 0 arguments (1 given)
+
+Stopping at failing batch command [0]: from gi.repository import Gimp; print('QUIT_EMPTY_CONTROL_READY', flush=True); Gimp.quit(True)

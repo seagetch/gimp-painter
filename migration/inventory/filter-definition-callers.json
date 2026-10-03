@@ -31,12 +31,12 @@
   },
   {
     "source": "app/core/gimpfilterlayer.cpp",
-    "line": 1203,
+    "line": 1198,
     "code": "gimp_filter_layer_set_procedure  (GimpFilterLayer* layer,"
   },
   {
     "source": "app/core/gimpfilterlayer.cpp",
-    "line": 1207,
+    "line": 1202,
     "code": "FilterLayerInterface::cast(layer)->set_procedure (proc_name, args);"
   },
   {
@@ -95,6 +95,11 @@
     "code": "g_print(\"xcf_load_props: PROP_FILTER_SPEC\\n\");"
   },
   {
+    "source": "app/xcf/xcf-private.h",
+    "line": 122,
+    "code": "PROP_FILTER_SPEC        = 32,"
+  },
+  {
     "source": "app/xcf/xcf-save.c",
     "line": 662,
     "code": "xcf_check_error (xcf_save_prop (info, image, PROP_FILTER_SPEC, error, filter_name, args));"
@@ -105,16 +110,6 @@
     "code": "case PROP_FILTER_SPEC:"
   },
   {
-    "source": "app/xcf/xcf-private.h",
-    "line": 122,
-    "code": "PROP_FILTER_SPEC        = 32,"
-  },
-  {
-    "source": "data/layer-presets/watercolor.json",
-    "line": 23,
-    "code": "\"name\": \"plug-in-edge\","
-  },
-  {
     "source": "data/layer-presets/test.json",
     "line": 15,
     "code": "\"name\": \"plug-in-edge\","
@@ -123,5 +118,10 @@
     "source": "data/layer-presets/test2.json",
     "line": 20,
     "code": "\"name\": \"plug-in-gauss\","
+  },
+  {
+    "source": "data/layer-presets/watercolor.json",
+    "line": 23,
+    "code": "\"name\": \"plug-in-edge\","
   }
 ]

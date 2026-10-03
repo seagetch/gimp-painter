@@ -14,6 +14,8 @@ extern "C" {
 #include "gimpcontainer.h"
 #include "gimpfilterstack.h"
 #include "gimpimage.h"
+#include "gimpchannel.h"
+#include "gimpcontext.h"
 #include "gimp.h"
 #include "gimpimage-undo.h"
 #include "gimpitemundo.h"
@@ -32,6 +34,7 @@ extern "C" {
 #include "painter/filter-gauss.hpp"
 #include "painter/filter-raster-kernels.hpp"
 #include "painter/filter-native-kernels.hpp"
+#include "painter/filter-process.hpp"
 #include "painter/gimp-painter-binding.h"
 #include "painter/source.hpp"
 #include <algorithm>
@@ -288,6 +291,8 @@ struct FilterImpl
   {
     graph_valid = false;
     read_budget = 1024;
+    native_procedure.reset ();
+    native_process_options.reset ();
     FilterScheduler::Request request;
     request.width = gimp_item_get_width (GIMP_ITEM (owner));
     request.height = gimp_item_get_height (GIMP_ITEM (owner));
@@ -458,6 +463,36 @@ struct FilterImpl
           return filter_native_vector (input,cancel,output,process);
         };
         if (spill) request.raster_process = std::move (process);
+      }
+    else if (procedure == "plug-in-blinds" && args && args->size () == 7 && !real &&
+             G_VALUE_HOLDS_INT (args->at (3)) && G_VALUE_HOLDS_INT (args->at (4)) &&
+             G_VALUE_HOLDS_INT (args->at (5)) && G_VALUE_HOLDS_INT (args->at (6)))
+      {
+        const auto angle = g_value_get_int (args->at (3));
+        const auto segments = g_value_get_int (args->at (4));
+        if (angle >= 0 && angle <= 90 && segments >= 1 && segments <= 100)
+          {
+            auto descriptor = std::make_shared<FilterProcedureRequest> ();
+            descriptor->width = request.width; descriptor->height = request.height;
+            descriptor->angle = angle; descriptor->segments = segments;
+            descriptor->orientation = g_value_get_int (args->at (5));
+            descriptor->transparent = g_value_get_int (args->at (6)); descriptor->gray = gray ();
+            auto options = std::make_shared<FilterProcessOptions> ();
+            options->executable = g_file_test (GIMP_PAINTER_FILTER_WORKER_BUILD_PATH, G_FILE_TEST_IS_EXECUTABLE) ?
+              GIMP_PAINTER_FILTER_WORKER_BUILD_PATH : GIMP_PAINTER_FILTER_WORKER_INSTALL_PATH;
+            /* Parent input/result and three child rasters (snapshot, drawable,
+             * shadow). 256MiB + row scratch is admission, not an RSS proof. */
+            const auto raster = descriptor->bytes ();
+            request.peak_spill_bytes = raster * 5;
+            const auto peak = std::uint64_t (256) * 1024 * 1024 +
+                              std::uint64_t (std::max (request.width, request.height)) * 384;
+            request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+            request.raster_process = [descriptor,options] (FilterRaster& input, FilterRaster& output,
+              std::atomic<bool>& cancel, const FilterRasterFactory&) {
+                return filter_process (*descriptor, input, output, cancel, *options);
+              };
+            native_procedure = std::move (descriptor); native_process_options = std::move (options);
+          }
       }
     scheduler.set_request (std::move (request));
     staged.reset ();
@@ -745,6 +780,36 @@ struct FilterImpl
         if (image) gimp_image_flush (GIMP_IMAGE (image.get ()));
       }
   }
+  void native_context (bool final_merge)
+  {
+    if (!native_procedure) return;
+    auto *image = gimp_item_get_image (GIMP_ITEM (owner));
+    if (!image) throw std::runtime_error ("Private Filter image was closed");
+    auto *selection = gimp_image_get_mask (image);
+    /* Querying is_empty() may synchronously scan an arbitrarily large mask.
+     * This first route admits only the already-established empty metadata. */
+    if (!selection->bounds_known || !selection->empty)
+      throw std::runtime_error ("Blinds selection context is not supported yet; definition and cache are retained");
+    if (final_merge)
+      {
+        if (gimp_image_get_active_mask (image) != GIMP_COMPONENT_MASK_ALL ||
+            gimp_layer_get_lock_alpha (GIMP_LAYER (owner)))
+          throw std::runtime_error ("Blinds component/alpha-lock merge context is not supported yet; definition and cache are retained");
+        return;
+      }
+    /* Context changes alone never invalidate a FilterLayer. Old Blinds reads
+     * its background at execution start, after input preparation is complete. */
+    double rgba[4];
+    gegl_color_get_pixel (gimp_context_get_background (gimp_get_user_context (image->gimp)),
+                          babl_format ("R'G'B'A double"), rgba);
+    const auto byte = [] (double v) { return std::uint8_t (std::floor (std::max (0.0, std::min (1.0, v)) * 255.0 + 0.5)); };
+    if (gray ())
+      {
+        const auto luminance = byte (0.2126 * rgba[0] + 0.7152 * rgba[1] + 0.0722 * rgba[2]);
+        native_procedure->background = {{luminance,luminance,luminance,255}};
+      }
+    else native_procedure->background = {{byte (rgba[0]),byte (rgba[1]),byte (rgba[2]),255}};
+  }
   bool step ()
   {
     /* Include every early return, callback and local destructor. Recording
@@ -765,7 +830,8 @@ struct FilterImpl
         return again;
       }
     const auto previous = scheduler.state ();
-    if (previous == FilterScheduler::State::waiting && scheduler.uses_spool ())
+    if ((previous == FilterScheduler::State::waiting || previous == FilterScheduler::State::cancelling) &&
+        scheduler.uses_spool ())
       {
         /* This is the expanded, trusted application swap setting, not an XCF
          * path argument or an implicit /tmp (which may be RAM-backed). The
@@ -774,6 +840,12 @@ struct FilterImpl
         g_object_get (gegl_config (), "swap", &directory, nullptr);
         std::unique_ptr<gchar, decltype (&g_free)> guard (directory, g_free);
         scheduler.set_spool_directory (directory ? directory : "");
+        if (native_process_options)
+          {
+            preparing_process_directory = directory ? directory : "";
+            if (!directory || !*directory || !g_path_is_absolute (directory))
+              scheduler.reject ("Bundled PDB Filter execution requires configured file swap; definition and cache are retained");
+          }
       }
     if (auto* image = gimp_item_get_image (GIMP_ITEM (owner))) {
       try { scheduler.set_admission (filter_admission_for_config (G_OBJECT (image->gimp->config))); }
@@ -860,11 +932,20 @@ struct FilterImpl
           gegl_node_blit (below_node, 1.0, &rect, encoded_format (), input.data () + size,
                           GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_CACHE);
         if (!input_current (generation)) return;
+        if (native_process_options && !offset)
+          {
+            /* The old worker is gone before first read. This is the exact
+             * directory copied into this admitted spool, not a later setting. */
+            native_process_options->temporary_directory = preparing_process_directory;
+          }
+        if (native_procedure && offset + count == std::size_t (native_procedure->width) * native_procedure->height)
+          native_context (false);
         maximum_read_us = std::max (maximum_read_us, g_get_monotonic_time () - read_started);
         tune_budget (count, g_get_monotonic_time () - read_started, read_budget);
       },
       [&] (std::size_t offset, std::size_t count, const std::uint8_t *pixels) {
         const auto import_started = g_get_monotonic_time ();
+        native_context (true);
         if (!offset)
           {
             GeglRectangle extent {0, 0, gimp_item_get_width (GIMP_ITEM (owner)), gimp_item_get_height (GIMP_ITEM (owner))};
@@ -903,6 +984,7 @@ struct FilterImpl
       },
       [&] (std::uint64_t token) {
         if (token != scheduler.generation ()) return;
+        native_context (true);
         auto completed = std::move (staged);
         publish_buffer (GEGL_BUFFER (completed.get ()), token, true);
       });
@@ -917,6 +999,9 @@ struct FilterImpl
   std::shared_ptr<const FilterArguments> args;
   std::uint64_t definition_revision = 0;
   FilterScheduler scheduler;
+  std::shared_ptr<FilterProcedureRequest> native_procedure;
+  std::shared_ptr<FilterProcessOptions> native_process_options;
+  std::string preparing_process_directory;
   FairDispatcher::Ticket pending;
   WeakRef<GObject> stack;
   ObjectRef<GObject> staged;

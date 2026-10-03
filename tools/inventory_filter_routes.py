@@ -5,7 +5,7 @@ Extract public procedure metadata only. Never archive pluginrc/profile files or
 inherited environment. The old popup policy is pinned by source hash. Current
 GEGL operations are semantic counterparts to audit, not executable mappings.
 """
-import argparse, csv, hashlib, json, re, subprocess
+import argparse, csv, hashlib, io, json, re, subprocess, tarfile
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 p = argparse.ArgumentParser()
@@ -39,9 +39,15 @@ def allowed(path):
     return path.startswith(('<Image>/Filters/','<Image>/Colors/')) and not path.startswith(tuple(
         '<Image>/Filters/'+x for x in ('Animation','Render','Language','Web','Alpha to Logo','Combine','Decor')))
 
-old_files={str(f.relative_to(a.legacy)):f.read_text(errors='replace') for f in (a.legacy/'plug-ins').rglob('*')
-           if f.suffix in ('.c','.h','.scm')}
-new_files={str(f.relative_to(ROOT)):f.read_text(errors='replace') for f in (ROOT/'plug-ins').rglob('*')
+# Read immutable pinned blobs: the legacy oracle worktree may carry capture
+# instrumentation, which must never change source provenance or line numbers.
+with tarfile.open(fileobj=io.BytesIO(subprocess.check_output(
+        ['git','-C',str(a.legacy),'archive',PIN,'plug-ins','app','data/layer-presets']))) as archive:
+    old_bytes={member.name:archive.extractfile(member).read()
+               for member in archive if member.isfile()}
+old_files={path:data.decode(errors='replace') for path,data in sorted(old_bytes.items())
+           if path.startswith('plug-ins/') and Path(path).suffix in ('.c','.h','.scm')}
+new_files={str(f.relative_to(ROOT)):f.read_text(errors='replace') for f in sorted((ROOT/'plug-ins').rglob('*'))
            if f.suffix in ('.c','.h','.scm','.py') and not any(x in f.parts for x in ('build','build-debian13'))}
 actions=(ROOT/'app/actions/filters-actions.c').read_text()
 operations=set(re.findall(r'"((?:gegl|gimp):[a-z0-9-]+)',actions))
@@ -77,13 +83,17 @@ def row(name,menu,args,source_kind,source_paths):
     if op not in operations: op=''
     if name in exact: route='exact independent byte kernel; native-double extension'; gap='precision/extension validation'
     elif name in new_exact: route='audited point kernel in development'; gap='genuine byte and native precision validation'
+    elif name == 'plug-in-blinds':
+        route='audited isolated bundled PDB adapter; U8 nonlinear RGB/Gray; angle 0..90, segments 1..100'
+        gap='selection/component phase integration, owner progress forwarding, disabled-swap route, relocation and platform verification'
     elif short in nonpixel: route='isolated legacy image/output adapter required'; gap='multi-image/layer/palette/result semantics, not a pixel substitution'
     elif short in context or source_kind=='script-source': route='isolated context/resource adapter required'; gap='capture resource/context/secondary-object dependencies; no automatic script execution'
     else: route='explicit compatibility kernel or isolated plug-in adapter required'; gap='parameter/alpha/numerical parity and cancellation/crash isolation'
     rows.append(dict(procedure=name,eligibility=source_kind,menu=';'.join(menu),argument_types=','.join(map(str,args)),
         legacy_source=';'.join(source_paths),current_source_mentions=';'.join(native),current_gegl_counterpart=op,
         executor_route=route,missing_port_work=gap,
-        dependency_status='bundled original source exists; missing port code' if source_paths else 'registration-only; source/dependency unresolved'))
+        dependency_status=('bounded route implemented; see migration/contracts/filter-process-bridge.md' if name == 'plug-in-blinds' else
+            'bundled original source exists; missing port code' if source_paths else 'registration-only; source/dependency unresolved')))
 registry=a.registry.read_text(encoding='latin1')
 for form in forms(registry,'proc-def'):
     name=re.match(r'\(proc-def\s+"([^"]+)"',form)[1]
@@ -114,14 +124,15 @@ a.output.mkdir(parents=True,exist_ok=True)
 with (a.output/'filter-procedure-routes.tsv').open('w') as f:
     writer=csv.DictWriter(f,fieldnames=list(rows[0]),delimiter='\t',lineterminator='\n');writer.writeheader();writer.writerows(sorted(rows,key=lambda r:r['procedure']))
 callers=[]
-for f in (a.legacy/'app').rglob('*'):
-    if f.suffix not in ('.c','.cpp','.h','.hpp'):continue
-    for i,line in enumerate(f.read_text(errors='replace').splitlines(),1):
+for path,data in sorted(old_bytes.items()):
+    if not path.startswith('app/') or Path(path).suffix not in ('.c','.cpp','.h','.hpp'):continue
+    for i,line in enumerate(data.decode(errors='replace').splitlines(),1):
         if re.search(r'(set_procedure|gimp_filter_layer_set_procedure|PROP_FILTER_SPEC|create_filter_list)',line):
-            callers.append(dict(source=str(f.relative_to(a.legacy)),line=i,code=line.strip()))
-for f in (a.legacy/'data/layer-presets').glob('*.json'):
-    for i,line in enumerate(f.read_text().splitlines(),1):
-        if 'plug-in-' in line: callers.append(dict(source=str(f.relative_to(a.legacy)),line=i,code=line.strip()))
+            callers.append(dict(source=path,line=i,code=line.strip()))
+for path,data in sorted(old_bytes.items()):
+    if not path.startswith('data/layer-presets/') or not path.endswith('.json'):continue
+    for i,line in enumerate(data.decode().splitlines(),1):
+        if 'plug-in-' in line: callers.append(dict(source=path,line=i,code=line.strip()))
 (a.output/'filter-definition-callers.json').write_text(json.dumps(callers,indent=2)+'\n')
 sources={path for row in rows for path in row['legacy_source'].split(';') if path}
 sources|={'app/widgets/gimplayerpopup.cpp','app/core/gimpfilterlayer.cpp','app/pdb/pdb-cxx-utils.hpp'}
@@ -131,7 +142,7 @@ report=dict(schema_version=1,legacy_commit=PIN,installed_compiled_popup_procedur
       'Current source/name and GEGL counterpart are discovery evidence, not numerical compatibility or automatic execution.',
       'Optional external third-party plug-ins are unbounded; unavailable definitions remain preserved and visibly unsupported.',
       'Registry input is not archived; only procedure metadata sourced from the pinned public project is emitted.'],
-    source_sha256={name:hashlib.sha256((a.legacy/name).read_bytes()).hexdigest() for name in sorted(sources)},
+    source_sha256={name:hashlib.sha256(old_bytes[name]).hexdigest() for name in sorted(sources)},
     current_actions_sha256=hashlib.sha256((ROOT/'app/actions/filters-actions.c').read_bytes()).hexdigest())
 (a.output/'filter-procedure-inventory.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({k:report[k] for k in ('installed_compiled_popup_procedures','source_eligible_scripts','total_rows')}))

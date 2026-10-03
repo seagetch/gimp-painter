@@ -40,13 +40,16 @@
 #include "gimp-intl.h"
 
 
-static void  gimp_batch_exit_after_callback (Gimp          *gimp) G_GNUC_NORETURN;
+static gboolean gimp_batch_exit_after_callback (Gimp          *gimp,
+                                                gboolean       force,
+                                                gboolean      *exit_requested);
 
 static gint  gimp_batch_run_cmd             (Gimp          *gimp,
                                              const gchar   *proc_name,
                                              GimpProcedure *procedure,
                                              GimpRunMode    run_mode,
-                                             const gchar   *cmd);
+                                             const gchar   *cmd,
+                                             const gboolean *exit_requested);
 
 
 gint
@@ -59,6 +62,7 @@ gimp_batch_run (Gimp         *gimp,
   GSList        *iter;
   gulong         exit_id;
   gint           retval = EXIT_SUCCESS;
+  gboolean       exit_requested = FALSE;
 
   if (! batch_commands || ! batch_commands[0])
     return retval;
@@ -154,7 +158,7 @@ gimp_batch_run (Gimp         *gimp,
 
   exit_id = g_signal_connect_after (gimp, "exit",
                                     G_CALLBACK (gimp_batch_exit_after_callback),
-                                    NULL);
+                                    &exit_requested);
 
   eval_proc = gimp_pdb_lookup_procedure (gimp->pdb, batch_interpreter);
   if (eval_proc)
@@ -165,7 +169,11 @@ gimp_batch_run (Gimp         *gimp,
       for (i = 0; batch_commands[i]; i++)
         {
           retval = gimp_batch_run_cmd (gimp, batch_interpreter, eval_proc,
-                                       GIMP_RUN_NONINTERACTIVE, batch_commands[i]);
+                                       GIMP_RUN_NONINTERACTIVE, batch_commands[i],
+                                       &exit_requested);
+
+          if (exit_requested)
+            break;
 
           /* In case of several commands, stop and return last
            * failed command.
@@ -191,21 +199,20 @@ gimp_batch_run (Gimp         *gimp,
 }
 
 
-/*
- * The purpose of this handler is to exit GIMP cleanly when the batch
- * procedure calls the gimp-exit procedure. Without this callback, the
- * message "batch command experienced an execution error" would appear
- * and gimp would hang forever.
- */
-static void
-gimp_batch_exit_after_callback (Gimp *gimp)
+/* An accepted explicit batch Quit interrupts its own PDB invocation. Record
+ * that exact event and unwind normally so the application's independent worker
+ * drain can finish. The true-handled exit accumulator never reaches this after
+ * callback when the user cancels a GUI Quit. */
+static gboolean
+gimp_batch_exit_after_callback (Gimp     *gimp,
+                                gboolean  force,
+                                gboolean *exit_requested)
 {
   if (gimp->be_verbose)
     g_print ("EXIT: %s\n", G_STRFUNC);
 
-  gegl_exit ();
-
-  exit (EXIT_SUCCESS);
+  *exit_requested = TRUE;
+  return FALSE;
 }
 
 static inline gboolean
@@ -220,7 +227,8 @@ gimp_batch_run_cmd (Gimp          *gimp,
                     const gchar   *proc_name,
                     GimpProcedure *procedure,
                     GimpRunMode    run_mode,
-                    const gchar   *cmd)
+                    const gchar   *cmd,
+                    const gboolean *exit_requested)
 {
   GimpValueArray *args;
   GimpValueArray *return_vals;
@@ -247,6 +255,14 @@ gimp_batch_run_cmd (Gimp          *gimp,
                                              gimp_get_user_context (gimp),
                                              NULL, &error,
                                              proc_name, args);
+
+  if (*exit_requested)
+    {
+      if (return_vals) gimp_value_array_unref (return_vals);
+      gimp_value_array_unref (args);
+      g_clear_error (&error);
+      return EXIT_SUCCESS;
+    }
 
   switch (g_value_get_enum (gimp_value_array_index (return_vals, 0)))
     {

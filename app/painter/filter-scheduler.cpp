@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "filter-scheduler.hpp"
+#include "filter-lifetime.hpp"
 #include <algorithm>
 #include <stdexcept>
 #include <limits>
@@ -159,6 +160,7 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
   const auto operation_generation = generation_;
   try
     {
+      if (FilterLifetime::stopping () && state_ != State::failed) reject ("Application is exiting");
       if (admission_->closed () && state_ != State::failed) reject ("Filter resource configuration is closed");
       if (job_ && job_->spool)
         {
@@ -273,13 +275,16 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
           job->input = std::move (input_);
           job->process = request_.process;
           job->generation = work_generation_;
-          std::thread worker ([job] {
+          auto lifetime = std::make_shared<FilterLifetime> ();
+          std::thread worker ([job,lifetime] () mutable {
             try { job->success = job->process (job->input, job->cancelled, job->output); }
             catch (const std::exception& e) { try { job->error = e.what (); } catch (...) {} }
             catch (...) { try { job->error = "Filter worker threw an unknown exception"; } catch (...) {} }
             if (!job->success && job->error.empty ())
               { try { job->error = "Filter execution failed or was cancelled"; } catch (...) {} }
             job->done.store (true, std::memory_order_release);
+            job.reset ();
+            lifetime.reset ();
           });
           job_ = std::move (job);
           worker.detach ();

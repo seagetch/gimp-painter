@@ -1,0 +1,25 @@
+INFO: temporary GIMP configuration directory: /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/.GIMP3-build-config-f6buav1c
+RUNNING: /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-console-3.0 --new-instance --no-interface --no-data --no-fonts --no-splash --gimprc /tmp/active-quit-1-8hbojcb_/gimprc --batch-interpreter=python-fu-eval -b exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py', 'exec')) /workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures/quit-blinds-1.xcf
+Failed to parse tag cache: No such file or directory
+
+(script-fu:918): scriptfu-WARNING **: 09:09:50.941: script_fu_add_resource_arg declared resource name is invalid Default
+
+(script-fu:918): scriptfu-WARNING **: 09:09:50.944: script_fu_add_resource_arg declared resource name is invalid Incandescent
+
+(script-fu:918): scriptfu-WARNING **: 09:09:50.946: script_fu_add_resource_arg declared resource name is invalid Coffee
+GIMP-Warning: Welcome to GIMP 3.0.9!
+
+batch command experienced a calling error:
+Traceback (most recent call last):
+  File "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/python-eval/python-eval.py", line 42, in code_eval
+    exec(code, globals())
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+  File "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py", line 35, in <module>
+    Gimp.quit(True)
+    ~~~~~~~~~^^^^^^
+TypeError: Gimp.quit() takes exactly 0 arguments (1 given)
+
+Stopping at failing batch command [0]: exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py', 'exec'))
+
+(python-eval.py:1263): LibGimp-WARNING **: 09:09:53.524: python-eval.py: gimp_flush(): error: Broken pipe

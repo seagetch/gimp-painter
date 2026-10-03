@@ -1,0 +1,4267 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "started_utc": "2026-10-03T00:09:46.024523+00:00",
+  "finished_utc": "2026-10-03T00:11:24.011279+00:00",
+  "executable_sha256": {
+    "app/tests/filter-quit-fixture": "5ca578c55e9671e1a51ddfef0e5dfba2252e2cb399202ccc4c0bbf1661d5bc0e",
+    "app/gimp-console-3.0": "d72ac7f17951592dd782df9bf9a939b6af1cfe70842d3409b1feeabe6521749f",
+    "app/gimp-painter-filter-worker": "f319eda5bc65aead448a9162faea7bf2cce7a176f4d86b3504da10fb9c5b590c",
+    "plug-ins/common/blinds": "a1664e8d26daa5cfb628815df381c66c7693a310dca18ee628092fe51a292417"
+  },
+  "executable_sha256_after": {
+    "app/tests/filter-quit-fixture": "5ca578c55e9671e1a51ddfef0e5dfba2252e2cb399202ccc4c0bbf1661d5bc0e",
+    "app/gimp-console-3.0": "d72ac7f17951592dd782df9bf9a939b6af1cfe70842d3409b1feeabe6521749f",
+    "app/gimp-painter-filter-worker": "f319eda5bc65aead448a9162faea7bf2cce7a176f4d86b3504da10fb9c5b590c",
+    "plug-ins/common/blinds": "a1664e8d26daa5cfb628815df381c66c7693a310dca18ee628092fe51a292417"
+  },
+  "source_sha256": {
+    "app/tests/test-filter-quit-fixture.cpp": "24ab8602af5501e3aa8fb158672764e3a73c5e8395150062ce92e97b925d2c39",
+    "app/core/gimpfilterlayer.cpp": "bd362d28cedf1fa82fd98df84d7608009aa0a0b155f45684f23fea666badd616",
+    "app/core/gimpfilterexit.cpp": "173415c8a7891b5627ec31797edb2000923fe2da2cd025995666dff5ed156914",
+    "app/core/gimpfilterprocedure.cpp": "5702e021df8b43914b7448067fd9321585285cc4e311e2cfd7773e7d64981a39",
+    "app/painter/filter-process.cpp": "df35b6ad577a798f81af6a1294eaf2c43191cd37f0cd75d329d9e3a9378775c5",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/filter-scheduler.cpp": "34184d48d320e3376e119552704b69c76832f45cf11e198f7a7924e6f22736c6",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-wire.cpp": "224d162b3c38c4fa39ec8dc387f5c85d7a903b0f939ea4ef4fac5601e12d9095",
+    "app/painter/filter-procedure.hpp": "d02dbe562f6e66f135de2379b214afd9fcb7bcb7c924a0647276706ae414500d",
+    "app/core/gimpfilterprocedure.hpp": "c2a2d7f1b1aacb9e52926ad255e7b7a180fa0c8125d74703f57a2eca750df2a9",
+    "app/config/gimppainterfilterconfig.cpp": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+    "tools/check_filter_active_quit.py": "5dc9caba9943eaa5ac6fb9cc5ded8ab2d62f63374b8086449eec125481064910",
+    "tools/in-build-gimp.py": "31967038e80c654d6666323c74fe89a4ca20fe6e2ae541b964156a52ed17b3d8",
+    "app/painter-filter-worker.cpp": "157649b7a6863f9e1bffbd7660cc473343be773696d3385d75a9fba60cc04b65",
+    "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+    "app/core/gimp-batch.c": "68249182124b74b42547f905dcc7f853d337cb095b91570f8f7185ff877a5470",
+    "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+    "app/gimpcoreapp.c": "5af19e7e592da680a22ce678f8282956033d1a0b2af407dd714ab452c0af5e13"
+  },
+  "source_sha256_after": {
+    "app/tests/test-filter-quit-fixture.cpp": "24ab8602af5501e3aa8fb158672764e3a73c5e8395150062ce92e97b925d2c39",
+    "app/core/gimpfilterlayer.cpp": "bd362d28cedf1fa82fd98df84d7608009aa0a0b155f45684f23fea666badd616",
+    "app/core/gimpfilterexit.cpp": "173415c8a7891b5627ec31797edb2000923fe2da2cd025995666dff5ed156914",
+    "app/core/gimpfilterprocedure.cpp": "5702e021df8b43914b7448067fd9321585285cc4e311e2cfd7773e7d64981a39",
+    "app/painter/filter-process.cpp": "df35b6ad577a798f81af6a1294eaf2c43191cd37f0cd75d329d9e3a9378775c5",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/filter-scheduler.cpp": "34184d48d320e3376e119552704b69c76832f45cf11e198f7a7924e6f22736c6",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-wire.cpp": "224d162b3c38c4fa39ec8dc387f5c85d7a903b0f939ea4ef4fac5601e12d9095",
+    "app/painter/filter-procedure.hpp": "d02dbe562f6e66f135de2379b214afd9fcb7bcb7c924a0647276706ae414500d",
+    "app/core/gimpfilterprocedure.hpp": "c2a2d7f1b1aacb9e52926ad255e7b7a180fa0c8125d74703f57a2eca750df2a9",
+    "app/config/gimppainterfilterconfig.cpp": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+    "tools/check_filter_active_quit.py": "5dc9caba9943eaa5ac6fb9cc5ded8ab2d62f63374b8086449eec125481064910",
+    "tools/in-build-gimp.py": "31967038e80c654d6666323c74fe89a4ca20fe6e2ae541b964156a52ed17b3d8",
+    "app/painter-filter-worker.cpp": "157649b7a6863f9e1bffbd7660cc473343be773696d3385d75a9fba60cc04b65",
+    "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+    "app/core/gimp-batch.c": "68249182124b74b42547f905dcc7f853d337cb095b91570f8f7185ff877a5470",
+    "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+    "app/gimpcoreapp.c": "5af19e7e592da680a22ce678f8282956033d1a0b2af407dd714ab452c0af5e13"
+  },
+  "observer_sha256": "5dc9caba9943eaa5ac6fb9cc5ded8ab2d62f63374b8086449eec125481064910",
+  "fixture_command": [
+    "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/tests/filter-quit-fixture",
+    "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures",
+    "4096"
+  ],
+  "fixture_sha256": {
+    "quit-blinds-1.xcf": "1e4af7adedcba4626c55b1b3a750c195b77e8a0b04c89047360a5911b5b4380c",
+    "quit-blinds-2.xcf": "95afc864367ffeaa97b4114064190947de097589a3c0c54287d8cb50862e34c7"
+  },
+  "trials": [
+    {
+      "jobs": 1,
+      "dimension": 4096,
+      "status": "failed",
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "--new-instance",
+        "--no-interface",
+        "--no-data",
+        "--no-fonts",
+        "--no-splash",
+        "--gimprc",
+        "/tmp/active-quit-1-8hbojcb_/gimprc",
+        "--batch-interpreter=python-fu-eval",
+        "-b",
+        "exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py', 'exec'))",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures/quit-blinds-1.xcf"
+      ],
+      "main_pid": 45,
+      "wrapper_pid": 37,
+      "exit_code": -9,
+      "quit_seconds": 4.503534917999787,
+      "total_seconds": 10.661425237000003,
+      "active_helpers_at_quit": [
+        {
+          "pid": 1590,
+          "state": "S",
+          "parent": 45,
+          "group": 1590,
+          "start_ticks": 503055,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+            "--filter-worker-v1",
+            "/tmp/active-quit-1-8hbojcb_/swap/gimp-filter-N6EQW3"
+          ]
+        }
+      ],
+      "native_children_at_quit": [
+        {
+          "pid": 1670,
+          "state": "R",
+          "parent": 1590,
+          "group": 1590,
+          "start_ticks": 503081,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+            "-gimp",
+            "277",
+            "8",
+            "7",
+            "-query",
+            "0"
+          ]
+        }
+      ],
+      "observed_processes": [
+        {
+          "pid": 37,
+          "state": "S",
+          "parent": 2,
+          "group": 37,
+          "start_ticks": 502466,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "/usr/bin/python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+            "--new-instance",
+            "--no-interface",
+            "--no-data",
+            "--no-fonts",
+            "--no-splash",
+            "--gimprc",
+            "/tmp/active-quit-1-8hbojcb_/gimprc",
+            "--batch-interpreter=python-fu-eval",
+            "-b",
+            "exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py', 'exec'))",
+            "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures/quit-blinds-1.xcf"
+          ]
+        },
+        {
+          "pid": 45,
+          "state": "S",
+          "parent": 37,
+          "group": 37,
+          "start_ticks": 502471,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-console-3.0",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-console-3.0",
+            "--new-instance",
+            "--no-interface",
+            "--no-data",
+            "--no-fonts",
+            "--no-splash",
+            "--gimprc",
+            "/tmp/active-quit-1-8hbojcb_/gimprc",
+            "--batch-interpreter=python-fu-eval",
+            "-b",
+            "exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-1/batch.py', 'exec'))",
+            "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures/quit-blinds-1.xcf"
+          ]
+        },
+        {
+          "pid": 100,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502489,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/mail/mail",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/mail/mail",
+            "-gimp",
+            "277",
+            "7",
+            "6",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 106,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502491,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-desktop-link/file-desktop-link",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-desktop-link/file-desktop-link",
+            "-gimp",
+            "277",
+            "8",
+            "7",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 109,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502492,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/warp/warp",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/warp/warp",
+            "-gimp",
+            "277",
+            "9",
+            "8",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 115,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502494,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/wavelet-decompose/wavelet-decompose",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/wavelet-decompose/wavelet-decompose",
+            "-gimp",
+            "277",
+            "10",
+            "9",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 121,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502496,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/web-browser/web-browser",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/web-browser/web-browser",
+            "-gimp",
+            "277",
+            "11",
+            "10",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 126,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502497,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/van-gogh-lic/van-gogh-lic",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/van-gogh-lic/van-gogh-lic",
+            "-gimp",
+            "277",
+            "12",
+            "11",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 132,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502499,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/tile-small/tile-small",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/tile-small/tile-small",
+            "-gimp",
+            "277",
+            "13",
+            "12",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 137,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502501,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/unit-editor/unit-editor",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/unit-editor/unit-editor",
+            "-gimp",
+            "277",
+            "14",
+            "13",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 143,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502503,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/tile/tile",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/tile/tile",
+            "-gimp",
+            "277",
+            "15",
+            "14",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 148,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502504,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sphere-designer/sphere-designer",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sphere-designer/sphere-designer",
+            "-gimp",
+            "277",
+            "16",
+            "15",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 154,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502506,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sample-colorize/sample-colorize",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sample-colorize/sample-colorize",
+            "-gimp",
+            "277",
+            "17",
+            "16",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 159,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502508,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/smooth-palette/smooth-palette",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/smooth-palette/smooth-palette",
+            "-gimp",
+            "277",
+            "18",
+            "17",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 165,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502509,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sparkle/sparkle",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sparkle/sparkle",
+            "-gimp",
+            "277",
+            "19",
+            "18",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 170,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502511,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/procedure-browser/procedure-browser",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/procedure-browser/procedure-browser",
+            "-gimp",
+            "277",
+            "20",
+            "19",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 176,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502513,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/qbist/qbist",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/qbist/qbist",
+            "-gimp",
+            "277",
+            "21",
+            "20",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 181,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502514,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/plugin-browser/plugin-browser",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/plugin-browser/plugin-browser",
+            "-gimp",
+            "277",
+            "22",
+            "21",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 187,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502516,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/nl-filter/nl-filter",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/nl-filter/nl-filter",
+            "-gimp",
+            "277",
+            "23",
+            "22",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 193,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502518,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/jigsaw/jigsaw",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/jigsaw/jigsaw",
+            "-gimp",
+            "277",
+            "24",
+            "23",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 198,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502520,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/hot/hot",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/hot/hot",
+            "-gimp",
+            "277",
+            "25",
+            "24",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 203,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502522,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/guillotine/guillotine",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/guillotine/guillotine",
+            "-gimp",
+            "277",
+            "26",
+            "25",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 207,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502523,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/grid/grid",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/grid/grid",
+            "-gimp",
+            "277",
+            "27",
+            "26",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 238,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502531,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/gradient-map/gradient-map",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/gradient-map/gradient-map",
+            "-gimp",
+            "277",
+            "28",
+            "27",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 242,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502533,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/film/film",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/film/film",
+            "-gimp",
+            "277",
+            "29",
+            "28",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 272,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502541,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-xwd/file-xwd",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-xwd/file-xwd",
+            "-gimp",
+            "277",
+            "30",
+            "29",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 276,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502542,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-xbm/file-xbm",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-xbm/file-xbm",
+            "-gimp",
+            "277",
+            "31",
+            "30",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 282,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502544,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-wbmp/file-wbmp",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-wbmp/file-wbmp",
+            "-gimp",
+            "277",
+            "32",
+            "31",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 285,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502545,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-tga/file-tga",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-tga/file-tga",
+            "-gimp",
+            "277",
+            "33",
+            "32",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 290,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502547,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-svg/file-svg",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-svg/file-svg",
+            "-gimp",
+            "277",
+            "34",
+            "33",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 297,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502549,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-raw-data/file-raw-data",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-raw-data/file-raw-data",
+            "-gimp",
+            "277",
+            "35",
+            "34",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 301,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502551,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-sunras/file-sunras",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-sunras/file-sunras",
+            "-gimp",
+            "277",
+            "36",
+            "35",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 306,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502553,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pnm/file-pnm",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pnm/file-pnm",
+            "-gimp",
+            "277",
+            "37",
+            "36",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 312,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502554,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-psp/file-psp",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-psp/file-psp",
+            "-gimp",
+            "277",
+            "38",
+            "37",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 316,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502556,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-png/file-png",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-png/file-png",
+            "-gimp",
+            "277",
+            "39",
+            "38",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 323,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502559,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pix/file-pix",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pix/file-pix",
+            "-gimp",
+            "277",
+            "40",
+            "39",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 327,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502560,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pcx/file-pcx",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pcx/file-pcx",
+            "-gimp",
+            "277",
+            "41",
+            "40",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 333,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502562,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pdf-load/file-pdf-load",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pdf-load/file-pdf-load",
+            "-gimp",
+            "277",
+            "42",
+            "41",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 341,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502565,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pat/file-pat",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pat/file-pat",
+            "-gimp",
+            "277",
+            "43",
+            "42",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 346,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502567,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-html-table/file-html-table",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-html-table/file-html-table",
+            "-gimp",
+            "277",
+            "44",
+            "43",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 350,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502568,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-header/file-header",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-header/file-header",
+            "-gimp",
+            "277",
+            "45",
+            "44",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 354,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502569,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gih/file-gih",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gih/file-gih",
+            "-gimp",
+            "277",
+            "46",
+            "45",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 359,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502571,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-glob/file-glob",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-glob/file-glob",
+            "-gimp",
+            "277",
+            "47",
+            "46",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 362,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502572,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gif-export/file-gif-export",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gif-export/file-gif-export",
+            "-gimp",
+            "277",
+            "48",
+            "47",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 368,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502574,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gbr/file-gbr",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gbr/file-gbr",
+            "-gimp",
+            "277",
+            "49",
+            "48",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 372,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502576,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gif-load/file-gif-load",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gif-load/file-gif-load",
+            "-gimp",
+            "277",
+            "50",
+            "49",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 376,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502577,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gegl/file-gegl",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gegl/file-gegl",
+            "-gimp",
+            "277",
+            "51",
+            "50",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 380,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502579,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-dicom/file-dicom",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-dicom/file-dicom",
+            "-gimp",
+            "277",
+            "52",
+            "51",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 384,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502580,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-csource/file-csource",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-csource/file-csource",
+            "-gimp",
+            "277",
+            "53",
+            "52",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 388,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502582,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-farbfeld/file-farbfeld",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-farbfeld/file-farbfeld",
+            "-gimp",
+            "277",
+            "54",
+            "53",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 392,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502583,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-compressor/file-compressor",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-compressor/file-compressor",
+            "-gimp",
+            "277",
+            "55",
+            "54",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 396,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502584,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-cel/file-cel",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-cel/file-cel",
+            "-gimp",
+            "277",
+            "56",
+            "55",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 400,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502586,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/destripe/destripe",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/destripe/destripe",
+            "-gimp",
+            "277",
+            "57",
+            "56",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 405,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502587,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/despeckle/despeckle",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/despeckle/despeckle",
+            "-gimp",
+            "277",
+            "58",
+            "57",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 410,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502589,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/depth-merge/depth-merge",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/depth-merge/depth-merge",
+            "-gimp",
+            "277",
+            "59",
+            "58",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 414,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502591,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/decompose/decompose",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/decompose/decompose",
+            "-gimp",
+            "277",
+            "60",
+            "59",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 418,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502592,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/crop-zealous/crop-zealous",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/crop-zealous/crop-zealous",
+            "-gimp",
+            "277",
+            "61",
+            "60",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 425,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502595,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/curve-bend/curve-bend",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/curve-bend/curve-bend",
+            "-gimp",
+            "277",
+            "62",
+            "61",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 430,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502597,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/contrast-retinex/contrast-retinex",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/contrast-retinex/contrast-retinex",
+            "-gimp",
+            "277",
+            "63",
+            "62",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 434,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502599,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/colormap-remap/colormap-remap",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/colormap-remap/colormap-remap",
+            "-gimp",
+            "277",
+            "64",
+            "63",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 438,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502600,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/compose/compose",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/compose/compose",
+            "-gimp",
+            "277",
+            "65",
+            "64",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 444,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502602,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/cml-explorer/cml-explorer",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/cml-explorer/cml-explorer",
+            "-gimp",
+            "277",
+            "66",
+            "65",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 449,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502604,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/checkerboard/checkerboard",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/checkerboard/checkerboard",
+            "-gimp",
+            "277",
+            "67",
+            "66",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 453,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502606,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/busy-dialog/busy-dialog",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/busy-dialog/busy-dialog",
+            "-gimp",
+            "277",
+            "68",
+            "67",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 458,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502608,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/border-average/border-average",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/border-average/border-average",
+            "-gimp",
+            "277",
+            "69",
+            "68",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 485,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502617,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/blinds/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/blinds/blinds",
+            "-gimp",
+            "277",
+            "70",
+            "69",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 490,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502618,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/animation-play/animation-play",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/animation-play/animation-play",
+            "-gimp",
+            "277",
+            "71",
+            "70",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 494,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502620,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/animation-optimize/animation-optimize",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/animation-optimize/animation-optimize",
+            "-gimp",
+            "277",
+            "72",
+            "71",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 498,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502621,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/align-layers/align-layers",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/align-layers/align-layers",
+            "-gimp",
+            "277",
+            "73",
+            "72",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 502,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502623,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/test-file-plug-ins/test-file-plug-ins.py",
+            "-gimp",
+            "277",
+            "74",
+            "73",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 519,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502631,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/test-dialog/test-dialog.py",
+            "-gimp",
+            "277",
+            "75",
+            "74",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 534,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502639,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/spyro-plus/spyro-plus.py",
+            "-gimp",
+            "277",
+            "76",
+            "75",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 558,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502650,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/python-eval/python-eval.py",
+            "-gimp",
+            "277",
+            "77",
+            "76",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 575,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502658,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/palette-to-gradient/palette-to-gradient.py",
+            "-gimp",
+            "277",
+            "78",
+            "77",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 590,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502667,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/palette-sort/palette-sort.py",
+            "-gimp",
+            "277",
+            "79",
+            "78",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 606,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502675,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/palette-offset/palette-offset.py",
+            "-gimp",
+            "277",
+            "80",
+            "79",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 621,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502682,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/histogram-export/histogram-export.py",
+            "-gimp",
+            "277",
+            "81",
+            "80",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 641,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502692,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/gradients-save-as-css/gradients-save-as-css.py",
+            "-gimp",
+            "277",
+            "82",
+            "81",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 655,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502700,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/foggify/foggify.py",
+            "-gimp",
+            "277",
+            "83",
+            "82",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 691,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502714,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/file-openraster/file-openraster.py",
+            "-gimp",
+            "277",
+            "84",
+            "83",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 707,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502722,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/colorxhtml/colorxhtml.py",
+            "-gimp",
+            "277",
+            "85",
+            "84",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 722,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502731,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/python-console/python-console.py",
+            "-gimp",
+            "277",
+            "86",
+            "85",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 743,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502742,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/selection-to-path/selection-to-path",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/selection-to-path/selection-to-path",
+            "-gimp",
+            "277",
+            "87",
+            "86",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 749,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502744,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu",
+            "-gimp",
+            "277",
+            "88",
+            "87",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 753,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502746,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/screenshot/screenshot",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/screenshot/screenshot",
+            "-gimp",
+            "277",
+            "89",
+            "88",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 757,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502748,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/print/print",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/print/print",
+            "-gimp",
+            "277",
+            "90",
+            "89",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 761,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502750,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/pagecurl/pagecurl",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/pagecurl/pagecurl",
+            "-gimp",
+            "277",
+            "91",
+            "90",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 766,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502751,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/map-object/map-object",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/map-object/map-object",
+            "-gimp",
+            "277",
+            "92",
+            "91",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 793,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502761,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/lighting/lighting",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/lighting/lighting",
+            "-gimp",
+            "277",
+            "93",
+            "92",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 819,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502771,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/imagemap/imagemap",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/imagemap/imagemap",
+            "-gimp",
+            "277",
+            "94",
+            "93",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 824,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502773,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/ifs-compose/ifs-compose",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/ifs-compose/ifs-compose",
+            "-gimp",
+            "277",
+            "95",
+            "94",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 829,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502774,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/help/help",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/help/help",
+            "-gimp",
+            "277",
+            "96",
+            "95",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 831,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502776,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gradient-flare/gradient-flare",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gradient-flare/gradient-flare",
+            "-gimp",
+            "277",
+            "97",
+            "96",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 836,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502777,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gimpressionist/gimpressionist",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gimpressionist/gimpressionist",
+            "-gimp",
+            "277",
+            "98",
+            "97",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 841,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502779,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gfig/gfig",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gfig/gfig",
+            "-gimp",
+            "277",
+            "99",
+            "98",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 848,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502783,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/flame/flame",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/flame/flame",
+            "-gimp",
+            "277",
+            "101",
+            "100",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 852,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502784,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-tiff/file-tiff",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-tiff/file-tiff",
+            "-gimp",
+            "277",
+            "102",
+            "101",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 856,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502786,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-sgi/file-sgi",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-sgi/file-sgi",
+            "-gimp",
+            "277",
+            "103",
+            "102",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 860,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502788,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-psd/file-psd",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-psd/file-psd",
+            "-gimp",
+            "277",
+            "104",
+            "103",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 864,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502790,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-jpeg/file-jpeg",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-jpeg/file-jpeg",
+            "-gimp",
+            "277",
+            "105",
+            "104",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 868,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502791,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-ico/file-ico",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-ico/file-ico",
+            "-gimp",
+            "277",
+            "106",
+            "105",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 872,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502793,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-icns/file-icns",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-icns/file-icns",
+            "-gimp",
+            "277",
+            "107",
+            "106",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 877,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502795,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-fli/file-fli",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-fli/file-fli",
+            "-gimp",
+            "277",
+            "108",
+            "107",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 883,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502798,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-dds/file-dds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-dds/file-dds",
+            "-gimp",
+            "277",
+            "110",
+            "109",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 887,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502799,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-bmp/file-bmp",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-bmp/file-bmp",
+            "-gimp",
+            "277",
+            "111",
+            "110",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 891,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502801,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu/gimp/3.0/extensions/org.gimp.extension.goat-exercises/goat-exercise-py3.py",
+            "-gimp",
+            "277",
+            "112",
+            "111",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 910,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502812,
+          "exe": "/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu/gimp/3.0/extensions/org.gimp.extension.goat-exercises/goat-exercise-c",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu/gimp/3.0/extensions/org.gimp.extension.goat-exercises/goat-exercise-c",
+            "-gimp",
+            "277",
+            "113",
+            "112",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 914,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502813,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/mail/mail",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/mail/mail",
+            "-gimp",
+            "277",
+            "114",
+            "113",
+            "-init",
+            "1"
+          ]
+        },
+        {
+          "pid": 918,
+          "state": "S",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502816,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu",
+            "-gimp",
+            "277",
+            "115",
+            "114",
+            "-run",
+            "1"
+          ]
+        },
+        {
+          "pid": 1263,
+          "state": "R",
+          "parent": 45,
+          "group": 37,
+          "start_ticks": 502937,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/python-eval/python-eval.py",
+            "-gimp",
+            "277",
+            "9",
+            "8",
+            "-run",
+            "1"
+          ]
+        },
+        {
+          "pid": 1590,
+          "state": "S",
+          "parent": 45,
+          "group": 1590,
+          "start_ticks": 503055,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+            "--filter-worker-v1",
+            "/tmp/active-quit-1-8hbojcb_/swap/gimp-filter-N6EQW3"
+          ]
+        },
+        {
+          "pid": 1670,
+          "state": "R",
+          "parent": 1590,
+          "group": 1590,
+          "start_ticks": 503081,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+            "-gimp",
+            "277",
+            "8",
+            "7",
+            "-query",
+            "0"
+          ]
+        },
+        {
+          "pid": 1840,
+          "state": "S",
+          "parent": 1590,
+          "group": 1590,
+          "start_ticks": 503143,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+            "-gimp",
+            "277",
+            "11",
+            "9",
+            "-run",
+            "0"
+          ]
+        }
+      ],
+      "observed_groups": [
+        37,
+        1590
+      ],
+      "survivors": [],
+      "surviving_groups": [
+        37
+      ],
+      "private_profiles": [
+        "/tmp/active-quit-1-8hbojcb_/swap/gimp-filter-N6EQW3"
+      ],
+      "leftover_profiles": [],
+      "events_file": "jobs-1/events.json",
+      "console_log": "jobs-1/console.log",
+      "console_log_sha256": "dd34de91e319f6a902817c7f4250a90b63c65d4e25b9684f91220f31a2a0cf9c",
+      "batch_source_sha256": "21418eda31978f77a9241800f99f7f3970c2c7858bf4ef75c5c083d67af16f8c",
+      "errors": [
+        "Quit did not finish before the 5-second fallback boundary",
+        "Console/wrapper exit status -9",
+        "Measured Quit exceeded bound or was not measured",
+        "Console diagnostic: batch command experienced",
+        "Console diagnostic: Traceback (most recent call last)",
+        "Observed child processes or their process groups survived Quit"
+      ]
+    },
+    {
+      "jobs": 2,
+      "dimension": 4096,
+      "status": "failed",
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "--new-instance",
+        "--no-interface",
+        "--no-data",
+        "--no-fonts",
+        "--no-splash",
+        "--gimprc",
+        "/tmp/active-quit-2-5bq6osqj/gimprc",
+        "--batch-interpreter=python-fu-eval",
+        "-b",
+        "exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-2/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-2/batch.py', 'exec'))",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures/quit-blinds-1.xcf",
+        "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures/quit-blinds-2.xcf"
+      ],
+      "main_pid": 2956,
+      "wrapper_pid": 2949,
+      "exit_code": -9,
+      "quit_seconds": 4.4996792929996445,
+      "total_seconds": 11.92593698499968,
+      "active_helpers_at_quit": [
+        {
+          "pid": 4890,
+          "state": "S",
+          "parent": 2956,
+          "group": 4890,
+          "start_ticks": 504251,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+            "--filter-worker-v1",
+            "/tmp/active-quit-2-5bq6osqj/swap/gimp-filter-MXKPW3"
+          ]
+        },
+        {
+          "pid": 4892,
+          "state": "S",
+          "parent": 2956,
+          "group": 4892,
+          "start_ticks": 504252,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+            "--filter-worker-v1",
+            "/tmp/active-quit-2-5bq6osqj/swap/gimp-filter-1JUPW3"
+          ]
+        }
+      ],
+      "native_children_at_quit": [
+        {
+          "pid": 4967,
+          "state": "R",
+          "parent": 4890,
+          "group": 4890,
+          "start_ticks": 504274,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+            "-gimp",
+            "277",
+            "8",
+            "7",
+            "-query",
+            "0"
+          ]
+        },
+        {
+          "pid": 4969,
+          "state": "R",
+          "parent": 4892,
+          "group": 4892,
+          "start_ticks": 504274,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+            "-gimp",
+            "277",
+            "8",
+            "7",
+            "-query",
+            "0"
+          ]
+        }
+      ],
+      "observed_processes": [
+        {
+          "pid": 2949,
+          "state": "S",
+          "parent": 2,
+          "group": 2949,
+          "start_ticks": 503533,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "/usr/bin/python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+            "--new-instance",
+            "--no-interface",
+            "--no-data",
+            "--no-fonts",
+            "--no-splash",
+            "--gimprc",
+            "/tmp/active-quit-2-5bq6osqj/gimprc",
+            "--batch-interpreter=python-fu-eval",
+            "-b",
+            "exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-2/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-2/batch.py', 'exec'))",
+            "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures/quit-blinds-1.xcf",
+            "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures/quit-blinds-2.xcf"
+          ]
+        },
+        {
+          "pid": 2956,
+          "state": "S",
+          "parent": 2949,
+          "group": 2949,
+          "start_ticks": 503537,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-console-3.0",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-console-3.0",
+            "--new-instance",
+            "--no-interface",
+            "--no-data",
+            "--no-fonts",
+            "--no-splash",
+            "--gimprc",
+            "/tmp/active-quit-2-5bq6osqj/gimprc",
+            "--batch-interpreter=python-fu-eval",
+            "-b",
+            "exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-2/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/jobs-2/batch.py', 'exec'))",
+            "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures/quit-blinds-1.xcf",
+            "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit-after-batch-fix/fixtures/quit-blinds-2.xcf"
+          ]
+        },
+        {
+          "pid": 3008,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503554,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/mail/mail",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/mail/mail",
+            "-gimp",
+            "277",
+            "7",
+            "6",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3015,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503556,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-desktop-link/file-desktop-link",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-desktop-link/file-desktop-link",
+            "-gimp",
+            "277",
+            "8",
+            "7",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3019,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503557,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/warp/warp",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/warp/warp",
+            "-gimp",
+            "277",
+            "9",
+            "8",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3024,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503559,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/wavelet-decompose/wavelet-decompose",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/wavelet-decompose/wavelet-decompose",
+            "-gimp",
+            "277",
+            "10",
+            "9",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3030,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503561,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/web-browser/web-browser",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/web-browser/web-browser",
+            "-gimp",
+            "277",
+            "11",
+            "10",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3036,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503563,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/van-gogh-lic/van-gogh-lic",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/van-gogh-lic/van-gogh-lic",
+            "-gimp",
+            "277",
+            "12",
+            "11",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3041,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503564,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/tile-small/tile-small",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/tile-small/tile-small",
+            "-gimp",
+            "277",
+            "13",
+            "12",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3046,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503566,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/unit-editor/unit-editor",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/unit-editor/unit-editor",
+            "-gimp",
+            "277",
+            "14",
+            "13",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3052,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503568,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/tile/tile",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/tile/tile",
+            "-gimp",
+            "277",
+            "15",
+            "14",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3058,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503570,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sphere-designer/sphere-designer",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sphere-designer/sphere-designer",
+            "-gimp",
+            "277",
+            "16",
+            "15",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3063,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503572,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sample-colorize/sample-colorize",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sample-colorize/sample-colorize",
+            "-gimp",
+            "277",
+            "17",
+            "16",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3070,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503574,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/smooth-palette/smooth-palette",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/smooth-palette/smooth-palette",
+            "-gimp",
+            "277",
+            "18",
+            "17",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3074,
+          "state": "S",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503575,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sparkle/sparkle",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/sparkle/sparkle",
+            "-gimp",
+            "277",
+            "19",
+            "18",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3081,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503577,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/procedure-browser/procedure-browser",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/procedure-browser/procedure-browser",
+            "-gimp",
+            "277",
+            "20",
+            "19",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3085,
+          "state": "S",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503579,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/qbist/qbist",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/qbist/qbist",
+            "-gimp",
+            "277",
+            "21",
+            "20",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3092,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503581,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/plugin-browser/plugin-browser",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/plugin-browser/plugin-browser",
+            "-gimp",
+            "277",
+            "22",
+            "21",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3096,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503582,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/nl-filter/nl-filter",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/nl-filter/nl-filter",
+            "-gimp",
+            "277",
+            "23",
+            "22",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3102,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503584,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/jigsaw/jigsaw",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/jigsaw/jigsaw",
+            "-gimp",
+            "277",
+            "24",
+            "23",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3107,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503585,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/hot/hot",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/hot/hot",
+            "-gimp",
+            "277",
+            "25",
+            "24",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3112,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503587,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/guillotine/guillotine",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/guillotine/guillotine",
+            "-gimp",
+            "277",
+            "26",
+            "25",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3116,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503588,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/grid/grid",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/grid/grid",
+            "-gimp",
+            "277",
+            "27",
+            "26",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3148,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503597,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/gradient-map/gradient-map",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/gradient-map/gradient-map",
+            "-gimp",
+            "277",
+            "28",
+            "27",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3152,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503599,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/film/film",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/film/film",
+            "-gimp",
+            "277",
+            "29",
+            "28",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3184,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503607,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-xwd/file-xwd",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-xwd/file-xwd",
+            "-gimp",
+            "277",
+            "30",
+            "29",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3188,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503609,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-xbm/file-xbm",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-xbm/file-xbm",
+            "-gimp",
+            "277",
+            "31",
+            "30",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3194,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503611,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-wbmp/file-wbmp",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-wbmp/file-wbmp",
+            "-gimp",
+            "277",
+            "32",
+            "31",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3197,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503612,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-tga/file-tga",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-tga/file-tga",
+            "-gimp",
+            "277",
+            "33",
+            "32",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3203,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503613,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-svg/file-svg",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-svg/file-svg",
+            "-gimp",
+            "277",
+            "34",
+            "33",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3208,
+          "state": "S",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503615,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-raw-data/file-raw-data",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-raw-data/file-raw-data",
+            "-gimp",
+            "277",
+            "35",
+            "34",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3214,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503617,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-sunras/file-sunras",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-sunras/file-sunras",
+            "-gimp",
+            "277",
+            "36",
+            "35",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3219,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503619,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pnm/file-pnm",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pnm/file-pnm",
+            "-gimp",
+            "277",
+            "37",
+            "36",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3224,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503621,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-psp/file-psp",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-psp/file-psp",
+            "-gimp",
+            "277",
+            "38",
+            "37",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3228,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503623,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-png/file-png",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-png/file-png",
+            "-gimp",
+            "277",
+            "39",
+            "38",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3234,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503625,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pix/file-pix",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pix/file-pix",
+            "-gimp",
+            "277",
+            "40",
+            "39",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3237,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503626,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pcx/file-pcx",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pcx/file-pcx",
+            "-gimp",
+            "277",
+            "41",
+            "40",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3243,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503629,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pdf-load/file-pdf-load",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pdf-load/file-pdf-load",
+            "-gimp",
+            "277",
+            "42",
+            "41",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3252,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503632,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pat/file-pat",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-pat/file-pat",
+            "-gimp",
+            "277",
+            "43",
+            "42",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3257,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503634,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-html-table/file-html-table",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-html-table/file-html-table",
+            "-gimp",
+            "277",
+            "44",
+            "43",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3265,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503637,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gih/file-gih",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gih/file-gih",
+            "-gimp",
+            "277",
+            "46",
+            "45",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3269,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503639,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-glob/file-glob",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-glob/file-glob",
+            "-gimp",
+            "277",
+            "47",
+            "46",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3273,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503640,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gif-export/file-gif-export",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gif-export/file-gif-export",
+            "-gimp",
+            "277",
+            "48",
+            "47",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3277,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503642,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gbr/file-gbr",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gbr/file-gbr",
+            "-gimp",
+            "277",
+            "49",
+            "48",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3283,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503643,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gif-load/file-gif-load",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gif-load/file-gif-load",
+            "-gimp",
+            "277",
+            "50",
+            "49",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3286,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503645,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gegl/file-gegl",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-gegl/file-gegl",
+            "-gimp",
+            "277",
+            "51",
+            "50",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3289,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503646,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-dicom/file-dicom",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-dicom/file-dicom",
+            "-gimp",
+            "277",
+            "52",
+            "51",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3293,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503647,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-csource/file-csource",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-csource/file-csource",
+            "-gimp",
+            "277",
+            "53",
+            "52",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3297,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503649,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-farbfeld/file-farbfeld",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-farbfeld/file-farbfeld",
+            "-gimp",
+            "277",
+            "54",
+            "53",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3301,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503650,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-compressor/file-compressor",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-compressor/file-compressor",
+            "-gimp",
+            "277",
+            "55",
+            "54",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3305,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503651,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-cel/file-cel",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/file-cel/file-cel",
+            "-gimp",
+            "277",
+            "56",
+            "55",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3310,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503653,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/destripe/destripe",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/destripe/destripe",
+            "-gimp",
+            "277",
+            "57",
+            "56",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3315,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503654,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/despeckle/despeckle",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/despeckle/despeckle",
+            "-gimp",
+            "277",
+            "58",
+            "57",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3319,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503656,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/depth-merge/depth-merge",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/depth-merge/depth-merge",
+            "-gimp",
+            "277",
+            "59",
+            "58",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3323,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503658,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/decompose/decompose",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/decompose/decompose",
+            "-gimp",
+            "277",
+            "60",
+            "59",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3328,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503659,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/crop-zealous/crop-zealous",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/crop-zealous/crop-zealous",
+            "-gimp",
+            "277",
+            "61",
+            "60",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3335,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503663,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/curve-bend/curve-bend",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/curve-bend/curve-bend",
+            "-gimp",
+            "277",
+            "62",
+            "61",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3340,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503664,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/contrast-retinex/contrast-retinex",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/contrast-retinex/contrast-retinex",
+            "-gimp",
+            "277",
+            "63",
+            "62",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3345,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503666,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/colormap-remap/colormap-remap",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/colormap-remap/colormap-remap",
+            "-gimp",
+            "277",
+            "64",
+            "63",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3349,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503668,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/compose/compose",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/compose/compose",
+            "-gimp",
+            "277",
+            "65",
+            "64",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3353,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503669,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/cml-explorer/cml-explorer",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/cml-explorer/cml-explorer",
+            "-gimp",
+            "277",
+            "66",
+            "65",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3358,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503671,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/checkerboard/checkerboard",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/checkerboard/checkerboard",
+            "-gimp",
+            "277",
+            "67",
+            "66",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3363,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503673,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/busy-dialog/busy-dialog",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/busy-dialog/busy-dialog",
+            "-gimp",
+            "277",
+            "68",
+            "67",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3367,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503675,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/border-average/border-average",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/border-average/border-average",
+            "-gimp",
+            "277",
+            "69",
+            "68",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3393,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503684,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/blinds/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/blinds/blinds",
+            "-gimp",
+            "277",
+            "70",
+            "69",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3397,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503686,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/animation-play/animation-play",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/animation-play/animation-play",
+            "-gimp",
+            "277",
+            "71",
+            "70",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3402,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503687,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/animation-optimize/animation-optimize",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/animation-optimize/animation-optimize",
+            "-gimp",
+            "277",
+            "72",
+            "71",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3405,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503688,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/align-layers/align-layers",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/test-plug-ins/align-layers/align-layers",
+            "-gimp",
+            "277",
+            "73",
+            "72",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3409,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503690,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/test-file-plug-ins/test-file-plug-ins.py",
+            "-gimp",
+            "277",
+            "74",
+            "73",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3425,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503698,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/test-dialog/test-dialog.py",
+            "-gimp",
+            "277",
+            "75",
+            "74",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3441,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503705,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/spyro-plus/spyro-plus.py",
+            "-gimp",
+            "277",
+            "76",
+            "75",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3464,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503717,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/python-eval/python-eval.py",
+            "-gimp",
+            "277",
+            "77",
+            "76",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3479,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503724,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/palette-to-gradient/palette-to-gradient.py",
+            "-gimp",
+            "277",
+            "78",
+            "77",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3495,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503732,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/palette-sort/palette-sort.py",
+            "-gimp",
+            "277",
+            "79",
+            "78",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3512,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503740,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/palette-offset/palette-offset.py",
+            "-gimp",
+            "277",
+            "80",
+            "79",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3529,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503748,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/histogram-export/histogram-export.py",
+            "-gimp",
+            "277",
+            "81",
+            "80",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3548,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503758,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/gradients-save-as-css/gradients-save-as-css.py",
+            "-gimp",
+            "277",
+            "82",
+            "81",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3564,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503766,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/foggify/foggify.py",
+            "-gimp",
+            "277",
+            "83",
+            "82",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3598,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503778,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/file-openraster/file-openraster.py",
+            "-gimp",
+            "277",
+            "84",
+            "83",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3614,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503786,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/colorxhtml/colorxhtml.py",
+            "-gimp",
+            "277",
+            "85",
+            "84",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3629,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503793,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/python-console/python-console.py",
+            "-gimp",
+            "277",
+            "86",
+            "85",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3652,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503806,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu",
+            "-gimp",
+            "277",
+            "88",
+            "87",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3656,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503808,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/screenshot/screenshot",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/screenshot/screenshot",
+            "-gimp",
+            "277",
+            "89",
+            "88",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3660,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503809,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/print/print",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/print/print",
+            "-gimp",
+            "277",
+            "90",
+            "89",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3665,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503811,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/pagecurl/pagecurl",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/pagecurl/pagecurl",
+            "-gimp",
+            "277",
+            "91",
+            "90",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3670,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503813,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/map-object/map-object",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/map-object/map-object",
+            "-gimp",
+            "277",
+            "92",
+            "91",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3695,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503822,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/lighting/lighting",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/lighting/lighting",
+            "-gimp",
+            "277",
+            "93",
+            "92",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3722,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503831,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/imagemap/imagemap",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/imagemap/imagemap",
+            "-gimp",
+            "277",
+            "94",
+            "93",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3726,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503833,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/ifs-compose/ifs-compose",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/ifs-compose/ifs-compose",
+            "-gimp",
+            "277",
+            "95",
+            "94",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3731,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503835,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/help/help",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/help/help",
+            "-gimp",
+            "277",
+            "96",
+            "95",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3734,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503836,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gradient-flare/gradient-flare",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gradient-flare/gradient-flare",
+            "-gimp",
+            "277",
+            "97",
+            "96",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3738,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503838,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gimpressionist/gimpressionist",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gimpressionist/gimpressionist",
+            "-gimp",
+            "277",
+            "98",
+            "97",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3742,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503839,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gfig/gfig",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/gfig/gfig",
+            "-gimp",
+            "277",
+            "99",
+            "98",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3746,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503841,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/fractal-explorer/fractal-explorer",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/fractal-explorer/fractal-explorer",
+            "-gimp",
+            "277",
+            "100",
+            "99",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3750,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503843,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/flame/flame",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/flame/flame",
+            "-gimp",
+            "277",
+            "101",
+            "100",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3754,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503845,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-tiff/file-tiff",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-tiff/file-tiff",
+            "-gimp",
+            "277",
+            "102",
+            "101",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3759,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503846,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-sgi/file-sgi",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-sgi/file-sgi",
+            "-gimp",
+            "277",
+            "103",
+            "102",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3763,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503848,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-psd/file-psd",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-psd/file-psd",
+            "-gimp",
+            "277",
+            "104",
+            "103",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3767,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503850,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-jpeg/file-jpeg",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-jpeg/file-jpeg",
+            "-gimp",
+            "277",
+            "105",
+            "104",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3771,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503852,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-ico/file-ico",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-ico/file-ico",
+            "-gimp",
+            "277",
+            "106",
+            "105",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3776,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503853,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-icns/file-icns",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-icns/file-icns",
+            "-gimp",
+            "277",
+            "107",
+            "106",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3780,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503855,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-fli/file-fli",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-fli/file-fli",
+            "-gimp",
+            "277",
+            "108",
+            "107",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3786,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503858,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-dds/file-dds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-dds/file-dds",
+            "-gimp",
+            "277",
+            "110",
+            "109",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3790,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503860,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-bmp/file-bmp",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/file-bmp/file-bmp",
+            "-gimp",
+            "277",
+            "111",
+            "110",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3794,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503861,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/.build-prefix-debian13/lib/x86_64-linux-gnu/gimp/3.0/extensions/org.gimp.extension.goat-exercises/goat-exercise-py3.py",
+            "-gimp",
+            "277",
+            "112",
+            "111",
+            "-query",
+            "1"
+          ]
+        },
+        {
+          "pid": 3818,
+          "state": "S",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 503874,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/script-fu/script-fu",
+            "-gimp",
+            "277",
+            "115",
+            "114",
+            "-run",
+            "1"
+          ]
+        },
+        {
+          "pid": 4247,
+          "state": "R",
+          "parent": 2956,
+          "group": 2949,
+          "start_ticks": 504026,
+          "exe": "/usr/bin/python3.13",
+          "argv": [
+            "python3",
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/python-eval/python-eval.py",
+            "-gimp",
+            "277",
+            "10",
+            "9",
+            "-run",
+            "1"
+          ]
+        },
+        {
+          "pid": 4890,
+          "state": "R",
+          "parent": 2956,
+          "group": 4890,
+          "start_ticks": 504251,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+            "--filter-worker-v1",
+            "/tmp/active-quit-2-5bq6osqj/swap/gimp-filter-MXKPW3"
+          ]
+        },
+        {
+          "pid": 4892,
+          "state": "R",
+          "parent": 2956,
+          "group": 4892,
+          "start_ticks": 504252,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-painter-filter-worker",
+            "--filter-worker-v1",
+            "/tmp/active-quit-2-5bq6osqj/swap/gimp-filter-1JUPW3"
+          ]
+        },
+        {
+          "pid": 4967,
+          "state": "R",
+          "parent": 4890,
+          "group": 4890,
+          "start_ticks": 504274,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+            "-gimp",
+            "277",
+            "8",
+            "7",
+            "-query",
+            "0"
+          ]
+        },
+        {
+          "pid": 4969,
+          "state": "R",
+          "parent": 4892,
+          "group": 4892,
+          "start_ticks": 504274,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+            "-gimp",
+            "277",
+            "8",
+            "7",
+            "-query",
+            "0"
+          ]
+        },
+        {
+          "pid": 5105,
+          "state": "S",
+          "parent": 4892,
+          "group": 4892,
+          "start_ticks": 504324,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+            "-gimp",
+            "277",
+            "11",
+            "9",
+            "-run",
+            "0"
+          ]
+        },
+        {
+          "pid": 5112,
+          "state": "R",
+          "parent": 4890,
+          "group": 4890,
+          "start_ticks": 504325,
+          "exe": "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+          "argv": [
+            "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/common/blinds",
+            "-gimp",
+            "277",
+            "11",
+            "9",
+            "-run",
+            "0"
+          ]
+        }
+      ],
+      "observed_groups": [
+        2949,
+        4890,
+        4892
+      ],
+      "survivors": [],
+      "surviving_groups": [
+        2949
+      ],
+      "private_profiles": [
+        "/tmp/active-quit-2-5bq6osqj/swap/gimp-filter-1JUPW3",
+        "/tmp/active-quit-2-5bq6osqj/swap/gimp-filter-MXKPW3"
+      ],
+      "leftover_profiles": [],
+      "events_file": "jobs-2/events.json",
+      "console_log": "jobs-2/console.log",
+      "console_log_sha256": "6a790f5848b1300d6b7fab0640c88a3f6afc2fb8937439a0bc0dd69196df9679",
+      "batch_source_sha256": "1baa6aa3c9e596242476e8c47d17b89c3e63d1737eef97c82a62b982e7134c8b",
+      "errors": [
+        "Quit did not finish before the 5-second fallback boundary",
+        "Console/wrapper exit status -9",
+        "Console diagnostic: batch command experienced",
+        "Console diagnostic: Traceback (most recent call last)",
+        "Observed child processes or their process groups survived Quit"
+      ]
+    }
+  ],
+  "batch_controls": [
+    {
+      "name": "explicit-quit-no-job",
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "--new-instance",
+        "--no-interface",
+        "--no-data",
+        "--no-fonts",
+        "--no-splash",
+        "--batch-interpreter=python-fu-eval",
+        "-b",
+        "from gi.repository import Gimp; print('QUIT_EMPTY_CONTROL_READY', flush=True); Gimp.quit(True)"
+      ],
+      "expected_exit_code": 0,
+      "actual_exit_code": -9,
+      "seconds": 60.001687820999905,
+      "timed_out": true,
+      "log_sha256": "a3f6ad87a687250aa98d99cca4d4fc21a06b4ef33f09b3880b2abb852f524c34",
+      "fallback": false,
+      "explicit_quit_ready": true
+    },
+    {
+      "name": "successful-batch",
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "--new-instance",
+        "--no-interface",
+        "--no-data",
+        "--no-fonts",
+        "--no-splash",
+        "--batch-interpreter=python-fu-eval",
+        "-b",
+        "print('QUIT_SUCCESSFUL_BATCH_CONTROL', flush=True)",
+        "--quit"
+      ],
+      "expected_exit_code": 0,
+      "actual_exit_code": 0,
+      "seconds": 4.630649593999806,
+      "timed_out": false,
+      "log_sha256": "1d6e3a4bf90298bb9838355c9034275412d8e01b9756d504072d76b2d932c72f",
+      "fallback": false,
+      "explicit_quit_ready": true
+    },
+    {
+      "name": "failed-batch",
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "--new-instance",
+        "--no-interface",
+        "--no-data",
+        "--no-fonts",
+        "--no-splash",
+        "--batch-interpreter=python-fu-eval",
+        "-b",
+        "raise RuntimeError('QUIT_EXPECTED_BATCH_FAILURE')",
+        "--quit"
+      ],
+      "expected_exit_code": 64,
+      "actual_exit_code": 64,
+      "seconds": 4.725961942999675,
+      "timed_out": false,
+      "log_sha256": "d33efcc9bb7c04c1bdd0f5c63443816ab148e66e99f025ea932b5f2f0d9d9698",
+      "fallback": false,
+      "explicit_quit_ready": true
+    },
+    {
+      "name": "missing-interpreter",
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter/tools/in-build-gimp.py",
+        "--new-instance",
+        "--no-interface",
+        "--no-data",
+        "--no-fonts",
+        "--no-splash",
+        "--batch-interpreter=gimp-painter-nonexistent-interpreter",
+        "-b",
+        "no-op",
+        "--quit"
+      ],
+      "expected_exit_code": 69,
+      "actual_exit_code": 69,
+      "seconds": 4.535394532999817,
+      "timed_out": false,
+      "log_sha256": "0e65f96220fc5ddc00452f3c664f311d483aa0d28462aa1c0b5668cc5276cfc3",
+      "fallback": false,
+      "explicit_quit_ready": true
+    }
+  ],
+  "errors": [
+    "jobs-1: Quit did not finish before the 5-second fallback boundary",
+    "jobs-1: Console/wrapper exit status -9",
+    "jobs-1: Measured Quit exceeded bound or was not measured",
+    "jobs-1: Console diagnostic: batch command experienced",
+    "jobs-1: Console diagnostic: Traceback (most recent call last)",
+    "jobs-1: Observed child processes or their process groups survived Quit",
+    "jobs-2: Quit did not finish before the 5-second fallback boundary",
+    "jobs-2: Console/wrapper exit status -9",
+    "jobs-2: Console diagnostic: batch command experienced",
+    "jobs-2: Console diagnostic: Traceback (most recent call last)",
+    "jobs-2: Observed child processes or their process groups survived Quit",
+    "Batch control failed: explicit-quit-no-job expected 0, got -9"
+  ]
+}

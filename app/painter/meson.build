@@ -12,6 +12,9 @@ libapppainter = static_library('apppainter',
   'gimp-painter-binding.cpp',
   'binding-store.cpp',
   'filter-scheduler.cpp',
+  'filter-wire.cpp',
+  'filter-process.cpp',
+  'filter-lifetime.cpp',
   'filter-raster.cpp',
   'filter-spool.cpp',
   'filter-raster-kernels.cpp',
@@ -52,11 +55,18 @@ test('painter-foundation', painter_foundation_test,
 )
 
 # The feature scheduler and exact legacy-edge executor own no GIMP objects.
-foreach feature : ['filter-scheduler', 'filter-edge', 'filter-gauss', 'filter-gray', 'filter-gauss-alias', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels', 'filter-native-kernels']
+foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-edge', 'filter-gauss', 'filter-gray', 'filter-gauss-alias', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels', 'filter-native-kernels']
+  feature_cpp_args = painter_cpp_args
+  feature_link_args = []
+  if feature == 'filter-process' and host_machine.system() == 'linux'
+    feature_cpp_args += ['-DFILTER_PROCESS_WRAP_REAPER']
+    feature_link_args += ['-Wl,--wrap=waitid', '-Wl,--wrap=kill']
+  endif
   feature_test = executable('painter-' + feature,
     'tests/test-' + feature + '.cpp',
     dependencies: [painter_dep, painter_threads],
-    cpp_args: painter_cpp_args,
+    cpp_args: feature_cpp_args,
+    link_args: feature_link_args,
     override_options: ['cpp_std=c++14'],
   )
   feature_args = []

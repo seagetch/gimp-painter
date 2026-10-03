@@ -1,0 +1,25 @@
+INFO: temporary GIMP configuration directory: /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/.GIMP3-build-config-gb5zb18b
+RUNNING: /workspace/scratch/5b5281e79681/gimp-painter/build-debian13/app/gimp-console-3.0 --new-instance --no-interface --no-data --no-fonts --no-splash --gimprc /tmp/active-quit-2-py_8zyz4/gimprc --batch-interpreter=python-fu-eval -b exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-2/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-2/batch.py', 'exec')) /workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/fixtures/quit-blinds-1.xcf /workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/fixtures/quit-blinds-2.xcf
+Failed to parse tag cache: No such file or directory
+
+(script-fu:394): scriptfu-WARNING **: 08:57:51.182: script_fu_add_resource_arg declared resource name is invalid Default
+
+(script-fu:394): scriptfu-WARNING **: 08:57:51.185: script_fu_add_resource_arg declared resource name is invalid Incandescent
+
+(script-fu:394): scriptfu-WARNING **: 08:57:51.188: script_fu_add_resource_arg declared resource name is invalid Coffee
+GIMP-Warning: Welcome to GIMP 3.0.9!
+
+batch command experienced a calling error:
+Traceback (most recent call last):
+  File "/workspace/scratch/5b5281e79681/gimp-painter/build-debian13/plug-ins/python/python-eval/python-eval.py", line 42, in code_eval
+    exec(code, globals())
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+  File "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-2/batch.py", line 33, in <module>
+    await_file('/tmp/active-quit-2-py_8zyz4/quit')
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-2/batch.py", line 14, in await_file
+    raise RuntimeError("External active Quit observer did not authorize next step")
+RuntimeError: External active Quit observer did not authorize next step
+
+Stopping at failing batch command [0]: exec(compile(open('/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-2/batch.py').read(), '/workspace/scratch/5b5281e79681/gimp-painter/migration/tests/filter-active-quit/jobs-2/batch.py', 'exec'))

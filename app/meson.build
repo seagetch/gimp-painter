@@ -279,3 +279,27 @@ if enable_default_bin
     endif
   endif
 endif
+
+# Isolated allowlisted Filter PDB host. No user-selected executable or script.
+painter_filter_worker = executable('gimp-painter-filter-worker',
+  'painter-filter-worker.cpp',
+  cpp_args: painter_cpp_args,
+  dependencies: libapp_dep,
+  link_with: [app_libgimps, gui_libapps],
+  link_language: 'cpp',
+  install: true,
+  install_dir: get_option('libexecdir'),
+)
+
+if not platform_windows
+  painter_filter_procedure_test = executable('painter-filter-procedure',
+    'painter/tests/test-filter-procedure.cpp',
+    dependencies: [painter_dep, painter_threads],
+    cpp_args: painter_cpp_args,
+  )
+  test('painter-filter-procedure', painter_filter_procedure_test,
+    args: [painter_filter_worker.full_path(),
+           meson.project_source_root() / 'migration/fixtures/legacy-blinds/fixtures.tsv'],
+    depends: painter_filter_worker,
+    suite: 'painter', timeout: 600)
+endif

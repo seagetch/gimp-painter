@@ -57,6 +57,7 @@
 #include "core/gimp-batch.h"
 #include "core/gimp-user-install.h"
 #include "core/gimpimage.h"
+#include "core/gimpfilterexit.h"
 
 #include "file/file-open.h"
 #ifdef HAVE_PAINTER_HTTP
@@ -258,6 +259,7 @@ app_run (const gchar         *full_prog_name,
 #endif
 
   gimp->app = app;
+  gimp_filter_exit_init (app);
 
   gimp_cpu_accel_set_use (use_cpu_accel);
 
@@ -528,6 +530,14 @@ app_activate_callback (GimpCoreApp *app,
                                  gimp_core_app_get_batch_interpreter (app),
                                  gimp_core_app_get_batch_commands (app));
 
+  if (gimp_filter_exit_is_requested (G_APPLICATION (app)))
+    {
+      /* An explicit batch Quit already closed native contexts and plug-ins.
+       * Preserve its status and let the scheduled worker drain finish. */
+      gimp_core_app_set_exit_status (app, batch_retval);
+      return;
+    }
+
   if (gimp_core_app_get_quit (app))
     {
       /*  Only if we are in batch mode, we want to exit with the
@@ -578,7 +588,7 @@ app_exit_after_callback (Gimp         *gimp,
   if (gimp->painter_httpd)
     g_object_run_dispose (gimp->painter_httpd);
   g_clear_object (&gimp->painter_httpd);
-  g_application_quit (G_APPLICATION (app));
+  gimp_filter_exit_quit (G_APPLICATION (app));
 
   return FALSE;
 }

@@ -592,3 +592,10 @@ test('painter-mypaint-precision', painter_precision_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 180)
+
+# Fixture producer for observing actual console Quit with live private workers.
+filter_quit_fixture = executable('filter-quit-fixture',
+  'test-filter-quit-fixture.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream],
+  link_with: apptests_links,
+)

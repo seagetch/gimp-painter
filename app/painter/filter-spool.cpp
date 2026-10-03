@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "filter-spool.hpp"
+#include "filter-lifetime.hpp"
 #include <algorithm>
 #include <array>
 #include <chrono>
@@ -81,12 +82,12 @@ struct FilterSpool::State
   {
     std::unique_lock<std::mutex> lock (wait_mutex);
     wake.wait_for (lock, std::chrono::milliseconds (10), [&] {
-      return cancelled.load (std::memory_order_relaxed) || ready ();
+      return (cancelled.load (std::memory_order_relaxed) || FilterLifetime::stopping ()) || ready ();
     });
   }
   bool run ()
   {
-    if (cancelled.load (std::memory_order_relaxed)) return false;
+    if ((cancelled.load (std::memory_order_relaxed) || FilterLifetime::stopping ())) return false;
     const auto pixels = width * height;
     const auto reservation = lease ? lease.reserved_spill_bytes () : std::numeric_limits<std::uint64_t>::max ();
     const auto minimum = std::uint64_t (pixels) * bytes_per_pixel * 2;
@@ -99,7 +100,7 @@ struct FilterSpool::State
     std::size_t received = 0;
     for (;;)
       {
-        if (cancelled.load (std::memory_order_relaxed)) return false;
+        if ((cancelled.load (std::memory_order_relaxed) || FilterLifetime::stopping ())) return false;
         auto chunk = input.pop ();
         if (chunk)
           {
@@ -120,18 +121,18 @@ struct FilterSpool::State
         else wait ([&] { return input.readable () || sealed.load (std::memory_order_acquire); });
       }
     snapshot.flush ();
-    if (cancelled.load (std::memory_order_relaxed)) return false;
+    if ((cancelled.load (std::memory_order_relaxed) || FilterLifetime::stopping ())) return false;
     started.store (true, std::memory_order_release);
     phase.store (Phase::processing, std::memory_order_release);
     FilterRasterFactory factory = [this,quota] (std::uint64_t bytes) {
       return std::unique_ptr<FilterRaster> (new ReservedRaster (quota,directory,bytes));
     };
-    if (!process (snapshot,result,cancelled,factory) || cancelled.load (std::memory_order_relaxed)) return false;
+    if (!process (snapshot,result,cancelled,factory) || (cancelled.load (std::memory_order_relaxed) || FilterLifetime::stopping ())) return false;
     result.flush (); // never export a deferred write error as a complete result
     phase.store (Phase::exporting, std::memory_order_release);
     for (std::size_t offset = 0; offset < pixels;)
       {
-        if (cancelled.load (std::memory_order_relaxed)) return false;
+        if ((cancelled.load (std::memory_order_relaxed) || FilterLifetime::stopping ())) return false;
         const auto x = offset % width;
         const auto count = x || width > pixel_budget ? std::min ({pixels - offset, width - x, pixel_budget}) :
                            std::min (pixels - offset, (pixel_budget / width) * width);
@@ -139,12 +140,12 @@ struct FilterSpool::State
         result.read (std::uint64_t (offset) * bytes_per_pixel, count * bytes_per_pixel, chunk->bytes.data ());
         while (!output.push (chunk))
           {
-            if (cancelled.load (std::memory_order_relaxed)) return false;
+            if ((cancelled.load (std::memory_order_relaxed) || FilterLifetime::stopping ())) return false;
             wait ([&] { return output.available (); });
           }
         offset += count;
       }
-    return !cancelled.load (std::memory_order_relaxed);
+    return !(cancelled.load (std::memory_order_relaxed) || FilterLifetime::stopping ());
   }
 };
 FilterSpool::FilterSpool (std::size_t width, std::size_t height, const std::string& directory,
@@ -154,19 +155,22 @@ FilterSpool::FilterSpool (std::size_t width, std::size_t height, const std::stri
       std::uint64_t (width) > std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / bytes_per_pixel / height || !process)
     throw std::invalid_argument ("Invalid filter spool request");
   auto state = std::make_shared<State> (width,height,directory,std::move (process),std::move (lease),bytes_per_pixel);
-  std::thread worker ([state] {
+  auto lifetime = std::make_shared<FilterLifetime> ();
+  std::thread worker ([state,lifetime] () mutable {
     try { state->success = state->run (); }
     catch (const std::exception& e) { try { state->error = e.what (); } catch (...) {} }
     catch (...) { try { state->error = "Unknown filter spool failure"; } catch (...) {} }
     // run() has destroyed all worker-only files before completion is visible.
     state->phase.store (Phase::complete, std::memory_order_release);
     state->done.store (true, std::memory_order_release);
+    state.reset (); // release worker resources before the independent lifetime
+    lifetime.reset ();
   });
   state_ = std::move (state); worker.detach ();
 }
 FilterSpool::~FilterSpool () noexcept { cancel (); }
 bool FilterSpool::can_submit () const noexcept
-{ return owner_ == std::this_thread::get_id () && !sealed_ && !state_->cancelled.load (std::memory_order_relaxed) && !done () && state_->input.available (); }
+{ return owner_ == std::this_thread::get_id () && !sealed_ && !(state_->cancelled.load (std::memory_order_relaxed) || FilterLifetime::stopping ()) && !done () && state_->input.available (); }
 bool FilterSpool::submit (std::size_t offset, Bytes& bytes)
 {
   if (owner_ != std::this_thread::get_id ()) throw std::logic_error ("Filter spool producer used outside owner thread");
