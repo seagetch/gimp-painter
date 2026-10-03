@@ -26,7 +26,7 @@ FOCUSED = {
     'app/painter/binding-store.cpp', 'app/painter/gimp-painter-binding.cpp', 'app/painter/gimp-painter-error.cpp',
     'app/painter/filter-scheduler.cpp', 'app/painter/filter-spool.cpp', 'app/painter/filter-raster.cpp',
     'app/painter/filter-process.cpp', 'app/painter/filter-wire.cpp', 'app/painter/filter-lifetime.cpp',
-    'app/core/gimpfilterlayer.cpp', 'app/core/gimpfilterprocedure.cpp', 'app/core/gimpfilterexit.cpp',
+    'app/core/gimpfilterlayer.cpp', 'app/core/gimpfilterprocedure.cpp', 'app/core/gimpfilterpaths.cpp', 'app/core/gimpfilterexit.cpp',
     'app/core/gimp-batch.c', 'app/app.c', 'app/painter-filter-worker.cpp', 'plug-ins/common/blinds.c',
     'app/tests/test-gimp-filter-layer.c', 'app/tests/test-gimp-filter-layout.cpp',
     'app/painter/tests/test-filter-process.cpp', 'app/painter/tests/test-filter-wire.cpp',
@@ -107,12 +107,10 @@ def main():
                 if arg in ('-MD', '-MMD'):
                     i += 1
                     continue
-                if source == 'app/core/gimpfilterlayer.cpp' and arg.startswith('-DGIMP_PAINTER_FILTER_WORKER_BUILD_PATH='):
-                    arg = '-DGIMP_PAINTER_FILTER_WORKER_BUILD_PATH="' + str(out / 'gimp-painter-filter-worker') + '"'
-                if source == 'app/core/gimpfilterprocedure.cpp' and arg.startswith('-DGIMP_PAINTER_BLINDS_BUILD_PATH='):
-                    arg = '-DGIMP_PAINTER_BLINDS_BUILD_PATH="' + str(out / 'blinds') + '"'
                 filtered.append(arg)
                 i += 1
+            if source == 'app/core/gimpfilterpaths.cpp':
+                filtered.append('-DGIMP_PAINTER_FILTER_PATHS_OVERLAY_DIR="' + str(out) + '"')
             flags = ([] if source in rtti_only else FLAGS) + (['-frtti'] if source.endswith(('.cpp', '.cc')) else [])
             obj = out / (entry['output'].replace('/', '_') + '.o')
             dep = obj.with_suffix('.d')

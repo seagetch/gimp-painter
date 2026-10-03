@@ -21,7 +21,9 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def run(command, environment, executables, output):
+def run(command, environment, executables, output, missing_runtime=None):
+    if missing_runtime not in (None, 'helper', 'plugin'):
+        raise ValueError('Unknown missing-runtime case')
     output.mkdir(parents=True, exist_ok=False)
     oracle_path = ROOT/'migration/fixtures/legacy-blinds-package-smoke.json'
     oracle = json.loads(oracle_path.read_text())
@@ -35,6 +37,10 @@ def run(command, environment, executables, output):
     env = {**environment, 'GIMP_PAINTER_FILTER_ORACLE':str(oracle_path),
            'GIMP_PAINTER_FILTER_FIXTURE':str(fixture), 'GIMP_PAINTER_FILTER_RESULT':str(result),
            'GIMP_PAINTER_FILTER_EVENTS':str(events), 'GIMP_PAINTER_FILTER_START':str(start)}
+    if missing_runtime:
+        env['GIMP_PAINTER_FILTER_MISSING_RUNTIME'] = missing_runtime
+    else:
+        env.pop('GIMP_PAINTER_FILTER_MISSING_RUNTIME', None)
     arguments = [*command, '--new-instance', '--no-interface', '--no-data', '--no-fonts', '--no-splash',
                  '--batch-interpreter=python-fu-eval', '-b', '-', '--quit']
     observed, profiles, errors = {}, set(), []
@@ -44,7 +50,7 @@ def run(command, environment, executables, output):
     with (output/'console.log').open('w') as log:
         process = subprocess.Popen([str(value) for value in arguments], env=env,
                                    stdin=subprocess.PIPE, stdout=log, stderr=subprocess.STDOUT,
-                                   text=True, start_new_session=True)
+                                   text=True, start_new_session=True, cwd=output)
         try:
             process.stdin.write(script.read_text())
             process.stdin.close()
@@ -71,16 +77,26 @@ def run(command, environment, executables, output):
                 os.killpg(process.pid, signal.SIGKILL)
                 process.wait()
     contents = (output/'console.log').read_text(errors='replace')
-    if code != 0 or 'INSTALLED_FILTER_EXACT_SAVE_REOPEN_OK' not in contents:
-        errors.append('Console did not confirm exact Filter output and Save/reopen')
+    marker = ('INSTALLED_FILTER_MISSING_RUNTIME_SAVE_REOPEN_OK' if missing_runtime else
+              'INSTALLED_FILTER_EXACT_SAVE_REOPEN_OK')
+    if code != 0 or marker not in contents:
+        errors.append('Console did not confirm the expected Filter result and Save/reopen')
     for marker in observer.SANITIZER_DIAGNOSTICS + ('batch command experienced', 'Traceback (most recent call last)', 'Filter cleanup exceeded'):
         if marker in contents:
             errors.append('Runtime diagnostic: '+marker)
     helpers = [item for item in observed.values() if item['exe'] == expected['helper']]
     helper_ids = {item['pid'] for item in helpers}
     plugins = [item for item in observed.values() if item['exe'] == expected['plugin'] and item['parent'] in helper_ids]
-    if not ready or not helpers or not plugins:
-        errors.append('Missing initial readiness or actual installed helper/native plugin observation')
+    if not ready:
+        errors.append('Missing initial readiness')
+    if missing_runtime == 'helper':
+        if helpers or plugins:
+            errors.append('Missing-helper case unexpectedly started a Filter executable')
+    elif missing_runtime == 'plugin':
+        if not helpers or plugins:
+            errors.append('Missing-plugin case must observe only the installed helper')
+    elif not helpers or not plugins:
+        errors.append('Missing actual installed helper/native plugin observation')
     # No occurrence of a Filter helper/plugin from another installation may
     # count as success even if the completed pixel checksum happens to match.
     all_helper_ids = {item['pid'] for item in observed.values() if Path(item['exe']).name == 'gimp-painter-filter-worker'}
@@ -103,9 +119,18 @@ def run(command, environment, executables, output):
                 except ProcessLookupError:
                     pass
     batch_result = json.loads(result.read_text()) if result.exists() else None
-    if not batch_result or batch_result.get('status') != 'passed' or batch_result.get('expected_sha256') != oracle['expected_rgba_sha256']:
+    if not batch_result or batch_result.get('status') != 'passed':
+        errors.append('Missing successful batch result record')
+    elif missing_runtime:
+        if (batch_result.get('missing_runtime') != missing_runtime or
+            batch_result.get('saved_state') != 6 or
+            batch_result.get('definition_preserved') is not True or
+            batch_result.get('cache_preserved') is not True):
+            errors.append('Missing terminal failure, retained definition or retained cache evidence')
+    elif batch_result.get('expected_sha256') != oracle['expected_rgba_sha256']:
         errors.append('Missing exact batch result record')
     report = dict(status='passed' if not errors else 'failed', errors=errors,
+                  missing_runtime=missing_runtime,
                   exit_code=code, seconds=time.monotonic()-began,
                   command=[str(value) for value in arguments], expected_executables=expected,
                   observed_helpers=helpers, observed_plugins=plugins, wrong_installation=wrong,
@@ -127,6 +152,40 @@ def installed_executables(bundle):
             raise RuntimeError('Expected exactly one installed '+kind+' executable')
         result[kind] = matches[0]
     return result
+
+
+def run_missing_runtime(command, environment, executables, output, kind):
+    """Reach the real host selector, then restore this private relocated copy."""
+    if kind not in ('helper', 'plugin'):
+        raise ValueError('Unknown missing-runtime case')
+    target = Path(executables[kind])
+    # Move outside the runtime tree so plug-in directory discovery cannot find
+    # the temporarily disabled binary under an alternate filename.
+    disabled = output.parent/(output.name+'.disabled-'+kind)
+    if not target.is_file() or disabled.exists():
+        raise RuntimeError('Missing-runtime case requires an intact, undisabled executable')
+    profile = output.parent/(output.name+'-profile')
+    profile.mkdir(parents=True, exist_ok=False)
+    isolated = {**environment, 'HOME':str(profile/'home'),
+                'XDG_CONFIG_HOME':str(profile/'config'),
+                'XDG_CACHE_HOME':str(profile/'cache'),
+                'XDG_DATA_HOME':str(profile/'data'),
+                'GIMP_PAINTER_PROFILE':str(profile/'gimp'),
+                'GIMP_PAINTER_CACHE':str(profile/'gimp-cache')}
+    for name in ('home', 'config', 'cache', 'data'):
+        (profile/name).mkdir()
+    original_sha256 = sha(target)
+    target.rename(disabled)
+    try:
+        report = run(command, isolated, executables, output, missing_runtime=kind)
+    finally:
+        disabled.rename(target)
+    if sha(target) != original_sha256:
+        raise RuntimeError('Missing-runtime executable changed during restoration')
+    report['disabled_executable'] = str(target)
+    report['restored_executable_sha256'] = original_sha256
+    (output/'report.json').write_text(json.dumps(report, indent=2)+'\n')
+    return report
 
 
 def main():

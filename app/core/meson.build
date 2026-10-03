@@ -54,6 +54,7 @@ libappcore_sources = [
   'gimpclonelayer.cpp',
   'gimpfilterlayer.cpp',
   'gimpfilterprocedure.cpp',
+  'gimpfilterpaths.cpp',
   'gimpfilterexit.cpp',
   'gimpasync.c',
   'gimpasyncset.c',
@@ -277,15 +278,26 @@ libappcore_sources = [
   icons_core_sources,
 ]
 
+# Keep the declared Meson 0.61 minimum: fs.relative_to requires Meson 1.3.
+# Derive both install edges at configure time, including custom absolute dirs.
+painter_filter_worker_name = 'gimp-painter-filter-worker' + (platform_windows ? '.exe' : '')
+painter_filter_relpath = 'import os, sys; print(os.path.relpath(sys.argv[1], sys.argv[2]).replace(chr(92), "/"))'
+painter_filter_bin_to_worker = run_command(python, '-c', painter_filter_relpath,
+  get_option('prefix') / get_option('libexecdir') / painter_filter_worker_name,
+  get_option('prefix') / get_option('bindir'), check: true).stdout().strip()
+painter_filter_worker_to_plugins = run_command(python, '-c', painter_filter_relpath,
+  get_option('prefix') / gimpplugindir / 'plug-ins',
+  get_option('prefix') / get_option('libexecdir'), check: true).stdout().strip()
+
 libappcore = static_library('appcore',
   libappcore_sources,
   include_directories: [ rootInclude, rootAppInclude, ],
   c_args: '-DG_LOG_DOMAIN="Gimp-Core"',
   cpp_args: [
-    '-DGIMP_PAINTER_FILTER_WORKER_BUILD_PATH="' + meson.project_build_root() / 'app/gimp-painter-filter-worker' + '"',
-    '-DGIMP_PAINTER_FILTER_WORKER_INSTALL_PATH="' + get_option('prefix') / get_option('libexecdir') / 'gimp-painter-filter-worker' + '"',
-    '-DGIMP_PAINTER_BLINDS_BUILD_PATH="' + meson.project_build_root() / 'plug-ins/common/blinds' + '"',
-    '-DGIMP_PAINTER_BLINDS_INSTALL_PATH="' + get_option('prefix') / gimpplugindir / 'plug-ins/blinds/blinds' + '"',
+    '-DGIMP_PAINTER_FILTER_BUILD_ROOT="' + meson.project_build_root() + '"',
+    '-DGIMP_PAINTER_FILTER_BIN_TO_WORKER="' + painter_filter_bin_to_worker + '"',
+    '-DGIMP_PAINTER_FILTER_WORKER_TO_PLUGINS="' + painter_filter_worker_to_plugins + '"',
+    '-DGIMP_PAINTER_FILTER_EXECUTABLE_SUFFIX="' + (platform_windows ? '.exe' : '') + '"',
   ],
   dependencies: [
     painter_mypaint_dep,

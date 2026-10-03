@@ -39,6 +39,7 @@ extern "C" {
 #include "plug-in/gimppluginprocedure.h"
 }
 #include "gimpfilterprocedure.hpp"
+#include "gimpfilterpaths.hpp"
 #include "gimp-painter-type-traits.hpp"
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
@@ -49,10 +50,6 @@ extern "C" {
 #include <cstring>
 #include <memory>
 #include <stdexcept>
-
-#if !defined (GIMP_PAINTER_BLINDS_BUILD_PATH) || !defined (GIMP_PAINTER_BLINDS_INSTALL_PATH)
-#error The helper requires its configured bundled Blinds executable path
-#endif
 
 /* No embedded C++ implementation or second qdata ownership mechanism. */
 struct GimpPainterProcedureProgress { GObject parent_instance; };
@@ -358,16 +355,10 @@ void validate_blinds (GimpProcedure *procedure, GFile *file)
 
 ObjectRef<GimpProcedure> query_blinds (Gimp *gimp, GimpContext *context)
 {
-  /* Both paths are build-system literals. Neither can be supplied by a wire
-   * request, saved definition, environment variable or plug-in registry. */
-  const char *path = GIMP_PAINTER_BLINDS_BUILD_PATH;
-  if (!g_file_test (path, G_FILE_TEST_IS_REGULAR) ||
-      !g_file_test (path, G_FILE_TEST_IS_EXECUTABLE))
-    path = GIMP_PAINTER_BLINDS_INSTALL_PATH;
-  if (!g_path_is_absolute (path) || !g_file_test (path, G_FILE_TEST_IS_REGULAR) ||
-      !g_file_test (path, G_FILE_TEST_IS_EXECUTABLE))
-    throw std::runtime_error ("Configured bundled Blinds executable is unavailable");
-  auto file = ObjectRef<GFile>::adopt (g_file_new_for_path (path));
+  /* Resolve only this bundled route from the private helper's own location.
+   * Saved definitions, the environment and plug-in registries cannot select it. */
+  const auto path = filter_plugin_path (FilterProcedure::blinds);
+  auto file = ObjectRef<GFile>::adopt (g_file_new_for_path (path.c_str ()));
   auto definition = ObjectRef<GimpPlugInDef>::adopt (gimp_plug_in_def_new (file.get ()));
   /* Only this literal executable is queried. No general restore/search/init
    * call is made. The parent process terminates a hung query or execution. */

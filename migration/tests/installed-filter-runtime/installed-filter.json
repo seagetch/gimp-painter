@@ -1,0 +1,113 @@
+{
+  "status": "passed",
+  "errors": [],
+  "missing_runtime": null,
+  "exit_code": 0,
+  "seconds": 6.027860042995599,
+  "command": [
+    "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/AppRun",
+    "--console",
+    "--new-instance",
+    "--no-interface",
+    "--no-data",
+    "--no-fonts",
+    "--no-splash",
+    "--batch-interpreter=python-fu-eval",
+    "-b",
+    "-",
+    "--quit"
+  ],
+  "expected_executables": {
+    "helper": "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+    "plugin": "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds/blinds"
+  },
+  "observed_helpers": [
+    {
+      "pid": 10093,
+      "state": "R",
+      "parent": 9497,
+      "group": 10093,
+      "start_ticks": 3594244,
+      "exe": "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+        "--filter-worker-v1",
+        "/workspace/scratch/5b5281e79681/installed-filter-relocated/profile/cache/gimp-painter-prototype/gimp-filter-AJTOW3"
+      ]
+    }
+  ],
+  "observed_plugins": [
+    {
+      "pid": 10152,
+      "state": "R",
+      "parent": 10093,
+      "group": 10093,
+      "start_ticks": 3594266,
+      "exe": "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds/blinds",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds/blinds",
+        "-gimp",
+        "277",
+        "8",
+        "7",
+        "-query",
+        "0"
+      ]
+    },
+    {
+      "pid": 10234,
+      "state": "S",
+      "parent": 10093,
+      "group": 10093,
+      "start_ticks": 3594305,
+      "exe": "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds/blinds",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds/blinds",
+        "-gimp",
+        "277",
+        "11",
+        "9",
+        "-run",
+        "0"
+      ]
+    }
+  ],
+  "wrong_installation": [],
+  "survivors": [],
+  "leftover_profiles": [],
+  "events": [
+    {
+      "event": "READY",
+      "monotonic": 35941.326948598,
+      "image": 1
+    },
+    {
+      "event": "INVALIDATED",
+      "monotonic": 35941.33778008,
+      "image": 1
+    },
+    {
+      "event": "EXACT_OUTPUT",
+      "monotonic": 35945.377363392,
+      "sha256": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1"
+    },
+    {
+      "event": "SAVED_REOPENED",
+      "monotonic": 35945.773742861,
+      "sha256": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1"
+    }
+  ],
+  "batch_result": {
+    "status": "passed",
+    "expected_sha256": "9a5228c92a2a65af74aeaee80517edb1aec7f2e310f968be169289af2c1e3be1",
+    "saved_xcf": "/workspace/scratch/5b5281e79681/installed-filter-relocated/installed-filter/batch-result.xcf",
+    "saved_bytes": 426918,
+    "saved_sha256": "f49d49b4bb29398aad975b7a014b0388822ed3c3afa3101a53d5d944b2fa0c1c",
+    "scope": "Explicit lower update, complete genuine-old Blinds pixels, Save and reopen; not a complete editing or GUI test"
+  },
+  "fixture_sha256": "1e4af7adedcba4626c55b1b3a750c195b77e8a0b04c89047360a5911b5b4380c",
+  "oracle_sha256": "5f4362b4a16c4c17080dddc41ef0058d3f1295c226067ae99a2aa6959f3ffffb",
+  "batch_source_sha256": "daf5b0d0c9bd19624df8941f4402603d7796bae69407d02a6e012bd7f3062235",
+  "observer_source_sha256": "45511eebe35d12b3e49bd5453c342fdf6fb4652324a679bdb79f4dc2d9bcd771",
+  "console_log_sha256": "e4b1169daf08ebba520259e1ec046ba7eb3dbe55d84f46925b733b57a97db6ba"
+}

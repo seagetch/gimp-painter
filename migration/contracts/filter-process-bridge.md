@@ -44,10 +44,10 @@ signal is sent after reap, including an observed ECHILD ownership-loss path.
 This requires exclusive reaper ownership; another app-wide `waitpid(-1)` reaper
 must not race the WNOWAIT-to-signal interval.
 
-No UI join, pipe wait, spool data I/O or child wait is introduced. The
-current build/install executable selector still performs an owner-side metadata
-stat; moving that resolution entirely to the worker remains a latency follow-up. Independent lifetime
-tokens survive closed layers until worker cleanup ends. Accepted application
+No UI join, pipe wait, spool data I/O, path lookup or child wait is introduced.
+The independent worker resolves its helper immediately before spawning, using a
+private copy of the owner-prepared process options. Independent lifetime tokens
+survive closed layers until worker cleanup ends. Accepted application
 Quit requests cancellation and polls those tokens on the owner context every
 10 ms. A 5-second deadline is an explicit, diagnostic fallback, preserving the
 existing batch exit status. There is no cross-platform process-tree guarantee,
@@ -87,11 +87,22 @@ universal total-RSS guarantee. The private runtime pins and verifies both native
 and GEGL temporary/swap paths, a 32 MiB tile cache, one GEGL worker and disabled
 OpenCL. It avoids user/system font loading with an empty private Fontconfig.
 
-The present executable selectors use configured build/install absolute paths.
-Relocatable package execution on a clean host remains open; same-host build
-smoke tests must not be presented as proof of package relocation. Windows
+Executable resolution starts with the running executable's actual directory,
+including when launched through a symlink. Only executables in the configured
+build's `app` or `app/tests` directories use that build's helper and Blinds.
+Installed hosts use configure-time relative bin-to-libexec and libexec-to-plugin
+edges, so a relocated runtime uses its own files even while the original build
+remains accessible. Missing or nonexecutable bundled files fail closed; no PATH,
+user plug-in registry, saved definition or environment override is consulted.
+Path probing occurs on the independent worker or private helper, not the owner
+context. Focused instrumentation has an explicit compile-time private overlay;
+production has no runtime overlay selector.
+
+Linux relocation is a separate installed-process/pixel/Save acceptance from the
+normal build tests; see `../tests/installed-filter-runtime/README.md`. Windows
 execution is explicitly unsupported for this route until a platform process
-adapter and its cancellation/exit proof exist.
+adapter and its cancellation/exit proof exist. The platform-specific path code
+alone does not establish Windows or macOS runtime acceptance.
 
 ## Evidence boundaries
 

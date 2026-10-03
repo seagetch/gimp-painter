@@ -22,6 +22,64 @@ runtime_spec=importlib.util.spec_from_file_location('runtime_test',REPO/'tools/t
 runtime_test=importlib.util.module_from_spec(runtime_spec)
 runtime_spec.loader.exec_module(runtime_test)
 
+batch_spec=importlib.util.spec_from_file_location('filter_batch',REPO/'migration/tests/filter-package-smoke.py')
+filter_batch=importlib.util.module_from_spec(batch_spec)
+batch_spec.loader.exec_module(filter_batch)
+
+
+class InstalledFilterTests(unittest.TestCase):
+    def test_missing_runtime_always_restores_on_observer_error(self):
+        smoke = runtime_test.filter_smoke
+        for kind in ('helper', 'plugin'):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root/kind
+                target.write_bytes(b'original runtime executable')
+                target.chmod(0o755)
+                with mock.patch.object(smoke, 'run', side_effect=RuntimeError('observer failed')):
+                    with self.assertRaisesRegex(RuntimeError, 'observer failed'):
+                        smoke.run_missing_runtime(['host'], {}, {kind:target}, root/'trial', kind)
+                self.assertEqual(target.read_bytes(), b'original runtime executable')
+                self.assertEqual(target.stat().st_mode & 0o777, 0o755)
+                self.assertFalse((root/('trial.disabled-'+kind)).exists())
+
+    def test_missing_runtime_reaches_host_with_isolated_profile(self):
+        smoke = runtime_test.filter_smoke
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            executables = {kind:root/kind for kind in ('helper', 'plugin')}
+            for path in executables.values():
+                path.write_bytes(b'original executable')
+            profiles = []
+            def observed(command, environment, expected, output, missing_runtime):
+                self.assertFalse(expected[missing_runtime].exists())
+                self.assertTrue(expected['plugin' if missing_runtime == 'helper' else 'helper'].exists())
+                self.assertEqual(command, ['actual-host'])
+                self.assertTrue(Path(environment['HOME']).is_dir())
+                self.assertNotEqual(environment['GIMP_PAINTER_PROFILE'], 'ambient-profile')
+                profiles.append(environment['GIMP_PAINTER_PROFILE'])
+                output.mkdir()
+                return {'status':'passed'}
+            with mock.patch.object(smoke, 'run', side_effect=observed):
+                for kind in ('helper', 'plugin'):
+                    report = smoke.run_missing_runtime(['actual-host'], {'GIMP_PAINTER_PROFILE':'ambient-profile'},
+                                                       executables, root/('trial-'+kind), kind)
+                    self.assertEqual(report['restored_executable_sha256'], smoke.sha(executables[kind]))
+            self.assertEqual(len(set(profiles)), 2)
+
+    def test_filter_capsule_reads_verified_fixture_and_rejects_truncation(self):
+        oracle = json.loads((REPO/'migration/fixtures/legacy-blinds-package-smoke.json').read_text())
+        fixture = REPO/oracle['fixture']
+        self.assertEqual(package.sha(fixture), oracle['fixture_sha256'])
+        capsule = filter_batch.filter_capsule(fixture)
+        self.assertIn(b'saved-state', capsule)
+        self.assertIn(b'plug-in-blinds', capsule)
+        with tempfile.TemporaryDirectory() as directory:
+            broken = Path(directory)/'truncated.xcf'
+            broken.write_bytes(fixture.read_bytes()[:80])
+            with self.assertRaises(AssertionError):
+                filter_batch.filter_capsule(broken)
+
 
 class PackageTests(unittest.TestCase):
     def test_only_baseline_host_abi_is_accepted(self):

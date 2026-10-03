@@ -25,6 +25,7 @@ extern "C" {
 }
 #include "gimp-painter-type-traits.hpp"
 #include "gimpfilterlayer-arguments.hpp"
+#include "gimpfilterpaths.hpp"
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/filter-scheduler.hpp"
@@ -478,8 +479,6 @@ struct FilterImpl
             descriptor->orientation = g_value_get_int (args->at (5));
             descriptor->transparent = g_value_get_int (args->at (6)); descriptor->gray = gray ();
             auto options = std::make_shared<FilterProcessOptions> ();
-            options->executable = g_file_test (GIMP_PAINTER_FILTER_WORKER_BUILD_PATH, G_FILE_TEST_IS_EXECUTABLE) ?
-              GIMP_PAINTER_FILTER_WORKER_BUILD_PATH : GIMP_PAINTER_FILTER_WORKER_INSTALL_PATH;
             /* Parent input/result and three child rasters (snapshot, drawable,
              * shadow). 256MiB + row scratch is admission, not an RSS proof. */
             const auto raster = descriptor->bytes ();
@@ -489,7 +488,11 @@ struct FilterImpl
             request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
             request.raster_process = [descriptor,options] (FilterRaster& input, FilterRaster& output,
               std::atomic<bool>& cancel, const FilterRasterFactory&) {
-                return filter_process (*descriptor, input, output, cancel, *options);
+                /* Filesystem lookup belongs to the independent worker. Copy
+                 * owner-prepared scalars instead of mutating shared options. */
+                auto resolved = *options;
+                resolved.executable = filter_worker_path ();
+                return filter_process (*descriptor, input, output, cancel, resolved);
               };
             native_procedure = std::move (descriptor); native_process_options = std::move (options);
           }

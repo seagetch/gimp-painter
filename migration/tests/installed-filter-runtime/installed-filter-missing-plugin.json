@@ -1,0 +1,89 @@
+{
+  "status": "passed",
+  "errors": [],
+  "missing_runtime": "plugin",
+  "exit_code": 0,
+  "seconds": 7.630707197000447,
+  "command": [
+    "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/AppRun",
+    "--console",
+    "--new-instance",
+    "--no-interface",
+    "--no-data",
+    "--no-fonts",
+    "--no-splash",
+    "--batch-interpreter=python-fu-eval",
+    "-b",
+    "-",
+    "--quit"
+  ],
+  "expected_executables": {
+    "helper": "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+    "plugin": "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds/blinds"
+  },
+  "observed_helpers": [
+    {
+      "pid": 13971,
+      "state": "R",
+      "parent": 12505,
+      "group": 13971,
+      "start_ticks": 3595972,
+      "exe": "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+        "--filter-worker-v1",
+        "/workspace/scratch/5b5281e79681/installed-filter-relocated/installed-filter-missing-plugin-profile/gimp-cache/gimp-filter-915TW3"
+      ]
+    }
+  ],
+  "observed_plugins": [],
+  "wrong_installation": [],
+  "survivors": [],
+  "leftover_profiles": [],
+  "events": [
+    {
+      "event": "READY",
+      "monotonic": 35958.181095987,
+      "image": 1
+    },
+    {
+      "event": "INVALIDATED",
+      "monotonic": 35958.19161708,
+      "image": 1
+    },
+    {
+      "event": "EXPECTED_FAILURE",
+      "monotonic": 35960.206365044,
+      "missing_runtime": "plugin",
+      "saved_state": 6,
+      "cache_sha256": "6e85664bd2368cec9d50a8556ad4508c647b3d7ac6e3aa8e5dd2ac63428229c0",
+      "definition_preserved": true
+    },
+    {
+      "event": "SAVED_REOPENED",
+      "monotonic": 35960.557766381,
+      "sha256": "6e85664bd2368cec9d50a8556ad4508c647b3d7ac6e3aa8e5dd2ac63428229c0"
+    }
+  ],
+  "batch_result": {
+    "status": "passed",
+    "expected_sha256": "6e85664bd2368cec9d50a8556ad4508c647b3d7ac6e3aa8e5dd2ac63428229c0",
+    "saved_xcf": "/workspace/scratch/5b5281e79681/installed-filter-relocated/installed-filter-missing-plugin/batch-result.xcf",
+    "saved_bytes": 201126,
+    "saved_sha256": "f97abf7a7a372d93fb3a30695ce5f951c9da074a91b0991ff28e92e9e88eeae7",
+    "scope": "Missing installed executable reaches terminal Filter failure, retains definition/arguments and full cache, and Saves/reopens",
+    "missing_runtime": "plugin",
+    "saved_state": 6,
+    "definition_preserved": true,
+    "cache_preserved": true,
+    "generation": 4,
+    "cache_generation": 3
+  },
+  "fixture_sha256": "1e4af7adedcba4626c55b1b3a750c195b77e8a0b04c89047360a5911b5b4380c",
+  "oracle_sha256": "5f4362b4a16c4c17080dddc41ef0058d3f1295c226067ae99a2aa6959f3ffffb",
+  "batch_source_sha256": "daf5b0d0c9bd19624df8941f4402603d7796bae69407d02a6e012bd7f3062235",
+  "observer_source_sha256": "45511eebe35d12b3e49bd5453c342fdf6fb4652324a679bdb79f4dc2d9bcd771",
+  "console_log_sha256": "ab1ceb1593ca32becd23e4e484941f65edfceb74699412da669012f97218058c",
+  "disabled_executable": "/workspace/scratch/5b5281e79681/installed-filter-relocated/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds/blinds",
+  "restored_executable_sha256": "048f12b441f8d7b840de945e560134c5d266e9342b35594115a4316831546f1f"
+}

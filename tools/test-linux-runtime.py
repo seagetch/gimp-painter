@@ -108,7 +108,7 @@ def main():
          Path(__file__).resolve().parent.parent/'migration/tests/baseline-smoke.py')]:
         with (output/(name+'.log')).open('w') as log:
             result = subprocess.run((['strace','-f','-qq','-e','trace=file','-o',str(output/(name+'-files.trace'))] if trace_available else []) + [str(a) for a in argv],env=env,
-                input=stdin.read_text() if stdin else None,text=True,stdout=log,stderr=subprocess.STDOUT,timeout=180)
+                input=stdin.read_text() if stdin else None,text=True,stdout=log,stderr=subprocess.STDOUT,timeout=180,cwd=output)
         contents = (output/(name+'.log')).read_text()
         passed = result.returncode == 0
         if stdin:
@@ -123,19 +123,31 @@ def main():
                      'file_trace_available':trace_file.exists(),'build_path_accesses':forbidden_hits})
         if not passed:
             print(contents)
+    filter_executables = filter_smoke.installed_executables(relocated)
     filter_report = filter_smoke.run([app, '--console'], env,
-        filter_smoke.installed_executables(relocated), output/'installed-filter')
+        filter_executables, output/'installed-filter')
     runs.append({'name':'installed-filter-exact-save-reopen',
                  'exit_code':filter_report['exit_code'],
                  'passed':filter_report['status']=='passed',
                  'report':'installed-filter/report.json',
                  'observed_installed_helper':bool(filter_report['observed_helpers']),
                  'observed_installed_plugin':bool(filter_report['observed_plugins'])})
+    for kind in ('helper', 'plugin'):
+        folder = output/('installed-filter-missing-'+kind)
+        negative = filter_smoke.run_missing_runtime([app, '--console'], env,
+                                                    filter_executables, folder, kind)
+        runs.append({'name':'installed-filter-missing-'+kind,
+                     'exit_code':negative['exit_code'], 'passed':negative['status']=='passed',
+                     'report':str(folder.relative_to(output)/'report.json'),
+                     'terminal_filter_failure':bool(negative['batch_result'] and
+                                                   negative['batch_result'].get('saved_state')==6)})
     report={'format':1,'source_commit':manifest['source_commit'],'prototype':manifest['status'],
         'bundle_manifest_sha256':digest(source/'build-manifest.json'),
         'verified_files':verified,'elf_objects':checked_elf,'relocation':'fresh path with spaces and Japanese characters',
         'environment':'explicit minimum whitelist; no build/dependency tree variables',
-        'resource_syscall_audit':{'available':trace_available,'unavailable_reason':trace_unavailable_reason},
+        'resource_syscall_audit':{'available':trace_available,'unavailable_reason':trace_unavailable_reason,
+                                 'scope':['version', 'console-create-fill-save-reopen'],
+                                 'filter_route':'executable identity and missing-runtime checks; no syscall audit'},
         'runs':runs,'dependencies':dependencies,'all_passed':all(r['passed'] for r in runs),
         'not_covered':['native GUI drawing','X11 pen','Wayland','Windows','macOS','physical tablet','full legacy corpus']}
     if (output/'smoke.xcf').exists():

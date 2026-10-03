@@ -52,6 +52,19 @@ strace is installed and the environment permits ptrace, attempted accesses to so
 fail the resource relocation gate. Raw trace output stays local. A prohibited ptrace probe is reported as unavailable;
 normal smoke tests continue without asserting a syscall audit pass.
 
+The Filter gate also invalidates the committed cached 4096×4096 Blinds fixture,
+observes the relocated helper and its own native Blinds child, compares all RGBA
+bytes with the pinned genuine old-PDB oracle, then saves and reopens. The host's
+working directory is outside the checkout/build and the original build remains
+available, so selecting a developer executable cannot count as success. Two
+fresh-profile negative cases temporarily remove the installed helper or Blinds,
+require an actual terminal failed state in the saved Painter capsule, preserve
+the prior full cache and definition/arguments, and reopen the saved result.
+The observer requires no surviving descendants or private helper profiles.
+Both removed files are restored even after failure and their hashes rechecked.
+The Filter route's executable observations are separate from the optional syscall
+audit, whose scope remains the version and ordinary-layer smoke commands.
+
 Actual native GUI launch, drawing, save, close and reopen require a separate
 recorded test with fresh screenshots. A console fill test is not a drawing,
 tablet-input, X11/Wayland-equivalence or full compatibility test.
