@@ -15,7 +15,9 @@ extern "C" {
 #include "gimp-contexts.h"
 #include "gimp-data-factories.h"
 #include "gimpcontext.h"
+#include "gimpchannel-select.h"
 #include "gimpdrawable.h"
+#include "gimpdrawable-shadow.h"
 #include "gimpimage.h"
 #include "gimpimage-color-profile.h"
 #include "gimpimage-undo.h"
@@ -377,6 +379,134 @@ ObjectRef<GimpProcedure> query_blinds (Gimp *gimp, GimpContext *context)
   return procedure;
 }
 
+constexpr const char *merge_shadow_name = "gimp-drawable-merge-shadow";
+
+void validate_merge_shadow (GimpProcedure *procedure)
+{
+  if (!procedure || G_OBJECT_TYPE (procedure) != GIMP_TYPE_PROCEDURE ||
+      procedure->proc_type != GIMP_PDB_PROC_TYPE_INTERNAL || !procedure->marshal_func ||
+      g_strcmp0 (gimp_object_get_name (procedure), merge_shadow_name) ||
+      procedure->num_args != 2 || procedure->num_values != 0 || !procedure->args)
+    throw std::runtime_error ("Private merge-shadow procedure signature changed");
+  auto **args = procedure->args;
+  if (!args[0] || !args[1] ||
+      g_strcmp0 (g_param_spec_get_name (args[0]), "drawable") ||
+      g_strcmp0 (g_param_spec_get_name (args[1]), "undo") ||
+      G_PARAM_SPEC_VALUE_TYPE (args[0]) != GIMP_TYPE_DRAWABLE ||
+      G_PARAM_SPEC_VALUE_TYPE (args[1]) != G_TYPE_BOOLEAN ||
+      !GIMP_IS_PARAM_SPEC_DRAWABLE (args[0]) || gimp_param_spec_item_none_allowed (args[0]) ||
+      !G_IS_PARAM_SPEC_BOOLEAN (args[1]) || G_PARAM_SPEC_BOOLEAN (args[1])->default_value ||
+      (args[0]->flags & G_PARAM_READWRITE) != G_PARAM_READWRITE ||
+      (args[1]->flags & G_PARAM_READWRITE) != G_PARAM_READWRITE)
+    throw std::runtime_error ("Private merge-shadow argument constraints changed");
+}
+
+struct ShadowState
+{
+  ShadowState (ObjectRef<Gimp> owner, ObjectRef<GimpLayer> drawable)
+    : owner (std::move (owner)), drawable (std::move (drawable)) {}
+  void close () noexcept { shadow.reset (); drawable.reset (); owner.reset (); }
+  ObjectRef<Gimp> owner;
+  ObjectRef<GimpLayer> drawable;
+  ObjectRef<GeglBuffer> shadow;
+  bool called = false;
+  bool failed = false;
+};
+struct ShadowSlot : SlotSpec<GimpProcedure, ShadowState> {};
+
+GimpValueArray *capture_shadow (GimpProcedure *procedure, Gimp *gimp,
+                               GimpContext *, GimpProgress *,
+                               const GimpValueArray *args, GError **error) noexcept
+{
+  const auto success = boundary<gboolean> (error, FALSE, [&] {
+    return BindingStore::require (G_OBJECT (procedure)).with<ShadowSlot> (
+      [&] (ShadowState& state) -> gboolean {
+        state.failed = true;
+        if (state.called || state.owner.get () != gimp || !args ||
+            gimp_value_array_length (args) != 2 ||
+            !G_VALUE_HOLDS (gimp_value_array_index (args, 0), GIMP_TYPE_DRAWABLE) ||
+            !G_VALUE_HOLDS_BOOLEAN (gimp_value_array_index (args, 1)) ||
+            g_value_get_object (gimp_value_array_index (args, 0)) != state.drawable.get ())
+          throw std::runtime_error ("Private merge-shadow called outside its owned drawable");
+        auto *drawable = GIMP_DRAWABLE (state.drawable.get ());
+        auto shadow = ObjectRef<GeglBuffer>::retain (gimp_drawable_get_shadow_buffer (drawable));
+        if (!shadow || gegl_buffer_get_format (shadow.get ()) != gimp_drawable_get_format (drawable) ||
+            gegl_buffer_get_width (shadow.get ()) != gimp_item_get_width (GIMP_ITEM (drawable)) ||
+            gegl_buffer_get_height (shadow.get ()) != gimp_item_get_height (GIMP_ITEM (drawable)))
+          throw std::runtime_error ("Private merge-shadow buffer layout changed");
+        gegl_buffer_flush (shadow.get ());
+        /* Plug-in cleanup frees the drawable's shadow reference. This typed
+         * lease preserves the unmerged bytes through that cleanup. */
+        state.shadow = std::move (shadow);
+        state.called = true;
+        state.failed = false;
+        return TRUE;
+      });
+  });
+  return gimp_procedure_get_return_values (procedure, success, error ? *error : nullptr);
+}
+
+/* A request-local PDB chain entry; never alter the registered native marshal.
+ * Every path, including exceptions and cancellation, removes only our entry. */
+class ShadowCapture
+{
+public:
+  ~ShadowCapture () noexcept
+  {
+    uninstall ();
+    if (override_)
+      boundary_void (nullptr, [&] {
+        if (auto *store = BindingStore::find (G_OBJECT (override_.get ()))) store->close ();
+      });
+  }
+  void install (Gimp *gimp, GimpLayer *layer)
+  {
+    owner_ = ObjectRef<Gimp>::retain (gimp);
+    original_ = ObjectRef<GimpProcedure>::retain (gimp_pdb_lookup_procedure (gimp->pdb, merge_shadow_name));
+    validate_merge_shadow (original_.get ());
+    override_ = ObjectRef<GimpProcedure>::adopt (gimp_procedure_create_override (original_.get (), capture_shadow));
+    validate_merge_shadow (override_.get ());
+    auto& store = BindingStore::ensure (G_OBJECT (override_.get ()));
+    store.emplace<ShadowSlot> (owner_, ObjectRef<GimpLayer>::retain (layer));
+    store.activate ();
+    /* GEGL's sparse buffer starts at zero. Clearing explicitly also guarantees
+     * that any unwritten portion outside the hard execution rectangle is zero. */
+    auto *shadow = gimp_drawable_get_shadow_buffer (GIMP_DRAWABLE (layer));
+    if (!shadow) throw std::runtime_error ("Cannot create private raw shadow");
+    gegl_buffer_clear (shadow, nullptr);
+    gimp_pdb_register_procedure (gimp->pdb, override_.get ());
+    registered_ = true;
+    if (gimp_pdb_lookup_procedure (gimp->pdb, merge_shadow_name) != override_.get ())
+      throw std::runtime_error ("Cannot install private merge-shadow interception");
+  }
+  ObjectRef<GeglBuffer> finish ()
+  {
+    if (!override_) return {};
+    auto result = BindingStore::require (G_OBJECT (override_.get ())).with<ShadowSlot> (
+      [] (ShadowState& state) {
+        if (state.failed || !state.called || !state.shadow)
+          throw std::runtime_error ("Private merge-shadow interception did not finish");
+        return state.shadow;
+      });
+    uninstall ();
+    if (gimp_pdb_lookup_procedure (owner_.get ()->pdb, merge_shadow_name) != original_.get ())
+      throw std::runtime_error ("Private merge-shadow registration chain was not restored");
+    return result;
+  }
+private:
+  void uninstall () noexcept
+  {
+    if (registered_)
+      {
+        gimp_pdb_unregister_procedure (owner_.get ()->pdb, override_.get ());
+        registered_ = false;
+      }
+  }
+  ObjectRef<Gimp> owner_;
+  ObjectRef<GimpProcedure> original_, override_;
+  bool registered_ = false;
+};
+
 /* A row wider than the transfer bound is split horizontally. The full raster
  * size and the number of rows never change the scratch allocation. */
 template<class Function>
@@ -424,15 +554,38 @@ procedure_progress_iface_init (GimpProgressInterface *iface)
 }
 
 namespace GimpPainter {
-bool
+FilterProcedureDisposition
 run_filter_procedure (const FilterProcedureRequest& request,
                       FilterRaster& input, FilterRaster& output,
                       std::atomic<bool>& cancel)
 {
+  using Disposition = FilterProcedureDisposition;
   const auto bytes = request.bytes ();
+  const auto region = request.execution_region ();
   if (&input == &output || input.size () != bytes || output.size () != bytes)
     throw std::invalid_argument ("Private Blinds requires separate exact-sized RGBA8 rasters");
-  if (cancel.load (std::memory_order_relaxed)) return false;
+  if (cancel.load (std::memory_order_relaxed)) return Disposition::pending;
+  std::array<std::uint8_t, transfer_bytes> pixels;
+  const auto validate_carrier = [&] (std::size_t count) {
+    if (request.gray)
+      for (std::size_t p = 0; p < count; p += 4)
+        if (pixels[p] != pixels[p + 1] || pixels[p] != pixels[p + 2])
+          throw std::invalid_argument ("Private Blinds Gray input is not triplicated");
+  };
+  if (!region.intersects)
+    {
+      /* An empty native mask is unrestricted, so it cannot encode a globally
+       * nonempty selection that misses this drawable. Blinds performs no merge
+       * in that case. Send an exact carrier and an explicit no-merge outcome. */
+      if (!each_chunk (request, cancel, [&] (const GeglRectangle&,
+                                            std::uint64_t offset, std::size_t count) {
+            input.read (offset, count, pixels.data ());
+            validate_carrier (count);
+            output.write (offset, count, pixels.data ());
+          })) return Disposition::pending;
+      output.flush ();
+      return cancel.load (std::memory_order_relaxed) ? Disposition::pending : Disposition::no_merge;
+    }
   PrivateRuntime runtime;
   runtime.initialize ();
   Gimp *gimp = runtime.get ();
@@ -440,7 +593,7 @@ run_filter_procedure (const FilterProcedureRequest& request,
     gimp_pdb_context_new (gimp, gimp_get_user_context (gimp), TRUE));
   auto procedure = query_blinds (gimp, context.get ());
   runtime.wait_for_plugins ();
-  if (cancel.load (std::memory_order_relaxed)) return false;
+  if (cancel.load (std::memory_order_relaxed)) return Disposition::pending;
 
   /* Native Blinds always requests RGB pixels. Triplicated Gray samples in an
    * RGB surrogate avoid both luminance conversion and an ICC round trip. */
@@ -459,17 +612,17 @@ run_filter_procedure (const FilterProcedureRequest& request,
     gimp_drawable_get_buffer (GIMP_DRAWABLE (layer.get ())));
   if (!buffer || gegl_buffer_get_format (buffer.get ()) != format)
     throw std::runtime_error ("Private Blinds drawable is not exact encoded RGBA8 sRGB");
+  if (region.selected)
+    gimp_channel_select_rectangle (gimp_image_get_mask (image.get ()),
+                                   region.x1, region.y1, region.x2 - region.x1, region.y2 - region.y1,
+                                   GIMP_CHANNEL_OP_REPLACE, FALSE, 0, 0, FALSE);
 
-  std::array<std::uint8_t, transfer_bytes> pixels;
   if (!each_chunk (request, cancel, [&] (const GeglRectangle& rect,
                                         std::uint64_t offset, std::size_t count) {
         input.read (offset, count, pixels.data ());
-        if (request.gray)
-          for (std::size_t p = 0; p < count; p += 4)
-            if (pixels[p] != pixels[p + 1] || pixels[p] != pixels[p + 2])
-              throw std::invalid_argument ("Private Blinds Gray input is not triplicated");
+        validate_carrier (count);
         gegl_buffer_set (buffer.get (), &rect, 0, format, pixels.data (), GEGL_AUTO_ROWSTRIDE);
-      })) return false;
+      })) return Disposition::pending;
   gegl_buffer_flush (buffer.get ());
 
   auto background = ObjectRef<GeglColor>::adopt (gegl_color_new (nullptr));
@@ -494,32 +647,47 @@ run_filter_procedure (const FilterProcedureRequest& request,
                       request.orientation == 1 ? "vertical" : "horizontal");
   g_value_set_boolean (gimp_value_array_index (arguments.get (), 6), request.transparent != 0);
   ProcedureProgress progress;
+  ShadowCapture capture;
+  if (request.raw_shadow) capture.install (gimp, layer.get ());
   GError *error = nullptr;
   ValuesRef result (gimp_procedure_execute (procedure.get (), gimp, context.get (),
                                            progress.get (), arguments.get (), &error));
   ErrorRef error_owner (error);
   runtime.wait_for_plugins ();
-  if (cancel.load (std::memory_order_relaxed)) return false;
+  if (cancel.load (std::memory_order_relaxed)) return Disposition::pending;
   if (error || !result || gimp_value_array_length (result.get ()) != 1 ||
       !G_VALUE_HOLDS (gimp_value_array_index (result.get (), 0), GIMP_TYPE_PDB_STATUS_TYPE) ||
       g_value_get_enum (gimp_value_array_index (result.get (), 0)) != GIMP_PDB_SUCCESS)
     throw std::runtime_error (error ? error->message : "Bundled Blinds did not finish successfully");
 
-  /* Merge-shadow can replace the buffer. Export the private committed drawable
-   * and restore the old alpha-zero hidden-color rule from the original input. */
-  buffer = ObjectRef<GeglBuffer>::retain (
-    gimp_drawable_get_buffer (GIMP_DRAWABLE (layer.get ())));
+  Disposition disposition = Disposition::merged;
+  if (request.raw_shadow)
+    {
+      buffer = capture.finish ();
+      disposition = Disposition::shadow;
+    }
+  else
+    {
+      /* Native merge-shadow can replace the buffer. Retain the standalone
+       * route's accepted alpha-zero repair only for already-merged output. */
+      buffer = ObjectRef<GeglBuffer>::retain (
+        gimp_drawable_get_buffer (GIMP_DRAWABLE (layer.get ())));
+      if (!buffer) throw std::runtime_error ("Private merged Blinds drawable has no buffer");
+    }
   std::array<std::uint8_t, transfer_bytes> original;
   if (!each_chunk (request, cancel, [&] (const GeglRectangle& rect,
                                         std::uint64_t offset, std::size_t count) {
         gegl_buffer_get (buffer.get (), &rect, 1.0, format, pixels.data (),
                          GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
-        input.read (offset, count, original.data ());
-        for (std::size_t p = 0; p < count; p += 4)
-          if (pixels[p + 3] == 0) std::memcpy (pixels.data () + p, original.data () + p, 3);
+        if (!request.raw_shadow)
+          {
+            input.read (offset, count, original.data ());
+            for (std::size_t p = 0; p < count; p += 4)
+              if (pixels[p + 3] == 0) std::memcpy (pixels.data () + p, original.data () + p, 3);
+          }
         output.write (offset, count, pixels.data ());
-      })) return false;
+      })) return Disposition::pending;
   output.flush ();
-  return !cancel.load (std::memory_order_relaxed);
+  return cancel.load (std::memory_order_relaxed) ? Disposition::pending : disposition;
 }
 } // namespace GimpPainter

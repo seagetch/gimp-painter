@@ -98,10 +98,14 @@ struct Profile {
 }
 #endif
 bool filter_process (const FilterProcedureRequest& request, FilterRaster& input,
-                     FilterRaster& output, std::atomic<bool>& cancel, const FilterProcessOptions& options)
+                     FilterRaster& output, std::atomic<bool>& cancel, const FilterProcessOptions& options,
+                     std::shared_ptr<FilterProcedureResult> outcome)
 {
+  if (outcome) outcome->reset ();
   const auto total = request.bytes ();
-  if (input.size () != total || output.size () != total) throw std::invalid_argument ("Filter process raster size mismatch");
+  if (request.raw_shadow && !outcome) throw std::invalid_argument ("Raw Filter shadow needs an owned result channel");
+  if (&input == &output || input.size () != total || output.size () != total)
+    throw std::invalid_argument ("Filter process requires separate exact-sized rasters");
 #ifdef G_OS_WIN32
   throw std::runtime_error ("Bundled PDB Filter process execution is not supported on this platform yet");
 #else
@@ -115,7 +119,7 @@ bool filter_process (const FilterProcedureRequest& request, FilterRaster& input,
   Fd life_read; life_read.value = life[0]; child.lifeline.value = life[1];
   fcntl (life_read.value, F_SETFD, FD_CLOEXEC); fcntl (child.lifeline.value, F_SETFD, FD_CLOEXEC);
   const int source_fds[] = {life_read.value}, target_fds[] = {3};
-  const gchar *argv[] = {options.executable.c_str (), "--filter-worker-v1", profile.path.c_str (), nullptr};
+  const gchar *argv[] = {options.executable.c_str (), "--filter-worker-v2", profile.path.c_str (), nullptr};
   GError *error = nullptr;
   if (!g_spawn_async_with_pipes_and_fds (nullptr, argv, nullptr,
       GSpawnFlags (G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_CLOEXEC_PIPES), group_setup, nullptr,
@@ -133,7 +137,7 @@ bool filter_process (const FilterProcedureRequest& request, FilterRaster& input,
   std::vector<std::uint8_t> incoming;
   incoming.reserve (FilterWire::header_size + FilterWire::pixel_limit);
   std::size_t wanted = FilterWire::header_size;
-  FilterWire::Result result (total);
+  FilterWire::Result result (total, request.raw_shadow, !request.execution_region ().intersects);
   /* SIGPIPE belongs to this independent worker. Block it locally instead of
    * mutating the UI process's global signal disposition. Consume any new
    * pending SIGPIPE before restoring the original thread mask. */
@@ -193,7 +197,9 @@ bool filter_process (const FilterProcedureRequest& request, FilterRaster& input,
     throw std::runtime_error ("Filter child did not exit successfully");
   output.flush ();
   if (!profile.clear ()) throw std::runtime_error ("Private Filter profile cleanup failed");
-  return !cancel.load (std::memory_order_relaxed) && !FilterLifetime::stopping ();
+  if (cancel.load (std::memory_order_relaxed) || FilterLifetime::stopping ()) return false;
+  if (outcome) outcome->publish (result.disposition ());
+  return true;
 #endif
 }
 }

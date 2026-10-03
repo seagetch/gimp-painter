@@ -26,6 +26,7 @@ extern "C" {
 #include "gimp-painter-type-traits.hpp"
 #include "gimpfilterlayer-arguments.hpp"
 #include "gimpfilterpaths.hpp"
+#include "gimpfiltercontext.hpp"
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/filter-scheduler.hpp"
@@ -105,6 +106,7 @@ void owner_format_changed (GimpDrawable *, gpointer);
 void image_profile_changed (GObject *, gpointer);
 void filter_budget_changed (GObject *, GParamSpec *, gpointer);
 void image_disconnected (GimpObject *, gpointer);
+void selection_invalidated (GimpImage *, gpointer);
 
 struct FilterImpl
 {
@@ -112,6 +114,7 @@ struct FilterImpl
   ~FilterImpl () noexcept = default;
   void close () noexcept
   {
+    native_context.reset ();
     scheduler.close ();
     pending.close ();
     dependencies.clear ();
@@ -120,6 +123,8 @@ struct FilterImpl
     graph_clones.clear ();
     graph_nodes.clear ();
     own_connections.clear ();
+    selection_connection.close ();
+    context_selection.reset ();
     image_connection.close ();
     profile_connection.close ();
     config_connection.close ();
@@ -151,14 +156,32 @@ struct FilterImpl
   }
   void watch_image ()
   {
+    selection_connection.close ();
+    context_selection.reset ();
+    native_context.reset ();
     image_connection.close ();
     profile_connection.close ();
     config_connection.close ();
     if (GimpImage *image = gimp_item_get_image (GIMP_ITEM (owner)))
       {
         image_connection = connect (G_OBJECT (image), "disconnect", G_CALLBACK (image_disconnected));
+        selection_connection = connect (G_OBJECT (image), "selection-invalidate", G_CALLBACK (selection_invalidated));
         profile_connection = connect (G_OBJECT (image), "profile-changed", G_CALLBACK (image_profile_changed));
         config_connection = connect (G_OBJECT (image->gimp->config), "notify::painter-filter-spill-size", G_CALLBACK (filter_budget_changed));
+      }
+  }
+  void refresh_context_selection ()
+  {
+    auto *image = gimp_item_get_image (GIMP_ITEM (owner));
+    if (!image) throw std::runtime_error ("Filter selection image was closed");
+    auto *selection = G_OBJECT (gimp_image_get_mask (image));
+    if (context_selection.lock ().get () != selection)
+      {
+        /* XCF replaces the selection object after loading layers, without
+         * notifying the layer's image property. Identity is an owner epoch,
+         * not a Filter input generation and never restarts a clean Filter. */
+        context_selection = WeakRef<GObject> (ObjectRef<GObject>::retain (selection));
+        native_context.selection_changed ();
       }
   }
   GimpContainer *current_stack ()
@@ -236,6 +259,7 @@ struct FilterImpl
   {
     graph_valid = false;
     read_budget = 1024;
+    native_context.reset ();
     scheduler.invalidate ();
     staged.reset ();
     schedule ();
@@ -276,6 +300,7 @@ struct FilterImpl
          * content. Keep them visible, but only a successful rerun certifies
          * freshness. In particular, an opaque model must never inherit the
          * newer procedure's pixels or be marked complete/current by Undo. */
+        native_context.reset ();
         scheduler.restore_cache ({1, 0, cache_complete});
         staged.reset (); schedule ();
         publish_buffer (restore_buffer, scheduler.generation (), false);
@@ -294,6 +319,8 @@ struct FilterImpl
     read_budget = 1024;
     native_procedure.reset ();
     native_process_options.reset ();
+    native_outcome.reset ();
+    native_context.reset ();
     FilterScheduler::Request request;
     request.width = gimp_item_get_width (GIMP_ITEM (owner));
     request.height = gimp_item_get_height (GIMP_ITEM (owner));
@@ -479,22 +506,28 @@ struct FilterImpl
             descriptor->orientation = g_value_get_int (args->at (5));
             descriptor->transparent = g_value_get_int (args->at (6)); descriptor->gray = gray ();
             auto options = std::make_shared<FilterProcessOptions> ();
+            auto outcome = std::make_shared<FilterProcedureResult> ();
             /* Parent input/result and three child rasters (snapshot, drawable,
-             * shadow). 256MiB + row scratch is admission, not an RSS proof. */
+             * shadow), plus an owner native input and final selection snapshot.
+             * Conservatively reserve the owner logical size in BOTH memory and
+             * spill budgets; GEGL actual tiles still obey its shared cache/swap.
+             * Other live caches and child libraries are not total-RSS bounds. */
             const auto raster = descriptor->bytes ();
-            request.peak_spill_bytes = raster * 5;
-            const auto peak = std::uint64_t (256) * 1024 * 1024 +
+            const auto owner_context_bytes = std::uint64_t (request.width) * request.height * (gray () ? 3 : 5);
+            request.peak_spill_bytes = raster * 5 + owner_context_bytes;
+            const auto peak = owner_context_bytes + std::uint64_t (256) * 1024 * 1024 +
                               std::uint64_t (std::max (request.width, request.height)) * 384;
             request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
-            request.raster_process = [descriptor,options] (FilterRaster& input, FilterRaster& output,
+            request.raster_process = [descriptor,options,outcome] (FilterRaster& input, FilterRaster& output,
               std::atomic<bool>& cancel, const FilterRasterFactory&) {
                 /* Filesystem lookup belongs to the independent worker. Copy
                  * owner-prepared scalars instead of mutating shared options. */
                 auto resolved = *options;
                 resolved.executable = filter_worker_path ();
-                return filter_process (*descriptor, input, output, cancel, resolved);
+                return filter_process (*descriptor, input, output, cancel, resolved, outcome);
               };
             native_procedure = std::move (descriptor); native_process_options = std::move (options);
+            native_outcome = std::move (outcome);
           }
       }
     scheduler.set_request (std::move (request));
@@ -783,36 +816,6 @@ struct FilterImpl
         if (image) gimp_image_flush (GIMP_IMAGE (image.get ()));
       }
   }
-  void native_context (bool final_merge)
-  {
-    if (!native_procedure) return;
-    auto *image = gimp_item_get_image (GIMP_ITEM (owner));
-    if (!image) throw std::runtime_error ("Private Filter image was closed");
-    auto *selection = gimp_image_get_mask (image);
-    /* Querying is_empty() may synchronously scan an arbitrarily large mask.
-     * This first route admits only the already-established empty metadata. */
-    if (!selection->bounds_known || !selection->empty)
-      throw std::runtime_error ("Blinds selection context is not supported yet; definition and cache are retained");
-    if (final_merge)
-      {
-        if (gimp_image_get_active_mask (image) != GIMP_COMPONENT_MASK_ALL ||
-            gimp_layer_get_lock_alpha (GIMP_LAYER (owner)))
-          throw std::runtime_error ("Blinds component/alpha-lock merge context is not supported yet; definition and cache are retained");
-        return;
-      }
-    /* Context changes alone never invalidate a FilterLayer. Old Blinds reads
-     * its background at execution start, after input preparation is complete. */
-    double rgba[4];
-    gegl_color_get_pixel (gimp_context_get_background (gimp_get_user_context (image->gimp)),
-                          babl_format ("R'G'B'A double"), rgba);
-    const auto byte = [] (double v) { return std::uint8_t (std::floor (std::max (0.0, std::min (1.0, v)) * 255.0 + 0.5)); };
-    if (gray ())
-      {
-        const auto luminance = byte (0.2126 * rgba[0] + 0.7152 * rgba[1] + 0.0722 * rgba[2]);
-        native_procedure->background = {{luminance,luminance,luminance,255}};
-      }
-    else native_procedure->background = {{byte (rgba[0]),byte (rgba[1]),byte (rgba[2]),255}};
-  }
   bool step ()
   {
     /* Include every early return, callback and local destructor. Recording
@@ -828,6 +831,7 @@ struct FilterImpl
     if (!gimp_item_is_attached (GIMP_ITEM (owner)) || gimp_item_is_removed (GIMP_ITEM (owner)) ||
         !gimp_item_get_visible (GIMP_ITEM (owner)))
       {
+        native_context.reset ();
         const bool again = scheduler.step (false, {}, {}, {});
         if (scheduler.state () != FilterScheduler::State::importing) staged.reset ();
         return again;
@@ -941,14 +945,16 @@ struct FilterImpl
              * directory copied into this admitted spool, not a later setting. */
             native_process_options->temporary_directory = preparing_process_directory;
           }
-        if (native_procedure && offset + count == std::size_t (native_procedure->width) * native_procedure->height)
-          native_context (false);
+        if (native_procedure)
+          native_context.capture_input (GIMP_DRAWABLE (owner), offset, count, input.data () + size);
         maximum_read_us = std::max (maximum_read_us, g_get_monotonic_time () - read_started);
         tune_budget (count, g_get_monotonic_time () - read_started, read_budget);
       },
       [&] (std::size_t offset, std::size_t count, const std::uint8_t *pixels) {
         const auto import_started = g_get_monotonic_time ();
-        native_context (true);
+        std::vector<std::uint8_t> merged;
+        if (native_procedure)
+          { native_context.merge_chunk (offset, count, pixels, merged); pixels = merged.data (); }
         if (!offset)
           {
             GeglRectangle extent {0, 0, gimp_item_get_width (GIMP_ITEM (owner)), gimp_item_get_height (GIMP_ITEM (owner))};
@@ -987,12 +993,24 @@ struct FilterImpl
       },
       [&] (std::uint64_t token) {
         if (token != scheduler.generation ()) return;
-        native_context (true);
+        native_context.reset ();
         auto completed = std::move (staged);
         publish_buffer (GEGL_BUFFER (completed.get ()), token, true);
-      });
+      },
+      native_procedure ? FilterScheduler::Gate ([&] {
+        refresh_context_selection ();
+        if (!native_context.before_process (GIMP_DRAWABLE (owner), *native_procedure, read_budget)) return false;
+        native_outcome->reset ();
+        return true;
+      }) : FilterScheduler::Gate (),
+      native_procedure ? FilterScheduler::Gate ([&] {
+        refresh_context_selection ();
+        return native_context.before_import (GIMP_DRAWABLE (owner), native_outcome->disposition (), import_budget);
+      }) : FilterScheduler::Gate ());
     if (scheduler.state () == FilterScheduler::State::closed) return false;
     if (scheduler.state () != FilterScheduler::State::importing) staged.reset ();
+    if (scheduler.state () == FilterScheduler::State::clean || scheduler.state () == FilterScheduler::State::failed)
+      native_context.reset ();
     if (previous != scheduler.state ()) g_signal_emit_by_name (owner, "filter-state-changed");
     return again || graph_recheck;
   }
@@ -1004,9 +1022,11 @@ struct FilterImpl
   FilterScheduler scheduler;
   std::shared_ptr<FilterProcedureRequest> native_procedure;
   std::shared_ptr<FilterProcessOptions> native_process_options;
+  std::shared_ptr<FilterProcedureResult> native_outcome;
+  FilterOwnerContext native_context;
   std::string preparing_process_directory;
   FairDispatcher::Ticket pending;
-  WeakRef<GObject> stack;
+  WeakRef<GObject> stack, context_selection;
   ObjectRef<GObject> staged;
   std::vector<Connection> own_connections, dependencies, graph_connections;
   std::vector<FilterDependency> graph_filters;
@@ -1014,7 +1034,7 @@ struct FilterImpl
   std::vector<WeakRef<GObject>> graph_nodes;
   std::size_t graph_node_cursor = 0, graph_fish_cursor = 0;
   bool graph_valid = false, graph_recheck = false;
-  Connection image_connection, profile_connection, config_connection;
+  Connection image_connection, profile_connection, config_connection, selection_connection;
   std::vector<WeakRef<GObject>> lower_objects;
   bool topology_dirty = false;
   gint64 maximum_quantum_us = 0, maximum_graph_us = 0, maximum_read_us = 0;
@@ -1068,6 +1088,8 @@ void owner_format_changed (GimpDrawable *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { impl.configure (); }); }
 void image_profile_changed (GObject *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { impl.invalidate (); }); }
+void selection_invalidated (GimpImage *, gpointer data)
+{ visit (data, [] (FilterImpl& impl) { impl.native_context.selection_changed (); }); }
 void image_disconnected (GimpObject *, gpointer data)
 { visit (data, [] (FilterImpl& impl) { gimp_painter_binding_close (G_OBJECT (impl.owner), nullptr); }); }
 struct FilterUndoImpl
@@ -1367,7 +1389,7 @@ gint64 gimp_filter_layer_get_max_read_quantum_us (GimpFilterLayer *layer)
 #undef FILTER_READ
 void gimp_filter_layer_mark_as_loaded (GimpFilterLayer *layer)
 { boundary_void (nullptr, [&] { BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([] (FilterImpl& impl) {
-    impl.scheduler.mark_loaded (); impl.staged.reset (); }); }); }
+    impl.native_context.reset (); impl.scheduler.mark_loaded (); impl.staged.reset (); }); }); }
 void gimp_filter_layer_invalidate (GimpFilterLayer *layer)
 { boundary_void (nullptr, [&] { BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([] (FilterImpl& impl) { impl.invalidate (); }); }); }
 void gimp_filter_layer_cancel (GimpFilterLayer *layer)
@@ -1378,6 +1400,7 @@ void gimp_filter_layer_cancel (GimpFilterLayer *layer)
       /* Detach before callbacks can replace or close this generation. The
        * completed drawable buffer is independent from the staged import. */
       auto retired = std::move (impl.staged);
+      impl.native_context.reset ();
       impl.scheduler.reject ("Filter execution cancelled");
       impl.schedule ();
       g_signal_emit_by_name (impl.owner, "filter-state-changed");
@@ -1426,6 +1449,7 @@ gboolean gimp_filter_layer_restore_snapshot_state (GimpFilterLayer *layer,
         snapshot->cache_generation > snapshot->generation || snapshot->generation > G_MAXINT64)
       throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Invalid FilterLayer snapshot schema");
     BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([&] (FilterImpl& impl) {
+      impl.native_context.reset ();
       impl.scheduler.restore_cache ({snapshot->generation, snapshot->cache_generation, bool (snapshot->cache_complete)});
       impl.staged.reset ();
       impl.schedule ();

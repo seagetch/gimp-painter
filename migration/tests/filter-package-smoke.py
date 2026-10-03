@@ -125,11 +125,12 @@ def main():
     assert first_row(source) == bytes(oracle['source_pixel']) * oracle['width'], 'Fixture lower input changed'
     assert first_row(effect) == bytes(oracle['prior_cache_pixel']) * oracle['width'], 'Fixture cache already changed before explicit update'
     saved = destination.with_suffix('.xcf')
+    initial = destination.with_name('initial-cache.xcf')
+    assert Gimp.file_save(Gimp.RunMode.NONINTERACTIVE, image, Gio.File.new_for_path(str(initial)), None)
+    before = filter_record(initial)
+    assert before['saved-state'] == 0 and before['cache-complete']
+    assert bytes(before['procedure']) == b'plug-in-blinds\0'
     if missing:
-        initial = destination.with_name('initial-cache.xcf')
-        assert Gimp.file_save(Gimp.RunMode.NONINTERACTIVE, image, Gio.File.new_for_path(str(initial)), None)
-        before = filter_record(initial)
-        assert before['saved-state'] == 0 and before['cache-complete']
         prior_hash = raster_hash(effect)
         prior = hashlib.sha256()
         for _ in range(oracle['height']):
@@ -170,15 +171,28 @@ def main():
         assert observed == oracle['expected_rgba_sha256'], 'Completed Filter bytes differ from actual old PDB output'
         emit('EXACT_OUTPUT', sha256=observed)
         assert Gimp.file_save(Gimp.RunMode.NONINTERACTIVE, image, Gio.File.new_for_path(str(saved)), None)
+        completed = filter_record(saved)
+        assert definition(completed) == definition(before), 'Execution changed the saved Filter definition/arguments'
+        assert completed['saved-state'] == 0 and completed['cache-complete']
+        assert completed['cache-generation'] == completed['generation']
     assert image.delete()
     reopened = Gimp.file_load(Gimp.RunMode.NONINTERACTIVE, Gio.File.new_for_path(str(saved)))
     assert reopened is not None
     _, restored = layers(reopened)
     assert raster_hash(restored) == observed, 'Saved/reopened Filter pixels changed'
+    resaved = destination.with_name('reopened-definition.xcf')
+    assert Gimp.file_save(Gimp.RunMode.NONINTERACTIVE, reopened, Gio.File.new_for_path(str(resaved)), None)
+    restored_record = filter_record(resaved)
+    assert definition(restored_record) == definition(before), 'Reopening changed Filter type/definition/arguments'
+    assert restored_record['cache-complete']
+    if not missing:
+        assert restored_record['saved-state'] == 0
+        assert restored_record['cache-generation'] == restored_record['generation']
     assert reopened.delete()
     result = dict(status='passed', expected_sha256=observed,
         saved_xcf=str(saved), saved_bytes=saved.stat().st_size,
         saved_sha256=hashlib.sha256(saved.read_bytes()).hexdigest(),
+        definition_preserved=True, reopened_definition_preserved=True,
         scope='Explicit lower update, complete genuine-old Blinds pixels, Save and reopen; not a complete editing or GUI test')
     if missing:
         result.update(missing_runtime=missing, saved_state=failed['saved-state'],

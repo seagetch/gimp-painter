@@ -24,16 +24,20 @@ ROOT = Path(__file__).resolve().parents[2]
 FLAGS = ['-fsanitize=address,undefined,float-cast-overflow', '-fno-omit-frame-pointer', '-O1', '-g']
 FOCUSED = {
     'app/painter/binding-store.cpp', 'app/painter/gimp-painter-binding.cpp', 'app/painter/gimp-painter-error.cpp',
-    'app/painter/filter-scheduler.cpp', 'app/painter/filter-spool.cpp', 'app/painter/filter-raster.cpp',
+    'app/painter/filter-scheduler.cpp', 'app/painter/filter-context.cpp', 'app/painter/filter-spool.cpp', 'app/painter/filter-raster.cpp',
     'app/painter/filter-process.cpp', 'app/painter/filter-wire.cpp', 'app/painter/filter-lifetime.cpp',
-    'app/core/gimpfilterlayer.cpp', 'app/core/gimpfilterprocedure.cpp', 'app/core/gimpfilterpaths.cpp', 'app/core/gimpfilterexit.cpp',
+    'app/core/gimpfilterlayer.cpp', 'app/core/gimpfiltercontext.cpp', 'app/core/gimpfilterprocedure.cpp', 'app/core/gimpfilterpaths.cpp', 'app/core/gimpfilterexit.cpp',
     'app/core/gimp-batch.c', 'app/app.c', 'app/painter-filter-worker.cpp', 'plug-ins/common/blinds.c',
-    'app/tests/test-gimp-filter-layer.c', 'app/tests/test-gimp-filter-layout.cpp',
+    'app/tests/test-gimp-filter-layer.c', 'app/tests/test-gimp-filter-layout.cpp', 'app/tests/test-filter-owner-context.cpp',
+    'app/painter/tests/test-filter-owner-gates.cpp',
     'app/painter/tests/test-filter-process.cpp', 'app/painter/tests/test-filter-wire.cpp',
     'app/painter/tests/test-filter-spool.cpp', 'app/painter/tests/test-filter-scheduler.cpp',
 }
-LIVE = ['blinds_identity_and_update', 'blinds_context_idle', 'blinds_final_context_preserves_cache',
-        'blinds_unknown_selection_refuses_without_scan', 'blinds_replace_running_definition',
+LIVE = ['blinds_capture_context_edits', 'blinds_sealed_context_chunked_import',
+        'blinds_capture_replacement_cancel_close', 'blinds_unknown_mask_latency', 'blinds_owner_context', 'blinds_owner_context_phases', 'blinds_owner_context_expansion',
+        'blinds_owner_context_retry', 'blinds_actual_old_context', 'blinds_actual_old_expansion',
+        'blinds_gray_offset_context', 'blinds_identity_and_update', 'blinds_context_idle', 'blinds_final_context_merges',
+        'blinds_unknown_selection_scans_in_quanta', 'blinds_replace_running_definition',
         'blinds_background_samples_execution_start', 'blinds_disabled_swap_preserves_cache',
         'blinds_cancelled_gui_quit_keeps_worker', 'blinds_nonquit_batch_statuses',
         'explicit_cancel_preserves_completed_cache', 'explicit_cancel_survives_callback_reentry']
@@ -41,7 +45,7 @@ TARGETS = {'app/tests/gimp-filter-layer': 'gimp-filter-layer',
            'app/gimp-painter-filter-worker': 'gimp-painter-filter-worker',
            'app/gimp-console-3.0': 'gimp-console-3.0', 'plug-ins/common/blinds': 'blinds',
            **{'app/painter/painter-' + name: 'painter-' + name for name in
-              ['filter-wire', 'filter-process', 'filter-spool', 'filter-scheduler']}}
+              ['filter-wire', 'filter-process', 'filter-spool', 'filter-scheduler', 'filter-owner-gates']}}
 
 
 def sha(path):
@@ -92,7 +96,9 @@ def main():
             raise RuntimeError('Unregistered source: ' + ', '.join(sorted(missing)))
         inputs = {ROOT / source for source in selected}
         inputs.update([Path(__file__).resolve(), ROOT / 'migration/tests/painter_sanitizer_scope.py',
-                       ROOT / 'app/tests/test-filter-blinds.inc', ROOT / 'app/tests/test-filter-cancel.inc',
+                       ROOT / 'app/tests/test-filter-blinds.inc', ROOT / 'app/tests/test-filter-blinds-context.inc', ROOT / 'app/tests/test-filter-blinds-context-lifecycle.inc',
+                       ROOT / 'migration/tests/run_filter_owner_context_fixture_test.py',
+                       ROOT / 'migration/tests/filter_context_fixture_bundle.py', ROOT / 'app/tests/test-filter-cancel.inc',
                        ROOT / 'tools/check_filter_active_quit.py'])
         jobs, replacements = [], {}
         for source in sorted(selected):
@@ -177,14 +183,15 @@ def main():
                        GIMP_TESTING_PLUGINDIRS=str(build / 'plug-ins/common'), GSETTINGS_BACKEND='memory',
                        ASAN_OPTIONS='detect_leaks=0:halt_on_error=1:abort_on_error=1',
                        UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1')
-            for name in ('painter-filter-wire', 'painter-filter-process', 'painter-filter-scheduler', 'painter-filter-spool'):
+            for name in ('painter-filter-wire', 'painter-filter-process', 'painter-filter-scheduler', 'painter-filter-spool', 'painter-filter-owner-gates'):
                 result = run([str(out / name)], name, env)
                 report['results'].append(dict(name=name, exit_code=result.returncode, stdout=result.stdout, stderr=result.stderr))
                 print(name, 'PASS', flush=True)
-            command = [str(out / 'gimp-filter-layer')]
+            command = ['python3', str(ROOT / 'migration/tests/run_filter_owner_context_fixture_test.py'),
+                       '--', str(out / 'gimp-filter-layer')]
             for name in LIVE:
                 command += ['-p', '/gimp-filter-layer/' + name]
-            result = run(command, 'live-filter', env, timeout=180)
+            result = run(command, 'live-filter', env, timeout=300)
             actual = set(re.findall(r'^ok \d+ /gimp-filter-layer/(\S+)$', result.stdout, re.M))
             if actual != set(LIVE):
                 raise RuntimeError('Selected native cases did not all execute: ' + repr(actual))

@@ -83,45 +83,38 @@ blinds_context_idle (void)
   g_object_unref (image);
 }
 static void
-blinds_final_context_preserves_cache (void)
+blinds_final_context_merges (void)
 {
   for (guint kind = 0; kind < 3; ++kind)
     {
       GimpImage *image = image_new (128,128);
       GimpLayer *source = source_new (image,NULL,128,128);
       GimpFilterLayer *filter = filter_new (image,NULL,128,128);
-      guint64 runs;
-      fill (source,31,121,217,255); define_blinds (filter,67,7,1,0);
+      fill (source,31,121,217,255); define_blinds (filter,0,7,1,0);
       fill (GIMP_LAYER (filter),17,29,53,123); gimp_filter_layer_mark_as_loaded (filter);
       gimp_filter_layer_invalidate (filter); blinds_wait (filter,GIMP_FILTER_LAYER_RUNNING);
       if (kind == 0) gimp_channel_select_rectangle (gimp_image_get_mask (image),0,0,7,9,GIMP_CHANNEL_OP_REPLACE,FALSE,0,0,FALSE);
       else if (kind == 1) gimp_image_set_component_active (image,GIMP_CHANNEL_RED,FALSE);
       else gimp_layer_set_lock_alpha (GIMP_LAYER (filter),TRUE,FALSE);
-      blinds_wait (filter,GIMP_FILTER_LAYER_FAILED); pixel (GIMP_LAYER (filter),17,29,53,123);
-      runs = gimp_filter_layer_get_run_count (filter);
-      if (kind == 0) gimp_channel_clear (gimp_image_get_mask (image),NULL,FALSE);
-      else if (kind == 1) gimp_image_set_component_active (image,GIMP_CHANNEL_RED,TRUE);
-      else gimp_layer_set_lock_alpha (GIMP_LAYER (filter),FALSE,FALSE);
-      spin_ms (50); g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, runs);
-      g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_FAILED);
-      define_blinds (filter,0,3,0,0); settle (filter); pixel (GIMP_LAYER (filter),31,121,217,255);
+      settle (filter); pixel (GIMP_LAYER (filter),31,121,217,255);
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 1);
       g_object_unref (image);
     }
 }
 static void
-blinds_unknown_selection_refuses_without_scan (void)
+blinds_unknown_selection_scans_in_quanta (void)
 {
   GimpImage *image = image_new (37,19);
   GimpLayer *source = source_new (image,NULL,37,19);
   GimpFilterLayer *filter = filter_new (image,NULL,37,19);
   GimpChannel *mask = gimp_image_get_mask (image);
   fill (source,31,121,217,255); define_blinds (filter,0,3,0,0);
-  fill (GIMP_LAYER (filter),17,29,53,123); gimp_filter_layer_mark_as_loaded (filter);
   mask->bounds_known = FALSE;
-  gimp_filter_layer_invalidate (filter); blinds_wait (filter,GIMP_FILTER_LAYER_FAILED);
-  g_assert_false (mask->bounds_known); pixel (GIMP_LAYER (filter),17,29,53,123);
-  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
-  gimp_channel_clear (mask,NULL,FALSE); g_object_unref (image);
+  settle (filter);
+  /* The completion image flush may populate native bounds independently. */
+  pixel (GIMP_LAYER (filter),31,121,217,255);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 1);
+  g_object_unref (image);
 }
 static void
 blinds_replace_running_definition (void)

@@ -1,8 +1,9 @@
 # Legacy FilterLayer context and exact shadow merge
 
-This is an independently verified scalar/context foundation. It is **not yet
-connected to the live GIMP 3 FilterLayer, worker protocol, or Meson targets**.
-The owner-phase integration remains a separate acceptance slice. No standard
+The independently verified scalar/context foundation is now registered in Meson
+and connected to the live GIMP 3 Blinds FilterLayer through owner-only capture
+and a private raw-shadow protocol. The accepted owner slice is recorded under
+`migration/tests/filter-blinds-context/`; it covers this one procedure family. No standard
 GEGL effect replaces the independent FilterLayer execution route.
 
 ## Corrected genuine old evidence
@@ -125,7 +126,7 @@ separate. Unknown mask bounds and mask copying belong in admitted owner-thread
 quanta. No GObject, GEGL graph, BindingStore, or owner closure crosses to workers,
 and GEGL evaluation never starts or waits for an executor.
 
-The pending child route must return shadow-equivalent pixels produced with the
+The integrated child route returns shadow-equivalent pixels produced with the
 start ROI. A scoped private-PDB shadow-merge override can retain the actual
 native shadow before modern compositing and cleanup, preserving the bundled
 plug-in transformation. Inverting an already merged drawable is not assumed to
@@ -172,3 +173,32 @@ The extracted-source comparison additionally needs the pinned old checkout.
 The compiled scalar/native tests need no GIMP application build; fresh oracle
 capture still uses the recorded restored old build environment. All native-test
 phases use the shared build lock.
+
+## Native Blinds owner slice
+
+The common typed FilterSlot now contains FilterOwnerContext, with admitted,
+contiguous original-input and selection-mask storage. No extra object store or
+worker-side GObject is introduced. Unknown global bounds and final coverage are
+read in bounded quanta; a change during either capture restarts it. Components
+and own alpha lock are read only at final sealing. After sealing, context-only
+changes neither restart import nor launch another job. New input/definition and
+owner lifetime invalidation remain separate and discard unpublished buffers.
+
+The original 240 alpha-bearing native records exercise every GrayA/RGBA active
+mask, four selection conditions and target/synthetic ancestor lock probes. The
+24 old live records and six expansion records test both context phases; actual
+process tests compare these full results again at zero/nonzero target offsets,
+including replacement of the image selection as performed by XCF loading.
+
+The compact expansion archive is separately pinned by its manifest and capture
+report. Three mid-PDB scenes begin with x=[21,42), y=[3,60) in a 63x63 target and
+then expand, clear or soften selection. All 2,772 unwritten shadow pixels outside
+that start ROI are zero; expansion changes alpha outside the ROI in 2,208, 2,426
+and 2,038 pixels respectively. This is why filling unwritten shadow with input
+would fail compatibility even though input must be retained outside final
+merge coverage. No fixture was generated from the new implementation.
+
+Timing reports retain actual end-to-end and owner/heartbeat measurements. Pixel
+budgets alone do not certify responsiveness, GEGL allocation/destruction or
+filesystem stalls. The broad latency, platform, UI-progress and remaining
+procedure gates stay open.

@@ -12,6 +12,7 @@ libapppainter = static_library('apppainter',
   'gimp-painter-binding.cpp',
   'binding-store.cpp',
   'filter-scheduler.cpp',
+  'filter-context.cpp',
   'filter-wire.cpp',
   'filter-process.cpp',
   'filter-lifetime.cpp',
@@ -55,7 +56,7 @@ test('painter-foundation', painter_foundation_test,
 )
 
 # The feature scheduler and exact legacy-edge executor own no GIMP objects.
-foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-edge', 'filter-gauss', 'filter-gray', 'filter-gauss-alias', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels', 'filter-native-kernels']
+foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-owner-gates', 'filter-edge', 'filter-gauss', 'filter-gray', 'filter-gauss-alias', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels', 'filter-native-kernels']
   feature_cpp_args = painter_cpp_args
   feature_link_args = []
   if feature == 'filter-process' and host_machine.system() == 'linux'
@@ -90,6 +91,32 @@ foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-
     args: feature_args,
     suite: 'painter', timeout: 60)
 endforeach
+
+filter_context_test = executable('painter-filter-context',
+  'tests/test-filter-context.cpp',
+  dependencies: [painter_dep, painter_threads],
+  cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'])
+test('painter-filter-context', python,
+  args: [meson.project_source_root() / 'migration/tests/run_filter_context_fixture_test.py',
+         filter_context_test,
+         meson.project_source_root() / 'migration/fixtures/legacy-filter-context.tar.gz',
+         meson.project_source_root() / 'migration/fixtures/legacy-filter-context.tar.manifest.json'],
+  depends: [filter_context_test], suite: 'painter', timeout: 60)
+
+# Deterministically pause the real spool at its two publication stores. The
+# generated observation copy is linked only into this test; the application
+# uses the unchanged production spool implementation with no test hooks.
+observed_filter_spool = custom_target('observed-filter-spool',
+  input: 'filter-spool.cpp', output: 'observed-filter-spool.cpp',
+  command: [python, files('tests/observe-filter-spool.py'), '@INPUT@', '@OUTPUT@'])
+filter_import_completion_test = executable('painter-filter-import-completion',
+  'tests/test-filter-import-completion.cpp', observed_filter_spool,
+  dependencies: [painter_dep, painter_threads],
+  cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'])
+test('painter-filter-import-completion', filter_import_completion_test,
+  suite: 'painter', timeout: 30)
 
 # A hidden app-only enum slot must never shift the public plug-in identities.
 test('painter-public-mode-abi', python,

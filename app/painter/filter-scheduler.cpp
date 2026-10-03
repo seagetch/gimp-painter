@@ -147,7 +147,8 @@ std::size_t FilterScheduler::next_count (std::size_t offset) const noexcept
   return std::min (remaining, (pixel_budget_ / request_.width) * request_.width);
 }
 bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
-                            const Commit& commit) noexcept
+                            const Commit& commit, const Gate& before_process,
+                            const Gate& before_import) noexcept
 {
   if (state_ == State::closed) return false;
   if (stepping_) return dirty_ || bool (job_);
@@ -178,8 +179,10 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
               const std::string message = spool.error ().empty () ? "Filter spool failed or was cancelled" : spool.error ();
               job_.reset (); fail (message.c_str ()); return false;
             }
-          else if (spool.phase () == FilterSpool::Phase::exporting || spool.done ())
-            { if (state_ != State::importing) { state_ = State::importing; cursor_ = 0; } }
+          else if (state_ == State::importing ||
+                   spool.phase () == FilterSpool::Phase::exporting ||
+                   spool.done ())
+            { if (state_ != State::importing) { state_ = State::importing; cursor_ = 0; import_ready_ = false; } }
           else if (spool.started ())
             { state_ = State::running; return true; }
         }
@@ -197,6 +200,7 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
                 { job_.reset (); fail ("Filter returned an invalid result size"); return false; }
               state_ = State::importing;
               cursor_ = 0;
+              import_ready_ = false;
             }
         }
       if (!dirty_) return false;
@@ -231,6 +235,7 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
           if (!admission_lease_) return true;
           cursor_ = 0;
           work_generation_ = generation_;
+          input_sealed_ = false;
           if (request_.raster_process)
             {
               auto job = std::make_shared<Job> ();
@@ -246,30 +251,43 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
       if (state_ == State::preparing)
         {
           auto collecting = job_; // callback closure cannot destroy an active transport
-          if (collecting && collecting->spool &&
-              (cursor_ == request_.width * request_.height || !collecting->spool->can_submit ())) return true;
-          const auto count = next_count (cursor_);
+          const auto total = request_.width * request_.height;
+          if (collecting && collecting->spool && input_sealed_) return true;
+          if (cursor_ < total)
+            {
+              if (collecting && collecting->spool && !collecting->spool->can_submit ()) return true;
+              const auto count = next_count (cursor_);
+              const auto token = work_generation_;
+              /* Reentrant callbacks receive an independent bounded chunk,
+               * never a borrow into admitted aggregate storage. */
+              Bytes chunk;
+              chunk.reserve (count * request_.bytes_per_pixel);
+              read (cursor_, count, chunk);
+              if (generation_ != token || state_ != State::preparing)
+                return state_ != State::closed && (dirty_ || bool (job_));
+              if (chunk.size () != count * request_.bytes_per_pixel)
+                { fail ("Input producer returned an invalid chunk size"); return bool (job_); }
+              if (collecting && collecting->spool)
+                {
+                  if (!collecting->spool->submit (cursor_, chunk)) return true;
+                }
+              else input_.insert (input_.end (), chunk.begin (), chunk.end ());
+              cursor_ += count;
+              /* Do not combine a full input read with bounded context capture
+               * in one owner quantum. Without a gate, keep the original path. */
+              if (cursor_ < total || before_process) return true;
+            }
           const auto token = work_generation_;
-          /* A callback can invalidate/close the scheduler. Keep its bounded
-           * mutable chunk independent of the admitted aggregate so reentry
-           * cannot retain unaccounted storage or invalidate its data pointer. */
-          Bytes chunk;
-          chunk.reserve (count * request_.bytes_per_pixel);
-          read (cursor_, count, chunk);
+          const bool context_ready = !before_process || before_process ();
           if (generation_ != token || state_ != State::preparing)
             return state_ != State::closed && (dirty_ || bool (job_));
-          if (chunk.size () != count * request_.bytes_per_pixel)
-            { fail ("Input producer returned an invalid chunk size"); return bool (job_); }
+          if (!context_ready) return true;
           if (collecting && collecting->spool)
             {
-              if (!collecting->spool->submit (cursor_, chunk)) return true;
-              cursor_ += count;
-              if (cursor_ == request_.width * request_.height) collecting->spool->seal_input ();
+              collecting->spool->seal_input ();
+              input_sealed_ = true;
               return true;
             }
-          input_.insert (input_.end (), chunk.begin (), chunk.end ());
-          cursor_ += count;
-          if (cursor_ < request_.width * request_.height) return true;
           auto job = std::make_shared<Job> ();
           job->lease = std::move (admission_lease_);
           job->input = std::move (input_);
@@ -295,6 +313,16 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
       if (state_ == State::importing)
         {
           const auto token = generation_;
+          if (!import_ready_)
+            {
+              const bool context_ready = !before_import || before_import ();
+              if (generation_ != token || state_ != State::importing)
+                return state_ != State::closed && (dirty_ || bool (job_));
+              if (!context_ready) return true;
+              import_ready_ = true;
+              // A completed capture may have used its entire pixel quantum.
+              if (before_import) return true;
+            }
           /* Keep worker bytes alive if a main-thread callback closes us. */
           auto job = job_;
           if (cursor_ < request_.width * request_.height)

@@ -75,13 +75,15 @@ foreach test_name : app_tests
     'test-@0@.c'.format(test_name),
     'tests.c',
     test_name == 'gimp-clone-layer' ? ['test-gimp-clone-layout.cpp'] : [],
-    test_name == 'gimp-filter-layer' ? ['test-gimp-filter-layout.cpp'] : [],
+    test_name == 'gimp-filter-layer' ? ['test-gimp-filter-layout.cpp', 'test-filter-owner-context.cpp'] : [],
     dependencies: [ libapp_dep, appstream ],
     link_with: apptests_links,
   )
 
   test(test_name,
-    test_exe,
+    test_name == 'gimp-filter-layer' ? python : test_exe,
+    args: test_name == 'gimp-filter-layer' ? [meson.project_source_root() /
+      'migration/tests/run_filter_owner_context_fixture_test.py', '--', test_exe] : [],
     env: [
       'GIMP_TESTING_ABS_TOP_SRCDIR='  + meson.project_source_root(),
       'GIMP_TESTING_ABS_TOP_BUILDDIR='+ meson.project_build_root(),
@@ -90,7 +92,7 @@ foreach test_name : app_tests
     ],
     suite: 'app',
     # This suite includes real8193x8193 spill and hundreds of old Gauss buffers.
-    timeout: test_name == 'gimp-filter-layer' ? 180 : 60,
+    timeout: test_name == 'gimp-filter-layer' ? 300 : 60,
     is_parallel : false,
     priority: prio,
   )

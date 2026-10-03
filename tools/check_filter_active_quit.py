@@ -194,7 +194,7 @@ def run_trial(jobs, fixtures, out, environment, executables, dimension, timeout)
                         main_pid = mains[0]["pid"]
                     helpers = [item for item in current.values() if item["exe"] == helper_exe and
                                item["state"] != "Z" and len(item["argv"]) == 3 and
-                               item["argv"][1] == "--filter-worker-v1"]
+                               item["argv"][1] == "--filter-worker-v2"]
                     for item in helpers:
                         profiles.add(item["argv"][2])
                     seen = events(event_path)

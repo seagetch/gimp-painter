@@ -65,7 +65,7 @@ int main (int argc, char **argv)
 #ifdef G_OS_WIN32
   return 125;
 #else
-  if (argc != 3 || std::strcmp (argv[1], "--filter-worker-v1")) return 125;
+  if (argc != 3 || std::strcmp (argv[1], "--filter-worker-v2")) return 125;
   /* Duplicate before GIMP/GEGL/plugin initialization. All ordinary diagnostics
    * (including library writes to stdout) go to stderr; descendants cannot keep
    * this protocol descriptor alive across exec. */
@@ -90,6 +90,7 @@ int main (int argc, char **argv)
   try {
     const auto request = FilterWire::request (read_frame ());
     const auto total = request.bytes ();
+    auto disposition = FilterProcedureDisposition::pending;
     {
       TemporaryFilterRaster input (argv[2], total);
       std::uint64_t offset = 0;
@@ -106,12 +107,13 @@ int main (int argc, char **argv)
       std::uint8_t trailing; ssize_t n; do { n = read (STDIN_FILENO, &trailing, 1); } while (n < 0 && errno == EINTR);
       if (n != 0) throw std::invalid_argument ("Trailing private Filter input bytes");
       input.flush (); Output output (protocol, total); std::atomic<bool> cancel {false};
-      if (!run_filter_procedure (request, input, output, cancel)) throw std::runtime_error ("Private Filter procedure cancelled");
+      disposition = run_filter_procedure (request, input, output, cancel);
+      if (disposition == FilterProcedureDisposition::pending) throw std::runtime_error ("Private Filter procedure cancelled");
       output.finish ();
     }
     /* run_filter_procedure and input destruction must finish before terminal.
      * The owner still requires this terminal, EOF, successful reap and cleanup. */
-    write_frame (protocol, {FilterWire::Type::success, total, {}}); status = 0;
+    write_frame (protocol, FilterWire::success (total, disposition)); status = 0;
   } catch (const std::exception& error) {
     std::fprintf (stderr, "Private Filter worker: %s\n", error.what ());
     try { write_frame (protocol, {FilterWire::Type::failure, 0, {}}); } catch (...) {}

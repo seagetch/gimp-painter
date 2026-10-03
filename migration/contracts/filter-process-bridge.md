@@ -23,7 +23,9 @@ The first route accepts U8 nonlinear RGB/Gray, angles 0..90 and segments 1..100.
 As in the old plug-in, orientation 1 is vertical and every other integer is
 horizontal; any nonzero transparency argument enables transparent background.
 
-The versioned little-endian framing has a 24-byte header, zero reserved fields,
+The private GPF2 / --filter-worker-v2 little-endian framing has a 24-byte header,
+a 60-byte Blinds-only request including start ROI/raw-shadow flags, a 4-byte
+completion disposition, zero reserved fields,
 at most 64 KiB metadata and 128 KiB pixel payloads. Input/output offsets must be
 contiguous and totals exact. Publication requires complete input transfer,
 exact output, exactly one successful terminal frame, EOF, successful helper
@@ -57,20 +59,36 @@ and abrupt-parent-crash profile removal is not claimed.
 
 Blinds receives RGBA8 in a private sRGB-labelled surrogate. Native RGB bytes are
 copied unchanged; Gray is replicated across RGB so neither ICC conversion nor
-modern gray luminance changes the old samples. Output alpha zero restores the
-original hidden color bytes, matching the old REPLACE_INTEN shadow merge.
+modern gray luminance changes the old samples. The integrated owner requests
+raw shadow through a request-scoped private PDB override, held in the common
+BindingStore. The bundled Blinds transformation runs unchanged. The override
+retains the actual shadow before modern compositing/cleanup; unwritten shadow
+outside the start ROI stays zero, as measured in the genuine-old expansion
+corpus. A selected-but-outside start ROI returns a distinct no-merge disposition.
 Background byte rounding and Gray luminance coefficients come from pinned old
 `gimp_drawable_get_color_uchar`, `gimp_rgb_get_uchar` and
 `gimp_rgb_luminance_uchar` at afa43fae3e920210146abed514f136fd49f671b5.
 
-Context-only edits do not start jobs. Background is sampled after the final
-input-preparation read, just before native execution can start. The first route
-explicitly refuses an unknown or nonempty selection at that point. It uses
-already-known selection metadata and never calls an unbounded selection scan.
-At import/final publication it independently checks the final selection,
-image components and target's own alpha lock; unsupported contexts retain the
-previous cache and original definition without eager restart. Full legacy
-selection/component merge semantics are a separate acceptance gate.
+Context-only edits do not start jobs. After input preparation, admitted owner
+quanta discover unknown global selection bounds without a synchronous whole-mask
+scan. Start ROI and background are sampled before sealing the worker input.
+After the independently completed result becomes available, owner quanta capture
+the current selection coverage. An immediate image selection-invalidate signal
+restarts a changed capture; gate-time mask identity checks also cover XCF's
+replacement selection object. Neither changes the Filter input generation.
+Components and the target's own alpha lock are sealed once with that completed
+coverage snapshot, then exact old REPLACE_INTEN arithmetic merges every chunk.
+Ancestor alpha locks do not restrict the target merge. A context-only edit after
+sealing leaves the in-progress publication coherent; the next lower-input edit
+uses current context. Input outside final coverage is preserved, while expansion
+can legitimately expose the old zero shadow outside the start ROI.
+
+GEGL continues to expose only the complete committed cache. Scheduler owner
+gates are ephemeral and never enter worker requests; cancelled/obsolete context
+storage is released with the abandoned generation. Import remains monotonic
+when a spool is between its complete-phase store and its done store. See
+`filter-context.md` and the exact leaf evidence under
+`../tests/filter-blinds-context/` for the native integration acceptance boundary.
 
 The trusted swap directory is captured per admitted job. Definition replacement
 while a prior worker is cancelling must still copy that directory into the new
@@ -82,6 +100,15 @@ worker options are not rewritten during replacement.
 All Blinds sizes use the existing bounded file spool. Disabled file swap is an
 explicit unsupported context, preserving cache/definition. Admission reserves
 parent input/result plus three child rasters and 256 MiB plus audited row work.
+The owner input and possible coverage snapshot additionally reserve 5 bytes per
+RGBA pixel or 3 per GrayA pixel in both memory and logical spill admission.
+Under the existing 1 GiB memory pool, this conservative full logical allowance
+can reject sufficiently large extents even when GEGL swap is enabled. This is
+an explicit resource limit, not an all-size compatibility claim. Oversize
+admission requests fail terminally before worker start and retain the completed
+cache/definition; arbitrary-size and total-resource acceptance remains open.
+Those owner buffers still use GEGL shared cache/swap; existing image/selection
+storage, tile metadata, libraries and other host caches remain separate.
 That is declared logical admission, not exclusive filesystem allocation or a
 universal total-RSS guarantee. The private runtime pins and verifies both native
 and GEGL temporary/swap paths, a 32 MiB tile cache, one GEGL worker and disabled

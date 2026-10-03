@@ -2334,6 +2334,8 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 
 #include "test-filter-cancel.inc"
 #include "test-filter-blinds.inc"
+#include "test-filter-blinds-context.inc"
+#include "test-filter-blinds-context-lifecycle.inc"
 
 int main (int argc, char **argv)
 {
@@ -2347,10 +2349,16 @@ int main (int argc, char **argv)
   }
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
+  ADD (blinds_owner_context); ADD (blinds_owner_context_phases);
+  ADD (blinds_owner_context_expansion); ADD (blinds_owner_context_retry);
+  ADD (blinds_actual_old_context); ADD (blinds_actual_old_expansion);
+  ADD (blinds_gray_offset_context);
+  ADD (blinds_capture_context_edits); ADD (blinds_sealed_context_chunked_import);
+  ADD (blinds_capture_replacement_cancel_close); ADD (blinds_unknown_mask_latency);
   ADD (blinds_nonquit_batch_statuses);
   ADD (blinds_cancelled_gui_quit_keeps_worker);
   ADD (blinds_identity_and_update); ADD (blinds_context_idle);
-  ADD (blinds_final_context_preserves_cache); ADD (blinds_unknown_selection_refuses_without_scan);
+  ADD (blinds_final_context_merges); ADD (blinds_unknown_selection_scans_in_quanta);
   ADD (blinds_replace_running_definition); ADD (blinds_background_samples_execution_start);
   ADD (blinds_disabled_swap_preserves_cache);
   ADD (explicit_cancel_preserves_completed_cache);

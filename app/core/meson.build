@@ -53,6 +53,7 @@ libappcore_sources = [
   'gimp.c',
   'gimpclonelayer.cpp',
   'gimpfilterlayer.cpp',
+  'gimpfiltercontext.cpp',
   'gimpfilterprocedure.cpp',
   'gimpfilterpaths.cpp',
   'gimpfilterexit.cpp',

@@ -17,17 +17,24 @@ std::size_t payload_size (const std::uint8_t *header);
 Frame decode (const std::uint8_t *bytes, std::size_t size);
 Frame request (const FilterProcedureRequest&);
 FilterProcedureRequest request (const Frame&);
+Frame success (std::uint64_t bytes, FilterProcedureDisposition disposition);
 /* Stateful exact-size, ordered result validation, independent of I/O. EOF and
  * successful child reap remain mandatory transport checks after finish(). */
 class Result {
 public:
-  explicit Result (std::uint64_t bytes) : bytes_ (bytes) {}
+  explicit Result (std::uint64_t bytes, bool raw_shadow = false, bool no_merge = false)
+    : bytes_ (bytes), expected_ (no_merge ? FilterProcedureDisposition::no_merge :
+                                raw_shadow ? FilterProcedureDisposition::shadow :
+                                             FilterProcedureDisposition::merged) {}
   void accept (const Frame&);
   void finish () const;
   bool terminal () const noexcept { return terminal_; }
+  FilterProcedureDisposition disposition () const noexcept { return disposition_; }
 private:
   std::uint64_t bytes_, offset_ = 0;
   bool terminal_ = false;
+  FilterProcedureDisposition expected_;
+  FilterProcedureDisposition disposition_ = FilterProcedureDisposition::pending;
 };
 }}
 #endif

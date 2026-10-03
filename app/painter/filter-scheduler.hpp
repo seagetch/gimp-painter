@@ -47,6 +47,10 @@ public:
   using Read = std::function<void (std::size_t, std::size_t, Bytes&)>;
   using Import = std::function<void (std::size_t, std::size_t, const std::uint8_t *)>;
   using Commit = std::function<void (std::uint64_t)>;
+  /* Ephemeral owner-thread gates, never retained in a Request or Job. A false
+   * return yields this quantum; source/generation reentry is checked afterward.
+   * Gates may prepare bounded context only after admission. */
+  using Gate = std::function<bool ()>;
   static constexpr std::size_t pixel_budget = 256 * 128;
   static constexpr std::size_t maximum_pixels = 64 * 1024 * 1024;
 
@@ -73,7 +77,8 @@ public:
   void close () noexcept;
   /* One bounded main-thread quantum. False means no further quanta are needed.
    * Dependency waiters sleep until their dependency signal schedules a step. */
-  bool step (bool dependencies_ready, const Read&, const Import&, const Commit&) noexcept;
+  bool step (bool dependencies_ready, const Read&, const Import&, const Commit&,
+             const Gate& before_process = {}, const Gate& before_import = {}) noexcept;
   State state () const noexcept { return state_; }
   bool settled () const noexcept { return !job_ && (state_ == State::clean || state_ == State::failed); }
   bool has_worker () const noexcept { return bool (job_); }
@@ -98,6 +103,7 @@ private:
   std::uint64_t generation_ = 0, work_generation_ = 0, cache_generation_ = 0, starts_ = 0;
   State state_ = State::clean;
   bool dirty_ = false, cache_complete_ = true, stepping_ = false;
+  bool input_sealed_ = false, import_ready_ = false;
   std::string error_;
 };
 } // namespace GimpPainter
