@@ -44,6 +44,7 @@
 #include "libgimp/stdplugins-intl.h"
 
 #define PLUG_IN_PROC   "plug-in-small-tiles"
+#define PAINTER_PROC   "plug-in-painter-small-tiles"
 #define PLUG_IN_BINARY "tile-small"
 #define PLUG_IN_ROLE   "gimp-tile-small"
 
@@ -247,7 +248,8 @@ tile_init (Tile *tile)
 static GList *
 tile_query_procedures (GimpPlugIn *plug_in)
 {
-  return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+  GList *procedures = g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+  return g_list_append (procedures, g_strdup (PAINTER_PROC));
 }
 
 static GimpProcedure *
@@ -256,18 +258,23 @@ tile_create_procedure (GimpPlugIn  *plug_in,
 {
   GimpProcedure *procedure = NULL;
 
-  if (! strcmp (name, PLUG_IN_PROC))
+  if (! strcmp (name, PLUG_IN_PROC) || ! strcmp (name, PAINTER_PROC))
     {
+      gboolean painter_legacy = ! strcmp (name, PAINTER_PROC);
+
       procedure = gimp_image_procedure_new (plug_in, name,
                                             GIMP_PDB_PROC_TYPE_PLUGIN,
-                                            tile_run, NULL, NULL);
+                                            tile_run, GINT_TO_POINTER (painter_legacy), NULL);
 
       gimp_procedure_set_image_types (procedure, "RGB*, GRAY*");
       gimp_procedure_set_sensitivity_mask (procedure,
                                            GIMP_PROCEDURE_SENSITIVE_DRAWABLE);
 
-      gimp_procedure_set_menu_label (procedure, _("_Small Tiles..."));
-      gimp_procedure_add_menu_path (procedure, "<Image>/Filters/Map");
+      if (! painter_legacy)
+        {
+          gimp_procedure_set_menu_label (procedure, _("_Small Tiles..."));
+          gimp_procedure_add_menu_path (procedure, "<Image>/Filters/Map");
+        }
 
       gimp_procedure_set_documentation (procedure,
                                         _("Tile image into smaller "
@@ -282,7 +289,7 @@ tile_create_procedure (GimpPlugIn  *plug_in,
       gimp_procedure_add_int_argument (procedure, "num-tiles",
                                        _("_n²"),
                                        _("Number of tiles to make"),
-                                       2, MAX_SEGS, 2,
+                                       painter_legacy ? 0 : 2, MAX_SEGS, 2,
                                        G_PARAM_READWRITE);
     }
 
@@ -300,6 +307,10 @@ tile_run (GimpProcedure        *procedure,
   GimpDrawable *drawable;
   gint          pwidth;
   gint          pheight;
+
+  /* The hidden compatibility entry has no dialog or saved interactive state. */
+  if (GPOINTER_TO_INT (run_data) && run_mode != GIMP_RUN_NONINTERACTIVE)
+    return gimp_procedure_new_return_values (procedure, GIMP_PDB_CALLING_ERROR, NULL);
 
   gegl_init (NULL, NULL);
 
@@ -332,6 +343,9 @@ tile_run (GimpProcedure        *procedure,
                                                GIMP_PDB_SUCCESS,
                                                NULL);
     }
+
+  if (GPOINTER_TO_INT (run_data) && (guint64) sel_width * sel_height > G_MAXINT)
+    return gimp_procedure_new_return_values (procedure, GIMP_PDB_EXECUTION_ERROR, NULL);
 
   sel_x2 = sel_x1 + sel_width;
   sel_y2 = sel_y1 + sel_height;
@@ -1094,6 +1108,15 @@ tiles_xy (GimpProcedureConfig *config,
   g_object_get (config,
                 "num-tiles", &num_tiles,
                 NULL);
+
+  /* Old noninteractive zero uses the zero-initialized tile action and samples
+   * (0, 0). Avoid its unused floating division by zero explicitly. The public
+   * entry still admits only 2..6. */
+  if (num_tiles == 0)
+    {
+      *nx = *ny = 0;
+      return 0;
+    }
 
   rnd = 1 - (1.0 / (gdouble) num_tiles) + 0.01;
 

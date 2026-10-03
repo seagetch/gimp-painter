@@ -10,7 +10,7 @@ namespace GimpPainter {
 /* This is the entire untrusted procedure selector. A frame contains no name,
  * executable, path, script, image identity, or GObject. Extend only after a
  * separate source/runtime compatibility audit of a literal bundled route. */
-enum class FilterProcedure : std::uint32_t { blinds = 1 };
+enum class FilterProcedure : std::uint32_t { blinds = 1, small_tiles = 2 };
 enum class FilterProcedureDisposition : std::uint32_t {
   pending = 0, merged = 1, shadow = 2, no_merge = 3
 };
@@ -28,6 +28,7 @@ struct FilterProcedureRequest {
   FilterProcedure procedure = FilterProcedure::blinds;
   std::uint32_t width = 0, height = 0;
   std::int32_t angle = 0, segments = 1, orientation = 0, transparent = 0;
+  std::int32_t tiles = 2;
   bool gray = false;
   std::array<std::uint8_t, 4> background {{0, 0, 0, 255}};
   FilterSelectionRegion start_region {};
@@ -44,11 +45,19 @@ struct FilterProcedureRequest {
     return r;
   }
   std::uint64_t bytes () const {
-    execution_region ();
-    if (procedure != FilterProcedure::blinds || !width || !height ||
-        width > 524288 || height > 524288 || angle < 0 || angle > 90 ||
-        segments < 1 || segments > 100)
-      throw std::invalid_argument ("Unsupported private Filter procedure request");
+    const auto region = execution_region ();
+    if (procedure == FilterProcedure::blinds)
+      {
+        if (angle < 0 || angle > 90 || segments < 1 || segments > 100 || tiles != 2)
+          throw std::invalid_argument ("Unsupported private Blinds request");
+      }
+    else if (procedure == FilterProcedure::small_tiles)
+      {
+        if (tiles < 0 || tiles > 6 || angle || segments != 1 || orientation || transparent ||
+            std::uint64_t (region.x2 - region.x1) * std::uint64_t (region.y2 - region.y1) > 2147483647u)
+          throw std::invalid_argument ("Unsupported private Small Tiles request");
+      }
+    else throw std::invalid_argument ("Unsupported private Filter procedure request");
     return std::uint64_t (width) * height * 4;
   }
 };

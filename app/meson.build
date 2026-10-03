@@ -297,9 +297,10 @@ if not platform_windows
     dependencies: [painter_dep, painter_threads],
     cpp_args: painter_cpp_args,
   )
-  test('painter-filter-procedure', painter_filter_procedure_test,
-    args: [painter_filter_worker.full_path(),
+  test('painter-filter-procedure', python,
+    args: [meson.project_source_root() / 'migration/tests/run_filter_owner_context_fixture_test.py',
+           '--', painter_filter_procedure_test, painter_filter_worker.full_path(),
            meson.project_source_root() / 'migration/fixtures/legacy-blinds/fixtures.tsv'],
-    depends: painter_filter_worker,
+    depends: [painter_filter_procedure_test, painter_filter_worker],
     suite: 'painter', timeout: 600)
 endif

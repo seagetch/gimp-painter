@@ -77,6 +77,51 @@ int main (int argc, char **argv) {
       if (compared != 320 || failed) throw std::runtime_error (std::to_string (failed) + " of " + std::to_string (compared) + " legacy Blinds cases failed");
       std::cout << compared << " actual legacy Blinds oracles byte-exact\n";
     }
+    if (const gchar *fixtures = g_getenv ("GIMP_PAINTER_SMALL_TILES_FIXTURES")) {
+      const std::string base = std::string (fixtures) + "/pdb";
+      std::ifstream manifest (base + "/fixtures.tsv");
+      if (!manifest) throw std::runtime_error ("Cannot read sealed SmallTiles manifest");
+      const auto read_bytes = [&] (const std::string& name) {
+        std::ifstream file (base + "/" + name,std::ios::binary);
+        if (!file) throw std::runtime_error ("Cannot read old SmallTiles raster: " + name);
+        return std::vector<std::uint8_t> (std::istreambuf_iterator<char> (file),{});
+      };
+      std::string line; unsigned compared = 0, failed = 0;
+      while (std::getline (manifest,line)) {
+        if (line.empty ()) continue;
+        std::istringstream columns (line);
+        std::string procedure, input_name, output_name, extra;
+        unsigned channels;
+        FilterProcedureRequest request; request.procedure = FilterProcedure::small_tiles;
+        if (!(columns >> procedure >> request.width >> request.height >> channels >> request.tiles >> input_name >> output_name) ||
+            columns >> extra || procedure != "plug-in-small-tiles" || channels < 1 || channels > 4)
+          throw std::runtime_error ("Invalid sealed SmallTiles manifest row");
+        request.gray = channels <= 2;
+        const bool alpha = channels == 2 || channels == 4;
+        const auto original = read_bytes (input_name), expected = read_bytes (output_name);
+        if (original.size () != std::uint64_t (request.width)*request.height*channels || expected.size () != original.size ())
+          throw std::runtime_error ("Invalid old SmallTiles byte extent");
+        Raster input (request.bytes ()), output (request.bytes ());
+        for (std::size_t at = 0,pixel = 0; at < original.size (); at += channels,pixel += 4) {
+          input.bytes[pixel] = original[at]; input.bytes[pixel+1] = original[at+(request.gray ? 0 : 1)];
+          input.bytes[pixel+2] = original[at+(request.gray ? 0 : 2)];
+          input.bytes[pixel+3] = alpha ? original[at+channels-1] : 255;
+        }
+        std::atomic<bool> cancel {false};
+        if (!filter_process (request,input,output,cancel,options)) throw std::runtime_error ("SmallTiles unexpectedly cancelled");
+        std::size_t differences = 0;
+        for (std::size_t at = 0,pixel = 0; at < expected.size (); at += channels,pixel += 4) {
+          for (unsigned c = 0; c < 3; ++c)
+            if (output.bytes[pixel+c] != expected[at+(request.gray ? 0 : c)]) ++differences;
+          if (output.bytes[pixel+3] != (alpha ? expected[at+channels-1] : 255)) ++differences;
+        }
+        ++compared;
+        if (differences) { ++failed; std::cerr << output_name << ": " << differences << " differing private RGBA bytes\n"; }
+      }
+      if (compared != 196 || failed)
+        throw std::runtime_error (std::to_string (failed)+" of "+std::to_string (compared)+" genuine old SmallTiles cases failed");
+      std::cout << compared << " actual legacy SmallTiles oracles byte-exact (RGB/RGBA/Gray/Gray-alpha, factors0..6)\n";
+    }
     GDir *dir = g_dir_open (directory,0,nullptr); g_assert (dir && !g_dir_read_name (dir)); g_dir_close (dir);
     g_assert (rmdir (directory) == 0); g_free (directory);
     std::cout << passed << " native Blinds identity cases passed\n";

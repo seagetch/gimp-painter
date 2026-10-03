@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "started_utc": "2026-10-03T10:42:30.405660+00:00",
+  "finished_utc": "2026-10-03T10:43:29.188642+00:00",
+  "command": [
+    "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/gimp-console-3.0",
+    "-nidfs",
+    "--system-gimprc",
+    "/tmp/small-tiles-pdb-d0pg3ewc/system-gimprc",
+    "--gimprc",
+    "/tmp/small-tiles-pdb-d0pg3ewc/profile/gimprc",
+    "--batch-interpreter=python-fu-eval",
+    "-b",
+    "exec(open('/workspace/scratch/5b5281e79681/small-tiles-validation/current-pdb/capture.py').read())",
+    "--quit"
+  ],
+  "exit_code": 0,
+  "fresh_isolated_registry": true,
+  "source_and_executable_sha256": {
+    "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/gimp-console-3.0": "2475cb1413500812dd32e7c1ac5d2e56882dff0e75fc1e95db0ba046d80e92fc",
+    "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/plug-ins/common/tile-small": "50855496b215aa6c71ed34546907e96cf866d948eb7b3042f8e922a4be9e29d6",
+    "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/plug-ins/common/file-png": "9fec2ee975c0a1d07f2fa9bdf65cdacc50fcc85509054de40349c2787a8d7d1f",
+    "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/plug-ins/common/tile-small.c": "6601d059f60dab9406733474fcff60c746a056d8da8c77388d3c522c6a197044",
+    "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/tools/capture_small_tiles.py": "03568df4fb6486982274422cb45e6b7e48a1258b2f390d5ead42714db9cfac75"
+  },
+  "stable": true,
+  "evidence_archive_sha256": "d28e4b74436f980a9e263225748b056df2228ed6b5d8b815f4b6e1c1d67f8695",
+  "observations_sha256": "339409c40f1d21d37264352adf57599d43e051e6891a899da632c4096264a614",
+  "public_cases": 24,
+  "hidden_cases": 196,
+  "rejected_run_modes": 2,
+  "log_sha256": "71b0747bf28bc1f30ab1844d2dab530c6af992ef4b369dce68dc9be6e98ad93f"
+}

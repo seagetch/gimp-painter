@@ -492,19 +492,27 @@ struct FilterImpl
         };
         if (spill) request.raster_process = std::move (process);
       }
-    else if (procedure == "plug-in-blinds" && args && args->size () == 7 && !real &&
-             G_VALUE_HOLDS_INT (args->at (3)) && G_VALUE_HOLDS_INT (args->at (4)) &&
-             G_VALUE_HOLDS_INT (args->at (5)) && G_VALUE_HOLDS_INT (args->at (6)))
+    else if (!real && args &&
+             ((procedure == "plug-in-blinds" && args->size () == 7 &&
+               G_VALUE_HOLDS_INT (args->at (3)) && G_VALUE_HOLDS_INT (args->at (4)) &&
+               G_VALUE_HOLDS_INT (args->at (5)) && G_VALUE_HOLDS_INT (args->at (6))) ||
+              (procedure == "plug-in-small-tiles" && args->size () == 4 &&
+               G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
+               G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_INT (args->at (3)))))
       {
-        const auto angle = g_value_get_int (args->at (3));
-        const auto segments = g_value_get_int (args->at (4));
-        if (angle >= 0 && angle <= 90 && segments >= 1 && segments <= 100)
+        const bool tiles = procedure == "plug-in-small-tiles";
+        const auto angle = tiles ? 0 : g_value_get_int (args->at (3));
+        const auto segments = tiles ? 1 : g_value_get_int (args->at (4));
+        const auto factor = tiles ? g_value_get_int (args->at (3)) : 2;
+        if (angle >= 0 && angle <= 90 && segments >= 1 && segments <= 100 && factor >= 0 && factor <= 6)
           {
             auto descriptor = std::make_shared<FilterProcedureRequest> ();
             descriptor->width = request.width; descriptor->height = request.height;
             descriptor->angle = angle; descriptor->segments = segments;
-            descriptor->orientation = g_value_get_int (args->at (5));
-            descriptor->transparent = g_value_get_int (args->at (6)); descriptor->gray = gray ();
+            descriptor->procedure = tiles ? FilterProcedure::small_tiles : FilterProcedure::blinds;
+            descriptor->tiles = factor;
+            descriptor->orientation = tiles ? 0 : g_value_get_int (args->at (5));
+            descriptor->transparent = tiles ? 0 : g_value_get_int (args->at (6)); descriptor->gray = gray ();
             auto options = std::make_shared<FilterProcessOptions> ();
             auto outcome = std::make_shared<FilterProcedureResult> ();
             /* Parent input/result and three child rasters (snapshot, drawable,

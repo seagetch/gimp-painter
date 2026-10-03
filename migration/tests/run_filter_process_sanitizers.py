@@ -28,12 +28,14 @@ FOCUSED = {
     'app/painter/filter-process.cpp', 'app/painter/filter-wire.cpp', 'app/painter/filter-lifetime.cpp',
     'app/core/gimpfilterlayer.cpp', 'app/core/gimpfiltercontext.cpp', 'app/core/gimpfilterprocedure.cpp', 'app/core/gimpfilterpaths.cpp', 'app/core/gimpfilterexit.cpp',
     'app/core/gimp-batch.c', 'app/app.c', 'app/painter-filter-worker.cpp', 'plug-ins/common/blinds.c',
+    'plug-ins/common/tile-small.c', 'app/painter/tests/test-filter-procedure.cpp',
     'app/tests/test-gimp-filter-layer.c', 'app/tests/test-gimp-filter-layout.cpp', 'app/tests/test-filter-owner-context.cpp',
     'app/painter/tests/test-filter-owner-gates.cpp',
     'app/painter/tests/test-filter-process.cpp', 'app/painter/tests/test-filter-wire.cpp',
     'app/painter/tests/test-filter-spool.cpp', 'app/painter/tests/test-filter-scheduler.cpp',
 }
-LIVE = ['blinds_capture_context_edits', 'blinds_sealed_context_chunked_import',
+LIVE = ['small_tiles_live_update', 'small_tiles_actual_old_live', 'small_tiles_invalid_domains_keep_cache', 'small_tiles_replace_running_definition', 'small_tiles_selection_no_merge', 'small_tiles_final_context', 'small_tiles_dependency_updates', 'small_tiles_save_reopen', 'small_tiles_owner_close',
+        'blinds_capture_context_edits', 'blinds_sealed_context_chunked_import',
         'blinds_capture_replacement_cancel_close', 'blinds_unknown_mask_latency', 'blinds_owner_context', 'blinds_owner_context_phases', 'blinds_owner_context_expansion',
         'blinds_owner_context_retry', 'blinds_actual_old_context', 'blinds_actual_old_expansion',
         'blinds_gray_offset_context', 'blinds_identity_and_update', 'blinds_context_idle', 'blinds_final_context_merges',
@@ -44,6 +46,7 @@ LIVE = ['blinds_capture_context_edits', 'blinds_sealed_context_chunked_import',
 TARGETS = {'app/tests/gimp-filter-layer': 'gimp-filter-layer',
            'app/gimp-painter-filter-worker': 'gimp-painter-filter-worker',
            'app/gimp-console-3.0': 'gimp-console-3.0', 'plug-ins/common/blinds': 'blinds',
+           'plug-ins/common/tile-small': 'tile-small', 'app/painter-filter-procedure': 'painter-filter-procedure',
            **{'app/painter/painter-' + name: 'painter-' + name for name in
               ['filter-wire', 'filter-process', 'filter-spool', 'filter-scheduler', 'filter-owner-gates']}}
 
@@ -96,7 +99,9 @@ def main():
             raise RuntimeError('Unregistered source: ' + ', '.join(sorted(missing)))
         inputs = {ROOT / source for source in selected}
         inputs.update([Path(__file__).resolve(), ROOT / 'migration/tests/painter_sanitizer_scope.py',
-                       ROOT / 'app/tests/test-filter-blinds.inc', ROOT / 'app/tests/test-filter-blinds-context.inc', ROOT / 'app/tests/test-filter-blinds-context-lifecycle.inc',
+                       ROOT / 'app/tests/test-filter-blinds.inc', ROOT / 'app/tests/test-filter-blinds-context.inc', ROOT / 'app/tests/test-filter-blinds-context-lifecycle.inc', ROOT / 'app/tests/test-filter-small-tiles.inc',
+                       ROOT / 'tools/check_small_tiles_evidence.py', ROOT / 'tools/derive_small_tiles_evidence.py',
+                       ROOT / 'migration/fixtures/small-tiles-evidence.tar.gz', ROOT / 'migration/fixtures/small-tiles-evidence.tar.manifest.json',
                        ROOT / 'migration/tests/run_filter_owner_context_fixture_test.py',
                        ROOT / 'migration/tests/filter_context_fixture_bundle.py', ROOT / 'app/tests/test-filter-cancel.inc',
                        ROOT / 'tools/check_filter_active_quit.py'])
@@ -171,7 +176,7 @@ def main():
             run([*command, *FLAGS], 'link-' + name)
             binaries[name] = sha(out / name)
         report['executable_sha256'] = binaries
-        report['compile_time_path_overrides'] = {'filter_worker': str(out / 'gimp-painter-filter-worker'), 'bundled_blinds': str(out / 'blinds')}
+        report['compile_time_path_overrides'] = {'filter_worker': str(out / 'gimp-painter-filter-worker'), 'bundled_blinds': str(out / 'blinds'), 'bundled_small_tiles': str(out / 'tile-small')}
         report['changed_during_build'] = [name for name, expected in before.items() if sha(name) != expected]
         if report['changed_during_build']:
             publish()
@@ -187,6 +192,11 @@ def main():
                 result = run([str(out / name)], name, env)
                 report['results'].append(dict(name=name, exit_code=result.returncode, stdout=result.stdout, stderr=result.stderr))
                 print(name, 'PASS', flush=True)
+            result = run(['python3', str(ROOT / 'migration/tests/run_filter_owner_context_fixture_test.py'),
+                          '--', str(out / 'painter-filter-procedure'), str(out / 'gimp-painter-filter-worker')],
+                         'small-tiles-procedure', env, timeout=600)
+            report['results'].append(dict(name='small-tiles-procedure', exit_code=result.returncode, stdout=result.stdout, stderr=result.stderr))
+            print('small-tiles-procedure PASS', flush=True)
             command = ['python3', str(ROOT / 'migration/tests/run_filter_owner_context_fixture_test.py'),
                        '--', str(out / 'gimp-filter-layer')]
             for name in LIVE:
@@ -200,7 +210,7 @@ def main():
         report['input_sha256_after'] = {name: sha(name) for name in before}
         report['changed_during_run'] = [name for name in before if before[name] != report['input_sha256_after'][name]]
         report['status'] = 'PASS' if not report['changed_during_run'] else 'FAIL'
-        report['scope'] = f'{len(FOCUSED)} instrumented sources and {len(rtti_only)} RTTI-only compatibility sources; remaining GIMP/dependencies ordinary; LSan off; helper and bundled Blinds are instrumented'
+        report['scope'] = f'{len(FOCUSED)} instrumented sources and {len(rtti_only)} RTTI-only compatibility sources; remaining GIMP/dependencies ordinary; LSan off; helper and bundled Blinds/Small Tiles are instrumented'
         report['finished_utc'] = datetime.now(timezone.utc).isoformat()
         publish()
         if report['status'] != 'PASS':

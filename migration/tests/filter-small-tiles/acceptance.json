@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "task": "16.003/isolated-small-tiles-route",
+  "status": "passed",
+  "date": "2026-10-03",
+  "scope": "Bounded U8 nonlinear SmallTiles isolated route with shared owner context; not whole migration or release acceptance",
+  "source_identity": {
+    "base_commit": "871eaafb19de5fcfad1e3d62dbcd0ad7912bfda8",
+    "base_tree": "9446d6d40ad9d3246ab65d09e822d2dacc27d456",
+    "final_task_source_sha256": {
+      "app/core/gimpfiltercontext.cpp": "ac9dd27fc8c17fb97fd84eb538838f891181a65b34102a2e73e6230dbff5340d",
+      "app/core/gimpfiltercontext.hpp": "79883ce964653bdc6f34603cb64262dd0bd7a4402dc76e002cb6b1c681295f3b",
+      "app/core/gimpfilterlayer.cpp": "e45f67c45e2ce8abed0b8642191ea783581d7831f7008affc8deb5174724861d",
+      "app/core/gimpfilterpaths.cpp": "80f147d6d58e304cac92e4d31c7367d81bd43dea5ab3ee8869fed3b20491e3e4",
+      "app/core/gimpfilterprocedure.cpp": "ec026a1041ec469e11207311d026f964db11b8e6d05acb45d41b36bdf5cc871c",
+      "app/meson.build": "92c4af9faff37adb6b488b7b5819eaf82a36e551f065f1075e4b27a2fb7194c5",
+      "app/painter-filter-worker.cpp": "8d8b15ee87abf890688b1dc4a15076da0670383bac6d7f4b04e7b72464b8d051",
+      "app/painter/filter-context.cpp": "1d7815323bf5b00c605fd544b70a5f3584c95dd322da4f167cd6d6e8d6916d5b",
+      "app/painter/filter-context.hpp": "9ac030008e3ddd430e902d14bef4981ee0c390e5a3cca6fabbd9bc374191195e",
+      "app/painter/filter-procedure.hpp": "9fcc8b2e529cd282455bc8f914153c7b24af7e66190e6b533d90d39246beabd4",
+      "app/painter/filter-process.cpp": "b3ac9e1f5695a859edb8151f486051775c9b00468b74a15561f1c5657de77fda",
+      "app/painter/filter-scheduler.cpp": "8a3ac98b8d0b5bc89efdec4d11ba1cc709a5fee753c8c4eaabe52e316da8c43e",
+      "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+      "app/painter/filter-wire.cpp": "354bfda9ae1921737219274116cb82764de3f83d96ccd4c08b3f8ee70f7c6c22",
+      "app/painter/tests/test-filter-procedure.cpp": "724293f4f81584e690c8ac4ba461194783c5917155869e6823f06437a689af21",
+      "app/painter/tests/test-filter-process.cpp": "7ba927725b27c6a60ae95f1920e6ddeb50f30881a8c1634fb844625b4a6e154a",
+      "app/painter/tests/test-filter-wire.cpp": "a25a869f0e691713dd5fc844886b007137a1b924818aa0ba7a30d57d79d1ec1a",
+      "app/tests/test-filter-blinds-context-lifecycle.inc": "04c7ae56173bb6851af14b7b06aed60f74978799b56072549dc5afed46d20186",
+      "app/tests/test-filter-blinds-context.inc": "77657663773307b126d7ab61567fe0bac155e35fea39163e1f49dc13665e087c",
+      "app/tests/test-filter-blinds.inc": "71df52ba55dac9d4cc50c99f86112eae56c141b39e9058a717fe45cbe26ff5fe",
+      "app/tests/test-filter-quit-fixture.cpp": "bf5579c64c0705e0e8b5a859da712dff6bb6dd2c495df75dc9306e9a5b7198e1",
+      "app/tests/test-filter-small-tiles.inc": "151a569ca26093c41c2c5498df564e40dda14681b73054b07c6f84dd34668f49",
+      "app/tests/test-gimp-filter-layer.c": "a001b8754145b017fc1354bb27fe0af68ba17f2634c25adba483ce871bbba5c5",
+      "migration/tests/run_filter_owner_context_fixture_test.py": "e6b5eb189a5ff81cea5487dbe62013de5d2d990b440e6f12552af34ac7cb14b2",
+      "migration/tests/run_filter_process_sanitizers.py": "422d01277fe26cd6509e37c08208c7d8faf64320f78b78b9f323cc7ab0e0a9dc",
+      "migration/tests/test_filter_executable_paths.py": "d4e45fbc71705865f2b8400e602df72a81726a35abf944cfe732e00e04eae0a6",
+      "plug-ins/common/tile-small.c": "6601d059f60dab9406733474fcff60c746a056d8da8c77388d3c522c6a197044",
+      "tools/capture_small_tiles.py": "03568df4fb6486982274422cb45e6b7e48a1258b2f390d5ead42714db9cfac75",
+      "tools/check_filter_active_quit.py": "7d07139e7aad54400183b79e652a8a7df16e808ddd4612498fdf283ed852186b",
+      "tools/check_installed_filter.py": "f849a2feff6b4e88842da68d767743203198ca7eae80668831f1181deda8b58f",
+      "tools/check_installed_small_tiles.py": "d1092aa0b3851af02f90218d84c9050b5e695581d7cb97bb884869d3bc043e2e",
+      "tools/check_small_tiles_evidence.py": "4f77fd1b6a0f5a79ac150d73bca924432f8000b3fdad521fc94b8500e32cc8db",
+      "tools/derive_small_tiles_evidence.py": "11fc2898b2e75ec11c6ad60a0dd530e5fa708f5073e36a2b5b6962f159cbd05d",
+      "tools/inventory_filter_routes.py": "0526ec0924ee6af59dbddf77250a42d44da585e66479f61b31b3dc25003e181e",
+      "tools/package-linux-runtime.py": "2765049200f599a319a2264c189d1fe13ba1048d9bd67cfbabf01bc68b837c46"
+    },
+    "after_native_fixture_only_changes": {
+      "app/tests/test-filter-quit-fixture.cpp": {
+        "native_check_sha256": "79d82ea67785fa06824d5bdbdb1cbd7d09cdd23ef33ac4e2e8f432921949110d",
+        "final_sha256": "bf5579c64c0705e0e8b5a859da712dff6bb6dd2c495df75dc9306e9a5b7198e1"
+      },
+      "tools/check_installed_small_tiles.py": {
+        "native_check_sha256": "1d5269d69a9dc6f5999708436c29fcc540ba22439e22ef300eea0622aa53b863",
+        "final_sha256": "d1092aa0b3851af02f90218d84c9050b5e695581d7cb97bb884869d3bc043e2e"
+      }
+    },
+    "production_filter_sources_unchanged_after_native_and_sanitizers": true,
+    "per_check_source_note": "Normal/sanitizer records retain exact executed inputs; corrected fixture and installed checker are pinned by the final installed records. No overwritten historical provenance.",
+    "validation_tree_without_acceptance_report": "52f87926ba06b68e49c4267ed2f922d8e2ba83d7",
+    "validation_tree_scope": "Staged complete task including final reports/WBS before adding this acceptance record; no validation commit. Exact per-check hashes distinguish fixture-only corrections."
+  },
+  "genuine_old_evidence": {
+    "archive": "migration/fixtures/small-tiles-evidence.tar.gz",
+    "sha256": "d28e4b74436f980a9e263225748b056df2228ed6b5d8b815f4b6e1c1d67f8695",
+    "bytes": 1452126,
+    "kind": "derived exact-byte SmallTiles subset; unchanged historical provenance, not a new old-runtime capture",
+    "standalone_outputs": 196,
+    "native_scenes": 25,
+    "native_merges": 48,
+    "native_output_comparisons": 50
+  },
+  "normal": {
+    "status": "passed",
+    "registered_targets": 9,
+    "final_native_tests": 114,
+    "skips": 0,
+    "timeouts": 0,
+    "actual_old_small_tiles_helper_comparisons": 196,
+    "actual_old_blinds_helper_comparisons": 320,
+    "blinds_identities": 12,
+    "process_cases": 72,
+    "scheduler_cases": 37,
+    "spool_cases": 11,
+    "owner_gates": 5,
+    "completion_races": 1,
+    "old_scalar_context_records": 304,
+    "records": [
+      "normal.json",
+      "native-final.json"
+    ]
+  },
+  "current_pdb": {
+    "status": "passed",
+    "public_calls": 24,
+    "public_signature_and_output_unchanged": true,
+    "hidden_calls": 196,
+    "hidden_interactive_modes_rejected": 2,
+    "old_alpha_zero_merge_repair_explicit": true,
+    "records": [
+      "current-pdb.json",
+      "current-pdb-observations.json"
+    ]
+  },
+  "focused_sanitizers": {
+    "status": "passed",
+    "instrumented_sources": 29,
+    "rtti_only_sources": 41,
+    "sealed_inputs": 1736,
+    "unchanged_inputs": true,
+    "unit_targets": 5,
+    "native_tests": 31,
+    "small_tiles_old_helper_comparisons": 196,
+    "blinds_identities": 12,
+    "leak_sanitizer": false,
+    "remaining_GIMP_and_dependencies": "ordinary uninstrumented",
+    "record": "sanitizers.json"
+  },
+  "installed": {
+    "status": "passed",
+    "kind": "fresh dirty Linux prototype",
+    "configured_targets": 1005,
+    "elf_executables_checked": 211,
+    "optional_unbuilt": 2,
+    "manifest_entries": 5270,
+    "regular_files": 5221,
+    "symlinks": 49,
+    "elf_objects": 419,
+    "relocated_factors": [
+      3,
+      0
+    ],
+    "actual_helper_jobs_per_factor": 2,
+    "actual_native_runs_per_factor": 2,
+    "save_reopen_cycles_per_factor": 2,
+    "old_live_rasters_byte_exact": true,
+    "saved_four_typed_arguments_preserved": true,
+    "wrong_runtime_processes": 0,
+    "observed_survivors": 0,
+    "private_profile_leftovers": 0,
+    "final_generator_critical_diagnostics": 0,
+    "unchanged_source_files": 4314,
+    "unchanged_manifest_entries": true,
+    "additional_CPython_caches_per_relocated_tree": 27,
+    "records": [
+      "package.json",
+      "installed-factor3.json",
+      "installed-factor0.json"
+    ]
+  },
+  "selectors": {
+    "normal": 17,
+    "sanitizers": 17,
+    "records": [
+      "selectors-normal.json",
+      "selectors-sanitizers.json"
+    ]
+  },
+  "superseded_attempts": [
+    {
+      "kind": "initial installed smoke",
+      "reason": "Fixture requested unsupported REPLACE layer mode; modern construction emitted critical and used default. Corrected fixture/checker, fresh package and both smokes replace it.",
+      "original_report_sha256_by_factor": {
+        "0": "027f08cb4d5e9bc00666c54b5c715a36063964f9985f3d843500f00eeecce369",
+        "3": "5cffd9b5c836e91146402a0b573121abf95cbb6b662988c69a040919a9957a52"
+      }
+    },
+    {
+      "kind": "strict no-added-files runtime scan",
+      "reason": "All5270 sealed entries remain unchanged;27 ordinary CPython caches were added per relocated runtime. Qualified seal records them; no write-free-tree claim.",
+      "strict_report_sha256": "73cb49cf659e69e5f98e6be74e651543342d1ae267f470edf51f588ef2b53b66"
+    }
+  ],
+  "other_checks": {
+    "WBS_dependencies_and_evidence": "passed",
+    "git_diff_check": "passed",
+    "package_recipe_tests": 35,
+    "package_recipe_skips": 0
+  },
+  "limits": [
+    "Only U8 nonlinear RGB/Gray and factors0..6; Retinex/XCF multipart untouched",
+    "Conservative1GiB memory admission; configurable spill defaults8GiB; large extents may be rejected despite swap",
+    "Disabled swap is explicit failure preserving cache/definition; no universal memory/disk/latency bound",
+    "Windows/macOS process, owner UI progress, remaining procedures, full aggregate/GUI/release gates remain open",
+    "Ordinary startup resource warnings and two stale contexts at host exit remain; no warning-free, whole-app sanitizer or leak-free claim"
+  ],
+  "evidence_sha256": {
+    "README.md": "fdae915b4ee839bfa49666d86967b45981c2eb21a4a79bfd60099504523b482f",
+    "current-pdb-observations.json": "339409c40f1d21d37264352adf57599d43e051e6891a899da632c4096264a614",
+    "current-pdb.json": "0591cb25df9629b816fd13fe9b4ff1e40cd7d07c16a7cf98c292eecfa314c8d0",
+    "installed-factor0.json": "65cf48f48b4eccdbbfd450ff9918cfa28ec7a54cbf301a13fb12fe97dfbbaaba",
+    "installed-factor3.json": "4de5eb80dec0e63ebc4f8363936da6d142c9cbe999d91537ba4c23b00b784c87",
+    "native-final.json": "c8a203fa82573d4cb73c57c544347985114cbdf6ac0376762e24412f1d9ab57f",
+    "normal.json": "d9162274b317ce9fabef8efc337c33a92c59033bbdc88377ea6594d31852ec0b",
+    "package.json": "0a16d94a96d913a700e2b70a77bcb785b6ae64dee934cd586dc9ea820117bf98",
+    "sanitizers.json": "81fbe28795af72b96dda9c030b8e98c4e8dd626586de560e893e0ec68e7d4c64",
+    "selectors-normal.json": "27cede206b8d1c38b9f2b3d8f8c6749471eea398c18fd4eaa74a548274df1dc0",
+    "selectors-sanitizers.json": "e1572916bc093e6e1f31baec51f32a091b130f8d1b4b9be96d164b80297d7c1c"
+  }
+}

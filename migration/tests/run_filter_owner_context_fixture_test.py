@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run an existing native test binary with both verified old context corpora.
+"""Run an existing native test binary with verified old context and SmallTiles corpora.
 
 Usage: python3 run_filter_owner_context_fixture_test.py -- BINARY [ARG ...]
 Build orchestration, sanitizer settings, test selection, and timeouts belong to
@@ -16,6 +16,8 @@ import tempfile
 from filter_context_fixture_bundle import materialize
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools"))
+from check_small_tiles_evidence import verify as verify_small_tiles
 COMMIT = "afa43fae3e920210146abed514f136fd49f671b5"
 BUNDLES = (
     ("legacy-filter-context", "GIMP_PAINTER_CONTEXT_FIXTURES", 280, 24,
@@ -75,6 +77,9 @@ def main(argv=None):
     with tempfile.TemporaryDirectory(prefix="gimp-owner-context-") as temporary:
         environment = dict(os.environ)
         environment.update(materialize_owner_context_fixtures(temporary))
+        small_tiles = Path(temporary) / "small-tiles"
+        verify_small_tiles(extract=small_tiles)
+        environment["GIMP_PAINTER_SMALL_TILES_FIXTURES"] = str(small_tiles / "small-tiles-evidence")
         return subprocess.run(command, env=environment).returncode
 
 

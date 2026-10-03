@@ -1,6 +1,7 @@
 # Isolated bundled Filter procedure bridge
 
-This is the first audited native PDB route, `plug-in-blinds`. It does not replace
+This describes the first audited native PDB route, `plug-in-blinds`, and the
+shared bridge now also used by `plug-in-small-tiles` (see `filter-small-tiles.md`). It does not replace
 FilterLayer scheduling with GEGL effects, authorize arbitrary PDB names, or mark
 the remaining procedure inventory complete. The existing nine exact native
 kernel names continue to use their own routes.
@@ -15,7 +16,7 @@ creates its own private GIMP instance, PDB, context, image, drawable and typed
 BindingStore-owned progress adapter on its main thread. That adapter currently
 serves the native plug-in locally; owner/UI progress forwarding remains open.
 
-The request selector is the numeric allowlisted Blinds enum. No serialized
+The request selector is a numeric allowlisted Blinds or Small Tiles enum. No serialized
 procedure name, executable, path, script, resource loader or arbitrary plug-in
 registry is accepted. The child directly queries the configured bundled Blinds
 binary and checks its executable identity and full argument/return signature.
@@ -23,8 +24,9 @@ The first route accepts U8 nonlinear RGB/Gray, angles 0..90 and segments 1..100.
 As in the old plug-in, orientation 1 is vertical and every other integer is
 horizontal; any nonzero transparency argument enables transparent background.
 
-The private GPF2 / --filter-worker-v2 little-endian framing has a 24-byte header,
-a 60-byte Blinds-only request including start ROI/raw-shadow flags, a 4-byte
+The private GPF3 / --filter-worker-v3 little-endian framing has a 24-byte header,
+a 64-byte request including start ROI/raw-shadow flags and the Small Tiles
+integer factor. Old GPF1/GPF2 and worker selectors are rejected. A 4-byte
 completion disposition, zero reserved fields,
 at most 64 KiB metadata and 128 KiB pixel payloads. Input/output offsets must be
 contiguous and totals exact. Publication requires complete input transfer,

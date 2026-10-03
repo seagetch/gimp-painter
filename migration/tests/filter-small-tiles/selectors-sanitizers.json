@@ -1,0 +1,171 @@
+{
+  "status": "passed",
+  "scope": "Compile actual path selectors and execute copies in synthetic install layouts.\n\nThis proves Linux executable location and fail-closed lookup, not a GIMP package\nor native plug-in run. No copied fixture executable launches another process.\n",
+  "sanitizer": true,
+  "leak_sanitizer": false,
+  "source_sha256": {
+    "app/core/gimpfilterpaths.cpp": "80f147d6d58e304cac92e4d31c7367d81bd43dea5ab3ee8869fed3b20491e3e4",
+    "app/core/gimpfilterpaths.hpp": "0a3fe6d32c4ec01322866a04880a8f437fa572e0fab61b65e316be20f068531b",
+    "app/painter/filter-procedure.hpp": "9fcc8b2e529cd282455bc8f914153c7b24af7e66190e6b533d90d39246beabd4",
+    "app/painter/filter-context.hpp": "9ac030008e3ddd430e902d14bef4981ee0c390e5a3cca6fabbd9bc374191195e",
+    "migration/tests/test_filter_executable_paths.py": "d4e45fbc71705865f2b8400e602df72a81726a35abf944cfe732e00e04eae0a6"
+  },
+  "cases": [
+    {
+      "name": "build main",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/original build/app/gimp-painter-filter-worker\n",
+      "stderr": ""
+    },
+    {
+      "name": "build test executable",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/original build/app/gimp-painter-filter-worker\n",
+      "stderr": ""
+    },
+    {
+      "name": "build helper plugin",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/original build/plug-ins/common/blinds\n",
+      "stderr": ""
+    },
+    {
+      "name": "build Small Tiles literal plugin",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/original build/plug-ins/common/tile-small\n",
+      "stderr": ""
+    },
+    {
+      "name": "relocated main ignores accessible build",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/moved runtime/usr/libexec/gimp-painter-filter-worker\n",
+      "stderr": ""
+    },
+    {
+      "name": "relocated helper ignores accessible build and environment",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/moved runtime/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds/blinds\n",
+      "stderr": ""
+    },
+    {
+      "name": "relocated Small Tiles ignores build and environment",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/moved runtime/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small\n",
+      "stderr": ""
+    },
+    {
+      "name": "symlink launcher resolves actual executable",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/moved runtime/usr/libexec/gimp-painter-filter-worker\n",
+      "stderr": ""
+    },
+    {
+      "name": "missing relocated helper never falls back",
+      "passed": true,
+      "exit_code": 3,
+      "stdout": "",
+      "stderr": "Bundled Filter executable is missing or not executable: /tmp/filter paths 日本語-b94nq5d6/moved runtime/usr/libexec/gimp-painter-filter-worker\n"
+    },
+    {
+      "name": "nonexecutable relocated helper never falls back",
+      "passed": true,
+      "exit_code": 3,
+      "stdout": "",
+      "stderr": "Bundled Filter executable is missing or not executable: /tmp/filter paths 日本語-b94nq5d6/moved runtime/usr/libexec/gimp-painter-filter-worker\n"
+    },
+    {
+      "name": "missing relocated plugin never falls back",
+      "passed": true,
+      "exit_code": 3,
+      "stdout": "",
+      "stderr": "Bundled Filter executable is missing or not executable: /tmp/filter paths 日本語-b94nq5d6/moved runtime/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds/blinds\n"
+    },
+    {
+      "name": "nonexecutable Small Tiles never falls back",
+      "passed": true,
+      "exit_code": 3,
+      "stdout": "",
+      "stderr": "Bundled Filter executable is missing or not executable: /tmp/filter paths 日本語-b94nq5d6/moved runtime/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small\n"
+    },
+    {
+      "name": "missing Small Tiles never falls back",
+      "passed": true,
+      "exit_code": 3,
+      "stdout": "",
+      "stderr": "Bundled Filter executable is missing or not executable: /tmp/filter paths 日本語-b94nq5d6/moved runtime/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small\n"
+    },
+    {
+      "name": "unknown procedure fails before path lookup",
+      "passed": true,
+      "exit_code": 3,
+      "stdout": "",
+      "stderr": "No bundled executable for this Filter procedure\n"
+    },
+    {
+      "name": "compile-time instrumentation overlay main",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/instrumented overlay/gimp-painter-filter-worker\n",
+      "stderr": ""
+    },
+    {
+      "name": "compile-time instrumentation overlay helper",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/instrumented overlay/blinds\n",
+      "stderr": ""
+    },
+    {
+      "name": "compile-time Small Tiles overlay helper",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "/tmp/filter paths 日本語-b94nq5d6/instrumented overlay/tile-small\n",
+      "stderr": ""
+    }
+  ],
+  "compile_command": [
+    "c++",
+    "-std=c++14",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-pthread",
+    "-I/workspace/scratch/5b5281e79681/small-tiles-validation/selectors-sanitizers/sources",
+    "-I/workspace/scratch/5b5281e79681/small-tiles-validation/selectors-sanitizers/sources/app",
+    "-DGIMP_PAINTER_FILTER_BUILD_ROOT=\"/tmp/filter paths 日本語-b94nq5d6/original build\"",
+    "-DGIMP_PAINTER_FILTER_BIN_TO_WORKER=\"../libexec/gimp-painter-filter-worker\"",
+    "-DGIMP_PAINTER_FILTER_WORKER_TO_PLUGINS=\"../lib/x86_64-linux-gnu/gimp/3.0/plug-ins\"",
+    "-DGIMP_PAINTER_FILTER_EXECUTABLE_SUFFIX=\"\"",
+    "-DGIMP_PAINTER_FILTER_PATHS_OVERLAY_DIR=\"/tmp/filter paths 日本語-b94nq5d6/instrumented overlay\"",
+    "-fsanitize=address,undefined,float-cast-overflow",
+    "-fno-omit-frame-pointer",
+    "-g",
+    "-O1",
+    "/workspace/scratch/5b5281e79681/small-tiles-validation/selectors-sanitizers/sources/probe.cpp",
+    "/workspace/scratch/5b5281e79681/small-tiles-validation/selectors-sanitizers/sources/app/core/gimpfilterpaths.cpp",
+    "-o",
+    "/workspace/scratch/5b5281e79681/small-tiles-validation/selectors-sanitizers/probe",
+    "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/glib-2.0",
+    "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+    "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/sysprof-6",
+    "-pthread",
+    "-lglib-2.0"
+  ],
+  "probe_sha256": "171e447f1ddb754d1bfca13148f7e31f7623f53e22f03846d1e010b656f476c6",
+  "source_sha256_after": {
+    "app/core/gimpfilterpaths.cpp": "80f147d6d58e304cac92e4d31c7367d81bd43dea5ab3ee8869fed3b20491e3e4",
+    "app/core/gimpfilterpaths.hpp": "0a3fe6d32c4ec01322866a04880a8f437fa572e0fab61b65e316be20f068531b",
+    "app/painter/filter-procedure.hpp": "9fcc8b2e529cd282455bc8f914153c7b24af7e66190e6b533d90d39246beabd4",
+    "app/painter/filter-context.hpp": "9ac030008e3ddd430e902d14bef4981ee0c390e5a3cca6fabbd9bc374191195e",
+    "migration/tests/test_filter_executable_paths.py": "d4e45fbc71705865f2b8400e602df72a81726a35abf944cfe732e00e04eae0a6"
+  },
+  "changed_sources": []
+}

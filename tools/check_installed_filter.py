@@ -59,7 +59,7 @@ def run(command, environment, executables, output, missing_runtime=None):
                 observed.update({(item['pid'],item['start_ticks']):item for item in current.values()})
                 helpers = [item for item in current.values() if item['exe'] == expected['helper'] and item['state'] != 'Z']
                 for item in helpers:
-                    if len(item['argv']) == 3 and item['argv'][1] in ('--filter-worker-v1','--filter-worker-v2'):
+                    if len(item['argv']) == 3 and item['argv'][1] in ('--filter-worker-v3',):
                         profiles.add(item['argv'][2])
                 if not ready and any(item['event']=='READY' for item in observer.events(events)):
                     if helpers:

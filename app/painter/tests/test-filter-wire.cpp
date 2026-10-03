@@ -24,7 +24,7 @@ int main () {
   auto trailing = bytes; trailing.push_back (0); rejects ([&] { FilterWire::decode (trailing.data (), trailing.size ()); });
   for (int angle : {-1,91}) { auto bad = req; bad.angle = angle; rejects ([&] { FilterWire::request (bad); }); }
   for (int segments : {0,101}) { auto bad = req; bad.segments = segments; rejects ([&] { FilterWire::request (bad); }); }
-  auto bad = req; bad.procedure = FilterProcedure (2); rejects ([&] { FilterWire::request (bad); });
+  auto bad = req; bad.procedure = FilterProcedure (3); rejects ([&] { FilterWire::request (bad); });
   bad = req; bad.width = 0; rejects ([&] { FilterWire::request (bad); });
   g_assert (!restored.raw_shadow && !restored.start_region.selected && restored.start_region.intersects &&
             restored.start_region.x1 == 0 && restored.start_region.y1 == 0 &&
@@ -49,20 +49,47 @@ int main () {
     bad = req; bad.width = dimension; rejects ([&] { FilterWire::request (bad); });
     bad = req; bad.height = dimension; rejects ([&] { FilterWire::request (bad); });
   }
-  for (std::uint32_t tag : {0u,2u,3u,0xffffffffu}) {
+  for (std::uint32_t tag : {0u,3u,0xffffffffu}) {
     auto f = FilterWire::request (req); put32 (f,0,tag); rejects ([&] { FilterWire::request (f); });
   }
   for (std::uint32_t flags : {0u,1u,8u,0xffffffffu}) {
     auto f = FilterWire::request (req); put32 (f,36,flags); rejects ([&] { FilterWire::request (f); });
   }
-  for (std::size_t at : {std::size_t (40),std::size_t (44),std::size_t (48),std::size_t (52),std::size_t (56)}) {
+  for (std::size_t at : {std::size_t (40),std::size_t (44),std::size_t (48),std::size_t (52),std::size_t (56),std::size_t (60)}) {
     auto f = FilterWire::request (req); put32 (f,at,1); rejects ([&] { FilterWire::request (f); });
   }
   { auto f = FilterWire::request (req); put32 (f,28,2); rejects ([&] { FilterWire::request (f); }); }
   { auto f = FilterWire::request (req); put32 (f,36,7); put32 (f,40,0xffffffffu);
     rejects ([&] { FilterWire::request (f); }); }
-  { auto old = bytes; old[3] = '1'; old[4] = 1; rejects ([&] { FilterWire::decode (old.data (), old.size ()); }); }
-  rejects ([&] { FilterWire::encode ({FilterWire::Type::request, 0, std::vector<std::uint8_t> (36)}); });
+  for (unsigned version : {1u,2u}) { auto old = bytes; old[3] = '0' + version; old[4] = version; rejects ([&] { FilterWire::decode (old.data (), old.size ()); }); }
+  for (unsigned old_size : {36u,60u})
+    rejects ([&] { FilterWire::encode ({FilterWire::Type::request, 0, std::vector<std::uint8_t> (old_size)}); });
+  FilterProcedureRequest tile; tile.procedure = FilterProcedure::small_tiles; tile.width = 67; tile.height = 66;
+  for (int factor = 0; factor <= 6; ++factor) for (bool gray : {false,true}) for (bool raw : {false,true}) {
+    tile.tiles = factor; tile.gray = gray; tile.raw_shadow = raw;
+    tile.start_region = {true,true,1,2,64,63};
+    auto frame = FilterWire::request (tile);
+    const auto encoded = FilterWire::encode (frame);
+    const auto decoded = FilterWire::request (FilterWire::decode (encoded.data (),encoded.size ()));
+    g_assert (decoded.procedure == tile.procedure && decoded.tiles == factor && decoded.gray == gray &&
+              decoded.raw_shadow == raw && decoded.start_region.x1 == 1 && decoded.start_region.y2 == 63);
+  }
+  {
+    auto huge = tile; huge.width = 524288; huge.height = 524288; huge.start_region = {};
+    rejects ([&] { FilterWire::request (huge); });
+    huge.start_region = {true,true,0,0,1,524288};
+    g_assert (FilterWire::request (FilterWire::request (huge)).bytes () == 1099511627776ull);
+    auto frame = FilterWire::request (huge); put32 (frame,48,524288);
+    rejects ([&] { FilterWire::request (frame); });
+  }
+  for (std::uint32_t factor : {7u,0xffffffffu,0x80000000u}) {
+    auto frame = FilterWire::request (tile); put32 (frame,56,factor);
+    rejects ([&] { FilterWire::request (frame); });
+  }
+  for (std::size_t at : {std::size_t(12),std::size_t(16),std::size_t(20),std::size_t(24),std::size_t(60)}) {
+    auto frame = FilterWire::request (tile); put32 (frame,at,99);
+    rejects ([&] { FilterWire::request (frame); });
+  }
   rejects ([&] { FilterWire::encode ({FilterWire::Type::success, 8, {}}); });
   rejects ([&] { FilterWire::success (8,Disposition::pending); });
   rejects ([&] { FilterWire::success (8,Disposition (4)); });

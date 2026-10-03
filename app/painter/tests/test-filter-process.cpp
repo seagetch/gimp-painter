@@ -103,7 +103,7 @@ struct Raster : FilterRaster {
 #endif
 int main (int argc, char **argv) {
 #ifndef G_OS_WIN32
-  if (argc == 3 && !std::strcmp (argv[1], "--filter-worker-v2")) child ();
+  if (argc == 3 && !std::strcmp (argv[1], "--filter-worker-v3")) child ();
   gchar *absolute = g_canonicalize_filename (argv[0], nullptr);
   gchar *directory = g_dir_make_tmp ("filter-process-test-XXXXXX", nullptr);
   g_assert (directory);
@@ -170,6 +170,17 @@ int main (int argc, char **argv) {
     g_assert (lost && externally_reaped && !signals_after_reap); ++passed;
   }
 #endif
+  request.angle = 0; request.procedure = FilterProcedure::small_tiles;
+  for (int factor = 0; factor <= 6; ++factor) for (bool raw : {false,true}) for (bool outside : {false,true}) {
+    request.tiles = factor; request.raw_shadow = raw;
+    request.start_region = outside ? FilterSelectionRegion {true,false,0,0,0,0} : FilterSelectionRegion {};
+    std::atomic<bool> cancel {false};
+    g_assert (filter_process (request,input,output,cancel,options,outcome));
+    g_assert (output.bytes == input.bytes && outcome->disposition () ==
+              (outside ? Disposition::no_merge : raw ? Disposition::shadow : Disposition::merged));
+    ++passed;
+  }
+  request.start_region = {}; request.raw_shadow = false;
   request.angle = 0; options.executable += "-missing"; std::atomic<bool> cancel {false};
   bool threw = false; try { filter_process (request,input,output,cancel,options,outcome); } catch (const std::exception&) { threw = true; } g_assert (threw); ++passed;
   GDir *dir = g_dir_open (directory,0,nullptr); g_assert (dir && !g_dir_read_name (dir)); g_dir_close (dir); g_assert (rmdir (directory) == 0); g_free (directory);

@@ -1,0 +1,250 @@
+{
+  "status": "passed",
+  "errors": [],
+  "factor": 0,
+  "scene": "tiles-g0-s0-v0",
+  "exit_code": 0,
+  "seconds": 6.441537143997266,
+  "command": [
+    "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/AppRun",
+    "--console",
+    "--new-instance",
+    "--no-interface",
+    "--no-data",
+    "--no-fonts",
+    "--no-splash",
+    "--batch-interpreter=python-fu-eval",
+    "-b",
+    "-",
+    "--quit"
+  ],
+  "expected_executables": {
+    "helper": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+    "plugin": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small"
+  },
+  "executable_sha256": {
+    "helper": "13ea84e2f516bf8ca9f715613a8013fa3f23b4c3b0f1b6688c06f1e4b3810ddd",
+    "plugin": "54e417347fe10af0c3b3f191c439bf6fb0d26c785368a818a66fb07659ad7b35"
+  },
+  "observed_helpers": [
+    {
+      "pid": 9020,
+      "state": "R",
+      "parent": 7994,
+      "group": 9020,
+      "start_ticks": 4471997,
+      "exe": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+        "--filter-worker-v3",
+        "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/profile/cache/gimp-painter-prototype/gimp-filter-JHWZW3"
+      ]
+    },
+    {
+      "pid": 9226,
+      "state": "S",
+      "parent": 7994,
+      "group": 9226,
+      "start_ticks": 4472060,
+      "exe": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+        "--filter-worker-v3",
+        "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/profile/cache/gimp-painter-prototype/gimp-filter-X4YQW3"
+      ]
+    }
+  ],
+  "observed_plugins": [
+    {
+      "pid": 9073,
+      "state": "S",
+      "parent": 9020,
+      "group": 9020,
+      "start_ticks": 4472012,
+      "exe": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small",
+        "-gimp",
+        "277",
+        "8",
+        "7",
+        "-query",
+        "0"
+      ]
+    },
+    {
+      "pid": 9164,
+      "state": "R",
+      "parent": 9020,
+      "group": 9020,
+      "start_ticks": 4472044,
+      "exe": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small",
+        "-gimp",
+        "277",
+        "11",
+        "9",
+        "-run",
+        "0"
+      ]
+    },
+    {
+      "pid": 9275,
+      "state": "R",
+      "parent": 9226,
+      "group": 9226,
+      "start_ticks": 4472074,
+      "exe": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small",
+        "-gimp",
+        "277",
+        "8",
+        "7",
+        "-query",
+        "0"
+      ]
+    },
+    {
+      "pid": 9365,
+      "state": "R",
+      "parent": 9226,
+      "group": 9226,
+      "start_ticks": 4472105,
+      "exe": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small",
+        "-gimp",
+        "277",
+        "11",
+        "9",
+        "-run",
+        "0"
+      ]
+    }
+  ],
+  "wrong_installation": [],
+  "survivors": [],
+  "leftover_profiles": [],
+  "invalidated_helper_identities": [
+    [
+      9020,
+      4471997
+    ],
+    [
+      9226,
+      4472060
+    ]
+  ],
+  "invalidated_plugin_run_identities": [
+    [
+      9164,
+      4472044
+    ],
+    [
+      9365,
+      4472105
+    ]
+  ],
+  "events": [
+    {
+      "event": "READY",
+      "monotonic": 44719.948988448,
+      "image": 1,
+      "generation": 3
+    },
+    {
+      "event": "INVALIDATED",
+      "monotonic": 44719.959442154,
+      "phase": "first",
+      "image": 1
+    },
+    {
+      "event": "EXACT_OUTPUT",
+      "monotonic": 44720.577200429,
+      "sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+      "generation": 4
+    },
+    {
+      "event": "REOPENED_READY",
+      "monotonic": 44720.5909725,
+      "image": 2,
+      "generation": 3
+    },
+    {
+      "event": "INVALIDATED",
+      "monotonic": 44720.601316611,
+      "phase": "reopened-rerun",
+      "image": 2
+    },
+    {
+      "event": "SAVED_REOPENED",
+      "monotonic": 44721.226278229,
+      "sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+      "rerun_sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0"
+    }
+  ],
+  "batch_result": {
+    "status": "passed",
+    "factor": 0,
+    "scene": "tiles-g0-s0-v0",
+    "expected_sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+    "rerun_sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+    "definition_preserved": true,
+    "reopened_definition_preserved": true,
+    "argument_count": 4,
+    "initial_generation": 3,
+    "first_generation": 4,
+    "reopened_generation": 3,
+    "rerun_generation": 4,
+    "scope": "Two explicit lower updates, full genuine-old live SmallTiles bytes, two Save/reopen cycles and four typed arguments; no GUI or whole-port claim"
+  },
+  "fixture_sha256": "5b24b112ae547f8e3531a40ca72d2e8e977762cc5c6ec676baab9dcbcf8f2db4",
+  "genuine_old_raw_sha256": {
+    "source": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+    "settled": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+    "rerun": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0"
+  },
+  "observer_source_sha256": "d1092aa0b3851af02f90218d84c9050b5e695581d7cb97bb884869d3bc043e2e",
+  "process_observer_source_sha256": "7d07139e7aad54400183b79e652a8a7df16e808ddd4612498fdf283ed852186b",
+  "batch_source_sha256": "5d0a76b9584b6348138111b6d88576f17f5c98ea65224a627b7e4ce81fe451d9",
+  "console_log_sha256": "4bf5c399ca55707f8033e712e785c0f1ca0c619b76a3ec11d54f26a652deab83",
+  "native_fixture_generator": {
+    "command": [
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/tests/filter-quit-fixture",
+      "--small-tiles",
+      "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/evidence/small-tiles-evidence",
+      "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/fixtures"
+    ],
+    "exit_code": 0,
+    "generator_sha256": "149b881df7f36913bac93ba21c00e2ef87136214203615625a1654afdcfcb4ac",
+    "source_sha256": "bf5579c64c0705e0e8b5a859da712dff6bb6dd2c495df75dc9306e9a5b7198e1",
+    "fixture_sha256": "5b24b112ae547f8e3531a40ca72d2e8e977762cc5c6ec676baab9dcbcf8f2db4",
+    "no_filter_jobs": true
+  },
+  "evidence_archive_sha256": "d28e4b74436f980a9e263225748b056df2228ed6b5d8b815f4b6e1c1d67f8695",
+  "relocation": "fresh path with spaces and Japanese characters",
+  "environment": "explicit minimum whitelist; no inherited developer dependency variables",
+  "complete_local_report_sha256": "7d869a4ebb69a1337b6b23268e79cc80c93462345f4f04a96edb6dc6b6c37574",
+  "evidence_counts": {
+    "old_pdb": 196,
+    "public_before": 24,
+    "public_after": 24,
+    "hidden_offtree": 196,
+    "hidden_integrated": 196,
+    "native_scenes": 25,
+    "native_merges": 48
+  },
+  "evidence_manifest_sha256": "40b16e69a8e10bf4ed3b5bab74b8f86d85120ef333d3d04fd37cbc0cddb437b2",
+  "fixture_diagnostics": {
+    "status": "passed",
+    "log": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/fixtures/console.log",
+    "log_sha256": "82e36f336ce4ff2c9ed31d637adc8a8e43852d850d766e9e9afcd21564507180",
+    "errors": [],
+    "fixture_ready_lines": [
+      "SMALL_TILES_FIXTURE_READY factor=0 width=53 height=41 runs=0 state=CLEAN scene=tiles-g0-s0-v0 file=/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/fixtures/small-tiles-0.xcf",
+      "SMALL_TILES_FIXTURE_READY factor=3 width=53 height=41 runs=0 state=CLEAN scene=tiles-g0-s0-v2 file=/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/fixtures/small-tiles-3.xcf"
+    ]
+  }
+}

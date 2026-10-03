@@ -16,7 +16,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCES = ('app/core/gimpfilterpaths.cpp', 'app/core/gimpfilterpaths.hpp',
-           'app/painter/filter-procedure.hpp',
+           'app/painter/filter-procedure.hpp', 'app/painter/filter-context.hpp',
            'migration/tests/test_filter_executable_paths.py')
 
 
@@ -71,7 +71,8 @@ int main (int argc, char **argv) {
             app, tests = build/'app', build/'app/tests'
             bin_dir, helper_dir = installed/'bin', installed/'libexec'
             plugin_dir = installed/'lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds'
-            for directory in (tests, bin_dir, helper_dir, plugin_dir, overlay, build/'plug-ins/common'):
+            tiles_dir = plugin_dir.parent/'tile-small'
+            for directory in (tests, bin_dir, helper_dir, plugin_dir, tiles_dir, overlay, build/'plug-ins/common'):
                 directory.mkdir(parents=True, exist_ok=True)
             macros = {'GIMP_PAINTER_FILTER_BUILD_ROOT':str(build),
                       'GIMP_PAINTER_FILTER_BIN_TO_WORKER':'../libexec/gimp-painter-filter-worker',
@@ -101,12 +102,15 @@ int main (int argc, char **argv) {
             original = copy(app/'probe')
             build_worker = copy(app/'gimp-painter-filter-worker')
             build_plugin = copy(build/'plug-ins/common/blinds')
+            build_tiles = copy(build/'plug-ins/common/tile-small')
             installed_host = copy(bin_dir/'gimp-console-3.0')
             installed_worker = copy(helper_dir/'gimp-painter-filter-worker')
             installed_plugin = copy(plugin_dir/'blinds')
+            installed_tiles = copy(tiles_dir/'tile-small')
             overlay_host = copy(overlay/'gimp-filter-layer')
             overlay_worker = copy(overlay/'gimp-painter-filter-worker')
             overlay_plugin = copy(overlay/'blinds')
+            overlay_tiles = copy(overlay/'tile-small')
             env = {**os.environ, 'ASAN_OPTIONS':'detect_leaks=0:abort_on_error=1',
                    'UBSAN_OPTIONS':'halt_on_error=1:print_stacktrace=1',
                    'GIMP3_PLUGINDIR':str(build/'deliberate unrelated environment path')}
@@ -120,8 +124,10 @@ int main (int argc, char **argv) {
             case('build main', original, 'worker', build_worker)
             case('build test executable', copy(tests/'probe'), 'worker', build_worker)
             case('build helper plugin', build_worker, '1', build_plugin)
+            case('build Small Tiles literal plugin', build_worker, '2', build_tiles)
             case('relocated main ignores accessible build', installed_host, 'worker', installed_worker)
             case('relocated helper ignores accessible build and environment', installed_worker, '1', installed_plugin)
+            case('relocated Small Tiles ignores build and environment', installed_worker, '2', installed_tiles)
             link = temp/'launcher alias'
             link.symlink_to(installed_host)
             case('symlink launcher resolves actual executable', link, 'worker', installed_worker)
@@ -132,9 +138,14 @@ int main (int argc, char **argv) {
             installed_worker.chmod(0o755)
             installed_plugin.unlink()
             case('missing relocated plugin never falls back', installed_worker, '1')
+            installed_tiles.chmod(0o644)
+            case('nonexecutable Small Tiles never falls back', installed_worker, '2')
+            installed_tiles.unlink()
+            case('missing Small Tiles never falls back', installed_worker, '2')
             case('unknown procedure fails before path lookup', installed_worker, '99')
             case('compile-time instrumentation overlay main', overlay_host, 'worker', overlay_worker)
             case('compile-time instrumentation overlay helper', overlay_worker, '1', overlay_plugin)
+            case('compile-time Small Tiles overlay helper', overlay_worker, '2', overlay_tiles)
         report['source_sha256_after'] = {name:sha(ROOT/name) for name in SOURCES}
         report['changed_sources'] = [name for name in SOURCES if report['source_sha256_after'][name] != before[name]]
         if report['changed_sources']: raise RuntimeError('Source changed during selector verification')

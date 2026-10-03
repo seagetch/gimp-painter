@@ -1,0 +1,641 @@
+{
+  "status": "passed",
+  "scope": "Dirty Linux prototype ordinary default build, fresh package, corrected native fixture, two relocated SmallTiles smokes and sealed-file recheck; no whole-port or release claim; all sealed runtime entries unchanged, expected Python bytecode additions recorded",
+  "configured_targets": 1005,
+  "executables": {
+    "checked_elf_executables": 211,
+    "unbuilt_targets": [],
+    "invalid_executables": [],
+    "repaired_executable_permissions": [],
+    "optional_unbuilt_targets": [
+      "libgimpwidgets/test-preview-area",
+      "app/operations/tests/test-operations"
+    ]
+  },
+  "changed_checker_source_sha256": {
+    "app/tests/test-filter-quit-fixture.cpp": "bf5579c64c0705e0e8b5a859da712dff6bb6dd2c495df75dc9306e9a5b7198e1",
+    "tools/check_installed_small_tiles.py": "d1092aa0b3851af02f90218d84c9050b5e695581d7cb97bb884869d3bc043e2e"
+  },
+  "source_inventory": {
+    "count": 4314,
+    "unchanged": true,
+    "before_sha256": "c060cbec40f00c00069ed15dd03c8cf8c5ebd1732425ba844daa55d755488396",
+    "after_sha256": "c060cbec40f00c00069ed15dd03c8cf8c5ebd1732425ba844daa55d755488396"
+  },
+  "ordinary_binary_sha256": {
+    "app/gimp-console-3.0": "2475cb1413500812dd32e7c1ac5d2e56882dff0e75fc1e95db0ba046d80e92fc",
+    "app/gimp-painter-filter-worker": "68f03eecc9cf6cdfaa0f491255b87cda9c826113418e331ebe0dc25f3aead588",
+    "plug-ins/common/tile-small": "50855496b215aa6c71ed34546907e96cf866d948eb7b3042f8e922a4be9e29d6",
+    "app/tests/filter-quit-fixture": "149b881df7f36913bac93ba21c00e2ef87136214203615625a1654afdcfcb4ac"
+  },
+  "installed_binary_sha256": {
+    "console": "c430d29f2a122d94cf530e0ca003747ea135f9d3983c9b3e4fe9a58816d62903",
+    "helper": "13ea84e2f516bf8ca9f715613a8013fa3f23b4c3b0f1b6688c06f1e4b3810ddd",
+    "plugin": "54e417347fe10af0c3b3f191c439bf6fb0d26c785368a818a66fb07659ad7b35"
+  },
+  "package_build_manifest_sha256": "ccea51e7db8dd2d6c59435a628e1de8d93eb2b7e251a799731ac91fcc94c5269",
+  "runtime_seals": {
+    "status": "passed",
+    "file_manifest_sha256": "739ae8c5c4c087f2506eea4f0bc6a610b5c49b6266f62e580fdaee3d36863c2a",
+    "results": [
+      {
+        "runtime": "/workspace/scratch/5b5281e79681/small-tiles-package-final/gimp-painter-linux-x86_64",
+        "verified_manifest_entries": 5270,
+        "regular_files": 5221,
+        "symlinks": 49,
+        "elf_objects": 419,
+        "additional_files": [
+          "file-manifest.json"
+        ],
+        "errors": [],
+        "status": "passed",
+        "generated_bytecode_count": 0,
+        "generated_bytecode": []
+      },
+      {
+        "runtime": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor3-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64",
+        "verified_manifest_entries": 5270,
+        "regular_files": 5221,
+        "symlinks": 49,
+        "elf_objects": 419,
+        "additional_files": [
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/__init__.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_constants.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_error.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_gtktemplate.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_option.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_ossighelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_propertyhelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_signalhelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/docstring.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/importer.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/module.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/types.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GExiv2.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GLib.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GObject.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gdk.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GdkPixbuf.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gio.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gtk.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Pango.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/__init__.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/repository/__pycache__/__init__.cpython-313.pyc",
+          "file-manifest.json",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/python-console/__pycache__/pyconsole.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpconfig.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpexporttests.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimplogger.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimptestframework.cpython-313.pyc"
+        ],
+        "errors": [],
+        "status": "passed",
+        "generated_bytecode_count": 27,
+        "generated_bytecode": [
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/__init__.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/__init__.py",
+            "bytes": 6155,
+            "sha256": "50ee0bb239622f1477df50b064c9f97d98f617ac94cced4961a5c7538b8429ca"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_constants.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_constants.py",
+            "bytes": 2665,
+            "sha256": "2213dc8c77b1c934cf9accf1d38d688ea95c4ca57333629bc36e0a0d16cafdc9"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_error.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_error.py",
+            "bytes": 2181,
+            "sha256": "217d7dc987445ac051af947d30718a84f9e054c378c500edd08c1e3cd504538d"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_gtktemplate.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_gtktemplate.py",
+            "bytes": 12986,
+            "sha256": "e7227ae533aa3fdb6bea6f28bc25d51218b35c6e903c843d304f14bb624211ad"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_option.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_option.py",
+            "bytes": 17849,
+            "sha256": "8cff21f831a9595ccaad8c17c81918a7dee0716340f27a75d69c796ad84fc284"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_ossighelper.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_ossighelper.py",
+            "bytes": 10751,
+            "sha256": "fd536ac3554be7d480bd872f10fde74f03f0110de88da7cd05c313cb4ff1d171"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_propertyhelper.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_propertyhelper.py",
+            "bytes": 16325,
+            "sha256": "fa104e8436cc438772cedd7c3efd33a23451f084ea6dca111008602d2ddc2398"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_signalhelper.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_signalhelper.py",
+            "bytes": 10654,
+            "sha256": "e422a71e8ddc778fd0fddb29c17b58ef3b80ab91742bd3da0cc8d0802dc1a10b"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/docstring.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/docstring.py",
+            "bytes": 7171,
+            "sha256": "824fb4f62d96f067b5b8010f0c9e943d5b7370d2f7d98d0352e14ecbf6815095"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/importer.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/importer.py",
+            "bytes": 5380,
+            "sha256": "1cd6929edafb45ce8bc10ebc793395d3a6b996b9504d62319c214221df1086e7"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/module.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/module.py",
+            "bytes": 9769,
+            "sha256": "60a6e96d1c78fe934c2fd249040a92d004fae1d01d748981a74fa68f14ec608c"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/types.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/types.py",
+            "bytes": 13879,
+            "sha256": "329366ffe8584211013b6360a428d608483fc2e503c0881bdfca3007f68f6afc"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GExiv2.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/GExiv2.py",
+            "bytes": 5623,
+            "sha256": "0466ac67ecfe853ab87b5880602643b55e92cd4ceefd387ac4c2486c864c6add"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GLib.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/GLib.py",
+            "bytes": 38799,
+            "sha256": "e8dd2e94b0c9c84f07d2bac7e686f9fb8ee7657ed3db5f546dec461dab755fee"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GObject.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/GObject.py",
+            "bytes": 28079,
+            "sha256": "24e4a52708cdacf67725e4399297e17778ebe9ac7c84dc6ddba3a093e1524610"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gdk.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/Gdk.py",
+            "bytes": 20811,
+            "sha256": "f343e96737e35e75ccc17993b05553cc8966510c4c7c278a6a7b293ed2ce39c8"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GdkPixbuf.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/GdkPixbuf.py",
+            "bytes": 1662,
+            "sha256": "abeeeac401adcf73922e66e20fb56b8b0202cacb077c0e4ee9a05f4ac98ccb41"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gio.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/Gio.py",
+            "bytes": 27085,
+            "sha256": "c0d3f2ca029943a5a6e0eb3261247a22fa7ae133b51f092c2c6e69f1db5ab95a"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gtk.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/Gtk.py",
+            "bytes": 87466,
+            "sha256": "5e512e4cc8d0ff896fa8b7c45dbf12de6581d63de79873fb7d5af9d81739dbf1"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Pango.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/Pango.py",
+            "bytes": 2311,
+            "sha256": "5ca6e37ae93c8ceb14bdc636269e3b4dd2b600eee7062e5d41b77e7530294ed6"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/__init__.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/__init__.py",
+            "bytes": 15679,
+            "sha256": "ee9a7c18471a9c90d77a16d23191f3685975ad1594c5bf6475c836857a147fee"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/repository/__pycache__/__init__.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/repository/__init__.py",
+            "bytes": 486,
+            "sha256": "875d87072dfd48aa4c9a88ab18bfdbe70317235723275738966c32a7a7a2f020"
+          },
+          {
+            "path": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/python-console/__pycache__/pyconsole.cpython-313.pyc",
+            "source": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/python-console/pyconsole.py",
+            "bytes": 45654,
+            "sha256": "b3a2e5b804ef080c6d82fdaf88e75b6e8208b45deb70e475c2d2468eee303e4b"
+          },
+          {
+            "path": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpconfig.cpython-313.pyc",
+            "source": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/gimpconfig.py",
+            "bytes": 3510,
+            "sha256": "ef37a499db895dcd1bfd1b1100a5bb03ec0e602f344738ffdbe8aefb209a7035"
+          },
+          {
+            "path": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpexporttests.cpython-313.pyc",
+            "source": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/gimpexporttests.py",
+            "bytes": 8427,
+            "sha256": "ff115ad13198b88dbdde1f83526393772f018740d84c332331e48b29bd9ec495"
+          },
+          {
+            "path": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimplogger.cpython-313.pyc",
+            "source": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/gimplogger.py",
+            "bytes": 4703,
+            "sha256": "9c5dd2898ec8419c68c014db89920e189002a2705d0adbf7847e64f7f94ca9b9"
+          },
+          {
+            "path": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimptestframework.cpython-313.pyc",
+            "source": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/gimptestframework.py",
+            "bytes": 32563,
+            "sha256": "9d63b960a061c40d479bced9ed9922d594a51e19f2163f46532185f8bd599927"
+          }
+        ]
+      },
+      {
+        "runtime": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64",
+        "verified_manifest_entries": 5270,
+        "regular_files": 5221,
+        "symlinks": 49,
+        "elf_objects": 419,
+        "additional_files": [
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/__init__.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_constants.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_error.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_gtktemplate.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_option.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_ossighelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_propertyhelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_signalhelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/docstring.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/importer.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/module.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/types.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GExiv2.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GLib.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GObject.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gdk.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GdkPixbuf.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gio.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gtk.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Pango.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/__init__.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/repository/__pycache__/__init__.cpython-313.pyc",
+          "file-manifest.json",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/python-console/__pycache__/pyconsole.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpconfig.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpexporttests.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimplogger.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimptestframework.cpython-313.pyc"
+        ],
+        "errors": [],
+        "status": "passed",
+        "generated_bytecode_count": 27,
+        "generated_bytecode": [
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/__init__.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/__init__.py",
+            "bytes": 6155,
+            "sha256": "6e4d05cef80cfaea3ec9bdadd7f57372bbde2f81c05d4d5c4f07fbffd86e4d5a"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_constants.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_constants.py",
+            "bytes": 2665,
+            "sha256": "62f31f3ba1d7df4029c8e05a63fc613b065c70037ad889274127e8bd5b62430f"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_error.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_error.py",
+            "bytes": 2181,
+            "sha256": "a695cfe97a8280ef410cd82575cfa7626dd212c444c57ee1b5a658dd5499e854"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_gtktemplate.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_gtktemplate.py",
+            "bytes": 12986,
+            "sha256": "4f4dffb8e5298c4a91fff4a76585498e22c0ad97e1765827be271fcb744d5abe"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_option.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_option.py",
+            "bytes": 17849,
+            "sha256": "2e2dad66d9a1e71a932c556180931cfea462c0ce4bfad5d8356811f0700ed8d2"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_ossighelper.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_ossighelper.py",
+            "bytes": 10751,
+            "sha256": "e8fc9d7309ab3579618e89d514c9507534320f879061c53719e695ee90bc9073"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_propertyhelper.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_propertyhelper.py",
+            "bytes": 16325,
+            "sha256": "b1ef1a74b8e9d50652941d2124005ba339517ee534b06329342084043ca4210c"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/_signalhelper.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/_signalhelper.py",
+            "bytes": 10654,
+            "sha256": "e4368659e8ce552aca4e49c909e2dacebe9301fdcfd902f53fcf39f7864b9ca6"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/docstring.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/docstring.py",
+            "bytes": 7171,
+            "sha256": "aee558a932842efea621d9c48c4ed210b7f32bea8f211ffd049f63abdcf51a81"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/importer.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/importer.py",
+            "bytes": 5380,
+            "sha256": "53a589981a846a7238f03ed2e5fdaf37cfd4e7a1b076a231050c99f789797924"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/module.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/module.py",
+            "bytes": 9769,
+            "sha256": "25cb1bd9f84bd0a2c95aa10ae5f57a8be8f20f77a819bf976a527dc16886d339"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/__pycache__/types.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/types.py",
+            "bytes": 13879,
+            "sha256": "44733a3056df4ed517a3a62b5c9d8711a2ec918e0e2897253c66017382b4eb1e"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GExiv2.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/GExiv2.py",
+            "bytes": 5623,
+            "sha256": "9c3f070a82087488655d62f117c16646bc073133f54794e78cf5d8181910f1b2"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GLib.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/GLib.py",
+            "bytes": 38799,
+            "sha256": "4e67c16f4e863b8eb2dffbc76fcb5a8b35ac399c3350f18abb0d3fa8aa2cf570"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GObject.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/GObject.py",
+            "bytes": 28079,
+            "sha256": "f1165373953af8dc42f553ff4e1dc78dfd4f3b2484cc4a0fa39a96a1c59e6411"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gdk.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/Gdk.py",
+            "bytes": 20811,
+            "sha256": "a903a0b886332512c736f7c9f794221b861de18243b7c29e54399e590c018d8f"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GdkPixbuf.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/GdkPixbuf.py",
+            "bytes": 1662,
+            "sha256": "d3525c3f2e3783c79fd1837c17259a44385e8d147285c0b8eb374821634b3af4"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gio.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/Gio.py",
+            "bytes": 27085,
+            "sha256": "f6b547129a65946cec5a9b8b3aca63f55a11214069cd8d72a8a23e295e7f8e59"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gtk.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/Gtk.py",
+            "bytes": 87466,
+            "sha256": "7f698b4754c9c86a4aac5e7c5dc7aa6ff385e2ef7ab60903822993e701dc7caf"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Pango.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/Pango.py",
+            "bytes": 2311,
+            "sha256": "7c1e5df059ca916acc0ccac6a3a708659f6748790fa56ff6cffcf9f310fbae5c"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/__init__.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/overrides/__init__.py",
+            "bytes": 15679,
+            "sha256": "a0df648c22a01be0d4620cb10fdd9aa3a112060fb938c4f6c8a41f3da940243b"
+          },
+          {
+            "path": "deps/usr/lib/python3/dist-packages/gi/repository/__pycache__/__init__.cpython-313.pyc",
+            "source": "deps/usr/lib/python3/dist-packages/gi/repository/__init__.py",
+            "bytes": 486,
+            "sha256": "1f72faf01125529d9d9ca2b72885d2d21fc209d71dc561f60a1d9e7c0d0544d4"
+          },
+          {
+            "path": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/python-console/__pycache__/pyconsole.cpython-313.pyc",
+            "source": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/python-console/pyconsole.py",
+            "bytes": 45654,
+            "sha256": "5ba0f4f6028251f4f526a0e3bc0a88faa1dabad8eb133156190e03357942ad7c"
+          },
+          {
+            "path": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpconfig.cpython-313.pyc",
+            "source": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/gimpconfig.py",
+            "bytes": 3510,
+            "sha256": "5b93ebe3084e1f4b563deb90ce35102e4f0f2fdb05013da0e031d34c28746f00"
+          },
+          {
+            "path": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpexporttests.cpython-313.pyc",
+            "source": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/gimpexporttests.py",
+            "bytes": 8427,
+            "sha256": "843aca19aabe75fa17afc48bbba66e372e02c252ff3cc9accc9ee0bdb9a8c609"
+          },
+          {
+            "path": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimplogger.cpython-313.pyc",
+            "source": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/gimplogger.py",
+            "bytes": 4703,
+            "sha256": "03a519a4f28753224ef122142b61434a38a2ba41e404c6cc400dbcc1ba98c368"
+          },
+          {
+            "path": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimptestframework.cpython-313.pyc",
+            "source": "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/gimptestframework.py",
+            "bytes": 32563,
+            "sha256": "8c2aff47f6310e83b6094ab68cafdd8388bd83a5bdc2ca36489fec3fc574c239"
+          }
+        ]
+      }
+    ],
+    "scope": "All original manifest entries and the manifest itself retain bytes, modes and links; expected interpreter bytecode additions are recorded separately. This does not claim a write-free runtime tree.",
+    "strict_directory_scan": "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/runtime-seals.json"
+  },
+  "generator_diagnostics": {
+    "3": {
+      "status": "passed",
+      "log": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor3-final/fixtures/console.log",
+      "log_sha256": "af093af60e54887463474b67ba30dfd165909e412d7c1539b4aa8d64f7479de3",
+      "errors": [],
+      "fixture_ready_lines": [
+        "SMALL_TILES_FIXTURE_READY factor=0 width=53 height=41 runs=0 state=CLEAN scene=tiles-g0-s0-v0 file=/workspace/scratch/5b5281e79681/small-tiles-installed-factor3-final/fixtures/small-tiles-0.xcf",
+        "SMALL_TILES_FIXTURE_READY factor=3 width=53 height=41 runs=0 state=CLEAN scene=tiles-g0-s0-v2 file=/workspace/scratch/5b5281e79681/small-tiles-installed-factor3-final/fixtures/small-tiles-3.xcf"
+      ]
+    },
+    "0": {
+      "status": "passed",
+      "log": "/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/fixtures/console.log",
+      "log_sha256": "82e36f336ce4ff2c9ed31d637adc8a8e43852d850d766e9e9afcd21564507180",
+      "errors": [],
+      "fixture_ready_lines": [
+        "SMALL_TILES_FIXTURE_READY factor=0 width=53 height=41 runs=0 state=CLEAN scene=tiles-g0-s0-v0 file=/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/fixtures/small-tiles-0.xcf",
+        "SMALL_TILES_FIXTURE_READY factor=3 width=53 height=41 runs=0 state=CLEAN scene=tiles-g0-s0-v2 file=/workspace/scratch/5b5281e79681/small-tiles-installed-factor0-final/fixtures/small-tiles-3.xcf"
+      ]
+    }
+  },
+  "smoke_results": {
+    "3": {
+      "status": "passed",
+      "factor": 3,
+      "scene": "tiles-g0-s0-v2",
+      "seconds": 7.317119528997864,
+      "batch_result": {
+        "status": "passed",
+        "factor": 3,
+        "scene": "tiles-g0-s0-v2",
+        "expected_sha256": "bfe0f850a327fa79cee613c77fbed57f030afaf55e11cb18ea14f693b3fc9eec",
+        "rerun_sha256": "bfe0f850a327fa79cee613c77fbed57f030afaf55e11cb18ea14f693b3fc9eec",
+        "definition_preserved": true,
+        "reopened_definition_preserved": true,
+        "argument_count": 4,
+        "initial_generation": 3,
+        "first_generation": 4,
+        "reopened_generation": 3,
+        "rerun_generation": 4,
+        "scope": "Two explicit lower updates, full genuine-old live SmallTiles bytes, two Save/reopen cycles and four typed arguments; no GUI or whole-port claim"
+      },
+      "fixture_sha256": "da0c96721e86ca9237ab2117d07197f5a87371229b0a6db712cdc6758d431518",
+      "observer_source_sha256": "d1092aa0b3851af02f90218d84c9050b5e695581d7cb97bb884869d3bc043e2e",
+      "process_observer_source_sha256": "7d07139e7aad54400183b79e652a8a7df16e808ddd4612498fdf283ed852186b",
+      "batch_source_sha256": "5d0a76b9584b6348138111b6d88576f17f5c98ea65224a627b7e4ce81fe451d9",
+      "console_log_sha256": "eb5d9dbdc3ecdf3b2934732f74ce2c6afdd3311d53049d8571c6bcc9c2df7bac",
+      "evidence_archive_sha256": "d28e4b74436f980a9e263225748b056df2228ed6b5d8b815f4b6e1c1d67f8695"
+    },
+    "0": {
+      "status": "passed",
+      "factor": 0,
+      "scene": "tiles-g0-s0-v0",
+      "seconds": 6.441537143997266,
+      "batch_result": {
+        "status": "passed",
+        "factor": 0,
+        "scene": "tiles-g0-s0-v0",
+        "expected_sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+        "rerun_sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+        "definition_preserved": true,
+        "reopened_definition_preserved": true,
+        "argument_count": 4,
+        "initial_generation": 3,
+        "first_generation": 4,
+        "reopened_generation": 3,
+        "rerun_generation": 4,
+        "scope": "Two explicit lower updates, full genuine-old live SmallTiles bytes, two Save/reopen cycles and four typed arguments; no GUI or whole-port claim"
+      },
+      "fixture_sha256": "5b24b112ae547f8e3531a40ca72d2e8e977762cc5c6ec676baab9dcbcf8f2db4",
+      "observer_source_sha256": "d1092aa0b3851af02f90218d84c9050b5e695581d7cb97bb884869d3bc043e2e",
+      "process_observer_source_sha256": "7d07139e7aad54400183b79e652a8a7df16e808ddd4612498fdf283ed852186b",
+      "batch_source_sha256": "5d0a76b9584b6348138111b6d88576f17f5c98ea65224a627b7e4ce81fe451d9",
+      "console_log_sha256": "4bf5c399ca55707f8033e712e785c0f1ca0c619b76a3ec11d54f26a652deab83",
+      "evidence_archive_sha256": "d28e4b74436f980a9e263225748b056df2228ed6b5d8b815f4b6e1c1d67f8695"
+    }
+  },
+  "commands": [
+    {
+      "name": "default-compile",
+      "command": [
+        "meson",
+        "compile",
+        "-C",
+        "build-installed-filter",
+        "-j",
+        "4"
+      ],
+      "started": "2026-10-03T11:10:46.941423+00:00",
+      "log": "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/default-compile.log",
+      "exit_code": 0,
+      "seconds": 2.085314768999524
+    },
+    {
+      "name": "verify-executables",
+      "command": [
+        "python3",
+        "tools/verify_build_executables.py",
+        "build-installed-filter",
+        "--report",
+        "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/executables.json"
+      ],
+      "started": "2026-10-03T11:10:49.027079+00:00",
+      "log": "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/verify-executables.log",
+      "exit_code": 0,
+      "seconds": 0.30378444000234595
+    },
+    {
+      "name": "package",
+      "command": [
+        "python3",
+        "tools/package-linux-runtime.py",
+        "--build",
+        "build-installed-filter",
+        "--deps",
+        "/workspace/scratch/5b5281e79681/.deps-debian13",
+        "--output",
+        "../small-tiles-package-final"
+      ],
+      "started": "2026-10-03T11:10:49.492828+00:00",
+      "log": "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/package.log",
+      "exit_code": 0,
+      "seconds": 17.52445826100302
+    },
+    {
+      "name": "relocated-factor3",
+      "command": [
+        "python3",
+        "tools/check_installed_small_tiles.py",
+        "--build",
+        "build-installed-filter",
+        "--bundle",
+        "../small-tiles-package-final/gimp-painter-linux-x86_64",
+        "--factor",
+        "3",
+        "--relocate",
+        "--output",
+        "../small-tiles-installed-factor3-final"
+      ],
+      "started": "2026-10-03T11:11:07.017558+00:00",
+      "log": "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/relocated-factor3.log",
+      "exit_code": 0,
+      "seconds": 9.068564930996217
+    },
+    {
+      "name": "relocated-factor0",
+      "command": [
+        "python3",
+        "tools/check_installed_small_tiles.py",
+        "--build",
+        "build-installed-filter",
+        "--bundle",
+        "../small-tiles-package-final/gimp-painter-linux-x86_64",
+        "--factor",
+        "0",
+        "--relocate",
+        "--output",
+        "../small-tiles-installed-factor0-final"
+      ],
+      "started": "2026-10-03T11:11:16.086472+00:00",
+      "log": "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/relocated-factor0.log",
+      "exit_code": 0,
+      "seconds": 8.229849505994935
+    }
+  ],
+  "artifacts_sha256": {
+    "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/default-compile.log": "3ca43bec502a106cfcd890cc792b056c1c0ebfe985d2e8ff592d684eddd50ee3",
+    "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/package.log": "d060d62a16642dbb7c0fc9df8d0723ebc87fc0bab96a9eaa8b5e7d9a6934e25b",
+    "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/relocated-factor0.log": "51aaf412b71303bb8536f7520d840388d758bc654ce977fc49281c59bc4190ad",
+    "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/relocated-factor3.log": "98e82fb61126f6c3059657dc668a782e5e7589d865ecacbce7e2af9391c0024e",
+    "/workspace/scratch/5b5281e79681/small-tiles-installed-build-final/verify-executables.log": "2da2d97646a8f06865991951695b3cb7df539b1862e1a7851fb99063ca085e90"
+  },
+  "complete_local_report_sha256": "1a747905aab6ef987703faa696d7811531eab057a4afd7d761dc39f53a065ff8"
+}

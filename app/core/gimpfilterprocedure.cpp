@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later
- * Only bundled Blinds is admitted. Every native object belongs to this child
+ * Only literal bundled procedures are admitted. Every native object belongs to this child
  * main thread; no parent GObject is retained or used by the helper.
  */
 #include "config.h"
@@ -191,7 +191,7 @@ public:
   }
   void check () const
   {
-    if (failed_) throw std::runtime_error ("Cannot track private Blinds child lifetime");
+    if (failed_) throw std::runtime_error ("Cannot track private Filter child lifetime");
   }
 private:
   static void opened (GimpPlugInManager *, GimpPlugIn *plugin, gpointer data) noexcept
@@ -266,7 +266,7 @@ public:
       g_object_new (GIMP_TYPE_RC, "gimp", gimp_.get (), nullptr)));
     const char *directory = gimp_directory ();
     if (!directory || !g_path_is_absolute (directory))
-      throw std::runtime_error ("Private Blinds requires an absolute private profile");
+      throw std::runtime_error ("Private Filter requires an absolute private profile");
     StringRef config_directory (g_filename_to_utf8 (directory, -1, nullptr, nullptr, nullptr));
     if (!config_directory)
       throw std::runtime_error ("Cannot encode private Blinds temporary directory");
@@ -287,7 +287,7 @@ public:
         !g_file_equal (expected_directory.get (), swap_directory.get ()) ||
         settings->tile_cache_size != 32 * 1024 * 1024 ||
         settings->num_processors != 1 || settings->use_opencl)
-      throw std::runtime_error ("Private Blinds resource configuration did not retain its limits");
+      throw std::runtime_error ("Private Filter resource configuration did not retain its limits");
     gimp_.get ()->config = GIMP_CORE_CONFIG (config.release ());
     gimp_.get ()->edit_config = GIMP_CORE_CONFIG (edit_config.release ());
     gimp_gegl_init (gimp_.get ());
@@ -298,7 +298,7 @@ public:
                   "tile-cache-size", &actual_cache, nullptr);
     StringRef swap_owner (actual_swap);
     if (!actual_swap || g_strcmp0 (actual_swap, directory) || actual_cache != settings->tile_cache_size)
-      throw std::runtime_error ("Private Blinds GEGL resource limits differ from native plug-in configuration");
+      throw std::runtime_error ("Private Filter GEGL resource limits differ from native plug-in configuration");
     gimp_data_factories_add_builtin (gimp_.get ());
     internal_procs_init (gimp_.get ()->pdb);
     plugins_.observe (gimp_.get ()->plug_in_manager);
@@ -376,6 +376,76 @@ ObjectRef<GimpProcedure> query_blinds (Gimp *gimp, GimpContext *context)
   gimp_pdb_register_procedure (gimp->pdb, procedure.get ());
   if (gimp_pdb_lookup_procedure (gimp->pdb, blinds_name) != procedure.get ())
     throw std::runtime_error ("Cannot register bundled Blinds in private PDB");
+  return procedure;
+}
+
+/* Inspect both exact registrations, but admit only the hidden noninteractive
+ * compatibility entry to this private PDB. A saved string never selects an
+ * executable or a public plug-in registration. */
+void validate_small_tiles (GimpProcedure *procedure, GFile *file, bool hidden)
+{
+  const char *name = hidden ? "plug-in-painter-small-tiles" : "plug-in-small-tiles";
+  if (!procedure || !GIMP_IS_PLUG_IN_PROCEDURE (procedure) ||
+      procedure->proc_type != GIMP_PDB_PROC_TYPE_PLUGIN ||
+      g_strcmp0 (gimp_object_get_name (procedure), name) ||
+      procedure->num_args != 4 || procedure->num_values || !procedure->args)
+    throw std::runtime_error ("Bundled Small Tiles procedure signature changed");
+  auto *plugin = GIMP_PLUG_IN_PROCEDURE (procedure);
+  if (!plugin->file || !g_file_equal (plugin->file, file) || plugin->file_proc ||
+      plugin->batch_interpreter || plugin->installed_during_init ||
+      g_strcmp0 (plugin->image_types, "RGB*, GRAY*") ||
+      plugin->sensitivity_mask != GIMP_PROCEDURE_SENSITIVE_DRAWABLE ||
+      (hidden && (plugin->menu_paths || plugin->menu_label)))
+    throw std::runtime_error ("Bundled Small Tiles executable registration changed");
+  const char *names[] = {"run-mode", "image", "drawables", "num-tiles"};
+  const GType types[] = {GIMP_TYPE_RUN_MODE, GIMP_TYPE_IMAGE, GIMP_TYPE_CORE_OBJECT_ARRAY, G_TYPE_INT};
+  for (unsigned i = 0; i < 4; ++i)
+    if (!procedure->args[i] || g_strcmp0 (g_param_spec_get_name (procedure->args[i]), names[i]) ||
+        G_PARAM_SPEC_VALUE_TYPE (procedure->args[i]) != types[i] ||
+        (procedure->args[i]->flags & G_PARAM_READWRITE) != G_PARAM_READWRITE)
+      throw std::runtime_error ("Bundled Small Tiles argument name or type changed");
+  auto **args = procedure->args;
+  if (!G_IS_PARAM_SPEC_ENUM (args[0]) || G_PARAM_SPEC_ENUM (args[0])->default_value != GIMP_RUN_NONINTERACTIVE ||
+      !GIMP_IS_PARAM_SPEC_IMAGE (args[1]) || gimp_param_spec_image_none_allowed (args[1]) ||
+      !GIMP_IS_PARAM_SPEC_CORE_OBJECT_ARRAY (args[2]) ||
+      gimp_param_spec_core_object_array_get_object_type (args[2]) != GIMP_TYPE_DRAWABLE ||
+      !G_IS_PARAM_SPEC_INT (args[3]) || G_PARAM_SPEC_INT (args[3])->minimum != (hidden ? 0 : 2) ||
+      G_PARAM_SPEC_INT (args[3])->maximum != 6 || G_PARAM_SPEC_INT (args[3])->default_value != 2)
+    throw std::runtime_error ("Bundled Small Tiles argument constraints changed");
+}
+
+ObjectRef<GimpProcedure> query_small_tiles (Gimp *gimp, GimpContext *context)
+{
+  const auto path = filter_plugin_path (FilterProcedure::small_tiles);
+  auto file = ObjectRef<GFile>::adopt (g_file_new_for_path (path.c_str ()));
+  auto definition = ObjectRef<GimpPlugInDef>::adopt (gimp_plug_in_def_new (file.get ()));
+  gimp_plug_in_manager_call_query (gimp->plug_in_manager, context, definition.get ());
+  if (definition.get ()->has_init || g_slist_length (definition.get ()->procedures) != 2)
+    throw std::runtime_error ("Bundled Small Tiles returned unexpected registrations");
+  GimpProcedure *selected = nullptr;
+  bool public_found = false;
+  for (GSList *iter = definition.get ()->procedures; iter; iter = iter->next)
+    {
+      auto *candidate = GIMP_PROCEDURE (iter->data);
+      if (!g_strcmp0 (gimp_object_get_name (candidate), "plug-in-painter-small-tiles") && !selected)
+        {
+          validate_small_tiles (candidate, file.get (), true);
+          selected = candidate;
+        }
+      else if (!g_strcmp0 (gimp_object_get_name (candidate), "plug-in-small-tiles") && !public_found)
+        {
+          validate_small_tiles (candidate, file.get (), false);
+          public_found = true;
+        }
+      else throw std::runtime_error ("Bundled Small Tiles returned an unknown registration");
+    }
+  if (!selected || !public_found)
+    throw std::runtime_error ("Bundled Small Tiles is missing a required registration");
+  auto procedure = ObjectRef<GimpProcedure>::retain (selected);
+  gimp_plug_in_manager_add_procedure (gimp->plug_in_manager, GIMP_PLUG_IN_PROCEDURE (selected));
+  gimp_pdb_register_procedure (gimp->pdb, selected);
+  if (gimp_pdb_lookup_procedure (gimp->pdb, "plug-in-painter-small-tiles") != selected)
+    throw std::runtime_error ("Cannot register bundled Small Tiles in private PDB");
   return procedure;
 }
 
@@ -563,19 +633,19 @@ run_filter_procedure (const FilterProcedureRequest& request,
   const auto bytes = request.bytes ();
   const auto region = request.execution_region ();
   if (&input == &output || input.size () != bytes || output.size () != bytes)
-    throw std::invalid_argument ("Private Blinds requires separate exact-sized RGBA8 rasters");
+    throw std::invalid_argument ("Private Filter requires separate exact-sized RGBA8 rasters");
   if (cancel.load (std::memory_order_relaxed)) return Disposition::pending;
   std::array<std::uint8_t, transfer_bytes> pixels;
   const auto validate_carrier = [&] (std::size_t count) {
     if (request.gray)
       for (std::size_t p = 0; p < count; p += 4)
         if (pixels[p] != pixels[p + 1] || pixels[p] != pixels[p + 2])
-          throw std::invalid_argument ("Private Blinds Gray input is not triplicated");
+          throw std::invalid_argument ("Private Filter Gray input is not triplicated");
   };
   if (!region.intersects)
     {
       /* An empty native mask is unrestricted, so it cannot encode a globally
-       * nonempty selection that misses this drawable. Blinds performs no merge
+       * nonempty selection that misses this drawable. Both routes perform no merge
        * in that case. Send an exact carrier and an explicit no-merge outcome. */
       if (!each_chunk (request, cancel, [&] (const GeglRectangle&,
                                             std::uint64_t offset, std::size_t count) {
@@ -591,27 +661,29 @@ run_filter_procedure (const FilterProcedureRequest& request,
   Gimp *gimp = runtime.get ();
   auto context = ObjectRef<GimpContext>::adopt (
     gimp_pdb_context_new (gimp, gimp_get_user_context (gimp), TRUE));
-  auto procedure = query_blinds (gimp, context.get ());
+  auto procedure = request.procedure == FilterProcedure::blinds ?
+    query_blinds (gimp, context.get ()) : query_small_tiles (gimp, context.get ());
   runtime.wait_for_plugins ();
   if (cancel.load (std::memory_order_relaxed)) return Disposition::pending;
 
-  /* Native Blinds always requests RGB pixels. Triplicated Gray samples in an
-   * RGB surrogate avoid both luminance conversion and an ICC round trip. */
+  /* Blinds requests RGB pixels and Small Tiles permutes channel bytes.
+   * Triplicated Gray in the RGBA surrogate preserves both routes' exact native
+   * samples, including hidden colors, without a modern luminance/ICC round trip. */
   auto image = ObjectRef<GimpImage>::adopt (gimp_image_new (
     gimp, int (request.width), int (request.height), GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR));
-  if (!image) throw std::runtime_error ("Cannot create private Blinds image");
+  if (!image) throw std::runtime_error ("Cannot create private Filter image");
   gimp_image_undo_disable (image.get ());
   gimp_image_set_use_srgb_profile (image.get (), TRUE);
   const Babl *format = babl_format ("R'G'B'A u8");
   auto layer = ObjectRef<GimpLayer>::sink (gimp_layer_new (
     image.get (), int (request.width), int (request.height), format,
-    "Private Blinds input", 1.0, GIMP_LAYER_MODE_NORMAL_LEGACY));
+    "Private Filter input", 1.0, GIMP_LAYER_MODE_NORMAL_LEGACY));
   if (!layer || !gimp_image_add_layer (image.get (), layer.get (), nullptr, 0, FALSE))
-    throw std::runtime_error ("Cannot attach private Blinds drawable");
+    throw std::runtime_error ("Cannot attach private Filter drawable");
   auto buffer = ObjectRef<GeglBuffer>::retain (
     gimp_drawable_get_buffer (GIMP_DRAWABLE (layer.get ())));
   if (!buffer || gegl_buffer_get_format (buffer.get ()) != format)
-    throw std::runtime_error ("Private Blinds drawable is not exact encoded RGBA8 sRGB");
+    throw std::runtime_error ("Private Filter drawable is not exact encoded RGBA8 sRGB");
   if (region.selected)
     gimp_channel_select_rectangle (gimp_image_get_mask (image.get ()),
                                    region.x1, region.y1, region.x2 - region.x1, region.y2 - region.y1,
@@ -630,22 +702,28 @@ run_filter_procedure (const FilterProcedureRequest& request,
   background_pixel[3] = 255; // legacy GimpContext backgrounds are opaque
   if (request.gray && (background_pixel[0] != background_pixel[1] ||
                        background_pixel[0] != background_pixel[2]))
-    throw std::invalid_argument ("Private Blinds Gray background is not triplicated");
+    throw std::invalid_argument ("Private Filter Gray background is not triplicated");
   gegl_color_set_pixel (background.get (), format, background_pixel.data ());
   gimp_context_set_background (context.get (), background.get ());
 
   ValuesRef arguments (gimp_procedure_get_arguments (procedure.get ()));
-  if (!arguments || gimp_value_array_length (arguments.get ()) != 7)
-    throw std::runtime_error ("Cannot construct private Blinds arguments");
+  if (!arguments || gimp_value_array_length (arguments.get ()) !=
+                    (request.procedure == FilterProcedure::small_tiles ? 4 : 7))
+    throw std::runtime_error ("Cannot construct private Filter arguments");
   GObject *drawables[] = { G_OBJECT (layer.get ()), nullptr };
   g_value_set_enum (gimp_value_array_index (arguments.get (), 0), GIMP_RUN_NONINTERACTIVE);
   g_value_set_object (gimp_value_array_index (arguments.get (), 1), image.get ());
   g_value_set_boxed (gimp_value_array_index (arguments.get (), 2), drawables);
-  g_value_set_int (gimp_value_array_index (arguments.get (), 3), request.angle);
-  g_value_set_int (gimp_value_array_index (arguments.get (), 4), request.segments);
-  g_value_set_string (gimp_value_array_index (arguments.get (), 5),
-                      request.orientation == 1 ? "vertical" : "horizontal");
-  g_value_set_boolean (gimp_value_array_index (arguments.get (), 6), request.transparent != 0);
+  if (request.procedure == FilterProcedure::small_tiles)
+    g_value_set_int (gimp_value_array_index (arguments.get (), 3), request.tiles);
+  else
+    {
+      g_value_set_int (gimp_value_array_index (arguments.get (), 3), request.angle);
+      g_value_set_int (gimp_value_array_index (arguments.get (), 4), request.segments);
+      g_value_set_string (gimp_value_array_index (arguments.get (), 5),
+                          request.orientation == 1 ? "vertical" : "horizontal");
+      g_value_set_boolean (gimp_value_array_index (arguments.get (), 6), request.transparent != 0);
+    }
   ProcedureProgress progress;
   ShadowCapture capture;
   if (request.raw_shadow) capture.install (gimp, layer.get ());
@@ -658,7 +736,7 @@ run_filter_procedure (const FilterProcedureRequest& request,
   if (error || !result || gimp_value_array_length (result.get ()) != 1 ||
       !G_VALUE_HOLDS (gimp_value_array_index (result.get (), 0), GIMP_TYPE_PDB_STATUS_TYPE) ||
       g_value_get_enum (gimp_value_array_index (result.get (), 0)) != GIMP_PDB_SUCCESS)
-    throw std::runtime_error (error ? error->message : "Bundled Blinds did not finish successfully");
+    throw std::runtime_error (error ? error->message : "Bundled Filter did not finish successfully");
 
   Disposition disposition = Disposition::merged;
   if (request.raw_shadow)
@@ -672,7 +750,7 @@ run_filter_procedure (const FilterProcedureRequest& request,
        * route's accepted alpha-zero repair only for already-merged output. */
       buffer = ObjectRef<GeglBuffer>::retain (
         gimp_drawable_get_buffer (GIMP_DRAWABLE (layer.get ())));
-      if (!buffer) throw std::runtime_error ("Private merged Blinds drawable has no buffer");
+      if (!buffer) throw std::runtime_error ("Private merged Filter drawable has no buffer");
     }
   std::array<std::uint8_t, transfer_bytes> original;
   if (!each_chunk (request, cancel, [&] (const GeglRectangle& rect,
