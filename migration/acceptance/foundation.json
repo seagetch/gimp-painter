@@ -546,7 +546,7 @@
       "id": "06.028",
       "task": "非同期 job の独立状態を実装する",
       "dependencies": "06.027",
-      "state": "COMPONENT_VERIFIED",
+      "state": "PARTIAL",
       "implementation_paths": [
         "app/painter/filter-scheduler.cpp",
         "app/painter/filter-spool.cpp",
@@ -560,7 +560,7 @@
         "migration/tests/filter-native-foundation-normal.json",
         "migration/tests/filter-native-other82-sanitizers.json"
       ],
-      "scope_or_gap": "Actual Filter job independently owns inputs/results/cancel/lease; image close preserves worker safety. Refreshed exact-source normal and 82-case sanitizer snapshot exclude the separately measured huge fixture; huge-image memory/latency gates and other feature-specific async jobs remain separate."
+      "scope_or_gap": "Actual Filter job independently owns inputs/results/cancel/lease; image close preserves worker safety. Refreshed exact-source normal and 82-case sanitizer snapshot exclude the separately measured huge fixture; huge-image memory/latency gates and other feature-specific async jobs remain separate. Current Filter source now adds explicit owner cancellation; two fresh native cancellation tests pass, while the previous reports remain historical and the complete current-source normal/sanitizer refresh is pending (17.022/explicit-owner-cancel)."
     },
     {
       "id": "06.029",
@@ -840,7 +840,7 @@
       "id": "07.012",
       "task": "worker 完了と画像終了の競合を試験する",
       "dependencies": "07.011",
-      "state": "COMPONENT_VERIFIED",
+      "state": "PARTIAL",
       "implementation_paths": [
         "app/painter/filter-scheduler.cpp",
         "app/painter/filter-spool.cpp",
@@ -854,7 +854,7 @@
         "migration/tests/filter-native-foundation-normal.json",
         "migration/tests/filter-native-other82-sanitizers.json"
       ],
-      "scope_or_gap": "Actual Filter job independently owns inputs/results/cancel/lease; image close preserves worker safety. Refreshed exact-source normal and 82-case sanitizer snapshot exclude the separately measured huge fixture; huge-image memory/latency gates and other feature-specific async jobs remain separate."
+      "scope_or_gap": "Actual Filter job independently owns inputs/results/cancel/lease; image close preserves worker safety. Refreshed exact-source normal and 82-case sanitizer snapshot exclude the separately measured huge fixture; huge-image memory/latency gates and other feature-specific async jobs remain separate. Current Filter source now adds explicit owner cancellation; two fresh native cancellation tests pass, while the previous reports remain historical and the complete current-source normal/sanitizer refresh is pending (17.022/explicit-owner-cancel)."
     },
     {
       "id": "07.013",

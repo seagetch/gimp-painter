@@ -1282,6 +1282,22 @@ void gimp_filter_layer_mark_as_loaded (GimpFilterLayer *layer)
     impl.scheduler.mark_loaded (); impl.staged.reset (); }); }); }
 void gimp_filter_layer_invalidate (GimpFilterLayer *layer)
 { boundary_void (nullptr, [&] { BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([] (FilterImpl& impl) { impl.invalidate (); }); }); }
+void gimp_filter_layer_cancel (GimpFilterLayer *layer)
+{
+  boundary_void (nullptr, [&] {
+    if (!GIMP_IS_FILTER_LAYER (layer)) return;
+    BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([] (FilterImpl& impl) {
+      /* Detach before callbacks can replace or close this generation. The
+       * completed drawable buffer is independent from the staged import. */
+      auto retired = std::move (impl.staged);
+      impl.scheduler.reject ("Filter execution cancelled");
+      impl.schedule ();
+      g_signal_emit_by_name (impl.owner, "filter-state-changed");
+      /* No further Impl access: signal or retired-buffer destruction may
+       * synchronously close the owner or install a replacement definition. */
+    });
+  });
+}
 
 gboolean gimp_filter_layer_get_argument_reference (GimpFilterLayer *layer, guint argument, guint element,
                                                   GType *type, gint64 *id, gboolean *expired)

@@ -2332,6 +2332,8 @@ static void image_close_during_redo_callbacks (void) { undo_owner_lifetime (TRUE
 static void image_close_during_strong_undo_callbacks (void) { undo_owner_lifetime (FALSE,TRUE); }
 static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetime (TRUE,TRUE); }
 
+#include "test-filter-cancel.inc"
+
 int main (int argc, char **argv)
 {
   int result;
@@ -2344,6 +2346,8 @@ int main (int argc, char **argv)
   }
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
+  ADD (explicit_cancel_preserves_completed_cache);
+  ADD (explicit_cancel_survives_callback_reentry);
   g_test_add_func ("/gimp-filter-layer/configuration-admission",configuration_admission);
   ADD (spill_budget_failure_preserves_cache_and_retries);
   ADD (image_close_during_undo_callbacks); ADD (image_close_during_redo_callbacks);

@@ -37,6 +37,7 @@ public:
   }
   String procedure () const { return String (gimp_filter_layer_dup_procedure (get ())); }
   GimpFilterLayerState state () const noexcept { return gimp_filter_layer_get_state (get ()); }
+  void cancel () const noexcept { gimp_filter_layer_cancel (get ()); }
 private:
   explicit FilterLayerRef (ObjectRef<GimpFilterLayer> owner) : owner_ (std::move (owner))
   { if (!owner_) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected FilterLayer"); }

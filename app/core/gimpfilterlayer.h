@@ -102,6 +102,10 @@ GimpFilterArgumentsSnapshot *gimp_filter_arguments_snapshot_nested (const GimpFi
 
 void        gimp_filter_layer_mark_as_loaded (GimpFilterLayer *);
 void        gimp_filter_layer_invalidate     (GimpFilterLayer *);
+/* Stop the current generation without discarding its definition or completed
+ * pixels. Independent workers drain asynchronously; a subsequent edit may
+ * start a new generation. Owner/main-context only. */
+void        gimp_filter_layer_cancel         (GimpFilterLayer *);
 GimpFilterLayerState gimp_filter_layer_get_state (GimpFilterLayer *);
 gchar *     gimp_filter_layer_dup_error      (GimpFilterLayer *);
 /* Session-local token for this layer's definition installations, including
