@@ -1,0 +1,33 @@
+{
+  "status": "failed",
+  "exit_code": 1,
+  "completed_utc": "2026-10-03T00:02:49.614286+00:00",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "sanitizer": true,
+  "command": [
+    "g++",
+    "-std=c++17",
+    "-g",
+    "-O2",
+    "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+    "/workspace/shared/gimp-filter-context-scalar/compare.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-context.cpp",
+    "-o",
+    "/workspace/shared/gimp-filter-context-scalar/compare-sanitized",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "-fno-sanitize-recover=all"
+  ],
+  "output": "==15==LeakSanitizer has encountered a fatal error.\n==15==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1\n==15==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)\n",
+  "source_sha256": {
+    "app/painter/filter-context.cpp": "138bbe57fb6c4490c3e5f762756f7a507656592482ec496770c8fde53f5a3b7f",
+    "app/painter/filter-context.hpp": "9ac030008e3ddd430e902d14bef4981ee0c390e5a3cca6fabbd9bc374191195e"
+  },
+  "oracle_sha256": {
+    "app/paint-funcs/paint-funcs.c": "41a5b121529718048b8cf3d6a9edd5bf67fb7e0734664393ea3c2a497d6d1cb5",
+    "app/paint-funcs/paint-funcs-utils.h": "12917e95afa5dabb2ce961d2978878cd72c12632e5ff90426aa6eba14f04cc14"
+  },
+  "extracted_sha256": "0e70c0aec81d8e16fc120ae4e5e74c1ac7f62ec71d18efe5c77b38fe9c9eb890",
+  "harness_sha256": "5239a279bb6855f06062d031b645cda1ad42010513bd462e8b84638674a20dd4",
+  "executable_sha256": "001a6c863fc879c17bef03669eeea98d9c6cef801fcf04e9d1971805f1d8a426"
+}

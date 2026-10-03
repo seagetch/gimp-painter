@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "exit_code": 0,
+  "source_sha256": {
+    "app/painter/filter-context.cpp": "1d7815323bf5b00c605fd544b70a5f3584c95dd322da4f167cd6d6e8d6916d5b",
+    "app/painter/filter-context.hpp": "9ac030008e3ddd430e902d14bef4981ee0c390e5a3cca6fabbd9bc374191195e",
+    "app/painter/tests/test-filter-context.cpp": "ab564a04cf15214ea7a331694800f222dd479a19adf0d4063b8454cc6a2cdc00"
+  },
+  "sources_unchanged": true,
+  "completed_utc": "2026-10-03T00:22:35.698262+00:00",
+  "sanitizer": false,
+  "leak_sanitizer": false,
+  "sanitizer_options": {
+    "ASAN_OPTIONS": null,
+    "UBSAN_OPTIONS": null
+  },
+  "coverage": "Independent scalar adapter and fixture harness only; no full application sanitizer claim",
+  "fixture_report_sha256": "1b234b50780ec19f88a3a52919cc7ced4b866c520b0354bf4eb967a87d599745",
+  "command": [
+    "g++",
+    "-std=c++14",
+    "-g",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-context.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/tests/test-filter-context.cpp",
+    "-o",
+    "/workspace/shared/test-filter-context-normal"
+  ],
+  "fixture_archive_sha256": "1f3b0bf7ddd08ac00d2e1582016599100d249e0a3657b7e96f94b12ba52c3019",
+  "fixture_manifest_sha256": "df994077b5aaf713471a293fe64fabceb1d2d9463544cbaabc100c17ab808000",
+  "executable_sha256": "a323727514eac48666127b5954a2a04fffcabcce490d6fbd34f0dfef5f27ab51",
+  "output": "Exact old native shadow merges: 304\nExact old native selection bounds: 304\nFilter context scalar tests passed\n"
+}

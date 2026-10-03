@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "exit_code": 0,
+  "completed_utc": "2026-10-03T00:22:45.357694+00:00",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "sanitizer": true,
+  "leak_sanitizer": false,
+  "sanitizer_options": {
+    "ASAN_OPTIONS": "detect_leaks=0:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1"
+  },
+  "command": [
+    "g++",
+    "-std=c++14",
+    "-g",
+    "-O2",
+    "-I/workspace/scratch/5b5281e79681/gimp-painter/app/painter",
+    "/workspace/shared/gimp-filter-context-scalar/compare.cpp",
+    "/workspace/scratch/5b5281e79681/gimp-painter/app/painter/filter-context.cpp",
+    "-o",
+    "/workspace/shared/gimp-filter-context-scalar/compare-sanitized",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "-fno-sanitize-recover=all"
+  ],
+  "output": "117440512 exact old-source comparisons passed\n",
+  "source_sha256": {
+    "app/painter/filter-context.cpp": "1d7815323bf5b00c605fd544b70a5f3584c95dd322da4f167cd6d6e8d6916d5b",
+    "app/painter/filter-context.hpp": "9ac030008e3ddd430e902d14bef4981ee0c390e5a3cca6fabbd9bc374191195e"
+  },
+  "oracle_sha256": {
+    "app/paint-funcs/paint-funcs.c": "41a5b121529718048b8cf3d6a9edd5bf67fb7e0734664393ea3c2a497d6d1cb5",
+    "app/paint-funcs/paint-funcs-utils.h": "12917e95afa5dabb2ce961d2978878cd72c12632e5ff90426aa6eba14f04cc14"
+  },
+  "extracted_sha256": "0e70c0aec81d8e16fc120ae4e5e74c1ac7f62ec71d18efe5c77b38fe9c9eb890",
+  "harness_sha256": "5239a279bb6855f06062d031b645cda1ad42010513bd462e8b84638674a20dd4",
+  "executable_sha256": "32e4ca4ba5914b3168fa4c9b8c1da741bcaa81da301b3daf3325ffb0005666ce"
+}
