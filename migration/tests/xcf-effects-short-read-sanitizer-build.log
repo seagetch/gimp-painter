@@ -1,0 +1,94 @@
+compile app/config/gimppainterfilterconfig.cpp
+compile app/core/gimp-painter-provenance.cpp
+compile app/core/gimpclonelayer.cpp
+compile app/core/gimpdrawablefilter.c
+compile app/core/gimpfilterlayer.cpp
+compile app/core/gimpimage-duplicate.c
+compile app/core/gimpitem.c
+compile app/core/gimpobject.c
+compile app/dialogs/file-save-deferred.cpp
+compile app/dialogs/painter-layer-dialog.cpp
+compile app/httpd/httpd-images.cpp
+compile app/httpd/httpd-navigation.cpp
+compile app/httpd/httpd-pdb.cpp
+compile app/httpd/httpd-resource.cpp
+compile app/httpd/httpd.cpp
+compile app/paint/gimpbrushcore-loops.cc
+compile app/paint/gimpfillbrush.cpp
+compile app/paint/gimppaintcore-loops.cc
+compile app/paint/gimppainterbrushgeometry.cpp
+[01m[K../app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+compile app/paint/gimppainterpaintgate.cpp
+compile app/paint/gimppainterpaper-paste.cpp
+compile app/paint/gimppainterpaper.cpp
+compile app/paint/gimppaintersmudge.cpp
+compile app/paint/painter-bounded-fill/search.cpp
+compile app/paint/painter-mypaint-surface/gegl-surface.cpp
+compile app/paint/painter-mypaint-surface/gimp-painter-options.cpp
+compile app/paint/painter-mypaint-surface/gimp-painter-session.cpp
+compile app/paint/painter-mypaint-surface/gimp-resources.cpp
+compile app/paint/painter-mypaint-surface/legacy-generated-mask.cpp
+compile app/paint/painter-mypaint-surface/legacy-mask-transform.cpp
+compile app/paint/painter-mypaint-surface/paint-core.cpp
+compile app/paint/painter-mypaint/engine.cpp
+In file included from [01m[K../app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../app/paint/painter-mypaint/legacy-brush.hpp:397:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  397 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+compile app/paint/painter-mypaint/resource.cpp
+compile app/painter-filter-worker.cpp
+compile app/painter/binding-store.cpp
+compile app/painter/filter-edge.cpp
+compile app/painter/filter-gauss.cpp
+compile app/painter/filter-lifetime.cpp
+compile app/painter/filter-native-kernels.cpp
+compile app/painter/filter-process.cpp
+compile app/painter/filter-raster-kernels.cpp
+compile app/painter/filter-raster.cpp
+compile app/painter/filter-scheduler.cpp
+compile app/painter/filter-spool.cpp
+compile app/painter/filter-wire.cpp
+compile app/painter/gimp-painter-binding.cpp
+compile app/painter/gimp-painter-error.cpp
+compile app/tests/test-painter-xcf-adversarial.c
+[01m[K../app/tests/test-painter-xcf-adversarial.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[K../app/tests/test-painter-xcf-adversarial.c:560:17:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  560 |                 [01;35m[Kgchar[m[K *name = g_strdup_printf ("/painter-xcf-adversarial/layout/%u/%u/%u%u%u%u", ow, compression, a,b,c,d);
+      |                 [01;35m[K^~~~~[m[K
+[01m[K../app/tests/test-painter-xcf-adversarial.c:564:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  564 |           [01;35m[Kgchar[m[K *name = g_strdup_printf ("/painter-xcf-adversarial/alias/%u/%u", ow, compression);
+      |           [01;35m[K^~~~~[m[K
+[01m[K../app/tests/test-painter-xcf-adversarial.c:570:13:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  570 |             [01;35m[KDamaged[m[K *d = g_new (Damaged, 1); *d = (Damaged) {ow, compression, 0, damage};
+      |             [01;35m[K^~~~~~~[m[K
+[01m[K../app/tests/test-painter-xcf-adversarial.c:571:13:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  571 |             [01;35m[Kgchar[m[K *name = g_strdup_printf ("/painter-xcf-adversarial/damage/%u/%u/%u", ow, compression, damage);
+      |             [01;35m[K^~~~~[m[K
+[01m[K../app/tests/test-painter-xcf-adversarial.c:577:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  577 |       [01;35m[Kgchar[m[K *name = g_strdup_printf ("/painter-xcf-adversarial/partial-filter/%u", compression);
+      |       [01;35m[K^~~~~[m[K
+compile app/tools/gimpfillbrushtool.cpp
+compile app/tools/gimppaintermybrushtool.cpp
+compile app/tools/gimppaintersmudgetool.cpp
+compile app/tools/gimpperspectiveguidetool.cpp
+compile app/widgets/gimppaintercompactoptions.cpp
+compile app/widgets/gimppainterlayertiles.cpp
+compile app/widgets/gimppaintermybrusheditor.cpp
+compile app/xcf/painter-xcf-arguments.cpp
+compile app/xcf/painter-xcf-compat.cpp
+compile app/xcf/painter-xcf-load.cpp
+compile app/xcf/painter-xcf-preserve.cpp
+compile app/xcf/xcf-load.c
+compile app/xcf/xcf-read.c
+compile app/xcf/xcf-save.c
+compile app/xcf/xcf-seek.c
+compile app/xcf/xcf-write.c
+compile app/xcf/xcf.c
+painter-xcf-adversarial 0

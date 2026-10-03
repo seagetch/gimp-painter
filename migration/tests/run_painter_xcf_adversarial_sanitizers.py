@@ -4,13 +4,22 @@
 Hold /workspace/shared/gimp-painter-build.lock and rebuild normal targets first.
 No shared production object/archive is replaced; this is not whole-GIMP or LSan.
 """
-import argparse, hashlib, json, os, shlex, subprocess
+import argparse, hashlib, io, json, os, shlex, subprocess, tarfile
 from pathlib import Path
 from painter_sanitizer_scope import bridge_rtti_sources
-p=argparse.ArgumentParser();p.add_argument('build',type=Path);p.add_argument('--report',type=Path,required=True);p.add_argument('--run',action='store_true');a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('build',type=Path);p.add_argument('--report',type=Path,required=True);p.add_argument('--run',action='store_true');p.add_argument('--seal-inputs',type=Path);a=p.parse_args()
 root=Path(__file__).resolve().parents[2];build=a.build.resolve();out=build/'xcf-adversarial-rtti-sanitizers';out.mkdir(exist_ok=True)
 entries=json.loads((build/'compile_commands.json').read_text())
-compiled={(Path(e['directory'])/e['file']).resolve():e for e in entries}
+compiled={}
+for e in entries:
+ source=(Path(e['directory'])/e['file']).resolve()
+ try:relative=source.relative_to(root).as_posix()
+ except ValueError:continue
+ # Several compatibility/filter sources also have standalone test copies.
+ # Instrument the real native archive member, never whichever entry is last.
+ module=next((m for m in ['core','painter','xcf'] if relative.startswith('app/'+m+'/') and '/tests/' not in relative),None)
+ if module and not e['output'].startswith('app/'+module+'/libapp'+module+'.a.p/'):continue
+ compiled[source]=e
 filter_candidates={p.relative_to(root).as_posix() for p in (root/'app/painter').glob('filter*.cpp')}
 unregistered={source for source in filter_candidates if (root/source).resolve() not in compiled}
 unregistered_headers={str(Path(source).with_suffix('.hpp')) for source in unregistered}
@@ -25,12 +34,24 @@ headers={'app/tests/test-painter-xcf-fields.inc','app/tests/test-painter-xcf-act
  'app/core/core-types.h','app/core/core-enums.h','app/core/gimpimage.h','app/core/gimpimage-private.h','app/core/gimpclonelayer.h','app/core/gimpfilterlayer.h','app/core/gimpfilterlayer-arguments.hpp',
  'app/xcf/xcf-private.h','app/xcf/xcf.h','app/xcf/painter-xcf-preserve.h','app/xcf/painter-xcf-load.h','app/xcf/painter-xcf-arguments.hpp',
  *{p.relative_to(root).as_posix() for p in (root/'app/painter').glob('*.hpp') if p.relative_to(root).as_posix() not in unregistered_headers},'migration/tests/painter_sanitizer_scope.py','migration/tests/run_painter_xcf_adversarial_sanitizers.py'}
-instrumented=set(sources);rtti_only=bridge_rtti_sources(root,build)-instrumented;sources|=rtti_only
+instrumented=set(sources);rtti_candidates=bridge_rtti_sources(root,build)
+rtti_only={source for source in rtti_candidates if (root/source).resolve() in compiled}-instrumented;sources|=rtti_only
 missing=sorted(source for source in sources if (root/source).resolve() not in compiled)
 if missing:raise RuntimeError('Required sanitizer sources are not registered in this build: '+', '.join(missing))
 headers|={str(Path(x).with_suffix(suffix)) for x in rtti_only for suffix in ['.h','.hpp'] if (root/Path(x).with_suffix(suffix)).exists()}
 def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 hashes={x:digest(root/x) for x in sources|headers}
+seal=None
+if a.seal_inputs:
+ with tarfile.open(a.seal_inputs,'x:gz') as archive:
+  for name in sorted(hashes):
+   data=(root/name).read_bytes()
+   if hashlib.sha256(data).hexdigest()!=hashes[name]:raise RuntimeError('Source changed before sealing: '+name)
+   item=tarfile.TarInfo(name);item.size=len(data);item.mode=0o644
+   archive.addfile(item,io.BytesIO(data))
+  data=(build/'compile_commands.json').read_bytes();item=tarfile.TarInfo('build-input/compile_commands.json');item.size=len(data);item.mode=0o644
+  archive.addfile(item,io.BytesIO(data))
+ seal={'path':str(a.seal_inputs),'sha256':digest(a.seal_inputs),'selected_source_header_count':len(hashes),'compile_database_sha256':hashlib.sha256(data).hexdigest()}
 objects={};originals={};commands=[];flags=['-fsanitize=address,undefined,float-cast-overflow','-fno-omit-frame-pointer','-O1']
 for source in sorted(sources):
  e=compiled[(root/source).resolve()];cmd=shlex.split(e['command']);clean=[];skip=False
@@ -66,6 +87,8 @@ changed=[x for x,h in hashes.items() if digest(root/x)!=h]
 report={'verification':'New execution after runtime restoration; initial mixed-RTTI failure retained separately; no missing historic logs reused','scope':f'{len(instrumented)} instrumented native provenance/XCF/layer/serialization units and {len(rtti_only)} RTTI-only compatibility units; remaining host/dependencies uninstrumented; LSan disabled','instrumented_sources':sorted(instrumented),'rtti_compatibility_only_sources':sorted(rtti_only),'sources_sha256':hashes,'changed_during_build':changed,'commands':commands,'executables':executables,'results':{}}
 report['excluded_unregistered_sources']=sorted(unregistered)
 report['excluded_unregistered_headers']=sorted(unregistered_headers)
+report['excluded_nonproduction_rtti_sources']=sorted(rtti_candidates-instrumented-rtti_only)
+report['compile_time_input_seal']=seal
 a.report.write_text(json.dumps(report,indent=2)+'\n')
 if changed:
  invalid=sources if any(x not in sources for x in changed) else set(changed)

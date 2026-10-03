@@ -10,7 +10,9 @@
 #include "widgets/widgets-types.h"
 #include "core/gimp.h"
 #include "core/gimp-painter-provenance.h"
+#include "core/gimpchannel.h"
 #include "core/gimpclonelayer.h"
+#include "core/gimpdrawablefilter.h"
 #include "core/gimpfilterlayer.h"
 #include "core/gimpgrouplayer.h"
 #include "core/gimpimage.h"
@@ -22,6 +24,7 @@
 #include "file/file-save.h"
 #include "xcf/xcf.h"
 #include "xcf/xcf-private.h"
+#include "xcf/xcf-load.h"
 #include "xcf/painter-xcf-load.h"
 #include "xcf/painter-xcf-preserve.h"
 #include "tests.h"
@@ -386,6 +389,103 @@ static guint skip_properties (GByteArray *b, guint at)
       g_assert_cmpuint (size, <=, b->len - at); at += size;
     }
 }
+/* Real native read fault after a complete effect and its mask have been
+ * parsed, before ownership of the FilterData list transfers to the layer.
+ * Truncating an ordinary file cannot isolate this fault: its offset table
+ * precedes the effect data. The normal snapshot/read route is tested above. */
+typedef struct {
+  GMemoryInputStream parent;
+  goffset fault, effect;
+  gint first_id;
+  guint partial, captured, finalized;
+  gboolean armed, failed;
+} EffectsFaultInput;
+typedef struct { GMemoryInputStreamClass parent; } EffectsFaultInputClass;
+static GType effects_fault_input_get_type (void);
+G_DEFINE_TYPE (EffectsFaultInput, effects_fault_input, G_TYPE_MEMORY_INPUT_STREAM)
+static void effects_mask_finalized (gpointer data, GObject *where)
+{ ++((EffectsFaultInput *) data)->finalized; }
+static gssize effects_fault_read (GInputStream *input, void *buffer, gsize count,
+                                 GCancellable *cancel, GError **error)
+{
+  EffectsFaultInput *self = (EffectsFaultInput *) input;
+  goffset position = g_seekable_tell (G_SEEKABLE (input));
+  if (position >= self->effect) self->armed = TRUE;
+  if (self->armed && position >= self->fault && position < self->fault + 8)
+    {
+      if (!self->captured)
+        for (gint id = self->first_id + 1; id <= self->first_id + 16; ++id)
+          {
+            GimpItem *item = gimp_item_get_by_id (gimp, id);
+            if (item && !g_strcmp0 (gimp_object_get_name (item), "effects-short-read-mask"))
+              {
+                g_object_weak_ref (G_OBJECT (item), effects_mask_finalized, self);
+                ++self->captured;
+              }
+          }
+      if (self->failed) return 0;
+      self->failed = TRUE;
+      count = MIN (count, self->partial);
+      if (!count) return 0;
+    }
+  return G_INPUT_STREAM_CLASS (effects_fault_input_parent_class)->read_fn (input, buffer, count, cancel, error);
+}
+static void effects_fault_input_class_init (EffectsFaultInputClass *klass)
+{ G_INPUT_STREAM_CLASS (klass)->read_fn = effects_fault_read; }
+static void effects_fault_input_init (EffectsFaultInput *self) {}
+static void native_effects_table_short_read (void)
+{
+  Scene s = {8, COMPRESS_NONE, 0, {0,1,2,3}}; Wire w = scene_wire (&s), native = {0};
+  GimpImage *image = load_wire (&w, FALSE, TRUE);
+  GimpLayer *base = first_layer (image);
+  GeglNode *node = gegl_node_new_child (NULL, "operation", "gegl:brightness-contrast", NULL);
+  GimpDrawableFilter *effect = gimp_drawable_filter_new (GIMP_DRAWABLE (base), "short table effect", node, "gimp-gegl");
+  GFileIOStream *io; GError *error = NULL; gchar *contents; gsize size;
+  GFile *file = g_file_new_tmp ("painter-effects-short-read-XXXXXX.xcf", &io, &error);
+  GimpPlugInProcedure *proc = GIMP_PLUG_IN_PROCEDURE (gimp_pdb_lookup_procedure (gimp->pdb, "gimp-xcf-save"));
+  guint version, at, effect_offset;
+  g_assert_no_error (error); g_io_stream_close (G_IO_STREAM (io), NULL, NULL); g_object_unref (io);
+  g_object_unref (node); gimp_drawable_filter_apply (effect, NULL);
+  g_assert_true (gimp_drawable_filter_commit (effect, TRUE, NULL, FALSE));
+  gimp_drawable_filter_layer_mask_freeze (effect);
+  gimp_object_set_name (GIMP_OBJECT (gimp_drawable_filter_get_mask (effect)), "effects-short-read-mask");
+  g_object_unref (effect);
+  g_assert_cmpint (file_save (gimp, image, NULL, file, proc, GIMP_RUN_NONINTERACTIVE, FALSE, FALSE, FALSE, &error), ==, GIMP_PDB_SUCCESS);
+  g_assert_no_error (error); g_object_unref (image);
+  g_assert_true (g_file_load_contents (file, NULL, &contents, &size, NULL, &error)); g_assert_no_error (error);
+  g_file_delete (file, NULL, NULL); g_object_unref (file);
+  native.bytes = g_byte_array_new_take ((guint8 *) contents, size);
+  version = g_ascii_strtoull (contents + 10, NULL, 10); g_assert_cmpuint (version, >=, 20);
+  native.ow = 8; at = skip_properties (native.bytes, 30); at = read_offset (native.bytes, at, 8);
+  at += 12; at += 4 + read_offset (native.bytes, at, 4); at = skip_properties (native.bytes, at);
+  effect_offset = read_offset (native.bytes, at + 16, 8); g_assert_cmpuint (effect_offset, >, at + 24);
+  /* The unmodified writer output also passes the ordinary Open route. */
+  image = load_wire (&native, FALSE, TRUE); complete (image); g_object_unref (image);
+  for (guint partial = 0; partial < 8; ++partial)
+    {
+      XcfInfo info = {0};
+      GimpImage *sentinel = load_wire (&w, FALSE, TRUE);
+      EffectsFaultInput *input = g_object_new (effects_fault_input_get_type (), NULL);
+      input->first_id = gimp_item_get_id (GIMP_ITEM (first_layer (sentinel)));
+      g_object_unref (sentinel);
+      input->fault = at + 24; input->effect = effect_offset; input->partial = partial;
+      g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (input), native.bytes->data, native.bytes->len, NULL);
+      g_assert_true (g_seekable_seek (G_SEEKABLE (input), 14, G_SEEK_SET, NULL, &error));
+      info.gimp = gimp; info.input = G_INPUT_STREAM (input); info.cp = 14;
+      info.seekable = G_SEEKABLE (input);
+      info.file_version = version; info.bytes_per_offset = 8;
+      info.painter_source = g_bytes_new (native.bytes->data, native.bytes->len);
+      info.painter_cancellable = g_cancellable_new ();
+      image = xcf_load_image (gimp, &info, &error);
+      g_assert_null (image); g_assert_nonnull (error); g_clear_error (&error);
+      g_assert_true (input->failed); g_assert_cmpuint (input->captured, ==, 1);
+      g_assert_cmpuint (input->finalized, ==, 1);
+      g_bytes_unref (info.painter_source); g_object_unref (info.painter_cancellable);
+      g_assert_null (info.selected_layers); g_assert_null (info.linked_layers);
+      g_object_unref (input);
+    }
+  g_byte_array_unref (native.bytes); g_byte_array_unref (w.bytes);
+}
 static void native_partial_filter (void)
 {
   Scene s = {4, COMPRESS_NONE, 3, {0,1,2,3}}; Wire legacy = scene_wire (&s), native = {0};
@@ -448,6 +548,7 @@ int main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
+  g_test_add_func ("/painter-xcf-adversarial/effects_table_short_read", native_effects_table_short_read);
   for (guint ow = 4; ow <= 8; ow += 4)
     for (guint compression = 0; compression < 3; ++compression)
       {

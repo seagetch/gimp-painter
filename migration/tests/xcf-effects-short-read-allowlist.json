@@ -1,0 +1,26 @@
+{
+  "status": "Verified narrow cleanup source and evidence snapshot",
+  "paths": [
+    "app/xcf/xcf-load.c",
+    "app/tests/test-painter-xcf-adversarial.c",
+    "migration/tests/run_painter_xcf_adversarial_sanitizers.py",
+    "migration/tests/xcf-effects-short-read-evidence.md",
+    "migration/tests/xcf-effects-short-read-normal-meson.log",
+    "migration/tests/xcf-effects-short-read-sanitizers.json",
+    "migration/tests/xcf-effects-short-read-sanitizer-build.log",
+    "migration/tests/xcf-effects-short-read-initial.log",
+    "migration/tests/xcf-effects-short-read-inputs.tar.gz"
+  ],
+  "sha256": {
+    "app/xcf/xcf-load.c": "d370ef27c0d03c699ca96e28c5ae9839b915737a8dd9810472206e283bf16f6f",
+    "app/tests/test-painter-xcf-adversarial.c": "9ac10fea700b11385bdfe8081ea6dabecaa6f89cc6dfbcf84ca82e8cf887e841",
+    "migration/tests/run_painter_xcf_adversarial_sanitizers.py": "ad0f77ce09cb9cc5bfa41b415bdba0475005bc5c8b403363610fb8938cdcdce8",
+    "migration/tests/xcf-effects-short-read-evidence.md": "7d947bb6ea2eadb227a155a0ced0db46de91c0ddef3e5742a562a987c764122e",
+    "migration/tests/xcf-effects-short-read-normal-meson.log": "373100f301e866ea474d4288715ccfa936bba88012f72597385097989445aa7c",
+    "migration/tests/xcf-effects-short-read-sanitizers.json": "097d85d81ddea205d004c0e129756b16c5de3511d3e064b048fdfa5ec4abf20c",
+    "migration/tests/xcf-effects-short-read-sanitizer-build.log": "ad0cc595d5b3043f377580e9f279879430cae7b80e195a2862f985ddabc1b123",
+    "migration/tests/xcf-effects-short-read-initial.log": "7eeddaa16fd0deafc711cc2bdd4349183f8d65ee97b46f39f6aafbbd1fbeeae5",
+    "migration/tests/xcf-effects-short-read-inputs.tar.gz": "4c42f95de4c83616fbdff34b0f11c6e3db878d22786049b093045d8e845d2b7c"
+  },
+  "task_wording": "Fix local effect/mask cleanup on next-offset short read; normal 1/1 and focused 247-case sanitizer verification with sealed precompile inputs. No multipart transport activation."
+}

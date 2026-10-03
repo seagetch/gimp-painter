@@ -497,6 +497,7 @@
 | 11.020 | [ ] | 通常の開く処理に reader を接続する | 11.019 | 事前変換なしで旧 XCF が開く |
 | 11.020/first-application-route | [x] | 実旧XCFを通常Openと明示recoveryへ接続する | 11.001/byte-record-foundation, 14.001/core-implementation, 15.001/core-scheduler-edge, 10.005/gegl-byte-operators | 旧Clone/Filter型・raw記録・参照/cacheを復元しcancelと曖昧形式を処理。upstream4/4、Open11通過/1 exact画素TODO、focused sanitizer確認。writerと全metadata/画素gateは未完了 |
 | 11.020/property-order-partial-recovery | [x] | 属性順序と不完全XCFの回復・保存拒否を実装する | 11.020/first-application-route, 17.022/explicit-owner-cancel | 通常5suiteと246 focused ASan/UBSan合格。144合法配置・alias・短tile・後続破損・反復marker・Clone/Filter/group属性・duplicate原bytesを検証。381入力seal、全malformed/effect/resource/platformは別gate |
+| 11.020/effects-offset-cleanup | [x] | effects offset短読時の未移管mask/listを解放する | 11.020/property-order-partial-recovery | 実Saveのeffect/maskと0..7byte故障注入で所有権を検証。通常target1/1・247 focused sanitizer合格、143入力をcompile前保存。multipart/全失敗経路は別gate |
 | 11.021 | [ ] | 標準 XCF の既存経路を維持する | 11.020 | probe による誤認と標準属性欠落がない |
 | 11.022 | [ ] | 画像単位の情報を復元する | 11.021 | 台帳で保存される解像度・単位・palette・profile 等を保持 |
 | 11.023 | [ ] | 階層 offset と tile offset を検査する | 11.022 | 循環・範囲外・巨大確保を避けつつ旧可読データを受理 |

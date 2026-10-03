@@ -3142,7 +3142,6 @@ xcf_load_layer (XcfInfo    *info,
   gboolean           floating;
   guint32            group_layer_flags = 0;
   guint32            text_layer_flags = 0;
-  gint               filter_count = 0;
   gint               width;
   gint               height;
   gint               type;
@@ -3403,7 +3402,6 @@ xcf_load_layer (XcfInfo    *info,
       else
         {
           filter_data_list = g_list_prepend (filter_data_list, filter_data);
-          filter_count++;
         }
       xcf_progress_update (info);
 
@@ -3423,8 +3421,9 @@ xcf_load_layer (XcfInfo    *info,
         }
     }
 
-  if (filter_count > 0)
-    g_object_set_data_full (G_OBJECT (layer), "gimp-layer-effects", filter_data_list,
+  if (filter_data_list)
+    g_object_set_data_full (G_OBJECT (layer), "gimp-layer-effects",
+                            g_steal_pointer (&filter_data_list),
                             (GDestroyNotify) xcf_load_free_effects);
 
   /* attach the floating selection... */
@@ -3436,6 +3435,9 @@ xcf_load_layer (XcfInfo    *info,
   return layer;
 
  error:
+  /* The layer owns these only after the complete offset table was read.
+   * In particular, a short next-offset read can follow valid effects/masks. */
+  g_clear_pointer (&filter_data_list, xcf_load_free_effects);
   info->selected_layers = g_list_remove (info->selected_layers, layer);
   info->linked_layers = g_list_remove (info->linked_layers, layer);
 
