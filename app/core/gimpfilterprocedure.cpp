@@ -43,6 +43,7 @@ extern "C" {
 #include "plug-in/gimppluginprocedure.h"
 }
 #include "gimpfilterprocedure.hpp"
+#include "gimpfilterprocedure-arguments.hpp"
 #include "gimpfilterpaths.hpp"
 #include "gimp-painter-type-traits.hpp"
 #include "painter/binding-store.hpp"
@@ -363,36 +364,7 @@ void validate_blinds (GimpProcedure *procedure, GFile *file)
   if (!plugin->file || !g_file_equal (plugin->file, file) ||
       plugin->file_proc || plugin->batch_interpreter || plugin->installed_during_init)
     throw std::runtime_error ("Bundled Blinds has an incompatible executable binding");
-  constexpr const char *names[] = { "run-mode", "image", "drawables",
-    "angle-displacement", "num-segments", "orientation", "bg-transparent" };
-  const GType types[] = { GIMP_TYPE_RUN_MODE, GIMP_TYPE_IMAGE,
-    GIMP_TYPE_CORE_OBJECT_ARRAY, G_TYPE_INT, G_TYPE_INT, G_TYPE_STRING, G_TYPE_BOOLEAN };
-  for (unsigned i = 0; i < 7; ++i)
-    if (!procedure->args[i] || g_strcmp0 (g_param_spec_get_name (procedure->args[i]), names[i]) ||
-        G_PARAM_SPEC_VALUE_TYPE (procedure->args[i]) != types[i] ||
-        (procedure->args[i]->flags & G_PARAM_READWRITE) != G_PARAM_READWRITE)
-      throw std::runtime_error ("Bundled Blinds argument name or type changed");
-  GParamSpec **args = procedure->args;
-  if (!G_IS_PARAM_SPEC_ENUM (args[0]) ||
-      G_PARAM_SPEC_ENUM (args[0])->default_value != GIMP_RUN_NONINTERACTIVE ||
-      !GIMP_IS_PARAM_SPEC_IMAGE (args[1]) || gimp_param_spec_image_none_allowed (args[1]) ||
-      !GIMP_IS_PARAM_SPEC_CORE_OBJECT_ARRAY (args[2]) ||
-      gimp_param_spec_core_object_array_get_object_type (args[2]) != GIMP_TYPE_DRAWABLE ||
-      !G_IS_PARAM_SPEC_INT (args[3]) || !G_IS_PARAM_SPEC_INT (args[4]) ||
-      G_PARAM_SPEC_INT (args[3])->minimum != 0 || G_PARAM_SPEC_INT (args[3])->maximum != 90 ||
-      G_PARAM_SPEC_INT (args[3])->default_value != 30 ||
-      G_PARAM_SPEC_INT (args[4])->minimum != 1 || G_PARAM_SPEC_INT (args[4])->maximum != 1024 ||
-      G_PARAM_SPEC_INT (args[4])->default_value != 3 ||
-      !GIMP_IS_PARAM_SPEC_CHOICE (args[5]) || !G_IS_PARAM_SPEC_BOOLEAN (args[6]) ||
-      G_PARAM_SPEC_BOOLEAN (args[6])->default_value)
-    throw std::runtime_error ("Bundled Blinds argument constraints changed");
-  GimpChoice *choice = gimp_param_spec_choice_get_choice (args[5]);
-  if (!choice || g_list_length (gimp_choice_list_nicks (choice)) != 2 ||
-      !gimp_choice_is_valid (choice, "horizontal") || !gimp_choice_is_valid (choice, "vertical") ||
-      gimp_choice_get_id (choice, "horizontal") != GIMP_ORIENTATION_HORIZONTAL ||
-      gimp_choice_get_id (choice, "vertical") != GIMP_ORIENTATION_VERTICAL ||
-      g_strcmp0 (gimp_param_spec_choice_get_default (args[5]), "horizontal"))
-    throw std::runtime_error ("Bundled Blinds orientation choices changed");
+  FilterParameterSchema schema (procedure, FilterProcedure::blinds);
 }
 
 ObjectRef<GimpProcedure> query_blinds (Gimp *gimp, GimpContext *context)
@@ -437,21 +409,7 @@ void validate_small_tiles (GimpProcedure *procedure, GFile *file, bool hidden)
       plugin->sensitivity_mask != GIMP_PROCEDURE_SENSITIVE_DRAWABLE ||
       (hidden && (plugin->menu_paths || plugin->menu_label)))
     throw std::runtime_error ("Bundled Small Tiles executable registration changed");
-  const char *names[] = {"run-mode", "image", "drawables", "num-tiles"};
-  const GType types[] = {GIMP_TYPE_RUN_MODE, GIMP_TYPE_IMAGE, GIMP_TYPE_CORE_OBJECT_ARRAY, G_TYPE_INT};
-  for (unsigned i = 0; i < 4; ++i)
-    if (!procedure->args[i] || g_strcmp0 (g_param_spec_get_name (procedure->args[i]), names[i]) ||
-        G_PARAM_SPEC_VALUE_TYPE (procedure->args[i]) != types[i] ||
-        (procedure->args[i]->flags & G_PARAM_READWRITE) != G_PARAM_READWRITE)
-      throw std::runtime_error ("Bundled Small Tiles argument name or type changed");
-  auto **args = procedure->args;
-  if (!G_IS_PARAM_SPEC_ENUM (args[0]) || G_PARAM_SPEC_ENUM (args[0])->default_value != GIMP_RUN_NONINTERACTIVE ||
-      !GIMP_IS_PARAM_SPEC_IMAGE (args[1]) || gimp_param_spec_image_none_allowed (args[1]) ||
-      !GIMP_IS_PARAM_SPEC_CORE_OBJECT_ARRAY (args[2]) ||
-      gimp_param_spec_core_object_array_get_object_type (args[2]) != GIMP_TYPE_DRAWABLE ||
-      !G_IS_PARAM_SPEC_INT (args[3]) || G_PARAM_SPEC_INT (args[3])->minimum != (hidden ? 0 : 2) ||
-      G_PARAM_SPEC_INT (args[3])->maximum != 6 || G_PARAM_SPEC_INT (args[3])->default_value != 2)
-    throw std::runtime_error ("Bundled Small Tiles argument constraints changed");
+  FilterParameterSchema schema (procedure, FilterProcedure::small_tiles, hidden);
 }
 
 ObjectRef<GimpProcedure> query_small_tiles (Gimp *gimp, GimpContext *context)
@@ -504,36 +462,7 @@ void validate_retinex (GimpProcedure *procedure, GFile *file, bool hidden)
       plugin->sensitivity_mask != GIMP_PROCEDURE_SENSITIVE_DRAWABLE ||
       (hidden && (plugin->menu_paths || plugin->menu_label)))
     throw std::runtime_error ("Bundled Retinex executable registration changed");
-  constexpr const char *names[] = {"run-mode", "image", "drawables", "scale",
-                                   "nscales", "scales-mode", "cvar"};
-  const GType types[] = {GIMP_TYPE_RUN_MODE, GIMP_TYPE_IMAGE, GIMP_TYPE_CORE_OBJECT_ARRAY,
-                         G_TYPE_INT, G_TYPE_INT, G_TYPE_STRING, G_TYPE_DOUBLE};
-  for (unsigned i = 0; i < 7; ++i)
-    if (!procedure->args[i] || g_strcmp0 (g_param_spec_get_name (procedure->args[i]), names[i]) ||
-        G_PARAM_SPEC_VALUE_TYPE (procedure->args[i]) != types[i] ||
-        (procedure->args[i]->flags & G_PARAM_READWRITE) != G_PARAM_READWRITE)
-      throw std::runtime_error ("Bundled Retinex argument name or type changed");
-  auto **args = procedure->args;
-  if (!G_IS_PARAM_SPEC_ENUM (args[0]) || G_PARAM_SPEC_ENUM (args[0])->default_value != GIMP_RUN_NONINTERACTIVE ||
-      !GIMP_IS_PARAM_SPEC_IMAGE (args[1]) || gimp_param_spec_image_none_allowed (args[1]) ||
-      !GIMP_IS_PARAM_SPEC_CORE_OBJECT_ARRAY (args[2]) ||
-      gimp_param_spec_core_object_array_get_object_type (args[2]) != GIMP_TYPE_DRAWABLE ||
-      !G_IS_PARAM_SPEC_INT (args[3]) || G_PARAM_SPEC_INT (args[3])->minimum != 16 ||
-      G_PARAM_SPEC_INT (args[3])->maximum != (hidden ? 256 : 250) ||
-      G_PARAM_SPEC_INT (args[3])->default_value != 240 ||
-      !G_IS_PARAM_SPEC_INT (args[4]) || G_PARAM_SPEC_INT (args[4])->minimum != 0 ||
-      G_PARAM_SPEC_INT (args[4])->maximum != 8 || G_PARAM_SPEC_INT (args[4])->default_value != 3 ||
-      !GIMP_IS_PARAM_SPEC_CHOICE (args[5]) || !G_IS_PARAM_SPEC_DOUBLE (args[6]) ||
-      G_PARAM_SPEC_DOUBLE (args[6])->minimum != 0 || G_PARAM_SPEC_DOUBLE (args[6])->maximum != 4 ||
-      G_PARAM_SPEC_DOUBLE (args[6])->default_value != 1.2)
-    throw std::runtime_error ("Bundled Retinex argument constraints changed");
-  GimpChoice *choice = gimp_param_spec_choice_get_choice (args[5]);
-  if (!choice || g_list_length (gimp_choice_list_nicks (choice)) != 3 ||
-      !gimp_choice_is_valid (choice, "uniform") || !gimp_choice_is_valid (choice, "low") ||
-      !gimp_choice_is_valid (choice, "high") || gimp_choice_get_id (choice, "uniform") != 0 ||
-      gimp_choice_get_id (choice, "low") != 1 || gimp_choice_get_id (choice, "high") != 2 ||
-      g_strcmp0 (gimp_param_spec_choice_get_default (args[5]), "uniform"))
-    throw std::runtime_error ("Bundled Retinex distribution choices changed");
+  FilterParameterSchema schema (procedure, FilterProcedure::retinex, hidden);
 }
 
 ObjectRef<GimpProcedure> query_retinex (Gimp *gimp, GimpContext *context)
@@ -585,31 +514,9 @@ void validate_convolution (GimpProcedure *procedure, GFile *file)
       g_strcmp0 (plugin->image_types, "RGB*, GRAY*") ||
       plugin->sensitivity_mask != GIMP_PROCEDURE_SENSITIVE_DRAWABLE)
     throw std::runtime_error ("Bundled Convolution executable registration changed");
-  const char *names[] = {"run-mode","image","drawables","matrix","alpha-alg","divisor","offset","channels","border-mode"};
-  const GType types[] = {GIMP_TYPE_RUN_MODE,GIMP_TYPE_IMAGE,GIMP_TYPE_CORE_OBJECT_ARRAY,
-    GIMP_TYPE_DOUBLE_ARRAY,G_TYPE_INT,G_TYPE_DOUBLE,G_TYPE_DOUBLE,GIMP_TYPE_INT32_ARRAY,G_TYPE_INT};
-  for (unsigned i = 0; i < 9; ++i)
-    if (!procedure->args[i] || g_strcmp0 (g_param_spec_get_name (procedure->args[i]),names[i]) ||
-        G_PARAM_SPEC_VALUE_TYPE (procedure->args[i]) != types[i] ||
-        (procedure->args[i]->flags & G_PARAM_READWRITE) != G_PARAM_READWRITE)
-      throw std::runtime_error ("Bundled Convolution argument name or type changed");
-  auto **args = procedure->args;
-  if (!G_IS_PARAM_SPEC_ENUM (args[0]) || G_PARAM_SPEC_ENUM (args[0])->default_value != GIMP_RUN_NONINTERACTIVE ||
-      !GIMP_IS_PARAM_SPEC_IMAGE (args[1]) || gimp_param_spec_image_none_allowed (args[1]) ||
-      !GIMP_IS_PARAM_SPEC_CORE_OBJECT_ARRAY (args[2]) ||
-      gimp_param_spec_core_object_array_get_object_type (args[2]) != GIMP_TYPE_DRAWABLE ||
-      !GIMP_IS_PARAM_SPEC_DOUBLE_ARRAY (args[3]) || !GIMP_IS_PARAM_SPEC_INT32_ARRAY (args[7]) ||
-      !G_IS_PARAM_SPEC_INT (args[4]) || G_PARAM_SPEC_INT (args[4])->minimum != G_MININT ||
-      G_PARAM_SPEC_INT (args[4])->maximum != G_MAXINT || G_PARAM_SPEC_INT (args[4])->default_value != 1 ||
-      !G_IS_PARAM_SPEC_INT (args[8]) || G_PARAM_SPEC_INT (args[8])->minimum != 0 ||
-      G_PARAM_SPEC_INT (args[8])->maximum != 2 || G_PARAM_SPEC_INT (args[8])->default_value != 2)
-    throw std::runtime_error ("Bundled Convolution argument constraints changed");
-  for (unsigned i : {5u,6u})
-    if (!G_IS_PARAM_SPEC_DOUBLE (args[i]) || G_PARAM_SPEC_DOUBLE (args[i])->minimum != -G_MAXDOUBLE ||
-        G_PARAM_SPEC_DOUBLE (args[i])->maximum != G_MAXDOUBLE ||
-        G_PARAM_SPEC_DOUBLE (args[i])->default_value != (i == 5 ? 1 : 0))
-      throw std::runtime_error ("Bundled Convolution numeric constraints changed");
+  FilterParameterSchema schema (procedure, FilterProcedure::convolution);
 }
+
 ObjectRef<GimpProcedure> query_convolution (Gimp *gimp, GimpContext *context)
 {
   const auto path = filter_plugin_path (FilterProcedure::convolution);
@@ -841,23 +748,21 @@ FilterProcedureDisposition run_convolution (const FilterProcedureRequest& reques
         gegl_buffer_set (buffer.get (),&rect,0,format,packed.data (),GEGL_AUTO_ROWSTRIDE);
       })) return Disposition::pending;
   gegl_buffer_flush (buffer.get ());
-  ValuesRef arguments (gimp_procedure_get_arguments (procedure.get ()));
-  if (!arguments || gimp_value_array_length (arguments.get ()) != 9)
-    throw std::runtime_error ("Cannot construct private Convolution arguments");
-  GObject *drawables[] = {G_OBJECT (layer.get ()),nullptr};
-  g_value_set_enum (gimp_value_array_index (arguments.get (),0),GIMP_RUN_NONINTERACTIVE);
-  g_value_set_object (gimp_value_array_index (arguments.get (),1),image.get ());
-  g_value_set_boxed (gimp_value_array_index (arguments.get (),2),drawables);
-  gimp_value_set_double_array (gimp_value_array_index (arguments.get (),3),request.matrix.data (),25);
-  g_value_set_int (gimp_value_array_index (arguments.get (),4),request.alpha_alg);
-  g_value_set_double (gimp_value_array_index (arguments.get (),5),request.divisor);
-  g_value_set_double (gimp_value_array_index (arguments.get (),6),request.offset);
-  gimp_value_set_int32_array (gimp_value_array_index (arguments.get (),7),request.channels.data (),5);
-  g_value_set_int (gimp_value_array_index (arguments.get (),8),request.border);
+  FilterParameterBinder arguments (FilterParameterSchema (procedure.get (), FilterProcedure::convolution));
+  GObject *drawables[] = {G_OBJECT (layer.get ()), nullptr};
+  arguments.set_enum ("run-mode", GIMP_TYPE_RUN_MODE, GIMP_RUN_NONINTERACTIVE);
+  arguments.set_image ("image", image.get ());
+  arguments.set_drawables ("drawables", drawables, 1);
+  arguments.set_double_array ("matrix", request.matrix.data (), 25);
+  arguments.set_int ("alpha-alg", request.alpha_alg);
+  arguments.set_double ("divisor", request.divisor);
+  arguments.set_double ("offset", request.offset);
+  arguments.set_int32_array ("channels", request.channels.data (), 5);
+  arguments.set_int ("border-mode", request.border);
   ProcedureProgress progress (progress_sink); ShadowCapture capture;
   if (request.raw_shadow) capture.install (gimp,layer.get ());
   GError *error = nullptr;
-  ValuesRef result (gimp_procedure_execute (procedure.get (),gimp,context.get (),progress.get (),arguments.get (),&error));
+  ValuesRef result (gimp_procedure_execute (procedure.get (),gimp,context.get (),progress.get (),arguments.finish (),&error));
   ErrorRef error_owner (error); runtime.wait_for_plugins (); progress.finish ();
   if (cancel.load ()) return Disposition::pending;
   if (error || !result || gimp_value_array_length (result.get ()) != 1 ||
@@ -1030,38 +935,34 @@ run_filter_procedure (const FilterProcedureRequest& request,
   gegl_color_set_pixel (background.get (), format, background_pixel.data ());
   gimp_context_set_background (context.get (), background.get ());
 
-  ValuesRef arguments (gimp_procedure_get_arguments (procedure.get ()));
-  if (!arguments || gimp_value_array_length (arguments.get ()) !=
-                    (request.procedure == FilterProcedure::small_tiles ? 4 : 7))
-    throw std::runtime_error ("Cannot construct private Filter arguments");
+  FilterParameterBinder arguments (FilterParameterSchema (procedure.get (), request.procedure));
   GObject *drawables[] = { G_OBJECT (layer.get ()), nullptr };
-  g_value_set_enum (gimp_value_array_index (arguments.get (), 0), GIMP_RUN_NONINTERACTIVE);
-  g_value_set_object (gimp_value_array_index (arguments.get (), 1), image.get ());
-  g_value_set_boxed (gimp_value_array_index (arguments.get (), 2), drawables);
+  arguments.set_enum ("run-mode", GIMP_TYPE_RUN_MODE, GIMP_RUN_NONINTERACTIVE);
+  arguments.set_image ("image", image.get ());
+  arguments.set_drawables ("drawables", drawables, 1);
   if (request.procedure == FilterProcedure::small_tiles)
-    g_value_set_int (gimp_value_array_index (arguments.get (), 3), request.tiles);
+    arguments.set_int ("num-tiles", request.tiles);
   else if (request.procedure == FilterProcedure::retinex)
     {
-      g_value_set_int (gimp_value_array_index (arguments.get (), 3), request.scale);
-      g_value_set_int (gimp_value_array_index (arguments.get (), 4), request.nscales);
+      arguments.set_int ("scale", request.scale);
+      arguments.set_int ("nscales", request.nscales);
       constexpr const char *modes[] = {"uniform", "low", "high"};
-      g_value_set_string (gimp_value_array_index (arguments.get (), 5), modes[request.scales_mode]);
-      g_value_set_double (gimp_value_array_index (arguments.get (), 6), request.cvar);
+      arguments.set_string ("scales-mode", modes[request.scales_mode]);
+      arguments.set_double ("cvar", request.cvar);
     }
   else
     {
-      g_value_set_int (gimp_value_array_index (arguments.get (), 3), request.angle);
-      g_value_set_int (gimp_value_array_index (arguments.get (), 4), request.segments);
-      g_value_set_string (gimp_value_array_index (arguments.get (), 5),
-                          request.orientation == 1 ? "vertical" : "horizontal");
-      g_value_set_boolean (gimp_value_array_index (arguments.get (), 6), request.transparent != 0);
+      arguments.set_int ("angle-displacement", request.angle);
+      arguments.set_int ("num-segments", request.segments);
+      arguments.set_string ("orientation", request.orientation == 1 ? "vertical" : "horizontal");
+      arguments.set_boolean ("bg-transparent", request.transparent != 0);
     }
   ProcedureProgress progress (progress_sink);
   ShadowCapture capture;
   if (request.raw_shadow) capture.install (gimp, layer.get ());
   GError *error = nullptr;
   ValuesRef result (gimp_procedure_execute (procedure.get (), gimp, context.get (),
-                                           progress.get (), arguments.get (), &error));
+                                           progress.get (), arguments.finish (), &error));
   ErrorRef error_owner (error);
   runtime.wait_for_plugins ();
   progress.finish ();

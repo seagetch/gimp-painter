@@ -1,0 +1,874 @@
+{
+  "task": "16.002/parameter-name-binder",
+  "status": "PASS",
+  "date": "2026-10-04",
+  "scope": "Phase A only: four existing isolated helper routes; name-based runtime metadata/typed assignments and exact-copy validation",
+  "source_identity": {
+    "base_commit": "fddac1ae47c9c30ef7f8f34ec5d0827bb2a446c4",
+    "source_sha256": {
+      "app/core/gimpfilterprocedure-arguments.cpp": "79f1e6745bc418c5fe79e8833ec92a1c4a9b556327c32f30ce6b8b8dc4b7b606",
+      "app/core/gimpfilterprocedure-arguments.hpp": "da2cdb5b7deb7a65d50f77e1ee5b3c20380edf992a2c1a3c6d3ef4e38768b178",
+      "app/core/gimpfilterprocedure.cpp": "bae3c7e2f206cf7650a2d58447d96b6538c56db1b54d609d1990a0b8d6f3f056",
+      "app/core/meson.build": "9a593e56f4b22dd97e523f0cda8d27ed03a8ed56ad687b41e418cf6244b2ff8a",
+      "app/tests/meson.build": "6f3277b4c7ddbfe47082de8e9221b4e961ce638b4ac0f6cf6f8f12f0b2f06658",
+      "app/tests/test-filter-parameters.cpp": "473ff2f1e6c28d5eb6ebcbceb006b31d5fda5d52802cce5e46e7cbe95c6ad0f9",
+      "app/tests/test-gimp-filter-layer.c": "f9893205ac389f958d156ab58becca52b1560cfb4ded2e1610989d40cd0be1d6",
+      "migration/tests/run_filter_process_sanitizers.py": "79188b7aa8a6f9b16f621a1857ce882e05aefce7d4c0b97d13cc2c69bde9ff8c"
+    },
+    "normal_binary_sha256": {
+      "app/tests/gimp-filter-layer": "9eb81dc827395b03954e0780a2c5df644d966c7cbaedb458e0055428db0786d3",
+      "app/gimp-painter-filter-worker": "ac290e4652dc1980ec9be9ae249af341187928ad46ff7a2e27c6698d282e58de",
+      "app/painter-filter-procedure": "12b63584f3a70ccffea379bfa1547bd511395ad322a5a4dcff5f5a897eef55c1",
+      "app/painter-filter-convolution": "a38c65a02fa4c743d17632b0c92ca319cf326d63a9ba90b792052cca03aa1514",
+      "app/gimp-console-3.0": "75be69916388979be6f6d03113751c25afb5277efc311a00d88cca74647b564a",
+      "plug-ins/common/blinds": "3894bb41a3af1fdb9b420f81a090c9044ec1e5b968b38840dbb51b479f5be2e0",
+      "plug-ins/common/tile-small": "50855496b215aa6c71ed34546907e96cf866d948eb7b3042f8e922a4be9e29d6",
+      "plug-ins/common/contrast-retinex": "28eed27e3845146c10ce77139a8b5f754ff1a7ad6825b60b851f6925280d729c",
+      "plug-ins/common/convolution-matrix": "bc00bdf51989bfc172ef7aa789181ddbec8628ff1fcca0b83ecd1598d842bc0e"
+    }
+  },
+  "normal_helpers": [
+    {
+      "name": "gimp:painter / painter-filter-procedure",
+      "result": "OK",
+      "duration": 511.458021402359,
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "app/painter-filter-procedure",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/gimp-painter-filter-worker",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/migration/fixtures/legacy-blinds/fixtures.tsv"
+      ],
+      "returncode": 0,
+      "stdout": "320 actual legacy Blinds oracles byte-exact\n196 actual legacy SmallTiles oracles byte-exact (RGB/RGBA/Gray/Gray-alpha, factors0..6)\n174 actual legacy Retinex oracles byte-exact (87 native RGB,87 native RGBA)\n6 analytic selected Retinex ROI compositions matched old whole-fixture outputs\n2 analytic native Retinex raw-shadow ROI cases and 4 RGB carrier rejection cases passed\n12 native Blinds identity cases passed\n",
+      "stderr": {
+        "bytes": 700934,
+        "sha256": "ae9f0250224143d14379f28027b6cfc61939cdf26c976b94c98ce3c29fe23644",
+        "notable": [
+          {
+            "line": "(tile-small:343737): LibGimp-WARNING **: 06:31:44.097: tile-small: gimp_flush(): error: Broken pipe",
+            "count": 1
+          },
+          {
+            "line": "(tile-small:345292): LibGimp-WARNING **: 06:32:52.587: tile-small: gimp_flush(): error: Broken pipe",
+            "count": 1
+          }
+        ],
+        "localization_disabled": 2516
+      }
+    },
+    {
+      "name": "gimp:painter / painter-filter-convolution",
+      "result": "OK",
+      "duration": 96.24444246292114,
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "app/painter-filter-convolution",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/gimp-painter-filter-worker"
+      ],
+      "returncode": 0,
+      "stdout": "296 genuine old Convolution final merges, 296 raw ROI comparisons, 8 old geometry rejections, 41 native analytic requests passed\n",
+      "stderr": {
+        "bytes": 301278,
+        "sha256": "8616124b7c2ed70caf674275f4985a5021268642210b5f6a722eaab1fcbc9fc2",
+        "notable": [],
+        "localization_disabled": 1011
+      }
+    }
+  ],
+  "normal_native": {
+    "command": [
+      "python3",
+      "-B",
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/migration/tests/run_filter_owner_context_fixture_test.py",
+      "--",
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/parameter_suffix_reordering",
+      "-p",
+      "/gimp-filter-layer/parameter_metadata_rejections",
+      "-p",
+      "/gimp-filter-layer/parameter_assignment_validation",
+      "-p",
+      "/gimp-filter-layer/parameter_object_lifetime",
+      "-p",
+      "/gimp-filter-layer/blinds_actual_old_context",
+      "-p",
+      "/gimp-filter-layer/blinds_actual_old_expansion",
+      "-p",
+      "/gimp-filter-layer/blinds_disabled_swap_preserves_cache",
+      "-p",
+      "/gimp-filter-layer/small_tiles_actual_old_live",
+      "-p",
+      "/gimp-filter-layer/small_tiles_invalid_domains_keep_cache",
+      "-p",
+      "/gimp-filter-layer/retinex_actual_old_live",
+      "-p",
+      "/gimp-filter-layer/retinex_invalid_domains_keep_cache",
+      "-p",
+      "/gimp-filter-layer/convolution_actual_old_live",
+      "-p",
+      "/gimp-filter-layer/convolution_invalid_arrays_keep_cache",
+      "-p",
+      "/gimp-filter-layer/convolution_native_failure_keeps_cache",
+      "-p",
+      "/gimp-filter-layer/progress_real_workers",
+      "-p",
+      "/gimp-filter-layer/progress_worker_cancel_replace_close"
+    ],
+    "exit_code": 0,
+    "selected": [
+      "parameter_suffix_reordering",
+      "parameter_metadata_rejections",
+      "parameter_assignment_validation",
+      "parameter_object_lifetime",
+      "blinds_actual_old_context",
+      "blinds_actual_old_expansion",
+      "blinds_disabled_swap_preserves_cache",
+      "small_tiles_actual_old_live",
+      "small_tiles_invalid_domains_keep_cache",
+      "retinex_actual_old_live",
+      "retinex_invalid_domains_keep_cache",
+      "convolution_actual_old_live",
+      "convolution_invalid_arrays_keep_cache",
+      "convolution_native_failure_keeps_cache",
+      "progress_real_workers",
+      "progress_worker_cancel_replace_close"
+    ],
+    "executed": [
+      "blinds_actual_old_context",
+      "blinds_actual_old_expansion",
+      "blinds_disabled_swap_preserves_cache",
+      "convolution_actual_old_live",
+      "convolution_invalid_arrays_keep_cache",
+      "convolution_native_failure_keeps_cache",
+      "parameter_assignment_validation",
+      "parameter_metadata_rejections",
+      "parameter_object_lifetime",
+      "parameter_suffix_reordering",
+      "progress_real_workers",
+      "progress_worker_cancel_replace_close",
+      "retinex_actual_old_live",
+      "retinex_invalid_domains_keep_cache",
+      "small_tiles_actual_old_live",
+      "small_tiles_invalid_domains_keep_cache"
+    ],
+    "pass_all": true
+  },
+  "focused_sanitizers": {
+    "status": "PASS",
+    "flags": [
+      "-fsanitize=address,undefined,float-cast-overflow",
+      "-fno-omit-frame-pointer",
+      "-O1",
+      "-g"
+    ],
+    "instrumented_sources": [
+      "app/app.c",
+      "app/core/gimp-batch.c",
+      "app/core/gimpfiltercontext.cpp",
+      "app/core/gimpfilterexit.cpp",
+      "app/core/gimpfilterlayer.cpp",
+      "app/core/gimpfilterpaths.cpp",
+      "app/core/gimpfilterprocedure-arguments.cpp",
+      "app/core/gimpfilterprocedure.cpp",
+      "app/painter-filter-worker.cpp",
+      "app/painter/binding-store.cpp",
+      "app/painter/filter-context.cpp",
+      "app/painter/filter-lifetime.cpp",
+      "app/painter/filter-process.cpp",
+      "app/painter/filter-raster.cpp",
+      "app/painter/filter-scheduler.cpp",
+      "app/painter/filter-spool.cpp",
+      "app/painter/filter-wire.cpp",
+      "app/painter/gimp-painter-binding.cpp",
+      "app/painter/gimp-painter-error.cpp",
+      "app/painter/tests/test-filter-context-native.cpp",
+      "app/painter/tests/test-filter-convolution.cpp",
+      "app/painter/tests/test-filter-owner-gates.cpp",
+      "app/painter/tests/test-filter-procedure.cpp",
+      "app/painter/tests/test-filter-process.cpp",
+      "app/painter/tests/test-filter-scheduler.cpp",
+      "app/painter/tests/test-filter-spool.cpp",
+      "app/painter/tests/test-filter-wire.cpp",
+      "app/tests/test-filter-owner-context.cpp",
+      "app/tests/test-filter-parameters.cpp",
+      "app/tests/test-gimp-filter-layer.c",
+      "app/tests/test-gimp-filter-layout.cpp",
+      "plug-ins/common/blinds.c",
+      "plug-ins/common/contrast-retinex.c",
+      "plug-ins/common/convolution-matrix.c",
+      "plug-ins/common/tile-small.c"
+    ],
+    "rtti_compatibility_only_sources": [
+      "app/config/gimppainterfilterconfig.cpp",
+      "app/dialogs/file-save-deferred.cpp",
+      "app/dialogs/painter-layer-dialog.cpp",
+      "app/httpd/httpd-images.cpp",
+      "app/httpd/httpd-navigation.cpp",
+      "app/httpd/httpd-pdb.cpp",
+      "app/httpd/httpd-resource.cpp",
+      "app/httpd/httpd.cpp",
+      "app/paint/gimpbrushcore-loops.cc",
+      "app/paint/gimpfillbrush.cpp",
+      "app/paint/gimppaintcore-loops.cc",
+      "app/paint/gimppainterbrushgeometry.cpp",
+      "app/paint/gimppainterpaintgate.cpp",
+      "app/paint/gimppainterpaper-paste.cpp",
+      "app/paint/gimppainterpaper.cpp",
+      "app/paint/gimppaintersmudge.cpp",
+      "app/paint/painter-bounded-fill/search.cpp",
+      "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+      "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "app/paint/painter-mypaint-surface/gimp-resources.cpp",
+      "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp",
+      "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp",
+      "app/paint/painter-mypaint-surface/paint-core.cpp",
+      "app/paint/painter-mypaint/engine.cpp",
+      "app/paint/painter-mypaint/resource.cpp",
+      "app/painter/filter-edge.cpp",
+      "app/painter/filter-gauss.cpp",
+      "app/painter/filter-native-kernels.cpp",
+      "app/painter/filter-raster-kernels.cpp",
+      "app/tools/gimpfillbrushtool.cpp",
+      "app/tools/gimppaintermybrushtool.cpp",
+      "app/tools/gimppaintersmudgetool.cpp",
+      "app/tools/gimpperspectiveguidetool.cpp",
+      "app/widgets/gimppaintercompactoptions.cpp",
+      "app/widgets/gimppainterlayertiles.cpp",
+      "app/widgets/gimppaintermybrusheditor.cpp",
+      "app/xcf/painter-xcf-arguments.cpp",
+      "app/xcf/painter-xcf-compat.cpp",
+      "app/xcf/painter-xcf-load.cpp",
+      "app/xcf/painter-xcf-multipart.cpp",
+      "app/xcf/painter-xcf-preserve.cpp",
+      "app/xcf/painter-xcf-storage.cpp",
+      "app/xcf/painter-xcf-transport.cpp"
+    ],
+    "leak_sanitizer": false,
+    "dependency_instrumentation": false,
+    "executable_sha256": {
+      "gimp-filter-layer": "112fe6e0dbfc7dfef66b706c325a1beb834bd265f516e53b96a42c150fe9ac28",
+      "gimp-painter-filter-worker": "658f10874aac9bf5c204d245e97f5ae8a42004d424c372a4ff4864f0af11722d",
+      "gimp-console-3.0": "cc31416586f3554f64fabcb1710bbf0f9e8ab10d233e35377463c9357b6d367e",
+      "blinds": "4e1ee515189a514d1b0c20860a85da8cd6eac8e93c1ca192556cac25f5ce3baf",
+      "tile-small": "693fe0b5eb5e6ad9e3a8a29c60339769c392246ef61aac0704b22eeaf671e8b9",
+      "contrast-retinex": "dc7f394537c226398305c7bba0903bb130ce481db90acd990da59bad9a75ac65",
+      "painter-filter-procedure": "574840ca32bc7250776250e3ddaee5156ace3ac9ee85d2735d43cef1ac68be7c",
+      "convolution-matrix": "1392b14b23abc645eaf09946c7bc90f6adeba3b96a20aca3f26ad079134aaa47",
+      "painter-filter-convolution": "5c85bc75604a28a73313a379a82e1f10a9a42249a9e5583c9e84abd27300be7f",
+      "painter-filter-context-native": "b3a8abaa95cc931392a577ca032986f2bc34c6a82cd436c083bab068910d8d2d",
+      "painter-filter-wire": "baac96ce21142a158cd3c46b24484242342d3e1eb1306f712e814dd3fb51c15d",
+      "painter-filter-process": "c5189873f6a9923e41bfb17f62a208c0bc2069f7b6be7c38bbe8770d7515ba14",
+      "painter-filter-spool": "9852cb4cddb18241aae1683ca204a904c1c513d27bde211122c1d2b7ee559a3a",
+      "painter-filter-scheduler": "f9794bb7b2b31bd67944563fd8a08039871736aa5c806cb136fbdd1e1e03c69e",
+      "painter-filter-owner-gates": "325a313f3db4eed5d4c40ddcc7e173d1586541b8d3fc07c5f23bcea988afbd78"
+    },
+    "changed_during_build": [],
+    "changed_during_run": [],
+    "scope": "35 instrumented sources and 44 RTTI-only compatibility sources; remaining GIMP/dependencies ordinary; LSan off; helper and bundled Blinds/Small Tiles/Retinex/Convolution are instrumented",
+    "report_sha256": "52f59214560a6d798463a5ddc3ab083b2bef2f318cf89545c1246004941a00a5",
+    "input_count": 1769,
+    "input_seal_sha256": "069994a7a71d1a9c2fde6450cf1ced11c5c65ff72dba71cbda4277071094249a",
+    "results": [
+      {
+        "name": "painter-filter-context-native",
+        "exit_code": 0,
+        "stdout": "Native Filter context tests passed\n",
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "notable": [],
+          "localization_disabled": 0
+        }
+      },
+      {
+        "name": "painter-filter-wire",
+        "exit_code": 0,
+        "stdout": "Filter wire validation passed\n",
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "notable": [],
+          "localization_disabled": 0
+        }
+      },
+      {
+        "name": "painter-filter-process",
+        "exit_code": 0,
+        "stdout": "115 Filter process cases passed\n",
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "notable": [],
+          "localization_disabled": 0
+        }
+      },
+      {
+        "name": "painter-filter-scheduler",
+        "exit_code": 0,
+        "stdout": "TAP version 14\n# random seed: R02Sf84a482201ced48d6dac5e9b81b5c360\n1..37\n# Start of painter-filter-scheduler tests\nok 1 /painter-filter-scheduler/recursive_step_does_not_consume_another_chunk\nok 2 /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry\n# slow test /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry executed in 2.38 secs\nok 3 /painter-filter-scheduler/spool_reentrant_read_cancellation\nok 4 /painter-filter-scheduler/spool_cancel_request_is_not_completion\nok 5 /painter-filter-scheduler/spool_change_during_import\nok 6 /painter-filter-scheduler/spool_read_failure_cancels_unsealed_worker\nok 7 /painter-filter-scheduler/spool_result_failure_never_commits\nok 8 /painter-filter-scheduler/spool_large_metadata_is_bounded_preparation\nok 9 /painter-filter-scheduler/spool_close_during_import_keeps_callback_bytes\nok 10 /painter-filter-scheduler/admission_waits_without_reading_and_resumes_fifo\nok 11 /painter-filter-scheduler/admission_cancel_retains_worker_reservation\nok 12 /painter-filter-scheduler/admission_edit_and_dependency_wait_release_preparation\nok 13 /painter-filter-scheduler/admission_failure_and_loaded_cache_release\nok 14 /painter-filter-scheduler/saved_generation_boundaries\nok 15 /painter-filter-scheduler/commit_failure_does_not_certify_cache\nok 16 /painter-filter-scheduler/obsolete_read_failure_preserves_new_edit\nok 17 /painter-filter-scheduler/saved_cache_generations\nok 18 /painter-filter-scheduler/restored_cache_rejects_colliding_old_job\nok 19 /painter-filter-scheduler/rejected_worker_is_not_settled_until_done\nok 20 /painter-filter-scheduler/reject_during_read\nok 21 /painter-filter-scheduler/reject_during_import\nok 22 /painter-filter-scheduler/closed_request_is_inert\nok 23 /painter-filter-scheduler/adjustable_chunk_budget\n# slow test /painter-filter-scheduler/adjustable_chunk_budget executed in 0.51 secs\nok 24 /painter-filter-scheduler/completed_cache\nok 25 /painter-filter-scheduler/bounded_chunks\nok 26 /painter-filter-scheduler/dependency_priority\nok 27 /painter-filter-scheduler/cancel_request_is_not_completion\nok 28 /painter-filter-scheduler/changes_during_preparation\nok 29 /painter-filter-scheduler/changes_during_import\nok 30 /painter-filter-scheduler/failures_do_not_retry\nok 31 /painter-filter-scheduler/close_does_not_wait\nok 32 /painter-filter-scheduler/loaded_cache_not_reexecuted\nok 33 /painter-filter-scheduler/invalid_request_and_result\nok 34 /painter-filter-scheduler/reentry_at_commit\nok 35 /painter-filter-scheduler/admission_switch_keeps_restored_cache\nok 36 /painter-filter-scheduler/native_stride_vector_and_spool\nok 37 /painter-filter-scheduler/invalid_stride_never_reads\n# End of painter-filter-scheduler tests\n",
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "notable": [],
+          "localization_disabled": 0
+        }
+      },
+      {
+        "name": "painter-filter-spool",
+        "exit_code": 0,
+        "stdout": "TAP version 14\n# random seed: R02Sdaa7c6592323dfe05a2aee765d91a201\n1..11\n# Start of filter-spool tests\nok 1 /filter-spool/admitted_extent_quota_and_scratch_reuse\nok 2 /filter-spool/filesystem_capacity_refusal_releases_lease\nok 3 /filter-spool/roundtrip_and_output_geometry\nok 4 /filter-spool/missing_directory_fails_without_start\nok 5 /filter-spool/cancellation_while_collecting\nok 6 /filter-spool/cancellation_while_output_is_full\nok 7 /filter-spool/close_keeps_worker_lease_until_completion\nok 8 /filter-spool/result_read_failure_never_certifies_partial_output\nok 9 /filter-spool/owner_api_thread_guards\nok 10 /filter-spool/processing_exception_is_reported\nok 11 /filter-spool/invalid_input_is_transactional\n# End of filter-spool tests\n",
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "notable": [],
+          "localization_disabled": 0
+        }
+      },
+      {
+        "name": "painter-filter-owner-gates",
+        "exit_code": 0,
+        "stdout": "TAP version 14\n# random seed: R02S6d7642cef517511217f241916de2296c\n1..5\n# Start of owner-gates tests\nok 1 /owner-gates/bounded\nok 2 /owner-gates/invalidation-reentry\nok 3 /owner-gates/close-and-failure\nok 4 /owner-gates/blocked-exporter-and-admission\nok 5 /owner-gates/stable-capture-and-plain-context\n# End of owner-gates tests\n",
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "notable": [],
+          "localization_disabled": 0
+        }
+      },
+      {
+        "name": "literal-filter-procedures",
+        "exit_code": 0,
+        "stdout": "196 actual legacy SmallTiles oracles byte-exact (RGB/RGBA/Gray/Gray-alpha, factors0..6)\n174 actual legacy Retinex oracles byte-exact (87 native RGB,87 native RGBA)\n6 analytic selected Retinex ROI compositions matched old whole-fixture outputs\n2 analytic native Retinex raw-shadow ROI cases and 4 RGB carrier rejection cases passed\n12 native Blinds identity cases passed\n",
+        "stderr": {
+          "bytes": 449426,
+          "sha256": "6a5e4a2d7bc0f84cd6899f4f9b61735f6af7a61fdfa843bcd4c89dccf33d4a7a",
+          "notable": [
+            {
+              "line": "(tile-small:357357): LibGimp-WARNING **: 06:47:24.385: tile-small: gimp_flush(): error: Broken pipe",
+              "count": 1
+            },
+            {
+              "line": "(contrast-retinex:360742): LibGimp-WARNING **: 06:50:18.560: contrast-retinex: gimp_flush(): error: Broken pipe",
+              "count": 1
+            }
+          ],
+          "localization_disabled": 1556
+        }
+      },
+      {
+        "name": "convolution-helper",
+        "exit_code": 0,
+        "stdout": "296 genuine old Convolution final merges, 296 raw ROI comparisons, 8 old geometry rejections, 41 native analytic requests passed\n",
+        "stderr": {
+          "bytes": 301395,
+          "sha256": "7081e780ed12edc59e7d73dd5ef793718df15d99b521f2a724e2bb3a639a16b5",
+          "notable": [
+            {
+              "line": "(convolution-matrix:366776): LibGimp-WARNING **: 06:53:34.179: convolution-matrix: gimp_flush(): error: Broken pipe",
+              "count": 1
+            }
+          ],
+          "localization_disabled": 1011
+        }
+      },
+      {
+        "name": "live-filter",
+        "cases": [
+          "blinds_actual_old_context",
+          "blinds_actual_old_expansion",
+          "blinds_background_samples_execution_start",
+          "blinds_cancelled_gui_quit_keeps_worker",
+          "blinds_capture_context_edits",
+          "blinds_capture_replacement_cancel_close",
+          "blinds_context_idle",
+          "blinds_disabled_swap_preserves_cache",
+          "blinds_final_context_merges",
+          "blinds_gray_offset_context",
+          "blinds_identity_and_update",
+          "blinds_nonquit_batch_statuses",
+          "blinds_owner_context",
+          "blinds_owner_context_expansion",
+          "blinds_owner_context_phases",
+          "blinds_owner_context_retry",
+          "blinds_replace_running_definition",
+          "blinds_sealed_context_chunked_import",
+          "blinds_unknown_mask_latency",
+          "blinds_unknown_selection_scans_in_quanta",
+          "convolution_actual_old_live",
+          "convolution_cancel_replace_close",
+          "convolution_ignored_legacy_tail",
+          "convolution_invalid_arrays_keep_cache",
+          "convolution_native_context",
+          "convolution_native_failure_keeps_cache",
+          "convolution_native_precisions",
+          "convolution_native_storage_overflow",
+          "convolution_save_reopen",
+          "explicit_cancel_preserves_completed_cache",
+          "explicit_cancel_survives_callback_reentry",
+          "parameter_assignment_validation",
+          "parameter_metadata_rejections",
+          "parameter_object_lifetime",
+          "parameter_suffix_reordering",
+          "progress_real_workers",
+          "progress_worker_cancel_replace_close",
+          "retinex_actual_old_live",
+          "retinex_dependency_updates",
+          "retinex_final_context",
+          "retinex_gray_keep_cache",
+          "retinex_invalid_domains_keep_cache",
+          "retinex_invalid_roi_keep_cache",
+          "retinex_owner_close",
+          "retinex_replace_running_definition",
+          "retinex_save_reopen",
+          "retinex_zero_scales_and_update",
+          "small_tiles_actual_old_live",
+          "small_tiles_dependency_updates",
+          "small_tiles_final_context",
+          "small_tiles_invalid_domains_keep_cache",
+          "small_tiles_live_update",
+          "small_tiles_owner_close",
+          "small_tiles_replace_running_definition",
+          "small_tiles_save_reopen",
+          "small_tiles_selection_no_merge"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "bytes": 323805,
+          "sha256": "a4d7c4e9f0f5b43fc61a15a579e481928f82f6c732603b6b7403eca1cae65b89",
+          "notable": [
+            {
+              "line": "(convolution-matrix:368742): LibGimp-WARNING **: 06:54:33.053: convolution-matrix: gimp_flush(): error: Broken pipe",
+              "count": 1
+            },
+            {
+              "line": "(tile-small:369443): LibGimp-WARNING **: 06:55:06.343: tile-small: gimp_flush(): error: Broken pipe",
+              "count": 1
+            },
+            {
+              "line": "batch command experienced a calling error",
+              "count": 1
+            },
+            {
+              "line": "batch command experienced an execution error",
+              "count": 1
+            },
+            {
+              "line": "GIMP-Error: Failed to save data:",
+              "count": 1
+            }
+          ],
+          "localization_disabled": 1102
+        },
+        "stdout_bytes": 47353,
+        "stdout_sha256": "bc5adad4ae4a8fe653b44e4f25f7151d9037d3cff1b916f3a29d0e8ec0c37ac3",
+        "observations": [
+          "# 24 typed core calls: four routes, public/hidden metadata, three suffix orders (Small Tiles has one input)",
+          "# Empty CoreObjectArray: GIMP class callback returns FALSE; installed GLib wrapper returns TRUE",
+          "# route=0 progress-signals=9 worker-intermediate=2 heartbeats=347 elapsed-us=782570 owner-max-us=20429",
+          "# route=1 progress-signals=14 worker-intermediate=0 heartbeats=553 elapsed-us=1175100 owner-max-us=8608",
+          "# route=2 progress-signals=13 worker-intermediate=1 heartbeats=525 elapsed-us=1099016 owner-max-us=1737",
+          "# route=3 progress-signals=19 worker-intermediate=6 heartbeats=847 elapsed-us=1769200 owner-max-us=1206",
+          "# route=4 progress-signals=17 worker-intermediate=6 heartbeats=713 elapsed-us=1497510 owner-max-us=1302"
+        ]
+      }
+    ],
+    "run_commands": [
+      [
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/painter-filter-context-native"
+      ],
+      [
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/painter-filter-wire"
+      ],
+      [
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/painter-filter-process"
+      ],
+      [
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/painter-filter-scheduler"
+      ],
+      [
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/painter-filter-spool"
+      ],
+      [
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/painter-filter-owner-gates"
+      ],
+      [
+        "python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/painter-filter-procedure",
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/gimp-painter-filter-worker"
+      ],
+      [
+        "python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/painter-filter-convolution",
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/gimp-painter-filter-worker"
+      ],
+      [
+        "python3",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/sanitizers/gimp-filter-layer",
+        "-p",
+        "/gimp-filter-layer/parameter_suffix_reordering",
+        "-p",
+        "/gimp-filter-layer/parameter_metadata_rejections",
+        "-p",
+        "/gimp-filter-layer/parameter_assignment_validation",
+        "-p",
+        "/gimp-filter-layer/parameter_object_lifetime",
+        "-p",
+        "/gimp-filter-layer/progress_real_workers",
+        "-p",
+        "/gimp-filter-layer/progress_worker_cancel_replace_close",
+        "-p",
+        "/gimp-filter-layer/convolution_native_storage_overflow",
+        "-p",
+        "/gimp-filter-layer/convolution_ignored_legacy_tail",
+        "-p",
+        "/gimp-filter-layer/convolution_native_failure_keeps_cache",
+        "-p",
+        "/gimp-filter-layer/convolution_actual_old_live",
+        "-p",
+        "/gimp-filter-layer/convolution_invalid_arrays_keep_cache",
+        "-p",
+        "/gimp-filter-layer/convolution_native_precisions",
+        "-p",
+        "/gimp-filter-layer/convolution_save_reopen",
+        "-p",
+        "/gimp-filter-layer/convolution_cancel_replace_close",
+        "-p",
+        "/gimp-filter-layer/convolution_native_context",
+        "-p",
+        "/gimp-filter-layer/retinex_zero_scales_and_update",
+        "-p",
+        "/gimp-filter-layer/retinex_actual_old_live",
+        "-p",
+        "/gimp-filter-layer/retinex_invalid_domains_keep_cache",
+        "-p",
+        "/gimp-filter-layer/retinex_gray_keep_cache",
+        "-p",
+        "/gimp-filter-layer/retinex_invalid_roi_keep_cache",
+        "-p",
+        "/gimp-filter-layer/retinex_replace_running_definition",
+        "-p",
+        "/gimp-filter-layer/retinex_final_context",
+        "-p",
+        "/gimp-filter-layer/retinex_dependency_updates",
+        "-p",
+        "/gimp-filter-layer/retinex_save_reopen",
+        "-p",
+        "/gimp-filter-layer/retinex_owner_close",
+        "-p",
+        "/gimp-filter-layer/small_tiles_live_update",
+        "-p",
+        "/gimp-filter-layer/small_tiles_actual_old_live",
+        "-p",
+        "/gimp-filter-layer/small_tiles_invalid_domains_keep_cache",
+        "-p",
+        "/gimp-filter-layer/small_tiles_replace_running_definition",
+        "-p",
+        "/gimp-filter-layer/small_tiles_selection_no_merge",
+        "-p",
+        "/gimp-filter-layer/small_tiles_final_context",
+        "-p",
+        "/gimp-filter-layer/small_tiles_dependency_updates",
+        "-p",
+        "/gimp-filter-layer/small_tiles_save_reopen",
+        "-p",
+        "/gimp-filter-layer/small_tiles_owner_close",
+        "-p",
+        "/gimp-filter-layer/blinds_capture_context_edits",
+        "-p",
+        "/gimp-filter-layer/blinds_sealed_context_chunked_import",
+        "-p",
+        "/gimp-filter-layer/blinds_capture_replacement_cancel_close",
+        "-p",
+        "/gimp-filter-layer/blinds_unknown_mask_latency",
+        "-p",
+        "/gimp-filter-layer/blinds_owner_context",
+        "-p",
+        "/gimp-filter-layer/blinds_owner_context_phases",
+        "-p",
+        "/gimp-filter-layer/blinds_owner_context_expansion",
+        "-p",
+        "/gimp-filter-layer/blinds_owner_context_retry",
+        "-p",
+        "/gimp-filter-layer/blinds_actual_old_context",
+        "-p",
+        "/gimp-filter-layer/blinds_actual_old_expansion",
+        "-p",
+        "/gimp-filter-layer/blinds_gray_offset_context",
+        "-p",
+        "/gimp-filter-layer/blinds_identity_and_update",
+        "-p",
+        "/gimp-filter-layer/blinds_context_idle",
+        "-p",
+        "/gimp-filter-layer/blinds_final_context_merges",
+        "-p",
+        "/gimp-filter-layer/blinds_unknown_selection_scans_in_quanta",
+        "-p",
+        "/gimp-filter-layer/blinds_replace_running_definition",
+        "-p",
+        "/gimp-filter-layer/blinds_background_samples_execution_start",
+        "-p",
+        "/gimp-filter-layer/blinds_disabled_swap_preserves_cache",
+        "-p",
+        "/gimp-filter-layer/blinds_cancelled_gui_quit_keeps_worker",
+        "-p",
+        "/gimp-filter-layer/blinds_nonquit_batch_statuses",
+        "-p",
+        "/gimp-filter-layer/explicit_cancel_preserves_completed_cache",
+        "-p",
+        "/gimp-filter-layer/explicit_cancel_survives_callback_reentry"
+      ]
+    ]
+  },
+  "api270_compile": {
+    "command": [
+      "c++",
+      "-Iapp/core/libappcore.a.p",
+      "-Iapp/core",
+      "-I../app/core",
+      "-I.",
+      "-I..",
+      "-Iapp",
+      "-I../app",
+      "-Iapp/paint/painter-mypaint",
+      "-I../app/paint/painter-mypaint",
+      "-Iapp/painter",
+      "-I../app/painter",
+      "-Iapp/paint/painter-brush-settings",
+      "-I../app/paint/painter-brush-settings",
+      "-Igimp-data/cursors",
+      "-Igimp-data/icons/Default",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/glib-2.0",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/sysprof-6",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/json-glib-1.0",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/libmount",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/blkid",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/cairo",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/libpng16",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/freetype2",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/pixman-1",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/gegl-0.4",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/gio-unix-2.0",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/babl-0.1",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/gdk-pixbuf-2.0",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/webp",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/libmypaint",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/json-c",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/appstream",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/pango-1.0",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/harfbuzz",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/fribidi",
+      "-fdiagnostics-color=always",
+      "-D_GLIBCXX_ASSERTIONS=1",
+      "-D_FILE_OFFSET_BITS=64",
+      "-Wall",
+      "-Winvalid-pch",
+      "-std=c++14",
+      "-O2",
+      "-g",
+      "-fdiagnostics-show-option",
+      "-fno-common",
+      "-Wformat",
+      "-Wformat-security",
+      "-Winit-self",
+      "-Wlogical-op",
+      "-Wmissing-declarations",
+      "-Wmissing-format-attribute",
+      "-Wpointer-arith",
+      "-Wreturn-type",
+      "-Wtype-limits",
+      "-DHAVE_CONFIG_H",
+      "-fPIC",
+      "-pthread",
+      "-DGIMP_PAINTER_FILTER_BUILD_ROOT=\"/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter\"",
+      "-DGIMP_PAINTER_FILTER_BIN_TO_WORKER=\"../libexec/gimp-painter-filter-worker\"",
+      "-DGIMP_PAINTER_FILTER_WORKER_TO_PLUGINS=\"../lib/x86_64-linux-gnu/gimp/3.0/plug-ins\"",
+      "-DGIMP_PAINTER_FILTER_EXECUTABLE_SUFFIX=\"\"",
+      "-MD",
+      "-MQ",
+      "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+      "-MF",
+      "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o.d",
+      "-o",
+      "/workspace/scratch/5b5281e79681/filter-parameter-binder-validation/arguments-api270.o",
+      "-c",
+      "../app/core/gimpfilterprocedure-arguments.cpp",
+      "-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70",
+      "-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_70",
+      "-Werror=deprecated-declarations"
+    ],
+    "exit_code": 0,
+    "source_sha256": {
+      "app/core/gimpfilterprocedure-arguments.cpp": "79f1e6745bc418c5fe79e8833ec92a1c4a9b556327c32f30ce6b8b8dc4b7b606",
+      "app/core/gimpfilterprocedure-arguments.hpp": "da2cdb5b7deb7a65d50f77e1ee5b3c20380edf992a2c1a3c6d3ef4e38768b178"
+    },
+    "scope": "Header API ceiling compile of new boundary only against installed GLib; not GLib2.70 runtime/build"
+  },
+  "boundary_coverage": [
+    "24 self-consistent synthetic core marshal invocations; three input orders; public/hidden range differences only for Small Tiles and Retinex; duplicate selector cases for Blinds/Convolution; Small Tiles has one suffix input",
+    "Fixed context prefix; missing/extra/duplicate/renamed/type/flags/default/range/choice drift rejected",
+    "Missing/repeated/wrong typed assignments, finite/subnormal/signed-zero exact values, malformed bounded arrays before copy",
+    "Real empty CoreObjectArray class callback FALSE versus public wrapper TRUE; separate scoped test-only public-FALSE in-place later-array-element mutation rejected",
+    "Full numeric bits and later object identities/order; independent ObjectRef leases with success/error/cancel status and weak finalizers"
+  ],
+  "diagnostics": {
+    "normal_helper_broken_pipe_warnings": 2,
+    "previous_record": "migration/tests/filter-small-tiles/sanitizers.json",
+    "note": "Flush Broken-pipe warning class was observed in earlier Small Tiles evidence; current normal logs contain two Small Tiles instances and sanitizer logs contain five Small Tiles/Retinex/Convolution instances. Their root cause is not resolved here. Native cleanup also reports the existing writable-data-folder/search-path test-profile message; batch error diagnostics are deliberate status-test inputs. Localization notices remain. No sanitizer finding or failed selected test occurred.",
+    "normal_native": {
+      "bytes": 173714,
+      "sha256": "7506a74ad51392e67c784542c99be7a2ace0e5248d7404f2046a3a804a25ed8e",
+      "notable": [
+        {
+          "line": "GIMP-Error: Failed to save data:",
+          "count": 1
+        }
+      ],
+      "localization_disabled": 534
+    },
+    "sanitizer_broken_pipe_warnings": 5
+  },
+  "earlier_attempts": {
+    "compile": {
+      "exit_code": 1,
+      "reason": "New C++ fixture needed an explicit GParamFlags cast for the integer GIMP_PARAM_READWRITE macro; fixed before native execution. Initial source was not separately sealed; compile diagnostics retained.",
+      "raw_log_sha256": "3280ea182beb628b6fdfecd136383cd3ad3d5ab5b130af7b4e50059166514516",
+      "diagnostics": "migration/tests/filter-parameter-binder/attempt-build.txt",
+      "diagnostics_sha256": "212c0cc1b29cd56a378aec6d3386e7b24513655a48dcfceeda3bfeb0f04a9ede"
+    },
+    "native": [
+      {
+        "attempt": 1,
+        "exit_code": 245,
+        "executed": [
+          "parameter_suffix_reordering"
+        ],
+        "reason": "Test fixture replaced all pspec flags and removed G_PARAM_STATIC_NAME/NICK/BLURB, causing invalid ownership on destruction. Fixed by clearing G_PARAM_WRITABLE only.",
+        "test_source_sha256": "a3aa78f2bb8e6847c7ceda15122f8095e40ecdafa2605385cb572ba499793893",
+        "native_binary_sha256": "280c37f5915405527925a409d94c974ac5e97d2775a04b1d4fa0831790b50afc"
+      },
+      {
+        "attempt": 2,
+        "exit_code": 250,
+        "executed": [
+          "parameter_metadata_rejections",
+          "parameter_suffix_reordering"
+        ],
+        "reason": "Test incorrectly expected public g_param_value_validate to return FALSE for empty array pointer replacement. Real GIMP callback returns FALSE; GLib wrapper returns TRUE. Corrected test and contract, and added a test-only in-place later-element mutation for the public FALSE path.",
+        "test_source_sha256": "a542e9aec4cf89fdd7a5a22161810138ef07044b9813bdac3689c1feea50db4b",
+        "native_binary_sha256": "0cc47dcb3d318ec651c38ed1189120637a3f375731848ca2b33f54241763035b"
+      }
+    ]
+  },
+  "verification": {
+    "build": "source ../gimp-build-restoration/env.sh; source tools/linux-debian13-env.sh; flock /workspace/shared/gimp-painter-build.lock ninja -C build-installed-filter -j3 app/tests/gimp-filter-layer app/gimp-painter-filter-worker app/painter-filter-procedure app/painter-filter-convolution app/gimp-console-3.0",
+    "normal_helpers": "flock /workspace/shared/gimp-painter-build.lock meson test -C build-installed-filter --no-rebuild --num-processes 1 --print-errorlogs painter-filter-procedure painter-filter-convolution",
+    "native_environment": "Actual cloud desktop terminal namespace; target env from build-installed-filter/meson-info/intro-tests.json, existing LD_LIBRARY_PATH appended, GIMP3_CACHEDIR=build-installed-filter/filter-spill-cache; exact fixture-wrapper command above",
+    "focused": "python3 -B migration/tests/run_filter_process_sanitizers.py --build build-installed-filter --output <private-output> --lock /workspace/shared/gimp-painter-build.lock --run",
+    "structural": [
+      "python3 -B tools/check_tasks.py",
+      "git diff --check"
+    ]
+  },
+  "logs": {
+    "normal_native": {
+      "uncompressed_sha256": "7506a74ad51392e67c784542c99be7a2ace0e5248d7404f2046a3a804a25ed8e",
+      "sha256": "b836ef0e1af504798a94cb412d7878241b00fb31595c077c1d31baab7c54e339",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "normal-native.log.gz"
+    },
+    "failed_native_1": {
+      "uncompressed_sha256": "845fa6e6464d00263725a5594b287c2f48bcc4d3f84c2cc36690c4042474515b",
+      "sha256": "246fb73811b3892d71be2850bede63e2472d6d9a8d8a165ada6e11c6c10b9e6a",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "attempt-native-1.log.gz"
+    },
+    "failed_native_2": {
+      "uncompressed_sha256": "b4f4849fa47339c8e89e43fff30439c57d4cc766a8fef5fbb6da231bf1b2b9a2",
+      "sha256": "cff470076f2ba7e64211b58a2b2c7d6e2b33c37b0fb7938171d5892bb3dd5934",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "attempt-native-2.log.gz"
+    },
+    "sanitizer_painter-filter-context-native": {
+      "uncompressed_sha256": "9bbd8d78bd9cb3d33e8534824534aa70807019d79eb5804034548a80c9a3f127",
+      "sha256": "139f20fac1fbaa47dffd038f95497bffed3a9594d8603568e1925a7b05a43059",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "sanitizer-painter-filter-context-native.log.gz"
+    },
+    "sanitizer_painter-filter-wire": {
+      "uncompressed_sha256": "929bb6b51dd7bee49f390e36b13775353a9dc952c9677726807ecd05fe083c6b",
+      "sha256": "a94683e1fccf78af4e4b7f7cf9a38e72b0c5f0894dd779ff97a42b41526e17f4",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "sanitizer-painter-filter-wire.log.gz"
+    },
+    "sanitizer_painter-filter-process": {
+      "uncompressed_sha256": "bd2359a76c5f0e90f2a72e3a731b6a3fefeb88fa7d7a76b1700875cd6025722f",
+      "sha256": "43b657dd0f3b9e58ba5fdd95b245896bf6955c6178982319becbfc4f7100ade3",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "sanitizer-painter-filter-process.log.gz"
+    },
+    "sanitizer_painter-filter-scheduler": {
+      "uncompressed_sha256": "c54b079ef4053f9d6c21e591843979fa7fb5c1f6c527142f81850a7f3ec06d54",
+      "sha256": "34de062f26cb722f64ef752ace2926bb626e3a8bf7708ee9c173c2f14de5b892",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "sanitizer-painter-filter-scheduler.log.gz"
+    },
+    "sanitizer_painter-filter-spool": {
+      "uncompressed_sha256": "7ba1eec5748b96c335d4ee9ebb5d1f1bea8f19d8c4afae0ebedbbd6cd6fb05d5",
+      "sha256": "5cfb11b2340abc04f4b873a2ac8e08ac74ecd89431eb2f662b6b45f92f2c9e08",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "sanitizer-painter-filter-spool.log.gz"
+    },
+    "sanitizer_painter-filter-owner-gates": {
+      "uncompressed_sha256": "01ae489229b8a3ecdd6e564a2372310e59551968a3c2f00ae4e24dedc54a098b",
+      "sha256": "f0c62afe38cb9e534fe0da16ed8dd7f662ee515247d360634ae25a6ba59edbbf",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "sanitizer-painter-filter-owner-gates.log.gz"
+    },
+    "sanitizer_literal-filter-procedures": {
+      "uncompressed_sha256": "a2ec54b58bf61d57de89d28d711fc776222c5007c7eff51fe29448894bf4c86b",
+      "sha256": "ec2ff65d40cd80eab035cc207499cca220225c55780893d8430bd09792913b5b",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "sanitizer-literal-filter-procedures.log.gz"
+    },
+    "sanitizer_convolution-helper": {
+      "uncompressed_sha256": "b035e5447d4bd8a6b180541e1963aa2e2b1f867915f32f132a068c3f36c52613",
+      "sha256": "736c64f3141db82843144cf4a82e17102cea6f1fc101911dfece0afa95538943",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "sanitizer-convolution-helper.log.gz"
+    },
+    "sanitizer_live-filter": {
+      "uncompressed_sha256": "7240cca8142a855c603d0b2b3ea8265baa606d78dfb82840b8a43e03a33dea61",
+      "sha256": "e8c286ed9a9f655217f0764e698dbe26936fae7e292c5ceea64f306de49afa68",
+      "archive": "migration/tests/filter-parameter-binder/logs.tar.gz",
+      "member": "sanitizer-live-filter.log.gz"
+    }
+  },
+  "limits": [
+    "Full 320-Blinds helper corpus is normal-only; sanitizer retains its prior smaller helper selection, with historical Blinds pixels checked in native context groups",
+    "GLib2.70 API-ceiling compile uses installed2.84.4 headers;2.70 wrapper source comparison is not a minimum-version runtime/full-build pass",
+    "Focused instrumentation only; remaining GIMP/dependencies ordinary and LeakSanitizer off",
+    "No GUI, wire, saved format, scheduler, algorithms or precision policy edits; no new routes or plugin framework",
+    "B\u2013E, parent16.002 and other open parent/full-port/platform/release gates remain open; independent GTK AT-SPI defect not resolved"
+  ],
+  "log_archive": {
+    "path": "migration/tests/filter-parameter-binder/logs.tar.gz",
+    "sha256": "6b48acf275189c2c7cf2ac45f5d7f8d261c89815d7a3d747b08336519bdfc597",
+    "bytes": 14976,
+    "members": 12,
+    "prepack_commit": "13e572a3e386a898bbc3818f5581ed534bb9e4ab",
+    "format": "Deterministic tar.gz containing the exact twelve original .gz log members; member sha256 and uncompressed_sha256 remain unchanged"
+  }
+}
