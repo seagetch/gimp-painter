@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Observe an installed SmallTiles route against sealed genuine-old live bytes.
+"""Observe an installed Retinex route against sealed genuine-old live bytes.
 
 Run under the shared build/test lock, after generating the native fixture with
-filter-quit-fixture --small-tiles EVIDENCE_ROOT OUTPUT_DIRECTORY. --relocate
+filter-quit-fixture --retinex EVIDENCE_ROOT OUTPUT_DIRECTORY. --relocate
 copies the supplied runtime to a fresh path containing spaces and Japanese
 characters. The source bundle and earlier acceptance evidence stay untouched.
 """
@@ -31,7 +31,7 @@ def module(name, path):
     return result
 
 
-observer = module('small_tiles_owned_processes', ROOT/'tools/check_filter_active_quit.py')
+observer = module('retinex_owned_processes', ROOT/'tools/check_filter_active_quit.py')
 
 
 def sha(path):
@@ -43,10 +43,11 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import struct
 import time
 from gi.repository import Gegl, Gio, Gimp, GLib
 
-config = json.loads(os.environ['GIMP_PAINTER_SMALL_TILES_SMOKE'])
+config = json.loads(os.environ['GIMP_PAINTER_RETINEX_SMOKE'])
 output = Path(config['output'])
 events = output/'events.jsonl'
 width, height = 53, 41
@@ -59,7 +60,7 @@ def wait_for_observer(name):
     deadline = time.monotonic()+30
     while not (output/name).exists():
         if time.monotonic() > deadline:
-            raise RuntimeError('SmallTiles observer did not acknowledge '+name)
+            raise RuntimeError('Retinex observer did not acknowledge '+name)
         time.sleep(0.01)
 
 def record(path):
@@ -95,7 +96,7 @@ def record(path):
         if offset == 0:
             break
         name, layer_at = string(offset+12)
-        if name != b'small tiles Filter':
+        if name != b'retinex Filter':
             continue
         props, _ = properties(layer_at)
         for tag, cursor, count in props:
@@ -112,7 +113,7 @@ def record(path):
                 cursor += count
     else:
         raise AssertionError('Too many XCF layers')
-    assert len(capsules) == 1, 'Expected exactly one SmallTiles Filter capsule'
+    assert len(capsules) == 1, 'Expected exactly one Retinex Filter capsule'
     assert capsules[0][:12] == b'GPXCF\0\0\0\1\0\0\0'
     value = GLib.Variant.new_from_bytes(GLib.VariantType.new('a{sv}'),
                                        GLib.Bytes.new(capsules[0][12:]), False)
@@ -132,8 +133,8 @@ def pixels(layer):
 def layers(image):
     assert image.get_width() == width and image.get_height() == height
     values = {layer.get_name():layer for layer in image.get_layers()}
-    assert set(values) == {'small tiles source', 'small tiles Filter'}
-    return values['small tiles source'], values['small tiles Filter']
+    assert set(values) == {'retinex source', 'retinex Filter'}
+    return values['retinex source'], values['retinex Filter']
 
 def save(image, name):
     path = output/name
@@ -148,11 +149,11 @@ def complete(image, effect, name, previous_generation, expected, initial_definit
                 state['generation'] > previous_generation and \
                 state['cache-generation'] == state['generation']:
             break
-        assert state['saved-state'] != 6, 'Installed SmallTiles reached terminal failure'
+        assert state['saved-state'] != 6, 'Installed Retinex reached terminal failure'
         if time.monotonic() > deadline:
-            raise RuntimeError('Installed SmallTiles did not complete the requested generation')
+            raise RuntimeError('Installed Retinex did not complete the requested generation')
         time.sleep(0.05)
-    assert pixels(effect) == expected, 'SmallTiles full raster differs from genuine-old live output'
+    assert pixels(effect) == expected, 'Retinex full raster differs from genuine-old live output'
     assert definition(state) == initial_definition, 'Execution changed typed Filter definition'
     return state
 
@@ -169,9 +170,12 @@ assert pixels(effect) == bytes((13, 29, 47, 255))*(width*height), 'Initial cache
 initial = save(image, 'initial-cache.xcf')
 assert initial['saved-state'] == 0 and initial['cache-complete']
 assert initial['generation'] == initial['cache-generation']
-assert bytes(initial['procedure']) == b'plug-in-small-tiles\0'
+assert bytes(initial['procedure']) == b'plug-in-retinex\0'
 assert initial['has-arguments'] and initial['arguments'] == [
-    ('gint', False, 1), ('gint', False, 0), ('gint', False, 0), ('gint', False, config['factor'])]
+    ('gint', False, 1), ('gint', False, 0), ('gint', False, 0),
+    ('gint', False, config['scale']), ('gint', False, config['nscales']),
+    ('gint', False, config['mode']),
+    ('gdouble', False, struct.unpack('<Q', struct.pack('<d', config['cvar']))[0])], initial['arguments']
 initial_definition = definition(initial)
 emit('READY', image=image.get_id(), generation=initial['generation'])
 wait_for_observer('start-first')
@@ -203,22 +207,22 @@ assert definition(restored) == initial_definition, 'Second reopen changed typed 
 assert restored['saved-state'] == 0 and restored['cache-complete']
 assert restored['generation'] == restored['cache-generation']
 assert image.delete()
-result = dict(status='passed', factor=config['factor'], scene=config['scene'],
+result = dict(status='passed', variant=config['variant'], scene=config['scene'],
     expected_sha256=hashlib.sha256(settled).hexdigest(), rerun_sha256=hashlib.sha256(rerun).hexdigest(),
-    definition_preserved=True, reopened_definition_preserved=True, argument_count=4,
+    definition_preserved=True, reopened_definition_preserved=True, argument_count=7,
     initial_generation=initial['generation'], first_generation=completed['generation'],
     reopened_generation=reopened['generation'], rerun_generation=repeated['generation'],
-    scope='Two explicit lower updates, full genuine-old live SmallTiles bytes, two Save/reopen cycles and four typed arguments; no GUI or whole-port claim')
+    scope='Two explicit lower updates, full genuine-old live Retinex bytes, two Save/reopen cycles and seven typed arguments, including binary64 cvar; no GUI or whole-port claim')
 (output/'batch-result.json').write_text(json.dumps(result, indent=2)+'\n')
 emit('SAVED_REOPENED', sha256=result['expected_sha256'], rerun_sha256=result['rerun_sha256'])
-print('INSTALLED_SMALL_TILES_EXACT_SAVE_REOPEN_OK', flush=True)
+print('INSTALLED_RETINEX_EXACT_SAVE_REOPEN_OK', flush=True)
 '''
 
 
 def installed_executables(bundle):
     result = {}
     for name, pattern in (('helper', 'usr/**/gimp-painter-filter-worker'),
-                          ('plugin', 'usr/**/plug-ins/tile-small/tile-small')):
+                          ('plugin', 'usr/**/plug-ins/contrast-retinex/contrast-retinex')):
         matches = [path for path in bundle.glob(pattern) if path.is_file()]
         if len(matches) != 1:
             raise RuntimeError('Expected exactly one installed '+name+' executable')
@@ -229,7 +233,7 @@ def installed_executables(bundle):
     return result
 
 
-def generate_fixture(build, evidence, output, factor):
+def generate_fixture(build, evidence, output, variant):
     """The native producer saves a complete cache without running any job."""
     output.mkdir()
     generator = build/'app/tests/filter-quit-fixture'
@@ -242,25 +246,25 @@ def generate_fixture(build, evidence, output, factor):
             env[key] = value+os.pathsep+env.get(key, '')
         else:
             env[key] = value
-    with tempfile.TemporaryDirectory(prefix='small-tiles-fixture-profile-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='retinex-fixture-profile-') as temporary:
         env.update(GIMP3_DIRECTORY=temporary, GIMP3_DATADIR=temporary,
                    GIMP3_CACHEDIR=temporary, GIMP3_TEMPDIR=temporary,
                    GIMP_TESTING_PLUGINDIRS=temporary,
                    GIMP_TESTING_INTERPRETER_DIRS=temporary,
                    GIMP_TESTING_ENVIRON_DIRS=temporary)
-        command = [str(generator), '--small-tiles', str(evidence), str(output)]
+        command = [str(generator), '--retinex', str(evidence), str(output)]
         with (output/'console.log').open('w') as log:
             result = subprocess.run(command, env=env, stdout=log, stderr=subprocess.STDOUT,
                                     text=True, timeout=90, check=False)
     contents = (output/'console.log').read_text(errors='replace')
-    if result.returncode != 0 or 'SMALL_TILES_FIXTURE_READY factor='+str(factor) not in contents:
-        raise RuntimeError('Native SmallTiles fixture generation failed; inspect '+str(output/'console.log'))
+    if result.returncode != 0 or 'RETINEX_FIXTURE_READY variant='+str(variant) not in contents:
+        raise RuntimeError('Native Retinex fixture generation failed; inspect '+str(output/'console.log'))
     for marker in observer.SANITIZER_DIAGNOSTICS + ('Gimp-Core-CRITICAL',):
         if marker in contents:
-            raise RuntimeError('Native SmallTiles fixture diagnostic: '+marker)
+            raise RuntimeError('Native Retinex fixture diagnostic: '+marker)
     if before != sha(generator):
         raise RuntimeError('Native fixture generator changed while running')
-    fixture = output/('small-tiles-'+str(factor)+'.xcf')
+    fixture = output/('retinex-'+str(variant)+'.xcf')
     evidence_record = dict(command=command, exit_code=result.returncode,
         generator_sha256=before, source_sha256=sha(ROOT/'app/tests/test-filter-quit-fixture.cpp'),
         fixture_sha256=sha(fixture), no_filter_jobs=True)
@@ -268,19 +272,21 @@ def generate_fixture(build, evidence, output, factor):
     return fixture, evidence_record
 
 
-def run(command, environment, executables, fixture, evidence, output, factor):
+def run(command, environment, executables, fixture, evidence, output, variant):
     """Also usable with a prefix console and its explicitly supplied environment."""
-    if factor not in (0, 3):
-        raise ValueError('This smoke has genuine-old fixtures only for factors 0 and 3')
+    if variant not in (0, 1):
+        raise ValueError('This smoke has genuine-old fixtures only for variants 0 and 1')
     output.mkdir(parents=True, exist_ok=False)
-    scene = 'tiles-g0-s0-v'+('0' if factor == 0 else '2')
+    scene = 'retinex-g0-s0-v'+str(variant)
     raw = {name:evidence/'live'/(scene+'-'+name+'.raw') for name in ('source', 'settled', 'rerun')}
     for path in raw.values():
         if path.stat().st_size != 53*41*4:
-            raise RuntimeError('Unexpected genuine-old SmallTiles raw extent: '+str(path))
-    config = dict(output=str(output), fixture=str(fixture), factor=factor, scene=scene,
-                  **{name:str(path) for name,path in raw.items()})
-    env = {**environment, 'GIMP_PAINTER_SMALL_TILES_SMOKE':json.dumps(config)}
+            raise RuntimeError('Unexpected genuine-old Retinex raw extent: '+str(path))
+    parameters = dict(scale=16, nscales=3, mode=0, cvar=1.2) if variant == 0 else \
+                 dict(scale=256, nscales=8, mode=2, cvar=0.123456789)
+    config = dict(output=str(output), fixture=str(fixture), variant=variant, scene=scene,
+                  **parameters, **{name:str(path) for name,path in raw.items()})
+    env = {**environment, 'GIMP_PAINTER_RETINEX_SMOKE':json.dumps(config)}
     arguments = [*command, '--new-instance', '--no-interface', '--no-data', '--no-fonts', '--no-splash',
                  '--batch-interpreter=python-fu-eval', '-b', '-', '--quit']
     expected = {name:str(Path(path).resolve()) for name,path in executables.items()}
@@ -320,7 +326,7 @@ def run(command, environment, executables, fixture, evidence, output, factor):
                         acknowledgements.add(event)
                         (output/gate).write_text('Initial saved cache and no live helper observed\n')
                 if time.monotonic()-began > 240:
-                    errors.append('Installed SmallTiles smoke exceeded 240 seconds')
+                    errors.append('Installed Retinex smoke exceeded 240 seconds')
                     os.killpg(process.pid, signal.SIGKILL)
                     break
                 time.sleep(0.005)
@@ -330,9 +336,9 @@ def run(command, environment, executables, fixture, evidence, output, factor):
                 os.killpg(process.pid, signal.SIGKILL)
                 process.wait()
     contents = (output/'console.log').read_text(errors='replace')
-    if code != 0 or 'INSTALLED_SMALL_TILES_EXACT_SAVE_REOPEN_OK' not in contents:
-        errors.append('Console did not confirm SmallTiles exact output and Save/reopen')
-    for marker in observer.SANITIZER_DIAGNOSTICS + ('batch command experienced', 'Traceback (most recent call last)', 'Filter cleanup exceeded'):
+    if code != 0 or 'INSTALLED_RETINEX_EXACT_SAVE_REOPEN_OK' not in contents:
+        errors.append('Console did not confirm Retinex exact output and Save/reopen')
+    for marker in observer.SANITIZER_DIAGNOSTICS + ('batch command experienced', 'Traceback (most recent call last)', 'Filter cleanup exceeded', 'Gimp-Core-CRITICAL'):
         if marker in contents:
             errors.append('Runtime diagnostic: '+marker)
     helpers = [item for item in observed.values() if item['exe'] == expected['helper']]
@@ -341,7 +347,7 @@ def run(command, environment, executables, fixture, evidence, output, factor):
     if acknowledgements != {'READY', 'REOPENED_READY'}:
         errors.append('Missing both initial and reopened readiness handshakes')
     if len(helpers_after_update) < 2 or len(plugins_after_update) < 2:
-        errors.append('Missing two actual installed helper/native tile-small -run observations after invalidation')
+        errors.append('Missing two actual installed helper/native contrast-retinex -run observations after invalidation')
     if any(len(item['argv']) != 3 or item['argv'][1] != '--filter-worker-v4' for item in helpers):
         errors.append('Installed helper did not use the GPF4 worker entry point')
     all_helper_ids = {item['pid'] for item in observed.values() if Path(item['exe']).name == 'gimp-painter-filter-worker'}
@@ -350,7 +356,7 @@ def run(command, environment, executables, fixture, evidence, output, factor):
                 (Path(item['exe']).name in ('tile-small', 'blinds', 'contrast-retinex') and
                  item['parent'] in all_helper_ids and item['exe'] != expected['plugin'])]
     if wrong:
-        errors.append('A Filter executable resolved outside the intended SmallTiles runtime route')
+        errors.append('A Filter executable resolved outside the intended Retinex runtime route')
     survivors = [item for item in observed.values() if observer.still_same(item)]
     leftovers = [path for path in sorted(profiles) if Path(path).exists()]
     if survivors or leftovers:
@@ -369,12 +375,12 @@ def run(command, environment, executables, fixture, evidence, output, factor):
     elif (batch.get('expected_sha256') != sha(raw['settled']) or
           batch.get('rerun_sha256') != sha(raw['rerun']) or
           batch.get('definition_preserved') is not True or
-          batch.get('reopened_definition_preserved') is not True or batch.get('argument_count') != 4):
+          batch.get('reopened_definition_preserved') is not True or batch.get('argument_count') != 7):
         errors.append('Missing genuine-old output or typed-definition preservation evidence')
     if executable_hashes != {name:sha(path) for name,path in expected.items()}:
         errors.append('Installed executable bytes changed during smoke')
     report = dict(status='failed' if errors else 'passed', errors=errors,
-        factor=factor, scene=scene, exit_code=code, seconds=time.monotonic()-began,
+        variant=variant, scene=scene, exit_code=code, seconds=time.monotonic()-began,
         command=[str(value) for value in arguments], expected_executables=expected,
         executable_sha256=executable_hashes, observed_helpers=helpers, observed_plugins=plugins,
         wrong_installation=wrong, survivors=survivors, leftover_profiles=leftovers,
@@ -395,7 +401,7 @@ def main():
     fixture_group = parser.add_mutually_exclusive_group(required=True)
     fixture_group.add_argument('--fixture', type=Path)
     fixture_group.add_argument('--build', type=Path, help='Generate a native fixture from this completed build')
-    parser.add_argument('--factor', type=int, choices=(0, 3), default=3)
+    parser.add_argument('--variant', type=int, choices=(0, 1), default=1)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--relocate', action='store_true')
     args = parser.parse_args()
@@ -403,11 +409,11 @@ def main():
     if output.exists():
         parser.error('Output must be new to preserve previous evidence')
     output.mkdir(parents=True)
-    verifier = module('small_tiles_sealed_evidence', ROOT/'tools/check_small_tiles_evidence.py')
+    verifier = module('retinex_sealed_evidence', ROOT/'tools/check_retinex_evidence.py')
     manifest = verifier.verify(extract=output/'evidence')
-    evidence = output/'evidence/small-tiles-evidence'
+    evidence = output/'evidence/retinex-evidence'
     if args.build:
-        fixture, generated = generate_fixture(args.build.resolve(), evidence, output/'fixtures', args.factor)
+        fixture, generated = generate_fixture(args.build.resolve(), evidence, output/'fixtures', args.variant)
     else:
         fixture, generated = args.fixture.resolve(), None
     if args.relocate:
@@ -421,7 +427,7 @@ def main():
                    'XDG_CONFIG_HOME':str(profile/'config'), 'XDG_CACHE_HOME':str(profile/'cache'),
                    'XDG_DATA_HOME':str(profile/'data')}
     report = run([bundle/'AppRun', '--console'], environment, installed_executables(bundle),
-                 fixture, evidence, output/'smoke', args.factor)
+                 fixture, evidence, output/'smoke', args.variant)
     report['native_fixture_generator'] = generated
     report['evidence_archive_sha256'] = sha(verifier.DEFAULT_ARCHIVE)
     report['evidence_manifest'] = manifest

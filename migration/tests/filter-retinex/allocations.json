@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "source_sha256_before": {
+    "plug-ins/common/contrast-retinex.c": "d5a2f22516aec102d25f4d244ea9c2da9d4fea2bf5869ec165377261c3dc5f13",
+    "tools/check_retinex_allocations.py": "39a19d0090b99df2d09f3169baf9ad66d641351aaf9521a52e64c36a6adb37cc",
+    "tools/check_retinex_evidence.py": "b82c7590ee5074306652b242ddc1b5e21a5850a2d727abe08d12661a69d154c6",
+    "tools/derive_retinex_evidence.py": "7011910ead0725584efb95511a8cf1bc5eef6091673b6987b8ee4c084b63fe3f"
+  },
+  "extracted_functions": {
+    "retinex_scales_distribution": {
+      "line": 532,
+      "sha256": "9bb85e7247ad7c404b1816401f97ef798c39c51f673850147bb312fbbcc0c80a"
+    },
+    "compute_coefs3": {
+      "line": 581,
+      "sha256": "b54715182afedec86af0bbfadefc20ad25800a8bc8f5fe84a13c00cbf466d14f"
+    },
+    "gausssmooth": {
+      "line": 630,
+      "sha256": "7c503927e61762311cbb3c08c1faf4e48da07b2d24d39c37c8b255656279db5e"
+    },
+    "MSRCR": {
+      "line": 693,
+      "sha256": "20beca9b3895bae9680825705b6e905a8f5d415be8ddd51e65c0ad17fe3f3376"
+    },
+    "compute_mean_var": {
+      "line": 932,
+      "sha256": "914e35804b113c72560ec702e45f736a3ec185d2123dd6b3cb81feabbe6f29f4"
+    },
+    "retinex": {
+      "line": 416,
+      "sha256": "a063786d66961715cf67bfd45e610be132a85db5c09a70edf48a644c2ba4f86f"
+    }
+  },
+  "extracted_source_sha256": "0afc989e06a39d9c6e8ec0603c49ba34fce427b04b69eac9ed50748032d28710",
+  "generated_harness_sha256": "1914532d2b0db246b2c3340026acad4034844a35bb48b0cf682a8f2f69f34069",
+  "sanitizers": [
+    "address",
+    "undefined",
+    "float-cast-overflow"
+  ],
+  "compiler": [
+    "cc"
+  ],
+  "compiler_flags": [
+    "-std=c11",
+    "-O2",
+    "-Wall",
+    "-Wno-unused-function",
+    "-fsanitize=address,undefined,float-cast-overflow",
+    "-fno-sanitize-recover=all",
+    "-fno-omit-frame-pointer"
+  ],
+  "sanitizer_options": {
+    "ASAN_OPTIONS": "detect_leaks=0:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "leak_check": "All six scratch allocation sites and both buffer references are counted; LeakSanitizer is disabled because this executor uses ptrace.",
+  "scope": "Exact source kernel and retinex publication control with stubbed host/configuration; native PDB, selection compositing, and installed behavior require separate tests.",
+  "allocation_sites": {
+    "src": {
+      "line": 462,
+      "injected_failures_passed": 2
+    },
+    "w1": {
+      "line": 650,
+      "injected_failures_passed": 576
+    },
+    "w2": {
+      "line": 651,
+      "injected_failures_passed": 576
+    },
+    "dst": {
+      "line": 746,
+      "injected_failures_passed": 2
+    },
+    "in": {
+      "line": 755,
+      "injected_failures_passed": 2
+    },
+    "out": {
+      "line": 763,
+      "injected_failures_passed": 2
+    }
+  },
+  "allocation_scenarios": [
+    {
+      "case_id": "RGB-16x16-retinex-031",
+      "input_sha256": "8aeb3828bb03298c637701529cd0a3b79e64ad0e4738a3f61109ecada4e29ce1",
+      "width": 16,
+      "height": 16,
+      "channels": 3,
+      "parameters": [
+        240,
+        3,
+        0,
+        1.2
+      ],
+      "allocation_calls": 580,
+      "injected_failures_by_site": {
+        "src": 1,
+        "w1": 288,
+        "w2": 288,
+        "dst": 1,
+        "in": 1,
+        "out": 1
+      }
+    },
+    {
+      "case_id": "RGBA-16x16-retinex-167",
+      "input_sha256": "2e141cdf9bed3b97aa6a611a00ab96c0ed174bcf63b1ea7858d5f93948a8355c",
+      "width": 16,
+      "height": 16,
+      "channels": 4,
+      "parameters": [
+        240,
+        3,
+        0,
+        1.2
+      ],
+      "allocation_calls": 580,
+      "injected_failures_by_site": {
+        "src": 1,
+        "w1": 288,
+        "w2": 288,
+        "dst": 1,
+        "in": 1,
+        "out": 1
+      }
+    }
+  ],
+  "hidden_kernel_cases_passed": 174,
+  "legacy_visible_and_alpha_cases_passed": 174,
+  "public_kernel_cases_passed": 32,
+  "allocation_failures_passed": 1160,
+  "compiler_version": "cc (Debian 14.2.0-19) 14.2.0",
+  "archive_sha256": "28f1f803e72bb25cb7fedcc4cf108a3df71a492d458baa1cbf8f52438b8e946c",
+  "manifest_sha256": "6542f4503c344a907611840011039c7957e208b6201fe46dc891830f2f6825cf",
+  "compiler_diagnostics": "",
+  "harness_binary_sha256": "87789e799ff44b52c70a9892d428cf7f2124fa1aa63687b50c777d46feb1bea5",
+  "analytic_geometry": {
+    "dimension_cases": [
+      "negative-width",
+      "negative-height",
+      "zero-width",
+      "zero-height",
+      "minimum-int-width",
+      "minimum-int-height",
+      "signed-product-width",
+      "signed-product-height",
+      "signed-product-square",
+      "signed-product-rgba",
+      "rgb-terminal-index-overflow",
+      "maximum-int-dimensions"
+    ],
+    "invalid_channel_counts": [
+      0,
+      1,
+      2,
+      5,
+      2147483647
+    ],
+    "recurrence_sizes": [
+      -1,
+      0,
+      2147483645,
+      2147483646,
+      2147483647
+    ],
+    "retinex_dimension_rejections": 12,
+    "kernel_dimension_rejections": 12,
+    "kernel_channel_rejections": 5,
+    "recurrence_rejections": 5,
+    "allocation_calls": 0,
+    "shadow_operations": 0,
+    "null_pixel_and_config_inputs": true,
+    "allocator_aborts_if_reached": true
+  },
+  "analytic_geometry_rejections_passed": 34,
+  "source_sha256_after": {
+    "plug-ins/common/contrast-retinex.c": "d5a2f22516aec102d25f4d244ea9c2da9d4fea2bf5869ec165377261c3dc5f13",
+    "tools/check_retinex_allocations.py": "39a19d0090b99df2d09f3169baf9ad66d641351aaf9521a52e64c36a6adb37cc",
+    "tools/check_retinex_evidence.py": "b82c7590ee5074306652b242ddc1b5e21a5850a2d727abe08d12661a69d154c6",
+    "tools/derive_retinex_evidence.py": "7011910ead0725584efb95511a8cf1bc5eef6091673b6987b8ee4c084b63fe3f"
+  },
+  "assertions": {
+    "all_allocations_injected": true,
+    "source_pixels_unchanged_on_failure": true,
+    "no_shadow_acquisition_on_failure": true,
+    "no_shadow_write_on_failure": true,
+    "no_shadow_merge_on_failure": true,
+    "no_tracked_allocation_leaks": true,
+    "no_buffer_reference_leaks": true,
+    "source_files_unchanged": true,
+    "no_sanitizer_diagnostics": true
+  }
+}

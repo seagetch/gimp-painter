@@ -103,7 +103,7 @@ struct Raster : FilterRaster {
 #endif
 int main (int argc, char **argv) {
 #ifndef G_OS_WIN32
-  if (argc == 3 && !std::strcmp (argv[1], "--filter-worker-v3")) child ();
+  if (argc == 3 && !std::strcmp (argv[1], "--filter-worker-v4")) child ();
   gchar *absolute = g_canonicalize_filename (argv[0], nullptr);
   gchar *directory = g_dir_make_tmp ("filter-process-test-XXXXXX", nullptr);
   g_assert (directory);
@@ -178,6 +178,15 @@ int main (int argc, char **argv) {
     g_assert (filter_process (request,input,output,cancel,options,outcome));
     g_assert (output.bytes == input.bytes && outcome->disposition () ==
               (outside ? Disposition::no_merge : raw ? Disposition::shadow : Disposition::merged));
+    ++passed;
+  }
+  request.procedure = FilterProcedure::retinex; request.tiles = 2; request.start_region = {};
+  for (unsigned storage : {3u,4u}) for (bool raw : {false,true}) {
+    request.storage_channels = storage; request.raw_shadow = raw; request.cvar = 0.123456789;
+    std::atomic<bool> cancel {false};
+    g_assert (filter_process (request,input,output,cancel,options,outcome));
+    g_assert (output.bytes == input.bytes && outcome->disposition () ==
+              (raw ? Disposition::shadow : Disposition::merged));
     ++passed;
   }
   request.start_region = {}; request.raw_shadow = false;

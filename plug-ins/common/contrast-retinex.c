@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <math.h>
 #include <string.h>
 
 #include "libgimp/gimp.h"
@@ -26,6 +27,7 @@
 
 
 #define PLUG_IN_PROC        "plug-in-retinex"
+#define PAINTER_PROC        "plug-in-painter-retinex"
 #define PLUG_IN_BINARY      "contrast-retinex"
 #define PLUG_IN_ROLE        "gimp-contrast-retinex"
 #define MAX_RETINEX_SCALES    8
@@ -93,9 +95,10 @@ static GimpValueArray * retinex_run              (GimpProcedure        *procedur
 static gboolean retinex_dialog              (GimpProcedure *procedure,
                                              GObject       *config,
                                              GimpDrawable  *drawable);
-static void     retinex                     (GObject       *config,
+static gboolean retinex                     (GObject       *config,
                                              GimpDrawable  *drawable,
-                                             GimpPreview   *preview);
+                                             GimpPreview   *preview,
+                                             gboolean       painter_legacy);
 static void     retinex_preview             (GtkWidget     *widget,
                                              GObject       *config);
 
@@ -113,7 +116,7 @@ static void     compute_mean_var            (gfloat       *src,
 static void     compute_coefs3              (gauss3_coefs *c,
                                              gfloat        sigma);
 
-static void     gausssmooth                 (gfloat       *in,
+static gboolean gausssmooth                 (gfloat       *in,
                                              gfloat       *out,
                                              gint          size,
                                              gint          rowtride,
@@ -123,12 +126,13 @@ static void     gausssmooth                 (gfloat       *in,
 /*
  * MSRCR = MultiScale Retinex with Color Restoration
  */
-static void     MSRCR                       (GObject      *config,
+static gboolean MSRCR                       (GObject      *config,
                                              guchar       *src,
                                              gint          width,
                                              gint          height,
                                              gint          bytes,
-                                             gboolean      preview_mode);
+                                             gboolean      preview_mode,
+                                             gboolean      painter_legacy);
 
 
 G_DEFINE_TYPE (Retinex, retinex, GIMP_TYPE_PLUG_IN)
@@ -155,7 +159,9 @@ retinex_init (Retinex *retinex)
 static GList *
 retinex_query_procedures (GimpPlugIn *plug_in)
 {
-  return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+  GList *procedures = g_list_append (NULL, g_strdup (PLUG_IN_PROC));
+
+  return g_list_append (procedures, g_strdup (PAINTER_PROC));
 }
 
 static GimpProcedure *
@@ -164,18 +170,24 @@ retinex_create_procedure (GimpPlugIn  *plug_in,
 {
   GimpProcedure *procedure = NULL;
 
-  if (! strcmp (name, PLUG_IN_PROC))
+  if (! strcmp (name, PLUG_IN_PROC) || ! strcmp (name, PAINTER_PROC))
     {
+      gboolean painter_legacy = ! strcmp (name, PAINTER_PROC);
+
       procedure = gimp_image_procedure_new (plug_in, name,
                                             GIMP_PDB_PROC_TYPE_PLUGIN,
-                                            retinex_run, NULL, NULL);
+                                            retinex_run,
+                                            GINT_TO_POINTER (painter_legacy), NULL);
 
       gimp_procedure_set_image_types (procedure, "RGB*");
       gimp_procedure_set_sensitivity_mask (procedure,
                                            GIMP_PROCEDURE_SENSITIVE_DRAWABLE);
 
-      gimp_procedure_set_menu_label (procedure, _("Retine_x..."));
-      gimp_procedure_add_menu_path (procedure, "<Image>/Colors/Tone Mapping");
+      if (! painter_legacy)
+        {
+          gimp_procedure_set_menu_label (procedure, _("Retine_x..."));
+          gimp_procedure_add_menu_path (procedure, "<Image>/Colors/Tone Mapping");
+        }
 
       gimp_procedure_set_documentation (procedure,
                                         _("Enhance contrast using the "
@@ -197,7 +209,8 @@ retinex_create_procedure (GimpPlugIn  *plug_in,
       gimp_procedure_add_int_argument (procedure, "scale",
                                        _("Scal_e"),
                                        _("Biggest scale value"),
-                                       MIN_GAUSSIAN_SCALE, MAX_GAUSSIAN_SCALE, 240,
+                                       MIN_GAUSSIAN_SCALE,
+                                       painter_legacy ? 256 : MAX_GAUSSIAN_SCALE, 240,
                                        G_PARAM_READWRITE);
 
       gimp_procedure_add_int_argument (procedure, "nscales",
@@ -236,6 +249,32 @@ retinex_run (GimpProcedure        *procedure,
 {
   GimpDrawable *drawable;
   gint          x, y, width, height;
+  gboolean      painter_legacy = GPOINTER_TO_INT (run_data);
+
+  /* The compatibility entry has no dialog or saved interactive state. */
+  if (painter_legacy)
+    {
+      gint    scale, nscales, scales_mode;
+      gdouble cvar;
+
+      if (run_mode != GIMP_RUN_NONINTERACTIVE)
+        return gimp_procedure_new_return_values (procedure,
+                                                 GIMP_PDB_CALLING_ERROR, NULL);
+
+      g_object_get (config,
+                    "scale",   &scale,
+                    "nscales", &nscales,
+                    "cvar",    &cvar,
+                    NULL);
+      scales_mode = gimp_procedure_config_get_choice_id (config, "scales-mode");
+
+      if (scale < MIN_GAUSSIAN_SCALE || scale > 256 ||
+          nscales < 0 || nscales > MAX_RETINEX_SCALES ||
+          scales_mode < RETINEX_UNIFORM || scales_mode > RETINEX_HIGH ||
+          ! isfinite (cvar) || cvar < 0.0 || cvar > 4.0)
+        return gimp_procedure_new_return_values (procedure,
+                                                 GIMP_PDB_CALLING_ERROR, NULL);
+    }
 
   gegl_init (NULL, NULL);
 
@@ -256,6 +295,20 @@ retinex_run (GimpProcedure        *procedure,
       drawable = drawables[0];
     }
 
+  if (painter_legacy)
+    {
+      const Babl  *format   = gimp_drawable_get_format (drawable);
+      const gchar *encoding = babl_format_get_encoding (format);
+
+      /* Preserve native old RGB/RGBA bytes, without precision or model
+       * conversion being silently admitted by the compatibility route. */
+      if (! gimp_drawable_is_rgb (drawable) ||
+          (strcmp (encoding, "R'G'B' u8") &&
+           strcmp (encoding, "R'G'B'A u8")))
+        return gimp_procedure_new_return_values (procedure,
+                                                 GIMP_PDB_EXECUTION_ERROR, NULL);
+    }
+
   if (! gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height) ||
       width  < MIN_GAUSSIAN_SCALE ||
       height < MIN_GAUSSIAN_SCALE)
@@ -272,7 +325,10 @@ retinex_run (GimpProcedure        *procedure,
     {
       gimp_progress_init (_("Retinex"));
 
-      retinex (G_OBJECT (config), drawable, NULL);
+      if (! retinex (G_OBJECT (config), drawable, NULL, painter_legacy) &&
+          painter_legacy)
+        return gimp_procedure_new_return_values (procedure,
+                                                 GIMP_PDB_EXECUTION_ERROR, NULL);
 
       if (run_mode != GIMP_RUN_NONINTERACTIVE)
         gimp_displays_flush ();
@@ -357,10 +413,11 @@ retinex_dialog (GimpProcedure *procedure,
 /*
  * Applies the algorithm
  */
-static void
+static gboolean
 retinex (GObject      *config,
          GimpDrawable *drawable,
-         GimpPreview  *preview)
+         GimpPreview  *preview,
+         gboolean      painter_legacy)
 {
   GeglBuffer *src_buffer = NULL;
   GeglBuffer *dest_buffer;
@@ -382,14 +439,23 @@ retinex (GObject      *config,
     {
       if (! gimp_drawable_mask_intersect (drawable,
                                           &x, &y, &width, &height))
-        return;
+        return FALSE;
 
-      if (gimp_drawable_has_alpha (drawable))
+      if (painter_legacy)
+        format = gimp_drawable_get_format (drawable);
+      else if (gimp_drawable_has_alpha (drawable))
         format = babl_format ("R'G'B'A u8");
       else
         format = babl_format ("R'G'B' u8");
 
       bytes = babl_format_get_bytes_per_pixel (format);
+
+      /* All pixel indices in the literal kernel are signed ints.  Bound
+       * their product before multiplication, including the float storage. */
+      if (width <= 0 || height <= 0 || (bytes != 3 && bytes != 4) ||
+          (guint64) width * height * bytes > G_MAXINT - (bytes - 1) ||
+          (guint64) width * height * bytes > G_MAXSIZE / sizeof (gfloat))
+        return FALSE;
 
       /* Allocate memory */
       size = width * height * bytes;
@@ -398,7 +464,7 @@ retinex (GObject      *config,
       if (src == NULL)
         {
           g_warning ("Failed to allocate memory");
-          return;
+          return FALSE;
         }
 
       memset (src, 0, sizeof (guchar) * size);
@@ -415,7 +481,13 @@ retinex (GObject      *config,
     Algorithm for Multi-scale Retinex with color Restoration (MSRCR).
    */
   psrc = src;
-  MSRCR (config, psrc, width, height, bytes, preview != NULL);
+  if (! src ||
+      ! MSRCR (config, psrc, width, height, bytes, preview != NULL, painter_legacy))
+    {
+      g_clear_object (&src_buffer);
+      g_free (src);
+      return FALSE;
+    }
 
   if (preview)
     {
@@ -440,6 +512,8 @@ retinex (GObject      *config,
     }
 
   g_free (src);
+
+  return TRUE;
 }
 
 static void
@@ -449,7 +523,7 @@ retinex_preview (GtkWidget *widget,
   GimpPreview  *preview  = GIMP_PREVIEW (widget);
   GimpDrawable *drawable = g_object_get_data (config, "drawable");
 
-  retinex (config, drawable, preview);
+  retinex (config, drawable, preview, FALSE);
 }
 
 /*
@@ -553,7 +627,7 @@ compute_coefs3 (gauss3_coefs *c, gfloat sigma)
 */
 }
 
-static void
+static gboolean
 gausssmooth (gfloat *in, gfloat *out, gint size, gint rowstride, gauss3_coefs *c)
 {
   /*
@@ -566,11 +640,22 @@ gausssmooth (gfloat *in, gfloat *out, gint size, gint rowstride, gauss3_coefs *c
   gint i,n, bufsize;
   gfloat *w1,*w2;
 
+  if (size <= 0 || size > G_MAXINT - 3 ||
+      (gsize) size + 3 > G_MAXSIZE / sizeof (gfloat))
+    return FALSE;
+
   /* forward pass */
   bufsize = size+3;
   size -= 1;
   w1 = (gfloat *) g_try_malloc (bufsize * sizeof (gfloat));
   w2 = (gfloat *) g_try_malloc (bufsize * sizeof (gfloat));
+  if (! w1 || ! w2)
+    {
+      g_free (w1);
+      g_free (w2);
+      g_warning ("Failed to allocate memory");
+      return FALSE;
+    }
   w1[0] = in[0];
   w1[1] = in[0];
   w1[2] = in[0];
@@ -596,6 +681,8 @@ gausssmooth (gfloat *in, gfloat *out, gint size, gint rowstride, gauss3_coefs *c
 
   g_free (w1);
   g_free (w2);
+
+  return TRUE;
 }
 
 /*
@@ -603,13 +690,14 @@ gausssmooth (gfloat *in, gfloat *out, gint size, gint rowstride, gauss3_coefs *c
  * (a)  Filterings at several scales and sumarize the results.
  * (b)  Calculation of the final values.
  */
-static void
+static gboolean
 MSRCR (GObject *config,
        guchar  *src,
        gint     width,
        gint     height,
        gint     bytes,
-       gboolean preview_mode)
+       gboolean preview_mode,
+       gboolean painter_legacy)
 {
 
   gint          scale,row,col;
@@ -634,6 +722,11 @@ MSRCR (GObject *config,
   gint          nscales;
   gdouble       cvar;
 
+  if (width <= 0 || height <= 0 || (bytes != 3 && bytes != 4) ||
+      (guint64) width * height * bytes > G_MAXINT - (bytes - 1) ||
+      (guint64) width * height * bytes > G_MAXSIZE / sizeof (gfloat))
+    return FALSE;
+
   g_object_get (config,
                 "scale",   &config_scale,
                 "nscales", &nscales,
@@ -654,7 +747,7 @@ MSRCR (GObject *config,
   if (dst == NULL)
     {
       g_warning ("Failed to allocate memory");
-      return;
+      return FALSE;
     }
   memset (dst, 0, size * sizeof (gfloat));
 
@@ -664,7 +757,7 @@ MSRCR (GObject *config,
     {
       g_free (dst);
       g_warning ("Failed to allocate memory");
-      return; /* do some clever stuff */
+      return FALSE;
     }
 
   out  = (gfloat *) g_try_malloc (channelsize * sizeof (gfloat));
@@ -673,7 +766,7 @@ MSRCR (GObject *config,
       g_free (in);
       g_free (dst);
       g_warning ("Failed to allocate memory");
-      return; /* do some clever stuff */
+      return FALSE;
     }
 
 
@@ -716,7 +809,8 @@ MSRCR (GObject *config,
           for (row=0 ;row < height; row++)
             {
               pos =  row * width;
-              gausssmooth (in + pos, out + pos, width, 1, &coef);
+              if (! gausssmooth (in + pos, out + pos, width, 1, &coef))
+                goto smoothing_failed;
             }
 
           memcpy(in,  out, channelsize * sizeof(gfloat));
@@ -730,7 +824,8 @@ MSRCR (GObject *config,
           for (col=0; col < width; col++)
             {
               pos = col;
-              gausssmooth(in + pos, out + pos, height, width, &coef);
+              if (! gausssmooth (in + pos, out + pos, height, width, &coef))
+                goto smoothing_failed;
             }
 
           /*
@@ -785,8 +880,22 @@ MSRCR (GObject *config,
   pdst = dst;
 
   compute_mean_var (pdst, &mean, &var, size, bytes);
-  mini = mean - cvar * var;
-  maxi = mean + cvar * var;
+  if (painter_legacy)
+    {
+      /* The old PDB double was stored in RetinexParams::cvar, a gfloat.
+       * Preserve that conversion and the float product before arithmetic;
+       * the public procedure retains its modern double calculation. */
+      gfloat legacy_cvar = (gfloat) cvar;
+      gfloat scaled_var = legacy_cvar * var;
+
+      mini = mean - scaled_var;
+      maxi = mean + scaled_var;
+    }
+  else
+    {
+      mini = mean - cvar * var;
+      maxi = mean + cvar * var;
+    }
   range = maxi - mini;
 
   if (!range)
@@ -806,6 +915,15 @@ MSRCR (GObject *config,
     }
 
   g_free (dst);
+
+  return TRUE;
+
+smoothing_failed:
+  g_free (out);
+  g_free (in);
+  g_free (dst);
+
+  return FALSE;
 }
 
 /*

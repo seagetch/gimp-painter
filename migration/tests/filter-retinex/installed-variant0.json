@@ -1,0 +1,248 @@
+{
+  "status": "passed",
+  "errors": [],
+  "variant": 0,
+  "scene": "retinex-g0-s0-v0",
+  "exit_code": 0,
+  "seconds": 6.671486323000863,
+  "command": [
+    "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/AppRun",
+    "--console",
+    "--new-instance",
+    "--no-interface",
+    "--no-data",
+    "--no-fonts",
+    "--no-splash",
+    "--batch-interpreter=python-fu-eval",
+    "-b",
+    "-",
+    "--quit"
+  ],
+  "expected_executables": {
+    "helper": "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+    "plugin": "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/contrast-retinex/contrast-retinex"
+  },
+  "executable_sha256": {
+    "helper": "86fd91d1443835cc20921ca07889e94de15a48180930b75adfada3be52a6eb10",
+    "plugin": "6541a76bb2cd34252d77b3674df476fce1cdb05828d2a33b70de8dbc51742edc"
+  },
+  "observed_helpers": [
+    {
+      "pid": 11156,
+      "state": "R",
+      "parent": 10116,
+      "group": 11156,
+      "start_ticks": 5053498,
+      "exe": "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+        "--filter-worker-v4",
+        "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/profile/cache/gimp-painter-prototype/gimp-filter-6EWZW3"
+      ]
+    },
+    {
+      "pid": 11356,
+      "state": "R",
+      "parent": 10116,
+      "group": 11356,
+      "start_ticks": 5053561,
+      "exe": "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+        "--filter-worker-v4",
+        "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/profile/cache/gimp-painter-prototype/gimp-filter-N1TQW3"
+      ]
+    }
+  ],
+  "observed_plugins": [
+    {
+      "pid": 11213,
+      "state": "R",
+      "parent": 11156,
+      "group": 11156,
+      "start_ticks": 5053513,
+      "exe": "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/contrast-retinex/contrast-retinex",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/contrast-retinex/contrast-retinex",
+        "-gimp",
+        "277",
+        "8",
+        "7",
+        "-query",
+        "0"
+      ]
+    },
+    {
+      "pid": 11294,
+      "state": "R",
+      "parent": 11156,
+      "group": 11156,
+      "start_ticks": 5053544,
+      "exe": "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/contrast-retinex/contrast-retinex",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/contrast-retinex/contrast-retinex",
+        "-gimp",
+        "277",
+        "11",
+        "9",
+        "-run",
+        "0"
+      ]
+    },
+    {
+      "pid": 11407,
+      "state": "R",
+      "parent": 11356,
+      "group": 11356,
+      "start_ticks": 5053576,
+      "exe": "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/contrast-retinex/contrast-retinex",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/contrast-retinex/contrast-retinex",
+        "-gimp",
+        "277",
+        "8",
+        "7",
+        "-query",
+        "0"
+      ]
+    },
+    {
+      "pid": 11496,
+      "state": "R",
+      "parent": 11356,
+      "group": 11356,
+      "start_ticks": 5053607,
+      "exe": "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/contrast-retinex/contrast-retinex",
+      "argv": [
+        "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/contrast-retinex/contrast-retinex",
+        "-gimp",
+        "277",
+        "11",
+        "9",
+        "-run",
+        "0"
+      ]
+    }
+  ],
+  "wrong_installation": [],
+  "survivors": [],
+  "leftover_profiles": [],
+  "invalidated_helper_identities": [
+    [
+      11156,
+      5053498
+    ],
+    [
+      11356,
+      5053561
+    ]
+  ],
+  "invalidated_plugin_run_identities": [
+    [
+      11294,
+      5053544
+    ],
+    [
+      11496,
+      5053607
+    ]
+  ],
+  "events": [
+    {
+      "event": "READY",
+      "monotonic": 50534.956094589,
+      "image": 1,
+      "generation": 3
+    },
+    {
+      "event": "INVALIDATED",
+      "monotonic": 50534.966586648,
+      "phase": "first",
+      "image": 1
+    },
+    {
+      "event": "EXACT_OUTPUT",
+      "monotonic": 50535.585338439,
+      "sha256": "128d27f87a0a206e55d1e8e45549023374acd1d5e4bd276085f1a1a4ba76e265",
+      "generation": 4
+    },
+    {
+      "event": "REOPENED_READY",
+      "monotonic": 50535.598825363,
+      "image": 2,
+      "generation": 3
+    },
+    {
+      "event": "INVALIDATED",
+      "monotonic": 50535.609230871,
+      "phase": "reopened-rerun",
+      "image": 2
+    },
+    {
+      "event": "SAVED_REOPENED",
+      "monotonic": 50536.237036183,
+      "sha256": "128d27f87a0a206e55d1e8e45549023374acd1d5e4bd276085f1a1a4ba76e265",
+      "rerun_sha256": "128d27f87a0a206e55d1e8e45549023374acd1d5e4bd276085f1a1a4ba76e265"
+    }
+  ],
+  "batch_result": {
+    "status": "passed",
+    "variant": 0,
+    "scene": "retinex-g0-s0-v0",
+    "expected_sha256": "128d27f87a0a206e55d1e8e45549023374acd1d5e4bd276085f1a1a4ba76e265",
+    "rerun_sha256": "128d27f87a0a206e55d1e8e45549023374acd1d5e4bd276085f1a1a4ba76e265",
+    "definition_preserved": true,
+    "reopened_definition_preserved": true,
+    "argument_count": 7,
+    "initial_generation": 3,
+    "first_generation": 4,
+    "reopened_generation": 3,
+    "rerun_generation": 4,
+    "scope": "Two explicit lower updates, full genuine-old live Retinex bytes, two Save/reopen cycles and seven typed arguments, including binary64 cvar; no GUI or whole-port claim"
+  },
+  "fixture_sha256": "45296fdcb300e8b880c57d777b60c8b2bd4b5011cab9d0a3344de0079f287cc2",
+  "genuine_old_raw_sha256": {
+    "source": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+    "settled": "128d27f87a0a206e55d1e8e45549023374acd1d5e4bd276085f1a1a4ba76e265",
+    "rerun": "128d27f87a0a206e55d1e8e45549023374acd1d5e4bd276085f1a1a4ba76e265"
+  },
+  "observer_source_sha256": "d12c88fa5758ec28e814b756e7f99daf5655d200e223fda5ac9ff4a01d5ffd56",
+  "process_observer_source_sha256": "32d991d77d56768f84025951972e360e83cf47bff973261214a2867f44cbf196",
+  "batch_source_sha256": "e00aa75387f070a5f21965f0e4da05380de23510ba6934e8d5917be15f76d451",
+  "console_log_sha256": "86205fbfdfa9228b1c7d4523f21a9b1d427dd7c6351da7d5e4101dc693a06e36",
+  "native_fixture_generator": {
+    "command": [
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/tests/filter-quit-fixture",
+      "--retinex",
+      "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/evidence/retinex-evidence",
+      "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/fixtures"
+    ],
+    "exit_code": 0,
+    "generator_sha256": "4013751e07826e80a978eaf9d4841fd47c26f9e9bb98decda70c99607de87445",
+    "source_sha256": "c928ba7a7f677798ee111c69fd9326c6bef34af32651673d5ba63b097e8695db",
+    "fixture_sha256": "45296fdcb300e8b880c57d777b60c8b2bd4b5011cab9d0a3344de0079f287cc2",
+    "no_filter_jobs": true
+  },
+  "evidence_archive_sha256": "28f1f803e72bb25cb7fedcc4cf108a3df71a492d458baa1cbf8f52438b8e946c",
+  "relocation": "fresh path with spaces and Japanese characters",
+  "environment": "explicit minimum whitelist; no inherited developer dependency variables",
+  "record_kind": "Compact current installed observation; full raw report retained by SHA256",
+  "original_report_sha256": "13a171aadc6fb68ec616488d10fe68f4a3710ce490b186b89291b95212338cd4",
+  "evidence_manifest_reference": {
+    "path": "migration/fixtures/retinex-evidence.tar.manifest.json",
+    "sha256": "6542f4503c344a907611840011039c7957e208b6201fe46dc891830f2f6825cf",
+    "schema_version": 1,
+    "kind": "derived-retinex-evidence",
+    "member_count": 724,
+    "counts": {
+      "old_pdb": 174,
+      "public_before": 32,
+      "public_after": 32,
+      "hidden_offtree": 174,
+      "hidden_integrated": 174,
+      "native_scenes": 6,
+      "native_merges": 12
+    },
+    "members_field_type": "object keyed by archive member path; not a list"
+  }
+}

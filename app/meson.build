@@ -302,5 +302,5 @@ if not platform_windows
            '--', painter_filter_procedure_test, painter_filter_worker.full_path(),
            meson.project_source_root() / 'migration/fixtures/legacy-blinds/fixtures.tsv'],
     depends: [painter_filter_procedure_test, painter_filter_worker],
-    suite: 'painter', timeout: 600)
+    suite: 'painter', timeout: 900)
 endif

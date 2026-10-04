@@ -449,6 +449,88 @@ ObjectRef<GimpProcedure> query_small_tiles (Gimp *gimp, GimpContext *context)
   return procedure;
 }
 
+void validate_retinex (GimpProcedure *procedure, GFile *file, bool hidden)
+{
+  const char *name = hidden ? "plug-in-painter-retinex" : "plug-in-retinex";
+  if (!procedure || !GIMP_IS_PLUG_IN_PROCEDURE (procedure) ||
+      procedure->proc_type != GIMP_PDB_PROC_TYPE_PLUGIN ||
+      g_strcmp0 (gimp_object_get_name (procedure), name) ||
+      procedure->num_args != 7 || procedure->num_values || !procedure->args)
+    throw std::runtime_error ("Bundled Retinex procedure signature changed");
+  auto *plugin = GIMP_PLUG_IN_PROCEDURE (procedure);
+  if (!plugin->file || !g_file_equal (plugin->file, file) || plugin->file_proc ||
+      plugin->batch_interpreter || plugin->installed_during_init ||
+      g_strcmp0 (plugin->image_types, "RGB*") ||
+      plugin->sensitivity_mask != GIMP_PROCEDURE_SENSITIVE_DRAWABLE ||
+      (hidden && (plugin->menu_paths || plugin->menu_label)))
+    throw std::runtime_error ("Bundled Retinex executable registration changed");
+  constexpr const char *names[] = {"run-mode", "image", "drawables", "scale",
+                                   "nscales", "scales-mode", "cvar"};
+  const GType types[] = {GIMP_TYPE_RUN_MODE, GIMP_TYPE_IMAGE, GIMP_TYPE_CORE_OBJECT_ARRAY,
+                         G_TYPE_INT, G_TYPE_INT, G_TYPE_STRING, G_TYPE_DOUBLE};
+  for (unsigned i = 0; i < 7; ++i)
+    if (!procedure->args[i] || g_strcmp0 (g_param_spec_get_name (procedure->args[i]), names[i]) ||
+        G_PARAM_SPEC_VALUE_TYPE (procedure->args[i]) != types[i] ||
+        (procedure->args[i]->flags & G_PARAM_READWRITE) != G_PARAM_READWRITE)
+      throw std::runtime_error ("Bundled Retinex argument name or type changed");
+  auto **args = procedure->args;
+  if (!G_IS_PARAM_SPEC_ENUM (args[0]) || G_PARAM_SPEC_ENUM (args[0])->default_value != GIMP_RUN_NONINTERACTIVE ||
+      !GIMP_IS_PARAM_SPEC_IMAGE (args[1]) || gimp_param_spec_image_none_allowed (args[1]) ||
+      !GIMP_IS_PARAM_SPEC_CORE_OBJECT_ARRAY (args[2]) ||
+      gimp_param_spec_core_object_array_get_object_type (args[2]) != GIMP_TYPE_DRAWABLE ||
+      !G_IS_PARAM_SPEC_INT (args[3]) || G_PARAM_SPEC_INT (args[3])->minimum != 16 ||
+      G_PARAM_SPEC_INT (args[3])->maximum != (hidden ? 256 : 250) ||
+      G_PARAM_SPEC_INT (args[3])->default_value != 240 ||
+      !G_IS_PARAM_SPEC_INT (args[4]) || G_PARAM_SPEC_INT (args[4])->minimum != 0 ||
+      G_PARAM_SPEC_INT (args[4])->maximum != 8 || G_PARAM_SPEC_INT (args[4])->default_value != 3 ||
+      !GIMP_IS_PARAM_SPEC_CHOICE (args[5]) || !G_IS_PARAM_SPEC_DOUBLE (args[6]) ||
+      G_PARAM_SPEC_DOUBLE (args[6])->minimum != 0 || G_PARAM_SPEC_DOUBLE (args[6])->maximum != 4 ||
+      G_PARAM_SPEC_DOUBLE (args[6])->default_value != 1.2)
+    throw std::runtime_error ("Bundled Retinex argument constraints changed");
+  GimpChoice *choice = gimp_param_spec_choice_get_choice (args[5]);
+  if (!choice || g_list_length (gimp_choice_list_nicks (choice)) != 3 ||
+      !gimp_choice_is_valid (choice, "uniform") || !gimp_choice_is_valid (choice, "low") ||
+      !gimp_choice_is_valid (choice, "high") || gimp_choice_get_id (choice, "uniform") != 0 ||
+      gimp_choice_get_id (choice, "low") != 1 || gimp_choice_get_id (choice, "high") != 2 ||
+      g_strcmp0 (gimp_param_spec_choice_get_default (args[5]), "uniform"))
+    throw std::runtime_error ("Bundled Retinex distribution choices changed");
+}
+
+ObjectRef<GimpProcedure> query_retinex (Gimp *gimp, GimpContext *context)
+{
+  const auto path = filter_plugin_path (FilterProcedure::retinex);
+  auto file = ObjectRef<GFile>::adopt (g_file_new_for_path (path.c_str ()));
+  auto definition = ObjectRef<GimpPlugInDef>::adopt (gimp_plug_in_def_new (file.get ()));
+  gimp_plug_in_manager_call_query (gimp->plug_in_manager, context, definition.get ());
+  if (definition.get ()->has_init || g_slist_length (definition.get ()->procedures) != 2)
+    throw std::runtime_error ("Bundled Retinex returned unexpected registrations");
+  GimpProcedure *selected = nullptr;
+  bool public_found = false;
+  for (GSList *iter = definition.get ()->procedures; iter; iter = iter->next)
+    {
+      auto *candidate = GIMP_PROCEDURE (iter->data);
+      if (!g_strcmp0 (gimp_object_get_name (candidate), "plug-in-painter-retinex") && !selected)
+        {
+          validate_retinex (candidate, file.get (), true);
+          selected = candidate;
+        }
+      else if (!g_strcmp0 (gimp_object_get_name (candidate), "plug-in-retinex") && !public_found)
+        {
+          validate_retinex (candidate, file.get (), false);
+          public_found = true;
+        }
+      else throw std::runtime_error ("Bundled Retinex returned an unknown registration");
+    }
+  if (!selected || !public_found)
+    throw std::runtime_error ("Bundled Retinex is missing a required registration");
+  auto procedure = ObjectRef<GimpProcedure>::retain (selected);
+  gimp_plug_in_manager_add_procedure (gimp->plug_in_manager, GIMP_PLUG_IN_PROCEDURE (selected));
+  gimp_pdb_register_procedure (gimp->pdb, selected);
+  if (gimp_pdb_lookup_procedure (gimp->pdb, "plug-in-painter-retinex") != selected)
+    throw std::runtime_error ("Cannot register bundled Retinex in private PDB");
+  return procedure;
+}
+
 constexpr const char *merge_shadow_name = "gimp-drawable-merge-shadow";
 
 void validate_merge_shadow (GimpProcedure *procedure)
@@ -540,7 +622,8 @@ public:
     store.emplace<ShadowSlot> (owner_, ObjectRef<GimpLayer>::retain (layer));
     store.activate ();
     /* GEGL's sparse buffer starts at zero. Clearing explicitly also guarantees
-     * that any unwritten portion outside the hard execution rectangle is zero. */
+     * zero native samples outside the hard execution rectangle. RGB storage
+     * has no alpha sample; its transport carrier supplies implicit alpha 255. */
     auto *shadow = gimp_drawable_get_shadow_buffer (GIMP_DRAWABLE (layer));
     if (!shadow) throw std::runtime_error ("Cannot create private raw shadow");
     gegl_buffer_clear (shadow, nullptr);
@@ -637,22 +720,27 @@ run_filter_procedure (const FilterProcedureRequest& request,
   if (cancel.load (std::memory_order_relaxed)) return Disposition::pending;
   std::array<std::uint8_t, transfer_bytes> pixels;
   const auto validate_carrier = [&] (std::size_t count) {
-    if (request.gray)
-      for (std::size_t p = 0; p < count; p += 4)
-        if (pixels[p] != pixels[p + 1] || pixels[p] != pixels[p + 2])
+    for (std::size_t p = 0; p < count; p += 4)
+      {
+        if (request.storage_channels == 3 && pixels[p + 3] != 255)
+          throw std::invalid_argument ("Private RGB Filter carrier must be opaque");
+        if (request.gray && (pixels[p] != pixels[p + 1] || pixels[p] != pixels[p + 2]))
           throw std::invalid_argument ("Private Filter Gray input is not triplicated");
+      }
   };
   if (!region.intersects)
     {
       /* An empty native mask is unrestricted, so it cannot encode a globally
-       * nonempty selection that misses this drawable. Both routes perform no merge
-       * in that case. Send an exact carrier and an explicit no-merge outcome. */
+       * nonempty selection that misses this drawable. Blinds and Small Tiles
+       * perform no merge; Retinex rejects an empty intersection before running. */
       if (!each_chunk (request, cancel, [&] (const GeglRectangle&,
                                             std::uint64_t offset, std::size_t count) {
             input.read (offset, count, pixels.data ());
             validate_carrier (count);
             output.write (offset, count, pixels.data ());
           })) return Disposition::pending;
+      if (request.procedure == FilterProcedure::retinex)
+        throw std::invalid_argument ("Private Retinex requires a nonempty execution region");
       output.flush ();
       return cancel.load (std::memory_order_relaxed) ? Disposition::pending : Disposition::no_merge;
     }
@@ -661,29 +749,37 @@ run_filter_procedure (const FilterProcedureRequest& request,
   Gimp *gimp = runtime.get ();
   auto context = ObjectRef<GimpContext>::adopt (
     gimp_pdb_context_new (gimp, gimp_get_user_context (gimp), TRUE));
-  auto procedure = request.procedure == FilterProcedure::blinds ?
-    query_blinds (gimp, context.get ()) : query_small_tiles (gimp, context.get ());
+  ObjectRef<GimpProcedure> procedure;
+  switch (request.procedure)
+    {
+    case FilterProcedure::blinds: procedure = query_blinds (gimp, context.get ()); break;
+    case FilterProcedure::small_tiles: procedure = query_small_tiles (gimp, context.get ()); break;
+    case FilterProcedure::retinex: procedure = query_retinex (gimp, context.get ()); break;
+    default: throw std::invalid_argument ("Unsupported private Filter procedure");
+    }
   runtime.wait_for_plugins ();
   if (cancel.load (std::memory_order_relaxed)) return Disposition::pending;
 
   /* Blinds requests RGB pixels and Small Tiles permutes channel bytes.
    * Triplicated Gray in the RGBA surrogate preserves both routes' exact native
-   * samples, including hidden colors, without a modern luminance/ICC round trip. */
+   * samples, including hidden colors, without a modern luminance/ICC round trip.
+   * Retinex statistics depend on its actual native RGB/RGBA storage stride. */
   auto image = ObjectRef<GimpImage>::adopt (gimp_image_new (
     gimp, int (request.width), int (request.height), GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR));
   if (!image) throw std::runtime_error ("Cannot create private Filter image");
   gimp_image_undo_disable (image.get ());
   gimp_image_set_use_srgb_profile (image.get (), TRUE);
   const Babl *format = babl_format ("R'G'B'A u8");
+  const Babl *storage_format = babl_format (request.storage_channels == 3 ? "R'G'B' u8" : "R'G'B'A u8");
   auto layer = ObjectRef<GimpLayer>::sink (gimp_layer_new (
-    image.get (), int (request.width), int (request.height), format,
+    image.get (), int (request.width), int (request.height), storage_format,
     "Private Filter input", 1.0, GIMP_LAYER_MODE_NORMAL_LEGACY));
   if (!layer || !gimp_image_add_layer (image.get (), layer.get (), nullptr, 0, FALSE))
     throw std::runtime_error ("Cannot attach private Filter drawable");
   auto buffer = ObjectRef<GeglBuffer>::retain (
     gimp_drawable_get_buffer (GIMP_DRAWABLE (layer.get ())));
-  if (!buffer || gegl_buffer_get_format (buffer.get ()) != format)
-    throw std::runtime_error ("Private Filter drawable is not exact encoded RGBA8 sRGB");
+  if (!buffer || gegl_buffer_get_format (buffer.get ()) != storage_format)
+    throw std::runtime_error ("Private Filter drawable has the wrong encoded RGB/RGBA8 sRGB storage");
   if (region.selected)
     gimp_channel_select_rectangle (gimp_image_get_mask (image.get ()),
                                    region.x1, region.y1, region.x2 - region.x1, region.y2 - region.y1,
@@ -693,7 +789,15 @@ run_filter_procedure (const FilterProcedureRequest& request,
                                         std::uint64_t offset, std::size_t count) {
         input.read (offset, count, pixels.data ());
         validate_carrier (count);
-        gegl_buffer_set (buffer.get (), &rect, 0, format, pixels.data (), GEGL_AUTO_ROWSTRIDE);
+        if (request.storage_channels == 3)
+          for (std::size_t p = 0; p < count / 4; ++p)
+            {
+              /* Pack forward in place; no color or alpha conversion occurs. */
+              pixels[p * 3] = pixels[p * 4];
+              pixels[p * 3 + 1] = pixels[p * 4 + 1];
+              pixels[p * 3 + 2] = pixels[p * 4 + 2];
+            }
+        gegl_buffer_set (buffer.get (), &rect, 0, storage_format, pixels.data (), GEGL_AUTO_ROWSTRIDE);
       })) return Disposition::pending;
   gegl_buffer_flush (buffer.get ());
 
@@ -716,6 +820,14 @@ run_filter_procedure (const FilterProcedureRequest& request,
   g_value_set_boxed (gimp_value_array_index (arguments.get (), 2), drawables);
   if (request.procedure == FilterProcedure::small_tiles)
     g_value_set_int (gimp_value_array_index (arguments.get (), 3), request.tiles);
+  else if (request.procedure == FilterProcedure::retinex)
+    {
+      g_value_set_int (gimp_value_array_index (arguments.get (), 3), request.scale);
+      g_value_set_int (gimp_value_array_index (arguments.get (), 4), request.nscales);
+      constexpr const char *modes[] = {"uniform", "low", "high"};
+      g_value_set_string (gimp_value_array_index (arguments.get (), 5), modes[request.scales_mode]);
+      g_value_set_double (gimp_value_array_index (arguments.get (), 6), request.cvar);
+    }
   else
     {
       g_value_set_int (gimp_value_array_index (arguments.get (), 3), request.angle);
@@ -755,8 +867,17 @@ run_filter_procedure (const FilterProcedureRequest& request,
   std::array<std::uint8_t, transfer_bytes> original;
   if (!each_chunk (request, cancel, [&] (const GeglRectangle& rect,
                                         std::uint64_t offset, std::size_t count) {
-        gegl_buffer_get (buffer.get (), &rect, 1.0, format, pixels.data (),
+        gegl_buffer_get (buffer.get (), &rect, 1.0, storage_format, pixels.data (),
                          GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+        if (request.storage_channels == 3)
+          for (std::size_t p = count / 4; p-- > 0;)
+            {
+              /* Expand backward, keeping unwritten RGB shadow black and opaque. */
+              pixels[p * 4 + 3] = 255;
+              pixels[p * 4 + 2] = pixels[p * 3 + 2];
+              pixels[p * 4 + 1] = pixels[p * 3 + 1];
+              pixels[p * 4] = pixels[p * 3];
+            }
         if (!request.raw_shadow)
           {
             input.read (offset, count, original.data ());

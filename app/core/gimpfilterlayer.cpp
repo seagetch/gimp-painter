@@ -498,21 +498,38 @@ struct FilterImpl
                G_VALUE_HOLDS_INT (args->at (5)) && G_VALUE_HOLDS_INT (args->at (6))) ||
               (procedure == "plug-in-small-tiles" && args->size () == 4 &&
                G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
-               G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_INT (args->at (3)))))
+               G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_INT (args->at (3))) ||
+              (procedure == "plug-in-retinex" && !gray () && args->size () == 7 &&
+               G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
+               G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_INT (args->at (3)) &&
+               G_VALUE_HOLDS_INT (args->at (4)) && G_VALUE_HOLDS_INT (args->at (5)) &&
+               G_VALUE_HOLDS_DOUBLE (args->at (6)))))
       {
         const bool tiles = procedure == "plug-in-small-tiles";
-        const auto angle = tiles ? 0 : g_value_get_int (args->at (3));
-        const auto segments = tiles ? 1 : g_value_get_int (args->at (4));
+        const bool retinex = procedure == "plug-in-retinex";
+        const auto angle = tiles || retinex ? 0 : g_value_get_int (args->at (3));
+        const auto segments = tiles || retinex ? 1 : g_value_get_int (args->at (4));
         const auto factor = tiles ? g_value_get_int (args->at (3)) : 2;
-        if (angle >= 0 && angle <= 90 && segments >= 1 && segments <= 100 && factor >= 0 && factor <= 6)
+        const auto scale = retinex ? g_value_get_int (args->at (3)) : 240;
+        const auto nscales = retinex ? g_value_get_int (args->at (4)) : 3;
+        const auto scales_mode = retinex ? g_value_get_int (args->at (5)) : 0;
+        const auto cvar = retinex ? g_value_get_double (args->at (6)) : 1.2;
+        if (angle >= 0 && angle <= 90 && segments >= 1 && segments <= 100 && factor >= 0 && factor <= 6 &&
+            (!retinex || (request.width >= 16 && request.height >= 16 &&
+              std::uint64_t (request.width) * request.height <= std::uint64_t (G_MAXINT) / 4 &&
+              scale >= 16 && scale <= 256 && nscales >= 0 && nscales <= 8 &&
+              scales_mode >= 0 && scales_mode <= 2 && std::isfinite (cvar) && cvar >= 0 && cvar <= 4)))
           {
             auto descriptor = std::make_shared<FilterProcedureRequest> ();
             descriptor->width = request.width; descriptor->height = request.height;
             descriptor->angle = angle; descriptor->segments = segments;
-            descriptor->procedure = tiles ? FilterProcedure::small_tiles : FilterProcedure::blinds;
+            descriptor->procedure = retinex ? FilterProcedure::retinex :
+                                    tiles ? FilterProcedure::small_tiles : FilterProcedure::blinds;
             descriptor->tiles = factor;
-            descriptor->orientation = tiles ? 0 : g_value_get_int (args->at (5));
-            descriptor->transparent = tiles ? 0 : g_value_get_int (args->at (6)); descriptor->gray = gray ();
+            descriptor->scale = scale; descriptor->nscales = nscales;
+            descriptor->scales_mode = scales_mode; descriptor->cvar = cvar;
+            descriptor->orientation = tiles || retinex ? 0 : g_value_get_int (args->at (5));
+            descriptor->transparent = tiles || retinex ? 0 : g_value_get_int (args->at (6)); descriptor->gray = gray ();
             auto options = std::make_shared<FilterProcessOptions> ();
             auto outcome = std::make_shared<FilterProcedureResult> ();
             /* Parent input/result and three child rasters (snapshot, drawable,
@@ -523,8 +540,7 @@ struct FilterImpl
             const auto raster = descriptor->bytes ();
             const auto owner_context_bytes = std::uint64_t (request.width) * request.height * (gray () ? 3 : 5);
             request.peak_spill_bytes = raster * 5 + owner_context_bytes;
-            const auto peak = owner_context_bytes + std::uint64_t (256) * 1024 * 1024 +
-                              std::uint64_t (std::max (request.width, request.height)) * 384;
+            const auto peak = owner_context_bytes + std::uint64_t (256) * 1024 * 1024 + descriptor->scratch_bytes ();
             request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
             request.raster_process = [descriptor,options,outcome] (FilterRaster& input, FilterRaster& output,
               std::atomic<bool>& cancel, const FilterRasterFactory&) {
@@ -1008,6 +1024,9 @@ struct FilterImpl
       native_procedure ? FilterScheduler::Gate ([&] {
         refresh_context_selection ();
         if (!native_context.before_process (GIMP_DRAWABLE (owner), *native_procedure, read_budget)) return false;
+        /* Retinex's native entry rejects an outside or narrower-than-16 ROI.
+         * Validate the captured start rectangle before launching any helper. */
+        if (native_procedure->procedure == FilterProcedure::retinex) native_procedure->bytes ();
         native_outcome->reset ();
         return true;
       }) : FilterScheduler::Gate (),

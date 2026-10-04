@@ -119,7 +119,7 @@ bool filter_process (const FilterProcedureRequest& request, FilterRaster& input,
   Fd life_read; life_read.value = life[0]; child.lifeline.value = life[1];
   fcntl (life_read.value, F_SETFD, FD_CLOEXEC); fcntl (child.lifeline.value, F_SETFD, FD_CLOEXEC);
   const int source_fds[] = {life_read.value}, target_fds[] = {3};
-  const gchar *argv[] = {options.executable.c_str (), "--filter-worker-v3", profile.path.c_str (), nullptr};
+  const gchar *argv[] = {options.executable.c_str (), "--filter-worker-v4", profile.path.c_str (), nullptr};
   GError *error = nullptr;
   if (!g_spawn_async_with_pipes_and_fds (nullptr, argv, nullptr,
       GSpawnFlags (G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_CLOEXEC_PIPES), group_setup, nullptr,

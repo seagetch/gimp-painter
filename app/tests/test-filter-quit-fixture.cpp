@@ -153,16 +153,78 @@ void small_tiles_fixture (Gimp *gimp, const std::string& directory,
   g_print ("SMALL_TILES_FIXTURE_READY factor=%d width=%d height=%d runs=0 state=CLEAN scene=%s file=%s\n",
            factor, width, height, scene.c_str (), name.c_str ());
 }
+void retinex_fixture (Gimp *gimp, const std::string& directory,
+                     const std::string& evidence, unsigned variant)
+{
+  require (variant <= 1, "Unknown Retinex fixture variant");
+  constexpr gint width = 53, height = 41;
+  const std::string scene = "retinex-g0-s0-v" + std::to_string (variant);
+  const std::string input = evidence + "/live/" + scene + "-source.raw";
+  std::array<guint8, width * height * 4> pixels;
+  std::ifstream captured (input, std::ios::binary);
+  captured.read (reinterpret_cast<char *> (pixels.data ()), pixels.size ());
+  require (captured && captured.peek () == std::ifstream::traits_type::eof (),
+           "Cannot read exact captured Retinex source extent");
+  GError *error = nullptr;
+  auto image = ObjectRef<GimpImage>::adopt (gimp_image_new (
+    gimp, width, height, GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR));
+  gimp_image_undo_disable (image.get ());
+  auto source = ObjectRef<GimpLayer>::sink (gimp_layer_new (
+    image.get (), width, height, babl_format ("R'G'B'A u8"),
+    "retinex source", 1.0, GIMP_LAYER_MODE_NORMAL_LEGACY));
+  auto filter = ObjectRef<GimpLayer>::sink (gimp_filter_layer_new (
+    image.get (), width, height, "retinex Filter", 1.0, GIMP_LAYER_MODE_NORMAL_LEGACY));
+  require (gimp_image_add_layer (image.get (), source.get (), nullptr, 0, FALSE), "Cannot add Retinex source");
+  require (gimp_image_add_layer (image.get (), filter.get (), nullptr, 0, FALSE), "Cannot add Retinex Filter");
+  const GeglRectangle rectangle {0, 0, width, height};
+  gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (source.get ())),
+                   &rectangle, 0, babl_format ("R'G'B'A u8"), pixels.data (), GEGL_AUTO_ROWSTRIDE);
+  fill (filter.get (), {{13, 29, 47, 255}});
+  const gint scale = variant ? 256 : 16, nscales = variant ? 8 : 3, mode = variant ? 2 : 0;
+  const gdouble cvar = variant ? 0.123456789 : 1.2;
+  GimpValueArray *arguments = gimp_value_array_new_from_types (nullptr,
+    G_TYPE_INT, 1, G_TYPE_INT, 0, G_TYPE_INT, 0, G_TYPE_INT, scale,
+    G_TYPE_INT, nscales, G_TYPE_INT, mode, G_TYPE_DOUBLE, cvar, G_TYPE_NONE);
+  const bool defined = gimp_filter_layer_set_definition (
+    GIMP_FILTER_LAYER (filter.get ()), "plug-in-retinex", nullptr, arguments, &error);
+  gimp_value_array_unref (arguments);
+  check_error (error);
+  require (defined, "Cannot define Retinex");
+  const GimpFilterLayerSnapshot complete {1, 41, 41, TRUE, GIMP_FILTER_LAYER_CLEAN};
+  require (gimp_filter_layer_restore_snapshot_state (GIMP_FILTER_LAYER (filter.get ()),
+                                                    &complete, &error), "Cannot install Retinex cached snapshot");
+  check_error (error);
+  require (gimp_filter_layer_get_state (GIMP_FILTER_LAYER (filter.get ())) == GIMP_FILTER_LAYER_CLEAN,
+           "Retinex fixture started a filter job before saving");
+  require (gimp_filter_layer_get_run_count (GIMP_FILTER_LAYER (filter.get ())) == 0,
+           "Fixture preparation must not execute Retinex");
+  const std::string name = directory + "/retinex-" + std::to_string (variant) + ".xcf";
+  auto file = ObjectRef<GFile>::adopt (g_file_new_for_path (name.c_str ()));
+  auto output = ObjectRef<GFileOutputStream>::adopt (
+    g_file_replace (file.get (), nullptr, FALSE, G_FILE_CREATE_NONE, nullptr, &error));
+  check_error (error);
+  require (xcf_save_stream (gimp, image.get (), G_OUTPUT_STREAM (output.get ()),
+                           file.get (), nullptr, &error), "Cannot save Retinex fixture");
+  check_error (error);
+  if (!g_output_stream_is_closed (G_OUTPUT_STREAM (output.get ())))
+    require (g_output_stream_close (G_OUTPUT_STREAM (output.get ()), nullptr, &error), "Cannot close Retinex fixture");
+  check_error (error);
+  g_print ("RETINEX_FIXTURE_READY variant=%u width=%d height=%d runs=0 state=CLEAN scene=%s file=%s\n",
+           variant, width, height, scene.c_str (), name.c_str ());
+}
 }
 int main (int argc, char **argv)
 {
   const bool small_tiles = argc == 4 && std::string (argv[1]) == "--small-tiles";
-  if (argc != 3 && !small_tiles)
+  const bool retinex = argc == 4 && std::string (argv[1]) == "--retinex";
+  const bool evidence_mode = small_tiles || retinex;
+  if (argc != 3 && !evidence_mode)
     { g_printerr ("usage: filter-quit-fixture OUTPUT_DIRECTORY DIMENSION\n"
-                  "       filter-quit-fixture --small-tiles EVIDENCE_ROOT OUTPUT_DIRECTORY\n"); return 2; }
+                  "       filter-quit-fixture --small-tiles EVIDENCE_ROOT OUTPUT_DIRECTORY\n"
+                  "       filter-quit-fixture --retinex EVIDENCE_ROOT OUTPUT_DIRECTORY\n"); return 2; }
   gchar *end = nullptr;
-  const auto side = small_tiles ? 0 : g_ascii_strtoll (argv[2], &end, 10);
-  if (!small_tiles && (!end || *end || (side != 2048 && side != 4096))) return 2;
+  const auto side = evidence_mode ? 0 : g_ascii_strtoll (argv[2], &end, 10);
+  if (!evidence_mode && (!end || *end || (side != 2048 && side != 4096))) return 2;
   g_set_prgname ("filter-quit-fixture");
   if (FcConfig *fonts = FcConfigCreate ())
     { FcConfigSetCurrent (fonts); FcConfigDestroy (fonts); }
@@ -170,11 +232,13 @@ int main (int argc, char **argv)
   int status = 0;
   try
     {
-      require (g_file_test (argv[small_tiles ? 3 : 1], G_FILE_TEST_IS_DIR), "Output directory does not exist");
+      require (g_file_test (argv[evidence_mode ? 3 : 1], G_FILE_TEST_IS_DIR), "Output directory does not exist");
       gimp = gimp_init_for_testing ();
       require (gimp != nullptr, "Cannot initialize fixture application");
       if (small_tiles)
         for (gint factor : {0, 3}) small_tiles_fixture (gimp, argv[3], argv[2], factor);
+      else if (retinex)
+        for (unsigned variant : {0U, 1U}) retinex_fixture (gimp, argv[3], argv[2], variant);
       else
         for (unsigned index = 1; index <= 2; ++index)
           fixture (gimp, std::string (argv[1]) + "/quit-blinds-" + std::to_string (index) + ".xcf",

@@ -2337,6 +2337,7 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-blinds-context.inc"
 #include "test-filter-blinds-context-lifecycle.inc"
 #include "test-filter-small-tiles.inc"
+#include "test-filter-retinex.inc"
 
 int main (int argc, char **argv)
 {
@@ -2367,6 +2368,16 @@ int main (int argc, char **argv)
   ADD (small_tiles_dependency_updates);
   ADD (small_tiles_save_reopen);
   ADD (small_tiles_owner_close);
+  ADD (retinex_zero_scales_and_update);
+  ADD (retinex_actual_old_live);
+  ADD (retinex_invalid_domains_keep_cache);
+  ADD (retinex_gray_keep_cache);
+  ADD (retinex_invalid_roi_keep_cache);
+  ADD (retinex_replace_running_definition);
+  ADD (retinex_final_context);
+  ADD (retinex_dependency_updates);
+  ADD (retinex_save_reopen);
+  ADD (retinex_owner_close);
   ADD (blinds_identity_and_update); ADD (blinds_context_idle);
   ADD (blinds_final_context_merges); ADD (blinds_unknown_selection_scans_in_quanta);
   ADD (blinds_replace_running_definition); ADD (blinds_background_samples_execution_start);

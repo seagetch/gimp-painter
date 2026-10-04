@@ -17,7 +17,7 @@ void validate (Type type, std::uint64_t offset, std::size_t size) {
       if (!size || size > pixel_limit || size % 4 || offset % 4) throw std::invalid_argument ("Invalid Filter pixel frame");
       break;
     case Type::request:
-      if (offset || size != 64) throw std::invalid_argument ("Invalid Filter request frame");
+      if (offset || size != 88) throw std::invalid_argument ("Invalid Filter request frame");
       break;
     case Type::input_end:
       if (size) throw std::invalid_argument ("Invalid Filter terminal frame");
@@ -33,7 +33,7 @@ void validate (Type type, std::uint64_t offset, std::size_t size) {
 }
 }
 std::size_t payload_size (const std::uint8_t *h) {
-  if (std::memcmp (h, "GPF3", 4) || get (h + 4, 2) != 3 || get (h + 20, 4))
+  if (std::memcmp (h, "GPF4", 4) || get (h + 4, 2) != 4 || get (h + 20, 4))
     throw std::invalid_argument ("Invalid Filter wire version or reserved field");
   const auto size = std::size_t (get (h + 8, 4));
   validate (Type (get (h + 6, 2)), get (h + 12, 8), size); return size;
@@ -41,7 +41,7 @@ std::size_t payload_size (const std::uint8_t *h) {
 std::vector<std::uint8_t> encode (const Frame& f) {
   validate (f.type, f.offset, f.payload.size ());
   std::vector<std::uint8_t> b (header_size + f.payload.size (), 0);
-  std::memcpy (b.data (), "GPF3", 4); put (b, 4, 3, 2); put (b, 6, std::uint16_t (f.type), 2);
+  std::memcpy (b.data (), "GPF4", 4); put (b, 4, 4, 2); put (b, 6, std::uint16_t (f.type), 2);
   put (b, 8, f.payload.size (), 4); put (b, 12, f.offset, 8);
   std::copy (f.payload.begin (), f.payload.end (), b.begin () + header_size); return b;
 }
@@ -51,7 +51,7 @@ Frame decode (const std::uint8_t *b, std::size_t size) {
   return {Type (get (b + 6, 2)), get (b + 12, 8), {b + header_size, b + size}};
 }
 Frame request (const FilterProcedureRequest& r) {
-  r.bytes (); Frame f {Type::request, 0, std::vector<std::uint8_t> (64)};
+  r.bytes (); Frame f {Type::request, 0, std::vector<std::uint8_t> (88)};
   put (f.payload, 0, std::uint32_t (r.procedure), 4); put (f.payload, 4, r.width, 4); put (f.payload, 8, r.height, 4);
   put (f.payload, 12, std::uint32_t (r.angle), 4); put (f.payload, 16, std::uint32_t (r.segments), 4);
   put (f.payload, 20, std::uint32_t (r.orientation), 4); put (f.payload, 24, std::uint32_t (r.transparent), 4);
@@ -61,6 +61,12 @@ Frame request (const FilterProcedureRequest& r) {
   put (f.payload, 40, std::uint32_t (region.x1), 4); put (f.payload, 44, std::uint32_t (region.y1), 4);
   put (f.payload, 48, std::uint32_t (region.x2), 4); put (f.payload, 52, std::uint32_t (region.y2), 4);
   put (f.payload, 56, std::uint32_t (r.tiles), 4);
+  put (f.payload, 60, r.storage_channels, 4);
+  put (f.payload, 64, std::uint32_t (r.scale), 4);
+  put (f.payload, 68, std::uint32_t (r.nscales), 4);
+  put (f.payload, 72, std::uint32_t (r.scales_mode), 4);
+  static_assert (sizeof (double) == 8 && std::numeric_limits<double>::is_iec559, "IEEE754 binary64 required");
+  std::uint64_t cvar; std::memcpy (&cvar, &r.cvar, 8); put (f.payload, 80, cvar, 8);
   return f;
 }
 FilterProcedureRequest request (const Frame& f) {
@@ -72,7 +78,7 @@ FilterProcedureRequest request (const Frame& f) {
   if (get (b + 28, 4) > 1) throw std::invalid_argument ("Invalid Filter sample type");
   r.gray = get (b + 28, 4) != 0; std::copy (b + 32, b + 36, r.background.begin ());
   const auto flags = get (b + 36, 4);
-  if ((flags & ~std::uint64_t (7)) || get (b + 60, 4)) throw std::invalid_argument ("Invalid Filter request flags");
+  if ((flags & ~std::uint64_t (7)) || get (b + 76, 4)) throw std::invalid_argument ("Invalid Filter request flags");
   r.raw_shadow = flags & 1; r.start_region.selected = flags & 2; r.start_region.intersects = flags & 4;
   r.start_region.x1 = std::int32_t (std::uint32_t (get (b + 40, 4)));
   r.start_region.y1 = std::int32_t (std::uint32_t (get (b + 44, 4)));
@@ -82,6 +88,11 @@ FilterProcedureRequest request (const Frame& f) {
       r.start_region.x2 != std::int64_t (r.width) || r.start_region.y2 != std::int64_t (r.height)))
     throw std::invalid_argument ("Noncanonical unselected Filter region");
   r.tiles = std::int32_t (std::uint32_t (get (b + 56, 4)));
+  r.storage_channels = get (b + 60, 4);
+  r.scale = std::int32_t (std::uint32_t (get (b + 64, 4)));
+  r.nscales = std::int32_t (std::uint32_t (get (b + 68, 4)));
+  r.scales_mode = std::int32_t (std::uint32_t (get (b + 72, 4)));
+  const std::uint64_t cvar = get (b + 80, 8); std::memcpy (&r.cvar, &cvar, 8);
   r.bytes (); return r;
 }
 Frame success (std::uint64_t bytes, FilterProcedureDisposition disposition) {

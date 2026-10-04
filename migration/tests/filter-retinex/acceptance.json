@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "task": "16.003/isolated-retinex-route",
+  "status": "passed",
+  "date": "2026-10-03",
+  "scope": "Bounded U8 nonlinear RGB Retinex isolated route and shared owner context; not whole migration, platform or release acceptance",
+  "source_identity": {
+    "base_commit": "ea840a5ab8b23491e46a4581d80d225272024538",
+    "base_tree": "82466b3c0f6ff76b4fbb08c9409d37be880e24a8",
+    "validation_tree_without_acceptance_report": "5f9695e1cb9a5bbdc1f437201ed68c85139ec432",
+    "validation_tree_scope": "Complete staged task including compact reports/WBS before adding this acceptance record; no validation commit",
+    "final_task_source_sha256": {
+      "app/core/gimpfilterlayer.cpp": "47c64aefde40301ebd003530904caebd6dbdacd8d7de43be52c3498464c41b9b",
+      "app/core/gimpfilterpaths.cpp": "0677b78cb7de02e776073db760ca148dd206cbe61967aebb9556d6f4bd48a6f3",
+      "app/core/gimpfilterprocedure.cpp": "bd2ab339bcf71a41136a137fc01fcdd6bb7e5351a068fe1d8d67cf56cd0c8f6a",
+      "app/meson.build": "74c4993499316a69eb2b9ed2e8606a2a0f65163d760084176498fc3fe26c5cb2",
+      "app/painter-filter-worker.cpp": "64db1e10a2e0ed7664bdfd7865a10ce5705cd11f54b5ca10aa9d88b60ad4b1c0",
+      "app/painter/filter-procedure.hpp": "3321a7a340dfdd83d61781915a243ba0f46738682865e96c3b90c1da69ec1087",
+      "app/painter/filter-process.cpp": "5b36cb70a3788f6b405706791112a393bcb87987f0c0aa40115db4ced5d306b9",
+      "app/painter/filter-wire.cpp": "30c585cecd2a7e8ee9ec2d469b95bd1e26b67baf8b438cc8c23bfe4e3e773abd",
+      "app/painter/tests/test-filter-procedure.cpp": "232dda9520777e4ca238442accb94aa44a8f3b19fb0dae3366dccce98b7bec50",
+      "app/painter/tests/test-filter-process.cpp": "f8d8e2c39daf7645f73edd908d1ccf2bd6e14946d7311f1998aad8bbd4e3cc92",
+      "app/painter/tests/test-filter-wire.cpp": "64903bad89c8db66f191b894185c395c71332f8702f48fb065929078be3d1312",
+      "app/tests/test-filter-quit-fixture.cpp": "c928ba7a7f677798ee111c69fd9326c6bef34af32651673d5ba63b097e8695db",
+      "app/tests/test-filter-retinex.inc": "1ee44dd135ceb3679002cc17cb2414972d1fa1a81f3427ac73dbaf52b93aad1c",
+      "app/tests/test-gimp-filter-layer.c": "4ea573495425da405a3e9ddcab8077d4f00cc69c281ae7b65fe9f9b717d72e24",
+      "migration/tests/run_filter_owner_context_fixture_test.py": "9fb8627e36637cf143042b741a9048c33e999ba998dc0200db7506709a5673a8",
+      "migration/tests/run_filter_process_sanitizers.py": "8fac84e8f8f9bd03dfbcd6fad8419bf7664c2f225e6883e7fc98932cc939cdf8",
+      "migration/tests/test_filter_executable_paths.py": "78988513c7e35fd55866c0fee154028fe42c3cac0724a96e369d680dda605641",
+      "plug-ins/common/contrast-retinex.c": "d5a2f22516aec102d25f4d244ea9c2da9d4fea2bf5869ec165377261c3dc5f13",
+      "tools/capture_retinex.py": "601e456d9cd23aa7d68d2bd11f6dbdc739b7be27d821437e4b04622e9d0f9895",
+      "tools/check_filter_active_quit.py": "32d991d77d56768f84025951972e360e83cf47bff973261214a2867f44cbf196",
+      "tools/check_installed_filter.py": "ec00a638758178a0e1fc64698694a50997a79b11b48a2a818a01a55a24f6fe0d",
+      "tools/check_installed_retinex.py": "d12c88fa5758ec28e814b756e7f99daf5655d200e223fda5ac9ff4a01d5ffd56",
+      "tools/check_installed_small_tiles.py": "509c9f123b0f80485da6d3356cd09c00d18d09bafc41f96c7bbe488cd70173b0",
+      "tools/check_retinex_allocations.py": "39a19d0090b99df2d09f3169baf9ad66d641351aaf9521a52e64c36a6adb37cc",
+      "tools/check_retinex_evidence.py": "b82c7590ee5074306652b242ddc1b5e21a5850a2d727abe08d12661a69d154c6",
+      "tools/derive_retinex_evidence.py": "7011910ead0725584efb95511a8cf1bc5eef6091673b6987b8ee4c084b63fe3f",
+      "tools/inventory_filter_routes.py": "679dbcff4c88e327b8afa5bb07b2a2f1d9799cbeb491e79a402ff10631d65030",
+      "tools/package-linux-runtime.py": "959d0161fd5e587c7b5ab2206fc3a309fcdde1f8b5a7f403088ebd391642ef55"
+    },
+    "accepted_owner_context_unchanged": {
+      "app/core/gimpfiltercontext.cpp": "ac9dd27fc8c17fb97fd84eb538838f891181a65b34102a2e73e6230dbff5340d",
+      "app/core/gimpfiltercontext.hpp": "79883ce964653bdc6f34603cb64262dd0bd7a4402dc76e002cb6b1c681295f3b",
+      "app/painter/filter-context.cpp": "1d7815323bf5b00c605fd544b70a5f3584c95dd322da4f167cd6d6e8d6916d5b",
+      "app/painter/filter-context.hpp": "9ac030008e3ddd430e902d14bef4981ee0c390e5a3cca6fabbd9bc374191195e"
+    },
+    "production_sources_unchanged_after_normal_and_sanitizers": true,
+    "per_check_source_note": "The installed checker was corrected after an initial pre-execution assertion failure; no production/native/sanitizer source changed. Final installed records pin that checker separately."
+  },
+  "genuine_old_evidence": {
+    "archive": "migration/fixtures/retinex-evidence.tar.gz",
+    "sha256": "28f1f803e72bb25cb7fedcc4cf108a3df71a492d458baa1cbf8f52438b8e946c",
+    "bytes": 3276963,
+    "manifest": "migration/fixtures/retinex-evidence.tar.manifest.json",
+    "manifest_sha256": "6542f4503c344a907611840011039c7957e208b6201fe46dc891830f2f6825cf",
+    "manifest_members_type": "Object keyed by archive member path, with size/SHA256 and origin fields; derived indexes/TSVs use derived_from",
+    "member_count": 724,
+    "kind": "Derived exact-byte Retinex subset of historical captures with unchanged original provenance; not a fresh old-runtime rerun",
+    "standalone_outputs": 174,
+    "native_rgb_outputs": 87,
+    "native_rgba_outputs": 87,
+    "native_scenes": 6,
+    "native_merges": 12
+  },
+  "normal": {
+    "status": "passed",
+    "registered_targets": 9,
+    "native_tests": 124,
+    "skips": 0,
+    "timeouts": 0,
+    "actual_old_retinex_helper_comparisons": 174,
+    "actual_old_small_tiles_helper_comparisons": 196,
+    "actual_old_blinds_helper_comparisons": 320,
+    "blinds_identities": 12,
+    "analytic_padded_roi_cases": 6,
+    "analytic_raw_shadow_cases": 2,
+    "helper_rgb_opacity_rejections": 4,
+    "binary64_request_roundtrips": 270,
+    "process_cases": 76,
+    "scheduler_cases": 37,
+    "spool_cases": 11,
+    "owner_gates": 5,
+    "completion_races": 1,
+    "old_scalar_context_records": 304,
+    "record": "normal.json"
+  },
+  "current_pdb": {
+    "status": "passed",
+    "public_calls": 32,
+    "public_signature_and_output_unchanged": true,
+    "hidden_calls": 174,
+    "hidden_interactive_modes_rejected": 2,
+    "runtime_diagnostics": [],
+    "old_alpha_zero_merge_repair_explicit": true,
+    "records": [
+      "current-pdb.json",
+      "current-pdb-observations.json"
+    ]
+  },
+  "focused_sanitizers": {
+    "status": "passed",
+    "instrumented_sources": 30,
+    "rtti_only_sources": 41,
+    "sealed_inputs": 1742,
+    "unchanged_inputs": true,
+    "unit_targets": 5,
+    "native_tests": 41,
+    "retinex_old_helper_comparisons": 174,
+    "small_tiles_old_helper_comparisons": 196,
+    "blinds_identities": 12,
+    "leak_sanitizer": false,
+    "remaining_GIMP_and_dependencies": "ordinary uninstrumented",
+    "record": "sanitizers.json"
+  },
+  "extracted_source_injection": {
+    "status": "passed",
+    "hidden_kernel_fixtures": 174,
+    "public_kernel_fixtures": 32,
+    "allocation_failures": 1160,
+    "sites": [
+      "src",
+      "dst",
+      "in",
+      "out",
+      "w1",
+      "w2"
+    ],
+    "analytic_geometry_rejections": 34,
+    "unchanged_pixels_no_shadow_publication_balanced_allocations": true,
+    "scope": "Exact production functions with stubbed host/configuration; ASan/UBSan/float-cast-overflow; not a native PDB or whole-app leak test",
+    "record": "allocations.json"
+  },
+  "installed": {
+    "status": "passed",
+    "kind": "fresh dirty Linux prototype",
+    "configured_targets": 1005,
+    "elf_executables_checked": 211,
+    "optional_unbuilt": 2,
+    "manifest_entries": 5270,
+    "relocated_variants": [
+      0,
+      1
+    ],
+    "actual_helper_jobs_per_variant": 2,
+    "actual_native_runs_per_variant": 2,
+    "save_reopen_cycles_per_variant": 2,
+    "old_live_rasters_byte_exact": true,
+    "saved_seven_typed_arguments_preserved": true,
+    "binary64_cvar_bits_preserved": true,
+    "post_reopen_parameter_edit": "Actual native suite on nonuniform data; not claimed by installed PDB smoke",
+    "wrong_runtime_processes": 0,
+    "observed_survivors": 0,
+    "private_profile_leftovers": 0,
+    "critical_diagnostics": 0,
+    "unchanged_source_files": 4319,
+    "unchanged_manifest_entries": true,
+    "additional_CPython_caches_per_relocated_tree": 27,
+    "records": [
+      "package.json",
+      "installed-variant0.json",
+      "installed-variant1.json"
+    ]
+  },
+  "selectors": {
+    "normal": 22,
+    "sanitizers": 22,
+    "records": [
+      "selectors-normal.json",
+      "selectors-sanitizers.json"
+    ]
+  },
+  "superseded_attempts": [
+    {
+      "kind": "initial normal native run",
+      "reason": "New invalid-ROI test observed one attempted worker start before safe failure. Added Retinex captured-ROI preflight in the owner gate, strengthened whole-cache assertions, and reran all nine targets successfully.",
+      "original_meson_report_sha256": "e4af652c9ce029122c702c4e851982b9ad2098693453fc8e55e97f8d1bc32740"
+    },
+    {
+      "kind": "initial installed variant0 before Retinex execution",
+      "reason": "Checker assumed an unpacked gdouble was a Python float; the established XCF codec stores exact uint64 bits. Corrected the checker, created a fresh package recipe and passed both relocated variants. Production code was unchanged.",
+      "original_report_sha256": "6e2f4f6102cd704e91b73feacea235ae55d7a81921840a277519af5b1c7cefcd"
+    }
+  ],
+  "other_checks": {
+    "WBS_dependencies_and_evidence": "passed",
+    "git_diff_check": "passed",
+    "package_recipe_tests": 35,
+    "package_recipe_skips": 0,
+    "package_recipe_log_sha256": "baa84c17d5212026b96cb2db15839ea67765b7f1c5d2f0fdeecd03fef7524615"
+  },
+  "limits": [
+    "Only U8 nonlinear RGB; true RGB3/RGBA4, scales16..256, nscales0..8, modes0..2, finite cvar0..4; selected width/height each>=16; Gray/higher precision unsupported",
+    "Outside/narrow Retinex ROI fails preserving exact definition/cache; unlike SmallTiles no-merge behavior",
+    "Conservative1GiB memory admission and configurable8GiB default logical spill remain; disabled swap is explicit failure; no universal memory/disk/latency guarantee",
+    "Owner UI progress, Windows/macOS process routes, remaining procedure families, XCF multipart and full aggregate/GUI/release gates remain open",
+    "Ordinary host startup/resource warnings and two stale host contexts remain; no warning-free, whole-app sanitizer or leak-free claim"
+  ],
+  "evidence_sha256": {
+    "README.md": "123fc966cbfabce3dbb5c9c7688d12a360a2f6078593f50fc344d46b54cc3e07",
+    "allocations.json": "87b9a4e8639805d3cacc6f6c2b430467ac0ea9a02d0141f9bd3cbe04aaa54770",
+    "current-pdb-observations.json": "49c63143ee9008dff2817e479e89ef174943fb4fcd6a7e443eba64b1056f6e5d",
+    "current-pdb.json": "84a7ace066336775af67eea8c426ad21135fea15fb0e60ee383d54dd698fdfd6",
+    "installed-variant0.json": "ab730ae3d79036ddbbe0619e22cfc584285c0a958a4b6e8c105202fdb31b5661",
+    "installed-variant1.json": "d616434daf216d0c309e351dcaa363187bb8090114f14713b56b827c5609ed04",
+    "normal.json": "dd770f72f78f15d1ddb8507530227c6eaf416533f7ac27a1a63ab809fd8aad24",
+    "package.json": "fd54094311bb5e5ad830969a8dfd5891fe663a44c3c79d38119ba1d1615ad0dc",
+    "sanitizers.json": "991a54e05d7b14268c2f64a3ba4f2ca11b237865bcc62ff26719665c13995414",
+    "selectors-normal.json": "497d048737bbc9385019b32b811a0b7ea7993d77ccc808b1b7b02a75bf4dce2d",
+    "selectors-sanitizers.json": "0b68a759ef35ec55c79626e8bf29e017a7986bae3bba8d8830109953c30645c3"
+  }
+}

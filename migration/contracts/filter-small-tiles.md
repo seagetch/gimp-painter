@@ -26,10 +26,12 @@ literally to bundled `tile-small`; saved names, paths, executables and scripts
 cannot select a binary. Build/installed/relocated paths retain the existing
 worker-side executable-relative lookup rules.
 
-GPF3 / `--filter-worker-v3` carries one 64-byte scalar request. It adds only the
-integer factor at byte 56, retains a zero reserved word at 60 and rejects old
-versions, unknown selectors, noncanonical unused route scalars and invalid
-geometry. Selected region area must fit signed native progress arithmetic before
+The original task used GPF3 / `--filter-worker-v3` with a 64-byte scalar request.
+The Retinex task advances the shared transport to GPF4 / `--filter-worker-v4`;
+Small Tiles retains these fields and validates canonical unused Retinex defaults.
+GPF3 added the integer factor at byte56 and reserved word60. GPF4 uses
+word60 for native storage and rejects old versions, unknown selectors,
+noncanonical unused route scalars and invalid geometry. Selected region area must fit signed native progress arithmetic before
 input transfer. The bounded RGBA8 carrier triplicates Gray bytes: Small Tiles
 only permutes channels, preserving the actual old native Gray values. Both old
 alpha-zero hidden colors and final component/own-alpha-lock behavior are merged

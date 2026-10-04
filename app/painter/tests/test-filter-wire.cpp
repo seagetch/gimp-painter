@@ -2,6 +2,8 @@
 #include "filter-wire.hpp"
 #include <glib.h>
 #include <functional>
+#include <cstring>
+#include <utility>
 #include <iostream>
 using namespace GimpPainter;
 using Disposition = FilterProcedureDisposition;
@@ -24,7 +26,7 @@ int main () {
   auto trailing = bytes; trailing.push_back (0); rejects ([&] { FilterWire::decode (trailing.data (), trailing.size ()); });
   for (int angle : {-1,91}) { auto bad = req; bad.angle = angle; rejects ([&] { FilterWire::request (bad); }); }
   for (int segments : {0,101}) { auto bad = req; bad.segments = segments; rejects ([&] { FilterWire::request (bad); }); }
-  auto bad = req; bad.procedure = FilterProcedure (3); rejects ([&] { FilterWire::request (bad); });
+  auto bad = req; bad.procedure = FilterProcedure (4); rejects ([&] { FilterWire::request (bad); });
   bad = req; bad.width = 0; rejects ([&] { FilterWire::request (bad); });
   g_assert (!restored.raw_shadow && !restored.start_region.selected && restored.start_region.intersects &&
             restored.start_region.x1 == 0 && restored.start_region.y1 == 0 &&
@@ -49,7 +51,7 @@ int main () {
     bad = req; bad.width = dimension; rejects ([&] { FilterWire::request (bad); });
     bad = req; bad.height = dimension; rejects ([&] { FilterWire::request (bad); });
   }
-  for (std::uint32_t tag : {0u,3u,0xffffffffu}) {
+  for (std::uint32_t tag : {0u,4u,0xffffffffu}) {
     auto f = FilterWire::request (req); put32 (f,0,tag); rejects ([&] { FilterWire::request (f); });
   }
   for (std::uint32_t flags : {0u,1u,8u,0xffffffffu}) {
@@ -61,8 +63,8 @@ int main () {
   { auto f = FilterWire::request (req); put32 (f,28,2); rejects ([&] { FilterWire::request (f); }); }
   { auto f = FilterWire::request (req); put32 (f,36,7); put32 (f,40,0xffffffffu);
     rejects ([&] { FilterWire::request (f); }); }
-  for (unsigned version : {1u,2u}) { auto old = bytes; old[3] = '0' + version; old[4] = version; rejects ([&] { FilterWire::decode (old.data (), old.size ()); }); }
-  for (unsigned old_size : {36u,60u})
+  for (unsigned version : {1u,2u,3u}) { auto old = bytes; old[3] = '0' + version; old[4] = version; rejects ([&] { FilterWire::decode (old.data (), old.size ()); }); }
+  for (unsigned old_size : {36u,60u,64u})
     rejects ([&] { FilterWire::encode ({FilterWire::Type::request, 0, std::vector<std::uint8_t> (old_size)}); });
   FilterProcedureRequest tile; tile.procedure = FilterProcedure::small_tiles; tile.width = 67; tile.height = 66;
   for (int factor = 0; factor <= 6; ++factor) for (bool gray : {false,true}) for (bool raw : {false,true}) {
@@ -90,6 +92,52 @@ int main () {
     auto frame = FilterWire::request (tile); put32 (frame,at,99);
     rejects ([&] { FilterWire::request (frame); });
   }
+
+  FilterProcedureRequest retinex; retinex.procedure = FilterProcedure::retinex;
+  retinex.width = 53; retinex.height = 41;
+  for (unsigned storage : {3u,4u}) for (int scale : {16,250,256}) for (int nscales : {0,1,8})
+    for (int mode : {0,1,2}) for (double cvar : {0.0,-0.0,0.123456789,1.2,4.0}) {
+      retinex.storage_channels = storage; retinex.scale = scale;
+      retinex.nscales = nscales; retinex.scales_mode = mode; retinex.cvar = cvar;
+      const auto frame = FilterWire::encode (FilterWire::request (retinex));
+      const auto decoded = FilterWire::request (FilterWire::decode (frame.data (),frame.size ()));
+      g_assert (decoded.procedure == FilterProcedure::retinex && decoded.storage_channels == storage &&
+                decoded.scale == scale && decoded.nscales == nscales && decoded.scales_mode == mode &&
+                !std::memcmp (&decoded.cvar,&cvar,sizeof cvar));
+      g_assert (decoded.scratch_bytes () == 53u*41u*(storage*5u+8u)+8u*(53u+3u));
+    }
+  for (std::uint32_t storage : {0u,1u,2u,5u,0xffffffffu}) {
+    auto frame = FilterWire::request (retinex); put32 (frame,60,storage);
+    rejects ([&] { FilterWire::request (frame); });
+  }
+  for (auto entry : {std::pair<std::size_t,std::uint32_t>{64,15}, {64,257}, {68,9}, {68,0xffffffffu},
+                     {72,3}, {72,0xffffffffu}, {76,1}, {56,3}, {12,1}, {16,2}, {20,1}, {24,1}, {28,1}}) {
+    auto frame = FilterWire::request (retinex); put32 (frame,entry.first,entry.second);
+    rejects ([&] { FilterWire::request (frame); });
+  }
+  for (double value : {-1.0,4.000000000000001,std::numeric_limits<double>::infinity (),
+                        -std::numeric_limits<double>::infinity (),std::numeric_limits<double>::quiet_NaN ()}) {
+    auto invalid = retinex; invalid.cvar = value; rejects ([&] { FilterWire::request (invalid); });
+    auto frame = FilterWire::request (retinex);
+    std::uint64_t bits; std::memcpy (&bits,&value,8);
+    for (unsigned i = 0; i < 8; ++i) frame.payload[80+i] = std::uint8_t (bits >> (8*i));
+    rejects ([&] { FilterWire::request (frame); });
+  }
+  for (const FilterSelectionRegion& region : {FilterSelectionRegion {true,true,0,0,15,41},
+      FilterSelectionRegion {true,true,0,0,53,15}, FilterSelectionRegion {true,false,0,0,0,0}}) {
+    auto invalid = retinex; invalid.start_region = region; rejects ([&] { FilterWire::request (invalid); });
+  }
+  { auto native_overflow = retinex; native_overflow.width = 32768; native_overflow.height = 16384;
+    rejects ([&] { FilterWire::request (native_overflow); });
+    native_overflow.storage_channels = 3;
+    g_assert (native_overflow.bytes () == 2147483648ull);
+    native_overflow.height = 21846;
+    rejects ([&] { FilterWire::request (native_overflow); }); }
+  for (std::size_t at : {std::size_t(60),std::size_t(64),std::size_t(68),std::size_t(72),std::size_t(76),std::size_t(80)}) {
+    auto frame = FilterWire::request (tile); put32 (frame,at,99);
+    rejects ([&] { FilterWire::request (frame); });
+  }
+
   rejects ([&] { FilterWire::encode ({FilterWire::Type::success, 8, {}}); });
   rejects ([&] { FilterWire::success (8,Disposition::pending); });
   rejects ([&] { FilterWire::success (8,Disposition (4)); });

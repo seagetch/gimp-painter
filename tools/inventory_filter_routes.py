@@ -89,13 +89,17 @@ def row(name,menu,args,source_kind,source_paths):
     elif name == 'plug-in-small-tiles':
         route='audited isolated bundled PDB adapter; U8 nonlinear RGB/Gray; factor 0..6; shared owner context'
         gap='owner progress forwarding, disabled-swap alternative, arbitrary-size/global-latency and other-platform verification'
+    elif name == 'plug-in-retinex':
+        route='audited isolated bundled PDB adapter; U8 nonlinear RGB; native RGB/RGBA BPP and old float cvar; shared owner context'
+        gap='Gray/higher precision, owner progress forwarding, disabled-swap alternative, arbitrary-size/global-latency and other-platform verification'
     elif short in nonpixel: route='isolated legacy image/output adapter required'; gap='multi-image/layer/palette/result semantics, not a pixel substitution'
     elif short in context or source_kind=='script-source': route='isolated context/resource adapter required'; gap='capture resource/context/secondary-object dependencies; no automatic script execution'
     else: route='explicit compatibility kernel or isolated plug-in adapter required'; gap='parameter/alpha/numerical parity and cancellation/crash isolation'
     rows.append(dict(procedure=name,eligibility=source_kind,menu=';'.join(menu),argument_types=','.join(map(str,args)),
         legacy_source=';'.join(source_paths),current_source_mentions=';'.join(native),current_gegl_counterpart=op,
         executor_route=route,missing_port_work=gap,
-        dependency_status=('bounded SmallTiles route implemented; see migration/contracts/filter-small-tiles.md' if name == 'plug-in-small-tiles' else
+        dependency_status=('bounded Retinex route implemented; see migration/contracts/filter-retinex.md' if name == 'plug-in-retinex' else
+            'bounded SmallTiles route implemented; see migration/contracts/filter-small-tiles.md' if name == 'plug-in-small-tiles' else
             'bounded route implemented; see migration/contracts/filter-process-bridge.md' if name == 'plug-in-blinds' else
             'bundled original source exists; missing port code' if source_paths else 'registration-only; source/dependency unresolved')))
 registry=a.registry.read_text(encoding='latin1')

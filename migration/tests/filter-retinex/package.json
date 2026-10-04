@@ -1,0 +1,249 @@
+{
+  "status": "passed",
+  "scope": "Fresh dirty Linux prototype build/package and two relocated Retinex exact-byte Save/reopen smokes; sealed entries unchanged, generated Python bytecode recorded separately; not release acceptance",
+  "configured_targets": 1005,
+  "executables": {
+    "checked_elf_executables": 211,
+    "unbuilt_targets": [],
+    "invalid_executables": [],
+    "repaired_executable_permissions": [],
+    "optional_unbuilt_targets": [
+      "libgimpwidgets/test-preview-area",
+      "app/operations/tests/test-operations"
+    ]
+  },
+  "source_inventory": {
+    "count": 4319,
+    "unchanged": true,
+    "before_sha256": "16bfc049e22349721a23cbe67d7d4e5d0f1ff0da5591e8fc63fd24e9bbad7f6e",
+    "after_sha256": "16bfc049e22349721a23cbe67d7d4e5d0f1ff0da5591e8fc63fd24e9bbad7f6e"
+  },
+  "ordinary_binary_sha256": {
+    "app/gimp-console-3.0": "683ad6d19d9da28d7ad27ee6af5813240a35fc6f5648fd2cf5ec4053a5e08edc",
+    "app/gimp-painter-filter-worker": "1b1dfabc7a9e5c26f868444cee8bfcfef7224a79e3e01edbbf30bbe2ebd2ef57",
+    "plug-ins/common/contrast-retinex": "28eed27e3845146c10ce77139a8b5f754ff1a7ad6825b60b851f6925280d729c",
+    "app/tests/filter-quit-fixture": "4013751e07826e80a978eaf9d4841fd47c26f9e9bb98decda70c99607de87445"
+  },
+  "package_build_manifest_sha256": "4ecf13f1212fba8ae2ad37eab25c85391eb97c3daf3df8ad980558ab97859064",
+  "package_recipe_sha256": "959d0161fd5e587c7b5ab2206fc3a309fcdde1f8b5a7f403088ebd391642ef55",
+  "runtime_seals": {
+    "status": "passed",
+    "file_manifest_sha256": "150d05915b48ac91d8bee62c5fbfbd7e5b413af3519dc05fc59f97d9c5d96594",
+    "results": [
+      {
+        "runtime": "/workspace/scratch/5b5281e79681/retinex-package-sealed/gimp-painter-linux-x86_64",
+        "verified_manifest_entries": 5270,
+        "regular_files": 5221,
+        "symlinks": 49,
+        "elf_objects": 419,
+        "additional_files": [
+          "file-manifest.json"
+        ],
+        "generated_bytecode_count": 0,
+        "errors": [],
+        "status": "passed"
+      },
+      {
+        "runtime": "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed/relocated path 日本語/gimp-painter-linux-x86_64",
+        "verified_manifest_entries": 5270,
+        "regular_files": 5221,
+        "symlinks": 49,
+        "elf_objects": 419,
+        "additional_files": [
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/__init__.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_constants.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_error.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_gtktemplate.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_option.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_ossighelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_propertyhelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_signalhelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/docstring.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/importer.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/module.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/types.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GExiv2.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GLib.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GObject.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gdk.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GdkPixbuf.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gio.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gtk.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Pango.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/__init__.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/repository/__pycache__/__init__.cpython-313.pyc",
+          "file-manifest.json",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/python-console/__pycache__/pyconsole.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpconfig.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpexporttests.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimplogger.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimptestframework.cpython-313.pyc"
+        ],
+        "generated_bytecode_count": 27,
+        "errors": [],
+        "status": "passed"
+      },
+      {
+        "runtime": "/workspace/scratch/5b5281e79681/retinex-installed-variant1-sealed/relocated path 日本語/gimp-painter-linux-x86_64",
+        "verified_manifest_entries": 5270,
+        "regular_files": 5221,
+        "symlinks": 49,
+        "elf_objects": 419,
+        "additional_files": [
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/__init__.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_constants.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_error.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_gtktemplate.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_option.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_ossighelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_propertyhelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/_signalhelper.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/docstring.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/importer.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/module.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/__pycache__/types.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GExiv2.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GLib.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GObject.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gdk.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GdkPixbuf.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gio.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gtk.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Pango.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/overrides/__pycache__/__init__.cpython-313.pyc",
+          "deps/usr/lib/python3/dist-packages/gi/repository/__pycache__/__init__.cpython-313.pyc",
+          "file-manifest.json",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/python-console/__pycache__/pyconsole.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpconfig.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimpexporttests.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimplogger.cpython-313.pyc",
+          "usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/test-file-plug-ins/__pycache__/gimptestframework.cpython-313.pyc"
+        ],
+        "generated_bytecode_count": 27,
+        "errors": [],
+        "status": "passed"
+      }
+    ]
+  },
+  "commands": [
+    {
+      "name": "default-compile",
+      "command": [
+        "meson",
+        "compile",
+        "-C",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter",
+        "-j",
+        "4"
+      ],
+      "started_utc": "2026-10-03T12:25:32.693366+00:00",
+      "exit_code": 0,
+      "seconds": 20.595682962004503,
+      "log_sha256": "cbde4404aa55a6ac20b8e8be1fd1ed35e9cb6f8b8fb336f52abe782bd1da402c"
+    },
+    {
+      "name": "verify-executables",
+      "command": [
+        "python3",
+        "tools/verify_build_executables.py",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter",
+        "--report",
+        "/workspace/scratch/5b5281e79681/retinex-validation/executables.json"
+      ],
+      "started_utc": "2026-10-03T12:25:53.289434+00:00",
+      "exit_code": 0,
+      "seconds": 0.3153624670012505,
+      "log_sha256": "2da2d97646a8f06865991951695b3cb7df539b1862e1a7851fb99063ca085e90"
+    },
+    {
+      "name": "bridge-sanitizers",
+      "command": [
+        "python3",
+        "migration/tests/run_filter_process_sanitizers.py",
+        "--build",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter",
+        "--output",
+        "/workspace/scratch/5b5281e79681/retinex-validation/bridge-sanitizers",
+        "--lock",
+        "/workspace/scratch/5b5281e79681/gimp-painter-build.lock",
+        "--run"
+      ],
+      "started_utc": "2026-10-03T12:26:36.372203+00:00",
+      "exit_code": 0,
+      "seconds": 634.2292485479993,
+      "log_sha256": "6cf4e8239dbaf0d49dc99696995cc240b60a88dc700e4931f6627caf038025e9"
+    },
+    {
+      "name": "current-pdb-sealed",
+      "command": [
+        "python3",
+        "tools/capture_retinex.py",
+        "--build",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter",
+        "--output",
+        "/workspace/scratch/5b5281e79681/retinex-validation/current-pdb-sealed"
+      ],
+      "started_utc": "2026-10-03T12:47:07.028522+00:00",
+      "exit_code": 0,
+      "seconds": 43.432572409001295,
+      "log_sha256": "6d1b1fd4b182d034eb067391ae1a5d510f40efeeb341a5daa25eb5ec4f8de5bc"
+    },
+    {
+      "name": "package",
+      "command": [
+        "python3",
+        "tools/package-linux-runtime.py",
+        "--build",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter",
+        "--deps",
+        "/workspace/scratch/5b5281e79681/.deps-debian13",
+        "--output",
+        "/workspace/scratch/5b5281e79681/retinex-package-sealed"
+      ],
+      "started_utc": "2026-10-03T12:47:50.683579+00:00",
+      "exit_code": 0,
+      "seconds": 19.03293044200109,
+      "log_sha256": "dec7346728fcf4d2757a1d6b3a415b98f5f95aa3ff7bf1e03a002b89263acdda"
+    },
+    {
+      "name": "installed-variant0",
+      "command": [
+        "python3",
+        "tools/check_installed_retinex.py",
+        "--build",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter",
+        "--bundle",
+        "/workspace/scratch/5b5281e79681/retinex-package-sealed/gimp-painter-linux-x86_64",
+        "--variant",
+        "0",
+        "--relocate",
+        "--output",
+        "/workspace/scratch/5b5281e79681/retinex-installed-variant0-sealed"
+      ],
+      "started_utc": "2026-10-03T12:48:09.716941+00:00",
+      "exit_code": 0,
+      "seconds": 9.659359651996056,
+      "log_sha256": "52d7a9c263ca2bba8aa876e3c561d6d87abbe5d4cf7d86170c602740bf182f4a"
+    },
+    {
+      "name": "installed-variant1",
+      "command": [
+        "python3",
+        "tools/check_installed_retinex.py",
+        "--build",
+        "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter",
+        "--bundle",
+        "/workspace/scratch/5b5281e79681/retinex-package-sealed/gimp-painter-linux-x86_64",
+        "--variant",
+        "1",
+        "--relocate",
+        "--output",
+        "/workspace/scratch/5b5281e79681/retinex-installed-variant1-sealed"
+      ],
+      "started_utc": "2026-10-03T12:48:19.376835+00:00",
+      "exit_code": 0,
+      "seconds": 8.698970889003249,
+      "log_sha256": "91963d409d82deffeecc175d5226b6bec43241542cecbf58510ef2f3462ee64b"
+    }
+  ]
+}

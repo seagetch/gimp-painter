@@ -65,7 +65,7 @@ int main (int argc, char **argv)
 #ifdef G_OS_WIN32
   return 125;
 #else
-  if (argc != 3 || std::strcmp (argv[1], "--filter-worker-v3")) return 125;
+  if (argc != 3 || std::strcmp (argv[1], "--filter-worker-v4")) return 125;
   /* Duplicate before GIMP/GEGL/plugin initialization. All ordinary diagnostics
    * (including library writes to stdout) go to stderr; descendants cannot keep
    * this protocol descriptor alive across exec. */
