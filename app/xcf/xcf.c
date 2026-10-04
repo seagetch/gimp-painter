@@ -441,7 +441,7 @@ xcf_save_stream_prepared (Gimp           *gimp,
   info.progress         = progress;
   info.file             = output_file;
   info.painter_save_state = prepared;
-  info.painter_cancellable = g_cancellable_new ();
+  info.painter_cancellable = g_object_ref (xcf_painter_save_cancellable (prepared));
 
   if (gimp_image_get_xcf_compression (image))
     info.compression = COMPRESS_ZLIB;
@@ -484,7 +484,7 @@ xcf_save_stream_prepared (Gimp           *gimp,
       g_set_error_literal (&my_error, G_IO_ERROR, G_IO_ERROR_CANCELLED, "Saving was cancelled");
     }
 
-  cancellable = g_cancellable_new ();
+  cancellable = g_object_ref (info.painter_cancellable);
   if (success)
     {
       if (progress)
@@ -533,8 +533,10 @@ xcf_save_stream_prepared (Gimp           *gimp,
 
 
 gboolean
-xcf_save_stream (Gimp *gimp, GimpImage *image, GOutputStream *output,
-                 GFile *output_file, GimpProgress *progress, GError **error)
+xcf_save_stream_with_painter_transport (Gimp *gimp, GimpImage *image, GOutputStream *output,
+                                        GFile *output_file, GimpProgress *progress,
+                                        gboolean multipart, GCancellable *cancel,
+                                        GError **error)
 {
   XcfPainterSave *prepared;
   gboolean success;
@@ -549,7 +551,7 @@ xcf_save_stream (Gimp *gimp, GimpImage *image, GOutputStream *output,
       prepared = NULL;
     }
   else
-    prepared = xcf_painter_prepare_save (image, error);
+    prepared = xcf_painter_prepare_save_full (image, cancel, multipart, error);
   if (!prepared)
     {
       GCancellable *cancel = g_cancellable_new ();
@@ -560,6 +562,67 @@ xcf_save_stream (Gimp *gimp, GimpImage *image, GOutputStream *output,
   success = xcf_save_stream_prepared (gimp, image, output, output_file, progress, prepared, error);
   xcf_painter_free_save (prepared);
   g_object_unref (image);
+  return success;
+}
+
+gboolean
+xcf_save_stream (Gimp *gimp, GimpImage *image, GOutputStream *output,
+                 GFile *output_file, GimpProgress *progress, GError **error)
+{
+  return xcf_save_stream_with_painter_transport (gimp, image, output, output_file,
+                                                 progress, TRUE, NULL, error);
+}
+
+/* Ordinary Save uses the accepted multipart transport. Tests can explicitly
+ * opt out to verify legacy inline-limit refusal; there is no process-global
+ * or environment-variable switch. */
+gboolean
+xcf_save_file_with_painter_transport (Gimp *gimp, GimpImage *image, GFile *file,
+                                      GimpProgress *progress, gboolean multipart,
+                                      GCancellable *requested_cancel, GError **error)
+{
+  GCancellable *cancel;
+  gulong cancel_id = 0;
+  XcfPainterSave *prepared = NULL;
+  GOutputStream *output = NULL;
+  gboolean success = FALSE;
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
+  g_return_val_if_fail (requested_cancel == NULL || G_IS_CANCELLABLE (requested_cancel), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  /* Every progress virtual callback is reentrant, including preparation start.
+   * Lease all borrowed arguments before the first callback. */
+  g_object_ref (gimp);
+  g_object_ref (image);
+  g_object_ref (file);
+  if (progress) g_object_ref (progress);
+  cancel = requested_cancel ? g_object_ref (requested_cancel) : g_cancellable_new ();
+  if (progress)
+    {
+      cancel_id = g_signal_connect (progress, "cancel", G_CALLBACK (xcf_cancel_load), cancel);
+      gimp_progress_start (progress, TRUE, _("Preparing '%s'"), gimp_file_get_utf8_name (file));
+    }
+  if (gimp_image_has_pending_paint (image))
+    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_BUSY,
+                         _("Painting is still in progress. Wait for the stroke to finish, then save again."));
+  else
+    prepared = xcf_painter_prepare_save_full (image, cancel, multipart, error);
+  if (cancel_id) g_signal_handler_disconnect (progress, cancel_id);
+  if (prepared)
+    {
+      output = G_OUTPUT_STREAM (g_file_replace (file, NULL, FALSE, G_FILE_CREATE_NONE, cancel, error));
+      if (output)
+        { success = xcf_save_stream_prepared (gimp, image, output, file, progress, prepared, error); g_object_unref (output); }
+      xcf_painter_free_save (prepared);
+    }
+  if (progress && !output) gimp_progress_end (progress);
+  g_object_unref (cancel);
+  if (progress) g_object_unref (progress);
+  g_object_unref (file);
+  g_object_unref (image);
+  g_object_unref (gimp);
   return success;
 }
 
@@ -624,49 +687,15 @@ xcf_save_invoker (GimpProcedure         *procedure,
   GimpValueArray *return_vals;
   GimpImage      *image;
   GFile          *file;
-  GOutputStream  *output;
   gboolean        success  = FALSE;
-  GError         *my_error = NULL;
-  XcfPainterSave *prepared;
 
   gimp_set_busy (gimp);
 
   image = g_value_get_object (gimp_value_array_index (args, 1));
   file  = g_value_get_object (gimp_value_array_index (args, 2));
 
-  if (gimp_image_has_pending_paint (image))
-    {
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_BUSY,
-                           _("Painting is still in progress. Wait for the stroke to finish, then save again."));
-      prepared = NULL;
-    }
-  else
-    prepared = xcf_painter_prepare_save (image, error);
-  if (!prepared)
-    {
-      return_vals = gimp_procedure_get_return_values (procedure, FALSE, error ? *error : NULL);
-      gimp_unset_busy (gimp);
-      return return_vals;
-    }
-
-  output = G_OUTPUT_STREAM (g_file_replace (file,
-                                            NULL, FALSE, G_FILE_CREATE_NONE,
-                                            NULL, &my_error));
-
-  if (output)
-    {
-      success = xcf_save_stream_prepared (gimp, image, output, file, progress, prepared, error);
-
-      g_object_unref (output);
-    }
-  else
-    {
-      g_propagate_prefixed_error (error, my_error,
-                                  _("Error creating '%s': "),
-                                  gimp_file_get_utf8_name (file));
-    }
-
-  xcf_painter_free_save (prepared);
+  success = xcf_save_file_with_painter_transport (gimp, image, file, progress,
+                                                   TRUE, NULL, error);
 
   return_vals = gimp_procedure_get_return_values (procedure, success,
                                                   error ? *error : NULL);

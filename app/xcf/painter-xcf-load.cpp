@@ -29,48 +29,23 @@ extern "C" {
 #include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
 }
 #include "painter-xcf-compat.hpp"
+#include "painter-xcf-storage.hpp"
 namespace compat = gimp::painter::xcf;
 namespace {
-struct Snapshot
-{
-  GFile *file = nullptr;
-  GFileIOStream *io = nullptr;
-  GMappedFile *map = nullptr;
-  ~Snapshot ()
-  {
-    if (map) g_mapped_file_unref (map);
-    if (io) { g_io_stream_close (G_IO_STREAM (io), nullptr, nullptr); g_object_unref (io); }
-    if (file) { g_file_delete (file, nullptr, nullptr); g_object_unref (file); }
-  }
-};
-void free_snapshot (gpointer p) { delete static_cast<Snapshot *> (p); }
 GBytes *snapshot (GInputStream *input, GCancellable *cancel, GError **error)
 {
-  std::unique_ptr<Snapshot> state (new Snapshot);
-  state->file = g_file_new_tmp ("gimp-xcf-read-XXXXXX", &state->io, error);
-  if (!state->file) return nullptr;
-  GOutputStream *output = g_io_stream_get_output_stream (G_IO_STREAM (state->io));
-  guint8 chunk[65536];
-  for (;;)
+  try
     {
-      const gssize count = g_input_stream_read (input, chunk, sizeof chunk, cancel, error);
-      if (count < 0) return nullptr;
-      if (!count) break;
-      if (!g_output_stream_write_all (output, chunk, count, nullptr, cancel, error)) return nullptr;
+      /* Metadata transport limits must not become a whole-XCF/pixel limit. */
+      GimpPainterXcf::StorageLimits limits; limits.bytes = G_MAXINT64;
+      return GimpPainterXcf::snapshot_stream (input, cancel, limits).release ();
     }
-  if (!g_output_stream_flush (output, cancel, error)) return nullptr;
-  gchar *path = g_file_get_path (state->file);
-  state->map = g_mapped_file_new (path, FALSE, error);
-  g_free (path);
-  if (!state->map) return nullptr;
-  /* POSIX can unlink a mapped open file immediately (also crash-safe). On
-   * platforms that cannot, Snapshot retries deletion after unmapping/closing. */
-  if (g_file_delete (state->file, nullptr, nullptr)) g_clear_object (&state->file);
-  GBytes *bytes = g_bytes_new_with_free_func (g_mapped_file_get_contents (state->map),
-                                             g_mapped_file_get_length (state->map),
-                                             free_snapshot, state.get ());
-  state.release ();
-  return bytes;
+  catch (const GimpPainterXcf::StorageError& failure)
+    { g_set_error_literal (error, failure.domain, failure.code, failure.what ()); }
+  catch (const std::exception& failure)
+    { g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, failure.what ()); }
+  catch (...) { g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Could not snapshot XCF input"); }
+  return nullptr;
 }
 compat::Bytes source (XcfInfo *info)
 {

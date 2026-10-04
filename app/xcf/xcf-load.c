@@ -1149,6 +1149,7 @@ xcf_load_image_props (XcfInfo   *info,
 {
   const goffset props_begin = info->cp;
   g_autoptr(GPtrArray) unknown_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
+  g_autoptr(GPtrArray) transport_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
   PropType prop_type;
   guint32  prop_size;
 
@@ -1168,6 +1169,7 @@ xcf_load_image_props (XcfInfo   *info,
       switch (prop_type)
         {
         case PROP_END:
+          if (! xcf_painter_finish_transport (info, G_OBJECT (image), transport_records)) return FALSE;
           xcf_painter_set_unknown_records (G_OBJECT (image), unknown_records);
           xcf_painter_capture_properties (info, G_OBJECT (image), props_begin, info->cp);
           return TRUE;
@@ -1414,8 +1416,12 @@ xcf_load_image_props (XcfInfo   *info,
 
             while (info->cp - base < prop_size)
               {
-                GimpParasite *p     = xcf_load_parasite (info);
+                gint captured = xcf_painter_intercept_parasite (info, transport_records, base + prop_size);
+                GimpParasite *p;
                 GError       *error = NULL;
+                if (captured < 0) return FALSE;
+                if (captured > 0) continue;
+                p = xcf_load_parasite (info);
 
                 if (! p)
                   {
@@ -1673,6 +1679,7 @@ xcf_load_layer_props (XcfInfo    *info,
 {
   const goffset props_begin = info->cp;
   g_autoptr(GPtrArray) unknown_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
+  g_autoptr(GPtrArray) transport_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
   PropType prop_type;
   guint32  prop_size;
 
@@ -1700,6 +1707,7 @@ xcf_load_layer_props (XcfInfo    *info,
       switch (prop_type)
         {
         case PROP_END:
+          if (! xcf_painter_finish_transport (info, G_OBJECT (*layer), transport_records)) return FALSE;
           xcf_painter_set_unknown_records (G_OBJECT (*layer), unknown_records);
           xcf_painter_capture_properties (info, G_OBJECT (*layer), props_begin, info->cp);
           return TRUE;
@@ -1975,8 +1983,12 @@ xcf_load_layer_props (XcfInfo    *info,
 
             while (info->cp - base < prop_size)
               {
-                GimpParasite *p     = xcf_load_parasite (info);
+                gint captured = xcf_painter_intercept_parasite (info, transport_records, base + prop_size);
+                GimpParasite *p;
                 GError       *error = NULL;
+                if (captured < 0) return FALSE;
+                if (captured > 0) continue;
+                p = xcf_load_parasite (info);
 
                 if (! p)
                   return FALSE;
@@ -2204,6 +2216,7 @@ xcf_load_channel_props (XcfInfo      *info,
 {
   const goffset props_begin = info->cp;
   g_autoptr(GPtrArray) unknown_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
+  g_autoptr(GPtrArray) transport_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
   PropType prop_type;
   guint32  prop_size;
 
@@ -2223,6 +2236,7 @@ xcf_load_channel_props (XcfInfo      *info,
       switch (prop_type)
         {
         case PROP_END:
+          if (! xcf_painter_finish_transport (info, G_OBJECT (*channel), transport_records)) return FALSE;
           xcf_painter_set_unknown_records (G_OBJECT (*channel), unknown_records);
           xcf_painter_capture_properties (info, G_OBJECT (*channel), props_begin, info->cp);
           return TRUE;
@@ -2449,8 +2463,12 @@ xcf_load_channel_props (XcfInfo      *info,
 
             while ((info->cp - base) < prop_size)
               {
-                GimpParasite *p     = xcf_load_parasite (info);
+                gint captured = xcf_painter_intercept_parasite (info, transport_records, base + prop_size);
+                GimpParasite *p;
                 GError       *error = NULL;
+                if (captured < 0) return FALSE;
+                if (captured > 0) continue;
+                p = xcf_load_parasite (info);
 
                 if (! p)
                   return FALSE;
@@ -2945,6 +2963,7 @@ xcf_load_path_props (XcfInfo    *info,
 {
   const goffset props_begin = info->cp;
   g_autoptr(GPtrArray) unknown_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
+  g_autoptr(GPtrArray) transport_records = g_ptr_array_new_with_free_func ((GDestroyNotify) g_bytes_unref);
   PropType prop_type;
   guint32  prop_size;
 
@@ -2957,6 +2976,7 @@ xcf_load_path_props (XcfInfo    *info,
       switch (prop_type)
         {
         case PROP_END:
+          if (! xcf_painter_finish_transport (info, G_OBJECT (*vectors), transport_records)) return FALSE;
           xcf_painter_set_unknown_records (G_OBJECT (*vectors), unknown_records);
           xcf_painter_capture_properties (info, G_OBJECT (*vectors), props_begin, info->cp);
           return TRUE;
@@ -3037,8 +3057,12 @@ xcf_load_path_props (XcfInfo    *info,
 
             while ((info->cp - base) < prop_size)
               {
-                GimpParasite *p     = xcf_load_parasite (info);
+                gint captured = xcf_painter_intercept_parasite (info, transport_records, base + prop_size);
+                GimpParasite *p;
                 GError       *error = NULL;
+                if (captured < 0) return FALSE;
+                if (captured > 0) continue;
+                p = xcf_load_parasite (info);
 
                 if (! p)
                   return FALSE;

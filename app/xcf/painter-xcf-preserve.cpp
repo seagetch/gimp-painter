@@ -28,6 +28,7 @@ extern "C" {
 #include "core/gimpparasitelist.h"
 #include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
 #include "xcf-private.h"
+#include "xcf-write.h"
 #include "painter-xcf-load.h"
 #include "painter-xcf-preserve.h"
 }
@@ -35,6 +36,8 @@ extern "C" {
 #include "painter/object-ref.hpp"
 #include "painter/connection.hpp"
 #include "painter/resources.hpp"
+#include "painter-xcf-storage.hpp"
+#include "painter-xcf-multipart.hpp"
 #include <algorithm>
 #include <cstring>
 #include <memory>
@@ -60,6 +63,30 @@ struct CloneFree { void operator() (GimpCloneLayerReference *p) const { if (p) g
 using Parasite = std::unique_ptr<GimpParasite, ParasiteFree>;
 using Variant = std::unique_ptr<GVariant, VariantFree>;
 using Bytes = std::unique_ptr<GBytes, BytesFree>;
+struct TransportFree { void operator() (GimpPainterProvenanceTransport *p) const { gimp_painter_provenance_free_transport (p); } };
+using Transport = std::unique_ptr<GimpPainterProvenanceTransport, TransportFree>;
+struct Capsule
+{
+  GimpPainter::Bytes bytes;
+  guint32 flags = GIMP_PARASITE_PERSISTENT;
+  bool occupied = false;
+  bool from_transport = false;
+  bool regenerated = false;
+  GBytes *get () const { return bytes.get (); }
+  explicit operator bool () const { return occupied; }
+};
+Capsule owner_capsule (GObject *owner, GimpPainterProvenanceNamespace space)
+{
+  Transport transport (gimp_painter_provenance_ref_transport (owner));
+  if (transport && (transport->present[space] || transport->invalid[space]))
+    return {GimpPainter::Bytes::retain (transport->capsules[space]), GIMP_PARASITE_PERSISTENT, true, true, false};
+  const char *name = GimpPainterXcf::namespace_name (GimpPainterXcf::Namespace (space));
+  const auto *parasite = GIMP_IS_IMAGE (owner) ? gimp_image_parasite_find (GIMP_IMAGE (owner), name) :
+                                             gimp_item_parasite_find (GIMP_ITEM (owner), name);
+  if (!parasite) return {};
+  guint32 size; const void *data = gimp_parasite_get_data (parasite, &size);
+  return {GimpPainter::Bytes::adopt (g_bytes_new (data, size)), guint32 (gimp_parasite_get_flags (parasite)), true};
+}
 using Object = GimpPainter::ObjectRef<GObject>;
 using GimpPainter::Connection;
 using Args = std::unique_ptr<GimpValueArray, ArgsFree>;
@@ -67,30 +94,30 @@ struct SnapshotFree { void operator() (GimpFilterArgumentsSnapshot *p) const { i
 using Snapshot = std::unique_ptr<GimpFilterArgumentsSnapshot, SnapshotFree>;
 using Clone = std::unique_ptr<GimpCloneLayerReference, CloneFree>;
 [[noreturn]] void fail (const char *message) { throw std::runtime_error (message); }
-GVariant *byte_array (const void *data, gsize length)
+GVariant *byte_array (const void *data, gsize length, GCancellable *cancel = nullptr)
 {
-  if (length > max_blob) fail ("Painter metadata exceeds the XCF parasite size limit");
-  return g_variant_new_fixed_array (G_VARIANT_TYPE_BYTE, data, length, 1);
+  if (length <= 65536) return g_variant_new_fixed_array (G_VARIANT_TYPE_BYTE, data, length, 1);
+  auto *input = g_memory_input_stream_new_from_data (data, length, nullptr);
+  std::unique_ptr<GInputStream, decltype (&g_object_unref)> held (input, g_object_unref);
+  auto snapshot = GimpPainterXcf::snapshot_stream (input, cancel);
+  return GimpPainterXcf::byte_variant (snapshot.get ());
 }
 GVariant *byte_array (GBytes *raw)
 {
-  gsize length = 0; const void *data = raw ? g_bytes_get_data (raw, &length) : nullptr;
-  return byte_array (data, length);
+  return GimpPainterXcf::byte_variant (raw);
 }
 GBytes *variant_bytes (GVariant *value)
 {
   if (!value || !g_variant_is_of_type (value, G_VARIANT_TYPE_BYTESTRING)) fail ("Invalid Painter byte field");
-  gsize length; const void *data = g_variant_get_fixed_array (value, &length, 1);
-  return g_bytes_new (data, length);
+  return g_variant_get_data_as_bytes (value);
 }
-Variant decode (const GimpParasite *parasite)
+Variant decode (GBytes *capsule)
 {
-  if (!parasite) return {};
-  guint32 length = 0;
-  auto *data = static_cast<const guint8 *> (gimp_parasite_get_data (parasite, &length));
+  if (!capsule) return {};
+  gsize length = 0;
+  auto *data = static_cast<const guint8 *> (g_bytes_get_data (capsule, &length));
   if (length < sizeof magic || std::memcmp (data, magic, sizeof magic)) return {};
-  if (length > max_blob) fail ("Painter metadata exceeds the bounded record size");
-  Bytes raw (g_bytes_new (data + sizeof magic, length - sizeof magic));
+  Bytes raw (g_bytes_new_from_bytes (capsule, sizeof magic, length - sizeof magic));
   Variant value (g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE_VARDICT, raw.get (), FALSE)));
   if (!g_variant_is_normal_form (value.get ())) fail ("Malformed Painter metadata; original record is retained");
 #if G_BYTE_ORDER == G_BIG_ENDIAN
@@ -111,22 +138,19 @@ Variant decode (const GimpParasite *parasite)
     }
   guint32 version;
   if (!g_variant_lookup (value.get (), "version", "u", &version) || version != 1) return {};
+  GimpPainterXcf::discard_snapshot_pages (data, length);
   return value;
 }
-Parasite encode (const gchar *name, GVariant *dict)
+Variant decode (const GimpParasite *parasite)
+{
+  if (!parasite) return {};
+  guint32 size; const void *data = gimp_parasite_get_data (parasite, &size);
+  Bytes bytes (g_bytes_new (data, size)); return decode (bytes.get ());
+}
+Capsule encode (const gchar *, GVariant *dict, GCancellable *cancel)
 {
   Variant value (g_variant_ref_sink (dict));
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-  value.reset (g_variant_byteswap (value.get ()));
-#endif
-  const gsize size = g_variant_get_size (value.get ());
-  if (size > max_blob - sizeof magic) fail ("Painter metadata is too large for one XCF parasite; destination was not changed");
-  std::vector<guint8> bytes (sizeof magic + size);
-  std::memcpy (bytes.data (), magic, sizeof magic);
-  /* Serialized GVariant data has alignment requirements; the wire header
-   * need not. Copy from its aligned immutable serialization. */
-  std::memcpy (bytes.data () + sizeof magic, g_variant_get_data (value.get ()), size);
-  return Parasite (gimp_parasite_new (name, GIMP_PARASITE_PERSISTENT, bytes.size (), bytes.data ()));
+  return {GimpPainterXcf::snapshot_variant (magic, sizeof magic, value.get (), cancel), GIMP_PARASITE_PERSISTENT, true, false, true};
 }
 struct Dictionary
 {
@@ -135,11 +159,29 @@ struct Dictionary
   explicit Dictionary (GVariant *base = nullptr) { g_variant_dict_init (&dict, base); }
   ~Dictionary () { if (!ended) g_variant_dict_clear (&dict); }
   void put (const char *key, GVariant *value) { g_variant_dict_insert_value (&dict, key, value); }
-  GVariant *end () { ended = true; return g_variant_dict_end (&dict); }
+  GVariant *end ()
+  {
+    ended = true;
+    Variant unordered (g_variant_ref_sink (g_variant_dict_end (&dict)));
+    std::vector<Variant> entries;
+    const gsize count = g_variant_n_children (unordered.get ());
+    entries.reserve (count);
+    for (gsize i = 0; i < count; ++i) entries.emplace_back (g_variant_get_child_value (unordered.get (), i));
+    /* GVariantDict hash iteration can change container padding after reload.
+     * Unique dictionary keys have no order semantics; stable ordering avoids
+     * size drift without materializing unknown field payloads. */
+    std::sort (entries.begin (), entries.end (), [] (const Variant& a, const Variant& b) {
+      Variant ka (g_variant_get_child_value (a.get (), 0)), kb (g_variant_get_child_value (b.get (), 0));
+      return std::strcmp (g_variant_get_string (ka.get (), nullptr), g_variant_get_string (kb.get (), nullptr)) < 0;
+    });
+    GVariantBuilder ordered; g_variant_builder_init (&ordered, G_VARIANT_TYPE_VARDICT);
+    for (const auto& entry : entries) g_variant_builder_add_value (&ordered, entry.get ());
+    return g_variant_builder_end (&ordered);
+  }
 };
-void nullable_string (Dictionary &dict, const char *key, const char *value)
+void nullable_string (Dictionary &dict, const char *key, const char *value, GCancellable *cancel = nullptr)
 {
-  if (value) dict.put (key, byte_array (value, std::strlen (value) + 1));
+  if (value) dict.put (key, byte_array (value, std::strlen (value) + 1, cancel));
   else g_variant_dict_remove (&dict.dict, key);
 }
 gchar *read_string (GVariant *dict, const char *key)
@@ -148,19 +190,32 @@ gchar *read_string (GVariant *dict, const char *key)
   if (!value) return nullptr;
   gsize size;
   const auto *data = static_cast<const gchar *> (g_variant_get_fixed_array (value.get (), &size, 1));
+  if (size > max_blob) fail ("Painter native name exceeds the legacy materialization limit; original capsule is retained");
   if (!size || data[size - 1] || std::memchr (data, 0, size - 1)) fail ("Malformed Painter name");
-  return static_cast<gchar *> (g_memdup2 (data, size));
+  auto *copy = static_cast<gchar *> (g_try_malloc (size));
+  if (!copy) throw std::bad_alloc ();
+  std::memcpy (copy, data, size); return copy;
 }
 const char external_field[] = "external-reference-origins";
-Bytes little_endian_bytes (GVariant *value)
+Bytes little_endian_bytes (GVariant *value, GCancellable *cancel = nullptr)
+{ return Bytes (GimpPainterXcf::snapshot_variant (nullptr, 0, value, cancel).release ()); }
+bool equal_snapshot_bytes (const void *, const void *, gsize, GCancellable *);
+std::string snapshot_digest (GBytes *bytes, GCancellable *cancel)
 {
-  Variant wire (g_variant_ref (value));
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-  wire.reset (g_variant_byteswap (wire.get ()));
-#endif
-  return Bytes (g_variant_get_data_as_bytes (wire.get ()));
+  std::unique_ptr<GChecksum, decltype (&g_checksum_free)> sum (g_checksum_new (G_CHECKSUM_SHA256), g_checksum_free);
+  gsize size; const auto *data = static_cast<const guint8 *> (g_bytes_get_data (bytes, &size));
+  while (size)
+    {
+      if (cancel && g_cancellable_is_cancelled (cancel))
+        throw GimpPainterXcf::StorageError (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Painter archive hashing was cancelled");
+      const gsize part = std::min (size, gsize (65536));
+      g_checksum_update (sum.get (), data, part);
+      GimpPainterXcf::discard_snapshot_pages (data, part);
+      data += part; size -= part;
+    }
+  return g_checksum_get_string (sum.get ());
 }
-void merge_external_origins (Dictionary &dict, GObject *object, GVariant *incoming)
+void merge_external_origins (Dictionary &dict, GObject *object, GVariant *incoming, GCancellable *cancel)
 {
   Variant existing (g_variant_dict_lookup_value (&dict.dict, external_field, G_VARIANT_TYPE ("aa{sv}")));
   if (!existing && g_variant_dict_contains (&dict.dict, external_field)) fail ("Invalid external reference provenance");
@@ -174,8 +229,9 @@ void merge_external_origins (Dictionary &dict, GObject *object, GVariant *incomi
 #endif
     }
   std::vector<Variant> records;
+  std::vector<Bytes> record_bytes;
   std::unordered_map<std::string, std::vector<gsize>> fingerprints;
-  gsize retained_size = 0;
+  guint64 retained_size = 0;
   for (GVariant *source : {existing.get (), cached.get (), incoming})
     if (source)
       {
@@ -185,18 +241,21 @@ void merge_external_origins (Dictionary &dict, GObject *object, GVariant *incomi
         for (gsize i = 0; i < count; ++i)
           {
             Variant record (g_variant_get_child_value (source, i));
-            Bytes raw (g_variant_get_data_as_bytes (record.get ()));
-            std::unique_ptr<gchar, decltype (&g_free)> digest (g_compute_checksum_for_bytes (G_CHECKSUM_SHA256, raw.get ()), g_free);
-            auto &bucket = fingerprints[std::string (digest.get ())];
+            Bytes raw = little_endian_bytes (record.get (), cancel);
+            auto &bucket = fingerprints[snapshot_digest (raw.get (), cancel)];
             bool seen = false;
             for (gsize index : bucket)
-              if (g_variant_equal (records[index].get (), record.get ())) { seen = true; break; }
+              if (g_bytes_get_size (record_bytes[index].get ()) == g_bytes_get_size (raw.get ()) &&
+                  equal_snapshot_bytes (g_bytes_get_data (record_bytes[index].get (), nullptr),
+                                        g_bytes_get_data (raw.get (), nullptr), g_bytes_get_size (raw.get ()), cancel))
+                { seen = true; break; }
             if (!seen)
               {
                 const gsize size = g_bytes_get_size (raw.get ());
-                if (records.size () >= 65536 || size > max_blob - retained_size) fail ("External reference archive exceeds its serialization limits");
+                if (records.size () >= 65536 || guint64 (size) > GimpPainterXcf::StorageLimits ().bytes - retained_size) fail ("External reference archive exceeds its serialization limits");
                 retained_size += size;
                 records.emplace_back (std::move (record));
+                record_bytes.emplace_back (std::move (raw));
                 bucket.push_back (records.size () - 1);
               }
           }
@@ -208,9 +267,27 @@ void merge_external_origins (Dictionary &dict, GObject *object, GVariant *incomi
       dict.put (external_field, g_variant_builder_end (&array));
     }
 }
-void preserve_records (Dictionary &dict, GObject *object)
+bool equal_snapshot_bytes (const void *first, const void *second, gsize size,
+                           GCancellable *cancel)
 {
-  merge_external_origins (dict, object, nullptr);
+  const auto *a = static_cast<const guint8 *> (first);
+  const auto *b = static_cast<const guint8 *> (second);
+  while (size)
+    {
+      if (cancel && g_cancellable_is_cancelled (cancel))
+        throw GimpPainterXcf::StorageError (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Painter archive comparison was cancelled");
+      const gsize part = std::min (size, gsize (65536));
+      const bool equal = !std::memcmp (a, b, part);
+      GimpPainterXcf::discard_snapshot_pages (a, part);
+      GimpPainterXcf::discard_snapshot_pages (b, part);
+      if (!equal) return false;
+      a += part; b += part; size -= part;
+    }
+  return true;
+}
+void preserve_records (Dictionary &dict, GObject *object, GCancellable *cancel)
+{
+  merge_external_origins (dict, object, nullptr, cancel);
   if (!g_variant_dict_contains (&dict.dict, "original-owner"))
     if (auto type = String (gimp_painter_provenance_dup_text (object, GIMP_PAINTER_PROVENANCE_TYPE)))
       dict.put ("original-owner", g_variant_new_string (type.get ()));
@@ -225,19 +302,11 @@ void preserve_records (Dictionary &dict, GObject *object)
   Records unknown (gimp_painter_provenance_ref_records (object));
   if (unknown && unknown->len)
     {
-      gsize size = 0;
+      std::vector<GimpPainter::Bytes> parts;
       for (guint i = 0; i < unknown->len; ++i)
-        {
-          const gsize part = g_bytes_get_size (static_cast<GBytes *> (g_ptr_array_index (unknown.get (), i)));
-          if (part > max_blob - size) fail ("Opaque property archive exceeds the XCF parasite size limit");
-          size += part;
-        }
-      std::vector<guint8> current (size); gsize offset = 0;
-      for (guint i = 0; i < unknown->len; ++i)
-        {
-          gsize part; const void *data = g_bytes_get_data (static_cast<GBytes *> (g_ptr_array_index (unknown.get (), i)), &part);
-          std::memcpy (current.data () + offset, data, part); offset += part;
-        }
+        parts.push_back (GimpPainter::Bytes::retain (static_cast<GBytes *> (g_ptr_array_index (unknown.get (), i))));
+      auto current = GimpPainterXcf::snapshot_parts (parts, 0, cancel);
+      const gsize size = g_bytes_get_size (current.get ());
       Variant old (g_variant_dict_lookup_value (&dict.dict, "opaque-record-sequences", G_VARIANT_TYPE ("aay")));
       if (!old && g_variant_dict_contains (&dict.dict, "opaque-record-sequences")) fail ("Invalid opaque property archive");
       GVariantBuilder history; g_variant_builder_init (&history, G_VARIANT_TYPE ("aay"));
@@ -247,10 +316,10 @@ void preserve_records (Dictionary &dict, GObject *object)
           {
             Variant sequence (g_variant_get_child_value (old.get (), i)); gsize length;
             const void *data = g_variant_get_fixed_array (sequence.get (), &length, 1);
-            seen = seen || (length == size && !std::memcmp (data, current.data (), size));
+            seen = seen || (length == size && equal_snapshot_bytes (data, g_bytes_get_data (current.get (), nullptr), size, cancel));
             g_variant_builder_add_value (&history, sequence.get ());
           }
-      if (!seen) g_variant_builder_add_value (&history, byte_array (current.data (), size));
+      if (!seen) g_variant_builder_add_value (&history, byte_array (current.get ()));
       dict.put ("opaque-record-sequences", g_variant_builder_end (&history));
     }
 }
@@ -260,10 +329,7 @@ Bytes pack_opaque_arguments (GVariant *value)
 {
   Variant wrapper (g_variant_ref_sink (g_variant_new_maybe (G_VARIANT_TYPE_VARIANT,
                                       value ? g_variant_new_variant (value) : nullptr)));
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-  wrapper.reset (g_variant_byteswap (wrapper.get ()));
-#endif
-  return Bytes (g_variant_get_data_as_bytes (wrapper.get ()));
+  return little_endian_bytes (wrapper.get ());
 }
 Variant unpack_opaque_arguments (GBytes *bytes)
 {
@@ -290,8 +356,22 @@ void validate_optional_name (GVariant *dict, const gchar *key)
     fail ("Invalid Painter name type; original capsule remains inert");
   gsize size;
   const auto *data = static_cast<const gchar *> (g_variant_get_fixed_array (name.get (), &size, 1));
+  if (size > max_blob) fail ("Painter native name exceeds the legacy materialization limit; original capsule remains inert");
   if (!size || data[size - 1] || std::memchr (data, 0, size - 1))
     fail ("Invalid Painter name encoding; original capsule remains inert");
+}
+void validate_native_names (GVariant *dict, std::initializer_list<const char *> names)
+{
+  gsize bytes = 0;
+  for (const auto *key : names)
+    {
+      validate_optional_name (dict, key);
+      Variant value (g_variant_lookup_value (dict, key, G_VARIANT_TYPE_BYTESTRING));
+      if (!value) continue;
+      const gsize size = g_variant_get_size (value.get ());
+      if (size > max_blob - bytes) fail ("Painter native names exceed the legacy materialization limit; original capsule remains inert");
+      bytes += size;
+    }
 }
 bool item_legacy_mode (GVariant *dict, GimpLayerMode *mode)
 {
@@ -334,7 +414,7 @@ void validate_filter_record (GVariant *dict)
       Variant definition (g_variant_lookup_value (dict, "definition", G_VARIANT_TYPE_BYTESTRING));
       if (!definition) fail ("Invalid Filter definition bytes; original capsule remains inert");
     }
-  validate_optional_name (dict, "procedure");
+  validate_native_names (dict, {"original-source-name", "procedure"});
   /* An unreadable active argument model has a separate lossless opaque path.
    * Do not reject or silently replace it with an empty converted model here.
    */
@@ -349,8 +429,7 @@ void validate_clone_record (GVariant *dict)
       !g_variant_lookup (dict, "allow-name-lookup", "b", &allow_lookup) ||
       state > GIMP_CLONE_SOURCE_EXPIRED)
     fail ("Invalid Clone reference fields; original capsule remains inert");
-  validate_optional_name (dict, "pending-name");
-  validate_optional_name (dict, "source-name");
+  validate_native_names (dict, {"original-source-name", "pending-name", "source-name"});
   Variant pending (g_variant_lookup_value (dict, "pending-name", G_VARIANT_TYPE_BYTESTRING));
   const guint32 expected = pending ? GIMP_CLONE_SOURCE_PENDING :
     id && !expired ? GIMP_CLONE_SOURCE_LIVE : expired ? GIMP_CLONE_SOURCE_EXPIRED : GIMP_CLONE_SOURCE_NONE;
@@ -382,47 +461,45 @@ bool supported_item_record (GVariant *value, GimpItem *owner)
   catch (const std::runtime_error &) { return false; }
   return true;
 }
-Parasite fallback_origin (GObject *object)
+Capsule fallback_origin (GObject *object, GCancellable *cancel)
 {
-  const auto *semantic = GIMP_IS_IMAGE (object) ? gimp_image_parasite_find (GIMP_IMAGE (object), image_name)
-                                               : gimp_item_parasite_find (GIMP_ITEM (object), item_name);
+  auto semantic = owner_capsule (object, GIMP_IS_IMAGE (object) ? GIMP_PAINTER_PROVENANCE_NAMESPACE_IMAGE : GIMP_PAINTER_PROVENANCE_NAMESPACE_ITEM);
   if (!semantic) return {};
-  Variant semantic_value = decode (semantic);
+  Variant semantic_value = decode (semantic.get ());
   if (semantic_value && (GIMP_IS_IMAGE (object) || supported_item_record (semantic_value.get (), GIMP_ITEM (object)))) return {};
-  const auto *existing = GIMP_IS_IMAGE (object) ? gimp_image_parasite_find (GIMP_IMAGE (object), origin_name)
-                                               : gimp_item_parasite_find (GIMP_ITEM (object), origin_name);
-  Variant base = decode (existing);
+  auto existing = owner_capsule (object, GIMP_PAINTER_PROVENANCE_NAMESPACE_ORIGIN);
+  Variant base = decode (existing.get ());
   if (existing && !base) fail ("Unknown origin archive version cannot be overwritten");
   Dictionary dict (base.get ()); dict.put ("version", g_variant_new_uint32 (1));
-  preserve_records (dict, object);
-  return encode (origin_name, dict.end ());
+  preserve_records (dict, object, cancel);
+  return encode (origin_name, dict.end (), cancel);
 }
-Parasite image_record (GimpImage *image)
+Capsule image_record (GimpImage *image, GCancellable *cancel)
 {
-  const auto *existing = gimp_image_parasite_find (image, image_name);
-  Variant base = decode (existing);
-  if (existing && !base) return Parasite (gimp_parasite_copy (existing));
+  auto existing = owner_capsule (G_OBJECT (image), GIMP_PAINTER_PROVENANCE_NAMESPACE_IMAGE);
+  Variant base = decode (existing.get ());
+  if (existing && !base) return existing;
   Dictionary dict (base.get ());
   dict.put ("version", g_variant_new_uint32 (1));
   dict.put ("dialect", g_variant_new_string ("gimp-painter-standard-v1"));
-  preserve_records (dict, G_OBJECT (image));
-  return encode (image_name, dict.end ());
+  preserve_records (dict, G_OBJECT (image), cancel);
+  return encode (image_name, dict.end (), cancel);
 }
-Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
+Capsule item_record (GimpImage *image, GimpItem *item, GHashTable *ids, GCancellable *cancel)
 {
-  const auto *existing = gimp_item_parasite_find (item, item_name);
-  Variant base = decode (existing);
+  auto existing = owner_capsule (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_NAMESPACE_ITEM);
+  Variant base = decode (existing.get ());
   if (existing && (!base || !supported_item_record (base.get (), item)))
     {
       if (GIMP_IS_CLONE_LAYER (item) || GIMP_IS_FILTER_LAYER (item) ||
           (GIMP_IS_LAYER (item) && gimp_painter_layer_mode_is_compatibility (gimp_layer_get_mode (GIMP_LAYER (item)))))
         fail ("Unknown Painter extension version, kind or invalid semantic state cannot be overwritten with edited custom semantics");
-      return Parasite (gimp_parasite_copy (existing));
+      return existing;
     }
   Dictionary dict (base.get ());
   dict.put ("version", g_variant_new_uint32 (1));
   dict.put ("id", g_variant_new_uint32 (GPOINTER_TO_UINT (g_hash_table_lookup (ids, item))));
-  preserve_records (dict, G_OBJECT (item));
+  preserve_records (dict, G_OBJECT (item), cancel);
   if (auto origin = Bytes (gimp_painter_provenance_ref_bytes (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_EXTENSION)))
     dict.put ("original-extension", byte_array (origin.get ()));
   guint32 mode;
@@ -444,7 +521,7 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
           GVariantBuilder array; g_variant_builder_init (&array, G_VARIANT_TYPE ("aa{sv}"));
           g_variant_builder_add_value (&array, origin.get ());
           Variant incoming (g_variant_ref_sink (g_variant_builder_end (&array)));
-          merge_external_origins (dict, G_OBJECT (item), incoming.get ());
+          merge_external_origins (dict, G_OBJECT (item), incoming.get (), cancel);
         }
       if (ref->source && !source_id)
         {
@@ -465,10 +542,10 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
       dict.put ("source-state", g_variant_new_uint32 (ref->state));
       dict.put ("source-expired", g_variant_new_boolean (ref->source_expired));
       dict.put ("allow-name-lookup", g_variant_new_boolean (ref->allow_name_lookup));
-      nullable_string (dict, "pending-name", ref->pending_name);
-      nullable_string (dict, "source-name", ref->source_name);
+      nullable_string (dict, "pending-name", ref->pending_name, cancel);
+      nullable_string (dict, "source-name", ref->source_name, cancel);
       String original (gimp_painter_provenance_dup_text (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_NAME));
-      if (original) nullable_string (dict, "original-source-name", original.get ());
+      if (original) nullable_string (dict, "original-source-name", original.get (), cancel);
       if (auto raw = Bytes (gimp_painter_provenance_ref_bytes (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_EXTENSION)))
         dict.put ("original-extension", byte_array (raw.get ()));
     }
@@ -479,7 +556,7 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
       if (!gimp_filter_layer_get_snapshot_state (filter, &state)) fail ("Could not snapshot Filter cache state");
       dict.put ("kind", g_variant_new_string ("filter"));
       gchar *name = gimp_filter_layer_dup_procedure (filter);
-      nullable_string (dict, "procedure", name); g_free (name);
+      nullable_string (dict, "procedure", name, cancel); g_free (name);
       Bytes definition (gimp_filter_layer_ref_definition (filter));
       dict.put ("has-definition", g_variant_new_boolean (definition != nullptr));
       dict.put ("definition", byte_array (definition.get ()));
@@ -506,9 +583,9 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
             }
           dict.put ("has-arguments", g_variant_new_boolean (args != nullptr));
           GVariant *external = nullptr;
-          Variant encoded_args (GimpPainterXcf::encode_snapshot (args.get (), image, ids, &external));
+          Variant encoded_args (GimpPainterXcf::encode_snapshot (args.get (), image, ids, &external, cancel));
           Variant external_origins (external);
-          merge_external_origins (dict, G_OBJECT (item), external_origins.get ());
+          merge_external_origins (dict, G_OBJECT (item), external_origins.get (), cancel);
           dict.put ("arguments", encoded_args.get ());
         }
       dict.put ("generation", g_variant_new_uint64 (state.generation));
@@ -517,7 +594,7 @@ Parasite item_record (GimpImage *image, GimpItem *item, GHashTable *ids)
       dict.put ("saved-state", g_variant_new_uint32 (state.state));
     }
   else dict.put ("kind", g_variant_new_string ("ordinary"));
-  return encode (item_name, dict.end ());
+  return encode (item_name, dict.end (), cancel);
 }
 }
 extern "C" gint xcf_painter_provenance_in_parasites (GBytes *source, gsize offset, gsize length)
@@ -559,15 +636,28 @@ extern "C" gint xcf_painter_provenance_in_parasites (GBytes *source, gsize offse
 
 struct _XcfPainterSave
 {
-  Parasite image;
-  std::unordered_map<GimpItem *, Parasite> items;
-  std::unordered_map<GObject *, Parasite> origins;
+  struct PreparedCapsule
+  {
+    Capsule capsule;
+    GimpPainterXcf::MultipartManifest manifest;
+    bool multipart = false;
+  };
+  std::unordered_map<GObject *, std::array<PreparedCapsule, 3>> transport;
+  std::unordered_map<GObject *, Transport> imported;
+  std::unordered_map<GObject *, std::vector<GimpPainter::Bytes>> inert_markers;
+  Capsule image;
+  std::unordered_map<GimpItem *, Capsule> items;
+  std::unordered_map<GObject *, Capsule> origins;
   std::unordered_map<GObject *, Bytes> external_origins;
   std::unordered_map<GimpDrawable *, Object> buffers;
   std::unordered_map<GimpCloneLayer *, Clone> clone_checks;
   std::unordered_map<GimpFilterLayer *, GimpFilterLayerSnapshot> filter_checks;
   std::vector<std::pair<Object, Connection>> observers;
+  Object cancellable;
   bool changed = false;
+  const char *changed_property = nullptr;
+  const char *changed_type = nullptr;
+  std::unordered_map<GObject *, const char *> watched_buffers;
   bool custom = false;
   GHashTable *ids = g_hash_table_new (g_direct_hash, g_direct_equal);
   guint32 tattoo_state = 0;
@@ -586,21 +676,34 @@ struct _XcfPainterSave
   }
 };
 namespace {
-void save_notify (GObject *, GParamSpec *, gpointer data) { static_cast<XcfPainterSave *> (data)->changed = true; }
-void save_buffer_changed (GeglBuffer *, const GeglRectangle *, gpointer data) { static_cast<XcfPainterSave *> (data)->changed = true; }
-void save_dirty (GimpImage *, GimpDirtyMask, gpointer data) { static_cast<XcfPainterSave *> (data)->changed = true; }
+void save_notify (GObject *object, GParamSpec *property, gpointer data)
+{
+  auto *save = static_cast<XcfPainterSave *> (data);
+  save->changed = true; save->changed_property = property->name; save->changed_type = G_OBJECT_TYPE_NAME (object);
+}
+void save_buffer_changed (GeglBuffer *buffer, const GeglRectangle *, gpointer data)
+{
+  auto *save = static_cast<XcfPainterSave *> (data); save->changed = true;
+  save->changed_property = "pixels";
+  const auto found = save->watched_buffers.find (G_OBJECT (buffer));
+  save->changed_type = found == save->watched_buffers.end () ? "GeglBuffer" : found->second;
+}
+void save_dirty (GimpImage *, GimpDirtyMask, gpointer data)
+{ auto *save = static_cast<XcfPainterSave *> (data); save->changed = true; save->changed_property = "dirty"; save->changed_type = "GimpImage"; }
 void save_container_changed (GimpContainer *, GimpObject *, gpointer data) { static_cast<XcfPainterSave *> (data)->changed = true; }
 void save_reordered (GimpContainer *, GimpObject *, gint, gpointer data) { static_cast<XcfPainterSave *> (data)->changed = true; }
 }
-extern "C" XcfPainterSave *xcf_painter_prepare_save (GimpImage *image, GError **error)
+extern "C" XcfPainterSave *xcf_painter_prepare_save_full (GimpImage *image, GCancellable *cancel, gboolean permit_multipart, GError **error)
 {
   try
     {
       if (auto refusal = String (gimp_painter_provenance_dup_text (G_OBJECT (image), GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL)))
         fail (refusal.get ());
       std::unique_ptr<XcfPainterSave> result (new XcfPainterSave);
-      result->image = image_record (image);
-      if (auto origin = fallback_origin (G_OBJECT (image))) result->origins.emplace (G_OBJECT (image), std::move (origin));
+      result->cancellable = cancel ? Object::retain (G_OBJECT (cancel)) : Object::adopt (G_OBJECT (g_cancellable_new ()));
+      cancel = G_CANCELLABLE (result->cancellable.get ());
+      if (g_cancellable_is_cancelled (cancel))
+        throw GimpPainterXcf::StorageError (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Painter save preparation was cancelled");
       GList *items = gimp_image_get_layer_list (image);
       items = g_list_concat (items, gimp_image_get_channel_list (image));
       items = g_list_concat (items, gimp_image_get_path_list (image));
@@ -654,17 +757,40 @@ extern "C" XcfPainterSave *xcf_painter_prepare_save (GimpImage *image, GError **
             while (used.count (next)) { if (next == G_MAXUINT32) fail ("No free Painter item ID"); ++next; }
             assign (item, next);
           }
+      result->watch (G_OBJECT (image), "dirty", G_CALLBACK (save_dirty));
+      result->watch (G_OBJECT (image), "notify", G_CALLBACK (save_notify));
+      const auto watch_container = [&] (GimpContainer *container) {
+        result->watch (G_OBJECT (container), "add", G_CALLBACK (save_container_changed));
+        result->watch (G_OBJECT (container), "remove", G_CALLBACK (save_container_changed));
+        result->watch (G_OBJECT (container), "reorder", G_CALLBACK (save_reordered));
+      };
+      watch_container (gimp_image_get_layers (image));
+      watch_container (gimp_image_get_channels (image));
+      watch_container (gimp_image_get_paths (image));
+      for (auto *item : all)
+        {
+          result->watch (G_OBJECT (item), "notify", G_CALLBACK (save_notify));
+          if (auto *children = gimp_viewable_get_children (GIMP_VIEWABLE (item))) watch_container (children);
+          if (GIMP_IS_DRAWABLE (item) && !GIMP_IS_GROUP_LAYER (item))
+            {
+              auto *buffer = G_OBJECT (gimp_drawable_get_buffer (GIMP_DRAWABLE (item)));
+              result->watched_buffers.emplace (buffer, G_OBJECT_TYPE_NAME (item));
+              result->watch (buffer, "changed", G_CALLBACK (save_buffer_changed));
+            }
+        }
+      result->image = image_record (image, cancel);
+      if (auto origin = fallback_origin (G_OBJECT (image), cancel)) result->origins.emplace (G_OBJECT (image), std::move (origin));
       for (auto *item : all)
         {
           if (auto refusal = String (gimp_painter_provenance_dup_text (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL)))
             fail (refusal.get ());
-          result->items.emplace (item, item_record (image, item, result->ids));
+          result->items.emplace (item, item_record (image, item, result->ids, cancel));
           {
             Variant record = decode (result->items.at (item).get ());
             if (record)
               {
                 Variant external (g_variant_lookup_value (record.get (), external_field, G_VARIANT_TYPE ("aa{sv}")));
-                if (external) result->external_origins.emplace (G_OBJECT (item), little_endian_bytes (external.get ()));
+                if (external) result->external_origins.emplace (G_OBJECT (item), little_endian_bytes (external.get (), cancel));
               }
           }
           if (GIMP_IS_CLONE_LAYER (item))
@@ -679,38 +805,81 @@ extern "C" XcfPainterSave *xcf_painter_prepare_save (GimpImage *image, GError **
               if (!gimp_filter_layer_get_snapshot_state (GIMP_FILTER_LAYER (item), &state)) fail ("Could not retain Filter save checkpoint");
               result->filter_checks.emplace (GIMP_FILTER_LAYER (item), state);
             }
-          if (auto origin = fallback_origin (G_OBJECT (item))) result->origins.emplace (G_OBJECT (item), std::move (origin));
+          if (auto origin = fallback_origin (G_OBJECT (item), cancel)) result->origins.emplace (G_OBJECT (item), std::move (origin));
           if (GIMP_IS_CLONE_LAYER (item) || GIMP_IS_FILTER_LAYER (item) ||
               (GIMP_IS_LAYER (item) && gimp_painter_layer_mode_is_compatibility (gimp_layer_get_mode (GIMP_LAYER (item)))))
             result->custom = true;
           if (GIMP_IS_DRAWABLE (item))
             result->buffers.emplace (GIMP_DRAWABLE (item), Object::adopt (G_OBJECT (gegl_buffer_dup (gimp_drawable_get_buffer (GIMP_DRAWABLE (item))))));
         }
-      result->watch (G_OBJECT (image), "dirty", G_CALLBACK (save_dirty));
-      result->watch (G_OBJECT (image), "notify", G_CALLBACK (save_notify));
-      const auto watch_container = [&] (GimpContainer *container) {
-        result->watch (G_OBJECT (container), "add", G_CALLBACK (save_container_changed));
-        result->watch (G_OBJECT (container), "remove", G_CALLBACK (save_container_changed));
-        result->watch (G_OBJECT (container), "reorder", G_CALLBACK (save_reordered));
+      /* Reading a group projection can synchronously fill its own cache and
+       * emit buffer::changed. Children, topology and group properties were
+       * watched throughout; begin watching the derived cache only after all
+       * committed buffer copies finish, so cache filling is not an edit. */
+      for (auto *item : all)
+        if (GIMP_IS_GROUP_LAYER (item))
+          {
+            auto *buffer = G_OBJECT (gimp_drawable_get_buffer (GIMP_DRAWABLE (item)));
+            result->watched_buffers.emplace (buffer, G_OBJECT_TYPE_NAME (item));
+            result->watch (buffer, "changed", G_CALLBACK (save_buffer_changed));
+          }
+      const auto prepare = [&] (GObject *owner, GimpPainterXcf::Namespace space, Capsule capsule) {
+        auto& prepared = result->transport[owner][guint (space)];
+        prepared.capsule = std::move (capsule);
+        if (!prepared.capsule.get ()) return;
+        const gsize size = g_bytes_get_size (prepared.capsule.get ());
+        if (!permit_multipart && size > max_blob)
+          fail ("Painter metadata exceeds the inline XCF size limit; multipart Save is not enabled");
+        /* Opaque capsules keep their complete original wire value and flags.
+         * Only newly encoded known semantics may choose a new transport. */
+        prepared.multipart = permit_multipart && prepared.capsule.regenerated &&
+                             size > 1024u * 1024u;
+        if (prepared.multipart)
+          {
+            using namespace GimpPainterXcf;
+            const OwnerClass type = GIMP_IS_IMAGE (owner) ? OwnerClass::image : GIMP_IS_LAYER_MASK (owner) ? OwnerClass::layer_mask :
+                                    GIMP_IS_LAYER (owner) ? OwnerClass::layer : GIMP_IS_CHANNEL (owner) ? OwnerClass::channel : OwnerClass::path;
+            const guint32 id = GIMP_IS_IMAGE (owner) ? 0 : GPOINTER_TO_UINT (g_hash_table_lookup (result->ids, owner));
+            prepared.manifest = multipart_manifest ({type, id}, space, prepared.capsule.get (), cancel);
+            result->custom = true; /* Metadata alone can require 64-bit offsets. */
+          }
       };
-      watch_container (gimp_image_get_layers (image));
-      watch_container (gimp_image_get_channels (image));
-      watch_container (gimp_image_get_paths (image));
-      for (const auto &item : result->items)
+      prepare (G_OBJECT (image), GimpPainterXcf::Namespace::image, result->image);
+      for (const auto& item : result->items) prepare (G_OBJECT (item.first), GimpPainterXcf::Namespace::item, item.second);
+      for (const auto& origin : result->origins) prepare (origin.first, GimpPainterXcf::Namespace::origin, origin.second);
+      for (const auto& entry : result->transport)
+        if (Transport imported {gimp_painter_provenance_ref_transport (entry.first)})
+          {
+            result->custom = true;
+            std::vector<GimpPainter::Bytes> inert;
+            const auto *flags = static_cast<const guint8 *> (g_bytes_get_data (imported->dispositions, nullptr));
+            for (guint i = 0; imported->records && i < imported->records->len; ++i)
+              if (!flags[i]) inert.push_back (GimpPainter::Bytes::retain (static_cast<GBytes *> (g_ptr_array_index (imported->records, i))));
+            result->inert_markers.emplace (entry.first, GimpPainterXcf::multipart_inert_markers (inert, cancel));
+            result->imported.emplace (entry.first, std::move (imported));
+          }
+      if (cancel && g_cancellable_is_cancelled (cancel))
+        throw GimpPainterXcf::StorageError (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Painter save preparation was cancelled");
+      if (!xcf_painter_save_unchanged (result.get ()))
         {
-          result->watch (G_OBJECT (item.first), "notify", G_CALLBACK (save_notify));
-          if (auto *children = gimp_viewable_get_children (GIMP_VIEWABLE (item.first))) watch_container (children);
-          if (GIMP_IS_DRAWABLE (item.first))
-            result->watch (G_OBJECT (gimp_drawable_get_buffer (GIMP_DRAWABLE (item.first))), "changed", G_CALLBACK (save_buffer_changed));
+          if (result->changed_property)
+            throw std::runtime_error (std::string ("The image changed during save preparation: ") +
+              result->changed_type + "::" + result->changed_property);
+          fail ("The image changed during save preparation");
         }
       return result.release ();
     }
+  catch (const GimpPainterXcf::StorageError &exception)
+    { g_set_error_literal (error, exception.domain, exception.code, exception.what ()); return nullptr; }
   catch (const std::exception &exception)
     { g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED, exception.what ()); return nullptr; }
   catch (...)
     { g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED, "Could not prepare Painter save snapshot"); return nullptr; }
 }
+extern "C" XcfPainterSave *xcf_painter_prepare_save (GimpImage *image, GError **error)
+{ return xcf_painter_prepare_save_full (image, nullptr, TRUE, error); }
 extern "C" void xcf_painter_free_save (XcfPainterSave *save) { delete save; }
+extern "C" GCancellable *xcf_painter_save_cancellable (XcfPainterSave *save) { return G_CANCELLABLE (save->cancellable.get ()); }
 extern "C" gboolean xcf_painter_save_unchanged (XcfPainterSave *save)
 {
   if (!save || save->changed) return FALSE;
@@ -746,18 +915,114 @@ extern "C" guint32 xcf_painter_saved_tattoo_state (XcfPainterSave *save, GimpIma
 { return save ? std::max (save->tattoo_state, gimp_image_get_tattoo_state (image)) : gimp_image_get_tattoo_state (image); }
 
 extern "C" GimpParasite *xcf_painter_image_parasite (XcfPainterSave *save)
-{ return save && save->image ? gimp_parasite_copy (save->image.get ()) : nullptr; }
+{ return save && save->image.get () ? gimp_parasite_new (image_name, save->image.flags, g_bytes_get_size (save->image.get ()), g_bytes_get_data (save->image.get (), nullptr)) : nullptr; }
 extern "C" GimpParasite *xcf_painter_origin_parasite (XcfPainterSave *save, GObject *object)
 {
   if (!save) return nullptr;
   const auto found = save->origins.find (object);
-  return found == save->origins.end () ? nullptr : gimp_parasite_copy (found->second.get ());
+  return found == save->origins.end () || !found->second.get () ? nullptr : gimp_parasite_new (origin_name, found->second.flags, g_bytes_get_size (found->second.get ()), g_bytes_get_data (found->second.get (), nullptr));
 }
 extern "C" GimpParasite *xcf_painter_item_parasite (XcfPainterSave *save, GimpItem *item)
 {
   if (!save) return nullptr;
   const auto found = save->items.find (item);
-  return found == save->items.end () ? nullptr : gimp_parasite_copy (found->second.get ());
+  return found == save->items.end () || !found->second.get () ? nullptr : gimp_parasite_new (item_name, found->second.flags, g_bytes_get_size (found->second.get ()), g_bytes_get_data (found->second.get (), nullptr));
+}
+namespace {
+bool write_bytes (XcfInfo *info, const void *raw, gsize size, GError **error)
+{
+  const auto *data = static_cast<const guint8 *> (raw);
+  while (size)
+    {
+      const gint part = std::min (size, gsize (65536));
+      if (xcf_write_int8 (info, data, part, error) != guint (part)) return false;
+      GimpPainterXcf::discard_snapshot_pages (data, part);
+      data += part; size -= part;
+    }
+  return true;
+}
+bool write_record (XcfInfo *info, GBytes *bytes, GError **error)
+{
+  const gsize size = g_bytes_get_size (bytes);
+  if (size > G_MAXUINT32) fail ("An inner parasite exceeds XCF property framing");
+  const guint32 header[] = {GUINT32_TO_BE (PROP_PARASITES), GUINT32_TO_BE (size)};
+  return write_bytes (info, header, sizeof header, error) &&
+         write_bytes (info, g_bytes_get_data (bytes, nullptr), size, error);
+}
+bool write_inline (XcfInfo *info, guint space, const Capsule& capsule, GError **error)
+{
+  const char *name = GimpPainterXcf::namespace_name (GimpPainterXcf::Namespace (space));
+  const guint32 name_size = std::strlen (name) + 1;
+  const gsize size = g_bytes_get_size (capsule.get ());
+  if (size > G_MAXUINT32 - name_size - 12) fail ("An inline capsule exceeds XCF framing");
+  const guint32 header[] = {GUINT32_TO_BE (PROP_PARASITES), GUINT32_TO_BE (size + name_size + 12), GUINT32_TO_BE (name_size)};
+  const guint32 fields[] = {GUINT32_TO_BE (capsule.flags), GUINT32_TO_BE (size)};
+  return write_bytes (info, header, sizeof header, error) && write_bytes (info, name, name_size, error) &&
+         write_bytes (info, fields, sizeof fields, error) && write_bytes (info, g_bytes_get_data (capsule.get (), nullptr), size, error);
+}
+}
+extern "C" gboolean xcf_painter_replaces_parasite (XcfInfo *info, GObject *owner, const gchar *name)
+{
+  const auto *save = static_cast<XcfPainterSave *> (info->painter_save_state);
+  if (!save) return FALSE;
+  const auto found = save->transport.find (owner);
+  if (found == save->transport.end ()) return FALSE;
+  for (guint n = 0; n < 3; ++n)
+    if (!std::strcmp (name, GimpPainterXcf::namespace_name (GimpPainterXcf::Namespace (n))))
+      {
+        const auto& capsule = found->second[n].capsule;
+        return capsule.get () && (!capsule.from_transport || capsule.regenerated);
+      }
+  return FALSE;
+}
+extern "C" gboolean xcf_painter_write_owner_records (XcfInfo *info, GObject *owner, GError **error)
+{
+  try
+    {
+      auto *save = static_cast<XcfPainterSave *> (info->painter_save_state);
+      if (!save) return TRUE;
+      const auto found = save->transport.find (owner);
+      std::array<bool, 3> replaced {{false,false,false}};
+      if (found != save->transport.end ())
+        for (guint n = 0; n < 3; ++n)
+          {
+            const auto& prepared = found->second[n]; const auto& capsule = prepared.capsule;
+            if (!capsule.get () || (capsule.from_transport && !capsule.regenerated)) continue;
+            replaced[n] = true;
+            if (!prepared.multipart)
+              { if (!write_inline (info, n, capsule, error)) return FALSE; }
+            else
+              {
+                auto manifest = GimpPainterXcf::multipart_manifest_record (prepared.manifest);
+                if (!write_record (info, manifest.get (), error)) return FALSE;
+                for (guint32 index = 0; index < prepared.manifest.count; ++index)
+                  {
+                    auto part = GimpPainterXcf::multipart_chunk_record (prepared.manifest, index, capsule.get ());
+                    if (!write_record (info, part.get (), error)) return FALSE;
+                  }
+              }
+          }
+      const auto markers = save->inert_markers.find (owner);
+      if (markers != save->inert_markers.end ())
+        for (const auto& record : markers->second)
+          if (!write_record (info, record.get (), error)) return FALSE;
+      const auto prior = save->imported.find (owner);
+      const auto *imported = prior == save->imported.end () ? nullptr : prior->second.get ();
+      if (imported && imported->records)
+        {
+          const auto *dispositions = static_cast<const guint8 *> (g_bytes_get_data (imported->dispositions, nullptr));
+          for (guint i = 0; i < imported->records->len; ++i)
+            if (!dispositions[i] || !replaced[dispositions[i] - 1])
+              if (!write_record (info, static_cast<GBytes *> (g_ptr_array_index (imported->records, i)), error)) return FALSE;
+        }
+      return TRUE;
+    }
+  catch (const GimpPainterXcf::StorageError& exception)
+    { g_set_error_literal (error, exception.domain, exception.code, exception.what ()); return FALSE; }
+  catch (const std::exception& exception)
+    { g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, exception.what ()); return FALSE; }
+  catch (...)
+    { g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Could not write Painter metadata"); return FALSE; }
 }
 extern "C" GeglBuffer *xcf_painter_saved_buffer (XcfPainterSave *save, GimpDrawable *drawable)
 {
@@ -797,7 +1062,13 @@ extern "C" void xcf_painter_capture_properties (XcfInfo *info, GObject *object, 
 {
   if (!info->painter_source || begin < 0 || end < begin || static_cast<guint64> (end) > g_bytes_get_size (info->painter_source)) return;
   capture_origin_type (object);
-  Bytes raw (g_bytes_new_from_bytes (info->painter_source, begin, end - begin));
+  Bytes raw (xcf_painter_without_transport (info, object, begin, end));
+  if (!raw)
+    {
+      raw.reset (g_bytes_new_from_bytes (info->painter_source, begin, end - begin));
+      gimp_painter_provenance_set_text (object, GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL,
+                                       "Malformed property archive cannot be safely rewritten");
+    }
   gimp_painter_provenance_set_bytes (object, GIMP_PAINTER_PROVENANCE_PROPERTIES, raw.get ());
 }
 namespace {
@@ -849,9 +1120,9 @@ extern "C" gboolean xcf_painter_restore_layer (XcfInfo *info, GimpImage *image, 
 {
   try
     {
-      const auto *parasite = gimp_item_parasite_find (GIMP_ITEM (*layer), item_name);
-      if (info->painter_legacy || !parasite) return TRUE;
-      Variant dict = decode (parasite);
+      auto capsule = owner_capsule (G_OBJECT (*layer), GIMP_PAINTER_PROVENANCE_NAMESPACE_ITEM);
+      if (info->painter_legacy || !capsule) return TRUE;
+      Variant dict = decode (capsule.get ());
       if (!dict) { load_warning (info, "unknown extension version"); return TRUE; }
       const gchar *kind = nullptr;
       if (!g_variant_lookup (dict.get (), "kind", "&s", &kind)) fail ("Missing layer kind");
@@ -975,8 +1246,31 @@ extern "C" void xcf_painter_restore_bindings (XcfInfo *info, GimpImage *image)
             }
         }
       catch (const std::exception &exception)
-        { load_warning (info, exception.what ()); }
-      catch (...) { load_warning (info, "allocation failure"); }
+        {
+          gimp_painter_provenance_set_text (object, GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL,
+            "Painter bindings could not be restored without data loss; original metadata is retained");
+          load_warning (info, exception.what ());
+        }
+      catch (...)
+        {
+          gimp_painter_provenance_set_text (object, GIMP_PAINTER_PROVENANCE_SAVE_REFUSAL,
+            "Painter bindings could not be restored without data loss; original metadata is retained");
+          load_warning (info, "allocation failure");
+        }
     }
   g_list_free (layers);
 }
+
+extern "C" GBytes *xcf_painter_snapshot_bytes (GInputStream *input, GCancellable *cancel, GError **error)
+{
+  try { return GimpPainterXcf::snapshot_stream (input, cancel).release (); }
+  catch (const GimpPainterXcf::StorageError& exception)
+    { g_set_error_literal (error, exception.domain, exception.code, exception.what ()); return nullptr; }
+  catch (const std::exception& exception)
+    { g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, exception.what ()); return nullptr; }
+  catch (...) { g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Could not snapshot bytes"); return nullptr; }
+}
+extern "C" void xcf_painter_discard_snapshot_pages (const void *data, gsize size)
+{ GimpPainterXcf::discard_snapshot_pages (data, size); }
+extern "C" guint xcf_painter_storage_live_files (void)
+{ return GimpPainterXcf::storage_live_files (); }

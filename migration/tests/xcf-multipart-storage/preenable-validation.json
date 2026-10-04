@@ -1,0 +1,50 @@
+{
+  "status": "passed-before-default-enablement",
+  "scope": "37 instrumented native provenance/XCF/layer/serialization units and 34 RTTI-only compatibility units; remaining host/dependencies uninstrumented; LSan disabled",
+  "selected_source_sha256": {
+    "app/xcf/painter-xcf-arguments.cpp": "f258db24eb691d014f13059527c768725dd02c507559eecea8e4ed496cda8468",
+    "app/xcf/xcf-seek.c": "0129c4ffd6e3b6444c164042cdd3a6e81ff3d1b05332ffb43ee85b1c55b5be53",
+    "app/core/gimp-painter-provenance.h": "9407e2d83d12b87ccd3b92114c1b59b6a0c8f430c981adb587684c0e331d3052",
+    "app/xcf/painter-xcf-load.h": "05ec6e5cd7e196578d0b666e5904d07ab13a7487296fcab1c72ae43ed0f2b1de",
+    "app/xcf/xcf.c": "d789b701ea90e9acb89342b7e94d2d227223286ea62b41c431327a224dd1bbc3",
+    "app/xcf/painter-xcf-preserve.cpp": "a31648d5da76f1b5bc1e7b79d603933239c063a3a1be6ff77673b849948304f7",
+    "app/xcf/painter-xcf-preserve.h": "97b35664d9d554fcb64d9ac2560d13a36355552917ad99b8e78d3ea3af63b0bd",
+    "app/xcf/painter-xcf-transport.cpp": "e5939dfa67e9e5a99a4eb03fa3d031837adce3c7e7f77c3888a1bb7b57f42cd4",
+    "app/xcf/xcf-write.c": "df96f13439d33a291fa9f994fe8a98ff6b5f9e0c1ed202bc250b77023164aa32",
+    "app/xcf/painter-xcf-multipart.hpp": "01e8d49c444b096a3b90598553b3dca2d2c043414418537b46f0f7fbf023ea69",
+    "app/xcf/painter-xcf-storage.cpp": "b7459b3ef7dc0cfabfd78d20ad51490f19a1cd8b886b5b8f870b69f856603f0e",
+    "app/xcf/painter-xcf-compat.cpp": "169b0dc7f774188b263ed55997817c3060291395f18f635a5e2f0cd8131043df",
+    "app/tests/test-painter-xcf-multipart.inc": "dc4b9c4612c15e4e6a82c339c1c0ee58e66409453d6b685ccd4ab90b7da6940f",
+    "app/xcf/painter-xcf-load.cpp": "d08022d60ccdb29a8119057ed3e5f375101be080b782a36b26c3b41e1132efb2",
+    "app/xcf/xcf-private.h": "981962f9d26fbd46a80213d75615907e97ce953b05844cc156e5e4f257c3d9f4",
+    "app/xcf/xcf-save.c": "2f5754f6d758b9036d510db9f88aa2c33aac409beb386a49525717f51292692b",
+    "app/core/gimp-painter-provenance.cpp": "e7f6cb4e5ddd346c55adde139457f4b822e2dd9006ec7262bc511f21e9dbb61e",
+    "app/xcf/painter-xcf-arguments.hpp": "f0b919237d4a4ff7f8785b6640e53b13721b564efaa26c47ca36f855bb2356b4",
+    "app/core/gimp-painter-provenance-private.h": "4932144713d8345ca358f6fd3a3a68967143e34d7dc0ad4f7efd6b5b2a55e473",
+    "app/xcf/painter-xcf-multipart.cpp": "e1b4af0c6ef55e4cb00138b9749848601ea6a96870c93467508314b7b8a191ed",
+    "app/xcf/painter-xcf-storage.hpp": "adf98bd69c3bbd7f23b4421d2cf3652d07f9aacef9f39079906be39789780114",
+    "app/xcf/xcf-read.c": "cc3f2ab3c6bc6ef132e9275bc1bf928b2c862a9f5db06b5f1200858f87b400bd",
+    "app/xcf/xcf-load.c": "1747322922475573497c7b57115acf886e72bbeb78979f6172403a7db5fb9f94",
+    "app/xcf/xcf.h": "13754e5e821c5164c2af6d041ad0e8924fbbae7a9b0132e411fffc52e69055dc"
+  },
+  "results": {
+    "painter-xcf-adversarial": {
+      "exit_code": 0,
+      "passed": 247,
+      "skipped": 0
+    },
+    "painter-provenance": {
+      "exit_code": 0,
+      "passed": 12,
+      "skipped": 0
+    },
+    "painter-xcf-roundtrip": {
+      "exit_code": 0,
+      "passed": 47,
+      "skipped": 1
+    }
+  },
+  "changed_during_build": [],
+  "changed_during_run": [],
+  "initial_attempt": "Relocated sanitizer binaries initially loaded an older libgimpconfig (missing gimp_config_set_xcf_version); exact current-build library search paths corrected the runtime without source changes."
+}

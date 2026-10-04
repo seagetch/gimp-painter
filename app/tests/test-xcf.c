@@ -330,6 +330,8 @@ gimp_write_and_read_file (Gimp     *gimp,
   gchar               *filename = NULL;
   gint                 file_handle;
   GFile               *file;
+  GError              *save_error = NULL;
+  GimpPDBStatusType    save_status;
 
   /* Create the image */
   image = gimp_create_mainimage (gimp,
@@ -355,7 +357,7 @@ gimp_write_and_read_file (Gimp     *gimp,
                                                    GIMP_FILE_PROCEDURE_GROUP_SAVE,
                                                    file,
                                                    NULL /*error*/);
-  file_save (gimp,
+  save_status = file_save (gimp,
              image,
              NULL /*progress*/,
              file,
@@ -364,7 +366,10 @@ gimp_write_and_read_file (Gimp     *gimp,
              FALSE /*change_saved_state*/,
              FALSE /*export_backward*/,
              FALSE /*export_forward*/,
-             NULL /*error*/);
+             &save_error);
+  if (save_error) g_test_message ("XCF save failed: %s", save_error->message);
+  g_assert_no_error (save_error);
+  g_assert_cmpint (save_status, ==, GIMP_PDB_SUCCESS);
 
   /* Load from file */
   loaded_image = gimp_test_load_image (image->gimp, file);

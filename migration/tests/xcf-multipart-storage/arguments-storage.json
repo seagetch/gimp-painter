@@ -1,0 +1,149 @@
+{
+  "scope": "Production argument encode/decode helper boundaries, materialization budget, ownership and cancellation; controlled allocation failures in codec/core scalar-import helpers; full codec syntax; forced endian branch is not big-endian hardware or full native XCF integration",
+  "status": "passed",
+  "sanitizers": true,
+  "leak_detection": false,
+  "checks": [
+    {
+      "name": "codec-native-syntax",
+      "exit_code": 0,
+      "seconds": 0.414,
+      "output": ""
+    },
+    {
+      "name": "codec-forced-big-endian-syntax",
+      "exit_code": 0,
+      "seconds": 0.401,
+      "output": ""
+    },
+    {
+      "name": "native-compile",
+      "exit_code": 0,
+      "seconds": 1.886,
+      "output": ""
+    },
+    {
+      "name": "native-tests",
+      "exit_code": 0,
+      "seconds": 0.029,
+      "output": "TAP version 14\n# random seed: R02S686ab665b5ffb4b2b535275cde7b4d2f\n1..6\n# Start of painter tests\n# Start of xcf tests\n# Start of arguments tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\nok 1 /painter/xcf/arguments/storage-arrays\nok 2 /painter/xcf/arguments/storage-strings\nok 3 /painter/xcf/arguments/storage-cancellation\nok 4 /painter/xcf/arguments/materialization-budget-and-allocation\nok 5 /painter/xcf/arguments/imported-allocation-failures\nok 6 /painter/xcf/arguments/immutable-ast-entries\n# End of arguments tests\n# End of xcf tests\n# End of painter tests\n"
+    },
+    {
+      "name": "forced-big-endian-compile",
+      "exit_code": 0,
+      "seconds": 1.874,
+      "output": ""
+    },
+    {
+      "name": "forced-big-endian-tests",
+      "exit_code": 0,
+      "seconds": 0.032,
+      "output": "TAP version 14\n# random seed: R02S4836b69141cc443234a88d5e211ed7ed\n1..6\n# Start of painter tests\n# Start of xcf tests\n# Start of arguments tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\nok 1 /painter/xcf/arguments/storage-arrays\nok 2 /painter/xcf/arguments/storage-strings\nok 3 /painter/xcf/arguments/storage-cancellation\nok 4 /painter/xcf/arguments/materialization-budget-and-allocation\nok 5 /painter/xcf/arguments/imported-allocation-failures\nok 6 /painter/xcf/arguments/immutable-ast-entries\n# End of arguments tests\n# End of xcf tests\n# End of painter tests\n"
+    },
+    {
+      "name": "native-asan-ubsan-compile",
+      "exit_code": 0,
+      "seconds": 3.068,
+      "output": ""
+    },
+    {
+      "name": "native-asan-ubsan-tests",
+      "exit_code": 0,
+      "seconds": 0.046,
+      "output": "TAP version 14\n# random seed: R02Sd5e3e19303c6efef7ec2848852cd3c99\n1..6\n# Start of painter tests\n# Start of xcf tests\n# Start of arguments tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\nok 1 /painter/xcf/arguments/storage-arrays\nok 2 /painter/xcf/arguments/storage-strings\nok 3 /painter/xcf/arguments/storage-cancellation\nok 4 /painter/xcf/arguments/materialization-budget-and-allocation\nok 5 /painter/xcf/arguments/imported-allocation-failures\nok 6 /painter/xcf/arguments/immutable-ast-entries\n# End of arguments tests\n# End of xcf tests\n# End of painter tests\n"
+    },
+    {
+      "name": "forced-big-endian-asan-ubsan-compile",
+      "exit_code": 0,
+      "seconds": 3.3,
+      "output": ""
+    },
+    {
+      "name": "forced-big-endian-asan-ubsan-tests",
+      "exit_code": 0,
+      "seconds": 0.055,
+      "output": "TAP version 14\n# random seed: R02Sa269d1b4d17393f9ce7d614c4f260bd6\n1..6\n# Start of painter tests\n# Start of xcf tests\n# Start of arguments tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\nok 1 /painter/xcf/arguments/storage-arrays\nok 2 /painter/xcf/arguments/storage-strings\nok 3 /painter/xcf/arguments/storage-cancellation\nok 4 /painter/xcf/arguments/materialization-budget-and-allocation\nok 5 /painter/xcf/arguments/imported-allocation-failures\nok 6 /painter/xcf/arguments/immutable-ast-entries\n# End of arguments tests\n# End of xcf tests\n# End of painter tests\n"
+    }
+  ],
+  "prior_failed_attempts": [
+    {
+      "started_utc": "2026-10-04T01:12:40.076842+00:00",
+      "completed_utc": "2026-10-04T01:12:47.039847+00:00",
+      "error": "native-asan-ubsan-tests failed",
+      "source_sha256_before": {
+        "app/xcf/painter-xcf-arguments.cpp": "f258db24eb691d014f13059527c768725dd02c507559eecea8e4ed496cda8468",
+        "app/xcf/painter-xcf-arguments.hpp": "f0b919237d4a4ff7f8785b6640e53b13721b564efaa26c47ca36f855bb2356b4",
+        "app/xcf/painter-xcf-storage.cpp": "b7459b3ef7dc0cfabfd78d20ad51490f19a1cd8b886b5b8f870b69f856603f0e",
+        "app/xcf/painter-xcf-storage.hpp": "adf98bd69c3bbd7f23b4421d2cf3652d07f9aacef9f39079906be39789780114",
+        "app/painter/bytes.hpp": "fca7937dedc4b52a661cbaaa3ce5858074fba62ea2a9fbe70f3687882f9864a4",
+        "app/core/gimpfilterlayer.h": "f2ef4a581df53bc1334bbcc7e0f41833a4bacdf5a4324f7b399e2059a0ddeb8a",
+        "libgimpbase/gimpparamspecs.h": "781f95793fe8f7564380c9d7110c2d1e974ce500c9d060c03295697f27793470",
+        "app/xcf/tests/test-painter-xcf-arguments-storage.cpp": "1ea295d9572076de71f1f8cae08063b8aceeeb1bfd388ffdac920bc989251d24",
+        "migration/tests/run_xcf_argument_storage_tests.py": "5588a40d75b3f983c2949a49fb47bf244aa4fcb626c76d84bb061240481a8154"
+      },
+      "sources_unchanged": true,
+      "failed_checks": [
+        {
+          "name": "native-asan-ubsan-tests",
+          "exit_code": -6,
+          "seconds": 0.041,
+          "output": "TAP version 14\n# random seed: R02Se6bf6f3ed5ac81348277b6622abc5faf\n1..3\n# Start of painter tests\n# Start of xcf tests\n# Start of arguments tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\nok 1 /painter/xcf/arguments/storage-arrays\nok 2 /painter/xcf/arguments/storage-strings\nok 3 /painter/xcf/arguments/storage-cancellation\n# End of arguments tests\n# End of xcf tests\n# End of painter tests\n==39==LeakSanitizer has encountered a fatal error.\n==39==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1\n==39==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)\n"
+        }
+      ]
+    },
+    {
+      "started_utc": "2026-10-04T02:17:57.965699+00:00",
+      "completed_utc": "2026-10-04T02:18:09.101333+00:00",
+      "error": "Tested sources changed during compilation or execution",
+      "source_sha256_before": {
+        "app/xcf/painter-xcf-arguments.cpp": "0b2064ceb686405036980c9e76c3f4bf7396918aea145c224c6ef4a7796f257c",
+        "app/xcf/painter-xcf-arguments.hpp": "fb87ddc0c4ca18c967689232698d45f8a0375557dd78e56e4a519df4d1ef54c9",
+        "app/xcf/painter-xcf-storage.cpp": "b7459b3ef7dc0cfabfd78d20ad51490f19a1cd8b886b5b8f870b69f856603f0e",
+        "app/xcf/painter-xcf-storage.hpp": "adf98bd69c3bbd7f23b4421d2cf3652d07f9aacef9f39079906be39789780114",
+        "app/painter/bytes.hpp": "fca7937dedc4b52a661cbaaa3ce5858074fba62ea2a9fbe70f3687882f9864a4",
+        "app/core/gimpfilterlayer.h": "f2ef4a581df53bc1334bbcc7e0f41833a4bacdf5a4324f7b399e2059a0ddeb8a",
+        "app/core/gimpfilterlayer-arguments.hpp": "8f4bb8abce6b503aa388d436142c1a2779c7b1c355d9cf1f5cc6b1efe3b9b515",
+        "libgimpbase/gimpparamspecs.c": "b8f0cda0d5b52871891682a19fb73b58b8d0c6636fe0f971ce5216640d304124",
+        "libgimpbase/gimpparamspecs.h": "781f95793fe8f7564380c9d7110c2d1e974ce500c9d060c03295697f27793470",
+        "app/xcf/tests/test-painter-xcf-arguments-storage.cpp": "df8ae776dfeeabda1b4dc71bd20266b3cbc0e596c40b7a28077857c364ea851e",
+        "migration/tests/run_xcf_argument_storage_tests.py": "5bedaab139a30fc221c32c706267edc87a2d9d467197be875e8170d976239ca6"
+      },
+      "sources_unchanged": false,
+      "failed_checks": []
+    }
+  ],
+  "started_utc": "2026-10-04T02:19:02.136951+00:00",
+  "source_sha256_before": {
+    "app/xcf/painter-xcf-arguments.cpp": "0b2064ceb686405036980c9e76c3f4bf7396918aea145c224c6ef4a7796f257c",
+    "app/xcf/painter-xcf-arguments.hpp": "fb87ddc0c4ca18c967689232698d45f8a0375557dd78e56e4a519df4d1ef54c9",
+    "app/xcf/painter-xcf-storage.cpp": "b7459b3ef7dc0cfabfd78d20ad51490f19a1cd8b886b5b8f870b69f856603f0e",
+    "app/xcf/painter-xcf-storage.hpp": "adf98bd69c3bbd7f23b4421d2cf3652d07f9aacef9f39079906be39789780114",
+    "app/painter/bytes.hpp": "fca7937dedc4b52a661cbaaa3ce5858074fba62ea2a9fbe70f3687882f9864a4",
+    "app/core/gimpfilterlayer.h": "f2ef4a581df53bc1334bbcc7e0f41833a4bacdf5a4324f7b399e2059a0ddeb8a",
+    "app/core/gimpfilterlayer-arguments.hpp": "ab1b54dd2b4890da9db48f77230ddf7e5ca02d77bdf34a7c37659e47c51ee402",
+    "libgimpbase/gimpparamspecs.c": "b8f0cda0d5b52871891682a19fb73b58b8d0c6636fe0f971ce5216640d304124",
+    "libgimpbase/gimpparamspecs.h": "781f95793fe8f7564380c9d7110c2d1e974ce500c9d060c03295697f27793470",
+    "app/xcf/tests/test-painter-xcf-arguments-storage.cpp": "e53d3372bb8fb49dc3ecab7ff028c8cb56677c2dcd70c6a7f0d8f9eae262ee03",
+    "migration/tests/run_xcf_argument_storage_tests.py": "5bedaab139a30fc221c32c706267edc87a2d9d467197be875e8170d976239ca6"
+  },
+  "compile_entry_sha256": "ed28098c633fdf809bd3bd1317672481f9bdb276314c7b16f5860b47e11bbf56",
+  "config_sha256": "222fd535054875a15abdaf17e510dee5fe8a8c9f9f09df42a293ee7e31f91eb7",
+  "libgimpbase_sha256_before": "541ddc2f40a61353aaf16da77eec749dc4e82519f333f30959aa4add2a0e59f0",
+  "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
+  "source_sha256_after": {
+    "app/xcf/painter-xcf-arguments.cpp": "0b2064ceb686405036980c9e76c3f4bf7396918aea145c224c6ef4a7796f257c",
+    "app/xcf/painter-xcf-arguments.hpp": "fb87ddc0c4ca18c967689232698d45f8a0375557dd78e56e4a519df4d1ef54c9",
+    "app/xcf/painter-xcf-storage.cpp": "b7459b3ef7dc0cfabfd78d20ad51490f19a1cd8b886b5b8f870b69f856603f0e",
+    "app/xcf/painter-xcf-storage.hpp": "adf98bd69c3bbd7f23b4421d2cf3652d07f9aacef9f39079906be39789780114",
+    "app/painter/bytes.hpp": "fca7937dedc4b52a661cbaaa3ce5858074fba62ea2a9fbe70f3687882f9864a4",
+    "app/core/gimpfilterlayer.h": "f2ef4a581df53bc1334bbcc7e0f41833a4bacdf5a4324f7b399e2059a0ddeb8a",
+    "app/core/gimpfilterlayer-arguments.hpp": "ab1b54dd2b4890da9db48f77230ddf7e5ca02d77bdf34a7c37659e47c51ee402",
+    "libgimpbase/gimpparamspecs.c": "b8f0cda0d5b52871891682a19fb73b58b8d0c6636fe0f971ce5216640d304124",
+    "libgimpbase/gimpparamspecs.h": "781f95793fe8f7564380c9d7110c2d1e974ce500c9d060c03295697f27793470",
+    "app/xcf/tests/test-painter-xcf-arguments-storage.cpp": "e53d3372bb8fb49dc3ecab7ff028c8cb56677c2dcd70c6a7f0d8f9eae262ee03",
+    "migration/tests/run_xcf_argument_storage_tests.py": "5bedaab139a30fc221c32c706267edc87a2d9d467197be875e8170d976239ca6"
+  },
+  "sources_unchanged": true,
+  "libgimpbase_sha256_after": "541ddc2f40a61353aaf16da77eec749dc4e82519f333f30959aa4add2a0e59f0",
+  "completed_utc": "2026-10-04T02:19:13.262606+00:00"
+}

@@ -380,12 +380,15 @@ static void typed_nested_expired_arguments (void)
   g_bytes_unref(bytes);g_bytes_unref(raw);g_object_unref(image);g_file_delete(file,NULL,NULL);g_object_unref(file);
 }
 
-typedef struct { GObject parent; gint count, cancel_at; gboolean close_cancel, mutate, ended; gint mutation_kind; GimpLayer *layer; } SaveProgress;
+typedef struct { GObject parent; gint count, cancel_at; gboolean close_cancel, mutate, ended; gint mutation_kind; GimpLayer *layer; GObject *release_on_start[3]; } SaveProgress;
 typedef struct { GObjectClass parent; } SaveProgressClass;
 static GimpProgress *save_progress_start (GimpProgress *progress, gboolean cancellable, const gchar *text)
 {
   SaveProgress *self=(SaveProgress*)progress;
-  g_assert_true(cancellable);if(self->cancel_at==0)gimp_progress_cancel(progress);return progress;
+  g_assert_true(cancellable);if(self->cancel_at==0)gimp_progress_cancel(progress);
+  for (guint i = 0; i < G_N_ELEMENTS (self->release_on_start); ++i)
+    g_clear_object (&self->release_on_start[i]);
+  return progress;
 }
 static void save_progress_value (GimpProgress *progress, gdouble value)
 {
@@ -464,7 +467,7 @@ static void low_level_reentrant_definitions (void)
       g_clear_error(&error);g_object_unref(output);g_object_unref(progress);g_object_unref(image);g_file_delete(file,NULL,NULL);g_object_unref(file);
     }
 }
-typedef struct { GFilterOutputStream parent; gsize limit,written; gboolean cancelled_close; } FailOutput;
+typedef struct { GFilterOutputStream parent; gsize limit,written; gboolean cancelled_close, fail_final_close; } FailOutput;
 typedef struct { GFilterOutputStreamClass parent; } FailOutputClass;
 static GOutputStream *fail_base (gpointer output) { return g_filter_output_stream_get_base_stream(G_FILTER_OUTPUT_STREAM(output)); }
 static gssize fail_write (GOutputStream *output,const void *buffer,gsize count,GCancellable *cancel,GError **error)
@@ -489,6 +492,15 @@ G_DEFINE_TYPE_WITH_CODE(FailOutput,fail_output,G_TYPE_FILTER_OUTPUT_STREAM,G_IMP
 static gboolean fail_close (GOutputStream *output,GCancellable *cancel,GError **error)
 {
   ((FailOutput*)output)->cancelled_close=g_cancellable_is_cancelled(cancel);
+  if (((FailOutput*)output)->fail_final_close && !g_cancellable_is_cancelled (cancel))
+    {
+      GCancellable *abandon = g_cancellable_new ();
+      g_cancellable_cancel (abandon);
+      G_OUTPUT_STREAM_CLASS(fail_output_parent_class)->close_fn (output, abandon, NULL);
+      g_object_unref (abandon);
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Injected final close failure");
+      return FALSE;
+    }
   return G_OUTPUT_STREAM_CLASS(fail_output_parent_class)->close_fn(output,cancel,error);
 }
 static void fail_output_class_init (FailOutputClass *klass)
@@ -1363,6 +1375,8 @@ malformed_clone_reference_stays_opaque (void)
 
 #include "test-painter-xcf-fields.inc"
 #include "test-painter-xcf-active.inc"
+#include "test-painter-xcf-multipart.inc"
+#include "test-painter-xcf-multipart-adversarial.inc"
 
 int main (int argc, char **argv)
 {
@@ -1403,6 +1417,22 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-xcf-fields/clone_duplicate_name_identity", fields_clone_duplicate_name_identity);
   g_test_add_func ("/painter-xcf-fields/absent_native_properties", fields_absent_native_properties);
   g_test_add_func ("/painter-xcf-fields/native_precision_and_compression", fields_native_precision_and_compression);
+  g_test_add_func ("/painter-xcf-multipart/native-small", multipart_native_small);
+  g_test_add_func ("/painter-xcf-multipart/native-large", multipart_native_large);
+  g_test_add_func ("/painter-xcf-multipart/native-cancellation", multipart_native_cancellation);
+  g_test_add_func ("/painter-xcf-multipart/native-midprepare-cancel", multipart_native_midprepare_cancel);
+  g_test_add_func ("/painter-xcf-multipart/native-disk-failure", multipart_native_disk_failure);
+  g_test_add_func ("/painter-xcf-multipart/argument-snapshot-borrow", multipart_argument_snapshot_borrow);
+  g_test_add_func ("/painter-xcf-multipart/native-owner-duplicate-edit", multipart_native_owner_duplicate_edit);
+  g_test_add_func ("/painter-xcf-multipart/native-reordered", multipart_native_reordered);
+  g_test_add_func ("/painter-xcf-multipart/native-grouped", multipart_native_grouped);
+  g_test_add_func ("/painter-xcf-multipart/native-adversarial", multipart_native_adversarial);
+  g_test_add_func ("/painter-xcf-multipart/native-opaque-capsules", multipart_native_opaque_capsules);
+  g_test_add_func ("/painter-xcf-multipart/native-unclaimed-parasites", multipart_native_unclaimed_parasites);
+  g_test_add_func ("/painter-xcf-multipart/native-inert-ownership-changes", multipart_native_inert_ownership_changes);
+  g_test_add_func ("/painter-xcf-multipart/native-callback-argument-leases", multipart_native_callback_argument_leases);
+  g_test_add_func ("/painter-xcf-multipart/native-stream-failures", multipart_native_stream_failures);
+  g_test_add_func ("/painter-xcf-multipart/native-argument-budget", multipart_native_argument_budget);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

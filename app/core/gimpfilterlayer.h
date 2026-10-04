@@ -95,6 +95,9 @@ guint    gimp_filter_arguments_snapshot_count (const GimpFilterArgumentsSnapshot
 GType    gimp_filter_arguments_snapshot_type (const GimpFilterArgumentsSnapshot *, guint argument);
 gboolean gimp_filter_arguments_snapshot_is_null (const GimpFilterArgumentsSnapshot *, guint argument);
 gboolean gimp_filter_arguments_snapshot_value (const GimpFilterArgumentsSnapshot *, guint argument, GValue *value);
+/* Immutable scalar borrow, valid until the snapshot is freed. Never returns
+ * nested/object-reference state; callers must not modify or free the value. */
+const GValue *gimp_filter_arguments_snapshot_peek_value (const GimpFilterArgumentsSnapshot *, guint argument);
 guint    gimp_filter_arguments_snapshot_reference_count (const GimpFilterArgumentsSnapshot *, guint argument);
 gboolean gimp_filter_arguments_snapshot_reference (const GimpFilterArgumentsSnapshot *, guint argument,
                                                    guint element, GimpFilterArgumentReference *);

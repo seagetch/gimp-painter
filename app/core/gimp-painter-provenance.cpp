@@ -6,6 +6,7 @@ extern "C" {
 #include "gimp-painter-provenance-private.h"
 }
 #include "painter/binding-store.hpp"
+#include "painter/bytes.hpp"
 #include "painter/resources.hpp"
 #include <array>
 #include <memory>
@@ -24,10 +25,8 @@ template<> struct TypeTraits<GimpPainterProvenance> {
 }
 namespace {
 using namespace GimpPainter;
-struct BytesFree { void operator() (GBytes *p) const noexcept { if (p) g_bytes_unref (p); } };
 struct VariantFree { void operator() (GVariant *p) const noexcept { if (p) g_variant_unref (p); } };
 struct RecordsFree { void operator() (GPtrArray *p) const noexcept { if (p) g_ptr_array_unref (p); } };
-using Bytes = std::unique_ptr<GBytes, BytesFree>;
 using Variant = std::unique_ptr<GVariant, VariantFree>;
 using Records = std::unique_ptr<GPtrArray, RecordsFree>;
 using Object = ObjectRef<GObject>;
@@ -43,10 +42,76 @@ Records snapshot_records (GPtrArray *source)
     }
   return copy;
 }
+struct Transport {
+  Records records;
+  Bytes dispositions;
+  std::array<Bytes, GIMP_PAINTER_PROVENANCE_N_NAMESPACES> capsules;
+  std::array<bool, GIMP_PAINTER_PROVENANCE_N_NAMESPACES> present {};
+  std::array<bool, GIMP_PAINTER_PROVENANCE_N_NAMESPACES> invalid {};
+};
+using TransportValue = std::unique_ptr<Transport>;
+TransportValue snapshot_transport (const GimpPainterProvenanceTransport *source)
+{
+  if (!source) return {};
+  const gsize count = source->records ? source->records->len : 0;
+  const gsize size = source->dispositions ? g_bytes_get_size (source->dispositions) : 0;
+  if (count != size)
+    throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Transport record dispositions have the wrong length");
+  for (guint n = 0; n < GIMP_PAINTER_PROVENANCE_N_NAMESPACES; ++n)
+    if (source->capsules[n] && (!source->present[n] || source->invalid[n]))
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Transport capsule has no valid namespace");
+  const auto *dispositions = source->dispositions
+    ? static_cast<const guint8 *> (g_bytes_get_data (source->dispositions, nullptr)) : nullptr;
+  for (gsize i = 0; i < size; ++i)
+    if (dispositions[i] > GIMP_PAINTER_PROVENANCE_TRANSPORT_ORIGIN ||
+        (dispositions[i] && !source->capsules[dispositions[i] - 1]))
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Invalid transport record disposition");
+  TransportValue copy (new Transport);
+  copy->records = snapshot_records (source->records);
+  copy->dispositions = Bytes::retain (source->dispositions);
+  for (guint n = 0; n < GIMP_PAINTER_PROVENANCE_N_NAMESPACES; ++n)
+    {
+      copy->capsules[n] = Bytes::retain (source->capsules[n]);
+      copy->present[n] = source->present[n];
+      copy->invalid[n] = source->invalid[n];
+    }
+  return copy;
+}
+TransportValue snapshot_transport (const Transport *source)
+{
+  if (!source) return {};
+  TransportValue copy (new Transport);
+  copy->records = snapshot_records (source->records.get ());
+  copy->dispositions = source->dispositions;
+  copy->capsules = source->capsules;
+  copy->present = source->present;
+  copy->invalid = source->invalid;
+  return copy;
+}
+struct PublicTransportFree {
+  void operator() (GimpPainterProvenanceTransport *p) const noexcept
+  { gimp_painter_provenance_free_transport (p); }
+};
+GimpPainterProvenanceTransport *export_transport (const Transport *source)
+{
+  if (!source) return nullptr;
+  std::unique_ptr<GimpPainterProvenanceTransport, PublicTransportFree> result (
+    g_new0 (GimpPainterProvenanceTransport, 1));
+  result->records = snapshot_records (source->records.get ()).release ();
+  result->dispositions = source->dispositions ? g_bytes_ref (source->dispositions.get ()) : nullptr;
+  for (guint n = 0; n < GIMP_PAINTER_PROVENANCE_N_NAMESPACES; ++n)
+    {
+      result->capsules[n] = source->capsules[n] ? g_bytes_ref (source->capsules[n].get ()) : nullptr;
+      result->present[n] = source->present[n];
+      result->invalid[n] = source->invalid[n];
+    }
+  return result.release ();
+}
 struct Provenance {
   std::array<Bytes, GIMP_PAINTER_PROVENANCE_N_BYTES> bytes;
   std::array<String, GIMP_PAINTER_PROVENANCE_N_TEXT> text;
   Records records;
+  TransportValue transport;
   Variant definition;
   guint64 offset = 0;
   guint32 save_id = 0;
@@ -113,7 +178,7 @@ GBytes *gimp_painter_provenance_ref_bytes (GObject *owner, GimpPainterProvenance
 gboolean gimp_painter_provenance_set_bytes (GObject *owner, GimpPainterProvenanceBytes field, GBytes *value)
 {
   if (field < 0 || field >= GIMP_PAINTER_PROVENANCE_N_BYTES) return FALSE;
-  return change (owner, [=] (Provenance& s) { Bytes next (value ? g_bytes_ref (value) : nullptr); s.bytes[field].swap (next); });
+  return change (owner, [=] (Provenance& s) { auto next = Bytes::retain (value); s.bytes[field].swap (next); });
 }
 gchar *gimp_painter_provenance_dup_text (GObject *owner, GimpPainterProvenanceText field)
 {
@@ -129,6 +194,34 @@ GPtrArray *gimp_painter_provenance_ref_records (GObject *owner)
 { return read<GPtrArray *> (owner, nullptr, [] (const Provenance& s) { return snapshot_records (s.records.get ()).release (); }); }
 gboolean gimp_painter_provenance_set_records (GObject *owner, GPtrArray *value)
 { return change (owner, [=] (Provenance& s) { auto next = snapshot_records (value); s.records.swap (next); }); }
+GimpPainterProvenanceTransport *gimp_painter_provenance_ref_transport (GObject *owner)
+{
+  return read<GimpPainterProvenanceTransport *> (owner, nullptr, [] (const Provenance& s) {
+    return export_transport (s.transport.get ());
+  });
+}
+void gimp_painter_provenance_free_transport (GimpPainterProvenanceTransport *value)
+{
+  if (!value) return;
+  /* Remove every field before callbacks from any final resource release. */
+  const auto old = *value;
+  *value = {};
+  if (old.records) g_ptr_array_unref (old.records);
+  if (old.dispositions) g_bytes_unref (old.dispositions);
+  for (auto *capsule : old.capsules) if (capsule) g_bytes_unref (capsule);
+  g_free (value);
+}
+gboolean gimp_painter_provenance_set_transport (GObject *owner, const GimpPainterProvenanceTransport *value)
+{
+  return boundary<gboolean> (nullptr, FALSE, [&] {
+    auto next = snapshot_transport (value);
+    return change (owner, [&] (Provenance& s) {
+      s.transport.swap (next);
+      /* Keep owner/child leased while user GBytes finalizers can reenter. */
+      next.reset ();
+    });
+  });
+}
 GVariant *gimp_painter_provenance_ref_definition (GObject *owner)
 { return read<GVariant *> (owner, nullptr, [] (const Provenance& s) { return s.definition ? g_variant_ref (s.definition.get ()) : nullptr; }); }
 gboolean gimp_painter_provenance_has_definition (GObject *owner)
@@ -158,10 +251,11 @@ void gimp_painter_copy_provenance (GObject *source, GObject *target)
     auto copy = BindingStore::require (child.get ()).read<ProvenanceSlot> ([] (const Provenance& s) {
       std::unique_ptr<Provenance> result (new Provenance);
       for (int i = 0; i < GIMP_PAINTER_PROVENANCE_ORIGINAL; ++i)
-        if (s.bytes[i]) result->bytes[i].reset (g_bytes_ref (s.bytes[i].get ()));
+        if (s.bytes[i]) result->bytes[i] = Bytes::retain (s.bytes[i].get ());
       for (int i = 0; i < GIMP_PAINTER_PROVENANCE_N_TEXT; ++i)
         result->text[i].reset (g_strdup (s.text[i].get ()));
       result->records = snapshot_records (s.records.get ());
+      result->transport = snapshot_transport (s.transport.get ());
       return result;
     });
     change (target, [&] (Provenance& s) {
@@ -170,6 +264,7 @@ void gimp_painter_copy_provenance (GObject *source, GObject *target)
       for (int i = 0; i < GIMP_PAINTER_PROVENANCE_N_TEXT; ++i)
         if (copy->text[i]) s.text[i].swap (copy->text[i]);
       if (copy->records) s.records.swap (copy->records);
+      if (copy->transport) s.transport.swap (copy->transport);
     });
   });
 }

@@ -1519,6 +1519,14 @@ gboolean gimp_filter_arguments_snapshot_value (const GimpFilterArgumentsSnapshot
     return TRUE;
   });
 }
+const GValue *gimp_filter_arguments_snapshot_peek_value (const GimpFilterArgumentsSnapshot *snapshot, guint argument)
+{
+  return boundary<const GValue *> (nullptr, nullptr, [&] () -> const GValue * {
+    if (!snapshot || argument >= snapshot->arguments->size () ||
+        !snapshot->arguments->scalar (argument)) return nullptr;
+    return snapshot->arguments->at (argument);
+  });
+}
 guint gimp_filter_arguments_snapshot_reference_count (const GimpFilterArgumentsSnapshot *snapshot, guint argument)
 { return snapshot ? snapshot->arguments->reference_count (argument) : 0; }
 gboolean gimp_filter_arguments_snapshot_reference (const GimpFilterArgumentsSnapshot *snapshot, guint argument,

@@ -1,0 +1,91 @@
+{
+  "scope": "Isolated C++14 storage/multipart sources and tests; this runner does not exercise native Save/Open",
+  "sanitizers": false,
+  "leak_detection": false,
+  "source_sha256": {
+    "app/xcf/painter-xcf-storage.cpp": "b7459b3ef7dc0cfabfd78d20ad51490f19a1cd8b886b5b8f870b69f856603f0e",
+    "app/xcf/painter-xcf-storage.hpp": "adf98bd69c3bbd7f23b4421d2cf3652d07f9aacef9f39079906be39789780114",
+    "app/xcf/painter-xcf-multipart.cpp": "e1b4af0c6ef55e4cb00138b9749848601ea6a96870c93467508314b7b8a191ed",
+    "app/xcf/painter-xcf-multipart.hpp": "01e8d49c444b096a3b90598553b3dca2d2c043414418537b46f0f7fbf023ea69",
+    "app/xcf/tests/test-painter-xcf-storage.cpp": "f95b31247be2180d149176e9f03290d6fbacf7cbcf28f05f0ed7cdc11f2927b3",
+    "app/xcf/tests/test-painter-xcf-multipart.cpp": "f361ba069eca650748a848df62ee5e1c7c946fffb453e1e8fc40da6a502714ec",
+    "app/painter/bytes.hpp": "fca7937dedc4b52a661cbaaa3ce5858074fba62ea2a9fbe70f3687882f9864a4",
+    "migration/tests/run_painter_xcf_storage_tests.py": "2aadb91c5d64e2b1c69c6b767fd951b7e723498f7aa93a94340cbf54ec2dce51"
+  },
+  "commands": [
+    [
+      "c++",
+      "-std=c++14",
+      "-fexceptions",
+      "-g",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-fno-rtti",
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/app/xcf/painter-xcf-storage.cpp",
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/app/xcf/tests/test-painter-xcf-storage.cpp",
+      "-o",
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/xcf-storage-isolated/painter-xcf-storage",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/glib-2.0",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/sysprof-6",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/libmount",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/blkid",
+      "-pthread",
+      "-lgio-2.0",
+      "-lgobject-2.0",
+      "-lglib-2.0"
+    ],
+    [
+      "c++",
+      "-std=c++14",
+      "-fexceptions",
+      "-g",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-fno-rtti",
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/app/xcf/painter-xcf-storage.cpp",
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/app/xcf/painter-xcf-multipart.cpp",
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/app/xcf/tests/test-painter-xcf-multipart.cpp",
+      "-o",
+      "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/xcf-storage-isolated/painter-xcf-multipart",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/glib-2.0",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/sysprof-6",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/libmount",
+      "-I/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/blkid",
+      "-pthread",
+      "-lgio-2.0",
+      "-lgobject-2.0",
+      "-lglib-2.0"
+    ]
+  ],
+  "results": {
+    "storage-compile": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "storage": {
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02S728826389d2fe2dbbd803897908905c3\n1..8\n# Start of painter-xcf-storage tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\nok 1 /painter-xcf-storage/scalars_and_containers\nok 2 /painter-xcf-storage/offset_boundaries\nok 3 /painter-xcf-storage/full_depth_unknown_arrays\n# slow test /painter-xcf-storage/full_depth_unknown_arrays executed in 0.82 secs\nok 4 /painter-xcf-storage/snapshot_lifetime\nok 5 /painter-xcf-storage/finalizer_reentry\nok 6 /painter-xcf-storage/mapping_discard_ownership\nok 7 /painter-xcf-storage/failures\nok 8 /painter-xcf-storage/bounded_cancel\n# End of painter-xcf-storage tests\n",
+      "stderr": "",
+      "executable_sha256": "fbc4c76d89bbb64cc241f144827aab83f2b8846f5aea88087904084f39767fca"
+    },
+    "multipart-compile": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "multipart": {
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02S722d739a2d8541d5c1c05cd640b2baab\n1..4\n# Start of painter-xcf-multipart tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\nok 1 /painter-xcf-multipart/identity_and_order\nok 2 /painter-xcf-multipart/inert_invalid\nok 3 /painter-xcf-multipart/namespaces_and_bounds\nok 4 /painter-xcf-multipart/inert-carrier-identity\n# End of painter-xcf-multipart tests\n",
+      "stderr": "",
+      "executable_sha256": "2c9e9e1c26075a88cab525f0584a705cf4d5f54bdcc4666bf1ad2c870c614b26"
+    }
+  },
+  "changed_during_run": []
+}

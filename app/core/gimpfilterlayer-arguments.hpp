@@ -5,6 +5,9 @@
 #include "painter/resources.hpp"
 #include "painter/object-ref.hpp"
 #include <memory>
+#include <cstring>
+#include <new>
+#include <stdexcept>
 #include <vector>
 
 namespace GimpPainter {
@@ -24,6 +27,54 @@ struct FilterArgumentReference
   gint64 id;
   WeakRef<GObject> target;
 };
+/* Bulk imported scalar copies must be recoverable. XCF may retain the
+ * original typed model as opaque when native materialization is unavailable. */
+inline gpointer try_argument_copy (gconstpointer data, gsize size)
+{
+  if (size && !data) throw std::runtime_error ("Invalid imported scalar buffer");
+  gpointer result = size ? g_try_malloc (size) : nullptr;
+  if (size && !result) throw std::bad_alloc ();
+  if (size) std::memcpy (result, data, size);
+  return result;
+}
+inline gchar *try_argument_string (const gchar *text)
+{
+  if (!text) return nullptr;
+  const gsize size = std::strlen (text);
+  if (size == G_MAXSIZE) throw std::bad_alloc ();
+  return static_cast<gchar *> (try_argument_copy (text, size + 1));
+}
+inline void copy_imported_argument_scalar (const GValue *source, GValue *target)
+{
+  const GType type = G_VALUE_TYPE (source);
+  if (type == G_TYPE_STRING)
+    g_value_take_string (target, try_argument_string (g_value_get_string (source)));
+  else if (type == G_TYPE_STRV)
+    {
+      auto **input = static_cast<gchar **> (g_value_get_boxed (source));
+      if (!input) return;
+      gsize count = 0;
+      while (input[count])
+        { if (count == G_MAXSIZE / sizeof (gchar *) - 1) throw std::bad_alloc (); ++count; }
+      std::unique_ptr<gchar *, decltype (&g_strfreev)> copy (g_try_new0 (gchar *, count + 1), g_strfreev);
+      if (!copy) throw std::bad_alloc ();
+      for (gsize i = 0; i < count; ++i) copy.get ()[i] = try_argument_string (input[i]);
+      g_value_take_boxed (target, copy.release ());
+    }
+  else if (type == GIMP_TYPE_ARRAY || type == GIMP_TYPE_INT32_ARRAY || type == GIMP_TYPE_DOUBLE_ARRAY)
+    {
+      const auto *input = static_cast<const GimpArray *> (g_value_get_boxed (source));
+      if (!input) return;
+      std::unique_ptr<guint8, decltype (&g_free)> copy (
+        static_cast<guint8 *> (try_argument_copy (input->data, input->length)), g_free);
+      auto *array = gimp_array_new (copy.get (), input->length, TRUE);
+      array->static_data = FALSE; copy.release ();
+      g_value_take_boxed (target, array);
+    }
+  else
+    /* Fixed scalars and immutable GBytes/GVariant references need no bulk copy. */
+    g_value_copy (source, target);
+}
 class FilterArguments
 {
   struct Argument
@@ -149,7 +200,7 @@ public:
                 (G_VALUE_HOLDS_BOXED (spec.value) && type != G_TYPE_BYTES && type != G_TYPE_STRV &&
                  type != GIMP_TYPE_ARRAY && type != GIMP_TYPE_INT32_ARRAY && type != GIMP_TYPE_DOUBLE_ARRAY))
               throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Unsupported imported scalar type");
-            g_value_copy (spec.value, arg.value.get ());
+            copy_imported_argument_scalar (spec.value, arg.value.get ());
           }
         arguments_.push_back (std::move (arg));
         if (is_null (i) != bool (spec.is_null))

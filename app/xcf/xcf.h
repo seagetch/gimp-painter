@@ -43,4 +43,12 @@ gboolean    xcf_save_stream (Gimp           *gimp,
                              GimpProgress   *progress,
                              GError        **error);
 
+/* Internal transaction entry points. FALSE explicitly selects inline-only metadata. */
+gboolean xcf_save_stream_with_painter_transport (Gimp *, GimpImage *, GOutputStream *,
+                                                 GFile *, GimpProgress *, gboolean,
+                                                 GCancellable *, GError **);
+gboolean xcf_save_file_with_painter_transport (Gimp *, GimpImage *, GFile *,
+                                               GimpProgress *, gboolean,
+                                               GCancellable *, GError **);
+
 #endif /* __XCF_H__ */

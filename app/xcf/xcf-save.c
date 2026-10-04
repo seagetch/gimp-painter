@@ -481,19 +481,21 @@ static gboolean
 xcf_save_painter_parasites (XcfInfo          *info,
                             GimpImage        *image,
                             GimpParasiteList *existing,
-                            GimpParasite     *extension,
-                            GimpParasite     *origin,
+                            GObject         *owner,
                             GError          **error)
 {
   GimpParasiteList *list = gimp_parasite_list_copy (existing);
   gboolean success;
-  if (extension) gimp_parasite_list_add (list, extension);
-  if (origin) gimp_parasite_list_add (list, origin);
+  if (info->painter_save_state)
+    {
+      const gchar *names[] = {"gimp-painter-image", "gimp-painter-item", "gimp-painter-origin"};
+      for (guint i = 0; i < G_N_ELEMENTS (names); ++i)
+        if (xcf_painter_replaces_parasite (info, owner, names[i]))
+          gimp_parasite_list_remove (list, names[i]);
+    }
   success = xcf_save_prop (info, image, PROP_PARASITES, error, list);
-  if (extension) gimp_parasite_free (extension);
-  if (origin) gimp_parasite_free (origin);
   g_object_unref (list);
-  return success;
+  return success && xcf_painter_write_owner_records (info, owner, error);
 }
 
 static gboolean
@@ -611,8 +613,7 @@ xcf_save_image_props (XcfInfo    *info,
   if (gimp_parasite_list_length (private->parasites) > 0 || info->painter_save_state)
     {
       xcf_check_error (xcf_save_painter_parasites (info, image, private->parasites,
-                      xcf_painter_image_parasite (info->painter_save_state),
-                      xcf_painter_origin_parasite (info->painter_save_state, G_OBJECT (image)), error), ;);
+                      G_OBJECT (image), error), ;);
     }
 
   if (grid_parasite)
@@ -773,8 +774,7 @@ xcf_save_layer_props (XcfInfo    *info,
   if (gimp_parasite_list_length (parasites) > 0 || info->painter_save_state)
     {
       xcf_check_error (xcf_save_painter_parasites (info, image, parasites,
-                      xcf_painter_item_parasite (info->painter_save_state, GIMP_ITEM (layer)),
-                      xcf_painter_origin_parasite (info->painter_save_state, G_OBJECT (layer)), error), ;);
+                      G_OBJECT (layer), error), ;);
     }
 
   for (iter = info->layer_sets; iter; iter = iter->next)
@@ -841,8 +841,7 @@ xcf_save_channel_props (XcfInfo      *info,
   if (gimp_parasite_list_length (parasites) > 0 || info->painter_save_state)
     {
       xcf_check_error (xcf_save_painter_parasites (info, image, parasites,
-                      xcf_painter_item_parasite (info->painter_save_state, GIMP_ITEM (channel)),
-                      xcf_painter_origin_parasite (info->painter_save_state, G_OBJECT (channel)), error), ;);
+                      G_OBJECT (channel), error), ;);
     }
 
   for (iter = info->channel_sets; iter; iter = iter->next)
@@ -1027,8 +1026,7 @@ xcf_save_path_props (XcfInfo      *info,
   if (gimp_parasite_list_length (parasites) > 0 || info->painter_save_state)
     {
       xcf_check_error (xcf_save_painter_parasites (info, image, parasites,
-                      xcf_painter_item_parasite (info->painter_save_state, GIMP_ITEM (vectors)),
-                      xcf_painter_origin_parasite (info->painter_save_state, G_OBJECT (vectors)), error), ;);
+                      G_OBJECT (vectors), error), ;);
     }
 
   for (iter = info->path_sets; iter; iter = iter->next)

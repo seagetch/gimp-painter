@@ -23,6 +23,27 @@ typedef enum {
   GIMP_PAINTER_PROVENANCE_INCOMPLETE_PIXELS,
   GIMP_PAINTER_PROVENANCE_N_TEXT
 } GimpPainterProvenanceText;
+typedef enum {
+  GIMP_PAINTER_PROVENANCE_NAMESPACE_IMAGE,
+  GIMP_PAINTER_PROVENANCE_NAMESPACE_ITEM,
+  GIMP_PAINTER_PROVENANCE_NAMESPACE_ORIGIN,
+  GIMP_PAINTER_PROVENANCE_N_NAMESPACES
+} GimpPainterProvenanceNamespace;
+/* One byte per raw inner parasite record. Only a complete validated wire set
+ * may claim a namespace; semantic validation still decides whether to use it. */
+typedef enum {
+  GIMP_PAINTER_PROVENANCE_TRANSPORT_INERT = 0,
+  GIMP_PAINTER_PROVENANCE_TRANSPORT_IMAGE,
+  GIMP_PAINTER_PROVENANCE_TRANSPORT_ITEM,
+  GIMP_PAINTER_PROVENANCE_TRANSPORT_ORIGIN
+} GimpPainterProvenanceDisposition;
+typedef struct {
+  GPtrArray *records;
+  GBytes   *dispositions;
+  GBytes   *capsules[GIMP_PAINTER_PROVENANCE_N_NAMESPACES];
+  gboolean  present[GIMP_PAINTER_PROVENANCE_N_NAMESPACES];
+  gboolean  invalid[GIMP_PAINTER_PROVENANCE_N_NAMESPACES];
+} GimpPainterProvenanceTransport;
 GBytes   *gimp_painter_provenance_ref_bytes (GObject *, GimpPainterProvenanceBytes);
 gboolean  gimp_painter_provenance_set_bytes (GObject *, GimpPainterProvenanceBytes, GBytes *);
 gchar    *gimp_painter_provenance_dup_text (GObject *, GimpPainterProvenanceText);
@@ -30,6 +51,13 @@ gboolean  gimp_painter_provenance_set_text (GObject *, GimpPainterProvenanceText
 /* Arrays are snapshots of GBytes references, never shared mutable containers. */
 GPtrArray *gimp_painter_provenance_ref_records (GObject *);
 gboolean  gimp_painter_provenance_set_records (GObject *, GPtrArray *);
+/* A single fixed transport value in the existing ProvenanceSlot. Ref returns
+ * an independently owned container snapshot; set borrows every input and
+ * publishes all fields together before releasing any overwritten resource.
+ * NULL clears the value. No function interprets raw records as executable state. */
+GimpPainterProvenanceTransport *gimp_painter_provenance_ref_transport (GObject *);
+void      gimp_painter_provenance_free_transport (GimpPainterProvenanceTransport *);
+gboolean  gimp_painter_provenance_set_transport (GObject *, const GimpPainterProvenanceTransport *);
 GVariant *gimp_painter_provenance_ref_definition (GObject *);
 gboolean  gimp_painter_provenance_set_definition (GObject *, GVariant *);
 gboolean  gimp_painter_provenance_has_definition (GObject *);

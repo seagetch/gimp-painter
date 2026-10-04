@@ -52,9 +52,12 @@ Do not infer a loss merely from missing test coverage.
   the current dual-valid and short-declared-extension fixtures
 - Test platform-specific temporary-file unlink/close/failure behavior; Linux
   large-input and cancellation coverage is not a Windows guarantee
-- The whole source has no arbitrary size cap, but each serialized metadata
-  parasite is limited below 256 MiB. Decide a chunked representation if a valid
-  retained definition/origin exceeds that limit; do not silently discard it
+- The whole source has no arbitrary size cap. The ordinary multipart integration
+  in [xcf-multipart-transport.md](xcf-multipart-transport.md) preserves large
+  unknown records beyond the old inline limit. Its public-PDB 256/512 MiB tests
+  establish exact retention and bounded anonymous scratch for those inputs;
+  fixed total RSS, GUI responsiveness and cross-platform temporary-file behavior
+  remain separate gates. Inline-only opt-out tests preserve the old refusal
 - Arbitrary live object internals outside supported image/item identities still
   require opaque state or preflight refusal, rather than fabricated objects
 

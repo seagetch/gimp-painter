@@ -96,9 +96,12 @@ Object descriptors retain declared type, original runtime ID, was-set/expired
 state and optional file ID; self-image and same-image item targets are resolved,
 expired descriptors remain descriptors. Arbitrary object internals are not
 fabricated. Unsupported values fail preflight; uninterpreted loaded metadata is
-retained. Limits are depth 32, 65,536 aggregate slots/references, and one parasite
-below 256 MiB. These are explicit serialization limits, not whole-input-file
-limits or evidence against a legacy interpretation.
+retained. Limits are depth 32 and 65,536 aggregate slots/references. Ordinary Save uses the
+[multipart transport](xcf-multipart-transport.md) for regenerated v1 capsules
+larger than 1 MiB, streaming the same logical capsule up to an explicit 64 GiB
+transport work bound without changing field semantics. The internal inline-only
+opt-out retains its prior 256 MiB preflight bound. Neither bound is a whole-input-file limit or evidence against a legacy
+interpretation.
 
 Filter pixels are the committed cache snapshot. After all topology and definitions
 are restored, the core normalizes saved generation lineage into a fresh runtime

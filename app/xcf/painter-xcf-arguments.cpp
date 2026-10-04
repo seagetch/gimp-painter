@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "painter-xcf-storage.hpp"
 #include <gegl.h>
 #include <gio/gio.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -43,28 +44,172 @@ struct Builder
   GVariant *end () { ended = true; return g_variant_builder_end (&value); }
 };
 [[noreturn]] void invalid () { throw std::runtime_error ("Unsupported or malformed saved Filter argument; original definition is retained"); }
-GVariant *bytes (const void *data, gsize length)
+constexpr gsize block_size = 65536;
+void cancelled (GCancellable *cancel)
 {
-  if (length > 256u * 1024u * 1024u - 4096u) invalid ();
-  return g_variant_new_fixed_array (G_VARIANT_TYPE_BYTE, data, length, 1);
+  if (cancel && g_cancellable_is_cancelled (cancel))
+    throw StorageError (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
 }
-GVariant *string_bytes (const gchar *text)
-{ return g_variant_new ("(b@ay)", text != nullptr, bytes (text, text ? std::strlen (text) + 1 : 0)); }
-gchar *read_string (GVariant *variant)
+GVariant *bytes (const void *data, gsize length, GCancellable *cancel)
+{
+  cancelled (cancel);
+  if (length <= block_size) return g_variant_new_fixed_array (G_VARIANT_TYPE_BYTE, data, length, 1);
+  if (length > G_MAXSSIZE) invalid ();
+  auto *input = g_memory_input_stream_new_from_data (data, length, nullptr);
+  std::unique_ptr<GInputStream, decltype (&g_object_unref)> held (input, g_object_unref);
+  auto snapshot = GimpPainterXcf::snapshot_stream (input, cancel);
+  return GimpPainterXcf::byte_variant (snapshot.get ());
+}
+GVariant *string_bytes (const gchar *text, GCancellable *cancel)
+{
+  cancelled (cancel);
+  gsize length = 0;
+  if (text)
+    for (;;)
+      {
+        /* A long string must not hide an uncancellable strlen() pass. Only
+         * examine bytes up to its terminator, checking between fixed blocks. */
+        cancelled (cancel);
+        gsize count = 0;
+        const gsize available = std::min (block_size, G_MAXSIZE - length);
+        while (count < available && text[length + count]) ++count;
+        if (count == G_MAXSIZE - length) invalid ();
+        length += count;
+        if (count < block_size) { ++length; break; }
+      }
+  return g_variant_new ("(b@ay)", text != nullptr, bytes (text, length, cancel));
+}
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+/* Convert borrowed native components as the snapshot reader consumes them.
+ * This also handles unaligned array data without asking GVariant to copy it. */
+struct EndianInput
+{
+  GInputStream parent;
+  const guint8 *data;
+  gsize length, position, width;
+};
+struct EndianInputClass { GInputStreamClass parent; };
+G_DEFINE_TYPE (EndianInput, endian_input, G_TYPE_INPUT_STREAM)
+static gssize endian_input_read (GInputStream *stream, void *buffer, gsize count,
+                                 GCancellable *cancel, GError **error)
+{
+  if (cancel && g_cancellable_set_error_if_cancelled (cancel, error)) return -1;
+  auto *input = reinterpret_cast<EndianInput *> (stream);
+  count = std::min ({count, input->length - input->position, block_size});
+  auto *output = static_cast<guint8 *> (buffer);
+  const gsize mask = input->width - 1;
+  for (gsize i = 0; i < count; ++i)
+    {
+      const gsize offset = input->position + i;
+      output[i] = input->data[(offset & ~mask) + (mask - (offset & mask))];
+    }
+  input->position += count;
+  return count;
+}
+static void endian_input_class_init (EndianInputClass *klass)
+{ G_INPUT_STREAM_CLASS (klass)->read_fn = endian_input_read; }
+static void endian_input_init (EndianInput *) {}
+#endif
+GVariant *array_bytes (const GimpArray *array, gsize width, GCancellable *cancel)
+{
+  cancelled (cancel);
+  const gsize length = array ? array->length : 0;
+  const guint8 *data = array ? array->data : nullptr;
+  if (length % width) invalid ();
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  if (length && width > 1)
+    {
+      auto *input = static_cast<EndianInput *> (g_object_new (endian_input_get_type (), nullptr));
+      std::unique_ptr<GInputStream, decltype (&g_object_unref)> held (G_INPUT_STREAM (input), g_object_unref);
+      input->data = data; input->length = length; input->width = width;
+      if (length <= block_size)
+        {
+          guint8 raw[block_size];
+          if (endian_input_read (held.get (), raw, length, cancel, nullptr) < 0)
+            throw StorageError (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
+          return bytes (raw, length, cancel);
+        }
+      auto snapshot = GimpPainterXcf::snapshot_stream (held.get (), cancel);
+      return GimpPainterXcf::byte_variant (snapshot.get ());
+    }
+#endif
+  return bytes (data, length, cancel);
+}
+struct MaterializationError : std::runtime_error
+{ using std::runtime_error::runtime_error; };
+struct MaterializationBudget
+{
+  /* The original envelope could contain at most 256 MiB of mutable scalar
+   * payloads. Preserve that range without allowing a larger transport to
+   * request arbitrary native allocations. Shared immutable bytes do not count.
+   * STRV pointer tables retain their existing per-array slot bound separately. */
+  gsize remaining = gsize (256) * 1024 * 1024;
+  void consume (gsize size)
+  {
+    if (size > remaining)
+      throw MaterializationError ("Saved Filter arguments exceed the mutable materialization limit; original definition is retained");
+    remaining -= size;
+  }
+};
+[[noreturn]] void allocation_failed ()
+{ throw MaterializationError ("Not enough memory to restore saved Filter arguments; original definition is retained"); }
+struct BufferFree { void operator() (guint8 *p) const { g_free (p); } };
+using Buffer = std::unique_ptr<guint8, BufferFree>;
+Buffer materialize_array (GVariant *raw, gsize width, MaterializationBudget& budget)
+{
+  const gsize size = g_variant_get_size (raw);
+  if (size % width) invalid ();
+  budget.consume (size);
+  Buffer copy (static_cast<guint8 *> (g_try_malloc (size)));
+  if (size && !copy) allocation_failed ();
+  if (size) std::memcpy (copy.get (), g_variant_get_data (raw), size);
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  for (gsize i = 0; i < size; i += width)
+    std::reverse (copy.get () + i, copy.get () + i + width);
+#endif
+  return copy;
+}
+gchar *read_string (GVariant *variant, MaterializationBudget& budget)
 {
   gboolean present;
   GVariant *raw;
   if (!g_variant_is_of_type (variant, G_VARIANT_TYPE ("(bay)"))) invalid ();
   g_variant_get (variant, "(b@ay)", &present, &raw);
   Variant owned (raw);
-  gsize length;
-  const auto *data = static_cast<const gchar *> (g_variant_get_fixed_array (raw, &length, 1));
+  const gsize length = g_variant_get_size (raw);
   if (!present) { if (length) invalid (); return nullptr; }
+  budget.consume (length);
+  const auto *data = static_cast<const gchar *> (g_variant_get_data (raw));
   if (!length || data[length - 1] || std::memchr (data, 0, length - 1)) invalid ();
-  return static_cast<gchar *> (g_memdup2 (data, length));
+  auto *copy = static_cast<gchar *> (g_try_malloc (length));
+  if (!copy) allocation_failed ();
+  std::memcpy (copy, data, length);
+  return copy;
 }
-GVariant *reference (GObject *object, GimpImage *image)
+struct ArgumentEntry
 {
+  Variant name;
+  Variant payload;
+  gboolean is_null = FALSE;
+  ArgumentEntry (GVariant *entry, bool snapshot)
+    : name (g_variant_get_child_value (entry, 0))
+  {
+    /* An aggregate borrowed-string format such as (&sbv) can serialize the
+     * whole tuple, copying a large immutable payload in a freshly built AST.
+     * Keep each child independently so only the small name needs string data. */
+    Variant wrapped (g_variant_get_child_value (entry, snapshot ? 2 : 1));
+    payload.reset (g_variant_get_variant (wrapped.get ()));
+    if (snapshot)
+      {
+        Variant flag (g_variant_get_child_value (entry, 1));
+        is_null = g_variant_get_boolean (flag.get ());
+      }
+  }
+  const gchar *type_name () const { return g_variant_get_string (name.get (), nullptr); }
+};
+GVariant *reference (GObject *object, GimpImage *image, GCancellable *cancel)
+{
+  cancelled (cancel);
   guint32 kind = 0, tattoo = 0;
   if (object == G_OBJECT (image)) kind = 1;
   else if (object && GIMP_IS_ITEM (object) && gimp_item_get_image (GIMP_ITEM (object)) == image)
@@ -102,10 +247,11 @@ GObject *find_reference (GVariant *variant, GimpImage *image)
   if (!result) invalid (); /* never bind an unrelated same-name item */
   return result;
 }
-GVariant *encode (const GimpValueArray *, GimpImage *, unsigned);
-GimpValueArray *decode (GVariant *, GimpImage *, unsigned);
-GVariant *encode_value (const GValue *v, GimpImage *image, unsigned depth)
+GVariant *encode (const GimpValueArray *, GimpImage *, unsigned, GCancellable *);
+GimpValueArray *decode (GVariant *, GimpImage *, unsigned, MaterializationBudget&);
+GVariant *encode_value (const GValue *v, GimpImage *image, unsigned depth, GCancellable *cancel)
 {
+  cancelled (cancel);
   const GType type = G_VALUE_TYPE (v);
   if (type == G_TYPE_BOOLEAN) return g_variant_new_boolean (g_value_get_boolean (v));
   if (type == G_TYPE_CHAR) return g_variant_new_int64 (g_value_get_schar (v));
@@ -124,64 +270,60 @@ GVariant *encode_value (const GValue *v, GimpImage *image, unsigned depth)
     { double f = g_value_get_double (v); guint64 bits; std::memcpy (&bits, &f, 8); return g_variant_new_uint64 (bits); }
   if (type == G_TYPE_VARIANT) return g_variant_new ("(bv)", g_value_get_variant (v) != nullptr,
                                                    g_value_get_variant (v) ? g_value_get_variant (v) : g_variant_new_byte (0));
-  if (type == G_TYPE_STRING) return string_bytes (g_value_get_string (v));
-  if (G_VALUE_HOLDS_OBJECT (v)) return reference (G_OBJECT (g_value_get_object (v)), image);
+  if (type == G_TYPE_STRING) return string_bytes (g_value_get_string (v), cancel);
+  if (G_VALUE_HOLDS_OBJECT (v)) return reference (G_OBJECT (g_value_get_object (v)), image, cancel);
   if (type == GIMP_TYPE_CORE_OBJECT_ARRAY)
     {
       auto **objects = static_cast<GObject **> (g_value_get_boxed (v));
       Builder b ("a(uu)");
       for (std::size_t i = 0; objects && objects[i]; ++i)
-        { if (i >= 65536) invalid (); g_variant_builder_add_value (&b.value, reference (objects[i], image)); }
+        { cancelled (cancel); if (i >= 65536) invalid (); g_variant_builder_add_value (&b.value, reference (objects[i], image, cancel)); }
       return g_variant_new ("(b@a(uu))", objects != nullptr, b.end ());
     }
   if (type == GIMP_TYPE_VALUE_ARRAY)
     {
       auto *array = static_cast<GimpValueArray *> (g_value_get_boxed (v));
-      return g_variant_new ("(b@a(sv))", array != nullptr, encode (array, image, depth + 1));
+      return g_variant_new ("(b@a(sv))", array != nullptr, encode (array, image, depth + 1, cancel));
     }
   if (type == G_TYPE_STRV)
     {
       auto **strings = static_cast<gchar **> (g_value_get_boxed (v));
       Builder b ("a(bay)");
       for (std::size_t i = 0; strings && strings[i]; ++i)
-        { if (i >= 65536) invalid (); g_variant_builder_add_value (&b.value, string_bytes (strings[i])); }
+        { cancelled (cancel); if (i >= 65536) invalid (); g_variant_builder_add_value (&b.value, string_bytes (strings[i], cancel)); }
       return g_variant_new ("(b@a(bay))", strings != nullptr, b.end ());
     }
   if (type == G_TYPE_BYTES)
     {
       auto *raw = static_cast<GBytes *> (g_value_get_boxed (v));
-      gsize length = 0; const void *data = raw ? g_bytes_get_data (raw, &length) : nullptr;
-      return g_variant_new ("(b@ay)", raw != nullptr, bytes (data, length));
+      return g_variant_new ("(b@ay)", raw != nullptr, GimpPainterXcf::byte_variant (raw));
     }
   if (type == GIMP_TYPE_ARRAY || type == GIMP_TYPE_INT32_ARRAY || type == GIMP_TYPE_DOUBLE_ARRAY)
     {
       auto *array = static_cast<GimpArray *> (g_value_get_boxed (v));
       /* Canonical little-endian components, including IEEE NaN payloads. */
-      std::vector<guint8> raw;
-      if (array && array->length) raw.assign (array->data, array->data + array->length);
       const std::size_t width = type == GIMP_TYPE_INT32_ARRAY ? 4 : type == GIMP_TYPE_DOUBLE_ARRAY ? 8 : 1;
-      if (raw.size () % width) invalid ();
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-      for (std::size_t i = 0; i < raw.size (); i += width) std::reverse (raw.begin () + i, raw.begin () + i + width);
-#endif
-      return g_variant_new ("(b@ay)", array != nullptr, bytes (raw.data (), raw.size ()));
+      return g_variant_new ("(b@ay)", array != nullptr, array_bytes (array, width, cancel));
     }
   invalid ();
 }
-GVariant *encode (const GimpValueArray *args, GimpImage *image, unsigned depth)
+GVariant *encode (const GimpValueArray *args, GimpImage *image, unsigned depth, GCancellable *cancel)
 {
+  cancelled (cancel);
   if (depth > 32) invalid ();
   const gint count = args ? gimp_value_array_length (args) : 0;
   if (count > 65536) invalid ();
   Builder b ("a(sv)");
   for (gint i = 0; i < count; ++i)
     {
+      cancelled (cancel);
       const GValue *value = gimp_value_array_index (args, i);
-      g_variant_builder_add (&b.value, "(sv)", g_type_name (G_VALUE_TYPE (value)), encode_value (value, image, depth));
+      g_variant_builder_add (&b.value, "(sv)", g_type_name (G_VALUE_TYPE (value)), encode_value (value, image, depth, cancel));
     }
+  cancelled (cancel);
   return b.end ();
 }
-void decode_value (GValue *v, GVariant *p, GimpImage *image, unsigned depth)
+void decode_value (GValue *v, GVariant *p, GimpImage *image, unsigned depth, MaterializationBudget& budget)
 {
   const GType type = G_VALUE_TYPE (v);
   if (type == G_TYPE_BOOLEAN)
@@ -219,14 +361,14 @@ void decode_value (GValue *v, GVariant *p, GimpImage *image, unsigned depth)
       if (present) g_value_set_variant (v, child);
       return;
     }
-  if (type == G_TYPE_STRING) { g_value_take_string (v, read_string (p)); return; }
+  if (type == G_TYPE_STRING) { g_value_take_string (v, read_string (p, budget)); return; }
   if (G_VALUE_HOLDS_OBJECT (v))
     { auto *object = find_reference (p, image); if (object && !g_type_is_a (G_OBJECT_TYPE (object), type)) invalid (); g_value_set_object (v, object); return; }
   if (type == GIMP_TYPE_VALUE_ARRAY)
     {
       if (!g_variant_is_of_type (p, G_VARIANT_TYPE ("(ba(sv))"))) invalid ();
       gboolean present; GVariant *child; g_variant_get (p, "(b@a(sv))", &present, &child); Variant owned (child);
-      if (present) g_value_take_boxed (v, decode (child, image, depth + 1));
+      if (present) g_value_take_boxed (v, decode (child, image, depth + 1, budget));
       return;
     }
   if (type == G_TYPE_STRV)
@@ -235,8 +377,9 @@ void decode_value (GValue *v, GVariant *p, GimpImage *image, unsigned depth)
       gboolean present; GVariant *child; g_variant_get (p, "(b@a(bay))", &present, &child); Variant owned (child);
       const gsize count = g_variant_n_children (child); if (count > 65536) invalid ();
       if (!present) return;
-      gchar **strings = g_new0 (gchar *, count + 1);
-      try { for (gsize i = 0; i < count; ++i) { Variant entry (g_variant_get_child_value (child, i)); strings[i] = read_string (entry.get ()); if (!strings[i]) invalid (); } }
+      gchar **strings = g_try_new0 (gchar *, count + 1);
+      if (!strings) allocation_failed ();
+      try { for (gsize i = 0; i < count; ++i) { Variant entry (g_variant_get_child_value (child, i)); strings[i] = read_string (entry.get (), budget); if (!strings[i]) invalid (); } }
       catch (...) { g_strfreev (strings); throw; }
       g_value_take_boxed (v, strings); return;
     }
@@ -254,20 +397,20 @@ void decode_value (GValue *v, GVariant *p, GimpImage *image, unsigned depth)
     {
       if (!g_variant_is_of_type (p, G_VARIANT_TYPE ("(bay)"))) invalid ();
       gboolean present; GVariant *child; g_variant_get (p, "(b@ay)", &present, &child); Variant owned (child);
-      gsize size; const auto *data = static_cast<const guint8 *> (g_variant_get_fixed_array (child, &size, 1));
+      const gsize size = g_variant_get_size (child);
       if (!present) { if (size) invalid (); return; }
-      if (type == G_TYPE_BYTES) { g_value_take_boxed (v, g_bytes_new (data, size)); return; }
+      if (type == G_TYPE_BYTES) { g_value_take_boxed (v, g_variant_get_data_as_bytes (child)); return; }
       const std::size_t width = type == GIMP_TYPE_INT32_ARRAY ? 4 : type == GIMP_TYPE_DOUBLE_ARRAY ? 8 : 1;
-      if (size % width) invalid ();
-      std::vector<guint8> copy; if (size) copy.assign (data, data + size);
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-      for (std::size_t i = 0; i < size; i += width) std::reverse (copy.begin () + i, copy.begin () + i + width);
-#endif
-      g_value_take_boxed (v, gimp_array_new (copy.data (), size, FALSE)); return;
+      auto copy = materialize_array (child, width, budget);
+      auto *array = gimp_array_new (copy.get (), size, TRUE);
+      if (!array) allocation_failed ();
+      array->static_data = FALSE;
+      copy.release ();
+      g_value_take_boxed (v, array); return;
     }
   invalid ();
 }
-GimpValueArray *decode (GVariant *variant, GimpImage *image, unsigned depth)
+GimpValueArray *decode (GVariant *variant, GimpImage *image, unsigned depth, MaterializationBudget& budget)
 {
   if (depth > 32 || !g_variant_is_of_type (variant, G_VARIANT_TYPE ("a(sv)")) ||
       g_variant_n_children (variant) > 65536) invalid ();
@@ -275,18 +418,22 @@ GimpValueArray *decode (GVariant *variant, GimpImage *image, unsigned depth)
   for (gsize i = 0; i < g_variant_n_children (variant); ++i)
     {
       Variant entry (g_variant_get_child_value (variant, i));
-      const gchar *type_name; GVariant *payload;
-      g_variant_get (entry.get (), "(&sv)", &type_name, &payload); Variant owned (payload);
-      GType type = g_type_from_name (type_name);
+      ArgumentEntry decoded (entry.get (), false);
+      GType type = g_type_from_name (decoded.type_name ());
       if (!type || !G_TYPE_IS_VALUE_TYPE (type)) invalid ();
-      Value value (type); decode_value (&value.value, payload, image, depth);
-      gimp_value_array_append (args.get (), &value.value);
+      /* Decode directly into an owned slot: appending a populated GValue
+       * would perform another unchecked mutable boxed/string allocation. */
+      gimp_value_array_append (args.get (), nullptr);
+      GValue *value = gimp_value_array_index (args.get (), i);
+      g_value_init (value, type);
+      decode_value (value, decoded.payload.get (), image, depth, budget);
     }
   return args.release ();
 }
 }
-GVariant *encode_arguments (const GimpValueArray *args, GimpImage *image) { return g_variant_ref_sink (encode (args, image, 0)); }
-GimpValueArray *decode_arguments (GVariant *variant, GimpImage *image) { return decode (variant, image, 0); }
+GVariant *encode_arguments (const GimpValueArray *args, GimpImage *image, GCancellable *cancel) { return g_variant_ref_sink (encode (args, image, 0, cancel)); }
+GimpValueArray *decode_arguments (GVariant *variant, GimpImage *image)
+{ MaterializationBudget budget; return decode (variant, image, 0, budget); }
 }
 
 namespace GimpPainterXcf {
@@ -306,8 +453,9 @@ const gchar *safe_image_name (GimpImage *image)
   return name && !std::strstr (name, "://") && !std::strchr (name, '/') &&
          !std::strchr (name, '\\') && !std::strchr (name, '@') ? name : nullptr;
 }
-GVariant *origin_record (GObject *object, GType declared_type, const char *role)
+GVariant *origin_record (GObject *object, GType declared_type, const char *role, GCancellable *cancel)
 {
+  cancelled (cancel);
   GimpImage *owner = GIMP_IS_IMAGE (object) ? GIMP_IMAGE (object) :
                      GIMP_IS_ITEM (object) ? gimp_item_get_image (GIMP_ITEM (object)) : nullptr;
   if (!GIMP_IS_IMAGE (object) && !GIMP_IS_ITEM (object)) invalid ();
@@ -318,12 +466,14 @@ GVariant *origin_record (GObject *object, GType declared_type, const char *role)
   g_variant_builder_add (&record.value, "{sv}", "object-type", g_variant_new_string (G_OBJECT_TYPE_NAME (object)));
   g_variant_builder_add (&record.value, "{sv}", "object-runtime-id", g_variant_new_int64 (id));
   g_variant_builder_add (&record.value, "{sv}", "image-runtime-id", g_variant_new_int64 (owner ? gimp_image_get_id (owner) : 0));
-  g_variant_builder_add (&record.value, "{sv}", "object-name", string_bytes (GIMP_IS_IMAGE (object) ? safe_image_name (owner) : gimp_object_get_name (object)));
-  g_variant_builder_add (&record.value, "{sv}", "image-name", string_bytes (safe_image_name (owner)));
+  g_variant_builder_add (&record.value, "{sv}", "object-name", string_bytes (GIMP_IS_IMAGE (object) ? safe_image_name (owner) : gimp_object_get_name (object), cancel));
+  g_variant_builder_add (&record.value, "{sv}", "image-name", string_bytes (safe_image_name (owner), cancel));
+  cancelled (cancel);
   return record.end ();
 }
-GVariant *encode_reference (GimpFilterArgumentReference ref, GimpImage *image, GHashTable *saved_ids, Builder &external)
+GVariant *encode_reference (GimpFilterArgumentReference ref, GimpImage *image, GHashTable *saved_ids, Builder &external, GCancellable *cancel)
 {
+  cancelled (cancel);
   guint32 kind = 0, tattoo = 0;
   if (ref.was_set)
     {
@@ -336,7 +486,7 @@ GVariant *encode_reference (GimpFilterArgumentReference ref, GimpImage *image, G
           if (target == image) kind = 1;
           else
             {
-              g_variant_builder_add_value (&external.value, origin_record (G_OBJECT (target), ref.object_type, "filter-argument"));
+              g_variant_builder_add_value (&external.value, origin_record (G_OBJECT (target), ref.object_type, "filter-argument", cancel));
               kind = 3; ref.expired = TRUE;
             }
         }
@@ -349,7 +499,7 @@ GVariant *encode_reference (GimpFilterArgumentReference ref, GimpImage *image, G
             { kind = 2; tattoo = GPOINTER_TO_UINT (g_hash_table_lookup (saved_ids, item)); }
           if (!tattoo)
             {
-              g_variant_builder_add_value (&external.value, origin_record (G_OBJECT (item), ref.object_type, "filter-argument"));
+              g_variant_builder_add_value (&external.value, origin_record (G_OBJECT (item), ref.object_type, "filter-argument", cancel));
               kind = 3; ref.expired = TRUE;
             }
         }
@@ -357,8 +507,9 @@ GVariant *encode_reference (GimpFilterArgumentReference ref, GimpImage *image, G
     }
   return g_variant_new ("(uuxsbb)", kind, tattoo, ref.id, g_type_name (ref.object_type), ref.was_set, ref.expired);
 }
-GVariant *encode_snapshot_inner (const GimpFilterArgumentsSnapshot *args, GimpImage *image, GHashTable *saved_ids, unsigned depth, guint &work, Builder &external)
+GVariant *encode_snapshot_inner (const GimpFilterArgumentsSnapshot *args, GimpImage *image, GHashTable *saved_ids, unsigned depth, guint &work, Builder &external, GCancellable *cancel)
 {
+  cancelled (cancel);
   if (depth > 32) invalid ();
   const guint count = args ? gimp_filter_arguments_snapshot_count (args) : 0;
   if (count > 65536 - work) invalid ();
@@ -366,6 +517,7 @@ GVariant *encode_snapshot_inner (const GimpFilterArgumentsSnapshot *args, GimpIm
   Builder b ("a(sbv)");
   for (guint i = 0; i < count; ++i)
     {
+      cancelled (cancel);
       const GType type = gimp_filter_arguments_snapshot_type (args, i);
       const gboolean is_null = gimp_filter_arguments_snapshot_is_null (args, i);
       GVariant *payload;
@@ -377,26 +529,28 @@ GVariant *encode_snapshot_inner (const GimpFilterArgumentsSnapshot *args, GimpIm
           work += n;
           for (guint j = 0; j < n; ++j)
             {
+              cancelled (cancel);
               GimpFilterArgumentReference ref;
               if (!gimp_filter_arguments_snapshot_reference (args, i, j, &ref)) invalid ();
-              g_variant_builder_add_value (&refs.value, encode_reference (ref, image, saved_ids, external));
+              g_variant_builder_add_value (&refs.value, encode_reference (ref, image, saved_ids, external, cancel));
             }
           payload = refs.end ();
         }
       else if (type == GIMP_TYPE_VALUE_ARRAY)
         {
           Snapshot nested (gimp_filter_arguments_snapshot_nested (args, i));
-          payload = encode_snapshot_inner (nested.get (), image, saved_ids, depth + 1, work, external);
+          payload = encode_snapshot_inner (nested.get (), image, saved_ids, depth + 1, work, external, cancel);
         }
       else
         {
-          Value value;
-          if (!gimp_filter_arguments_snapshot_value (args, i, &value.value)) invalid ();
-          payload = encode_value (&value.value, image, depth);
+          const GValue *value = gimp_filter_arguments_snapshot_peek_value (args, i);
+          if (!value) invalid ();
+          payload = encode_value (value, image, depth, cancel);
         }
       Variant owned_payload (g_variant_ref_sink (payload));
       g_variant_builder_add (&b.value, "(sbv)", g_type_name (type), is_null, owned_payload.get ());
     }
+  cancelled (cancel);
   return b.end ();
 }
 struct Imported
@@ -408,7 +562,7 @@ struct Imported
   std::vector<std::unique_ptr<Imported>> children;
   std::vector<GimpFilterArgumentSpec> child_specs;
 };
-std::vector<std::unique_ptr<Imported>> decode_snapshot_inner (GVariant *variant, GimpImage *image, unsigned depth, guint &work)
+std::vector<std::unique_ptr<Imported>> decode_snapshot_inner (GVariant *variant, GimpImage *image, unsigned depth, guint &work, MaterializationBudget& budget)
 {
   if (depth > 32 || !g_variant_is_of_type (variant, G_VARIANT_TYPE ("a(sbv)"))) invalid ();
   const gsize count = g_variant_n_children (variant);
@@ -418,12 +572,12 @@ std::vector<std::unique_ptr<Imported>> decode_snapshot_inner (GVariant *variant,
   for (gsize i = 0; i < count; ++i)
     {
       Variant entry (g_variant_get_child_value (variant, i));
-      const gchar *name; gboolean is_null; GVariant *payload;
-      g_variant_get (entry.get (), "(&sbv)", &name, &is_null, &payload); Variant owned (payload);
-      const GType type = g_type_from_name (name);
+      ArgumentEntry decoded (entry.get (), true);
+      GVariant *payload = decoded.payload.get ();
+      const GType type = g_type_from_name (decoded.type_name ());
       if (!type || !G_TYPE_IS_VALUE_TYPE (type)) invalid ();
       std::unique_ptr<Imported> node (new Imported);
-      node->spec.value_type = type; node->spec.is_null = is_null;
+      node->spec.value_type = type; node->spec.is_null = decoded.is_null;
       if (g_type_is_a (type, G_TYPE_OBJECT) || type == GIMP_TYPE_CORE_OBJECT_ARRAY)
         {
           if (!g_variant_is_of_type (payload, G_VARIANT_TYPE ("a(uuxsbb)"))) invalid ();
@@ -459,14 +613,14 @@ std::vector<std::unique_ptr<Imported>> decode_snapshot_inner (GVariant *variant,
         }
       else if (type == GIMP_TYPE_VALUE_ARRAY)
         {
-          node->children = decode_snapshot_inner (payload, image, depth + 1, work);
+          node->children = decode_snapshot_inner (payload, image, depth + 1, work, budget);
           for (const auto &child : node->children) node->child_specs.push_back (child->spec);
           node->spec.n_children = node->child_specs.size (); node->spec.children = node->child_specs.data ();
         }
       else
         {
           g_value_init (&node->value.value, type);
-          decode_value (&node->value.value, payload, image, depth);
+          decode_value (&node->value.value, payload, image, depth, budget);
           node->spec.value = &node->value.value;
         }
       result.push_back (std::move (node));
@@ -474,20 +628,23 @@ std::vector<std::unique_ptr<Imported>> decode_snapshot_inner (GVariant *variant,
   return result;
 }
 }
-GVariant *external_reference_origin (GObject *object, GType declared_type, const char *role)
-{ return g_variant_ref_sink (origin_record (object, declared_type, role)); }
-GVariant *encode_snapshot (const GimpFilterArgumentsSnapshot *args, GimpImage *image, GHashTable *saved_ids, GVariant **external_origins)
+GVariant *external_reference_origin (GObject *object, GType declared_type, const char *role, GCancellable *cancel)
+{ return g_variant_ref_sink (origin_record (object, declared_type, role, cancel)); }
+GVariant *encode_snapshot (const GimpFilterArgumentsSnapshot *args, GimpImage *image, GHashTable *saved_ids, GVariant **external_origins, GCancellable *cancel)
 {
   if (external_origins) *external_origins = nullptr;
+  cancelled (cancel);
   guint work = 0; Builder external ("aa{sv}");
-  Variant result (g_variant_ref_sink (encode_snapshot_inner (args, image, saved_ids, 0, work, external)));
+  Variant result (g_variant_ref_sink (encode_snapshot_inner (args, image, saved_ids, 0, work, external, cancel)));
+  cancelled (cancel);
   if (external_origins) *external_origins = g_variant_ref_sink (external.end ());
   return result.release ();
 }
 GimpFilterArgumentsSnapshot *decode_snapshot (GVariant *variant, GimpImage *image)
 {
   guint work = 0;
-  auto nodes = decode_snapshot_inner (variant, image, 0, work);
+  MaterializationBudget budget;
+  auto nodes = decode_snapshot_inner (variant, image, 0, work, budget);
   std::vector<GimpFilterArgumentSpec> specs;
   for (const auto &node : nodes) specs.push_back (node->spec);
   GError *error = nullptr;

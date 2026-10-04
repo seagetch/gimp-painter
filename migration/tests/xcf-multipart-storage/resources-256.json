@@ -1,0 +1,87 @@
+{
+  "scope": "Ordinary public PDB Save/Open with multipart metadata, Clone references and Filter raw/typed state",
+  "sources_sha256": {
+    "app/xcf/painter-xcf-storage.cpp": "b7459b3ef7dc0cfabfd78d20ad51490f19a1cd8b886b5b8f870b69f856603f0e",
+    "app/xcf/painter-xcf-storage.hpp": "adf98bd69c3bbd7f23b4421d2cf3652d07f9aacef9f39079906be39789780114",
+    "app/xcf/painter-xcf-multipart.cpp": "e1b4af0c6ef55e4cb00138b9749848601ea6a96870c93467508314b7b8a191ed",
+    "app/xcf/painter-xcf-multipart.hpp": "01e8d49c444b096a3b90598553b3dca2d2c043414418537b46f0f7fbf023ea69",
+    "app/xcf/painter-xcf-transport.cpp": "e5939dfa67e9e5a99a4eb03fa3d031837adce3c7e7f77c3888a1bb7b57f42cd4",
+    "app/xcf/painter-xcf-preserve.cpp": "7929ef912ca7e428614bd03f02eb266f5fb426763503ceb4ca182c9fa674bc88",
+    "app/xcf/painter-xcf-load.cpp": "d08022d60ccdb29a8119057ed3e5f375101be080b782a36b26c3b41e1132efb2",
+    "app/xcf/painter-xcf-preserve.h": "97b35664d9d554fcb64d9ac2560d13a36355552917ad99b8e78d3ea3af63b0bd",
+    "app/xcf/painter-xcf-arguments.cpp": "0b2064ceb686405036980c9e76c3f4bf7396918aea145c224c6ef4a7796f257c",
+    "app/xcf/xcf-load.c": "1747322922475573497c7b57115acf886e72bbeb78979f6172403a7db5fb9f94",
+    "app/xcf/xcf-save.c": "2f5754f6d758b9036d510db9f88aa2c33aac409beb386a49525717f51292692b",
+    "app/xcf/xcf.c": "72584175577cce7c6bb3fba7f447e4e88cb9581497d29257e86fb2b07f015913",
+    "app/xcf/xcf.h": "a35804ec5343c2e9a0b3687397df48a6c94067adfe63855066251aefc1bc3bcb",
+    "app/painter/bytes.hpp": "fca7937dedc4b52a661cbaaa3ce5858074fba62ea2a9fbe70f3687882f9864a4",
+    "app/core/gimp-painter-provenance.cpp": "e7f6cb4e5ddd346c55adde139457f4b822e2dd9006ec7262bc511f21e9dbb61e",
+    "app/core/gimp-painter-provenance.h": "9407e2d83d12b87ccd3b92114c1b59b6a0c8f430c981adb587684c0e331d3052",
+    "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9",
+    "app/tests/test-painter-xcf-multipart.inc": "5d5ea6f8a6567d49d43c628971be003ec1e93703bf5750f1dc2707151a998bd2",
+    "app/tests/test-painter-xcf-multipart-adversarial.inc": "41811a2d37080ecef52925064c3ad58c096491bdcb807edd8d586cbcff4c4820",
+    "app/core/gimpfilterlayer.cpp": "6f31f2cbce137afa309e8d8fe10747bef75b47b550439fa5dae65c42d521928d",
+    "app/core/gimpfilterlayer.h": "f2ef4a581df53bc1334bbcc7e0f41833a4bacdf5a4324f7b399e2059a0ddeb8a",
+    "app/core/gimpfilterlayer-arguments.hpp": "ab1b54dd2b4890da9db48f77230ddf7e5ca02d77bdf34a7c37659e47c51ee402",
+    "app/tests/test-painter-xcf-argument-resources.cpp": "73c78cab4fc1082bc09b7bf81897b16e39df8e9572c2dcc505a1b3b62ba0b115",
+    "app/xcf/painter-xcf-arguments.hpp": "fb87ddc0c4ca18c967689232698d45f8a0375557dd78e56e4a519df4d1ef54c9",
+    "migration/tests/run_native_xcf_multipart_resources.py": "2270178defe8ac34a356ddaa947ce50b53f2f2de0fa854da9de460c3afb6c66d"
+  },
+  "executable_sha256": "54cee8c6d7f2eebaa209c00fe1ca110c8a6d47169323490765eda3cabf8ff973",
+  "sample_interval_ms": 10,
+  "payload_bytes": 268435457,
+  "limits": [
+    "Linux host RSS includes GIMP, libraries, retained source/capsules and mapped pages",
+    "FD allocation excludes mappings whose source descriptor was already closed",
+    "No Windows/macOS or big-endian proof",
+    "Native API transaction evidence; no interactive GUI latency or platform claim"
+  ],
+  "command": [
+    "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/tests/painter-xcf-roundtrip",
+    "-m",
+    "slow",
+    "-p",
+    "/painter-xcf-multipart/native-large"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 34.273115554999094,
+  "sampled_peak_rss_bytes": 607105024,
+  "wait4_peak_rss_bytes": 606752768,
+  "rss_components_at_sampled_peak": {
+    "RssAnon": 31784960,
+    "RssFile": 575320064,
+    "RssShmem": 0
+  },
+  "sampled_peak_temp_fd_count": 2,
+  "sampled_peak_temp_fd_logical_bytes": 527695881,
+  "sampled_peak_temp_fd_allocated_bytes": 527765504,
+  "sampled_peak_temp_mapping_bytes": 1075429376,
+  "sampled_peak_temp_mapping_count": 9,
+  "sampled_peak_fd_or_accessible_mapping_allocated_bytes": 527765504,
+  "mapping_allocation_stat_denials": 10588,
+  "sampled_peak_filesystem_allocated_delta_bytes": 1344749568,
+  "filesystem_measurement_scope": "Actual filesystem free-block delta, includes concurrently allocated non-task files on this filesystem; mapping logical bytes are not physical allocation",
+  "temp_directory_entries_after_exit": [
+    {
+      "path": "gimp",
+      "is_dir": true,
+      "size": 4096
+    },
+    {
+      "path": "gimp/3.0",
+      "is_dir": true,
+      "size": 4096
+    }
+  ],
+  "samples": 2942,
+  "stdout_summary": [
+    "# multipart public-pdb payload=268435457 file=269268992 three-save-open-us=32143519",
+    "ok 1 /painter-xcf-multipart/native-large",
+    "1..1"
+  ],
+  "stdout_sha256": "d054a0fb8c1cd0553f33ca629399bca549d0e985b433c43aa8845c66b2343ddc",
+  "stderr_sha256": "ffee61576e6de2a11ec7f3f8979829623f61d6688625d049a1e62e85f0b96a53",
+  "diagnostics": [],
+  "changed_during_run": [],
+  "transport_leftovers_after_exit": []
+}

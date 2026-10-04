@@ -414,8 +414,9 @@ static void fields_retained_metadata_bound (void)
   gchar *filename;
   GBytes *bytes;
   gpointer state;
-  /* A real size-valid retained origin beyond the supported capsule bound.
-   * mmap avoids manufacturing 256 MiB of heap copies merely to exercise preflight. */
+  /* Explicit inline-only opt-out still refuses a real oversized origin.
+   * Ordinary Save now uses multipart and is covered by the large public-PDB
+   * roundtrip; mmap keeps this legacy preflight refusal test inexpensive. */
   large = g_file_new_tmp ("painter-retained-origin-XXXXXX", &io, NULL);
   g_assert_nonnull (large);
   g_assert_true (g_seekable_truncate (G_SEEKABLE (io), size, NULL, &error));
@@ -427,12 +428,11 @@ static void fields_retained_metadata_bound (void)
   gimp_image_add_layer (image, item, NULL, 0, FALSE);
   g_assert_true (gimp_painter_provenance_set_bytes (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_PROPERTIES, bytes));
   sentinel_write (file);
-  state = xcf_painter_prepare_save (image, &error);
+  state = xcf_painter_prepare_save_full (image, NULL, FALSE, &error);
   g_assert_null (state); g_assert_nonnull (error); g_assert_nonnull (strstr (error->message, "limit"));
   g_clear_error (&error); sentinel_check (file);
   {
-    GimpPlugInProcedure *proc = GIMP_PLUG_IN_PROCEDURE (gimp_pdb_lookup_procedure (gimp->pdb, "gimp-xcf-save"));
-    g_assert_cmpint (file_save (gimp, image, NULL, file, proc, GIMP_RUN_NONINTERACTIVE, FALSE, FALSE, FALSE, &error), !=, GIMP_PDB_SUCCESS);
+    g_assert_false (xcf_save_file_with_painter_transport (gimp, image, file, NULL, FALSE, NULL, &error));
     g_assert_nonnull (error); g_clear_error (&error); sentinel_check (file);
   }
   g_object_unref (image); g_bytes_unref (bytes); g_mapped_file_unref (mapping);
