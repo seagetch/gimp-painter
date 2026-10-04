@@ -19,7 +19,24 @@ extern "C" {
 
 namespace GimpPainter {
 namespace {
-constexpr gsize max_elements = 25;
+/* Runtime metadata fingerprints for this bundled GIMP 3 provider. These are
+ * independently pinned public/hidden declarations, not legacy admission limits
+ * or defaults for missing saved arguments. See the registration code in
+ * plug-ins/common/{blinds,tile-small,contrast-retinex,convolution-matrix}.c. */
+namespace RuntimeMetadata {
+struct Integer { gint minimum, maximum, initial; };
+struct Real { gdouble minimum, maximum, initial; };
+constexpr Integer blinds_angle {0, 90, 30}, blinds_segments {1, 1024, 3};
+constexpr Integer tiles_public {2, 6, 2}, tiles_hidden {0, 6, 2};
+constexpr Integer retinex_scale_public {16, 250, 240}, retinex_scale_hidden {16, 256, 240};
+constexpr Integer retinex_nscales {0, 8, 3};
+constexpr Real retinex_cvar {0, 4, 1.2};
+constexpr Integer convolution_alpha {G_MININT, G_MAXINT, 1}, convolution_border {0, 2, 2};
+constexpr Real convolution_divisor {-G_MAXDOUBLE, G_MAXDOUBLE, 1}, convolution_offset {-G_MAXDOUBLE, G_MAXDOUBLE, 0};
+}
+/* Bounded copies cover the largest explicitly supported semantic array. The
+ * GParamSpec array subtype itself does not describe its required count. */
+constexpr gsize max_elements = FilterLegacy::matrix_count;
 constexpr gsize max_string = 32;
 [[noreturn]] void invalid ()
 { throw std::invalid_argument ("Bundled Filter parameter value is incompatible"); }
@@ -66,15 +83,15 @@ void bounded (const GValue& value)
     }
   invalid ();
 }
-void integer (GParamSpec *spec, gint low, gint high, gint initial)
+void integer (GParamSpec *spec, RuntimeMetadata::Integer expected)
 {
-  if (!G_IS_PARAM_SPEC_INT (spec) || G_PARAM_SPEC_INT (spec)->minimum != low ||
-      G_PARAM_SPEC_INT (spec)->maximum != high || G_PARAM_SPEC_INT (spec)->default_value != initial) drift ();
+  if (!G_IS_PARAM_SPEC_INT (spec) || G_PARAM_SPEC_INT (spec)->minimum != expected.minimum ||
+      G_PARAM_SPEC_INT (spec)->maximum != expected.maximum || G_PARAM_SPEC_INT (spec)->default_value != expected.initial) drift ();
 }
-void real (GParamSpec *spec, gdouble low, gdouble high, gdouble initial)
+void real (GParamSpec *spec, RuntimeMetadata::Real expected)
 {
-  if (!G_IS_PARAM_SPEC_DOUBLE (spec) || G_PARAM_SPEC_DOUBLE (spec)->minimum != low ||
-      G_PARAM_SPEC_DOUBLE (spec)->maximum != high || G_PARAM_SPEC_DOUBLE (spec)->default_value != initial) drift ();
+  if (!G_IS_PARAM_SPEC_DOUBLE (spec) || G_PARAM_SPEC_DOUBLE (spec)->minimum != expected.minimum ||
+      G_PARAM_SPEC_DOUBLE (spec)->maximum != expected.maximum || G_PARAM_SPEC_DOUBLE (spec)->default_value != expected.initial) drift ();
 }
 void choice (GParamSpec *spec, const char *const *names, const gint *ids, unsigned count, const char *initial)
 {
@@ -130,8 +147,8 @@ FilterParameterSchema::FilterParameterSchema (GimpProcedure *procedure, FilterPr
       gimp_param_spec_core_object_array_get_object_type (drawables) != GIMP_TYPE_DRAWABLE) drift ();
   switch (route) {
     case FilterProcedure::blinds: {
-      integer (spec ("angle-displacement"), 0, 90, 30);
-      integer (spec ("num-segments"), 1, 1024, 3);
+      integer (spec ("angle-displacement"), RuntimeMetadata::blinds_angle);
+      integer (spec ("num-segments"), RuntimeMetadata::blinds_segments);
       auto *transparent = spec ("bg-transparent");
       if (!G_IS_PARAM_SPEC_BOOLEAN (transparent) || G_PARAM_SPEC_BOOLEAN (transparent)->default_value) drift ();
       const char *names[] = {"horizontal", "vertical"};
@@ -139,21 +156,21 @@ FilterParameterSchema::FilterParameterSchema (GimpProcedure *procedure, FilterPr
       choice (spec ("orientation"), names, ids, 2, "horizontal"); break;
     }
     case FilterProcedure::small_tiles:
-      integer (spec ("num-tiles"), hidden ? 0 : 2, 6, 2); break;
+      integer (spec ("num-tiles"), hidden ? RuntimeMetadata::tiles_hidden : RuntimeMetadata::tiles_public); break;
     case FilterProcedure::retinex: {
-      integer (spec ("scale"), 16, hidden ? 256 : 250, 240);
-      integer (spec ("nscales"), 0, 8, 3);
-      real (spec ("cvar"), 0, 4, 1.2);
+      integer (spec ("scale"), hidden ? RuntimeMetadata::retinex_scale_hidden : RuntimeMetadata::retinex_scale_public);
+      integer (spec ("nscales"), RuntimeMetadata::retinex_nscales);
+      real (spec ("cvar"), RuntimeMetadata::retinex_cvar);
       const char *names[] = {"uniform", "low", "high"}; const gint ids[] = {0, 1, 2};
       choice (spec ("scales-mode"), names, ids, 3, "uniform"); break;
     }
     case FilterProcedure::convolution:
       if (!GIMP_IS_PARAM_SPEC_DOUBLE_ARRAY (spec ("matrix")) ||
           !GIMP_IS_PARAM_SPEC_INT32_ARRAY (spec ("channels"))) drift ();
-      integer (spec ("alpha-alg"), G_MININT, G_MAXINT, 1);
-      integer (spec ("border-mode"), 0, 2, 2);
-      real (spec ("divisor"), -G_MAXDOUBLE, G_MAXDOUBLE, 1);
-      real (spec ("offset"), -G_MAXDOUBLE, G_MAXDOUBLE, 0); break;
+      integer (spec ("alpha-alg"), RuntimeMetadata::convolution_alpha);
+      integer (spec ("border-mode"), RuntimeMetadata::convolution_border);
+      real (spec ("divisor"), RuntimeMetadata::convolution_divisor);
+      real (spec ("offset"), RuntimeMetadata::convolution_offset); break;
   }
 }
 unsigned FilterParameterSchema::slot (const char *name) const
@@ -197,8 +214,9 @@ void filter_parameter_validate_copy (GParamSpec *spec, const GValue& value)
   if (!spec || G_VALUE_TYPE (&value) != G_PARAM_SPEC_VALUE_TYPE (spec)) invalid ();
   bounded (value);
   Value copy (G_VALUE_TYPE (&value)); g_value_copy (&value, copy.get ());
-  /* CoreObjectArray's empty -> NULL validator returns FALSE. Compare exact
-   * typed values as well; GParamSpec comparators do not compare all elements. */
+  /* The CoreObjectArray class callback can return FALSE after changing data;
+   * GLib's public wrapper also checks the outer GValue. Exact contents still
+   * need comparison for in-place boxed changes with an unchanged outer value. */
   const bool changed = g_param_value_validate (spec, copy.get ());
   if (changed || !filter_parameter_values_equal (value, *copy.get ())) invalid ();
 }
@@ -221,7 +239,7 @@ void FilterParameterBinder::assign (const char *name, const GValue& value)
       object_count (static_cast<GObject **> (g_value_get_boxed (&value))) != 1) invalid ();
   if (G_VALUE_TYPE (&value) == GIMP_TYPE_DOUBLE_ARRAY || G_VALUE_TYPE (&value) == GIMP_TYPE_INT32_ARRAY) {
     const auto *array = static_cast<const GimpArray *> (g_value_get_boxed (&value));
-    const auto bytes = G_VALUE_TYPE (&value) == GIMP_TYPE_DOUBLE_ARRAY ? 25 * sizeof (gdouble) : 5 * sizeof (gint32);
+    const auto bytes = G_VALUE_TYPE (&value) == GIMP_TYPE_DOUBLE_ARRAY ? FilterLegacy::matrix_count * sizeof (gdouble) : FilterLegacy::channel_count * sizeof (gint32);
     if (!array || array->length != bytes) invalid ();
   }
   g_value_copy (&value, target); assigned_[slot] = true;
@@ -251,12 +269,12 @@ void FilterParameterBinder::set_drawables (const char *name, GObject *const *obj
 }
 void FilterParameterBinder::set_double_array (const char *name, const gdouble *numbers, gsize count)
 {
-  if (!numbers || count != 25) invalid ();
+  if (!numbers || count != FilterLegacy::matrix_count) invalid ();
   Value v (GIMP_TYPE_DOUBLE_ARRAY); gimp_value_set_static_double_array (v.get (), numbers, count); assign (name, *v.get ());
 }
 void FilterParameterBinder::set_int32_array (const char *name, const gint32 *numbers, gsize count)
 {
-  if (!numbers || count != 5) invalid ();
+  if (!numbers || count != FilterLegacy::channel_count) invalid ();
   Value v (GIMP_TYPE_INT32_ARRAY); gimp_value_set_static_int32_array (v.get (), numbers, count); assign (name, *v.get ());
 }
 }

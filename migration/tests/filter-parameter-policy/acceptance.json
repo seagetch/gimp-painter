@@ -1,0 +1,228 @@
+{
+  "task": "16.010/parameter-semantic-policy",
+  "status": "PASS",
+  "date": "2026-10-04",
+  "scope": "Phase B only: four existing isolated Filter routes; plain legacy semantic policy separated from trusted runtime metadata; minimum-API compatibility corrected",
+  "source_identity": {
+    "base_commit": "c7b5f74bf520dbaeb46e93a6ce4424e1a08295ca",
+    "source_sha256": {
+      "app/painter/filter-procedure-policy.hpp": "52759c7df1acf1acfe0ca4d06b629a571f368c2c2eebe79030c59c79ff0e0a98",
+      "app/painter/filter-procedure.hpp": "a78f664f14985701eca4db16f6405f78b8faf173d5c486268944558b13908d24",
+      "app/core/gimpfilterlayer.cpp": "4cfe86c23386ce4e8c018b8b3942ad8dab83e183c7b37439e30b284f1879f957",
+      "app/core/gimpfilterprocedure.cpp": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+      "app/core/gimpfilterprocedure-arguments.cpp": "cfa0028427f1ae19701f42d107a26883e4c143a25a15dbb4211d53fab0f9a055",
+      "meson.build": "942c394c03be814b45e83e0268cb6e6774fbe3eb10060f08ff5721549121f751",
+      "app/tests/test-gimp-filter-layer.c": "50d829afd5073bd14dd934732a8013220af97e597b796bdeadfba2da13b74f43",
+      "app/painter/tests/test-filter-semantic-policy.cpp": "538ab964ab3101035482ac3de17c114f8b7596b06ea55e59b4f223def9ab56b0",
+      "migration/tests/run_filter_semantic_policy_checks.py": "2286547b59689fb8ab60caa82cda7c90cc68c08da7a5f435245d622a34a06cad",
+      "libgimpbase/gimpchoice.c": "4100495c012c59ced6e0ee8cfefd4523fe87e78c0e910c647e7328f968dcfb01",
+      "app/tests/test-gimp-clone-layer.c": "3f9bf23dc26fcc51169c1254836c98af4f39631cb1aa9ed98cdf5c761bd906ac",
+      "libgimpwidgets/meson.build": "a467f0969387e34ac5f32688372da5cae979f1c4e0479974db5805ee437bdd6c"
+    }
+  },
+  "normal_binary_sha256": {
+    "app/tests/gimp-filter-layer": "c3831a203420f08370ccdfa67511eb5f7ba514a24ddadf257072b35e30cd1bd8",
+    "app/gimp-painter-filter-worker": "c557901fdf07f2bde85464677caac349da9c0b4092aba3b7e8667e520c8deb40",
+    "app/gimp-console-3.0": "97cdc230b06bcd6548040ebef5ba561d76bbd78fbc8579c676b2cb266947cdaf",
+    "app/painter-filter-procedure": "6c022ea1f67f6cc12f3c048f8e031764278ad006b1455984a237bb1722caa4fa",
+    "app/painter-filter-convolution": "0bcae3702135756d141235284245125a0650328da31cb5e79829d508eb2f059c",
+    "app/painter/painter-filter-wire": "aacaef64676eda9b66d34380db8e7dab71620e0f9c5e3def5f275b4d87706db9",
+    "app/painter/painter-filter-process": "c91b77c818d70798a69f630478f555e979f1fd74d02aa06cd7a2db64b627821c",
+    "plug-ins/common/blinds": "3894bb41a3af1fdb9b420f81a090c9044ec1e5b968b38840dbb51b479f5be2e0",
+    "plug-ins/common/tile-small": "50855496b215aa6c71ed34546907e96cf866d948eb7b3042f8e922a4be9e29d6",
+    "plug-ins/common/contrast-retinex": "28eed27e3845146c10ce77139a8b5f754ff1a7ad6825b60b851f6925280d729c",
+    "plug-ins/common/convolution-matrix": "bc00bdf51989bfc172ef7aa789181ddbec8628ff1fcca0b83ecd1598d842bc0e"
+  },
+  "final_current_binary_sha256": {
+    "app/tests/gimp-clone-layer": "3480ea69cdb79c8c04971131569746c42e3a0fa0ebb4dfd5577a7f62a99d68d9",
+    "libgimpwidgets/test-eevl": "35b615d66687c20461dc9adb75d4c2e57c52ac202e8a13164469afb23836eb53",
+    "libgimpbase/libgimpbase-3.0.so.0.8.1": "432e4a190d9c22bc71d7ca9c0d848da402084e20df95987ec91e16fba1f4a98d",
+    "app/tests/gimp-filter-layer": "c3831a203420f08370ccdfa67511eb5f7ba514a24ddadf257072b35e30cd1bd8",
+    "app/gimp-painter-filter-worker": "c557901fdf07f2bde85464677caac349da9c0b4092aba3b7e8667e520c8deb40"
+  },
+  "checks": {
+    "request_policy": {
+      "normal": "PASS",
+      "asan_ubsan_float_cast_overflow": "PASS",
+      "comparisons_each": 11506,
+      "baseline_commit": "c7b5f74bf520dbaeb46e93a6ce4424e1a08295ca",
+      "coverage": "Domain, defaults, reservation and exact error strings; finite/nonfinite, tiny legacy float vs native double, signed zero, flags, ROI/BPP; no pixel allocation"
+    },
+    "normal_helpers": {
+      "status": "PASS",
+      "wire": true,
+      "process_cases": 115,
+      "genuine_old_outputs": {
+        "Blinds": 320,
+        "SmallTiles": 196,
+        "Retinex": 174,
+        "Convolution_final": 296,
+        "Convolution_raw": 296
+      },
+      "convolution_geometry_rejections": 8,
+      "convolution_analytic_requests": 41,
+      "receipt": "normal/normal-helper-results.json"
+    },
+    "normal_native": {
+      "status": "PASS",
+      "groups": 16,
+      "selected": [
+        "parameter_suffix_reordering",
+        "parameter_metadata_rejections",
+        "parameter_assignment_validation",
+        "parameter_object_lifetime",
+        "blinds_saved_argument_policy",
+        "small_tiles_invalid_domains_keep_cache",
+        "retinex_invalid_domains_keep_cache",
+        "convolution_invalid_arrays_keep_cache",
+        "convolution_ignored_legacy_tail",
+        "convolution_native_failure_keeps_cache",
+        "blinds_actual_old_context",
+        "small_tiles_actual_old_live",
+        "retinex_actual_old_live",
+        "convolution_actual_old_live",
+        "progress_real_workers",
+        "progress_worker_cancel_replace_close"
+      ],
+      "receipt": "normal/normal-native.json"
+    },
+    "focused_sanitizers": {
+      "status": "PASS",
+      "groups": 10,
+      "instrumented_sources": 35,
+      "rtti_only_sources": 44,
+      "dependency_instrumentation": false,
+      "leak_sanitizer": false,
+      "receipt": "normal/sanitized-native.json",
+      "build_receipt": "normal/sanitizer-build-receipt.json"
+    },
+    "minimum_api_corrections": {
+      "status": "PASS",
+      "choice_preprocessed_tokens_equal": true,
+      "diagnostic_file_line_normalization": true,
+      "final_library_binder_normal": 4,
+      "final_library_binder_sanitized": 4,
+      "clone_subprocess": 1,
+      "test_eevl_cases": 16,
+      "receipt": "normal/minimum-api-correction-checks.json"
+    },
+    "fixture_seal": {
+      "status": "PASS",
+      "tracked_files": 2626,
+      "changed": 0,
+      "receipt": "normal/immutable-fixtures.json"
+    },
+    "actual_minimum": {
+      "status": "PASS",
+      "gimp": "3.0.9",
+      "glib_headers_and_runtime": "2.70.0",
+      "configured_default_targets": 886,
+      "verified_elf_executables": 216,
+      "test_eevl_cases": 16,
+      "native_groups": 5,
+      "native_processes_with_loader_proof": 6,
+      "native_cases": [
+        "parameter_suffix_reordering",
+        "parameter_metadata_rejections",
+        "parameter_assignment_validation",
+        "parameter_object_lifetime",
+        "retained_item_gimp_lifetime"
+      ],
+      "loaded_core_libraries": [
+        {
+          "soname": "libglib-2.0.so.0",
+          "canonical_path": "/workspace/scratch/5b5281e79681/filter-policy-minimum/prefix/lib/x86_64-linux-gnu/libglib-2.0.so.0.7000.0",
+          "sha256": "1d3b4c1e2b6e8babeb23a0e7ef038455b2ccb7d10e53bfdd3a3622dc8730bd1b"
+        },
+        {
+          "soname": "libgobject-2.0.so.0",
+          "canonical_path": "/workspace/scratch/5b5281e79681/filter-policy-minimum/prefix/lib/x86_64-linux-gnu/libgobject-2.0.so.0.7000.0",
+          "sha256": "8e91e3e8d6b9d0625b06de44a02a4d0d04a3cd0d60f460ed64c2b3aafe3455d1"
+        },
+        {
+          "soname": "libgio-2.0.so.0",
+          "canonical_path": "/workspace/scratch/5b5281e79681/filter-policy-minimum/prefix/lib/x86_64-linux-gnu/libgio-2.0.so.0.7000.0",
+          "sha256": "c80d9ecd80ee9ad943c03478f54c7bd69a6cdb8cd0fb10df8fad4fba755ecdcf"
+        }
+      ],
+      "b_lundef": true,
+      "b_asneeded": true,
+      "optional_auto_features": "disabled",
+      "libunwind": false,
+      "painter_http": "enabled",
+      "optional_unbuilt_targets": [
+        "libgimpwidgets/test-preview-area",
+        "app/operations/tests/test-operations"
+      ],
+      "full_receipt": "minimum/evidence/verification.json",
+      "native_receipt": "minimum/evidence/native-binder-results.json",
+      "replay": "minimum/replay.md",
+      "limitations": [
+        "Optional auto_features are disabled and libunwind is false, as explicitly configured; this is not every optional plugin configuration",
+        "Historical Filter pixel corpus and sanitizer coverage are separately validated on the normal stack; this receipt covers full minimum compilation, strict runtime closure, test-eevl and five selected native groups",
+        "No GIMP installation/package/deployment was performed; only dependency installations inside this staging tree",
+        "Compatible newer third-party libraries such as GTK3.24.49 and Cairo1.18.4 remain; no newer GLib/GObject/GIO is accepted in checked runtime closure or native loader proofs"
+      ]
+    }
+  },
+  "preserved_semantics": [
+    "Blinds payload-only saved type admission, including arbitrary existing typed context prefix",
+    "Convolution11/12 slots, exact25double/5int arrays and arbitrary ignored typed tail",
+    "Public Blinds segments1024 versus legacy100; public SmallTiles2..6 versus hidden/legacy0..6; public Retinex250 versus hidden/legacy256",
+    "Tiny finite matrix/offset may narrow to legacy float0; divisor float0 rejects; native double remains distinct",
+    "Inactive numeric positive/negative zero equivalence remains separate from exact-bit model/no-op/copy validation",
+    "Retinex conservative full-image owner admission remains separate from selected-region/native-BPP execution bounds",
+    "Existing common Value/ObjectRef, provider identity, context0/1/2 ABI, cache/error/progress/cancel behavior"
+  ],
+  "diagnostics": {
+    "normal": "normal/normal-diagnostics.json",
+    "sanitizer": "normal/sanitizer-diagnostics.json",
+    "normal_broken_pipe_instances": 5,
+    "note": "Known test-profile/localization and occasional plug-in Broken-pipe classes remain; no sanitizer finding. The new Blinds test checks model retention, not new XCF Save/reopen."
+  },
+  "failure_and_correction_history": [
+    {
+      "item": "Real GLib2.70 compilation",
+      "failure": "GParamSpecClass::value_is_valid and G_TEST_SUBPROCESS_DEFAULT were introduced2.74",
+      "correction": "Conditional choice callback; typed-zero subprocess flag",
+      "evidence": "minimum/evidence/verification.json"
+    },
+    {
+      "item": "Isolated dependency/tooling setup",
+      "failure": "Compatible package/tool selection, cached pkg-config/header paths and transitive system-libgimpmath selection",
+      "correction": "Explicit isolated header/library metadata paths, strict rpath-link, explicit matching math link in test-eevl and GI scanner; no undefined-symbol suppression",
+      "evidence": "minimum/replay.md"
+    },
+    {
+      "item": "Clone targeted fixture",
+      "failure": "Expected no-font critical was no longer emitted by already null-safe baseline font finalizer; test aborted",
+      "correction": "Removed obsolete expected-warning fixture; all lifetime assertions retained and final case passed",
+      "evidence": "normal/clone-fixture-correction.json"
+    },
+    {
+      "item": "Initial actual-minimum native audit",
+      "failure": "First binder case passed TAP but process-map sampling captured no native process and correctly failed verification",
+      "correction": "Non-racy per-PID loader traces with exact program identity, canonical library hashes, and launched-cwd handling; all five final groups passed",
+      "evidence": "minimum/evidence/verification.json"
+    }
+  ],
+  "limits": [
+    "No GUI/schema IPC/cache/saved or wire format/scheduler/algorithm/precision policy changes",
+    "No new minimum-stack historical pixel corpus or sanitizer pass claimed; those are normal-stack results",
+    "No GIMP install/package/deployment gate; default configured build excludes optional/non-default targets as listed",
+    "Later schema editor/persistence, full-port, GTK AT-SPI, tablet and other-platform gates remain open"
+  ],
+  "evidence_archive": {
+    "path": "raw-evidence.tar.gz",
+    "bytes": 229335,
+    "sha256": "6b0aa2fd0c80ace0d3b492e740c18024b718f54c65dcf76470c4421da98751b3",
+    "members": 167,
+    "manifest": "MANIFEST.json",
+    "full_environment_maps": false,
+    "generated_profiles": false
+  },
+  "final_review_checks": {
+    "check_tasks": "PASS",
+    "git_diff_check": "PASS"
+  }
+}

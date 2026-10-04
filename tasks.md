@@ -653,7 +653,7 @@
 | 16.008 | [ ] | 旧配列引数の変換を実装する | 16.007 | 保存から復元可能な範囲を正しく渡す |
 | 16.009 | [ ] | 旧画像・drawable 引数の解決を実装する | 16.008 | 一時入力と現行参照型へ対応 |
 | 16.010 | [ ] | 引数の default と順序を実装する | 16.009 | 省略値の意味が旧版と一致 |
-| 16.010/parameter-semantic-policy | [ ] | runtime引数schemaと旧意味adapterを分離する | 16.002/parameter-name-binder | range/default/alias/count/flagの由来を保持し、型別exact比較・境界/配列/float/errorと旧corpus不変、GLib2.70/GIMP3.0 buildを検証。declared型parseと明示legacy narrowingを区別 |
+| 16.010/parameter-semantic-policy | [x] | runtime引数schemaと旧意味adapterを分離する | 16.002/parameter-name-binder | 旧range/default/alias/count/flagを共有しpublic/hidden metadataと区別。11,506 request通常/sanitizer比較、旧4経路corpus不変、16 native/10 focused sanitizer、最小API修正後再確認と実GLib2.70/GIMP3.0.9 default build・5 native loader検証を受入。model保持とXCF永続化gateを区別 |
 | 16.011 | [ ] | 一時入力画像または drawable を生成する | 16.010 | 独立した世代の入力を処理できる |
 | 16.012 | [ ] | 出力 buffer の回収を実装する | 16.011 | 実行途中の出力を確定画像に混ぜない |
 | 16.013 | [ ] | 非同期起動を実装する | 16.012 | UI で完了を待たない |

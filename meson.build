@@ -476,13 +476,15 @@ glib_version_split = glib_minver.split('.')
 glib_major = glib_version_split[0].to_int()
 glib_minor = glib_version_split[1].to_int()
 glib_min_macro = 'GLIB_VERSION_@0@_@1@'.format(glib_major, glib_minor)
-add_project_arguments('-DGLIB_VERSION_MIN_REQUIRED=' + glib_min_macro, language: 'c')
+add_project_arguments('-DGLIB_VERSION_MIN_REQUIRED=' + glib_min_macro, language: ['c', 'cpp'])
 # XXX: ideally the MIN_REQUIRED and MAX_ALLOWED should be the same
 # version but we have a bunch of GLIB_CHECK_VERSION() conditional code
 # (higher being 2.76.0). So we use this max version to avoid useless
 # warnings. We should clean up all conditional code once we bump the
 # minimum requirement.
-add_project_arguments('-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76', language: 'c')
+# C++ G_DEFINE_TYPE must use the same baseline (new headers otherwise select
+# g_once_init_*_pointer, which requires GLib 2.80 even without explicit calls).
+add_project_arguments('-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76', language: ['c', 'cpp'])
 
 gi                = dependency('gobject-introspection-1.0')
 

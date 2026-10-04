@@ -499,7 +499,7 @@ struct FilterImpl
         };
         if (spill) request.raster_process = std::move (process);
       }
-    else if (procedure == "plug-in-convmatrix" && args && (args->size () == 11 || args->size () == 12))
+    else if (procedure == FilterLegacy::convolution.saved && args && FilterLegacy::convolution_saved_count (args->size ()))
       {
         /* The old handler also accepted and ignored a twelfth argument. Keep
          * its typed value in the definition, never in native plugin options. */
@@ -508,14 +508,15 @@ struct FilterImpl
           integer (8) && integer (10) && G_VALUE_HOLDS (args->at (4), GIMP_TYPE_DOUBLE_ARRAY) &&
           G_VALUE_HOLDS_DOUBLE (args->at (6)) && G_VALUE_HOLDS_DOUBLE (args->at (7)) &&
           G_VALUE_HOLDS (args->at (9), GIMP_TYPE_INT32_ARRAY);
-        if (types && g_value_get_int (args->at (3)) == 25 && g_value_get_int (args->at (8)) == 5)
+        if (types && g_value_get_int (args->at (3)) == FilterLegacy::matrix_count &&
+            g_value_get_int (args->at (8)) == FilterLegacy::channel_count)
           {
             const auto *matrix = static_cast<const GimpArray *> (g_value_get_boxed (args->at (4)));
             const auto *channels = static_cast<const GimpArray *> (g_value_get_boxed (args->at (9)));
             /* A matching boxed type alone does not prove element count or even
              * a whole element. Check raw byte lengths before any typed read. */
-            if (matrix && matrix->data && matrix->length == 25 * sizeof (double) &&
-                channels && channels->data && channels->length == 5 * sizeof (gint32))
+            if (matrix && matrix->data && matrix->length == FilterLegacy::matrix_count * sizeof (double) &&
+                channels && channels->data && channels->length == FilterLegacy::channel_count * sizeof (gint32))
               {
                 auto descriptor = std::make_shared<FilterProcedureRequest> ();
                 descriptor->procedure = FilterProcedure::convolution;
@@ -537,33 +538,33 @@ struct FilterImpl
               }
           }
       }
+    /* Blinds historically checks only payload slots 3..6. Unlike the other
+     * routes, saved context slot types are not an execution admission rule. */
     else if (!real && args &&
-             ((procedure == "plug-in-blinds" && args->size () == 7 &&
+             ((procedure == FilterLegacy::blinds.saved && args->size () == 7 &&
                G_VALUE_HOLDS_INT (args->at (3)) && G_VALUE_HOLDS_INT (args->at (4)) &&
                G_VALUE_HOLDS_INT (args->at (5)) && G_VALUE_HOLDS_INT (args->at (6))) ||
-              (procedure == "plug-in-small-tiles" && args->size () == 4 &&
+              (procedure == FilterLegacy::small_tiles.saved && args->size () == 4 &&
                G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
                G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_INT (args->at (3))) ||
-              (procedure == "plug-in-retinex" && !gray () && args->size () == 7 &&
+              (procedure == FilterLegacy::retinex.saved && !gray () && args->size () == 7 &&
                G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
                G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_INT (args->at (3)) &&
                G_VALUE_HOLDS_INT (args->at (4)) && G_VALUE_HOLDS_INT (args->at (5)) &&
                G_VALUE_HOLDS_DOUBLE (args->at (6)))))
       {
-        const bool tiles = procedure == "plug-in-small-tiles";
-        const bool retinex = procedure == "plug-in-retinex";
-        const auto angle = tiles || retinex ? 0 : g_value_get_int (args->at (3));
-        const auto segments = tiles || retinex ? 1 : g_value_get_int (args->at (4));
-        const auto factor = tiles ? g_value_get_int (args->at (3)) : 2;
-        const auto scale = retinex ? g_value_get_int (args->at (3)) : 240;
-        const auto nscales = retinex ? g_value_get_int (args->at (4)) : 3;
-        const auto scales_mode = retinex ? g_value_get_int (args->at (5)) : 0;
-        const auto cvar = retinex ? g_value_get_double (args->at (6)) : 1.2;
-        if (angle >= 0 && angle <= 90 && segments >= 1 && segments <= 100 && factor >= 0 && factor <= 6 &&
-            (!retinex || (request.width >= 16 && request.height >= 16 &&
-              std::uint64_t (request.width) * request.height <= std::uint64_t (G_MAXINT) / 4 &&
-              scale >= 16 && scale <= 256 && nscales >= 0 && nscales <= 8 &&
-              scales_mode >= 0 && scales_mode <= 2 && std::isfinite (cvar) && cvar >= 0 && cvar <= 4)))
+        const bool tiles = procedure == FilterLegacy::small_tiles.saved;
+        const bool retinex = procedure == FilterLegacy::retinex.saved;
+        const auto angle = tiles || retinex ? FilterLegacy::angle.initial : g_value_get_int (args->at (3));
+        const auto segments = tiles || retinex ? FilterLegacy::segments.initial : g_value_get_int (args->at (4));
+        const auto factor = tiles ? g_value_get_int (args->at (3)) : FilterLegacy::tiles.initial;
+        const auto scale = retinex ? g_value_get_int (args->at (3)) : FilterLegacy::scale.initial;
+        const auto nscales = retinex ? g_value_get_int (args->at (4)) : FilterLegacy::nscales.initial;
+        const auto scales_mode = retinex ? g_value_get_int (args->at (5)) : FilterLegacy::scales_mode.initial;
+        const auto cvar = retinex ? g_value_get_double (args->at (6)) : FilterLegacy::cvar.initial;
+        if (FilterLegacy::blinds_scalars (angle, segments) && FilterLegacy::tiles.accepts (factor) &&
+            (!retinex || (FilterLegacy::retinex_owner_geometry (request.width, request.height) &&
+              FilterLegacy::retinex_scalars (scale, nscales, scales_mode, cvar))))
           {
             auto descriptor = std::make_shared<FilterProcedureRequest> ();
             descriptor->width = request.width; descriptor->height = request.height;
@@ -573,8 +574,8 @@ struct FilterImpl
             descriptor->tiles = factor;
             descriptor->scale = scale; descriptor->nscales = nscales;
             descriptor->scales_mode = scales_mode; descriptor->cvar = cvar;
-            descriptor->orientation = tiles || retinex ? 0 : g_value_get_int (args->at (5));
-            descriptor->transparent = tiles || retinex ? 0 : g_value_get_int (args->at (6)); descriptor->gray = gray ();
+            descriptor->orientation = tiles || retinex ? FilterLegacy::orientation_default : g_value_get_int (args->at (5));
+            descriptor->transparent = tiles || retinex ? FilterLegacy::transparent_default : g_value_get_int (args->at (6)); descriptor->gray = gray ();
             configure_native (request, std::move (descriptor));
           }
       }

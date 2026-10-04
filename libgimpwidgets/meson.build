@@ -247,6 +247,8 @@ test_eevl = executable('test-eevl',
     glib, gtk3, math,
   ],
   c_args: '-DG_LOG_DOMAIN="LibGimpWidgets"',
-  link_with: [ libgimpwidgets, ],
+  # Resolve this build's math library explicitly, including in isolated builds
+  # where a different installed libgimpmath has the same SONAME.
+  link_with: [ libgimpwidgets, libgimpmath, ],
   install: false,
 )
