@@ -3,6 +3,8 @@
  * This editor only invokes explicitly supported compatibility executors. */
 #include "config.h"
 #include <math.h>
+#include <errno.h>
+#include <limits>
 #include <string>
 #include <gegl.h>
 #include <gtk/gtk.h>
@@ -29,6 +31,36 @@ extern "C" {
 using namespace GimpPainter;
 
 namespace {
+
+/* ASCII entries avoid GtkSpinButton's display rounding and silent clamping.
+ * Each field patches only its own saved scalar/array element. */
+struct FilterNumberField
+{
+  GtkWidget *entry;
+  std::string route;
+  guint argument;
+  gint element; // -1: scalar, otherwise an element in a typed array
+  bool integer;
+  gdouble minimum, maximum;
+  std::string initial;
+};
+
+struct FilterFlagField
+{
+  GtkWidget *widget;
+  std::string route;
+  guint argument;
+  gint element;
+  bool initial;
+};
+
+struct FilterEnumField
+{
+  GtkWidget *widget;
+  std::string route;
+  guint argument;
+  gint initial;
+};
 
 /* The native dialog owns exactly one typed implementation. Helpers borrow it
  * only inside initialize()/with(); no closure or qdata key owns a raw Impl. */
@@ -60,6 +92,11 @@ struct PainterLayerDialog
   GtkWidget *error = nullptr;
   gint       row = 0;
   std::vector<Connection> connections;
+  std::vector<FilterNumberField> numbers;
+  std::vector<FilterFlagField> flags;
+  std::vector<FilterEnumField> enums;
+  std::string loaded_route;
+  guint64 loaded_revision = 0;
 
   PainterLayerDialog (GtkWidget *owner, GimpImage *image, GimpLayer *layer)
     : editing (layer != nullptr), dialog (owner)
@@ -510,11 +547,48 @@ painter_filter_describe (GString                           *text,
       g_string_append_printf (text, "%*s%u: %s", depth * 2, "", i, g_type_name (type));
       if (gimp_filter_arguments_snapshot_is_null (snapshot, i))
         g_string_append (text, " = NULL");
-      else if (gimp_filter_arguments_snapshot_value (snapshot, i, &value))
+      else
         {
-          gchar *printed = g_strdup_value_contents (&value);
-          g_string_append_printf (text, " = %s", printed);
-          g_free (printed); g_value_unset (&value);
+          const GValue *contents = gimp_filter_arguments_snapshot_peek_value (snapshot, i);
+          if (!contents && gimp_filter_arguments_snapshot_value (snapshot, i, &value)) contents = &value;
+          if (contents)
+            {
+              if (type == GIMP_TYPE_DOUBLE_ARRAY || type == GIMP_TYPE_INT32_ARRAY)
+                {
+                  const auto *array = static_cast<const GimpArray *> (g_value_get_boxed (contents));
+                  if (!array) g_string_append (text, " = NULL");
+                  else
+                    {
+                      const gsize size = type == GIMP_TYPE_DOUBLE_ARRAY ? sizeof (gdouble) : sizeof (gint32);
+                      g_string_append_printf (text, " (%" G_GSIZE_FORMAT " bytes) = [", array->length);
+                      for (gsize at = 0; array->data && at + size <= array->length && at / size < 256; at += size)
+                        {
+                          if (at) g_string_append (text, ", ");
+                          if (type == GIMP_TYPE_DOUBLE_ARRAY)
+                            {
+                              gdouble number; gchar printed[G_ASCII_DTOSTR_BUF_SIZE];
+                              memcpy (&number, array->data + at, sizeof number);
+                              g_string_append (text, g_ascii_dtostr (printed, sizeof printed, number));
+                            }
+                          else
+                            {
+                              gint32 number; memcpy (&number, array->data + at, sizeof number);
+                              g_string_append_printf (text, "%" G_GINT32_FORMAT, number);
+                            }
+                        }
+                      if (array->length / size > 256) g_string_append (text, ", …");
+                      if (array->length % size) g_string_append (text, "; incomplete trailing element retained");
+                      g_string_append_c (text, ']');
+                    }
+                }
+              else
+                {
+                  gchar *printed = g_strdup_value_contents (contents);
+                  g_string_append_printf (text, " = %s", printed);
+                  g_free (printed);
+                }
+            }
+          if (G_IS_VALUE (&value)) g_value_unset (&value);
         }
       for (j = 0; j < gimp_filter_arguments_snapshot_reference_count (snapshot, i); j++)
         {
@@ -583,6 +657,362 @@ painter_filter_details (PainterLayerDialog *state,
   gimp_filter_arguments_snapshot_free (snapshot);
 }
 
+static bool
+painter_filter_isolated (const gchar *choice)
+{
+  return choice && (!strcmp (choice, "blinds") || !strcmp (choice, "small-tiles") ||
+                    !strcmp (choice, "retinex") || !strcmp (choice, "convmatrix"));
+}
+
+static void
+painter_filter_entry_value (FilterNumberField& field, gdouble value)
+{
+  gchar text[G_ASCII_DTOSTR_BUF_SIZE];
+  g_ascii_dtostr (text, sizeof text, value);
+  field.initial = text;
+  gtk_entry_set_text (GTK_ENTRY (field.entry), text);
+}
+
+static GtkWidget *
+painter_filter_entry (PainterLayerDialog *state, const gchar *route,
+                      guint argument, gint element, bool integer,
+                      const gchar *label, const gchar *name,
+                      gdouble minimum, gdouble maximum, gdouble value,
+                      bool attach = true)
+{
+  GtkWidget *entry = gtk_entry_new ();
+  gtk_widget_set_name (entry, name);
+  gtk_entry_set_width_chars (GTK_ENTRY (entry), element >= 0 ? 8 : 22);
+  gtk_entry_set_activates_default (GTK_ENTRY (entry), TRUE);
+  state->numbers.push_back ({entry, route, argument, element, integer, minimum, maximum, ""});
+  painter_filter_entry_value (state->numbers.back (), value);
+  if (attach) painter_dialog_field (state, label, entry, name);
+  return entry;
+}
+
+static bool
+painter_filter_flag_active (const FilterFlagField& field)
+{
+  return GTK_IS_COMBO_BOX (field.widget) ? gtk_combo_box_get_active (GTK_COMBO_BOX (field.widget)) == 1 :
+                                         gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (field.widget));
+}
+
+static GtkWidget *
+painter_filter_flag (PainterLayerDialog *state, const gchar *route, guint argument, gint element,
+                     const gchar *label, const gchar *name, bool initial, bool attach = true)
+{
+  GtkWidget *widget = gtk_check_button_new_with_mnemonic (label);
+  gtk_widget_set_name (widget, name);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), initial);
+  state->flags.push_back ({widget, route, argument, element, initial});
+  if (attach) painter_dialog_field (state, NULL, widget, name);
+  return widget;
+}
+
+static gint
+painter_filter_enum_value (const FilterEnumField& field)
+{
+  const gchar *id = gtk_combo_box_get_active_id (GTK_COMBO_BOX (field.widget));
+  return id && strcmp (id, "saved") ? static_cast<gint> (g_ascii_strtoll (id, NULL, 10)) : field.initial;
+}
+
+static void
+painter_filter_enum (PainterLayerDialog *state, const gchar *route, guint argument,
+                    const gchar *label, const gchar *name, const gchar *const labels[3], gint initial)
+{
+  GtkWidget *widget = painter_dialog_field (state, label, gtk_combo_box_text_new (), name);
+  for (guint i = 0; i < 3; ++i)
+    {
+      gchar *id = g_strdup_printf ("%u", i);
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (widget), id, labels[i]);
+      g_free (id);
+    }
+  gtk_combo_box_set_active (GTK_COMBO_BOX (widget), initial);
+  state->enums.push_back ({widget, route, argument, initial});
+}
+
+static bool
+painter_filter_isolated_shape (const gchar *route, const GimpFilterArgumentsSnapshot *args)
+{
+  const guint count = args ? gimp_filter_arguments_snapshot_count (args) : 0;
+  const auto integer = [&] (guint i) { return i < count && G_VALUE_HOLDS_INT (gimp_filter_arguments_snapshot_peek_value (args, i)); };
+  if (!integer (0) || !integer (1) || !integer (2)) return false;
+  if (!strcmp (route, "blinds"))
+    return count == 7 && integer (3) && integer (4) && integer (5) && integer (6);
+  if (!strcmp (route, "small-tiles")) return count == 4 && integer (3);
+  if (!strcmp (route, "retinex"))
+    return count == 7 && integer (3) && integer (4) && integer (5) &&
+           G_VALUE_HOLDS_DOUBLE (gimp_filter_arguments_snapshot_peek_value (args, 6));
+  if (strcmp (route, "convmatrix") || (count != 11 && count != 12) ||
+      !integer (3) || !integer (5) || !integer (8) || !integer (10) ||
+      g_value_get_int (gimp_filter_arguments_snapshot_peek_value (args, 3)) != 25 ||
+      g_value_get_int (gimp_filter_arguments_snapshot_peek_value (args, 8)) != 5 ||
+      !G_VALUE_HOLDS (gimp_filter_arguments_snapshot_peek_value (args, 4), GIMP_TYPE_DOUBLE_ARRAY) ||
+      !G_VALUE_HOLDS_DOUBLE (gimp_filter_arguments_snapshot_peek_value (args, 6)) ||
+      !G_VALUE_HOLDS_DOUBLE (gimp_filter_arguments_snapshot_peek_value (args, 7)) ||
+      !G_VALUE_HOLDS (gimp_filter_arguments_snapshot_peek_value (args, 9), GIMP_TYPE_INT32_ARRAY)) return false;
+  const auto *matrix = static_cast<const GimpArray *> (g_value_get_boxed (gimp_filter_arguments_snapshot_peek_value (args, 4)));
+  const auto *channels = static_cast<const GimpArray *> (g_value_get_boxed (gimp_filter_arguments_snapshot_peek_value (args, 9)));
+  return matrix && matrix->data && matrix->length == 25 * sizeof (gdouble) &&
+         channels && channels->data && channels->length == 5 * sizeof (gint32);
+}
+
+static void
+painter_filter_isolated_load (PainterLayerDialog *state, const gchar *route,
+                             const GimpFilterArgumentsSnapshot *args)
+{
+  for (auto& field : state->numbers)
+    if (field.route == route)
+      {
+        const GValue *value = gimp_filter_arguments_snapshot_peek_value (args, field.argument);
+        gdouble number;
+        if (field.element < 0)
+          number = field.integer ? g_value_get_int (value) : g_value_get_double (value);
+        else
+          {
+            const auto *array = static_cast<const GimpArray *> (g_value_get_boxed (value));
+            if (field.integer)
+              { gint32 v; memcpy (&v, array->data + field.element * sizeof v, sizeof v); number = v; }
+            else memcpy (&number, array->data + field.element * sizeof number, sizeof number);
+          }
+        painter_filter_entry_value (field, number);
+      }
+  for (auto& field : state->flags)
+    if (field.route == route)
+      {
+        const GValue *value = gimp_filter_arguments_snapshot_peek_value (args, field.argument);
+        gint flag;
+        if (field.element < 0) flag = g_value_get_int (value);
+        else
+          {
+            const auto *array = static_cast<const GimpArray *> (g_value_get_boxed (value));
+            memcpy (&flag, array->data + field.element * sizeof (gint32), sizeof (gint32));
+          }
+        field.initial = GTK_IS_COMBO_BOX (field.widget) ? flag == 1 : flag != 0;
+        if (GTK_IS_COMBO_BOX (field.widget)) gtk_combo_box_set_active (GTK_COMBO_BOX (field.widget), field.initial ? 1 : 0);
+        else gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (field.widget), field.initial);
+      }
+  for (auto& field : state->enums)
+    if (field.route == route)
+      {
+        field.initial = g_value_get_int (gimp_filter_arguments_snapshot_peek_value (args, field.argument));
+        if (field.initial >= 0 && field.initial <= 2)
+          gtk_combo_box_set_active (GTK_COMBO_BOX (field.widget), field.initial);
+        else
+          {
+            gchar *label = g_strdup_printf (_("Saved value: %d (unsupported)"), field.initial);
+            gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (field.widget), "saved", label);
+            gtk_combo_box_set_active_id (GTK_COMBO_BOX (field.widget), "saved");
+            g_free (label);
+          }
+      }
+  state->loaded_route = route;
+  gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), route);
+}
+
+static GimpValueArray *
+painter_filter_isolated_defaults (const gchar *route, GimpImage *image)
+{
+  if (!strcmp (route, "blinds"))
+    return gimp_value_array_new_from_types (NULL, G_TYPE_INT, 1, G_TYPE_INT, gimp_image_get_id (image),
+      G_TYPE_INT, 0, G_TYPE_INT, 30, G_TYPE_INT, 3, G_TYPE_INT, 0, G_TYPE_INT, 0, G_TYPE_NONE);
+  if (!strcmp (route, "small-tiles"))
+    return gimp_value_array_new_from_types (NULL, G_TYPE_INT, 1, G_TYPE_INT, gimp_image_get_id (image),
+      G_TYPE_INT, 0, G_TYPE_INT, 2, G_TYPE_NONE);
+  if (!strcmp (route, "retinex"))
+    return gimp_value_array_new_from_types (NULL, G_TYPE_INT, 1, G_TYPE_INT, gimp_image_get_id (image),
+      G_TYPE_INT, 0, G_TYPE_INT, 240, G_TYPE_INT, 3, G_TYPE_INT, 0, G_TYPE_DOUBLE, 1.2, G_TYPE_NONE);
+  GimpValueArray *args = gimp_value_array_new_from_types (NULL, G_TYPE_INT, 1, G_TYPE_INT, gimp_image_get_id (image),
+    G_TYPE_INT, 0, G_TYPE_INT, 25, GIMP_TYPE_DOUBLE_ARRAY, NULL, G_TYPE_INT, 1,
+    G_TYPE_DOUBLE, 1., G_TYPE_DOUBLE, 0., G_TYPE_INT, 5, GIMP_TYPE_INT32_ARRAY, NULL, G_TYPE_INT, 2, G_TYPE_NONE);
+  gdouble matrix[25] = {}; matrix[12] = 1;
+  const gint32 channels[5] = {1, 1, 1, 1, 1};
+  gimp_value_set_double_array (gimp_value_array_index (args, 4), matrix, 25);
+  gimp_value_set_int32_array (gimp_value_array_index (args, 9), channels, 5);
+  return args;
+}
+
+static gboolean
+painter_filter_isolated_args (PainterLayerDialog *state, const gchar *route,
+                             GimpImage *image, GimpLayer *layer, GimpValueArray **result)
+{
+  const bool preserve = layer && state->loaded_route == route;
+  if (preserve && state->loaded_revision != gimp_filter_layer_get_definition_revision (GIMP_FILTER_LAYER (layer)))
+    {
+      painter_dialog_error (state, _("This filter definition changed while the editor was open. Reopen the editor to use the latest values."));
+      return FALSE;
+    }
+  GimpValueArray *args = preserve ? gimp_filter_layer_dup_args (GIMP_FILTER_LAYER (layer)) :
+                                  painter_filter_isolated_defaults (route, image);
+  if (preserve)
+    {
+      bool changed = false;
+      for (const auto& field : state->numbers)
+        if (field.route == route && field.initial != gtk_entry_get_text (GTK_ENTRY (field.entry))) changed = true;
+      for (const auto& field : state->flags)
+        if (field.route == route && field.initial != painter_filter_flag_active (field)) changed = true;
+      for (const auto& field : state->enums)
+        if (field.route == route && field.initial != painter_filter_enum_value (field)) changed = true;
+      if (!changed) { gimp_value_array_unref (args); *result = NULL; return TRUE; }
+    }
+  bool changed = !preserve;
+  const bool convolution = !strcmp (route, "convmatrix");
+  const bool legacy = gimp_image_get_precision (image) == GIMP_PRECISION_U8_NON_LINEAR;
+  gdouble matrix[25] = {};
+  gint32 channels[5] = {};
+  bool matrix_changed = false, channels_changed = false;
+  if (convolution)
+    {
+      memcpy (matrix, gimp_value_get_double_array (gimp_value_array_index (args, 4), NULL), sizeof matrix);
+      memcpy (channels, gimp_value_get_int32_array (gimp_value_array_index (args, 9), NULL), sizeof channels);
+    }
+  for (const auto& field : state->numbers)
+    if (field.route == route)
+      {
+        const gchar *text = gtk_entry_get_text (GTK_ENTRY (field.entry));
+        gchar *end = nullptr;
+        errno = 0;
+        gdouble number;
+        if (field.integer)
+          {
+            const gint64 value = g_ascii_strtoll (text, &end, 10);
+            number = value;
+          }
+        else number = g_ascii_strtod (text, &end);
+        const bool consumed = end && end != text;
+        while (end && g_ascii_isspace (*end)) ++end;
+        /* ERANGE can also mean a representable double subnormal. A complete
+         * finite nonzero result is usable; overflow/underflow-to-zero is not. */
+        const bool range_error = errno == ERANGE && (field.integer || number == 0 || !isfinite (number));
+        if (!consumed || *end || range_error || !isfinite (number) ||
+            number < field.minimum || number > field.maximum ||
+            (convolution && !field.integer && legacy && fabs (number) > std::numeric_limits<float>::max ()) ||
+            (convolution && field.argument == 6 && (number == 0 || (legacy && static_cast<float> (number) == 0))))
+          {
+            painter_dialog_error (state, _("Enter a finite number within the indicated range. Use a dot for decimals; integer flags must be whole numbers. The divisor must be nonzero and representable at this image precision."));
+            if (!state->closed) gtk_widget_grab_focus (field.entry);
+            gimp_value_array_unref (args);
+            return FALSE;
+          }
+        if (preserve && field.initial == text) continue;
+        GValue *value = gimp_value_array_index (args, field.argument);
+        if (preserve)
+          {
+            const gdouble old = field.element >= 0 ? (field.integer ? channels[field.element] : matrix[field.element]) :
+              field.integer ? g_value_get_int (value) : g_value_get_double (value);
+            if (!memcmp (&old, &number, sizeof number)) continue;
+          }
+        changed = true;
+        if (field.element < 0)
+          {
+            if (field.integer) g_value_set_int (value, static_cast<gint> (number));
+            else g_value_set_double (value, number);
+          }
+        else if (field.integer)
+          { channels[field.element] = static_cast<gint32> (number); channels_changed = true; }
+        else
+          { matrix[field.element] = number; matrix_changed = true; }
+      }
+  for (const auto& field : state->flags)
+    if (field.route == route)
+      {
+        const bool active = painter_filter_flag_active (field);
+        /* A noncanonical stored integer has the same meaning as the native
+         * control. Preserve it unless the user changes that meaning. */
+        if (preserve && active == field.initial) continue;
+        if (field.element < 0) g_value_set_int (gimp_value_array_index (args, field.argument), active ? 1 : 0);
+        else { channels[field.element] = active ? 1 : 0; channels_changed = true; }
+        changed = true;
+      }
+  for (const auto& field : state->enums)
+    if (field.route == route)
+      {
+        const gint value = painter_filter_enum_value (field);
+        if (preserve && value == field.initial) continue;
+        g_value_set_int (gimp_value_array_index (args, field.argument), value);
+        changed = true;
+      }
+  if (matrix_changed) gimp_value_set_double_array (gimp_value_array_index (args, 4), matrix, 25);
+  if (channels_changed) gimp_value_set_int32_array (gimp_value_array_index (args, 9), channels, 5);
+  if (!changed) { gimp_value_array_unref (args); args = NULL; }
+  *result = args;
+  return TRUE;
+}
+
+static void
+painter_filter_isolated_pages (PainterLayerDialog *state)
+{
+  const auto page = [&] (const gchar *route) {
+    state->grid = gtk_grid_new (); state->row = 0;
+    gtk_grid_set_row_spacing (GTK_GRID (state->grid), 6);
+    gtk_grid_set_column_spacing (GTK_GRID (state->grid), 6);
+    gtk_stack_add_named (GTK_STACK (state->parameters), state->grid, route);
+  };
+  const auto help = [&] (const gchar *text, const gchar *name) {
+    GtkWidget *label = gtk_label_new (text);
+    gtk_label_set_xalign (GTK_LABEL (label), 0);
+    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+    gtk_label_set_max_width_chars (GTK_LABEL (label), 65);
+    gtk_widget_set_name (label, name);
+    gtk_grid_attach (GTK_GRID (state->grid), label, 0, state->row++, 2, 1);
+  };
+  page ("blinds");
+  painter_filter_entry (state, "blinds", 3, -1, true, _("_Angle (0–90):"), "painter-blinds-angle", 0, 90, 30);
+  painter_filter_entry (state, "blinds", 4, -1, true, _("_Segments (1–100):"), "painter-blinds-segments", 1, 100, 3);
+  GtkWidget *orientation = painter_dialog_field (state, _("_Orientation:"), gtk_combo_box_text_new (), "painter-blinds-orientation");
+  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (orientation), "horizontal", _("Horizontal"));
+  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (orientation), "vertical", _("Vertical"));
+  gtk_combo_box_set_active (GTK_COMBO_BOX (orientation), 0);
+  state->flags.push_back ({orientation, "blinds", 5, -1, false});
+  painter_filter_flag (state, "blinds", 6, -1, _("_Transparent background"), "painter-blinds-transparent", false);
+  help (_("Requires 8-bit non-linear RGB or grayscale.\nSaved legacy direction and transparency values are retained until their setting changes."), "painter-blinds-help");
+  page ("small-tiles");
+  painter_filter_entry (state, "small-tiles", 3, -1, true, _("_Tile factor (0–6):"), "painter-small-tiles-factor", 0, 6, 2);
+  help (_("The saved legacy range includes 0 and 1.\nRequires 8-bit non-linear RGB or grayscale."), "painter-small-tiles-help");
+  page ("retinex");
+  painter_filter_entry (state, "retinex", 3, -1, true, _("_Scale (16–256):"), "painter-retinex-scale", 16, 256, 240);
+  painter_filter_entry (state, "retinex", 4, -1, true, _("_Number of scales (0–8):"), "painter-retinex-nscales", 0, 8, 3);
+  const gchar *distributions[] = {_("Uniform"), _("Low"), _("High")};
+  painter_filter_enum (state, "retinex", 5, _("_Distribution:"), "painter-retinex-mode", distributions, 0);
+  painter_filter_entry (state, "retinex", 6, -1, false, _("_Dynamic (0–4):"), "painter-retinex-cvar", 0, 4, 1.2);
+  help (_("Zero scales is a supported legacy value.\nRequires 8-bit non-linear RGB and a selected region at least 16 × 16 pixels.\nUse a dot for decimals; saved precision is retained."), "painter-retinex-help");
+  page ("convmatrix");
+  help (_("5 × 5 coefficients, shown in image order (rows top to bottom, columns left to right).\nUse a dot for decimals; scientific notation is accepted."), "painter-convmatrix-matrix-help");
+  GtkWidget *matrix = gtk_grid_new ();
+  gtk_grid_set_row_spacing (GTK_GRID (matrix), 4);
+  gtk_grid_set_column_spacing (GTK_GRID (matrix), 4);
+  gtk_grid_attach (GTK_GRID (state->grid), matrix, 0, state->row++, 2, 1);
+  for (guint y = 0; y < 5; ++y)
+    for (guint x = 0; x < 5; ++x)
+      {
+        const guint index = x * 5 + y; // The saved old array is x-major.
+        gchar *name = g_strdup_printf ("painter-convmatrix-%u", index);
+        GtkWidget *entry = painter_filter_entry (state, "convmatrix", 4, index, false, NULL, name,
+                                                -G_MAXDOUBLE, G_MAXDOUBLE, index == 12 ? 1 : 0, false);
+        gchar *tip = g_strdup_printf (_("Column %u, row %u (saved coefficient %u)"), x + 1, y + 1, index);
+        gtk_widget_set_tooltip_text (entry, tip);
+        atk_object_set_name (gtk_widget_get_accessible (entry), tip);
+        gtk_grid_attach (GTK_GRID (matrix), entry, x, y, 1, 1);
+        g_free (tip); g_free (name);
+      }
+  painter_filter_entry (state, "convmatrix", 6, -1, false, _("_Divisor (nonzero):"), "painter-convmatrix-divisor", -G_MAXDOUBLE, G_MAXDOUBLE, 1);
+  painter_filter_entry (state, "convmatrix", 7, -1, false, _("_Offset (byte units):"), "painter-convmatrix-offset", -G_MAXDOUBLE, G_MAXDOUBLE, 0);
+  const gchar *borders[] = {_("Extend"), _("Wrap"), _("Clear")};
+  painter_filter_enum (state, "convmatrix", 10, _("_Border:"), "painter-convmatrix-border", borders, 2);
+  GtkWidget *channels = gtk_grid_new ();
+  gtk_grid_set_column_spacing (GTK_GRID (channels), 4);
+  gtk_grid_attach (GTK_GRID (state->grid), channels, 0, state->row++, 2, 1);
+  const gchar *labels[] = {_("Gray"), _("Red"), _("Green"), _("Blue"), _("Alpha")};
+  for (guint i = 0; i < 5; ++i)
+    {
+      gchar *name = g_strdup_printf ("painter-convmatrix-channel-%u", i);
+      GtkWidget *entry = painter_filter_flag (state, "convmatrix", 9, i, labels[i], name, true, false);
+      gtk_grid_attach (GTK_GRID (channels), entry, i, 0, 1, 1);
+      g_free (name);
+    }
+  help (_("Select the channels to filter. Saved legacy channel values are retained until a setting changes.\nWithout alpha the legacy executor uses the Extend border.\nLegacy noninteractive execution disables alpha weighting; its saved argument is retained.\nCoefficients, divisor and offset must be finite; 8-bit non-linear images also require float range."), "painter-convmatrix-help");
+}
+
 static gboolean
 painter_filter_number (const GValue *value,
                        gdouble      min,
@@ -602,11 +1032,23 @@ painter_filter_load (PainterLayerDialog *state,
                      GimpFilterLayer    *layer)
 {
   gchar          *procedure = gimp_filter_layer_dup_procedure (layer);
-  GimpValueArray *args = gimp_filter_layer_dup_args (layer);
-  guint          count = args ? gimp_value_array_length (args) : 0;
+  GimpValueArray *args = NULL;
+  guint          count;
   gdouble        first, second;
   const GValue  *a, *b, *c;
   gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "keep");
+  state->loaded_revision = gimp_filter_layer_get_definition_revision (layer);
+  if (procedure && g_str_has_prefix (procedure, "plug-in-") &&
+      painter_filter_isolated (procedure + strlen ("plug-in-")))
+    {
+      GimpFilterArgumentsSnapshot *snapshot = gimp_filter_layer_snapshot_arguments (layer);
+      if (painter_filter_isolated_shape (procedure + strlen ("plug-in-"), snapshot))
+        painter_filter_isolated_load (state, procedure + strlen ("plug-in-"), snapshot);
+      gimp_filter_arguments_snapshot_free (snapshot);
+      goto out;
+    }
+  args = gimp_filter_layer_dup_args (layer);
+  count = args ? gimp_value_array_length (args) : 0;
   if ((!g_strcmp0 (procedure,"plug-in-vinvert") && count == 3) ||
       ((!g_strcmp0 (procedure,"plug-in-max-rgb") || !g_strcmp0 (procedure,"plug-in-threshold-alpha")) &&
        count == 4 && G_VALUE_HOLDS_INT (gimp_value_array_index (args,3))))
@@ -688,6 +1130,14 @@ painter_filter_response (PainterLayerDialog *state,
     goto close;
   if (! choice || g_str_equal (choice, "keep"))
     procedure = "";
+  else if (painter_filter_isolated (choice))
+    {
+      procedure = !strcmp (choice, "blinds") ? "plug-in-blinds" :
+                  !strcmp (choice, "small-tiles") ? "plug-in-small-tiles" :
+                  !strcmp (choice, "retinex") ? "plug-in-retinex" : "plug-in-convmatrix";
+      if (!painter_filter_isolated_args (state, choice, image, layer, &args)) goto out;
+      if (!args) goto close;
+    }
   else if (g_str_equal (choice, "edge"))
     {
       procedure = "plug-in-edge";
@@ -735,7 +1185,7 @@ painter_filter_response (PainterLayerDialog *state,
     {
       gchar *old_procedure = gimp_filter_layer_dup_procedure (GIMP_FILTER_LAYER (layer));
       raw = gimp_filter_layer_ref_definition (GIMP_FILTER_LAYER (layer));
-      if (! g_strcmp0 (old_procedure, procedure))
+      if (!painter_filter_isolated (choice) && ! g_strcmp0 (old_procedure, procedure))
         {
           GimpValueArray *old_args = gimp_filter_layer_dup_args (GIMP_FILTER_LAYER (layer));
           guint count = old_args ? gimp_value_array_length (old_args) : 0;
@@ -877,6 +1327,10 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"vinvert",_("Value Invert (Painter compatibility)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"max-rgb",_("Maximum/Minimum RGB (Painter compatibility)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"threshold-alpha",_("Threshold Alpha (Painter compatibility)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "blinds", _("Blinds (Painter compatibility)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "small-tiles", _("Small Tiles (Painter compatibility)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "retinex", _("Retinex (Painter compatibility)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "convmatrix", _("Convolution Matrix (Painter compatibility)"));
       state->parameters = gtk_stack_new ();
       gtk_stack_set_homogeneous (GTK_STACK (state->parameters), FALSE);
       gtk_grid_attach (GTK_GRID (state->grid), state->parameters, 0, state->row++, 2, 1);
@@ -926,6 +1380,7 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       gtk_stack_add_named (GTK_STACK (state->parameters),grid,"point");
       state->point_argument = painter_dialog_spin (state,_("_Integer argument:"),"painter-point-argument",G_MININT,G_MAXINT,1,0);
       painter_dialog_field (state,NULL,gtk_label_new (_("Maximum RGB: positive selects maximum, otherwise minimum.\nThreshold Alpha: alpha byte threshold (normally 0–255).\nValue Invert has no additional argument.")),"painter-point-help");
+      painter_filter_isolated_pages (state);
       state->grid = main_grid; state->row = row;
       state->status = painter_dialog_field (state, NULL, gtk_label_new (NULL), "painter-filter-status");
       gtk_label_set_line_wrap (GTK_LABEL (state->status), TRUE);
@@ -953,6 +1408,12 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       painter_dialog_connect (state,state->radius,"value-changed",G_CALLBACK (painter_filter_dirty));
       painter_dialog_connect (state,state->horizontal_flag,"value-changed",G_CALLBACK (painter_filter_dirty));
       painter_dialog_connect (state,state->vertical_flag,"value-changed",G_CALLBACK (painter_filter_dirty));
+      for (const auto& number : state->numbers)
+        painter_dialog_connect (state, number.entry, "changed", G_CALLBACK (painter_filter_dirty));
+      for (const auto& flag : state->flags)
+        painter_dialog_connect (state, flag.widget, GTK_IS_COMBO_BOX (flag.widget) ? "changed" : "toggled", G_CALLBACK (painter_filter_dirty));
+      for (const auto& selection : state->enums)
+        painter_dialog_connect (state, selection.widget, "changed", G_CALLBACK (painter_filter_dirty));
       painter_dialog_connect (state, state->dialog, "response", G_CALLBACK (painter_filter_response_received));
     },
     [&] (PainterLayerDialog& state) {

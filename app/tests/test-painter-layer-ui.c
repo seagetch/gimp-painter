@@ -766,6 +766,8 @@ static void dialog_factory_reentry (void)
     }
 }
 
+#include "test-isolated-filter-editors.inc"
+
 int main (int argc, char **argv)
 {
   int result;
@@ -787,6 +789,18 @@ int main (int argc, char **argv)
   ADD (dialog_binding_close); ADD (filter_choice_last_owner_reentry);
   ADD (filter_status_last_owner_reentry); ADD (dialog_destroy_last_owner_reentry);
   ADD (dialog_factory_reentry);
+  ADD (isolated_editor_create_reedit);
+  ADD (isolated_editor_preserve_and_undo);
+  ADD (isolated_editor_stale_definition);
+  ADD (isolated_editor_saved_enums);
+  ADD (isolated_editor_every_field);
+  ADD (isolated_editor_invalid_input);
+  ADD (isolated_editor_precision_ranges);
+  ADD (isolated_editor_unknown_shapes);
+  ADD (isolated_editor_lifetimes);
+  ADD (isolated_editor_reentry);
+  ADD (isolated_editor_running_cache);
+  ADD (isolated_editor_save_reopen);
   result = g_test_run ();
   gtk_widget_destroy (parent); g_object_unref (parent);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");

@@ -29,7 +29,8 @@ The old writer could omit FLOATARRAY coefficients (tag7, zero payload), and
 INT32ARRAY records were not generally recoverable. Preserving such opaque old
 records is separate from new typed-array Save/reopen. Coefficients never saved
 by the old writer cannot be recovered. Programmatic edit/Undo/Redo is tested;
-a GTK array parameter editor remains open.
+the native GTK array editor is covered separately by
+[30.001/isolated-filter-editors](filter-isolated-editors.md).
 
 The private helper queries only the bundled `convolution-matrix` executable
 and validates its single hidden `plug-in-painter-convmatrix` registration,
@@ -126,5 +127,5 @@ malformed definitions, cancellation/replacement/close, Save/reopen/reedit/Undo,
 wire, selectors, focused sanitizers and relocated runtime results are recorded
 in `../tests/filter-convolution/acceptance.json`. Each result distinguishes
 normal, instrumented and actually installed execution. Tests run on Linux;
-Windows/macOS, GTK numeric-array editing, owner progress forwarding, no-swap
+Windows/macOS, owner progress forwarding, no-swap
 execution, arbitrary-size/global-latency and other procedures remain open.

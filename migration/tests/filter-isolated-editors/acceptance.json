@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "task": "30.001/isolated-filter-editors",
+  "status": "passed",
+  "date": "2026-10-04",
+  "scope": "Linux native GTK3 New/Edit Filter Layer controls for Blinds, Small Tiles, Retinex and Convolution; bounded editor acceptance only",
+  "source_identity": {
+    "base_commit": "29461237ed44886ceea5e950aaccd1f378a1c4c3",
+    "final_task_source_sha256": {
+      "app/dialogs/painter-layer-dialog.cpp": "61a297e47f23da3a4ae7ab89dcbeeb1010655bef2a2b55f47970b31688430c4c",
+      "app/tests/test-painter-layer-ui.c": "cd277b3ee0cbe6a62bae4646c5a5c0ab2e28bc9cc07313f44c3b9cde9939dec6",
+      "app/tests/test-isolated-filter-editors.inc": "d5536743cf0987083274f14dd04659ced6721ddf195bccf958e126866eb9cb32",
+      "migration/tests/build_painter_ui_sanitizers.py": "6cb7f626c4febadca35f1b9b940203a0ff15d9bbca4376c942ccf4b29a467d53",
+      "migration/tests/painter_sanitizer_scope.py": "19976b7a0269a20f93237c1cfb58ba00c183afd5007eb6f3b9fb8e13919ae17c",
+      "migration/tests/run_isolated_filter_editors.sh": "6a17b736dc4d4d271464cd1d87490a362c960b4fe285a53a75dbb26beccd826c"
+    },
+    "freshness": "Editor implementation matches all four run identities. Final test sources and both current executables match boundary run identities. Full-suite test sources match the preserved recovery archive; their only later changes are the added precision-range group and whitespace-invalid case, both exercised by the boundary runs.",
+    "test_delta": "migration/tests/filter-isolated-editors/full-suite-to-boundary-tests.patch",
+    "recovery_archive_sha256": "cfb0508f3b9dc4422385187cf563ffa0be47356e317fbe3c52078d5808275b0c",
+    "no_aggregate_rerun_claim": "The final 36-group registration was not rerun as one suite: 35 groups per mode passed before test-only additions, followed by 2 groups per mode on final sources.",
+    "full_suite_test_source_sha256": {
+      "app/tests/test-painter-layer-ui.c": "62a373b213f5e30a334df9cc3b668a687f5c713637c8aaa6ebb1d9ecc9c53d75",
+      "app/tests/test-isolated-filter-editors.inc": "bcb2109da5e88da641c266e15ebfbc122409d715d9b746f9d3d486273cf2d8f4"
+    }
+  },
+  "automated": {
+    "platform": "Linux, native GTK display :0",
+    "runner": "migration/tests/run_isolated_filter_editors.sh",
+    "runs": {
+      "full_normal": {
+        "started_utc": "2026-10-04T05:46:06Z",
+        "log": "migration/tests/filter-isolated-editors/normal.log.gz",
+        "identity": "migration/tests/filter-isolated-editors/normal-identity.txt",
+        "exit_code_file": "migration/tests/filter-isolated-editors/normal-exit-code.txt",
+        "passed_groups": 35,
+        "exit_code": 0,
+        "executable_sha256": "0626d457c3774c7fb0eb85da7c780e033c6bb532452c36fa32266d162c161add",
+        "log_integrity": {
+          "uncompressed_sha256": "d238e09d0e15143b164c293f91d585ec9f1ff5b84d993125e94e2a37b184e71f",
+          "uncompressed_bytes": 340629,
+          "gzip_sha256": "5e0bb89764bb41c6f83ddbff071faf14aa5b21250396880e5c20bb25c38b63ec",
+          "gzip_bytes": 6147,
+          "gzip_mtime": 0
+        },
+        "read_log_command": "gzip -dc migration/tests/filter-isolated-editors/normal.log.gz"
+      },
+      "full_asan": {
+        "started_utc": "2026-10-04T06:00:12Z",
+        "log": "migration/tests/filter-isolated-editors/asan.log.gz",
+        "identity": "migration/tests/filter-isolated-editors/asan-identity.txt",
+        "exit_code_file": "migration/tests/filter-isolated-editors/asan-exit-code.txt",
+        "passed_groups": 35,
+        "exit_code": 0,
+        "executable_sha256": "0f715ecf84df4f0b498d9aafa8fd7af2ee0f870f44ed851134fc0482d3bce00f",
+        "log_integrity": {
+          "uncompressed_sha256": "0cf939eff8f1f29abda0d6be3b12573c030f6584a96824816a6a985ddb83c363",
+          "uncompressed_bytes": 313305,
+          "gzip_sha256": "2e196d19e23c285c09feac34977491a53adf7f394721f6b69717807adab682a9",
+          "gzip_bytes": 4739,
+          "gzip_mtime": 0
+        },
+        "read_log_command": "gzip -dc migration/tests/filter-isolated-editors/asan.log.gz"
+      },
+      "boundary_normal": {
+        "started_utc": "2026-10-04T06:06:23Z",
+        "log": "migration/tests/filter-isolated-editors/boundary/normal.log.gz",
+        "identity": "migration/tests/filter-isolated-editors/boundary/normal-identity.txt",
+        "exit_code_file": "migration/tests/filter-isolated-editors/boundary/normal-exit-code.txt",
+        "passed_groups": 2,
+        "exit_code": 0,
+        "executable_sha256": "b9e003df9c808eacf12e928f68fbc67347c6624d657758124bfcaacd0b6969b6",
+        "log_integrity": {
+          "uncompressed_sha256": "00951cc38f61b054d6d869417c1fd34634f6bc69b8490f97d4d4492343b9128c",
+          "uncompressed_bytes": 39429,
+          "gzip_sha256": "e873d3cfad1befe62d6bc4e40eb3d104ed649d1bb61e3154b7ffb60a9139b29f",
+          "gzip_bytes": 1863,
+          "gzip_mtime": 0
+        },
+        "read_log_command": "gzip -dc migration/tests/filter-isolated-editors/boundary/normal.log.gz"
+      },
+      "boundary_asan": {
+        "started_utc": "2026-10-04T06:06:30Z",
+        "log": "migration/tests/filter-isolated-editors/boundary/asan.log.gz",
+        "identity": "migration/tests/filter-isolated-editors/boundary/asan-identity.txt",
+        "exit_code_file": "migration/tests/filter-isolated-editors/boundary/asan-exit-code.txt",
+        "passed_groups": 2,
+        "exit_code": 0,
+        "executable_sha256": "01248959d44c18a3fee383cedc9f57fbf061a85f60fb754cbf2c05133daddf9d",
+        "log_integrity": {
+          "uncompressed_sha256": "d40969e9c3a06945391da733bb3443efb92ac208de542ec563261da3725a1a13",
+          "uncompressed_bytes": 39429,
+          "gzip_sha256": "1fdf12ce8cff3ac5dca1824ec59bf532eeae911ffbecae6ea6ca1c985f3e1b71",
+          "gzip_bytes": 1860,
+          "gzip_mtime": 0
+        },
+        "read_log_command": "gzip -dc migration/tests/filter-isolated-editors/boundary/asan.log.gz"
+      }
+    },
+    "unique_groups_per_mode": 36,
+    "existing_groups": 24,
+    "isolated_editor_groups": 12,
+    "boundary_groups": [
+      "isolated_editor_precision_ranges",
+      "isolated_editor_invalid_input"
+    ],
+    "coverage": [
+      "Create/cancel/reedit all four literal routes; typed scalars/arrays, raw metadata, context IDs, signed flags, signed zero and ignored Convolution tails preserved; no-op and semantic toggle-back edits create no transaction.",
+      "All 42 editable fields independently patched with Undo; 25 matrix cells use image rows and legacy x*5+y storage; supported and unknown saved enums; stale definition rejection.",
+      "Invalid input in create and edit leaves dialog/model/Undo/generation intact; unknown shapes retained; retained/detached children, repeated close and reentrant destruction.",
+      "Running-generation replacement retains prior pixels and publishes the new result, compared with an independent full-image evaluation; XCF save/load/reedit preserves typed definitions, raw metadata and completed pixels.",
+      "Final precision group checks U8 float-range/zero-divisor rejection and double-range/subnormal storage and no-op preservation. Extreme accepted doubles are cancelled before execution; this is parser/storage coverage."
+    ],
+    "diagnostics": "No AddressSanitizer/UBSan failure signatures or failing TAP cases in the four preserved logs. The logs include missing localization-catalog notices, GLib setenv debug notices and the existing writable data-folder save diagnostic; execution is not claimed warning-free."
+  },
+  "sanitizers": {
+    "types": [
+      "address",
+      "undefined"
+    ],
+    "instrumented_sources": [
+      "app/actions/layers-actions.c",
+      "app/actions/layers-commands.c",
+      "app/dialogs/painter-layer-dialog.cpp",
+      "app/painter/binding-store.cpp",
+      "app/painter/gimp-painter-binding.cpp",
+      "app/painter/gimp-painter-error.cpp",
+      "app/tests/test-painter-layer-ui.c"
+    ],
+    "instrumented_translation_units": 7,
+    "rtti_only_translation_units": 51,
+    "rtti_count_verification": "Recomputed with painter_sanitizer_scope.bridge_rtti_sources from the preserved build-installed-filter/compile_commands.json, subtracting the builder instrumented set; these 51 units receive -frtti only.",
+    "compile_commands_sha256": "87420fa5d50fb24a5dc6263e53922ca996b81d067d2e6e6dfc499a2a9c86eb97",
+    "leak_detection": false,
+    "asan_options": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+    "ubsan_options": "halt_on_error=1:print_stacktrace=1",
+    "limits": "GTK, remaining core, executors, plugins and other dependencies are not claimed instrumented by this focused UI build. Final sanitizer build report/source archive was not recovered; retained run identities, binaries, builder and compile database establish the available provenance."
+  },
+  "manual_walkthrough": {
+    "status": "reported_pass; raw evidence unavailable",
+    "reported_flow": "Built-app walkthrough of all four editors, Convolution 5x5 grid, named combos and checkboxes, validation, Undo/Redo and Save-close-reopen-edit completed without crashes.",
+    "reported_diagnostics": "GTK/GDK accessibility-related critical diagnostics were reported; their exact cause was not verified.",
+    "evidence_limit": "The raw walkthrough log was reported under /workspace/shared, which is absent after the runtime change. This documentation pass did not independently repeat or verify the manual walkthrough, its diagnostics or the built-app binary identity."
+  },
+  "remaining_gates": [
+    "Windows/macOS, tablet workflows and all popup contexts",
+    "Manual diagnostic reproduction and attribution; no warning-free app claim",
+    "Owner progress forwarding, global resource/latency and full migration/release acceptance",
+    "No expansion or rerun of accepted legacy numerical corpora; no extreme-parameter executor acceptance"
+  ],
+  "excluded_generated_artifacts": [
+    "app/tests/gimpdir/pluginrc",
+    "migration/tests/__pycache__/"
+  ],
+  "evidence_sha256": {
+    "migration/tests/filter-isolated-editors/asan-exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "migration/tests/filter-isolated-editors/asan-identity.txt": "8256708f6158325498d9e8292b7d3b09d2f8c67865ae6176f1d3d2def2d3fae9",
+    "migration/tests/filter-isolated-editors/asan.log.gz": "2e196d19e23c285c09feac34977491a53adf7f394721f6b69717807adab682a9",
+    "migration/tests/filter-isolated-editors/boundary/asan-exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "migration/tests/filter-isolated-editors/boundary/asan-identity.txt": "f03a1c87b543721ca718673526e3619892067d2f07f1d90cb21123cdc935c8ca",
+    "migration/tests/filter-isolated-editors/boundary/asan.log.gz": "1fdf12ce8cff3ac5dca1824ec59bf532eeae911ffbecae6ea6ca1c985f3e1b71",
+    "migration/tests/filter-isolated-editors/boundary/normal-exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "migration/tests/filter-isolated-editors/boundary/normal-identity.txt": "0991e929d80d3d5489103ec8b01fad5696bb6e41aebe86ae25666a0cd3e3bcbc",
+    "migration/tests/filter-isolated-editors/boundary/normal.log.gz": "e873d3cfad1befe62d6bc4e40eb3d104ed649d1bb61e3154b7ffb60a9139b29f",
+    "migration/tests/filter-isolated-editors/full-suite-to-boundary-tests.patch": "77ce01833e11248dbc84a3e99ac9c16e11dacf2729cdef305508c5d96396478a",
+    "migration/tests/filter-isolated-editors/normal-exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "migration/tests/filter-isolated-editors/normal-identity.txt": "235b808c8852109b9778d75604b2c76cf106d7d4e6b6f0635ba96fa233769dc6",
+    "migration/tests/filter-isolated-editors/normal.log.gz": "5e0bb89764bb41c6f83ddbff071faf14aa5b21250396880e5c20bb25c38b63ec"
+  },
+  "documentation_validation": {
+    "task_row": "30.001/isolated-filter-editors is checked, has one complete DONE evidence row and both declared dependencies are checked; parent 30.001 remains unchecked.",
+    "wbs_validator": "Passed tools/check_tasks.py after restoring the missing DONE evidence row for the already-published Convolution prerequisite (29461237); no prerequisite checkbox or implementation changed.",
+    "diff_check": "passed"
+  }
+}

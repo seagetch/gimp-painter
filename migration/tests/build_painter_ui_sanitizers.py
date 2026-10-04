@@ -43,6 +43,7 @@ headers = {
     "app/core/gimpclonelayer.h", "app/core/gimpfilterlayer.h",
     "app/widgets/gimpviewabledialog.h", "app/dialogs/meson.build",
     "app/tests/meson.build", "po/POTFILES.in",
+    "app/tests/test-isolated-filter-editors.inc",
     "migration/tests/build_painter_ui_sanitizers.py",
     "migration/tests/painter_sanitizer_scope.py",
 }

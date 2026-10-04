@@ -1,0 +1,104 @@
+--- a/app/tests/test-painter-layer-ui.c
++++ b/app/tests/test-painter-layer-ui.c
+@@ -797,0 +798 @@
++  ADD (isolated_editor_precision_ranges);
+--- a/app/tests/test-isolated-filter-editors.inc
++++ b/app/tests/test-isolated-filter-editors.inc
+@@ -478,0 +479 @@
++    { 1, "painter-small-tiles-factor", " \t " },
+@@ -818,0 +820,95 @@
++isolated_editor_precision_ranges (void)
++{
++  const gdouble smallest = nextafter (0.0, 1.0);
++  const guint8 zero[] = { 0, 0, 0, 0 };
++  gchar smallest_text[G_ASCII_DTOSTR_BUF_SIZE];
++
++  g_assert_cmpfloat (smallest, >, 0.0);
++  g_assert_cmpfloat (smallest, <, G_MINDOUBLE);
++  g_ascii_dtostr (smallest_text, sizeof smallest_text, smallest);
++  for (guint native = 0; native < 2; native++)
++    {
++      GimpImage *image = gimp_image_new (gimp, 16, 16, GIMP_RGB,
++        native ? GIMP_PRECISION_DOUBLE_NON_LINEAR : GIMP_PRECISION_U8_NON_LINEAR);
++      GimpLayer *source = gimp_layer_new (image, 16, 16, gimp_image_get_layer_format (image, TRUE),
++        "zero source", 1, GIMP_LAYER_MODE_NORMAL_LEGACY);
++      GimpValueArray *args = isolated_args (3, 3);
++      GimpFilterLayer *filter;
++      GtkWidget *dialog;
++      gdouble matrix[25];
++
++      g_assert_true (gimp_image_add_layer (image, source, NULL, 0, FALSE));
++      isolated_fill (source, zero); filter = isolated_layer (image, 3, args);
++      /* These are parameter parser/storage tests. Cancel before running the
++       * main context, so extreme accepted doubles are never evaluated. */
++      gimp_filter_layer_cancel (filter);
++      memcpy (matrix, gimp_value_get_double_array (gimp_value_array_index (args, 4), NULL), sizeof matrix);
++      if (native)
++        {
++          guint64 revision;
++          gdouble parsed;
++
++          dialog = isolated_editor (image, filter, 3);
++          isolated_text (dialog, "painter-convmatrix-0", "1e100");
++          isolated_text (dialog, "painter-convmatrix-divisor", "1e100");
++          isolated_accept (dialog); gimp_filter_layer_cancel (filter);
++          matrix[0] = 1e100; gimp_value_set_double_array (gimp_value_array_index (args, 4), matrix, 25);
++          g_value_set_double (gimp_value_array_index (args, 6), 1e100);
++          isolated_assert_args (filter, 3, args); isolated_assert_raw (filter);
++
++          dialog = isolated_editor (image, filter, 3);
++          isolated_text (dialog, "painter-convmatrix-offset", "0.25");
++          isolated_accept (dialog); gimp_filter_layer_cancel (filter);
++          g_value_set_double (gimp_value_array_index (args, 7), 0.25);
++          isolated_assert_args (filter, 3, args); isolated_assert_raw (filter);
++
++          dialog = isolated_editor (image, filter, 3);
++          isolated_text (dialog, "painter-convmatrix-24", smallest_text);
++          isolated_text (dialog, "painter-convmatrix-divisor", smallest_text);
++          isolated_accept (dialog); gimp_filter_layer_cancel (filter);
++          matrix[24] = smallest; gimp_value_set_double_array (gimp_value_array_index (args, 4), matrix, 25);
++          g_value_set_double (gimp_value_array_index (args, 6), smallest);
++          isolated_assert_args (filter, 3, args); isolated_assert_raw (filter);
++
++          revision = gimp_filter_layer_get_definition_revision (filter);
++          dialog = isolated_editor (image, filter, 3);
++          parsed = g_ascii_strtod (gtk_entry_get_text (GTK_ENTRY (field (dialog, "painter-convmatrix-24"))), NULL);
++          g_assert_cmpmem (&parsed, sizeof parsed, &smallest, sizeof smallest);
++          parsed = g_ascii_strtod (gtk_entry_get_text (GTK_ENTRY (field (dialog, "painter-convmatrix-divisor"))), NULL);
++          g_assert_cmpmem (&parsed, sizeof parsed, &smallest, sizeof smallest);
++          isolated_accept (dialog);
++          g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, revision);
++          isolated_assert_args (filter, 3, args);
++        }
++      else
++        {
++          const gchar *names[] = { "painter-convmatrix-0", "painter-convmatrix-divisor",
++            "painter-convmatrix-offset", "painter-convmatrix-divisor", "painter-convmatrix-divisor",
++            "painter-convmatrix-24" };
++          const gchar *texts[] = { "1e100", "1e100", "-1e100", "1e-100", smallest_text, " \t " };
++          guint64 revision = gimp_filter_layer_get_definition_revision (filter);
++          guint64 generation = gimp_filter_layer_get_generation (filter);
++
++          for (guint i = 0; i < G_N_ELEMENTS (names); i++)
++            {
++              gboolean closed = FALSE;
++              dialog = isolated_editor (image, filter, 3);
++              g_signal_connect (dialog, "destroy", G_CALLBACK (destroyed), &closed);
++              isolated_text (dialog, names[i], texts[i]);
++              gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
++              g_assert_false (closed);
++              g_assert_true (gtk_widget_get_visible (field (dialog, "painter-layer-error")));
++              g_assert_cmpstr (gtk_entry_get_text (GTK_ENTRY (field (dialog, names[i]))), ==, texts[i]);
++              g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, revision);
++              g_assert_cmpuint (gimp_filter_layer_get_generation (filter), ==, generation);
++              isolated_assert_args (filter, 3, args); isolated_assert_raw (filter);
++              gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL); g_object_unref (dialog);
++            }
++          g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, 0);
++        }
++      g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
++      gimp_value_array_unref (args); g_object_unref (image);
++    }
++}
++
++static void
