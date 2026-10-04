@@ -1187,7 +1187,7 @@
 | 34.002 | [ ] | Linux install manifest を検証する | 34.001 | 資源・plugin・locale が揃う |
 | 34.003 | [ ] | X11 入力を試験する | 34.002 | ペン・popup・回転が動く |
 | 34.003/gtk-atk-menu-guards | [ ] | 未表示menuのAT-SPI操作で起きるGTK依存の型guardを修正する | 30.001/native-dialog-diagnostics | Debian offscreen grabのNULL GdkWindowとupstream accessible祖先の型検査を再現可能な依存patchとして適用し、fixed-mode0・offscreen/通常入力/AT-SPIを独立検証する。GTK3.24.52側も未修正、source/license/runtime hashも更新する |
-| 34.003/dialog-device-diagnostics | [ ] | New Filter初回表示のGimpDeviceInfo/GdkDevice criticalをstackから修正する | 30.001/native-dialog-diagnostics | 保存済native raw logの16criticalを同一profile/device条件で再現しbounded stack・通常入力対照で原因を確定して修正する。今回分類したwindow/accessibility2assertionと混同しない |
+| 34.003/dialog-device-diagnostics | [x] | New Filter初回表示のGimpDeviceInfo/GdkDevice criticalをstackから修正する | 30.001/native-dialog-diagnostics | 同一baselineの通常pointerで16criticalを再現しbounded stackで初回focus前のcurrent-device未初期化を確認。canvas境界guard、negative trap・実GTK lifecycle1+navigation4を通常/8C unit ASan・UBSanで合格、非計測実appの初回/再表示・Escape/Cancel/終了0でcritical0。GTK別2欠陥・tablet/hot-plug/Wayland/集約gateは未完了 |
 | 34.004 | [ ] | Wayland 入力を試験する | 34.003 | 座標・focus・popup 復帰が動く |
 | 34.005 | [ ] | clean 環境 package を作る | 34.004 | 作業ディレクトリ外から起動 |
 | 34.005/runtime-prototype | [x] | Linuxの隔離・再配置runtime梱包と検証手順を実装する | 03.009, 04.002/common-foundation | 5255file/418ELF・177brush/8presetをseal、別日本語pathでversion/Save再読込と実GTK stroke保存再開、11helper安全検査合格。prototypeのみでfinal source/binary一致・配布source/license・release/platform gateは未完了 |

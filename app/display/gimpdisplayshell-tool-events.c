@@ -507,6 +507,15 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
   if (gimp_display_shell_check_device (shell, event, &device_changed))
     return TRUE;
 
+  /* Device discovery waits for the first focus-in event. GTK can send a
+   * canvas focus-out before then (for example after no-splash startup).
+   * Do not sample or dispatch tool input without a current device. The
+   * focused-once flag is set before initialization callbacks complete and
+   * is therefore not a readiness check.
+   */
+  if (! gimp_device_manager_get_current_device (gimp_devices_get_manager (gimp)))
+    return FALSE;
+
   gimp_display_shell_get_event_coords (shell, event,
                                        &display_coords,
                                        &state, &time);

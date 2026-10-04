@@ -60,6 +60,7 @@ app_tests = [
   'painter-dynamics',
   'painter-navigation-ui',
   'painter-navigation-events',
+  'device-dialog-events',
   'painter-perspective',
   'painter-perspective-ui',
   'painter-perspective-events',
