@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "scope": "Final normal native storage conversion guard and relevant precision/Save regressions, executed directly headless",
+  "completed_utc": "2026-10-04T04:23:32.040346+00:00",
+  "exit_code": 0,
+  "cases": [
+    "/gimp-filter-layer/convolution_native_storage_overflow",
+    "/gimp-filter-layer/convolution_native_precisions",
+    "/gimp-filter-layer/convolution_save_reopen"
+  ],
+  "storage_cases": [
+    "HALF in-range HDR32",
+    "HALF finite-double-to-infinity rejected, cache/definition retained, successful retry",
+    "FLOAT in-range HDR32",
+    "FLOAT finite-double-to-infinity rejected, cache/definition retained, successful retry"
+  ],
+  "source_sha256": {
+    "app/core/gimpfilterlayer.cpp": "8250192acd9a33307fd519e4a026b285439ac165890c10c6b5834ddcbfb1b8be",
+    "app/tests/test-filter-convolution.inc": "f5b26c69f4c0c4e52059b8d3aab6149b9d168c506696cfda3c28defb27330a8a",
+    "app/tests/test-gimp-filter-layer.c": "1a709989ecc601b436e6df091fc9ff046ed4fa5bd6418cbcb41192cb48221933",
+    "app/tests/meson.build": "f9f0cad50cd5f2e02895093eca14422c5e09fcc0ae7a61fd8e36aeca7c105ddd",
+    "migration/tests/run_filter_process_sanitizers.py": "98d26ad9fec669cac56be7b236ea7640d18118c990b63c5c622c26539e249650"
+  },
+  "log_sha256": "b5cfb893a6b50cc0b133a8459345c9f94377e9e7b2a58756b35d74d37e359223",
+  "inherited_shutdown_diagnostic": "Test profile writable-data search-path message at shutdown; no test failure, sanitizer or critical error"
+}

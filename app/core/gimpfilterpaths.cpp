@@ -117,6 +117,7 @@ std::string filter_plugin_path (FilterProcedure procedure)
     case FilterProcedure::blinds: name = "blinds"; break;
     case FilterProcedure::small_tiles: name = "tile-small"; break;
     case FilterProcedure::retinex: name = "contrast-retinex"; break;
+    case FilterProcedure::convolution: name = "convolution-matrix"; break;
     default: throw std::invalid_argument ("No bundled executable for this Filter procedure");
     }
   const auto directory = executable_directory ();

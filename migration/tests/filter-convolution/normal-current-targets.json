@@ -1,0 +1,91 @@
+{
+  "status": "passed",
+  "scope": "Normal headless affected-target reruns after actual-pixel numeric admission and ignored twelfth legacy argument support",
+  "completed_utc": "2026-10-04T04:13:43.724633+00:00",
+  "source_sha256": {
+    "app/painter/filter-raster-kernels.cpp": "fe2b4880c97952dfd33d798a2a38c01dba10b0b226335f35b3e7dc7101a78a23",
+    "app/painter/filter-context.hpp": "5ecde6228c5fc0143d44112b6bfe4d2a96abda1b2b9b6f276416231f7c17cce9",
+    "app/painter/filter-gauss.cpp": "025565dcfffc90d2de06614e127bd0530e70ce6fac6b4b4839c8171bbb4a0c0b",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-process.hpp": "8881c774d35f72daab705fc81e4c5b47671e85ea454846275eed53496808eb1e",
+    "app/painter/filter-edge.cpp": "8366b14c980d6b9db472a83071859f15403681e469841e04ba3010a7ad8a7af6",
+    "app/painter/filter-procedure.hpp": "8df7e7e22b3d09e9c86c5217b39e71d0858ed7ae1c183ecd2f06b96b8de55100",
+    "app/painter/filter-gauss-kernel-private.hpp": "8f9a9e3cc7d336a0d021d8aee387ab96116a8b771acb8fc893693bc0f82c9f2f",
+    "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/filter-wire.cpp": "67e96dfbc94b5e39f469b984dc5aa13e569f56ac4517833b4e7d44b3064ab1ea",
+    "app/painter/filter-native-kernels.cpp": "511591b1502fdf93fa4c44125e725eab1f4814f465ff3e4bf4dff1c7863ea5f1",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-wire.hpp": "38b11d647a492678c3f7122a2dab370ef239b0ae764dc66222e289e0f1dd2450",
+    "app/painter/filter-edge-kernel-private.hpp": "e48ac6f29c3af18bba60252b7b7676663e055d866ae6ddd2eee9faa41c6587bd",
+    "app/painter/filter-native-kernels.hpp": "d8225ade52257119e80c92cb8a62ba0fd1ecd4c987fa5723ab9eec427b4fd796",
+    "app/painter/filter-scheduler.cpp": "8a3ac98b8d0b5bc89efdec4d11ba1cc709a5fee753c8c4eaabe52e316da8c43e",
+    "app/painter/filter-scheduler.hpp": "0179a5a697aa8cf9479d737f78691f8d19e1f69a0398e6b725b7d0066466ceeb",
+    "app/painter/filter-raster-kernels.hpp": "8a9fc21d4cf3ae1c31c611003ce7833c9e4c12a9db5c0f7065dbc809045b7ca3",
+    "app/painter/filter-raster.hpp": "065083d88ddbcf21fed56f813c796b5ac933cc14b6da8457ed76104afdbfc50b",
+    "app/painter/filter-lifetime.hpp": "653113d3c0ad98a7dfcebc5199c8069dec5b419aa2b74eb581f1961b9f402a81",
+    "app/painter/filter-process.cpp": "b1ea459e3a62ceac19a9ee3a0ec0a61fc0c8b87f76295cdb5176441990a239eb",
+    "app/painter/filter-gauss.hpp": "3a10627882495265b731522622c3657534969b10a5024fdbfb2416fc4732a29c",
+    "app/painter/filter-edge.hpp": "6167b90820e961e33d629e227b401c77e70b9727d7e887ab6e514fbdda75ca2b",
+    "app/painter/filter-spool.hpp": "e6d2eae6eafd24bc28b7be0961a36dff1cdfd9def372879e474d261157c9356a",
+    "app/core/gimpfilterprocedure.cpp": "41d4a7b22ff81d2683906a7e880818f81be53b982c55f53b3da4b0dd0a1382eb",
+    "app/core/gimpfilterlayer-arguments.hpp": "ab1b54dd2b4890da9db48f77230ddf7e5ca02d77bdf34a7c37659e47c51ee402",
+    "app/core/gimpfilterlayer-handle.hpp": "a1c1d929d43033fb596bb2ade15cc5d1c9bfb9c1acfb4ab15847b0ec89749037",
+    "app/core/gimpfiltercontext.hpp": "6eb9b62f5c4b339a2df9659844734517f5e45de8e94e199ca49233bdeb0d81df",
+    "app/core/gimpfilter.c": "3e2d1daeeb23c4900b7da8b99e87250264b957cd440e93550c9d5b9795e3d3a8",
+    "app/core/gimpfilteredcontainer.h": "581b856a6dde380305b15ef21e0b4226828c9dbe001e1d04289bc9029e68bfb5",
+    "app/core/gimpfilterstack.c": "534facb04210999de9cc768cb1a1a199c6f2490d3f89523cbc062b72db3bde0c",
+    "app/core/gimpfilterlayer.cpp": "9590b03754a933b38e9a1a62a20ad8ac75cde20ffe141b7301deb050817451ff",
+    "app/core/gimpfilterprocedure.hpp": "770a82d4bb62fbf60f44c914d9bc92eb602726dcece3f198b028aa8b081200a4",
+    "app/core/gimpfilterexit.h": "3e70d5bae79aa141ec3475145b858ad4b25642e739e6448d0b6510180ec69eb0",
+    "app/core/gimpfilterstack.h": "3bea1258ba12941e36f20a2c98f1b4496875024930ee6700d258b23d6322f5c6",
+    "app/core/gimpfiltercontext.cpp": "3f5d46a95862607d04170da30e05c72a1d6650c5226e8dfb48277541934cefc9",
+    "app/core/gimpfilterpaths.hpp": "0a3fe6d32c4ec01322866a04880a8f437fa572e0fab61b65e316be20f068531b",
+    "app/core/gimpfilterlayer.h": "f2ef4a581df53bc1334bbcc7e0f41833a4bacdf5a4324f7b399e2059a0ddeb8a",
+    "app/core/gimpfilter.h": "e1af592513de1654f4ddf767ec977d44b7abe3d913f0ab111052ca35bca52982",
+    "app/core/gimpfilterpaths.cpp": "fd150c6e70c620e59d6a51652095164813a99b1741b8ec49cfd6627eac800604",
+    "app/core/gimpfilteredcontainer.c": "5e8d9f6134d145cb8816ecb6a6058069730ea263458b48dde032262bc5b3e614",
+    "app/core/gimpfilterexit.cpp": "173415c8a7891b5627ec31797edb2000923fe2da2cd025995666dff5ed156914",
+    "plug-ins/common/convolution-matrix.c": "bffb9e07ec4d25988c0d1065e0c5d50b17f6bfd9d49e25b633c25c68ddfeedee",
+    "plug-ins/common/convolution-matrix-kernel.h": "c0d5d2c68117edc3389f9aa8134749a386b61e58b21e588459789e1578e3a7ad",
+    "app/painter/tests/test-filter-convolution.cpp": "f4a096ec39d2c4f9fc45004fde110df08eebf005dc659df296af6030b42dd0b6",
+    "app/tests/test-filter-convolution.inc": "54460697eb42057f84af8c21f368ab463136313e67c88356f7839faf58b35244",
+    "app/tests/test-gimp-filter-layer.c": "4c3170baec2b50f0b2c182f05b05c6f6ef458afe288a13c228e8813569e4091b"
+  },
+  "native_cases": [
+    "/gimp-filter-layer/convolution_ignored_legacy_tail",
+    "/gimp-filter-layer/convolution_native_failure_keeps_cache",
+    "/gimp-filter-layer/convolution_actual_old_live",
+    "/gimp-filter-layer/convolution_invalid_arrays_keep_cache",
+    "/gimp-filter-layer/convolution_native_precisions",
+    "/gimp-filter-layer/convolution_save_reopen",
+    "/gimp-filter-layer/convolution_cancel_replace_close"
+  ],
+  "native_stdout_sha256": "69bd2aecc36b33653c080133da1481e333c602692be789477f454cf2baa0084c",
+  "boundary_helper_output": "0 genuine old Convolution final merges, 0 raw ROI comparisons, 0 old geometry rejections, 5 native analytic requests passed",
+  "boundary_helper_scope": "Four identical supplemental old numeric fixture inputs plus one safe CLEAR/one-row extension; not a rerun of the original296 corpus",
+  "supplemental_oracles": {
+    "legacy-convolution-appendix.tar.gz": "f9f152c6c5ac732582c459530a3ee5c0f92951023ace6a8541db4cb0a671de07",
+    "legacy-convolution-extreme.tar.gz": "0c6bd14d3ce7396e9edb6dd38ef59f1e8909fd102b79cb0a5f60bd4036914a13"
+  },
+  "wire_process_context_results": [
+    {
+      "name": "gimp:painter / painter-filter-wire",
+      "result": "OK",
+      "duration": 0.005936861038208008,
+      "stdout": "Filter wire validation passed\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-process",
+      "result": "OK",
+      "duration": 4.451302766799927,
+      "stdout": "106 Filter process cases passed\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-context-native",
+      "result": "OK",
+      "duration": 0.00427699089050293,
+      "stdout": "Native Filter context tests passed\n"
+    }
+  ]
+}

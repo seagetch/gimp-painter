@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "task": "16.003/isolated-convolution-route",
+  "status": "passed",
+  "date": "2026-10-04",
+  "scope": "Bounded literal legacy Convolution Matrix FilterLayer route through isolated current GIMP3 typed arrays/GeglBuffer; Linux only, not general migration/GUI/platform/release acceptance",
+  "source_identity": {
+    "base_commit": "206c61431b73d494d1c4a01edf162c90bc4f9984",
+    "base_tree": "ab078b7badddeb5115dba2dc6963f6526c1f2eab",
+    "validation_tree_without_acceptance_report": "d522b8e1d691e80f9cb645071cf07e01223b1139",
+    "tree_scope": "Complete staged task and evidence before adding this acceptance record; no audit-only commit",
+    "final_task_source_sha256": {
+      "app/core/gimpfiltercontext.cpp": "3f5d46a95862607d04170da30e05c72a1d6650c5226e8dfb48277541934cefc9",
+      "app/core/gimpfiltercontext.hpp": "6eb9b62f5c4b339a2df9659844734517f5e45de8e94e199ca49233bdeb0d81df",
+      "app/core/gimpfilterlayer.cpp": "8250192acd9a33307fd519e4a026b285439ac165890c10c6b5834ddcbfb1b8be",
+      "app/core/gimpfilterpaths.cpp": "fd150c6e70c620e59d6a51652095164813a99b1741b8ec49cfd6627eac800604",
+      "app/core/gimpfilterprocedure.cpp": "41d4a7b22ff81d2683906a7e880818f81be53b982c55f53b3da4b0dd0a1382eb",
+      "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648",
+      "app/painter-filter-worker.cpp": "cafa8caa1d00bcf792c8722faa7e90f1f46cf6af96d976c72a13357194a6c7cf",
+      "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+      "app/painter/filter-context.hpp": "5ecde6228c5fc0143d44112b6bfe4d2a96abda1b2b9b6f276416231f7c17cce9",
+      "app/painter/filter-procedure.hpp": "8df7e7e22b3d09e9c86c5217b39e71d0858ed7ae1c183ecd2f06b96b8de55100",
+      "app/painter/filter-process.cpp": "b1ea459e3a62ceac19a9ee3a0ec0a61fc0c8b87f76295cdb5176441990a239eb",
+      "app/painter/filter-wire.cpp": "67e96dfbc94b5e39f469b984dc5aa13e569f56ac4517833b4e7d44b3064ab1ea",
+      "app/painter/filter-wire.hpp": "38b11d647a492678c3f7122a2dab370ef239b0ae764dc66222e289e0f1dd2450",
+      "app/painter/meson.build": "1eed5d2025c6077f65761466ae3bb7936c9efe96a1956b6b2cacfdad4c5a5d5d",
+      "app/painter/tests/test-filter-context-native.cpp": "ad86e0053d552d50b896aedd82277bbb2590fd332d7f34d0b5f95e335db92931",
+      "app/painter/tests/test-filter-convolution.cpp": "f4a096ec39d2c4f9fc45004fde110df08eebf005dc659df296af6030b42dd0b6",
+      "app/painter/tests/test-filter-process.cpp": "05f6df42bf189cc559216f461a75f6d4a6fb9f6e2444601cb4f61f82bb48ad77",
+      "app/painter/tests/test-filter-wire.cpp": "13896507faba4f60cfdd805058e43024f1d0188bd84f8e63527ac12142b0fd53",
+      "app/tests/meson.build": "f9f0cad50cd5f2e02895093eca14422c5e09fcc0ae7a61fd8e36aeca7c105ddd",
+      "app/tests/test-filter-owner-context.cpp": "fe4e538147fe089b86c335cde5623a145e9c8890f5dcbe862adb59b82cd8e1a4",
+      "app/tests/test-gimp-filter-layer.c": "1a709989ecc601b436e6df091fc9ff046ed4fa5bd6418cbcb41192cb48221933",
+      "migration/tests/filter-convolution/gegl-probe.c": "ac4c7e3705d1820fc332909be97c3aee197367d2b7963e52910b53af6d6c9a58",
+      "migration/tests/filter-convolution/rerun-live-after-fixture-fix.py": "86f050ab19facfd76366b38b953d4782aef6a102e096a1c54c43763c642eb571",
+      "migration/tests/filter-convolution/run-gegl-comparison.sh": "e92c3b872acaf3af4f81090de91a4ce908ef2abfd7a7b2783867d00f97d30ebf",
+      "migration/tests/filter-convolution/run-gegl-probe.py": "a983716243e7bceca8a44916954a87a2d82e590d48b5393aea08517afec83e6b",
+      "migration/tests/filter-convolution/test-convolution-kernel.c": "dd3afbbdbe62f01981726b08d51e08000439ffc76ef73843296e5317a675aacc",
+      "migration/tests/legacy-convolution-capture.c": "13cbb5ecaab0188c357a5645e0dd5cd2a975716df24c45fc8a2747176919eb38",
+      "migration/tests/run_filter_owner_context_fixture_test.py": "4153db0860e3ac8ce409feb92dc4252df25bb3df9d3a1a480ac1dd219b3cf5fc",
+      "migration/tests/run_filter_process_sanitizers.py": "98d26ad9fec669cac56be7b236ea7640d18118c990b63c5c622c26539e249650",
+      "migration/tests/test_filter_executable_paths.py": "f07cf59533d45ec2398527a5a4eae1096bfbff55b50c44de81c3aecd1de70cb6",
+      "plug-ins/common/convolution-matrix-kernel.h": "c0d5d2c68117edc3389f9aa8134749a386b61e58b21e588459789e1578e3a7ad",
+      "plug-ins/common/convolution-matrix.c": "bffb9e07ec4d25988c0d1065e0c5d50b17f6bfd9d49e25b633c25c68ddfeedee",
+      "plug-ins/common/meson.build": "f8cfff5934d028ef2faeecd0f5cde559a037758c107cb738a1fdae24f5680935",
+      "tools/capture_legacy_convolution.py": "9a9f6b1155aa0b1a0f95d8cb6f1b08990d9490186ed172d31eba37aca02146fd",
+      "tools/capture_legacy_convolution_appendix.py": "908034f017d6ee9e66bb2f39f3beb01ea7c34165eb900583004d9f9df33fb7fb",
+      "tools/capture_legacy_convolution_extreme.py": "921466b7ea85cdfdfeb5934c468d1fb3df2e986d97bff2da56b1ce95794571be",
+      "tools/check_convolution_evidence.py": "76714f9f53f773d1d0a248301c6a25de421654a88fd803144e0c7a51549d3526",
+      "tools/check_filter_active_quit.py": "5a802543944a754daf8213c707a490f3260ac14ad717fef1b6fb823b92523157",
+      "tools/check_installed_convolution.py": "e47d854dbe2f1fea6cb07ec5b7617b8bee28960ac0233e29af95ddf6f9e0342e",
+      "tools/check_installed_filter.py": "89e75e0c8aadbb9533f42e8c2187b9791b3a63323cdb58fdefcab13848e8e2b9",
+      "tools/check_installed_retinex.py": "93745109033b66e2f00840cf45141cfbf62a2633b99101f33ef65017d9e3d82a",
+      "tools/check_installed_small_tiles.py": "ab4972466d761986115d32e1d01ecd7d2f253f169354756681fbf1ddc05838e1",
+      "tools/inventory_filter_routes.py": "1bf06dcdce3ed016d3249041b7f24c57d6235b10f3b059bce6ae15c3a0987a8e",
+      "tools/package-linux-runtime.py": "42d5df30c63787ee360607600b0a19d72c94680fce7d99d31f90b8696d666f69"
+    }
+  },
+  "architecture": {
+    "original_names_retained": [
+      "plug-in-convmatrix"
+    ],
+    "legacy_slots": [
+      11,
+      12
+    ],
+    "matrix_doubles": 25,
+    "channel_int32s": 5,
+    "native_procedure": "plug-in-painter-convmatrix",
+    "current_plugin_slots": 9,
+    "transport": "GPF5 / --filter-worker-v5",
+    "request_bytes": 344,
+    "execution": "Existing asynchronous isolated process scheduler, priority/checkpoints/cancel/generation/lease semantics; completed GeglBuffer remains GEGL source",
+    "arbitrary_procedures_or_scripts_enabled": false,
+    "legacy_runtime_shipped": false
+  },
+  "genuine_old": {
+    "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+    "main_calls": 304,
+    "main_successes": 296,
+    "main_expected_geometry_rejections": 8,
+    "main_actual_filter_layer_calls": 12,
+    "independent_repeat_matches": 304,
+    "supplemental_calls": 8,
+    "supplemental_details": {
+      "large_finite_coefficient_divisor": 2,
+      "defined_near_INT_MAX_offset": 2,
+      "ignored_twelfth_int_or_string": 4
+    },
+    "archives": [
+      {
+        "archive": "migration/fixtures/legacy-convolution.tar.gz",
+        "sha256": "dff2d7f6b4b6d514e0c213abd7d2757729708a10b821b12316b9c97102f84a57",
+        "bytes": 124904,
+        "manifest_sha256": "27a3ffb3feed3b14e110915c0bab4a5a6412946a09561939ebbe12b5d5c2b44f"
+      },
+      {
+        "archive": "migration/fixtures/legacy-convolution-extreme.tar.gz",
+        "sha256": "0c6bd14d3ce7396e9edb6dd38ef59f1e8909fd102b79cb0a5f60bd4036914a13",
+        "bytes": 11197,
+        "manifest_sha256": "f0a7c6ca58cd9872b8a38089ea4e40f3a3cf4428c05799a0b2b6e4dbdad94c46"
+      },
+      {
+        "archive": "migration/fixtures/legacy-convolution-appendix.tar.gz",
+        "sha256": "f9f152c6c5ac732582c459530a3ee5c0f92951023ace6a8541db4cb0a671de07",
+        "bytes": 12371,
+        "manifest_sha256": "076e309e3430dd0ccb5b9861361b0b233dff97bf9404b453ddd3f3a439a0f580"
+      }
+    ],
+    "undefined_legacy_cases": "Repeated partial-right CLEAR calls produced different bytes; one-row ROI writes outside its valid shadow rows. Safe defined behavior is an explicit extension, not parity proof."
+  },
+  "gegl_backend_measurement": {
+    "report": "gegl-comparison.json",
+    "version": "0.4.62",
+    "old_shadow_cases": 228,
+    "mismatching_cases": 144,
+    "different_samples": 16466,
+    "maximum_byte_delta": 120,
+    "finer_than_float_double_identity_differences": 27,
+    "sample_count": 36,
+    "conclusion": "Existing operation is not exact old-U8 or binary64-native backend; compatibility arithmetic uses modern GIMP3/GeglBuffer"
+  },
+  "normal": {
+    "regression_report": "normal-regressions.json",
+    "regression_targets": 61,
+    "passed": 58,
+    "skipped": [
+      "painter-profile-native",
+      "painter-paper-ui",
+      "painter-http-ui"
+    ],
+    "skip_reason": "Observed exit77; source gates on failed gtk_init_check. Xvfb could not establish listening sockets and its outer launcher returned1. Inner Meson results remain separate; no GTK coverage claimed.",
+    "checkpoint_full_filter_layer_tests": 131,
+    "checkpoint_report": "normal-final-targets.json",
+    "final_affected_reports": [
+      "normal-current-targets.json",
+      "normal-native-storage.json",
+      "normal-fixture-recovery.json"
+    ],
+    "validation_sequence": "Broad regressions and131core tests ran before widened numeric/twelfth-slot/storage refinements. Changed Convolution targets were rerun normally; all final production and corrected live-test sources also passed focused instrumented coverage. No single frozen-tree whole-release run is claimed.",
+    "legacy_helper_raw_ROI_comparisons": 296,
+    "legacy_helper_final_merges": 296,
+    "modern_and_boundary_helper_requests": 41,
+    "modern_precision_model_TRC_profile_combinations": 34,
+    "native_owner_context_cases": 154,
+    "array_invalid_and_opaque_cases": 19,
+    "wire_validation": "passed",
+    "final_process_cases": 106,
+    "final_affected_live_runs_direct_headless": true
+  },
+  "sanitizers": {
+    "report": "sanitizers.json",
+    "instrumented_sources": 33,
+    "rtti_only_sources": 44,
+    "sealed_inputs": 1763,
+    "unit_targets": 6,
+    "current_old_helper_comparisons": 296,
+    "additional_convolution_helper_requests": 41,
+    "selected_live_cases": 50,
+    "leak_sanitizer": false,
+    "remaining_GIMP_and_dependencies": "ordinary uninstrumented",
+    "source_changes_during_accepted_live_run": [],
+    "test_fixture_recovery": "First live run caught stack-backed g_bytes_new_static in the test helper. Literal now has static storage. Reused unchanged successful production/helper receipts; verified only declared test include changed, replayed exact driver/link commands and reran all50live cases, plus fresh normal exports. Raw source epochs and failure trace hash retained."
+  },
+  "standalone_kernel": {
+    "report": "kernel-sanitizers.json",
+    "analytic_old_float_comparisons": 400000,
+    "instrumentation": [
+      "address",
+      "undefined",
+      "float-cast-overflow"
+    ],
+    "old_runtime_oracle": false
+  },
+  "executable_selectors": {
+    "normal_cases": 27,
+    "sanitizer_cases": 27,
+    "reports": [
+      "selectors-normal.json",
+      "selectors-sanitizers.json"
+    ]
+  },
+  "installed": {
+    "report": "installed.json",
+    "status": "passed",
+    "formats": [
+      "U8 nonlinear RGB",
+      "Double nonlinear RGB"
+    ],
+    "independently_observed_runs_per_case": 2,
+    "exact_Save_reopen_cycles_per_case": 2,
+    "typed_definition_checks": "Ordered11slots, fixed25/5counts,200/20byte arrays, exact matrix/channel values and definition bytes on each cycle",
+    "required_ABI": [
+      "libgegl-0.4.so.0",
+      "libgimp-3.0.so.0",
+      "libgtk-3.so.0"
+    ],
+    "legacy_ABI_dependencies": [],
+    "isolated_environment": "Explicit minimum whitelist; no inherited dependency environment",
+    "relocation": "Fresh path with spaces and Japanese characters",
+    "input_archive": "installed-inputs.tar.gz",
+    "input_archive_sha256": "a7988e113b7c4d9ca0b42feb6c91d5d4a56a94001cc5e30f488eb7c40149ae5a",
+    "prior_setup_failure": "installed-development-failure.json records stale unlinked console host; excluded from acceptance. Prototype package now converges default Ninja before installation.",
+    "package_recipe_tests": 35,
+    "package_recipe_log": "package-recipe-tests.log"
+  },
+  "explicit_limits": [
+    "GTK numeric-array editor remains open; editing/Undo tests are programmatic",
+    "Missing coefficients never written by old XCF cannot be recovered; original opaque bytes/cache are retained",
+    "No indexed-mode route; width/height below3 remain rejected",
+    "Native precision is a documented extension; normal lower-stack GEGL compositing remains authoritative and can introduce its own precision/profile effects",
+    "raw_shadow=false helper output is not a double-precise standalone-merge guarantee; live owner uses raw shadow and double merge",
+    "Convolution HALF/FLOAT conversion to nonfinite storage fails with prior cache/definition retained; finite in-range HDR is supported",
+    "Host-native double pixel byte order is checked; no real big-endian/platform execution claim",
+    "Global latency, arbitrary maximum sizes, no-swap route, owner progress forwarding, Windows/macOS and other procedure families remain open"
+  ],
+  "recorded_utc": "2026-10-04T04:56:09.270836+00:00"
+}

@@ -492,6 +492,44 @@ struct FilterImpl
         };
         if (spill) request.raster_process = std::move (process);
       }
+    else if (procedure == "plug-in-convmatrix" && args && (args->size () == 11 || args->size () == 12))
+      {
+        /* The old handler also accepted and ignored a twelfth argument. Keep
+         * its typed value in the definition, never in native plugin options. */
+        const auto integer = [&] (unsigned i) { return G_VALUE_HOLDS_INT (args->at (i)); };
+        const bool types = integer (0) && integer (1) && integer (2) && integer (3) && integer (5) &&
+          integer (8) && integer (10) && G_VALUE_HOLDS (args->at (4), GIMP_TYPE_DOUBLE_ARRAY) &&
+          G_VALUE_HOLDS_DOUBLE (args->at (6)) && G_VALUE_HOLDS_DOUBLE (args->at (7)) &&
+          G_VALUE_HOLDS (args->at (9), GIMP_TYPE_INT32_ARRAY);
+        if (types && g_value_get_int (args->at (3)) == 25 && g_value_get_int (args->at (8)) == 5)
+          {
+            const auto *matrix = static_cast<const GimpArray *> (g_value_get_boxed (args->at (4)));
+            const auto *channels = static_cast<const GimpArray *> (g_value_get_boxed (args->at (9)));
+            /* A matching boxed type alone does not prove element count or even
+             * a whole element. Check raw byte lengths before any typed read. */
+            if (matrix && matrix->data && matrix->length == 25 * sizeof (double) &&
+                channels && channels->data && channels->length == 5 * sizeof (gint32))
+              {
+                auto descriptor = std::make_shared<FilterProcedureRequest> ();
+                descriptor->procedure = FilterProcedure::convolution;
+                descriptor->width = request.width; descriptor->height = request.height;
+                descriptor->gray = gray (); descriptor->storage_channels = gray () ? 2 : 4;
+                const auto trc = gimp_drawable_get_trc (GIMP_DRAWABLE (owner));
+                descriptor->sample_mode = !real ? 0 : trc == GIMP_TRC_LINEAR ? 1 :
+                  trc == GIMP_TRC_NON_LINEAR ? 2 : 3;
+                std::memcpy (descriptor->matrix.data (), matrix->data, matrix->length);
+                std::memcpy (descriptor->channels.data (), channels->data, channels->length);
+                descriptor->alpha_alg = g_value_get_int (args->at (5));
+                descriptor->divisor = g_value_get_double (args->at (6));
+                descriptor->offset = g_value_get_double (args->at (7));
+                descriptor->border = g_value_get_int (args->at (10));
+                bool valid = true;
+                try { descriptor->bytes (); }
+                catch (const std::invalid_argument&) { valid = false; }
+                if (valid) configure_native (request, std::move (descriptor));
+              }
+          }
+      }
     else if (!real && args &&
              ((procedure == "plug-in-blinds" && args->size () == 7 &&
                G_VALUE_HOLDS_INT (args->at (3)) && G_VALUE_HOLDS_INT (args->at (4)) &&
@@ -530,34 +568,39 @@ struct FilterImpl
             descriptor->scales_mode = scales_mode; descriptor->cvar = cvar;
             descriptor->orientation = tiles || retinex ? 0 : g_value_get_int (args->at (5));
             descriptor->transparent = tiles || retinex ? 0 : g_value_get_int (args->at (6)); descriptor->gray = gray ();
-            auto options = std::make_shared<FilterProcessOptions> ();
-            auto outcome = std::make_shared<FilterProcedureResult> ();
-            /* Parent input/result and three child rasters (snapshot, drawable,
-             * shadow), plus an owner native input and final selection snapshot.
-             * Conservatively reserve the owner logical size in BOTH memory and
-             * spill budgets; GEGL actual tiles still obey its shared cache/swap.
-             * Other live caches and child libraries are not total-RSS bounds. */
-            const auto raster = descriptor->bytes ();
-            const auto owner_context_bytes = std::uint64_t (request.width) * request.height * (gray () ? 3 : 5);
-            request.peak_spill_bytes = raster * 5 + owner_context_bytes;
-            const auto peak = owner_context_bytes + std::uint64_t (256) * 1024 * 1024 + descriptor->scratch_bytes ();
-            request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
-            request.raster_process = [descriptor,options,outcome] (FilterRaster& input, FilterRaster& output,
-              std::atomic<bool>& cancel, const FilterRasterFactory&) {
-                /* Filesystem lookup belongs to the independent worker. Copy
-                 * owner-prepared scalars instead of mutating shared options. */
-                auto resolved = *options;
-                resolved.executable = filter_worker_path ();
-                return filter_process (*descriptor, input, output, cancel, resolved, outcome);
-              };
-            native_procedure = std::move (descriptor); native_process_options = std::move (options);
-            native_outcome = std::move (outcome);
+            configure_native (request, std::move (descriptor));
           }
       }
     scheduler.set_request (std::move (request));
     staged.reset ();
     schedule ();
     g_signal_emit_by_name (owner, "filter-state-changed");
+  }
+  void configure_native (FilterScheduler::Request& request,
+                         std::shared_ptr<FilterProcedureRequest> descriptor)
+  {
+    auto options = std::make_shared<FilterProcessOptions> ();
+    auto outcome = std::make_shared<FilterProcedureResult> ();
+    /* Same isolated bridge and owner gates for every native route. Convolution
+     * doubles retain their full native input and selection snapshots. Reserve
+     * both logical storage classes conservatively, independently of GEGL's
+     * shared tile-cache policy; this is not a total-RSS bound. */
+    const auto raster = descriptor->bytes ();
+    const auto sample = descriptor->sample_mode ? 8u : 1u;
+    const auto owner_context_bytes = std::uint64_t (request.width) * request.height *
+      (gray () ? 3u : 5u) * sample;
+    const auto child_mask_bytes = std::uint64_t (request.width) * request.height * sample;
+    request.peak_spill_bytes = raster * 5 + owner_context_bytes + child_mask_bytes;
+    const auto peak = owner_context_bytes + std::uint64_t (256) * 1024 * 1024 + descriptor->scratch_bytes ();
+    request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+    request.raster_process = [descriptor,options,outcome] (FilterRaster& input, FilterRaster& output,
+      std::atomic<bool>& cancel, const FilterRasterFactory&) {
+        auto resolved = *options;
+        resolved.executable = filter_worker_path ();
+        return filter_process (*descriptor, input, output, cancel, resolved, outcome);
+      };
+    native_procedure = std::move (descriptor); native_process_options = std::move (options);
+    native_outcome = std::move (outcome);
   }
   void schedule ()
   {
@@ -998,6 +1041,20 @@ struct FilterImpl
                 }
             else std::memcpy (native.data (),pixels,count*32);
             gegl_buffer_set (GEGL_BUFFER (staged.get ()),&rect,0,encoded_format (),native.data (),GEGL_AUTO_ROWSTRIDE);
+            const auto component = gimp_babl_component_type (gimp_drawable_get_precision (GIMP_DRAWABLE (owner)));
+            if (native_procedure && native_procedure->procedure == FilterProcedure::convolution &&
+                (component == GIMP_COMPONENT_TYPE_HALF || component == GIMP_COMPONENT_TYPE_FLOAT))
+              {
+                /* A finite double result can overflow HALF/FLOAT storage.
+                 * Read only this private, bounded converted chunk; never let
+                 * an infinity produced by native storage reach publication. */
+                gegl_buffer_get (GEGL_BUFFER (staged.get ()), &rect, 1.0, encoded_format (),
+                                 native.data (), GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+                for (double sample : native)
+                  if (!std::isfinite (sample))
+                    throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
+                                 "Convolution result exceeds finite native storage");
+              }
           }
         else if (gray ())
           {
@@ -1026,7 +1083,7 @@ struct FilterImpl
         if (!native_context.before_process (GIMP_DRAWABLE (owner), *native_procedure, read_budget)) return false;
         /* Retinex's native entry rejects an outside or narrower-than-16 ROI.
          * Validate the captured start rectangle before launching any helper. */
-        if (native_procedure->procedure == FilterProcedure::retinex) native_procedure->bytes ();
+        native_procedure->bytes ();
         native_outcome->reset ();
         return true;
       }) : FilterScheduler::Gate (),

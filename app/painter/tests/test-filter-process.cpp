@@ -57,37 +57,38 @@ FilterWire::Frame frame () {
 void send (const FilterWire::Frame& f) { const auto b = FilterWire::encode (f); write_all (1, b.data (), b.size ()); }
 void child () {
   const auto r = FilterWire::request (frame ());
+  const auto mode = r.procedure == FilterProcedure::convolution ? r.alpha_alg : r.angle;
   const auto disposition = !r.execution_region ().intersects ? Disposition::no_merge :
                            r.raw_shadow ? Disposition::shadow : Disposition::merged;
-  if (r.angle == 1) _exit (0); // no result or terminal
-  if (r.angle == 2) { signal (SIGTERM, SIG_IGN); for (;;) pause (); }
+  if (mode == 1) _exit (0); // no result or terminal
+  if (mode == 2) { signal (SIGTERM, SIG_IGN); for (;;) pause (); }
   std::vector<std::uint8_t> data;
   for (;;) { const auto f = frame (); if (f.type == FilterWire::Type::input_end) break; data.insert (data.end (), f.payload.begin (), f.payload.end ()); }
   char byte; g_assert (read (0, &byte, 1) == 0);
-  if (r.angle == 3) { write_all (1, reinterpret_cast<const std::uint8_t*> ("bad"), 3); _exit (0); }
-  if (r.angle == 4) { auto b = FilterWire::encode ({FilterWire::Type::output, 0, {1,2,3,4}}); b[8] = 0xff; b[9] = 0xff; b[10] = 0xff; write_all (1,b.data (),b.size ()); _exit (0); }
-  if (r.angle == 5) { send ({FilterWire::Type::output, 4, {1,2,3,4}}); _exit (0); }
-  if (r.angle == 6) { send (FilterWire::success (r.bytes (),disposition)); _exit (0); }
-  if (r.angle == 7) { send ({FilterWire::Type::failure, 0, {}}); _exit (1); }
+  if (mode == 3) { write_all (1, reinterpret_cast<const std::uint8_t*> ("bad"), 3); _exit (0); }
+  if (mode == 4) { auto b = FilterWire::encode ({FilterWire::Type::output, 0, {1,2,3,4}}); b[8] = 0xff; b[9] = 0xff; b[10] = 0xff; write_all (1,b.data (),b.size ()); _exit (0); }
+  if (mode == 5) { send ({FilterWire::Type::output, 4, {1,2,3,4}}); _exit (0); }
+  if (mode == 6) { send (FilterWire::success (r.bytes (),disposition)); _exit (0); }
+  if (mode == 7) { send ({FilterWire::Type::failure, 0, {}}); _exit (1); }
   for (std::size_t at = 0; at < data.size (); at += FilterWire::pixel_limit) {
     const auto n = std::min (FilterWire::pixel_limit, data.size () - at);
     send ({FilterWire::Type::output, at, {data.data () + at, data.data () + at + n}});
   }
-  if (r.angle == 13) {
+  if (mode == 13) {
     send (FilterWire::success (r.bytes (),r.raw_shadow ? Disposition::merged : Disposition::shadow)); _exit (0);
   }
-  if (r.angle == 14) { send (FilterWire::success (r.bytes (),Disposition::no_merge)); _exit (0); }
-  if (r.angle == 15) {
+  if (mode == 14) { send (FilterWire::success (r.bytes (),Disposition::no_merge)); _exit (0); }
+  if (mode == 15) {
     auto terminal = FilterWire::success (r.bytes (),disposition); terminal.payload[0] = 255;
     send (terminal); _exit (0);
   }
-  if (r.angle == 17) { send (FilterWire::success (r.bytes (),Disposition::merged)); _exit (0); }
-  if (r.angle != 8) send (FilterWire::success (r.bytes (),disposition));
-  if (r.angle == 9) send (FilterWire::success (r.bytes (),disposition));
-  if (r.angle == 10) write_all (1, reinterpret_cast<const std::uint8_t*> ("x"), 1);
-  if (r.angle == 11) _exit (2);
-  if (r.angle == 16) { signal (SIGTERM, SIG_IGN); for (;;) pause (); }
-  if (r.angle == 12 && fork () == 0) { signal (SIGTERM, SIG_IGN); for (;;) pause (); }
+  if (mode == 17) { send (FilterWire::success (r.bytes (),Disposition::merged)); _exit (0); }
+  if (mode != 8) send (FilterWire::success (r.bytes (),disposition));
+  if (mode == 9) send (FilterWire::success (r.bytes (),disposition));
+  if (mode == 10) write_all (1, reinterpret_cast<const std::uint8_t*> ("x"), 1);
+  if (mode == 11) _exit (2);
+  if (mode == 16) { signal (SIGTERM, SIG_IGN); for (;;) pause (); }
+  if (mode == 12 && fork () == 0) { signal (SIGTERM, SIG_IGN); for (;;) pause (); }
   _exit (0);
 }
 struct Raster : FilterRaster {
@@ -103,7 +104,7 @@ struct Raster : FilterRaster {
 #endif
 int main (int argc, char **argv) {
 #ifndef G_OS_WIN32
-  if (argc == 3 && !std::strcmp (argv[1], "--filter-worker-v4")) child ();
+  if (argc == 3 && !std::strcmp (argv[1], "--filter-worker-v5")) child ();
   gchar *absolute = g_canonicalize_filename (argv[0], nullptr);
   gchar *directory = g_dir_make_tmp ("filter-process-test-XXXXXX", nullptr);
   g_assert (directory);
@@ -187,6 +188,35 @@ int main (int argc, char **argv) {
     g_assert (filter_process (request,input,output,cancel,options,outcome));
     g_assert (output.bytes == input.bytes && outcome->disposition () ==
               (raw ? Disposition::shadow : Disposition::merged));
+    ++passed;
+  }
+  for (unsigned mode : {0u,1u,2u,3u}) for (bool raw : {false,true}) for (bool outside : {false,true}) {
+    FilterProcedureRequest convolution; convolution.procedure = FilterProcedure::convolution;
+    convolution.width = 33; convolution.height = 17; convolution.sample_mode = mode; convolution.alpha_alg = 0;
+    convolution.raw_shadow = raw;
+    convolution.start_region = outside ? FilterSelectionRegion {true,false,0,0,0,0} : FilterSelectionRegion {};
+    Raster a (convolution.bytes ()), b (convolution.bytes ());
+    for (std::size_t i = 0; i < a.bytes.size (); ++i) a.bytes[i] = std::uint8_t (i*17);
+    std::atomic<bool> cancelled {false};
+    g_assert (filter_process (convolution,a,b,cancelled,options,outcome));
+    g_assert (a.bytes == b.bytes && outcome->disposition () ==
+      (outside ? Disposition::no_merge : raw ? Disposition::shadow : Disposition::merged)); ++passed;
+  }
+  for (unsigned sample : {0u,1u}) for (int mode : {1,2,5,7,11,12,16}) {
+    FilterProcedureRequest convolution; convolution.procedure = FilterProcedure::convolution;
+    convolution.width = 33; convolution.height = 17; convolution.sample_mode = sample;
+    convolution.raw_shadow = true; convolution.alpha_alg = mode;
+    Raster a (convolution.bytes ()),b (convolution.bytes ()); std::atomic<bool> cancelled {false};
+    std::thread stop;
+    if (mode == 2 || mode == 16) stop = std::thread ([&] {
+      std::this_thread::sleep_for (std::chrono::milliseconds (mode == 16 ? 250 : 100)); cancelled = true;
+    });
+    bool success = false, failed = false;
+    try { success = filter_process (convolution,a,b,cancelled,options,outcome); }
+    catch (const std::exception&) { failed = true; }
+    if (stop.joinable ()) stop.join ();
+    if (mode == 12) g_assert (success && !failed && outcome->disposition () == Disposition::shadow);
+    else g_assert (!success && outcome->disposition () == Disposition::pending && (cancelled || failed));
     ++passed;
   }
   request.start_region = {}; request.raw_shadow = false;

@@ -22,8 +22,8 @@ Frame success (std::uint64_t bytes, FilterProcedureDisposition disposition);
  * successful child reap remain mandatory transport checks after finish(). */
 class Result {
 public:
-  explicit Result (std::uint64_t bytes, bool raw_shadow = false, bool no_merge = false)
-    : bytes_ (bytes), expected_ (no_merge ? FilterProcedureDisposition::no_merge :
+  explicit Result (std::uint64_t bytes, bool raw_shadow = false, bool no_merge = false, std::size_t alignment = 4)
+    : bytes_ (bytes), alignment_ (alignment), expected_ (no_merge ? FilterProcedureDisposition::no_merge :
                                 raw_shadow ? FilterProcedureDisposition::shadow :
                                              FilterProcedureDisposition::merged) {}
   void accept (const Frame&);
@@ -32,6 +32,7 @@ public:
   FilterProcedureDisposition disposition () const noexcept { return disposition_; }
 private:
   std::uint64_t bytes_, offset_ = 0;
+  std::size_t alignment_ = 4;
   bool terminal_ = false;
   FilterProcedureDisposition expected_;
   FilterProcedureDisposition disposition_ = FilterProcedureDisposition::pending;

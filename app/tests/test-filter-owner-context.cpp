@@ -16,9 +16,12 @@ extern "C" {
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
 #include "core/gimplayer-new.h"
+#include "gegl/gimp-babl.h"
 }
 #include "core/gimpfiltercontext.hpp"
 #include <algorithm>
+#include <cmath>
+#include <cstring>
 #include <fstream>
 #include <map>
 #include <string>
@@ -28,6 +31,7 @@ void gimp_test_filter_owner_context (Gimp *, const gchar *);
 void gimp_test_filter_owner_context_phases (Gimp *, const gchar *);
 void gimp_test_filter_owner_context_expansion (Gimp *, const gchar *);
 void gimp_test_filter_owner_context_retry (Gimp *, const gchar *);
+void gimp_test_filter_owner_context_native (Gimp *);
 }
 using namespace GimpPainter;
 using Bytes = std::vector<std::uint8_t>;
@@ -96,14 +100,16 @@ Bytes pixels (const char *directory, const Record& record, const char *label)
 struct Scene
 {
   Scene (Gimp *application, unsigned width, unsigned height, unsigned channels,
-         unsigned image_width = 0, unsigned image_height = 0, int ox = 0, int oy = 0)
+         unsigned image_width = 0, unsigned image_height = 0, int ox = 0, int oy = 0,
+         GimpPrecision precision = GIMP_PRECISION_U8_NON_LINEAR)
     : width (width), height (height), channels (channels),
       image_width (image_width ? image_width : width), image_height (image_height ? image_height : height)
   {
     image = gimp_image_new (application, this->image_width, this->image_height,
-                            channels == 2 ? GIMP_GRAY : GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR);
+                            channels == 2 ? GIMP_GRAY : GIMP_RGB, precision);
     parent = gimp_group_layer_new (image);
-    target = gimp_layer_new (image, width, height, babl_format (channels == 2 ? "Y'A u8" : "R'G'B'A u8"),
+    target = gimp_layer_new (image, width, height,
+                             gimp_babl_format (channels == 2 ? GIMP_GRAY : GIMP_RGB, precision, TRUE, nullptr),
                              "Owner context", 1, GIMP_LAYER_MODE_NORMAL_LEGACY);
     gimp_image_add_layer (image, parent, nullptr, 0, FALSE);
     gimp_image_add_layer (image, target, parent, 0, FALSE);
@@ -126,6 +132,7 @@ void set_selection (Scene& scene, const Bytes& global)
   gimp_drawable_update (GIMP_DRAWABLE (selection), 0, 0, scene.image_width, scene.image_height);
   gimp_image_mask_changed (scene.image);
 }
+
 /* These are the archived capture-harness.c selection inputs, not expected
  * output formulas. Reconstruct the entire image mask, including outside pixels. */
 Bytes selection (unsigned width, unsigned height, unsigned kind)
@@ -404,4 +411,137 @@ extern "C" void gimp_test_filter_owner_context_retry (Gimp *application, const g
   set_selection (scene, selection (39, 29, 0)); context.selection_changed ();
   g_assert_true (context.before_import (scene.drawable (), FilterProcedureDisposition::no_merge, 7));
   assert_equal_bytes (merge (context, scene, shadow), input, "outside start then expanded final remains no-merge");
+}
+
+namespace {
+using Samples = std::vector<double>;
+void capture_native (FilterOwnerContext& context, Scene& scene, const Samples& input)
+{
+  for (unsigned y = 0; y < scene.height; ++y)
+    for (unsigned x = 0; x < scene.width; x += 3)
+      {
+        const auto count = std::min (3U, scene.width - x), offset = y * scene.width + x;
+        Bytes chunk (count * 4 * sizeof (double));
+        std::memcpy (chunk.data (), input.data () + offset * 4, chunk.size ());
+        context.capture_input (scene.drawable (), offset, count, chunk.data ());
+      }
+}
+Samples merge_native (FilterOwnerContext& context, Scene& scene, const Samples& shadow)
+{
+  Samples result (scene.width * scene.height * 4);
+  for (unsigned y = 0; y < scene.height; ++y)
+    for (unsigned x = 0; x < scene.width; x += 3)
+      {
+        const auto count = std::min (3U, scene.width - x), offset = y * scene.width + x;
+        Bytes encoded (count * 4 * sizeof (double)), merged;
+        std::memcpy (encoded.data (), shadow.data () + offset * 4, encoded.size ());
+        context.merge_chunk (offset, count, encoded.data (), merged);
+        g_assert_cmpuint (merged.size (), ==, encoded.size ());
+        std::memcpy (result.data () + offset * 4, merged.data (), merged.size ());
+      }
+  return result;
+}
+void set_native_selection (Scene& scene, const Samples& global)
+{
+  g_assert_cmpuint (global.size (), ==, scene.image_width * scene.image_height);
+  auto *selection = gimp_image_get_mask (scene.image);
+  gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (selection)), nullptr, 0,
+                   babl_format ("Y double"), global.data (), GEGL_AUTO_ROWSTRIDE);
+  selection->bounds_known = FALSE;
+  gimp_drawable_invalidate_boundary (GIMP_DRAWABLE (selection));
+  gimp_drawable_update (GIMP_DRAWABLE (selection), 0, 0, scene.image_width, scene.image_height);
+  gimp_image_mask_changed (scene.image);
+}
+Samples native_pattern (unsigned channels, bool shadow)
+{
+  const double old_alpha[] = {.5, .5, .25, 0, 0, .25, .75, .5};
+  const double new_alpha[] = {.75, .5, .75, 0, .75, .75, .25, .25};
+  Samples samples (32);
+  for (unsigned i = 0; i < 8; ++i)
+    {
+      samples[i * 4] = shadow ? .875 : .125;
+      samples[i * 4 + 1] = channels == 2 ? samples[i * 4] : shadow ? .25 : .75;
+      samples[i * 4 + 2] = channels == 2 ? samples[i * 4] : shadow ? 1.75 : -.25;
+      samples[i * 4 + 3] = shadow ? new_alpha[i] : old_alpha[i];
+    }
+  return samples;
+}
+}
+
+extern "C" void gimp_test_filter_owner_context_native (Gimp *application)
+{
+  const GimpPrecision precisions[] = {
+    GIMP_PRECISION_U8_LINEAR, GIMP_PRECISION_U8_PERCEPTUAL,
+    GIMP_PRECISION_U16_LINEAR, GIMP_PRECISION_U16_NON_LINEAR, GIMP_PRECISION_U16_PERCEPTUAL,
+    GIMP_PRECISION_U32_LINEAR, GIMP_PRECISION_U32_NON_LINEAR, GIMP_PRECISION_U32_PERCEPTUAL,
+    GIMP_PRECISION_HALF_LINEAR, GIMP_PRECISION_HALF_NON_LINEAR, GIMP_PRECISION_HALF_PERCEPTUAL,
+    GIMP_PRECISION_FLOAT_LINEAR, GIMP_PRECISION_FLOAT_NON_LINEAR, GIMP_PRECISION_FLOAT_PERCEPTUAL,
+    GIMP_PRECISION_DOUBLE_LINEAR, GIMP_PRECISION_DOUBLE_NON_LINEAR, GIMP_PRECISION_DOUBLE_PERCEPTUAL
+  };
+  // The owner must preserve its binary64 carrier even when the drawable will
+  // eventually quantize it on publication. No-merge never changes hidden RGB.
+  for (const auto precision : precisions) for (unsigned channels : {2U, 4U})
+    {
+      Scene scene (application, 4, 2, channels, 0, 0, 0, 0, precision);
+      auto input = native_pattern (channels, false);
+      input[0] = input[1] = input[2] = .123456789012345;
+      input[12] = input[13] = input[14] = -0.0;
+      FilterOwnerContext context;
+      capture_native (context, scene, input);
+      g_assert_true (context.before_import (scene.drawable (), FilterProcedureDisposition::no_merge, 1));
+      const auto output = merge_native (context, scene, native_pattern (channels, true));
+      g_assert_cmpmem (output.data (), output.size () * sizeof (double),
+                      input.data (), input.size () * sizeof (double));
+    }
+
+  const double tiny = std::ldexp (1.0, -20);
+  const double coverage[] = {0, tiny, .25, 1, .5, 1, .25, 0};
+  // Analytic premultiplied Replace cases: same-alpha tiny blend; alpha ratio
+  // 1/2 and 1/10; transparent source/destination; exact endpoint preservation.
+  const double ratios[] = {0, tiny, .5, 0, 1, 1, .1, 0};
+  const double merged_alpha[] = {.5, .5, .375, 0, .375, .75, .625, .5};
+  for (auto precision : {GIMP_PRECISION_DOUBLE_LINEAR, GIMP_PRECISION_DOUBLE_NON_LINEAR,
+                          GIMP_PRECISION_DOUBLE_PERCEPTUAL})
+    for (unsigned channels : {2U, 4U})
+      {
+        Scene scene (application, 4, 2, channels, 8, 4, 2, 1, precision);
+        const auto input = native_pattern (channels, false), shadow = native_pattern (channels, true);
+        for (unsigned components = 0; components < (1U << channels); ++components)
+          for (bool locked : {false, true})
+            {
+              FilterOwnerContext context; FilterProcedureRequest request;
+              Samples global (32, 0.0);
+              global[1 * 8 + 3] = tiny;
+              set_native_selection (scene, global);
+              active (scene, components); gimp_layer_set_lock_alpha (scene.target, locked, FALSE);
+              capture_native (context, scene, input);
+              g_assert_cmpuint (prepare (context, scene, request, 3), >, 1);
+              g_assert_true (request.start_region.selected); g_assert_true (request.start_region.intersects);
+              g_assert_cmpint (request.start_region.x1, ==, 1); g_assert_cmpint (request.start_region.x2, ==, 2);
+              g_assert_cmpint (request.start_region.y1, ==, 0); g_assert_cmpint (request.start_region.y2, ==, 1);
+              // Retry an incomplete final scan with a different selection.
+              context.selection_changed ();
+              g_assert_false (context.before_import (scene.drawable (), FilterProcedureDisposition::shadow, 2));
+              for (unsigned i = 0; i < 8; ++i) global[(i / 4 + 1) * 8 + i % 4 + 2] = coverage[i];
+              set_native_selection (scene, global); context.selection_changed ();
+              g_assert_cmpuint (seal (context, scene, 3), >, 1);
+              set_native_selection (scene, Samples (32, 0.0)); active (scene, 0);
+              gimp_layer_set_lock_alpha (scene.target, TRUE, FALSE); context.selection_changed ();
+              const auto output = merge_native (context, scene, shadow);
+              for (unsigned i = 0; i < 8; ++i)
+                {
+                  for (unsigned c = 0; c < 3; ++c)
+                    {
+                      const unsigned component = channels == 2 ? 0 : c;
+                      const double expected = (components & (1U << component)) ?
+                        input[i * 4 + c] + (shadow[i * 4 + c] - input[i * 4 + c]) * ratios[i] :
+                        input[i * 4 + c];
+                      g_assert_cmpfloat_with_epsilon (output[i * 4 + c], expected, 1e-14);
+                    }
+                  const double expected_alpha = !locked && (components & (1U << (channels - 1))) ?
+                    merged_alpha[i] : input[i * 4 + 3];
+                  g_assert_cmpfloat (output[i * 4 + 3], ==, expected_alpha);
+                }
+            }
+      }
 }

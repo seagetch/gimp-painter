@@ -44,13 +44,13 @@ void write_frame (int fd, const FilterWire::Frame& frame) {
   const auto bytes = FilterWire::encode (frame); write_exact (fd, bytes.data (), bytes.size ());
 }
 class Output final : public FilterRaster {
-  int fd_; std::uint64_t size_, offset_ = 0;
+  int fd_; std::uint64_t size_, offset_ = 0; std::size_t alignment_;
 public:
-  Output (int fd, std::uint64_t size) : fd_ (fd), size_ (size) {}
+  Output (int fd, std::uint64_t size, std::size_t alignment) : fd_ (fd), size_ (size), alignment_ (alignment) {}
   std::uint64_t size () const noexcept override { return size_; }
   void read (std::uint64_t, std::size_t, std::uint8_t *) override { throw std::logic_error ("Private Filter result is write-only"); }
   void write (std::uint64_t offset, std::size_t count, const std::uint8_t *bytes) override {
-    if (offset != offset_ || !count || count % 4 || count > size_ - offset_) throw std::invalid_argument ("Invalid private Filter output extent");
+    if (offset != offset_ || !count || count % alignment_ || count > size_ - offset_) throw std::invalid_argument ("Invalid private Filter output extent");
     while (count) { const auto n = std::min (count, FilterWire::pixel_limit);
       write_frame (fd_, {FilterWire::Type::output, offset_, {bytes, bytes + n}});
       count -= n; bytes += n; offset_ += n; }
@@ -65,7 +65,7 @@ int main (int argc, char **argv)
 #ifdef G_OS_WIN32
   return 125;
 #else
-  if (argc != 3 || std::strcmp (argv[1], "--filter-worker-v4")) return 125;
+  if (argc != 3 || std::strcmp (argv[1], "--filter-worker-v5")) return 125;
   /* Duplicate before GIMP/GEGL/plugin initialization. All ordinary diagnostics
    * (including library writes to stdout) go to stderr; descendants cannot keep
    * this protocol descriptor alive across exec. */
@@ -100,13 +100,14 @@ int main (int argc, char **argv)
           if (frame.offset != total || offset != total) throw std::invalid_argument ("Incomplete private Filter input");
           break;
         }
-        if (frame.type != FilterWire::Type::input || frame.offset != offset || frame.payload.size () > total - offset)
+        if (frame.type != FilterWire::Type::input || frame.offset != offset || frame.offset % request.bytes_per_pixel () ||
+            frame.payload.size () % request.bytes_per_pixel () || frame.payload.size () > total - offset)
           throw std::invalid_argument ("Invalid private Filter input sequence");
         input.write (offset, frame.payload.size (), frame.payload.data ()); offset += frame.payload.size ();
       }
       std::uint8_t trailing; ssize_t n; do { n = read (STDIN_FILENO, &trailing, 1); } while (n < 0 && errno == EINTR);
       if (n != 0) throw std::invalid_argument ("Trailing private Filter input bytes");
-      input.flush (); Output output (protocol, total); std::atomic<bool> cancel {false};
+      input.flush (); Output output (protocol, total, request.bytes_per_pixel ()); std::atomic<bool> cancel {false};
       disposition = run_filter_procedure (request, input, output, cancel);
       if (disposition == FilterProcedureDisposition::pending) throw std::runtime_error ("Private Filter procedure cancelled");
       output.finish ();

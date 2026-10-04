@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 from check_small_tiles_evidence import verify as verify_small_tiles
 from check_retinex_evidence import verify as verify_retinex
+from check_convolution_evidence import verify as verify_convolution
 COMMIT = "afa43fae3e920210146abed514f136fd49f671b5"
 BUNDLES = (
     ("legacy-filter-context", "GIMP_PAINTER_CONTEXT_FIXTURES", 280, 24,
@@ -84,6 +85,9 @@ def main(argv=None):
         retinex = Path(temporary) / "retinex"
         verify_retinex(extract=retinex)
         environment["GIMP_PAINTER_RETINEX_FIXTURES"] = str(retinex / "retinex-evidence")
+        convolution = Path(temporary) / "convolution"
+        verify_convolution(extract=convolution)
+        environment["GIMP_PAINTER_CONVOLUTION_FIXTURES"] = str(convolution / "legacy-convolution")
         return subprocess.run(command, env=environment).returncode
 
 

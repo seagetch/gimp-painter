@@ -38,6 +38,7 @@ private:
   std::int32_t width_ = 0, height_ = 0;
   std::size_t input_cursor_ = 0, mask_cursor_ = 0;
   unsigned channels_ = 4, active_ = 15;
+  bool real_samples_ = false;
   bool selection_dirty_ = true, bounds_valid_ = false, scan_started_ = false;
   bool final_started_ = false, final_ready_ = false, no_merge_ = false;
 };

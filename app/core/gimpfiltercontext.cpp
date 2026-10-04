@@ -12,10 +12,12 @@ extern "C" {
 #include "gimpdrawable.h"
 #include "gimpimage.h"
 #include "gimplayer.h"
+#include "gegl/gimp-babl.h"
 }
 #include "gimpfiltercontext.hpp"
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <limits>
 #include <stdexcept>
 #include <utility>
@@ -47,8 +49,15 @@ GeglRectangle rectangle (std::int32_t width, std::size_t offset, std::size_t cou
            int (count < std::size_t (width) ? 1 : count / width) };
 }
 
-const Babl *pixel_format (unsigned channels)
-{ return babl_format (channels == 2 ? "Y'A u8" : "R'G'B'A u8"); }
+const Babl *pixel_format (GimpDrawable *drawable, bool real_samples)
+{
+  const auto base = gimp_drawable_get_base_type (drawable);
+  const auto precision = real_samples ?
+    gimp_babl_precision (GIMP_COMPONENT_TYPE_DOUBLE, gimp_drawable_get_trc (drawable)) :
+    GIMP_PRECISION_U8_NON_LINEAR;
+  return gimp_babl_format (base, precision, TRUE,
+                           babl_format_get_space (gimp_drawable_get_format (drawable)));
+}
 
 ObjectRef<GObject> image_for (GimpDrawable *drawable)
 {
@@ -65,6 +74,7 @@ void FilterOwnerContext::reset () noexcept
   bounds_ = {}; final_region_ = {};
   selection_dirty_ = true; bounds_valid_ = scan_started_ = false;
   final_started_ = final_ready_ = no_merge_ = false;
+  real_samples_ = false;
 }
 
 void FilterOwnerContext::capture_input (GimpDrawable *drawable, std::size_t offset,
@@ -72,32 +82,52 @@ void FilterOwnerContext::capture_input (GimpDrawable *drawable, std::size_t offs
 {
   if (!offset)
     {
+      const auto base = gimp_drawable_get_base_type (drawable);
       if (!GIMP_IS_LAYER (drawable) || !gimp_drawable_has_alpha (drawable) ||
-          gimp_drawable_get_precision (drawable) != GIMP_PRECISION_U8_NON_LINEAR)
-        throw std::runtime_error ("Legacy Filter context requires an alpha-bearing encoded byte layer");
+          (base != GIMP_RGB && base != GIMP_GRAY))
+        throw std::runtime_error ("Filter context requires an alpha-bearing RGB or Gray layer");
       reset ();
       width_ = gimp_item_get_width (GIMP_ITEM (drawable));
       height_ = gimp_item_get_height (GIMP_ITEM (drawable));
       channels_ = gimp_drawable_get_base_type (drawable) == GIMP_GRAY ? 2 : 4;
+      real_samples_ = gimp_drawable_get_precision (drawable) != GIMP_PRECISION_U8_NON_LINEAR;
       if (width_ <= 0 || height_ <= 0 ||
           std::size_t (width_) > std::numeric_limits<std::size_t>::max () / height_)
         throw std::runtime_error ("Invalid Filter context extent");
       const GeglRectangle extent { 0, 0, width_, height_ };
-      input_ = ObjectRef<GObject>::adopt (G_OBJECT (gegl_buffer_new (&extent, pixel_format (channels_))));
+      input_ = ObjectRef<GObject>::adopt (G_OBJECT (gegl_buffer_new (&extent, pixel_format (drawable, real_samples_))));
     }
   const auto total = std::size_t (width_) * height_;
   if (!input_ || offset != input_cursor_ || offset > total || !rgba ||
       !count || count > maximum_pixels || count > total - offset)
     throw std::runtime_error ("Invalid Filter context input chunk");
   const auto rect = rectangle (width_, offset, count);
-  if (channels_ == 4)
-    gegl_buffer_set (GEGL_BUFFER (input_.get ()), &rect, 0, pixel_format (4), rgba, GEGL_AUTO_ROWSTRIDE);
+  const auto *format = gegl_buffer_get_format (GEGL_BUFFER (input_.get ()));
+  if (real_samples_)
+    {
+      std::vector<double> native (count * channels_);
+      if (channels_ == 4) std::memcpy (native.data (), rgba, count * 4 * sizeof (double));
+      else
+        for (std::size_t i = 0; i < count; ++i)
+          {
+            double pixel[4]; std::memcpy (pixel, rgba + i * 4 * sizeof (double), sizeof (pixel));
+            if (pixel[0] != pixel[1] || pixel[0] != pixel[2])
+              throw std::runtime_error ("Gray Filter input returned unequal channels");
+            native[i * 2] = pixel[0]; native[i * 2 + 1] = pixel[3];
+          }
+      for (double sample : native)
+        if (!std::isfinite (sample))
+          throw std::runtime_error ("Nonfinite native Filter input sample");
+      gegl_buffer_set (GEGL_BUFFER (input_.get ()), &rect, 0, format, native.data (), GEGL_AUTO_ROWSTRIDE);
+    }
+  else if (channels_ == 4)
+    gegl_buffer_set (GEGL_BUFFER (input_.get ()), &rect, 0, format, rgba, GEGL_AUTO_ROWSTRIDE);
   else
     {
       std::vector<std::uint8_t> native (count * 2);
       for (std::size_t i = 0; i < count; ++i)
         { native[i * 2] = rgba[i * 4]; native[i * 2 + 1] = rgba[i * 4 + 3]; }
-      gegl_buffer_set (GEGL_BUFFER (input_.get ()), &rect, 0, pixel_format (2), native.data (), GEGL_AUTO_ROWSTRIDE);
+      gegl_buffer_set (GEGL_BUFFER (input_.get ()), &rect, 0, format, native.data (), GEGL_AUTO_ROWSTRIDE);
     }
   input_cursor_ += count;
 }
@@ -115,7 +145,10 @@ bool FilterOwnerContext::bounds_quantum (GimpDrawable *drawable, std::size_t bud
        * during import. This function is never called again for that import. */
     }
   if (bounds_valid_) return true;
-  if (channel->bounds_known)
+  // The host cache tests native bit patterns for nonzero, including negative
+  // coverage and -0. Native coverage is clamped and rejects nonfinite values,
+  // so discover those bounds with the same numeric semantics in bounded reads.
+  if (channel->bounds_known && !real_samples_)
     {
       bounds_ = { bool (channel->empty), channel->x1, channel->y1, channel->x2, channel->y2 };
       bounds_valid_ = true;
@@ -131,13 +164,25 @@ bool FilterOwnerContext::bounds_quantum (GimpDrawable *drawable, std::size_t bud
   const auto offset = std::size_t (scan_.consumed ());
   const auto count = next_count (width, height, offset, budget);
   const auto rect = rectangle (width, offset, count);
-  std::vector<std::uint8_t> bytes (count);
   auto buffer = ObjectRef<GObject>::retain (G_OBJECT (gimp_drawable_get_buffer (GIMP_DRAWABLE (channel))));
-  gegl_buffer_get (GEGL_BUFFER (buffer.get ()), &rect, 1.0, babl_format ("Y u8"),
-                   bytes.data (), GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
-  if (selection_dirty_) return false;
-  if (!scan_.append (offset, bytes.data (), count))
-    throw std::runtime_error ("Invalid Filter selection capture chunk");
+  bool appended;
+  if (real_samples_)
+    {
+      std::vector<double> coverage (count);
+      gegl_buffer_get (GEGL_BUFFER (buffer.get ()), &rect, 1.0, babl_format ("Y double"),
+                       coverage.data (), GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+      if (selection_dirty_) return false;
+      appended = scan_.append_native (offset, coverage.data (), count);
+    }
+  else
+    {
+      std::vector<std::uint8_t> bytes (count);
+      gegl_buffer_get (GEGL_BUFFER (buffer.get ()), &rect, 1.0, babl_format ("Y u8"),
+                       bytes.data (), GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+      if (selection_dirty_) return false;
+      appended = scan_.append (offset, bytes.data (), count);
+    }
+  if (!appended) throw std::runtime_error ("Invalid Filter selection capture chunk");
   if (scan_.finish (bounds_)) bounds_valid_ = true;
   return false; // The scan used this owner's bounded quantum, even if finished.
 }
@@ -205,7 +250,8 @@ bool FilterOwnerContext::before_import (GimpDrawable *drawable,
       if (!mask_)
         {
           const GeglRectangle extent { 0, 0, width_, height_ };
-          mask_ = ObjectRef<GObject>::adopt (G_OBJECT (gegl_buffer_new (&extent, babl_format ("Y u8"))));
+          mask_ = ObjectRef<GObject>::adopt (G_OBJECT (gegl_buffer_new (&extent,
+            babl_format (real_samples_ ? "Y double" : "Y u8"))));
         }
     }
   const auto total = std::size_t (width_) * height_;
@@ -222,12 +268,28 @@ bool FilterOwnerContext::before_import (GimpDrawable *drawable,
   auto image = image_for (drawable);
   auto selection = ObjectRef<GObject>::retain (G_OBJECT (gimp_image_get_mask (GIMP_IMAGE (image.get ()))));
   auto buffer = ObjectRef<GObject>::retain (G_OBJECT (gimp_drawable_get_buffer (GIMP_DRAWABLE (selection.get ()))));
-  std::vector<std::uint8_t> bytes (count);
-  gegl_buffer_get (GEGL_BUFFER (buffer.get ()), &source, 1.0, babl_format ("Y u8"),
-                   bytes.data (), GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
-  if (selection_dirty_) return false;
-  gegl_buffer_set (GEGL_BUFFER (mask_.get ()), &local, 0, babl_format ("Y u8"),
-                   bytes.data (), GEGL_AUTO_ROWSTRIDE);
+  const auto *format = gegl_buffer_get_format (GEGL_BUFFER (mask_.get ()));
+  if (real_samples_)
+    {
+      std::vector<double> coverage (count);
+      gegl_buffer_get (GEGL_BUFFER (buffer.get ()), &source, 1.0, format,
+                       coverage.data (), GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+      if (selection_dirty_) return false;
+      for (double sample : coverage)
+        if (!std::isfinite (sample))
+          throw std::runtime_error ("Nonfinite native Filter selection sample");
+      gegl_buffer_set (GEGL_BUFFER (mask_.get ()), &local, 0, format,
+                       coverage.data (), GEGL_AUTO_ROWSTRIDE);
+    }
+  else
+    {
+      std::vector<std::uint8_t> bytes (count);
+      gegl_buffer_get (GEGL_BUFFER (buffer.get ()), &source, 1.0, format,
+                       bytes.data (), GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+      if (selection_dirty_) return false;
+      gegl_buffer_set (GEGL_BUFFER (mask_.get ()), &local, 0, format,
+                       bytes.data (), GEGL_AUTO_ROWSTRIDE);
+    }
   mask_cursor_ += count;
   return false;
 }
@@ -240,10 +302,54 @@ void FilterOwnerContext::merge_chunk (std::size_t offset, std::size_t count,
   if (!final_ready_ || !input_ || offset > total || !count || count > maximum_pixels || count > total - offset)
     throw std::runtime_error ("Invalid Filter final merge chunk");
   const auto rect = rectangle (width_, offset, count);
+  const auto *format = gegl_buffer_get_format (GEGL_BUFFER (input_.get ()));
+  const bool merge = !no_merge_ && (!final_region_.selected || final_region_.intersects);
+  if (merge && !shadow_rgba)
+    throw std::runtime_error ("Missing Filter shadow merge pixels");
+  if (real_samples_)
+    {
+      std::vector<double> original (count * channels_);
+      gegl_buffer_get (GEGL_BUFFER (input_.get ()), &rect, 1.0, format,
+                       original.data (), GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+      if (merge)
+        {
+          std::vector<double> selection;
+          if (final_region_.selected)
+            {
+              selection.resize (count);
+              gegl_buffer_get (GEGL_BUFFER (mask_.get ()), &rect, 1.0, babl_format ("Y double"),
+                               selection.data (), GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+            }
+          std::vector<double> shadow (count * channels_);
+          if (channels_ == 4) std::memcpy (shadow.data (), shadow_rgba, count * 4 * sizeof (double));
+          else
+            for (std::size_t i = 0; i < count; ++i)
+              {
+                double pixel[4];
+                std::memcpy (pixel, shadow_rgba + i * 4 * sizeof (double), sizeof (pixel));
+                if (pixel[0] != pixel[1] || pixel[0] != pixel[2])
+                  throw std::runtime_error ("Gray Filter shadow returned unequal channels");
+                shadow[i * 2] = pixel[0]; shadow[i * 2 + 1] = pixel[3];
+              }
+          if (!filter_replace_native_row (original.data (), shadow.data (),
+                                           selection.empty () ? nullptr : selection.data (),
+                                           original.data (), count, channels_, active_))
+            throw std::runtime_error ("Invalid native Filter shadow merge inputs");
+        }
+      rgba.resize (count * 4 * sizeof (double));
+      if (channels_ == 4) std::memcpy (rgba.data (), original.data (), rgba.size ());
+      else
+        for (std::size_t i = 0; i < count; ++i)
+          {
+            const double pixel[4] = { original[i * 2], original[i * 2], original[i * 2], original[i * 2 + 1] };
+            std::memcpy (rgba.data () + i * sizeof (pixel), pixel, sizeof (pixel));
+          }
+      return;
+    }
   std::vector<std::uint8_t> original (count * channels_);
-  gegl_buffer_get (GEGL_BUFFER (input_.get ()), &rect, 1.0, pixel_format (channels_),
+  gegl_buffer_get (GEGL_BUFFER (input_.get ()), &rect, 1.0, format,
                    original.data (), GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
-  if (!no_merge_ && (!final_region_.selected || final_region_.intersects))
+  if (merge)
     {
       std::vector<std::uint8_t> selection;
       if (final_region_.selected)

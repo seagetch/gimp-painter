@@ -17,7 +17,7 @@ creates its own private GIMP instance, PDB, context, image, drawable and typed
 BindingStore-owned progress adapter on its main thread. That adapter currently
 serves the native plug-in locally; owner/UI progress forwarding remains open.
 
-The request selector is a numeric allowlisted Blinds, Small Tiles or Retinex enum. No serialized
+The request selector is a numeric allowlisted Blinds, Small Tiles, Retinex or Convolution enum. No serialized
 procedure name, executable, path, script, resource loader or arbitrary plug-in
 registry is accepted. The child directly queries the configured bundled Blinds
 binary and checks its executable identity and full argument/return signature.
@@ -25,10 +25,12 @@ The first route accepts U8 nonlinear RGB/Gray, angles 0..90 and segments 1..100.
 As in the old plug-in, orientation 1 is vertical and every other integer is
 horizontal; any nonzero transparency argument enables transparent background.
 
-The private GPF4 / --filter-worker-v4 little-endian framing has a 24-byte header,
-an 88-byte request including start ROI/raw-shadow flags, the Small Tiles integer
-factor and Retinex native storage, options and exact binary64 cvar. Older GPF1,
-GPF2 and GPF3 framing and worker selectors are rejected. A 4-byte
+The private GPF5 / --filter-worker-v5 framing has a 24-byte header and344-byte
+request. Its first88 bytes retain start ROI/raw-shadow flags, Small Tiles factor
+and Retinex options/cvar. The extension adds typed Convolution arrays and native
+sample metadata; [Convolution](filter-convolution.md) defines its explicit
+host-native double pixel byte-order marker. Metadata remains little endian. Older GPF1,
+GPF2, GPF3 and GPF4 framing and worker selectors are rejected. A 4-byte
 completion disposition, zero reserved fields,
 at most 64 KiB metadata and 128 KiB pixel payloads. Input/output offsets must be
 contiguous and totals exact. Publication requires complete input transfer,

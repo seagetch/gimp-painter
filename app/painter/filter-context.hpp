@@ -32,9 +32,14 @@ public:
   bool reset (std::int32_t width, std::int32_t height) noexcept;
   bool append (std::uint64_t offset, const std::uint8_t *coverage,
                std::size_t count) noexcept;
+  bool append_native (std::uint64_t offset, const double *coverage,
+                      std::size_t count) noexcept;
   bool finish (FilterSelectionBounds& bounds) const noexcept;
   std::uint64_t consumed () const noexcept { return consumed_; }
 private:
+  template<class Sample> bool append_samples (std::uint64_t offset,
+                                             const Sample *coverage,
+                                             std::size_t count) noexcept;
   FilterSelectionBounds bounds_;
   std::int32_t width_ = 0, height_ = 0;
   std::uint64_t consumed_ = 0;
@@ -67,6 +72,24 @@ bool filter_replace_inten_row (const std::uint8_t *original,
                               unsigned           channels,
                               unsigned           active_components,
                               std::uint8_t       opacity = 255) noexcept;
+
+/* Native precision extension of the Replace contract, in the captured
+ * drawable's space/TRC. Color samples are not clamped or byte-quantized.
+ * Finite alpha/selection are clamped to [0,1] for coverage; opacity must be
+ * in [0,1]. Inactive alpha preserves its original sample. A null selection is 1.
+ * All nonfinite samples/coverage are rejected before any output is written.
+ * As with the byte contract, mixed alpha controls the color ratio even when
+ * alpha is inactive, and zero mixed alpha preserves original hidden colors.
+ * Exact endpoints retain original/shadow samples without cancellation.
+ * The same ownership, aliasing and argument rules as the byte row apply. */
+bool filter_replace_native_row (const double *original,
+                                const double *shadow,
+                                const double *selection,
+                                double       *output,
+                                std::size_t   pixels,
+                                unsigned      channels,
+                                unsigned      active_components,
+                                double        opacity = 1.0) noexcept;
 
 } // namespace GimpPainter
 #endif

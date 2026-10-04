@@ -26,6 +26,7 @@
 #include "tests.h"
 #include "gimp-app-test-utils.h"
 void gimp_test_filter_cpp_config (Gimp *application);
+void gimp_test_filter_owner_context_native (Gimp *application);
 void gimp_test_filter_cpp_layout (gsize size, gsize offset, GimpFilterLayer *layer);
 GBytes *gimp_test_filter_cpp_gauss_reference (const guint8 *native, gsize width, gsize height, guint channels, gint method);
 static Gimp *gimp;
@@ -2338,6 +2339,8 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-blinds-context-lifecycle.inc"
 #include "test-filter-small-tiles.inc"
 #include "test-filter-retinex.inc"
+#include "test-filter-convolution.inc"
+static void convolution_native_context (void) { gimp_test_filter_owner_context_native (gimp); }
 
 int main (int argc, char **argv)
 {
@@ -2368,6 +2371,9 @@ int main (int argc, char **argv)
   ADD (small_tiles_dependency_updates);
   ADD (small_tiles_save_reopen);
   ADD (small_tiles_owner_close);
+  ADD (convolution_native_storage_overflow); ADD (convolution_ignored_legacy_tail); ADD (convolution_native_context);
+  ADD (convolution_actual_old_live); ADD (convolution_invalid_arrays_keep_cache);
+  ADD (convolution_native_failure_keeps_cache); ADD (convolution_native_precisions); ADD (convolution_save_reopen); ADD (convolution_cancel_replace_close);
   ADD (retinex_zero_scales_and_update);
   ADD (retinex_actual_old_live);
   ADD (retinex_invalid_domains_keep_cache);

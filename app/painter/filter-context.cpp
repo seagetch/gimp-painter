@@ -2,6 +2,7 @@
 #include "filter-context.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <limits>
 
 namespace GimpPainter {
@@ -27,6 +28,20 @@ unsigned divide_nearest (unsigned numerator, unsigned denominator) noexcept
          (numerator % denominator > denominator / 2);
 }
 
+double unit_coverage (double value) noexcept
+{ return std::max (0.0, std::min (1.0, value)); }
+
+double interpolate_native (double original, double shadow, double ratio) noexcept
+{
+  if (ratio == 0.0) return original;
+  if (ratio == 1.0) return shadow;
+  // Same-sign subtraction and opposite-sign weighted addition cannot overflow
+  // for finite endpoints and a ratio in [0,1]. Preserve exact endpoints above.
+  if (std::signbit (original) != std::signbit (shadow))
+    return original * (1.0 - ratio) + shadow * ratio;
+  return original + (shadow - original) * ratio;
+}
+
 } // namespace
 
 bool FilterSelectionScan::reset (std::int32_t width, std::int32_t height) noexcept
@@ -39,12 +54,24 @@ bool FilterSelectionScan::reset (std::int32_t width, std::int32_t height) noexce
 
 bool FilterSelectionScan::append (std::uint64_t offset, const std::uint8_t *coverage,
                                  std::size_t count) noexcept
+{ return append_samples (offset, coverage, count); }
+
+bool FilterSelectionScan::append_native (std::uint64_t offset, const double *coverage,
+                                        std::size_t count) noexcept
+{ return append_samples (offset, coverage, count); }
+
+template<class Sample>
+bool FilterSelectionScan::append_samples (std::uint64_t offset, const Sample *coverage,
+                                         std::size_t count) noexcept
 {
   const auto total = static_cast<std::uint64_t> (width_) * height_;
   if (!width_ || offset != consumed_ || consumed_ > total ||
-      count > total - consumed_ || (count && !coverage)) return false;
+      count > total - consumed_ || count > std::numeric_limits<std::size_t>::max () / sizeof (Sample) ||
+      (count && !coverage)) return false;
   for (std::size_t i = 0; i < count; ++i)
-    if (coverage[i])
+    if (!std::isfinite (coverage[i])) return false;
+  for (std::size_t i = 0; i < count; ++i)
+    if (coverage[i] > 0)
       {
         const auto x = static_cast<std::int32_t> ((offset + i) % width_);
         const auto y = static_cast<std::int32_t> ((offset + i) / width_);
@@ -143,6 +170,58 @@ filter_replace_inten_row (const std::uint8_t *original,
       if (has_alpha)
         output[color_channels] = (active_components & (1U << color_channels)) ?
                                  mixed_alpha : old_alpha;
+      original += channels;
+      shadow += channels;
+      output += channels;
+    }
+  return true;
+}
+
+bool
+filter_replace_native_row (const double *original,
+                           const double *shadow,
+                           const double *selection,
+                           double       *output,
+                           std::size_t   pixels,
+                           unsigned      channels,
+                           unsigned      active_components,
+                           double        opacity) noexcept
+{
+  if (channels < 1 || channels > 4 ||
+      pixels > std::numeric_limits<std::size_t>::max () / channels / sizeof (double) ||
+      (pixels && (!original || !shadow || !output)) ||
+      !std::isfinite (opacity) || opacity < 0.0 || opacity > 1.0)
+    return false;
+  const bool has_alpha = channels % 2 == 0;
+  const unsigned color_channels = channels - has_alpha;
+  // Validate the entire row before writing, including inactive and masked
+  // samples. The owner can then discard a failed shadow atomically.
+  for (std::size_t i = 0; i < pixels * channels; ++i)
+    if (!std::isfinite (original[i]) || !std::isfinite (shadow[i])) return false;
+  if (selection)
+    for (std::size_t i = 0; i < pixels; ++i)
+      if (!std::isfinite (selection[i])) return false;
+  for (std::size_t pixel = 0; pixel < pixels; ++pixel)
+    {
+      const double coverage = (selection ? unit_coverage (selection[pixel]) : 1.0) * opacity;
+      const double old_alpha = has_alpha ? unit_coverage (original[color_channels]) : 1.0;
+      const double new_alpha = has_alpha ? unit_coverage (shadow[color_channels]) : 1.0;
+      const double mixed_alpha = coverage == 0.0 ? old_alpha :
+                                 coverage == 1.0 ? new_alpha :
+                                 old_alpha + (new_alpha - old_alpha) * coverage;
+      const double ratio = mixed_alpha != 0.0 ? unit_coverage (coverage * new_alpha / mixed_alpha) : 0.0;
+      for (unsigned channel = 0; channel < color_channels; ++channel)
+        {
+          double value = original[channel];
+          if (mixed_alpha != 0.0 && (active_components & (1U << channel)))
+            {
+              value = interpolate_native (value, shadow[channel], ratio);
+            }
+          output[channel] = value;
+        }
+      if (has_alpha)
+        output[color_channels] = (active_components & (1U << color_channels)) ?
+                                 mixed_alpha : original[color_channels];
       original += channels;
       shadow += channels;
       output += channels;

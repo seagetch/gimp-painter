@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "scope": "Standalone production arithmetic header; analytic old-float operation comparison, not additional genuine-old runtime fixtures",
+  "u8_comparisons": 400000,
+  "instrumentation": [
+    "address",
+    "undefined",
+    "float-cast-overflow"
+  ],
+  "leak_sanitizer": false,
+  "source_sha256": {
+    "plug-ins/common/convolution-matrix.c": "bffb9e07ec4d25988c0d1065e0c5d50b17f6bfd9d49e25b633c25c68ddfeedee",
+    "plug-ins/common/convolution-matrix-kernel.h": "c0d5d2c68117edc3389f9aa8134749a386b61e58b21e588459789e1578e3a7ad",
+    "migration/tests/filter-convolution/test-convolution-kernel.c": "dd3afbbdbe62f01981726b08d51e08000439ffc76ef73843296e5317a675aacc"
+  },
+  "output": "PASS 400000 U8 old-arithmetic comparisons, x-major orientation, native precision/HDR, normalized offset, and invalid arithmetic\n",
+  "completed_utc": "2026-10-04T03:51:04.657585+00:00",
+  "command": "cc -std=c11 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined,float-cast-overflow -fno-omit-frame-pointer migration/tests/filter-convolution/test-convolution-kernel.c -o /tmp/convolution-kernel-sanitized $(pkg-config --cflags --libs glib-2.0) -lm; ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/convolution-kernel-sanitized",
+  "numeric_admission": "Only actual per-pixel intermediates and exact final integer range; large finite coefficient/divisor and near INT_MAX accepted"
+}

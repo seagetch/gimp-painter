@@ -304,3 +304,14 @@ if not platform_windows
     depends: [painter_filter_procedure_test, painter_filter_worker],
     suite: 'painter', timeout: 900)
 endif
+
+if not platform_windows
+  painter_filter_convolution_test = executable('painter-filter-convolution',
+    'painter/tests/test-filter-convolution.cpp',
+    dependencies: [painter_dep, painter_threads], cpp_args: painter_cpp_args)
+  test('painter-filter-convolution', python,
+    args: [meson.project_source_root() / 'migration/tests/run_filter_owner_context_fixture_test.py',
+           '--', painter_filter_convolution_test, painter_filter_worker.full_path()],
+    depends: [painter_filter_convolution_test, painter_filter_worker],
+    suite: 'painter', timeout: 900)
+endif

@@ -1,0 +1,153 @@
+{
+  "classification": "Development staging used an unrelinked host after targeted builds. Both first updates failed before any helper. Final full-build package passed equivalent tests. The package recipe now performs default Ninja convergence before prototype installation.",
+  "not_accepted_as_pass": true,
+  "original_result": {
+    "status": "failed",
+    "cases": [
+      {
+        "status": "failed",
+        "errors": [
+          "Console did not confirm exact pixels and Save/reopen",
+          "Runtime diagnostic: Traceback (most recent call last)",
+          "Missing two actual installed helper/plugin executions or readiness handshakes",
+          "Missing sealed expected-pixel success result"
+        ],
+        "case": "u8",
+        "exit_code": 64,
+        "seconds": 5.236851887999364,
+        "command": [
+          "/workspace/shared/convolution-installed-smoke-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/AppRun",
+          "--console",
+          "--new-instance",
+          "--no-interface",
+          "--no-data",
+          "--no-fonts",
+          "--no-splash",
+          "--batch-interpreter=python-fu-eval",
+          "-b",
+          "-",
+          "--quit"
+        ],
+        "expected_executables": {
+          "helper": "/workspace/shared/convolution-installed-smoke-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+          "plugin": "/workspace/shared/convolution-installed-smoke-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix"
+        },
+        "executable_sha256": {
+          "helper": "f22de055d6dc87fe084b29a467fc8005fd5249c1d67966b377d6074badc128ce",
+          "plugin": "a42cb75bd2f462e81ac3c2eebb04e29e813fbd26587b7901128ec6191baa41e5"
+        },
+        "observed_helpers": [],
+        "observed_plugins": [],
+        "survivors": [],
+        "leftover_profiles": [],
+        "batch_result": null,
+        "events": [
+          {
+            "event": "READY",
+            "monotonic": 17461.561103292,
+            "generation": 3
+          },
+          {
+            "event": "INVALIDATED",
+            "monotonic": 17461.57152877,
+            "phase": "first"
+          }
+        ],
+        "input_sha256": {
+          "fixture": "dfb1283d89fbf9629ca0f5631784a64703f287a914b5fd495e6aea43237f6004",
+          "source": "b4443f98e4a645b9e4667f03ed6f9a6e7ce8db90924109c4dff8e38e12442e97",
+          "initial": "97931329b8a32fd266599f829786105aa047bdf254611f34acb784ec6fb54df7",
+          "expected": "97931329b8a32fd266599f829786105aa047bdf254611f34acb784ec6fb54df7"
+        },
+        "observer_sha256": "193ea8f4f72193cb0292a97a38050ee111dbe48d43a357941a79605f29f63503",
+        "process_observer_sha256": "5a802543944a754daf8213c707a490f3260ac14ad717fef1b6fb823b92523157",
+        "batch_sha256": "d4f4b88c22fd62a6e9d05bed263de15be265f4965f8218e883963e8f6abc6832",
+        "console_sha256": "9ea07255c8596cb874240c358ce97ab557977a6e083184e408656627c2da1e9d"
+      },
+      {
+        "status": "failed",
+        "errors": [
+          "Console did not confirm exact pixels and Save/reopen",
+          "Runtime diagnostic: Traceback (most recent call last)",
+          "Missing two actual installed helper/plugin executions or readiness handshakes",
+          "Missing sealed expected-pixel success result"
+        ],
+        "case": "double",
+        "exit_code": 64,
+        "seconds": 5.222378976002801,
+        "command": [
+          "/workspace/shared/convolution-installed-smoke-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/AppRun",
+          "--console",
+          "--new-instance",
+          "--no-interface",
+          "--no-data",
+          "--no-fonts",
+          "--no-splash",
+          "--batch-interpreter=python-fu-eval",
+          "-b",
+          "-",
+          "--quit"
+        ],
+        "expected_executables": {
+          "helper": "/workspace/shared/convolution-installed-smoke-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+          "plugin": "/workspace/shared/convolution-installed-smoke-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix"
+        },
+        "executable_sha256": {
+          "helper": "f22de055d6dc87fe084b29a467fc8005fd5249c1d67966b377d6074badc128ce",
+          "plugin": "a42cb75bd2f462e81ac3c2eebb04e29e813fbd26587b7901128ec6191baa41e5"
+        },
+        "observed_helpers": [],
+        "observed_plugins": [],
+        "survivors": [],
+        "leftover_profiles": [],
+        "batch_result": null,
+        "events": [
+          {
+            "event": "READY",
+            "monotonic": 17466.839935607,
+            "generation": 3
+          },
+          {
+            "event": "INVALIDATED",
+            "monotonic": 17466.850440595,
+            "phase": "first"
+          }
+        ],
+        "input_sha256": {
+          "fixture": "673ced66d72d2fa936db6d273b2d4a2404346077ec02ef727fa4577e64fb1eb7",
+          "source": "493b63678543baf4edbc143bf88a72e5ef82c7820a12927f7dd1178cfae41e64",
+          "initial": "50faea05194f8c2392f5a49366a7698b533705974f57db7df882b6d779cf6b69",
+          "expected": "50faea05194f8c2392f5a49366a7698b533705974f57db7df882b6d779cf6b69"
+        },
+        "observer_sha256": "193ea8f4f72193cb0292a97a38050ee111dbe48d43a357941a79605f29f63503",
+        "process_observer_sha256": "5a802543944a754daf8213c707a490f3260ac14ad717fef1b6fb823b92523157",
+        "batch_sha256": "d4f4b88c22fd62a6e9d05bed263de15be265f4965f8218e883963e8f6abc6832",
+        "console_sha256": "8a0222e90039b2f31a6beb3eabb7d424d2d717091792ef3fe5f1bfab11143ca6"
+      }
+    ],
+    "input_manifest_sha256": "b124d31cca969b3acc8ffac144b8503c26fefd9f70e42fb7e1f893b4cd1be5b8",
+    "relocation": "Fresh path with spaces and Japanese characters",
+    "environment": "Explicit minimum whitelist; no inherited dependency environment",
+    "scope": "Two synthetic native fixture cases; two explicit reruns and two Save/reopen cycles each; Linux console only"
+  },
+  "host_identity_comparison": {
+    "initial": {
+      "sha256": "542fdf059681d390bd4d50a548f915a9534a01c28814efae2475ed5a3d773b4f",
+      "convolution_marker_presence": {
+        "Nonfinite Convolution coefficient": false,
+        "Noncanonical private Convolution fields": false,
+        "Convolution result exceeds finite native storage": false
+      }
+    },
+    "accepted": {
+      "sha256": "1c4aa83ebb896ef45bee6eed69746622c892056f1e0ce5bb1676c323707934a2",
+      "convolution_marker_presence": {
+        "Nonfinite Convolution coefficient": true,
+        "Noncanonical private Convolution fields": true,
+        "Convolution result exceeds finite native storage": true
+      }
+    }
+  },
+  "accepted_report": "installed.json",
+  "test_fixture_note": "The initial fixture was later regenerated after correcting a static GBytes lifetime in the test producer; final acceptance uses only regenerated fixtures."
+}

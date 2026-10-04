@@ -10,6 +10,7 @@ common_plugins_list = [
   { 'name': 'colormap-remap', },
   { 'name': 'compose', },
   { 'name': 'contrast-retinex', },
+  { 'name': 'convolution-matrix', },
   { 'name': 'crop-zealous' },
   { 'name': 'curve-bend', },
   { 'name': 'decompose', },

@@ -1,0 +1,581 @@
+{
+  "status": "passed_with_skips",
+  "scope": "Normal task regression suite; not whole-release acceptance",
+  "registered_targets": 61,
+  "passed": 58,
+  "skipped": [
+    "gimp:painter / painter-profile-native",
+    "gimp:painter / painter-paper-ui",
+    "gimp:painter / painter-http-ui"
+  ],
+  "failed": [],
+  "source_scope": "Production sources unchanged throughout normal painter regression; test-only additions receive final affected-target reruns",
+  "source_sha256": {
+    "app/painter/filter-raster-kernels.cpp": "fe2b4880c97952dfd33d798a2a38c01dba10b0b226335f35b3e7dc7101a78a23",
+    "app/painter/filter-context.hpp": "5ecde6228c5fc0143d44112b6bfe4d2a96abda1b2b9b6f276416231f7c17cce9",
+    "app/painter/filter-gauss.cpp": "025565dcfffc90d2de06614e127bd0530e70ce6fac6b4b4839c8171bbb4a0c0b",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-process.hpp": "8881c774d35f72daab705fc81e4c5b47671e85ea454846275eed53496808eb1e",
+    "app/painter/filter-edge.cpp": "8366b14c980d6b9db472a83071859f15403681e469841e04ba3010a7ad8a7af6",
+    "app/painter/filter-procedure.hpp": "926ba19707f08546a0ff6e1e6752ea42408e28bec98b3c67e8419295b44dc258",
+    "app/painter/filter-gauss-kernel-private.hpp": "8f9a9e3cc7d336a0d021d8aee387ab96116a8b771acb8fc893693bc0f82c9f2f",
+    "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/filter-wire.cpp": "67e96dfbc94b5e39f469b984dc5aa13e569f56ac4517833b4e7d44b3064ab1ea",
+    "app/painter/filter-native-kernels.cpp": "511591b1502fdf93fa4c44125e725eab1f4814f465ff3e4bf4dff1c7863ea5f1",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-wire.hpp": "38b11d647a492678c3f7122a2dab370ef239b0ae764dc66222e289e0f1dd2450",
+    "app/painter/filter-edge-kernel-private.hpp": "e48ac6f29c3af18bba60252b7b7676663e055d866ae6ddd2eee9faa41c6587bd",
+    "app/painter/filter-native-kernels.hpp": "d8225ade52257119e80c92cb8a62ba0fd1ecd4c987fa5723ab9eec427b4fd796",
+    "app/painter/filter-scheduler.cpp": "8a3ac98b8d0b5bc89efdec4d11ba1cc709a5fee753c8c4eaabe52e316da8c43e",
+    "app/painter/filter-scheduler.hpp": "0179a5a697aa8cf9479d737f78691f8d19e1f69a0398e6b725b7d0066466ceeb",
+    "app/painter/filter-raster-kernels.hpp": "8a9fc21d4cf3ae1c31c611003ce7833c9e4c12a9db5c0f7065dbc809045b7ca3",
+    "app/painter/filter-raster.hpp": "065083d88ddbcf21fed56f813c796b5ac933cc14b6da8457ed76104afdbfc50b",
+    "app/painter/filter-lifetime.hpp": "653113d3c0ad98a7dfcebc5199c8069dec5b419aa2b74eb581f1961b9f402a81",
+    "app/painter/filter-process.cpp": "b1ea459e3a62ceac19a9ee3a0ec0a61fc0c8b87f76295cdb5176441990a239eb",
+    "app/painter/filter-gauss.hpp": "3a10627882495265b731522622c3657534969b10a5024fdbfb2416fc4732a29c",
+    "app/painter/filter-edge.hpp": "6167b90820e961e33d629e227b401c77e70b9727d7e887ab6e514fbdda75ca2b",
+    "app/painter/filter-spool.hpp": "e6d2eae6eafd24bc28b7be0961a36dff1cdfd9def372879e474d261157c9356a",
+    "app/core/gimpfilterprocedure.cpp": "41d4a7b22ff81d2683906a7e880818f81be53b982c55f53b3da4b0dd0a1382eb",
+    "app/core/gimpfilterlayer-arguments.hpp": "ab1b54dd2b4890da9db48f77230ddf7e5ca02d77bdf34a7c37659e47c51ee402",
+    "app/core/gimpfilterlayer-handle.hpp": "a1c1d929d43033fb596bb2ade15cc5d1c9bfb9c1acfb4ab15847b0ec89749037",
+    "app/core/gimpfiltercontext.hpp": "6eb9b62f5c4b339a2df9659844734517f5e45de8e94e199ca49233bdeb0d81df",
+    "app/core/gimpfilter.c": "3e2d1daeeb23c4900b7da8b99e87250264b957cd440e93550c9d5b9795e3d3a8",
+    "app/core/gimpfilteredcontainer.h": "581b856a6dde380305b15ef21e0b4226828c9dbe001e1d04289bc9029e68bfb5",
+    "app/core/gimpfilterstack.c": "534facb04210999de9cc768cb1a1a199c6f2490d3f89523cbc062b72db3bde0c",
+    "app/core/gimpfilterlayer.cpp": "f1d38dfc402f41839dc44b41cd3919d3e4eab600a531b7fa973084bb0df5eeed",
+    "app/core/gimpfilterprocedure.hpp": "770a82d4bb62fbf60f44c914d9bc92eb602726dcece3f198b028aa8b081200a4",
+    "app/core/gimpfilterexit.h": "3e70d5bae79aa141ec3475145b858ad4b25642e739e6448d0b6510180ec69eb0",
+    "app/core/gimpfilterstack.h": "3bea1258ba12941e36f20a2c98f1b4496875024930ee6700d258b23d6322f5c6",
+    "app/core/gimpfiltercontext.cpp": "3f5d46a95862607d04170da30e05c72a1d6650c5226e8dfb48277541934cefc9",
+    "app/core/gimpfilterpaths.hpp": "0a3fe6d32c4ec01322866a04880a8f437fa572e0fab61b65e316be20f068531b",
+    "app/core/gimpfilterlayer.h": "f2ef4a581df53bc1334bbcc7e0f41833a4bacdf5a4324f7b399e2059a0ddeb8a",
+    "app/core/gimpfilter.h": "e1af592513de1654f4ddf767ec977d44b7abe3d913f0ab111052ca35bca52982",
+    "app/core/gimpfilterpaths.cpp": "fd150c6e70c620e59d6a51652095164813a99b1741b8ec49cfd6627eac800604",
+    "app/core/gimpfilteredcontainer.c": "5e8d9f6134d145cb8816ecb6a6058069730ea263458b48dde032262bc5b3e614",
+    "app/core/gimpfilterexit.cpp": "173415c8a7891b5627ec31797edb2000923fe2da2cd025995666dff5ed156914",
+    "plug-ins/common/convolution-matrix.c": "bffb9e07ec4d25988c0d1065e0c5d50b17f6bfd9d49e25b633c25c68ddfeedee",
+    "plug-ins/common/convolution-matrix-kernel.h": "ed42c13ae59cfe26608c92c2878ad3d9e44c066f27f3ddbb8f9d1c4828e8555f"
+  },
+  "painter_filter_process_source_sha256": "061ead8077785c19239face9acb0e2053b2172807ae9f3b86f2e9d686059db9f",
+  "results": [
+    {
+      "name": "gimp:painter / painter-filter-wire",
+      "result": "OK",
+      "duration": 0.006254434585571289,
+      "stdout_sha256": "929bb6b51dd7bee49f390e36b13775353a9dc952c9677726807ecd05fe083c6b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-foundation",
+      "result": "OK",
+      "duration": 0.012227296829223633,
+      "stdout_sha256": "2f03410bb3933e34bac297f3f019a9f65d535ae4d9f59eda19ad212df85d58b2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-process",
+      "result": "OK",
+      "duration": 2.4570517539978027,
+      "stdout_sha256": "471c8784ae6887028ff19a9e7d24006503d22b1395459801c8a5f63e38c6b445",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-owner-gates",
+      "result": "OK",
+      "duration": 0.1784350872039795,
+      "stdout_sha256": "a860c58424da54ff00148dbfa4ac80a3b1225661f102fd7d30687f6f8a7d4f3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-edge",
+      "result": "OK",
+      "duration": 0.011113643646240234,
+      "stdout_sha256": "64c248d02cfae85a3bb873ff8d543b5ccb12338bbe773f68ef82250ef89a1130",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-gauss",
+      "result": "OK",
+      "duration": 0.037006378173828125,
+      "stdout_sha256": "8bc7fb83ebbf37dc87d3e68d80e1ef253398afe2c2837fc1da6b4c3da64e2518",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-gray",
+      "result": "OK",
+      "duration": 0.009847640991210938,
+      "stdout_sha256": "4d7d6c32f203950c6b371f67b58c69516cf9352f9c4404437373484bdc5203dc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-gauss-alias",
+      "result": "OK",
+      "duration": 0.09902429580688477,
+      "stdout_sha256": "1d1a08a0ff82a998383fb8a8026482f505cb4133437d2c1b84e7d03c7897af8c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-fair-dispatcher",
+      "result": "OK",
+      "duration": 0.006947994232177734,
+      "stdout_sha256": "3ea44f834e7a0d1bfbba2974c03fd60076bc622173c583698ce4775796c42ac7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-work-admission",
+      "result": "OK",
+      "duration": 0.008953094482421875,
+      "stdout_sha256": "0056ad9e528e4f082deff9f932cbb30d4ddc2c02b5ea2969cf4695aebd266d8a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-scheduler",
+      "result": "OK",
+      "duration": 3.448273181915283,
+      "stdout_sha256": "059e7ae52df3ecdd5e6597fd2af8feede342dcc921aa0f908aedf70f0ca103d9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-raster",
+      "result": "OK",
+      "duration": 0.7118058204650879,
+      "stdout_sha256": "af4571fe8f3526b1e7ee57ea1cbf1f1a5df16fc038df722deef27033ccb16f2d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-spool",
+      "result": "OK",
+      "duration": 0.07929325103759766,
+      "stdout_sha256": "698e408bff44b497c52d8a7c73f51e6a7849655f5af4ca191be2aa7ac6f97dd9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-native-kernels",
+      "result": "OK",
+      "duration": 0.009519100189208984,
+      "stdout_sha256": "6d2d42b4db782159be891105b94dd5511daaf6a9035e09eefba83c21ffaaff20",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-context-native",
+      "result": "OK",
+      "duration": 0.0051462650299072266,
+      "stdout_sha256": "9bbd8d78bd9cb3d33e8534824534aa70807019d79eb5804034548a80c9a3f127",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": "Native Filter context tests passed\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-context",
+      "result": "OK",
+      "duration": 0.12932705879211426,
+      "stdout_sha256": "236fa9823db32815538b2fe2e94bcef46e7cadfefc00df1ab2242f0ed78c1f61",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-import-completion",
+      "result": "OK",
+      "duration": 0.007375955581665039,
+      "stdout_sha256": "c6cd25a700774ebe67dbb60f04a191febeb5775f05d44a1d993b405301d0386d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-public-mode-abi",
+      "result": "OK",
+      "duration": 0.04147148132324219,
+      "stdout_sha256": "23c35bbc6d4fa703faf6b62e54d39a1b5725624937438f01386ad1e587d52f2c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-brush-metadata-c",
+      "result": "OK",
+      "duration": 0.0044019222259521484,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-brush-metadata-cpp",
+      "result": "OK",
+      "duration": 0.0036420822143554688,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-brush-generator",
+      "result": "OK",
+      "duration": 0.4187600612640381,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9a475947516e7cf91f0e66dae0bf35c14e3994ad359bdc9981e63a5fccd1a26c",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-resource",
+      "result": "OK",
+      "duration": 0.14423012733459473,
+      "stdout_sha256": "822ccd6afb916045457b80e1d538814fccd51cc54ebf51eb608471d5ecbd8e83",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-decoder",
+      "result": "OK",
+      "duration": 0.1032259464263916,
+      "stdout_sha256": "afd492cb211509748026776e3994a2a3ebe80873d5c61310b49a72587c31802d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-engine",
+      "result": "OK",
+      "duration": 0.17880678176879883,
+      "stdout_sha256": "c553f031a1bb086a113eefce0f0188ae58e73a298b6fb9baf1e76370a092dbb9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-navigation",
+      "result": "OK",
+      "duration": 0.011152267456054688,
+      "stdout_sha256": "119b1ecd1a1e74af1d6e215613749d3d49b0007926ade9962391386787f6dbc9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-bounded-fill-legacy",
+      "result": "OK",
+      "duration": 0.5850155353546143,
+      "stdout_sha256": "6e40cb026ccb2638559edbc38b4e8dc15666b78052e79e859b1a16d65ef8b48c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-raster-kernels",
+      "result": "OK",
+      "duration": 1.8361122608184814,
+      "stdout_sha256": "4b8cfe7b34d1d70f81f47bdfad345a66f77e8543f0ab2b437eaa3ff78c131089",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-bounded-fill",
+      "result": "OK",
+      "duration": 0.20694899559020996,
+      "stdout_sha256": "57435a72f96df3e119117a4567b376271f163ed2f6d8bfcfbae9394e5bb975c0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-generated",
+      "result": "OK",
+      "duration": 0.030841350555419922,
+      "stdout_sha256": "fc91953704491bedfde121b0ae6011425afd7e0228b9012bbadecf094b9bd4c8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-gray-alpha-equations",
+      "result": "OK",
+      "duration": 0.005014896392822266,
+      "stdout_sha256": "c316bbee8af1007720ad8346255d8ae2c297dfea1ea7efd2f9aef897424073bc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-surface",
+      "result": "OK",
+      "duration": 0.27479004859924316,
+      "stdout_sha256": "0860abbc548cb68eea0f1a8fba44aa133ee9c0768a16c58fcdaf2b07e0a8361f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-smudge-legacy-pixels",
+      "result": "OK",
+      "duration": 0.05145406723022461,
+      "stdout_sha256": "af1afbdf18e89dcae612104e501acf15fbda9e7461a285678262648f7556fc44",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-xcf-compat",
+      "result": "OK",
+      "duration": 0.012463092803955078,
+      "stdout_sha256": "0234565b67af0e03d36bf16faa96b255eef732914943d62cc1a0d2618910e4eb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-native-precision",
+      "result": "OK",
+      "duration": 0.392864465713501,
+      "stdout_sha256": "d1b3d5963bbf21cb95d460ac5dc9a2c9dd105424f2430a7deb20cf1615ecad55",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-filter-convolution",
+      "result": "OK",
+      "duration": 242.36299085617065,
+      "stdout_sha256": "313ca310038fe876dd0ebb502f080128390340f35fe3d8c9d5760a1ec03f1bcc",
+      "stderr_sha256": "c27ce4ac65497fc025789e27015b960f6dc3b2e05146bb36fc747e4276f52b2e",
+      "summary": "296 genuine old Convolution final merges, 296 raw ROI comparisons, 8 old geometry rejections, 37 native analytic requests passed\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-procedure",
+      "result": "OK",
+      "duration": 578.0163705348969,
+      "stdout_sha256": "6346cbe646fd52c901865b2a35de6e6155e7a99e55c3ec36b1f10c99ecc516d7",
+      "stderr_sha256": "f4f03bd308130805727d3eeff966ac26572af6116518983527067ac5f9562812",
+      "summary": "320 actual legacy Blinds oracles byte-exact\n196 actual legacy SmallTiles oracles byte-exact (RGB/RGBA/Gray/Gray-alpha, factors0..6)\n174 actual legacy Retinex oracles byte-exact (87 native RGB,87 native RGBA)\n6 analytic selected Retinex ROI compositions matched old whole-fixture outputs\n2 analytic native Retinex raw-shadow ROI cases and 4 RGB carrier rejection cases passed\n12 native Blinds identity cases passed\n"
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-session",
+      "result": "OK",
+      "duration": 14.130739212036133,
+      "stdout_sha256": "bc85c0292d08769cd02626d0d84678c2e48829b60b063df6f6bb46911503226e",
+      "stderr_sha256": "848d109a081a995fcc5972882e377554c692478af0ba2d67fc8c269d007ec1a6",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-fill-brush-legacy",
+      "result": "OK",
+      "duration": 1.4726357460021973,
+      "stdout_sha256": "a069fd2f672739f5f15f465c883d65eb3792cb22c6efed5911c3037c411c4d29",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-fill-brush-legacyqueued",
+      "result": "OK",
+      "duration": 1.4613690376281738,
+      "stdout_sha256": "a069fd2f672739f5f15f465c883d65eb3792cb22c6efed5911c3037c411c4d29",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-fill-brush-legacyasync",
+      "result": "OK",
+      "duration": 1.4724721908569336,
+      "stdout_sha256": "a069fd2f672739f5f15f465c883d65eb3792cb22c6efed5911c3037c411c4d29",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-native-interpolation",
+      "result": "OK",
+      "duration": 7.818113088607788,
+      "stdout_sha256": "d5a07bfd4cb13caf105b8e213aaa8d9863412841222287fe79ea80bcd1735a97",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-rgb-session",
+      "result": "OK",
+      "duration": 2.6360931396484375,
+      "stdout_sha256": "070fd71b1be0107f3cee1c310f8bf1a434c4efd450272aa1fa4e60a5f74cd987",
+      "stderr_sha256": "a74bf26217aac9b7f7df28f9c3c7bb859f7a8e1c8cb08a61c080da12ea270b5c",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-rgb-session-fixtures",
+      "result": "OK",
+      "duration": 0.1902167797088623,
+      "stdout_sha256": "3ae4055d719ee0b84464451100dbbed3afd464caca30d4661172b6414d0c70da",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-smudge-legacy-strokes",
+      "result": "OK",
+      "duration": 13.877503156661987,
+      "stdout_sha256": "9636e116ed7e6facfa26419e6d6098357afb166e51964f78e7bb3c5f7d9f95e6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-smudge-owned-strokes",
+      "result": "OK",
+      "duration": 13.983475923538208,
+      "stdout_sha256": "9636e116ed7e6facfa26419e6d6098357afb166e51964f78e7bb3c5f7d9f95e6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-preview-fixture",
+      "result": "OK",
+      "duration": 0.09040474891662598,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "f956005d0fffd32ac4a36ab5c68098cf29abcd859b0dd83722c4ea73d78658fd",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-gray-session",
+      "result": "OK",
+      "duration": 1.2915682792663574,
+      "stdout_sha256": "5bc2e250a7d752fc811d82032d6c5436e3a088507b0a5e61d27aeefd69490497",
+      "stderr_sha256": "a74bf26217aac9b7f7df28f9c3c7bb859f7a8e1c8cb08a61c080da12ea270b5c",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-gray-session-fixtures",
+      "result": "OK",
+      "duration": 0.041664838790893555,
+      "stdout_sha256": "f887053648c8fc9bdcf5794205a9e28c6707e0cced3c7f3b345d2b860d693990",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-profile-parser",
+      "result": "OK",
+      "duration": 0.010743379592895508,
+      "stdout_sha256": "f5331a1a64ec3ffbed00ed1f84228d26c6f0b9b61d469c9a352442f8ad82f520",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-profile-native",
+      "result": "SKIP",
+      "duration": 0.028026580810546875,
+      "stdout_sha256": "98c12d21cdf28de6d03d0450678d5280fc780de4ae567c1381b8838834da31e4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-paper",
+      "result": "OK",
+      "duration": 13.905008792877197,
+      "stdout_sha256": "029482890b74ff9b375c41e9d74c17332b10eba137e80852f8b3109c78b95383",
+      "stderr_sha256": "5bcb688fe0fee0bf59b0bfd05226f96a362e2e76237e40adc7fd16c0cbc581bd",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-paper-ui",
+      "result": "SKIP",
+      "duration": 0.029297351837158203,
+      "stdout_sha256": "30492c5e98ebf56c25e35a4888a4c7b05ea120695a70e46be9826c8a618e3dcc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-legacy-paper",
+      "result": "OK",
+      "duration": 14.059383630752563,
+      "stdout_sha256": "f1ac30b8c95072e893341d97ede6ad5a8c4316b16f9b51d37a281e38a1f6bf94",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-legacy-paper-modes",
+      "result": "OK",
+      "duration": 17.493536472320557,
+      "stdout_sha256": "111625cf43668fa7e4882ef2ae78734da9a9723aee9ab12056fe90eaf0ecad4e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-pipe",
+      "result": "OK",
+      "duration": 1.5077838897705078,
+      "stdout_sha256": "a89927b8421ce069e5bb8bec9bc1a174f18e5e7daeae4a295c40592ba01b3470",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-brush-geometry",
+      "result": "OK",
+      "duration": 14.26547646522522,
+      "stdout_sha256": "1f3106dd68d3110f0dc35a0ca0fa77155a495d56ccd60ce2ecfc915843b6d482",
+      "stderr_sha256": "5bcb688fe0fee0bf59b0bfd05226f96a362e2e76237e40adc7fd16c0cbc581bd",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-brush-geometry-strokes",
+      "result": "OK",
+      "duration": 32.90135312080383,
+      "stdout_sha256": "cbf35aafd6b5b0698590836b56a112a643d850b9cd4dc10c266488bd432cad69",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-brush-geometry-pixmap",
+      "result": "OK",
+      "duration": 14.428944110870361,
+      "stdout_sha256": "d03d903d0e06dc17462da08eef56bc8b6a217a785074f0f0b5e76c63026a05e4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-brush-geometry-fixtures",
+      "result": "OK",
+      "duration": 0.09782791137695312,
+      "stdout_sha256": "87c2f1236bc47e22ff2080e029b9d2e6aa380d00ad8932376fcaf174fc426147",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-http",
+      "result": "OK",
+      "duration": 1.21336030960083,
+      "stdout_sha256": "b645c7c5332f3ad70f16478523ab92ff2319c59296e6b125510438c6ac681e62",
+      "stderr_sha256": "4f76e693dccf49904e394a8e0d08ace74d07f5e4d16e0f5e7870ef2569de75fc",
+      "summary": ""
+    },
+    {
+      "name": "gimp:painter / painter-http-ui",
+      "result": "SKIP",
+      "duration": 0.03249001502990723,
+      "stdout_sha256": "ebadf992d7ac6f62b0e154dc1c8256d3b34ccc3925b4325887d3f3c86178bcc5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": ""
+    }
+  ],
+  "skip_details": [
+    {
+      "name": "gimp:painter / painter-profile-native",
+      "observed_exit_code": 77,
+      "observed_diagnostic": "Only TAP initialization, no textual reason emitted",
+      "source_verified_gate": "main returns GIMP_EXIT_TEST_SKIPPED when gtk_init_check fails",
+      "scope": "Unrelated existing GUI/profile gate; not counted as a pass or Convolution GUI coverage"
+    },
+    {
+      "name": "gimp:painter / painter-paper-ui",
+      "observed_exit_code": 77,
+      "observed_diagnostic": "Only TAP initialization, no textual reason emitted",
+      "source_verified_gate": "main returns GIMP_EXIT_TEST_SKIPPED when gtk_init_check fails",
+      "scope": "Unrelated existing GUI/profile gate; not counted as a pass or Convolution GUI coverage"
+    },
+    {
+      "name": "gimp:painter / painter-http-ui",
+      "observed_exit_code": 77,
+      "observed_diagnostic": "Only TAP initialization, no textual reason emitted",
+      "source_verified_gate": "main returns GIMP_EXIT_TEST_SKIPPED when gtk_init_check fails",
+      "scope": "Unrelated existing GUI/profile gate; not counted as a pass or Convolution GUI coverage"
+    }
+  ],
+  "launcher": {
+    "program": "xvfb-run",
+    "exit_status": "outer launcher returned1; inner Meson results recorded separately",
+    "verified_issue": "Xvfb could not establish local/Unix listening sockets; cleanup tried to kill a nonexistent process",
+    "diagnostic_sha256": "11f0f274f3657a8e53fc7019318d0788e3bedbf215663674405ceb22c493d4fc",
+    "impact": "Three unrelated GTK tests skipped in broad regression; headless native/core tests executed. Subsequent affected native and sanitizer commands run directly headless."
+  }
+}

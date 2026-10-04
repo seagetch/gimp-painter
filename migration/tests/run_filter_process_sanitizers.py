@@ -28,13 +28,14 @@ FOCUSED = {
     'app/painter/filter-process.cpp', 'app/painter/filter-wire.cpp', 'app/painter/filter-lifetime.cpp',
     'app/core/gimpfilterlayer.cpp', 'app/core/gimpfiltercontext.cpp', 'app/core/gimpfilterprocedure.cpp', 'app/core/gimpfilterpaths.cpp', 'app/core/gimpfilterexit.cpp',
     'app/core/gimp-batch.c', 'app/app.c', 'app/painter-filter-worker.cpp', 'plug-ins/common/blinds.c',
-    'plug-ins/common/tile-small.c', 'plug-ins/common/contrast-retinex.c', 'app/painter/tests/test-filter-procedure.cpp',
+    'plug-ins/common/tile-small.c', 'plug-ins/common/contrast-retinex.c', 'plug-ins/common/convolution-matrix.c',
+    'app/painter/tests/test-filter-convolution.cpp', 'app/painter/tests/test-filter-context-native.cpp', 'app/painter/tests/test-filter-procedure.cpp',
     'app/tests/test-gimp-filter-layer.c', 'app/tests/test-gimp-filter-layout.cpp', 'app/tests/test-filter-owner-context.cpp',
     'app/painter/tests/test-filter-owner-gates.cpp',
     'app/painter/tests/test-filter-process.cpp', 'app/painter/tests/test-filter-wire.cpp',
     'app/painter/tests/test-filter-spool.cpp', 'app/painter/tests/test-filter-scheduler.cpp',
 }
-LIVE = ['retinex_zero_scales_and_update', 'retinex_actual_old_live', 'retinex_invalid_domains_keep_cache', 'retinex_gray_keep_cache', 'retinex_invalid_roi_keep_cache', 'retinex_replace_running_definition', 'retinex_final_context', 'retinex_dependency_updates', 'retinex_save_reopen', 'retinex_owner_close',
+LIVE = ['convolution_native_storage_overflow', 'convolution_ignored_legacy_tail', 'convolution_native_failure_keeps_cache', 'convolution_actual_old_live', 'convolution_invalid_arrays_keep_cache', 'convolution_native_precisions', 'convolution_save_reopen', 'convolution_cancel_replace_close', 'convolution_native_context', 'retinex_zero_scales_and_update', 'retinex_actual_old_live', 'retinex_invalid_domains_keep_cache', 'retinex_gray_keep_cache', 'retinex_invalid_roi_keep_cache', 'retinex_replace_running_definition', 'retinex_final_context', 'retinex_dependency_updates', 'retinex_save_reopen', 'retinex_owner_close',
         'small_tiles_live_update', 'small_tiles_actual_old_live', 'small_tiles_invalid_domains_keep_cache', 'small_tiles_replace_running_definition', 'small_tiles_selection_no_merge', 'small_tiles_final_context', 'small_tiles_dependency_updates', 'small_tiles_save_reopen', 'small_tiles_owner_close',
         'blinds_capture_context_edits', 'blinds_sealed_context_chunked_import',
         'blinds_capture_replacement_cancel_close', 'blinds_unknown_mask_latency', 'blinds_owner_context', 'blinds_owner_context_phases', 'blinds_owner_context_expansion',
@@ -48,6 +49,8 @@ TARGETS = {'app/tests/gimp-filter-layer': 'gimp-filter-layer',
            'app/gimp-painter-filter-worker': 'gimp-painter-filter-worker',
            'app/gimp-console-3.0': 'gimp-console-3.0', 'plug-ins/common/blinds': 'blinds',
            'plug-ins/common/tile-small': 'tile-small', 'plug-ins/common/contrast-retinex': 'contrast-retinex', 'app/painter-filter-procedure': 'painter-filter-procedure',
+           'plug-ins/common/convolution-matrix': 'convolution-matrix', 'app/painter-filter-convolution': 'painter-filter-convolution',
+           'app/painter/painter-filter-context-native': 'painter-filter-context-native',
            **{'app/painter/painter-' + name: 'painter-' + name for name in
               ['filter-wire', 'filter-process', 'filter-spool', 'filter-scheduler', 'filter-owner-gates']}}
 
@@ -100,7 +103,9 @@ def main():
             raise RuntimeError('Unregistered source: ' + ', '.join(sorted(missing)))
         inputs = {ROOT / source for source in selected}
         inputs.update([Path(__file__).resolve(), ROOT / 'migration/tests/painter_sanitizer_scope.py',
-                       ROOT / 'app/tests/test-filter-blinds.inc', ROOT / 'app/tests/test-filter-blinds-context.inc', ROOT / 'app/tests/test-filter-blinds-context-lifecycle.inc', ROOT / 'app/tests/test-filter-small-tiles.inc', ROOT / 'app/tests/test-filter-retinex.inc',
+                       ROOT / 'app/tests/test-filter-blinds.inc', ROOT / 'app/tests/test-filter-blinds-context.inc', ROOT / 'app/tests/test-filter-blinds-context-lifecycle.inc', ROOT / 'app/tests/test-filter-small-tiles.inc', ROOT / 'app/tests/test-filter-retinex.inc', ROOT / 'app/tests/test-filter-convolution.inc',
+                       ROOT / 'tools/check_convolution_evidence.py', ROOT / 'migration/fixtures/legacy-convolution.tar.gz',
+                       ROOT / 'migration/fixtures/legacy-convolution.tar.manifest.json',
                        ROOT / 'tools/check_small_tiles_evidence.py', ROOT / 'tools/derive_small_tiles_evidence.py',
                        ROOT / 'tools/check_retinex_evidence.py', ROOT / 'tools/derive_retinex_evidence.py',
                        ROOT / 'migration/fixtures/retinex-evidence.tar.gz', ROOT / 'migration/fixtures/retinex-evidence.tar.manifest.json',
@@ -179,7 +184,7 @@ def main():
             run([*command, *FLAGS], 'link-' + name)
             binaries[name] = sha(out / name)
         report['executable_sha256'] = binaries
-        report['compile_time_path_overrides'] = {'filter_worker': str(out / 'gimp-painter-filter-worker'), 'bundled_blinds': str(out / 'blinds'), 'bundled_small_tiles': str(out / 'tile-small'), 'bundled_retinex': str(out / 'contrast-retinex')}
+        report['compile_time_path_overrides'] = {'filter_worker': str(out / 'gimp-painter-filter-worker'), 'bundled_blinds': str(out / 'blinds'), 'bundled_small_tiles': str(out / 'tile-small'), 'bundled_retinex': str(out / 'contrast-retinex'), 'bundled_convolution': str(out / 'convolution-matrix')}
         report['changed_during_build'] = [name for name, expected in before.items() if sha(name) != expected]
         if report['changed_during_build']:
             publish()
@@ -191,7 +196,7 @@ def main():
                        GIMP_TESTING_PLUGINDIRS=str(build / 'plug-ins/common'), GSETTINGS_BACKEND='memory',
                        ASAN_OPTIONS='detect_leaks=0:halt_on_error=1:abort_on_error=1',
                        UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1')
-            for name in ('painter-filter-wire', 'painter-filter-process', 'painter-filter-scheduler', 'painter-filter-spool', 'painter-filter-owner-gates'):
+            for name in ('painter-filter-context-native', 'painter-filter-wire', 'painter-filter-process', 'painter-filter-scheduler', 'painter-filter-spool', 'painter-filter-owner-gates'):
                 result = run([str(out / name)], name, env)
                 report['results'].append(dict(name=name, exit_code=result.returncode, stdout=result.stdout, stderr=result.stderr))
                 print(name, 'PASS', flush=True)
@@ -200,11 +205,16 @@ def main():
                          'literal-filter-procedures', env, timeout=600)
             report['results'].append(dict(name='literal-filter-procedures', exit_code=result.returncode, stdout=result.stdout, stderr=result.stderr))
             print('literal-filter-procedures PASS', flush=True)
+            result = run(['python3', str(ROOT / 'migration/tests/run_filter_owner_context_fixture_test.py'),
+                          '--', str(out / 'painter-filter-convolution'), str(out / 'gimp-painter-filter-worker')],
+                         'convolution-helper', env, timeout=600)
+            report['results'].append(dict(name='convolution-helper', exit_code=result.returncode, stdout=result.stdout, stderr=result.stderr))
+            print('convolution-helper PASS', flush=True)
             command = ['python3', str(ROOT / 'migration/tests/run_filter_owner_context_fixture_test.py'),
                        '--', str(out / 'gimp-filter-layer')]
             for name in LIVE:
                 command += ['-p', '/gimp-filter-layer/' + name]
-            result = run(command, 'live-filter', env, timeout=300)
+            result = run(command, 'live-filter', env, timeout=600)
             actual = set(re.findall(r'^ok \d+ /gimp-filter-layer/(\S+)$', result.stdout, re.M))
             if actual != set(LIVE):
                 raise RuntimeError('Selected native cases did not all execute: ' + repr(actual))
@@ -213,7 +223,7 @@ def main():
         report['input_sha256_after'] = {name: sha(name) for name in before}
         report['changed_during_run'] = [name for name in before if before[name] != report['input_sha256_after'][name]]
         report['status'] = 'PASS' if not report['changed_during_run'] else 'FAIL'
-        report['scope'] = f'{len(FOCUSED)} instrumented sources and {len(rtti_only)} RTTI-only compatibility sources; remaining GIMP/dependencies ordinary; LSan off; helper and bundled Blinds/Small Tiles/Retinex are instrumented'
+        report['scope'] = f'{len(FOCUSED)} instrumented sources and {len(rtti_only)} RTTI-only compatibility sources; remaining GIMP/dependencies ordinary; LSan off; helper and bundled Blinds/Small Tiles/Retinex/Convolution are instrumented'
         report['finished_utc'] = datetime.now(timezone.utc).isoformat()
         publish()
         if report['status'] != 'PASS':

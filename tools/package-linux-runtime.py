@@ -358,6 +358,18 @@ def main():
                 'tools/derive_small_tiles_evidence.py', 'app/tests/test-filter-quit-fixture.cpp',
                 'tools/check_installed_retinex.py', 'tools/check_retinex_evidence.py',
                 'tools/derive_retinex_evidence.py',
+                'tools/check_installed_convolution.py', 'tools/check_convolution_evidence.py',
+                'tools/capture_legacy_convolution.py',
+                'tools/capture_legacy_convolution_extreme.py',
+                'tools/capture_legacy_convolution_appendix.py',
+                'app/tests/test-filter-convolution.inc',
+                'migration/tests/legacy-convolution-capture.c',
+                'migration/fixtures/legacy-convolution.tar.gz',
+                'migration/fixtures/legacy-convolution.tar.manifest.json',
+                'migration/fixtures/legacy-convolution-extreme.tar.gz',
+                'migration/fixtures/legacy-convolution-extreme.tar.manifest.json',
+                'migration/fixtures/legacy-convolution-appendix.tar.gz',
+                'migration/fixtures/legacy-convolution-appendix.tar.manifest.json',
                 'migration/fixtures/retinex-evidence.tar.gz',
                 'migration/fixtures/retinex-evidence.tar.manifest.json',
                 'migration/fixtures/small-tiles-evidence.tar.gz',
@@ -369,6 +381,14 @@ def main():
                 'migration/tests/filter-active-quit-pdb/fixtures/quit-blinds-1.xcf']:
         copy_runtime(REPO/rel, recipe/rel)
     json_write(recipe/'recipe-files.json', inventory(recipe))
+    # A successful targeted test build can leave the installed console or GUI
+    # linked to older core code. Prototype staging must converge the complete
+    # default build too. Candidates already perform their aggregate-sealed
+    # convergence check above and must not change those accepted artifacts.
+    if not args.candidate:
+        with (logs/'prototype-build.log').open('w') as log:
+            subprocess.run(['ninja', '-C', str(build), '-j2'],
+                           stdout=log, stderr=subprocess.STDOUT, check=True)
     # Capture only this explicit command output, never full process environments.
     with (logs/'install.log').open('w') as log:
         subprocess.run(['meson', 'install', '-C', str(build), '--no-rebuild',

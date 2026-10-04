@@ -1,0 +1,426 @@
+{
+  "status": "passed",
+  "cases": [
+    {
+      "status": "passed",
+      "errors": [],
+      "case": "u8",
+      "exit_code": 0,
+      "seconds": 5.839440715000819,
+      "command": [
+        "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/AppRun",
+        "--console",
+        "--new-instance",
+        "--no-interface",
+        "--no-data",
+        "--no-fonts",
+        "--no-splash",
+        "--batch-interpreter=python-fu-eval",
+        "-b",
+        "-",
+        "--quit"
+      ],
+      "expected_executables": {
+        "helper": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+        "plugin": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix"
+      },
+      "executable_sha256": {
+        "helper": "a071b32069e61cdac89bd02ffa29e66d63e765e138bf6b517b28ef8c6029cb51",
+        "plugin": "ae14ca9ab621ef8cf1e874591da895585acede327a7a72a0b27049e5bb257b48"
+      },
+      "observed_helpers": [
+        {
+          "pid": 1045,
+          "state": "S",
+          "parent": 6,
+          "group": 1045,
+          "start_ticks": 2188031,
+          "exe": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+          "argv": [
+            "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+            "--filter-worker-v5",
+            "/workspace/shared/convolution-installed-smoke-final-20261004/u8/profile/cache/gimp-painter-prototype/gimp-filter-OZI1W3"
+          ]
+        },
+        {
+          "pid": 1183,
+          "state": "S",
+          "parent": 6,
+          "group": 1183,
+          "start_ticks": 2188068,
+          "exe": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+          "argv": [
+            "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+            "--filter-worker-v5",
+            "/workspace/shared/convolution-installed-smoke-final-20261004/u8/profile/cache/gimp-painter-prototype/gimp-filter-GJTMW3"
+          ]
+        }
+      ],
+      "observed_plugins": [
+        {
+          "pid": 1107,
+          "state": "R",
+          "parent": 1045,
+          "group": 1045,
+          "start_ticks": 2188047,
+          "exe": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix",
+          "argv": [
+            "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix",
+            "-gimp",
+            "277",
+            "11",
+            "9",
+            "-run",
+            "0"
+          ]
+        },
+        {
+          "pid": 1244,
+          "state": "R",
+          "parent": 1183,
+          "group": 1183,
+          "start_ticks": 2188085,
+          "exe": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix",
+          "argv": [
+            "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix",
+            "-gimp",
+            "277",
+            "11",
+            "9",
+            "-run",
+            "0"
+          ]
+        }
+      ],
+      "phase_process_identities": {
+        "first": {
+          "helpers": [
+            [
+              1045,
+              2188031
+            ]
+          ],
+          "plugins": [
+            [
+              1107,
+              2188047
+            ]
+          ]
+        },
+        "reopened-rerun": {
+          "helpers": [
+            [
+              1183,
+              2188068
+            ]
+          ],
+          "plugins": [
+            [
+              1244,
+              2188085
+            ]
+          ]
+        }
+      },
+      "survivors": [],
+      "leftover_profiles": [],
+      "batch_result": {
+        "status": "passed",
+        "case": "u8",
+        "format": "R'G'B'A u8",
+        "argument_count": 11,
+        "matrix_type": "GimpDoubleArray",
+        "channels_type": "GimpInt32Array",
+        "expected_sha256": "97931329b8a32fd266599f829786105aa047bdf254611f34acb784ec6fb54df7",
+        "initial_generation": 3,
+        "first_generation": 4,
+        "reopened_generation": 3,
+        "second_generation": 4,
+        "exact_pixels": true,
+        "typed_definition_preserved": true,
+        "save_reopen_cycles": 2
+      },
+      "events": [
+        {
+          "event": "READY",
+          "monotonic": 21880.279215872,
+          "generation": 3
+        },
+        {
+          "event": "INVALIDATED",
+          "monotonic": 21880.289630161,
+          "phase": "first"
+        },
+        {
+          "event": "REOPENED_READY",
+          "monotonic": 21880.662978814,
+          "generation": 3
+        },
+        {
+          "event": "INVALIDATED",
+          "monotonic": 21880.673394074,
+          "phase": "reopened-rerun"
+        },
+        {
+          "event": "DONE",
+          "monotonic": 21880.986456854
+        }
+      ],
+      "startup_diagnostics": {
+        "scriptfu_resource_warnings": 7,
+        "welcome_messages": 1
+      },
+      "input_sha256": {
+        "fixture": "1af98e13b8e3852c440b7896f31cf5600d95157b09ac4d81f237d909666f6b3f",
+        "source": "b4443f98e4a645b9e4667f03ed6f9a6e7ce8db90924109c4dff8e38e12442e97",
+        "initial": "97931329b8a32fd266599f829786105aa047bdf254611f34acb784ec6fb54df7",
+        "expected": "97931329b8a32fd266599f829786105aa047bdf254611f34acb784ec6fb54df7"
+      },
+      "observer_sha256": "e47d854dbe2f1fea6cb07ec5b7617b8bee28960ac0233e29af95ddf6f9e0342e",
+      "process_observer_sha256": "5a802543944a754daf8213c707a490f3260ac14ad717fef1b6fb823b92523157",
+      "batch_sha256": "d4f4b88c22fd62a6e9d05bed263de15be265f4965f8218e883963e8f6abc6832",
+      "console_sha256": "bd204ed2124ab853c5d027ee81a2e9e7a5c4d6c731d776b8949d2f96107c3e22"
+    },
+    {
+      "status": "passed",
+      "errors": [],
+      "case": "double",
+      "exit_code": 0,
+      "seconds": 5.612098787001742,
+      "command": [
+        "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/AppRun",
+        "--console",
+        "--new-instance",
+        "--no-interface",
+        "--no-data",
+        "--no-fonts",
+        "--no-splash",
+        "--batch-interpreter=python-fu-eval",
+        "-b",
+        "-",
+        "--quit"
+      ],
+      "expected_executables": {
+        "helper": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+        "plugin": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix"
+      },
+      "executable_sha256": {
+        "helper": "a071b32069e61cdac89bd02ffa29e66d63e765e138bf6b517b28ef8c6029cb51",
+        "plugin": "ae14ca9ab621ef8cf1e874591da895585acede327a7a72a0b27049e5bb257b48"
+      },
+      "observed_helpers": [
+        {
+          "pid": 2328,
+          "state": "S",
+          "parent": 1336,
+          "group": 2328,
+          "start_ticks": 2188592,
+          "exe": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+          "argv": [
+            "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+            "--filter-worker-v5",
+            "/workspace/shared/convolution-installed-smoke-final-20261004/double/profile/cache/gimp-painter-prototype/gimp-filter-37BTW3"
+          ]
+        },
+        {
+          "pid": 2460,
+          "state": "R",
+          "parent": 1336,
+          "group": 2460,
+          "start_ticks": 2188631,
+          "exe": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+          "argv": [
+            "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/libexec/gimp-painter-filter-worker",
+            "--filter-worker-v5",
+            "/workspace/shared/convolution-installed-smoke-final-20261004/double/profile/cache/gimp-painter-prototype/gimp-filter-2GI1W3"
+          ]
+        }
+      ],
+      "observed_plugins": [
+        {
+          "pid": 2393,
+          "state": "R",
+          "parent": 2328,
+          "group": 2328,
+          "start_ticks": 2188610,
+          "exe": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix",
+          "argv": [
+            "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix",
+            "-gimp",
+            "277",
+            "11",
+            "9",
+            "-run",
+            "0"
+          ]
+        },
+        {
+          "pid": 2523,
+          "state": "R",
+          "parent": 2460,
+          "group": 2460,
+          "start_ticks": 2188648,
+          "exe": "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix",
+          "argv": [
+            "/workspace/shared/convolution-installed-smoke-final-20261004/relocated path \u65e5\u672c\u8a9e/gimp-painter-linux-x86_64/usr/lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix",
+            "-gimp",
+            "277",
+            "11",
+            "9",
+            "-run",
+            "0"
+          ]
+        }
+      ],
+      "phase_process_identities": {
+        "first": {
+          "helpers": [
+            [
+              2328,
+              2188592
+            ]
+          ],
+          "plugins": [
+            [
+              2393,
+              2188610
+            ]
+          ]
+        },
+        "reopened-rerun": {
+          "helpers": [
+            [
+              2460,
+              2188631
+            ]
+          ],
+          "plugins": [
+            [
+              2523,
+              2188648
+            ]
+          ]
+        }
+      },
+      "survivors": [],
+      "leftover_profiles": [],
+      "batch_result": {
+        "status": "passed",
+        "case": "double",
+        "format": "R'G'B'A double",
+        "argument_count": 11,
+        "matrix_type": "GimpDoubleArray",
+        "channels_type": "GimpInt32Array",
+        "expected_sha256": "50faea05194f8c2392f5a49366a7698b533705974f57db7df882b6d779cf6b69",
+        "initial_generation": 3,
+        "first_generation": 4,
+        "reopened_generation": 3,
+        "second_generation": 4,
+        "exact_pixels": true,
+        "typed_definition_preserved": true,
+        "save_reopen_cycles": 2
+      },
+      "events": [
+        {
+          "event": "READY",
+          "monotonic": 21885.893802509,
+          "generation": 3
+        },
+        {
+          "event": "INVALIDATED",
+          "monotonic": 21885.90420458,
+          "phase": "first"
+        },
+        {
+          "event": "REOPENED_READY",
+          "monotonic": 21886.283965215,
+          "generation": 3
+        },
+        {
+          "event": "INVALIDATED",
+          "monotonic": 21886.294410921,
+          "phase": "reopened-rerun"
+        },
+        {
+          "event": "DONE",
+          "monotonic": 21886.672417994
+        }
+      ],
+      "startup_diagnostics": {
+        "scriptfu_resource_warnings": 7,
+        "welcome_messages": 1
+      },
+      "input_sha256": {
+        "fixture": "065758fd58d151d1617727e426c24ebfd58cf33641c7e7d74ac8ba68d536b68a",
+        "source": "493b63678543baf4edbc143bf88a72e5ef82c7820a12927f7dd1178cfae41e64",
+        "initial": "50faea05194f8c2392f5a49366a7698b533705974f57db7df882b6d779cf6b69",
+        "expected": "50faea05194f8c2392f5a49366a7698b533705974f57db7df882b6d779cf6b69"
+      },
+      "observer_sha256": "e47d854dbe2f1fea6cb07ec5b7617b8bee28960ac0233e29af95ddf6f9e0342e",
+      "process_observer_sha256": "5a802543944a754daf8213c707a490f3260ac14ad717fef1b6fb823b92523157",
+      "batch_sha256": "d4f4b88c22fd62a6e9d05bed263de15be265f4965f8218e883963e8f6abc6832",
+      "console_sha256": "9f750a34074fa5d5f7a345d7db4d14d0d7c0636303c6ac58a75e253264b2cd94"
+    }
+  ],
+  "input_manifest_sha256": "a1b51cd725d5c58551f4e7106e4cf7afddbb892bfe150514110f69bf6fbec8fb",
+  "relocation": "Fresh path with spaces and Japanese characters",
+  "environment": "Explicit minimum whitelist; no inherited dependency environment",
+  "packaged_abi": {
+    "required": [
+      "libgegl-0.4.so.0",
+      "libgimp-3.0.so.0",
+      "libgtk-3.so.0"
+    ],
+    "legacy_dependencies": [],
+    "build_manifest_sha256": "e548a78b0a84249a96f0858d546b60e0fa44a77dc7ed0bebfa64f1940ec52fea"
+  },
+  "scope": "Two synthetic native fixture cases; two explicit reruns and two Save/reopen cycles each; Linux console only",
+  "fixture_archive": {
+    "archive": "installed-inputs.tar.gz",
+    "bytes": 5118,
+    "sha256": "a7988e113b7c4d9ca0b42feb6c91d5d4a56a94001cc5e30f488eb7c40149ae5a",
+    "members": {
+      "double-expected.raw": {
+        "size": 400416,
+        "sha256": "50faea05194f8c2392f5a49366a7698b533705974f57db7df882b6d779cf6b69"
+      },
+      "double-source.raw": {
+        "size": 400416,
+        "sha256": "493b63678543baf4edbc143bf88a72e5ef82c7820a12927f7dd1178cfae41e64"
+      },
+      "double.xcf": {
+        "size": 3534,
+        "sha256": "065758fd58d151d1617727e426c24ebfd58cf33641c7e7d74ac8ba68d536b68a"
+      },
+      "manifest.json": {
+        "size": 2300,
+        "sha256": "a1b51cd725d5c58551f4e7106e4cf7afddbb892bfe150514110f69bf6fbec8fb"
+      },
+      "u8-expected.raw": {
+        "size": 50052,
+        "sha256": "97931329b8a32fd266599f829786105aa047bdf254611f34acb784ec6fb54df7"
+      },
+      "u8-source.raw": {
+        "size": 50052,
+        "sha256": "b4443f98e4a645b9e4667f03ed6f9a6e7ce8db90924109c4dff8e38e12442e97"
+      },
+      "u8.xcf": {
+        "size": 2414,
+        "sha256": "1af98e13b8e3852c440b7896f31cf5600d95157b09ac4d81f237d909666f6b3f"
+      }
+    },
+    "provenance": "Synthetic native test export; two129x97 images, source/completed pixels and typed-array manifest; no user documents or profiles"
+  },
+  "fixture_generator": {
+    "source": "app/tests/test-filter-convolution.inc",
+    "sha256": "c06550d15f4cd69c29c656370f08e9c4eff451357d4a32a93ae47b824604e20c",
+    "target": "app/tests/gimp-filter-layer -p /gimp-filter-layer/convolution_save_reopen",
+    "export_variable": "GIMP_PAINTER_CONVOLUTION_EXPORT"
+  },
+  "package_recipe_tests": {
+    "passed": 35,
+    "skipped": 0,
+    "log_sha256": "cc8e4f74a919c2438518db5fab7313fce1aac8f62fc1263ba2b4cac4fdc55476"
+  },
+  "package_status": "prototype-not-a-release; feature-specific installed acceptance only"
+}

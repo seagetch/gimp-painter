@@ -26,7 +26,7 @@ int main () {
   auto trailing = bytes; trailing.push_back (0); rejects ([&] { FilterWire::decode (trailing.data (), trailing.size ()); });
   for (int angle : {-1,91}) { auto bad = req; bad.angle = angle; rejects ([&] { FilterWire::request (bad); }); }
   for (int segments : {0,101}) { auto bad = req; bad.segments = segments; rejects ([&] { FilterWire::request (bad); }); }
-  auto bad = req; bad.procedure = FilterProcedure (4); rejects ([&] { FilterWire::request (bad); });
+  auto bad = req; bad.procedure = FilterProcedure (5); rejects ([&] { FilterWire::request (bad); });
   bad = req; bad.width = 0; rejects ([&] { FilterWire::request (bad); });
   g_assert (!restored.raw_shadow && !restored.start_region.selected && restored.start_region.intersects &&
             restored.start_region.x1 == 0 && restored.start_region.y1 == 0 &&
@@ -51,7 +51,7 @@ int main () {
     bad = req; bad.width = dimension; rejects ([&] { FilterWire::request (bad); });
     bad = req; bad.height = dimension; rejects ([&] { FilterWire::request (bad); });
   }
-  for (std::uint32_t tag : {0u,4u,0xffffffffu}) {
+  for (std::uint32_t tag : {0u,5u,0xffffffffu}) {
     auto f = FilterWire::request (req); put32 (f,0,tag); rejects ([&] { FilterWire::request (f); });
   }
   for (std::uint32_t flags : {0u,1u,8u,0xffffffffu}) {
@@ -63,8 +63,8 @@ int main () {
   { auto f = FilterWire::request (req); put32 (f,28,2); rejects ([&] { FilterWire::request (f); }); }
   { auto f = FilterWire::request (req); put32 (f,36,7); put32 (f,40,0xffffffffu);
     rejects ([&] { FilterWire::request (f); }); }
-  for (unsigned version : {1u,2u,3u}) { auto old = bytes; old[3] = '0' + version; old[4] = version; rejects ([&] { FilterWire::decode (old.data (), old.size ()); }); }
-  for (unsigned old_size : {36u,60u,64u})
+  for (unsigned version : {1u,2u,3u,4u}) { auto old = bytes; old[3] = '0' + version; old[4] = version; rejects ([&] { FilterWire::decode (old.data (), old.size ()); }); }
+  for (unsigned old_size : {36u,60u,64u,88u})
     rejects ([&] { FilterWire::encode ({FilterWire::Type::request, 0, std::vector<std::uint8_t> (old_size)}); });
   FilterProcedureRequest tile; tile.procedure = FilterProcedure::small_tiles; tile.width = 67; tile.height = 66;
   for (int factor = 0; factor <= 6; ++factor) for (bool gray : {false,true}) for (bool raw : {false,true}) {
@@ -136,6 +136,42 @@ int main () {
   for (std::size_t at : {std::size_t(60),std::size_t(64),std::size_t(68),std::size_t(72),std::size_t(76),std::size_t(80)}) {
     auto frame = FilterWire::request (tile); put32 (frame,at,99);
     rejects ([&] { FilterWire::request (frame); });
+  }
+
+  FilterProcedureRequest convolution; convolution.procedure = FilterProcedure::convolution;
+  convolution.width = 9; convolution.height = 8;
+  for (unsigned mode : {0u,1u,2u,3u}) for (unsigned storage : {1u,2u,3u,4u}) {
+    auto r = convolution; r.sample_mode = mode; r.storage_channels = storage; r.gray = storage <= 2;
+    r.matrix[0] = 0.123456789012345; r.matrix[24] = -0.0000000000123;
+    r.channels = {{-17,0,1,2,2147483647}}; r.alpha_alg = -51;
+    r.divisor = -0.345678901234567; r.offset = 3.141592653589793;
+    const auto frame = FilterWire::encode (FilterWire::request (r));
+    const auto decoded = FilterWire::request (FilterWire::decode (frame.data (),frame.size ()));
+    g_assert (decoded.matrix == r.matrix && decoded.channels == r.channels && decoded.alpha_alg == r.alpha_alg &&
+      decoded.sample_mode == mode && decoded.storage_channels == storage && decoded.divisor == r.divisor && decoded.offset == r.offset);
+    g_assert (decoded.bytes () == 9*8*(mode ? 32 : 4));
+  }
+  for (double value : {std::numeric_limits<double>::quiet_NaN (),std::numeric_limits<double>::infinity ()}) {
+    for (unsigned mode : {0u,1u}) {
+      auto r = convolution; r.sample_mode = mode; r.matrix[17] = value;
+      rejects ([&] { FilterWire::request (r); });
+      r = convolution; r.sample_mode = mode; r.divisor = value; rejects ([&] { FilterWire::request (r); });
+      r = convolution; r.sample_mode = mode; r.offset = value; rejects ([&] { FilterWire::request (r); });
+    }
+  }
+  for (double divisor : {0.0,-0.0,1e-310,1e100}) {
+    auto r = convolution; r.divisor = divisor; rejects ([&] { FilterWire::request (r); });
+  }
+  for (auto entry : {std::pair<std::size_t,std::uint32_t>{88,4},{96,3},{100,1},{340,1},{60,1}}) {
+    auto frame = FilterWire::request (convolution); put32 (frame,entry.first,entry.second);
+    rejects ([&] { FilterWire::request (frame); });
+  }
+  {
+    auto r = convolution; r.sample_mode = 1;
+    auto frame = FilterWire::request (r); put32 (frame,100,frame.payload[100] == 1 ? 2 : 1);
+    rejects ([&] { FilterWire::request (frame); }); // explicitly reject the other host byte order
+    FilterWire::Result aligned (32,true,false,32);
+    rejects ([&] { aligned.accept ({FilterWire::Type::output,0,std::vector<std::uint8_t> (4)}); });
   }
 
   rejects ([&] { FilterWire::encode ({FilterWire::Type::success, 8, {}}); });

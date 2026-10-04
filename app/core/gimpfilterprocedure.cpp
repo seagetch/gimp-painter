@@ -27,6 +27,7 @@ extern "C" {
 #include "gimpprogress.h"
 #include "config/gimprc.h"
 #include "gegl/gimp-gegl.h"
+#include "gegl/gimp-babl.h"
 #include "pdb/gimppdb.h"
 #include "pdb/gimppdbcontext.h"
 #include "pdb/gimpprocedure.h"
@@ -531,6 +532,62 @@ ObjectRef<GimpProcedure> query_retinex (Gimp *gimp, GimpContext *context)
   return procedure;
 }
 
+constexpr const char *convolution_name = "plug-in-painter-convmatrix";
+void validate_convolution (GimpProcedure *procedure, GFile *file)
+{
+  if (!procedure || !GIMP_IS_PLUG_IN_PROCEDURE (procedure) ||
+      procedure->proc_type != GIMP_PDB_PROC_TYPE_PLUGIN ||
+      g_strcmp0 (gimp_object_get_name (procedure), convolution_name) ||
+      procedure->num_args != 9 || procedure->num_values || !procedure->args)
+    throw std::runtime_error ("Bundled Convolution procedure signature changed");
+  auto *plugin = GIMP_PLUG_IN_PROCEDURE (procedure);
+  if (!plugin->file || !g_file_equal (plugin->file, file) || plugin->file_proc ||
+      plugin->batch_interpreter || plugin->installed_during_init || plugin->menu_paths || plugin->menu_label ||
+      g_strcmp0 (plugin->image_types, "RGB*, GRAY*") ||
+      plugin->sensitivity_mask != GIMP_PROCEDURE_SENSITIVE_DRAWABLE)
+    throw std::runtime_error ("Bundled Convolution executable registration changed");
+  const char *names[] = {"run-mode","image","drawables","matrix","alpha-alg","divisor","offset","channels","border-mode"};
+  const GType types[] = {GIMP_TYPE_RUN_MODE,GIMP_TYPE_IMAGE,GIMP_TYPE_CORE_OBJECT_ARRAY,
+    GIMP_TYPE_DOUBLE_ARRAY,G_TYPE_INT,G_TYPE_DOUBLE,G_TYPE_DOUBLE,GIMP_TYPE_INT32_ARRAY,G_TYPE_INT};
+  for (unsigned i = 0; i < 9; ++i)
+    if (!procedure->args[i] || g_strcmp0 (g_param_spec_get_name (procedure->args[i]),names[i]) ||
+        G_PARAM_SPEC_VALUE_TYPE (procedure->args[i]) != types[i] ||
+        (procedure->args[i]->flags & G_PARAM_READWRITE) != G_PARAM_READWRITE)
+      throw std::runtime_error ("Bundled Convolution argument name or type changed");
+  auto **args = procedure->args;
+  if (!G_IS_PARAM_SPEC_ENUM (args[0]) || G_PARAM_SPEC_ENUM (args[0])->default_value != GIMP_RUN_NONINTERACTIVE ||
+      !GIMP_IS_PARAM_SPEC_IMAGE (args[1]) || gimp_param_spec_image_none_allowed (args[1]) ||
+      !GIMP_IS_PARAM_SPEC_CORE_OBJECT_ARRAY (args[2]) ||
+      gimp_param_spec_core_object_array_get_object_type (args[2]) != GIMP_TYPE_DRAWABLE ||
+      !GIMP_IS_PARAM_SPEC_DOUBLE_ARRAY (args[3]) || !GIMP_IS_PARAM_SPEC_INT32_ARRAY (args[7]) ||
+      !G_IS_PARAM_SPEC_INT (args[4]) || G_PARAM_SPEC_INT (args[4])->minimum != G_MININT ||
+      G_PARAM_SPEC_INT (args[4])->maximum != G_MAXINT || G_PARAM_SPEC_INT (args[4])->default_value != 1 ||
+      !G_IS_PARAM_SPEC_INT (args[8]) || G_PARAM_SPEC_INT (args[8])->minimum != 0 ||
+      G_PARAM_SPEC_INT (args[8])->maximum != 2 || G_PARAM_SPEC_INT (args[8])->default_value != 2)
+    throw std::runtime_error ("Bundled Convolution argument constraints changed");
+  for (unsigned i : {5u,6u})
+    if (!G_IS_PARAM_SPEC_DOUBLE (args[i]) || G_PARAM_SPEC_DOUBLE (args[i])->minimum != -G_MAXDOUBLE ||
+        G_PARAM_SPEC_DOUBLE (args[i])->maximum != G_MAXDOUBLE ||
+        G_PARAM_SPEC_DOUBLE (args[i])->default_value != (i == 5 ? 1 : 0))
+      throw std::runtime_error ("Bundled Convolution numeric constraints changed");
+}
+ObjectRef<GimpProcedure> query_convolution (Gimp *gimp, GimpContext *context)
+{
+  const auto path = filter_plugin_path (FilterProcedure::convolution);
+  auto file = ObjectRef<GFile>::adopt (g_file_new_for_path (path.c_str ()));
+  auto definition = ObjectRef<GimpPlugInDef>::adopt (gimp_plug_in_def_new (file.get ()));
+  gimp_plug_in_manager_call_query (gimp->plug_in_manager, context, definition.get ());
+  if (definition.get ()->has_init || !definition.get ()->procedures || definition.get ()->procedures->next)
+    throw std::runtime_error ("Bundled Convolution returned unexpected registrations");
+  auto procedure = ObjectRef<GimpProcedure>::retain (GIMP_PROCEDURE (definition.get ()->procedures->data));
+  validate_convolution (procedure.get (), file.get ());
+  gimp_plug_in_manager_add_procedure (gimp->plug_in_manager,GIMP_PLUG_IN_PROCEDURE (procedure.get ()));
+  gimp_pdb_register_procedure (gimp->pdb,procedure.get ());
+  if (gimp_pdb_lookup_procedure (gimp->pdb,convolution_name) != procedure.get ())
+    throw std::runtime_error ("Cannot register bundled Convolution in private PDB");
+  return procedure;
+}
+
 constexpr const char *merge_shadow_name = "gimp-drawable-merge-shadow";
 
 void validate_merge_shadow (GimpProcedure *procedure)
@@ -670,13 +727,128 @@ bool each_chunk (const FilterProcedureRequest& request, std::atomic<bool>& cance
     for (std::uint32_t x = 0; x < request.width;)
       {
         if (cancel.load (std::memory_order_relaxed)) return false;
-        const auto width = std::min<std::uint32_t> (request.width - x, transfer_bytes / 4);
+        const auto width = std::min<std::uint32_t> (request.width - x, transfer_bytes / request.bytes_per_pixel ());
         const GeglRectangle rect { int (x), int (y), int (width), 1 };
-        const std::uint64_t offset = (std::uint64_t (y) * request.width + x) * 4;
-        function (rect, offset, std::size_t (width) * 4);
+        const std::uint64_t offset = (std::uint64_t (y) * request.width + x) * request.bytes_per_pixel ();
+        function (rect, offset, std::size_t (width) * request.bytes_per_pixel ());
         x += width;
       }
   return !cancel.load (std::memory_order_relaxed);
+}
+
+FilterProcedureDisposition run_convolution (const FilterProcedureRequest& request,
+  FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel)
+{
+  using Disposition = FilterProcedureDisposition;
+  const auto region = request.execution_region ();
+  const auto sample = request.sample_mode ? sizeof (double) : std::size_t (1);
+  const auto stride = request.bytes_per_pixel ();
+  const bool alpha = request.storage_channels % 2 == 0;
+  std::array<std::uint8_t, transfer_bytes> carrier {}, packed {};
+  const auto validate = [&] (std::size_t count) {
+    for (std::size_t at = 0; at < count; at += stride)
+      if (request.sample_mode) {
+        double p[4]; std::memcpy (p,carrier.data () + at,32);
+        for (double value : p) if (!std::isfinite (value))
+          throw std::invalid_argument ("Convolution requires finite native samples");
+        if (p[3] < 0 || p[3] > 1 || (!alpha && p[3] != 1) ||
+            (request.gray && (p[0] != p[1] || p[0] != p[2])))
+          throw std::invalid_argument ("Invalid Convolution native carrier");
+      } else {
+        const auto *p = carrier.data () + at;
+        if ((!alpha && p[3] != 255) || (request.gray && (p[0] != p[1] || p[0] != p[2])))
+          throw std::invalid_argument ("Invalid Convolution byte carrier");
+      }
+  };
+  if (!region.intersects) {
+    if (!each_chunk (request,cancel,[&] (const GeglRectangle&,std::uint64_t at,std::size_t count) {
+          input.read (at,count,carrier.data ()); validate (count); output.write (at,count,carrier.data ());
+        })) return Disposition::pending;
+    output.flush (); return cancel.load () ? Disposition::pending : Disposition::no_merge;
+  }
+  PrivateRuntime runtime; runtime.initialize ();
+  Gimp *gimp = runtime.get ();
+  auto context = ObjectRef<GimpContext>::adopt (gimp_pdb_context_new (gimp,gimp_get_user_context (gimp),TRUE));
+  auto procedure = query_convolution (gimp,context.get ()); runtime.wait_for_plugins ();
+  const GimpPrecision precisions[] = {GIMP_PRECISION_U8_NON_LINEAR,GIMP_PRECISION_DOUBLE_LINEAR,
+    GIMP_PRECISION_DOUBLE_NON_LINEAR,GIMP_PRECISION_DOUBLE_PERCEPTUAL};
+  const auto precision = precisions[request.sample_mode];
+  auto image = ObjectRef<GimpImage>::adopt (gimp_image_new (gimp,request.width,request.height,
+    request.gray ? GIMP_GRAY : GIMP_RGB,precision));
+  if (!image) throw std::runtime_error ("Cannot create private Convolution image");
+  gimp_image_undo_disable (image.get ());
+  /* Same component encoding in both directions. The child does no ICC
+   * conversion; original drawable space remains exclusively in the owner. */
+  const Babl *format = gimp_babl_format (request.gray ? GIMP_GRAY : GIMP_RGB,precision,alpha,nullptr);
+  auto layer = ObjectRef<GimpLayer>::sink (gimp_layer_new (image.get (),request.width,request.height,
+    format,"Private Convolution input",1.0,GIMP_LAYER_MODE_NORMAL_LEGACY));
+  if (!layer || !gimp_image_add_layer (image.get (),layer.get (),nullptr,0,FALSE))
+    throw std::runtime_error ("Cannot attach private Convolution drawable");
+  auto buffer = ObjectRef<GeglBuffer>::retain (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer.get ())));
+  if (!buffer || gegl_buffer_get_format (buffer.get ()) != format)
+    throw std::runtime_error ("Private Convolution native storage changed");
+  if (region.selected)
+    gimp_channel_select_rectangle (gimp_image_get_mask (image.get ()),region.x1,region.y1,
+      region.x2-region.x1,region.y2-region.y1,GIMP_CHANNEL_OP_REPLACE,FALSE,0,0,FALSE);
+  if (!each_chunk (request,cancel,[&] (const GeglRectangle& rect,std::uint64_t at,std::size_t count) {
+        input.read (at,count,carrier.data ()); validate (count);
+        for (std::size_t p = 0; p < count / stride; ++p)
+          for (unsigned c = 0; c < request.storage_channels; ++c) {
+            const auto source = alpha && c == request.storage_channels-1 ? 3 : request.gray ? 0 : c;
+            std::memcpy (packed.data () + (p*request.storage_channels+c)*sample,
+              carrier.data () + p*stride+source*sample,sample);
+          }
+        gegl_buffer_set (buffer.get (),&rect,0,format,packed.data (),GEGL_AUTO_ROWSTRIDE);
+      })) return Disposition::pending;
+  gegl_buffer_flush (buffer.get ());
+  ValuesRef arguments (gimp_procedure_get_arguments (procedure.get ()));
+  if (!arguments || gimp_value_array_length (arguments.get ()) != 9)
+    throw std::runtime_error ("Cannot construct private Convolution arguments");
+  GObject *drawables[] = {G_OBJECT (layer.get ()),nullptr};
+  g_value_set_enum (gimp_value_array_index (arguments.get (),0),GIMP_RUN_NONINTERACTIVE);
+  g_value_set_object (gimp_value_array_index (arguments.get (),1),image.get ());
+  g_value_set_boxed (gimp_value_array_index (arguments.get (),2),drawables);
+  gimp_value_set_double_array (gimp_value_array_index (arguments.get (),3),request.matrix.data (),25);
+  g_value_set_int (gimp_value_array_index (arguments.get (),4),request.alpha_alg);
+  g_value_set_double (gimp_value_array_index (arguments.get (),5),request.divisor);
+  g_value_set_double (gimp_value_array_index (arguments.get (),6),request.offset);
+  gimp_value_set_int32_array (gimp_value_array_index (arguments.get (),7),request.channels.data (),5);
+  g_value_set_int (gimp_value_array_index (arguments.get (),8),request.border);
+  ProcedureProgress progress; ShadowCapture capture;
+  if (request.raw_shadow) capture.install (gimp,layer.get ());
+  GError *error = nullptr;
+  ValuesRef result (gimp_procedure_execute (procedure.get (),gimp,context.get (),progress.get (),arguments.get (),&error));
+  ErrorRef error_owner (error); runtime.wait_for_plugins ();
+  if (cancel.load ()) return Disposition::pending;
+  if (error || !result || gimp_value_array_length (result.get ()) != 1 ||
+      !G_VALUE_HOLDS (gimp_value_array_index (result.get (),0),GIMP_TYPE_PDB_STATUS_TYPE) ||
+      g_value_get_enum (gimp_value_array_index (result.get (),0)) != GIMP_PDB_SUCCESS)
+    throw std::runtime_error (error ? error->message : "Bundled Convolution did not finish successfully");
+  buffer = request.raw_shadow ? capture.finish () : ObjectRef<GeglBuffer>::retain (
+    gimp_drawable_get_buffer (GIMP_DRAWABLE (layer.get ())));
+  const auto disposition = request.raw_shadow ? Disposition::shadow : Disposition::merged;
+  if (!each_chunk (request,cancel,[&] (const GeglRectangle& rect,std::uint64_t at,std::size_t count) {
+        gegl_buffer_get (buffer.get (),&rect,1.0,format,packed.data (),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+        for (std::size_t p = 0; p < count / stride; ++p)
+          for (unsigned c = 0; c < 4; ++c) {
+            auto *target = carrier.data () + p*stride+c*sample;
+            if (c == 3 && !alpha) {
+              const double one = 1;
+              if (request.sample_mode) std::memcpy (target,&one,8); else *target = 255;
+            } else {
+              const auto source = c == 3 ? request.storage_channels-1 : request.gray ? 0 : c;
+              std::memcpy (target,packed.data ()+(p*request.storage_channels+source)*sample,sample);
+            }
+          }
+        validate (count);
+        if (!request.raw_shadow && !request.sample_mode) {
+          input.read (at,count,packed.data ());
+          for (std::size_t p = 0; p < count; p += 4)
+            if (!carrier[p+3]) std::memcpy (carrier.data ()+p,packed.data ()+p,3);
+        }
+        output.write (at,count,carrier.data ());
+      })) return Disposition::pending;
+  output.flush (); return cancel.load () ? Disposition::pending : disposition;
 }
 } // namespace
 
@@ -718,6 +890,7 @@ run_filter_procedure (const FilterProcedureRequest& request,
   if (&input == &output || input.size () != bytes || output.size () != bytes)
     throw std::invalid_argument ("Private Filter requires separate exact-sized RGBA8 rasters");
   if (cancel.load (std::memory_order_relaxed)) return Disposition::pending;
+  if (request.procedure == FilterProcedure::convolution) return run_convolution (request,input,output,cancel);
   std::array<std::uint8_t, transfer_bytes> pixels;
   const auto validate_carrier = [&] (std::size_t count) {
     for (std::size_t p = 0; p < count; p += 4)

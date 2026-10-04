@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "scope": "All archive members/buffer hashes and actual old 3x3 numeric/ignored-tail outputs verified; original304 corpus unchanged",
+  "reports": [
+    {
+      "archive": "migration/fixtures/legacy-convolution-extreme.tar.gz",
+      "sha256": "0c6bd14d3ce7396e9edb6dd38ef59f1e8909fd102b79cb0a5f60bd4036914a13",
+      "manifest_sha256": "f0a7c6ca58cd9872b8a38089ea4e40f3a3cf4428c05799a0b2b6e4dbdad94c46",
+      "members_verified": 15,
+      "calls_verified": 2,
+      "observed_case_ids": [
+        "pdb-c1-3x3-extreme-center",
+        "pdb-c3-3x3-extreme-center"
+      ]
+    },
+    {
+      "archive": "migration/fixtures/legacy-convolution-appendix.tar.gz",
+      "sha256": "f9f152c6c5ac732582c459530a3ee5c0f92951023ace6a8541db4cb0a671de07",
+      "manifest_sha256": "076e309e3430dd0ccb5b9861361b0b233dff97bf9404b453ddd3f3a439a0f580",
+      "members_verified": 16,
+      "calls_verified": 6,
+      "observed_case_ids": [
+        "pdb-c1-3x3-trailing-1",
+        "pdb-c1-3x3-trailing-2",
+        "pdb-c1-3x3-high-offset",
+        "pdb-c3-3x3-trailing-1",
+        "pdb-c3-3x3-trailing-2",
+        "pdb-c3-3x3-high-offset"
+      ]
+    }
+  ]
+}

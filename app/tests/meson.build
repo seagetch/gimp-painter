@@ -93,7 +93,7 @@ foreach test_name : app_tests
     ],
     suite: 'app',
     # This suite includes real8193x8193 spill and hundreds of old Gauss buffers.
-    timeout: test_name == 'gimp-filter-layer' ? 300 : 60,
+    timeout: test_name == 'gimp-filter-layer' ? 600 : 60,
     is_parallel : false,
     priority: prio,
   )

@@ -47,7 +47,9 @@ src/dst/in/out/w1/w2 propagates failure before shadow acquisition or publication
 
 ## Transport
 
-GPF4 / `--filter-worker-v4` uses the existing24-byte header and88-byte request.
+The original Retinex checkpoint used GPF4 / `--filter-worker-v4`. Current GPF5
+retains these fields in its first88 bytes and requires canonical unused
+Convolution fields; see [Convolution transport](filter-convolution.md). GPF4 used the existing24-byte header and88-byte request.
 Offsets0..56 keep the accepted selector, dimensions, Blinds scalars, Gray tag,
 background, start region/flags and Small Tiles factor. Native storage is at60;
 Retinex scale/nscales/mode occupy64/68/72; word76 is reserved zero; cvar is an
