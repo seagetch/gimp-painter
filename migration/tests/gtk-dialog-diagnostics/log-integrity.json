@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "archive": "logs.tar.gz",
+  "archive_sha256": "15f743bdc82693660c787e1d04faf2b46393b3a14a8befdea3b690e092737351",
+  "archive_bytes": 16642,
+  "deterministic": "sorted USTAR members,zero uid/gid/mtime,gzip mtime0",
+  "members": [
+    {
+      "path": "baseline-analysis.txt",
+      "bytes": 9442,
+      "sha256": "2cd4bb7ec120a0e11ba13e13b58b02d3b9a9270bbacc8f23894a633f40be2daf"
+    },
+    {
+      "path": "baseline/app.stderr",
+      "bytes": 17578,
+      "sha256": "f8b8a2b172507c2e7d9f9b4dc7a50e705196a7a84c9324d2a21f093ecca1f872"
+    },
+    {
+      "path": "baseline/app.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline/binary-sha256.txt",
+      "bytes": 222,
+      "sha256": "8e2ef822abb60c9cc73ae8485c9b743d2f1fce6e804a053b4764e7575183fb5e"
+    },
+    {
+      "path": "baseline/session.txt",
+      "bytes": 56,
+      "sha256": "d154a835eb8010fe4236b06034feb5d4ca937410fdd5666a4c836f1b9ee7f335"
+    },
+    {
+      "path": "critical-stack.c",
+      "bytes": 946,
+      "sha256": "2ed224e7581c679089c16733d96451b6e63d0369927010062ac11928fdb6ce99"
+    },
+    {
+      "path": "final-repro/build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-repro/exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "final-repro/identity.txt",
+      "bytes": 336,
+      "sha256": "324569b41e7b6946c3388045d4363d2bd97693388122eb46c4cd43d38af39ea5"
+    },
+    {
+      "path": "final-repro/stderr.log",
+      "bytes": 261,
+      "sha256": "64ae016c9ca3f63fe67f62cf08a791c3013e1319b43f5de359f7c57be591d857"
+    },
+    {
+      "path": "final-repro/stdout.log",
+      "bytes": 600,
+      "sha256": "0150d2910430a51d387195ab9a846ab5a0faf080a45cdd7707bd5e8cc692af52"
+    },
+    {
+      "path": "launch-baseline.sh",
+      "bytes": 1358,
+      "sha256": "9475c32ea27397253583df59e5bf738e286ce76e8e0a3ceba4e41c37c673e8f1"
+    },
+    {
+      "path": "launch-native.sh",
+      "bytes": 1354,
+      "sha256": "be9fa8a6ebd3cce398da27fd100405567854e6ffb94f5271dbb0dd158e76c85a"
+    },
+    {
+      "path": "launch-stack.sh",
+      "bytes": 1442,
+      "sha256": "ea6ad6a94f3a53907ff25b592f296de05e75a8d4c3c6810e8f79c5b6c7d99e49"
+    },
+    {
+      "path": "minimal-original.c",
+      "bytes": 2997,
+      "sha256": "e13cb1fa34919f36722ecee8dd8d720664da97ee5b67a7fd0435fda7abb013fa"
+    },
+    {
+      "path": "minimal.exit",
+      "bytes": 19,
+      "sha256": "74a183a0e8c1df17a7c4fe587d6c65f9d77be43c6321ca88aae2d060a322db18"
+    },
+    {
+      "path": "minimal.stderr",
+      "bytes": 3643,
+      "sha256": "f9f2212b88339a277952b66b3e9442cb8f1c45c7dfa5bfa00d51ea1d713a2819"
+    },
+    {
+      "path": "minimal.stdout",
+      "bytes": 234,
+      "sha256": "f48d29b229f2c24497c66dd5335df5300ec71bfd0f2269e3425aafa4b5869506"
+    },
+    {
+      "path": "native/app.stderr",
+      "bytes": 21018,
+      "sha256": "b2de3412ee61ad067153b4ccb2c6b9f3751e4cdd6cc7fb983acff7c947ddd0c2"
+    },
+    {
+      "path": "native/app.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native/binary-sha256.txt",
+      "bytes": 222,
+      "sha256": "8e2ef822abb60c9cc73ae8485c9b743d2f1fce6e804a053b4764e7575183fb5e"
+    },
+    {
+      "path": "native/session.txt",
+      "bytes": 56,
+      "sha256": "b8d28c7127ac5051d384656a30c3f2d5c1ff2a92ddd20db355572be185ea4cab"
+    },
+    {
+      "path": "operations.tsv",
+      "bytes": 3476,
+      "sha256": "2eca9eb9a46c8d97bb312cf0001168ec9cee7fc1fbdf49eb82699698c2e07fb8"
+    },
+    {
+      "path": "run-final-repros.sh",
+      "bytes": 621,
+      "sha256": "2610f62d18cb99ee093febbe245e8ca3c1a163d220f8a078adaa56e6a56caca4"
+    },
+    {
+      "path": "runtime-identity.txt",
+      "bytes": 684,
+      "sha256": "0381fd83341f103c29baed3863db731c4fe52962f8d86f49fc95ec1c2d2feda7"
+    },
+    {
+      "path": "stack/app.stderr",
+      "bytes": 26545,
+      "sha256": "949fdda869bb37aee0167ea9764c9af4e9c4f5385a55803ca7b948e5119fb26b"
+    },
+    {
+      "path": "stack/app.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stack/binary-sha256.txt",
+      "bytes": 222,
+      "sha256": "8e2ef822abb60c9cc73ae8485c9b743d2f1fce6e804a053b4764e7575183fb5e"
+    },
+    {
+      "path": "stack/session.txt",
+      "bytes": 56,
+      "sha256": "648c2e0a4d1b502e4ea19dc604cb51076c51d2c1781d2ff6c7d7ffca26017392"
+    },
+    {
+      "path": "strict-repro/build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "strict-repro/exit-code.txt",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "strict-repro/identity.txt",
+      "bytes": 337,
+      "sha256": "c8e53ebcbae3614b373d5c296e683342dbae849934805b0d91625e78adc805c5"
+    },
+    {
+      "path": "strict-repro/stderr.log",
+      "bytes": 261,
+      "sha256": "278ffa919dde8ac76eafff45a55565f0ce9c1d5ad87397243b983bb6fa08c7c6"
+    },
+    {
+      "path": "strict-repro/stdout.log",
+      "bytes": 592,
+      "sha256": "16eaf3d84f46e9a237e676da40d233e291ea3f1a1062749ad3148982874c0332"
+    },
+    {
+      "path": "structural.txt",
+      "bytes": 54,
+      "sha256": "1c4b2c049610693d4cae3f93580ac8f43d77dff8406ae9af6a536728ca7b4ad0"
+    },
+    {
+      "path": "upstream-status.txt",
+      "bytes": 5545,
+      "sha256": "49a18e2ea6d23b0e5541c58f1dabc92b6b562173ef527c66c33023bd65f0cc7e"
+    }
+  ],
+  "excluded": "private profiles/cache/fixtures/XCF/ELF/screenshots/core/environment dumps; final repro source is adjacent in repository"
+}

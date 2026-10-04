@@ -1078,6 +1078,7 @@
 | 30.001 | [ ] | 追加 actions の登録を統合する | 24.017, 25.012, 26.014, 27.015, 28.015, 29.020 | 重複 ID と未登録 command がない |
 | 30.001/layer-create-edit | [x] | Clone/Filter作成・編集を実GTK actions/menuへ接続する | 14.015/reference-undo-snapshot, 17.001/dependency-publication | 16 native GTK通常/focused sanitizer合格、複製参照/定義Undo・未知bytes表示保持・dialog/child寿命再入を確認。実appでbrush→Clone→Filter/Undo/Redoを視認。全popup/device/platformは未完了 |
 | 30.001/isolated-filter-editors | [x] | Blinds/Small Tiles/Retinex/Convolutionの作成・再編集をnative GTKへ接続する | 30.001/layer-create-edit, 16.003/isolated-convolution-route | 実GTK35群＋最終境界2群を通常/7unit ASan・UBSanで合格（36unique、51 RTTI-only）。typed値・signed flags・配列・未知値・ignored tail保持、Undo/再入/実行中cache/Save再編集を確認。実app完走は報告済み、raw log消失・GTK/GDK診断原因未検証。全popup/platformは別gate |
+| 30.001/native-dialog-diagnostics | [x] | 実editor/Quitの2assertionをstackと独立GTK対照で分類する | 15.006/native-owner-progress | 同一binaryのAT-SPI操作で2組再現、bounded stackとGTK単独controlでDebian grabのNULL window・upstream ancestor型不一致を確認。既知欠陥mode0/fixed要求mode1、通常Retinex作成/編集/進捗取消し・Quit Cancel・新規XCF保存/正常終了0。依存欠陥と別device16criticalは未修正、全GTK clean/旧log全件同一原因とはしない |
 | 30.001/tool-group-state | [ ] | 上流tool groupへ旧展開・選択・保存状態を接続する | 30.001, 01.012 | 旧expanded state、active-tool、toolrc順序とgroup変更を個別に比較し、上流モデルで失う状態は移行する |
 | 30.002 | [ ] | 旧 shortcut の対応を実装する | 30.001 | 回転等の旧操作を復元可能 |
 | 30.003 | [ ] | 独自 tool の icon を登録する | 30.002 | テーマと scale に応じ表示 |
@@ -1185,6 +1186,8 @@
 | 34.001 | [ ] | Linux release build を作る | 07.017, 30.017 | debug 専用の依存なしで動く |
 | 34.002 | [ ] | Linux install manifest を検証する | 34.001 | 資源・plugin・locale が揃う |
 | 34.003 | [ ] | X11 入力を試験する | 34.002 | ペン・popup・回転が動く |
+| 34.003/gtk-atk-menu-guards | [ ] | 未表示menuのAT-SPI操作で起きるGTK依存の型guardを修正する | 30.001/native-dialog-diagnostics | Debian offscreen grabのNULL GdkWindowとupstream accessible祖先の型検査を再現可能な依存patchとして適用し、fixed-mode0・offscreen/通常入力/AT-SPIを独立検証する。GTK3.24.52側も未修正、source/license/runtime hashも更新する |
+| 34.003/dialog-device-diagnostics | [ ] | New Filter初回表示のGimpDeviceInfo/GdkDevice criticalをstackから修正する | 30.001/native-dialog-diagnostics | 保存済native raw logの16criticalを同一profile/device条件で再現しbounded stack・通常入力対照で原因を確定して修正する。今回分類したwindow/accessibility2assertionと混同しない |
 | 34.004 | [ ] | Wayland 入力を試験する | 34.003 | 座標・focus・popup 復帰が動く |
 | 34.005 | [ ] | clean 環境 package を作る | 34.004 | 作業ディレクトリ外から起動 |
 | 34.005/runtime-prototype | [x] | Linuxの隔離・再配置runtime梱包と検証手順を実装する | 03.009, 04.002/common-foundation | 5255file/418ELF・177brush/8presetをseal、別日本語pathでversion/Save再読込と実GTK stroke保存再開、11helper安全検査合格。prototypeのみでfinal source/binary一致・配布source/license・release/platform gateは未完了 |

@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "task": "30.001/native-dialog-diagnostics",
+  "status": "accepted_cause_classification_with_unfixed_dependencies",
+  "date": "2026-10-04",
+  "dependency_fixed": false,
+  "app_code_changed": false,
+  "source_identity": {
+    "base_commit": "d52b8c3422139332d8f181029cbdc377f3ff854d",
+    "base_tree": "412ac9ca167e870dbcd68d42cd2b04086570965c",
+    "application_sha256": "2d7d3c3e2a995207bdfc64d11d7ed3714d9e54a693abc45da790758d4f0eedb1",
+    "helper_sha256": "ee327f9bdc614ad02808f48be0e2b2a7f1a6dd385139cbedc83a565a93b231e6",
+    "test_source_sha256": "eba52ab23450758c18f9b961726003f29f675a1270f10ef3eac361057f0e6652",
+    "runner_sha256": "cde78bf9c9bbf781eb99829cb6a28b54ec448f1e18da8fbbb67a25ebc501b00c",
+    "shared_dialog_baseline": "3e30c05",
+    "shared_dialog_files_unchanged": [
+      "app/dialogs/quit-dialog.c",
+      "app/widgets/gimpdialogfactory.c",
+      "app/widgets/gimpmessagedialog.c",
+      "app/widgets/gimpviewabledialog.c",
+      "libgimpwidgets/gimpdialog.c",
+      "libgimpwidgets/gimpwidgetsutils.c"
+    ],
+    "shared_dialog_source_sha256": {
+      "app/dialogs/quit-dialog.c": "a08168610247e6bf91e3231da3121faee9354fbb823f7059cd2b3f253bc4a65f",
+      "app/widgets/gimpdialogfactory.c": "50e55e605e0a9bf274eb373f8303c9dfadce1b8a5c47d3f06d816397f94a5be3",
+      "app/widgets/gimpmessagedialog.c": "0583fb081913c95d50c4065c3beca9edb1d2193b74d7c9570c5da0f5836960b4",
+      "app/widgets/gimpviewabledialog.c": "a1e1bce09e86edeac06239d517c377c8952a9218647764f29b8995342e33178e",
+      "libgimpwidgets/gimpdialog.c": "aaf30639b8c9ec712f5d3fd59a0674728392fda1da4e36525359f9f2d6fa2d59",
+      "libgimpwidgets/gimpwidgetsutils.c": "aa84583b0b60d1e53136cfb87d8d2e55b8f3cf0901991f38727db676f76c2a51"
+    },
+    "initial_upstream_commit": "95f6410f25c5186686db7a489d79c1e79187cd41",
+    "initial_upstream_object_available": false
+  },
+  "dependency_identity": {
+    "gtk_package": "libgtk-3-0t64 3.24.49-3 amd64",
+    "gtk_library_sha256": "a56aed9f46dc47d054555880c6dc543f41846b0732520c7d2e5ef45c5c7f2ddf",
+    "gtk_build_id": "d54786f1fa09b343b302a9725f239075bbf0d0eb",
+    "deb_sha256": "4aa8828f01365f937f3bf69f812c8107ee4c8a2b208ffdd7656e8de5de81d98f",
+    "locked_package_manifest_sha256": "553f4051b91626bc2f5470373fd3e8d67c8d61ec62103b2addcab7a16492129f",
+    "archive_library_matches_extracted_library": true,
+    "project_dependency_modified": false,
+    "glib": "2.84.4",
+    "patch_name": "016_no_offscreen_widgets_grabbing.patch",
+    "upstream_menu_accessibility_sha256": "48790b88dc8adf573752b9fd0131894f1fe14f95e2853136296837da0c90e17e",
+    "upstream_matching_refs": {
+      "3.24.49": "198aeace1e9e119c77f4d669bd8efdf337828ad1",
+      "3.24.52": "6a0b360d473f7c546314738c0c8dd9829eb9d3c2",
+      "gtk-3-24_observed": "2776f156e2405727faea5d7ffa5bd035dc3945c0"
+    }
+  },
+  "cause": {
+    "gdk_window": "GTK ATK menu action selects unmapped menu; Debian gtk_grab_add patch passes NULL GdkWindow to get_window_type before application action",
+    "gtk_accessible": "GTK ensure_menus_unposted traverses valid GtkToplevelAccessible AtkObject ancestor and converts it to GtkAccessible without a type guard after action",
+    "gtk_offsets": [
+      "gtk_grab_add+0x2e",
+      "0x21cf9c",
+      "0x403d81",
+      "0x403dc8"
+    ],
+    "lifetime_defect_established": false,
+    "affects": "AT-SPI activation of unmapped menu items, including potential assistive-technology use; not claimed exclusive to test automation"
+  },
+  "standalone": {
+    "links_gimp": false,
+    "final_source_build_flags": [
+      "-std=c11",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ],
+    "known_defect": {
+      "exit_code": 0,
+      "target_counts": [
+        1,
+        1
+      ],
+      "other_gtk_gdk_criticals": 0,
+      "dialogs": 2
+    },
+    "check_fixed": {
+      "exit_code": 1,
+      "expected_result": "fail because unchanged dependency remains defective"
+    },
+    "observed_toplevel": {
+      "type": "GtkWindow",
+      "has_window": false,
+      "menu_item_mapped": false
+    },
+    "observed_root_ancestor": {
+      "type": "GtkToplevelAccessible",
+      "is_gtk_accessible": false
+    },
+    "direct_gtk_activation_added_target_counts": [
+      0,
+      0
+    ],
+    "diagnostics_forwarded_unchanged": true,
+    "predicate_scope": "Gtk/Gdk criticals across activation and teardown; other domains retained in raw stderr",
+    "display": "actual cloud Linux GTK display :0"
+  },
+  "sessions": {
+    "baseline": {
+      "started_utc": "2026-10-04T08:22:01Z",
+      "ended_utc": "2026-10-04T08:24:22Z",
+      "exit_code": 0,
+      "counts": {
+        "gdk_window_get_window_type": 2,
+        "gtk_accessible_get_widget": 2,
+        "other_criticals": 16
+      },
+      "raw_log": "baseline/app.stderr",
+      "app_and_helper_hashes_match": true
+    },
+    "stack": {
+      "started_utc": "2026-10-04T08:25:09Z",
+      "ended_utc": "2026-10-04T08:30:27Z",
+      "exit_code": 0,
+      "counts": {
+        "gdk_window_get_window_type": 2,
+        "gtk_accessible_get_widget": 2,
+        "other_criticals": 16
+      },
+      "raw_log": "stack/app.stderr",
+      "app_and_helper_hashes_match": true
+    },
+    "native": {
+      "started_utc": "2026-10-04T08:33:00Z",
+      "ended_utc": "2026-10-04T08:42:02Z",
+      "exit_code": 0,
+      "counts": {
+        "gdk_window_get_window_type": 0,
+        "gtk_accessible_get_widget": 0,
+        "other_criticals": 16
+      },
+      "raw_log": "native/app.stderr",
+      "app_and_helper_hashes_match": true
+    }
+  },
+  "native_acceptance": {
+    "fixture_sha256": "f552c90e4ce1132310e3cf5e5beb01d1b26dbe07377c3ed1e0fc183a4f68d067",
+    "fixture": "private deterministic3072x3072 RGB U8 nonlinear image",
+    "profile_and_overlay": "copied previous synthetic progress-session profile/data without resource repair",
+    "actions": [
+      "visible menu New Filter",
+      "Retinex240/3/uniform/1.2 applied and completed",
+      "visible menu Edit;scales3to8 accepted;active progress visible",
+      "first cancellation attempt arrived after completion, not counted",
+      "scale240to256 accepted;reopen;active Cancel Update visibly produced Filter execution cancelled",
+      "close editor;native Ctrl+Q prompt",
+      "verified accessible Cancel button closed Quit (not an unmapped menu action)",
+      "new private scratch XCF save;native Ctrl+Q normal exit0"
+    ],
+    "synthetic_saved_xcf_sha256": "4907b77d40e17eea78e32b8f0f063921191f3c546d3bdbbda2f6b38cc9881f74",
+    "final_discard_tested": false,
+    "pixel_equality_claimed": false,
+    "screenshots_published": false,
+    "visual_states": "directly observed through native computer tool; operation journal preserved",
+    "target_diagnostics_absent": true,
+    "whole_app_log_clean": false
+  },
+  "other_diagnostics": {
+    "device_critical_count_per_app_session": 16,
+    "native_lines": [
+      92,
+      121
+    ],
+    "native_printed_local_time": "04:33:51.915",
+    "correlated_utc_time": "08:33:51.915",
+    "first_operation": "first New Filter opening with native pointer input",
+    "functions": [
+      "gimp_device_info_get_device",
+      "gdk_device_get_device_type",
+      "gdk_device_get_source",
+      "gdk_device_get_state",
+      "gdk_window_get_device_position_double",
+      "gdk_device_get_axis"
+    ],
+    "stack_captured": false,
+    "cause": "unclassified",
+    "gate": "34.003/dialog-device-diagnostics",
+    "resource_notices": "original missing icons/resources/localization and full logs preserved"
+  },
+  "instrumentation": {
+    "only_for": "stack-capture app and first independent control",
+    "method": "temporary GLib assertion-site interposer,32symbol frames maximum;forward original log unchanged",
+    "debugger_available": false,
+    "ptrace_attempted": false,
+    "core_dumps_enabled": false,
+    "locals_memory_environment_dumped": false,
+    "final_native_app_and_final_repro_instrumented": false
+  },
+  "sanitizers": {
+    "run": false,
+    "reason": "no lifetime defect or application/dependency lifetime change;standalone API reproducer and source/type evidence only"
+  },
+  "remaining_gates": [
+    "34.003/gtk-atk-menu-guards",
+    "34.003/dialog-device-diagnostics",
+    "original parent WBS/dependency/platform/release gates unchanged",
+    "no retroactive cause proof for lost editor logs or every occurrence in earlier stackless session"
+  ],
+  "logs": "log-integrity.json",
+  "verification": {
+    "test_predicate": "Gtk/Gdk criticals including teardown;both final modes rerun",
+    "artifact_checks": "source/binary identities,expected exits,raw diagnostic counts,all36archive members,WBS and diff checks",
+    "pinned_upstream_source_comparison": "included in upstream-status.txt;supersedes initial fetch limitation"
+  }
+}
