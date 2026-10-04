@@ -20,6 +20,22 @@ void validate (Type type, std::uint64_t offset, std::size_t size) {
     case Type::input: case Type::output:
       if (!size || size > pixel_limit || size % 4 || offset % 4) throw std::invalid_argument ("Invalid Filter pixel frame");
       break;
+    case Type::progress_start:
+      if (size < 1 || size > FilterProgress::text_limit + 1) throw std::invalid_argument ("Invalid Filter progress start");
+      break;
+    case Type::progress_end:
+      if (size) throw std::invalid_argument ("Invalid Filter progress end");
+      break;
+    case Type::progress_text:
+      if (size > FilterProgress::text_limit) throw std::invalid_argument ("Invalid Filter progress text");
+      break;
+    case Type::progress_value: case Type::progress_pulse:
+      if (size != 8) throw std::invalid_argument ("Invalid Filter progress value or pulse");
+      break;
+    case Type::progress_message:
+      if (size < 6 || size > 6 + FilterProgress::domain_limit + FilterProgress::text_limit)
+        throw std::invalid_argument ("Invalid Filter progress message");
+      break;
     case Type::request:
       if (offset || size != 344) throw std::invalid_argument ("Invalid Filter request frame");
       break;
@@ -35,24 +51,147 @@ void validate (Type type, std::uint64_t offset, std::size_t size) {
     default: throw std::invalid_argument ("Unknown Filter frame type");
   }
 }
+FilterProgress::Snapshot progress_snapshot (const Frame& f) {
+  validate (f.type, f.offset, f.payload.size ());
+  FilterProgress::Snapshot s;
+  const auto *b = f.payload.data ();
+  const auto text = [] (auto& target, const std::uint8_t *bytes, std::size_t size) {
+    if (size >= target.size () || !FilterProgress::valid_utf8 (bytes, size))
+      throw std::invalid_argument ("Invalid Filter progress UTF-8");
+    if (size) std::memcpy (target.data (), bytes, size);
+  };
+  switch (f.type) {
+    case Type::progress_start:
+      if (b[0] > 1) throw std::invalid_argument ("Invalid Filter progress flags");
+      s.active = true; s.cancellable = b[0]; text (s.text, b + 1, f.payload.size () - 1); break;
+    case Type::progress_end: break;
+    case Type::progress_text: text (s.text, b, f.payload.size ()); break;
+    case Type::progress_value: {
+      const auto bits = get (b, 8); std::memcpy (&s.value, &bits, 8);
+      if (!std::isfinite (s.value) || s.value < 0 || s.value > 1)
+        throw std::invalid_argument ("Invalid Filter progress fraction");
+      break;
+    }
+    case Type::progress_pulse:
+      s.pulses = get (b, 8);
+      if (!s.pulses) throw std::invalid_argument ("Empty Filter progress pulse");
+      break;
+    case Type::progress_message: {
+      const auto severity = get (b, 4), domain = get (b + 4, 2);
+      if (severity > 4 || domain > FilterProgress::domain_limit || domain > f.payload.size () - 6)
+        throw std::invalid_argument ("Invalid Filter progress message fields");
+      s.message_severity = int (severity);
+      text (s.message_domain, b + 6, domain);
+      text (s.message_text, b + 6 + domain, f.payload.size () - 6 - domain); break;
+    }
+    default: throw std::invalid_argument ("Not a Filter progress frame");
+  }
+  return s;
+}
 }
 std::size_t payload_size (const std::uint8_t *h) {
-  if (std::memcmp (h, "GPF5", 4) || get (h + 4, 2) != 5 || get (h + 20, 4))
+  if (std::memcmp (h, "GPF6", 4) || get (h + 4, 2) != 6 || get (h + 20, 4))
     throw std::invalid_argument ("Invalid Filter wire version or reserved field");
   const auto size = std::size_t (get (h + 8, 4));
   validate (Type (get (h + 6, 2)), get (h + 12, 8), size); return size;
 }
 std::vector<std::uint8_t> encode (const Frame& f) {
   validate (f.type, f.offset, f.payload.size ());
+  if (is_progress (f.type)) progress_snapshot (f);
   std::vector<std::uint8_t> b (header_size + f.payload.size (), 0);
-  std::memcpy (b.data (), "GPF5", 4); put (b, 4, 5, 2); put (b, 6, std::uint16_t (f.type), 2);
+  std::memcpy (b.data (), "GPF6", 4); put (b, 4, 6, 2); put (b, 6, std::uint16_t (f.type), 2);
   put (b, 8, f.payload.size (), 4); put (b, 12, f.offset, 8);
   std::copy (f.payload.begin (), f.payload.end (), b.begin () + header_size); return b;
 }
 Frame decode (const std::uint8_t *b, std::size_t size) {
   if (size < header_size || payload_size (b) != size - header_size)
     throw std::invalid_argument ("Truncated or trailing Filter frame bytes");
-  return {Type (get (b + 6, 2)), get (b + 12, 8), {b + header_size, b + size}};
+  Frame frame {Type (get (b + 6, 2)), get (b + 12, 8), {b + header_size, b + size}};
+  if (is_progress (frame.type)) progress_snapshot (frame);
+  return frame;
+}
+bool is_progress (Type type) noexcept {
+  return type >= Type::progress_start && type <= Type::progress_message;
+}
+Frame progress (FilterProgress::Event event, const FilterProgress::Snapshot& state) {
+  Frame f {Type::progress_end, 0, {}};
+  const auto append = [&] (const auto& text) {
+    const auto end = std::find (text.begin (), text.end (), '\0');
+    if (end == text.end ()) throw std::invalid_argument ("Unterminated Filter progress text");
+    f.payload.insert (f.payload.end (), text.begin (), end);
+  };
+  switch (event) {
+    case FilterProgress::Event::start:
+      f.type = Type::progress_start; f.payload.push_back (state.cancellable ? 1 : 0); append (state.text); break;
+    case FilterProgress::Event::end: break;
+    case FilterProgress::Event::text: f.type = Type::progress_text; append (state.text); break;
+    case FilterProgress::Event::value: {
+      f.type = Type::progress_value; f.payload.resize (8);
+      std::uint64_t bits; std::memcpy (&bits, &state.value, 8); put (f.payload, 0, bits, 8); break;
+    }
+    case FilterProgress::Event::pulse:
+      f.type = Type::progress_pulse; f.payload.resize (8); put (f.payload, 0, state.pulses, 8); break;
+    case FilterProgress::Event::message: {
+      f.type = Type::progress_message; f.payload.resize (6);
+      put (f.payload, 0, std::uint32_t (state.message_severity), 4);
+      append (state.message_domain); put (f.payload, 4, f.payload.size () - 6, 2);
+      append (state.message_text); break;
+    }
+  }
+  progress_snapshot (f); return f;
+}
+void publish_progress (const Frame& f, FilterProgress& channel) {
+  const auto s = progress_snapshot (f);
+  switch (f.type) {
+    case Type::progress_start: channel.start (s.cancellable, s.text.data ()); break;
+    case Type::progress_end: channel.end (); break;
+    case Type::progress_text: channel.set_text (s.text.data ()); break;
+    case Type::progress_value: channel.set_value (s.value); break;
+    case Type::progress_pulse: channel.pulse (s.pulses); break;
+    case Type::progress_message: channel.message (s.message_severity, s.message_domain.data (), s.message_text.data ()); break;
+    default: break;
+  }
+}
+bool ProgressBudget::admit (Clock::time_point now) {
+  if (now > last_) {
+    tokens_ = std::min (double (burst), tokens_ + std::chrono::duration<double> (now - last_).count () * per_second);
+    last_ = now;
+  }
+  if (tokens_ < 1) return false;
+  tokens_ -= 1; return true;
+}
+void ProgressWriter::send (Frame frame) {
+  if (sequence_ == std::numeric_limits<std::uint64_t>::max ())
+    throw std::runtime_error ("Filter progress sequence exhausted");
+  if (!budget_.admit ()) throw std::runtime_error ("Private Filter progress emission rate exceeded");
+  frame.offset = ++sequence_; sink_ (frame);
+}
+void ProgressWriter::flush () {
+  for (unsigned i = 0; i < pending_.size (); ++i) if (dirty_[i]) {
+    send (std::move (pending_[i])); dirty_[i] = false;
+    if (i == 2) pulses_sent_ = latest_pulses_;
+  }
+}
+void ProgressWriter::update (FilterProgress::Event event, const FilterProgress::Snapshot& state,
+                             Clock::time_point now) {
+  using Event = FilterProgress::Event;
+  if (event == Event::start || event == Event::end) {
+    if ((event == Event::start) == active_) throw std::invalid_argument ("Invalid private progress lifecycle");
+    flush (); send (progress (event, state)); active_ = event == Event::start; last_ = now; return;
+  }
+  if (event != Event::message && !active_) throw std::invalid_argument ("Inactive private progress update");
+  const unsigned slot = event == Event::text ? 0 : event == Event::value ? 1 : event == Event::pulse ? 2 : 3;
+  auto update = state;
+  if (event == Event::pulse) {
+    if (state.pulses <= pulses_sent_) throw std::invalid_argument ("Invalid private progress pulse count");
+    latest_pulses_ = state.pulses; update.pulses -= pulses_sent_;
+  }
+  pending_[slot] = progress (event, update); dirty_[slot] = true;
+  if (now - last_ >= std::chrono::milliseconds (50)) { flush (); last_ = now; }
+}
+void ProgressWriter::finish () {
+  flush ();
+  if (active_) { send ({Type::progress_end, 0, {}}); active_ = false; }
 }
 Frame request (const FilterProcedureRequest& r) {
   r.bytes (); Frame f {Type::request, 0, std::vector<std::uint8_t> (344)};
@@ -132,11 +271,25 @@ void Result::accept (const Frame& f) {
   validate (f.type, f.offset, f.payload.size ());
   if (terminal_) throw std::invalid_argument ("Filter data after terminal frame");
   if (f.type == Type::failure) throw std::runtime_error ("Private Filter procedure failed");
-  if (f.type == Type::output) {
+  if (is_progress (f.type)) {
+    const auto state = progress_snapshot (f);
+    if (progress_sequence_ == std::numeric_limits<std::uint64_t>::max () || f.offset != progress_sequence_ + 1)
+      throw std::invalid_argument ("Noncontiguous Filter progress sequence");
+    if (f.type == Type::progress_start) {
+      if (progress_active_) throw std::invalid_argument ("Duplicate Filter progress start");
+    } else if (f.type != Type::progress_message && !progress_active_)
+      throw std::invalid_argument ("Inactive Filter progress update");
+    if (state.pulses > std::numeric_limits<std::uint64_t>::max () - progress_pulses_)
+      throw std::invalid_argument ("Filter progress pulse count overflow");
+    progress_sequence_ = f.offset; progress_pulses_ += state.pulses;
+    if (f.type == Type::progress_start) progress_active_ = true;
+    if (f.type == Type::progress_end) progress_active_ = false;
+  } else if (f.type == Type::output) {
     if ((alignment_ != 4 && alignment_ != 32) || f.offset % alignment_ || f.payload.size () % alignment_ ||
         f.offset != offset_ || f.payload.size () > bytes_ - offset_) throw std::invalid_argument ("Noncontiguous or oversized Filter result");
     offset_ += f.payload.size ();
   } else if (f.type == Type::success) {
+    if (progress_active_) throw std::invalid_argument ("Unfinished Filter progress lifecycle");
     if (f.offset != bytes_ || offset_ != bytes_) throw std::invalid_argument ("Incomplete Filter result");
     const auto disposition = FilterProcedureDisposition (get (f.payload.data (),4));
     if (disposition != expected_)

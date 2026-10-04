@@ -1,0 +1,100 @@
+{
+  "archive": {
+    "path": "migration/tests/filter-progress/logs.tar.gz",
+    "bytes": 13721,
+    "sha256": "552656c1fa1aa27083e3a593862af0045995452552423c15b95b33409e4f8851",
+    "format": "deterministic gzip/tar,mtime0,flat regular log files"
+  },
+  "members": {
+    "attempt-abi-wrapper-failure": {
+      "member": "attempt-abi-wrapper-failure.log",
+      "bytes": 12259,
+      "sha256": "118a992661678b3f23a311401308e9b384d842153a700a31edb8bc4d92cdf74f",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz attempt-abi-wrapper-failure.log"
+    },
+    "attempt-headless-gtk-skip": {
+      "member": "attempt-headless-gtk-skip.log",
+      "bytes": 578,
+      "sha256": "c2c3c5abf49824d46f64e2690bd7341d89a5db0b5b9881b91feaab9ab9722281",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz attempt-headless-gtk-skip.log"
+    },
+    "manual-app-stderr": {
+      "member": "manual-app-stderr.log",
+      "bytes": 49985,
+      "sha256": "872d0cf485e6617a3347bbb7ce0fc7082f629b1344e9e6707bf94ab607c886ac",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz manual-app-stderr.log"
+    },
+    "manual-app-stdout": {
+      "member": "manual-app-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz manual-app-stdout.log"
+    },
+    "manual-session": {
+      "member": "manual-session.log",
+      "bytes": 56,
+      "sha256": "7f6cfc88d4476c09386efe23699e86daafdc7b78f762b026b4aa4ef85ee761e7",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz manual-session.log"
+    },
+    "normal-gtk": {
+      "member": "normal-gtk.log",
+      "bytes": 56380,
+      "sha256": "3280eed0db4e61c23e2800cb9ad94f113f3dabb0227632681fdbab1d396d629c",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz normal-gtk.log"
+    },
+    "normal-independent": {
+      "member": "normal-independent.log",
+      "bytes": 15412,
+      "sha256": "229f0f53283a3c39666ea04dcb84fa852c3d5d0272c0395a49089ff021ce38d5",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz normal-independent.log"
+    },
+    "normal-native": {
+      "member": "normal-native.log",
+      "bytes": 18839,
+      "sha256": "76c54a6dfa4748bbbffb4ebd064e02c1fc9439362c6f0f1532ef873bae1f6cff",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz normal-native.log"
+    },
+    "sanitizer-filter-kernel-progress": {
+      "member": "sanitizer-filter-kernel-progress.log",
+      "bytes": 264,
+      "sha256": "c97a54e6bbb6fe2a26f0088705b4a7489f8e8bf56f3f5ecf1ff5d008d9b6710a",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz sanitizer-filter-kernel-progress.log"
+    },
+    "sanitizer-filter-owner-gates": {
+      "member": "sanitizer-filter-owner-gates.log",
+      "bytes": 329,
+      "sha256": "19f9a6427a58fdc1b24c470dcf213ec48e05cd4b1d5248060cef27584178a830",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz sanitizer-filter-owner-gates.log"
+    },
+    "sanitizer-filter-process": {
+      "member": "sanitizer-filter-process.log",
+      "bytes": 32,
+      "sha256": "bd2359a76c5f0e90f2a72e3a731b6a3fefeb88fa7d7a76b1700875cd6025722f",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz sanitizer-filter-process.log"
+    },
+    "sanitizer-filter-scheduler": {
+      "member": "sanitizer-filter-scheduler.log",
+      "bytes": 2708,
+      "sha256": "9637683d0ea587f9907053b0639157ba38fdbdca4394ec9d6a62235887c91c3d",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz sanitizer-filter-scheduler.log"
+    },
+    "sanitizer-filter-wire": {
+      "member": "sanitizer-filter-wire.log",
+      "bytes": 30,
+      "sha256": "929bb6b51dd7bee49f390e36b13775353a9dc952c9677726807ecd05fe083c6b",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz sanitizer-filter-wire.log"
+    },
+    "sanitizer-gtk": {
+      "member": "sanitizer-gtk.log",
+      "bytes": 57543,
+      "sha256": "dfd2a17c418af10871d527e415d91264a5e0c16aaaff5712b6cb1f63ca37bc59",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz sanitizer-gtk.log"
+    },
+    "sanitizer-native": {
+      "member": "sanitizer-native.log",
+      "bytes": 18849,
+      "sha256": "ea277d9169c0a2dfc939b13bc4471685e040fcaf7a69f5118a1c4967cea56ea5",
+      "read": "tar -xOzf migration/tests/filter-progress/logs.tar.gz sanitizer-native.log"
+    }
+  }
+}

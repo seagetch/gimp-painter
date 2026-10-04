@@ -2,6 +2,7 @@
 #include "filter-raster-kernels.hpp"
 #include "filter-edge-kernel-private.hpp"
 #include "filter-gauss-kernel-private.hpp"
+#include "filter-progress.hpp"
 #include <array>
 
 namespace GimpPainter {
@@ -51,7 +52,9 @@ void read_edge_strip (FilterRaster& input, std::size_t width, std::size_t y,
 template<class Kernel>
 void row_pass (FilterRaster& input, FilterRaster& output,
                std::size_t width, std::size_t height,
-               Kernel& kernel, Check& check)
+               Kernel& kernel, Check& check,
+               const std::shared_ptr<FilterProgress>& progress,
+               double begin, double span)
 {
   Bytes src (width * 4), dest (width * 4);
   for (std::size_t y = 0; y < height; ++y)
@@ -64,29 +67,34 @@ void row_pass (FilterRaster& input, FilterRaster& output,
       FilterGaussDetail::separate_alpha (dest, check);
       check.now ();
       output.write (offset, dest.size (), dest.data ());
+      if (progress) progress->set_value (begin + span * double (y + 1) / height);
     }
 }
 
 void gaussian_pass (FilterRaster& input, FilterRaster& output,
                     std::size_t width, std::size_t height,
-                    double radius, bool iir, Check& check)
+                    double radius, bool iir, Check& check,
+                    const std::shared_ptr<FilterProgress>& progress,
+                    double begin, double span)
 {
   check.now ();
   if (iir)
     {
       FilterGaussDetail::Iir kernel (radius, width);
-      row_pass (input, output, width, height, kernel, check);
+      row_pass (input, output, width, height, kernel, check, progress, begin, span);
     }
   else
     {
       FilterGaussDetail::Rle kernel (radius, width, check);
-      row_pass (input, output, width, height, kernel, check);
+      row_pass (input, output, width, height, kernel, check, progress, begin, span);
     }
 }
 
 void shadow_merge (FilterRaster& input, FilterRaster& output,
                    std::uint64_t size, std::size_t width,
-                   const FilterGaussDetail::Region& region, Check& check)
+                   const FilterGaussDetail::Region& region, Check& check,
+                   const std::shared_ptr<FilterProgress>& progress,
+                   double begin, double span)
 {
   const std::size_t chunk = 64 * 1024;
   Bytes original (chunk), result (chunk);
@@ -110,6 +118,7 @@ void shadow_merge (FilterRaster& input, FilterRaster& output,
       check.now ();
       output.write (offset, count, result.data ());
       offset += count;
+      if (progress) progress->set_value (begin + span * double (offset) / size);
     }
 }
 } // namespace
@@ -117,7 +126,8 @@ void shadow_merge (FilterRaster& input, FilterRaster& output,
 bool filter_edge_raster (FilterRaster& input,
                          std::size_t width, std::size_t height,
                          const EdgeOptions& options,
-                         std::atomic<bool>& cancel, FilterRaster& output)
+                         std::atomic<bool>& cancel, FilterRaster& output,
+                         const std::shared_ptr<FilterProgress>& progress)
 {
   checked_extent (input, output, width, height);
   if (options.wrapmode < 1 || options.wrapmode > 3 ||
@@ -165,17 +175,23 @@ bool filter_edge_raster (FilterRaster& input,
         if (cancel.load (std::memory_order_relaxed)) return false;
         output.write ((std::uint64_t (y) * width + x) * 4, count * 4, result.data ());
         x += count;
+        if (progress)
+          progress->set_value (0.99 * (double (y) * width + x) /
+                               (double (width) * height));
       }
   if (cancel.load (std::memory_order_relaxed)) return false;
   output.flush ();
-  return !cancel.load (std::memory_order_relaxed);
+  if (cancel.load (std::memory_order_relaxed)) return false;
+  if (progress) progress->set_value (1.0);
+  return true;
 }
 
 bool filter_gauss_raster (FilterRaster& input,
                           std::size_t width, std::size_t height,
                           const GaussOptions& options,
                           std::atomic<bool>& cancel, FilterRaster& output,
-                          const FilterRasterFactory& scratch_factory)
+                          const FilterRasterFactory& scratch_factory,
+                          const std::shared_ptr<FilterProgress>& progress)
 {
   const auto size = checked_extent (input, output, width, height);
   const auto legacy_maximum = static_cast<std::size_t>
@@ -193,6 +209,10 @@ bool filter_gauss_raster (FilterRaster& input,
       check.now ();
       const bool iir = options.method == 0 &&
                        options.horizontal > 1.0 && options.vertical > 1.0;
+      // Each phase traverses the whole raster. Reserve completion until flush.
+      const double span = 0.99 / (3 * (options.vertical > 0.0) +
+                                 (options.horizontal > 0.0) + 1);
+      double begin = 0.0;
       if (options.vertical > 0)
         {
           if (!scratch_factory)
@@ -208,16 +228,27 @@ bool filter_gauss_raster (FilterRaster& input,
             throw std::invalid_argument ("Invalid Gaussian scratch storage");
           check.now ();
           if (!transpose_filter_rgba (input, *scratch, width, height, cancel)) return false;
-          gaussian_pass (*scratch, *scratch, height, width, options.vertical, iir, check);
+          begin += span;
+          if (progress) progress->set_value (begin);
+          gaussian_pass (*scratch, *scratch, height, width, options.vertical, iir,
+                         check, progress, begin, span);
+          begin += span;
           if (!transpose_filter_rgba (*scratch, output, height, width, cancel)) return false;
+          begin += span;
+          if (progress) progress->set_value (begin);
         }
       if (options.horizontal > 0)
-        gaussian_pass (options.vertical > 0 ? output : input, output,
-                       width, height, options.horizontal, iir, check);
-      shadow_merge (input, output, size, width, region, check);
+        {
+          gaussian_pass (options.vertical > 0 ? output : input, output,
+                         width, height, options.horizontal, iir,
+                         check, progress, begin, span);
+          begin += span;
+        }
+      shadow_merge (input, output, size, width, region, check, progress, begin, span);
       check.now ();
       output.flush ();
       check.now ();
+      if (progress) progress->set_value (1.0);
       return true;
     }
   catch (const FilterGaussDetail::Cancelled&)

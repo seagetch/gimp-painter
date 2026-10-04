@@ -452,7 +452,8 @@ GIMP/GEGL/system memory/disk guarantees.
 - Normal Open/XCF persistence and creation/menu/editor UI are validated by their
   separate modules/evidence. This core slice supplies typed argument and
   generation primitives; these core tests alone are not save/reopen or GTK proof.
-  A GimpProgress adapter remains separate
+  The generation-scoped GimpProgress adapter and GTK surface are now covered by
+  the separate `filter-progress.md` checkpoint
 - Whole lower-stack parity (especially custom modes, masks, component visibility,
   group/passthrough behavior and high precision), sustained input,
   dense/complex spill-backed large rasters, measured high-contention multi-image

@@ -5,9 +5,12 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <vector>
 
 namespace GimpPainter {
+
+class FilterProgress;
 
 /* Values are the legacy plug-in-gauss PDB arguments, not GEGL sigma. */
 struct GaussOptions
@@ -34,15 +37,17 @@ struct GaussOptions
  * exceptions propagate. Undefined legacy overflow is rejected, not emulated.
  * Returns false on cancellation; publishes output only on complete success.
  * Output stays unchanged on cancellation or exception and may alias input.
- * Only cancel is shared; callers must keep input/options immutable and must
- * not concurrently access output. No GObject/GEGL or borrowed state is used.
+ * Only cancel and the optional progress mailbox are shared; callers must keep
+ * input/options immutable and must not concurrently access output. No
+ * GObject/GEGL or borrowed state is used.
  */
 bool filter_gauss (const std::vector<std::uint8_t>& input,
                    std::size_t width,
                    std::size_t height,
                    const GaussOptions& options,
                    std::atomic<bool>& cancel,
-                   std::vector<std::uint8_t>& output);
+                   std::vector<std::uint8_t>& output,
+                   const std::shared_ptr<FilterProgress>& progress = {});
 
 } // namespace GimpPainter
 #endif

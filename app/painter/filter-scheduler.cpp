@@ -146,6 +146,17 @@ std::size_t FilterScheduler::next_count (std::size_t offset) const noexcept
     return std::min ({remaining, request_.width - x, pixel_budget_});
   return std::min (remaining, (pixel_budget_ / request_.width) * request_.width);
 }
+bool FilterScheduler::progress_snapshot (FilterProgress::Snapshot& snapshot) const noexcept
+{
+  return work_generation_ == generation_ && request_.progress &&
+    (state_ == State::preparing || state_ == State::running || state_ == State::importing) &&
+    request_.progress->try_snapshot (snapshot);
+}
+double FilterScheduler::phase_fraction () const noexcept
+{
+  if (!request_.width || !request_.height) return 0;
+  return std::min (1.0, double (cursor_) / double (request_.width * request_.height));
+}
 bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
                             const Commit& commit, const Gate& before_process,
                             const Gate& before_import) noexcept
@@ -235,6 +246,9 @@ bool FilterScheduler::step (bool ready, const Read& read, const Import& import,
           if (!admission_lease_) return true;
           cursor_ = 0;
           work_generation_ = generation_;
+          // No old worker can write now: cancellation completion was observed
+          // above. Reset never contends with a producer on the owner thread.
+          if (request_.progress) request_.progress->reset ();
           input_sealed_ = false;
           if (request_.raster_process)
             {

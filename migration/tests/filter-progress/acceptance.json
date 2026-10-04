@@ -1,0 +1,531 @@
+{
+  "schema_version": 1,
+  "task": "15.006/native-owner-progress",
+  "status": "passed_with_documented_limits",
+  "date": "2026-10-04",
+  "scope": "Linux native modern GimpProgress ABI, bounded generation-scoped independent kernels/four isolated PDB routes and existing GTK Filter editor progress/cancel",
+  "source_identity": {
+    "base_commit": "031dbf87424ad502877627687d08387e9f2b88ed",
+    "changed_source_sha256": {
+      "app/core/gimpfilterlayer.cpp": "5a2a81f845fee42479312611b45767e8339e27bd85ddd50ad1c1b101d38382d9",
+      "app/core/gimpfilterlayer.h": "f5036e935685c0aec5c5d8948dc171297623b46d313c478e6ba176f59e58e893",
+      "app/core/gimpfilterprocedure-progress.h": "b2c2329a2c38ecb767dd4c6b1f99e6cc76db7518bcae0781031700664901f53b",
+      "app/core/gimpfilterprocedure.cpp": "426b4bc3d4daf1426799a86ea966a084a69493aee66948c38d58929817227558",
+      "app/core/gimpfilterprocedure.hpp": "6916ec07978d479476d9787bcd9fe60c337f4d8466670f2c4603256f71077133",
+      "app/dialogs/painter-layer-dialog.cpp": "84f5935f0f1b17f4a47f1589f059fe2ae48a7d5fee332462b89fe7fa1dddd498",
+      "app/painter-filter-worker.cpp": "4a841382f471e71a59ce26865a62919213450ba03b62552096d7a10a589d1838",
+      "app/painter/filter-edge.cpp": "ff9d6c77932043585c8e914ee98cbfb2278eabbc8928d3ea821e6a7c955b7d67",
+      "app/painter/filter-edge.hpp": "7e9b7427883ff6eff9a36629ae0315a10811eac3df98c13192026bf32660877f",
+      "app/painter/filter-gauss.cpp": "f296f5c50198ede8833ad01c50006581d808a1c4db69858e45c36df8f12bf5e5",
+      "app/painter/filter-gauss.hpp": "0f2678a5c3cfc242fd3d3fec7fd5cfc9ac46f1e1b6813c0fa39f140f11156189",
+      "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+      "app/painter/filter-native-kernels.hpp": "60c8ca7bbeba821d7205d29b27b598195fc082fc61b79a9057c3cdee7d32b88c",
+      "app/painter/filter-process.cpp": "5d5bc162d3c26d9496cc5f52ceff926e6e7e57fdaae225fef02a8705edd6d42c",
+      "app/painter/filter-process.hpp": "564362dd115d1250dc4b9ba2bec7787cd8ff2848317a7b59505c90f10d5e72f2",
+      "app/painter/filter-progress.hpp": "a0786aaf22b2aa55d4af3c00833be4f47298ab5c879ae3f992d544452ee4a8f5",
+      "app/painter/filter-raster-kernels.cpp": "70b6551e5bb4b800b3fc4145f9f07f25fe7400e52ca9543bd9bddf343bba6b06",
+      "app/painter/filter-raster-kernels.hpp": "c1dbc539013bfd1bf9a0118f678cd4c5ef8f53f39c0cc64ddb3c6ccbbd57edfc",
+      "app/painter/filter-scheduler.cpp": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+      "app/painter/filter-scheduler.hpp": "416e7e8b34adbd6ddfa2b2a82e87052dfe25e5785aef3599ddd035f6ccf4a53f",
+      "app/painter/filter-wire.cpp": "24ce90825a3480c69e90d04f9048d020638004676389681d5f7d196eb279ccd6",
+      "app/painter/filter-wire.hpp": "5d5cb1e87bf7e1b9c4e1367390c540596fefcb9af2df380b03aacecb6c6ab287",
+      "app/painter/meson.build": "cfe6183e70b7a9bdb12dc29e2659f287953ff286fd128472a5db605ae80f9cc3",
+      "app/painter/tests/test-filter-kernel-progress.cpp": "0d2f16ea4b1f85c1db2c6f94d0ad768958f4fae3619e5b129765f5b9fbc59442",
+      "app/painter/tests/test-filter-process.cpp": "a4df9836b29153920bc9dba0a49cf4d17a8737e2b8e99d6d54d3e096325dbc83",
+      "app/painter/tests/test-filter-wire.cpp": "5ae5f7c127f57393e780b8e0de0e3e86cf4f98f09531105d1667fb153b241892",
+      "app/pdb/progress-cmds.c": "2df26238ce130f2fedcbcff06a9f3470e4b004af974406c5da44bada15e96eb3",
+      "app/tests/test-filter-progress-ui.inc": "f60813cb8723f0be91c070777b51e5b833c49507a2f301a84ec4b9696319f27e",
+      "app/tests/test-filter-progress.inc": "ec6221e6dce35b6474bede835580489df23c4e5f9fa7579ae3c5fbfa52d792d2",
+      "app/tests/test-gimp-filter-layer.c": "68a5ba51501e5a3db86d6bee0f3e164b3df05f1d384652601de9a9a582f0c9a9",
+      "app/tests/test-painter-layer-ui.c": "29aafdd2b53300a955456054dd2c1d81a65d5ec678025292582c3018bf261685",
+      "migration/tests/run_filter_progress_sanitizers.py": "7acfd20c5f3afe9f307ad564553ed5b80ef416ff9f6ac9468014120f74375eb5",
+      "pdb/groups/progress.pdb": "823f6fbc9d7f2b057bf76721b76ce841b74bfd388e30e4f2bd5cbe8cf613de2e",
+      "tools/check_filter_active_quit.py": "62d46a5c124e85c385f84194d499b119630d4bd1dd7d4dd026bd46d59e3e4312",
+      "tools/check_installed_convolution.py": "f04745d497810a7f78130b3f7729c7833f94eb2e9cca2efab367bc80a948f362",
+      "tools/check_installed_filter.py": "26a5ea73b6cc51b96ce4c19b3eba3dd957f9c297d4328655766131006c9e6344",
+      "tools/check_installed_retinex.py": "a488f726e8b61024a6c6613db9927d8e1af77f0f24afd1a89fc91f2e397be1f2",
+      "tools/check_installed_small_tiles.py": "c7d4ec8c1ec3038f3c1009a0f457c123716ff705c4d456d5c803d8080a438bc2"
+    },
+    "matched_compiled_dependency_sources": [
+      "app/core/gimpfilterlayer.cpp",
+      "app/core/gimpfilterlayer.h",
+      "app/core/gimpfilterprocedure-progress.h",
+      "app/core/gimpfilterprocedure.cpp",
+      "app/core/gimpfilterprocedure.hpp",
+      "app/dialogs/painter-layer-dialog.cpp",
+      "app/painter-filter-worker.cpp",
+      "app/painter/filter-edge.cpp",
+      "app/painter/filter-edge.hpp",
+      "app/painter/filter-gauss.cpp",
+      "app/painter/filter-gauss.hpp",
+      "app/painter/filter-native-kernels.cpp",
+      "app/painter/filter-native-kernels.hpp",
+      "app/painter/filter-process.cpp",
+      "app/painter/filter-process.hpp",
+      "app/painter/filter-progress.hpp",
+      "app/painter/filter-raster-kernels.cpp",
+      "app/painter/filter-raster-kernels.hpp",
+      "app/painter/filter-scheduler.cpp",
+      "app/painter/filter-scheduler.hpp",
+      "app/painter/filter-wire.cpp",
+      "app/painter/filter-wire.hpp",
+      "app/painter/tests/test-filter-kernel-progress.cpp",
+      "app/painter/tests/test-filter-process.cpp",
+      "app/painter/tests/test-filter-wire.cpp",
+      "app/pdb/progress-cmds.c",
+      "app/tests/test-filter-progress-ui.inc",
+      "app/tests/test-filter-progress.inc",
+      "app/tests/test-gimp-filter-layer.c",
+      "app/tests/test-painter-layer-ui.c",
+      "migration/tests/run_filter_progress_sanitizers.py"
+    ],
+    "normal_executable_sha256": {
+      "app/gimp-3.0": "2d7d3c3e2a995207bdfc64d11d7ed3714d9e54a693abc45da790758d4f0eedb1",
+      "app/gimp-console-3.0": "fb99bdbbf64127675a8297452ec3795dc1b00c637ebd3a9950af8f51549a9448",
+      "app/gimp-painter-filter-worker": "ee327f9bdc614ad02808f48be0e2b2a7f1a6dd385139cbedc83a565a93b231e6",
+      "app/tests/gimp-filter-layer": "c1aed60ae9edb6124073c6fcb3996cb15e90048878837b4db7cb78f53ea5dc42",
+      "app/tests/painter-layer-ui": "eb3aa01360650cf17b7847ad9301742ddb46eca9a7be7ac58dadc7426f3a0859",
+      "app/painter/painter-filter-wire": "33a53cba65f187d5086540b79132578bd5df859dbb7ce7c412a85aaa7dc7a14d",
+      "app/painter/painter-filter-process": "9d2da35d6f2603f856edc97e03706d955fdb9ba2a580635c6b37329bfe0d26b0",
+      "app/painter/painter-filter-kernel-progress": "8a96a715bf6d77e8cd5b95eea8db6f63b1f1b9682ab030501d451405a48880a9",
+      "app/painter/painter-filter-scheduler": "509c83ef11f6a29299a51ce6d3be767622f53ee046ba6632cdc2ad816dba5c20",
+      "app/painter/painter-filter-owner-gates": "76aa6223cd2582a308fb2f973550e4eb5dba897b9f66fe9f5715a15c368390dd"
+    },
+    "focused_executable_sha256": {
+      "gimp-filter-layer": "643b6671954702b8c277b2cf41deffaeb045ae9837da1912b504cc880900199a",
+      "painter-layer-ui": "e4eac49ccdfb18f8122413ec53522598c4c49d0f78adc6f744f6d7a4090d1ce6",
+      "gimp-painter-filter-worker": "fb4adf74095ac140daabc48fc752432f1c376b6a910a089ef728b8104fc3be9d",
+      "blinds": "4e1ee515189a514d1b0c20860a85da8cd6eac8e93c1ca192556cac25f5ce3baf",
+      "tile-small": "693fe0b5eb5e6ad9e3a8a29c60339769c392246ef61aac0704b22eeaf671e8b9",
+      "contrast-retinex": "dc7f394537c226398305c7bba0903bb130ce481db90acd990da59bad9a75ac65",
+      "convolution-matrix": "1392b14b23abc645eaf09946c7bc90f6adeba3b96a20aca3f26ad079134aaa47",
+      "painter-filter-wire": "baac96ce21142a158cd3c46b24484242342d3e1eb1306f712e814dd3fb51c15d",
+      "painter-filter-process": "c5189873f6a9923e41bfb17f62a208c0bc2069f7b6be7c38bbe8770d7515ba14",
+      "painter-filter-kernel-progress": "6be2d73d9ee6b8309e8a4f17ada3b71f6966cd97cef91b7ca047c9747ba599d7",
+      "painter-filter-scheduler": "f9794bb7b2b31bd67944563fd8a08039871736aa5c806cb136fbdd1e1e03c69e",
+      "painter-filter-owner-gates": "325a313f3db4eed5d4c40ddcc7e173d1586541b8d3fc07c5f23bcea988afbd78"
+    },
+    "focused_input_count": 1728,
+    "focused_changed_during_build": [],
+    "focused_changed_during_run": [],
+    "focused_report_sha256": "c798308af21c4421d8e5457c9917b6735b94dfdfe2b2e115dbec10a22b904ad9",
+    "detail_storage": "Complete build commands, immutable dependency seals and source archive retained privately in scratch; compact changed-source hashes above tie this task to its published base"
+  },
+  "automated": {
+    "normal": {
+      "independent_targets": 5,
+      "independent_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "native": {
+        "binary": "gimp-filter-layer",
+        "cases": [
+          "progress_native_abi",
+          "progress_start_reentry",
+          "progress_real_workers",
+          "progress_worker_cancel_replace_close",
+          "progress_independent_owners",
+          "explicit_cancel_preserves_completed_cache",
+          "explicit_cancel_survives_callback_reentry"
+        ],
+        "exit_code": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/tests/gimp-filter-layer",
+          "-p",
+          "/gimp-filter-layer/progress_native_abi",
+          "-p",
+          "/gimp-filter-layer/progress_start_reentry",
+          "-p",
+          "/gimp-filter-layer/progress_real_workers",
+          "-p",
+          "/gimp-filter-layer/progress_worker_cancel_replace_close",
+          "-p",
+          "/gimp-filter-layer/progress_independent_owners",
+          "-p",
+          "/gimp-filter-layer/explicit_cancel_preserves_completed_cache",
+          "-p",
+          "/gimp-filter-layer/explicit_cancel_survives_callback_reentry"
+        ]
+      },
+      "gtk": {
+        "binary": "painter-layer-ui",
+        "cases": [
+          "filter_progress_widgets",
+          "filter_progress_running_cancel",
+          "filter_progress_render_reentry",
+          "filter_status_last_owner_reentry",
+          "dialog_binding_close",
+          "isolated_editor_lifetimes",
+          "isolated_editor_reentry"
+        ],
+        "exit_code": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/tests/painter-layer-ui",
+          "-p",
+          "/painter-layer-ui/filter_progress_widgets",
+          "-p",
+          "/painter-layer-ui/filter_progress_running_cancel",
+          "-p",
+          "/painter-layer-ui/filter_progress_render_reentry",
+          "-p",
+          "/painter-layer-ui/filter_status_last_owner_reentry",
+          "-p",
+          "/painter-layer-ui/dialog_binding_close",
+          "-p",
+          "/painter-layer-ui/isolated_editor_lifetimes",
+          "-p",
+          "/painter-layer-ui/isolated_editor_reentry"
+        ]
+      }
+    },
+    "focused_sanitizers": {
+      "flags": [
+        "-fsanitize=address,undefined,float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O1",
+        "-g"
+      ],
+      "instrumented_sources": [
+        "app/core/gimpfiltercontext.cpp",
+        "app/core/gimpfilterlayer.cpp",
+        "app/core/gimpfilterpaths.cpp",
+        "app/core/gimpfilterprocedure.cpp",
+        "app/core/gimpprogress.c",
+        "app/dialogs/painter-layer-dialog.cpp",
+        "app/painter-filter-worker.cpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/filter-context.cpp",
+        "app/painter/filter-edge.cpp",
+        "app/painter/filter-gauss.cpp",
+        "app/painter/filter-lifetime.cpp",
+        "app/painter/filter-native-kernels.cpp",
+        "app/painter/filter-process.cpp",
+        "app/painter/filter-raster-kernels.cpp",
+        "app/painter/filter-raster.cpp",
+        "app/painter/filter-scheduler.cpp",
+        "app/painter/filter-spool.cpp",
+        "app/painter/filter-wire.cpp",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/painter/gimp-painter-error.cpp",
+        "app/painter/tests/test-filter-kernel-progress.cpp",
+        "app/painter/tests/test-filter-owner-gates.cpp",
+        "app/painter/tests/test-filter-process.cpp",
+        "app/painter/tests/test-filter-scheduler.cpp",
+        "app/painter/tests/test-filter-wire.cpp",
+        "app/pdb/progress-cmds.c",
+        "app/tests/test-gimp-filter-layer.c",
+        "app/tests/test-painter-layer-ui.c",
+        "plug-ins/common/blinds.c",
+        "plug-ins/common/contrast-retinex.c",
+        "plug-ins/common/convolution-matrix.c",
+        "plug-ins/common/tile-small.c"
+      ],
+      "rtti_only_sources": [
+        "app/config/gimppainterfilterconfig.cpp",
+        "app/dialogs/file-save-deferred.cpp",
+        "app/httpd/httpd-images.cpp",
+        "app/httpd/httpd-navigation.cpp",
+        "app/httpd/httpd-pdb.cpp",
+        "app/httpd/httpd-resource.cpp",
+        "app/httpd/httpd.cpp",
+        "app/paint/gimpbrushcore-loops.cc",
+        "app/paint/gimpfillbrush.cpp",
+        "app/paint/gimppaintcore-loops.cc",
+        "app/paint/gimppainterbrushgeometry.cpp",
+        "app/paint/gimppainterpaintgate.cpp",
+        "app/paint/gimppainterpaper-paste.cpp",
+        "app/paint/gimppainterpaper.cpp",
+        "app/paint/gimppaintersmudge.cpp",
+        "app/paint/painter-bounded-fill/search.cpp",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+        "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+        "app/paint/painter-mypaint-surface/gimp-resources.cpp",
+        "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp",
+        "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp",
+        "app/paint/painter-mypaint-surface/paint-core.cpp",
+        "app/paint/painter-mypaint/engine.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/tools/gimpfillbrushtool.cpp",
+        "app/tools/gimppaintermybrushtool.cpp",
+        "app/tools/gimppaintersmudgetool.cpp",
+        "app/tools/gimpperspectiveguidetool.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/xcf/painter-xcf-arguments.cpp",
+        "app/xcf/painter-xcf-compat.cpp",
+        "app/xcf/painter-xcf-load.cpp",
+        "app/xcf/painter-xcf-multipart.cpp",
+        "app/xcf/painter-xcf-preserve.cpp",
+        "app/xcf/painter-xcf-storage.cpp",
+        "app/xcf/painter-xcf-transport.cpp"
+      ],
+      "leak_detection": false,
+      "remaining_gimp_gtk_dependencies_instrumented": false,
+      "results": [
+        {
+          "name": "painter-filter-wire",
+          "exit_code": 0
+        },
+        {
+          "name": "painter-filter-process",
+          "exit_code": 0
+        },
+        {
+          "name": "painter-filter-kernel-progress",
+          "exit_code": 0
+        },
+        {
+          "name": "painter-filter-scheduler",
+          "exit_code": 0
+        },
+        {
+          "name": "painter-filter-owner-gates",
+          "exit_code": 0
+        },
+        {
+          "name": "gimp-filter-layer",
+          "cases": [
+            "explicit_cancel_preserves_completed_cache",
+            "explicit_cancel_survives_callback_reentry",
+            "progress_independent_owners",
+            "progress_native_abi",
+            "progress_real_workers",
+            "progress_start_reentry",
+            "progress_worker_cancel_replace_close"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "painter-layer-ui",
+          "cases": [
+            "dialog_binding_close",
+            "filter_progress_render_reentry",
+            "filter_progress_running_cancel",
+            "filter_progress_widgets",
+            "filter_status_last_owner_reentry",
+            "isolated_editor_lifetimes",
+            "isolated_editor_reentry"
+          ],
+          "exit_code": 0
+        }
+      ]
+    },
+    "independent_coverage": {
+      "wire": "fixed mailbox/UTF8, finite values, severity, sequence/pulse/lifecycle/terminal bounds, coalescing, delayed backlog",
+      "process_cases": 115,
+      "process_backlog": 4096,
+      "process_receiver_pause_ms": 250,
+      "process_flood_cancellation": true,
+      "kernel_groups": 3,
+      "kernel_raster_variants": 16,
+      "scheduler_groups": 37,
+      "owner_gate_groups": 5
+    },
+    "worker_observations": {
+      "normal": [
+        {
+          "route": "native Edge",
+          "progress_signals": 9,
+          "intermediate_worker_samples": 2,
+          "default_priority_2ms_heartbeats": 355,
+          "elapsed_us": 795014,
+          "maximum_observed_owner_quantum_us": 19567
+        },
+        {
+          "route": "Blinds",
+          "progress_signals": 9,
+          "intermediate_worker_samples": 0,
+          "default_priority_2ms_heartbeats": 348,
+          "elapsed_us": 729981,
+          "maximum_observed_owner_quantum_us": 8847
+        },
+        {
+          "route": "Small Tiles",
+          "progress_signals": 10,
+          "intermediate_worker_samples": 1,
+          "default_priority_2ms_heartbeats": 385,
+          "elapsed_us": 799167,
+          "maximum_observed_owner_quantum_us": 734
+        },
+        {
+          "route": "Retinex",
+          "progress_signals": 12,
+          "intermediate_worker_samples": 2,
+          "default_priority_2ms_heartbeats": 502,
+          "elapsed_us": 1040750,
+          "maximum_observed_owner_quantum_us": 722
+        },
+        {
+          "route": "Convolution",
+          "progress_signals": 11,
+          "intermediate_worker_samples": 4,
+          "default_priority_2ms_heartbeats": 438,
+          "elapsed_us": 919950,
+          "maximum_observed_owner_quantum_us": 794
+        }
+      ],
+      "focused_sanitizer": [
+        {
+          "route": "native Edge",
+          "progress_signals": 24,
+          "intermediate_worker_samples": 17,
+          "default_priority_2ms_heartbeats": 1055,
+          "elapsed_us": 2269751,
+          "maximum_observed_owner_quantum_us": 20158
+        },
+        {
+          "route": "Blinds",
+          "progress_signals": 12,
+          "intermediate_worker_samples": 0,
+          "default_priority_2ms_heartbeats": 458,
+          "elapsed_us": 982064,
+          "maximum_observed_owner_quantum_us": 8598
+        },
+        {
+          "route": "Small Tiles",
+          "progress_signals": 12,
+          "intermediate_worker_samples": 2,
+          "default_priority_2ms_heartbeats": 493,
+          "elapsed_us": 1048082,
+          "maximum_observed_owner_quantum_us": 1240
+        },
+        {
+          "route": "Retinex",
+          "progress_signals": 19,
+          "intermediate_worker_samples": 6,
+          "default_priority_2ms_heartbeats": 820,
+          "elapsed_us": 1742129,
+          "maximum_observed_owner_quantum_us": 1414
+        },
+        {
+          "route": "Convolution",
+          "progress_signals": 18,
+          "intermediate_worker_samples": 7,
+          "default_priority_2ms_heartbeats": 764,
+          "elapsed_us": 1614921,
+          "maximum_observed_owner_quantum_us": 1227
+        }
+      ]
+    },
+    "worker_observation_limit": "All four real helper route texts reached owners; short Blinds completed between owner fraction samples (0 intermediate fractions). Kernel checkpoints and final helper reporting are separately verified; no elapsed-time or global latency guarantee."
+  },
+  "native_boundary_coverage": [
+    "modern start argument order, busy start, cancellable false/true, finite/clamped values, bounded text/message/pulse/end",
+    "start notification reentry cancel/replace/binding-close/image-close",
+    "real native Edge and four isolated routes deliver reports while default-priority heartbeat continues",
+    "all five running routes cancel/replacement/image-close with previous completed cache",
+    "two independent image owners: cancel one does not end the other",
+    "GTK status snapshot notify reentry cannot re-show canceled or superseded state; retained closed controls are inert",
+    "helper-only typed headless guard rejects null and ordinary supplied progress; all four generated/source guards match"
+  ],
+  "manual": {
+    "status": "functional_pass_with_unresolved_diagnostics",
+    "platform": "actual cloud Linux GTK desktop",
+    "started_utc": "2026-10-04T07:44:04Z",
+    "ended_utc": "2026-10-04T07:53:04Z",
+    "exit_code": 0,
+    "binary_sha256": {
+      "app": "2d7d3c3e2a995207bdfc64d11d7ed3714d9e54a693abc45da790758d4f0eedb1",
+      "helper": "ee327f9bdc614ad02808f48be0e2b2a7f1a6dd385139cbedc83a565a93b231e6"
+    },
+    "fixture": {
+      "width": 3072,
+      "height": 3072,
+      "format": "RGB U8 nonlinear synthetic gradient",
+      "sha256": "f552c90e4ce1132310e3cf5e5beb01d1b26dbe07377c3ed1e0fc183a4f68d067"
+    },
+    "flow": [
+      "Create Retinex default scale240/nscales3/uniform/cvar1.2; wait for committed cache",
+      "Change nscales to8, accept and reopen editor during rerun",
+      "Observe active filled progress bar, Retinex: filtering and enabled Cancel Update",
+      "Click Cancel Update; observe Filter execution cancelled, hidden bar and cancel control",
+      "Close editor, confirm retained visible canvas, Zoom In18.2% to25%",
+      "Quit and discard only generated unsaved scratch; normal exit0 and lock release"
+    ],
+    "visible_canvas": {
+      "before_sha256": "265ce6c436829df0922c9b18d9250d6177ee22b6108d2c4e2a31a92d2b4f9dd9",
+      "after_sha256": "265ce6c436829df0922c9b18d9250d6177ee22b6108d2c4e2a31a92d2b4f9dd9",
+      "crop_bounds": [
+        311,
+        150,
+        870,
+        708
+      ],
+      "difference_bbox": null,
+      "limit": "Captured visible crop only; no manual full-resolution buffer/export equality claim"
+    },
+    "screenshots": {
+      "active-editor.png": {
+        "path": "migration/tests/filter-progress/active-editor.png",
+        "sha256": "a73b1f4b3487962f9a3b37f6b5f4eba040f818b5f8340504d32cd1cf29ef373f"
+      },
+      "cancelled-editor.png": {
+        "path": "migration/tests/filter-progress/cancelled-editor.png",
+        "sha256": "462874bc50b0d704a064d368b65349475fe2d028e82f974bd8632835e8fa2c87"
+      }
+    },
+    "critical_diagnostic_count": {
+      "Gdk": 6,
+      "Gtk": 6
+    },
+    "critical_diagnostic_correlation": "Editor opening and Quit prompt, not the observed Cancel Update click; exact lines/times preserved in manual-diagnostics.md. Correlation does not establish causation.",
+    "other_diagnostics": "One no trigger event for menu popup warning during Retinex combo accessibility activation, plus startup missing resources/icons/localization. No filtered-warning pass claimed.",
+    "limits": [
+      "Retinex only manually; four routes exercised automatically",
+      "No global statusbar verification",
+      "Earlier task diagnostics not retroactively resolved"
+    ],
+    "diagnostics_reference": "migration/tests/filter-progress/manual-diagnostics.md",
+    "timezone": {
+      "verified_later_terminal": "America/Toronto -0400 EDT at2026-10-04T07:59:29Z",
+      "app_inheritance": "inferred from unchanged launcher env and four-hour raw-log offset; not captured from terminated process",
+      "raw_evidence": "migration/tests/filter-progress/timezone-evidence.txt"
+    },
+    "reproduction": {
+      "recipe": "migration/tests/filter-progress/generate-fixture.py",
+      "observed_launcher": "migration/tests/filter-progress/launch-observed.sh"
+    }
+  },
+  "diagnostics": {
+    "final_normal_and_sanitizer": "No ASan/UBSan, GTK/GDK critical or test assertion failures. Existing test-profile writable-folder error, localization-disabled and GLib setenv debug diagnostics remain in raw logs.",
+    "early_attempts": [
+      {
+        "log": "attempt-headless-gtk-skip",
+        "result": "test exit77 (GTK display unavailable under the shell xvfb attempt); later actual desktop7 groups passed"
+      },
+      {
+        "log": "attempt-abi-wrapper-failure",
+        "result": "outer xvfb invocation exit1 after ABI assertion passed; no whole-attempt success claimed; final native ABI subsequently passed on final source"
+      }
+    ],
+    "prior_manual_gtk_gdk_diagnostics": "Earlier editor task raw manual log was lost and cause remains unclassified; this task does not retroactively resolve it",
+    "manual_current": "Six GDK_IS_WINDOW and six GTK_IS_ACCESSIBLE critical assertions reproduced; cause remains open for the next narrow investigation. Exact raw log and operation correlation retained."
+  },
+  "logs": "migration/tests/filter-progress/log-integrity.json",
+  "verification_commands": {
+    "build": "source ../gimp-build-restoration/env.sh; source tools/linux-debian13-env.sh; flock /workspace/shared/gimp-painter-build.lock ninja -C build-installed-filter -j3 app/tests/gimp-filter-layer app/tests/painter-layer-ui app/gimp-3.0 app/gimp-console-3.0 app/gimp-painter-filter-worker app/painter/painter-filter-wire app/painter/painter-filter-process app/painter/painter-filter-kernel-progress app/painter/painter-filter-scheduler app/painter/painter-filter-owner-gates",
+    "normal_independent": "meson test -C build-installed-filter --no-rebuild --num-processes 1 --print-errorlogs painter-filter-wire painter-filter-process painter-filter-kernel-progress painter-filter-scheduler painter-filter-owner-gates",
+    "native_gtk_environment": "Use env from build-installed-filter/meson-info/intro-tests.json with existing dependency LD_LIBRARY_PATH appended, on a real GTK display, plus the recorded normal command arguments. Hold the shared build lock.",
+    "focused": "python3 migration/tests/run_filter_progress_sanitizers.py --build build-installed-filter --output <private-output> --run (real GTK display; script owns shared lock)",
+    "structural": [
+      "python3 -B tools/check_tasks.py",
+      "git diff --check"
+    ]
+  },
+  "remaining_gates": [
+    "Parent15.006 and all other parent WBS gates remain open",
+    "General procedures, unsupported precision/Gray domains, no-swap alternatives, platform/release/whole-port gates unchanged",
+    "No global display/statusbar surface or exact historical UI placement claim",
+    "Focused instrumentation only; no whole-program sanitizer or LeakSanitizer pass",
+    "Shared-host heartbeat/quantum observations do not certify worst-case or global latency",
+    "Original15.006/filter-progress-start remains unchecked until15.005/06.016 prerequisites are accepted; no duplicate implementation implied"
+  ],
+  "implements_runtime_for": "15.006/filter-progress-start",
+  "review": "Independent final bounded review found no concrete defect in typed helper guard, result/progress separation, generation closure or GTK render revision; review inspected sources/tests and did not rerun verification"
+}

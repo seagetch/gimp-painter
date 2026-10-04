@@ -24,18 +24,21 @@ namespace GimpPainter {
  * Heap storage is bounded by a transpose tile or a single legacy scanline and
  * kernel state, never by raster area. Defined legacy line/radius limits apply.
  * The factory must return a non-null, fresh raster of the requested size.
+ * Optional progress counts completed work; 1.0 requires a successful flush.
  */
 bool filter_edge_raster (FilterRaster& input,
                          std::size_t width, std::size_t height,
                          const EdgeOptions& options,
                          std::atomic<bool>& cancel,
-                         FilterRaster& output);
+                         FilterRaster& output,
+                         const std::shared_ptr<FilterProgress>& progress = {});
 
 bool filter_gauss_raster (FilterRaster& input,
                           std::size_t width, std::size_t height,
                           const GaussOptions& options,
                           std::atomic<bool>& cancel,
                           FilterRaster& output,
-                          const FilterRasterFactory& scratch_factory);
+                          const FilterRasterFactory& scratch_factory,
+                          const std::shared_ptr<FilterProgress>& progress = {});
 } // namespace GimpPainter
 #endif

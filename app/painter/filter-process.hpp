@@ -3,6 +3,7 @@
 #define GIMP_PAINTER_FILTER_PROCESS_HPP
 #include "filter-procedure.hpp"
 #include "filter-raster.hpp"
+#include "filter-progress.hpp"
 #include <memory>
 #include <string>
 namespace GimpPainter {
@@ -11,6 +12,7 @@ namespace GimpPainter {
 struct FilterProcessOptions { std::string executable; std::string temporary_directory; };
 bool filter_process (const FilterProcedureRequest&, FilterRaster&, FilterRaster&,
                      std::atomic<bool>&, const FilterProcessOptions&,
-                     std::shared_ptr<FilterProcedureResult> result = {});
+                     std::shared_ptr<FilterProcedureResult> result = {},
+                     std::shared_ptr<FilterProgress> progress = {});
 }
 #endif

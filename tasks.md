@@ -610,6 +610,7 @@
 | 15.006/gegl-result-source | [ ] | FilterLayer の確定結果を GEGL source node へ供給する | 15.006, 09.013/gegl-graph-invalidation | 未完成・旧世代の結果を見せず source 変更が投影を更新し operator 評価から runner を起動しない |
 | 15.006/filter-pickable-opacity | [ ] | FilterLayer の不透明度照会を現行型へ接続する | 15.005, 01.005/gimp3-layer-slots | 旧 gint 返却のゼロ透明を現行 gdouble 契約で保ち、合成結果との矛盾を試験 |
 | 15.006/filter-progress-start | [ ] | FilterLayer の progress 開始 callback を現行 ABI に合わせる | 15.005, 06.016, 01.005/gimp3-layer-slots | cancellable と message の新しい引数順を守り、進捗通知・取消しが逆転しない |
+| 15.006/native-owner-progress | [x] | 実GimpProgressと独立worker通知・GTK取消しを接続する | 15.001/core-scheduler-edge, 17.022/explicit-owner-cancel, 16.003/isolated-convolution-route, 30.001/isolated-filter-editors, 01.005/gimp3-layer-slots | 現行start ABI、固定mailbox/GPF6、native kernel/4実helper進捗、世代別cancelとGTK再入を検証。通常5target・native7/GTK7と33source+39RTTI focused sanitizer合格、3072RGB実Retinexの表示/取消し/可視cache保持/正常終了を確認。全latency/platformとmanual GTK/GDK critical原因は未完了 |
 | 15.006/editability-contract | [ ] | FilterLayer の編集可否を現行ロック規約へ対応付ける | 15.005, 01.005/gimp3-layer-slots | 廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証 |
 | 15.007 | [ ] | loaded 状態を実装する | 15.006 | 保存済み cache の初回表示を区別 |
 | 15.008 | [ ] | 定義変更の世代を実装する | 15.007 | procedure/引数変更で結果を失効 |

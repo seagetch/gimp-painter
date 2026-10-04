@@ -14,8 +14,8 @@ checks, preparation and import. A worker receives only owned scalar options,
 pixel rasters and cancellation. No parent GIMP object, Babl object, callback,
 saved object identifier or graph crosses the process boundary. The helper
 creates its own private GIMP instance, PDB, context, image, drawable and typed
-BindingStore-owned progress adapter on its main thread. That adapter currently
-serves the native plug-in locally; owner/UI progress forwarding remains open.
+BindingStore-owned progress adapter on its main thread. That adapter forwards bounded native reports to the generation-scoped owner/editor
+channel described in `filter-progress.md`.
 
 The request selector is a numeric allowlisted Blinds, Small Tiles, Retinex or Convolution enum. No serialized
 procedure name, executable, path, script, resource loader or arbitrary plug-in
@@ -25,7 +25,7 @@ The first route accepts U8 nonlinear RGB/Gray, angles 0..90 and segments 1..100.
 As in the old plug-in, orientation 1 is vertical and every other integer is
 horizontal; any nonzero transparency argument enables transparent background.
 
-The private GPF5 / --filter-worker-v5 framing has a 24-byte header and344-byte
+The private GPF6 / --filter-worker-v6 framing has a 24-byte header and344-byte
 request. Its first88 bytes retain start ROI/raw-shadow flags, Small Tiles factor
 and Retinex options/cvar. The extension adds typed Convolution arrays and native
 sample metadata; [Convolution](filter-convolution.md) defines its explicit

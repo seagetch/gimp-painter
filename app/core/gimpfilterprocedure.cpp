@@ -25,6 +25,7 @@ extern "C" {
 #include "gimplayer-new.h"
 #include "gimpparamspecs.h"
 #include "gimpprogress.h"
+#include "gimpfilterprocedure-progress.h"
 #include "config/gimprc.h"
 #include "gegl/gimp-gegl.h"
 #include "gegl/gimp-babl.h"
@@ -51,6 +52,7 @@ extern "C" {
 #include <array>
 #include <cmath>
 #include <cstring>
+#include <exception>
 #include <memory>
 #include <stdexcept>
 
@@ -94,9 +96,21 @@ constexpr const char *blinds_name = "plug-in-blinds";
 
 struct ProgressState
 {
+  explicit ProgressState (FilterProcedureProgressSink callback) : sink (std::move (callback)) {}
   void close () noexcept { active = false; }
+  void emit (FilterProgress::Event event) noexcept {
+    if (!sink || failure) return;
+    try {
+      FilterProgress::Snapshot snapshot;
+      if (!data.try_snapshot (snapshot)) throw std::logic_error ("Private progress unexpectedly locked");
+      sink (event, snapshot);
+    } catch (...) { failure = std::current_exception (); }
+  }
   bool active = false;
   double value = 0;
+  FilterProgress data;
+  FilterProcedureProgressSink sink;
+  std::exception_ptr failure;
 };
 struct ProgressSlot : SlotSpec<GimpPainterProcedureProgress, ProgressState> {};
 
@@ -114,45 +128,70 @@ void progress_call (GimpProgress *progress, Function function) noexcept
     BindingStore::require (G_OBJECT (progress)).with<ProgressSlot> (function);
   });
 }
-GimpProgress *progress_start (GimpProgress *progress, gboolean, const gchar *) noexcept
+GimpProgress *progress_start (GimpProgress *progress, gboolean cancellable, const gchar *message) noexcept
 {
   return progress_call<GimpProgress *> (progress, nullptr, [=] (ProgressState& state) {
     state.active = true;
     state.value = 0;
+    state.data.start (cancellable, message); state.emit (FilterProgress::Event::start);
     return progress;
   });
 }
 void progress_end (GimpProgress *progress) noexcept
-{ progress_call (progress, [] (ProgressState& state) { state.active = false; }); }
+{ progress_call (progress, [] (ProgressState& state) {
+    if (!state.active) return;
+    state.active = false; state.data.end (); state.emit (FilterProgress::Event::end);
+  }); }
 gboolean progress_active (GimpProgress *progress) noexcept
 { return progress_call<gboolean> (progress, FALSE, [] (ProgressState& state) { return state.active; }); }
-void progress_text (GimpProgress *, const gchar *) noexcept {}
+void progress_text (GimpProgress *progress, const gchar *message) noexcept
+{ progress_call (progress, [=] (ProgressState& state) {
+    if (!state.active) return;
+    state.data.set_text (message); state.emit (FilterProgress::Event::text);
+  }); }
 void progress_value (GimpProgress *progress, gdouble value) noexcept
 {
   progress_call (progress, [=] (ProgressState& state) {
-    if (std::isfinite (value)) state.value = std::max (0.0, std::min (1.0, value));
+    if (state.active && std::isfinite (value)) {
+      state.value = std::max (0.0, std::min (1.0, value));
+      state.data.set_value (state.value); state.emit (FilterProgress::Event::value);
+    }
   });
 }
 gdouble progress_get_value (GimpProgress *progress) noexcept
 { return progress_call<double> (progress, 0, [] (ProgressState& state) { return state.value; }); }
-void progress_pulse (GimpProgress *) noexcept {}
-gboolean progress_message (GimpProgress *, Gimp *, GimpMessageSeverity,
-                           const gchar *, const gchar *) noexcept
-{ return FALSE; }
+void progress_pulse (GimpProgress *progress) noexcept
+{ progress_call (progress, [] (ProgressState& state) {
+    if (!state.active) return;
+    state.data.pulse (); state.emit (FilterProgress::Event::pulse);
+  }); }
+gboolean progress_message (GimpProgress *progress, Gimp *, GimpMessageSeverity severity,
+                           const gchar *domain, const gchar *message) noexcept
+{ return progress_call<gboolean> (progress, FALSE, [=] (ProgressState& state) {
+    if (!state.sink || severity < 0 || severity > GIMP_MESSAGE_BUG_CRITICAL) return FALSE;
+    state.data.message (int (severity), domain, message); state.emit (FilterProgress::Event::message);
+    return state.failure ? FALSE : TRUE;
+  }); }
 
 class ProcedureProgress
 {
 public:
-  ProcedureProgress ()
+  explicit ProcedureProgress (const FilterProcedureProgressSink& sink)
     : object_ (ObjectRef<GimpPainterProcedureProgress>::adopt (
         static_cast<GimpPainterProcedureProgress *> (g_object_new (
           gimp_painter_procedure_progress_get_type (), nullptr))))
   {
     auto& store = BindingStore::ensure (G_OBJECT (object_.get ()));
-    store.emplace<ProgressSlot> ();
+    store.emplace<ProgressSlot> (sink);
     store.activate ();
   }
   GimpProgress *get () const noexcept { return GIMP_PROGRESS (object_.get ()); }
+  void finish () {
+    progress_end (get ());
+    BindingStore::require (G_OBJECT (object_.get ())).with<ProgressSlot> ([] (ProgressState& state) {
+      if (state.failure) std::rethrow_exception (state.failure);
+    });
+  }
 private:
   ObjectRef<GimpPainterProcedureProgress> object_;
 };
@@ -737,7 +776,8 @@ bool each_chunk (const FilterProcedureRequest& request, std::atomic<bool>& cance
 }
 
 FilterProcedureDisposition run_convolution (const FilterProcedureRequest& request,
-  FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel)
+  FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel,
+  const FilterProcedureProgressSink& progress_sink)
 {
   using Disposition = FilterProcedureDisposition;
   const auto region = request.execution_region ();
@@ -814,11 +854,11 @@ FilterProcedureDisposition run_convolution (const FilterProcedureRequest& reques
   g_value_set_double (gimp_value_array_index (arguments.get (),6),request.offset);
   gimp_value_set_int32_array (gimp_value_array_index (arguments.get (),7),request.channels.data (),5);
   g_value_set_int (gimp_value_array_index (arguments.get (),8),request.border);
-  ProcedureProgress progress; ShadowCapture capture;
+  ProcedureProgress progress (progress_sink); ShadowCapture capture;
   if (request.raw_shadow) capture.install (gimp,layer.get ());
   GError *error = nullptr;
   ValuesRef result (gimp_procedure_execute (procedure.get (),gimp,context.get (),progress.get (),arguments.get (),&error));
-  ErrorRef error_owner (error); runtime.wait_for_plugins ();
+  ErrorRef error_owner (error); runtime.wait_for_plugins (); progress.finish ();
   if (cancel.load ()) return Disposition::pending;
   if (error || !result || gimp_value_array_length (result.get ()) != 1 ||
       !G_VALUE_HOLDS (gimp_value_array_index (result.get (),0),GIMP_TYPE_PDB_STATUS_TYPE) ||
@@ -852,6 +892,12 @@ FilterProcedureDisposition run_convolution (const FilterProcedureRequest& reques
 }
 } // namespace
 
+gboolean
+gimp_filter_procedure_progress_is_private (GimpProgress *progress)
+{
+  return progress && G_TYPE_CHECK_INSTANCE_TYPE (progress, gimp_painter_procedure_progress_get_type ());
+}
+
 static void
 gimp_painter_procedure_progress_dispose (GObject *object) noexcept
 {
@@ -882,7 +928,8 @@ namespace GimpPainter {
 FilterProcedureDisposition
 run_filter_procedure (const FilterProcedureRequest& request,
                       FilterRaster& input, FilterRaster& output,
-                      std::atomic<bool>& cancel)
+                      std::atomic<bool>& cancel,
+                      const FilterProcedureProgressSink& progress_sink)
 {
   using Disposition = FilterProcedureDisposition;
   const auto bytes = request.bytes ();
@@ -890,7 +937,7 @@ run_filter_procedure (const FilterProcedureRequest& request,
   if (&input == &output || input.size () != bytes || output.size () != bytes)
     throw std::invalid_argument ("Private Filter requires separate exact-sized RGBA8 rasters");
   if (cancel.load (std::memory_order_relaxed)) return Disposition::pending;
-  if (request.procedure == FilterProcedure::convolution) return run_convolution (request,input,output,cancel);
+  if (request.procedure == FilterProcedure::convolution) return run_convolution (request,input,output,cancel,progress_sink);
   std::array<std::uint8_t, transfer_bytes> pixels;
   const auto validate_carrier = [&] (std::size_t count) {
     for (std::size_t p = 0; p < count; p += 4)
@@ -1009,7 +1056,7 @@ run_filter_procedure (const FilterProcedureRequest& request,
                           request.orientation == 1 ? "vertical" : "horizontal");
       g_value_set_boolean (gimp_value_array_index (arguments.get (), 6), request.transparent != 0);
     }
-  ProcedureProgress progress;
+  ProcedureProgress progress (progress_sink);
   ShadowCapture capture;
   if (request.raw_shadow) capture.install (gimp, layer.get ());
   GError *error = nullptr;
@@ -1017,6 +1064,7 @@ run_filter_procedure (const FilterProcedureRequest& request,
                                            progress.get (), arguments.get (), &error));
   ErrorRef error_owner (error);
   runtime.wait_for_plugins ();
+  progress.finish ();
   if (cancel.load (std::memory_order_relaxed)) return Disposition::pending;
   if (error || !result || gimp_value_array_length (result.get ()) != 1 ||
       !G_VALUE_HOLDS (gimp_value_array_index (result.get (), 0), GIMP_TYPE_PDB_STATUS_TYPE) ||

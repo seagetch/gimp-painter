@@ -30,6 +30,7 @@
 #include "pdb-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpfilterprocedure-progress.h"
 #include "core/gimpparamspecs.h"
 #include "plug-in/gimpplugin-progress.h"
 #include "plug-in/gimpplugin.h"
@@ -61,7 +62,7 @@ progress_init_invoker (GimpProcedure         *procedure,
 
       if (plug_in && plug_in->open)
         {
-          if (! gimp->no_interface)
+          if (! gimp->no_interface || gimp_filter_procedure_progress_is_private (progress))
             gimp_plug_in_progress_start (plug_in, message, gdisplay);
         }
       else
@@ -91,7 +92,7 @@ progress_update_invoker (GimpProcedure         *procedure,
 
       if (plug_in && plug_in->open)
         {
-          if (! gimp->no_interface)
+          if (! gimp->no_interface || gimp_filter_procedure_progress_is_private (progress))
             gimp_plug_in_progress_set_value (plug_in, percentage);
         }
       else
@@ -115,7 +116,7 @@ progress_pulse_invoker (GimpProcedure         *procedure,
 
   if (plug_in && plug_in->open)
     {
-      if (! gimp->no_interface)
+      if (! gimp->no_interface || gimp_filter_procedure_progress_is_private (progress))
         gimp_plug_in_progress_pulse (plug_in);
     }
   else
@@ -144,7 +145,7 @@ progress_set_text_invoker (GimpProcedure         *procedure,
 
       if (plug_in && plug_in->open)
         {
-          if (! gimp->no_interface)
+          if (! gimp->no_interface || gimp_filter_procedure_progress_is_private (progress))
             gimp_plug_in_progress_set_text (plug_in, message);
         }
       else

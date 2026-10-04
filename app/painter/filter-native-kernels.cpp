@@ -7,6 +7,7 @@
 #include "filter-native-kernels.hpp"
 #include "filter-edge-kernel-private.hpp"
 #include "filter-gauss-kernel-private.hpp"
+#include "filter-progress.hpp"
 #include <array>
 #include <cstring>
 #include <climits>
@@ -32,7 +33,8 @@ void validate (const double *samples, std::size_t count)
     if (!std::isfinite (samples[i]) || (i % 4 == 3 && (samples[i] < 0 || samples[i] > 1)))
       throw std::invalid_argument ("Native filter requires finite samples and alpha in [0,1]");
 }
-void validate_raster (FilterRaster& in, Check& check)
+void validate_raster (FilterRaster& in, Check& check,
+                      const std::shared_ptr<FilterProgress>& progress, double span)
 {
   std::array<double,4096> samples;
   for (std::uint64_t offset = 0; offset < in.size ();)
@@ -41,6 +43,7 @@ void validate_raster (FilterRaster& in, Check& check)
       const auto bytes = std::size_t (std::min (std::uint64_t (sizeof samples), in.size () - offset));
       in.read (offset, bytes, reinterpret_cast<std::uint8_t *> (samples.data ()));
       validate (samples.data (), bytes / sizeof (double)); offset += bytes;
+      if (progress) progress->set_value (span * double (offset) / in.size ());
     }
 }
 void point_byte (std::uint8_t *p, FilterPoint operation, int argument)
@@ -97,7 +100,9 @@ void read_strip (FilterRaster& in, std::size_t w, std::size_t y,
 }
 template<class Kernel>
 void row_pass (FilterRaster& in, FilterRaster& out, std::size_t w, std::size_t h,
-               Kernel& kernel, Check& check)
+               Kernel& kernel, Check& check,
+               const std::shared_ptr<FilterProgress>& progress,
+               double begin, double span)
 {
   Reals source (w*4), result (w*4);
   for (std::size_t y=0; y<h; ++y) {
@@ -116,13 +121,16 @@ void row_pass (FilterRaster& in, FilterRaster& out, std::size_t w, std::size_t h
     }
     validate (result.data (),result.size ());
     out.write (offset,w*stride,reinterpret_cast<const std::uint8_t *> (result.data ()));
+    if (progress) progress->set_value (begin + span * double (y + 1) / h);
   }
 }
 void gaussian_pass (FilterRaster& in, FilterRaster& out, std::size_t w, std::size_t h,
-                    double radius, bool iir, Check& check)
+                    double radius, bool iir, Check& check,
+                    const std::shared_ptr<FilterProgress>& progress,
+                    double begin, double span)
 {
-  if (iir) { FilterGaussDetail::Iir kernel (radius,w); row_pass (in,out,w,h,kernel,check); }
-  else { FilterGaussDetail::RleReal kernel (radius,w,check); row_pass (in,out,w,h,kernel,check); }
+  if (iir) { FilterGaussDetail::Iir kernel (radius,w); row_pass (in,out,w,h,kernel,check,progress,begin,span); }
+  else { FilterGaussDetail::RleReal kernel (radius,w,check); row_pass (in,out,w,h,kernel,check,progress,begin,span); }
 }
 class VectorRaster final : public FilterRaster {
   const Bytes *input_;
@@ -158,7 +166,8 @@ bool filter_native_vector (const Bytes& input, std::atomic<bool>& cancel, Bytes&
   output.swap (result); return true;
 }
 bool filter_point_raster (FilterRaster& in, FilterRaster& out, std::size_t w, std::size_t h,
-                           FilterPoint operation, int argument, bool real, std::atomic<bool>& cancel)
+                           FilterPoint operation, int argument, bool real, std::atomic<bool>& cancel,
+                           const std::shared_ptr<FilterProgress>& progress)
 {
   const auto bpp = real ? stride : 4;
   const auto size = extent (in,out,w,h,bpp);
@@ -177,18 +186,23 @@ bool filter_point_raster (FilterRaster& in, FilterRaster& out, std::size_t w, st
       else point_byte (bytes+i*4,operation,argument);
     }
     out.write (offset,count,bytes); offset+=count;
+    if (progress) progress->set_value (0.99 * double (offset) / size);
   }
-  out.flush (); return !cancel.load (std::memory_order_relaxed);
+  out.flush ();
+  if (cancel.load (std::memory_order_relaxed)) return false;
+  if (progress) progress->set_value (1.0);
+  return true;
 }
 bool filter_edge_real_raster (FilterRaster& in, FilterRaster& out, std::size_t w, std::size_t h,
-                               const EdgeOptions& options, std::atomic<bool>& cancel)
+                               const EdgeOptions& options, std::atomic<bool>& cancel,
+                               const std::shared_ptr<FilterProgress>& progress)
 {
   extent (in,out,w,h,stride);
   if (!std::isfinite (options.amount) || options.wrapmode<1 || options.wrapmode>3 || options.edgemode<0 || options.edgemode>5)
     throw std::invalid_argument ("Invalid native edge options");
   Check check {cancel};
   try {
-    validate_raster (in,check);
+    validate_raster (in,check,progress,0.1);
     constexpr std::size_t strip=1024;
     std::array<std::array<double,(strip+2)*4>,3> rows;
     std::array<double,strip*4> result;
@@ -210,12 +224,16 @@ bool filter_edge_real_raster (FilterRaster& in, FilterRaster& out, std::size_t w
         }
       }
       out.write((std::uint64_t(y)*w+x)*stride,count*stride,reinterpret_cast<const std::uint8_t*>(result.data())); x+=count;
+      if (progress) progress->set_value (0.1 + 0.89 * (double (y) * w + x) / (double (w) * h));
     }
-    out.flush (); check.now (); return true;
+    out.flush (); check.now ();
+    if (progress) progress->set_value (1.0);
+    return true;
   } catch (const FilterGaussDetail::Cancelled&) { return false; }
 }
 bool filter_gauss_real_raster (FilterRaster& in, FilterRaster& out, std::size_t w, std::size_t h,
-                                const GaussOptions& options, std::atomic<bool>& cancel, const FilterRasterFactory& factory)
+                                const GaussOptions& options, std::atomic<bool>& cancel, const FilterRasterFactory& factory,
+                                const std::shared_ptr<FilterProgress>& progress)
 {
   const auto size=extent(in,out,w,h,stride);
   if (!std::isfinite(options.horizontal) || !std::isfinite(options.vertical) ||
@@ -224,7 +242,11 @@ bool filter_gauss_real_raster (FilterRaster& in, FilterRaster& out, std::size_t 
   const auto region=FilterGaussDetail::legacy_region(w,h,options.horizontal,options.vertical);
   Check check {cancel};
   try {
-    validate_raster(in,check);
+    // Validation, transposes, convolution axes and shadow merge are separate
+    // full-raster phases. A successful flush is required for completion.
+    const double span=0.99/(3*(options.vertical>0)+(options.horizontal>0)+2);
+    validate_raster(in,check,progress,span);
+    double begin=span;
     const bool iir=options.method==0 && options.horizontal>1 && options.vertical>1;
     if(options.vertical>0) {
       if(!factory) throw std::invalid_argument("Missing native Gaussian scratch factory");
@@ -232,10 +254,18 @@ bool filter_gauss_real_raster (FilterRaster& in, FilterRaster& out, std::size_t 
       if(scratch.get()==&in || scratch.get()==&out) { scratch.release(); throw std::invalid_argument("Aliased native Gaussian scratch"); }
       if(!scratch || scratch->size()!=size) throw std::invalid_argument("Invalid native Gaussian scratch");
       if(!transpose_filter_rgba(in,*scratch,w,h,cancel,256,stride)) return false;
-      gaussian_pass(*scratch,*scratch,h,w,options.vertical,iir,check);
+      begin+=span;
+      if(progress) progress->set_value(begin);
+      gaussian_pass(*scratch,*scratch,h,w,options.vertical,iir,check,progress,begin,span);
+      begin+=span;
       if(!transpose_filter_rgba(*scratch,out,h,w,cancel,256,stride)) return false;
+      begin+=span;
+      if(progress) progress->set_value(begin);
     }
-    if(options.horizontal>0) gaussian_pass(options.vertical>0?out:in,out,w,h,options.horizontal,iir,check);
+    if(options.horizontal>0) {
+      gaussian_pass(options.vertical>0?out:in,out,w,h,options.horizontal,iir,check,progress,begin,span);
+      begin+=span;
+    }
     std::array<double,4096> original,result;
     for(std::uint64_t offset=0;offset<size;) {
       check.now(); const auto bytes=std::size_t(std::min(std::uint64_t(sizeof original),size-offset));
@@ -248,8 +278,11 @@ bool filter_gauss_real_raster (FilterRaster& in, FilterRaster& out, std::size_t 
         else if(result[i+3]==0) std::copy_n(original.data()+i,3,result.data()+i);
       }
       out.write(offset,bytes,reinterpret_cast<const std::uint8_t*>(result.data())); offset+=bytes;
+      if(progress) progress->set_value(begin+span*double(offset)/size);
     }
-    out.flush(); check.now(); return true;
+    out.flush(); check.now();
+    if(progress) progress->set_value(1.0);
+    return true;
   } catch (const FilterGaussDetail::Cancelled&) { return false; }
 }
 }

@@ -47,8 +47,8 @@ src/dst/in/out/w1/w2 propagates failure before shadow acquisition or publication
 
 ## Transport
 
-The original Retinex checkpoint used GPF4 / `--filter-worker-v4`. Current GPF5
-retains these fields in its first88 bytes and requires canonical unused
+The original Retinex checkpoint used GPF4 / `--filter-worker-v4`. Convolution
+expanded this to GPF5; current GPF6 retains these fields in its first88 bytes and requires canonical unused
 Convolution fields; see [Convolution transport](filter-convolution.md). GPF4 used the existing24-byte header and88-byte request.
 Offsets0..56 keep the accepted selector, dimensions, Blinds scalars, Gray tag,
 background, start region/flags and Small Tiles factor. Native storage is at60;
@@ -76,8 +76,10 @@ assertions are labeled analytic and are not counted as additional old captures.
 
 This is a bounded U8 nonlinear RGB route. Conservative1GiB memory admission,
 configurable spill with8GiB default, logical rather than physical reservation,
-disabled-swap failure, owner UI progress, global latency and Windows/macOS
+disabled-swap failure, global latency and Windows/macOS
 process gates remain explicit. Focused normal/sanitizer and dirty prototype
 packaging checks are not whole-application, platform or release acceptance.
 XCF multipart, other procedure families and unrelated migration gates remain
 outside this task.
+
+Generation-scoped owner/editor progress is now covered by `filter-progress.md`.

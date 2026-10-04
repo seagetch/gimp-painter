@@ -5,9 +5,12 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <vector>
 
 namespace GimpPainter {
+
+class FilterProgress;
 
 /* Numeric values are the legacy plug-in-edge PDB arguments. */
 struct EdgeOptions
@@ -31,15 +34,17 @@ struct EdgeOptions
  * Returns false if cancellation is observed; otherwise publishes the complete
  * result and returns true. Output is unchanged on cancellation or exception,
  * and may alias input. Callers must keep input and options immutable until
- * return and must not concurrently access output. Only cancel is shared with
- * the controlling thread; no GObject or borrowed application state is used.
+ * return and must not concurrently access output. Only cancel and the optional
+ * progress mailbox are shared with the controlling thread; no GObject or
+ * borrowed application state is used. Progress is normalized work completion.
  */
 bool filter_edge (const std::vector<std::uint8_t>& input,
                   std::size_t width,
                   std::size_t height,
                   const EdgeOptions& options,
                   std::atomic<bool>& cancel,
-                  std::vector<std::uint8_t>& output);
+                  std::vector<std::uint8_t>& output,
+                  const std::shared_ptr<FilterProgress>& progress = {});
 
 } // namespace GimpPainter
 #endif

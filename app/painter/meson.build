@@ -56,7 +56,7 @@ test('painter-foundation', painter_foundation_test,
 )
 
 # The feature scheduler and exact legacy-edge executor own no GIMP objects.
-foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-owner-gates', 'filter-edge', 'filter-gauss', 'filter-gray', 'filter-gauss-alias', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels', 'filter-native-kernels', 'filter-context-native']
+foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-owner-gates', 'filter-edge', 'filter-gauss', 'filter-gray', 'filter-gauss-alias', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels', 'filter-native-kernels', 'filter-kernel-progress', 'filter-context-native']
   feature_cpp_args = painter_cpp_args
   feature_link_args = []
   if feature == 'filter-process' and host_machine.system() == 'linux'

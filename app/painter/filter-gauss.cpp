@@ -5,6 +5,7 @@
  */
 #include "filter-gauss.hpp"
 #include "filter-gauss-kernel-private.hpp"
+#include "filter-progress.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -17,7 +18,9 @@ using namespace FilterGaussDetail;
 
 template<class Kernel>
 void pass (Bytes& image, std::size_t width, std::size_t height,
-           bool vertical, Kernel& kernel, Check& check)
+           bool vertical, Kernel& kernel, Check& check,
+           const std::shared_ptr<FilterProgress>& progress,
+           double begin, double span)
 {
   const auto length = vertical ? height : width;
   const auto lines = vertical ? width : height;
@@ -42,6 +45,7 @@ void pass (Bytes& image, std::size_t width, std::size_t height,
                                        : (line * width + i) * 4;
           std::copy_n (dest.data () + i * 4, 4, image.data () + offset);
         }
+      if (progress) progress->set_value (begin + span * double (line + 1) / lines);
     }
 }
 
@@ -52,7 +56,8 @@ bool filter_gauss (const Bytes& input,
                    std::size_t height,
                    const GaussOptions& options,
                    std::atomic<bool>& cancel,
-                   Bytes& output)
+                   Bytes& output,
+                   const std::shared_ptr<FilterProgress>& progress)
 {
   const auto maximum = std::numeric_limits<std::size_t>::max ();
   const auto legacy_maximum = static_cast<std::size_t>
@@ -77,9 +82,13 @@ bool filter_gauss (const Bytes& input,
         {
           check.step ();
           result[i] = input[i];
+          if (progress && ((i + 1) % 65536 == 0 || i + 1 == input.size ()))
+            progress->set_value (0.05 * double (i + 1) / input.size ());
         }
       const bool iir = options.method == 0 &&
                        options.horizontal > 1.0 && options.vertical > 1.0;
+      const double span = 0.9 / ((options.vertical > 0.0) + (options.horizontal > 0.0));
+      double begin = 0.05;
       for (bool vertical : { true, false })
         {
           const double radius = vertical ? options.vertical : options.horizontal;
@@ -89,13 +98,14 @@ bool filter_gauss (const Bytes& input,
           if (iir)
             {
               Iir kernel (radius, length);
-              pass (result, width, height, vertical, kernel, check);
+              pass (result, width, height, vertical, kernel, check, progress, begin, span);
             }
           else
             {
               Rle kernel (radius, length, check);
-              pass (result, width, height, vertical, kernel, check);
+              pass (result, width, height, vertical, kernel, check, progress, begin, span);
             }
+          begin += span;
         }
       for (std::size_t i = 0; i < result.size (); i += 4)
         {
@@ -107,9 +117,12 @@ bool filter_gauss (const Bytes& input,
             { std::copy_n (input.data () + i, 3, result.data () + i); result[i + 3] = 0; }
           else if (result[i + 3] == 0)
             std::copy_n (input.data () + i, 3, result.data () + i);
+          if (progress && ((i + 4) % 65536 == 0 || i + 4 == result.size ()))
+            progress->set_value (0.95 + 0.04 * double (i + 4) / result.size ());
         }
       check.now ();
       output.swap (result);
+      if (progress) progress->set_value (1.0);
       return true;
     }
   catch (const Cancelled&)
