@@ -768,6 +768,8 @@ static void dialog_factory_reentry (void)
 
 #include "test-isolated-filter-editors.inc"
 #include "test-filter-schema-editors.inc"
+#include "test-filter-schema-persistence.inc"
+#include "test-filter-schema-persistence-failures.inc"
 #include "test-filter-progress-ui.inc"
 
 /* C entry points implemented by the native C++ metadata boundary fixtures. */
@@ -832,6 +834,16 @@ int main (int argc, char **argv)
   ADD (filter_schema_manager_lifetime);
   ADD (filter_schema_argument_patch);
   ADD (filter_schema_undo_provider_reentry);
+  ADD (filter_schema_persistence_routes);
+  ADD (filter_schema_persistence_special_bits);
+  ADD (filter_schema_persistence_large_tails);
+  ADD (filter_schema_persistence_reference_identity);
+  ADD (filter_schema_persistence_failures);
+  ADD (filter_schema_persistence_nested_null);
+  ADD (filter_schema_persistence_unknown_opaque);
+  ADD (filter_schema_persistence_active_save);
+  ADD (filter_schema_persistence_reference_lease);
+  ADD (filter_schema_persistence_double_cache);
   result = g_test_run ();
   gtk_widget_destroy (parent); g_object_unref (parent);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");

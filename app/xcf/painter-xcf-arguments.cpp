@@ -16,6 +16,7 @@ extern "C" {
 #include "core/gimpparamspecs.h"
 }
 #include "painter-xcf-arguments.hpp"
+#include "painter/object-ref.hpp"
 #include <cstring>
 #include <algorithm>
 #include <memory>
@@ -471,30 +472,27 @@ GVariant *origin_record (GObject *object, GType declared_type, const char *role,
   cancelled (cancel);
   return record.end ();
 }
-GVariant *encode_reference (GimpFilterArgumentReference ref, GimpImage *image, GHashTable *saved_ids, Builder &external, GCancellable *cancel)
+GVariant *encode_reference (GimpFilterArgumentReference ref, GObject *target,
+                           GimpImage *image, GHashTable *saved_ids, Builder &external, GCancellable *cancel)
 {
   cancelled (cancel);
   guint32 kind = 0, tattoo = 0;
   if (ref.was_set)
     {
       if (ref.expired) kind = 3;
-      else if (g_type_is_a (ref.object_type, GIMP_TYPE_IMAGE))
+      else if (!target || !g_type_is_a (G_OBJECT_TYPE (target), ref.object_type)) invalid ();
+      else if (GIMP_IS_IMAGE (target))
         {
-          if (ref.id <= 0 || ref.id > G_MAXINT) invalid ();
-          auto *target = gimp_image_get_by_id (image->gimp, ref.id);
-          if (!target) invalid ();
-          if (target == image) kind = 1;
+          if (target == G_OBJECT (image)) kind = 1;
           else
             {
               g_variant_builder_add_value (&external.value, origin_record (G_OBJECT (target), ref.object_type, "filter-argument", cancel));
               kind = 3; ref.expired = TRUE;
             }
         }
-      else if (g_type_is_a (ref.object_type, GIMP_TYPE_ITEM))
+      else if (GIMP_IS_ITEM (target))
         {
-          if (ref.id <= 0 || ref.id > G_MAXINT) invalid ();
-          auto *item = gimp_item_get_by_id (image->gimp, ref.id);
-          if (!item) invalid ();
+          auto *item = GIMP_ITEM (target);
           if (gimp_item_get_image (item) == image)
             { kind = 2; tattoo = GPOINTER_TO_UINT (g_hash_table_lookup (saved_ids, item)); }
           if (!tattoo)
@@ -531,8 +529,12 @@ GVariant *encode_snapshot_inner (const GimpFilterArgumentsSnapshot *args, GimpIm
             {
               cancelled (cancel);
               GimpFilterArgumentReference ref;
-              if (!gimp_filter_arguments_snapshot_reference (args, i, j, &ref)) invalid ();
-              g_variant_builder_add_value (&refs.value, encode_reference (ref, image, saved_ids, external, cancel));
+              GObject *target = nullptr;
+              if (!gimp_filter_arguments_snapshot_acquire_reference (args, i, j, &ref, &target)) invalid ();
+              auto lease = GimpPainter::ObjectRef<GObject>::adopt (target);
+              /* Recorded IDs/types are provenance. Only this retained weak
+               * target determines file-local identity or external status. */
+              g_variant_builder_add_value (&refs.value, encode_reference (ref, lease.get (), image, saved_ids, external, cancel));
             }
           payload = refs.end ();
         }

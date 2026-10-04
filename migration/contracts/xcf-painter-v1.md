@@ -95,7 +95,11 @@ references use the bounded core importer, not legacy pointer-copy GValue code.
 Object descriptors retain declared type, original runtime ID, was-set/expired
 state and optional file ID; self-image and same-image item targets are resolved,
 expired descriptors remain descriptors. Arbitrary object internals are not
-fabricated. Unsupported values fail preflight; uninterpreted loaded metadata is
+fabricated. The [Phase D integration](filter-parameter-persistence.md) uses one
+weak-target lease to encode live identity; recorded descriptor IDs are never a
+process-table lookup key. On reopen, live current-model IDs still normalize to
+new runtime IDs, while the input tuple remains in the imported capsule and later
+`original-argument-model`. Expired recorded IDs stay exact. Unsupported values fail preflight; uninterpreted loaded metadata is
 retained. Limits are depth 32 and 65,536 aggregate slots/references. Ordinary Save uses the
 [multipart transport](xcf-multipart-transport.md) for regenerated v1 capsules
 larger than 1 MiB, streaming the same logical capsule up to an explicit 64 GiB

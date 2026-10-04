@@ -1912,6 +1912,23 @@ gboolean gimp_filter_arguments_snapshot_reference (const GimpFilterArgumentsSnap
     return TRUE;
   });
 }
+gboolean gimp_filter_arguments_snapshot_acquire_reference (const GimpFilterArgumentsSnapshot *snapshot, guint argument,
+                                                           guint element, GimpFilterArgumentReference *reference,
+                                                           GObject **target)
+{
+  return boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
+    if (!snapshot || !reference || !target) return FALSE;
+    /* A weak-lock/toggle notification may reenter. Keep its backing model alive
+     * and transfer this very lease instead of observing expiration twice. */
+    auto arguments = snapshot->arguments;
+    const auto *ref = arguments->reference (argument, element);
+    if (!ref) return FALSE;
+    auto lease = ref->target.lock ();
+    *reference = {ref->type, ref->id, ref->had_object, ref->had_object && !lease};
+    *target = lease.release ();
+    return TRUE;
+  });
+}
 GimpFilterArgumentsSnapshot *gimp_filter_arguments_snapshot_nested (const GimpFilterArgumentsSnapshot *snapshot, guint argument)
 {
   return boundary<GimpFilterArgumentsSnapshot *> (nullptr, nullptr, [&] {

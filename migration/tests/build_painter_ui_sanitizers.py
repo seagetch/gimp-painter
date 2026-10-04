@@ -21,6 +21,8 @@ from painter_sanitizer_scope import bridge_rtti_sources, CXX_SUFFIXES
 parser = argparse.ArgumentParser()
 parser.add_argument("build", type=Path)
 parser.add_argument("--report", type=Path, required=True)
+parser.add_argument("--persistence", action="store_true",
+                    help="Also instrument ordinary XCF persistence and duplication for Phase D")
 args = parser.parse_args()
 build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
@@ -37,6 +39,15 @@ instrumented = {
     "app/plug-in/gimppluginmanager.c", "app/plug-in/gimppluginmanager-restore.c",
     "app/tests/test-filter-editor-metadata.cpp", "app/tests/test-filter-argument-patch.cpp",
 }
+if args.persistence:
+    instrumented |= {
+        "app/xcf/xcf.c", "app/xcf/xcf-load.c", "app/xcf/xcf-read.c",
+        "app/xcf/xcf-seek.c", "app/xcf/xcf-save.c", "app/xcf/xcf-write.c",
+        "app/xcf/painter-xcf-arguments.cpp", "app/xcf/painter-xcf-preserve.cpp",
+        "app/xcf/painter-xcf-load.cpp", "app/xcf/painter-xcf-storage.cpp",
+        "app/xcf/painter-xcf-transport.cpp", "app/xcf/painter-xcf-multipart.cpp",
+        "app/core/gimpimage-duplicate.c", "app/core/gimpitem.c",
+    }
 rtti_only = bridge_rtti_sources(root, build) - instrumented
 wanted = instrumented | rtti_only
 headers = {
@@ -49,6 +60,8 @@ headers = {
     "app/tests/meson.build", "po/POTFILES.in",
     "app/tests/test-isolated-filter-editors.inc",
     "app/tests/test-filter-schema-editors.inc",
+    "app/tests/test-filter-schema-persistence.inc",
+    "app/tests/test-filter-schema-persistence-failures.inc",
     "app/core/gimpfilterparametereditor.hpp", "app/core/gimpfilterparametereditor.h",
     "app/core/gimpfilterlayer-arguments.hpp",
     "app/core/gimpfilterprocedure-arguments.hpp", "app/painter/filter-procedure-policy.hpp",
@@ -76,7 +89,7 @@ with tarfile.open(archive, "r:gz") as stream:
     if archived != hashes:
         raise RuntimeError("Existing source archive does not match its content identity")
 report = {
-    "scope": "Painter GTK editor, definition snapshot patch, registered metadata/provider lifetime, Layers actions/commands, common BindingStore lifecycle and UI tests instrumented; other listed production C++ is RTTI-only; GTK and remaining core/dependencies uninstrumented; leak detection disabled",
+    "scope": "Painter GTK editor, definition snapshot patch, registered metadata/provider lifetime, Layers actions/commands, common BindingStore lifecycle and UI tests instrumented; " + ("ordinary XCF reader/writer/transport/argument codec and item/image duplication also instrumented; " if args.persistence else "") + "other listed production C++ is RTTI-only; GTK and remaining core/dependencies uninstrumented; leak detection disabled",
     "sanitizers": ["address", "undefined"], "leak_detection": False,
     "instrumented_sources": sorted(instrumented),
     "rtti_compatibility_only_sources": sorted(rtti_only),

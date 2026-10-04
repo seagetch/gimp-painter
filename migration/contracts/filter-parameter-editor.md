@@ -118,7 +118,8 @@ Undo, stale and replaced providers, in-place metadata drift, reordered keys,
 bounded previews, large ignored tails, saved special values and imported live/
 expired reference provenance. Existing Save/Open and snapshot/Undo regression
 cases are rerun because the immutable model patch touches their shared accessors.
-Phase D's comprehensive persistence matrix remains a separate task.
+Phase D's comprehensive persistence matrix is recorded separately in
+[the ordinary XCF integration contract](filter-parameter-persistence.md).
 
 Algorithms, pixel precision, process/wire formats, scheduler, progress,
 checkpoint/cancel behavior and XCF format are unchanged. The existing pixel

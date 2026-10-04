@@ -1,7 +1,7 @@
 # FilterLayer 引数取得・検証・編集・互換仕様
 
 採用日: 2026-10-04。`16.002/parameter-schema-contract` の設計契約。
-**設計採用時は文書と WBS のみだった。現在は §9-A/B の helper 名前 binder・旧意味 policy と、C の既登録metadata/lossless editorを限定実装・受入済み。D/E は TODO。C は query/IPC/cache を追加していない。** [A](../tests/filter-parameter-binder/acceptance.json)、[B](../tests/filter-parameter-policy/acceptance.json)、[C](../tests/filter-parameter-editor/acceptance.json)の受入証跡と今後満たす要件を区別する。
+**設計採用時は文書と WBS のみだった。現在は §9-A/B の helper 名前 binder・旧意味 policy と、C の既登録metadata/lossless editor、およびDの通常XCF往復を限定実装・受入済み。E は TODO。C は query/IPC/cache を追加していない。** [A](../tests/filter-parameter-binder/acceptance.json)、[B](../tests/filter-parameter-policy/acceptance.json)、[C](../tests/filter-parameter-editor/acceptance.json)、[D](../tests/filter-parameter-persistence/acceptance.json)の受入証跡と今後満たす要件を区別する。
 
 ソース照合基準は `seagetch/gimp-painter` の `gimp-3-0-port`、commit `5d12add0ecf46ea78c588714dc7dbb9e5efe66e2`、tree `d25e04e59ae6d6d2a535d12fb11420e3f629120d`。§12 の現行ソース・既存契約を照合した。実行試験、GLib 2.70 での build、新しい資源上限の実測はこの設計採用には含まない。
 
@@ -201,17 +201,17 @@ UI の runtime metadata 取得方法は Phase C で次の順に比較して決�
 
 ## 9. 段階別 WBS
 
-[WBS](../../tasks.md) の設計採用 `16.002/parameter-schema-contract` は DONE。以下の A/B は helper 4経路と旧意味 policy、C は既登録metadataとlossless editorの限定受入を終え DONE、D/E は TODO。設計子の完了と各実装子の受入を分け、既存 parent、全移植、統合受入の完了とはしない。
+[WBS](../../tasks.md) の設計採用 `16.002/parameter-schema-contract` は DONE。以下の A/B は helper 4経路と旧意味 policy、C は既登録metadataとlossless editor、Dは通常XCF往復の限定受入を終え DONE、E は TODO。設計子の完了と各実装子の受入を分け、既存 parent、全移植、統合受入の完了とはしない。
 
 | 段階 / ID | 変更対象 | 完了条件 | 必須先行 ID |
 |---|---|---|---|
 | A `16.002/parameter-name-binder` **DONE** ([証跡](../tests/filter-parameter-binder/acceptance.json)) | helper 内の4経路だけ。name→slot / type / assigned と型付き setter を小さな共通部品へ移し、既存署名・制約検査を name で照合 | context prefix 0/1/2 を固定した input reorder、missing/duplicate/type/constraint 不正拒否、コピー検証の FALSE mutation 検知、既存 object 強参照寿命、4経路 pixel/status/progress/cancel regression。GUI・wire・保存・scheduler 無変更 | `16.002/parameter-schema-contract`, `16.003/isolated-blinds-route`, `16.003/isolated-small-tiles-route`, `16.003/isolated-retinex-route`, `16.003/isolated-convolution-route`, `15.006/native-owner-progress` |
 | B `16.010/parameter-semantic-policy` **DONE** ([証跡](../tests/filter-parameter-policy/acceptance.json)) | runtime schema と旧意味 adapter を分離。現在の range/default/alias/count/flag policy の重複を整理 | コピー validation、型別 exact 比較、境界/配列/float/error tests。旧 corpus 不変。GLib 2.70 / GIMP 3.0 build | `16.002/parameter-name-binder` |
 | C `30.001/parameter-schema-editor` **DONE** ([証跡](../tests/filter-parameter-editor/acceptance.json)) | 既存 field を schema keys に接続。共通 scalar entry・専用 matrix・bounded preview。trusted 既登録 metadata の bounded 借用を先に比較し、必要な場合だけ describe IPC/cache | no-op 完全一致、stale 拒否、取得寿命/取消し、64bit 精度、未知保持、native GTK 操作。通信/cache を加える場合だけ版・不正入力・失効試験。追加予算を実測確定 | `16.010/parameter-semantic-policy`, `30.001/isolated-filter-editors`, `15.006/native-owner-progress` |
-| D `12.015/parameter-schema-roundtrip` | 保存仕様を変えず統合の保持試験を追加。拡張の必要性が判明した場合だけ別の versioned 設計 | ordinary Save/Open/再編集、Duplicate/Undo、巨大 opaque、実行中 Save、失敗時元 file 保持 | `30.001/parameter-schema-editor`, `12.015/multipart-storage` |
+| D `12.015/parameter-schema-roundtrip` **DONE** ([証跡](../tests/filter-parameter-persistence/acceptance.json)) | 保存仕様を変えず統合の保持試験を追加。拡張の必要性が判明した場合だけ別の versioned 設計 | ordinary Save/Open/再編集、Duplicate/Undo、巨大 opaque、実行中 Save、失敗時元 file 保持 | `30.001/parameter-schema-editor`, `12.015/multipart-storage` |
 | E `16.023/parameter-schema-acceptance` | focused sanitizer、実アプリ、再配置 runtime、source/binary hash 付き証跡 | 新旧 pixel corpus、4経路 native 実行、実 editor/取消/終了/再読込、OOM/malformed/schema drift。未検証 platform・全 port 残課題を明記 | `12.015/parameter-schema-roundtrip` |
 
-A の受入は helper 名前 binder のみで、通常版4経路の旧 corpus、16 native group、focused sanitizer の56 native group と境界検査を記録した。当時の GLib 2.70 API 上限 compile と wrapper の source 照合は最低版 runtime 試験ではない。B は [明示的な旧意味 policy](filter-parameter-policy.md) を分離し、11,506 request比較を通常/sanitizerで検証、旧 corpus 不変、16 native group と10 focused sanitizer group、最小API修正後の再確認、実 GLib 2.70.0 の GIMP 3.0.9 default build と5 native groupの loader 証跡を追加した。既知種類の Broken-pipe 警告・test-profile 診断と fixture/検証手段の失敗・修正も証跡に残す。C は[実装契約](filter-parameter-editor.md)に従い既登録metadataをbounded取得し、immutable差分で保存値を保持する。native GTK53組を通常/ASan・UBSanで検証し、既存core31組/XCF14組と実GLib2.70 headersで変更6単位compileを確認した。取得IPC/cacheは追加せず、D/Eの統合gateは別タスクとして残す。新しい汎用 plugin framework、全アルゴリズム再実装、baseline 3.2 化、新しい動的 GObject 型生成、永続 schema DB、汎用巨大配列 editor はこの段階化には含めない。未対応フィルターを含む移植全体の要件と既存の未完了 gate は維持する。
+A の受入は helper 名前 binder のみで、通常版4経路の旧 corpus、16 native group、focused sanitizer の56 native group と境界検査を記録した。当時の GLib 2.70 API 上限 compile と wrapper の source 照合は最低版 runtime 試験ではない。B は [明示的な旧意味 policy](filter-parameter-policy.md) を分離し、11,506 request比較を通常/sanitizerで検証、旧 corpus 不変、16 native group と10 focused sanitizer group、最小API修正後の再確認、実 GLib 2.70.0 の GIMP 3.0.9 default build と5 native groupの loader 証跡を追加した。既知種類の Broken-pipe 警告・test-profile 診断と fixture/検証手段の失敗・修正も証跡に残す。C は[実装契約](filter-parameter-editor.md)に従い既登録metadataをbounded取得し、immutable差分で保存値を保持する。native GTK53組を通常/ASan・UBSanで検証し、既存core31組/XCF14組と実GLib2.70 headersで変更6単位compileを確認した。取得IPC/cacheは追加していない。Dは[通常XCF保存との統合](filter-parameter-persistence.md)を通常10組/focused sanitizer10組と最終2組の追加assertion再検証、既存XCF6組で受入済み。live参照は実weak targetからfile IDを決め、記録IDから再探索しない。wireとreopen時のlive runtime ID正規化は変更せず、原tupleは別archiveに保持する。実GLib2.70 headersで変更2単位compileを確認した。実app/再配置/OOM等のEは未完了。新しい汎用 plugin framework、全アルゴリズム再実装、baseline 3.2 化、新しい動的 GObject 型生成、永続 schema DB、汎用巨大配列 editor はこの段階化には含めない。未対応フィルターを含む移植全体の要件と既存の未完了 gate は維持する。
 
 独立した GTK AT-SPI の依存欠陥 `34.003/gtk-atk-menu-guards` は未完了のまま。A〜E の合格で修正済みにしない。[原因と残作業](../tests/gtk-dialog-diagnostics/README.md) に従い、通常入力の結果と accessibility 経路の未解決事項を分けて報告する。
 
