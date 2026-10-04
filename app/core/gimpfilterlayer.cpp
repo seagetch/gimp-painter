@@ -19,6 +19,7 @@ extern "C" {
 #include "gimp.h"
 #include "gimpimage-undo.h"
 #include "gimpitemundo.h"
+#include "gimpundostack.h"
 #include "gimppickable.h"
 #include "gimpprogress.h"
 #include "gimpprojectable.h"
@@ -1604,7 +1605,11 @@ GimpLayer *gimp_filter_layer_new (GimpImage *image, gint width, gint height, con
 static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
                                 GBytes *raw, const GimpValueArray *args, bool push_undo, GError **error,
                                 const std::shared_ptr<const FilterArguments> *imported = nullptr,
-                                GBytes *opaque_arguments = nullptr)
+                                GBytes *opaque_arguments = nullptr,
+                                const std::shared_ptr<const FilterArguments> *expected_arguments = nullptr,
+                                guint64 expected_revision = 0,
+                                gboolean (*check) (gpointer) = nullptr,
+                                gpointer check_data = nullptr)
 {
   return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
     if (!GIMP_IS_FILTER_LAYER (layer)) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected FilterLayer");
@@ -1616,8 +1621,11 @@ static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
     std::shared_ptr<const FilterArguments> arguments = imported ? *imported :
                                                        args ? std::make_shared<FilterArguments> (args) : nullptr;
     BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([&] (FilterImpl& impl) {
+      if (expected_arguments && (impl.args != *expected_arguments || impl.definition_revision != expected_revision))
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition changed; reload its saved parameters");
       const auto binding_token = BindingStore::require (G_OBJECT (layer)).generation ();
       const auto revision = impl.definition_revision;
+      ObjectRef<GObject> pushed_undo;
       if (impl.definition_revision == std::numeric_limits<std::uint64_t>::max ())
         throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition revision exhausted");
       if (push_undo && gimp_item_is_attached (GIMP_ITEM (layer)))
@@ -1626,11 +1634,37 @@ static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
                                             gimp_filter_layer_undo_get_type (), GIMP_UNDO_FILTER_LAYER_DEFINITION,
                                             "Filter layer definition", GimpDirtyMask (GIMP_DIRTY_ITEM | GIMP_DIRTY_ITEM_META | GIMP_DIRTY_DRAWABLE),
                                             "item", layer, nullptr);
+          pushed_undo = ObjectRef<GObject>::retain (G_OBJECT (undo));
           if (undo && reinterpret_cast<GimpFilterLayerUndo *> (undo)->binding_failed)
             throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition Undo construction failed");
         }
-      if (!impl.definition_current (binding_token, revision))
-        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition target changed during Undo creation");
+      const bool precondition = !check || check (check_data);
+      const bool current = impl.definition_current (binding_token, revision) &&
+        (!expected_arguments || (impl.args == *expected_arguments && impl.definition_revision == expected_revision));
+      if (!precondition || !current)
+        {
+          /* A provider/UI guard can fail from a synchronous Undo signal. Drop
+           * only our own still-top item for an otherwise unchanged target.
+           * Never pop/apply Undo or remove another edit/group. Existing dirty
+           * notifications and redo expiration are not a reversible transaction. */
+          if (!precondition && current && pushed_undo && image_pin)
+            {
+              auto *image = GIMP_IMAGE (image_pin.get ());
+              auto *stack = gimp_image_get_undo_stack (image);
+              auto *undo = GIMP_UNDO (pushed_undo.get ());
+              if (gimp_undo_stack_peek (stack) == undo)
+                {
+                  auto stack_pin = ObjectRef<GObject>::retain (G_OBJECT (stack));
+                  if (gimp_container_remove (stack->undos, GIMP_OBJECT (undo)))
+                    {
+                      gimp_undo_free (undo, GIMP_UNDO_MODE_UNDO);
+                      gimp_image_undo_event (image, GIMP_UNDO_EVENT_UNDO_EXPIRED, undo);
+                      g_object_unref (undo); // Original stack-owned reference.
+                    }
+                }
+            }
+          throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition or editor metadata changed during Undo creation");
+        }
       impl.definition_installed ();
       const auto installed_revision = impl.definition_revision;
       /* Byte payloads can have caller-supplied destruction callbacks. Keep
@@ -1650,6 +1684,26 @@ gboolean gimp_filter_layer_set_definition (GimpFilterLayer *layer, const gchar *
 gboolean gimp_filter_layer_edit_definition (GimpFilterLayer *layer, const gchar *procedure,
                                            GBytes *raw, const GimpValueArray *args, GError **error)
 { return set_definition (layer, procedure, raw, args, true, error); }
+gboolean gimp_filter_layer_set_definition_checked (GimpFilterLayer *layer, const gchar *procedure,
+                                                   GBytes *raw, const GimpValueArray *args, gboolean push_undo,
+                                                   gboolean (*check) (gpointer), gpointer check_data,
+                                                   GError **error)
+{
+  return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
+    if (!GIMP_IS_FILTER_LAYER (layer) || (push_undo != FALSE && push_undo != TRUE))
+      throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected FilterLayer and Boolean Undo option");
+    auto owner_pin = ObjectRef<GObject>::retain (G_OBJECT (layer));
+    std::shared_ptr<const FilterArguments> original;
+    guint64 revision = 0;
+    BindingStore::require (G_OBJECT (layer)).read<FilterSlot> ([&] (const FilterImpl& impl) {
+      original = impl.args; revision = impl.definition_revision;
+    });
+    if (check && !check (check_data))
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter editor metadata changed before staging");
+    return set_definition (layer, procedure, raw, args, push_undo, error,
+                           nullptr, nullptr, &original, revision, check, check_data);
+  });
+}
 gboolean gimp_filter_layer_set_definition_with_opaque_arguments (GimpFilterLayer *layer, const gchar *procedure,
                                                                 GBytes *raw, GBytes *opaque, GError **error)
 { return set_definition (layer, procedure, raw, nullptr, false, error, nullptr, opaque); }
@@ -1660,6 +1714,19 @@ gboolean gimp_filter_layer_set_definition_with_opaque_arguments (GimpFilterLayer
   })
 gchar *gimp_filter_layer_dup_procedure (GimpFilterLayer *layer)
 { FILTER_READ (gchar *, static_cast<gchar *> (nullptr), g_strdup (impl.procedure.c_str ())); }
+gchar *gimp_filter_layer_dup_procedure_prefix (GimpFilterLayer *layer, gsize max_bytes,
+                                             gboolean *truncated)
+{
+  if (truncated) *truncated = FALSE;
+  return boundary<gchar *> (nullptr, nullptr, [&] {
+    if (!GIMP_IS_FILTER_LAYER (layer)) return static_cast<gchar *> (nullptr);
+    return BindingStore::require (G_OBJECT (layer)).read<FilterSlot> ([&] (const FilterImpl& impl) {
+      const gsize size = MIN (max_bytes, gsize (impl.procedure.size ()));
+      if (truncated) *truncated = size < impl.procedure.size ();
+      return g_strndup (impl.procedure.c_str (), size);
+    });
+  });
+}
 GBytes *gimp_filter_layer_ref_definition (GimpFilterLayer *layer)
 { FILTER_READ (GBytes *, static_cast<GBytes *> (nullptr), impl.raw ? g_bytes_ref (impl.raw.get ()) : nullptr); }
 GBytes *gimp_filter_layer_ref_opaque_arguments (GimpFilterLayer *layer)
@@ -1771,6 +1838,40 @@ GimpFilterArgumentsSnapshot *gimp_filter_layer_snapshot_arguments (GimpFilterLay
     return BindingStore::require (G_OBJECT (layer)).read<FilterSlot> ([&] (const FilterImpl& impl) -> GimpFilterArgumentsSnapshot * {
       return impl.args ? new GimpFilterArgumentsSnapshot (impl.args) : nullptr;
     });
+  });
+}
+gboolean gimp_filter_layer_edit_argument_patch (GimpFilterLayer *layer, guint64 expected_revision,
+                                                const GimpFilterArgumentsSnapshot *snapshot,
+                                                guint n_patches, const GimpFilterArgumentPatch *patches,
+                                                gboolean (*check) (gpointer), gpointer check_data,
+                                                GError **error)
+{
+  return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
+    if (!GIMP_IS_FILTER_LAYER (layer) || !snapshot || !snapshot->arguments)
+      throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected FilterLayer and saved argument snapshot");
+    if (n_patches > 512 || (n_patches && !patches))
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter argument edit exceeds structural limits");
+    auto owner_pin = ObjectRef<GObject>::retain (G_OBJECT (layer));
+    const auto original = snapshot->arguments;
+    if (check && !check (check_data))
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter editor metadata changed before staging");
+    std::shared_ptr<const FilterArguments> edited;
+    std::string procedure;
+    BytesRef raw, opaque;
+    BindingStore::require (G_OBJECT (layer)).read<FilterSlot> ([&] (const FilterImpl& impl) {
+      if (impl.args != original || impl.definition_revision != expected_revision)
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition changed; reload its saved parameters");
+      if (!n_patches) return;
+      if (impl.procedure.size () > 4096)
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter procedure name exceeds the edit budget");
+      edited = std::make_shared<FilterArguments> (original, n_patches, patches);
+      procedure = impl.procedure;
+      raw.reset (impl.raw ? g_bytes_ref (impl.raw.get ()) : nullptr);
+      opaque.reset (impl.opaque_arguments ? g_bytes_ref (impl.opaque_arguments.get ()) : nullptr);
+    });
+    if (!n_patches) return TRUE;
+    return set_definition (layer, procedure.c_str (), raw.get (), nullptr, true, error,
+                           &edited, opaque.get (), &original, expected_revision, check, check_data);
   });
 }
 void gimp_filter_arguments_snapshot_free (GimpFilterArgumentsSnapshot *snapshot) { delete snapshot; }

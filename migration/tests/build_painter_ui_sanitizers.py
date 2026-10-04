@@ -32,6 +32,10 @@ instrumented = {
     "app/actions/layers-commands.c", "app/tests/test-painter-layer-ui.c",
     "app/painter/binding-store.cpp", "app/painter/gimp-painter-binding.cpp",
     "app/painter/gimp-painter-error.cpp",
+    "app/core/gimpfilterlayer.cpp", "app/core/gimpfilterparametereditor.cpp",
+    "app/core/gimpfilterprocedure-arguments.cpp", "app/core/gimpfilterpaths.cpp",
+    "app/plug-in/gimppluginmanager.c", "app/plug-in/gimppluginmanager-restore.c",
+    "app/tests/test-filter-editor-metadata.cpp", "app/tests/test-filter-argument-patch.cpp",
 }
 rtti_only = bridge_rtti_sources(root, build) - instrumented
 wanted = instrumented | rtti_only
@@ -44,6 +48,10 @@ headers = {
     "app/widgets/gimpviewabledialog.h", "app/dialogs/meson.build",
     "app/tests/meson.build", "po/POTFILES.in",
     "app/tests/test-isolated-filter-editors.inc",
+    "app/tests/test-filter-schema-editors.inc",
+    "app/core/gimpfilterparametereditor.hpp", "app/core/gimpfilterparametereditor.h",
+    "app/core/gimpfilterlayer-arguments.hpp",
+    "app/core/gimpfilterprocedure-arguments.hpp", "app/painter/filter-procedure-policy.hpp",
     "migration/tests/build_painter_ui_sanitizers.py",
     "migration/tests/painter_sanitizer_scope.py",
 }
@@ -68,7 +76,7 @@ with tarfile.open(archive, "r:gz") as stream:
     if archived != hashes:
         raise RuntimeError("Existing source archive does not match its content identity")
 report = {
-    "scope": "Painter GTK dialog/controller, Layers actions/commands, common BindingStore lifecycle and UI tests instrumented; other listed production C++ is RTTI-only; GTK and other core/dependencies uninstrumented; leak detection disabled",
+    "scope": "Painter GTK editor, definition snapshot patch, registered metadata/provider lifetime, Layers actions/commands, common BindingStore lifecycle and UI tests instrumented; other listed production C++ is RTTI-only; GTK and remaining core/dependencies uninstrumented; leak detection disabled",
     "sanitizers": ["address", "undefined"], "leak_detection": False,
     "instrumented_sources": sorted(instrumented),
     "rtti_compatibility_only_sources": sorted(rtti_only),

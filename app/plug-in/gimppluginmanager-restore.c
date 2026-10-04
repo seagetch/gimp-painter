@@ -33,6 +33,7 @@
 
 #include "core/gimp.h"
 #include "core/gimp-utils.h"
+#include "core/gimpfilterparametereditor.h"
 
 #include "pdb/gimppdb.h"
 #include "pdb/gimppdbcontext.h"
@@ -159,6 +160,7 @@ gimp_plug_in_manager_restore (GimpPlugInManager  *manager,
     }
 
   /* we're done with the plug-in-defs */
+  gimp_filter_parameter_editor_capture (manager);
   g_slist_free_full (manager->plug_in_defs, (GDestroyNotify) g_object_unref);
   manager->plug_in_defs = NULL;
 

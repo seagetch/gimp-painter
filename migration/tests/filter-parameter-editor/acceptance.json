@@ -1,0 +1,188 @@
+{
+  "task": "30.001/parameter-schema-editor",
+  "status": "PASS",
+  "date": "2026-10-04",
+  "scope": "PhaseC only: bounded already-registered core PDB descriptors and existing four-route lossless GTK editors; no describeIPC/cache, algorithm, precision, scheduler, wire or XCF-format change",
+  "base_commit": "e84538a2c4c664c3bdcf22e900f3e95ceb33e239",
+  "source_sha256": {
+    "app/core/gimpfilterlayer-arguments.hpp": "3fccf3c4fb94f081ff09f1530154429f928dc2a06cfcb78a051901f333b9aed2",
+    "app/core/gimpfilterlayer.cpp": "9d97a5120d1c955dcbaaeaadd90e85d229e5f200fd44f84a641663f1f20e301f",
+    "app/core/gimpfilterlayer.h": "4a73d44cb4980a0ac612397bba628db00e1d0cbcd71e1c14e3a7e7d68b5473a9",
+    "app/core/gimpfilterparametereditor.cpp": "fcf150ea7c938ab792770f3307d769e5f84dddcfba20b85030b6e7ca4c9e130f",
+    "app/core/gimpfilterparametereditor.h": "ec098ed545ef308e49e4193644e5e31aa4c51b00570eb7a9a6b20808843b5878",
+    "app/core/gimpfilterparametereditor.hpp": "5a82fa9bb4b55723e7f1386a8ca4090025901a2fa33f37a3680bbc62c49ff50c",
+    "app/core/gimpfilterpaths.cpp": "91c45a032f7b6caace7968f9e94494aa310d4097e9df3e41a9360e1b8975d8e9",
+    "app/core/gimpfilterpaths.hpp": "b9c2492ddb3447c188584c07de88157fe35f2728ff21f2762688103dc04f3334",
+    "app/core/meson.build": "1779f00e028bd5f4f3cd3bd1ed1679272660a15065fec66b1ccc772dda3906f2",
+    "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+    "app/plug-in/gimppluginmanager-restore.c": "cd76b575963676e7f1abfd964df2a82ed8c3baa79a75d5bc02b070126201fba3",
+    "app/plug-in/gimppluginmanager.c": "bf4bde68b05b7e748e6142e2a9d3ba7192f830a1bef0acc6d69d8f115fdaeaea",
+    "app/tests/meson.build": "a9cc9109eb081da9ce579ff7a553e162b4b38291aa3573b8ca62122a04652f4a",
+    "app/tests/test-filter-argument-patch.cpp": "ed91c4be60dd77dc08e281c6e1017c3bca332713b1dd40ffa25d8d37a8dac930",
+    "app/tests/test-filter-editor-metadata.cpp": "8187f0749f317f6ca8d3a87c6893a17498a7b24166e5a5b7be351504774d03ad",
+    "app/tests/test-filter-schema-editors.inc": "5c1cfed08e87f62705a9a4742d3e2a2d4db4552c87f6e09b7b24f03f00365c64",
+    "app/tests/test-painter-layer-ui.c": "1412e386b0c6554071f387009d6ee94d2bea4672866d68adf7f1057969571d7b",
+    "migration/contracts/filter-isolated-editors.md": "1e6282c32dcbc73955b5a2556951793fa73e7132db0646205fa06e73145a23f5",
+    "migration/contracts/filter-parameter-editor.md": "9b19559cf3d1fad609230497189074bb315f092b05c51d06f47beaeed66d1f47",
+    "migration/contracts/filter-parameter-schema.md": "8821d40e8f2483216e910398910e6e363217fb415dae838fe7ac5b8bfcdb35c6",
+    "migration/progress.tsv": "feefb8ed3090f052c412ebf2c48e2de9a66b6b64eddf87bb3b2284fbf72cf246",
+    "migration/tests/build_painter_ui_sanitizers.py": "15ff133f2db259bed130211dd3c8ba8e80aa59ce336186f7b08e85d30eef16b5",
+    "tasks.md": "203d50367cecd15e4ef78e0ca90cfe8070b42633b8c6e4bed65e29042d97f7eb"
+  },
+  "final_binary_sha256": {
+    "build-installed-filter/app/tests/painter-layer-ui": "bc5cd31dd1cf6be428e01d566fd4d9c79cc08b3bbadc4eeb0e0bc54e6049dace",
+    "build-installed-filter/app/tests/painter-layer-ui-asan": "1086a3516e39bb21e23215de8111fa52446350e8eb632708a462d35b954f1eaa",
+    "build-installed-filter/app/tests/gimp-filter-layer": "0a88ca9172e03d06a86ea9d57d3c15193fedd168ab09a45a5dadf5e95f815b8c",
+    "build-installed-filter/app/tests/painter-xcf-roundtrip": "27471c94f09357c3186d88dc8bfb1799762701045c9fc077a43352ee145a5ad8",
+    "build-installed-filter/app/gimp-painter-filter-worker": "773f5b2304d03b34e00ab53fc037a5d355910b2995d4f690561ed61434c00aa4",
+    "build-installed-filter/app/gimp-3.0": "ce4fa1331f4de8cd16dee0aa01b2f267fe3ab6625c5ede7d03f7d9ef484e0b86"
+  },
+  "native_gtk": {
+    "normal": {
+      "groups": 53,
+      "exit_code": 0,
+      "elapsed_seconds": 46.684505094002816,
+      "binary_sha256": "bc5cd31dd1cf6be428e01d566fd4d9c79cc08b3bbadc4eeb0e0bc54e6049dace"
+    },
+    "focused_asan_ubsan": {
+      "groups": 53,
+      "exit_code": 0,
+      "elapsed_seconds": 67.47779170199647,
+      "binary_sha256": "1086a3516e39bb21e23215de8111fa52446350e8eb632708a462d35b954f1eaa",
+      "instrumented_units": 15,
+      "rtti_only_units": 51,
+      "leak_detection": false,
+      "whole_application_or_dependency_instrumentation": false
+    },
+    "existing_groups": 39,
+    "new_groups": 14
+  },
+  "regressions": {
+    "core_groups": 31,
+    "existing_xcf_groups": 14,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "freshness": "Final core/model/provider sources equal the checkpoint1 hashes used for regression runs. Only dialog admission and user-facing text plus its test changed afterward; final full GTK suites cover that change."
+  },
+  "minimum_glib": {
+    "version": "2.70.0",
+    "changed_production_units_compiled": 6,
+    "passed": true,
+    "scope": "Actual pinned minimum headers/flags; compile-only. Prior PhaseB full build/runtime is separate and frozen."
+  },
+  "bounds": {
+    "retained_dialog_descriptor_bytes": 65536,
+    "temporary_descriptor_bytes": 65536,
+    "metadata_string_bytes": 4096,
+    "spec_or_choice_items": 512,
+    "registry_nodes": 4096,
+    "preview_utf8_bytes": 65536,
+    "preview_string_bytes": 4096,
+    "array_or_strv_preview_elements": 256,
+    "argument_reference_preview_entries": 512,
+    "raw_preview_bytes": 4096,
+    "preview_depth": 32,
+    "changed_patch_additional_allocation_budget_bytes": 1048576,
+    "patch_slots": 512,
+    "materialization_policy": "Same-route patches share untouched scalar/nested/weak-reference/huge-tail slots without deep-copy charges. Only changed values and patch container overhead consume new-allocation budget. Original backing model remains alive while aliases/Undo need it. Whole-copy estimate retained only for older non-isolated editor materialization. No totalRSS guarantee."
+  },
+  "observed": {
+    "descriptor_bytes_by_route": [
+      4294,
+      4884,
+      8368,
+      5011
+    ],
+    "retained_descriptor_total_bytes": 22557,
+    "largest_preview_bytes": 65536,
+    "whole_large_preview_dialog_callback_microseconds": {
+      "min": 28522,
+      "max": 32698
+    },
+    "baseline_matched_groups": 2,
+    "baseline": {
+      "elapsed_seconds": 12.794250904000364,
+      "max_rss_kib": 402468,
+      "binary_sha256": "eb3aa01360650cf17b7847ad9301742ddb46eca9a7be7ac58dadc7426f3a0859"
+    },
+    "current_matched": {
+      "elapsed_seconds": 12.245790438995755,
+      "max_rss_kib": 402708,
+      "binary_sha256": "bc5cd31dd1cf6be428e01d566fd4d9c79cc08b3bbadc4eeb0e0bc54e6049dace"
+    },
+    "limits": "Single shared-host observations; no independent per-callback allocation tracer/heartbeat p99/FD-process sampling or global performance gate claimed. No acquisition child/cache/persistentFD exists by construction."
+  },
+  "old_corpus": {
+    "base_commit": "e84538a2c4c664c3bdcf22e900f3e95ceb33e239",
+    "verified_tracked_fixture_files": 2626,
+    "mismatches": [],
+    "seal_sha256": "2ada5ad913de2cac13889a48febed0d8a01a46fe7b8d33c9b49efaefb8c0f55b",
+    "method": "git ls-tree HEAD fixture blob IDs compared with current git hash-object bytes; not a regenerated or rerun pixel corpus"
+  },
+  "actual_app": {
+    "binary": "/workspace/scratch/5b5281e79681/gimp-painter-installed-filter/build-installed-filter/app/gimp-3.0",
+    "binary_sha256": "02f4a0b35e5a1220f35e85cdb8151dbdfdf1b93f0e2a379c0e2c4097440a3c93",
+    "source_checkpoint": "source-checkpoint-1.json",
+    "observed": [
+      "Fresh-profile normal plug-in restore; all four route pages available",
+      "Convolution5x5 grid and five flags in x-major labels",
+      "New divisor0 rejected without close; divisor1 accepted",
+      "Created32x32 Convolution layer; Up to date on re-edit",
+      "No-op OK retained Undo Add Layer",
+      "Offset0.125 created Undo Filter layer definition; one Undo returned Undo Add Layer and Redo Filter layer definition; Redo restored definition Undo",
+      "Discarded only disposable unsaved test image and exited"
+    ],
+    "source_limit": "Before final admission/text-only adjustment removing hypothetical copy charge for shared huge tails. Those changes are covered by final native normal/sanitizer reruns.",
+    "startup_attempt": "Missing uninstalled prefix menu data caused fatal startup; wrapper corrected to source Meson menu/sysconf/testing-plugin variables; failed log retained",
+    "screenshots": "Native CUA observations in task trace; no standalone screenshot archive",
+    "diagnostics": [
+      "Missing installed localization/icons/splash assets",
+      "Unsupported temporary single-window-mode gimprc property (removed from final wrapper)",
+      "Existing GTK/GDK AT-SPI criticals and popup trigger warnings during menu/quit interactions; remains open34.003",
+      "No crash in corrected menu-path walkthrough; actual dialog/cancel/Undo behavior observed independently of diagnostic presence"
+    ]
+  },
+  "acceptance_cases": {
+    "P01": "Passed: fixed-context input reorder, native editor key mapping and existing binder regression",
+    "P02": "Passed: missing/duplicate/shadow/path/type/range/default/choice incompatibility, including raw cached-default drift",
+    "P03": "Passed for supported INT32 editors; INT64/UINT64 preserved/read-only via existing typed snapshot/XCF cases; no new 64-bit editor promised",
+    "P04": "Passed: existing precision/invalid-input groups plus exact untouched NaN/Inf, negative zero and one-field edits",
+    "P05": "Existing binder copy-validation regression rerun; model/UI originals remain immutable",
+    "P06": "Passed existing malformed-array/unknown-shape and new bounded/large-tail cases; importer limits unchanged",
+    "P07": "Passed signed flags, toggle-return, unknown enum and arbitrary11/12-slot tail preservation",
+    "P08": "Passed existing isolated editor domain/precision and Gaussian alias regressions; legacy domains remain explicit",
+    "P09": "Passed preserve-only unknown definitions; no arbitrary saved-name lookup/query/execute route introduced",
+    "P10": "Passed close/reentry/image/retained-widget lifecycle; no asynchronous acquisition IPC or children exist",
+    "P11": "Passed same-object unregister/re-register, duplicate/provider/path replacement, raw/default/range mutation, manager closure and post-Undo guard",
+    "P12": "Passed stale definition and existing Undo/reentry groups",
+    "P13": "Passed settled/running no-op, Cancel, equivalent text and flag round-trip groups",
+    "P14": "Passed all four scalar editors, matrix/channel field edits, single Undo and untouched nonfinite/reference/huge tail",
+    "P15": "Scoped existing14 XCF and native UI Save/Open regressions passed; comprehensive PhaseD remains open",
+    "P16": "Passed preview/descriptor/choice/shared-tail/new-patch allocation bounds; no describe/cache adopted; whole-application OOM injection remains PhaseE",
+    "P17": "Current-worker real four-route progress/cancel and core regression passed; algorithms/transport unchanged; previous full crash/timeout corpus remains separate",
+    "P18": "Final53 normal+53 focused sanitizer, exact source/binary hashes; fresh-app walkthrough recorded at checkpoint1; relocation/integrated PhaseE remains open",
+    "P19": "Existing typed comparator/native binder regression rerun; snapshot tests compare untouched identities/bits directly",
+    "P20": "Existing execution-object lifetime plus new registered-provider and immutable weak-reference lifetime tests passed",
+    "P21": "Passed initialized native owner with four trusted registrations; unavailable/hidden-public mismatch blocks changed values without query; fresh-app pages available"
+  },
+  "bookkeeping_checks": {
+    "check_tasks": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "limitations": [
+    "PhaseD comprehensive persistence and PhaseE integrated/relocation/OOM acceptance remain open",
+    "Post-Undo provider guard cannot restore preexisting dirty notifications or expired redo/old Undo; only its own identifiable still-top Undo is removed while the target remains unchanged",
+    "GTK/GDK AT-SPI menu/accessibility defect34.003 remains open; native diagnostics retained",
+    "New and preexisting test C90 mixed-declaration warnings plus existing missing-declaration/unused-variable warnings retained; no warning-free claim",
+    "Windows/macOS/tablet/full migration unsupported paths remain open"
+  ],
+  "evidence": {
+    "archive": "raw-evidence.tar.gz",
+    "bytes": 71811,
+    "sha256": "b2f497ce08cbc44eaed4031914c81f5dc4e04597737b9284d5cb036c3a9ab107",
+    "members": 45,
+    "manifest_sha256": "ab4b9d4c19f1c2db36bfb0390ca5164b07de9b4c64bf79ac0d0fa3e7eef88aad"
+  }
+}

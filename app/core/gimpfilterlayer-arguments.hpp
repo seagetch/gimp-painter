@@ -207,15 +207,53 @@ public:
           throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Imported null flag conflicts with its value");
       }
   }
-  std::size_t size () const noexcept { return arguments_.size (); }
-  const GValue *at (std::size_t i) const { return arguments_.at (i).value.get (); }
+  FilterArguments (const std::shared_ptr<const FilterArguments>& source,
+                   guint count, const GimpFilterArgumentPatch *patches)
+  {
+    if (!source || source->size () > 512 || count > 512 || (count && !patches))
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter argument edit exceeds structural limits");
+    /* Reserve for copied name, model/container storage, and the temporary and
+     * retained values. Payload accounting precedes every potentially bulk copy. */
+    gsize remaining = 1024 * 1024 - 16384 - source->size () * 256;
+    for (guint i = 0; i < count; ++i)
+      {
+        const auto& patch = patches[i];
+        if (patch.index >= source->size () || !patch.value || !G_IS_VALUE (patch.value) ||
+            !source->scalar (patch.index) || G_VALUE_TYPE (patch.value) != G_VALUE_TYPE (source->at (patch.index)))
+          throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Filter argument patch has the wrong index or exact type");
+        for (guint j = 0; j < i; ++j)
+          if (patches[j].index == patch.index)
+            throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Duplicate filter argument patch");
+        if (!patch_copy_admitted (patch.value, remaining))
+          throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter argument patch exceeds the safe copy budget");
+      }
+    shared_arguments_.reserve (source->size ());
+    for (std::size_t i = 0; i < source->size (); ++i)
+      {
+        /* Flatten an existing patch rather than retaining its whole model.
+         * Original slots use aliasing ownership, so noncopyable weak links and
+         * nested models retain their exact immutable identity and provenance. */
+        shared_arguments_.push_back (source->shared_arguments_.empty () ?
+          std::shared_ptr<const Argument> (source, &source->arguments_[i]) : source->shared_arguments_[i]);
+      }
+    for (guint i = 0; i < count; ++i)
+      {
+        auto replacement = std::make_shared<Argument> ();
+        replacement->value = Value (G_VALUE_TYPE (patches[i].value));
+        copy_imported_argument_scalar (patches[i].value, replacement->value.get ());
+        shared_arguments_[patches[i].index] = std::move (replacement);
+      }
+  }
+  std::size_t size () const noexcept
+  { return shared_arguments_.empty () ? arguments_.size () : shared_arguments_.size (); }
+  const GValue *at (std::size_t i) const { return argument_at (i).value.get (); }
   std::size_t reference_count (std::size_t argument) const
-  { return argument < arguments_.size () ? arguments_[argument].objects.size () : 0; }
+  { return argument < size () ? argument_at (argument).objects.size () : 0; }
   std::shared_ptr<const FilterArguments> nested (std::size_t argument) const
-  { return argument < arguments_.size () ? arguments_[argument].nested : nullptr; }
+  { return argument < size () ? argument_at (argument).nested : nullptr; }
   bool is_null (std::size_t argument) const
   {
-    const auto& arg = arguments_.at (argument);
+    const auto& arg = argument_at (argument);
     const auto *value = arg.value.get ();
     if (G_VALUE_HOLDS_OBJECT (value)) return !arg.objects[0].had_object;
     if (GIMP_VALUE_HOLDS_CORE_OBJECT_ARRAY (value)) return arg.null_container;
@@ -232,16 +270,17 @@ public:
   }
   const FilterArgumentReference *reference (std::size_t argument, std::size_t element) const
   {
-    if (argument >= arguments_.size () || element >= arguments_[argument].objects.size ()) return nullptr;
-    return &arguments_[argument].objects[element];
+    if (argument >= size () || element >= argument_at (argument).objects.size ()) return nullptr;
+    return &argument_at (argument).objects[element];
   }
   GimpValueArray *copy_values () const
   {
-    auto *result = gimp_value_array_new (arguments_.size ());
+    auto *result = gimp_value_array_new (size ());
     try
       {
-        for (const auto& arg : arguments_)
+        for (std::size_t i = 0; i < size (); ++i)
           {
+            const auto& arg = argument_at (i);
             Value value = arg.value;
             if (G_VALUE_HOLDS_OBJECT (value.get ()))
               {
@@ -271,7 +310,57 @@ public:
     return result;
   }
 private:
+  static bool patch_copy_admitted (const GValue *value, gsize& remaining)
+  {
+    const auto charge = [&] (gsize size) {
+      if (size > remaining) return false;
+      remaining -= size; return true;
+    };
+    const auto copies = [&] (gsize size) {
+      return size <= remaining / 2 && charge (size * 2);
+    };
+    const auto string = [&] (const gchar *text) {
+      if (!text) return true;
+      const gsize limit = remaining / 2;
+      gsize length = 0;
+      while (length < limit && text[length]) ++length;
+      return length < limit && copies (length + 1) && charge (64);
+    };
+    if (!charge (256)) return false;
+    const GType type = G_VALUE_TYPE (value);
+    if (type == G_TYPE_STRING) return string (g_value_get_string (value));
+    if (type == G_TYPE_STRV)
+      {
+        const auto *strings = static_cast<const gchar *const *> (g_value_get_boxed (value));
+        if (!strings) return true;
+        if (!copies (sizeof (gchar *))) return false;
+        for (guint i = 0; strings[i]; ++i)
+          if (i >= 512 || !copies (sizeof (gchar *)) || !string (strings[i])) return false;
+        return true;
+      }
+    if (type == GIMP_TYPE_ARRAY || type == GIMP_TYPE_INT32_ARRAY || type == GIMP_TYPE_DOUBLE_ARRAY)
+      {
+        const auto *array = static_cast<const GimpArray *> (g_value_get_boxed (value));
+        if (!array) return true;
+        const gsize width = type == GIMP_TYPE_DOUBLE_ARRAY ? sizeof (gdouble) :
+                            type == GIMP_TYPE_INT32_ARRAY ? sizeof (gint32) : 1;
+        return (!array->length || array->data) && !(array->length % width) &&
+               copies (array->length) && charge (2 * (sizeof (GimpArray) + 32));
+      }
+    if (type == G_TYPE_BYTES || type == G_TYPE_VARIANT || type == G_TYPE_GTYPE) return true;
+    switch (G_TYPE_FUNDAMENTAL (type))
+      {
+      case G_TYPE_CHAR: case G_TYPE_UCHAR: case G_TYPE_BOOLEAN:
+      case G_TYPE_INT: case G_TYPE_UINT: case G_TYPE_LONG: case G_TYPE_ULONG:
+      case G_TYPE_INT64: case G_TYPE_UINT64: case G_TYPE_ENUM: case G_TYPE_FLAGS:
+      case G_TYPE_FLOAT: case G_TYPE_DOUBLE: return true;
+      default: return false;
+      }
+  }
+  const Argument& argument_at (std::size_t i) const
+  { return shared_arguments_.empty () ? arguments_.at (i) : *shared_arguments_.at (i); }
   std::vector<Argument> arguments_;
+  std::vector<std::shared_ptr<const Argument>> shared_arguments_;
 };
 } // namespace GimpPainter
 #endif
