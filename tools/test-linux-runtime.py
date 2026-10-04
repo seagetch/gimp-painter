@@ -53,6 +53,7 @@ def main():
     for name in ['home','config','cache','data']:
         (profile/name).mkdir(parents=True)
     env = {'PATH':'/usr/bin:/bin','LANG':'C.UTF-8','HOME':str(profile/'home'),
+           'PYTHONDONTWRITEBYTECODE':'1',
            'XDG_CONFIG_HOME':str(profile/'config'),'XDG_CACHE_HOME':str(profile/'cache'),
            'XDG_DATA_HOME':str(profile/'data'),'GIMP_BASELINE_XCF':str(output/'smoke.xcf')}
     app = relocated/'AppRun'
@@ -116,7 +117,14 @@ def main():
         trace_file = output/(name+'-files.trace')
         forbidden_hits = []
         if trace_file.exists():
-            forbidden = [str(Path(__file__).resolve().parent.parent), '/workspace/shared/gimp-build-deps', '.build-prefix-debian13']
+            repository = Path(__file__).resolve().parent.parent
+            forbidden = [str(repository), '/workspace/shared/gimp-build-deps',
+                         '.build-prefix-debian13', '.deps-debian13', '.prefix-installed-filter']
+            # Record the actual caller-selected dependency/prefix locations too;
+            # these values are audit inputs, never passed into the runtime env.
+            forbidden.extend(str(Path(os.environ[name]).resolve()) for name in
+                             ('GIMP_DEPS_DIRECTORY', 'GIMP_DEPS_ROOT', 'GIMP_BUILD_PREFIX')
+                             if os.environ.get(name))
             forbidden_hits = [line for line in trace_file.read_text().splitlines() if any(path in line for path in forbidden)]
             passed &= not forbidden_hits
         runs.append({'name':name,'exit_code':result.returncode,'passed':passed,'log':name+'.log',

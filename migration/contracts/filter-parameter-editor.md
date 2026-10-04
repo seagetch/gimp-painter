@@ -127,3 +127,8 @@ corpus is not regenerated from this implementation. The GLib minimum remains
 2.70 and no GIMP 3.2 API is introduced. Native Linux results do not establish
 Windows/macOS, tablet or full-port completion. The independent GTK AT-SPI
 `34.003/gtk-atk-menu-guards` dependency defect remains open.
+
+Phase E now records [bounded integrated Linux acceptance](filter-parameter-acceptance.md),
+including scoped descriptor/definition allocation failures. This reconciles the
+earlier prospective whole-application OOM wording: whole-app/dependency OOM
+recovery and global latency/RSS remain outside the accepted component scope.

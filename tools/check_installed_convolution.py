@@ -207,6 +207,7 @@ def run_case(bundle, fixture_root, case, output):
     profile = output/'profile'
     for name in ('home','config','cache','data'): (profile/name).mkdir(parents=True)
     env = dict(PATH='/usr/bin:/bin',LANG='C.UTF-8',HOME=str(profile/'home'),
+               PYTHONDONTWRITEBYTECODE='1',
                XDG_CONFIG_HOME=str(profile/'config'),XDG_CACHE_HOME=str(profile/'cache'),
                XDG_DATA_HOME=str(profile/'data'),GIMP_PAINTER_CONVOLUTION_SMOKE=json.dumps(config))
     command = [str(bundle/'AppRun'),'--console','--new-instance','--no-interface','--no-data',

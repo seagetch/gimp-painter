@@ -293,11 +293,20 @@ struct FilterImpl
     auto *store = BindingStore::find (G_OBJECT (owner));
     return store && store->accepts (binding_token) && definition_revision == revision;
   }
-  bool publish_definition (GeglBuffer *restore_buffer = nullptr, bool cache_complete = true)
+  struct PreparedConfiguration
+  {
+    FilterScheduler::Request request;
+    std::shared_ptr<FilterProcedureRequest> procedure;
+    std::shared_ptr<FilterProcessOptions> process_options;
+    std::shared_ptr<FilterProcedureResult> outcome;
+  };
+  bool publish_definition (GeglBuffer *restore_buffer = nullptr, bool cache_complete = true,
+                           PreparedConfiguration *prepared = nullptr)
   {
     auto& store = BindingStore::require (G_OBJECT (owner));
     const auto token = store.generation (), revision = definition_revision;
-    configure ();
+    if (prepared) apply_configuration (std::move (*prepared));
+    else configure ();
     if (!definition_current (token, revision)) return false;
     if (restore_buffer)
       {
@@ -320,13 +329,19 @@ struct FilterImpl
   }
   void configure ()
   {
-    graph_valid = false;
-    read_budget = 1024;
-    native_procedure.reset ();
-    native_process_options.reset ();
-    native_outcome.reset ();
-    native_context.reset ();
-    FilterScheduler::Request request;
+    auto prepared = prepare_configuration (procedure, args);
+    schedule ();
+    apply_configuration (std::move (prepared));
+  }
+  PreparedConfiguration prepare_configuration (const std::string& procedure,
+                                                const std::shared_ptr<const FilterArguments>& args)
+  {
+    /* Allocate callable captures and native execution state privately. A
+     * rejected definition must not publish its model or retire current work.
+     * Unsupported definitions still produce the same empty request, preserving
+     * their stored values and the executor's existing failure diagnostics. */
+    PreparedConfiguration prepared;
+    auto& request = prepared.request;
     const auto channel = std::make_shared<FilterProgress> ();
     request.progress = channel;
     request.width = gimp_item_get_width (GIMP_ITEM (owner));
@@ -535,7 +550,7 @@ struct FilterImpl
                 bool valid = true;
                 try { descriptor->bytes (); }
                 catch (const std::invalid_argument&) { valid = false; }
-                if (valid) configure_native (request, std::move (descriptor));
+                if (valid) configure_native (prepared, std::move (descriptor));
               }
           }
       }
@@ -577,17 +592,29 @@ struct FilterImpl
             descriptor->scales_mode = scales_mode; descriptor->cvar = cvar;
             descriptor->orientation = tiles || retinex ? FilterLegacy::orientation_default : g_value_get_int (args->at (5));
             descriptor->transparent = tiles || retinex ? FilterLegacy::transparent_default : g_value_get_int (args->at (6)); descriptor->gray = gray ();
-            configure_native (request, std::move (descriptor));
+            configure_native (prepared, std::move (descriptor));
           }
       }
-    scheduler.set_request (std::move (request));
+    return prepared;
+  }
+  void apply_configuration (PreparedConfiguration prepared)
+  {
+    /* The caller has also scheduled the dispatcher before entering this
+     * publication step. Moving the prepared request performs no C++ allocation. */
+    graph_valid = false;
+    read_budget = 1024;
+    native_procedure = std::move (prepared.procedure);
+    native_process_options = std::move (prepared.process_options);
+    native_outcome = std::move (prepared.outcome);
+    native_context.reset ();
+    scheduler.set_request (std::move (prepared.request));
     staged.reset ();
-    schedule ();
     g_signal_emit_by_name (owner, "filter-state-changed");
   }
-  void configure_native (FilterScheduler::Request& request,
+  void configure_native (PreparedConfiguration& prepared,
                          std::shared_ptr<FilterProcedureRequest> descriptor)
   {
+    auto& request = prepared.request;
     auto options = std::make_shared<FilterProcessOptions> ();
     auto outcome = std::make_shared<FilterProcedureResult> ();
     /* Same isolated bridge and owner gates for every native route. Convolution
@@ -609,8 +636,8 @@ struct FilterImpl
         resolved.executable = filter_worker_path ();
         return filter_process (*descriptor, input, output, cancel, resolved, outcome, channel);
       };
-    native_procedure = std::move (descriptor); native_process_options = std::move (options);
-    native_outcome = std::move (outcome);
+    prepared.procedure = std::move (descriptor); prepared.process_options = std::move (options);
+    prepared.outcome = std::move (outcome);
   }
   void schedule ()
   {
@@ -1628,42 +1655,58 @@ static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
       ObjectRef<GObject> pushed_undo;
       if (impl.definition_revision == std::numeric_limits<std::uint64_t>::max ())
         throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition revision exhausted");
-      if (push_undo && gimp_item_is_attached (GIMP_ITEM (layer)))
+      const auto current = [&] {
+        return impl.definition_current (binding_token, revision) &&
+          (!expected_arguments || (impl.args == *expected_arguments && impl.definition_revision == expected_revision));
+      };
+      const auto discard_own_undo = [&] {
+        /* A failed private allocation/guard can follow Undo creation. Remove
+         * only our own still-top item for an otherwise unchanged definition.
+         * Dirty notifications and expired redo/old history remain the existing
+         * separate image-history atomicity limitation. Never undo reentrant work. */
+        if (!current () || !pushed_undo || !image_pin) return;
+        auto *image = GIMP_IMAGE (image_pin.get ());
+        auto *stack = gimp_image_get_undo_stack (image);
+        auto *undo = GIMP_UNDO (pushed_undo.get ());
+        if (gimp_undo_stack_peek (stack) != undo) return;
+        auto stack_pin = ObjectRef<GObject>::retain (G_OBJECT (stack));
+        if (gimp_container_remove (stack->undos, GIMP_OBJECT (undo)))
+          {
+            gimp_undo_free (undo, GIMP_UNDO_MODE_UNDO);
+            gimp_image_undo_event (image, GIMP_UNDO_EVENT_UNDO_EXPIRED, undo);
+            g_object_unref (undo); // Original stack-owned reference.
+          }
+      };
+      FilterImpl::PreparedConfiguration prepared;
+      try
         {
-          auto *undo = gimp_image_undo_push (gimp_item_get_image (GIMP_ITEM (layer)),
-                                            gimp_filter_layer_undo_get_type (), GIMP_UNDO_FILTER_LAYER_DEFINITION,
-                                            "Filter layer definition", GimpDirtyMask (GIMP_DIRTY_ITEM | GIMP_DIRTY_ITEM_META | GIMP_DIRTY_DRAWABLE),
-                                            "item", layer, nullptr);
-          pushed_undo = ObjectRef<GObject>::retain (G_OBJECT (undo));
-          if (undo && reinterpret_cast<GimpFilterLayerUndo *> (undo)->binding_failed)
-            throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition Undo construction failed");
-        }
-      const bool precondition = !check || check (check_data);
-      const bool current = impl.definition_current (binding_token, revision) &&
-        (!expected_arguments || (impl.args == *expected_arguments && impl.definition_revision == expected_revision));
-      if (!precondition || !current)
-        {
-          /* A provider/UI guard can fail from a synchronous Undo signal. Drop
-           * only our own still-top item for an otherwise unchanged target.
-           * Never pop/apply Undo or remove another edit/group. Existing dirty
-           * notifications and redo expiration are not a reversible transaction. */
-          if (!precondition && current && pushed_undo && image_pin)
+          if (push_undo && gimp_item_is_attached (GIMP_ITEM (layer)))
             {
-              auto *image = GIMP_IMAGE (image_pin.get ());
-              auto *stack = gimp_image_get_undo_stack (image);
-              auto *undo = GIMP_UNDO (pushed_undo.get ());
-              if (gimp_undo_stack_peek (stack) == undo)
-                {
-                  auto stack_pin = ObjectRef<GObject>::retain (G_OBJECT (stack));
-                  if (gimp_container_remove (stack->undos, GIMP_OBJECT (undo)))
-                    {
-                      gimp_undo_free (undo, GIMP_UNDO_MODE_UNDO);
-                      gimp_image_undo_event (image, GIMP_UNDO_EVENT_UNDO_EXPIRED, undo);
-                      g_object_unref (undo); // Original stack-owned reference.
-                    }
-                }
+              auto *undo = gimp_image_undo_push (gimp_item_get_image (GIMP_ITEM (layer)),
+                                                gimp_filter_layer_undo_get_type (), GIMP_UNDO_FILTER_LAYER_DEFINITION,
+                                                "Filter layer definition", GimpDirtyMask (GIMP_DIRTY_ITEM | GIMP_DIRTY_ITEM_META | GIMP_DIRTY_DRAWABLE),
+                                                "item", layer, nullptr);
+              pushed_undo = ObjectRef<GObject>::retain (G_OBJECT (undo));
+              if (undo && reinterpret_cast<GimpFilterLayerUndo *> (undo)->binding_failed)
+                throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition Undo construction failed");
             }
-          throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition or editor metadata changed during Undo creation");
+          /* Undo signals and the caller's guard may change dimensions, close
+           * the target, or dispatch the old clean request in a nested loop. */
+          if (!current ())
+            throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition changed during Undo creation");
+          impl.attach ();
+          const bool precondition = !check || check (check_data);
+          if (!precondition || !current ())
+            throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition or editor metadata changed during Undo creation");
+          /* Capture geometry and enqueue only after the final callback. No
+           * callback/main-loop gap may consume this wakeup before publication. */
+          prepared = impl.prepare_configuration (name, arguments);
+          impl.schedule ();
+        }
+      catch (...)
+        {
+          discard_own_undo ();
+          throw;
         }
       impl.definition_installed ();
       const auto installed_revision = impl.definition_revision;
@@ -1671,8 +1714,8 @@ static gboolean set_definition (GimpFilterLayer *layer, const gchar *procedure,
        * the retired definition alive until the whole replacement is published. */
       impl.procedure.swap (name); impl.raw.swap (bytes);
       impl.args.swap (arguments); impl.opaque_arguments.swap (opaque);
-      impl.attach ();
-      if (!impl.definition_current (binding_token, installed_revision) || !impl.publish_definition ())
+      if (!impl.definition_current (binding_token, installed_revision) ||
+          !impl.publish_definition (nullptr, true, &prepared))
         throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Filter definition target changed during notification");
     });
     return TRUE;

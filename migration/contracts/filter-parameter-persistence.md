@@ -96,7 +96,9 @@ replacement; it is not a separately reproduced operating-system rename failure.
 
 This is native GTK integration, not a new full-app keyboard/menu walkthrough,
 relocation run, OOM campaign, pixel corpus regeneration or whole-port gate.
-Those Phase E and broader migration tasks remain open. The known independent
+Those activities were outside this Phase D result. Phase E now records the
+[bounded Linux integration](filter-parameter-acceptance.md), while broader
+migration, whole-app OOM and release gates remain open. The known independent
 GTK/GDK AT-SPI defect `34.003` and the previously documented Undo-push reentry
 atomicity limitation remain open. Missing installed/test-profile assets and
 existing compiler/runtime diagnostics are recorded separately from failures.
