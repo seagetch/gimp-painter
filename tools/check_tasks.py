@@ -76,6 +76,8 @@ def validate(tasks_path: Path, evidence_path: Path) -> list[str]:
                 errors.append(f"{task}: invalid status")
     for task, (checked, _) in rows.items():
         record = evidence.get(task)
+        if not record:
+            errors.append(f"{task}: missing progress row")
         if checked and (not record or record["status"] != "DONE"):
             errors.append(f"{task}: checked without DONE evidence")
         if record and (record["status"] == "DONE") != checked:

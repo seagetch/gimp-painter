@@ -33,7 +33,7 @@
 
 外部ブロックが生じた場合は、そのタスクと依存する作業だけを blocked とし、実行可能な他の区分を進める。旧版の再現環境や実機が不足する場合も試験を合格扱いせず、環境修復・代替採取・未完了事項を同じ台帳で追跡する。
 
-2026-10-01の並行化：05の契約は、実appにリンクしてC/GObjectとの往復・寿命試験を通した04.002/common-foundationを入力として開始する。全機能のMeson登録・生成・allocator監査を待つ必要がないため05.001の依存を明示更新した。04の全件登録と各機能の子作業は未完了のまま保持し、G1の全区分完了条件は変更しない。
+2026-10-01の並行化：05の契約は、実appにリンクしてC/GObjectとの往復・寿命試験を通した04.002/common-foundationを入力として開始する。全機能のMeson登録・生成・allocator監査を待つ必要がないため05.001の依存を明示更新した。04の他タスクと各機能の子作業は未完了のまま保持し、G1の全区分完了条件は変更しない。2026-10-04に04.002の元の完了条件（既存CをC++として再コンパイルせず独自C++を追加できる）を現行buildで再検証した。Makefile一律分類の47義務を実hunkで照合し、登録19件と既存の正しいWBSへ戻す28件を区別した。後続機能の実装・登録・検証義務は各既存WBSとソース台帳に残し、04.002へ全機能完了を追加要求しない（`migration/contracts/cpp-registration.md`）。
 
 ### 実装中に判明した不足の扱い
 
@@ -259,8 +259,8 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 04.001 | [x] | 独自 C++ モジュールの配置を決める | 01.017, 03.009 | GLib/GObjectのみの共通bridgeとcore・paint・PDB・UI・presetsの依存方向、C公開ヘッダーとprivate C++配置を記録（`migration/contracts/module-layout.md`） |
-| 04.002 | [ ] | C++ ソースを Meson の対象へ登録する | 04.001 | 既存 C ソースを C++ として再コンパイルせず追加できる |
-| 04.002/common-foundation | [x] | 共通C++基盤を実appと最小混在試験へ接続する | 04.001 | GObject-only static library、C入口とGimp.dispose、明示C++ link、31寿命/例外試験を統合。通常・ASan/UBSan・Meson・install後smokeに合格（`migration/tests/painter-integration.json`）。旧機能全登録は親04.002に残す |
+| 04.002 | [x] | C++ ソースを Meson の対象へ登録する | 04.001 | 既存 C ソースを C++ として再コンパイルせず追加できる |
+| 04.002/common-foundation | [x] | 共通C++基盤を実appと最小混在試験へ接続する | 04.001 | GObject-only static library、C入口とGimp.dispose、明示C++ link、31寿命/例外試験を統合。通常・ASan/UBSan・Meson・install後smokeに合格（`migration/tests/painter-integration.json`）。旧証跡は履歴として保持し、現行登録の再検証は親04.002の証跡を参照 |
 | 04.002/foundation-acceptance-matrix | [x] | 基盤WBS全50項目を実装・実行証跡・未達へ照合する | 04.002/common-foundation, 17.001/configured-spill-budget | 46component検証済/3partial/1platform未達を別台帳化し親依存は維持。実base/derived/GInterface/property/parent dispose再入を追加し34通常/ASan・UBSan/Meson合格、5台帳改竄検査合格。新規qdata残存箇所も未解決として保持 |
 | 04.002/evidence-reproducibility | [x] | test証跡のJSON/JSONLと継承環境の最小化を検証する | 04.002/foundation-acceptance-matrix | 単行/複数行/nested JSONとtext framing/冪等性の7検査合格。未公開4commitの環境metadataと対応checksumのみ修正しcode・構造化結果不変を検証、全移植history/復旧archive再scanで残存markerゼロ。認識外opaque秘密の不存在までは主張しない |
 | 04.003 | [x] | C ヘッダーの C++ 可読性を監査する | 04.002/common-foundation, 01.017 | 既存42 header経路・89 hunk義務を監査し予約語/flags変換を修正。C/C++二重include、全18macro展開とABI配置の88 probe合格（`migration/contracts/c-header-audit.md`）。後続feature追加headerと他platformは各作業で検証 |

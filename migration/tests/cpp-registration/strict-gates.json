@@ -1,0 +1,38 @@
+{
+  "scope": "Read-only current validation; no full feature rerun or expected-hash rewrite",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tools/check_painter_acceptance.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "06.028: report/source mismatch app/painter/filter-scheduler.cpp\n06.028: report/source mismatch app/core/gimpfilterlayer.cpp\n06.028: report/source mismatch app/painter/filter-scheduler.cpp\n06.028: report/source mismatch app/core/gimpfilterlayer.cpp\n07.012: report/source mismatch app/painter/filter-scheduler.cpp\n07.012: report/source mismatch app/core/gimpfilterlayer.cpp\n07.012: report/source mismatch app/painter/filter-scheduler.cpp\n07.012: report/source mismatch app/core/gimpfilterlayer.cpp\n",
+      "classification": "CURRENT_FAIL_SOURCE_DRIFT; historical reports and expected hashes unchanged"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tools/check_clone_acceptance.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Core source/evidence mismatch: app/tests/test-gimp-clone-layer.c\n",
+      "classification": "CURRENT_FAIL_SOURCE_DRIFT; historical reports and expected hashes unchanged"
+    }
+  ],
+  "source_sha256": {
+    "migration/acceptance/foundation.json": "e1580b491c6f8867599550fc225982812b0b056a02ce017245d57c3c7f5544ff",
+    "migration/acceptance/clone.json": "78900a2844ab001e2562f71e4a4d48a04b3fe29fa681099f4a4c801c679e6744",
+    "migration/tests/filter-process-checkpoint/native.json": "387ab03cd7524a18c860c97529b362b2e64ec6b1bddffdf06c120d0a7546fa6f",
+    "migration/tests/filter-process-checkpoint/foundation-sanitizers.json": "d30fa7f866101e48e0160b3572d591c80e1d5db29685552e9c9e1559a53a14c2",
+    "app/painter/filter-scheduler.cpp": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+    "app/core/gimpfilterlayer.cpp": "abcda53a71ea70000569649fec6c72b802bae828d1748e4c7810a665db3b6b9a",
+    "app/tests/test-gimp-clone-layer.c": "3f9bf23dc26fcc51169c1254836c98af4f39631cb1aa9ed98cdf5c761bd906ac",
+    "tools/check_painter_acceptance.py": "bcb010c078a296b9c90faac7337a646efc735b8bda4c223e1b0d5c589d0153c4",
+    "tools/check_clone_acceptance.py": "a76ef4d8709787577d29b1c1ee16b75a278407f12cd77b31d48df42d8ceefb54"
+  }
+}
