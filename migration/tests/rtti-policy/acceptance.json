@@ -1,0 +1,62 @@
+{
+  "task": "original 04.011 native verification component",
+  "status": "PASS",
+  "recorded_at_utc": "2026-10-08T12:36:25Z",
+  "base_commit": "aefbb47ceda6064344cbfdf4e88b39ab423bd1b3",
+  "compiler": "native Linux GCC 14.2",
+  "results": {
+    "default": {
+      "report": "default.json",
+      "report_sha256": "81ab29fa094f54b7bfcf4e1077b1f0e14ebad521f8491a91aafe1871958c8501",
+      "initial_report": "default-initial.json",
+      "initial_report_sha256": "1a70d6c3d11ac5f0302808058a6343f327f6536a04ecfb657a2c57bdfd2b0919",
+      "summary": {
+        "production_cpp_commands": 73,
+        "painter_cpp_commands": 64,
+        "painter_with_existing_no_rtti": 48,
+        "core_display_replayed": 20,
+        "painter_replayed": 16,
+        "upstream_replayed": 4,
+        "successful_full_object_compiles": 20,
+        "painter_flags_outside_replay_gaps": [],
+        "foundation_cases_verified": 39,
+        "foundation_runtime_rerun": true,
+        "control_cases": 5
+      }
+    },
+    "http": {
+      "report": "http.json",
+      "report_sha256": "48a36c0ece3b47b29aa6d1efc073f5321ca3be2c746dc922eab4817c82693ad4",
+      "initial_report": "http-initial.json",
+      "initial_report_sha256": "6e3784efb5923c1e7915db59b9c662010b362acea6cbb4924e15db35636fdc1c",
+      "summary": {
+        "production_cpp_commands": 78,
+        "painter_cpp_commands": 69,
+        "painter_with_existing_no_rtti": 53,
+        "core_display_replayed": 20,
+        "painter_replayed": 16,
+        "upstream_replayed": 4,
+        "successful_full_object_compiles": 20,
+        "painter_flags_outside_replay_gaps": [],
+        "foundation_cases_verified": 39,
+        "foundation_runtime_rerun": true,
+        "control_cases": 5
+      }
+    }
+  },
+  "controls": [
+    "polymorphic downcast: reject without RTTI, run with RTTI",
+    "polymorphic typeid: reject without RTTI, run with RTTI",
+    "ordinary virtual dispatch: run in both modes",
+    "virtual-base dynamic_cast upcast: run in both modes",
+    "real GType/typed slot/public C bridge: compile/link/run without RTTI"
+  ],
+  "foundation_policy": "Fresh 39-case run in each restored configuration; old binary identities were unavailable and were not reused.",
+  "fixture_correction": "Initial alias-specialization compile failure preserved; only corrected typed bridge rerun after verifying all retained native identities.",
+  "limits": [
+    "Complete production compile-command inventory, but only core/display freshly replayed by this checker.",
+    "No production flags, C sources, source-writing generators, original objects or focused sanitizer policy changed.",
+    "No whole-application relink, GUI, profile, listener, sanitizer or cross-platform acceptance.",
+    "Legacy/source audit and transitional adapter contract are recorded separately."
+  ]
+}

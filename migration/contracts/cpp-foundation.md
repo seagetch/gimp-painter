@@ -313,3 +313,13 @@ source-duty rows assigned to 04.010. It does not complete every feature's error
 or class-initialization migration, recover process-aborting allocation failure,
 or prove another platform, sanitizer, or full application relink. Earlier
 source-frozen reports remain evidence for their recorded snapshots.
+
+
+## RTTI independence (original 04.011)
+
+The [RTTI contract](rtti-separation.md) distinguishes the frozen legacy downcasts
+and runtime keys from GType checks and exact Slot identities. Native default/HTTP
+proof compiles all forty core/display C++ objects with RTTI disabled, runs the
+common 39-case suite per configuration and tests the real typed bridge. Existing
+production flags are unchanged. Exception typeinfo and focused sanitizer vptr
+metadata are explicitly separate from the new API's RTTI independence.

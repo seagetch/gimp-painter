@@ -43,7 +43,11 @@ lookup is introduced. The detailed contract is `cpp-foundation.md`.
 The module test executable has C-compiled main and GObject subclass adapters,
 C++-compiled implementation, a static bridge archive and explicit C++ final link.
 The final GIMP link is explicitly C++ without changing source-language detection.
-All target-specific exception/RTTI/visibility settings are local to the bridge.
+The bridge declares reusable exception/RTTI flags; owning C++ targets select
+them without changing C compilation. Core/display select the exception flags
+separately. Their default RTTI setting is not an API dependency; the isolated
+no-RTTI proof and separate sanitizer policy are specified in
+[`rtti-separation.md`](rtti-separation.md).
 
 ## Scope of evidence
 
