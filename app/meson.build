@@ -26,6 +26,8 @@ if painter_http_enabled
   subdir('httpd')
 endif
 
+subdir('painter/tests/headers')
+
 
 # For app/config
 app_debug_files = files(

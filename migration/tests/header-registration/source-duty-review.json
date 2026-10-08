@@ -1,0 +1,1714 @@
+{
+  "task": "04.014",
+  "baseline_commit": "4efd79a1a23c411d61c95637aa4d865680810fe8",
+  "duties": [
+    {
+      "work_id": "legacy-30e94f0fd5f51100fad0",
+      "source_id": "01.002/000038",
+      "path": "app/base/Makefile.am",
+      "source_sha256": "4ec3c13c6c7b75adb94f01f6c31adc12fa141910cfb9dce42644ece8f1a880e7",
+      "languages": [
+        "cpp"
+      ],
+      "legacy_headers": [
+        "app/base/pixel.hpp",
+        "app/base/delegators.hpp",
+        "app/base/scopeguard.hpp",
+        "app/base/glib-cxx-types.hpp",
+        "app/base/glib-cxx-impl.hpp",
+        "app/base/glib-cxx-utils.hpp",
+        "app/base/json-cxx-utils.hpp",
+        "app/base/soup-cxx-utils.hpp"
+      ],
+      "current_headers": [
+        "app/core/gimp-painter-type-traits.hpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/core/gimpfilterlayer-handle.hpp",
+        "app/httpd/httpd-private.hpp",
+        "app/httpd/httpd-resource.hpp",
+        "app/paint/painter-mypaint-surface/legacy-pixel.hpp",
+        "app/paint/painter-mypaint/resource.hpp",
+        "app/painter/binding-store.hpp",
+        "app/painter/boundary.hpp",
+        "app/painter/connection.hpp",
+        "app/painter/gio-type-traits.hpp",
+        "app/painter/object-ref.hpp",
+        "app/painter/resources.hpp",
+        "app/painter/source.hpp"
+      ],
+      "probe_kinds": [
+        "private-cpp-header"
+      ],
+      "scope": "Private C++ counterparts compile only as C++; optionalHTTP headers covered in enabled configuration. No feature equivalence or C compatibility claim for.hpp"
+    },
+    {
+      "work_id": "legacy-07115b7d545a54b73fd4",
+      "source_id": "01.002/000105",
+      "path": "app/config/gimpbaseconfig.h",
+      "source_sha256": "251cab66860451ab0eb7ad655e29bde0fd537be0edeefb8558c9dffb15d7a3c5",
+      "reviewed_04004_work_id": "legacy-c3e81cb0b15f4027c3cb",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/config/gimpgeglconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-1318c05cac6e25bff423",
+      "source_id": "01.002/000122",
+      "path": "app/config/gimpcoreconfig.h",
+      "source_sha256": "6760497612d1207212a139f898b2b83838a89b2eee719814193e3b5b26b78dc4",
+      "reviewed_04004_work_id": "legacy-be662d602c892cef9cf3",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/config/gimpcoreconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-a53d87ad9e0f0f1393aa",
+      "source_id": "01.002/000149",
+      "path": "app/core/core-types.h",
+      "source_sha256": "101ff2aa7925a5f9033da7f32805008542954d989a44f10c38bb5515e5bab4ac",
+      "reviewed_04004_work_id": "legacy-f0258962f80f1594fe11",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/core-types.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-117be5f86782af0da96e",
+      "source_id": "01.002/000150",
+      "path": "app/core/core-types.h",
+      "source_sha256": "95bcec2e8a87478861727ff1eb97973351a3c806ab1ded5ec59e083bde8dd26c",
+      "reviewed_04004_work_id": "legacy-1216060ddc7fbed8b405",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/core-types.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-e0dce6393452e9141c34",
+      "source_id": "01.002/000151",
+      "path": "app/core/core-types.h",
+      "source_sha256": "fd202ad82cf23d60db5c98b13399c03c43f6f477fb0f722f1f57e9a1cdf07538",
+      "reviewed_04004_work_id": "legacy-39a25c5fd1c167cee7a4",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/core-types.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-f647087d6f371298a8e0",
+      "source_id": "01.002/000152",
+      "path": "app/core/core-types.h",
+      "source_sha256": "9d41ac95d6ee3802161f4535a4f1f9729a097a5900d589f949fe1ec0f7fc462e",
+      "reviewed_04004_work_id": "legacy-d7525e5711d1d43cb4f0",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/core-types.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-21c6e24de48e134b0b38",
+      "source_id": "01.002/000153",
+      "path": "app/core/core-types.h",
+      "source_sha256": "473488db651f9cd32946037c142c2551b77e640b420d2f6a44bc2b171ee23352",
+      "reviewed_04004_work_id": "legacy-db36cf9b6cb9d7acc798",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/core-types.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-23df0e16e904f30e38b0",
+      "source_id": "01.002/000167",
+      "path": "app/core/gimp.h",
+      "source_sha256": "470926f30e7ee0a8f8e42c3201792c89a1013d79cfac3b0a42ed02f3c65bd03c",
+      "reviewed_04004_work_id": "legacy-6b9b362a60302a6d1e26",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimp.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-b15317cc5a6044a70aba",
+      "source_id": "01.002/000171",
+      "path": "app/core/gimpbrush.h",
+      "source_sha256": "3c88f2f2944638c92a695c1d802c6b82232dcb9ecba6099ddfd9612381e2e3e0",
+      "reviewed_04004_work_id": "legacy-9bd04b248a000f39a0e0",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpbrush.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-20c2e300137a1e691706",
+      "source_id": "01.002/000172",
+      "path": "app/core/gimpchannel.h",
+      "source_sha256": "352935a32b917a3f79030570cd7d63e1857dcd0362808be0386285733e366524",
+      "reviewed_04004_work_id": "legacy-8cac3d60345a6aa94ab4",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpchannel.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-fad1b666bb2461073b51",
+      "source_id": "01.002/000194",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "0b30467dcb040993144696452ce7ee784ef4d2d13fdfe0c2109298fbfe363853",
+      "reviewed_04004_work_id": "legacy-5a311928c4faf4e7ab6c",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-20eefaab872eb8f23305",
+      "source_id": "01.002/000197",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "bd9e16115133d4dde6c86bf8f2ef248314d94db32105ca006318b505f9eaa00d",
+      "reviewed_04004_work_id": "legacy-dafff816de90794cbfcb",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-208bad32cb53e3b68d7b",
+      "source_id": "01.002/000198",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "3d25bc40ce01c76fa4668f9b2f7b49497f6a9f31f625ee9f911a4667ae878177",
+      "reviewed_04004_work_id": "legacy-1ec1245c3e4a6aab1509",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-f61c0c6cfd810d5e93e5",
+      "source_id": "01.002/000206",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "755f7e42f66b796b62d5dd33f8471c70790dc4003bce668f0751203f92b13a96",
+      "reviewed_04004_work_id": "legacy-fbb68a678d5db3413fa1",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-93a4f17175d643fe7557",
+      "source_id": "01.002/000208",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "3ed23421928f02304ae89626c5b05d92638aaf238690988a5f491339cad85aae",
+      "reviewed_04004_work_id": "legacy-721815b09300e74f0c54",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-ed5e747d8002b87a14ac",
+      "source_id": "01.002/000209",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "cecbaa927b2458b13352c19c85a221153e3227f0174b1956e8ce72c6388a160d",
+      "reviewed_04004_work_id": "legacy-c32e68aee1feb23b563f",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-2413bb6cf75abf3baac4",
+      "source_id": "01.002/000210",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "a0cc32ad50228e839b5f744ccf2bfa53674b6f398f6ffad1faf34b3c60759e90",
+      "reviewed_04004_work_id": "legacy-fb0a8d7fe81e8e9cc42e",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-64555cc6ea8730221c92",
+      "source_id": "01.002/000211",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "f7e22474c1e8add79d18fbcf8c3d7d15b1a86ba28014a0ce4cebce53b0c40aea",
+      "reviewed_04004_work_id": "legacy-ec51e6dab004e34abfa3",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-2d0e9d2e6b71a8cb869b",
+      "source_id": "01.002/000212",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "c1eb489201e89ddff04d846cdf17865f42c8dbbb390c63249616d89a3f9602cb",
+      "reviewed_04004_work_id": "legacy-7282458314ac3c00840d",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-5393a13de3bb4a80e334",
+      "source_id": "01.002/000213",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "bd9e16115133d4dde6c86bf8f2ef248314d94db32105ca006318b505f9eaa00d",
+      "reviewed_04004_work_id": "legacy-3ca37ded96f62dea1986",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-2acf2cfba9939046cacf",
+      "source_id": "01.002/000214",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "c99d93f61b317cf5fd7018697250f7c7ce370c93818a930970262297c8bf1999",
+      "reviewed_04004_work_id": "legacy-f8670e2e92f714af97c5",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-f518c4048510beae880b",
+      "source_id": "01.002/000215",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "8bf76b2c016be78a6e96289998764320e137b1af5c0e15ed343343ef7db6c3f2",
+      "reviewed_04004_work_id": "legacy-03e01c0f4461e16f0521",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-dc23a680bfa8012477e5",
+      "source_id": "01.002/000216",
+      "path": "app/core/gimpcontext.c",
+      "source_sha256": "13d5214b393c76d340883d4368d246a57f67561a672107389f03f9b783ecdbc1",
+      "reviewed_04004_work_id": "legacy-b8cce2d00ef28af85a6a",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-09e2539619757aa9e887",
+      "source_id": "01.002/000218",
+      "path": "app/core/gimpcontext.h",
+      "source_sha256": "75ce3c32c39f7235ff5ecd83b87a0222eb7d0a7331a6f7e70010ae62d4388783",
+      "reviewed_04004_work_id": "legacy-e7156404005f42c3990d",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-4a98b690aef38be7a048",
+      "source_id": "01.002/000220",
+      "path": "app/core/gimpcontext.h",
+      "source_sha256": "511e875c16a6c9a5ba33cab6aa8e16de632451f6af84235943850833ff2610b1",
+      "reviewed_04004_work_id": "legacy-b1f267a5f6871e56da9e",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-6723b547d05f8b130471",
+      "source_id": "01.002/000221",
+      "path": "app/core/gimpcontext.h",
+      "source_sha256": "30e477f898d295e0bfccca633e0af81ebbcc8ed3a79e11bcc781d0cebe949c03",
+      "reviewed_04004_work_id": "legacy-3a55be3d9fd565d8b1da",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-1a11bfc8cd858c0d17d8",
+      "source_id": "01.002/000223",
+      "path": "app/core/gimpcontext.h",
+      "source_sha256": "360190465f431e787c132bac52e16fe67ede162e76f4311418401ba30e31e859",
+      "reviewed_04004_work_id": "legacy-de13faed2308251aba66",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-4f2fb5796c865a0c3114",
+      "source_id": "01.002/000224",
+      "path": "app/core/gimpcontext.h",
+      "source_sha256": "bedadc0e190613b1f83cbe5e2384fe1ed320082d1ec3ef054f0981dfc233b842",
+      "reviewed_04004_work_id": "legacy-194b12b301c8b5b99e08",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-981328d96ec90493e1f8",
+      "source_id": "01.002/000226",
+      "path": "app/core/gimpdata.h",
+      "source_sha256": "0ed7a69cc5bdcb81ebfb62431af0e98484908e9a16548136f4aa41e3df9703e9",
+      "reviewed_04004_work_id": "legacy-fcbf1f85afad9d43d83c",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpdata.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-9040fe8f0e43a6e4da9f",
+      "source_id": "01.002/000228",
+      "path": "app/core/gimpdatafactory.h",
+      "source_sha256": "5cdd559fe7b88aecf3169a6da72ee9a7f7e9755dbc7d6276996341cbd65ff215",
+      "reviewed_04004_work_id": "legacy-bc289f93033e38e0919d",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpdatafactory.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-89b31fe9acc72a51ba8d",
+      "source_id": "01.002/000232",
+      "path": "app/core/gimpdrawable.h",
+      "source_sha256": "efea016255664c3aefca0c2061be366fb6d75acb6f737d7c080579d58a062f49",
+      "reviewed_04004_work_id": "legacy-09380809d5ed9e13a74c",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpdrawable.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-8d658390dd4549adbe83",
+      "source_id": "01.002/000233",
+      "path": "app/core/gimpdrawable.h",
+      "source_sha256": "9bb41c2bdf539b1fb4e819f83915f240412c666c824efdc1cd2131a848e37a55",
+      "reviewed_04004_work_id": "legacy-074765fce58049cb5c7a",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpdrawable.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-89c6ea8b0b24cb00f1ce",
+      "source_id": "01.002/000234",
+      "path": "app/core/gimpdrawable.h",
+      "source_sha256": "066753d97a207c44ece32a8990f23b44fcd04ed02166e428e9923fdec72b2cc5",
+      "reviewed_04004_work_id": "legacy-9a07e0ab53d0a9740169",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpdrawable.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-d8451ee7f5f31c6db08c",
+      "source_id": "01.002/000242",
+      "path": "app/core/gimpdrawablestack.h",
+      "source_sha256": "6b059846635aec10cd51900671338d66f319c3ef8fe7e01fcb722332f175fcd5",
+      "reviewed_04004_work_id": "legacy-0594bbf68f556b4bf07d",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpdrawablestack.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-d8374530ee1ab45a3172",
+      "source_id": "01.002/000253",
+      "path": "app/core/gimpdynamics.h",
+      "source_sha256": "f64b169d7ccbae34f32ca01b1d69340cf7051cd6a50c1333f671def10e61300d",
+      "reviewed_04004_work_id": "legacy-d4371862480c28ca466a",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpdynamics.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-b8cfc272c6ddc169c2d2",
+      "source_id": "01.002/000254",
+      "path": "app/core/gimpdynamicsoutput.h",
+      "source_sha256": "84afddbd64ca6e09916064cc6c7f0ce5820909fa23f9f611aca22b3a172aa617",
+      "reviewed_04004_work_id": "legacy-9918b4cc9ed08707e9ed",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpdynamicsoutput.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-745964aa14b5374b2dcb",
+      "source_id": "01.002/000265",
+      "path": "app/core/gimpgrouplayer.h",
+      "source_sha256": "78d55d45dcaa243b6ea10c30dbc422569c2c4043e0029e33620b5af5b7c9dc7d",
+      "reviewed_04004_work_id": "legacy-502fe62903896808d6a5",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpgrouplayer.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-6de0fb80041c9bee5599",
+      "source_id": "01.002/000331",
+      "path": "app/core/gimpimage-new.h",
+      "source_sha256": "db81026901d7cdd7c0552989e2931ba98bf128a44b63281c0f424b73865421b5",
+      "reviewed_04004_work_id": "legacy-2c50eb388dd088584a97",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpimage-new.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-c299f83f2863fb7e38ac",
+      "source_id": "01.002/000332",
+      "path": "app/core/gimpimage-new.h",
+      "source_sha256": "8f288b301b484e9ebf0a1885ea3a46b168f4e82dd27e7f13a25860e971c7f641",
+      "reviewed_04004_work_id": "legacy-8267b331c36e73ecf57a",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpimage-new.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-851f7c2a8012b740a5ee",
+      "source_id": "01.002/000352",
+      "path": "app/core/gimpimage.h",
+      "source_sha256": "1c6ad1d8bac463283b97e956def1d1f10118335a8f5f23ac35a588590d77402f",
+      "reviewed_04004_work_id": "legacy-6ad2fc4272cef09ae97a",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpimage.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-786dcc8f9d4fff3ea0ab",
+      "source_id": "01.002/000360",
+      "path": "app/core/gimpitemundo.h",
+      "source_sha256": "9e6d22bad3460c567df61a991857755eb4c173fc3563b5f4ac7a49423c4654d5",
+      "reviewed_04004_work_id": "legacy-3d86da486dd6a20b0446",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpitemundo.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-86f3f1da70a25ade3dd5",
+      "source_id": "01.002/000362",
+      "path": "app/core/gimplayer.h",
+      "source_sha256": "c2b6fa1b126d8cbc1a725a8e43cb5111759ee660a18041ef337930217ec48000",
+      "reviewed_04004_work_id": "legacy-8df0fa44c792ecb471b1",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimplayer.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-c5863aedb62dc8d71529",
+      "source_id": "01.002/000374",
+      "path": "app/core/gimpobject.h",
+      "source_sha256": "456e2534292c46daa9447ca27149bf58f6303d7a36fc3a3a1bd94cc017f666a8",
+      "reviewed_04004_work_id": "legacy-924726818d7a5513b2fe",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpobject.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-e2709d4822e0e825a292",
+      "source_id": "01.002/000375",
+      "path": "app/core/gimpobject.h",
+      "source_sha256": "9bb41c2bdf539b1fb4e819f83915f240412c666c824efdc1cd2131a848e37a55",
+      "reviewed_04004_work_id": "legacy-b7c12acf2b91371b9ca5",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpobject.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-b65904a9155d85726422",
+      "source_id": "01.002/000382",
+      "path": "app/core/gimppickable.h",
+      "source_sha256": "030298a58bb8eb82361894776d47ff943d776dd5c82723b4ade9a55c56f8bc2e",
+      "reviewed_04004_work_id": "legacy-ef432a8ee4ef55e09117",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimppickable.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-b97d4454596ee5c3aa6e",
+      "source_id": "01.002/000383",
+      "path": "app/core/gimpprogress.h",
+      "source_sha256": "f8dad0f6141d11c958a2b2b33865a52b30ee060da90668e8a2660b29b9540bc7",
+      "reviewed_04004_work_id": "legacy-6f1b4f974d068cc8ad00",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpprogress.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-32939e6b07b75bbf9bca",
+      "source_id": "01.002/000384",
+      "path": "app/core/gimpprojectable.h",
+      "source_sha256": "a2139e966f945e97b10ef8210d5d52af51aa314f4ba419afd34b460d9b0da92d",
+      "reviewed_04004_work_id": "legacy-8f7bdaca5c84cc8886ff",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpprojectable.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-761ff6d140095d3c673a",
+      "source_id": "01.002/000386",
+      "path": "app/core/gimpprojection.h",
+      "source_sha256": "59bad2b2332811d2c122abd6bb6e06b6ddecaed960d942b825429fc3a6276453",
+      "reviewed_04004_work_id": "legacy-4d8d87b6139d0dc72a77",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpprojection.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-86ad0c2e468dd6a04e5e",
+      "source_id": "01.002/000387",
+      "path": "app/core/gimptemplate.h",
+      "source_sha256": "d0f1b1aaf044d2f8eae647dafa528204effbf99f4c7fa0640ca79fdc5677644c",
+      "reviewed_04004_work_id": "legacy-7621c00f0533ba589c7c",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-d51562c5a6f1cf15ff10",
+      "source_id": "01.002/000388",
+      "path": "app/core/gimptemplate.h",
+      "source_sha256": "dda3611f4c4ccc246532be8fcf582e494ede5ebba0945a9a1bacf6d538276435",
+      "reviewed_04004_work_id": "legacy-8091ec7a0cfdc787aa95",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-580f73b406dfe8237db7",
+      "source_id": "01.002/000389",
+      "path": "app/core/gimptemplate.h",
+      "source_sha256": "ad7f598a5682aea3b07a8c4bb130edba93899c68478a780d66313e761349d17f",
+      "reviewed_04004_work_id": "legacy-89670f038c21bc549479",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-c6714dfbf071c68ab380",
+      "source_id": "01.002/000390",
+      "path": "app/core/gimptemplate.h",
+      "source_sha256": "edf498c416b452c188ef26fb3517223269dabdc3c672107bbbd8473b6c480349",
+      "reviewed_04004_work_id": "legacy-9d33fdd2601919a9d2fb",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-3096f642dd4245f14ebc",
+      "source_id": "01.002/000391",
+      "path": "app/core/gimptemplate.h",
+      "source_sha256": "7d0ada68459b1262c4893550b547b406b20386f4135ae34e5384ec5209707a90",
+      "reviewed_04004_work_id": "legacy-35e1863b185998d4b550",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-ce435152f5d61a5d6b3f",
+      "source_id": "01.002/000392",
+      "path": "app/core/gimptemplate.h",
+      "source_sha256": "2881b6f3b5dd9766b0bc176b6c33ee7b30980f650b9915db1aa0bacf6db5de3a",
+      "reviewed_04004_work_id": "legacy-7d6eee2787b78249453a",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-4a06721157bf8f8b0283",
+      "source_id": "01.002/000429",
+      "path": "app/core/gimptooloptions.h",
+      "source_sha256": "bd7d1a2b6f2fa1ab21b77665f7728cc0e75c1301dae4079f494d9e26894c2fab",
+      "reviewed_04004_work_id": "legacy-ac38cf7d0fb62c89d483",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimptooloptions.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-27a4b22e0d6e7314c8c7",
+      "source_id": "01.002/000436",
+      "path": "app/core/gimpviewable.h",
+      "source_sha256": "f48b37fe24e9e6784a012bd6f7ef06011c04e7dde2cadae4a2261452373fc650",
+      "reviewed_04004_work_id": "legacy-113151271b308864585e",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/core/gimpviewable.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-f9056b9ba57cb7e2871c",
+      "source_id": "01.002/000528",
+      "path": "app/display/gimpcanvasitem.h",
+      "source_sha256": "609bdb799b96dfd049dc35fa21979690f1b85c9d5e25c5a414b30a5ffeed04e3",
+      "reviewed_04004_work_id": "legacy-21059f6ad8b5754e5b82",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/display/gimpcanvasitem.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-8cf825bd63edd90f1489",
+      "source_id": "01.002/000868",
+      "path": "app/paint-funcs/Makefile.am",
+      "source_sha256": "352be5bc5646ac0d3da085dff5f548eaaa54faa7ddc75bd5e49ce194f08f2927",
+      "languages": [
+        "cpp"
+      ],
+      "legacy_headers": [
+        "app/paint-funcs/mypaint-brushmodes.hpp"
+      ],
+      "current_headers": [
+        "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp"
+      ],
+      "probe_kinds": [
+        "private-cpp-header"
+      ],
+      "scope": "Private C++ counterparts compile only as C++; optionalHTTP headers covered in enabled configuration. No feature equivalence or C compatibility claim for.hpp"
+    },
+    {
+      "work_id": "legacy-dbb674b0d6468c0f7a8f",
+      "source_id": "01.002/000887",
+      "path": "app/paint/Makefile.am",
+      "source_sha256": "ccdacc8f82bbe29a56afb90d538c43c0e41ae089031fae840830f7cb32765630",
+      "languages": [
+        "cpp"
+      ],
+      "legacy_headers": [
+        "app/paint/gimpmypaintcore-brushfeature.hpp",
+        "app/paint/gimpmypaintcore-drawablefeature.hpp"
+      ],
+      "current_headers": [
+        "app/paint/painter-mypaint-surface/gegl-surface.hpp",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.hpp",
+        "app/paint/painter-mypaint-surface/gimp-resources.hpp",
+        "app/paint/painter-mypaint-surface/legacy-generated-mask.hpp",
+        "app/paint/painter-mypaint-surface/legacy-mask-transform.hpp",
+        "app/paint/painter-mypaint-surface/paint-core.hpp"
+      ],
+      "probe_kinds": [
+        "private-cpp-header"
+      ],
+      "scope": "Private C++ counterparts compile only as C++; optionalHTTP headers covered in enabled configuration. No feature equivalence or C compatibility claim for.hpp"
+    },
+    {
+      "work_id": "legacy-a70eea34c62a8b4b2a6d",
+      "source_id": "01.002/000927",
+      "path": "app/paint/gimpbrushcore.h",
+      "source_sha256": "ad479299e4c241a4664247dd63dcd61eac351697064f5790bc0e8437138cc6c9",
+      "reviewed_04004_work_id": "legacy-23a058383b680ab6481c",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/paint/gimpbrushcore.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-8c36f0f74cd1c20cde5e",
+      "source_id": "01.002/000948",
+      "path": "app/paint/gimppaintcore.h",
+      "source_sha256": "3867f7fddaaca3c252bd413e00988f4460e09447d03d5b348660bf1c2e2bfb04",
+      "reviewed_04004_work_id": "legacy-9486b5086cf3e7ea4887",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/paint/gimppaintcore.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-d6f725d3cd74fcdc32be",
+      "source_id": "01.002/000963",
+      "path": "app/paint/gimppaintoptions.h",
+      "source_sha256": "118e99fc9a42e79eae0e9f018a932c81c5afb89b1effd68f0bc9def2b702eac2",
+      "reviewed_04004_work_id": "legacy-eff2f471e56ca056cc2c",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/paint/gimppaintoptions.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-e6ead01234007405e8ba",
+      "source_id": "01.002/001039",
+      "path": "app/pdb/gimpprocedure.h",
+      "source_sha256": "035a5fd40c798dcb4ba84e908760c2fe79880f3f024f7a22faabcb438f0d6375",
+      "reviewed_04004_work_id": "legacy-f6fff224d2ff82838ae4",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/pdb/gimpprocedure.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-68804971b3c52a310fb7",
+      "source_id": "01.002/001241",
+      "path": "app/tools/gimpdrawtool.h",
+      "source_sha256": "6c51c5cec741ce0f90ee52c8771848b8bc5195bfdbfee4b10ea63439d260775c",
+      "reviewed_04004_work_id": "legacy-b9acd2f46195240495de",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/tools/gimpdrawtool.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-31745cf2c05e93ad0c02",
+      "source_id": "01.002/001479",
+      "path": "app/tools/gimptool.h",
+      "source_sha256": "5e3fd8031d9ac5e7458a4c97a686da0fcd2a321eb0a5392818a46ccf8bad3340",
+      "reviewed_04004_work_id": "legacy-2f20fd409eeab13ade58",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/tools/gimptool.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-b5d06934add1bac03b9e",
+      "source_id": "01.002/001527",
+      "path": "app/widgets/gimpcontainereditor.h",
+      "source_sha256": "dd1b123fb6093129e58c4734e75fa22307f4958886c53ff572077974409ccb46",
+      "reviewed_04004_work_id": "legacy-0bec264e7b196c531f29",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/widgets/gimpcontainereditor.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-bb27669e71aff959879c",
+      "source_id": "01.002/001546",
+      "path": "app/widgets/gimpcontainerview.h",
+      "source_sha256": "05bf84962ca93c1e8f109bde13f34f0e7e32a8f4efe983747acc44ca6a3bc1f1",
+      "reviewed_04004_work_id": "legacy-c7c191c0227867c263b4",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/widgets/gimpcontainerview.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-47e84d32ac1c1bf5aad9",
+      "source_id": "01.002/001554",
+      "path": "app/widgets/gimpdatafactoryview.h",
+      "source_sha256": "7f3e3b4a641e5134f917d92fd15de68f6223c77c8eca8291f27c618b5719e2b0",
+      "reviewed_04004_work_id": "legacy-d71268384db3b07f50ec",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/widgets/gimpdatafactoryview.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-9d242836ee0a89ecf46a",
+      "source_id": "01.002/001614",
+      "path": "app/widgets/gimpeditor.h",
+      "source_sha256": "7676dc7c88c233dd23054a2692f3d9f4a3c90e9e864bfd7d0a3fd773d62692be",
+      "reviewed_04004_work_id": "legacy-2b5fc53f05572df82589",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "app/widgets/gimpeditor.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-105cddc77f69bcaa3a8e",
+      "source_id": "01.002/002303",
+      "path": "libgimpcolor/gimpcairocolor.h",
+      "source_sha256": "17fe0838765bc9a6699b35abec70eead5675c955fa107e9c20f72edcb0f11d6f",
+      "reviewed_04004_work_id": "legacy-7945f24d84084731bdeb",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpcolor/gimpcolor.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-8fbed3dc8aad2d303b02",
+      "source_id": "01.002/002304",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-b728511750aed591edd5",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-9bcb2bfebd72ddb511ec",
+      "source_id": "01.002/002305",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-c3b53a64a8ea6b119a41",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-4664b60ce8832559ea7d",
+      "source_id": "01.002/002306",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-da4da6098edf67cafeae",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-3ef49cf0c2e3d5f4b378",
+      "source_id": "01.002/002307",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-8415206ab9de73fb57cb",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-8b7af30742170bbd7618",
+      "source_id": "01.002/002308",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-f9f47d59785839378a0d",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-8bdf96c7da7fa693d384",
+      "source_id": "01.002/002309",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-07e49dc97bf2ba4b4a8f",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-1b94dc6fe5e246f7259f",
+      "source_id": "01.002/002310",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-c4907e121eb58ac95ff0",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-bf75ffb9eee4376c86ce",
+      "source_id": "01.002/002311",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-e8f1b245b51f696c0007",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-c29d96693925998821c2",
+      "source_id": "01.002/002312",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-3b0744fc8b4ca9f270fc",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-b6116dbd89be3c80dbfc",
+      "source_id": "01.002/002313",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-720f5dcad770ea5f41b1",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-bbe7c6be0e85d0223dea",
+      "source_id": "01.002/002314",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-0888acb758df02df87bc",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-c530a6cab2bbe5e2fc03",
+      "source_id": "01.002/002315",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "reviewed_04004_work_id": "legacy-0c8b9e109f8a0bdb2a4e",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-5f98483b482790291cf1",
+      "source_id": "01.002/002316",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "29ffc9526c28a08a8e1d4035f25149ac7e54dcca5f0725bdc280a6fa022c1c37",
+      "reviewed_04004_work_id": "legacy-5066a4e4f179ffb4398f",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-19bc56de5ddcdd0f5754",
+      "source_id": "01.002/002317",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "17231912e1a6e55afe03411e2159b5c5ece8433c85af9d8153ac3ba729fd49fe",
+      "reviewed_04004_work_id": "legacy-11763e051c57be12f8e9",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-c6a7c6900db5111b2f52",
+      "source_id": "01.002/002318",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "29ffc9526c28a08a8e1d4035f25149ac7e54dcca5f0725bdc280a6fa022c1c37",
+      "reviewed_04004_work_id": "legacy-27bfc644f8dfe51dc91b",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-f4b853dae5bacd0cfda9",
+      "source_id": "01.002/002319",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "17231912e1a6e55afe03411e2159b5c5ece8433c85af9d8153ac3ba729fd49fe",
+      "reviewed_04004_work_id": "legacy-7ad5bcb249bb7ebe6321",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-13a69df1c99e7ebf7faa",
+      "source_id": "01.002/002320",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "29ffc9526c28a08a8e1d4035f25149ac7e54dcca5f0725bdc280a6fa022c1c37",
+      "reviewed_04004_work_id": "legacy-f158c07b992cf3b7303c",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-78311330b0a7ab9f1ad6",
+      "source_id": "01.002/002321",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_sha256": "17231912e1a6e55afe03411e2159b5c5ece8433c85af9d8153ac3ba729fd49fe",
+      "reviewed_04004_work_id": "legacy-42b6d068b685243304ba",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "probe_kinds": [
+        "public-header",
+        "configuration-macros"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-2f3ff1c5eaf3672604ab",
+      "source_id": "01.002/002322",
+      "path": "libgimpwidgets/gimpcolorselector.h",
+      "source_sha256": "81d10cf5791d95663d7af3e25629f1cca633c10943df9cda89c0cd485579c721",
+      "reviewed_04004_work_id": "legacy-c869e78dfae71d99ed08",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpwidgets/gimpwidgets.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-260f305b8dc9a9da8309",
+      "source_id": "01.002/002343",
+      "path": "libgimpwidgets/gimpframe.h",
+      "source_sha256": "5faeca3ef54f733c0613240fd6ef5b065de72c5cb20ae538ac6f22992dc4b3e8",
+      "reviewed_04004_work_id": "legacy-775b5fd96f185f763c19",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpwidgets/gimpwidgets.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    },
+    {
+      "work_id": "legacy-32820a9dfb72a6d473fa",
+      "source_id": "01.002/002344",
+      "path": "libgimpwidgets/gimpintcombobox.h",
+      "source_sha256": "1f1c76e17ecf7a2dfbb4a85cc1e366a39b498322f69e5e1444c650eed52044b8",
+      "reviewed_04004_work_id": "legacy-8ad8c8a62379ee0e31fb",
+      "languages": [
+        "c",
+        "cpp"
+      ],
+      "current_headers": [
+        "libgimpwidgets/gimpwidgets.h"
+      ],
+      "probe_kinds": [
+        "public-header"
+      ],
+      "scope": "C-facing header compilation registration only; associated implementation semantics remain separately tracked"
+    }
+  ],
+  "total": 92,
+  "c_boundary_duties": 89,
+  "private_registration_duties": 3,
+  "unrelated_rows": 22852,
+  "unrelated_rows_sha256": "acf4280743b7c2600b3bb96290c899df5f86b2382bc0718c129757d66aaa21dc"
+}

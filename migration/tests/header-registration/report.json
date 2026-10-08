@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "task": "04.014",
+  "scope": "Native Linux Meson C11/C++14 header compilation registration; no link/runtime/platform completion claim",
+  "baseline_commit": "4efd79a1a23c411d61c95637aa4d865680810fe8",
+  "registered_test": "painter-public-header-compilation",
+  "public_header_targets": 102,
+  "default_compiles": 231,
+  "http_compiles": 233,
+  "expected_control_outcomes": 18,
+  "source_verification_duties_closed": 92,
+  "source_sha256": {
+    "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451",
+    "app/painter/tests/headers/meson.build": "cf6861499b5fcdd78715b0be663cb55ade5faba9b5d0cb5e6a6619a25e03ea75",
+    "app/painter/tests/headers/generate-probes.py": "5c73d300a3a19e30922a4ab8ca2c3aed043f93e52d73a52b195424815e31f731",
+    "tools/check_painter_header_registration.py": "bc2b18bedeaf6cf6743fbf97aab0ecff7970b9e661768a6bce97da87ecc07755",
+    "migration/inventory/c-header-linkage.json": "31cf1b05b6f8d5e8a8c89f66136b036caa675dba6f176c61e0a2b0255cb01073",
+    "migration/inventory/cpp-header-boundary.json": "bca3774f0ae0099a99a2508a6f8a6dcbf725a30b83dd7823ca06d8dc14886568",
+    "migration/tests/header-registration/source-duty-review.json": "6900df209ec91f2e8edb3a5f8294ccb24ed0ec7a934cc7831c23fd307a02ea17"
+  }
+}
