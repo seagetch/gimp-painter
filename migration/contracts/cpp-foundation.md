@@ -189,3 +189,33 @@ bounded checkpoint from the two byte-verified archived blobs. Full historical
 generator execution was blocked by unavailable pinned source/base trees and is
 not claimed. Completed baseline WBS criteria are unchanged; the new source-level
 comparison duties do not reopen those original criteria or imply completion.
+
+## Final C++ runtime link (original 04.008)
+
+Both GUI and console targets explicitly use `link_language: 'cpp'` while
+`main.c` remains C. The old empty `dummy.cpp` linker-selection trick is replaced
+by this target property. The common bridge and current feature archives join
+their owning final targets; HTTP core/GUI archives are conditional.
+
+The [fresh native result](../tests/final-cpp-link-native.json) builds actual GUI
+and console executables with HTTP disabled and enabled. All four use a C main
+object and C++ final driver, retain `libstdc++.so.6`, the C bridge and migrated
+C++ feature symbols, and exit successfully on isolated `--version`. C was not
+compiled as C++; no explicit C standard flag is claimed from the DWARF C11 tag.
+Replacing the console driver with C and removing the explicit C++ runtime link
+fails in both configurations with the expected GLIBCXX unresolved dependency;
+the production executable hashes remain unchanged.
+
+The [25 source-duty mappings](../inventory/final-cpp-link-scope.json) cover all
+40 counterpart paths through actual compiler, object, archive/direct-input and
+generator ownership evidence. Only these 25 execution records close; all source
+identities and other rows are preserved. This is final-link/runtime acceptance,
+not proof of unused registration-member retention (04.009), complete feature
+behavior, other platforms, or installed operation. No listener or GUI workflow
+was started. The evidence archive retains exact reproduction scripts and logs.
+
+Seventeen enum/PDB recipes per configuration ran against isolated source copies
+to protect tracked generated C sources. Their outputs matched, all compile/link
+recipes stayed unchanged, and 9,915 tracked source hashes matched before/after.
+The immutable earlier source-ledger correction reports remain historical
+checkpoints; current mutable work status is validated by the granularity tool.

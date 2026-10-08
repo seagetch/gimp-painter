@@ -1,0 +1,784 @@
+{
+  "task": "04.008",
+  "source_parent": "34983b34c7e2c45b1c69c6c13ab93c17bef6574e",
+  "status": "PASS",
+  "duties": [
+    {
+      "work_id": "legacy-8a2ed6f80c4bbc9bd457",
+      "source_id": "01.002/000001",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-35,2 -> 35,8",
+      "source_sha256": "48e6d9d1fcd9e2b8eac3436a0fcab9013527570d41071dc3f66da0c716044e4d",
+      "classification": "current-cpp-module-registration",
+      "payload": "-\t.\t\t\\\n-\ttests\n+\tpresets\n+\n+if USE_HTTPD\n+SUBDIRS += httpd\n+endif\n+\n+SUBDIRS += .\t\t\\\n+\t   tests\n",
+      "current_paths": [
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/httpd/httpd.cpp"
+      ],
+      "current_path_sha256": {
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+        "app/core/gimplayerpreset-apply.cpp": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+        "app/httpd/httpd.cpp": "22450de1872fe672f6f20ba1a220abba5e52f32a2d7cb1ccbecdd77e046682df"
+      },
+      "registration_rationale": "Presets moved into core; optional HTTP retains its conditional subdir. Both owning libraries join the app link.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "28.003",
+        "28.004",
+        "31.003"
+      ],
+      "not_accepted_by_this_task": [
+        "28.003",
+        "28.004",
+        "31.003"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-7f5d74ac6c597a845b2a",
+      "source_id": "01.002/000002",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-73,0 -> 80,2",
+      "source_sha256": "4940e6b96a8062fc155f0e7f60438b726ffce13be3fb5aa11282c89df0bbfd54",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimp-features.cpp\t\\\n+\tgimp-features.hpp\t\\\n",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/actions/actions.c",
+        "app/painter/gimp-painter-binding.cpp"
+      ],
+      "current_path_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/actions/actions.c": "0627fb49a0a0215b589f37a38b43b202fd17f80c176f1a42a1c1b9387702cc09",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd"
+      },
+      "registration_rationale": "Legacy feature dispatcher is replaced by explicit native C startup/teardown and owning module registration. The common C++ bridge is a real app dependency.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "30.016"
+      ],
+      "not_accepted_by_this_task": [
+        "30.016"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-a8485d2b085ad2100434",
+      "source_id": "01.002/000003",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-89 -> 97",
+      "source_sha256": "d84cb10b6f5b05a2c6e8441962ca08087b9fdcebf5cf1c0231c749d5b9fff070",
+      "classification": "link-only",
+      "payload": "-gimp_2_8_SOURCES = $(libapp_sources) main.c\n+gimp_2_8_SOURCES = $(libapp_sources) main.c dummy.cpp\n",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "current_path_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "not_accepted_by_this_task": [
+        "04.009"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-50154ee990cf230bf27b",
+      "source_id": "01.002/000004",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-171,0 -> 180",
+      "source_sha256": "093addb9d344488c662e702c07c5a65ac82e821e8094111e911f0c898dead1a3",
+      "classification": "link-only",
+      "payload": "+\tpresets/libapppresets.a         \\\n",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "current_path_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "not_accepted_by_this_task": [
+        "04.009"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-948967df613b5ebf4e3b",
+      "source_id": "01.002/000005",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-188,0 -> 198,8",
+      "source_sha256": "c8b6fa63a2f18768cc082ff3fbed4589c9094a5ef43367edc3e7c55f5097271a",
+      "classification": "link-only",
+      "payload": "+if USE_HTTPD\n+gimphttpdldadd = \\\n+\thttpd/libapphttpd.a\t\t\\\n+\t$(SOUP_LIBS)\n+else\n+gimphttpdldadd =\n+endif\n+\n",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "current_path_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "not_accepted_by_this_task": [
+        "04.009"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-1d5c10e83cc30334ae3f",
+      "source_id": "01.002/000006",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-206,0 -> 224",
+      "source_sha256": "63e5ebb77a3f2acbc803f133a8611e6d9dc851227c2e5b6a3d927c4107edf0e6",
+      "classification": "link-only",
+      "payload": "+\t$(gimphttpdldadd)\t\t\\\n",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "current_path_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "not_accepted_by_this_task": [
+        "04.009"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-f23f73db516a94d02f0b",
+      "source_id": "01.002/000007",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-212 -> 230",
+      "source_sha256": "9edef7090ee33f53503a1fe4cfbf010c15ad503048e98a515b62d3aabd5c060b",
+      "classification": "link-only",
+      "payload": "-gimp_console_2_8_SOURCES = $(libapp_sources) main.c\n+gimp_console_2_8_SOURCES = $(libapp_sources) main.c dummy.cpp\n",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "current_path_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "not_accepted_by_this_task": [
+        "04.009"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-7013b2bcff11f1ab1489",
+      "source_id": "01.002/000008",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-219,0 -> 238",
+      "source_sha256": "78766817876d0a3bd1c48dcae0e2be43935571878d338be2250ad0d28c50fd61",
+      "classification": "link-only",
+      "payload": "+\t$(gimphttpdldadd)\n",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "current_path_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "not_accepted_by_this_task": [
+        "04.009"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-7999af59c9a6c092662a",
+      "source_id": "01.002/000128",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-81,0 -> 82,8",
+      "source_sha256": "3547aa70b7ceeef9b528a46a32e6cdaf9bb928b456218c5697cbcf1e093f76ed",
+      "classification": "current-cpp-module-registration",
+      "payload": "+  gimpmypaintbrush.h                      \\\n+\tgimpmypaintbrush.cpp\t\t\t\\\n+  gimpmypaintbrush-load.h\t\t\t\\\n+\tgimpmypaintbrush-load.cpp\t\t\t\\\n+\tmypaintbrush-enum-settings.h \\\n+\tmypaintbrush-brushsettings.h \\\n+\tmypaintbrush-brushsettings.c \\\n+\tmypaintbrush-mapping.hpp \\\n",
+      "current_paths": [
+        "app/core/gimppaintermybrush.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/paint/painter-brush-settings/meson.build"
+      ],
+      "current_path_sha256": {
+        "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+        "app/paint/painter-brush-settings/meson.build": "49ffdc89681014266308b749cfda29e09d6e5a4296ce3aae6de48aa4ac4fa7bd"
+      },
+      "registration_rationale": "Extended brush resource/reader/writer now share resource.cpp and the core adapter; generated setting constants remain a separate generator obligation.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.005",
+        "19.001",
+        "19.011",
+        "19.013",
+        "20.001",
+        "04.013"
+      ],
+      "not_accepted_by_this_task": [
+        "08.005",
+        "19.001",
+        "19.011",
+        "19.013",
+        "20.001",
+        "04.013"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-96f4ab4f0d91cbfe052d",
+      "source_id": "01.002/000130",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-342,0 -> 353,2",
+      "source_sha256": "fb18c77627e55984949fd55bd9cba649b89d95eed5d38ca291642212f1a64190",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimpperspectiveguide.cpp    \\\n+\tgimpperspectiveguide.h \t\t\\\n",
+      "current_paths": [
+        "app/core/gimpperspectiveguide.cpp"
+      ],
+      "current_path_sha256": {
+        "app/core/gimpperspectiveguide.cpp": "edcfce4efc37d41a66340c531be6fd558bc931fad927ad65a8dd0fc27272d1b4"
+      },
+      "registration_rationale": "Perspective guide implementation is registered directly in appcore.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.009",
+        "26.001"
+      ],
+      "not_accepted_by_this_task": [
+        "08.009",
+        "26.001"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-ac1d65bb290fa8edbdd4",
+      "source_id": "01.002/000132",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-396 -> 412,11",
+      "source_sha256": "5df3a8d7025f85984a1c650c2f2e94349159d8ef5d6d76106abc5cf36b2d1483",
+      "classification": "current-cpp-module-registration",
+      "payload": "-\tgimpviewable.h\n+\tgimpviewable.h\t\t\t\t\\\n+\tgimpmypaintbrush-private.hpp\t\t\\\n+\tgimpmypaintbrush-save.cpp\t\t\\\n+\tgimpmypaintbrush-save.h\t\t\t\\\n+\tgimpfilterlayer.h\t\t\t\\\n+\tgimpfilterlayer.cpp\t\t\t\\\n+\tgimpclonelayer.h\t\t\t\\\n+\tgimpclonelayer.cpp\t\t\t\\\n+\tgimpclonelayerundo.h\t\t\t\\\n+\tgimpclonelayerundo.cpp\n+\n",
+      "current_paths": [
+        "app/core/gimppaintermybrush.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/core/gimpfilterlayer.cpp",
+        "app/core/gimpclonelayer.cpp"
+      ],
+      "current_path_sha256": {
+        "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+        "app/core/gimpfilterlayer.cpp": "abcda53a71ea70000569649fec6c72b802bae828d1748e4c7810a665db3b6b9a",
+        "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+      },
+      "registration_rationale": "Brush save shares resource.cpp; Clone reference Undo is in gimpclonelayer.cpp. Both independent layer types are registered in appcore.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "14.001",
+        "14.015",
+        "15.001",
+        "19.011"
+      ],
+      "not_accepted_by_this_task": [
+        "14.001",
+        "14.015",
+        "15.001",
+        "19.011"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-cd5488c10e0f004f32f7",
+      "source_id": "01.002/000455",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-56,0 -> 57,2",
+      "source_sha256": "76de1fcacc3a8b14fe08f21e99b1a6c74cce1ec83aab813cb94d5b8472d24578",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimpcanvasperspectiveguide.cpp\t\t\t\t\\\n+\tgimpcanvasperspectiveguide.h\t\t\t\t\\\n",
+      "current_paths": [
+        "app/display/gimpcanvasperspectiveguide.cpp"
+      ],
+      "current_path_sha256": {
+        "app/display/gimpcanvasperspectiveguide.cpp": "8ae697467c3cfff54b41c03828419000907cfc5b2ee92902246711523663f858"
+      },
+      "registration_rationale": "Perspective canvas implementation is registered directly in appdisplay.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "26.005",
+        "26.006"
+      ],
+      "not_accepted_by_this_task": [
+        "26.005",
+        "26.006"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-a2fe8791f420bb5922ff",
+      "source_id": "01.002/000456",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-114,0 -> 117,2",
+      "source_sha256": "b6fc3a2e05f9f9240696b8d307e3a779c2b63b5209b3bae71646eda6b56d9f5f",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimpdisplayshell-overlays.cpp\t\\\n+\tgimpdisplayshell-overlays.h\t\t\\\n",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "current_path_sha256": {
+        "app/display/gimppaintercanvasui.cpp": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed"
+      },
+      "registration_rationale": "The current shell-owned canvas controller replaces the legacy overlays translation unit.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "29.001",
+        "29.019"
+      ],
+      "not_accepted_by_this_task": [
+        "29.001",
+        "29.019"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-d305ae54446fdb95f93d",
+      "source_id": "01.002/000852",
+      "path": "app/httpd/Makefile.am",
+      "source_blob": "90d9e83353cc27d314914b3e25b16ebc89c5083d",
+      "source_range": "-0,0 -> 1,65",
+      "source_sha256": "91513434dd2641e668600ef54f103c2db91a1bc919da0fcce0d948a8676a053e",
+      "classification": "current-cpp-module-registration",
+      "payload": "+## Process this file with automake to produce Makefile.in\n+\n+if PLATFORM_OSX\n+xobjective_c = \"-xobjective-c\"\n+endif\n+\n+AM_CPPFLAGS = \\\n+        -DISO_CODES_LOCATION=\\\"$(ISO_CODES_LOCATION)\\\"\t\t\\\n+        -DISO_CODES_LOCALEDIR=\\\"$(ISO_CODES_LOCALEDIR)\\\"\t\\\n+\t-DG_LOG_DOMAIN=\\\"Gimp-Presets\\\"\n+\n+INCLUDES = \\\n+\t-I$(top_builddir)\t\t\\\n+\t-I$(top_srcdir)\t\t\t\\\n+\t-I$(top_builddir)/app\t\\\n+\t-I$(top_srcdir)/app\t\t\\\n+\t$(GEGL_CFLAGS)\t\t\t\\\n+\t$(GTK_CFLAGS)\t\t\t\\\n+\t$(SOUP_CFLAGS)\t\t\t\\\n+\t-I$(includedir) \t\t\\\n+\t$(xobjective_c)\n+\n+noinst_LIBRARIES = libapphttpd.a\n+\n+libapphttpd_a_sources = \\\n+\thttpd-enums.h   \t\t\\\n+\thttpd.cpp\t\t\t\\\n+\thttpd.h\t\t\t\t\\\n+\trest-pdb.cpp\t\t\t\\\n+\trest-pdb.h\t\t\t\\\n+\trest-image-tree.cpp\t\t\\\n+\trest-image-tree.h\t\t\\\n+\thttpd-features.cpp\t\t\\\n+\thttpd-features.h        \\\n+\thttpd-features-gui.cpp\t\t\\\n+\thttpd-features-gui.h        \\\n+\tnavigation-guide.cpp    \\\n+\tnavigation-guide.h\n+\n+libapphttpd_a_built_sources = httpd-enums.c\n+\n+libapphttpd_a_SOURCES = \\\n+\t$(libapphttpd_a_built_sources) $(libapphttpd_a_sources)\n+\n+\n+#\n+# rules to generate built sources\n+#\n+# setup autogeneration dependencies\n+gen_sources = xgen-wec\n+CLEANFILES = $(gen_sources)\n+\n+httpd-enums.c: $(srcdir)/httpd-enums.h $(GIMP_MKENUMS)\n+\t$(GIMP_MKENUMS) \\\n+\t\t--fhead \"#include \\\"config.h\\\"\\n#include <gtk/gtk.h>\\n#include \\\"libgimpbase/gimpbase.h\\\"\\n#include \\\"httpd-enums.h\\\"\\n#include \\\"gimp-intl.h\\\"\" \\\n+\t\t--fprod \"\\n/* enumerations from \\\"@filename@\\\" */\" \\\n+\t\t--vhead \"GType\\n@enum_name@_get_type (void)\\n{\\n  static const G@Type@Value values[] =\\n  {\" \\\n+\t\t--vprod \"    { @VALUENAME@, \\\"@VALUENAME@\\\", \\\"@valuenick@\\\" },\" \\\n+\t\t--vtail \"    { 0, NULL, NULL }\\n  };\\n\" \\\n+\t\t--dhead \"  static const Gimp@Type@Desc descs[] =\\n  {\" \\\n+\t\t--dprod \"    { @VALUENAME@, @valuedesc@, @valuehelp@ },\" \\\n+\t\t--dtail \"    { 0, NULL, NULL }\\n  };\\n\\n  static GType type = 0;\\n\\n  if (G_UNLIKELY (! type))\\n    {\\n      type = g_@type@_register_static (\\\"@EnumName@\\\", values);\\n      gimp_type_set_translation_context (type, \\\"@enumnick@\\\");\\n      gimp_@type@_set_value_descriptions (type, descs);\\n    }\\n\\n  return type;\\n}\\n\" \\\n+\t\t$(srcdir)/httpd-enums.h > xgen-wec \\\n+\t&& cp xgen-wec $(@F) \\\n+\t&& rm -f xgen-wec\n",
+      "current_paths": [
+        "app/httpd/httpd.cpp",
+        "app/httpd/httpd-resource.cpp",
+        "app/httpd/httpd-images.cpp",
+        "app/httpd/httpd-pdb.cpp",
+        "app/httpd/httpd-navigation.cpp"
+      ],
+      "current_path_sha256": {
+        "app/httpd/httpd.cpp": "22450de1872fe672f6f20ba1a220abba5e52f32a2d7cb1ccbecdd77e046682df",
+        "app/httpd/httpd-resource.cpp": "1b048f9cdea036e50d7fa54becaa37bb08d7f4685cca281b08e9ab5321232651",
+        "app/httpd/httpd-images.cpp": "084e0fe355b97a806e9fb021bcfa73881a9a917203bbfdafe0dd609103554631",
+        "app/httpd/httpd-pdb.cpp": "745a694918a67bd15962e7dd035dd78d14183d4a07f01c7c50e5a80014329a97",
+        "app/httpd/httpd-navigation.cpp": "3c08a702de3a9873b0513dcf9f572284820bcac1a8dfbf7e51fd31fb98cda5fc"
+      },
+      "registration_rationale": "Optional HTTP has explicit core and GUI C++ libraries; this configured build enables them. Disabled builds and old enum/platform behavior remain their own gates.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "31.003",
+        "31.009",
+        "04.013"
+      ],
+      "not_accepted_by_this_task": [
+        "31.003",
+        "31.009",
+        "04.013"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-8b03ff860b2853fce7fe",
+      "source_id": "01.002/000885",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-57,0 -> 58,6",
+      "source_sha256": "21114d439bb76d5bbb48f010ce3f692499ac790e302f92c0147e121be8f13cfe",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimpmypaintcore.cpp\t\t\\\n+\tgimpmypaintcore.hpp\t\t\\\n+\tgimpmypaintcoreundo.cpp\t\t\\\n+\tgimpmypaintcoreundo.h\t\t\\\n+\tgimpmypaintcore-surface.cpp\t\t\\\n+\tgimpmypaintcore-surface.hpp\t\t\\\n",
+      "current_paths": [
+        "app/paint/painter-mypaint-surface/paint-core.cpp",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp"
+      ],
+      "current_path_sha256": {
+        "app/paint/painter-mypaint-surface/paint-core.cpp": "f2acf89889fbb8c7ae57f700f1f455833c830ba38329c4f829a9bf4d9f00669a",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp": "e7ac2ab7781f9a278c1b4296424d353ef30758a79fa2ddddc5ae70fa342b3c2c",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431"
+      },
+      "registration_rationale": "Native PaintCore/session and GEGL Surface replace the old core, surface and empty Undo TU; registration does not close Undo/behavior acceptance.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.006",
+        "09.011",
+        "21.001",
+        "21.014"
+      ],
+      "not_accepted_by_this_task": [
+        "08.006",
+        "09.011",
+        "21.001",
+        "21.014"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-b9535d3f888dcad2ebc0",
+      "source_id": "01.002/000886",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-63,0 -> 70,8",
+      "source_sha256": "5b5d48c7bd9a6f949e01526807be10e37d3918d6d449e15dde10a3ac5ebd36c9",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimpmypaintoptions.cpp\t\t\\\n+\tgimpmypaintoptions.h\t\t\\\n+\tgimpmypaintoptions-history.cpp\t\\\n+\tgimpmypaintoptions-history.hpp\t\\\n+\tmypaintbrush-brush.hpp\t\t\\\n+\tmypaintbrush-surface.hpp\t\t\\\n+\tmypaintbrush-stroke.hpp\t\t\\\n+\tmypaintbrush-stroke.cpp\t\t\\\n",
+      "current_paths": [
+        "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "app/paint/painter-mypaint/engine.cpp"
+      ],
+      "current_path_sha256": {
+        "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "2126a82d73b1abb30ec7031449ec615a358b735584dd824b0c8c3840069ea813",
+        "app/paint/painter-mypaint/engine.cpp": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a"
+      },
+      "registration_rationale": "Options and application-owned history share the options TU; stroke/engine code is in engine.cpp.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.007",
+        "20.001",
+        "24.010"
+      ],
+      "not_accepted_by_this_task": [
+        "08.007",
+        "20.001",
+        "24.010"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-afdc456290b549495219",
+      "source_id": "01.002/001008",
+      "path": "app/pdb/Makefile.am",
+      "source_blob": "12a94259835da77e2a77e97848b11619c61a7c5e",
+      "source_range": "-32,0 -> 33,2",
+      "source_sha256": "49d572fcfa22a73972a19bd5793957968b2bb40108adba3c4c097bc32a43eb8b",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tpdb-cxx-utils.cpp\t\t\\\n+\tpdb-cxx-utils.hpp\t\t\\\n",
+      "current_paths": [
+        "app/core/gimpfilterprocedure.cpp",
+        "app/core/gimpfilterprocedure-arguments.cpp",
+        "app/painter/filter-process.cpp"
+      ],
+      "current_path_sha256": {
+        "app/core/gimpfilterprocedure.cpp": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+        "app/core/gimpfilterprocedure-arguments.cpp": "cfa0028427f1ae19701f42d107a26883e4c143a25a15dbb4211d53fab0f9a055",
+        "app/painter/filter-process.cpp": "5d5bc162d3c26d9496cc5f52ceff926e6e7e57fdaae225fef02a8705edd6d42c"
+      },
+      "registration_rationale": "PDB/executor C++ adapters moved into appcore and apppainter; no old pdb-cxx-utils.cpp needs a duplicate registration. Arbitrary saved procedure coverage remains open.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "16.002",
+        "16.003",
+        "16.006"
+      ],
+      "not_accepted_by_this_task": [
+        "16.002",
+        "16.003",
+        "16.006"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-12f9ddce01489c95e05b",
+      "source_id": "01.002/001065",
+      "path": "app/presets/Makefile.am",
+      "source_blob": "d874add9c485d04b46255309c0228463e0062663",
+      "source_range": "-0,0 -> 1,62",
+      "source_sha256": "9cfe6a562755e05d4a7095bd4822099fa8fedce56bcad76a34fda4e691c212ab",
+      "classification": "current-cpp-module-registration",
+      "payload": "+## Process this file with automake to produce Makefile.in\n+\n+if PLATFORM_OSX\n+xobjective_c = \"-xobjective-c\"\n+endif\n+\n+AM_CPPFLAGS = \\\n+        -DISO_CODES_LOCATION=\\\"$(ISO_CODES_LOCATION)\\\"\t\t\\\n+        -DISO_CODES_LOCALEDIR=\\\"$(ISO_CODES_LOCALEDIR)\\\"\t\\\n+\t-DG_LOG_DOMAIN=\\\"Gimp-Presets\\\"\n+\n+INCLUDES = \\\n+\t-I$(top_builddir)\t\t\\\n+\t-I$(top_srcdir)\t\t\t\\\n+\t-I$(top_builddir)/app\t\\\n+\t-I$(top_srcdir)/app\t\t\\\n+\t$(GEGL_CFLAGS)\t\t\t\\\n+\t$(GTK_CFLAGS)\t\t\t\\\n+\t-I$(includedir) \t\t\\\n+\t$(xobjective_c)\n+\n+noinst_LIBRARIES = libapppresets.a\n+\n+libapppresets_a_sources = \\\n+\tpresets-enums.h   \t\t\\\n+\tgimpjsonresource.cpp\t\t\\\n+\tgimpjsonresource.h\t\t\\\n+\tpreset-factory.cpp\t\t\\\n+\tpreset-factory.h\t\t\\\n+\tpreset-factory-gui.cpp\t\t\\\n+\tpreset-factory-gui.h\t\t\\\n+\tlayer-preset.cpp\t\t\\\n+\tlayer-preset.h\t\t\t\\\n+\tlayer-preset-gui.cpp\t\t\\\n+\tlayer-preset-gui.h\n+\n+libapppresets_a_built_sources = presets-enums.c\n+\n+libapppresets_a_SOURCES = \\\n+\t$(libapppresets_a_built_sources) $(libapppresets_a_sources)\n+\n+\n+#\n+# rules to generate built sources\n+#\n+# setup autogeneration dependencies\n+gen_sources = xgen-wec\n+CLEANFILES = $(gen_sources)\n+\n+presets-enums.c: $(srcdir)/presets-enums.h $(GIMP_MKENUMS)\n+\t$(GIMP_MKENUMS) \\\n+\t\t--fhead \"#include \\\"config.h\\\"\\n#include <gtk/gtk.h>\\n#include \\\"libgimpbase/gimpbase.h\\\"\\n#include \\\"presets-enums.h\\\"\\n#include \\\"gimp-intl.h\\\"\" \\\n+\t\t--fprod \"\\n/* enumerations from \\\"@filename@\\\" */\" \\\n+\t\t--vhead \"GType\\n@enum_name@_get_type (void)\\n{\\n  static const G@Type@Value values[] =\\n  {\" \\\n+\t\t--vprod \"    { @VALUENAME@, \\\"@VALUENAME@\\\", \\\"@valuenick@\\\" },\" \\\n+\t\t--vtail \"    { 0, NULL, NULL }\\n  };\\n\" \\\n+\t\t--dhead \"  static const Gimp@Type@Desc descs[] =\\n  {\" \\\n+\t\t--dprod \"    { @VALUENAME@, @valuedesc@, @valuehelp@ },\" \\\n+\t\t--dtail \"    { 0, NULL, NULL }\\n  };\\n\\n  static GType type = 0;\\n\\n  if (G_UNLIKELY (! type))\\n    {\\n      type = g_@type@_register_static (\\\"@EnumName@\\\", values);\\n      gimp_type_set_translation_context (type, \\\"@enumnick@\\\");\\n      gimp_@type@_set_value_descriptions (type, descs);\\n    }\\n\\n  return type;\\n}\\n\" \\\n+\t\t$(srcdir)/presets-enums.h > xgen-wec \\\n+\t&& cp xgen-wec $(@F) \\\n+\t&& rm -f xgen-wec\n",
+      "current_paths": [
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/core/gimp-data-factories.c",
+        "app/actions/layer-presets-actions.c",
+        "app/widgets/gimplayerpresetview.c"
+      ],
+      "current_path_sha256": {
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+        "app/core/gimplayerpreset-apply.cpp": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/actions/layer-presets-actions.c": "740d7b1e9de1e4ec7bfc7ac1f5930190390172026befdaf635e787b2969d0f7d",
+        "app/widgets/gimplayerpresetview.c": "46a8763177097b16102f06481bab4750ebaa978757eda86030e5c34b4c2c9ced"
+      },
+      "registration_rationale": "Presets are native C data/factory/view and a private C++ applier in existing modules, not a separately named legacy library. Generator/behavior obligations stay open.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "28.001",
+        "28.003",
+        "28.004",
+        "28.014",
+        "04.013"
+      ],
+      "not_accepted_by_this_task": [
+        "28.001",
+        "28.003",
+        "28.004",
+        "28.014",
+        "04.013"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-f001c7fd162bd28c0238",
+      "source_id": "01.002/001082",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-42,0 -> 45,2",
+      "source_sha256": "7db8e963d67d2487de10b7b67b8fee0303b6b9200c43213b4f26fa67c29e28e9",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimpbucketfillbrushtool.cpp\t\t\\\n+\tgimpbucketfillbrushtool.h\t\t\\\n",
+      "current_paths": [
+        "app/tools/gimpfillbrushtool.cpp",
+        "app/paint/gimpfillbrush.cpp"
+      ],
+      "current_path_sha256": {
+        "app/tools/gimpfillbrushtool.cpp": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+        "app/paint/gimpfillbrush.cpp": "f91685ff3853e89313aa038805630117c8dbfbe741b4b3af463be1c04dbf2a0e"
+      },
+      "registration_rationale": "Bounded fill tool and paint-core implementations have explicit owning-module registrations.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.012",
+        "27.001"
+      ],
+      "not_accepted_by_this_task": [
+        "08.012",
+        "27.001"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-c85811f16a0b3ac51886",
+      "source_id": "01.002/001085",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-144,0 -> 153,2",
+      "source_sha256": "8aa19abbd32aa4e5a8a82cdb6daff85dba45307407b6a3fa5d2c3b910a9a0614",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimpperspectiveguidetool.cpp\t\t\\\n+\tgimpperspectiveguidetool.h\t\t\\\n",
+      "current_paths": [
+        "app/tools/gimpperspectiveguidetool.cpp"
+      ],
+      "current_path_sha256": {
+        "app/tools/gimpperspectiveguidetool.cpp": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b"
+      },
+      "registration_rationale": "Perspective editor tool is registered directly in apptools.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.010",
+        "26.002"
+      ],
+      "not_accepted_by_this_task": [
+        "08.010",
+        "26.002"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-ce98a4a82d175dfd2b14",
+      "source_id": "01.002/001086",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-198 -> 208,13",
+      "source_sha256": "5cdffcdda5b82f01e63348ee4fed2f3e3bd71be3a4cd9602524d789a713f9755",
+      "classification": "current-cpp-module-registration",
+      "payload": "-\tgimpvectortool.h\n+\tgimpvectortool.h   \t\t\\\n+\tgimpmypainttool.cpp\t\t\\\n+\tgimpmypainttool.h\t\t\\\n+\tgimpmypaintoptions-gui.cpp\t\\\n+\tgimpmypaintoptions-gui.h  \t\\\n+\tgimpmypaintbrushoptions-gui.cpp\t\\\n+\tgimpmypaintbrushoptions-gui.h\t\\\n+\tgimptooloptions-gui-cxx.cpp\t\\\n+\tgimptooloptions-gui-cxx.hpp\t\t\\\n+\tgimpmypaintbrusheditor.cpp\t\t\\\n+\tgimpmypaintbrusheditor.hpp\t\t\\\n+\tgimpmypaint-gui-base.hpp\n+\n",
+      "current_paths": [
+        "app/tools/gimppaintermybrushtool.cpp",
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "current_path_sha256": {
+        "app/tools/gimppaintermybrushtool.cpp": "2b6a54cabe22fbb3b8cd113c8a3231955407ca67519822c0eb673c6f03575c90",
+        "app/widgets/gimppaintermybrusheditor.cpp": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "registration_rationale": "Tool, shared editor and reversible compact adapter replace duplicate legacy tool/editor/helper TUs. Full control/type equivalence remains under their existing feature tasks.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.008",
+        "24.001",
+        "29.010",
+        "31.013"
+      ],
+      "not_accepted_by_this_task": [
+        "08.008",
+        "24.001",
+        "29.010",
+        "31.013"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-66ae3c3ac2b17f60b150",
+      "source_id": "01.002/001515",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-52,0 -> 57,2",
+      "source_sha256": "b61b6e95e6382ad76978e633753bee1419ce46c5fe78f2b6dadb978b9907b629",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimpcellrendererpopup.cpp\t\\\n+\tgimpcellrendererpopup.h\t\\\n",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "current_path_sha256": {
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "registration_rationale": "Registered GTK3 popover consumers provide current UI routes; this does not prove that every old CellRendererPopup vfunc has been ported.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.016",
+        "29.006"
+      ],
+      "not_accepted_by_this_task": [
+        "08.016",
+        "29.006"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-1617545390bf63120c4a",
+      "source_id": "01.002/001516",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-234,0 -> 241,4",
+      "source_sha256": "648de987d8ba08257f9f9c414dd482393a185b9e837938d8ee7807417f9f1eb1",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimplayerpopup.cpp\t\t\\\n+\tgimplayerpopup.h\t\t\\\n+\tgimplayertileview.cpp\t\\\n+\tgimplayertileview.h\t\t\\\n",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/dialogs/layer-options-dialog.c",
+        "app/core/gimpfilterparametereditor.cpp"
+      ],
+      "current_path_sha256": {
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+        "app/dialogs/layer-options-dialog.c": "a7ae97a35bf0a1fc90c608523eefe0dc7a7f8696ab89a5c1171e85834075eef9",
+        "app/core/gimpfilterparametereditor.cpp": "fcf150ea7c938ab792770f3307d769e5f84dddcfba20b85030b6e7ca4c9e130f"
+      },
+      "registration_rationale": "Layer tiles use registered C++ and canonical custom-layer editors. Full legacy popup/type acceptance remains separate.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.013",
+        "29.001",
+        "29.006"
+      ],
+      "not_accepted_by_this_task": [
+        "08.013",
+        "29.001",
+        "29.006"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-5db66c7f8c88373935e0",
+      "source_id": "01.002/001520",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-361,0 -> 377,2",
+      "source_sha256": "6553f8a63f0472c67d7ed31ced59ac11ff92ed74d06d61049aeee2ff12037101",
+      "classification": "current-cpp-module-registration",
+      "payload": "+\tgimptooltileview.cpp\t\\\n+\tgimptooltileview.h\t\t\\\n",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "current_path_sha256": {
+        "app/display/gimppaintercanvasui.cpp": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed"
+      },
+      "registration_rationale": "Current tool tile/group controller is registered in the shell canvas C++ TU; no duplicate legacy widget TU is added.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.014",
+        "29.008",
+        "29.009"
+      ],
+      "not_accepted_by_this_task": [
+        "08.014",
+        "29.008",
+        "29.009"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    },
+    {
+      "work_id": "legacy-e5a563a61e459d9f123d",
+      "source_id": "01.002/001521",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-415 -> 432,8",
+      "source_sha256": "11031674dfd628315fe52689ffb3447a10ff511dd6d1ed9fc422d95afd644cdd",
+      "classification": "current-cpp-module-registration",
+      "payload": "-\tgtkhwrapbox.h\n+\tgtkhwrapbox.h\t\t\t\\\n+\tgimpmypaintbrusheditor.cpp\t\\\n+\tgimpmypaintbrusheditor.h\t\\\n+\tpopupper.cpp\t\t\t\\\n+\tpopupper.h\t\t\t\\\n+\tgimpeditor-private.h\t\t\\\n+\tgimpeditor-cxx.cpp\t\t\\\n+\tgimpeditor-cxx.h\n",
+      "current_paths": [
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppainterlayertiles.cpp"
+      ],
+      "current_path_sha256": {
+        "app/widgets/gimppaintermybrusheditor.cpp": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0",
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e"
+      },
+      "registration_rationale": "Shared editor, native GTK3 popovers and compact controls are registered replacements; old helper/type contracts remain in their separate WBS/source obligations.",
+      "criterion": "C-main executable resolves current C++ object/runtime dependencies; archive retention and all feature behavior remain separate gates",
+      "source_review_remaining_tasks": [
+        "08.015",
+        "08.017",
+        "24.001",
+        "29.019",
+        "31.013"
+      ],
+      "not_accepted_by_this_task": [
+        "08.015",
+        "08.017",
+        "24.001",
+        "29.019",
+        "31.013"
+      ],
+      "result": "PASS: counterpart compile/object/archive or generator ownership is verified in current final C++ links; runtime is present"
+    }
+  ],
+  "counterpart_membership_sha256": "012d5c8619c23e062b78821305c1e1e285870b7345ea680ffa815f867f63b23d",
+  "native_summary_sha256": "9dba5823e07c99690c56f3a556f0aa8b8d6dff205e59688bfac9cdc0d5c38d35"
+}

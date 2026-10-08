@@ -268,7 +268,7 @@
 | 04.005 | [x] | C++ 専用ヘッダーの公開範囲を制限する | 04.004 | C の translation unit に template・STL が漏れない |
 | 04.006 | [x] | 相互呼出しの最小試験を作る | 04.005 | C→C++→C の値とエラーが往復する |
 | 04.007 | [x] | GObject callback から C++ への最小試験を作る | 04.006 | constructor・callback・destructor の順が確認できる |
-| 04.008 | [ ] | 最終リンクの C++ runtime を接続する | 04.007 | C 主体 executable から C++ object を解決できる |
+| 04.008 | [x] | 最終リンクの C++ runtime を接続する | 04.007 | C 主体 executable から C++ object を解決できる |
 | 04.009 | [ ] | 静的 library のリンク順を検証する | 04.008 | 未参照登録 object の脱落と循環依存を検出 |
 | 04.009/json-dependency | [ ] | JSON reader/writer の直接リンク依存を登録する | 04.009, 01.011 | JSON-GLib のinclude/linkをcore・presetsへ明示し、他依存を外しても未解決symbolが出ない |
 | 04.010 | [ ] | 例外方針を compiler 設定に反映する | 04.009 | C++ 内部での扱いと C 境界での捕捉が一致 |
