@@ -219,3 +219,42 @@ to protect tracked generated C sources. Their outputs matched, all compile/link
 recipes stayed unchanged, and 9,915 tracked source hashes matched before/after.
 The immutable earlier source-ledger correction reports remain historical
 checkpoints; current mutable work status is validated by the granularity tool.
+
+## Static archive order and retained roots (original 04.009)
+
+The [native archive check](../tests/archive-order/native.json) replays all four
+actual default/HTTP GUI/console links into separate outputs and obtains
+byte-identical executables. GNU rescan groups resolve their cyclic static
+archive dependencies. Seventy applicable explicit-root records retain 122
+required symbol observations, with compiled consumer references and actual
+archive-member extraction reasons. Lazy GTypes are not required to register
+at startup. The maintained roots cover current implemented paths; future
+feature registrations must extend their own root contracts.
+
+Twelve controlled comparisons expose both failure modes: removing grouping
+breaks the two real console links on app-provided symbols, and restoring only
+grouping resolves them. An unrooted real Clone type member drops even in a
+group and returns with an explicit root. Separate small fixtures prove
+constructor-only registration dropout and A/B cycle ordering. Five checker
+self-tests verify failure detection. No GIMP/GUI/server/profile is launched.
+
+The [27 source-duty mappings](../inventory/archive-order-scope.json) bind the
+42 current counterpart paths to native extraction or configuration evidence.
+Preset application has only GUI consumers, so its member is absent from both
+console maps and present in both GUI maps; this reviewed omission is recorded.
+HTTP sources are excluded when disabled. The two JSON configure hunks also
+have [default](../tests/json-link/default.json) and
+[HTTP](../tests/json-link/http.json) direct-dependency evidence: eight positive
+links, eight failures without the JSON library, two failures without its
+headers, and four real Resource reader/writer smoke runs. Isolated Resource
+links omit GEGL/Soup/GTK; complete app links retain required GEGL APIs and still
+fail if only the direct JSON library is removed. Full old-file parity remains
+with the feature tests. The existing JSON child is not checked by this update.
+
+No production link defect required a code change. Only original 04.009 and its
+27 source execution records close. The default checker validates the frozen
+historical checkpoint and recorded translation-unit/configuration identities;
+it does not bind all headers or discover future source-list additions. Such
+changes require fresh builds and link evidence. The executed checker is
+preserved separately from a documented wording-only clarification. Platform,
+feature-runtime and earlier historical-source-drift gates remain separate.
