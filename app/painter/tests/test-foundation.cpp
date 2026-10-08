@@ -231,6 +231,40 @@ gboolean painter_test_cpp_roundtrip (int value, int *result, GError **error)
   });
 }
 
+gboolean painter_test_cpp_exception (PainterTestExceptionKind kind,
+                                     gboolean use_void_boundary,
+                                     int *destroyed, GError **error)
+{
+  struct Cleanup
+  {
+    int& destroyed;
+    ~Cleanup () noexcept { ++destroyed; }
+  };
+  *destroyed = 0;
+  auto fail = [&] () -> gboolean {
+    Cleanup cleanup { *destroyed };
+    switch (kind)
+      {
+      case PAINTER_TEST_EXCEPTION_TYPED:
+        throw Error (GIMP_PAINTER_ERROR_CLOSED, "injected typed failure");
+      case PAINTER_TEST_EXCEPTION_STANDARD:
+        throw std::runtime_error ("injected standard failure");
+      case PAINTER_TEST_EXCEPTION_ALLOCATION:
+        throw std::bad_alloc ();
+      case PAINTER_TEST_EXCEPTION_UNKNOWN:
+        throw 23;
+      }
+    g_assert_not_reached ();
+  };
+  if (use_void_boundary)
+    {
+      gboolean result = FALSE;
+      boundary_void (error, [&] { result = fail (); });
+      return result;
+    }
+  return boundary<gboolean> (error, FALSE, fail);
+}
+
 void painter_test_register ()
 {
   painter_test_register_resources ();

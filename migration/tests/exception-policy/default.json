@@ -1,0 +1,2623 @@
+{
+  "task": "original 04.010 compiler policy",
+  "recorded_at_utc": "2026-10-08T11:58:53Z",
+  "status": "PASS",
+  "compiler": {
+    "id": "gcc",
+    "exelist": [
+      "c++"
+    ],
+    "linker_exelist": [
+      "c++"
+    ],
+    "file_suffixes": [
+      "cpp",
+      "cppm",
+      "cc",
+      "cp",
+      "cxx",
+      "c++",
+      "hh",
+      "hp",
+      "hpp",
+      "ipp",
+      "hxx",
+      "h++",
+      "ino",
+      "ixx",
+      "CPP",
+      "C",
+      "HPP",
+      "H"
+    ],
+    "default_suffix": "cpp",
+    "version": "14.2.0",
+    "full_version": "c++ (Debian 14.2.0-19) 14.2.0",
+    "linker_id": "ld.bfd"
+  },
+  "inputs": {
+    "/workspace/shared/gimp-cpp-boundary-04005/build-default/compile_commands.json": "bac8a0c4dee9d7a221b4fed207faecabdbc4c72238601ba038d2ff9a540cef9b",
+    "/workspace/shared/gimp-cpp-boundary-04005/build-default/meson-info/intro-targets.json": "f8c7705cdb045396caf20ada53ac882cbe345da0032c6bf05d3f05670e6bd614",
+    "/workspace/shared/gimp-cpp-boundary-04005/build-default/meson-info/intro-compilers.json": "8d1bc21329896f0b985a35791f7a19510beb5f0fbb7e9c71847aa1bbc5d8e827"
+  },
+  "probe_sha256": "15a98ae0f34cc0f0d21c8e2030d7c7e2847007670681be49223ac544c4475283",
+  "units": [
+    {
+      "source": "app/painter/gimp-painter-error.cpp",
+      "source_sha256": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/gimp-painter-error.cpp.o",
+      "command_sha256": "3fc174e764363835436f4c78a66c15417a9951ac420ca9f249ea3cab2b4a8bc5",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/gimp-painter-binding.cpp",
+      "source_sha256": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+      "command_sha256": "4f3f344c709e27c6ec4b654cc90086992773ef7e1dcbfb9a5e92c529a22df469",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/binding-store.cpp",
+      "source_sha256": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/binding-store.cpp.o",
+      "command_sha256": "f077afc52025c18d856871af3b08f11f57f9d428d92a42555e8541b99ad66337",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-scheduler.cpp",
+      "source_sha256": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-scheduler.cpp.o",
+      "command_sha256": "50c8aa6415382d58d1ce4f3e63be5d9dbfb4970ccd9f975ea620a551390efe5f",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-context.cpp",
+      "source_sha256": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-context.cpp.o",
+      "command_sha256": "65359cb05d2b65e93c969d71956406997d46ab2b333be3a728a603dfb75e9d83",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-wire.cpp",
+      "source_sha256": "24ce90825a3480c69e90d04f9048d020638004676389681d5f7d196eb279ccd6",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-wire.cpp.o",
+      "command_sha256": "fc037f851e806ddd683605bb1425899b449048a0323301f8f499861128b00c98",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-process.cpp",
+      "source_sha256": "5d5bc162d3c26d9496cc5f52ceff926e6e7e57fdaae225fef02a8705edd6d42c",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-process.cpp.o",
+      "command_sha256": "459d2014e7b99447d4c00c12aeb4304d1a97961a610ea8d939bc2394595c095f",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-lifetime.cpp",
+      "source_sha256": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-lifetime.cpp.o",
+      "command_sha256": "7967dbd4110e1837b65ae3f8a63a0562a3643de5e3beb4482c26afd73fc355c3",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-raster.cpp",
+      "source_sha256": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-raster.cpp.o",
+      "command_sha256": "17710941912e3d60a21dbb633940d0fe5eadefd5b0033f575ca5da79accf203f",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-spool.cpp",
+      "source_sha256": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-spool.cpp.o",
+      "command_sha256": "39fd79691586f0de5ac2ed2045c62d2520cf4b80989cf774d8bd039809462e6f",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-raster-kernels.cpp",
+      "source_sha256": "70b6551e5bb4b800b3fc4145f9f07f25fe7400e52ca9543bd9bddf343bba6b06",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-raster-kernels.cpp.o",
+      "command_sha256": "217ac0a274c01ab71994e4e9fb32d9b03cab65b033b1baf2012a53c764db0026",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-edge.cpp",
+      "source_sha256": "ff9d6c77932043585c8e914ee98cbfb2278eabbc8928d3ea821e6a7c955b7d67",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-edge.cpp.o",
+      "command_sha256": "86a144f684f495ed39b709de8aa26c722e421f453d859c284826e553efed65f5",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-gauss.cpp",
+      "source_sha256": "f296f5c50198ede8833ad01c50006581d808a1c4db69858e45c36df8f12bf5e5",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-gauss.cpp.o",
+      "command_sha256": "023a37e42a14150fccbdff52dde8001f6ac7ea6d7468c423fcdbc28c3323f839",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter/filter-native-kernels.cpp",
+      "source_sha256": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+      "target": "apppainter",
+      "output": "app/painter/libapppainter.a.p/filter-native-kernels.cpp.o",
+      "command_sha256": "0d7730fe3aea00fa69cf13c4d616b4e897d9d998ffcb1e154626e08e013b00f2",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/painter-mypaint/resource.cpp",
+      "source_sha256": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+      "target": "painter-mypaint",
+      "output": "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+      "command_sha256": "87e7a912e8af834ce9232c245582fcf96795891192923129d39b6b1ff0c4bc02",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/painter-mypaint/engine.cpp",
+      "source_sha256": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a",
+      "target": "painter-mypaint",
+      "output": "app/paint/painter-mypaint/libpainter-mypaint.a.p/engine.cpp.o",
+      "command_sha256": "518f1acbd17ac1c328f1b7417b086629eb4d6465375b55b30f2179fb7f375bfb",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimp-parallel.cc",
+      "source_sha256": "55cee148e680709f0b6133e9e0d05231b8cfd1d475d72e48a2da9e56ba7d0f37",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimp-parallel.cc.o",
+      "command_sha256": "643be5328fc60f8c9f6550b048704ac83db75f84ef523503ffb66071ed080b95",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": false,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimp-painter-provenance.cpp",
+      "source_sha256": "e7f6cb4e5ddd346c55adde139457f4b822e2dd9006ec7262bc511f21e9dbb61e",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimp-painter-provenance.cpp.o",
+      "command_sha256": "62e3aecb634d531abf1afc5db5617229fb24ecf177504ab9fa77c7260efdf40d",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimppainterprofile.cpp",
+      "source_sha256": "7dcc7e77cb211d7c371baeae32677923f0d0429c6b069fa6ed0207848553907b",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimppainterprofile.cpp.o",
+      "command_sha256": "bf3b0a70190c12f5e43067553e202386d81fed1a30175b7b4f81f011fa5408b4",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpclonelayer.cpp",
+      "source_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+      "command_sha256": "490c1a93092e164ba6c33ef4dd9818b85b502d0edcf03a681fb4c0429b9a537d",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpfilterlayer.cpp",
+      "source_sha256": "abcda53a71ea70000569649fec6c72b802bae828d1748e4c7810a665db3b6b9a",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+      "command_sha256": "9d72203a808a71b4db51c0dbb1d4abb1e6473b78a13c6d69b6ef9d2233349e26",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpfiltercontext.cpp",
+      "source_sha256": "3f5d46a95862607d04170da30e05c72a1d6650c5226e8dfb48277541934cefc9",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpfiltercontext.cpp.o",
+      "command_sha256": "a4ce5bab5e5e2ffd963253aac28aede8947b5dbceaf08ce6f2bfa577aaa560f9",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpfilterprocedure.cpp",
+      "source_sha256": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+      "command_sha256": "d3e8629ee239b0ae2c70e939ed05c8023ea1d5f8f90506c7398cf320be5139da",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpfilterprocedure-arguments.cpp",
+      "source_sha256": "cfa0028427f1ae19701f42d107a26883e4c143a25a15dbb4211d53fab0f9a055",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+      "command_sha256": "e80c2eed439e27720951d274f757f1874fb1f7df46bb3a0a8c8534f450977395",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpfilterparametereditor.cpp",
+      "source_sha256": "fcf150ea7c938ab792770f3307d769e5f84dddcfba20b85030b6e7ca4c9e130f",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+      "command_sha256": "cbda2e813c544e92d28e9c0d50e37517da054beaec3cea780b99f1608acde14d",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpfilterpaths.cpp",
+      "source_sha256": "91c45a032f7b6caace7968f9e94494aa310d4097e9df3e41a9360e1b8975d8e9",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpfilterpaths.cpp.o",
+      "command_sha256": "68a95a6619285448877b9f82929f655d1f0f73b617ca5c223e4f56deec3cc761",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpfilterexit.cpp",
+      "source_sha256": "173415c8a7891b5627ec31797edb2000923fe2da2cd025995666dff5ed156914",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpfilterexit.cpp.o",
+      "command_sha256": "3c9335da02da2e43da8c7fbf24249becbb9f848c192ef2e3ea37d721dde10af9",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpbrush-mipmap.cc",
+      "source_sha256": "b36ccf32b680ba8c34bd214f5a9f57ffe3ce7b76af0418208dae494f69795ede",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpbrush-mipmap.cc.o",
+      "command_sha256": "58110c582c9059f1ce7d1bf6fa5217ba2093b26f72144a7f96153f32ab6d0c2f",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": false,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpbrush-transform.cc",
+      "source_sha256": "252a8f67ecc9a4bbcee17348285dcbb7144a0f5df0db572edc11130ced83445c",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpbrush-transform.cc.o",
+      "command_sha256": "52d8d0c9de932bf7dc41205e2fddd2df3531bad26fdec56f5712c58abc840c8b",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": false,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpperspectiveguide.cpp",
+      "source_sha256": "edcfce4efc37d41a66340c531be6fd558bc931fad927ad65a8dd0fc27272d1b4",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+      "command_sha256": "8ee6b5eea432e2d582e5dab990cc641fd42e1b66288a9aa7d592f4d477e2b717",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimpperspectiveguideundo.cpp",
+      "source_sha256": "61e9feb6bcd75673dde49fbb6074d29c09120d69436008cd9af3169ca4787ac7",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimpperspectiveguideundo.cpp.o",
+      "command_sha256": "1346150d1e6b12f77923345efb59e9441220fc8ae5a8f3ea251255b6ec832dbf",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimppaintermybrush.cpp",
+      "source_sha256": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+      "command_sha256": "240f4b9d62e4cce213f0e93dc5f06631933bd45323bbfe51ecd0504588b62a54",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimppickable-contiguous-region.cc",
+      "source_sha256": "93335aaf277f610cdbff862b725d350b0d0fe646ee8cd6c2fce4bfc188e8c53f",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimppickable-contiguous-region.cc.o",
+      "command_sha256": "76ad09e02dcb0764b44a2dcae3d3e4ab3bbc6eccbc2c46a16491a5fd411c2ce4",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": false,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/core/gimplayerpreset-apply.cpp",
+      "source_sha256": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+      "target": "appcore",
+      "output": "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+      "command_sha256": "b3cf55870c9594f1ed21e63839c078b1708dba9cdc4800d2b3a74973c1490273",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/dialogs/file-save-deferred.cpp",
+      "source_sha256": "076ab5e3edbd884bf69fd707264e7c11b42bd65e90095d65401f159600232c0d",
+      "target": "appdialogs",
+      "output": "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+      "command_sha256": "c239a41ad1999fa5f0157f8467a3b2a105b190cc59d53c71d56bf9ae830b5e8d",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/dialogs/painter-layer-dialog.cpp",
+      "source_sha256": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+      "target": "appdialogs",
+      "output": "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+      "command_sha256": "51600379da6753c73f0e9a8067c5e8c7926e9248ec12b08b8285cf3a06bbd81d",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/display/gimpcanvasperspectiveguide.cpp",
+      "source_sha256": "8ae697467c3cfff54b41c03828419000907cfc5b2ee92902246711523663f858",
+      "target": "appdisplay",
+      "output": "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+      "command_sha256": "c81d7577b1ab93be668009ec306689bbe403495d2efed78c3997faa46e2fdce9",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/display/gimppaintercanvasui.cpp",
+      "source_sha256": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed",
+      "target": "appdisplay",
+      "output": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+      "command_sha256": "535949e6850171d9e9852ca25ac6e9574278b4840363e89b75a249aa04369bd2",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/gegl/gimp-gegl-loops.cc",
+      "source_sha256": "40c7705400b9f77ad8c9079700e1bc68e6802cb47b96898044e35b51b8a34876",
+      "target": "appgegl",
+      "output": "app/gegl/libappgegl.a.p/gimp-gegl-loops.cc.o",
+      "command_sha256": "fa83cb277c26f42406eab9633b84c64a3499666c354060fb510d8c674176bd02",
+      "policy_flags": [],
+      "rtti_flags": [],
+      "requires_explicit_policy": false,
+      "explicitly_enabled": false,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/gegl/gimp-gegl-mask-combine.cc",
+      "source_sha256": "3e3477d29f5c1f1b13f7bc3f9ab7ff25e65965e76208359d12126cfd5d180a35",
+      "target": "appgegl",
+      "output": "app/gegl/libappgegl.a.p/gimp-gegl-mask-combine.cc.o",
+      "command_sha256": "72dd3f9c45a7fb6268c3fd49ded1d066ea48abea9dec40fa8f7cb8af3315ab59",
+      "policy_flags": [],
+      "rtti_flags": [],
+      "requires_explicit_policy": false,
+      "explicitly_enabled": false,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/operations/gimpoperationmaskcomponents.cc",
+      "source_sha256": "efbb79ed234be058a2058ef84a2b52c1867741422e37e860703cd7bbefc8693f",
+      "target": "appoperations",
+      "output": "app/operations/libappoperations.a.p/gimpoperationmaskcomponents.cc.o",
+      "command_sha256": "872c61999a939abb4f4edd069a103edef99a225857ffeed1b35ef9185aed3da2",
+      "policy_flags": [],
+      "rtti_flags": [],
+      "requires_explicit_policy": false,
+      "explicitly_enabled": false,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/painter-bounded-fill/search.cpp",
+      "source_sha256": "9aefd9e47b15b8dd9eecc531df1be0bc8ac6c2c511bd6a488256b15d47ece254",
+      "target": "painter-bounded-fill",
+      "output": "app/paint/painter-bounded-fill/libpainter-bounded-fill.a.p/search.cpp.o",
+      "command_sha256": "16bd03fb8e0b4a9378bc4a6110825e40d3648e340946b30ef4b906e99b31cfc8",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+      "source_sha256": "e7ac2ab7781f9a278c1b4296424d353ef30758a79fa2ddddc5ae70fa342b3c2c",
+      "target": "painter-mypaint-surface",
+      "output": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+      "command_sha256": "f0ea79714d1ecc1a881ceb5dc6babcf7c8dccfe20a95e9f6d4b4244c38c9abcb",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/gimp-resources.cpp",
+      "source_sha256": "5ff2f3454005a1673c4bc3079884ae19972e09f6117512641258b00310b170da",
+      "target": "painter-mypaint-surface",
+      "output": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+      "command_sha256": "7a2e4c7435b4a99919aacd5eb61f6ae9bee977edcd2bbf8af9309e39929e4758",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/paint-core.cpp",
+      "source_sha256": "f2acf89889fbb8c7ae57f700f1f455833c830ba38329c4f829a9bf4d9f00669a",
+      "target": "painter-mypaint-surface",
+      "output": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+      "command_sha256": "3f598572f2a0232fbbcb9d4efa5615099f841a531778c5406b20b2ce197cfe33",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/gimppainterpaper.cpp",
+      "source_sha256": "e837d31afa91d36eb239650045b77a87a5700f422286beda2d694de07064ec6f",
+      "target": "painter-mypaint-surface",
+      "output": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/.._gimppainterpaper.cpp.o",
+      "command_sha256": "8034a9cbeec5cb340221e4f585d97d81860605fe85ab1074197b3e26975c110d",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "source_sha256": "2126a82d73b1abb30ec7031449ec615a358b735584dd824b0c8c3840069ea813",
+      "target": "painter-mypaint-surface",
+      "output": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+      "command_sha256": "f0778a6279ce38e82de042bf14ea7a76b24d7b47ac81f9bcaaf51d563e0355f8",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "source_sha256": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431",
+      "target": "painter-mypaint-surface",
+      "output": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+      "command_sha256": "e9dfecee3a9944d68bd9283a68d66db85fb3d15460866358f03b9a90a711f5bd",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp",
+      "source_sha256": "a2c86b97e7b6ba5e253c8f6b0c79be3100d541a125b68ffe893a6e70e80568d2",
+      "target": "painter-mypaint-surface",
+      "output": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-mask-transform.cpp.o",
+      "command_sha256": "0d4b3a4c11ecdc896076241557307a70c641e32bfe6d2902497436dc18540a2f",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp",
+      "source_sha256": "7c5da8fc893ae23073ceaae7be68d96e5eaafe2f1fa85d4991617ecafdc1cef2",
+      "target": "painter-mypaint-surface",
+      "output": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-generated-mask.cpp.o",
+      "command_sha256": "80864dfeebc8998a36d4b66c05031478e76c1b31b847ff40b5718ddc8d918ad5",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/gimpbrushcore-loops.cc",
+      "source_sha256": "57c1cbbf209c496d051fd5c8f095d887077332d7b988fc5022c436fe006cb0f5",
+      "target": "apppaint",
+      "output": "app/paint/libapppaint.a.p/gimpbrushcore-loops.cc.o",
+      "command_sha256": "15f9fb37d930710818be7460e43ca55599573376cddd5c674f6d05b3f31e9b7d",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": false,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/gimpfillbrush.cpp",
+      "source_sha256": "f91685ff3853e89313aa038805630117c8dbfbe741b4b3af463be1c04dbf2a0e",
+      "target": "apppaint",
+      "output": "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+      "command_sha256": "ed2ce58cdc8dc9d9598b207a7881fe18c9be0e4d1f14fbf07592bbbbd128d959",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/gimppainterpaintgate.cpp",
+      "source_sha256": "75adea53979cc68b940db96304bc5ee3a1c77c569a09f781b0a26eb13eb2f41f",
+      "target": "apppaint",
+      "output": "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+      "command_sha256": "39fbcd32ed8ef2d076f6160c9a347758ef06d3869a306d12b2cb00dcd4db3150",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/gimppainterbrushgeometry.cpp",
+      "source_sha256": "d230eea2c1ffed24e6a764d115f394be12de379e9941ea042888647fbf3f755d",
+      "target": "apppaint",
+      "output": "app/paint/libapppaint.a.p/gimppainterbrushgeometry.cpp.o",
+      "command_sha256": "2136378cb3e936a40aba39f9f3011ab1831c66fdc75f5c29514fbdccfbb76454",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/gimppaintcore-loops.cc",
+      "source_sha256": "d4be1c9ff6a1bdc4f2818e9f13933403a0597a657c2efe33240c3a40d0894f40",
+      "target": "apppaint",
+      "output": "app/paint/libapppaint.a.p/gimppaintcore-loops.cc.o",
+      "command_sha256": "e08e375e7c2a0e3a147cf6f3e422c611b7526a89ca14637c7066ef34eee9d886",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": false,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/gimppaintersmudge.cpp",
+      "source_sha256": "317d9ef1fc7aec4af57ab037fbadf075f0cb66249c379dcbfd4c5d808c27e679",
+      "target": "apppaint",
+      "output": "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+      "command_sha256": "6b7283bdf64f44d35d0afad1cd911f6ce56bf118dd0af5a35670c646fd8faf87",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/paint/gimppainterpaper-paste.cpp",
+      "source_sha256": "5c245c1798d2b7a3da8b4c9c1d565005d0325cf71655e22423f495fee6cbe84c",
+      "target": "apppaint",
+      "output": "app/paint/libapppaint.a.p/gimppainterpaper-paste.cpp.o",
+      "command_sha256": "f1a92e14b0657ac368e251c417c1e9189c01b141ec5f3a50f323cd7942cd76b9",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/tools/gimpfillbrushtool.cpp",
+      "source_sha256": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+      "target": "apptools",
+      "output": "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+      "command_sha256": "06c0554f84789c8024e602c2e725d0e2b3c70607d3a11cf4e206c5c667cfcd46",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/tools/gimppaintersmudgetool.cpp",
+      "source_sha256": "c11e2e2413baaebd86f03a2a9e6f9726c2b965162a442e0714236c39354163d1",
+      "target": "apptools",
+      "output": "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+      "command_sha256": "aeb9ba9a28d7c7e291e45d8047be6f99bbdddba6b7e5cc846b9faff4e4c2f182",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/tools/gimppaintermybrushtool.cpp",
+      "source_sha256": "2b6a54cabe22fbb3b8cd113c8a3231955407ca67519822c0eb673c6f03575c90",
+      "target": "apptools",
+      "output": "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+      "command_sha256": "d38a56f35310fe120cf97d23f77714a6b27703ff378b392d58e2a0ed4f7b7c0c",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/tools/gimpperspectiveguidetool.cpp",
+      "source_sha256": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b",
+      "target": "apptools",
+      "output": "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+      "command_sha256": "8fc934b601dd4b1813324fde8cbf616464d56afb85c8acf3c96bd8f98c0dfd57",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/widgets/gimppaintermybrusheditor.cpp",
+      "source_sha256": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+      "target": "appwidgets",
+      "output": "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+      "command_sha256": "d8226262f52f86a1abb7717a355277c1bc7a928cc9b7626d936407ebe0303578",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/widgets/gimppainterlayertiles.cpp",
+      "source_sha256": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+      "target": "appwidgets",
+      "output": "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+      "command_sha256": "13648fee27fbb82a7f869a3c0f7c8e19c87b73d33d2222075dc0d085e1ac4a61",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/widgets/gimppaintercompactoptions.cpp",
+      "source_sha256": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0",
+      "target": "appwidgets",
+      "output": "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+      "command_sha256": "a0d4bdcb3afecf7f51497373271d9d896baf03eed3f00e41f110abfd4f377771",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/xcf/painter-xcf-compat.cpp",
+      "source_sha256": "169b0dc7f774188b263ed55997817c3060291395f18f635a5e2f0cd8131043df",
+      "target": "appxcf",
+      "output": "app/xcf/libappxcf.a.p/painter-xcf-compat.cpp.o",
+      "command_sha256": "fd8afb35b25df61ff85233321c6e2d479c417ea655a4b723aa91d6cd5129fabc",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/xcf/painter-xcf-load.cpp",
+      "source_sha256": "d08022d60ccdb29a8119057ed3e5f375101be080b782a36b26c3b41e1132efb2",
+      "target": "appxcf",
+      "output": "app/xcf/libappxcf.a.p/painter-xcf-load.cpp.o",
+      "command_sha256": "82bbe3b91447bb13c6c9ef6d5f62a75dfd0168c6577c092b211bd03079f531f7",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/xcf/painter-xcf-preserve.cpp",
+      "source_sha256": "7929ef912ca7e428614bd03f02eb266f5fb426763503ceb4ca182c9fa674bc88",
+      "target": "appxcf",
+      "output": "app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o",
+      "command_sha256": "89c5be82ca495bde0d747ae61d142f9e8a06d4bd968938ecbf19fd8025a67d34",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/xcf/painter-xcf-arguments.cpp",
+      "source_sha256": "35927b8787496ba21ae7a5468fcb780fed09a097108eee4f4ca460e5b89f7562",
+      "target": "appxcf",
+      "output": "app/xcf/libappxcf.a.p/painter-xcf-arguments.cpp.o",
+      "command_sha256": "d679f5119f91b7316dc6cb80c965bbc1ba1f6065359c0f39c98b3007d71bcb5c",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/xcf/painter-xcf-storage.cpp",
+      "source_sha256": "b7459b3ef7dc0cfabfd78d20ad51490f19a1cd8b886b5b8f870b69f856603f0e",
+      "target": "appxcf",
+      "output": "app/xcf/libappxcf.a.p/painter-xcf-storage.cpp.o",
+      "command_sha256": "4811595def6237d44b7c34289ad8982f80a2640039462cb5eb59c7570330f0ea",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/xcf/painter-xcf-multipart.cpp",
+      "source_sha256": "e1b4af0c6ef55e4cb00138b9749848601ea6a96870c93467508314b7b8a191ed",
+      "target": "appxcf",
+      "output": "app/xcf/libappxcf.a.p/painter-xcf-multipart.cpp.o",
+      "command_sha256": "a3f719c48799485b564415dcc9b4ebfba1ed1d3c023b5ce92da2352f481e9968",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/xcf/painter-xcf-transport.cpp",
+      "source_sha256": "e5939dfa67e9e5a99a4eb03fa3d031837adce3c7e7f77c3888a1bb7b57f42cd4",
+      "target": "appxcf",
+      "output": "app/xcf/libappxcf.a.p/painter-xcf-transport.cpp.o",
+      "command_sha256": "e892b677e1b8fc30d1a89e27df40fafa1d4fb6db269c271cd75d4d539fb11344",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/config/gimppainterfilterconfig.cpp",
+      "source_sha256": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+      "target": "appconfig",
+      "output": "app/config/libappconfig.a.p/gimppainterfilterconfig.cpp.o",
+      "command_sha256": "20997de197be2c5ee1eea7e11d44705b87b78dd3e45947a5a194324e6be9d8bf",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    },
+    {
+      "source": "app/painter-filter-worker.cpp",
+      "source_sha256": "4a841382f471e71a59ce26865a62919213450ba03b62552096d7a10a589d1838",
+      "target": "gimp-painter-filter-worker",
+      "output": "app/gimp-painter-filter-worker.p/painter-filter-worker.cpp.o",
+      "command_sha256": "014be821af34eb9041c548e04c4f00227bfe83bd218e1cf6aad61cc1b28af28f",
+      "policy_flags": [
+        "-fexceptions"
+      ],
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "requires_explicit_policy": true,
+      "explicitly_enabled": true,
+      "native_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "native_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_compile": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "earlier_disable_unwind": {
+        "returncode": 0,
+        "diagnostic": ""
+      },
+      "final_disable_compile": {
+        "returncode": 1,
+        "diagnostic": "/tmp/painter-exceptions-x66h245j/probe.cpp:2:2: error: #error Painter_requires_CXX_exceptions\n    2 | #error Painter_requires_CXX_exceptions\n      |  ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018void inner(int*)\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:8:59: error: exception handling disabled, use \u2018-fexceptions\u2019 to enable\n    8 | static void inner(int *count) { Guard guard{count}; throw 47; }\n      |                                                           ^~\n/tmp/painter-exceptions-x66h245j/probe.cpp: In function \u2018int main()\u2019:\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:30: error: \u2018value\u2019 was not declared in this scope\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |                              ^~~~~\n/tmp/painter-exceptions-x66h245j/probe.cpp:12:3: error: \u2018...\u2019 handler must be the last handler for its try block [-fpermissive]\n   12 |   catch (int value) { return value == 47 && count == 1 ? 0 : 2; }\n      |   ^~~~~\n"
+      }
+    }
+  ],
+  "excluded_targets": {
+    "filter-quit-fixture": 1,
+    "gimp-clone-layer": 1,
+    "gimp-fill-brush": 1,
+    "gimp-filter-layer": 3,
+    "gimp-painter-batch": 1,
+    "gimp-painter-gray": 1,
+    "gimp-painter-gray-extension": 1,
+    "gimp-painter-hover": 1,
+    "gimp-painter-options": 1,
+    "gimp-painter-preview": 1,
+    "gimp-painter-session": 1,
+    "gimp-painter-smudge": 1,
+    "gimp-painter-surface": 1,
+    "painter-bounded-fill-test": 1,
+    "painter-bounded-fill-trace": 1,
+    "painter-brush-geometry": 1,
+    "painter-brush-geometry-trace": 1,
+    "painter-brush-interpolation-trace": 1,
+    "painter-brush-metadata-cpp": 1,
+    "painter-fair-dispatcher": 1,
+    "painter-fill-brush-trace": 1,
+    "painter-fill-brush-ui": 1,
+    "painter-filter-context": 1,
+    "painter-filter-context-native": 1,
+    "painter-filter-convolution": 1,
+    "painter-filter-edge": 1,
+    "painter-filter-gauss": 1,
+    "painter-filter-gauss-alias": 1,
+    "painter-filter-gray": 1,
+    "painter-filter-import-completion": 2,
+    "painter-filter-kernel-progress": 1,
+    "painter-filter-native-kernels": 1,
+    "painter-filter-owner-gates": 1,
+    "painter-filter-procedure": 1,
+    "painter-filter-process": 1,
+    "painter-filter-raster": 1,
+    "painter-filter-raster-kernels": 1,
+    "painter-filter-scheduler": 1,
+    "painter-filter-spool": 1,
+    "painter-filter-wire": 1,
+    "painter-foundation": 5,
+    "painter-gray-alpha-equations": 1,
+    "painter-layer-ui": 2,
+    "painter-mypaint-editor": 1,
+    "painter-mypaint-engine-trace": 1,
+    "painter-mypaint-generated-trace": 1,
+    "painter-mypaint-gray-session-trace": 1,
+    "painter-mypaint-native-precision": 1,
+    "painter-mypaint-pipe-trace": 1,
+    "painter-mypaint-precision": 1,
+    "painter-mypaint-resource": 1,
+    "painter-mypaint-resource-trace": 1,
+    "painter-mypaint-rgb-session-trace": 1,
+    "painter-mypaint-session-trace": 1,
+    "painter-mypaint-surface-trace": 1,
+    "painter-mypaint-tool": 1,
+    "painter-paper": 1,
+    "painter-paper-trace": 1,
+    "painter-paper-ui": 1,
+    "painter-profile-native": 1,
+    "painter-profile-parser": 2,
+    "painter-save-continuation": 1,
+    "painter-smudge-pixels-trace": 1,
+    "painter-smudge-trace": 1,
+    "painter-smudge-ui": 1,
+    "painter-work-admission": 1,
+    "painter-xcf-compat-test": 2,
+    "painter-xcf-roundtrip": 1
+  },
+  "limitations": [
+    "Native Linux GNU-style compiler replay only; Windows, macOS and cross compilers are unverified.",
+    "Standalone programs prove flag handling and C++ unwinding; C ABI boundary behavior is tested separately.",
+    "No GIMP executable, GUI, network listener, user profile or source-writing generator is run.",
+    "Painter policy scope is current app production .cpp units; upstream .cc units are inventoried separately.",
+    "Prepending -fno-exceptions models earlier global flags; it is not a fresh whole-project configure."
+  ],
+  "summary": {
+    "production_cpp_commands": 73,
+    "painter_cpp_commands": 64,
+    "upstream_cc_commands": 9,
+    "native_unwind_passes": 73,
+    "painter_explicit_policy_gaps": [],
+    "native_failures": [],
+    "negative_control_failures": []
+  }
+}

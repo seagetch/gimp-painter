@@ -1,0 +1,73 @@
+TAP version 14
+# random seed: R02S838f118e47d4e8f0dafb8e4a972f4672
+1..39
+# Start of painter tests
+# Start of interop tests
+ok 1 /painter/interop/c-cpp-c-value
+ok 2 /painter/interop/cpp-error-to-c
+ok 3 /painter/interop/cpp-error-without-gerror
+ok 4 /painter/interop/result-boundary-policy
+ok 5 /painter/interop/void-boundary-policy
+# End of interop tests
+# Start of resources tests
+ok 6 /painter/resources/value-assignment
+ok 7 /painter/resources/array-assignment
+ok 8 /painter/resources/mutex-exception
+# End of resources tests
+# Start of signal tests
+ok 9 /painter/signal/lifetime-blocks
+ok 10 /painter/signal/after-order
+ok 11 /painter/signal/reentrant-disconnect
+# End of signal tests
+# Start of source tests
+ok 12 /painter/source/cancel-repeat
+ok 13 /painter/source/self-close
+ok 14 /painter/source/exception
+# End of source tests
+# Start of gobject tests
+# fixture event 1: construct
+# fixture event 2: construct-property
+# fixture event 3: activate
+# fixture event 4: get
+# fixture event 5: set
+# fixture event 6: get
+# fixture event 7: close
+# fixture event 8: get
+# fixture event 9: destroy
+ok 15 /painter/gobject/property-dispose-finalize
+ok 16 /painter/gobject/type-rejection
+# End of gobject tests
+# Start of reentry tests
+ok 17 /painter/reentry/ref-move
+ok 18 /painter/reentry/value-reset-move
+ok 19 /painter/reentry/array-move
+ok 20 /painter/reentry/source-move
+ok 21 /painter/reentry/connection-move
+ok 22 /painter/reentry/receiver-deletion
+ok 23 /painter/reentry/constructor-close
+ok 24 /painter/reentry/constructor-duplicate
+ok 25 /painter/reentry/constructor-owner-loss
+ok 26 /painter/reentry/finalizing-close-read
+# End of reentry tests
+# Start of hierarchy tests
+ok 27 /painter/hierarchy/properties-interface
+ok 28 /painter/hierarchy/interface-exception
+ok 29 /painter/hierarchy/parent-dispose-reentry
+# End of hierarchy tests
+# Start of ref tests
+ok 30 /painter/ref/copy-move-adopt-retain
+ok 31 /painter/ref/floating-sink
+ok 32 /painter/ref/weak
+# End of ref tests
+# Start of store tests
+ok 33 /painter/store/lifecycle
+ok 34 /painter/store/multiple-slots
+ok 35 /painter/store/reentrant-close
+ok 36 /painter/store/construction-failure
+ok 37 /painter/store/thread-rejection
+# End of store tests
+# Start of boundary tests
+ok 38 /painter/boundary/c-close
+ok 39 /painter/boundary/exception
+# End of boundary tests
+# End of painter tests

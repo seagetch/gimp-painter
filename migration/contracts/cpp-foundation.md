@@ -272,3 +272,44 @@ with only JSON-GLib/GIO/GLib and fail when JSON is removed. This establishes
 independence from accidental transitive JSON linkage; removing the full app's
 semantic GEGL APIs is not asserted. No new native run is attributed to this
 acceptance update. Complete persistence fixtures and platform gates remain open.
+
+## Enforced compiler exception policy (original 04.010)
+
+Painter C++ code may throw internally; its C entries use the common result/void
+boundaries to return declared errors or safe fallback values. The build now
+requires a supported exception-enabling switch and a successful exception-macro
+and `try`/`catch` compile probe. GNU-style compilers select `-fexceptions`;
+MSVC-style argument syntax selects `/EHsc`. An unavailable switch or a compiler
+that accepts it without exception support stops configuration. The Meson APIs
+used here are within the declared 0.61 minimum: see the
+[compiler API reference](https://mesonbuild.com/Reference-manual_returned_compiler.html).
+Only native GCC was executed in this acceptance.
+
+`painter_exception_args` is separate from RTTI flags and is applied to core and
+display in addition to the existing Painter targets. Before this change, sixteen
+Painter translation units per configuration relied on GCC defaults and failed
+when an earlier global flag disabled exceptions. Current default/HTTP probes
+cover 73/78 production C++ commands, including 64/69 Painter units; all Painter
+units explicitly enable exceptions and override that earlier disable. A final
+disable still fails. The five configure controls include the old silent-filter
+behavior, rejected switch and accepted-but-disabled compiler cases.
+
+The [native results](../tests/exception-policy/README.md) rebuild both affected
+archives and the common test in both configurations. Each foundation run passes
+39 cases. Two C-compiled cases make sixteen calls through the real result/void
+boundaries: typed Error, standard exception, injected `std::bad_alloc` and a
+non-standard exception, each with and without GError output. They verify safe
+FALSE returns, error identity, one RAII cleanup and C caller continuation. Actual
+C references and C++ definitions have the same unmangled entry symbol.
+
+Every C compile command remains unchanged (1,865 default / 1,867 HTTP). The only
+changed C++ arguments are the exception switch on twenty core/display commands
+per configuration, including four existing upstream `.cc` sources. RTTI flags
+are unchanged. The guarded generators preserve tracked C outputs and all 9,938
+tracked source hashes during the bounded builds.
+
+This completes the compiler/common-boundary criterion, with no canonical
+source-duty rows assigned to 04.010. It does not complete every feature's error
+or class-initialization migration, recover process-aborting allocation failure,
+or prove another platform, sanitizer, or full application relink. Earlier
+source-frozen reports remain evidence for their recorded snapshots.

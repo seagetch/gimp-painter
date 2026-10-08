@@ -1,0 +1,93 @@
+{
+  "task": "04.010",
+  "status": "PASS",
+  "base_commit": "25b46e57717a650b6bf1a8473e9e75ffe397d89a",
+  "verified_at_utc": "2026-10-08T12:03:08Z",
+  "results": [
+    {
+      "configuration": "default",
+      "command": [
+        "/workspace/shared/gimp-cpp-boundary-04005/build-default/app/painter/painter-foundation",
+        "--tap"
+      ],
+      "returncode": 0,
+      "binary_sha256": "1f20310f5da63e552614d43525b7e053e63d434f1b832b8bb6df01c0f3a95bb5",
+      "stdout_sha256": "43adf4b9253861091ec774f38c72e5af74ca5658ce8ef211240a1a31207b172c",
+      "stderr": "",
+      "test_cases": 39,
+      "c_boundary_policy_cases": 2,
+      "injected_boundary_calls": 16,
+      "exception_kinds": [
+        "typed Error",
+        "std::runtime_error",
+        "injected std::bad_alloc",
+        "non-standard int"
+      ],
+      "boundary_variants": [
+        "boundary",
+        "boundary_void"
+      ],
+      "checks": [
+        "FALSE safe return",
+        "GError domain/code",
+        "stable error messages",
+        "single C++ RAII cleanup",
+        "C caller continuation",
+        "NULL GError accepted"
+      ],
+      "c_object_sha256": "e2e5a89bf39ca569be1b7ab368b0c328f581db7d5cd2293c9d3c04f55b9f7580",
+      "cpp_object_sha256": "948c7c4519134053bfde79d323171a5040357d13f9b9883d62f1d3c90c094a17",
+      "unmangled_c_reference_and_cpp_definition": true
+    },
+    {
+      "configuration": "http",
+      "command": [
+        "/workspace/shared/gimp-cpp-boundary-04005/build-http/app/painter/painter-foundation",
+        "--tap"
+      ],
+      "returncode": 0,
+      "binary_sha256": "e903f80ce93a407948c606980efdf0fed9b92b5cbe4a281a023b5a05c13d941c",
+      "stdout_sha256": "6647bea8af29df8fdf8ea0014c9ae214d081b9b9735e664af036d2d56a900691",
+      "stderr": "",
+      "test_cases": 39,
+      "c_boundary_policy_cases": 2,
+      "injected_boundary_calls": 16,
+      "exception_kinds": [
+        "typed Error",
+        "std::runtime_error",
+        "injected std::bad_alloc",
+        "non-standard int"
+      ],
+      "boundary_variants": [
+        "boundary",
+        "boundary_void"
+      ],
+      "checks": [
+        "FALSE safe return",
+        "GError domain/code",
+        "stable error messages",
+        "single C++ RAII cleanup",
+        "C caller continuation",
+        "NULL GError accepted"
+      ],
+      "c_object_sha256": "41e340d6d9408e9bff3f03f32d62057883658cc882eda387b1a5caad530298f7",
+      "cpp_object_sha256": "797cbb2f77fcc4c78db301ae8411207aa57437e878850fcf1457335e604b9427",
+      "unmangled_c_reference_and_cpp_definition": true
+    }
+  ],
+  "source_sha256": {
+    "app/painter/boundary.hpp": "3023d89825dc146aefd9f8451ba986f211f42fd9b677cc147b84ed71e2119ff4",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/tests/test-c-api.c": "609f376f12c4ef43aecd21b00a50cc8567b9f8827aef36d0b48848a89c6e0c7d",
+    "app/painter/tests/test-c-api.h": "e9b3208f78777d72e27b321d53203c770900409718bdd0b7b7159fd86b28ed13",
+    "app/painter/tests/test-foundation.cpp": "9feb9318c9671e74f0b0ac680d3571d88ca985637a8bd9dc7ec2cf72eec691e9",
+    "app/painter/meson.build": "dd94ce18187655b9c94342d93d9d129b2b3db50c74b0a558afb6920f544da106",
+    "app/core/meson.build": "404256f93210e226946b9e9acefa04d2049f38dfe77711971fe6165113626199",
+    "app/display/meson.build": "d13af186b9ad5c038e51b498dbafd14abc204643a429e54d346d92cc70194b11"
+  },
+  "limitations": [
+    "Native Linux GCC only; no sanitizer or cross-platform result inferred.",
+    "std::bad_alloc is injected; aborting GLib allocation failure and exceptions thrown from noexcept destructors are not recoverable through this boundary.",
+    "Common boundary/compiler policy only; whole-feature callback migration and class-initialization failure remain separate WBS gates."
+  ]
+}

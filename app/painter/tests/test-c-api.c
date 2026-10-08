@@ -64,12 +64,54 @@ static void cpp_error_without_gerror (void)
   g_assert_cmpint (callback_value, ==, -1);
 }
 
+static void cpp_exception_policy (gboolean use_void_boundary)
+{
+  const char *messages[] = {
+    "injected typed failure", "injected standard failure", NULL,
+    "Unknown C++ exception"
+  };
+  unsigned int continued = 0;
+
+  for (int kind = PAINTER_TEST_EXCEPTION_TYPED;
+       kind <= PAINTER_TEST_EXCEPTION_UNKNOWN; ++kind)
+    {
+      GError *error = NULL;
+      int destroyed = -1;
+      int code = kind == PAINTER_TEST_EXCEPTION_TYPED ?
+                 GIMP_PAINTER_ERROR_CLOSED : GIMP_PAINTER_ERROR_EXCEPTION;
+
+      g_assert_false (painter_test_cpp_exception (kind, use_void_boundary,
+                                                &destroyed, &error));
+      ++continued;
+      g_assert_cmpint (destroyed, ==, 1);
+      g_assert_error (error, GIMP_PAINTER_ERROR, code);
+      if (messages[kind])
+        g_assert_cmpstr (error->message, ==, messages[kind]);
+      else
+        g_assert_true (error->message && error->message[0]);
+      g_clear_error (&error);
+      g_assert_null (error);
+
+      destroyed = -1;
+      g_assert_false (painter_test_cpp_exception (kind, use_void_boundary,
+                                                &destroyed, NULL));
+      ++continued;
+      g_assert_cmpint (destroyed, ==, 1);
+    }
+  g_assert_cmpuint (continued, ==, 8);
+}
+
+static void cpp_result_boundary_policy (void) { cpp_exception_policy (FALSE); }
+static void cpp_void_boundary_policy (void) { cpp_exception_policy (TRUE); }
+
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
   g_test_add_func ("/painter/interop/c-cpp-c-value", c_cpp_c_value);
   g_test_add_func ("/painter/interop/cpp-error-to-c", cpp_error_to_c);
   g_test_add_func ("/painter/interop/cpp-error-without-gerror", cpp_error_without_gerror);
+  g_test_add_func ("/painter/interop/result-boundary-policy", cpp_result_boundary_policy);
+  g_test_add_func ("/painter/interop/void-boundary-policy", cpp_void_boundary_policy);
   painter_test_register ();
   return g_test_run ();
 }
