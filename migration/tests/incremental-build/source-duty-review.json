@@ -1,0 +1,3310 @@
+{
+  "task": "04.015",
+  "baseline_head": "27f34ac3282c058caf309147dc7460a34d4b87de",
+  "immutable_registration_review_sha256": "75bf025e4616ba08bd5da635d7991b11247d98fb60e2bdc0fb861c20286106ff",
+  "duties": [
+    {
+      "work_id": "legacy-be87264371f09b6e79bb",
+      "source_id": "01.002/000001",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-35,2 -> 35,8",
+      "source_sha256": "48e6d9d1fcd9e2b8eac3436a0fcab9013527570d41071dc3f66da0c716044e4d",
+      "source_scope": "SUBDIRS = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/httpd/httpd.cpp"
+      ],
+      "rationale": "Presets moved into core; optional HTTP retains its conditional subdir. Both owning libraries join the app link.",
+      "remaining_feature_tasks": [
+        "28.003",
+        "28.004",
+        "31.003"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimplayerpreset.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimplayerpreset.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimplayerpreset-apply.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimplayerpreset.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimplayerpreset.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimplayerpreset-apply.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/httpd/libapphttpd.a.p/httpd.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/httpd/libapphttpd.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/httpd/httpd.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+        "app/core/gimplayerpreset-apply.cpp": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+        "app/httpd/httpd.cpp": "076867e07e80bb3a30edf9481b36ac4f437700228651220ad1841fe2d4686f93"
+      }
+    },
+    {
+      "work_id": "legacy-51bab6b72edcf0ad9f74",
+      "source_id": "01.002/000002",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-73,0 -> 80,2",
+      "source_sha256": "4940e6b96a8062fc155f0e7f60438b726ffce13be3fb5aa11282c89df0bbfd54",
+      "source_scope": "libapp_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/actions/actions.c",
+        "app/painter/gimp-painter-binding.cpp"
+      ],
+      "rationale": "Legacy feature dispatcher is replaced by explicit native C startup/teardown and owning module registration. The common C++ bridge is a real app dependency.",
+      "remaining_feature_tasks": [
+        "30.016"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/libapp.a.p/app.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/libapp.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/app.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/gimp-console-3.0.p/app.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [],
+              "production_final_targets": [
+                "app/gimp-console-3.0"
+              ],
+              "source": "app/app.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimp.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimp.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimp-data-factories.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimp-data-factories.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/actions/libappactions.a.p/actions.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/actions/libappactions.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/actions/actions.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/painter/libapppainter.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/painter/gimp-painter-binding.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/libapp.a.p/app.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/libapp.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/app.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/gimp-console-3.0.p/app.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [],
+              "production_final_targets": [
+                "app/gimp-console-3.0"
+              ],
+              "source": "app/app.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimp.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimp.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimp-data-factories.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimp-data-factories.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/actions/libappactions.a.p/actions.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/actions/libappactions.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/actions/actions.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/painter/libapppainter.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/painter/gimp-painter-binding.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/actions/actions.c": "0627fb49a0a0215b589f37a38b43b202fd17f80c176f1a42a1c1b9387702cc09",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd"
+      }
+    },
+    {
+      "work_id": "legacy-09f964909809204eea91",
+      "source_id": "01.002/000003",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-89 -> 97",
+      "source_sha256": "d84cb10b6f5b05a2c6e8441962ca08087b9fdcebf5cf1c0231c749d5b9fff070",
+      "source_scope": "libapp_a_SOURCES = $(libapp_sources) $(libapp_generated_sources)",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        },
+        "http": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        }
+      },
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      }
+    },
+    {
+      "work_id": "legacy-d7335c2c749ed8615321",
+      "source_id": "01.002/000004",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-171,0 -> 180",
+      "source_sha256": "093addb9d344488c662e702c07c5a65ac82e821e8094111e911f0c898dead1a3",
+      "source_scope": "gimpconsoleldadd = \\",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-3.0",
+            "app/gimp-console-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        },
+        "http": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-3.0",
+            "app/gimp-console-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        }
+      },
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      }
+    },
+    {
+      "work_id": "legacy-d13eb9956e0f7075fb3a",
+      "source_id": "01.002/000005",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-188,0 -> 198,8",
+      "source_sha256": "c8b6fa63a2f18768cc082ff3fbed4589c9094a5ef43367edc3e7c55f5097271a",
+      "source_scope": "gimpconsoleldadd = \\",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-3.0",
+            "app/gimp-console-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        },
+        "http": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-3.0",
+            "app/gimp-console-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        }
+      },
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      }
+    },
+    {
+      "work_id": "legacy-4c8a4a358900746d81fd",
+      "source_id": "01.002/000006",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-206,0 -> 224",
+      "source_sha256": "63e5ebb77a3f2acbc803f133a8611e6d9dc851227c2e5b6a3d927c4107edf0e6",
+      "source_scope": "gimp_2_8_LDADD = \\",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        },
+        "http": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        }
+      },
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      }
+    },
+    {
+      "work_id": "legacy-0f0264db2cd529b1e80e",
+      "source_id": "01.002/000007",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-212 -> 230",
+      "source_sha256": "9edef7090ee33f53503a1fe4cfbf010c15ad503048e98a515b62d3aabd5c060b",
+      "source_scope": "if ENABLE_GIMP_CONSOLE",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-console-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        },
+        "http": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-console-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        }
+      },
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      }
+    },
+    {
+      "work_id": "legacy-cfd04fa7bd8bf1bb0b7e",
+      "source_id": "01.002/000008",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-219,0 -> 238",
+      "source_sha256": "78766817876d0a3bd1c48dcae0e2be43935571878d338be2250ad0d28c50fd61",
+      "source_scope": "gimp_console_2_8_LDADD = \\",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-console-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        },
+        "http": {
+          "counterpart_objects": [],
+          "mapped_final_targets": [
+            "app/gimp-console-3.0"
+          ],
+          "interpretation": "Real C++ final link over implemented owning archives. No dummy.cpp object exists or is required. Both broad header trials reach each final target; HTTP entries exist only in enabled variant."
+        }
+      },
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      }
+    },
+    {
+      "work_id": "legacy-4fec2016f0f36dfb18f6",
+      "source_id": "01.002/000038",
+      "path": "app/base/Makefile.am",
+      "source_blob": "03b82578f3d4eaa0b37fb03d2bdda9ec0a1bf9df",
+      "source_range": "-74 -> 74,9",
+      "source_sha256": "4ec3c13c6c7b75adb94f01f6c31adc12fa141910cfb9dce42644ece8f1a880e7",
+      "source_scope": "libappbase_a_SOURCES = \\",
+      "classification": "private-headers",
+      "current_paths": [
+        "app/painter/meson.build",
+        "app/paint/painter-mypaint-surface/meson.build"
+      ],
+      "rationale": "Only private .hpp headers are appended; no compiled translation unit is added. Header exposure and compile/dependency checks remain open, as do the headers own feature obligations.",
+      "remaining_feature_tasks": [
+        "04.005"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [],
+          "header_production_consumers": {
+            "app/core/gimp-painter-type-traits.hpp": [
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ],
+            "app/core/gimpclonelayer-handle.hpp": [],
+            "app/core/gimpfilterlayer-handle.hpp": [],
+            "app/httpd/httpd-private.hpp": [],
+            "app/httpd/httpd-resource.hpp": [],
+            "app/paint/painter-mypaint-surface/legacy-pixel.hpp": [
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o"
+            ],
+            "app/paint/painter-mypaint/resource.hpp": [
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "app/paint/painter-mypaint/libpainter-mypaint.a.p/engine.cpp.o",
+              "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ],
+            "app/painter/binding-store.hpp": [
+              "app/config/libappconfig.a.p/gimppainterfilterconfig.cpp.o",
+              "app/core/libappcore.a.p/gimp-painter-provenance.cpp.o",
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterexit.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguideundo.cpp.o",
+              "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+              "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+              "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+              "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/painter/libapppainter.a.p/binding-store.cpp.o",
+              "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+              "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+              "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ],
+            "app/painter/boundary.hpp": [
+              "app/config/libappconfig.a.p/gimppainterfilterconfig.cpp.o",
+              "app/core/libappcore.a.p/gimp-painter-provenance.cpp.o",
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfiltercontext.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterexit.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/core/libappcore.a.p/gimppainterprofile.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguideundo.cpp.o",
+              "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+              "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+              "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+              "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterbrushgeometry.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaper-paste.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-bounded-fill/libpainter-bounded-fill.a.p/search.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/.._gimppainterpaper.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "app/painter/libapppainter.a.p/binding-store.cpp.o",
+              "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+              "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+              "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-arguments.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o"
+            ],
+            "app/painter/connection.hpp": [
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+              "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+              "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+              "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o"
+            ],
+            "app/painter/gio-type-traits.hpp": [
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/core/libappcore.a.p/gimppainterprofile.cpp.o"
+            ],
+            "app/painter/object-ref.hpp": [
+              "app/config/libappconfig.a.p/gimppainterfilterconfig.cpp.o",
+              "app/core/libappcore.a.p/gimp-painter-provenance.cpp.o",
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfiltercontext.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterexit.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/core/libappcore.a.p/gimppainterprofile.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguideundo.cpp.o",
+              "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+              "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+              "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+              "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-bounded-fill/libpainter-bounded-fill.a.p/search.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "app/painter/libapppainter.a.p/binding-store.cpp.o",
+              "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+              "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+              "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-arguments.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o"
+            ],
+            "app/painter/resources.hpp": [
+              "app/core/libappcore.a.p/gimp-painter-provenance.cpp.o",
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+              "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/core/libappcore.a.p/gimppainterprofile.cpp.o",
+              "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o"
+            ],
+            "app/painter/source.hpp": [
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterexit.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+              "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ]
+          }
+        },
+        "http": {
+          "counterpart_objects": [],
+          "header_production_consumers": {
+            "app/core/gimp-painter-type-traits.hpp": [
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ],
+            "app/core/gimpclonelayer-handle.hpp": [],
+            "app/core/gimpfilterlayer-handle.hpp": [],
+            "app/httpd/httpd-private.hpp": [
+              "app/httpd/libapphttpd.a.p/httpd.cpp.o",
+              "app/httpd/libapphttpdgui.a.p/httpd-navigation.cpp.o"
+            ],
+            "app/httpd/httpd-resource.hpp": [
+              "app/httpd/libapphttpd.a.p/httpd-images.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd-pdb.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd-resource.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd.cpp.o",
+              "app/httpd/libapphttpdgui.a.p/httpd-navigation.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/legacy-pixel.hpp": [
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o"
+            ],
+            "app/paint/painter-mypaint/resource.hpp": [
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "app/paint/painter-mypaint/libpainter-mypaint.a.p/engine.cpp.o",
+              "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ],
+            "app/painter/binding-store.hpp": [
+              "app/config/libappconfig.a.p/gimppainterfilterconfig.cpp.o",
+              "app/core/libappcore.a.p/gimp-painter-provenance.cpp.o",
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterexit.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguideundo.cpp.o",
+              "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+              "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+              "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+              "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd.cpp.o",
+              "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/painter/libapppainter.a.p/binding-store.cpp.o",
+              "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+              "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+              "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ],
+            "app/painter/boundary.hpp": [
+              "app/config/libappconfig.a.p/gimppainterfilterconfig.cpp.o",
+              "app/core/libappcore.a.p/gimp-painter-provenance.cpp.o",
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfiltercontext.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterexit.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/core/libappcore.a.p/gimppainterprofile.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguideundo.cpp.o",
+              "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+              "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+              "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+              "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd-images.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd-pdb.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd.cpp.o",
+              "app/httpd/libapphttpdgui.a.p/httpd-navigation.cpp.o",
+              "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterbrushgeometry.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaper-paste.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-bounded-fill/libpainter-bounded-fill.a.p/search.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/.._gimppainterpaper.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "app/painter/libapppainter.a.p/binding-store.cpp.o",
+              "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+              "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+              "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-arguments.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o"
+            ],
+            "app/painter/connection.hpp": [
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+              "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+              "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+              "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "app/httpd/libapphttpdgui.a.p/httpd-navigation.cpp.o",
+              "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o"
+            ],
+            "app/painter/gio-type-traits.hpp": [
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/core/libappcore.a.p/gimppainterprofile.cpp.o"
+            ],
+            "app/painter/object-ref.hpp": [
+              "app/config/libappconfig.a.p/gimppainterfilterconfig.cpp.o",
+              "app/core/libappcore.a.p/gimp-painter-provenance.cpp.o",
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfiltercontext.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterexit.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/core/libappcore.a.p/gimppainterprofile.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+              "app/core/libappcore.a.p/gimpperspectiveguideundo.cpp.o",
+              "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+              "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+              "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+              "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd-images.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd-pdb.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd.cpp.o",
+              "app/httpd/libapphttpdgui.a.p/httpd-navigation.cpp.o",
+              "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-bounded-fill/libpainter-bounded-fill.a.p/search.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "app/painter/libapppainter.a.p/binding-store.cpp.o",
+              "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+              "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+              "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-arguments.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o"
+            ],
+            "app/painter/resources.hpp": [
+              "app/core/libappcore.a.p/gimp-painter-provenance.cpp.o",
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+              "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "app/core/libappcore.a.p/gimppainterprofile.cpp.o",
+              "app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o",
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o"
+            ],
+            "app/painter/source.hpp": [
+              "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterexit.cpp.o",
+              "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "app/dialogs/libappdialogs.a.p/file-save-deferred.cpp.o",
+              "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "app/httpd/libapphttpd.a.p/httpd.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintersmudgetool.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ]
+          }
+        }
+      },
+      "current_headers": [
+        "app/core/gimp-painter-type-traits.hpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/core/gimpfilterlayer-handle.hpp",
+        "app/httpd/httpd-private.hpp",
+        "app/httpd/httpd-resource.hpp",
+        "app/paint/painter-mypaint-surface/legacy-pixel.hpp",
+        "app/paint/painter-mypaint/resource.hpp",
+        "app/painter/binding-store.hpp",
+        "app/painter/boundary.hpp",
+        "app/painter/connection.hpp",
+        "app/painter/gio-type-traits.hpp",
+        "app/painter/object-ref.hpp",
+        "app/painter/resources.hpp",
+        "app/painter/source.hpp"
+      ],
+      "current_source_sha256": {
+        "app/painter/meson.build": "340b4147cc44efab297054af7ea7dc094a4cf0904de3b25788daf14adfa980a7",
+        "app/paint/painter-mypaint-surface/meson.build": "2478b356185c1ac01852a9cd7cc8a2d050f41a68380df1f1d5af5b67f62b4dbd"
+      }
+    },
+    {
+      "work_id": "legacy-88523e1c23d19b826f20",
+      "source_id": "01.002/000128",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-81,0 -> 82,8",
+      "source_sha256": "3547aa70b7ceeef9b528a46a32e6cdaf9bb928b456218c5697cbcf1e093f76ed",
+      "source_scope": "libappcore_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimppaintermybrush.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/paint/painter-brush-settings/meson.build"
+      ],
+      "rationale": "Extended brush resource/reader/writer now share resource.cpp and the core adapter; generated setting constants remain a separate generator obligation.",
+      "remaining_feature_tasks": [
+        "08.005",
+        "19.001",
+        "19.011",
+        "19.013",
+        "20.001",
+        "04.013"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimppaintermybrush.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint/libpainter-mypaint.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint/resource.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ],
+              "excluded_nonproduction_archive_consumers": [
+                "app/tests/libapptestutils.a"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimppaintermybrush.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint/libpainter-mypaint.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint/resource.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ],
+              "excluded_nonproduction_archive_consumers": [
+                "app/tests/libapptestutils.a"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+        "app/paint/painter-brush-settings/meson.build": "49ffdc89681014266308b749cfda29e09d6e5a4296ce3aae6de48aa4ac4fa7bd"
+      }
+    },
+    {
+      "work_id": "legacy-b645edb7a9cd6e3c15e4",
+      "source_id": "01.002/000130",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-342,0 -> 353,2",
+      "source_sha256": "fb18c77627e55984949fd55bd9cba649b89d95eed5d38ca291642212f1a64190",
+      "source_scope": "libappcore_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimpperspectiveguide.cpp"
+      ],
+      "rationale": "Perspective guide implementation is registered directly in appcore.",
+      "remaining_feature_tasks": [
+        "08.009",
+        "26.001"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpperspectiveguide.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpperspectiveguide.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/core/gimpperspectiveguide.cpp": "edcfce4efc37d41a66340c531be6fd558bc931fad927ad65a8dd0fc27272d1b4"
+      }
+    },
+    {
+      "work_id": "legacy-c587257ffc2b6279bbd0",
+      "source_id": "01.002/000132",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-396 -> 412,11",
+      "source_sha256": "5df3a8d7025f85984a1c650c2f2e94349159d8ef5d6d76106abc5cf36b2d1483",
+      "source_scope": "libappcore_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimppaintermybrush.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/core/gimpfilterlayer.cpp",
+        "app/core/gimpclonelayer.cpp"
+      ],
+      "rationale": "Brush save shares resource.cpp; Clone reference Undo is in gimpclonelayer.cpp. Both independent layer types are registered in appcore.",
+      "remaining_feature_tasks": [
+        "14.001",
+        "14.015",
+        "15.001",
+        "19.011"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimppaintermybrush.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint/libpainter-mypaint.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint/resource.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ],
+              "excluded_nonproduction_archive_consumers": [
+                "app/tests/libapptestutils.a"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpfilterlayer.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpclonelayer.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimppaintermybrush.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint/libpainter-mypaint.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint/resource.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ],
+              "excluded_nonproduction_archive_consumers": [
+                "app/tests/libapptestutils.a"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpfilterlayer.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpclonelayer.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+        "app/core/gimpfilterlayer.cpp": "67658997dbdf8bd796567143d109348e2bddb2a4a421fcb363c7ce3122644925",
+        "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+      }
+    },
+    {
+      "work_id": "legacy-ae849f922cc899aeb044",
+      "source_id": "01.002/000455",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-56,0 -> 57,2",
+      "source_sha256": "76de1fcacc3a8b14fe08f21e99b1a6c74cce1ec83aab813cb94d5b8472d24578",
+      "source_scope": "libappdisplay_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/display/gimpcanvasperspectiveguide.cpp"
+      ],
+      "rationale": "Perspective canvas implementation is registered directly in appdisplay.",
+      "remaining_feature_tasks": [
+        "26.005",
+        "26.006"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/display/libappdisplay.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/display/gimpcanvasperspectiveguide.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/display/libappdisplay.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/display/gimpcanvasperspectiveguide.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/display/gimpcanvasperspectiveguide.cpp": "8ae697467c3cfff54b41c03828419000907cfc5b2ee92902246711523663f858"
+      }
+    },
+    {
+      "work_id": "legacy-c33b0fac97ccdd83b278",
+      "source_id": "01.002/000456",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-114,0 -> 117,2",
+      "source_sha256": "b6fc3a2e05f9f9240696b8d307e3a779c2b63b5209b3bae71646eda6b56d9f5f",
+      "source_scope": "libappdisplay_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "rationale": "The current shell-owned canvas controller replaces the legacy overlays translation unit.",
+      "remaining_feature_tasks": [
+        "29.001",
+        "29.019"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/display/libappdisplay.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/display/gimppaintercanvasui.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/display/libappdisplay.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/display/gimppaintercanvasui.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/display/gimppaintercanvasui.cpp": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed"
+      }
+    },
+    {
+      "work_id": "legacy-893f74b7fe8c8b661d99",
+      "source_id": "01.002/000852",
+      "path": "app/httpd/Makefile.am",
+      "source_blob": "90d9e83353cc27d314914b3e25b16ebc89c5083d",
+      "source_range": "-0,0 -> 1,65",
+      "source_sha256": "91513434dd2641e668600ef54f103c2db91a1bc919da0fcce0d948a8676a053e",
+      "source_scope": "file-level declarations/content",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/httpd/httpd.cpp",
+        "app/httpd/httpd-resource.cpp",
+        "app/httpd/httpd-images.cpp",
+        "app/httpd/httpd-pdb.cpp",
+        "app/httpd/httpd-navigation.cpp"
+      ],
+      "rationale": "Optional HTTP has explicit core and GUI C++ libraries; this configured build enables them. Disabled builds and old enum/platform behavior remain their own gates.",
+      "remaining_feature_tasks": [
+        "31.003",
+        "31.009",
+        "04.013"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": []
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/httpd/libapphttpd.a.p/httpd.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/httpd/libapphttpd.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/httpd/httpd.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/httpd/libapphttpd.a.p/httpd-resource.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/httpd/libapphttpd.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/httpd/httpd-resource.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/httpd/libapphttpd.a.p/httpd-images.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/httpd/libapphttpd.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/httpd/httpd-images.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/httpd/libapphttpd.a.p/httpd-pdb.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/httpd/libapphttpd.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/httpd/httpd-pdb.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/httpd/libapphttpdgui.a.p/httpd-navigation.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/httpd/libapphttpdgui.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/httpd/httpd-navigation.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/httpd/httpd.cpp": "076867e07e80bb3a30edf9481b36ac4f437700228651220ad1841fe2d4686f93",
+        "app/httpd/httpd-resource.cpp": "6b8385c98fc2c35df90f19783489ed8e95bf6072cf24a2cd16cad81d787e0567",
+        "app/httpd/httpd-images.cpp": "e8417637364357fda5c71353c06da27ad097c29d4f8a15eb23f256c3b4726c1d",
+        "app/httpd/httpd-pdb.cpp": "bd67443db09b8bea0daf99286aa931b62d1ac70bc69fc0145cc3d6a017520b14",
+        "app/httpd/httpd-navigation.cpp": "3c08a702de3a9873b0513dcf9f572284820bcac1a8dfbf7e51fd31fb98cda5fc"
+      }
+    },
+    {
+      "work_id": "legacy-d536ccdd9a19a93731cb",
+      "source_id": "01.002/000868",
+      "path": "app/paint-funcs/Makefile.am",
+      "source_blob": "3bef64dffd7481c46130642bad7455141878fa86",
+      "source_range": "-33 -> 33,2",
+      "source_sha256": "352be5bc5646ac0d3da085dff5f548eaaa54faa7ddc75bd5e49ce194f08f2927",
+      "source_scope": "libapppaint_funcs_a_SOURCES = \\",
+      "classification": "private-headers",
+      "current_paths": [
+        "app/painter/meson.build",
+        "app/paint/painter-mypaint-surface/meson.build"
+      ],
+      "rationale": "Only private .hpp headers are appended; no compiled translation unit is added. Header exposure and compile/dependency checks remain open, as do the headers own feature obligations.",
+      "remaining_feature_tasks": [
+        "04.005"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [],
+          "header_production_consumers": {
+            "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp": [
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o"
+            ]
+          }
+        },
+        "http": {
+          "counterpart_objects": [],
+          "header_production_consumers": {
+            "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp": [
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o"
+            ]
+          }
+        }
+      },
+      "current_headers": [
+        "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp"
+      ],
+      "current_source_sha256": {
+        "app/painter/meson.build": "340b4147cc44efab297054af7ea7dc094a4cf0904de3b25788daf14adfa980a7",
+        "app/paint/painter-mypaint-surface/meson.build": "2478b356185c1ac01852a9cd7cc8a2d050f41a68380df1f1d5af5b67f62b4dbd"
+      }
+    },
+    {
+      "work_id": "legacy-e8de215053777ef8f562",
+      "source_id": "01.002/000885",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-57,0 -> 58,6",
+      "source_sha256": "21114d439bb76d5bbb48f010ce3f692499ac790e302f92c0147e121be8f13cfe",
+      "source_scope": "libapppaint_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/paint/painter-mypaint-surface/paint-core.cpp",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp"
+      ],
+      "rationale": "Native PaintCore/session and GEGL Surface replace the old core, surface and empty Undo TU; registration does not close Undo/behavior acceptance.",
+      "remaining_feature_tasks": [
+        "08.006",
+        "09.011",
+        "21.001",
+        "21.014"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint-surface/paint-core.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ]
+            },
+            {
+              "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint-surface/paint-core.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ]
+            },
+            {
+              "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/paint/painter-mypaint-surface/paint-core.cpp": "f2acf89889fbb8c7ae57f700f1f455833c830ba38329c4f829a9bf4d9f00669a",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp": "e7ac2ab7781f9a278c1b4296424d353ef30758a79fa2ddddc5ae70fa342b3c2c",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431"
+      }
+    },
+    {
+      "work_id": "legacy-da23b081a4dcd70efe0a",
+      "source_id": "01.002/000886",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-63,0 -> 70,8",
+      "source_sha256": "5b5d48c7bd9a6f949e01526807be10e37d3918d6d449e15dde10a3ac5ebd36c9",
+      "source_scope": "libapppaint_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "app/paint/painter-mypaint/engine.cpp"
+      ],
+      "rationale": "Options and application-owned history share the options TU; stroke/engine code is in engine.cpp.",
+      "remaining_feature_tasks": [
+        "08.007",
+        "20.001",
+        "24.010"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/engine.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint/libpainter-mypaint.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint/engine.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ],
+              "excluded_nonproduction_archive_consumers": [
+                "app/tests/libapptestutils.a"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/engine.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/painter-mypaint/libpainter-mypaint.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/painter-mypaint/engine.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ],
+              "excluded_nonproduction_archive_consumers": [
+                "app/tests/libapptestutils.a"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "2126a82d73b1abb30ec7031449ec615a358b735584dd824b0c8c3840069ea813",
+        "app/paint/painter-mypaint/engine.cpp": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a"
+      }
+    },
+    {
+      "work_id": "legacy-47a54477b7ec00975f09",
+      "source_id": "01.002/000887",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-81 -> 95,3",
+      "source_sha256": "ccdacc8f82bbe29a56afb90d538c43c0e41ae089031fae840830f7cb32765630",
+      "source_scope": "libapppaint_a_sources = \\",
+      "classification": "private-headers",
+      "current_paths": [
+        "app/painter/meson.build",
+        "app/paint/painter-mypaint-surface/meson.build"
+      ],
+      "rationale": "Only private .hpp headers are appended; no compiled translation unit is added. Header exposure and compile/dependency checks remain open, as do the headers own feature obligations.",
+      "remaining_feature_tasks": [
+        "04.005"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [],
+          "header_production_consumers": {
+            "app/paint/painter-mypaint-surface/gegl-surface.hpp": [
+              "app/paint/libapppaint.a.p/gimppainterbrushgeometry.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-generated-mask.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-mask-transform.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/gimp-painter-session.hpp": [
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/gimp-resources.hpp": [
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/legacy-generated-mask.hpp": [
+              "app/paint/libapppaint.a.p/gimppainterbrushgeometry.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-generated-mask.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/legacy-mask-transform.hpp": [
+              "app/paint/libapppaint.a.p/gimppainterbrushgeometry.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-mask-transform.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/paint-core.hpp": [
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o"
+            ]
+          }
+        },
+        "http": {
+          "counterpart_objects": [],
+          "header_production_consumers": {
+            "app/paint/painter-mypaint-surface/gegl-surface.hpp": [
+              "app/paint/libapppaint.a.p/gimppainterbrushgeometry.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-generated-mask.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-mask-transform.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/gimp-painter-session.hpp": [
+              "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/gimp-resources.hpp": [
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+              "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/legacy-generated-mask.hpp": [
+              "app/paint/libapppaint.a.p/gimppainterbrushgeometry.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-generated-mask.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/legacy-mask-transform.hpp": [
+              "app/paint/libapppaint.a.p/gimppainterbrushgeometry.cpp.o",
+              "app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-mask-transform.cpp.o"
+            ],
+            "app/paint/painter-mypaint-surface/paint-core.hpp": [
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+              "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o"
+            ]
+          }
+        }
+      },
+      "current_headers": [
+        "app/paint/painter-mypaint-surface/gegl-surface.hpp",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.hpp",
+        "app/paint/painter-mypaint-surface/gimp-resources.hpp",
+        "app/paint/painter-mypaint-surface/legacy-generated-mask.hpp",
+        "app/paint/painter-mypaint-surface/legacy-mask-transform.hpp",
+        "app/paint/painter-mypaint-surface/paint-core.hpp"
+      ],
+      "current_source_sha256": {
+        "app/painter/meson.build": "340b4147cc44efab297054af7ea7dc094a4cf0904de3b25788daf14adfa980a7",
+        "app/paint/painter-mypaint-surface/meson.build": "2478b356185c1ac01852a9cd7cc8a2d050f41a68380df1f1d5af5b67f62b4dbd"
+      }
+    },
+    {
+      "work_id": "legacy-7fea58afbe341f3c1e03",
+      "source_id": "01.002/001008",
+      "path": "app/pdb/Makefile.am",
+      "source_blob": "12a94259835da77e2a77e97848b11619c61a7c5e",
+      "source_range": "-32,0 -> 33,2",
+      "source_sha256": "49d572fcfa22a73972a19bd5793957968b2bb40108adba3c4c097bc32a43eb8b",
+      "source_scope": "libapppdb_a_SOURCES = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimpfilterprocedure.cpp",
+        "app/core/gimpfilterprocedure-arguments.cpp",
+        "app/painter/filter-process.cpp"
+      ],
+      "rationale": "PDB/executor C++ adapters moved into appcore and apppainter; no old pdb-cxx-utils.cpp needs a duplicate registration. Arbitrary saved procedure coverage remains open.",
+      "remaining_feature_tasks": [
+        "16.002",
+        "16.003",
+        "16.006"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpfilterprocedure.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpfilterprocedure-arguments.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/painter/libapppainter.a.p/filter-process.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/painter/libapppainter.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/painter/filter-process.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpfilterprocedure.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpfilterprocedure-arguments.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/painter/libapppainter.a.p/filter-process.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/painter/libapppainter.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/painter/filter-process.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/core/gimpfilterprocedure.cpp": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+        "app/core/gimpfilterprocedure-arguments.cpp": "cfa0028427f1ae19701f42d107a26883e4c143a25a15dbb4211d53fab0f9a055",
+        "app/painter/filter-process.cpp": "5d5bc162d3c26d9496cc5f52ceff926e6e7e57fdaae225fef02a8705edd6d42c"
+      }
+    },
+    {
+      "work_id": "legacy-bebf2272a903bdec48f1",
+      "source_id": "01.002/001065",
+      "path": "app/presets/Makefile.am",
+      "source_blob": "d874add9c485d04b46255309c0228463e0062663",
+      "source_range": "-0,0 -> 1,62",
+      "source_sha256": "9cfe6a562755e05d4a7095bd4822099fa8fedce56bcad76a34fda4e691c212ab",
+      "source_scope": "file-level declarations/content",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/core/gimp-data-factories.c",
+        "app/actions/layer-presets-actions.c",
+        "app/widgets/gimplayerpresetview.c"
+      ],
+      "rationale": "Presets are native C data/factory/view and a private C++ applier in existing modules, not a separately named legacy library. Generator/behavior obligations stay open.",
+      "remaining_feature_tasks": [
+        "28.001",
+        "28.003",
+        "28.004",
+        "28.014",
+        "04.013"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimplayerpreset.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimplayerpreset.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimplayerpreset-apply.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimp-data-factories.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimp-data-factories.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/actions/libappactions.a.p/layer-presets-actions.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/actions/libappactions.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/actions/layer-presets-actions.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimplayerpresetview.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimplayerpresetview.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/core/libappcore.a.p/gimplayerpreset.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimplayerpreset.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimplayerpreset-apply.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimp-data-factories.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimp-data-factories.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/actions/libappactions.a.p/layer-presets-actions.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/actions/libappactions.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/actions/layer-presets-actions.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimplayerpresetview.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimplayerpresetview.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+        "app/core/gimplayerpreset-apply.cpp": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/actions/layer-presets-actions.c": "740d7b1e9de1e4ec7bfc7ac1f5930190390172026befdaf635e787b2969d0f7d",
+        "app/widgets/gimplayerpresetview.c": "46a8763177097b16102f06481bab4750ebaa978757eda86030e5c34b4c2c9ced"
+      }
+    },
+    {
+      "work_id": "legacy-bd24ac3baccafbc46f8f",
+      "source_id": "01.002/001082",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-42,0 -> 45,2",
+      "source_sha256": "7db8e963d67d2487de10b7b67b8fee0303b6b9200c43213b4f26fa67c29e28e9",
+      "source_scope": "libapptools_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/tools/gimpfillbrushtool.cpp",
+        "app/paint/gimpfillbrush.cpp"
+      ],
+      "rationale": "Bounded fill tool and paint-core implementations have explicit owning-module registrations.",
+      "remaining_feature_tasks": [
+        "08.012",
+        "27.001"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/tools/libapptools.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/tools/gimpfillbrushtool.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/libapppaint.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/gimpfillbrush.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/tools/libapptools.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/tools/gimpfillbrushtool.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/paint/libapppaint.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/paint/gimpfillbrush.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/tools/gimpfillbrushtool.cpp": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+        "app/paint/gimpfillbrush.cpp": "f91685ff3853e89313aa038805630117c8dbfbe741b4b3af463be1c04dbf2a0e"
+      }
+    },
+    {
+      "work_id": "legacy-fa3dc17a8a8a96a90463",
+      "source_id": "01.002/001085",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-144,0 -> 153,2",
+      "source_sha256": "8aa19abbd32aa4e5a8a82cdb6daff85dba45307407b6a3fa5d2c3b910a9a0614",
+      "source_scope": "libapptools_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/tools/gimpperspectiveguidetool.cpp"
+      ],
+      "rationale": "Perspective editor tool is registered directly in apptools.",
+      "remaining_feature_tasks": [
+        "08.010",
+        "26.002"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/tools/libapptools.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/tools/gimpperspectiveguidetool.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/tools/libapptools.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/tools/gimpperspectiveguidetool.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/tools/gimpperspectiveguidetool.cpp": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b"
+      }
+    },
+    {
+      "work_id": "legacy-84cacfb724190a89909d",
+      "source_id": "01.002/001086",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-198 -> 208,13",
+      "source_sha256": "5cdffcdda5b82f01e63348ee4fed2f3e3bd71be3a4cd9602524d789a713f9755",
+      "source_scope": "libapptools_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/tools/gimppaintermybrushtool.cpp",
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "rationale": "Tool, shared editor and reversible compact adapter replace duplicate legacy tool/editor/helper TUs. Full control/type equivalence remains under their existing feature tasks.",
+      "remaining_feature_tasks": [
+        "08.008",
+        "24.001",
+        "29.010",
+        "31.013"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/tools/libapptools.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/tools/gimppaintermybrushtool.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppaintermybrusheditor.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppaintercompactoptions.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/tools/libapptools.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/tools/gimppaintermybrushtool.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppaintermybrusheditor.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppaintercompactoptions.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/tools/gimppaintermybrushtool.cpp": "2b6a54cabe22fbb3b8cd113c8a3231955407ca67519822c0eb673c6f03575c90",
+        "app/widgets/gimppaintermybrusheditor.cpp": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      }
+    },
+    {
+      "work_id": "legacy-1bddedd7c4978e0217d2",
+      "source_id": "01.002/001515",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-52,0 -> 57,2",
+      "source_sha256": "b61b6e95e6382ad76978e633753bee1419ce46c5fe78f2b6dadb978b9907b629",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "rationale": "Registered GTK3 popover consumers provide current UI routes; this does not prove that every old CellRendererPopup vfunc has been ported.",
+      "remaining_feature_tasks": [
+        "08.016",
+        "29.006"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppainterlayertiles.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppaintercompactoptions.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppainterlayertiles.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppaintercompactoptions.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      }
+    },
+    {
+      "work_id": "legacy-280b1c9bbd59ba57b4b6",
+      "source_id": "01.002/001516",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-234,0 -> 241,4",
+      "source_sha256": "648de987d8ba08257f9f9c414dd482393a185b9e837938d8ee7807417f9f1eb1",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/dialogs/layer-options-dialog.c",
+        "app/core/gimpfilterparametereditor.cpp"
+      ],
+      "rationale": "Layer tiles use registered C++ and canonical custom-layer editors. Full legacy popup/type acceptance remains separate.",
+      "remaining_feature_tasks": [
+        "08.013",
+        "29.001",
+        "29.006"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppainterlayertiles.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/dialogs/libappdialogs.a.p/layer-options-dialog.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/dialogs/libappdialogs.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/dialogs/layer-options-dialog.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpfilterparametereditor.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppainterlayertiles.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/dialogs/libappdialogs.a.p/layer-options-dialog.c.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/dialogs/libappdialogs.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/dialogs/layer-options-dialog.c",
+              "mutation_headers": [
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/core/libappcore.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-console-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/core/gimpfilterparametereditor.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+        "app/dialogs/layer-options-dialog.c": "a7ae97a35bf0a1fc90c608523eefe0dc7a7f8696ab89a5c1171e85834075eef9",
+        "app/core/gimpfilterparametereditor.cpp": "fcf150ea7c938ab792770f3307d769e5f84dddcfba20b85030b6e7ca4c9e130f"
+      }
+    },
+    {
+      "work_id": "legacy-a5fe7d267d85600e8a7d",
+      "source_id": "01.002/001520",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-361,0 -> 377,2",
+      "source_sha256": "6553f8a63f0472c67d7ed31ced59ac11ff92ed74d06d61049aeee2ff12037101",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "rationale": "Current tool tile/group controller is registered in the shell canvas C++ TU; no duplicate legacy widget TU is added.",
+      "remaining_feature_tasks": [
+        "08.014",
+        "29.008",
+        "29.009"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/display/libappdisplay.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/display/gimppaintercanvasui.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/display/libappdisplay.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/display/gimppaintercanvasui.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/display/gimppaintercanvasui.cpp": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed"
+      }
+    },
+    {
+      "work_id": "legacy-bd93e5239b2cdaeca63b",
+      "source_id": "01.002/001521",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-415 -> 432,8",
+      "source_sha256": "11031674dfd628315fe52689ffb3447a10ff511dd6d1ed9fc422d95afd644cdd",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppainterlayertiles.cpp"
+      ],
+      "rationale": "Shared editor, native GTK3 popovers and compact controls are registered replacements; old helper/type contracts remain in their separate WBS/source obligations.",
+      "remaining_feature_tasks": [
+        "08.015",
+        "08.017",
+        "24.001",
+        "29.019",
+        "31.013"
+      ],
+      "variants": {
+        "default": {
+          "counterpart_objects": [
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppaintermybrusheditor.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppaintercompactoptions.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppainterlayertiles.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        },
+        "http": {
+          "counterpart_objects": [
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppaintermybrusheditor.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppaintercompactoptions.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            },
+            {
+              "object": "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+              "exists": true,
+              "dep_record": "VALID",
+              "archives": [
+                "app/widgets/libappwidgets.a"
+              ],
+              "production_final_targets": [
+                "app/gimp-3.0",
+                "app/gimp-painter-filter-worker"
+              ],
+              "source": "app/widgets/gimppainterlayertiles.cpp",
+              "mutation_headers": [
+                "app/painter/gimp-painter-visibility.h",
+                "app/core/core-types.h"
+              ]
+            }
+          ]
+        }
+      },
+      "current_source_sha256": {
+        "app/widgets/gimppaintermybrusheditor.cpp": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0",
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e"
+      }
+    }
+  ],
+  "findings": {
+    "missing_current_source_registrations": [],
+    "missing_production_dependency_records": {
+      "default": [],
+      "http": []
+    },
+    "private_headers_without_production_users": [
+      "app/core/gimpclonelayer-handle.hpp",
+      "app/core/gimpfilterlayer-handle.hpp"
+    ],
+    "http_default_exclusions": "All five mapped HTTP cpp sources and two private HTTP headers are absent from disabled production closure by design.",
+    "feature_scope": "Remaining feature tasks retain original state; dependency registration is not implementation acceptance.",
+    "historical_archive_counterpart_paths_whose_source_bytes_changed_since_04009": [
+      "app/core/gimpfilterlayer.cpp",
+      "app/httpd/httpd-images.cpp",
+      "app/httpd/httpd-pdb.cpp",
+      "app/httpd/httpd-resource.cpp",
+      "app/httpd/httpd.cpp",
+      "app/meson.build"
+    ],
+    "historical_evidence_interpretation": "Prior archive/link observation identifies retained current role and expected final-target scope; it is not refreshed build/hash evidence. Actual current ownership is separately verified from both native manifests and compile databases.",
+    "expected_archive_correction_is_audit_bug_not_product_failure": true,
+    "trial_revisions": [
+      {
+        "variant": "default",
+        "header": "app/painter/gimp-painter-visibility.h",
+        "expected_object_count": 69,
+        "expected_archive_count": 13,
+        "expected_final_bin_count": 3,
+        "excluded_candidate_archives": [
+          "app/tests/libapptestutils.a"
+        ]
+      },
+      {
+        "variant": "default",
+        "header": "app/core/core-types.h",
+        "expected_object_count": 1159,
+        "expected_archive_count": 29,
+        "expected_final_bin_count": 3,
+        "excluded_candidate_archives": []
+      },
+      {
+        "variant": "default",
+        "header": "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp",
+        "expected_object_count": 1,
+        "expected_archive_count": 1,
+        "expected_final_bin_count": 3,
+        "excluded_candidate_archives": []
+      },
+      {
+        "variant": "default",
+        "header": "app/paint/painter-mypaint-surface/paint-core.hpp",
+        "expected_object_count": 2,
+        "expected_archive_count": 1,
+        "expected_final_bin_count": 3,
+        "excluded_candidate_archives": []
+      },
+      {
+        "variant": "default",
+        "header": "app/painter/object-ref.hpp",
+        "expected_object_count": 38,
+        "expected_archive_count": 12,
+        "expected_final_bin_count": 3,
+        "excluded_candidate_archives": [
+          "app/tests/libapptestutils.a"
+        ]
+      },
+      {
+        "variant": "http",
+        "header": "app/painter/gimp-painter-visibility.h",
+        "expected_object_count": 74,
+        "expected_archive_count": 15,
+        "expected_final_bin_count": 3,
+        "excluded_candidate_archives": [
+          "app/tests/libapptestutils.a"
+        ]
+      },
+      {
+        "variant": "http",
+        "header": "app/core/core-types.h",
+        "expected_object_count": 1164,
+        "expected_archive_count": 31,
+        "expected_final_bin_count": 3,
+        "excluded_candidate_archives": []
+      },
+      {
+        "variant": "http",
+        "header": "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp",
+        "expected_object_count": 1,
+        "expected_archive_count": 1,
+        "expected_final_bin_count": 3,
+        "excluded_candidate_archives": []
+      },
+      {
+        "variant": "http",
+        "header": "app/paint/painter-mypaint-surface/paint-core.hpp",
+        "expected_object_count": 2,
+        "expected_archive_count": 1,
+        "expected_final_bin_count": 3,
+        "excluded_candidate_archives": []
+      },
+      {
+        "variant": "http",
+        "header": "app/painter/object-ref.hpp",
+        "expected_object_count": 42,
+        "expected_archive_count": 14,
+        "expected_final_bin_count": 3,
+        "excluded_candidate_archives": [
+          "app/tests/libapptestutils.a"
+        ]
+      }
+    ]
+  },
+  "scope": "Current source-specific build dependency verification; historical link-retention observations remain in their own earlier reports",
+  "unrelated_rows": 22916,
+  "unrelated_rows_sha256": "2b526933f5c33c5f663d3e67a6b8495f3dc80bdead36f1d0cba8737d386a4ae4"
+}
