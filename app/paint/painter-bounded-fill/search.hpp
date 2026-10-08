@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_BOUNDED_FILL_HPP
 #define GIMP_PAINTER_BOUNDED_FILL_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include <gegl.h>
 #include <array>
 #include <cstddef>
 #include <memory>
-namespace GimpPainter { namespace Fill {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace Fill {
 /* Immutable projection state shared by all dabs of a stroke. Input must have
  * the native nonlinear byte format; no implicit precision/profile conversion.
  * Coordinates are in the buffer's image coordinate system, including offsets. */

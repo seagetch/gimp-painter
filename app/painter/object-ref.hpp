@@ -2,11 +2,12 @@
 #ifndef GIMP_PAINTER_OBJECT_REF_HPP
 #define GIMP_PAINTER_OBJECT_REF_HPP
 
+#include "gimp-painter-visibility.h"
 #include "boundary.hpp"
 #include <memory>
 #include <utility>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 
 template<class T> struct TypeTraits;
 template<> struct TypeTraits<GObject>

@@ -1,13 +1,14 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_CLONE_LAYER_HANDLE_HPP
 #define GIMP_CLONE_LAYER_HANDLE_HPP
+#include "../painter/gimp-painter-visibility.h"
 extern "C" {
 #include "gimpclonelayer.h"
 }
 #include "gimp-painter-type-traits.hpp"
 #include "painter/resources.hpp"
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* A named, owning public handle. No Impl pointer or generic interface cast. */
 struct CloneReferenceFree
 { void operator() (GimpCloneLayerReference *value) const noexcept { gimp_clone_layer_reference_free (value); } };

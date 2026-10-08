@@ -11,6 +11,7 @@
  * Preserve historical operation order and byte rounding in one place. */
 #ifndef GIMP_PAINTER_FILTER_EDGE_KERNEL_PRIVATE_HPP
 #define GIMP_PAINTER_FILTER_EDGE_KERNEL_PRIVATE_HPP
+#include "gimp-painter-visibility.h"
 #include <algorithm>
 #include <atomic>
 #include <cmath>
@@ -19,7 +20,7 @@
 #include <limits>
 #include <stdexcept>
 #include <vector>
-namespace GimpPainter { namespace FilterEdgeDetail {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace FilterEdgeDetail {
 
 /* These kernels use the historical column-major neighborhood order. Keep
  * multiplication and addition in the same order as the old C implementation:

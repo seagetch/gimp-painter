@@ -5,8 +5,9 @@
  */
 #ifndef GIMP_PAINTER_GRAY_ALPHA_PIXELS_HPP
 #define GIMP_PAINTER_GRAY_ALPHA_PIXELS_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include "legacy-pixel-modes.hpp"
-namespace GimpPainter { namespace MyPaint { namespace GrayAlpha {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint { namespace GrayAlpha {
 using namespace LegacyPixel;
 
 // Same byte-stride iterator, but alpha is at index 1 for a native Y'A brushmark.

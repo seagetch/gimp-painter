@@ -1,10 +1,11 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_MYPAINT_ENGINE_HPP
 #define GIMP_PAINTER_MYPAINT_ENGINE_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include "resource.hpp"
 #include "surface.hpp"
 #include <memory>
-namespace GimpPainter { namespace MyPaint {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint {
 /* Owns the extended legacy evaluator, never a standard libmypaint brush. */
 class Engine
 {

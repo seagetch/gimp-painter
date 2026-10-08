@@ -15,12 +15,13 @@
  */
 #ifndef GIMP_PAINTER_MYPAINT_MAPPING_HPP
 #define GIMP_PAINTER_MYPAINT_MAPPING_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include <array>
 #include <cmath>
 #include <stdexcept>
 #include <vector>
 
-namespace GimpPainter { namespace MyPaint {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint {
 /* Value-owned replacement for the old new[]/delete mapping owner. Evaluation
  * order and extrapolation, including duplicate x coordinates, remain legacy. */
 class Mapping

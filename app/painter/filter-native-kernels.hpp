@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FILTER_NATIVE_KERNELS_HPP
 #define GIMP_PAINTER_FILTER_NATIVE_KERNELS_HPP
+#include "gimp-painter-visibility.h"
 #include "filter-raster-kernels.hpp"
 #include <vector>
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 enum class FilterPoint { value_invert, max_rgb, threshold_alpha };
 /* Explicit point mappings. Bytes retain old whole-drawable shadow semantics;
  * real samples are the normalized-double modern extension, never byte-oracle

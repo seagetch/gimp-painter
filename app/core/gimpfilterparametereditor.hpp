@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_FILTER_PARAMETER_EDITOR_HPP
 #define GIMP_FILTER_PARAMETER_EDITOR_HPP
+#include "../painter/gimp-painter-visibility.h"
 #include "painter/filter-procedure-policy.hpp"
 #include <glib-object.h>
 #include <memory>
@@ -11,7 +12,7 @@
 typedef struct _Gimp Gimp;
 typedef struct _GimpProcedure GimpProcedure;
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 enum class FilterEditorValueType { integer, real, boolean, choice, double_array, int32_array, context };
 /* Trusted legacy overlay. These values never come from a PDB registration and
  * never fill missing saved arguments. Initial values are for explicit creation

@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_GIMP_FILTER_PATHS_HPP
 #define GIMP_PAINTER_GIMP_FILTER_PATHS_HPP
+#include "../painter/gimp-painter-visibility.h"
 #include "painter/filter-procedure.hpp"
 #include <string>
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* Resolve fixed bundled executables from this process's actual location.
  * These functions may perform filesystem I/O; call on the independent worker
  * or private helper, never during an owner/main-context preparation quantum.

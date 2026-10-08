@@ -20,7 +20,14 @@ if not cxx.compiles('''
   error('Painter requires C++ throw/catch support for its C error boundaries')
 endif
 
-painter_cpp_args = painter_exception_args + cxx.get_supported_arguments(['-fno-rtti'])
+# Hidden class declarations alone can leave exported weak STL constructor
+# aliases. Restrict C++ inline definitions without hiding global C entry points.
+painter_inline_visibility_args = []
+if cxx.get_argument_syntax() == 'gcc'
+  painter_inline_visibility_args = cxx.get_supported_arguments(
+    ['-fvisibility-inlines-hidden'], checked: 'require')
+endif
+painter_cpp_args = painter_exception_args + painter_inline_visibility_args + cxx.get_supported_arguments(['-fno-rtti'])
 if cxx.get_id() == 'msvc'
   painter_cpp_args += ['/GR-']
 endif

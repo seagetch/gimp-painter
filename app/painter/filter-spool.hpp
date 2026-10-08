@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FILTER_SPOOL_HPP
 #define GIMP_PAINTER_FILTER_SPOOL_HPP
+#include "gimp-painter-visibility.h"
 #include "filter-raster.hpp"
 #include "work-admission.hpp"
 #include <atomic>
@@ -10,7 +11,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* Independent byte transport. The owner never opens, reads, writes or closes
  * a temporary file and never waits for the worker. There is one producer and
  * one consumer per direction, with at most two bounded chunks in each queue.

@@ -1,12 +1,13 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_FILTER_LAYER_HANDLE_HPP
 #define GIMP_FILTER_LAYER_HANDLE_HPP
+#include "../painter/gimp-painter-visibility.h"
 extern "C" {
 #include "gimpfilterlayer.h"
 }
 #include "gimp-painter-type-traits.hpp"
 #include "painter/resources.hpp"
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 class FilterLayerRef
 {
 public:

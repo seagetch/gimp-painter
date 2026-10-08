@@ -2,13 +2,14 @@
 #ifndef GIMP_PAINTER_FILTER_GAUSS_HPP
 #define GIMP_PAINTER_FILTER_GAUSS_HPP
 
+#include "gimp-painter-visibility.h"
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <vector>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 
 class FilterProgress;
 

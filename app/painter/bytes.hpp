@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_BYTES_HPP
 #define GIMP_PAINTER_BYTES_HPP
+#include "gimp-painter-visibility.h"
 #include <glib.h>
 #include <utility>
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* Explicit transfer before callbacks: even a GBytes free function can reenter
  * the wrapper being assigned. Never unref its old value before publishing. */
 class Bytes

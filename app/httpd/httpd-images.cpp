@@ -22,8 +22,7 @@ extern "C"
 #include "core/gimpfilterlayer.h"
 }
 #include "painter/object-ref.hpp"
-namespace GimpPainter
-{
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 namespace Http
 {
 static std::vector<GimpObject *>

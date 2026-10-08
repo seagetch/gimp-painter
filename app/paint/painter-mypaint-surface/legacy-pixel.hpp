@@ -1,8 +1,9 @@
 /* Pinned painter floating pixel expressions; see provenance in README.md. */
 #ifndef __PIXEL_HPP__
 #define __PIXEL_HPP__
+#include "../../painter/gimp-painter-visibility.h"
 #include <glib.h>
-namespace GimpPainter { namespace MyPaint { namespace LegacyPixel {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint { namespace LegacyPixel {
 
 struct Pixel {
   // Currently BPP=8 is assumed.

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FILTER_SCHEDULER_HPP
 #define GIMP_PAINTER_FILTER_SCHEDULER_HPP
+#include "gimp-painter-visibility.h"
 #include "work-admission.hpp"
 #include "filter-spool.hpp"
 #include "filter-progress.hpp"
@@ -12,7 +13,7 @@
 #include <string>
 #include <vector>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* Main-thread state machine. Workers receive only owned bytes and a cancellation
  * flag; never a GObject, graph, drawable, callback or borrowed implementation. */
 class FilterScheduler

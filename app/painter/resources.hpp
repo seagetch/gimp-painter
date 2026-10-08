@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_RESOURCES_HPP
 #define GIMP_PAINTER_RESOURCES_HPP
+#include "gimp-painter-visibility.h"
 #include "boundary.hpp"
 #include <memory>
 #include <utility>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 struct Free { void operator() (gpointer value) const noexcept { g_free (value); } };
 using String = std::unique_ptr<gchar, Free>;
 

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_MYPAINT_RESOURCE_HPP
 #define GIMP_PAINTER_MYPAINT_RESOURCE_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include <gio/gio.h>
 #include <array>
 #include <memory>
@@ -9,7 +10,7 @@
 #include "mapping.hpp"
 #include "mypaintbrush-enum-settings.h"
 
-namespace GimpPainter { namespace MyPaint {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint {
 struct Point { double x, y; };
 struct Diagnostic {
   enum class Kind { LegacyIgnored, Unsupported };

@@ -323,3 +323,13 @@ proof compiles all forty core/display C++ objects with RTTI disabled, runs the
 common 39-case suite per configuration and tests the real typed bridge. Existing
 production flags are unchanged. Exception typeinfo and focused sanitizer vptr
 metadata are explicitly separate from the new API's RTTI independence.
+
+## Private C++ visibility (original 04.012)
+
+The [visibility contract](symbol-visibility.md) keeps private declarations and
+template derivatives out of the application's dynamic ABI, while explicit C
+entry attributes preserve functions involving hidden record types. Native
+before/after ELF checks cover all six default/HTTP application executables,
+SDK/module controls, C compile vectors and C/C++ record layouts. The C++ inline
+visibility switch has separately recorded effects on generic/upstream inline
+symbols; no C export, SDK or module entry is removed.

@@ -4,10 +4,11 @@
  */
 #ifndef GIMP_PAINTER_SMUDGE_LEGACY_PIXELS_HPP
 #define GIMP_PAINTER_SMUDGE_LEGACY_PIXELS_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include <cstddef>
 #include <cstdint>
 #include <stdexcept>
-namespace GimpPainter { namespace Smudge {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace Smudge {
 inline void validate_pixels (const void* source, const void* destination,
                              std::size_t bytes, unsigned channels)
 {

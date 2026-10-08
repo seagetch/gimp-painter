@@ -17,8 +17,7 @@ extern "C"
 #include "display/display-types.h"
 #include "display/gimpdisplay.h"
 }
-namespace GimpPainter
-{
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 namespace Http
 {
 Json

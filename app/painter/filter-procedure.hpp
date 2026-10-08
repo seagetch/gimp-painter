@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FILTER_PROCEDURE_HPP
 #define GIMP_PAINTER_FILTER_PROCEDURE_HPP
+#include "gimp-painter-visibility.h"
 #include "filter-context.hpp"
 #include "filter-procedure-policy.hpp"
 #include <algorithm>
@@ -10,7 +11,7 @@
 #include <cstdint>
 #include <limits>
 #include <stdexcept>
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 enum class FilterProcedureDisposition : std::uint32_t {
   pending = 0, merged = 1, shadow = 2, no_merge = 3
 };

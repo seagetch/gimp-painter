@@ -17,6 +17,7 @@
 #ifndef __MYPAINT_BRUSH_HPP__
 #define __MYPAINT_BRUSH_HPP__
 
+#include "../../painter/gimp-painter-visibility.h"
 #include <stdio.h>
 #include <string.h>
 #include <glib.h>
@@ -33,7 +34,7 @@
 #include "mypaintbrush-enum-settings.h"
 #include "mapping.hpp"
 
-namespace GimpPainter { namespace MyPaint { namespace Legacy {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint { namespace Legacy {
 using std::isfinite;
 
 #define SQR(x) ((x) * (x))

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FAIR_DISPATCHER_HPP
 #define GIMP_PAINTER_FAIR_DISPATCHER_HPP
+#include "gimp-painter-visibility.h"
 #include "source.hpp"
 #include <algorithm>
 #include <deque>
@@ -8,7 +9,7 @@
 #include <memory>
 #include <utility>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* One Source, one bounded callback per dispatch, FIFO across independent owners.
  * Callbacks must do their own bounded quantum and return true to rotate again.
  * The dispatcher owns no GObject; adapters capture weak generation tickets.

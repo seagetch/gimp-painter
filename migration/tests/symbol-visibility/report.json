@@ -1,0 +1,168 @@
+{
+  "baseline_head": "d13515bfd49756e743cc7036f7875bf7d8edaf0e",
+  "baseline_source_manifest_sha256": "a145060c281e20e1b2ddb84ee09a7f4892903f3bbf15cd544ef50b7b7041090d",
+  "checker_self_tests": 7,
+  "configurations": {
+    "default": {
+      "applications": {
+        "app/gimp-3.0": {
+          "baseline_defined_dynamic": 7469,
+          "baseline_nonmangled_count": 6798,
+          "baseline_private_cpp": 543,
+          "binary_sha256": "c739a70ffd5b48f1b21ec34c607775e7cc414f5d3e2b0cb0a6c10043a74f647e",
+          "final_defined_dynamic": 6861,
+          "final_private_cpp": 0,
+          "removed_c": [],
+          "removed_other_cpp": 65,
+          "removed_private_cpp": 543
+        },
+        "app/gimp-console-3.0": {
+          "baseline_defined_dynamic": 3992,
+          "baseline_nonmangled_count": 3365,
+          "baseline_private_cpp": 510,
+          "binary_sha256": "1f41a9f9126b8cc7f737a550ee4c0d4b0f0b15f10e2de6f972978a19066f4e1b",
+          "final_defined_dynamic": 3425,
+          "final_private_cpp": 0,
+          "removed_c": [],
+          "removed_other_cpp": 57,
+          "removed_private_cpp": 510
+        },
+        "app/gimp-painter-filter-worker": {
+          "baseline_defined_dynamic": 3867,
+          "baseline_nonmangled_count": 3250,
+          "baseline_private_cpp": 502,
+          "binary_sha256": "7ac39ba87db7da77dc7633ba6c27f0489c3f78df89a02f0f0420340ec551fff4",
+          "final_defined_dynamic": 3308,
+          "final_private_cpp": 0,
+          "removed_c": [],
+          "removed_other_cpp": 57,
+          "removed_private_cpp": 502
+        }
+      },
+      "c_compile_vectors_unchanged": 1865,
+      "c_modules_binary_and_export_identical": 9,
+      "foundation_cases_passed": 39,
+      "full_export_report": "native/verified-default-exports/report.json",
+      "install_manifest_entries_unchanged": 2704,
+      "module_entry_names": [
+        "gimp_module_query",
+        "gimp_module_register"
+      ],
+      "new_compiler_warning_kinds": [],
+      "preexisting_warning_kinds": [
+        "app/paint/gimppainterbrushgeometry.cpp: comparison of integer expressions of different signedness: 'const std::size_t' {aka 'const long unsigned int'} and 'int' [-Wsign-compare]",
+        "app/paint/painter-mypaint/legacy-brush.hpp: unused variable 'dx_old' [-Wunused-variable]",
+        "app/paint/painter-mypaint/legacy-brush.hpp: unused variable 'dy_old' [-Wunused-variable]"
+      ],
+      "private_app_sdk_installs": {},
+      "process_exit_checks": {
+        "console-version": 0,
+        "foundation": 0,
+        "gui-version": 0,
+        "worker-rejected-version": 125
+      },
+      "record_layout": {
+        "baseline_current_c_cpp_equal": true,
+        "fields": 15,
+        "records": 3
+      },
+      "runtime_empty_xdg_data_directory_created": true,
+      "runtime_files_created": [],
+      "runtime_profile_created": false,
+      "sdk_libraries_binary_and_export_identical": 9,
+      "status": "PASS",
+      "unique_other_cpp_exports_removed": 67,
+      "upstream_cc_commands": 9,
+      "upstream_cc_commands_with_only_added_hidden_inline": 6
+    },
+    "http": {
+      "applications": {
+        "app/gimp-3.0": {
+          "baseline_defined_dynamic": 7555,
+          "baseline_nonmangled_count": 6804,
+          "baseline_private_cpp": 617,
+          "binary_sha256": "40d3a269ecfb0541282d79895eef5faa17a97dd2bc97909004a2a098104a1171",
+          "final_defined_dynamic": 6869,
+          "final_private_cpp": 0,
+          "removed_c": [],
+          "removed_other_cpp": 69,
+          "removed_private_cpp": 617
+        },
+        "app/gimp-console-3.0": {
+          "baseline_defined_dynamic": 4080,
+          "baseline_nonmangled_count": 3370,
+          "baseline_private_cpp": 587,
+          "binary_sha256": "080933187df9d87a85a9be0a3608c157dc7985653e47314695c620687a2ee535",
+          "final_defined_dynamic": 3432,
+          "final_private_cpp": 0,
+          "removed_c": [],
+          "removed_other_cpp": 61,
+          "removed_private_cpp": 587
+        },
+        "app/gimp-painter-filter-worker": {
+          "baseline_defined_dynamic": 3867,
+          "baseline_nonmangled_count": 3250,
+          "baseline_private_cpp": 502,
+          "binary_sha256": "7a8153965bccb5e345991f4e095d1122ace845817abfa3fbda3c43a01e040d57",
+          "final_defined_dynamic": 3308,
+          "final_private_cpp": 0,
+          "removed_c": [],
+          "removed_other_cpp": 57,
+          "removed_private_cpp": 502
+        }
+      },
+      "c_compile_vectors_unchanged": 1867,
+      "c_modules_binary_and_export_identical": 9,
+      "foundation_cases_passed": 39,
+      "full_export_report": "native/verified-http-exports/report.json",
+      "install_manifest_entries_unchanged": 2704,
+      "module_entry_names": [
+        "gimp_module_query",
+        "gimp_module_register"
+      ],
+      "new_compiler_warning_kinds": [],
+      "preexisting_warning_kinds": [
+        "app/paint/gimppainterbrushgeometry.cpp: comparison of integer expressions of different signedness: 'const std::size_t' {aka 'const long unsigned int'} and 'int' [-Wsign-compare]",
+        "app/paint/painter-mypaint/legacy-brush.hpp: unused variable 'dx_old' [-Wunused-variable]",
+        "app/paint/painter-mypaint/legacy-brush.hpp: unused variable 'dy_old' [-Wunused-variable]"
+      ],
+      "private_app_sdk_installs": {},
+      "process_exit_checks": {
+        "console-version": 0,
+        "foundation": 0,
+        "gui-version": 0,
+        "worker-rejected-version": 125
+      },
+      "record_layout": {
+        "baseline_current_c_cpp_equal": true,
+        "fields": 15,
+        "records": 3
+      },
+      "runtime_empty_xdg_data_directory_created": true,
+      "runtime_files_created": [],
+      "runtime_profile_created": false,
+      "sdk_libraries_binary_and_export_identical": 9,
+      "status": "PASS",
+      "unique_other_cpp_exports_removed": 71,
+      "upstream_cc_commands": 9,
+      "upstream_cc_commands_with_only_added_hidden_inline": 6
+    }
+  },
+  "diagnosed_attempts": {
+    "first_native_attempt": "Builds succeeded, but17 C exports were inadvertently hidden in all6 executables; HTTP GUI/console retained3 private class vtables, and new visibility warnings were emitted. Explicit C-entry attributes, attributed forward declarations, hidden opaque holder and source-only HTTP namespace annotations corrected these gates. Original failure reports and warnings are retained.",
+    "first_runtime_harness": "All39 foundation cases and expected process exits passed. An overly strict zero-directory assertion rejected creation of an empty isolated XDG data directory by GUI --version. Revised harness still rejects files/profile creation and records each process; bounded reruns passed."
+  },
+  "limitations": [
+    "Native Linux x86_64 GCC14 ELF evidence only; Windows/macOS visibility and runtimes are not established.",
+    "Application runtime checks stop at --version or the worker invalid-argument guard; no GUI, profile or HTTP listener starts.",
+    "Generic/upstream inline C++ exports also decrease under the C++-only hidden-inline switch; these are separately enumerated and are not presented as preserved C exports."
+  ],
+  "source_stability": {
+    "changed_during_attempt2": [],
+    "files_checked": 9978,
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "task": "original WBS 04.012 native symbol visibility",
+  "verified_source_manifest_sha256": "c98053c17e8dddbba623564314e935bb6cc6010e8267d5362ee465be0e81c3a2"
+}

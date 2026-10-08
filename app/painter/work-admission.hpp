@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_WORK_ADMISSION_HPP
 #define GIMP_PAINTER_WORK_ADMISSION_HPP
+#include "gimp-painter-visibility.h"
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
@@ -11,7 +12,7 @@
 #include <thread>
 #include <utility>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* FIFO admission for independent worker snapshots. Requests and acquisition
  * belong to one owner thread; a lease may be released on any worker thread.
  * It contains no callbacks, GObjects or alternate implementation storage.

@@ -23,8 +23,7 @@ struct GimpPainterHttpdClass
   GObjectClass parent_class;
 };
 G_DEFINE_TYPE (GimpPainterHttpd, gimp_painter_httpd, G_TYPE_OBJECT)
-namespace GimpPainter
-{
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 template <> struct TypeTraits<GimpPainterHttpd>
 {
   static GType
@@ -504,8 +503,7 @@ gimp_painter_httpd_port (GObject *o)
 {
   return boundary<guint> (nullptr, 0, [&] { return state (o)->port; });
 }
-namespace GimpPainter
-{
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 namespace Http
 {
 guint

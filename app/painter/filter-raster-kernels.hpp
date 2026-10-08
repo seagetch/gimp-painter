@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FILTER_RASTER_KERNELS_HPP
 #define GIMP_PAINTER_FILTER_RASTER_KERNELS_HPP
+#include "gimp-painter-visibility.h"
 #include "filter-edge.hpp"
 #include "filter-gauss.hpp"
 #include "filter-raster.hpp"
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* Exact legacy kernels over independent worker-owned, straight RGBA8 storage.
  * No application objects or callbacks may be captured by the scratch factory.
  * Input, output and factory rasters must have independent backing storage;
