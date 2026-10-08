@@ -24,6 +24,8 @@
 
 #include "gimpobject.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_CONTAINER            (gimp_container_get_type ())
 #define GIMP_CONTAINER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CONTAINER, GimpContainer))
@@ -152,5 +154,8 @@ void         gimp_container_remove_handlers_by_data
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (GimpContainer, g_object_unref);
 
+
+
+G_END_DECLS
 
 #endif  /* __GIMP_CONTAINER_H__ */

@@ -21,6 +21,8 @@
 #ifndef __GIMP_PICKABLE_H__
 #define __GIMP_PICKABLE_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_PICKABLE (gimp_pickable_get_type ())
 G_DECLARE_INTERFACE (GimpPickable, gimp_pickable, GIMP, PICKABLE, GObject)
@@ -81,5 +83,8 @@ gboolean        gimp_pickable_pick_color              (GimpPickable        *pick
                                                        gpointer             pixel,
                                                        GeglColor          **color);
 
+
+
+G_END_DECLS
 
 #endif  /* __GIMP_PICKABLE_H__ */

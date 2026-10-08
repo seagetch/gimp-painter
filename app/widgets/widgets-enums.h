@@ -18,6 +18,8 @@
 #ifndef __WIDGETS_ENUMS_H__
 #define __WIDGETS_ENUMS_H__
 
+G_BEGIN_DECLS
+
 
 /*
  * enums that are registered with the type system
@@ -317,5 +319,8 @@ typedef enum  /*< skip >*/
   GIMP_DASHBOARD_HISTORY_DURATION_240_SEC = 240000
 } GimpDashboardHistoryDuration;
 
+
+
+G_END_DECLS
 
 #endif /* __WIDGETS_ENUMS_H__ */

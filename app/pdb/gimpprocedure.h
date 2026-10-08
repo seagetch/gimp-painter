@@ -21,6 +21,8 @@
 
 #include "core/gimpviewable.h"
 
+G_BEGIN_DECLS
+
 
 typedef GimpValueArray * (* GimpMarshalFunc) (GimpProcedure         *procedure,
                                               Gimp                  *gimp,
@@ -173,5 +175,8 @@ gint             gimp_procedure_name_compare       (GimpProcedure    *proc1,
                                                     GimpProcedure    *proc2);
 
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_PROCEDURE_H__  */

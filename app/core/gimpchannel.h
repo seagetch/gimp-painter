@@ -20,6 +20,8 @@
 
 #include "gimpdrawable.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_CHANNEL            (gimp_channel_get_type ())
 #define GIMP_CHANNEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CHANNEL, GimpChannel))
@@ -215,5 +217,8 @@ void          gimp_channel_shrink             (GimpChannel            *mask,
 void          gimp_channel_flood              (GimpChannel            *mask,
                                                gboolean                push_undo);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_CHANNEL_H__ */

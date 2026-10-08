@@ -21,6 +21,8 @@
 
 #include "gimpdrawtool.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_COLOR_TOOL            (gimp_color_tool_get_type ())
 #define GIMP_COLOR_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_TOOL, GimpColorTool))
@@ -83,5 +85,8 @@ void       gimp_color_tool_enable     (GimpColorTool    *color_tool,
 void       gimp_color_tool_disable    (GimpColorTool    *color_tool);
 gboolean   gimp_color_tool_is_enabled (GimpColorTool    *color_tool);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_COLOR_TOOL_H__  */

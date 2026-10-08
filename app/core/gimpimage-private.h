@@ -18,6 +18,8 @@
 #ifndef __GIMP_IMAGE_PRIVATE_H__
 #define __GIMP_IMAGE_PRIVATE_H__
 
+G_BEGIN_DECLS
+
 
 typedef struct _GimpImageFlushAccumulator GimpImageFlushAccumulator;
 
@@ -159,5 +161,8 @@ struct _GimpImagePrivate
 void   gimp_image_take_mask (GimpImage   *image,
                              GimpChannel *mask);
 
+
+
+G_END_DECLS
 
 #endif  /* __GIMP_IMAGE_PRIVATE_H__ */

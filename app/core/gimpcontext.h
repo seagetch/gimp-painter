@@ -24,6 +24,8 @@
 
 #include "gimpviewable.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_CONTEXT            (gimp_context_get_type ())
 #define GIMP_CONTEXT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CONTEXT, GimpContext))
@@ -385,5 +387,8 @@ GimpLineArt    * gimp_context_take_line_art       (GimpContext     *context);
 void             gimp_context_store_line_art      (GimpContext     *context,
                                                    GimpLineArt     *line_art);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_CONTEXT_H__ */

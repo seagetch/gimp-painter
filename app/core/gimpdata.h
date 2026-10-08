@@ -24,6 +24,8 @@
 
 #include "gimpresource.h"
 
+G_BEGIN_DECLS
+
 
 typedef enum
 {
@@ -145,5 +147,8 @@ void          gimp_data_get_identifiers  (GimpData     *data,
 
 GQuark        gimp_data_error_quark      (void) G_GNUC_CONST;
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_DATA_H__ */

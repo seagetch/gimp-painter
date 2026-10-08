@@ -21,6 +21,8 @@
 
 #include "gimpobject.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_PROJECTION            (gimp_projection_get_type ())
 #define GIMP_PROJECTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PROJECTION, GimpProjection))
@@ -79,5 +81,8 @@ gint64           gimp_projection_estimate_memsize  (GimpImageBaseType  type,
                                                     gint               width,
                                                     gint               height);
 
+
+
+G_END_DECLS
 
 #endif /*  __GIMP_PROJECTION_H__  */

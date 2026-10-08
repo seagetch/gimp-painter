@@ -21,6 +21,8 @@
 
 #include "gimpdata.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_DYNAMICS            (gimp_dynamics_get_type ())
 #define GIMP_DYNAMICS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DYNAMICS, GimpDynamics))
@@ -73,5 +75,8 @@ gdouble         gimp_dynamics_get_aspect_value  (GimpDynamics           *dynamic
                                                  GimpPaintOptions       *options,
                                                  gdouble                 fade_point);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_DYNAMICS_H__  */

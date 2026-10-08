@@ -21,6 +21,8 @@
 
 #include "gimppaintcore.h"
 
+G_BEGIN_DECLS
+
 
 #define BRUSH_CORE_SUBSAMPLE        4
 #define BRUSH_CORE_SOLID_SUBSAMPLE  2
@@ -188,5 +190,8 @@ void   gimp_brush_core_eval_transform_symmetry
                                        GimpSymmetry             *symmetry,
                                        gint                      stroke);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_BRUSH_CORE_H__  */

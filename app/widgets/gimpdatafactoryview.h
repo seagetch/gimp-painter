@@ -24,6 +24,8 @@
 
 #include "gimpcontainereditor.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_DATA_FACTORY_VIEW            (gimp_data_factory_view_get_type ())
 #define GIMP_DATA_FACTORY_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DATA_FACTORY_VIEW, GimpDataFactoryView))
@@ -73,5 +75,8 @@ gboolean          gimp_data_factory_view_has_data_new_func        (GimpDataFacto
 gboolean          gimp_data_factory_view_have                     (GimpDataFactoryView *factory_view,
                                                                    GimpObject          *object);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_DATA_FACTORY_VIEW_H__  */

@@ -18,6 +18,8 @@
 #ifndef __FILE_SAVE_DIALOG_H__
 #define __FILE_SAVE_DIALOG_H__
 
+G_BEGIN_DECLS
+
 
 #define FILE_SAVE_RESPONSE_OTHER_DIALOG -23
 
@@ -38,5 +40,8 @@ gboolean    file_save_dialog_save_image (GimpProgress        *progress_and_handl
                                          gboolean             verbose_cancel);
 
 
+
+
+G_END_DECLS
 
 #endif /* __FILE_SAVE_DIALOG_H__ */

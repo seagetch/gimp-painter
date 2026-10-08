@@ -21,6 +21,8 @@
 
 #include "gimpdrawable.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_LAYER            (gimp_layer_get_type ())
 #define GIMP_LAYER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LAYER, GimpLayer))
@@ -249,5 +251,8 @@ gboolean        gimp_layer_is_alpha_locked     (GimpLayer            *layer,
 void          gimp_layer_update_effective_mode (GimpLayer            *layer);
 void       gimp_layer_update_excludes_backdrop (GimpLayer            *layer);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_LAYER_H__ */

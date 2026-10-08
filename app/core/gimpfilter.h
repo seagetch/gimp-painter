@@ -23,6 +23,8 @@
 
 #include "gimpviewable.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_FILTER (gimp_filter_get_type ())
 G_DECLARE_DERIVABLE_TYPE (GimpFilter,
@@ -61,5 +63,8 @@ void             gimp_filter_set_applicator   (GimpFilter     *filter,
                                                GimpApplicator *applicator);
 GimpApplicator * gimp_filter_get_applicator   (GimpFilter     *filter);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_FILTER_H__ */

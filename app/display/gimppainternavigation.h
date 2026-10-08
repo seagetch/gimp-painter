@@ -4,6 +4,8 @@
 #include <gdk/gdk.h>
 #include "display-enums.h"
 
+G_BEGIN_DECLS
+
 /* Stateless legacy input math. Angles at the public boundary use the modern
  * R * Flip matrix; the old display used Flip * R. No display/widget is owned. */
 gdouble gimp_painter_navigation_begin (gint width, gint height, gint x, gint y,
@@ -21,4 +23,7 @@ GimpModifierAction gimp_painter_navigation_rotation_action (GimpModifierAction i
                                                             gboolean inherited,
                                                             GdkModifierType state);
 guint gimp_painter_navigation_key (guint key, gboolean mirrored, gboolean press);
+
+G_END_DECLS
+
 #endif

@@ -21,6 +21,8 @@
 #ifndef __GIMP_CONTAINER_VIEW_H__
 #define __GIMP_CONTAINER_VIEW_H__
 
+G_BEGIN_DECLS
+
 
 typedef enum
 {
@@ -151,5 +153,8 @@ void               _gimp_container_view_get_property      (GObject            *o
                                                            guint               property_id,
                                                            GValue             *value,
                                                            GParamSpec         *pspec);
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_CONTAINER_VIEW_H__  */

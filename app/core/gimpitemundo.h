@@ -21,6 +21,8 @@
 
 #include "gimpundo.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_ITEM_UNDO            (gimp_item_undo_get_type ())
 #define GIMP_ITEM_UNDO(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ITEM_UNDO, GimpItemUndo))
@@ -48,5 +50,8 @@ struct _GimpItemUndoClass
 
 GType   gimp_item_undo_get_type (void) G_GNUC_CONST;
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_ITEM_UNDO_H__ */

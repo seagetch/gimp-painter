@@ -18,6 +18,8 @@
 #ifndef __PAINT_ENUMS_H__
 #define __PAINT_ENUMS_H__
 
+G_BEGIN_DECLS
+
 #if 0
    This file is parsed by two scripts, enumgen.pl in pdb,
    and gimp-mkenums. All enums that are not marked with
@@ -88,5 +90,8 @@ typedef enum /*< skip, pdb-skip >*/
   GIMP_PAINT_LOCK_BLINK_PENDING,
   GIMP_PAINT_LOCK_BLINKED,
 } GimpPaintLockBlinkState;
+
+
+G_END_DECLS
 
 #endif /* __PAINT_ENUMS_H__ */

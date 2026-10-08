@@ -23,6 +23,8 @@
 
 #include "core/gimpobject.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_MOTION_BUFFER            (gimp_motion_buffer_get_type ())
 #define GIMP_MOTION_BUFFER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MOTION_BUFFER, GimpMotionBuffer))
@@ -100,5 +102,8 @@ void       gimp_motion_buffer_request_hover        (GimpMotionBuffer *buffer,
                                                     GdkModifierType   state,
                                                     gboolean          proximity);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_MOTION_BUFFER_H__ */

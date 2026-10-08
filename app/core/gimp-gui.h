@@ -18,6 +18,8 @@
 #ifndef __GIMP_GUI_H__
 #define __GIMP_GUI_H__
 
+G_BEGIN_DECLS
+
 
 typedef struct _GimpGui GimpGui;
 
@@ -211,5 +213,8 @@ GimpMetadataRotationPolicy
                                             GimpContext         *context,
                                             gboolean            *dont_ask);
 
+
+
+G_END_DECLS
 
 #endif  /* __GIMP_GUI_H__ */

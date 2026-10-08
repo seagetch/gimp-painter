@@ -21,6 +21,8 @@
 
 #include "core/gimptooloptions.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_PAINT_OPTIONS_CONTEXT_MASK GIMP_CONTEXT_PROP_MASK_FOREGROUND | \
                                         GIMP_CONTEXT_PROP_MASK_BACKGROUND | \
@@ -184,5 +186,8 @@ void     gimp_paint_options_copy_props         (GimpPaintOptions    *src,
                                                 GimpPaintOptions    *dest,
                                                 GimpContextPropMask  prop_mask);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_PAINT_OPTIONS_H__  */

@@ -21,6 +21,8 @@
 
 #include "gimppainttool.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_BRUSH_TOOL            (gimp_brush_tool_get_type ())
 #define GIMP_BRUSH_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH_TOOL, GimpBrushTool))
@@ -59,5 +61,8 @@ GimpCanvasItem * gimp_brush_tool_create_outline (GimpBrushTool *brush_tool,
                                                  gdouble        x,
                                                  gdouble        y);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_BRUSH_TOOL_H__  */

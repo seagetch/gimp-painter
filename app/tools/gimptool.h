@@ -21,6 +21,8 @@
 
 #include "core/gimpobject.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_TOOL            (gimp_tool_get_type ())
 #define GIMP_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL, GimpTool))
@@ -299,5 +301,8 @@ void              gimp_tool_set_cursor          (GimpTool            *tool,
                                                  GimpToolCursorType   tool_cursor,
                                                  GimpCursorModifier   modifier);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_TOOL_H__  */

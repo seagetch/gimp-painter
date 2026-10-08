@@ -21,6 +21,8 @@
 
 #include "gimpitem.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_DRAWABLE            (gimp_drawable_get_type ())
 #define GIMP_DRAWABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DRAWABLE, GimpDrawable))
@@ -242,5 +244,8 @@ gboolean          gimp_drawable_end_paint            (GimpDrawable    *drawable)
 gboolean          gimp_drawable_flush_paint          (GimpDrawable    *drawable);
 gboolean          gimp_drawable_is_painting          (GimpDrawable    *drawable);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_DRAWABLE_H__ */

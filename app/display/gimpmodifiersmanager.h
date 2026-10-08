@@ -21,6 +21,8 @@
 #ifndef __GIMP_MODIFIERS_MANAGER_H__
 #define __GIMP_MODIFIERS_MANAGER_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_MODIFIERS_MANAGER            (gimp_modifiers_manager_get_type ())
 #define GIMP_MODIFIERS_MANAGER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_MODIFIERS_MANAGER, GimpModifiersManager))
@@ -85,5 +87,8 @@ void                   gimp_modifiers_manager_remove        (GimpModifiersManage
                                                              GdkModifierType       modifiers);
 void                   gimp_modifiers_manager_clear         (GimpModifiersManager *manager);
 
+
+
+G_END_DECLS
 
 #endif  /* __GIMP_MODIFIERS_MANAGER_H__ */

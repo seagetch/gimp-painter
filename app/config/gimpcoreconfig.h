@@ -26,6 +26,8 @@
 
 #include "config/gimpgeglconfig.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_CORE_CONFIG            (gimp_core_config_get_type ())
 #define GIMP_CORE_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CORE_CONFIG, GimpCoreConfig))
@@ -136,5 +138,8 @@ struct _GimpCoreConfigClass
 
 GType  gimp_core_config_get_type (void) G_GNUC_CONST;
 
+
+
+G_END_DECLS
 
 #endif /* GIMP_CORE_CONFIG_H__ */

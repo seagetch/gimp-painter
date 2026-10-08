@@ -21,6 +21,8 @@
 #ifndef __GIMP_COORDS_H__
 #define __GIMP_COORDS_H__
 
+G_BEGIN_DECLS
+
 
 void     gimp_coords_mix            (const gdouble     amul,
                                      const GimpCoords *a,
@@ -53,5 +55,8 @@ gboolean gimp_coords_equal          (const GimpCoords *a,
 gdouble  gimp_coords_direction      (const GimpCoords *a,
                                      const GimpCoords *b);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_COORDS_H__ */

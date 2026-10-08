@@ -21,6 +21,8 @@
 
 #include "gimpcolortool.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_PAINT_TOOL_LINE_MASK (gimp_get_extend_selection_mask ())
 
@@ -111,5 +113,8 @@ void    gimp_paint_tool_set_draw_circle     (GimpPaintTool       *tool,
 void    gimp_paint_tool_force_draw          (GimpPaintTool       *tool,
                                              gboolean             force);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_PAINT_TOOL_H__  */

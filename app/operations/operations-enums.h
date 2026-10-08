@@ -20,6 +20,8 @@
 #ifndef __OPERATIONS_ENUMS_H__
 #define __OPERATIONS_ENUMS_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_LAYER_COLOR_SPACE (gimp_layer_color_space_get_type ())
 
@@ -204,5 +206,8 @@ typedef enum  /*< pdb-skip, skip >*/
   GIMP_LAYER_MODE_FLAG_TRIVIAL                   =  1 << 6
 } GimpLayerModeFlags;
 
+
+
+G_END_DECLS
 
 #endif /* __OPERATIONS_ENUMS_H__ */

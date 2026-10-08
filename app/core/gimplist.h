@@ -24,6 +24,8 @@
 
 #include "gimpcontainer.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_LIST            (gimp_list_get_type ())
 #define GIMP_LIST(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LIST, GimpList))
@@ -68,5 +70,8 @@ void            gimp_list_sort_by_name  (GimpList     *list);
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (GimpList, g_object_unref);
 
+
+
+G_END_DECLS
 
 #endif  /* __GIMP_LIST_H__ */
