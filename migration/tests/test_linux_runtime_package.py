@@ -179,6 +179,286 @@ class PackageTests(unittest.TestCase):
             self.assertFalse(package.elf(root/'link'))
 
 
+class DependencyFixtures:
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.work = Path(self.directory.name)
+        self.directories = [self.work/name for name in ['primary', 'http', 'extra']]
+        for directory in self.directories:
+            (directory/'root').mkdir(parents=True)
+        self.lib = Path('usr/lib')/package.TRIPLET/'libfixture.so.0'
+
+    def put(self, index, relative, data=b'fixture'):
+        path = self.directories[index]/relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+        return path
+
+
+class DependencyRootTests(DependencyFixtures, unittest.TestCase):
+    def test_secondary_needed_library_retains_resolved_archive_path(self):
+        target = self.put(1, Path('root')/(str(self.lib)+'.1'))
+        link = target.with_name('libfixture.so.0')
+        link.symlink_to(target.name)
+        source, relative, origin = package.dependency_library(self.directories, link.name, link)
+        self.assertEqual(source, link)
+        self.assertEqual(relative, self.lib)
+        self.assertEqual(origin['dependency_root'], 1)
+        self.assertEqual(origin['matching_dependency_roots'], [1])
+        self.assertEqual(origin['archive_path'], str(target.relative_to(self.directories[1]/'root')))
+        self.assertEqual(origin['sha256'], package.sha(target))
+
+    def test_repeatable_roots_and_identical_collisions_follow_declared_order(self):
+        relative = Path('root')/self.lib
+        first = self.put(1, relative)
+        self.put(2, relative)
+        directories = package.dependency_directories(self.directories[0], self.directories[1:])
+        source, origin = package.dependency_file(directories, relative)
+        self.assertEqual(source, first)
+        self.assertEqual(origin['matching_dependency_roots'], [1, 2])
+        primary = self.put(0, relative)
+        source, origin = package.dependency_file(directories, relative)
+        self.assertEqual(source, primary)
+        self.assertEqual(origin['matching_dependency_roots'], [0, 1, 2])
+
+    def test_single_root_resolution_is_unchanged(self):
+        source = self.put(0, Path('root')/self.lib)
+        selected, relative, origin = package.dependency_library([self.directories[0]], source.name, source)
+        self.assertEqual(selected, source)
+        self.assertEqual(relative, self.lib)
+        self.assertEqual(origin['dependency_root'], 0)
+
+    def test_inconsistent_library_bytes_modes_and_links_are_rejected(self):
+        relative = Path('root')/self.lib
+        self.put(0, relative)
+        other = self.put(1, relative, b'different')
+        with self.assertRaisesRegex(RuntimeError, 'Conflicting dependency copies'):
+            package.dependency_file(self.directories, relative)
+        other.write_bytes(b'fixture')
+        other.chmod(0o755)
+        with self.assertRaisesRegex(RuntimeError, 'Conflicting dependency copies'):
+            package.dependency_file(self.directories, relative)
+        other.unlink()
+        target = self.put(1, Path('root')/(str(self.lib)+'.1'))
+        other.symlink_to(target.name)
+        with self.assertRaisesRegex(RuntimeError, 'Conflicting dependency copies'):
+            package.dependency_file(self.directories, relative)
+
+    def test_soname_collision_in_other_search_directory_is_rejected(self):
+        source = self.put(0, Path('root')/self.lib)
+        self.put(1, Path('root')/self.lib.parent/'blas'/self.lib.name, b'other ABI')
+        with self.assertRaisesRegex(RuntimeError, 'Conflicting dependency SONAME'):
+            package.dependency_library(self.directories, source.name, source)
+
+    def test_missing_and_host_non_abi_libraries_are_rejected(self):
+        with self.assertRaisesRegex(RuntimeError, 'Dependency file missing'):
+            package.dependency_library(self.directories, self.lib.name, self.directories[1]/'root'/self.lib)
+        with self.assertRaisesRegex(RuntimeError, 'Non-baseline host dependency'):
+            package.dependency_library(self.directories, self.lib.name, Path('/usr/lib')/self.lib.name)
+        self.assertIsNone(package.dependency_library(self.directories, 'libc.so.6', Path('/usr/lib/libc.so.6')))
+
+    def test_dependency_link_cannot_resolve_to_host_or_another_root(self):
+        outside = self.put(1, Path('root')/self.lib)
+        link = self.directories[0]/'root'/self.lib
+        link.parent.mkdir(parents=True)
+        link.symlink_to(outside)
+        with self.assertRaisesRegex(RuntimeError, 'escapes root'):
+            package.dependency_library(self.directories, link.name, link)
+
+    def test_absolute_usr_library_link_uses_extracted_target(self):
+        target = self.put(1, Path('root')/(str(self.lib)+'.1'), b'extracted library')
+        link = target.with_name(self.lib.name)
+        link.symlink_to('/'+str(self.lib)+'.1')
+        source, relative, origin = package.dependency_library(self.directories, link.name, link)
+        self.assertEqual(source, link)
+        self.assertEqual(relative, self.lib)
+        self.assertEqual(origin['sha256'], package.sha(target))
+        self.assertEqual(origin['resolved_path'], 'root/'+str(self.lib)+'.1')
+        self.assertEqual(origin['archive_path'], str(self.lib)+'.1')
+
+    def test_matching_absolute_links_compare_each_roots_actual_bytes(self):
+        for index in [0, 1]:
+            target = self.put(index, Path('root')/(str(self.lib)+'.1'), b'matching library')
+            target.with_name(self.lib.name).symlink_to('/'+str(self.lib)+'.1')
+        source, origin = package.dependency_file(self.directories, Path('root')/self.lib)
+        self.assertEqual(source, self.directories[0]/'root'/self.lib)
+        self.assertEqual(origin['matching_dependency_roots'], [0, 1])
+        target.write_bytes(b'inconsistent library')
+        with self.assertRaisesRegex(RuntimeError, 'Conflicting dependency copies'):
+            package.dependency_file(self.directories, Path('root')/self.lib)
+
+    def test_absolute_usr_asset_chain_relocates_without_host_lookup(self):
+        relative = Path('usr/share/fixture')
+        target = self.put(1, Path('root')/relative/'target', b'extracted asset')
+        (target.parent/'first').symlink_to('/'+str(relative/'second'))
+        (target.parent/'second').symlink_to('/'+str(relative/'relative'))
+        (target.parent/'relative').symlink_to('target')
+        runtime, origins = self.work/'runtime', {}
+        package.copy_dependency_tree(self.directories, relative, runtime, origins)
+        package.relative_symlinks(runtime)
+        for name in ['first', 'second', 'relative']:
+            staged = runtime/relative/name
+            self.assertTrue(staged.is_symlink())
+            self.assertFalse(Path(os.readlink(staged)).is_absolute())
+            self.assertEqual(staged.read_bytes(), b'extracted asset')
+            self.assertEqual(staged.resolve(), runtime/relative/'target')
+        self.assertEqual(origins[str(relative/'first')]['resolved_path'], 'root/'+str(relative/'target'))
+
+    def test_absolute_usr_links_never_use_existing_host_file(self):
+        host = Path('/usr/bin/python3')
+        self.assertTrue(host.is_file())
+        target = self.put(1, 'root/usr/bin/python3', b'declared-root-only')
+        link = self.put(1, 'root/usr/share/fixture/link')
+        link.unlink()
+        link.symlink_to(host)
+        _, origin = package.dependency_file(self.directories, 'root/usr/share/fixture/link')
+        self.assertEqual(origin['sha256'], package.sha(target))
+        self.assertNotEqual(origin['sha256'], package.sha(host))
+        target.unlink()
+        with self.assertRaisesRegex(RuntimeError, 'missing or not regular'):
+            package.dependency_file(self.directories, 'root/usr/share/fixture/link')
+
+    def test_absolute_usr_intermediate_directory_link_is_rooted(self):
+        target = self.put(1, 'root/usr/share/fixture/actual/file')
+        (target.parent.parent/'alias').symlink_to('/usr/share/fixture/actual')
+        source, origin = package.dependency_file(self.directories, 'root/usr/share/fixture/alias/file')
+        self.assertEqual(source, target)
+        self.assertEqual(origin['resolved_path'], 'root/usr/share/fixture/actual/file')
+
+    def test_absolute_usr_link_cycles_and_escapes_are_rejected(self):
+        directory = self.directories[1]/'root/usr/share/fixture'
+        directory.mkdir(parents=True)
+        first, second = directory/'first', directory/'second'
+        first.symlink_to('/usr/share/fixture/second')
+        second.symlink_to('first')
+        with self.assertRaisesRegex(RuntimeError, 'symlink cycle'):
+            package.dependency_file(self.directories, 'root/usr/share/fixture/first')
+        second.unlink()
+        for destination in ['/etc/passwd', '../../../../outside', '/usr/../../outside']:
+            with self.subTest(destination=destination):
+                second.symlink_to(destination)
+                with self.assertRaisesRegex(RuntimeError, 'escapes root'):
+                    package.dependency_file(self.directories, 'root/usr/share/fixture/first')
+                second.unlink()
+
+    def test_allowlisted_trees_merge_only_matching_files(self):
+        relative = Path('usr/share/glib-2.0/schemas')
+        self.put(0, Path('root')/relative/'common.xml')
+        self.put(1, Path('root')/relative/'common.xml')
+        self.put(1, Path('root')/relative/'http.xml')
+        self.put(1, Path('root')/relative/'unused.pyc')
+        runtime, origins = self.work/'runtime', {}
+        package.copy_dependency_tree(self.directories, relative, runtime, origins)
+        self.assertEqual(sorted(p.name for p in (runtime/relative).iterdir()), ['common.xml', 'http.xml'])
+        self.assertEqual(origins[str(relative/'common.xml')]['matching_dependency_roots'], [0, 1])
+        self.assertEqual(origins[str(relative/'http.xml')]['dependency_root'], 1)
+        self.put(1, Path('root')/relative/'common.xml', b'inconsistent')
+        with self.assertRaisesRegex(RuntimeError, 'Conflicting dependency copies'):
+            package.copy_dependency_tree(self.directories, relative, runtime, {})
+
+    def test_tree_file_directory_collision_is_rejected(self):
+        relative = Path('usr/share/fixture')
+        self.put(0, Path('root')/relative)
+        self.put(1, Path('root')/relative/'child')
+        with self.assertRaisesRegex(RuntimeError, 'not regular'):
+            package.copy_dependency_tree(self.directories, relative, self.work/'runtime', {})
+
+    def test_missing_or_duplicate_root_is_rejected(self):
+        with self.assertRaisesRegex(RuntimeError, 'Dependency root missing'):
+            package.dependency_directories(self.work/'missing')
+        with self.assertRaisesRegex(RuntimeError, 'Duplicate dependency directory'):
+            package.dependency_directories(self.directories[0], [self.directories[0]])
+
+
+@unittest.skipUnless(shutil.which('dpkg-deb'), 'dpkg-deb is required for archive provenance fixtures')
+class DependencyNoticeTests(DependencyFixtures, unittest.TestCase):
+    def setUp(self):
+        super().setUp()
+        self.package_name = 'libfixture'
+        self.notice_relative = Path('root/usr/share/doc/libfixture/copyright')
+        self.notice = self.put(1, self.notice_relative, b'Fixture copyright notice\n')
+        self.put(1, Path('root')/self.lib)
+        control = self.put(1, 'root/DEBIAN/control',
+            b'Package: libfixture\nVersion: 1.0\nArchitecture: amd64\n'
+            b'Maintainer: Fixture <fixture@example.invalid>\n'
+            b'Source: fixture-source (1.0-1)\nDescription: Packaging test fixture\n')
+        self.archive_relative = Path('apt/archives/libfixture_1.0_amd64.deb')
+        self.archive = self.directories[1]/self.archive_relative
+        self.archive.parent.mkdir(parents=True)
+        subprocess.run(['dpkg-deb', '--build', str(control.parents[1]), str(self.archive)],
+                       check=True, capture_output=True)
+        self.item = {'package': self.package_name, 'version': '1.0', 'architecture': 'amd64',
+                     'filename': self.archive.name, 'sha256': package.sha(self.archive)}
+        self.bundle = self.work/'bundle'
+        self.bundle.mkdir()
+
+    def notices(self, packages=None):
+        return package.runtime_package_notices(self.directories,
+            packages or {self.archive.name: self.item}, {str(self.lib)}, self.bundle)
+
+    def test_secondary_archive_and_notice_are_both_recorded(self):
+        owner = self.notices()[self.package_name]
+        self.assertEqual(owner['archive_origin']['dependency_root'], 1)
+        self.assertEqual(owner['archive_origin']['path'], str(self.archive_relative))
+        self.assertEqual(owner['archive_origin']['sha256'], self.item['sha256'])
+        self.assertEqual(owner['copyright_origin']['dependency_root'], 1)
+        self.assertEqual(owner['copyright_origin']['path'], str(self.notice_relative))
+        self.assertEqual(owner['copyright_sha256'], package.sha(self.notice))
+        self.assertEqual(owner['source_package'], 'fixture-source')
+        self.assertEqual(owner['source_version'], '1.0-1')
+        self.assertEqual(owner['bundled_files'], [str(self.lib)])
+        self.assertEqual((self.bundle/owner['copyright']).read_bytes(), self.notice.read_bytes())
+
+    def test_matching_archives_and_notices_choose_first_root(self):
+        self.put(0, self.archive_relative, self.archive.read_bytes())
+        self.put(0, self.notice_relative, self.notice.read_bytes())
+        owner = self.notices()[self.package_name]
+        for field in ['archive_origin', 'copyright_origin']:
+            self.assertEqual(owner[field]['dependency_root'], 0)
+            self.assertEqual(owner[field]['matching_dependency_roots'], [0, 1])
+
+    def test_missing_archive_is_rejected(self):
+        self.archive.unlink()
+        with self.assertRaisesRegex(RuntimeError, 'Dependency file missing: apt/archives'):
+            self.notices()
+
+    def test_missing_notice_is_rejected(self):
+        self.notice.unlink()
+        with self.assertRaisesRegex(RuntimeError, 'Dependency file missing: root/usr/share/doc'):
+            self.notices()
+
+    def test_absolute_usr_notice_link_copies_declared_root_bytes(self):
+        notice_bytes = self.notice.read_bytes()
+        target = self.put(1, 'root/usr/share/doc/fixture-source/copyright', notice_bytes)
+        self.notice.unlink()
+        self.notice.symlink_to('/usr/share/doc/fixture-source/copyright')
+        owner = self.notices()[self.package_name]
+        self.assertEqual((self.bundle/owner['copyright']).read_bytes(), notice_bytes)
+        self.assertEqual(owner['copyright_origin']['resolved_path'], str(target.relative_to(self.directories[1])))
+
+    def test_conflicting_archive_copy_is_rejected(self):
+        self.put(0, self.archive_relative, b'wrong archive')
+        with self.assertRaisesRegex(RuntimeError, 'Conflicting dependency copies: apt/archives'):
+            self.notices()
+
+    def test_conflicting_notice_copy_is_rejected(self):
+        self.put(0, self.notice_relative, b'unrelated notice')
+        with self.assertRaisesRegex(RuntimeError, 'Conflicting dependency copies: root/usr/share/doc'):
+            self.notices()
+
+    def test_wrong_locked_checksum_is_rejected(self):
+        self.item['sha256'] = 'wrong checksum'
+        with self.assertRaisesRegex(RuntimeError, 'Locked archive checksum mismatch'):
+            self.notices()
+
+    def test_ambiguous_package_archives_cannot_overwrite_provenance(self):
+        other = {**self.item, 'filename': 'libfixture_other_amd64.deb', 'version': 'other'}
+        self.put(1, Path('apt/archives')/other['filename'], self.archive.read_bytes())
+        with self.assertRaisesRegex(RuntimeError, 'Ambiguous runtime package archives'):
+            self.notices({self.archive.name: self.item, other['filename']: other})
+
+
 @unittest.skipUnless(shutil.which('ninja'), 'Ninja is required for convergence fixtures')
 class FreshnessTests(unittest.TestCase):
     """Private, tiny Ninja/Meson-metadata fixtures; never use the GIMP build."""

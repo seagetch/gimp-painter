@@ -279,6 +279,180 @@ def copy_runtime(source, target):
         shutil.copy2(source, target)
 
 
+def dependency_directories(primary, extras=()):
+    """Keep the primary root first; do not infer roots from the host environment."""
+    directories = [Path(path).resolve() for path in (primary, *extras)]
+    if len(set(directories)) != len(directories):
+        raise RuntimeError('Duplicate dependency directory')
+    for directory in directories:
+        if not (directory/'root').is_dir():
+            raise RuntimeError(f'Dependency root missing: {directory}/root')
+    return directories
+
+
+def dependency_path(directory, relative, follow_final=True):
+    """Resolve extracted /usr links inside their root, never through the host."""
+    relative = Path(relative)
+    if not relative.parts or relative.is_absolute() or '..' in relative.parts:
+        raise RuntimeError(f'Invalid dependency path: {relative}')
+    extracted = relative.parts[0] == 'root'
+    boundary = directory/'root' if extracted else directory
+    if boundary.is_symlink():
+        raise RuntimeError(f'Dependency path escapes root: {boundary}')
+    pending = list(relative.parts[1:] if extracted else relative.parts)
+    resolved, links = [], 0
+    while pending:
+        part = pending.pop(0)
+        if part == '..':
+            if not resolved:
+                raise RuntimeError(f'Dependency path escapes root: {directory/relative}')
+            resolved.pop()
+            continue
+        path = boundary.joinpath(*resolved, part)
+        if path.is_symlink() and (follow_final or pending):
+            links += 1
+            if links > 40:
+                raise RuntimeError(f'Dependency symlink cycle or excessive chain: {directory/relative}')
+            link = Path(os.readlink(path))
+            if link.is_absolute():
+                if extracted and link.is_relative_to('/usr'):
+                    link = link.relative_to('/')
+                elif link.is_relative_to(boundary):
+                    link = link.relative_to(boundary)
+                else:
+                    raise RuntimeError(f'Dependency path escapes root: {path}')
+                resolved = []
+            pending = list(link.parts) + pending
+        else:
+            resolved.append(part)
+    return boundary.joinpath(*resolved)
+
+
+def dependency_file(directories, relative, required=True):
+    """Choose the first identical copy and retain every matching root's identity."""
+    relative = Path(relative)
+    matches = []
+    identity = None
+    for index, directory in enumerate(directories):
+        path = dependency_path(directory, relative, follow_final=False)
+        if not path.exists() and not path.is_symlink():
+            continue
+        resolved = dependency_path(directory, relative)
+        if not resolved.is_file():
+            raise RuntimeError(f'Dependency file missing or not regular: {path}')
+        current = {'sha256': sha(resolved), 'mode': oct(resolved.stat().st_mode & 0o777)}
+        if path.is_symlink():
+            current['symlink'] = os.readlink(path)
+        if identity is not None and current != identity:
+            raise RuntimeError(f'Conflicting dependency copies: {relative}')
+        identity = current
+        matches.append(index)
+    if not matches:
+        if required:
+            raise RuntimeError(f'Dependency file missing: {relative}')
+        return None
+    index = matches[0]
+    return dependency_path(directories[index], relative, follow_final=False), {
+        'dependency_root': index, 'matching_dependency_roots': matches,
+        'path': str(relative),
+        'resolved_path': str(dependency_path(directories[index], relative).relative_to(directories[index])),
+        **identity}
+
+
+def copy_dependency_tree(directories, relative, runtime, origins):
+    """Merge allowlisted runtime trees only when overlapping files agree."""
+    relative = Path(relative)
+    sources = [dependency_path(directory, Path('root')/relative, follow_final=False)
+               for directory in directories]
+    present = [path for path in sources if path.exists() or path.is_symlink()]
+    if not present:
+        return
+    if all(path.is_dir() and not path.is_symlink() for path in present):
+        target = runtime/relative
+        target.mkdir(parents=True, exist_ok=True)
+        shutil.copystat(present[0], target)
+        for name in sorted({child.name for source in present for child in source.iterdir()}):
+            if name == '__pycache__' or Path(name).suffix in {'.pyc', '.a', '.la', '.pc'}:
+                continue
+            copy_dependency_tree(directories, relative/name, runtime, origins)
+        return
+    source, origin = dependency_file(directories, Path('root')/relative)
+    target = runtime/relative
+    if source.is_symlink():
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if not target.exists() and not target.is_symlink():
+            link = os.readlink(source)
+            if Path(link).is_absolute() and Path(link).is_relative_to('/usr'):
+                # Rooted lookup has already checked the entire chain. Relocate
+                # now so chained absolute links never consult host /usr later.
+                local = runtime/Path(origin['resolved_path']).relative_to('root')
+                link = os.path.relpath(local, target.parent)
+            target.symlink_to(link)
+    else:
+        copy_runtime(source, target)
+    origins[str(relative)] = origin
+
+
+def dependency_library(directories, soname, resolved):
+    """Resolve an ldd edge without accepting a non-ABI library from the host."""
+    source = Path(resolved)
+    roots = [directory/'root' for directory in directories]
+    root = next((root for root in roots if source.is_relative_to(root)), None)
+    if root is None:
+        require_base_abi(soname)
+        return None
+    relative = source.relative_to(root)
+    selected, origin = dependency_file(directories, Path('root')/relative)
+    # The same SONAME can also be present in a different loader search directory.
+    # An ordered search must not silently hide incompatible bytes there either.
+    for suffix in ['', '/blas', '/lapack']:
+        match = dependency_file(directories,
+            f'root/usr/lib/{TRIPLET}{suffix}/{soname}', required=False)
+        if match and (match[1]['sha256'], match[1]['mode']) != (origin['sha256'], origin['mode']):
+            raise RuntimeError(f'Conflicting dependency SONAME: {soname}')
+    origin['archive_path'] = str(Path(origin['resolved_path']).relative_to('root'))
+    return selected, relative, origin
+
+
+def runtime_package_notices(directories, packages, bundled_paths, bundle):
+    """Resolve locked archives and notices across exactly the declared roots."""
+    owners, notices = {}, bundle/'licenses'
+    notices.mkdir()
+    for filename, item in sorted(packages.items()):
+        archive, archive_origin = dependency_file(directories, Path('apt/archives')/filename)
+        archive = directories[archive_origin['dependency_root']]/archive_origin['resolved_path']
+        proc = subprocess.Popen(['dpkg-deb', '--fsys-tarfile', str(archive)], stdout=subprocess.PIPE)
+        paths = set()
+        with tarfile.open(fileobj=proc.stdout, mode='r|') as tar:
+            for member in tar:
+                paths.add(member.name.removeprefix('./'))
+        proc.stdout.close()
+        if proc.wait() != 0:
+            raise RuntimeError(f'Could not inspect archive: {filename}')
+        used = sorted(paths & bundled_paths)
+        if not used:
+            continue
+        if archive_origin['sha256'] != item['sha256']:
+            raise RuntimeError(f'Locked archive checksum mismatch: {filename}')
+        if item['package'] in owners:
+            raise RuntimeError(f'Ambiguous runtime package archives: {item["package"]}')
+        source_field = command(['dpkg-deb', '-f', archive, 'Source'])
+        source_name = (source_field or item['package']).split()[0]
+        source_version = re.search(r'\((.*?)\)', source_field)
+        source_version = source_version.group(1) if source_version else item['version']
+        doc, doc_origin = dependency_file(directories,
+            Path('root/usr/share/doc')/item['package']/'copyright')
+        copyright_dest = notices/(item['package']+'.copyright')
+        shutil.copy2(directories[doc_origin['dependency_root']]/doc_origin['resolved_path'], copyright_dest)
+        owners[item['package']] = {**item, 'source_package': source_name,
+            'source_version': source_version,
+            'source_index': 'https://snapshot.debian.org/package/'+urllib.parse.quote(source_name)+'/'+urllib.parse.quote(source_version, safe='')+'/',
+            'archive_origin': archive_origin, 'copyright_origin': doc_origin,
+            'copyright': str(copyright_dest.relative_to(bundle)),
+            'copyright_sha256': sha(copyright_dest), 'bundled_files': used}
+    return owners
+
+
 def relative_symlinks(root):
     for path in root.rglob('*'):
         if not path.is_symlink():
@@ -312,6 +486,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--build', type=Path, default=REPO/'build-debian13')
     parser.add_argument('--deps', type=Path, required=True)
+    parser.add_argument('--extra-deps', type=Path, action='append', default=[],
+                        help='Additional dependency directory (repeatable, searched after --deps); overlapping files must match')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--candidate', action='store_true')
     parser.add_argument('--aggregate-gate', type=Path)
@@ -319,7 +495,11 @@ def main():
     parser.add_argument('--source-archive', action='store_true',
                         help='Only after review confirms committed evidence contains no private data')
     args = parser.parse_args()
-    build, deps, output = args.build.resolve(), args.deps.resolve(), args.output.resolve()
+    build, output = args.build.resolve(), args.output.resolve()
+    try:
+        dependencies = dependency_directories(args.deps, args.extra_deps)
+    except RuntimeError as error:
+        parser.error(str(error))
     if output.exists():
         parser.error('Output must not exist; choose a new destination to preserve evidence')
     options = {o['name']: o['value'] for o in json.loads((build/'meson-info/intro-buildoptions.json').read_text())}
@@ -410,14 +590,15 @@ def main():
     shutil.move(installed, bundle/'usr')
     runtime = bundle/'deps'
     runtime.mkdir()
-    dep_root = deps/'root'
+    dependency_origins = {}
     for rel in DEPENDENCY_TREES:
-        source = dep_root/rel
-        if source.exists():
-            copy_runtime(source, runtime/rel)
+        copy_dependency_tree(dependencies, rel, runtime, dependency_origins)
     # Inspect every installed executable/shared library plus all dlopen module roots.
+    library_paths = [str(bundle/'usr/lib'/TRIPLET)]
+    library_paths += [str(directory/'root/usr/lib'/TRIPLET)+suffix
+                      for directory in dependencies for suffix in ['', '/blas', '/lapack']]
     env = {'PATH': '/usr/bin:/bin', 'LC_ALL': 'C',
-           'LD_LIBRARY_PATH': f'{bundle}/usr/lib/{TRIPLET}:{dep_root}/usr/lib/{TRIPLET}:{dep_root}/usr/lib/{TRIPLET}/blas:{dep_root}/usr/lib/{TRIPLET}/lapack'}
+           'LD_LIBRARY_PATH': ':'.join(library_paths)}
     queue = [p for top in (bundle/'usr', runtime) for p in top.rglob('*') if elf(p)]
     inspected, edges, host = set(), {}, {}
     while queue:
@@ -441,17 +622,21 @@ def main():
             row = {'soname': soname}
             if source.is_relative_to(bundle):
                 row['bundled'] = str(source.relative_to(bundle))
-            elif source.is_relative_to(dep_root) and soname not in BASE_ABI:
-                rel = source.relative_to(dep_root)
+            elif soname not in BASE_ABI:
+                source, rel, origin = dependency_library(dependencies, soname, source)
                 # Dereference version links and install the requested SONAME as a regular file.
                 # This is intentional: no library symlink can escape the relocatable bundle.
                 target = runtime/rel
                 target.parent.mkdir(parents=True, exist_ok=True)
                 if not target.exists():
-                    shutil.copy2(source.resolve(), target)
+                    shutil.copy2(dependencies[origin['dependency_root']]/origin['resolved_path'], target)
                     queue.append(target)
+                elif sha(target) != origin['sha256']:
+                    raise RuntimeError(f'Conflicting staged dependency: {rel}')
+                dependency_origins[str(rel)] = origin
                 row['bundled'] = str(target.relative_to(bundle))
-                row['archive_path'] = str(source.resolve().relative_to(dep_root))
+                row['archive_path'] = origin['archive_path']
+                row['dependency_root'] = origin['dependency_root']
             else:
                 require_base_abi(soname)
                 system_path = Path('/usr/lib')/TRIPLET/soname
@@ -464,7 +649,9 @@ def main():
     relative_symlinks(runtime)
     # GLib schemas are relocatable bytecode; generate them from the pinned runtime XML.
     schemas = runtime/'usr/share/glib-2.0/schemas'
-    subprocess.run([str(dep_root/'usr/bin/glib-compile-schemas'), str(schemas)], env=env, check=True)
+    schema_compiler, schema_compiler_origin = dependency_file(dependencies, 'root/usr/bin/glib-compile-schemas')
+    schema_compiler = dependencies[schema_compiler_origin['dependency_root']]/schema_compiler_origin['resolved_path']
+    subprocess.run([str(schema_compiler), str(schemas)], env=env, check=True)
     # This baseline was not configured with relocatable-bundle=yes. Its standard
     # MyPaint path is compile-time absolute, so override only that search path in
     # the bundled system config using GIMP's supported environment expansion.
@@ -479,43 +666,16 @@ def main():
     for lock in locks:
         if lock.exists():
             for item in json.loads(lock.read_text())['packages']:
+                previous = packages.get(item['filename'])
+                if previous and any(previous[key] != item[key] for key in
+                        ['package', 'version', 'architecture', 'sha256']):
+                    raise RuntimeError(f'Conflicting locked archive: {item["filename"]}')
                 packages[item['filename']] = item
     bundled_paths = {str(p.relative_to(runtime)) for p in runtime.rglob('*') if p.is_file() or p.is_symlink()}
     # SONAMEs can be links to versioned files; add original targets for package ownership lookup.
     bundled_paths |= {r['archive_path'] for rows in edges.values() for r in rows if 'archive_path' in r}
-    owners, notices = {}, bundle/'licenses'
-    notices.mkdir()
-    for filename, item in sorted(packages.items()):
-        archive = deps/'apt/archives'/filename
-        if not archive.exists():
-            raise RuntimeError(f'Locked archive missing: {filename}')
-        proc = subprocess.Popen(['dpkg-deb', '--fsys-tarfile', str(archive)], stdout=subprocess.PIPE)
-        paths = set()
-        with tarfile.open(fileobj=proc.stdout, mode='r|') as tar:
-            for member in tar:
-                paths.add(member.name.removeprefix('./'))
-        proc.stdout.close()
-        if proc.wait() != 0:
-            raise RuntimeError(f'Could not inspect archive: {filename}')
-        used = sorted(paths & bundled_paths)
-        if not used:
-            continue
-        if sha(archive) != item['sha256']:
-            raise RuntimeError(f'Locked archive checksum mismatch: {filename}')
-        source_field = command(['dpkg-deb', '-f', archive, 'Source'])
-        source_name = (source_field or item['package']).split()[0]
-        source_version = re.search(r'\((.*?)\)', source_field)
-        source_version = source_version.group(1) if source_version else item['version']
-        doc = dep_root/'usr/share/doc'/item['package']/'copyright'
-        if not doc.exists():
-            raise RuntimeError(f'License notice missing for {item["package"]}')
-        copyright_dest = notices/(item['package']+'.copyright')
-        shutil.copy2(doc.resolve(), copyright_dest)
-        owners[item['package']] = {**item, 'source_package': source_name,
-            'source_version': source_version,
-            'source_index': 'https://snapshot.debian.org/package/'+urllib.parse.quote(source_name)+'/'+urllib.parse.quote(source_version, safe='')+'/',
-            'copyright': str(copyright_dest.relative_to(bundle)),
-            'copyright_sha256': sha(copyright_dest), 'bundled_files': used}
+    owners = runtime_package_notices(dependencies, packages, bundled_paths, bundle)
+    notices = bundle/'licenses'
     source_notices = {}
     # Meson installs artwork/plug-ins without every accompanying source notice.
     # Preserve every tracked explicit notice from both pinned source trees.
@@ -531,10 +691,19 @@ def main():
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, target)
             source_notices[label+'/'+rel] = {'sha256':sha(source),'bundled':str(target.relative_to(bundle))}
-    common = dep_root/'usr/share/common-licenses'
-    if not common.exists():
+    common_origins = {}
+    common_relative = 'usr/share/common-licenses'
+    if any((directory/'root'/common_relative).exists() for directory in dependencies):
+        copy_dependency_tree(dependencies, common_relative, notices, common_origins)
+        shutil.move(notices/common_relative, notices/'common-licenses')
+        (notices/'usr/share').rmdir()
+        (notices/'usr').rmdir()
+        relative_symlinks(notices/'common-licenses')
+    else:
+        # Preserve the existing common-license fallback, and make its origin explicit.
         common = Path('/usr/share/common-licenses')
-    shutil.copytree(common, notices/'common-licenses', symlinks=False)
+        shutil.copytree(common, notices/'common-licenses', symlinks=False)
+        common_origins = {'host_directory': str(common), 'files': inventory(notices/'common-licenses')}
     launcher = REPO/'migration/packaging/AppRun'
     shutil.copy2(launcher, bundle/'AppRun')
     (bundle/'AppRun').chmod(0o755)
@@ -559,6 +728,9 @@ def main():
         'build_options': safe_options, 'build_inputs': {},
         'package_recipe_sha256': sha(Path(__file__)), 'launcher_sha256': sha(bundle/'AppRun'),
         'source_notices': source_notices, 'runtime_debian_packages': owners, 'host_runtime': host, 'elf_dependency_graph': edges,
+        'dependency_roots': [str(directory) for directory in dependencies],
+        'runtime_dependency_sources': dependency_origins, 'common_license_sources': common_origins,
+        'schema_compiler_source': schema_compiler_origin,
         'packaging_adaptations': ['bundle-local standard MyPaint resource override in system gimprc',
             'generated GLib schema cache', 'launcher-regenerated pixbuf/GTK IM module caches'],
         'platform_gates': {'linux_x86_64': 'runtime smoke pending',
