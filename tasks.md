@@ -266,7 +266,7 @@
 | 04.003 | [x] | C ヘッダーの C++ 可読性を監査する | 04.002/common-foundation, 01.017 | 既存42 header経路・89 hunk義務を監査し予約語/flags変換を修正。C/C++二重include、全18macro展開とABI配置の88 probe合格（`migration/contracts/c-header-audit.md`）。後続feature追加headerと他platformは各作業で検証 |
 | 04.004 | [x] | C 公開ヘッダーの linkage を整える | 04.003 | C と C++ の両方から include できる |
 | 04.005 | [x] | C++ 専用ヘッダーの公開範囲を制限する | 04.004 | C の translation unit に template・STL が漏れない |
-| 04.006 | [ ] | 相互呼出しの最小試験を作る | 04.005 | C→C++→C の値とエラーが往復する |
+| 04.006 | [x] | 相互呼出しの最小試験を作る | 04.005 | C→C++→C の値とエラーが往復する |
 | 04.007 | [ ] | GObject callback から C++ への最小試験を作る | 04.006 | constructor・callback・destructor の順が確認できる |
 | 04.008 | [ ] | 最終リンクの C++ runtime を接続する | 04.007 | C 主体 executable から C++ object を解決できる |
 | 04.009 | [ ] | 静的 library のリンク順を検証する | 04.008 | 未参照登録 object の脱落と循環依存を検出 |

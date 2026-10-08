@@ -143,3 +143,20 @@ rechecks lifecycle before publication. Rejected completed constructions close
 and destroy their state exactly once. This defensive check does not authorize
 production constructors to fire callbacks. During final destruction, every
 implementation access is rejected and reentrant close is a no-op.
+
+## Minimal mixed-language round trip (original 04.006)
+
+The C-compiled `tests/test-c-api.c` now registers three named `/painter/interop`
+cases. It calls the C++ implementation in `tests/test-foundation.cpp`, which
+calls the real C callback and uses the production `boundary.hpp` conversion.
+The test checks the callback input/count and returned values, the exception's
+GError domain/code/message, zeroed failure output, caller-owned error cleanup,
+and omission of the optional error output. No production API is changed.
+
+The [native result](../tests/cpp-roundtrip-native.json) records all 37 foundation
+cases and the three-case selection passing, the actual C/C++ compiler commands,
+plain C symbol references in both objects, and the C++ final link to the real
+bridge archive. There are no canonical source-duty rows assigned to 04.006.
+This closes its original minimum criterion; GObject lifecycle (04.007), full
+application linking (04.008), platform and feature acceptance remain separate.
+Earlier SHA-frozen reports describe their original snapshots and are preserved.
