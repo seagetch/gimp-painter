@@ -258,3 +258,17 @@ it does not bind all headers or discover future source-list additions. Such
 changes require fresh builds and link evidence. The executed checker is
 preserved separately from a documented wording-only clarification. Platform,
 feature-runtime and earlier historical-source-drift gates remain separate.
+
+
+### Direct JSON dependency acceptance (existing 04.009/json-dependency)
+
+The default/HTTP direct-link reports published with 04.009 satisfy this existing
+child's dependency criterion. All ten recorded source identities still match.
+`json_glib` is required and appears directly in the core archive, MyPaint
+Resource archive and its exported internal dependency. Native preset objects
+have real JSON references: omitting JSON from strict final links fails even
+with GEGL/Soup available. Real Resource links and reader/writer smoke succeed
+with only JSON-GLib/GIO/GLib and fail when JSON is removed. This establishes
+independence from accidental transitive JSON linkage; removing the full app's
+semantic GEGL APIs is not asserted. No new native run is attributed to this
+acceptance update. Complete persistence fixtures and platform gates remain open.
