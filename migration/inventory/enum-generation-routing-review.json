@@ -1,0 +1,234 @@
+{
+  "task": "04.013",
+  "baseline_commit": "818ed559d007aac618120df20aaf76cee7c087af",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "base_commit": "a61915a8e62aad8855cd8c620bdb7195a25ffb90",
+  "criterion": {
+    "task": "04.013",
+    "action": "enum 等の生成規則を Meson に接続する",
+    "acceptance": "生成元変更で C/C++ 両方の対象が再ビルドされる",
+    "dependency": "04.012"
+  },
+  "source_registration_review": [
+    {
+      "source_kind": "hunk",
+      "source_id": "01.002/001009",
+      "source_path": "app/pdb/Makefile.am",
+      "source_blob": "12a94259835da77e2a77e97848b11619c61a7c5e",
+      "source_range": "-40,0 -> 43",
+      "source_payload": "+\tmypaint-brush-select-cmds.c\t\\\n",
+      "source_payload_sha256": "97eea4f2b16120e7471f23a511f43a131e2aee6bec98e616e8d1752ea919c37e",
+      "current_counterpart_expected": "app/pdb/mypaint-brush-select-cmds.c",
+      "current_counterpart_exists": false,
+      "registration_owner": "app/pdb/meson.build",
+      "existing_duties": [
+        {
+          "work_id": "legacy-3736759af816c17c67f7",
+          "wbs_task": "04.013",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "enum 等の生成規則を Meson に接続する",
+          "acceptance": "生成元変更で C/C++ 両方の対象が再ビルドされる"
+        },
+        {
+          "work_id": "legacy-90c17648589b785885ea",
+          "wbs_task": "30.012",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "追加 PDB 手順を現行形式へ登録する",
+          "acceptance": "引数と戻り値が現行 caller から使える"
+        },
+        {
+          "work_id": "legacy-2ac2a41fd5b08de0c537",
+          "wbs_task": "30.013",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "生成された PDB コードを更新する",
+          "acceptance": "生成元と成果物に乖離がない"
+        },
+        {
+          "work_id": "legacy-ec240a5a7eee072cd906",
+          "wbs_task": "34.013",
+          "phase": "verification",
+          "status": "TODO",
+          "action": "生成物の差分検査を登録する",
+          "acceptance": "enum/PDB 等の再生成漏れを検出"
+        }
+      ],
+      "removed_duplicate_work_id": "legacy-3736759af816c17c67f7",
+      "implementation_tasks": [
+        "30.012",
+        "30.013"
+      ],
+      "verification_tasks": [
+        "34.013"
+      ],
+      "reason": "Adds only a named MyPaint-selection PDB input or generated C/header to a source list. The missing API and its generated registration remain explicit TODO obligations in30.012/30.013, with generated-output verification in34.013. It changes no common generator rule or C/C++ dependency; remove only the duplicate04.013 assignment without claiming feature completion."
+    },
+    {
+      "source_kind": "hunk",
+      "source_id": "01.002/002293",
+      "source_path": "libgimp/Makefile.am",
+      "source_blob": "35a3bb4fd59e387655461b77e8289646a7835cad",
+      "source_range": "-127 -> 127,2",
+      "source_payload": "-\tgimpvectors_pdb.c\n+\tgimpvectors_pdb.c\t\t\\\n+\tgimpmypaintbrushselect_pdb.c\t\n",
+      "source_payload_sha256": "f5c44ecf908f08e661b0f7b597ded0e829b425abfad13b5495eae9f30ac72f79",
+      "current_counterpart_expected": "libgimp/gimpmypaintbrushselect_pdb.c",
+      "current_counterpart_exists": false,
+      "registration_owner": "libgimp/meson.build",
+      "existing_duties": [
+        {
+          "work_id": "legacy-471b55534a1a1ec060ac",
+          "wbs_task": "04.013",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "enum 等の生成規則を Meson に接続する",
+          "acceptance": "生成元変更で C/C++ 両方の対象が再ビルドされる"
+        },
+        {
+          "work_id": "legacy-fb789dbffee715be56f7",
+          "wbs_task": "30.012",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "追加 PDB 手順を現行形式へ登録する",
+          "acceptance": "引数と戻り値が現行 caller から使える"
+        },
+        {
+          "work_id": "legacy-296fe686e0d461930927",
+          "wbs_task": "30.013",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "生成された PDB コードを更新する",
+          "acceptance": "生成元と成果物に乖離がない"
+        },
+        {
+          "work_id": "legacy-461717015a883277c351",
+          "wbs_task": "34.013",
+          "phase": "verification",
+          "status": "TODO",
+          "action": "生成物の差分検査を登録する",
+          "acceptance": "enum/PDB 等の再生成漏れを検出"
+        }
+      ],
+      "removed_duplicate_work_id": "legacy-471b55534a1a1ec060ac",
+      "implementation_tasks": [
+        "30.012",
+        "30.013"
+      ],
+      "verification_tasks": [
+        "34.013"
+      ],
+      "reason": "Adds only a named MyPaint-selection PDB input or generated C/header to a source list. The missing API and its generated registration remain explicit TODO obligations in30.012/30.013, with generated-output verification in34.013. It changes no common generator rule or C/C++ dependency; remove only the duplicate04.013 assignment without claiming feature completion."
+    },
+    {
+      "source_kind": "hunk",
+      "source_id": "01.002/002294",
+      "source_path": "libgimp/Makefile.am",
+      "source_blob": "35a3bb4fd59e387655461b77e8289646a7835cad",
+      "source_range": "-180 -> 181,2",
+      "source_payload": "-\tgimpvectors_pdb.h\n+\tgimpvectors_pdb.h\t\t\\\n+\tgimpmypaintbrushselect_pdb.h\n",
+      "source_payload_sha256": "4d91e18e53fd592b41a402347c6aa199c2410b2d9489d5373ed72c260633cce3",
+      "current_counterpart_expected": "libgimp/gimpmypaintbrushselect_pdb.h",
+      "current_counterpart_exists": false,
+      "registration_owner": "libgimp/meson.build",
+      "existing_duties": [
+        {
+          "work_id": "legacy-789d0b998334d635df62",
+          "wbs_task": "04.013",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "enum 等の生成規則を Meson に接続する",
+          "acceptance": "生成元変更で C/C++ 両方の対象が再ビルドされる"
+        },
+        {
+          "work_id": "legacy-8fa1374db35a45b8f47b",
+          "wbs_task": "30.012",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "追加 PDB 手順を現行形式へ登録する",
+          "acceptance": "引数と戻り値が現行 caller から使える"
+        },
+        {
+          "work_id": "legacy-0ab35695dd66debb48d2",
+          "wbs_task": "30.013",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "生成された PDB コードを更新する",
+          "acceptance": "生成元と成果物に乖離がない"
+        },
+        {
+          "work_id": "legacy-728620a592695a3ccbdc",
+          "wbs_task": "34.013",
+          "phase": "verification",
+          "status": "TODO",
+          "action": "生成物の差分検査を登録する",
+          "acceptance": "enum/PDB 等の再生成漏れを検出"
+        }
+      ],
+      "removed_duplicate_work_id": "legacy-789d0b998334d635df62",
+      "implementation_tasks": [
+        "30.012",
+        "30.013"
+      ],
+      "verification_tasks": [
+        "34.013"
+      ],
+      "reason": "Adds only a named MyPaint-selection PDB input or generated C/header to a source list. The missing API and its generated registration remain explicit TODO obligations in30.012/30.013, with generated-output verification in34.013. It changes no common generator rule or C/C++ dependency; remove only the duplicate04.013 assignment without claiming feature completion."
+    },
+    {
+      "source_kind": "hunk",
+      "source_id": "01.002/002484",
+      "source_path": "tools/pdbgen/Makefile.am",
+      "source_blob": "564d6030f4e1039cf8b8021127b2bbd932e69d17",
+      "source_range": "-54 -> 54,2",
+      "source_payload": "-\tpdb/vectors.pdb\n+\tpdb/vectors.pdb\t\t\t\\\n+\tpdb/mypaint_brush_select.pdb\n",
+      "source_payload_sha256": "87c99f75e185b053ecc4e7303a3e9970b58f45c1810300dc2204e8e5804aa7f0",
+      "current_counterpart_expected": "pdb/groups/mypaint_brush_select.pdb",
+      "current_counterpart_exists": false,
+      "registration_owner": "pdb/meson.build",
+      "existing_duties": [
+        {
+          "work_id": "legacy-fe764cc2f01c73f73726",
+          "wbs_task": "04.013",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "enum 等の生成規則を Meson に接続する",
+          "acceptance": "生成元変更で C/C++ 両方の対象が再ビルドされる"
+        },
+        {
+          "work_id": "legacy-eafb85d659eb18dc8a44",
+          "wbs_task": "30.012",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "追加 PDB 手順を現行形式へ登録する",
+          "acceptance": "引数と戻り値が現行 caller から使える"
+        },
+        {
+          "work_id": "legacy-1fbf88a1bd1b22942966",
+          "wbs_task": "30.013",
+          "phase": "implementation",
+          "status": "TODO",
+          "action": "生成された PDB コードを更新する",
+          "acceptance": "生成元と成果物に乖離がない"
+        },
+        {
+          "work_id": "legacy-18a1b1ba76759d8f0837",
+          "wbs_task": "34.013",
+          "phase": "verification",
+          "status": "TODO",
+          "action": "生成物の差分検査を登録する",
+          "acceptance": "enum/PDB 等の再生成漏れを検出"
+        }
+      ],
+      "removed_duplicate_work_id": "legacy-fe764cc2f01c73f73726",
+      "implementation_tasks": [
+        "30.012",
+        "30.013"
+      ],
+      "verification_tasks": [
+        "34.013"
+      ],
+      "reason": "Adds only a named MyPaint-selection PDB input or generated C/header to a source list. The missing API and its generated registration remain explicit TODO obligations in30.012/30.013, with generated-output verification in34.013. It changes no common generator rule or C/C++ dependency; remove only the duplicate04.013 assignment without claiming feature completion."
+    }
+  ]
+}

@@ -1425,6 +1425,8 @@ module_dependencies = find_program('tools'/'module-dependencies.py')
 meson_install_subdir= find_program('tools'/'meson_install_subdir.py')
 
 gimp_mkenums = find_program('tools' / 'gimp-mkenums')
+# meson-mkenums.py invokes this parser internally; track it for every wrapper.
+gimp_mkenums_source = files('tools/gimp-mkenums')
 mkenums_wrap = find_program(meson.current_source_dir() / 'tools' / 'meson-mkenums.py')
 
 libgimp_mkenums_dtails = \
