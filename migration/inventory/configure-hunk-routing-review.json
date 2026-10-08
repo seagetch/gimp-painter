@@ -1,0 +1,880 @@
+{
+  "scope": "Reviewed source-ledger correction for original 04.007; exactly thirteen configure.ac hunks, with all replacement source duties TODO",
+  "baseline_commit": "f70f64b2fecb44bd2ccf35cb71ee90725b0cdf2f",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "base_commit": "a61915a8e62aad8855cd8c620bdb7195a25ffb90",
+  "source_repository": "https://github.com/seagetch/gimp-painter.git",
+  "base_repository": "https://github.com/GNOME/gimp.git",
+  "verified_blobs": {
+    "base": {
+      "git_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "bytes": 72434,
+      "sha256": "47a018561bc1a9b5c2f1a68b24d795cb913892f608bb4d7df95c469410e7182b",
+      "path": "base/configure.ac"
+    },
+    "source": {
+      "git_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "bytes": 73666,
+      "sha256": "c0c8adb27348aaeda97bb384fe3ff55cbe5e237030322d46ddbbc0f4219c6c3a",
+      "path": "source/configure.ac"
+    }
+  },
+  "original_callback_criterion": {
+    "title": "GObject callback から C++ への最小試験を作る",
+    "acceptance": "constructor・callback・destructor の順が確認できる",
+    "line": 270,
+    "original_status": "[ ]"
+  },
+  "finding": "All thirteen assigned configure.ac hunks have no GObject callback code. Diff scope headings are context only; neither the GIMP project name nor its version is changed by these payloads.",
+  "preservation": "Keep original hunk IDs, ranges, source/base blobs, payload hashes, source_scope and all unreviewed work unchanged. All replacement source work is TODO, including routes to historical completed baseline tasks; no WBS status is inferred or changed by this proposal.",
+  "prior_work_snapshot": "migration/tests/configure-hunk-routing/prior-work-items.json",
+  "old_configure_work_count": 91,
+  "new_configure_work_count": 49,
+  "mappings": [
+    {
+      "hunk_id": "01.002/001888",
+      "assignment_id": "01.013/hunk-001888",
+      "index": 1,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-43,2 -> 43,2",
+      "diff_header": "@@ -43,2 +43,2 @@ m4_define([gimp_full_name], [GNU Image Manipulation Program])",
+      "source_scope_unchanged_context": "m4_define([gimp_full_name], [GNU Image Manipulation Program])",
+      "payload_sha256": "34d8c7c35e7a410e288560535f8ec6525f5e9c3f09f94d9a3a855173891728ba",
+      "payload": "-m4_define([babl_required_version], [0.1.10])\n-m4_define([gegl_required_version], [0.2.0])\n+m4_define([babl_required_version], [0.1.12])\n+m4_define([gegl_required_version], [0.3.0])\n",
+      "original_callback_work_id": "legacy-2ded2a884137da160729",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001888",
+      "feature": "Babl and GEGL minimum dependency versions",
+      "implementation_tasks": [
+        "03.002"
+      ],
+      "verification_tasks": [
+        "34.001",
+        "34.006"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-987524d2a8b7b6e4ef5b",
+        "legacy-a780e42b7cd7a42051a3",
+        "legacy-e7ef26b0f358059bb5f2"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Changes only Babl 0.1.10 to 0.1.12 and GEGL 0.2.0 to 0.3.0. Retain the version requirement and prove its current dependency replacement; do not transplant the old versions into GIMP 3. The gimp_full_name source_scope is unchanged diff context, not a project-name change. Dependency configuration belongs to 03.002 and current release/cross-platform compile verification to 34.001/34.006.",
+      "current_source_references": [
+        "meson.build:437",
+        "meson.build:461",
+        "migration/inventory/legacy-dependencies.md"
+      ],
+      "semantic_category": "dependency-versions"
+    },
+    {
+      "hunk_id": "01.002/001889",
+      "assignment_id": "01.013/hunk-001889",
+      "index": 2,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-56 -> 56",
+      "diff_header": "@@ -56 +56 @@ m4_define([webkit_required_version], [1.6.1])",
+      "source_scope_unchanged_context": "m4_define([webkit_required_version], [1.6.1])",
+      "payload_sha256": "f24c8f6999a9cecc23a6cb747d807c67223c2afccd258128fa95a430bf965286",
+      "payload": "-m4_define([alsa_required_version], [1.0.0])\n+m5_define([alsa_required_version], [1.0.0])\n",
+      "original_callback_work_id": "legacy-c22d28bfc7683be330b4",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001889",
+      "feature": "ALSA dependency macro defect and optional configuration",
+      "implementation_tasks": [
+        "03.006"
+      ],
+      "verification_tasks": [
+        "34.001",
+        "38.001"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-660ee5c728f454bd545b",
+        "legacy-66bc52b14a47e2ffb6a4",
+        "legacy-886b0775fedd9c844c88"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "The complete payload changes m4_define to m5_define while keeping ALSA 1.0.0. Treat this as a suspicious source macro defect, not as a callback or a requested feature deletion. Keep the optional ALSA dependency contract in the current Meson options; verify current release configuration and retain final source disposition review. No claim that the legacy macro defect is harmless is made.",
+      "current_source_references": [
+        "meson.build:1094",
+        "meson_options.txt:39"
+      ],
+      "semantic_category": "alsa-option"
+    },
+    {
+      "hunk_id": "01.002/001890",
+      "assignment_id": "01.013/hunk-001890",
+      "index": 3,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-61,0 -> 62",
+      "diff_header": "@@ -61,0 +62 @@ m4_define([libcurl_required_version], [7.15.1])",
+      "source_scope_unchanged_context": "m4_define([libcurl_required_version], [7.15.1])",
+      "payload_sha256": "33d74528177bc4b4f5172c3702b8b45d27436ed0122ef6f974652b8cf3f5432b",
+      "payload": "+m4_define([libsoup_required_version], [2.46])\n",
+      "original_callback_work_id": "legacy-54c931078a09f204d11b",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001890",
+      "feature": "Optional HTTP Soup dependency",
+      "implementation_tasks": [
+        "31.003",
+        "31.004"
+      ],
+      "verification_tasks": [
+        "31.009",
+        "31.010"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-14d2029816b0738e44b7",
+        "legacy-99891ce6c60bd390e403",
+        "legacy-8e7b60f9cf8e969e8461",
+        "legacy-be422c089852030e19be"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Adds libsoup >=2.46 metadata for the HTTP subsystem. Preserve the optional feature boundary and adapt it to the adopted Soup API; verify both disabled core independence and enabled endpoint behavior. The old library version is provenance, not the required GIMP 3 ABI.",
+      "current_source_references": [
+        "meson.build:535",
+        "meson_options.txt:74",
+        "app/httpd/meson.build:5"
+      ],
+      "semantic_category": "http-dependency"
+    },
+    {
+      "hunk_id": "01.002/001891",
+      "assignment_id": "01.013/hunk-001891",
+      "index": 4,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-69,0 -> 71",
+      "diff_header": "@@ -69,0 +71 @@ m4_define([python2_required_version], [2.5.0])",
+      "source_scope_unchanged_context": "m4_define([python2_required_version], [2.5.0])",
+      "payload_sha256": "250882ee928e086b0ecfd32f6ac0b87b78f3c96b66faa81f50b64455a204e7f6",
+      "payload": "+m4_define([json_glib_required_version],[1.0])\n",
+      "original_callback_work_id": "legacy-05aca1ce7e42660f96d1",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001891",
+      "feature": "Required JSON dependency for brush and preset persistence",
+      "implementation_tasks": [
+        "04.009"
+      ],
+      "verification_tasks": [
+        "19.015",
+        "28.015",
+        "31.009"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-292c51c1982b9d590183",
+        "legacy-b9988e4e1bf55e36098d",
+        "legacy-0c4e3ac047a10330691f",
+        "legacy-2309a5680c3b5f69a9cb"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Adds JSON-GLib >=1.0 metadata. JSON is shared by brush/preset persistence and must not become HTTP-only or rely on an accidental transitive archive dependency. Existing original 04.009 owns link dependency/order verification; its already-existing 04.009/json-dependency child contains the precise direct-link duty and remains unchanged. Verify brush/preset round trips and HTTP-disabled persistence.",
+      "current_source_references": [
+        "meson.build:531",
+        "app/core/meson.build:307",
+        "tasks.md:273",
+        "migration/inventory/legacy-dependencies.md"
+      ],
+      "semantic_category": "json-dependency"
+    },
+    {
+      "hunk_id": "01.002/001892",
+      "assignment_id": "01.013/hunk-001892",
+      "index": 5,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-165,0 -> 168,4",
+      "diff_header": "@@ -165,0 +168,4 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, \"$GETTEXT_PACKAGE\",",
+      "source_scope_unchanged_context": "AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, \"$GETTEXT_PACKAGE\",",
+      "payload_sha256": "ec19df92c03827848c99b9241e151add6da3f376d638084107766b13cf04eb8d",
+      "payload": "+# Determine a CXX compiler to use\n+AC_PROG_CXX\n+AC_PROG_CXX_C_O\n+AX_CXX_COMPILE_STDCXX_14\n",
+      "original_callback_work_id": "legacy-16dd4aa9d3fb0eabfb3c",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001892",
+      "feature": "C++ compiler detection and C++14 standard",
+      "implementation_tasks": [
+        "03.001",
+        "03.007"
+      ],
+      "verification_tasks": [
+        "07.014",
+        "34.006"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-2a8ef92b37aeec4ae68f",
+        "legacy-1088ab99e18ed218b16b",
+        "legacy-9e61b8aac7871dfbd3cc",
+        "legacy-22bb7d0be47d473d1686"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Adds only AC_PROG_CXX, AC_PROG_CXX_C_O and AX_CXX_COMPILE_STDCXX_14. The corresponding original duties are Meson C/C++ capability and C++ standard selection. It changes no GObject lifecycle callback, exception policy or visibility rule. Preserve independent mixed-executable and OS compile verification; no current platform pass is inferred.",
+      "current_source_references": [
+        "meson.build:1",
+        "migration/baseline/build-definition.md"
+      ],
+      "semantic_category": "cpp-toolchain"
+    },
+    {
+      "hunk_id": "01.002/001893",
+      "assignment_id": "01.013/hunk-001893",
+      "index": 6,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-527 -> 533",
+      "diff_header": "@@ -527 +533 @@ PKG_CHECK_MODULES(BABL, babl >= babl_required_version)",
+      "source_scope_unchanged_context": "PKG_CHECK_MODULES(BABL, babl >= babl_required_version)",
+      "payload_sha256": "99a6fb5e4267df8642282c397745a84f82a41db10e97134377c8cd2098112f64",
+      "payload": "-PKG_CHECK_MODULES(GEGL, gegl-0.2 >= gegl_required_version)\n+PKG_CHECK_MODULES(GEGL, gegl-0.3 >= gegl_required_version)\n",
+      "original_callback_work_id": "legacy-578dde5b8851079756ac",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001893",
+      "feature": "GEGL dependency ABI selection",
+      "implementation_tasks": [
+        "03.002"
+      ],
+      "verification_tasks": [
+        "34.001",
+        "34.006"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-05e4597ea1d9ea93c764",
+        "legacy-078fe9fd90369f0c240b",
+        "legacy-91f21dd7848e4c24c9bb"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Changes the pkg-config module from gegl-0.2 to gegl-0.3. Retain its dependency/ABI identity as provenance and verify the adopted GIMP 3 gegl-0.4 replacement in current builds, without copying a legacy incompatible ABI or inferring pixel equivalence.",
+      "current_source_references": [
+        "meson.build:461",
+        "migration/inventory/legacy-dependencies.md"
+      ],
+      "semantic_category": "dependency-versions"
+    },
+    {
+      "hunk_id": "01.002/001894",
+      "assignment_id": "01.013/hunk-001894",
+      "index": 7,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-545,0 -> 552,2",
+      "diff_header": "@@ -545,0 +552,2 @@ AC_MSG_RESULT($have_glib_2_31)",
+      "source_scope_unchanged_context": "AC_MSG_RESULT($have_glib_2_31)",
+      "payload_sha256": "28504a4a06d711fc6fe1ed30100f321bafa220eaf32612accd4031e97790ebdf",
+      "payload": "+PKG_CHECK_MODULES(JSON, json-glib-1.0 >= json_glib_required_version)\n+\n",
+      "original_callback_work_id": "legacy-4d6f67343ee7f115f94b",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001894",
+      "feature": "Required JSON pkg-config discovery",
+      "implementation_tasks": [
+        "04.009"
+      ],
+      "verification_tasks": [
+        "19.015",
+        "28.015",
+        "31.009"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-08fcd913dcbf4ae344b6",
+        "legacy-a7e2026930c783637781",
+        "legacy-4581d343e1ad833f774c",
+        "legacy-65f9cbbcda996f458348"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Adds the JSON-GLib pkg-config probe, paired with hunk 4 version metadata. Preserve explicit direct include/link dependencies for brush/preset persistence. The existing 04.009/json-dependency child specifies that work; this recommendation references its original parent and keeps all obligations TODO. Verify persistence with HTTP disabled as well as round trips.",
+      "current_source_references": [
+        "meson.build:531",
+        "app/core/meson.build:307",
+        "tasks.md:273"
+      ],
+      "semantic_category": "json-dependency"
+    },
+    {
+      "hunk_id": "01.002/001895",
+      "assignment_id": "01.013/hunk-001895",
+      "index": 8,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-1562,0 -> 1571,20",
+      "diff_header": "@@ -1562,0 +1571,20 @@ fi",
+      "source_scope_unchanged_context": "fi",
+      "payload_sha256": "51722971a16035b65ae8ae4af806da4b71737987ca6aae37f56ac37225db6eb8",
+      "payload": "+###################\n+# Check for libsoup\n+###################\n+AC_ARG_ENABLE(httpd, [  --enable-httpd         build with httpd support(default=yes)])\n+have_libsoup=no\n+if test \"x$enable_httpd\" != xno; then\n+  enable_httpd=yes\n+  PKG_CHECK_MODULES(SOUP, libsoup-2.4 >= libsoup_required_version,\n+    have_libsoup=yes,\n+    have_libsoup=\"no (libsoup not found)\")\n+else\n+  enable_httpd=no \n+fi\n+if test \"x$have_libsoup\" = \"xyes\"; then\n+  AC_DEFINE(HAVE_LIBSOUP, 1, [Define to 1 if libsoup is available])\n+  AC_DEFINE(USE_HTTPD, 1, [Define to 1 if using httpd modules])\n+fi\n+AM_CONDITIONAL(USE_HTTPD, test \"x$enable_httpd\" = xyes)\n+\n+\n",
+      "original_callback_work_id": "legacy-edd447187ad1d8c51ac4",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001895",
+      "feature": "HTTP optional probe and build defines",
+      "implementation_tasks": [
+        "31.003",
+        "31.004"
+      ],
+      "verification_tasks": [
+        "31.009",
+        "31.010"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-ede589520e6bb08aa17a",
+        "legacy-7f977b2579cec0ee5d7d",
+        "legacy-425bc04fcab5eb97039a",
+        "legacy-86c0f04a2348bc047f16"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Adds enable-httpd, Soup discovery, HAVE_LIBSOUP/USE_HTTPD defines and USE_HTTPD Automake conditional. Keep optional isolation and current dependency adaptation, including missing-dependency/disabled behavior. The old conditional tests enable_httpd even if Soup discovery failed; preserve the source evidence and verify the intended boundary instead of copying that inconsistency. Current secure/default-disabled policy is unchanged.",
+      "current_source_references": [
+        "meson.build:535",
+        "meson_options.txt:74",
+        "app/meson.build:25"
+      ],
+      "semantic_category": "http-feature"
+    },
+    {
+      "hunk_id": "01.002/001896",
+      "assignment_id": "01.013/hunk-001896",
+      "index": 9,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-2103 -> 2131",
+      "diff_header": "@@ -2103 +2131 @@ AM_CONDITIONAL(ENABLE_GIMP_CONSOLE, test \"x$enable_gimp_console\" != xno)",
+      "source_scope_unchanged_context": "AM_CONDITIONAL(ENABLE_GIMP_CONSOLE, test \"x$enable_gimp_console\" != xno)",
+      "payload_sha256": "1bb85d83116d84f5a4a5c12a7066d7c0d34602f91da5c7eac2a2b312a2e14707",
+      "payload": "-gimpdir=.gimp-gimp_user_version\n+gimpdir=.gimp-painter-gimp_user_version\n",
+      "original_callback_work_id": "legacy-f13f748dd962e7b15b74",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001896",
+      "feature": "Painter user profile and resource path identity",
+      "implementation_tasks": [
+        "30.010",
+        "30.011"
+      ],
+      "verification_tasks": [
+        "04.016",
+        "36.022"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-efa6c6fd6522d38f13c2",
+        "legacy-e9580f2bb30aab19338b",
+        "legacy-eac9a87a516009e3bbfd",
+        "legacy-0305a9ead46caad67d2a"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Changes the default user directory from .gimp-2.8 to .gimp-painter-2.8 via gimp_user_version substitution. Preserve old-profile discovery, user-edit protection and resource lookup when migrating to the current XDG/profile scheme. This is neither project-name metadata nor a GObject callback. Verify installed startup and missing-resource information retention.",
+      "current_source_references": [
+        "meson.build:1404",
+        "meson_options.txt:24",
+        "tasks.md:1100"
+      ],
+      "semantic_category": "profile-directory"
+    },
+    {
+      "hunk_id": "01.002/001897",
+      "assignment_id": "01.013/hunk-001897",
+      "index": 10,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-2307,0 -> 2336",
+      "diff_header": "@@ -2307,0 +2336 @@ app/gui/Makefile",
+      "source_scope_unchanged_context": "app/gui/Makefile",
+      "payload_sha256": "405d78f9f73afe187fd8305cfe99c03fc339e0d646ad4e5761229c11373798a9",
+      "payload": "+app/httpd/Makefile\n",
+      "original_callback_work_id": "legacy-f9390938432a1ac34aed",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001897",
+      "feature": "Optional HTTP module build registration",
+      "implementation_tasks": [
+        "31.003",
+        "31.004"
+      ],
+      "verification_tasks": [
+        "31.009",
+        "31.010"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-5542f04df5c9ff20fec7",
+        "legacy-7dcf263b8d3cd3f72fcf",
+        "legacy-4bdf439e5ef7c41c6118",
+        "legacy-b095749778e24b326c68"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Registers app/httpd/Makefile generation, whose module remains an optional feature in Meson. Keep the HTTP build/dependency boundary and enabled/disabled verification. The current C++ source registration was separately reviewed under 04.002; this correction does not reopen or falsely complete that registration checkpoint.",
+      "current_source_references": [
+        "app/meson.build:25",
+        "app/httpd/meson.build:1",
+        "migration/contracts/cpp-registration.md"
+      ],
+      "semantic_category": "http-feature"
+    },
+    {
+      "hunk_id": "01.002/001898",
+      "assignment_id": "01.013/hunk-001898",
+      "index": 11,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-2313,0 -> 2343",
+      "diff_header": "@@ -2313,0 +2343 @@ app/plug-in/Makefile",
+      "source_scope_unchanged_context": "app/plug-in/Makefile",
+      "payload_sha256": "a0040841b0bd44c9343ed6d85f0cf5446f204bc3139b8ce185e00e246c3a39cd",
+      "payload": "+app/presets/Makefile\n",
+      "original_callback_work_id": "legacy-d7e3211d90ec56348e25",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001898",
+      "feature": "Preset module build integration",
+      "implementation_tasks": [
+        "28.002",
+        "28.003",
+        "28.014"
+      ],
+      "verification_tasks": [
+        "28.013",
+        "28.015"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-1eb41e62ede203142ba7",
+        "legacy-e48435ebd58eb10f96d7",
+        "legacy-a8e30d0db246343917fe",
+        "legacy-8eb723f2e9811247e2bb",
+        "legacy-0becb399f8a9ad2d0406"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Registers app/presets/Makefile generation. Preserve the module purpose through the current JSON resource model, factory and selection UI, even though replacement sources no longer live in app/presets. Existing C++ registration evidence is separate; complete preset fixture and persistence obligations remain TODO.",
+      "current_source_references": [
+        "migration/contracts/cpp-registration.md",
+        "app/core/meson.build",
+        "tasks.md:1014"
+      ],
+      "semantic_category": "preset-module"
+    },
+    {
+      "hunk_id": "01.002/001899",
+      "assignment_id": "01.013/hunk-001899",
+      "index": 12,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-2437,0 -> 2468,8",
+      "diff_header": "@@ -2437,0 +2468,8 @@ data/tool-presets/Sketch/Makefile",
+      "source_scope_unchanged_context": "data/tool-presets/Sketch/Makefile",
+      "payload_sha256": "d9471e4a22eb0018259037e5110614db9d90cc84b66d3a5259273b93b5aae0be",
+      "payload": "+data/layer-presets/Makefile\n+data/mypaint-brushes/Makefile\n+data/mypaint-brushes/classic/Makefile\n+data/mypaint-brushes/deevad/Makefile\n+data/mypaint-brushes/tanda/Makefile\n+data/mypaint-brushes/ramon/Makefile\n+data/mypaint-brushes/experimental/Makefile\n+data/mypaint-brushes/kaerhon/Makefile\n",
+      "original_callback_work_id": "legacy-599be914a8043466d28a",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001899",
+      "feature": "Preset and extended brush install manifests",
+      "implementation_tasks": [
+        "30.017"
+      ],
+      "verification_tasks": [
+        "34.002",
+        "34.014"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-93df0db66d68087a1473",
+        "legacy-8b4e83441123664ac3f4",
+        "legacy-e57eee2412f811ec7475"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Registers data/layer-presets and root plus six named MyPaint brush-directory Makefiles. Preserve every exact directory/asset identity and current install manifest coverage; this adds no callback, exception or visibility policy. Verify Linux installed assets and the independent resource-manifest check.",
+      "current_source_references": [
+        "tasks.md:1111",
+        "migration/inventory/asset-wbs.tsv"
+      ],
+      "semantic_category": "asset-install"
+    },
+    {
+      "hunk_id": "01.002/001900",
+      "assignment_id": "01.013/hunk-001900",
+      "index": 13,
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+      "old_new_lines": "-2509,0 -> 2548",
+      "diff_header": "@@ -2509,0 +2548 @@ Optional Plug-Ins:",
+      "source_scope_unchanged_context": "Optional Plug-Ins:",
+      "payload_sha256": "a20e3507273d32e513a1ce67f51d9e171dadf8e3da224a6c868059ec8a55c979",
+      "payload": "+  SOUP:                $have_libsoup\n",
+      "original_callback_work_id": "legacy-692110a7b8e9829fbfe5",
+      "previous_implementation_tasks": [
+        "04.007",
+        "04.008",
+        "04.010",
+        "04.012",
+        "31.003"
+      ],
+      "previous_verification_tasks": [
+        "07.014",
+        "31.009"
+      ],
+      "proposed_profile": "configure-001900",
+      "feature": "Soup configuration summary output",
+      "implementation_tasks": [
+        "31.003",
+        "31.004"
+      ],
+      "verification_tasks": [
+        "31.009",
+        "31.010"
+      ],
+      "corrected_source_work_ids": [
+        "legacy-4b1e6aaea5967ca508a6",
+        "legacy-ccc62d400280b4a59d58",
+        "legacy-4c1d0f138635c6e8d2f1",
+        "legacy-34c27be1caf077c48510"
+      ],
+      "implementation_state": "TODO",
+      "rationale": "Adds only the printed SOUP availability line. Preserve accurate optional dependency/feature reporting with the HTTP boundary and its current dependency adaptation; verify enabled/disabled configuration states without treating an informational line as lifecycle code.",
+      "current_source_references": [
+        "meson.build:535",
+        "meson_options.txt:74"
+      ],
+      "semantic_category": "http-feature"
+    }
+  ],
+  "task_catalog": {
+    "03.001": {
+      "title": "対象版 Meson 定義を確認する",
+      "acceptance": "既に C と C++ が有効なこと、C++14 と最低 Meson 条件を記録",
+      "line": 243,
+      "original_status": "[x]"
+    },
+    "03.002": {
+      "title": "Linux 基準ビルド環境を固定する",
+      "acceptance": "compiler・GLib・GTK・GEGL・babl 等の版を記録",
+      "line": 244,
+      "original_status": "[x]"
+    },
+    "03.006": {
+      "title": "Meson オプションの台帳を作る",
+      "acceptance": "debug/release、sanitizer、optional dependency を記録",
+      "line": 248,
+      "original_status": "[x]"
+    },
+    "03.007": {
+      "title": "C++ 標準の指定箇所を整理する",
+      "acceptance": "初期 C++14、対象別引上げの条件が明示される",
+      "line": 249,
+      "original_status": "[x]"
+    },
+    "04.009": {
+      "title": "静的 library のリンク順を検証する",
+      "acceptance": "未参照登録 object の脱落と循環依存を検出",
+      "line": 272,
+      "original_status": "[ ]"
+    },
+    "04.016": {
+      "title": "install 後の起動を検証する",
+      "acceptance": "build tree に依存せず独自モジュールを含め起動する",
+      "line": 282,
+      "original_status": "[ ]"
+    },
+    "07.014": {
+      "title": "最小混在 executable を各 OS でリンクする",
+      "acceptance": "runtime・visibility・callback ABI が一致",
+      "line": 372,
+      "original_status": "[ ]"
+    },
+    "19.015": {
+      "title": "全177件の往復試験を実行する",
+      "acceptance": "設定の意味差分がゼロ",
+      "line": 773,
+      "original_status": "[ ]"
+    },
+    "28.002": {
+      "title": "JSON 資源 model を移植する",
+      "acceptance": "未知項目を保持",
+      "line": 1016,
+      "original_status": "[ ]"
+    },
+    "28.003": {
+      "title": "preset factory を移植する",
+      "acceptance": "検索パス・読込み・選択を接続",
+      "line": 1017,
+      "original_status": "[ ]"
+    },
+    "28.013": {
+      "title": "その他同梱 preset を検証する",
+      "acceptance": "全定義に生成結果 fixture がある",
+      "line": 1027,
+      "original_status": "[ ]"
+    },
+    "28.014": {
+      "title": "preset 選択 UI を接続する",
+      "acceptance": "旧導線から適用可能",
+      "line": 1028,
+      "original_status": "[ ]"
+    },
+    "28.015": {
+      "title": "preset 生成後の保存を試験する",
+      "acceptance": "再読込して source 編集・filter 再評価が可能",
+      "line": 1033,
+      "original_status": "[ ]"
+    },
+    "30.010": {
+      "title": "既存ユーザーの資源移行を実装する",
+      "acceptance": "ユーザー編集済み資源を上書きしない",
+      "line": 1100,
+      "original_status": "[ ]"
+    },
+    "30.011": {
+      "title": "資源検索パスを接続する",
+      "acceptance": "install prefix と user path の双方を解決",
+      "line": 1102,
+      "original_status": "[ ]"
+    },
+    "30.017": {
+      "title": "インストール資産の一覧を生成する",
+      "acceptance": "必要ファイルの欠落を検出できる",
+      "line": 1111,
+      "original_status": "[ ]"
+    },
+    "31.003": {
+      "title": "HTTP の任意ビルド境界を実装する",
+      "acceptance": "core 機能に必須依存を作らない",
+      "line": 1124,
+      "original_status": "[ ]"
+    },
+    "31.004": {
+      "title": "HTTP を現行依存へ適合する",
+      "acceptance": "採用 libsoup 等でビルドできる",
+      "line": 1125,
+      "original_status": "[ ]"
+    },
+    "31.009": {
+      "title": "HTTP 無効ビルドを試験する",
+      "acceptance": "保存・描画・UI の必須機能が動く",
+      "line": 1131,
+      "original_status": "[ ]"
+    },
+    "31.010": {
+      "title": "HTTP 有効ビルドを試験する",
+      "acceptance": "列挙した endpoint の契約を満たす",
+      "line": 1132,
+      "original_status": "[ ]"
+    },
+    "34.001": {
+      "title": "Linux release build を作る",
+      "acceptance": "debug 専用の依存なしで動く",
+      "line": 1192,
+      "original_status": "[ ]"
+    },
+    "34.002": {
+      "title": "Linux install manifest を検証する",
+      "acceptance": "資源・plugin・locale が揃う",
+      "line": 1193,
+      "original_status": "[ ]"
+    },
+    "34.006": {
+      "title": "C/C++ compile CI を登録する",
+      "acceptance": "主要 OS で全追加 module を検査",
+      "line": 1203,
+      "original_status": "[ ]"
+    },
+    "34.014": {
+      "title": "資源 manifest の検査を登録する",
+      "acceptance": "同梱ファイルの欠落と未登録を検出",
+      "line": 1211,
+      "original_status": "[ ]"
+    },
+    "36.022": {
+      "title": "欠落資源と欠落 procedure を試験する",
+      "acceptance": "開くことと元情報保持を維持",
+      "line": 1259,
+      "original_status": "[ ]"
+    },
+    "38.001": {
+      "title": "変更 hunk の割当を再集計する",
+      "acceptance": "01の台帳に未処置差分がない",
+      "line": 1293,
+      "original_status": "[ ]"
+    }
+  },
+  "minimal_generator_changes": [
+    {
+      "file": "tools/legacy_assignment_rules.py",
+      "change": "Add thirteen exact configure-001888 through configure-001900 profiles using the supplied feature, implementation_tasks, verification_tasks and rationale. Add configure.ac overrides for hunk indices 1 through 13. Leave existing path families and all other overrides unchanged. Do not route from source_scope; it is unchanged diff context. The existing build-config fallback may remain unused for this frozen 13-hunk file; no generated source row should retain it."
+    },
+    {
+      "file": "tools/audit_legacy_candidates.py",
+      "change": "Extend the existing mixed-Makefile union condition to also include path == configure.ac. Its one path row must contain the sorted union of all thirteen exact implementation/verification routes, not just hunk 13."
+    },
+    {
+      "file": "tools/audit_auxiliary_scripts.py",
+      "change": "Retain the configure.ac classification and target fields; within its per-hunk output loop take implementation_tasks and verification_tasks from that exact hunk-wbs row. Set input_output_contract from the exact hunk feature/reason or use an accurate fixed configure-input description. Keep all other paths unchanged. The current blanket 04.002,04.008,04.010,31.003 / 04.015,31.009 route is wrong for most of these payloads."
+    },
+    {
+      "file": "tools/assign_legacy_hunks.py",
+      "change": "No format or generic generation logic change is necessary. Its route() consumer already writes exact profiles, hashes and TODO state. Full regeneration requires missing original source/base Git objects in this shallow checkout; do not claim it ran. A bounded regeneration must use these verified blobs, reproduce all thirteen original ranges and payload hashes, and prove every other source row unchanged."
+    },
+    {
+      "file": "tools/audit_legacy_granularity.py",
+      "change": "No logic change is necessary. It replaces only stale TODO keys, preserves existing mutable evidence for unchanged source/phase/task keys, rejects deletion of active/completed rows, and initializes new source-work rows TODO. Preserve the 91-row prior snapshot separately before regenerating."
+    },
+    {
+      "file": "tools/check_cpp_registration.py and migration/tests/cpp-registration/prior-work-items.json",
+      "change": "Keep both historical artifacts unchanged. Their historical unreviewed digest includes these ninety-one rows and therefore will no longer describe the new source ledger. Use a separate exact configure correction checker/snapshot for this checkpoint; do not rewrite historical evidence or call the old digest a current pass."
+    }
+  ],
+  "affected_generated_files": [
+    "migration/inventory/changed-hunks.tsv (13 rows only)",
+    "migration/inventory/changed-hunks.json (inventory digest)",
+    "migration/inventory/hunk-wbs.tsv (13 rows only)",
+    "migration/inventory/wbs-assignment-summary.json (profile counts and ledger digest)",
+    "migration/inventory/cleanup-candidate-review.tsv (configure.ac path row only)",
+    "migration/inventory/auxiliary-script-review.tsv (configure.ac 13 rows only)",
+    "migration/inventory/legacy-port-work-items.tsv (91 old rows -> 49 proposed TODO rows; preserve 22,899 others)",
+    "migration/inventory/granularity-review.tsv (13 exact source rows)",
+    "migration/inventory/granularity-summary.json (action counts)"
+  ],
+  "must_remain_unchanged": [
+    "All original WBS titles, acceptance criteria, dependencies and states; source-specific routing does not infer WBS acceptance",
+    "All 2,489 source identities and 947 changed paths; all 402 asset rows",
+    "Every source hunk payload SHA-256, blob ID, hunk ID, range and source_scope",
+    "All unrelated work row content and execution evidence",
+    "Historical registration/checkpoint digests and reports",
+    "Runtime_state NOT_PORTED in auxiliary review; implementation_state TODO in hunk assignments"
+  ],
+  "completed_target_wbs": {
+    "03.001": {
+      "title": "対象版 Meson 定義を確認する",
+      "acceptance": "既に C と C++ が有効なこと、C++14 と最低 Meson 条件を記録",
+      "line": 243,
+      "original_status": "[x]"
+    },
+    "03.002": {
+      "title": "Linux 基準ビルド環境を固定する",
+      "acceptance": "compiler・GLib・GTK・GEGL・babl 等の版を記録",
+      "line": 244,
+      "original_status": "[x]"
+    },
+    "03.006": {
+      "title": "Meson オプションの台帳を作る",
+      "acceptance": "debug/release、sanitizer、optional dependency を記録",
+      "line": 248,
+      "original_status": "[x]"
+    },
+    "03.007": {
+      "title": "C++ 標準の指定箇所を整理する",
+      "acceptance": "初期 C++14、対象別引上げの条件が明示される",
+      "line": 249,
+      "original_status": "[x]"
+    }
+  },
+  "completed_target_note": "03.001/03.002/03.006/03.007 are completed original baseline tasks. Retaining exact source-specific TODO evidence under these IDs neither reopens the original acceptance nor creates a dependency. Do not add 04.007 as their prerequisite, do not require their source-specific checks for callback-order acceptance, and do not infer source equivalence from the completed WBS checkmark.",
+  "verified_blob_archive": "migration/tests/configure-hunk-routing/legacy-build-inputs.tar.gz"
+}

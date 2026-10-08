@@ -23,9 +23,9 @@ def render():
     baseline=json.loads((ROOT/'migration/baseline/baseline.json').read_text());source=baseline['source']['commit']
     assignments=read_tsv(INV/'hunk-wbs.tsv')
     routes={r['path']:dict(r) for r in assignments}
-    # Mixed Makefile hunks must retain the union, not just the last hunk.
+    # Mixed build-input hunks must retain the union, not just the last hunk.
     for path, route in routes.items():
-        if Path(path).name == 'Makefile.am':
+        if Path(path).name == 'Makefile.am' or path == 'configure.ac':
             for key in ('implementation_tasks', 'verification_tasks'):
                 route[key]=','.join(sorted({task for row in assignments if row['path']==path
                                            for task in row[key].split(',')}))
