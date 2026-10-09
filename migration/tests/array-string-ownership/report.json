@@ -1,0 +1,111 @@
+{
+  "task": "06.021",
+  "completed_existing_child": "06.021/array-reassignment",
+  "status": "PASS",
+  "condition": "allocator 対応が一致",
+  "source_work_ids": [
+    "legacy-2442f3c51055205b9640",
+    "legacy-fdb015c3283d1ad031fb",
+    "legacy-a3b090b1adc0fcb4714b",
+    "legacy-fa1f5399d6969e1b1487",
+    "legacy-24662fcf6c2b5fb1ae6b"
+  ],
+  "source_snapshot_parent": "5ce80b71110e47f2e4818df07490c23740864113",
+  "production_implementation_changed": true,
+  "production_change": "Three native GDestroyNotify adapters replace incompatible function-pointer casts; ownership and release order unchanged",
+  "source_sha256": {
+    "app/core/gimp-painter-provenance.cpp": "aa67639002b93907eac76978d907aa197025a5da2fbc2e41e7a45b5fe432bd18",
+    "app/core/gimpfilterlayer-arguments.hpp": "940a0296d1adb1f063b323a0fb092c2abf749bda4db81e02f84f7d9291f48ecc",
+    "app/httpd/httpd-images.cpp": "7f9ae33519135e2363d0a0731c382145eac7ce209b166b1a5c54ce5deb68fe69",
+    "app/httpd/httpd-pdb.cpp": "9adaf3ed12bdfb984c9735c7f5cdd7e2e78be9416a9f3d6f2a2f7d076ab54be8",
+    "app/httpd/httpd-resource.cpp": "edb97960d74973c410da70b7a1b5eec53034bc9ea5d45ff88b84b7efaf7301b2",
+    "app/httpd/httpd-resource.hpp": "683c29d4573c5c2cc0b212f99c496be2cd605f9adbe2837f980e6c303d1b301e",
+    "app/httpd/httpd.cpp": "4fc203a0faf1c42d28d00e3da053529cb174970a57cf93721825acf1ac4770e4",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-binding.h": "d0269c7b9dd84535d95f714e2227c280030cc922ba967823c00e98daa77d8c04",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/tests/test-c-api.c": "609f376f12c4ef43aecd21b00a50cc8567b9f8827aef36d0b48848a89c6e0c7d",
+    "app/painter/tests/test-c-api.h": "e9b3208f78777d72e27b321d53203c770900409718bdd0b7b7159fd86b28ed13",
+    "app/painter/tests/test-fixture-traits.hpp": "354a1608ae71a4c51377127df6e0934e6c987b55677c06dfc67df391dedd669e",
+    "app/painter/tests/test-fixture.c": "e4b37f1f5a3d763452721b9e9d4084587d63b3d2c1be58769277f7401584eef1",
+    "app/painter/tests/test-fixture.h": "9fc69b825a713006eced784618db8b76850154134c1c83788957e30c65c06139",
+    "app/painter/tests/test-foundation.cpp": "7fc2bfb8dd43cbf8f790b9dd628016f67a559d3c615604ee068bfe5a303c898a",
+    "app/painter/tests/test-gobject.cpp": "2b32b30f53e3768438c80ab7ddefe9d6ae06c9e8b9d7d0e805625b81d8c0bd22",
+    "app/painter/tests/test-hierarchy.c": "fd448e354f15d5cec1d85fa53ed8f62253943ff90fda5a5c28b2c729beba8688",
+    "app/painter/tests/test-hierarchy.cpp": "544937df8eb79becb12c6532e1a7fe44ca32ca9f8a9611ec0adf811567493763",
+    "app/painter/tests/test-hierarchy.h": "ff70fb38099ec19b86c15d5f1e2e4c02c3f4777689bcc391cd6c15af6d225674",
+    "app/painter/tests/test-reentry.cpp": "3c3749333a6f9eb9566a77cbefcf04c40462c937d42f1966254cf72ac5844764",
+    "app/painter/tests/test-registry.hpp": "4bd2aff639d1cef2459e41c4039a44d728634fe38ef5d4653e4bb08938b3b0e4",
+    "app/painter/tests/test-resources.cpp": "343b6e9811083831fcd9836a48d826eac97c26595f38cf081728669b40a8b8c3",
+    "app/xcf/painter-xcf-arguments.cpp": "35927b8787496ba21ae7a5468fcb780fed09a097108eee4f4ca460e5b89f7562",
+    "app/xcf/painter-xcf-transport.cpp": "5ac76e3886dce621b1fb78428906fb220d79b3ab4c0a514fdc68053ac64741bb"
+  },
+  "unchanged_public_test_source_sha256": {
+    "app/tests/test-painter-provenance.c": "6f7efe85a233676fe1c96d50b86ea7913c6337b726d9f3fdaef1a193e35f1b89",
+    "app/tests/test-painter-http.cpp": "d889d82baf1cf9dbb1f09a3d4d9d6e0c5b9ad372ea7976bf339d626be78cac6d",
+    "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9",
+    "app/tests/test-painter-xcf-multipart.inc": "5d5ea6f8a6567d49d43c628971be003ec1e93703bf5750f1dc2707151a998bd2",
+    "app/tests/test-painter-xcf-multipart-adversarial.inc": "41811a2d37080ecef52925064c3ad58c096491bdcb807edd8d586cbcff4c4820"
+  },
+  "native_cases": 59,
+  "sanitizer_cases": 59,
+  "native_features": [
+    {
+      "name": "painter-provenance",
+      "command": [
+        "/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http/app/tests/painter-provenance"
+      ],
+      "cwd": "/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http",
+      "exit_code": 0,
+      "passed": 12,
+      "executable_sha256": "8f522a149b757682e4cac1386bde2e329f6db12482b5c63e6fd0a810b099bf05",
+      "stdout_sha256": "0a37b1238c58ac14324873bdfc70cf35b8c3286fe5e83368ccc53fe0738785ea",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "painter-http",
+      "command": [
+        "/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http/app/tests/painter-http"
+      ],
+      "cwd": "/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http",
+      "exit_code": 0,
+      "passed": 17,
+      "executable_sha256": "3a4b7c503249cbee2d0904a8536765c4e192a92b237b69a7f8efea58b3055ac2",
+      "stdout_sha256": "7f1fd1b13b728ef76b5fcff7ec9b6f001bb32ef3eb86278da709cd8e44f7aaa3",
+      "stderr_sha256": "ea851623076871ff58d510d63fdbc07bdc0092e6cc250cefae9eca70fde46ebd"
+    },
+    {
+      "name": "painter-xcf-roundtrip",
+      "command": [
+        "/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http/app/tests/painter-xcf-roundtrip"
+      ],
+      "cwd": "/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http",
+      "exit_code": 0,
+      "passed": 49,
+      "executable_sha256": "46514d148b7ecf4466cf8fbaa5c049e0adedc1473472c65d9bbe91299317e879",
+      "stdout_sha256": "4325b7c1ed08dabe6805f3b1f4eb34b43f81745f871c8955fc01eb42b63d8eb6",
+      "stderr_sha256": "95e1e5a2a80b1d56a65befa41ef7574004bb86a03f2afe4f3af558c75e446049"
+    }
+  ],
+  "native_executable_sha256": "fe1a5176f5ab0bf261e775dcbf599893f930f476c1a082eb07f3eb527c072bab",
+  "sanitizer_executable_sha256": "b09936d7075c7d4ffabebe7ef454242605b4c2ae8cbf6abb00bedff406180f3c",
+  "evidence_members": 67,
+  "evidence_bytes": 100092,
+  "evidence_sha256": "1418ca6dc61f911f531df8c00de761384d207fafc72382f8f2326def722c60ff",
+  "limitations": [
+    "Production12/17/49 suites are normal builds, not whole-application sanitizers",
+    "LSan unavailable under verified ptrace restriction;vptr excluded;system libraries not instrumented",
+    "Expected malformed XCF warnings and existing synthetic profile writable-folder warning retained",
+    "Allocator correspondence does not close complete JSON/selection semantics or feature/platform gates",
+    "Prior04.019 fault-injection remains historical and is not relabeled current"
+  ]
+}

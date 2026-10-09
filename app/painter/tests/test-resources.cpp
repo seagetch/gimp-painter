@@ -175,6 +175,102 @@ void arrays ()
   g_assert_cmpint (destroyed, ==, 1);
   g_assert_cmpuint (moved.get ()->len, ==, 0);
 }
+ArrayRef counted_array (int& destroyed)
+{
+  auto result = ArrayRef::adopt (g_array_new (FALSE, FALSE, sizeof (GObject *)));
+  g_array_set_clear_func (result.get (), [] (gpointer element) {
+    g_object_unref (*static_cast<GObject **> (element));
+  });
+  auto *object = G_OBJECT (g_object_new (G_TYPE_OBJECT, nullptr));
+  g_object_weak_ref (object, count_destroy, &destroyed);
+  g_array_append_val (result.get (), object);
+  return result;
+}
+void array_ownership ()
+{
+  auto adopted_null = ArrayRef::adopt (nullptr);
+  auto retained_null = ArrayRef::retain (nullptr);
+  auto copied_null = retained_null;
+  g_assert_null (adopted_null.get ());
+  g_assert_null (copied_null.get ());
+  int destroyed = 0, displaced = 0;
+  auto source = counted_array (destroyed);
+  auto *raw = source.release ();
+  g_assert_null (source.get ());
+  auto retained = ArrayRef::retain (raw);
+  g_array_unref (raw); // release the producer's reference, keeping the retained one
+  g_assert_cmpint (destroyed, ==, 0);
+  auto copy = retained;
+  auto destination = counted_array (displaced);
+  destination = retained;
+  g_assert_cmpint (displaced, ==, 1);
+  g_assert_true (destination.get () == retained.get ());
+  auto *alias = &destination;
+  destination = *alias;
+  destination = std::move (*alias);
+  g_assert_true (destination.get () == retained.get ());
+  destination = std::move (copy);
+  g_assert_null (copy.get ());
+  retained.reset ();
+  g_assert_cmpint (destroyed, ==, 0);
+  g_assert_cmpuint (destination.get ()->len, ==, 1);
+  raw = destination.release ();
+  destination.reset (); destination.reset ();
+  g_assert_cmpint (destroyed, ==, 0);
+  g_array_unref (raw);
+  g_assert_cmpint (destroyed, ==, 1);
+  int empty_copy_destroyed = 0, empty_move_destroyed = 0;
+  auto old_copy = counted_array (empty_copy_destroyed);
+  old_copy = copied_null;
+  g_assert_null (old_copy.get ());
+  g_assert_cmpint (empty_copy_destroyed, ==, 1);
+  auto old_move = counted_array (empty_move_destroyed);
+  old_move = ArrayRef ();
+  g_assert_null (old_move.get ());
+  g_assert_cmpint (empty_move_destroyed, ==, 1);
+  auto empty = ArrayRef::adopt (g_array_new (FALSE, TRUE, sizeof (int)));
+  g_assert_cmpuint (empty.get ()->len, ==, 0);
+  auto empty_shared = empty;
+  const int value = 17;
+  g_array_append_val (empty.get (), value);
+  g_assert_cmpuint (empty_shared.get ()->len, ==, 1);
+  g_assert_cmpint (g_array_index (empty_shared.get (), int, 0), ==, 17);
+  g_array_set_size (empty.get (), 0);
+  g_assert_cmpuint (empty_shared.get ()->len, ==, 0); // no index-zero access on empty
+}
+void string_ownership ()
+{
+  static_assert (!std::is_copy_constructible<String>::value, "GLib string ownership is explicit");
+  String value (g_strdup ("owned UTF-8: \u753b\u50cf"));
+  String copy (g_strdup (value.get ()));
+  g_assert_true (value.get () != copy.get ());
+  value.get ()[0] = 'O';
+  g_assert_cmpstr (copy.get (), ==, "owned UTF-8: \u753b\u50cf");
+  auto *raw = value.get ();
+  String moved (std::move (value));
+  g_assert_null (value.get ());
+  g_assert_true (moved.get () == raw);
+  String replaced (g_strdup_printf ("%s-%d", "old", 7));
+  replaced = std::move (moved);
+  String& alias = replaced;
+  replaced = std::move (alias);
+  g_assert_true (replaced.get () == raw);
+  g_assert_null (moved.get ());
+  raw = replaced.release ();
+  g_assert_null (replaced.get ());
+  g_assert_cmpstr (raw, ==, "Owned UTF-8: \u753b\u50cf");
+  g_free (raw);
+  copy.reset (g_strdup (""));
+  g_assert_cmpstr (copy.get (), ==, "");
+  copy.reset (); copy.reset ();
+  try
+    {
+      String temporary (static_cast<gchar *> (g_malloc0 (32)));
+      temporary.get ()[0] = 'x';
+      throw 1;
+    }
+  catch (int) {}
+}
 
 void mutex_guard ()
 {
@@ -556,6 +652,8 @@ void painter_test_register_resources ()
   g_test_add_func ("/painter/resources/value-assignment", values);
   g_test_add_func ("/painter/resources/value-owned-borrow-copy", value_ownership);
   g_test_add_func ("/painter/resources/array-assignment", arrays);
+  g_test_add_func ("/painter/resources/array-owned-ref-release", array_ownership);
+  g_test_add_func ("/painter/resources/glib-string-owner", string_ownership);
   g_test_add_func ("/painter/resources/error-message-transfer", errors);
   g_test_add_func ("/painter/resources/mutex-exception", mutex_guard);
   g_test_add_func ("/painter/signal/lifetime-blocks", connections);

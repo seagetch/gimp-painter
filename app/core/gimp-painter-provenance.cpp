@@ -33,7 +33,9 @@ using Object = ObjectRef<GObject>;
 Records snapshot_records (GPtrArray *source)
 {
   if (!source) return {};
-  Records copy (g_ptr_array_new_with_free_func (reinterpret_cast<GDestroyNotify> (g_bytes_unref)));
+  Records copy (g_ptr_array_new_with_free_func ([] (gpointer data) {
+    g_bytes_unref (static_cast<GBytes *> (data));
+  }));
   for (guint i = 0; i < source->len; ++i)
     {
       auto *bytes = static_cast<GBytes *> (g_ptr_array_index (source, i));

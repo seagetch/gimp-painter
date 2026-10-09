@@ -126,7 +126,9 @@ extern "C" gboolean xcf_painter_finish_transport (XcfInfo *info, GObject *owner,
       if (all.empty ()) return TRUE;
       auto restored = multipart_restore (identity (owner), all, info->painter_cancellable);
       GimpPainterProvenanceTransport state = {};
-      state.records = g_ptr_array_new_with_free_func (reinterpret_cast<GDestroyNotify> (g_bytes_unref));
+      state.records = g_ptr_array_new_with_free_func ([] (gpointer data) {
+        g_bytes_unref (static_cast<GBytes *> (data));
+      });
       std::unique_ptr<GPtrArray, decltype (&g_ptr_array_unref)> held (state.records, g_ptr_array_unref);
       std::vector<guint8> dispositions (all.size (), 0);
       for (gsize i = 0; i < all.size (); ++i)

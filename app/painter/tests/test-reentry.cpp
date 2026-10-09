@@ -97,15 +97,25 @@ void replace_array (gpointer data, GObject *)
 }
 void array_reentry ()
 {
-  auto value = ArrayRef::adopt (g_array_new (FALSE, FALSE, sizeof (GObject *)));
-  g_array_set_clear_func (value.get (), [] (gpointer p) { g_object_unref (*static_cast<GObject **> (p)); });
-  auto old = object ();
-  g_object_weak_ref (old.get (), replace_array, &value);
-  auto *raw = old.release ();
-  g_array_append_val (value.get (), raw);
-  value = ArrayRef::adopt (g_array_new (FALSE, FALSE, sizeof (int)));
-  g_assert_cmpuint (value.get ()->len, ==, 1);
-  g_assert_cmpint (g_array_index (value.get (), int, 0), ==, 42);
+  for (int operation = 0; operation < 3; ++operation)
+    {
+      auto value = ArrayRef::adopt (g_array_new (FALSE, FALSE, sizeof (GObject *)));
+      g_array_set_clear_func (value.get (), [] (gpointer p) { g_object_unref (*static_cast<GObject **> (p)); });
+      auto old = object ();
+      g_object_weak_ref (old.get (), replace_array, &value);
+      auto *raw = old.release ();
+      g_array_append_val (value.get (), raw);
+      auto incoming = ArrayRef::adopt (g_array_new (FALSE, FALSE, sizeof (int)));
+      if (operation == 0) value.reset ();
+      else if (operation == 1) value = std::move (incoming);
+      else
+        {
+          value = incoming;
+          g_assert_cmpuint (incoming.get ()->len, ==, 0);
+        }
+      g_assert_cmpuint (value.get ()->len, ==, 1);
+      g_assert_cmpint (g_array_index (value.get (), int, 0), ==, 42);
+    }
 }
 struct Reschedule
 {
