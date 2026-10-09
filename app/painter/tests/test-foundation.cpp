@@ -345,6 +345,71 @@ void weak_handles ()
   g_assert_null (destination.lock ().get ());
 }
 
+void store_registration ()
+{
+  const GQuark reserved = g_quark_from_static_string ("gimp-painter-binding-store-v1");
+  const GQuark foreign = g_quark_from_static_string ("painter-test-unrelated-owner-data");
+  int first_finalized = 0, second_finalized = 0;
+  int first_foreign_destroyed = 0, second_foreign_destroyed = 0;
+  Counters first_stats, second_stats;
+  auto first = new_object (), second = new_object ();
+  g_object_weak_ref (first.get (), weak_notify, &first_finalized);
+  g_object_weak_ref (second.get (), weak_notify, &second_finalized);
+  auto destroy_foreign = [] (gpointer data) { ++*static_cast<int *> (data); };
+  g_object_set_qdata_full (first.get (), foreign, &first_foreign_destroyed, destroy_foreign);
+  g_object_set_qdata_full (second.get (), foreign, &second_foreign_destroyed, destroy_foreign);
+  g_assert_null (BindingStore::find (nullptr));
+  g_assert_null (BindingStore::find (first.get ()));
+  g_assert_null (g_object_get_qdata (first.get (), reserved));
+  expect (GIMP_PAINTER_ERROR_MISSING_SLOT, [&] { BindingStore::require (first.get ()); });
+  g_assert_null (g_object_get_qdata (first.get (), reserved));
+
+  auto& first_store = BindingStore::ensure (first.get ());
+  auto& second_store = BindingStore::ensure (second.get ());
+  g_assert_true (&first_store != &second_store);
+  g_assert_true (g_object_get_qdata (first.get (), reserved) == &first_store);
+  g_assert_true (g_object_get_qdata (second.get (), reserved) == &second_store);
+  for (int i = 0; i != 3; ++i)
+    {
+      g_assert_true (&BindingStore::ensure (first.get ()) == &first_store);
+      g_assert_true (&BindingStore::require (first.get ()) == &first_store);
+      g_assert_true (BindingStore::find (first.get ()) == &first_store);
+      g_assert_cmpuint (first.get ()->ref_count, ==, 1);
+    }
+  first_store.emplace<MainSlot> (first_stats);
+  second_store.emplace<MainSlot> (second_stats);
+  first_store.activate ();
+  second_store.activate ();
+  const auto generation = first_store.generation ();
+  g_assert_true (&BindingStore::ensure (first.get ()) == &first_store);
+  g_assert_true (first_store.state () == BindingStore::State::active);
+  g_assert_cmpuint (first_store.generation (), ==, generation);
+  first_store.close ();
+  g_assert_true (&BindingStore::ensure (first.get ()) == &first_store);
+  g_assert_true (first_store.state () == BindingStore::State::closed);
+  g_assert_cmpuint (first_store.generation (), ==, generation + 1);
+  g_assert_true (second_store.state () == BindingStore::State::active);
+  g_assert_cmpint (second_store.with<MainSlot> ([] (Impl& value) { return value.value; }), ==, 41);
+  g_assert_true (g_object_get_qdata (first.get (), foreign) == &first_foreign_destroyed);
+  g_assert_true (g_object_get_qdata (second.get (), foreign) == &second_foreign_destroyed);
+  g_assert_cmpint (first_foreign_destroyed, ==, 0);
+  g_assert_cmpint (second_foreign_destroyed, ==, 0);
+  g_assert_cmpuint (first.get ()->ref_count, ==, 1);
+  g_assert_cmpuint (second.get ()->ref_count, ==, 1);
+  first.reset ();
+  g_assert_cmpint (first_finalized, ==, 1);
+  g_assert_cmpint (first_foreign_destroyed, ==, 1);
+  g_assert_cmpint (first_stats.destroy, ==, 1);
+  g_assert_cmpint (second_finalized, ==, 0);
+  g_assert_cmpint (second_foreign_destroyed, ==, 0);
+  g_assert_cmpint (second_stats.destroy, ==, 0);
+  g_assert_true (BindingStore::find (second.get ()) == &second_store);
+  second.reset ();
+  g_assert_cmpint (second_finalized, ==, 1);
+  g_assert_cmpint (second_foreign_destroyed, ==, 1);
+  g_assert_cmpint (second_stats.destroy, ==, 1);
+}
+
 void store_lifetime ()
 {
   Counters counters;
@@ -525,6 +590,7 @@ void painter_test_register ()
   g_test_add_func ("/painter/ref/floating-sink", floating);
   g_test_add_func ("/painter/ref/weak", weak_handles);
   g_test_add_func ("/painter/store/lifecycle", store_lifetime);
+  g_test_add_func ("/painter/store/registration", store_registration);
   g_test_add_func ("/painter/store/multiple-slots", multiple_slots);
   g_test_add_func ("/painter/store/reentrant-close", reentrant_close);
   g_test_add_func ("/painter/store/construction-failure", failed_construction);
