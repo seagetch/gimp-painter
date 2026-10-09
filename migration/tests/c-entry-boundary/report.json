@@ -1,0 +1,102 @@
+{
+  "task": "06.013",
+  "status": "PASS",
+  "condition": "C の呼出し元へ例外が越境しない",
+  "production_implementation_changed": false,
+  "test_cases_added": 0,
+  "source_work_id": "legacy-bc8c738def225a9ac706",
+  "fresh_native_cases": 6,
+  "fresh_sanitizer_cases": 6,
+  "source_equal_prior_full_native_cases": 51,
+  "source_equal_prior_full_sanitizer_cases": 51,
+  "source_sha256": {
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-binding.h": "d0269c7b9dd84535d95f714e2227c280030cc922ba967823c00e98daa77d8c04",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/tests/test-c-api.c": "609f376f12c4ef43aecd21b00a50cc8567b9f8827aef36d0b48848a89c6e0c7d",
+    "app/painter/tests/test-c-api.h": "e9b3208f78777d72e27b321d53203c770900409718bdd0b7b7159fd86b28ed13",
+    "app/painter/tests/test-fixture-traits.hpp": "b5a91c8c312a9253208cf2cfe2988100d3259c3abb095b9bc26472d9a4c4ab68",
+    "app/painter/tests/test-fixture.c": "50696abdf8d4598fa7e431ee628e43a89912ead7c10891fdac90462441dd41af",
+    "app/painter/tests/test-fixture.h": "5a26cdf5bc2ce9208e0666be126885e9ea4d9ba09cf9accded89ea673cab8946",
+    "app/painter/tests/test-foundation.cpp": "7fc2bfb8dd43cbf8f790b9dd628016f67a559d3c615604ee068bfe5a303c898a",
+    "app/painter/tests/test-gobject.cpp": "e51d1d5abfc737ee792c6fec32be834b441fe82985bbac5046f68d6887fc1515",
+    "app/painter/tests/test-hierarchy.c": "fd448e354f15d5cec1d85fa53ed8f62253943ff90fda5a5c28b2c729beba8688",
+    "app/painter/tests/test-hierarchy.cpp": "46f086fa9efb9e4fd5f495c2d1420fa72b4a3bf49868275d64bddfce9916c09a",
+    "app/painter/tests/test-hierarchy.h": "ff70fb38099ec19b86c15d5f1e2e4c02c3f4777689bcc391cd6c15af6d225674",
+    "app/painter/tests/test-reentry.cpp": "27d5e099f4fc2c3b5e3e27856c9dd1b76a0d612d3695a6b2cb8864d438d403d5",
+    "app/painter/tests/test-registry.hpp": "4bd2aff639d1cef2459e41c4039a44d728634fe38ef5d4653e4bb08938b3b0e4",
+    "app/painter/tests/test-resources.cpp": "78f4be301a173e96d69ad5ead9f15a5826f791df2c1f58e1536a08a037ec5274"
+  },
+  "runs": [
+    {
+      "kind": "native",
+      "command": [
+        "/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http/app/painter/painter-foundation",
+        "-p",
+        "/painter/interop"
+      ],
+      "passed": 5,
+      "exit_code": 0,
+      "binary_sha256": "73987d47a39a4527780959c86cd599be83ae9dcd89d7c68d1ee6e3b898dd22f5",
+      "stdout": "native-interop-stdout.log",
+      "stderr": "native-interop-stderr.log"
+    },
+    {
+      "kind": "native",
+      "command": [
+        "/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http/app/painter/painter-foundation",
+        "-p",
+        "/painter/boundary/c-close"
+      ],
+      "passed": 1,
+      "exit_code": 0,
+      "binary_sha256": "73987d47a39a4527780959c86cd599be83ae9dcd89d7c68d1ee6e3b898dd22f5",
+      "stdout": "native-close-stdout.log",
+      "stderr": "native-close-stderr.log"
+    },
+    {
+      "kind": "sanitizer",
+      "command": [
+        "/workspace/scratch/5b5281e79681/call-leases-06012-verification/foundation-sanitizers/foundation-asan",
+        "-p",
+        "/painter/interop"
+      ],
+      "passed": 5,
+      "exit_code": 0,
+      "binary_sha256": "a1cec486c6ce72e6a4995737ed9643e5ea4e2412339a3aaa644ac05665583e35",
+      "stdout": "sanitizer-interop-stdout.log",
+      "stderr": "sanitizer-interop-stderr.log"
+    },
+    {
+      "kind": "sanitizer",
+      "command": [
+        "/workspace/scratch/5b5281e79681/call-leases-06012-verification/foundation-sanitizers/foundation-asan",
+        "-p",
+        "/painter/boundary/c-close"
+      ],
+      "passed": 1,
+      "exit_code": 0,
+      "binary_sha256": "a1cec486c6ce72e6a4995737ed9643e5ea4e2412339a3aaa644ac05665583e35",
+      "stdout": "sanitizer-close-stdout.log",
+      "stderr": "sanitizer-close-stderr.log"
+    }
+  ],
+  "c_compile_and_symbols_verified": true,
+  "evidence_members": 51,
+  "evidence_bytes": 38495,
+  "evidence_sha256": "86ae04ba5e0bfba021914f1feb6357afbb368a55a67ae53c20f560d3da2f6bb6",
+  "limitations": [
+    "Common boundary helpers and binding_close, not universal containment of every test/feature callback under invalid use",
+    "Native scalar fallbacks, nonthrowing cleanup and valid GError preconditions; no process-wide GLib OOM recovery or automatic rollback claimed",
+    "LSan unavailable under executor ptrace; UBSan vptr excluded; system GLib not instrumented"
+  ]
+}
