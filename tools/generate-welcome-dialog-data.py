@@ -117,18 +117,21 @@ if __name__ == "__main__":
   if args.header:
     print('#ifndef __WELCOME_DIALOG_DATA_H__')
     print('#define __WELCOME_DIALOG_DATA_H__\n\n')
+    print('#include <glib.h>\n')
+    print('G_BEGIN_DECLS\n')
 
-    print('extern gint          gimp_welcome_dialog_n_items;')
+    print('extern const gint    gimp_welcome_dialog_n_items;')
     print('extern const gchar * gimp_welcome_dialog_items[];')
     print('extern const gchar * gimp_welcome_dialog_demos[];')
     print()
-    print('extern gint          gimp_welcome_dialog_intro_n_paragraphs;')
+    print('extern const gint    gimp_welcome_dialog_intro_n_paragraphs;')
     print('extern const gchar * gimp_welcome_dialog_intro[];')
 
-    print('\n\n#endif /* __WELCOME_DIALOG_DATA_H__ */')
+    print('\nG_END_DECLS\n\n#endif /* __WELCOME_DIALOG_DATA_H__ */')
   else:
     print('#include "config.h"')
     print('#include <glib.h>')
+    print('#include "welcome-dialog-data.h"')
     print()
 
     print('const gint   gimp_welcome_dialog_n_items = {};'.format(len(demos)))

@@ -22,6 +22,9 @@
 <xsl:text>
 /* NOTE: This file is auto-generated from authors.xml, do not edit it. */
 
+#ifndef __GIMP_DIALOG_AUTHORS_H__
+#define __GIMP_DIALOG_AUTHORS_H__
+
 static const gchar * const creators[] =
 {
 </xsl:text>
@@ -72,6 +75,8 @@ static const gchar * const documenters[] =
   </xsl:call-template>
 <xsl:text>  NULL
 };
+
+#endif /* __GIMP_DIALOG_AUTHORS_H__ */
 </xsl:text>
   </xsl:template>
 

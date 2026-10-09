@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 C_SCOPE = 'migration/inventory/c-header-linkage.json'
 CPP_SCOPE = 'migration/inventory/cpp-header-boundary.json'
+GENERATED_SCOPE = 'migration/inventory/generated-c-header-scope.json'
 PRELUDE = 'migration/tests/painter-headers/prologue.h'
 MACROS = 'migration/tests/painter-headers/config-macros.c'
 VISIBILITY = 'app/painter/gimp-painter-visibility.h'
@@ -21,14 +22,34 @@ def include(path):
     return '#include "'+path+'"\n'
 
 
-def specification(root, http, scope=None, private_scope=None):
+def specification(root, http, scope=None, private_scope=None, generated_scope=None):
     # Explicit File arguments let Meson track the metadata used to enumerate
     # generated output names and prerequisite files at configure time.
-    for given, expected in [(scope, C_SCOPE), (private_scope, CPP_SCOPE)]:
+    for given, expected in [(scope, C_SCOPE), (private_scope, CPP_SCOPE),
+                            (generated_scope, GENERATED_SCOPE)]:
         if given is not None and given.resolve() != (root/expected).resolve():
             raise ValueError('unexpected reviewed scope path: '+str(given))
     c_scope = json.loads((root/C_SCOPE).read_text())
     cpp_scope = json.loads((root/CPP_SCOPE).read_text())
+    generated = json.loads((root/GENERATED_SCOPE).read_text())['source_written']
+    expected_generated = ({'app/pdb/internal-procs.h', 'libgimp/gimpenums.h',
+                           'libgimp/gimp_pdb_headers.h'} |
+                          {str(p.relative_to(root)) for p in (root/'libgimp').glob('*_pdb.h')} |
+                          {'plug-ins/imagemap/imap_'+syntax+'_parse.h'
+                           for syntax in ('cern', 'csim', 'ncsa')})
+    if len(generated) != 63 or len(expected_generated) != 63 or \
+       {row['path'] for row in generated} != expected_generated:
+        raise ValueError('generated C-header scope is missing, duplicated or changed')
+    for row in generated:
+        expected_context = ('core' if row['path'].startswith('app/') else
+                            'sdk' if row['path'].startswith('libgimp/') else 'standalone')
+        expected_generator = ('pdb/app.pl' if expected_context == 'core' else
+                              'pdb/enumcode.pl' if row['path'] == 'libgimp/gimpenums.h' else
+                              'pdb/lib.pl' if expected_context == 'sdk' else
+                              row['path'].replace('_parse.h', '.y'))
+        if row['context'] != expected_context or row['generator'] != expected_generator or \
+           not (root/row['generator']).is_file():
+            raise ValueError('generated C-header producer/context mismatch: '+row['path'])
     if len(c_scope['routes']) != 103:
         raise ValueError('missing or additional reviewed C-header route')
     if len({row['route'] for row in c_scope['routes']}) != len(c_scope['routes']):
@@ -82,8 +103,14 @@ def specification(root, http, scope=None, private_scope=None):
         'extern "C" GIMP_PAINTER_C_ENTRY void probe_entry (void);\n#endif\n')
     for target in active_private:
         add('private-cpp-header', target, prelude+include(target)*2, ('cpp',))
+    for row in generated:
+        context = {'core':prelude,
+                   'sdk':'#include "config.h"\n#define GIMP_COMPILATION\n#include "libgimp/gimp.h"\n',
+                   'standalone':''}[row['context']]
+        add('generated-source-header', row['path'], context+include(row['path'])*2)
     baseline = {row['path']:row for row in c_scope['all_baseline_app_headers']}
-    closure = {row['path'] for row in c_scope['headers']} | set(targets)
+    generated_paths = {row['path'] for row in generated}
+    closure = {row['path'] for row in c_scope['headers']} | set(targets) | generated_paths
     for header in sorted((root/'app').rglob('*.h')):
         if 'tests' in header.relative_to(root).parts:
             continue
@@ -94,7 +121,7 @@ def specification(root, http, scope=None, private_scope=None):
         blob = hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
         if path in baseline and blob != baseline[path]['baseline_blob'] and path not in closure:
             raise ValueError('changed C header is outside the reviewed closure: '+path)
-    inputs = {C_SCOPE, CPP_SCOPE, PRELUDE, MACROS, VISIBILITY,
+    inputs = {C_SCOPE, CPP_SCOPE, GENERATED_SCOPE, PRELUDE, MACROS, VISIBILITY,
               str(Path(__file__).resolve().relative_to(ROOT))}
     inputs.update(closure); inputs.update(active_private)
     records = [{'name':p['name'], 'label':p['label'], 'header':p['header'],
@@ -103,6 +130,7 @@ def specification(root, http, scope=None, private_scope=None):
     manifest = {'format':1, 'scope':'C11/C++14 header compilation; no runtime or link ABI claim',
                 'http_enabled':http, 'public_targets':targets,
                 'private_cpp_targets':active_private, 'probes':records,
+                'generated_source_targets':sorted(generated_paths),
                 'outer_linkage_adapter':False,
                 'source_sha256':{p:sha((root/p).read_bytes()) for p in sorted(inputs)}}
     return probes, manifest
@@ -119,6 +147,7 @@ def main():
     parser.add_argument('--http', choices=('0','1'), default='0')
     parser.add_argument('--scope', type=Path)
     parser.add_argument('--private-scope', type=Path)
+    parser.add_argument('--generated-scope', type=Path)
     parser.add_argument('--list', action='store_true')
     parser.add_argument('--list-inputs', action='store_true')
     parser.add_argument('--output-dir', type=Path)
@@ -127,7 +156,7 @@ def main():
     parser.add_argument('--report', type=Path)
     args = parser.parse_args()
     probes, manifest = specification(args.root.resolve(), args.http == '1',
-                                     args.scope, args.private_scope)
+                                     args.scope, args.private_scope, args.generated_scope)
     if args.list_inputs:
         print('\n'.join(manifest['source_sha256']))
         return

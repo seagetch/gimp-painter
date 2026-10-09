@@ -470,6 +470,25 @@ gio               = dependency('gio-2.0')
 gio_specific_name = platform_windows ? 'gio-windows-2.0' : 'gio-unix-2.0'
 gio_specific      = dependency(gio_specific_name)
 
+# Keep resource declarations usable from C++ without changing the generated C
+# or the pinned gimp-data sources. Resolve the compiler from build-machine GIO:
+# a cross build must never try to execute a target-machine resource compiler.
+resource_gio = dependency('gio-2.0', native: true)
+resource_compiler = find_program(
+  resource_gio.get_variable(pkgconfig: 'glib_compile_resources'),
+  native: true,
+)
+resource_config = configuration_data()
+resource_config.set_quoted('GLIB_COMPILE_RESOURCES',
+                          resource_compiler.full_path().replace('\\', '/'))
+resource_wrapper = configure_file(
+  input: 'tools/gimp-compile-resources.py.in',
+  output: 'gimp-compile-resources.py',
+  configuration: resource_config,
+)
+meson.override_find_program('glib-compile-resources',
+                           find_program(resource_wrapper, native: true))
+
 glib_minver       = '2.70.0'
 glib              = dependency('glib-2.0',           version: '>='+glib_minver)
 glib_version_split = glib_minver.split('.')

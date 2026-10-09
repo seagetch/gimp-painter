@@ -1214,6 +1214,8 @@ GPL
 #ifndef $guard
 #define $guard
 
+G_BEGIN_DECLS
+
 HEADER
 
         print IFILE "void   internal_procs_init" . ' ' x ($longest - length "internal_procs_init") . " (GimpPDB *pdb);\n\n";
@@ -1224,6 +1226,8 @@ HEADER
 	}
 
 	print IFILE <<HEADER;
+
+G_END_DECLS
 
 #endif /* $guard */
 HEADER

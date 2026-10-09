@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+"""Give Meson's generated GResource headers their own C linkage."""
+
+from pathlib import Path
+import os
+import re
+import signal
+import subprocess
+import sys
+
+
+COMPILER = @GLIB_COMPILE_RESOURCES@
+
+
+def add_c_linkage(header):
+    # GLib owns the header guard and GIO include. Keep the include outside the
+    # linkage block, and cover every declaration (including manual registration).
+    match = re.fullmatch(
+        rb'(#ifndef (?P<guard>__RESOURCE_\w+)\r?\n'
+        rb'#define (?P=guard)\r?\n\s*#include <gio/gio\.h>\r?\n)'
+        rb'(?P<body>.*)(?P<end>#endif[^\r\n]*\r?\n?)', header, re.DOTALL)
+    if not match:
+        raise ValueError('unrecognized generated GResource header layout')
+    body = match['body']
+    # Newer generators or distributor patches may already own the linkage.
+    if (b'G_BEGIN_DECLS' in body and b'G_END_DECLS' in body or
+            re.search(rb'extern\s+"C"\s*\{', body)):
+        return header
+    if b'G_BEGIN_DECLS' in body or b'G_END_DECLS' in body:
+        raise ValueError('incomplete generated GResource C linkage')
+    newline = b'\r\n' if b'\r\n' in header else b'\n'
+    return (match[1] + newline + b'G_BEGIN_DECLS' + newline + body +
+            newline + b'G_END_DECLS' + newline + newline + match['end'])
+
+
+def main(args):
+    # Delegate all options and diagnostics unchanged. In particular, do not
+    # rewrite a stale header when the compiler failed or only displayed help.
+    result = subprocess.call([COMPILER] + args)
+    if result < 0:
+        # subprocess reports Unix signal termination as a negative status.
+        # Preserve that failure instead of turning it into a different exit code.
+        if -result != signal.SIGKILL:
+            signal.signal(-result, signal.SIG_DFL)
+        os.kill(os.getpid(), -result)
+    if result or any(arg in ('--version', '--help', '--help-all', '-h')
+                     for arg in args):
+        return result
+
+    target = None
+    for index, arg in enumerate(args):
+        if arg == '--target' and index + 1 < len(args):
+            target = args[index + 1]
+        elif arg.startswith('--target='):
+            target = arg.split('=', 1)[1]
+
+    # Meson always supplies a target. Leave non-header compiler invocations,
+    # including source, binary, version and dependency queries, alone.
+    if target and ('--generate-header' in args or
+                   '--generate' in args and target.endswith('.h')):
+        path = Path(target)
+        header = path.read_bytes()
+        updated = add_c_linkage(header)
+        if updated != header:
+            path.write_bytes(updated)
+    return 0
+
+
+if __name__ == '__main__':
+    try:
+        sys.exit(main(sys.argv[1:]))
+    except (OSError, ValueError) as error:
+        sys.exit('gimp-compile-resources: ' + str(error))

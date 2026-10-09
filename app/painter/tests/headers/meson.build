@@ -4,7 +4,8 @@ painter_header_generator = files('generate-probes.py')
 painter_header_http = painter_http_enabled ? '1' : '0'
 painter_header_scope_args = [
   '--scope', files('../../../../migration/inventory/c-header-linkage.json'),
-  '--private-scope', files('../../../../migration/inventory/cpp-header-boundary.json')]
+  '--private-scope', files('../../../../migration/inventory/cpp-header-boundary.json'),
+  '--generated-scope', files('../../../../migration/inventory/generated-c-header-scope.json')]
 painter_header_names = run_command(python, painter_header_generator,
   painter_header_scope_args, '--http', painter_header_http, '--list',
   check: true).stdout().strip().split('\n')

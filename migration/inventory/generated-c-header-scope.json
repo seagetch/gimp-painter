@@ -1,0 +1,337 @@
+{
+  "format": 1,
+  "task": "04.017",
+  "scope": "Tracked generated C-facing headers and the current native generated-output inventory; existing04.014 source boundaries remain unchanged",
+  "source_written": [
+    {
+      "path": "app/pdb/internal-procs.h",
+      "context": "core",
+      "generator": "pdb/app.pl"
+    },
+    {
+      "path": "libgimp/gimp_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimp_pdb_headers.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpbrush_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpbrushes_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpbrushselect_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpbuffer_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpchannel_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpcontext_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpdebug_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpdisplay_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpdrawable_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpdrawablecolor_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpdrawableedit_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpdrawablefilter_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpdrawableselect_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpdynamics_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpedit_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpenums.h",
+      "context": "sdk",
+      "generator": "pdb/enumcode.pl"
+    },
+    {
+      "path": "libgimp/gimpfile_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpfloatingsel_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpfont_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpfonts_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpfontselect_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpgimprc_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpgradient_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpgradients_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpgradientselect_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpgrouplayer_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimphelp_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpimage_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpimageautocrop_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpimagecolorprofile_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpimageconvert_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpimagegrid_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpimageguides_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpimagesamplepoints_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpimageselect_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpimagetransform_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpimageundo_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpitem_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpitemtransform_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimplayer_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpmessage_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimppainttools_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimppalette_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimppalettes_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimppaletteselect_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimppath_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimppattern_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimppatterns_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimppatternselect_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimppdb_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpplugin_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpprogress_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpresource_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpselection_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimptextlayer_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimptexttool_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "libgimp/gimpunit_pdb.h",
+      "context": "sdk",
+      "generator": "pdb/lib.pl"
+    },
+    {
+      "path": "plug-ins/imagemap/imap_cern_parse.h",
+      "context": "standalone",
+      "generator": "plug-ins/imagemap/imap_cern.y"
+    },
+    {
+      "path": "plug-ins/imagemap/imap_csim_parse.h",
+      "context": "standalone",
+      "generator": "plug-ins/imagemap/imap_csim.y"
+    },
+    {
+      "path": "plug-ins/imagemap/imap_ncsa_parse.h",
+      "context": "standalone",
+      "generator": "plug-ins/imagemap/imap_ncsa.y"
+    }
+  ],
+  "source_header_count": 63,
+  "build_graph": "Enumerate actual Meson .h outputs plus configured config.h/gimpversion.h; classify stamps as idempotent no-ABI inputs; inactive optional outputs are recorded separately",
+  "active_native_custom_header_count": 40,
+  "configured_header_count": 2,
+  "inactive_optional_headers": [
+    "plug-ins/help-browser/help-menus.h"
+  ],
+  "known_definition_only": [
+    "app/dialogs/authors.h",
+    "app/widgets/gimplanguagestore-data.h",
+    "plug-ins/file-bmp/huffman.h",
+    "app/paint/painter-brush-settings/mypaintbrush-enum-settings.h",
+    "app/paint/painter-brush-settings/mypaintbrush-settings-data.h"
+  ],
+  "separate_parser_contexts": true
+}
