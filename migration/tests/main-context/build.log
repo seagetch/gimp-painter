@@ -1,0 +1,12 @@
+ninja: Entering directory `/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http'
+[1/8] Compiling C++ object app/painter/painter-filter-raster.p/tests_test-filter-raster.cpp.o
+[2/8] Linking target app/painter/painter-filter-raster
+[3/8] Compiling C++ object app/painter/painter-filter-owner-gates.p/tests_test-filter-owner-gates.cpp.o
+../../gimp-painter-port-active/app/painter/tests/test-filter-owner-gates.cpp:14:8: warning: 'GateHarness' declared with greater visibility than the type of its field 'GateHarness::scheduler' [-Wattributes]
+   14 | struct GateHarness
+      |        ^~~~~~~~~~~
+[4/8] Compiling C++ object app/painter/painter-work-admission.p/tests_test-work-admission.cpp.o
+[5/8] Linking target app/painter/painter-filter-owner-gates
+[6/8] Linking target app/painter/painter-work-admission
+[7/8] Compiling C++ object app/painter/painter-filter-spool.p/tests_test-filter-spool.cpp.o
+[8/8] Linking target app/painter/painter-filter-spool

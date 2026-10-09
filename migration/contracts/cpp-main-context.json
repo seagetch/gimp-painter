@@ -1,0 +1,265 @@
+{
+  "format": 1,
+  "task": "05.012",
+  "status": "DEFINED",
+  "implementation_parent": "d100cf3581eeb4940ddf2ab468a6dd349a113697",
+  "routes": [
+    {
+      "id": "binding-store-and-handles",
+      "owner": "GThread recorded by BindingStore construction; GUI adapters install on UI thread",
+      "operations": [
+        "construct, register, initialize, activate, const read, mutation, close, generation checks on creator thread",
+        "ObjectRef/WeakRef retain/copy/lock/release follow referred-object affinity; find is lookup only"
+      ],
+      "boundary": "Context acquisition does not change creator identity; synchronous creator-thread operation does not require current context ownership",
+      "close_and_final_release": "Owner final-unrefs; off-thread BindingStore destruction diagnoses then cleans synchronously, not marshalled recovery",
+      "source_evidence": [
+        "app/painter/binding-store.cpp:16",
+        "app/painter/binding-store.cpp:19",
+        "app/painter/binding-store.cpp:59",
+        "app/painter/object-ref.hpp:22",
+        "app/painter/object-ref.hpp:41",
+        "app/painter/object-ref.hpp:73"
+      ]
+    },
+    {
+      "id": "sources-and-fair-dispatcher",
+      "owner": "Creating owner thread and explicitly attached context",
+      "operations": [
+        "Source create/replace/close and affinity-bearing callable destruction on owner",
+        "FairDispatcher ticket creation/schedule/cancel/destruction and deque access owner-confined"
+      ],
+      "boundary": "Source runs on context iterating thread; no marshalling or affinity guard. FairDispatcher enqueue checks thread, dispatch/cancel rely on contract",
+      "close_and_final_release": "Source pins executing callable during self-close; destroying on owner preserves capture affinity",
+      "source_evidence": [
+        "app/painter/source.hpp:27",
+        "app/painter/source.hpp:34",
+        "app/painter/source.hpp:55",
+        "app/painter/fair-dispatcher.hpp:27",
+        "app/painter/fair-dispatcher.hpp:32",
+        "app/painter/fair-dispatcher.hpp:57",
+        "app/painter/fair-dispatcher.hpp:107"
+      ]
+    },
+    {
+      "id": "filter-owner-adapter",
+      "owner": "GUI owner; default-context FairDispatcher",
+      "operations": [
+        "prepare dependencies and native context",
+        "sample lower-stack graph into owned packed bytes",
+        "import private staging buffer and publish current completed generation",
+        "emit progress/state notifications after reading plain channel snapshot"
+      ],
+      "boundary": "Read/Import/Commit/Gate callables are ephemeral synchronous owner callbacks passed to FilterScheduler::step; never in Request/Job",
+      "close_and_final_release": "FilterImpl closes scheduler, tickets, connections, native context and refs on owner without join",
+      "source_evidence": [
+        "app/core/gimpfilterlayer.cpp:119",
+        "app/core/gimpfilterlayer.cpp:642",
+        "app/core/gimpfilterlayer.cpp:903",
+        "app/core/gimpfilterlayer.cpp:930",
+        "app/core/gimpfilterlayer.cpp:1059",
+        "app/core/gimpfilterlayer.cpp:1186"
+      ]
+    },
+    {
+      "id": "detached-vector-filter",
+      "owner": "Independent std::thread",
+      "operations": [
+        "compute with owned Job input/output, scalar options and approved plain-value Process captures",
+        "write success/error/output, then release-store done"
+      ],
+      "boundary": "Owner acquires done before reading non-atomic worker output; generation check rejects stale completion; Process capture graph must exclude UI/Gimp/BindingStore ownership",
+      "close_and_final_release": "Job/Process destruction can occur on either side; owner close drops its share, worker later destroys independent state and lifetime token",
+      "source_evidence": [
+        "app/painter/filter-scheduler.cpp:24",
+        "app/painter/filter-scheduler.cpp:122",
+        "app/painter/filter-scheduler.cpp:200",
+        "app/painter/filter-scheduler.cpp:305"
+      ]
+    },
+    {
+      "id": "detached-spool-and-process-transport",
+      "owner": "Independent std::thread; TemporaryFilterRaster tied to constructing worker",
+      "operations": [
+        "own temporary files, quotas, process handles, profile and scratch",
+        "SPSC transfer of uniquely owned chunks",
+        "run process only after acquired input seal"
+      ],
+      "boundary": "Owner may fill shared native descriptor/options during collection, completes before_process, then seals; no mutation after seal until prior worker completion. Progress uses mutex/try_snapshot; result uses release/acquire atomic scalar",
+      "close_and_final_release": "Worker closes files before complete/done publication; admission/lifetime leases outlive resources. Cancellation is a request, not completion",
+      "source_evidence": [
+        "app/painter/filter-spool.cpp:37",
+        "app/painter/filter-spool.cpp:65",
+        "app/painter/filter-spool.cpp:114",
+        "app/painter/filter-spool.cpp:151",
+        "app/painter/filter-spool.cpp:186",
+        "app/painter/filter-raster.cpp:56",
+        "app/painter/filter-process.cpp:101",
+        "app/core/gimpfilterlayer.cpp:1114",
+        "app/core/gimpfilterlayer.cpp:1186",
+        "app/painter/filter-progress.hpp:30",
+        "app/painter/filter-procedure.hpp:18"
+      ]
+    },
+    {
+      "id": "isolated-filter-helper",
+      "owner": "Main thread of separate gimp-painter-filter-worker process",
+      "operations": [
+        "construct PrivateRuntime and local Gimp/PDB/image/layer/buffer/progress objects",
+        "service own default context for native plugin watches",
+        "separate lifeline thread only reads pipe and kills process group"
+      ],
+      "boundary": "Only validated scalar/byte wire frames cross process boundary; no parent GUI object crosses",
+      "close_and_final_release": "PrivateRuntime drains plugins and releases local GIMP/GEGL on helper main before terminal success; parent validates terminal/EOF/reap/cleanup",
+      "source_evidence": [
+        "app/painter-filter-worker.cpp:63",
+        "app/painter-filter-worker.cpp:77",
+        "app/painter-filter-worker.cpp:91",
+        "app/painter-filter-worker.cpp:118",
+        "app/core/gimpfilterprocedure.cpp:219",
+        "app/core/gimpfilterprocedure.cpp:269",
+        "app/core/gimpfilterprocedure.cpp:716",
+        "app/core/gimpfilterprocedure.cpp:872"
+      ]
+    },
+    {
+      "id": "mypaint-preview",
+      "owner": "GUI owner, cooperatively scheduled default-context idle",
+      "operations": [
+        "capture settings/color/resources synchronously",
+        "duplicate private GimpBrush/GimpPattern; own GeglBuffer and GdkPixbuf",
+        "step bounded preview samples and publish complete current revision"
+      ],
+      "boundary": "Weak owner + store generation + preview revision guard; PreviewJob is not a detached worker and GObject snapshots are not transferable plain values",
+      "close_and_final_release": "Owner cancels/replaces/closes Source, PreviewJob and resource refs; running step pins current job across reentry",
+      "source_evidence": [
+        "app/widgets/gimppaintermybrusheditor.cpp:48",
+        "app/widgets/gimppaintermybrusheditor.cpp:83",
+        "app/widgets/gimppaintermybrusheditor.cpp:141",
+        "app/widgets/gimppaintermybrusheditor.cpp:388",
+        "app/paint/painter-mypaint-surface/gimp-resources.cpp:225"
+      ]
+    },
+    {
+      "id": "custom-paint-and-queued-fill-smudge",
+      "owner": "GUI owner; MyPaint ColorTool synchronous Session; Fill/Smudge default-context idle",
+      "operations": [
+        "MyPaint Session/PaintCore operate synchronously from custom input callbacks",
+        "Fill/Smudge freeze GObject-bearing stroke options/resources and drain bounded owner work",
+        "Undo, GEGL native resources and notifications stay in owner transaction"
+      ],
+      "boundary": "Async/queued names do not imply detached execution; custom tool callbacks override native input and use owner weak/generation validation",
+      "close_and_final_release": "Owner cancels/finishes sessions/strokes, closes sources and releases GObject refs",
+      "source_evidence": [
+        "app/tools/gimppaintermybrushtool.cpp:43",
+        "app/tools/gimppaintermybrushtool.cpp:174",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp:101",
+        "app/paint/painter-mypaint-surface/paint-core.cpp:60",
+        "app/tools/gimpfillbrushtool.cpp:58",
+        "app/tools/gimpfillbrushtool.cpp:225",
+        "app/tools/gimpfillbrushtool.cpp:294",
+        "app/tools/gimppaintersmudgetool.cpp:225"
+      ]
+    },
+    {
+      "id": "upstream-ordinary-paint-exception",
+      "owner": "Existing native GimpPaintTool paint thread and owner transaction",
+      "operations": [
+        "paint worker interpolates against borrowed live native paint tool/core/options/drawables under native paint_mutex",
+        "BrushCore invokes Painter geometry, texturize and compatibility paper paste on native buffers/caches"
+      ],
+      "boundary": "Upstream paint queue, paint_mutex, owner flush and PAINT_FINISH lifecycle apply; exception does not permit custom BindingStore or GTK usage from a Filter worker",
+      "close_and_final_release": "Native paint-end drains queued PAINT_FINISH before native finish/cancel/end-paint; BrushCore owns retained texture/cache lifetime. This audit identifies route, not complete concurrent-edit race safety",
+      "source_evidence": [
+        "app/tools/gimppainttool-paint.c:100",
+        "app/tools/gimppainttool-paint.c:125",
+        "app/tools/gimppainttool-paint.c:164",
+        "app/tools/gimppainttool-paint.c:211",
+        "app/tools/gimppainttool-paint.c:385",
+        "app/paint/gimpbrushcore.c:248",
+        "app/paint/gimpbrushcore.c:1217",
+        "app/paint/gimpbrushcore.c:1360",
+        "app/paint/gimpbrushcore.c:1451",
+        "app/paint/gimppainterpaper-paste.cpp:83"
+      ]
+    }
+  ],
+  "source_sha256": {
+    "migration/design.md": "1dc730859639b4ed2fe0bddce42b199cf5ee191616d16cceeb3e52d4c113a09d",
+    "migration/contracts/cpp-foundation.md": "247a4733838ed21c2bae31d6b1d0d7bd023e63cd5728860705d98bf7d4434329",
+    "migration/contracts/ordinary-paper.md": "6c5520268596fb8bdbc450ab25ccbedc26a9d04c7411c35ce1ca5e3d9b5953e3",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/fair-dispatcher.hpp": "b91633f201fb69abedafcdc337842332d9ef63e1c70c6611069af47879852c7b",
+    "app/painter/filter-scheduler.hpp": "18982c318bc9a033d2bb9404aecfccc7dea3eba758c21e152c62e659e4eebd5e",
+    "app/painter/filter-scheduler.cpp": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-process.cpp": "87918ee52bfcdacca648203151292021996a850332ce25c3444cd82f83867fc8",
+    "app/painter/filter-procedure.hpp": "72540b564fddce712f094063742f635a5133d54f734e7dde9d587c1427e7fd56",
+    "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/work-admission.hpp": "a9167b3a1a8b1a729d12029bc3d2a6baa284e4096a91fcb98fa70e4ca73cc98d",
+    "app/core/gimpfilterlayer.cpp": "67658997dbdf8bd796567143d109348e2bddb2a4a421fcb363c7ce3122644925",
+    "app/core/gimpfilterprocedure.cpp": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+    "app/painter-filter-worker.cpp": "4a841382f471e71a59ce26865a62919213450ba03b62552096d7a10a589d1838",
+    "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+    "app/paint/painter-mypaint-surface/gimp-resources.cpp": "4b0aed77cd20f25428a53ac5bee822db01b5d6630f86a2e92a648c536492cbf1",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "e61aff31fa66c94af9fb641974e7d2818f0ce7b4b43dd2495cfcf4867138a798",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431",
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "b76d784b6173aba483cc88524db66d1d13a3f22c56c96de871c16f73772863d5",
+    "app/tools/gimppaintermybrushtool.cpp": "255f679a0ce50c13106fe72f0dcc45b07db7ac568dfbfb6224e5ccb8bc4c8353",
+    "app/tools/gimpfillbrushtool.cpp": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+    "app/tools/gimppaintersmudgetool.cpp": "c11e2e2413baaebd86f03a2a9e6f9726c2b965162a442e0714236c39354163d1",
+    "app/tools/gimppainttool-paint.c": "741cd587946eac384d78c5e1d332e4d6038afa833666e1e6b5de6a569dfe0949",
+    "app/paint/gimpbrushcore.c": "dae7f51e023039a29c211ee66b047e02d2a0add045ae94821660ab3568346048",
+    "app/paint/gimppainterbrushgeometry.cpp": "d230eea2c1ffed24e6a764d115f394be12de379e9941ea042888647fbf3f755d",
+    "app/paint/gimppainterpaper.cpp": "2740721aa4952e51570c0ed8440d15a1421295874c3b3f973246d93de76f7cdb",
+    "app/paint/gimppainterpaper-paste.cpp": "5c245c1798d2b7a3da8b4c9c1d565005d0325cf71655e22423f495fee6cbe84c",
+    "app/painter/tests/test-foundation.cpp": "9feb9318c9671e74f0b0ac680d3571d88ca985637a8bd9dc7ec2cf72eec691e9",
+    "app/painter/tests/test-resources.cpp": "78f4be301a173e96d69ad5ead9f15a5826f791df2c1f58e1536a08a037ec5274",
+    "app/painter/tests/test-reentry.cpp": "53da4804a46cf3f9b6119e3b05eb67c143d4278e8ad7e0fcad34eacb951d5420",
+    "app/painter/tests/test-fair-dispatcher.cpp": "8f96fd4f9db78b5378de465e73b49fcacb26eb1655b36e8eae55909013665465",
+    "app/painter/tests/test-filter-scheduler.cpp": "8ce8787123b2fe26de6091cff3a8cc751209626ce5d66ed5b1d9927917034dba",
+    "app/painter/tests/test-filter-spool.cpp": "befacf7bd2e2668f3d6f3228814365406ba7d8b2f0f62b98f0884d1a67568c08",
+    "app/painter/tests/test-work-admission.cpp": "dfea75b460016351f2eaa984cd11bf2e7fdfb2b43d1a4b21848109cd954a1133",
+    "app/painter/tests/test-filter-owner-gates.cpp": "41e4136bf876cd7bb00c6e615bcb8c98a5b1d470f7644c43abdec3f5e29f1296",
+    "app/painter/tests/test-filter-import-completion.cpp": "00fd1a9cb29fe08116471cda478a09ca401a2a909fff6174fb4cfb92ebdceff4",
+    "app/tests/test-gimp-filter-layer.c": "01d2dba11ad8a07c119afedb7b50990a4b17161063e8acb4dd22f50333566ef5",
+    "app/tests/test-filter-owner-context.cpp": "fe4e538147fe089b86c335cde5623a145e9c8890f5dcbe862adb59b82cd8e1a4",
+    "app/tests/test-gimp-painter-preview.cpp": "83d6eb212743eefec5d38f9407c06ffdf3f3a1f493d357590346a218ec334e00",
+    "app/tests/test-painter-mypaint-editor.cpp": "0516d7e8e8de35e967ad88f97bdae117d46e6dea7ec258d6123334de908b25f9",
+    "app/tests/test-painter-mypaint-tool.cpp": "b3f7f498fb3f36d06b0e387611f0d362388b09ebc26b4713fd0715068ac19058",
+    "app/painter/meson.build": "340b4147cc44efab297054af7ea7dc094a4cf0904de3b25788daf14adfa980a7",
+    "app/tests/meson.build": "a9cc9109eb081da9ce579ff7a553e162b4b38291aa3573b8ca62122a04652f4a",
+    "app/core/gimpfilterpaths.cpp": "91c45a032f7b6caace7968f9e94494aa310d4097e9df3e41a9360e1b8975d8e9",
+    "app/painter/filter-spool.hpp": "856966b186ce70a233b7fc8b41d652f2c58345bc187035365dfddb263c3d0651",
+    "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+    "app/paint/painter-mypaint/resource.hpp": "dc7cddb3e5c32245ec61f5f39541c43ba58d6c0fd62a79ea15fe7829809a103e",
+    "migration/tests/main-context/owner-context.cpp": "9dba62b16229ac841e99c3046a313abd6010180dfa695e2b80efe34f387a6585",
+    "tools/check_painter_main_context.py": "1b4be7697092ec2a26f3c55da89545234a2fd039fe90bc772952833cec926fc5"
+  },
+  "evidence_sha256": {
+    "migration/tests/main-context/build-result.json": "32bfe80bf39fc64df93cff64f7b53a93386c8e107734dd3e5d9e89c855c1f1ad",
+    "migration/tests/main-context/build.log": "84c1e8b36977611baace5aea05c9ced099ed7d488cfda17a5f9c143fe9e35312",
+    "migration/tests/main-context/native-results.json": "32d495a994433aca68b778a419da078c0f7922f0b78a677965c80310796b75ca",
+    "migration/tests/main-context/native.log": "ff5e221feb15116494a4d616a62f97674110a046b88a79c3e18aedd85616983d",
+    "migration/tests/main-context/owner-context.cpp": "9dba62b16229ac841e99c3046a313abd6010180dfa695e2b80efe34f387a6585",
+    "migration/tests/main-context/painter-filter-owner-gates.log": "f47925b63e1a80f21849b796ae30bf662eaaf2db4061eb2a12c7f8e7e8a0e444",
+    "migration/tests/main-context/painter-filter-raster.log": "0d21caea274689acb5667cf9aec0320e5965fb863d0aba9f4b3ec5297da00a0f",
+    "migration/tests/main-context/painter-filter-spool.log": "fbf38f16fb5496acf13355928013a791dbc3314dd1861649e7896ca9fadcf3e3",
+    "migration/tests/main-context/painter-work-admission.log": "20192debded3cc1e0f45a487bf4148a2202da87d7ec7ed7c500c6510c351a1a5",
+    "migration/tests/main-context/report.json": "bdecd4c8773e077bde49e0953bc3f1749d7c08b95b9fa6cad0a88e863f6ff76e",
+    "migration/tests/main-context/sanitized.log": "2e991bf0663f43597b784d891a428d671c8d9fe1e10a1239535770c46d597982"
+  },
+  "limits": [
+    "Source is not an affinity marshaller; owner-context discipline is required",
+    "Final release follows caller thread; owning UI references must not reach worker captures",
+    "Request descriptors freeze after owner preparation/seal, not allocation",
+    "Native synchronized paint exception does not permit arbitrary GObject or GTK worker operations",
+    "No production race defect or universal race-freedom demonstrated; LSan/TSan and platform gates not passed"
+  ]
+}
