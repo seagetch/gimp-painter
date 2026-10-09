@@ -334,7 +334,7 @@
 | 06.014 | [x] | vfunc の型付き trampoline を実装する | 06.013 | 不一致な関数ポインター cast を使わない |
 | 06.015 | [x] | property の転送を実装する | 06.014 | 型・既定値・notify を保持 |
 | 06.016 | [x] | GInterface の登録 adapter を実装する | 06.015 | class と interface の登録を混同しない |
-| 06.017 | [ ] | Connection の所有管理を実装する | 06.016 | target 先行破棄時にも安全に切断できる |
+| 06.017 | [x] | Connection の所有管理を実装する | 06.016 | target 先行破棄時にも安全に切断できる |
 | 06.018 | [ ] | Connection の block/unblock を実装する | 06.017 | 旧 after と一時抑制の順序を維持 |
 | 06.019 | [ ] | idle source の所有管理を実装する | 06.018 | close 後に user data を参照しない |
 | 06.020 | [ ] | GValue の所有 wrapper を実装する | 06.019 | borrow・copy・unset・free を明示して二重解放しない |
