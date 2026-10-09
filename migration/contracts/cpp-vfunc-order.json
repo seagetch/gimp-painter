@@ -1,0 +1,3316 @@
+{
+  "format": 1,
+  "task": "05.011",
+  "status": "DEFINED",
+  "implementation_parent": "427cbeb67e5d68ca59013ecec84d8607aeb2fd75",
+  "types": [
+    {
+      "type": "EndianInput",
+      "parent": "G_TYPE_INPUT_STREAM",
+      "source": "app/xcf/painter-xcf-arguments.cpp",
+      "activation": "Big-endian-only private C-layout input stream. Factory initializes borrowed array data/length/width before synchronous snapshot read. No BindingStore.",
+      "cleanup": "Inherit GInputStream disposal/finalization; borrowed data not freed by stream.",
+      "reentry": "read checks cancellable, bounds bytes to block size, maps component byte order and advances position. Caller retains source values during synchronous conversion; no UI/user callback or asynchronous raw-pointer escape.",
+      "evidence": [
+        "app/xcf/tests/test-painter-xcf-arguments-storage.cpp"
+      ],
+      "slots": [
+        {
+          "slot": "GInputStream.read_fn",
+          "callback": "endian_input_read",
+          "parent_order": "replacement reads borrowed components, no parent read",
+          "contract": "replacement reads borrowed components, no parent read"
+        }
+      ],
+      "parent_macro": "G_TYPE_INPUT_STREAM",
+      "initializers": [
+        {
+          "symbol": "endian_input_class_init",
+          "assigned_fields": [
+            "read_fn"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "read_fn",
+              "callback": "endian_input_read"
+            }
+          ],
+          "body_sha256": "1bb0faa2ca450e3856f4e9cb533fc9118c0e46982950277cbfd50ad49dfb4b70"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpCanvasPerspectiveGuide",
+      "parent": "GIMP_TYPE_CANVAS_ITEM",
+      "source": "app/display/gimpcanvasperspectiveguide.cpp",
+      "activation": "Register OverlaySlot in init; native parent constructed first establishes shell, then activate/connect/refresh. Shell display may arrive later through notify::display.",
+      "cleanup": "dispose closes all signal connections and guide refs before native parent; no custom finalize.",
+      "reentry": "Signal payload locks weak owner and checks store generation; with/read lease protects Impl. close clears state and refs; draw/extents read snapshots and do not mutate guide. Extent calculation bounds integer conversion.",
+      "evidence": [
+        "app/tests/test-painter-perspective.c",
+        "app/tests/test-painter-perspective-ui.c"
+      ],
+      "slots": [
+        {
+          "slot": "GObject.constructed",
+          "callback": "constructed",
+          "parent_order": "parent -> activate -> connect/refresh",
+          "contract": "parent -> activate -> connect/refresh"
+        },
+        {
+          "slot": "GObject.dispose",
+          "callback": "dispose",
+          "parent_order": "close store -> parent",
+          "contract": "close store -> parent"
+        },
+        {
+          "slot": "GimpCanvasItem.draw",
+          "callback": "draw",
+          "parent_order": "replacement, no parent drawing",
+          "contract": "replacement, no parent drawing"
+        },
+        {
+          "slot": "GimpCanvasItem.get_extents",
+          "callback": "extents",
+          "parent_order": "replacement, no parent extents",
+          "contract": "replacement, no parent extents"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_CANVAS_ITEM",
+      "initializers": [
+        {
+          "symbol": "gimp_canvas_perspective_guide_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "draw",
+            "get_extents"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "draw",
+              "callback": "draw"
+            },
+            {
+              "slot": "get_extents",
+              "callback": "extents"
+            }
+          ],
+          "body_sha256": "561d38df4da3408a7f752525495bcd15ea6182f5d72616cf220335b12586e7a7"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpCloneLayer",
+      "parent": "GimpLayer",
+      "source": "app/core/gimpclonelayer.cpp",
+      "activation": "Instance init ensure/emplace -> constructing. Parent constructed first -> verify slot -> activate -> watch_owner_image. binding_failed closes the store; construction factory rejects it.",
+      "cleanup": "Close store before native layer dispose. Close increments reference_generation, destroys idle source/connections, clears weak owners/source and balances mirrored preview freeze before parent teardown. No own finalize assignment. Native parent finalizers remain inherited; BindingStore qdata destruction closes idempotently, rejects finalizing reads, and destroys each implementation once. A close hook must not first access native parent resources at that late fallback.",
+      "reentry": "Signal Callback stores weak owner and BindingStore generation. visit_callback locks owner, checks accepts, then takes a with lease. reference_generation invalidates in-flight set_source/update/restore after synchronous notifications; Flag guards resolving/updating/restoring/editing_reference; dependency cycles are checked; one owned idle source coalesces refresh.",
+      "limits": "The lease protects implementation lifetime, not transaction atomicity. Generations are checked at explicit emission/flush boundaries. duplicate lacks a scoped owner for the newly allocated copy after parent duplicate, unlike FilterLayer; exception cleanup of that path is not established by this read-only audit. No new failing execution was observed.",
+      "evidence": [
+        "/gimp-clone-layer/inert_construction",
+        "/gimp-clone-layer/reentrant_source_replace",
+        "/gimp-clone-layer/thaw_reentry_close_and_replace",
+        "/gimp-clone-layer/freeze_and_close",
+        "/gimp-clone-layer/frozen_source_disposal",
+        "/gimp-clone-layer/cycles",
+        "/gimp-clone-layer/offset_size_and_noop_transforms",
+        "/gimp-clone-layer/duplicate_and_group_update"
+      ],
+      "property_dispatch": "Own get_property ID 1 = binding-failed, no own setter. Parent property IDs are handled by their GObject property owner; direct foreign ID call warns.",
+      "construct_reentry": "No own construction setter. Parent image/name/property callbacks may run while CloneSlot is constructing; read may succeed, with and generation-accepts must fail until parent returns and derived activation finishes.",
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before",
+          "contract": "Parent invariants finish while store is constructing; activate only afterwards.",
+          "parent_implementation": "GimpLayer inherits gimp_item_constructed (app/core/gimpitem.c:363): parent constructed, then image/ID assertions; inherited gimp_object_constructed registers debug instance."
+        },
+        {
+          "slot": "GObjectClass.get_property",
+          "callback": "get_property",
+          "parent_order": "none",
+          "contract": "Own property IDs only; unexpected IDs warn, with no explicit parent forwarding. Normal GObject property dispatch uses the property-defining class; do not call this adapter directly with foreign parent IDs. Own ID 1 reads the C binding_failed flag without requiring active store.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after",
+          "contract": "Close own store and callbacks before native parent disposal emits disconnect or releases native resources.",
+          "parent_implementation": "gimp_layer_dispose (app/core/gimplayer.c:634) -> gimp_drawable_dispose (app/core/gimpdrawable.c:370) -> inherited gimp_object_dispose (app/core/gimpobject.c:147)."
+        },
+        {
+          "slot": "GimpItemClass.duplicate",
+          "callback": "duplicate",
+          "parent_order": "before",
+          "contract": "Native copy/cache/mask/provenance first; then resolve source and copy clone reference metadata only if copy is a CloneLayer.",
+          "parent_implementation": "gimp_layer_duplicate (app/core/gimplayer.c:926) -> gimp_drawable_duplicate (app/core/gimpdrawable.c:555) -> gimp_item_real_duplicate (app/core/gimpitem.c:549)."
+        },
+        {
+          "slot": "GimpItemClass.is_content_locked",
+          "callback": "content_locked",
+          "parent_order": "none",
+          "contract": "Intentional replacement: always TRUE; initialize optional locked_item to this item.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpItemClass.scale",
+          "callback": "scale",
+          "parent_order": "none",
+          "contract": "Intentional legacy no-op for a derived reference layer; parent pixel transform is suppressed. Other inherited operations remain native.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpItemClass.flip",
+          "callback": "flip",
+          "parent_order": "none",
+          "contract": "Intentional legacy no-op for a derived reference layer; parent pixel transform is suppressed. Other inherited operations remain native.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpItemClass.rotate",
+          "callback": "rotate",
+          "parent_order": "none",
+          "contract": "Intentional legacy no-op for a derived reference layer; parent pixel transform is suppressed. Other inherited operations remain native.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpItemClass.transform",
+          "callback": "transform",
+          "parent_order": "none",
+          "contract": "Intentional legacy no-op for a derived reference layer; parent pixel transform is suppressed. Other inherited operations remain native.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpPickableInterface.get_opacity_at",
+          "callback": "opacity_at",
+          "parent_order": "none",
+          "contract": "Intentional 0.0 hit-opacity policy; do not invoke inherited drawable opacity. Other Pickable slots stay inherited.",
+          "parent_implementation": null
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_LAYER",
+      "initializers": [
+        {
+          "symbol": "gimp_clone_layer_class_init",
+          "assigned_fields": [
+            "constructed",
+            "get_property",
+            "dispose",
+            "duplicate",
+            "is_content_locked",
+            "scale",
+            "flip",
+            "rotate",
+            "transform",
+            "default_icon_name",
+            "default_name"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "get_property",
+              "callback": "get_property"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "duplicate",
+              "callback": "duplicate"
+            },
+            {
+              "slot": "is_content_locked",
+              "callback": "content_locked"
+            },
+            {
+              "slot": "scale",
+              "callback": "scale"
+            },
+            {
+              "slot": "flip",
+              "callback": "flip"
+            },
+            {
+              "slot": "rotate",
+              "callback": "rotate"
+            },
+            {
+              "slot": "transform",
+              "callback": "transform"
+            }
+          ],
+          "body_sha256": "74c84db5c09596ea565b744dec92cf8491155bb15d371d01a080904f68ab93f1"
+        },
+        {
+          "symbol": "gimp_clone_layer_pickable_init",
+          "assigned_fields": [
+            "get_opacity_at"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "get_opacity_at",
+              "callback": "opacity_at"
+            }
+          ],
+          "body_sha256": "e9afe500be188e60dce36fae0ae7c7d5c7b046ab81482e35255bd0b0aea27253"
+        }
+      ],
+      "class_metadata_fields": [
+        "default_icon_name",
+        "default_name"
+      ]
+    },
+    {
+      "type": "GimpCloneLayerUndo",
+      "parent": "GimpItemUndo",
+      "source": "app/core/gimpclonelayer.cpp",
+      "activation": "Instance init ensure/emplace -> constructing. Parent constructed validates image/item -> require CloneLayer and source-undo kind -> capture target state through active target slot -> activate -> install source image watcher. Any recorded failure closes store.",
+      "cleanup": "dispose and free close store before their parents. Close disconnects saved source watcher, releases weak identities and cached buffer, clears saved names. No own finalize assignment. Native parent finalizers remain inherited; BindingStore qdata destruction closes idempotently, rejects finalizing reads, and destroys each implementation once. A close hook must not first access native parent resources at that late fallback.",
+      "reentry": "Weak owner/generation guard on saved source notify::image. pop requires active undo and target stores, leases both, calls parent, rechecks undo generation, then capture/restore. Clone restore checks target generation after callbacks before swapping undo snapshot; late callbacks become inert.",
+      "limits": "No same-Undo nested-pop busy flag; arbitrary recursive external undo is not promised. Guarded source replacement/close is covered. free is a lifecycle boundary and subsequent pop must be inert.",
+      "evidence": [
+        "/gimp-clone-layer/source_reference_undo_live",
+        "/gimp-clone-layer/source_reference_undo_all_states",
+        "/gimp-clone-layer/source_reference_undo_close_reentry",
+        "/gimp-clone-layer/undo_source_image_relocation",
+        "/gimp-clone-layer/source_reference_undo_dependent_clone"
+      ],
+      "property_dispatch": "No own property setter/getter. item is defined by GimpItemUndo; image/time/undo-type/dirty-mask by GimpUndo; name by GimpObject.",
+      "construct_reentry": "Inherited construct properties are ready before derived constructed; snapshot initialization/activation runs only after native parent returns. Source watcher is installed after activation.",
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "reference_undo_constructed",
+          "parent_order": "before",
+          "contract": "Parent constructs native undo identity before feature snapshot/watch installation.",
+          "parent_implementation": "gimp_item_undo_constructed (app/core/gimpitemundo.c:83) -> gimp_undo_constructed (app/core/gimpundo.c:181); require valid item and image before derived capture."
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "reference_undo_dispose",
+          "parent_order": "after",
+          "contract": "Close store before inherited native GimpObject dispose.",
+          "parent_implementation": "gimp_object_dispose (app/core/gimpobject.c:147) inherited through GimpUndo/GimpItemUndo."
+        },
+        {
+          "slot": "GimpObjectClass.get_memsize",
+          "callback": "reference_undo_memsize",
+          "parent_order": "after",
+          "contract": "Read own saved string capacities/cache size, then add native undo memsize. Boundary failure returns 0 and skips parent, an explicit fallback limitation.",
+          "parent_implementation": "GimpItemUndo inherits gimp_undo_get_memsize (app/core/gimpundo.c:266); it adds preview GUI bytes then chains to native parents."
+        },
+        {
+          "slot": "GimpUndoClass.pop",
+          "callback": "reference_undo_pop",
+          "parent_order": "conditional-before",
+          "contract": "Only after active undo/target validation and leases; parent first, then generation check and clone snapshot restore. Rejected/closed calls skip parent.",
+          "parent_implementation": "GimpItemUndo inherits gimp_undo_real_pop (app/core/gimpundo.c:338), currently an empty default."
+        },
+        {
+          "slot": "GimpUndoClass.free",
+          "callback": "reference_undo_free",
+          "parent_order": "after",
+          "contract": "Close own state before parent releases item, preventing source callbacks during item destruction.",
+          "parent_implementation": "gimp_item_undo_free (app/core/gimpitemundo.c:133) clears item then calls gimp_undo_real_free (app/core/gimpundo.c:345), empty."
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_ITEM_UNDO",
+      "initializers": [
+        {
+          "symbol": "gimp_clone_layer_undo_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "get_memsize",
+            "pop",
+            "free"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "reference_undo_constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "reference_undo_dispose"
+            },
+            {
+              "slot": "get_memsize",
+              "callback": "reference_undo_memsize"
+            },
+            {
+              "slot": "pop",
+              "callback": "reference_undo_pop"
+            },
+            {
+              "slot": "free",
+              "callback": "reference_undo_free"
+            }
+          ],
+          "body_sha256": "b31ee3596ba357d6c9662781c212d305e86d26085d8fecd7a7b6ddaf6011f069"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpDeferredSave",
+      "parent": "G_TYPE_OBJECT",
+      "source": "app/dialogs/file-save-deferred.cpp",
+      "activation": "Register Pending slot in instance init; parent constructed first, then activate.",
+      "cleanup": "close disconnects sources/connections and detaches request before destruction; dispose closes before parent dispose; store finalizer owns Impl destruction.",
+      "reentry": "Source retains operation; request snapshots and weak owner/progress locks survive callbacks. running blocks nested attempts; closed and display/image identity are checked after pending-paint/save callbacks; no nested main loop.",
+      "evidence": [
+        "app/tests/test-painter-save-continuation.cpp"
+      ],
+      "slots": [
+        {
+          "slot": "GObject.constructed",
+          "callback": "constructed",
+          "parent_order": "parent constructed -> activate store",
+          "contract": "parent constructed -> activate store"
+        },
+        {
+          "slot": "GObject.dispose",
+          "callback": "dispose",
+          "parent_order": "close_save -> parent dispose",
+          "contract": "close_save -> parent dispose"
+        }
+      ],
+      "parent_macro": "G_TYPE_OBJECT",
+      "initializers": [
+        {
+          "symbol": "gimp_deferred_save_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            }
+          ],
+          "body_sha256": "aa2c2d635b4c4e065eb3ff1a7e8fad6131802aba03716b39493e436285aab04f"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpFillBrush",
+      "parent": "GimpBrushCore",
+      "source": "app/paint/gimpfillbrush.cpp",
+      "activation": "BrushSlot emplaced in init; parent constructed then activate. begin owns image/drawable/options, connects target watches, sets starting and one-shot permits, calls native start, then INIT. step owns shared segment/dab leases. finish marks ending and started=false before FINISH/commit/cancel; release scratch and frame follows. close sets closed+cancel_requested first, defers while starting/preparing/draining/ending and otherwise rolls back. dispose closes before parent; native finalize inherited.",
+      "cleanup": "BrushCore pre_paint, post_paint, interpolate, get_paint_buffer and signal closures remain inherited; PaintCore push_undo and final resource destruction remain native. Boolean handles_* class flags are not vfuncs.",
+      "reentry": "Native callbacks may occur during projection flush, start, paint publication and finish. Captured revision is rechecked after flush/interpolation/publication; local shared segment/dab and object leases survive invalidation. Target buffer changed uses a shared atomic TargetWatch and ignores owned_write; query-pending-paint reads busy without borrowing Impl; Connection owns/disconnects closure identity. release_frame sets busy=false and disconnects before releasing resources. finish_frame marks ending before dispatching FINISH. Independent target pixels/format/geometry are preserved rather than stale rollback. Generic operation cancellation is checked before commit seal; postcommit notifications cannot undo the sealed result. No claim that every arbitrary synchronous signal recursion is rejected by BindingStore itself; the concrete flags and revisions above define the supported transition discipline.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "fill-core",
+        "fill-ui",
+        "owned-generic"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before-own",
+          "contract": "parent constructed → activate own store; Inherited construction properties must be ready before active callbacks",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after-own",
+          "contract": "close own BindingStore → parent dispose; Reentrant callbacks from parent teardown must see closing/closed state",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpPaintCoreClass.check_start",
+          "callback": "check_start",
+          "parent_order": "not-called",
+          "contract": "require start_permit && starting && !closed → consume permit → arm native_start; The native base check_start slot is NULL; admission must happen before native allocations/callbacks",
+          "reentry": "Single-use permit"
+        },
+        {
+          "slot": "GimpPaintCoreClass.start",
+          "callback": "native_start",
+          "parent_order": "after-own",
+          "contract": "require native_start_armed && starting && !closed → consume arm → parent BrushCore.start; Native resource/brush setup follows owned admission",
+          "reentry": "Consume before any parent callback"
+        },
+        {
+          "slot": "GimpPaintCoreClass.paint",
+          "callback": "paint",
+          "parent_order": "not-called",
+          "contract": "INIT/FINISH clear dab state; MOTION queues bounded-fill dab; errors recorded; Own renderer replaces base no-op paint; pre_paint/post_paint remain native",
+          "reentry": "preparing/draining/interpolating, closed, revision and generic-stroke checks"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_BRUSH_CORE",
+      "initializers": [
+        {
+          "symbol": "gimp_fill_brush_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "paint",
+            "check_start",
+            "start",
+            "handles_changing_brush",
+            "handles_transforming_brush",
+            "handles_dynamic_transforming_brush"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "paint",
+              "callback": "paint"
+            },
+            {
+              "slot": "check_start",
+              "callback": "check_start"
+            },
+            {
+              "slot": "start",
+              "callback": "native_start"
+            }
+          ],
+          "body_sha256": "946938b274db4b7f85f280f9f3f46b02bae440d294b193d5f7dcf2d5bbd386cb"
+        }
+      ],
+      "class_metadata_fields": [
+        "handles_changing_brush",
+        "handles_transforming_brush",
+        "handles_dynamic_transforming_brush"
+      ]
+    },
+    {
+      "type": "GimpFillBrushOptions",
+      "parent": "GimpPaintOptions",
+      "source": "app/paint/gimpfillbrush.cpp",
+      "activation": "Settings slot emplaced in instance init; constructing set_property uses initialize; constructed calls parent then activate; dispose closes the store before parent; no own finalize (qdata store final destruction). No owned signals/sources in the settings slot.",
+      "cleanup": "All GimpPaintOptions context/config handlers and finalization inherited; no new config interface.",
+      "reentry": "Unknown IDs warn; these types do not implement explicit fallback to parent get/set. Do not classify the absence of a chain as a lost inherited-property bug: normal GObject property dispatch resolves the defining property owner. The contract records this exact behavior rather than claiming the foundation fallback wording is implemented for arbitrary direct vfunc invocation.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "fill-ui",
+        "fill-core"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "options_constructed",
+          "parent_order": "before-own",
+          "contract": "parent constructed → activate own store; Inherited construction properties must be ready before active callbacks",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "options_dispose",
+          "parent_order": "after-own",
+          "contract": "close own BindingStore → parent dispose; Reentrant callbacks from parent teardown must see closing/closed state",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.set_property",
+          "callback": "options_set",
+          "parent_order": "not-called",
+          "contract": "own id → constructing initialize or active mutation; unknown id → warning; Own properties are handled here; ordinary inherited-property dispatch uses the property-defining class",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.get_property",
+          "callback": "options_get",
+          "parent_order": "not-called",
+          "contract": "const typed-slot read → own output; unknown id → warning; Own values only; no synthetic parent-ID fallback",
+          "reentry": ""
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_PAINT_OPTIONS",
+      "initializers": [
+        {
+          "symbol": "gimp_fill_brush_options_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "get_property",
+            "set_property"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "options_constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "options_dispose"
+            },
+            {
+              "slot": "get_property",
+              "callback": "options_get"
+            },
+            {
+              "slot": "set_property",
+              "callback": "options_set"
+            }
+          ],
+          "body_sha256": "2ff99924e5cc8f2a5a81dfe46cc948dac91de75e964ba4c79e71c37353a5a8a9"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpFillBrushTool",
+      "parent": "GimpBrushTool",
+      "source": "app/tools/gimpfillbrushtool.cpp",
+      "activation": "Controller slot in init; BrushTool parent constructed first (native preview core), then activate. dispose closes controller/store before parent Tool disposal may redispatch HALT. Controller close publishes closed and invalidates; revision++, source closed, connections/strokes swapped out, input reset, then disconnections, halt and cancellation. No own finalize.",
+      "cleanup": "BrushTool cursor_update/options_notify/paint_start/end/flush, PaintTool modifier/key handling and underlying color picking are inherited. No own options property/config vfuncs.",
+      "reentry": "with() admits only active stores, making parent-dispose HALT a safe own-state no-op; inherited parent control still runs. tick() rejects dispatch recursion and retains shared front stroke; compares revision after each callback-producing phase. committing suppresses self-generated dirty/clean invalidation; dispatching suppresses own drawable update invalidation. Idle callback captures weak owner + BindingStore generation, takes a strong owner lease, requires accepts(generation), and enters typed slot. Source handles destruction during its own dispatch; if an invalidation destroys that source and new input arrives, it rearms the newer controller source. Signal closures for target/display/image observations hold raw tool pointer, with Connection disconnection at close; these are synchronous GObject notifications, not queued weak-generation payloads. Their callbacks use active-store gate. Deferred idle is separately weak/generation validated. saving signal calls public COMMIT only when input exists and image still matches. Public gimp_tool_control always follows COMMIT by HALT (gimptool.c:656); commit_halts counts nested pairs. Watch signals include image selection/mask/dirty/clean/precision/saving/pending, drawable removed/lock/format/geometry/update, display image and shell destruction.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "fill-ui",
+        "fill-core"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before-own",
+          "contract": "parent constructed → activate own store; Inherited construction properties must be ready before active callbacks",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after-own",
+          "contract": "close own BindingStore → parent dispose; Reentrant callbacks from parent teardown must see closing/closed state",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpToolClass.control",
+          "callback": "control",
+          "parent_order": "after-own",
+          "contract": "COMMIT seal current envelope + increment commit_halts + schedule; HALT consume commit_halts or invalidate; then parent control; Parent retains native tool control behavior",
+          "reentry": "Counter preserves nested COMMIT→automatic HALT without swallowing an unrelated later HALT"
+        },
+        {
+          "slot": "GimpToolClass.button_press",
+          "callback": "press",
+          "parent_order": "conditional-only",
+          "contract": "picker enabled → parent only; otherwise validate target, freeze options, enqueue stroke and schedule; Painting uses owned resumable controller; picker preserves inherited behavior",
+          "reentry": "revision after freeze_options; retained stroke; repeated press seals prior input"
+        },
+        {
+          "slot": "GimpToolClass.motion",
+          "callback": "motion",
+          "parent_order": "conditional-only",
+          "contract": "picker enabled → parent only; otherwise enqueue input, update preview with pause/resume; Do not start an extra native PaintTool transaction",
+          "reentry": "active-store gate, input/closed/display identity"
+        },
+        {
+          "slot": "GimpToolClass.button_release",
+          "callback": "release",
+          "parent_order": "conditional-only",
+          "contract": "picker enabled → parent only; otherwise halt control then cancel or seal/schedule input; Owned asynchronous transaction may remain after pointer release",
+          "reentry": "release cancellation invalidates revision/source"
+        },
+        {
+          "slot": "GimpToolClass.oper_update",
+          "callback": "oper_update",
+          "parent_order": "after-own",
+          "contract": "invalidate pending strokes if display changed → parent oper_update; Parent BrushTool supplies native preview behavior",
+          "reentry": "active store and display identity"
+        },
+        {
+          "slot": "GimpDrawToolClass.draw",
+          "callback": "draw",
+          "parent_order": "conditional-after-own",
+          "contract": "reject unrepresentable off-canvas cursor/line → otherwise parent draw; Canvas preview numeric domain is narrower than accepted input",
+          "reentry": "No added recursive guard; delegates native draw"
+        },
+        {
+          "slot": "GimpPaintToolClass.get_outline",
+          "callback": "outline",
+          "parent_order": "conditional-after-own",
+          "contract": "reject off-canvas transformed outline → otherwise return parent outline; Preserve native outline while avoiding invalid canvas properties",
+          "reentry": "No typed-slot mutation"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_BRUSH_TOOL",
+      "initializers": [
+        {
+          "symbol": "gimp_fill_brush_tool_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "control",
+            "button_press",
+            "button_release",
+            "motion",
+            "oper_update",
+            "draw",
+            "get_outline"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "control",
+              "callback": "control"
+            },
+            {
+              "slot": "button_press",
+              "callback": "press"
+            },
+            {
+              "slot": "button_release",
+              "callback": "release"
+            },
+            {
+              "slot": "motion",
+              "callback": "motion"
+            },
+            {
+              "slot": "oper_update",
+              "callback": "oper_update"
+            },
+            {
+              "slot": "draw",
+              "callback": "draw"
+            },
+            {
+              "slot": "get_outline",
+              "callback": "outline"
+            }
+          ],
+          "body_sha256": "de0725fca19f3c20efe12c303aafdf4d0d0e3d807e6bceb12b97c68befaa7ccf"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpFilterLayer",
+      "parent": "GimpLayer",
+      "source": "app/core/gimpfilterlayer.cpp",
+      "activation": "Instance init ensure/emplace -> constructing. Parent constructed -> verify slot -> activate; failed binding closes. Factory/duplicate attach signal graph after native layer creation.",
+      "cleanup": "Close store before native layer dispose. Close native-context and scheduler first, deactivate progress, destroy source/connections, release staged buffer and weak dependency graph. Saved definition/argument values remain in implementation until destruction. No own finalize assignment. Native parent finalizers remain inherited; BindingStore qdata destruction closes idempotently, rejects finalizing reads, and destroys each implementation once. A close hook must not first access native parent resources at that late fallback.",
+      "reentry": "Weak owner + binding generation tokens gate signals and idle dispatch. dispatching suppresses recursive step execution. Scheduler generation and definition_revision distinguish cancellation/replacement and stale publications. publish_definition rechecks after configure, buffer publication and each notify. Progress start rechecks its token after synchronous filter-progress-changed; worker state uses snapshots and owner-thread delivery.",
+      "limits": "Store leases allow mutable reentry; they do not roll back prior native effects. Definition publication has explicit current checks. UI/image Undo-history atomicity and arbitrary observer loops are not implied. Saved data remains readable after close; progress is inactive.",
+      "evidence": [
+        "/gimp-filter-layer/definition_notifications_stop_after_close",
+        "/gimp-filter-layer/definition_edit_preserves_reentered_install",
+        "/gimp-filter-layer/duplicate_reentry_cannot_certify_new_definition",
+        "/gimp-filter-layer/retired_definition_payload_reentry",
+        "/gimp-filter-layer/progress_native_abi",
+        "/gimp-filter-layer/progress_start_reentry",
+        "/gimp-filter-layer/progress_real_workers",
+        "/gimp-filter-layer/progress_worker_cancel_replace_close",
+        "/gimp-filter-layer/explicit_cancel_survives_callback_reentry",
+        "/gimp-filter-layer/close_during_preparation"
+      ],
+      "property_dispatch": "Own read-only IDs 1..5 = binding-failed/filter-procedure/filter-arguments/filter-original-definition/filter-opaque-arguments; no own setter. Foreign direct IDs warn; inherited owner properties stay native.",
+      "construct_reentry": "No own construction setter. Feature store stays constructing through parent constructed; inherited construction callbacks cannot enter active Filter mutation. Graph attachment follows active construction in factory or duplicate.",
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before",
+          "contract": "Complete native image/item construction before active-only feature callbacks.",
+          "parent_implementation": "GimpLayer inherits gimp_item_constructed (app/core/gimpitem.c:363): parent constructed, then image/ID assertions; inherited gimp_object_constructed registers debug instance."
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after",
+          "contract": "Close own state/callbacks before native parent disposal.",
+          "parent_implementation": "gimp_layer_dispose (app/core/gimplayer.c:634) -> gimp_drawable_dispose (app/core/gimpdrawable.c:370) -> inherited gimp_object_dispose (app/core/gimpobject.c:147)."
+        },
+        {
+          "slot": "GObjectClass.get_property",
+          "callback": "get_property",
+          "parent_order": "none",
+          "contract": "Own property IDs only; unexpected IDs warn, with no explicit parent forwarding. Normal GObject property dispatch uses the property-defining class; do not call this adapter directly with foreign parent IDs. IDs 1..5 read binding_failed and copied/ref-counted definition data; data getters use const store reads.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpItemClass.duplicate",
+          "callback": "duplicate",
+          "parent_order": "before",
+          "contract": "Parent duplicates native pixels/mask/provenance, then scoped copy owner installs feature definition, attachments/configuration and cache state. Binding token/revision checks reject reentrant replacement and scoped owner releases failed partial copy.",
+          "parent_implementation": "gimp_layer_duplicate (app/core/gimplayer.c:926) -> gimp_drawable_duplicate (app/core/gimpdrawable.c:555) -> gimp_item_real_duplicate (app/core/gimpitem.c:549)."
+        },
+        {
+          "slot": "GimpItemClass.is_content_locked",
+          "callback": "content_locked",
+          "parent_order": "none",
+          "contract": "Intentional replacement: always TRUE and optional locked_item is this item.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpPickableInterface.get_opacity_at",
+          "callback": "opacity_at",
+          "parent_order": "none",
+          "contract": "Intentional 0.0 hit-opacity policy; other Pickable operations remain inherited.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpProgressInterface.start",
+          "callback": "filter_progress_start",
+          "parent_order": "none",
+          "contract": "Own interface implementation; no parent progress backend. Reject current progress, snapshot scheduler generation, publish active/cancellable/text, emit progress-changed, return self only if still current after reentry.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53) only registers cancel signal; no default method chain."
+        },
+        {
+          "slot": "GimpProgressInterface.end",
+          "callback": "filter_progress_end",
+          "parent_order": "none",
+          "contract": "Own interface implementation; no parent progress backend. If current, clear active/cancellable before emitting; no mutation after emission.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53) only registers cancel signal; no default method chain."
+        },
+        {
+          "slot": "GimpProgressInterface.is_active",
+          "callback": "filter_progress_active",
+          "parent_order": "none",
+          "contract": "Own interface implementation; no parent progress backend. Const store read; true only when active and scheduler generation still matches and scheduler not closed.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53) only registers cancel signal; no default method chain."
+        },
+        {
+          "slot": "GimpProgressInterface.set_text",
+          "callback": "filter_progress_text",
+          "parent_order": "none",
+          "contract": "Own interface implementation; no parent progress backend. Active lease, current-generation gate; bounded copy then notification.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53) only registers cancel signal; no default method chain."
+        },
+        {
+          "slot": "GimpProgressInterface.set_value",
+          "callback": "filter_progress_value",
+          "parent_order": "none",
+          "contract": "Own interface implementation; no parent progress backend. Ignore non-finite value; active/current gate, clamp to [0,1], then notification.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53) only registers cancel signal; no default method chain."
+        },
+        {
+          "slot": "GimpProgressInterface.get_value",
+          "callback": "filter_progress_get_value",
+          "parent_order": "none",
+          "contract": "Own interface implementation; no parent progress backend. Const read; current fraction, otherwise 0.0.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53) only registers cancel signal; no default method chain."
+        },
+        {
+          "slot": "GimpProgressInterface.pulse",
+          "callback": "filter_progress_pulse",
+          "parent_order": "none",
+          "contract": "Own interface implementation; no parent progress backend. Active/current gate, saturating pulse increment then notification.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53) only registers cancel signal; no default method chain."
+        },
+        {
+          "slot": "GimpProgressInterface.message",
+          "callback": "filter_progress_message",
+          "parent_order": "none",
+          "contract": "Own interface implementation; no parent progress backend. Active/current/severity gate, bounded message snapshot and saturating revision increment; emit then report accepted TRUE.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53) only registers cancel signal; no default method chain."
+        },
+        {
+          "slot": "GimpProgressInterface.cancel",
+          "callback": "filter_progress_cancel",
+          "parent_order": "none",
+          "contract": "Own interface implementation; no parent progress backend. Active lease; if current and cancellable, cancel the captured generation through the C entry.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53) only registers cancel signal; no default method chain."
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_LAYER",
+      "initializers": [
+        {
+          "symbol": "gimp_filter_layer_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "get_property",
+            "duplicate",
+            "is_content_locked",
+            "default_icon_name",
+            "default_name"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "get_property",
+              "callback": "get_property"
+            },
+            {
+              "slot": "duplicate",
+              "callback": "duplicate"
+            },
+            {
+              "slot": "is_content_locked",
+              "callback": "content_locked"
+            }
+          ],
+          "body_sha256": "392a03e4f3dbdb5fbc7c3b30443529a4fc5b6389d3dbb38e51c8e4c04d89ded5"
+        },
+        {
+          "symbol": "gimp_filter_layer_pickable_init",
+          "assigned_fields": [
+            "get_opacity_at"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "get_opacity_at",
+              "callback": "opacity_at"
+            }
+          ],
+          "body_sha256": "e9afe500be188e60dce36fae0ae7c7d5c7b046ab81482e35255bd0b0aea27253"
+        },
+        {
+          "symbol": "gimp_filter_layer_progress_init",
+          "assigned_fields": [
+            "start",
+            "end",
+            "is_active",
+            "set_text",
+            "set_value",
+            "get_value",
+            "pulse",
+            "message",
+            "cancel"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "start",
+              "callback": "filter_progress_start"
+            },
+            {
+              "slot": "end",
+              "callback": "filter_progress_end"
+            },
+            {
+              "slot": "is_active",
+              "callback": "filter_progress_active"
+            },
+            {
+              "slot": "set_text",
+              "callback": "filter_progress_text"
+            },
+            {
+              "slot": "set_value",
+              "callback": "filter_progress_value"
+            },
+            {
+              "slot": "get_value",
+              "callback": "filter_progress_get_value"
+            },
+            {
+              "slot": "pulse",
+              "callback": "filter_progress_pulse"
+            },
+            {
+              "slot": "message",
+              "callback": "filter_progress_message"
+            },
+            {
+              "slot": "cancel",
+              "callback": "filter_progress_cancel"
+            }
+          ],
+          "body_sha256": "4e278db7f7424d7ef516e9220b3d81f5eab880f42dcebd138a16d11359fd4e64"
+        }
+      ],
+      "class_metadata_fields": [
+        "default_icon_name",
+        "default_name"
+      ]
+    },
+    {
+      "type": "GimpFilterLayerUndo",
+      "parent": "GimpItemUndo",
+      "source": "app/core/gimpfilterlayer.cpp",
+      "activation": "Instance init registers slot. Parent constructed -> initialize snapshot from target const read -> activate. binding_failed captures failure, but this constructed adapter does not explicitly close on failure; store may remain constructing until dispose.",
+      "cleanup": "Store closes before inherited native dispose; payload/cache released. No own free override: inherited GimpItemUndo.free releases item and leaves store closure to dispose. No own finalize assignment. Native parent finalizers remain inherited; BindingStore qdata destruction closes idempotently, rejects finalizing reads, and destroys each implementation once. A close hook must not first access native parent resources at that late fallback.",
+      "reentry": "pop holds active undo and target store leases. It copies current cache, advances definition revision, swaps snapshot/model before publish_definition. That publication checks target generation/revision after callback boundaries. Memsize accepts only active store for own bytes.",
+      "limits": "No own nested-pop or undo-generation guard around publication. Snapshot fields are committed before notifications; outer pop performs no slot mutation after publish. Construction-failure close asymmetry is a documented path, not an observed runtime failure. No guarantee for reuse after inherited free.",
+      "evidence": [
+        "/gimp-filter-layer/definition_undo_redo",
+        "/gimp-filter-layer/opaque_arguments_duplicate_and_undo",
+        "/gimp-filter-layer/image_close_during_undo_callbacks",
+        "/gimp-filter-layer/image_close_during_redo_callbacks",
+        "/gimp-filter-layer/image_close_during_strong_undo_callbacks",
+        "/gimp-filter-layer/image_close_during_strong_redo_callbacks"
+      ],
+      "property_dispatch": "No own properties or property adapters; native parent item/image/undo metadata are inherited.",
+      "construct_reentry": "Native parent constructed returns before snapshot initialize then activate. Its recorded failure leaves constructing/partial state until later dispose; no active callbacks should be installed in that failure path.",
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "undo_constructed",
+          "parent_order": "before",
+          "contract": "Native item/image properties first, then snapshot cache/definition and activate. Failure sets binding_failed but does not explicitly close.",
+          "parent_implementation": "gimp_item_undo_constructed (app/core/gimpitemundo.c:83) -> gimp_undo_constructed (app/core/gimpundo.c:181); require valid item and image before derived capture."
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "undo_dispose",
+          "parent_order": "after",
+          "contract": "Close snapshot store before inherited native dispose.",
+          "parent_implementation": "gimp_object_dispose (app/core/gimpobject.c:147), inherited."
+        },
+        {
+          "slot": "GimpUndoClass.pop",
+          "callback": "undo_pop",
+          "parent_order": "before",
+          "contract": "Always calls parent first, including closed/missing-store cases, then boundary validates active undo and target before swapping/publishing.",
+          "parent_implementation": "GimpItemUndo inherits gimp_undo_real_pop (app/core/gimpundo.c:338), currently an empty default."
+        },
+        {
+          "slot": "GimpObjectClass.get_memsize",
+          "callback": "undo_memsize",
+          "parent_order": "after",
+          "contract": "Bounded own-memory estimate (zero for absent/non-active store) then always add parent, saturating at G_MAXINT64.",
+          "parent_implementation": "GimpItemUndo inherits gimp_undo_get_memsize (app/core/gimpundo.c:266); it adds preview GUI bytes then chains to native parents."
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_ITEM_UNDO",
+      "initializers": [
+        {
+          "symbol": "gimp_filter_layer_undo_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "pop",
+            "get_memsize"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "undo_constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "undo_dispose"
+            },
+            {
+              "slot": "pop",
+              "callback": "undo_pop"
+            },
+            {
+              "slot": "get_memsize",
+              "callback": "undo_memsize"
+            }
+          ],
+          "body_sha256": "328075e96c391a7bbfa579d6653f5f049834f12af79c03853f2c4a1c0618b161"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpLayerPreset",
+      "parent": "GIMP_TYPE_DATA",
+      "source": "app/core/gimplayerpreset.c",
+      "activation": "Native C compatibility resource replacing old JSON resource. Inherit constructed; factory installs initial deep-copied JSON. No C++ BindingStore.",
+      "cleanup": "Clear owned JsonNode before parent finalize; native dispose inherited.",
+      "reentry": "set_json builds replacement before publication, retains destination across name/dirty notifications. save deep-copies a snapshot before stream writes; copy uses same setter. No callback receives borrowed C++ state.",
+      "evidence": [
+        "app/tests/test-gimp-layer-presets.c"
+      ],
+      "slots": [
+        {
+          "slot": "GObject.finalize",
+          "callback": "finalize",
+          "parent_order": "clear JSON -> parent finalize",
+          "contract": "clear JSON -> parent finalize"
+        },
+        {
+          "slot": "GimpData.save",
+          "callback": "save",
+          "parent_order": "replacement writes owned snapshot to supplied stream, no parent save",
+          "contract": "replacement writes owned snapshot to supplied stream, no parent save"
+        },
+        {
+          "slot": "GimpData.get_extension",
+          "callback": "extension",
+          "parent_order": "replacement static .json extension, no parent",
+          "contract": "replacement static .json extension, no parent"
+        },
+        {
+          "slot": "GimpData.copy",
+          "callback": "copy",
+          "parent_order": "replacement deep-copy setter, no parent copy",
+          "contract": "replacement deep-copy setter, no parent copy"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_DATA",
+      "initializers": [
+        {
+          "symbol": "gimp_layer_preset_class_init",
+          "assigned_fields": [
+            "finalize",
+            "save",
+            "get_extension",
+            "copy",
+            "default_icon_name"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "finalize",
+              "callback": "finalize"
+            },
+            {
+              "slot": "save",
+              "callback": "save"
+            },
+            {
+              "slot": "get_extension",
+              "callback": "extension"
+            },
+            {
+              "slot": "copy",
+              "callback": "copy"
+            }
+          ],
+          "body_sha256": "144e4fe2201c44009a829e6eb9e21e761cc9fd4f5ee274ea018b0da0cb66b05a"
+        }
+      ],
+      "class_metadata_fields": [
+        "default_icon_name"
+      ]
+    },
+    {
+      "type": "GimpLayerPresetView",
+      "parent": "GIMP_TYPE_DATA_FACTORY_VIEW",
+      "source": "app/widgets/gimplayerpresetview.c",
+      "activation": "Native C view. Inherited construction assembles container/menu; factory sets ready only after action button setup. No C++ BindingStore.",
+      "cleanup": "dispose marks menu_closed and ready false, removes owner-keyed menu cache once, then native parent dispose.",
+      "reentry": "ready suppresses construction/refresh selection application; applying prevents nested preset execution. apply retains view through callback and resets state before unref. Selection order preserves parent selection bookkeeping before eligible legacy single-click application.",
+      "evidence": [
+        "app/tests/test-layer-presets-ui.c"
+      ],
+      "slots": [
+        {
+          "slot": "GObject.dispose",
+          "callback": "dispose",
+          "parent_order": "remove menu cache once -> parent dispose",
+          "contract": "remove menu cache once -> parent dispose"
+        },
+        {
+          "slot": "GimpContainerEditor.select_item",
+          "callback": "select_item",
+          "parent_order": "parent selection -> ready/eligible apply",
+          "contract": "parent selection -> ready/eligible apply"
+        },
+        {
+          "slot": "GimpContainerEditor.activate_item",
+          "callback": "activate_item",
+          "parent_order": "replacement explicit apply, no parent activate",
+          "contract": "replacement explicit apply, no parent activate"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_DATA_FACTORY_VIEW",
+      "initializers": [
+        {
+          "symbol": "gimp_layer_preset_view_class_init",
+          "assigned_fields": [
+            "dispose",
+            "select_item",
+            "activate_item"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "select_item",
+              "callback": "select_item"
+            },
+            {
+              "slot": "activate_item",
+              "callback": "activate_item"
+            }
+          ],
+          "body_sha256": "b6b08a8efbcd79baf7c3fdef9d1393637bda873ab4628d1a06506d8467fbb3bf"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpOperationMaskComponents",
+      "parent": "GEGL_TYPE_OPERATION_POINT_COMPOSER",
+      "source": "app/operations/gimpoperationmaskcomponents.cc",
+      "activation": "Existing upstream native C-layout operation; property construction and GEGL prepare initialize scalar format/process state; no BindingStore.",
+      "cleanup": "No subclass dispose/finalize, inherited native cleanup.",
+      "reentry": "No UI/signal-owned C++ callback state. GEGL owns evaluation lifetime; prepare selects native processing format. Process forwards whole input/aux only on documented mask fast paths; otherwise native parent dispatch invokes point kernel.",
+      "evidence": [
+        "app/tests/test-gimp-clone-layer.c",
+        "app/tests/test-gimp-filter-layer.c"
+      ],
+      "slots": [
+        {
+          "slot": "GObject.set_property",
+          "callback": "gimp_operation_mask_components_set_property",
+          "parent_order": "own property cases only; invalid IDs warn; no parent call",
+          "contract": "own property cases only; invalid IDs warn; no parent call"
+        },
+        {
+          "slot": "GObject.get_property",
+          "callback": "gimp_operation_mask_components_get_property",
+          "parent_order": "own property cases only; invalid IDs warn; no parent call",
+          "contract": "own property cases only; invalid IDs warn; no parent call"
+        },
+        {
+          "slot": "GeglOperation.prepare",
+          "callback": "gimp_operation_mask_components_prepare",
+          "parent_order": "replacement: set formats/process, no parent prepare",
+          "contract": "replacement: set formats/process, no parent prepare"
+        },
+        {
+          "slot": "GeglOperation.get_bounding_box",
+          "callback": "gimp_operation_mask_components_get_bounding_box",
+          "parent_order": "replacement: mask-selected or union bounds, no parent",
+          "contract": "replacement: mask-selected or union bounds, no parent"
+        },
+        {
+          "slot": "GeglOperation.process",
+          "callback": "gimp_operation_mask_components_parent_process",
+          "parent_order": "input/aux forwarding returns directly; otherwise parent process",
+          "contract": "input/aux forwarding returns directly; otherwise parent process"
+        },
+        {
+          "slot": "GeglOperationPointComposer.process",
+          "callback": "gimp_operation_mask_components_process",
+          "parent_order": "replacement kernel; no parent point process",
+          "contract": "replacement kernel; no parent point process"
+        }
+      ],
+      "parent_macro": "GEGL_TYPE_OPERATION_POINT_COMPOSER",
+      "initializers": [
+        {
+          "symbol": "gimp_operation_mask_components_class_init",
+          "assigned_fields": [
+            "set_property",
+            "get_property",
+            "prepare",
+            "get_bounding_box",
+            "process",
+            "process"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "set_property",
+              "callback": "gimp_operation_mask_components_set_property"
+            },
+            {
+              "slot": "get_property",
+              "callback": "gimp_operation_mask_components_get_property"
+            },
+            {
+              "slot": "prepare",
+              "callback": "gimp_operation_mask_components_prepare"
+            },
+            {
+              "slot": "get_bounding_box",
+              "callback": "gimp_operation_mask_components_get_bounding_box"
+            },
+            {
+              "slot": "process",
+              "callback": "gimp_operation_mask_components_parent_process"
+            },
+            {
+              "slot": "process",
+              "callback": "gimp_operation_mask_components_process"
+            }
+          ],
+          "body_sha256": "42f7453c90533ad17c0b128ad48842f01cfcdcbe53091fece206e9747ab2d3f2"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpOperationPainterLegacy",
+      "parent": "GIMP_TYPE_OPERATION_LAYER_MODE",
+      "source": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+      "activation": "Native GEGL layer operation with POD arithmetic state. No C++ BindingStore; inherited native lifecycle.",
+      "cleanup": "No custom dispose/finalize.",
+      "reentry": "prepare stages nonlinear compatibility fields before parent prepares formats, then records source extent. Pure pixel process uses supplied arrays/ROI and never starts Filter execution or UI work. GEGL evaluation owns operation lifetime; native platform/precision feature acceptance remains separate.",
+      "evidence": [
+        "app/tests/test-painter-layer-modes.c"
+      ],
+      "slots": [
+        {
+          "slot": "GeglOperation.prepare",
+          "callback": "prepare",
+          "parent_order": "set compatibility fields -> parent prepare -> capture aux bounds",
+          "contract": "set compatibility fields -> parent prepare -> capture aux bounds"
+        },
+        {
+          "slot": "GimpOperationLayerMode.process",
+          "callback": "process",
+          "parent_order": "replacement legacy pixel arithmetic, no parent process",
+          "contract": "replacement legacy pixel arithmetic, no parent process"
+        },
+        {
+          "slot": "GimpOperationLayerMode.get_affected_region",
+          "callback": "affected",
+          "parent_order": "replacement UNION result, no parent",
+          "contract": "replacement UNION result, no parent"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_OPERATION_LAYER_MODE",
+      "initializers": [
+        {
+          "symbol": "gimp_operation_painter_legacy_class_init",
+          "assigned_fields": [
+            "prepare",
+            "process",
+            "get_affected_region"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "prepare",
+              "callback": "prepare"
+            },
+            {
+              "slot": "process",
+              "callback": "process"
+            },
+            {
+              "slot": "get_affected_region",
+              "callback": "affected"
+            }
+          ],
+          "body_sha256": "5ccd72337ba61ad694389c94db9fb9fcb8ac5ce9a97721182983b388e2089d82"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterDeviceOptions",
+      "parent": "GimpToolOptions",
+      "source": "app/core/gimptooloptions.c",
+      "activation": "Empty class_init and instance_init. Native inherited construction only; no BindingStore or C++ slot.",
+      "cleanup": "No override. Inherit gimp_tool_options_dispose: clear tool_info before parent context disposal. No override/no store. All parent property/config/constructed/dispose/finalize handlers remain inherited.",
+      "reentry": "No feature-specific callback adapter/guard. Inherited notify::tool handler and GimpConfig reset are unchanged; type identity makes gimp_tool_options_check_tool_info accept any registered tool for a migrated context snapshot.",
+      "limits": "No extra guarantees beyond native GimpToolOptions/GimpContext. It deliberately does not masquerade as a complete numerical tool-options subtype.",
+      "evidence": [
+        "/painter-profile-native/genuine-device-context"
+      ],
+      "property_dispatch": "No own properties/adapters. Inherit GimpToolOptions tool override and tool-info/legacy-native-spacing/legacy-native-hardness plus native GimpContext/GimpObject properties. Parent handlers warn unknown IDs; their legacy one-shot geometry setters can call nested g_object_set where supported.",
+      "construct_reentry": "No C++ store/activation at any point. Native GimpContext construction and GimpToolOptions notify::tool handler determine callback order; exact subtype relaxes only tool-info type matching. No additional reentry guard is introduced.",
+      "slots": [],
+      "parent_macro": "GIMP_TYPE_TOOL_OPTIONS",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_device_options_class_init",
+          "assigned_fields": [],
+          "assigned_callbacks": [],
+          "body_sha256": "8eb95bcbc154530931e15fc418c8b1fe991095671409552099ea1aa596999ede"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterHttpd",
+      "parent": "G_TYPE_OBJECT",
+      "source": "app/httpd/httpd.cpp",
+      "activation": "Register and activate ServiceSlot in init; start later configures application/server on a strong local owner.",
+      "cleanup": "dispose closes service before GObject parent; Service close cancels pending requests/hooks before native refs are released.",
+      "reentry": "Async and server callback payloads lock weak State, closed/generation guards suppress stale work; Soup/native operations run through existing owner-context routes. Dispose never waits for callbacks.",
+      "evidence": [
+        "app/tests/test-painter-http.cpp",
+        "app/tests/test-painter-http-ui.cpp"
+      ],
+      "slots": [
+        {
+          "slot": "GObject.dispose",
+          "callback": "dispose",
+          "parent_order": "close store -> parent dispose",
+          "contract": "close store -> parent dispose"
+        }
+      ],
+      "parent_macro": "G_TYPE_OBJECT",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_httpd_class_init",
+          "assigned_fields": [
+            "dispose"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            }
+          ],
+          "body_sha256": "84c2003e4be62b939f839383211fe9f0e88b612f0c584b8f7c4462cab36c6e59"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterLayerTiles",
+      "parent": "GIMP_TYPE_IMAGE_EDITOR",
+      "source": "app/widgets/gimppainterlayertiles.cpp",
+      "activation": "Register, activate and build slot in init. Public factory later sets context/menu/image. Inherit constructed.",
+      "cleanup": "Widget destroy closes slot before parent destroy; inherited native dispose/destroy route and store finalizer remain responsible for remaining ownership.",
+      "reentry": "use only admits active store and retains owner during slot call. Signal dispatch copies weak-owner target/command before callbacks. closed/syncing/image_generation and moved popup/child owners prevent stale model/idle results and destructive reentry from reusing released controls.",
+      "evidence": [
+        "app/tests/test-painter-canvas-ui.c"
+      ],
+      "slots": [
+        {
+          "slot": "GtkWidget.destroy",
+          "callback": "close_widget",
+          "parent_order": "close store -> parent destroy",
+          "contract": "close store -> parent destroy"
+        },
+        {
+          "slot": "GimpImageEditor.set_image",
+          "callback": "set_image",
+          "parent_order": "parent set_image -> active-slot bind_image",
+          "contract": "parent set_image -> active-slot bind_image"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_IMAGE_EDITOR",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_layer_tiles_class_init",
+          "assigned_fields": [
+            "destroy",
+            "set_image"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "destroy",
+              "callback": "close_widget"
+            },
+            {
+              "slot": "set_image",
+              "callback": "set_image"
+            }
+          ],
+          "body_sha256": "59a7264f903bd4c6d208426bc6ddef1f5173309890bd0f80642f90c483ec36ed"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterMybrush",
+      "parent": "GimpData",
+      "source": "app/core/gimppaintermybrush.cpp",
+      "activation": "Instance init registers slot. Parent GimpData constructed/thaw runs while store constructing; then activate. binding_failed closes store and factory rejects object.",
+      "cleanup": "Close before inherited GimpObject dispose. Brush close releases icon; resource JSON stays readable for const serialization until finalization. No own finalize assignment. Native parent finalizers remain inherited; BindingStore qdata destruction closes idempotently, rejects finalizing reads, and destroys each implementation once. A close hook must not first access native parent resources at that late fallback.",
+      "reentry": "copy retains source and destination across snapshot, mutation and gimp_data_dirty notifications. Store read/with leases pin implementation; resource/icon replacements happen before outward signals. set_json/set_icon additionally hold owner leases through dirty/settings/size signals.",
+      "limits": "No generation or recursive-notification suppression for dirty/settings-changed/size-changed. A callback can close or change the owner; memory stays valid, but arbitrary transactional atomicity is not promised. Direct preview after close reflects released icon.",
+      "evidence": [
+        "/painter-mybrush/177-native-load-copy",
+        "/painter-mybrush/stream-icon-copy",
+        "/painter-mybrush/closed-owner",
+        "/painter-mybrush/copy-icon-finalizer-reentry"
+      ],
+      "property_dispatch": "No own property overrides. GimpObject name, GimpData mime/file/image etc and inherited Viewable properties use native owner handlers.",
+      "construct_reentry": "Parent GimpData constructed calls gimp_data_thaw (gimpdata.c:777), which can call dirty and emit invalidate-preview/name-changed before derived activation. BrushSlot already exists; const read is permitted, active write rejected. Own adapter does not activate before parent returns.",
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before",
+          "contract": "GimpData sets writable and thaws native data before feature activation. Read callbacks can see constructing slot; active writes must fail until activation.",
+          "parent_implementation": "gimp_data_constructed (app/core/gimpdata.c:227)."
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after",
+          "contract": "Close own icon state before native disconnect/final resource teardown.",
+          "parent_implementation": "gimp_object_dispose (app/core/gimpobject.c:147), inherited through GimpData/GimpViewable."
+        },
+        {
+          "slot": "GimpDataClass.save",
+          "callback": "save",
+          "parent_order": "none",
+          "contract": "Parent save is NULL. Const read copies resource, stamps current native name and writes snapshot to stream under boundary; returns FALSE/GError on failure.",
+          "parent_implementation": "app/core/gimpdata.c:160 save = NULL."
+        },
+        {
+          "slot": "GimpDataClass.get_extension",
+          "callback": "extension",
+          "parent_order": "none",
+          "contract": "Parent extension NULL; return immutable .myb suffix, no store access.",
+          "parent_implementation": "app/core/gimpdata.c:161 get_extension = NULL."
+        },
+        {
+          "slot": "GimpDataClass.copy",
+          "callback": "copy",
+          "parent_order": "none",
+          "contract": "Parent copy NULL. Source/destination leases, copy resource/icon, mutate destination, then native dirty notification.",
+          "parent_implementation": "app/core/gimpdata.c:162 copy = NULL; inherited duplicate uses this slot through gimp_data_copy."
+        },
+        {
+          "slot": "GimpViewableClass.get_size",
+          "callback": "get_size",
+          "parent_order": "none",
+          "contract": "Own icon dimensions or 48x48 fallback. Initialize valid outputs to 0 before boundary; absent output pointer returns FALSE.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpViewableClass.get_new_pixbuf",
+          "callback": "get_pixbuf",
+          "parent_order": "none",
+          "contract": "Own icon scaled proportionally; NULL for missing icon/invalid dimensions. Native caller supplies fallback icon, no parent image generation.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpViewableClass.get_new_preview",
+          "callback": "get_preview",
+          "parent_order": "none",
+          "contract": "Calls own get_pixbuf and converts to native TempBuf; NULL if no icon.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpTaggedInterface.get_checksum",
+          "callback": "checksum",
+          "parent_order": "none",
+          "contract": "SHA256 of owned encoded JSON copy, not parent checksum. Failure returns NULL.",
+          "parent_implementation": null
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_DATA",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_mybrush_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "save",
+            "get_extension",
+            "copy",
+            "get_size",
+            "get_new_pixbuf",
+            "get_new_preview",
+            "default_icon_name"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "save",
+              "callback": "save"
+            },
+            {
+              "slot": "get_extension",
+              "callback": "extension"
+            },
+            {
+              "slot": "copy",
+              "callback": "copy"
+            },
+            {
+              "slot": "get_size",
+              "callback": "get_size"
+            },
+            {
+              "slot": "get_new_pixbuf",
+              "callback": "get_pixbuf"
+            },
+            {
+              "slot": "get_new_preview",
+              "callback": "get_preview"
+            }
+          ],
+          "body_sha256": "37e2a1c97faac52d9b7e79cad0b48a4ea77982b9bf97c683ebebb3b0480ad635"
+        },
+        {
+          "symbol": "tagged_init",
+          "assigned_fields": [
+            "get_checksum"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "get_checksum",
+              "callback": "checksum"
+            }
+          ],
+          "body_sha256": "d58406327de7dd3f7df54db6dd41fbce8d08aa57347c26de5b0b3a6835960901"
+        }
+      ],
+      "class_metadata_fields": [
+        "default_icon_name"
+      ]
+    },
+    {
+      "type": "GimpPainterMybrushEditor",
+      "parent": "GIMP_TYPE_EDITOR",
+      "source": "app/widgets/gimppaintermybrusheditor.cpp",
+      "activation": "Register EditorSlot in init. Parent constructed first; then activate unless binding failed. Context/UI are installed by public factory/set_context.",
+      "cleanup": "Both destroy and dispose close store before their native parents; repeated close is harmless; finalize inherited.",
+      "reentry": "Signal callbacks lock weak owner, check generation/UI revision, copy callable before invocation and use store lease. Closed/syncing/replacing guards and retained old widgets protect replacement/notifications; preview request numbers invalidate stale work. NULL docked context detaches UI through same slot.",
+      "evidence": [
+        "app/tests/test-painter-mypaint-editor.cpp"
+      ],
+      "slots": [
+        {
+          "slot": "GObject.constructed",
+          "callback": "constructed",
+          "parent_order": "parent -> activate",
+          "contract": "parent -> activate"
+        },
+        {
+          "slot": "GtkWidget.destroy",
+          "callback": "destroy",
+          "parent_order": "close store -> parent destroy",
+          "contract": "close store -> parent destroy"
+        },
+        {
+          "slot": "GObject.dispose",
+          "callback": "dispose",
+          "parent_order": "close store -> parent dispose",
+          "contract": "close store -> parent dispose"
+        },
+        {
+          "slot": "GimpDocked.set_context",
+          "callback": "docked_init::set_context lambda",
+          "parent_order": "replacement interface handler: set context or detach, no parent interface invocation",
+          "contract": "replacement interface handler: set context or detach, no parent interface invocation"
+        },
+        {
+          "slot": "GimpDocked.get_title",
+          "callback": "docked_init::get_title lambda",
+          "parent_order": "replacement returns allocated title, no parent",
+          "contract": "replacement returns allocated title, no parent"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_EDITOR",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_mybrush_editor_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "destroy"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "destroy",
+              "callback": "destroy"
+            }
+          ],
+          "body_sha256": "2a68a2deb2d078f0a4718009be7333a5e343a1d401ff6aa57a4196d440fa79d5"
+        },
+        {
+          "symbol": "docked_init",
+          "assigned_fields": [
+            "set_context",
+            "get_title"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "set_context",
+              "callback": "<lambda>"
+            },
+            {
+              "slot": "get_title",
+              "callback": "<lambda>"
+            }
+          ],
+          "body_sha256": "af21ed5a7bb8d8ea7771631d4b2e9335f67e8836176ab3f21978517a5104ff39"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterMybrushOptions",
+      "parent": "GimpPaintOptions",
+      "source": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "activation": "OptionsSlot emplaced in init. selected_changed can initialize during construction; constructed calls parent then activates and sets up shared application history/resource selection. close disconnects selected signal and releases selected/history. Parent PaintOptions handles its native resources/finalize. ApplicationHistory is a behavior slot on Gimp, initialized explicitly only if no store exists, activated then shared by options; application-close stops its source and clears entries.",
+      "cleanup": "GimpPaintOptions finalize and Config reset inherited; normal GObject inherited-property dispatch unchanged. No claim that legacy registry TODO handles become complete just because this current adapter exists.",
+      "reentry": "notify_changed holds owner, captures generation, checks generation+revision before sync_resources, each property notify and settings-changed emission. Nested notification owns newer revision and older notification batch stops. select_source publishes selected/draft/baseline/conflict and increments revision before closing old connection and unref old selected; finalizers can reselect safely. settings-changed closure uses WeakOptions owner+generation. source_changed ignores other selection and own committing; dirty draft becomes conflict rather than silently overwritten. commit snapshots source/baseline/revision, sets committing before resource replacement, clears it only on active state, and reconciles only if selected identity/revision still match. Cancellation/close cannot borrow retired Impl. History idle owns weak HistoryState; snapshots strong targets+generation before emissions so recursive options creation/removal cannot invalidate iteration. Close sets closed and destroys source before clearing observers/entries.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "mypaint-options",
+        "mypaint-session",
+        "mypaint-tool"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before-own",
+          "contract": "parent constructed → activate → attach application history → select current/default resource; failure closes; Construction properties ready before revisioned resource notifications",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after-own",
+          "contract": "close own binding → parent dispose; Disconnect selected-resource signal/release state before parent notifications",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.set_property",
+          "callback": "set_property",
+          "parent_order": "not-called",
+          "contract": "own JSON/settings dispatch; constructing numeric initialize vs active with; notify after mutation; Own numeric/JSON model; inherited property owner dispatch remains native",
+          "reentry": "Revision used by notify_changed"
+        },
+        {
+          "slot": "GObjectClass.get_property",
+          "callback": "get_property",
+          "parent_order": "not-called",
+          "contract": "constructing initialize const lambda; otherwise read; fill own JSON/settings/dirty/conflict; Serialization/cleanup read of own draft",
+          "reentry": "No notifications during read"
+        },
+        {
+          "slot": "GimpContextClass.painter_mybrush_changed",
+          "callback": "selected_changed",
+          "parent_order": "not-called",
+          "contract": "select_source; publish complete replacement then release old objects/connections; notify; Own canonical draft selection replaces base empty closure",
+          "reentry": "Construction branch; revision and weak-generation selected-source observer"
+        },
+        {
+          "slot": "GimpContextClass.brush_changed",
+          "callback": "brush_changed",
+          "parent_order": "before-own-conditional",
+          "contract": "if parent closure exists call it → synchronize brushmark name; Keep PaintOptions brush-link behavior before own named-resource update",
+          "reentry": "Strong owner; resource_changed active-only; value equality avoids redundant mutation"
+        },
+        {
+          "slot": "GimpContextClass.pattern_changed",
+          "callback": "pattern_changed",
+          "parent_order": "before-own-conditional",
+          "contract": "if parent closure exists call it → synchronize texture name; Keep any inherited context pattern behavior",
+          "reentry": "Strong owner; active-only/value equality"
+        },
+        {
+          "slot": "GimpConfigInterface.copy",
+          "callback": "config_copy",
+          "parent_order": "between-own",
+          "contract": "snapshot source → parent copy; on success and matching flags restore model snapshot → notify; Native context properties copy first, full draft/dirty/conflict/selection semantics restored afterward",
+          "reentry": "Source/target retained; restore requires selected identity"
+        },
+        {
+          "slot": "GimpConfigInterface.duplicate",
+          "callback": "config_duplicate",
+          "parent_order": "between-own",
+          "contract": "snapshot source → parent duplicate → restore snapshot → release owned target; Native duplicate constructs object before model restore",
+          "reentry": "Source/target retained; NULL result fails safely"
+        },
+        {
+          "slot": "GimpConfigInterface.serialize_property",
+          "callback": "nullptr",
+          "parent_order": "not-called",
+          "contract": "clear inherited interface override; Inherited custom serializer understands Context property IDs only; use generic config value serialization for own settings",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpConfigInterface.deserialize_property",
+          "callback": "nullptr",
+          "parent_order": "not-called",
+          "contract": "clear inherited interface override; Inherited custom deserializer understands Context IDs only; own settings use generic path",
+          "reentry": ""
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_PAINT_OPTIONS",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_mybrush_options_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "set_property",
+            "get_property",
+            "painter_mybrush_changed",
+            "brush_changed",
+            "pattern_changed"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "set_property",
+              "callback": "set_property"
+            },
+            {
+              "slot": "get_property",
+              "callback": "get_property"
+            },
+            {
+              "slot": "painter_mybrush_changed",
+              "callback": "selected_changed"
+            },
+            {
+              "slot": "brush_changed",
+              "callback": "brush_changed"
+            },
+            {
+              "slot": "pattern_changed",
+              "callback": "pattern_changed"
+            }
+          ],
+          "body_sha256": "b01714de5ba8eb62bede4926f41f6f8ef5df6a062839e267b4641e4e56de9724"
+        },
+        {
+          "symbol": "config_iface_init",
+          "assigned_fields": [
+            "copy",
+            "duplicate",
+            "serialize_property",
+            "deserialize_property"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "copy",
+              "callback": "config_copy"
+            },
+            {
+              "slot": "duplicate",
+              "callback": "config_duplicate"
+            },
+            {
+              "slot": "serialize_property",
+              "callback": "nullptr"
+            },
+            {
+              "slot": "deserialize_property",
+              "callback": "nullptr"
+            }
+          ],
+          "body_sha256": "305e4cde1f5824303b40e6b897efc718423a03ddf089abc6e45a906e1c48301e"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterMybrushTool",
+      "parent": "GimpColorTool",
+      "source": "app/tools/gimppaintermybrushtool.cpp",
+      "activation": "ToolSlot emplaced in init. constructed creates one GimpPainterSession after parent, initializes then activates, closes on binding failure. close moves session/connections out, clears pressed/hover/weak targets, disconnects, halts/stops drawing, clears native drawable/display state, then cancels retired session. dispose close precedes inherited Tool HALT. No own finalize.",
+      "cleanup": "Inherits ColorTool cursor_update/can_pick/pick/picked and DrawTool/Tool behavior except enumerated overrides. Standard GimpMybrushTool (C, PaintTool subclass) remains a separate registered tool and is not the migrated extended tool.",
+      "reentry": "Operation retains owner and captures generation; sets busy, rejects nested input. Destructor only operates if generation still accepted, clears busy, takes pending inactive sample, then processes it after the outer call unwinds. Targets are weakly observed by WeakTool{owner,generation}; callbacks lock owner and require accepts. stopping prevents recursive cancellation. image_dirty ignores busy/stopping and inactive Session; saving finishes Session; query_pending reports only executing input busy. Input retains display/image/drawable and Session across engine/projection/display callbacks. Generation is rechecked before clearing error. Close or target cancellation clears queued release so it cannot revive the old operation.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "mypaint-tool",
+        "mypaint-session"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before-own",
+          "contract": "parent constructed → validate Painter options → create Session → initialize slot → activate; failed binding closes; Session owns painting transaction; parent construction must expose tool options",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after-own",
+          "contract": "close binding → clear native input/control → parent dispose; Publish retired own state before inherited HALT",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpToolClass.control",
+          "callback": "control",
+          "parent_order": "after-own",
+          "contract": "HALT/COMMIT finish session and clear input if usable → parent control; Preserve legacy commit-on-HALT and native control",
+          "reentry": "Strong tool lease; closed store skips own work"
+        },
+        {
+          "slot": "GimpToolClass.button_press",
+          "callback": "press",
+          "parent_order": "conditional-only",
+          "contract": "unusable/non-normal return; picker→parent only; otherwise if not busy set pressed and input paint; ColorTool is used for picking; Session owns real painting",
+          "reentry": "busy rejects recursive press; whole-call strong owner"
+        },
+        {
+          "slot": "GimpToolClass.button_release",
+          "callback": "release",
+          "parent_order": "conditional-only",
+          "contract": "unusable return; picker→parent only; otherwise clear pressed/halt; cancel or inactive input; Release lets engine decide logical split",
+          "reentry": "During busy normal release queue one weak-display hover sample; cancel priority handled by Session/PaintCore"
+        },
+        {
+          "slot": "GimpToolClass.motion",
+          "callback": "motion",
+          "parent_order": "conditional-only",
+          "contract": "unusable return; picker→parent only; otherwise input using pressed/control-active state; Full-motion idle/hover goes through Session",
+          "reentry": "Operation guard rejects recursive input"
+        },
+        {
+          "slot": "GimpToolClass.modifier_key",
+          "callback": "modifier",
+          "parent_order": "not-called",
+          "contract": "constrain modifier enables/disables native foreground color picker; Own modifier behavior selected for ColorTool subclass",
+          "reentry": "usable gate and retained tool"
+        },
+        {
+          "slot": "GimpToolClass.oper_update",
+          "callback": "oper_update",
+          "parent_order": "conditional-only",
+          "contract": "picker→parent only; otherwise update cursor/start-stop redraw by proximity/display; Own circle preview lifecycle",
+          "reentry": "usable gate and retained tool"
+        },
+        {
+          "slot": "GimpDrawToolClass.draw",
+          "callback": "draw",
+          "parent_order": "conditional-only",
+          "contract": "unusable/no-image return; picker→parent only; otherwise read radius and draw circle; Own radius preview; native picker rendering remains inherited",
+          "reentry": "Active store and display checks"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_COLOR_TOOL",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_mybrush_tool_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "control",
+            "button_press",
+            "button_release",
+            "motion",
+            "modifier_key",
+            "oper_update",
+            "draw"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "control",
+              "callback": "control"
+            },
+            {
+              "slot": "button_press",
+              "callback": "press"
+            },
+            {
+              "slot": "button_release",
+              "callback": "release"
+            },
+            {
+              "slot": "motion",
+              "callback": "motion"
+            },
+            {
+              "slot": "modifier_key",
+              "callback": "modifier"
+            },
+            {
+              "slot": "oper_update",
+              "callback": "oper_update"
+            },
+            {
+              "slot": "draw",
+              "callback": "draw"
+            }
+          ],
+          "body_sha256": "e57b512cb5befa134ed578551e85b43118dce4e4acf83c3f48fd8efff39ee0fd"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterPaintGate",
+      "parent": "GimpPaintCore",
+      "source": "app/paint/gimppainterpaintgate.cpp",
+      "activation": "Instance init ensures/emplace GateSlot and immediately activates. There is no constructed override; this intentionally records current early activation, since slot needs no construction properties. dispose closes before parent; inherited PaintCore finalization. GateImpl close moves Operation away then requests cancel. Admission retains core/generation/shared Operation; destructor rolls back batch before dropping pending-paint signal, restores coordinate fields unless committed, and removes slot operation only if generation is still accepted.",
+      "cleanup": "All native paint/interpolate/pre/post/get-buffer/push-undo handlers and GObject properties/finalize inherited. The ordinary entry is refused; gimp_painter_paint_gate_stroke is a C entry using Session batch, not another vfunc.",
+      "reentry": "Admission rejects an already present operation; generation validation after session construction, each segment, samples and before commit rejects close/cancel. WeakOperation query callback locks a shared Operation and reads active, never raw Impl. Close moves slot operation before invoking Session cancel. Admission owns Operation independently, so pending-paint stays true until actual rollback completes even if owner is disposed inside evaluator callback.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "mypaint-batch",
+        "mypaint-tool"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after-own",
+          "contract": "close own store → parent dispose; Cancel current Operation before inherited teardown",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpPaintCoreClass.check_start",
+          "callback": "refuse",
+          "parent_order": "not-called",
+          "contract": "set explicit GIMP error → FALSE; No direct native start: atomic Stroke/Path/PDB adapter must own Session batch",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpPaintCoreClass.start",
+          "callback": "refuse",
+          "parent_order": "not-called",
+          "contract": "set explicit GIMP error → FALSE; Defensive refusal even when start vfunc called directly",
+          "reentry": ""
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_PAINT_CORE",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_paint_gate_class_init",
+          "assigned_fields": [
+            "dispose",
+            "check_start",
+            "start"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "check_start",
+              "callback": "refuse"
+            },
+            {
+              "slot": "start",
+              "callback": "refuse"
+            }
+          ],
+          "body_sha256": "c61748d12b36564bdf4c43872945020f64e176ad65903150e1feb4fd031bdf0f"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterProcedureProgress",
+      "parent": "GObject",
+      "source": "app/core/gimpfilterprocedure.cpp",
+      "activation": "GObject init is empty and store absent during g_object_new/constructed. ProcedureProgress C++ constructor explicitly ensure/emplace(sink)/activate afterwards. Never expose progress before that explicit installation.",
+      "cleanup": "Own dispose finds/closes store before GObject dispose. ProgressState.close only clears active; sink/data/failure survive until store destruction. No own finalize assignment. Native parent finalizers remain inherited; BindingStore qdata destruction closes idempotently, rejects finalizing reads, and destroys each implementation once. A close hook must not first access native parent resources at that late fallback.",
+      "reentry": "Every interface method uses boundary plus active with lease (including read-like queries). FilterProgress snapshot is taken before sink callback; no progress mutex is held while sink executes. Sink exceptions are caught/stored and later rethrown by ProcedureProgress.finish inside C++ caller.",
+      "limits": "Private helper only; sink delivery is synchronous and has no binding-generation or nested-emission guard. start always returns progress after sink even if a hypothetical sink reenters close/end; such hostile sink behavior is not separately validated. Private cancellation uses worker cancellation outside this interface; cancel/get_window_id are unassigned.",
+      "evidence": [
+        "/gimp-filter-layer/progress_real_workers",
+        "/gimp-filter-layer/progress_worker_cancel_replace_close",
+        "painter-filter-kernel-progress",
+        "painter-filter-process"
+      ],
+      "property_dispatch": "No own properties and no property adapters.",
+      "construct_reentry": "Opposite special case: no store exists during instance init or native constructed. C++ ProcedureProgress installs and activates the store after g_object_new returns, before exposing its GimpProgress pointer.",
+      "slots": [
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "gimp_painter_procedure_progress_dispose",
+          "parent_order": "after",
+          "contract": "Close explicit behavior store if present; then native GObject dispose.",
+          "parent_implementation": "GObject external native dispose."
+        },
+        {
+          "slot": "GimpProgressInterface.start",
+          "callback": "progress_start",
+          "parent_order": "none",
+          "contract": "Independent private sink adapter. Set active/value and start data before emitting sink; returns same progress unconditionally after sink. No parent progress state.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53), no default methods."
+        },
+        {
+          "slot": "GimpProgressInterface.end",
+          "callback": "progress_end",
+          "parent_order": "none",
+          "contract": "Independent private sink adapter. If active, mark inactive and end data before sink.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53), no default methods."
+        },
+        {
+          "slot": "GimpProgressInterface.is_active",
+          "callback": "progress_active",
+          "parent_order": "none",
+          "contract": "Independent private sink adapter. Active store lease returns state.active; closed/missing store returns FALSE.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53), no default methods."
+        },
+        {
+          "slot": "GimpProgressInterface.set_text",
+          "callback": "progress_text",
+          "parent_order": "none",
+          "contract": "Independent private sink adapter. If active, update bounded data and emit sink.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53), no default methods."
+        },
+        {
+          "slot": "GimpProgressInterface.set_value",
+          "callback": "progress_value",
+          "parent_order": "none",
+          "contract": "Independent private sink adapter. If active and finite, clamp value to [0,1], publish data then sink.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53), no default methods."
+        },
+        {
+          "slot": "GimpProgressInterface.get_value",
+          "callback": "progress_get_value",
+          "parent_order": "none",
+          "contract": "Independent private sink adapter. Active store lease returns last stored value, even after end; closed/missing store returns 0.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53), no default methods."
+        },
+        {
+          "slot": "GimpProgressInterface.pulse",
+          "callback": "progress_pulse",
+          "parent_order": "none",
+          "contract": "Independent private sink adapter. If active, update data and emit sink.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53), no default methods."
+        },
+        {
+          "slot": "GimpProgressInterface.message",
+          "callback": "progress_message",
+          "parent_order": "none",
+          "contract": "Independent private sink adapter. Requires sink and valid severity (not active flag); update message and emit; FALSE if sink failure was recorded.",
+          "parent_implementation": "GimpProgress default_init (app/core/gimpprogress.c:53), no default methods."
+        }
+      ],
+      "parent_macro": "G_TYPE_OBJECT",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_procedure_progress_class_init",
+          "assigned_fields": [
+            "dispose"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "dispose",
+              "callback": "gimp_painter_procedure_progress_dispose"
+            }
+          ],
+          "body_sha256": "c7ef9e466bd994d58658bb8ed9de4e99b3a70b706e40075493da0bd9f011bfd7"
+        },
+        {
+          "symbol": "procedure_progress_iface_init",
+          "assigned_fields": [
+            "start",
+            "end",
+            "is_active",
+            "set_text",
+            "set_value",
+            "get_value",
+            "pulse",
+            "message"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "start",
+              "callback": "progress_start"
+            },
+            {
+              "slot": "end",
+              "callback": "progress_end"
+            },
+            {
+              "slot": "is_active",
+              "callback": "progress_active"
+            },
+            {
+              "slot": "set_text",
+              "callback": "progress_text"
+            },
+            {
+              "slot": "set_value",
+              "callback": "progress_value"
+            },
+            {
+              "slot": "get_value",
+              "callback": "progress_get_value"
+            },
+            {
+              "slot": "pulse",
+              "callback": "progress_pulse"
+            },
+            {
+              "slot": "message",
+              "callback": "progress_message"
+            }
+          ],
+          "body_sha256": "44b618d89f03c5f8471f9f44e6b548b27328704f6d82a3c0e6ad1317511f26af"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterProvenance",
+      "parent": "GObject",
+      "source": "app/core/gimp-painter-provenance.cpp",
+      "activation": "ensure/emplace/activate in instance init, not constructed; no construction properties or active-callback setup, no own constructed. GimpObject holds child through an explicit typed C seam; no late slot insertion into feature owner.",
+      "cleanup": "Child store closes before GObject dispose; close is no-op so immutable retained values remain readable. Native containing GimpObject marks provenance_closed before disposing child and emits disconnect after that. No own finalize assignment. Native parent finalizers remain inherited; BindingStore qdata destruction closes idempotently, rejects finalizing reads, and destroys each implementation once. A close hook must not first access native parent resources at that late fallback.",
+      "reentry": "Outer native owner and child are strongly leased for changes; replacements publish via swap before retired GBytes/GVariant values can run custom finalizers. Containing GimpObject marks finalizing before clearing child, and _lease rejects both finalizing reads and closed writes. Transport free zeroes public fields before user value finalizers.",
+      "limits": "Init boundary has no public binding_failed flag; missing/partial store fails later boundaries. Reentry-safe ownership does not serialize or reject every nested edit; supported reads/edits observe published replacement.",
+      "evidence": [
+        "/painter-provenance/closed_read_and_write",
+        "/painter-provenance/replacement_reentry",
+        "/painter-provenance/replacement_drops_last_owner",
+        "/painter-provenance/copy_release_closes_target",
+        "/painter-provenance/finalizing_owner_reentry",
+        "/painter-provenance/transport_replacement_reentry",
+        "/painter-provenance/transport_copy_reentry_closes_target"
+      ],
+      "property_dispatch": "No own or inherited application properties and no property adapters.",
+      "construct_reentry": "Special case: store is activated in instance init, before native parent constructed. No construction setters/signals use it and child is not handed to external code until component installation. No derived constructed callback exists.",
+      "slots": [
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after",
+          "contract": "Find and close store under boundary first; then parent GObject dispose. Values persist until store destruction.",
+          "parent_implementation": "GObject external native dispose; containing native gimp_object_dispose/finalize and typed seam in app/core/gimpobject.c:147,169,554."
+        }
+      ],
+      "parent_macro": "G_TYPE_OBJECT",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_provenance_class_init",
+          "assigned_fields": [
+            "dispose"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            }
+          ],
+          "body_sha256": "d7c449d5889b57c45f0e5347b89670e70ac8371746976d77e02b8c6a37a5d467"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterSession",
+      "parent": "GimpObject",
+      "source": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "activation": "SessionSlot emplaced in init; construct-only options property initializes strong Options ref. parent constructed then connect settings/notify, activate, refresh. close moves core/options away before disconnect/cancel, and guarded PaintCore cancel is nonblocking/deferred when required. No own finalize.",
+      "cleanup": "GimpObject base properties/lifecycle beyond these four slots remain inherited. PainterSession is current adapter infrastructure, not a second renderer.",
+      "reentry": "WeakSession owner+generation gates settings-changed and native context notify; context filtering excludes resource selection names handled elsewhere. refresh sets pending and revision; busy/refreshing coalesces nested configuration. Bounded 16-iteration loop takes independent options/core/revision snapshot; publishes only matching revision; checks generation before/after error notify. Beyond 16 leaves an error and pending settings for retry. operate retains owner and independent core/options; busy/refreshing rejects recursive painting/configuration. Deferred pending refresh runs after busy clears; active notify only if generation still accepted. finish/cancel during sample/start call current PaintCore stop instead of nested operate. PaintCore defers guarded stops; cancel wins over simultaneous finish.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "mypaint-session",
+        "mypaint-batch"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before-own",
+          "contract": "parent constructed → require options/connect → activate → refresh; failure closes; Options are construct-only, refresh requires active store",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after-own",
+          "contract": "close binding → parent dispose; Retire core/options and disconnect before native teardown",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.set_property",
+          "callback": "set_property",
+          "parent_order": "not-called",
+          "contract": "PROP_OPTIONS only → initialize retained options; Only construct-only option input; unknown IDs warn",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.get_property",
+          "callback": "get_property",
+          "parent_order": "not-called",
+          "contract": "read options/active/error into GValue; unknown warn; Own serialization/status reads allowed through read lease",
+          "reentry": ""
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_OBJECT",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_session_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "set_property",
+            "get_property"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "set_property",
+              "callback": "set_property"
+            },
+            {
+              "slot": "get_property",
+              "callback": "get_property"
+            }
+          ],
+          "body_sha256": "156c1b39ed6de52743fde3f02d399b0239743a5a7609f8f45080b3afe092e3cf"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterSmudge",
+      "parent": "GimpBrushCore",
+      "source": "app/paint/gimppaintersmudge.cpp",
+      "activation": "SmudgeSlot emplaced in init; parent constructed then activate. begin stores strong frame resources and shared watch, starts native transaction through consumed permit, then INIT. motion_begin/step use processing and LocalCoordinates RAII. finish_frame defers while starting/processing, marks ending+inactive before FINISH, commit/cancel, scratch release. close publishes closed+cancel and defers guarded operation rollback. dispose closes before parent; no own finalize.",
+      "cleanup": "BrushCore pre_paint, post_paint, get_paint_buffer and signal handlers inherited; PaintCore undo/finalize inherited. Own interpolate is an intentional replacement; handles_* entries are boolean capabilities.",
+      "reentry": "buffer changed callback owns shared Watch, ignores writing and records external changes; pending callback reads atomic busy. Connections removed before frame resources retire. starting/processing/ending plus local_coordinates protect operation transitions; revision and frame_current checks detect changed buffer/format/offset/extent/attachment and reject stale publication. FINISH may reenter cancellation; commit is sealed only after FINISH and current-target validation. Existing native frame is kept alive by local owner/image/drawable/options leases.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "smudge-core",
+        "smudge-ui",
+        "owned-generic"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before-own",
+          "contract": "parent constructed → activate own store; Inherited construction properties must be ready before active callbacks",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after-own",
+          "contract": "close own BindingStore → parent dispose; Reentrant callbacks from parent teardown must see closing/closed state",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpPaintCoreClass.check_start",
+          "callback": "check_start",
+          "parent_order": "not-called",
+          "contract": "validate coordinates → require owned start/nontransitioning state → consume permit → arm start; Reject unowned native transaction before native work",
+          "reentry": "active/processing/ending/starting/closed plus one-shot permit"
+        },
+        {
+          "slot": "GimpPaintCoreClass.start",
+          "callback": "start",
+          "parent_order": "after-own",
+          "contract": "consume arm → validate coordinates, single drawable, byte RGB/Gray and options → parent BrushCore.start; Keep native brush setup within owned transaction",
+          "reentry": "Arm consumed even if subsequent validation fails"
+        },
+        {
+          "slot": "GimpPaintCoreClass.paint",
+          "callback": "paint",
+          "parent_order": "not-called",
+          "contract": "INIT clears accumulator/error; FINISH clears accumulator; MOTION renders own legacy smudge; Own byte renderer replaces base paint",
+          "reentry": "closed/error checks; motion revision/current-target checks"
+        },
+        {
+          "slot": "GimpPaintCoreClass.interpolate",
+          "callback": "interpolate",
+          "parent_order": "not-called",
+          "contract": "validate → translate native coordinates to drawable-local → begin/step native resumable interpolation → restore coordinates; Calls native interpolation helper instead of parent vfunc to preserve old local-double arithmetic",
+          "reentry": "local_coordinates forbids nested local-coordinate entry; loop stops on closed/cancel/error"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_BRUSH_CORE",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_smudge_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "check_start",
+            "start",
+            "paint",
+            "interpolate",
+            "handles_changing_brush",
+            "handles_transforming_brush",
+            "handles_dynamic_transforming_brush"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "check_start",
+              "callback": "check_start"
+            },
+            {
+              "slot": "start",
+              "callback": "start"
+            },
+            {
+              "slot": "paint",
+              "callback": "paint"
+            },
+            {
+              "slot": "interpolate",
+              "callback": "interpolate"
+            }
+          ],
+          "body_sha256": "fd95909dc639aa1d8fcd23e26dfe15aeb7fbd77c2c9a0c6e2d14d827e9fc0d74"
+        }
+      ],
+      "class_metadata_fields": [
+        "handles_changing_brush",
+        "handles_transforming_brush",
+        "handles_dynamic_transforming_brush"
+      ]
+    },
+    {
+      "type": "GimpPainterSmudgeOptions",
+      "parent": "GimpPaintOptions",
+      "source": "app/paint/gimppaintersmudge.cpp",
+      "activation": "Settings slot emplaced in instance init; constructing set_property uses initialize; constructed calls parent then activate; dispose closes the store before parent; no own finalize (qdata store final destruction). No owned signals/sources in the settings slot.",
+      "cleanup": "Native GimpPaintOptions context/config handlers and finalization inherited. This is separate from standard GimpSmudgeOptions.",
+      "reentry": "Unknown IDs warn; these types do not implement explicit fallback to parent get/set. Do not classify the absence of a chain as a lost inherited-property bug: normal GObject property dispatch resolves the defining property owner. The contract records this exact behavior rather than claiming the foundation fallback wording is implemented for arbitrary direct vfunc invocation.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "smudge-core",
+        "smudge-ui"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "options_constructed",
+          "parent_order": "before-own",
+          "contract": "parent constructed → activate own store; Inherited construction properties must be ready before active callbacks",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "options_dispose",
+          "parent_order": "after-own",
+          "contract": "close own BindingStore → parent dispose; Reentrant callbacks from parent teardown must see closing/closed state",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.set_property",
+          "callback": "options_set",
+          "parent_order": "not-called",
+          "contract": "own id → constructing initialize or active mutation; unknown id → warning; Own properties are handled here; ordinary inherited-property dispatch uses the property-defining class",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.get_property",
+          "callback": "options_get",
+          "parent_order": "not-called",
+          "contract": "const typed-slot read → own output; unknown id → warning; Own values only; no synthetic parent-ID fallback",
+          "reentry": ""
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_PAINT_OPTIONS",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_smudge_options_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "get_property",
+            "set_property"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "options_constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "options_dispose"
+            },
+            {
+              "slot": "get_property",
+              "callback": "options_get"
+            },
+            {
+              "slot": "set_property",
+              "callback": "options_set"
+            }
+          ],
+          "body_sha256": "0f126548678ac30c2929b0106d8130fd63b1e428d371949bfcfb190a758ec51b"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPainterSmudgeTool",
+      "parent": "GimpBrushTool",
+      "source": "app/tools/gimppaintersmudgetool.cpp",
+      "activation": "Controller slot in init; BrushTool parent constructed first (native preview core), then activate. dispose closes controller/store before parent Tool disposal may redispatch HALT. Controller close publishes closed and invalidates; revision++, source closed, connections/strokes swapped out, input reset, then disconnections, halt and cancellation. No own finalize.",
+      "cleanup": "BrushTool cursor_update/options_notify/paint_start/end/flush, PaintTool modifier/key handling and underlying color picking are inherited. No own options property/config vfuncs.",
+      "reentry": "with() admits only active stores, making parent-dispose HALT a safe own-state no-op; inherited parent control still runs. tick() rejects dispatch recursion and retains shared front stroke; compares revision after each callback-producing phase. committing suppresses self-generated dirty/clean invalidation; dispatching suppresses own drawable update invalidation. Idle callback captures weak owner + BindingStore generation, takes a strong owner lease, requires accepts(generation), and enters typed slot. Source handles destruction during its own dispatch; if an invalidation destroys that source and new input arrives, it rearms the newer controller source. Signal closures for target/display/image observations hold raw tool pointer, with Connection disconnection at close; these are synchronous GObject notifications, not queued weak-generation payloads. Their callbacks use active-store gate. Deferred idle is separately weak/generation validated. saving signal calls public COMMIT only when input exists and image still matches. Public gimp_tool_control always follows COMMIT by HALT (gimptool.c:656); commit_halts counts nested pairs. Watch signals include image selection/mask/dirty/clean/precision/saving/pending, drawable removed/lock/format/geometry/update, display image and shell destruction.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "smudge-ui",
+        "smudge-core"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before-own",
+          "contract": "parent constructed → activate own store; Inherited construction properties must be ready before active callbacks",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after-own",
+          "contract": "close own BindingStore → parent dispose; Reentrant callbacks from parent teardown must see closing/closed state",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpToolClass.control",
+          "callback": "control",
+          "parent_order": "after-own",
+          "contract": "COMMIT seal current envelope + increment commit_halts + schedule; HALT consume commit_halts or invalidate; then parent control; Parent retains native tool control behavior",
+          "reentry": "Counter preserves nested COMMIT→automatic HALT without swallowing an unrelated later HALT"
+        },
+        {
+          "slot": "GimpToolClass.button_press",
+          "callback": "press",
+          "parent_order": "conditional-only",
+          "contract": "picker enabled → parent only; otherwise validate target, freeze options, enqueue stroke and schedule; Painting uses owned resumable controller; picker preserves inherited behavior",
+          "reentry": "revision after freeze_options; retained stroke; repeated press seals prior input"
+        },
+        {
+          "slot": "GimpToolClass.motion",
+          "callback": "motion",
+          "parent_order": "conditional-only",
+          "contract": "picker enabled → parent only; otherwise enqueue input, update preview with pause/resume; Do not start an extra native PaintTool transaction",
+          "reentry": "active-store gate, input/closed/display identity"
+        },
+        {
+          "slot": "GimpToolClass.button_release",
+          "callback": "release",
+          "parent_order": "conditional-only",
+          "contract": "picker enabled → parent only; otherwise halt control then cancel or seal/schedule input; Owned asynchronous transaction may remain after pointer release",
+          "reentry": "release cancellation invalidates revision/source"
+        },
+        {
+          "slot": "GimpToolClass.oper_update",
+          "callback": "oper_update",
+          "parent_order": "after-own",
+          "contract": "invalidate pending strokes if display changed → parent oper_update; Parent BrushTool supplies native preview behavior",
+          "reentry": "active store and display identity"
+        },
+        {
+          "slot": "GimpDrawToolClass.draw",
+          "callback": "draw",
+          "parent_order": "conditional-after-own",
+          "contract": "reject unrepresentable off-canvas cursor/line → otherwise parent draw; Canvas preview numeric domain is narrower than accepted input",
+          "reentry": "No added recursive guard; delegates native draw"
+        },
+        {
+          "slot": "GimpPaintToolClass.get_outline",
+          "callback": "outline",
+          "parent_order": "conditional-after-own",
+          "contract": "reject off-canvas transformed outline → otherwise return parent outline; Preserve native outline while avoiding invalid canvas properties",
+          "reentry": "No typed-slot mutation"
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_BRUSH_TOOL",
+      "initializers": [
+        {
+          "symbol": "gimp_painter_smudge_tool_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "control",
+            "button_press",
+            "button_release",
+            "motion",
+            "oper_update",
+            "draw",
+            "get_outline"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "control",
+              "callback": "control"
+            },
+            {
+              "slot": "button_press",
+              "callback": "press"
+            },
+            {
+              "slot": "button_release",
+              "callback": "release"
+            },
+            {
+              "slot": "motion",
+              "callback": "motion"
+            },
+            {
+              "slot": "oper_update",
+              "callback": "oper_update"
+            },
+            {
+              "slot": "draw",
+              "callback": "draw"
+            },
+            {
+              "slot": "get_outline",
+              "callback": "outline"
+            }
+          ],
+          "body_sha256": "de0725fca19f3c20efe12c303aafdf4d0d0e3d807e6bceb12b97c68befaa7ccf"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPerspectiveGuide",
+      "parent": "GObject",
+      "source": "app/core/gimpperspectiveguide.cpp",
+      "activation": "Instance init registers state slot. Construct properties use initialize without changed signal. Parent constructed then activate; binding_failed closes store and factory rejects.",
+      "cleanup": "Store closes before GObject dispose; GuideImpl.close is no-op, allowing const state reads while retained/closed. No own finalize assignment. Native parent finalizers remain inherited; BindingStore qdata destruction closes idempotently, rejects finalizing reads, and destroys each implementation once. A close hook must not first access native parent resources at that late fallback.",
+      "reentry": "mutate retains guide beyond with through changed signal; state commits before notification. Property setter initializes during construction, otherwise with then emits changed. Image integration retains image/incoming guide, publishes new guide before removed, and sets disposing + clears pointer before dispose notifications.",
+      "limits": "No busy/generation guard prevents recursive changed handlers. Model mutation notification is synchronous and may be superseded. Property setter relies on its GObject call context for lifetime after with; public mutate has an explicit outer lease. removed class signal slot is registered but has no assigned default handler.",
+      "evidence": [
+        "/perspective/model_bounds",
+        "/perspective/reentrant_replacement",
+        "/perspective/dispose_reentry",
+        "/perspective/signal_lifetime"
+      ],
+      "property_dispatch": "Own IDs 1/2 = id/angle, read-write construct. Unknown IDs warn; direct parent is GObject and defines no relevant application properties.",
+      "construct_reentry": "Construct property setters use initialize and do not emit changed. They never activate. Parent constructed returns before activation. Active setter mutates then emits changed; closed setter fails without changed emission.",
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before",
+          "contract": "Call GObject constructed before activating own registered property state.",
+          "parent_implementation": "GObject external native constructed."
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after",
+          "contract": "Close own store before GObject dispose.",
+          "parent_implementation": "GObject external native dispose."
+        },
+        {
+          "slot": "GObjectClass.set_property",
+          "callback": "set_property",
+          "parent_order": "none",
+          "contract": "Own property IDs only; unexpected IDs warn, with no explicit parent forwarding. Normal GObject property dispatch uses the property-defining class; do not call this adapter directly with foreign parent IDs. ID/angle: constructing initialize, otherwise active mutation followed by changed; no change signal during construct property setting.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GObjectClass.get_property",
+          "callback": "get_property",
+          "parent_order": "none",
+          "contract": "Own property IDs only; unexpected IDs warn, with no explicit parent forwarding. Normal GObject property dispatch uses the property-defining class; do not call this adapter directly with foreign parent IDs. ID/angle const store reads remain possible constructing/closed while owner not finalizing.",
+          "parent_implementation": null
+        }
+      ],
+      "parent_macro": "G_TYPE_OBJECT",
+      "initializers": [
+        {
+          "symbol": "gimp_perspective_guide_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "set_property",
+            "get_property"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "set_property",
+              "callback": "set_property"
+            },
+            {
+              "slot": "get_property",
+              "callback": "get_property"
+            }
+          ],
+          "body_sha256": "0fa736bea954f96cd8ee22ecff9490e39368cd598eac70f3221cf8d141e52e35"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPerspectiveGuideTool",
+      "parent": "GimpDrawTool",
+      "source": "app/tools/gimpperspectiveguidetool.cpp",
+      "activation": "ToolSlot in init, parent constructed then activate. with() active-only protects inherited dispose→HALT. dispose first cancels edit with active slot then closes; close clears weak image, guide, before and editing state. No own finalize or own async source/signal connections. Registration uses standard GIMP_TYPE_TOOL_OPTIONS, not a recreated custom GuideOptions.",
+      "cleanup": "DrawTool has_display/has_image/key_release/active_modifier/get_popup and Tool defaults inherited. No custom options GType in current registration.",
+      "reentry": "DrawPause balances native pause/resume; image is weak, guide/before strong, and motion/finish compare installed image guide identity before mutating/undoing. No dedicated busy, finishing or generation guard surrounds finish/model mutations. Model/image update, flush and draw-resume may synchronously redispatch callbacks. Existing guards are lifecycle admission, editing/display/guide identity and owner lease from BindingStore; this audit does not claim arbitrary recursive edit callbacks are comprehensively blocked. finish currently updates editing/changed after callback-producing image-set/undo/flush work. This is an observation and test-coverage limit, not a proven defect in this read-only audit.",
+      "limits": "Recorded feature evidence is historical unless separately source-matched; this task does not re-execute each feature suite.",
+      "evidence": [
+        "perspective-ui",
+        "perspective-events"
+      ],
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before-own",
+          "contract": "parent constructed → activate; Tool construction precedes active own callbacks",
+          "reentry": ""
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after-own",
+          "contract": "finish(cancel) while active → close store → parent dispose; Restore interrupted edit before clearing own state; parent HALT must not reopen it",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpToolClass.control",
+          "callback": "control",
+          "parent_order": "after-own",
+          "contract": "HALT cancel edit, close own fields/reset operation/stop draw → parent control; Native DrawTool cleanup follows own edit cancellation",
+          "reentry": "with admits active only; parent-dispose HALT skips own closed slot"
+        },
+        {
+          "slot": "GimpToolClass.button_press",
+          "callback": "press",
+          "parent_order": "not-called",
+          "contract": "attach display → duplicate before state → activate edit → add/remove/hit selection; Own guide editing replaces generic tool press",
+          "reentry": "DrawPause; weak image and retained guide/before"
+        },
+        {
+          "slot": "GimpToolClass.button_release",
+          "callback": "release",
+          "parent_order": "not-called",
+          "contract": "pause drawing → finish(cancel when release cancel); Own undo/cancel transaction",
+          "reentry": "finish checks installed guide identity"
+        },
+        {
+          "slot": "GimpToolClass.motion",
+          "callback": "motion",
+          "parent_order": "not-called",
+          "contract": "require editing/target/guide/display and current installed guide → move point; Own guide coordinates replace generic motion",
+          "reentry": "Identity mismatch abandons editing"
+        },
+        {
+          "slot": "GimpToolClass.modifier_key",
+          "callback": "modifier",
+          "parent_order": "not-called",
+          "contract": "Shift enables Add; Ctrl enables Remove; matching release restores Move; Own operation mode only",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpToolClass.oper_update",
+          "callback": "oper_update",
+          "parent_order": "not-called",
+          "contract": "if not editing attach guide/display with drawing paused; Own guide overlay association",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpToolClass.cursor_update",
+          "callback": "cursor_update",
+          "parent_order": "after-own",
+          "contract": "set guide hit/operation cursor → parent cursor_update; Parent publishes chosen native cursor",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpToolClass.key_press",
+          "callback": "key_press",
+          "parent_order": "not-called",
+          "contract": "Escape cancels and TRUE; other keys FALSE; Only own Escape editing command is claimed",
+          "reentry": ""
+        },
+        {
+          "slot": "GimpDrawToolClass.draw",
+          "callback": "draw",
+          "parent_order": "not-called",
+          "contract": "snapshot guide state → handles and two-point line; Parent default draw contributes no guide geometry",
+          "reentry": ""
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_DRAW_TOOL",
+      "initializers": [
+        {
+          "symbol": "gimp_perspective_guide_tool_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "control",
+            "button_press",
+            "button_release",
+            "motion",
+            "modifier_key",
+            "oper_update",
+            "cursor_update",
+            "key_press",
+            "draw"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "control",
+              "callback": "control"
+            },
+            {
+              "slot": "button_press",
+              "callback": "press"
+            },
+            {
+              "slot": "button_release",
+              "callback": "release"
+            },
+            {
+              "slot": "motion",
+              "callback": "motion"
+            },
+            {
+              "slot": "modifier_key",
+              "callback": "modifier"
+            },
+            {
+              "slot": "oper_update",
+              "callback": "oper_update"
+            },
+            {
+              "slot": "cursor_update",
+              "callback": "cursor_update"
+            },
+            {
+              "slot": "key_press",
+              "callback": "key_press"
+            },
+            {
+              "slot": "draw",
+              "callback": "draw"
+            }
+          ],
+          "body_sha256": "4d8d0281c1a94c163bc6f5301919f5f6af88955396547ae6f2942ee0f326ac36"
+        }
+      ],
+      "class_metadata_fields": []
+    },
+    {
+      "type": "GimpPerspectiveGuideUndo",
+      "parent": "GimpUndo",
+      "source": "app/core/gimpperspectiveguideundo.cpp",
+      "activation": "Instance init registers slot and records binding_failed. Construct-only guide property duplicates guide into slot through initialize. Parent constructed then activate under boundary; this path does not consume/update binding_failed or explicitly close failures.",
+      "cleanup": "Store closes before inherited native dispose; close resets snapshot. Native Undo.free is inherited empty default, no own free override. No own finalize assignment. Native parent finalizers remain inherited; BindingStore qdata destruction closes idempotently, rejects finalizing reads, and destroys each implementation once. A close hook must not first access native parent resources at that late fallback.",
+      "reentry": "pop commits replacement snapshot before gimp_image_set_perspective_guide emits removed/changed. Active Undo store lease pins implementation; image setter has its own retained image and publish-first/disposing guard.",
+      "limits": "No nested-pop suppression or feature generation guard; only ordinary edit undo/redo and image model reentry cases are recorded. Construction failure detection is weaker than CloneUndo: factory/push does not reject binding_failed; allocation-failure behavior is not established here.",
+      "evidence": [
+        "/perspective/edit_undo",
+        "/perspective/reentrant_replacement",
+        "/perspective/dispose_reentry"
+      ],
+      "property_dispatch": "Own ID 1 = guide, writable construct-only; handler only duplicates guide through initialize. Native image/undo-type/dirty-mask/name remain handled by native defining parents. Foreign direct IDs warn.",
+      "construct_reentry": "Guide snapshot property is set while UndoSlot constructing, before constructed. It may construct a separate duplicate Guide, whose own store becomes active, but does not activate this Undo. Own Undo activation occurs after parent returns; failure path is weaker as recorded.",
+      "slots": [
+        {
+          "slot": "GObjectClass.constructed",
+          "callback": "constructed",
+          "parent_order": "before",
+          "contract": "Native GimpUndo image assertion first, then attempt activate. Failure swallowed by boundary; no explicit failed-construction close.",
+          "parent_implementation": "gimp_undo_constructed (app/core/gimpundo.c:181)."
+        },
+        {
+          "slot": "GObjectClass.dispose",
+          "callback": "dispose",
+          "parent_order": "after",
+          "contract": "Close/release guide snapshot before native dispose.",
+          "parent_implementation": "gimp_object_dispose (app/core/gimpobject.c:147), inherited."
+        },
+        {
+          "slot": "GObjectClass.set_property",
+          "callback": "set_property",
+          "parent_order": "none",
+          "contract": "Own property IDs only; unexpected IDs warn, with no explicit parent forwarding. Normal GObject property dispatch uses the property-defining class; do not call this adapter directly with foreign parent IDs. Own construct-only guide ID 1 duplicates supplied guide; initialize only, never active mutation.",
+          "parent_implementation": null
+        },
+        {
+          "slot": "GimpUndoClass.pop",
+          "callback": "pop",
+          "parent_order": "before",
+          "contract": "Always call empty native parent then active store lease; capture current guide, duplicate saved guide, commit new snapshot, publish image replacement.",
+          "parent_implementation": "gimp_undo_real_pop (app/core/gimpundo.c:338), empty."
+        }
+      ],
+      "parent_macro": "GIMP_TYPE_UNDO",
+      "initializers": [
+        {
+          "symbol": "gimp_perspective_guide_undo_class_init",
+          "assigned_fields": [
+            "constructed",
+            "dispose",
+            "set_property",
+            "pop"
+          ],
+          "assigned_callbacks": [
+            {
+              "slot": "constructed",
+              "callback": "constructed"
+            },
+            {
+              "slot": "dispose",
+              "callback": "dispose"
+            },
+            {
+              "slot": "set_property",
+              "callback": "set_property"
+            },
+            {
+              "slot": "pop",
+              "callback": "pop"
+            }
+          ],
+          "body_sha256": "d634b2b1c300be0a353004f57e2e4a496b3fe35eb9a3776ac62db6e0d628f5b4"
+        }
+      ],
+      "class_metadata_fields": []
+    }
+  ],
+  "legacy_custom_types": [
+    {
+      "legacy_type": "GimpBucketFillBrush",
+      "current_types": [
+        "GimpFillBrush"
+      ],
+      "disposition": "current renamed native subtype",
+      "contract": "Use current type row and inherited native parent; old aliases/settings compatibility remains a feature obligation.",
+      "feature_gate": "27"
+    },
+    {
+      "legacy_type": "GimpBucketFillBrushOptions",
+      "current_types": [
+        "GimpFillBrushOptions"
+      ],
+      "disposition": "current renamed native subtype",
+      "contract": "Use current type row and inherited native parent; old aliases/settings compatibility remains a feature obligation.",
+      "feature_gate": "27"
+    },
+    {
+      "legacy_type": "GimpBucketFillBrushTool",
+      "current_types": [
+        "GimpFillBrushTool"
+      ],
+      "disposition": "current renamed native subtype",
+      "contract": "Use current type row and inherited native parent; old aliases/settings compatibility remains a feature obligation.",
+      "feature_gate": "27"
+    },
+    {
+      "legacy_type": "GimpCanvasPerspectiveGuide",
+      "current_types": [
+        "GimpCanvasPerspectiveGuide"
+      ],
+      "disposition": "current native subtype",
+      "contract": "Use the named current parent/slot/reentry row.",
+      "feature_gate": "08; 28"
+    },
+    {
+      "legacy_type": "GimpCellRendererPopup",
+      "current_types": [
+        "GimpPainterLayerTiles"
+      ],
+      "disposition": "native widget composition",
+      "contract": "Current layer tiles use ordinary GTK controls and popovers, with no custom GtkCellRenderer vtable. Retain old popup/selection behavior duties; do not invent parent calls for an absent subtype.",
+      "feature_gate": "29.006/cellrenderer-gtk3"
+    },
+    {
+      "legacy_type": "GimpCloneLayer",
+      "current_types": [
+        "GimpCloneLayer"
+      ],
+      "disposition": "current native subtype",
+      "contract": "Use the named current parent/slot/reentry row.",
+      "feature_gate": "08; 14"
+    },
+    {
+      "legacy_type": "GimpCloneLayerUndo",
+      "current_types": [
+        "GimpCloneLayerUndo"
+      ],
+      "disposition": "current native subtype",
+      "contract": "Use the named current parent/slot/reentry row.",
+      "feature_gate": "08; 14"
+    },
+    {
+      "legacy_type": "GimpFilterLayer",
+      "current_types": [
+        "GimpFilterLayer"
+      ],
+      "disposition": "current native subtype",
+      "contract": "Use the named current parent/slot/reentry row.",
+      "feature_gate": "08; 15"
+    },
+    {
+      "legacy_type": "GimpImageGeneratorOptions",
+      "current_types": [],
+      "disposition": "pending placeholder disposition",
+      "contract": "No current type or parent vfunc is registered. Before introducing an adapter, define exact parent/slots and inert construction/close behavior; exclusion still requires original dependency/asset proof.",
+      "feature_gate": "31.011; 31.012"
+    },
+    {
+      "legacy_type": "GimpImageGeneratorTool",
+      "current_types": [],
+      "disposition": "pending placeholder disposition",
+      "contract": "No current type or parent vfunc is registered. Before introducing an adapter, define exact parent/slots and inert construction/close behavior; exclusion still requires original dependency/asset proof.",
+      "feature_gate": "31.011; 31.012"
+    },
+    {
+      "legacy_type": "GimpJsonResource",
+      "current_types": [
+        "GimpLayerPreset"
+      ],
+      "disposition": "native C resource counterpart",
+      "contract": "GimpData save/copy/extension and GObject finalize follow GimpLayerPreset row. No old C++ NewGClass required.",
+      "feature_gate": "25; 26"
+    },
+    {
+      "legacy_type": "GimpLayerPresetFactoryView",
+      "current_types": [
+        "GimpLayerPresetView"
+      ],
+      "disposition": "native C view counterpart",
+      "contract": "Parent selection first; construction suppression and applying guard follow current view row.",
+      "feature_gate": "26"
+    },
+    {
+      "legacy_type": "GimpLayerTileView",
+      "current_types": [
+        "GimpPainterLayerTiles"
+      ],
+      "disposition": "current native view counterpart",
+      "contract": "Use current ImageEditor/destroy contract, keeping legacy gestures/popups under feature acceptance.",
+      "feature_gate": "29.002"
+    },
+    {
+      "legacy_type": "GimpMypaintBrush",
+      "current_types": [
+        "GimpPainterMybrush"
+      ],
+      "disposition": "current renamed compatibility subtype",
+      "contract": "Use current type row; imported old names/settings have independent compatibility tests.",
+      "feature_gate": "19"
+    },
+    {
+      "legacy_type": "GimpMypaintBrushEditor",
+      "current_types": [
+        "GimpPainterMybrushEditor"
+      ],
+      "disposition": "current renamed compatibility subtype",
+      "contract": "Use current type row; imported old names/settings have independent compatibility tests.",
+      "feature_gate": "22"
+    },
+    {
+      "legacy_type": "GimpMypaintCoreUndo",
+      "current_types": [
+        "GimpPainterPaintGate"
+      ],
+      "disposition": "native PaintCore undo composition",
+      "contract": "Current stroke wrapper owns native GimpPaintCore start/finish/cancel and native undo buffers. No replacement custom Undo vtable; generic stroke admission uses PaintGate. Old empty Undo pop is not copied.",
+      "feature_gate": "09.011/mypaint-undo-stroke; 21"
+    },
+    {
+      "legacy_type": "GimpMypaintOptions",
+      "current_types": [
+        "GimpPainterMybrushOptions"
+      ],
+      "disposition": "current renamed compatibility subtype",
+      "contract": "Use current type row; imported old names/settings have independent compatibility tests.",
+      "feature_gate": "20"
+    },
+    {
+      "legacy_type": "GimpMypaintTool",
+      "current_types": [
+        "GimpPainterMybrushTool"
+      ],
+      "disposition": "current renamed compatibility subtype",
+      "contract": "Use current type row; imported old names/settings have independent compatibility tests.",
+      "feature_gate": "21"
+    },
+    {
+      "legacy_type": "GimpPerspectiveGuide",
+      "current_types": [
+        "GimpPerspectiveGuide"
+      ],
+      "disposition": "current native subtype",
+      "contract": "Use the named current parent/slot/reentry row.",
+      "feature_gate": "08; 28"
+    },
+    {
+      "legacy_type": "GimpPerspectiveGuideOptions",
+      "current_types": [],
+      "disposition": "inherited native ToolOptions",
+      "contract": "Guide tool registration explicitly uses GIMP_TYPE_TOOL_OPTIONS with the normal options GUI. No custom options vtable or synthetic parent forwarding. Saved unused fields remain profile/feature obligations.",
+      "feature_gate": "28"
+    },
+    {
+      "legacy_type": "GimpPerspectiveGuideTool",
+      "current_types": [
+        "GimpPerspectiveGuideTool"
+      ],
+      "disposition": "current native subtype",
+      "contract": "Use the named current parent/slot/reentry row.",
+      "feature_gate": "08; 28"
+    },
+    {
+      "legacy_type": "GimpPopover2",
+      "current_types": [
+        "GimpPainterLayerTiles"
+      ],
+      "disposition": "native GtkPopover composition",
+      "contract": "Use GTK3 popover lifecycle and explicit close/action callbacks. No recreated map/key/button/cancel/confirm class slots; legacy cancel/confirm behavior remains separately tracked.",
+      "feature_gate": "29.006; 29.006/popover-class-signals"
+    },
+    {
+      "legacy_type": "GimpToolTileView",
+      "current_types": [],
+      "disposition": "native controls on existing display owner",
+      "contract": "Canvas tool controls are owned by the DisplayShell Canvas slot and normal GTK widgets/signals; no separate tool-tile subclass vfunc. Retain tool selection/hover/teardown feature duties.",
+      "feature_gate": "29.008"
+    }
+  ],
+  "legacy_reference_only_types": [
+    "GObject",
+    "GdkDrawable",
+    "GdkScreen",
+    "Gimp",
+    "GimpActionGroup",
+    "GimpBaseConfig",
+    "GimpBrush",
+    "GimpBrushCore",
+    "GimpCanvasItem",
+    "GimpChannel",
+    "GimpContainer",
+    "GimpContainerEditor",
+    "GimpContainerView",
+    "GimpContext",
+    "GimpCoreConfig",
+    "GimpData",
+    "GimpDataFactory",
+    "GimpDataFactoryView",
+    "GimpDisplayShell",
+    "GimpDrawTool",
+    "GimpDrawable",
+    "GimpDrawableStack",
+    "GimpDynamics",
+    "GimpDynamicsOutput",
+    "GimpEditor",
+    "GimpGroupLayer",
+    "GimpImage",
+    "GimpItem",
+    "GimpItemUndo",
+    "GimpLayer",
+    "GimpObject",
+    "GimpPaintCore",
+    "GimpPaintOptions",
+    "GimpPickable",
+    "GimpProcedure",
+    "GimpProgress",
+    "GimpProjectable",
+    "GimpProjection",
+    "GimpTool",
+    "GimpToolOptions",
+    "GimpViewable",
+    "GtkAdjustment",
+    "GtkBin",
+    "GtkBox",
+    "GtkButton",
+    "GtkCellRenderer",
+    "GtkContainer",
+    "GtkDrawingArea",
+    "GtkFrame",
+    "GtkImageMenuItem",
+    "GtkLabel",
+    "GtkMenu",
+    "GtkMenuItem",
+    "GtkMisc",
+    "GtkNotebook",
+    "GtkOrientable",
+    "GtkScrolledWindow",
+    "GtkToggleButton",
+    "GtkTreeModel",
+    "GtkTreeSelection",
+    "GtkTreeStore",
+    "GtkTreeView",
+    "GtkUIManager",
+    "GtkWidget",
+    "GtkWindow",
+    "SoupMessage",
+    "SoupServer"
+  ],
+  "scope": "27 production C++ GTypes plus4 native C compatibility subtypes; conditional types included; test-only subclasses excluded",
+  "evidence_scope": "4 current native foundation contract cases; feature references identify coverage only and do not claim fresh execution",
+  "source_sha256": {
+    "app/core/gimp-painter-provenance.cpp": "e7f6cb4e5ddd346c55adde139457f4b822e2dd9006ec7262bc511f21e9dbb61e",
+    "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/core/gimpcontext.c": "fc1b1ff6c4f9c5470c53b8fa991774639e5ef9c1abf011c245ec3699ae854ab7",
+    "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd",
+    "app/core/gimpdata.c": "4b47bc0b58940a0d7bc697885db3f133e6d5f668442a0db2cff340031b599599",
+    "app/core/gimpdrawable.c": "e2ba45059fc33256ee103dbcabd6936ff07912a0437848fa58e4b6149b75553b",
+    "app/core/gimpfilter.c": "3e2d1daeeb23c4900b7da8b99e87250264b957cd440e93550c9d5b9795e3d3a8",
+    "app/core/gimpfilterlayer.cpp": "67658997dbdf8bd796567143d109348e2bddb2a4a421fcb363c7ce3122644925",
+    "app/core/gimpfilterparametereditor.cpp": "fcf150ea7c938ab792770f3307d769e5f84dddcfba20b85030b6e7ca4c9e130f",
+    "app/core/gimpfilterprocedure.cpp": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+    "app/core/gimpimage-perspective-guide.c": "f0d0cc6b3258cd1d18699661a22aa515ce6d532f16e92267ad52f1a3f1474664",
+    "app/core/gimpimage.c": "88cf26998cf9b591d1e13301f3422606ada64c58e9be31a20b4fe9593adb6f73",
+    "app/core/gimpitem.c": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e",
+    "app/core/gimpitemundo.c": "f7b3a5b2a62da9b2b3661bb65c19beb03db8c342c7e3806ba7531eaaa6faa973",
+    "app/core/gimplayer.c": "318ab25e71247a368454dcf9093144cf2598db9d43b90ea6e5ef89ed8b88d1ef",
+    "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+    "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+    "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+    "app/core/gimpperspectiveguide.cpp": "edcfce4efc37d41a66340c531be6fd558bc931fad927ad65a8dd0fc27272d1b4",
+    "app/core/gimpperspectiveguideundo.cpp": "b8b473b4a81c6b453c4db817e4478de0691dd311a4cbc2535b4a4416814630c5",
+    "app/core/gimppickable.c": "eb3bfc46d0f03627518e40087f87f3529cb2afa22ec4d2ceafe5176198581d73",
+    "app/core/gimpprogress.c": "8aa97f6ac1cfcfdf451b8002456e841d27394064fb9c73489d2527656c7a260c",
+    "app/core/gimptagged.c": "d438b611051ee41548780e803b75a79ed156a9c9e28813bf44e958c21650cace",
+    "app/core/gimptooloptions.c": "65797b79006804998e21a4c05fe1ad4d3b06d0856c9dc6d7748ff24cd058edb4",
+    "app/core/gimpundo.c": "006eaa9507c6f9e22d6e3c9b43e71b988e4fe89079f0bad1732deddfbeccded0",
+    "app/core/gimpviewable.c": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3",
+    "app/dialogs/file-save-deferred.cpp": "1909de2bea0d6ba238cccfa3b3bfb9bd4229a4123258b87c760cad85882c0328",
+    "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+    "app/display/gimpcanvasperspectiveguide.cpp": "8ae697467c3cfff54b41c03828419000907cfc5b2ee92902246711523663f858",
+    "app/display/gimpdisplayshell.c": "363134ee77eb7a62e34b79047f5522559f891fe5600be001c0443145f9dcd106",
+    "app/display/gimppaintercanvasui.cpp": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed",
+    "app/httpd/httpd.cpp": "eade64e38003ee12cb4e9e387dceecdf5f93b03a4bcc54553e1f6805c48039e9",
+    "app/operations/gimpoperationmaskcomponents.cc": "efbb79ed234be058a2058ef84a2b52c1867741422e37e860703cd7bbefc8693f",
+    "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28",
+    "app/paint/gimpbrushcore.c": "dae7f51e023039a29c211ee66b047e02d2a0add045ae94821660ab3568346048",
+    "app/paint/gimpfillbrush.cpp": "20f89872832f90085e14ec9f5ef8f2a0a2b7bc6805655003e46f37a1bb57f2f4",
+    "app/paint/gimppaintcore.c": "306710d7b6ae412e7e12bcedaf85b5f9bd4b43de2a7f424dca2bb82a9c6a16be",
+    "app/paint/gimppaintcore.h": "c4daffd4560445fe4796bd902006efadb91762781102f83d3745a0f2ba99967a",
+    "app/paint/gimppainterpaintgate.cpp": "0adab689f1bfe4967da9f69259c7ba9b59bed6500a55d0eff643c4ad634986de",
+    "app/paint/gimppaintersmudge.cpp": "3b6bdd809e353455291bfdbbb217c0cb0c5545734aa6e2afbe7bc7dacb27c922",
+    "app/paint/gimppaintoptions.c": "a434f30fcdcde309405aab0b121e19019b541b847203cdeeb1921ffd7edf98a8",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "e61aff31fa66c94af9fb641974e7d2818f0ce7b4b43dd2495cfcf4867138a798",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431",
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "b76d784b6173aba483cc88524db66d1d13a3f22c56c96de871c16f73772863d5",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/tests/test-fixture.c": "50696abdf8d4598fa7e431ee628e43a89912ead7c10891fdac90462441dd41af",
+    "app/painter/tests/test-gobject.cpp": "31cbeee515e94a8ead509fdd14c9e66588adc3ebac4a37308db600c365b15180",
+    "app/painter/tests/test-hierarchy.c": "fd448e354f15d5cec1d85fa53ed8f62253943ff90fda5a5c28b2c729beba8688",
+    "app/painter/tests/test-hierarchy.cpp": "032621605ee064420a528c183b7907de93b4e688fa9c3c90054120bc892d570e",
+    "app/plug-in/gimppluginmanager.c": "bf4bde68b05b7e748e6142e2a9d3ba7192f830a1bef0acc6d69d8f115fdaeaea",
+    "app/tests/meson.build": "a9cc9109eb081da9ce579ff7a553e162b4b38291aa3573b8ca62122a04652f4a",
+    "app/tests/test-filter-progress.inc": "ec6221e6dce35b6474bede835580489df23c4e5f9fa7579ae3c5fbfa52d792d2",
+    "app/tests/test-gimp-clone-layer.c": "3f9bf23dc26fcc51169c1254836c98af4f39631cb1aa9ed98cdf5c761bd906ac",
+    "app/tests/test-gimp-fill-brush.cpp": "045d968f3d17225192411e66499dcea8fd0eadd53405be4777d428bec4dcac70",
+    "app/tests/test-gimp-filter-layer.c": "01d2dba11ad8a07c119afedb7b50990a4b17161063e8acb4dd22f50333566ef5",
+    "app/tests/test-gimp-layer-presets.c": "452132152101e1f1b5e7bcf67ed94d5014f24ae3e347dba35b12da8d470f9050",
+    "app/tests/test-gimp-painter-batch.cpp": "6f6c0678042292ca6aa85dfdac42f5a6545c4a3a52e2341c997bd58986911a0f",
+    "app/tests/test-gimp-painter-mybrush.c": "debb1b12cd978964450e4d6c02e17266df5563a1a01b6993240d5f77964985e0",
+    "app/tests/test-gimp-painter-options.cpp": "c78142dac1fb94676ecd8f3922ba1e1c3efe59822a3c53b519578c0a38a39e45",
+    "app/tests/test-gimp-painter-session.cpp": "28c9346f0825e0631018c8ecff0536c55dbedb6e00faff66ca303163404a7a81",
+    "app/tests/test-gimp-painter-smudge.cpp": "3fcf33dda015c8fb93bf14627204c7e5b1f81c46dc8c8289156fb65f9ee94f4c",
+    "app/tests/test-layer-presets-ui.c": "66f5e7f6b09ac13df1965c964e96182bd4bf7367aa38bfd26a169e4df53745dd",
+    "app/tests/test-painter-canvas-ui.c": "c992b9dd28ae2df3380a3f521af39132522363927570e9b5d4cef65a7eb005aa",
+    "app/tests/test-painter-fill-brush-ui.cpp": "a7472a03f1437bc1c1650756a094b97cfb3d8e548b499f4e0f0ccee61a1d7415",
+    "app/tests/test-painter-http-ui.cpp": "3aefbba3476e7329526f8f5e9528c9e267158b4ead7a11675ab5dbe4991be713",
+    "app/tests/test-painter-http.cpp": "d889d82baf1cf9dbb1f09a3d4d9d6e0c5b9ad372ea7976bf339d626be78cac6d",
+    "app/tests/test-painter-layer-modes.c": "f6c12e70973a0cb65b0c3aa1cffb4b11d1625543332c079f6910762e75ac85a8",
+    "app/tests/test-painter-mypaint-editor.cpp": "0516d7e8e8de35e967ad88f97bdae117d46e6dea7ec258d6123334de908b25f9",
+    "app/tests/test-painter-mypaint-tool.cpp": "b3f7f498fb3f36d06b0e387611f0d362388b09ebc26b4713fd0715068ac19058",
+    "app/tests/test-painter-owned-strokes.inc": "7305559c5799f4bcf4ff45afbb7c0bcfc4d6cb1d96cdeba7644d61e013eb0cdc",
+    "app/tests/test-painter-perspective-events.c": "168f22b90d9ce5bb16c42992ab7ad70abb88d3514919a3593261cec363660d39",
+    "app/tests/test-painter-perspective-ui.c": "52ab01e7edbfa5f77f800e4874e543959be222884a52db25536b637b0bd83ad7",
+    "app/tests/test-painter-perspective.c": "59361ebe4f6efd1663ce52d6490f5a5b99ebc0a6d0d8b2f07b4b94a5b549b0fc",
+    "app/tests/test-painter-profile-native.cpp": "8019aeb41406e318768ac6e7e25071ebdeb8acf9a8587254414b927e447e09bc",
+    "app/tests/test-painter-provenance.c": "6f7efe85a233676fe1c96d50b86ea7913c6337b726d9f3fdaef1a193e35f1b89",
+    "app/tests/test-painter-save-continuation.cpp": "be5683ddee5de667b3b43b77b56c0fb29708072d77cafe81f6bcd459a7107d88",
+    "app/tests/test-painter-smudge-ui.cpp": "7c4d6131f21c2e2e308ac6c50a25d4d540163ab680eefe7efeb3f1d9a0676c4f",
+    "app/tools/gimpbrushtool.c": "8f2dd287d26250cc4ba44acc895012bc4df2caa677de62fade6c4ac9f38016f5",
+    "app/tools/gimpcolortool.c": "7063d040ab0d6ff1a6fc8fa6998105b208d88f4478b8c74e4bbc5106397270b1",
+    "app/tools/gimpdrawtool.c": "9602d5fd2cc8125b368668d3dd4cb179bd2ee41d80809610a58d523453aea312",
+    "app/tools/gimpdrawtool.h": "b8b1b49039fcd0ab2f787cf31ec274f45197dc3bc2852a24e0be298a9e3d9d72",
+    "app/tools/gimpfillbrushtool.cpp": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+    "app/tools/gimppaintermybrushtool.cpp": "255f679a0ce50c13106fe72f0dcc45b07db7ac568dfbfb6224e5ccb8bc4c8353",
+    "app/tools/gimppaintersmudgetool.cpp": "c11e2e2413baaebd86f03a2a9e6f9726c2b965162a442e0714236c39354163d1",
+    "app/tools/gimppainttool.h": "0df4f683445aec4039225efdb690ff4d97a4e5862aef08dc9ebe6130a5608afa",
+    "app/tools/gimpperspectiveguidetool.cpp": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b",
+    "app/tools/gimptool.c": "de30576df39b394985b358ab9a238df330a97fcb396f4e7e37232e052219136b",
+    "app/tools/gimptool.h": "c72fae2f17e4fb53b2b239f081db5826e09118508522a9265e77394f9e0c1861",
+    "app/widgets/gimplayerpresetview.c": "46a8763177097b16102f06481bab4750ebaa978757eda86030e5c34b4c2c9ced",
+    "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0",
+    "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+    "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+    "app/xcf/painter-xcf-arguments.cpp": "35927b8787496ba21ae7a5468fcb780fed09a097108eee4f4ca460e5b89f7562",
+    "app/xcf/tests/test-painter-xcf-arguments-storage.cpp": "e53d3372bb8fb49dc3ecab7ff028c8cb56677c2dcd70c6a7f0d8f9eae262ee03",
+    "libgimpconfig/gimpconfig-iface.h": "6bd149fabee4f21ff94a7d2e2ef3313f799ffe3e03d948b996c0939237ebc4a6",
+    "migration/contracts/cpp-foundation.md": "247a4733838ed21c2bae31d6b1d0d7bd023e63cd5728860705d98bf7d4434329",
+    "migration/contracts/cpp-handle-registry.tsv": "6e63af0d9d79ccd4d8af6dbcfdb5f01a2278e203326ad6aae368b730fabb8e5c",
+    "tools/check_painter_vfunc_order.py": "638391fb865419e1559b5113dd29593515e820d470183a99131edb3403da2671"
+  }
+}

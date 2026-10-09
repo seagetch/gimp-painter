@@ -1,0 +1,25 @@
+{
+  "binary_sha256": "7a80b923e28bfb902c66ea73d82850bb7a47a5f3d9e085b71b3fbcec5b42dae3",
+  "results": [
+    {
+      "name": "hierarchy",
+      "command": [
+        "/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http/app/painter/painter-foundation",
+        "-p",
+        "/painter/hierarchy"
+      ],
+      "exit_code": 0,
+      "passed": 3
+    },
+    {
+      "name": "lifecycle",
+      "command": [
+        "/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/build-http/app/painter/painter-foundation",
+        "-p",
+        "/painter/gobject/property-dispose-finalize"
+      ],
+      "exit_code": 0,
+      "passed": 1
+    }
+  ]
+}
