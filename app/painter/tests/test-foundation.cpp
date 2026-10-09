@@ -148,6 +148,35 @@ void adopt_factory ()
   g_assert_cmpint (destroyed, ==, 1);
 }
 
+void sink_factory ()
+{
+  auto empty = ObjectRef<GObject>::sink (nullptr);
+  g_assert_null (empty.get ());
+  g_assert_false (static_cast<bool> (empty));
+
+  for (GType type : {G_TYPE_OBJECT, G_TYPE_INITIALLY_UNOWNED})
+    {
+      int destroyed = 0;
+      auto *raw = G_OBJECT (g_object_new (type, nullptr));
+      const bool was_floating = g_object_is_floating (raw);
+      g_object_weak_ref (raw, weak_notify, &destroyed);
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+      auto sunk = ObjectRef<GObject>::sink (raw);
+      g_assert_true (sunk.get () == raw);
+      g_assert_false (g_object_is_floating (raw));
+      g_assert_cmpuint (raw->ref_count, ==, was_floating ? 1 : 2);
+      // A floating reference was transferred; a nonfloating caller still
+      // owns its separate original reference and must release it itself.
+      if (!was_floating) g_object_unref (raw);
+      g_assert_cmpint (destroyed, ==, 0);
+      g_assert_cmpuint (sunk.get ()->ref_count, ==, 1);
+      sunk.reset ();
+      g_assert_cmpint (destroyed, ==, 1);
+      sunk.reset ();
+      g_assert_cmpint (destroyed, ==, 1);
+    }
+}
+
 void floating ()
 {
   int destroyed = 0;
@@ -353,6 +382,7 @@ void painter_test_register ()
   g_test_add_func ("/painter/ref/copy-move-adopt-retain", references);
   g_test_add_func ("/painter/ref/retain-factory", retain_factory);
   g_test_add_func ("/painter/ref/adopt-factory", adopt_factory);
+  g_test_add_func ("/painter/ref/sink-factory", sink_factory);
   g_test_add_func ("/painter/ref/floating-sink", floating);
   g_test_add_func ("/painter/ref/weak", weak_handles);
   g_test_add_func ("/painter/store/lifecycle", store_lifetime);
