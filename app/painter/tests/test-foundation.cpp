@@ -5,6 +5,7 @@
 #include "gimp-painter-binding.h"
 #include "gimp-painter-binding.h"
 #include "binding-store.hpp"
+#include <functional>
 #include <stdexcept>
 #include <thread>
 #include <type_traits>
@@ -37,6 +38,16 @@ struct LookupImpl
 };
 struct LookupSlot : SlotSpec<GObject, LookupImpl> {};
 struct MissingLookupSlot : SlotSpec<GObject, LookupImpl> {};
+struct CloseObserver
+{
+  CloseObserver (Counters& counts, std::function<void ()> callback)
+    : counts (counts), callback (std::move (callback)) { ++counts.alive; }
+  ~CloseObserver () { --counts.alive; ++counts.destroy; }
+  void close () noexcept { ++counts.close; callback (); }
+  Counters& counts;
+  std::function<void ()> callback;
+};
+struct CloseObserverSlot : SlotSpec<GObject, CloseObserver> {};
 struct FailingImpl
 {
   FailingImpl () { throw std::runtime_error ("injected constructor failure"); }
@@ -614,6 +625,59 @@ void implementation_ownership ()
     }
 }
 
+void close_transitions ()
+{
+  for (bool activate : {false, true})
+    {
+      Counters observer, regular;
+      auto owner = new_object ();
+      auto& store = BindingStore::ensure (owner.get ());
+      const auto original_generation = store.generation ();
+      store.emplace<MainSlot> (regular);
+      store.emplace<CloseObserverSlot> (observer, [&] {
+        g_assert_true (store.state () == BindingStore::State::closing);
+        g_assert_cmpuint (store.generation (), ==, original_generation + 1);
+        g_assert_false (store.accepts (original_generation));
+        store.close ();
+        store.close ();
+        g_assert_true (store.state () == BindingStore::State::closing);
+        g_assert_cmpuint (store.generation (), ==, original_generation + 1);
+        g_assert_cmpint (observer.close, ==, 1);
+        g_assert_cmpint (observer.destroy, ==, 0);
+        expect (GIMP_PAINTER_ERROR_CLOSED, [&] { store.with<MainSlot> ([] (Impl&) {}); });
+        expect (GIMP_PAINTER_ERROR_INVALID_STATE, [&] { store.activate (); });
+      });
+      if (activate)
+        {
+          store.activate ();
+          g_assert_true (store.accepts (original_generation));
+        }
+      else g_assert_false (store.accepts (original_generation));
+      store.close ();
+      g_assert_true (store.state () == BindingStore::State::closed);
+      g_assert_cmpuint (store.generation (), ==, original_generation + 1);
+      g_assert_false (store.accepts (store.generation ()));
+      store.close ();
+      store.close ();
+      g_assert_cmpuint (store.generation (), ==, original_generation + 1);
+      g_assert_cmpuint (owner.get ()->ref_count, ==, 1);
+      g_assert_cmpint (store.read<MainSlot> ([] (const Impl& value) { return value.value; }), ==, 41);
+      for (const auto *counter : {&observer, &regular})
+        {
+          g_assert_cmpint (counter->close, ==, 1);
+          g_assert_cmpint (counter->alive, ==, 1);
+          g_assert_cmpint (counter->destroy, ==, 0);
+        }
+      owner.reset ();
+      for (const auto *counter : {&observer, &regular})
+        {
+          g_assert_cmpint (counter->close, ==, 1);
+          g_assert_cmpint (counter->alive, ==, 0);
+          g_assert_cmpint (counter->destroy, ==, 1);
+        }
+    }
+}
+
 void reentrant_close ()
 {
   Counters counters;
@@ -757,6 +821,7 @@ void painter_test_register ()
   g_test_add_func ("/painter/store/slot-registration", slot_registration);
   g_test_add_func ("/painter/store/slot-lookup", slot_lookup);
   g_test_add_func ("/painter/store/implementation-ownership", implementation_ownership);
+  g_test_add_func ("/painter/store/close-transitions", close_transitions);
   g_test_add_func ("/painter/store/reentrant-close", reentrant_close);
   g_test_add_func ("/painter/store/construction-failure", failed_construction);
   g_test_add_func ("/painter/store/thread-rejection", wrong_thread);
