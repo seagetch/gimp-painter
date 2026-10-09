@@ -106,6 +106,48 @@ void retain_factory ()
     }
 }
 
+void adopt_factory ()
+{
+  auto empty = ObjectRef<GObject>::adopt (nullptr);
+  g_assert_null (empty.get ());
+  g_assert_false (static_cast<bool> (empty));
+
+  for (GType type : {G_TYPE_OBJECT, G_TYPE_INITIALLY_UNOWNED})
+    {
+      int destroyed = 0;
+      auto *raw = G_OBJECT (g_object_new (type, nullptr));
+      const bool was_floating = g_object_is_floating (raw);
+      g_object_weak_ref (raw, weak_notify, &destroyed);
+      {
+        auto adopted = ObjectRef<GObject>::adopt (raw);
+        g_assert_true (adopted.get () == raw);
+        g_assert_cmpuint (raw->ref_count, ==, 1);
+        g_assert_cmpint (g_object_is_floating (raw), ==, was_floating);
+        if (was_floating)
+          {
+            g_object_ref_sink (adopted.get ());
+            g_assert_cmpuint (raw->ref_count, ==, 1);
+          }
+      }
+      g_assert_cmpint (destroyed, ==, 1);
+    }
+
+  int destroyed = 0;
+  auto *caller = G_OBJECT (g_object_new (G_TYPE_OBJECT, nullptr));
+  g_object_weak_ref (caller, weak_notify, &destroyed);
+  {
+    // A native C producer has already supplied a distinct owned reference.
+    auto *transferred = G_OBJECT (g_object_ref (caller));
+    auto adopted = ObjectRef<GObject>::adopt (transferred);
+    g_assert_true (adopted.get () == caller);
+    g_assert_cmpuint (caller->ref_count, ==, 2);
+  }
+  g_assert_cmpuint (caller->ref_count, ==, 1);
+  g_assert_cmpint (destroyed, ==, 0);
+  g_object_unref (caller);
+  g_assert_cmpint (destroyed, ==, 1);
+}
+
 void floating ()
 {
   int destroyed = 0;
@@ -310,6 +352,7 @@ void painter_test_register ()
   painter_test_register_hierarchy ();
   g_test_add_func ("/painter/ref/copy-move-adopt-retain", references);
   g_test_add_func ("/painter/ref/retain-factory", retain_factory);
+  g_test_add_func ("/painter/ref/adopt-factory", adopt_factory);
   g_test_add_func ("/painter/ref/floating-sink", floating);
   g_test_add_func ("/painter/ref/weak", weak_handles);
   g_test_add_func ("/painter/store/lifecycle", store_lifetime);
