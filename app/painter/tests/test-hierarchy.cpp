@@ -30,6 +30,30 @@ auto child () -> ObjectRef<PainterHierarchyChild> {
 void hierarchy_properties_interface ()
 {
   stats={};
+  const GType interface_type = painter_readable_get_type ();
+  const GType base_type = painter_hierarchy_base_get_type ();
+  const GType child_type = painter_hierarchy_child_get_type ();
+  g_assert_true (G_TYPE_IS_INTERFACE (interface_type));
+  g_assert_false (G_TYPE_IS_INSTANTIATABLE (interface_type));
+  g_assert_true (G_TYPE_IS_OBJECT (base_type));
+  g_assert_true (G_TYPE_IS_OBJECT (child_type));
+  g_assert_false (G_TYPE_IS_INTERFACE (child_type));
+  g_assert_cmpuint (g_type_parent (child_type), ==, base_type);
+  guint count = 0;
+  GType *types = g_type_interface_prerequisites (interface_type, &count);
+  g_assert_cmpuint (count, ==, 1);
+  g_assert_cmpuint (types[0], ==, G_TYPE_OBJECT);
+  g_free (types);
+  types = g_type_interfaces (base_type, &count);
+  g_assert_cmpuint (count, ==, 0);
+  g_free (types);
+  types = g_type_interfaces (child_type, &count);
+  g_assert_cmpuint (count, ==, 1);
+  g_assert_cmpuint (types[0], ==, interface_type);
+  g_free (types);
+  auto *default_iface = static_cast<PainterReadableInterface *> (g_type_default_interface_ref (interface_type));
+  g_assert_cmpuint (default_iface->parent.g_type, ==, interface_type);
+  g_assert_null (default_iface->read);
   {
     auto defaults=ObjectRef<PainterHierarchyChild>::adopt (static_cast<PainterHierarchyChild*> (g_object_new (painter_hierarchy_child_get_type (),nullptr)));
     g_assert_cmpint (painter_hierarchy_get (G_OBJECT(defaults.get()),FALSE),==,7);
@@ -39,6 +63,17 @@ void hierarchy_properties_interface ()
   auto owner=child (); auto base=ObjectRef<PainterHierarchyBase>::retain (reinterpret_cast<PainterHierarchyBase*>(owner.get ()));
   auto readable=ObjectRef<PainterReadable>::retain (reinterpret_cast<PainterReadable*>(owner.get ()));
   auto *iface = G_TYPE_INSTANCE_GET_INTERFACE (owner.get (), painter_readable_get_type (), PainterReadableInterface);
+  g_assert_true (iface != default_iface);
+  g_assert_cmpuint (iface->parent.g_type, ==, interface_type);
+  g_assert_cmpuint (iface->parent.g_instance_type, ==, child_type);
+  g_assert_true (g_type_interface_peek (G_OBJECT_GET_CLASS (owner.get ()), interface_type) == iface);
+  g_assert_null (g_type_interface_peek_parent (iface));
+  auto *base_class = G_OBJECT_CLASS (g_type_class_peek (base_type));
+  auto *child_class = G_OBJECT_GET_CLASS (owner.get ());
+  g_assert_true (base_class != child_class);
+  g_assert_true (base_class->constructed == child_class->constructed);
+  g_assert_true (base_class->get_property != child_class->get_property);
+  g_assert_null (default_iface->read);
   g_assert_true (iface->read == &painter_hierarchy_read);
   g_assert_cmpint (stats.constructed,==,2);
   auto& store=BindingStore::require (G_OBJECT (owner.get ()));
@@ -50,6 +85,8 @@ void hierarchy_properties_interface ()
   g_assert_cmpint (inherited,==,3);g_assert_cmpint (own,==,11);
   owner.reset ();base.reset ();g_assert_cmpint (stats.destroyed,==,0);readable.reset ();
   g_assert_cmpint (stats.destroyed,==,2);g_assert_true ((stats.closed==std::array<int,2>({{2,1}})));
+  g_assert_null (default_iface->read);
+  g_type_default_interface_unref (default_iface);
 }
 void interface_exception_boundary ()
 {
