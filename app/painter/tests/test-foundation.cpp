@@ -569,6 +569,51 @@ void slot_lookup ()
   g_assert_cmpint (lookup_counters.destroy, ==, 1);
 }
 
+void implementation_ownership ()
+{
+  // Cover construction teardown, active teardown fallback and explicit close.
+  for (int mode = 0; mode != 3; ++mode)
+    {
+      Counters first, second;
+      int finalized = 0;
+      auto owner = new_object ();
+      g_object_weak_ref (owner.get (), weak_notify, &finalized);
+      auto& store = BindingStore::ensure (owner.get ());
+      store.emplace<MainSlot> (first);
+      store.emplace<SecondSlot> (second);
+      if (mode != 0) store.activate ();
+      if (mode == 2)
+        {
+          store.close ();
+          store.close ();
+        }
+      for (const auto *counter : {&first, &second})
+        {
+          g_assert_cmpint (counter->alive, ==, 1);
+          g_assert_cmpint (counter->close, ==, mode == 2 ? 1 : 0);
+          g_assert_cmpint (counter->destroy, ==, 0);
+        }
+      auto final_owner = ObjectRef<GObject>::retain (owner.get ());
+      g_assert_cmpuint (owner.get ()->ref_count, ==, 2);
+      owner.reset ();
+      g_assert_cmpuint (final_owner.get ()->ref_count, ==, 1);
+      g_assert_cmpint (finalized, ==, 0);
+      for (const auto *counter : {&first, &second})
+        {
+          g_assert_cmpint (counter->alive, ==, 1);
+          g_assert_cmpint (counter->destroy, ==, 0);
+        }
+      final_owner.reset ();
+      g_assert_cmpint (finalized, ==, 1);
+      for (const auto *counter : {&first, &second})
+        {
+          g_assert_cmpint (counter->alive, ==, 0);
+          g_assert_cmpint (counter->close, ==, 1);
+          g_assert_cmpint (counter->destroy, ==, 1);
+        }
+    }
+}
+
 void reentrant_close ()
 {
   Counters counters;
@@ -711,6 +756,7 @@ void painter_test_register ()
   g_test_add_func ("/painter/store/multiple-slots", multiple_slots);
   g_test_add_func ("/painter/store/slot-registration", slot_registration);
   g_test_add_func ("/painter/store/slot-lookup", slot_lookup);
+  g_test_add_func ("/painter/store/implementation-ownership", implementation_ownership);
   g_test_add_func ("/painter/store/reentrant-close", reentrant_close);
   g_test_add_func ("/painter/store/construction-failure", failed_construction);
   g_test_add_func ("/painter/store/thread-rejection", wrong_thread);
