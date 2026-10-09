@@ -26,6 +26,17 @@ struct MainSlot : SlotSpec<GObject, Impl> {};
 struct SecondSlot : SlotSpec<GObject, Impl> {};
 struct AbsentSlot : SlotSpec<GObject, Impl> {};
 struct WrongOwnerSlot : SlotSpec<PainterFixture, Impl> {};
+Counters lookup_counters;
+int lookup_constructed = 0;
+struct LookupImpl
+{
+  LookupImpl () { ++lookup_constructed; ++lookup_counters.alive; }
+  ~LookupImpl () { --lookup_counters.alive; ++lookup_counters.destroy; }
+  void close () noexcept { ++lookup_counters.close; }
+  int value = 0;
+};
+struct LookupSlot : SlotSpec<GObject, LookupImpl> {};
+struct MissingLookupSlot : SlotSpec<GObject, LookupImpl> {};
 struct FailingImpl
 {
   FailingImpl () { throw std::runtime_error ("injected constructor failure"); }
@@ -499,6 +510,65 @@ void slot_registration ()
   g_assert_cmpint (rejected.destroy, ==, 0);
 }
 
+void slot_lookup ()
+{
+  lookup_counters = {};
+  lookup_constructed = 0;
+  int missing_callbacks = 0;
+  auto owner = new_object ();
+  auto& store = BindingStore::ensure (owner.get ());
+  const auto generation = store.generation ();
+  expect (GIMP_PAINTER_ERROR_MISSING_SLOT, [&] {
+    store.initialize<LookupSlot> ([&] (LookupImpl&) { ++missing_callbacks; });
+  });
+  expect (GIMP_PAINTER_ERROR_MISSING_SLOT, [&] {
+    store.read<LookupSlot> ([&] (const LookupImpl&) { ++missing_callbacks; });
+  });
+  g_assert_cmpint (lookup_constructed, ==, 0);
+  g_assert_cmpint (lookup_counters.alive, ==, 0);
+  g_assert_cmpint (lookup_counters.destroy, ==, 0);
+  g_assert_cmpint (missing_callbacks, ==, 0);
+  g_assert_cmpuint (owner.get ()->ref_count, ==, 1);
+  g_assert_cmpuint (store.generation (), ==, generation);
+  g_assert_true (store.state () == BindingStore::State::constructing);
+  // Only this explicit registration constructs the default-constructible Impl.
+  store.emplace<LookupSlot> ();
+  g_assert_cmpint (lookup_constructed, ==, 1);
+  store.initialize<LookupSlot> ([] (LookupImpl& value) { value.value = 57; });
+  store.activate ();
+  g_assert_cmpint (store.with<LookupSlot> ([] (LookupImpl& value) { return value.value; }), ==, 57);
+  expect (GIMP_PAINTER_ERROR_MISSING_SLOT, [&] {
+    store.with<MissingLookupSlot> ([&] (LookupImpl&) { ++missing_callbacks; });
+  });
+  expect (GIMP_PAINTER_ERROR_MISSING_SLOT, [&] {
+    store.read<MissingLookupSlot> ([&] (const LookupImpl&) { ++missing_callbacks; });
+  });
+  g_assert_cmpint (lookup_constructed, ==, 1);
+  g_assert_cmpint (missing_callbacks, ==, 0);
+  g_assert_cmpint (lookup_counters.close, ==, 0);
+  g_assert_cmpuint (store.generation (), ==, generation);
+  g_assert_true (store.state () == BindingStore::State::active);
+  g_assert_cmpuint (owner.get ()->ref_count, ==, 1);
+  store.close ();
+  const auto closed_generation = store.generation ();
+  expect (GIMP_PAINTER_ERROR_MISSING_SLOT, [&] {
+    store.read<MissingLookupSlot> ([&] (const LookupImpl&) { ++missing_callbacks; });
+  });
+  g_assert_cmpint (store.read<LookupSlot> ([] (const LookupImpl& value) { return value.value; }), ==, 57);
+  g_assert_cmpint (lookup_constructed, ==, 1);
+  g_assert_cmpint (lookup_counters.alive, ==, 1);
+  g_assert_cmpint (lookup_counters.close, ==, 1);
+  g_assert_cmpint (lookup_counters.destroy, ==, 0);
+  g_assert_cmpint (missing_callbacks, ==, 0);
+  g_assert_cmpuint (owner.get ()->ref_count, ==, 1);
+  g_assert_true (store.state () == BindingStore::State::closed);
+  g_assert_cmpuint (store.generation (), ==, closed_generation);
+  owner.reset ();
+  g_assert_cmpint (lookup_constructed, ==, 1);
+  g_assert_cmpint (lookup_counters.alive, ==, 0);
+  g_assert_cmpint (lookup_counters.destroy, ==, 1);
+}
+
 void reentrant_close ()
 {
   Counters counters;
@@ -640,6 +710,7 @@ void painter_test_register ()
   g_test_add_func ("/painter/store/registration", store_registration);
   g_test_add_func ("/painter/store/multiple-slots", multiple_slots);
   g_test_add_func ("/painter/store/slot-registration", slot_registration);
+  g_test_add_func ("/painter/store/slot-lookup", slot_lookup);
   g_test_add_func ("/painter/store/reentrant-close", reentrant_close);
   g_test_add_func ("/painter/store/construction-failure", failed_construction);
   g_test_add_func ("/painter/store/thread-rejection", wrong_thread);
