@@ -142,23 +142,31 @@ void sync_resources(GimpPainterMybrushOptions*options,std::uint64_t revision)
   auto*context=GIMP_CONTEXT(options);
   for(bool paper:{false,true}) {
     if(!binding.accepts(generation))return;
-    auto draft=binding.read<OptionsSlot>([&](const OptionsImpl&i){return i.draft;});
-    if(!binding.read<OptionsSlot>([&](const OptionsImpl&i){return i.revision==revision;}))return;
     const int use=paper?BRUSH_USE_GIMP_TEXTURE:BRUSH_USE_GIMP_BRUSHMARK;
     const int specified=paper?BRUSH_TEXTURE_SPECIFIED:BRUSH_BRUSHMARK_SPECIFIED;
     const int text=paper?BRUSH_TEXTURE_NAME:BRUSH_BRUSHMARK_NAME;
-    if(!draft.switch_value(use)||!draft.switch_value(specified))continue;
+    String requested;
+    bool enabled=false;
+    const bool current_revision=binding.read<OptionsSlot>([&](const OptionsImpl&i){
+      if(i.revision!=revision)return false;
+      enabled=i.draft.switch_value(use)&&i.draft.switch_value(specified);
+      // The draft is already committed. Capture only the needed native text,
+      // without a fallible C++ deep copy before its change notifications.
+      if(enabled)requested.reset(g_strdup(i.draft.peek_text(text)));
+      return true;
+    });
+    if(!current_revision)return;
+    if(!enabled)continue;
     auto current=ObjectRef<GObject>::retain(paper?G_OBJECT(gimp_context_get_pattern(context)):G_OBJECT(gimp_context_get_brush(context)));
-    const auto requested=draft.text_value(text);
     const char*name=current?gimp_object_get_name(current.get()):nullptr;
-    if(requested.empty()&&name&&*name) {
+    if((!requested||!*requested)&&name&&*name) {
       g_object_set(options,paper?"texture-name":"brushmark-name",name,nullptr);
       return; // nested notification owns the new revision
     }
-    if(requested.empty()||requested==(name?name:""))continue;
+    if(!requested||!*requested||g_strcmp0(requested.get(),name)==0)continue;
     auto*factory=paper?context->gimp->pattern_factory:context->gimp->brush_factory;
     if(!factory)continue;
-    auto*matched=gimp_container_get_child_by_name(gimp_data_factory_get_container(factory),requested.c_str());
+    auto*matched=gimp_container_get_child_by_name(gimp_data_factory_get_container(factory),requested.get());
     auto replacement=ObjectRef<GObject>::retain(matched?G_OBJECT(matched):nullptr);
     if(replacement) {
       if(paper)gimp_context_set_pattern(context,GIMP_PATTERN(replacement.get()));
@@ -264,7 +272,7 @@ void dispose(GObject*object)
 {gimp_painter_binding_close(object,nullptr);G_OBJECT_CLASS(gimp_painter_mybrush_options_parent_class)->dispose(object);}
 void set_property(GObject*object,guint id,const GValue*value,GParamSpec*pspec)
 {
-  boundary_void(nullptr,[&]{
+  property_boundary(object,pspec,"set",[&]{
     auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(GIMP_PAINTER_MYBRUSH_OPTIONS(object));
     if(id==PROP_JSON){GError*error=nullptr;if(!gimp_painter_mybrush_options_set_json(owner.get(),g_value_get_string(value),&error)){std::string why = GimpPainter::take_error_message (error, "Invalid draft");throw std::runtime_error(why);}return;}
     if(id<1||id>BRUSH_SETTINGS_COUNT){G_OBJECT_WARN_INVALID_PROPERTY_ID(object,id,pspec);return;}
@@ -282,7 +290,7 @@ void set_property(GObject*object,guint id,const GValue*value,GParamSpec*pspec)
 }
 void get_property(GObject*object,guint id,GValue*value,GParamSpec*pspec)
 {
-  boundary_void(nullptr,[&]{
+  property_boundary(object,pspec,"get",[&]{
     auto&binding=store(GIMP_PAINTER_MYBRUSH_OPTIONS(object));
     const auto read=[&](const OptionsImpl&i){
       if(id==PROP_JSON)g_value_set_string(value,i.draft.encode().c_str());

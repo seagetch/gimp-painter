@@ -17,7 +17,9 @@ using namespace GimpPainter;
 typedef struct { GimpUndo parent; gboolean binding_failed; } GimpPerspectiveGuideUndo;
 typedef struct { GimpUndoClass parent; } GimpPerspectiveGuideUndoClass;
 static GType gimp_perspective_guide_undo_get_type (void);
-G_DEFINE_TYPE (GimpPerspectiveGuideUndo, gimp_perspective_guide_undo, GIMP_TYPE_UNDO)
+static void initable_iface_init (GInitableIface *iface);
+G_DEFINE_TYPE_WITH_CODE (GimpPerspectiveGuideUndo, gimp_perspective_guide_undo, GIMP_TYPE_UNDO,
+                        G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init))
 namespace GimpPainter {
 template<> struct TypeTraits<GimpPerspectiveGuideUndo>
 { static GType type () noexcept { return gimp_perspective_guide_undo_get_type (); } };
@@ -28,15 +30,37 @@ struct UndoSlot : SlotSpec<GimpPerspectiveGuideUndo, UndoImpl> {};
 void set_property (GObject *object, guint prop, const GValue *value, GParamSpec *pspec)
 {
   if (prop != 1) { G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop, pspec); return; }
-  boundary_void (nullptr, [&] { BindingStore::require (object).initialize<UndoSlot> ([&] (UndoImpl& impl) {
-    impl.snapshot = ObjectRef<GimpPerspectiveGuide>::adopt (gimp_perspective_guide_duplicate (
-      static_cast<GimpPerspectiveGuide *> (g_value_get_object (value))));
-  }); });
+  auto *undo = reinterpret_cast<GimpPerspectiveGuideUndo *> (object);
+  const bool success = property_boundary (object, pspec, "set", [&] {
+    BindingStore::require (object).initialize<UndoSlot> ([&] (UndoImpl& impl) {
+      auto *before = static_cast<GimpPerspectiveGuide *> (g_value_get_object (value));
+      auto snapshot = ObjectRef<GimpPerspectiveGuide>::adopt (gimp_perspective_guide_duplicate (before));
+      if (before && !snapshot)
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Unable to copy perspective Undo snapshot");
+      impl.snapshot = std::move (snapshot);
+    });
+  });
+  if (!success) undo->binding_failed = TRUE;
 }
 void constructed (GObject *object)
 {
   G_OBJECT_CLASS (gimp_perspective_guide_undo_parent_class)->constructed (object);
-  boundary_void (nullptr, [&] { BindingStore::require (object).activate (); });
+  auto *undo = reinterpret_cast<GimpPerspectiveGuideUndo *> (object);
+  if (!undo->binding_failed)
+    undo->binding_failed = !boundary<bool> (nullptr, false, [&] {
+      BindingStore::require (object).activate (); return true;
+    });
+  if (undo->binding_failed) gimp_painter_binding_close (object, nullptr);
+}
+gboolean initable_init (GInitable *initable, GCancellable *cancel, GError **error)
+{
+  if (g_cancellable_set_error_if_cancelled (cancel, error)) return FALSE;
+  return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
+    auto *undo = reinterpret_cast<GimpPerspectiveGuideUndo *> (initable);
+    if (undo->binding_failed || BindingStore::require (G_OBJECT (undo)).state () != BindingStore::State::active)
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Perspective Undo construction failed");
+    return TRUE;
+  });
 }
 void dispose (GObject *object)
 { gimp_painter_binding_close (object, nullptr); G_OBJECT_CLASS (gimp_perspective_guide_undo_parent_class)->dispose (object); }
@@ -51,6 +75,8 @@ void pop (GimpUndo *undo, GimpUndoMode mode, GimpUndoAccumulator *accum)
   }); });
 }
 }
+static void initable_iface_init (GInitableIface *iface)
+{ iface->init = initable_init; }
 static void gimp_perspective_guide_undo_class_init (GimpPerspectiveGuideUndoClass *klass)
 {
   auto *object = G_OBJECT_CLASS (klass);

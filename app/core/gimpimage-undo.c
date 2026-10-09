@@ -19,6 +19,7 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
+#include <gio/gio.h>
 
 #include "core-types.h"
 
@@ -416,6 +417,23 @@ gimp_image_undo_push (GimpImage     *image,
                                                     (const GValue *) values);
 
   gimp_properties_free (n_properties, names, values);
+
+  /* Fallible native subclasses must finish construction before an unusable
+   * entry can replace redo history or enter an Undo group. Ordinary Undo
+   * types do not implement GInitable and retain their existing behavior. */
+  if (G_IS_INITABLE (undo))
+    {
+      GError *error = NULL;
+
+      if (! g_initable_init (G_INITABLE (undo), NULL, &error))
+        {
+          g_warning ("Unable to construct Undo: %s",
+                     error ? error->message : "unspecified initialization failure");
+          g_clear_error (&error);
+          g_object_unref (undo);
+          return NULL;
+        }
+    }
 
   /*  nuke the redo stack  */
   gimp_image_undo_free_redo (image);

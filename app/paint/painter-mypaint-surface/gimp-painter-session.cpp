@@ -73,11 +73,11 @@ void refresh(GimpPainterSession*session)
 }
 void set_property(GObject*object,guint id,const GValue*value,GParamSpec*spec)
 {
-  boundary_void(nullptr,[&]{if(id!=PROP_OPTIONS){G_OBJECT_WARN_INVALID_PROPERTY_ID(object,id,spec);return;}store(GIMP_PAINTER_SESSION(object)).initialize<SessionSlot>([&](SessionImpl&i){i.options=ObjectRef<GimpPainterMybrushOptions>::retain(GIMP_PAINTER_MYBRUSH_OPTIONS(g_value_get_object(value)));});});
+  property_boundary(object,spec,"set",[&]{if(id!=PROP_OPTIONS){G_OBJECT_WARN_INVALID_PROPERTY_ID(object,id,spec);return;}store(GIMP_PAINTER_SESSION(object)).initialize<SessionSlot>([&](SessionImpl&i){i.options=ObjectRef<GimpPainterMybrushOptions>::retain(GIMP_PAINTER_MYBRUSH_OPTIONS(g_value_get_object(value)));});});
 }
 void get_property(GObject*object,guint id,GValue*value,GParamSpec*spec)
 {
-  boundary_void(nullptr,[&]{store(GIMP_PAINTER_SESSION(object)).read<SessionSlot>([&](const SessionImpl&i){
+  property_boundary(object,spec,"get",[&]{store(GIMP_PAINTER_SESSION(object)).read<SessionSlot>([&](const SessionImpl&i){
     if(id==PROP_OPTIONS)g_value_set_object(value,i.options.get());
     else if(id==PROP_ACTIVE)g_value_set_boolean(value,i.core&&i.core->active());
     else if(id==PROP_ERROR)g_value_set_string(value,i.error.empty()?nullptr:i.error.c_str());

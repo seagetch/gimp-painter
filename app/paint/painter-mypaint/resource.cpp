@@ -343,11 +343,16 @@ bool Resource::text_is_null (int id) const
   auto *s = section (impl_->object (), "texts"); auto *n = s ? member (s, text_name (id)) : nullptr;
   return !n || JSON_NODE_HOLDS_NULL (n);
 }
-std::string Resource::text_value (int id) const
+const char *Resource::peek_text (int id) const
 {
   const char *key = text_name (id); auto *s = section (impl_->object (), "texts"); auto *n = s ? member (s, key) : nullptr;
-  return !n || JSON_NODE_HOLDS_NULL (n) ? "" : json_string (n, key);
+  if (!n || JSON_NODE_HOLDS_NULL (n)) return nullptr;
+  if (!JSON_NODE_HOLDS_VALUE (n) || json_node_get_value_type (n) != G_TYPE_STRING)
+    throw std::invalid_argument (std::string (key) + " must be a string");
+  return json_node_get_string (n);
 }
+std::string Resource::text_value (int id) const
+{ const char *text = peek_text (id); return text ? text : ""; }
 std::string Resource::parent_brush_name () const
 { auto *n = member (impl_->object (), "parent_brush_name"); return n ? json_string (n, "parent_brush_name") : ""; }
 std::string Resource::group () const

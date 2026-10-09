@@ -27,7 +27,7 @@
 
 対象一件ごとの子チェックは TSV 等の台帳に保持できる。WBS に新しい行を追加するのは、独立した実装・検証の成果物と完了条件が必要なときとする。調査で問題を見つけたことと、その問題を移植先で修正して試験したことは別の状態で管理する。
 
-契約定義行を必須先行 ID に持つ独立した実装・検証行は、ID の接頭辞が同じでも、当該契約定義行の完了条件を構成する対象別子チェックとは区別する。05.013 は共通エラー契約の定義と共通境界での照合を完了条件とし、05.013/class-init-error、05.013/legacy-exit-removal、38.004/all-vfunc-exception-containment はその契約を入力として実装・試験する未完了義務として残す。全件対象の照合子チェック、各区分と Gate の完了条件は変更しない。
+契約定義行を必須先行 ID に持つ独立した実装・検証行は、ID の接頭辞が同じでも、当該契約定義行の完了条件を構成する対象別子チェックとは区別する。05.013 は共通エラー契約の定義と共通境界での照合を完了条件とし、05.013/class-init-error、05.013/legacy-exit-removal、38.004/all-vfunc-exception-containment はその契約を入力として実装・試験する独立した義務とし、完了状態は各行のチェックを正本とする。全件対象の照合子チェック、各区分と Gate の完了条件は変更しない。
 
 ### 依存と順序
 
@@ -309,7 +309,7 @@
 | 05.012 | [x] | main context の所有規約を定義する | 05.011 | GObject・UI と worker の操作可能範囲を記載 |
 | 05.013 | [x] | エラー境界を定義する | 05.012 | 型不一致・未登録・終了済み・例外の返し方を統一 |
 | 05.013/class-init-error | [x] | class 初期化失敗を C ABI 内で処理する | 05.013, 01.007/class-pointer-exception | pointer 例外を廃止し、部分登録と再試行の状態を試験する |
-| 05.013/legacy-exit-removal | [ ] | 旧 property callback の例外時 exit を C ABI 安全な処理へ変更する | 05.013, 01.005/gimp3-remaining-callbacks | setter/getter の例外でプロセスを終了せず、GValue と登録済み property の状態を整合させて通知・復帰する |
+| 05.013/legacy-exit-removal | [x] | 旧 property callback の例外時 exit を C ABI 安全な処理へ変更する | 05.013, 01.005/gimp3-remaining-callbacks | 31型/15 property callbackを照合。Optionsの更新後通知欠落とGuideUndoの失敗NULL混同をnative再現して修正。通常/ASan・UBSanで型付きGValue・通知・登録・回復を検証（migration/tests/property-boundary/README.md）。全vfuncは別義務 |
 | 05.014 | [ ] | 移行 adapter の撤去条件を定義する | 05.013 | 旧 API 利用箇所ゼロを機械検査できる |
 
 ### 06 単一 C++ API の共通実装

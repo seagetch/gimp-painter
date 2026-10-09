@@ -38,6 +38,9 @@ public:
   double base_value (int id) const;
   bool switch_value (int id) const;
   bool text_is_null (int id) const;
+  /* Borrowed until this Resource changes or is destroyed. NULL represents a
+   * missing/null text. Copy before callbacks or releasing the owning lease. */
+  const char *peek_text (int id) const;
   std::string text_value (int id) const;
   std::string parent_brush_name () const;
   std::string group () const;

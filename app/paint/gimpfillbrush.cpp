@@ -51,8 +51,8 @@ template<> struct TypeTraits<GeglColor>{static GType type(){return GEGL_TYPE_COL
 namespace {
 struct Settings{double rate=50;bool eraser=false;void close()noexcept{}};
 struct OptionsSlot:SlotSpec<GimpFillBrushOptions,Settings>{};
-void options_set(GObject*o,guint id,const GValue*v,GParamSpec*p){boundary_void(nullptr,[&]{auto&store=BindingStore::require(o);auto set=[&](Settings&s){if(id==1)s.rate=g_value_get_double(v);else if(id==2)s.eraser=g_value_get_boolean(v);else G_OBJECT_WARN_INVALID_PROPERTY_ID(o,id,p);};if(store.state()==BindingStore::State::constructing)store.initialize<OptionsSlot>(set);else store.with<OptionsSlot>(set);});}
-void options_get(GObject*o,guint id,GValue*v,GParamSpec*p){boundary_void(nullptr,[&]{BindingStore::require(o).read<OptionsSlot>([&](const Settings&s){if(id==1)g_value_set_double(v,s.rate);else if(id==2)g_value_set_boolean(v,s.eraser);else G_OBJECT_WARN_INVALID_PROPERTY_ID(o,id,p);});});}
+void options_set(GObject*o,guint id,const GValue*v,GParamSpec*p){property_boundary(o,p,"set",[&]{auto&store=BindingStore::require(o);auto set=[&](Settings&s){if(id==1)s.rate=g_value_get_double(v);else if(id==2)s.eraser=g_value_get_boolean(v);else G_OBJECT_WARN_INVALID_PROPERTY_ID(o,id,p);};if(store.state()==BindingStore::State::constructing)store.initialize<OptionsSlot>(set);else store.with<OptionsSlot>(set);});}
+void options_get(GObject*o,guint id,GValue*v,GParamSpec*p){property_boundary(o,p,"get",[&]{BindingStore::require(o).read<OptionsSlot>([&](const Settings&s){if(id==1)g_value_set_double(v,s.rate);else if(id==2)g_value_set_boolean(v,s.eraser);else G_OBJECT_WARN_INVALID_PROPERTY_ID(o,id,p);});});}
 void options_constructed(GObject*o){G_OBJECT_CLASS(gimp_fill_brush_options_parent_class)->constructed(o);boundary_void(nullptr,[&]{BindingStore::require(o).activate();});}
 void options_dispose(GObject*o){gimp_painter_binding_close(o,nullptr);G_OBJECT_CLASS(gimp_fill_brush_options_parent_class)->dispose(o);}
 struct TempDelete{void operator()(GimpTempBuf*b)const{if(b)gimp_temp_buf_unref(b);}};

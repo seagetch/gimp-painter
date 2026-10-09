@@ -140,7 +140,7 @@ void options_dispose (GObject* object) {
   G_OBJECT_CLASS (gimp_painter_smudge_options_parent_class)->dispose (object);
 }
 void options_set (GObject* object, guint id, const GValue* value, GParamSpec* pspec) {
-  boundary_void (nullptr, [&] {
+  property_boundary (object, pspec, "set", [&] {
     auto& store = BindingStore::require (object);
     auto set = [&] (Settings& settings) {
       if (id == 1) settings.rate = g_value_get_double (value);
@@ -152,7 +152,7 @@ void options_set (GObject* object, guint id, const GValue* value, GParamSpec* ps
   });
 }
 void options_get (GObject* object, guint id, GValue* value, GParamSpec* pspec) {
-  boundary_void (nullptr, [&] { BindingStore::require (object).read<OptionsSlot> ([&] (const Settings& settings) {
+  property_boundary (object, pspec, "get", [&] { BindingStore::require (object).read<OptionsSlot> ([&] (const Settings& settings) {
     if (id == 1) g_value_set_double (value, settings.rate);
     else if (id == 2) g_value_set_boolean (value, settings.blending);
     else G_OBJECT_WARN_INVALID_PROPERTY_ID (object, id, pspec);

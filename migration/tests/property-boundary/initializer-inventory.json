@@ -1,0 +1,1350 @@
+{
+  "GimpPainterProvenance": {
+    "source": "app/core/gimp-painter-provenance.cpp",
+    "parent_macro": "G_TYPE_OBJECT",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_provenance_class_init",
+        "assigned_fields": [
+          "dispose"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          }
+        ],
+        "body_sha256": "d7c449d5889b57c45f0e5347b89670e70ac8371746976d77e02b8c6a37a5d467"
+      }
+    ]
+  },
+  "GimpCloneLayer": {
+    "source": "app/core/gimpclonelayer.cpp",
+    "parent_macro": "GIMP_TYPE_LAYER",
+    "initializers": [
+      {
+        "symbol": "gimp_clone_layer_class_init",
+        "assigned_fields": [
+          "constructed",
+          "get_property",
+          "dispose",
+          "duplicate",
+          "is_content_locked",
+          "scale",
+          "flip",
+          "rotate",
+          "transform",
+          "default_icon_name",
+          "default_name"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "get_property",
+            "callback": "get_property"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "duplicate",
+            "callback": "duplicate"
+          },
+          {
+            "slot": "is_content_locked",
+            "callback": "content_locked"
+          },
+          {
+            "slot": "scale",
+            "callback": "scale"
+          },
+          {
+            "slot": "flip",
+            "callback": "flip"
+          },
+          {
+            "slot": "rotate",
+            "callback": "rotate"
+          },
+          {
+            "slot": "transform",
+            "callback": "transform"
+          }
+        ],
+        "body_sha256": "74c84db5c09596ea565b744dec92cf8491155bb15d371d01a080904f68ab93f1"
+      },
+      {
+        "symbol": "gimp_clone_layer_pickable_init",
+        "assigned_fields": [
+          "get_opacity_at"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "get_opacity_at",
+            "callback": "opacity_at"
+          }
+        ],
+        "body_sha256": "e9afe500be188e60dce36fae0ae7c7d5c7b046ab81482e35255bd0b0aea27253"
+      }
+    ]
+  },
+  "GimpCloneLayerUndo": {
+    "source": "app/core/gimpclonelayer.cpp",
+    "parent_macro": "GIMP_TYPE_ITEM_UNDO",
+    "initializers": [
+      {
+        "symbol": "gimp_clone_layer_undo_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "get_memsize",
+          "pop",
+          "free"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "reference_undo_constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "reference_undo_dispose"
+          },
+          {
+            "slot": "get_memsize",
+            "callback": "reference_undo_memsize"
+          },
+          {
+            "slot": "pop",
+            "callback": "reference_undo_pop"
+          },
+          {
+            "slot": "free",
+            "callback": "reference_undo_free"
+          }
+        ],
+        "body_sha256": "b31ee3596ba357d6c9662781c212d305e86d26085d8fecd7a7b6ddaf6011f069"
+      }
+    ]
+  },
+  "GimpFilterLayer": {
+    "source": "app/core/gimpfilterlayer.cpp",
+    "parent_macro": "GIMP_TYPE_LAYER",
+    "initializers": [
+      {
+        "symbol": "gimp_filter_layer_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "get_property",
+          "duplicate",
+          "is_content_locked",
+          "default_icon_name",
+          "default_name"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "get_property",
+            "callback": "get_property"
+          },
+          {
+            "slot": "duplicate",
+            "callback": "duplicate"
+          },
+          {
+            "slot": "is_content_locked",
+            "callback": "content_locked"
+          }
+        ],
+        "body_sha256": "392a03e4f3dbdb5fbc7c3b30443529a4fc5b6389d3dbb38e51c8e4c04d89ded5"
+      },
+      {
+        "symbol": "gimp_filter_layer_pickable_init",
+        "assigned_fields": [
+          "get_opacity_at"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "get_opacity_at",
+            "callback": "opacity_at"
+          }
+        ],
+        "body_sha256": "e9afe500be188e60dce36fae0ae7c7d5c7b046ab81482e35255bd0b0aea27253"
+      },
+      {
+        "symbol": "gimp_filter_layer_progress_init",
+        "assigned_fields": [
+          "start",
+          "end",
+          "is_active",
+          "set_text",
+          "set_value",
+          "get_value",
+          "pulse",
+          "message",
+          "cancel"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "start",
+            "callback": "filter_progress_start"
+          },
+          {
+            "slot": "end",
+            "callback": "filter_progress_end"
+          },
+          {
+            "slot": "is_active",
+            "callback": "filter_progress_active"
+          },
+          {
+            "slot": "set_text",
+            "callback": "filter_progress_text"
+          },
+          {
+            "slot": "set_value",
+            "callback": "filter_progress_value"
+          },
+          {
+            "slot": "get_value",
+            "callback": "filter_progress_get_value"
+          },
+          {
+            "slot": "pulse",
+            "callback": "filter_progress_pulse"
+          },
+          {
+            "slot": "message",
+            "callback": "filter_progress_message"
+          },
+          {
+            "slot": "cancel",
+            "callback": "filter_progress_cancel"
+          }
+        ],
+        "body_sha256": "4e278db7f7424d7ef516e9220b3d81f5eab880f42dcebd138a16d11359fd4e64"
+      }
+    ]
+  },
+  "GimpFilterLayerUndo": {
+    "source": "app/core/gimpfilterlayer.cpp",
+    "parent_macro": "GIMP_TYPE_ITEM_UNDO",
+    "initializers": [
+      {
+        "symbol": "gimp_filter_layer_undo_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "pop",
+          "get_memsize"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "undo_constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "undo_dispose"
+          },
+          {
+            "slot": "pop",
+            "callback": "undo_pop"
+          },
+          {
+            "slot": "get_memsize",
+            "callback": "undo_memsize"
+          }
+        ],
+        "body_sha256": "328075e96c391a7bbfa579d6653f5f049834f12af79c03853f2c4a1c0618b161"
+      }
+    ]
+  },
+  "GimpPainterProcedureProgress": {
+    "source": "app/core/gimpfilterprocedure.cpp",
+    "parent_macro": "G_TYPE_OBJECT",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_procedure_progress_class_init",
+        "assigned_fields": [
+          "dispose"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "dispose",
+            "callback": "gimp_painter_procedure_progress_dispose"
+          }
+        ],
+        "body_sha256": "c7ef9e466bd994d58658bb8ed9de4e99b3a70b706e40075493da0bd9f011bfd7"
+      },
+      {
+        "symbol": "procedure_progress_iface_init",
+        "assigned_fields": [
+          "start",
+          "end",
+          "is_active",
+          "set_text",
+          "set_value",
+          "get_value",
+          "pulse",
+          "message"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "start",
+            "callback": "progress_start"
+          },
+          {
+            "slot": "end",
+            "callback": "progress_end"
+          },
+          {
+            "slot": "is_active",
+            "callback": "progress_active"
+          },
+          {
+            "slot": "set_text",
+            "callback": "progress_text"
+          },
+          {
+            "slot": "set_value",
+            "callback": "progress_value"
+          },
+          {
+            "slot": "get_value",
+            "callback": "progress_get_value"
+          },
+          {
+            "slot": "pulse",
+            "callback": "progress_pulse"
+          },
+          {
+            "slot": "message",
+            "callback": "progress_message"
+          }
+        ],
+        "body_sha256": "44b618d89f03c5f8471f9f44e6b548b27328704f6d82a3c0e6ad1317511f26af"
+      }
+    ]
+  },
+  "GimpLayerPreset": {
+    "source": "app/core/gimplayerpreset.c",
+    "parent_macro": "GIMP_TYPE_DATA",
+    "initializers": [
+      {
+        "symbol": "gimp_layer_preset_class_init",
+        "assigned_fields": [
+          "finalize",
+          "save",
+          "get_extension",
+          "copy",
+          "default_icon_name"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "finalize",
+            "callback": "finalize"
+          },
+          {
+            "slot": "save",
+            "callback": "save"
+          },
+          {
+            "slot": "get_extension",
+            "callback": "extension"
+          },
+          {
+            "slot": "copy",
+            "callback": "copy"
+          }
+        ],
+        "body_sha256": "144e4fe2201c44009a829e6eb9e21e761cc9fd4f5ee274ea018b0da0cb66b05a"
+      }
+    ]
+  },
+  "GimpPainterMybrush": {
+    "source": "app/core/gimppaintermybrush.cpp",
+    "parent_macro": "GIMP_TYPE_DATA",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_mybrush_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "save",
+          "get_extension",
+          "copy",
+          "get_size",
+          "get_new_pixbuf",
+          "get_new_preview",
+          "default_icon_name"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "save",
+            "callback": "save"
+          },
+          {
+            "slot": "get_extension",
+            "callback": "extension"
+          },
+          {
+            "slot": "copy",
+            "callback": "copy"
+          },
+          {
+            "slot": "get_size",
+            "callback": "get_size"
+          },
+          {
+            "slot": "get_new_pixbuf",
+            "callback": "get_pixbuf"
+          },
+          {
+            "slot": "get_new_preview",
+            "callback": "get_preview"
+          }
+        ],
+        "body_sha256": "37e2a1c97faac52d9b7e79cad0b48a4ea77982b9bf97c683ebebb3b0480ad635"
+      },
+      {
+        "symbol": "tagged_init",
+        "assigned_fields": [
+          "get_checksum"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "get_checksum",
+            "callback": "checksum"
+          }
+        ],
+        "body_sha256": "d58406327de7dd3f7df54db6dd41fbce8d08aa57347c26de5b0b3a6835960901"
+      }
+    ]
+  },
+  "GimpPerspectiveGuide": {
+    "source": "app/core/gimpperspectiveguide.cpp",
+    "parent_macro": "G_TYPE_OBJECT",
+    "initializers": [
+      {
+        "symbol": "gimp_perspective_guide_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "set_property",
+          "get_property"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "set_property",
+            "callback": "set_property"
+          },
+          {
+            "slot": "get_property",
+            "callback": "get_property"
+          }
+        ],
+        "body_sha256": "0fa736bea954f96cd8ee22ecff9490e39368cd598eac70f3221cf8d141e52e35"
+      }
+    ]
+  },
+  "GimpPerspectiveGuideUndo": {
+    "source": "app/core/gimpperspectiveguideundo.cpp",
+    "parent_macro": "GIMP_TYPE_UNDO",
+    "initializers": [
+      {
+        "symbol": "gimp_perspective_guide_undo_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "set_property",
+          "pop"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "set_property",
+            "callback": "set_property"
+          },
+          {
+            "slot": "pop",
+            "callback": "pop"
+          }
+        ],
+        "body_sha256": "d634b2b1c300be0a353004f57e2e4a496b3fe35eb9a3776ac62db6e0d628f5b4"
+      },
+      {
+        "symbol": "initable_iface_init",
+        "assigned_fields": [
+          "init"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "init",
+            "callback": "initable_init"
+          }
+        ],
+        "body_sha256": "d646a7bbae6ef5300e007455e9bc5614f43ba2b2cf6c4e8f6459e29732e9e14d"
+      }
+    ]
+  },
+  "GimpPainterDeviceOptions": {
+    "source": "app/core/gimptooloptions.c",
+    "parent_macro": "GIMP_TYPE_TOOL_OPTIONS",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_device_options_class_init",
+        "assigned_fields": [],
+        "assigned_callbacks": [],
+        "body_sha256": "8eb95bcbc154530931e15fc418c8b1fe991095671409552099ea1aa596999ede"
+      }
+    ]
+  },
+  "GimpDeferredSave": {
+    "source": "app/dialogs/file-save-deferred.cpp",
+    "parent_macro": "G_TYPE_OBJECT",
+    "initializers": [
+      {
+        "symbol": "gimp_deferred_save_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          }
+        ],
+        "body_sha256": "aa2c2d635b4c4e065eb3ff1a7e8fad6131802aba03716b39493e436285aab04f"
+      }
+    ]
+  },
+  "GimpCanvasPerspectiveGuide": {
+    "source": "app/display/gimpcanvasperspectiveguide.cpp",
+    "parent_macro": "GIMP_TYPE_CANVAS_ITEM",
+    "initializers": [
+      {
+        "symbol": "gimp_canvas_perspective_guide_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "draw",
+          "get_extents"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "draw",
+            "callback": "draw"
+          },
+          {
+            "slot": "get_extents",
+            "callback": "extents"
+          }
+        ],
+        "body_sha256": "561d38df4da3408a7f752525495bcd15ea6182f5d72616cf220335b12586e7a7"
+      }
+    ]
+  },
+  "GimpPainterHttpd": {
+    "source": "app/httpd/httpd.cpp",
+    "parent_macro": "G_TYPE_OBJECT",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_httpd_class_init",
+        "assigned_fields": [
+          "dispose"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          }
+        ],
+        "body_sha256": "84c2003e4be62b939f839383211fe9f0e88b612f0c584b8f7c4462cab36c6e59"
+      }
+    ]
+  },
+  "GimpOperationMaskComponents": {
+    "source": "app/operations/gimpoperationmaskcomponents.cc",
+    "parent_macro": "GEGL_TYPE_OPERATION_POINT_COMPOSER",
+    "initializers": [
+      {
+        "symbol": "gimp_operation_mask_components_class_init",
+        "assigned_fields": [
+          "set_property",
+          "get_property",
+          "prepare",
+          "get_bounding_box",
+          "process",
+          "process"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "set_property",
+            "callback": "gimp_operation_mask_components_set_property"
+          },
+          {
+            "slot": "get_property",
+            "callback": "gimp_operation_mask_components_get_property"
+          },
+          {
+            "slot": "prepare",
+            "callback": "gimp_operation_mask_components_prepare"
+          },
+          {
+            "slot": "get_bounding_box",
+            "callback": "gimp_operation_mask_components_get_bounding_box"
+          },
+          {
+            "slot": "process",
+            "callback": "gimp_operation_mask_components_parent_process"
+          },
+          {
+            "slot": "process",
+            "callback": "gimp_operation_mask_components_process"
+          }
+        ],
+        "body_sha256": "42f7453c90533ad17c0b128ad48842f01cfcdcbe53091fece206e9747ab2d3f2"
+      }
+    ]
+  },
+  "GimpOperationPainterLegacy": {
+    "source": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+    "parent_macro": "GIMP_TYPE_OPERATION_LAYER_MODE",
+    "initializers": [
+      {
+        "symbol": "gimp_operation_painter_legacy_class_init",
+        "assigned_fields": [
+          "prepare",
+          "process",
+          "get_affected_region"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "prepare",
+            "callback": "prepare"
+          },
+          {
+            "slot": "process",
+            "callback": "process"
+          },
+          {
+            "slot": "get_affected_region",
+            "callback": "affected"
+          }
+        ],
+        "body_sha256": "5ccd72337ba61ad694389c94db9fb9fcb8ac5ce9a97721182983b388e2089d82"
+      }
+    ]
+  },
+  "GimpFillBrushOptions": {
+    "source": "app/paint/gimpfillbrush.cpp",
+    "parent_macro": "GIMP_TYPE_PAINT_OPTIONS",
+    "initializers": [
+      {
+        "symbol": "gimp_fill_brush_options_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "get_property",
+          "set_property"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "options_constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "options_dispose"
+          },
+          {
+            "slot": "get_property",
+            "callback": "options_get"
+          },
+          {
+            "slot": "set_property",
+            "callback": "options_set"
+          }
+        ],
+        "body_sha256": "2ff99924e5cc8f2a5a81dfe46cc948dac91de75e964ba4c79e71c37353a5a8a9"
+      }
+    ]
+  },
+  "GimpFillBrush": {
+    "source": "app/paint/gimpfillbrush.cpp",
+    "parent_macro": "GIMP_TYPE_BRUSH_CORE",
+    "initializers": [
+      {
+        "symbol": "gimp_fill_brush_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "paint",
+          "check_start",
+          "start",
+          "handles_changing_brush",
+          "handles_transforming_brush",
+          "handles_dynamic_transforming_brush"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "paint",
+            "callback": "paint"
+          },
+          {
+            "slot": "check_start",
+            "callback": "check_start"
+          },
+          {
+            "slot": "start",
+            "callback": "native_start"
+          }
+        ],
+        "body_sha256": "946938b274db4b7f85f280f9f3f46b02bae440d294b193d5f7dcf2d5bbd386cb"
+      }
+    ]
+  },
+  "GimpPainterPaintGate": {
+    "source": "app/paint/gimppainterpaintgate.cpp",
+    "parent_macro": "GIMP_TYPE_PAINT_CORE",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_paint_gate_class_init",
+        "assigned_fields": [
+          "dispose",
+          "check_start",
+          "start"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "check_start",
+            "callback": "refuse"
+          },
+          {
+            "slot": "start",
+            "callback": "refuse"
+          }
+        ],
+        "body_sha256": "c61748d12b36564bdf4c43872945020f64e176ad65903150e1feb4fd031bdf0f"
+      }
+    ]
+  },
+  "GimpPainterSmudgeOptions": {
+    "source": "app/paint/gimppaintersmudge.cpp",
+    "parent_macro": "GIMP_TYPE_PAINT_OPTIONS",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_smudge_options_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "get_property",
+          "set_property"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "options_constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "options_dispose"
+          },
+          {
+            "slot": "get_property",
+            "callback": "options_get"
+          },
+          {
+            "slot": "set_property",
+            "callback": "options_set"
+          }
+        ],
+        "body_sha256": "0f126548678ac30c2929b0106d8130fd63b1e428d371949bfcfb190a758ec51b"
+      }
+    ]
+  },
+  "GimpPainterSmudge": {
+    "source": "app/paint/gimppaintersmudge.cpp",
+    "parent_macro": "GIMP_TYPE_BRUSH_CORE",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_smudge_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "check_start",
+          "start",
+          "paint",
+          "interpolate",
+          "handles_changing_brush",
+          "handles_transforming_brush",
+          "handles_dynamic_transforming_brush"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "check_start",
+            "callback": "check_start"
+          },
+          {
+            "slot": "start",
+            "callback": "start"
+          },
+          {
+            "slot": "paint",
+            "callback": "paint"
+          },
+          {
+            "slot": "interpolate",
+            "callback": "interpolate"
+          }
+        ],
+        "body_sha256": "fd95909dc639aa1d8fcd23e26dfe15aeb7fbd77c2c9a0c6e2d14d827e9fc0d74"
+      }
+    ]
+  },
+  "GimpPainterMybrushOptions": {
+    "source": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+    "parent_macro": "GIMP_TYPE_PAINT_OPTIONS",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_mybrush_options_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "set_property",
+          "get_property",
+          "painter_mybrush_changed",
+          "brush_changed",
+          "pattern_changed"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "set_property",
+            "callback": "set_property"
+          },
+          {
+            "slot": "get_property",
+            "callback": "get_property"
+          },
+          {
+            "slot": "painter_mybrush_changed",
+            "callback": "selected_changed"
+          },
+          {
+            "slot": "brush_changed",
+            "callback": "brush_changed"
+          },
+          {
+            "slot": "pattern_changed",
+            "callback": "pattern_changed"
+          }
+        ],
+        "body_sha256": "34bfc061d680561f8c5e8c6ba6a56cc8cbf3c296d87ece414565436098c4d37d"
+      },
+      {
+        "symbol": "config_iface_init",
+        "assigned_fields": [
+          "copy",
+          "duplicate",
+          "serialize_property",
+          "deserialize_property"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "copy",
+            "callback": "config_copy"
+          },
+          {
+            "slot": "duplicate",
+            "callback": "config_duplicate"
+          },
+          {
+            "slot": "serialize_property",
+            "callback": "nullptr"
+          },
+          {
+            "slot": "deserialize_property",
+            "callback": "nullptr"
+          }
+        ],
+        "body_sha256": "305e4cde1f5824303b40e6b897efc718423a03ddf089abc6e45a906e1c48301e"
+      }
+    ]
+  },
+  "GimpPainterSession": {
+    "source": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+    "parent_macro": "GIMP_TYPE_OBJECT",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_session_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "set_property",
+          "get_property"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "set_property",
+            "callback": "set_property"
+          },
+          {
+            "slot": "get_property",
+            "callback": "get_property"
+          }
+        ],
+        "body_sha256": "156c1b39ed6de52743fde3f02d399b0239743a5a7609f8f45080b3afe092e3cf"
+      }
+    ]
+  },
+  "GimpFillBrushTool": {
+    "source": "app/tools/gimpfillbrushtool.cpp",
+    "parent_macro": "GIMP_TYPE_BRUSH_TOOL",
+    "initializers": [
+      {
+        "symbol": "gimp_fill_brush_tool_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "control",
+          "button_press",
+          "button_release",
+          "motion",
+          "oper_update",
+          "draw",
+          "get_outline"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "control",
+            "callback": "control"
+          },
+          {
+            "slot": "button_press",
+            "callback": "press"
+          },
+          {
+            "slot": "button_release",
+            "callback": "release"
+          },
+          {
+            "slot": "motion",
+            "callback": "motion"
+          },
+          {
+            "slot": "oper_update",
+            "callback": "oper_update"
+          },
+          {
+            "slot": "draw",
+            "callback": "draw"
+          },
+          {
+            "slot": "get_outline",
+            "callback": "outline"
+          }
+        ],
+        "body_sha256": "de0725fca19f3c20efe12c303aafdf4d0d0e3d807e6bceb12b97c68befaa7ccf"
+      }
+    ]
+  },
+  "GimpPainterMybrushTool": {
+    "source": "app/tools/gimppaintermybrushtool.cpp",
+    "parent_macro": "GIMP_TYPE_COLOR_TOOL",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_mybrush_tool_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "control",
+          "button_press",
+          "button_release",
+          "motion",
+          "modifier_key",
+          "oper_update",
+          "draw"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "control",
+            "callback": "control"
+          },
+          {
+            "slot": "button_press",
+            "callback": "press"
+          },
+          {
+            "slot": "button_release",
+            "callback": "release"
+          },
+          {
+            "slot": "motion",
+            "callback": "motion"
+          },
+          {
+            "slot": "modifier_key",
+            "callback": "modifier"
+          },
+          {
+            "slot": "oper_update",
+            "callback": "oper_update"
+          },
+          {
+            "slot": "draw",
+            "callback": "draw"
+          }
+        ],
+        "body_sha256": "e57b512cb5befa134ed578551e85b43118dce4e4acf83c3f48fd8efff39ee0fd"
+      }
+    ]
+  },
+  "GimpPainterSmudgeTool": {
+    "source": "app/tools/gimppaintersmudgetool.cpp",
+    "parent_macro": "GIMP_TYPE_BRUSH_TOOL",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_smudge_tool_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "control",
+          "button_press",
+          "button_release",
+          "motion",
+          "oper_update",
+          "draw",
+          "get_outline"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "control",
+            "callback": "control"
+          },
+          {
+            "slot": "button_press",
+            "callback": "press"
+          },
+          {
+            "slot": "button_release",
+            "callback": "release"
+          },
+          {
+            "slot": "motion",
+            "callback": "motion"
+          },
+          {
+            "slot": "oper_update",
+            "callback": "oper_update"
+          },
+          {
+            "slot": "draw",
+            "callback": "draw"
+          },
+          {
+            "slot": "get_outline",
+            "callback": "outline"
+          }
+        ],
+        "body_sha256": "de0725fca19f3c20efe12c303aafdf4d0d0e3d807e6bceb12b97c68befaa7ccf"
+      }
+    ]
+  },
+  "GimpPerspectiveGuideTool": {
+    "source": "app/tools/gimpperspectiveguidetool.cpp",
+    "parent_macro": "GIMP_TYPE_DRAW_TOOL",
+    "initializers": [
+      {
+        "symbol": "gimp_perspective_guide_tool_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "control",
+          "button_press",
+          "button_release",
+          "motion",
+          "modifier_key",
+          "oper_update",
+          "cursor_update",
+          "key_press",
+          "draw"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "control",
+            "callback": "control"
+          },
+          {
+            "slot": "button_press",
+            "callback": "press"
+          },
+          {
+            "slot": "button_release",
+            "callback": "release"
+          },
+          {
+            "slot": "motion",
+            "callback": "motion"
+          },
+          {
+            "slot": "modifier_key",
+            "callback": "modifier"
+          },
+          {
+            "slot": "oper_update",
+            "callback": "oper_update"
+          },
+          {
+            "slot": "cursor_update",
+            "callback": "cursor_update"
+          },
+          {
+            "slot": "key_press",
+            "callback": "key_press"
+          },
+          {
+            "slot": "draw",
+            "callback": "draw"
+          }
+        ],
+        "body_sha256": "4d8d0281c1a94c163bc6f5301919f5f6af88955396547ae6f2942ee0f326ac36"
+      }
+    ]
+  },
+  "GimpLayerPresetView": {
+    "source": "app/widgets/gimplayerpresetview.c",
+    "parent_macro": "GIMP_TYPE_DATA_FACTORY_VIEW",
+    "initializers": [
+      {
+        "symbol": "gimp_layer_preset_view_class_init",
+        "assigned_fields": [
+          "dispose",
+          "select_item",
+          "activate_item"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "select_item",
+            "callback": "select_item"
+          },
+          {
+            "slot": "activate_item",
+            "callback": "activate_item"
+          }
+        ],
+        "body_sha256": "b6b08a8efbcd79baf7c3fdef9d1393637bda873ab4628d1a06506d8467fbb3bf"
+      }
+    ]
+  },
+  "GimpPainterLayerTiles": {
+    "source": "app/widgets/gimppainterlayertiles.cpp",
+    "parent_macro": "GIMP_TYPE_IMAGE_EDITOR",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_layer_tiles_class_init",
+        "assigned_fields": [
+          "destroy",
+          "set_image"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "destroy",
+            "callback": "close_widget"
+          },
+          {
+            "slot": "set_image",
+            "callback": "set_image"
+          }
+        ],
+        "body_sha256": "59a7264f903bd4c6d208426bc6ddef1f5173309890bd0f80642f90c483ec36ed"
+      }
+    ]
+  },
+  "GimpPainterMybrushEditor": {
+    "source": "app/widgets/gimppaintermybrusheditor.cpp",
+    "parent_macro": "GIMP_TYPE_EDITOR",
+    "initializers": [
+      {
+        "symbol": "gimp_painter_mybrush_editor_class_init",
+        "assigned_fields": [
+          "constructed",
+          "dispose",
+          "destroy"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "constructed",
+            "callback": "constructed"
+          },
+          {
+            "slot": "dispose",
+            "callback": "dispose"
+          },
+          {
+            "slot": "destroy",
+            "callback": "destroy"
+          }
+        ],
+        "body_sha256": "2a68a2deb2d078f0a4718009be7333a5e343a1d401ff6aa57a4196d440fa79d5"
+      },
+      {
+        "symbol": "docked_init",
+        "assigned_fields": [
+          "set_context",
+          "get_title"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "set_context",
+            "callback": "<lambda>"
+          },
+          {
+            "slot": "get_title",
+            "callback": "<lambda>"
+          }
+        ],
+        "body_sha256": "af21ed5a7bb8d8ea7771631d4b2e9335f67e8836176ab3f21978517a5104ff39"
+      }
+    ]
+  },
+  "EndianInput": {
+    "source": "app/xcf/painter-xcf-arguments.cpp",
+    "parent_macro": "G_TYPE_INPUT_STREAM",
+    "initializers": [
+      {
+        "symbol": "endian_input_class_init",
+        "assigned_fields": [
+          "read_fn"
+        ],
+        "assigned_callbacks": [
+          {
+            "slot": "read_fn",
+            "callback": "endian_input_read"
+          }
+        ],
+        "body_sha256": "1bb0faa2ca450e3856f4e9cb533fc9118c0e46982950277cbfd50ad49dfb4b70"
+      }
+    ]
+  }
+}

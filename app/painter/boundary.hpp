@@ -51,5 +51,32 @@ boundary_void (GError **error, Function&& function) noexcept
   catch (...) { capture_exception (error); }
 }
 
+/* GObject property vfuncs cannot return GError. Keep the native owner and spec
+ * alive through reentrant diagnostics, and report a contained failure without
+ * changing GLib's initialized getter value or automatic notify semantics. */
+template<class Function>
+bool
+property_boundary (GObject *object, GParamSpec *spec, const char *operation,
+                   Function&& function) noexcept
+{
+  g_object_ref (object);
+  g_param_spec_ref (spec);
+  GError *error = nullptr;
+  const bool success = boundary<bool> (&error, false, [&] {
+    function ();
+    return true;
+  });
+  if (error)
+    {
+      g_warning ("Painter property %s.%s %s failed: %s",
+                 G_OBJECT_TYPE_NAME (object), spec->name, operation,
+                 error->message);
+      g_error_free (error);
+    }
+  g_param_spec_unref (spec);
+  g_object_unref (object);
+  return success;
+}
+
 } // namespace GimpPainter
 #endif
