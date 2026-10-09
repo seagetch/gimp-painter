@@ -310,7 +310,7 @@
 | 05.013 | [x] | エラー境界を定義する | 05.012 | 型不一致・未登録・終了済み・例外の返し方を統一 |
 | 05.013/class-init-error | [x] | class 初期化失敗を C ABI 内で処理する | 05.013, 01.007/class-pointer-exception | pointer 例外を廃止し、部分登録と再試行の状態を試験する |
 | 05.013/legacy-exit-removal | [x] | 旧 property callback の例外時 exit を C ABI 安全な処理へ変更する | 05.013, 01.005/gimp3-remaining-callbacks | 31型/15 property callbackを照合。Optionsの更新後通知欠落とGuideUndoの失敗NULL混同をnative再現して修正。通常/ASan・UBSanで型付きGValue・通知・登録・回復を検証（migration/tests/property-boundary/README.md）。全vfuncは別義務 |
-| 05.014 | [ ] | 移行 adapter の撤去条件を定義する | 05.013 | 旧 API 利用箇所ゼロを機械検査できる |
+| 05.014 | [x] | 移行 adapter の撤去条件を定義する | 05.013 | 2457 source/78 C++ unitを全構成分岐で検査。681 data siteは675上流一致＋6個別規約、4無効分岐と1現行宣言を固定し39正負テスト合格。撤去条件を定義し、全feature/31.014–017の実証は別義務（migration/contracts/legacy-adapter-removal.md） |
 
 ### 06 単一 C++ API の共通実装
 
