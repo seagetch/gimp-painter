@@ -1,0 +1,54 @@
+{
+  "task": "06.005",
+  "status": "PASS",
+  "condition": "誤った GType を拒否する",
+  "production_factory_changed": false,
+  "source_work_ids": [
+    "legacy-31b15077c686c97dca6f",
+    "legacy-fbc69246be9f2c10c3d4",
+    "legacy-f6b8f51e4c3dd7e45581"
+  ],
+  "native_cases": 45,
+  "sanitizer_cases": 45,
+  "specific_tests": [
+    "/painter/gobject/type-rejection",
+    "/painter/hierarchy/type-ancestry"
+  ],
+  "gobject_version": "2.84.4",
+  "source_sha256": {
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-binding.h": "d0269c7b9dd84535d95f714e2227c280030cc922ba967823c00e98daa77d8c04",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/tests/test-c-api.c": "609f376f12c4ef43aecd21b00a50cc8567b9f8827aef36d0b48848a89c6e0c7d",
+    "app/painter/tests/test-c-api.h": "e9b3208f78777d72e27b321d53203c770900409718bdd0b7b7159fd86b28ed13",
+    "app/painter/tests/test-fixture.c": "50696abdf8d4598fa7e431ee628e43a89912ead7c10891fdac90462441dd41af",
+    "app/painter/tests/test-fixture.h": "5a26cdf5bc2ce9208e0666be126885e9ea4d9ba09cf9accded89ea673cab8946",
+    "app/painter/tests/test-foundation.cpp": "dba5d92d8893db9bc5b465b05d0fa16d77dcc3c345e6a9fce33f05b43ab7556e",
+    "app/painter/tests/test-gobject.cpp": "50fa9b61b8f732db705821f33658b00079b91bb8d78dfeb2564eb0eef81d8231",
+    "app/painter/tests/test-hierarchy.c": "fd448e354f15d5cec1d85fa53ed8f62253943ff90fda5a5c28b2c729beba8688",
+    "app/painter/tests/test-hierarchy.cpp": "46f086fa9efb9e4fd5f495c2d1420fa72b4a3bf49868275d64bddfce9916c09a",
+    "app/painter/tests/test-hierarchy.h": "ff70fb38099ec19b86c15d5f1e2e4c02c3f4777689bcc391cd6c15af6d225674",
+    "app/painter/tests/test-reentry.cpp": "27d5e099f4fc2c3b5e3e27856c9dd1b76a0d612d3695a6b2cb8864d438d403d5",
+    "app/painter/tests/test-registry.hpp": "4bd2aff639d1cef2459e41c4039a44d728634fe38ef5d4653e4bb08938b3b0e4",
+    "app/painter/tests/test-resources.cpp": "78f4be301a173e96d69ad5ead9f15a5826f791df2c1f58e1536a08a037ec5274"
+  },
+  "native_executable_sha256": "e9a53915a0ec66a87b1f3d48596df60ff0a0d190fff5ac3f543b483797282611",
+  "sanitizer_executable_sha256": "34e62990fc48839ce86030f411c38fdf83a105e89e63c207bd21b1b1a93982dd",
+  "evidence_members": 43,
+  "evidence_bytes": 41411,
+  "evidence_sha256": "986f3131ce9708a128d2138aa48842459f1dd62b46c6f191ecc47ba429fc06a6",
+  "limitations": [
+    "Valid live GObject inputs required; arbitrary bad addresses are outside contract",
+    "Common instance checking, not completion of all old catalog or feature mappings",
+    "LSan unavailable under executor ptrace; UBSan vptr excluded; system GLib not instrumented"
+  ]
+}
