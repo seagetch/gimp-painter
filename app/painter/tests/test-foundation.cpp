@@ -695,6 +695,62 @@ void reentrant_close ()
   g_assert_cmpint (counters.destroy, ==, 1);
 }
 
+void call_leases ()
+{
+  // initialize, with, active read, and closed read; return and unwind paths.
+  for (int method = 0; method != 4; ++method)
+    for (bool fail : {false, true})
+      {
+        Counters counters;
+        int finalized = 0;
+        auto owner = new_object ();
+        auto *raw = owner.get ();
+        g_object_weak_ref (raw, weak_notify, &finalized);
+        auto& store = BindingStore::ensure (raw);
+        store.emplace<MainSlot> (counters);
+        if (method != 0) store.activate ();
+        if (method == 3) store.close ();
+        bool called = false, threw = false;
+        int result = -1;
+        auto call = [&] (auto& impl) {
+          called = true;
+          g_assert_cmpuint (raw->ref_count, ==, 2);
+          store.close ();
+          owner.reset ();
+          g_assert_null (owner.get ());
+          g_assert_cmpuint (raw->ref_count, ==, 1);
+          g_assert_cmpint (finalized, ==, 0);
+          g_assert_cmpint (counters.alive, ==, 1);
+          g_assert_cmpint (counters.close, ==, 1);
+          g_assert_cmpint (counters.destroy, ==, 0);
+          g_assert_true (store.state () == BindingStore::State::closed);
+          g_assert_cmpint (impl.value, ==, 41);
+          if (fail) throw std::runtime_error ("injected after close and owner release");
+          return impl.value;
+        };
+        try
+          {
+            if (method == 0) result = store.initialize<MainSlot> (call);
+            else if (method == 1) result = store.with<MainSlot> (call);
+            else result = store.read<MainSlot> (call);
+          }
+        catch (const std::runtime_error& error)
+          {
+            threw = true;
+            g_assert_cmpstr (error.what (), ==, "injected after close and owner release");
+          }
+        g_assert_true (called);
+        g_assert_cmpint (threw, ==, fail);
+        g_assert_cmpint (result, ==, fail ? -1 : 41);
+        g_assert_null (owner.get ());
+        g_assert_cmpint (finalized, ==, 1);
+        g_assert_cmpint (counters.alive, ==, 0);
+        g_assert_cmpint (counters.close, ==, 1);
+        g_assert_cmpint (counters.destroy, ==, 1);
+        // The store and Impl have now died; do not access their old borrows.
+      }
+}
+
 void failed_construction ()
 {
   Counters counters;
@@ -823,6 +879,7 @@ void painter_test_register ()
   g_test_add_func ("/painter/store/implementation-ownership", implementation_ownership);
   g_test_add_func ("/painter/store/close-transitions", close_transitions);
   g_test_add_func ("/painter/store/reentrant-close", reentrant_close);
+  g_test_add_func ("/painter/store/call-leases", call_leases);
   g_test_add_func ("/painter/store/construction-failure", failed_construction);
   g_test_add_func ("/painter/store/thread-rejection", wrong_thread);
   g_test_add_func ("/painter/boundary/c-close", c_close_boundary);
