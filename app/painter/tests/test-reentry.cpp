@@ -65,17 +65,22 @@ void replace_value (gpointer data, GObject *)
 }
 void value_reentry ()
 {
-  for (int move = 0; move != 2; ++move)
+  for (int operation = 0; operation != 3; ++operation)
     {
       Value value (G_TYPE_OBJECT);
       auto old = object ();
       g_object_weak_ref (old.get (), replace_value, &value);
       g_value_take_object (value.get (), old.release ());
-      if (move)
+      if (operation)
         {
           Value incoming (G_TYPE_STRING);
           g_value_set_string (incoming.get (), "incoming");
-          value = std::move (incoming);
+          if (operation == 1) value = std::move (incoming);
+          else
+            {
+              value = incoming;
+              g_assert_cmpstr (g_value_get_string (incoming.get ()), ==, "incoming");
+            }
         }
       else value.reset ();
       g_assert_true (G_VALUE_HOLDS_STRING (value.get ()));

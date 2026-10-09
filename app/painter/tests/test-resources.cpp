@@ -42,6 +42,108 @@ void values ()
   g_assert_cmpstr (text.get (), ==, "text");
 }
 
+struct BoxCounts { int allocated = 0; int copied = 0; int freed = 0; };
+struct CountedBox { BoxCounts *counts; int value; };
+gpointer copy_box (gpointer data)
+{
+  auto *box = static_cast<CountedBox *> (data);
+  auto *copy = new CountedBox (*box);
+  ++box->counts->allocated; ++box->counts->copied;
+  return copy;
+}
+void free_box (gpointer data)
+{
+  auto *box = static_cast<CountedBox *> (data);
+  ++box->counts->freed;
+  delete box;
+}
+void value_ownership ()
+{
+  Value empty;
+  g_assert_false (G_IS_VALUE (empty.get ()));
+  auto null_copy = Value::copy (nullptr);
+  auto empty_copy = ValueView (empty.get ()).copy ();
+  g_assert_false (G_IS_VALUE (null_copy.get ()));
+  g_assert_false (G_IS_VALUE (empty_copy.get ()));
+  empty.reset (); empty.reset ();
+  for (bool heap : {false, true})
+    {
+      int destroyed = 0;
+      auto owner = new_object ();
+      auto *raw = owner.get ();
+      g_object_weak_ref (raw, count_destroy, &destroyed);
+      GValue stack = G_VALUE_INIT;
+      GValue *native = heap ? g_new0 (GValue, 1) : &stack;
+      g_value_init (native, G_TYPE_OBJECT);
+      g_value_take_object (native, owner.release ());
+      Value copied;
+      {
+        ValueView borrow (native);
+        g_assert_true (borrow.get () == native);
+        g_assert_cmpuint (raw->ref_count, ==, 1);
+        copied = borrow.copy ();
+        g_assert_true (copied.get () != native);
+        g_assert_cmpuint (raw->ref_count, ==, 2);
+      }
+      g_assert_cmpuint (raw->ref_count, ==, 2); // borrow destructor does not unset
+      g_value_unset (native);
+      if (heap) g_free (native); // the C producer retains ownership of its shell
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+      g_assert_true (g_value_get_object (copied.get ()) == raw);
+      copied.reset (); copied.reset ();
+      g_assert_cmpint (destroyed, ==, 1);
+    }
+  Value string (G_TYPE_STRING);
+  g_value_set_string (string.get (), "copied text");
+  auto string_copy = ValueView (string.get ()).copy ();
+  g_value_set_string (string.get (), "changed input");
+  g_assert_cmpstr (g_value_get_string (string_copy.get ()), ==, "copied text");
+
+  const GType type = g_boxed_type_register_static ("PainterCountedValueBox", copy_box, free_box);
+  BoxCounts counts, displaced;
+  {
+    Value value (type);
+    ++counts.allocated;
+    g_value_take_boxed (value.get (), new CountedBox { &counts, 37 });
+    Value copy (value);
+    g_assert_cmpint (counts.copied, ==, 1);
+    g_assert_true (g_value_get_boxed (copy.get ()) != g_value_get_boxed (value.get ()));
+    Value destination (type);
+    ++displaced.allocated;
+    g_value_take_boxed (destination.get (), new CountedBox { &displaced, -1 });
+    destination = value;
+    g_assert_cmpint (displaced.freed, ==, 1);
+    g_assert_cmpint (counts.copied, ==, 2);
+    g_assert_true (g_value_get_boxed (destination.get ()) != g_value_get_boxed (value.get ()));
+    g_assert_cmpint (static_cast<CountedBox *> (g_value_get_boxed (destination.get ()))->value, ==, 37);
+    auto *alias = &destination;
+    destination = *alias;
+    g_assert_cmpint (counts.copied, ==, 3);
+    g_assert_cmpint (counts.freed, ==, 1);
+    auto *self_payload = g_value_get_boxed (destination.get ());
+    g_assert_cmpint (static_cast<CountedBox *> (self_payload)->value, ==, 37);
+    destination = std::move (*alias);
+    g_assert_true (g_value_get_boxed (destination.get ()) == self_payload);
+    g_assert_cmpint (counts.copied, ==, 3);
+    g_assert_cmpint (counts.freed, ==, 1);
+    destination = std::move (copy);
+    g_assert_false (G_IS_VALUE (copy.get ()));
+    g_assert_cmpint (counts.freed, ==, 2);
+    Value moved (std::move (destination));
+    g_assert_false (G_IS_VALUE (destination.get ()));
+    g_assert_cmpint (static_cast<CountedBox *> (g_value_get_boxed (moved.get ()))->value, ==, 37);
+    value = empty; // copy assignment from empty releases the old boxed payload
+    g_assert_false (G_IS_VALUE (value.get ()));
+    g_assert_cmpint (counts.freed, ==, 3);
+    moved = Value (); // move assignment from empty releases its old payload too
+    g_assert_false (G_IS_VALUE (moved.get ()));
+    g_assert_cmpint (counts.freed, ==, 4);
+  }
+  g_assert_cmpint (counts.allocated, ==, 4);
+  g_assert_cmpint (counts.freed, ==, counts.allocated);
+  g_assert_cmpint (displaced.freed, ==, displaced.allocated);
+}
+
 void errors ()
 {
   GError *error = g_error_new_literal (GIMP_PAINTER_ERROR,
@@ -452,6 +554,7 @@ void source_exception ()
 void painter_test_register_resources ()
 {
   g_test_add_func ("/painter/resources/value-assignment", values);
+  g_test_add_func ("/painter/resources/value-owned-borrow-copy", value_ownership);
   g_test_add_func ("/painter/resources/array-assignment", arrays);
   g_test_add_func ("/painter/resources/error-message-transfer", errors);
   g_test_add_func ("/painter/resources/mutex-exception", mutex_guard);
