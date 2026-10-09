@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "../painter/resources.hpp"
 #include <gtk/gtk.h>
 #include <gegl.h>
 extern "C" {
@@ -87,7 +88,7 @@ ObjectRef<GimpPainterSession> session(GimpTool*tool)
 void report(GimpTool*tool,GimpDisplay*display,GError*error)
 {
   if(!error)return;
-  const std::string message=error->message;g_clear_error(&error);
+  const std::string message = GimpPainter::take_error_message (error, "Unknown error");
   auto*binding=BindingStore::find(G_OBJECT(tool));if(!binding||binding->state()!=BindingStore::State::active)return;
   bool changed=binding->with<ToolSlot>([&](ToolImpl&i){if(i.error==message)return false;i.error=message;return true;});
   if(changed&&display)gimp_tool_message_literal(tool,display,message.c_str());
@@ -186,7 +187,7 @@ void constructed(GObject*object)
   if(!self->binding_failed)self->binding_failed=!boundary<bool>(nullptr,false,[&]{
     auto*options=gimp_tool_get_options(tool);if(!GIMP_IS_PAINTER_MYBRUSH_OPTIONS(options))throw std::invalid_argument("Extended painter tool requires painter options");
     GError*error=nullptr;auto value=ObjectRef<GimpPainterSession>::adopt(gimp_painter_session_new(GIMP_PAINTER_MYBRUSH_OPTIONS(options),&error));
-    if(!value){std::string why=error?error->message:"Unable to initialize painter session";g_clear_error(&error);throw std::runtime_error(why);}
+    if(!value){std::string why = GimpPainter::take_error_message (error, "Unable to initialize painter session");throw std::runtime_error(why);}
     auto&binding=store(tool);binding.initialize<ToolSlot>([&](ToolImpl&i){i.session=std::move(value);});binding.activate();return true;
   });
   if(self->binding_failed)gimp_painter_binding_close(object,nullptr);

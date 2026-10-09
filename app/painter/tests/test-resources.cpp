@@ -41,6 +41,19 @@ void values ()
   g_assert_cmpstr (text.get (), ==, "text");
 }
 
+void errors ()
+{
+  GError *error = g_error_new_literal (GIMP_PAINTER_ERROR,
+                                     GIMP_PAINTER_ERROR_INVALID_STATE,
+                                     "失敗した処理の所有権");
+  const auto message = take_error_message (error, "fallback");
+  g_assert_null (error);
+  g_assert_cmpstr (message.c_str (), ==, "失敗した処理の所有権");
+  const auto fallback = take_error_message (error, "fallback");
+  g_assert_cmpstr (fallback.c_str (), ==, "fallback");
+  g_assert_null (error);
+}
+
 void arrays ()
 {
   int destroyed = 0;
@@ -210,6 +223,7 @@ void painter_test_register_resources ()
 {
   g_test_add_func ("/painter/resources/value-assignment", values);
   g_test_add_func ("/painter/resources/array-assignment", arrays);
+  g_test_add_func ("/painter/resources/error-message-transfer", errors);
   g_test_add_func ("/painter/resources/mutex-exception", mutex_guard);
   g_test_add_func ("/painter/signal/lifetime-blocks", connections);
   g_test_add_func ("/painter/signal/after-order", signal_order);

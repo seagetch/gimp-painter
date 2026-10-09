@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
+#include "resources.hpp"
 #include "filter-process.hpp"
 #include "filter-wire.hpp"
 #include "filter-lifetime.hpp"
@@ -126,8 +127,7 @@ bool filter_process (const FilterProcedureRequest& request, FilterRaster& input,
       GSpawnFlags (G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_CLOEXEC_PIPES), group_setup, nullptr,
       -1, -1, -1, source_fds, target_fds, 1, &child.pid,
       &child.input.value, &child.output.value, nullptr, &error)) {
-    const std::string message = error ? error->message : "Cannot spawn Filter helper";
-    g_clear_error (&error); throw std::runtime_error (message);
+    const std::string message = GimpPainter::take_error_message (error, "Cannot spawn Filter helper"); throw std::runtime_error (message);
   }
   life_read.reset (); nonblocking (child.input.value); nonblocking (child.output.value);
   std::vector<std::uint8_t> outgoing = FilterWire::encode (FilterWire::request (request));

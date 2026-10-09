@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later
  * Independent legacy Smudge raster semantics; current standard Smudge is unchanged. */
 #include "config.h"
+#include "../painter/resources.hpp"
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gio/gio.h>
 #include <gegl.h>
@@ -577,7 +578,7 @@ gboolean gimp_painter_smudge_begin (GimpPainterSmudge* smudge, GimpDrawable* dra
       auto* core = GIMP_PAINT_CORE (smudge);GList list = {drawable, nullptr, nullptr};GError* native_error = nullptr;
       state.start_permit = true;
       const bool started = gimp_paint_core_start (core, &list, options, coords, &native_error);state.start_permit = false;state.native_start_armed = false;state.starting = false;
-      if (!started) { std::string message = native_error ? native_error->message : "Legacy Smudge start failed";g_clear_error (&native_error);release_scratch (core);state.release_frame ();throw std::runtime_error (message); }
+      if (!started) { std::string message = GimpPainter::take_error_message (native_error, "Legacy Smudge start failed");release_scratch (core);state.release_frame ();throw std::runtime_error (message); }
       state.active = true;
       if (state.closed || state.cancel_requested || !frame_current (state)) { finish_frame (state, false);throw std::runtime_error ("Legacy Smudge start cancelled"); }
       gimp_paint_core_paint (core, &list, options, GIMP_PAINT_STATE_INIT, 0);

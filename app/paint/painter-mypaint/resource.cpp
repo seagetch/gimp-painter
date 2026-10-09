@@ -86,7 +86,7 @@ Node parse_json (const std::string& text)
 {
   auto parser = ObjectRef<JsonParser>::adopt (json_parser_new ()); GError *error = nullptr;
   if (!json_parser_load_from_data (parser.get (), text.data (), text.size (), &error)) {
-    std::string message = error->message; g_error_free (error); throw std::invalid_argument (message);
+    std::string message = GimpPainter::take_error_message (error, "Unknown error"); throw std::invalid_argument (message);
   }
   return clone (json_parser_get_root (parser.get ()));
 }
@@ -299,7 +299,7 @@ Resource Resource::load (GInputStream *input, GCancellable *cancel, const std::s
   std::string text; char buffer[8192]; GError *error = nullptr;
   for (;;) {
     const auto count = g_input_stream_read (input, buffer, sizeof buffer, cancel, &error);
-    if (count < 0) { std::string why = error->message; g_error_free (error); throw std::runtime_error (why); }
+    if (count < 0) { std::string why = GimpPainter::take_error_message (error, "Unknown error"); throw std::runtime_error (why); }
     if (!count) break;
     if (text.size () + count > 16*1024*1024) throw std::invalid_argument ("Brush exceeds 16 MiB safety limit");
     text.append (buffer, count);

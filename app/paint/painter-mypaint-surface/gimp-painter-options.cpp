@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "../../painter/resources.hpp"
 #include <gtk/gtk.h>
 extern "C" {
 #include "libgimpconfig/gimpconfig.h"
@@ -267,7 +268,7 @@ void set_property(GObject*object,guint id,const GValue*value,GParamSpec*pspec)
 {
   boundary_void(nullptr,[&]{
     auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(GIMP_PAINTER_MYBRUSH_OPTIONS(object));
-    if(id==PROP_JSON){GError*error=nullptr;if(!gimp_painter_mybrush_options_set_json(owner.get(),g_value_get_string(value),&error)){std::string why=error?error->message:"Invalid draft";g_clear_error(&error);throw std::runtime_error(why);}return;}
+    if(id==PROP_JSON){GError*error=nullptr;if(!gimp_painter_mybrush_options_set_json(owner.get(),g_value_get_string(value),&error)){std::string why = GimpPainter::take_error_message (error, "Invalid draft");throw std::runtime_error(why);}return;}
     if(id<1||id>BRUSH_SETTINGS_COUNT){G_OBJECT_WARN_INVALID_PROPERTY_ID(object,id,pspec);return;}
     auto&binding=store(owner.get());const bool constructing=binding.state()==BindingStore::State::constructing;
     const auto update=[&](OptionsImpl&i){

@@ -1,0 +1,41 @@
+{
+  "task": "04.019",
+  "status": "PASS",
+  "baseline_commit": "be7946decb64097c1b82f7c444481121c5515922",
+  "inventory_sha256": "6136643a3fb791dfe33e888074ff8b83067afb3e83618ee40c0598d5984bd87c",
+  "evidence_sha256": "15265277ca597b3e123dfa4056a1d092aa5d651ef02491f54770fdf2eb31cd1b",
+  "evidence_members": 202,
+  "allocator_family_mismatches_found": 0,
+  "normal_delete_leak_hypothesis": "disproved; prompt change reverted",
+  "audit_scope": "78 production app/worker C++ units and mapped native producers/consumers; optional OpenEXR static pairing inspection",
+  "proven_ownership_failures": [
+    "HTTP Router growth, malformed JSON error/parser, response serialization",
+    "FairDispatcher context/thread references across deque construction",
+    "native GError message copying before release"
+  ],
+  "native_results": {
+    "foundation": 40,
+    "fair_dispatcher": 8,
+    "http": 17,
+    "mypaint_resource": 8,
+    "fill": 36,
+    "smudge": 23,
+    "profile_parser": 9,
+    "paper": 12,
+    "xcf_roundtrip": 49,
+    "profile_native": 9,
+    "filter_process": "exit0"
+  },
+  "header_compile_probes": {
+    "default": 357,
+    "http": 359
+  },
+  "limitations": [
+    "LSan fatal ptrace restriction; explicit live-owner/ref counters establish leaks",
+    "ASan/UBSan native allocator controls supplement injected new/delete overrides; vptr unavailable under native no-RTTI",
+    "Other HTTP immediate-owner sites inspected and ordinarily tested, not individually allocation-fault-injected",
+    "Initial missing generated tags prerequisite repaired; isolated diagnostic shutdown critical root cause not established",
+    "Windows/macOS runtime, tablets and AT-SPI dependency issue remain open",
+    "Prior source-sealed reports remain historical; their hashes are not rewritten"
+  ]
+}

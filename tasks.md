@@ -282,7 +282,7 @@
 | 04.016 | [x] | install 後の起動を検証する | 04.015 | build tree に依存せず独自モジュールを含め起動する |
 | 04.017 | [x] | 生成 C ヘッダーの二重 include を試験する | 04.016 | C linkage と include guard が安定 |
 | 04.018 | [x] | C++ static 初期化の順序依存を除去する | 04.017 | GIMP 初期化前に型登録や GTK 呼出しを行わない |
-| 04.019 | [ ] | 異なる allocator の解放を監査する | 04.018 | new/delete と GLib allocation の対応が全境界で一致 |
+| 04.019 | [x] | 異なる allocator の解放を監査する | 04.018 | new/delete と GLib allocation の対応が全境界で一致 |
 
 ### 05 単一 C++ API の契約
 

@@ -289,7 +289,7 @@ std::string transform(const std::string&input,const std::string&kind,bool origin
 using File=GimpPainter::ObjectRef<GFile>;
 using Info=GimpPainter::ObjectRef<GFileInfo>;
 using Enumerator=GimpPainter::ObjectRef<GFileEnumerator>;
-std::string failure(const char*operation,GError*error) { std::string result=std::string(operation)+": "+(error?error->message:"unknown error"); g_clear_error(&error); return result; }
+std::string failure(const char*operation,GError*error) { auto message=GimpPainter::take_error_message(error,"unknown error"); return std::string(operation)+": "+message; }
 File file(const std::string&path) { return File::adopt(g_file_new_for_path(path.c_str())); }
 std::string join(const std::string&a,const std::string&b) { GimpPainter::String path(g_build_filename(a.c_str(),b.c_str(),nullptr)); return path.get(); }
 std::string read(const std::string&path) {

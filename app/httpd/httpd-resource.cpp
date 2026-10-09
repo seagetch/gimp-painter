@@ -5,6 +5,8 @@
 #include <cmath>
 #include <stdexcept>
 #include "httpd-resource.hpp"
+#include "painter/object-ref.hpp"
+#include "painter/resources.hpp"
 extern "C"
 {
 #include "core/gimp.h"
@@ -196,13 +198,14 @@ parse (const std::string &s)
 {
   if (s.size () > 1024 * 1024)
     throw Failure (413, "JSON body exceeds 1 MiB");
-  auto       *p  = json_parser_new ();
+  auto parser = ObjectRef<GObject>::adopt (G_OBJECT (json_parser_new ()));
+  auto       *p  = JSON_PARSER (parser.get ());
   GError     *e  = nullptr;
   bool        ok = json_parser_load_from_data (p, s.data (), s.size (), &e);
-  Json        n (ok ? json_node_copy (json_parser_get_root (p)) : nullptr);
-  std::string message = e ? e->message : "Invalid JSON";
-  g_clear_error (&e);
-  g_object_unref (p);
+  std::unique_ptr<GError, decltype (&g_error_free)> error (e, g_error_free);
+  JsonNode   *root = ok ? json_parser_get_root (p) : nullptr;
+  Json        n (root ? json_node_copy (root) : nullptr);
+  std::string message = error ? error->message : "Invalid JSON";
   if (! n)
     throw Failure (400, message);
   return n;
@@ -210,11 +213,10 @@ parse (const std::string &s)
 Response
 reply (Json n, unsigned status)
 {
-  auto    *s = json_to_string (n.get (), FALSE);
+  String s (json_to_string (n.get (), FALSE));
   Response r;
   r.status = status;
-  r.body   = s;
-  g_free (s);
+  r.body   = s.get ();
   return r;
 }
 Response
@@ -338,11 +340,11 @@ public:
 };
 Router::Router (Navigation n)
 {
-  rules_.emplace_back (new Rule ("/api/v1/pdb", pdb_resource (), false));
-  rules_.emplace_back (new Rule ("/api/v1/images", images_resource (), false));
-  rules_.emplace_back (new Rule (
+  rules_.push_back (std::unique_ptr<Rule> (new Rule ("/api/v1/pdb", pdb_resource (), false)));
+  rules_.push_back (std::unique_ptr<Rule> (new Rule ("/api/v1/images", images_resource (), false)));
+  rules_.push_back (std::unique_ptr<Rule> (new Rule (
       "/api/v1/navigation",
-      std::unique_ptr<Resource> (new NavigationResource (std::move (n))), true));
+      std::unique_ptr<Resource> (new NavigationResource (std::move (n))), true)));
 }
 Router::~Router () = default;
 Response
