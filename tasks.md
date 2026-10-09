@@ -336,7 +336,7 @@
 | 06.016 | [x] | GInterface の登録 adapter を実装する | 06.015 | class と interface の登録を混同しない |
 | 06.017 | [x] | Connection の所有管理を実装する | 06.016 | target 先行破棄時にも安全に切断できる |
 | 06.018 | [x] | Connection の block/unblock を実装する | 06.017 | 旧 after と一時抑制の順序を維持 |
-| 06.019 | [ ] | idle source の所有管理を実装する | 06.018 | close 後に user data を参照しない |
+| 06.019 | [x] | idle source の所有管理を実装する | 06.018 | close 後に user data を参照しない |
 | 06.020 | [ ] | GValue の所有 wrapper を実装する | 06.019 | borrow・copy・unset・free を明示して二重解放しない |
 | 06.020/value-assignment | [ ] | GValue wrapper の再代入を安全にする | 06.020, 01.007/value-wrapper | copy/move/self 代入で旧値を解放し、確保領域と値を一度だけ破棄する |
 | 06.021 | [ ] | GLib 配列と文字列の所有 wrapper を実装する | 06.020 | allocator 対応が一致 |

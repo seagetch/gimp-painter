@@ -337,32 +337,114 @@ struct Capture
   ~Capture () { ++destroyed; }
   int& destroyed;
 };
+void source_ownership ()
+{
+  for (bool timeout : {false, true})
+    {
+      auto *context = g_main_context_new ();
+      auto create = [context, timeout] (std::function<bool ()> callback) {
+        return timeout ? Source::timeout (context, 0, G_PRIORITY_DEFAULT_IDLE, std::move (callback))
+                       : Source::idle (context, G_PRIORITY_DEFAULT_IDLE, std::move (callback));
+      };
+      for (int path = 0; path < 3; ++path)
+        {
+          int calls = 0, destroyed = 0;
+          auto capture = std::make_shared<Capture> (destroyed);
+          std::weak_ptr<Capture> weak = capture;
+          {
+            auto source = create ([capture, &calls, path] { ++calls; return path == 2 && calls == 1; });
+            capture.reset ();
+            g_assert_false (weak.expired ());
+            if (path == 0)
+              {
+                source.close (); source.close ();
+                g_assert_false (source.active ());
+                g_assert_true (weak.expired ());
+                g_assert_cmpint (destroyed, ==, 1);
+                g_assert_false (g_main_context_iteration (context, FALSE));
+                g_assert_cmpint (calls, ==, 0);
+              }
+            if (path == 2)
+              {
+                g_assert_true (g_main_context_iteration (context, FALSE));
+                g_assert_true (source.active ());
+                g_assert_false (weak.expired ());
+                g_assert_cmpint (destroyed, ==, 0);
+                g_assert_true (g_main_context_iteration (context, FALSE));
+                g_assert_false (source.active ());
+                g_assert_true (weak.expired ());
+                g_assert_cmpint (destroyed, ==, 1);
+              }
+          } // path 1 cancels through the wrapper destructor
+          g_assert_true (weak.expired ());
+          g_assert_cmpint (destroyed, ==, 1);
+          g_assert_false (g_main_context_iteration (context, FALSE));
+          g_assert_cmpint (calls, ==, path == 2 ? 2 : 0);
+        }
+      int first_calls = 0, old_calls = 0, first_destroyed = 0, old_destroyed = 0;
+      auto first = std::make_shared<Capture> (first_destroyed);
+      auto old = std::make_shared<Capture> (old_destroyed);
+      auto source = create ([first, &first_calls] { ++first_calls; return false; });
+      auto destination = create ([old, &old_calls] { ++old_calls; return false; });
+      first.reset (); old.reset ();
+      destination = std::move (source);
+      g_assert_false (source.active ());
+      g_assert_cmpint (old_destroyed, ==, 1);
+      Source& alias = destination;
+      destination = std::move (alias);
+      auto moved = std::move (destination);
+      source.close (); destination.close ();
+      g_assert_true (g_main_context_iteration (context, FALSE));
+      g_assert_false (g_main_context_iteration (context, FALSE));
+      g_assert_cmpint (first_calls, ==, 1);
+      g_assert_cmpint (old_calls, ==, 0);
+      g_assert_cmpint (first_destroyed, ==, 1);
+      g_assert_cmpint (old_destroyed, ==, 1);
+      moved.close ();
+      g_main_context_unref (context);
+    }
+}
 void source_self_close ()
 {
-  auto *context = g_main_context_new ();
-  int destroyed = 0;
-  auto capture = std::make_shared<Capture> (destroyed);
-  Source source;
-  source = Source::idle (context, G_PRIORITY_DEFAULT_IDLE, [&, capture] {
-    source.close ();
-    g_assert_cmpint (destroyed, ==, 0);
-    g_assert_true (capture != nullptr);
-    return false;
-  });
-  capture.reset ();
-  g_assert_true (g_main_context_iteration (context, FALSE));
-  g_assert_cmpint (destroyed, ==, 1);
-  g_assert_false (g_main_context_iteration (context, FALSE));
-  g_main_context_unref (context);
+  for (bool timeout : {false, true})
+    {
+      auto *context = g_main_context_new ();
+      int destroyed = 0, calls = 0;
+      auto capture = std::make_shared<Capture> (destroyed);
+      Source source;
+      auto callback = [&, capture] {
+        ++calls;
+        source.close ();
+        g_assert_false (source.active ());
+        g_assert_cmpint (destroyed, ==, 0);
+        g_assert_true (capture != nullptr);
+        return true; // an already destroyed source must not repeat
+      };
+      source = timeout ? Source::timeout (context, 0, G_PRIORITY_DEFAULT_IDLE, std::move (callback))
+                       : Source::idle (context, G_PRIORITY_DEFAULT_IDLE, std::move (callback));
+      capture.reset ();
+      g_assert_true (g_main_context_iteration (context, FALSE));
+      g_assert_cmpint (destroyed, ==, 1);
+      g_assert_false (g_main_context_iteration (context, FALSE));
+      g_assert_cmpint (calls, ==, 1);
+      g_main_context_unref (context);
+    }
 }
 void source_exception ()
 {
   auto *context = g_main_context_new ();
-  auto source = Source::idle (context, G_PRIORITY_DEFAULT_IDLE, [] () -> bool { throw std::runtime_error ("injected"); });
+  int destroyed = 0;
+  auto capture = std::make_shared<Capture> (destroyed);
+  auto source = Source::idle (context, G_PRIORITY_DEFAULT_IDLE, [capture] () -> bool { throw std::runtime_error ("injected"); });
+  capture.reset ();
   g_test_expect_message (nullptr, G_LOG_LEVEL_WARNING, "*Painter source callback failed: injected*");
   g_assert_true (g_main_context_iteration (context, FALSE));
   g_test_assert_expected_messages ();
   g_assert_false (source.active ());
+  g_assert_cmpint (destroyed, ==, 1);
+  source.close ();
+  g_assert_false (g_main_context_iteration (context, FALSE));
+  g_assert_cmpint (destroyed, ==, 1);
   g_main_context_unref (context);
 }
 }
@@ -379,6 +461,7 @@ void painter_test_register_resources ()
   g_test_add_func ("/painter/signal/block-phase-order", signal_block_order);
   g_test_add_func ("/painter/signal/reentrant-disconnect", reentrant_disconnect);
   g_test_add_func ("/painter/source/cancel-repeat", sources);
+  g_test_add_func ("/painter/source/owned-lifetime", source_ownership);
   g_test_add_func ("/painter/source/self-close", source_self_close);
   g_test_add_func ("/painter/source/exception", source_exception);
 }
