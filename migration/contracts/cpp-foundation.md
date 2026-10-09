@@ -333,3 +333,20 @@ before/after ELF checks cover all six default/HTTP application executables,
 SDK/module controls, C compile vectors and C/C++ record layouts. The C++ inline
 visibility switch has separately recorded effects on generic/upstream inline
 symbols; no C export, SDK or module entry is removed.
+
+## Explicit initialization phase (original 04.018)
+
+[Current native object evidence](../tests/static-initialization/README.md) covers
+all 73/78 application and Filter worker production C++ inputs in the default/HTTP
+builds. No initialization root is present before main; lazy function statics and
+standard GObject type getters remain explicit-use paths. The maintained ELF check
+includes startup sections, arbitrarily named constructor roots, TLS initializers
+and IFUNC resolvers, with real GType/GTK positive controls and metadata omission
+controls.
+
+Here “after GIMP initialization” means within controlled application startup or
+later, never a namespace/global constructor. It is not a prohibition until the
+function gimp_initialize returns: gimp_new invokes gimp_constructed and the
+ordinary paint registration phase earlier. C resource/CRT/dependency constructors
+are outside the C++ object invariant. The separate feature-entry-point lifecycle
+obligation is not closed by this foundation check.
