@@ -11,24 +11,50 @@ namespace {
 auto object () -> ObjectRef<GObject>
 { return ObjectRef<GObject>::adopt (G_OBJECT (g_object_new (G_TYPE_OBJECT, nullptr))); }
 void count (gpointer data, GObject *) { ++*static_cast<int *> (data); }
-struct ReplaceRef { ObjectRef<GObject> *target; GObject *replacement; };
+struct ReplaceRef
+{
+  ObjectRef<GObject> *target;
+  GObject *replacement;
+  GObject *published;
+  int calls;
+};
 void replace_ref (gpointer data, GObject *)
 {
   auto& state = *static_cast<ReplaceRef *> (data);
+  g_assert_true (state.target->get () == state.published);
+  ++state.calls;
   *state.target = ObjectRef<GObject>::retain (state.replacement);
 }
 void ref_reentry ()
 {
-  int incoming_destroyed = 0;
-  auto value = object ();
-  auto replacement = object ();
-  auto incoming = object ();
-  g_object_weak_ref (incoming.get (), count, &incoming_destroyed);
-  ReplaceRef state { &value, replacement.get () };
-  g_object_weak_ref (value.get (), replace_ref, &state);
-  value = std::move (incoming);
-  g_assert_true (value.get () == replacement.get ());
-  g_assert_cmpint (incoming_destroyed, ==, 1);
+  for (bool move : {false, true})
+    {
+      int incoming_destroyed = 0, old_destroyed = 0, replacement_destroyed = 0;
+      auto value = object ();
+      auto replacement = object ();
+      auto incoming = object ();
+      g_object_weak_ref (value.get (), count, &old_destroyed);
+      g_object_weak_ref (incoming.get (), count, &incoming_destroyed);
+      g_object_weak_ref (replacement.get (), count, &replacement_destroyed);
+      ReplaceRef state { &value, replacement.get (), incoming.get (), 0 };
+      g_object_weak_ref (value.get (), replace_ref, &state);
+      if (move) value = std::move (incoming);
+      else value = incoming;
+      g_assert_cmpint (state.calls, ==, 1);
+      g_assert_cmpint (old_destroyed, ==, 1);
+      g_assert_true (value.get () == replacement.get ());
+      g_assert_cmpuint (replacement.get ()->ref_count, ==, 2);
+      g_assert_cmpint (incoming_destroyed, ==, move ? 1 : 0);
+      if (move) g_assert_null (incoming.get ());
+      else g_assert_cmpuint (incoming.get ()->ref_count, ==, 1);
+      incoming.reset ();
+      g_assert_cmpint (incoming_destroyed, ==, 1);
+      value.reset ();
+      g_assert_cmpuint (replacement.get ()->ref_count, ==, 1);
+      g_assert_cmpint (replacement_destroyed, ==, 0);
+      replacement.reset ();
+      g_assert_cmpint (replacement_destroyed, ==, 1);
+    }
 }
 void replace_value (gpointer data, GObject *)
 {
