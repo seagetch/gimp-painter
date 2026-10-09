@@ -1,0 +1,60 @@
+{
+  "task": "05.013",
+  "status": "DEFINED",
+  "implementation_parent": "144c2e77d0ecce401d04fbab17a9170ca74a2e5a",
+  "source_sha256": {
+    "app/painter/boundary.hpp": "820ee02b68267e48b2a90c6a17b58b095586b3c147b4e72b16a14f8ec6227811",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-binding.h": "d0269c7b9dd84535d95f714e2227c280030cc922ba967823c00e98daa77d8c04",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/tests/test-c-api.c": "609f376f12c4ef43aecd21b00a50cc8567b9f8827aef36d0b48848a89c6e0c7d",
+    "app/painter/tests/test-c-api.h": "e9b3208f78777d72e27b321d53203c770900409718bdd0b7b7159fd86b28ed13",
+    "app/painter/tests/test-foundation.cpp": "9feb9318c9671e74f0b0ac680d3571d88ca985637a8bd9dc7ec2cf72eec691e9",
+    "app/painter/tests/test-gobject.cpp": "31cbeee515e94a8ead509fdd14c9e66588adc3ebac4a37308db600c365b15180",
+    "app/painter/tests/test-fixture.c": "50696abdf8d4598fa7e431ee628e43a89912ead7c10891fdac90462441dd41af",
+    "app/painter/tests/test-hierarchy.cpp": "032621605ee064420a528c183b7907de93b4e688fa9c3c90054120bc892d570e",
+    "app/painter/tests/test-hierarchy.c": "fd448e354f15d5cec1d85fa53ed8f62253943ff90fda5a5c28b2c729beba8688",
+    "app/painter/tests/test-hierarchy.h": "ff70fb38099ec19b86c15d5f1e2e4c02c3f4777689bcc391cd6c15af6d225674",
+    "app/painter/tests/test-resources.cpp": "78f4be301a173e96d69ad5ead9f15a5826f791df2c1f58e1536a08a037ec5274",
+    "app/painter/tests/test-reentry.cpp": "53da4804a46cf3f9b6119e3b05eb67c143d4278e8ad7e0fcad34eacb951d5420",
+    "app/painter/meson.build": "340b4147cc44efab297054af7ea7dc094a4cf0904de3b25788daf14adfa980a7",
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/core/gimpfilterlayer.cpp": "67658997dbdf8bd796567143d109348e2bddb2a4a421fcb363c7ce3122644925",
+    "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+    "app/core/gimpperspectiveguide.cpp": "edcfce4efc37d41a66340c531be6fd558bc931fad927ad65a8dd0fc27272d1b4",
+    "app/paint/gimppainterpaintgate.cpp": "0adab689f1bfe4967da9f69259c7ba9b59bed6500a55d0eff643c4ad634986de",
+    "migration/inventory/class-init-pointer-exception.md": "32f74a8f75ceb3bf89efa4687b44502cf1f0f8c67b1c07af037bb618a5e6fa9a",
+    "migration/inventory/gimp3-remaining-callback-review.tsv": "b74b59e71132324f9b6d48985cbf23e854fe3a0038ef21a517f7ac54c076ecfd",
+    "migration/contracts/cpp-foundation.md": "247a4733838ed21c2bae31d6b1d0d7bd023e63cd5728860705d98bf7d4434329",
+    "migration/contracts/cpp-vfunc-order.md": "44ca8a405bdcf3791c03884aa6d5728991c3f700c93d56ce32da7c80da79ea03",
+    "tools/check_painter_error_boundary.py": "e7035a9234c7589e35e3a58d6fb5f6e9c4da7ceb23a94bd8d4c7b95a83904e39",
+    "migration/contracts/cpp-error-boundary.md": "f3bbda6ca86fb752f6fcae6bdd35d39a600c1a5a3692bfb3c2e54062ee189bda"
+  },
+  "evidence_sha256": {
+    "migration/tests/error-boundary/native-boundary.log": "e6d7340ba3fa65111db58ec0ca8a028c23e7fa61174927966a74b3a9b40d9dcc",
+    "migration/tests/error-boundary/native-interop.log": "f9d34767da874ca79722b0f98ace86cfc38ff0dbf30b103df6c6c073a73d6b46",
+    "migration/tests/error-boundary/native-results.json": "5183e210ced6c599f84b4120bfb4eae50117f03e1dec8eda962ec35dcbb5c03f",
+    "migration/tests/error-boundary/native-store.log": "7625a76d361f55f5da38d91dd78c48813f525015fc69edbac4ae3462065d3978",
+    "migration/tests/error-boundary/sanitized-boundary.log": "77f6be4d8cc232c0006048cbe59c0aef913570887d696a21bffa61d7fb8d64eb",
+    "migration/tests/error-boundary/sanitized-interop.log": "4c0029b17ca6ab50a88c63f9901b3477ef35c030dd1876db943179b210c4cca2",
+    "migration/tests/error-boundary/sanitized-store.log": "16e5ee9927b5b9205cfbf3488d4e64858aa92082587e0213f5b3f46e2f442cb8"
+  },
+  "remaining_implementation_tasks": [
+    "05.013/class-init-error",
+    "05.013/legacy-exit-removal",
+    "38.004/all-vfunc-exception-containment"
+  ],
+  "limits": [
+    "Common contract definition and shared implementation comparison only",
+    "Existing feature classification differences and output-policy obligations are not silently marked complete",
+    "No new all-class-init/property/vfunc injected-failure claim",
+    "LSan and RTTI-dependent vptr checking unavailable in recorded sanitizer mode"
+  ]
+}

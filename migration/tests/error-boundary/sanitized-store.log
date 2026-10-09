@@ -1,0 +1,12 @@
+TAP version 14
+# random seed: R02Se5570ab6849196758eefd28b03cfd482
+# Start of painter tests
+# Start of store tests
+ok 1 /painter/store/lifecycle
+ok 2 /painter/store/multiple-slots
+ok 3 /painter/store/reentrant-close
+ok 4 /painter/store/construction-failure
+ok 5 /painter/store/thread-rejection
+# End of store tests
+# End of painter tests
+1..5
