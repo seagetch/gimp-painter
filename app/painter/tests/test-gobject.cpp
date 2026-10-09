@@ -1,13 +1,9 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "test-registry.hpp"
-#include "test-fixture.h"
+#include "test-fixture-traits.hpp"
 #include "binding-store.hpp"
 #include <initializer_list>
 
-namespace GimpPainter {
-template<> struct TypeTraits<PainterFixture>
-{ static GType type () noexcept { return painter_fixture_get_type (); } };
-}
 using namespace GimpPainter;
 namespace {
 enum class Event { construct, construct_property, activate, get, set, close, destroy };

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "test-registry.hpp"
 #include "test-c-api.h"
+#include "test-fixture-traits.hpp"
 #include "gimp-painter-binding.h"
 #include "gimp-painter-binding.h"
 #include "binding-store.hpp"
@@ -24,6 +25,7 @@ struct Impl
 struct MainSlot : SlotSpec<GObject, Impl> {};
 struct SecondSlot : SlotSpec<GObject, Impl> {};
 struct AbsentSlot : SlotSpec<GObject, Impl> {};
+struct WrongOwnerSlot : SlotSpec<PainterFixture, Impl> {};
 struct FailingImpl
 {
   FailingImpl () { throw std::runtime_error ("injected constructor failure"); }
@@ -452,6 +454,51 @@ void multiple_slots ()
   g_assert_cmpint (counters.destroy, ==, 2);
 }
 
+void slot_registration ()
+{
+  Counters installed, rejected;
+  auto owner = new_object ();
+  auto& store = BindingStore::ensure (owner.get ());
+  const auto generation = store.generation ();
+  auto rejection_has_no_effect = [&] {
+    g_assert_cmpint (rejected.alive, ==, 0);
+    g_assert_cmpint (rejected.close, ==, 0);
+    g_assert_cmpint (rejected.destroy, ==, 0);
+    g_assert_cmpuint (owner.get ()->ref_count, ==, 1);
+  };
+  expect (GIMP_PAINTER_ERROR_WRONG_TYPE, [&] { store.emplace<WrongOwnerSlot> (rejected); });
+  rejection_has_no_effect ();
+  g_assert_true (store.state () == BindingStore::State::constructing);
+  g_assert_cmpuint (store.generation (), ==, generation);
+  store.emplace<MainSlot> (installed);
+  store.initialize<MainSlot> ([] (Impl& value) { value.value = 73; });
+  expect (GIMP_PAINTER_ERROR_DUPLICATE_SLOT, [&] { store.emplace<MainSlot> (rejected); });
+  rejection_has_no_effect ();
+  g_assert_cmpint (installed.alive, ==, 1);
+  g_assert_cmpint (store.read<MainSlot> ([] (const Impl& value) { return value.value; }), ==, 73);
+  g_assert_cmpuint (store.generation (), ==, generation);
+  store.activate ();
+  expect (GIMP_PAINTER_ERROR_INVALID_STATE, [&] { store.emplace<SecondSlot> (rejected); });
+  rejection_has_no_effect ();
+  g_assert_true (store.state () == BindingStore::State::active);
+  g_assert_cmpint (store.with<MainSlot> ([] (Impl& value) { return value.value; }), ==, 73);
+  expect (GIMP_PAINTER_ERROR_MISSING_SLOT, [&] { store.read<SecondSlot> ([] (const Impl&) {}); });
+  store.close ();
+  const auto closed_generation = store.generation ();
+  expect (GIMP_PAINTER_ERROR_INVALID_STATE, [&] { store.emplace<SecondSlot> (rejected); });
+  expect (GIMP_PAINTER_ERROR_INVALID_STATE, [&] { store.emplace<MainSlot> (rejected); });
+  rejection_has_no_effect ();
+  g_assert_true (store.state () == BindingStore::State::closed);
+  g_assert_cmpuint (store.generation (), ==, closed_generation);
+  g_assert_cmpint (store.read<MainSlot> ([] (const Impl& value) { return value.value; }), ==, 73);
+  expect (GIMP_PAINTER_ERROR_MISSING_SLOT, [&] { store.read<SecondSlot> ([] (const Impl&) {}); });
+  g_assert_cmpint (installed.close, ==, 1);
+  g_assert_cmpint (installed.destroy, ==, 0);
+  owner.reset ();
+  g_assert_cmpint (installed.destroy, ==, 1);
+  g_assert_cmpint (rejected.destroy, ==, 0);
+}
+
 void reentrant_close ()
 {
   Counters counters;
@@ -592,6 +639,7 @@ void painter_test_register ()
   g_test_add_func ("/painter/store/lifecycle", store_lifetime);
   g_test_add_func ("/painter/store/registration", store_registration);
   g_test_add_func ("/painter/store/multiple-slots", multiple_slots);
+  g_test_add_func ("/painter/store/slot-registration", slot_registration);
   g_test_add_func ("/painter/store/reentrant-close", reentrant_close);
   g_test_add_func ("/painter/store/construction-failure", failed_construction);
   g_test_add_func ("/painter/store/thread-rejection", wrong_thread);

@@ -93,7 +93,8 @@ def run(build, sanitizer, leak_check=False):
     output = execute([str(executable)], env=environment)
     print(output, end='')
     tracked = [MODULE / name for name in C_SOURCES + CPP_SOURCES + TEST_CPP + C_HEADERS + CPP_HEADERS +
-               ['tests/test-c-api.h', 'tests/test-fixture.h', 'tests/test-hierarchy.h', 'tests/test-registry.hpp']]
+               ['tests/test-c-api.h', 'tests/test-fixture.h', 'tests/test-fixture-traits.hpp',
+                'tests/test-hierarchy.h', 'tests/test-registry.hpp']]
     tracked.append(Path(__file__).resolve())
     return {'status': 'PASS', 'scope': 'standalone painter foundation, not full GIMP or legacy compatibility',
             'sanitizers': (['address', 'undefined'] + (['leak'] if leak_check else [])) if sanitizer else [],
