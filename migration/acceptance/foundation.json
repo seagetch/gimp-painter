@@ -771,17 +771,20 @@
       "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
         "app/painter/binding-store.hpp",
-        "app/painter/binding-store.cpp"
+        "app/painter/binding-store.cpp",
+        "app/painter/boundary.hpp",
+        "app/painter/connection.hpp",
+        "app/painter/tests/test-reentry.cpp"
       ],
       "test_ids": [
-        "/painter/store/reentrant-close",
-        "/painter/reentry/constructor-owner-loss"
+        "/painter/store/call-leases",
+        "/painter/signal/close-receiver-lifetime"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/signal-close/native.json",
+        "migration/tests/signal-close/sanitizers.json"
       ],
-      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+      "scope_or_gap": "Actual native notify with distinct emitter/receiver closes the store, disconnects, and releases the external receiver owner while the Impl invocation retains its sole lease. Scope-exit checks prove survival through return and exception unwind; final destruction occurs once afterward and later emission cannot reenter. Current67 native/ASanUBSan/Meson; test-only gap closure, no production defect or LSan/platform claim."
     },
     {
       "id": "07.008",

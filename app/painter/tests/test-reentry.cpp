@@ -235,6 +235,99 @@ void constructor_owner_loss ()
   g_assert_cmpint (stats.closed, ==, 1);
   g_assert_cmpint (stats.destroyed, ==, 1);
 }
+struct SignalCloseStats
+{
+  int calls = 0, closed = 0, destroyed = 0, finalized = 0, scope_exits = 0;
+};
+struct SignalCloseImpl
+{
+  explicit SignalCloseImpl (SignalCloseStats& stats) : stats (stats) {}
+  ~SignalCloseImpl () { ++stats.destroyed; }
+  void close () noexcept { ++stats.closed; connection.close (); }
+  SignalCloseStats& stats;
+  Connection connection;
+  int value = 41;
+};
+struct SignalCloseSlot : SlotSpec<GObject, SignalCloseImpl> {};
+struct SignalCloseContext
+{
+  ObjectRef<GObject> *external_owner;
+  GObject *receiver;
+  SignalCloseStats *stats;
+  bool fail;
+};
+void signal_close_callback (GObject *, GParamSpec *, gpointer data)
+{
+  auto& context = *static_cast<SignalCloseContext *> (data);
+  auto& stats = *context.stats;
+  ++stats.calls;
+  GError *error = nullptr;
+  boundary_void (&error, [&] {
+    auto& store = BindingStore::require (context.receiver);
+    store.with<SignalCloseSlot> ([&] (SignalCloseImpl& impl) {
+      // The emitter is a different object, so emission cannot retain receiver.
+      g_assert_cmpuint (context.receiver->ref_count, ==, 2);
+      store.close ();
+      context.external_owner->reset ();
+      g_assert_cmpuint (context.receiver->ref_count, ==, 1);
+      g_assert_cmpint (stats.closed, ==, 1);
+      g_assert_cmpint (stats.destroyed, ==, 0);
+      g_assert_cmpint (stats.finalized, ==, 0);
+      g_assert_false (impl.connection.connected ());
+      struct CheckExit
+      {
+        SignalCloseImpl& impl;
+        SignalCloseContext& context;
+        ~CheckExit ()
+        {
+          g_assert_cmpint (impl.value, ==, 41);
+          g_assert_cmpint (context.stats->destroyed, ==, 0);
+          g_assert_cmpint (context.stats->finalized, ==, 0);
+          g_assert_cmpuint (context.receiver->ref_count, ==, 1);
+          ++context.stats->scope_exits;
+        }
+      } check_exit {impl, context};
+      if (context.fail) throw std::runtime_error ("signal close unwind");
+    });
+  });
+  if (context.fail)
+    {
+      g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_EXCEPTION);
+      g_assert_cmpstr (error->message, ==, "signal close unwind");
+      g_clear_error (&error);
+    }
+  else g_assert_no_error (error);
+  g_assert_cmpint (stats.scope_exits, ==, 1);
+  g_assert_cmpint (stats.destroyed, ==, 1);
+  g_assert_cmpint (stats.finalized, ==, 1);
+}
+void signal_close_lifetime ()
+{
+  for (bool fail : {false, true})
+    {
+      SignalCloseStats stats;
+      auto emitter = object ();
+      auto owner = object ();
+      g_object_weak_ref (owner.get (), count, &stats.finalized);
+      SignalCloseContext context {&owner, owner.get (), &stats, fail};
+      auto& store = BindingStore::ensure (owner.get ());
+      store.emplace<SignalCloseSlot> (stats);
+      store.activate ();
+      store.with<SignalCloseSlot> ([&] (SignalCloseImpl& impl) {
+        impl.connection = Connection::connect (emitter, "notify",
+          G_CALLBACK (signal_close_callback), &context, nullptr);
+      });
+      g_assert_cmpuint (owner.get ()->ref_count, ==, 1);
+      emit (emitter.get ());
+      g_assert_null (owner.get ());
+      g_assert_cmpint (stats.calls, ==, 1);
+      g_assert_cmpint (stats.closed, ==, 1);
+      g_assert_cmpint (stats.destroyed, ==, 1);
+      g_assert_cmpint (stats.finalized, ==, 1);
+      emit (emitter.get ());
+      g_assert_cmpint (stats.calls, ==, 1);
+    }
+}
 struct FinalizingImpl
 {
   explicit FinalizingImpl (std::function<void ()> callback) : callback (std::move (callback)) {}
@@ -268,5 +361,6 @@ void painter_test_register_reentry ()
   g_test_add_func ("/painter/reentry/constructor-close", constructor_close);
   g_test_add_func ("/painter/reentry/constructor-duplicate", constructor_duplicate);
   g_test_add_func ("/painter/reentry/constructor-owner-loss", constructor_owner_loss);
+  g_test_add_func ("/painter/signal/close-receiver-lifetime", signal_close_lifetime);
   g_test_add_func ("/painter/reentry/finalizing-close-read", finalizing_reentry);
 }
