@@ -14,12 +14,27 @@ template<> struct TypeTraits<PainterReadable> { static GType type () { return pa
 }
 using namespace GimpPainter;
 namespace {
-struct Stats { int constructed=0,destroyed=0,parent_calls=0; bool reenter=false; int closed_count=0; std::array<int,2> closed {{0,0}}; };
+struct Stats {
+  int constructed=0,destroyed=0,parent_calls=0;
+  bool reenter=false,trace_shutdown=false;
+  int closed_count=0,finalize_count=0;
+  std::array<int,2> closed {{0,0}}, close_by_tag {{0,0}}, destroy_by_tag {{0,0}};
+  std::array<int,4> finalize_phases {{0,0,0,0}};
+};
 Stats stats;
 struct Impl {
   explicit Impl (int tag):tag(tag) { ++stats.constructed; }
-  ~Impl () { ++stats.destroyed; }
-  void close () noexcept { g_assert_cmpint (stats.closed_count,<,2); stats.closed[stats.closed_count++]=tag; }
+  ~Impl () {
+    if (stats.trace_shutdown) {
+      g_assert_cmpint (stats.finalize_count, ==, stats.constructed);
+      g_assert_cmpint (stats.closed_count, ==, stats.constructed);
+    }
+    ++stats.destroyed; ++stats.destroy_by_tag[tag-1];
+  }
+  void close () noexcept {
+    g_assert_cmpint (stats.closed_count,<,2);
+    stats.closed[stats.closed_count++]=tag; ++stats.close_by_tag[tag-1];
+  }
   int tag,value=-1;
 };
 struct BaseSlot:SlotSpec<PainterHierarchyBase,Impl>{};
@@ -171,10 +186,47 @@ void base_missing_derived ()
 }
 void parent_dispose_reentry ()
 {
-  stats={};auto owner=child ();stats.reenter=true;
-  g_object_run_dispose (G_OBJECT (owner.get ()));g_object_run_dispose (G_OBJECT (owner.get ()));
-  g_assert_true ((stats.closed==std::array<int,2>({{2,1}})));g_assert_cmpint (stats.parent_calls,>=,3);
-  g_assert_cmpint (stats.destroyed,==,0);owner.reset ();g_assert_cmpint (stats.destroyed,==,2);
+  stats={};auto owner=child ();stats.reenter=true;stats.trace_shutdown=true;
+  auto& store=BindingStore::require (G_OBJECT (owner.get ()));
+  const auto generation=store.generation ();
+  g_object_run_dispose (G_OBJECT (owner.get ()));
+  g_assert_cmpint (stats.parent_calls,==,2); // Outer dispose and one nested dispose.
+  g_object_run_dispose (G_OBJECT (owner.get ()));
+  g_assert_cmpint (stats.parent_calls,==,3);
+  g_assert_cmpuint (store.generation (),==,generation+1);
+  g_assert_true ((stats.closed==std::array<int,2>({{2,1}})));
+  g_assert_true ((stats.close_by_tag==std::array<int,2>({{1,1}})));
+  g_assert_cmpint (stats.destroyed,==,0);g_assert_cmpint (stats.finalize_count,==,0);
+  owner.reset ();
+  g_assert_cmpint (stats.parent_calls,==,4); // Final native unref still chains dispose.
+  g_assert_cmpint (stats.destroyed,==,2);
+  g_assert_true ((stats.destroy_by_tag==std::array<int,2>({{1,1}})));
+  g_assert_true ((stats.finalize_phases==std::array<int,4>({{2,1,-1,-2}})));
+}
+
+void hierarchy_shutdown_paths ()
+{
+  for (bool derived : {false,true}) for (bool explicit_close : {false,true}) {
+    stats={};
+    auto owner=ObjectRef<GObject>::adopt (G_OBJECT (g_object_new (
+      derived ? painter_hierarchy_child_get_type () : painter_hierarchy_base_get_type (),nullptr)));
+    stats.trace_shutdown=true;
+    auto& store=BindingStore::require (owner.get ());
+    const auto generation=store.generation ();
+    if (explicit_close) { store.close ();store.close (); }
+    g_object_run_dispose (owner.get ());g_object_run_dispose (owner.get ());
+    g_assert_cmpint (stats.parent_calls,==,2);
+    g_assert_cmpuint (store.generation (),==,generation+1);
+    g_assert_cmpint (stats.closed_count,==,derived?2:1);
+    g_assert_true ((stats.close_by_tag==std::array<int,2>({{1,derived?1:0}})));
+    g_assert_cmpint (stats.destroyed,==,0);g_assert_cmpint (stats.finalize_count,==,0);
+    owner.reset ();
+    g_assert_cmpint (stats.parent_calls,==,3);
+    g_assert_cmpint (stats.destroyed,==,derived?2:1);
+    g_assert_true ((stats.destroy_by_tag==std::array<int,2>({{1,derived?1:0}})));
+    if (derived) g_assert_true ((stats.finalize_phases==std::array<int,4>({{2,1,-1,-2}})));
+    else g_assert_true ((stats.finalize_phases==std::array<int,4>({{1,-1,0,0}})));
+  }
 }
 
 void property_trace (guint base_set, guint base_get, guint child_set, guint child_get)
@@ -330,10 +382,25 @@ gint painter_hierarchy_read (PainterReadable *owner,GError **error)
 void painter_hierarchy_parent_dispose (GObject *owner)
 {
   ++stats.parent_calls;
+  if (stats.trace_shutdown) {
+    g_assert_cmpint (stats.closed_count,==,stats.constructed);
+    g_assert_cmpint (stats.destroyed,==,0);
+    g_assert_cmpint (stats.finalize_count,==,0);
+    g_assert_cmpint (stats.closed[0],==,stats.constructed);
+    if (stats.constructed==2) g_assert_cmpint (stats.closed[1],==,1);
+  }
   g_assert_true(BindingStore::require(owner).state()==BindingStore::State::closed);
   g_assert_cmpint(painter_hierarchy_get(owner,FALSE),>=,0);
   if(G_TYPE_CHECK_INSTANCE_TYPE(owner,painter_hierarchy_child_get_type()))g_assert_cmpint(painter_hierarchy_get(owner,TRUE),>=,0);
   if(stats.reenter){stats.reenter=false;g_object_run_dispose(owner);}
+}
+void painter_hierarchy_finalize_phase (gint phase)
+{
+  if (!stats.trace_shutdown) return;
+  g_assert_cmpint (stats.finalize_count,<,4);
+  stats.finalize_phases[stats.finalize_count++]=phase;
+  g_assert_cmpint (stats.closed_count,==,stats.constructed);
+  g_assert_cmpint (stats.destroyed,==,phase>0?0:stats.constructed);
 }
 void painter_test_register_hierarchy ()
 {
@@ -344,5 +411,6 @@ void painter_test_register_hierarchy ()
   g_test_add_func("/painter/hierarchy/native-property-owner-dispatch",native_property_owner_dispatch);
   g_test_add_func("/painter/hierarchy/inherited-property-delegation",inherited_property_delegation);
   g_test_add_func("/painter/hierarchy/parent-dispose-reentry",parent_dispose_reentry);
+  g_test_add_func("/painter/hierarchy/shutdown-paths",hierarchy_shutdown_paths);
   g_test_add_func("/painter/hierarchy/type-ancestry",type_ancestry);
 }

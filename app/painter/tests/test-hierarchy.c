@@ -39,6 +39,18 @@ static void child_dispose (GObject *owner)
   g_assert_true (gimp_painter_binding_close (owner,NULL));
   G_OBJECT_CLASS (painter_hierarchy_child_parent_class)->dispose (owner);
 }
+static void base_finalize (GObject *owner)
+{
+  painter_hierarchy_finalize_phase (1);
+  G_OBJECT_CLASS (painter_hierarchy_base_parent_class)->finalize (owner);
+  painter_hierarchy_finalize_phase (-1);
+}
+static void child_finalize (GObject *owner)
+{
+  painter_hierarchy_finalize_phase (2);
+  G_OBJECT_CLASS (painter_hierarchy_child_parent_class)->finalize (owner);
+  painter_hierarchy_finalize_phase (-2);
+}
 static void base_set (GObject *owner, guint id, const GValue *value, GParamSpec *spec)
 {
   ++property_trace.base_set;
@@ -67,6 +79,7 @@ static void painter_hierarchy_base_class_init (PainterHierarchyBaseClass *klass)
 {
   GObjectClass *object = G_OBJECT_CLASS (klass);
   object->constructed = base_constructed; object->dispose = base_dispose;
+  object->finalize = base_finalize;
   object->set_property = base_set; object->get_property = base_get;
   g_object_class_install_property (object,1,g_param_spec_int ("base-value","Base value","Base value",0,99,7,G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
 }
@@ -74,6 +87,7 @@ static void painter_hierarchy_child_class_init (PainterHierarchyChildClass *klas
 {
   GObjectClass *object = G_OBJECT_CLASS (klass);
   object->dispose = child_dispose; object->set_property = child_set; object->get_property = child_get;
+  object->finalize = child_finalize;
   g_object_class_install_property (object,2,g_param_spec_int ("child-value","Child value","Child value",0,99,9,G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
 }
 static void painter_hierarchy_base_init (PainterHierarchyBase *self) { painter_hierarchy_init_binding (G_OBJECT (self),FALSE); }

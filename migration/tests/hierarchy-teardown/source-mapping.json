@@ -1,0 +1,65 @@
+{
+  "task": "06.027",
+  "audited_head": "c7521dcdc09e01d5bf52f772fcf11d2ee25b4bc5",
+  "audited_tree": "ad5ffb7a53123351a61097c6eb0f74b982cee14d",
+  "legacy_source": {
+    "path": "migration/tests/inherited-properties/legacy-source/glib-cxx-impl.hpp",
+    "bytes": 18618,
+    "git_blob": "a2ad35e37a3e7a481698c1f8b78b71adb385f7d3",
+    "full_file_sha256": "5c50241a85ee4caaadb5c28cb4499c4348666281d24078c318cd31c643f04887",
+    "caller_census_member": "source/app/base/glib-cxx-impl.hpp",
+    "caller_census_bytes_identical": true,
+    "ledger_source_sha256_meaning": "Immutable addition-hunk hash; intentionally differs from recovered full-file hash"
+  },
+  "legacy_mapping": [
+    {
+      "lines": "384-385,407-423",
+      "behavior": "Per-specialization saved parent and private offset; placement-new native-private Impl, explicit Impl destructor, then saved parent finalize; get_private resolves by native declared GType"
+    },
+    {
+      "lines": "426-443,511-515",
+      "behavior": "Save immediate parent class at class initialization; install own instance_finalize; parent/private bookkeeping belongs to template specialization"
+    },
+    {
+      "lines": "519-531",
+      "behavior": "Register declared native parent and instance-init callback; allocate instance-private sizeof(Impl) storage"
+    }
+  ],
+  "replacement_mapping": [
+    {
+      "path": "app/painter/binding-store.cpp",
+      "lines": "10-13,19-28,31-40",
+      "behavior": "Single native owner qdata destroy notifier deletes store; store sets finalizing, closes if needed, then destroys each uniquely-owned entry"
+    },
+    {
+      "path": "app/painter/binding-store.cpp",
+      "lines": "80-96",
+      "behavior": "Publish closing and increment generation once before reverse-registration close; closing/closed reentry returns; public close retains owner for synchronous hooks"
+    },
+    {
+      "path": "app/painter/binding-store.hpp",
+      "lines": "129-142",
+      "behavior": "Each entry owns one Impl and sets its closed flag before calling hook; Entry destructor fallback cannot repeat hook"
+    },
+    {
+      "path": "app/painter/tests/test-hierarchy.c",
+      "lines": "31-40,66-80",
+      "behavior": "Real C Child dispose closes store and calls fixed Base parent; Base closes same store and calls parent-observer then GObject parent; base/child init register separate slots"
+    },
+    {
+      "path": "app/painter/tests/test-hierarchy.cpp",
+      "lines": "17-24,172-178,330-336",
+      "behavior": "Current regression checks close tags [2,1], lower-bound parent call count, total destruction after final release, parent const reads after closed state, and one nested run_dispose"
+    }
+  ],
+  "scope_limits": [
+    "One common lifecycle source obligation, dependent on 06.026; no added all-feature, all-platform, whole-GIMP or LSan gate",
+    "Old source has no separate reusable close/dispose state machine; new contract separates logical reverse close from one final memory release",
+    "Original condition does not require reverse Impl destructor order. BindingStore entries_.clear destruction order must not be turned into a newly invented contract",
+    "Do not require parent dispose globally once: GObject permits repeated and nested disposal; slot close and destruction must be once while required parent chaining repeats"
+  ],
+  "work_id": "legacy-1ff25c784d3e86f0c831",
+  "source_hunk": "01.002/000045",
+  "snapshot_note": "Mapping line numbers describe the fixed audited parent. Current runtime evidence for the added shutdown assertions is native.json and sanitizers.json.",
+  "result": "Existing common lifecycle contract verified with real native base/child C vfuncs, per-slot close/destruction counts, exact repeated/reentrant parent counts, generation invariance and native finalize tracing. No production change or double-free claim."
+}
