@@ -104,6 +104,40 @@ static void cpp_exception_policy (gboolean use_void_boundary)
 static void cpp_result_boundary_policy (void) { cpp_exception_policy (FALSE); }
 static void cpp_void_boundary_policy (void) { cpp_exception_policy (TRUE); }
 
+static void cpp_construction_failure (void)
+{
+  guint continued = 0;
+  for (gint failure = 0; failure <= 2; ++failure)
+    for (gint with_error = 0; with_error <= 1; ++with_error)
+      {
+        GError *error = NULL;
+        PainterTestConstructionResult result = {0};
+        const gboolean success = painter_test_cpp_construction (
+          failure, &result, with_error ? &error : NULL);
+        ++continued; /* Execution must resume in this C11 translation unit. */
+        g_assert_cmpint (success, ==, failure == 0);
+        if (failure && with_error)
+          {
+            g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_EXCEPTION);
+            if (failure == 1)
+              g_assert_cmpstr (error->message, ==, "after resource acquisition");
+            else
+              g_assert_true (error->message && error->message[0]);
+          }
+        else
+          g_assert_no_error (error);
+        g_clear_error (&error);
+        g_assert_cmpint (result.cpp_freed, ==, 1);
+        g_assert_cmpint (result.object_freed, ==, 1);
+        g_assert_cmpint (result.array_elements_freed, ==, 2);
+        g_assert_cmpint (result.owner_finalized, ==, 1);
+        g_assert_cmpint (result.completed, ==, failure == 0);
+        g_assert_cmpint (result.closed, ==, failure == 0);
+        g_assert_cmpint (result.destroyed, ==, failure == 0);
+      }
+  g_assert_cmpuint (continued, ==, 6);
+}
+
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
@@ -112,6 +146,7 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter/interop/cpp-error-without-gerror", cpp_error_without_gerror);
   g_test_add_func ("/painter/interop/result-boundary-policy", cpp_result_boundary_policy);
   g_test_add_func ("/painter/interop/void-boundary-policy", cpp_void_boundary_policy);
+  g_test_add_func ("/painter/interop/construction-failure", cpp_construction_failure);
   painter_test_register ();
   return g_test_run ();
 }

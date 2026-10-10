@@ -1123,19 +1123,29 @@
       "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
         "app/painter/binding-store.hpp",
-        "app/painter/binding-store.cpp"
+        "app/painter/binding-store.cpp",
+        "app/painter/boundary.hpp",
+        "app/painter/object-ref.hpp",
+        "app/painter/resources.hpp",
+        "app/painter/tests/test-c-api.h",
+        "app/painter/tests/test-c-api.c",
+        "app/painter/tests/test-foundation.cpp",
+        "app/painter/tests/test-reentry.cpp"
       ],
       "test_ids": [
+        "/painter/interop/construction-failure",
         "/painter/store/construction-failure",
+        "/painter/store/acquired-construction-failure",
         "/painter/reentry/constructor-close",
         "/painter/reentry/constructor-duplicate",
         "/painter/reentry/constructor-owner-loss"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/construction-boundary/native.json",
+        "migration/tests/construction-boundary/sanitizers.json",
+        "migration/tests/construction-boundary/meson.json"
       ],
-      "scope_or_gap": "Slot construction and prohibited constructor callback failures are injected; feature-specific GType class initialization audit remains separate."
+      "scope_or_gap": "Original07.016 combined C11 caller -> C-linkage C++ boundary -> resource-acquiring failed constructor now measured with standard/bad_alloc and optionalGError; native/ASanUBSan/Meson70 current25seals. Prior allocation5+5 reports have10 unchangedseals. Three pinned duties accepted; no production defect, LSan, fatal GLib OOM or all-feature class-init claim."
     },
     {
       "id": "07.017",
