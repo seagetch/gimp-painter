@@ -436,3 +436,14 @@ available for their cleanup. Finalization destroys each Impl once; the common
 contract does not specify an order between Impl destructors. The
 [native hierarchy tests](../tests/hierarchy-teardown/README.md) observe per-slot
 counts, generation, parent reentry and C finalize phases directly.
+
+## Independent asynchronous state (original 06.028)
+
+An asynchronous processor owns its input, result, cancellation token and required
+execution descriptors independently of the owner Impl. Native owner/UI objects,
+borrowed slots and owner-side callbacks must not be captured by worker closures.
+Cancellation requests do not imply completion or permit releasing a running
+job's admission lease. Closed owners cannot import or publish a late result.
+Worker-side resources and captures are released before the independent lifetime
+token is retired. [Gated vector/spill tests and native owner-close checks](../tests/independent-jobs/README.md)
+observe these conditions through completion, including result access after close.

@@ -1,0 +1,95 @@
+{
+  "task": "06.028",
+  "acceptance": "owner Impl を捕捉せず入力・結果・cancel 状態を所有",
+  "audited_local_commit": "e6a045de031cadc07c4b4beb833cb6c37d0145b4",
+  "audited_tree": "e4787aa0688d491def7a3d751ca56aa7aa25d369",
+  "ledger": {
+    "exact_assignment_counts": {
+      "migration/inventory/hunk-wbs.tsv": {
+        "06.028": 0,
+        "07.012": 0
+      },
+      "migration/inventory/asset-wbs.tsv": {
+        "06.028": 0,
+        "07.012": 0
+      },
+      "migration/inventory/legacy-port-work-items.tsv": {
+        "06.028": 0,
+        "07.012": 0
+      }
+    },
+    "conclusion": "Zero exact legacy duties exist for 06.028 in both original assignment inventories and expanded ledger. Do not invent, retarget, or accept a neighboring legacy duty. Original WBS remains independently scoped by tasks.md:350.",
+    "generation_source": "tools/audit_legacy_granularity.py:24-48 expands only assigned hunk/asset task IDs."
+  },
+  "source_mapping": [
+    {
+      "concern": "Independent vector job",
+      "source": [
+        "app/painter/filter-scheduler.hpp:17-43",
+        "app/painter/filter-scheduler.cpp:24-38",
+        "app/painter/filter-scheduler.cpp:305-325"
+      ],
+      "finding": "Job owns input/output vectors, atomic cancelled/done, process closure, generation/error and admission lease. Input moves into Job. Detached thread captures shared Job and FilterLifetime only; no scheduler, FilterImpl, owner GObject or UI callback."
+    },
+    {
+      "concern": "Independent spill job",
+      "source": [
+        "app/painter/filter-spool.cpp:65-80",
+        "app/painter/filter-spool.cpp:88-148",
+        "app/painter/filter-spool.cpp:151-171"
+      ],
+      "finding": "Detached thread captures shared State and FilterLifetime. State owns process, dimensions, path, queues, atomics, error and lease; run owns snapshot/result files. Factory capture of this at line127 refers to independent State, not FilterImpl. File destruction precedes done publication."
+    },
+    {
+      "concern": "Ownership transfer and completion visibility",
+      "source": [
+        "app/painter/filter-spool.cpp:37-63",
+        "app/painter/filter-spool.cpp:174-199",
+        "app/painter/filter-scheduler.cpp:200-215",
+        "app/painter/filter-scheduler.cpp:340-378"
+      ],
+      "finding": "Spool moves chunks through SPSC queues; cancellation is independent atomic state. Vector done release/acquire publishes result/error. Import holds a local shared Job so callback-driven close cannot destroy its borrowed result bytes. Spool waits for done/success before commit."
+    },
+    {
+      "concern": "Close and finalization",
+      "source": [
+        "app/painter/filter-scheduler.cpp:48-54",
+        "app/painter/filter-scheduler.cpp:122-131",
+        "app/core/gimpfilterlayer.cpp:119-139",
+        "app/core/gimpfilterlayer.cpp:1287-1288",
+        "app/core/gimpfilterlayer.cpp:1413-1414"
+      ],
+      "finding": "Image disconnect and native dispose close BindingStore; FilterImpl close cancels scheduler before clearing callbacks/resources. Scheduler close signals cancel, drops owner Job ref, releases preparation, and becomes inert without joining. Worker-held Job/State persists independently."
+    },
+    {
+      "concern": "Production process captures",
+      "source": [
+        "app/core/gimpfilterlayer.cpp:386-406",
+        "app/core/gimpfilterlayer.cpp:461-495",
+        "app/core/gimpfilterlayer.cpp:508-516",
+        "app/core/gimpfilterlayer.cpp:614-640",
+        "app/painter/filter-procedure.hpp:18-46"
+      ],
+      "finding": "Kernel closures capture value options/dimensions and owned progress. Isolated process captures shared plain descriptor/options/atomic outcome/progress. They do not capture FilterImpl. Descriptor/options owner writes occur during preparation before seal; generation replacement owns new descriptors."
+    },
+    {
+      "concern": "Owner callbacks stay on owner side",
+      "source": [
+        "app/painter/filter-scheduler.hpp:49-58",
+        "app/core/gimpfilterlayer.cpp:77-94",
+        "app/core/gimpfilterlayer.cpp:642-657",
+        "app/core/gimpfilterlayer.cpp:1059-1198"
+      ],
+      "finding": "Read/import/commit/gates are ephemeral arguments to step, never stored in Job. Dispatcher owns weak owner plus binding-generation callback; BindingStore with lease guards current owner-side synchronous call."
+    }
+  ],
+  "outside_scope": [
+    "Full generic FilterLayer procedure coverage",
+    "Huge-image latency/RSS",
+    "Platform acceptance",
+    "Unrelated07.012 main-context completion acceptance",
+    "All feature-specific jobs"
+  ],
+  "snapshot_note": "Source locations refer to the fixed audited parent; current test changes and execution are recorded in this directory. Zero direct source duties remain zero.",
+  "current_verification": "Gated owner destruction with post-close input/result/cancel observations, vector/spill import-close bytes, final lifetime and reservation release; real native owner close drains workers and separately observes late main-context dispatch."
+}

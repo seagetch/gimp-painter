@@ -26,6 +26,7 @@
 #include "tests.h"
 #include "gimp-app-test-utils.h"
 void gimp_test_filter_cpp_config (Gimp *application);
+gsize gimp_test_filter_pending_jobs (void);
 void gimp_test_filter_owner_context_native (Gimp *application);
 void gimp_test_filter_parameter_reordering (Gimp *application);
 void gimp_test_filter_parameter_metadata (Gimp *application);
@@ -1851,6 +1852,13 @@ static void small_image_finishes_during_large_preparation (void)
   settle (large_filter); pixel (GIMP_LAYER (large_filter),0,0,0,255);
   g_object_unref (large); g_object_unref (small);
 }
+static void drain_closed_filter_jobs (void)
+{
+  const gint64 deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+  while (gimp_test_filter_pending_jobs () && g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
+  g_assert_cmpuint (gimp_test_filter_pending_jobs (), ==, 0);
+}
 static void image_close_during_worker (void)
 {
   gint finalized = 0;
@@ -1874,7 +1882,8 @@ static void image_close_during_worker (void)
   g_object_unref (image);
   g_assert_cmpint (g_get_monotonic_time () - start, <, 100000);
   g_assert_cmpint (finalized, ==, 3);
-  spin_ms (30); /* lets the detached, cancelled, UI-free worker release bytes */
+  drain_closed_filter_jobs (); /* Observe completion, not an estimated sleep. */
+  g_assert_cmpint (finalized, ==, 3);
 }
 typedef struct { GimpLayer *source; guint updates; } Editing;
 static gboolean edit_lower_repeatedly (gpointer data)
@@ -2314,6 +2323,9 @@ static void retained_handle_after_image_close (void)
       g_assert_null (gimp_item_get_image (GIMP_ITEM (filter)));
       g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
       after_close = updates;
+      drain_closed_filter_jobs ();
+      /* Even a pre-run or already-finished worker can leave owner-side idle
+       * callbacks. Drain completion and observe late dispatch independently. */
       spin_ms (50);
       g_assert_cmpuint (updates, ==, after_close);
       g_assert_cmpuint (gimp_filter_layer_get_cache_generation (filter), ==, cache_generation);

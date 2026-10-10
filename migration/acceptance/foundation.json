@@ -577,18 +577,24 @@
       "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
         "app/painter/filter-scheduler.cpp",
+        "app/painter/filter-scheduler.hpp",
         "app/painter/filter-spool.cpp",
-        "app/core/gimpfilterlayer.cpp"
+        "app/painter/filter-spool.hpp",
+        "app/painter/filter-lifetime.cpp",
+        "app/painter/work-admission.hpp",
+        "app/painter/tests/test-filter-scheduler.cpp"
       ],
       "test_ids": [
-        "/gimp-filter-layer/image_close_during_worker",
-        "/gimp-filter-layer/retained_handle_after_image_close"
+        "/painter-filter-scheduler/independent_state_after_owner_destruction",
+        "/painter-filter-scheduler/spool_close_during_import_keeps_callback_bytes",
+        "/painter-filter-scheduler/vector_close_during_import_keeps_callback_bytes",
+        "/painter-filter-scheduler/cancel_request_is_not_completion"
       ],
       "reports": [
-        "migration/tests/filter-process-checkpoint/native.json",
-        "migration/tests/filter-process-checkpoint/foundation-sanitizers.json"
+        "migration/tests/independent-jobs/native-scheduler.json",
+        "migration/tests/independent-jobs/sanitizers.json"
       ],
-      "scope_or_gap": "Independent Filter job inputs/results/cancel/lease and owner-close behavior pass the current94-case native suite plus these two focused ASan/UBSan cases against sealed unchanged sources. The separately recorded11 native process/cancel/exit cases and actual active-job Quit prove the first isolated Blinds route only. Native normal fingerprints were captured immediately after its run, without an independent before/after pair. Huge-image memory/latency, every feature-specific job, context phases and platform gates remain open; LSan is off and other app/dependencies ordinary."
+      "scope_or_gap": "Original independent job-state condition verified by deterministic vector/spill owner-destruction gates with post-close input/result/cancel access, final capture/lease/lifetime release and import-close byte checks.39 native and ASan/UBSan scheduler cases. Separate native-layer.json seals current GIMP integration2 cases with actual worker drain plus late owner callback observation; GIMP is not sanitizer-instrumented in that report. Zero direct legacy duties; source ledger unchanged. Trusted adapter captures are source-audited; LSan, all-feature/platform and07.012 remain separate."
     },
     {
       "id": "06.029",
