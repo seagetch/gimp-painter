@@ -1,0 +1,127 @@
+{
+  "task": "07.015",
+  "parent": "c4bdc33eac89acd121563ab322d4cf85dbdeafda",
+  "source_duties": [
+    {
+      "work_id": "legacy-faf836ca7033b5a0a31d",
+      "source_id": "01.002/000043",
+      "path": "app/base/glib-cxx-bridge.hpp",
+      "source_blob": "5a56ab19e30499a86fa93d81419f907812652c4d",
+      "source_range": "-0,0 -> 1,42",
+      "source_sha256": "16eb3824d7ce715852b1e8e365976e8587d1e99b69021990e631992da37cba33",
+      "source_copy": "migration/tests/inherited-slots/legacy-source/glib-cxx-bridge.hpp",
+      "source_copy_sha256": "c7288258efa4826a7fcc10da63ede842cbfa863a183da96145040056a4ac4134",
+      "legacy_role": "Native class/interface GType declarations, lines12-38",
+      "replacement": "TypeTraits + ObjectRef native ancestry validation + SlotSpec owner type; actual child/base/interface retrieval and incompatible view rejection",
+      "tests": [
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/slot-identity",
+        "/painter/hierarchy/base-missing-derived",
+        "/painter/hierarchy/type-ancestry",
+        "/painter/store/multiple-slots",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup",
+        "/painter/gobject/type-rejection"
+      ]
+    },
+    {
+      "work_id": "legacy-21409d0302e398fe755f",
+      "source_id": "01.002/000045",
+      "path": "app/base/glib-cxx-impl.hpp",
+      "source_blob": "a2ad35e37a3e7a481698c1f8b78b71adb385f7d3",
+      "source_range": "-0,0 -> 1,560",
+      "source_sha256": "c24566a896ca3302c75736d6e78458027fc19b41b5b7d220a7990e8ecedbdf69",
+      "source_copy": "migration/tests/inherited-properties/legacy-source/glib-cxx-impl.hpp",
+      "source_copy_sha256": "5c50241a85ee4caaadb5c28cb4499c4348666281d24078c318cd31c643f04887",
+      "legacy_role": "DerivedFrom/UseCStructs parent structure, lines30-47; get_private421-423; Binder453-456; native parent registration523",
+      "replacement": "One BindingStore per native owner; BaseSlot and ChildSlot installed by native C instance initialization; exact Slot identity replaces private-offset Impl lookup, with typed scoped mutable/const access",
+      "tests": [
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/slot-identity",
+        "/painter/hierarchy/base-missing-derived",
+        "/painter/hierarchy/type-ancestry",
+        "/painter/store/multiple-slots",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup",
+        "/painter/gobject/type-rejection"
+      ]
+    },
+    {
+      "work_id": "legacy-0e1cebc69eaaa0635b95",
+      "source_id": "01.002/000046",
+      "path": "app/base/glib-cxx-types.hpp",
+      "source_blob": "19a9d47773fa06a1c654283a6d2e033a67b2428a",
+      "source_range": "-0,0 -> 1,114",
+      "source_sha256": "c838223f5bfeacef1026dc348db1b4ce7d9a01146b28be8f2a8e7542dde46649",
+      "source_copy": "migration/tests/inherited-slots/legacy-source/glib-cxx-types.hpp",
+      "source_copy_sha256": "ecf261a0d66c562924ca0f72cacc7cf84183e4f442af8002b6e8ab5082a6885e",
+      "legacy_role": "TraitsBase Instance/Class/GType and ancestry, lines51-64; class/interface macros85-112",
+      "replacement": "TypeTraits + checked ObjectRef + SlotSpec preserve native type relationships; base-only child lookup rejects before callback without lazy Impl creation",
+      "tests": [
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/slot-identity",
+        "/painter/hierarchy/base-missing-derived",
+        "/painter/hierarchy/type-ancestry",
+        "/painter/store/multiple-slots",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup",
+        "/painter/gobject/type-rejection"
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "path": "migration/tests/boundary-conversion/native.json",
+      "sha256": "b75e794109596ec7cd71cf4609e54d6183dd0ddd4c0c39362cc67f7896a31268",
+      "current_source_seals": 25,
+      "required_cases": [
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/slot-identity",
+        "/painter/hierarchy/base-missing-derived",
+        "/painter/hierarchy/type-ancestry",
+        "/painter/store/multiple-slots",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup",
+        "/painter/gobject/type-rejection"
+      ],
+      "all_cases": 69,
+      "status": "PASS"
+    },
+    {
+      "path": "migration/tests/boundary-conversion/sanitizers.json",
+      "sha256": "cf5e920226f0fd7b772e6a165c2844efb12a35cabc11765549d4647131c0a469",
+      "current_source_seals": 25,
+      "required_cases": [
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/slot-identity",
+        "/painter/hierarchy/base-missing-derived",
+        "/painter/hierarchy/type-ancestry",
+        "/painter/store/multiple-slots",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup",
+        "/painter/gobject/type-rejection"
+      ],
+      "all_cases": 69,
+      "status": "PASS"
+    },
+    {
+      "path": "migration/tests/boundary-conversion/meson.json",
+      "sha256": "cf072fdb26e5b1abf05b63edd683f293e8de69fe1efd970c21ae3aa2dc5f8f84",
+      "current_source_seals": 25,
+      "required_cases": [
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/slot-identity",
+        "/painter/hierarchy/base-missing-derived",
+        "/painter/hierarchy/type-ancestry",
+        "/painter/store/multiple-slots",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup",
+        "/painter/gobject/type-rejection"
+      ],
+      "all_cases": 69,
+      "status": "PASS"
+    }
+  ],
+  "routing_changes": 0,
+  "source_duties_accepted": 3
+}

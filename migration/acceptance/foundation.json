@@ -1092,17 +1092,29 @@
       "implementation_paths": [
         "app/painter/binding-store.hpp",
         "app/painter/binding-store.cpp",
+        "app/painter/object-ref.hpp",
+        "app/painter/tests/test-hierarchy.h",
         "app/painter/tests/test-hierarchy.c",
-        "app/painter/tests/test-hierarchy.cpp"
+        "app/painter/tests/test-hierarchy.cpp",
+        "app/painter/tests/test-foundation.cpp",
+        "app/painter/tests/test-gobject.cpp"
       ],
       "test_ids": [
-        "/painter/hierarchy/properties-interface"
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/slot-identity",
+        "/painter/hierarchy/base-missing-derived",
+        "/painter/hierarchy/type-ancestry",
+        "/painter/store/multiple-slots",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup",
+        "/painter/gobject/type-rejection"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/boundary-conversion/native.json",
+        "migration/tests/boundary-conversion/sanitizers.json",
+        "migration/tests/boundary-conversion/meson.json"
       ],
-      "scope_or_gap": "Actual base/derived GTypes share one store with distinct slots of the same Impl type; inherited and own properties plus interface reads roundtrip."
+      "scope_or_gap": "Original07.015: actual native base/derived/interface views, distinct same-Impl slots, alias/lookalike identities, incompatible GType and missing-derived rejection; three pinned source duties mapped; all25 report seals current. Existing measured69-case native/ASanUBSan/Meson reports reused without rewriting historical seals. No all-feature or obsolete GTK catalog claim."
     },
     {
       "id": "07.016",
