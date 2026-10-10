@@ -627,17 +627,19 @@
       "dependencies": "06.029",
       "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
-        "app/painter/object-ref.hpp"
+        "app/painter/object-ref.hpp",
+        "app/painter/tests/test-foundation.cpp"
       ],
       "test_ids": [
-        "/painter/ref/floating-sink",
-        "/painter/ref/copy-move-adopt-retain"
+        "/painter/ref/retain-factory",
+        "/painter/ref/adopt-factory",
+        "/painter/ref/sink-factory"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/construction-failure/native.json",
+        "migration/tests/construction-failure/sanitizers.json"
       ],
-      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+      "scope_or_gap": "Original retain/adopt/sink verification complete from current 65-case native and ASan/UBSan reports. All recorded source seals and three dedicated factory PASS lines verified; Meson65 also matches. Exact private GObject/GInitiallyUnowned live counts, floating state, null handles and one weak-finalizer release observed. One old source duty mapped. No redundant test rerun, new production change, LSan or cross-platform claim."
     },
     {
       "id": "07.002",
