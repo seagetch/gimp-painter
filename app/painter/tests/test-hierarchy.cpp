@@ -18,6 +18,7 @@ struct Stats {
   int constructed=0,destroyed=0,parent_calls=0;
   bool reenter=false,trace_shutdown=false;
   int closed_count=0,finalize_count=0;
+  int interface_entered=0,interface_unwound=0;
   std::array<int,2> closed {{0,0}}, close_by_tag {{0,0}}, destroy_by_tag {{0,0}};
   std::array<int,4> finalize_phases {{0,0,0,0}};
 };
@@ -36,6 +37,7 @@ struct Impl {
     stats.closed[stats.closed_count++]=tag; ++stats.close_by_tag[tag-1];
   }
   int tag,value=-1;
+  int read_failure=0; // Fixture-only failure injection, independent of properties.
 };
 struct BaseSlot:SlotSpec<PainterHierarchyBase,Impl>{};
 struct ChildSlot:SlotSpec<PainterHierarchyChild,Impl>{};
@@ -112,6 +114,47 @@ void interface_exception_boundary ()
   g_assert_error (error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_EXCEPTION);g_clear_error (&error);
   g_object_set (owner.get (),"child-value",14,nullptr);
   g_assert_cmpint (painter_readable_read (reinterpret_cast<PainterReadable*>(owner.get ()),&error),==,31);g_assert_no_error (error);
+}
+
+void interface_exception_policy ()
+{
+  stats = {};
+  auto owner = child ();
+  auto *readable = reinterpret_cast<PainterReadable *> (owner.get ());
+  auto& store = BindingStore::require (G_OBJECT (owner.get ()));
+  const char *messages[] = {nullptr, "typed interface failure", "standard interface failure",
+                            nullptr, "Unknown C++ exception"};
+  for (int kind = 1; kind <= 4; ++kind)
+    {
+      store.with<ChildSlot> ([&] (Impl& impl) { impl.read_failure = kind; });
+      for (bool output_error : {true, false})
+        {
+          GError *error = nullptr;
+          const auto entered = stats.interface_entered;
+          const auto unwound = stats.interface_unwound;
+          // This exported C function dispatches the actual native interface slot.
+          g_assert_cmpint (painter_readable_read (readable, output_error ? &error : nullptr), ==, -1);
+          g_assert_cmpint (stats.interface_entered, ==, entered + 1);
+          g_assert_cmpint (stats.interface_unwound, ==, unwound + 1);
+          if (output_error)
+            {
+              const int code = kind == 1 ? GIMP_PAINTER_ERROR_CLOSED : GIMP_PAINTER_ERROR_EXCEPTION;
+              g_assert_error (error, GIMP_PAINTER_ERROR, code);
+              if (messages[kind]) g_assert_cmpstr (error->message, ==, messages[kind]);
+              else g_assert_true (error->message && error->message[0]);
+              g_clear_error (&error);
+            }
+          g_assert_null (error);
+          g_assert_cmpuint (G_OBJECT (owner.get ())->ref_count, ==, 1);
+          store.read<ChildSlot> ([] (const Impl& impl) { g_assert_cmpint (impl.value, ==, 31); });
+        }
+      store.with<ChildSlot> ([] (Impl& impl) { impl.read_failure = 0; });
+      GError *error = nullptr;
+      g_assert_cmpint (painter_readable_read (readable, &error), ==, 48);
+      g_assert_no_error (error);
+    }
+  g_assert_cmpint (stats.interface_entered, ==, 8);
+  g_assert_cmpint (stats.interface_unwound, ==, 8);
 }
 
 void slot_identity ()
@@ -378,7 +421,28 @@ void painter_hierarchy_set (GObject *owner,gboolean is_child,gint value)
 gint painter_hierarchy_get (GObject *owner,gboolean is_child)
 { GError* error=nullptr;auto value=boundary<gint>(&error,-1,[&]{auto& store=BindingStore::require(owner);auto read=[](const Impl& s){return s.value;};return is_child?store.read<ChildSlot>(read):store.read<BaseSlot>(read);});g_assert_no_error(error);return value; }
 gint painter_hierarchy_read (PainterReadable *owner,GError **error)
-{ return boundary<gint>(error,-1,[&]{int base=painter_hierarchy_get(G_OBJECT(owner),FALSE),child=painter_hierarchy_get(G_OBJECT(owner),TRUE);if(child==13)throw std::runtime_error("interface failure");return base+child;}); }
+{
+  return boundary<gint> (error, -1, [&] {
+    auto& store = BindingStore::require (G_OBJECT (owner));
+    const int failure = store.read<ChildSlot> ([] (const Impl& impl) { return impl.read_failure; });
+    if (failure)
+      {
+        ++stats.interface_entered;
+        struct Unwind { ~Unwind () { ++stats.interface_unwound; } } unwind;
+        switch (failure)
+          {
+          case 1: throw Error (GIMP_PAINTER_ERROR_CLOSED, "typed interface failure");
+          case 2: throw std::runtime_error ("standard interface failure");
+          case 3: throw std::bad_alloc ();
+          default: throw 17;
+          }
+      }
+    const int base = painter_hierarchy_get (G_OBJECT (owner), FALSE);
+    const int child = painter_hierarchy_get (G_OBJECT (owner), TRUE);
+    if (child == 13) throw std::runtime_error ("interface failure");
+    return base + child;
+  });
+}
 void painter_hierarchy_parent_dispose (GObject *owner)
 {
   ++stats.parent_calls;
@@ -406,6 +470,7 @@ void painter_test_register_hierarchy ()
 {
   g_test_add_func("/painter/hierarchy/properties-interface",hierarchy_properties_interface);
   g_test_add_func("/painter/hierarchy/interface-exception",interface_exception_boundary);
+  g_test_add_func("/painter/hierarchy/interface-exception-policy",interface_exception_policy);
   g_test_add_func("/painter/hierarchy/slot-identity",slot_identity);
   g_test_add_func("/painter/hierarchy/base-missing-derived",base_missing_derived);
   g_test_add_func("/painter/hierarchy/native-property-owner-dispatch",native_property_owner_dispatch);
