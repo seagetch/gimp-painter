@@ -1,0 +1,70 @@
+{
+  "task": "07.017",
+  "parent": "96f8c0fee40c434576bb2f8bf69fdd682ebb3986",
+  "source_duties": [
+    {
+      "work_id": "legacy-b7378cb884cde25e0184",
+      "source_kind": "hunk",
+      "source_id": "01.002/000045",
+      "path": "app/base/glib-cxx-impl.hpp",
+      "source_blob": "a2ad35e37a3e7a481698c1f8b78b71adb385f7d3",
+      "source_range": "-0,0 -> 1,560",
+      "source_sha256": "c24566a896ca3302c75736d6e78458027fc19b41b5b7d220a7990e8ecedbdf69",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "07.017",
+      "action": "親 dispose の再入を試験する",
+      "acceptance": "close 済みの子状態を親 callback が安全に扱う",
+      "source_copy": "migration/tests/inherited-properties/legacy-source/glib-cxx-impl.hpp",
+      "source_copy_sha256": "5c50241a85ee4caaadb5c28cb4499c4348666281d24078c318cd31c643f04887",
+      "legacy_role": "Private Impl retrieval and destruction before native parent finalize, lines407-443; no native dispose override in this legacy helper",
+      "replacement": "Native child/base dispose close the common store before chaining to the parent; closed const state remains owned/readable until native finalize/qdata destruction; finalizing reads reject without ref resurrection",
+      "tests": [
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/hierarchy/shutdown-paths",
+        "/painter/reentry/finalizing-close-read"
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "path": "migration/tests/construction-boundary/native.json",
+      "sha256": "ecc237826c88043525ca0e5e9d48731c2a6c6a66a66c38d8c1623f1887474f2f",
+      "all_cases": 70,
+      "current_source_seals": 25,
+      "required_cases": [
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/hierarchy/shutdown-paths",
+        "/painter/reentry/finalizing-close-read"
+      ],
+      "status": "PASS"
+    },
+    {
+      "path": "migration/tests/construction-boundary/sanitizers.json",
+      "sha256": "2bcd08b956adfbc0b0ce5a5a1f59d8d6c3ac5b861bd1f08d5606f5405db6151f",
+      "all_cases": 70,
+      "current_source_seals": 25,
+      "required_cases": [
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/hierarchy/shutdown-paths",
+        "/painter/reentry/finalizing-close-read"
+      ],
+      "status": "PASS"
+    },
+    {
+      "path": "migration/tests/construction-boundary/meson.json",
+      "sha256": "d97582300afc94f17fd2c61f1c456b62dcbb725f1e1af66c0e3da46b26a71802",
+      "all_cases": 70,
+      "current_source_seals": 25,
+      "required_cases": [
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/hierarchy/shutdown-paths",
+        "/painter/reentry/finalizing-close-read"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "platform_corroboration": "migration/tests/platform-link/native-acceptance.json",
+  "routing_changes": 0,
+  "source_duties_accepted": 1
+}

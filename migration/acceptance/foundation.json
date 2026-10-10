@@ -1156,18 +1156,26 @@
       "implementation_paths": [
         "app/painter/binding-store.hpp",
         "app/painter/binding-store.cpp",
+        "app/painter/boundary.hpp",
+        "app/painter/object-ref.hpp",
+        "app/painter/gimp-painter-binding.h",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/painter/tests/test-hierarchy.h",
         "app/painter/tests/test-hierarchy.c",
-        "app/painter/tests/test-hierarchy.cpp"
+        "app/painter/tests/test-hierarchy.cpp",
+        "app/painter/tests/test-reentry.cpp"
       ],
       "test_ids": [
         "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/hierarchy/shutdown-paths",
         "/painter/reentry/finalizing-close-read"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/construction-boundary/native.json",
+        "migration/tests/construction-boundary/sanitizers.json",
+        "migration/tests/construction-boundary/meson.json"
       ],
-      "scope_or_gap": "Derived/base hooks and repeated parent dispose reentry close each slot once; const closed reads are allowed, finalizing reads are rejected."
+      "scope_or_gap": "Original parent-dispose reentry accepted on native C child/base hooks: closed const state readable, recursive/repeated close idempotent, one generation increment, exactly-once delayed destruction and native finalize ordering; native/sanitizer/Meson70 exact25seals reused. Finalizing reads reject. One pinned source duty; no all-feature/full-release/LSan claim."
     }
   ]
 }
