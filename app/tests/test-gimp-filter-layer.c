@@ -21,6 +21,7 @@
 #include "core/gimplayer-new.h"
 #include "core/gimplayermask.h"
 #include "core/gimppickable.h"
+#include "core/gimpprogress.h"
 #include "core/gimpundostack.h"
 #include "painter/gimp-painter-binding.h"
 #include "tests.h"
@@ -47,6 +48,19 @@ static void test_broken_filter_init (TestBrokenFilter *filter)
   g_object_weak_ref (G_OBJECT (filter),broken_filter_weak,NULL);
   gimp_painter_binding_close (G_OBJECT (filter),NULL);
 }
+typedef struct { GimpFilterLayer parent; } TestLifecycleFilter;
+typedef struct { GimpFilterLayerClass parent; } TestLifecycleFilterClass;
+static guint lifecycle_filter_finalizes;
+GType test_lifecycle_filter_get_type (void);
+G_DEFINE_TYPE (TestLifecycleFilter, test_lifecycle_filter, GIMP_TYPE_FILTER_LAYER)
+static void test_lifecycle_filter_finalize (GObject *object)
+{
+  lifecycle_filter_finalizes++;
+  G_OBJECT_CLASS (test_lifecycle_filter_parent_class)->finalize (object);
+}
+static void test_lifecycle_filter_class_init (TestLifecycleFilterClass *klass)
+{ G_OBJECT_CLASS (klass)->finalize = test_lifecycle_filter_finalize; }
+static void test_lifecycle_filter_init (TestLifecycleFilter *filter) {}
 typedef struct { GimpLayer parent; GimpCloneLayer *pending; gboolean resolved; } TestResolvingLayer;
 typedef struct { GimpLayerClass parent; } TestResolvingLayerClass;
 GType test_resolving_layer_get_type (void);
@@ -81,6 +95,71 @@ static void test_preparing_layer_class_init (TestPreparingLayerClass *klass)
 static void test_preparing_layer_init (TestPreparingLayer *layer) {}
 static GimpImage *image_new (gint w, gint h)
 { return gimp_image_new (gimp, w, h, GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR); }
+static void native_type_lifecycle (void)
+{
+  GTypeQuery query;
+  GimpImage *image = image_new (32, 32);
+  GimpLayer *layer = gimp_filter_layer_new (image, 7, 9, "native filter", 0.75,
+                                            GIMP_LAYER_MODE_NORMAL);
+  GimpLayer *weak_layer = layer;
+  gboolean failed = TRUE;
+  gint item_id;
+  g_type_query (GIMP_TYPE_FILTER_LAYER, &query);
+  g_assert_cmpuint (g_type_parent (GIMP_TYPE_FILTER_LAYER), ==, GIMP_TYPE_LAYER);
+  g_assert_cmpuint (query.instance_size, ==, sizeof (GimpFilterLayer));
+  g_assert_cmpuint (query.class_size, ==, sizeof (GimpFilterLayerClass));
+  g_assert_true (g_type_is_a (GIMP_TYPE_FILTER_LAYER, GIMP_TYPE_PICKABLE));
+  g_assert_true (g_type_is_a (GIMP_TYPE_FILTER_LAYER, GIMP_TYPE_PROGRESS));
+  g_assert_nonnull (layer);
+  g_object_ref_sink (layer);
+  g_object_get (layer, "binding-failed", &failed, NULL);
+  g_assert_false (failed);
+  g_assert_cmpuint (G_OBJECT_TYPE (layer), ==, GIMP_TYPE_FILTER_LAYER);
+  g_assert_cmpstr (gimp_object_get_name (layer), ==, "native filter");
+  g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (layer)), ==, 7);
+  g_assert_cmpint (gimp_item_get_height (GIMP_ITEM (layer)), ==, 9);
+  g_assert_cmpfloat (gimp_layer_get_opacity (layer), ==, 0.75);
+  g_assert_nonnull (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)));
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (GIMP_FILTER_LAYER (layer)), ==, 0);
+  item_id = gimp_item_get_id (GIMP_ITEM (layer));
+  g_object_add_weak_pointer (G_OBJECT (layer), (gpointer *) &weak_layer);
+  g_object_unref (layer);
+  g_assert_null (weak_layer);
+  g_assert_null (gimp_item_get_by_id (gimp, item_id));
+
+  /* Count native finalize separately from weak notifications during dispose. */
+  for (gint explicit_dispose = 0; explicit_dispose < 2; explicit_dispose++)
+    {
+      lifecycle_filter_finalizes = 0;
+      layer = g_object_new (test_lifecycle_filter_get_type (), "image", image, NULL);
+      g_object_ref_sink (layer);
+      item_id = gimp_item_get_id (GIMP_ITEM (layer));
+      g_object_get (layer, "binding-failed", &failed, NULL);
+      g_assert_false (failed);
+      g_assert_true (gimp_progress_start (GIMP_PROGRESS (layer), TRUE, "native lifecycle") ==
+                      GIMP_PROGRESS (layer));
+      g_assert_true (gimp_progress_is_active (GIMP_PROGRESS (layer)));
+      if (explicit_dispose)
+        {
+          GError *error = NULL;
+          g_object_run_dispose (G_OBJECT (layer));
+          g_object_run_dispose (G_OBJECT (layer));
+          g_assert_cmpuint (lifecycle_filter_finalizes, ==, 0);
+          g_assert_cmpint (gimp_filter_layer_get_state (GIMP_FILTER_LAYER (layer)), ==,
+                            GIMP_FILTER_LAYER_CLOSED);
+          g_assert_false (gimp_progress_is_active (GIMP_PROGRESS (layer)));
+          g_assert_null (gimp_progress_start (GIMP_PROGRESS (layer), TRUE, "closed"));
+          g_assert_false (gimp_filter_layer_set_definition (GIMP_FILTER_LAYER (layer),
+                                                           "", NULL, NULL, &error));
+          g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED);
+          g_clear_error (&error);
+        }
+      g_object_unref (layer);
+      g_assert_cmpuint (lifecycle_filter_finalizes, ==, 1);
+      g_assert_null (gimp_item_get_by_id (gimp, item_id));
+    }
+  g_object_unref (image);
+}
 static GimpLayer *source_new (GimpImage *image, GimpLayer *parent, gint w, gint h)
 {
   GimpLayer *layer = gimp_layer_new (image, w, h, babl_format ("R'G'B'A u8"), "source", 1, GIMP_LAYER_MODE_NORMAL_LEGACY);
@@ -2612,6 +2691,7 @@ int main (int argc, char **argv)
   }
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
+  ADD (native_type_lifecycle);
   ADD (parameter_suffix_reordering); ADD (parameter_metadata_rejections);
   ADD (parameter_assignment_validation); ADD (parameter_object_lifetime);
   ADD (blinds_saved_argument_policy);
