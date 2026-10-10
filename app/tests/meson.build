@@ -36,6 +36,7 @@ apptests_links += libapptestutils
 # proper way.
 app_tests = [
   'core',
+  'painter-type-startup',
   'file-load-pipeline',
   'gimp-clone-layer',
   'gimp-filter-layer',
@@ -73,7 +74,7 @@ app_tests = [
 prio = 1000
 foreach test_name : app_tests
   test_exe = executable(test_name,
-    'test-@0@.c'.format(test_name),
+    'test-@0@.@1@'.format(test_name, test_name == 'painter-type-startup' ? 'cpp' : 'c'),
     'tests.c',
     test_name == 'gimp-clone-layer' ? ['test-gimp-clone-layout.cpp'] : [],
     test_name == 'painter-xcf-roundtrip' ? ['test-painter-xcf-argument-resources.cpp'] : [],

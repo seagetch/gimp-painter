@@ -1,0 +1,42 @@
+{
+  "name": "perspective",
+  "argv": [
+    "/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http/app/tests/painter-perspective"
+  ],
+  "exit_code": 0,
+  "status": "PASS",
+  "cases": [
+    "/perspective/model_bounds",
+    "/perspective/runtime_model_fixture",
+    "/perspective/source_oracle",
+    "/perspective/threshold_ties_and_constraint",
+    "/perspective/image_ownership",
+    "/perspective/reentrant_replacement",
+    "/perspective/dispose_reentry",
+    "/perspective/edit_undo",
+    "/perspective/signal_lifetime"
+  ],
+  "stdout": "TAP version 14\n# random seed: R02S3a4926bf7527c8a049eaa60752dc8746\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n1..9\n# Start of perspective tests\nok 1 /perspective/model_bounds\nok 2 /perspective/runtime_model_fixture\n# 7500 exact legacy source-helper cases; runtime/property defect tested separately\nok 3 /perspective/source_oracle\nok 4 /perspective/threshold_ties_and_constraint\nok 5 /perspective/image_ownership\nok 6 /perspective/reentrant_replacement\nok 7 /perspective/dispose_reentry\nok 8 /perspective/edit_undo\nok 9 /perspective/signal_lifetime\n# End of perspective tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\nGIMP-Error: Failed to save data:\n\nYou have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.\n\n",
+  "binary_sha256": "5a6d11b0eebc64a1dd17c756b14aa3113e615c46737862ac446a0c84b1f0d904",
+  "source_sha256": {
+    "app/core/gimp.c": "c7f23e4d018f9b8423fea2f8bd53450add435612d8e20b707a4f894ea7567070",
+    "app/core/core-types.h": "6843c4d1a5962cc458f5cc8331e7de7e09165cde98ba76966f35b270f79817d7",
+    "app/core/gimp.h": "c974396ae0caf911cfe348a3bc80a3a5887e88e39c402cb7ed82cf97b30498a3",
+    "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/core/gimpfilterlayer.cpp": "093b237a078d26678241837f26d77d92fc508e14951159539a4d6b86298f471d",
+    "app/core/gimpperspectiveguide.cpp": "72c4fce594a0cce96901f289ed6d5956b519dc8836f4306b3efc955e26024ce3",
+    "app/core/gimpfilterlayer-arguments.hpp": "940a0296d1adb1f063b323a0fb092c2abf749bda4db81e02f84f7d9291f48ecc",
+    "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+    "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+    "app/config/gimpcoreconfig.c": "23e25ae7461f5cd33d5351b1cd89d1efb43d9ae9796acd15fe3250cf9d359b34",
+    "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+    "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+    "app/tests/meson.build": "c0ca2ba436e782c8672cfd903c9bc71700438c29303ffa3f0ccbb58471fce1b5",
+    "app/tests/test-painter-type-startup.cpp": "f4bf3d37e63826d3f2957a1dfadedb47d150c1f7b7d8a6079f663e1634d495ef",
+    "app/tests/test-gimp-clone-layer.c": "3f9bf23dc26fcc51169c1254836c98af4f39631cb1aa9ed98cdf5c761bd906ac",
+    "app/tests/test-painter-perspective.c": "59361ebe4f6efd1663ce52d6490f5a5b99ebc0a6d0d8b2f07b4b94a5b549b0fc",
+    "app/tests/test-gimp-filter-layer.c": "2828d2a9ba39377275a93d7683454a2ce2f4765bef5193c83ff251c17c0f3647",
+    "app/xcf/painter-xcf-arguments.cpp": "35927b8787496ba21ae7a5468fcb780fed09a097108eee4f4ca460e5b89f7562"
+  }
+}

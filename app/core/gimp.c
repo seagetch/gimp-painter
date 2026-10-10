@@ -58,10 +58,12 @@
 #include "gimpbrush.h"
 #include "gimpbrushgenerated.h"
 #include "gimpbuffer.h"
+#include "gimpclonelayer.h"
 #include "gimpcontext.h"
 #include "gimpdynamics.h"
 #include "gimpdocumentlist.h"
 #include "gimpextensionmanager.h"
+#include "gimpfilterlayer.h"
 #include "gimpgradient.h"
 #include "gimpidtable.h"
 #include "gimpimage.h"
@@ -74,6 +76,7 @@
 #include "gimppalette.h"
 #include "gimpparasitelist.h"
 #include "gimppattern.h"
+#include "gimpperspectiveguide.h"
 #include "gimptemplate.h"
 #include "gimptoolinfo.h"
 #include "gimptoolpreset.h"
@@ -256,6 +259,13 @@ gimp_init (Gimp *gimp)
   gimp->parasites = gimp_parasite_list_new ();
 
   gimp_enums_init ();
+
+  /* Saved painter argument types are resolved by name, including typed null
+   * references. Register them before config/data/XCF loading can run, even if
+   * no corresponding layer or guide has been constructed in this process. */
+  g_type_ensure (GIMP_TYPE_CLONE_LAYER);
+  g_type_ensure (GIMP_TYPE_FILTER_LAYER);
+  g_type_ensure (GIMP_TYPE_PERSPECTIVE_GUIDE);
 
   gimp_units_init (gimp);
 

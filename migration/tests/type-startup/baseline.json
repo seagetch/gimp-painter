@@ -1,0 +1,11 @@
+{
+  "exit_code": -6,
+  "stdout": "TAP version 14\n# random seed: R02S6e8aa1ff381e04307c71b875312d0d8f\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n1..3\n# Start of painter-type-startup tests\n# cold GimpCloneLayer: Unsupported or malformed saved Filter argument; original definition is retained\n# cold GimpFilterLayer: Unsupported or malformed saved Filter argument; original definition is retained\n# cold GimpPerspectiveGuide: Unsupported or malformed saved Filter argument; original definition is retained\nnot ok 1 /painter-type-startup/cold-legacy-arguments\nBail out!\n",
+  "binary_sha256": "1e3100889a49d538422af323d487694b22435e35f4255d7f6bbb082d28b5a06c",
+  "source_sha256": {
+    "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+    "app/tests/meson.build": "c0ca2ba436e782c8672cfd903c9bc71700438c29303ffa3f0ccbb58471fce1b5",
+    "app/tests/test-painter-type-startup.cpp": "b583a7746c10ac01d2cfa9b24c4ceaa4dab08bf9a0cf7a8182ea0313098fe1a1",
+    "app/xcf/painter-xcf-arguments.cpp": "35927b8787496ba21ae7a5468fcb780fed09a097108eee4f4ca460e5b89f7562"
+  }
+}
