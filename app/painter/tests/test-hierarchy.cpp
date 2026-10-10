@@ -24,6 +24,7 @@ struct Impl {
 };
 struct BaseSlot:SlotSpec<PainterHierarchyBase,Impl>{};
 struct ChildSlot:SlotSpec<PainterHierarchyChild,Impl>{};
+struct BaseLookalikeSlot:SlotSpec<PainterHierarchyBase,Impl>{};
 auto child () -> ObjectRef<PainterHierarchyChild> {
   return ObjectRef<PainterHierarchyChild>::adopt (static_cast<PainterHierarchyChild*> (g_object_new (painter_hierarchy_child_get_type (),"base-value",17,"child-value",31,nullptr)));
 }
@@ -96,6 +97,77 @@ void interface_exception_boundary ()
   g_assert_error (error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_EXCEPTION);g_clear_error (&error);
   g_object_set (owner.get (),"child-value",14,nullptr);
   g_assert_cmpint (painter_readable_read (reinterpret_cast<PainterReadable*>(owner.get ()),&error),==,31);g_assert_no_error (error);
+}
+
+void slot_identity ()
+{
+  stats = {};
+  auto owner = child ();
+  auto *base = reinterpret_cast<PainterHierarchyBase *> (owner.get ());
+  auto& through_child = BindingStore::require (G_OBJECT (owner.get ()));
+  auto& through_base = BindingStore::require (G_OBJECT (base));
+  g_assert_true (&through_child == &through_base);
+  auto *readable = reinterpret_cast<PainterReadable *> (owner.get ());
+  g_assert_true (&through_child == &BindingStore::require (G_OBJECT (readable)));
+  using BaseAlias = BaseSlot;
+  through_base.with<BaseAlias> ([&] (Impl& parent) {
+    through_child.with<ChildSlot> ([&] (Impl& child) {
+      // Both implementations have exactly the same C++ type. Slot identity,
+      // not an owner cast or Impl type, must select the distinct instances.
+      g_assert_true (&parent != &child);
+      g_assert_cmpint (parent.tag, ==, 1);
+      g_assert_cmpint (child.tag, ==, 2);
+      g_assert_cmpint (parent.value, ==, 17);
+      g_assert_cmpint (child.value, ==, 31);
+      parent.value = 23;
+      g_assert_cmpint (child.value, ==, 31);
+      child.value = 47;
+      g_assert_cmpint (parent.value, ==, 23);
+    });
+  });
+  bool rejected = false, entered = false;
+  try { through_base.read<BaseLookalikeSlot> ([&] (const Impl&) { entered = true; }); }
+  catch (const Error& error) { rejected = error.code () == GIMP_PAINTER_ERROR_MISSING_SLOT; }
+  g_assert_true (rejected);
+  g_assert_false (entered);
+  g_assert_cmpint (stats.constructed, ==, 2);
+  g_assert_cmpint (painter_hierarchy_get (G_OBJECT (base), FALSE), ==, 23);
+  g_assert_cmpint (painter_hierarchy_get (G_OBJECT (base), TRUE), ==, 47);
+  through_base.close ();
+  g_assert_cmpint (through_child.read<BaseSlot> ([] (const Impl& i) { return i.value; }), ==, 23);
+  g_assert_cmpint (through_child.read<ChildSlot> ([] (const Impl& i) { return i.value; }), ==, 47);
+  owner.reset ();
+  g_assert_cmpint (stats.destroyed, ==, 2);
+  g_assert_true ((stats.closed == std::array<int,2> ({{2,1}})));
+}
+
+void base_missing_derived ()
+{
+  stats = {};
+  auto owner = ObjectRef<PainterHierarchyBase>::adopt (
+    static_cast<PainterHierarchyBase *> (g_object_new (painter_hierarchy_base_get_type (), nullptr)));
+  auto& store = BindingStore::require (G_OBJECT (owner.get ()));
+  const auto generation = store.generation ();
+  bool entered = false;
+  for (int attempt = 0; attempt < 3; ++attempt) {
+    bool read_rejected = false, write_rejected = false;
+    try { store.read<ChildSlot> ([&] (const Impl&) { entered = true; }); }
+    catch (const Error& error) { read_rejected = error.code () == GIMP_PAINTER_ERROR_MISSING_SLOT; }
+    try { store.with<ChildSlot> ([&] (Impl&) { entered = true; }); }
+    catch (const Error& error) { write_rejected = error.code () == GIMP_PAINTER_ERROR_MISSING_SLOT; }
+    g_assert_true (read_rejected);
+    g_assert_true (write_rejected);
+    g_assert_false (entered);
+    g_assert_cmpint (stats.constructed, ==, 1);
+    g_assert_cmpint (stats.destroyed, ==, 0);
+    g_assert_true (store.accepts (generation));
+    g_assert_cmpint (store.read<BaseSlot> ([] (const Impl& i) { return i.tag; }), ==, 1);
+    g_assert_cmpint (store.read<BaseSlot> ([] (const Impl& i) { return i.value; }), ==, 7);
+  }
+  owner.reset ();
+  g_assert_cmpint (stats.destroyed, ==, 1);
+  g_assert_cmpint (stats.closed_count, ==, 1);
+  g_assert_cmpint (stats.closed[0], ==, 1);
 }
 void parent_dispose_reentry ()
 {
@@ -188,6 +260,8 @@ void painter_test_register_hierarchy ()
 {
   g_test_add_func("/painter/hierarchy/properties-interface",hierarchy_properties_interface);
   g_test_add_func("/painter/hierarchy/interface-exception",interface_exception_boundary);
+  g_test_add_func("/painter/hierarchy/slot-identity",slot_identity);
+  g_test_add_func("/painter/hierarchy/base-missing-derived",base_missing_derived);
   g_test_add_func("/painter/hierarchy/parent-dispose-reentry",parent_dispose_reentry);
   g_test_add_func("/painter/hierarchy/type-ancestry",type_ancestry);
 }

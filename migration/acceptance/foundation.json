@@ -512,13 +512,18 @@
         "app/painter/tests/test-hierarchy.cpp"
       ],
       "test_ids": [
-        "/painter/hierarchy/properties-interface"
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/slot-identity",
+        "/painter/hierarchy/base-missing-derived",
+        "/painter/store/multiple-slots",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/inherited-slots/native.json",
+        "migration/tests/inherited-slots/sanitizers.json"
       ],
-      "scope_or_gap": "Actual base/derived GTypes share one store with distinct slots of the same Impl type; inherited and own properties plus interface reads roundtrip."
+      "scope_or_gap": "Original inherited-slot condition verified with real native Base/Child types sharing one store and the same Impl type, distinct Slot identities, independent mutation, and missing-derived rejection without callbacks or construction. Exactly two source duties accepted; native and ASan/UBSan61 cases. LSan, property delegation, teardown and platform gates remain separate."
     },
     {
       "id": "06.026",
