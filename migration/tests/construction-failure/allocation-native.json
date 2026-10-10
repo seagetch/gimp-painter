@@ -1,0 +1,178 @@
+{
+  "status": "PASS",
+  "scope": "Standalone Linux C++ allocation failure and exact pointer release; no GLib fatal-OOM injection, full GIMP, or platform-wide claim",
+  "sanitizers": [],
+  "leak_check": "not run; explicit tracked new/delete and fixture String/g_free",
+  "commands": [
+    {
+      "argv": [
+        "pkg-config",
+        "--cflags",
+        "gobject-2.0"
+      ],
+      "exit_code": 0,
+      "stdout": "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0 -I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6 -pthread \n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "pkg-config",
+        "--libs",
+        "gobject-2.0"
+      ],
+      "exit_code": 0,
+      "stdout": "-lgobject-2.0 -lglib-2.0 \n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-std=c++14",
+        "-O0",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fno-rtti",
+        "-fno-lto",
+        "-fvisibility=hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/binding-store.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/construction-06029-run/allocation-native-build/binding-store.cpp.o"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-std=c++14",
+        "-O0",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fno-rtti",
+        "-fno-lto",
+        "-fvisibility=hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/gimp-painter-error.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/construction-06029-run/allocation-native-build/gimp-painter-error.cpp.o"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-std=c++14",
+        "-O0",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fno-rtti",
+        "-fno-lto",
+        "-fvisibility=hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/test-store-allocation-failures.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/construction-06029-run/allocation-native-build/test-store-allocation-failures.cpp.o"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-std=c++14",
+        "-O0",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fno-rtti",
+        "-fno-lto",
+        "-fvisibility=hidden",
+        "/workspace/scratch/5b5281e79681/construction-06029-run/allocation-native-build/binding-store.cpp.o",
+        "/workspace/scratch/5b5281e79681/construction-06029-run/allocation-native-build/gimp-painter-error.cpp.o",
+        "/workspace/scratch/5b5281e79681/construction-06029-run/allocation-native-build/test-store-allocation-failures.cpp.o",
+        "-Wl,--wrap=_Znwm",
+        "-Wl,--wrap=_ZdlPv",
+        "-Wl,--wrap=_ZdlPvm",
+        "-Wl,--wrap=g_free",
+        "-lgobject-2.0",
+        "-lglib-2.0",
+        "-pthread",
+        "-o",
+        "/workspace/scratch/5b5281e79681/construction-06029-run/allocation-native-build/test-store-allocation-failures"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/workspace/scratch/5b5281e79681/construction-06029-run/allocation-native-build/test-store-allocation-failures"
+      ],
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02S7d0b91bb1104e59ca55abac6d3663108\n1..5\n# Start of painter tests\n# Start of store-allocation tests\n# tracked C++ allocations/releases=1; fixture strings/g_free=0\nok 1 /painter/store-allocation/store\n# tracked C++ allocations/releases=7; fixture strings/g_free=2\nok 2 /painter/store-allocation/entry\n# tracked C++ allocations/releases=8; fixture strings/g_free=2\nok 3 /painter/store-allocation/impl\n# tracked C++ allocations/releases=9; fixture strings/g_free=3\nok 4 /painter/store-allocation/publication\n# tracked C++ allocations/releases=9; fixture strings/g_free=3\nok 5 /painter/store-allocation/string-constructor-unwind\n# End of store-allocation tests\n# End of painter tests\n",
+      "stderr": ""
+    }
+  ],
+  "output": [
+    "TAP version 14\n# random seed: R02S7d0b91bb1104e59ca55abac6d3663108\n1..5\n# Start of painter tests\n# Start of store-allocation tests\n# tracked C++ allocations/releases=1; fixture strings/g_free=0\nok 1 /painter/store-allocation/store\n# tracked C++ allocations/releases=7; fixture strings/g_free=2\nok 2 /painter/store-allocation/entry\n# tracked C++ allocations/releases=8; fixture strings/g_free=2\nok 3 /painter/store-allocation/impl\n# tracked C++ allocations/releases=9; fixture strings/g_free=3\nok 4 /painter/store-allocation/publication\n# tracked C++ allocations/releases=9; fixture strings/g_free=3\nok 5 /painter/store-allocation/string-constructor-unwind\n# End of store-allocation tests\n# End of painter tests\n"
+  ],
+  "compiled_sources": [
+    "app/painter/binding-store.cpp",
+    "app/painter/gimp-painter-error.cpp",
+    "app/painter/tests/test-store-allocation-failures.cpp"
+  ],
+  "source_sha256": {
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/painter/tests/test-store-allocation-failures.cpp": "96c05ac91bb846be328360737a4931a435c80890e58454415d8eaacba7e49b9a",
+    "tools/test_store_allocation_failures.py": "e4281daad43e0690dcae1d96628117f28123e264e8e6d39585b4cea858df0cc6"
+  },
+  "executable_sha256": "611eaadd27d7f8ddcb9340d0a7d9bef044dcaaaede465f635db7cb4a654a2348",
+  "runtime_environment": {},
+  "source_sha256_after": {
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/painter/tests/test-store-allocation-failures.cpp": "96c05ac91bb846be328360737a4931a435c80890e58454415d8eaacba7e49b9a",
+    "tools/test_store_allocation_failures.py": "e4281daad43e0690dcae1d96628117f28123e264e8e6d39585b4cea858df0cc6"
+  },
+  "source_unchanged": true
+}

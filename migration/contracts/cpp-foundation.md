@@ -447,3 +447,21 @@ job's admission lease. Closed owners cannot import or publish a late result.
 Worker-side resources and captures are released before the independent lifetime
 token is retired. [Gated vector/spill tests and native owner-close checks](../tests/independent-jobs/README.md)
 observe these conditions through completion, including result access after close.
+
+## Construction failure cleanup (original 06.029)
+
+Own a new store until native qdata takes ownership. Reserve a slot identity only
+for the duration of construction, retain its owner during any synchronous
+callback, and own each completed Entry/Impl candidate before adding it to the
+store. Recoverable allocation failures and constructor exceptions release these
+candidates and clear the reservation. Existing registered slots remain valid.
+The native owner may intentionally retain an empty constructing store for retry;
+an adapter abandoning that owner must release its own native reference.
+
+Acquire constructor resources into completed RAII members immediately. On a
+constructor exception these members unwind, while the unfinished Impl's own
+destructor and close hook do not run. A fully constructed candidate rejected
+before publication instead closes and is destroyed once. A failed vector growth
+must not transfer or lose that candidate. [Failure injection regressions](../tests/construction-failure/README.md)
+observe both paths and same-slot retries. GLib's fatal allocation policy and its
+void qdata registration API do not supply recoverable failure branches.

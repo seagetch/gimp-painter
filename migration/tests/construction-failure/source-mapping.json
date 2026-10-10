@@ -1,0 +1,45 @@
+{
+  "task": "06.029",
+  "audited_parent": "1c87b4753036f810d3a78567fa8c861bb13b763e",
+  "duties": [
+    {
+      "work_id": "legacy-4efe2688dd60a27f8ea1",
+      "path": "app/base/glib-cxx-impl.hpp",
+      "hunk": "01.002/000045",
+      "git_blob": "a2ad35e37a3e7a481698c1f8b78b71adb385f7d3",
+      "evidence_path": "migration/tests/inherited-properties/legacy-source/glib-cxx-impl.hpp",
+      "bytes": 18618,
+      "sha256": "5c50241a85ee4caaadb5c28cb4499c4348666281d24078c318cd31c643f04887",
+      "mapping": "Old placement construction in instance-private storage is replaced by unattached unique_ptr store and uniquely owned Entry/Impl candidates, pending-slot rollback and native owner lease."
+    },
+    {
+      "work_id": "legacy-5098f009b9937a3a045d",
+      "path": "app/base/scopeguard.hpp",
+      "hunk": "01.002/000078",
+      "git_blob": "9ddfb5976f4f0ccd3fef93cb3bc4fcd620f70649",
+      "archive": "migration/tests/impl-ownership/evidence.tar.gz",
+      "member": "legacy/scopeguard.hpp",
+      "bytes": 3156,
+      "sha256": "aa7b42c9d4738202d084d3feef7813969eb94a82ef0b9323ba22014f39e2284d",
+      "mapping": "Scoped matching releases are supplied by unique_ptr and ObjectRef/ArrayRef/String members; acquired members unwind even when the enclosing Impl never completes."
+    },
+    {
+      "work_id": "legacy-822bd0cb7211f156699e",
+      "path": "app/base/selectcase-utils.hpp",
+      "hunk": "01.002/000079",
+      "git_blob": "35ef728e6cba705cd168247a27660d1f0656d7da",
+      "archive": "migration/tests/impl-ownership/evidence.tar.gz",
+      "member": "legacy/selectcase-utils.hpp",
+      "bytes": 3057,
+      "sha256": "42f29e95d200032cad592e8019cdd4a7e8ebbf1c1bf3f31113d7b12b71fa3896",
+      "mapping": "Copied matcher strings and owned pattern arrays release on constructor exceptions. This cleanup duty does not accept selection matching or feature callers."
+    }
+  ],
+  "source_hash_note": "Ledger source_sha256 is the immutable addition-hunk hash, not the complete recovered file hash.",
+  "production_result": "No leak reproduced; current RAII rollback verified by new failure regressions.",
+  "scope_limits": [
+    "Recoverable C++ allocation and exceptions only; fatal GLib allocation failure is not a recoverable API.",
+    "g_object_set_qdata_full has no recoverable boolean registration result.",
+    "Feature-specific GType initialization and matching semantics remain separate original duties."
+  ]
+}

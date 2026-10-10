@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "original_tasks": 661,
+  "original_done": 107,
+  "source_ledger_rows": 22868,
+  "source_ledger_done": 560,
+  "only_changed_source_duties": [
+    "legacy-4efe2688dd60a27f8ea1",
+    "legacy-5098f009b9937a3a045d",
+    "legacy-822bd0cb7211f156699e"
+  ],
+  "immutable_contracts_preserved": true,
+  "current_06029_acceptance_errors": [],
+  "whole_historical_foundation_status": "FAIL",
+  "unrelated_historical_errors": 132,
+  "checks": {
+    "python3 -B tools/check_tasks.py": "WBS dependencies, states, and completion evidence: OK\n",
+    "python3 -B tools/audit_legacy_granularity.py --check": "{\"assets\": 402, \"compound_action_rows\": 0, \"hunks\": 2489, \"implementation_actions\": 15999, \"source_checks\": 2891, \"statuses\": {\"DONE\": 560, \"TODO\": 22308}, \"unassigned_sources\": 0, \"verification_actions\": 6869}\n",
+    "git diff --check": ""
+  },
+  "allocation_cases": {
+    "allocation-native.json": 5,
+    "allocation-sanitizers.json": 5
+  }
+}

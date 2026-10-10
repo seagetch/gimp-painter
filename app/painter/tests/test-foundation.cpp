@@ -5,6 +5,7 @@
 #include "gimp-painter-binding.h"
 #include "gimp-painter-binding.h"
 #include "binding-store.hpp"
+#include "resources.hpp"
 #include <functional>
 #include <stdexcept>
 #include <thread>
@@ -767,6 +768,128 @@ void failed_construction ()
   g_assert_cmpint (counters.destroy, ==, 1);
 }
 
+struct ConstructionCounts
+{
+  int cpp_freed = 0;
+  int object_freed = 0;
+  int array_elements_freed = 0;
+  int completed = 0;
+  int closed = 0;
+  int destroyed = 0;
+};
+struct ConstructionResource
+{
+  explicit ConstructionResource (ConstructionCounts& counts) : counts (counts) {}
+  ~ConstructionResource () { ++counts.cpp_freed; }
+  ConstructionCounts& counts;
+};
+void construction_array_clear (gpointer element)
+{ ++**static_cast<int **> (element); }
+ArrayRef construction_array (ConstructionCounts& counts)
+{
+  auto result = ArrayRef::adopt (g_array_new (FALSE, FALSE, sizeof (int *)));
+  g_array_set_clear_func (result.get (), construction_array_clear);
+  auto *counter = &counts.array_elements_freed;
+  g_array_append_val (result.get (), counter);
+  g_array_append_val (result.get (), counter);
+  return result;
+}
+ObjectRef<GObject> construction_object (ConstructionCounts& counts)
+{
+  auto result = new_object ();
+  g_object_weak_ref (result.get (), weak_notify, &counts.object_freed);
+  return result;
+}
+struct AcquiredImpl
+{
+  AcquiredImpl (ConstructionCounts& counts, int failure,
+                ObjectRef<GObject> *release_owner)
+    : counts (counts), resource (new ConstructionResource (counts)),
+      object (construction_object (counts)), text (g_strdup ("owned matcher")),
+      patterns (construction_array (counts))
+  {
+    g_assert_cmpstr (text.get (), ==, "owned matcher");
+    if (release_owner) release_owner->reset ();
+    if (failure == 1) throw std::runtime_error ("after resource acquisition");
+    if (failure == 2) throw std::bad_alloc ();
+    ++counts.completed;
+  }
+  ~AcquiredImpl () { ++counts.destroyed; }
+  void close () noexcept { ++counts.closed; }
+  ConstructionCounts& counts;
+  std::unique_ptr<ConstructionResource> resource;
+  ObjectRef<GObject> object;
+  String text;
+  ArrayRef patterns;
+};
+struct AcquiredSlot : SlotSpec<GObject, AcquiredImpl> {};
+
+void acquired_construction_failure ()
+{
+  // Failure must destroy completed members, not the unfinished Impl itself.
+  // Both an empty store and a store with an existing slot remain reusable.
+  for (bool prior : {false, true})
+    for (int failure : {1, 2})
+      for (bool abandon : {false, true})
+        {
+          Counters previous;
+          ConstructionCounts counts;
+          int finalized = 0;
+          auto owner = new_object ();
+          g_object_weak_ref (owner.get (), weak_notify, &finalized);
+          auto& store = BindingStore::ensure (owner.get ());
+          if (prior) store.emplace<MainSlot> (previous);
+          const auto generation = store.generation ();
+          bool threw = false;
+          try { store.emplace<AcquiredSlot> (counts, failure, abandon ? &owner : nullptr); }
+          catch (const std::bad_alloc&) { g_assert_cmpint (failure, ==, 2); threw = true; }
+          catch (const std::runtime_error&) { g_assert_cmpint (failure, ==, 1); threw = true; }
+          g_assert_true (threw);
+          g_assert_cmpint (counts.cpp_freed, ==, 1);
+          g_assert_cmpint (counts.object_freed, ==, 1);
+          g_assert_cmpint (counts.array_elements_freed, ==, 2);
+          g_assert_cmpint (counts.completed, ==, 0);
+          g_assert_cmpint (counts.closed, ==, 0);
+          g_assert_cmpint (counts.destroyed, ==, 0);
+          if (!abandon)
+            {
+              g_assert_cmpint (finalized, ==, 0);
+              g_assert_cmpuint (owner.get ()->ref_count, ==, 1);
+              g_assert_true (BindingStore::find (owner.get ()) == &store);
+              g_assert_true (store.state () == BindingStore::State::constructing);
+              g_assert_cmpuint (store.generation (), ==, generation);
+              expect (GIMP_PAINTER_ERROR_MISSING_SLOT, [&] {
+                store.initialize<AcquiredSlot> ([] (AcquiredImpl&) {});
+              });
+              if (prior)
+                g_assert_cmpint (store.initialize<MainSlot> ([] (Impl& impl) { return impl.value; }), ==, 41);
+              // Same identity can be retried: no stale pending reservation.
+              store.emplace<AcquiredSlot> (counts, 0, nullptr);
+              store.activate ();
+              store.with<AcquiredSlot> ([] (AcquiredImpl& impl) {
+                g_assert_cmpstr (impl.text.get (), ==, "owned matcher");
+                g_assert_cmpuint (impl.patterns.get ()->len, ==, 2);
+              });
+              store.close ();
+              store.close ();
+              owner.reset ();
+              g_assert_cmpint (counts.cpp_freed, ==, 2);
+              g_assert_cmpint (counts.object_freed, ==, 2);
+              g_assert_cmpint (counts.array_elements_freed, ==, 4);
+              g_assert_cmpint (counts.completed, ==, 1);
+              g_assert_cmpint (counts.closed, ==, 1);
+              g_assert_cmpint (counts.destroyed, ==, 1);
+            }
+          // In the abandon case the emplace lease released the last reference
+          // during unwind; do not dereference the now-destroyed store.
+          g_assert_null (owner.get ());
+          g_assert_cmpint (finalized, ==, 1);
+          g_assert_cmpint (previous.alive, ==, 0);
+          g_assert_cmpint (previous.close, ==, prior ? 1 : 0);
+          g_assert_cmpint (previous.destroy, ==, prior ? 1 : 0);
+        }
+}
+
 void wrong_thread ()
 {
   auto owner = new_object ();
@@ -881,6 +1004,7 @@ void painter_test_register ()
   g_test_add_func ("/painter/store/reentrant-close", reentrant_close);
   g_test_add_func ("/painter/store/call-leases", call_leases);
   g_test_add_func ("/painter/store/construction-failure", failed_construction);
+  g_test_add_func ("/painter/store/acquired-construction-failure", acquired_construction_failure);
   g_test_add_func ("/painter/store/thread-rejection", wrong_thread);
   g_test_add_func ("/painter/boundary/c-close", c_close_boundary);
   g_test_add_func ("/painter/boundary/exception", exception_conversion);
