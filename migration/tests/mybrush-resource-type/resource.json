@@ -1,0 +1,40 @@
+{
+  "name": "resource",
+  "argv": [
+    "/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http/app/tests/gimp-painter-mybrush"
+  ],
+  "exit_code": 0,
+  "status": "PASS",
+  "cases": [
+    "/painter-mybrush/177-native-load-copy",
+    "/painter-mybrush/stream-icon-copy",
+    "/painter-mybrush/closed-owner",
+    "/painter-mybrush/copy-icon-finalizer-reentry"
+  ],
+  "stdout": "TAP version 14\n# random seed: R02Sb2ab555ab64d4d38a47790863b55f965\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n1..4\n# Start of painter-mybrush tests\nok 1 /painter-mybrush/177-native-load-copy\n# slow test /painter-mybrush/177-native-load-copy executed in 0.94 secs\nok 2 /painter-mybrush/stream-icon-copy\nok 3 /painter-mybrush/closed-owner\nok 4 /painter-mybrush/copy-icon-finalizer-reentry\n# End of painter-mybrush tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\nGIMP-Error: Failed to save data:\n\nYou have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.\n\n",
+  "binary_sha256": "2e7c8b978c82a9ac5c42020e2b606f578592adfb552644d23b6567c1613dd3e6",
+  "source_sha256": {
+    "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+    "app/core/gimppaintermybrush.h": "64ddcd6f166cf8c69738227fad391678f04ee3fec468da8191116169a4f31890",
+    "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+    "app/core/gimpdatafactory.c": "d1a7a033197db51b7162ba5a81474d51771e2d7bbbe6b3e43edb47644a2759bf",
+    "app/core/gimpdataloaderfactory.c": "893389d7e1f3d4790f7ed1acfcbc2adc27d074759ec0dd3fc2fed4e322d4d702",
+    "app/core/gimpdata.c": "4b47bc0b58940a0d7bc697885db3f133e6d5f668442a0db2cff340031b599599",
+    "app/core/gimpcontainer.c": "d289b12f38dad3a7964d0bb14ad175e55c786c4e59f56c3183998e4ef2bd5ab6",
+    "app/core/gimp.c": "c7f23e4d018f9b8423fea2f8bd53450add435612d8e20b707a4f894ea7567070",
+    "app/core/gimp.h": "c974396ae0caf911cfe348a3bc80a3a5887e88e39c402cb7ed82cf97b30498a3",
+    "app/core/gimpcontext.c": "fc1b1ff6c4f9c5470c53b8fa991774639e5ef9c1abf011c245ec3699ae854ab7",
+    "app/config/gimpcoreconfig.c": "23e25ae7461f5cd33d5351b1cd89d1efb43d9ae9796acd15fe3250cf9d359b34",
+    "app/paint/painter-mypaint/resource.cpp": "ea2006b960d8e03de5c9ef77299f336d51430b4d30865bf3f37bbe2dc874f14f",
+    "app/paint/painter-mypaint/resource.hpp": "088cdb4df4c757480329e45b5a1187c4ea5c8ce7c78b1279a9f2262636820ded",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/tests/test-gimp-painter-mybrush-factory.c": "d4f9741f74c153a547864490a58b2954687a4ce3618e79f0d3d3f103ad8c687d",
+    "app/tests/test-gimp-painter-mybrush.c": "debb1b12cd978964450e4d6c02e17266df5563a1a01b6993240d5f77964985e0",
+    "app/tests/meson.build": "c0ca2ba436e782c8672cfd903c9bc71700438c29303ffa3f0ccbb58471fce1b5"
+  }
+}

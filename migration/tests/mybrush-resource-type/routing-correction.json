@@ -1,0 +1,26 @@
+{
+  "changes": [
+    {
+      "source_id": "01.002/000166",
+      "old_tasks": "08.005,19.013,19.014,30.009,30.011,30.016",
+      "new_tasks": "19.013,19.014,30.009,30.011,30.016",
+      "source_blob": "66119d6aed8e0ecbf28459a5b83f1821c219c567",
+      "payload_sha256": "283af16644aba396dc33f698e839b84c61c315cebc9a6b5e0e39ef67c8a1b0df",
+      "added_lines": [
+        "  GimpMypaintInfo        *standard_mypaint_info;"
+      ]
+    },
+    {
+      "source_id": "01.002/000167",
+      "old_tasks": "04.003,04.004,08.001",
+      "new_tasks": "04.003,04.004,08.001,08.005",
+      "source_blob": "66119d6aed8e0ecbf28459a5b83f1821c219c567",
+      "payload_sha256": "470926f30e7ee0a8f8e42c3201792c89a1013d79cfac3b0a42ed02f3c65bd03c",
+      "added_lines": [
+        "  GimpDataFactory        *mypaint_brush_factory;",
+        "  GHashTable             *factory_table;"
+      ]
+    }
+  ],
+  "scope": "Only08.005 corrected; all other source/task contracts and mutable evidence retained; no claim of global dead-member removal"
+}
