@@ -1,0 +1,71 @@
+{
+  "task": "07.008",
+  "status": "PASS",
+  "parent": "1f740118fadbccf464f83d2d621645d993025b02",
+  "reports": [
+    {
+      "path": "migration/tests/emitter-teardown/native.json",
+      "sha256": "4823ad1ce8decdcde978ded099e398b13b229396ec60b795c9e04c5eb92b1646",
+      "suite_cases": 67,
+      "all_recorded_source_seals_match": true,
+      "new_execution": true
+    },
+    {
+      "path": "migration/tests/emitter-teardown/sanitizers.json",
+      "sha256": "3a6434e585017416e9deb16a95bbe8f6cc00c9bcce64e2930c7f6d4684a6453a",
+      "suite_cases": 67,
+      "all_recorded_source_seals_match": true,
+      "new_execution": true
+    },
+    {
+      "path": "migration/tests/emitter-teardown/meson.json",
+      "sha256": "f7113a6abcd05f21eea4c51e6e2de38db85c1c520970fadbe236bf8bb6e394f8",
+      "suite_cases": 67,
+      "all_recorded_source_seals_match": true,
+      "new_execution": true
+    }
+  ],
+  "gtk_supporting_evidence": {
+    "path": "migration/tests/gtk-binding/native.json",
+    "sha256": "098daf844fb810713928f9cb374943dc46c1dce68666ec42b3236f0449dcdab2",
+    "all_14_recorded_source_seals_match": true,
+    "reused_without_rerun": true,
+    "scope": "Recorded21 native GTK ownership cases, not exact old dropdown/preset/cell-renderer equivalence; historical GTK sanitizer report is not promoted to current."
+  },
+  "original_tasks": 661,
+  "original_done": 115,
+  "source_ledger_rows": 22778,
+  "source_ledger_done": 573,
+  "source_rows_before": 22868,
+  "routing_removed_todo": 90,
+  "done_added_by_routing": 0,
+  "accepted_source_duties": [
+    "legacy-5ffecdfab44c8582b0f1",
+    "legacy-95435deda8e653368654",
+    "legacy-9ad6c5facf04866ae7a2",
+    "legacy-c486ee585d872622cce8"
+  ],
+  "done_added_by_acceptance": 4,
+  "all_other_work_rows_preserved": true,
+  "current_acceptance_errors": [],
+  "whole_historical_foundation_status": "FAIL",
+  "unrelated_historical_errors": 114,
+  "checks": {
+    "python3 -B tools/check_tasks.py": "WBS dependencies, states, and completion evidence: OK\n",
+    "python3 -B tools/audit_legacy_granularity.py --check": "{\"assets\": 402, \"compound_action_rows\": 0, \"hunks\": 2489, \"implementation_actions\": 15999, \"source_checks\": 2891, \"statuses\": {\"DONE\": 573, \"TODO\": 22205}, \"unassigned_sources\": 0, \"verification_actions\": 6779}\n",
+    "git diff --check": ""
+  },
+  "limits": [
+    "Only original shared Connection destructor condition accepted.",
+    "Exact legacy dropdown/preset/cell-renderer equivalence is unproven and retains independent feature duties.",
+    "LSan, system-GLib instrumentation and platform acceptance are not claimed."
+  ],
+  "routing_proof": {
+    "path": "migration/tests/emitter-teardown/routing-proof.json",
+    "sha256": "e9ec2a2dd7fdef50666c93781b02041ecb7e8b0e62c106f9d9282f59b45a57ef",
+    "current_accepted_inventory_check": "PASS",
+    "emitter_controls": 15,
+    "historical_gtk_controls": 13,
+    "historical_output_hashes_preserved": 8
+  }
+}

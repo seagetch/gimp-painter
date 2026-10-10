@@ -792,20 +792,23 @@
       "dependencies": "07.007",
       "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
-        "app/painter/connection.hpp"
+        "app/painter/connection.hpp",
+        "app/painter/object-ref.hpp",
+        "app/painter/tests/test-resources.cpp",
+        "app/painter/tests/test-reentry.cpp"
       ],
       "test_ids": [
+        "/painter/signal/owned-lifetime",
         "/painter/signal/lifetime-blocks",
-        "/painter/signal/after-order",
         "/painter/signal/reentrant-disconnect",
         "/painter/reentry/connection-move",
         "/painter/reentry/receiver-deletion"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/emitter-teardown/native.json",
+        "migration/tests/emitter-teardown/sanitizers.json"
       ],
-      "scope_or_gap": "New Connection owns weak emitter and handler ID; no copied signal-name allocation to leak. All legacy call-site mapping remains separate."
+      "scope_or_gap": "Original Connection-destructor condition verified by actual emitter finalization then untouched expired-handle scope destruction, plus outstanding block-depth unblock. Current67 native/ASanUBSan/Meson, once-only closure and emitter counters. Bounded routing removes90 unrelated TODO duties without increasing DONE; retained4 provider/indirect-trigger duties verify the common ownership boundary. Exact old dropdown/preset/cell-renderer feature equivalence, LSan and platform gates remain separate."
     },
     {
       "id": "07.008/untracked-signals",

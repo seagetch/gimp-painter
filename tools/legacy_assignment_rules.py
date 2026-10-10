@@ -397,6 +397,16 @@ GTK_DSL_SUPPORT = {
     'app/widgets/gimpitemtreeview.c': {1, 4, 5, 6, 7},
 }
 
+# Only these reviewed widget hunks reach the popover's Connection owner.
+# Declarations, native C signal handlers and unrelated GTK layout/model changes
+# do not exercise the original 07.008 freed-emitter destructor contract. Keep
+# the common cpp-signals provider and every other lifetime/feature duty intact.
+EMITTER_TEARDOWN_TRIGGERS = {
+    'app/widgets/gimpeditor-cxx.cpp': {1},
+    'app/widgets/gimpcontainertreeview.c': {8},
+    'app/widgets/gimplayertreeview.c': {7},
+}
+
 
 def uses_gtk_dsl(path, lines):
     """Recognize the actual C++ DSL, ignoring names in comments and strings."""
@@ -426,4 +436,8 @@ def route(row, added, removed):
                        if task != '06.023' or dsl or support]
     if dsl and '06.023' not in result['tasks']:
         result['tasks'].insert(0, '06.023')
+    if key in ('widget-helpers', 'cpp-gtk'):
+        trigger = int(row['index']) in EMITTER_TEARDOWN_TRIGGERS.get(path, set())
+        result['tests'] = [test for test in result['tests']
+                           if test != '07.008' or trigger]
     return result

@@ -89,6 +89,21 @@ class RoutingProof(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'wrong routed assignment'):
             proof.regenerate(self.baseline, cases, self.sections, self.catalog)
 
+    def test_later_emitter_verification_route_preserves_historical_output(self):
+        # Current original 07.008 routing drops the unrelated GTK DSL provider,
+        # while this proof must still reproduce exactly the historical outputs.
+        current = route({'path': 'app/base/glib-cxx-def-utils.hpp', 'index': '1'}, [], [])
+        self.assertNotIn('07.008', current['tests'])
+        before = next(r for r in proof.rows(self.baseline[proof.ASSIGN])
+                      if r['hunk_id'] == '01.002/000044')
+        after = next(r for r in proof.rows(self.outputs[proof.ASSIGN])
+                     if r['hunk_id'] == '01.002/000044')
+        self.assertIn('07.008', before['verification_tasks'].split(','))
+        self.assertEqual(after['verification_tasks'], before['verification_tasks'])
+        import json
+        recorded = json.loads((HERE / 'routing-proof.json').read_text())
+        self.assertEqual(self.report['output_sha256'], recorded['output_sha256'])
+
     def test_acceptance_check_limits_mutable_fields_to_exact_duties(self):
         current = dict(self.outputs)
         work = proof.rows(current[proof.WORK])
