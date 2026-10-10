@@ -1,0 +1,755 @@
+{
+  "task": "07.014",
+  "status": "PASS",
+  "scope": "Native common bridge only; no full-GIMP/platform release claim",
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "--version"
+      ],
+      "exit_code": 0,
+      "output": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/gcc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "output": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/gcc",
+        "-dumpmachine"
+      ],
+      "exit_code": 0,
+      "output": "x86_64-linux-gnu\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-dumpmachine"
+      ],
+      "exit_code": 0,
+      "output": "x86_64-linux-gnu\n"
+    },
+    {
+      "argv": [
+        "pkg-config",
+        "--modversion",
+        "gobject-2.0"
+      ],
+      "exit_code": 0,
+      "output": "2.84.4\n"
+    },
+    {
+      "argv": [
+        "pkg-config",
+        "--cflags",
+        "gobject-2.0"
+      ],
+      "exit_code": 0,
+      "output": "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0 -I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6 -pthread \n"
+    },
+    {
+      "argv": [
+        "pkg-config",
+        "--libs",
+        "gobject-2.0"
+      ],
+      "exit_code": 0,
+      "output": "-lgobject-2.0 -lglib-2.0 \n"
+    },
+    {
+      "argv": [
+        "/usr/bin/gcc",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c11",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/test-c-api.c",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-c-api.c.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/gcc",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c11",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/test-fixture.c",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-fixture.c.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/gcc",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c11",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/test-hierarchy.c",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-hierarchy.c.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c++14",
+        "-fexceptions",
+        "-fno-rtti",
+        "-fvisibility-inlines-hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/gimp-painter-error.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/gimp-painter-error.cpp.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c++14",
+        "-fexceptions",
+        "-fno-rtti",
+        "-fvisibility-inlines-hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/gimp-painter-binding.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/gimp-painter-binding.cpp.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c++14",
+        "-fexceptions",
+        "-fno-rtti",
+        "-fvisibility-inlines-hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/binding-store.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/binding-store.cpp.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c++14",
+        "-fexceptions",
+        "-fno-rtti",
+        "-fvisibility-inlines-hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/test-foundation.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-foundation.cpp.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c++14",
+        "-fexceptions",
+        "-fno-rtti",
+        "-fvisibility-inlines-hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/test-resources.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-resources.cpp.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c++14",
+        "-fexceptions",
+        "-fno-rtti",
+        "-fvisibility-inlines-hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/test-gobject.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-gobject.cpp.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c++14",
+        "-fexceptions",
+        "-fno-rtti",
+        "-fvisibility-inlines-hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/test-reentry.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-reentry.cpp.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c++14",
+        "-fexceptions",
+        "-fno-rtti",
+        "-fvisibility-inlines-hidden",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/test-hierarchy.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-hierarchy.cpp.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "rcs",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/archive-hl9806pv/libapppainter.a",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/gimp-painter-error.cpp.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/gimp-painter-binding.cpp.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/binding-store.cpp.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "t",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/archive-hl9806pv/libapppainter.a"
+      ],
+      "exit_code": 0,
+      "output": "gimp-painter-error.cpp.o\ngimp-painter-binding.cpp.o\nbinding-store.cpp.o\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-c-api.c.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-fixture.c.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-hierarchy.c.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-foundation.cpp.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-resources.cpp.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-gobject.cpp.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-reentry.cpp.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/test-hierarchy.cpp.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/libapppainter.a",
+        "-lgobject-2.0",
+        "-lglib-2.0",
+        "-pthread",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/painter-foundation"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/painter-foundation"
+      ],
+      "exit_code": 0,
+      "output": "TAP version 14\n# random seed: R02Se1bb2536cf868d50cafed3170b02e8b1\n1..69\n# Start of painter tests\n# Start of interop tests\nok 1 /painter/interop/c-cpp-c-value\nok 2 /painter/interop/cpp-error-to-c\nok 3 /painter/interop/cpp-error-without-gerror\nok 4 /painter/interop/result-boundary-policy\nok 5 /painter/interop/void-boundary-policy\n# End of interop tests\n# Start of resources tests\nok 6 /painter/resources/value-assignment\nok 7 /painter/resources/value-owned-borrow-copy\nok 8 /painter/resources/array-assignment\nok 9 /painter/resources/array-owned-ref-release\nok 10 /painter/resources/glib-string-owner\nok 11 /painter/resources/error-message-transfer\nok 12 /painter/resources/mutex-exception\n# End of resources tests\n# Start of signal tests\nok 13 /painter/signal/lifetime-blocks\nok 14 /painter/signal/owned-lifetime\nok 15 /painter/signal/after-order\nok 16 /painter/signal/block-phase-order\nok 17 /painter/signal/reentrant-disconnect\nok 18 /painter/signal/close-receiver-lifetime\n# End of signal tests\n# Start of source tests\nok 19 /painter/source/cancel-repeat\nok 20 /painter/source/owned-lifetime\nok 21 /painter/source/self-close\nok 22 /painter/source/exception\nok 23 /painter/source/queued-callback-invalidation\n# End of source tests\n# Start of gobject tests\n# fixture event 1: construct\n# fixture event 2: construct-property\n# fixture event 3: activate\n# fixture event 4: get\n# fixture event 5: set\n# fixture event 6: get\n# fixture event 7: close\n# fixture event 8: get\n# fixture event 9: destroy\nok 24 /painter/gobject/property-dispose-finalize\nok 25 /painter/gobject/construction-property-callbacks\nok 26 /painter/gobject/type-rejection\nok 27 /painter/gobject/property-types-defaults-notify\nok 28 /painter/gobject/property-notify-reentry\n# End of gobject tests\n# Start of reentry tests\nok 29 /painter/reentry/ref-move\nok 30 /painter/reentry/value-reset-move\nok 31 /painter/reentry/array-move\nok 32 /painter/reentry/source-move\nok 33 /painter/reentry/connection-move\nok 34 /painter/reentry/receiver-deletion\nok 35 /painter/reentry/constructor-close\nok 36 /painter/reentry/constructor-duplicate\nok 37 /painter/reentry/constructor-owner-loss\nok 38 /painter/reentry/finalizing-close-read\n# End of reentry tests\n# Start of hierarchy tests\nok 39 /painter/hierarchy/properties-interface\nok 40 /painter/hierarchy/interface-exception\nok 41 /painter/hierarchy/interface-exception-policy\nok 42 /painter/hierarchy/slot-identity\nok 43 /painter/hierarchy/base-missing-derived\nok 44 /painter/hierarchy/native-property-owner-dispatch\nok 45 /painter/hierarchy/inherited-property-delegation\nok 46 /painter/hierarchy/parent-dispose-reentry\nok 47 /painter/hierarchy/shutdown-paths\nok 48 /painter/hierarchy/type-ancestry\n# End of hierarchy tests\n# Start of ref tests\nok 49 /painter/ref/copy-move-adopt-retain\nok 50 /painter/ref/retain-factory\nok 51 /painter/ref/adopt-factory\nok 52 /painter/ref/sink-factory\nok 53 /painter/ref/copy-move-contract\nok 54 /painter/ref/floating-sink\nok 55 /painter/ref/weak\n# End of ref tests\n# Start of store tests\nok 56 /painter/store/lifecycle\nok 57 /painter/store/registration\nok 58 /painter/store/multiple-slots\nok 59 /painter/store/slot-registration\nok 60 /painter/store/slot-lookup\nok 61 /painter/store/implementation-ownership\nok 62 /painter/store/close-transitions\nok 63 /painter/store/reentrant-close\nok 64 /painter/store/call-leases\nok 65 /painter/store/construction-failure\nok 66 /painter/store/acquired-construction-failure\nok 67 /painter/store/thread-rejection\n# End of store tests\n# Start of boundary tests\nok 68 /painter/boundary/c-close\nok 69 /painter/boundary/exception\n# End of boundary tests\n# End of painter tests\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/gcc",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c11",
+        "-fvisibility=default",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/platform-abi.c",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/platform-abi.c.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c++14",
+        "-fexceptions",
+        "-fno-rtti",
+        "-fvisibility-inlines-hidden",
+        "-fvisibility=default",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/platform-abi.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/platform-abi.cpp.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/platform-abi.c.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/platform-abi.cpp.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/libapppainter.a",
+        "-lgobject-2.0",
+        "-lglib-2.0",
+        "-pthread",
+        "-Wl,--export-dynamic",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/painter-platform-abi"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/painter-platform-abi"
+      ],
+      "exit_code": 0,
+      "output": "PLATFORM_ABI_PASS pointer=8 long=8 object=24 value=24 error=16\n"
+    },
+    {
+      "argv": [
+        "nm",
+        "-D",
+        "--defined-only",
+        "--format=posix",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/painter-platform-abi"
+      ],
+      "exit_code": 0,
+      "output": "_IO_stdin_used R 7000 4\n_ZTISt13runtime_error V bd88 18\n_ZTISt9exception V bd60 10\n_ZTSSt13runtime_error V 7780 12\n_ZTSSt9exception V 7750 d\n__bss_start B c178 \n__data_start D c150 \n_edata D c178 \n_end B c180 \n_start T 22e0 22\ndata_start W c150 \nmain T 26c5 a20\npainter_platform_cpp_layout T 30f1 9a\npainter_platform_export_control T 26ba b\npainter_platform_roundtrip T 3303 53\n"
+    },
+    {
+      "argv": [
+        "c++filt"
+      ],
+      "exit_code": 0,
+      "output": "_IO_stdin_used\ntypeinfo for std::runtime_error\ntypeinfo for std::exception\ntypeinfo name for std::runtime_error\ntypeinfo name for std::exception\n__bss_start\n__data_start\n_edata\n_end\n_start\ndata_start\nmain\npainter_platform_cpp_layout\npainter_platform_export_control\npainter_platform_roundtrip\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "-std=c++14",
+        "-fexceptions",
+        "-fno-rtti",
+        "-fvisibility-inlines-hidden",
+        "-fvisibility=default",
+        "-DPAINTER_PLATFORM_NEGATIVE_EXPORT",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+        "-pthread",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+        "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+        "-c",
+        "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/platform-abi.cpp",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/platform-abi.cpp-negative.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-g",
+        "-fvisibility=hidden",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/platform-abi.c.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/platform-abi.cpp-negative.o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/libapppainter.a",
+        "-lgobject-2.0",
+        "-lglib-2.0",
+        "-pthread",
+        "-Wl,--export-dynamic",
+        "-o",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/painter-platform-leak-control"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "nm",
+        "-D",
+        "--defined-only",
+        "--format=posix",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/painter-platform-leak-control"
+      ],
+      "exit_code": 0,
+      "output": "_IO_stdin_used R 7000 4\n_ZN11GimpPainter28platform_export_leak_controlEv T 30f1 b\n_ZTISt13runtime_error V bd88 18\n_ZTISt9exception V bd60 10\n_ZTSSt13runtime_error V 7780 12\n_ZTSSt9exception V 7750 d\n__bss_start B c178 \n__data_start D c150 \n_edata D c178 \n_end B c180 \n_start T 22e0 22\ndata_start W c150 \nmain T 26c5 a20\npainter_platform_cpp_layout T 30fc 9a\npainter_platform_export_control T 26ba b\npainter_platform_roundtrip T 330d 53\n"
+    },
+    {
+      "argv": [
+        "c++filt"
+      ],
+      "exit_code": 0,
+      "output": "_IO_stdin_used\nGimpPainter::platform_export_leak_control()\ntypeinfo for std::runtime_error\ntypeinfo for std::exception\ntypeinfo name for std::runtime_error\ntypeinfo name for std::exception\n__bss_start\n__data_start\n_edata\n_end\n_start\ndata_start\nmain\npainter_platform_cpp_layout\npainter_platform_export_control\npainter_platform_roundtrip\n"
+    },
+    {
+      "argv": [
+        "nm",
+        "--defined-only",
+        "--format=posix",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/painter-platform-abi"
+      ],
+      "exit_code": 0,
+      "output": "DW.ref._ZTIN11GimpPainter5ErrorE d c160 8\nDW.ref._ZTISt9exception d c168 8\nDW.ref.__gxx_personality_v0 d c170 8\n_DYNAMIC d bda0 \n_GLOBAL_OFFSET_TABLE_ d bfe8 \n_IO_stdin_used R 7000 4\n_ZN11GimpPainter10TypeTraitsI8_GObjectE4typeEv t 3fa6 b\n_ZN11GimpPainter12BindingStore15close_uncheckedEv t 5c6c d1\n_ZN11GimpPainter12BindingStore19check_borrow_resultIN12_GLOBAL__N_14SlotElEEvv t 394b 7\n_ZN11GimpPainter12BindingStore4findEP8_GObject t 5970 31\n_ZN11GimpPainter12BindingStore4withIN12_GLOBAL__N_14SlotEZZ26painter_platform_roundtripENKUlvE_clEvEUlRNS2_4ImplEE_EEDTclfp_cl7declvalIRNT_4ImplEEEEEOT0_ t 3746 106\n_ZN11GimpPainter12BindingStore5EntryIN12_GLOBAL__N_14SlotEE5closeEv t 3dde 3e\n_ZN11GimpPainter12BindingStore5EntryIN12_GLOBAL__N_14SlotEEC1IJEEEDpOT_ t 38b0 9b\n_ZN11GimpPainter12BindingStore5EntryIN12_GLOBAL__N_14SlotEEC2IJEEEDpOT_ t 38b0 9b\n_ZN11GimpPainter12BindingStore5EntryIN12_GLOBAL__N_14SlotEED0Ev t 3db2 2b\n_ZN11GimpPainter12BindingStore5EntryIN12_GLOBAL__N_14SlotEED1Ev t 3d6c 45\n_ZN11GimpPainter12BindingStore5EntryIN12_GLOBAL__N_14SlotEED2Ev t 3d6c 45\n_ZN11GimpPainter12BindingStore5closeEv t 5d3e 57\n_ZN11GimpPainter12BindingStore6ensureEP8_GObject t 580e 161\n_ZN11GimpPainter12BindingStore6lookupIN12_GLOBAL__N_14SlotEEERNT_4ImplEv t 3952 a2\n_ZN11GimpPainter12BindingStore7emplaceIN12_GLOBAL__N_14SlotEJEEEvDpOT0_ t 339a 3ab\n_ZN11GimpPainter12BindingStore7requireEP8_GObject t 59a2 102\n_ZN11GimpPainter12BindingStore8activateEv t 5bcc 9f\n_ZN11GimpPainter12BindingStore8identityIN12_GLOBAL__N_14SlotEEEPKvv t 38a2 d\n_ZN11GimpPainter12BindingStore9EntryBaseC1EPKv t 3fb2 29\n_ZN11GimpPainter12BindingStore9EntryBaseC2EPKv t 3fb2 29\n_ZN11GimpPainter12BindingStore9EntryBaseD0Ev t 41f0 2b\n_ZN11GimpPainter12BindingStore9EntryBaseD1Ev t 41d6 19\n_ZN11GimpPainter12BindingStore9EntryBaseD2Ev t 41d6 19\n_ZN11GimpPainter12BindingStoreC1EP8_GObject t 5712 6e\n_ZN11GimpPainter12BindingStoreC2EP8_GObject t 5712 6e\n_ZN11GimpPainter12BindingStoreD1Ev t 5780 8d\n_ZN11GimpPainter12BindingStoreD2Ev t 5780 8d\n_ZN11GimpPainter12_GLOBAL__N_113destroy_storeEPv t 56df 32\n_ZN11GimpPainter12_GLOBAL__N_19store_keyEv t 56ca 15\n_ZN11GimpPainter17capture_exceptionEPP7_GError t 3eab fb\n_ZN11GimpPainter5ErrorC1E16GimpPainterErrorPKc t 3e58 41\n_ZN11GimpPainter5ErrorC2E16GimpPainterErrorPKc t 3e58 41\n_ZN11GimpPainter5ErrorD0Ev t 4006 2b\n_ZN11GimpPainter5ErrorD1Ev t 3fdc 29\n_ZN11GimpPainter5ErrorD2Ev t 3fdc 29\n_ZN11GimpPainter5Value3getEv t 40f6 e\n_ZN11GimpPainter5Value5resetEv t 4104 6e\n_ZN11GimpPainter5ValueC1Em t 4032 a7\n_ZN11GimpPainter5ValueC2Em t 4032 a7\n_ZN11GimpPainter5ValueD1Ev t 40da 1b\n_ZN11GimpPainter5ValueD2Ev t 40da 1b\n_ZN11GimpPainter8SlotSpecI8_GObjectN12_GLOBAL__N_14ImplEE10owner_typeEv t 3897 b\n_ZN11GimpPainter8boundaryIiZ26gimp_painter_binding_closeEUlvE_EET_PP7_GErrorS2_OT0_ t 567e 4b\n_ZN11GimpPainter8boundaryIiZ26painter_platform_roundtripEUlvE_EET_PP7_GErrorS2_OT0_ t 384c 4b\n_ZN11GimpPainter9ObjectRefI8_GObjectE5checkEPS1_ t 430b e9\n_ZN11GimpPainter9ObjectRefI8_GObjectE5resetEv t 440e 32\n_ZN11GimpPainter9ObjectRefI8_GObjectE6retainEPS1_ t 4172 48\n_ZN11GimpPainter9ObjectRefI8_GObjectE7releaseEv t 4440 24\n_ZN11GimpPainter9ObjectRefI8_GObjectEC1EPS1_NS2_5OwnedE t 43f4 1a\n_ZN11GimpPainter9ObjectRefI8_GObjectEC2EPS1_NS2_5OwnedE t 43f4 1a\n_ZN11GimpPainter9ObjectRefI8_GObjectED1Ev t 41ba 1b\n_ZN11GimpPainter9ObjectRefI8_GObjectED2Ev t 41ba 1b\n_ZN12_GLOBAL__N_14Impl5closeEv t 30e6 b\n_ZN9__gnu_cxx17__normal_iteratorIPKSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEC1ERKS9_ t 6394 1d\n_ZN9__gnu_cxx17__normal_iteratorIPKSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEC2ERKS9_ t 6394 1d\n_ZN9__gnu_cxx17__normal_iteratorIPKSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEppEv t 6058 20\n_ZN9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEC1ERKS8_ t 4ec2 1d\n_ZN9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEC2ERKS8_ t 4ec2 1d\n_ZN9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEmmEv t 643e 20\n_ZN9__gnu_cxxL21__default_lock_policyE r 75dc 4\n_ZN9__gnu_cxxL21__default_lock_policyE r 77c4 4\n_ZN9__gnu_cxxL21__default_lock_policyE r 77f4 4\n_ZN9__gnu_cxxeqIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEEbRKNS_17__normal_iteratorIT_T0_EESH_ t 6505 3b\n_ZN9__gnu_cxxmiIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEENS_17__normal_iteratorIT_T0_E15difference_typeERKSF_SI_ t 4c1d 42\n_ZN9__gnu_cxxneIPKSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEEbRKNS_17__normal_iteratorIT_T0_EESI_ t 601d 3b\n_ZNK11GimpPainter12BindingStore12check_threadEv t 5aa4 86\n_ZNK11GimpPainter12BindingStore5entryEPKv t 5b2a a1\n_ZNK11GimpPainter5Error4codeEv t 3e9a 11\n_ZNK9__gnu_cxx17__normal_iteratorIPKSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEE4baseEv t 63b2 e\n_ZNK9__gnu_cxx17__normal_iteratorIPKSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEdeEv t 6078 11\n_ZNK9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEE4baseEv t 4ee0 e\n_ZNK9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EESt6vectorIS7_SaIS7_EEEdeEv t 645e 11\n_ZNKSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EE3getEv t 60a4 1a\n_ZNKSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEptEv t 608a 1a\n_ZNKSt10unique_ptrIN11GimpPainter12BindingStoreESt14default_deleteIS1_EE3getEv t 5f9a 1a\n_ZNKSt10unique_ptrIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EE3getEv t 3b84 1a\n_ZNKSt10unique_ptrIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEdeEv t 3aa4 42\n_ZNKSt10unique_ptrIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEptEv t 3e1c 1a\n_ZNKSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE19_M_get_Tp_allocatorEv t 507a e\n_ZNKSt13move_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEE4baseEv t 5576 11\n_ZNKSt13move_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEdeEv t 54d0 11\n_ZNKSt14default_deleteIN11GimpPainter12BindingStore9EntryBaseEEclEPS2_ t 44d8 2b\n_ZNKSt14default_deleteIN11GimpPainter12BindingStoreEEclEPS1_ t 6308 36\n_ZNKSt14default_deleteIN12_GLOBAL__N_14ImplEEclEPS1_ t 3b5a 29\n_ZNKSt15__uniq_ptr_implIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EE6_M_ptrEv t 63c0 1d\n_ZNKSt15__uniq_ptr_implIN11GimpPainter12BindingStoreESt14default_deleteIS1_EE6_M_ptrEv t 633e 1d\n_ZNKSt15__uniq_ptr_implIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EE6_M_ptrEv t 3bee 1d\n_ZNKSt16reverse_iteratorIN9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS5_EESt6vectorIS8_SaIS8_EEEEE4baseEv t 64f4 11\n_ZNKSt16reverse_iteratorIN9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS5_EESt6vectorIS8_SaIS8_EEEEEdeEv t 616c 2d\n_ZNKSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE12_M_check_lenEmPKc t 4b06 c8\n_ZNKSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE3endEv t 5ff4 29\n_ZNKSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE4sizeEv t 4e74 23\n_ZNKSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE5beginEv t 5fce 25\n_ZNKSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE8max_sizeEv t 4e52 22\n_ZNSt10_Head_baseILm0EPN11GimpPainter12BindingStore9EntryBaseELb0EE7_M_headERKS4_ t 66ab e\n_ZNSt10_Head_baseILm0EPN11GimpPainter12BindingStore9EntryBaseELb0EE7_M_headERS4_ t 4fd9 e\n_ZNSt10_Head_baseILm0EPN11GimpPainter12BindingStore9EntryBaseELb0EEC1Ev t 4d68 16\n_ZNSt10_Head_baseILm0EPN11GimpPainter12BindingStore9EntryBaseELb0EEC2Ev t 4d68 16\n_ZNSt10_Head_baseILm0EPN11GimpPainter12BindingStoreELb0EE7_M_headERKS3_ t 669d e\n_ZNSt10_Head_baseILm0EPN11GimpPainter12BindingStoreELb0EE7_M_headERS3_ t 6675 e\n_ZNSt10_Head_baseILm0EPN11GimpPainter12BindingStoreELb0EEC1Ev t 65ec 16\n_ZNSt10_Head_baseILm0EPN11GimpPainter12BindingStoreELb0EEC2Ev t 65ec 16\n_ZNSt10_Head_baseILm0EPN12_GLOBAL__N_14ImplELb0EE7_M_headERKS3_ t 3d5d e\n_ZNSt10_Head_baseILm0EPN12_GLOBAL__N_14ImplELb0EE7_M_headERS3_ t 3d0d e\n_ZNSt10_Head_baseILm0EPN12_GLOBAL__N_14ImplELb0EEC2Ev t 3c9e 16\n_ZNSt10_Head_baseILm1ESt14default_deleteIN11GimpPainter12BindingStore9EntryBaseEELb1EE7_M_headERS5_ t 51e8 e\n_ZNSt10_Head_baseILm1ESt14default_deleteIN11GimpPainter12BindingStore9EntryBaseEELb1EEC1Ev t 4fce b\n_ZNSt10_Head_baseILm1ESt14default_deleteIN11GimpPainter12BindingStore9EntryBaseEELb1EEC2Ev t 4fce b\n_ZNSt10_Head_baseILm1ESt14default_deleteIN11GimpPainter12BindingStoreEELb1EE7_M_headERS4_ t 66b9 e\n_ZNSt10_Head_baseILm1ESt14default_deleteIN11GimpPainter12BindingStoreEELb1EEC1Ev t 666a b\n_ZNSt10_Head_baseILm1ESt14default_deleteIN11GimpPainter12BindingStoreEELb1EEC2Ev t 666a b\n_ZNSt10_Head_baseILm1ESt14default_deleteIN12_GLOBAL__N_14ImplEELb1EE7_M_headERS4_ t 3d4f e\n_ZNSt10_Head_baseILm1ESt14default_deleteIN12_GLOBAL__N_14ImplEELb1EEC2Ev t 3d02 b\n_ZNSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EE11get_deleterEv t 44b0 1a\n_ZNSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEC1EOS5_ t 4ae0 26\n_ZNSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEC1IS4_vEEPS2_ t 4242 26\n_ZNSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEC2EOS5_ t 4ae0 26\n_ZNSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEC2IS4_vEEPS2_ t 4242 26\n_ZNSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EED1Ev t 4268 64\n_ZNSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EED2Ev t 4268 64\n_ZNSt10unique_ptrIN11GimpPainter12BindingStoreESt14default_deleteIS1_EE11get_deleterEv t 62e0 1a\n_ZNSt10unique_ptrIN11GimpPainter12BindingStoreESt14default_deleteIS1_EE7releaseEv t 5fb4 1a\n_ZNSt10unique_ptrIN11GimpPainter12BindingStoreESt14default_deleteIS1_EEC1IS3_vEEPS1_ t 5f10 26\n_ZNSt10unique_ptrIN11GimpPainter12BindingStoreESt14default_deleteIS1_EEC2IS3_vEEPS1_ t 5f10 26\n_ZNSt10unique_ptrIN11GimpPainter12BindingStoreESt14default_deleteIS1_EED1Ev t 5f36 64\n_ZNSt10unique_ptrIN11GimpPainter12BindingStoreESt14default_deleteIS1_EED2Ev t 5f36 64\n_ZNSt10unique_ptrIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EE11get_deleterEv t 3b32 1a\n_ZNSt10unique_ptrIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEC1IS3_vEEPS1_ t 3a1a 26\n_ZNSt10unique_ptrIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEC2IS3_vEEPS1_ t 3a1a 26\n_ZNSt10unique_ptrIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EED1Ev t 3a40 64\n_ZNSt10unique_ptrIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EED2Ev t 3a40 64\n_ZNSt11_Tuple_implILm0EJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEE7_M_headERKS6_ t 6650 1a\n_ZNSt11_Tuple_implILm0EJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEE7_M_headERS6_ t 4d7e 1a\n_ZNSt11_Tuple_implILm0EJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEEC1EOS6_ t 4db2 34\n_ZNSt11_Tuple_implILm0EJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEEC1Ev t 4a5e 27\n_ZNSt11_Tuple_implILm0EJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEEC2EOS6_ t 4db2 34\n_ZNSt11_Tuple_implILm0EJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEEC2Ev t 4a5e 27\n_ZNSt11_Tuple_implILm0EJPN11GimpPainter12BindingStoreESt14default_deleteIS1_EEE7_M_headERKS5_ t 6636 1a\n_ZNSt11_Tuple_implILm0EJPN11GimpPainter12BindingStoreESt14default_deleteIS1_EEE7_M_headERS5_ t 6602 1a\n_ZNSt11_Tuple_implILm0EJPN11GimpPainter12BindingStoreESt14default_deleteIS1_EEEC1Ev t 6540 27\n_ZNSt11_Tuple_implILm0EJPN11GimpPainter12BindingStoreESt14default_deleteIS1_EEEC2Ev t 6540 27\n_ZNSt11_Tuple_implILm0EJPN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEE7_M_headERKS5_ t 3d35 1a\n_ZNSt11_Tuple_implILm0EJPN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEE7_M_headERS5_ t 3cb4 1a\n_ZNSt11_Tuple_implILm0EJPN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEEC2Ev t 3c0c 27\n_ZNSt11_Tuple_implILm1EJSt14default_deleteIN11GimpPainter12BindingStore9EntryBaseEEEE7_M_headERS5_ t 4fe7 1a\n_ZNSt11_Tuple_implILm1EJSt14default_deleteIN11GimpPainter12BindingStore9EntryBaseEEEEC1EOS5_ t 5010 f\n_ZNSt11_Tuple_implILm1EJSt14default_deleteIN11GimpPainter12BindingStore9EntryBaseEEEEC1Ev t 4d4c 1b\n_ZNSt11_Tuple_implILm1EJSt14default_deleteIN11GimpPainter12BindingStore9EntryBaseEEEEC2EOS5_ t 5010 f\n_ZNSt11_Tuple_implILm1EJSt14default_deleteIN11GimpPainter12BindingStore9EntryBaseEEEEC2Ev t 4d4c 1b\n_ZNSt11_Tuple_implILm1EJSt14default_deleteIN11GimpPainter12BindingStoreEEEE7_M_headERS4_ t 6683 1a\n_ZNSt11_Tuple_implILm1EJSt14default_deleteIN11GimpPainter12BindingStoreEEEEC1Ev t 65d0 1b\n_ZNSt11_Tuple_implILm1EJSt14default_deleteIN11GimpPainter12BindingStoreEEEEC2Ev t 65d0 1b\n_ZNSt11_Tuple_implILm1EJSt14default_deleteIN12_GLOBAL__N_14ImplEEEE7_M_headERS4_ t 3d1b 1a\n_ZNSt11_Tuple_implILm1EJSt14default_deleteIN12_GLOBAL__N_14ImplEEEEC2Ev t 3c82 1b\n_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS5_EEEEvT_SA_ t 5151 39\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE11_M_allocateEm t 4c60 49\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE12_Vector_implC1Ev t 5df2 2d\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE12_Vector_implC2Ev t 5df2 2d\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE12_Vector_implD1Ev t 5d96 24\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE12_Vector_implD2Ev t 5d96 24\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE13_M_deallocateEPS6_m t 61d4 4e\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_Vector_impl_dataC1Ev t 619a 2e\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_Vector_impl_dataC2Ev t 619a 2e\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE19_M_get_Tp_allocatorEv t 4cea e\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EEC1Ev t 5dba 1b\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EEC2Ev t 5dba 1b\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EED1Ev t 5e20 4d\n_ZNSt12_Vector_baseISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EED2Ev t 5e20 4d\n_ZNSt13move_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEC1ES7_ t 518a 29\n_ZNSt13move_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEC2ES7_ t 518a 29\n_ZNSt13move_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEppEv t 54b0 20\n_ZNSt15__new_allocatorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEE10deallocateEPS6_m t 4eee 32\n_ZNSt15__new_allocatorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEE8allocateEmPKv t 5088 66\n_ZNSt15__new_allocatorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEED1Ev t 61c8 b\n_ZNSt15__new_allocatorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEED2Ev t 61c8 b\n_ZNSt15__uniq_ptr_dataIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_ELb1ELb1EEC1EOS5_ t 4aba 26\n_ZNSt15__uniq_ptr_dataIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_ELb1ELb1EEC2EOS5_ t 4aba 26\n_ZNSt15__uniq_ptr_dataIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_ELb1ELb1EECI1St15__uniq_ptr_implIS2_S4_EEPS2_ t 421c 26\n_ZNSt15__uniq_ptr_dataIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_ELb1ELb1EECI2St15__uniq_ptr_implIS2_S4_EEPS2_ t 421c 26\n_ZNSt15__uniq_ptr_dataIN11GimpPainter12BindingStoreESt14default_deleteIS1_ELb1ELb1EECI1St15__uniq_ptr_implIS1_S3_EEPS1_ t 5eea 26\n_ZNSt15__uniq_ptr_dataIN11GimpPainter12BindingStoreESt14default_deleteIS1_ELb1ELb1EECI2St15__uniq_ptr_implIS1_S3_EEPS1_ t 5eea 26\n_ZNSt15__uniq_ptr_dataIN12_GLOBAL__N_14ImplESt14default_deleteIS1_ELb1ELb1EECI1St15__uniq_ptr_implIS1_S3_EEPS1_ t 39f4 26\n_ZNSt15__uniq_ptr_dataIN12_GLOBAL__N_14ImplESt14default_deleteIS1_ELb1ELb1EECI2St15__uniq_ptr_implIS1_S3_EEPS1_ t 39f4 26\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EE10_M_deleterEv t 462a 1a\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EE6_M_ptrEv t 4496 1a\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEC1EOS5_ t 4e0c 46\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEC1EPS2_ t 4464 32\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEC2EOS5_ t 4e0c 46\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEC2EPS2_ t 4464 32\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStoreESt14default_deleteIS1_EE10_M_deleterEv t 64a6 1a\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStoreESt14default_deleteIS1_EE6_M_ptrEv t 62c6 1a\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStoreESt14default_deleteIS1_EE7releaseEv t 635c 38\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStoreESt14default_deleteIS1_EEC1EPS1_ t 6294 32\n_ZNSt15__uniq_ptr_implIN11GimpPainter12BindingStoreESt14default_deleteIS1_EEC2EPS1_ t 6294 32\n_ZNSt15__uniq_ptr_implIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EE10_M_deleterEv t 3bd4 1a\n_ZNSt15__uniq_ptr_implIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EE6_M_ptrEv t 3b18 1a\n_ZNSt15__uniq_ptr_implIN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEC2EPS1_ t 3ae6 32\n_ZNSt16reverse_iteratorIN9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS5_EESt6vectorIS8_SaIS8_EEEEEC1ESD_ t 63de 1a\n_ZNSt16reverse_iteratorIN9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS5_EESt6vectorIS8_SaIS8_EEEEEC2ESD_ t 63de 1a\n_ZNSt16reverse_iteratorIN9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS5_EESt6vectorIS8_SaIS8_EEEEEppEv t 614e 1e\n_ZNSt20__uninitialized_copyILb0EE13__uninit_copyISt13move_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS6_EEESA_EET0_T_SD_SC_ t 52d7 2d\n_ZNSt5tupleIJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEEC1EOS6_ t 4de6 26\n_ZNSt5tupleIJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEEC1ILb1ELb1EEEv t 45f4 1b\n_ZNSt5tupleIJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEEC2EOS6_ t 4de6 26\n_ZNSt5tupleIJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEEC2ILb1ELb1EEEv t 45f4 1b\n_ZNSt5tupleIJPN11GimpPainter12BindingStoreESt14default_deleteIS1_EEEC1ILb1ELb1EEEv t 6470 1b\n_ZNSt5tupleIJPN11GimpPainter12BindingStoreESt14default_deleteIS1_EEEC2ILb1ELb1EEEv t 6470 1b\n_ZNSt5tupleIJPN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEEC1ILb1ELb1EEEv t 3b9e 1b\n_ZNSt5tupleIJPN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEEC2ILb1ELb1EEEv t 3b9e 1b\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE11_S_max_sizeERKS7_ t 501f 5a\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE11_S_relocateEPS6_S9_S9_RS7_ t 4cb7 32\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE12emplace_backIJS6_EEEvDpOT_ t 4504 ef\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE14_S_do_relocateEPS6_S9_S9_RS7_St17integral_constantIbLb1EE t 4f20 32\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE15_M_erase_at_endEPS6_ t 6222 72\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE15_S_use_relocateEv t 46e2 f\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_M_realloc_appendIJS6_EEEvDpOT_ t 477c 2e1\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE19_S_nothrow_relocateESt17integral_constantIbLb1EE t 46f1 b\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE3endEv t 4bce 29\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE4rendEv t 60f2 34\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE5beginEv t 4bf8 25\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE5clearEv t 5ec4 25\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE6rbeginEv t 60be 34\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE9push_backEOS6_ t 42cc 31\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EEC1Ev t 5dd6 1b\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EEC2Ev t 5dd6 1b\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EED1Ev t 5e6e 56\n_ZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EED2Ev t 5e6e 56\n_ZNSt8__detail30__integer_to_chars_is_unsignedIjEE r 773d 1\n_ZNSt8__detail30__integer_to_chars_is_unsignedIjEE r 77e7 1\n_ZNSt8__detail30__integer_to_chars_is_unsignedIjEE r 7901 1\n_ZNSt8__detail30__integer_to_chars_is_unsignedImEE r 773e 1\n_ZNSt8__detail30__integer_to_chars_is_unsignedImEE r 77e8 1\n_ZNSt8__detail30__integer_to_chars_is_unsignedImEE r 7902 1\n_ZNSt8__detail30__integer_to_chars_is_unsignedIyEE r 773f 1\n_ZNSt8__detail30__integer_to_chars_is_unsignedIyEE r 77e9 1\n_ZNSt8__detail30__integer_to_chars_is_unsignedIyEE r 7903 1\n_ZSt10_ConstructISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEJS6_EEvPT_DpOT0_ t 54e1 5c\n_ZSt11__addressofISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEPT_RS7_ t 52a0 e\n_ZSt12__get_helperILm0EPN11GimpPainter12BindingStore9EntryBaseEJSt14default_deleteIS2_EEERKT0_RKSt11_Tuple_implIXT_EJS6_DpT1_EE t 65b5 1a\n_ZSt12__get_helperILm0EPN11GimpPainter12BindingStore9EntryBaseEJSt14default_deleteIS2_EEERT0_RSt11_Tuple_implIXT_EJS6_DpT1_EE t 4a85 1a\n_ZSt12__get_helperILm0EPN11GimpPainter12BindingStoreEJSt14default_deleteIS1_EEERKT0_RKSt11_Tuple_implIXT_EJS5_DpT1_EE t 659b 1a\n_ZSt12__get_helperILm0EPN11GimpPainter12BindingStoreEJSt14default_deleteIS1_EEERT0_RSt11_Tuple_implIXT_EJS5_DpT1_EE t 6567 1a\n_ZSt12__get_helperILm0EPN12_GLOBAL__N_14ImplEJSt14default_deleteIS1_EEERKT0_RKSt11_Tuple_implIXT_EJS5_DpT1_EE t 3ce8 1a\n_ZSt12__get_helperILm0EPN12_GLOBAL__N_14ImplEJSt14default_deleteIS1_EEERT0_RSt11_Tuple_implIXT_EJS5_DpT1_EE t 3c33 1a\n_ZSt12__get_helperILm1ESt14default_deleteIN11GimpPainter12BindingStore9EntryBaseEEJEERT0_RSt11_Tuple_implIXT_EJS5_DpT1_EE t 4d98 1a\n_ZSt12__get_helperILm1ESt14default_deleteIN11GimpPainter12BindingStoreEEJEERT0_RSt11_Tuple_implIXT_EJS4_DpT1_EE t 661c 1a\n_ZSt12__get_helperILm1ESt14default_deleteIN12_GLOBAL__N_14ImplEEJEERT0_RSt11_Tuple_implIXT_EJS4_DpT1_EE t 3cce 1a\n_ZSt12__niter_baseIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEET_S8_ t 5221 e\n_ZSt12__relocate_aIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EES7_SaIS6_EET0_T_SA_S9_RT1_ t 50ee 63\n_ZSt12__to_addressISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEPT_S8_ t 4ca9 e\n_ZSt14__relocate_a_1IPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EES7_SaIS6_EET0_T_SA_S9_RT1_ t 522f 71\n_ZSt16__do_uninit_copyISt13move_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EEES8_ET0_T_SB_SA_ t 53dc ac\n_ZSt18uninitialized_copyISt13move_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EEES8_ET0_T_SB_SA_ t 51b3 35\n_ZSt19__relocate_object_aISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EES6_SaIS6_EEvPT_PT0_RT1_ t 5304 d8\n_ZSt22__uninitialized_copy_aISt13move_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS4_EEES8_S7_ET0_T_SB_SA_RSaIT1_E t 4f9d 31\n_ZSt30__is_nothrow_new_constructibleISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEJS6_EE r 7740 1\n_ZSt32__make_move_if_noexcept_iteratorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESt13move_iteratorIPS6_EET0_PT_ t 4f78 25\n_ZSt34__uninitialized_move_if_noexcept_aIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EES7_SaIS6_EET0_T_SA_S9_RT1_ t 4cf8 53\n_ZSt3getILm0EJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEERKNSt13tuple_elementIXT_ESt5tupleIJDpT0_EEE4typeERKSA_ t 64da 1a\n_ZSt3getILm0EJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEERNSt13tuple_elementIXT_ESt5tupleIJDpT0_EEE4typeERSA_ t 460f 1a\n_ZSt3getILm0EJPN11GimpPainter12BindingStoreESt14default_deleteIS1_EEERKNSt13tuple_elementIXT_ESt5tupleIJDpT0_EEE4typeERKS9_ t 64c0 1a\n_ZSt3getILm0EJPN11GimpPainter12BindingStoreESt14default_deleteIS1_EEERNSt13tuple_elementIXT_ESt5tupleIJDpT0_EEE4typeERS9_ t 648b 1a\n_ZSt3getILm0EJPN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEERKNSt13tuple_elementIXT_ESt5tupleIJDpT0_EEE4typeERKS9_ t 3c67 1a\n_ZSt3getILm0EJPN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEERNSt13tuple_elementIXT_ESt5tupleIJDpT0_EEE4typeERS9_ t 3bb9 1a\n_ZSt3getILm1EJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS2_EEERNSt13tuple_elementIXT_ESt5tupleIJDpT0_EEE4typeERSA_ t 4a9f 1a\n_ZSt3getILm1EJPN11GimpPainter12BindingStoreESt14default_deleteIS1_EEERNSt13tuple_elementIXT_ESt5tupleIJDpT0_EEE4typeERS9_ t 6581 1a\n_ZSt3getILm1EJPN12_GLOBAL__N_14ImplESt14default_deleteIS1_EEERNSt13tuple_elementIXT_ESt5tupleIJDpT0_EEE4typeERS9_ t 3c4d 1a\n_ZSt3maxImERKT_S2_S2_ t 4e97 2b\n_ZSt3minImERKT_S2_S2_ t 51f6 2b\n_ZSt4moveIRPN11GimpPainter12BindingStore9EntryBaseEEONSt16remove_referenceIT_E4typeEOS6_ t 44ca e\n_ZSt4moveIRPN11GimpPainter12BindingStoreEEONSt16remove_referenceIT_E4typeEOS5_ t 62fa e\n_ZSt4moveIRPN12_GLOBAL__N_14ImplEEONSt16remove_referenceIT_E4typeEOS5_ t 3b4c e\n_ZSt4moveIRPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEONSt16remove_referenceIT_E4typeEOSA_ t 52c9 e\n_ZSt4moveIRSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEONSt16remove_referenceIT_E4typeEOS9_ t 42fd e\n_ZSt4moveIRSt5tupleIJPN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEEONSt16remove_referenceIT_E4typeEOSA_ t 5001 e\n_ZSt7forwardISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEOT_RNSt16remove_referenceIS7_E4typeE t 4644 e\n_ZSt8_DestroyIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEvT_S8_ t 4f52 26\n_ZSt8_DestroyISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEvPT_ t 52ae 1b\n_ZStL13allocator_arg r 75d7 1\n_ZStL13allocator_arg r 77bf 1\n_ZStL13allocator_arg r 77f1 1\n_ZStL19piecewise_construct r 75c0 1\n_ZStL19piecewise_construct r 77a8 1\n_ZStL19piecewise_construct r 77f0 1\n_ZStL6ignore r 75d8 1\n_ZStL6ignore r 77c0 1\n_ZStL6ignore r 77f2 1\n_ZSteqIN9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS5_EESt6vectorIS8_SaIS8_EEEEEbRKSt16reverse_iteratorIT_ESI_ t 63f8 45\n_ZSteqIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEbRKSt13move_iteratorIT_ESC_ t 553d 38\n_ZStneIN9__gnu_cxx17__normal_iteratorIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS5_EESt6vectorIS8_SaIS8_EEEEEbRKSt16reverse_iteratorIT_ESI_ t 6126 28\n_ZStneIPSt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EEEbRKSt13move_iteratorIT_ESC_ t 5488 28\n_ZTIN11GimpPainter5ErrorE d bd70 18\n_ZTISt13runtime_error V bd88 18\n_ZTISt9exception V bd60 10\n_ZTSN11GimpPainter5ErrorE r 7760 16\n_ZTSSt13runtime_error V 7780 12\n_ZTSSt9exception V 7750 d\n_ZTVN11GimpPainter12BindingStore5EntryIN12_GLOBAL__N_14SlotEEE d bce8 28\n_ZTVN11GimpPainter12BindingStore9EntryBaseE d bd10 28\n_ZTVN11GimpPainter5ErrorE d bd38 28\n_ZZ26gimp_painter_binding_closeENKUlvE_clEv t 559c b3\n_ZZ26painter_platform_roundtripENKUlvE_clEv t 325c a7\n_ZZN11GimpPainter12BindingStore7emplaceIN12_GLOBAL__N_14SlotEJEEEvDpOT0_EN7PendingC1ERPKvS9_ t 3356 29\n_ZZN11GimpPainter12BindingStore7emplaceIN12_GLOBAL__N_14SlotEJEEEvDpOT0_EN7PendingC2ERPKvS9_ t 3356 29\n_ZZN11GimpPainter12BindingStore7emplaceIN12_GLOBAL__N_14SlotEJEEEvDpOT0_EN7PendingD1Ev t 3380 19\n_ZZN11GimpPainter12BindingStore7emplaceIN12_GLOBAL__N_14SlotEJEEEvDpOT0_EN7PendingD2Ev t 3380 19\n_ZZN11GimpPainter12BindingStore8identityIN12_GLOBAL__N_14SlotEEEPKvvE5token r 76e4 1\n_ZZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_M_realloc_appendIJS6_EEEvDpOT_EN11_Guard_eltsC1EPS6_RS7_ t 46fc 3a\n_ZZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_M_realloc_appendIJS6_EEEvDpOT_EN11_Guard_eltsC2EPS6_RS7_ t 46fc 3a\n_ZZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_M_realloc_appendIJS6_EEEvDpOT_EN11_Guard_eltsD1Ev t 4736 46\n_ZZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_M_realloc_appendIJS6_EEEvDpOT_EN11_Guard_eltsD2Ev t 4736 46\n_ZZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_M_realloc_appendIJS6_EEEvDpOT_EN6_GuardC1EPS6_mRS7_ t 4652 3a\n_ZZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_M_realloc_appendIJS6_EEEvDpOT_EN6_GuardC2EPS6_mRS7_ t 4652 3a\n_ZZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_M_realloc_appendIJS6_EEEvDpOT_EN6_GuardD1Ev t 468c 56\n_ZZNSt6vectorISt10unique_ptrIN11GimpPainter12BindingStore9EntryBaseESt14default_deleteIS3_EESaIS6_EE17_M_realloc_appendIJS6_EEEvDpOT_EN6_GuardD2Ev t 468c 56\n_ZZZ26painter_platform_roundtripENKUlvE_clEvENKUlRN12_GLOBAL__N_14ImplEE_clES2_ t 318c cf\n_ZdlPvS_ t 3e48 f\n_ZnwmPv t 3e36 12\n__FRAME_END__ r 9f8c \n__GNU_EH_FRAME_HDR r 7904 \n__TMC_END__ d c178 \n__abi_tag r a178 20\n__bss_start B c178 \n__data_start D c150 \n__do_global_dtors_aux t 2380 \n__do_global_dtors_aux_fini_array_entry d bce0 \n__dso_handle d c158 \n__frame_dummy_init_array_entry d bcd8 \n__func__.1 r 75a0 5\n__func__.2 r 7520 9\n_edata D c178 \n_end B c180 \n_fini t 66c8 \n_init t 2000 \n_start T 22e0 22\nc.0 r 7540 60\ncallback t 23c9 2f1\ncallback_count b c17c 4\ncompleted.0 b c178 1\ndata_start W c150 \nderegister_tm_clones t 2310 \nframe_dummy t 23c0 \ngimp_painter_binding_close t 564f 2f\ngimp_painter_error_quark t 5587 15\nmain T 26c5 a20\npainter_platform_cpp_layout T 30f1 9a\npainter_platform_export_control T 26ba b\npainter_platform_roundtrip T 3303 53\nregister_tm_clones t 2340 \n"
+    },
+    {
+      "argv": [
+        "readelf",
+        "-d",
+        "/workspace/scratch/5b5281e79681/platform-link-07014-recovery/build-linux/painter-platform-abi"
+      ],
+      "exit_code": 0,
+      "output": "\nDynamic section at offset 0xada0 contains 30 entries:\n  Tag        Type                         Name/Value\n 0x0000000000000001 (NEEDED)             Shared library: [libgobject-2.0.so.0]\n 0x0000000000000001 (NEEDED)             Shared library: [libglib-2.0.so.0]\n 0x0000000000000001 (NEEDED)             Shared library: [libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             Shared library: [libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]\n 0x000000000000000c (INIT)               0x2000\n 0x000000000000000d (FINI)               0x66c8\n 0x0000000000000019 (INIT_ARRAY)         0xbcd8\n 0x000000000000001b (INIT_ARRAYSZ)       8 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0xbce0\n 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x3b0\n 0x0000000000000005 (STRTAB)             0xa80\n 0x0000000000000006 (SYMTAB)             0x420\n 0x000000000000000a (STRSZ)              1459 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000015 (DEBUG)              0x0\n 0x0000000000000003 (PLTGOT)             0xbfe8\n 0x0000000000000002 (PLTRELSZ)           1008 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x13e0\n 0x0000000000000007 (RELA)               0x1170\n 0x0000000000000008 (RELASZ)             624 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffb (FLAGS_1)            Flags: PIE\n 0x000000006ffffffe (VERNEED)            0x10c0\n 0x000000006fffffff (VERNEEDNUM)         3\n 0x000000006ffffff0 (VERSYM)             0x1034\n 0x000000006ffffff9 (RELACOUNT)          15\n 0x0000000000000000 (NULL)               0x0\n"
+    }
+  ],
+  "binaries": {
+    "painter-foundation": {
+      "format": "ELF",
+      "architecture": "x86_64",
+      "sha256": "3c436855160a4bd8c42ff85ac2520be3ae4673becf0363b2c01856f9f2023de4"
+    },
+    "painter-platform-abi": {
+      "format": "ELF",
+      "architecture": "x86_64",
+      "sha256": "35fea6e5fa10f4cc4f93e32a67302642caa7f8da510ba5755dce999ee0c8d4b9"
+    },
+    "painter-platform-leak-control": {
+      "format": "ELF",
+      "architecture": "x86_64",
+      "sha256": "8198129c2cfa3881626a33407480ee0e74d0b834259d75df59c7deae342bd92a"
+    }
+  },
+  "host": {
+    "system": "linux",
+    "architecture": "x86_64",
+    "python": "3.13.5"
+  },
+  "ci": {
+    "GITHUB_SHA": null,
+    "GITHUB_RUN_ID": null,
+    "GITHUB_RUN_ATTEMPT": null,
+    "GITHUB_JOB": null
+  },
+  "toolchain": {
+    "cc": "gcc (Debian 14.2.0-19) 14.2.0",
+    "cxx": "g++ (Debian 14.2.0-19) 14.2.0",
+    "cc_target": "x86_64-linux-gnu",
+    "cxx_target": "x86_64-linux-gnu",
+    "glib": "2.84.4"
+  },
+  "source_sha256": {
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-binding.h": "d0269c7b9dd84535d95f714e2227c280030cc922ba967823c00e98daa77d8c04",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/tests/platform-abi.c": "f8679726aa2a2003be9b65df8ef21ee73d957e9dfe8e21956c18c1c1b49f7117",
+    "app/painter/tests/platform-abi.cpp": "a436318a15b057ca2c8c04164c007cb0809f812c5b2500d45d2b349a8d32af53",
+    "app/painter/tests/platform-abi.h": "9d32d7310f819e45d9bde03e9b3e2e8dc0130d2b5adaee40778392a3164a72d2",
+    "app/painter/tests/test-c-api.c": "609f376f12c4ef43aecd21b00a50cc8567b9f8827aef36d0b48848a89c6e0c7d",
+    "app/painter/tests/test-c-api.h": "e9b3208f78777d72e27b321d53203c770900409718bdd0b7b7159fd86b28ed13",
+    "app/painter/tests/test-fixture-traits.hpp": "354a1608ae71a4c51377127df6e0934e6c987b55677c06dfc67df391dedd669e",
+    "app/painter/tests/test-fixture.c": "a10eab637aecab527de0c1058fd805219c5668531d6f45075a20733cbedbfb84",
+    "app/painter/tests/test-fixture.h": "947447f665e88b6000b9e1cf4bf51eaa186b38653ac9cc319d0b0814b10fa454",
+    "app/painter/tests/test-foundation.cpp": "615d03addbd41aa9afaf0203cd8083eea74b2584bc308d0baf6421e81580f50f",
+    "app/painter/tests/test-gobject.cpp": "edd8cec84a2884795ec8e62327033edd8de77aa1b892c559f28553da177a723f",
+    "app/painter/tests/test-hierarchy.c": "e7664beef325143ff2c569c03ba3b677d844662cabe92ad5664828dee79a12f3",
+    "app/painter/tests/test-hierarchy.cpp": "d835265d890295a0c486c20d846d4fb42070a826f752f7a25d8b3df1b5ba4779",
+    "app/painter/tests/test-hierarchy.h": "53f455eba0bcd15ed3b547d5e470e33c06448fc9f811456cd992a10eb854f74d",
+    "app/painter/tests/test-reentry.cpp": "f1c2ff06baeaa16faf7ccfad43b88c638f55bbd5cb88a5e585cf7d951a2d6e0c",
+    "app/painter/tests/test-registry.hpp": "4bd2aff639d1cef2459e41c4039a44d728634fe38ef5d4653e4bb08938b3b0e4",
+    "app/painter/tests/test-resources.cpp": "9bf8ffaa683e5ed488946e5cdcd2300ed8bab46a250ed7328263d630da22faf8",
+    "tools/test_painter_foundation.py": "32bcb2f7b5e06b04737ba59a9a98763560de0233691bb22838d006f0da740c4d",
+    "tools/test_painter_platform_link.py": "5e9869651b1e0e008653520a2570013b51f87be2ff55feffc5ced476cd6f3964"
+  },
+  "archive_members": [
+    "gimp-painter-error.cpp.o",
+    "gimp-painter-binding.cpp.o",
+    "binding-store.cpp.o"
+  ],
+  "foundation_tests": [
+    "/painter/interop/c-cpp-c-value",
+    "/painter/interop/cpp-error-to-c",
+    "/painter/interop/cpp-error-without-gerror",
+    "/painter/interop/result-boundary-policy",
+    "/painter/interop/void-boundary-policy",
+    "/painter/resources/value-assignment",
+    "/painter/resources/value-owned-borrow-copy",
+    "/painter/resources/array-assignment",
+    "/painter/resources/array-owned-ref-release",
+    "/painter/resources/glib-string-owner",
+    "/painter/resources/error-message-transfer",
+    "/painter/resources/mutex-exception",
+    "/painter/signal/lifetime-blocks",
+    "/painter/signal/owned-lifetime",
+    "/painter/signal/after-order",
+    "/painter/signal/block-phase-order",
+    "/painter/signal/reentrant-disconnect",
+    "/painter/signal/close-receiver-lifetime",
+    "/painter/source/cancel-repeat",
+    "/painter/source/owned-lifetime",
+    "/painter/source/self-close",
+    "/painter/source/exception",
+    "/painter/source/queued-callback-invalidation",
+    "/painter/gobject/property-dispose-finalize",
+    "/painter/gobject/construction-property-callbacks",
+    "/painter/gobject/type-rejection",
+    "/painter/gobject/property-types-defaults-notify",
+    "/painter/gobject/property-notify-reentry",
+    "/painter/reentry/ref-move",
+    "/painter/reentry/value-reset-move",
+    "/painter/reentry/array-move",
+    "/painter/reentry/source-move",
+    "/painter/reentry/connection-move",
+    "/painter/reentry/receiver-deletion",
+    "/painter/reentry/constructor-close",
+    "/painter/reentry/constructor-duplicate",
+    "/painter/reentry/constructor-owner-loss",
+    "/painter/reentry/finalizing-close-read",
+    "/painter/hierarchy/properties-interface",
+    "/painter/hierarchy/interface-exception",
+    "/painter/hierarchy/interface-exception-policy",
+    "/painter/hierarchy/slot-identity",
+    "/painter/hierarchy/base-missing-derived",
+    "/painter/hierarchy/native-property-owner-dispatch",
+    "/painter/hierarchy/inherited-property-delegation",
+    "/painter/hierarchy/parent-dispose-reentry",
+    "/painter/hierarchy/shutdown-paths",
+    "/painter/hierarchy/type-ancestry",
+    "/painter/ref/copy-move-adopt-retain",
+    "/painter/ref/retain-factory",
+    "/painter/ref/adopt-factory",
+    "/painter/ref/sink-factory",
+    "/painter/ref/copy-move-contract",
+    "/painter/ref/floating-sink",
+    "/painter/ref/weak",
+    "/painter/store/lifecycle",
+    "/painter/store/registration",
+    "/painter/store/multiple-slots",
+    "/painter/store/slot-registration",
+    "/painter/store/slot-lookup",
+    "/painter/store/implementation-ownership",
+    "/painter/store/close-transitions",
+    "/painter/store/reentrant-close",
+    "/painter/store/call-leases",
+    "/painter/store/construction-failure",
+    "/painter/store/acquired-construction-failure",
+    "/painter/store/thread-rejection",
+    "/painter/boundary/c-close",
+    "/painter/boundary/exception"
+  ],
+  "abi_result": "PLATFORM_ABI_PASS pointer=8 long=8 object=24 value=24 error=16",
+  "exports": {
+    "names": [
+      "_IO_stdin_used",
+      "_ZTISt13runtime_error",
+      "_ZTISt9exception",
+      "_ZTSSt13runtime_error",
+      "_ZTSSt9exception",
+      "__bss_start",
+      "__data_start",
+      "_edata",
+      "_end",
+      "_start",
+      "data_start",
+      "main",
+      "painter_platform_cpp_layout",
+      "painter_platform_export_control",
+      "painter_platform_roundtrip"
+    ],
+    "private_cpp_exports": []
+  },
+  "negative_export_control": [
+    "GimpPainter::platform_export_leak_control()"
+  ],
+  "unmangled_c_symbols": [
+    "gimp_painter_binding_close",
+    "gimp_painter_error_quark",
+    "painter_platform_cpp_layout",
+    "painter_platform_roundtrip"
+  ],
+  "runtime_dependencies": "\nDynamic section at offset 0xada0 contains 30 entries:\n  Tag        Type                         Name/Value\n 0x0000000000000001 (NEEDED)             Shared library: [libgobject-2.0.so.0]\n 0x0000000000000001 (NEEDED)             Shared library: [libglib-2.0.so.0]\n 0x0000000000000001 (NEEDED)             Shared library: [libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             Shared library: [libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]\n 0x000000000000000c (INIT)               0x2000\n 0x000000000000000d (FINI)               0x66c8\n 0x0000000000000019 (INIT_ARRAY)         0xbcd8\n 0x000000000000001b (INIT_ARRAYSZ)       8 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0xbce0\n 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x3b0\n 0x0000000000000005 (STRTAB)             0xa80\n 0x0000000000000006 (SYMTAB)             0x420\n 0x000000000000000a (STRSZ)              1459 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000015 (DEBUG)              0x0\n 0x0000000000000003 (PLTGOT)             0xbfe8\n 0x0000000000000002 (PLTRELSZ)           1008 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x13e0\n 0x0000000000000007 (RELA)               0x1170\n 0x0000000000000008 (RELASZ)             624 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffb (FLAGS_1)            Flags: PIE\n 0x000000006ffffffe (VERNEED)            0x10c0\n 0x000000006fffffff (VERNEEDNUM)         3\n 0x000000006ffffff0 (VERSYM)             0x1034\n 0x000000006ffffff9 (RELACOUNT)          15\n 0x0000000000000000 (NULL)               0x0\n",
+  "archive_sha256": "37b96914affdf0f1f0d30761e041753f74a3c5889f6d90a5ab3eeb77b7db1f17"
+}
