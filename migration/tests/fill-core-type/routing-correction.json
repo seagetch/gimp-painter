@@ -1,0 +1,101 @@
+{
+  "task": "08.011",
+  "exclusions": [
+    {
+      "path": "app/core/gimpimage-contiguous-region.h",
+      "source_blob": "fe093d0e953bdad5be1f74ebee92e39d24ef7eed",
+      "payload_sha256": "021ff829a767b714a7d7746e616ee7e01158e344ce12fbda29b686b6a1d082af",
+      "payload": "+GimpChannel * gimp_image_contiguous_region_by_seed_ext  (GimpImage           *image,\n+                                                         GimpDrawable        *drawable,\n+                                                         GimpChannel         *source_mask,\n+                                                         gboolean             sample_merged,\n+                                                         gboolean             antialias,\n+                                                         gint                 threshold,\n+                                                         gboolean             select_transparent,\n+                                                         GimpSelectCriterion  select_criterion,\n+                                                         gint                 x,\n+                                                         gint                 y);\n+\n+GimpChannel * gimp_image_contiguous_region_by_seed_full (GimpImage           *image,\n+                                                         PixelRegion         *srcPR,\n+                                                         gint                 off_src_x,\n+                                                         gint                 off_src_y,\n+                                                         PixelRegion         *src_maskPR,\n+                                                         gint                 off_mask_x,\n+                                                         gint                 off_mask_y,\n+                                                         gint                 x1,\n+                                                         gint                 y1,\n+                                                         gint                 x2,\n+                                                         gint                 y2,\n+                                                         GimpImageType        src_type,\n+                                                         gboolean             has_alpha,\n+                                                         gint                 bytes,\n+//                                                         GimpDrawable        *drawable,\n+//                                                         GimpChannel         *source_mask,\n+//                                                         gboolean             sample_merged,\n+                                                         gboolean             antialias,\n+                                                         gint                 threshold,\n+                                                         gboolean             select_transparent,\n+                                                         GimpSelectCriterion  select_criterion,\n+                                                         gint                 x,\n+                                                         gint                 y,\n+                                                         guchar              *start_color);\n+\n+\n",
+      "reason": "Only declares gimp_image_contiguous_region_by_seed_ext and gimp_image_contiguous_region_by_seed_full, including mask, bounded rectangle, pixel format and fixed start-color arguments. No GType, paint-core subclass, class initializer or parent-vfunc dispatch. Remove only the broad 08.011 association; retain all other currently assigned obligations including search/selection/rendering under 27.*.",
+      "source_id": "01.002/000329",
+      "index": 1,
+      "retained_work_ids": [
+        "legacy-05ef793a622e1fb6475b",
+        "legacy-6b0887ce64724b6e8194",
+        "legacy-b7e3eb70bbf11f1bfa55",
+        "legacy-ba1c446dd581d2639126",
+        "legacy-2ce1686301412ef5903b",
+        "legacy-56b53dd91c8e9b9123b3",
+        "legacy-019c58eba86621259fbd",
+        "legacy-4672141e0b9c71faeefb",
+        "legacy-2a19eef9b8f58a91fcb5",
+        "legacy-dec64e4c48aba24fed54",
+        "legacy-ff5c38bcf3c7d175d5a0",
+        "legacy-c57697c2c64282694919",
+        "legacy-bd9509c31fb409ec40ba",
+        "legacy-b83bdca92475aa1d5b5b",
+        "legacy-cc6bba791074958f6e0d",
+        "legacy-a980458133e680787bc8",
+        "legacy-1b4f61c91a7218acf1a8",
+        "legacy-956c8212723265f84f75"
+      ]
+    },
+    {
+      "path": "app/tools/gimpbucketfillbrushtool.h",
+      "source_blob": "3d4a9f269907420ca1e5a4dd3d2e9dd314a5fffb",
+      "payload_sha256": "036b145b51746ba9e8dbfb5480d7a1425d0998dfdd77fd97c9d53cf00dda35d5",
+      "payload": "+/* GIMP - The GNU Image Manipulation Program\n+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis\n+ *\n+ * This program is free software: you can redistribute it and/or modify\n+ * it under the terms of the GNU General Public License as published by\n+ * the Free Software Foundation; either version 3 of the License, or\n+ * (at your option) any later version.\n+ *\n+ * This program is distributed in the hope that it will be useful,\n+ * but WITHOUT ANY WARRANTY; without even the implied warranty of\n+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n+ * GNU General Public License for more details.\n+ *\n+ * You should have received a copy of the GNU General Public License\n+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.\n+ */\n+\n+#ifndef __GIMP_BUCKET_FILL_BRUSH_TOOL_H__\n+#define __GIMP_BUCKET_FILL_BRUSH_TOOL_H__\n+\n+#ifdef __cplusplus\n+extern \"C\" {\n+#endif\n+\n+#include \"gimpbrushtool.h\"\n+\n+\n+#define GIMP_TYPE_BUCKET_FILL_BRUSH_TOOL            (gimp_bucket_fill_brush_tool_get_type ())\n+#define GIMP_BUCKET_FILL_BRUSH_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BUCKET_FILL_BRUSH_TOOL, GimpBucketFillBrushTool))\n+#define GIMP_BUCKET_FILL_BRUSH_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_BUCKET_FILL_BRUSH_TOOL, GimpBucketFillBrushToolClass))\n+#define GIMP_IS_BUCKET_FILL_BRUSH_TOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_BUCKET_FILL_BRUSH_TOOL))\n+#define GIMP_IS_BUCKET_FILL_BRUSH_TOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_BUCKET_FILL_BRUSH_TOOL))\n+#define GIMP_BUCKET_FILL_BRUSH_TOOL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_BUCKET_FILL_BRUSH_TOOL, GimpBucketFillBrushToolClass))\n+\n+\n+typedef struct _GimpBucketFillBrushTool      GimpBucketFillBrushTool;\n+typedef struct _GimpBucketFillBrushToolClass GimpBucketFillBrushToolClass;\n+\n+struct _GimpBucketFillBrushTool\n+{\n+  GimpBrushTool parent_instance;\n+};\n+\n+struct _GimpBucketFillBrushToolClass\n+{\n+  GimpBrushToolClass parent_class;\n+};\n+\n+\n+void    gimp_bucket_fill_brush_tool_register (GimpToolRegisterCallback  callback,\n+                                              gpointer                  data);\n+\n+GType   gimp_bucket_fill_brush_tool_get_type (void) G_GNUC_CONST;\n+\n+#ifdef __cplusplus\n+}\n+#endif\n+\n+#endif  /*  __GIMP_BUCKET_FILL_BRUSH_OPTIONS_H__  */\n",
+      "reason": "Declares only the GimpBucketFillBrushTool instance/class, both derived from GimpBrushTool, its TOOL cast/type macros, tool-register function and tool-get-type function. It declares no brush-core type or paint-core vfunc. Remove only the broad 08.011 association; preserve 08.012 tool/options and all other currently assigned obligations.",
+      "source_id": "01.002/001170",
+      "index": 1,
+      "retained_work_ids": [
+        "legacy-8690e65e40898dcc3a48",
+        "legacy-6131e3f293a65489f343",
+        "legacy-7307a63147e60066fddb",
+        "legacy-0206d41f7f04cb648fd7",
+        "legacy-d1fa4f95656878fc9d80",
+        "legacy-348ce3169a55e8e67c87",
+        "legacy-be449d39a169d6af8724",
+        "legacy-5ea9b617aa54373911bf",
+        "legacy-4a3127e1825ff27046e5",
+        "legacy-e2680815e7b8d1f77c6d",
+        "legacy-100404f1aa91492086e1",
+        "legacy-e8340fca5742994cdd91",
+        "legacy-2bfb176c4b34ecbb2637",
+        "legacy-103cc9a3e8d0b4c248f7",
+        "legacy-11bb1fbc17c9ac6ab2f0",
+        "legacy-bc2241575dbd7228d76d",
+        "legacy-f1abfa2b16d0ed5f27cb",
+        "legacy-4e54fdc3ceb9262d8460"
+      ]
+    },
+    {
+      "source_id": "01.002/001089",
+      "path": "app/tools/gimp-tools.c",
+      "source_blob": "018aa68742928631399a43506e7fdd047c6f4126",
+      "payload_sha256": "ebfffd7dda8486668e721e8bfc4c858b2d2db80a9158a0432d69763b3326b4b3",
+      "payload": "+#include \"gimpbucketfillbrushtool.h\" /* gimp-painter 2.8 */\n",
+      "index": 3,
+      "reason": "Tool declaration include only; actual core type and registration remain001169.",
+      "retained_work_ids": [
+        "legacy-2012f12baf93ce871dce",
+        "legacy-6eadc8efcf7bbcbbc48d",
+        "legacy-3c7621f09e911bba1120",
+        "legacy-b3c61556bc829f44d4cb",
+        "legacy-02a59949c9b9127b9e3d",
+        "legacy-4ecec2f56c70a2cd958c",
+        "legacy-c27ef24d492441b4f760",
+        "legacy-751b86d768b9d63d710b",
+        "legacy-44569691b13aa73e50b1",
+        "legacy-c75a82487aa444f29be1",
+        "legacy-5f59f54be02c1174c43c",
+        "legacy-913bac187bdb918d963d",
+        "legacy-2482a4fa843fe03bba3e",
+        "legacy-8e4eb1c0f902f15a4d75",
+        "legacy-6233dc7fbd1d8a2250c1",
+        "legacy-662bef16be912e1cfa23",
+        "legacy-9a5feb2ebd579be63fc8",
+        "legacy-11c14c54963f0ecbd130"
+      ]
+    }
+  ],
+  "removed_erroneous_todo": [
+    "legacy-1de989476574cdb50623",
+    "legacy-28084c2ffab403ca754b",
+    "legacy-dd2a8df4587938e96276"
+  ],
+  "completion_gain": 0,
+  "other_rows_unchanged": 22732,
+  "retained_core_duties": 1,
+  "independent_review": "Exact source/payload review confirms only search API or tool declaration roles; original rendering, search and tool duties remain. Full pinned source tree is absent in recovered Git; exact blob and payload identities verified instead."
+}

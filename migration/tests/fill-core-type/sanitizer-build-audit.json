@@ -1,0 +1,33 @@
+{
+  "build_report": "/workspace/scratch/5b5281e79681/fill-core-type-08011-recovery/sanitizer-build.json",
+  "build_report_sha256": "fae0e1fb60d2f09bb9a58a1fe3b9cc694839ccc6a0ec6d13c32920d5b23f9f04",
+  "build_status": "passed",
+  "run_status": "Not run. Build-only evidence; parent owns all execution.",
+  "executable": "/workspace/scratch/5b5281e79681/fill-core-type-08011-recovery/sanitizer-private/gimp-fill-brush-asan",
+  "executable_sha256": "1fd119244f32ae955ee8be6b485734097bcd20cf6dd49315ea01cbe0da340ef1",
+  "executable_hash_matches_report": true,
+  "private_object_hashes_match": true,
+  "private_archive_hashes_match": true,
+  "normal_artifacts_unchanged_since_baseline": true,
+  "normal_artifact_count": 1276,
+  "source_seals_match": true,
+  "header_seals_match": true,
+  "source_and_generated_header_count": 1830,
+  "instrumented_compile_count": 32,
+  "rtti_only_compile_count": 43,
+  "instrumented_sources_absent_from_link_input_closure": [],
+  "rtti_only_sources_absent_from_link_input_closure": [
+    "app/httpd/httpd-navigation.cpp",
+    "app/painter-filter-worker.cpp"
+  ],
+  "rtti_only_link_input_count": 41,
+  "link_input_scope_note": "Input closure confirms member replacement across all archive aliases; it does not claim that the linker extracted every private member.",
+  "case_strings_present": {
+    "registered-type-parent-contract": true,
+    "parent-start-failure-retry": true,
+    "standalone-parent-lifetime": true,
+    "parent-start-notification-lifetime": true
+  },
+  "tests_executed_by_builder_or_auditor": false,
+  "audit_status": "PASS"
+}
