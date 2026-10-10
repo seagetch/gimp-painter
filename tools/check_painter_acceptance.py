@@ -22,6 +22,10 @@ def validate(root=ROOT, matrix=None):
         for src in row['implementation_paths']:
             if not (root/src).is_file():errors.append(name+': missing source '+src)
         if state!='COMPONENT_VERIFIED':continue
+        if name == '07.014':
+            from check_painter_platform_acceptance import validate as validate_platform
+            errors.extend(validate_platform(root, foundation_row=row))
+            continue
         if not row['test_ids'] or len(row['reports'])<2:errors.append(name+': missing native/sanitizer evidence');continue
         for report in row['reports']:
             raw=(root/report).read_text()
