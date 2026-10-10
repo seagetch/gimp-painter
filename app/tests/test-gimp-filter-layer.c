@@ -1859,9 +1859,25 @@ static void drain_closed_filter_jobs (void)
     { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
   g_assert_cmpuint (gimp_test_filter_pending_jobs (), ==, 0);
 }
+typedef struct { GThread *owner_thread; gint count; } OwnerFinalization;
+static void finalized_on_owner_thread (gpointer data)
+{
+  OwnerFinalization *state = data;
+  /* This private qdata key is never replaced or cleared: base GObject finalize
+   * destroys it. A weak notification alone could also mean explicit dispose. */
+  g_assert_true (g_thread_self () == state->owner_thread);
+  g_atomic_int_inc (&state->count);
+}
+static void check_owner_finalizations (OwnerFinalization *state, gint filter_count)
+{
+  g_assert_cmpint (g_atomic_int_get (&state[0].count), ==, 1); /* image */
+  g_assert_cmpint (g_atomic_int_get (&state[1].count), ==, 1); /* source */
+  g_assert_cmpint (g_atomic_int_get (&state[2].count), ==, filter_count);
+}
 static void image_close_during_worker (void)
 {
-  gint finalized = 0;
+  OwnerFinalization finalized[3] = {{g_thread_self (), 0}, {g_thread_self (), 0},
+                                    {g_thread_self (), 0}};
   GimpImage *image = image_new (1025,1025);
   GimpLayer *source = source_new (image,NULL,1025,1025);
   GimpFilterLayer *filter = filter_new (image,NULL,1025,1025);
@@ -1870,9 +1886,9 @@ static void image_close_during_worker (void)
   gint64 deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 20, start;
   fill (source,50,100,150,255);
   gimp_filter_layer_set_definition (filter,"plug-in-gauss",NULL,args,NULL); gimp_value_array_unref (args);
-  g_object_weak_ref (G_OBJECT (image),weak_finalized,&finalized);
-  g_object_weak_ref (G_OBJECT (source),weak_finalized,&finalized);
-  g_object_weak_ref (G_OBJECT (filter),weak_finalized,&finalized);
+  g_object_set_qdata_full (G_OBJECT (image), g_quark_from_static_string ("painter-test-owner-finalization"), &finalized[0], finalized_on_owner_thread);
+  g_object_set_qdata_full (G_OBJECT (source), g_quark_from_static_string ("painter-test-owner-finalization"), &finalized[1], finalized_on_owner_thread);
+  g_object_set_qdata_full (G_OBJECT (filter), g_quark_from_static_string ("painter-test-owner-finalization"), &finalized[2], finalized_on_owner_thread);
   while (gimp_filter_layer_get_state (filter) != GIMP_FILTER_LAYER_RUNNING && g_get_monotonic_time () < deadline)
     { g_main_context_iteration (NULL,FALSE); g_usleep (100); }
   if (gimp_filter_layer_get_state (filter) == GIMP_FILTER_LAYER_FAILED)
@@ -1881,9 +1897,9 @@ static void image_close_during_worker (void)
   start = g_get_monotonic_time ();
   g_object_unref (image);
   g_assert_cmpint (g_get_monotonic_time () - start, <, 100000);
-  g_assert_cmpint (finalized, ==, 3);
+  check_owner_finalizations (finalized, 1);
   drain_closed_filter_jobs (); /* Observe completion, not an estimated sleep. */
-  g_assert_cmpint (finalized, ==, 3);
+  check_owner_finalizations (finalized, 1);
 }
 typedef struct { GimpLayer *source; guint updates; } Editing;
 static gboolean edit_lower_repeatedly (gpointer data)
@@ -2295,7 +2311,8 @@ static void retained_handle_after_image_close (void)
 {
   for (gint running = 0; running < 3; ++running)
     {
-      gint finalized = 0;
+      OwnerFinalization finalized[3] = {{g_thread_self (), 0}, {g_thread_self (), 0},
+                                        {g_thread_self (), 0}};
       guint updates = 0, after_close;
       const gint side = running == 2 ? 1100 : 1024;
       GimpImage *image = image_new (side,side);
@@ -2304,9 +2321,9 @@ static void retained_handle_after_image_close (void)
       guint64 cache_generation, starts;
       gint64 deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND * 20;
       g_object_ref (filter); /* independent public owning handle outlives image */
-      g_object_weak_ref (G_OBJECT (image),weak_finalized,&finalized);
-      g_object_weak_ref (G_OBJECT (source),weak_finalized,&finalized);
-      g_object_weak_ref (G_OBJECT (filter),weak_finalized,&finalized);
+      g_object_set_qdata_full (G_OBJECT (image), g_quark_from_static_string ("painter-test-owner-finalization"), &finalized[0], finalized_on_owner_thread);
+      g_object_set_qdata_full (G_OBJECT (source), g_quark_from_static_string ("painter-test-owner-finalization"), &finalized[1], finalized_on_owner_thread);
+      g_object_set_qdata_full (G_OBJECT (filter), g_quark_from_static_string ("painter-test-owner-finalization"), &finalized[2], finalized_on_owner_thread);
       fill (GIMP_LAYER (filter),11,22,33,255); gimp_filter_layer_mark_as_loaded (filter);
       fill (source,255,0,0,255);
       if (running)
@@ -2319,7 +2336,7 @@ static void retained_handle_after_image_close (void)
       starts = gimp_filter_layer_get_run_count (filter);
       g_signal_connect (filter,"update",G_CALLBACK (count_update),&updates);
       g_object_unref (image);
-      g_assert_cmpint (finalized, ==, 2);
+      check_owner_finalizations (finalized, 0);
       g_assert_null (gimp_item_get_image (GIMP_ITEM (filter)));
       g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
       after_close = updates;
@@ -2331,7 +2348,8 @@ static void retained_handle_after_image_close (void)
       g_assert_cmpuint (gimp_filter_layer_get_cache_generation (filter), ==, cache_generation);
       g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, starts);
       pixel (GIMP_LAYER (filter),11,22,33,255);
-      g_object_unref (filter); g_assert_cmpint (finalized, ==, 3);
+      g_object_unref (filter);
+      check_owner_finalizations (finalized, 1);
     }
 }
 

@@ -1,0 +1,87 @@
+{
+  "task": "07.012",
+  "status": "PASS",
+  "parent": "2f9ca4d4d2ea095c573e4e211ad52a0983a78713",
+  "reports": [
+    {
+      "path": "migration/tests/worker-owner-finalization/native-layer.json",
+      "sha256": "7a577f5d18531dc10bc64a4414d0395aa9aa0eacfb29331d1475fa557afe2eae",
+      "passed_test_ids": [
+        "/gimp-filter-layer/image_close_during_worker",
+        "/gimp-filter-layer/retained_handle_after_image_close"
+      ],
+      "source_seals": 17,
+      "new_execution": true,
+      "sanitizers": [],
+      "scope": "Actual native FilterLayer foundation"
+    },
+    {
+      "path": "migration/tests/worker-owner-finalization/native-sanitizers.json",
+      "sha256": "31cb404eb73d90865df94a97c12345fbbcb5011fe99ea66f26b29a4a8e0fc732",
+      "passed_test_ids": [
+        "/gimp-filter-layer/image_close_during_worker",
+        "/gimp-filter-layer/retained_handle_after_image_close"
+      ],
+      "source_seals": 77,
+      "new_execution": true,
+      "sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "scope": "FilterLayer, argument/Undo state, image Undo operation lifetime, common item owner lifetime, group duplication, edge/Gauss raster/spool executors, scheduler, startup MyPaint Options/session RTTI boundary, C/C++ tests, and shared BindingStore; remaining GIMP/dependencies uninstrumented; config-owned memory/spill admission and native persistence tests; listed RTTI-only sources are not instrumented"
+    },
+    {
+      "path": "migration/tests/independent-jobs/native-scheduler.json",
+      "sha256": "73fce7bec04e9c30d8cdd2d11dbebf2756cb2521ea520e59f8e4f779bd6ad2bb",
+      "suite_cases": 39,
+      "source_seals": 12,
+      "new_execution": false,
+      "scope": "Deterministic common vector/spill workers across plain C++ owner destruction; not native UI finalization",
+      "sanitizers": []
+    },
+    {
+      "path": "migration/tests/independent-jobs/sanitizers.json",
+      "sha256": "2019c1188c16587c3c9d40d2f0aa4caeb8f0c66bf55ead2b085294506bb62bf3",
+      "suite_cases": 39,
+      "source_seals": 12,
+      "new_execution": false,
+      "scope": "Deterministic common vector/spill workers across plain C++ owner destruction; not native UI finalization",
+      "sanitizers": [
+        "address",
+        "undefined"
+      ]
+    }
+  ],
+  "native_observer": "Unique untouched qdata destroy notification at base GObject finalize; per-object owner GThread equality and one count",
+  "superseded_observer": "Initial weak-notification runs were disposal-capable and are not promoted to final-unref acceptance",
+  "native_overlap": "Unforced RUNNING/close/completion timing; deterministic overlap belongs only to common scheduler harness",
+  "source_mapping": {
+    "path": "migration/tests/independent-jobs/source-mapping.json",
+    "sha256": "67bd0dda3909f84b8d2f513d59581b080641262f7610ef589260c11c66a62074"
+  },
+  "runner_sha256": "4aef329c4035c6bb440ab0281399b82bea5db2d9f7fddf19daca35b4ac32ecdd",
+  "original_tasks": 661,
+  "original_done": 119,
+  "source_ledger_rows": 22778,
+  "source_ledger_done": 576,
+  "direct_assignment_counts": {
+    "migration/inventory/hunk-wbs.tsv": 0,
+    "migration/inventory/asset-wbs.tsv": 0,
+    "migration/inventory/legacy-port-work-items.tsv": 0
+  },
+  "source_ledger_byte_identical_to_parent": true,
+  "source_ledger_sha256": "8de3babfd371a6cb8d60337852b30302a99a79b7858226e120975f95b900fd20",
+  "current_acceptance_errors": [],
+  "whole_historical_foundation_status": "FAIL",
+  "unrelated_historical_errors": 108,
+  "limits": [
+    "No production lifetime defect reproduced; test-only observer and focused runner selection.",
+    "Other GIMP/dependencies and RTTI-only units remain ordinary; LSan and platform checks unclaimed.",
+    "Native test profile prints known writable-data/search-path diagnostic in both successful runs; no claim this unrelated warning was fixed."
+  ],
+  "checks": {
+    "python3 -B tools/check_tasks.py": "WBS dependencies, states, and completion evidence: OK\n",
+    "python3 -B tools/audit_legacy_granularity.py --check": "{\"assets\": 402, \"compound_action_rows\": 0, \"hunks\": 2489, \"implementation_actions\": 15999, \"source_checks\": 2891, \"statuses\": {\"DONE\": 576, \"TODO\": 22202}, \"unassigned_sources\": 0, \"verification_actions\": 6779}\n",
+    "git diff --check": ""
+  }
+}

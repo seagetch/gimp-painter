@@ -926,17 +926,18 @@
       "implementation_paths": [
         "app/painter/filter-scheduler.cpp",
         "app/painter/filter-spool.cpp",
-        "app/core/gimpfilterlayer.cpp"
+        "app/core/gimpfilterlayer.cpp",
+        "app/tests/test-gimp-filter-layer.c"
       ],
       "test_ids": [
         "/gimp-filter-layer/image_close_during_worker",
         "/gimp-filter-layer/retained_handle_after_image_close"
       ],
       "reports": [
-        "migration/tests/filter-process-checkpoint/native.json",
-        "migration/tests/filter-process-checkpoint/foundation-sanitizers.json"
+        "migration/tests/worker-owner-finalization/native-layer.json",
+        "migration/tests/worker-owner-finalization/native-sanitizers.json"
       ],
-      "scope_or_gap": "Independent Filter job inputs/results/cancel/lease and owner-close behavior pass the current94-case native suite plus these two focused ASan/UBSan cases against sealed unchanged sources. The separately recorded11 native process/cancel/exit cases and actual active-job Quit prove the first isolated Blinds route only. Native normal fingerprints were captured immediately after its run, without an independent before/after pair. Huge-image memory/latency, every feature-specific job, context phases and platform gates remain open; LSan is off and other app/dependencies ordinary."
+      "scope_or_gap": "Original worker/UI final-unref condition accepted by actual per-object owner-thread finalization in2 native and2 focused instrumented cases, plus unchanged39 scheduler native/ASan cases and audited production captures. Native RUNNING timing is unforced; deterministic gate is common scheduler Harness only. Other GIMP/dependencies/RTTI-only sources and LSan/platforms are not claimed instrumented/passed. Zero source duties."
     },
     {
       "id": "07.013",

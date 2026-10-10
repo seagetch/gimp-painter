@@ -18,6 +18,8 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("build", type=Path)
 parser.add_argument("--report", type=Path, required=True)
+parser.add_argument("--test-path", action="append", default=[],
+                    help="Run this exact GLib test path; repeat for focused acceptance")
 args = parser.parse_args()
 build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
@@ -120,7 +122,13 @@ env.update({"GIMP_TESTING_ABS_TOP_SRCDIR": str(root),
             "GIMP_TESTING_PLUGINDIRS": str(build / "plug-ins/common"),
             "UI_TEST": "yes", "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
             "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"})
-result = subprocess.run([str(exe)], cwd=build, env=env, capture_output=True, text=True)
+test_command = [str(exe)]
+for test_path in args.test_path:
+    test_command += ["-p", test_path]
+report["test_command"] = test_command
+report["selected_test_paths"] = args.test_path
+result = subprocess.run(test_command, cwd=build, env=env, capture_output=True,
+                        text=True, timeout=180 if args.test_path else None)
 report["changed_after_compile"] = [name for name, digest in source_hashes.items()
     if hashlib.sha256((root / name).read_bytes()).hexdigest() != digest]
 report.update({"exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr})
