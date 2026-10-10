@@ -1,0 +1,53 @@
+{
+  "name": "options",
+  "argv": [
+    "/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http/app/tests/gimp-painter-options"
+  ],
+  "exit_code": 0,
+  "status": "PASS",
+  "cases": [
+    "/painter-options/generated-properties",
+    "/painter-options/all-native-properties-config",
+    "/painter-options/legacy-brush-mode-config",
+    "/painter-options/edit-curve-commit-conflict",
+    "/painter-options/history-config",
+    "/painter-options/native-config-reset-defaults",
+    "/painter-options/notification-last-ref",
+    "/painter-options/closed-invalid-curve",
+    "/painter-options/named-resources",
+    "/painter-options/selection-reentry",
+    "/painter-options/commit-close",
+    "/painter-options/cross-options-history",
+    "/painter-options/application-history-close"
+  ],
+  "stdout": "TAP version 14\n# random seed: R02Sa029625ff9680b73337a03bdb54bef86\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n1..13\n# Start of painter-options tests\nok 1 /painter-options/generated-properties\nok 2 /painter-options/all-native-properties-config\nok 3 /painter-options/legacy-brush-mode-config\nok 4 /painter-options/edit-curve-commit-conflict\nok 5 /painter-options/history-config\nok 6 /painter-options/native-config-reset-defaults\nok 7 /painter-options/notification-last-ref\nok 8 /painter-options/closed-invalid-curve\nok 9 /painter-options/named-resources\nok 10 /painter-options/selection-reentry\nok 11 /painter-options/commit-close\nok 12 /painter-options/cross-options-history\nok 13 /painter-options/application-history-close\n# End of painter-options tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\nGIMP-Error: Failed to save data:\n\nYou have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.\n\n",
+  "binary_sha256": "80dbeb92a82c944420831214dda93efa89a48874bc858fbc5df85518a10bf829",
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "ca6cd5749e6c36a689051ab45824db222597a5635ea1da74ac84ed3fb490b66c",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h": "eb150c845183c939c2611b1d63178ef23988c2eb4f071ccab739a06b173a793f",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.hpp": "01fe463e68988d4f81855ad4dca190248b691f36f3d8c2a625d1eea830b19903",
+    "app/paint/gimppaintoptions.c": "a434f30fcdcde309405aab0b121e19019b541b847203cdeeb1921ffd7edf98a8",
+    "app/paint/gimppaintoptions.h": "5138abd4268b4a7036a1a6433adbc826f74cf6b79914f0467c6b5c271dada073",
+    "app/core/gimpcontext.c": "fc1b1ff6c4f9c5470c53b8fa991774639e5ef9c1abf011c245ec3699ae854ab7",
+    "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+    "app/paint/painter-mypaint/resource.cpp": "ea2006b960d8e03de5c9ef77299f336d51430b4d30865bf3f37bbe2dc874f14f",
+    "app/paint/painter-mypaint/resource.hpp": "088cdb4df4c757480329e45b5a1187c4ea5c8ce7c78b1279a9f2262636820ded",
+    "app/paint/painter-mypaint/engine.cpp": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a",
+    "app/paint/painter-mypaint/mapping.hpp": "91aa220915e41092d27fe7abc5742b3741a7b5dbf8d49b2053e30a3581cd21e7",
+    "app/paint/painter-mypaint/tests/test-resource.cpp": "9b8c438f605b8e44afee7a315a8478de84249324155c0f4b9ab6e570195c76bc",
+    "app/paint/painter-mypaint/meson.build": "c84e92c0c1a65c336ab8257153fc5422b2f434fbef00d2affef40c84f33315d8",
+    "app/paint/painter-brush-settings/brush-settings.json": "3c8f2e5c67b1d5a8bd8a7af4c37457fbe76448038dac39062a3a19dfdea35c44",
+    "app/paint/painter-brush-settings/generate.py": "b2314b34a41a34bcbb1ffb285fbc339a955187404953df1dff9a84ac4a628076",
+    "app/paint/painter-brush-settings/tests/test-data.h": "fbd3112ffb42af86be22f52d913f8938d22762de6d1993c32dd1101a91db6631",
+    "app/paint/painter-brush-settings/tests/test-data.c": "195595311c1f147fd20cb5b1cb83e2bfbd5ab563201204ae350966b989d55a8c",
+    "app/paint/painter-brush-settings/tests/test-data.cpp": "195595311c1f147fd20cb5b1cb83e2bfbd5ab563201204ae350966b989d55a8c",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/tests/test-gimp-painter-options.cpp": "efe0b8d90a450328547482baf298ec537e3a629da0935f43950a2db005f7199a",
+    "app/tests/meson.build": "c0ca2ba436e782c8672cfd903c9bc71700438c29303ffa3f0ccbb58471fce1b5"
+  }
+}

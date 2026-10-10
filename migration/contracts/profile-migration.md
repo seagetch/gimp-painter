@@ -51,10 +51,12 @@ Unknown fields remain verbatim in converted input and byte-exact in originals,
 even if the modern loader does not reserialize them. MyPaint generated settings
 are already exposed by current Painter options. Ordinary `use-texture` and
 pattern references remain intact for the separately implemented paper backend.
-Old MyPaint `brush-mode` and view-only preferences are retained. This slice
-does not claim rendering-control parity from those bytes: the old brush-mode
-getter itself serialized Normal, while inherited brush-view preferences and
-the old UI naming mismatch need a separate control audit.
+Old MyPaint `brush-mode` and view-only preferences are retained. The old GObject
+property getter serialized its stored enum; a separate rendering helper always
+returned Normal. The current compatibility property preserves all four legacy
+values and names without enabling additional rendering modes. Native options
+tests cover its config load/save/copy/reset and inherited brush-view preferences;
+the old UI naming mismatch remains a separate control audit.
 
 ## Implicit old defaults matter
 

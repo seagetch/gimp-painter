@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "resource.hpp"
 #include "engine.hpp"
+#include "mypaintbrush-settings-data.h"
 #include <glib.h>
 #include <json-glib/json-glib.h>
 #include <cmath>
@@ -115,6 +116,58 @@ static void test_legacy_unknown_input ()
     }
   }
 }
+static void test_static_lookup_recreation ()
+{
+  struct Alias { const char *old_name; int target; double source, expected; };
+  const Alias aliases[] = {
+    {"color_hue", BRUSH_CHANGE_COLOR_H, 360, 64},
+    {"color_saturation", BRUSH_CHANGE_COLOR_HSV_S, 256, 128},
+    {"color_value", BRUSH_CHANGE_COLOR_V, 256, 128},
+    {"speed_slowness", BRUSH_SPEED1_SLOWNESS, .25, .25},
+    {"change_color_s", BRUSH_CHANGE_COLOR_HSV_S, .25, .25},
+    {"stroke_treshold", BRUSH_STROKE_THRESHOLD, .25, .25}
+  };
+  for (int pass = 0; pass < 8; ++pass)
+    {
+      std::ostringstream text;
+      text << "version 2\n";
+      for (const auto &s : painter_mypaint_settings)
+        {
+          text << s.internal_name << " 0.125";
+          for (const auto &input : painter_mypaint_inputs)
+            text << " | " << input.name << " (0 0), (1 0.25)";
+          text << '\n';
+        }
+      auto resource = Resource::decode (text.str ());
+      g_assert_cmpuint (resource.diagnostics ().size (), ==, 0);
+      for (const auto &s : painter_mypaint_settings)
+        {
+          g_assert_cmpfloat (resource.base_value (s.index), ==, .125);
+          for (const auto &input : painter_mypaint_inputs)
+            {
+              const auto curve = resource.curve (s.index, input.index);
+              g_assert_cmpuint (curve.size (), ==, 2);
+              g_assert_cmpfloat (curve[1].y, ==, .25);
+            }
+        }
+      for (const auto &s : painter_mypaint_switches) resource.set_switch (s.index, true);
+      for (const auto &s : painter_mypaint_texts) resource.set_text (s.index, s.internal_name);
+      auto copy = Resource::decode (resource.encode ());
+      equal_semantics (resource, copy);
+      for (const auto &s : painter_mypaint_switches) g_assert_true (copy.switch_value (s.index));
+      for (const auto &s : painter_mypaint_texts) g_assert_true (copy.text_value (s.index) == s.internal_name);
+      for (const auto &alias : aliases)
+        {
+          std::ostringstream old;
+          old << "version 2\n" << alias.old_name << ' ' << alias.source
+              << " | pressure (0 0), (1 " << alias.source << ")\n";
+          auto migrated = Resource::decode (old.str ());
+          g_assert_cmpfloat (migrated.base_value (alias.target), ==, alias.expected);
+          g_assert_cmpfloat (migrated.curve (alias.target, INPUT_PRESSURE)[1].y, ==, alias.expected);
+          equal_semantics (migrated, Resource::decode (migrated.encode ()));
+        }
+    }
+}
 static void test_mapping ()
 {
   Mapping a; a.set_n (0, 3); a.set_point (0,0,0,1); a.set_point (0,1,0,2); a.set_point (0,2,1,3); a.base_value = .5;
@@ -150,6 +203,7 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter/myb/corpus", test_corpus); g_test_add_func ("/painter/myb/defaults", test_defaults);
   g_test_add_func ("/painter/myb/unknown", test_unknown); g_test_add_func ("/painter/myb/legacy-curves", test_legacy_curves);
   g_test_add_func ("/painter/myb/legacy-unknown-input", test_legacy_unknown_input);
+  g_test_add_func ("/painter/myb/static-lookup-recreation", test_static_lookup_recreation);
   g_test_add_func ("/painter/myb/mapping", test_mapping); g_test_add_func ("/painter/myb/stream", test_stream);
   g_test_add_func ("/painter/myb/malformed", test_malformed); return g_test_run ();
 }
