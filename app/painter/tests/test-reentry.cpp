@@ -328,6 +328,162 @@ void signal_close_lifetime ()
       g_assert_cmpint (stats.calls, ==, 1);
     }
 }
+struct QueuedStats
+{
+  int queued = 0, delivered = 0, mutated = 0, rejected = 0, expired = 0;
+  int tickets_destroyed = 0, closed = 0, destroyed = 0, finalized = 0;
+  int closing_deliveries = 0;
+};
+struct QueuedImpl
+{
+  explicit QueuedImpl (QueuedStats& stats) : stats (stats) {}
+  ~QueuedImpl () noexcept { ++stats.destroyed; }
+  void close () noexcept
+  {
+    ++stats.closed;
+    connection.close ();
+    if (on_close) on_close ();
+  }
+  QueuedStats& stats;
+  Connection connection;
+  std::function<void ()> on_close;
+  int value = 41;
+};
+struct QueuedSlot : SlotSpec<GObject, QueuedImpl> {};
+struct QueuedTicket
+{
+  QueuedTicket (const ObjectRef<GObject>& owner, std::uint64_t generation,
+                QueuedStats& stats) : owner (owner), generation (generation), stats (stats) {}
+  ~QueuedTicket () { ++stats.tickets_destroyed; }
+  WeakRef<GObject> owner;
+  std::uint64_t generation;
+  QueuedStats& stats;
+};
+struct QueueContext
+{
+  WeakRef<GObject> owner;
+  GMainContext *main;
+  Source *source;
+  QueuedStats *stats;
+  bool timeout, mismatch;
+};
+void enqueue_callback (GObject *, GParamSpec *, gpointer data) noexcept
+{
+  auto& context = *static_cast<QueueContext *> (data);
+  GError *error = nullptr;
+  boundary_void (&error, [&] {
+    auto owner = context.owner.lock ();
+    g_assert_nonnull (owner.get ());
+    auto& store = BindingStore::require (owner.get ());
+    auto ticket = std::make_shared<QueuedTicket> (
+      owner, store.generation () + (context.mismatch ? 1 : 0), *context.stats);
+    auto deliver = [ticket] {
+      auto& stats = ticket->stats;
+      ++stats.delivered; // Prove real dispatch, including rejected deliveries.
+      auto owner = ticket->owner.lock ();
+      if (!owner) { ++stats.expired; return false; }
+      auto& store = BindingStore::require (owner.get ());
+      if (store.state () == BindingStore::State::closing) ++stats.closing_deliveries;
+      if (!store.accepts (ticket->generation)) { ++stats.rejected; return false; }
+      store.with<QueuedSlot> ([&] (QueuedImpl& impl) { ++impl.value; ++stats.mutated; });
+      return false;
+    };
+    *context.source = context.timeout
+      ? Source::timeout (context.main, 0, G_PRIORITY_DEFAULT, deliver)
+      : Source::idle (context.main, G_PRIORITY_DEFAULT_IDLE, deliver);
+    ++context.stats->queued;
+  });
+  g_assert_no_error (error);
+}
+void queued_callback_invalidation ()
+{
+  // The queued Source intentionally survives disconnect. Admission belongs to
+  // the weak owner + lifecycle generation adapter, not Connection alone.
+  enum { active, closed, finalized, mismatch, during_close };
+  for (bool timeout : {false, true})
+    for (int scenario = active; scenario <= during_close; ++scenario)
+      {
+        auto *main = g_main_context_new ();
+        QueuedStats stats;
+        auto emitter = object ();
+        auto owner = object ();
+        Source source;
+        QueueContext context {WeakRef<GObject> (owner), main, &source, &stats,
+                              timeout, scenario == mismatch};
+        g_object_weak_ref (owner.get (), count, &stats.finalized);
+        auto& store = BindingStore::ensure (owner.get ());
+        store.emplace<QueuedSlot> (stats);
+        store.activate ();
+        const auto generation = store.generation ();
+        store.with<QueuedSlot> ([&] (QueuedImpl& impl) {
+          impl.connection = Connection::connect (emitter, "notify",
+            G_CALLBACK (enqueue_callback), &context, nullptr);
+          if (scenario == during_close)
+            impl.on_close = [&] {
+              g_assert_true (store.state () == BindingStore::State::closing);
+              g_assert_true (source.active ());
+              g_assert_true (g_main_context_iteration (main, FALSE));
+              g_assert_cmpint (stats.closing_deliveries, ==, 1);
+              g_assert_cmpint (stats.mutated, ==, 0);
+            };
+        });
+        emit (emitter.get ());
+        g_assert_cmpint (stats.queued, ==, 1);
+        g_assert_cmpint (stats.delivered, ==, 0);
+        g_assert_cmpint (stats.tickets_destroyed, ==, 0);
+        g_assert_cmpuint (owner.get ()->ref_count, ==, 1); // No queue/owner cycle.
+        g_assert_true (source.active ());
+        if (scenario == closed || scenario == finalized || scenario == during_close)
+          {
+            store.close ();
+            g_assert_cmpuint (store.generation (), ==, generation + 1);
+            g_assert_cmpint (stats.closed, ==, 1);
+            store.read<QueuedSlot> ([] (const QueuedImpl& impl) {
+              g_assert_false (impl.connection.connected ());
+              g_assert_cmpint (impl.value, ==, 41);
+            });
+            emit (emitter.get ());
+            g_assert_cmpint (stats.queued, ==, 1); // Disconnect prevents new work.
+          }
+        if (scenario == finalized)
+          {
+            owner.reset ();
+            g_assert_cmpint (stats.finalized, ==, 1);
+            g_assert_cmpint (stats.destroyed, ==, 1);
+          }
+        if (scenario != during_close)
+          {
+            g_assert_true (source.active ()); // Not canceled before delivery.
+            g_assert_true (g_main_context_iteration (main, FALSE));
+          }
+        g_assert_cmpint (stats.delivered, ==, 1);
+        g_assert_cmpint (stats.mutated, ==, scenario == active ? 1 : 0);
+        g_assert_cmpint (stats.expired, ==, scenario == finalized ? 1 : 0);
+        g_assert_cmpint (stats.rejected, ==,
+                        scenario == closed || scenario == mismatch || scenario == during_close ? 1 : 0);
+        g_assert_cmpint (stats.tickets_destroyed, ==, 1);
+        g_assert_false (source.active ());
+        g_assert_false (g_main_context_iteration (main, FALSE));
+        if (owner)
+          {
+            store.read<QueuedSlot> ([&] (const QueuedImpl& impl) {
+              g_assert_cmpint (impl.value, ==, scenario == active ? 42 : 41);
+            });
+            if (scenario == mismatch)
+              {
+                g_assert_true (store.state () == BindingStore::State::active);
+                g_assert_cmpuint (store.generation (), ==, generation);
+              }
+            store.close ();
+            owner.reset ();
+          }
+        g_assert_cmpint (stats.closed, ==, 1);
+        g_assert_cmpint (stats.destroyed, ==, 1);
+        g_assert_cmpint (stats.finalized, ==, 1);
+        source.close ();
+        g_main_context_unref (main);
+      }
+}
 struct FinalizingImpl
 {
   explicit FinalizingImpl (std::function<void ()> callback) : callback (std::move (callback)) {}
@@ -362,5 +518,6 @@ void painter_test_register_reentry ()
   g_test_add_func ("/painter/reentry/constructor-duplicate", constructor_duplicate);
   g_test_add_func ("/painter/reentry/constructor-owner-loss", constructor_owner_loss);
   g_test_add_func ("/painter/signal/close-receiver-lifetime", signal_close_lifetime);
+  g_test_add_func ("/painter/source/queued-callback-invalidation", queued_callback_invalidation);
   g_test_add_func ("/painter/reentry/finalizing-close-read", finalizing_reentry);
 }

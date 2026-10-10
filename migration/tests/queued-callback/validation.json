@@ -1,0 +1,61 @@
+{
+  "task": "07.009",
+  "status": "PASS",
+  "parent": "ec657d4f5a71cc5fd365676b3cfc26a4a983c9a4",
+  "reports": [
+    {
+      "path": "migration/tests/queued-callback/native.json",
+      "sha256": "f7679a59427dd018759406c4d519a71a5b95f4d7aab95348e16479155fa044ab",
+      "suite_cases": 68,
+      "current_source_seals": 25,
+      "new_execution": true
+    },
+    {
+      "path": "migration/tests/queued-callback/sanitizers.json",
+      "sha256": "7c80f8d3cc208fa2c44f73e974e49b0fbfd0b51c3ab94a499f9b298fda0b22cb",
+      "suite_cases": 68,
+      "current_source_seals": 25,
+      "new_execution": true
+    },
+    {
+      "path": "migration/tests/queued-callback/meson.json",
+      "sha256": "e56a60f7dac13f606ff3eed6a710a59ce1819cdeb405e7340a656af6ecb00f4d",
+      "suite_cases": 68,
+      "current_source_seals": 25,
+      "new_execution": true
+    }
+  ],
+  "original_tasks": 661,
+  "original_done": 116,
+  "source_ledger_rows": 22778,
+  "source_ledger_done": 574,
+  "accepted_source_duties": [
+    "legacy-eb0569e7338d2c0a2a18"
+  ],
+  "all_other_work_rows_preserved": true,
+  "legacy_source": {
+    "archive": "migration/tests/gtk-binding/caller-census.tar.gz",
+    "member": "source/app/base/delegators.hpp",
+    "git_blob": "f615f41b4fdebbebc865e17888eadc38a0c45e58",
+    "sha256": "0184dfa3748b24a770ef00e59987da84164847244ba6ab62dcaf9aad3eaf03e0",
+    "scope": "Synchronous delegator/Connection source; no independent legacy queue"
+  },
+  "current_acceptance_errors": [],
+  "whole_historical_foundation_status": "FAIL",
+  "unrelated_historical_errors": 112,
+  "scenarios_per_source": 5,
+  "source_kinds": [
+    "idle",
+    "zero-timeout"
+  ],
+  "production_changes": false,
+  "limits": [
+    "Shared weak-owner and lifecycle-generation admission; arbitrary independent queue invalidation is not supplied by Connection alone.",
+    "No feature-specific supersession, LSan, system-GLib instrumentation or platform acceptance claim."
+  ],
+  "checks": {
+    "python3 -B tools/check_tasks.py": "WBS dependencies, states, and completion evidence: OK\n",
+    "python3 -B tools/audit_legacy_granularity.py --check": "{\"assets\": 402, \"compound_action_rows\": 0, \"hunks\": 2489, \"implementation_actions\": 15999, \"source_checks\": 2891, \"statuses\": {\"DONE\": 574, \"TODO\": 22204}, \"unassigned_sources\": 0, \"verification_actions\": 6779}\n",
+    "git diff --check": ""
+  }
+}
