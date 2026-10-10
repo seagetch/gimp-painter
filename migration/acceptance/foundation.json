@@ -695,17 +695,22 @@
       "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
         "app/painter/binding-store.hpp",
-        "app/painter/binding-store.cpp"
+        "app/painter/binding-store.cpp",
+        "app/painter/tests/test-foundation.cpp",
+        "app/painter/tests/test-hierarchy.cpp",
+        "app/painter/tests/test-hierarchy.c"
       ],
       "test_ids": [
-        "/painter/store/multiple-slots",
-        "/painter/hierarchy/properties-interface"
+        "/painter/store/implementation-ownership",
+        "/painter/hierarchy/shutdown-paths",
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/store/multiple-slots"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/construction-failure/native.json",
+        "migration/tests/construction-failure/sanitizers.json"
       ],
-      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+      "scope_or_gap": "Original each-Impl-once condition verified using unchanged current65-case native/ASanUBSan and Meson reports. Separate counters for two slots cover construction/active teardown, retained native owner, repeated explicit close, native base/child dispose and parent reentry. One exact old duty mapped. No redundant runtime execution, production change, destructor-order extension, LSan or platform claim."
     },
     {
       "id": "07.005",

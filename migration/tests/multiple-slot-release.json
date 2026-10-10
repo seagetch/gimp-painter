@@ -1,0 +1,73 @@
+{
+  "task": "07.004",
+  "status": "PASS",
+  "parent": "0a9b82b2f0742c25cbdb960253dbdd045a825503",
+  "reports": [
+    {
+      "path": "migration/tests/construction-failure/native.json",
+      "sha256": "03d6842f82a0caa770a29fb5cfd7f143dd05c448b8b574c7e5a9071d7665d289",
+      "all_recorded_source_seals_match": true,
+      "suite_cases": 65,
+      "reused_without_rerun": true,
+      "release_tests": [
+        "/painter/store/implementation-ownership",
+        "/painter/hierarchy/shutdown-paths",
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/store/multiple-slots"
+      ]
+    },
+    {
+      "path": "migration/tests/construction-failure/sanitizers.json",
+      "sha256": "7da3b322e9e8c362b2e1cd1570dd470618b57ac51339491ffb3a74181323347e",
+      "all_recorded_source_seals_match": true,
+      "suite_cases": 65,
+      "reused_without_rerun": true,
+      "release_tests": [
+        "/painter/store/implementation-ownership",
+        "/painter/hierarchy/shutdown-paths",
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/store/multiple-slots"
+      ]
+    },
+    {
+      "path": "migration/tests/construction-failure/meson.json",
+      "sha256": "0813bd08a5a244ba048a21be25e3ba8a920fe719aba003b45c1ffe13e56e89b6",
+      "all_recorded_source_seals_match": true,
+      "suite_cases": 65,
+      "reused_without_rerun": true,
+      "release_tests": [
+        "/painter/store/implementation-ownership",
+        "/painter/hierarchy/shutdown-paths",
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/store/multiple-slots"
+      ]
+    }
+  ],
+  "original_tasks": 661,
+  "original_done": 111,
+  "source_ledger_rows": 22868,
+  "source_ledger_done": 566,
+  "only_changed_source_duties": [
+    "legacy-1917976c127e8b287262"
+  ],
+  "immutable_contracts_preserved": true,
+  "current_acceptance_errors": [],
+  "whole_historical_foundation_status": "FAIL",
+  "unrelated_historical_errors": 122,
+  "checks": {
+    "python3 -B tools/check_tasks.py": "WBS dependencies, states, and completion evidence: OK\n",
+    "python3 -B tools/audit_legacy_granularity.py --check": "{\"assets\": 402, \"compound_action_rows\": 0, \"hunks\": 2489, \"implementation_actions\": 15999, \"source_checks\": 2891, \"statuses\": {\"DONE\": 566, \"TODO\": 22302}, \"unassigned_sources\": 0, \"verification_actions\": 6869}\n",
+    "git diff --check": ""
+  },
+  "source_duty": {
+    "work_id": "legacy-1917976c127e8b287262",
+    "path": "app/base/glib-cxx-impl.hpp",
+    "source_hunk": "01.002/000045",
+    "git_blob": "a2ad35e37a3e7a481698c1f8b78b71adb385f7d3",
+    "evidence_path": "migration/tests/inherited-properties/legacy-source/glib-cxx-impl.hpp",
+    "bytes": 18618,
+    "sha256": "5c50241a85ee4caaadb5c28cb4499c4348666281d24078c318cd31c643f04887",
+    "lines": "407-416",
+    "mapping": "Native-private placement construction and explicit Impl destructor become uniquely owned Entry/Impl per slot with one qdata store teardown. Per-slot counters verify each release, not only aggregate total."
+  }
+}
