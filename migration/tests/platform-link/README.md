@@ -97,7 +97,7 @@ platform ABIs to be byte-identical.
 `native-acceptance.json` binds the exact report snapshots to CI jobs, artifacts
 and source commit. The four `native-*.json.gz` files preserve original report
 bytes, including commands and failures being absent. All thirty source seals
-match current source bytes; Windows' exact LF-to-CRLF checkout transformation
+matched that source snapshot; Windows' exact LF-to-CRLF checkout transformation
 is explicitly recorded and rechecked. `tools/check_painter_platform_acceptance.py`
 verifies the matrix, report digests, real test output, native identities, controls
 and current source. The foundation acceptance checker delegates this OS-specific
@@ -110,3 +110,16 @@ C/C++ setup and the native executable gate. No assignments are moved or removed.
 The independent 34.006 obligation stays open. This closes the original minimal
 bridge task, with no claim of a full GIMP build on all platforms, MSVC acceptance,
 sanitizers on those runners, tablet behavior or completed platform releases.
+## Construction-boundary refresh
+
+[Run 38029643264](https://github.com/seagetch/gimp-painter/actions/runs/38029643264)
+on `e2a52c063d4953a28d99ecc9534e23a1eece079f` passed the same four native
+targets with all 70 foundation cases, including the separately compiled C11
+construction-failure caller added for original 07.016. The ABI, native runtime,
+C symbols and positive/negative export controls also pass on every target.
+
+The current index points to new `construction-70-*.json.gz` snapshots. The four
+initial `native-*.json.gz` reports retain their original bytes and historical
+source seals. All thirty current source seals match the new reports, with the
+explicit exact Windows LF-to-CRLF transformation. No production change or broader
+application/platform acceptance is inferred from this refresh.
