@@ -947,6 +947,7 @@
       "implementation_paths": [
         "app/painter/binding-store.hpp",
         "app/painter/binding-store.cpp",
+        "app/painter/boundary.hpp",
         "app/painter/object-ref.hpp",
         "app/painter/resources.hpp",
         "app/painter/connection.hpp",
@@ -954,13 +955,18 @@
       ],
       "test_ids": [
         "/painter/store/lifecycle",
-        "/painter/hierarchy/parent-dispose-reentry"
+        "/painter/store/acquired-construction-failure",
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/hierarchy/interface-exception-policy",
+        "/painter/signal/reentrant-disconnect",
+        "/painter/source/queued-callback-invalidation"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/boundary-conversion/native.json",
+        "migration/tests/boundary-conversion/sanitizers.json",
+        "migration/tests/boundary-conversion/meson.json"
       ],
-      "scope_or_gap": "Linux ASan/UBSan only, with source/compile proof; LeakSanitizer is not a pass and no cross-platform acceptance is implied."
+      "scope_or_gap": "Original shared-bridge acceptance:69 current ASanUBSan cases,11 instrumented units and25 unchanged seals; measured reports reused.4 helper duties accepted;15 unrelated core-hooks assignments corrected without accepting their45 feature/platform duties. No LSan, system-library, whole-GIMP or cross-platform claim."
     },
     {
       "id": "07.014",

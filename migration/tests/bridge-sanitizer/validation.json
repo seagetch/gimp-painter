@@ -1,0 +1,107 @@
+{
+  "task": "07.013",
+  "status": "PASS",
+  "parent": "afce4dc0c2dc0673a0b8851bed25d2d35223a300",
+  "production_or_test_changes": false,
+  "reports": [
+    {
+      "path": "migration/tests/boundary-conversion/native.json",
+      "sha256": "b75e794109596ec7cd71cf4609e54d6183dd0ddd4c0c39362cc67f7896a31268",
+      "passing_cases": 69,
+      "current_source_seals": 25,
+      "new_execution": false
+    },
+    {
+      "path": "migration/tests/boundary-conversion/sanitizers.json",
+      "sha256": "cf5e920226f0fd7b772e6a165c2844efb12a35cabc11765549d4647131c0a469",
+      "passing_cases": 69,
+      "current_source_seals": 25,
+      "new_execution": false
+    },
+    {
+      "path": "migration/tests/boundary-conversion/meson.json",
+      "sha256": "cf072fdb26e5b1abf05b63edd683f293e8de69fe1efd970c21ae3aa2dc5f8f84",
+      "passing_cases": 69,
+      "current_source_seals": 25,
+      "new_execution": false
+    }
+  ],
+  "retained_helper_tests": [
+    "/painter/reentry/array-move",
+    "/painter/reentry/value-reset-move",
+    "/painter/ref/copy-move-contract",
+    "/painter/ref/weak",
+    "/painter/resources/array-owned-ref-release",
+    "/painter/resources/glib-string-owner",
+    "/painter/resources/mutex-exception",
+    "/painter/resources/value-owned-borrow-copy",
+    "/painter/signal/after-order",
+    "/painter/signal/block-phase-order",
+    "/painter/signal/close-receiver-lifetime",
+    "/painter/signal/owned-lifetime",
+    "/painter/signal/reentrant-disconnect",
+    "/painter/source/owned-lifetime",
+    "/painter/source/queued-callback-invalidation",
+    "/painter/store/acquired-construction-failure",
+    "/painter/store/construction-failure",
+    "/painter/store/implementation-ownership",
+    "/painter/store/lifecycle"
+  ],
+  "original_tasks": 661,
+  "original_done": 120,
+  "source_ledger_rows": 22763,
+  "source_ledger_done": 580,
+  "accepted_source_duties": [
+    "legacy-093d2aff32ab185edfa1",
+    "legacy-a21706e1e1b96bca68e4",
+    "legacy-bfe2b925e0404bde620f",
+    "legacy-cfa97a184d079e7831c7"
+  ],
+  "removed_incorrect_todo_assignments": [
+    "legacy-0ce3a0e4bdbb4e09971e",
+    "legacy-1ae5c704b57ae2b8ffa8",
+    "legacy-1daaf4f421d963cc03ea",
+    "legacy-31e684f5b9d3682ab52a",
+    "legacy-6115f36bb9e7ee53b247",
+    "legacy-6362cf726f08a9626d45",
+    "legacy-6bffac4694dc9e74a6de",
+    "legacy-6dc98ff8efcfeb45a9a4",
+    "legacy-7e03ee6e9dc7ad739569",
+    "legacy-85a9cc2db659bbb1d88c",
+    "legacy-a2acc96d3dc3bbd7cb5f",
+    "legacy-a6f9ea174537e342c304",
+    "legacy-ab7a3b1a3e5ad8a07e51",
+    "legacy-eb6cb5839b371e3eaf75",
+    "legacy-fccc817ec37df236935c"
+  ],
+  "done_added_by_routing": 0,
+  "preserved_independent_feature_rows": 45,
+  "all_other_work_and_progress_rows_preserved": true,
+  "routing_report_sha256": "5fdf690b2c8d501f0d8f2c33d22de3a47850cc4fae805652f13fefd35542d0f9",
+  "current_acceptance_errors": [],
+  "whole_historical_foundation_status": "FAIL",
+  "unrelated_historical_errors": 98,
+  "limits": [
+    "Existing exact-current measurements reused; no new runtime execution.",
+    "ASan/UBSan on11 common C/C++ translation units; no LSan, system-library instrumentation, all-feature or cross-platform claim.",
+    "Historical full source trees absent; routing proof covers19 selected byte-verified hunks only."
+  ],
+  "checks": {
+    "python3 -B migration/tests/bridge-sanitizer/reproduce-routing.py --check": {
+      "exit_code": 0,
+      "output_sha256": "5fdf690b2c8d501f0d8f2c33d22de3a47850cc4fae805652f13fefd35542d0f9"
+    },
+    "python3 -B tools/check_tasks.py": {
+      "exit_code": 0,
+      "output_sha256": "1c4b2c049610693d4cae3f93580ac8f43d77dff8406ae9af6a536728ca7b4ad0"
+    },
+    "python3 -B tools/audit_legacy_granularity.py --check": {
+      "exit_code": 0,
+      "output_sha256": "3f1984654a331a6ff1b3255ce5bf4bbb9a2f1d050e984668b34df432fa39e3b4"
+    },
+    "git diff --check": {
+      "exit_code": 0,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}
