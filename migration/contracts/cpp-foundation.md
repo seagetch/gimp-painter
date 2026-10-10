@@ -411,3 +411,16 @@ lookup of an absent derived slot reports MISSING_SLOT without invoking a borrow
 callback, falling back to the base implementation or creating a new slot.
 [Native hierarchy tests](../tests/inherited-slots/README.md) exercise the same
 Impl type in both levels, independent mutation and base-only negative lookup.
+
+## Inherited property delegation (original 06.026)
+
+Property IDs are class-local. Ordinary GObject property calls dispatch through
+the GParamSpec owner class. When a derived callback explicitly handles a parent
+property, its fallback calls the saved, fixed parent callback once with the
+original object, ID, value and GParamSpec. A same-class wrapper instead preserves
+the handler it replaced. Do not recover the parent from the object's runtime
+class on each call, which can recurse for further-derived instances. Unknown
+IDs preserve the final handler's warning and do not mutate implementation state.
+[Direct native callback tests](../tests/inherited-properties/README.md) distinguish
+fallback behavior from GObject's property-owner routing. These rules supplement
+the per-type and override policy in [cpp-vfunc-order.md](cpp-vfunc-order.md).

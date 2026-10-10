@@ -177,6 +177,85 @@ void parent_dispose_reentry ()
   g_assert_cmpint (stats.destroyed,==,0);owner.reset ();g_assert_cmpint (stats.destroyed,==,2);
 }
 
+void property_trace (guint base_set, guint base_get, guint child_set, guint child_get)
+{
+  const auto actual = painter_hierarchy_property_trace ();
+  g_assert_cmpuint (actual.base_set, ==, base_set);
+  g_assert_cmpuint (actual.base_get, ==, base_get);
+  g_assert_cmpuint (actual.child_set, ==, child_set);
+  g_assert_cmpuint (actual.child_get, ==, child_get);
+}
+
+void native_property_owner_dispatch ()
+{
+  stats = {};
+  auto owner = child ();
+  auto *klass = G_OBJECT_GET_CLASS (owner.get ());
+  auto *base_spec = g_object_class_find_property (klass, "base-value");
+  auto *child_spec = g_object_class_find_property (klass, "child-value");
+  g_assert_cmpuint (base_spec->owner_type, ==, painter_hierarchy_base_get_type ());
+  g_assert_cmpuint (child_spec->owner_type, ==, painter_hierarchy_child_get_type ());
+  painter_hierarchy_reset_property_trace ();
+  gint value = 0;
+  g_object_set (owner.get (), "base-value", 19, nullptr);
+  g_object_get (owner.get (), "base-value", &value, nullptr);
+  g_assert_cmpint (value, ==, 19);
+  property_trace (1, 1, 0, 0); // GObject dispatches to the property's owner class.
+  g_assert_cmpint (painter_hierarchy_get (G_OBJECT (owner.get ()), TRUE), ==, 31);
+  painter_hierarchy_reset_property_trace ();
+  g_object_set (owner.get (), "child-value", 37, nullptr);
+  g_object_get (owner.get (), "child-value", &value, nullptr);
+  g_assert_cmpint (value, ==, 37);
+  property_trace (0, 0, 1, 1);
+  g_assert_cmpint (painter_hierarchy_get (G_OBJECT (owner.get ()), FALSE), ==, 19);
+}
+
+void inherited_property_delegation ()
+{
+  stats = {};
+  auto owner = child ();
+  auto *object = G_OBJECT (owner.get ());
+  auto *klass = G_OBJECT_GET_CLASS (owner.get ());
+  auto *base_spec = g_object_class_find_property (klass, "base-value");
+  auto *child_spec = g_object_class_find_property (klass, "child-value");
+  GValue value = G_VALUE_INIT;
+  g_value_init (&value, G_TYPE_INT);
+  painter_hierarchy_reset_property_trace ();
+  g_value_set_int (&value, 23);
+  // Call the derived C vfunc directly to execute its actual fallback branch.
+  // Ordinary g_object_set/get above do not exercise this path for inherited IDs.
+  klass->set_property (object, base_spec->param_id, &value, base_spec);
+  g_value_set_int (&value, 0);
+  klass->get_property (object, base_spec->param_id, &value, base_spec);
+  g_assert_cmpint (g_value_get_int (&value), ==, 23);
+  property_trace (1, 1, 1, 1);
+  g_assert_cmpint (painter_hierarchy_get (object, TRUE), ==, 31);
+
+  painter_hierarchy_reset_property_trace ();
+  g_value_set_int (&value, 47);
+  klass->set_property (object, child_spec->param_id, &value, child_spec);
+  g_value_set_int (&value, 0);
+  klass->get_property (object, child_spec->param_id, &value, child_spec);
+  g_assert_cmpint (g_value_get_int (&value), ==, 47);
+  property_trace (0, 0, 1, 1);
+  g_assert_cmpint (painter_hierarchy_get (object, FALSE), ==, 23);
+
+  painter_hierarchy_reset_property_trace ();
+  g_value_set_int (&value, 53);
+  g_test_expect_message (nullptr, G_LOG_LEVEL_WARNING, "*invalid property id 99*base-value*");
+  klass->set_property (object, 99, &value, base_spec);
+  g_test_assert_expected_messages ();
+  g_test_expect_message (nullptr, G_LOG_LEVEL_WARNING, "*invalid property id 99*base-value*");
+  klass->get_property (object, 99, &value, base_spec);
+  g_test_assert_expected_messages ();
+  property_trace (1, 1, 1, 1); // Fixed parent, exactly once, no recursive redispatch.
+  g_assert_cmpint (g_value_get_int (&value), ==, 53);
+  g_assert_cmpint (painter_hierarchy_get (object, FALSE), ==, 23);
+  g_assert_cmpint (painter_hierarchy_get (object, TRUE), ==, 47);
+  g_assert_cmpint (stats.constructed, ==, 2);
+  g_value_unset (&value);
+}
+
 template<class T> void accepted_type (GObject *object)
 {
   using Ref = ObjectRef<T>;
@@ -262,6 +341,8 @@ void painter_test_register_hierarchy ()
   g_test_add_func("/painter/hierarchy/interface-exception",interface_exception_boundary);
   g_test_add_func("/painter/hierarchy/slot-identity",slot_identity);
   g_test_add_func("/painter/hierarchy/base-missing-derived",base_missing_derived);
+  g_test_add_func("/painter/hierarchy/native-property-owner-dispatch",native_property_owner_dispatch);
+  g_test_add_func("/painter/hierarchy/inherited-property-delegation",inherited_property_delegation);
   g_test_add_func("/painter/hierarchy/parent-dispose-reentry",parent_dispose_reentry);
   g_test_add_func("/painter/hierarchy/type-ancestry",type_ancestry);
 }

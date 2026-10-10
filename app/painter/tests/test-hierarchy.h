@@ -6,6 +6,9 @@ G_BEGIN_DECLS
 typedef struct _PainterHierarchyBase PainterHierarchyBase;
 typedef struct _PainterHierarchyChild PainterHierarchyChild;
 typedef struct _PainterReadable PainterReadable;
+typedef struct {
+  guint base_set, base_get, child_set, child_get;
+} PainterPropertyTrace;
 typedef struct _PainterReadableInterface {
   GTypeInterface parent;
   gint (*read) (PainterReadable *, GError **);
@@ -20,5 +23,7 @@ void painter_hierarchy_set (GObject *owner, gboolean child, gint value);
 gint painter_hierarchy_get (GObject *owner, gboolean child);
 gint painter_hierarchy_read (PainterReadable *owner, GError **error);
 void painter_hierarchy_parent_dispose (GObject *owner);
+void painter_hierarchy_reset_property_trace (void);
+PainterPropertyTrace painter_hierarchy_property_trace (void);
 G_END_DECLS
 #endif

@@ -7,6 +7,11 @@ typedef struct _PainterHierarchyChildClass { PainterHierarchyBaseClass parent; }
 struct _PainterHierarchyBase { GObject parent; };
 struct _PainterHierarchyChild { PainterHierarchyBase parent; };
 static void readable_init (PainterReadableInterface *iface);
+static PainterPropertyTrace property_trace;
+void painter_hierarchy_reset_property_trace (void)
+{ property_trace = (PainterPropertyTrace) {0, 0, 0, 0}; }
+PainterPropertyTrace painter_hierarchy_property_trace (void)
+{ return property_trace; }
 G_DEFINE_INTERFACE (PainterReadable,painter_readable,G_TYPE_OBJECT)
 G_DEFINE_TYPE (PainterHierarchyBase,painter_hierarchy_base,G_TYPE_OBJECT)
 G_DEFINE_TYPE_WITH_CODE (PainterHierarchyChild,painter_hierarchy_child,painter_hierarchy_base_get_type (),
@@ -36,21 +41,25 @@ static void child_dispose (GObject *owner)
 }
 static void base_set (GObject *owner, guint id, const GValue *value, GParamSpec *spec)
 {
+  ++property_trace.base_set;
   if (id == 1) painter_hierarchy_set (owner,FALSE,g_value_get_int (value));
   else G_OBJECT_WARN_INVALID_PROPERTY_ID (owner,id,spec);
 }
 static void base_get (GObject *owner, guint id, GValue *value, GParamSpec *spec)
 {
+  ++property_trace.base_get;
   if (id == 1) g_value_set_int (value,painter_hierarchy_get (owner,FALSE));
   else G_OBJECT_WARN_INVALID_PROPERTY_ID (owner,id,spec);
 }
 static void child_set (GObject *owner, guint id, const GValue *value, GParamSpec *spec)
 {
+  ++property_trace.child_set;
   if (id == 2) painter_hierarchy_set (owner,TRUE,g_value_get_int (value));
   else G_OBJECT_CLASS (painter_hierarchy_child_parent_class)->set_property (owner,id,value,spec);
 }
 static void child_get (GObject *owner, guint id, GValue *value, GParamSpec *spec)
 {
+  ++property_trace.child_get;
   if (id == 2) g_value_set_int (value,painter_hierarchy_get (owner,TRUE));
   else G_OBJECT_CLASS (painter_hierarchy_child_parent_class)->get_property (owner,id,value,spec);
 }
