@@ -1,0 +1,67 @@
+{
+  "task": "08.004",
+  "parent": "f5a6b1b2d290af1e2fb7aa48c2cee933c7773e59",
+  "source_duties": [
+    {
+      "work_id": "legacy-085544d46af7bccb8852",
+      "source_kind": "hunk",
+      "source_id": "01.002/000175",
+      "path": "app/core/gimpclonelayerundo.cpp",
+      "source_blob": "b3ad8a75f6a65884e4b3f4472cd517c58e104500",
+      "source_range": "-0,0 -> 1,122",
+      "source_sha256": "dc011589728abe75318381882d60451ffcf8ccf853f45a2fd30952e01edfa86d",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.004",
+      "action": "CloneLayerUndo の型を移植する",
+      "acceptance": "現行 GimpItemUndo と親処理を接続",
+      "legacy_role": "Legacy NewGClass/UseCStructs<GimpItemUndo,GimpCloneLayerUndo>, constructed/pop parent chaining and dormant GROUP_LAYER_CONVERT operation",
+      "current_type_contract": "Native G_DEFINE_TYPE directly derives GimpItemUndo; common ReferenceUndoSlot with native constructed/pop/free/dispose/memsize parent calls implements current source-reference Undo. Dormant conversion helper remains retired; actual precision conversion inherits native drawable Undo",
+      "source_copy": "migration/tests/clone-undo-type/legacy-source/gimpclonelayerundo.cpp",
+      "source_copy_sha256": "f43179cbd4e6eada184aae2dd1dd983ab46a0cfaf0f69d115a98cd1abead1f6c",
+      "tests": [
+        "/gimp-clone-layer/native_undo_parent_contract",
+        "/gimp-clone-layer/source_reference_undo_live",
+        "/gimp-clone-layer/inherited_precision_conversion_undo"
+      ]
+    },
+    {
+      "work_id": "legacy-f506d8854774f77dc20b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000176",
+      "path": "app/core/gimpclonelayerundo.h",
+      "source_blob": "1195989e9a1d942d61e888c8d2611ed344565890",
+      "source_range": "-0,0 -> 1,54",
+      "source_sha256": "785acdbfd0cc4e125966e91a900c8d42bb9ea949b2c3e78f352e0caef9ddbb07",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.004",
+      "action": "CloneLayerUndo の型を移植する",
+      "acceptance": "現行 GimpItemUndo と親処理を接続",
+      "legacy_role": "Legacy C parent-first instance/class, get_type and six public type macros plus old C++ traits declaration",
+      "current_type_contract": "Native public C layout/get_type retained; restore the missing CLASS, IS_CLASS and GET_CLASS macros. C and separately compiled C++ use those macros and compare actual GType sizes",
+      "source_copy": "migration/tests/clone-undo-type/legacy-source/gimpclonelayerundo.h",
+      "source_copy_sha256": "9f85425119920acda32340d2d3a0f0bd61bba6a7e907628c0b7441e946297951",
+      "tests": [
+        "/gimp-clone-layer/native_undo_parent_contract",
+        "/gimp-clone-layer/source_reference_undo_live",
+        "/gimp-clone-layer/inherited_precision_conversion_undo"
+      ]
+    }
+  ],
+  "source_duties_accepted": 2,
+  "routing_changes": 0,
+  "reports": [
+    {
+      "path": "migration/tests/clone-undo-type/native.json",
+      "sha256": "4e3e1b499874acae68ddcca8bbb403c3c3050e0d21a9fea5d8122f052e7e92af",
+      "passed_cases": 39,
+      "current_source_seals": 21
+    }
+  ],
+  "existing_operation_contract": {
+    "path": "migration/contracts/clone-layer-port.md",
+    "sha256": "8e1433f227f4ea8d61f86c6261ac8400cf5df581d5f9de7b13544eb7176125c1"
+  },
+  "limits": "Native Undo type and parent behavior; no direct ReferenceUndoImpl destructor counter, inert-pop assertion, legacy dormant conversion revival or new platform/sanitizer claim"
+}
