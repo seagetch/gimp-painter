@@ -39,6 +39,27 @@
 #include "tests.h"
 static Gimp *gimp;
 static GtkWidget *window;
+typedef struct { guint destroyed, finalized; } WidgetLifetime;
+typedef struct { GtkBox parent; WidgetLifetime *lifetime; } OwnershipBox;
+typedef struct { GtkBoxClass parent; } OwnershipBoxClass;
+G_DEFINE_TYPE (OwnershipBox, ownership_box, GTK_TYPE_BOX)
+static void ownership_box_finalize (GObject *object) {
+  OwnershipBox *box=(OwnershipBox *)object;
+  if(box->lifetime)box->lifetime->finalized++;
+  G_OBJECT_CLASS(ownership_box_parent_class)->finalize(object);
+}
+static void ownership_box_class_init (OwnershipBoxClass *klass) {
+  G_OBJECT_CLASS(klass)->finalize=ownership_box_finalize;
+}
+static void ownership_box_init (OwnershipBox *box) { box->lifetime=NULL; }
+static void ownership_destroyed (GtkWidget *widget,gpointer data) {
+  (void)widget;((WidgetLifetime *)data)->destroyed++;
+}
+static GtkWidget *ownership_widget (WidgetLifetime *lifetime) {
+  OwnershipBox *box=g_object_new(ownership_box_get_type(),"orientation",GTK_ORIENTATION_VERTICAL,NULL);
+  box->lifetime=lifetime;g_signal_connect(box,"destroy",G_CALLBACK(ownership_destroyed),lifetime);
+  return GTK_WIDGET(box);
+}
 static void drain (void) { gimp_test_run_mainloop_until_idle (); }
 static void gather (GtkWidget *w, GPtrArray *result) {
   if (g_ptr_array_find (result,w,NULL)) return;
@@ -148,6 +169,80 @@ static void fresh_owner_lifecycle (void) {
     g_object_set(tool->tool_options,"use-jitter",n%2,"jitter-amount",.2,NULL);
   }
 }
+typedef struct { GtkWidget *widget; gboolean expand,fill; guint padding; GtkPackType pack; } Packing;
+static void assert_packing_restored (GtkWidget *gui,const Packing *saved,guint count,GList *order) {
+  for(guint i=0;i<count;i++) {
+    gboolean expand,fill;guint padding;GtkPackType pack;
+    g_assert_true(gtk_widget_get_parent(saved[i].widget)==gui);
+    gtk_box_query_child_packing(GTK_BOX(gui),saved[i].widget,&expand,&fill,&padding,&pack);
+    g_assert_cmpint(expand,==,saved[i].expand);g_assert_cmpint(fill,==,saved[i].fill);
+    g_assert_cmpuint(padding,==,saved[i].padding);g_assert_cmpint(pack,==,saved[i].pack);
+  }
+  GList *actual=gtk_container_get_children(GTK_CONTAINER(gui));
+  g_assert_cmpuint(g_list_length(actual),==,g_list_length(order));
+  for(GList *a=actual,*b=order;a;a=a->next,b=b->next)g_assert_true(a->data==b->data);
+  g_list_free(actual);
+}
+static void mixed_packing_and_owned_destruction (void) {
+  GimpToolInfo *tool=info("gimp-paintbrush-tool");
+  WidgetLifetime life[5]={{0}};
+  GtkWidget *gui=ownership_widget(&life[0]);g_object_ref_sink(gui);
+  GtkWidget *first=ownership_widget(&life[1]),*last=ownership_widget(&life[2]);
+  GtkWidget *jitter_body=ownership_widget(&life[3]),*texture_body=ownership_widget(&life[4]);
+  gtk_box_pack_start(GTK_BOX(jitter_body),gimp_prop_spin_scale_new(G_OBJECT(tool->tool_options),"jitter-amount",.1,1.,2),FALSE,FALSE,0);
+  gtk_box_pack_start(GTK_BOX(texture_body),gtk_label_new("Texture details"),FALSE,FALSE,0);
+  GtkWidget *jitter=gimp_prop_expanding_frame_new(G_OBJECT(tool->tool_options),"use-jitter",NULL,jitter_body,NULL);
+  GtkWidget *texture=gimp_prop_expanding_frame_new(G_OBJECT(tool->tool_options),"use-texture",NULL,texture_body,NULL);
+  gtk_box_pack_start(GTK_BOX(gui),first,TRUE,FALSE,3);
+  gtk_box_pack_end(GTK_BOX(gui),last,FALSE,TRUE,9);
+  gtk_box_pack_end(GTK_BOX(gui),jitter,TRUE,FALSE,7);
+  gtk_box_pack_start(GTK_BOX(gui),texture,FALSE,FALSE,11);
+  GtkWidget *retained[]={first,last,jitter_body,texture_body};
+  for(guint i=0;i<G_N_ELEMENTS(retained);i++)g_object_ref(retained[i]);
+  Packing saved[]={{first,TRUE,FALSE,3,GTK_PACK_START},{last,FALSE,TRUE,9,GTK_PACK_END},
+    {jitter,TRUE,FALSE,7,GTK_PACK_END},{texture,FALSE,FALSE,11,GTK_PACK_START}};
+  GList *order=gtk_container_get_children(GTK_CONTAINER(gui));
+  for(guint cycle=0;cycle<3;cycle++) {
+    compact(gui,tool->tool_options,TRUE,GTK_ORIENTATION_HORIZONTAL);
+    g_assert_cmpint(gtk_orientable_get_orientation(GTK_ORIENTABLE(gui)),==,GTK_ORIENTATION_HORIZONTAL);
+    GtkWidget *button=find(gui,"painter-compact-use-jitter",GTK_TYPE_MENU_BUTTON);g_assert_nonnull(button);
+    GtkWidget *popup=GTK_WIDGET(gtk_menu_button_get_popover(GTK_MENU_BUTTON(button)));
+    GtkWidget *scroll=gtk_bin_get_child(GTK_BIN(popup));g_assert_true(GTK_IS_SCROLLED_WINDOW(scroll));
+    GtkWidget *viewport=gtk_bin_get_child(GTK_BIN(scroll));g_assert_true(GTK_IS_VIEWPORT(viewport));
+    GtkWidget *body=gtk_bin_get_child(GTK_BIN(viewport));g_assert_true(GTK_IS_BOX(body));
+    g_assert_true(gtk_widget_is_ancestor(jitter,body));
+    compact(gui,tool->tool_options,TRUE,GTK_ORIENTATION_VERTICAL);
+    g_assert_cmpint(gtk_orientable_get_orientation(GTK_ORIENTABLE(gui)),==,GTK_ORIENTATION_VERTICAL);
+    compact(gui,tool->tool_options,FALSE,GTK_ORIENTATION_HORIZONTAL);
+    assert_packing_restored(gui,saved,G_N_ELEMENTS(saved),order);
+    for(guint i=0;i<G_N_ELEMENTS(life);i++){g_assert_cmpuint(life[i].destroyed,==,0);g_assert_cmpuint(life[i].finalized,==,0);}
+  }
+  g_list_free(order);gtk_widget_destroy(gui);
+  for(guint i=0;i<G_N_ELEMENTS(life);i++){g_assert_cmpuint(life[i].destroyed,==,1);g_assert_cmpuint(life[i].finalized,==,0);}
+  g_object_unref(gui);
+  for(guint i=0;i<G_N_ELEMENTS(retained);i++)g_object_unref(retained[i]);
+  for(guint i=0;i<G_N_ELEMENTS(life);i++)g_assert_cmpuint(life[i].finalized,==,1);
+}
+static void native_viewport_composition (void) {
+  for(guint scrollable=0;scrollable<2;scrollable++) {
+    WidgetLifetime life={0};GtkWidget *scroll=gtk_scrolled_window_new(NULL,NULL);g_object_ref_sink(scroll);
+    GtkWidget *child=scrollable?gtk_tree_view_new():ownership_widget(&life);
+    gtk_container_add(GTK_CONTAINER(scroll),child);g_object_ref(child);
+    GtkWidget *native=gtk_bin_get_child(GTK_BIN(scroll));
+    if(scrollable){g_assert_true(GTK_IS_SCROLLABLE(child));g_assert_true(native==child);}
+    else {g_assert_true(GTK_IS_VIEWPORT(native));g_assert_true(gtk_bin_get_child(GTK_BIN(native))==child);}
+    gtk_widget_destroy(scroll);g_object_unref(scroll);
+    if(!scrollable) {
+      /* GtkScrolledWindow removes the auto-viewport's child before destroying
+       * that viewport. An independently retained child survives unparented. */
+      g_assert_null(gtk_widget_get_parent(child));
+      g_assert_cmpuint(life.destroyed,==,0);g_assert_cmpuint(life.finalized,==,0);
+      gtk_widget_destroy(child);g_assert_cmpuint(life.destroyed,==,1);
+    }
+    g_object_unref(child);
+    if(!scrollable)g_assert_cmpuint(life.finalized,==,1);
+  }
+}
 static void registered_popup_contracts (void) {
   const char *cases[][3]={
     {"gimp-rect-select-tool","fixed-center","painter-compact-rectangle"},
@@ -234,6 +329,8 @@ int main(int argc,char **argv) {
   g_test_add_func("/painter-compact-options/paint-bidirectional-resource",paint_bidirectional_reset_and_resource);
   g_test_add_func("/painter-compact-options/popup-repeat",popup_repeat);
   g_test_add_func("/painter-compact-options/fresh-owner-lifecycle",fresh_owner_lifecycle);
+  g_test_add_func("/painter-compact-options/mixed-packing-owned-destruction",mixed_packing_and_owned_destruction);
+  g_test_add_func("/painter-compact-options/native-viewport-composition",native_viewport_composition);
   g_test_add_func("/painter-compact-options/registered-popup-contracts",registered_popup_contracts);
   g_test_add_func("/painter-compact-options/reentrant-destruction",reentrant_destroy_during_compaction);
   g_test_add_func("/painter-compact-options/native-visibility-preference",native_visibility_preference);

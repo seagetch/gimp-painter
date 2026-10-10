@@ -460,13 +460,21 @@
       "id": "06.023",
       "task": "GTK DSL を新ハンドルへ接続する",
       "dependencies": "06.022",
-      "state": "PARTIAL",
+      "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
-        "app/widgets/gimppaintermybrusheditor.cpp"
+        "app/painter/object-ref.hpp",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/tests/test-painter-compact-options.c"
       ],
-      "test_ids": [],
-      "reports": [],
-      "scope_or_gap": "GTK DSL replacement is feature-specific; canvas compact horizontal toolbar and complete old Definer/Packer call-site disposition remain open."
+      "test_ids": [
+        "/painter-compact-options/mixed-packing-owned-destruction",
+        "/painter-compact-options/native-viewport-composition"
+      ],
+      "reports": [
+        "migration/tests/gtk-binding/native.json",
+        "migration/tests/gtk-binding/sanitizers.json"
+      ],
+      "scope_or_gap": "Original Definer/Packer ownership condition verified by explicit common handles, native GTK packing/viewport/lifetime tests and 18 source duties. Other feature behavior, all named GTK adapters, platforms and whole-application sanitizer coverage remain separate."
     },
     {
       "id": "06.024",

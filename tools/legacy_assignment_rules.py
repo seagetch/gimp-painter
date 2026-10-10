@@ -387,6 +387,29 @@ OVERRIDES.setdefault('libgimp/Makefile.am', {}).update({1: 'registration-2293', 
 OVERRIDES.setdefault('menus/Makefile.am', {}).update({1: 'registration-2365'})
 OVERRIDES.setdefault('tools/pdbgen/Makefile.am', {}).update({1: 'registration-2484'})
 
+# These provider/caller hunks expose the editor DSL's raw widget boundary or
+# keep its two item-tree callers inactive. Native GTK constructors, model and
+# layout changes elsewhere do not inherit a Definer/Packer ownership duty.
+GTK_DSL_SUPPORT = {
+    'app/widgets/gimpeditor-cxx.h': {1},
+    'app/widgets/gimpeditor-private.h': {1},
+    'app/widgets/gimpeditor.c': {1, 2, 3, 4, 5, 6},
+    'app/widgets/gimpitemtreeview.c': {1, 4, 5, 6, 7},
+}
+
+
+def uses_gtk_dsl(path, lines):
+    """Recognize the actual C++ DSL, ignoring names in comments and strings."""
+    if PurePosixPath(path).suffix not in ('.cpp', '.hpp', '.h'):
+        return False
+    code = re.sub(r'//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'',
+                  '', '\n'.join(lines), flags=re.S)
+    if re.search(r'\bGLib\s*::\s*(?:with\s*\(|Definer\s*<)', code):
+        return True
+    imported = re.search(r'\b(?:using\s+namespace\s+GLib\s*;|namespace\s+GLib\s*\{|using\s+GLib\s*::\s*(?:with|Definer)\s*;)', code)
+    return bool(imported and re.search(r'\b(?:with\s*\(|Definer\s*<|class\s+Definer\b)', code))
+
+
 def route(row, added, removed):
     path = row['path']
     key = OVERRIDES.get(path, {}).get(int(row['index']), path_profile(path))
@@ -397,4 +420,10 @@ def route(row, added, removed):
     if lines and any('__DECLARE_GTK_' in l for l in lines) and all(allowed.match(l) for l in lines):
         key = 'cpp-header'
     result = dict(PROFILES[key]); result['profile'] = key
+    dsl = uses_gtk_dsl(path, added + removed)
+    support = int(row['index']) in GTK_DSL_SUPPORT.get(path, set())
+    result['tasks'] = [task for task in result['tasks']
+                       if task != '06.023' or dsl or support]
+    if dsl and '06.023' not in result['tasks']:
+        result['tasks'].insert(0, '06.023')
     return result

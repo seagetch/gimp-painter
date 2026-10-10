@@ -41,6 +41,13 @@
 #include "gimpcoreapp.h"
 static Gimp *gimp;
 static GtkWidget *window;
+typedef struct { void (*run) (void); } CanvasTestCase;
+static void run_canvas_case (gconstpointer data) {
+  /* Device restoration is deferred until the first focus. Each -p case must
+   * establish it itself, rather than depend on an earlier case/window focus. */
+  gimp_set_focused_once(gimp);
+  ((const CanvasTestCase *) data)->run();
+}
 static void drain (void) { for (int i=0;i<300 && g_main_context_pending(NULL);++i) g_main_context_iteration(NULL,FALSE); }
 static GtkWidget *find (GtkWidget *w,const gchar *name) {
   if (!g_strcmp0(gtk_widget_get_name(w),name)) return w;
@@ -372,7 +379,8 @@ int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);gtk_window_set_default_size(GTK_WINDOW(window),220,700);
-#define ADD(f) g_test_add_func("/painter-canvas-ui/" #f,f)
+#define ADD(f) do { static const CanvasTestCase test_case = { f }; \
+  g_test_add_data_func("/painter-canvas-ui/" #f, &test_case, run_canvas_case); } while (0)
   if(g_getenv("PAINTER_CANVAS_DEMO")) { ADD(demo); } else {
   ADD(channel_preview_components);ADD(selection_and_visibility);ADD(group_move_and_undo);ADD(image_switch_disconnect);ADD(long_press_cancel_destroy);ADD(preview_pending_destroy);ADD(popup_repeat_and_owner_close);
   ADD(popup_controls_and_clone);ADD(mask_controls);ADD(long_press_once);ADD(reentrant_visibility_close);ADD(multiple_reorder_one_undo);ADD(hide_cancels_grab);

@@ -364,3 +364,18 @@ function gimp_initialize returns: gimp_new invokes gimp_constructed and the
 ordinary paint registration phase earlier. C resource/CRT/dependency constructors
 are outside the C++ object invariant. The separate feature-entry-point lifecycle
 obligation is not closed by this foundation check.
+
+## Native GTK construction ownership (original 06.023)
+
+[The GTK ownership acceptance](../tests/gtk-binding/README.md) connects the old
+Definer/Packer construction sites to native GTK3 and common ObjectRef ownership.
+Sink a new floating widget, retain a borrowed child before reparenting, and keep
+its saved packing properties until restoration. Parent references and explicit
+strong references may coexist; do not add another implicit DSL owner. Scoped
+BindingStore borrowing is not the old GLib::with construction API.
+
+Close connections and delayed callbacks before destroying native roots. A strong
+reference preserves storage, not permission to use a logically destroyed widget.
+GtkScrolledWindow's automatic viewport can unparent a separately retained child
+before destroying its viewport; that child's explicit owner retains its own
+cleanup responsibility. Current tests distinguish destroy from final unref.

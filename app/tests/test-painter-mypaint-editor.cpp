@@ -47,6 +47,17 @@ extern "C" {
 #include <vector>
 using namespace GimpPainter;
 static Gimp *gimp;
+struct EditorTestCase { void (*run)(); };
+static void run_editor_case(gconstpointer data) {
+  // Every filtered case needs the deferred device setup before GUI teardown.
+  gimp_set_focused_once(gimp);
+  static_cast<const EditorTestCase *>(data)->run();
+}
+static void add_editor_case(const char *name,void (*run)()) {
+  auto *test=new EditorTestCase{run};
+  g_test_add_data_func_full(name,test,run_editor_case,
+    +[](gpointer data){delete static_cast<EditorTestCase *>(data);});
+}
 static std::string writable_directory;
 static gchar *original_search;
 static GtkWidget*find(GtkWidget*w,const char*name){
@@ -289,18 +300,18 @@ static void registration(){
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
-  g_test_add_func("/painter-editor/01-constructors-shared",constructors_and_shared_model);
-  g_test_add_func("/painter-editor/02-all-controls-curves",all_controls_and_curves);
-  g_test_add_func("/painter-editor/03-list-search-history",list_search_history);
-  g_test_add_func("/painter-editor/04-save-conflict-default-path",save_conflict_default_path);
-  g_test_add_func("/painter-editor/05-preview-extended",preview_deterministic_extended);
-  g_test_add_func("/painter-editor/06-replace-close",replacement_and_close);
-  g_test_add_func("/painter-editor/07-registration",registration);
-  g_test_add_func("/painter-editor/08-legacy-preview-oracle",legacy_preview_oracle);
-  g_test_add_func("/painter-editor/09-close-during-refresh",close_during_refresh);
-  g_test_add_func("/painter-editor/10-graph-gestures",graph_gestures);
-  g_test_add_func("/painter-editor/11-resource-notifications",replaced_resource_notifications);
-  g_test_add_func("/painter-editor/12-delete-failure",delete_failure_retains_draft);
-  if(g_getenv("PAINTER_EDITOR_DEMO"))g_test_add_func("/painter-editor/visual-demo",visual_demo);
+  add_editor_case("/painter-editor/01-constructors-shared",constructors_and_shared_model);
+  add_editor_case("/painter-editor/02-all-controls-curves",all_controls_and_curves);
+  add_editor_case("/painter-editor/03-list-search-history",list_search_history);
+  add_editor_case("/painter-editor/04-save-conflict-default-path",save_conflict_default_path);
+  add_editor_case("/painter-editor/05-preview-extended",preview_deterministic_extended);
+  add_editor_case("/painter-editor/06-replace-close",replacement_and_close);
+  add_editor_case("/painter-editor/07-registration",registration);
+  add_editor_case("/painter-editor/08-legacy-preview-oracle",legacy_preview_oracle);
+  add_editor_case("/painter-editor/09-close-during-refresh",close_during_refresh);
+  add_editor_case("/painter-editor/10-graph-gestures",graph_gestures);
+  add_editor_case("/painter-editor/11-resource-notifications",replaced_resource_notifications);
+  add_editor_case("/painter-editor/12-delete-failure",delete_failure_retains_draft);
+  if(g_getenv("PAINTER_EDITOR_DEMO"))add_editor_case("/painter-editor/visual-demo",visual_demo);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(gimp->app);g_clear_object(&gimp->app);g_free(original_search);return result;
 }
