@@ -1,0 +1,67 @@
+{
+  "task": "08.002",
+  "parent": "eadee8b10299f9d9f515796cc12e3574ac01b32e",
+  "source_duties": [
+    {
+      "work_id": "legacy-cfa0b404716471f08968",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.002",
+      "action": "CloneLayer の GType 骨格を移植する",
+      "acceptance": "GimpLayer 派生型として生成・終了できる",
+      "legacy_role": "Legacy NewGClass/UseCStructs<GimpLayer,GimpCloneLayer>/Pickable registration, construction and native factory at lines174-180,253-275,602-677",
+      "current_type_contract": "Native G_DEFINE_TYPE_WITH_CODE directly derives GimpLayer, registers Pickable and its C layouts; CloneSlot construction and activation use BindingStore with boundary containment; dispose closes then chains; inherited finalize and qdata destruction end the instance",
+      "source_copy": "migration/tests/clone-type/legacy-source/gimpclonelayer.cpp",
+      "source_copy_sha256": "3e4ea9bc3f77379989a81c35fe0ace8ad3fe0763c0d66c2765e361ce504ff4bb",
+      "tests": [
+        "/gimp-clone-layer/native_type_lifecycle",
+        "/gimp-clone-layer/inert_construction",
+        "/gimp-clone-layer/cpp_header_layout",
+        "/gimp-clone-layer/freeze_and_close",
+        "/gimp-clone-layer/retained_items_image_destroy"
+      ]
+    },
+    {
+      "work_id": "legacy-af8e9581aa87ad54115e",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.002",
+      "action": "CloneLayer の GType 骨格を移植する",
+      "acceptance": "GimpLayer 派生型として生成・終了できる",
+      "legacy_role": "Legacy public C instance/class parent layout, get_type and native factory declaration, plus old C++ interface bridge",
+      "current_type_contract": "Current C public header preserves native parent-first structs and C-linkage getters/factory; extra C boolean records inert construction status; C++ state stays in the common store and typed handle replaces the old secondary interface",
+      "source_copy": "migration/tests/clone-type/legacy-source/gimpclonelayer.h",
+      "source_copy_sha256": "7ac420fc151c7476faaf7dfb5caf9eee135579e678c65fa4e801c287368316bd",
+      "tests": [
+        "/gimp-clone-layer/native_type_lifecycle",
+        "/gimp-clone-layer/inert_construction",
+        "/gimp-clone-layer/cpp_header_layout",
+        "/gimp-clone-layer/freeze_and_close",
+        "/gimp-clone-layer/retained_items_image_destroy"
+      ]
+    }
+  ],
+  "source_duties_accepted": 2,
+  "routing_changes": 0,
+  "reports": [
+    {
+      "path": "migration/tests/clone-type/native.json",
+      "sha256": "a39cdc8cea3048b8101754e17c478d47a27014a91c08dec64b04b32f2a06f133",
+      "passed_cases": 38,
+      "current_source_seals": 17
+    }
+  ],
+  "limits": "Original native type creation/termination only; whole-file duty anchors do not close independent reference/Undo/pixel/transform/XCF/platform obligations"
+}
