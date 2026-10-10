@@ -1,0 +1,11 @@
+ninja: Entering directory `/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http'
+[1/13] Generating git-version.h.in.1 with a custom command
+[2/13] Generating git-version.h.in.2 with a custom command
+[3/13] Generating git-version.h with a custom command
+[4/7] Compiling C++ object app/tests/painter-mypaint-tool.p/test-painter-mypaint-tool.cpp.o
+[5/7] Compiling C++ object app/tests/painter-mypaint-editor.p/test-painter-mypaint-editor.cpp.o
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-painter-mypaint-editor.cpp:68:8: warning: ‘Editor’ declared with greater visibility than the type of its field ‘Editor::model’ [-Wattributes]
+   68 | struct Editor {
+      |        ^~~~~~
+[6/7] Linking target app/tests/painter-mypaint-tool
+[7/7] Linking target app/tests/painter-mypaint-editor

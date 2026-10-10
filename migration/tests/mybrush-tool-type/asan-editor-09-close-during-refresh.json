@@ -1,0 +1,21 @@
+{
+  "name": "asan-editor-09-close-during-refresh",
+  "argv": [
+    "/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http/app/tests/painter-mypaint-editor-asan",
+    "-p",
+    "/painter-editor/09-close-during-refresh"
+  ],
+  "exit_code": 0,
+  "status": "PASS",
+  "cases": [
+    "/painter-editor/09-close-during-refresh"
+  ],
+  "sanitizer_errors": [],
+  "stdout": "TAP version 14\n# random seed: R02S792ebf8ed2ea251057328eec4b4d0807\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for \u2018gio-vfs\u2019\n# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created\n# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:\n# GdkPixbuf-DEBUG: \tEncoding raw\n# GdkPixbuf-DEBUG: \tDimensions: 64 x 64\n# GdkPixbuf-DEBUG: \tRowstride: 256, Length: 16408\n# GdkPixbuf-DEBUG: \tCopy pixels == false\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/16x16/gimp.png (Failed to open file \u201c/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/16x16/gimp.png\u201d: No such file or directory)\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/32x32/gimp.png (Failed to open file \u201c/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/32x32/gimp.png\u201d: No such file or directory)\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/48x48/gimp.png (Failed to open file \u201c/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/48x48/gimp.png\u201d: No such file or directory)\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/64x64/gimp.png (Failed to open file \u201c/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/64x64/gimp.png\u201d: No such file or directory)\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/scalable/gimp.svg (Failed to open file \u201c/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/scalable/gimp.svg\u201d: No such file or directory)\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/256x256/gimp.png\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for \u2018gsettings-backend\u2019\n# Start of painter-editor tests\nset device 'Virtual core XTEST pointer' to mode: disabled\n# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:\n# GdkPixbuf-DEBUG: \tEncoding raw\n# GdkPixbuf-DEBUG: \tDimensions: 14 x 14\n# GdkPixbuf-DEBUG: \tRowstride: 56, Length: 808\n# GdkPixbuf-DEBUG: \tCopy pixels == false\n# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:\n# GdkPixbuf-DEBUG: \tEncoding raw\n# GdkPixbuf-DEBUG: \tDimensions: 14 x 14\n# GdkPixbuf-DEBUG: \tRowstride: 56, Length: 808\n# GdkPixbuf-DEBUG: \tCopy pixels == false\nok 1 /painter-editor/09-close-during-refresh\n# slow test /painter-editor/09-close-during-refresh executed in 0.99 secs\n# End of painter-editor tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\nGIMP-Error: Failed to save data:\n\nYou have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.\n\n",
+  "binary_sha256": "521a61c8ac14bb34bd88fa1ffd6b6f8f2a69355229ad52b130d6f6c2e5c9f244",
+  "build_report_sha256": "fad569e93024520498c8a78af3081e95aaa51e321fe4c54de282cf113ce4b105",
+  "sanitizer_options": {
+    "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  }
+}

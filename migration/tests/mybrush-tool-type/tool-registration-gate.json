@@ -1,0 +1,46 @@
+{
+  "name": "tool-registration-gate",
+  "argv": [
+    "/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http/app/tests/painter-mypaint-tool",
+    "-p",
+    "/painter-tool/registration-gate"
+  ],
+  "exit_code": 0,
+  "status": "PASS",
+  "cases": [
+    "/painter-tool/registration-gate"
+  ],
+  "stdout": "TAP version 14\n# random seed: R02S6eb163e54cd821b6c20c707146c62447\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for \u2018gio-vfs\u2019\n# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created\n# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:\n# GdkPixbuf-DEBUG: \tEncoding raw\n# GdkPixbuf-DEBUG: \tDimensions: 64 x 64\n# GdkPixbuf-DEBUG: \tRowstride: 256, Length: 16408\n# GdkPixbuf-DEBUG: \tCopy pixels == false\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/16x16/gimp.png (Failed to open file \u201c/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/16x16/gimp.png\u201d: No such file or directory)\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/32x32/gimp.png (Failed to open file \u201c/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/32x32/gimp.png\u201d: No such file or directory)\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/48x48/gimp.png (Failed to open file \u201c/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/48x48/gimp.png\u201d: No such file or directory)\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/64x64/gimp.png (Failed to open file \u201c/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/64x64/gimp.png\u201d: No such file or directory)\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/scalable/gimp.svg (Failed to open file \u201c/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/scalable/gimp.svg\u201d: No such file or directory)\nApplication icon missing: /workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/desktop/256x256/gimp.png\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for \u2018gsettings-backend\u2019\n# Start of painter-tool tests\nset device 'Virtual core XTEST pointer' to mode: disabled\n# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:\n# GdkPixbuf-DEBUG: \tEncoding raw\n# GdkPixbuf-DEBUG: \tDimensions: 14 x 14\n# GdkPixbuf-DEBUG: \tRowstride: 56, Length: 808\n# GdkPixbuf-DEBUG: \tCopy pixels == false\n# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:\n# GdkPixbuf-DEBUG: \tEncoding raw\n# GdkPixbuf-DEBUG: \tDimensions: 14 x 14\n# GdkPixbuf-DEBUG: \tRowstride: 56, Length: 808\n# GdkPixbuf-DEBUG: \tCopy pixels == false\n# registration: image=0x55ce5e8545e0 drawable-image=0x55ce5e8545e0 before options GUI\n# registration: before refusing paint-core start\n# registration: before scene destruction\nWARNING: icon theme has no icon 'gimp-tool-mypaint-brush'.\nWARNING: icon theme has no icon 'gimp-wilber-eek'.\nok 1 /painter-tool/registration-gate\n# slow test /painter-tool/registration-gate executed in 0.64 secs\n# End of painter-tool tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\nGIMP-Error: Failed to save data:\n\nYou have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.\n\n",
+  "binary_sha256": "70222f5b7782529b74e05147762b3d3d70a921427118a6f1a76b3f9cfb529de3",
+  "source_sha256": {
+    "app/tools/gimppaintermybrushtool.cpp": "255f679a0ce50c13106fe72f0dcc45b07db7ac568dfbfb6224e5ccb8bc4c8353",
+    "app/tools/gimppaintermybrushtool.h": "b2f2a648614ea2085e7131fb8219e7cb7b7a81f0cdd5690480742201379d74f0",
+    "app/tools/gimppaintermybrushtool.hpp": "207f076f27f61fb79bee94f0accbaf7490f649a9569ea56c633a5621654c3a71",
+    "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+    "app/tools/gimptool.c": "de30576df39b394985b358ab9a238df330a97fcb396f4e7e37232e052219136b",
+    "app/tools/gimpdrawtool.c": "9602d5fd2cc8125b368668d3dd4cb179bd2ee41d80809610a58d523453aea312",
+    "app/tools/gimpcolortool.c": "7063d040ab0d6ff1a6fc8fa6998105b208d88f4478b8c74e4bbc5106397270b1",
+    "app/tools/tool_manager.c": "e9b4f3fed964663c728e5b77f3b01b2f72b5e0530c1959c2f5b39d07e5f141e5",
+    "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+    "app/widgets/gimppaintermybrusheditor.h": "b380505737cfbffb0ab6354a1c0368f5bdd2f17cc6ab24209e506329dba13a5f",
+    "app/widgets/gimppaintermybrusheditor.hpp": "e1ba947f6aac62ee5c62d764a65ee1bf5aea4d7d718c7e7e22d9f789e1720baf",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "ca6cd5749e6c36a689051ab45824db222597a5635ea1da74ac84ed3fb490b66c",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h": "eb150c845183c939c2611b1d63178ef23988c2eb4f071ccab739a06b173a793f",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "3784efe5ae3577d1329cc53f50102d424403385be99d66207e686ad250a2a6d9",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.h": "4f53e90cf9902dd84b7b85f3417689d54c68b1ac8008c9eb181915e89f085345",
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "b76d784b6173aba483cc88524db66d1d13a3f22c56c96de871c16f73772863d5",
+    "app/paint/painter-mypaint-surface/paint-core.hpp": "7b7ee841d0ffbf7cf6f77f3f0fc38d6e0f4009878a346bef310fd11a329775cc",
+    "app/paint/painter-mypaint/resource.cpp": "ea2006b960d8e03de5c9ef77299f336d51430b4d30865bf3f37bbe2dc874f14f",
+    "app/paint/painter-mypaint/engine.cpp": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/tests/test-painter-mypaint-tool.cpp": "753b184bdcc875babfb1eff9395d5fcd436a200e43a050d9e6b99e145df7669f",
+    "app/tests/test-painter-mypaint-editor.cpp": "24da66d064bd0f797a15dd521033a59889ff44f1631197a88089833cd761a062",
+    "app/tests/meson.build": "c0ca2ba436e782c8672cfd903c9bc71700438c29303ffa3f0ccbb58471fce1b5"
+  }
+}

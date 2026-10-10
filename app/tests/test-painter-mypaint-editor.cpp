@@ -240,6 +240,53 @@ static void close_during_refresh(){
   g_assert_false(gimp_painter_mybrush_editor_preview_pending(editor.widget));
   g_assert_null(gimp_painter_mybrush_editor_ref_preview(editor.widget));g_object_unref(owner);
 }
+static void owner_destruction_orders()
+{
+  for (bool options_first : {true, false})
+    {
+      auto *options = GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (
+        GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, "gimp", gimp, nullptr));
+      bool options_finalized = false, editor_finalized = false, control_finalized = false;
+      const auto finalized = +[](gpointer data) { *static_cast<bool*> (data) = true; };
+      g_object_set_data_full (G_OBJECT (options), "test-08008-finalized", &options_finalized, finalized);
+      GError *error = nullptr;
+      auto *widget = gimp_painter_mybrush_editor_new (GIMP_CONTEXT (options), FALSE, &error);
+      g_assert_no_error (error); g_assert_nonnull (widget); g_object_ref_sink (widget);
+      g_object_set_data_full (G_OBJECT (widget), "test-08008-finalized", &editor_finalized, finalized);
+      auto *spin = control (widget, "opaque"); g_object_ref (spin);
+      g_object_set_data_full (G_OBJECT (spin), "test-08008-finalized", &control_finalized, finalized);
+      if (options_first)
+        {
+          g_object_unref (options);
+          g_assert_false (options_finalized);
+          gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin), .321);
+          double value = 0; g_object_get (options, "opaque", &value, nullptr);
+          g_assert_cmpfloat_with_epsilon (value, .321, 1e-6);
+        }
+      gtk_widget_destroy (widget);
+      g_object_run_dispose (G_OBJECT (widget));
+      g_object_run_dispose (G_OBJECT (widget));
+      g_object_unref (widget);
+      g_assert_true (editor_finalized);
+      g_assert_false (control_finalized);
+      if (options_first)
+        g_assert_true (options_finalized);
+      else
+        {
+          g_assert_false (options_finalized);
+          g_object_set (options, "opaque", .654, nullptr);
+          gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin), .111);
+          double value = 0; g_object_get (options, "opaque", &value, nullptr);
+          g_assert_cmpfloat_with_epsilon (value, .654, 1e-6);
+          g_object_unref (options);
+          g_assert_true (options_finalized);
+        }
+      gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin), .222);
+      g_object_unref (spin);
+      g_assert_true (control_finalized);
+      gimp_test_run_mainloop_until_idle ();
+    }
+}
 static void graph_gestures(){
   Editor editor(true);MyPaint::Resource r;r.set_curve(BRUSH_OPAQUE,INPUT_PRESSURE,{{0,0},{1,1}});editor.set(r);
   auto*graph=editor.get("painter-curve-graph");auto*parent=gtk_widget_get_parent(graph);while(parent&&!GTK_IS_NOTEBOOK(parent))parent=gtk_widget_get_parent(parent);g_assert_nonnull(parent);gtk_notebook_set_current_page(GTK_NOTEBOOK(parent),2);
@@ -309,6 +356,7 @@ int main(int argc,char**argv){
   add_editor_case("/painter-editor/07-registration",registration);
   add_editor_case("/painter-editor/08-legacy-preview-oracle",legacy_preview_oracle);
   add_editor_case("/painter-editor/09-close-during-refresh",close_during_refresh);
+  add_editor_case("/painter-editor/13-owner-destruction-orders",owner_destruction_orders);
   add_editor_case("/painter-editor/10-graph-gestures",graph_gestures);
   add_editor_case("/painter-editor/11-resource-notifications",replaced_resource_notifications);
   add_editor_case("/painter-editor/12-delete-failure",delete_failure_retains_draft);
