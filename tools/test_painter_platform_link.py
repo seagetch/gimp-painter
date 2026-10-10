@@ -85,6 +85,31 @@ def foundation_results(output):
     return tests
 
 
+def archive_objects(members, system):
+    # Apple/BSD ar exposes its generated symbol index in `ar t`; this is not
+    # a compiled object. Accept at most one known index on Mach-O only.
+    indexes = {'__.SYMDEF', '__.SYMDEF SORTED', '__.SYMDEF_64', '__.SYMDEF_64 SORTED'}
+    metadata = [name for name in members if name in indexes]
+    require(not metadata or (system == 'darwin' and len(metadata) == 1),
+            'Unexpected archive symbol-index members')
+    return [name for name in members if name not in indexes]
+
+
+def pe_exports(raw):
+    marker = '[Ordinal/Name Pointer] Table'
+    require(marker in raw, 'Missing PE export-name table')
+    table = raw.split(marker, 1)[1].split('\n\n', 1)[0]
+    # Binutils versions either print [index] name or include ordinal-base and
+    # hint columns. Restrict parsing to the actual name table in both formats.
+    return re.findall(r'^\s*\[\s*\d+\]\s+(?:\+base\[\s*\d+\]\s+[0-9a-fA-F]+\s+)?(\S+)\s*$', table, re.M)
+
+
+def macho_exports(raw):
+    # dyld_info prints flags after ordinary names. Re-exports have a labelled
+    # prefix rather than an address and must also be inspected for private ABI.
+    return re.findall(r'^\s*(?:0x[0-9a-fA-F]+|\[re-export\])\s+(\S+)', raw, re.M)
+
+
 def run(args, report):
     system = platform.system().lower()
     arch = native_arch(platform.machine())
@@ -145,10 +170,12 @@ def run(args, report):
         fresh = Path(directory) / archive.name
         execute(ar + ['rcs', fresh] + [objects[name] for name in foundation.CPP_SOURCES])
         members = execute(ar + ['t', fresh]).splitlines()
-        require(members == [objects[name].name for name in foundation.CPP_SOURCES],
+        object_members = archive_objects(members, system)
+        require(object_members == [objects[name].name for name in foundation.CPP_SOURCES],
                 'Archive contains unrecorded or missing objects')
         fresh.replace(archive)
     report['archive_members'] = members
+    report['archive_object_members'] = object_members
     extension = '.exe' if system == 'windows' else ''
 
     def link(name, objects, export=False):
@@ -181,12 +208,10 @@ def run(args, report):
             names = [line.split()[0] for line in raw.splitlines() if line.strip()]
         elif system == 'windows':
             raw = execute(['objdump', '-p', path])
-            require('[Ordinal/Name Pointer] Table' in raw, 'Missing PE export-name table')
-            table = raw.split('[Ordinal/Name Pointer] Table', 1)[1]
-            names = re.findall(r'^\s*\[\s*\d+\]\s+(\S+)\s*$', table, re.M)
+            names = pe_exports(raw)
         else:
             raw = execute(['xcrun', 'dyld_info', '-exports', path])
-            names = re.findall(r'^\s*0x[0-9a-fA-F]+\s+(\S+)', raw, re.M)
+            names = macho_exports(raw)
         names = sorted(set(normalize(n) for n in names))
         require('painter_platform_export_control' in names, 'Export inspection missed positive control')
         demangled = execute(['c++filt'], '\n'.join(names) + '\n').splitlines()
