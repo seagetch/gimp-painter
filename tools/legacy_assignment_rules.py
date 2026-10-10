@@ -442,6 +442,17 @@ def route(row, added, removed):
     # remains; do not infer a MyPaint type obligation from the broad profile.
     if path == 'app/tools/gimp-tools.c' and int(row['index']) == 12:
         result['tasks'] = [task for task in result['tasks'] if task != '08.008']
+    # These ruler-profile hunks contain only math/whitespace, hit-test
+    # transforms or the editing tool interface, without a model owner/slot.
+    # Keep their tool/geometry duties; exclude only the three model gates.
+    if (path, int(row['index'])) in {
+            ('app/core/gimpimage-snap.c', 1),
+            ('app/core/gimpimage-snap.h', 1),
+            ('app/tools/gimp-tools.c', 5),
+            ('app/tools/gimpdrawtool.c', 1),
+            ('app/tools/gimpperspectiveguidetool.h', 1)}:
+        result['tasks'] = [task for task in result['tasks'] if task not in
+                           {'08.009', '08.009/removed-signal', '08.009/guide-owner'}]
     dsl = uses_gtk_dsl(path, added + removed)
     support = int(row['index']) in GTK_DSL_SUPPORT.get(path, set())
     result['tasks'] = [task for task in result['tasks']

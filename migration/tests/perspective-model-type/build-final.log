@@ -1,0 +1,26 @@
+ninja: Entering directory `/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http'
+[1/11] Generating git-version.h.in.1 with a custom command
+[2/11] Generating git-version.h.in.2 with a custom command
+[3/11] Generating git-version.h with a custom command
+[4/5] Compiling C object app/tests/painter-perspective.p/test-painter-perspective.c.o
+In file included from /workspace/scratch/5b5281e79681/gimp-native-restore-20261010/native-deps/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/scratch/5b5281e79681/gimp-native-restore-20261010/native-deps/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/scratch/5b5281e79681/gimp-native-restore-20261010/native-deps/root/usr/include/glib-2.0/glib-object.h:24,
+                 from /workspace/scratch/5b5281e79681/gimp-native-restore-20261010/native-deps/root/usr/include/gegl-0.4/gegl.h:22,
+                 from ../../gtk-binding-recovery-20261010/worktree/app/tests/test-painter-perspective.c:6:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-painter-perspective.c:26:28: warning: no previous declaration for ‘probe_guide_get_type’ [-Wmissing-declarations]
+   26 | G_DEFINE_TYPE (ProbeGuide, probe_guide, GIMP_TYPE_PERSPECTIVE_GUIDE)
+      |                            ^~~~~~~~~~~
+/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/native-deps/root/usr/include/glib-2.0/gobject/gtype.h:2305:1: note: in definition of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE’
+ 2305 | type_name##_get_type (void) \
+      | ^~~~~~~~~
+/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/native-deps/root/usr/include/glib-2.0/gobject/gtype.h:2053:61: note: in expansion of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/native-deps/root/usr/include/glib-2.0/gobject/gtype.h:1834:61: note: in expansion of macro ‘G_DEFINE_TYPE_EXTENDED’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-painter-perspective.c:26:1: note: in expansion of macro ‘G_DEFINE_TYPE’
+   26 | G_DEFINE_TYPE (ProbeGuide, probe_guide, GIMP_TYPE_PERSPECTIVE_GUIDE)
+      | ^~~~~~~~~~~~~
+[5/5] Linking target app/tests/painter-perspective

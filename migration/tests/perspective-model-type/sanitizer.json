@@ -1,0 +1,32 @@
+{
+  "name": "sanitizer-perspective-model-type",
+  "status": "PASS",
+  "exit_code": 0,
+  "cases": [
+    "/perspective/model_bounds",
+    "/perspective/runtime_model_fixture",
+    "/perspective/source_oracle",
+    "/perspective/threshold_ties_and_constraint",
+    "/perspective/image_ownership",
+    "/perspective/reentrant_replacement",
+    "/perspective/dispose_reentry",
+    "/perspective/edit_undo",
+    "/perspective/signal_lifetime",
+    "/perspective/removed_class_slot",
+    "/perspective/setter_owner_release",
+    "/perspective/duplicate_ownership"
+  ],
+  "sanitizer_errors": [],
+  "argv": [
+    "/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http/app/tests/painter-perspective-asan"
+  ],
+  "binary_sha256": "071cf81142d4d3f2ca78a3a5671b96b3ec47e4f4f13cb01dfbb07e51dc073562",
+  "build_report_sha256": "b3729638005995581c4b506ea3499e7cda5da5b32ba08ad1c30a23eba6ddb308",
+  "changed_during_run": [],
+  "sanitizer_options": {
+    "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "stdout": "TAP version 14\n# random seed: R02S29610fdbbf02e762981b8709bb57e569\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n1..12\n# Start of perspective tests\nok 1 /perspective/model_bounds\nok 2 /perspective/runtime_model_fixture\n# 7500 exact legacy source-helper cases; runtime/property defect tested separately\nok 3 /perspective/source_oracle\nok 4 /perspective/threshold_ties_and_constraint\nok 5 /perspective/image_ownership\nok 6 /perspective/reentrant_replacement\nok 7 /perspective/dispose_reentry\nok 8 /perspective/edit_undo\nok 9 /perspective/signal_lifetime\nok 10 /perspective/removed_class_slot\nok 11 /perspective/setter_owner_release\nok 12 /perspective/duplicate_ownership\n# End of perspective tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\nGIMP-Error: Failed to save data:\n\nYou have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.\n\n",
+  "scope": "Twelve model/core cases under focused ASan/UBSan source coverage; RTTI-only and uninstrumented dependencies enumerated in build report, LeakSanitizer disabled. No new UI or platform acceptance."
+}
