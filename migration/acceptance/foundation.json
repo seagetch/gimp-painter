@@ -480,14 +480,25 @@
       "id": "06.024",
       "task": "qdata lookup の処理単位を制限する",
       "dependencies": "06.023",
-      "state": "PARTIAL",
+      "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
-        "app/paint/painter-mypaint-surface/gegl-surface.cpp",
-        "app/core/gimpfilterlayer.cpp"
+        "app/painter/binding-store.cpp",
+        "app/painter/binding-store.hpp",
+        "app/painter/object-ref.hpp"
       ],
-      "test_ids": [],
-      "reports": [],
-      "scope_or_gap": "Major renderer pixel loops consume resolved plain state, but all source-ledger paths still require one-resolution-per-operation review."
+      "test_ids": [
+        "/qdata/scoped-regions",
+        "/qdata/nested-operation",
+        "/qdata/owner-lease",
+        "/qdata/close-generation",
+        "/qdata/counter-sensitivity",
+        "/qdata/wrong-thread"
+      ],
+      "reports": [
+        "migration/tests/qdata-operations/common.json",
+        "migration/tests/qdata-operations/sanitizers.json"
+      ],
+      "scope_or_gap": "Original operation-scoped resolution condition verified with actual find/entry counters, six common cases normal+ASan/UBSan, separately sealed real MyPaint session/GEGL tests, and a current 50-file boundary audit. No per-pixel defect or speedup claimed. Native app sanitizers, all-feature parity and platforms remain separate. Direct historical duties: zero; ledger unchanged."
     },
     {
       "id": "06.025",

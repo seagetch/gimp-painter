@@ -1,0 +1,331 @@
+{
+  "head": "a285ff55edb40a06d9fa85f4c695731eda6f87bf",
+  "task": "06.024",
+  "direct_source_obligations": 0,
+  "textual_census_note": "Tracked production C/C++ source, excluding tests. Counted regex occurrences, not runtime calls; helper wrappers and kernel call graph are reviewed separately in BOUNDARIES.md. find/require definitions are included in their own foundation row. No arbitrary qdata calls or unrelated task duties are reassigned.",
+  "resolution_files": [
+    {
+      "path": "app/config/gimppainterfilterconfig.cpp",
+      "sha256": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+      "matching_lines": 5,
+      "textual_counts": {
+        "find": 0,
+        "require": 4,
+        "with": 2,
+        "read": 1
+      }
+    },
+    {
+      "path": "app/core/gimp-painter-provenance.cpp",
+      "sha256": "aa67639002b93907eac76978d907aa197025a5da2fbc2e41e7a45b5fe432bd18",
+      "matching_lines": 4,
+      "textual_counts": {
+        "find": 1,
+        "require": 3,
+        "with": 1,
+        "read": 2
+      }
+    },
+    {
+      "path": "app/core/gimpclonelayer.cpp",
+      "sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+      "matching_lines": 37,
+      "textual_counts": {
+        "find": 6,
+        "require": 24,
+        "with": 15,
+        "read": 5
+      }
+    },
+    {
+      "path": "app/core/gimpfilterexit.cpp",
+      "sha256": "173415c8a7891b5627ec31797edb2000923fe2da2cd025995666dff5ed156914",
+      "matching_lines": 5,
+      "textual_counts": {
+        "find": 1,
+        "require": 2,
+        "with": 2,
+        "read": 1
+      }
+    },
+    {
+      "path": "app/core/gimpfilterlayer.cpp",
+      "sha256": "093b237a078d26678241837f26d77d92fc508e14951159539a4d6b86298f471d",
+      "matching_lines": 35,
+      "textual_counts": {
+        "find": 3,
+        "require": 30,
+        "with": 12,
+        "read": 14
+      }
+    },
+    {
+      "path": "app/core/gimpfilterparametereditor.cpp",
+      "sha256": "fcf150ea7c938ab792770f3307d769e5f84dddcfba20b85030b6e7ca4c9e130f",
+      "matching_lines": 6,
+      "textual_counts": {
+        "find": 3,
+        "require": 2,
+        "with": 1,
+        "read": 1
+      }
+    },
+    {
+      "path": "app/core/gimpfilterprocedure.cpp",
+      "sha256": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+      "matching_lines": 7,
+      "textual_counts": {
+        "find": 2,
+        "require": 5,
+        "with": 5,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/core/gimppaintermybrush.cpp",
+      "sha256": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+      "matching_lines": 16,
+      "textual_counts": {
+        "find": 0,
+        "require": 2,
+        "with": 5,
+        "read": 9
+      }
+    },
+    {
+      "path": "app/core/gimpperspectiveguide.cpp",
+      "sha256": "72c4fce594a0cce96901f289ed6d5956b519dc8836f4306b3efc955e26024ce3",
+      "matching_lines": 8,
+      "textual_counts": {
+        "find": 0,
+        "require": 4,
+        "with": 3,
+        "read": 2
+      }
+    },
+    {
+      "path": "app/core/gimpperspectiveguideundo.cpp",
+      "sha256": "02c4840cd65c60fc24da666073ea6f7670eb87a86005ce153e5e34e0effb5375",
+      "matching_lines": 4,
+      "textual_counts": {
+        "find": 0,
+        "require": 4,
+        "with": 1,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/dialogs/file-save-deferred.cpp",
+      "sha256": "1909de2bea0d6ba238cccfa3b3bfb9bd4229a4123258b87c760cad85882c0328",
+      "matching_lines": 8,
+      "textual_counts": {
+        "find": 2,
+        "require": 3,
+        "with": 3,
+        "read": 1
+      }
+    },
+    {
+      "path": "app/dialogs/painter-layer-dialog.cpp",
+      "sha256": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+      "matching_lines": 4,
+      "textual_counts": {
+        "find": 1,
+        "require": 1,
+        "with": 2,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/display/gimpcanvasperspectiveguide.cpp",
+      "sha256": "8ae697467c3cfff54b41c03828419000907cfc5b2ee92902246711523663f858",
+      "matching_lines": 7,
+      "textual_counts": {
+        "find": 1,
+        "require": 4,
+        "with": 2,
+        "read": 2
+      }
+    },
+    {
+      "path": "app/display/gimppaintercanvasui.cpp",
+      "sha256": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed",
+      "matching_lines": 7,
+      "textual_counts": {
+        "find": 3,
+        "require": 1,
+        "with": 3,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/httpd/httpd.cpp",
+      "sha256": "4fc203a0faf1c42d28d00e3da053529cb174970a57cf93721825acf1ac4770e4",
+      "matching_lines": 3,
+      "textual_counts": {
+        "find": 2,
+        "require": 1,
+        "with": 1,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/paint/gimpfillbrush.cpp",
+      "sha256": "077bff742f79ea6c4df585d3bdc1d3865b2895ffbd3f179b88e68fcbc3c52319",
+      "matching_lines": 15,
+      "textual_counts": {
+        "find": 0,
+        "require": 15,
+        "with": 11,
+        "read": 2
+      }
+    },
+    {
+      "path": "app/paint/gimppainterpaintgate.cpp",
+      "sha256": "0adab689f1bfe4967da9f69259c7ba9b59bed6500a55d0eff643c4ad634986de",
+      "matching_lines": 3,
+      "textual_counts": {
+        "find": 0,
+        "require": 1,
+        "with": 2,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/paint/gimppaintersmudge.cpp",
+      "sha256": "1cbbcbb3dd373265f597a52a3d4cdb137b889c4d430f9f24064cce8cf1df7a43",
+      "matching_lines": 17,
+      "textual_counts": {
+        "find": 0,
+        "require": 16,
+        "with": 11,
+        "read": 3
+      }
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "sha256": "45a5f51c429e45de42b85317847211caa092d4a5c2a9784a17a9918b693ba91a",
+      "matching_lines": 34,
+      "textual_counts": {
+        "find": 7,
+        "require": 2,
+        "with": 19,
+        "read": 7
+      }
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "sha256": "3784efe5ae3577d1329cc53f50102d424403385be99d66207e686ad250a2a6d9",
+      "matching_lines": 15,
+      "textual_counts": {
+        "find": 2,
+        "require": 1,
+        "with": 8,
+        "read": 4
+      }
+    },
+    {
+      "path": "app/painter/binding-store.cpp",
+      "sha256": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+      "matching_lines": 2,
+      "textual_counts": {
+        "find": 1,
+        "require": 1,
+        "with": 0,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/painter/gimp-painter-binding.cpp",
+      "sha256": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+      "matching_lines": 1,
+      "textual_counts": {
+        "find": 1,
+        "require": 0,
+        "with": 0,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/tools/gimpfillbrushtool.cpp",
+      "sha256": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+      "matching_lines": 8,
+      "textual_counts": {
+        "find": 3,
+        "require": 2,
+        "with": 2,
+        "read": 1
+      }
+    },
+    {
+      "path": "app/tools/gimppaintermybrushtool.cpp",
+      "sha256": "255f679a0ce50c13106fe72f0dcc45b07db7ac568dfbfb6224e5ccb8bc4c8353",
+      "matching_lines": 24,
+      "textual_counts": {
+        "find": 6,
+        "require": 1,
+        "with": 19,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/tools/gimppaintersmudgetool.cpp",
+      "sha256": "c11e2e2413baaebd86f03a2a9e6f9726c2b965162a442e0714236c39354163d1",
+      "matching_lines": 8,
+      "textual_counts": {
+        "find": 3,
+        "require": 2,
+        "with": 2,
+        "read": 1
+      }
+    },
+    {
+      "path": "app/tools/gimpperspectiveguidetool.cpp",
+      "sha256": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b",
+      "matching_lines": 3,
+      "textual_counts": {
+        "find": 1,
+        "require": 1,
+        "with": 1,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "sha256": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0",
+      "matching_lines": 6,
+      "textual_counts": {
+        "find": 3,
+        "require": 0,
+        "with": 3,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/widgets/gimppainterlayertiles.cpp",
+      "sha256": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+      "matching_lines": 13,
+      "textual_counts": {
+        "find": 5,
+        "require": 3,
+        "with": 5,
+        "read": 0
+      }
+    },
+    {
+      "path": "app/widgets/gimppaintermybrusheditor.cpp",
+      "sha256": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+      "matching_lines": 22,
+      "textual_counts": {
+        "find": 6,
+        "require": 1,
+        "with": 16,
+        "read": 0
+      }
+    }
+  ],
+  "matching_lines": 327,
+  "file_count": 29,
+  "tracked_status": "",
+  "tests_executed": false
+}

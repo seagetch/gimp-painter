@@ -379,3 +379,23 @@ reference preserves storage, not permission to use a logically destroyed widget.
 GtkScrolledWindow's automatic viewport can unparent a separately retained child
 before destroying its viewport; that child's explicit owner retains its own
 cleanup responsibility. Current tests distinguish destroy from final unref.
+
+## Resolution granularity (original 06.024)
+
+Resolve the owner store and typed slot at an operation, job admission or bounded
+drawable-region boundary. `with`/`read` acquires the owner lease and slot once;
+the numerical loop consumes the supplied borrow, copied settings, or an owned
+raster. Caching only `BindingStore&` and calling `with` for every pixel still
+performs a slot search and violates this condition. Do not cache an `Impl*`
+across operations, synchronous signals, asynchronous jobs or owner threads to
+reduce lookup counts. A retained owner preserves storage; `accepts(generation)`
+must still gate state use after a callback that can close it.
+
+An input sample, native dab, bounded search step, dependency checkpoint and
+callback admission are distinct operations. Their counts may grow with input
+samples, regions or dependencies. They must not grow merely with the number of
+pixels in the same operation. Workers receive independent owned input; they
+must not consult an owner-thread store. [The current boundary audit and counter
+tests](../tests/qdata-operations/README.md) distinguish store finds, typed slot
+searches and buffer-copy work. Test-only observation leaves production ABI and
+execution unchanged.
