@@ -214,7 +214,9 @@ def run(args, report):
             names = macho_exports(raw)
         names = sorted(set(normalize(n) for n in names))
         require('painter_platform_export_control' in names, 'Export inspection missed positive control')
-        demangled = execute(['c++filt'], '\n'.join(names) + '\n').splitlines()
+        # Names above already have Mach-O's object prefix removed. Disable
+        # c++filt's platform-dependent extra stripping (Darwin defaults on).
+        demangled = execute(['c++filt', '-n'], '\n'.join(names) + '\n').splitlines()
         require(len(names) == len(demangled), 'Incomplete export demangling')
         private = [n for n in demangled if 'GimpPainter::' in n]
         return {'names': names, 'private_cpp_exports': private}

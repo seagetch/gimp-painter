@@ -1,0 +1,108 @@
+{
+  "run_id": 38027444418,
+  "url": "https://github.com/seagetch/gimp-painter/actions/runs/38027444418",
+  "source_commit": "71dbc0e000bb56f9930c4ff93ae79620456cbf8c",
+  "targets": [
+    {
+      "target": "linux-x86_64",
+      "status": "PASS",
+      "foundation_cases": 69,
+      "abi_result": "PLATFORM_ABI_PASS pointer=8 long=8 object=24 value=24 error=16",
+      "failure": null,
+      "report_sha256": "412aa3419ebc6e0503bd13ffdf4d75e1ab430c94f9b1281a1650ddb46352b24d",
+      "zip_sha256": "a5b422f06f7e8096fa7a20fc9919089091a0a0049d468c710df102ed4a199e7c",
+      "source_verification": {
+        "repository_byte_matches": 30,
+        "exact_LF_to_CRLF_checkout_matches": []
+      }
+    },
+    {
+      "target": "macos-arm64",
+      "status": "FAIL",
+      "foundation_cases": 69,
+      "abi_result": "PLATFORM_ABI_PASS pointer=8 long=8 object=24 value=24 error=16",
+      "failure": "Export leak control was not detected",
+      "report_sha256": "0ec118f6641535cc15a6da7e23cc51aa8875e773dd572a83c502650efa000804",
+      "zip_sha256": "3854e3d717594b1d11de6bcb6963b032a5479014e9a62cd283b9c10102009c13",
+      "source_verification": {
+        "repository_byte_matches": 30,
+        "exact_LF_to_CRLF_checkout_matches": []
+      },
+      "negative_control_demangler": {
+        "argv": [
+          "c++filt"
+        ],
+        "exit_code": 0,
+        "output": "_ZN11GimpPainter28platform_export_leak_controlEv\n_mh_execute_header\nmain\npainter_platform_cpp_layout\npainter_platform_export_control\npainter_platform_roundtrip\n"
+      },
+      "negative_control_raw_exports": "/Users/runner/work/gimp-painter/gimp-painter/platform-build/painter-platform-leak-control [arm64]:\n    -exports:\n        offset      symbol\n        0x000014DC  __ZN11GimpPainter28platform_export_leak_controlEv\n        0x00000000  __mh_execute_header\n        0x00000718  _main\n        0x000014E4  _painter_platform_cpp_layout\n        0x00000710  _painter_platform_export_control\n        0x00001550  _painter_platform_roundtrip\n"
+    },
+    {
+      "target": "macos-x86_64",
+      "status": "FAIL",
+      "foundation_cases": 69,
+      "abi_result": "PLATFORM_ABI_PASS pointer=8 long=8 object=24 value=24 error=16",
+      "failure": "Export leak control was not detected",
+      "report_sha256": "4cddbeab9ba2eb12777092cfa005e6ed9104c942db46498631accb3d1f32bfed",
+      "zip_sha256": "ce91eef954661d6cfeba4c8a504402e1922cfcb00fb6fad5015848871665ef64",
+      "source_verification": {
+        "repository_byte_matches": 30,
+        "exact_LF_to_CRLF_checkout_matches": []
+      },
+      "negative_control_demangler": {
+        "argv": [
+          "c++filt"
+        ],
+        "exit_code": 0,
+        "output": "_ZN11GimpPainter28platform_export_leak_controlEv\n_ZTISt11logic_error\n_ZTISt12length_error\n_ZTISt13runtime_error\n_ZTISt20bad_array_new_length\n_ZTISt9bad_alloc\n_ZTISt9exception\n_ZTSSt11logic_error\n_ZTSSt12length_error\n_ZTSSt13runtime_error\n_ZTSSt20bad_array_new_length\n_ZTSSt9bad_alloc\n_ZTSSt9exception\n_mh_execute_header\nmain\npainter_platform_cpp_layout\npainter_platform_export_control\npainter_platform_roundtrip\n"
+      },
+      "negative_control_raw_exports": "/Users/runner/work/gimp-painter/gimp-painter/platform-build/painter-platform-leak-control [x86_64]:\n    -exports:\n        offset      symbol\n        0x000014C0  __ZN11GimpPainter28platform_export_leak_controlEv\n        0x00007250  __ZTISt11logic_error [weak-def]\n        0x00007268  __ZTISt12length_error [weak-def]\n        0x000071A8  __ZTISt13runtime_error [weak-def]\n        0x00007298  __ZTISt20bad_array_new_length [weak-def]\n        0x00007280  __ZTISt9bad_alloc [weak-def]\n        0x00007198  __ZTISt9exception [weak-def]\n        0x0000530F  __ZTSSt11logic_error [weak-def]\n        0x000052FE  __ZTSSt12length_error [weak-def]\n        0x000052DE  __ZTSSt13runtime_error [weak-def]\n        0x0000531F  __ZTSSt20bad_array_new_length [weak-def]\n        0x00005338  __ZTSSt9bad_alloc [weak-def]\n        0x000052F0  __ZTSSt9exception [weak-def]\n        0x00000000  __mh_execute_header\n        0x00000720  _main\n        0x000014D0  _painter_platform_cpp_layout\n        0x00000710  _painter_platform_export_control\n        0x00001560  _painter_platform_roundtrip\n"
+    },
+    {
+      "target": "windows-x86_64",
+      "status": "PASS",
+      "foundation_cases": 69,
+      "abi_result": "PLATFORM_ABI_PASS pointer=8 long=4 object=24 value=24 error=16",
+      "failure": null,
+      "report_sha256": "82df8c3c069ae53d694aa58a47a22d5a9f6b9d339ef3a555c148b92f55301035",
+      "zip_sha256": "f8925b7ca45545c2de6f52db51de5c94e22cebffdcf1b432e6f49cf6ef8656f1",
+      "source_verification": {
+        "repository_byte_matches": 0,
+        "exact_LF_to_CRLF_checkout_matches": [
+          "app/painter/binding-store.cpp",
+          "app/painter/binding-store.hpp",
+          "app/painter/boundary.hpp",
+          "app/painter/connection.hpp",
+          "app/painter/gimp-painter-binding.cpp",
+          "app/painter/gimp-painter-binding.h",
+          "app/painter/gimp-painter-error.cpp",
+          "app/painter/gimp-painter-error.h",
+          "app/painter/gimp-painter-visibility.h",
+          "app/painter/object-ref.hpp",
+          "app/painter/resources.hpp",
+          "app/painter/source.hpp",
+          "app/painter/tests/platform-abi.c",
+          "app/painter/tests/platform-abi.cpp",
+          "app/painter/tests/platform-abi.h",
+          "app/painter/tests/test-c-api.c",
+          "app/painter/tests/test-c-api.h",
+          "app/painter/tests/test-fixture-traits.hpp",
+          "app/painter/tests/test-fixture.c",
+          "app/painter/tests/test-fixture.h",
+          "app/painter/tests/test-foundation.cpp",
+          "app/painter/tests/test-gobject.cpp",
+          "app/painter/tests/test-hierarchy.c",
+          "app/painter/tests/test-hierarchy.cpp",
+          "app/painter/tests/test-hierarchy.h",
+          "app/painter/tests/test-reentry.cpp",
+          "app/painter/tests/test-registry.hpp",
+          "app/painter/tests/test-resources.cpp",
+          "tools/test_painter_foundation.py",
+          "tools/test_painter_platform_link.py"
+        ]
+      }
+    }
+  ],
+  "diagnosis": "Linux and Windows pass all gates. Both macOS targets pass 69 foundation tests and native ABI, then the recorder fails its intentional private-export control. Mach-O export normalization already removed the object prefix; Darwin c++filt stripped an additional underscore. Explicit -n prevents the second removal. Production acceptance on macOS still requires the next native run.",
+  "reference": "https://releases.llvm.org/20.1.0/docs/CommandGuide/llvm-cxxfilt.html"
+}
