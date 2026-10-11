@@ -399,7 +399,7 @@
 | 08.009/guide-owner | [x] | パース定規の image setter の参照移譲契約を確定する | 08.009, 01.007/c-state | setter の旧値解放と新値代入を対称にし、呼出し元・画像終了時の二重解放と残存を防ぐ |
 | 08.010 | [x] | パース定規 tool 型を移植する | 08.009 | draw tool と options に登録 |
 | 08.011 | [x] | 塗りつぶし brush core 型を移植する | 08.010 | paint core と親 vfunc を接続 |
-| 08.012 | [ ] | 塗りつぶし tool/options 型を移植する | 08.011 | DOING。tool manager と設定に登録。2026-10-11 に通常 GTK 32/32 を再検証し証跡を回収。GUIのfixture条件をMeson登録へ統合し、一括16登録252ケース成功（`migration/tests/native-gui-fixtures-20261011.json`）。ASan/UBSan 完了は未確定、元の完了数135/661を維持。`migration/tests/native-loopback-gui-20261011.json` |
+| 08.012 | [ ] | 塗りつぶし tool/options 型を移植する | 08.011 | tool manager と設定に登録 |
 | 08.013 | [ ] | LayerTileView 型を移植する | 08.012 | GTK3 の親 widget と終了を接続 |
 | 08.014 | [ ] | ToolTileView 型を移植する | 08.013 | GTK3 の親 widget と終了を接続 |
 | 08.015 | [ ] | Popover 型を移植する | 08.014 | window のイベント・destroy を接続 |
@@ -410,6 +410,8 @@
 | 08.018/core-extension-hooks | [ ] | 標準coreの独自操作hookを現行APIへ接続する | 08.018, 01.013 | hunk台帳のcore補助関数・公開宣言ごとの子チェックを処理し、同名APIの所有・座標・更新・失敗時の意味を検証する |
 | 08.019 | [ ] | C++ 利用箇所をハンドルへ移す | 08.018 | ref 関数添字と公開 interface cast を排除 |
 | 08.020 | [ ] | 旧 registration helper の残用途を整理する | 08.019 | 必要な型登録だけ adapter に残り、旧 Impl 配置がない |
+
+08.012 進捗（2026-10-11検証時点の記録）：DOING。tool manager と設定に登録。2026-10-11 に通常 GTK 32/32 を再検証し証跡を回収。GUIのfixture条件をMeson登録へ統合し、一括16登録252ケース成功（`migration/tests/native-gui-fixtures-20261011.json`）。ASan/UBSan 完了は未確定、元の完了数135/661を維持。`migration/tests/native-loopback-gui-20261011.json`
 
 ### 09 画像・画素・Undo の共通基盤
 
