@@ -8,8 +8,24 @@
 #include <stdexcept>
 #include <thread>
 #include <vector>
+#ifdef PAINTER_TEST_SANITIZER_RTTI
+#if !defined(__GXX_RTTI) && !defined(_CPPRTTI)
+#error Painter undefined sanitizer tests require C++ RTTI
+#endif
+#include <typeinfo>
+#endif
 using namespace GimpPainter;
 static std::string directory;
+#ifdef PAINTER_TEST_SANITIZER_RTTI
+static void sanitizer_typeinfo_linkage ()
+{
+  TemporaryFilterRaster raster (directory,4);
+  FilterRaster& base = raster;
+  // Force a reference to metadata owned by the real library's key function.
+  const std::type_info * volatile expected = &typeid (TemporaryFilterRaster);
+  g_assert_true (typeid (base) == *expected);
+}
+#endif
 static void native_bytes_and_cleanup ()
 {
   {
@@ -108,6 +124,9 @@ int main (int argc, char **argv)
 #define ADD(name) g_test_add_func ("/filter-raster/" #name,name)
   ADD (available_capacity_is_advisory); ADD (native_bytes_and_cleanup); ADD (large_sparse_offset); ADD (invalid_access_and_unwritten_read);
   ADD (worker_affinity); ADD (tiled_transpose_and_roundtrip); ADD (cancelled_or_failed_output_stays_private);
+#ifdef PAINTER_TEST_SANITIZER_RTTI
+  ADD (sanitizer_typeinfo_linkage);
+#endif
   const int result = g_test_run ();
   g_assert_cmpint (g_rmdir (directory.c_str ()), ==, 0);
   return result;
