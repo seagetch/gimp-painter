@@ -1,0 +1,39 @@
+# Extracted TAP protocol lines; complete original stdout/stderr retained in checkpoint archive
+# Evidence run: gui-isolated
+TAP version 14
+# random seed: R02S68d32b55b57d577405bcaa80c9f21a1d
+1..32
+# Start of fill-ui tests
+ok 1 /fill-ui/long-event-yields
+ok 2 /fill-ui/registered-manager-defaults
+ok 3 /fill-ui/options-persistence
+ok 4 /fill-ui/options-widget-binding
+ok 5 /fill-ui/registration-options
+ok 6 /fill-ui/foreground-picker
+ok 7 /fill-ui/queued-settings-undo
+ok 8 /fill-ui/repeated-press
+ok 9 /fill-ui/cancel-before-after
+ok 10 /fill-ui/external-dirty
+ok 11 /fill-ui/display-image-change
+ok 12 /fill-ui/dispose-queued
+ok 13 /fill-ui/dispose-during-start
+ok 14 /fill-ui/cancel-reentrant-stroke
+ok 15 /fill-ui/last-owner-release
+ok 16 /fill-ui/oper-update-owner-loss
+ok 17 /fill-ui/disposed-oper-update
+ok 18 /fill-ui/oper-update-dispose
+ok 19 /fill-ui/rollback-reentrant-input
+ok 20 /fill-ui/save-commit-pending
+ok 21 /fill-ui/undo-pending
+ok 22 /fill-ui/outline-projection
+ok 23 /fill-ui/save-export-preflight
+ok 24 /fill-ui/save-signal-reentry
+ok 25 /fill-ui/xcf-progress-reentry
+ok 26 /fill-ui/target-mutation
+ok 27 /fill-ui/external-write-preserved
+ok 28 /fill-ui/save-reentrant-close
+ok 29 /fill-ui/invalid-coordinates
+ok 30 /fill-ui/direct-export-preflight
+ok 31 /fill-ui/latency-sample
+ok 32 /fill-ui/latency-large-queue
+# End of fill-ui tests

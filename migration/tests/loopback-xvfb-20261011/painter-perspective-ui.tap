@@ -1,0 +1,28 @@
+# Extracted TAP protocol lines; complete original stdout/stderr retained in checkpoint archive
+# Evidence run: gui-isolated
+TAP version 14
+# random seed: R02Sf52d623e239611c793f75284988f7978
+1..21
+# Start of perspective-ui tests
+ok 1 /perspective-ui/add-move-remove-undo
+ok 2 /perspective-ui/close-pending-resize
+ok 3 /perspective-ui/cancel-hit-transforms
+ok 4 /perspective-ui/overlay-extents-replace
+ok 5 /perspective-ui/overlay-pixels-image-switch
+ok 6 /perspective-ui/registration-external-replace
+ok 7 /perspective-ui/old-toolrc-preserves-groups
+ok 8 /perspective-ui/interrupted-add
+ok 9 /perspective-ui/interrupted-add-dispose
+ok 10 /perspective-ui/interrupted-remove
+ok 11 /perspective-ui/interrupted-remove-dispose
+ok 12 /perspective-ui/proximity-status
+ok 13 /perspective-ui/registered-type-options
+ok 14 /perspective-ui/standalone-lifetime
+ok 15 /perspective-ui/interrupted-motion
+ok 16 /perspective-ui/recursive-cancel
+ok 17 /perspective-ui/switch-finalizer-disposes-tool
+ok 18 /perspective-ui/notification-last-owner
+ok 19 /perspective-ui/guide-property-ownership
+ok 20 /perspective-ui/property-finalizer-disposes-tool
+ok 21 /perspective-ui/property-finalizer-replaces-model
+# End of perspective-ui tests

@@ -1,0 +1,20 @@
+# Extracted TAP protocol lines; complete original stdout/stderr retained in checkpoint archive
+# Evidence run: gui-save-memory
+TAP version 14
+# random seed: R02S2d04c03a63fe06d2e7ac54f1b0cd4cc1
+1..13
+# Start of save-continuation tests
+ok 1 /save-continuation/query-replaces-file
+ok 2 /save-continuation/dialog-close-before-admission
+ok 3 /save-continuation/nested-commit
+ok 4 /save-continuation/save-and-close
+ok 5 /save-continuation/late-writer-reentry
+ok 6 /save-continuation/dialog-response
+ok 7 /save-continuation/active-tool-commit
+ok 8 /save-continuation/save-export-pixels
+ok 9 /save-continuation/owner-destroy
+ok 10 /save-continuation/display-change
+ok 11 /save-continuation/query-owner-loss
+ok 12 /save-continuation/saving-reentry
+ok 13 /save-continuation/clean-save-action
+# End of save-continuation tests

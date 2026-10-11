@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "scope": "Standard Meson build and sanitizer RTTI linkage verification; not full migration acceptance",
+  "base_commit": "bb991ef172c39042d9897aaf57618a1911b8a8c3",
+  "tested_changed_source_sha256": {
+    "app/painter/meson.build": "8608004c04fe38b50c2df1c3a5679df2a846f07a4a92cdcb406e4fe47199c659",
+    "app/core/meson.build": "1953950d353e81b26ce510483cdcf1fe1d52829707623289f5d4ce5411e7d282",
+    "app/display/meson.build": "6a8db0a6db78a956e8580a95090ce1b056d6003c77dbbfde3bc3cf8d4f1bf41b",
+    "app/painter/tests/test-filter-raster.cpp": "767f7398ea48a90c4f23764f92ff2b04e6c682ca28363f573437cdf8c8335a83",
+    "migration/contracts/rtti-separation.md": "9dbb20a3d0796895c82e173926238719849a681be6d47fc0d0ac146e1de9f779"
+  },
+  "normal_baseline": {
+    "build": "PASS: 2943 steps",
+    "registered_tests": 124,
+    "ok": 108,
+    "skipped": 16,
+    "failed": 0,
+    "timeouts": 0
+  },
+  "after_rtti_fix": {
+    "normal_build": "PASS",
+    "normal_compile_commands_compared": 2382,
+    "normal_compile_commands_changed": 0,
+    "normal_focused": {
+      "registered_tests": 9,
+      "ok": 8,
+      "skipped": 1,
+      "failed": 0
+    },
+    "asan_ubsan_build": "PASS",
+    "asan_ubsan_focused": {
+      "registered_tests": 9,
+      "ok": 7,
+      "skipped": 1,
+      "failed": 1
+    },
+    "typeinfo_linkage_regression": "PASS: eighth painter-filter-raster case under UBSan",
+    "sanitizers": "address,undefined (including vptr)",
+    "leak_detection": "Unavailable under ptrace; detect_leaks=0; not passed"
+  },
+  "remaining_failures": [
+    {
+      "test": "gimp-fill-brush",
+      "file": "app/core/gimpbrush-transform.cc",
+      "line": 380,
+      "diagnostic": "signed integer overflow: 2304 * 1044480",
+      "status": "Unfixed; not an expected-failure or passing result"
+    }
+  ],
+  "remaining_coverage": {
+    "native_gui_cases_not_executed": 0,
+    "sanitizer_gui_acceptance": "Not established",
+    "installed_prefix_startup": "Not established by these native tests",
+    "dbus": "Not needed for these GUI tests with existing in-memory GSettings test backend; persistent dconf not validated"
+  },
+  "wbs": {
+    "task": "08.012",
+    "status": "DOING",
+    "completed_original_tasks": 135,
+    "total_original_tasks": 661
+  },
+  "workflow_documentation_verification": {
+    "status": "PASS",
+    "checks": 11,
+    "scope": "Disposable Git snapshot fixture and three shell syntax checks; no additional GIMP runtime tests",
+    "evidence": "validation/native-workflow-recurrence-checks.json"
+  },
+  "later_native_gui": {
+    "registrations": 16,
+    "ok": 16,
+    "failed": 0,
+    "skipped": 0,
+    "tap_cases": 252,
+    "fill_ui_cases": 32,
+    "evidence": "native-loopback-gui-20261011.json",
+    "scope": "Separate documented fixture-adjusted runs, not a single aggregate or installed-prefix smoke"
+  }
+}

@@ -1,0 +1,24 @@
+# Extracted TAP protocol lines; complete original stdout/stderr retained in checkpoint archive
+# Evidence run: gui-isolated
+TAP version 14
+# random seed: R02Sfddb0cbd4f9987591e72cb2b7ff90aad
+1..17
+# Start of painter-tool tests
+ok 1 /painter-tool/registration-gate
+ok 2 /painter-tool/standalone-lifecycle
+ok 3 /painter-tool/hover-default-pressure
+ok 4 /painter-tool/stationary-equal-time-undo
+ok 5 /painter-tool/cancel
+ok 6 /painter-tool/editor-context
+ok 7 /painter-tool/ruler-origin
+ok 8 /painter-tool/halt-last-ref-motion
+ok 9 /painter-tool/image-change
+ok 10 /painter-tool/save-pending
+ok 11 /painter-tool/save-preflight
+ok 12 /painter-tool/outline-projection
+ok 13 /painter-tool/public-press-last-ref
+ok 14 /painter-tool/last-ref-without-halt
+ok 15 /painter-tool/gray-native-save-roundtrip
+ok 16 /painter-tool/pipe-release-save-roundtrip
+ok 17 /painter-tool/precision-native-save-roundtrip
+# End of painter-tool tests

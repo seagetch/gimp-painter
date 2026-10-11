@@ -399,7 +399,7 @@
 | 08.009/guide-owner | [x] | パース定規の image setter の参照移譲契約を確定する | 08.009, 01.007/c-state | setter の旧値解放と新値代入を対称にし、呼出し元・画像終了時の二重解放と残存を防ぐ |
 | 08.010 | [x] | パース定規 tool 型を移植する | 08.009 | draw tool と options に登録 |
 | 08.011 | [x] | 塗りつぶし brush core 型を移植する | 08.010 | paint core と親 vfunc を接続 |
-| 08.012 | [ ] | 塗りつぶし tool/options 型を移植する | 08.011 | tool manager と設定に登録 |
+| 08.012 | [ ] | 塗りつぶし tool/options 型を移植する | 08.011 | DOING。tool manager と設定に登録。2026-10-11 に通常 GTK 32/32 を再検証し証跡を回収。周辺 GUI 16 登録252ケースも成功（個別fixture条件あり）。ASan/UBSan 完了は未確定、元の完了数135/661を維持。`migration/tests/native-loopback-gui-20261011.json` |
 | 08.013 | [ ] | LayerTileView 型を移植する | 08.012 | GTK3 の親 widget と終了を接続 |
 | 08.014 | [ ] | ToolTileView 型を移植する | 08.013 | GTK3 の親 widget と終了を接続 |
 | 08.015 | [ ] | Popover 型を移植する | 08.014 | window のイベント・destroy を接続 |

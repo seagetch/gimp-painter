@@ -40,3 +40,24 @@ The helper's 29-test results are historical helper-specific checks, not native
 GIMP or GTK acceptance. This procedure correction does not rerun native tests.
 Fresh normal GTK and ASan/UBSan verification remain pending; 08.012 stays
 **DOING**, and the completed original-task count remains **135/661**.
+
+## Recovered native GUI verification (2026-10-11)
+
+The restored source was built with standard Meson and the Fill tool/options GUI
+test now has recoverable evidence: 32/32 TAP cases passed, Meson exit 0. The
+server was unmodified Xvfb using its supported inherited loopback TCP listener,
+with cookie authentication and no external-interface listener. Writable private
+HOME/XDG paths avoided the previously documented fixture errors.
+
+All 16 previously display-skipped registrations now have successful individual
+runs, totaling 252 TAP cases. The record
+`tests/native-loopback-gui-20261011.json` retains the qualification that Layer
+needed a 180-second budget, Profile used real build-generated data, and Save
+Continuation used the standard in-memory GSettings test backend. Original
+failed/timed-out attempts remain preserved separately. This is not a claim that
+a single default-configured aggregate run or installed-prefix smoke passed.
+
+The separate standard sanitizer run still fails on signed integer overflow in
+`app/core/gimpbrush-transform.cc:380`. Leak detection remains unavailable under
+ptrace. Neither failure is changed into a passing result. 08.012 remains DOING
+and the original completed-task count remains 135/661.
