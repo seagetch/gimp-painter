@@ -406,9 +406,17 @@ void release (GimpTool *tool, const GimpCoords *coords, guint32 time, GdkModifie
 }
 void oper_update (GimpTool *tool, const GimpCoords *coords, GdkModifierType state, gboolean proximity, GimpDisplay *display) {
   with (tool, [&] (Controller& self) {
-    if (!self.strokes.empty () && self.display.lock ().get () != G_OBJECT (display)) self.invalidate (true);
+    if (self.closed) return;
+    if (!self.strokes.empty () && self.display.lock ().get () != G_OBJECT (display)) {
+      const auto revision = self.revision;
+      self.invalidate (true);
+      // Rollback emits native signals: a callback may dispose this tool or
+      // start a replacement stroke. Do not restart the old preview afterward.
+      if (self.closed || self.revision != revision + 1 || !self.strokes.empty ()) return;
+    }
+    // Keep the store's owner lease through the parent callback as well.
+    GIMP_TOOL_CLASS (gimp_fill_brush_tool_parent_class)->oper_update (tool, coords, state, proximity, display);
   });
-  GIMP_TOOL_CLASS (gimp_fill_brush_tool_parent_class)->oper_update (tool, coords, state, proximity, display);
 }
 void draw (GimpDrawTool *draw_tool) {
   auto *paint = GIMP_PAINT_TOOL (draw_tool);

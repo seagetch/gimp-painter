@@ -28,6 +28,9 @@ extern "C" {
 #include "core/gimplayer.h"
 #include "core/gimptempbuf.h"
 #include "core/gimptoolinfo.h"
+#include "core/gimptoolpreset.h"
+#include "core/gimppainterprofile.h"
+#include "core/gimppaintinfo.h"
 #include "core/gimpundostack.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpcanvasitem.h"
@@ -42,6 +45,7 @@ extern "C" {
 #include "display/gimpdisplayshell.h"
 #include "paint/gimpfillbrush.h"
 #include "tools/gimp-tools.h"
+#include "tools/tool_manager.h"
 #include "widgets/gimpwidgets-utils.h"
 #include "widgets/gimpaction.h"
 #include "widgets/gimpactiongroup.h"
@@ -65,9 +69,14 @@ struct Scene {
   std::vector<guchar> initial;
   explicit Scene (int size=128) : side(size), initial (size*size*4, 80) {
     gimp_set_focused_once (gimp);
+    std::vector<GimpImage*> existing_images;
+    for (auto *iter=gimp_get_display_iter(gimp);iter;iter=iter->next) existing_images.push_back(gimp_display_get_image(GIMP_DISPLAY(iter->data)));
     gimp_test_utils_create_image (gimp, side, side);
     gimp_test_run_mainloop_until_idle ();
-    display = GIMP_DISPLAY (gimp_get_display_iter (gimp)->data);
+    display = nullptr;
+    for (auto *iter=gimp_get_display_iter(gimp);iter;iter=iter->next)
+      if (std::find(existing_images.begin(),existing_images.end(),gimp_display_get_image(GIMP_DISPLAY(iter->data)))==existing_images.end()) display=GIMP_DISPLAY(iter->data);
+    g_assert_nonnull(display);
     image = gimp_display_get_image (display);
     auto *list = gimp_image_get_selected_drawables (image); g_assert_nonnull (list);
     drawable = GIMP_DRAWABLE (list->data); g_object_ref (drawable); g_list_free (list);
@@ -130,6 +139,66 @@ static void registration_options () {
   g_object_set(s.options,"rate",27.0,"eraser-mode",TRUE,nullptr);
   auto *copy=G_OBJECT(gimp_config_duplicate(GIMP_CONFIG(s.options)));gdouble rate=0;gboolean erase=FALSE;
   g_object_get(copy,"rate",&rate,"eraser-mode",&erase,nullptr);g_assert_cmpfloat(rate,==,27);g_assert_true(erase);g_object_unref(copy);
+}
+static void registered_manager_defaults () {
+  Scene s;auto*info=s.tool->tool_info;
+  g_assert_cmpuint(info->tool_type,==,GIMP_TYPE_FILL_BRUSH_TOOL);
+  g_assert_cmpuint(info->tool_options_type,==,GIMP_TYPE_FILL_BRUSH_OPTIONS);
+  g_assert_cmpuint(info->context_props,==,GIMP_PAINT_OPTIONS_CONTEXT_MASK);
+  g_assert_false(info->hidden);g_assert_nonnull(info->paint_info);
+  g_assert_cmpstr(gimp_object_get_name(info->paint_info),==,"gimp-bucket-fill-brush");
+  gimp_tool_item_set_visible(GIMP_TOOL_ITEM(info),FALSE);
+  auto*path=g_build_filename(g_getenv("GIMP_TESTING_ABS_TOP_SRCDIR"),"etc","toolrc",nullptr);
+  gchar*text=nullptr;GError*error=nullptr;g_assert_true(g_file_get_contents(path,&text,nullptr,&error));g_assert_no_error(error);g_free(path);
+  auto*scanner=gimp_scanner_new_string(text,-1,&error);g_assert_no_error(error);
+  gimp_container_clear(gimp->tool_item_list);g_assert_true(gimp_tools_deserialize(gimp,gimp->tool_item_list,scanner));g_assert_no_error(error);gimp_scanner_unref(scanner);g_free(text);
+  g_assert_true(gimp_tool_item_get_visible(GIMP_TOOL_ITEM(info)));
+  gimp_context_set_tool(gimp_get_user_context(gimp),info);
+  auto*active=GIMP_TOOL(g_object_ref(tool_manager_get_active(gimp)));
+  g_assert_true(GIMP_IS_FILL_BRUSH_TOOL(active));g_assert_true(GIMP_TOOL(GIMP_FILL_BRUSH_TOOL(active))==active);
+  g_assert_true(active->tool_info==info);g_assert_true(gimp_tool_get_options(active)==info->tool_options);
+  g_assert_cmpuint(G_OBJECT_TYPE(info->tool_options),==,GIMP_TYPE_FILL_BRUSH_OPTIONS);
+  g_assert_cmpuint(g_type_parent(G_OBJECT_TYPE(active)),==,GIMP_TYPE_BRUSH_TOOL);
+  g_assert_cmpuint(g_type_parent(G_OBJECT_TYPE(info->tool_options)),==,GIMP_TYPE_PAINT_OPTIONS);
+  GTypeQuery query;g_type_query(G_OBJECT_TYPE(active),&query);g_assert_cmpuint(query.instance_size,==,sizeof(GimpFillBrushTool));g_assert_cmpuint(query.class_size,==,sizeof(GimpFillBrushToolClass));
+  g_type_query(G_OBJECT_TYPE(info->tool_options),&query);g_assert_cmpuint(query.instance_size,==,sizeof(GimpFillBrushOptions));g_assert_cmpuint(query.class_size,==,sizeof(GimpFillBrushOptionsClass));
+  auto*klass=GIMP_FILL_BRUSH_TOOL_GET_CLASS(active);g_assert_true(GIMP_IS_FILL_BRUSH_TOOL_CLASS(klass));g_assert_true(GIMP_FILL_BRUSH_TOOL_CLASS(G_OBJECT_GET_CLASS(active))==klass);
+  g_assert_true(GIMP_IS_FILL_BRUSH(GIMP_PAINT_TOOL(active)->core));
+  gimp_context_set_tool(gimp_get_user_context(gimp),gimp_get_tool_info(gimp,"gimp-paintbrush-tool"));g_object_unref(active);
+}
+static void options_persistence () {
+  Scene s;auto*options=G_OBJECT(g_object_new(GIMP_TYPE_FILL_BRUSH_OPTIONS,"gimp",gimp,nullptr));
+  gdouble rate=0;gboolean erase=TRUE;g_object_get(options,"rate",&rate,"eraser-mode",&erase,nullptr);g_assert_cmpfloat(rate,==,50);g_assert_false(erase);
+  auto*rate_spec=g_object_class_find_property(G_OBJECT_GET_CLASS(options),"rate");auto*erase_spec=g_object_class_find_property(G_OBJECT_GET_CLASS(options),"eraser-mode");
+  g_assert_true(G_IS_PARAM_SPEC_DOUBLE(rate_spec));g_assert_cmpfloat(G_PARAM_SPEC_DOUBLE(rate_spec)->minimum,==,0);g_assert_cmpfloat(G_PARAM_SPEC_DOUBLE(rate_spec)->maximum,==,100);g_assert_cmpfloat(G_PARAM_SPEC_DOUBLE(rate_spec)->default_value,==,50);
+  g_assert_true(G_IS_PARAM_SPEC_BOOLEAN(erase_spec));g_assert_false(G_PARAM_SPEC_BOOLEAN(erase_spec)->default_value);
+  for(auto*spec:{rate_spec,erase_spec}){g_assert_cmpuint(spec->owner_type,==,GIMP_TYPE_FILL_BRUSH_OPTIONS);g_assert_true((spec->flags&G_PARAM_CONSTRUCT)!=0);g_assert_true((spec->flags&GIMP_CONFIG_PARAM_SERIALIZE)!=0);}
+  g_object_unref(options);options=G_OBJECT(g_object_new(GIMP_TYPE_FILL_BRUSH_OPTIONS,"gimp",gimp,"rate",27.25,"eraser-mode",TRUE,"brush-size",23.,nullptr));
+  auto*serialized=gimp_config_serialize_to_string(GIMP_CONFIG(options),nullptr);g_assert_nonnull(strstr(serialized,"(rate 27.25)"));g_assert_nonnull(strstr(serialized,"(eraser-mode yes)"));
+  auto*copy=G_OBJECT(g_object_new(GIMP_TYPE_FILL_BRUSH_OPTIONS,"gimp",gimp,nullptr));GError*error=nullptr;
+  g_assert_true(gimp_config_deserialize_string(GIMP_CONFIG(copy),serialized,-1,nullptr,&error));g_assert_no_error(error);g_free(serialized);
+  double size=0;g_object_get(copy,"rate",&rate,"eraser-mode",&erase,"brush-size",&size,nullptr);g_assert_cmpfloat(rate,==,27.25);g_assert_true(erase);g_assert_cmpfloat(size,==,23.);
+  auto*duplicate=G_OBJECT(gimp_config_duplicate(GIMP_CONFIG(copy)));g_object_set(duplicate,"rate",81.,"eraser-mode",FALSE,nullptr);g_object_get(copy,"rate",&rate,"eraser-mode",&erase,nullptr);g_assert_cmpfloat(rate,==,27.25);g_assert_true(erase);g_object_unref(duplicate);
+  gimp_config_reset(GIMP_CONFIG(copy));g_object_get(copy,"rate",&rate,"eraser-mode",&erase,nullptr);g_assert_cmpfloat(rate,==,50);g_assert_false(erase);g_object_unref(copy);g_object_unref(options);
+  const char*legacy="(name \"Synthetic Fill preset\") (tool-options \"GimpBucketFillBrushOptions\" (tool \"gimp-bucket-fill-brush-tool\") (paint-info \"gimp-bucket-fill-brush\") (rate 31.25) (eraser-mode yes) (brush-size 19))";
+  auto*converted=gimp_painter_profile_transform(legacy,"preset",TRUE,&error);g_assert_no_error(error);g_assert_nonnull(converted);
+  auto*preset=GIMP_TOOL_PRESET(g_object_new(GIMP_TYPE_TOOL_PRESET,"gimp",gimp,nullptr));g_assert_true(gimp_config_deserialize_string(GIMP_CONFIG(preset),converted,-1,nullptr,&error));g_assert_no_error(error);g_free(converted);
+  g_assert_cmpuint(G_OBJECT_TYPE(preset->tool_options),==,GIMP_TYPE_FILL_BRUSH_OPTIONS);g_assert_true(GIMP_CONTEXT(preset->tool_options)->tool_info==s.tool->tool_info);
+  serialized=gimp_config_serialize_to_string(GIMP_CONFIG(preset),nullptr);auto*reopen=GIMP_TOOL_PRESET(g_object_new(GIMP_TYPE_TOOL_PRESET,"gimp",gimp,nullptr));g_assert_true(gimp_config_deserialize_string(GIMP_CONFIG(reopen),serialized,-1,nullptr,&error));g_assert_no_error(error);g_free(serialized);
+  g_object_get(reopen->tool_options,"rate",&rate,"eraser-mode",&erase,"brush-size",&size,nullptr);g_assert_cmpfloat(rate,==,31.25);g_assert_true(erase);g_assert_cmpfloat(size,==,19.);g_object_unref(reopen);g_object_unref(preset);
+}
+static GtkWidget* property_widget(GtkWidget*root,GObject*config,const char*name) {
+  if(g_object_get_data(G_OBJECT(root),"gimp-widget-property-config")==config&&g_strcmp0(static_cast<const char*>(g_object_get_data(G_OBJECT(root),"gimp-widget-property-name")),name)==0)return root;
+  if(GTK_IS_CONTAINER(root)){GList*children=gtk_container_get_children(GTK_CONTAINER(root));GtkWidget*found=nullptr;for(auto*item=children;item&&!found;item=item->next)found=property_widget(GTK_WIDGET(item->data),config,name);g_list_free(children);return found;}return nullptr;
+}
+static void options_widget_binding () {
+  Scene s;auto*gui=gimp_tools_get_tool_options_gui(GIMP_TOOL_OPTIONS(s.options));g_assert_true(GTK_IS_BOX(gui));g_assert_true(gui==gimp_tools_get_tool_options_gui(GIMP_TOOL_OPTIONS(s.options)));
+  auto*rate=property_widget(gui,G_OBJECT(s.options),"rate");auto*erase=property_widget(gui,G_OBJECT(s.options),"eraser-mode");g_assert_true(GTK_IS_SPIN_BUTTON(rate));g_assert_true(GTK_IS_TOGGLE_BUTTON(erase));
+  g_assert_true(gtk_widget_get_visible(rate));g_assert_true(gtk_widget_get_visible(erase));g_assert_cmpfloat(gtk_spin_button_get_value(GTK_SPIN_BUTTON(rate)),==,50);g_assert_false(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(erase)));
+  gtk_spin_button_set_value(GTK_SPIN_BUTTON(rate),17.5);gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(erase),TRUE);double actual=0;gboolean active=FALSE;g_object_get(s.options,"rate",&actual,"eraser-mode",&active,nullptr);g_assert_cmpfloat(actual,==,17.5);g_assert_true(active);
+  g_object_set(s.options,"rate",63.25,"eraser-mode",FALSE,nullptr);g_assert_cmpfloat(gtk_spin_button_get_value(GTK_SPIN_BUTTON(rate)),==,63.25);g_assert_false(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(erase)));
+  auto*adjustment=gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(rate));g_assert_cmpfloat(gtk_adjustment_get_lower(adjustment),==,0);g_assert_cmpfloat(gtk_adjustment_get_upper(adjustment),==,100);
+  gimp_config_reset(GIMP_CONFIG(s.options));g_assert_cmpfloat(gtk_spin_button_get_value(GTK_SPIN_BUTTON(rate)),==,50);g_assert_false(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(erase)));
 }
 static void foreground_picker () {
   Scene s;GdkModifierType mask=gimp_get_constrain_behavior_mask();
@@ -198,6 +267,38 @@ static void last_owner_release () {
   Scene s;auto id=g_signal_connect(s.drawable,"update",G_CALLBACK(owner_loss_on_update),&s);s.press();s.release();
   const gint64 deadline=g_get_monotonic_time()+10000000;while(s.tool && g_get_monotonic_time()<deadline)g_main_context_iteration(nullptr,FALSE);
   g_assert_null(s.tool);g_signal_handler_disconnect(s.drawable,id);gimp_test_run_mainloop_until_idle();g_assert(s.pixels()==s.initial);
+}
+static void mark_tool_finalized(gpointer data){*static_cast<bool*>(data)=true;}
+static void oper_update_owner_loss () {
+  for(bool public_dispatch:{false,true}){
+    Scene s;Scene other;g_assert_true(s.display!=other.display);bool finalized=false;
+    g_object_set_data_full(G_OBJECT(s.tool),"fill-tool-finalized",&finalized,mark_tool_finalized);
+    s.press();s.await_paint();s.release();g_assert_true(s.pending());
+    auto id=g_signal_connect(s.drawable,"update",G_CALLBACK(owner_loss_on_update),&s);
+    if(public_dispatch) gimp_image_remove_layer(other.image,GIMP_LAYER(other.drawable),FALSE,nullptr);
+    auto*tool=s.tool;
+    if(public_dispatch)gimp_tool_oper_update(tool,&s.coords,GdkModifierType(0),TRUE,other.display);
+    else s.klass->oper_update(tool,&s.coords,GdkModifierType(0),TRUE,other.display);
+    g_assert_null(s.tool);g_assert_true(finalized);g_signal_handler_disconnect(s.drawable,id);
+    gimp_test_run_mainloop_until_idle();g_assert(s.pixels()==s.initial);g_assert_cmpint(s.depth(),==,0);
+    g_assert_false(gimp_image_has_pending_paint(s.image));
+  }
+}
+static void dispose_on_update(GimpDrawable*,gint,gint,gint,gint,gpointer data) { g_object_run_dispose(G_OBJECT(data)); }
+static void oper_update_dispose () {
+  Scene s;Scene other;s.press();s.await_paint();s.release();g_assert_true(s.pending());
+  auto id=g_signal_connect(s.drawable,"update",G_CALLBACK(dispose_on_update),s.tool);
+  gimp_tool_oper_update(s.tool,&s.coords,GdkModifierType(0),TRUE,other.display);
+  g_signal_handler_disconnect(s.drawable,id);g_assert_false(gimp_draw_tool_is_active(GIMP_DRAW_TOOL(s.tool)));
+  g_assert_null(GIMP_DRAW_TOOL(s.tool)->item);g_assert_false(s.pending());g_assert(s.pixels()==s.initial);g_assert_cmpint(s.depth(),==,0);
+}
+static void disposed_oper_update () {
+  Scene s;g_object_run_dispose(G_OBJECT(s.tool));g_object_run_dispose(G_OBJECT(s.tool));
+  auto*draw=GIMP_DRAW_TOOL(s.tool);g_assert_false(gimp_draw_tool_is_active(draw));
+  gimp_tool_oper_update(s.tool,&s.coords,GdkModifierType(0),TRUE,s.display);
+  g_assert_false(gimp_draw_tool_is_active(draw));g_assert_null(draw->item);
+  g_assert_false(s.pending());g_assert_false(gimp_tool_control_is_active(s.tool->control));
+  g_assert(s.pixels()==s.initial);g_assert_cmpint(s.depth(),==,0);
 }
 static void press_on_rollback (GimpDrawable *drawable,gint,gint,gint,gint,gpointer data) {
   auto *call=static_cast<Reenter*>(data);g_signal_handler_disconnect(drawable,call->id);
@@ -387,6 +488,9 @@ int main(int argc,char**argv) {
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   g_test_add_func("/fill-ui/long-event-yields",long_event_yields);
+  g_test_add_func("/fill-ui/registered-manager-defaults",registered_manager_defaults);
+  g_test_add_func("/fill-ui/options-persistence",options_persistence);
+  g_test_add_func("/fill-ui/options-widget-binding",options_widget_binding);
   g_test_add_func("/fill-ui/registration-options",registration_options);
   g_test_add_func("/fill-ui/foreground-picker",foreground_picker);
   g_test_add_func("/fill-ui/queued-settings-undo",queued_settings_undo);
@@ -398,6 +502,9 @@ int main(int argc,char**argv) {
   g_test_add_func("/fill-ui/dispose-during-start",dispose_during_start);
   g_test_add_func("/fill-ui/cancel-reentrant-stroke",cancel_then_reentrant_stroke);
   g_test_add_func("/fill-ui/last-owner-release",last_owner_release);
+  g_test_add_func("/fill-ui/oper-update-owner-loss",oper_update_owner_loss);
+  g_test_add_func("/fill-ui/disposed-oper-update",disposed_oper_update);
+  g_test_add_func("/fill-ui/oper-update-dispose",oper_update_dispose);
   g_test_add_func("/fill-ui/rollback-reentrant-input",rollback_reentrant_input);
   g_test_add_func("/fill-ui/save-commit-pending",save_and_commit_pending);
   g_test_add_func("/fill-ui/undo-pending",undo_pending);

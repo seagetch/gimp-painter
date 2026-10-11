@@ -1217,6 +1217,9 @@ gimp_tool_oper_update (GimpTool         *tool,
   g_return_if_fail (GIMP_IS_DISPLAY (display));
   g_return_if_fail (gimp_tool_control_is_active (tool->control) == FALSE);
 
+  /* The vfunc can emit native signals that release the caller's last ref. */
+  g_object_ref (tool);
+
   GIMP_TOOL_GET_CLASS (tool)->oper_update (tool, coords, state, proximity,
                                            display);
 
@@ -1228,6 +1231,8 @@ gimp_tool_oper_update (GimpTool         *tool,
                                 _("Can't work on an empty image, "
                                   "add a layer first"));
     }
+
+  g_object_unref (tool);
 }
 
 void
