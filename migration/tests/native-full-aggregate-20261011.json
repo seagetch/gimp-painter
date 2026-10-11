@@ -1,0 +1,1964 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-11",
+  "scope": "Fresh normal native Meson build and one full registered aggregate; no sanitizer or installed-prefix acceptance",
+  "source_commit": "fca9fa6ed21e76a027d0edcf2c6684f9b38ad4b9",
+  "source_tree": "7ee4eac82c8280c46cc3f79ac4d64c0cc589a1a6",
+  "gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "source_integrity": {
+    "tracked_manifest_sha256": "0ddbb3acd50fb1a57f451dc8481f325491fa781791c2588daeed138f5db97727",
+    "tracked_changed_during_build_tests": [],
+    "runtime_untracked_files_recorded": true,
+    "runtime_files_excluded_from_publication": true
+  },
+  "recovery": {
+    "previous_source_build_dependencies_missing": true,
+    "checkpoint_version": 7,
+    "fresh_public_git_checkout": true,
+    "source_and_data_fsck_exit": 0,
+    "dependency_snapshot": "20260925T181338Z",
+    "dependency_archives_verified": 560,
+    "dependency_helper_sha256": "0884591ce6ee387e5dc7ee035033168d99ff304043a32d19cc8011cb641db750",
+    "dependency_lock_sha256": "553f4051b91626bc2f5470373fd3e8d67c8d61ec62103b2addcab7a16492129f",
+    "generated_meson_internals_restored": false
+  },
+  "build_options": {
+    "headless-tests": "disabled",
+    "painter-http": "disabled",
+    "b_sanitize": "none",
+    "buildtype": "debugoptimized",
+    "auto_features": "disabled",
+    "prefix": "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/prefix-native"
+  },
+  "phases": {
+    "dependency_restore_exit": 0,
+    "meson_setup_exit": 0,
+    "meson_compile_exit": 0,
+    "meson_test_exit": 4
+  },
+  "invocation": {
+    "all_registered": true,
+    "name_or_suite_filter": null,
+    "normal_prerequisite_rebuild": true,
+    "num_processes": 1,
+    "timeout_multiplier": null,
+    "parent_GSETTINGS_BACKEND": null,
+    "parent_GIMP3_DATADIR": null,
+    "command": [
+      "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/deps-debian13/root/usr/bin/meson",
+      "test",
+      "-C",
+      "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/build-native",
+      "--num-processes",
+      "1",
+      "--print-errorlogs",
+      "--logbase",
+      "full-native-aggregate"
+    ]
+  },
+  "transport": {
+    "start_utc": "2026-10-11T10:38:22.806058+00:00",
+    "end_utc": "2026-10-11T11:25:56.902721+00:00",
+    "max_seconds": 3600,
+    "transport": "AF_INET 127.0.0.1 only via systemd LISTEN_PID/LISTEN_FDS fd3",
+    "automatic_transports_disabled": [
+      "tcp",
+      "unix",
+      "local"
+    ],
+    "authorization": "MIT-MAGIC-COOKIE-1",
+    "auth_mode": "0o600",
+    "bound_address": [
+      "127.0.0.1",
+      32865
+    ],
+    "server_listeners": [
+      "LISTEN 0      0          127.0.0.1:32865      0.0.0.0:*    users:((\"Xvfb\",pid=59,fd=3))"
+    ],
+    "authenticated_client_exit": 0,
+    "unauthenticated_client_exit": 1,
+    "server_exit": 0,
+    "server_state": "stopped; temporary authentication files removed"
+  },
+  "results": {
+    "registered_total": 124,
+    "registrations_run": 124,
+    "result_counts": {
+      "OK": 120,
+      "TIMEOUT": 4
+    },
+    "tap_registrations": 64,
+    "non_tap_registrations": 60,
+    "tap_planned_cases": 1184,
+    "tap_ok": 1076,
+    "tap_passed_excluding_skips": 1075,
+    "tap_not_ok": 0,
+    "tap_skipped": 1,
+    "tap_todo": 0,
+    "tap_plan_mismatches": [
+      "gimp:app / gimp-filter-layer",
+      "gimp:app / painter-layer-ui",
+      "gimp:app / painter-xcf-roundtrip"
+    ],
+    "duration_sum_seconds": 2791.7485213279724,
+    "records": [
+      {
+        "name": "gimp:app / core",
+        "result": "OK",
+        "duration": 11.23309588432312,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          4
+        ],
+        "tap_ok": 4,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-type-startup",
+        "result": "OK",
+        "duration": 1.661207914352417,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          6
+        ],
+        "tap_ok": 6,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / file-load-pipeline",
+        "result": "OK",
+        "duration": 3.6096882820129395,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          6
+        ],
+        "tap_ok": 6,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-clone-layer",
+        "result": "OK",
+        "duration": 7.463193893432617,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          39
+        ],
+        "tap_ok": 39,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-filter-layer",
+        "result": "TIMEOUT",
+        "duration": 600.1475174427032,
+        "returncode": -15,
+        "registered_timeout": 600,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          147
+        ],
+        "tap_ok": 50,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": false
+      },
+      {
+        "name": "gimp:app / painter-layer-ui",
+        "result": "TIMEOUT",
+        "duration": 180.09786677360535,
+        "returncode": -15,
+        "registered_timeout": 180,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          63
+        ],
+        "tap_ok": 53,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": false
+      },
+      {
+        "name": "gimp:app / painter-canvas-ui",
+        "result": "OK",
+        "duration": 16.814191818237305,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          19
+        ],
+        "tap_ok": 19,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-compact-options",
+        "result": "OK",
+        "duration": 13.950950384140015,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          10
+        ],
+        "tap_ok": 10,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-painter-mybrush",
+        "result": "OK",
+        "duration": 4.65718412399292,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          4
+        ],
+        "tap_ok": 4,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-painter-mybrush-factory",
+        "result": "OK",
+        "duration": 6.368220090866089,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          2
+        ],
+        "tap_ok": 2,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimpidtable",
+        "result": "OK",
+        "duration": 0.11388587951660156,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          8
+        ],
+        "tap_ok": 8,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-tool-owner",
+        "result": "OK",
+        "duration": 3.7413225173950195,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          1
+        ],
+        "tap_ok": 1,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / xcf",
+        "result": "OK",
+        "duration": 4.772031545639038,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          4
+        ],
+        "tap_ok": 4,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-xcf-open",
+        "result": "OK",
+        "duration": 6.544822692871094,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          14
+        ],
+        "tap_ok": 14,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-xcf-adversarial",
+        "result": "OK",
+        "duration": 4.999627590179443,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          247
+        ],
+        "tap_ok": 247,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-xcf-roundtrip",
+        "result": "TIMEOUT",
+        "duration": 60.10316610336304,
+        "returncode": -15,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          49
+        ],
+        "tap_ok": 48,
+        "tap_not_ok": [],
+        "tap_skipped": 1,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": false
+      },
+      {
+        "name": "gimp:app / painter-provenance",
+        "result": "OK",
+        "duration": 0.09663558006286621,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          12
+        ],
+        "tap_ok": 12,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-layer-modes",
+        "result": "OK",
+        "duration": 7.203701496124268,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          2
+        ],
+        "tap_ok": 2,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-dynamics",
+        "result": "OK",
+        "duration": 0.28664350509643555,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          5
+        ],
+        "tap_ok": 5,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-navigation-ui",
+        "result": "OK",
+        "duration": 0.13175678253173828,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          4
+        ],
+        "tap_ok": 4,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-navigation-events",
+        "result": "OK",
+        "duration": 5.6745030879974365,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          4
+        ],
+        "tap_ok": 4,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / device-dialog-events",
+        "result": "OK",
+        "duration": 5.726848363876343,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          1
+        ],
+        "tap_ok": 1,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-perspective",
+        "result": "OK",
+        "duration": 3.2485148906707764,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          12
+        ],
+        "tap_ok": 12,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-perspective-ui",
+        "result": "OK",
+        "duration": 8.691463708877563,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          21
+        ],
+        "tap_ok": 21,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-perspective-events",
+        "result": "OK",
+        "duration": 7.542309999465942,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          9
+        ],
+        "tap_ok": 9,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-painter-context",
+        "result": "OK",
+        "duration": 3.065568208694458,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          4
+        ],
+        "tap_ok": 4,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-foundation",
+        "result": "OK",
+        "duration": 0.12359094619750977,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          70
+        ],
+        "tap_ok": 70,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-qdata-operations",
+        "result": "OK",
+        "duration": 0.05902600288391113,
+        "returncode": 0,
+        "registered_timeout": 30,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          6
+        ],
+        "tap_ok": 6,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-filter-wire",
+        "result": "OK",
+        "duration": 0.03368377685546875,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-filter-process",
+        "result": "OK",
+        "duration": 5.782984018325806,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-filter-scheduler",
+        "result": "OK",
+        "duration": 5.202183246612549,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          39
+        ],
+        "tap_ok": 39,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-filter-owner-gates",
+        "result": "OK",
+        "duration": 0.2400810718536377,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          5
+        ],
+        "tap_ok": 5,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-filter-edge",
+        "result": "OK",
+        "duration": 0.04689216613769531,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-filter-gauss",
+        "result": "OK",
+        "duration": 0.23628950119018555,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-filter-gray",
+        "result": "OK",
+        "duration": 0.054788827896118164,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-filter-gauss-alias",
+        "result": "OK",
+        "duration": 0.690814733505249,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-fair-dispatcher",
+        "result": "OK",
+        "duration": 0.0182034969329834,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          8
+        ],
+        "tap_ok": 8,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-work-admission",
+        "result": "OK",
+        "duration": 0.027463197708129883,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          13
+        ],
+        "tap_ok": 13,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-filter-raster",
+        "result": "OK",
+        "duration": 2.0718109607696533,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          7
+        ],
+        "tap_ok": 7,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-filter-spool",
+        "result": "OK",
+        "duration": 0.13148021697998047,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          11
+        ],
+        "tap_ok": 11,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-filter-raster-kernels",
+        "result": "OK",
+        "duration": 4.9571373462677,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-filter-native-kernels",
+        "result": "OK",
+        "duration": 0.05575680732727051,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          6
+        ],
+        "tap_ok": 6,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-filter-kernel-progress",
+        "result": "OK",
+        "duration": 0.253997802734375,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          3
+        ],
+        "tap_ok": 3,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-filter-context-native",
+        "result": "OK",
+        "duration": 0.01506352424621582,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-filter-context",
+        "result": "OK",
+        "duration": 0.5210442543029785,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-filter-import-completion",
+        "result": "OK",
+        "duration": 0.016093969345092773,
+        "returncode": 0,
+        "registered_timeout": 30,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-public-mode-abi",
+        "result": "OK",
+        "duration": 0.13724613189697266,
+        "returncode": 0,
+        "registered_timeout": 30,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-brush-metadata-c",
+        "result": "OK",
+        "duration": 0.034397125244140625,
+        "returncode": 0,
+        "registered_timeout": 30,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-brush-metadata-cpp",
+        "result": "OK",
+        "duration": 0.012542009353637695,
+        "returncode": 0,
+        "registered_timeout": 30,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-brush-generator",
+        "result": "OK",
+        "duration": 1.344449520111084,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-resource",
+        "result": "OK",
+        "duration": 0.4746217727661133,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          9
+        ],
+        "tap_ok": 9,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-decoder",
+        "result": "OK",
+        "duration": 0.25135016441345215,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-engine",
+        "result": "OK",
+        "duration": 0.4138035774230957,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-navigation",
+        "result": "OK",
+        "duration": 0.033660888671875,
+        "returncode": 0,
+        "registered_timeout": 30,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          6
+        ],
+        "tap_ok": 6,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-bounded-fill-legacy",
+        "result": "OK",
+        "duration": 0.9195432662963867,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-bounded-fill",
+        "result": "OK",
+        "duration": 0.1998002529144287,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          5
+        ],
+        "tap_ok": 5,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-surface",
+        "result": "OK",
+        "duration": 0.419649600982666,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-generated",
+        "result": "OK",
+        "duration": 0.09884786605834961,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-gray-alpha-equations",
+        "result": "OK",
+        "duration": 0.009789466857910156,
+        "returncode": 0,
+        "registered_timeout": 30,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-native-precision",
+        "result": "OK",
+        "duration": 0.5317051410675049,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          8
+        ],
+        "tap_ok": 8,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-smudge-legacy-pixels",
+        "result": "OK",
+        "duration": 0.12671589851379395,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-xcf-compat",
+        "result": "OK",
+        "duration": 0.03611040115356445,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-public-header-compilation",
+        "result": "OK",
+        "duration": 0.49548912048339844,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / app-config",
+        "result": "OK",
+        "duration": 0.11995601654052734,
+        "returncode": 0,
+        "registered_timeout": 30,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-filter-procedure",
+        "result": "TIMEOUT",
+        "duration": 900.0232565402985,
+        "returncode": -15,
+        "registered_timeout": 900,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-filter-convolution",
+        "result": "OK",
+        "duration": 183.29412007331848,
+        "returncode": 0,
+        "registered_timeout": 900,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:desktop / validate-desktop",
+        "result": "OK",
+        "duration": 0.02967691421508789,
+        "returncode": 0,
+        "registered_timeout": 30,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / save-and-export",
+        "result": "OK",
+        "duration": 17.659714460372925,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / in-build-gimp-wrapper",
+        "result": "OK",
+        "duration": 2.5002822875976562,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / script-fu-startup",
+        "result": "OK",
+        "duration": 106.31699538230896,
+        "returncode": 0,
+        "registered_timeout": 480,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / gimp-painter-surface",
+        "result": "OK",
+        "duration": 2.405977249145508,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          10
+        ],
+        "tap_ok": 10,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-session",
+        "result": "OK",
+        "duration": 6.886739015579224,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / gimp-painter-options",
+        "result": "OK",
+        "duration": 2.594658136367798,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          13
+        ],
+        "tap_ok": 13,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-painter-session",
+        "result": "OK",
+        "duration": 2.075251340866089,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          10
+        ],
+        "tap_ok": 10,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-painter-qdata-operations",
+        "result": "OK",
+        "duration": 2.778430461883545,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          2
+        ],
+        "tap_ok": 2,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-painter-hover",
+        "result": "OK",
+        "duration": 2.5963456630706787,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          7
+        ],
+        "tap_ok": 7,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-fill-brush",
+        "result": "OK",
+        "duration": 8.569630861282349,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          40
+        ],
+        "tap_ok": 40,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-fill-brush-legacy",
+        "result": "OK",
+        "duration": 3.6770918369293213,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-fill-brush-legacyqueued",
+        "result": "OK",
+        "duration": 3.8440351486206055,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-fill-brush-legacyasync",
+        "result": "OK",
+        "duration": 3.9226670265197754,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / painter-fill-brush-ui",
+        "result": "OK",
+        "duration": 15.955483436584473,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          32
+        ],
+        "tap_ok": 32,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-layer-presets",
+        "result": "OK",
+        "duration": 4.6288557052612305,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          11
+        ],
+        "tap_ok": 11,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / layer-presets-ui",
+        "result": "OK",
+        "duration": 20.94091486930847,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          4
+        ],
+        "tap_ok": 4,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-mypaint-tool",
+        "result": "OK",
+        "duration": 94.26318073272705,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          17
+        ],
+        "tap_ok": 17,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-native-interpolation",
+        "result": "OK",
+        "duration": 20.494243621826172,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / gimp-painter-preview",
+        "result": "OK",
+        "duration": 2.2517685890197754,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          5
+        ],
+        "tap_ok": 5,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-rgb-session",
+        "result": "OK",
+        "duration": 8.148183584213257,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-rgb-session-fixtures",
+        "result": "OK",
+        "duration": 0.4439685344696045,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-smudge-legacy-strokes",
+        "result": "OK",
+        "duration": 2.983875036239624,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / gimp-painter-smudge",
+        "result": "OK",
+        "duration": 2.4062538146972656,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          23
+        ],
+        "tap_ok": 23,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-smudge-owned-strokes",
+        "result": "OK",
+        "duration": 3.253718137741089,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / painter-mypaint-editor",
+        "result": "OK",
+        "duration": 27.436758518218994,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          13
+        ],
+        "tap_ok": 13,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-preview-fixture",
+        "result": "OK",
+        "duration": 0.2679173946380615,
+        "returncode": 0,
+        "registered_timeout": 30,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / painter-smudge-ui",
+        "result": "OK",
+        "duration": 12.68850827217102,
+        "returncode": 0,
+        "registered_timeout": 180,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          26
+        ],
+        "tap_ok": 26,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / painter-save-continuation",
+        "result": "OK",
+        "duration": 15.421127557754517,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          13
+        ],
+        "tap_ok": 13,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-painter-batch",
+        "result": "OK",
+        "duration": 3.8146605491638184,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          13
+        ],
+        "tap_ok": 13,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-gray-session",
+        "result": "OK",
+        "duration": 3.64837646484375,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-gray-session-fixtures",
+        "result": "OK",
+        "duration": 0.17888140678405762,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / gimp-painter-gray",
+        "result": "OK",
+        "duration": 2.910635232925415,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          4
+        ],
+        "tap_ok": 4,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:app / gimp-painter-gray-extension",
+        "result": "OK",
+        "duration": 7.9530909061431885,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          2
+        ],
+        "tap_ok": 2,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-profile-parser",
+        "result": "OK",
+        "duration": 0.055794715881347656,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          9
+        ],
+        "tap_ok": 9,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-profile-native",
+        "result": "OK",
+        "duration": 3.8610339164733887,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          9
+        ],
+        "tap_ok": 9,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-paper",
+        "result": "OK",
+        "duration": 2.8637630939483643,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          12
+        ],
+        "tap_ok": 12,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-paper-ui",
+        "result": "OK",
+        "duration": 6.2025673389434814,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          7
+        ],
+        "tap_ok": 7,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-legacy-paper",
+        "result": "OK",
+        "duration": 3.6241419315338135,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-legacy-paper-modes",
+        "result": "OK",
+        "duration": 11.373607873916626,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-pipe",
+        "result": "OK",
+        "duration": 4.368663787841797,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-brush-geometry",
+        "result": "OK",
+        "duration": 2.474827527999878,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          7
+        ],
+        "tap_ok": 7,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:painter / painter-brush-geometry-strokes",
+        "result": "OK",
+        "duration": 22.31654667854309,
+        "returncode": 0,
+        "registered_timeout": 180,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-brush-geometry-pixmap",
+        "result": "OK",
+        "duration": 5.540233135223389,
+        "returncode": 0,
+        "registered_timeout": 180,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:painter / painter-brush-geometry-fixtures",
+        "result": "OK",
+        "duration": 0.2109978199005127,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:app / painter-mypaint-precision",
+        "result": "OK",
+        "duration": 23.171627044677734,
+        "returncode": 0,
+        "registered_timeout": 180,
+        "registered_protocol": "exitcode",
+        "tap_plans": [
+          2
+        ],
+        "tap_ok": 2,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0,
+        "tap_plan_matches_observed": true
+      },
+      {
+        "name": "gimp:libgimp+python3 / color-parser",
+        "result": "OK",
+        "duration": 21.63084053993225,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+C / color-parser",
+        "result": "OK",
+        "duration": 15.69488263130188,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+python3 / export-options",
+        "result": "OK",
+        "duration": 15.766791582107544,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+C / export-options",
+        "result": "OK",
+        "duration": 19.16451072692871,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+python3 / image",
+        "result": "OK",
+        "duration": 15.633995532989502,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+C / image",
+        "result": "OK",
+        "duration": 18.001224756240845,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+python3 / palette",
+        "result": "OK",
+        "duration": 17.682481050491333,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+C / palette",
+        "result": "OK",
+        "duration": 22.24161124229431,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+python3 / selection-float",
+        "result": "OK",
+        "duration": 23.760013341903687,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+C / selection-float",
+        "result": "OK",
+        "duration": 14.332777261734009,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+python3 / unit",
+        "result": "OK",
+        "duration": 14.146066427230835,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      },
+      {
+        "name": "gimp:libgimp+C / unit",
+        "result": "OK",
+        "duration": 14.220263957977295,
+        "returncode": 0,
+        "registered_timeout": 90,
+        "registered_protocol": "exitcode",
+        "tap_plans": [],
+        "tap_ok": 0,
+        "tap_not_ok": [],
+        "tap_skipped": 0,
+        "tap_todo": 0
+      }
+    ],
+    "missing_planned_tap_cases": 108,
+    "non_tap_timed_out_registrations": [
+      "gimp:painter / painter-filter-procedure"
+    ],
+    "interpretation": "Completed aggregate has four actual TIMEOUT results and is not passing; no TAP assertion failure was observed. The single reported TAP skip is the pre-existing >256 MiB explicit slow case."
+  },
+  "acceptance": {
+    "wbs_08_012": "DOING",
+    "original_completed_tasks": 135,
+    "original_total_tasks": 661,
+    "known_unfixed_sanitizer_overflow": "app/core/gimpbrush-transform.cc:380; signed integer overflow 2304 * 1044480; not rerun in this task"
+  },
+  "limitations": [
+    "Normal unsanitized build only; known brush-transform sanitizer overflow remains unfixed",
+    "Installed-prefix smoke, persistent dconf, optional HTTP and platform/release acceptance are not established",
+    "Historical failed and focused test runs remain unchanged; this aggregate is a distinct execution",
+    "Non-TAP registrations are counted by their actual exit-code results, not assigned inferred case counts"
+  ],
+  "later_diagnostic": {
+    "scope": "One selected existing SmallTiles live-update case with process-tree resource sampling; not an aggregate retry",
+    "same_malloc_perturb": "231",
+    "baseline_tap_seconds": 35.47,
+    "single_cpu_tap_seconds": 38.37,
+    "aggregate_same_case_seconds": 30.89,
+    "both_exact_selected_case_passed": true,
+    "conclusion": "One-CPU affinity did not improve runtime; do not adopt a thread/affinity limit on this evidence",
+    "whole_tree_cpu_baseline": {
+      "user_seconds": 23.861458,
+      "system_seconds": 24.076622,
+      "wall_seconds": 43.72761195899966
+    },
+    "production_or_test_source_edits": false,
+    "timeouts_changed": false
+  },
+  "evidence_checkpoint": {
+    "storage": "Existing user Library checkpoint; no private download URL or public Git ZIP dependency",
+    "library_file_id": "libfile_639c334f86908191bac8a35639a2619b",
+    "filename": "standard-native-checkpoint-20261011-v9.zip",
+    "sha256": "5f6b96fc6dbf1e8eb539a22806355eca8b82800d2ab1500fc0334ba202907607",
+    "bytes": 5016371,
+    "expected_prior_version": 8,
+    "save_status": "Verified saved to the same Library identity as version 9; filename, byte count and SHA-256 match the locally verified archive",
+    "prior_entries_preserved": 583,
+    "entries": 916,
+    "evidence_root": "final-native-validation-20261011/",
+    "policy": "Full per-test stdout/stderr and process sampling retained; inherited environment dictionaries, private Xauthority contents and generated runtime profiles excluded",
+    "version": 9
+  },
+  "later_affected_validation": {
+    "report": "native-affected-budget-20261011.json",
+    "completed_registrations": 4,
+    "result": "4 OK, 0 TIMEOUT, 0 FAIL",
+    "original_aggregate_result_unchanged": true
+  }
+}

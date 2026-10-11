@@ -1,0 +1,662 @@
+# Verbatim canonical TAP lines grouped by original registration. Original aggregate: 120 OK, 4 TIMEOUT. Concatenated evidence, not one TAP stream.
+
+# Source: 025-gimp-app-painter-perspective-events.stdout.log
+TAP version 14
+1..9
+ok 1 /perspective-events/short_threshold_release
+ok 2 /perspective-events/no_guide_clicks_and_toggle
+ok 3 /perspective-events/cancel_and_tool_switch
+ok 4 /perspective-events/guide_and_image_switch
+ok 5 /perspective-events/history_origin_and_full_tracking
+ok 6 /perspective-events/replacement_during_delivery
+ok 7 /perspective-events/prior_hover_does_not_bend_stroke
+ok 8 /perspective-events/editing_tool_bypass
+ok 9 /perspective-events/three_point_transforms
+
+# Source: 026-gimp-app-gimp-painter-context.stdout.log
+TAP version 14
+1..4
+ok 1 /painter-context/property-parent
+ok 2 /painter-context/legacy-key-missing-name
+ok 3 /painter-context/finalizer-drops-owner
+ok 4 /painter-context/nested-selection
+
+# Source: 027-gimp-painter-painter-foundation.stdout.log
+TAP version 14
+1..70
+ok 1 /painter/interop/c-cpp-c-value
+ok 2 /painter/interop/cpp-error-to-c
+ok 3 /painter/interop/cpp-error-without-gerror
+ok 4 /painter/interop/result-boundary-policy
+ok 5 /painter/interop/void-boundary-policy
+ok 6 /painter/interop/construction-failure
+ok 7 /painter/resources/value-assignment
+ok 8 /painter/resources/value-owned-borrow-copy
+ok 9 /painter/resources/array-assignment
+ok 10 /painter/resources/array-owned-ref-release
+ok 11 /painter/resources/glib-string-owner
+ok 12 /painter/resources/error-message-transfer
+ok 13 /painter/resources/mutex-exception
+ok 14 /painter/signal/lifetime-blocks
+ok 15 /painter/signal/owned-lifetime
+ok 16 /painter/signal/after-order
+ok 17 /painter/signal/block-phase-order
+ok 18 /painter/signal/reentrant-disconnect
+ok 19 /painter/signal/close-receiver-lifetime
+ok 20 /painter/source/cancel-repeat
+ok 21 /painter/source/owned-lifetime
+ok 22 /painter/source/self-close
+ok 23 /painter/source/exception
+ok 24 /painter/source/queued-callback-invalidation
+ok 25 /painter/gobject/property-dispose-finalize
+ok 26 /painter/gobject/construction-property-callbacks
+ok 27 /painter/gobject/type-rejection
+ok 28 /painter/gobject/property-types-defaults-notify
+ok 29 /painter/gobject/property-notify-reentry
+ok 30 /painter/reentry/ref-move
+ok 31 /painter/reentry/value-reset-move
+ok 32 /painter/reentry/array-move
+ok 33 /painter/reentry/source-move
+ok 34 /painter/reentry/connection-move
+ok 35 /painter/reentry/receiver-deletion
+ok 36 /painter/reentry/constructor-close
+ok 37 /painter/reentry/constructor-duplicate
+ok 38 /painter/reentry/constructor-owner-loss
+ok 39 /painter/reentry/finalizing-close-read
+ok 40 /painter/hierarchy/properties-interface
+ok 41 /painter/hierarchy/interface-exception
+ok 42 /painter/hierarchy/interface-exception-policy
+ok 43 /painter/hierarchy/slot-identity
+ok 44 /painter/hierarchy/base-missing-derived
+ok 45 /painter/hierarchy/native-property-owner-dispatch
+ok 46 /painter/hierarchy/inherited-property-delegation
+ok 47 /painter/hierarchy/parent-dispose-reentry
+ok 48 /painter/hierarchy/shutdown-paths
+ok 49 /painter/hierarchy/type-ancestry
+ok 50 /painter/ref/copy-move-adopt-retain
+ok 51 /painter/ref/retain-factory
+ok 52 /painter/ref/adopt-factory
+ok 53 /painter/ref/sink-factory
+ok 54 /painter/ref/copy-move-contract
+ok 55 /painter/ref/floating-sink
+ok 56 /painter/ref/weak
+ok 57 /painter/store/lifecycle
+ok 58 /painter/store/registration
+ok 59 /painter/store/multiple-slots
+ok 60 /painter/store/slot-registration
+ok 61 /painter/store/slot-lookup
+ok 62 /painter/store/implementation-ownership
+ok 63 /painter/store/close-transitions
+ok 64 /painter/store/reentrant-close
+ok 65 /painter/store/call-leases
+ok 66 /painter/store/construction-failure
+ok 67 /painter/store/acquired-construction-failure
+ok 68 /painter/store/thread-rejection
+ok 69 /painter/boundary/c-close
+ok 70 /painter/boundary/exception
+
+# Source: 028-gimp-painter-painter-qdata-operations.stdout.log
+TAP version 14
+1..6
+ok 1 /qdata/scoped-regions
+ok 2 /qdata/nested-operation
+ok 3 /qdata/owner-lease
+ok 4 /qdata/close-generation
+ok 5 /qdata/counter-sensitivity
+ok 6 /qdata/wrong-thread
+
+# Source: 031-gimp-painter-painter-filter-scheduler.stdout.log
+TAP version 14
+1..39
+ok 1 /painter-filter-scheduler/independent_state_after_owner_destruction
+ok 2 /painter-filter-scheduler/recursive_step_does_not_consume_another_chunk
+ok 3 /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry
+ok 4 /painter-filter-scheduler/spool_reentrant_read_cancellation
+ok 5 /painter-filter-scheduler/spool_cancel_request_is_not_completion
+ok 6 /painter-filter-scheduler/spool_change_during_import
+ok 7 /painter-filter-scheduler/spool_read_failure_cancels_unsealed_worker
+ok 8 /painter-filter-scheduler/spool_result_failure_never_commits
+ok 9 /painter-filter-scheduler/spool_large_metadata_is_bounded_preparation
+ok 10 /painter-filter-scheduler/spool_close_during_import_keeps_callback_bytes
+ok 11 /painter-filter-scheduler/vector_close_during_import_keeps_callback_bytes
+ok 12 /painter-filter-scheduler/admission_waits_without_reading_and_resumes_fifo
+ok 13 /painter-filter-scheduler/admission_cancel_retains_worker_reservation
+ok 14 /painter-filter-scheduler/admission_edit_and_dependency_wait_release_preparation
+ok 15 /painter-filter-scheduler/admission_failure_and_loaded_cache_release
+ok 16 /painter-filter-scheduler/saved_generation_boundaries
+ok 17 /painter-filter-scheduler/commit_failure_does_not_certify_cache
+ok 18 /painter-filter-scheduler/obsolete_read_failure_preserves_new_edit
+ok 19 /painter-filter-scheduler/saved_cache_generations
+ok 20 /painter-filter-scheduler/restored_cache_rejects_colliding_old_job
+ok 21 /painter-filter-scheduler/rejected_worker_is_not_settled_until_done
+ok 22 /painter-filter-scheduler/reject_during_read
+ok 23 /painter-filter-scheduler/reject_during_import
+ok 24 /painter-filter-scheduler/closed_request_is_inert
+ok 25 /painter-filter-scheduler/adjustable_chunk_budget
+ok 26 /painter-filter-scheduler/completed_cache
+ok 27 /painter-filter-scheduler/bounded_chunks
+ok 28 /painter-filter-scheduler/dependency_priority
+ok 29 /painter-filter-scheduler/cancel_request_is_not_completion
+ok 30 /painter-filter-scheduler/changes_during_preparation
+ok 31 /painter-filter-scheduler/changes_during_import
+ok 32 /painter-filter-scheduler/failures_do_not_retry
+ok 33 /painter-filter-scheduler/close_does_not_wait
+ok 34 /painter-filter-scheduler/loaded_cache_not_reexecuted
+ok 35 /painter-filter-scheduler/invalid_request_and_result
+ok 36 /painter-filter-scheduler/reentry_at_commit
+ok 37 /painter-filter-scheduler/admission_switch_keeps_restored_cache
+ok 38 /painter-filter-scheduler/native_stride_vector_and_spool
+ok 39 /painter-filter-scheduler/invalid_stride_never_reads
+
+# Source: 032-gimp-painter-painter-filter-owner-gates.stdout.log
+TAP version 14
+1..5
+ok 1 /owner-gates/bounded
+ok 2 /owner-gates/invalidation-reentry
+ok 3 /owner-gates/close-and-failure
+ok 4 /owner-gates/blocked-exporter-and-admission
+ok 5 /owner-gates/stable-capture-and-plain-context
+
+# Source: 037-gimp-painter-painter-fair-dispatcher.stdout.log
+TAP version 14
+1..8
+ok 1 /painter-fair-dispatcher/capture_destruction_can_replace_ticket
+ok 2 /painter-fair-dispatcher/cancel_then_schedule_replaces_source
+ok 3 /painter-fair-dispatcher/input_preempts_next_quantum
+ok 4 /painter-fair-dispatcher/fifo_one_quantum
+ok 5 /painter-fair-dispatcher/cancel_during_callback
+ok 6 /painter-fair-dispatcher/schedule_during_callback
+ok 7 /painter-fair-dispatcher/dispatcher_close_invalidates_tickets
+ok 8 /painter-fair-dispatcher/exception_does_not_stall_others
+
+# Source: 038-gimp-painter-painter-work-admission.stdout.log
+TAP version 14
+1..13
+ok 1 /work-admission/fifo_and_jobs
+ok 2 /work-admission/byte_limit_and_no_overtaking
+ok 3 /work-admission/cancelled_requests
+ok 4 /work-admission/repeated_edits_do_not_accumulate_queue_nodes
+ok 5 /work-admission/releases_on_worker
+ok 6 /work-admission/owner_can_close_without_waiting
+ok 7 /work-admission/moves_release_exactly_once
+ok 8 /work-admission/invalid_limits_and_requests
+ok 9 /work-admission/wrong_thread_is_rejected
+ok 10 /work-admission/spill_limits_and_fifo
+ok 11 /work-admission/lowered_limits_preserve_live_leases
+ok 12 /work-admission/spill_uint64_accounting
+ok 13 /work-admission/close_keeps_only_existing_reservations
+
+# Source: 039-gimp-painter-painter-filter-raster.stdout.log
+TAP version 14
+1..7
+ok 1 /filter-raster/available_capacity_is_advisory
+ok 2 /filter-raster/native_bytes_and_cleanup
+ok 3 /filter-raster/large_sparse_offset
+ok 4 /filter-raster/invalid_access_and_unwritten_read
+ok 5 /filter-raster/worker_affinity
+ok 6 /filter-raster/tiled_transpose_and_roundtrip
+ok 7 /filter-raster/cancelled_or_failed_output_stays_private
+
+# Source: 040-gimp-painter-painter-filter-spool.stdout.log
+TAP version 14
+1..11
+ok 1 /filter-spool/admitted_extent_quota_and_scratch_reuse
+ok 2 /filter-spool/filesystem_capacity_refusal_releases_lease
+ok 3 /filter-spool/roundtrip_and_output_geometry
+ok 4 /filter-spool/missing_directory_fails_without_start
+ok 5 /filter-spool/cancellation_while_collecting
+ok 6 /filter-spool/cancellation_while_output_is_full
+ok 7 /filter-spool/close_keeps_worker_lease_until_completion
+ok 8 /filter-spool/result_read_failure_never_certifies_partial_output
+ok 9 /filter-spool/owner_api_thread_guards
+ok 10 /filter-spool/processing_exception_is_reported
+ok 11 /filter-spool/invalid_input_is_transactional
+
+# Source: 042-gimp-painter-painter-filter-native-kernels.stdout.log
+TAP version 14
+1..6
+ok 1 /filter-native/genuine_point_corpus
+ok 2 /filter-native/real_point_equations
+ok 3 /filter-native/real_edge_ramp_and_hidden
+ok 4 /filter-native/real_gauss_constant_and_impulse
+ok 5 /filter-native/native_rejection_and_cancel
+ok 6 /filter-native/native_transpose
+
+# Source: 043-gimp-painter-painter-filter-kernel-progress.stdout.log
+TAP version 14
+1..3
+ok 1 /filter-kernel-progress/raster
+ok 2 /filter-kernel-progress/cancellation
+ok 3 /filter-kernel-progress/vector
+
+# Source: 051-gimp-painter-painter-mypaint-resource.stdout.log
+TAP version 14
+1..9
+ok 1 /painter/myb/corpus
+ok 2 /painter/myb/defaults
+ok 3 /painter/myb/unknown
+ok 4 /painter/myb/legacy-curves
+ok 5 /painter/myb/legacy-unknown-input
+ok 6 /painter/myb/static-lookup-recreation
+ok 7 /painter/myb/mapping
+ok 8 /painter/myb/stream
+ok 9 /painter/myb/malformed
+
+# Source: 054-gimp-painter-painter-navigation.stdout.log
+TAP version 14
+1..6
+ok 1 /navigation/golden-rotation
+ok 2 /navigation/golden-zoom
+ok 3 /navigation/modifier-bits
+ok 4 /navigation/midpoint-toggle
+ok 5 /navigation/mirrored-keys
+ok 6 /navigation/custom-rotation
+
+# Source: 056-gimp-painter-painter-bounded-fill.stdout.log
+TAP version 14
+1..5
+ok 1 /fill/barriers
+ok 2 /fill/immutable
+ok 3 /fill/connectivity-grow
+ok 4 /fill/cancellation
+ok 5 /fill/validation
+
+# Source: 060-gimp-painter-painter-mypaint-native-precision.stdout.log
+TAP version 14
+1..8
+ok 1 /precision/72-formats
+ok 2 /precision/quantization-native-lsb
+ok 3 /precision/half-boundaries
+ok 4 /precision/alpha-hdr-selection-nonincremental
+ok 5 /precision/finite-hidden
+ok 6 /precision/background-exception-safety
+ok 7 /precision/shape-paper-sampling
+ok 8 /precision/profile-trc
+
+# Source: 071-gimp-app-gimp-painter-surface.stdout.log
+TAP version 14
+1..10
+ok 1 /painter-surface/session-undo-cancel
+ok 2 /painter-surface/rgb-cancel-undo
+ok 3 /painter-surface/stationary-selection
+ok 4 /painter-surface/resource-lifetime-missing
+ok 5 /painter-surface/paper-invalidation
+ok 6 /painter-surface/rejected-snapshot-format
+ok 7 /painter-surface/transparent-lock-representable-masks
+ok 8 /painter-surface/starting-reentry-deferred-cancel
+ok 9 /painter-surface/image-lifetime-native-callbacks
+ok 10 /painter-surface/drawable-removal-native-callbacks
+
+# Source: 073-gimp-app-gimp-painter-options.stdout.log
+TAP version 14
+1..13
+ok 1 /painter-options/generated-properties
+ok 2 /painter-options/all-native-properties-config
+ok 3 /painter-options/legacy-brush-mode-config
+ok 4 /painter-options/edit-curve-commit-conflict
+ok 5 /painter-options/history-config
+ok 6 /painter-options/native-config-reset-defaults
+ok 7 /painter-options/notification-last-ref
+ok 8 /painter-options/closed-invalid-curve
+ok 9 /painter-options/named-resources
+ok 10 /painter-options/selection-reentry
+ok 11 /painter-options/commit-close
+ok 12 /painter-options/cross-options-history
+ok 13 /painter-options/application-history-close
+
+# Source: 074-gimp-app-gimp-painter-session.stdout.log
+TAP version 14
+1..10
+ok 1 /painter-session/controller-pixels
+ok 2 /painter-session/registered-native-paint-core
+ok 3 /painter-session/options-first-stroke-ownership
+ok 4 /painter-session/settings-split-block
+ok 5 /painter-session/close-start
+ok 6 /painter-session/settings-during-motion
+ok 7 /painter-session/closed-options-cancel
+ok 8 /painter-session/notification-last-ref
+ok 9 /painter-session/deferred-sample-stop
+ok 10 /painter-session/cancel-native-start
+
+# Source: 075-gimp-app-gimp-painter-qdata-operations.stdout.log
+TAP version 14
+1..2
+ok 1 /qdata/native-session
+ok 2 /qdata/native-surface
+
+# Source: 076-gimp-app-gimp-painter-hover.stdout.log
+TAP version 14
+1..7
+ok 1 /painter-hover/cold-no-writes
+ok 2 /painter-hover/logical-idle-split
+ok 3 /painter-hover/release-image
+ok 4 /painter-hover/closed
+ok 5 /painter-hover/positive-pressure-release-tail
+ok 6 /painter-hover/resource-reentry
+ok 7 /painter-hover/resource-selector-pressure
+
+# Source: 077-gimp-app-gimp-fill-brush.stdout.log
+TAP version 14
+1..40
+ok 1 /fill-core/registered-type-parent-contract
+ok 2 /fill-core/parent-start-failure-retry
+ok 3 /fill-core/standalone-parent-lifetime
+ok 4 /fill-core/parent-start-notification-lifetime
+ok 5 /fill-core/generic-start-gate
+ok 6 /fill-core/resumable-long-event
+ok 7 /fill-core/wide-native-interpolation
+ok 8 /fill-core/normal-reuse
+ok 9 /fill-core/cancel-before-after
+ok 10 /fill-core/dispose-rollback
+ok 11 /fill-core/starting-cancel
+ok 12 /fill-core/publication-cancel
+ok 13 /fill-core/caller-core-loss
+ok 14 /fill-core/caller-image-loss
+ok 15 /fill-core/detached-target
+ok 16 /fill-core/invalid-coordinates
+ok 17 /fill-core/stale-external-pixels
+ok 18 /fill-core/stale-geometry-format-lock
+ok 19 /fill-core/pending-query-lifetime
+ok 20 /fill-core-async/normal-reuse
+ok 21 /fill-core-async/cancel-before-after
+ok 22 /fill-core-async/dispose-rollback
+ok 23 /fill-core-async/publication-cancel
+ok 24 /fill-core-async/caller-core-loss
+ok 25 /fill-core-async/caller-image-loss
+ok 26 /fill-core-async/detached-target
+ok 27 /fill-core-async/invalid-coordinates
+ok 28 /fill-core-async/stale-external-pixels
+ok 29 /fill-core-async/stale-geometry-format-lock
+ok 30 /fill-core-async/pending-query-lifetime
+ok 31 /owned-generic/first-failure
+ok 32 /owned-generic/finish-boundary
+ok 33 /owned-generic/raw-undo
+ok 34 /owned-generic/path-boundary
+ok 35 /owned-generic/no-undo-noop
+ok 36 /owned-generic/active-rejected
+ok 37 /owned-generic/reentry-abort-loss
+ok 38 /owned-generic/later-failure-history
+ok 39 /owned-generic/invalid-axes
+ok 40 /owned-generic/after-commit-notification
+
+# Source: 081-gimp-app-painter-fill-brush-ui.stdout.log
+TAP version 14
+1..32
+ok 1 /fill-ui/long-event-yields
+ok 2 /fill-ui/registered-manager-defaults
+ok 3 /fill-ui/options-persistence
+ok 4 /fill-ui/options-widget-binding
+ok 5 /fill-ui/registration-options
+ok 6 /fill-ui/foreground-picker
+ok 7 /fill-ui/queued-settings-undo
+ok 8 /fill-ui/repeated-press
+ok 9 /fill-ui/cancel-before-after
+ok 10 /fill-ui/external-dirty
+ok 11 /fill-ui/display-image-change
+ok 12 /fill-ui/dispose-queued
+ok 13 /fill-ui/dispose-during-start
+ok 14 /fill-ui/cancel-reentrant-stroke
+ok 15 /fill-ui/last-owner-release
+ok 16 /fill-ui/oper-update-owner-loss
+ok 17 /fill-ui/disposed-oper-update
+ok 18 /fill-ui/oper-update-dispose
+ok 19 /fill-ui/rollback-reentrant-input
+ok 20 /fill-ui/save-commit-pending
+ok 21 /fill-ui/undo-pending
+ok 22 /fill-ui/outline-projection
+ok 23 /fill-ui/save-export-preflight
+ok 24 /fill-ui/save-signal-reentry
+ok 25 /fill-ui/xcf-progress-reentry
+ok 26 /fill-ui/target-mutation
+ok 27 /fill-ui/external-write-preserved
+ok 28 /fill-ui/save-reentrant-close
+ok 29 /fill-ui/invalid-coordinates
+ok 30 /fill-ui/direct-export-preflight
+ok 31 /fill-ui/latency-sample
+ok 32 /fill-ui/latency-large-queue
+
+# Source: 082-gimp-app-gimp-layer-presets.stdout.log
+TAP version 14
+1..11
+ok 1 /layer-presets/malformed_resource_loads
+ok 2 /layer-presets/unknown_filter_stays_inert
+ok 3 /layer-presets/all_bundled_construction
+ok 4 /layer-presets/resource_roundtrip
+ok 5 /layer-presets/reject_without_history_loss
+ok 6 /layer-presets/rollback_after_insert
+ok 7 /layer-presets/callback_rename_keeps_undo_name
+ok 8 /layer-presets/preflight_rejects_changed_target
+ok 9 /layer-presets/ordered_source_edits
+ok 10 /layer-presets/factory_paths
+ok 11 /layer-presets/save_reopen_editable
+
+# Source: 083-gimp-app-layer-presets-ui.stdout.log
+TAP version 14
+1..4
+ok 1 /layer-presets-ui/selection-actions-lifetime
+ok 2 /layer-presets-ui/preferences-registration
+ok 3 /layer-presets-ui/filter-storage-preferences
+ok 4 /layer-presets-ui/filter-storage-reentrant-close
+
+# Source: 084-gimp-app-painter-mypaint-tool.stdout.log
+TAP version 14
+1..17
+ok 1 /painter-tool/registration-gate
+ok 2 /painter-tool/standalone-lifecycle
+ok 3 /painter-tool/hover-default-pressure
+ok 4 /painter-tool/stationary-equal-time-undo
+ok 5 /painter-tool/cancel
+ok 6 /painter-tool/editor-context
+ok 7 /painter-tool/ruler-origin
+ok 8 /painter-tool/halt-last-ref-motion
+ok 9 /painter-tool/image-change
+ok 10 /painter-tool/save-pending
+ok 11 /painter-tool/save-preflight
+ok 12 /painter-tool/outline-projection
+ok 13 /painter-tool/public-press-last-ref
+ok 14 /painter-tool/last-ref-without-halt
+ok 15 /painter-tool/gray-native-save-roundtrip
+ok 16 /painter-tool/pipe-release-save-roundtrip
+ok 17 /painter-tool/precision-native-save-roundtrip
+
+# Source: 086-gimp-app-gimp-painter-preview.stdout.log
+TAP version 14
+1..5
+ok 1 /painter-preview/pipe-modes-private
+ok 2 /painter-preview/snapshot-child-paper
+ok 3 /painter-preview/stroke-native
+ok 4 /painter-preview/clipboard-brush-snapshot
+ok 5 /painter-preview/reject-unisolated-invalid
+
+# Source: 090-gimp-app-gimp-painter-smudge.stdout.log
+TAP version 14
+1..23
+ok 1 /painter/smudge/reuse-undo
+ok 2 /painter/smudge/cancel
+ok 3 /painter/smudge/dispose
+ok 4 /painter/smudge/start-cancel
+ok 5 /painter/smudge/publication-cancel
+ok 6 /painter/smudge/core-loss
+ok 7 /painter/smudge/image-loss
+ok 8 /painter/smudge/invalid-axes
+ok 9 /painter/smudge/external-edit
+ok 10 /painter/smudge/invalid-vfunc
+ok 11 /painter/smudge/paused-segment
+ok 12 /painter/smudge/nested-native-start
+ok 13 /painter/smudge/unowned-start-refused
+ok 14 /owned-generic/first-failure
+ok 15 /owned-generic/finish-boundary
+ok 16 /owned-generic/raw-undo
+ok 17 /owned-generic/path-boundary
+ok 18 /owned-generic/no-undo-noop
+ok 19 /owned-generic/active-rejected
+ok 20 /owned-generic/reentry-abort-loss
+ok 21 /owned-generic/later-failure-history
+ok 22 /owned-generic/invalid-axes
+ok 23 /owned-generic/after-commit-notification
+
+# Source: 092-gimp-app-painter-mypaint-editor.stdout.log
+TAP version 14
+1..13
+ok 1 /painter-editor/01-constructors-shared
+ok 2 /painter-editor/02-all-controls-curves
+ok 3 /painter-editor/03-list-search-history
+ok 4 /painter-editor/04-save-conflict-default-path
+ok 5 /painter-editor/05-preview-extended
+ok 6 /painter-editor/06-replace-close
+ok 7 /painter-editor/07-registration
+ok 8 /painter-editor/08-legacy-preview-oracle
+ok 9 /painter-editor/09-close-during-refresh
+ok 10 /painter-editor/13-owner-destruction-orders
+ok 11 /painter-editor/10-graph-gestures
+ok 12 /painter-editor/11-resource-notifications
+ok 13 /painter-editor/12-delete-failure
+
+# Source: 094-gimp-app-painter-smudge-ui.stdout.log
+TAP version 14
+1..26
+ok 1 /smudge-ui/long-event-yields
+ok 2 /smudge-ui/registration-options
+ok 3 /smudge-ui/foreground-picker
+ok 4 /smudge-ui/queued-settings-undo
+ok 5 /smudge-ui/repeated-press
+ok 6 /smudge-ui/cancel-before-after
+ok 7 /smudge-ui/external-dirty
+ok 8 /smudge-ui/display-image-change
+ok 9 /smudge-ui/dispose-queued
+ok 10 /smudge-ui/dispose-during-start
+ok 11 /smudge-ui/cancel-reentrant-stroke
+ok 12 /smudge-ui/last-owner-release
+ok 13 /smudge-ui/rollback-reentrant-input
+ok 14 /smudge-ui/save-commit-pending
+ok 15 /smudge-ui/undo-pending
+ok 16 /smudge-ui/outline-projection
+ok 17 /smudge-ui/save-export-preflight
+ok 18 /smudge-ui/save-signal-reentry
+ok 19 /smudge-ui/xcf-progress-reentry
+ok 20 /smudge-ui/target-mutation
+ok 21 /smudge-ui/external-write-preserved
+ok 22 /smudge-ui/save-reentrant-close
+ok 23 /smudge-ui/invalid-coordinates
+ok 24 /smudge-ui/direct-export-preflight
+ok 25 /smudge-ui/latency-sample
+ok 26 /smudge-ui/latency-large-queue
+
+# Source: 095-gimp-app-painter-save-continuation.stdout.log
+TAP version 14
+1..13
+ok 1 /save-continuation/query-replaces-file
+ok 2 /save-continuation/dialog-close-before-admission
+ok 3 /save-continuation/nested-commit
+ok 4 /save-continuation/save-and-close
+ok 5 /save-continuation/late-writer-reentry
+ok 6 /save-continuation/dialog-response
+ok 7 /save-continuation/active-tool-commit
+ok 8 /save-continuation/save-export-pixels
+ok 9 /save-continuation/owner-destroy
+ok 10 /save-continuation/display-change
+ok 11 /save-continuation/query-owner-loss
+ok 12 /save-continuation/saving-reentry
+ok 13 /save-continuation/clean-save-action
+
+# Source: 096-gimp-app-gimp-painter-batch.stdout.log
+TAP version 14
+1..13
+ok 1 /painter-batch/one-transaction-segments
+ok 2 /painter-batch/error-preserves-history
+ok 3 /painter-batch/no-undo-noop-lock
+ok 4 /painter-batch/cancel-cannot-commit
+ok 5 /painter-batch/settings-abort
+ok 6 /painter-batch/raw-stroke
+ok 7 /painter-batch/raw-path-boundary
+ok 8 /painter-batch/raw-later-path-failure
+ok 9 /painter-batch/raw-reentry-dispose
+ok 10 /painter-batch/raw-no-undo-empty
+ok 11 /painter-batch/invalid-before-native-start
+ok 12 /painter-batch/path-options-last-owner
+ok 13 /painter-batch/native-start-coordinates
+
+# Source: 099-gimp-app-gimp-painter-gray.stdout.log
+TAP version 14
+1..4
+ok 1 /painter-gray/native-undo-cancel
+ok 2 /painter-gray/red-component-sampling
+ok 3 /painter-gray/precision-policy
+ok 4 /painter-gray/defined-nonincremental
+
+# Source: 100-gimp-app-gimp-painter-gray-extension.stdout.log
+TAP version 14
+1..2
+ok 1 /painter-gray-extension/paired-native-sessions
+ok 2 /painter-gray-extension/transparent-defined
+
+# Source: 101-gimp-painter-painter-profile-parser.stdout.log
+TAP version 14
+1..9
+ok 1 /painter-profile/structured-mapping
+ok 2 /painter-profile/toolrc-modes
+ok 3 /painter-profile/malformed
+ok 4 /painter-profile/origin-conflicts
+ok 5 /painter-profile/device-schema-paths
+ok 6 /painter-profile/symlink-nested-rejection
+ok 7 /painter-profile/options-only-origin
+ok 8 /painter-profile/blend-filename-options
+ok 9 /painter-profile/canvas-behavior-default
+
+# Source: 102-gimp-painter-painter-profile-native.stdout.log
+TAP version 14
+1..9
+ok 1 /painter-profile-native/tool-order-roundtrip
+ok 2 /painter-profile-native/mypaint-preset-roundtrip
+ok 3 /painter-profile-native/smudge-context-roundtrip
+ok 4 /painter-profile-native/genuine-old-writer
+ok 5 /painter-profile-native/genuine-device-context
+ok 6 /painter-profile-native/independent-defaults
+ok 7 /painter-profile-native/first-run-installer-retry
+ok 8 /painter-profile-native/native-brush-defaults
+ok 9 /painter-profile-native/expanded-last-owner
+
+# Source: 103-gimp-painter-painter-paper.stdout.log
+TAP version 14
+1..12
+ok 1 /painter/paper/old-native-masks
+ok 2 /painter/paper/old-transformed-mask-kernel
+ok 3 /painter/paper/all-byte-products
+ok 4 /painter/paper/float-mask
+ok 5 /painter/paper/negative-y-extension
+ok 6 /painter/paper/invalid-domain
+ok 7 /painter/paper/lifetime-dirty
+ok 8 /painter/paper/texture-signal-lease
+ok 9 /painter/paper/failed-paste-no-fallback
+ok 10 /painter/paper/options-roundtrip
+ok 11 /painter/paper/native-float-undo
+ok 12 /painter/paper/clipboard-preview-snapshot
+
+# Source: 104-gimp-painter-painter-paper-ui.stdout.log
+TAP version 14
+1..7
+ok 1 /paper-ui/three-options-controls
+ok 2 /paper-ui/smudge-pattern-snapshot
+ok 3 /paper-ui/fill-pattern-snapshot
+ok 4 /paper-ui/smudge-cancel-reuse
+ok 5 /paper-ui/fill-cancel-reuse
+ok 6 /paper-ui/smudge-clipboard-snapshot
+ok 7 /paper-ui/fill-clipboard-snapshot
+
+# Source: 108-gimp-painter-painter-brush-geometry.stdout.log
+TAP version 14
+1..7
+ok 1 /painter/geometry/old-masks
+ok 2 /painter/geometry/options
+ok 3 /painter/geometry/defaults
+ok 4 /painter/geometry/provenance
+ok 5 /painter/geometry/cache
+ok 6 /painter/geometry/invalid
+ok 7 /painter/geometry/default-dynamics
+
+# Source: 112-gimp-app-painter-mypaint-precision.stdout.log
+TAP version 14
+1..2
+ok 1 /painter-precision/native-144-matrix
+ok 2 /painter-precision/profile-change-after-hover
+

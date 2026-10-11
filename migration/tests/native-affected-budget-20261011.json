@@ -1,0 +1,383 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-11",
+  "scope": "Calibrated affected-only normal validation after preserved original aggregate timeouts; not a new all-124 aggregate",
+  "source_commit": "fca9fa6ed21e76a027d0edcf2c6684f9b38ad4b9",
+  "source_tree": "7ee4eac82c8280c46cc3f79ac4d64c0cc589a1a6",
+  "tracked_source_changes": [],
+  "build_options": {
+    "buildtype": "debugoptimized",
+    "headless-tests": "disabled",
+    "painter-http": "disabled",
+    "b_sanitize": "none"
+  },
+  "original_aggregate": {
+    "evidence": "native-full-aggregate-20261011.json",
+    "registered_total": 124,
+    "OK": 120,
+    "TIMEOUT": 4,
+    "FAIL": 0,
+    "registration_SKIP": 0,
+    "remains_failed": true
+  },
+  "calibration": {
+    "filter_layer_matched_slow_case_median_ratio": 3.707055214723927,
+    "layer_ui_matched_slow_case_median_ratio": 3.382352941176471,
+    "xcf_matched_slow_case_median_ratio": 1.9808163265306122,
+    "private_worker_thread_limit_already_present": true,
+    "single_cpu_diagnostic_did_not_improve_runtime": true,
+    "registered_timeouts_unchanged": true,
+    "product_time_constraints_unchanged": true,
+    "assertions_and_full_case_sets_unchanged": true,
+    "malloc_perturb_matches_original_per_test": true,
+    "server_lifetime_limit_each_seconds": 3600,
+    "grouping": "Phase A three ordinary single-registration invocations; Phase B one FilterProcedure invocation; never an unchanged all-124 retry",
+    "interpretation": "Per-run execution budgets accommodate observed execution time in this environment. No single host cause, runtime defect or runtime-performance fix is proven.",
+    "measured_full_registration_ratios_to_prior": {
+      "gimp:app / gimp-filter-layer": 3.2536749763248825,
+      "gimp:app / painter-layer-ui": 3.4525412569959126,
+      "gimp:app / painter-xcf-roundtrip": 2.6786392503305843,
+      "gimp:painter / painter-filter-procedure": 3.820193934838893
+    },
+    "documented_cli_semantics": "Meson --timeout-multiplier multiplies each selected registration timeout for this invocation only. Registered budgets remain 600, 180, 60 and 900 seconds.",
+    "matched_completed_registration_sample_median_ratio": 3.09,
+    "matched_completed_registration_sample_count": 27,
+    "only_timeout_policy_change": "Documented Meson per-run --timeout-multiplier: FilterLayer3, LayerUI3, XCF4, FilterProcedure3",
+    "other_recorded_execution_differences": [
+      "Four separate single-registration invocations rather than one unfiltered aggregate",
+      "Fresh private profile per target",
+      "Verbose test output",
+      "One-second process-tree resource sampling"
+    ]
+  },
+  "results": {
+    "affected_registrations": 4,
+    "completed": 4,
+    "pending": 0,
+    "result_counts": {
+      "OK": 4
+    },
+    "records": [
+      {
+        "phase": "phase-a",
+        "name": "gimp:app / gimp-filter-layer",
+        "result": "OK",
+        "duration": 719.1187837123871,
+        "returncode": 0,
+        "registered_timeout": 600,
+        "timeout_multiplier": 3,
+        "effective_timeout": 1800,
+        "malloc_perturb": "231",
+        "tap_plan": [
+          147
+        ],
+        "tap_ok_outputs": 147,
+        "tap_skips": 0,
+        "tap_assertion_failures": [],
+        "resource_measurement": {
+          "label": "filter-layer",
+          "command": [
+            "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/deps-debian13/root/usr/bin/meson",
+            "test",
+            "-C",
+            "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/build-native",
+            "--num-processes",
+            "1",
+            "--print-errorlogs",
+            "--logbase",
+            "affected-budget-filter-layer",
+            "--verbose",
+            "--timeout-multiplier",
+            "3",
+            "gimp-filter-layer"
+          ],
+          "requested_affinity": null,
+          "parent_affinity": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "meson_exit": 0,
+          "malloc_perturb": "231",
+          "registered_timeout": 600,
+          "timeout_multiplier": 3,
+          "effective_timeout": 1800,
+          "wall_seconds": 723.5346654119994,
+          "waited_descendant_user_seconds": 405.256938,
+          "waited_descendant_system_seconds": 363.235024,
+          "voluntary_context_switches": 2874622,
+          "involuntary_context_switches": 17188,
+          "block_input_operations": 207688,
+          "block_output_operations": 1730880,
+          "sampled_peaks_are_lower_bounds": true,
+          "peak_live_processes": 5,
+          "peak_live_threads": 32
+        }
+      },
+      {
+        "phase": "phase-a",
+        "name": "gimp:app / painter-layer-ui",
+        "result": "OK",
+        "duration": 277.51512813568115,
+        "returncode": 0,
+        "registered_timeout": 180,
+        "timeout_multiplier": 3,
+        "effective_timeout": 540,
+        "malloc_perturb": "237",
+        "tap_plan": [
+          63
+        ],
+        "tap_ok_outputs": 63,
+        "tap_skips": 0,
+        "tap_assertion_failures": [],
+        "resource_measurement": {
+          "label": "layer-ui",
+          "command": [
+            "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/deps-debian13/root/usr/bin/meson",
+            "test",
+            "-C",
+            "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/build-native",
+            "--num-processes",
+            "1",
+            "--print-errorlogs",
+            "--logbase",
+            "affected-budget-layer-ui",
+            "--verbose",
+            "--timeout-multiplier",
+            "3",
+            "painter-layer-ui"
+          ],
+          "requested_affinity": null,
+          "parent_affinity": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "meson_exit": 0,
+          "malloc_perturb": "237",
+          "registered_timeout": 180,
+          "timeout_multiplier": 3,
+          "effective_timeout": 540,
+          "wall_seconds": 280.7543141510005,
+          "waited_descendant_user_seconds": 204.24482600000005,
+          "waited_descendant_system_seconds": 101.94457499999999,
+          "voluntary_context_switches": 687965,
+          "involuntary_context_switches": 9363,
+          "block_input_operations": 92168,
+          "block_output_operations": 6608,
+          "sampled_peaks_are_lower_bounds": true,
+          "peak_live_processes": 4,
+          "peak_live_threads": 33
+        }
+      },
+      {
+        "phase": "phase-a",
+        "name": "gimp:app / painter-xcf-roundtrip",
+        "result": "OK",
+        "duration": 133.92598915100098,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "timeout_multiplier": 4,
+        "effective_timeout": 240,
+        "malloc_perturb": "201",
+        "tap_plan": [
+          49
+        ],
+        "tap_ok_outputs": 49,
+        "tap_skips": 1,
+        "tap_assertion_failures": [],
+        "resource_measurement": {
+          "label": "xcf-roundtrip",
+          "command": [
+            "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/deps-debian13/root/usr/bin/meson",
+            "test",
+            "-C",
+            "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/build-native",
+            "--num-processes",
+            "1",
+            "--print-errorlogs",
+            "--logbase",
+            "affected-budget-xcf-roundtrip",
+            "--verbose",
+            "--timeout-multiplier",
+            "4",
+            "painter-xcf-roundtrip"
+          ],
+          "requested_affinity": null,
+          "parent_affinity": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "meson_exit": 0,
+          "malloc_perturb": "201",
+          "registered_timeout": 60,
+          "timeout_multiplier": 4,
+          "effective_timeout": 240,
+          "wall_seconds": 136.95562571699975,
+          "waited_descendant_user_seconds": 102.98472600000002,
+          "waited_descendant_system_seconds": 33.61828300000002,
+          "voluntary_context_switches": 32343,
+          "involuntary_context_switches": 2034,
+          "block_input_operations": 38712,
+          "block_output_operations": 1032,
+          "sampled_peaks_are_lower_bounds": true,
+          "peak_live_processes": 3,
+          "peak_live_threads": 25
+        }
+      },
+      {
+        "phase": "phase-b",
+        "name": "gimp:painter / painter-filter-procedure",
+        "result": "OK",
+        "duration": 1864.6830749511719,
+        "returncode": 0,
+        "registered_timeout": 900,
+        "timeout_multiplier": 3,
+        "effective_timeout": 2700,
+        "malloc_perturb": "255",
+        "tap_plan": [],
+        "tap_ok_outputs": 0,
+        "tap_skips": 0,
+        "tap_assertion_failures": [],
+        "resource_measurement": {
+          "label": "filter-procedure",
+          "command": [
+            "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/deps-debian13/root/usr/bin/meson",
+            "test",
+            "-C",
+            "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/build-native",
+            "--num-processes",
+            "1",
+            "--print-errorlogs",
+            "--logbase",
+            "affected-budget-filter-procedure",
+            "--verbose",
+            "--timeout-multiplier",
+            "3",
+            "painter-filter-procedure"
+          ],
+          "requested_affinity": null,
+          "parent_affinity": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "meson_exit": 0,
+          "malloc_perturb": "255",
+          "registered_timeout": 900,
+          "timeout_multiplier": 3,
+          "effective_timeout": 2700,
+          "wall_seconds": 1870.1155773620003,
+          "waited_descendant_user_seconds": 986.678852,
+          "waited_descendant_system_seconds": 874.4903989999999,
+          "voluntary_context_switches": 332280,
+          "involuntary_context_switches": 30262,
+          "block_input_operations": 54184,
+          "block_output_operations": 6424,
+          "sampled_peaks_are_lower_bounds": true,
+          "peak_live_processes": 5,
+          "peak_live_threads": 13
+        }
+      }
+    ],
+    "tap_ok_outputs": 259,
+    "tap_skips": 1,
+    "tap_passes_excluding_skips": 258,
+    "tap_assertion_failures": 0,
+    "filter_procedure_non_tap_summaries": [
+      "320 actual legacy Blinds oracles byte-exact",
+      "196 actual legacy SmallTiles oracles byte-exact (RGB/RGBA/Gray/Gray-alpha, factors0..6)",
+      "174 actual legacy Retinex oracles byte-exact (87 native RGB,87 native RGBA)",
+      "6 analytic selected Retinex ROI compositions matched old whole-fixture outputs",
+      "2 analytic native Retinex raw-shadow ROI cases and 4 RGB carrier rejection cases passed",
+      "12 native Blinds identity cases passed"
+    ],
+    "additional_planned_tap_cases_reached_vs_original": 108,
+    "unique_completed_tap_cases_across_original_and_affected_runs_excluding_skip": 1183,
+    "unique_intentional_tap_skips_across_runs": 1
+  },
+  "transport_phases": [
+    {
+      "phase": "phase-a",
+      "start_utc": "2026-10-11T11:34:50.435728+00:00",
+      "end_utc": "2026-10-11T11:53:52.665789+00:00",
+      "max_seconds": 3600,
+      "authenticated_client_exit": 0,
+      "unauthenticated_client_exit": 1,
+      "server_listeners": [
+        "LISTEN 0      0          127.0.0.1:43625      0.0.0.0:*    users:((\"Xvfb\",pid=9,fd=3))"
+      ],
+      "server_exit": 0,
+      "server_state": "stopped; temporary authentication files removed",
+      "remaining_sampled_descendants": [],
+      "cleanup_errors": []
+    },
+    {
+      "phase": "phase-b",
+      "start_utc": "2026-10-11T11:54:08.446497+00:00",
+      "end_utc": "2026-10-11T12:25:19.578929+00:00",
+      "max_seconds": 3600,
+      "authenticated_client_exit": 0,
+      "unauthenticated_client_exit": 1,
+      "server_listeners": [
+        "LISTEN 0      0          127.0.0.1:47647      0.0.0.0:*    users:((\"Xvfb\",pid=7,fd=3))"
+      ],
+      "server_exit": 0,
+      "server_state": "stopped; temporary authentication files removed",
+      "remaining_sampled_descendants": [],
+      "cleanup_errors": []
+    }
+  ],
+  "acceptance": {
+    "wbs_08_012": "DOING",
+    "original_completed_tasks": 135,
+    "original_total_tasks": 661,
+    "known_unfixed_sanitizer_overflow": "app/core/gimpbrush-transform.cc:380; not rerun",
+    "runtime_bug_fix_claimed": false,
+    "single_clean_all_124_aggregate_claimed": false,
+    "installed_prefix_or_platform_acceptance_claimed": false
+  },
+  "evidence_checkpoint": {
+    "storage": "Existing user Library checkpoint; no private download URL or public Git ZIP dependency",
+    "library_file_id": "libfile_639c334f86908191bac8a35639a2619b",
+    "filename": "standard-native-checkpoint-20261011-v9.zip",
+    "sha256": "5f6b96fc6dbf1e8eb539a22806355eca8b82800d2ab1500fc0334ba202907607",
+    "bytes": 5016371,
+    "expected_prior_version": 8,
+    "save_status": "Verified saved to the same Library identity as version 9; filename, byte count and SHA-256 match the locally verified archive",
+    "prior_entries_preserved": 583,
+    "entries": 916,
+    "evidence_root": "final-native-validation-20261011/",
+    "policy": "Full per-test stdout/stderr and process sampling retained; inherited environment dictionaries, private Xauthority contents and generated runtime profiles excluded",
+    "version": 9,
+    "historical_field_clarifications": [
+      "The frozen summary field overall_completed_test_median_ratio describes only the saved 27-registration matched sample",
+      "The frozen only_changed_validation_budget wording refers to the timeout policy; other execution differences are enumerated in this public report"
+    ]
+  }
+}
