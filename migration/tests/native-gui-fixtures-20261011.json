@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-11",
+  "published_parent_commit": "8121f485447917938baaf57dc4627516a109f367",
+  "tested_checkout_head": "bb991ef172c39042d9897aaf57618a1911b8a8c3",
+  "tested_snapshot_note": "Existing standard native checkout retained the already-published RTTI and workflow changes. Only app/tests/meson.build changed among previously tracked files during this task.",
+  "scope": "Maintained native GUI Meson fixture registrations; not sanitizer or installed-prefix acceptance",
+  "build_options": {
+    "headless-tests": "disabled",
+    "painter-http": "disabled",
+    "b_sanitize": "none",
+    "buildtype": "debugoptimized"
+  },
+  "source_file_sha256": {
+    "app/tests/meson.build": "a504c51a94b4aadff4bd8b6f223628570819e0457e9b84179b1065c5621b823e"
+  },
+  "phases": {
+    "meson_reconfigure_exit": 0,
+    "meson_compile_exit": 0,
+    "meson_test_exit": 0
+  },
+  "invocation": {
+    "single_selection": true,
+    "registrations": 16,
+    "normal_prerequisite_rebuild": true,
+    "timeout_multiplier": null,
+    "parent_GSETTINGS_BACKEND": null,
+    "parent_GIMP3_DATADIR": null,
+    "num_processes": 1
+  },
+  "registration_changes": {
+    "painter-layer-ui": {
+      "timeout_seconds": 180,
+      "original_timeout_seconds": 60,
+      "historical_complete_duration_seconds": 83.69223284721375,
+      "cases_unchanged": 63
+    },
+    "painter-save-continuation": {
+      "GSETTINGS_BACKEND": "memory",
+      "cases_unchanged": 13
+    },
+    "painter-profile-native": {
+      "GIMP3_DATADIR": "$build/data",
+      "depends": "gimp_tags_default",
+      "generated_file": "data/tags/gimp-tags-default.xml",
+      "cases_unchanged": 9
+    }
+  },
+  "meson_introspection_assertions": "PASS: all three registration properties and generated tags target dependency",
+  "transport": {
+    "start_utc": "2026-10-11T08:52:04.628377+00:00",
+    "end_utc": "2026-10-11T08:55:02.939746+00:00",
+    "transport": "AF_INET 127.0.0.1 only via systemd LISTEN_PID/LISTEN_FDS fd3",
+    "automatic_transports_disabled": [
+      "tcp",
+      "unix",
+      "local"
+    ],
+    "authorization": "MIT-MAGIC-COOKIE-1",
+    "auth_mode": "0o600",
+    "bound_address": [
+      "127.0.0.1",
+      42905
+    ],
+    "server_listeners": [
+      "LISTEN 0      0          127.0.0.1:42905      0.0.0.0:*    users:((\"Xvfb\",pid=14,fd=3))"
+    ],
+    "authenticated_client_exit": 0,
+    "unauthenticated_client_exit": 1,
+    "server_exit": 0,
+    "server_state": "stopped; temporary authentication files removed"
+  },
+  "latest_results": {
+    "registrations_run": 16,
+    "result_counts": {
+      "OK": 16
+    },
+    "tap_cases": 252,
+    "tap_individual_skips": 0,
+    "records": [
+      {
+        "name": "gimp:app / painter-layer-ui",
+        "result": "OK",
+        "duration": 80.37996125221252,
+        "returncode": 0,
+        "registered_timeout": 180,
+        "tap_plan": 63,
+        "tap_ok": 63,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-canvas-ui",
+        "result": "OK",
+        "duration": 6.754293203353882,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "tap_plan": 19,
+        "tap_ok": 19,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-compact-options",
+        "result": "OK",
+        "duration": 5.151381969451904,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "tap_plan": 10,
+        "tap_ok": 10,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-navigation-ui",
+        "result": "OK",
+        "duration": 0.041460275650024414,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "tap_plan": 4,
+        "tap_ok": 4,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-navigation-events",
+        "result": "OK",
+        "duration": 1.8631465435028076,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "tap_plan": 4,
+        "tap_ok": 4,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / device-dialog-events",
+        "result": "OK",
+        "duration": 1.8209357261657715,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "tap_plan": 1,
+        "tap_ok": 1,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-perspective-ui",
+        "result": "OK",
+        "duration": 2.7363076210021973,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "tap_plan": 21,
+        "tap_ok": 21,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-perspective-events",
+        "result": "OK",
+        "duration": 2.1709563732147217,
+        "returncode": 0,
+        "registered_timeout": 60,
+        "tap_plan": 9,
+        "tap_ok": 9,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-fill-brush-ui",
+        "result": "OK",
+        "duration": 6.310734748840332,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "tap_plan": 32,
+        "tap_ok": 32,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / layer-presets-ui",
+        "result": "OK",
+        "duration": 7.407480001449585,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "tap_plan": 4,
+        "tap_ok": 4,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-mypaint-tool",
+        "result": "OK",
+        "duration": 38.210973501205444,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "tap_plan": 17,
+        "tap_ok": 17,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-mypaint-editor",
+        "result": "OK",
+        "duration": 11.644662857055664,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "tap_plan": 13,
+        "tap_ok": 13,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-smudge-ui",
+        "result": "OK",
+        "duration": 4.231121063232422,
+        "returncode": 0,
+        "registered_timeout": 180,
+        "tap_plan": 26,
+        "tap_ok": 26,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:app / painter-save-continuation",
+        "result": "OK",
+        "duration": 4.801181793212891,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "tap_plan": 13,
+        "tap_ok": 13,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:painter / painter-profile-native",
+        "result": "OK",
+        "duration": 1.5674152374267578,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "tap_plan": 9,
+        "tap_ok": 9,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      },
+      {
+        "name": "gimp:painter / painter-paper-ui",
+        "result": "OK",
+        "duration": 2.3871335983276367,
+        "returncode": 0,
+        "registered_timeout": 120,
+        "tap_plan": 7,
+        "tap_ok": 7,
+        "tap_individual_skips": 0,
+        "tap_not_ok": []
+      }
+    ]
+  },
+  "historical_attempts": {
+    "source": "migration/tests/native-loopback-gui-20261011.json",
+    "gui-run": {
+      "OK": 1,
+      "FAIL": 15
+    },
+    "gui-isolated": {
+      "OK": 13,
+      "FAIL": 2,
+      "TIMEOUT": 1
+    },
+    "gui-focused": {
+      "OK": 2
+    },
+    "gui-save-memory": {
+      "OK": 1
+    },
+    "note": "Historical failed or timed-out attempts are preserved unchanged and are not counted as passing runs."
+  },
+  "limitations": [
+    "Existing native build was reconfigured and compiled; this was not a fresh clean rebuild.",
+    "Writable private HOME/XDG/TMP and an authenticated display remain general test prerequisites.",
+    "Profile uses real build-generated resources; installed-prefix startup was not tested.",
+    "Save uses in-memory GSettings; persistent dconf integration was not tested.",
+    "Known separate brush-transform signed-overflow issue remains unresolved; sanitizer suite was not rerun."
+  ]
+}
