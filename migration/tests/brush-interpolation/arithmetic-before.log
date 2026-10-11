@@ -1,0 +1,12 @@
+/workspace/scratch/5b5281e79681/layer-popup-reentry-20261011/profile/tmp/brush-interpolation-4750oz4k/check.cpp:20:67: runtime error: signed integer overflow: 1044480 * 2304 cannot be represented in type 'int'
+Traceback (most recent call last):
+  File "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/source/migration/tests/test_brush_interpolation_arithmetic.py", line 94, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/scratch/5b5281e79681/native-aggregate-recovery-20261011/run/source/migration/tests/test_brush_interpolation_arithmetic.py", line 90, in main
+    subprocess.run([str(binary)], check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/workspace/scratch/5b5281e79681/layer-popup-reentry-20261011/profile/tmp/brush-interpolation-4750oz4k/check']' returned non-zero exit status 1.

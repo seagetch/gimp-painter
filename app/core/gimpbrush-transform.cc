@@ -304,8 +304,8 @@ gimp_brush_real_transform_mask (GimpBrush *brush,
       const guchar *pixel_next;
       const guchar *pixel_below;
       const guchar *pixel_below_next;
-      gint          opposite_x, distance_from_true_x;
-      gint          opposite_y, distance_from_true_y;
+      guint         opposite_x, distance_from_true_x;
+      guint         opposite_y, distance_from_true_y;
       gint          u, v;
 
       dest = gimp_temp_buf_get_data (result) +
@@ -618,8 +618,8 @@ gimp_brush_real_transform_pixmap (GimpBrush *brush,
       const guchar *pixel_next;
       const guchar *pixel_below;
       const guchar *pixel_below_next;
-      gint          opposite_x, distance_from_true_x;
-      gint          opposite_y, distance_from_true_y;
+      guint         opposite_x, distance_from_true_x;
+      guint         opposite_y, distance_from_true_y;
       gint          u, v;
 
       dest = gimp_temp_buf_get_data (result) +
