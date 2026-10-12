@@ -1,0 +1,38 @@
+{
+  "task": "08.013",
+  "baseline": "0953d681650249739fdcb17394f3962f822fdb39",
+  "widget_sha256": "e7952ab29456a5e9afb793b4259008362433cf0a866d0adda96f6e75b0117e62",
+  "test_sha256": "d0f0dd2756cc447b32fdc35d11cfc4e98b8bf2b6923e90143198613dd8f0bbb7",
+  "targeted_regressions": [
+    {
+      "case": "destroyed_tiles_reject_image",
+      "result": "FAIL",
+      "duration": 1.9472813606262207,
+      "returncode": -6,
+      "assertion": "ERROR:app/tests/test-painter-canvas-ui.c:220:destroyed_tiles_reject_image: 'gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w))' should be NULL"
+    },
+    {
+      "case": "image_switch_popup_owner_close",
+      "result": "FAIL",
+      "duration": 1.9745471477508545,
+      "returncode": -6,
+      "assertion": "ERROR:app/tests/test-painter-canvas-ui.c:242:image_switch_popup_owner_close: 'weak_image' should be NULL"
+    },
+    {
+      "case": "image_switch_popup_newer_image",
+      "result": "FAIL",
+      "duration": 1.8848862648010254,
+      "returncode": -6,
+      "assertion": "ERROR:app/tests/test-painter-canvas-ui.c:254:image_switch_popup_newer_image: 'gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w))==c' should be TRUE"
+    }
+  ],
+  "observed_at_utc": "2026-10-12T10:22:00Z",
+  "positive_control": "Fourth parent-notify case passed after fix staging; not baseline defect evidence",
+  "verification_provenance": {
+    "reconstructed_at_utc": "2026-10-12T15:04:00Z",
+    "basis": "Recorded successful tool execution output from the 2026-10-12 normal and standard ASan/UBSan validation, accepted before workspace reset. This is not a fresh execution.",
+    "raw_log_status": "Final raw Meson logs and originally generated publication summaries were lost in workspace reset; not claimed recovered.",
+    "recovered_inputs": "Library checkpoint v15 preserved exact changed sources, source hashes and combined patch. Each recovered source hash and reconstructed unified diff matches the preserved record.",
+    "combined_patch_sha256": "9a057d579b9ba43024c50924de03a166c5317a020f437cf9b6145d7f58d81d49"
+  }
+}

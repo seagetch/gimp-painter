@@ -393,11 +393,16 @@ void Tiles::build () {
   gtk_widget_show_all (GTK_WIDGET (owner));
 }
 void Tiles::bind_image (GimpImage *value) {
-  ++image_generation;
+  if (closed) return;
+  const auto generation = ++image_generation;
+  auto next_image = ObjectRef<GObject>::retain (value ? G_OBJECT (value) : nullptr);
   cancel_press (); rebuild.close (); autoscroll.close (); close_popup ();
+  /* popup-closed may destroy us or synchronously bind a newer image. */
+  if (closed || image_generation != generation) return;
   model.clear (); controls.clear (); rows.clear (); drag_layer.reset ();
-  image = ObjectRef<GObject>::retain (value ? G_OBJECT (value) : nullptr);
+  image = std::move (next_image);
   if (ctx ()) gimp_context_set_image (ctx (), value);
+  if (closed || image_generation != generation) return;
   refresh ();
 }
 void Tiles::schedule () {
@@ -746,8 +751,20 @@ void close_widget (GtkWidget *widget) {
   GTK_WIDGET_CLASS (gimp_painter_layer_tiles_parent_class)->destroy (widget);
 }
 void set_image (GimpImageEditor *editor, GimpImage *image) {
-  GIMP_IMAGE_EDITOR_CLASS (gimp_painter_layer_tiles_parent_class)->set_image (editor, image);
-  use (G_OBJECT (editor), [&] (Tiles& s) { s.bind_image (image); });
+  bool entered = false;
+  use (G_OBJECT (editor), [&] (Tiles& s) {
+    entered = true;
+    auto image_lease = ObjectRef<GObject>::retain (image ? G_OBJECT (image) : nullptr);
+    GIMP_IMAGE_EDITOR_CLASS (gimp_painter_layer_tiles_parent_class)->set_image (editor, image);
+    /* The parent changes sensitivity, which can synchronously close the widget
+     * or route it to another image. Keep both parent and binding in agreement. */
+    if (!s.closed && gimp_image_editor_get_image (editor) == image)
+      s.bind_image (image);
+  });
+  /* Teardown must still disconnect the parent's image/flush handler, but a
+   * retained, destroyed widget must never attach a new image to that parent. */
+  if (!entered && !image)
+    GIMP_IMAGE_EDITOR_CLASS (gimp_painter_layer_tiles_parent_class)->set_image (editor, nullptr);
 }
 }
 static void gimp_painter_layer_tiles_class_init (GimpPainterLayerTilesClass *klass) {
