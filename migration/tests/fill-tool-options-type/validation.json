@@ -1,0 +1,97 @@
+{
+  "task": "08.012",
+  "criterion": "tool manager と設定に登録",
+  "status": "PASS",
+  "verified_date": "2026-10-12",
+  "tested_source_commit": "8ab2fe7ffeb32efee0f0b2e16f1231ce32aae4d5",
+  "normal": {
+    "provenance": "Recovered original Meson JSONL; case counts independently rechecked after reset.",
+    "configuration": "standard Meson b_sanitize=none; headless-tests=disabled; painter-http=disabled",
+    "passed": {
+      "gimp-ruler": 6,
+      "gimp-fill-brush": 40,
+      "painter-fill-brush-ui": 32
+    },
+    "total_passed": 78,
+    "failures": 0,
+    "skips": 0,
+    "timeouts": 0
+  },
+  "sanitizer": {
+    "provenance": "Verified historical run at approximately10:25UTC. Parent recorded Meson exit0 and3/3 successful registrations; independent acceptance checker parsed exactly6+40+32 successful TAP cases before reset. Original final raw JSONL was lost in later workspace reset and is not claimed recovered.",
+    "configuration": "standard Meson b_sanitize=address,undefined; RTTI/vptr retained; detect_leaks=0",
+    "passed": {
+      "gimp-ruler": 6,
+      "gimp-fill-brush": 40,
+      "painter-fill-brush-ui": 32
+    },
+    "total_passed": 78,
+    "failures": 0,
+    "skips": 0,
+    "timeouts": 0,
+    "recorded_duration_seconds": {
+      "gimp-ruler": 0.83,
+      "gimp-fill-brush": 4.65,
+      "painter-fill-brush-ui": 15.28
+    }
+  },
+  "reconstruction": {
+    "date": "2026-10-12",
+    "new_build_or_runtime_test": false,
+    "basis": "Pinned public source, preserved source hashes and recorded independently verified run results. This document is reconstructed, not a recovered original raw test report."
+  },
+  "prior_attempts": [
+    {
+      "result": "FAIL",
+      "reason": "Selected-target sanitizer build omitted generated menu resources; GUI failed before first case, while ruler6 and Fill core40 passed. Full standard Meson compile supplied resources before accepted rerun."
+    },
+    {
+      "result": "FAIL",
+      "reason": "First full sanitizer compile invoked instrumented generator without disabling leak detection and hit known ptrace LSan limitation; compile corrected with detect_leaks=0."
+    }
+  ],
+  "limitations": [
+    "Original fixed08.012 registration criterion only; remaining27.* renderer/search tasks remain open.",
+    "LeakSanitizer disabled under ptrace; external system dependencies not sanitizer-instrumented.",
+    "No complete application aggregate, installed-prefix, platform/tablet or full migration acceptance claimed.",
+    "Historical normal aggregate timeouts and failed sanitizer attempts remain failures.",
+    "Final raw ASan log unavailable after reset; acceptance relies on recorded verified result, not a newly executed test."
+  ],
+  "preserved_source_identity_receipt": {
+    "verified_commit": "8ab2fe7ffeb32efee0f0b2e16f1231ce32aae4d5",
+    "parent": "0953d681650249739fdcb17394f3962f822fdb39",
+    "tree": "78f0532bd4ab91ad3ddf969c03b0c5d62aabb0ed",
+    "files": [
+      {
+        "path": "libgimpwidgets/gimpruler.c",
+        "sha256": "8f99d3b237541e30a15216bc9bff86cf2af966172356fa1b0184be00ccee1718",
+        "git_blob_sha1": "9fa39bb408a77c15f73ebc3813852cb710603e7a",
+        "size_bytes": 44071
+      },
+      {
+        "path": "libgimpwidgets/meson.build",
+        "sha256": "9caefb5271ea01ecd7c71c2e127608456375945cafcd66e5d677c9170e62349e",
+        "git_blob_sha1": "12a05bc6b6bd1ef2c88d7039980b29b215eceeb5",
+        "size_bytes": 6331
+      },
+      {
+        "path": "libgimpwidgets/test-ruler.c",
+        "sha256": "6acfebde575989b8e86aebe0f319a81df70cb112d49d8f8221eeb090b0278d79",
+        "git_blob_sha1": "8c1f38bf2eaa57d2db7fb785cc903941a144bc50",
+        "size_bytes": 12405
+      },
+      {
+        "path": "migration/contracts/ruler-numeric-safety.md",
+        "sha256": "73fd5d6bacc4b46b717989f9eb75ac50557e1a99720ebca238070dce6883cac8",
+        "git_blob_sha1": "c897ae96c4657ceee6784d3c8a3eb6fc20b8f8d7",
+        "size_bytes": 1387
+      },
+      {
+        "path": "migration/tests/ruler-numeric-safety/validation.json",
+        "sha256": "e33c0d58e39bda2dbd8cbd5a761012a52d5697779b731423444a669d6fe35dbf",
+        "git_blob_sha1": "6cdd49f4903c665eda304e5ecdf775c68df82419",
+        "size_bytes": 1507
+      }
+    ]
+  }
+}
