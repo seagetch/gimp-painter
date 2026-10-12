@@ -253,3 +253,19 @@ test_eevl = executable('test-eevl',
   link_with: [ libgimpwidgets, libgimpmath, ],
   install: false,
 )
+
+# Exercise the production widget and its Cairo rendering in both orientations.
+# A missing display is reported as a skipped test (exit status 77).
+test_ruler = executable('test-ruler',
+  'test-ruler.c',
+  include_directories: rootInclude,
+  dependencies: [ gtk3, math, ],
+  c_args: [ '-DG_LOG_DOMAIN="LibGimpWidgets"', '-DGIMP_WIDGETS_COMPILATION', ],
+  link_with: [ libgimpwidgets, libgimpbase, ],
+  install: false,
+)
+
+test('gimp-ruler', test_ruler,
+  suite: 'libgimpwidgets',
+  timeout: 30,
+)

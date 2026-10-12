@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include <float.h>
 #include <gtk/gtk.h>
 #include <string.h>
 
@@ -615,15 +616,15 @@ gimp_ruler_set_position (GimpRuler *ruler,
   if (ruler->position != position)
     {
       GdkRectangle rect;
-      gint xdiff, ydiff;
+      gint64       xdiff, ydiff;
 
       ruler->position = position;
       g_object_notify_by_pspec (G_OBJECT (ruler), object_props[PROP_POSITION]);
 
       rect = gimp_ruler_get_pos_rect (ruler, ruler->position);
 
-      xdiff = rect.x - ruler->last_pos_rect.x;
-      ydiff = rect.y - ruler->last_pos_rect.y;
+      xdiff = (gint64) rect.x - ruler->last_pos_rect.x;
+      ydiff = (gint64) rect.y - ruler->last_pos_rect.y;
 
 #ifndef GDK_WINDOWING_QUARTZ
       /*
@@ -970,7 +971,7 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
   gdouble            increment;     /* Number of pixels per unit */
   gint               scale;         /* Number of units per major unit */
   gdouble            start, end, cur;
-  gchar              unit_str[32];
+  gchar              unit_str[DBL_MAX_10_EXP + 3];
   gint               digit_height;
   gint               digit_offset;
   gint               text_size;
@@ -1033,10 +1034,15 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
 
   gimp_ruler_get_range (ruler, &lower, &upper, &max_size);
 
-  if ((upper - lower) == 0)
+  if (! isfinite (lower) || ! isfinite (upper) || ! isfinite (max_size) ||
+      ! isfinite (upper - lower) || upper == lower ||
+      width <= 0 || height <= 0)
     goto out;
 
   increment = (gdouble) width / (upper - lower);
+
+  if (! isfinite (increment) || increment == 0.0)
+    goto out;
 
   /* determine the scale
    *   use the maximum extents of the ruler to determine the largest
@@ -1048,8 +1054,10 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
    *   actually measuring the text width, so that the result for the
    *   scale looks consistent with an accompanying vruler.
    */
-  scale = ceil (max_size);
-  g_snprintf (unit_str, sizeof (unit_str), "%d", scale);
+  /* A finite range need not fit in an integer.  Format its labels without
+   * an intermediate integer conversion.
+   */
+  g_snprintf (unit_str, sizeof (unit_str), "%.0f", ceil (max_size));
   text_size = strlen (unit_str) * digit_height + 1;
 
   unit = gimp_ruler_get_unit (ruler);
@@ -1101,9 +1109,25 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
           end   = ceil  (lower / subd_incr) * subd_incr;
         }
 
+      /* At very large offsets, adding a subdivision can round back to the
+       * same value.  Do not enter a loop which cannot make progress.
+       */
+      if (! isfinite (start) || ! isfinite (end) ||
+          start + subd_incr <= start || end + subd_incr <= end)
+        continue;
+
       for (cur = start; cur <= end; cur += subd_incr)
         {
-          pos = ROUND ((cur - lower) * increment);
+          gdouble tick_position = (cur - lower) * increment;
+
+          /* Clip before ROUND(), which converts to int.  Leave enough room
+           * for a label starting just outside the visible ruler.
+           */
+          if (! isfinite (tick_position) ||
+              tick_position < -text_size || tick_position > width)
+            continue;
+
+          pos = ROUND (tick_position);
 
           if (ruler->orientation == GTK_ORIENTATION_HORIZONTAL)
             {
@@ -1121,7 +1145,7 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
           /* draw label */
           if (i == 0)
             {
-              g_snprintf (unit_str, sizeof (unit_str), "%d", (int) cur);
+              g_snprintf (unit_str, sizeof (unit_str), "%.0f", cur);
 
               if (ruler->orientation == GTK_ORIENTATION_HORIZONTAL)
                 {
@@ -1154,9 +1178,8 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
 
   cairo_fill (cr);
 
-  ruler->backing_store_valid = TRUE;
-
 out:
+  ruler->backing_store_valid = TRUE;
   cairo_destroy (cr);
 }
 
@@ -1172,6 +1195,7 @@ gimp_ruler_get_pos_rect (GimpRuler *ruler,
   gdouble          upper = 0;
   gdouble          lower = 0;
   gdouble          increment;
+  gdouble          coordinate;
   GdkRectangle     rect = { 0, };
 
   if (! gtk_widget_is_drawable (widget))
@@ -1180,10 +1204,19 @@ gimp_ruler_get_pos_rect (GimpRuler *ruler,
   gtk_widget_get_allocation (widget, &allocation);
   gtk_style_context_get_border (context, gtk_widget_get_state_flags (widget), &border);
 
+  gimp_ruler_get_range (ruler, &lower, &upper, NULL);
+
+  if (! isfinite (position) || ! isfinite (lower) || ! isfinite (upper) ||
+      ! isfinite (upper - lower) || upper == lower)
+    return rect;
+
   if (ruler->orientation == GTK_ORIENTATION_HORIZONTAL)
     {
       width  = allocation.width;
       height = allocation.height - (border.top + border.bottom);
+
+      if (width <= 0 || height <= 0)
+        return rect;
 
       rect.width = height / 2 + 2;
       rect.width |= 1;  /* make sure it's odd */
@@ -1194,26 +1227,46 @@ gimp_ruler_get_pos_rect (GimpRuler *ruler,
       width  = allocation.width - (border.left + border.right);
       height = allocation.height;
 
+      if (width <= 0 || height <= 0)
+        return rect;
+
       rect.height = width / 2 + 2;
       rect.height |= 1;  /* make sure it's odd */
       rect.width = rect.height / 2 + 1;
     }
 
-  gimp_ruler_get_range (ruler, &lower, &upper, NULL);
+  increment = ((ruler->orientation == GTK_ORIENTATION_HORIZONTAL) ?
+               (gdouble) width : (gdouble) height) / (upper - lower);
+  coordinate = (position - lower) * increment;
+
+  if (! isfinite (increment) || ! isfinite (coordinate))
+    return (GdkRectangle) { 0, };
+
+  /* Match ROUND() in floating point, then reject wholly off-screen markers
+   * before converting their coordinates to int.  Keep partially visible
+   * markers intact so clipping does not change the triangle's shape.
+   */
+  coordinate = trunc (coordinate + 0.5);
 
   if (ruler->orientation == GTK_ORIENTATION_HORIZONTAL)
     {
-      increment = (gdouble) width / (upper - lower);
+      coordinate += (border.left + border.right - rect.width) / 2 - 1;
 
-      rect.x = ROUND ((position - lower) * increment) + (border.left + border.right - rect.width) / 2 - 1;
+      if (coordinate <= -rect.width || coordinate >= allocation.width)
+        return (GdkRectangle) { 0, };
+
+      rect.x = (gint) coordinate;
       rect.y = (height + rect.height) / 2 + border.top;
     }
   else
     {
-      increment = (gdouble) height / (upper - lower);
+      coordinate += (border.top + border.bottom - rect.height) / 2 - 1;
+
+      if (coordinate <= -rect.height || coordinate >= allocation.height)
+        return (GdkRectangle) { 0, };
 
       rect.x = (width + rect.width) / 2 + border.left;
-      rect.y = ROUND ((position - lower) * increment) + (border.top + border.bottom - rect.height) / 2 - 1;
+      rect.y = (gint) coordinate;
     }
 
   return rect;
