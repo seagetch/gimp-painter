@@ -155,6 +155,80 @@ static void popup_repeat (void) {
   }
   gtk_container_remove(GTK_CONTAINER(window),gui);if(old){gtk_container_add(GTK_CONTAINER(old),gui);g_object_unref(old);}g_object_unref(gui);gtk_widget_hide(window);
 }
+static void compact_popup_wait_viewable(GtkWidget *popup) {
+  /* Mapping the widget can precede the frame-clock's GdkWindow remap.
+   * GTK discards synthetic press/key events until that window is viewable. */
+  gint64 deadline=g_get_monotonic_time()+2*G_TIME_SPAN_SECOND;
+  while(!gdk_window_is_viewable(gtk_widget_get_window(popup)) && g_get_monotonic_time()<deadline) {
+    g_main_context_iteration(NULL,FALSE);g_usleep(1000);
+  }
+  g_assert_true(gdk_window_is_viewable(gtk_widget_get_window(popup)));
+}
+static void compact_popup_event(GtkWidget *popup,GdkEventType type,gdouble x,gdouble y) {
+  if(type==GDK_KEY_PRESS || type==GDK_BUTTON_PRESS)compact_popup_wait_viewable(popup);
+  GdkEvent *event=gdk_event_new(type);
+  GdkSeat *seat=gdk_display_get_default_seat(gtk_widget_get_display(popup));
+  if(type==GDK_KEY_PRESS) {
+    event->key.window=g_object_ref(gtk_widget_get_window(popup));event->key.send_event=TRUE;
+    event->key.time=GDK_CURRENT_TIME;event->key.keyval=GDK_KEY_Escape;
+    gdk_event_set_device(event,gdk_seat_get_keyboard(seat));
+  } else {
+    event->button.window=g_object_ref(gtk_widget_get_window(popup));event->button.send_event=TRUE;
+    event->button.time=GDK_CURRENT_TIME;event->button.button=1;event->button.x=x;event->button.y=y;
+    gdk_event_set_device(event,gdk_seat_get_pointer(seat));
+  }
+  gtk_widget_event(popup,event);gdk_event_free(event);
+}
+static void compact_popup_closed(GtkPopover *popup,gpointer data) { (void)popup;(*(guint *)data)++; }
+static void popup_native_events_and_window_destroy(void) {
+  gimp_set_focused_once(gimp);
+  GimpToolInfo *tool=info("gimp-paintbrush-tool");gboolean old_jitter=FALSE;
+  g_object_get(tool->tool_options,"use-jitter",&old_jitter,NULL);
+  g_object_set(tool->tool_options,"use-jitter",TRUE,NULL);
+  GtkWidget *host=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(host);
+  GtkWidget *gui=gtk_box_new(GTK_ORIENTATION_VERTICAL,4);g_object_ref_sink(gui);
+  GtkWidget *body=gimp_prop_spin_scale_new(G_OBJECT(tool->tool_options),"jitter-amount",.1,1.,2);
+  GtkWidget *frame=gimp_prop_expanding_frame_new(G_OBJECT(tool->tool_options),"use-jitter",NULL,body,NULL);
+  gtk_box_pack_start(GTK_BOX(gui),frame,FALSE,FALSE,0);gtk_container_add(GTK_CONTAINER(host),gui);
+  compact(gui,tool->tool_options,TRUE,GTK_ORIENTATION_HORIZONTAL);gtk_widget_show_all(host);drain();
+  GtkWidget *button=find(gui,"painter-compact-use-jitter",GTK_TYPE_MENU_BUTTON);g_assert_nonnull(button);g_object_ref(button);
+  GtkWidget *popup=GTK_WIDGET(gtk_menu_button_get_popover(GTK_MENU_BUTTON(button)));g_assert_nonnull(popup);g_object_ref(popup);
+  g_assert_true(gtk_popover_get_relative_to(GTK_POPOVER(popup))==button);g_assert_true(gtk_popover_get_modal(GTK_POPOVER(popup)));
+  GtkSettings *settings=gtk_widget_get_settings(host);gboolean animations=FALSE;
+  g_object_get(settings,"gtk-enable-animations",&animations,NULL);g_object_set(settings,"gtk-enable-animations",FALSE,NULL);
+  guint closed=0;g_signal_connect(popup,"closed",G_CALLBACK(compact_popup_closed),&closed);
+  for(guint cycle=0;cycle<3;cycle++) {
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),TRUE);drain();g_assert_true(gtk_widget_get_visible(popup));
+    g_assert_true(gtk_widget_get_realized(popup));g_assert_true(gtk_widget_get_mapped(popup));g_assert_true(gtk_widget_has_grab(popup));
+    gtk_widget_grab_focus(body);compact_popup_event(popup,GDK_KEY_PRESS,0,0);drain();
+    g_assert_false(gtk_widget_get_visible(popup));g_assert_false(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
+    g_assert_false(gtk_widget_has_grab(popup));g_assert_cmpuint(closed,==,cycle*2+1);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),TRUE);drain();
+    g_assert_true(gtk_widget_get_mapped(popup));g_assert_true(gtk_widget_has_grab(popup));
+    compact_popup_wait_viewable(popup);
+    GtkAllocation allocation;gtk_widget_get_allocation(gtk_bin_get_child(GTK_BIN(popup)),&allocation);
+    g_assert_cmpint(allocation.width,>,0);g_assert_cmpint(allocation.height,>,0);
+    gdouble x=allocation.x+allocation.width/2.,y=allocation.y+allocation.height/2.;
+    compact_popup_event(popup,GDK_BUTTON_PRESS,x,y);compact_popup_event(popup,GDK_BUTTON_RELEASE,x,y);drain();
+    g_assert_true(gtk_widget_get_visible(popup));g_assert_cmpuint(closed,==,cycle*2+1);
+    compact_popup_event(popup,GDK_BUTTON_PRESS,-10,-10);compact_popup_event(popup,GDK_BUTTON_RELEASE,-10,-10);drain();
+    g_assert_false(gtk_widget_get_visible(popup));g_assert_false(gtk_widget_has_grab(popup));g_assert_cmpuint(closed,==,cycle*2+2);
+  }
+  g_signal_handlers_disconnect_by_data(popup,&closed);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),TRUE);drain();
+  g_assert_true(gtk_widget_get_mapped(popup));g_assert_true(gtk_widget_has_grab(popup));
+  gpointer weak_gui=gui,weak_popup=popup,weak_button=button;
+  g_object_add_weak_pointer(G_OBJECT(gui),&weak_gui);g_object_add_weak_pointer(G_OBJECT(popup),&weak_popup);
+  g_object_add_weak_pointer(G_OBJECT(button),&weak_button);
+  g_object_set(settings,"gtk-enable-animations",animations,NULL);
+  gtk_widget_destroy(host);gtk_widget_destroy(host);drain();
+  g_assert_false(gimp_painter_compact_options_get(gui));g_assert_false(gtk_widget_has_grab(popup));
+  gtk_button_clicked(GTK_BUTTON(button));g_signal_emit_by_name(popup,"closed");drain();
+  g_assert_false(gimp_painter_compact_options_get(gui));
+  g_object_unref(button);g_object_unref(popup);g_object_unref(gui);g_object_unref(host);drain();
+  g_assert_null(weak_gui);g_assert_null(weak_popup);g_assert_null(weak_button);
+  g_object_set(tool->tool_options,"use-jitter",old_jitter,NULL);
+}
 static void finalized (gpointer data,GObject *object) { *(gboolean*)data=TRUE; }
 static void fresh_owner_lifecycle (void) {
   GimpToolInfo *tool=info("gimp-paintbrush-tool");
@@ -328,6 +402,7 @@ int main(int argc,char **argv) {
   g_test_add_func("/painter-compact-options/inventory-all-registered",inventory_all_registered_tools);
   g_test_add_func("/painter-compact-options/paint-bidirectional-resource",paint_bidirectional_reset_and_resource);
   g_test_add_func("/painter-compact-options/popup-repeat",popup_repeat);
+  g_test_add_func("/painter-compact-options/popup-native-events-window-destroy",popup_native_events_and_window_destroy);
   g_test_add_func("/painter-compact-options/fresh-owner-lifecycle",fresh_owner_lifecycle);
   g_test_add_func("/painter-compact-options/mixed-packing-owned-destruction",mixed_packing_and_owned_destruction);
   g_test_add_func("/painter-compact-options/native-viewport-composition",native_viewport_composition);

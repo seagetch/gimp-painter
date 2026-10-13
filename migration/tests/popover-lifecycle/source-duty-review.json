@@ -1,0 +1,197 @@
+{
+  "task": "08.015",
+  "baseline_head": "a3586d6b06f68282f26fa234d09c805c5a43abcf",
+  "scope": "Native GtkPopover parent, dismissal events and destroy replacement; same-image synchronous popup replacement",
+  "obligations": [
+    {
+      "work_id": "legacy-60104476857f8fd9c1c2",
+      "source_id": "01.002/001517",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-272,0 -> 283,2",
+      "source_sha256": "c26c02b2cf169f89681e3f9898aa5f1c97bf229d8b7ad270d96b9d67039a9399",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "reviewed_lines": "283-284",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/Makefile.am",
+      "state": "VERIFIED",
+      "replacement": "Native compact adapter registration is the popupbutton replacement. Verify existing app/widgets/meson.build entry and linked test behavior; no legacy duplicate type compilation.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppaintercompactoptions.h",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c",
+        "app/widgets/meson.build"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ]
+    },
+    {
+      "work_id": "legacy-d2e9217e0bd946052765",
+      "source_id": "01.002/001523",
+      "path": "app/widgets/gimpcellrendererpopup.cpp",
+      "source_blob": "9fcecab914869bd18ca3085bbbe64003b6eac195",
+      "source_range": "-0,0 -> 1,347",
+      "source_sha256": "86b5a6668c525aa05255e87c761629f6c2722fe091ae83ca31c7ca3b257b875a",
+      "source_scope": "file-level declarations/content",
+      "reviewed_lines": "300-347",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimpcellrendererpopup.cpp",
+      "state": "VERIFIED",
+      "replacement": "Popup consumer activate/parent-clicked route maps to native layer action button/key entry points and anchored GtkPopover. Drawing, GtkCellRenderer ABI and pixbuf ownership remain 08.016/29.006 work.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppaintercompactoptions.h",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ]
+    },
+    {
+      "work_id": "legacy-dfb3a10235af7714374f",
+      "source_id": "01.002/001524",
+      "path": "app/widgets/gimpcellrendererpopup.h",
+      "source_blob": "ba74530b87d8b783cab934d4c00dd3a451065bfd",
+      "source_range": "-0,0 -> 1,72",
+      "source_sha256": "9142d3313321a43ae0b148e9d94f94d44ded5228576c2d802639245ba62ca90c",
+      "source_scope": "file-level declarations/content",
+      "reviewed_lines": "35-69",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimpcellrendererpopup.h",
+      "state": "VERIFIED",
+      "replacement": "Popup entry contract maps to gimp_painter_layer_tiles_popup and native widgets; this does not accept old renderer class ABI or drawing obligations.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppaintercompactoptions.h",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ]
+    },
+    {
+      "work_id": "legacy-781ee366fa992c790894",
+      "source_id": "01.002/001679",
+      "path": "app/widgets/gimppopupbutton.c",
+      "source_blob": "ed6fe2c206913f8106f03097d407369ecd7a7c8c",
+      "source_range": "-0,0 -> 1,662",
+      "source_sha256": "0eb5bc2497b97be4fa1d2461e2a5eede271eda429ee97da3641784b012017861",
+      "source_scope": "file-level declarations/content",
+      "reviewed_lines": "66-285; 545-626",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimppopupbutton.c",
+      "state": "VERIFIED",
+      "replacement": "Custom GtkWindow event/destroy and popupbutton activation map to GtkPopover/GtkMenuButton with Presentation close/restore, weak-owner connections, retained canonical controls.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppaintercompactoptions.h",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ]
+    },
+    {
+      "work_id": "legacy-44f82f02cbcae1747821",
+      "source_id": "01.002/001680",
+      "path": "app/widgets/gimppopupbutton.h",
+      "source_blob": "260f814f35329d21b91149df73adc7da7ee40e52",
+      "source_range": "-0,0 -> 1,139",
+      "source_sha256": "6ceb9392ee8270f377ea0500b53f6d1a5ea894f13ea34b1baaf63ab328952cad",
+      "source_scope": "file-level declarations/content",
+      "reviewed_lines": "42-96; 113-131",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimppopupbutton.h",
+      "state": "VERIFIED",
+      "replacement": "Window child/view and parent-anchor declarations map to GtkPopover relative-to and native GtkMenuButton. Legacy view-size property behavior remains separately assigned.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppaintercompactoptions.h",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ]
+    },
+    {
+      "work_id": "legacy-4bcdfc56be63855d5521",
+      "source_id": "01.002/001815",
+      "path": "app/widgets/popupper.cpp",
+      "source_blob": "6aa874674b3773478e9b29e5e287746d3879d1ac",
+      "source_range": "-0,0 -> 1,592",
+      "source_sha256": "b8d09c5eb194a3c1c9041a42549edec5e50318a1f91cd7997dff28ace429c190",
+      "source_scope": "file-level declarations/content",
+      "reviewed_lines": "107-265; 348-408; 426-545",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/popupper.cpp",
+      "state": "VERIFIED",
+      "replacement": "Custom GtkWindow map/button/key/destroy and anchored view ownership map to native GtkPopover; layer popup operation generation prevents stale continuation after synchronous replacement. Legacy Return/Space and grab-loss cancel are commented out.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppaintercompactoptions.h",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ]
+    },
+    {
+      "work_id": "legacy-79b5cd452988c5706574",
+      "source_id": "01.002/001816",
+      "path": "app/widgets/popupper.h",
+      "source_blob": "dc77ab8cc739b28628726a186e139a47fda85353",
+      "source_range": "-0,0 -> 1,61",
+      "source_sha256": "67b07b60211dacdbe47f5c2310aa5f907cf7a7ed167174c1cc436513028b8777",
+      "source_scope": "file-level declarations/content",
+      "reviewed_lines": "20-56",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/popupper.h",
+      "state": "VERIFIED",
+      "replacement": "GtkWindow subclass, cancel/confirm slots and interface methods map to native GtkPopover plus typed controller APIs. Separate signal ABI duties remain open.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppaintercompactoptions.h",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ]
+    }
+  ]
+}

@@ -148,6 +148,133 @@ static void popup_repeat_and_owner_close(void) {
   gtk_button_clicked(GTK_BUTTON(button));g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
   g_object_unref(button);g_object_unref(p);g_object_unref(image);drain();
 }
+static void count_popup_closed(GimpPainterLayerTiles *w,gpointer data) {
+  (void)w;(*(guint *)data)++;
+}
+static void native_popup_wait_viewable(GtkWidget *popup) {
+  gint64 deadline=g_get_monotonic_time()+2*G_TIME_SPAN_SECOND;
+  while(!gdk_window_is_viewable(gtk_widget_get_window(popup)) && g_get_monotonic_time()<deadline) {
+    g_main_context_iteration(NULL,FALSE);g_usleep(1000);
+  }
+  g_assert_true(gdk_window_is_viewable(gtk_widget_get_window(popup)));
+}
+static gboolean native_popup_key(GtkWidget *popup,guint keyval) {
+  native_popup_wait_viewable(popup);
+  GdkEvent *event=gdk_event_new(GDK_KEY_PRESS);
+  event->key.window=g_object_ref(gtk_widget_get_window(popup));
+  event->key.send_event=TRUE;event->key.time=GDK_CURRENT_TIME;event->key.keyval=keyval;
+  gdk_event_set_device(event,gdk_seat_get_keyboard(gdk_display_get_default_seat(gtk_widget_get_display(popup))));
+  gboolean handled=gtk_widget_event(popup,event);gdk_event_free(event);return handled;
+}
+static void native_popup_button(GtkWidget *popup,GdkEventType type,gdouble x,gdouble y) {
+  if(type==GDK_BUTTON_PRESS)native_popup_wait_viewable(popup);
+  GdkEvent *event=gdk_event_new(type);
+  event->button.window=g_object_ref(gtk_widget_get_window(popup));
+  event->button.send_event=TRUE;event->button.time=GDK_CURRENT_TIME;
+  event->button.button=1;event->button.x=x;event->button.y=y;
+  gdk_event_set_device(event,gdk_seat_get_pointer(gdk_display_get_default_seat(gtk_widget_get_display(popup))));
+  gtk_widget_event(popup,event);gdk_event_free(event);
+}
+static void popup_native_events_and_parent(void) {
+  GimpImage *image=new_image();GimpLayer *selected=layer(image,NULL,"Layer");GtkWidget *w=tiles(image);
+  GtkSettings *settings=gtk_widget_get_settings(w);gboolean animations=FALSE;
+  g_object_get(settings,"gtk-enable-animations",&animations,NULL);
+  g_object_set(settings,"gtk-enable-animations",FALSE,NULL);
+  guint closed=0;g_signal_connect(w,"popup-closed",G_CALLBACK(count_popup_closed),&closed);
+  for(guint cycle=0;cycle<3;cycle++) {
+    GtkWidget *popup=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);g_assert_nonnull(popup);
+    g_assert_true(GTK_IS_POPOVER(popup));g_assert_true(gtk_popover_get_modal(GTK_POPOVER(popup)));
+    g_assert_true(gtk_popover_get_relative_to(GTK_POPOVER(popup))==w);
+    GtkWidget *scroll=gtk_bin_get_child(GTK_BIN(popup));g_assert_true(GTK_IS_SCROLLED_WINDOW(scroll));
+    GtkWidget *viewport=gtk_bin_get_child(GTK_BIN(scroll));g_assert_true(GTK_IS_VIEWPORT(viewport));
+    g_assert_true(GTK_IS_BOX(gtk_bin_get_child(GTK_BIN(viewport))));drain();
+    g_assert_true(gtk_widget_get_realized(popup));g_assert_true(gtk_widget_get_mapped(popup));g_assert_true(gtk_widget_has_grab(popup));
+    GtkWidget *opacity=find(popup,"painter-layer-opacity");g_assert_nonnull(opacity);
+    gtk_widget_grab_focus(opacity);
+    gtk_range_set_value(GTK_RANGE(opacity),70.);
+    g_assert_cmpfloat(gimp_layer_get_opacity(selected),==,.7);
+    /* Exercise GtkPopover's inherited event handlers, not a synthetic closed signal. */
+    g_assert_true(native_popup_key(popup,GDK_KEY_Escape));drain();
+    g_assert_false(gtk_widget_get_visible(popup));g_assert_false(gtk_widget_has_grab(popup));
+    g_assert_cmpuint(closed,==,cycle*2+1);
+    popup=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),TRUE);g_assert_nonnull(popup);drain();
+    g_assert_true(gtk_popover_get_relative_to(GTK_POPOVER(popup))==find(w,"painter-layer-add"));
+    g_assert_true(gtk_widget_get_mapped(popup));g_assert_true(gtk_widget_has_grab(popup));
+    native_popup_wait_viewable(popup);
+    GtkAllocation allocation;gtk_widget_get_allocation(gtk_bin_get_child(GTK_BIN(popup)),&allocation);
+    g_assert_cmpint(allocation.width,>,0);g_assert_cmpint(allocation.height,>,0);
+    gdouble x=allocation.x+allocation.width/2.,y=allocation.y+allocation.height/2.;
+    native_popup_button(popup,GDK_BUTTON_PRESS,x,y);native_popup_button(popup,GDK_BUTTON_RELEASE,x,y);drain();
+    g_assert_true(gtk_widget_get_visible(popup));g_assert_cmpuint(closed,==,cycle*2+1);
+    native_popup_button(popup,GDK_BUTTON_PRESS,-10,-10);native_popup_button(popup,GDK_BUTTON_RELEASE,-10,-10);drain();
+    g_assert_false(gtk_widget_get_visible(popup));g_assert_false(gtk_widget_has_grab(popup));
+    g_assert_cmpuint(closed,==,cycle*2+2);g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
+  }
+  g_signal_handlers_disconnect_by_data(w,&closed);
+  gimp_painter_layer_tiles_cancel_interaction(GIMP_PAINTER_LAYER_TILES(w));
+  g_object_set(settings,"gtk-enable-animations",animations,NULL);
+  close_tiles(w);g_object_unref(image);
+}
+static void popup_destroy_orders(void) {
+  for(guint owner_first=0;owner_first<2;owner_first++) {
+    GimpImage *image=new_image();layer(image,NULL,"Layer");GtkWidget *w=tiles(image);g_object_ref(w);
+    GtkWidget *popup=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),TRUE);g_assert_nonnull(popup);g_object_ref(popup);
+    GtkWidget *button=find(popup,"layers-new-clone");g_assert_nonnull(button);g_object_ref(button);
+    drain();g_assert_true(gtk_widget_get_realized(popup));g_assert_true(gtk_widget_get_mapped(popup));g_assert_true(gtk_widget_has_grab(popup));
+    GtkWidget *next=NULL;gpointer weak_next=NULL;
+    gpointer weak_owner=w,weak_popup=popup,weak_button=button;
+    g_object_add_weak_pointer(G_OBJECT(w),&weak_owner);g_object_add_weak_pointer(G_OBJECT(popup),&weak_popup);
+    g_object_add_weak_pointer(G_OBJECT(button),&weak_button);
+    if(owner_first)gtk_widget_destroy(w);
+    else {
+      gtk_widget_destroy(popup);drain();g_assert_false(gtk_widget_has_grab(popup));
+      next=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);g_assert_nonnull(next);g_object_ref(next);
+      weak_next=next;g_object_add_weak_pointer(G_OBJECT(next),&weak_next);drain();
+      g_assert_true(gtk_widget_get_mapped(next));g_assert_true(gtk_widget_has_grab(next));gtk_widget_destroy(w);
+    }
+    gtk_widget_destroy(w);gtk_button_clicked(GTK_BUTTON(button));
+    g_assert_false(gtk_widget_has_grab(popup));g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
+    if(next){g_assert_false(gtk_widget_has_grab(next));g_object_unref(next);}
+    g_object_unref(button);g_object_unref(popup);g_object_unref(w);drain();
+    g_assert_null(weak_button);g_assert_null(weak_popup);g_assert_null(weak_owner);g_assert_null(weak_next);g_object_unref(image);
+  }
+}
+typedef struct { GtkWidget *newer; guint calls; gboolean creation; } PopupReplacement;
+static void replace_on_popup_closed(GimpPainterLayerTiles *w,gpointer data) {
+  PopupReplacement *f=data;
+  if(f->calls++==0) {
+    f->newer=gimp_painter_layer_tiles_popup(w,f->creation);
+    g_assert_nonnull(f->newer);g_object_ref(f->newer);
+  }
+}
+static void popup_replacement_newer_same_image(gboolean creation) {
+  GimpImage *image=new_image();layer(image,NULL,"Layer");GtkWidget *w=tiles(image);
+  GtkWidget *first=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);
+  g_assert_nonnull(first);g_object_ref(first);
+  GtkWidget *stale=find(first,"layers-new-clone");g_assert_nonnull(stale);g_object_ref(stale);
+  PopupReplacement f={NULL,0,!creation};
+  gulong handler=g_signal_connect(w,"popup-closed",G_CALLBACK(replace_on_popup_closed),&f);
+  g_assert_null(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),creation));
+  g_assert_cmpuint(f.calls,==,1);g_assert_nonnull(f.newer);
+  g_assert_cmpstr(gtk_widget_get_name(f.newer),==,f.creation?"painter-layer-create-popup":"painter-layer-properties-popup");
+  g_assert_true(gtk_widget_get_visible(f.newer));g_assert_false(gtk_widget_get_visible(first));
+  g_assert_true(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w))==image);
+  /* An old action cannot run after its popup was retired. */
+  gtk_button_clicked(GTK_BUTTON(stale));g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
+  gpointer weak_first=first,weak_newer=f.newer;
+  g_object_add_weak_pointer(G_OBJECT(first),&weak_first);
+  g_object_add_weak_pointer(G_OBJECT(f.newer),&weak_newer);
+  g_signal_handler_disconnect(w,handler);
+  gimp_painter_layer_tiles_cancel_interaction(GIMP_PAINTER_LAYER_TILES(w));
+  gimp_painter_layer_tiles_cancel_interaction(GIMP_PAINTER_LAYER_TILES(w));
+  g_assert_false(gtk_widget_get_visible(f.newer));
+  g_assert_false(gtk_widget_has_grab(first));g_assert_false(gtk_widget_has_grab(f.newer));
+  g_object_unref(stale);g_object_unref(first);g_object_unref(f.newer);drain();
+  g_assert_null(weak_first);g_assert_null(weak_newer);
+  close_tiles(w);g_object_unref(image);
+}
+static void popup_properties_newer_same_image(void) { popup_replacement_newer_same_image(FALSE); }
+static void popup_creation_newer_same_image(void) { popup_replacement_newer_same_image(TRUE); }
 static void destroy_on_popup_closed(GimpPainterLayerTiles *w,gpointer data) {
   guint *calls=data;
   ++*calls;
@@ -662,6 +789,8 @@ int main(int argc,char **argv) {
   g_test_add_data_func("/painter-canvas-ui/" #f, &test_case, run_canvas_case); } while (0)
   if(g_getenv("PAINTER_CANVAS_DEMO")) { ADD(demo); } else {
   ADD(channel_preview_components);ADD(selection_and_visibility);ADD(group_move_and_undo);ADD(image_switch_disconnect);ADD(long_press_cancel_destroy);ADD(preview_pending_destroy);ADD(popup_repeat_and_owner_close);
+  ADD(popup_native_events_and_parent);ADD(popup_destroy_orders);
+  ADD(popup_properties_newer_same_image);ADD(popup_creation_newer_same_image);
   ADD(popup_properties_reentrant_owner_close);ADD(popup_creation_reentrant_owner_close);ADD(popup_properties_reentrant_image_switch);ADD(popup_creation_reentrant_image_switch);
   ADD(destroyed_tiles_reject_image);ADD(image_switch_popup_owner_close);ADD(image_switch_popup_newer_image);ADD(parent_image_notify_owner_close);
   ADD(popup_controls_and_clone);ADD(mask_controls);ADD(long_press_once);ADD(reentrant_visibility_close);ADD(multiple_reorder_one_undo);ADD(hide_cancels_grab);

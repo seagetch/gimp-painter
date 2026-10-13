@@ -1,0 +1,54 @@
+{
+  "task": "08.015",
+  "baseline_head": "a3586d6b06f68282f26fa234d09c805c5a43abcf",
+  "baseline_source_sha256": {
+    "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+    "app/widgets/gimppainterlayertiles.cpp": "218033b3a7ad19a2347bc263268397dbae514529abb3ae4b282060cbb8597011",
+    "app/tests/test-painter-canvas-ui.c": "93670340edf9418888e8a620a20c97c20631b54d76079d0973759e7b4b006a9e",
+    "app/tests/test-painter-compact-options.c": "17484ccb9492df572f2560f62e52ff23d70613060fbd0fdba5dadfe592281d3b"
+  },
+  "targeted_regressions": [
+    {
+      "case": "popup_properties_newer_same_image",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 3.023146152496338,
+      "assertion": "not ok /painter-canvas-ui/popup_properties_newer_same_image - ERROR:../source/app/tests/test-painter-canvas-ui.c:257:popup_replacement_newer_same_image: 'gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),creation)' should be NULL"
+    },
+    {
+      "case": "popup_creation_newer_same_image",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 1.9799129962921143,
+      "assertion": "not ok /painter-canvas-ui/popup_creation_newer_same_image - ERROR:../source/app/tests/test-painter-canvas-ui.c:257:popup_replacement_newer_same_image: 'gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),creation)' should be NULL"
+    }
+  ],
+  "positive_controls": [
+    {
+      "test_registration": "painter-canvas-ui",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 2.1472997665405273,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-canvas-ui/popup_native_events_and_parent\n1..1\n"
+    },
+    {
+      "test_registration": "painter-canvas-ui",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.7509753704071045,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-canvas-ui/popup_destroy_orders\n1..1\n"
+    },
+    {
+      "test_registration": "painter-compact-options",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.8879632949829102,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-compact-options/popup-native-events-window-destroy\n1..1\n"
+    }
+  ],
+  "fixture_correction": "Initial synthetic compact input ran after GtkWidget mapped but before GdkWindow viewability; an intermediate variant sampled child allocation before the remap completed. Final fixtures wait for actual viewability before input and before sampling child geometry. Both historical failures are retained privately. No compact production change was needed.",
+  "scope": "Two intended same-image replacement failures; three positive native parent/event/destroy controls. No premature task closure."
+}
