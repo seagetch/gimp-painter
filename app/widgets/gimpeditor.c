@@ -660,7 +660,7 @@ gimp_editor_get_top_box (GimpEditor *editor)
 typedef struct
 {
   GdkModifierType  mod_mask;
-  GimpAction      *action;
+  GimpAction      *action; /* Weak; preserve native action identity/lifetime. */
 } ExtendedAction;
 
 static void
@@ -669,7 +669,12 @@ gimp_editor_button_extended_actions_free (GList *actions)
   GList *list;
 
   for (list = actions; list; list = list->next)
-    g_slice_free (ExtendedAction, list->data);
+    {
+      ExtendedAction *ext = list->data;
+
+      g_clear_weak_pointer (&ext->action);
+      g_slice_free (ExtendedAction, ext);
+    }
 
   g_list_free (actions);
 }
@@ -687,6 +692,7 @@ gimp_editor_button_extended_clicked (GtkWidget       *button,
       ExtendedAction *ext = list->data;
 
       if ((ext->mod_mask & mask) == ext->mod_mask &&
+          ext->action != NULL &&
           gimp_action_get_sensitive (ext->action, NULL))
         {
           gimp_action_activate (ext->action);
@@ -880,6 +886,8 @@ gimp_editor_create_action_button_valist (GimpEditor  *editor,
 
           ext->mod_mask = mod_mask;
           ext->action   = action;
+          g_object_add_weak_pointer (G_OBJECT (action),
+                                     (gpointer *) &ext->action);
 
           extended = g_list_prepend (extended, ext);
 
