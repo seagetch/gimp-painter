@@ -1,0 +1,1522 @@
+{
+  "task": "08.017",
+  "state": "TODO",
+  "source_duties_advanced": 0,
+  "evidence_status": "BOUNDED_NATIVE_AND_ASAN_UBSAN_PASS",
+  "authoritative_contract": {
+    "path": "migration/design.md",
+    "section": "8.4.1",
+    "requirements": [
+      "GObject owns one reserved-key BindingStore; typed slots uniquely own C++ implementation/behavior state.",
+      "Ordinary widget identity remains unchanged; destroy/controller close reaches common idempotent close.",
+      "Typed C++ handles call C entry points, which reach the same implementation; vfunc/callback adapters use that implementation.",
+      "Preserve C APIs, observable values/model/notifications and ownership; removal/renaming or wrapper-name matching does not establish replacement.",
+      "Native scalar object data, C structures and model references are not by themselves C++ Impl allocations. Their separate lifetimes and callers still require evidence."
+    ]
+  },
+  "mapped_original_duties": [
+    {
+      "original_row": {
+        "work_id": "legacy-027dd2c66a7c632da0e3",
+        "source_kind": "hunk",
+        "source_id": "01.002/001526",
+        "path": "app/widgets/gimpcontainerbox.c",
+        "source_blob": "5d27d334a18a5440d44236486d67c903e66ff4c6",
+        "source_range": "-208,0 -> 209",
+        "source_sha256": "2a85328212b343a030ef4f40ab32342267dacade1bd18c094a7d7db479d04ecc",
+        "source_scope": "gimp_container_box_get_preview (GimpDocked   *docked,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Adds a NULL preview return guard immediately after gimp_prop_view_new and before dereferencing GIMP_VIEW(preview)->renderer.",
+      "verified_original_payload": "+  g_return_val_if_fail(preview != NULL, NULL);\n",
+      "production_change": "app/widgets/gimpcontainerbox.c",
+      "test_cases": [
+        "/painter-compact-options/native-preview-factory-failure",
+        "/painter-compact-options/native-preview-factory-success"
+      ],
+      "coverage_limit": "Both actual public-entry failure and ordinary paths pass native and standard ASan/UBSan after the one-line guard; no broader provider/caller acceptance is claimed.",
+      "original_source_review_requirements": [
+        "Test forced NULL/failure preview or prove the factory preconditions make it unreachable, while preserving the original defensive behavior."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-7c82ee26c10a8fdedba0",
+        "source_kind": "hunk",
+        "source_id": "01.002/002323",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-86,0 -> 87",
+        "source_sha256": "4e3cf60495dca6411d155372c42aa62f07a6f0c5792f016cff361dd7a3965b20",
+        "source_scope": "gimp_enum_radio_box_new (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Adds a blank line only; preserve the original identity without interpreting it as a separate registration.",
+      "verified_original_payload": "+\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Exact whitespace-only row preserved; no runtime assertion can prove whitespace. No row reassignment or completion authorized.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-8375ad72db8457a7138d",
+        "source_kind": "hunk",
+        "source_id": "01.002/002324",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-105,7 -> 106,8",
+        "source_sha256": "30e9d6023f49807a4de71545faf856e5180ee956c18e07549dab9bc5d58d2fdc",
+        "source_scope": "gimp_enum_radio_box_new (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Refactors range-based enum radio construction into a private full helper carrying GtkOrientation; preserves callback/data and first_button outputs.",
+      "verified_original_payload": "-GtkWidget *\n-gimp_enum_radio_box_new_with_range (GType       enum_type,\n-                                    gint        minimum,\n-                                    gint        maximum,\n-                                    GCallback   callback,\n-                                    gpointer    callback_data,\n-                                    GtkWidget **first_button)\n+static GtkWidget *\n+gimp_enum_radio_box_new_full (GType       enum_type,\n+                              gint        minimum,\n+                              gint        maximum,\n+                              GCallback   callback,\n+                              gpointer    callback_data,\n+                              GtkWidget **first_button,\n+                              GtkOrientation orientation)\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-5c5548c1d1e0178b2886",
+        "source_kind": "hunk",
+        "source_id": "01.002/002325",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-113 -> 115",
+        "source_sha256": "e7d50e32bbd64c5a3da032a31ef1b233d7d010eca31d508c3d1a7dd6dd56073c",
+        "source_scope": "gimp_enum_radio_box_new_with_range (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Renames the widget local from vbox to box to support the orientation parameter; participates in the full helper refactor.",
+      "verified_original_payload": "-  GtkWidget  *vbox;\n+  GtkWidget  *box;\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-0e017e3692514478ea29",
+        "source_kind": "hunk",
+        "source_id": "01.002/002326",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-122,3 -> 124,3",
+        "source_sha256": "69547d4ea0434eda25c67becf20ce5e03e76ca79132c002f421939f022bb2f1f",
+        "source_scope": "gimp_enum_radio_box_new_with_range (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Constructs the GTK box with the supplied orientation and retains the enum-class weak-notify release path on that box.",
+      "verified_original_payload": "-\n-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 1);\n-  g_object_weak_ref (G_OBJECT (vbox),\n+   \n+  box = gtk_box_new (orientation, 1);\n+  g_object_weak_ref (G_OBJECT (box),\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-3b8ef4dae76ab45d5c38",
+        "source_kind": "hunk",
+        "source_id": "01.002/002327",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-145 -> 147",
+        "source_sha256": "fd33f42b740c39c4381ce1e59166494cea7ae7eafcaca0f9767d759e0d4087e6",
+        "source_scope": "gimp_enum_radio_box_new_with_range (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Packs each enum radio child into the orientation-aware box; grouping, enum item value and callback wiring are surrounding executable duties.",
+      "verified_original_payload": "-      gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);\n+      gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 0);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-a993573c36bb5c727c22",
+        "source_kind": "hunk",
+        "source_id": "01.002/002328",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-156,0 -> 159,44",
+        "source_sha256": "d22979c78059ec675f5fb797626b06c320d084a896edab55b4fbdb4daddcc8c3",
+        "source_scope": "gimp_enum_radio_box_new_with_range (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Returns the full-helper box and adds an orientation-aware enum constructor using enum min/max with balanced GEnumClass references.",
+      "verified_original_payload": "+  return box;\n+}\n+\n+\n+/**\n+ * gimp_enum_radio_box_new_with_orientation:\n+ * @enum_type:     the #GType of an enum.\n+ * @callback:      a callback to connect to the \"toggled\" signal of each\n+ *                 #GtkRadioButton that is created.\n+ * @callback_data: data to pass to the @callback.\n+ * @first_button:  returns the first button in the created group.\n+ *\n+ * Creates a new group of #GtkRadioButtons representing the enum\n+ * values.  A group of radiobuttons is a good way to represent enums\n+ * with up to three or four values. Often it is better to use a\n+ * #GimpEnumComboBox instead.\n+ *\n+ * Return value: a new #GtkVBox holding a group of #GtkRadioButtons.\n+ *\n+ * Since: GIMP 2.4\n+ **/\n+GtkWidget *\n+gimp_enum_radio_box_new_with_orientation (GType       enum_type,\n+                                          GCallback   callback,\n+                                          gpointer    callback_data,\n+                                          GtkWidget **first_button,\n+                                          GtkOrientation orientation)\n+{\n+  GEnumClass *enum_class;\n+  GtkWidget  *vbox;\n+\n+  g_return_val_if_fail (G_TYPE_IS_ENUM (enum_type), NULL);\n+\n+  enum_class = g_type_class_ref (enum_type);\n+\n+  vbox = gimp_enum_radio_box_new_full (enum_type,\n+                                       enum_class->minimum,\n+                                       enum_class->maximum,\n+                                       callback, callback_data,\n+                                       first_button,\n+                                       orientation);\n+\n+  g_type_class_unref (enum_class);\n+\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-2b5364ed9cb6dbee3a44",
+        "source_kind": "hunk",
+        "source_id": "01.002/002329",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-159,0 -> 206,36",
+        "source_sha256": "c7e4cce5ba4ab5ee4d935d0b68581a1b54c5dd8f94f0c828d2c5b67f70744c55",
+        "source_scope": "gimp_enum_radio_box_new_with_range (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Reintroduces the public range constructor as a compatibility wrapper fixing orientation to VERTICAL.",
+      "verified_original_payload": "+\n+/**\n+ * gimp_enum_radio_box_new_with_range:\n+ * @minimum:       the minimum enum value\n+ * @maximum:       the maximum enum value\n+ * @enum_type:     the #GType of an enum.\n+ * @callback:      a callback to connect to the \"toggled\" signal of each\n+ *                 #GtkRadioButton that is created.\n+ * @callback_data: data to pass to the @callback.\n+ * @first_button:  returns the first button in the created group.\n+ *\n+ * Just like gimp_enum_radio_box_new(), this function creates a group\n+ * of radio buttons, but it allows to limit the range of available\n+ * enum values.\n+ *\n+ * Return value: a new #GtkVBox holding a group of #GtkRadioButtons.\n+ *\n+ * Since: GIMP 2.4\n+ **/\n+GtkWidget *\n+gimp_enum_radio_box_new_with_range (GType       enum_type,\n+                                    gint        minimum,\n+                                    gint        maximum,\n+                                    GCallback   callback,\n+                                    gpointer    callback_data,\n+                                    GtkWidget **first_button)\n+{\n+  return gimp_enum_radio_box_new_full (enum_type,\n+                                        minimum,\n+                                        maximum,\n+                                        callback,\n+                                        callback_data,\n+                                        first_button,\n+                                        GTK_ORIENTATION_VERTICAL);\n+}\n+\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-ac704b5d9a4fd502e52f",
+        "source_kind": "hunk",
+        "source_id": "01.002/002330",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-182,0 -> 265,35",
+        "source_sha256": "d192f6cb4d510f525e93402549120dcb364b070776108710a31909f8dda1247a",
+        "source_scope": "gimp_enum_radio_frame_new (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Makes the default enum frame wrapper select VERTICAL and introduces an orientation-aware frame constructor.",
+      "verified_original_payload": "+{\n+  return gimp_enum_radio_frame_new_with_orientation (enum_type,\n+                                                      label_widget,\n+                                                      callback,\n+                                                      callback_data,\n+                                                      first_button,\n+                                                      GTK_ORIENTATION_VERTICAL);\n+}\n+\n+\n+/**\n+ * gimp_enum_radio_frame_new_with_orietation:\n+ * @enum_type:     the #GType of an enum.\n+ * @label_widget:  a widget to use as label for the frame that will\n+ *                 hold the radio box.\n+ * @callback:      a callback to connect to the \"toggled\" signal of each\n+ *                 #GtkRadioButton that is created.\n+ * @callback_data: data to pass to the @callback.\n+ * @first_button:  returns the first button in the created group.\n+ * @orientation:   alignment orientation of the radio buttons.\n+ *\n+ * Calls gimp_enum_radio_box_new() and puts the resulting vbox into a\n+ * #GtkFrame.\n+ *\n+ * Return value: a new #GtkFrame holding a group of #GtkRadioButtons.\n+ *\n+ * Since: GIMP 2.4\n+ **/\n+GtkWidget *\n+gimp_enum_radio_frame_new_with_orientation (GType       enum_type,\n+                                            GtkWidget  *label_widget,\n+                                            GCallback   callback,\n+                                            gpointer    callback_data,\n+                                            GtkWidget **first_button,\n+                                            GtkOrientation orientation)\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-f9aa79ddb8fc1e15d323",
+        "source_kind": "hunk",
+        "source_id": "01.002/002331",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-199,3 -> 316,3",
+        "source_sha256": "4d19e77499a00efcc80efac8b19fa87dde7ea8af92372e7c9f859e0c1b5e5a2e",
+        "source_scope": "gimp_enum_radio_frame_new (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Forwards frame orientation into the orientation-aware radio-box constructor, preserving callback/data/first-button routing.",
+      "verified_original_payload": "-  radio_box = gimp_enum_radio_box_new (enum_type,\n-                                       callback, callback_data,\n-                                       first_button);\n+  radio_box = gimp_enum_radio_box_new_with_orientation (enum_type,\n+                                                        callback, callback_data,\n+                                                        first_button, orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-847146ab39739b8fd305",
+        "source_kind": "hunk",
+        "source_id": "01.002/002332",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-207,0 -> 325",
+        "source_sha256": "4e3cf60495dca6411d155372c42aa62f07a6f0c5792f016cff361dd7a3965b20",
+        "source_scope": "gimp_enum_radio_frame_new (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Adds a blank line only.",
+      "verified_original_payload": "+\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Exact whitespace-only row preserved; no runtime assertion can prove whitespace. No row reassignment or completion authorized.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-ebe1dea06af3e704c0d6",
+        "source_kind": "hunk",
+        "source_id": "01.002/002333",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-233,0 -> 352,40",
+        "source_sha256": "d3ac6ebdb74be1dfd7043b165c555bdc4140cbd8020d09210fc559ca41bd6da1",
+        "source_scope": "gimp_enum_radio_frame_new_with_range (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Makes range-frame construction use a full helper with explicit VERTICAL default and publishes an orientation argument on that full helper.",
+      "verified_original_payload": "+{\n+  return gimp_enum_radio_frame_new_full (enum_type,\n+                                          minimum,\n+                                          maximum,\n+                                          label_widget,\n+                                          callback,\n+                                          callback_data,\n+                                          first_button,\n+                                          GTK_ORIENTATION_VERTICAL);\n+}\n+\n+\n+/**\n+ * gimp_enum_radio_frame_new_full:\n+ * @enum_type:     the #GType of an enum.\n+ * @minimum:       the minimum enum value\n+ * @maximum:       the maximum enum value\n+ * @label_widget:  a widget to put into the frame that will hold the radio box.\n+ * @callback:      a callback to connect to the \"toggled\" signal of each\n+ *                 #GtkRadioButton that is created.\n+ * @callback_data: data to pass to the @callback.\n+ * @first_button:  returns the first button in the created group.\n+ * @orientation:   alignment orientation of the radio buttons.\n+ *\n+ * Calls gimp_enum_radio_box_new_with_range() and puts the resulting\n+ * vbox into a #GtkFrame.\n+ *\n+ * Return value: a new #GtkFrame holding a group of #GtkRadioButtons.\n+ *\n+ * Since: GIMP 2.4\n+ **/\n+GtkWidget *\n+gimp_enum_radio_frame_new_full (GType       enum_type,\n+                               gint        minimum,\n+                               gint        maximum,\n+                               GtkWidget  *label_widget,\n+                               GCallback   callback,\n+                               gpointer    callback_data,\n+                               GtkWidget **first_button,\n+                               GtkOrientation orientation)\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-3840c43c421d08287b95",
+        "source_kind": "hunk",
+        "source_id": "01.002/002334",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-250,5 -> 408,6",
+        "source_sha256": "ba363346ca9d1c99bae3c9544fe6309822488108f6a13d6cf0ec7ecd4f910bb1",
+        "source_scope": "gimp_enum_radio_frame_new_with_range (GType       enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Forwards range limits and orientation into the shared radio-box full helper.",
+      "verified_original_payload": "-  radio_box = gimp_enum_radio_box_new_with_range (enum_type,\n-                                                  minimum,\n-                                                  maximum,\n-                                                  callback, callback_data,\n-                                                  first_button);\n+  radio_box = gimp_enum_radio_box_new_full (enum_type,\n+                                            minimum,\n+                                            maximum,\n+                                            callback, callback_data,\n+                                            first_button,\n+                                            orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-50f89879952baa657ed2",
+        "source_kind": "hunk",
+        "source_id": "01.002/002335",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-306,0 -> 466",
+        "source_sha256": "4e3cf60495dca6411d155372c42aa62f07a6f0c5792f016cff361dd7a3965b20",
+        "source_scope": "gimp_enum_stock_box_new (GType         enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Adds a blank line only.",
+      "verified_original_payload": "+\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Exact whitespace-only row preserved; no runtime assertion can prove whitespace. No row reassignment or completion authorized.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-8d1942d3077de15c246a",
+        "source_kind": "hunk",
+        "source_id": "01.002/002336",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-327,9 -> 487,10",
+        "source_sha256": "5c0e5f37aea5f03dc4f291a9e7e39e0e16cc76dca73339e7b526dbfc023c0062",
+        "source_scope": "gimp_enum_stock_box_new (GType         enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Refactors the stock/icon radio-box range constructor into a private full helper taking orientation.",
+      "verified_original_payload": "-GtkWidget *\n-gimp_enum_stock_box_new_with_range (GType         enum_type,\n-                                    gint          minimum,\n-                                    gint          maximum,\n-                                    const gchar  *stock_prefix,\n-                                    GtkIconSize   icon_size,\n-                                    GCallback     callback,\n-                                    gpointer      callback_data,\n-                                    GtkWidget   **first_button)\n+static GtkWidget *\n+gimp_enum_stock_box_new_full (GType         enum_type,\n+                              gint          minimum,\n+                              gint          maximum,\n+                              const gchar  *stock_prefix,\n+                              GtkIconSize   icon_size,\n+                              GCallback     callback,\n+                              gpointer      callback_data,\n+                              GtkWidget   **first_button,\n+                              GtkOrientation orientation)\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-1b13f275651a7d850c73",
+        "source_kind": "hunk",
+        "source_id": "01.002/002337",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-350 -> 511",
+        "source_sha256": "5519baf8bc7be351a8f442c7078892a11d7651266ddd1b826bb4922bb9cd8f51",
+        "source_scope": "gimp_enum_stock_box_new_with_range (GType         enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Constructs the stock/icon radio box with the supplied orientation instead of hardcoded HORIZONTAL.",
+      "verified_original_payload": "-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);\n+  hbox = gtk_box_new (orientation, 0);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-c64527774cb68953cbb1",
+        "source_kind": "hunk",
+        "source_id": "01.002/002338",
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "source_blob": "40bf91c37dbe4021cf0afd16a09f4e382af752f9",
+        "source_range": "-401,0 -> 563,89",
+        "source_sha256": "786e0a3e2c183040b8d3ce09d7b7086cc537d9cedc4991e100eedd71b1b7dad2",
+        "source_scope": "gimp_enum_stock_box_new_with_range (GType         enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Adds a stock/icon orientation constructor with balanced enum-class refs and a range compatibility wrapper that preserves HORIZONTAL default.",
+      "verified_original_payload": "+/**\n+ * gimp_enum_stock_box_new:\n+ * @enum_type:     the #GType of an enum.\n+ * @stock_prefix:  the prefix of the group of stock ids to use.\n+ * @icon_size:     the icon size for the stock icons\n+ * @callback:      a callback to connect to the \"toggled\" signal of each\n+ *                 #GtkRadioButton that is created.\n+ * @callback_data: data to pass to the @callback.\n+ * @first_button:  returns the first button in the created group.\n+ *\n+ * Creates a horizontal box of radio buttons with stock icons.  The\n+ * stock_id for each icon is created by appending the enum_value's\n+ * nick to the given @stock_prefix.\n+ *\n+ * Return value: a new #GtkHBox holding a group of #GtkRadioButtons.\n+ *\n+ * Since: GIMP 2.4\n+ **/\n+GtkWidget *\n+gimp_enum_stock_box_new_with_orientation (GType         enum_type,\n+                                          const gchar  *stock_prefix,\n+                                          GtkIconSize   icon_size,\n+                                          GCallback     callback,\n+                                          gpointer      callback_data,\n+                                          GtkWidget   **first_button,\n+                                          GtkOrientation orientation)\n+{\n+  GEnumClass *enum_class;\n+  GtkWidget  *box;\n+\n+  g_return_val_if_fail (G_TYPE_IS_ENUM (enum_type), NULL);\n+\n+  enum_class = g_type_class_ref (enum_type);\n+\n+  box = gimp_enum_stock_box_new_full (enum_type,\n+                                      enum_class->minimum,\n+                                      enum_class->maximum,\n+                                      stock_prefix, icon_size,\n+                                      callback, callback_data,\n+                                      first_button,\n+                                      orientation);\n+\n+  g_type_class_unref (enum_class);\n+\n+  return box;\n+}\n+\n+\n+/**\n+ * gimp_enum_stock_box_new_with_range:\n+ * @enum_type:     the #GType of an enum.\n+ * @minimum:       the minumim enum value\n+ * @maximum:       the maximum enum value\n+ * @stock_prefix:  the prefix of the group of stock ids to use.\n+ * @icon_size:     the icon size for the stock icons\n+ * @callback:      a callback to connect to the \"toggled\" signal of each\n+ *                 #GtkRadioButton that is created.\n+ * @callback_data: data to pass to the @callback.\n+ * @first_button:  returns the first button in the created group.\n+ *\n+ * Just like gimp_enum_stock_box_new(), this function creates a group\n+ * of radio buttons, but it allows to limit the range of available\n+ * enum values.\n+ *\n+ * Return value: a new #GtkHBox holding a group of #GtkRadioButtons.\n+ *\n+ * Since: GIMP 2.4\n+ **/\n+GtkWidget *\n+gimp_enum_stock_box_new_with_range (GType         enum_type,\n+                                    gint          minimum,\n+                                    gint          maximum,\n+                                    const gchar  *stock_prefix,\n+                                    GtkIconSize   icon_size,\n+                                    GCallback     callback,\n+                                    gpointer      callback_data,\n+                                    GtkWidget   **first_button)\n+{\n+  return gimp_enum_stock_box_new_full (enum_type,\n+                                        minimum,\n+                                        maximum,\n+                                        stock_prefix,\n+                                        icon_size,\n+                                        callback,\n+                                        callback_data,\n+                                        first_button,\n+                                        GTK_ORIENTATION_HORIZONTAL);\n+}\n+\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-25e854562c7f3d9ce979",
+        "source_kind": "hunk",
+        "source_id": "01.002/002339",
+        "path": "libgimpwidgets/gimpenumwidgets.h",
+        "source_blob": "ae0f9c3d1d36bde4c9a30f8bbe792a5ddf007b71",
+        "source_range": "-35,0 -> 36,5",
+        "source_sha256": "c79a6b4d9b622e238e034378ad2b29a9c753bf18126df2a4d164a01255723b87",
+        "source_scope": "GtkWidget * gimp_enum_radio_box_new               (GType         enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Publishes orientation-aware enum radio-box construction with callback/data and first-button return.",
+      "verified_original_payload": "+GtkWidget * gimp_enum_radio_box_new_with_orientation (GType         enum_type,\n+                                                      GCallback     callback,\n+                                                      gpointer      callback_data,\n+                                                      GtkWidget   **first_button,\n+                                                      GtkOrientation orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-40bd98f93ea107c22341",
+        "source_kind": "hunk",
+        "source_id": "01.002/002340",
+        "path": "libgimpwidgets/gimpenumwidgets.h",
+        "source_blob": "ae0f9c3d1d36bde4c9a30f8bbe792a5ddf007b71",
+        "source_range": "-47,0 -> 53,6",
+        "source_sha256": "7e01ea6f5007bf3f111bb000bdd322894f110effb1292a3a800a05c3dde8315c",
+        "source_scope": "GtkWidget * gimp_enum_radio_frame_new             (GType         enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Publishes orientation-aware enum radio-frame construction and label-widget/callback ownership boundary.",
+      "verified_original_payload": "+GtkWidget * gimp_enum_radio_frame_new_with_orientation (GType         enum_type,\n+                                                        GtkWidget    *label_widget,\n+                                                        GCallback     callback,\n+                                                        gpointer      callback_data,\n+                                                        GtkWidget   **first_button,\n+                                                        GtkOrientation orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-03bee0ab0c5dd64a5ca6",
+        "source_kind": "hunk",
+        "source_id": "01.002/002341",
+        "path": "libgimpwidgets/gimpenumwidgets.h",
+        "source_blob": "ae0f9c3d1d36bde4c9a30f8bbe792a5ddf007b71",
+        "source_range": "-54,0 -> 66,8",
+        "source_sha256": "ce232a84aba88c72822910d3df2992332b0973756eedf86430e1cb632a43d316",
+        "source_scope": "GtkWidget * gimp_enum_radio_frame_new_with_range  (GType         enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Publishes the enum radio-frame full helper including range, label widget and orientation.",
+      "verified_original_payload": "+GtkWidget * gimp_enum_radio_frame_new_full        (GType         enum_type,\n+                                                   gint          minimum,\n+                                                   gint          maximum,\n+                                                   GtkWidget    *label_widget,\n+                                                   GCallback     callback,\n+                                                   gpointer      callback_data,\n+                                                   GtkWidget   **first_button,\n+                                                   GtkOrientation orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-743fe820566eb7950da3",
+        "source_kind": "hunk",
+        "source_id": "01.002/002342",
+        "path": "libgimpwidgets/gimpenumwidgets.h",
+        "source_blob": "ae0f9c3d1d36bde4c9a30f8bbe792a5ddf007b71",
+        "source_range": "-61,0 -> 81,7",
+        "source_sha256": "34b15cce6f5445c2bb208479d642d7bc3b174d29e187de3ff07f1fed3f1d8450",
+        "source_scope": "GtkWidget * gimp_enum_stock_box_new               (GType         enum_type,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Publishes orientation-aware stock/icon radio-box construction.",
+      "verified_original_payload": "+GtkWidget * gimp_enum_stock_box_new_with_orientation (GType         enum_type,\n+                                                      const gchar  *stock_prefix,\n+                                                      GtkIconSize   icon_size,\n+                                                      GCallback     callback,\n+                                                      gpointer      callback_data,\n+                                                      GtkWidget   **first_button,\n+                                                      GtkOrientation orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Exercise vertical/horizontal construction in actual consumers, range limits, first-button result, item values, toggled callback data, enum-class lifetime, re-show/tool switch."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-fa86119536c7d2190ada",
+        "source_kind": "hunk",
+        "source_id": "01.002/002345",
+        "path": "libgimpwidgets/gimppropwidgets.c",
+        "source_blob": "3cf7b05422f056484acb772a722959c592d62496",
+        "source_range": "-656,0 -> 657,33",
+        "source_sha256": "7b35cea497fa339c28cc90e3f780a3c215fd7fe1fdb2ae40ef298ca8ac85ff1a",
+        "source_scope": "gimp_prop_enum_radio_frame_new (GObject     *config,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Wraps enum property frames with VERTICAL default and adds an orientation-aware API. The implementation reads GParamSpec/current value and links control toggles and property notifications.",
+      "verified_original_payload": "+{\n+  return gimp_prop_enum_radio_frame_new_with_orientation (config,\n+                                                           property_name,\n+                                                           title,\n+                                                           minimum,\n+                                                           maximum,\n+                                                           GTK_ORIENTATION_VERTICAL);\n+}\n+\n+/**\n+ * gimp_prop_enum_radio_frame_new_full:\n+ * @config:        Object to which property is attached.\n+ * @property_name: Name of enum property controlled by the radio buttons.\n+ * @title:         Label for the frame holding the buttons\n+ * @minimum:       Smallest value of enum to be included.\n+ * @maximum:       Largest value of enum to be included.\n+ *\n+ * Creates a group of radio buttons which function to set and display\n+ * the specified enum property.  The @minimum and @maximum arguments\n+ * allow only a subset of the enum to be used.  If the two arguments\n+ * are equal (e.g., 0, 0), then the full range of the enum will be used.\n+ *\n+ * Return value: A #GimpFrame containing the radio buttons.\n+ *\n+ * Since GIMP 2.4\n+ */\n+GtkWidget *\n+gimp_prop_enum_radio_frame_new_with_orientation (GObject     *config,\n+                                                 const gchar *property_name,\n+                                                 const gchar *title,\n+                                                 gint         minimum,\n+                                                 gint         maximum,\n+                                                 GtkOrientation orientation)\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Test user toggle -> property and external notify -> control, initial/range values, retained/destroyed controls, horizontal/vertical consumers.",
+        "Document the stock orientation ignored-argument limitation and decide under root review whether compatibility or correction is intended."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-cc176f93e842f05483de",
+        "source_kind": "hunk",
+        "source_id": "01.002/002346",
+        "path": "libgimpwidgets/gimppropwidgets.c",
+        "source_blob": "3cf7b05422f056484acb772a722959c592d62496",
+        "source_range": "-677,6 -> 710,7",
+        "source_sha256": "dbb3239807db3e618097b2ae5d9bbcb6981c9abaf77b312e64fc35c655ee94c5",
+        "source_scope": "gimp_prop_enum_radio_frame_new (GObject     *config,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "For subset enum ranges calls the full frame constructor with orientation, config as callback_data and first-button output.",
+      "verified_original_payload": "-      frame = gimp_enum_radio_frame_new_with_range (param_spec->value_type,\n-                                                    minimum, maximum,\n-                                                    gtk_label_new (title),\n-                                                    G_CALLBACK (gimp_prop_radio_button_callback),\n-                                                    config,\n-                                                    &button);\n+      frame = gimp_enum_radio_frame_new_full (param_spec->value_type,\n+                                              minimum, maximum,\n+                                              gtk_label_new (title),\n+                                              G_CALLBACK (gimp_prop_radio_button_callback),\n+                                              config,\n+                                              &button,\n+                                              orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Test user toggle -> property and external notify -> control, initial/range values, retained/destroyed controls, horizontal/vertical consumers.",
+        "Document the stock orientation ignored-argument limitation and decide under root review whether compatibility or correction is intended."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-557e5684c2d0bd2e7d75",
+        "source_kind": "hunk",
+        "source_id": "01.002/002347",
+        "path": "libgimpwidgets/gimppropwidgets.c",
+        "source_blob": "3cf7b05422f056484acb772a722959c592d62496",
+        "source_range": "-686,5 -> 720,6",
+        "source_sha256": "ca643b567d8a06e48884a83eaa067f572ee235aa85222c68fafc0e95dc0b15a1",
+        "source_scope": "gimp_prop_enum_radio_frame_new (GObject     *config,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "For the complete enum range calls the orientation-aware frame constructor, preserving config callback and initial active-value wiring.",
+      "verified_original_payload": "-      frame = gimp_enum_radio_frame_new (param_spec->value_type,\n-                                         gtk_label_new (title),\n-                                         G_CALLBACK (gimp_prop_radio_button_callback),\n-                                         config,\n-                                         &button);\n+      frame = gimp_enum_radio_frame_new_with_orientation (param_spec->value_type,\n+                                                          gtk_label_new (title),\n+                                                          G_CALLBACK (gimp_prop_radio_button_callback),\n+                                                          config,\n+                                                          &button,\n+                                                          orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Test user toggle -> property and external notify -> control, initial/range values, retained/destroyed controls, horizontal/vertical consumers.",
+        "Document the stock orientation ignored-argument limitation and decide under root review whether compatibility or correction is intended."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-ce9102e0b3fbfd5e5adf",
+        "source_kind": "hunk",
+        "source_id": "01.002/002348",
+        "path": "libgimpwidgets/gimppropwidgets.c",
+        "source_blob": "3cf7b05422f056484acb772a722959c592d62496",
+        "source_range": "-860,0 -> 896,32",
+        "source_sha256": "a1dee1cad235d5fdd83cda701295249eefb8586d2221676a31959c8dd6e7b2f1",
+        "source_scope": "gimp_prop_boolean_radio_frame_new (GObject     *config,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Wraps boolean property frames with VERTICAL default and publishes an orientation-aware boolean API.",
+      "verified_original_payload": "+{\n+  return gimp_prop_boolean_radio_frame_new_with_orientation (config,\n+                                                              property_name,\n+                                                              title,\n+                                                              true_text, false_text,\n+                                                              GTK_ORIENTATION_VERTICAL);\n+}\n+\n+\n+/**\n+ * gimp_prop_boolean_radio_frame_new_with_orientation:\n+ * @config:        Object to which property is attached.\n+ * @property_name: Name of boolean property controlled by the radio buttons.\n+ * @title:         Label for the frame.\n+ * @true_text:     Label for the button corresponding to %TRUE.\n+ * @false_text:    Label for the button corresponding to %FALSE.\n+ * @orientation:   Alignment orientation of the radio buttons.\n+ *\n+ * Creates a pair of radio buttons which function to set and display\n+ * the specified boolean property.\n+ *\n+ * Return value: A #GimpFrame containing the radio buttons.\n+ *\n+ * Since GIMP 2.4\n+ */\n+GtkWidget *\n+gimp_prop_boolean_radio_frame_new_with_orientation (GObject     *config,\n+                                                    const gchar *property_name,\n+                                                    const gchar *title,\n+                                                    const gchar *true_text,\n+                                                    const gchar *false_text,\n+                                                    GtkOrientation orientation)\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Test user toggle -> property and external notify -> control, initial/range values, retained/destroyed controls, horizontal/vertical consumers.",
+        "Document the stock orientation ignored-argument limitation and decide under root review whether compatibility or correction is intended."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-928e512e3bcf2832fc80",
+        "source_kind": "hunk",
+        "source_id": "01.002/002349",
+        "path": "libgimpwidgets/gimppropwidgets.c",
+        "source_blob": "3cf7b05422f056484acb772a722959c592d62496",
+        "source_range": "-880 -> 947",
+        "source_sha256": "c5c9c5aff053d1ec85d287563ad0237ce8151777df81f6da760b937f5e9d106a",
+        "source_scope": "gimp_prop_boolean_radio_frame_new (GObject     *config,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Replaces the boolean frame radio-group call with the orientation-aware integer-radio group helper.",
+      "verified_original_payload": "-    gimp_int_radio_group_new (TRUE, title,\n+    gimp_int_radio_group_new_with_orientation (TRUE, title,\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Test user toggle -> property and external notify -> control, initial/range values, retained/destroyed controls, horizontal/vertical consumers.",
+        "Document the stock orientation ignored-argument limitation and decide under root review whether compatibility or correction is intended."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-d751340362d22ef05903",
+        "source_kind": "hunk",
+        "source_id": "01.002/002350",
+        "path": "libgimpwidgets/gimppropwidgets.c",
+        "source_blob": "3cf7b05422f056484acb772a722959c592d62496",
+        "source_range": "-882 -> 949",
+        "source_sha256": "7d286f105557cb35a464b0b1e09f840a8e9cf2a28b5fd1a7e6df02a60b0ac34d",
+        "source_scope": "gimp_prop_boolean_radio_frame_new (GObject     *config,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Passes config, orientation and current boolean value into the orientation-aware integer-radio group in the correct order.",
+      "verified_original_payload": "-                              config, value,\n+                              config, orientation, value,\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Test user toggle -> property and external notify -> control, initial/range values, retained/destroyed controls, horizontal/vertical consumers.",
+        "Document the stock orientation ignored-argument limitation and decide under root review whether compatibility or correction is intended."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-6b325ffcaa9a71b138f6",
+        "source_kind": "hunk",
+        "source_id": "01.002/002351",
+        "path": "libgimpwidgets/gimppropwidgets.c",
+        "source_blob": "3cf7b05422f056484acb772a722959c592d62496",
+        "source_range": "-923,0 -> 991,34",
+        "source_sha256": "570bed6fb1c3a888bd26368ea697b38d1a70e5206204da2dd338635c422986c7",
+        "source_scope": "gimp_prop_enum_stock_box_new (GObject     *config,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Adds an orientation-aware stock property API and default wrapper. Important exact-source limitation: the function body never forwards orientation; both branches still call non-orientation stock-box helpers. Do not infer effective orientation behavior from its name.",
+      "verified_original_payload": "+{\n+  return gimp_prop_enum_stock_box_new_with_orientation (config,\n+                                                         property_name,\n+                                                         stock_prefix,\n+                                                         minimum,\n+                                                         maximum,\n+                                                         GTK_ORIENTATION_VERTICAL);\n+}\n+\n+/**\n+ * gimp_prop_enum_stock_box_new_with_orientation:\n+ * @config:        Object to which property is attached.\n+ * @property_name: Name of enum property controlled by the radio buttons.\n+ * @stock_prefix:  The prefix of the group of stock ids to use.\n+ * @minimum:       Smallest value of enum to be included.\n+ * @maximum:       Largest value of enum to be included.\n+ *\n+ * Creates a horizontal box of radio buttons with stock icons, which\n+ * function to set and display the value of the specified Enum\n+ * property.  The stock_id for each icon is created by appending the\n+ * enum_value's nick to the given @stock_prefix.  See\n+ * gimp_enum_stock_box_new() for more information.\n+ *\n+ * Return value: A #libgimpwidgets-gimpenumstockbox containing the radio buttons.\n+ *\n+ * Since GIMP 2.8\n+ */\n+GtkWidget *\n+gimp_prop_enum_stock_box_new_with_orientation (GObject     *config,\n+                                               const gchar *property_name,\n+                                               const gchar *stock_prefix,\n+                                               gint         minimum,\n+                                               gint         maximum,\n+                                               GtkOrientation orientation)\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Old stock-property orientation parameter was ignored in both executable branches. Test preserves native icon HORIZONTAL behavior. No policy/API change or row completion made.",
+      "original_source_review_requirements": [
+        "Test user toggle -> property and external notify -> control, initial/range values, retained/destroyed controls, horizontal/vertical consumers.",
+        "Document the stock orientation ignored-argument limitation and decide under root review whether compatibility or correction is intended."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-e0bf61b6475a00a40708",
+        "source_kind": "hunk",
+        "source_id": "01.002/002352",
+        "path": "libgimpwidgets/gimppropwidgets.h",
+        "source_blob": "725fc756fae1e3f6bba585073ca690fdee88d8da",
+        "source_range": "-45,0 -> 46,6",
+        "source_sha256": "3340a69f2ad1da67617ee1dad542819751bda25dba6c2e31c95cb174f0ba9973",
+        "source_scope": "GtkWidget     * gimp_prop_boolean_radio_frame_new (GObject      *config,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Declares the orientation-aware boolean property frame API; preserve property name, labels and caller-supplied orientation.",
+      "verified_original_payload": "+GtkWidget     * gimp_prop_boolean_radio_frame_new_with_orientation (GObject      *config,\n+                                                   const gchar  *property_name,\n+                                                   const gchar  *title,\n+                                                   const gchar  *true_text,\n+                                                   const gchar  *false_text,\n+                                                   GtkOrientation orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Test user toggle -> property and external notify -> control, initial/range values, retained/destroyed controls, horizontal/vertical consumers.",
+        "Document the stock orientation ignored-argument limitation and decide under root review whether compatibility or correction is intended."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-161e5016070acd0627dc",
+        "source_kind": "hunk",
+        "source_id": "01.002/002353",
+        "path": "libgimpwidgets/gimppropwidgets.h",
+        "source_blob": "725fc756fae1e3f6bba585073ca690fdee88d8da",
+        "source_range": "-76,0 -> 83,6",
+        "source_sha256": "4eba778d9577ca00bbc17c12864515ce3569adebcb0fc0f0f08222a4b21939e2",
+        "source_scope": "GtkWidget     * gimp_prop_enum_radio_frame_new    (GObject      *config,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Declares the orientation-aware enum property frame API including range limits.",
+      "verified_original_payload": "+GtkWidget     * gimp_prop_enum_radio_frame_new_with_orientation (GObject     *config,\n+                                                                 const gchar *property_name,\n+                                                                 const gchar *title,\n+                                                                 gint         minimum,\n+                                                                 gint         maximum,\n+                                                                 GtkOrientation orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Test user toggle -> property and external notify -> control, initial/range values, retained/destroyed controls, horizontal/vertical consumers.",
+        "Document the stock orientation ignored-argument limitation and decide under root review whether compatibility or correction is intended."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-d6daeac884780b785112",
+        "source_kind": "hunk",
+        "source_id": "01.002/002354",
+        "path": "libgimpwidgets/gimppropwidgets.h",
+        "source_blob": "725fc756fae1e3f6bba585073ca690fdee88d8da",
+        "source_range": "-85,0 -> 98,6",
+        "source_sha256": "2a688a258badd060855255f6cfad8b423bbb73f535593a547ea3e3198d17645a",
+        "source_scope": "GtkWidget     * gimp_prop_enum_stock_box_new      (GObject      *config,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Declares stock property orientation API; actual ignored-argument behavior in 002351 must be acknowledged, not silently replaced by a name-based claim.",
+      "verified_original_payload": "+GtkWidget     * gimp_prop_enum_stock_box_new_with_orientation (GObject      *config,\n+                                                               const gchar  *property_name,\n+                                                               const gchar  *stock_prefix,\n+                                                               gint          minimum,\n+                                                               gint          maximum,\n+                                                               GtkOrientation orientation);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Old stock-property orientation parameter was ignored in both executable branches. Test preserves native icon HORIZONTAL behavior. No policy/API change or row completion made.",
+      "original_source_review_requirements": [
+        "Test user toggle -> property and external notify -> control, initial/range values, retained/destroyed controls, horizontal/vertical consumers.",
+        "Document the stock orientation ignored-argument limitation and decide under root review whether compatibility or correction is intended."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-da212e6f868d6eb94b4d",
+        "source_kind": "hunk",
+        "source_id": "01.002/002363",
+        "path": "libgimpwidgets/gimpwidgets.c",
+        "source_blob": "5b45cd3a537192ca8415632c5d3aec56dab37613",
+        "source_range": "-311,0 -> 312,120",
+        "source_sha256": "8df8b44424f918dc9a416d48fa365d2e5d372dedd825b9be46bca0db756371ae",
+        "source_scope": "gimp_int_radio_group_new (gboolean         in_frame,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Adds an orientation-aware integer-radio group constructor and preserves varargs label/value/output-widget parsing, initial selection, toggled callbacks and optional frame. gimp-item-data/user_data qdata holds integer values, not C++ Impl; it is not evidence of a second C++ ownership store.",
+      "verified_original_payload": "+  while (label)\n+    {\n+      item_data  = va_arg (args, gint);\n+      widget_ptr = va_arg (args, GtkWidget **);\n+\n+      item_ptr = GINT_TO_POINTER (item_data);\n+\n+      if (label != GINT_TO_POINTER (1))\n+        button = gtk_radio_button_new_with_mnemonic (group, label);\n+      else\n+        button = gtk_radio_button_new (group);\n+\n+      group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));\n+      gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);\n+\n+      if (item_data)\n+        {\n+          g_object_set_data (G_OBJECT (button), \"gimp-item-data\", item_ptr);\n+\n+          /*  backward compatibility  */\n+          g_object_set_data (G_OBJECT (button), \"user_data\", item_ptr);\n+        }\n+\n+      if (widget_ptr)\n+        *widget_ptr = button;\n+\n+      if (initial == item_data)\n+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);\n+\n+      g_signal_connect (button, \"toggled\",\n+                        radio_button_callback,\n+                        callback_data);\n+\n+      gtk_widget_show (button);\n+\n+      label = va_arg (args, const gchar *);\n+    }\n+  va_end (args);\n+\n+  if (in_frame)\n+    {\n+      GtkWidget *frame;\n+\n+      frame = gimp_frame_new (frame_title);\n+      gtk_container_add (GTK_CONTAINER (frame), vbox);\n+      gtk_widget_show (vbox);\n+\n+      return frame;\n+    }\n+\n+  return vbox;\n+}\n+\n+/**\n+ * gimp_int_radio_group_new_with_orientation:\n+ * @in_frame:              %TRUE if you want a #GtkFrame around the\n+ *                         radio button group.\n+ * @frame_title:           The title of the Frame or %NULL if you don't want\n+ *                         a title.\n+ * @radio_button_callback: The callback each button's \"toggled\" signal will\n+ *                         be connected with.\n+ * @radio_button_callback_data:\n+ *                         The data which will be passed to g_signal_connect().\n+ * @orientation:           Alignment orientation of the radio buttons.\n+ * @initial:               The @item_data of the initially pressed radio button.\n+ * @...:                   A %NULL-terminated @va_list describing\n+ *                         the radio buttons.\n+ *\n+ * Convenience function to create a group of radio buttons embedded into\n+ * a #GtkFrame or #GtkVBox. This function does the same thing as\n+ * gimp_radio_group_new2(), but it takes integers as @item_data instead of\n+ * pointers, since that is a very common case (mapping an enum to a radio\n+ * group).\n+ *\n+ * Returns: A #GtkFrame or #GtkVBox (depending on @in_frame).\n+ **/\n+GtkWidget *\n+gimp_int_radio_group_new_with_orientation (gboolean         in_frame,\n+                                           const gchar     *frame_title,\n+                                           GCallback        radio_button_callback,\n+                                           gpointer         callback_data,\n+                                           GtkOrientation   orientation,\n+                                           gint             initial, /* item_data */\n+ \n+                                           /* specify radio buttons as va_list:\n+                                            *  const gchar *label,\n+                                            *  gint         item_data,\n+                                            *  GtkWidget  **widget_ptr,\n+                                            */\n+ \n+                                           ...)\n+{\n+  GtkWidget *vbox;\n+  GtkWidget *button;\n+  GSList    *group;\n+\n+  /*  radio button variables  */\n+  const gchar *label;\n+  gint         item_data;\n+  gpointer     item_ptr;\n+  GtkWidget  **widget_ptr;\n+\n+  va_list args;\n+\n+  switch (orientation)\n+    {\n+    case GTK_ORIENTATION_HORIZONTAL:\n+      vbox = gtk_hbox_new (FALSE, 2);\n+      break;\n+    case GTK_ORIENTATION_VERTICAL:\n+    default:\n+      vbox = gtk_vbox_new (FALSE, 2);\n+      break;\n+    }\n+  group = NULL;\n+\n+  /*  create the radio buttons  */\n+  va_start (args, initial);\n+  label = va_arg (args, const gchar *);\n+\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Test orientation, NULL terminator, label/value/widget output tuples, zero/nonzero item data, initial active value, callback data and frame/child destruction."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-ecd754678b8799f26d57",
+        "source_kind": "hunk",
+        "source_id": "01.002/002364",
+        "path": "libgimpwidgets/gimpwidgets.h",
+        "source_blob": "efce63d05a83f9f5ca9422d935b30e6dfd620ac4",
+        "source_range": "-109,0 -> 110,15",
+        "source_sha256": "9fff9b4960c08d915217b5a866a3fbf8cc7ec928f1ec255171595f683826a11f",
+        "source_scope": "GtkWidget * gimp_int_radio_group_new (gboolean          in_frame,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Declares the orientation-aware integer-radio varargs constructor with orientation before initial and a NULL-terminated argument contract.",
+      "verified_original_payload": "+GtkWidget * gimp_int_radio_group_new_with_orientation (gboolean          in_frame,\n+                                                       const gchar      *frame_title,\n+                                                       GCallback         radio_button_callback,\n+                                                       gpointer          radio_button_callback_data,\n+                                                       GtkOrientation    orientation,\n+                                                       gint              initial, /* item_data */\n+\n+                                                       /* specify radio buttons as va_list:\n+                                                        *  const gchar  *label,\n+                                                        *  gint          item_data,\n+                                                        *  GtkWidget   **widget_ptr,\n+                                                        */\n+\n+                                                       ...) G_GNUC_NULL_TERMINATED;\n+\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "coverage_limit": "Partial provider/consumer behavioral evidence only. All old orientation APIs and every legacy caller still need explicit mapping; no old C ABI guarantee or closed-world caller coverage is claimed.",
+      "original_source_review_requirements": [
+        "Test orientation, NULL terminator, label/value/widget output tuples, zero/nonzero item data, initial active value, callback data and frame/child destruction."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-ef2258eabbcf2a8c1833",
+        "source_kind": "hunk",
+        "source_id": "01.002/001528",
+        "path": "app/widgets/gimpcontainertreeview-dnd.c",
+        "source_blob": "9cf301e34a8009be656525833e61cc944df4ae4e",
+        "source_range": "-645,4 -> 645,4",
+        "source_sha256": "cff6fad8dd92cf56bb8a3dd95bb04c2dab3cd64d0bef711e0b8931d336fadbcc",
+        "source_scope": "gimp_container_tree_view_real_drop_viewable (GimpContainerTreeView   *tree_view,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Replaces one flat container and src_index local with separate source/destination containers and an initialized destination index.",
+      "verified_original_payload": "-  GimpContainerView *view      = GIMP_CONTAINER_VIEW (tree_view);\n-  GimpContainer     *container = gimp_container_view_get_container (view);\n-  gint               src_index;\n-  gint               dest_index;\n+  GimpContainerView *view       = GIMP_CONTAINER_VIEW (tree_view);\n+  GimpContainer     *src_container;\n+  GimpContainer     *dest_container;\n+  gint               dest_index = 0;\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-canvas-ui/w08017_dnd_same_parent_order",
+        "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner"
+      ],
+      "coverage_limit": "Native callback/model evidence only; no physical drag transport, multi-source or complete feature acceptance.",
+      "original_source_review_requirements": [
+        "Test before/after and into-child drops, same/cross-parent moves, ordering, selection/model notifications, and source survival across remove/insert; include multi-selection and reentry."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-db62522f4ceeda639b4a",
+        "source_kind": "hunk",
+        "source_id": "01.002/001529",
+        "path": "app/widgets/gimpcontainertreeview-dnd.c",
+        "source_blob": "9cf301e34a8009be656525833e61cc944df4ae4e",
+        "source_range": "-650,4 -> 650,9",
+        "source_sha256": "d895d8e709b700a27227a2f7cfbf7744979685afb7536574f76d5cebcee47b1b",
+        "source_scope": "gimp_container_tree_view_real_drop_viewable (GimpContainerTreeView   *tree_view,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Resolves source container from the source viewable parent, otherwise from the container view.",
+      "verified_original_payload": "-  src_index  = gimp_container_get_child_index (container,\n-                                               GIMP_OBJECT (src_viewable));\n-  dest_index = gimp_container_get_child_index (container,\n-                                               GIMP_OBJECT (dest_viewable));\n+  if (gimp_viewable_get_parent (src_viewable))\n+    {\n+      src_container = gimp_viewable_get_children (\n+        gimp_viewable_get_parent (src_viewable));\n+    }\n+  else\n+    {\n+      src_container = gimp_container_view_get_container (view);\n+    }\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner"
+      ],
+      "coverage_limit": "Native callback/model evidence only; no physical drag transport, multi-source or complete feature acceptance.",
+      "original_source_review_requirements": [
+        "Test before/after and into-child drops, same/cross-parent moves, ordering, selection/model notifications, and source survival across remove/insert; include multi-selection and reentry."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-8008d4333b8160e67585",
+        "source_kind": "hunk",
+        "source_id": "01.002/001530",
+        "path": "app/widgets/gimpcontainertreeview-dnd.c",
+        "source_blob": "9cf301e34a8009be656525833e61cc944df4ae4e",
+        "source_range": "-655 -> 660,3",
+        "source_sha256": "20e506b8a915e52f77047423b039b9fdeb74c6afb3d56d80bc630037ba01fd3f",
+        "source_scope": "gimp_container_tree_view_real_drop_viewable (GimpContainerTreeView   *tree_view,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Recognizes INTO_OR_AFTER/INTO_OR_BEFORE drops when the destination has children.",
+      "verified_original_payload": "-  if (drop_pos == GTK_TREE_VIEW_DROP_AFTER && src_index > dest_index)\n+  if ((drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_AFTER   ||\n+       drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_BEFORE) &&\n+      gimp_viewable_get_children (dest_viewable))\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner"
+      ],
+      "coverage_limit": "Native callback/model evidence only; no physical drag transport, multi-source or complete feature acceptance.",
+      "original_source_review_requirements": [
+        "Test before/after and into-child drops, same/cross-parent moves, ordering, selection/model notifications, and source survival across remove/insert; include multi-selection and reentry."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-6fc270534d482128e4c9",
+        "source_kind": "hunk",
+        "source_id": "01.002/001531",
+        "path": "app/widgets/gimpcontainertreeview-dnd.c",
+        "source_blob": "9cf301e34a8009be656525833e61cc944df4ae4e",
+        "source_range": "-657 -> 664,3",
+        "source_sha256": "7eb7895340b45bdd0cd645587ec4199f17c78a7695c64ff413e7ca2b2b3dacc6",
+        "source_scope": "gimp_container_tree_view_real_drop_viewable (GimpContainerTreeView   *tree_view,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Selects the destination child container, clears dest_viewable and normalizes insertion to BEFORE.",
+      "verified_original_payload": "-      dest_index++;\n+      dest_container = gimp_viewable_get_children (dest_viewable);\n+      dest_viewable  = NULL;\n+      drop_pos       = GTK_TREE_VIEW_DROP_BEFORE;\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner"
+      ],
+      "coverage_limit": "Native callback/model evidence only; no physical drag transport, multi-source or complete feature acceptance.",
+      "original_source_review_requirements": [
+        "Test before/after and into-child drops, same/cross-parent moves, ordering, selection/model notifications, and source survival across remove/insert; include multi-selection and reentry."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-0162d9459993ab918d75",
+        "source_kind": "hunk",
+        "source_id": "01.002/001532",
+        "path": "app/widgets/gimpcontainertreeview-dnd.c",
+        "source_blob": "9cf301e34a8009be656525833e61cc944df4ae4e",
+        "source_range": "-659 -> 668",
+        "source_sha256": "8083d29799b42faedbe7ea87f9252033345b441c638f146c43fc1362dc5af658",
+        "source_scope": "gimp_container_tree_view_real_drop_viewable (GimpContainerTreeView   *tree_view,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Branches on destination-parent presence, replacing a flat-index-only branch.",
+      "verified_original_payload": "-  else if (drop_pos == GTK_TREE_VIEW_DROP_BEFORE && src_index < dest_index)\n+  else if (gimp_viewable_get_parent (dest_viewable))\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner"
+      ],
+      "coverage_limit": "Native callback/model evidence only; no physical drag transport, multi-source or complete feature acceptance.",
+      "original_source_review_requirements": [
+        "Test before/after and into-child drops, same/cross-parent moves, ordering, selection/model notifications, and source survival across remove/insert; include multi-selection and reentry."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-1750db404ee25d2816c8",
+        "source_kind": "hunk",
+        "source_id": "01.002/001533",
+        "path": "app/widgets/gimpcontainertreeview-dnd.c",
+        "source_blob": "9cf301e34a8009be656525833e61cc944df4ae4e",
+        "source_range": "-661 -> 670,38",
+        "source_sha256": "0ba898bad8d6ba88a5c9e6330bb682aa405d894ede00a1810e8a3747e35a7b65",
+        "source_scope": "gimp_container_tree_view_real_drop_viewable (GimpContainerTreeView   *tree_view,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Resolves destination parent/top-level container, calculates destination index and corrects same-container before/after indexes before reordering.",
+      "verified_original_payload": "-      dest_index--;\n+      dest_container = gimp_viewable_get_children (\n+        gimp_viewable_get_parent (dest_viewable));\n+    }\n+  else\n+    {\n+      dest_container = gimp_container_view_get_container (view);\n+    }\n+\n+  if (dest_viewable)\n+    {\n+      dest_index = gimp_container_get_child_index (dest_container,\n+                                                   GIMP_OBJECT (dest_viewable));\n+    }\n+\n+  if (src_container == dest_container)\n+    {\n+      gint src_index;\n+\n+      src_index  = gimp_container_get_child_index (src_container,\n+                                                   GIMP_OBJECT (src_viewable));\n+\n+      switch (drop_pos)\n+        {\n+        case GTK_TREE_VIEW_DROP_AFTER:\n+        case GTK_TREE_VIEW_DROP_INTO_OR_AFTER:\n+          if (src_index > dest_index)\n+            dest_index++;\n+          break;\n+\n+        case GTK_TREE_VIEW_DROP_BEFORE:\n+        case GTK_TREE_VIEW_DROP_INTO_OR_BEFORE:\n+          if (src_index < dest_index)\n+            dest_index--;\n+          break;\n+        }\n+\n+      gimp_container_reorder (src_container,\n+                              GIMP_OBJECT (src_viewable), dest_index);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-canvas-ui/w08017_dnd_same_parent_order",
+        "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner"
+      ],
+      "coverage_limit": "Native callback/model evidence only; no physical drag transport, multi-source or complete feature acceptance.",
+      "original_source_review_requirements": [
+        "Test before/after and into-child drops, same/cross-parent moves, ordering, selection/model notifications, and source survival across remove/insert; include multi-selection and reentry."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-0dc1d396fb24e35d8097",
+        "source_kind": "hunk",
+        "source_id": "01.002/001534",
+        "path": "app/widgets/gimpcontainertreeview-dnd.c",
+        "source_blob": "9cf301e34a8009be656525833e61cc944df4ae4e",
+        "source_range": "-662,0 -> 709,15",
+        "source_sha256": "fd915a77fb400749ff8ce1f8d9c3c683bdf91b67c6afe70495accd1e65b9b576",
+        "source_scope": "gimp_container_tree_view_real_drop_viewable (GimpContainerTreeView   *tree_view,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Adjusts cross-container insertion index and retains src_viewable before it is removed from its old owning container.",
+      "verified_original_payload": "+  else\n+    {\n+      switch (drop_pos)\n+        {\n+        case GTK_TREE_VIEW_DROP_AFTER:\n+        case GTK_TREE_VIEW_DROP_INTO_OR_AFTER:\n+          dest_index++;\n+          break;\n+\n+        case GTK_TREE_VIEW_DROP_BEFORE:\n+        case GTK_TREE_VIEW_DROP_INTO_OR_BEFORE:\n+          break;\n+        }\n+\n+      g_object_ref (src_viewable);\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner"
+      ],
+      "coverage_limit": "Native callback/model evidence only; no physical drag transport, multi-source or complete feature acceptance.",
+      "original_source_review_requirements": [
+        "Test before/after and into-child drops, same/cross-parent moves, ordering, selection/model notifications, and source survival across remove/insert; include multi-selection and reentry."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-8695d40ca6ddc559ad86",
+        "source_kind": "hunk",
+        "source_id": "01.002/001535",
+        "path": "app/widgets/gimpcontainertreeview-dnd.c",
+        "source_blob": "9cf301e34a8009be656525833e61cc944df4ae4e",
+        "source_range": "-664 -> 725,6",
+        "source_sha256": "93b05cc773d4b854b6476b1bddd6ac3520bceb1bf0b118b0dcfd137fb15509dd",
+        "source_scope": "gimp_container_tree_view_real_drop_viewable (GimpContainerTreeView   *tree_view,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "source_specific_duty": "Performs remove/insert while retaining src_viewable, then releases the temporary reference. The retained object is a C model object, not a C++ behavior allocation.",
+      "verified_original_payload": "-  gimp_container_reorder (container, GIMP_OBJECT (src_viewable), dest_index);\n+      gimp_container_remove (src_container,  GIMP_OBJECT (src_viewable));\n+      gimp_container_insert (dest_container, GIMP_OBJECT (src_viewable),\n+                             dest_index);\n+\n+      g_object_unref (src_viewable);\n+    }\n",
+      "production_change": null,
+      "test_cases": [
+        "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner"
+      ],
+      "coverage_limit": "Native callback/model evidence only; no physical drag transport, multi-source or complete feature acceptance.",
+      "original_source_review_requirements": [
+        "Test before/after and into-child drops, same/cross-parent moves, ordering, selection/model notifications, and source survival across remove/insert; include multi-selection and reentry."
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    }
+  ],
+  "supporting_dnd_integration": [
+    {
+      "name": "w08017_dnd_same_parent_order",
+      "source_ids": [
+        "01.002/001528",
+        "01.002/001533"
+      ],
+      "proof": "Real same-parent reorder before/after in both directions; exact model/GTK order."
+    },
+    {
+      "name": "w08017_dnd_cross_parent_last_owner",
+      "source_ids": [
+        "01.002/001528",
+        "01.002/001529",
+        "01.002/001530",
+        "01.002/001531",
+        "01.002/001532",
+        "01.002/001533",
+        "01.002/001534",
+        "01.002/001535"
+      ],
+      "proof": "Real source/destination parent/root resolution; both INTO positions; post-release owner gap, refs exactly one, no lost/extra owner, GTK rows."
+    },
+    {
+      "name": "w08017_dnd_reject_self_ancestor",
+      "source_ids": [],
+      "proof": "Surrounding native gate rejects self/ancestor before mutation; integration support only."
+    },
+    {
+      "name": "w08017_dnd_layer_group_move_undo",
+      "source_ids": [],
+      "proof": "Image-aware original-provider integration: actual layer tree group reparent, child identity, selection, model, Undo."
+    },
+    {
+      "name": "w08017_dnd_cross_image_copy",
+      "source_ids": [],
+      "proof": "Image-aware original-provider integration: COPY, converted destination object, unchanged source, pixels/dimensions/opacity and destination Undo."
+    }
+  ],
+  "legacy_image_aware_provider": {
+    "path": "app/widgets/gimpitemtreeview.c",
+    "source_blob": "3c35fd5b3a6d4d4beb5140e8e5c2c9b53183178e",
+    "sha256": "87c485c01989a63c701184f17a78d7a5b75880e814dd73f1cfcc28ff966ff9be",
+    "lines": [
+      1073,
+      1166
+    ],
+    "relationship": "Existing provider context, not a changed generic-hunk obligation; cross-image COPY/convert/add and same-image reorder are independently evidenced."
+  },
+  "native_lifetime_oracles": {
+    "preview_and_helper_finalization": "Qdata destruction proves actual finalization; retained native widgets survive destroy until the final unref.",
+    "helper_callback_release": "Weak-notify callback counters prove exactly-once callback-data release, separately from object finalization.",
+    "dnd_last_owner": "Source removal observer sees exactly the temporary native model ref before destination insertion; destination ownership and final model destruction reject lost or leaked retains."
+  },
+  "orientation_boundary": "The pinned old stock-property orientation helper ignored orientation in its effective body; current horizontal icon-box behavior is asserted, with no invented vertical policy or ABI claim.",
+  "limitations": [
+    "Bounded native provider/integration evidence; no acceptance or closure of 08.017 or 29.* feature duties",
+    "All 93 original 08.017 source duties stay individually visible, byte-identical and TODO; original tasks remain 140/661",
+    "Five selected registrations, not the full aggregate suite",
+    "Virtual GTK display and native vfunc/model callbacks; no physical drag transport, pointer hit-testing, tablet or cross-platform acceptance",
+    "Standard application ASan/UBSan with RTTI and vptr retained; LSan disabled; third-party dependencies not instrumented",
+    "Helper counterparts do not establish all old orientation APIs, old C ABI callers or a closed-world legacy caller census",
+    "DnD controls cover singleton source lists, selected ownership/order/Undo behavior and bounded copy fidelity, not modern multi-selection or complete old feature equivalence"
+  ]
+}

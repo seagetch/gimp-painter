@@ -545,10 +545,16 @@ static void native_editor_mixed_width_buttons (void)
   gtk_widget_destroy (host); g_object_unref (host); drain ();
 }
 
+#include "test-widget-store-native-controls.inc"
+
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);gtk_window_set_default_size(GTK_WINDOW(window),1100,130);
+  g_test_add_func ("/painter-compact-options/native-preview-factory-failure", native_preview_factory_failure);
+  g_test_add_func ("/painter-compact-options/native-preview-factory-success", native_preview_factory_success);
+  g_test_add_func ("/painter-compact-options/native-property-controls", native_property_controls);
+  g_test_add_func ("/painter-compact-options/native-enum-integer-helpers", native_enum_integer_helpers);
   g_test_add_func("/painter-compact-options/inventory-all-registered",inventory_all_registered_tools);
   g_test_add_func("/painter-compact-options/common-store-registration-close",common_store_registration_and_close);
   g_test_add_func("/painter-compact-options/mypaint-store-page-retention",mypaint_popup_store_and_page_retention);

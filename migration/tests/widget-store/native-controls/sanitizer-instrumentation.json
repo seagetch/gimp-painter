@@ -1,0 +1,182 @@
+{
+  "status": "PASS",
+  "standard_builds": [
+    {
+      "mode": "native",
+      "stage": "red",
+      "status": "PASS"
+    },
+    {
+      "mode": "native",
+      "stage": "green",
+      "status": "PASS"
+    },
+    {
+      "mode": "asan",
+      "stage": "red",
+      "status": "PASS"
+    },
+    {
+      "mode": "asan",
+      "stage": "green",
+      "status": "PASS"
+    }
+  ],
+  "compile_checks": [
+    {
+      "mode": "native",
+      "path": "app/widgets/gimpcontainerbox.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "app/tests/test-painter-compact-options.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "app/tests/test-painter-canvas-ui.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimppropwidgets.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimpcontainertreeview-dnd.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimpitemtreeview.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "libgimpwidgets/gimpenumwidgets.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "libgimpwidgets/gimppropwidgets.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "libgimpwidgets/gimpwidgets.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimpcontainerbox.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "app/tests/test-painter-compact-options.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "app/tests/test-painter-canvas-ui.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimppropwidgets.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimpcontainertreeview-dnd.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimpitemtreeview.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "libgimpwidgets/gimpenumwidgets.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "libgimpwidgets/gimppropwidgets.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "libgimpwidgets/gimpwidgets.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    }
+  ],
+  "included_fragments": [
+    {
+      "path": "app/tests/test-widget-store-native-controls.inc",
+      "translation_unit": "app/tests/test-painter-compact-options.c"
+    },
+    {
+      "path": "app/tests/test-widget-store-native-dnd.inc",
+      "translation_unit": "app/tests/test-painter-canvas-ui.c"
+    }
+  ],
+  "asan_options": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+  "ubsan_options": "halt_on_error=1:abort_on_error=1:print_stacktrace=1",
+  "leak_detection": false,
+  "third_party_dependencies_instrumented": false,
+  "rtti_and_vptr_preserved": true
+}

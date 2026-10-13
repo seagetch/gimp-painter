@@ -265,6 +265,8 @@ gimp_container_box_get_preview (GimpDocked   *docked,
 
   preview = gimp_prop_view_new (G_OBJECT (context), prop_name,
                                 context, height);
+  g_return_val_if_fail (preview != NULL, NULL);
+
   GIMP_VIEW (preview)->renderer->size = -1;
 
   gimp_container_view_get_view_size (view, &border_width);

@@ -1,0 +1,44 @@
+{
+  "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+  "baseline_sha256": {
+    "app/tests/test-painter-compact-options.c": "7c23ff1454763519299e5c9912d23bfaa86c2fc5ff9478aa539d8321af081b38",
+    "app/tests/test-painter-canvas-ui.c": "2a72b007d0d486c24845f634eb21fb69f2127887eb7ac88b92e8a79e9ba90ddf",
+    "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef"
+  },
+  "final_sha256": {
+    "app/widgets/gimpcontainerbox.c": "fba1e434defbc21d7165ea6a0e0fb071b3cc0fdf06ec50c323db09a99ee07cd7",
+    "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+    "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+    "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+    "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4"
+  },
+  "new_source_files": [
+    "app/tests/test-widget-store-native-controls.inc",
+    "app/tests/test-widget-store-native-dnd.inc"
+  ],
+  "provider_sha256_unchanged_between_preparation_and_freeze": {
+    "app/widgets/gimppropwidgets.c": "d9ea7d225b9538e005b538db88788e8d97ae8a0eafae9c66b72b9b8fbabe6714",
+    "app/widgets/gimpdocked.c": "f821a718f2d356d27c941206d5ac2a68ce1ab7fcbc291c9810e09fe9e24a2e16",
+    "app/widgets/gimpcontainertreeview-dnd.c": "189f0ec71da5b31e7638d024889aafa94a56f8e143ce7dc55a7c823ac23e6c97",
+    "app/widgets/gimpitemtreeview.c": "6606b80dc5adffec949c2d6ea7938ddf50fb2d989cd16aa54522c1539349e336",
+    "app/widgets/gimplayertreeview.c": "94efd1ec6f98258a16aa32e737185848809670d15062af64372892299e05c3c6",
+    "libgimpwidgets/gimpenumwidgets.c": "f764664e33a93d34c4e0324ba4e1a0283bed0c53d2a08f19bae9ef76027633cd",
+    "libgimpwidgets/gimppropwidgets.c": "7559aa044fdb075941228fb2f0cd99c231e2499cb68047a45f77ac106b9578f8",
+    "libgimpwidgets/gimpwidgets.c": "27a8d368eedb9b7a38a8fe77e51ffb095ed11d5f1d2c17a04d4cdaf46088f981"
+  },
+  "identity_limit": "Additional provider identities are preparation/freeze checks; only paths listed by each runner are independently sealed before/after execution.",
+  "ledger_unchanged": {
+    "task": "08.017",
+    "state": "TODO",
+    "source_duties_total": 93,
+    "source_duties_todo": 93,
+    "source_duties_advanced": 0,
+    "original_tasks_done": 140,
+    "original_tasks_total": 661,
+    "ledger_sha256_unchanged": {
+      "tasks.md": "f8dcc04dce565b828e988c6e7c8a5a9cdeb0187393a4f73200f1a6ca4294f599",
+      "migration/progress.tsv": "1486df43d0bb66c320163a93aeff9c9040e87ea273c880bf1ee84a3974af013b",
+      "migration/inventory/legacy-port-work-items.tsv": "d49c9f480dc051b56ea6264b0dce8dcc4ef039b041287cee21e96dcb23637d7b"
+    }
+  }
+}
