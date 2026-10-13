@@ -1,0 +1,143 @@
+{
+  "status": "PASS",
+  "builds": [
+    {
+      "mode": "native",
+      "status": "PASS",
+      "exit_marker_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "mode": "asan",
+      "status": "PASS",
+      "exit_marker_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "compile_checks": [
+    {
+      "mode": "native",
+      "path": "app/widgets/gimpwidgets-utils.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "e4e9e18ab72b80e3bdd445ea9f39d290acb7f628304be1296d0ace6cbca72a59"
+    },
+    {
+      "mode": "native",
+      "path": "app/tests/test-painter-canvas-ui.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "ac4261429fd67c4d33f0d912f32f351f1b5232344895f1ef041f0ef457d6e1dd"
+    },
+    {
+      "mode": "native",
+      "path": "app/tests/test-painter-mypaint-editor.cpp",
+      "sanitizers": "none",
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "sanitizer_suppression": false,
+      "command_sha256": "1b31228b8245dca6e14c04e85b85f5f685ddeb491f8fefe189fca38ec2955c31"
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimppaintermybrusheditor.cpp",
+      "sanitizers": "none",
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "sanitizer_suppression": false,
+      "command_sha256": "fa0edff792ef380f250dc2b4495040ee738955d4f57ed694cef4ecf23b7be7cb"
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimpviewrenderer.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "e98acfdadb0483f7bb7469bda849b94eebb849a1bd7a0fb1f89d7e8bb2f92426"
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimpdnd.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "440d964622082a372efdd0512e279da79ec5cc7c812c85fd2c19b9cc2615fb41"
+    },
+    {
+      "mode": "native",
+      "path": "app/gui/session.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "641e0802e156ec7df4fae4ae5884a0d512fb8767f7b38145351ee74602c536da"
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimpwidgets-utils.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "da4264eb72712ea8e18aebd827d610c02167ad19721d3c5c5e529a1ed185e55c"
+    },
+    {
+      "mode": "asan",
+      "path": "app/tests/test-painter-canvas-ui.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "7b957d4945463a78b14c49b3fd60b4ef962435e9fae737448b20ebb386c21f82"
+    },
+    {
+      "mode": "asan",
+      "path": "app/tests/test-painter-mypaint-editor.cpp",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [
+        "-frtti"
+      ],
+      "sanitizer_suppression": false,
+      "command_sha256": "96b7429c15ae2d84cd111fe7f2ff15a2b160591ce844a0f6bad978f4c2bfbb60"
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimppaintermybrusheditor.cpp",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [
+        "-frtti"
+      ],
+      "sanitizer_suppression": false,
+      "command_sha256": "69631dd540182ac79627523cf114daeecab0770ed787be7bcfe5979f45ad1c45"
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimpviewrenderer.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "2c560ed3b5ee8e9d7121bd012a9bd1391a64c2ba01214cacacb20dcee91a8795"
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimpdnd.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "0c0c777cd47e1b62d22d67010b2e2f681e362ed59c93c6a26493cbd60bf6bc29"
+    },
+    {
+      "mode": "asan",
+      "path": "app/gui/session.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "a74167bfdd5a450ccaff16e56d7eca07831ab21a6d7de30c0f8723db8f1bc97c"
+    }
+  ],
+  "asan_options": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+  "ubsan_options": "halt_on_error=1:abort_on_error=1:print_stacktrace=1",
+  "asan_rtti_and_vptr_preserved": true,
+  "native_default_no_rtti_preserved": true,
+  "leak_detection": false,
+  "third_party_dependencies_instrumented": false
+}
