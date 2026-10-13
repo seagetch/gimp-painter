@@ -207,5 +207,125 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(self.scan()['status'],'FAIL')
 
 
+class NativeWidgetMetadataTests(unittest.TestCase):
+    """Pin the two 08.018 native metadata reviews without general qdata access."""
+    SITES = (
+        ('native-editor-help', 'app/widgets/gimpeditor-cxx.cpp',
+         'g_object_set_qdata_full',
+         '41f19886d64f6911801df4adead4965ff28daa68f973131a5646e7596ee944a3',
+         'g_object_set_qdata_full (arrow.get (), GIMP_HELP_ID, g_strdup (help_id), g_free);'),
+        ('native-radio-button', 'app/widgets/gimppaintercompactoptions.cpp',
+         'g_object_get_data',
+         '5aa62660106766da81a0f878ff53a3627f514343ed8e82c15687fc478ad74bfb',
+         'g_object_get_data (G_OBJECT (widget), "radio-button");'),
+    )
+
+    def setUp(self):
+        root = Path(__file__).resolve().parents[2]
+        full = json.loads((root / A.POLICY).read_text())
+        names = {site[0] for site in self.SITES}
+        self.policy = {
+            'syntax_exceptions': [], 'dormant_exceptions': [],
+            'reviews': {name: full['reviews'][name] for name in names},
+            'data_sites': [row for row in full['data_sites'] if row['provenance'] in names],
+        }
+        self.calls = {site[1]: site[4] for site in self.SITES}
+
+    def scan(self, calls=None):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name, call in (self.calls if calls is None else calls).items():
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(call + '\n')
+            return A.scan(root, self.policy)
+
+    def test_policy_pins_exact_native_metadata_sites(self):
+        self.assertEqual(len(self.policy['data_sites']), 2)
+        for name, path, operation, sha256, _ in self.SITES:
+            rows = [row for row in self.policy['data_sites'] if row['provenance'] == name]
+            self.assertEqual(len(rows), 1)
+            row = rows[0]
+            self.assertEqual((row['path'], row['operation'], row['sha256'], row['count']),
+                             (path, operation, sha256, 1))
+            self.assertEqual(self.policy['reviews'][name]['paths'], [path])
+            self.assertTrue(row['reason'])
+            self.assertTrue(self.policy['reviews'][name]['reason'])
+
+    def test_exact_native_metadata_calls(self):
+        self.assertEqual(self.scan()['status'], 'PASS')
+
+    def test_unknown_qdata_site_rejected(self):
+        for _, path, _, _, _ in self.SITES:
+            with self.subTest(path=path):
+                calls = dict(self.calls)
+                calls[path] += '\ng_object_set_qdata_full (object, impl_key, new Impl, destroy_impl);'
+                result = self.scan(calls)
+                self.assertEqual(result['status'], 'FAIL')
+                self.assertTrue(any('unaudited object data site' in error for error in result['errors']))
+
+    def test_mutated_native_metadata_calls_rejected(self):
+        changes = (
+            (0, 'arrow.get ()', 'primary.get ()'),
+            (0, 'GIMP_HELP_ID', 'impl_key'),
+            (0, 'g_strdup (help_id)', 'new Impl'),
+            (0, 'g_free', 'destroy_impl'),
+            (1, 'G_OBJECT (widget)', 'G_OBJECT (other)'),
+            (1, '"radio-button"', '"impl"'),
+        )
+        for index, old, new in changes:
+            with self.subTest(index=index, old=old):
+                calls = dict(self.calls)
+                path = self.SITES[index][1]
+                calls[path] = calls[path].replace(old, new)
+                result = self.scan(calls)
+                self.assertEqual(result['status'], 'FAIL')
+                self.assertTrue(any('unaudited object data site' in error for error in result['errors']))
+                self.assertTrue(any('stale or changed object data review' in error for error in result['errors']))
+
+    def test_duplicate_native_metadata_calls_rejected(self):
+        for _, path, _, _, _ in self.SITES:
+            with self.subTest(path=path):
+                calls = dict(self.calls)
+                calls[path] *= 2
+                self.assertEqual(self.scan(calls)['status'], 'FAIL')
+
+    def test_native_metadata_source_path_drift_rejected(self):
+        for _, path, _, _, _ in self.SITES:
+            with self.subTest(path=path):
+                calls = dict(self.calls)
+                calls[path.replace('.cpp', '-moved.cpp')] = calls.pop(path)
+                result = self.scan(calls)
+                self.assertEqual(result['status'], 'FAIL')
+                self.assertTrue(any('unaudited object data site' in error for error in result['errors']))
+                self.assertTrue(any('stale or changed object data review' in error for error in result['errors']))
+
+    def test_duplicate_native_metadata_policy_rejected(self):
+        for row in self.policy['data_sites'][:]:
+            with self.subTest(path=row['path']):
+                self.policy['data_sites'].append(dict(row))
+                with self.assertRaisesRegex(ValueError, 'duplicate data-site policy entry'):
+                    self.scan()
+                self.policy['data_sites'].pop()
+
+    def test_unknown_native_metadata_provenance_rejected(self):
+        for row in self.policy['data_sites']:
+            with self.subTest(path=row['path']):
+                previous = row['provenance']
+                row['provenance'] = 'unreviewed-native-metadata'
+                with self.assertRaisesRegex(ValueError, 'unknown explicit data-site review'):
+                    self.scan()
+                row['provenance'] = previous
+
+    def test_native_metadata_review_path_drift_rejected(self):
+        for name, review in self.policy['reviews'].items():
+            with self.subTest(review=name):
+                previous = review['paths']
+                review['paths'] = ['app/widgets/unreviewed.cpp']
+                with self.assertRaisesRegex(ValueError, 'data-site review does not cover this source path'):
+                    self.scan()
+                review['paths'] = previous
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
