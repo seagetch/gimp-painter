@@ -1,0 +1,84 @@
+{
+  "status": "PASS",
+  "build_scope": "Full standard Meson application builds completed before focused red and green tests",
+  "headless-tests": "disabled",
+  "painter-http": "disabled",
+  "compile_checks": [
+    {
+      "mode": "native",
+      "path": "libgimp/gimpprocedure.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "libgimpconfig/gimpconfig-register.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "libgimp/tests/test-procedure-config.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "app/tests/test-painter-layer-ui.c",
+      "sanitizers": "none",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "sanitizers": "none",
+      "rtti_disabled": true,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "libgimp/gimpprocedure.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "libgimpconfig/gimpconfig-register.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "libgimp/tests/test-procedure-config.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "app/tests/test-painter-layer-ui.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    }
+  ],
+  "asan_options": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+  "ubsan_options": "halt_on_error=1:abort_on_error=1:print_stacktrace=1",
+  "sanitizer_rtti_and_vptr_preserved": true,
+  "leak_detection": false,
+  "third_party_dependencies_instrumented": false,
+  "initial_test_target_attempt": "A target-name compile was attempted before Meson regeneration and failed to find the new target. The subsequent full standard native and sanitizer builds regenerated it and passed; that setup attempt is not counted as a test result."
+}

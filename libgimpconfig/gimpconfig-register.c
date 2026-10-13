@@ -84,7 +84,8 @@ gimp_config_type_register (GType         parent_type,
 
   terminated_pspecs = g_new0 (GParamSpec *, n_pspecs + 1);
 
-  memcpy (terminated_pspecs, pspecs, sizeof (GParamSpec *) * n_pspecs);
+  if (n_pspecs > 0)
+    memcpy (terminated_pspecs, pspecs, sizeof (GParamSpec *) * n_pspecs);
 
   g_type_query (parent_type, &query);
 

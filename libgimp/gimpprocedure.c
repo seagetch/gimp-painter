@@ -578,12 +578,14 @@ gimp_procedure_create_config_with_prefix (GimpProcedure  *procedure,
 
       config_args = g_new0 (GParamSpec *, n_config_args);
 
-      memcpy (config_args,
-              args,
-              n_args * sizeof (GParamSpec *));
-      memcpy (config_args + n_args,
-              priv->aux_args,
-              priv->n_aux_args * sizeof (GParamSpec *));
+      if (n_args > 0)
+        memcpy (config_args,
+                args,
+                n_args * sizeof (GParamSpec *));
+      if (priv->n_aux_args > 0)
+        memcpy (config_args + n_args,
+                priv->aux_args,
+                priv->n_aux_args * sizeof (GParamSpec *));
 
       type = gimp_config_type_register (GIMP_TYPE_PROCEDURE_CONFIG,
                                         type_name,
