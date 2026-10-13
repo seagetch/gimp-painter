@@ -819,7 +819,8 @@ view_painter_canvas_ui_cmd_callback (GimpAction *action,
   return_if_no_shell (shell, data);
   g_object_set (shell->display->gimp->config, "painter-canvas-ui",
                 g_variant_get_boolean (value), NULL);
-  gimp_painter_canvas_ui_set_visible (shell, g_variant_get_boolean (value));
+  /* Native reconciliation reads current intent after synchronous notify
+   * callbacks.  Replaying the original shell/value here would be stale. */
 }
 
 void

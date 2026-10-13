@@ -372,6 +372,19 @@ void Presentation::restore () noexcept {
   /* Detach every borrowed control before destroying any popup. Parent refs
    * and child refs keep native action targets alive during synchronous reentry. */
   auto old = std::move (saved);
+  auto old_groups = std::move (groups);
+  /* GTK 3 preserves inherited INSENSITIVE flags across unparent/set_parent.
+   * A disabled temporary menu button also disables its popover. Clear only
+   * that retiring adapter-owned gate while the native children are still
+   * inside it, so GTK recomputes their inherited state before restoration.
+   * Native widgets' own sensitivity is never changed; explicit FALSE values
+   * and an insensitive destination still apply. Local batches keep all
+   * leases/iterators valid if a state-change callback closes the owner. */
+  for (auto& g : old_groups) {
+    if (closed) break;
+    auto *popup = GTK_WIDGET (g->popup.get ());
+    if (!gtk_widget_get_sensitive (popup)) gtk_widget_set_sensitive (popup, TRUE);
+  }
   for (auto it = old.rbegin (); it != old.rend (); ++it) {
     auto& s = **it; auto *w = GTK_WIDGET (s.widget.get ());
     if (!*s.alive) continue;
@@ -396,7 +409,6 @@ void Presentation::restore () noexcept {
     gtk_widget_set_no_show_all (w, s.no_show_all);
     gtk_widget_set_valign (w, s.valign);
   }
-  auto old_groups = std::move (groups);
   for (auto& g : old_groups) { gtk_widget_destroy (GTK_WIDGET (g->popup.get ())); gtk_widget_destroy (GTK_WIDGET (g->row.get ())); }
   /* Temporary buttons must be gone before restoring absolute sibling indices. */
   for (auto& item : old) {

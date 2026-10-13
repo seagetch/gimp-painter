@@ -28,6 +28,8 @@
 
 #include "gui-types.h"
 
+#include "config/gimpguiconfig.h"
+
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 
@@ -43,6 +45,7 @@
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-appearance.h"
 #include "display/gimpimagewindow.h"
+#include "display/gimppaintercanvasui.h"
 
 #include "gimpuiconfigurer.h"
 
@@ -54,9 +57,18 @@ enum
 };
 
 
+typedef struct _PainterConversion PainterConversion;
+struct _PainterConversion
+{
+  GList             *windows; /* temporary leases, one suspension each */
+  PainterConversion *previous;
+};
+
 struct _GimpUIConfigurerPrivate
 {
   Gimp *gimp;
+  PainterConversion *painter_conversion;
+  guint64 painter_conversion_revision;
 };
 
 
@@ -77,7 +89,8 @@ static void              gimp_ui_configurer_separate_docks              (GimpUIC
                                                                          GimpImageWindow   *source_image_window);
 static void              gimp_ui_configurer_move_docks_to_window        (GimpUIConfigurer  *ui_configurer,
                                                                          GimpDockColumns   *dock_columns,
-                                                                         GimpAlignmentType  screen_side);
+                                                                         GimpAlignmentType  screen_side,
+                                                                         gint               logical_width);
 static void              gimp_ui_configurer_separate_shells             (GimpUIConfigurer  *ui_configurer,
                                                                          GimpImageWindow   *source_image_window);
 static void              gimp_ui_configurer_configure_for_single_window (GimpUIConfigurer  *ui_configurer);
@@ -309,12 +322,16 @@ gimp_ui_configurer_separate_docks (GimpUIConfigurer  *ui_configurer,
 {
   GimpDockColumns *left_docks  = NULL;
   GimpDockColumns *right_docks = NULL;
+  gint             right_width;
 
   left_docks  = gimp_image_window_get_left_docks (image_window);
   right_docks = gimp_image_window_get_right_docks (image_window);
 
-  gimp_ui_configurer_move_docks_to_window (ui_configurer, left_docks, GIMP_ALIGN_LEFT);
-  gimp_ui_configurer_move_docks_to_window (ui_configurer, right_docks, GIMP_ALIGN_RIGHT);
+  right_width = gimp_image_window_get_right_docks_width (image_window);
+  gimp_ui_configurer_move_docks_to_window (ui_configurer, left_docks,
+                                           GIMP_ALIGN_LEFT, -1);
+  gimp_ui_configurer_move_docks_to_window (ui_configurer, right_docks,
+                                           GIMP_ALIGN_RIGHT, right_width);
 }
 
 /**
@@ -328,7 +345,8 @@ gimp_ui_configurer_separate_docks (GimpUIConfigurer  *ui_configurer,
 static void
 gimp_ui_configurer_move_docks_to_window (GimpUIConfigurer  *ui_configurer,
                                          GimpDockColumns   *dock_columns,
-                                         GimpAlignmentType  screen_side)
+                                         GimpAlignmentType  screen_side,
+                                         gint               logical_width)
 {
   GdkMonitor    *monitor;
   GdkRectangle   monitor_rect;
@@ -352,6 +370,10 @@ gimp_ui_configurer_move_docks_to_window (GimpUIConfigurer  *ui_configurer,
    * size
    */
   gtk_widget_get_allocation (GTK_WIDGET (dock_columns), &original_size);
+  /* A restored child may still carry its overlay allocation until GTK's
+   * next layout.  The session's logical native width survives that gap. */
+  if (logical_width > 0)
+    original_size.width = logical_width;
 
   /* Do we need a toolbox window? */
   for (iter = docks; iter; iter = g_list_next (iter))
@@ -415,10 +437,19 @@ gimp_ui_configurer_move_docks_to_window (GimpUIConfigurer  *ui_configurer,
   gtk_window_set_gravity (GTK_WINDOW (dock_window), gravity);
   gtk_window_move (GTK_WINDOW (dock_window), x, y);
 
-  /* Try to keep the same size */
-  gtk_window_set_default_size (GTK_WINDOW (dock_window),
-                               original_size.width,
-                               original_size.height);
+  /* An explicit logical width must use the same resize contract as
+   * gimp_session_info_apply_geometry(): dock-window style updates reset
+   * default sizes. Preserve the native default-size path when no logical
+   * width was supplied (for example, the left docks).
+   */
+  if (logical_width > 0)
+    gtk_window_resize (GTK_WINDOW (dock_window),
+                       original_size.width,
+                       original_size.height);
+  else
+    gtk_window_set_default_size (GTK_WINDOW (dock_window),
+                                 original_size.width,
+                                 original_size.height);
 
   /* Don't forget to show the window */
   gtk_widget_show (dock_window);
@@ -445,12 +476,23 @@ gimp_ui_configurer_separate_shells (GimpUIConfigurer *ui_configurer,
     {
       GimpImageWindow  *new_image_window;
       GimpDisplayShell *shell;
+      PainterConversion *conversion;
 
       /* Create a new image window */
       new_image_window = gimp_image_window_new (ui_configurer->p->gimp,
                                                 NULL,
                                                 gimp_dialog_factory_get_singleton (),
                                                 gimp_widget_get_monitor (GTK_WIDGET (source_image_window)));
+      /* Newly constructed windows join every open conversion bracket
+       * before receiving a shell.  Nested mode changes remain allowed. */
+      for (conversion = ui_configurer->p->painter_conversion;
+           conversion; conversion = conversion->previous)
+        {
+          conversion->windows = g_list_append (conversion->windows,
+                                                g_object_ref (new_image_window));
+          gimp_image_window_painter_suspend (new_image_window);
+        }
+
       /* Move the shell there */
       shell = gimp_image_window_get_shell (source_image_window, 1);
 
@@ -616,10 +658,39 @@ void
 gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
                               gboolean          single_window_mode)
 {
-  if (single_window_mode)
-    gimp_ui_configurer_configure_for_single_window (ui_configurer);
-  else
-    gimp_ui_configurer_configure_for_multi_window (ui_configurer);
+  PainterConversion conversion;
+  GList            *initial;
+  GList            *iter;
+  guint64           revision = ++ui_configurer->p->painter_conversion_revision;
+
+  conversion.windows = gimp_get_image_windows (ui_configurer->p->gimp);
+  conversion.previous = ui_configurer->p->painter_conversion;
+  for (iter = conversion.windows; iter; iter = iter->next)
+    g_object_ref (iter->data);
+  ui_configurer->p->painter_conversion = &conversion;
+
+  /* Do this before the first dock/shell move, independently of config
+   * notify registration order.  A fixed initial list avoids suspending a
+   * newly registered window twice if callbacks construct one here. */
+  initial = g_list_copy (conversion.windows);
+  for (iter = initial; iter; iter = iter->next)
+    gimp_image_window_painter_suspend (iter->data);
+  g_list_free (initial);
+
+  /* Restoration emits callbacks.  A nested, newer mode request wins;
+   * never replay this invocation's obsolete requested topology. */
+  if (revision == ui_configurer->p->painter_conversion_revision &&
+      single_window_mode == GIMP_GUI_CONFIG (ui_configurer->p->gimp->config)->single_window_mode)
+    {
+      if (single_window_mode)
+        gimp_ui_configurer_configure_for_single_window (ui_configurer);
+      else
+        gimp_ui_configurer_configure_for_multi_window (ui_configurer);
+    }
 
   gimp_ui_configurer_update_appearance (ui_configurer);
+  ui_configurer->p->painter_conversion = conversion.previous;
+  for (iter = conversion.windows; iter; iter = iter->next)
+    gimp_image_window_painter_resume (iter->data);
+  g_list_free_full (conversion.windows, g_object_unref);
 }

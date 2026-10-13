@@ -1,0 +1,252 @@
+{
+  "accepted_bounded_feature_subset": true,
+  "evidence": [
+    {
+      "record": {
+        "all_capture_inputs_stable": true,
+        "application_receipt_sha256": "1cbf697cbf72705951a5bfc4a4048ff5c3c1460790232716f85ba6eb81bcaef0",
+        "application_sha256": "4304d99f5b9c68d5b29cd4654f6b7c32a3abec870c2540b4435c0e0a4c3be85b",
+        "caption": "Actual GIMP: enable Painter Canvas mode on first image, select second image. Before panels disappear and native Brushes/Layers stay outside canvas; candidate retains mode and moves real native right docks into selected canvas with separate Tool Options.",
+        "capture_result_sha256": "68470fcf1359f50abe6cabe2c6ffca89609c8218dd066e118257743724affb63",
+        "delivery_pending": true,
+        "functional_acceptance": false,
+        "kind": "NORMAL_APP_VISUAL_EVIDENCE_ONLY",
+        "native_build_capture_sha256": "0adecaefee109838f8c833c23c41e3d86c74654ed15c882eb06b3022ff4bd9ca",
+        "production_patch_sha256": "25284cdd0e4d293c1896c1eb8160f57f0c3da843cd2a8b61133efa2c08f01586",
+        "screenshots": {
+          "visual-evidence/tab-retention/after/01-mode-on-first-image.png": "b0ee47b87b44e32c38a8d9add6ad7c2539a8f2a3dc23564ace869b6d79b8afbe",
+          "visual-evidence/tab-retention/after/02-second-image-after-switch.png": "0187b5881cd0575d76d7851bc9efd95e99af5f4b78fdf240b349eb8fce2eca65",
+          "visual-evidence/tab-retention/after/04-mode-off-restored-docks.png": "1c7281bd74d4a38ec1d33b267cd599444cb0c34c324ab8ea8d9edf8ad447b56b",
+          "visual-evidence/tab-retention/before/01-mode-on-first-image.png": "794d63581892b1f7b391d4c0c0660ade50eb3f21dc4df2ddd500f44c708dc990",
+          "visual-evidence/tab-retention/before/02-second-image-after-switch.png": "ea8e8c0ac816d842aa8ef786059a281ddd88bbac9066661bda33bb3a4974b223",
+          "visual-evidence/tab-retention/before/04-mode-off-restored-docks.png": "4baee8ff74e2d90dd935ab0023e0a44318f4ec4f84a5db0967f952e447dcf48b"
+        },
+        "source_count_bound_to_build": 172,
+        "utc": "2026-10-13T17:35:30.258315+00:00"
+      },
+      "source": {
+        "bytes": 2309,
+        "git_blob_sha1": "3890cde61812a5d2c67d93f2d8d5813101789430",
+        "path": "right-dock-08018-capture-prep-20261013/candidate-v7-visual-binding.json",
+        "sha256": "8b46e75d9db95ce764b67b8931a09990e6496821074b3af22011de18167df0a6"
+      }
+    },
+    {
+      "record": {
+        "delivery_channel": "chatgpt",
+        "delivery_utc": "2026-10-13T17:36:16Z",
+        "images": [
+          {
+            "path": "visual-evidence/tab-retention/before/02-second-image-after-switch.png",
+            "role": "before",
+            "sha256": "ea8e8c0ac816d842aa8ef786059a281ddd88bbac9066661bda33bb3a4974b223"
+          },
+          {
+            "path": "visual-evidence/tab-retention/after/02-second-image-after-switch.png",
+            "role": "after",
+            "sha256": "0187b5881cd0575d76d7851bc9efd95e99af5f4b78fdf240b349eb8fce2eca65"
+          }
+        ],
+        "root_confirmed_actual_delivery": true,
+        "scope": "Normal-app tab retention and current native right-dock integration. Commit still pending; crowded layout/reachability remains under review. No full visual parity or functional acceptance claim.",
+        "visual_binding_sha256": "8b46e75d9db95ce764b67b8931a09990e6496821074b3af22011de18167df0a6"
+      },
+      "source": {
+        "bytes": 1202,
+        "git_blob_sha1": "d710b998ac5e88436d9d22dde4dce3518b225a99",
+        "path": "right-dock-08018-capture-prep-20261013/candidate-v7-visual-delivery-receipt.json",
+        "sha256": "0fc2ad47ac11c5f2679c062ff7e9561f51456a550534664368f4affeef599fe8"
+      }
+    },
+    {
+      "record": {
+        "actual_delivery_receipt": "pending root",
+        "evidence_kind": "VISUAL_ONLY_NORMAL_APPLICATION_08_018",
+        "functional_acceptance": false,
+        "images": [
+          {
+            "build_capture_sha256": "818b1ffeeb428f944d0583ad9d4b01343475e8c6760eb3d0e75a5daae178f599",
+            "capture_result": "visual-evidence/sensitivity/before/capture-results.json",
+            "capture_result_sha256": "a5f069284213a0e5fed94aaace1b63501bc80dac7def891ea7fdd81a8f508ced",
+            "image": "visual-evidence/sensitivity/before/14-full-after-reenable-click.png",
+            "inputs_after_sha256": "dfb4849e977226d6de78c80a2eb0f0b9752eea28ce6bdda0b70faded360e98a2",
+            "inputs_before_sha256": "dfb4849e977226d6de78c80a2eb0f0b9752eea28ce6bdda0b70faded360e98a2",
+            "normal_elf_sha256": "d52aa6bd516ceef6505c689730af47f5734a7bdcf38ee70b279c5c4f6e15922a",
+            "role": "before",
+            "sealed_input_count": 14352,
+            "sha256": "38eac80d78a97aadb9ea52b63af3b11760119637f0a63f86fa85c1490f7a466f",
+            "source_map_sha256": "ee1ffe0c3542443671ef9b496eb09935fdb698feb8b0cd130a3df0276a7485f2"
+          },
+          {
+            "build_capture_sha256": "7ee89cf9a564add1a9d8412eba1c1a98bf3c47fecd0192ec6f7273ecde9cdd66",
+            "capture_result": "visual-evidence/sensitivity/after/capture-results.json",
+            "capture_result_sha256": "8b836ce84de74e93195be7312e472847492ffea5866b5ae2b06e831460c8d7b5",
+            "image": "visual-evidence/sensitivity/after/14-full-after-reenable-click.png",
+            "inputs_after_sha256": "c0cc14bf40f54f5d3c602b3457d9846bd65db5403a1ff1ac17c30716a2f16215",
+            "inputs_before_sha256": "c0cc14bf40f54f5d3c602b3457d9846bd65db5403a1ff1ac17c30716a2f16215",
+            "normal_elf_sha256": "8d42918914ac8d72b2abac33fdd9fa0abafa79809628eeb35a008a5031963273",
+            "role": "after",
+            "sealed_input_count": 14352,
+            "sha256": "5748837f2c4039199fe799da0e1ff5722f348d8d6fd8fb8bc4d7ef917e2aae97",
+            "source_map_sha256": "b3a6c4a345a782e26eddb94f2f56c34de4e53a4e1fa0702867dfef0319aad9af"
+          }
+        ],
+        "initial_positive_control": "before-sensitivity-normal-app-08 initial compact-to-full checkbox worked; no claim every mode switch fails",
+        "recorded_utc": "2026-10-13T18:50:40.170945+00:00",
+        "sequence": "Real app: full Expand Layers on; Compact Options; scroll right; Expand Layers off; Tool Options; scroll end; click Expand Layers to re-enable",
+        "visual_observation": "Before grey unchecked remains unchanged after native click; after blue checked following same native click"
+      },
+      "source": {
+        "bytes": 2740,
+        "git_blob_sha1": "40567edc4ba24ef12da129fbb4824b7857e58c90",
+        "path": "right-dock-08018-capture-prep-20261013/sensitivity-before-after-visual-binding.json",
+        "sha256": "0f434d39f317d3767a6323ff0e955f2260818d47d5db59d4f56779d9f806ccf9"
+      }
+    },
+    {
+      "record": {
+        "delivery_channel": "chatgpt",
+        "delivery_utc": "2026-10-13T18:50:54Z",
+        "ordered_delivery_evidence": [
+          {
+            "order": 1,
+            "role": "before"
+          },
+          {
+            "order": 2,
+            "role": "after"
+          }
+        ],
+        "root_confirmed_actual_delivery": true,
+        "scope": "Exact normal-app compact-off to full to re-enable behavior; before grey, after checked. Final functional tests ongoing; no layout parity claim.",
+        "visual_binding_sha256": "0f434d39f317d3767a6323ff0e955f2260818d47d5db59d4f56779d9f806ccf9"
+      },
+      "source": {
+        "bytes": 566,
+        "git_blob_sha1": "4f0eab7a0c744110d91008f64a5557e10cce438c",
+        "path": "right-dock-08018-capture-prep-20261013/sensitivity-before-after-delivery-receipt.json",
+        "sha256": "afc8560f064b919bc9b3c1290cdd11dfd19f40977c131440f5aad8b5f684d96f"
+      }
+    }
+  ],
+  "final_production_resize_delivered": true,
+  "fresh_final_visual_binding_required": false,
+  "functional_acceptance": false,
+  "layout_parity_claim": false,
+  "normal_app_screenshots_delivered": true,
+  "note": "The resize delivery receipt supersedes the binding's earlier delivery_pending_root field. Visuals demonstrate the described normal-app sequence, not overall functional acceptance or layout parity.",
+  "older_sensitivity_pixels_equal_final_recapture": false,
+  "parent_terminal_acceptance": {
+    "bytes": 6720,
+    "path": "right-dock-parent-final-acceptance-20261013/acceptance.json",
+    "sha256": "11575c1e832373a7854e515e5750f7ab6879736f01d8de1118e169d3e0a3d20a"
+  },
+  "pixel_equality_correction": "Delivered after11 sensitivity image SHA-256 5748837f2c4039199fe799da0e1ff5722f348d8d6fd8fb8bc4d7ef917e2aae97 differs from after13 image f92e3d1a206ea19e4508d72a47498b34ecda0d7c48dde1d0cb92756bd2abc848. The final delivered 1280 resize view also shows enabled checked Expand Layers.",
+  "public_evidence_privacy": "Actual precommit delivery, dates, image order and hashes are retained. Private chat and file identifiers and absolute capture paths are omitted; full original receipts remain in the private checkpoint.",
+  "resize_binding": {
+    "record": {
+      "delivery_pending_root": true,
+      "evidence_kind": "VISUAL_ONLY_NORMAL_APPLICATION_08_018",
+      "functional_acceptance": false,
+      "images": [
+        {
+          "build_capture_sha256": "fbb8cf5825533c2293db12ed155516f6522ec373bf2d3118f589da78e5b376f5",
+          "capture_result_sha256": "d00834abc75d14200f3fca682a9cbf0fc70a213d277ae590abb73632fab8c654",
+          "image": "visual-evidence/resize/before/16-full-options-at1280.png",
+          "inputs_after_sha256": "7d4b570fa3922a40406c9fd24ec1c1393e27aabc29cfdb8c557b2f466b74c715",
+          "inputs_before_sha256": "7d4b570fa3922a40406c9fd24ec1c1393e27aabc29cfdb8c557b2f466b74c715",
+          "normal_elf_sha256": "8d42918914ac8d72b2abac33fdd9fa0abafa79809628eeb35a008a5031963273",
+          "role": "before",
+          "sealed_input_count": 14352,
+          "sha256": "d5b3860977c0f0b059e6a20a5cd57093b348dc884c5566f75c2bea86223e2393",
+          "source_map_sha256": "f9a15391f80013266ca0e563266c42d2fe620e4ed3dbd1ebcca0cedc51c62fe4"
+        },
+        {
+          "build_capture_sha256": "9df700680ddbeff26d7b7d1f11cb35ac5db8ae00df614e17cf37ee77623458e0",
+          "capture_result_sha256": "49cfd0114bd2d9ae5d114d8bc45dc79a457e8f3229b96661475d214001cbdbe7",
+          "image": "visual-evidence/resize/after/16-full-options-at1280.png",
+          "inputs_after_sha256": "004f1ad07726a8f922bbd504cfc3566a6d1f1b047b2d65d006417608f0ad31d1",
+          "inputs_before_sha256": "004f1ad07726a8f922bbd504cfc3566a6d1f1b047b2d65d006417608f0ad31d1",
+          "normal_elf_sha256": "e90a52dcfcfad2cb46517b22c6e44a77d23ee0f342c2b2dba3d9f19b90806c75",
+          "role": "after",
+          "sealed_input_count": 14352,
+          "sha256": "7678450bc95bf773e4acd8dbcb139dc3ebd52440f422a27f26da9f0095e2d032",
+          "source_map_sha256": "c8d4a5b854068a89ef81ab611dd6b37f44623d73380fa3b1beef28a5270020c1"
+        }
+      ],
+      "observation": "Before1280 retains old horizontal panel positions; after follows enlarged window. Return1240 pixels equal.",
+      "recorded_utc": "2026-10-13T19:16:45.301756+00:00",
+      "sensitivity_after_pixels_equal_previously_delivered": false,
+      "sensitivity_after_sha256": "f92e3d1a206ea19e4508d72a47498b34ecda0d7c48dde1d0cb92756bd2abc848",
+      "sensitivity_delivered_sha256": "5748837f2c4039199fe799da0e1ff5722f348d8d6fd8fb8bc4d7ef917e2aae97",
+      "sensitivity_delivery_receipt_sha256": "afc8560f064b919bc9b3c1290cdd11dfd19f40977c131440f5aad8b5f684d96f",
+      "sensitivity_v16_v17_recaptures_equal": true,
+      "sequence": "Same normalapp full-options sequence; native resize1240x960 to1280x960, then return1240x960"
+    },
+    "source": {
+      "bytes": 2643,
+      "path": "right-dock-08018-capture-prep-20261013/resize-before-after-visual-binding.json",
+      "sha256": "2bf5e15f42772a9975140317c048a2c58771920286865b101504c4fa85b5c832"
+    }
+  },
+  "resize_delivery": {
+    "record": {
+      "delivery_channel": "chatgpt",
+      "delivery_utc": "2026-10-13T19:16:45Z",
+      "ordered_delivery_evidence": [
+        {
+          "order": 1,
+          "role": "before"
+        },
+        {
+          "order": 2,
+          "role": "after"
+        }
+      ],
+      "root_confirmed_actual_delivery": true,
+      "scope": "Final-production1280resize positions follow window; checked enabled Expand Layers visible. No older sensitivity pixel-equality claim.",
+      "visual_binding_sha256": "2bf5e15f42772a9975140317c048a2c58771920286865b101504c4fa85b5c832"
+    },
+    "source": {
+      "bytes": 556,
+      "path": "right-dock-08018-capture-prep-20261013/resize-before-after-delivery-receipt.json",
+      "sha256": "34635ef8218fba3e61b071bfd1976c4f5652a55e20ebae9d1f0f9b48d28d6eeb"
+    }
+  },
+  "screenshots_in_code_patch": false,
+  "status": "PARENT_ACCEPTED_VISUAL_BINDING_AND_EXACT_ELF_CONTINUITY",
+  "v18_normal_app_binary_equivalence": {
+    "record": {
+      "captured_inputs_sha256": "004f1ad07726a8f922bbd504cfc3566a6d1f1b047b2d65d006417608f0ad31d1",
+      "final_native_full_build_sha256": "b3419bc153b56b560aec53c04ee8aa98336738790676d895a332be77013bbebb",
+      "final_stage": "v18",
+      "normal_elf_exact_equal": true,
+      "normal_elf_sha256": "e90a52dcfcfad2cb46517b22c6e44a77d23ee0f342c2b2dba3d9f19b90806c75",
+      "recorded_utc": "2026-10-13T19:24:49.393103+00:00",
+      "resize_delivery_receipt_sha256": "34635ef8218fba3e61b071bfd1976c4f5652a55e20ebae9d1f0f9b48d28d6eeb",
+      "scope": "Only registration routing changed after production17 visual capture; all production bytes and exact normal ELF identical",
+      "source175_delta_verified": {
+        "app/tests/meson.build": {
+          "captured": "dc1fa8129d2e50bf239962de19de5ebf13d48db1ce946d9c39f964c99adaa0ec",
+          "final": "f136c028a209ee871e5b6b5ef600268ff02b36c77064ff8cd48a0872d67e0e4e"
+        },
+        "app/tests/test-painter-canvas-ui.c": {
+          "captured": "1d5295a32fb2ae147290a573a33c7e0912497ed924453b881ecf9f9e56366e8a",
+          "final": "313db1debd25117b05d178b39957f7f9ac2eb95fe214f8a1f9ff2f262353d41d"
+        }
+      },
+      "source_delta_since_visual": [
+        "app/tests/meson.build",
+        "app/tests/test-painter-canvas-ui.c"
+      ],
+      "unchanged_source_count": 173
+    },
+    "source": {
+      "bytes": 1247,
+      "path": "right-dock-08018-capture-prep-20261013/v18-final-visual-continuity.json",
+      "sha256": "378e1a8c53619bfbeaaff792abc57509a77fafaf7ca87f9c7e068f77bddb5fe2"
+    },
+    "status": "PARENT_VERIFIED_EXACT_BINARY_EQUALITY"
+  },
+  "v18_production_sources_equal_v17": true
+}

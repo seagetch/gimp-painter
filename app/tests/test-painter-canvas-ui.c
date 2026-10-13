@@ -1723,15 +1723,69 @@ native_session_boolean_reader_writer (void)
   }
 }
 
+#include "test-painter-right-docks.inc"
+#include "test-painter-right-docks-width.inc"
+#include "test-painter-right-docks-conversion.inc"
+#include "test-painter-right-host-interactions.inc"
+
 int main(int argc,char **argv) {
-  g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
+  const gchar *registration_group = g_getenv ("GIMP_TEST_PAINTER_CANVAS_GROUP");
+
+  g_test_init(&argc,&argv,NULL);
+  /* Meson splits this harness without renaming, skipping or duplicating cases.
+   * An unset group retains the full manual invocation; reject misspellings. */
+  g_assert_true (registration_group == NULL ||
+                 g_str_equal (registration_group, "original") ||
+                 g_str_equal (registration_group, "right-docks") ||
+                 g_str_equal (registration_group, "dock-session") ||
+                 g_str_equal (registration_group, "dock-input") ||
+                 g_str_equal (registration_group, "dock-layout"));
+  if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   native_session_prepare_startup ();
   window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);gtk_window_set_default_size(GTK_WINDOW(window),220,700);
 #define ADD(f) do { static const CanvasTestCase test_case = { f }; \
   g_test_add_data_func("/painter-canvas-ui/" #f, &test_case, run_canvas_case); } while (0)
   if(g_getenv("PAINTER_CANVAS_DEMO")) { ADD(demo); } else {
-/* Inside the existing non-demo branch in test-painter-canvas-ui.c main(). */
+  if (registration_group == NULL ||
+      g_str_equal (registration_group, "right-docks")) {
+ADD(right_docks_native_notebook_transfer);
+ADD(right_docks_switch_repeat_and_restore);
+ADD(right_docks_hide_restore);
+ADD(right_docks_cancel_on_remove);
+ADD(right_docks_newer_selection_on_remove);
+ADD(right_docks_close_active_tab);
+ADD(right_docks_close_inactive_tab);
+ADD(right_docks_options_coexist);
+ADD(right_docks_first_opt_in_switch);
+  }
+  if (registration_group == NULL ||
+      g_str_equal (registration_group, "dock-session")) {
+ADD(right_docks_session_width_unchanged_restore);
+ADD(right_docks_session_width_resize_restore);
+ADD(right_docks_session_aux_positive_width);
+ADD(right_docks_session_aux_legacy_position);
+ADD(right_docks_session_aux_deferred_reborrow);
+ADD(right_docks_session_aux_deferred_close);
+ADD(right_docks_window_mode_roundtrip);
+  }
+  if (registration_group == NULL ||
+      g_str_equal (registration_group, "dock-input")) {
+ADD(right_docks_panel_hover);
+ADD(right_docks_panel_retreat_input);
+ADD(right_docks_panel_release_recovery);
+ADD(right_docks_panel_proximity_recovery);
+ADD(right_docks_panel_grab_recovery);
+ADD(right_docks_panel_focus_recovery);
+  }
+  if (registration_group == NULL ||
+      g_str_equal (registration_group, "dock-layout")) {
+ADD(right_docks_controls_reachable_1240);
+ADD(right_docks_controls_reachable_1280);
+ADD(right_docks_controls_reachable_portrait);
+  }
+  if (registration_group == NULL ||
+      g_str_equal (registration_group, "original")) {
 ADD(w08017_dnd_same_parent_order);
 ADD(w08017_dnd_cross_parent_last_owner);
 ADD(w08017_dnd_reject_self_ancestor);
@@ -1780,6 +1834,7 @@ ADD(w08017_dnd_relocate_later_on_cleanup);
   ADD(destroyed_tiles_reject_image);ADD(image_switch_popup_owner_close);ADD(image_switch_popup_newer_image);ADD(parent_image_notify_owner_close);
   ADD(popup_controls_and_clone);ADD(mask_controls);ADD(long_press_once);ADD(reentrant_visibility_close);ADD(multiple_reorder_one_undo);ADD(hide_cancels_grab);
   ADD(overlay_input_and_restore);ADD(dock_restore_and_parent_close);ADD(overlay_tools_and_colors);ADD(overlay_tool_group);ADD(tool_click_active_owner_close);ADD(tool_click_expanded_owner_close);ADD(tool_expander_owner_close);ADD(tool_click_newer_selection);ADD(tool_pending_refresh_owner_destroy);ADD(tool_group_selection_restores_canvas_focus);ADD(multiple_canvas_context_and_dock_transfer);ADD(overlay_owner_destroy_callbacks);
+  }
   }
   g_application_run(gimp->app,0,NULL);
   int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));

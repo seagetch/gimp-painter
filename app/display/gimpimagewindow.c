@@ -79,6 +79,7 @@
 #include "gimpdisplayshell-tool-events.h"
 #include "gimpdisplayshell-transform.h"
 #include "gimpimagewindow.h"
+#include "gimppaintercanvasui.h"
 #include "gimpstatusbar.h"
 
 #include "gimp-log.h"
@@ -144,6 +145,27 @@ struct _GimpImageWindowPrivate
   gint               suspend_keep_pos;
 
   gint               update_ui_manager_idle_id;
+
+  GWeakRef           painter_owner;
+  guint64            painter_revision;
+  gboolean           painter_running;
+  gboolean           painter_dirty;
+  gboolean           painter_closing;
+  gboolean           painter_home_destroyed;
+  gboolean           painter_columns_destroyed;
+  gboolean           painter_managed;
+  guint              painter_suspended;
+  guint              painter_switch_depth;
+  guint              painter_idle_id;
+
+  guint64            painter_geometry_revision;
+  gulong             painter_allocation_handler;
+  gboolean           painter_geometry_pending;
+  gint               painter_right_width;
+  gint               painter_right_position;
+  gint               painter_right_span;
+  gint               painter_window_width;
+  gboolean           painter_right_position_set;
 };
 
 typedef struct
@@ -178,6 +200,26 @@ static void      gimp_image_window_get_property        (GObject             *obj
                                                         guint                property_id,
                                                         GValue              *value,
                                                         GParamSpec          *pspec);
+
+static void      gimp_image_window_painter_home_allocated (GtkWidget        *widget,
+                                                           GtkAllocation    *allocation,
+                                                           GimpImageWindow  *window);
+static void      gimp_image_window_painter_child_destroy (GtkWidget         *widget,
+                                                          GimpImageWindow  *window);
+static void      gimp_image_window_painter_set_width   (GimpImageWindow     *window,
+                                                        gint                 encoded_width,
+                                                        gboolean             wait);
+static void      gimp_image_window_widget_destroy      (GtkWidget           *widget);
+static void      gimp_image_window_painter_close       (GimpImageWindow     *window);
+static void      gimp_image_window_painter_restore_shell (GimpImageWindow    *window,
+                                                         GimpDisplayShell   *shell);
+static void      gimp_image_window_painter_context_changed (GimpContext      *context,
+                                                           GimpDisplay      *display,
+                                                           GimpImageWindow  *window);
+static void      gimp_image_window_switch_page_after   (GtkNotebook         *notebook,
+                                                        gpointer             page,
+                                                        gint                 page_num,
+                                                        GimpImageWindow     *window);
 
 static gboolean  gimp_image_window_delete_event        (GtkWidget           *widget,
                                                         GdkEventAny         *event);
@@ -295,6 +337,7 @@ gimp_image_window_class_init (GimpImageWindowClass *klass)
   object_class->set_property       = gimp_image_window_set_property;
   object_class->get_property       = gimp_image_window_get_property;
 
+  widget_class->destroy            = gimp_image_window_widget_destroy;
   widget_class->delete_event       = gimp_image_window_delete_event;
   widget_class->configure_event    = gimp_image_window_configure_event;
   widget_class->window_state_event = gimp_image_window_window_state_event;
@@ -327,8 +370,11 @@ gimp_image_window_class_init (GimpImageWindowClass *klass)
 static void
 gimp_image_window_init (GimpImageWindow *window)
 {
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
   static gint  role_serial = 1;
   gchar       *role;
+
+  g_weak_ref_init (&private->painter_owner, NULL);
 
   role = g_strdup_printf ("gimp-image-window-%d", role_serial++);
   gtk_window_set_role (GTK_WINDOW (window), role);
@@ -524,6 +570,9 @@ gimp_image_window_constructed (GObject *object)
   g_signal_connect (private->notebook, "switch-page",
                     G_CALLBACK (gimp_image_window_switch_page),
                     window);
+  g_signal_connect_after (private->notebook, "switch-page",
+                          G_CALLBACK (gimp_image_window_switch_page_after),
+                          window);
   g_signal_connect (private->notebook, "page-removed",
                     G_CALLBACK (gimp_image_window_page_removed),
                     window);
@@ -541,6 +590,22 @@ gimp_image_window_constructed (GObject *object)
                    FALSE, FALSE);
   gtk_widget_set_visible (private->right_docks, config->single_window_mode);
 
+  g_signal_connect_object (private->right_hpane, "size-allocate",
+                           G_CALLBACK (gimp_image_window_painter_home_allocated),
+                           window, G_CONNECT_AFTER);
+  g_signal_connect_object (private->right_hpane, "destroy",
+                           G_CALLBACK (gimp_image_window_painter_child_destroy),
+                           window, 0);
+  g_signal_connect_object (private->right_docks, "destroy",
+                           G_CALLBACK (gimp_image_window_painter_child_destroy),
+                           window, 0);
+
+  g_signal_connect_object (config, "notify::painter-canvas-ui",
+                           G_CALLBACK (gimp_image_window_config_notify),
+                           window, G_CONNECT_SWAPPED);
+  g_signal_connect_object (gimp_get_user_context (private->gimp), "display-changed",
+                           G_CALLBACK (gimp_image_window_painter_context_changed),
+                           window, 0);
   g_signal_connect_object (config, "notify::single-window-mode",
                            G_CALLBACK (gimp_image_window_config_notify),
                            window, G_CONNECT_SWAPPED);
@@ -579,6 +644,8 @@ gimp_image_window_dispose (GObject *object)
 {
   GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (object);
 
+  gimp_image_window_painter_close (GIMP_IMAGE_WINDOW (object));
+
   if (private->dialog_factory)
     {
       g_signal_handlers_disconnect_by_func (private->dialog_factory,
@@ -609,6 +676,8 @@ gimp_image_window_finalize (GObject *object)
       g_list_free (private->shells);
       private->shells = NULL;
     }
+
+  g_weak_ref_clear (&private->painter_owner);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -1051,7 +1120,6 @@ gimp_image_window_get_aux_info (GimpSessionManaged *session_managed)
   if (config->single_window_mode)
     {
       GimpSessionInfoAux *aux;
-      GtkAllocation       allocation;
       gchar               widthbuf[128];
 
       g_snprintf (widthbuf, sizeof (widthbuf), "%d",
@@ -1060,11 +1128,9 @@ gimp_image_window_get_aux_info (GimpSessionManaged *session_managed)
                                        widthbuf);
       aux_info = g_list_append (aux_info, aux);
 
-      gtk_widget_get_allocation (private->right_hpane, &allocation);
-
       g_snprintf (widthbuf, sizeof (widthbuf), "%d",
-                  allocation.width -
-                  gtk_paned_get_position (GTK_PANED (private->right_hpane)));
+                  gimp_image_window_get_right_docks_width
+                    (GIMP_IMAGE_WINDOW (session_managed)));
       aux = gimp_session_info_aux_new (GIMP_IMAGE_WINDOW_RIGHT_DOCKS_WIDTH,
                                        widthbuf);
       aux_info = g_list_append (aux_info, aux);
@@ -1076,25 +1142,6 @@ gimp_image_window_get_aux_info (GimpSessionManaged *session_managed)
     }
 
   return aux_info;
-}
-
-static void
-gimp_image_window_set_right_docks_width (GtkPaned      *paned,
-                                         GtkAllocation *allocation,
-                                         void          *data)
-{
-  gint width = GPOINTER_TO_INT (data);
-
-  g_return_if_fail (GTK_IS_PANED (paned));
-
-  if (width > 0)
-    gtk_paned_set_position (paned, allocation->width - width);
-  else
-    gtk_paned_set_position (paned, - width);
-
-  g_signal_handlers_disconnect_by_func (paned,
-                                        gimp_image_window_set_right_docks_width,
-                                        data);
 }
 
 static void
@@ -1158,30 +1205,10 @@ gimp_image_window_set_aux_info (GimpSessionManaged *session_managed,
       wait_with_right_docks = TRUE;
     }
 
-  if (right_docks_width != G_MININT &&
-      gtk_paned_get_position (GTK_PANED (private->right_hpane)) !=
-      right_docks_width)
-    {
-      if (wait_with_right_docks || right_docks_width > 0)
-        {
-          /* We must wait for a size allocation before we can set the
-           * position
-           */
-          g_signal_connect_data (private->right_hpane, "size-allocate",
-                                 G_CALLBACK (gimp_image_window_set_right_docks_width),
-                                 GINT_TO_POINTER (right_docks_width), NULL,
-                                 G_CONNECT_AFTER);
-        }
-      else
-        {
-          /* We can set the position directly, because we didn't
-           * change the left hpane position, and we got the old compat
-           * dock pos property.
-           */
-          gtk_paned_set_position (GTK_PANED (private->right_hpane),
-                                  - right_docks_width);
-        }
-    }
+  if (right_docks_width != G_MININT)
+    gimp_image_window_painter_set_width (GIMP_IMAGE_WINDOW (session_managed),
+                                         right_docks_width,
+                                         wait_with_right_docks || right_docks_width > 0);
 
 #ifdef G_OS_WIN32
   /* On Windows, user can provide startup hints to have a program
@@ -1206,6 +1233,628 @@ gimp_image_window_set_aux_info (GimpSessionManaged *session_managed,
       gtk_window_maximize (GTK_WINDOW (session_managed));
     else
       gtk_window_unmaximize (GTK_WINDOW (session_managed));
+}
+
+
+static gpointer
+gimp_image_window_painter_ref_shell (gconstpointer shell,
+                                     gpointer      unused)
+{
+  return g_object_ref ((gpointer) shell);
+}
+
+/* Painter has one native transaction per image window.  Widget ownership
+ * remains in Canvas; these fields only describe current intent and the
+ * logical GtkPaned geometry, never the temporary overlay allocation.
+ */
+static GimpDisplayShell *
+gimp_image_window_painter_selected (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GtkWidget             *page;
+  gint                   index;
+
+  if (private->painter_closing || private->painter_home_destroyed ||
+      ! private->notebook ||
+      gtk_widget_in_destruction (private->notebook))
+    return NULL;
+
+  index = gtk_notebook_get_current_page (GTK_NOTEBOOK (private->notebook));
+  if (index < 0)
+    return NULL;
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (private->notebook), index);
+
+  if (! page || ! GIMP_IS_DISPLAY_SHELL (page) ||
+      gtk_widget_in_destruction (page) ||
+      ! g_list_find (private->shells, page) ||
+      gtk_widget_get_parent (page) != private->notebook)
+    return NULL;
+
+  return GIMP_DISPLAY_SHELL (page);
+}
+
+static gboolean
+gimp_image_window_painter_current (GimpImageWindow *window,
+                                   guint64          revision)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  return (! private->painter_closing &&
+          ! private->painter_suspended &&
+          ! private->painter_switch_depth &&
+          private->painter_revision == revision);
+}
+
+gboolean
+gimp_image_window_painter_can_attach (GimpImageWindow  *window,
+                                      GimpDisplayShell *shell,
+                                      guint64           revision)
+{
+  GimpImageWindowPrivate *private;
+  GimpGuiConfig         *config;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE_WINDOW (window), FALSE);
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+
+  private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  config  = GIMP_GUI_CONFIG (private->gimp->config);
+
+  return (gimp_image_window_painter_current (window, revision) &&
+          ! gtk_widget_in_destruction (GTK_WIDGET (window)) &&
+          ! gtk_widget_in_destruction (GTK_WIDGET (shell)) &&
+          private->active_shell == shell &&
+          gimp_image_window_painter_selected (window) == shell &&
+          gimp_display_shell_get_window (shell) == window &&
+          shell->display && gimp_display_get_image (shell->display) &&
+          private->gimp->config->painter_canvas_ui && config->single_window_mode &&
+          ! config->hide_docks &&
+          ! private->painter_home_destroyed &&
+          ! private->painter_columns_destroyed &&
+          private->right_docks && private->right_hpane &&
+          ! gtk_widget_in_destruction (private->right_docks) &&
+          ! gtk_widget_in_destruction (private->right_hpane) &&
+          gtk_widget_get_allocated_width (private->right_hpane) > 1);
+}
+
+static void
+gimp_image_window_painter_cancel_allocation (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  private->painter_geometry_revision++;
+  if (private->painter_allocation_handler)
+    {
+      if (! private->painter_home_destroyed && private->right_hpane &&
+          g_signal_handler_is_connected (private->right_hpane,
+                                          private->painter_allocation_handler))
+        g_signal_handler_disconnect (private->right_hpane,
+                                     private->painter_allocation_handler);
+      private->painter_allocation_handler = 0;
+    }
+}
+
+void
+gimp_image_window_get_right_docks_geometry (GimpImageWindow *window,
+                                            gint            *width,
+                                            gint            *position,
+                                            gint            *span,
+                                            gboolean        *position_set)
+{
+  GimpImageWindowPrivate *private;
+  GtkAllocation          allocation;
+
+  g_return_if_fail (GIMP_IS_IMAGE_WINDOW (window));
+  private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  /* An immediate restore/reborrow has not had a home allocation yet. */
+  if (! private->painter_geometry_pending && ! private->painter_home_destroyed)
+    {
+      gtk_widget_get_allocation (private->right_hpane, &allocation);
+      private->painter_right_span = allocation.width;
+      private->painter_window_width = gtk_widget_get_allocated_width (GTK_WIDGET (window));
+      private->painter_right_position =
+        gtk_paned_get_position (GTK_PANED (private->right_hpane));
+      private->painter_right_width = allocation.width -
+                                    private->painter_right_position;
+      g_object_get (private->right_hpane, "position-set",
+                    &private->painter_right_position_set, NULL);
+    }
+
+  if (width)        *width        = private->painter_right_width;
+  if (position)     *position     = private->painter_right_position;
+  if (span)         *span         = private->painter_right_span;
+  if (position_set) *position_set = private->painter_right_position_set;
+}
+
+gint
+gimp_image_window_get_right_docks_width (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private;
+  GList                 *iter;
+  gint                   width = 0;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE_WINDOW (window), 0);
+  private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  for (iter = private->shells; iter; iter = iter->next)
+    if (gimp_painter_canvas_ui_get_right_docks_width (iter->data, &width))
+      return width;
+
+  gimp_image_window_get_right_docks_geometry (window, &width, NULL, NULL, NULL);
+  return width;
+}
+
+static void
+gimp_image_window_painter_allocation (GtkWidget       *paned,
+                                      GtkAllocation   *allocation,
+                                      GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  guint64                revision;
+  gint                   position;
+  gboolean               position_set;
+  gboolean               hidden;
+  gint                   window_width;
+  gint                   logical_span;
+
+  if (private->painter_closing || private->painter_home_destroyed ||
+      private->painter_columns_destroyed ||
+      gtk_widget_get_parent (private->right_docks) != paned)
+    return;
+
+  g_object_ref (window);
+  hidden = GIMP_GUI_CONFIG (private->gimp->config)->hide_docks;
+  window_width = gtk_widget_get_allocated_width (GTK_WIDGET (window));
+  /* Hiding the left column also removes its native Paned handle, widening
+   * right_hpane even when the window has not resized. That temporary span
+   * must not change the saved right divider or the session's dock width.
+   * While hidden, only an actual outer-window resize changes logical span. */
+  logical_span = hidden ?
+                 private->painter_right_span + window_width - private->painter_window_width :
+                 allocation->width;
+  position = logical_span == private->painter_right_span ?
+             private->painter_right_position :
+             logical_span - private->painter_right_width;
+  position_set = private->painter_right_position_set;
+  gimp_image_window_painter_cancel_allocation (window);
+  revision = private->painter_geometry_revision;
+
+  gtk_paned_set_position (GTK_PANED (paned), position);
+  if (! private->painter_closing && ! private->painter_home_destroyed &&
+      ! private->painter_columns_destroyed &&
+      private->painter_geometry_revision == revision &&
+      gtk_widget_get_parent (private->right_docks) == paned)
+    {
+      g_object_set (paned, "position-set", position_set, NULL);
+      if (! private->painter_closing && ! private->painter_home_destroyed &&
+          ! private->painter_columns_destroyed &&
+          private->painter_geometry_revision == revision &&
+          gtk_widget_get_parent (private->right_docks) == paned)
+        {
+          private->painter_right_span = logical_span;
+          private->painter_window_width = window_width;
+          private->painter_right_position = position;
+          /* Keep the normal-layout snapshot authoritative until docks are
+           * shown again. A session read must not recache the hidden pane. */
+          private->painter_geometry_pending = hidden;
+        }
+    }
+  g_object_unref (window);
+}
+
+static void
+gimp_image_window_painter_set_width (GimpImageWindow *window,
+                                     gint             encoded_width,
+                                     gboolean         wait)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GtkAllocation          allocation;
+  GList                 *shells;
+  GList                 *iter;
+  guint64                revision;
+  gint                   logical_span;
+  gint                   window_width;
+
+  if (private->painter_closing || private->painter_home_destroyed ||
+      private->painter_columns_destroyed)
+    return;
+
+  g_object_ref (window);
+  gimp_image_window_get_right_docks_geometry (window, NULL, NULL, NULL, NULL);
+  gimp_image_window_painter_cancel_allocation (window);
+  revision = private->painter_geometry_revision;
+  gtk_widget_get_allocation (private->right_hpane, &allocation);
+  window_width = gtk_widget_get_allocated_width (GTK_WIDGET (window));
+  logical_span = GIMP_GUI_CONFIG (private->gimp->config)->hide_docks &&
+                 private->painter_geometry_pending ?
+                 private->painter_right_span + window_width - private->painter_window_width :
+                 allocation.width;
+  private->painter_right_span = logical_span;
+  private->painter_window_width = window_width;
+  private->painter_right_position = encoded_width > 0 ?
+                                   logical_span - encoded_width :
+                                   -encoded_width;
+  private->painter_right_width = logical_span - private->painter_right_position;
+  private->painter_right_position_set = TRUE;
+  private->painter_geometry_pending = TRUE;
+
+  shells = g_list_copy_deep (private->shells, gimp_image_window_painter_ref_shell, NULL);
+  for (iter = shells; iter; iter = iter->next)
+    if (gimp_painter_canvas_ui_has_right_docks (iter->data))
+      {
+        gimp_painter_canvas_ui_set_right_docks_width (iter->data, encoded_width);
+        if (private->painter_closing ||
+            private->painter_geometry_revision != revision)
+          break;
+      }
+  g_list_free_full (shells, g_object_unref);
+
+  if (! private->painter_closing && ! private->painter_home_destroyed &&
+      ! private->painter_columns_destroyed &&
+      private->painter_geometry_revision == revision &&
+      gtk_widget_get_parent (private->right_docks) == private->right_hpane)
+    {
+      if (wait)
+        {
+          private->painter_allocation_handler =
+            g_signal_connect_object (private->right_hpane, "size-allocate",
+                                     G_CALLBACK (gimp_image_window_painter_allocation),
+                                     window, G_CONNECT_AFTER);
+          gtk_widget_queue_resize (private->right_hpane);
+        }
+      else
+        gimp_image_window_painter_allocation (private->right_hpane, &allocation, window);
+    }
+  g_object_unref (window);
+}
+
+static void
+gimp_image_window_painter_restore_shell (GimpImageWindow  *window,
+                                         GimpDisplayShell *shell)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  gint                   width;
+
+  if (! gimp_painter_canvas_ui_get_right_docks_width (shell, &width))
+    {
+      /* Canvas may have restored itself before page-removed, for example
+       * during shell disposal.  Complete that same pending native restore. */
+      if (private->painter_geometry_pending && ! private->painter_closing &&
+          ! private->painter_home_destroyed && ! private->painter_columns_destroyed &&
+          ! private->painter_allocation_handler &&
+          gtk_widget_get_parent (private->right_docks) == private->right_hpane)
+        {
+          private->painter_allocation_handler =
+            g_signal_connect_object (private->right_hpane, "size-allocate",
+                                     G_CALLBACK (gimp_image_window_painter_allocation),
+                                     window, G_CONNECT_AFTER);
+          gtk_widget_queue_resize (private->right_hpane);
+        }
+      return;
+    }
+
+  private->painter_right_width = width;
+  private->painter_geometry_pending = TRUE;
+  gimp_image_window_painter_cancel_allocation (window);
+
+  /* Install before removing the host, so even a synchronous allocation
+   * caused by parent-set callbacks sees the logical home geometry. */
+  if (! private->painter_closing && ! private->painter_home_destroyed &&
+      ! private->painter_columns_destroyed)
+    private->painter_allocation_handler =
+      g_signal_connect_object (private->right_hpane, "size-allocate",
+                               G_CALLBACK (gimp_image_window_painter_allocation),
+                               window, G_CONNECT_AFTER);
+
+  gimp_painter_canvas_ui_detach_right_docks (shell);
+}
+
+typedef struct
+{
+  GWeakRef window;
+} PainterReconcileIdle;
+
+static void
+gimp_image_window_painter_idle_free (gpointer data)
+{
+  PainterReconcileIdle *idle = data;
+
+  g_weak_ref_clear (&idle->window);
+  g_free (idle);
+}
+
+static gboolean
+gimp_image_window_painter_idle (gpointer data)
+{
+  PainterReconcileIdle *idle = data;
+  GimpImageWindow      *window = g_weak_ref_get (&idle->window);
+
+  if (window)
+    {
+      GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+      private->painter_idle_id = 0;
+      gimp_image_window_painter_reconcile (window);
+      g_object_unref (window);
+    }
+  return G_SOURCE_REMOVE;
+}
+
+static void
+gimp_image_window_painter_queue (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  if (! private->painter_closing && ! private->painter_suspended &&
+      ! private->painter_idle_id)
+    {
+      PainterReconcileIdle *idle = g_new0 (PainterReconcileIdle, 1);
+
+      g_weak_ref_init (&idle->window, window);
+      private->painter_idle_id =
+        g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
+                         gimp_image_window_painter_idle, idle,
+                         gimp_image_window_painter_idle_free);
+    }
+}
+
+static void
+gimp_image_window_painter_home_allocated (GtkWidget       *widget,
+                                          GtkAllocation   *allocation,
+                                          GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GimpDisplayShell       *selected;
+  GimpGuiConfig         *config = GIMP_GUI_CONFIG (private->gimp->config);
+
+  if (private->painter_closing || private->painter_home_destroyed ||
+      private->painter_columns_destroyed || private->painter_suspended ||
+      ! private->gimp->config->painter_canvas_ui ||
+      ! config->single_window_mode || config->hide_docks || allocation->width <= 1)
+    return;
+  selected = gimp_image_window_painter_selected (window);
+  /* Initial opt-in can precede the first real native allocation.  Defer
+   * the first borrow until its home geometry is meaningful. */
+  if (selected && selected->display && gimp_display_get_image (selected->display) &&
+      ! gimp_painter_canvas_ui_has_right_docks (selected) &&
+      gtk_widget_get_parent (private->right_docks) == widget)
+    gimp_image_window_painter_queue (window);
+}
+
+static void
+gimp_image_window_painter_child_destroy (GtkWidget       *widget,
+                                         GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  /* GtkWidget::destroy can finish while references keep the object alive;
+   * gtk_widget_in_destruction() alone is not a persistent lifetime marker. */
+  if (widget == private->right_hpane)
+    {
+      private->painter_home_destroyed = TRUE;
+      private->painter_allocation_handler = 0;
+    }
+  if (widget == private->right_docks)
+    private->painter_columns_destroyed = TRUE;
+  private->painter_revision++;
+  private->painter_geometry_revision++;
+  private->painter_dirty = TRUE;
+  gimp_image_window_painter_queue (window);
+}
+
+static void
+gimp_image_window_painter_context_changed (GimpContext     *context,
+                                           GimpDisplay     *display,
+                                           GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  /* This notification can run inside switch-page.  Ownership follows the
+   * actual global user-context display after native selection has settled. */
+  private->painter_revision++;
+  private->painter_dirty = TRUE;
+  gimp_image_window_painter_queue (window);
+}
+
+void
+gimp_image_window_painter_reconcile (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private;
+  GimpDisplayShell      *selected;
+  GimpDisplayShell      *previous;
+  gint                   options_mode = 1;
+  GList                 *shells;
+  GList                 *iter;
+  guint64                revision;
+  gboolean               show;
+
+  g_return_if_fail (GIMP_IS_IMAGE_WINDOW (window));
+  private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  private->painter_revision++;
+  private->painter_dirty = TRUE;
+
+  if (private->painter_closing || private->painter_running ||
+      private->painter_suspended || private->painter_switch_depth)
+    return;
+
+  /* Preserve the explicit transient per-shell helper when global opt-in
+   * has never owned this window, or has already completed its disable. */
+  if (! private->gimp->config->painter_canvas_ui && ! private->painter_managed)
+    {
+      private->painter_dirty = FALSE;
+      return;
+    }
+
+  g_object_ref (window);
+  private->painter_managed = TRUE;
+  private->painter_running = TRUE;
+  private->painter_dirty = FALSE;
+  revision = private->painter_revision;
+  selected = gimp_image_window_painter_selected (window);
+  if (selected)
+    g_object_ref (selected);
+  shells = g_list_copy_deep (private->shells, gimp_image_window_painter_ref_shell, NULL);
+  show = private->gimp->config->painter_canvas_ui;
+  previous = g_weak_ref_get (&private->painter_owner);
+  if (previous)
+    options_mode = gimp_painter_canvas_ui_get_options_presentation (previous);
+
+  /* Release the old owner before showing the selected shell.  The list
+   * leases stay valid if a parent-set callback removes or destroys a tab. */
+  for (iter = shells; iter; iter = iter->next)
+    {
+      GimpDisplayShell *shell = iter->data;
+
+      if (shell != selected || ! show ||
+          ! gimp_image_window_painter_can_attach (window, shell, revision))
+        {
+          gimp_image_window_painter_restore_shell (window, shell);
+          if (! gimp_image_window_painter_current (window, revision))
+            goto done;
+        }
+      if (shell != selected || ! show)
+        {
+          gimp_painter_canvas_ui_set_visible (shell, FALSE);
+          if (! gimp_image_window_painter_current (window, revision))
+            goto done;
+        }
+    }
+
+  if (selected && private->active_shell == selected && show)
+    {
+      /* Also mark an unchanged owner's mode as intentional: suspension
+       * hid it temporarily and must not reset full/hidden to compact. */
+      gimp_painter_canvas_ui_set_options_presentation (selected, options_mode);
+      gimp_painter_canvas_ui_set_visible (selected, TRUE);
+      if (! gimp_image_window_painter_current (window, revision))
+        goto done;
+
+      if (gimp_image_window_painter_can_attach (window, selected, revision) &&
+          ! gimp_painter_canvas_ui_has_right_docks (selected))
+        {
+          gimp_image_window_get_right_docks_geometry (window, NULL, NULL,
+                                                       NULL, NULL);
+          gimp_image_window_painter_cancel_allocation (window);
+          private->painter_geometry_pending = TRUE;
+          if (! gimp_painter_canvas_ui_attach_right_docks (selected,
+                                                          private->right_docks,
+                                                          revision) &&
+              ! private->painter_closing &&
+              ! private->painter_home_destroyed &&
+              ! private->painter_columns_destroyed &&
+              ! private->painter_allocation_handler &&
+              gtk_widget_get_parent (private->right_docks) == private->right_hpane)
+            {
+              /* Canvas rolled an unpublished/cancelled borrow home. */
+              private->painter_allocation_handler =
+                g_signal_connect_object (private->right_hpane, "size-allocate",
+                                         G_CALLBACK (gimp_image_window_painter_allocation),
+                                         window, G_CONNECT_AFTER);
+              gtk_widget_queue_resize (private->right_hpane);
+            }
+          if (! gimp_image_window_painter_current (window, revision))
+            goto done;
+        }
+    }
+
+  g_weak_ref_set (&private->painter_owner, show ? selected : NULL);
+  if (! show)
+    private->painter_managed = FALSE;
+
+done:
+  if (private->painter_revision != revision)
+    private->painter_dirty = TRUE;
+  private->painter_running = FALSE;
+  g_list_free_full (shells, g_object_unref);
+  g_clear_object (&selected);
+  g_clear_object (&previous);
+  /* One pass per invocation.  Continually superseded intent coalesces in
+   * one weak idle instead of recursively moving a borrowed widget. */
+  if (private->painter_dirty)
+    gimp_image_window_painter_queue (window);
+  g_object_unref (window);
+}
+
+void
+gimp_image_window_painter_suspend (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private;
+  GList                 *shells;
+  GList                 *iter;
+
+  g_return_if_fail (GIMP_IS_IMAGE_WINDOW (window));
+  private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  private->painter_suspended++;
+  private->painter_revision++;
+  private->painter_dirty = TRUE;
+  if (private->painter_suspended != 1 || private->painter_closing)
+    return;
+
+  g_object_ref (window);
+  shells = g_list_copy_deep (private->shells, gimp_image_window_painter_ref_shell, NULL);
+  for (iter = shells; iter; iter = iter->next)
+    {
+      gimp_image_window_painter_restore_shell (window, iter->data);
+      if (private->painter_closing)
+        break;
+      if (private->painter_managed)
+        gimp_painter_canvas_ui_set_visible (iter->data, FALSE);
+      if (private->painter_closing)
+        break;
+    }
+  g_list_free_full (shells, g_object_unref);
+  g_object_unref (window);
+}
+
+void
+gimp_image_window_painter_resume (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private;
+
+  g_return_if_fail (GIMP_IS_IMAGE_WINDOW (window));
+  private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  g_return_if_fail (private->painter_suspended > 0);
+  private->painter_suspended--;
+  gimp_image_window_painter_reconcile (window);
+}
+
+static void
+gimp_image_window_painter_close (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GList                 *shells;
+  GList                 *iter;
+
+  if (private->painter_closing)
+    return;
+
+  private->painter_closing = TRUE;
+  private->painter_revision++;
+  if (private->painter_idle_id)
+    {
+      g_source_remove (private->painter_idle_id);
+      private->painter_idle_id = 0;
+    }
+  gimp_image_window_painter_cancel_allocation (window);
+  shells = g_list_copy_deep (private->shells, gimp_image_window_painter_ref_shell, NULL);
+  for (iter = shells; iter; iter = iter->next)
+    {
+      gimp_painter_canvas_ui_set_visible (iter->data, FALSE);
+      /* Restore options while their home inside the right columns still
+       * exists, including a callback-cancelled transient hide. */
+      gimp_painter_canvas_ui_detach_dock (iter->data);
+      gimp_painter_canvas_ui_detach_right_docks (iter->data);
+    }
+  g_list_free_full (shells, g_object_unref);
+}
+
+static void
+gimp_image_window_widget_destroy (GtkWidget *widget)
+{
+  /* GtkContainer destroys descendants before a late GObject dispose can
+   * restore them.  Return borrowed children while their Paned still lives. */
+  gimp_image_window_painter_close (GIMP_IMAGE_WINDOW (widget));
+  GTK_WIDGET_CLASS (parent_class)->destroy (widget);
 }
 
 
@@ -1315,24 +1964,34 @@ gimp_image_window_add_shell (GimpImageWindow  *window,
 
   g_return_if_fail (GIMP_IS_IMAGE_WINDOW (window));
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
   private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
-
   g_return_if_fail (g_list_find (private->shells, shell) == NULL);
+  if (private->painter_closing)
+    return;
 
+  g_object_ref (window);
+  g_object_ref (shell);
+  private->painter_suspended++;
+  private->painter_revision++;
+  private->painter_dirty = TRUE;
   private->shells = g_list_append (private->shells, shell);
-
   tab_label = gimp_image_window_create_tab_label (window, shell);
-
   gtk_notebook_append_page (GTK_NOTEBOOK (private->notebook),
                             GTK_WIDGET (shell), tab_label);
-  gtk_notebook_set_tab_reorderable (GTK_NOTEBOOK (private->notebook),
-                                    GTK_WIDGET (shell), TRUE);
-
-  gtk_widget_show (GTK_WIDGET (shell));
-
-  /*  make it fetch the right monitor profile  */
-  gimp_color_managed_profile_changed (GIMP_COLOR_MANAGED (shell));
+  if (! private->painter_closing &&
+      gtk_widget_get_parent (GTK_WIDGET (shell)) == private->notebook)
+    {
+      gtk_notebook_set_tab_reorderable (GTK_NOTEBOOK (private->notebook),
+                                        GTK_WIDGET (shell), TRUE);
+      gtk_widget_show (GTK_WIDGET (shell));
+      if (! private->painter_closing &&
+          gtk_widget_get_parent (GTK_WIDGET (shell)) == private->notebook)
+        gimp_color_managed_profile_changed (GIMP_COLOR_MANAGED (shell));
+    }
+  private->painter_suspended--;
+  gimp_image_window_painter_reconcile (window);
+  g_object_unref (shell);
+  g_object_unref (window);
 }
 
 GimpDisplayShell *
@@ -1356,15 +2015,28 @@ gimp_image_window_remove_shell (GimpImageWindow  *window,
 
   g_return_if_fail (GIMP_IS_IMAGE_WINDOW (window));
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
   private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
-
   g_return_if_fail (g_list_find (private->shells, shell) != NULL);
 
+  g_object_ref (window);
+  g_object_ref (shell);
+  private->painter_suspended++;
+  private->painter_revision++;
+  private->painter_dirty = TRUE;
+  /* Invalidate membership before callback-producing restoration, while
+   * the shell still has its source-window ancestor.  An inactive removal
+   * never releases the selected shell's unrelated right-column record. */
   private->shells = g_list_remove (private->shells, shell);
-
-  gtk_container_remove (GTK_CONTAINER (private->notebook),
-                        GTK_WIDGET (shell));
+  gimp_image_window_painter_restore_shell (window, shell);
+  if (! private->painter_closing && private->painter_managed)
+    gimp_painter_canvas_ui_set_visible (shell, FALSE);
+  if (! private->painter_closing &&
+      gtk_widget_get_parent (GTK_WIDGET (shell)) == private->notebook)
+    gtk_container_remove (GTK_CONTAINER (private->notebook), GTK_WIDGET (shell));
+  private->painter_suspended--;
+  gimp_image_window_painter_reconcile (window);
+  g_object_unref (shell);
+  g_object_unref (window);
 }
 
 gint
@@ -1916,59 +2588,72 @@ gimp_image_window_config_notify (GimpImageWindow *window,
                                  GimpGuiConfig   *config)
 {
   GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  guint64                revision;
+  gboolean               topology;
 
-  /* Dock column visibility */
-  if (strcmp (pspec->name, "single-window-mode") == 0 ||
-      strcmp (pspec->name, "hide-docks")         == 0 ||
-      strcmp (pspec->name, "show-tabs")          == 0 ||
-      strcmp (pspec->name, "tabs-position")      == 0)
+  if (private->painter_closing || private->painter_home_destroyed ||
+      private->painter_columns_destroyed)
+    return;
+  if (! strcmp (pspec->name, "painter-canvas-ui"))
     {
-      if (strcmp (pspec->name, "single-window-mode") == 0 ||
-          strcmp (pspec->name, "hide-docks")         == 0)
+      private->painter_managed = TRUE;
+      gimp_image_window_painter_reconcile (window);
+      return;
+    }
+
+  g_object_ref (window);
+  topology = (! strcmp (pspec->name, "single-window-mode") ||
+              ! strcmp (pspec->name, "hide-docks"));
+  if (topology)
+    gimp_image_window_painter_suspend (window);
+  else
+    private->painter_revision++;
+  revision = private->painter_revision;
+
+  if (topology && ! private->painter_closing)
+    {
+      gboolean show_docks = config->single_window_mode && ! config->hide_docks;
+
+      gimp_image_window_keep_canvas_pos (window);
+      if (private->painter_closing || private->painter_revision != revision)
+        goto done;
+      gtk_widget_set_visible (private->left_docks, show_docks);
+      if (private->painter_closing || private->painter_revision != revision)
+        goto done;
+      gtk_widget_set_visible (private->right_docks, show_docks);
+      if (private->painter_closing || private->painter_revision != revision)
+        goto done;
+
+      if (! strcmp (pspec->name, "hide-docks") &&
+          ! config->single_window_mode && ! config->hide_docks)
         {
-          gboolean show_docks = (config->single_window_mode &&
-                                 ! config->hide_docks);
+          GimpDisplayShell *shell = gimp_image_window_get_active_shell (window);
+          GimpContext *context = gimp_get_user_context (private->gimp);
 
-          gimp_image_window_keep_canvas_pos (window);
-          gtk_widget_set_visible (private->left_docks, show_docks);
-          gtk_widget_set_visible (private->right_docks, show_docks);
-
-          /* If docks are being shown, and we are in multi-window-mode,
-           * and this is the window of the active display, try to set
-           * the keyboard focus to this window because it might have
-           * been stolen by a dock. See bug #567333.
-           */
-          if (strcmp (pspec->name, "hide-docks") == 0 &&
-              ! config->single_window_mode            &&
-              ! config->hide_docks)
+          if (shell && gimp_context_get_display (context) == shell->display)
             {
-              GimpDisplayShell *shell;
-              GimpContext      *user_context;
-
-              shell        = gimp_image_window_get_active_shell (window);
-              user_context = gimp_get_user_context (private->gimp);
-
-              if (gimp_context_get_display (user_context) == shell->display)
-                {
-                  GdkWindow *w = gtk_widget_get_window (GTK_WIDGET (window));
-
-                  if (w)
-                    gdk_window_focus (w, gtk_get_current_event_time ());
-                }
+              GdkWindow *w = gtk_widget_get_window (GTK_WIDGET (window));
+              if (w)
+                gdk_window_focus (w, gtk_get_current_event_time ());
             }
         }
-
-      gimp_image_window_update_tabs (window);
     }
 
-  /* Session management */
-  if (strcmp (pspec->name, "single-window-mode") == 0)
-    {
-      gimp_image_window_session_update (window,
-                                        NULL /*new_display*/,
-                                        gimp_image_window_config_to_entry_id (config),
-                                        gimp_widget_get_monitor (GTK_WIDGET (window)));
-    }
+  if (private->painter_closing || private->painter_revision != revision)
+    goto done;
+  gimp_image_window_update_tabs (window);
+  if (private->painter_closing || private->painter_revision != revision)
+    goto done;
+  if (! strcmp (pspec->name, "single-window-mode"))
+    gimp_image_window_session_update (window, NULL,
+                                      gimp_image_window_config_to_entry_id (config),
+                                      gimp_widget_get_monitor (GTK_WIDGET (window)));
+done:
+  if (topology)
+    gimp_image_window_painter_resume (window);
+  else
+    gimp_image_window_painter_reconcile (window);
+  g_object_unref (window);
 }
 
 static void
@@ -2075,76 +2760,124 @@ gimp_image_window_shell_events (GtkWidget       *widget,
 }
 
 static void
+gimp_image_window_activate_shell (GimpImageWindow  *window,
+                                   GimpDisplayShell *shell)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GimpDisplay           *active_display;
+  guint64                revision = private->painter_revision;
+
+  if (! shell || private->painter_closing || private->painter_home_destroyed ||
+      shell == private->active_shell)
+    return;
+  g_object_ref (window);
+  g_object_ref (shell);
+  gimp_image_window_disconnect_from_active_shell (window);
+  if (private->painter_closing || private->painter_revision != revision)
+    goto done;
+  private->active_shell = shell;
+  active_display = shell->display;
+  g_signal_connect (active_display, "notify::image",
+                    G_CALLBACK (gimp_image_window_image_notify), window);
+  g_signal_connect (shell, "scaled",
+                    G_CALLBACK (gimp_image_window_shell_scaled), window);
+  g_signal_connect (shell, "rotated",
+                    G_CALLBACK (gimp_image_window_shell_rotated), window);
+  g_signal_connect (shell, "notify::title",
+                    G_CALLBACK (gimp_image_window_shell_title_notify), window);
+  gimp_window_set_primary_focus_widget (GIMP_WINDOW (window), shell->canvas);
+  if (private->painter_closing || private->painter_revision != revision)
+    goto done;
+  gtk_window_set_title (GTK_WINDOW (window), shell->title);
+  if (private->painter_closing || private->painter_revision != revision)
+    goto done;
+
+  if (gtk_widget_get_window (GTK_WIDGET (window)))
+    gimp_image_window_session_update (window, active_display, NULL,
+                                      gimp_widget_get_monitor (GTK_WIDGET (window)));
+  else if (private->initial_monitor)
+    gimp_image_window_session_update (window, active_display, NULL,
+                                      private->initial_monitor);
+  if (private->painter_closing || private->painter_revision != revision)
+    goto done;
+
+  /* This emits display-changed.  It requests a deferred Painter update;
+   * no old-shell work is performed after it returns. */
+  gimp_context_set_display (gimp_get_user_context (private->gimp), active_display);
+done:
+  g_object_unref (shell);
+  g_object_unref (window);
+}
+
+static void
 gimp_image_window_switch_page (GtkNotebook     *notebook,
                                gpointer         page,
                                gint             page_num,
                                GimpImageWindow *window)
 {
   GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
-  GimpDisplayShell       *shell;
-  GimpDisplay            *active_display;
+  GtkWidget             *shell = gtk_notebook_get_nth_page (notebook, page_num);
 
-  shell = GIMP_DISPLAY_SHELL (gtk_notebook_get_nth_page (notebook, page_num));
+  private->painter_switch_depth++;
+  private->painter_revision++;
+  private->painter_dirty = TRUE;
+  if (shell && GIMP_IS_DISPLAY_SHELL (shell) &&
+      g_list_find (private->shells, shell))
+    gimp_image_window_activate_shell (window, GIMP_DISPLAY_SHELL (shell));
+}
 
-  if (shell == private->active_shell)
+static void
+gimp_image_window_switch_page_after (GtkNotebook     *notebook,
+                                     gpointer         page,
+                                     gint             page_num,
+                                     GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GimpDisplayShell       *selected;
+  guint64                revision;
+
+  if (private->painter_switch_depth)
+    private->painter_switch_depth--;
+  if (private->painter_closing || private->painter_switch_depth)
     return;
 
-  gimp_image_window_disconnect_from_active_shell (window);
-
-  GIMP_LOG (WM, "GimpImageWindow %p, private->active_shell = %p; \n",
-            window, shell);
-  private->active_shell = shell;
-
-  gimp_window_set_primary_focus_widget (GIMP_WINDOW (window),
-                                        shell->canvas);
-
-  active_display = private->active_shell->display;
-
-  g_signal_connect (active_display, "notify::image",
-                    G_CALLBACK (gimp_image_window_image_notify),
-                    window);
-
-  g_signal_connect (private->active_shell, "scaled",
-                    G_CALLBACK (gimp_image_window_shell_scaled),
-                    window);
-  g_signal_connect (private->active_shell, "rotated",
-                    G_CALLBACK (gimp_image_window_shell_rotated),
-                    window);
-  g_signal_connect (private->active_shell, "notify::title",
-                    G_CALLBACK (gimp_image_window_shell_title_notify),
-                    window);
-
-  gtk_window_set_title (GTK_WINDOW (window), shell->title);
-
-  if (gtk_widget_get_window (GTK_WIDGET (window)))
+  g_object_ref (window);
+  selected = gimp_image_window_painter_selected (window);
+  if (selected)
+    g_object_ref (selected);
+  /* Nested callbacks can select a newer page before the outer signal's
+   * default handler settles.  Read the notebook again instead of replaying
+   * either signal's page argument. */
+  if (selected && selected != private->active_shell)
     {
-      /*  we are fully initialized, use the window's current monitor
-       */
-      gimp_image_window_session_update (window,
-                                        active_display,
-                                        NULL /*new_entry_id*/,
-                                        gimp_widget_get_monitor (GTK_WIDGET (window)));
+      private->painter_revision++;
+      gimp_image_window_activate_shell (window, selected);
     }
-  else if (private->initial_monitor != NULL)
+  revision = private->painter_revision;
+  if (selected && ! private->painter_closing &&
+      selected == private->active_shell &&
+      selected == gimp_image_window_painter_selected (window))
     {
-      /*  we are in construction, use the initial monitor; calling
-       *  gimp_widget_get_monitor() would get us the monitor where the
-       *  pointer is
-       */
-      gimp_image_window_session_update (window,
-                                        active_display,
-                                        NULL /*new_entry_id*/,
-                                        private->initial_monitor);
+      if (gimp_context_get_display (gimp_get_user_context (private->gimp)) != selected->display)
+        {
+          gimp_context_set_display (gimp_get_user_context (private->gimp), selected->display);
+          if (private->painter_closing || selected != private->active_shell ||
+              selected != gimp_image_window_painter_selected (window))
+            goto done;
+          revision = private->painter_revision;
+        }
+      gimp_display_shell_appearance_update (selected);
+      if (private->painter_closing || private->painter_revision != revision)
+        goto done;
+      gimp_image_window_update_ui_manager (window);
+      if (private->painter_closing || private->painter_revision != revision)
+        goto done;
+      gimp_image_window_update_tab_labels (window);
     }
-
-  gimp_context_set_display (gimp_get_user_context (private->gimp),
-                            active_display);
-
-  gimp_display_shell_appearance_update (private->active_shell);
-
-  gimp_image_window_update_ui_manager (window);
-
-  gimp_image_window_update_tab_labels (window);
+done:
+  gimp_image_window_painter_reconcile (window);
+  g_clear_object (&selected);
+  g_object_unref (window);
 }
 
 static void
@@ -2155,13 +2888,20 @@ gimp_image_window_page_removed (GtkNotebook     *notebook,
 {
   GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
 
+  private->painter_revision++;
+  private->painter_dirty = TRUE;
+  private->shells = g_list_remove (private->shells, widget);
+  if (! private->painter_closing && GIMP_IS_DISPLAY_SHELL (widget))
+    gimp_image_window_painter_restore_shell (window, GIMP_DISPLAY_SHELL (widget));
   if (GTK_WIDGET (private->active_shell) == widget)
     {
-      GIMP_LOG (WM, "GimpImageWindow %p, private->active_shell = %p; \n",
-                window, NULL);
       gimp_image_window_disconnect_from_active_shell (window);
-      private->active_shell = NULL;
+      if (GTK_WIDGET (private->active_shell) == widget)
+        private->active_shell = NULL;
     }
+  /* Notebook removal and its resulting selection must finish before a
+   * remaining page can become the next owner. */
+  gimp_image_window_painter_queue (window);
 }
 
 static void
@@ -2231,25 +2971,42 @@ gimp_image_window_image_notify (GimpDisplay      *display,
                                 GimpImageWindow  *window)
 {
   GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
-  GtkWidget              *tab_label;
-  GList                  *children;
-  GtkWidget              *view;
+  GimpDisplayShell      *shell;
+  GtkWidget             *tab_label;
+  GList                 *children;
+  GtkWidget             *view;
+  guint64                revision;
 
-  gimp_image_window_session_update (window,
-                                    display,
-                                    NULL /*new_entry_id*/,
+  if (private->painter_closing || private->painter_home_destroyed ||
+      private->painter_columns_destroyed)
+    return;
+  g_object_ref (window);
+  g_object_ref (display);
+  gimp_image_window_painter_suspend (window);
+  revision = private->painter_revision;
+  gimp_image_window_session_update (window, display, NULL,
                                     gimp_widget_get_monitor (GTK_WIDGET (window)));
-
+  if (private->painter_closing || private->painter_revision != revision)
+    goto done;
+  shell = gimp_display_get_shell (display);
+  if (! shell || ! g_list_find (private->shells, shell))
+    goto done;
   tab_label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (private->notebook),
-                                          GTK_WIDGET (gimp_display_get_shell (display)));
-  children  = gtk_container_get_children (GTK_CONTAINER (tab_label));
-  view      = GTK_WIDGET (children->data);
+                                         GTK_WIDGET (shell));
+  if (! tab_label)
+    goto done;
+  children = gtk_container_get_children (GTK_CONTAINER (tab_label));
+  view = children ? GTK_WIDGET (children->data) : NULL;
   g_list_free (children);
-
-  gimp_view_set_viewable (GIMP_VIEW (view),
-                          GIMP_VIEWABLE (gimp_display_get_image (display)));
-
-  gimp_image_window_update_ui_manager (window);
+  if (view)
+    gimp_view_set_viewable (GIMP_VIEW (view),
+                            GIMP_VIEWABLE (gimp_display_get_image (display)));
+  if (! private->painter_closing && private->painter_revision == revision)
+    gimp_image_window_update_ui_manager (window);
+done:
+  gimp_image_window_painter_resume (window);
+  g_object_unref (display);
+  g_object_unref (window);
 }
 
 static void

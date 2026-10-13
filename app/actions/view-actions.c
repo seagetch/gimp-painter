@@ -965,7 +965,10 @@ view_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("view-show-menubar",    image);
   SET_ACTIVE    ("view-show-menubar",    display && options->show_menubar);
   SET_SENSITIVE ("view-painter-canvas-ui", image);
-  SET_ACTIVE    ("view-painter-canvas-ui", display && gimp_painter_canvas_ui_get_visible (shell));
+  /* Action synchronization can emit the toggle callback.  The global
+   * preference, rather than an inactive shell's transient visibility, is
+   * authoritative even before switch-page's after-handler has run. */
+  SET_ACTIVE    ("view-painter-canvas-ui", group->gimp->config->painter_canvas_ui);
   SET_SENSITIVE ("view-show-rulers",     image);
   SET_ACTIVE    ("view-show-rulers",     display && options->show_rulers);
   SET_SENSITIVE ("view-show-scrollbars", image);
