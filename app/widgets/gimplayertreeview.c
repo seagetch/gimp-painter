@@ -57,6 +57,8 @@
 #include "gimpactiongroup.h"
 #include "gimpcellrendererviewable.h"
 #include "gimpcontainertreestore.h"
+#include "gimpcontainertreeview.h"
+#include "gimpcellrendererpopup.h"
 #include "gimpcontainerview.h"
 #include "gimpcontainerview-cruft.h"
 #include "gimpdnd.h"
@@ -318,8 +320,16 @@ gimp_layer_tree_view_constructed (GObject *object)
   GimpContainerTreeView *tree_view  = GIMP_CONTAINER_TREE_VIEW (object);
   GimpLayerTreeView     *layer_view = GIMP_LAYER_TREE_VIEW (object);
   GtkWidget             *button;
+  GtkCellRenderer       *popup_cell;
+  GtkTreeViewColumn     *popup_column;
 
   G_OBJECT_CLASS (parent_class)->constructed (object);
+
+  popup_column = gtk_tree_view_column_new ();
+  gtk_tree_view_insert_column (tree_view->view, popup_column, 0);
+  popup_cell = gimp_cell_renderer_popup_new ();
+  gtk_tree_view_column_pack_start (popup_column, popup_cell, FALSE);
+  gimp_container_tree_view_add_misc_cell (tree_view, popup_cell);
 
   layer_view->priv->mask_cell = gimp_cell_renderer_viewable_new ();
   gtk_tree_view_column_pack_start (tree_view->main_column,
@@ -359,6 +369,12 @@ gimp_layer_tree_view_constructed (GObject *object)
                                           "layers-new-group", NULL);
   gtk_box_reorder_child (gimp_editor_get_button_box (GIMP_EDITOR (layer_view)),
                          button, 1);
+
+  button = gimp_editor_add_action_button (GIMP_EDITOR (layer_view), "layers",
+                                          "layers-new-filter", NULL);
+  gtk_widget_set_name (button, "painter-tree-new-filter");
+  gtk_box_reorder_child (gimp_editor_get_button_box (GIMP_EDITOR (layer_view)),
+                         button, 3);
 
   button = gimp_editor_add_action_button (GIMP_EDITOR (layer_view), "layers",
                                           "layers-anchor", NULL);
@@ -601,13 +617,53 @@ gimp_layer_tree_view_set_selected (GimpContainerView *view,
                                    GList             *items)
 {
   GimpLayerTreeView *layer_view = GIMP_LAYER_TREE_VIEW (view);
+  GimpItemTreeView  *item_view  = GIMP_ITEM_TREE_VIEW (view);
+  GimpImage         *image      = gimp_item_tree_view_get_image (item_view);
+  GList             *selected   = NULL;
+  GList             *list;
   gboolean           success;
+
+  /* Selection signals may remove the requested layers, replace an image's
+   * selected-items list, or destroy the view. Keep both the list nodes and
+   * their objects alive until this invocation has unwound.
+   */
+  g_object_ref (view);
+  if (image)
+    g_object_ref (image);
+
+  items = g_list_copy (items);
+  for (list = items; list; list = g_list_next (list))
+    g_object_ref (list->data);
 
   success = parent_view_iface->set_selected (view, items);
 
+  /* A widget reference does not prevent destroy. The item view clears its
+   * image/container on dispose, including after in_destruction becomes false.
+   */
+  if (! image ||
+      gtk_widget_in_destruction (GTK_WIDGET (view)) ||
+      gimp_item_tree_view_get_image (item_view) != image ||
+      ! gimp_container_view_get_container (view))
+    goto out;
+
   if (items && success)
     {
-      GList *list;
+      GList *image_selected = gimp_image_get_selected_layers (image);
+
+      /* A reentrant selection is authoritative. Do not overwrite its options
+       * with the old request; compare identities, not row positions or order.
+       */
+      gimp_container_view_get_selected (view, &selected);
+      if (g_list_length (items) != g_list_length (selected) ||
+          g_list_length (items) != g_list_length (image_selected))
+        goto out;
+
+      for (list = items; list; list = g_list_next (list))
+        if (! gimp_item_is_attached (GIMP_ITEM (list->data)) ||
+            gimp_item_get_image (GIMP_ITEM (list->data)) != image ||
+            ! g_list_find (selected, list->data) ||
+            ! g_list_find (image_selected, list->data))
+          goto out;
 
       for (list = items; list; list = g_list_next (list))
         {
@@ -632,6 +688,12 @@ gimp_layer_tree_view_set_selected (GimpContainerView *view,
        */
       gimp_widget_blink (GTK_WIDGET (gimp_editor_get_button_box (editor)));
     }
+
+out:
+  g_list_free (selected);
+  g_list_free_full (items, g_object_unref);
+  g_clear_object (&image);
+  g_object_unref (view);
 
   return success;
 }

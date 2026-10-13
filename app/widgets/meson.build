@@ -43,6 +43,7 @@ libappwidgets_sources = [
   'gimpbufferview.c',
   'gimpcairo-wilber.c',
   'gimpcellrendererbutton.c',
+  'gimpcellrendererpopup.cpp',
   'gimpcellrendererdashes.c',
   'gimpcellrendererviewable.c',
   'gimpchanneltreeview.c',
