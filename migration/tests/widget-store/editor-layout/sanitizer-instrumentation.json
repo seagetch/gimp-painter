@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "commands_checked": [
+    {
+      "path": "app/widgets/gimpeditor.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "path": "app/widgets/gimppaintermybrusheditor.cpp",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "path": "app/tests/test-painter-compact-options.c",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    },
+    {
+      "path": "app/tests/test-painter-mypaint-editor.cpp",
+      "sanitizers": "address,undefined",
+      "rtti_disabled": false,
+      "vptr_disabled": false
+    }
+  ],
+  "scope": "Current standard Meson compile_commands; third-party dependencies not instrumented"
+}
