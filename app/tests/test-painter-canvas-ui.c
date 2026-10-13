@@ -65,8 +65,14 @@ static void run_canvas_case (gconstpointer data) {
 static void drain (void) { for (int i=0;i<300 && g_main_context_pending(NULL);++i) g_main_context_iteration(NULL,FALSE); }
 static GtkWidget *find (GtkWidget *w,const gchar *name) {
   if (!g_strcmp0(gtk_widget_get_name(w),name)) return w;
-  if (GTK_IS_CONTAINER(w)) { GList *children=gtk_container_get_children(GTK_CONTAINER(w)); GtkWidget *result=NULL;
-    for(GList *i=children;i && !result;i=i->next) result=find(i->data,name); g_list_free(children); return result; }
+  if (GTK_IS_CONTAINER(w)) {
+    GList *children=gtk_container_get_children(GTK_CONTAINER(w));
+    GtkWidget *result=NULL;
+    for(GList *i=children;i && !result;i=i->next)
+      result=find(i->data,name);
+    g_list_free(children);
+    return result;
+  }
   return NULL;
 }
 static GimpImage *new_image(void) { return gimp_image_new(gimp,64,64,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR); }
@@ -303,7 +309,10 @@ static void renderer_modifier_activation(void) {
     g_assert_true(renderer_button_event_state(preview,3,states[i]));drain();
     renderer_current_popup(w);selection=gimp_image_get_selected_layers(image);
     g_assert_cmpuint(g_list_length(selection),==,i>=3?1:2);
-    if(i!=4)g_assert_nonnull(g_list_find(selection,a));if(i!=3)g_assert_nonnull(g_list_find(selection,b));
+    if(i!=4)
+      g_assert_nonnull(g_list_find(selection,a));
+    if(i!=3)
+      g_assert_nonnull(g_list_find(selection,b));
     gimp_painter_layer_tiles_cancel_interaction(GIMP_PAINTER_LAYER_TILES(w));drain();
   }
   close_tiles(w);g_object_unref(image);
@@ -1728,6 +1737,35 @@ ADD(w08017_dnd_cross_parent_last_owner);
 ADD(w08017_dnd_reject_self_ancestor);
 ADD(w08017_dnd_layer_group_move_undo);
 ADD(w08017_dnd_cross_image_copy);
+ADD(w08017_dnd_multi_into_before);
+ADD(w08017_dnd_multi_into_after);
+ADD(w08017_dnd_multi_same_parent_before);
+ADD(w08017_dnd_multi_same_parent_after);
+ADD(w08017_dnd_multi_cross_parent_before);
+ADD(w08017_dnd_multi_cross_parent_after);
+ADD(w08017_dnd_multi_caller_topology);
+ADD(w08017_dnd_multi_selected_anchor_before);
+ADD(w08017_dnd_multi_selected_anchor_after);
+ADD(w08017_dnd_multi_transfer_lifetime);
+ADD(w08017_dnd_multi_reject_unowned_ancestor);
+ADD(w08017_dnd_multi_destination_lost_on_remove);
+ADD(w08017_dnd_multi_destination_lost_on_insert);
+ADD(w08017_dnd_multi_reject_group_into_before);
+ADD(w08017_dnd_multi_reject_group_into_after);
+ADD(w08017_dnd_relocate_parent_valid);
+ADD(w08017_dnd_relocate_parent_lost);
+ADD(w08017_dnd_relocate_root_valid);
+ADD(w08017_dnd_relocate_root_lost);
+ADD(w08017_dnd_relocate_foreign_root_valid);
+ADD(w08017_dnd_relocate_foreign_root_lost);
+ADD(w08017_dnd_relocate_later_foreign_valid);
+ADD(w08017_dnd_relocate_later_foreign_lost);
+ADD(w08017_dnd_relocate_on_insert_valid);
+ADD(w08017_dnd_relocate_on_insert_lost);
+ADD(w08017_dnd_relocate_on_rollback);
+ADD(w08017_dnd_relocate_same_destination);
+ADD(w08017_dnd_weak_admission_keeps_move);
+ADD(w08017_dnd_relocate_later_on_cleanup);
   ADD(native_tool_dnd_wire_payload);
   ADD(native_renderer_background_lifetime);
   ADD(native_layer_preview_pixels_lifetime);

@@ -1,0 +1,170 @@
+{
+  "asan": {
+    "ABI": {
+      "actual_link_includes_both_objects": true,
+      "actual_link_line_sha256": "39d7ad3d44269df479c7feb52234de6580d9019503aae494711a2e8ba5d76fad",
+      "build_command_metadata_only": false,
+      "build_exit_basename": "build-asan-final80v3.exit",
+      "build_exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "build_log_basename": "build-asan-final80v3.log",
+      "build_log_sha256": "1b992afdd62b915d7829b9b1daf127788fe2948fdf1bde3bbd742a547b3618b4",
+      "captured_at_utc": "2026-10-13T10:04:02.918792+00:00",
+      "compact_binary": "app/tests/painter-compact-options",
+      "compact_sha256": "48611d7c4deb53bcb2cbceb15877d40d57ad056126ab950dc1cf86948ffb9435",
+      "compile_checks": [
+        {
+          "actual_compiler_invocation_verified": true,
+          "compiler_command_sha256": "7fd06406d3a8fd654168431cde85ef2468cac27d190a69ef027395b31723e3cd",
+          "object": "app/tests/painter-compact-options.p/test-widget-orientation-api.c.o",
+          "object_bytes": 3840,
+          "object_sha256": "3e69431a853a6c27a45c8b48906c9b1d6e303864c00d677cbf81017fb9ceaca8",
+          "signatures": 12,
+          "source": "app/tests/test-widget-orientation-api.c",
+          "source_sha256": "d85281846b56ee88aa1a703ec5053ae677de9a08ab9f8cf8695c0c5359fa9648",
+          "standard": "c11"
+        },
+        {
+          "actual_compiler_invocation_verified": true,
+          "compiler_command_sha256": "88bf77618c6a1b68605d146fa0c208b386dffc36542ad8f1d03a2f18b5e87aae",
+          "object": "app/tests/painter-compact-options.p/test-widget-orientation-api.cpp.o",
+          "object_bytes": 9368,
+          "object_sha256": "c87e6739dea7b250993473f5be17790b13481ad5d14fc113116fa37214756f15",
+          "signatures": 12,
+          "source": "app/tests/test-widget-orientation-api.cpp",
+          "source_sha256": "5e987e170aa64885ecf5c6fe6f400e47b0430a4dca7aabecbbb3a02dea480f8c",
+          "standard": "c++14"
+        }
+      ],
+      "mode": "asan",
+      "runtime_executed": false,
+      "status": "PASS"
+    },
+    "exports": {
+      "GIR_run": false,
+      "Windows_link_run": false,
+      "before_after_equal": true,
+      "export_table_sha256": "94c7bb9d3e34e43f42be97d87e6f6dffa3b76bd08d7b836b816d5fbd3a3cf04c",
+      "library": "libgimpwidgets/libgimpwidgets-3.0.so.0.8.1",
+      "library_sha256": "f542d83a4a8598d505f32e37e5028de242b6881e7bfa02f2e74584f1ab84e8ac",
+      "status": "PASS",
+      "symbol_counts": {
+        "gimp_enum_radio_box_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_enum_radio_frame_new_full": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_enum_radio_frame_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_enum_stock_box_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_int_radio_group_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_prop_boolean_radio_frame_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_prop_enum_radio_frame_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_prop_enum_stock_box_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        }
+      }
+    }
+  },
+  "native": {
+    "ABI": {
+      "actual_link_includes_both_objects": true,
+      "actual_link_line_sha256": "dde3507d2dd9e786dcd9adf826d280b6ffb942121dc59fab3c9b726b81942b0a",
+      "build_command_metadata_only": false,
+      "build_exit_basename": "build-native-final80v3.exit",
+      "build_exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "build_log_basename": "build-native-final80v3.log",
+      "build_log_sha256": "096052fff804bcd6f2eb557acc169748938d9a89f7beead2b14b0615bf4df512",
+      "captured_at_utc": "2026-10-13T10:02:08.753767+00:00",
+      "compact_binary": "app/tests/painter-compact-options",
+      "compact_sha256": "db4a2a3522ec48d2ed849b198ca625a0d56530675faa1f65ab003359fba220ae",
+      "compile_checks": [
+        {
+          "actual_compiler_invocation_verified": true,
+          "compiler_command_sha256": "0f96a97c0952442588714671597c5c55e21e4afd46c87be5d6354a0ef3625d77",
+          "object": "app/tests/painter-compact-options.p/test-widget-orientation-api.c.o",
+          "object_bytes": 2912,
+          "object_sha256": "d41ceaeccaf1374b3fab25ab04f12050b93c03a058bcdbcb5fb39cb15371994a",
+          "signatures": 12,
+          "source": "app/tests/test-widget-orientation-api.c",
+          "source_sha256": "d85281846b56ee88aa1a703ec5053ae677de9a08ab9f8cf8695c0c5359fa9648",
+          "standard": "c11"
+        },
+        {
+          "actual_compiler_invocation_verified": true,
+          "compiler_command_sha256": "c198d06f2589bd3c7b46b50cb0ae423e1d5068b55cf76b04a4ac1574eed51269",
+          "object": "app/tests/painter-compact-options.p/test-widget-orientation-api.cpp.o",
+          "object_bytes": 8512,
+          "object_sha256": "7e43fc44a9ce5e393450eb16e69ee204e77713207ef455f0c9dbcdde8834a4b7",
+          "signatures": 12,
+          "source": "app/tests/test-widget-orientation-api.cpp",
+          "source_sha256": "5e987e170aa64885ecf5c6fe6f400e47b0430a4dca7aabecbbb3a02dea480f8c",
+          "standard": "c++14"
+        }
+      ],
+      "mode": "native",
+      "runtime_executed": false,
+      "status": "PASS"
+    },
+    "exports": {
+      "GIR_run": false,
+      "Windows_link_run": false,
+      "before_after_equal": true,
+      "export_table_sha256": "94c7bb9d3e34e43f42be97d87e6f6dffa3b76bd08d7b836b816d5fbd3a3cf04c",
+      "library": "libgimpwidgets/libgimpwidgets-3.0.so.0.8.1",
+      "library_sha256": "d4f9e36d143e782739ac557be751709a837e28ef89d1a329d505bb4bb4f82774",
+      "status": "PASS",
+      "symbol_counts": {
+        "gimp_enum_radio_box_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_enum_radio_frame_new_full": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_enum_radio_frame_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_enum_stock_box_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_int_radio_group_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_prop_boolean_radio_frame_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_prop_enum_radio_frame_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        },
+        "gimp_prop_enum_stock_box_new_with_orientation": {
+          "ELF_defined_unmangled": 1,
+          "windows_table": 1
+        }
+      }
+    }
+  }
+}

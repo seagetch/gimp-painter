@@ -717,7 +717,8 @@ gimp_container_tree_view_real_drop_possible (GimpContainerTreeView   *tree_view,
       GimpViewable *parent;
 
       /*  dropping on the lower third of a group item drops into that group  */
-      if (drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_AFTER &&
+      if ((drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_AFTER ||
+           drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_BEFORE) &&
           gimp_viewable_get_children (dest_viewable))
         {
           parent = dest_viewable;
@@ -767,6 +768,14 @@ gimp_container_tree_view_real_drop_possible (GimpContainerTreeView   *tree_view,
       if (g_type_is_a (G_TYPE_FROM_INSTANCE (src_viewable),
                        gimp_container_get_child_type (container)))
         {
+          /* MOVE requires the actual destination's child type.  Foreign
+           * root types keep the COPY/conversion path below.
+           */
+          if (dest_container &&
+              ! g_type_is_a (G_TYPE_FROM_INSTANCE (src_viewable),
+                              gimp_container_get_child_type (dest_container)))
+            return FALSE;
+
           /* The drop won't change a thing. This is not a fatal drop
            * failure, unless there is only one source viewable.
            * See also the XXX below.
@@ -816,104 +825,307 @@ gimp_container_tree_view_real_drop_possible (GimpContainerTreeView   *tree_view,
   return TRUE;
 }
 
+/* GCopyFunc has two arguments; do not call g_object_ref through a cast. */
+static gpointer
+gimp_container_tree_view_drop_ref_source (gconstpointer source,
+                                           gpointer      user_data)
+{
+  return g_object_ref ((gpointer) source);
+}
+
+/* Roots do not set GimpViewable::parent.  Observe native strong-container
+ * admissions during this synchronous dispatch instead of guessing ownership
+ * from a NULL parent or the object's reference count.  The snapshot owns the
+ * objects; these pointer-key sets add no object references.
+ */
+typedef struct
+{
+  GThread       *thread;
+  GHashTable    *selected;
+  GHashTable    *adopted;
+  GimpContainer *expected_container;
+  GimpObject    *expected_source;
+} GimpContainerTreeViewDropChoices;
+
+static gboolean
+gimp_container_tree_view_drop_source_added (GSignalInvocationHint *hint,
+                                             guint                  n_values,
+                                             const GValue          *values,
+                                             gpointer               data)
+{
+  GimpContainerTreeViewDropChoices *choices = data;
+  GimpContainer *container;
+  GimpObject    *source;
+
+  /* Emission hooks are process-wide.  Ignore unrelated emitter threads
+   * before touching native UI objects or the owner-thread-only sets.
+   */
+  if (g_thread_self () != choices->thread)
+    return TRUE;
+
+  container = g_value_get_object (&values[0]);
+  source = g_value_get_object (&values[1]);
+  if (gimp_container_get_policy (container) == GIMP_CONTAINER_POLICY_STRONG &&
+      g_hash_table_contains (choices->selected, source))
+    {
+      /* Exactly one admission belongs to our own insert.  A nested
+       * re-admission of the same object/container still produces an extra
+       * emission, so at least one of the two records the newer choice.
+       */
+      if (container == choices->expected_container &&
+          source == choices->expected_source)
+        {
+          choices->expected_container = NULL;
+          choices->expected_source = NULL;
+        }
+      else
+        {
+          g_hash_table_add (choices->adopted, source);
+        }
+    }
+
+  return TRUE;
+}
+
+static void
+gimp_container_tree_view_drop_choices_free (gpointer data)
+{
+  GimpContainerTreeViewDropChoices *choices = data;
+
+  g_hash_table_unref (choices->adopted);
+  g_hash_table_unref (choices->selected);
+  g_thread_unref (choices->thread);
+  g_free (choices);
+}
+
+static gboolean
+gimp_container_tree_view_drop_insert (GimpContainerTreeViewDropChoices *choices,
+                                       GimpContainer                    *container,
+                                       GimpObject                       *source,
+                                       gint                              index)
+{
+  gboolean inserted;
+
+  choices->expected_container = container;
+  choices->expected_source = source;
+  inserted = gimp_container_insert (container, source, index);
+  choices->expected_container = NULL;
+  choices->expected_source = NULL;
+
+  return inserted;
+}
+
+/* A retained destination must still belong to the view's original hierarchy.
+ * Retaining its container alone is insufficient: child-container callbacks
+ * can borrow their owning group.
+ */
+static gboolean
+gimp_container_tree_view_drop_destination_valid (GimpContainerView *view,
+                                                 GimpContainer     *container,
+                                                 GimpViewable      *destination,
+                                                 GimpViewable      *parent,
+                                                 GimpContainer     *children,
+                                                 gboolean           into)
+{
+  GimpViewable *top;
+
+  if (gimp_container_view_get_container (view) != container)
+    return FALSE;
+
+  if (! destination)
+    return children == container;
+
+  if (into)
+    {
+      if (gimp_viewable_get_children (destination) != children)
+        return FALSE;
+    }
+  else if (gimp_viewable_get_parent (destination) != parent)
+    {
+      return FALSE;
+    }
+
+  for (top = destination; gimp_viewable_get_parent (top);
+       top = gimp_viewable_get_parent (top))
+    ;
+
+  return gimp_container_have (container, GIMP_OBJECT (top));
+}
+
 void
 gimp_container_tree_view_real_drop_viewables (GimpContainerTreeView   *tree_view,
                                               GList                   *src_viewables,
                                               GimpViewable            *dest_viewable,
                                               GtkTreeViewDropPosition  drop_pos)
 {
-  GimpContainerView *view       = GIMP_CONTAINER_VIEW (tree_view);
-  GimpContainer     *src_container;
+  GimpContainerView *view = GIMP_CONTAINER_VIEW (tree_view);
+  GimpContainer     *container = gimp_container_view_get_container (view);
   GimpContainer     *dest_container;
+  GimpViewable      *dest_parent = NULL;
+  GList             *sources;
   GList             *iter;
+  gboolean           into;
   gint               dest_index = 0;
+  GimpContainerTreeViewDropChoices *choices;
+  guint              add_signal;
+  gulong             add_hook;
 
   g_return_if_fail (g_list_length (src_viewables) > 0);
+  g_return_if_fail (GIMP_IS_CONTAINER (container));
+  g_return_if_fail (GIMP_IS_VIEWABLE (dest_viewable));
 
-  src_viewables = g_list_reverse (src_viewables);
-  for (iter = src_viewables; iter; iter = iter->next)
+  /* Keep callback owners and all borrowed sources alive through synchronous
+   * remove/add notifications.  The snapshot owns its own list links.
+   */
+  g_object_ref (view);
+  g_object_ref (container);
+  if (dest_viewable)
+    g_object_ref (dest_viewable);
+  sources = g_list_copy_deep (src_viewables, gimp_container_tree_view_drop_ref_source, NULL);
+
+  into = dest_viewable &&
+         (drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_AFTER ||
+          drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_BEFORE) &&
+         gimp_viewable_get_children (dest_viewable);
+
+  if (into)
     {
-      GimpViewable *src_viewable = iter->data;
-
-      if ((drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_AFTER   ||
-           drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_BEFORE) &&
-          gimp_viewable_get_children (dest_viewable))
-        {
-          dest_container = gimp_viewable_get_children (dest_viewable);
-          dest_viewable  = NULL;
-          drop_pos       = GTK_TREE_VIEW_DROP_BEFORE;
-        }
-      else if (gimp_viewable_get_parent (dest_viewable))
-        {
-          dest_container = gimp_viewable_get_children (gimp_viewable_get_parent (dest_viewable));
-        }
-      else
-        {
-          dest_container = gimp_container_view_get_container (view);
-        }
+      dest_parent = dest_viewable;
+      dest_container = gimp_viewable_get_children (dest_viewable);
+    }
+  else
+    {
+      if (dest_viewable)
+        dest_parent = gimp_viewable_get_parent (dest_viewable);
+      dest_container = dest_parent ? gimp_viewable_get_children (dest_parent) : container;
 
       if (dest_viewable)
         {
           dest_index = gimp_container_get_child_index (dest_container,
                                                        GIMP_OBJECT (dest_viewable));
-        }
-
-      if (gimp_viewable_get_parent (src_viewable))
-        {
-          src_container = gimp_viewable_get_children (
-                                                      gimp_viewable_get_parent (src_viewable));
-        }
-      else
-        {
-          src_container = gimp_container_view_get_container (view);
-        }
-
-      if (src_container == dest_container)
-        {
-          gint src_index;
-
-          src_index  = gimp_container_get_child_index (src_container,
-                                                       GIMP_OBJECT (src_viewable));
-
-          switch (drop_pos)
-            {
-            case GTK_TREE_VIEW_DROP_AFTER:
-            case GTK_TREE_VIEW_DROP_INTO_OR_AFTER:
-              if (src_index > dest_index)
-                dest_index++;
-              break;
-
-            case GTK_TREE_VIEW_DROP_BEFORE:
-            case GTK_TREE_VIEW_DROP_INTO_OR_BEFORE:
-              if (src_index < dest_index)
-                dest_index--;
-              break;
-            }
-
-          gimp_container_reorder (src_container,
-                                  GIMP_OBJECT (src_viewable), dest_index);
-        }
-      else
-        {
-          switch (drop_pos)
-            {
-            case GTK_TREE_VIEW_DROP_AFTER:
-            case GTK_TREE_VIEW_DROP_INTO_OR_AFTER:
-              dest_index++;
-              break;
-
-            case GTK_TREE_VIEW_DROP_BEFORE:
-            case GTK_TREE_VIEW_DROP_INTO_OR_BEFORE:
-              break;
-            }
-
-          g_object_ref (src_viewable);
-
-          gimp_container_remove (src_container,  GIMP_OBJECT (src_viewable));
-          gimp_container_insert (dest_container, GIMP_OBJECT (src_viewable),
-                                 dest_index);
-
-          g_object_unref (src_viewable);
+          if (drop_pos == GTK_TREE_VIEW_DROP_AFTER ||
+              drop_pos == GTK_TREE_VIEW_DROP_INTO_OR_AFTER)
+            dest_index++;
         }
     }
+  if (dest_parent)
+    g_object_ref (dest_parent);
+  g_object_ref (dest_container);
+
+  choices = g_new0 (GimpContainerTreeViewDropChoices, 1);
+  choices->thread = g_thread_ref (g_thread_self ());
+  choices->selected = g_hash_table_new (g_direct_hash, g_direct_equal);
+  choices->adopted = g_hash_table_new (g_direct_hash, g_direct_equal);
+  choices->expected_container = NULL;
+  choices->expected_source = NULL;
+  for (iter = sources; iter; iter = iter->next)
+    g_hash_table_add (choices->selected, iter->data);
+
+  /* GimpContainer::add is RUN_FIRST and allows emission hooks.  Observe all
+   * selected objects, including a later source adopted during an earlier
+   * source's notification.  Keep observing through cancellation/restore.
+   */
+  add_signal = g_signal_lookup ("add", GIMP_TYPE_CONTAINER);
+  add_hook = g_signal_add_emission_hook (add_signal, 0,
+                                        gimp_container_tree_view_drop_source_added,
+                                        choices,
+                                        gimp_container_tree_view_drop_choices_free);
+
+  /* The cursor is a boundary between children, not a repeatedly looked-up
+   * anchor.  Removals before it shift it left; each insertion advances it.
+   */
+  for (iter = sources; iter; iter = iter->next)
+    {
+      GimpViewable *source = iter->data;
+      GimpViewable *src_parent;
+      GimpContainer *src_container;
+      gint src_index;
+      gboolean cancelled = FALSE;
+
+      if (g_hash_table_size (choices->adopted) > 0 ||
+          ! gimp_container_tree_view_drop_destination_valid (view, container,
+                                                              dest_viewable, dest_parent,
+                                                              dest_container, into))
+        break;
+
+      src_parent = gimp_viewable_get_parent (source);
+      if (src_parent)
+        g_object_ref (src_parent);
+      src_container = src_parent ? gimp_viewable_get_children (src_parent) : container;
+      g_object_ref (src_container);
+      src_index = gimp_container_get_child_index (src_container, GIMP_OBJECT (source));
+
+      if (src_index < 0 || dest_index > gimp_container_get_n_children (dest_container))
+        {
+          cancelled = TRUE;
+        }
+      else if (src_container == dest_container)
+        {
+          if (src_index < dest_index)
+            dest_index--;
+          gimp_container_reorder (src_container, GIMP_OBJECT (source), dest_index);
+          cancelled = g_hash_table_size (choices->adopted) > 0 ||
+                      ! gimp_container_tree_view_drop_destination_valid (view, container,
+                                                                         dest_viewable, dest_parent,
+                                                                         dest_container, into);
+          if (cancelled && ! g_hash_table_contains (choices->adopted, source) &&
+              gimp_container_have (src_container, GIMP_OBJECT (source)))
+            gimp_container_reorder (src_container, GIMP_OBJECT (source),
+                                      MIN (src_index, gimp_container_get_n_children (src_container) - 1));
+        }
+      else
+        {
+          gimp_container_remove (src_container, GIMP_OBJECT (source));
+
+          cancelled = g_hash_table_size (choices->adopted) > 0 ||
+                      ! gimp_container_tree_view_drop_destination_valid (view, container,
+                                                                         dest_viewable, dest_parent,
+                                                                         dest_container, into);
+          if (! cancelled &&
+              dest_index > gimp_container_get_n_children (dest_container))
+            cancelled = TRUE;
+          if (! cancelled)
+            {
+              gboolean inserted;
+
+              inserted = gimp_container_tree_view_drop_insert (choices, dest_container,
+                                                               GIMP_OBJECT (source), dest_index);
+              cancelled = ! inserted || g_hash_table_size (choices->adopted) > 0 ||
+                          ! gimp_container_tree_view_drop_destination_valid (view, container,
+                                                                             dest_viewable, dest_parent,
+                                                                             dest_container, into);
+              if (cancelled && ! g_hash_table_contains (choices->adopted, source) &&
+                  gimp_container_have (dest_container, GIMP_OBJECT (source)))
+                gimp_container_remove (dest_container, GIMP_OBJECT (source));
+            }
+
+          /* A newer native admission wins, even into an unrelated root with
+           * no parent pointer.  Otherwise restore this in-flight source and
+           * stop; later selected objects retain their newer owner untouched.
+           * The hook also sees adoption during the rollback removal above.
+           */
+          if (cancelled && ! g_hash_table_contains (choices->adopted, source) &&
+              ! gimp_viewable_get_parent (source) &&
+              ! gimp_container_have (container, GIMP_OBJECT (source)) &&
+              ! gimp_container_have (src_container, GIMP_OBJECT (source)))
+            gimp_container_tree_view_drop_insert (choices, src_container,
+                                                   GIMP_OBJECT (source),
+                                                   MIN (src_index,
+                                                        gimp_container_get_n_children (src_container)));
+        }
+
+      g_object_unref (src_container);
+      g_clear_object (&src_parent);
+      if (cancelled)
+        break;
+      dest_index++;
+    }
+
+  g_signal_remove_emission_hook (add_signal, add_hook);
+  g_object_unref (dest_container);
+  g_clear_object (&dest_parent);
+  g_clear_object (&dest_viewable);
+  g_list_free_full (sources, g_object_unref);
+  g_object_unref (container);
+  g_object_unref (view);
 }

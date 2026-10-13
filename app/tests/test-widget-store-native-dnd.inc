@@ -466,3 +466,964 @@ w08017_dnd_cross_image_copy (void)
   g_object_unref (destination_image);
   g_object_unref (source_image);
 }
+
+/* Modern generic multi-item extension coverage. The original 08.017 DnD
+ * hunks describe the singleton contract; this regression must not be used
+ * to accept image-specific layer COPY/Undo behavior or those siblings.
+ * Keep ordinary fatal diagnostics enabled: a NULL destination diagnostic
+ * must fail this test rather than be expected or suppressed. */
+static void
+w08017_dnd_multi_into (GtkTreeViewDropPosition position)
+{
+  GimpContainer *root = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpToolGroup *left = w08017_dnd_group (root, "Multi source");
+  GimpToolGroup *right = w08017_dnd_group (root, "Multi destination");
+  GimpContainer *left_children = gimp_viewable_get_children (GIMP_VIEWABLE (left));
+  GimpContainer *right_children = gimp_viewable_get_children (GIMP_VIEWABLE (right));
+  GimpToolInfo *a = w08017_dnd_tool (left_children, "A");
+  GimpToolInfo *b = w08017_dnd_tool (left_children, "B");
+  GimpToolInfo *anchor = w08017_dnd_tool (right_children, "Existing child");
+  GimpContainerTreeView *view = w08017_dnd_generic_view (root);
+  GimpContainerTreeViewClass *klass = GIMP_CONTAINER_TREE_VIEW_GET_CLASS (view);
+  GtkTreePath *path = w08017_dnd_path (view, GIMP_VIEWABLE (right));
+  GtkTreeViewDropPosition result_position = position;
+  GdkDragAction action = 0;
+  GList *items = NULL;
+
+  /* Borrowed model objects in source order. No extra object references may
+   * mask the production remove/insert lifetime route. */
+  items = g_list_append (items, a);
+  items = g_list_append (items, b);
+  g_assert_cmpuint (g_list_length (items), ==, 2);
+  g_assert_true (klass->drop_possible (view, GIMP_DND_TYPE_TOOL_ITEM, items,
+                                      GIMP_VIEWABLE (right), path, position,
+                                      &result_position, &action));
+  g_assert_cmpint (result_position, ==, position);
+  g_assert_cmpint (action, ==, GDK_ACTION_MOVE);
+  gtk_tree_path_free (path);
+
+  /* Invoke the real generic native vfunc exactly once for both sources. */
+  klass->drop_viewables (view, items, GIMP_VIEWABLE (right), position);
+
+  /* The current generic implementation mutates list links by reversing.
+   * Free from the actual head regardless of whether a later production
+   * repair preserves or reverses the caller's list. Caller-list ownership
+   * is a separate issue and is deliberately not asserted by this case. */
+  g_list_free (g_list_first (items));
+
+  g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (a)) == GIMP_VIEWABLE (right));
+  g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (b)) == GIMP_VIEWABLE (right));
+  g_assert_cmpint (gimp_container_get_n_children (left_children), ==, 0);
+  g_assert_cmpint (gimp_container_get_n_children (right_children), ==, 3);
+  g_assert_true (gimp_container_get_child_by_index (right_children, 0) == GIMP_OBJECT (a));
+  g_assert_true (gimp_container_get_child_by_index (right_children, 1) == GIMP_OBJECT (b));
+  g_assert_true (gimp_container_get_child_by_index (right_children, 2) == GIMP_OBJECT (anchor));
+  g_assert_cmpint (gimp_container_get_n_children (root), ==, 2);
+  g_assert_true (gimp_container_get_child_by_index (root, 0) == GIMP_OBJECT (left));
+  g_assert_true (gimp_container_get_child_by_index (root, 1) == GIMP_OBJECT (right));
+  w08017_dnd_assert_model (view, root, NULL);
+
+  w08017_dnd_close_view (view);
+  g_object_unref (root);
+}
+
+static void
+w08017_dnd_multi_into_before (void)
+{
+  w08017_dnd_multi_into (GTK_TREE_VIEW_DROP_INTO_OR_BEFORE);
+}
+
+static void
+w08017_dnd_multi_into_after (void)
+{
+  w08017_dnd_multi_into (GTK_TREE_VIEW_DROP_INTO_OR_AFTER);
+}
+
+/* Modern multi-source regression extensions.  The INTO reproducers above
+ * remain separate from caller-list ownership and before/after ordering. */
+static void
+w08017_dnd_multi_call (GimpContainerTreeView   *view,
+                       GList                   *items,
+                       GimpViewable            *destination,
+                       GtkTreeViewDropPosition  position)
+{
+  GimpContainerTreeViewClass *klass = GIMP_CONTAINER_TREE_VIEW_GET_CLASS (view);
+  GtkTreePath *path = w08017_dnd_path (view, destination);
+  GtkTreeViewDropPosition result_position = position;
+  GdkDragAction action = 0;
+
+  g_assert_true (klass->drop_possible (view, GIMP_DND_TYPE_TOOL_ITEM, items,
+                                      destination, path, position,
+                                      &result_position, &action));
+  g_assert_cmpint (result_position, ==, position);
+  g_assert_cmpint (action, ==, GDK_ACTION_MOVE);
+  gtk_tree_path_free (path);
+  klass->drop_viewables (view, items, destination, position);
+}
+
+static void
+w08017_dnd_assert_order (GimpContainer *container,
+                         GimpObject   **expected,
+                         guint          length)
+{
+  g_assert_cmpint (gimp_container_get_n_children (container), ==, length);
+  for (guint i = 0; i < length; i++)
+    g_assert_true (gimp_container_get_child_by_index (container, i) == expected[i]);
+}
+
+static void
+w08017_dnd_multi_order (gboolean                same_parent,
+                        gboolean                sources_before,
+                        GtkTreeViewDropPosition position)
+{
+  GimpContainer *root = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpToolGroup *left = w08017_dnd_group (root, "Order source");
+  GimpToolGroup *right = w08017_dnd_group (root, "Order destination");
+  GimpContainer *source = gimp_viewable_get_children (GIMP_VIEWABLE (left));
+  GimpContainer *destination = same_parent ? source :
+    gimp_viewable_get_children (GIMP_VIEWABLE (right));
+  GimpToolInfo *anchor = NULL;
+  GimpToolInfo *a;
+  GimpToolInfo *gap;
+  GimpToolInfo *b;
+  GimpToolInfo *tail;
+  GimpContainerTreeView *view;
+  GimpObject *expected[5];
+  GList *items = NULL;
+  guint n = 0;
+
+  if (same_parent && ! sources_before)
+    anchor = w08017_dnd_tool (destination, "Anchor");
+  a = w08017_dnd_tool (source, "A");
+  gap = w08017_dnd_tool (source, "Unselected gap");
+  b = w08017_dnd_tool (source, "B");
+  if (! anchor)
+    anchor = w08017_dnd_tool (destination, "Anchor");
+  tail = w08017_dnd_tool (destination, "Unselected tail");
+  view = w08017_dnd_generic_view (root);
+
+  items = g_list_append (items, a);
+  items = g_list_append (items, b);
+  w08017_dnd_multi_call (view, items, GIMP_VIEWABLE (anchor), position);
+  /* Isolate placement from topology: the topology test below deliberately
+   * frees the original head and asserts every link; this case does not. */
+  g_list_free (g_list_first (items));
+
+  if (same_parent && sources_before)
+    expected[n++] = GIMP_OBJECT (gap);
+  if (position == GTK_TREE_VIEW_DROP_AFTER)
+    expected[n++] = GIMP_OBJECT (anchor);
+  expected[n++] = GIMP_OBJECT (a);
+  expected[n++] = GIMP_OBJECT (b);
+  if (position == GTK_TREE_VIEW_DROP_BEFORE)
+    expected[n++] = GIMP_OBJECT (anchor);
+  if (same_parent && ! sources_before)
+    expected[n++] = GIMP_OBJECT (gap);
+  expected[n++] = GIMP_OBJECT (tail);
+  w08017_dnd_assert_order (destination, expected, n);
+  if (! same_parent)
+    {
+      GimpObject *remaining[] = { GIMP_OBJECT (gap) };
+      w08017_dnd_assert_order (source, remaining, G_N_ELEMENTS (remaining));
+    }
+  g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (a)) ==
+                 GIMP_VIEWABLE (same_parent ? left : right));
+  g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (b)) ==
+                 GIMP_VIEWABLE (same_parent ? left : right));
+  w08017_dnd_assert_model (view, root, NULL);
+  w08017_dnd_close_view (view);
+  g_object_unref (root);
+}
+
+static void
+w08017_dnd_multi_same_parent_before (void)
+{
+  w08017_dnd_multi_order (TRUE, TRUE, GTK_TREE_VIEW_DROP_BEFORE);
+  w08017_dnd_multi_order (TRUE, FALSE, GTK_TREE_VIEW_DROP_BEFORE);
+}
+
+static void
+w08017_dnd_multi_same_parent_after (void)
+{
+  w08017_dnd_multi_order (TRUE, TRUE, GTK_TREE_VIEW_DROP_AFTER);
+  w08017_dnd_multi_order (TRUE, FALSE, GTK_TREE_VIEW_DROP_AFTER);
+}
+
+static void
+w08017_dnd_multi_cross_parent_before (void)
+{
+  w08017_dnd_multi_order (FALSE, TRUE, GTK_TREE_VIEW_DROP_BEFORE);
+}
+
+static void
+w08017_dnd_multi_cross_parent_after (void)
+{
+  w08017_dnd_multi_order (FALSE, TRUE, GTK_TREE_VIEW_DROP_AFTER);
+}
+
+static void
+w08017_dnd_multi_caller_topology (void)
+{
+  GimpContainer *root = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpToolGroup *left = w08017_dnd_group (root, "Topology source");
+  GimpToolGroup *right = w08017_dnd_group (root, "Topology destination");
+  GimpContainer *source = gimp_viewable_get_children (GIMP_VIEWABLE (left));
+  GimpContainer *destination = gimp_viewable_get_children (GIMP_VIEWABLE (right));
+  GimpToolInfo *a = w08017_dnd_tool (source, "A");
+  GimpToolInfo *b = w08017_dnd_tool (source, "B");
+  GimpToolInfo *anchor = w08017_dnd_tool (destination, "Anchor");
+  GimpContainerTreeView *view = w08017_dnd_generic_view (root);
+  GList *items = NULL;
+  GList *original_head;
+  GList *original_tail;
+  GimpObject *expected[] = { GIMP_OBJECT (anchor), GIMP_OBJECT (a), GIMP_OBJECT (b) };
+
+  items = g_list_append (items, a);
+  items = g_list_append (items, b);
+  original_head = items;
+  original_tail = items->next;
+  /* AFTER already preserves object order in the preimage.  Thus this is an
+   * independent list-node ownership failure, not the BEFORE/INTO defect. */
+  w08017_dnd_multi_call (view, items, GIMP_VIEWABLE (anchor),
+                         GTK_TREE_VIEW_DROP_AFTER);
+  g_assert_null (original_head->prev);
+  g_assert_true (original_head->next == original_tail);
+  g_assert_true (original_head->data == a);
+  g_assert_true (original_tail->prev == original_head);
+  g_assert_null (original_tail->next);
+  g_assert_true (original_tail->data == b);
+  g_assert_cmpuint (g_list_length (original_head), ==, 2);
+  g_list_free (original_head); /* Exactly the real caller's ownership route. */
+  w08017_dnd_assert_order (destination, expected, G_N_ELEMENTS (expected));
+  w08017_dnd_assert_model (view, root, NULL);
+  w08017_dnd_close_view (view);
+  g_object_unref (root);
+}
+
+static void
+w08017_dnd_multi_selected_anchor (GtkTreeViewDropPosition position)
+{
+  for (guint selected = 0; selected < 2; selected++)
+    {
+      GimpContainer *root = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+      GimpToolInfo *lead = w08017_dnd_tool (root, "Lead");
+      GimpToolInfo *a = w08017_dnd_tool (root, "A");
+      GimpToolInfo *gap = w08017_dnd_tool (root, "Gap");
+      GimpToolInfo *b = w08017_dnd_tool (root, "B");
+      GimpToolInfo *tail = w08017_dnd_tool (root, "Tail");
+      GimpContainerTreeView *view = w08017_dnd_generic_view (root);
+      GimpObject *expected[5];
+      GList *items = NULL;
+      guint n = 0;
+
+      items = g_list_append (items, a);
+      items = g_list_append (items, b);
+      w08017_dnd_multi_call (view, items, GIMP_VIEWABLE (selected ? b : a), position);
+      g_list_free (g_list_first (items));
+      expected[n++] = GIMP_OBJECT (lead);
+      if (selected)
+        expected[n++] = GIMP_OBJECT (gap);
+      expected[n++] = GIMP_OBJECT (a);
+      expected[n++] = GIMP_OBJECT (b);
+      if (! selected)
+        expected[n++] = GIMP_OBJECT (gap);
+      expected[n++] = GIMP_OBJECT (tail);
+      w08017_dnd_assert_order (root, expected, n);
+      w08017_dnd_assert_model (view, root, NULL);
+      w08017_dnd_close_view (view);
+      g_object_unref (root);
+    }
+}
+
+static void
+w08017_dnd_multi_selected_anchor_before (void)
+{
+  w08017_dnd_multi_selected_anchor (GTK_TREE_VIEW_DROP_BEFORE);
+}
+
+static void
+w08017_dnd_multi_selected_anchor_after (void)
+{
+  w08017_dnd_multi_selected_anchor (GTK_TREE_VIEW_DROP_AFTER);
+}
+
+static void
+w08017_dnd_multi_source_changed (GListModel *model,
+                                guint       position,
+                                guint       removed,
+                                guint       added,
+                                gpointer    data)
+{
+  W08017DndLifetime *states = data;
+  guint owner_gaps = 0;
+
+  if (! removed)
+    return;
+  g_assert_cmpuint (removed, ==, 1);
+  for (guint i = 0; i < 2; i++)
+    {
+      g_assert_false (states[i].finalized);
+      if (! gimp_viewable_get_parent (states[i].source))
+        {
+          g_assert_cmpuint (G_OBJECT (states[i].source)->ref_count, ==, 1);
+          states[i].source_removed++;
+          states[i].observed_owner_gap = TRUE;
+          owner_gaps++;
+        }
+    }
+  g_assert_cmpuint (owner_gaps, ==, 1);
+}
+
+static void
+w08017_dnd_multi_transfer_lifetime (void)
+{
+  GimpContainer *root = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpToolGroup *left = w08017_dnd_group (root, "Lifetime source");
+  GimpToolGroup *right = w08017_dnd_group (root, "Lifetime destination");
+  GimpContainer *source = gimp_viewable_get_children (GIMP_VIEWABLE (left));
+  GimpContainer *destination = gimp_viewable_get_children (GIMP_VIEWABLE (right));
+  GimpToolInfo *a = w08017_dnd_tool (source, "A");
+  GimpToolInfo *b = w08017_dnd_tool (source, "B");
+  GimpToolInfo *anchor = w08017_dnd_tool (destination, "Anchor");
+  GimpContainerTreeView *view = w08017_dnd_generic_view (root);
+  W08017DndLifetime states[] = {
+    { GIMP_VIEWABLE (a), FALSE, 0, 0, FALSE },
+    { GIMP_VIEWABLE (b), FALSE, 0, 0, FALSE }
+  };
+  GimpObject *expected[] = { GIMP_OBJECT (anchor), GIMP_OBJECT (a), GIMP_OBJECT (b) };
+  GList *items = NULL;
+  gulong handler;
+
+  for (guint i = 0; i < 2; i++)
+    {
+      g_object_weak_ref (G_OBJECT (states[i].source), w08017_dnd_finalized, &states[i]);
+      g_assert_cmpuint (G_OBJECT (states[i].source)->ref_count, ==, 1);
+      items = g_list_append (items, states[i].source);
+    }
+  handler = g_signal_connect (source, "items-changed",
+                              G_CALLBACK (w08017_dnd_multi_source_changed), states);
+  w08017_dnd_multi_call (view, items, GIMP_VIEWABLE (anchor), GTK_TREE_VIEW_DROP_AFTER);
+  g_signal_handler_disconnect (source, handler);
+  g_list_free (g_list_first (items));
+  for (guint i = 0; i < 2; i++)
+    {
+      g_assert_false (states[i].finalized);
+      g_assert_true (states[i].observed_owner_gap);
+      g_assert_cmpuint (states[i].source_removed, ==, 1);
+      g_assert_cmpuint (G_OBJECT (states[i].source)->ref_count, ==, 1);
+    }
+  w08017_dnd_assert_order (destination, expected, G_N_ELEMENTS (expected));
+  w08017_dnd_assert_model (view, root, NULL);
+  w08017_dnd_close_view (view);
+  g_object_unref (root);
+  g_assert_true (states[0].finalized);
+  g_assert_true (states[1].finalized);
+}
+
+static void
+w08017_dnd_multi_reject_unowned_ancestor (void)
+{
+  GimpContainer *root = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpContainer *foreign = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpToolInfo *a = w08017_dnd_tool (root, "A");
+  GimpToolInfo *unowned = w08017_dnd_tool (foreign, "Outside this root");
+  GimpToolGroup *group = w08017_dnd_group (root, "Parent");
+  GimpContainer *children = gimp_viewable_get_children (GIMP_VIEWABLE (group));
+  GimpToolInfo *child = w08017_dnd_tool (children, "Child");
+  GimpContainerTreeView *view = w08017_dnd_generic_view (root);
+  GimpContainerTreeViewClass *klass = GIMP_CONTAINER_TREE_VIEW_GET_CLASS (view);
+  GtkTreePath *path = w08017_dnd_path (view, GIMP_VIEWABLE (child));
+  GtkTreeViewDropPosition result_position = GTK_TREE_VIEW_DROP_BEFORE;
+  GdkDragAction action = 0;
+  GList *items = NULL;
+
+  items = g_list_append (items, a);
+  items = g_list_append (items, unowned);
+  g_assert_false (klass->drop_possible (view, GIMP_DND_TYPE_TOOL_ITEM, items,
+                                       NULL, NULL, GTK_TREE_VIEW_DROP_BEFORE,
+                                       &result_position, &action));
+  g_assert_false (klass->drop_possible (view, GIMP_DND_TYPE_TOOL_ITEM, items,
+                                       GIMP_VIEWABLE (child), path,
+                                       GTK_TREE_VIEW_DROP_BEFORE,
+                                       &result_position, &action));
+  g_assert_null (items->prev);
+  g_assert_true (items->data == a && items->next->data == unowned);
+  g_list_free (items);
+
+  items = g_list_append (NULL, a);
+  items = g_list_append (items, group);
+  g_assert_false (klass->drop_possible (view, GIMP_DND_TYPE_TOOL_ITEM, items,
+                                       GIMP_VIEWABLE (child), path,
+                                       GTK_TREE_VIEW_DROP_BEFORE,
+                                       &result_position, &action));
+  g_list_free (items);
+  gtk_tree_path_free (path);
+  g_assert_cmpint (gimp_container_get_n_children (root), ==, 2);
+  g_assert_cmpint (gimp_container_get_n_children (foreign), ==, 1);
+  g_assert_true (gimp_container_have (foreign, GIMP_OBJECT (unowned)));
+  g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (child)) == GIMP_VIEWABLE (group));
+  w08017_dnd_assert_model (view, root, NULL);
+  w08017_dnd_close_view (view);
+  g_object_unref (root);
+  g_object_unref (foreign);
+}
+
+/* Separate safety/cancellation probes.  No extra destination references in
+ * the fixture may hide loss of its last external/model owner. */
+typedef struct
+{
+  GimpContainer *root;
+  GimpToolGroup *destination; /* Borrowed; weak notification tracks death. */
+  gboolean after_insert;
+  gboolean fired;
+  gboolean finalized;
+} W08017DndDestinationLoss;
+
+static void
+w08017_dnd_destination_finalized (gpointer data,
+                                  GObject *object)
+{
+  W08017DndDestinationLoss *state = data;
+  state->finalized = TRUE;
+}
+
+static void
+w08017_dnd_remove_destination_owner (GListModel *model,
+                                     guint       position,
+                                     guint       removed,
+                                     guint       added,
+                                     gpointer    data)
+{
+  W08017DndDestinationLoss *state = data;
+
+  if (! state->fired && (state->after_insert ? added > 0 : removed > 0))
+    {
+      state->fired = TRUE;
+      g_assert_true (gimp_container_remove (state->root,
+                                            GIMP_OBJECT (state->destination)));
+    }
+}
+
+static void
+w08017_dnd_multi_destination_owner_loss (gboolean after_insert,
+                                           gboolean into)
+{
+  GimpContainer *root = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpToolGroup *left = w08017_dnd_group (root, "Owner source");
+  GimpToolGroup *right = w08017_dnd_group (root, "Owner destination");
+  GimpContainer *source = gimp_viewable_get_children (GIMP_VIEWABLE (left));
+  GimpContainer *destination = gimp_viewable_get_children (GIMP_VIEWABLE (right));
+  GimpToolInfo *a = w08017_dnd_tool (source, "A");
+  GimpToolInfo *b = w08017_dnd_tool (source, "B");
+  GimpToolInfo *anchor = w08017_dnd_tool (destination, "Existing destination child");
+  GimpContainerTreeView *view = w08017_dnd_generic_view (root);
+  W08017DndDestinationLoss state = { root, right, after_insert, FALSE, FALSE };
+  GimpObject *expected[] = { GIMP_OBJECT (a), GIMP_OBJECT (b) };
+  GList *items = NULL;
+  gulong handler;
+
+  g_assert_cmpuint (G_OBJECT (right)->ref_count, ==, 1);
+  g_object_weak_ref (G_OBJECT (right), w08017_dnd_destination_finalized, &state);
+  handler = g_signal_connect (after_insert ? destination : source, "items-changed",
+                              G_CALLBACK (w08017_dnd_remove_destination_owner), &state);
+  items = g_list_append (items, a);
+  items = g_list_append (items, b);
+  w08017_dnd_multi_call (view, items, into ? GIMP_VIEWABLE (right) : GIMP_VIEWABLE (anchor),
+                         into ? GTK_TREE_VIEW_DROP_INTO_OR_AFTER : GTK_TREE_VIEW_DROP_AFTER);
+
+  /* A disappeared destination cancels the current transfer.  Its moved
+   * source is restored; remaining sources are untouched.  This is the
+   * explicit candidate cancellation policy, not an existing baseline pass. */
+  g_assert_true (state.fired);
+  g_assert_true (state.finalized);
+  if (! after_insert)
+    g_signal_handler_disconnect (source, handler);
+  /* Destination signal connection died with its container in the other case. */
+  g_assert_null (items->prev);
+  g_assert_true (items->data == a && items->next->data == b);
+  g_list_free (items);
+  w08017_dnd_assert_order (source, expected, G_N_ELEMENTS (expected));
+  g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (a)) == GIMP_VIEWABLE (left));
+  g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (b)) == GIMP_VIEWABLE (left));
+  g_assert_cmpint (gimp_container_get_n_children (root), ==, 1);
+  g_assert_true (gimp_container_get_child_by_index (root, 0) == GIMP_OBJECT (left));
+  w08017_dnd_assert_model (view, root, NULL);
+  w08017_dnd_close_view (view);
+  g_object_unref (root);
+}
+
+static void
+w08017_dnd_multi_destination_lost_on_remove (void)
+{
+  w08017_dnd_multi_destination_owner_loss (FALSE, FALSE);
+  w08017_dnd_multi_destination_owner_loss (FALSE, TRUE);
+}
+
+static void
+w08017_dnd_multi_destination_lost_on_insert (void)
+{
+  w08017_dnd_multi_destination_owner_loss (TRUE, FALSE);
+  w08017_dnd_multi_destination_owner_loss (TRUE, TRUE);
+}
+
+/* Admission is separate from placement and ownership: ToolGroup children
+ * accept ToolInfo, even though the root admits the broader ToolItem type. */
+static void
+w08017_dnd_multi_reject_incompatible_group (GtkTreeViewDropPosition position)
+{
+  GimpContainer *root = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpToolGroup *left = w08017_dnd_group (root, "Source group");
+  GimpToolGroup *right = w08017_dnd_group (root, "Destination group");
+  GimpContainer *source = gimp_viewable_get_children (GIMP_VIEWABLE (left));
+  GimpContainer *destination = gimp_viewable_get_children (GIMP_VIEWABLE (right));
+  GimpToolInfo *tool = w08017_dnd_tool (source, "Compatible tool");
+  GimpContainerTreeView *view = w08017_dnd_generic_view (root);
+  GimpContainerTreeViewClass *klass = GIMP_CONTAINER_TREE_VIEW_GET_CLASS (view);
+  GtkTreePath *path = w08017_dnd_path (view, GIMP_VIEWABLE (right));
+  GtkTreeViewDropPosition result_position = position;
+  GdkDragAction action = 0;
+  GList *items = g_list_append (NULL, tool);
+  GimpImage *image;
+  GimpLayer *foreign_layer;
+
+  g_assert_cmpuint (gimp_container_get_child_type (root), ==, GIMP_TYPE_TOOL_ITEM);
+  g_assert_cmpuint (gimp_container_get_child_type (destination), ==, GIMP_TYPE_TOOL_INFO);
+  g_assert_true (klass->drop_possible (view, GIMP_DND_TYPE_TOOL_ITEM, items,
+                                      GIMP_VIEWABLE (right), path, position,
+                                      &result_position, &action));
+  g_assert_cmpint (action, ==, GDK_ACTION_MOVE);
+  g_assert_cmpint (result_position, ==, position);
+
+  items = g_list_append (items, left);
+  /* The first source fits.  The second is a valid root ToolItem, but cannot
+   * be inserted into the narrower ToolInfo destination container. */
+  g_assert_false (klass->drop_possible (view, GIMP_DND_TYPE_TOOL_ITEM, items,
+                                       GIMP_VIEWABLE (right), path, position,
+                                       &result_position, &action));
+  g_assert_null (items->prev);
+  g_assert_true (items->data == tool && items->next->data == left);
+  g_list_free (items);
+
+  /* Foreign root types still request COPY, which derived item views can
+   * convert.  This checks admission only; generic drop_viewables has no
+   * foreign-type conversion contract. */
+  image = new_image ();
+  foreign_layer = layer (image, NULL, "Foreign type COPY control");
+  items = g_list_append (NULL, foreign_layer);
+  action = 0;
+  g_assert_true (klass->drop_possible (view, GIMP_DND_TYPE_LAYER_LIST, items,
+                                      GIMP_VIEWABLE (right), path, position,
+                                      &result_position, &action));
+  g_assert_cmpint (action, ==, GDK_ACTION_COPY);
+  g_assert_cmpint (result_position, ==, position);
+  g_list_free (items);
+  g_object_unref (image);
+  gtk_tree_path_free (path);
+
+  g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (tool)) == GIMP_VIEWABLE (left));
+  g_assert_cmpint (gimp_container_get_n_children (root), ==, 2);
+  g_assert_cmpint (gimp_container_get_n_children (source), ==, 1);
+  g_assert_cmpint (gimp_container_get_n_children (destination), ==, 0);
+  w08017_dnd_assert_model (view, root, NULL);
+  w08017_dnd_close_view (view);
+  g_object_unref (root);
+}
+
+static void
+w08017_dnd_multi_reject_group_into_before (void)
+{
+  w08017_dnd_multi_reject_incompatible_group (GTK_TREE_VIEW_DROP_INTO_OR_BEFORE);
+}
+
+static void
+w08017_dnd_multi_reject_group_into_after (void)
+{
+  w08017_dnd_multi_reject_incompatible_group (GTK_TREE_VIEW_DROP_INTO_OR_AFTER);
+}
+
+/* Reentrant native source admissions are independent of ordering, target
+ * lifetime, and MOVE admission.  In particular, a root owner sets no parent.
+ */
+typedef enum
+{
+  W08017_ADOPT_PARENT,
+  W08017_ADOPT_ROOT,
+  W08017_ADOPT_FOREIGN_ROOT,
+  W08017_ADOPT_SAME_DESTINATION,
+  W08017_ADOPT_WEAK
+} W08017DndAdoptKind;
+
+typedef enum
+{
+  W08017_ADOPT_ON_SOURCE_REMOVE,
+  W08017_ADOPT_ON_DESTINATION_INSERT,
+  W08017_ADOPT_ON_ROLLBACK_REMOVE
+} W08017DndAdoptPhase;
+
+typedef struct
+{
+  GimpContainer *root;
+  GimpContainer *source;
+  GimpContainer *destination;
+  GimpContainer *new_owner;
+  GimpToolGroup *destination_group; /* Borrowed, never pinned by the probe. */
+  GimpObject *chosen;
+  W08017DndAdoptPhase phase;
+  gboolean later;
+  gboolean lose_destination;
+  gboolean fired;
+  gboolean destination_removed;
+  gboolean destination_finalized;
+  guint source_added;
+  guint source_removed;
+  guint destination_added;
+  guint destination_removed_items;
+} W08017DndAdoption;
+
+static void
+w08017_dnd_adoption_destination_finalized (gpointer data,
+                                           GObject *object)
+{
+  W08017DndAdoption *state = data;
+  state->destination_finalized = TRUE;
+}
+
+static void
+w08017_dnd_adoption_remove_destination (W08017DndAdoption *state)
+{
+  if (! state->destination_removed)
+    {
+      state->destination_removed = TRUE;
+      g_assert_true (gimp_container_remove (state->root,
+                                            GIMP_OBJECT (state->destination_group)));
+    }
+}
+
+static void
+w08017_dnd_adoption_choose (W08017DndAdoption *state)
+{
+  state->fired = TRUE; /* Nested native notifications must not fire twice. */
+  if (state->later)
+    g_assert_true (gimp_container_remove (state->source, state->chosen));
+  else if (state->phase == W08017_ADOPT_ON_DESTINATION_INSERT)
+    g_assert_true (gimp_container_remove (state->destination, state->chosen));
+
+  g_assert_null (gimp_viewable_get_parent (GIMP_VIEWABLE (state->chosen)));
+  w08017_dnd_append (state->new_owner, state->chosen);
+  g_assert_true (gimp_container_have (state->new_owner, state->chosen));
+  if (state->lose_destination)
+    w08017_dnd_adoption_remove_destination (state);
+}
+
+static void
+w08017_dnd_adoption_source_changed (GListModel *model,
+                                     guint       position,
+                                     guint       removed,
+                                     guint       added,
+                                     gpointer    data)
+{
+  W08017DndAdoption *state = data;
+  state->source_removed += removed;
+  state->source_added += added;
+  if (! state->fired && removed && state->phase == W08017_ADOPT_ON_SOURCE_REMOVE)
+    w08017_dnd_adoption_choose (state);
+}
+
+static void
+w08017_dnd_adoption_destination_changed (GListModel *model,
+                                          guint       position,
+                                          guint       removed,
+                                          guint       added,
+                                          gpointer    data)
+{
+  W08017DndAdoption *state = data;
+  state->destination_added += added;
+  state->destination_removed_items += removed;
+  if (! state->fired && added && state->phase == W08017_ADOPT_ON_DESTINATION_INSERT)
+    w08017_dnd_adoption_choose (state);
+  else if (! state->fired && state->phase == W08017_ADOPT_ON_ROLLBACK_REMOVE)
+    {
+      if (added)
+        w08017_dnd_adoption_remove_destination (state);
+      else if (removed && state->destination_removed)
+        w08017_dnd_adoption_choose (state);
+    }
+}
+
+static void
+w08017_dnd_adoption_case (W08017DndAdoptKind       kind,
+                           W08017DndAdoptPhase      phase,
+                           gboolean                later,
+                           gboolean                lose_destination,
+                           GtkTreeViewDropPosition position)
+{
+  GimpContainer *root = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpContainer *foreign = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpContainer *weak = gimp_list_new_weak (GIMP_TYPE_TOOL_ITEM, TRUE);
+  GimpToolGroup *left = w08017_dnd_group (root, "Source owner");
+  GimpToolGroup *right = w08017_dnd_group (root, "Intended owner");
+  GimpToolGroup *third = w08017_dnd_group (root, "Newer owner");
+  GimpContainer *source = gimp_viewable_get_children (GIMP_VIEWABLE (left));
+  GimpContainer *destination = gimp_viewable_get_children (GIMP_VIEWABLE (right));
+  GimpContainer *third_children = gimp_viewable_get_children (GIMP_VIEWABLE (third));
+  GimpToolInfo *a = w08017_dnd_tool (source, "A");
+  GimpToolInfo *b = w08017_dnd_tool (source, "B");
+  GimpToolInfo *anchor = w08017_dnd_tool (destination, "Anchor");
+  GimpContainerTreeView *view = w08017_dnd_generic_view (root);
+  GimpContainerTreeView *foreign_view = w08017_dnd_generic_view (foreign);
+  W08017DndAdoption state = { 0 };
+  W08017DndLifetime lifetime[2] = {
+    { GIMP_VIEWABLE (a), FALSE, 0, 0, FALSE },
+    { GIMP_VIEWABLE (b), FALSE, 0, 0, FALSE }
+  };
+  GList *items = g_list_append (g_list_append (NULL, a), b);
+  GList *second = items->next;
+  GimpObject *remaining[] = { GIMP_OBJECT (later ? a : b) };
+  GimpObject *chosen = GIMP_OBJECT (later ? b : a);
+  gboolean into = position == GTK_TREE_VIEW_DROP_INTO_OR_BEFORE ||
+                  position == GTK_TREE_VIEW_DROP_INTO_OR_AFTER;
+  gulong source_handler;
+  gulong destination_handler;
+
+  state.root = root;
+  state.source = source;
+  state.destination = destination;
+  state.destination_group = right;
+  state.chosen = chosen;
+  state.phase = phase;
+  state.later = later;
+  state.lose_destination = lose_destination;
+  switch (kind)
+    {
+    case W08017_ADOPT_PARENT:           state.new_owner = third_children; break;
+    case W08017_ADOPT_ROOT:             state.new_owner = root; break;
+    case W08017_ADOPT_FOREIGN_ROOT:     state.new_owner = foreign; break;
+    case W08017_ADOPT_SAME_DESTINATION: state.new_owner = destination; break;
+    case W08017_ADOPT_WEAK:             state.new_owner = weak; break;
+    }
+  for (guint i = 0; i < 2; i++)
+    g_object_weak_ref (G_OBJECT (lifetime[i].source), w08017_dnd_finalized, &lifetime[i]);
+  g_object_weak_ref (G_OBJECT (right), w08017_dnd_adoption_destination_finalized, &state);
+  source_handler = g_signal_connect (source, "items-changed",
+                                      G_CALLBACK (w08017_dnd_adoption_source_changed), &state);
+  destination_handler = g_signal_connect (destination, "items-changed",
+                                           G_CALLBACK (w08017_dnd_adoption_destination_changed), &state);
+
+  w08017_dnd_multi_call (view, items, into ? GIMP_VIEWABLE (right) : GIMP_VIEWABLE (anchor),
+                         position);
+
+  g_assert_true (state.fired);
+  g_assert_cmpint (state.destination_removed, ==, lose_destination);
+  g_assert_cmpint (state.destination_finalized, ==, lose_destination);
+  g_assert_false (lifetime[0].finalized);
+  g_assert_false (lifetime[1].finalized);
+  /* The original caller nodes and every link/data field are unchanged. */
+  g_assert_null (items->prev);
+  g_assert_true (items->data == a && items->next == second);
+  g_assert_true (second->prev == items && second->data == b);
+  g_assert_null (second->next);
+  g_list_free (items);
+  g_signal_handler_disconnect (source, source_handler);
+  if (! state.destination_finalized)
+    g_signal_handler_disconnect (destination, destination_handler);
+
+  g_assert_true (gimp_container_have (state.new_owner, chosen));
+  if (kind == W08017_ADOPT_WEAK)
+    {
+      /* A weak observer-list admission must not cancel an ordinary MOVE. */
+      GimpObject *expected_before[] = { GIMP_OBJECT (a), GIMP_OBJECT (b), GIMP_OBJECT (anchor) };
+      GimpObject *expected_after[] = { GIMP_OBJECT (anchor), GIMP_OBJECT (a), GIMP_OBJECT (b) };
+      w08017_dnd_assert_order (destination,
+                               position == GTK_TREE_VIEW_DROP_AFTER ? expected_after : expected_before, 3);
+      g_assert_cmpint (gimp_container_get_n_children (source), ==, 0);
+      g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (a)) == GIMP_VIEWABLE (right));
+      g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (b)) == GIMP_VIEWABLE (right));
+      g_assert_cmpuint (state.destination_added, ==, 2);
+    }
+  else
+    {
+      w08017_dnd_assert_order (source, remaining, G_N_ELEMENTS (remaining));
+      g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (remaining[0])) == GIMP_VIEWABLE (left));
+      g_assert_false (gimp_container_have (source, chosen));
+      g_assert_cmpuint (state.source_added, ==, later ? 1 : 0);
+      g_assert_cmpuint (state.source_removed, ==, later ? 2 : 1);
+      if (kind == W08017_ADOPT_PARENT)
+        g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (chosen)) == GIMP_VIEWABLE (third));
+      else if (kind == W08017_ADOPT_SAME_DESTINATION)
+        g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (chosen)) == GIMP_VIEWABLE (right));
+      else
+        g_assert_null (gimp_viewable_get_parent (GIMP_VIEWABLE (chosen)));
+      g_assert_cmpint (gimp_container_have (root, chosen), ==, kind == W08017_ADOPT_ROOT);
+      g_assert_cmpint (gimp_container_have (foreign, chosen), ==, kind == W08017_ADOPT_FOREIGN_ROOT);
+      g_assert_cmpint (gimp_container_have (third_children, chosen), ==, kind == W08017_ADOPT_PARENT);
+      if (! lose_destination)
+        {
+          g_assert_cmpint (gimp_container_have (destination, chosen), ==,
+                           kind == W08017_ADOPT_SAME_DESTINATION);
+          g_assert_false (gimp_container_have (destination, remaining[0]));
+          g_assert_cmpint (gimp_container_get_n_children (destination), ==,
+                           kind == W08017_ADOPT_SAME_DESTINATION ? 2 : 1);
+          g_assert_true (gimp_container_get_child_by_index (destination, 0) == GIMP_OBJECT (anchor));
+          if (kind == W08017_ADOPT_SAME_DESTINATION)
+            g_assert_true (gimp_container_get_child_by_index (destination, 1) == chosen);
+        }
+      g_assert_cmpuint (state.destination_added, ==,
+                        kind == W08017_ADOPT_SAME_DESTINATION ? 2 :
+                        phase == W08017_ADOPT_ON_SOURCE_REMOVE ? 0 : 1);
+    }
+
+  w08017_dnd_assert_model (view, root, NULL);
+  w08017_dnd_assert_model (foreign_view, foreign, NULL);
+  w08017_dnd_close_view (view);
+  w08017_dnd_close_view (foreign_view);
+  g_object_unref (weak);
+  g_object_unref (root);
+  g_object_unref (foreign);
+  g_assert_true (lifetime[0].finalized);
+  g_assert_true (lifetime[1].finalized);
+  g_assert_true (state.destination_finalized);
+}
+
+static void
+w08017_dnd_adoption_positions (W08017DndAdoptKind  kind,
+                                W08017DndAdoptPhase phase,
+                                gboolean           later,
+                                gboolean           lose_destination)
+{
+  const GtkTreeViewDropPosition positions[] = {
+    GTK_TREE_VIEW_DROP_BEFORE, GTK_TREE_VIEW_DROP_AFTER,
+    GTK_TREE_VIEW_DROP_INTO_OR_BEFORE, GTK_TREE_VIEW_DROP_INTO_OR_AFTER
+  };
+  for (guint i = 0; i < G_N_ELEMENTS (positions); i++)
+    w08017_dnd_adoption_case (kind, phase, later, lose_destination, positions[i]);
+}
+
+#define W08017_ADOPTION_CASE(name, kind, phase, later, lost) \
+static void name (void) \
+{ w08017_dnd_adoption_positions (kind, phase, later, lost); }
+
+W08017_ADOPTION_CASE (w08017_dnd_relocate_parent_valid, W08017_ADOPT_PARENT, W08017_ADOPT_ON_SOURCE_REMOVE, FALSE, FALSE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_parent_lost, W08017_ADOPT_PARENT, W08017_ADOPT_ON_SOURCE_REMOVE, FALSE, TRUE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_root_valid, W08017_ADOPT_ROOT, W08017_ADOPT_ON_SOURCE_REMOVE, FALSE, FALSE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_root_lost, W08017_ADOPT_ROOT, W08017_ADOPT_ON_SOURCE_REMOVE, FALSE, TRUE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_foreign_root_valid, W08017_ADOPT_FOREIGN_ROOT, W08017_ADOPT_ON_SOURCE_REMOVE, FALSE, FALSE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_foreign_root_lost, W08017_ADOPT_FOREIGN_ROOT, W08017_ADOPT_ON_SOURCE_REMOVE, FALSE, TRUE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_later_foreign_valid, W08017_ADOPT_FOREIGN_ROOT, W08017_ADOPT_ON_SOURCE_REMOVE, TRUE, FALSE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_later_foreign_lost, W08017_ADOPT_FOREIGN_ROOT, W08017_ADOPT_ON_SOURCE_REMOVE, TRUE, TRUE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_on_insert_valid, W08017_ADOPT_FOREIGN_ROOT, W08017_ADOPT_ON_DESTINATION_INSERT, FALSE, FALSE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_on_insert_lost, W08017_ADOPT_FOREIGN_ROOT, W08017_ADOPT_ON_DESTINATION_INSERT, FALSE, TRUE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_on_rollback, W08017_ADOPT_FOREIGN_ROOT, W08017_ADOPT_ON_ROLLBACK_REMOVE, FALSE, TRUE)
+W08017_ADOPTION_CASE (w08017_dnd_relocate_same_destination, W08017_ADOPT_SAME_DESTINATION, W08017_ADOPT_ON_DESTINATION_INSERT, FALSE, FALSE)
+W08017_ADOPTION_CASE (w08017_dnd_weak_admission_keeps_move, W08017_ADOPT_WEAK, W08017_ADOPT_ON_SOURCE_REMOVE, FALSE, FALSE)
+
+#undef W08017_ADOPTION_CASE
+
+/* A later source can be adopted while the previous source's retained parent
+ * is released, after that iteration computed its cancellation flag. */
+typedef struct
+{
+  GimpContainer *root;
+  GimpToolGroup *old_parent;
+  GimpContainer *new_owner;
+  GimpObject *later;
+  guint callbacks;
+  gboolean finalized;
+} W08017DndCleanupAdoption;
+
+static void
+w08017_dnd_cleanup_parent_finalized (gpointer data,
+                                      GObject *object)
+{
+  W08017DndCleanupAdoption *state = data;
+  state->finalized = TRUE;
+}
+
+static void
+w08017_dnd_cleanup_source_changed (GListModel *model,
+                                    guint       position,
+                                    guint       removed,
+                                    guint       added,
+                                    gpointer    data)
+{
+  W08017DndCleanupAdoption *state = data;
+  if (! removed)
+    return;
+
+  state->callbacks++;
+  if (state->callbacks == 1)
+    {
+      /* The native drop alone keeps this parent and its child container
+       * alive until the first source has completed its transfer. */
+      g_assert_true (gimp_container_remove (state->root, GIMP_OBJECT (state->old_parent)));
+    }
+  else
+    {
+      /* Container dispose clears the remaining B, then emits items-changed
+       * on thaw.  Its newer admission happens during the old drop's cleanup. */
+      g_assert_cmpuint (state->callbacks, ==, 2);
+      g_assert_false (gimp_container_have (GIMP_CONTAINER (model), state->later));
+      g_assert_null (gimp_viewable_get_parent (GIMP_VIEWABLE (state->later)));
+      w08017_dnd_append (state->new_owner, state->later);
+    }
+}
+
+static void
+w08017_dnd_relocate_later_on_cleanup (void)
+{
+  const GtkTreeViewDropPosition positions[] = {
+    GTK_TREE_VIEW_DROP_BEFORE, GTK_TREE_VIEW_DROP_AFTER,
+    GTK_TREE_VIEW_DROP_INTO_OR_BEFORE, GTK_TREE_VIEW_DROP_INTO_OR_AFTER
+  };
+  for (guint i = 0; i < G_N_ELEMENTS (positions); i++)
+    {
+      GimpContainer *root = gimp_list_new (GIMP_TYPE_TOOL_ITEM, TRUE);
+      GimpToolGroup *left = w08017_dnd_group (root, "Expiring source parent");
+      GimpToolGroup *right = w08017_dnd_group (root, "Intended destination");
+      GimpToolGroup *third = w08017_dnd_group (root, "Newer later-source parent");
+      GimpContainer *source = gimp_viewable_get_children (GIMP_VIEWABLE (left));
+      GimpContainer *destination = gimp_viewable_get_children (GIMP_VIEWABLE (right));
+      GimpContainer *new_owner = gimp_viewable_get_children (GIMP_VIEWABLE (third));
+      GimpToolInfo *a = w08017_dnd_tool (source, "A");
+      GimpToolInfo *b = w08017_dnd_tool (source, "B");
+      GimpToolInfo *anchor = w08017_dnd_tool (destination, "Anchor");
+      GimpContainerTreeView *view = w08017_dnd_generic_view (root);
+      W08017DndCleanupAdoption state = { root, left, new_owner, GIMP_OBJECT (b), 0, FALSE };
+      W08017DndLifetime lifetime[2] = {
+        { GIMP_VIEWABLE (a), FALSE, 0, 0, FALSE },
+        { GIMP_VIEWABLE (b), FALSE, 0, 0, FALSE }
+      };
+      GList *items = g_list_append (g_list_append (NULL, a), b);
+      GList *second = items->next;
+      gboolean into = positions[i] == GTK_TREE_VIEW_DROP_INTO_OR_BEFORE ||
+                      positions[i] == GTK_TREE_VIEW_DROP_INTO_OR_AFTER;
+      GimpObject *before[] = { GIMP_OBJECT (a), GIMP_OBJECT (anchor) };
+      GimpObject *after[] = { GIMP_OBJECT (anchor), GIMP_OBJECT (a) };
+      GimpObject *adopted[] = { GIMP_OBJECT (b) };
+
+      for (guint j = 0; j < 2; j++)
+        g_object_weak_ref (G_OBJECT (lifetime[j].source), w08017_dnd_finalized, &lifetime[j]);
+      g_object_weak_ref (G_OBJECT (left), w08017_dnd_cleanup_parent_finalized, &state);
+      g_signal_connect (source, "items-changed",
+                        G_CALLBACK (w08017_dnd_cleanup_source_changed), &state);
+      w08017_dnd_multi_call (view, items, into ? GIMP_VIEWABLE (right) : GIMP_VIEWABLE (anchor),
+                             positions[i]);
+      g_assert_cmpuint (state.callbacks, ==, 2);
+      g_assert_true (state.finalized);
+      g_assert_false (lifetime[0].finalized);
+      g_assert_false (lifetime[1].finalized);
+      g_assert_null (items->prev);
+      g_assert_true (items->data == a && items->next == second);
+      g_assert_true (second->prev == items && second->data == b);
+      g_assert_null (second->next);
+      g_list_free (items);
+      w08017_dnd_assert_order (destination, positions[i] == GTK_TREE_VIEW_DROP_AFTER ? after : before, 2);
+      w08017_dnd_assert_order (new_owner, adopted, 1);
+      g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (a)) == GIMP_VIEWABLE (right));
+      g_assert_true (gimp_viewable_get_parent (GIMP_VIEWABLE (b)) == GIMP_VIEWABLE (third));
+      w08017_dnd_assert_model (view, root, NULL);
+      w08017_dnd_close_view (view);
+      g_object_unref (root);
+      g_assert_true (lifetime[0].finalized);
+      g_assert_true (lifetime[1].finalized);
+    }
+}
