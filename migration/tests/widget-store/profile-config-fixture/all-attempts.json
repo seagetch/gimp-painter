@@ -1,0 +1,186 @@
+{
+  "all_evidence_file_count": 379,
+  "all_evidence_tree_sha256": "d5ae97907296515ad40532fd3a70158598b8381b3350fafa1a98a004777b9857",
+  "attempts": [
+    {
+      "attempt": "build-asan-baseline",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD_NOT_AUTOMATICALLY_ACCEPTED",
+      "exit": 0,
+      "file_sha256": {
+        "build-asan-baseline-capture.json": "0c35de60c84429b64ca76e7c5d91f8eda9ff84d5524dd64c62abf7d21398c17d",
+        "build-asan-baseline-command.json": "afd2d534abbc4f74061507ea32e0389de36ce83bd8fdde4c1f2eccdf8d3742cc",
+        "build-asan-baseline-reconfigure-command.json": "8cbfd7ec4e739346f9e87d4c2dd8eec2b15c17be09b74bd598fde7aae2323e9b",
+        "build-asan-baseline.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-asan-baseline.log": "ebf68f21315534006f75759f054601990fdac656a497acad5d54d686b1ee5c34"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-asan-candidate",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD_NOT_AUTOMATICALLY_ACCEPTED",
+      "exit": 0,
+      "file_sha256": {
+        "build-asan-candidate-capture.json": "bed953e87f91d5449a507d721bcccddbe70490ce68c3c1961fcfac936c000ff0",
+        "build-asan-candidate-command.json": "5fe04fa8c29960c8bf9bbcc81ff9a619afd7d73caa7ce6570c58214721c5e2f8",
+        "build-asan-candidate-reconfigure-command.json": "8cbfd7ec4e739346f9e87d4c2dd8eec2b15c17be09b74bd598fde7aae2323e9b",
+        "build-asan-candidate.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-asan-candidate.log": "08d904e4c9997713c234b9e8a63a7202d469fadc04e0a9f69ed21992fca81a77"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-baseline",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD_NOT_AUTOMATICALLY_ACCEPTED",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-baseline-capture.json": "d3a78ebea80733d5c963695bed686ed51784fb522bb7387b2e9101d5c823f1a3",
+        "build-native-baseline-command.json": "199352e26e29478be819faa040a83341af35f7b715c599f14e1ad6579068162c",
+        "build-native-baseline-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-baseline.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-baseline.log": "aa1e0312c71f1985e7421522a7f22972c6e3d827731fa0ba69ff9c8292f87588"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-candidate",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD_NOT_AUTOMATICALLY_ACCEPTED",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-candidate-capture.json": "f527ce7654aab1d3d6ee9ec04d081c458f847f21eaca3ee69126bd8919f7ccce",
+        "build-native-candidate-command.json": "1c541f1dd22ef07403131ded4994563b087c348d90a448bc36ca98481e1549b2",
+        "build-native-candidate-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-candidate.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-candidate.log": "4aac459044f8339f2ae0767283ffc6ba5ae48ebed8c3dd1016fc032ac12923be"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "profile-asan-baseline-custom",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "9a2dda2bd7f0d0caeddc41f31426d0cbc368f0fb666239b73075e3d05881ef6f",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "27dbe2e4336f4067b711a23ad47649682224252f87a64279bdb85cdd072e033b"
+    },
+    {
+      "attempt": "profile-asan-baseline-default",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "b3dbea3690b3d1b879a2b5bff36d9dfaf2a6b6c1a63efe2f7475821d22692e3a",
+      "kind": "runtime",
+      "meson_exit": 1,
+      "result_sha256": "04a4011a41d9841b054f015032e6c0965fe5a6f168c2ec5da5957291583887b6"
+    },
+    {
+      "attempt": "profile-asan-candidate-all",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "1d239aa98dacfdbb93316218c2263f144b7c751d04627c4d79a5415b502d78c1",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "3b8ae1cf76eaebcec7b0e3a29255a7d1ccab9ca767272f1922de951b2c3a8ae7"
+    },
+    {
+      "attempt": "profile-asan-control-preferences",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "99d9ba0671df946a1267b99c90e9d9a9b4ed1ea3caeec33c5345d804303fc178",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "629046e7e404424115fc7ed0a26d076b23d049f1472bdf9a05a7da28bc52df80"
+    },
+    {
+      "attempt": "profile-asan-control-reentrant",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "e2a895ea11d4d4d5da6f2657d5121b8a2ab70b59f464d1092227daca935d7bbf",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "7e522cd2a6866d1e546ee121e59666b844051022032f808d39715ab5984ac1ca"
+    },
+    {
+      "attempt": "profile-asan-control-session",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "2997bc59ece75a5a0dc759b803cf68c03b40c825760435147fa77d4e8f575e04",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "e3dc61b5b2f3f39f5fd03f2552b6d67b2ae46e65dbecc4d33f3a5899209f67d0"
+    },
+    {
+      "attempt": "profile-native-baseline-custom",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "dd9b78b56312ff3727d6b63111547cf4cb98cae4a9c6848f14c76a229cc1b2df",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "c1fcae611f5cf06f1ae2b8e67cf5f5ce8aea82c1f10afb899cab16c2638f125b"
+    },
+    {
+      "attempt": "profile-native-baseline-default",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "1fe0819f0eb8437b669e091504b4dc7b61399610b4dc1c331c76910f69a3b861",
+      "kind": "runtime",
+      "meson_exit": 1,
+      "result_sha256": "8eff84bba6fbb22d4004aa809a7bf3cdab5a4d1f8ab43000b1a59da42f139272"
+    },
+    {
+      "attempt": "profile-native-candidate-all",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "005240d7c67c1fb1e7aaab1e7d8705d70ed7e207736924c787eb875fdd0a34c7",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "f7aba589e5c9c710717a5004607b09c4b0658128db264e945b531de3f192b346"
+    },
+    {
+      "attempt": "profile-native-control-preferences",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "af69e9c56c229edeaeb5f2c306a4a9f5c1129db9a106850151faa20c72c4c9c4",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "9dd3fd41836c94edc64727b9ee3a9fdb930d34a6a5d74c2fe4d3ea24c71865ba"
+    },
+    {
+      "attempt": "profile-native-control-reentrant",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "1103e19f4464110bf7fac785e752b371f22b5766b4f02cedada8eb25829dbcbd",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "8c766882e5eca1a3abba180bc105a9163866174a87eea306414eec48af479bed"
+    },
+    {
+      "attempt": "profile-native-control-session",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "17ecc4facf3ffe5470797c7f67c1483630e382998506b45f45efe44e1a54d3bc",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "94561b6720d19c04cf84f9af55a015ace25004e4023f635d0fa6642d04159ab7"
+    }
+  ],
+  "historical_failures_reclassified_as_pass": false,
+  "prior_preserved_evidence_tree_sha256": "2d310d9d19d604a62085221d9783b684822140025c92b085587cb3900045801c",
+  "raw_logs_published": false,
+  "scope": "All current profile prerequisite private evidence files, including failed/incomplete and superseded preparations; prior gradient/helper source, checks and original diagnostic evidence are separately sealed."
+}

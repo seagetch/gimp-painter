@@ -40,6 +40,7 @@ apptests_links += libapptestutils
 # proper way.
 app_tests = [
   'core',
+  'gimp-test-config-fixture',
   'painter-type-startup',
   'file-load-pipeline',
   'gimp-clone-layer',

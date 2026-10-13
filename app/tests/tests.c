@@ -33,6 +33,7 @@
 #include "widgets/gimpsessioninfo.h"
 
 #include "config/gimpgeglconfig.h"
+#include "config/gimprc.h"
 
 #include "core/gimp.h"
 #include "core/gimp-contexts.h"
@@ -57,6 +58,163 @@ gimp_status_func_dummy (const gchar *text1,
 {
 }
 
+typedef struct
+{
+  GFile   *user_rc;
+  GWeakRef config;
+  GWeakRef edit_config;
+} GimpTestConfigFile;
+
+static GSList *gimp_test_config_files = NULL;
+
+static void
+gimp_test_remove_config_files (void)
+{
+  GSList *iter;
+
+  /* Some standalone test mains call gimp_exit() but retain Gimp until process
+   * exit. Wait until main has returned, rather than delete during Gimp's exit
+   * signal or assume final unref. Do not change the real autosave lifecycle. */
+  for (iter = gimp_test_config_files; iter; iter = iter->next)
+    {
+      GimpTestConfigFile *owned = iter->data;
+      GObject           *config;
+      GError            *error = NULL;
+      gboolean           removed;
+
+      config = g_weak_ref_get (&owned->config);
+      if (config)
+        {
+          g_assert_cmpuint (GIMP_RC (config)->save_idle_id, ==, 0);
+          g_object_unref (config);
+        }
+      config = g_weak_ref_get (&owned->edit_config);
+      if (config)
+        {
+          g_assert_cmpuint (GIMP_RC (config)->save_idle_id, ==, 0);
+          g_object_unref (config);
+        }
+
+      removed = g_file_delete (owned->user_rc, NULL, &error);
+      if (! removed && g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+        g_clear_error (&error);
+      g_assert_no_error (error);
+      g_weak_ref_clear (&owned->config);
+      g_weak_ref_clear (&owned->edit_config);
+      g_object_unref (owned->user_rc);
+      g_free (owned);
+    }
+
+  g_clear_pointer (&gimp_test_config_files, g_slist_free);
+}
+
+/* Ordinary tests have no checked-in personal gimprc. Give every initialization
+ * an empty, owned personal RC file, while retaining source session/dock inputs.
+ * Its path is never reused as another test's input. TMPDIR is owned and cleaned
+ * by the isolated runtime launcher, including expected assertion-abort runs.
+ * Normal main-return/exit paths additionally remove the file with atexit(). */
+static void
+gimp_test_load_default_config (Gimp *gimp)
+{
+  static gboolean     cleanup_registered = FALSE;
+  GimpTestConfigFile  *owned;
+  GFileIOStream      *stream;
+  GError             *error = NULL;
+  GParamSpec         *pluginrc_spec;
+  const gchar        *build_root;
+  gchar              *pluginrc;
+  gboolean            closed;
+
+  if (! g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"))
+    {
+      gimp_load_config (gimp, NULL, NULL);
+      return;
+    }
+
+  build_root = g_getenv ("GIMP_TESTING_ABS_TOP_BUILDDIR");
+  g_assert_nonnull (build_root);
+  g_assert_true (g_path_is_absolute (build_root));
+  if (! cleanup_registered)
+    {
+      gint result = atexit (gimp_test_remove_config_files);
+      g_assert_cmpint (result, ==, 0);
+      cleanup_registered = TRUE;
+    }
+
+  owned = g_new0 (GimpTestConfigFile, 1);
+  owned->user_rc = g_file_new_tmp ("gimp-app-test-gimprc-XXXXXX", &stream, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (owned->user_rc);
+  closed = g_io_stream_close (G_IO_STREAM (stream), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (closed);
+  g_object_unref (stream);
+
+  gimp_load_config (gimp, NULL, owned->user_rc);
+  g_weak_ref_init (&owned->config, G_OBJECT (gimp->config));
+  g_weak_ref_init (&owned->edit_config, G_OBJECT (gimp->edit_config));
+  gimp_test_config_files = g_slist_prepend (gimp_test_config_files, owned);
+
+  /* Cache writes are ordinary mutable build output, independent of personal
+   * RC lifetime. Native and sanitizer builds have separate cache paths. */
+  pluginrc_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (gimp->config),
+                                               "pluginrc-path");
+  g_object_get (gimp->config, "pluginrc-path", &pluginrc, NULL);
+  if (g_strcmp0 (pluginrc,
+                 g_value_get_string (g_param_spec_get_default_value (pluginrc_spec))) == 0)
+    {
+      gchar *path = g_build_filename (build_root, "app", "tests",
+                                      "gimpdir-output", "pluginrc", NULL);
+      g_object_set (gimp->config, "pluginrc-path", path, NULL);
+      g_free (path);
+    }
+
+  g_free (pluginrc);
+}
+
+/* The testing data-path default searches only source/data/gradients, while
+ * its writable default is ${gimp_dir}/gradients. The built-in Custom gradient
+ * is internal but writable and dirty, so normal shutdown still resolves a
+ * save directory before gimp_data_save() handles it as internal data.
+ * Keep the source search and the writable token together. Do not expand the
+ * token here: GUI tests redirect gimp_dir to gimpdir-output before shutdown.
+ * Leave explicitly customized path pairs unchanged.
+ */
+static void
+gimp_test_complete_default_gradient_path (Gimp *gimp)
+{
+  GObjectClass *klass = G_OBJECT_GET_CLASS (gimp->config);
+  GParamSpec   *path_spec;
+  GParamSpec   *writable_spec;
+  gchar        *path;
+  gchar        *writable;
+
+  if (! g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"))
+    return;
+
+  path_spec = g_object_class_find_property (klass, "gradient-path");
+  writable_spec = g_object_class_find_property (klass, "gradient-path-writable");
+  g_object_get (gimp->config,
+                "gradient-path",          &path,
+                "gradient-path-writable", &writable,
+                NULL);
+
+  if (g_strcmp0 (path,
+                 g_value_get_string (g_param_spec_get_default_value (path_spec))) == 0 &&
+      g_strcmp0 (writable,
+                 g_value_get_string (g_param_spec_get_default_value (writable_spec))) == 0)
+    {
+      gchar *complete = g_build_path (G_SEARCHPATH_SEPARATOR_S,
+                                      path, writable, NULL);
+
+      g_object_set (gimp->config, "gradient-path", complete, NULL);
+      g_free (complete);
+    }
+
+  g_free (path);
+  g_free (writable);
+}
+
 /**
  * gimp_init_for_testing:
  *
@@ -75,7 +233,8 @@ gimp_init_for_testing (void)
                    FALSE, FALSE, TRUE, FALSE, FALSE,
                    GIMP_STACK_TRACE_QUERY, GIMP_PDB_COMPAT_OFF);
 
-  gimp_load_config (gimp, NULL, NULL);
+  gimp_test_load_default_config (gimp);
+  gimp_test_complete_default_gradient_path (gimp);
 
   gimp_gegl_init (gimp);
   gimp_initialize (gimp, gimp_status_func_dummy);
@@ -177,7 +336,16 @@ gimp_init_for_gui_testing_internal (gboolean  show_gui,
   gimp->app = gimp_app_new (gimp, TRUE, FALSE, FALSE, NULL, NULL, NULL);
 
   gimp_set_show_gui (gimp, show_gui);
-  gimp_load_config (gimp, gimprc, NULL);
+  if (gimprc)
+    {
+      /* Preserve the caller-provided RC and its existing path contract. */
+      gimp_load_config (gimp, gimprc, NULL);
+    }
+  else
+    {
+      gimp_test_load_default_config (gimp);
+      gimp_test_complete_default_gradient_path (gimp);
+    }
   gimp_gegl_init (gimp);
 
   g_signal_connect (gimp->app, "activate",
