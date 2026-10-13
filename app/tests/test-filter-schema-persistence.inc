@@ -551,6 +551,77 @@ persistence_assert_unknown (GimpFilterLayer *filter, GBytes *payload)
   g_bytes_unref (actual); g_variant_unref (unknown); g_variant_unref (dict);
 }
 
+/* This fixture deliberately supplies an unregistered argument type.  XCF
+ * reports it through gimp_message(), not the GLib log machinery, so
+ * g_test_expect_message() cannot observe it.  Assert the real GIMP message
+ * at its native presentation boundary, scoped to each ordinary Open only.
+ * Save, image destruction, dialogs, and all other tests keep their handlers.
+ */
+typedef struct
+{
+  guint expected;
+  guint seen;
+} PersistenceUnknownMessages;
+
+static void
+persistence_unknown_message (Gimp                *application,
+                             GObject             *handler,
+                             GimpMessageSeverity  severity,
+                             const gchar         *domain,
+                             const gchar         *message)
+{
+  PersistenceUnknownMessages *messages = g_object_get_data (
+    G_OBJECT (application), "painter-test-unknown-argument-messages");
+
+  g_assert_true (application == gimp);
+  g_assert_nonnull (messages);
+  g_assert_null (handler);
+  g_assert_cmpint (severity, ==, GIMP_MESSAGE_WARNING);
+  g_assert_cmpstr (domain, ==, "GIMP");
+  g_assert_cmpstr (message, ==,
+    "Painter XCF metadata was retained but could not be fully restored: "
+    "Unsupported or malformed saved Filter argument; original definition is retained");
+  g_assert_cmpuint (messages->seen, <, messages->expected);
+  messages->seen++;
+}
+
+static GimpImage *
+persistence_unknown_close_reopen (GimpImage *image,
+                                  GFile     *file,
+                                  gboolean   opaque)
+{
+  GimpGui saved_gui;
+  gboolean saved_console_messages;
+  PersistenceUnknownMessages messages = { opaque ? 1 : 0, 0 };
+  gpointer weak = image;
+
+  /* Preserve the same ordinary Save/Close ownership checks as
+   * persistence_close_reopen(), before beginning the expected-message scope.
+   */
+  g_object_add_weak_pointer (G_OBJECT (image), &weak);
+  persistence_save (image, file);
+  g_object_unref (image); g_assert_null (weak);
+
+  saved_gui = gimp->gui;
+  saved_console_messages = gimp->console_messages;
+  g_assert_null (g_object_get_data (G_OBJECT (gimp),
+                                   "painter-test-unknown-argument-messages"));
+  g_object_set_data (G_OBJECT (gimp), "painter-test-unknown-argument-messages",
+                     &messages);
+  gimp->gui.show_message = persistence_unknown_message;
+  gimp->console_messages = FALSE;
+  image = persistence_load (file);
+  g_assert_true (gimp->gui.show_message == persistence_unknown_message);
+  g_assert_false (gimp->console_messages);
+  gimp->gui.show_message = saved_gui.show_message;
+  gimp->console_messages = saved_console_messages;
+  g_object_set_data (G_OBJECT (gimp), "painter-test-unknown-argument-messages",
+                     NULL);
+  g_assert_cmpuint (messages.seen, ==, messages.expected);
+
+  return image;
+}
+
 static void
 filter_schema_persistence_unknown_opaque (void)
 {
@@ -584,13 +655,13 @@ filter_schema_persistence_unknown_opaque (void)
             filter, "plug-in-convmatrix", raw, opaque_bytes, NULL)); g_bytes_unref (raw);
         }
       gimp_filter_layer_mark_as_loaded (filter);
-      image = persistence_close_reopen (image, file); filter = persistence_filter (image);
+      image = persistence_unknown_close_reopen (image, file, opaque); filter = persistence_filter (image);
       persistence_unknown_field (filter, payload);
       for (guint pass = 0; pass < 3; pass++)
         {
           GtkWidget *dialog;
           SchemaCheckpoint checkpoint;
-          image = persistence_close_reopen (image, file); filter = persistence_filter (image);
+          image = persistence_unknown_close_reopen (image, file, opaque); filter = persistence_filter (image);
           persistence_assert_unknown (filter, payload); isolated_assert_raw (filter);
           checkpoint = schema_checkpoint (image, filter);
           if (opaque)

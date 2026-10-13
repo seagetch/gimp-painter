@@ -1,0 +1,357 @@
+{
+  "all_evidence_file_count": 486,
+  "all_evidence_tree_sha256": "75360765c6abe084e0b5f15bde1e142390e07cb0862644db28c8d9113f867f1f",
+  "attempts": [
+    {
+      "attempt": "build-asan-xcf-candidate",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-asan-xcf-candidate-capture.json": "060f68be1720ab8c46bcd7e42463f65507873329962ecf8d6c562c2ef17429db",
+        "build-asan-xcf-candidate-command.json": "2cf55efad31d5a38505b926a2439cb2214366cd0726ee07aa61a8dfa1d98bb58",
+        "build-asan-xcf-candidate-reconfigure-command.json": "8cbfd7ec4e739346f9e87d4c2dd8eec2b15c17be09b74bd598fde7aae2323e9b",
+        "build-asan-xcf-candidate.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-asan-xcf-candidate.log": "e3f923e005e29460473331ab4c2b6ccd487debb934b4b2e514cd62473d73ed54"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-asan-xcf-restored",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-asan-xcf-restored-capture.json": "8167b41142530801de9fe3dae56fb9fe330b86819c7b4fd1726204025ac3c6ac",
+        "build-asan-xcf-restored-command.json": "2cf55efad31d5a38505b926a2439cb2214366cd0726ee07aa61a8dfa1d98bb58",
+        "build-asan-xcf-restored-reconfigure-command.json": "8cbfd7ec4e739346f9e87d4c2dd8eec2b15c17be09b74bd598fde7aae2323e9b",
+        "build-asan-xcf-restored.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-asan-xcf-restored.log": "e3f923e005e29460473331ab4c2b6ccd487debb934b4b2e514cd62473d73ed54"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-xcf-candidate",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-xcf-candidate-capture.json": "490cdf68ac65ce606af5842c4fdd9eab2382659d115e92b95cf46478f07ccb8e",
+        "build-native-xcf-candidate-command.json": "cafdf4fd0457a26418bfae40a8ce854af0c2e1573f0f33c8d52ea84f9931e1ae",
+        "build-native-xcf-candidate-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-xcf-candidate.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-xcf-candidate.log": "361091ab2416ebb3176ac67ff7540472a400b596747f00bf12c8cba2150f1857"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-xcf-negative-duplicate-native-callback",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-xcf-negative-duplicate-native-callback-capture.json": "04572d43c57d9306db7b390b54c7690b8ccff347992238f9391f58871d328922",
+        "build-native-xcf-negative-duplicate-native-callback-command.json": "cafdf4fd0457a26418bfae40a8ce854af0c2e1573f0f33c8d52ea84f9931e1ae",
+        "build-native-xcf-negative-duplicate-native-callback-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-xcf-negative-duplicate-native-callback.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-xcf-negative-duplicate-native-callback.log": "05a7ce9ade772ed6c52a16c68f4204d2f2f2d6f986ae56aee1ef4681ebc03708"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-xcf-negative-fatal-glib-warning",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-xcf-negative-fatal-glib-warning-capture.json": "e4ed5da2625ea4de1cd7950effd809eb7a8f7a266e32c27e8ced3b153beeb561",
+        "build-native-xcf-negative-fatal-glib-warning-command.json": "cafdf4fd0457a26418bfae40a8ce854af0c2e1573f0f33c8d52ea84f9931e1ae",
+        "build-native-xcf-negative-fatal-glib-warning-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-xcf-negative-fatal-glib-warning.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-xcf-negative-fatal-glib-warning.log": "05a7ce9ade772ed6c52a16c68f4204d2f2f2d6f986ae56aee1ef4681ebc03708"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-xcf-negative-two-expected",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-xcf-negative-two-expected-capture.json": "75b1a05e7169e47c053dd98a789757b3d8772450d17fb58fa496ad61f53147c3",
+        "build-native-xcf-negative-two-expected-command.json": "cafdf4fd0457a26418bfae40a8ce854af0c2e1573f0f33c8d52ea84f9931e1ae",
+        "build-native-xcf-negative-two-expected-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-xcf-negative-two-expected.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-xcf-negative-two-expected.log": "05a7ce9ade772ed6c52a16c68f4204d2f2f2d6f986ae56aee1ef4681ebc03708"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-xcf-negative-typed-open-warning",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-xcf-negative-typed-open-warning-capture.json": "8f85030fcd1c8bdd3eb381a312b4f09695a38d5a20eb12e18b3f4dd842105f5a",
+        "build-native-xcf-negative-typed-open-warning-command.json": "cafdf4fd0457a26418bfae40a8ce854af0c2e1573f0f33c8d52ea84f9931e1ae",
+        "build-native-xcf-negative-typed-open-warning-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-xcf-negative-typed-open-warning.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-xcf-negative-typed-open-warning.log": "05a7ce9ade772ed6c52a16c68f4204d2f2f2d6f986ae56aee1ef4681ebc03708"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-xcf-negative-wrong-domain",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-xcf-negative-wrong-domain-capture.json": "27d607043fe9ee39d8202be7cda82bd44e6ba48bd80e5ad7572be0c960abdd09",
+        "build-native-xcf-negative-wrong-domain-command.json": "cafdf4fd0457a26418bfae40a8ce854af0c2e1573f0f33c8d52ea84f9931e1ae",
+        "build-native-xcf-negative-wrong-domain-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-xcf-negative-wrong-domain.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-xcf-negative-wrong-domain.log": "05a7ce9ade772ed6c52a16c68f4204d2f2f2d6f986ae56aee1ef4681ebc03708"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-xcf-negative-wrong-severity",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-xcf-negative-wrong-severity-capture.json": "0bbca59b7c468fa261ee10dc85ae6688e181a7a52c902d8d7c52d3a5244380d8",
+        "build-native-xcf-negative-wrong-severity-command.json": "cafdf4fd0457a26418bfae40a8ce854af0c2e1573f0f33c8d52ea84f9931e1ae",
+        "build-native-xcf-negative-wrong-severity-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-xcf-negative-wrong-severity.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-xcf-negative-wrong-severity.log": "05a7ce9ade772ed6c52a16c68f4204d2f2f2d6f986ae56aee1ef4681ebc03708"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-xcf-negative-wrong-text",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-xcf-negative-wrong-text-capture.json": "869cd9ec1ccc160dd47d41e4927dc1745f721fb4e63ea46a12acf428fe33a74f",
+        "build-native-xcf-negative-wrong-text-command.json": "cafdf4fd0457a26418bfae40a8ce854af0c2e1573f0f33c8d52ea84f9931e1ae",
+        "build-native-xcf-negative-wrong-text-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-xcf-negative-wrong-text.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-xcf-negative-wrong-text.log": "05a7ce9ade772ed6c52a16c68f4204d2f2f2d6f986ae56aee1ef4681ebc03708"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-xcf-negative-zero-expected",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-xcf-negative-zero-expected-capture.json": "b3f1da99cfb478d1610a1ad771be426b8a29fea5cb78350b7734888050f45913",
+        "build-native-xcf-negative-zero-expected-command.json": "cafdf4fd0457a26418bfae40a8ce854af0c2e1573f0f33c8d52ea84f9931e1ae",
+        "build-native-xcf-negative-zero-expected-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-xcf-negative-zero-expected.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-xcf-negative-zero-expected.log": "05a7ce9ade772ed6c52a16c68f4204d2f2f2d6f986ae56aee1ef4681ebc03708"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "build-native-xcf-restored",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_BUILD",
+      "exit": 0,
+      "file_sha256": {
+        "build-native-xcf-restored-capture.json": "4ec8ca2e4b43bdbbeef45c985f1b239f9bd26e773812991241ec7cd87d6d9622",
+        "build-native-xcf-restored-command.json": "cafdf4fd0457a26418bfae40a8ce854af0c2e1573f0f33c8d52ea84f9931e1ae",
+        "build-native-xcf-restored-reconfigure-command.json": "4691816d212e52e446c53b4edfc96b1697999a04b2e491bb3f8fe0b8f09d1f98",
+        "build-native-xcf-restored.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "build-native-xcf-restored.log": "05a7ce9ade772ed6c52a16c68f4204d2f2f2d6f986ae56aee1ef4681ebc03708"
+      },
+      "kind": "build"
+    },
+    {
+      "attempt": "xcf-candidate-asan-focused",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "fdc7eb90ad4ae0562dcc388f81a9d320c2f18b6afecf6cfa8671f773f7005a08",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "c2359907682c6caefea4e84ad547c9ed2d5a4aa339205ef189ad5cdaf31996ec"
+    },
+    {
+      "attempt": "xcf-candidate-asan-full",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "9d5dbd027e68aeb5536aea6413b3a06d51a531eb13f7579185fef0ac873cfb54",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "6aee54f1a4d94c3281a4ae0cc5c3a39d7177995102ba85e8feb02dc0a044c43c"
+    },
+    {
+      "attempt": "xcf-candidate-native-focused",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "c31ea10124daaca2ba45906d5f259dce3d7bf03ed7478756cc6c1a75b345e7bf",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "2fb5de5ee475d0a3d260a9497ceee58ad1d31337a02b873b86046e741d789afd"
+    },
+    {
+      "attempt": "xcf-candidate-native-full",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "823d170153dbada68f3ba20f5c4ad08c946e5aad25cffd9e3a7ff3145ff0da84",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "f2f452736be5fd1c6efe83c722fc59bb1ab56f3f477c871dcac5f3a504623c93"
+    },
+    {
+      "attempt": "xcf-negative-native-duplicate-native-callback",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "e4d76e94a91ebacb835a64443d35d5b7c119ffdfc9be1b255e52fc17b83630b8",
+      "kind": "runtime",
+      "meson_exit": 1,
+      "result_sha256": "32af8bbe239f76e4d5bd112c747beefec5a69a1a440d540bda2773315e8bb46f"
+    },
+    {
+      "attempt": "xcf-negative-native-fatal-glib-warning",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "2978a8993ada059a59f37d041fe4c4cf564acd1e0ac957331d186b66864695ce",
+      "kind": "runtime",
+      "meson_exit": 1,
+      "result_sha256": "0df6ab34a779cf50bc70a822555865e6475dac010d863d0361623d16be193e4b"
+    },
+    {
+      "attempt": "xcf-negative-native-two-expected",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "504e0cc97232ab43efb446c4cf8f603db1e84f292faf3b79514e6ff578c964e8",
+      "kind": "runtime",
+      "meson_exit": 1,
+      "result_sha256": "af5d241b6841fc394e7f9e1bb5989297208cf503501de58681351de2065e0d39"
+    },
+    {
+      "attempt": "xcf-negative-native-typed-open-warning",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "5a08dc6abac7e342f5a8abaec273a9c07c547d497efa12cf444109ec951bfd79",
+      "kind": "runtime",
+      "meson_exit": 1,
+      "result_sha256": "937d12bb0a2d3532feae6a379baa2c3a60ec708233d45e47a3a699e72baed7c4"
+    },
+    {
+      "attempt": "xcf-negative-native-wrong-domain",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "f1d640f22ccd1ef59b47b99101438bf151522dd40c8880e14d1274203852e8b6",
+      "kind": "runtime",
+      "meson_exit": 1,
+      "result_sha256": "e8a5f01d05a5e151617c008fc66437642c6fff22174d6c6554f2f73b0d933264"
+    },
+    {
+      "attempt": "xcf-negative-native-wrong-severity",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "5bf6f3b73ea1f14740cf63ba93d01cc2d9405c71f655d8b535234d38d6b2279d",
+      "kind": "runtime",
+      "meson_exit": 1,
+      "result_sha256": "17f8c144ceac3ffd94dec2dac3f2883d17b525e221b163c19b6f5761b4fb218d"
+    },
+    {
+      "attempt": "xcf-negative-native-wrong-text",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "bc899b4cf164daffb685129ab48a31e3bcbaa635a2f7e0620a91028835f8c6d8",
+      "kind": "runtime",
+      "meson_exit": 1,
+      "result_sha256": "ac103a313a80e46546d9d54a9c503dc167ba57a90cc2a1eb30fa94ea4c3d3424"
+    },
+    {
+      "attempt": "xcf-negative-native-zero-expected",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "f183b7492fe119ebe4f4254a4d174e2be9082402dd96ae65483038f369b88b7f",
+      "kind": "runtime",
+      "meson_exit": 1,
+      "result_sha256": "c2b6778e0b2035596806657a3b943511a99ef516f32d0447d97459be56057d1c"
+    },
+    {
+      "attempt": "xcf-opaque-baseline-asan",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "1d3ae92c6c707964f7d0d1696833bf180f4e7088c7b482686856f2cad1ceac7d",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "d4164da6f07d3d323b8fa6eb0332d3ef8f04e12e9bc7d01fc6a62a5400a437d7"
+    },
+    {
+      "attempt": "xcf-opaque-baseline-native",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "3bbaae38e8878263e9d41e1430b2ef4083d2261868e46aa4f6c7b23aea47e61a",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "0e4580fd8c2a0bfeddc09f9d9d2dd4e915dea77f1abdf9687fcf815ca1768095"
+    },
+    {
+      "attempt": "xcf-restored-asan-focused",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "9c68f590884dddc1f3afe3862875ad721d335976374c845159f719267f9c3639",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "bac03485e9897f7769eca4b4d3cb3a2948138313c4fc5b3d48c63d02e4c66012"
+    },
+    {
+      "attempt": "xcf-restored-asan-full",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "9ce79217e054d8c4635ebb970c99d680abc34cd0a714343dadf0046fcf9c750c",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "9ebab28811b3877a32f860a6288eb58def0df70fea7f25acbfe88c71e2a59a7f"
+    },
+    {
+      "attempt": "xcf-restored-native-focused",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "764a0a3516732366ef7e915c5baab157fad02e6b7e181b987edc2a71762b8d67",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "b82597b2fbb74c538a8bc7b8ca6858e4dd2d575cd188ff91c575552815c36d09"
+    },
+    {
+      "attempt": "xcf-restored-native-full",
+      "automatic_acceptance_credit": false,
+      "classification": "CAPTURED_NOT_AUTOMATICALLY_ACCEPTED",
+      "evidence_file_count": 19,
+      "evidence_tree_sha256": "b1e2527e6391fa64cfd577356c07376391dd17647966a6851c324edfe2b8a259",
+      "kind": "runtime",
+      "meson_exit": 0,
+      "result_sha256": "b213add91769db6888d4eaf20f70bf96b8b90e394fed4f8ad9e18fece846d880"
+    }
+  ],
+  "historical_failures_reclassified_as_pass": false,
+  "raw_logs_published": false,
+  "scope": "All current fixture-prerequisite evidence files, including failed/incomplete builds, launches, controls and support records; private raw bytes remain local."
+}
