@@ -44,46 +44,15 @@
  **/
 
 
-/**
- * gimp_int_radio_group_new: (skip)
- * @in_frame:              %TRUE if you want a #GtkFrame around the
- *                         radio button group.
- * @frame_title: (nullable):
- *                         The title of the Frame or %NULL if you don't want a
- *                         title.
- * @radio_button_callback: (scope notified) (closure radio_button_callback_data):
- *                         The callback each button's
- *                         "toggled" signal will be connected with.
- * @radio_button_callback_data:
- *                         The data which will be passed to g_signal_connect().
- * @radio_button_callback_destroy: (destroy radio_button_callback_data):
- * @initial:               The @item_data of the initially pressed radio button.
- * @...:                   A %NULL-terminated @va_list describing
- *                         the radio buttons.
- *
- * Convenience function to create a group of radio buttons embedded into
- * a #GtkFrame or #GtkBox. This function does the same thing as
- * gimp_radio_group_new2(), but it takes integers as @item_data instead of
- * pointers, since that is a very common case (mapping an enum to a radio
- * group).
- *
- * Returns: (transfer full): A #GtkFrame or #GtkBox (depending on @in_frame).
- **/
-GtkWidget *
-gimp_int_radio_group_new (gboolean         in_frame,
-                          const gchar     *frame_title,
-                          GCallback        radio_button_callback,
-                          gpointer         radio_button_callback_data,
-                          GDestroyNotify   radio_button_callback_destroy,
-                          gint             initial, /* item_data */
-
-                          /* specify radio buttons as va_list:
-                           *  const gchar *label,
-                           *  gint         item_data,
-                           *  GtkWidget  **widget_ptr,
-                           */
-
-                          ...)
+static GtkWidget *
+gimp_int_radio_group_new_valist (gboolean       in_frame,
+                                 const gchar   *frame_title,
+                                 GCallback      radio_button_callback,
+                                 gpointer       radio_button_callback_data,
+                                 GDestroyNotify radio_button_callback_destroy,
+                                 GtkOrientation orientation,
+                                 gint           initial,
+                                 va_list        args)
 {
   GtkWidget *vbox;
   GtkWidget *button;
@@ -95,9 +64,7 @@ gimp_int_radio_group_new (gboolean         in_frame,
   gpointer     item_ptr;
   GtkWidget  **widget_ptr;
 
-  va_list args;
-
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+  vbox = gtk_box_new (orientation, 2);
 
   group = NULL;
 
@@ -107,7 +74,6 @@ gimp_int_radio_group_new (gboolean         in_frame,
                        radio_button_callback_data);
 
   /*  create the radio buttons  */
-  va_start (args, initial);
   label = va_arg (args, const gchar *);
 
   while (label)
@@ -147,7 +113,6 @@ gimp_int_radio_group_new (gboolean         in_frame,
 
       label = va_arg (args, const gchar *);
     }
-  va_end (args);
 
   if (in_frame)
     {
@@ -161,6 +126,88 @@ gimp_int_radio_group_new (gboolean         in_frame,
     }
 
   return vbox;
+}
+
+/**
+ * gimp_int_radio_group_new: (skip)
+ * @in_frame:              %TRUE if you want a #GtkFrame around the
+ *                         radio button group.
+ * @frame_title: (nullable):
+ *                         The title of the Frame or %NULL if you don't want a
+ *                         title.
+ * @radio_button_callback: (scope notified) (closure radio_button_callback_data):
+ *                         The callback each button's
+ *                         "toggled" signal will be connected with.
+ * @radio_button_callback_data:
+ *                         The data which will be passed to g_signal_connect().
+ * @radio_button_callback_destroy: (destroy radio_button_callback_data):
+ * @initial:               The @item_data of the initially pressed radio button.
+ * @...:                   A %NULL-terminated @va_list describing
+ *                         the radio buttons.
+ *
+ * Convenience function to create a group of radio buttons embedded into
+ * a #GtkFrame or #GtkBox. This function does the same thing as
+ * gimp_radio_group_new2(), but it takes integers as @item_data instead of
+ * pointers, since that is a very common case (mapping an enum to a radio
+ * group).
+ *
+ * Returns: (transfer full): A #GtkFrame or #GtkBox (depending on @in_frame).
+ **/
+
+GtkWidget *
+gimp_int_radio_group_new (gboolean       in_frame,
+                          const gchar   *frame_title,
+                          GCallback      radio_button_callback,
+                          gpointer       radio_button_callback_data,
+                          GDestroyNotify radio_button_callback_destroy,
+                          gint           initial,
+                          ...)
+{
+  GtkWidget *result;
+  va_list    args;
+
+  va_start (args, initial);
+  result = gimp_int_radio_group_new_valist (in_frame, frame_title,
+                                            radio_button_callback,
+                                            radio_button_callback_data,
+                                            radio_button_callback_destroy,
+                                            GTK_ORIENTATION_VERTICAL,
+                                            initial, args);
+  va_end (args);
+
+  return result;
+}
+
+/**
+ * gimp_int_radio_group_new_with_orientation: (skip)
+ *
+ * GIMP-Painter compatibility entry point with the original varargs ABI.
+ * Callback data is borrowed. As in the original switch, unknown orientation
+ * values fall back to vertical.
+ */
+GtkWidget *
+gimp_int_radio_group_new_with_orientation (gboolean       in_frame,
+                                           const gchar   *frame_title,
+                                           GCallback      radio_button_callback,
+                                           gpointer       radio_button_callback_data,
+                                           GtkOrientation orientation,
+                                           gint           initial,
+                                           ...)
+{
+  GtkWidget *result;
+  va_list    args;
+
+  if (orientation != GTK_ORIENTATION_HORIZONTAL)
+    orientation = GTK_ORIENTATION_VERTICAL;
+
+  va_start (args, initial);
+  result = gimp_int_radio_group_new_valist (in_frame, frame_title,
+                                            radio_button_callback,
+                                            radio_button_callback_data,
+                                            NULL, orientation, initial, args);
+  va_end (args);
+
+  return result;
 }
 
 /**

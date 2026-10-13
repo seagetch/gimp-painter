@@ -322,6 +322,15 @@ void Presentation::build (GtkWidget *box, const std::string& tool) {
         auto *child = gtk_bin_get_child (GTK_BIN (widget));
         if (GTK_IS_BOX (child)) orient (child, layout);
       }
+      /* Follow native first-button metadata: cage/clone have bare radio
+       * boxes; transform frames may wrap theirs beside a direction-link
+       * button. Icon boxes deliberately have no such metadata and retain
+       * the historical stock-property orientation behavior. */
+      auto *radio = GTK_WIDGET (g_object_get_data (G_OBJECT (widget), "radio-button"));
+      if (GTK_IS_RADIO_BUTTON (radio)) {
+        auto *radio_box = gtk_widget_get_parent (radio);
+        if (GTK_IS_BOX (radio_box)) orient (radio_box, layout);
+      }
       /* Native reset/link buttons stay next to their original spin scale. */
       if (any (widget, {"paint-mode", "opacity", "brush-size", "rate", "flow", "threshold", "size", "tilt-angle", "offset"})) {
         auto& s = remember (widget);

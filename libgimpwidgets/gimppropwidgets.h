@@ -262,6 +262,29 @@ GtkWidget     * gimp_prop_icon_image_new          (GObject       *config,
                                                    GtkIconSize    icon_size);
 
 
+/* GIMP-Painter compatibility: preserve original signatures and binding. */
+GtkWidget * gimp_prop_enum_radio_frame_new_with_orientation
+                                                      (GObject       *config,
+                                                       const gchar   *property_name,
+                                                       const gchar   *title,
+                                                       gint           minimum,
+                                                       gint           maximum,
+                                                       GtkOrientation orientation);
+GtkWidget * gimp_prop_boolean_radio_frame_new_with_orientation
+                                                      (GObject       *config,
+                                                       const gchar   *property_name,
+                                                       const gchar   *title,
+                                                       const gchar   *true_text,
+                                                       const gchar   *false_text,
+                                                       GtkOrientation orientation);
+GtkWidget * gimp_prop_enum_stock_box_new_with_orientation
+                                                      (GObject       *config,
+                                                       const gchar   *property_name,
+                                                       const gchar   *stock_prefix,
+                                                       gint           minimum,
+                                                       gint           maximum,
+                                                       GtkOrientation orientation);
+
 G_END_DECLS
 
 #endif /* __GIMPWIDGETS_PROP_WIDGETS_H__ */

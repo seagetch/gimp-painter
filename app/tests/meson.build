@@ -81,12 +81,14 @@ foreach test_name : app_tests
   test_exe = executable(test_name,
     'test-@0@.@1@'.format(test_name, test_name == 'painter-type-startup' ? 'cpp' : 'c'),
     'tests.c',
+    test_name == 'painter-compact-options' ? ['test-widget-orientation-api.c', 'test-widget-orientation-api.cpp'] : [],
     test_name == 'gimp-clone-layer' ? ['test-gimp-clone-layout.cpp'] : [],
     test_name == 'painter-xcf-roundtrip' ? ['test-painter-xcf-argument-resources.cpp'] : [],
     test_name == 'painter-layer-ui' ? ['test-filter-editor-metadata.cpp', 'test-filter-argument-patch.cpp'] : [],
     test_name == 'gimp-filter-layer' ? ['test-gimp-filter-layout.cpp', 'test-filter-owner-context.cpp', 'test-filter-parameters.cpp'] : [],
     dependencies: [ libapp_dep, appstream ],
     link_with: apptests_links,
+    override_options: test_name == 'painter-compact-options' ? ['c_std=c11', 'cpp_std=c++14'] : [],
   )
 
   # Filter tests include real 8193x8193 spill and hundreds of old Gauss buffers.

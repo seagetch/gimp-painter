@@ -507,3 +507,106 @@ gimp_enum_icon_box_set_icon_size (GtkWidget   *icon_box,
 
   g_list_free (children);
 }
+
+/**
+ * gimp_enum_radio_box_new_with_orientation: (skip)
+ *
+ * GIMP-Painter compatibility entry point. Uses the original C callback/data
+ * contract (no destroy notify). The caller keeps callback data alive until
+ * the buttons are destroyed. Reorient before returning the native box.
+ */
+GtkWidget *
+gimp_enum_radio_box_new_with_orientation (GType          enum_type,
+                                          GCallback      callback,
+                                          gpointer       callback_data,
+                                          GtkWidget    **first_button,
+                                          GtkOrientation orientation)
+{
+  GtkWidget *box = gimp_enum_radio_box_new (enum_type, callback, callback_data,
+                                            NULL, first_button);
+
+  if (box)
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (box), orientation);
+
+  return box;
+}
+
+/**
+ * gimp_enum_radio_frame_new_with_orientation: (skip)
+ *
+ * GIMP-Painter compatibility entry point; callback data is borrowed.
+ * The native frame, label and radio-group ownership remain unchanged.
+ */
+GtkWidget *
+gimp_enum_radio_frame_new_with_orientation (GType          enum_type,
+                                            GtkWidget     *label_widget,
+                                            GCallback      callback,
+                                            gpointer       callback_data,
+                                            GtkWidget    **first_button,
+                                            GtkOrientation orientation)
+{
+  GtkWidget *frame = gimp_enum_radio_frame_new (enum_type, label_widget,
+                                                callback, callback_data,
+                                                NULL, first_button);
+
+  if (frame)
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (gtk_bin_get_child (GTK_BIN (frame))),
+                                     orientation);
+
+  return frame;
+}
+
+/**
+ * gimp_enum_radio_frame_new_full: (skip)
+ *
+ * GIMP-Painter compatibility entry point with inclusive range and orientation.
+ * Callback data is borrowed, exactly as in the historical C signature.
+ */
+GtkWidget *
+gimp_enum_radio_frame_new_full (GType          enum_type,
+                                gint           minimum,
+                                gint           maximum,
+                                GtkWidget     *label_widget,
+                                GCallback      callback,
+                                gpointer       callback_data,
+                                GtkWidget    **first_button,
+                                GtkOrientation orientation)
+{
+  GtkWidget *frame = gimp_enum_radio_frame_new_with_range (enum_type,
+                                                           minimum, maximum,
+                                                           label_widget,
+                                                           callback, callback_data,
+                                                           NULL, first_button);
+
+  if (frame)
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (gtk_bin_get_child (GTK_BIN (frame))),
+                                     orientation);
+
+  return frame;
+}
+
+/**
+ * gimp_enum_stock_box_new_with_orientation: (skip)
+ *
+ * GIMP-Painter compatibility entry point using the native named-icon helper.
+ * The prefix-plus-enum-nick naming and callback-data borrowing are retained;
+ * GTK stock image lookup is replaced by the current named-icon route.
+ */
+GtkWidget *
+gimp_enum_stock_box_new_with_orientation (GType          enum_type,
+                                          const gchar   *stock_prefix,
+                                          GtkIconSize    icon_size,
+                                          GCallback      callback,
+                                          gpointer       callback_data,
+                                          GtkWidget    **first_button,
+                                          GtkOrientation orientation)
+{
+  GtkWidget *box = gimp_enum_icon_box_new (enum_type, stock_prefix, icon_size,
+                                           callback, callback_data,
+                                           NULL, first_button);
+
+  if (box)
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (box), orientation);
+
+  return box;
+}

@@ -5159,3 +5159,72 @@ gimp_prop_widget_double_from_factor (GBinding     *binding,
 
   return TRUE;
 }
+
+/**
+ * gimp_prop_enum_radio_frame_new_with_orientation: (skip)
+ *
+ * GIMP-Painter compatibility entry point. Reuses native property binding,
+ * initial selection, notification and widget ownership before reorientation.
+ */
+GtkWidget *
+gimp_prop_enum_radio_frame_new_with_orientation (GObject       *config,
+                                               const gchar   *property_name,
+                                               const gchar   *title,
+                                               gint           minimum,
+                                               gint           maximum,
+                                               GtkOrientation orientation)
+{
+  GtkWidget *frame = gimp_prop_enum_radio_frame_new (config, property_name,
+                                                        title, minimum, maximum);
+
+  if (frame)
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (gtk_bin_get_child (GTK_BIN (frame))),
+                                     orientation);
+
+  return frame;
+}
+
+/**
+ * gimp_prop_boolean_radio_frame_new_with_orientation: (skip)
+ *
+ * GIMP-Painter compatibility entry point. Reuses native property binding,
+ * initial selection, notification and widget ownership before reorientation.
+ */
+GtkWidget *
+gimp_prop_boolean_radio_frame_new_with_orientation (GObject       *config,
+                                               const gchar   *property_name,
+                                               const gchar   *title,
+                                               const gchar   *true_text,
+                                               const gchar   *false_text,
+                                               GtkOrientation orientation)
+{
+  GtkWidget *frame = gimp_prop_boolean_radio_frame_new (config, property_name,
+                                                        title, true_text, false_text);
+
+  if (frame)
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (gtk_bin_get_child (GTK_BIN (frame))),
+                                     orientation);
+
+  return frame;
+}
+
+/**
+ * gimp_prop_enum_stock_box_new_with_orientation: (skip)
+ *
+ * GIMP-Painter compatibility entry point. The historical implementation
+ * accepted but ignored orientation and always returned a horizontal icon box.
+ * Preserve that behavior rather than silently introducing a different contract.
+ */
+GtkWidget *
+gimp_prop_enum_stock_box_new_with_orientation (GObject       *config,
+                                               const gchar   *property_name,
+                                               const gchar   *stock_prefix,
+                                               gint           minimum,
+                                               gint           maximum,
+                                               GtkOrientation orientation)
+{
+  (void) orientation;
+
+  return gimp_prop_enum_icon_box_new (config, property_name, stock_prefix,
+                                      minimum, maximum);
+}

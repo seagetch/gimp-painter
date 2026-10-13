@@ -1,0 +1,530 @@
+[
+  {
+    "run": "baseline-native-bare-callers",
+    "classification": "required-baseline",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 1,
+    "raw_result_sha256": "cf0a34bcb5e1d39a838a5e0fcc61fc3ab048abbff256f7c0fb9edaa41f8ea40f",
+    "raw_record_sha256": "7f54412c63a6ebb89453ed6aafa0b6a5fdaa8965ba8ebe00cf1349d047919180",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "FAIL",
+        "exit_code": -6
+      }
+    ]
+  },
+  {
+    "run": "baseline-native-inventory-all-registered",
+    "classification": "required-baseline",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "f72dcf765be6f53400072fe4c39fc1dfc02d020551d130eb540920d7d5809e3d",
+    "raw_record_sha256": "101cbe6826f022f51a9766c1c46c441c3e3d5f3a6f9342e9299d729b934a5dab",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "baseline-native-native-enum-integer-helpers",
+    "classification": "required-baseline",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "527c51ed47122052a2f52e8b8340102f25e9967398101762ab80c8ee0a02666e",
+    "raw_record_sha256": "770588442ecd6a4c764463ade1a2185fbda548a9e6b53deb6ad814e82d9beef4",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "baseline-native-native-property-controls",
+    "classification": "required-baseline",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "d11c9c1c7978273e977ae96542cb004e49c41500d56d8c44699153836745fd90",
+    "raw_record_sha256": "7e643b3d9f9b2ff1457538a25c101d3fa6cc14a7ce0d6d4928284883c2ba1bf0",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "baseline-native-nested-callers",
+    "classification": "required-baseline",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 1,
+    "raw_result_sha256": "4c3222532176f66329bf45ce58f2337e1ed3845b0c2523ed75deafa557dc1383",
+    "raw_record_sha256": "97c2b49ce7654966000f5d4c33513a486fa73e98ce7207ab6f44dc76a66967e7",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "FAIL",
+        "exit_code": -6
+      }
+    ]
+  },
+  {
+    "run": "diagnostic-asan-enum-before-focus",
+    "classification": "uninitialized-focused-once-device-teardown-after-case-pass",
+    "explanation": "The one enum-contract case completed and emitted1/1 TAP, then application shutdown trapped on an absent current-device assertion. Both native and standardASan reproduce the same -5 failure; no sanitizer memory report was observed. This entire run is nonaccepting and remains preserved.",
+    "meson_exit": 1,
+    "raw_result_sha256": "c4b487fed8c95e9573a99f3fc10b15b75b43968439348a6946f0833fb351aa56",
+    "raw_record_sha256": "fafd5cb4951c1c40383da57b38447be13735144d89a052c72be92d933de83764",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "FAIL",
+        "exit_code": -5
+      }
+    ]
+  },
+  {
+    "run": "orientation-native-orientation-enum-contract",
+    "classification": "uninitialized-focused-once-device-teardown-after-case-pass",
+    "explanation": "The one enum-contract case completed and emitted1/1 TAP, then application shutdown trapped on an absent current-device assertion. Both native and standardASan reproduce the same -5 failure; no sanitizer memory report was observed. This entire run is nonaccepting and remains preserved.",
+    "meson_exit": 1,
+    "raw_result_sha256": "545956f94412644e518013e601fd7643df58b745fa7e29d648a6fc7e1158018c",
+    "raw_record_sha256": "f61e953afd316f2cc9640be2b7fb505fda2330c66dd63cb1e35ed3ad0b9c4a19",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "FAIL",
+        "exit_code": -5
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-asan-expanded-full",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "6d82d8d7115fad10407c120d44ecaf36339b22e28a70102f0ce130851d9d66de",
+    "raw_record_sha256": "cef38411e61fec5b7be143f08fc14aa97cb31e81bab987b0d86bf5253c2f13b3",
+    "outcomes": [
+      {
+        "registration": "gimp-clone-layer",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "gimp-filter-layer",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-layer-ui",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-layer-tree",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-canvas-ui",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-foundation",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "gimp-layer-presets",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "layer-presets-ui",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-mypaint-editor",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "editor-dropdown",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "editor-dropdown-preset-control",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-asan-inventory-all-registered",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "a22f05bd31c44b3a0808d23fc89312662fed633d6b71b810d7581fb84e29260d",
+    "raw_record_sha256": "b64b0d9fa7bfd128367e3cd22d888036b2234dce3ec355850eca22469bfc57ba",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-asan-native-enum-integer-helpers",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "130cdecd9abe8340955543493e577251450a07cf68df890d67f617e425d12817",
+    "raw_record_sha256": "afdeed555b89615d929d699c35d9fea1c1d8129f1f3db7e5f349eba591efdc13",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-asan-native-property-controls",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "b2a7933262fd0c7beaa08828be0e9d16931b407145d14b7a65e8c955d028435e",
+    "raw_record_sha256": "c72725b58bbf72251633805971dfcc86427feaee5d136e78016d19a40369a113",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-asan-orientation-active-callers",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "8881f3029c31ef805db14f10dac63fe4c853568dfcd1145b6d79594191b50b6d",
+    "raw_record_sha256": "ca89523e0e73f7e435a06ebc940b31b2714c87873cfe70e418d47cd4bc645c2a",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-asan-orientation-enum-contract",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "f5fd8e8e0f2b0736125967b30295c4d84e35f9d523b3348ca2a976f9d7f7e171",
+    "raw_record_sha256": "7a34f024596c1c285e3b736cab6956543ff09a0a6330bcabd6124310f0871e61",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-asan-orientation-histogram-current-controls",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "93263f8e4f85d9fef9fcdafe641c89caa4d4c381540bbe0d1c6884b688d4a72d",
+    "raw_record_sha256": "51493b8494a6a0173b617d3e6ca0fe3893b94869ab5b29e834c7fe92b21f17f8",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-asan-orientation-integer-contract",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "aed75d0dd5937ef5fc33b00c5ffa9cd758e87f39f70118f2325247146c667ce9",
+    "raw_record_sha256": "600fded005ae822a1a5c274be0134e2239d161035db3d996f6698f836b599580",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-asan-orientation-property-contract",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "3fbfb8bd804df5a6e5edb4ddfaf3d337d79f6f7d1455a75392b553d50ab03f4f",
+    "raw_record_sha256": "6ba3cb5b86bfe93790db67f533f95b9e0489367f26277eec907c717310b6e033",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-native-expanded-recovery",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "dd5a72646d4865626fd69a2806bbb6377d97ce438c54ce83c0c8d8a299e2cc15",
+    "raw_record_sha256": "d9eaf6b35521f08a13cbfb7fcd017bd72f88fc370c91247090942b7f502f9ba6",
+    "outcomes": [
+      {
+        "registration": "gimp-clone-layer",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "gimp-filter-layer",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-layer-ui",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-layer-tree",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-canvas-ui",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-foundation",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "gimp-layer-presets",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "layer-presets-ui",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "painter-mypaint-editor",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "editor-dropdown",
+        "result": "OK",
+        "exit_code": 0
+      },
+      {
+        "registration": "editor-dropdown-preset-control",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-native-inventory-all-registered",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "5768dd636df6bd37da04f4055de05ffe0942e65213aa9615b035e30589b9ae68",
+    "raw_record_sha256": "eec3f60f0e9c36aba25593614dc431ad93a311d9836e1676eeb41041300cad56",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-native-native-enum-integer-helpers",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "ad3a49941596a332c471695993aa54efed785af9d1fad2af899f2dcd56a1db0b",
+    "raw_record_sha256": "d3ce89946e26f7501e67d4deddb769327ec018cfa0d2f02cdd34381c1e0ae823",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-native-native-property-controls",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "838aa7808d4890289e811957ee87951433a8f32c10dbe2a2aabb17a80eb05889",
+    "raw_record_sha256": "3683c535e71fee210e953392e3b568496cf69bab2369ab82a4932ff9df7a5a49",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-native-orientation-active-callers",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "64383df70bde8d8294af7ee11737d8cc0c10c0350542251bafcc1bfeee7d50a1",
+    "raw_record_sha256": "4e89e9c65248ad94a9220e348f91035dcf1f00d15daada86bfa6aed52fb092fe",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-native-orientation-enum-contract",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "c96c1a5e23e52420387d3a2b7848f9b8cb71c791a86791f5c246475489b74d44",
+    "raw_record_sha256": "f9627b55d79505c2a4d4684ef5fc863ea17ae87b53dcf43368bcf034eb0feb8b",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-native-orientation-histogram-current-controls",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "5aa4a0d8512ffd2fe345c1887335cc0a8b5f3d775fcdcf7f121d23c5e4d9fd97",
+    "raw_record_sha256": "1f1795bf6449f9a34d75cd011e68e4d6c7364cb95093fb65c16a7796c5d342af",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-native-orientation-integer-contract",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "f9211a2e2e7a84d177d2854df274cbadfe48315733219a2b732f38624326a69b",
+    "raw_record_sha256": "754197147204f0da6e3f29801e70349f598fa1ca5fb1d77ae32cd90964aaad55",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-native-orientation-property-contract",
+    "classification": "required-final-runtime",
+    "explanation": "Verified against exact stage gates.",
+    "meson_exit": 0,
+    "raw_result_sha256": "bc8ded80669593af1d16c9f88c32e1802df0c4b110a741cdcd3119a981e13f92",
+    "raw_record_sha256": "7987c94cf2944d4b0ae0ff69d257407e757cec569a6aaef998075f1c7b5e3e12",
+    "outcomes": [
+      {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "run": "reviewed-orientation-native-expanded-full",
+    "classification": "incomplete-executor-tail-after-Meson-success",
+    "accepted": false,
+    "meson_exit_observed": 0,
+    "terminal_seals_missing": true,
+    "old_tail_process_state": "unobservable; no later advancement observed before recovery",
+    "manifest_sha256": "9f9489c01752af040b066125fd8e577da345c4734d9c0153b2873e4b9e10bac7",
+    "raw_result_sha256": "2148f7efc1c1cdc11235d7459888eef801a2bc8455a7bad8d454e68daf0c0bd0",
+    "explanation": "Meson returned success, but the executor session became inaccessible before final source/binary/asset seals and outer exit were recorded. Original partial output is preserved; a separate complete aggregate is required."
+  },
+  {
+    "run": "initial-native-baseline-configure",
+    "classification": "configure-invocation-source-path-missing",
+    "explanation": "Initial Meson reconfigure command omitted the explicit source path from workspace cwd and failed before configuration. Retried with explicit build and source paths; not a behavioral baseline red.",
+    "exit_code": 1,
+    "log_sha256": "3d1673f6d19692e39c792db2ad987903ce5f3a11857628076879523205e38c68",
+    "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "run": "initial-runtime-coordinator-stop",
+    "classification": "stopped-on-first-nonaccepting-enum-teardown",
+    "explanation": "The first final runtime coordinator stopped on the native enum run’s post-case teardown assertion; no final aggregate or later gates were accepted.",
+    "exit_code": 1,
+    "log_sha256": "9676ccf3c36c9638c4058d3dcd3e54af65b98d41938490d2d12a2805c601f1e9",
+    "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "run": "reviewed-orientation-asan-header-icon-regressions",
+    "classification": "final-header-gate",
+    "status": "PASS",
+    "runner_exit": 0,
+    "tests_executed": true,
+    "raw_runner_result_sha256": "e7cec39f62a8b17d9434dbbb6149f744ec55e1f6876f7c75093a9fdb2cf8c10c"
+  },
+  {
+    "run": "reviewed-orientation-native-header-icon-regressions",
+    "classification": "final-header-gate",
+    "status": "PASS",
+    "runner_exit": 0,
+    "tests_executed": true,
+    "raw_runner_result_sha256": "731714c117fa9ce2a5305f6e12335ba2f8d57d8d865c88094038d4759ae4646b"
+  }
+]

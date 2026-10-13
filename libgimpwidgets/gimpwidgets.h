@@ -210,6 +210,15 @@ void gimp_double_adjustment_update       (GtkAdjustment   *adjustment,
                                           gpointer         data);
 
 
+/* Original GIMP-Painter varargs ABI: orientation precedes initial. */
+GtkWidget * gimp_int_radio_group_new_with_orientation  (gboolean        in_frame,
+                                                       const gchar    *frame_title,
+                                                       GCallback       radio_button_callback,
+                                                       gpointer        radio_button_callback_data,
+                                                       GtkOrientation  orientation,
+                                                       gint            initial,
+                                                       ...) G_GNUC_NULL_TERMINATED;
+
 G_END_DECLS
 
 #endif /* __GIMP_WIDGETS_H__ */
