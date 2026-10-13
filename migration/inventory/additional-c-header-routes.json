@@ -31,6 +31,24 @@
       "context": "core",
       "prerequisites": [],
       "review": "08.017 original001813/001814: retain the callable native gimp_session_write_boolean true/false token helper and its original signature. Extends the identified historical header with C linkage for this declaration. Double-include with the normal core/config/widget type prelude in C11 and C++14; no outer linkage wrapper and no change to historical duties."
+    },
+    {
+      "path": "app/widgets/gimpeditor-cxx.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [
+        "app/widgets/gimpeditor.h"
+      ],
+      "review": "08.017 original001605: restored callable dropdown C interface for the common-store provider. Uses the reviewed native editor header and normal core/widget types; owns its C linkage and include guard. Compile twice in C11 and C++14 without an outer linkage wrapper. This new current-tree header does not revise historical inventory identities or discharge original duties."
+    },
+    {
+      "path": "app/widgets/gimpeditor-cxx-private.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [
+        "app/widgets/gimpeditor.h"
+      ],
+      "review": "08.017 original001606-001612: new app-private native construction-helper boundary used by C gimpeditor.c and C++ dropdown provider. Keeps GimpEditorPrivate and ExtendedAction layout in C; owns stdarg, C linkage and include guard. Compile twice after the reviewed editor header in C11 and C++14 without an outer linkage wrapper. Does not recreate the removed historical gimpeditor-private.h or discharge its duties."
     }
   ]
 }

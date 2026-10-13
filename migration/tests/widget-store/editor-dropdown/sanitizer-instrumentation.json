@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "compile_checks": [
+    {
+      "mode": "native",
+      "path": "app/widgets/gimpeditor.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "command_sha256": "4a28ca2c210e4197d97fc8eb8638b120afa097d9fa4ac048061011f6cd34ed06"
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimplayerpresetview.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "command_sha256": "cc1d5c73cbb4b8c8e300c5d6a6d5a184358c9665b74d5eaaee547cd4018330ea"
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimpeditor-cxx.cpp",
+      "sanitizers": "none",
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "command_sha256": "75a707f26ee49cec9270680d1a4b2040d169f0687bb00de2a8ba0fe448bffe74"
+    },
+    {
+      "mode": "native",
+      "path": "app/tests/test-editor-dropdown.cpp",
+      "sanitizers": "none",
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "command_sha256": "ff4cbaf05107cacf216b255896f5b244ca6856ac3ae9fb7a353c58dba9e38805"
+    },
+    {
+      "mode": "native",
+      "path": "app/tests/test-editor-dropdown-preset-control.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "command_sha256": "08943a8ae0f9e21123dd01769096ec5fa217599b635ac59b9ebcaba81ecd87bd"
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimpeditor.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "command_sha256": "16755558855d464e057b4dc9abaf5f0ecbb2e6b888bc2756288ae794a7d5cadc"
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimplayerpresetview.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "command_sha256": "1bb1195a4c7611a55346560edbf83d2c41ea566b04544672fe9e55cda0687efc"
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimpeditor-cxx.cpp",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [
+        "-frtti"
+      ],
+      "command_sha256": "5d0109273aa5f9d3a167c908629a14b4e07b1a76d2d9189081a734663b9653dc"
+    },
+    {
+      "mode": "asan",
+      "path": "app/tests/test-editor-dropdown.cpp",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [
+        "-frtti"
+      ],
+      "command_sha256": "8fb2daa9b518187f7299f1d1b613cc14fc67159069c0e00cc724e847797faaec"
+    },
+    {
+      "mode": "asan",
+      "path": "app/tests/test-editor-dropdown-preset-control.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "command_sha256": "7b96f512aebebad6fa1643f89da61ebc6bdd7835ecf044c67d33a8a64b13010e"
+    }
+  ],
+  "pending_compile_checks": [],
+  "asan_options": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+  "ubsan_options": "halt_on_error=1:abort_on_error=1:print_stacktrace=1",
+  "asan_rtti_and_vptr_preserved": true,
+  "third_party_dependencies_instrumented": false,
+  "leak_detection": false
+}

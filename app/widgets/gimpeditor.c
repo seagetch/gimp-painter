@@ -36,6 +36,7 @@
 #include "gimpactiongroup.h"
 #include "gimpdocked.h"
 #include "gimpeditor.h"
+#include "gimpeditor-cxx-private.h"
 #include "gimpdnd.h"
 #include "gimpmenufactory.h"
 #include "gimptoggleaction.h"
@@ -694,25 +695,115 @@ gimp_editor_button_extended_clicked (GtkWidget       *button,
     }
 }
 
+/* A construction-time observer is synchronous, never retained after the
+ * helper returns. Strong references protect storage; this flag separately
+ * prevents publishing a destroyed editor, box or primary. */
+static void
+gimp_editor_construction_destroyed (GtkWidget *widget,
+                                     gpointer   data)
+{
+  *((gboolean *) data) = TRUE;
+}
+
+gboolean
+gimp_editor_pack_button (GimpEditor *editor,
+                         GtkWidget  *button)
+{
+  GimpEditorPrivate *priv;
+  GtkWidget         *box = NULL;
+  GtkReliefStyle     relief;
+  gint               spacing;
+  gboolean           cancelled = FALSE, box_cancelled = FALSE;
+  gulong             editor_destroy, button_destroy, box_destroy = 0;
+
+  g_return_val_if_fail (GIMP_IS_EDITOR (editor), FALSE);
+  g_return_val_if_fail (GTK_IS_BUTTON (button), FALSE);
+  priv = GET_PRIVATE (editor);
+  g_object_ref (editor); g_object_ref (button);
+  editor_destroy = g_signal_connect (editor, "destroy",
+                                     G_CALLBACK (gimp_editor_construction_destroyed), &cancelled);
+  button_destroy = g_signal_connect (button, "destroy",
+                                     G_CALLBACK (gimp_editor_construction_destroyed), &cancelled);
+  if (priv->button_box)
+    {
+      box = g_object_ref (priv->button_box);
+      box_destroy = g_signal_connect (box, "destroy",
+                                      G_CALLBACK (gimp_editor_construction_destroyed), &box_cancelled);
+    }
+  gtk_widget_style_get (GTK_WIDGET (editor), "button-spacing", &spacing,
+                        "button-relief", &relief, NULL);
+  if (!cancelled && !box)
+    {
+      box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, spacing);
+      g_object_ref_sink (box);
+      box_destroy = g_signal_connect (box, "destroy",
+                                      G_CALLBACK (gimp_editor_construction_destroyed), &box_cancelled);
+      priv->button_box = box;
+      gtk_box_set_homogeneous (GTK_BOX (box), FALSE);
+      gtk_box_pack_end (GTK_BOX (editor), box, FALSE, FALSE, 0);
+      if (!cancelled && !box_cancelled) gtk_box_reorder_child (GTK_BOX (editor), box, 0);
+      if (!cancelled && !box_cancelled && priv->show_button_bar) gtk_widget_show (box);
+    }
+  if (!cancelled && !box_cancelled) gtk_button_set_relief (GTK_BUTTON (button), relief);
+  if (!cancelled && !box_cancelled) gtk_box_pack_start (GTK_BOX (box), button, TRUE, TRUE, 0);
+  if (!cancelled && !box_cancelled) gtk_widget_show (button);
+  if (g_signal_handler_is_connected (editor, editor_destroy))
+    g_signal_handler_disconnect (editor, editor_destroy);
+  if (g_signal_handler_is_connected (button, button_destroy))
+    g_signal_handler_disconnect (button, button_destroy);
+  if (box && g_signal_handler_is_connected (box, box_destroy))
+    g_signal_handler_disconnect (box, box_destroy);
+  if (box_cancelled && priv->button_box == box) priv->button_box = NULL;
+  g_clear_object (&box);
+  g_object_unref (button); g_object_unref (editor);
+  return !cancelled && !box_cancelled;
+}
+
 GtkWidget *
 gimp_editor_add_action_button (GimpEditor  *editor,
                                const gchar *group_name,
                                const gchar *action_name,
                                ...)
 {
+  GtkWidget *button;
+  gboolean   packed;
+  va_list    args;
+
+  va_start (args, action_name);
+  button = gimp_editor_create_action_button_valist (editor, group_name, action_name, FALSE, args);
+  va_end (args);
+  if (!button) return NULL;
+  packed = gimp_editor_pack_button (editor, button);
+  if (!packed) gtk_widget_destroy (button);
+  g_object_unref (button);
+  return packed ? button : NULL;
+}
+
+/* One native action proxy and one native ExtendedAction list for both entry
+ * points. Complete configuration before exposing the button to GTK parents. */
+GtkWidget *
+gimp_editor_create_action_button_valist (GimpEditor  *editor,
+                               const gchar *group_name,
+                               const gchar *action_name,
+                               gboolean    force_button,
+                               va_list     args)
+{
   GimpEditorPrivate *priv = GET_PRIVATE (editor);
   GimpActionGroup   *group;
   GimpAction        *action;
+  GimpAction        *primary_action;
+  gchar             *primary_name;
   GtkWidget         *button;
   GtkWidget         *old_child;
   GtkWidget         *image;
   GtkIconSize        button_icon_size;
   GtkReliefStyle     button_relief;
   const gchar       *icon_name;
-  gchar             *tooltip;
+  gchar             *tooltip = NULL;
   const gchar       *help_id;
   GList             *extended = NULL;
-  va_list            args;
+  gboolean           cancelled = FALSE;
+  gulong             editor_destroy, button_destroy;
 
   g_return_val_if_fail (GIMP_IS_EDITOR (editor), NULL);
   g_return_val_if_fail (action_name != NULL, NULL);
@@ -727,14 +818,26 @@ gimp_editor_add_action_button (GimpEditor  *editor,
 
   g_return_val_if_fail (action != NULL, NULL);
 
-  button_icon_size = gimp_editor_ensure_button_box (editor, &button_relief);
+  g_object_ref (editor);
+  g_object_ref (group);
+  primary_action = g_object_ref (action);
+  primary_name = g_strdup (action_name);
+  editor_destroy = g_signal_connect (editor, "destroy",
+                                     G_CALLBACK (gimp_editor_construction_destroyed), &cancelled);
+  gtk_widget_style_get (GTK_WIDGET (editor), "button-icon-size", &button_icon_size,
+                        "button-relief", &button_relief, NULL);
 
-  if (GIMP_IS_TOGGLE_ACTION (action))
+  if (!force_button && GIMP_IS_TOGGLE_ACTION (action))
     button = gtk_toggle_button_new ();
   else
     button = gimp_button_new ();
 
+  g_object_ref_sink (button);
+  button_destroy = g_signal_connect (button, "destroy",
+                                     G_CALLBACK (gimp_editor_construction_destroyed), &cancelled);
+  if (cancelled) goto cleanup;
   gtk_button_set_relief (GTK_BUTTON (button), button_relief);
+  if (cancelled) goto cleanup;
 
   icon_name = gimp_action_get_icon_name (action);
   tooltip   = g_markup_escape_text (gimp_action_get_tooltip (action), -1);
@@ -746,15 +849,20 @@ gimp_editor_add_action_button (GimpEditor  *editor,
     gtk_widget_destroy (old_child);
 
   image = gtk_image_new_from_icon_name (icon_name, button_icon_size);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_widget_show (image);
+  g_object_ref_sink (image);
+  if (!cancelled) gtk_container_add (GTK_CONTAINER (button), image);
+  if (!cancelled) gtk_widget_show (image);
+  g_object_unref (image);
 
+  if (cancelled || !priv->ui_manager ||
+      gimp_ui_manager_get_action_group (priv->ui_manager, group_name) != group ||
+      gimp_action_group_get_action (group, primary_name) != primary_action)
+    { cancelled = TRUE; goto cleanup; }
   gimp_action_set_proxy (action, button);
-  gtk_box_pack_start (GTK_BOX (priv->button_box), button,
-                      TRUE, TRUE, 0);
-  gtk_widget_show (button);
-
-  va_start (args, action_name);
+  if (cancelled || !priv->ui_manager ||
+      gimp_ui_manager_get_action_group (priv->ui_manager, group_name) != group ||
+      gimp_action_group_get_action (group, primary_name) != primary_action)
+    { cancelled = TRUE; goto cleanup; }
 
   action_name = va_arg (args, const gchar *);
 
@@ -795,13 +903,12 @@ gimp_editor_add_action_button (GimpEditor  *editor,
       action_name = va_arg (args, const gchar *);
     }
 
-  va_end (args);
-
   if (extended)
     {
       g_object_set_data_full (G_OBJECT (button), "extended-actions", extended,
                               (GDestroyNotify) gimp_editor_button_extended_actions_free);
 
+      extended = NULL; /* The button now owns the single native list. */
       g_signal_connect (button, "extended-clicked",
                         G_CALLBACK (gimp_editor_button_extended_clicked),
                         NULL);
@@ -810,8 +917,24 @@ gimp_editor_add_action_button (GimpEditor  *editor,
   if (tooltip || help_id)
     gimp_help_set_help_data_with_markup (button, tooltip, help_id);
 
+cleanup:
   g_free (tooltip);
+  if (extended) gimp_editor_button_extended_actions_free (extended);
 
+  if (g_signal_handler_is_connected (editor, editor_destroy))
+    g_signal_handler_disconnect (editor, editor_destroy);
+  if (g_signal_handler_is_connected (button, button_destroy))
+    g_signal_handler_disconnect (button, button_destroy);
+  g_free (primary_name);
+  g_object_unref (primary_action);
+  g_object_unref (group);
+  g_object_unref (editor);
+  if (cancelled)
+    {
+      gtk_widget_destroy (button);
+      g_object_unref (button);
+      return NULL;
+    }
   return button;
 }
 

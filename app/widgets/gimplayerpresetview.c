@@ -35,6 +35,7 @@ gboolean gimp_layer_preset_view_can_apply (GimpLayerPresetView *view)
 {
   GimpContext *context; GimpLayer *source; GimpLayerPreset *preset;
   g_return_val_if_fail (GIMP_IS_LAYER_PRESET_VIEW (view), FALSE);
+  if (!view->ready || view->menu_closed) return FALSE;
   preset = selected (view, &context, &source);
   return !view->applying && preset && gimp_layer_preset_matches (preset, source);
 }
@@ -42,24 +43,29 @@ void gimp_layer_preset_view_apply (GimpLayerPresetView *view)
 {
   GimpContext *context; GimpLayer *source; GimpLayerPreset *preset; GError *error = NULL;
   g_return_if_fail (GIMP_IS_LAYER_PRESET_VIEW (view));
-  if (view->applying) return;
+  if (!view->ready || view->menu_closed || view->applying) return;
   preset = selected (view, &context, &source);
   if (!preset) return;
-  g_object_ref (view);
+  /* Selection/application can synchronously close the containing popup.
+   * Hold inputs through error reporting, after the backend releases its leases. */
+  g_object_ref (view); g_object_ref (context); g_object_ref (source); g_object_ref (preset);
   view->applying = TRUE;
   if (!gimp_layer_preset_apply (preset, context, source, &error))
     { gimp_message_literal (context->gimp, G_OBJECT (view), GIMP_MESSAGE_ERROR, error ? error->message : "Unable to apply layer preset"); g_clear_error (&error); }
   view->applying = FALSE;
+  g_object_unref (preset); g_object_unref (source); g_object_unref (context);
   g_object_unref (view);
 }
 static void select_item (GimpContainerEditor *editor, GimpViewable *item)
 {
   GimpLayerPresetView *view = GIMP_LAYER_PRESET_VIEW (editor);
+  g_object_ref (view);
   GIMP_CONTAINER_EDITOR_CLASS (gimp_layer_preset_view_parent_class)->select_item (editor, item);
   /* Legacy single-click selection applies the resource. Construction and
    * refresh selections are suppressed; explicit activation can apply again. */
   if (view->ready && item && gimp_layer_preset_view_can_apply (view))
     gimp_layer_preset_view_apply (view);
+  g_object_unref (view);
 }
 static void activate_item (GimpContainerEditor *editor, GimpViewable *item)
 { if (item) gimp_layer_preset_view_apply (GIMP_LAYER_PRESET_VIEW (editor)); }
