@@ -1,0 +1,29 @@
+{
+  "affected_historical_commit": "4d7fc9f73311f6c35480a9ddfeabfac3a4108184",
+  "all93_duties": "TODO",
+  "cause": "After a successfully flushed main GP_PROC_RETURN, libgimp could send redundant GP_QUIT while the host had already closed its pipe, producing a LibGimp Broken pipe warning. The repair marks the main return only after successful gp_proc_return_write and guards only final GP_QUIT.",
+  "claim_boundary": "This independent libgimp prerequisite does not establish a full DnD clean result and does not advance any original 08.017 migration duty.",
+  "correction": "The earlier orientation checker omitted the LibGimp warning domain. Older acceptance also omitted inherited GIMP-Error gradient-save diagnostics in 11 of 12 orientation rows in each mode. Its diagnostic-clean interpretation was too broad. Historical receipts and original observations remain preserved unchanged; they are not rewritten as stronger evidence.",
+  "historical_orientation_checkpoint": {
+    "archive_sha256": "da0aaa0a3f327519fb485a78c88aa50a6f9affd3e110454ee7abc582d44d4895",
+    "independently_verified": true,
+    "scope": "final orientation freeze and publication receipt; confirmed by preservation worker",
+    "version": "v109"
+  },
+  "historical_orientation_receipt": {
+    "base": "2e81203ca86fc86a14e6bf54812a7025366d0ee6",
+    "branch": "gimp-3-0-port",
+    "ci": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "commit": "4d7fc9f73311f6c35480a9ddfeabfac3a4108184",
+    "files_verified": 24,
+    "remote_ref_verified": true,
+    "tree": "16951f08bf31fd40f6c9a083961e477af5123a5c",
+    "verified_at": "2026-10-13T06:31:50.900Z"
+  },
+  "original_completion": "140/661",
+  "separate_fixture_prerequisite": "The inherited gradient-save and XCF fixture issues are being handled separately. This narrow protocol repair does not fix or accept those issues.",
+  "three_ledgers_changed": false
+}
