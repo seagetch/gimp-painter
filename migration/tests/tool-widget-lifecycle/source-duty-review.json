@@ -1,0 +1,49 @@
+{
+  "task": "08.014",
+  "baseline_head": "762db20a68e9063a31620f0d90c02214e00306b1",
+  "scope": "GTK3 native parent and terminal teardown replacement, with synchronous callback reentry and focus preservation",
+  "obligations": [
+    {
+      "work_id": "legacy-a3b58de8a4f56f9812c0",
+      "source_id": "01.002/001802",
+      "path": "app/widgets/gimptooltileview.cpp",
+      "source_blob": "32f50f094620089216fddf829d534a953efd9c30",
+      "source_range": "-0,0 -> 1,601",
+      "source_sha256": "b0e082abe32a0fc9bb8ac08695012e628f058600f116ef5900853e5f133a024b",
+      "source_scope": "file-level declarations/content",
+      "state": "VERIFIED",
+      "replacement": "Native GTK3 vertical GtkBox/scrolled parent under the display-shell controller replaces the legacy GtkBox subclass. Existing BindingStore/Connection/Source ownership handles callbacks and terminal teardown; synchronous reentry preserves newer selection and normal same-target canvas focus. No legacy Interface::cast or duplicate GType is introduced.",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp",
+        "app/display/gimppaintercanvasui.h",
+        "app/tests/test-painter-canvas-ui.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json"
+      ]
+    },
+    {
+      "work_id": "legacy-babc7c59323b967c1e02",
+      "source_id": "01.002/001803",
+      "path": "app/widgets/gimptooltileview.h",
+      "source_blob": "0354ce300e494750a2998a2691ff17a8fd59acee",
+      "source_range": "-0,0 -> 1,66",
+      "source_sha256": "67c7a44579bd67bb010f9fcb219da6ccb55331dbe22f2256f6479d115fb8c661",
+      "source_scope": "file-level declarations/content",
+      "state": "VERIFIED",
+      "replacement": "Native GTK3 vertical GtkBox/scrolled parent under the display-shell controller replaces the legacy GtkBox subclass. Existing BindingStore/Connection/Source ownership handles callbacks and terminal teardown; synchronous reentry preserves newer selection and normal same-target canvas focus. No legacy Interface::cast or duplicate GType is introduced.",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp",
+        "app/display/gimppaintercanvasui.h",
+        "app/tests/test-painter-canvas-ui.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json"
+      ]
+    }
+  ]
+}
