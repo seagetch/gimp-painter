@@ -405,7 +405,7 @@
 | 08.015 | [x] | Popover 型を移植する | 08.014 | window のイベント・destroy を接続 |
 | 08.016 | [x] | CellRendererPopup 型を移植する | 08.015 | cell renderer の vfunc と callback を接続 |
 | 08.016/pixbuf-owner | [ ] | popup renderer の pixbuf 寿命を修正する | 08.016, 01.007/cpp-ownership | 初期値・生成失敗・再生成・破棄時の参照を一回だけ解放し、NULL pixbuf を描画しない |
-| 08.017 | [ ] | 既存 widget behavior を store に移す | 08.016 | 全登録箇所が共通 slot を利用 |
+| 08.017 | [x] | 既存 widget behavior を store に移す | 08.016 | 全登録箇所が共通 slot を利用 |
 | 08.018 | [ ] | C 公開操作を新 Impl へ接続する | 08.017 | C 入口から旧 Interface::cast を排除 |
 | 08.018/core-extension-hooks | [ ] | 標準coreの独自操作hookを現行APIへ接続する | 08.018, 01.013 | hunk台帳のcore補助関数・公開宣言ごとの子チェックを処理し、同名APIの所有・座標・更新・失敗時の意味を検証する |
 | 08.019 | [ ] | C++ 利用箇所をハンドルへ移す | 08.018 | ref 関数添字と公開 interface cast を排除 |
