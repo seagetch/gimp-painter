@@ -403,7 +403,7 @@
 | 08.013 | [x] | LayerTileView 型を移植する | 08.012 | GTK3 の親 widget と終了を接続 |
 | 08.014 | [x] | ToolTileView 型を移植する | 08.013 | GTK3 の親 widget と終了を接続 |
 | 08.015 | [x] | Popover 型を移植する | 08.014 | window のイベント・destroy を接続 |
-| 08.016 | [ ] | CellRendererPopup 型を移植する | 08.015 | cell renderer の vfunc と callback を接続 |
+| 08.016 | [x] | CellRendererPopup 型を移植する | 08.015 | cell renderer の vfunc と callback を接続 |
 | 08.016/pixbuf-owner | [ ] | popup renderer の pixbuf 寿命を修正する | 08.016, 01.007/cpp-ownership | 初期値・生成失敗・再生成・破棄時の参照を一回だけ解放し、NULL pixbuf を描画しない |
 | 08.017 | [ ] | 既存 widget behavior を store に移す | 08.016 | 全登録箇所が共通 slot を利用 |
 | 08.018 | [ ] | C 公開操作を新 Impl へ接続する | 08.017 | C 入口から旧 Interface::cast を排除 |

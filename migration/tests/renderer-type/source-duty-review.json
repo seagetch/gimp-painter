@@ -1,0 +1,218 @@
+{
+  "task": "08.016",
+  "baseline_head": "d094e8b95c7d1f518b12d2c6750e6711a884b07f",
+  "scope": "Native composition type, size/draw/activation/callback routing; narrow final-selection supersession guard",
+  "original_acceptance": "cell renderer の vfunc と callback を接続",
+  "obligations": [
+    {
+      "work_id": "legacy-8e64fcc116c4eb40ac9a",
+      "source_id": "01.002/001523",
+      "path": "app/widgets/gimpcellrendererpopup.cpp",
+      "source_blob": "9fcecab914869bd18ca3085bbbe64003b6eac195",
+      "source_range": "-0,0 -> 1,347",
+      "source_sha256": "86b5a6668c525aa05255e87c761629f6c2722fe091ae83ca31c7ca3b257b875a",
+      "source_scope": "file-level declarations/content",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimpcellrendererpopup.cpp",
+      "state": "VERIFIED",
+      "replacement": "Legacy constructed/get_size/render/activate/clicked map to native row/button/preview construction, preferred-size/allocation/Cairo draw and typed popup activation. Seven direct GTK/control tests verify routing and selection callback reentry. Exact icon/active shadow, renderer ABI and pixbuf duties remain separate.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ],
+      "independent_duties_preserved": [
+        "08.015",
+        "08.016/pixbuf-owner",
+        "29.006/cellrenderer-gtk3",
+        "29.006/popover-class-signals",
+        "29.006/popover-handler-teardown",
+        "29.015",
+        "29.019",
+        "29.020"
+      ]
+    },
+    {
+      "work_id": "legacy-36ff10b0015be9793a28",
+      "source_id": "01.002/001524",
+      "path": "app/widgets/gimpcellrendererpopup.h",
+      "source_blob": "ba74530b87d8b783cab934d4c00dd3a451065bfd",
+      "source_range": "-0,0 -> 1,72",
+      "source_sha256": "9142d3313321a43ae0b148e9d94f94d44ded5228576c2d802639245ba62ca90c",
+      "source_scope": "file-level declarations/content",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimpcellrendererpopup.h",
+      "state": "VERIFIED",
+      "replacement": "Legacy type/factory/clicked interface is replaced at the existing native GimpPainterLayerTiles composition boundary; its public popup entry and widget routes use the same typed slot. No duplicate custom cell-renderer vtable. Legacy exported ABI and handle migration remain separate.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ],
+      "independent_duties_preserved": [
+        "08.015",
+        "08.016/pixbuf-owner",
+        "29.006/cellrenderer-gtk3",
+        "29.006/popover-class-signals",
+        "29.006/popover-handler-teardown",
+        "29.015",
+        "29.019",
+        "29.020"
+      ]
+    },
+    {
+      "work_id": "legacy-ba55e025651fdb283e1a",
+      "source_id": "01.002/001679",
+      "path": "app/widgets/gimppopupbutton.c",
+      "source_blob": "ed6fe2c206913f8106f03097d407369ecd7a7c8c",
+      "source_range": "-0,0 -> 1,662",
+      "source_sha256": "0eb5bc2497b97be4fa1d2461e2a5eede271eda429ee97da3641784b012017861",
+      "source_scope": "file-level declarations/content",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimppopupbutton.c",
+      "state": "VERIFIED",
+      "replacement": "Support GimpPopup/GimpPopupButton construction/create-view/activation chain maps to existing native GtkButton/GtkMenuButton/GtkPopover composition. Layer overflow activation and complete compact11 including native popup events are rerun; 08.015 handles inherited parent/destroy obligations. This file is support, not itself a GtkCellRenderer subclass.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ],
+      "independent_duties_preserved": [
+        "08.015",
+        "08.016/pixbuf-owner",
+        "29.006/cellrenderer-gtk3",
+        "29.006/popover-class-signals",
+        "29.006/popover-handler-teardown",
+        "29.015",
+        "29.019",
+        "29.020"
+      ]
+    },
+    {
+      "work_id": "legacy-e7792a407e363bcb872e",
+      "source_id": "01.002/001680",
+      "path": "app/widgets/gimppopupbutton.h",
+      "source_blob": "260f814f35329d21b91149df73adc7da7ee40e52",
+      "source_range": "-0,0 -> 1,139",
+      "source_sha256": "6ceb9392ee8270f377ea0500b53f6d1a5ea894f13ea34b1baaf63ab328952cad",
+      "source_scope": "file-level declarations/content",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimppopupbutton.h",
+      "state": "VERIFIED",
+      "replacement": "Support popup/button/view/anchor interfaces participate through native controls and existing typed controller popup entry; actual native types and activation are tested. No claim of an old renderer declaration or legacy ABI. All independent popup duties remain assigned.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ],
+      "independent_duties_preserved": [
+        "08.015",
+        "08.016/pixbuf-owner",
+        "29.006/cellrenderer-gtk3",
+        "29.006/popover-class-signals",
+        "29.006/popover-handler-teardown",
+        "29.015",
+        "29.019",
+        "29.020"
+      ]
+    },
+    {
+      "work_id": "legacy-b77bcdd845c58a4b9423",
+      "source_id": "01.002/001815",
+      "path": "app/widgets/popupper.cpp",
+      "source_blob": "6aa874674b3773478e9b29e5e287746d3879d1ac",
+      "source_range": "-0,0 -> 1,592",
+      "source_sha256": "b8d09c5eb194a3c1c9041a42549edec5e50318a1f91cd7997dff28ace429c190",
+      "source_scope": "file-level declarations/content",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/popupper.cpp",
+      "state": "VERIFIED",
+      "replacement": "PopoverDecorator parent_clicked path/viewable/create-view chain is replaced by retained typed layer Hook targets and native show_popup. Native right-click proves correct selected layer and controls; reentry regression prevents interrupted activation for newer-different selection. Same-target completion stays valid. Exact old rectangle anchoring remains separate.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ],
+      "independent_duties_preserved": [
+        "08.015",
+        "08.016/pixbuf-owner",
+        "29.006/cellrenderer-gtk3",
+        "29.006/popover-class-signals",
+        "29.006/popover-handler-teardown",
+        "29.015",
+        "29.019",
+        "29.020"
+      ]
+    },
+    {
+      "work_id": "legacy-db11c1d860b2e6d5aef0",
+      "source_id": "01.002/001816",
+      "path": "app/widgets/popupper.h",
+      "source_blob": "dc77ab8cc739b28628726a186e139a47fda85353",
+      "source_range": "-0,0 -> 1,61",
+      "source_sha256": "67b07b60211dacdbe47f5c2310aa5f907cf7a7ed167174c1cc436513028b8777",
+      "source_scope": "file-level declarations/content",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/popupper.h",
+      "state": "VERIFIED",
+      "replacement": "Create-view/popover interface used by renderer constructed is replaced by native widgets and owner typed-slot callback registration. Current callback path is tested through C widget events and public popup entry; old class-signal/exported ABI and visual parity remain separate.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/tests/test-painter-canvas-ui.c",
+        "app/tests/test-painter-compact-options.c"
+      ],
+      "reports": [
+        "baseline-red.json",
+        "native.json",
+        "asan.json",
+        "scale2.json"
+      ],
+      "independent_duties_preserved": [
+        "08.015",
+        "08.016/pixbuf-owner",
+        "29.006/cellrenderer-gtk3",
+        "29.006/popover-class-signals",
+        "29.006/popover-handler-teardown",
+        "29.015",
+        "29.019",
+        "29.020"
+      ]
+    }
+  ]
+}

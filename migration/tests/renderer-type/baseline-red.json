@@ -1,0 +1,70 @@
+{
+  "task": "08.016",
+  "baseline_head": "d094e8b95c7d1f518b12d2c6750e6711a884b07f",
+  "baseline_source_sha256": {
+    "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+    "app/widgets/gimppainterlayertiles.cpp": "94f070c4ff58eea637f19db7d7b4d4d09deccc54337f570beea0ccf2ca9df28e",
+    "app/tests/test-painter-canvas-ui.c": "2a72b007d0d486c24845f634eb21fb69f2127887eb7ac88b92e8a79e9ba90ddf",
+    "app/tests/test-painter-compact-options.c": "17484ccb9492df572f2560f62e52ff23d70613060fbd0fdba5dadfe592281d3b"
+  },
+  "targeted_regressions": [
+    {
+      "case": "renderer_selection_reentry",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 2.1080222129821777,
+      "assertion": "not ok /painter-canvas-ui/renderer_selection_reentry - ERROR:../source/app/tests/test-painter-canvas-ui.c:238:renderer_selection_reentry_case: 'GTK_IS_POPOVER(gtk_grab_get_current())' should be FALSE"
+    }
+  ],
+  "positive_controls": [
+    {
+      "test_registration": "painter-canvas-ui",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.8106358051300049,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-canvas-ui/renderer_escape_owner_close\n1..1\n"
+    },
+    {
+      "test_registration": "painter-canvas-ui",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.8468427658081055,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-canvas-ui/renderer_native_size_draw\n1..1\n"
+    },
+    {
+      "test_registration": "painter-canvas-ui",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.8635082244873047,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-canvas-ui/renderer_native_activation_routes\n1..1\n"
+    },
+    {
+      "test_registration": "painter-canvas-ui",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.7098886966705322,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-canvas-ui/renderer_stale_preview_disconnected\n1..1\n"
+    },
+    {
+      "test_registration": "painter-canvas-ui",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.9394772052764893,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-canvas-ui/renderer_modifier_activation\n1..1\n"
+    },
+    {
+      "test_registration": "painter-canvas-ui",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.7965457439422607,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-canvas-ui/renderer_selection_same_target\n1..1\n"
+    }
+  ],
+  "scope": "One intended newer-selection stale popup failure; six positive native/control cases. Escape-after-dispose passes without a production fix. Initial runner classification expected Escape failure, then corrected to report the measured passing control; original result retained."
+}
