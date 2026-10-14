@@ -1,0 +1,802 @@
+{
+  "scope": "08.018 original popup rows 6\u20138 bounded native operations",
+  "public_base": "6e99e97ccc1cfc1b4fdbdf50efc4f28ea78d3f97",
+  "public_tree": "58d0d78495816f47d4f95ca46120c5ed23ef017d",
+  "source_manifest": [
+    {
+      "path": "app/widgets/gimpcellrendererpopup.cpp",
+      "before_blob": "6ab02230ee2351e2a2d8e30587f555b2a6ce41d7",
+      "after_blob": "a8c381bbdbb2cf82f555671668d5105f7f9b7bac",
+      "sha256": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+      "bytes": 21340
+    },
+    {
+      "path": "app/widgets/gimpcellrendererpopup.h",
+      "before_blob": "a8bfd75aa789c04865812fb98ef811e9b6d669e7",
+      "after_blob": "b4ecb6284fec2874cef8e2be5aafca4e6a175b82",
+      "sha256": "a8fe7be5a98be80813d6538c4c9c05e366fcfba63774b280e0a6273a76e6f5f7",
+      "bytes": 2230
+    },
+    {
+      "path": "app/widgets/gimpcellrendererpopup-handle.hpp",
+      "before_blob": null,
+      "after_blob": "e0919513b6e640bc5a66fd45782d3af704314efe",
+      "sha256": "f63ae50a6c7e67504dd831a4e4e0bac888eaf675a67dde1a0cc6eeb43b258dbf",
+      "bytes": 1480
+    },
+    {
+      "path": "app/tests/test-painter-layer-tree.c",
+      "before_blob": "d05f0f846d802b5742d5fabc31b666685390cdc7",
+      "after_blob": "22a53efc8a6cad3602948af9b2c22873d77909b7",
+      "sha256": "f1f2a9cbfece31cdc53aa2c099cdf4a774cd05dfd90a5f96c627a33abf69f31b",
+      "bytes": 56539
+    },
+    {
+      "path": "app/tests/test-painter-popup-handles.cpp",
+      "before_blob": null,
+      "after_blob": "5cebfb79bcd1709fc9efb376aa793d45975ce5d5",
+      "sha256": "424864cdfb76081fa51339318276edc30b434721ddf5a92363c640e15b799452",
+      "bytes": 29251
+    },
+    {
+      "path": "app/tests/meson.build",
+      "before_blob": "9bea9ffeb7fb09f6f99f84cadfc760f6eed16141",
+      "after_blob": "6849f5c6d2db2293d3d1d30f45a419ddb44b3f57",
+      "sha256": "742ea3873432ff9a4bfb06b6ffa05a324baebba6cbb342da5477c02fd46359de",
+      "bytes": 40061
+    },
+    {
+      "path": "migration/contracts/cpp-c-entry-map.tsv",
+      "before_blob": "64ff90e20c40246b1762164dd97b954ce5c5b7a7",
+      "after_blob": "8fb0e197763f1d55ed4e5efe974678ceeec2084e",
+      "sha256": "2f8c3204e856ba8f011605639a28d07c43f3f06e8036be29e2f49fc0335db737",
+      "bytes": 23772
+    }
+  ],
+  "results": {
+    "native": {
+      "mode": "native",
+      "run": "popup-entry-handles-candidate-native-v2",
+      "status": "PASS",
+      "registrations": 2,
+      "case_count": 57,
+      "results": [
+        {
+          "name": "painter-layer-tree",
+          "cases": [
+            "/painter-layer-tree/native_column",
+            "/painter-layer-tree/direct_filter_button",
+            "/painter-layer-tree/target_controls",
+            "/painter-layer-tree/modifier_target",
+            "/painter-layer-tree/retained_controls_owner_close",
+            "/painter-layer-tree/image_switch_and_removed_target",
+            "/painter-layer-tree/newer_popup_wins",
+            "/painter-layer-tree/selection_reorders_clicked_row",
+            "/painter-layer-tree/filter_editor_clicked_target",
+            "/painter-layer-tree/refresh_reentry_initializes_new_target",
+            "/painter-layer-tree/selection_newer_popup_wins",
+            "/painter-layer-tree/selection_removes_target",
+            "/painter-layer-tree/selection_destroys_owner",
+            "/painter-layer-tree/repeat_popdown_disconnects_old_controls",
+            "/painter-layer-tree/signal_observer_newer_popup_wins",
+            "/painter-layer-tree/signal_observer_preserves_clicked_target",
+            "/painter-layer-tree/image_switch_reentrant_old_popup",
+            "/painter-layer-tree/scrolled_full_row_geometry",
+            "/painter-layer-tree/group_pass_through_context",
+            "/painter-layer-tree/same_target_refresh_keeps_latest_model",
+            "/painter-layer-tree/selection_removes_column",
+            "/painter-layer-tree/selection_only_supersedes_activation",
+            "/painter-layer-tree/focus_reentry_closes_owner",
+            "/painter-layer-tree/attributes_supersede_activation",
+            "/painter-layer-tree/first_attributes_preserve_request",
+            "/painter-layer-tree/removed_row_invalidates_drag_cache",
+            "/painter-layer-tree/public_factory_floating_column_ownership",
+            "/painter-layer-tree/public_clicked_active_property_independent",
+            "/painter-layer-tree/public_clicked_unbound_observers",
+            "/painter-layer-tree/public_clicked_invalid_row_observers",
+            "/painter-layer-tree/public_clicked_null_area",
+            "/painter-layer-tree/public_clicked_subclass_order",
+            "/painter-layer-tree/public_clicked_nested_reopen",
+            "/painter-layer-tree/public_clicked_close_keeps_observer_order",
+            "/painter-layer-tree/public_clicked_last_reference_leases"
+          ],
+          "case_count": 35,
+          "duration_seconds": 4.622522354125977,
+          "registered_timeout_seconds": 60,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        },
+        {
+          "name": "painter-popup-handles",
+          "cases": [
+            "/painter-popup-handles/admission/closed-entry",
+            "/painter-popup-handles/admission/wrong-thread-entry",
+            "/painter-popup-handles/admission/invalid-arguments",
+            "/painter-popup-handles/admission/named-wrong-thread-entry",
+            "/painter-popup-handles/admission/constructing-c",
+            "/painter-popup-handles/admission/constructing-named",
+            "/painter-popup-handles/admission/closing-c",
+            "/painter-popup-handles/admission/closing-named",
+            "/painter-popup-handles/admission/named-closed",
+            "/painter-popup-handles/admission/named-disposed",
+            "/painter-popup-handles/admission/renderer-retain-closes",
+            "/painter-popup-handles/admission/tree-retain-closes",
+            "/painter-popup-handles/ownership/create-column-first",
+            "/painter-popup-handles/ownership/create-handle-first",
+            "/painter-popup-handles/ownership/retain-column-first",
+            "/painter-popup-handles/ownership/retain-handle-first",
+            "/painter-popup-handles/ownership/copy-move",
+            "/painter-popup-handles/named/active-unbound-arguments",
+            "/painter-popup-handles/named/nested-emission",
+            "/painter-popup-handles/named/close-during-emission",
+            "/painter-popup-handles/named/last-reference-leases",
+            "/painter-popup-handles/named/bound-controls-and-teardown"
+          ],
+          "case_count": 22,
+          "duration_seconds": 1.9269533157348633,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        }
+      ],
+      "source_seal": {
+        "path": "popup-entry-handles-20261014/candidate-source-seal.json",
+        "sha256": "af62aa081d7839c3b050ee5b1b251fbc920e55d704b6c07147b58b242d2ec37e",
+        "files": [
+          {
+            "path": "app/widgets/gimpcellrendererpopup.cpp",
+            "bytes": 21340,
+            "after_sha256": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+            "after_git_blob": "a8c381bbdbb2cf82f555671668d5105f7f9b7bac"
+          },
+          {
+            "path": "app/widgets/gimpcellrendererpopup.h",
+            "bytes": 2230,
+            "after_sha256": "a8fe7be5a98be80813d6538c4c9c05e366fcfba63774b280e0a6273a76e6f5f7",
+            "after_git_blob": "b4ecb6284fec2874cef8e2be5aafca4e6a175b82"
+          },
+          {
+            "path": "app/widgets/gimpcellrendererpopup-handle.hpp",
+            "bytes": 1480,
+            "after_sha256": "f63ae50a6c7e67504dd831a4e4e0bac888eaf675a67dde1a0cc6eeb43b258dbf",
+            "after_git_blob": "e0919513b6e640bc5a66fd45782d3af704314efe"
+          },
+          {
+            "path": "app/tests/test-painter-layer-tree.c",
+            "bytes": 56539,
+            "after_sha256": "f1f2a9cbfece31cdc53aa2c099cdf4a774cd05dfd90a5f96c627a33abf69f31b",
+            "after_git_blob": "22a53efc8a6cad3602948af9b2c22873d77909b7"
+          },
+          {
+            "path": "app/tests/test-painter-popup-handles.cpp",
+            "bytes": 29251,
+            "after_sha256": "424864cdfb76081fa51339318276edc30b434721ddf5a92363c640e15b799452",
+            "after_git_blob": "5cebfb79bcd1709fc9efb376aa793d45975ce5d5"
+          },
+          {
+            "path": "app/tests/meson.build",
+            "bytes": 40061,
+            "after_sha256": "742ea3873432ff9a4bfb06b6ffa05a324baebba6cbb342da5477c02fd46359de",
+            "after_git_blob": "6849f5c6d2db2293d3d1d30f45a419ddb44b3f57"
+          }
+        ]
+      },
+      "registration_sources_sha256": {
+        "app/tests/test-painter-layer-tree.c": "f1f2a9cbfece31cdc53aa2c099cdf4a774cd05dfd90a5f96c627a33abf69f31b",
+        "app/tests/test-painter-popup-handles.cpp": "424864cdfb76081fa51339318276edc30b434721ddf5a92363c640e15b799452"
+      },
+      "actual_c11": true,
+      "actual_c11_scope": [
+        "painter-layer-tree"
+      ],
+      "other_c_consumers": "popup actual C consumer uses cc -std=c11; handle tests use c++ -std=c++14; no language override",
+      "compile_evidence": {
+        "sha256": "610de780171b3567dbdf18c65aaeb0a61e626cd7df2edac5dadc8ca4a5a6a8ec",
+        "units": [
+          {
+            "file": "test-painter-layer-tree.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [
+              "-std=c11"
+            ]
+          },
+          {
+            "file": "test-painter-popup-handles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ]
+          },
+          {
+            "file": "gimpcellrendererpopup.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ]
+          }
+        ]
+      },
+      "timeouts_unchanged": true,
+      "timeout_multiplier": null,
+      "isolation_and_authenticated_loopback_verified": true,
+      "lsan_enabled": null,
+      "diagnostic_exception": {
+        "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+        "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+        "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+      },
+      "verifier_sha256": "dff971d418ca1e48f4035b5b62c74c0162ea00cad32965e586de401965dfb109",
+      "input_sha256": {
+        "results.json": "5c0c4942df34fb15dae9e2a8053fa12826814f5b88527fb3324503c2d91547d1",
+        "registrations.json": "ff735d8b76671db85ab7e130fdb71fa379d120d95af5592cd7b392c1d0b27b83",
+        "popup-entry-handles-candidate-native-v2.json": "09b514dd8476d95f901b8656250b4e1e093689f09e9c8c506cb780e5fbaa3adf"
+      }
+    },
+    "asan": {
+      "mode": "asan",
+      "run": "popup-entry-handles-candidate-asan-v1",
+      "status": "PASS",
+      "registrations": 2,
+      "case_count": 57,
+      "results": [
+        {
+          "name": "painter-layer-tree",
+          "cases": [
+            "/painter-layer-tree/native_column",
+            "/painter-layer-tree/direct_filter_button",
+            "/painter-layer-tree/target_controls",
+            "/painter-layer-tree/modifier_target",
+            "/painter-layer-tree/retained_controls_owner_close",
+            "/painter-layer-tree/image_switch_and_removed_target",
+            "/painter-layer-tree/newer_popup_wins",
+            "/painter-layer-tree/selection_reorders_clicked_row",
+            "/painter-layer-tree/filter_editor_clicked_target",
+            "/painter-layer-tree/refresh_reentry_initializes_new_target",
+            "/painter-layer-tree/selection_newer_popup_wins",
+            "/painter-layer-tree/selection_removes_target",
+            "/painter-layer-tree/selection_destroys_owner",
+            "/painter-layer-tree/repeat_popdown_disconnects_old_controls",
+            "/painter-layer-tree/signal_observer_newer_popup_wins",
+            "/painter-layer-tree/signal_observer_preserves_clicked_target",
+            "/painter-layer-tree/image_switch_reentrant_old_popup",
+            "/painter-layer-tree/scrolled_full_row_geometry",
+            "/painter-layer-tree/group_pass_through_context",
+            "/painter-layer-tree/same_target_refresh_keeps_latest_model",
+            "/painter-layer-tree/selection_removes_column",
+            "/painter-layer-tree/selection_only_supersedes_activation",
+            "/painter-layer-tree/focus_reentry_closes_owner",
+            "/painter-layer-tree/attributes_supersede_activation",
+            "/painter-layer-tree/first_attributes_preserve_request",
+            "/painter-layer-tree/removed_row_invalidates_drag_cache",
+            "/painter-layer-tree/public_factory_floating_column_ownership",
+            "/painter-layer-tree/public_clicked_active_property_independent",
+            "/painter-layer-tree/public_clicked_unbound_observers",
+            "/painter-layer-tree/public_clicked_invalid_row_observers",
+            "/painter-layer-tree/public_clicked_null_area",
+            "/painter-layer-tree/public_clicked_subclass_order",
+            "/painter-layer-tree/public_clicked_nested_reopen",
+            "/painter-layer-tree/public_clicked_close_keeps_observer_order",
+            "/painter-layer-tree/public_clicked_last_reference_leases"
+          ],
+          "case_count": 35,
+          "duration_seconds": 8.424609899520874,
+          "registered_timeout_seconds": 60,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        },
+        {
+          "name": "painter-popup-handles",
+          "cases": [
+            "/painter-popup-handles/admission/closed-entry",
+            "/painter-popup-handles/admission/wrong-thread-entry",
+            "/painter-popup-handles/admission/invalid-arguments",
+            "/painter-popup-handles/admission/named-wrong-thread-entry",
+            "/painter-popup-handles/admission/constructing-c",
+            "/painter-popup-handles/admission/constructing-named",
+            "/painter-popup-handles/admission/closing-c",
+            "/painter-popup-handles/admission/closing-named",
+            "/painter-popup-handles/admission/named-closed",
+            "/painter-popup-handles/admission/named-disposed",
+            "/painter-popup-handles/admission/renderer-retain-closes",
+            "/painter-popup-handles/admission/tree-retain-closes",
+            "/painter-popup-handles/ownership/create-column-first",
+            "/painter-popup-handles/ownership/create-handle-first",
+            "/painter-popup-handles/ownership/retain-column-first",
+            "/painter-popup-handles/ownership/retain-handle-first",
+            "/painter-popup-handles/ownership/copy-move",
+            "/painter-popup-handles/named/active-unbound-arguments",
+            "/painter-popup-handles/named/nested-emission",
+            "/painter-popup-handles/named/close-during-emission",
+            "/painter-popup-handles/named/last-reference-leases",
+            "/painter-popup-handles/named/bound-controls-and-teardown"
+          ],
+          "case_count": 22,
+          "duration_seconds": 3.278873920440674,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        }
+      ],
+      "source_seal": {
+        "path": "popup-entry-handles-20261014/candidate-source-seal.json",
+        "sha256": "af62aa081d7839c3b050ee5b1b251fbc920e55d704b6c07147b58b242d2ec37e",
+        "files": [
+          {
+            "path": "app/widgets/gimpcellrendererpopup.cpp",
+            "bytes": 21340,
+            "after_sha256": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+            "after_git_blob": "a8c381bbdbb2cf82f555671668d5105f7f9b7bac"
+          },
+          {
+            "path": "app/widgets/gimpcellrendererpopup.h",
+            "bytes": 2230,
+            "after_sha256": "a8fe7be5a98be80813d6538c4c9c05e366fcfba63774b280e0a6273a76e6f5f7",
+            "after_git_blob": "b4ecb6284fec2874cef8e2be5aafca4e6a175b82"
+          },
+          {
+            "path": "app/widgets/gimpcellrendererpopup-handle.hpp",
+            "bytes": 1480,
+            "after_sha256": "f63ae50a6c7e67504dd831a4e4e0bac888eaf675a67dde1a0cc6eeb43b258dbf",
+            "after_git_blob": "e0919513b6e640bc5a66fd45782d3af704314efe"
+          },
+          {
+            "path": "app/tests/test-painter-layer-tree.c",
+            "bytes": 56539,
+            "after_sha256": "f1f2a9cbfece31cdc53aa2c099cdf4a774cd05dfd90a5f96c627a33abf69f31b",
+            "after_git_blob": "22a53efc8a6cad3602948af9b2c22873d77909b7"
+          },
+          {
+            "path": "app/tests/test-painter-popup-handles.cpp",
+            "bytes": 29251,
+            "after_sha256": "424864cdfb76081fa51339318276edc30b434721ddf5a92363c640e15b799452",
+            "after_git_blob": "5cebfb79bcd1709fc9efb376aa793d45975ce5d5"
+          },
+          {
+            "path": "app/tests/meson.build",
+            "bytes": 40061,
+            "after_sha256": "742ea3873432ff9a4bfb06b6ffa05a324baebba6cbb342da5477c02fd46359de",
+            "after_git_blob": "6849f5c6d2db2293d3d1d30f45a419ddb44b3f57"
+          }
+        ]
+      },
+      "registration_sources_sha256": {
+        "app/tests/test-painter-layer-tree.c": "f1f2a9cbfece31cdc53aa2c099cdf4a774cd05dfd90a5f96c627a33abf69f31b",
+        "app/tests/test-painter-popup-handles.cpp": "424864cdfb76081fa51339318276edc30b434721ddf5a92363c640e15b799452"
+      },
+      "actual_c11": true,
+      "actual_c11_scope": [
+        "painter-layer-tree"
+      ],
+      "other_c_consumers": "popup actual C consumer uses cc -std=c11; handle tests use c++ -std=c++14; no language override",
+      "compile_evidence": {
+        "sha256": "2ed6d5812c9b897938e619752276aa99bbc28ae485690561a87271a0e58d44db",
+        "units": [
+          {
+            "file": "test-painter-layer-tree.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [
+              "-std=c11"
+            ]
+          },
+          {
+            "file": "test-painter-popup-handles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ]
+          },
+          {
+            "file": "gimpcellrendererpopup.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ]
+          }
+        ]
+      },
+      "timeouts_unchanged": true,
+      "timeout_multiplier": null,
+      "isolation_and_authenticated_loopback_verified": true,
+      "lsan_enabled": false,
+      "diagnostic_exception": {
+        "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+        "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+        "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+      },
+      "verifier_sha256": "dff971d418ca1e48f4035b5b62c74c0162ea00cad32965e586de401965dfb109",
+      "input_sha256": {
+        "results.json": "940a7b8f070b5ef6ddec94d593eb9acc4f5e3fb16a1e6eda84a21d31c9d8b920",
+        "registrations.json": "2d88df06b6d2a89b9f570bc53dc262b620b412428fbc124953ffb76981e2da29",
+        "popup-entry-handles-candidate-asan-v1.json": "74c584a4659189afe638efd2da3839eda122e33106240c59b65f506533df68bc"
+      }
+    }
+  },
+  "binary_sha256": {
+    "native/app/tests/painter-layer-tree": "16a043f927544ce6dca87f156301a0670acf14c1871c3e1a689bc25cf1ffbfdf",
+    "native/app/tests/painter-popup-handles": "223c061129fc6ec9c9a4260a7c262e2660d1d854a61187bf8942b0c8be8beb32",
+    "native/compile_commands.json": "610de780171b3567dbdf18c65aaeb0a61e626cd7df2edac5dadc8ca4a5a6a8ec",
+    "native/meson-info/intro-tests.json": "791f26d36369f10ed9af463ed1fc0e2677da75765a6d9b43f64079327e082ecc",
+    "native/app/widgets/libappwidgets.a.p/gimpcellrendererpopup.cpp.o": "4990c9d0104f8a0ab50253a0846fab27527009fb0a1b5da9408149782bfdde41",
+    "asan/app/tests/painter-layer-tree": "ec5bbf68b7465c73b642b668935eee0b1ec218236ecd0d7d8e6b8b7eaca7149b",
+    "asan/app/tests/painter-popup-handles": "dd4f4fb712a04ba8283205b3f73b642dccadb7d63319b5f4cd3111c90cf78e79",
+    "asan/compile_commands.json": "2ed6d5812c9b897938e619752276aa99bbc28ae485690561a87271a0e58d44db",
+    "asan/meson-info/intro-tests.json": "f3df783c5aa4a54f6e08920d0eb56f4406c08258c4606cd68416835d60c83392",
+    "asan/app/widgets/libappwidgets.a.p/gimpcellrendererpopup.cpp.o": "b066c3c46f58112201339788bee4c4e9b9f1ec3aa76a56e6f170b6af902733a1",
+    "native/app/gimp-3.0": "c17828479afffe864b989ae4dbb2419d3fb40429301524d4d908c5aa736cdc2f"
+  },
+  "symbol_evidence": {
+    "native/app/tests/painter-layer-tree": {
+      "gimp_cell_renderer_popup_clicked": 1,
+      "gimp_cell_renderer_popup_get_type": 1,
+      "gimp_cell_renderer_popup_new": 1
+    },
+    "native/app/tests/painter-popup-handles": {
+      "gimp_cell_renderer_popup_clicked": 1,
+      "gimp_cell_renderer_popup_get_type": 1,
+      "gimp_cell_renderer_popup_new": 1
+    },
+    "asan/app/tests/painter-layer-tree": {
+      "gimp_cell_renderer_popup_clicked": 1,
+      "gimp_cell_renderer_popup_get_type": 1,
+      "gimp_cell_renderer_popup_new": 1
+    },
+    "asan/app/tests/painter-popup-handles": {
+      "gimp_cell_renderer_popup_clicked": 1,
+      "gimp_cell_renderer_popup_get_type": 1,
+      "gimp_cell_renderer_popup_new": 1
+    },
+    "native/app/gimp-3.0": {
+      "gimp_cell_renderer_popup_clicked": 1,
+      "gimp_cell_renderer_popup_get_type": 1,
+      "gimp_cell_renderer_popup_new": 1
+    }
+  },
+  "header_compilation": {
+    "status": "PASS",
+    "compiled_probes": 375,
+    "outer_linkage_adapter": false,
+    "report_sha256": "09e32b21362f5c6cb86b7b4a1767cf0f0b0c381de79dd6606c954965386ce146",
+    "libraries": {
+      "c-boundaries-validation-20261013/build-native/app/painter/tests/headers/libpainter-public-headers-c.a": {
+        "bytes": 22594,
+        "sha256": "0ca49bf1db865489b630db25dbd7c259af894ed016b2800c16ad986540484d33"
+      },
+      "c-boundaries-validation-20261013/build-native/app/painter/tests/headers/libpainter-public-headers-cpp.a": {
+        "bytes": 25796,
+        "sha256": "b486ff5018126a5d6a2c648c1e97f1ea33c7f49d710f5d56b21ec955814fec97"
+      }
+    },
+    "registrations": [
+      {
+        "name": "gimp:painter / painter-public-header-compilation",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 0.10501241683959961
+      },
+      {
+        "name": "gimp:painter / painter-additional-header-routes",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 1.5350227355957031
+      }
+    ]
+  },
+  "handle_compile_controls": {
+    "status": "PASS",
+    "standard": "C++14",
+    "double_include": true,
+    "positive_count": 4,
+    "negative_count": 3,
+    "header_sha256": "f63ae50a6c7e67504dd831a4e4e0bac888eaf675a67dde1a0cc6eeb43b258dbf",
+    "results": [
+      {
+        "name": "header-only",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "6b3b356419f5bb102319c825fca806c6298f41ffca57eaffc5a5b6a939303291",
+        "log_sha256": "92a8ce9237d0f1b94b8c900f444ff2d4b9a0ef434bc7530f5338c8b0605276b4"
+      },
+      {
+        "name": "create",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "3b862fb0c4b43879f83da2482fb34e3f675e73ef8033badc369e0ea68843db97",
+        "log_sha256": "a6bc86b3bb839904445fcc04ff35798b297a565c7c71510ad2349b6919f90c92"
+      },
+      {
+        "name": "copy-move",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "f863df8eb39b4fdd7418c19e8ce29f17e4aed8c5beb32939fc6eba02f57463e8",
+        "log_sha256": "b3dac8d29a7a245c86927751602f96fbad5906b033f0514322e23fa396c56fcf"
+      },
+      {
+        "name": "clicked",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "35a939d5fb7b743f413c65d90c67d6b969af21ff88b41f8b50e1314570260f5f",
+        "log_sha256": "42a4cd13d69ac260ce9526c71104b647fe0ea7e906cc1d52bd37098fecaffd69"
+      },
+      {
+        "name": "wrong-owner",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "bf641e2dfb8dfe248b758fa11696a49edf25c805396732740b4ff542a250b3d0",
+        "log_sha256": "ea5d4dd629578b8a2d12fec8c4bb7ef9a06cc7e7d71db219032767f3e0f18d20"
+      },
+      {
+        "name": "wrong-path",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "abad419b1afd3c802a7cd3bd9cc35cffef4cef6fd6c0371a4ca190b4c82a2a24",
+        "log_sha256": "282f608e40e8c325029f112719a37e5d7cde14bb2c7aaaa0ecf442cfe958f286"
+      },
+      {
+        "name": "wrong-area",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "1803684199d63b4e63f43bccd3af3fb6cd2da7b65f3114ac4b99c2bfefccb283",
+        "log_sha256": "9cb6f42cb41ab21b7523e9e11021dc5b202bc3464cfa01a93fc89b1efa740d02"
+      }
+    ]
+  },
+  "negative_controls": {
+    "status": "PASS",
+    "positive_control": "Unmodified isolated native-v1 report accepted",
+    "negative_case_count": 12,
+    "original_inputs_source_and_build_unchanged": true,
+    "protected_sha256": {
+      "c-boundaries-validation-20261013/validation/popup-entry-handles-candidate-native-v2/results.json": "5c0c4942df34fb15dae9e2a8053fa12826814f5b88527fb3324503c2d91547d1",
+      "c-boundaries-validation-20261013/validation/popup-entry-handles-candidate-native-v2/registrations.json": "ff735d8b76671db85ab7e130fdb71fa379d120d95af5592cd7b392c1d0b27b83",
+      "c-boundaries-validation-20261013/validation/popup-entry-handles-candidate-native-v2/popup-entry-handles-candidate-native-v2.json": "09b514dd8476d95f901b8656250b4e1e093689f09e9c8c506cb780e5fbaa3adf",
+      "c-boundaries-validation-20261013/validation/popup-entry-handles-candidate-native-v2/verified-results.json": "6e03c1457a390a8652301ae8fc54141765db819734909b010d514941565e51aa",
+      "popup-entry-handles-20261014/candidate-source-seal.json": "af62aa081d7839c3b050ee5b1b251fbc920e55d704b6c07147b58b242d2ec37e",
+      "popup-entry-handles-20261014/verify_candidate.py": "dff971d418ca1e48f4035b5b62c74c0162ea00cad32965e586de401965dfb109",
+      "c-boundaries-validation-20261013/build-native/compile_commands.json": "610de780171b3567dbdf18c65aaeb0a61e626cd7df2edac5dadc8ca4a5a6a8ec",
+      "gimp-c-boundaries-20261013/app/widgets/gimpcellrendererpopup.cpp": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+      "gimp-c-boundaries-20261013/app/widgets/gimpcellrendererpopup.h": "a8fe7be5a98be80813d6538c4c9c05e366fcfba63774b280e0a6273a76e6f5f7",
+      "gimp-c-boundaries-20261013/app/widgets/gimpcellrendererpopup-handle.hpp": "f63ae50a6c7e67504dd831a4e4e0bac888eaf675a67dde1a0cc6eeb43b258dbf",
+      "gimp-c-boundaries-20261013/app/tests/test-painter-layer-tree.c": "f1f2a9cbfece31cdc53aa2c099cdf4a774cd05dfd90a5f96c627a33abf69f31b",
+      "gimp-c-boundaries-20261013/app/tests/test-painter-popup-handles.cpp": "424864cdfb76081fa51339318276edc30b434721ddf5a92363c640e15b799452",
+      "gimp-c-boundaries-20261013/app/tests/meson.build": "742ea3873432ff9a4bfb06b6ffa05a324baebba6cbb342da5477c02fd46359de"
+    },
+    "verifier_sha256": "dff971d418ca1e48f4035b5b62c74c0162ea00cad32965e586de401965dfb109",
+    "scope": "Verifier-only execution against isolated JSON copies; no application or build execution",
+    "results": [
+      {
+        "mutation": "none",
+        "passed": true,
+        "expected_rejection": null,
+        "observed_error": null,
+        "accepted_output_written": true,
+        "log_sha256": "2d6ac57f6cfd4a276a46df38aad4b2b80889cf7f291456bb5159c7793f20e6c1"
+      },
+      {
+        "mutation": "aggregate_nonzero",
+        "passed": true,
+        "expected_rejection": "aggregate or X server exit failed",
+        "observed_error": "aggregate or X server exit failed",
+        "accepted_output_written": false,
+        "log_sha256": "20c2067d16712f84256831afa1b8af9c8ea53ee31eba2e9f3ca2b5145840f411"
+      },
+      {
+        "mutation": "process_nonzero_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "test process failed: painter-layer-tree",
+        "observed_error": "test process failed: painter-layer-tree",
+        "accepted_output_written": false,
+        "log_sha256": "2a750316c7c1698e63ffaa0fe219078ba6187453ac5848a5d82243afefc2f49e"
+      },
+      {
+        "mutation": "missing_tap_case",
+        "passed": true,
+        "expected_rejection": "TAP numbering missing/duplicated: painter-layer-tree",
+        "observed_error": "TAP numbering missing/duplicated: painter-layer-tree",
+        "accepted_output_written": false,
+        "log_sha256": "dd3058f1f742529157f1097af232d4802801f2e2ce32ece2dc7d5510fec9997b"
+      },
+      {
+        "mutation": "duplicate_tap_case",
+        "passed": true,
+        "expected_rejection": "TAP numbering missing/duplicated: painter-layer-tree",
+        "observed_error": "TAP numbering missing/duplicated: painter-layer-tree",
+        "accepted_output_written": false,
+        "log_sha256": "dd3058f1f742529157f1097af232d4802801f2e2ce32ece2dc7d5510fec9997b"
+      },
+      {
+        "mutation": "tap_skip_directive",
+        "passed": true,
+        "expected_rejection": "TAP IDs/order differ from source registration: painter-layer-tree",
+        "observed_error": "TAP IDs/order differ from source registration: painter-layer-tree",
+        "accepted_output_written": false,
+        "log_sha256": "29604dac95d2bd8128c8001cddb203d15e68958e469e03da0af778b7a884da02"
+      },
+      {
+        "mutation": "comment_skip",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: # SKIP injected",
+        "observed_error": "painter-layer-tree: forbidden diagnostic: # SKIP injected",
+        "accepted_output_written": false,
+        "log_sha256": "8bdbdc7e855361766031bb6c782d568334db8cdc66e95fb4222c859ed9c326c3"
+      },
+      {
+        "mutation": "teardown_critical_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: Gimp-Core-CRITICAL",
+        "observed_error": "painter-layer-tree: forbidden diagnostic: Gimp-Core-CRITICAL: injected teardown failure",
+        "accepted_output_written": false,
+        "log_sha256": "c43049159495707ca661371a876179d47f53a091e7318c9845dda6acfcc3a5ca"
+      },
+      {
+        "mutation": "sanitizer_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: AddressSanitizer",
+        "observed_error": "painter-layer-tree: forbidden diagnostic: AddressSanitizer: injected error",
+        "accepted_output_written": false,
+        "log_sha256": "d03cad75f7528f38cc9724bbd42f94a38fbad8f1ac1d8fb3febcf895324b1451"
+      },
+      {
+        "mutation": "increased_registered_timeout",
+        "passed": true,
+        "expected_rejection": "registered timeout/serial contract changed: painter-layer-tree",
+        "observed_error": "registered timeout/serial contract changed: painter-layer-tree",
+        "accepted_output_written": false,
+        "log_sha256": "def10c41c563023c7d67b36b21dcbd69ed6f1112e3bec7585829523e83b57d65"
+      },
+      {
+        "mutation": "command_timeout_multiplier",
+        "passed": true,
+        "expected_rejection": "aggregate command differs",
+        "observed_error": "aggregate command differs, filters/timeout multipliers are forbidden",
+        "accepted_output_written": false,
+        "log_sha256": "7ba085f00d38b9436df0e9d419c7aa99de9d08d764234f72fef7a8d13c1cc5f5"
+      },
+      {
+        "mutation": "environment_timeout_multiplier",
+        "passed": true,
+        "expected_rejection": "timeout multiplier environment set",
+        "observed_error": "painter-layer-tree: timeout multiplier environment set",
+        "accepted_output_written": false,
+        "log_sha256": "56944ff9380dcce190aba6d35e32a2c0c1b647a70d4bb8e8eb72eae40707a6d3"
+      },
+      {
+        "mutation": "source_seal_tamper",
+        "passed": true,
+        "expected_rejection": "sealed SHA256 changed",
+        "observed_error": "sealed SHA256 changed: app/widgets/gimpcellrendererpopup.cpp",
+        "accepted_output_written": false,
+        "log_sha256": "44d4aa30078e5f7f8d35067a47942fd6b621b630b972f38ef2e06f3d41e9b4e1"
+      }
+    ]
+  },
+  "source_gate": "2467 sources; 683 reviewed data sites; 4 dormant findings",
+  "policy_tests": 48,
+  "contract_gate": "90 unique typed-handle contracts; 76 C entries",
+  "independent_review": "# Independent source review\n\nFinal production, public declaration, named ownership route and 35 C11 plus\n22 C++14 test registrations reviewed read-only. No blocking findings.\n\nThe public entry requires the existing owner-thread active binding before\ncallback-capable retains, rechecks typed admission after both renderer/tree\nleases, and emits outside the borrow. No store creation, revival, row gate or\nactive-property gate. Both toggle-ref close windows are exercised. Worker-thread\nprobes use owner-thread-created objects/handles and counting-only atomic\ncallbacks. Owning create sinks floating factory output; retain and both column\nrelease orders preserve native ownership. Current closure/chaining, normal/after\norder, nesting, continued outer emission after close, target stability and\nteardown have meaningful assertions.\n\nFinal invalid-argument addition uses live wrong-type GObjects and expected\noriginal critical diagnostics; it verifies zero delivery, unchanged renderer\nstore identity/state/generation and popup epoch, and no unrelated store creation.\nHistorical Interface, parent/class layout and RUN_LAST metadata are explicitly\noutside the completed compatibility claim. Direct raw signal emission bypasses\nthe C-entry gate.\n\nReviewed SHA-256:\n- Production: 6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d\n- Public header: a8fe7be5a98be80813d6538c4c9c05e366fcfba63774b280e0a6273a76e6f5f7\n- Handle: f63ae50a6c7e67504dd831a4e4e0bac888eaf675a67dde1a0cc6eeb43b258dbf\n- C tests: f1f2a9cbfece31cdc53aa2c099cdf4a774cd05dfd90a5f96c627a33abf69f31b\n- C++ tests: 424864cdfb76081fa51339318276edc30b434721ddf5a92363c640e15b799452\n",
+  "baseline_admission_failures": [
+    {
+      "run": "popup-closed-baseline-v1",
+      "meson_exit": 1,
+      "process_exit": -6,
+      "server_exit": 0,
+      "observed_class_closure": 1,
+      "observed_external_observer": 1,
+      "expected_each": 0,
+      "raw_json_sha256": "e0b1ee5bd06541bb9075c0896b5387797845543f28f4f5a16b2cc3d5c8d9a75a"
+    },
+    {
+      "run": "popup-thread-baseline-v1",
+      "meson_exit": 1,
+      "process_exit": -6,
+      "server_exit": 0,
+      "observed_class_closure": 1,
+      "observed_external_observer": 1,
+      "expected_each": 0,
+      "raw_json_sha256": "b8c39368d874661a7764a5f7dcb697321d1d2e68093e69d29fb01a55a6b871d2"
+    }
+  ],
+  "other_retained_findings": [
+    "Initial new Meson target lookup preceded regeneration; direct Ninja regeneration resolved it. First test compilation needed the ordinary widgets-types prerequisite.",
+    "First no-rebuild public-header gate correctly rejected changed header inputs. Registered archives were rebuilt incrementally and both final header gates pass.",
+    "Intermediate 35-case native and 56-case combined native runs passed, but final acceptance is the complete 57-case native and ASan rerun after invalid-argument coverage."
+  ],
+  "limits": [
+    "Focused native integration suites, not full GIMP regression. ASan+UBSan enabled; LSan disabled. Existing C suite timeout 60s and new handle timeout 120s unchanged.",
+    "No historical abstract Interface virtual-dispatch, class/instance parent-layout, RUN_LAST metadata, subclass ABI or render-parity claim. Row 6 remains PARTIAL.",
+    "Direct raw signal emission bypasses the C-entry gate. Owner-thread admission is not general GTK thread safety or arbitrary-pointer validation.",
+    "Only rows 6\u20138 implementation evidence changes; other 73 entries, separate 31 hooks, type/handle catalog, 141/661 and 08.018 remain unchanged. Row 50, ImageGenerator prerequisites and blocked perspective are excluded.",
+    "Native application relinked; integrated test processes exercise final native and ASan provider. No full application ASan relink or general app shutdown claim."
+  ],
+  "visual_evidence": "Internal admission/ownership change with integrated native layer-target assertions; no invented UI or artificial fixture screenshot.",
+  "evidence_sha256": {
+    "popup-entry-handles-candidate-native-v2/results.json": "5c0c4942df34fb15dae9e2a8053fa12826814f5b88527fb3324503c2d91547d1",
+    "popup-entry-handles-candidate-native-v2/verified-results.json": "6e03c1457a390a8652301ae8fc54141765db819734909b010d514941565e51aa",
+    "popup-entry-handles-candidate-native-v2/popup-entry-handles-candidate-native-v2.json": "09b514dd8476d95f901b8656250b4e1e093689f09e9c8c506cb780e5fbaa3adf",
+    "popup-entry-handles-candidate-native-v2/popup-entry-handles-candidate-native-v2.txt": "bbeb8635168e8a637f451ebfe045107b726a8bde6be746d3a99d5977b8f1907f",
+    "popup-entry-handles-candidate-asan-v1/results.json": "940a7b8f070b5ef6ddec94d593eb9acc4f5e3fb16a1e6eda84a21d31c9d8b920",
+    "popup-entry-handles-candidate-asan-v1/verified-results.json": "b386093af01eea15fd1ca395fa1e02bc83f62ae54058f64d3ee8443fb36308b6",
+    "popup-entry-handles-candidate-asan-v1/popup-entry-handles-candidate-asan-v1.json": "74c584a4659189afe638efd2da3839eda122e33106240c59b65f506533df68bc",
+    "popup-entry-handles-candidate-asan-v1/popup-entry-handles-candidate-asan-v1.txt": "3ffd75452d665782a447057cd64468990b275a5c879201c67bcee5932ea339c6",
+    "baseline-native-v3-build.log": "3af874987336ef730831a1969c2950ba22e6f3531295292a1f0cac9615813208",
+    "candidate-native-v2-build.log": "302e7e9d1f21fe24fc5aa211588f33b9f3bd5f98e362611b08b548a7ef730031",
+    "candidate-source-seal.json": "af62aa081d7839c3b050ee5b1b251fbc920e55d704b6c07147b58b242d2ec37e",
+    "baseline-native-v3-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "production-native-v1-build.log": "55a4dc76d62eeccf2ca6bc0bddafdb7624b299707202680e2bb8214fde0469f9",
+    "candidate-asan-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "candidate-asan-v1-build.log": "69bae3cf1a6102c35b5f1d0a7d5376c8036c68e80b5b467242937c420ca584b8",
+    "candidate-native-v1-build.log": "98e36df9b6213cae37ebb81e749f770e0adae00f3e62a8b6e7cb6853eeb8e48f",
+    "test_verify_candidate.py": "9231ec8a321e887a651383b96ae88515d118cec2370349e9d0801addf61a9aaa",
+    "popup-thread-baseline-v1-console.log": "4c31857aaad0621902b702e036e9c5a64f8aa010604ab0d5e6e1da801106087c",
+    "candidate-asan-v2-build.log": "8e839fca3be618f586d7d8808914023dabde7db4cf05fd02b0273daa3eb55ddf",
+    "negative-controls.log": "15c01bad8ea2f91e1c9c3f61644b6535196c898fa6e4b8cb0d26e7c23cd1ba79",
+    "candidate-native-v3-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "negative-controls.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "popup-entry-handles-candidate-native-v1-console.log": "e96a7e8d81408f64036e1e84fd205a8a814263fb1f35d7a084b40c29a0b51dc3",
+    "scope-and-contract.md": "a8fdbd15ff04d21d9406f0cb4b96196b77d7b008fff5da87563acb34b2139901",
+    "popup-closed-baseline-v1-console.log": "882352ff2aefb9adb9f09c8d97bb5c0725112ec69568dad135d419b9e2149234",
+    "asan-verification.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "candidate-asan-v2-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "asan-verification.log": "5ad693abc372a59d9752cc6713c2e3c0fec56bb35ea9e1b6bb3505e24b098e01",
+    "handle-compile-results.json": "65bce4445588cf610fb0ddf305bf5d8f3cf13cd80156a9f470de8d0e30087b5c",
+    "baseline-admission-test.cpp": "56a132ef4785b6d3645a0fadfee3218cd1e176ce596e7bcf7c46172ee2240481",
+    "candidate-native-v2-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "production-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "popup-entry-handles-candidate-native-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "headers-native-validation-v2.log": "6a7c51095f4c8c1a6537b74640389987cc7aed00628fdefaf6510848f8e55b64",
+    "adapter-check.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "native-verification.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "native-verification.log": "2cbe2ebe63c58cb93edcd46d368751a3c62030ba7747af39fccf95c819690dbb",
+    "independent-review.md": "45a816544029f945cab66c0b6c8c7285673b7d3f01ac04db3482904510333050",
+    "handle-compile.log": "11de3773d570f9f4876bd57712d2a7b55891acca2d2a5fb677114e53161754bf",
+    "popup-entry-handles-candidate-asan-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "popup-entry-handles-candidate-asan-v1-console.log": "320d4e00e9396e7bbaca23f4e8185f426d0e9c3f259ba2baded31e1ba8f65e0a",
+    "popup-closed-baseline-v1.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "popup-layer-tree-candidate-native-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "handle-compile.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "baseline-native-v1-build.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "popup-entry-handles-candidate-native-v2-console.log": "95e67cab0b17a7f2f7eb1c80ee9a6af773e920929bf7718df3f45b52c947a8ca",
+    "baseline-native-v2-build.log": "f937af8fe39ee039c7338c4487f29cc5bcbc8f60040afda5b0857c91246ac453",
+    "popup-entry-handles-candidate-native-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "adapter-policy-tests.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "popup-layer-tree-candidate-native-v1-console.log": "7c56e48d3676df5a5173e13eca6d4c463aad241e0a5dd78850b39bee2a580a5c",
+    "baseline-source.json": "947e571824c0bb7ec08425201b42ee38f1fe0677856f974dc43a7dcf13572804",
+    "adapter-policy-tests.log": "404326777c090a63b6229c8935af42b64409d08877ca02d574e8877a30638526",
+    "baseline-native-v1-build.log": "bcdfcb5c2686b3ffadee1737813d20b6def4580b91d576e40908624b81a51216",
+    "verify_candidate.py": "dff971d418ca1e48f4035b5b62c74c0162ea00cad32965e586de401965dfb109",
+    "verifier-negative-results.json": "7e9c25a12609b6cb27f7170046680a20d35a50bd0b5935dc91d37c6f656c7ca0",
+    "contracts.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "headers-native-validation.log": "ca7183807248eef319f48f6c16537bd84c3e1798c4c46a9f2035d0ab8546e2a4",
+    "final-runs.json": "a0553fce042c6e94a10acb78a675106342c8b3012a826cf0177516fd1270bbfd",
+    "check_handle_compile.py": "b1758b38fc529c544aa1ebaa31d1c53e93520a8e16bd7a0b06e783d6969a8354",
+    "popup-thread-baseline-v1.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "adapter-check.log": "6b16c285a7d2328318fbb01a5bef77c3aeb2d8a9e586b7ef7517702b4b4f435a",
+    "candidate-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "freeze.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "headers-native-validation-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "headers-native-validation.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "baseline-native-v2-build.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "contracts.log": "5d7679fe57fa10916ee636e18c811f3cf0e7f5655dce2cb6868f62a4741265e1",
+    "candidate-native-v3-build.log": "fe42342bf5f382d3cdd6ffa8d636e63e814d2d6dd715d4667f0c2634086139c2"
+  }
+}

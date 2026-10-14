@@ -19,6 +19,7 @@
 #include "widgets/gimpcontainertreeview.h"
 #include "widgets/gimpcontainertreestore.h"
 #include "widgets/gimpcontainerview.h"
+#include "widgets/gimpcellrendererpopup.h"
 #include "widgets/gimpitemtreeview.h"
 #include "widgets/gimplayertreeview.h"
 #include "widgets/gimplayermodebox.h"
@@ -631,6 +632,380 @@ static void removed_row_invalidates_drag_cache (void) {
     fixture_clear (&f);
   }
 }
+
+/* These are calls compiled as C11 against the original native entry points.
+ * They complement, rather than replace, the actual pointer-event tests above. */
+typedef struct {
+  GObject *widget;
+  const gchar *path;
+  GdkRectangle *area;
+  guint calls;
+  gboolean expect_popup;
+} PopupDelivery;
+
+static void record_popup_delivery (GimpCellRendererPopup *cell, GObject *widget,
+                                   const gchar *path, GdkRectangle *area,
+                                   gpointer data) {
+  PopupDelivery *delivery = data;
+  g_assert_true (widget == delivery->widget);
+  g_assert_cmpstr (path, ==, delivery->path);
+  g_assert_true (area == delivery->area);
+  g_assert_cmpint (gimp_cell_renderer_popup_get_popup (cell) != NULL, ==,
+                   delivery->expect_popup);
+  ++delivery->calls;
+}
+
+static gchar *popup_path_text (Fixture *f, GimpLayer *target) {
+  GtkTreePath *path = path_for (f, target);
+  gchar *text = gtk_tree_path_to_string (path);
+  gtk_tree_path_free (path);
+  return text;
+}
+
+static void public_factory_floating_column_ownership (void) {
+  /* A raw factory result is floating and can be transferred straight into
+   * the native GtkCellLayout. The factory must not sink this reference. */
+  GtkCellRenderer *(*factory) (void) = gimp_cell_renderer_popup_new;
+  GtkCellRenderer *cell = factory ();
+  gpointer weak = cell;
+  g_object_add_weak_pointer (G_OBJECT (cell), &weak);
+  g_assert_true (g_object_is_floating (cell));
+  g_assert_true (G_OBJECT_TYPE (cell) == gimp_cell_renderer_popup_get_type ());
+  g_assert_true (g_type_parent (G_OBJECT_TYPE (cell)) == GTK_TYPE_CELL_RENDERER_PIXBUF);
+  GtkTreeViewColumn *column = gtk_tree_view_column_new ();
+  g_object_ref_sink (column);
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (column), cell, FALSE);
+  g_assert_false (g_object_is_floating (cell));
+  g_object_unref (column);
+  g_assert_null (weak);
+
+  /* Both a separately sunk factory reference and a retained column-owned
+   * reference survive either release order without stealing column ownership. */
+  for (guint retain_column_owned = 0; retain_column_owned < 2; ++retain_column_owned)
+    for (guint release_column_first = 0; release_column_first < 2; ++release_column_first) {
+      cell = factory (); weak = cell;
+      g_object_add_weak_pointer (G_OBJECT (cell), &weak);
+      column = gtk_tree_view_column_new (); g_object_ref_sink (column);
+      if (!retain_column_owned) g_object_ref_sink (cell);
+      gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (column), cell, FALSE);
+      if (retain_column_owned) g_object_ref (cell);
+      g_assert_false (g_object_is_floating (cell));
+      if (release_column_first) {
+        g_object_unref (column); g_assert_nonnull (weak);
+        g_object_unref (cell);
+      } else {
+        g_object_unref (cell); g_assert_nonnull (weak);
+        g_object_unref (column);
+      }
+      g_assert_null (weak);
+    }
+}
+
+static void public_clicked_active_property_independent (void) {
+  Fixture f; fixture_init (&f);
+  GimpCellRendererPopup *cell = GIMP_CELL_RENDERER_POPUP (popup_cell (&f));
+  gchar *path = popup_path_text (&f, f.a);
+  GdkRectangle area = { 0, 0, 100, 24 };
+  PopupDelivery delivery = { G_OBJECT (f.view->view), path, &area, 0, TRUE };
+  g_signal_connect (cell, "parent-clicked", G_CALLBACK (record_popup_delivery), &delivery);
+  gboolean active = TRUE;
+  g_object_get (cell, "active", &active, NULL); g_assert_false (active);
+  for (guint value = 0; value < 2; ++value) {
+    g_object_set (cell, "active", (gboolean) value, NULL);
+    const guint64 generation = gimp_cell_renderer_popup_get_generation (cell);
+    gimp_cell_renderer_popup_clicked (cell, delivery.widget, path, &area);
+    g_assert_cmpuint (delivery.calls, ==, value + 1);
+    g_assert_cmpuint (gimp_cell_renderer_popup_get_generation (cell), >, generation);
+    GtkWidget *popup = current_popup (GTK_CELL_RENDERER (cell));
+    g_assert_nonnull (popup);
+    gtk_range_set_value (GTK_RANGE (find (popup, "painter-tree-layer-opacity")), 35 + 20 * value);
+    g_assert_cmpfloat_with_epsilon (gimp_layer_get_opacity (f.a), .35 + .20 * value, .000001);
+    g_assert_cmpfloat (gimp_layer_get_opacity (f.b), ==, 1);
+    g_object_unref (popup);
+  }
+  g_signal_handlers_disconnect_by_data (cell, &delivery);
+  g_free (path); fixture_clear (&f);
+}
+
+static void public_clicked_unbound_observers (void) {
+  Fixture f; fixture_init (&f);
+  GimpCellRendererPopup *cell = GIMP_CELL_RENDERER_POPUP (gimp_cell_renderer_popup_new ());
+  g_object_ref_sink (cell);
+  gchar *path = popup_path_text (&f, f.a);
+  GdkRectangle area = { 3, 5, 100, 24 };
+  PopupDelivery delivery = { G_OBJECT (f.view->view), path, &area, 0, FALSE };
+  g_signal_connect (cell, "parent-clicked", G_CALLBACK (record_popup_delivery), &delivery);
+  g_signal_connect_after (cell, "parent-clicked", G_CALLBACK (record_popup_delivery), &delivery);
+  const guint64 generation = gimp_cell_renderer_popup_get_generation (cell);
+  gimp_cell_renderer_popup_clicked (cell, delivery.widget, path, &area);
+  g_assert_cmpuint (delivery.calls, ==, 2);
+  g_assert_cmpuint (gimp_cell_renderer_popup_get_generation (cell), ==, generation);
+  g_object_unref (cell); g_free (path); fixture_clear (&f);
+}
+
+static void public_clicked_invalid_row_observers (void) {
+  Fixture f; fixture_init (&f);
+  GimpCellRendererPopup *cell = GIMP_CELL_RENDERER_POPUP (popup_cell (&f));
+  GdkRectangle area = { 3, 5, 100, 24 };
+  PopupDelivery delivery = { G_OBJECT (f.view->view), "999999", &area, 0, FALSE };
+  g_signal_connect (cell, "parent-clicked", G_CALLBACK (record_popup_delivery), &delivery);
+  const guint64 generation = gimp_cell_renderer_popup_get_generation (cell);
+  gimp_cell_renderer_popup_clicked (cell, delivery.widget, delivery.path, &area);
+  g_assert_cmpuint (delivery.calls, ==, 1);
+  g_assert_cmpuint (gimp_cell_renderer_popup_get_generation (cell), ==, generation);
+  g_signal_handlers_disconnect_by_data (cell, &delivery);
+  open_signal (&f, f.a);
+  GtkWidget *popup = current_popup (GTK_CELL_RENDERER (cell)); g_assert_nonnull (popup);
+  delivery.expect_popup = TRUE;
+  g_signal_connect (cell, "parent-clicked", G_CALLBACK (record_popup_delivery), &delivery);
+  const guint64 open_generation = gimp_cell_renderer_popup_get_generation (cell);
+  gimp_cell_renderer_popup_clicked (cell, delivery.widget, delivery.path, &area);
+  g_assert_cmpuint (delivery.calls, ==, 2);
+  g_assert_true (gimp_cell_renderer_popup_get_popup (cell) == popup);
+  g_assert_cmpuint (gimp_cell_renderer_popup_get_generation (cell), ==, open_generation);
+  g_signal_handlers_disconnect_by_data (cell, &delivery);
+  g_object_unref (popup); fixture_clear (&f);
+}
+
+static void public_clicked_null_area (void) {
+  Fixture f; fixture_init (&f);
+  GimpCellRendererPopup *cell = GIMP_CELL_RENDERER_POPUP (popup_cell (&f));
+  gchar *path = popup_path_text (&f, f.a);
+  PopupDelivery delivery = { G_OBJECT (f.view->view), path, NULL, 0, TRUE };
+  g_signal_connect (cell, "parent-clicked", G_CALLBACK (record_popup_delivery), &delivery);
+  gimp_cell_renderer_popup_clicked (cell, delivery.widget, path, NULL);
+  g_assert_cmpuint (delivery.calls, ==, 1);
+  GtkWidget *popup = current_popup (GTK_CELL_RENDERER (cell)); g_assert_nonnull (popup);
+  gtk_range_set_value (GTK_RANGE (find (popup, "painter-tree-layer-opacity")), 43);
+  g_assert_cmpfloat_with_epsilon (gimp_layer_get_opacity (f.a), .43, .000001);
+  g_assert_cmpfloat (gimp_layer_get_opacity (f.b), ==, 1);
+  g_signal_handlers_disconnect_by_data (cell, &delivery);
+  g_object_unref (popup); g_free (path); fixture_clear (&f);
+}
+
+/* Use a genuine native subclass and its installed class closure. This tests
+ * the current RUN_FIRST contract, not the removed C++ interface or old ABI. */
+typedef struct {
+  GimpCellRendererPopup parent_instance;
+  GString *trace;
+  gboolean chain;
+  guint closures;
+} TestPopupRenderer;
+typedef struct { GimpCellRendererPopupClass parent_class; } TestPopupRendererClass;
+G_DEFINE_TYPE (TestPopupRenderer, test_popup_renderer, GIMP_TYPE_CELL_RENDERER_POPUP)
+
+static void test_popup_parent_clicked (GimpCellRendererPopup *cell, GObject *widget,
+                                      const gchar *path, GdkRectangle *area) {
+  TestPopupRenderer *test = (TestPopupRenderer *) cell;
+  ++test->closures;
+  g_string_append_c (test->trace, 'C');
+  if (test->chain) {
+    GimpCellRendererPopupClass *parent = test_popup_renderer_parent_class;
+    parent->parent_clicked (cell, widget, path, area);
+    g_assert_nonnull (gimp_cell_renderer_popup_get_popup (cell));
+    g_string_append_c (test->trace, 'P');
+  }
+}
+static void test_popup_renderer_class_init (TestPopupRendererClass *klass) {
+  ((GimpCellRendererPopupClass *) klass)->parent_clicked = test_popup_parent_clicked;
+}
+static void test_popup_renderer_init (TestPopupRenderer *test) {
+  test->trace = NULL; test->chain = FALSE; test->closures = 0;
+}
+static void subclass_normal_observer (GimpCellRendererPopup *cell, GObject *widget,
+                                     const gchar *path, GdkRectangle *area,
+                                     gpointer data) {
+  TestPopupRenderer *test = (TestPopupRenderer *) cell;
+  record_popup_delivery (cell, widget, path, area, data);
+  g_string_append_c (test->trace, 'N');
+}
+static void subclass_after_observer (GimpCellRendererPopup *cell, GObject *widget,
+                                    const gchar *path, GdkRectangle *area,
+                                    gpointer data) {
+  TestPopupRenderer *test = (TestPopupRenderer *) cell;
+  record_popup_delivery (cell, widget, path, area, data);
+  g_string_append_c (test->trace, 'A');
+}
+static void public_clicked_subclass_order (void) {
+  Fixture f; fixture_init (&f);
+  gchar *path = popup_path_text (&f, f.a);
+  GdkRectangle area = { 0, 0, 100, 24 };
+  for (guint chain = 0; chain < 2; ++chain) {
+    TestPopupRenderer *test = g_object_new (test_popup_renderer_get_type (), NULL);
+    g_object_ref_sink (test);
+    test->trace = g_string_new (NULL); test->chain = chain;
+    GimpCellRendererPopup *cell = GIMP_CELL_RENDERER_POPUP (test);
+    g_assert_true (gimp_cell_renderer_popup_bind_tree (cell, f.tree));
+    GSignalQuery query;
+    g_signal_query (g_signal_lookup ("parent-clicked", G_OBJECT_TYPE (cell)), &query);
+    g_assert_cmpuint (query.signal_flags & (G_SIGNAL_RUN_FIRST | G_SIGNAL_RUN_LAST | G_SIGNAL_RUN_CLEANUP),
+                      ==, G_SIGNAL_RUN_FIRST);
+    g_assert_cmpuint (query.n_params, ==, 3);
+    g_assert_true (query.return_type == G_TYPE_NONE);
+    PopupDelivery delivery = { G_OBJECT (f.view->view), path, &area, 0, chain };
+    g_signal_connect (cell, "parent-clicked", G_CALLBACK (subclass_normal_observer), &delivery);
+    g_signal_connect_after (cell, "parent-clicked", G_CALLBACK (subclass_after_observer), &delivery);
+    gimp_cell_renderer_popup_clicked (cell, delivery.widget, path, &area);
+    g_assert_cmpstr (test->trace->str, ==, chain ? "CPNA" : "CNA");
+    g_assert_cmpuint (test->closures, ==, 1);
+    g_assert_cmpuint (delivery.calls, ==, 2);
+    if (chain) {
+      GtkWidget *popup = current_popup (GTK_CELL_RENDERER (cell)); g_assert_nonnull (popup);
+      gimp_container_view_set_1_selected (GIMP_CONTAINER_VIEW (f.tree), GIMP_VIEWABLE (f.b));
+      gtk_range_set_value (GTK_RANGE (find (popup, "painter-tree-layer-opacity")), 39);
+      g_assert_cmpfloat_with_epsilon (gimp_layer_get_opacity (f.a), .39, .000001);
+      g_assert_cmpfloat (gimp_layer_get_opacity (f.b), ==, 1);
+      g_object_unref (popup);
+    } else {
+      g_assert_cmpuint (gimp_cell_renderer_popup_get_generation (cell), ==, 0);
+    }
+    GString *trace = test->trace;
+    g_object_unref (test); g_string_free (trace, TRUE);
+  }
+  g_free (path); fixture_clear (&f);
+}
+
+typedef struct {
+  Fixture *fixture;
+  const gchar *outer_path, *inner_path;
+  GString *trace;
+  guint normal_calls, after_calls;
+  gboolean nested;
+} NestedPopupClick;
+static void public_click_nested_observer (GimpCellRendererPopup *cell, GObject *widget,
+                                         const gchar *path, GdkRectangle *area,
+                                         gpointer data) {
+  NestedPopupClick *click = data;
+  ++click->normal_calls;
+  g_assert_true (widget == G_OBJECT (click->fixture->view->view));
+  g_assert_nonnull (gimp_cell_renderer_popup_get_popup (cell));
+  if (click->nested) {
+    g_assert_cmpstr (path, ==, click->inner_path);
+    g_string_append_c (click->trace, 'I');
+    return;
+  }
+  g_assert_cmpstr (path, ==, click->outer_path);
+  g_string_append_c (click->trace, 'O');
+  click->nested = TRUE;
+  gimp_cell_renderer_popup_clicked (cell, widget, click->inner_path, area);
+  click->nested = FALSE;
+  g_string_append_c (click->trace, 'R');
+}
+static void public_click_nested_after (GimpCellRendererPopup *cell, GObject *widget,
+                                      const gchar *path, GdkRectangle *area,
+                                      gpointer data) {
+  NestedPopupClick *click = data;
+  (void) cell; (void) widget; (void) area;
+  g_assert_cmpstr (path, ==, click->nested ? click->inner_path : click->outer_path);
+  ++click->after_calls;
+  g_string_append_c (click->trace, click->nested ? 'i' : 'o');
+}
+static void public_clicked_nested_reopen (void) {
+  Fixture f; fixture_init (&f);
+  GimpCellRendererPopup *cell = GIMP_CELL_RENDERER_POPUP (popup_cell (&f));
+  gchar *outer_path = popup_path_text (&f, f.a), *inner_path = popup_path_text (&f, f.b);
+  NestedPopupClick click = { &f, outer_path, inner_path, g_string_new (NULL), 0, 0, FALSE };
+  g_signal_connect (cell, "parent-clicked", G_CALLBACK (public_click_nested_observer), &click);
+  g_signal_connect_after (cell, "parent-clicked", G_CALLBACK (public_click_nested_after), &click);
+  gimp_cell_renderer_popup_clicked (cell, G_OBJECT (f.view->view), outer_path, NULL);
+  g_assert_cmpstr (click.trace->str, ==, "OIiRo");
+  g_assert_cmpuint (click.normal_calls, ==, 2); g_assert_cmpuint (click.after_calls, ==, 2);
+  GtkWidget *popup = current_popup (GTK_CELL_RENDERER (cell)); g_assert_nonnull (popup);
+  gtk_range_set_value (GTK_RANGE (find (popup, "painter-tree-layer-opacity")), 29);
+  g_assert_cmpfloat_with_epsilon (gimp_layer_get_opacity (f.b), .29, .000001);
+  g_assert_cmpfloat (gimp_layer_get_opacity (f.a), ==, 1);
+  g_signal_handlers_disconnect_by_data (cell, &click);
+  g_object_unref (popup); g_string_free (click.trace, TRUE);
+  g_free (outer_path); g_free (inner_path); fixture_clear (&f);
+}
+
+typedef struct { GString *trace; gboolean closed; } ClosePopupClick;
+static void public_click_close_observer (GimpCellRendererPopup *cell, GObject *widget,
+                                        const gchar *path, GdkRectangle *area,
+                                        gpointer data) {
+  ClosePopupClick *click = data;
+  g_string_append_c (click->trace, 'C');
+  if (!click->closed) {
+    GError *error = NULL;
+    g_assert_nonnull (gimp_cell_renderer_popup_get_popup (cell));
+    click->closed = TRUE;
+    g_assert_true (gimp_painter_binding_close (G_OBJECT (cell), &error));
+    g_assert_no_error (error);
+    /* This fresh entry is rejected, while the already admitted outer
+     * emission must still reach its remaining normal and after observers. */
+    gimp_cell_renderer_popup_clicked (cell, widget, path, area);
+  }
+}
+static void public_click_close_later (GimpCellRendererPopup *cell, GObject *widget,
+                                     const gchar *path, GdkRectangle *area,
+                                     gpointer data) {
+  ClosePopupClick *click = data;
+  (void) widget; (void) path; (void) area;
+  g_assert_null (gimp_cell_renderer_popup_get_popup (cell));
+  g_string_append_c (click->trace, 'L');
+}
+static void public_click_close_after (GimpCellRendererPopup *cell, GObject *widget,
+                                     const gchar *path, GdkRectangle *area,
+                                     gpointer data) {
+  ClosePopupClick *click = data;
+  (void) cell; (void) widget; (void) path; (void) area;
+  g_string_append_c (click->trace, 'A');
+}
+static void public_clicked_close_keeps_observer_order (void) {
+  Fixture f; fixture_init (&f);
+  GimpCellRendererPopup *cell = GIMP_CELL_RENDERER_POPUP (popup_cell (&f));
+  gchar *path = popup_path_text (&f, f.a);
+  ClosePopupClick click = { g_string_new (NULL), FALSE };
+  g_signal_connect (cell, "parent-clicked", G_CALLBACK (public_click_close_observer), &click);
+  g_signal_connect (cell, "parent-clicked", G_CALLBACK (public_click_close_later), &click);
+  g_signal_connect_after (cell, "parent-clicked", G_CALLBACK (public_click_close_after), &click);
+  gimp_cell_renderer_popup_clicked (cell, G_OBJECT (f.view->view), path, NULL);
+  g_assert_true (click.closed);
+  g_assert_cmpstr (click.trace->str, ==, "CLA");
+  gimp_cell_renderer_popup_clicked (cell, G_OBJECT (f.view->view), path, NULL);
+  g_assert_cmpstr (click.trace->str, ==, "CLA");
+  g_signal_handlers_disconnect_by_data (cell, &click);
+  g_string_free (click.trace, TRUE); g_free (path); fixture_clear (&f);
+}
+
+typedef struct {
+  gpointer renderer_weak, tree_weak;
+  guint normal_calls, after_calls;
+} DropPopupReferences;
+static void public_click_drop_references (GimpCellRendererPopup *cell, GObject *widget,
+                                         const gchar *path, GdkRectangle *area,
+                                         gpointer data) {
+  DropPopupReferences *drop = data;
+  (void) path; (void) area;
+  ++drop->normal_calls;
+  g_object_unref (cell); g_object_unref (widget);
+  g_assert_nonnull (drop->renderer_weak); g_assert_nonnull (drop->tree_weak);
+}
+static void public_click_after_drop (GimpCellRendererPopup *cell, GObject *widget,
+                                    const gchar *path, GdkRectangle *area,
+                                    gpointer data) {
+  DropPopupReferences *drop = data;
+  (void) path; (void) area;
+  ++drop->after_calls;
+  g_assert_true (drop->renderer_weak == cell);
+  g_assert_true (drop->tree_weak == widget);
+  g_assert_true (GIMP_IS_CELL_RENDERER_POPUP (cell));
+  g_assert_true (GTK_IS_TREE_VIEW (widget));
+}
+static void public_clicked_last_reference_leases (void) {
+  GimpCellRendererPopup *cell = GIMP_CELL_RENDERER_POPUP (gimp_cell_renderer_popup_new ());
+  GtkWidget *tree = gtk_tree_view_new ();
+  g_object_ref_sink (cell); g_object_ref_sink (tree);
+  DropPopupReferences drop = { cell, tree, 0, 0 };
+  g_object_add_weak_pointer (G_OBJECT (cell), &drop.renderer_weak);
+  g_object_add_weak_pointer (G_OBJECT (tree), &drop.tree_weak);
+  g_signal_connect (cell, "parent-clicked", G_CALLBACK (public_click_drop_references), &drop);
+  g_signal_connect_after (cell, "parent-clicked", G_CALLBACK (public_click_after_drop), &drop);
+  gimp_cell_renderer_popup_clicked (cell, G_OBJECT (tree), "0", NULL);
+  g_assert_cmpuint (drop.normal_calls, ==, 1); g_assert_cmpuint (drop.after_calls, ==, 1);
+  g_assert_null (drop.renderer_weak); g_assert_null (drop.tree_weak);
+}
+
 int main (int argc, char **argv) {
   g_test_init (&argc, &argv, NULL);
   if (!gtk_init_check (&argc, &argv)) return GIMP_EXIT_TEST_SKIPPED;
@@ -650,6 +1025,11 @@ int main (int argc, char **argv) {
   ADD (selection_only_supersedes_activation); ADD (focus_reentry_closes_owner);
   ADD (attributes_supersede_activation); ADD (first_attributes_preserve_request);
   ADD (removed_row_invalidates_drag_cache);
+  ADD (public_factory_floating_column_ownership);
+  ADD (public_clicked_active_property_independent); ADD (public_clicked_unbound_observers);
+  ADD (public_clicked_invalid_row_observers); ADD (public_clicked_null_area);
+  ADD (public_clicked_subclass_order); ADD (public_clicked_nested_reopen);
+  ADD (public_clicked_close_keeps_observer_order); ADD (public_clicked_last_reference_leases);
   g_application_run (gimp->app, 0, NULL);
   int result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
   g_application_quit (G_APPLICATION (gimp->app)); g_clear_object (&gimp->app);

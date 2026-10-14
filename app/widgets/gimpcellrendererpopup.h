@@ -19,6 +19,9 @@ GtkCellRenderer * gimp_cell_renderer_popup_new (void);
  * Tree destroy explicitly closes the renderer store even if a caller retains it. */
 gboolean          gimp_cell_renderer_popup_bind_tree (GimpCellRendererPopup *cell,
                                                        GtkWidget *tree);
+/* Admits only an active binding on its owner thread. Once admitted, normal
+ * RUN_FIRST signal ordering/reentry applies. Direct g_signal_emit calls bypass
+ * this C-entry admission. The active property is not a signal-delivery gate. */
 void              gimp_cell_renderer_popup_clicked (GimpCellRendererPopup *cell,
                                                      GObject *widget,
                                                      const gchar *path,
