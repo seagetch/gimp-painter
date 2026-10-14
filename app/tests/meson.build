@@ -72,6 +72,7 @@ app_tests = [
   'painter-perspective-ui',
   'painter-perspective-events',
   'gimp-painter-context',
+  'mypaint-selector-contracts',
 ]
 
 # Prevent parallel builds for the tests
@@ -98,11 +99,21 @@ if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx
   clone_route_link_args = [clone_source_wrap, clone_name_wrap]
 endif
 
+# Prove the owning ContextRef method delegates to the original C factory.
+selector_route_args = []
+selector_route_link_args = []
+selector_factory_wrap = '-Wl,--wrap=gimp_mypaint_brush_button_with_popup'
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_link_argument(selector_factory_wrap)
+  selector_route_args = ['-DGIMP_TEST_MYPAINT_SELECTOR_WRAP_FACTORY']
+  selector_route_link_args = [selector_factory_wrap]
+endif
+
 prio = 1000
 foreach test_name : app_tests
   test_exe = executable(test_name,
     'test-@0@.@1@'.format(test_name, test_name == 'painter-type-startup' ? 'cpp' : 'c'),
     'tests.c',
+    test_name == 'mypaint-selector-contracts' ? ['test-mypaint-selector-contracts.cpp'] : [],
     test_name == 'painter-compact-options' ? ['test-widget-orientation-api.c', 'test-widget-orientation-api.cpp'] : [],
     test_name == 'gimp-clone-layer' ? ['test-gimp-clone-layout.cpp'] : [],
     test_name == 'gimp-painter-mybrush' ? ['test-painter-mybrush-duplicate-handle.cpp'] : [],
@@ -111,17 +122,23 @@ foreach test_name : app_tests
     test_name == 'gimp-filter-layer' ? ['test-gimp-filter-layout.cpp', 'test-filter-owner-context.cpp', 'test-filter-parameters.cpp'] : [],
     c_args: test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : [],
     cpp_args: (test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : []) +
-      (test_name == 'gimp-clone-layer' ? clone_route_args : []),
+      (test_name == 'gimp-clone-layer' ? clone_route_args : []) +
+      (test_name == 'mypaint-selector-contracts' ? painter_cpp_args + selector_route_args : []),
     link_args: (test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_link_args : []) +
-      (test_name == 'gimp-clone-layer' ? clone_route_link_args : []),
+      (test_name == 'gimp-clone-layer' ? clone_route_link_args : []) +
+      (test_name == 'mypaint-selector-contracts' ? selector_route_link_args : []),
     dependencies: [ libapp_dep, appstream ] +
-      (test_name == 'gimp-painter-mybrush' ? [painter_brush_settings_dep] : []),
+      (test_name == 'gimp-painter-mybrush' ? [painter_brush_settings_dep] : []) +
+      (test_name == 'mypaint-selector-contracts' ? [painter_mypaint_surface_dep] : []),
     link_with: apptests_links,
-    override_options: ['painter-compact-options', 'gimp-painter-mybrush', 'painter-layer-tree', 'gimp-clone-layer'].contains(test_name) ? ['c_std=c11', 'cpp_std=c++14'] : [],
+    override_options: ['painter-compact-options', 'gimp-painter-mybrush', 'painter-layer-tree', 'gimp-clone-layer', 'mypaint-selector-contracts'].contains(test_name) ? ['c_std=c11', 'cpp_std=c++14'] : [],
   )
 
   # Filter tests include real 8193x8193 spill and hundreds of old Gauss buffers.
   test_timeout = test_name == 'gimp-filter-layer' ? 600 : 60
+  if test_name == 'mypaint-selector-contracts'
+    test_timeout = 180
+  endif
   if test_name == 'painter-layer-ui'
     # All 63 cases took 83.69s under Xvfb; keep the full suite within its budget.
     test_timeout = 180

@@ -95,6 +95,10 @@ struct Editor {
 };
 static void prepare(){
   gimp_set_focused_once(gimp);
+  // A filtered case needs the same corpus setup as the full suite. Reuse the
+  // first setup without replacing original_search or refreshing live drafts.
+  static bool prepared=false;
+  if(prepared)return;
   gchar*path=nullptr;g_object_get(gimp->config,"painter-mypaint-brush-path-writable",&path,"painter-mypaint-brush-path",&original_search,nullptr);
   GError*error=nullptr;gchar*expanded=gimp_config_path_expand(path,TRUE,&error);g_assert_no_error(error);g_assert_nonnull(expanded);
   writable_directory=expanded;g_assert_nonnull(strstr(expanded,"painter-mypaint-brushes"));g_assert_cmpint(g_mkdir_with_parents(expanded,0700),==,0);
@@ -104,6 +108,7 @@ static void prepare(){
   gimp_data_factory_data_refresh(gimp->painter_mybrush_factory,gimp->user_context);
   auto*c=gimp_data_factory_get_container(gimp->painter_mybrush_factory);g_assert_cmpint(gimp_container_get_n_children(c),==,177);
   gimp_context_set_painter_mybrush(gimp->user_context,GIMP_PAINTER_MYBRUSH(gimp_container_get_child_by_index(c,0)));
+  prepared=true;
 }
 static void constructors_and_shared_model(){
   prepare();GError*e=nullptr;
@@ -152,6 +157,7 @@ static void all_controls_and_curves(){
   g_assert_true(gimp_painter_mybrush_editor_delete(a.widget,&error));g_assert_no_error(error);
 }
 static void list_search_history(){
+  prepare();
   auto*c=gimp_data_factory_get_container(gimp->painter_mybrush_factory);auto*first=GIMP_PAINTER_MYBRUSH(gimp_container_get_child_by_index(c,0));auto*second=GIMP_PAINTER_MYBRUSH(gimp_container_get_child_by_index(c,1));gimp_context_set_painter_mybrush(gimp->user_context,first);
   Editor a;auto r=a.snapshot();r.set_base_value(BRUSH_OPAQUE,.137);r.set_text(BRUSH_TEXTURE_NAME,"missing history texture");r.set_curve(BRUSH_SMUDGE,INPUT_PRESSURE,{{0,.123},{.5,.789},{1,.456}});a.set(r);
   guint before=gimp_painter_mybrush_options_history_size(a.model.get());gimp_context_set_painter_mybrush(GIMP_CONTEXT(a.model.get()),second);g_assert_cmpuint(gimp_painter_mybrush_options_history_size(a.model.get()),==,before+1);

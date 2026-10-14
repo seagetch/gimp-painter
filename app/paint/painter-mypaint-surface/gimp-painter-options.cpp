@@ -623,6 +623,32 @@ guint gimp_painter_mybrush_options_history_size(GimpPainterMybrushOptions*option
 {return boundary<guint>(nullptr,0,[&]{return store(options).read<OptionsSlot>([](const OptionsImpl&i){return i.history ? guint(i.history->entries.size()) : 0;});});}
 gchar*gimp_painter_mybrush_options_history_name(GimpPainterMybrushOptions*options,guint index)
 {return boundary<gchar*>(nullptr,nullptr,[&]{return store(options).with<OptionsSlot>([&](const OptionsImpl&i){return g_strdup(i.history->entries.at(index).name.c_str());});});}
+GdkPixbuf*gimp_painter_mybrush_options_history_preview(GimpPainterMybrushOptions*options,guint index,GError**error)
+{
+  return boundary<GdkPixbuf*>(error,nullptr,[&]() -> GdkPixbuf*{
+    // Copy only immutable snapshot bytes under the typed borrow. Decoding must
+    // neither retain an implementation borrow nor consult the mutable source.
+    const auto embedded=store(options).with<OptionsSlot>([&](const OptionsImpl&i){
+      if(!i.history||i.history->closed)throw Error(GIMP_PAINTER_ERROR_CLOSED,"Painter history is closed");
+      if(index>=i.history->entries.size())throw std::out_of_range("Painter history index");
+      return i.history->entries[index].resource.preview_png_base64();
+    });
+    if(embedded.empty())return nullptr;
+    // GLib's decoder skips invalid characters. Reject malformed encodings
+    // explicitly rather than accidentally displaying a partially decoded icon.
+    std::string compact;
+    compact.reserve(embedded.size());
+    for(unsigned char byte:embedded)if(!g_ascii_isspace(byte))compact.push_back(byte);
+    gsize size=0;
+    std::unique_ptr<guchar,Free> bytes(g_base64_decode(compact.c_str(),&size));
+    String canonical(g_base64_encode(bytes.get(),size));
+    if(!size||compact!=canonical.get())throw std::invalid_argument("Malformed painter history preview base64");
+    auto input=ObjectRef<GObject>::adopt(G_OBJECT(g_memory_input_stream_new_from_data(bytes.get(),size,nullptr)));
+    // Each call decodes into a fresh, transfer-full pixbuf whose pixels outlive
+    // the input stream, history, selected source and producing options object.
+    return gdk_pixbuf_new_from_stream(G_INPUT_STREAM(input.get()),nullptr,error);
+  });
+}
 gboolean gimp_painter_mybrush_options_restore_history(GimpPainterMybrushOptions*options,guint index,GError**error)
 {
   return boundary<gboolean>(error,FALSE,[&]() -> gboolean{

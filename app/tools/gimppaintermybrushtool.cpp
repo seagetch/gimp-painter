@@ -16,6 +16,7 @@ extern "C" {
 #include "core/gimptoolinfo.h"
 #include "display/gimpdisplay.h"
 #include "widgets/gimppaintermybrusheditor.h"
+#include "widgets/gimpmypaintbrushoptions-gui.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpwidgets-utils.h"
 #include "gimpcoloroptions.h"
@@ -274,6 +275,8 @@ void draw(GimpDrawTool*draw_tool)
 GtkWidget*options_gui(GimpToolOptions*options)
 {
   auto*box=gimp_tool_options_gui(options);GError*error=nullptr;
+  auto*selector=gimp_mypaint_brush_button_with_popup(G_OBJECT(options));
+  if(selector){gtk_box_pack_start(GTK_BOX(box),selector,FALSE,FALSE,0);gtk_widget_show(selector);}
   auto*editor=gimp_painter_mybrush_editor_new(GIMP_CONTEXT(options),FALSE,&error);
   if(editor){gtk_box_pack_start(GTK_BOX(box),editor,FALSE,FALSE,0);gtk_widget_show(editor);}
   else{auto*label=gtk_label_new(error?error->message:_("Unable to open the painter brush editor"));gtk_box_pack_start(GTK_BOX(box),label,FALSE,FALSE,0);gtk_widget_show(label);g_clear_error(&error);}

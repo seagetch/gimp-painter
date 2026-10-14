@@ -142,6 +142,7 @@ static void paint_bidirectional_reset_and_resource (void) {
   gtk_spin_button_set_value(GTK_SPIN_BUTTON(size),29.);g_object_get(tool->tool_options,"brush-size",&value,NULL);g_assert_cmpfloat(value,==,29.);
 }
 static void popup_repeat (void) {
+  gimp_set_focused_once(gimp);
   GimpToolInfo *tool=info("gimp-paintbrush-tool");GtkWidget *gui=gimp_tools_get_tool_options_gui(tool->tool_options);
   GtkWidget *old=gtk_widget_get_parent(gui);if(old)g_object_ref(old);g_object_ref(gui);
   if(old)gtk_container_remove(GTK_CONTAINER(old),gui);gtk_container_add(GTK_CONTAINER(window),gui);gtk_widget_show_all(window);
@@ -233,6 +234,7 @@ static void popup_native_events_and_window_destroy(void) {
 }
 static void finalized (gpointer data,GObject *object) { *(gboolean*)data=TRUE; }
 static void fresh_owner_lifecycle (void) {
+  gimp_set_focused_once(gimp);
   GimpToolInfo *tool=info("gimp-paintbrush-tool");
   for(guint n=0;n<24;n++) {
     GtkWidget *gui=gtk_box_new(GTK_ORIENTATION_VERTICAL,4);g_object_ref_sink(gui);
