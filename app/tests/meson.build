@@ -825,3 +825,24 @@ test('filter-entry-contracts', filter_entry_contracts_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Original deferred LayerTileView construction and native canvas routing.
+layer_tile_entry_args = []
+layer_tile_entry_link_args = []
+layer_tile_entry_wraps = ['-Wl,--wrap=gimp_layer_tile_view_new',
+                          '-Wl,--wrap=gimp_layer_tile_view_get_type']
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_multi_link_arguments(layer_tile_entry_wraps)
+  layer_tile_entry_args = ['-DGIMP_TEST_LAYER_TILE_WRAP_ENTRIES']
+  layer_tile_entry_link_args = layer_tile_entry_wraps
+endif
+layer_tile_entry_contracts_test = executable('layer-tile-entry-contracts',
+  'test-layer-tile-entry-contracts.c', 'test-layer-tile-entry-contracts.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream, json_glib], link_with: apptests_links,
+  cpp_args: painter_cpp_args + layer_tile_entry_args, link_args: layer_tile_entry_link_args,
+  override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('layer-tile-entry-contracts', layer_tile_entry_contracts_test,
+  depends: gimp_test_icon_dependencies,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
