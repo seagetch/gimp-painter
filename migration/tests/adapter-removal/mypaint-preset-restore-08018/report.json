@@ -1,0 +1,1059 @@
+{
+  "public_base": "79d36312c27a6a8c866d17a87beb53fae05127ff",
+  "status": "PASS bounded startup/reset restoration; 08.018 remains open",
+  "change": "Synthetic JSON property NULL means no override during native Reset; startup reseeds the complete currently selected Painter preset once immediately after Reset, before persisted options deserialization. Save remains unchanged and consumes the full working draft.",
+  "baseline_source_evidence": {
+    "public_base": "79d36312c27a6a8c866d17a87beb53fae05127ff",
+    "evidence": "Reused clean ordinary-app capture; production inputs and app binary verified in baseline-source.json. Source-derived causal chain, not an instrumented stack trace.",
+    "observations": [
+      {
+        "label": "source",
+        "top_level_keys": [
+          "comment",
+          "group",
+          "parent_brush_name",
+          "settings",
+          "version"
+        ],
+        "settings_count": 43,
+        "mapped_settings_count": 3,
+        "opaque": {
+          "base_value": 0.4,
+          "inputs": {
+            "pressure": [
+              [
+                0,
+                0
+              ],
+              [
+                1.0,
+                0.4
+              ]
+            ]
+          }
+        },
+        "embedded_icon": false
+      },
+      {
+        "label": "saved_baseline",
+        "top_level_keys": [
+          "parent_brush_name",
+          "settings",
+          "version"
+        ],
+        "settings_count": 1,
+        "mapped_settings_count": 0,
+        "opaque": {
+          "base_value": 0.65
+        },
+        "embedded_icon": false
+      }
+    ],
+    "source_sha256": "c166706ab5eee26370ccbd547793ed696ebceaa988375037fdf2bf738dc059bc",
+    "saved_baseline_sha256": "4758b6c3b1a8ab02d452f7dc757eb7dedb57950a4c8b1b94aa6b57e94a51ddee",
+    "preedit_screenshot_sha256": "12790fb8985b7683d8adb873eeceb2b05b34e45ab35b0ba456bdaa3431c17317",
+    "preedit_visual": "Selected charcoal source; Opacity1.0 and Unsaved draft before any editor modification, source opacity0.4.",
+    "source_chain": [
+      "gimp_restore loads resource factories before emitting restore",
+      "gui_restore_callback invokes gimp_tools_restore",
+      "first restore loop calls gimp_config_reset on Painter Options",
+      "native property walker writes synthetic painter-settings default version3 Resource",
+      "same-pointer painter resource selection is an intentional native no-op",
+      "later name/settings edits, history and Save faithfully preserve reduced draft"
+    ],
+    "fix_scope": "NULL synthetic-property default sentinel + one startup reseed after Reset; explicit numeric Reset retains draft-owned non-property data. No Save fallback and no generic pixel-copy change.",
+    "remaining_limit": "Existing specified named brushmark/paper bidirectional bindings may intentionally update text later during global context restoration; no second reseed/history-suppression change."
+  },
+  "baseline_control": {
+    "status": "EXPECTED_FAIL",
+    "case": "/painter-options/native-config-reset-defaults",
+    "returncode": -6,
+    "assertion": "actual.preview_png_base64()==draft.preview_png_base64()",
+    "raw_json_sha256": "82a9cdbdf97e6fe419c0324aec571e3dab3bb6f37b9a227aa3d5bbe6d95aeb87",
+    "scope": "Existing public APIs on old production source; retained numeric reset controls passed before icon-loss assertion. Not a crash in ordinary UI."
+  },
+  "candidate": {
+    "native": {
+      "mode": "native",
+      "run": "preset-restore-candidate-native-v1",
+      "status": "PASS",
+      "registrations": 7,
+      "case_count": 103,
+      "results": [
+        {
+          "name": "painter-compact-options",
+          "cases": [
+            "/painter-compact-options/orientation-enum-contract",
+            "/painter-compact-options/orientation-integer-contract",
+            "/painter-compact-options/orientation-property-contract",
+            "/painter-compact-options/orientation-active-callers",
+            "/painter-compact-options/orientation-histogram-current-controls",
+            "/painter-compact-options/native-preview-factory-failure",
+            "/painter-compact-options/native-preview-factory-success",
+            "/painter-compact-options/native-property-controls",
+            "/painter-compact-options/native-enum-integer-helpers",
+            "/painter-compact-options/inventory-all-registered",
+            "/painter-compact-options/common-store-registration-close",
+            "/painter-compact-options/mypaint-store-page-retention",
+            "/painter-compact-options/native-editor-mixed-width",
+            "/painter-compact-options/paint-bidirectional-resource",
+            "/painter-compact-options/popup-repeat",
+            "/painter-compact-options/popup-native-events-window-destroy",
+            "/painter-compact-options/fresh-owner-lifecycle",
+            "/painter-compact-options/mixed-packing-owned-destruction",
+            "/painter-compact-options/native-viewport-composition",
+            "/painter-compact-options/registered-popup-contracts",
+            "/painter-compact-options/reentrant-destruction",
+            "/painter-compact-options/native-visibility-preference",
+            "/painter-compact-options/canvas-dock-tool-transfer-preference"
+          ],
+          "case_count": 23,
+          "duration_seconds": 6.8252036571502686,
+          "registered_timeout_seconds": 60,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        },
+        {
+          "name": "gimp-painter-options",
+          "cases": [
+            "/painter-options/generated-properties",
+            "/painter-options/all-native-properties-config",
+            "/painter-options/legacy-brush-mode-config",
+            "/painter-options/edit-curve-commit-conflict",
+            "/painter-options/history-config",
+            "/painter-options/draft-name-identity-commit",
+            "/painter-options/draft-name-history-copy",
+            "/painter-options/draft-name-external-errors",
+            "/painter-options/draft-name-notification-lifetime",
+            "/painter-options/draft-name-reentry",
+            "/painter-options/native-config-reset-defaults",
+            "/painter-options/notification-last-ref",
+            "/painter-options/closed-invalid-curve",
+            "/painter-options/named-resources",
+            "/painter-options/selection-reentry",
+            "/painter-options/commit-close",
+            "/painter-options/cross-options-history",
+            "/painter-options/application-history-close"
+          ],
+          "case_count": 18,
+          "duration_seconds": 1.0186364650726318,
+          "registered_timeout_seconds": 60,
+          "stderr_lines": 71,
+          "allowed_cloud_debug_notices": []
+        },
+        {
+          "name": "gimp-painter-session",
+          "cases": [
+            "/painter-session/controller-pixels",
+            "/painter-session/registered-native-paint-core",
+            "/painter-session/options-first-stroke-ownership",
+            "/painter-session/settings-split-block",
+            "/painter-session/close-start",
+            "/painter-session/settings-during-motion",
+            "/painter-session/closed-options-cancel",
+            "/painter-session/notification-last-ref",
+            "/painter-session/deferred-sample-stop",
+            "/painter-session/cancel-native-start"
+          ],
+          "case_count": 10,
+          "duration_seconds": 1.1232211589813232,
+          "registered_timeout_seconds": 60,
+          "stderr_lines": 71,
+          "allowed_cloud_debug_notices": []
+        },
+        {
+          "name": "painter-options-session-c",
+          "cases": [
+            "/painter-c/options-owned-roundtrip",
+            "/painter-c/options-draft-name-history-copy",
+            "/painter-c/options-prepare-restore-saved-json",
+            "/painter-c/options-reject-close",
+            "/painter-c/session-native-transaction",
+            "/painter-c/session-errors-close"
+          ],
+          "case_count": 6,
+          "duration_seconds": 1.0948047637939453,
+          "registered_timeout_seconds": 60,
+          "stderr_lines": 71,
+          "allowed_cloud_debug_notices": []
+        },
+        {
+          "name": "painter-mypaint-tool",
+          "cases": [
+            "/painter-tool/registration-gate",
+            "/painter-tool/standalone-lifecycle",
+            "/painter-tool/hover-default-pressure",
+            "/painter-tool/stationary-equal-time-undo",
+            "/painter-tool/cancel",
+            "/painter-tool/editor-context",
+            "/painter-tool/ruler-origin",
+            "/painter-tool/halt-last-ref-motion",
+            "/painter-tool/image-change",
+            "/painter-tool/save-pending",
+            "/painter-tool/save-preflight",
+            "/painter-tool/outline-projection",
+            "/painter-tool/public-press-last-ref",
+            "/painter-tool/last-ref-without-halt",
+            "/painter-tool/gray-native-save-roundtrip",
+            "/painter-tool/pipe-release-save-roundtrip",
+            "/painter-tool/precision-native-save-roundtrip"
+          ],
+          "case_count": 17,
+          "duration_seconds": 40.077747106552124,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 93,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        },
+        {
+          "name": "painter-mypaint-editor",
+          "cases": [
+            "/painter-editor/01-constructors-shared",
+            "/painter-editor/14-common-store-widget-behaviors",
+            "/painter-editor/02-all-controls-curves",
+            "/painter-editor/03-list-search-history",
+            "/painter-editor/04-save-conflict-default-path",
+            "/painter-editor/05-preview-extended",
+            "/painter-editor/06-replace-close",
+            "/painter-editor/07-registration",
+            "/painter-editor/08-legacy-preview-oracle",
+            "/painter-editor/09-close-during-refresh",
+            "/painter-editor/13-owner-destruction-orders",
+            "/painter-editor/10-graph-gestures",
+            "/painter-editor/11-resource-notifications",
+            "/painter-editor/12-delete-failure",
+            "/painter-editor/15-registered-dock-selection-context",
+            "/painter-editor/16-factory-membership-context-lifetime",
+            "/painter-editor/17-draft-name-history-save"
+          ],
+          "case_count": 17,
+          "duration_seconds": 19.091768741607666,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        },
+        {
+          "name": "painter-profile-native",
+          "cases": [
+            "/painter-profile-native/tool-order-roundtrip",
+            "/painter-profile-native/mypaint-preset-roundtrip",
+            "/painter-profile-native/smudge-context-roundtrip",
+            "/painter-profile-native/genuine-old-writer",
+            "/painter-profile-native/genuine-device-context",
+            "/painter-profile-native/independent-defaults",
+            "/painter-profile-native/first-run-installer-retry",
+            "/painter-profile-native/native-brush-defaults",
+            "/painter-profile-native/expanded-last-owner",
+            "/painter-profile-native/image-generator/genuine-writer",
+            "/painter-profile-native/image-generator/missing-selection",
+            "/painter-profile-native/image-generator/unknown-saved-data"
+          ],
+          "case_count": 12,
+          "duration_seconds": 1.65236234664917,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        }
+      ],
+      "source_seal": {
+        "path": "mypaint-icons-20261014/candidate-source-seal.json",
+        "sha256": "504d0840a30d7aa3590ffefb8a5de7dfc426b2d720e40f1cf4eee1e7292d13f9",
+        "files": [
+          {
+            "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+            "before_git_blob": "03c7f81045c62c690946dcf9e16fa39e3ec73323",
+            "after_git_blob": "e26f68e1de4b1a1cdebca4e23c83d5a9426dc0fe",
+            "after_sha256": "87f5ded73bfeaa682fe750f0a346163d5265a58b008cb8ddaef8ed2b7ae26c08",
+            "bytes": 37063
+          },
+          {
+            "path": "app/paint/painter-mypaint-surface/gimp-painter-options.h",
+            "before_git_blob": "53cc41dbf5a3ef1d65532ced34442793c4580c42",
+            "after_git_blob": "89a986a3e1ea73a28b6bbca6691e63408471e59d",
+            "after_sha256": "390f0ed80e278c8447bc54b909bd5ca62662f01f478dc3d771f70c4c0ee6d36c",
+            "bytes": 4241
+          },
+          {
+            "path": "app/tools/gimp-tools.c",
+            "before_git_blob": "04c23c47720ee44808d4c761cdd35db1ce69757a",
+            "after_git_blob": "da2329e67fb2e7df4f731ff51f35dd0af8b0165f",
+            "after_sha256": "8b58ad5b978a761ebb1703f156c70300e9cecd3cce86851f5b097f5a4ca28ae3",
+            "bytes": 27195
+          },
+          {
+            "path": "app/tests/test-gimp-painter-options.cpp",
+            "before_git_blob": "8b4a9fb9726eb891ddb41ae8c2f3e9102897a8c1",
+            "after_git_blob": "f732452d3d7edd722e6f698f22463724e44c23bf",
+            "after_sha256": "9f2b9b65bfecf7c511f7c14db04892a3d51e024ef4e58a484e0c9bc70405ccff",
+            "bytes": 45140
+          },
+          {
+            "path": "app/tests/test-painter-options-session-c.c",
+            "before_git_blob": "ecd5129557c88cbedcaff376065c5600a0afe181",
+            "after_git_blob": "ee7ecf9ab9b74d1bac1d9580d716643b8dc27e09",
+            "after_sha256": "76e4ac05fa46c528032e190bca2f39e00e762f4e0e8a564dbc42ed85f3d69c4b",
+            "bytes": 26595
+          },
+          {
+            "path": "app/tests/test-painter-mypaint-editor.cpp",
+            "before_git_blob": "20aba34e5b2f20c60cc8eb79895c5b94dca20920",
+            "after_git_blob": "ae74acceb30bb07b7a371e688f1d1e7e3fb8d8ca",
+            "after_sha256": "d3b8d077493d975b034c5b9138dec47a1f5072b773895e1d16891bce5437a6d1",
+            "bytes": 71801
+          }
+        ]
+      },
+      "registration_sources_sha256": {
+        "app/tests/test-gimp-painter-options.cpp": "9f2b9b65bfecf7c511f7c14db04892a3d51e024ef4e58a484e0c9bc70405ccff",
+        "app/tests/test-gimp-painter-session.cpp": "951ede1749e1760cf4e85473301759c023bb2ca4386614605dbbd5d73d3008f2",
+        "app/tests/test-painter-options-session-c.c": "76e4ac05fa46c528032e190bca2f39e00e762f4e0e8a564dbc42ed85f3d69c4b",
+        "app/tests/test-painter-mypaint-tool.cpp": "753b184bdcc875babfb1eff9395d5fcd436a200e43a050d9e6b99e145df7669f",
+        "app/tests/test-painter-mypaint-editor.cpp": "d3b8d077493d975b034c5b9138dec47a1f5072b773895e1d16891bce5437a6d1",
+        "app/tests/test-painter-compact-options.c": "b8659ad2b034736404d58af7bf6209fbbe5d89ffb73ea014429b65133beaaecb",
+        "app/tests/test-painter-profile-native.cpp": "ebeac4ea2a8a3fdd03378e3858c88d3424af3a2036e44f024999a0dbec9b2cae",
+        "app/tests/test-painter-profile-image-generator-c.c": "4961f2cdaf1d5685cc60f095153a71e8ed9c0f4da89ba77cc1fd0f1f0952d72f"
+      },
+      "actual_c11": true,
+      "compile_evidence": {
+        "sha256": "9d2de63681b42dc3d1bc9741b389ccfa5ec6de8e08d7d0e287d1a81e52a13613",
+        "units": [
+          {
+            "file": "test-gimp-painter-options.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": []
+          },
+          {
+            "file": "test-gimp-painter-session.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": []
+          },
+          {
+            "file": "test-painter-options-session-c.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [
+              "-std=c11"
+            ],
+            "sanitizers": []
+          },
+          {
+            "file": "test-painter-mypaint-tool.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": []
+          },
+          {
+            "file": "test-painter-mypaint-editor.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": []
+          },
+          {
+            "file": "test-painter-compact-options.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [
+              "-std=c11"
+            ],
+            "sanitizers": []
+          },
+          {
+            "file": "test-painter-profile-native.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": []
+          }
+        ]
+      },
+      "timeouts_unchanged": true,
+      "timeout_multiplier": null,
+      "isolation_and_authenticated_loopback_verified": true,
+      "lsan_enabled": null,
+      "diagnostic_exception": {
+        "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+        "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+        "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+      },
+      "verifier_sha256": "d454d776ebbb2a4231a6c59bba57c07fc4ded7ceb8e37048a8b143e3ff5ec735",
+      "input_sha256": {
+        "results.json": "cd900fd5226808914fe8cd73e4cf58560bc7a177ff9ea2569b9cca17ff13488b",
+        "registrations.json": "9ccb4c45d7657973e6fe7846bdc9d61207d94322e8f7157fa8b3d4b9e3d91e6f",
+        "preset-restore-candidate-native-v1.json": "b5c85d1a580747d3ea3046deff00f58993baad0a7a02ba38da24c1ab441d95cf"
+      }
+    },
+    "asan": {
+      "mode": "asan",
+      "run": "preset-restore-candidate-asan-v1",
+      "status": "PASS",
+      "registrations": 7,
+      "case_count": 103,
+      "results": [
+        {
+          "name": "painter-compact-options",
+          "cases": [
+            "/painter-compact-options/orientation-enum-contract",
+            "/painter-compact-options/orientation-integer-contract",
+            "/painter-compact-options/orientation-property-contract",
+            "/painter-compact-options/orientation-active-callers",
+            "/painter-compact-options/orientation-histogram-current-controls",
+            "/painter-compact-options/native-preview-factory-failure",
+            "/painter-compact-options/native-preview-factory-success",
+            "/painter-compact-options/native-property-controls",
+            "/painter-compact-options/native-enum-integer-helpers",
+            "/painter-compact-options/inventory-all-registered",
+            "/painter-compact-options/common-store-registration-close",
+            "/painter-compact-options/mypaint-store-page-retention",
+            "/painter-compact-options/native-editor-mixed-width",
+            "/painter-compact-options/paint-bidirectional-resource",
+            "/painter-compact-options/popup-repeat",
+            "/painter-compact-options/popup-native-events-window-destroy",
+            "/painter-compact-options/fresh-owner-lifecycle",
+            "/painter-compact-options/mixed-packing-owned-destruction",
+            "/painter-compact-options/native-viewport-composition",
+            "/painter-compact-options/registered-popup-contracts",
+            "/painter-compact-options/reentrant-destruction",
+            "/painter-compact-options/native-visibility-preference",
+            "/painter-compact-options/canvas-dock-tool-transfer-preference"
+          ],
+          "case_count": 23,
+          "duration_seconds": 13.878467559814453,
+          "registered_timeout_seconds": 60,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        },
+        {
+          "name": "gimp-painter-options",
+          "cases": [
+            "/painter-options/generated-properties",
+            "/painter-options/all-native-properties-config",
+            "/painter-options/legacy-brush-mode-config",
+            "/painter-options/edit-curve-commit-conflict",
+            "/painter-options/history-config",
+            "/painter-options/draft-name-identity-commit",
+            "/painter-options/draft-name-history-copy",
+            "/painter-options/draft-name-external-errors",
+            "/painter-options/draft-name-notification-lifetime",
+            "/painter-options/draft-name-reentry",
+            "/painter-options/native-config-reset-defaults",
+            "/painter-options/notification-last-ref",
+            "/painter-options/closed-invalid-curve",
+            "/painter-options/named-resources",
+            "/painter-options/selection-reentry",
+            "/painter-options/commit-close",
+            "/painter-options/cross-options-history",
+            "/painter-options/application-history-close"
+          ],
+          "case_count": 18,
+          "duration_seconds": 1.3143246173858643,
+          "registered_timeout_seconds": 60,
+          "stderr_lines": 71,
+          "allowed_cloud_debug_notices": []
+        },
+        {
+          "name": "gimp-painter-session",
+          "cases": [
+            "/painter-session/controller-pixels",
+            "/painter-session/registered-native-paint-core",
+            "/painter-session/options-first-stroke-ownership",
+            "/painter-session/settings-split-block",
+            "/painter-session/close-start",
+            "/painter-session/settings-during-motion",
+            "/painter-session/closed-options-cancel",
+            "/painter-session/notification-last-ref",
+            "/painter-session/deferred-sample-stop",
+            "/painter-session/cancel-native-start"
+          ],
+          "case_count": 10,
+          "duration_seconds": 1.3550472259521484,
+          "registered_timeout_seconds": 60,
+          "stderr_lines": 71,
+          "allowed_cloud_debug_notices": []
+        },
+        {
+          "name": "painter-options-session-c",
+          "cases": [
+            "/painter-c/options-owned-roundtrip",
+            "/painter-c/options-draft-name-history-copy",
+            "/painter-c/options-prepare-restore-saved-json",
+            "/painter-c/options-reject-close",
+            "/painter-c/session-native-transaction",
+            "/painter-c/session-errors-close"
+          ],
+          "case_count": 6,
+          "duration_seconds": 1.3891854286193848,
+          "registered_timeout_seconds": 60,
+          "stderr_lines": 71,
+          "allowed_cloud_debug_notices": []
+        },
+        {
+          "name": "painter-mypaint-tool",
+          "cases": [
+            "/painter-tool/registration-gate",
+            "/painter-tool/standalone-lifecycle",
+            "/painter-tool/hover-default-pressure",
+            "/painter-tool/stationary-equal-time-undo",
+            "/painter-tool/cancel",
+            "/painter-tool/editor-context",
+            "/painter-tool/ruler-origin",
+            "/painter-tool/halt-last-ref-motion",
+            "/painter-tool/image-change",
+            "/painter-tool/save-pending",
+            "/painter-tool/save-preflight",
+            "/painter-tool/outline-projection",
+            "/painter-tool/public-press-last-ref",
+            "/painter-tool/last-ref-without-halt",
+            "/painter-tool/gray-native-save-roundtrip",
+            "/painter-tool/pipe-release-save-roundtrip",
+            "/painter-tool/precision-native-save-roundtrip"
+          ],
+          "case_count": 17,
+          "duration_seconds": 40.36470651626587,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 93,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        },
+        {
+          "name": "painter-mypaint-editor",
+          "cases": [
+            "/painter-editor/01-constructors-shared",
+            "/painter-editor/14-common-store-widget-behaviors",
+            "/painter-editor/02-all-controls-curves",
+            "/painter-editor/03-list-search-history",
+            "/painter-editor/04-save-conflict-default-path",
+            "/painter-editor/05-preview-extended",
+            "/painter-editor/06-replace-close",
+            "/painter-editor/07-registration",
+            "/painter-editor/08-legacy-preview-oracle",
+            "/painter-editor/09-close-during-refresh",
+            "/painter-editor/13-owner-destruction-orders",
+            "/painter-editor/10-graph-gestures",
+            "/painter-editor/11-resource-notifications",
+            "/painter-editor/12-delete-failure",
+            "/painter-editor/15-registered-dock-selection-context",
+            "/painter-editor/16-factory-membership-context-lifetime",
+            "/painter-editor/17-draft-name-history-save"
+          ],
+          "case_count": 17,
+          "duration_seconds": 67.29852104187012,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        },
+        {
+          "name": "painter-profile-native",
+          "cases": [
+            "/painter-profile-native/tool-order-roundtrip",
+            "/painter-profile-native/mypaint-preset-roundtrip",
+            "/painter-profile-native/smudge-context-roundtrip",
+            "/painter-profile-native/genuine-old-writer",
+            "/painter-profile-native/genuine-device-context",
+            "/painter-profile-native/independent-defaults",
+            "/painter-profile-native/first-run-installer-retry",
+            "/painter-profile-native/native-brush-defaults",
+            "/painter-profile-native/expanded-last-owner",
+            "/painter-profile-native/image-generator/genuine-writer",
+            "/painter-profile-native/image-generator/missing-selection",
+            "/painter-profile-native/image-generator/unknown-saved-data"
+          ],
+          "case_count": 12,
+          "duration_seconds": 2.565037250518799,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        }
+      ],
+      "source_seal": {
+        "path": "mypaint-icons-20261014/candidate-source-seal.json",
+        "sha256": "504d0840a30d7aa3590ffefb8a5de7dfc426b2d720e40f1cf4eee1e7292d13f9",
+        "files": [
+          {
+            "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+            "before_git_blob": "03c7f81045c62c690946dcf9e16fa39e3ec73323",
+            "after_git_blob": "e26f68e1de4b1a1cdebca4e23c83d5a9426dc0fe",
+            "after_sha256": "87f5ded73bfeaa682fe750f0a346163d5265a58b008cb8ddaef8ed2b7ae26c08",
+            "bytes": 37063
+          },
+          {
+            "path": "app/paint/painter-mypaint-surface/gimp-painter-options.h",
+            "before_git_blob": "53cc41dbf5a3ef1d65532ced34442793c4580c42",
+            "after_git_blob": "89a986a3e1ea73a28b6bbca6691e63408471e59d",
+            "after_sha256": "390f0ed80e278c8447bc54b909bd5ca62662f01f478dc3d771f70c4c0ee6d36c",
+            "bytes": 4241
+          },
+          {
+            "path": "app/tools/gimp-tools.c",
+            "before_git_blob": "04c23c47720ee44808d4c761cdd35db1ce69757a",
+            "after_git_blob": "da2329e67fb2e7df4f731ff51f35dd0af8b0165f",
+            "after_sha256": "8b58ad5b978a761ebb1703f156c70300e9cecd3cce86851f5b097f5a4ca28ae3",
+            "bytes": 27195
+          },
+          {
+            "path": "app/tests/test-gimp-painter-options.cpp",
+            "before_git_blob": "8b4a9fb9726eb891ddb41ae8c2f3e9102897a8c1",
+            "after_git_blob": "f732452d3d7edd722e6f698f22463724e44c23bf",
+            "after_sha256": "9f2b9b65bfecf7c511f7c14db04892a3d51e024ef4e58a484e0c9bc70405ccff",
+            "bytes": 45140
+          },
+          {
+            "path": "app/tests/test-painter-options-session-c.c",
+            "before_git_blob": "ecd5129557c88cbedcaff376065c5600a0afe181",
+            "after_git_blob": "ee7ecf9ab9b74d1bac1d9580d716643b8dc27e09",
+            "after_sha256": "76e4ac05fa46c528032e190bca2f39e00e762f4e0e8a564dbc42ed85f3d69c4b",
+            "bytes": 26595
+          },
+          {
+            "path": "app/tests/test-painter-mypaint-editor.cpp",
+            "before_git_blob": "20aba34e5b2f20c60cc8eb79895c5b94dca20920",
+            "after_git_blob": "ae74acceb30bb07b7a371e688f1d1e7e3fb8d8ca",
+            "after_sha256": "d3b8d077493d975b034c5b9138dec47a1f5072b773895e1d16891bce5437a6d1",
+            "bytes": 71801
+          }
+        ]
+      },
+      "registration_sources_sha256": {
+        "app/tests/test-gimp-painter-options.cpp": "9f2b9b65bfecf7c511f7c14db04892a3d51e024ef4e58a484e0c9bc70405ccff",
+        "app/tests/test-gimp-painter-session.cpp": "951ede1749e1760cf4e85473301759c023bb2ca4386614605dbbd5d73d3008f2",
+        "app/tests/test-painter-options-session-c.c": "76e4ac05fa46c528032e190bca2f39e00e762f4e0e8a564dbc42ed85f3d69c4b",
+        "app/tests/test-painter-mypaint-tool.cpp": "753b184bdcc875babfb1eff9395d5fcd436a200e43a050d9e6b99e145df7669f",
+        "app/tests/test-painter-mypaint-editor.cpp": "d3b8d077493d975b034c5b9138dec47a1f5072b773895e1d16891bce5437a6d1",
+        "app/tests/test-painter-compact-options.c": "b8659ad2b034736404d58af7bf6209fbbe5d89ffb73ea014429b65133beaaecb",
+        "app/tests/test-painter-profile-native.cpp": "ebeac4ea2a8a3fdd03378e3858c88d3424af3a2036e44f024999a0dbec9b2cae",
+        "app/tests/test-painter-profile-image-generator-c.c": "4961f2cdaf1d5685cc60f095153a71e8ed9c0f4da89ba77cc1fd0f1f0952d72f"
+      },
+      "actual_c11": true,
+      "compile_evidence": {
+        "sha256": "0a28e6dd8ffe463af13cfbb2750a229ddb468bb072c0e0ef3d73f3de985e13e8",
+        "units": [
+          {
+            "file": "test-gimp-painter-options.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "test-gimp-painter-session.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "test-painter-options-session-c.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [
+              "-std=c11"
+            ],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "test-painter-mypaint-tool.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "test-painter-mypaint-editor.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "test-painter-compact-options.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [
+              "-std=c11"
+            ],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "test-painter-profile-native.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          }
+        ]
+      },
+      "timeouts_unchanged": true,
+      "timeout_multiplier": null,
+      "isolation_and_authenticated_loopback_verified": true,
+      "lsan_enabled": false,
+      "diagnostic_exception": {
+        "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+        "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+        "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+      },
+      "verifier_sha256": "d454d776ebbb2a4231a6c59bba57c07fc4ded7ceb8e37048a8b143e3ff5ec735",
+      "input_sha256": {
+        "results.json": "f41837b138099eb496d5f65e9693fdde52a00df9fb7ad99499377134a9efa925",
+        "registrations.json": "a36339572417abb5b6155903e29d3f4d8ad5d7e74685a40a58d21f751738bd9c",
+        "preset-restore-candidate-asan-v1.json": "43e148de4e584a7a419ec98c52d00eca411a5a41b08940f5c9382f1aff92d2ec"
+      }
+    }
+  },
+  "visual": {
+    "baseline": {
+      "application_sha256": "66f693b4e5c6df11332c2082e976d118b5b7391dd31b557bb6d41c3371ded5e5",
+      "application_exit": 0,
+      "stable_inputs": true,
+      "original_brush_and_document_unchanged": true,
+      "images": {
+        "action-11.png": "12790fb8985b7683d8adb873eeceb2b05b34e45ab35b0ba456bdaa3431c17317",
+        "after-save-new-resource.png": "35308b59dac861ce466c0ded23cfa9a5eefddb7b355757d1c43df3237e753943"
+      },
+      "receipt_sha256": "ebe522a964e2e178d0e87e105298ab6fbbddb2026e3ab29be06de90179db0849",
+      "normal_log_sha256": "54750d11308ac1a5517a60c232308290ab31d04525a657ab0ddb366d37e81152"
+    },
+    "candidate": {
+      "application_sha256": "3a1194c23890146b212b54ba3dcf6752a610f1f2b343de9fa776f7d8456b786a",
+      "application_exit": 0,
+      "stable_inputs": true,
+      "original_brush_and_document_unchanged": true,
+      "images": {
+        "after-startup-full-preset.png": "e0b272467fecf488bed0f2f023eb81efe5a349ec6b17e1748301b9f731456570",
+        "after-edited-full-draft.png": "9fb87b537775cc1d1f2169f348bcb27dcb1404a2e8cad5c3aed4736f2fe5ca68",
+        "after-history-full-draft.png": "da508ae948d302e6f07c9f32185b6fb906df94f93f4e4d0f671ecfe60cd74165",
+        "after-save-full-preset-icon.png": "78b4947d1138680d4fb51d4b2108b6caf171c527ee0ae30682e9c5d52622d29f"
+      },
+      "receipt_sha256": "877c2f5b64afce881921ff512725a35a5bed7deb29a400148d7ff6f534687d55",
+      "normal_log_sha256": "a6e088a760eebf19ae1b6846431d2be5cf8b7b01a8d94a29943f5bd2ab68ba06"
+    },
+    "baseline_provenance": {
+      "public_base": "79d36312c27a6a8c866d17a87beb53fae05127ff",
+      "files": [
+        {
+          "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+          "sha256": "6c38d5c51827a14583d8213137028cf914a70470777b13927e1ea842deb1b1f4"
+        },
+        {
+          "path": "app/paint/painter-mypaint-surface/gimp-painter-options.h",
+          "sha256": "738efdb8009995481165482bc95968369a8c990cafdd0727b0deb9cf75593b55"
+        },
+        {
+          "path": "app/tools/gimp-tools.c",
+          "sha256": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435"
+        },
+        {
+          "path": "app/tests/test-gimp-painter-options.cpp",
+          "sha256": "ee9b09ff741d44c4af65c61ff4ae47a502cd9f590c155dc080d83fb5e5671708"
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "sha256": "ddfb883b650992f1353161f75da79ffac85759d36a573bcceec6bccee12f3e36"
+        },
+        {
+          "path": "app/tests/test-painter-mypaint-editor.cpp",
+          "sha256": "696bf18574f2d9113bc02a870746d9d4a4106893295f46c2c4f8a269306cc9d1"
+        },
+        {
+          "path": "app/core/gimppaintermybrush.cpp",
+          "sha256": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2"
+        },
+        {
+          "path": "app/widgets/gimppaintermybrusheditor.cpp",
+          "sha256": "f9f73bc111be87ebe1d89b7dabe234258b59cae45f27cf3f9b1d828f63b1f86a"
+        }
+      ],
+      "application_sha256": "66f693b4e5c6df11332c2082e976d118b5b7391dd31b557bb6d41c3371ded5e5",
+      "application_build_evidence": "mypaint-semantics-20261014/candidate-native-v2-build.log",
+      "reused_visual_evidence": "mypaint-semantics-20261014/visual-prep/candidate-01",
+      "qualification": "Application production inputs unchanged since clean naming capture; subsequent naming v3 edits were test-fixture only."
+    },
+    "readback": {
+      "status": "PASS",
+      "settings_count": 43,
+      "mapped_settings_count": 3,
+      "full_json_equal_except_intended_name_opaque_and_embedded_preview": true,
+      "unchanged_fields": "All original settings/curves/group/comment/other JSON retained except edited opaque base0.65 and parent name charcoal study draft.",
+      "icon_dimensions": [
+        128,
+        128
+      ],
+      "icon_rgba_sha256": "3368a8e4591f50bf1062f4618738a927158ce61ee88aca2860640f39b99441f1",
+      "icon_pixels_equal_original_sidecar": true,
+      "saved_file_sha256": "e48e12ab5c0aac52aeca81a550a9577647efb5648cc967dc8a53b615119fe720",
+      "source_file_sha256": "c166706ab5eee26370ccbd547793ed696ebceaa988375037fdf2bf738dc059bc",
+      "source_preview_sha256": "6a146b5dd16f7553392f79c76ee73168777f7993f3ed07869c6483423c0861da"
+    },
+    "delivery": "Normal-app startup before/after images reviewed and shared with the user on 2026-10-14 before publication.",
+    "method": "Ordinary standalone GIMP, complete ordinary resources, isolated writable profile, genuine legacy XCF, exact shipped charcoal brush/sidecar. Native XTest input and untouched full-desktop screenshots through the working tool-options popup. No injected test widgets, screenshot editing or empty fixture images. Visual evidence is not counted as test cases."
+  },
+  "verifier_negative_controls": {
+    "status": "PASS",
+    "positive_control": "Unmodified isolated native-v1 report accepted",
+    "negative_case_count": 12,
+    "original_inputs_source_and_build_unchanged": true,
+    "protected_sha256": {
+      "c-boundaries-validation-20261013/validation/preset-restore-candidate-native-v1/results.json": "cd900fd5226808914fe8cd73e4cf58560bc7a177ff9ea2569b9cca17ff13488b",
+      "c-boundaries-validation-20261013/validation/preset-restore-candidate-native-v1/registrations.json": "9ccb4c45d7657973e6fe7846bdc9d61207d94322e8f7157fa8b3d4b9e3d91e6f",
+      "c-boundaries-validation-20261013/validation/preset-restore-candidate-native-v1/preset-restore-candidate-native-v1.json": "b5c85d1a580747d3ea3046deff00f58993baad0a7a02ba38da24c1ab441d95cf",
+      "c-boundaries-validation-20261013/validation/preset-restore-candidate-native-v1/verified-results.json": "001b4a999e7cfc21c19510e2bb99c45ed94e0d49bcd548c2fee850d6e52d3ae3",
+      "mypaint-icons-20261014/candidate-source-seal.json": "504d0840a30d7aa3590ffefb8a5de7dfc426b2d720e40f1cf4eee1e7292d13f9",
+      "mypaint-icons-20261014/verify_candidate.py": "d454d776ebbb2a4231a6c59bba57c07fc4ded7ceb8e37048a8b143e3ff5ec735",
+      "c-boundaries-validation-20261013/build-native/compile_commands.json": "9d2de63681b42dc3d1bc9741b389ccfa5ec6de8e08d7d0e287d1a81e52a13613",
+      "gimp-c-boundaries-20261013/app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "87f5ded73bfeaa682fe750f0a346163d5265a58b008cb8ddaef8ed2b7ae26c08",
+      "gimp-c-boundaries-20261013/app/paint/painter-mypaint-surface/gimp-painter-options.h": "390f0ed80e278c8447bc54b909bd5ca62662f01f478dc3d771f70c4c0ee6d36c",
+      "gimp-c-boundaries-20261013/app/tools/gimp-tools.c": "8b58ad5b978a761ebb1703f156c70300e9cecd3cce86851f5b097f5a4ca28ae3",
+      "gimp-c-boundaries-20261013/app/tests/test-gimp-painter-options.cpp": "9f2b9b65bfecf7c511f7c14db04892a3d51e024ef4e58a484e0c9bc70405ccff",
+      "gimp-c-boundaries-20261013/app/tests/test-painter-options-session-c.c": "76e4ac05fa46c528032e190bca2f39e00e762f4e0e8a564dbc42ed85f3d69c4b",
+      "gimp-c-boundaries-20261013/app/tests/test-painter-mypaint-editor.cpp": "d3b8d077493d975b034c5b9138dec47a1f5072b773895e1d16891bce5437a6d1"
+    },
+    "verifier_sha256": "d454d776ebbb2a4231a6c59bba57c07fc4ded7ceb8e37048a8b143e3ff5ec735",
+    "scope": "Verifier-only execution against isolated JSON copies; no application or build execution",
+    "results": [
+      {
+        "mutation": "none",
+        "passed": true,
+        "expected_rejection": null,
+        "observed_error": null,
+        "accepted_output_written": true,
+        "log_sha256": "14545cdbda04b108a22292cf3e142b681ecd55f8f40134b333979237329d0705"
+      },
+      {
+        "mutation": "aggregate_nonzero",
+        "passed": true,
+        "expected_rejection": "aggregate or X server exit failed",
+        "observed_error": "aggregate or X server exit failed",
+        "accepted_output_written": false,
+        "log_sha256": "a0074dd261f8e57497dc45793387825296f123d44e1dd9c2e3dab262cd74dbaa"
+      },
+      {
+        "mutation": "process_nonzero_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "test process failed: painter-mypaint-editor",
+        "observed_error": "test process failed: painter-mypaint-editor",
+        "accepted_output_written": false,
+        "log_sha256": "b96ba9725704aefd03a41f6e7db84f68fb61533a61542d3b6b20cdae6fb4eb1d"
+      },
+      {
+        "mutation": "missing_tap_case",
+        "passed": true,
+        "expected_rejection": "TAP numbering missing/duplicated: painter-mypaint-editor",
+        "observed_error": "TAP numbering missing/duplicated: painter-mypaint-editor",
+        "accepted_output_written": false,
+        "log_sha256": "a0d2763b5c3bce72595c828e94c13521e79aef3fa7cad63f1992caf77b748ded"
+      },
+      {
+        "mutation": "duplicate_tap_case",
+        "passed": true,
+        "expected_rejection": "TAP numbering missing/duplicated: painter-mypaint-editor",
+        "observed_error": "TAP numbering missing/duplicated: painter-mypaint-editor",
+        "accepted_output_written": false,
+        "log_sha256": "a0d2763b5c3bce72595c828e94c13521e79aef3fa7cad63f1992caf77b748ded"
+      },
+      {
+        "mutation": "tap_skip_directive",
+        "passed": true,
+        "expected_rejection": "TAP IDs/order differ from source registration: painter-mypaint-editor",
+        "observed_error": "TAP IDs/order differ from source registration: painter-mypaint-editor",
+        "accepted_output_written": false,
+        "log_sha256": "165335e582f5c7daf265dc3041a880fcdfd60bcc83edc44448b2c8b7483ab254"
+      },
+      {
+        "mutation": "comment_skip",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: # SKIP injected",
+        "observed_error": "painter-mypaint-editor: forbidden diagnostic: # SKIP injected",
+        "accepted_output_written": false,
+        "log_sha256": "2c77f35dcab60375102b44710a37c2ba1181a5481a96614eec6a200e14d29b68"
+      },
+      {
+        "mutation": "teardown_critical_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: Gimp-Core-CRITICAL",
+        "observed_error": "painter-mypaint-editor: forbidden diagnostic: Gimp-Core-CRITICAL: injected teardown failure",
+        "accepted_output_written": false,
+        "log_sha256": "d161f7d5d4c26c363d33b930143fa147af47ff5db14fe2dd768fc4a367172421"
+      },
+      {
+        "mutation": "sanitizer_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: AddressSanitizer",
+        "observed_error": "painter-mypaint-editor: forbidden diagnostic: AddressSanitizer: injected error",
+        "accepted_output_written": false,
+        "log_sha256": "1000b656ed4d5b0b09ea26c2b51114240108c10d2a46e54a3183bfc69e53377c"
+      },
+      {
+        "mutation": "increased_registered_timeout",
+        "passed": true,
+        "expected_rejection": "registered timeout/serial contract changed: painter-mypaint-editor",
+        "observed_error": "registered timeout/serial contract changed: painter-mypaint-editor",
+        "accepted_output_written": false,
+        "log_sha256": "4ad2604a49cc9f657572c4d0409174a467ba8a225ca3a9d61c5fcf57a43c4527"
+      },
+      {
+        "mutation": "command_timeout_multiplier",
+        "passed": true,
+        "expected_rejection": "aggregate command differs",
+        "observed_error": "aggregate command differs, filters/timeout multipliers are forbidden",
+        "accepted_output_written": false,
+        "log_sha256": "49bf9fb834e93ffce63e51f22c9c7808979b08c697b6448e24798df1e627aaf4"
+      },
+      {
+        "mutation": "environment_timeout_multiplier",
+        "passed": true,
+        "expected_rejection": "timeout multiplier environment set",
+        "observed_error": "painter-mypaint-editor: timeout multiplier environment set",
+        "accepted_output_written": false,
+        "log_sha256": "d205eb91ff4be345664a68aabd1f90bd80b8675af27d1d34fa34e576d42e4f4e"
+      },
+      {
+        "mutation": "source_seal_tamper",
+        "passed": true,
+        "expected_rejection": "sealed SHA256 changed",
+        "observed_error": "sealed SHA256 changed: app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "accepted_output_written": false,
+        "log_sha256": "8da1833f4c4d1eaa1319bb8559ed42a0465bb8a4828163975bae292b77c3a87e"
+      }
+    ]
+  },
+  "static_policy": {
+    "scanner": "PASS: 2462 sources; 683 reviewed data sites; 4 dormant legacy findings",
+    "tests": 48
+  },
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "87f5ded73bfeaa682fe750f0a346163d5265a58b008cb8ddaef8ed2b7ae26c08",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h": "390f0ed80e278c8447bc54b909bd5ca62662f01f478dc3d771f70c4c0ee6d36c",
+    "app/tools/gimp-tools.c": "8b58ad5b978a761ebb1703f156c70300e9cecd3cce86851f5b097f5a4ca28ae3",
+    "app/tests/test-gimp-painter-options.cpp": "9f2b9b65bfecf7c511f7c14db04892a3d51e024ef4e58a484e0c9bc70405ccff",
+    "app/tests/test-painter-options-session-c.c": "76e4ac05fa46c528032e190bca2f39e00e762f4e0e8a564dbc42ed85f3d69c4b",
+    "app/tests/test-painter-mypaint-editor.cpp": "d3b8d077493d975b034c5b9138dec47a1f5072b773895e1d16891bce5437a6d1",
+    "app/tests/meson.build": "f5dee0b19c36baee6fa76852ee0380288bce42365462f640a391a45b8030d7a3",
+    "app/tests/test-gimp-painter-session.cpp": "951ede1749e1760cf4e85473301759c023bb2ca4386614605dbbd5d73d3008f2",
+    "app/tests/test-painter-mypaint-tool.cpp": "753b184bdcc875babfb1eff9395d5fcd436a200e43a050d9e6b99e145df7669f",
+    "app/tests/test-painter-compact-options.c": "b8659ad2b034736404d58af7bf6209fbbe5d89ffb73ea014429b65133beaaecb",
+    "app/tests/test-painter-profile-native.cpp": "ebeac4ea2a8a3fdd03378e3858c88d3424af3a2036e44f024999a0dbec9b2cae",
+    "app/tests/test-painter-profile-image-generator-c.c": "4961f2cdaf1d5685cc60f095153a71e8ed9c0f4da89ba77cc1fd0f1f0952d72f",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.hpp": "01fe463e68988d4f81855ad4dca190248b691f36f3d8c2a625d1eea830b19903",
+    "app/widgets/gimppaintermybrusheditor.cpp": "f9f73bc111be87ebe1d89b7dabe234258b59cae45f27cf3f9b1d828f63b1f86a",
+    "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+    "app/core/gimptooloptions.c": "65797b79006804998e21a4c05fe1ad4d3b06d0856c9dc6d7748ff24cd058edb4",
+    "libgimpconfig/gimpconfig-utils.c": "071980521110d774ac2ab087d63ffbcfbc5c68d6c9c95da7b16f2a416a2df18a",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262"
+  },
+  "binary_sha256": {
+    "native": {
+      "app/tests/gimp-painter-options": "72d4cbf32c8178ec446a636b41d19b50e26de30f2ef112d2429cb3d722fba5d8",
+      "app/tests/gimp-painter-session": "fa12b9c453d12176d746b51c6aa4ab5586e55bcbb3ef337a05e44a0a62d3fc53",
+      "app/tests/painter-options-session-c": "2d4f3ce88975a489fcc506802b8268e7f8e3f41a7c75f6ba5090e2c326d3e285",
+      "app/tests/painter-mypaint-tool": "2bef456b03fba15ff1f4b78883064e520d1ddaa8e9d9539db42d263c9969734a",
+      "app/tests/painter-mypaint-editor": "048c118a31b04ec81c333d4ad3a39943cac2cba92bb15abd78e1f22af0fee845",
+      "app/tests/painter-compact-options": "b688c1331f752692d4f88955cb37cc22ea47cac4a96159e1ce030467dfe063e0",
+      "app/tests/painter-profile-native": "7e9a3a1ac753a42d495a7e3aecbc460bd111f5076b39fb0a5e42b1ac9946ebac",
+      "compile_commands.json": "9d2de63681b42dc3d1bc9741b389ccfa5ec6de8e08d7d0e287d1a81e52a13613",
+      "meson-info/intro-tests.json": "6ab81987a0693146469c70127a0e667336b9271fe7ffac032af816e7d1b47ab5",
+      "app/tools/libapptools.a.p/gimp-tools.c.o": "b15bcbe6146b09ab0a52dfb74f5751a14578f5c60316101b1d15489ded773027",
+      "app/gimp-3.0": "3a1194c23890146b212b54ba3dcf6752a610f1f2b343de9fa776f7d8456b786a"
+    },
+    "asan": {
+      "app/tests/gimp-painter-options": "025d02d3f4c6570400b388c3cbcd57ba5a538b3c4145fb7128f17f78faceaf76",
+      "app/tests/gimp-painter-session": "8b6d9d7f6867e6f649170b73824ecb4699724c79380b6670875de4e28357b99d",
+      "app/tests/painter-options-session-c": "4543afb281b6ac5204a79b4858fd8243428e4d900c09a957a48368e3c5de73c5",
+      "app/tests/painter-mypaint-tool": "53e0bd72766f7f88f9fabd40763554fdaaf7938a64362232faf7b49e8822d0e1",
+      "app/tests/painter-mypaint-editor": "5b15b7f631139915529274d73bef106772d1c534dabfbdc884dec6896c2ca95a",
+      "app/tests/painter-compact-options": "4230a8c7ae5ef988f567d3f223cc2251d232a1d73fa5f4f89335100230337718",
+      "app/tests/painter-profile-native": "186392936f91a40a16c58f47a28e67ad8519035757d4e2b0343ba9214192bb9c",
+      "compile_commands.json": "0a28e6dd8ffe463af13cfbb2750a229ddb468bb072c0e0ef3d73f3de985e13e8",
+      "meson-info/intro-tests.json": "805a1fcdcd4d0c3bdb475c5c59e42aa4c6a0c1e650cf1d72cb786869197ef340",
+      "app/tools/libapptools.a.p/gimp-tools.c.o": "a3e0e840bbfd3329fbf774761be9177f29219b3ec1c58f244e51c0fbaa36a331"
+    }
+  },
+  "evidence_sha256": {
+    "preset-restore-candidate-native-v1/preset-restore-candidate-native-v1.json": "b5c85d1a580747d3ea3046deff00f58993baad0a7a02ba38da24c1ab441d95cf",
+    "preset-restore-candidate-native-v1/preset-restore-candidate-native-v1.txt": "ed737d70f1fcd6c9629a517f15a4a284d5419e7c50d8aaf64820166333affd99",
+    "preset-restore-candidate-native-v1/verified-results.json": "001b4a999e7cfc21c19510e2bb99c45ed94e0d49bcd548c2fee850d6e52d3ae3",
+    "preset-restore-candidate-native-v1/results.json": "cd900fd5226808914fe8cd73e4cf58560bc7a177ff9ea2569b9cca17ff13488b",
+    "preset-restore-candidate-asan-v1/preset-restore-candidate-asan-v1.json": "43e148de4e584a7a419ec98c52d00eca411a5a41b08940f5c9382f1aff92d2ec",
+    "preset-restore-candidate-asan-v1/preset-restore-candidate-asan-v1.txt": "259d356779983e4bd142bf58c850d926c581c21b66bf42178d0458efa7b83913",
+    "preset-restore-candidate-asan-v1/verified-results.json": "9dec63ff258532a73faf8513432e6a34781f671e128468e3d22437ecc64c2db8",
+    "preset-restore-candidate-asan-v1/results.json": "f41837b138099eb496d5f65e9693fdde52a00df9fb7ad99499377134a9efa925",
+    "baseline-source.json": "bcaf5ed46fa01b8dd12726bf001a068b2b3fa6e235102a467d7ccb5864a7abd1",
+    "baseline-causal.json": "e3d8b45dc2ffa2ec030f45fd38c5c5bf45cc5e1457266edb7f538fce113c21f5",
+    "baseline-control-result.json": "9151e7e384fd89199b18f98066e2c21c405fb627571fd373e204184419c8c51f",
+    "baseline-native-build.log": "b889a1f9710c66451eeccfd2aa30030b50be8853b4827f4d3c40c4644ccb8aa1",
+    "baseline-test-source/app/tests/test-gimp-painter-options.cpp": "a1231857d01129af56d62582eb1b2e48045e180a32e865495e98901bc9c61490",
+    "candidate-source-seal.json": "504d0840a30d7aa3590ffefb8a5de7dfc426b2d720e40f1cf4eee1e7292d13f9",
+    "candidate-app-build.log": "afad3b9450a80ab692c69a6fa43cebf564c24973be7fc30299089cf7dc25925b",
+    "candidate-native-v1-build.log": "15bd892520b3095c65a4e064b4cf9294d641d8b68818d77c61e2ec80de3c529d",
+    "candidate-asan-v1-build.log": "cdbace07406cee83ebba7e40479735ebd4cd67dea4fbaae828636d9dd57dea2e",
+    "verify_candidate.py": "d454d776ebbb2a4231a6c59bba57c07fc4ded7ceb8e37048a8b143e3ff5ec735",
+    "test_verify_candidate.py": "253366e034684653ff77d1a8f246dcc1d029aab8a4a5d4840669af03f6978216",
+    "verifier-negative-results.json": "989671082ff8869eb6c02301bafed9cee78a8d501a21bf5f9d96b2eb249c0d91",
+    "normal-app-full-preset-readback.json": "ce5f7f9db110fcfea562e28652c460e81d48554123059a5c5826eec2dbb08a14",
+    "adapter-scan.log": "a002e14ba52d00fc477fe32c1e4f91a728461b89222e28a74680b4133df6ddaa",
+    "adapter-policy-tests.log": "2f2a24444148cca328bfb893a53c54b608dc95d9653c6c2ef1ceb12af81ffa01"
+  },
+  "limits": [
+    "Explicit user Reset keeps native scalar/bool/text/brush-mode/inherited reset behavior and preserves draft-owned curves/icon/non-property metadata; it is not changed into a selected-preset reload.",
+    "The NULL GObject property sentinel is separate from the public C set_json(NULL) error. Every non-NULL JSON document remains authoritative, including deliberate icon removal.",
+    "One startup reseed callsite only. Existing specified named brushmark/paper bidirectional bindings may intentionally update text later during global context restoration; no universal byte-identical preset or zero incidental history guarantee across that later interval is claimed.",
+    "prepare_restore is startup-only and preserves history directly. It rejects closed/inconsistent/committing models and protects notification edit/select/close reentry; unguarded recursive calls to the same always-notifying API are not promised idempotent.",
+    "Native GimpConfig Reset itself is called with a live caller owner; no outer Reset last-owner lifetime hardening is claimed.",
+    "AddressSanitizer and UndefinedBehaviorSanitizer cover the same seven test executables, with fatal diagnostics and unchanged registered bounds. LeakSanitizer is disabled.",
+    "The compiler retains the inherited Editor visibility warning. Exact nonfatal libcloudproviders DEBUG bus-absence notices are narrowly checked and published with normalized machine identifiers.",
+    "Mutable-pixbuf generic copy independence, legacy overwrite behavior, exact old C ABI/named handles, and the separate dockable NULL help-ID defect remain open.",
+    "No changes to the original 76-entry or separate 31-core-hook aggregate completion claims, migration count 141/661, or blocked perspective guard."
+  ]
+}
