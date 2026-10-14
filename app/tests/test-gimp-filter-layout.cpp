@@ -36,9 +36,68 @@ extern "C" void gimp_test_filter_cpp_layout (gsize size, gsize offset, GimpFilte
   ref.set_definition ("future-procedure", nullptr, nullptr);
   auto name = ref.procedure ();
   g_assert_cmpstr (name.get (), ==, "future-procedure");
-  auto created = GimpPainter::FilterLayerRef::create (gimp_item_get_image (GIMP_ITEM (layer)),
-                                                     2,2,"typed",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
-  g_assert_true (GIMP_IS_FILTER_LAYER (created.get ()));
+  auto *owner_image = gimp_item_get_image (GIMP_ITEM (layer));
+  auto weak_finalized = [] (gpointer data, GObject *) {
+    ++*static_cast<guint *> (data);
+  };
+
+  guint unattached_finalized = 0;
+  {
+    auto created = GimpPainter::FilterLayerRef::create (
+      owner_image, 2, 2, "typed", 1, GIMP_LAYER_MODE_NORMAL_LEGACY);
+    g_assert_true (GIMP_IS_FILTER_LAYER (created.get ()));
+    /* Check ownership before insertion can consume a floating reference. */
+    g_assert_false (g_object_is_floating (created.get ()));
+    g_assert_false (gimp_item_is_attached (GIMP_ITEM (created.get ())));
+    g_object_weak_ref (G_OBJECT (created.get ()),
+                       weak_finalized, &unattached_finalized);
+  }
+  g_assert_cmpuint (unattached_finalized, ==, 1);
+
+  /* Both independent-owner release orders, without Undo or main-loop work. */
+  for (gint image_first = 0; image_first < 2; ++image_first)
+    {
+      guint image_finalized = 0;
+      guint layer_finalized = 0;
+      auto *image = gimp_image_new (owner_image->gimp, 2, 2,
+                                   GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR);
+      g_assert_nonnull (image);
+      g_object_weak_ref (G_OBJECT (image), weak_finalized, &image_finalized);
+      GimpFilterLayer *inserted = nullptr;
+      {
+        auto created = GimpPainter::FilterLayerRef::create (
+          image, 2, 2, "typed inserted", 1, GIMP_LAYER_MODE_NORMAL_LEGACY);
+        g_assert_true (GIMP_IS_FILTER_LAYER (created.get ()));
+        g_assert_false (g_object_is_floating (created.get ()));
+        inserted = created.get ();
+        g_object_weak_ref (G_OBJECT (inserted), weak_finalized, &layer_finalized);
+        g_assert_true (gimp_image_add_layer (image, GIMP_LAYER (inserted),
+                                             nullptr, 0, FALSE));
+        g_assert_true (gimp_item_is_attached (GIMP_ITEM (inserted)));
+        g_assert_false (g_object_is_floating (inserted));
+        g_assert_cmpuint (layer_finalized, ==, 0);
+        if (image_first)
+          {
+            g_object_unref (image);
+            image = nullptr;
+            g_assert_cmpuint (image_finalized, ==, 1);
+            g_assert_cmpuint (layer_finalized, ==, 0);
+            g_assert_true (GIMP_IS_FILTER_LAYER (created.get ()));
+            g_assert_null (gimp_item_get_image (GIMP_ITEM (created.get ())));
+            g_assert_false (gimp_item_is_attached (GIMP_ITEM (created.get ())));
+          }
+      }
+      if (!image_first)
+        {
+          g_assert_cmpuint (image_finalized, ==, 0);
+          g_assert_cmpuint (layer_finalized, ==, 0);
+          g_assert_true (gimp_item_is_attached (GIMP_ITEM (inserted)));
+          g_assert_true (gimp_item_get_image (GIMP_ITEM (inserted)) == image);
+          g_object_unref (image);
+        }
+      g_assert_cmpuint (image_finalized, ==, 1);
+      g_assert_cmpuint (layer_finalized, ==, 1);
+    }
 }
 
 /* Generated large-image transfer reference. The arithmetic itself is already
