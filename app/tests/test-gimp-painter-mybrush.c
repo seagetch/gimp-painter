@@ -4,6 +4,7 @@
 #include <gio/gio.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
+#include <json-glib/json-glib.h>
 #include <string.h>
 #include "core/core-types.h"
 #include "widgets/widgets-types.h"
@@ -113,6 +114,287 @@ static void closed_owner (void)
   g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED); g_clear_error (&error);
   g_object_run_dispose (G_OBJECT (brush)); g_object_run_dispose (G_OBJECT (brush)); g_object_unref (brush);
 }
+
+static const gchar copy_fixture_json[] =
+  "{\"version\":3,\"parent_brush_name\":\"fixture-parent\",\"group\":\"copy-tests\","
+  "\"settings\":{"
+    "\"opaque\":{\"base_value\":0.625,\"inputs\":{"
+      "\"pressure\":[[0,0],[0.25,0.125],[1,1]],"
+      "\"speed1\":[[0,-0.5],[1,0.75]],"
+      "\"future_input\":{\"retain\":[true,null,\"opaque\"]}},"
+      "\"future_setting_metadata\":{\"label\":\"keep me\"}},"
+    "\"texture_grain\":{\"base_value\":0.375,\"inputs\":{}},"
+    "\"future_setting\":{\"nested\":[1,{\"keep\":false}]}},"
+  "\"switches\":{\"non_incremental\":true,\"use_gimp_texture\":false,"
+    "\"future_switch\":{\"retain\":true}},"
+  "\"texts\":{\"brushmark_name\":\"fixture brushmark\",\"texture_name\":null,"
+    "\"future_text\":[\"keep\",null]},"
+  "\"future_root\":{\"array\":[3,null,{\"nested\":\"preserved\"}]}}";
+
+static gchar *
+brush_json (GimpPainterMybrush *brush)
+{
+  GError *error = NULL;
+  gchar *json = gimp_painter_mybrush_dup_json (brush, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (json);
+  return json;
+}
+
+static void
+assert_brush_json (GimpPainterMybrush *brush,
+                   const gchar        *expected)
+{
+  gchar *json = brush_json (brush);
+  g_assert_cmpstr (json, ==, expected);
+  g_free (json);
+}
+
+static void
+assert_fixture_payload (GimpPainterMybrush *brush)
+{
+  JsonParser *actual = json_parser_new ();
+  JsonParser *expected = json_parser_new ();
+  GError *error = NULL;
+  gchar *json = brush_json (brush);
+
+  g_assert_true (json_parser_load_from_data (actual, json, -1, &error));
+  g_assert_no_error (error);
+  g_assert_true (json_parser_load_from_data (expected, copy_fixture_json, -1, &error));
+  g_assert_no_error (error);
+  /* Compare every metadata member and curve, including opaque future data.
+   * Only the separately tested embedded icon may differ from the fixture. */
+  json_object_remove_member (json_node_get_object (json_parser_get_root (actual)),
+                             "painter_preview_png");
+  g_assert_true (json_node_equal (json_parser_get_root (actual),
+                                 json_parser_get_root (expected)));
+  g_free (json);
+  g_object_unref (actual);
+  g_object_unref (expected);
+}
+
+static guchar *
+icon_pixel (GdkPixbuf *icon,
+            gint       x,
+            gint       y)
+{
+  return gdk_pixbuf_get_pixels (icon) + y * gdk_pixbuf_get_rowstride (icon) +
+         x * gdk_pixbuf_get_n_channels (icon);
+}
+
+static void
+assert_icon_pixels (GdkPixbuf *actual,
+                    GdkPixbuf *expected)
+{
+  gint row_bytes;
+
+  g_assert_nonnull (actual);
+  g_assert_nonnull (expected);
+  g_assert_cmpint (gdk_pixbuf_get_colorspace (actual), ==, gdk_pixbuf_get_colorspace (expected));
+  g_assert_cmpint (gdk_pixbuf_get_bits_per_sample (actual), ==, gdk_pixbuf_get_bits_per_sample (expected));
+  g_assert_cmpint (gdk_pixbuf_get_has_alpha (actual), ==, gdk_pixbuf_get_has_alpha (expected));
+  g_assert_cmpint (gdk_pixbuf_get_n_channels (actual), ==, gdk_pixbuf_get_n_channels (expected));
+  g_assert_cmpint (gdk_pixbuf_get_width (actual), ==, gdk_pixbuf_get_width (expected));
+  g_assert_cmpint (gdk_pixbuf_get_height (actual), ==, gdk_pixbuf_get_height (expected));
+  row_bytes = gdk_pixbuf_get_width (expected) * gdk_pixbuf_get_n_channels (expected);
+  for (gint y = 0; y < gdk_pixbuf_get_height (expected); ++y)
+    g_assert_cmpmem (icon_pixel (actual, 0, y), row_bytes,
+                     icon_pixel (expected, 0, y), row_bytes);
+}
+
+static GimpPainterMybrush *
+new_icon_copy_fixture (const gchar *name,
+                       gboolean     alpha)
+{
+  GimpPainterMybrush *brush = GIMP_PAINTER_MYBRUSH (gimp_painter_mybrush_new (NULL, name));
+  GdkPixbuf *icon = gdk_pixbuf_new (GDK_COLORSPACE_RGB, alpha, 8, 3, 5);
+  GError *error = NULL;
+
+  g_assert_nonnull (brush);
+  g_assert_nonnull (icon);
+  for (gint y = 0; y < 5; ++y)
+    for (gint x = 0; x < 3; ++x)
+      for (gint c = 0; c < gdk_pixbuf_get_n_channels (icon); ++c)
+        icon_pixel (icon, x, y)[c] = (guchar) (17 + 23 * x + 31 * y + 47 * c);
+  g_assert_true (gimp_painter_mybrush_set_json (brush, copy_fixture_json, &error));
+  g_assert_no_error (error);
+  g_assert_true (gimp_painter_mybrush_set_icon (brush, icon, &error));
+  g_assert_no_error (error);
+  g_object_unref (icon);
+  assert_fixture_payload (brush);
+  gimp_data_clean (GIMP_DATA (brush));
+  return brush;
+}
+
+static void
+copy_icon_pixel_independence (gconstpointer user_data)
+{
+  gboolean duplicate = GPOINTER_TO_INT (user_data);
+  /* Exercise both RGBA and padded RGB rows through the generic GimpData API. */
+  GimpPainterMybrush *source = new_icon_copy_fixture ("copy-source", duplicate);
+  GimpPainterMybrush *target;
+  GimpPainterMybrush *decoded;
+  GdkPixbuf *source_icon = gimp_painter_mybrush_ref_icon (source);
+  GdkPixbuf *target_icon;
+  GdkPixbuf *expected_source;
+  GdkPixbuf *expected_target;
+  GdkPixbuf *decoded_icon;
+  gchar *original_json = brush_json (source);
+  gchar *target_json;
+  GError *error = NULL;
+
+  /* The live icon can differ from its last serialized PNG. Copy its current
+   * pixels, not an icon reconstructed from the resource's older PNG bytes. */
+  icon_pixel (source_icon, 2, 4)[1] ^= 0x5a;
+  expected_source = gdk_pixbuf_copy (source_icon);
+  assert_brush_json (source, original_json);
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+
+  if (duplicate)
+    {
+      target = GIMP_PAINTER_MYBRUSH (gimp_data_duplicate (GIMP_DATA (source)));
+      g_assert_nonnull (target);
+      g_assert_null (gimp_object_get_name (GIMP_OBJECT (target)));
+    }
+  else
+    {
+      GdkPixbuf *old_icon = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 7, 2);
+      target = GIMP_PAINTER_MYBRUSH (gimp_painter_mybrush_new (NULL, "copy-target"));
+      gdk_pixbuf_fill (old_icon, 0xabcdef80);
+      g_assert_true (gimp_painter_mybrush_set_json (target, "{\"version\":3,\"replace_me\":true}", &error));
+      g_assert_no_error (error);
+      g_assert_true (gimp_painter_mybrush_set_icon (target, old_icon, &error));
+      g_assert_no_error (error);
+      g_object_unref (old_icon);
+      gimp_data_clean (GIMP_DATA (target));
+      gimp_data_copy (GIMP_DATA (target), GIMP_DATA (source));
+      g_assert_cmpstr (gimp_object_get_name (GIMP_OBJECT (target)), ==, "copy-target");
+    }
+
+  target_icon = gimp_painter_mybrush_ref_icon (target);
+  assert_icon_pixels (target_icon, expected_source);
+  assert_icon_pixels (source_icon, expected_source);
+  assert_brush_json (target, original_json);
+  assert_brush_json (source, original_json);
+  assert_fixture_payload (target);
+  g_assert_cmpstr (gimp_object_get_name (GIMP_OBJECT (source)), ==, "copy-source");
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+  g_assert_true (gimp_data_is_dirty (GIMP_DATA (target)));
+  gimp_data_clean (GIMP_DATA (target));
+
+  /* Both checks fail with shared live icon storage. Compare visible bytes,
+   * not object identity or uninitialized row-padding bytes. */
+  icon_pixel (target_icon, 0, 0)[0] ^= 0x3c;
+  assert_icon_pixels (source_icon, expected_source);
+  expected_target = gdk_pixbuf_copy (target_icon);
+  icon_pixel (source_icon, 1, 1)[2] ^= 0x6d;
+  icon_pixel (expected_source, 1, 1)[2] ^= 0x6d;
+  assert_icon_pixels (target_icon, expected_target);
+  assert_brush_json (source, original_json);
+  assert_brush_json (target, original_json);
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (target)));
+
+  /* Direct pixel writes do not serialize or dirty the brush. Explicitly
+   * setting the icon does, without changing the other brush's resource. */
+  g_assert_true (gimp_painter_mybrush_set_icon (target, target_icon, &error));
+  g_assert_no_error (error);
+  g_assert_true (gimp_data_is_dirty (GIMP_DATA (target)));
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+  target_json = brush_json (target);
+  g_assert_cmpstr (target_json, !=, original_json);
+  assert_brush_json (source, original_json);
+  assert_fixture_payload (target);
+  decoded = GIMP_PAINTER_MYBRUSH (gimp_painter_mybrush_new (NULL, "decoded-copy"));
+  g_assert_true (gimp_painter_mybrush_set_json (decoded, target_json, &error));
+  g_assert_no_error (error);
+  decoded_icon = gimp_painter_mybrush_ref_icon (decoded);
+  assert_icon_pixels (decoded_icon, expected_target);
+  g_object_unref (decoded_icon);
+  g_object_unref (decoded);
+
+  g_assert_true (gimp_painter_mybrush_set_icon (source, source_icon, &error));
+  g_assert_no_error (error);
+  assert_brush_json (target, target_json);
+  assert_fixture_payload (source);
+  assert_icon_pixels (source_icon, expected_source);
+  assert_icon_pixels (target_icon, expected_target);
+  g_object_unref (source_icon);
+  g_object_unref (source);
+  assert_icon_pixels (target_icon, expected_target);
+  g_object_unref (target_icon);
+  g_object_unref (target);
+  g_object_unref (expected_source);
+  g_object_unref (expected_target);
+  g_free (original_json);
+  g_free (target_json);
+}
+
+static void
+copy_without_icon_clears_target (void)
+{
+  GimpPainterMybrush *source = GIMP_PAINTER_MYBRUSH (gimp_painter_mybrush_new (NULL, "no-icon"));
+  GimpPainterMybrush *target = new_icon_copy_fixture ("old-icon", TRUE);
+  GimpData *duplicate;
+  GdkPixbuf *old_icon = gimp_painter_mybrush_ref_icon (target);
+  gpointer weak_icon = old_icon;
+  GError *error = NULL;
+  gchar *json;
+  gint width = 0, height = 0;
+
+  g_assert_true (gimp_painter_mybrush_set_json (source, copy_fixture_json, &error));
+  g_assert_no_error (error);
+  gimp_data_clean (GIMP_DATA (source));
+  json = brush_json (source);
+  g_object_add_weak_pointer (G_OBJECT (old_icon), &weak_icon);
+  g_object_unref (old_icon);
+  gimp_data_copy (GIMP_DATA (target), GIMP_DATA (source));
+  g_assert_null (weak_icon);
+  g_assert_null (gimp_painter_mybrush_ref_icon (target));
+  g_assert_true (gimp_viewable_get_size (GIMP_VIEWABLE (target), &width, &height));
+  g_assert_cmpint (width, ==, 48);
+  g_assert_cmpint (height, ==, 48);
+  assert_brush_json (target, json);
+  assert_fixture_payload (target);
+  g_assert_true (gimp_data_is_dirty (GIMP_DATA (target)));
+  duplicate = gimp_data_duplicate (GIMP_DATA (source));
+  g_assert_nonnull (duplicate);
+  g_assert_null (gimp_painter_mybrush_ref_icon (GIMP_PAINTER_MYBRUSH (duplicate)));
+  assert_brush_json (GIMP_PAINTER_MYBRUSH (duplicate), json);
+  assert_brush_json (source, json);
+  g_assert_null (gimp_painter_mybrush_ref_icon (source));
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+  g_free (json);
+  g_object_unref (duplicate);
+  g_object_unref (target);
+  g_object_unref (source);
+}
+
+static void
+self_copy_coherent (void)
+{
+  GimpPainterMybrush *brush = new_icon_copy_fixture ("self-copy", TRUE);
+  GdkPixbuf *before = gimp_painter_mybrush_ref_icon (brush);
+  GdkPixbuf *expected = gdk_pixbuf_copy (before);
+  GdkPixbuf *after;
+  gchar *json = brush_json (brush);
+
+  /* The public GimpData API makes self-copy a no-op, including dirty state. */
+  gimp_data_copy (GIMP_DATA (brush), GIMP_DATA (brush));
+  after = gimp_painter_mybrush_ref_icon (brush);
+  g_assert_true (after == before);
+  assert_icon_pixels (after, expected);
+  assert_brush_json (brush, json);
+  assert_fixture_payload (brush);
+  g_assert_cmpstr (gimp_object_get_name (GIMP_OBJECT (brush)), ==, "self-copy");
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (brush)));
+  g_free (json);
+  g_object_unref (expected);
+  g_object_unref (after);
+  g_object_unref (before);
+  g_object_unref (brush);
+}
+
 typedef struct { GimpData *target; gboolean fired; } ReleaseOnIconFinalize;
 static void release_target_on_icon_finalize (gpointer user_data, GObject *where_icon_was)
 {
@@ -151,6 +433,10 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-mybrush/177-native-load-copy", load_all);
   g_test_add_func ("/painter-mybrush/stream-icon-copy", stream_icon_and_copy);
   g_test_add_func ("/painter-mybrush/closed-owner", closed_owner);
+  g_test_add_data_func ("/painter-mybrush/duplicate-icon-pixel-independence", GINT_TO_POINTER (TRUE), copy_icon_pixel_independence);
+  g_test_add_data_func ("/painter-mybrush/copy-icon-pixel-independence", GINT_TO_POINTER (FALSE), copy_icon_pixel_independence);
+  g_test_add_func ("/painter-mybrush/copy-without-icon-clears-target", copy_without_icon_clears_target);
+  g_test_add_func ("/painter-mybrush/self-copy-coherent", self_copy_coherent);
   g_test_add_func ("/painter-mybrush/copy-icon-finalizer-reentry", copy_icon_finalizer_reentry);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");

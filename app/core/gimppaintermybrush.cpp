@@ -15,6 +15,7 @@ extern "C" {
 #include "painter/resources.hpp"
 #include "paint/painter-mypaint/resource.hpp"
 #include <algorithm>
+#include <new>
 #include <string>
 
 using namespace GimpPainter;
@@ -67,7 +68,14 @@ void copy (GimpData *data, GimpData *source)
     auto destination_lease = ObjectRef<GimpPainterMybrush>::retain (to);
     auto source_lease = ObjectRef<GimpPainterMybrush>::retain (from);
     auto snapshot = store (from).read<BrushSlot> ([] (const BrushImpl& impl) { return impl.resource; });
-    auto icon = store (from).read<BrushSlot> ([] (const BrushImpl& impl) { return impl.icon; });
+    auto source_icon = store (from).read<BrushSlot> ([] (const BrushImpl& impl) { return impl.icon; });
+    ObjectRef<GdkPixbuf> icon;
+    if (source_icon) {
+      // Copy current pixels, which can differ from the last serialized PNG.
+      // Finish allocation before replacing either part of the target state.
+      icon = ObjectRef<GdkPixbuf>::adopt (gdk_pixbuf_copy (source_icon.get ()));
+      if (!icon) throw std::bad_alloc ();
+    }
     store (to).with<BrushSlot> ([&] (BrushImpl& impl) { impl.resource = std::move (snapshot); impl.icon = std::move (icon); });
     gimp_data_dirty (data);
   });
