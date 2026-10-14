@@ -1,0 +1,1709 @@
+{
+  "scope": "08.018 original clone rows 9\u201314 native routing and ownership",
+  "public_base": "8685d5b5a68aafd67aa49c120a02e3c8e445b73b",
+  "public_tree": "a99d5d78f48f939f5935340ffceb642ad2924881",
+  "source_manifest": [
+    {
+      "path": "app/core/gimpclonelayer-handle.hpp",
+      "before_blob": "479fefa0026abfbccb2a31075dfdc09ea4cb2973",
+      "after_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca",
+      "sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+      "bytes": 3952
+    },
+    {
+      "path": "app/tests/test-gimp-clone-layer.c",
+      "before_blob": "2ecb68de19249f305a6dbd710af18227ba652563",
+      "after_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9",
+      "sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+      "bytes": 80963
+    },
+    {
+      "path": "app/tests/test-gimp-clone-layout.cpp",
+      "before_blob": "beae21e06fe47a95ff930118b031f486ab9d2dcf",
+      "after_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420",
+      "sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+      "bytes": 26379
+    },
+    {
+      "path": "app/tests/meson.build",
+      "before_blob": "6849f5c6d2db2293d3d1d30f45a419ddb44b3f57",
+      "after_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4",
+      "sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+      "bytes": 40809
+    },
+    {
+      "path": "migration/contracts/cpp-c-entry-map.tsv",
+      "before_blob": "8fb0e197763f1d55ed4e5efe974678ceeec2084e",
+      "after_blob": "32570dc08f0eea2d44de6393758d988fd686b385",
+      "sha256": "983819179eb2e9b1fe518473e3885d1cbbc0d3eb4af221e7a35f8189e8242c25",
+      "bytes": 26430
+    }
+  ],
+  "results": {
+    "native": [
+      {
+        "mode": "native",
+        "run": "clone-entry-handles-candidate-native-v2",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 52,
+        "results": [
+          {
+            "name": "gimp-clone-layer",
+            "cases": [
+              "/gimp-clone-layer/retained_items_image_destroy",
+              "/gimp-clone-layer/retained_item_same_gimp_relocation",
+              "/gimp-clone-layer/replaced_item_weak_identity_transfer",
+              "/gimp-clone-layer/retained_item_gimp_lifetime",
+              "/gimp-clone-layer/serialization_reference_snapshot_and_restore",
+              "/gimp-clone-layer/undo_source_image_relocation",
+              "/gimp-clone-layer/clone_owner_image_relocation",
+              "/gimp-clone-layer/source_reference_undo_dependent_clone",
+              "/gimp-clone-layer/source_reference_undo_close_reentry",
+              "/gimp-clone-layer/source_reference_undo_live",
+              "/gimp-clone-layer/source_reference_undo_all_states",
+              "/gimp-clone-layer/source_reference_undo_preserves_pending_live",
+              "/gimp-clone-layer/source_reference_undo_renamed_then_expired",
+              "/gimp-clone-layer/source_reference_undo_expired_cross_image",
+              "/gimp-clone-layer/cross_image_copy_and_move",
+              "/gimp-clone-layer/inherited_precision_conversion_undo",
+              "/gimp-clone-layer/source_resize_undo_legacy_fixture",
+              "/gimp-clone-layer/group_duplicate_complete_hierarchy",
+              "/gimp-clone-layer/double_precision_and_trc",
+              "/gimp-clone-layer/thaw_reentry_close_and_replace",
+              "/gimp-clone-layer/dissolve_legacy_fixture",
+              "/gimp-clone-layer/gray_and_high_precision",
+              "/gimp-clone-layer/frozen_source_disposal",
+              "/gimp-clone-layer/group_duplicate_internal_reference",
+              "/gimp-clone-layer/inert_construction",
+              "/gimp-clone-layer/reentrant_source_replace",
+              "/gimp-clone-layer/cpp_header_layout",
+              "/gimp-clone-layer/projected_pixels",
+              "/gimp-clone-layer/partial_update_and_graph",
+              "/gimp-clone-layer/deferred_name",
+              "/gimp-clone-layer/native_type_lifecycle",
+              "/gimp-clone-layer/native_undo_parent_contract",
+              "/gimp-clone-layer/recursive_first_match",
+              "/gimp-clone-layer/offset_size_and_noop_transforms",
+              "/gimp-clone-layer/source_delete_undo",
+              "/gimp-clone-layer/source_lifetime_and_detach",
+              "/gimp-clone-layer/freeze_and_close",
+              "/gimp-clone-layer/cycles",
+              "/gimp-clone-layer/duplicate_and_group_update",
+              "/gimp-clone-layer/original_void_entry_contract",
+              "/gimp-clone-layer/original_factory_borrowed_ownership",
+              "/gimp-clone-layer/handle_original_set_source_route",
+              "/gimp-clone-layer/handle_original_set_source_name_route",
+              "/gimp-clone-layer/handle_factory_and_release_orders",
+              "/gimp-clone-layer/handle_source_reference_independence",
+              "/gimp-clone-layer/handle_pending_null_empty_and_rename",
+              "/gimp-clone-layer/handle_recursive_first_match",
+              "/gimp-clone-layer/handle_updates_and_lazy_resolution",
+              "/gimp-clone-layer/handle_reentrant_replace_and_close",
+              "/gimp-clone-layer/handle_contained_invalid_and_closed",
+              "/gimp-clone-layer/handle_checked_error_contract",
+              "/gimp-clone-layer/handle_wrong_thread_containment"
+            ],
+            "case_count": 52,
+            "duration_seconds": 2.7738590240478516,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 0
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-clone-layout.cpp": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+          "app/tests/test-gimp-clone-layer.c": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016"
+        },
+        "actual_c11": true,
+        "actual_c11_scope": [
+          "gimp-clone-layer"
+        ],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "4183487ca433279fbf822a5d6e11a9d2e4fdb80b0b9afa0e8eae08326ef498fd",
+          "units": [
+            {
+              "file": "test-gimp-clone-layer.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [
+                "-std=c11"
+              ],
+              "wrap_define": false
+            },
+            {
+              "file": "test-gimp-clone-layout.cpp",
+              "compiler": "c++",
+              "sanitized": false,
+              "standard": [
+                "-std=c++14"
+              ],
+              "wrap_define": true
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "55353dfd66aa97d7ccf1f7e4407738a77a74e7108252fdfbb8cdc157dfa14cd1",
+          "registrations.json": "f782664498ccd4962bb5c402fcda6210a7e50ee530d6892a73698202dc6962ba",
+          "clone-entry-handles-candidate-native-v2.json": "f10628d8851d3dfab4fe12071e372b7ffbec9e3d28a869a00944a8750627d734"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "clone-xcf-native-case1-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/clones_edit_save_reopen"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.2726552486419678,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 0
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "4183487ca433279fbf822a5d6e11a9d2e4fdb80b0b9afa0e8eae08326ef498fd",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "3da2539480c843a3d6347ebb725fcbf69e2b97e012b9129ec6d8fa43296b6449",
+          "registrations.json": "f782664498ccd4962bb5c402fcda6210a7e50ee530d6892a73698202dc6962ba",
+          "clone-xcf-native-case1-v1.json": "e497e9b4b1c2aa746fdcad61651d2e40f1ceb639c8739c94d210391d5352c13f"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "clone-xcf-native-case2-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/missing_clone_id_and_pending_name"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.2432618141174316,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 0
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "4183487ca433279fbf822a5d6e11a9d2e4fdb80b0b9afa0e8eae08326ef498fd",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "235bfa11078692c15e2bb9aabafb13ea198910300bb16cf2e129f2580486a99d",
+          "registrations.json": "f782664498ccd4962bb5c402fcda6210a7e50ee530d6892a73698202dc6962ba",
+          "clone-xcf-native-case2-v1.json": "f236f79e4cab441dce02cf3faae772dbb1a2f40c60da968648e21124748a5e36"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "clone-xcf-native-case3-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/external_references_remain_unresolved"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.3380262851715088,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 0
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "4183487ca433279fbf822a5d6e11a9d2e4fdb80b0b9afa0e8eae08326ef498fd",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "1eae438d6d8423a28b6c995b8a6c246848fe4a47db28996e5aafea388aa6f00d",
+          "registrations.json": "f782664498ccd4962bb5c402fcda6210a7e50ee530d6892a73698202dc6962ba",
+          "clone-xcf-native-case3-v1.json": "4cda7e1f876dcbf85113bf3462d6117658c3e1c982c95118174f9dd899aa8050"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "clone-xcf-native-case4-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/malformed_clone_reference_stays_opaque"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.6857545375823975,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 251,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 90
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "4183487ca433279fbf822a5d6e11a9d2e4fdb80b0b9afa0e8eae08326ef498fd",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "5244ed1603df004f01507b860e8701993f8c7cd2b44000fc00b4ef88a2295f66",
+          "registrations.json": "f782664498ccd4962bb5c402fcda6210a7e50ee530d6892a73698202dc6962ba",
+          "clone-xcf-native-case4-v1.json": "434b2a19c9ea57085e90b8c01f60fb061a00f524045bfe8afac544411e66b852"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "clone-xcf-native-case5-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-fields/clone_duplicate_name_identity"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.1732118129730225,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 0
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "4183487ca433279fbf822a5d6e11a9d2e4fdb80b0b9afa0e8eae08326ef498fd",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "775c9c45de3a2ce9b7d58a2720b423ec4a9cfe572177dbe79473436940d57cae",
+          "registrations.json": "f782664498ccd4962bb5c402fcda6210a7e50ee530d6892a73698202dc6962ba",
+          "clone-xcf-native-case5-v1.json": "501d217435483236225b4f5687119f7b4f89cecaa6a7f8f394c7fbcd59e0e6b2"
+        }
+      }
+    ],
+    "asan": [
+      {
+        "mode": "asan",
+        "run": "clone-entry-handles-candidate-asan-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 52,
+        "results": [
+          {
+            "name": "gimp-clone-layer",
+            "cases": [
+              "/gimp-clone-layer/retained_items_image_destroy",
+              "/gimp-clone-layer/retained_item_same_gimp_relocation",
+              "/gimp-clone-layer/replaced_item_weak_identity_transfer",
+              "/gimp-clone-layer/retained_item_gimp_lifetime",
+              "/gimp-clone-layer/serialization_reference_snapshot_and_restore",
+              "/gimp-clone-layer/undo_source_image_relocation",
+              "/gimp-clone-layer/clone_owner_image_relocation",
+              "/gimp-clone-layer/source_reference_undo_dependent_clone",
+              "/gimp-clone-layer/source_reference_undo_close_reentry",
+              "/gimp-clone-layer/source_reference_undo_live",
+              "/gimp-clone-layer/source_reference_undo_all_states",
+              "/gimp-clone-layer/source_reference_undo_preserves_pending_live",
+              "/gimp-clone-layer/source_reference_undo_renamed_then_expired",
+              "/gimp-clone-layer/source_reference_undo_expired_cross_image",
+              "/gimp-clone-layer/cross_image_copy_and_move",
+              "/gimp-clone-layer/inherited_precision_conversion_undo",
+              "/gimp-clone-layer/source_resize_undo_legacy_fixture",
+              "/gimp-clone-layer/group_duplicate_complete_hierarchy",
+              "/gimp-clone-layer/double_precision_and_trc",
+              "/gimp-clone-layer/thaw_reentry_close_and_replace",
+              "/gimp-clone-layer/dissolve_legacy_fixture",
+              "/gimp-clone-layer/gray_and_high_precision",
+              "/gimp-clone-layer/frozen_source_disposal",
+              "/gimp-clone-layer/group_duplicate_internal_reference",
+              "/gimp-clone-layer/inert_construction",
+              "/gimp-clone-layer/reentrant_source_replace",
+              "/gimp-clone-layer/cpp_header_layout",
+              "/gimp-clone-layer/projected_pixels",
+              "/gimp-clone-layer/partial_update_and_graph",
+              "/gimp-clone-layer/deferred_name",
+              "/gimp-clone-layer/native_type_lifecycle",
+              "/gimp-clone-layer/native_undo_parent_contract",
+              "/gimp-clone-layer/recursive_first_match",
+              "/gimp-clone-layer/offset_size_and_noop_transforms",
+              "/gimp-clone-layer/source_delete_undo",
+              "/gimp-clone-layer/source_lifetime_and_detach",
+              "/gimp-clone-layer/freeze_and_close",
+              "/gimp-clone-layer/cycles",
+              "/gimp-clone-layer/duplicate_and_group_update",
+              "/gimp-clone-layer/original_void_entry_contract",
+              "/gimp-clone-layer/original_factory_borrowed_ownership",
+              "/gimp-clone-layer/handle_original_set_source_route",
+              "/gimp-clone-layer/handle_original_set_source_name_route",
+              "/gimp-clone-layer/handle_factory_and_release_orders",
+              "/gimp-clone-layer/handle_source_reference_independence",
+              "/gimp-clone-layer/handle_pending_null_empty_and_rename",
+              "/gimp-clone-layer/handle_recursive_first_match",
+              "/gimp-clone-layer/handle_updates_and_lazy_resolution",
+              "/gimp-clone-layer/handle_reentrant_replace_and_close",
+              "/gimp-clone-layer/handle_contained_invalid_and_closed",
+              "/gimp-clone-layer/handle_checked_error_contract",
+              "/gimp-clone-layer/handle_wrong_thread_containment"
+            ],
+            "case_count": 52,
+            "duration_seconds": 3.862539529800415,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 0
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-clone-layout.cpp": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+          "app/tests/test-gimp-clone-layer.c": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016"
+        },
+        "actual_c11": true,
+        "actual_c11_scope": [
+          "gimp-clone-layer"
+        ],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "44ce1a17cfea9a7cfce3fe7249e0c6bf137525a2207335508c934281fd36f0ef",
+          "units": [
+            {
+              "file": "test-gimp-clone-layer.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [
+                "-std=c11"
+              ],
+              "wrap_define": false
+            },
+            {
+              "file": "test-gimp-clone-layout.cpp",
+              "compiler": "c++",
+              "sanitized": true,
+              "standard": [
+                "-std=c++14"
+              ],
+              "wrap_define": true
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "ec186bf31e7e1a64de6c35ec2794f87c2373b1753e08ebee05ada6db125077f7",
+          "registrations.json": "880ce067f37d5ebfb5ae1f4a63ff524449b1af9cafe13475d83a9bfa6f603efd",
+          "clone-entry-handles-candidate-asan-v1.json": "8b8eaa24e1fb5741d30b0db3bf27b999be14dcea72b76b7ba90fbc9788d6911e"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "clone-xcf-asan-case1-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/clones_edit_save_reopen"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.6296896934509277,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 0
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "44ce1a17cfea9a7cfce3fe7249e0c6bf137525a2207335508c934281fd36f0ef",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "7a299b468f565b3eb05e63cb0edd5b1faaa27ab64038a889a43a2508f660e635",
+          "registrations.json": "880ce067f37d5ebfb5ae1f4a63ff524449b1af9cafe13475d83a9bfa6f603efd",
+          "clone-xcf-asan-case1-v1.json": "5ad16c0fbf2383fc36935c18773c302d6bc5f0334dac820d0d3d3d99511aa55a"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "clone-xcf-asan-case2-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/missing_clone_id_and_pending_name"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.4531574249267578,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 0
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "44ce1a17cfea9a7cfce3fe7249e0c6bf137525a2207335508c934281fd36f0ef",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "d059c9bb208c9c29fae88c4e7673286ab45f16f89e98a3a2cf89ff3a35e93eae",
+          "registrations.json": "880ce067f37d5ebfb5ae1f4a63ff524449b1af9cafe13475d83a9bfa6f603efd",
+          "clone-xcf-asan-case2-v1.json": "325bb595308b462cb1eb56df0a5061da826960156dad254d8cb9f7b84d81262c"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "clone-xcf-asan-case3-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/external_references_remain_unresolved"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.4963901042938232,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 0
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "44ce1a17cfea9a7cfce3fe7249e0c6bf137525a2207335508c934281fd36f0ef",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "0f0bec5504602e5e3464d016c417d832688045dc9fa840571725c7541dd40cab",
+          "registrations.json": "880ce067f37d5ebfb5ae1f4a63ff524449b1af9cafe13475d83a9bfa6f603efd",
+          "clone-xcf-asan-case3-v1.json": "341b9df30fec69a09c1dca1a03f1d25432c6f8d10e3f45b33cdf58de93064ff4"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "clone-xcf-asan-case4-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/malformed_clone_reference_stays_opaque"
+            ],
+            "case_count": 1,
+            "duration_seconds": 2.1913909912109375,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 251,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 90
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "44ce1a17cfea9a7cfce3fe7249e0c6bf137525a2207335508c934281fd36f0ef",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "b001275053eb2a9232bc68c21f71f8f9e2df34736cd6b30b68c82e047b1450d2",
+          "registrations.json": "880ce067f37d5ebfb5ae1f4a63ff524449b1af9cafe13475d83a9bfa6f603efd",
+          "clone-xcf-asan-case4-v1.json": "af1d2a5b661d55daebfb4d4d785843048047c0c5448a896acab0d563304bc1ba"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "clone-xcf-asan-case5-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-fields/clone_duplicate_name_identity"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.5174667835235596,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_malformed_capsule_warnings": 0
+          }
+        ],
+        "source_seal": {
+          "path": "clone-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+          "files": [
+            {
+              "path": "app/core/gimpclonelayer-handle.hpp",
+              "bytes": 3952,
+              "after_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+              "after_git_blob": "0cbabae2d6146c39f37f2416c825ddf862c447ca"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layer.c",
+              "bytes": 80963,
+              "after_sha256": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+              "after_git_blob": "7106714d07095dc8cbd12d6b94c326371e1234d9"
+            },
+            {
+              "path": "app/tests/test-gimp-clone-layout.cpp",
+              "bytes": 26379,
+              "after_sha256": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+              "after_git_blob": "532efedddf6b36a5b8964ddd2a0a3b96faa1d420"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 40809,
+              "after_sha256": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0",
+              "after_git_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "clone actual C uses cc -std=c11; handle helper c++14; unchanged selected XCF consumer uses cc with project-default C standard (no explicit -std flag)",
+        "compile_evidence": {
+          "sha256": "44ce1a17cfea9a7cfce3fe7249e0c6bf137525a2207335508c934281fd36f0ef",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+        "input_sha256": {
+          "results.json": "c71e6228a43e72a57228af5c1898e3e4a6acd38945a8a2f12f2866e63e73766f",
+          "registrations.json": "880ce067f37d5ebfb5ae1f4a63ff524449b1af9cafe13475d83a9bfa6f603efd",
+          "clone-xcf-asan-case5-v1.json": "b13a96a976ccfb1d409cba8911da524bb2f8c489e9b76f2910df296dde796627"
+        }
+      }
+    ]
+  },
+  "acceptance": {
+    "native_full_clone": 52,
+    "asan_full_clone": 52,
+    "native_selected_xcf": 5,
+    "asan_selected_xcf": 5,
+    "original_clone_cases_preserved": 39,
+    "new_actual_C_cases": 2,
+    "new_Cpp_cases": 11,
+    "full_xcf_suite_claim": false
+  },
+  "binary_sha256": {
+    "native/app/tests/gimp-clone-layer": "6937439f24e6162543429be7b81b836a8e3c253fdda19c906b98b5d9041456c6",
+    "native/app/tests/painter-xcf-roundtrip": "c579f45826cabc27855b34905210d6a9300de33bc72cd45669838b7594d07b49",
+    "native/compile_commands.json": "4183487ca433279fbf822a5d6e11a9d2e4fdb80b0b9afa0e8eae08326ef498fd",
+    "native/meson-info/intro-tests.json": "fd8c2b38bd6ec79ea58158576032a6a8a512ae7e8ba4a9a016e5efde8cc276e7",
+    "asan/app/tests/gimp-clone-layer": "93a141dd3bc89e3d8c2886d827369a01587e51676e75c3b21cff372333831eb1",
+    "asan/app/tests/painter-xcf-roundtrip": "f9ea2c31046137c85563c471793961d37a126be673ee34b2454706d829a2b6b9",
+    "asan/compile_commands.json": "44ce1a17cfea9a7cfce3fe7249e0c6bf137525a2207335508c934281fd36f0ef",
+    "asan/meson-info/intro-tests.json": "4d0e6adf5a0969518135fd761f25b7ec67d10eddd807c2c5d825a02611d2f516"
+  },
+  "symbol_evidence": {
+    "native": {
+      "gimp_clone_layer_get_source": 1,
+      "gimp_clone_layer_get_type": 1,
+      "gimp_clone_layer_new": 1,
+      "gimp_clone_layer_set_source": 1,
+      "gimp_clone_layer_set_source_by_name": 1,
+      "gimp_clone_layer_undo_get_type": 1,
+      "__wrap_gimp_clone_layer_set_source": 1,
+      "__wrap_gimp_clone_layer_set_source_by_name": 1
+    },
+    "asan": {
+      "gimp_clone_layer_get_source": 1,
+      "gimp_clone_layer_get_type": 1,
+      "gimp_clone_layer_new": 1,
+      "gimp_clone_layer_set_source": 1,
+      "gimp_clone_layer_set_source_by_name": 1,
+      "gimp_clone_layer_undo_get_type": 1,
+      "__wrap_gimp_clone_layer_set_source": 1,
+      "__wrap_gimp_clone_layer_set_source_by_name": 1
+    }
+  },
+  "header_compilation": {
+    "status": "PASS",
+    "compiled_probes": 375,
+    "report_sha256": "f0c74d31165c96fdc0b7c4efed676efa34a051ebedf8fe99286165ea419c1c56",
+    "libraries": {
+      "c-boundaries-validation-20261013/build-native/app/painter/tests/headers/libpainter-public-headers-c.a": {
+        "bytes": 22594,
+        "sha256": "0ca49bf1db865489b630db25dbd7c259af894ed016b2800c16ad986540484d33"
+      },
+      "c-boundaries-validation-20261013/build-native/app/painter/tests/headers/libpainter-public-headers-cpp.a": {
+        "bytes": 25796,
+        "sha256": "b486ff5018126a5d6a2c648c1e97f1ea33c7f49d710f5d56b21ec955814fec97"
+      }
+    },
+    "registrations": [
+      {
+        "name": "gimp:painter / painter-public-header-compilation",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 0.10408616065979004
+      },
+      {
+        "name": "gimp:painter / painter-additional-header-routes",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 1.6650457382202148
+      }
+    ]
+  },
+  "handle_compile_controls": {
+    "status": "PASS",
+    "standard": "C++14",
+    "double_include": true,
+    "positive_count": 4,
+    "negative_count": 3,
+    "header_sha256": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+    "results": [
+      {
+        "name": "header-only",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "3edf37fa99badf1b0652dbfa1e1d017cf5a34a55fd5f5eb7e8602fc5bd8305bc",
+        "log_sha256": "eced1b33d02c230d1afaf1d05151d18ee1d3483c1eb9b3d50d95a915332bdfb8"
+      },
+      {
+        "name": "create-owning-source",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "11b174b23d79fa9d4cd83cc867b4621c6c58c2a80c258f97195d824350199674",
+        "log_sha256": "dd42e301e5e663ae7aaa81acdc94fe057de91f06d934e5b3415974335384f293"
+      },
+      {
+        "name": "original-setters",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "c483379adc5eec40fad664f2e8e86f88dbb070761d9d1adde746b277aba826bc",
+        "log_sha256": "c47513965678f31e9bf8a94f86b181c6773ac9bf0a4c6afe917fa2fd2134d296"
+      },
+      {
+        "name": "checked-setters",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "9cd189566e5969e4b34f3943cdbb4e15159bfaa63b7ece7a440199a688240e67",
+        "log_sha256": "1e9967119414fdf6c773ebe02c09407cb0b08de7693498689750578953a9a996"
+      },
+      {
+        "name": "wrong-owner",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "e2428e058ba1c2ddb605e7c5587e651d777bfe1cb8e80721025a0d81c1a0bfff",
+        "log_sha256": "f12c258a0f33d73a96b780480bcbd7e6dcc088931aac1b88d8e389e4f7aeb9f7"
+      },
+      {
+        "name": "wrong-source",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "76f7600b956342af3b78ca605380bd1ac14e9ae889375efbde533bd22c564d4d",
+        "log_sha256": "306a93601b2d522146fbdca571f30a45ebf3885a3c915fd5060bb36076a15ebf"
+      },
+      {
+        "name": "wrong-name",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "b51c09b2b9154d978d8b0ee0c46eb196856e9f6b66397150315d2fec1e28637d",
+        "log_sha256": "0ea737e7b721c2c9689d3f7539b448bef733b0a4d3ba89927c01c9e39b67f352"
+      }
+    ]
+  },
+  "negative_controls": {
+    "status": "PASS",
+    "positive_control": "Unmodified isolated native-v1 report accepted",
+    "negative_case_count": 12,
+    "original_inputs_source_and_build_unchanged": true,
+    "protected_sha256": {
+      "c-boundaries-validation-20261013/validation/clone-entry-handles-candidate-native-v2/results.json": "55353dfd66aa97d7ccf1f7e4407738a77a74e7108252fdfbb8cdc157dfa14cd1",
+      "c-boundaries-validation-20261013/validation/clone-entry-handles-candidate-native-v2/registrations.json": "f782664498ccd4962bb5c402fcda6210a7e50ee530d6892a73698202dc6962ba",
+      "c-boundaries-validation-20261013/validation/clone-entry-handles-candidate-native-v2/clone-entry-handles-candidate-native-v2.json": "f10628d8851d3dfab4fe12071e372b7ffbec9e3d28a869a00944a8750627d734",
+      "c-boundaries-validation-20261013/validation/clone-entry-handles-candidate-native-v2/verified-results.json": "a50c16de60b94ff87e3695cde5649e68c63bf84df2307e9d63dc7c3818484886",
+      "clone-entry-handles-20261014/candidate-source-seal.json": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+      "clone-entry-handles-20261014/verify_candidate.py": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+      "c-boundaries-validation-20261013/build-native/compile_commands.json": "4183487ca433279fbf822a5d6e11a9d2e4fdb80b0b9afa0e8eae08326ef498fd",
+      "gimp-c-boundaries-20261013/app/core/gimpclonelayer-handle.hpp": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+      "gimp-c-boundaries-20261013/app/tests/test-gimp-clone-layer.c": "6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016",
+      "gimp-c-boundaries-20261013/app/tests/test-gimp-clone-layout.cpp": "1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c",
+      "gimp-c-boundaries-20261013/app/tests/meson.build": "70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0"
+    },
+    "verifier_sha256": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+    "scope": "Verifier-only execution against isolated JSON copies; no application or build execution",
+    "results": [
+      {
+        "mutation": "none",
+        "passed": true,
+        "expected_rejection": null,
+        "observed_error": null,
+        "accepted_output_written": true,
+        "log_sha256": "0297104d9f3abff7149401254df02b26e68e62346734d4bad4f7b3fae7c49f90"
+      },
+      {
+        "mutation": "aggregate_nonzero",
+        "passed": true,
+        "expected_rejection": "aggregate or X server exit failed",
+        "observed_error": "aggregate or X server exit failed",
+        "accepted_output_written": false,
+        "log_sha256": "c8d80de73bdfddb1b35404c9367277d87a1d0773d1be81664508f828b82dfba5"
+      },
+      {
+        "mutation": "process_nonzero_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "test process failed: gimp-clone-layer",
+        "observed_error": "test process failed: gimp-clone-layer",
+        "accepted_output_written": false,
+        "log_sha256": "402e820032d066483dc3eeb6c2f6f8c9c1330b3970116520859a5e6100ab8738"
+      },
+      {
+        "mutation": "missing_tap_case",
+        "passed": true,
+        "expected_rejection": "TAP numbering missing/duplicated: gimp-clone-layer",
+        "observed_error": "TAP numbering missing/duplicated: gimp-clone-layer",
+        "accepted_output_written": false,
+        "log_sha256": "84ec0170afd49834bd23542363f380fc4fa90376638d90cc748de55a6e1a6c88"
+      },
+      {
+        "mutation": "duplicate_tap_case",
+        "passed": true,
+        "expected_rejection": "TAP numbering missing/duplicated: gimp-clone-layer",
+        "observed_error": "TAP numbering missing/duplicated: gimp-clone-layer",
+        "accepted_output_written": false,
+        "log_sha256": "84ec0170afd49834bd23542363f380fc4fa90376638d90cc748de55a6e1a6c88"
+      },
+      {
+        "mutation": "tap_skip_directive",
+        "passed": true,
+        "expected_rejection": "TAP IDs/order differ from source registration: gimp-clone-layer",
+        "observed_error": "TAP IDs/order differ from source registration: gimp-clone-layer",
+        "accepted_output_written": false,
+        "log_sha256": "497840989706bed403652be16086f7deeb768a9a05416ef4c622e11aa3df7a17"
+      },
+      {
+        "mutation": "comment_skip",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: # SKIP injected",
+        "observed_error": "gimp-clone-layer: forbidden diagnostic: # SKIP injected",
+        "accepted_output_written": false,
+        "log_sha256": "d28416ea6af8419b8be543f75912269f1d42d8b87f6428f00e22cd5081a60b2a"
+      },
+      {
+        "mutation": "teardown_critical_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: Gimp-Core-CRITICAL",
+        "observed_error": "gimp-clone-layer: forbidden diagnostic: Gimp-Core-CRITICAL: injected teardown failure",
+        "accepted_output_written": false,
+        "log_sha256": "ab0c6ada9578cd2c367a0195889fcce7efaa946a64fe2b6fbfadb1a51b650425"
+      },
+      {
+        "mutation": "sanitizer_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: AddressSanitizer",
+        "observed_error": "gimp-clone-layer: forbidden diagnostic: AddressSanitizer: injected error",
+        "accepted_output_written": false,
+        "log_sha256": "25c30288eca5e52ed61ff1064c934c1e4213c3e90688b7890dd18700fd451dd8"
+      },
+      {
+        "mutation": "increased_registered_timeout",
+        "passed": true,
+        "expected_rejection": "registered timeout/serial contract changed: gimp-clone-layer",
+        "observed_error": "registered timeout/serial contract changed: gimp-clone-layer",
+        "accepted_output_written": false,
+        "log_sha256": "c757c5bf8a467074aa6d4b10fd5946f0086bfc322edd6993d694296c3f5cbbac"
+      },
+      {
+        "mutation": "command_timeout_multiplier",
+        "passed": true,
+        "expected_rejection": "aggregate command differs",
+        "observed_error": "aggregate command differs, filters/timeout multipliers are forbidden",
+        "accepted_output_written": false,
+        "log_sha256": "d8a4299800a18bd5409a699fb3cacc885427d75c680e73c55c9cd4115b0b9d00"
+      },
+      {
+        "mutation": "environment_timeout_multiplier",
+        "passed": true,
+        "expected_rejection": "timeout multiplier environment set",
+        "observed_error": "gimp-clone-layer: timeout multiplier environment set",
+        "accepted_output_written": false,
+        "log_sha256": "48563730faa33f742633120ee66ea7ca9b155b384219777fa228689774504049"
+      },
+      {
+        "mutation": "source_seal_tamper",
+        "passed": true,
+        "expected_rejection": "sealed SHA256 changed",
+        "observed_error": "sealed SHA256 changed: app/core/gimpclonelayer-handle.hpp",
+        "accepted_output_written": false,
+        "log_sha256": "7583e82c487bae71a7d98c01ef8235387b7d7c47ef82c9b889272332410376d0"
+      }
+    ]
+  },
+  "xcf_negative_controls": {
+    "status": "PASS",
+    "positive_controls": 1,
+    "negative_controls": 6,
+    "results": [
+      {
+        "mutation": "none",
+        "status": "PASS",
+        "error": null,
+        "accepted_output_written": true
+      },
+      {
+        "mutation": "one_warning_missing",
+        "status": "PASS",
+        "error": "malformed fixture warning count differs from 18 invalid scenes times five restored objects",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "one_warning_extra",
+        "status": "PASS",
+        "error": "malformed fixture warning count differs from 18 invalid scenes times five restored objects",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "different_warning",
+        "status": "PASS",
+        "error": "painter-xcf-roundtrip: forbidden diagnostic: GIMP-Warning: unexpected injected warning",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "warning_wrong_case",
+        "status": "PASS",
+        "error": "painter-xcf-roundtrip: forbidden diagnostic: GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "empty_selection",
+        "status": "PASS",
+        "error": "TAP numbering missing/duplicated: painter-xcf-roundtrip",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "wrong_case_command",
+        "status": "PASS",
+        "error": "aggregate command differs, filters/timeout multipliers are forbidden",
+        "accepted_output_written": false
+      }
+    ]
+  },
+  "source_gate": "2467 sources; 683 reviewed data sites; 4 dormant findings",
+  "policy_tests": 48,
+  "contract_gate": "90 unique typed-handle contracts; 76 C entries",
+  "independent_review": "# Independent review: PASS\n\nRead-only final production-header/test/contract/evidence review found no remaining\nblocking issue. Original named setters now traverse the original void entries\nonce; checked alternatives preserve previous throwing bodies. Borrowed-source\nretention, floating ownership, live/pending/name semantics, callback reentry and\ncontained versus checked failure behavior have meaningful assertions.\n\nBoth complete clone runs pass all 52 cases, and all five predeclared XCF cases\npass separately in each mode. Final reports use verifier SHA256\n949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36 with matching\ninput hashes. The malformed fixture's exact 90 warnings are justified by\n18 invalid scenes times five restored objects. Source proves the inert capsule,\npixel and refused-save/sentinel assertions; the narrow allowlist has rejection\ncontrols for missing, extra, different and wrong-case diagnostics.\n\nReviewed passing evidence: 375 public-header probes, 16 additional-route tests,\n48 policy tests, seven named-handle compile controls, 12 standard evidence\nnegative controls and six selected-XCF evidence negative controls. All 15\nprotected source/progress hashes match. Only rows 9\u201314 implementation cells\nchange, with rows 11/12 PARTIAL and row 14 native registration only.\n\nA review finding corrected new tests that expected read-only metadata to fail\nafter close: snapshots/text remain readable, ignored original writes preserve\nall fields, and checked writes still report CLOSED. Provider unchanged.\n\nFinal source SHA256:\n- app/core/gimpclonelayer-handle.hpp: 1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9\n- app/tests/test-gimp-clone-layer.c: 6ba27dfbf60a62f667857118b44da7ccea7d14f83d62f4544c4afc54098cf016\n- app/tests/test-gimp-clone-layout.cpp: 1de74894af24457da87987eaf3a49ee629c952c1ee5afb7e12d6af440442b04c\n- app/tests/meson.build: 70808515f6b4dac0575c78d82bcce042530205d73511fc72d551ad859c8062e0\n",
+  "baseline_route_failures": [
+    {
+      "run": "clone-source-route-baseline-v2",
+      "process_exit": -6,
+      "meson_exit": 1,
+      "server_exit": 0,
+      "expected_original_entry_calls": 1,
+      "actual_original_entry_calls": 0,
+      "raw_json_sha256": "abd53afc1dc2efd0016aed0e5eb7aee8d355e09f3c9dae2b48b592d535ac8a0e"
+    },
+    {
+      "run": "clone-name-route-baseline-v2",
+      "process_exit": -6,
+      "meson_exit": 1,
+      "server_exit": 0,
+      "expected_original_entry_calls": 1,
+      "actual_original_entry_calls": 0,
+      "raw_json_sha256": "77799c511a3f1518acc179789b74cd889af934994acc91d0411a80942cdc32df"
+    }
+  ],
+  "unchanged_contracts_sha256": {
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/core/gimpclonelayer.h": "988baaa69210d5171eb29920146abb78d77cbc1d505f8b0aae45d06500aad73e",
+    "app/core/gimpclonelayerundo.h": "08952a62d26ecae1ebd11c01fe36b28082e598535a04921ae4278dee91a998b7",
+    "app/core/gimp-painter-type-traits.hpp": "5bc16efd001f1f83dfd2fa6de6260dbc4d3c646969a7801d27f1eb398869f29f",
+    "app/xcf/painter-xcf-preserve.cpp": "9d79e3ba4657e0e4a15bf89f10a08555cfee935b362086991c59ad656df7af7a",
+    "app/xcf/painter-xcf-load.cpp": "d08022d60ccdb29a8119057ed3e5f375101be080b782a36b26c3b41e1132efb2",
+    "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+    "app/actions/layers-commands.c": "99031ad4e7a9de4cb2de9f7de9e66176b7f23d239a5e3ff88c33e9e1b4dd8b44",
+    "app/core/gimplayerpreset-apply.cpp": "f00c7043b3365c243475341e926122ee57c93af82f26e7721e045eb5cf417419",
+    "app/httpd/httpd-images.cpp": "7f9ae33519135e2363d0a0731c382145eac7ce209b166b1a5c54ce5deb68fe69",
+    "app/core/gimpgrouplayer.c": "9513fd1a56dd306f19dae35d13fb45cc3010a322b11ccc558c17c6954318a3fc",
+    "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9",
+    "tasks.md": "0a7274e11b0d5f554d99f9020988031765c23a3cbc82410cfb36594a3e1b7198",
+    "migration/progress.tsv": "bf3f867cecf4635f47e9c5d9d007c9d8ab2574080e376453ea31fdf572b3f3ba",
+    "migration/contracts/cpp-handle-registry.tsv": "6e63af0d9d79ccd4d8af6dbcfdb5f01a2278e203326ad6aae368b730fabb8e5c"
+  },
+  "expected_xcf_diagnostics": {
+    "case": "/painter-xcf-roundtrip/malformed_clone_reference_stays_opaque",
+    "count_each_mode": 90,
+    "message": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+    "derivation": "18 invalid scenes times (initial load 1 + two reloads 2 + duplicated image reload 2 affected objects); four valid scenes emit none",
+    "source_anchors": [
+      "app/tests/test-painter-xcf-roundtrip.c:1298-1370",
+      "app/xcf/painter-xcf-preserve.cpp:1078,1137"
+    ],
+    "scope": "Exact line and count only in this selected case; all other warnings rejected; unchanged source hashes enforced; six mutation rejection controls pass"
+  },
+  "retained_intermediate_findings": [
+    "Initial Meson nested ternary was rejected; independent argument-list expressions fixed it before baseline compilation. Initial old-binary selection registered zero cases and is not accepted evidence.",
+    "First candidate native run passed original39 then failed a new incorrect assumption that closed bindings forbid read-only snapshots. Corrected tests compare retained metadata before/after ignored writes; provider unchanged.",
+    "First header freshness gate required registered archive refresh. First negative-evidence harness lacked unchanged-contract/baseline inputs; corrected copies make positive control and all12 negative controls pass.",
+    "Verifier draft corrected four-argument selected-run handling, actual XCF project-default C standard (no -std flag), and the source-proven malformed fixture diagnostics. Final12 reports use final verifier hash."
+  ],
+  "limits": [
+    "Focused full clone suite plus five explicitly selected XCF cases; not full GIMP or full XCF regression. ASan+UBSan active, LSan disabled, normal60s registration limits unchanged.",
+    "Original named setter failure policy is intentionally migrated to original void boundary; use explicit *_checked methods for previous throwing behavior.",
+    "Rows11/12 remain PARTIAL; type routes prove current native callable identities only. Historical Interface/enum/layout/subclass ABI, factory signal ordering and old Undo semantics are not claimed.",
+    "Provider, serializers, original C declarations, traits and production callers unchanged. No ordinary application relink or UI/screenshot change.",
+    "Only rows9\u201314 evidence updates; other70 rows, separate31hooks/typecatalog/counts and excluded work unchanged."
+  ],
+  "evidence_sha256": {
+    "clone-entry-handles-candidate-native-v2/results.json": "55353dfd66aa97d7ccf1f7e4407738a77a74e7108252fdfbb8cdc157dfa14cd1",
+    "clone-entry-handles-candidate-native-v2/verified-results.json": "ed51b5d14222d0ddc2d32af4619208e9daaba14b52c572e446a47a291b6c81cf",
+    "clone-entry-handles-candidate-native-v2/clone-entry-handles-candidate-native-v2.json": "f10628d8851d3dfab4fe12071e372b7ffbec9e3d28a869a00944a8750627d734",
+    "clone-entry-handles-candidate-native-v2/clone-entry-handles-candidate-native-v2.txt": "eed722aa3a11cdfb0db32733fb423a2a5a9bcd72d67c48e2b21c5e11a3b908f7",
+    "clone-xcf-native-case1-v1/results.json": "3da2539480c843a3d6347ebb725fcbf69e2b97e012b9129ec6d8fa43296b6449",
+    "clone-xcf-native-case1-v1/verified-results.json": "84caf792e599326689c650bc0c718cec6acb61c57a10e5a81e9b70c368151e09",
+    "clone-xcf-native-case1-v1/clone-xcf-native-case1-v1.json": "e497e9b4b1c2aa746fdcad61651d2e40f1ceb639c8739c94d210391d5352c13f",
+    "clone-xcf-native-case1-v1/clone-xcf-native-case1-v1.txt": "4f60616d5f1e226123655cc2017ba5f312dd94fbafcebf5c9a838755111c1648",
+    "clone-xcf-native-case2-v1/results.json": "235bfa11078692c15e2bb9aabafb13ea198910300bb16cf2e129f2580486a99d",
+    "clone-xcf-native-case2-v1/verified-results.json": "400b23d7fda221c939a834d899e1870b8f09748aa1b3467eed896723eb4730f9",
+    "clone-xcf-native-case2-v1/clone-xcf-native-case2-v1.json": "f236f79e4cab441dce02cf3faae772dbb1a2f40c60da968648e21124748a5e36",
+    "clone-xcf-native-case2-v1/clone-xcf-native-case2-v1.txt": "b80a30ae7d7bbdcfc1a42b01729b2a30ba89c1c7714353fb94464ea4abf206c4",
+    "clone-xcf-native-case3-v1/results.json": "1eae438d6d8423a28b6c995b8a6c246848fe4a47db28996e5aafea388aa6f00d",
+    "clone-xcf-native-case3-v1/verified-results.json": "381e1f44f26a6cfb2cc4ee15ed41942dbf305258c9c5d84fdaf69dad0c52069a",
+    "clone-xcf-native-case3-v1/clone-xcf-native-case3-v1.json": "4cda7e1f876dcbf85113bf3462d6117658c3e1c982c95118174f9dd899aa8050",
+    "clone-xcf-native-case3-v1/clone-xcf-native-case3-v1.txt": "880d328aa015b6e18b5a4f18ac7ac224da0e0e78b3dd7303b15f9c1e1f60db51",
+    "clone-xcf-native-case4-v1/results.json": "5244ed1603df004f01507b860e8701993f8c7cd2b44000fc00b4ef88a2295f66",
+    "clone-xcf-native-case4-v1/verified-results.json": "01132f69a77222f09b7071140faad4d12885328ca082ab9a785d567896f40a0a",
+    "clone-xcf-native-case4-v1/clone-xcf-native-case4-v1.json": "434b2a19c9ea57085e90b8c01f60fb061a00f524045bfe8afac544411e66b852",
+    "clone-xcf-native-case4-v1/clone-xcf-native-case4-v1.txt": "68adb918b767073c99884ec1d5aad84d9750fc72237959b71b5a2ece30758189",
+    "clone-xcf-native-case5-v1/results.json": "775c9c45de3a2ce9b7d58a2720b423ec4a9cfe572177dbe79473436940d57cae",
+    "clone-xcf-native-case5-v1/verified-results.json": "0e3b9b5de87cacd24d6f54f53d2a398f04af8309118b6969821f644a4c88b0da",
+    "clone-xcf-native-case5-v1/clone-xcf-native-case5-v1.json": "501d217435483236225b4f5687119f7b4f89cecaa6a7f8f394c7fbcd59e0e6b2",
+    "clone-xcf-native-case5-v1/clone-xcf-native-case5-v1.txt": "12f003524d9b892f1a86661557118a4794cea356dd6e9ef4255e41d86ce3909b",
+    "clone-entry-handles-candidate-asan-v1/results.json": "ec186bf31e7e1a64de6c35ec2794f87c2373b1753e08ebee05ada6db125077f7",
+    "clone-entry-handles-candidate-asan-v1/verified-results.json": "197c0100fb1aad2c4778c18e9d269063d0164b4f2e374a6e0ed892e1ab8836e0",
+    "clone-entry-handles-candidate-asan-v1/clone-entry-handles-candidate-asan-v1.json": "8b8eaa24e1fb5741d30b0db3bf27b999be14dcea72b76b7ba90fbc9788d6911e",
+    "clone-entry-handles-candidate-asan-v1/clone-entry-handles-candidate-asan-v1.txt": "baed8b1857eeadca45fe58397073bcbddff0901900412ae821b6f7670d6e7b71",
+    "clone-xcf-asan-case1-v1/results.json": "7a299b468f565b3eb05e63cb0edd5b1faaa27ab64038a889a43a2508f660e635",
+    "clone-xcf-asan-case1-v1/verified-results.json": "3196e1487622aae3444453ee18cfffa9e6d262adad09ebd4e04b1b2687dab7a1",
+    "clone-xcf-asan-case1-v1/clone-xcf-asan-case1-v1.json": "5ad16c0fbf2383fc36935c18773c302d6bc5f0334dac820d0d3d3d99511aa55a",
+    "clone-xcf-asan-case1-v1/clone-xcf-asan-case1-v1.txt": "9131276209e1b75af84ba3b68a4fbb642c8c3473789d359134a5b4ef108e4049",
+    "clone-xcf-asan-case2-v1/results.json": "d059c9bb208c9c29fae88c4e7673286ab45f16f89e98a3a2cf89ff3a35e93eae",
+    "clone-xcf-asan-case2-v1/verified-results.json": "0c70f28726588535d8875d0f74e33c11c7a337fed8a3d4edc6bbb3d3b2f929ae",
+    "clone-xcf-asan-case2-v1/clone-xcf-asan-case2-v1.json": "325bb595308b462cb1eb56df0a5061da826960156dad254d8cb9f7b84d81262c",
+    "clone-xcf-asan-case2-v1/clone-xcf-asan-case2-v1.txt": "33a83658b860982991b5d63a64d7fd38a8b58d537ae4699a02af9f92ba2cd9b6",
+    "clone-xcf-asan-case3-v1/results.json": "0f0bec5504602e5e3464d016c417d832688045dc9fa840571725c7541dd40cab",
+    "clone-xcf-asan-case3-v1/verified-results.json": "cbe8350f092bc85332d8e70def9d23161b24bf1d23def2f5158ea882800a17b7",
+    "clone-xcf-asan-case3-v1/clone-xcf-asan-case3-v1.json": "341b9df30fec69a09c1dca1a03f1d25432c6f8d10e3f45b33cdf58de93064ff4",
+    "clone-xcf-asan-case3-v1/clone-xcf-asan-case3-v1.txt": "2ad1fcbfdc03485c29c85b2c4d5534073b50b247a221378a4286c146196c85f5",
+    "clone-xcf-asan-case4-v1/results.json": "b001275053eb2a9232bc68c21f71f8f9e2df34736cd6b30b68c82e047b1450d2",
+    "clone-xcf-asan-case4-v1/verified-results.json": "19f0ee201e72e68f7bdbb7b43aab8183913ef80ad9accb1b4699c65baf70cc62",
+    "clone-xcf-asan-case4-v1/clone-xcf-asan-case4-v1.json": "af1d2a5b661d55daebfb4d4d785843048047c0c5448a896acab0d563304bc1ba",
+    "clone-xcf-asan-case4-v1/clone-xcf-asan-case4-v1.txt": "9d00118a40a46a7872732b844ff6d66f7184849f8aa93826c31b838c57b302be",
+    "clone-xcf-asan-case5-v1/results.json": "c71e6228a43e72a57228af5c1898e3e4a6acd38945a8a2f12f2866e63e73766f",
+    "clone-xcf-asan-case5-v1/verified-results.json": "38904f99008e578680a64233fef382ad9f504d5d32ce9b6c67e0962f679fb6f5",
+    "clone-xcf-asan-case5-v1/clone-xcf-asan-case5-v1.json": "b13a96a976ccfb1d409cba8911da524bb2f8c489e9b76f2910df296dde796627",
+    "clone-xcf-asan-case5-v1/clone-xcf-asan-case5-v1.txt": "10eaf58139d1e4d71e41b19bc9af4029c5184e76821ce924dec2bb8dd9c2db50",
+    "xcf-verification.log": "f2710374eb0289deec5c249afe9c71d6fd5b255495cdcc8980b81707c10f1455",
+    "candidate-native-v2-build.log": "6b8aff6a0c8c845ef540c61647517778d08d42f851023bcf547d638342279b46",
+    "clone-xcf-asan-case5-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-asan-case3-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-source-route-baseline-v2-console.log": "cf7b9a5bc099bdbb1b1894d004bdfff4dbb245c69906b032c2c0d6f3760944ba",
+    "headers-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "candidate-source-seal.json": "723b939da1a42e403896cb9de7fed85b1c515413ef759f37b5b977f9e1e8a88a",
+    "xcf-asan-v1-build.log": "0a44baa865c8f13856e20b72058f5c21c83d815bc26c3da5271dbcced4f72a4e",
+    "clone-name-route-baseline-v2-console.log": "48ce057c6fe5053805031f972d2f5b6599360a4f055616c39cb58866d9081585",
+    "xcf-verification.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "candidate-asan-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "candidate-asan-v1-build.log": "2bb7137ecd175c3bd6182d6bf2640103ccc28fd70c64fe99618876ab70629b89",
+    "candidate-native-v1-build.log": "6b8aff6a0c8c845ef540c61647517778d08d42f851023bcf547d638342279b46",
+    "test_verify_candidate.py": "71a49fcc0eb0111a14f07413103afb382c4eb0fd727b5d04650d834f4498a933",
+    "candidate-gimpclonelayer-handle.hpp": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+    "negative-controls-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "final-verification.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-entry-handles-candidate-native-v1-console.log": "41230d22eb8954ae85fd0a712448179c1ba299e8f27d3827c1d5a5f147963d26",
+    "clone-xcf-native-case1-v1-console.log": "21c5ede9ecc6f7b02efd41d657bb6c6c9342b99fbe650d48de9b3fbf8bd70481",
+    "xcf-verifier-negative-results.json": "1edb0185bcfe8365ab6e281e61af5e935a4e0098d0838223b34645207dba20d3",
+    "clone-xcf-native-case4-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "negative-controls.log": "9bb555307111c312c5078db48308154162d31cc2eade082e4dc35e8181897d5d",
+    "xcf-negative-controls.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "xcf-native-v1-build.log": "034ff13769ca190ae0116d6077b8c62402a1ff2e14f65f04cd414f0af682d1b5",
+    "negative-controls.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "scope-and-contract.md": "930e1602db8521bd079de83ad10dc98e1519fcdfade592a36a72ca762760bd52",
+    "asan-verification.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "asan-verification.log": "268281db7b60701e9dd6ef28737a9eebcabf6537f03fb398227e816a97117f71",
+    "handle-compile-results.json": "481f0a685dab5260a5d40375d79d0647c3a7ddfe8e0946401f8c53361880b4b8",
+    "clone-xcf-native-case2-v1-console.log": "4e3824be3bf9f99fc00f57567205aa7be06ca20a6289123a2a336e4a402d3582",
+    "xcf-asan-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "candidate-native-v2-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-native-case5-v1-console.log": "52c2a6c9f4ece313c6e1a5e897cfd68cbf4c7cbbf8404ddd110a1284518643ce",
+    "xcf-verification-v2.log": "b5cfb224a3790502fff3d8f7913607aa88ccbbaece036ab0f24b7ef1c1a476b3",
+    "headers-native-v1-build.log": "3f06deb185b209624956bb9864a76527bb7d568cf069c58d53594991fe8d2388",
+    "xcf-verification-trial.log": "40efaafe29b5418c5def1c224f2cd90fd9162347e641983c53f5d59a3c78cda1",
+    "clone-xcf-asan-case3-v1-console.log": "0a0fb3b9a6c9b14ca4f01434dbbeae311636e455e00b7ec78505c1eca5edc304",
+    "clone-entry-handles-candidate-asan-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "headers-native-validation-v2.log": "d708f194ed64b87768e24ca3d8df2622b365be9469ffe83ad17b093513852fad",
+    "adapter-check.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-entry-handles-candidate-native-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-native-case2-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-asan-case5-v1-console.log": "796bfc1b3d06d2d1849df3ff609e34d86c775cadd045c46e77823313daba4374",
+    "native-verification.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-native-case5-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-native-case4-v1-console.log": "a3836fe94e776d1e0d747d93b25558853a529755b1d4a6262d00d5d023d58595",
+    "clone-xcf-native-case3-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-native-case3-v1-console.log": "5257f0f7d7175b4401ca37d0537ac25b9fb5d08fce203a9023e1fc8ade195c35",
+    "native-verification.log": "ebfa913457ebf026d7527ef968cc2df527a20e734b594d43b55dc8c9dd1e55b3",
+    "independent-review.md": "7c79b2c9934abeb6251e321a72850b4858492c35aea3c17efe75b513b9545004",
+    "handle-compile.log": "a4c4931fe2dc14a86eef6b2c8aeea303b1fee85fa6a1b6f18228044041add0b9",
+    "final-verification.log": "04754f1d7a0c0c31dc3355e493ec6469b1d2ee3721a4da46387082089ca2b17e",
+    "clone-name-route-baseline-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-asan-case4-v1-console.log": "10016e6bf3efe73a8caa86cf2efd789b36efd27487cdce179d6c2e57f36e10a0",
+    "handle-compile.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-entry-handles-candidate-native-v1.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "test_verify_xcf_subset.py": "1a7e6768e7bd3c6b396835c1505ea4101319e224b442c9a97211a72900ff6b5e",
+    "baseline-native-v1-build.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "baseline-native-v2-build.log": "28d25a9f2142fe11f2d50461598db13500445beab5511c36f7ec600c5aa85680",
+    "clone-source-route-baseline-v2.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "clone-xcf-asan-case1-v1-console.log": "7ca01ea4b0c53dad8df0f2ef621fb7b212a742e37bf0ae1395da2eb3cc3ce955",
+    "verifier-negative-results-initial.json": "5bf453ca2cd24f086e9cb5aa96de2f785b1c6b05baf40390393781a23ca52662",
+    "adapter-policy-tests.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "negative-controls-v2.log": "6981d714852bd3e3f86484ffbdeb8bb0304f01c0f9f6237658be47145f2a158b",
+    "baseline-source.json": "fef5a1c54c78d91d9afc62c11d04785a64e8480ac14d604008bcff48d4cd08ef",
+    "clone-entry-handles-candidate-native-v2-console.log": "ab341885da74b1e452545c44bd55c682309d7f1116b5fdfb2259ce59a2f33b01",
+    "unchanged-contracts.json": "1a89f0d965ef857a68dbe32beff57f6c0d3be0af0092a64b4de7a04e8e95b1aa",
+    "clone-xcf-asan-case1-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-name-route-baseline-v2.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "adapter-policy-tests.log": "928116ea9f4f46b8e4a69e964c3d72c960789e7ea5c18ee2f675235a55aad291",
+    "baseline-native-v1-build.log": "75f6f1b43b483b389d7b38abd505a7fd64fa28f700d4f957e59f1d8af41a5986",
+    "clone-xcf-native-case1-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "xcf-negative-controls.log": "d32ca6537539c1d5fd4ae60fe0b08f5527304e25a5c458d792716049901e825c",
+    "verify_candidate.py": "949e552f1758e8b8687baac4cf389c933ec45c981979ce8a8cf439ed232bec36",
+    "verifier-negative-results.json": "dae427982a50f39712704a8be7f1c714ac01771c73f82f6362d706914a7bc888",
+    "contracts.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "headers-native-validation.log": "d09bf28ea3a948def2b1c1d5938c0b4ab255c9dbbce9d39f945145741c8e5a2d",
+    "xcf-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "final-runs.json": "ed3f6b1c79d8c063fd45df55db2e66a819217db58310a58b077278dc749f3990",
+    "check_handle_compile.py": "f9ad4ec17ec02bab812af083eabe708b64c3109c854fa38a41204534600215e8",
+    "xcf-subset.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-asan-case2-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-name-route-baseline-v1-console.log": "2a813bf378fd7d5975680b02fecec28df534d7594fa0c18d1914e2d281a3d1f0",
+    "adapter-check.log": "6b16c285a7d2328318fbb01a5bef77c3aeb2d8a9e586b7ef7517702b4b4f435a",
+    "candidate-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-asan-case4-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "freeze.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "headers-native-validation-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "clone-xcf-asan-case2-v1-console.log": "231aab7f237e4d84d3684f33f41b5e1f799e0614560205b13b2cc268b7b65112",
+    "headers-native-validation.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "baseline-route-test.cpp": "76d3c47e36114714eb8ab69f6c16b201e180f3deaded945083d0b6bad89a353f",
+    "clone-entry-handles-candidate-asan-v1-console.log": "9a7d1f65c14f67188daf5bb5baf905d9f05b79e30ce3b57657ff259d2dfcb6f9",
+    "baseline-native-v2-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "contracts.log": "5d7679fe57fa10916ee636e18c811f3cf0e7f5655dce2cb6868f62a4741265e1",
+    "xcf-verification-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  }
+}

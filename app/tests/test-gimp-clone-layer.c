@@ -32,6 +32,7 @@
 void gimp_test_clone_retained_image (GimpImage *image, GimpCloneLayer *clone);
 void gimp_test_clone_cpp_layout (gsize size, gsize offset, GimpCloneLayer *layer);
 void gimp_test_clone_undo_cpp_type (GimpCloneLayerUndo *undo);
+void gimp_test_clone_register_cpp_tests (Gimp *application);
 typedef struct { GimpCloneLayer parent; } TestBrokenClone;
 typedef struct { GimpCloneLayerClass parent; } TestBrokenCloneClass;
 GType test_broken_clone_get_type (void);
@@ -1447,6 +1448,90 @@ static void retained_item_gimp_lifetime (void)
   g_test_trap_subprocess (NULL, 30 * G_USEC_PER_SEC, (GTestSubprocessFlags) 0);
   g_test_trap_assert_passed ();
 }
+/* Actual C callers separately cover the original void setters, including
+ * recoverable invalid requests. These are not C++ helper invocations. */
+static void original_void_entry_contract (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *source = new_layer (image, "original C source", NULL, 0);
+  GimpCloneLayer *clone = new_clone (image, source);
+  GObject *wrong = g_object_new (G_TYPE_OBJECT, NULL);
+  GimpCloneLayerReference *reference, *closed_reference;
+  GError *error = NULL;
+
+  gimp_clone_layer_set_source_by_name (clone, "");
+  gimp_clone_layer_set_source (clone, (GimpLayer *) wrong);
+  reference = gimp_clone_layer_dup_reference (clone, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (reference);
+  g_assert_true (reference->source == source);
+  g_assert_cmpstr (reference->pending_name, ==, "");
+  g_assert_cmpint (reference->state, ==, GIMP_CLONE_SOURCE_PENDING);
+  gimp_clone_layer_reference_free (reference);
+  gimp_clone_layer_set_source_by_name (clone, NULL);
+  reference = gimp_clone_layer_dup_reference (clone, &error);
+  g_assert_no_error (error);
+  g_assert_true (reference->source == source);
+  g_assert_null (reference->pending_name);
+  g_assert_cmpint (reference->state, ==, GIMP_CLONE_SOURCE_LIVE);
+  gimp_clone_layer_reference_free (reference);
+  gimp_clone_layer_set_source (clone, NULL);
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  g_assert_cmpint (gimp_clone_layer_get_source_state (clone), ==, GIMP_CLONE_SOURCE_NONE);
+  gimp_clone_layer_set_source ((GimpCloneLayer *) wrong, source);
+  gimp_clone_layer_set_source_by_name ((GimpCloneLayer *) wrong, "ignored");
+  gimp_clone_layer_set_source (NULL, source);
+  gimp_clone_layer_set_source_by_name (NULL, "ignored");
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (clone), NULL));
+  closed_reference = gimp_clone_layer_dup_reference (clone, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (closed_reference);
+  gimp_clone_layer_set_source (clone, source);
+  gimp_clone_layer_set_source_by_name (clone, "ignored after close");
+  g_assert_null (gimp_clone_layer_get_source (clone));
+  reference = gimp_clone_layer_dup_reference (clone, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (reference);
+  g_assert_true (reference->source == closed_reference->source);
+  g_assert_cmpstr (reference->pending_name, ==, closed_reference->pending_name);
+  g_assert_cmpstr (reference->source_name, ==, closed_reference->source_name);
+  g_assert_cmpint (reference->state, ==, closed_reference->state);
+  g_assert_cmpint (reference->source_expired, ==, closed_reference->source_expired);
+  g_assert_cmpint (reference->allow_name_lookup, ==, closed_reference->allow_name_lookup);
+  gimp_clone_layer_reference_free (reference);
+  gimp_clone_layer_reference_free (closed_reference);
+  g_object_unref (wrong);
+  g_object_unref (image);
+}
+
+static void original_factory_borrowed_ownership (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *source = new_layer (image, "borrowed C source", NULL, 0);
+  GimpLayer *created = gimp_clone_layer_new (image, source, 0, 0, "floating C clone",
+                                             0.5, GIMP_LAYER_MODE_NORMAL);
+  GimpLayer *weak_source = source;
+  GimpLayer *weak_created = created;
+  guint source_refs = G_OBJECT (source)->ref_count;
+  g_assert_nonnull (created);
+  g_assert_true (g_object_is_floating (created));
+  g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (created)), ==, 16);
+  g_assert_cmpint (gimp_item_get_height (GIMP_ITEM (created)), ==, 16);
+  g_assert_cmpfloat (gimp_layer_get_opacity (created), ==, 0.5);
+  g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (created)) == source);
+  g_assert_cmpuint (G_OBJECT (source)->ref_count, ==, source_refs);
+  g_object_ref_sink (created);
+  g_object_add_weak_pointer (G_OBJECT (source), (gpointer *) &weak_source);
+  g_object_add_weak_pointer (G_OBJECT (created), (gpointer *) &weak_created);
+  g_object_unref (image);
+  g_assert_null (weak_source); /* borrowed source query did not retain it */
+  g_assert_nonnull (weak_created);
+  g_assert_null (gimp_item_get_image (GIMP_ITEM (created)));
+  g_assert_null (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (created)));
+  g_object_unref (created);
+  g_assert_null (weak_created);
+}
+
 int main (int argc, char **argv)
 {
   int result;
@@ -1473,6 +1558,8 @@ int main (int argc, char **argv)
   ADD (recursive_first_match); ADD (offset_size_and_noop_transforms);
   ADD (source_delete_undo); ADD (source_lifetime_and_detach); ADD (freeze_and_close); ADD (cycles);
   ADD (duplicate_and_group_update);
+  ADD (original_void_entry_contract); ADD (original_factory_borrowed_ownership);
+  gimp_test_clone_register_cpp_tests (gimp);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   if (gimp) gimp_exit (gimp, TRUE);
