@@ -1,0 +1,937 @@
+{
+  "public_base": "8ca3bf43fe61e534df38737cb24da2f89aedcbd0",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "entry_count": 76,
+  "changed_implementation_rows": [
+    57
+  ],
+  "row57_status": "PARTIAL: native notification fanout differs from original named-property notification",
+  "row51_retained": true,
+  "row58_remains_partial": true,
+  "other75_unchanged": true,
+  "row36_retained": true,
+  "separate31hooks_unchanged": true,
+  "type_handle_catalog_unchanged": true,
+  "broader08018_complete": false,
+  "migration_count": "141/661 unchanged",
+  "protected_files_sha256": {
+    "tasks.md": "0a7274e11b0d5f554d99f9020988031765c23a3cbc82410cfb36594a3e1b7198",
+    "migration/progress.tsv": "bf3f867cecf4635f47e9c5d9d007c9d8ab2574080e376453ea31fdf572b3f3ba",
+    "migration/contracts/cpp-handle-registry.tsv": "6e63af0d9d79ccd4d8af6dbcfdb5f01a2278e203326ad6aae368b730fabb8e5c"
+  },
+  "entries": [
+    {
+      "index": 1,
+      "baseline": {
+        "c_entry": "features_entry_point",
+        "legacy_site": "app/gimp-features.cpp:70",
+        "cpp_operation": "ApplicationRef::initialize_features",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 2,
+      "baseline": {
+        "c_entry": "gimp_bucket_fill_brush_tool_get_type",
+        "legacy_site": "app/tools/gimpbucketfillbrushtool.cpp:485",
+        "cpp_operation": "TypeTraits<GimpBucketFillBrushTool>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 3,
+      "baseline": {
+        "c_entry": "gimp_bucket_fill_brush_tool_register",
+        "legacy_site": "app/tools/gimpbucketfillbrushtool.cpp:490",
+        "cpp_operation": "BucketFillBrushToolRef::register_type",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 4,
+      "baseline": {
+        "c_entry": "gimp_canvas_perspective_guide_get_type",
+        "legacy_site": "app/display/gimpcanvasperspectiveguide.cpp:295",
+        "cpp_operation": "TypeTraits<GimpCanvasPerspectiveGuide>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 5,
+      "baseline": {
+        "c_entry": "gimp_canvas_perspective_guide_new",
+        "legacy_site": "app/display/gimpcanvasperspectiveguide.cpp:300",
+        "cpp_operation": "CanvasPerspectiveGuideRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 6,
+      "baseline": {
+        "c_entry": "gimp_cell_renderer_popup_clicked",
+        "legacy_site": "app/widgets/gimpcellrendererpopup.cpp:344",
+        "cpp_operation": "CellRendererPopupRef::clicked",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 7,
+      "baseline": {
+        "c_entry": "gimp_cell_renderer_popup_get_type",
+        "legacy_site": "app/widgets/gimpcellrendererpopup.cpp:341",
+        "cpp_operation": "TypeTraits<GimpCellRendererPopup>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 8,
+      "baseline": {
+        "c_entry": "gimp_cell_renderer_popup_new",
+        "legacy_site": "app/widgets/gimpcellrendererpopup.cpp:342",
+        "cpp_operation": "CellRendererPopupRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 9,
+      "baseline": {
+        "c_entry": "gimp_clone_layer_get_source",
+        "legacy_site": "app/core/gimpclonelayer.cpp:688",
+        "cpp_operation": "CloneLayerRef::source",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation; returned borrowed GimpLayer is retained by owning LayerRef, lazy name resolution semantics preserved",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 10,
+      "baseline": {
+        "c_entry": "gimp_clone_layer_get_type",
+        "legacy_site": "app/core/gimpclonelayer.cpp:664",
+        "cpp_operation": "TypeTraits<GimpCloneLayer>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 11,
+      "baseline": {
+        "c_entry": "gimp_clone_layer_new",
+        "legacy_site": "app/core/gimpclonelayer.cpp:669",
+        "cpp_operation": "CloneLayerRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 12,
+      "baseline": {
+        "c_entry": "gimp_clone_layer_set_source",
+        "legacy_site": "app/core/gimpclonelayer.cpp:681",
+        "cpp_operation": "CloneLayerRef::set_source",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 13,
+      "baseline": {
+        "c_entry": "gimp_clone_layer_set_source_by_name",
+        "legacy_site": "app/core/gimpclonelayer.cpp:696",
+        "cpp_operation": "CloneLayerRef::set_source_name",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 14,
+      "baseline": {
+        "c_entry": "gimp_clone_layer_undo_get_type",
+        "legacy_site": "app/core/gimpclonelayerundo.cpp:61",
+        "cpp_operation": "TypeTraits<GimpCloneLayerUndo>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 15,
+      "baseline": {
+        "c_entry": "gimp_display_shell_attach_on_canvas_view",
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:670",
+        "cpp_operation": "DisplayShellRef::attach_on_canvas_view",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 16,
+      "baseline": {
+        "c_entry": "gimp_display_shell_detach_on_canvas_view",
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:713",
+        "cpp_operation": "DisplayShellRef::detach_on_canvas_view",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 17,
+      "baseline": {
+        "c_entry": "gimp_display_shell_update_on_canvas_opacity",
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:659",
+        "cpp_operation": "DisplayShellRef::update_on_canvas_opacity",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 18,
+      "baseline": {
+        "c_entry": "gimp_display_shell_update_on_canvas_views",
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:601",
+        "cpp_operation": "DisplayShellRef::update_on_canvas_views",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 19,
+      "baseline": {
+        "c_entry": "gimp_editor_add_action_dropdown",
+        "legacy_site": "app/widgets/gimpeditor-cxx.cpp:182",
+        "cpp_operation": "EditorRef::add_action_dropdown",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 20,
+      "baseline": {
+        "c_entry": "gimp_editor_add_dropdown",
+        "legacy_site": "app/widgets/gimpeditor-cxx.cpp:89",
+        "cpp_operation": "EditorRef::add_dropdown",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 21,
+      "baseline": {
+        "c_entry": "gimp_filter_layer_get_procedure",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1186",
+        "cpp_operation": "FilterLayerRef::get_procedure",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 22,
+      "baseline": {
+        "c_entry": "gimp_filter_layer_get_procedure_args",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1192",
+        "cpp_operation": "FilterLayerRef::get_procedure_args",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation; deep-copy GValues with independently owned array; do not shallow-copy internal string/object pointers",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 23,
+      "baseline": {
+        "c_entry": "gimp_filter_layer_get_type",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1170",
+        "cpp_operation": "TypeTraits<GimpFilterLayer>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 24,
+      "baseline": {
+        "c_entry": "gimp_filter_layer_mark_as_loaded",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1206",
+        "cpp_operation": "FilterLayerRef::mark_as_loaded",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 25,
+      "baseline": {
+        "c_entry": "gimp_filter_layer_new",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1175",
+        "cpp_operation": "FilterLayerRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 26,
+      "baseline": {
+        "c_entry": "gimp_filter_layer_set_procedure",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1198",
+        "cpp_operation": "FilterLayerRef::set_procedure",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 27,
+      "baseline": {
+        "c_entry": "gimp_image_generator_options_get_type",
+        "legacy_site": "app/tools/gimpimagegeneratortool.cpp:137",
+        "cpp_operation": "TypeTraits<GimpImageGeneratorOptions>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement; removal only after31.011 dependency proof, never assumed here",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 28,
+      "baseline": {
+        "c_entry": "gimp_image_generator_tool_get_type",
+        "legacy_site": "app/tools/gimpimagegeneratortool.cpp:472",
+        "cpp_operation": "TypeTraits<GimpImageGeneratorTool>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement; removal only after31.011 dependency proof, never assumed here",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 29,
+      "baseline": {
+        "c_entry": "gimp_image_generator_tool_register",
+        "legacy_site": "app/tools/gimpimagegeneratortool.cpp:437",
+        "cpp_operation": "ImageGeneratorToolRef::register_type",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store; removal only after31.011 dependency proof, never assumed here",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 30,
+      "baseline": {
+        "c_entry": "gimp_json_resource_get_type",
+        "legacy_site": "app/presets/gimpjsonresource.cpp:215",
+        "cpp_operation": "TypeTraits<GimpJsonResource>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 31,
+      "baseline": {
+        "c_entry": "gimp_json_resource_new",
+        "legacy_site": "app/presets/gimpjsonresource.cpp:219",
+        "cpp_operation": "JsonResourceRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 32,
+      "baseline": {
+        "c_entry": "gimp_layer_tile_view_get_type",
+        "legacy_site": "app/widgets/gimplayertileview.cpp:1594",
+        "cpp_operation": "TypeTraits<GimpLayerTileView>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 33,
+      "baseline": {
+        "c_entry": "gimp_layer_tile_view_new",
+        "legacy_site": "app/widgets/gimplayertileview.cpp:1595",
+        "cpp_operation": "LayerTileViewRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 34,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_begin_use",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:383",
+        "cpp_operation": "MypaintBrushRef::begin_use",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 35,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_button_with_popup",
+        "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:325",
+        "cpp_operation": "ContextRef::create_mypaint_brush_button",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 36,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_duplicate",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:350",
+        "cpp_operation": "MypaintBrushRef::duplicate",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "app/core/gimppaintermybrush.cpp:gimp_mypaint_brush_duplicate; app/core/gimpmypaintbrush.h source-only alias; app/core/gimppaintermybrush-handle.hpp:MypaintBrushRef::duplicate; acceptance migration/tests/adapter-removal/mypaint-named-duplicate-08018/report.json; no legacy layout/GType ABI claim"
+      },
+      "current_implementation": "app/core/gimppaintermybrush.cpp:gimp_mypaint_brush_duplicate; app/core/gimpmypaintbrush.h source-only alias; app/core/gimppaintermybrush-handle.hpp:MypaintBrushRef::duplicate; acceptance migration/tests/adapter-removal/mypaint-named-duplicate-08018/report.json; no legacy layout/GType ABI claim",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 37,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_editor_get_type",
+        "legacy_site": "app/widgets/gimpmypaintbrusheditor.cpp:84",
+        "cpp_operation": "TypeTraits<GimpMypaintBrushEditor>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 38,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_editor_new",
+        "legacy_site": "app/widgets/gimpmypaintbrusheditor.cpp:284",
+        "cpp_operation": "MypaintBrushEditorRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 39,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_end_use",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:394",
+        "cpp_operation": "MypaintBrushRef::end_use",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 40,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_get_standard",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:364",
+        "cpp_operation": "MypaintBrushRef::get_standard",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation; borrowed standard resource is retained, never adopted as a newly-owned return",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 41,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_get_type",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:100",
+        "cpp_operation": "TypeTraits<GimpMypaintBrush>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 42,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_load",
+        "legacy_site": "app/core/gimpmypaintbrush-load.cpp:111",
+        "cpp_operation": "MypaintBrushRef::load",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 43,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_new",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:334",
+        "cpp_operation": "MypaintBrushRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 44,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_save",
+        "legacy_site": "app/core/gimpmypaintbrush-save.cpp:101",
+        "cpp_operation": "MypaintBrushRef::save",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 45,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_select_mypaint_brush",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:406",
+        "cpp_operation": "MypaintBrushRef::select_mypaint_brush",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 46,
+      "baseline": {
+        "c_entry": "gimp_mypaint_brush_want_null_motion",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:420",
+        "cpp_operation": "MypaintBrushRef::want_null_motion",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 47,
+      "baseline": {
+        "c_entry": "gimp_mypaint_core_undo_get_type",
+        "legacy_site": "app/paint/gimpmypaintcoreundo.cpp:56",
+        "cpp_operation": "TypeTraits<GimpMypaintCoreUndo>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 48,
+      "baseline": {
+        "c_entry": "gimp_mypaint_options_copy_brush_props",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:358",
+        "cpp_operation": "MypaintOptionsRef::copy_brush_props",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 49,
+      "baseline": {
+        "c_entry": "gimp_mypaint_options_get_brush_mode",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:347",
+        "cpp_operation": "MypaintOptionsRef::get_brush_mode",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 50,
+      "baseline": {
+        "c_entry": "gimp_mypaint_options_get_current_brush",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:533",
+        "cpp_operation": "MypaintOptionsRef::get_current_brush",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 51,
+      "baseline": {
+        "c_entry": "gimp_mypaint_options_get_mapping_point",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:571",
+        "cpp_operation": "MypaintOptionsRef::get_mapping_point",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp original owned mapping-point C query; app/paint/gimpmypaintoptions.h operation-level source alias; app/paint/painter-mypaint-surface/gimp-painter-options.hpp MypaintOptionsRef::get_mapping_point delegates to this entry and the existing OptionsSlot draft. Original signature, name normalization, float rounding and g_free ownership; no legacy layout/runtime GType or borrowed-live-brush claim. See migration/tests/adapter-removal/mypaint-mapping-getter-08018/report.json"
+      },
+      "current_implementation": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp original owned mapping-point C query; app/paint/gimpmypaintoptions.h operation-level source alias; app/paint/painter-mypaint-surface/gimp-painter-options.hpp MypaintOptionsRef::get_mapping_point delegates to this entry and the existing OptionsSlot draft. Original signature, name normalization, float rounding and g_free ownership; no legacy layout/runtime GType or borrowed-live-brush claim. See migration/tests/adapter-removal/mypaint-mapping-getter-08018/report.json",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 52,
+      "baseline": {
+        "c_entry": "gimp_mypaint_options_get_type",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:95",
+        "cpp_operation": "TypeTraits<GimpMypaintOptions>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 53,
+      "baseline": {
+        "c_entry": "gimp_mypaint_options_gui",
+        "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:543",
+        "cpp_operation": "MypaintOptionsRef::gui",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 54,
+      "baseline": {
+        "c_entry": "gimp_mypaint_options_gui_horizontal",
+        "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:573",
+        "cpp_operation": "MypaintOptionsRef::gui_horizontal",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 55,
+      "baseline": {
+        "c_entry": "gimp_mypaint_options_is_ready",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:606",
+        "cpp_operation": "MypaintOptionsRef::is_ready",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 56,
+      "baseline": {
+        "c_entry": "gimp_mypaint_options_new",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:334",
+        "cpp_operation": "MypaintOptionsRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 57,
+      "baseline": {
+        "c_entry": "gimp_mypaint_options_set_mapping_point",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:539",
+        "cpp_operation": "MypaintOptionsRef::set_mapping_point",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "PARTIAL: app/paint/painter-mypaint-surface/gimp-painter-options.cpp original named mapping replacement; app/paint/gimpmypaintoptions.h source alias; MypaintOptionsRef::set_mapping_point delegates once to the C entry and native active draft set_curve. Original signature, exact name normalization, float-rounded points and explicit empty reset; native broader property notifications/settings-changed retained instead of exact legacy single-property fanout. No legacy layout/runtime GType, binary ABI or borrowed-live-brush claim. See migration/tests/adapter-removal/mypaint-mapping-setter-08018/report.json",
+      "disposition": "partial_named_mapping_replacement",
+      "full_original_entry_closed": false
+    },
+    {
+      "index": 58,
+      "baseline": {
+        "c_entry": "gimp_mypaint_tool_enable_color_picker",
+        "legacy_site": "app/tools/gimpmypainttool.cpp:222",
+        "cpp_operation": "MypaintToolRef::enable_color_picker",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "PARTIAL: app/tools/gimppaintermybrushtool.cpp original C operation name; app/tools/gimpmypainttool.h requires explicit GimpColorPickTarget/TARGET_* source migration; app/tools/gimppaintermybrushtool.hpp MypaintToolRef::enable_color_picker delegates to that entry and same ToolSlot. Native destination behavior restored; original GimpColorPickMode signature, legacy layout/runtime GType and ABI are not restored. See migration/tests/adapter-removal/mypaint-colorpicker-08018/report.json"
+      },
+      "current_implementation": "PARTIAL: app/tools/gimppaintermybrushtool.cpp original C operation name; app/tools/gimpmypainttool.h requires explicit GimpColorPickTarget/TARGET_* source migration; app/tools/gimppaintermybrushtool.hpp MypaintToolRef::enable_color_picker delegates to that entry and same ToolSlot. Native destination behavior restored; original GimpColorPickMode signature, legacy layout/runtime GType and ABI are not restored. See migration/tests/adapter-removal/mypaint-colorpicker-08018/report.json",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 59,
+      "baseline": {
+        "c_entry": "gimp_mypaint_tool_get_type",
+        "legacy_site": "app/tools/gimpmypainttool.cpp:117",
+        "cpp_operation": "TypeTraits<GimpMypaintTool>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 60,
+      "baseline": {
+        "c_entry": "gimp_mypaint_tool_register",
+        "legacy_site": "app/tools/gimpmypainttool.cpp:813",
+        "cpp_operation": "MypaintToolRef::register_type",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 61,
+      "baseline": {
+        "c_entry": "gimp_perspective_guide_add_vanish_points",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:255",
+        "cpp_operation": "PerspectiveGuideRef::add_vanish_points",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 62,
+      "baseline": {
+        "c_entry": "gimp_perspective_guide_get_type",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:240",
+        "cpp_operation": "TypeTraits<GimpPerspectiveGuide>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 63,
+      "baseline": {
+        "c_entry": "gimp_perspective_guide_get_vanish_point_length",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:250",
+        "cpp_operation": "PerspectiveGuideRef::get_vanish_point_length",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 64,
+      "baseline": {
+        "c_entry": "gimp_perspective_guide_get_vanish_points",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:265",
+        "cpp_operation": "PerspectiveGuideRef::get_vanish_points",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 65,
+      "baseline": {
+        "c_entry": "gimp_perspective_guide_new",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:245",
+        "cpp_operation": "PerspectiveGuideRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 66,
+      "baseline": {
+        "c_entry": "gimp_perspective_guide_options_get_type",
+        "legacy_site": "app/tools/gimpperspectiveguidetool.cpp:137",
+        "cpp_operation": "TypeTraits<GimpPerspectiveGuideOptions>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 67,
+      "baseline": {
+        "c_entry": "gimp_perspective_guide_remove_vanish_points",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:260",
+        "cpp_operation": "PerspectiveGuideRef::remove_vanish_points",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 68,
+      "baseline": {
+        "c_entry": "gimp_perspective_guide_set_vanish_points",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:270",
+        "cpp_operation": "PerspectiveGuideRef::set_vanish_points",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 69,
+      "baseline": {
+        "c_entry": "gimp_perspective_guide_tool_get_type",
+        "legacy_site": "app/tools/gimpperspectiveguidetool.cpp:662",
+        "cpp_operation": "TypeTraits<GimpPerspectiveGuideTool>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 70,
+      "baseline": {
+        "c_entry": "gimp_perspective_guide_tool_register",
+        "legacy_site": "app/tools/gimpperspectiveguidetool.cpp:627",
+        "cpp_operation": "PerspectiveGuideToolRef::register_type",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 71,
+      "baseline": {
+        "c_entry": "gimp_popover_new",
+        "legacy_site": "app/widgets/popupper.cpp:420",
+        "cpp_operation": "PopoverRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 72,
+      "baseline": {
+        "c_entry": "gimp_tool_tile_view_get_type",
+        "legacy_site": "app/widgets/gimptooltileview.cpp:600",
+        "cpp_operation": "TypeTraits<GimpToolTileView>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 73,
+      "baseline": {
+        "c_entry": "gimp_tool_tile_view_new",
+        "legacy_site": "app/widgets/gimptooltileview.cpp:601",
+        "cpp_operation": "ToolTileViewRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 74,
+      "baseline": {
+        "c_entry": "preset_factory_gui_action_group_entry_point",
+        "legacy_site": "app/presets/preset-factory-gui.cpp:247",
+        "cpp_operation": "ActionGroupRef::register_preset_actions",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 75,
+      "baseline": {
+        "c_entry": "preset_factory_gui_dialogs_actions_entry_point",
+        "legacy_site": "app/presets/preset-factory-gui.cpp:240",
+        "cpp_operation": "ActionGroupRef::register_preset_dialog_actions",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    },
+    {
+      "index": 76,
+      "baseline": {
+        "c_entry": "preset_factory_gui_prefs_entry_point",
+        "legacy_site": "app/presets/preset-factory-gui.cpp:233",
+        "cpp_operation": "ApplicationRef::preset_preferences",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "current_implementation": "TODO",
+      "disposition": "unchanged_by_this_subset"
+    }
+  ]
+}

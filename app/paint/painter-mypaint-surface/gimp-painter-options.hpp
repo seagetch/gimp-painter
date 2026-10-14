@@ -16,6 +16,12 @@ public:
   static PainterOptionsRef retain (GimpPainterMybrushOptions *options)
   { return PainterOptionsRef (ObjectRef<GimpPainterMybrushOptions>::retain (options)); }
   GimpPainterMybrushOptions *get () const noexcept { return owner_.get (); }
+  void set_mapping_point (const gchar *name, guint input, guint count,
+                          const GimpVector2 *points) const
+  {
+    gimp_mypaint_options_set_mapping_point(get(),const_cast<gchar*>(name),input,count,
+                                          const_cast<GimpVector2*>(points));
+  }
   std::vector<GimpVector2> get_mapping_point (const gchar *name, guint input) const
   {
     guint count=0;GimpVector2 *points=nullptr;
