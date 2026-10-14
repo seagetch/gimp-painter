@@ -294,6 +294,21 @@ test('gimp-painter-session', painter_session_test,
     'UI_TEST=yes',
   ], suite: 'app', is_parallel: false, timeout: 60)
 
+# Exercise exported Options/Session entry points from an actual C translation unit.
+painter_options_session_c = executable('painter-options-session-c',
+  'test-painter-options-session-c.c', 'tests.c',
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links,
+  override_options: ['c_std=c11'],
+)
+test('painter-options-session-c', painter_options_session_c,
+  env: [
+    'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+    'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+    'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+    'UI_TEST=yes',
+  ], suite: 'app', is_parallel: false, timeout: 60)
+
 painter_qdata_test = executable('gimp-painter-qdata-operations',
   'test-gimp-painter-qdata-operations.cpp', 'tests.c',
   observed_binding_store, binding_store_observation,
@@ -556,6 +571,7 @@ test('painter-profile-parser', painter_profile_parser, suite: 'painter',
   is_parallel: false, timeout: 60)
 painter_profile_native = executable('painter-profile-native',
   'test-painter-profile-native.cpp', 'tests.c',
+  'test-painter-profile-image-generator-c.c',
   dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
   link_with: apptests_links, cpp_args: painter_cpp_args,
   override_options: ['cpp_std=c++14'])
