@@ -65,6 +65,13 @@
       "context": "core",
       "prerequisites": [],
       "review": "08.018 row 58 partial operation port: original color-picker operation name and narrow native tool alias, with an explicit GimpColorPickTarget parameter migration. Owns C linkage and include guard; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Does not restore the incompatible legacy GimpColorPickMode enum, object/class layout, runtime GType, or discharge other original duties."
+    },
+    {
+      "path": "app/paint/gimpmypaintoptions.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018 exact row 51: original owned mapping-point query signature and operation-level alias to native Options. Owns include guard and C linkage; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Preserves caller g_free ownership and legacy float rounding; no borrowed live-brush, legacy layout/runtime GType, or unrelated operation claim."
     }
   ]
 }

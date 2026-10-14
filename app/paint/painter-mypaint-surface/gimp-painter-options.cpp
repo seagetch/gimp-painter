@@ -22,6 +22,8 @@ extern "C" {
 #include "painter/gimp-painter-binding.h"
 #include "mypaintbrush-settings-data.h"
 #include <algorithm>
+#include <cmath>
+#include <limits>
 namespace GimpPainter {
 template<> struct TypeTraits<Gimp>
 { static GType type () noexcept { return GIMP_TYPE_GIMP; } };
@@ -535,6 +537,40 @@ gboolean gimp_painter_mybrush_options_set_curve(GimpPainterMybrushOptions*option
 GArray*gimp_painter_mybrush_options_get_curve(GimpPainterMybrushOptions*options,gint setting,gint input,GError**error)
 {
   return boundary<GArray*>(error,nullptr,[&]{auto curve=store(options).with<OptionsSlot>([&](const OptionsImpl&i){return i.draft.curve(setting,input);});auto*array=g_array_new(FALSE,FALSE,sizeof(GimpVector2));for(const auto&p:curve){GimpVector2 v={p.x,p.y};g_array_append_val(array,v);}return array;});
+}
+void gimp_mypaint_options_get_mapping_point(GimpMypaintOptions*options,gchar*name,guint input,guint*size,GimpVector2**points)
+{
+  if(size)*size=0;
+  if(points)*points=nullptr;
+  if(!size||!points)return;
+  boundary_void(nullptr,[&]{
+    if(!name||input>=INPUT_COUNT)return;
+    String normalized(g_strdup(name));
+    g_strcanon(normalized.get(),"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_",'_');
+    gint setting=-1;
+    for(const auto&candidate:painter_mypaint_settings)
+      if(g_str_equal(normalized.get(),candidate.internal_name)){setting=candidate.index;break;}
+    if(setting<0)return;
+    auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(options);
+    std::unique_ptr<GArray,decltype(&g_array_unref)> curve(
+      gimp_painter_mybrush_options_get_curve(owner.get(),setting,static_cast<gint>(input),nullptr),g_array_unref);
+    if(!curve||!curve->len)return;
+    const auto representable=[](double value){
+      return std::isfinite(value)&&std::fabs(value)<=std::numeric_limits<float>::max();
+    };
+    for(guint i=0;i<curve->len;++i){
+      const auto&p=g_array_index(curve.get(),GimpVector2,i);
+      if(!representable(p.x)||!representable(p.y))return;
+    }
+    std::unique_ptr<GimpVector2,Free> copy(g_try_new(GimpVector2,curve->len));
+    if(!copy)return;
+    for(guint i=0;i<curve->len;++i){
+      const auto&p=g_array_index(curve.get(),GimpVector2,i);
+      copy.get()[i]={static_cast<float>(p.x),static_cast<float>(p.y)};
+    }
+    *size=curve->len;
+    *points=copy.release();
+  });
 }
 gboolean gimp_painter_mybrush_options_commit(GimpPainterMybrushOptions*options,GError**error)
 {
