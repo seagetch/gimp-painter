@@ -846,7 +846,9 @@ gimp_editor_create_action_button_valist (GimpEditor  *editor,
   if (cancelled) goto cleanup;
 
   icon_name = gimp_action_get_icon_name (action);
-  tooltip   = g_markup_escape_text (gimp_action_get_tooltip (action), -1);
+  tooltip   = gimp_action_get_tooltip (action)
+              ? g_markup_escape_text (gimp_action_get_tooltip (action), -1)
+              : NULL;
   help_id   = g_object_get_qdata (G_OBJECT (action), GIMP_HELP_ID);
 
   old_child = gtk_bin_get_child (GTK_BIN (button));
@@ -893,7 +895,8 @@ gimp_editor_create_action_button_valist (GimpEditor  *editor,
 
           if (tooltip)
             {
-              gchar *ext_tooltip = g_markup_escape_text (gimp_action_get_tooltip (action), -1);
+              const gchar *ext_text = gimp_action_get_tooltip (action);
+              gchar *ext_tooltip = ext_text ? g_markup_escape_text (ext_text, -1) : NULL;
 
               if (ext_tooltip)
                 {

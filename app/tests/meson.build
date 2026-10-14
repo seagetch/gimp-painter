@@ -769,7 +769,8 @@ test('editor-dropdown', editor_dropdown_test,
 
 editor_dropdown_preset_control = executable('editor-dropdown-preset-control',
   'test-editor-dropdown-preset-control.c', 'tests.c',
-  dependencies: [libapp_dep, appstream], link_with: apptests_links)
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  override_options: ['c_std=c11'])
 test('editor-dropdown-preset-control', editor_dropdown_preset_control,
   depends: gimp_test_icon_dependencies,
   env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),

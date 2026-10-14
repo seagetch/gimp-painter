@@ -34,6 +34,8 @@ extern "C" {
 #include "gimp-app-test-utils.h"
 }
 #include "painter/binding-store.hpp"
+#include "widgets/gimpeditor-handle.hpp"
+#include <memory>
 
 using namespace GimpPainter;
 static Gimp *gimp;
@@ -438,6 +440,41 @@ static void ordinary_action_control () {
   g_object_unref (group);
   gtk_button_clicked (GTK_BUTTON (button)); g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
   g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (modified, ==, 1); g_object_unref (button);
+}
+/* Keep these C-provider controls independent of the C++ handle.  A missing
+ * action tooltip is legitimate metadata, for both ordinary and split buttons.
+ * Each case is separately registered so the unmodified providers can reproduce
+ * the NULL-to-g_markup_escape_text diagnostic before the shared repair. */
+static void nullable_action_tooltip (guint kind, bool primary_null) {
+  Fixture fixture; guint normal = 0, modified = 0;
+  auto *group = gimp_action_group_new (gimp, "nullable-action-tooltip", "Nullable tooltip", nullptr, nullptr, nullptr);
+  gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+  action (group, "nullable-main", primary_null ? nullptr : "Main <tip>", &normal);
+  action (group, "nullable-alternate", primary_null ? "Alternate <tip>" : nullptr, &modified);
+  ObjectRef<GtkWidget> retained;
+  if (kind == 2) retained = EditorRef::retain (GIMP_EDITOR (fixture.editor)).add_action_dropdown (
+    nullptr, "nullable-action-tooltip", "nullable-main", "nullable-alternate", GDK_SHIFT_MASK);
+  auto *button = kind == 2 ? retained.get () : kind == 0 ?
+    gimp_editor_add_action_dropdown (GIMP_EDITOR (fixture.editor), nullptr, "nullable-action-tooltip", "nullable-main",
+                                    "nullable-alternate", GDK_SHIFT_MASK, static_cast<const gchar *> (nullptr)) :
+    gimp_editor_add_action_button (GIMP_EDITOR (fixture.editor), "nullable-action-tooltip", "nullable-main",
+                                  "nullable-alternate", GDK_SHIFT_MASK, static_cast<const gchar *> (nullptr));
+  g_assert_nonnull (button);
+  gchar *markup = gtk_widget_get_tooltip_markup (button);
+  if (primary_null) g_assert_null (markup);
+  else g_assert_cmpstr (markup, ==, "Main &lt;tip&gt;");
+  g_free (markup);
+  if (kind != 1) {
+    gchar *tooltip = gtk_widget_get_tooltip_text (fixture.arrow ());
+    if (primary_null) g_assert_null (tooltip);
+    else g_assert_cmpstr (tooltip, ==, "Main <tip>");
+    g_free (tooltip);
+  }
+  g_assert_cmpstr (static_cast<const gchar *> (g_object_get_qdata (G_OBJECT (button), GIMP_HELP_ID)), ==, "action-help");
+  gtk_button_clicked (GTK_BUTTON (button));
+  g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+  g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (modified, ==, 1);
+  g_object_unref (group);
 }
 static void toggle_action_shape () {
   Fixture fixture; guint alternate_calls = 0;
@@ -968,6 +1005,364 @@ static void closed_retirement_newer_open_wins () {
   BindingStore::require (G_OBJECT (arrow)).close ();
   g_object_unref (context);
 }
+/* A C control takes its own explicit lease; the handle must return that same
+ * ownership without transferring the GTK parent's existing reference. */
+static ObjectRef<GtkWidget> owned_generic (Fixture& fixture, bool handle,
+                                          GCallback callback = nullptr,
+                                          GCallback extended_callback = nullptr,
+                                          gpointer data = nullptr) {
+  if (handle)
+    return EditorRef::retain (GIMP_EDITOR (fixture.editor)).add_dropdown (
+      "document-new", "Create a layer", "dropdown-help", "deliberately-ignored",
+      callback, extended_callback, data);
+  return ObjectRef<GtkWidget>::retain (generic (fixture, callback, extended_callback, data));
+}
+template<class... Alternates>
+static ObjectRef<GtkWidget> owned_action_dropdown (Fixture& fixture, bool handle,
+                                                   const gchar *group, const gchar *primary,
+                                                   Alternates... alternates) {
+  if (handle)
+    return EditorRef::retain (GIMP_EDITOR (fixture.editor)).add_action_dropdown (
+      "deliberately-ignored", group, primary, alternates...);
+  return ObjectRef<GtkWidget>::retain (gimp_editor_add_action_dropdown (
+    GIMP_EDITOR (fixture.editor), "deliberately-ignored", group, primary,
+    alternates..., static_cast<const gchar *> (nullptr)));
+}
+static void assert_dropdown_shape (Fixture& fixture, GtkWidget *primary) {
+  g_assert_nonnull (primary); g_assert_true (GIMP_IS_BUTTON (primary));
+  auto *box = gimp_editor_get_button_box (GIMP_EDITOR (fixture.editor));
+  auto *arrow = fixture.arrow ();
+  g_assert_true (primary != arrow); g_assert_true (gtk_widget_get_visible (primary));
+  g_assert_true (gtk_widget_get_parent (primary) == GTK_WIDGET (box));
+  GList *children = gtk_container_get_children (GTK_CONTAINER (box));
+  g_assert_cmpuint (g_list_length (children), ==, 2);
+  g_assert_true (children->data == primary); g_assert_true (children->next->data == arrow);
+  g_list_free (children);
+  g_assert_null (BindingStore::find (G_OBJECT (fixture.editor)));
+  g_assert_null (BindingStore::find (G_OBJECT (primary)));
+  g_assert_true (BindingStore::require (G_OBJECT (arrow)).state () == BindingStore::State::active);
+}
+static void handle_generic_parity () {
+  for (bool handle : {false, true}) {
+    Fixture fixture; Calls calls;
+    auto primary = owned_generic (fixture, handle, G_CALLBACK (clicked), G_CALLBACK (extended), &calls);
+    assert_dropdown_shape (fixture, primary.get ());
+    for (auto *widget : {primary.get (), fixture.arrow ()}) {
+      gchar *tooltip = gtk_widget_get_tooltip_text (widget);
+      g_assert_cmpstr (tooltip, ==, "Create a layer"); g_free (tooltip);
+      g_assert_cmpstr (static_cast<const gchar *> (g_object_get_qdata (G_OBJECT (widget), GIMP_HELP_ID)), ==, "dropdown-help");
+    }
+    gtk_button_clicked (GTK_BUTTON (primary.get ()));
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GDK_CONTROL_MASK);
+    g_assert_cmpuint (calls.normal, ==, 1); g_assert_cmpuint (calls.extended, ==, 1);
+    g_assert_cmpint (calls.mask, ==, GDK_CONTROL_MASK);
+    gtk_widget_destroy (fixture.editor);
+    gtk_button_clicked (GTK_BUTTON (primary.get ()));
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (calls.normal, ==, 1); g_assert_cmpuint (calls.extended, ==, 1);
+  }
+}
+static void handle_editor_ref_ownership () {
+  Fixture fixture;
+  auto *editor = GIMP_EDITOR (fixture.editor);
+  const guint before = G_OBJECT (editor)->ref_count;
+  {
+    auto retained = EditorRef::retain (editor);
+    g_assert_true (retained.get () == editor);
+    g_assert_cmpuint (G_OBJECT (editor)->ref_count, ==, before + 1);
+    {
+      auto copied = retained;
+      g_assert_cmpuint (G_OBJECT (editor)->ref_count, ==, before + 2);
+      auto moved = std::move (copied);
+      g_assert_true (moved.get () == editor); g_assert_null (copied.get ());
+      g_assert_cmpuint (G_OBJECT (editor)->ref_count, ==, before + 2);
+    }
+    g_assert_cmpuint (G_OBJECT (editor)->ref_count, ==, before + 1);
+    g_assert_null (BindingStore::find (G_OBJECT (editor)));
+  }
+  g_assert_cmpuint (G_OBJECT (editor)->ref_count, ==, before);
+}
+static void handle_primary_ref_ownership (bool action_backed, bool release_first) {
+  Fixture fixture; guint normal = 0;
+  auto *group = gimp_action_group_new (gimp, "handle-ownership", "Ownership", nullptr, nullptr, nullptr);
+  gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+  action (group, "ownership-main", "Ownership help", &normal); g_object_unref (group);
+  auto *control = action_backed ?
+    gimp_editor_add_action_dropdown (GIMP_EDITOR (fixture.editor), nullptr, "handle-ownership", "ownership-main", static_cast<const gchar *> (nullptr)) :
+    generic (fixture);
+  g_assert_nonnull (control);
+  const guint native_refs = G_OBJECT (control)->ref_count;
+  auto editor = EditorRef::retain (GIMP_EDITOR (fixture.editor));
+  auto primary = action_backed ? editor.add_action_dropdown (nullptr, "handle-ownership", "ownership-main") :
+    editor.add_dropdown ("document-new", "Ownership help", nullptr, nullptr, nullptr, nullptr, nullptr);
+  g_assert_nonnull (primary.get ());
+  g_assert_cmpuint (G_OBJECT (primary.get ())->ref_count, ==, native_refs + 1);
+  GObject *weak_primary = G_OBJECT (primary.get ()), *weak_arrow = G_OBJECT (fixture.arrow ());
+  g_object_add_weak_pointer (weak_primary, reinterpret_cast<gpointer *> (&weak_primary));
+  g_object_add_weak_pointer (weak_arrow, reinterpret_cast<gpointer *> (&weak_arrow));
+  {
+    auto copied = primary;
+    g_assert_cmpuint (G_OBJECT (primary.get ())->ref_count, ==, native_refs + 2);
+    auto moved = std::move (copied);
+    g_assert_null (copied.get ()); g_assert_true (moved.get () == primary.get ());
+    g_assert_cmpuint (G_OBJECT (primary.get ())->ref_count, ==, native_refs + 2);
+  }
+  g_assert_cmpuint (G_OBJECT (primary.get ())->ref_count, ==, native_refs + 1);
+  if (release_first) {
+    primary.reset ();
+    g_assert_nonnull (weak_primary);
+    g_assert_cmpuint (weak_primary->ref_count, ==, native_refs);
+    g_assert_nonnull (gtk_widget_get_parent (GTK_WIDGET (weak_primary)));
+    gtk_widget_destroy (fixture.editor);
+    g_assert_null (weak_primary); g_assert_null (weak_arrow);
+  } else {
+    /* GTK disposal sends weak notifications even while strong storage leases
+     * survive. Use the owned pointers and exact counts as the storage witness,
+     * and compare with an explicitly retained C-provider control. */
+    auto control_lease = ObjectRef<GtkWidget>::retain (control);
+    GObject *weak_control = G_OBJECT (control);
+    g_object_add_weak_pointer (weak_control, reinterpret_cast<gpointer *> (&weak_control));
+    gtk_widget_destroy (fixture.editor);
+    g_assert_null (weak_primary); g_assert_null (weak_control); g_assert_null (weak_arrow);
+    g_assert_true (GTK_IS_WIDGET (primary.get ())); g_assert_true (GTK_IS_WIDGET (control_lease.get ()));
+    g_assert_null (gtk_widget_get_parent (primary.get ()));
+    g_assert_null (gtk_widget_get_parent (control_lease.get ()));
+    g_assert_cmpuint (G_OBJECT (primary.get ())->ref_count, ==, 1);
+    g_assert_cmpuint (G_OBJECT (control_lease.get ())->ref_count, ==, 1);
+    /* Register fresh notifications after disposal, then drop the sole refs. */
+    weak_primary = G_OBJECT (primary.get ()); weak_control = G_OBJECT (control_lease.get ());
+    g_object_add_weak_pointer (weak_primary, reinterpret_cast<gpointer *> (&weak_primary));
+    g_object_add_weak_pointer (weak_control, reinterpret_cast<gpointer *> (&weak_control));
+    control_lease.reset (); g_assert_null (weak_control); g_assert_nonnull (weak_primary);
+    primary.reset (); g_assert_null (weak_primary);
+  }
+}
+static void handle_outlives_fixture (bool editor_first) {
+  ObjectRef<GtkWidget> primary;
+  std::unique_ptr<EditorRef> editor;
+  GObject *weak_editor = nullptr, *weak_primary = nullptr, *weak_arrow = nullptr;
+  {
+    Fixture fixture;
+    editor.reset (new EditorRef (EditorRef::retain (GIMP_EDITOR (fixture.editor))));
+    primary = editor->add_dropdown ("document-new", nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+    weak_editor = G_OBJECT (editor->get ()); weak_primary = G_OBJECT (primary.get ());
+    weak_arrow = G_OBJECT (fixture.arrow ());
+    g_object_add_weak_pointer (weak_editor, reinterpret_cast<gpointer *> (&weak_editor));
+    g_object_add_weak_pointer (weak_primary, reinterpret_cast<gpointer *> (&weak_primary));
+    g_object_add_weak_pointer (weak_arrow, reinterpret_cast<gpointer *> (&weak_arrow));
+  }
+  g_assert_null (weak_editor); g_assert_null (weak_primary); g_assert_null (weak_arrow);
+  g_assert_true (GIMP_IS_EDITOR (editor->get ())); g_assert_true (GTK_IS_WIDGET (primary.get ()));
+  g_assert_cmpuint (G_OBJECT (editor->get ())->ref_count, ==, 1);
+  g_assert_cmpuint (G_OBJECT (primary.get ())->ref_count, ==, 1);
+  /* The first weak notifications witnessed disposal, not storage loss. */
+  weak_editor = G_OBJECT (editor->get ()); weak_primary = G_OBJECT (primary.get ());
+  g_object_add_weak_pointer (weak_editor, reinterpret_cast<gpointer *> (&weak_editor));
+  g_object_add_weak_pointer (weak_primary, reinterpret_cast<gpointer *> (&weak_primary));
+  g_assert_null (gtk_widget_get_parent (primary.get ()));
+  /* Retention keeps identity alive, not GTK liveness. Disposal has removed the
+   * manager, so this read-before-construction action path safely returns empty.
+   * Do not call the generic constructor on the destroyed container: native GTK
+   * preconditions and the old button-box pointer are outside this API contract. */
+  g_assert_null (gimp_editor_get_ui_manager (editor->get ()));
+  auto unavailable = editor->add_action_dropdown (nullptr, "missing-group", "missing-action");
+  g_assert_false (static_cast<bool> (unavailable));
+  g_assert_null (gimp_editor_add_action_dropdown (editor->get (), nullptr, "missing-group", "missing-action", static_cast<const gchar *> (nullptr)));
+  if (editor_first) {
+    editor.reset (); g_assert_null (weak_editor); g_assert_nonnull (weak_primary);
+    primary.reset (); g_assert_null (weak_primary);
+  } else {
+    primary.reset (); g_assert_null (weak_primary); g_assert_nonnull (weak_editor);
+    editor.reset (); g_assert_null (weak_editor);
+  }
+}
+static void handle_action_alternates (guint alternate_count) {
+  for (bool handle : {false, true}) {
+    Fixture fixture; guint normal = 0, shift = 0, control = 0, zero = 0;
+    auto *group = gimp_action_group_new (gimp, "handle-alternates", "Alternates", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+    auto *main = action (group, "handle-main", "Main <tip>", &normal);
+    auto *shift_action = action (group, "handle-shift", "Shift <tip>", &shift);
+    auto *control_action = action (group, "handle-control", "Control <tip>", &control);
+    action (group, "handle-zero", "Zero mask must be omitted", &zero);
+    ObjectRef<GtkWidget> primary;
+    if (alternate_count == 0) primary = owned_action_dropdown (fixture, handle, "handle-alternates", "handle-main");
+    else if (alternate_count == 1) primary = owned_action_dropdown (fixture, handle, "handle-alternates", "handle-main",
+                                                                  "handle-shift", GDK_SHIFT_MASK);
+    else primary = owned_action_dropdown (fixture, handle, "handle-alternates", "handle-main",
+                                         "handle-shift", GDK_SHIFT_MASK, "missing-alternate", GDK_MOD1_MASK,
+                                         "handle-control", GDK_CONTROL_MASK, "handle-zero", GdkModifierType (0));
+    assert_dropdown_shape (fixture, primary.get ());
+    g_assert_cmpint (g_object_get_data (G_OBJECT (primary.get ()), "extended-actions") != nullptr, ==, alternate_count != 0);
+    gchar *markup = gtk_widget_get_tooltip_markup (primary.get ());
+    g_assert_nonnull (markup); g_assert_nonnull (strstr (markup, "Main &lt;tip&gt;"));
+    if (alternate_count) g_assert_nonnull (strstr (markup, "Shift &lt;tip&gt;"));
+    if (alternate_count > 1) g_assert_nonnull (strstr (markup, "Control &lt;tip&gt;"));
+    g_assert_null (strstr (markup, "Zero mask")); g_free (markup);
+    gtk_button_clicked (GTK_BUTTON (primary.get ())); g_assert_cmpuint (normal, ==, 1);
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GDK_MOD1_MASK);
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GdkModifierType (0));
+    g_assert_cmpuint (shift, ==, 0); g_assert_cmpuint (control, ==, 0); g_assert_cmpuint (zero, ==, 0);
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (shift, ==, alternate_count ? 1 : 0);
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GdkModifierType (GDK_SHIFT_MASK | GDK_CONTROL_MASK));
+    g_assert_cmpuint (control, ==, alternate_count > 1 ? 1 : 0);
+    g_assert_cmpuint (shift, ==, alternate_count == 1 ? 2 : alternate_count > 1 ? 1 : 0);
+    if (alternate_count > 1) {
+      gimp_action_set_sensitive (control_action, FALSE, "Last alternate disabled");
+      g_signal_emit_by_name (primary.get (), "extended-clicked", GdkModifierType (GDK_SHIFT_MASK | GDK_CONTROL_MASK));
+      g_assert_cmpuint (control, ==, 1); g_assert_cmpuint (shift, ==, 2);
+    }
+    const guint before = shift;
+    gimp_action_set_sensitive (shift_action, FALSE, "Shift disabled");
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GdkModifierType (GDK_SHIFT_MASK | GDK_CONTROL_MASK));
+    g_assert_cmpuint (shift, ==, before); g_assert_cmpuint (zero, ==, 0);
+    gimp_action_set_sensitive (main, FALSE, "Primary disabled");
+    g_assert_false (gtk_widget_get_sensitive (primary.get ()));
+    g_assert_true (gtk_widget_get_sensitive (fixture.arrow ()));
+    gimp_action_set_sensitive (main, TRUE, nullptr); g_assert_true (gtk_widget_get_sensitive (primary.get ()));
+    g_object_unref (group);
+  }
+}
+static void handle_toggle_action_parity () {
+  for (bool handle : {false, true}) {
+    Fixture fixture; guint modified = 0;
+    auto *group = gimp_action_group_new (gimp, "handle-toggle", "Toggle", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+    auto *toggle = gimp_toggle_action_new ("handle-toggle-main", "Toggle", nullptr, "Toggle help", "document-new", "toggle-help", gimp->user_context);
+    gimp_action_group_add_action (group, toggle);
+    action (group, "handle-toggle-alternate", "Alternate", &modified);
+    auto primary = owned_action_dropdown (fixture, handle, "handle-toggle", "handle-toggle-main", "handle-toggle-alternate", GDK_SHIFT_MASK);
+    assert_dropdown_shape (fixture, primary.get ());
+    g_assert_false (GTK_IS_TOGGLE_BUTTON (primary.get ()));
+    g_assert_false (gimp_toggle_action_get_active (GIMP_TOGGLE_ACTION (toggle)));
+    gtk_button_clicked (GTK_BUTTON (primary.get ()));
+    g_assert_true (gimp_toggle_action_get_active (GIMP_TOGGLE_ACTION (toggle)));
+    gtk_button_clicked (GTK_BUTTON (primary.get ()));
+    g_assert_false (gimp_toggle_action_get_active (GIMP_TOGGLE_ACTION (toggle)));
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (modified, ==, 1);
+    g_object_unref (toggle); g_object_unref (group);
+  }
+}
+static void handle_missing_lookup_parity () {
+  for (bool handle : {false, true}) {
+    Fixture fixture; guint normal = 0;
+    auto *group = gimp_action_group_new (gimp, "handle-missing", "Missing", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+    action (group, "handle-existing", "Existing", &normal); g_object_unref (group);
+    g_assert_false (static_cast<bool> (owned_action_dropdown (fixture, handle, "absent-group", "handle-existing")));
+    g_assert_false (static_cast<bool> (owned_action_dropdown (fixture, handle, "handle-missing", "absent-primary")));
+    gimp_menu_factory_delete_manager (fixture.factory, "<LayerPresets>", fixture.editor); fixture.manager_deleted = true;
+    g_assert_false (static_cast<bool> (owned_action_dropdown (fixture, handle, "handle-missing", "handle-existing")));
+    g_assert_null (BindingStore::find (G_OBJECT (fixture.editor))); g_assert_cmpuint (normal, ==, 0);
+  }
+}
+struct HandleReentry { ObjectRef<GtkWidget> *result; GtkWidget *editor; guint normal = 0, extended = 0; };
+static void handle_reentry_extended (GtkWidget *, GdkModifierType mask, gpointer data) {
+  auto *state = static_cast<HandleReentry *> (data);
+  ++state->extended; g_assert_cmpint (mask, ==, GDK_SHIFT_MASK);
+}
+static void handle_reentry_clicked (GtkWidget *button, gpointer data) {
+  auto *state = static_cast<HandleReentry *> (data); ++state->normal;
+  g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+  state->result->reset ();
+  gtk_widget_destroy (state->editor);
+  gtk_button_clicked (GTK_BUTTON (button));
+  g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+}
+static void handle_generic_reentry_parity () {
+  for (bool handle : {false, true}) {
+    Fixture fixture; ObjectRef<GtkWidget> primary;
+    HandleReentry state {&primary, fixture.editor};
+    primary = owned_generic (fixture, handle, G_CALLBACK (handle_reentry_clicked), G_CALLBACK (handle_reentry_extended), &state);
+    auto retained = primary;
+    auto arrow = ObjectRef<GtkWidget>::retain (fixture.arrow ());
+    gtk_button_clicked (GTK_BUTTON (primary.get ()));
+    g_assert_false (static_cast<bool> (primary));
+    g_assert_cmpuint (state.normal, ==, 1); g_assert_cmpuint (state.extended, ==, 1);
+    g_assert_true (BindingStore::require (G_OBJECT (arrow.get ())).state () == BindingStore::State::closed);
+    gtk_button_clicked (GTK_BUTTON (retained.get ()));
+    g_signal_emit_by_name (retained.get (), "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (state.normal, ==, 1); g_assert_cmpuint (state.extended, ==, 1);
+  }
+}
+struct HandleManagerLoss { Fixture *fixture; GtkWidget *primary; guint calls = 0; };
+static void handle_manager_loss_called (GimpAction *main, GVariant *, gpointer data) {
+  auto *state = static_cast<HandleManagerLoss *> (data); ++state->calls;
+  gimp_action_set_sensitive (main, FALSE, "Losing manager during callback");
+  gimp_menu_factory_delete_manager (state->fixture->factory, "<LayerPresets>", state->fixture->editor);
+  state->fixture->manager_deleted = true;
+  g_signal_emit_by_name (state->primary, "extended-clicked", GDK_SHIFT_MASK);
+}
+static void handle_action_manager_reentry_parity () {
+  for (bool handle : {false, true}) {
+    Fixture fixture; guint normal = 0, modified = 0;
+    auto *manager = gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor));
+    auto *group = gimp_action_group_new (gimp, "handle-manager-reentry", "Manager reentry", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (manager, group);
+    auto *main = action (group, "handle-manager-main", "Main", &normal);
+    auto *alternate = action (group, "handle-manager-alternate", "Alternate", &modified);
+    GObject *weak_manager = G_OBJECT (manager), *weak_main = G_OBJECT (main), *weak_alternate = G_OBJECT (alternate);
+    g_object_add_weak_pointer (weak_manager, reinterpret_cast<gpointer *> (&weak_manager));
+    g_object_add_weak_pointer (weak_main, reinterpret_cast<gpointer *> (&weak_main));
+    g_object_add_weak_pointer (weak_alternate, reinterpret_cast<gpointer *> (&weak_alternate));
+    auto primary = owned_action_dropdown (fixture, handle, "handle-manager-reentry", "handle-manager-main", "handle-manager-alternate", GDK_SHIFT_MASK);
+    HandleManagerLoss state {&fixture, primary.get ()};
+    g_signal_connect (main, "activate", G_CALLBACK (handle_manager_loss_called), &state); g_object_unref (group);
+    gtk_button_clicked (GTK_BUTTON (primary.get ()));
+    g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (modified, ==, 0); g_assert_cmpuint (state.calls, ==, 1);
+    g_assert_null (weak_manager); g_assert_null (weak_main); g_assert_null (weak_alternate);
+    g_assert_nonnull (gtk_widget_get_parent (primary.get ()));
+    gtk_button_clicked (GTK_BUTTON (primary.get ()));
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (modified, ==, 0); g_assert_cmpuint (state.calls, ==, 1);
+  }
+}
+static void handle_retained_destroyed_primary_parity () {
+  for (bool handle : {false, true}) {
+    Fixture fixture; guint normal = 0, modified = 0;
+    auto *group = gimp_action_group_new (gimp, "handle-destroyed-primary", "Destroyed", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+    auto *main = action (group, "handle-destroyed-main", "Main", &normal);
+    auto *alternate = action (group, "handle-destroyed-alternate", "Alternate", &modified);
+    auto primary = owned_action_dropdown (fixture, handle, "handle-destroyed-primary", "handle-destroyed-main", "handle-destroyed-alternate", GDK_SHIFT_MASK);
+    auto arrow = ObjectRef<GtkWidget>::retain (fixture.arrow ());
+    gtk_widget_destroy (primary.get ());
+    g_assert_cmpuint (G_OBJECT (primary.get ())->ref_count, ==, 1);
+    g_assert_null (gtk_widget_get_parent (primary.get ()));
+    g_assert_true (BindingStore::require (G_OBJECT (arrow.get ())).state () == BindingStore::State::closed);
+    gimp_action_set_sensitive (main, FALSE, "Detached proxy");
+    g_assert_true (gtk_widget_get_sensitive (primary.get ()));
+    gtk_button_clicked (GTK_BUTTON (primary.get ()));
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GDK_SHIFT_MASK);
+    gimp_action_group_remove_action (group, alternate);
+    g_signal_emit_by_name (primary.get (), "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (normal, ==, 0); g_assert_cmpuint (modified, ==, 0);
+    g_object_unref (group);
+  }
+}
+static void handle_construction_owner_loss () {
+  for (bool action_backed : {false, true}) {
+    for (guint mode = 0; mode < 4; ++mode) {
+      Fixture fixture; guint normal = 0;
+      auto *group = gimp_action_group_new (gimp, "handle-construction", "Construction", nullptr, nullptr, nullptr);
+      gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+      action (group, "handle-construction-main", "Main", &normal); g_object_unref (group);
+      auto editor = EditorRef::retain (GIMP_EDITOR (fixture.editor));
+      CancelConstruction cancellation {fixture.editor, mode};
+      const guint signal = g_signal_lookup ("show", GTK_TYPE_WIDGET);
+      const gulong hook = g_signal_add_emission_hook (signal, 0, cancel_construction, &cancellation, nullptr);
+      g_assert_cmpuint (hook, !=, 0);
+      auto primary = action_backed ? editor.add_action_dropdown (nullptr, "handle-construction", "handle-construction-main") :
+        editor.add_dropdown ("document-new", nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+      g_signal_remove_emission_hook (signal, hook);
+      g_assert_cmpuint (cancellation.calls, ==, 1); g_assert_false (static_cast<bool> (primary));
+      g_assert_cmpuint (normal, ==, 0);
+      if (cancellation.retained_primary) g_object_unref (cancellation.retained_primary);
+    }
+  }
+}
 int main (int argc, char **argv) {
   g_test_init (&argc, &argv, nullptr); if (!gtk_init_check (&argc, &argv)) return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path (); gimp = gimp_init_for_gui_testing (TRUE);
@@ -983,6 +1378,10 @@ int main (int argc, char **argv) {
   g_test_add_func ("/editor-dropdown/native-action-contract", native_action_contract);
   g_test_add_func ("/editor-dropdown/ordinary-action-control", ordinary_action_control);
   g_test_add_func ("/editor-dropdown/construction-owner-loss", construction_owner_loss);
+  g_test_add_func ("/editor-dropdown/null-primary-tooltip-dropdown", [] { nullable_action_tooltip (0, true); });
+  g_test_add_func ("/editor-dropdown/null-primary-tooltip-ordinary", [] { nullable_action_tooltip (1, true); });
+  g_test_add_func ("/editor-dropdown/null-alternate-tooltip-dropdown", [] { nullable_action_tooltip (0, false); });
+  g_test_add_func ("/editor-dropdown/null-alternate-tooltip-ordinary", [] { nullable_action_tooltip (1, false); });
   g_test_add_func ("/editor-dropdown/toggle-action-shape", toggle_action_shape);
   g_test_add_func ("/editor-dropdown/action-loss-during-construction", action_loss_during_construction);
   g_test_add_func ("/editor-dropdown/missing-context-can-reopen", missing_context_can_reopen);
@@ -1008,6 +1407,25 @@ int main (int argc, char **argv) {
   g_test_add_func ("/editor-dropdown/alternate-manager-loss-live-button-ordinary", [] { alternate_manager_loss_live_button (1); });
   g_test_add_func ("/editor-dropdown/alternate-retained-destroyed-button-dropdown", [] { alternate_retained_destroyed_button (0); });
   g_test_add_func ("/editor-dropdown/alternate-retained-destroyed-button-ordinary", [] { alternate_retained_destroyed_button (1); });
+  g_test_add_func ("/editor-dropdown/null-primary-tooltip-handle", [] { nullable_action_tooltip (2, true); });
+  g_test_add_func ("/editor-dropdown/null-alternate-tooltip-handle", [] { nullable_action_tooltip (2, false); });
+  g_test_add_func ("/editor-dropdown/handle-generic-parity", handle_generic_parity);
+  g_test_add_func ("/editor-dropdown/handle-editor-ref-ownership", handle_editor_ref_ownership);
+  g_test_add_func ("/editor-dropdown/handle-generic-ref-release-first", [] { handle_primary_ref_ownership (false, true); });
+  g_test_add_func ("/editor-dropdown/handle-generic-ref-destroy-first", [] { handle_primary_ref_ownership (false, false); });
+  g_test_add_func ("/editor-dropdown/handle-action-ref-release-first", [] { handle_primary_ref_ownership (true, true); });
+  g_test_add_func ("/editor-dropdown/handle-action-ref-destroy-first", [] { handle_primary_ref_ownership (true, false); });
+  g_test_add_func ("/editor-dropdown/handle-outlives-fixture-editor-first", [] { handle_outlives_fixture (true); });
+  g_test_add_func ("/editor-dropdown/handle-outlives-fixture-primary-first", [] { handle_outlives_fixture (false); });
+  g_test_add_func ("/editor-dropdown/handle-action-zero-alternates", [] { handle_action_alternates (0); });
+  g_test_add_func ("/editor-dropdown/handle-action-one-alternate", [] { handle_action_alternates (1); });
+  g_test_add_func ("/editor-dropdown/handle-action-multiple-alternates", [] { handle_action_alternates (2); });
+  g_test_add_func ("/editor-dropdown/handle-toggle-action-parity", handle_toggle_action_parity);
+  g_test_add_func ("/editor-dropdown/handle-missing-lookup-parity", handle_missing_lookup_parity);
+  g_test_add_func ("/editor-dropdown/handle-generic-reentry-parity", handle_generic_reentry_parity);
+  g_test_add_func ("/editor-dropdown/handle-action-manager-reentry-parity", handle_action_manager_reentry_parity);
+  g_test_add_func ("/editor-dropdown/handle-retained-destroyed-primary-parity", handle_retained_destroyed_primary_parity);
+  g_test_add_func ("/editor-dropdown/handle-construction-owner-loss", handle_construction_owner_loss);
   g_application_run (gimp->app, 0, nullptr);
   const gint result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
   g_application_quit (G_APPLICATION (gimp->app)); g_clear_object (&gimp->app); return result;
