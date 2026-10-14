@@ -21,10 +21,18 @@ struct _GimpPainterMybrushOptionsClass { GimpPaintOptionsClass parent_class; };
 GType gimp_painter_mybrush_options_get_type (void) G_GNUC_CONST;
 gchar *gimp_painter_mybrush_options_dup_json (GimpPainterMybrushOptions *options, GError **error);
 gboolean gimp_painter_mybrush_options_set_json (GimpPainterMybrushOptions *options, const gchar *json, GError **error);
+/* Transfer-full draft name, independent of the selected resource's identity.
+ * UTF-8 names may be empty while editing. NULL/invalid UTF-8 is rejected.
+ * Runtime properties painter-draft-name and painter-name-dirty are read-only
+ * and not serialized. Name edits do not emit settings-changed or affect
+ * painter-dirty. Settings Reset preserves the independent pending name. */
+gchar *gimp_painter_mybrush_options_dup_draft_name (GimpPainterMybrushOptions *options, GError **error);
+gboolean gimp_painter_mybrush_options_set_draft_name (GimpPainterMybrushOptions *options, const gchar *name, GError **error);
 gboolean gimp_painter_mybrush_options_set_curve (GimpPainterMybrushOptions *options, gint setting, gint input, const GimpVector2 *points, guint count, GError **error);
 GArray *gimp_painter_mybrush_options_get_curve (GimpPainterMybrushOptions *options, gint setting, gint input, GError **error);
-/* Applies the full draft to its selected resource; filesystem saving is a
- * separate native data-factory action. Rejects an externally changed source. */
+/* Applies draft settings to the selected resource without renaming it or
+ * clearing a pending draft name; filesystem saving is a separate native
+ * data-factory action. Rejects an externally changed source. */
 gboolean gimp_painter_mybrush_options_commit (GimpPainterMybrushOptions *options, GError **error);
 guint gimp_painter_mybrush_options_history_size (GimpPainterMybrushOptions *options);
 gchar *gimp_painter_mybrush_options_history_name (GimpPainterMybrushOptions *options, guint index);
