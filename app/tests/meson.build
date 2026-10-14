@@ -77,6 +77,16 @@ app_tests = [
 # Prevent parallel builds for the tests
 # The tests must not be run in parallel or in a different order as specified
 
+# This one target can simulate gdk_pixbuf_copy() allocation failure without
+# changing production code or wrapping any allocator process-wide.
+mybrush_copy_fault_args = []
+mybrush_copy_fault_link_args = []
+mybrush_copy_fault_wrap = '-Wl,--wrap=gdk_pixbuf_copy'
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_link_argument(mybrush_copy_fault_wrap)
+  mybrush_copy_fault_args = ['-DGIMP_TEST_MYBRUSH_WRAP_PIXBUF_COPY']
+  mybrush_copy_fault_link_args = [mybrush_copy_fault_wrap]
+endif
+
 prio = 1000
 foreach test_name : app_tests
   test_exe = executable(test_name,
@@ -84,12 +94,17 @@ foreach test_name : app_tests
     'tests.c',
     test_name == 'painter-compact-options' ? ['test-widget-orientation-api.c', 'test-widget-orientation-api.cpp'] : [],
     test_name == 'gimp-clone-layer' ? ['test-gimp-clone-layout.cpp'] : [],
+    test_name == 'gimp-painter-mybrush' ? ['test-painter-mybrush-duplicate-handle.cpp'] : [],
     test_name == 'painter-xcf-roundtrip' ? ['test-painter-xcf-argument-resources.cpp'] : [],
     test_name == 'painter-layer-ui' ? ['test-filter-editor-metadata.cpp', 'test-filter-argument-patch.cpp'] : [],
     test_name == 'gimp-filter-layer' ? ['test-gimp-filter-layout.cpp', 'test-filter-owner-context.cpp', 'test-filter-parameters.cpp'] : [],
-    dependencies: [ libapp_dep, appstream ],
+    c_args: test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : [],
+    cpp_args: test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : [],
+    link_args: test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_link_args : [],
+    dependencies: [ libapp_dep, appstream ] +
+      (test_name == 'gimp-painter-mybrush' ? [painter_brush_settings_dep] : []),
     link_with: apptests_links,
-    override_options: test_name == 'painter-compact-options' ? ['c_std=c11', 'cpp_std=c++14'] : [],
+    override_options: ['painter-compact-options', 'gimp-painter-mybrush'].contains(test_name) ? ['c_std=c11', 'cpp_std=c++14'] : [],
   )
 
   # Filter tests include real 8193x8193 spill and hundreds of old Gauss buffers.

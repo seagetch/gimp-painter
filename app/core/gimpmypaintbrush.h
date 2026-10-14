@@ -1,0 +1,22 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+#ifndef GIMP_MYPAINT_BRUSH_H
+#define GIMP_MYPAINT_BRUSH_H
+
+#include "gimppaintermybrush.h"
+
+G_BEGIN_DECLS
+
+/* Source compatibility for the named duplicate operation only. This alias
+ * does not restore the legacy object/class layout or its runtime GType name. */
+typedef GimpPainterMybrush GimpMypaintBrush;
+#define GIMP_MYPAINT_BRUSH(obj) GIMP_PAINTER_MYBRUSH (obj)
+#define GIMP_IS_MYPAINT_BRUSH(obj) GIMP_IS_PAINTER_MYBRUSH (obj)
+
+/* Returns a distinct, transfer-full named resource, with independent settings
+ * and live icon pixels and no inherited file association. Invalid, unnamed,
+ * inactive or wrong-thread sources and copy failure return NULL. */
+GimpData *gimp_mypaint_brush_duplicate (GimpMypaintBrush *brush);
+
+G_END_DECLS
+
+#endif

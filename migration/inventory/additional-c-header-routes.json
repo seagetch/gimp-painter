@@ -21,7 +21,9 @@
       "kind": "changed-baseline",
       "baseline_blob": "364ca893d7c685c2c6281af00e7da9266cc02c40",
       "context": "core",
-      "prerequisites": ["app/widgets/gimpcontainertreeview.h"],
+      "prerequisites": [
+        "app/widgets/gimpcontainertreeview.h"
+      ],
       "review": "08.017 original001536: the native owning misc_cells list extends the identified private tree layout. Probe after its public tree header and core/widget types, twice in both C and C++; no outer linkage wrapper."
     },
     {
@@ -49,6 +51,13 @@
         "app/widgets/gimpeditor.h"
       ],
       "review": "08.017 original001606-001612: new app-private native construction-helper boundary used by C gimpeditor.c and C++ dropdown provider. Keeps GimpEditorPrivate and ExtendedAction layout in C; owns stdarg, C linkage and include guard. Compile twice after the reviewed editor header in C11 and C++14 without an outer linkage wrapper. Does not recreate the removed historical gimpeditor-private.h or discharge its duties."
+    },
+    {
+      "path": "app/core/gimpmypaintbrush.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018 exact row 36: source-only alias to native GimpPainterMybrush and the original named duplicate C operation. Owns C linkage and include guard; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Does not restore legacy object/class layout or runtime GType, or discharge other historical type/operation duties."
     }
   ]
 }
