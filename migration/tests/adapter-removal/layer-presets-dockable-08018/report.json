@@ -1,0 +1,780 @@
+{
+  "public_base": "a6f5109fd04f100899e20a195262857ee51387a6",
+  "scope": "Layer Presets native dock registration and icon-only tab support",
+  "code": [
+    {
+      "path": "app/dialogs/dialogs.c",
+      "before_blob": "357800aec9b1450ff067bec801ae991d3d0277fb",
+      "after_blob": "bbfd45bb56796d78f07614ed7724f0508b6b5a41",
+      "before_sha256": "9d4bea7a59251ae756609730d0219a4298f82a10bfb18410de16ce86cc334556",
+      "after_sha256": "dd2320e084f0a49e7d55e60844bf64417e82b2190fa911a2fa086daa48884aae",
+      "bytes": 30594
+    },
+    {
+      "path": "app/actions/dialogs-actions.c",
+      "before_blob": "574891cda04cf00d896cead7ddf2fb2aa997f911",
+      "after_blob": "7f82fa3517c5c01c9834ba0d3bb4fe63257296d8",
+      "before_sha256": "5af0de60c1291f181cc5e19ffbf9f50e2541fec6c893f5627e1277b4bce504ca",
+      "after_sha256": "d65cf83962610c3bef8fd728bf76fb6094c3684303c6cafa963b94849856f883",
+      "bytes": 15852
+    },
+    {
+      "path": "app/widgets/gimplayerpresetview.c",
+      "before_blob": "10153cdf160401eacb818ac6964bd26b132f641b",
+      "after_blob": "9b4b04f5b970f9a2704e3e086a7ff5d45945e7ac",
+      "before_sha256": "5bada5c213100df67f522f73642b289a768ccb0049c70bdf3dbef8eb675ebbdc",
+      "after_sha256": "9d9293289f0a6821dfe9ad3c5a0688a7d77ef207dd49714372b2f21258d18228",
+      "bytes": 5558
+    },
+    {
+      "path": "app/tests/test-layer-presets-ui.c",
+      "before_blob": "e517c686a3860ac968e1019ad99e129351b8d1d7",
+      "after_blob": "7bc84e823e4de34cca2f198dfa0b4e719ef91dd2",
+      "before_sha256": "66f5e7f6b09ac13df1965c964e96182bd4bf7367aa38bfd26a169e4df53745dd",
+      "after_sha256": "0b44e96027df51e49f7b094eb794b764499e2937f9c00231bb8e0104143677ef",
+      "bytes": 31765
+    }
+  ],
+  "acceptance": {
+    "native": {
+      "mode": "native",
+      "run": "layer-presets-dockable-candidate-native-v3",
+      "status": "PASS",
+      "registrations": 3,
+      "case_count": 36,
+      "results": [
+        {
+          "name": "gimp-layer-presets",
+          "cases": [
+            "/layer-presets/malformed_resource_loads",
+            "/layer-presets/unknown_filter_stays_inert",
+            "/layer-presets/all_bundled_construction",
+            "/layer-presets/resource_roundtrip",
+            "/layer-presets/reject_without_history_loss",
+            "/layer-presets/rollback_after_insert",
+            "/layer-presets/callback_rename_keeps_undo_name",
+            "/layer-presets/preflight_rejects_changed_target",
+            "/layer-presets/ordered_source_edits",
+            "/layer-presets/factory_paths",
+            "/layer-presets/save_reopen_editable"
+          ],
+          "case_count": 11,
+          "duration_seconds": 1.3737337589263916,
+          "registered_timeout_seconds": 90,
+          "stderr_lines": 71,
+          "allowed_cloud_debug_notices": []
+        },
+        {
+          "name": "layer-presets-ui",
+          "cases": [
+            "/layer-presets-ui/selection-actions-lifetime",
+            "/layer-presets-ui/preferences-registration",
+            "/layer-presets-ui/dialog-factory-dockable-lifetime",
+            "/layer-presets-ui/action-dockable-close-reopen",
+            "/layer-presets-ui/filter-storage-preferences",
+            "/layer-presets-ui/filter-storage-reentrant-close"
+          ],
+          "case_count": 6,
+          "duration_seconds": 9.334847450256348,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        },
+        {
+          "name": "painter-mypaint-editor",
+          "cases": [
+            "/painter-editor/01-constructors-shared",
+            "/painter-editor/14-common-store-widget-behaviors",
+            "/painter-editor/02-all-controls-curves",
+            "/painter-editor/03-list-search-history",
+            "/painter-editor/04-save-conflict-default-path",
+            "/painter-editor/05-preview-extended",
+            "/painter-editor/06-replace-close",
+            "/painter-editor/07-registration",
+            "/painter-editor/08-legacy-preview-oracle",
+            "/painter-editor/09-close-during-refresh",
+            "/painter-editor/13-owner-destruction-orders",
+            "/painter-editor/10-graph-gestures",
+            "/painter-editor/11-resource-notifications",
+            "/painter-editor/12-delete-failure",
+            "/painter-editor/15-registered-dock-selection-context",
+            "/painter-editor/16-factory-membership-context-lifetime",
+            "/painter-editor/17-draft-name-history-save",
+            "/painter-editor/18-dialog-factory-dockable-lifetime",
+            "/painter-editor/19-action-dockable-close-reopen"
+          ],
+          "case_count": 19,
+          "duration_seconds": 19.400068998336792,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        }
+      ],
+      "source_seal": {
+        "path": "layer-presets-dockable-20261014/candidate-source-seal.json",
+        "sha256": "3ef390d5a2faaa3362736485ee7e52ae8a4c53401635bfca006ed4d58f6b2880",
+        "files": [
+          {
+            "path": "app/dialogs/dialogs.c",
+            "bytes": 30594,
+            "before_git_blob": "357800aec9b1450ff067bec801ae991d3d0277fb",
+            "after_git_blob": "bbfd45bb56796d78f07614ed7724f0508b6b5a41",
+            "before_sha256": "9d4bea7a59251ae756609730d0219a4298f82a10bfb18410de16ce86cc334556",
+            "after_sha256": "dd2320e084f0a49e7d55e60844bf64417e82b2190fa911a2fa086daa48884aae"
+          },
+          {
+            "path": "app/actions/dialogs-actions.c",
+            "bytes": 15852,
+            "before_git_blob": "574891cda04cf00d896cead7ddf2fb2aa997f911",
+            "after_git_blob": "7f82fa3517c5c01c9834ba0d3bb4fe63257296d8",
+            "before_sha256": "5af0de60c1291f181cc5e19ffbf9f50e2541fec6c893f5627e1277b4bce504ca",
+            "after_sha256": "d65cf83962610c3bef8fd728bf76fb6094c3684303c6cafa963b94849856f883"
+          },
+          {
+            "path": "app/widgets/gimplayerpresetview.c",
+            "bytes": 5558,
+            "before_git_blob": "10153cdf160401eacb818ac6964bd26b132f641b",
+            "after_git_blob": "9b4b04f5b970f9a2704e3e086a7ff5d45945e7ac",
+            "before_sha256": "5bada5c213100df67f522f73642b289a768ccb0049c70bdf3dbef8eb675ebbdc",
+            "after_sha256": "9d9293289f0a6821dfe9ad3c5a0688a7d77ef207dd49714372b2f21258d18228"
+          },
+          {
+            "path": "app/tests/test-layer-presets-ui.c",
+            "bytes": 31765,
+            "before_git_blob": "e517c686a3860ac968e1019ad99e129351b8d1d7",
+            "after_git_blob": "7bc84e823e4de34cca2f198dfa0b4e719ef91dd2",
+            "before_sha256": "66f5e7f6b09ac13df1965c964e96182bd4bf7367aa38bfd26a169e4df53745dd",
+            "after_sha256": "0b44e96027df51e49f7b094eb794b764499e2937f9c00231bb8e0104143677ef"
+          }
+        ]
+      },
+      "registration_sources_sha256": {
+        "app/tests/test-layer-presets-ui.c": "0b44e96027df51e49f7b094eb794b764499e2937f9c00231bb8e0104143677ef",
+        "app/tests/test-gimp-layer-presets.c": "452132152101e1f1b5e7bcf67ed94d5014f24ae3e347dba35b12da8d470f9050",
+        "app/tests/test-painter-mypaint-editor.cpp": "09f76eb9a87a28440c7bd8a257451f6b02bd1e6a1b5f7548033e1325de798670"
+      },
+      "actual_c11": false,
+      "actual_c11_scope": null,
+      "other_c_consumers": "layer-presets-ui and gimp-layer-presets use cc; per-unit standard recorded; no language override",
+      "compile_evidence": {
+        "sha256": "9d2de63681b42dc3d1bc9741b389ccfa5ec6de8e08d7d0e287d1a81e52a13613",
+        "units": [
+          {
+            "file": "test-layer-presets-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "sanitizers": []
+          },
+          {
+            "file": "test-gimp-layer-presets.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "sanitizers": []
+          },
+          {
+            "file": "test-painter-mypaint-editor.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": []
+          },
+          {
+            "file": "dialogs.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "sanitizers": []
+          },
+          {
+            "file": "dialogs-actions.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "sanitizers": []
+          },
+          {
+            "file": "gimplayerpresetview.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "sanitizers": []
+          }
+        ]
+      },
+      "timeouts_unchanged": true,
+      "timeout_multiplier": null,
+      "isolation_and_authenticated_loopback_verified": true,
+      "lsan_enabled": null,
+      "diagnostic_exception": {
+        "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+        "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+        "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+      },
+      "verifier_sha256": "27d3ef35ec477742d4f6e9f343859a5d74b1081c3bb523caba76496fb5db647b",
+      "input_sha256": {
+        "results.json": "7888e770922aa2549cdd6b2273e780095e78295b2e4e7cf8e5ca6d4736f8da35",
+        "registrations.json": "9ccb4c45d7657973e6fe7846bdc9d61207d94322e8f7157fa8b3d4b9e3d91e6f",
+        "layer-presets-dockable-candidate-native-v3.json": "cc6181f051690b6eda8b8bb7cc780afe7e15598ea6b8c915397bb8654b804aed"
+      }
+    },
+    "asan": {
+      "mode": "asan",
+      "run": "layer-presets-dockable-candidate-asan-v1",
+      "status": "PASS",
+      "registrations": 3,
+      "case_count": 36,
+      "results": [
+        {
+          "name": "gimp-layer-presets",
+          "cases": [
+            "/layer-presets/malformed_resource_loads",
+            "/layer-presets/unknown_filter_stays_inert",
+            "/layer-presets/all_bundled_construction",
+            "/layer-presets/resource_roundtrip",
+            "/layer-presets/reject_without_history_loss",
+            "/layer-presets/rollback_after_insert",
+            "/layer-presets/callback_rename_keeps_undo_name",
+            "/layer-presets/preflight_rejects_changed_target",
+            "/layer-presets/ordered_source_edits",
+            "/layer-presets/factory_paths",
+            "/layer-presets/save_reopen_editable"
+          ],
+          "case_count": 11,
+          "duration_seconds": 1.7754545211791992,
+          "registered_timeout_seconds": 90,
+          "stderr_lines": 71,
+          "allowed_cloud_debug_notices": []
+        },
+        {
+          "name": "layer-presets-ui",
+          "cases": [
+            "/layer-presets-ui/selection-actions-lifetime",
+            "/layer-presets-ui/preferences-registration",
+            "/layer-presets-ui/dialog-factory-dockable-lifetime",
+            "/layer-presets-ui/action-dockable-close-reopen",
+            "/layer-presets-ui/filter-storage-preferences",
+            "/layer-presets-ui/filter-storage-reentrant-close"
+          ],
+          "case_count": 6,
+          "duration_seconds": 20.81834578514099,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        },
+        {
+          "name": "painter-mypaint-editor",
+          "cases": [
+            "/painter-editor/01-constructors-shared",
+            "/painter-editor/14-common-store-widget-behaviors",
+            "/painter-editor/02-all-controls-curves",
+            "/painter-editor/03-list-search-history",
+            "/painter-editor/04-save-conflict-default-path",
+            "/painter-editor/05-preview-extended",
+            "/painter-editor/06-replace-close",
+            "/painter-editor/07-registration",
+            "/painter-editor/08-legacy-preview-oracle",
+            "/painter-editor/09-close-during-refresh",
+            "/painter-editor/13-owner-destruction-orders",
+            "/painter-editor/10-graph-gestures",
+            "/painter-editor/11-resource-notifications",
+            "/painter-editor/12-delete-failure",
+            "/painter-editor/15-registered-dock-selection-context",
+            "/painter-editor/16-factory-membership-context-lifetime",
+            "/painter-editor/17-draft-name-history-save",
+            "/painter-editor/18-dialog-factory-dockable-lifetime",
+            "/painter-editor/19-action-dockable-close-reopen"
+          ],
+          "case_count": 19,
+          "duration_seconds": 69.68315529823303,
+          "registered_timeout_seconds": 120,
+          "stderr_lines": 80,
+          "allowed_cloud_debug_notices": [
+            "# DEBUG: Error acquiring bus for cloud providers: Error spawning command line \u201cdbus-launch --autolaunch=<machine-id> --binary-syntax --close-stderr\u201d: Child process exited with code 1"
+          ]
+        }
+      ],
+      "source_seal": {
+        "path": "layer-presets-dockable-20261014/candidate-source-seal.json",
+        "sha256": "3ef390d5a2faaa3362736485ee7e52ae8a4c53401635bfca006ed4d58f6b2880",
+        "files": [
+          {
+            "path": "app/dialogs/dialogs.c",
+            "bytes": 30594,
+            "before_git_blob": "357800aec9b1450ff067bec801ae991d3d0277fb",
+            "after_git_blob": "bbfd45bb56796d78f07614ed7724f0508b6b5a41",
+            "before_sha256": "9d4bea7a59251ae756609730d0219a4298f82a10bfb18410de16ce86cc334556",
+            "after_sha256": "dd2320e084f0a49e7d55e60844bf64417e82b2190fa911a2fa086daa48884aae"
+          },
+          {
+            "path": "app/actions/dialogs-actions.c",
+            "bytes": 15852,
+            "before_git_blob": "574891cda04cf00d896cead7ddf2fb2aa997f911",
+            "after_git_blob": "7f82fa3517c5c01c9834ba0d3bb4fe63257296d8",
+            "before_sha256": "5af0de60c1291f181cc5e19ffbf9f50e2541fec6c893f5627e1277b4bce504ca",
+            "after_sha256": "d65cf83962610c3bef8fd728bf76fb6094c3684303c6cafa963b94849856f883"
+          },
+          {
+            "path": "app/widgets/gimplayerpresetview.c",
+            "bytes": 5558,
+            "before_git_blob": "10153cdf160401eacb818ac6964bd26b132f641b",
+            "after_git_blob": "9b4b04f5b970f9a2704e3e086a7ff5d45945e7ac",
+            "before_sha256": "5bada5c213100df67f522f73642b289a768ccb0049c70bdf3dbef8eb675ebbdc",
+            "after_sha256": "9d9293289f0a6821dfe9ad3c5a0688a7d77ef207dd49714372b2f21258d18228"
+          },
+          {
+            "path": "app/tests/test-layer-presets-ui.c",
+            "bytes": 31765,
+            "before_git_blob": "e517c686a3860ac968e1019ad99e129351b8d1d7",
+            "after_git_blob": "7bc84e823e4de34cca2f198dfa0b4e719ef91dd2",
+            "before_sha256": "66f5e7f6b09ac13df1965c964e96182bd4bf7367aa38bfd26a169e4df53745dd",
+            "after_sha256": "0b44e96027df51e49f7b094eb794b764499e2937f9c00231bb8e0104143677ef"
+          }
+        ]
+      },
+      "registration_sources_sha256": {
+        "app/tests/test-layer-presets-ui.c": "0b44e96027df51e49f7b094eb794b764499e2937f9c00231bb8e0104143677ef",
+        "app/tests/test-gimp-layer-presets.c": "452132152101e1f1b5e7bcf67ed94d5014f24ae3e347dba35b12da8d470f9050",
+        "app/tests/test-painter-mypaint-editor.cpp": "09f76eb9a87a28440c7bd8a257451f6b02bd1e6a1b5f7548033e1325de798670"
+      },
+      "actual_c11": false,
+      "actual_c11_scope": null,
+      "other_c_consumers": "layer-presets-ui and gimp-layer-presets use cc; per-unit standard recorded; no language override",
+      "compile_evidence": {
+        "sha256": "0a28e6dd8ffe463af13cfbb2750a229ddb468bb072c0e0ef3d73f3de985e13e8",
+        "units": [
+          {
+            "file": "test-layer-presets-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "test-gimp-layer-presets.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "test-painter-mypaint-editor.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "dialogs.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "dialogs-actions.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          },
+          {
+            "file": "gimplayerpresetview.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "sanitizers": [
+              "-fsanitize=address,undefined"
+            ]
+          }
+        ]
+      },
+      "timeouts_unchanged": true,
+      "timeout_multiplier": null,
+      "isolation_and_authenticated_loopback_verified": true,
+      "lsan_enabled": false,
+      "diagnostic_exception": {
+        "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+        "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+        "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+      },
+      "verifier_sha256": "27d3ef35ec477742d4f6e9f343859a5d74b1081c3bb523caba76496fb5db647b",
+      "input_sha256": {
+        "results.json": "6e7451b4ee5f78727e6804cea1cadd28ec376aba643a33bf48ac9f2a4da1b800",
+        "registrations.json": "a36339572417abb5b6155903e29d3f4d8ad5d7e74685a40a58d21f751738bd9c",
+        "layer-presets-dockable-candidate-asan-v1.json": "52ac1f751aff57b87578370d17a9291fac412e5a58b0ee1682fccedeaeece576"
+      }
+    }
+  },
+  "verifier_controls": {
+    "status": "PASS",
+    "positive_control": "Unmodified isolated native-v3 report accepted",
+    "negative_case_count": 12,
+    "original_inputs_source_and_build_unchanged": true,
+    "protected_sha256": {
+      "c-boundaries-validation-20261013/validation/layer-presets-dockable-candidate-native-v3/results.json": "7888e770922aa2549cdd6b2273e780095e78295b2e4e7cf8e5ca6d4736f8da35",
+      "c-boundaries-validation-20261013/validation/layer-presets-dockable-candidate-native-v3/registrations.json": "9ccb4c45d7657973e6fe7846bdc9d61207d94322e8f7157fa8b3d4b9e3d91e6f",
+      "c-boundaries-validation-20261013/validation/layer-presets-dockable-candidate-native-v3/layer-presets-dockable-candidate-native-v3.json": "cc6181f051690b6eda8b8bb7cc780afe7e15598ea6b8c915397bb8654b804aed",
+      "c-boundaries-validation-20261013/validation/layer-presets-dockable-candidate-native-v3/verified-results.json": "8c0deed376894a91fe0178e36d98283ba1086b1f4717524f994a4af5ad154299",
+      "layer-presets-dockable-20261014/candidate-source-seal.json": "3ef390d5a2faaa3362736485ee7e52ae8a4c53401635bfca006ed4d58f6b2880",
+      "layer-presets-dockable-20261014/verify_candidate.py": "27d3ef35ec477742d4f6e9f343859a5d74b1081c3bb523caba76496fb5db647b",
+      "c-boundaries-validation-20261013/build-native/compile_commands.json": "9d2de63681b42dc3d1bc9741b389ccfa5ec6de8e08d7d0e287d1a81e52a13613",
+      "gimp-c-boundaries-20261013/app/dialogs/dialogs.c": "dd2320e084f0a49e7d55e60844bf64417e82b2190fa911a2fa086daa48884aae",
+      "gimp-c-boundaries-20261013/app/actions/dialogs-actions.c": "d65cf83962610c3bef8fd728bf76fb6094c3684303c6cafa963b94849856f883",
+      "gimp-c-boundaries-20261013/app/widgets/gimplayerpresetview.c": "9d9293289f0a6821dfe9ad3c5a0688a7d77ef207dd49714372b2f21258d18228",
+      "gimp-c-boundaries-20261013/app/tests/test-layer-presets-ui.c": "0b44e96027df51e49f7b094eb794b764499e2937f9c00231bb8e0104143677ef"
+    },
+    "verifier_sha256": "27d3ef35ec477742d4f6e9f343859a5d74b1081c3bb523caba76496fb5db647b",
+    "scope": "Verifier-only execution against isolated JSON copies; no application or build execution",
+    "results": [
+      {
+        "mutation": "none",
+        "passed": true,
+        "expected_rejection": null,
+        "observed_error": null,
+        "accepted_output_written": true,
+        "log_sha256": "fd10b246e1d0bae1be29a816956146e027fde98b5daae4886f6498136e965bed"
+      },
+      {
+        "mutation": "aggregate_nonzero",
+        "passed": true,
+        "expected_rejection": "aggregate or X server exit failed",
+        "observed_error": "aggregate or X server exit failed",
+        "accepted_output_written": false,
+        "log_sha256": "9641b8445f0c9623f8210229c0a4c6d41594d282fce301abbc7ee6482212c9ba"
+      },
+      {
+        "mutation": "process_nonzero_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "test process failed: painter-mypaint-editor",
+        "observed_error": "test process failed: painter-mypaint-editor",
+        "accepted_output_written": false,
+        "log_sha256": "61a6e0806286c03bd6c06f84d34e30d1e290a664194f235ef947c1feb523e0cc"
+      },
+      {
+        "mutation": "missing_tap_case",
+        "passed": true,
+        "expected_rejection": "TAP numbering missing/duplicated: painter-mypaint-editor",
+        "observed_error": "TAP numbering missing/duplicated: painter-mypaint-editor",
+        "accepted_output_written": false,
+        "log_sha256": "4e9e9d9f435b19a9b482dbb9b3c1a520175b52bb225e16d28a0cb2e66c948b9b"
+      },
+      {
+        "mutation": "duplicate_tap_case",
+        "passed": true,
+        "expected_rejection": "TAP numbering missing/duplicated: painter-mypaint-editor",
+        "observed_error": "TAP numbering missing/duplicated: painter-mypaint-editor",
+        "accepted_output_written": false,
+        "log_sha256": "4e9e9d9f435b19a9b482dbb9b3c1a520175b52bb225e16d28a0cb2e66c948b9b"
+      },
+      {
+        "mutation": "tap_skip_directive",
+        "passed": true,
+        "expected_rejection": "TAP IDs/order differ from source registration: painter-mypaint-editor",
+        "observed_error": "TAP IDs/order differ from source registration: painter-mypaint-editor",
+        "accepted_output_written": false,
+        "log_sha256": "99621a288d91a818afbc685d0480c753cd7c00a27f4322f67a9437dc9466c33d"
+      },
+      {
+        "mutation": "comment_skip",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: # SKIP injected",
+        "observed_error": "painter-mypaint-editor: forbidden diagnostic: # SKIP injected",
+        "accepted_output_written": false,
+        "log_sha256": "94ebdff19a05a5d055fbb45e9de7431ff5a1de516b9b5c9f47c52b038809de4c"
+      },
+      {
+        "mutation": "teardown_critical_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: Gimp-Core-CRITICAL",
+        "observed_error": "painter-mypaint-editor: forbidden diagnostic: Gimp-Core-CRITICAL: injected teardown failure",
+        "accepted_output_written": false,
+        "log_sha256": "2b19a322e0aa86e397af34cc012737f7ba60873542a3b6d15a5e8250ae9fcc44"
+      },
+      {
+        "mutation": "sanitizer_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: AddressSanitizer",
+        "observed_error": "painter-mypaint-editor: forbidden diagnostic: AddressSanitizer: injected error",
+        "accepted_output_written": false,
+        "log_sha256": "bd041e72c1e4a00cd609f6b1315460fe4bd3dafd90d7533beaadafba0067f226"
+      },
+      {
+        "mutation": "increased_registered_timeout",
+        "passed": true,
+        "expected_rejection": "registered timeout/serial contract changed: painter-mypaint-editor",
+        "observed_error": "registered timeout/serial contract changed: painter-mypaint-editor",
+        "accepted_output_written": false,
+        "log_sha256": "5ddb0fe38081b3b1aea10c522311db2ff3a543ae14958e09b0e7b45b2a54ebd2"
+      },
+      {
+        "mutation": "command_timeout_multiplier",
+        "passed": true,
+        "expected_rejection": "aggregate command differs",
+        "observed_error": "aggregate command differs, filters/timeout multipliers are forbidden",
+        "accepted_output_written": false,
+        "log_sha256": "7498c6f76162cce8a51fce12609f19a590bb2af65f063de9f4c84e33731337d1"
+      },
+      {
+        "mutation": "environment_timeout_multiplier",
+        "passed": true,
+        "expected_rejection": "timeout multiplier environment set",
+        "observed_error": "painter-mypaint-editor: timeout multiplier environment set",
+        "accepted_output_written": false,
+        "log_sha256": "a9a20b6e175a376a65960677963da469e4186ddeef15012e8b0a3f080d8d1941"
+      },
+      {
+        "mutation": "source_seal_tamper",
+        "passed": true,
+        "expected_rejection": "sealed SHA256 changed",
+        "observed_error": "sealed SHA256 changed: app/dialogs/dialogs.c",
+        "accepted_output_written": false,
+        "log_sha256": "12b2283cd16f0c7f6ce206fa1cb7cd5c54667b35acf7a50c35baafcd54f2a4f2"
+      }
+    ]
+  },
+  "retained_failures": [
+    {
+      "run": "layer-presets-dockable-baseline-factory",
+      "reason": "Published NULL-help factory control",
+      "sha256": "9d4c33e165db3d5e3dfa8f93529c17eae3c0f0c1d73addb83ae4047d73a4ab70",
+      "aggregate_exit": 1,
+      "results": [
+        {
+          "name": "gimp:app / layer-presets-ui",
+          "returncode": -5,
+          "result": "FAIL",
+          "failure_lines": [
+            "not ok /layer-presets-ui/dialog-factory-dockable-lifetime - Gimp-Widgets-FATAL-CRITICAL: gimp_dockable_new: assertion 'help_id != NULL' failed",
+            "Bail out!"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "layer-presets-dockable-baseline-action",
+      "reason": "Published NULL-help action control",
+      "sha256": "63f526d8b888795b1bb45d2679b834b797d11d0dab4e36410791cd1e7b4aef42",
+      "aggregate_exit": 1,
+      "results": [
+        {
+          "name": "gimp:app / layer-presets-ui",
+          "returncode": -5,
+          "result": "FAIL",
+          "failure_lines": [
+            "not ok /layer-presets-ui/action-dockable-close-reopen - Gimp-Widgets-FATAL-CRITICAL: gimp_dockable_new: assertion 'help_id != NULL' failed",
+            "Bail out!"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "layer-presets-dockable-candidate-native-v1",
+      "reason": "Two help values alone expose inherited property-preview NULL assertion",
+      "sha256": "2d888d8736971b314c9c4cee6afba7b2dacd6e03db5ed93061d84a1487d2d1bb",
+      "aggregate_exit": 1,
+      "results": [
+        {
+          "name": "gimp:app / gimp-layer-presets",
+          "returncode": 0,
+          "result": "OK",
+          "failure_lines": []
+        },
+        {
+          "name": "gimp:app / layer-presets-ui",
+          "returncode": -5,
+          "result": "FAIL",
+          "failure_lines": [
+            "not ok /layer-presets-ui/dialog-factory-dockable-lifetime - GLib-GObject-FATAL-CRITICAL: g_object_class_find_property: assertion 'property_name != NULL' failed",
+            "Bail out!"
+          ]
+        },
+        {
+          "name": "gimp:app / painter-mypaint-editor",
+          "returncode": 0,
+          "result": "OK",
+          "failure_lines": []
+        }
+      ]
+    },
+    {
+      "run": "layer-presets-dockable-candidate-native-v2",
+      "reason": "Factory passes; action mapped assertion fails after prior display reuse; retained fixture timing failure",
+      "sha256": "b62a0fa75dfb5afc8bf3c47281b710c3729eca0b4ffc1bcc9a9454aefcbde95c",
+      "aggregate_exit": 1,
+      "results": [
+        {
+          "name": "gimp:app / gimp-layer-presets",
+          "returncode": 0,
+          "result": "OK",
+          "failure_lines": []
+        },
+        {
+          "name": "gimp:app / layer-presets-ui",
+          "returncode": -6,
+          "result": "FAIL",
+          "failure_lines": [
+            "not ok /layer-presets-ui/action-dockable-close-reopen - ERROR:../../gimp-c-boundaries-20261013/app/tests/test-layer-presets-ui.c:278:native_dockable_close_reopen: 'gtk_widget_get_mapped (dockable)' should be TRUE",
+            "Bail out!"
+          ]
+        },
+        {
+          "name": "gimp:app / painter-mypaint-editor",
+          "returncode": 0,
+          "result": "OK",
+          "failure_lines": []
+        }
+      ]
+    }
+  ],
+  "retained_capture_failures": [
+    {
+      "run": "baseline-01",
+      "status": "FAILED",
+      "failure": "AssertionError: Normal quit did not complete (check for a real unsaved-image dialog)",
+      "normal_quit_exit": null,
+      "application_exit": 1,
+      "forced_termination": true,
+      "document_bytes_unchanged": true,
+      "receipt_sha256": "b9e5ebbbac59843139aff530303f56ecdb85d1ca1fca4604f4bc341483b4b90d",
+      "acceptance": false,
+      "note": "Excluded capture: wrong geometry key selected main window and typed shortcut keys; discard as acceptance. Failed quit after transient document mutation."
+    },
+    {
+      "run": "baseline-02",
+      "status": "FAILED",
+      "failure": "AssertionError: Normal quit did not complete (check for a real unsaved-image dialog)",
+      "normal_quit_exit": -11,
+      "application_exit": -11,
+      "forced_termination": false,
+      "document_bytes_unchanged": true,
+      "receipt_sha256": "fb3c0dd8ffec1ac0346a0211881435abef9ffa26ad65dd21fca857c83263166f",
+      "acceptance": false,
+      "note": "Accepted visual reproduction only: exact visible action fails NULL help and no dock appears. Clean source image state before quit; quit SIGSEGV retained, causal link unresolved."
+    }
+  ],
+  "visual": {
+    "baseline": {
+      "application_sha256": "4c576822b94a4f398d8b00e1d837c672e7abde0c268f32f9723a76bd93c19a84",
+      "capture_exit": 1,
+      "normal_quit_exit": -11,
+      "document_bytes_unchanged": true,
+      "images": {
+        "before-layer-presets-action-no-dock": "c73cf9ac3d7ee4a19e5f5f061faab0499176cdf81477c3283ee163b0fb205c09"
+      },
+      "receipt_sha256": "fb3c0dd8ffec1ac0346a0211881435abef9ffa26ad65dd21fca857c83263166f",
+      "result_sha256": "f174c80c46a58aeac528b1f72bf9158b740e9c0fa094bf3f61e2de2236f924b6"
+    },
+    "candidate": {
+      "application_sha256": "f8b6ef1215d1a011342f2216b26159919196fd5018235a5be5e8dd2061f95d4f",
+      "capture_exit": 0,
+      "normal_quit_exit": 0,
+      "document_bytes_unchanged": true,
+      "images": {
+        "after-open-layer-presets-no-implicit-apply": "f0eefe5f064d2fbfb1f4037523040f6abc380cb1b76c70361fcf7fa9c0e1dae3",
+        "after-reopened-layer-presets-source-preserved": "d63f6f6cfcf176aede5b49589cad2a66412a19bf3ee9d5dbe5d075ae2f349cb2",
+        "after-explicit-apply-one-clone": "9aeda2d0e773a4de51f05927aca72fd0f5ad4c0d596da3113a7c2424e1372f0d"
+      },
+      "receipt_sha256": "4e03368a0b5cce45efa58dd6759a5a3876faf69c25c482da3d747fce5608cb21",
+      "result_sha256": "b27b2f211d8d52339491d237b818485579b7a318ef50366a02427cd5f436f28a"
+    },
+    "delivery": {
+      "before_after_shared_before_commit_utc": "2026-10-14T03:46:45Z",
+      "scope": "Missing Layer Presets dock before; real preset list visible after reopening. This is not general Apply-correctness evidence."
+    }
+  },
+  "binary_sha256": {
+    "native": {
+      "app/tests/layer-presets-ui": "219d5568b23442a40d057ec7af34262ccc29190d3c95662574f73fa596ba4158",
+      "app/tests/gimp-layer-presets": "81686877f070132a37c424bd67ede718ec4803fd6a9d3c9cebadec2514cfcdd2",
+      "app/tests/painter-mypaint-editor": "c16636a36258d44d8a550bea2f7be82750d74d1e9f3444b3486ebf7bf509c485",
+      "compile_commands.json": "9d2de63681b42dc3d1bc9741b389ccfa5ec6de8e08d7d0e287d1a81e52a13613",
+      "meson-info/intro-tests.json": "6ab81987a0693146469c70127a0e667336b9271fe7ffac032af816e7d1b47ab5",
+      "app/dialogs/libappdialogs.a.p/dialogs.c.o": "fad1a28b8621b9c8d5c0a68d529fd6d3d574bc334a0adb257d9b5ca1e9f08bef",
+      "app/actions/libappactions.a.p/dialogs-actions.c.o": "581d10b5fc7f8cd7e67f900b8d306b04d8c9e5d3a345121c6712124e2c1c14ca",
+      "app/widgets/libappwidgets.a.p/gimplayerpresetview.c.o": "2f71b8fe9f9479279bc222c779de584efd867d8ded2c0937aab897f4d40461ef",
+      "app/gimp-3.0": "f8b6ef1215d1a011342f2216b26159919196fd5018235a5be5e8dd2061f95d4f"
+    },
+    "asan": {
+      "app/tests/layer-presets-ui": "b94c92056e4ee949875f26e9c2a3d7874d5b809e18ecb3c04199faafe5310fc7",
+      "app/tests/gimp-layer-presets": "dbacb66e75757362ada809a348fcc97659eec7c5f9ba7118155348a0e8f0019f",
+      "app/tests/painter-mypaint-editor": "d8826e077d5c2fbce20dd82d60176bf10cd8380f2e934b6f86842e89f6c73ed1",
+      "compile_commands.json": "0a28e6dd8ffe463af13cfbb2750a229ddb468bb072c0e0ef3d73f3de985e13e8",
+      "meson-info/intro-tests.json": "805a1fcdcd4d0c3bdb475c5c59e42aa4c6a0c1e650cf1d72cb786869197ef340",
+      "app/dialogs/libappdialogs.a.p/dialogs.c.o": "edbae3a3e1428258ed60fc058e3efc6ffc95513a781ebb1933153d8ad94ffd71",
+      "app/actions/libappactions.a.p/dialogs-actions.c.o": "d8d946e54835abdc46bd89bfa473a857d6c65f6e6c15d35d381a6bbdede55785",
+      "app/widgets/libappwidgets.a.p/gimplayerpresetview.c.o": "04c172643fc6dc2706f7bb079adfb49da04a17e5c23ad1ab955a5ae88b2506cf"
+    }
+  },
+  "evidence_sha256": {
+    "layer-presets-dockable-candidate-native-v3/results.json": "7888e770922aa2549cdd6b2273e780095e78295b2e4e7cf8e5ca6d4736f8da35",
+    "layer-presets-dockable-candidate-native-v3/verified-results.json": "8c0deed376894a91fe0178e36d98283ba1086b1f4717524f994a4af5ad154299",
+    "layer-presets-dockable-candidate-native-v3/layer-presets-dockable-candidate-native-v3.json": "cc6181f051690b6eda8b8bb7cc780afe7e15598ea6b8c915397bb8654b804aed",
+    "layer-presets-dockable-candidate-native-v3/layer-presets-dockable-candidate-native-v3.txt": "efad5b69c02f6106b3e97c5889a5612f6939f9c0828e0f7d140b4206df455a94",
+    "layer-presets-dockable-candidate-asan-v1/results.json": "6e7451b4ee5f78727e6804cea1cadd28ec376aba643a33bf48ac9f2a4da1b800",
+    "layer-presets-dockable-candidate-asan-v1/verified-results.json": "34fc31064a72298f9f0f49f3bdef3ce76431215e06ae3b2ad34ecb8f87186925",
+    "layer-presets-dockable-candidate-asan-v1/layer-presets-dockable-candidate-asan-v1.json": "52ac1f751aff57b87578370d17a9291fac412e5a58b0ee1682fccedeaeece576",
+    "layer-presets-dockable-candidate-asan-v1/layer-presets-dockable-candidate-asan-v1.txt": "6c18c4b6df011efb996e488322e5f0ad189b484b166b1015ae11c6b42215fa28",
+    "candidate-source-seal.json": "3ef390d5a2faaa3362736485ee7e52ae8a4c53401635bfca006ed4d58f6b2880",
+    "candidate-v1-source-seal.json": "84125ea82e8c8fb6afdad0e115d28f479a99420aec03d9f7dd1deeacba46c303",
+    "candidate-v2-source-seal.json": "181e29d5a4add6c570e31006094ab9e32636b06d75559b5ecc90d4e7fc24818c",
+    "baseline-ui-build.log": "8cb6d8f80408de64b600f833dce5d4ff212991f55016a5acbb6c290fa4d0e79b",
+    "candidate-native-v1-build.log": "8ee50110176bac2f28615951fe06552b6b33eb05a64afe4feee0cee3a47dba07",
+    "candidate-native-v2-build.log": "a26fa5ce71246c3eeccedb3fdebdd97d9a4e783ac3343e0a03e089d03d5de7ee",
+    "candidate-native-v3-build.log": "298f9dd4ac155ed7bbd1abf402b42562c11204868e3f40f34238afd6530c1e3c",
+    "candidate-asan-v1-build.log": "914847116df0dd857215fae38c3b2de0472c2c6921d0dcf1bd20e5c62d2d03b9",
+    "verify_candidate.py": "27d3ef35ec477742d4f6e9f343859a5d74b1081c3bb523caba76496fb5db647b",
+    "test_verify_candidate.py": "73bb3e84f94b0abd73f7521e1bad20ca8a5802a081150f44659693b16ded4034",
+    "verifier-negative-results.json": "3bd95f712b60fa716ff11f7bd60212d22062cc4059502772c9c92e975081a9bf",
+    "adapter-scan.log": "a002e14ba52d00fc477fe32c1e4f91a728461b89222e28a74680b4133df6ddaa",
+    "adapter-policy-tests.log": "2f2a24444148cca328bfb893a53c54b608dc95d9653c6c2ef1ceb12af81ffa01",
+    "independent-source-review.md": "0a87313c3415b3b1799ecc20c2eff62b843c5646583ecc6efb72206f6925360e"
+  },
+  "limits": [
+    "Original 76 C-entry obligations remain separate from 31 core hooks. Row 75 receives direct bounded dialog-action semantics; rows 1/74 supporting coverage; zero whole rows closed, migration 141/661 unchanged.",
+    "Help uses the existing generic dock identifier. No feature-specific manual page or external F1 help-content acceptance is claimed.",
+    "Layer Presets has no GimpContext resource property. Only its GimpDocked get_preview slot is disabled; inherited context/menu/button/aux methods remain. Normal preview tab requests fall back to the registered layer icon.",
+    "Actual-C UI controls create a real display and native factory/action wrapper, verify native image/display binding before manual context changes, three preview style constructions and icon normalization, source pixels/metadata/selected layer/count/clean state/Undo-Redo depth, no implicit Apply on open/re-raise/reopen/context reattachment, menu/cache weak destruction and Close Tab lifecycle.",
+    "Programmatic selection and explicit menu Apply each produce one new layer with one Undo. These controls do not prove native pointer single-click event semantics, clone identity/source link, wrapper Refresh, or Undo/Redo top-object identity.",
+    "Ordinary application one row click (one XTest press/release pair) created two clones and required two Undo steps; this remains an explicit next defect. Explicit Apply button created one clone, restored with one Undo. Opening/reopening alone preserved the two-layer image. No blanket usable-workflow or single-click correctness claim.",
+    "Baseline ordinary quit exited SIGSEGV (-11). Source reveals a stranded child after failed wrapper construction, a plausible but unproven cause; no causal crash-fix claim. Candidate complete normal quit exited 0 without warnings/criticals.",
+    "First capture excluded after wrong geometry field focused main window and typed shortcuts. Published visual baseline is second capture; all underlying failures remain retained.",
+    "Full native v2 aggregate failed a mapped-widget assertion after display reuse although isolated action passed. Final fixture waits up to 2 seconds for natural mapping using weak observation, never shows widgets or alters config, retains mapped assertions; full aggregate rerun required.",
+    "Native and ASan+UBSan run 36 source-registered cases each in 3 successful processes under unchanged 90/120 second bounds, no timeout multiplier. LeakSanitizer disabled. Two C consumers compile with cc under recorded project-default standard, no C++ override or explicit-C11 claim.",
+    "No full GIMP suite, interactive multiwindow/F1/manual content, broader legacy ABI closure or blocked perspective guard integration. Overwrite/colorpicker/wrong-point/perspective gaps remain open."
+  ],
+  "source_sha256": {
+    "app/dialogs/dialogs.c": "dd2320e084f0a49e7d55e60844bf64417e82b2190fa911a2fa086daa48884aae",
+    "app/actions/dialogs-actions.c": "d65cf83962610c3bef8fd728bf76fb6094c3684303c6cafa963b94849856f883",
+    "app/widgets/gimplayerpresetview.c": "9d9293289f0a6821dfe9ad3c5a0688a7d77ef207dd49714372b2f21258d18228",
+    "app/tests/test-layer-presets-ui.c": "0b44e96027df51e49f7b094eb794b764499e2937f9c00231bb8e0104143677ef",
+    "app/tests/meson.build": "f5dee0b19c36baee6fa76852ee0380288bce42365462f640a391a45b8030d7a3",
+    "app/tests/test-gimp-layer-presets.c": "452132152101e1f1b5e7bcf67ed94d5014f24ae3e347dba35b12da8d470f9050",
+    "app/tests/test-painter-mypaint-editor.cpp": "09f76eb9a87a28440c7bd8a257451f6b02bd1e6a1b5f7548033e1325de798670",
+    "app/widgets/gimpdockable.c": "3605429dd08c736a509bcae61a84d4772f0fe221483a0495736bb868fb4c31d0",
+    "app/widgets/gimpcontainerbox.c": "fba1e434defbc21d7165ea6a0e0fb071b3cc0fdf06ec50c323db09a99ee07cd7",
+    "app/widgets/gimpcontainereditor.c": "bd3e8aac9a5bace162784a2b53aa75fa2ca4b5d634a38423f699bb129f45c9a0",
+    "app/widgets/gimpdialogfactory.c": "50e55e605e0a9bf274eb373f8303c9dfadce1b8a5c47d3f06d816397f94a5be3"
+  }
+}
