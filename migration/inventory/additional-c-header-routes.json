@@ -58,6 +58,13 @@
       "context": "core",
       "prerequisites": [],
       "review": "08.018 exact row 36: source-only alias to native GimpPainterMybrush and the original named duplicate C operation. Owns C linkage and include guard; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Does not restore legacy object/class layout or runtime GType, or discharge other historical type/operation duties."
+    },
+    {
+      "path": "app/tools/gimpmypainttool.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018 row 58 partial operation port: original color-picker operation name and narrow native tool alias, with an explicit GimpColorPickTarget parameter migration. Owns C linkage and include guard; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Does not restore the incompatible legacy GimpColorPickMode enum, object/class layout, runtime GType, or discharge other original duties."
     }
   ]
 }
