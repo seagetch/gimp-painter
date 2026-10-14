@@ -1768,6 +1768,8 @@ gboolean gimp_filter_layer_set_definition_with_opaque_arguments (GimpFilterLayer
     if (!GIMP_IS_FILTER_LAYER (layer)) return fallback; \
     return BindingStore::require (G_OBJECT (layer)).read<FilterSlot> ([&] (const FilterImpl& impl) -> type { return expression; }); \
   })
+const gchar *gimp_filter_layer_get_procedure (GimpFilterLayer *layer)
+{ FILTER_READ (const gchar *, static_cast<const gchar *> (nullptr), impl.procedure.c_str ()); }
 gchar *gimp_filter_layer_dup_procedure (GimpFilterLayer *layer)
 { FILTER_READ (gchar *, static_cast<gchar *> (nullptr), g_strdup (impl.procedure.c_str ())); }
 gchar *gimp_filter_layer_dup_procedure_prefix (GimpFilterLayer *layer, gsize max_bytes,
@@ -1789,6 +1791,33 @@ GBytes *gimp_filter_layer_ref_opaque_arguments (GimpFilterLayer *layer)
 { FILTER_READ (GBytes *, static_cast<GBytes *> (nullptr), impl.opaque_arguments ? g_bytes_ref (impl.opaque_arguments.get ()) : nullptr); }
 GimpValueArray *gimp_filter_layer_dup_args (GimpFilterLayer *layer)
 { FILTER_READ (GimpValueArray *, static_cast<GimpValueArray *> (nullptr), impl.args ? impl.args->copy_values () : nullptr); }
+GArray *gimp_filter_layer_get_procedure_args (GimpFilterLayer *layer)
+{
+  return boundary<GArray *> (nullptr, nullptr, [&] {
+    /* Materialize through the existing reference-aware model. Never expose its
+     * saved values or replace raw/opaque serialization with these values. */
+    ArgsRef values (gimp_filter_layer_dup_args (layer));
+    if (!values) return static_cast<GArray *> (nullptr);
+    const gint count = gimp_value_array_length (values.get ());
+    if (count < 0) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Invalid Filter argument count");
+    auto result = ArrayRef::adopt (g_array_sized_new (FALSE, TRUE, sizeof (GValue), count));
+    g_array_set_clear_func (result.get (), [] (gpointer data) {
+      auto *value = static_cast<GValue *> (data);
+      if (G_IS_VALUE (value)) g_value_unset (value);
+    });
+    g_array_set_size (result.get (), count);
+    for (gint i = 0; i < count; ++i)
+      {
+        const GValue *source = gimp_value_array_index (values.get (), i);
+        if (!G_IS_VALUE (source))
+          throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Invalid Filter argument value");
+        GValue *destination = &g_array_index (result.get (), GValue, i);
+        g_value_init (destination, G_VALUE_TYPE (source));
+        g_value_copy (source, destination);
+      }
+    return result.release ();
+  });
+}
 GimpFilterLayerState gimp_filter_layer_get_state (GimpFilterLayer *layer)
 { FILTER_READ (GimpFilterLayerState, GIMP_FILTER_LAYER_CLOSED, static_cast<GimpFilterLayerState> (impl.scheduler.state ())); }
 gchar *gimp_filter_layer_dup_error (GimpFilterLayer *layer)

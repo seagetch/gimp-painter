@@ -50,6 +50,20 @@ gboolean    gimp_filter_layer_set_definition_checked (GimpFilterLayer *, const g
                                                       GBytes *, const GimpValueArray *, gboolean push_undo,
                                                       gboolean (*check) (gpointer), gpointer check_data,
                                                       GError **);
+/* Original query names over the native saved definition, not PDB runner
+ * original_name/default arguments. Borrowed name stays valid until definition
+ * replacement or owner destruction; read-only metadata remains available after
+ * explicit close. NULL signals an invalid/unavailable query. */
+const gchar *gimp_filter_layer_get_procedure (GimpFilterLayer *);
+/* Owned GArray<GValue>; free with g_array_unref(). Values have independent
+ * GValue ownership. Scalar object values retain the same object identity.
+ * Boxed values keep their native copy contract: CORE_OBJECT_ARRAY owns only
+ * its pointer container, not element references. Callers must keep those
+ * elements alive separately and must not dereference them after owner loss.
+ * Uses native reference materialization: absent arguments or rejected expired
+ * object arrays return NULL; an explicitly empty argument array remains empty.
+ * Does not alter raw/opaque serialization metadata or schedule execution. */
+GArray *    gimp_filter_layer_get_procedure_args (GimpFilterLayer *);
 gchar *     gimp_filter_layer_dup_procedure  (GimpFilterLayer *);
 /* Bounded byte prefix for owner-thread UI inspection. The returned bytes may
  * end inside a UTF-8 sequence; only the presentation copy may be repaired. */
