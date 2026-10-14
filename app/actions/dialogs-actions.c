@@ -241,7 +241,7 @@ const GimpStringActionEntry dialogs_dockable_actions[] =
     NC_("dialogs-action", "Painter MyPaint Brush Editor"),
     NC_("dialogs-action", "Painter MyPaint Brushes"), { NULL },
     NC_("dialogs-action", "Edit the extended Painter MyPaint brushes"),
-    "gimp-painter-mypaint-editor", NULL },
+    "gimp-painter-mypaint-editor", GIMP_HELP_MYPAINT_BRUSH_EDIT },
 
   { "dialogs-layer-presets", GIMP_ICON_LAYER,
     NC_("dialogs-action", "Layer Presets Dialog"),
