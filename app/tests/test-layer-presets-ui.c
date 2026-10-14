@@ -15,6 +15,7 @@
 #include "core/gimplayer-new.h"
 #include "core/gimplayer.h"
 #include "core/gimplayerpreset.h"
+#include "core/gimpclonelayer.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimpundostack.h"
@@ -22,6 +23,9 @@
 #include "config/gimprc.h"
 #include "widgets/gimplayerpresetview.h"
 #include "widgets/gimpcontainerview.h"
+#include "widgets/gimpcontainertreeview.h"
+#include "widgets/gimpcontainertreestore.h"
+#include "widgets/gimpviewrenderer.h"
 #include "widgets/gimpaction.h"
 #include "widgets/gimpactiongroup.h"
 #include "widgets/gimpactionfactory.h"
@@ -456,6 +460,746 @@ static void dialog_factory_dockable_lifetime (void)
 static void action_dockable_close_reopen (void)
 { native_dockable_close_reopen (TRUE); }
 
+/* These controls go through GDK's queue and GTK's current-event stack. A
+ * direct selection, signal emission or gtk_widget_event() would not reproduce
+ * both native tree notifications with the dispatch identity used by the view. */
+typedef struct
+{
+  GimpImage             *saved_image;
+  GimpDisplay           *saved_display;
+  GimpDisplay           *empty_display;
+  GimpDisplay           *display;
+  gchar                 *saved_path;
+  GimpImage             *image;
+  GimpLayer             *source;
+  GimpViewable          *preset;
+  GtkWidget            *dockable;
+  GimpLayerPresetView   *view;
+  GimpContainerView     *container;
+  GimpContainerTreeView *tree;
+  GdkEvent              *expected;
+  GtkWidget             *event_target;
+  guint                 delivered;
+  guint                 press_selections;
+  guint                 release_selections;
+  guint                 activations;
+  guchar                pixels[64 * 64 * 4];
+} GestureFixture;
+
+static void
+gesture_event_after (GtkWidget      *widget,
+                     GdkEvent       *event,
+                     GestureFixture *f)
+{
+  GdkEvent *current;
+
+  if (! f->expected || widget != f->event_target ||
+      event->type != f->expected->type ||
+      event->any.window != f->expected->any.window ||
+      gdk_event_get_time (event) != gdk_event_get_time (f->expected))
+    return;
+
+  g_assert_true (gdk_event_get_device (event) ==
+                 gdk_event_get_device (f->expected));
+  g_assert_true (gdk_event_get_source_device (event) ==
+                 gdk_event_get_source_device (f->expected));
+  if (event->type == GDK_BUTTON_PRESS || event->type == GDK_BUTTON_RELEASE ||
+      event->type == GDK_2BUTTON_PRESS)
+    {
+      g_assert_cmpuint (event->button.button, ==, f->expected->button.button);
+      g_assert_cmpuint (event->button.state, ==, f->expected->button.state);
+    }
+  current = gtk_get_current_event ();
+  g_assert_nonnull (current);
+  g_assert_cmpint (current->type, ==, event->type);
+  g_assert_true (current->any.window == event->any.window);
+  g_assert_cmpuint (gdk_event_get_time (current), ==,
+                    gdk_event_get_time (event));
+  gdk_event_free (current);
+  f->delivered++;
+}
+
+static void
+gesture_item_activated (GimpContainerView *container,
+                       GimpViewable      *item,
+                       GestureFixture    *f)
+{
+  g_assert_true (item == f->preset);
+  f->activations++;
+}
+
+static void
+gesture_selection_changed (GimpContainerView *container,
+                           GestureFixture    *f)
+{
+  GdkEvent *event = gtk_get_current_event ();
+
+  if (event && event->any.window ==
+      gtk_tree_view_get_bin_window (f->tree->view))
+    {
+      if (event->type == GDK_BUTTON_PRESS) f->press_selections++;
+      if (event->type == GDK_BUTTON_RELEASE) f->release_selections++;
+    }
+  if (event) gdk_event_free (event);
+}
+
+static void
+gesture_open (GestureFixture *f)
+{
+  f->dockable = open_native_preset (TRUE);
+  g_assert_true (GIMP_IS_DOCKABLE (f->dockable));
+  f->view = GIMP_LAYER_PRESET_VIEW (gtk_bin_get_child (GTK_BIN (f->dockable)));
+  f->container = GIMP_CONTAINER_EDITOR (f->view)->view;
+  g_assert_true (GIMP_IS_CONTAINER_TREE_VIEW (f->container));
+  f->tree = GIMP_CONTAINER_TREE_VIEW (f->container);
+  wait_native_mapped (f->dockable);
+  wait_native_mapped (GTK_WIDGET (f->tree->view));
+  g_assert_true (gimp_context_get_image (
+    gimp_container_view_get_context (f->container)) == f->image);
+  g_signal_connect (f->tree->view, "event-after",
+                    G_CALLBACK (gesture_event_after), f);
+  g_signal_connect (f->container, "selection-changed",
+                    G_CALLBACK (gesture_selection_changed), f);
+  g_signal_connect (f->container, "item-activated",
+                    G_CALLBACK (gesture_item_activated), f);
+}
+
+static void
+gesture_close (GestureFixture *f)
+{
+  GimpDockbook *book = gimp_dockable_get_dockbook (GIMP_DOCKABLE (f->dockable));
+  gpointer weak_view = f->view, weak_dockable = f->dockable;
+
+  g_object_add_weak_pointer (G_OBJECT (f->view), &weak_view);
+  g_object_add_weak_pointer (G_OBJECT (f->dockable), &weak_dockable);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (book),
+    gtk_notebook_page_num (GTK_NOTEBOOK (book), f->dockable));
+  dockable_close_tab_cmd_callback (NULL, NULL, book);
+  gimp_test_run_mainloop_until_idle ();
+  g_assert_null (weak_view);
+  g_assert_null (weak_dockable);
+  f->view = NULL; f->dockable = NULL; f->tree = NULL; f->container = NULL;
+}
+
+static void
+gesture_fixture_init (GestureFixture *f)
+{
+  *f = (GestureFixture) { 0 };
+  f->saved_image = gimp_context_get_image (gimp->user_context);
+  f->saved_display = gimp_context_get_display (gimp->user_context);
+  f->empty_display = gimp_get_empty_display (gimp);
+  if (f->saved_image) g_object_ref (f->saved_image);
+  if (f->saved_display) g_object_ref (f->saved_display);
+  g_object_get (gimp->config, "layer-presets-path", &f->saved_path, NULL);
+  factory_prepare ();
+  f->image = image_new (&f->source);
+  select_source (f->image, f->source);
+  for (guint i = 0; i < sizeof (f->pixels); i++)
+    f->pixels[i] = i % 4 == 3 ? 255 : (i * 37 + 11) % 256;
+  gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (f->source)),
+                   GEGL_RECTANGLE (0, 0, 64, 64), 0, babl_format ("R'G'B'A u8"),
+                   f->pixels, GEGL_AUTO_ROWSTRIDE);
+  gimp_image_clean_all (f->image);
+  f->display = gimp_create_display (gimp, f->image, gimp_unit_pixel (), 1.0, NULL);
+  g_assert_nonnull (f->display);
+  gimp_test_run_mainloop_until_idle ();
+  f->preset = GIMP_VIEWABLE (gimp_container_get_child_by_name (
+    gimp_data_factory_get_container (gimp->layer_preset_factory), "Clone layer"));
+  g_assert_nonnull (f->preset);
+  gesture_open (f);
+  assert_native_source (f->image, f->source, f->pixels, 0);
+  g_assert_null (gimp_container_view_get_1_selected (f->container));
+}
+
+static void
+gesture_fixture_clear (GestureFixture *f)
+{
+  gesture_close (f);
+  if (f->display == f->empty_display) gimp_display_empty (f->display);
+  else gimp_display_delete (f->display);
+  gimp_test_run_mainloop_until_idle ();
+  gimp_context_set_display (gimp->user_context, f->saved_display);
+  gimp_context_set_image (gimp->user_context, f->saved_image);
+  g_object_unref (f->image);
+  g_clear_object (&f->saved_display);
+  g_clear_object (&f->saved_image);
+  g_object_set (gimp->config, "layer-presets-path", f->saved_path, NULL);
+  g_free (f->saved_path);
+  gimp_data_factory_data_refresh (gimp->layer_preset_factory, gimp->user_context);
+  gimp_test_run_mainloop_until_idle ();
+}
+
+static GtkTreePath *
+gesture_preset_path (GestureFixture *f)
+{
+  GtkTreeIter iter;
+  gboolean valid = gtk_tree_model_get_iter_first (f->tree->model, &iter);
+
+  while (valid)
+    {
+      GimpViewRenderer *renderer = gimp_container_tree_store_get_renderer (
+        GIMP_CONTAINER_TREE_STORE (f->tree->model), &iter);
+      gboolean match = renderer->viewable == f->preset;
+      g_object_unref (renderer);
+      if (match) return gtk_tree_model_get_path (f->tree->model, &iter);
+      valid = gtk_tree_model_iter_next (f->tree->model, &iter);
+    }
+  g_assert_not_reached ();
+  return NULL;
+}
+
+static GdkEvent *
+gesture_button_event (GestureFixture *f,
+                      GdkEventType    type,
+                      guint32         time,
+                      gboolean        icon)
+{
+  GtkTreePath *path = gesture_preset_path (f), *hit = NULL;
+  GtkTreeViewColumn *column = f->tree->main_column, *hit_column = NULL;
+  GtkCellRenderer *cell = icon ? f->tree->renderer_cell :
+    gimp_container_tree_view_get_name_cell (f->tree);
+  GdkWindow *window = gtk_tree_view_get_bin_window (f->tree->view);
+  GdkSeat *seat = gdk_display_get_default_seat (gdk_window_get_display (window));
+  GdkRectangle area;
+  gint start, width, root_x, root_y;
+  GdkEvent *event = gdk_event_new (type);
+  gint64 deadline = g_get_monotonic_time () + 2 * G_TIME_SPAN_SECOND;
+
+  gtk_tree_view_scroll_to_cell (f->tree->view, path, NULL, FALSE, 0.0, 0.0);
+  while (! gdk_window_is_viewable (window) && g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL, FALSE); g_usleep (1000); }
+  g_assert_true (gdk_window_is_viewable (window));
+  /* A reopened mapped tree can precede its first cell allocation. Wait for
+   * the native layout rather than inventing click coordinates or resizing it. */
+  do
+    {
+      gtk_tree_view_get_cell_area (f->tree->view, path, column, &area);
+      g_assert_true (gtk_tree_view_column_cell_get_position (column, cell, &start, &width));
+      if (width > 0 && area.height > 0) break;
+      g_main_context_iteration (NULL, FALSE);
+      g_usleep (1000);
+    }
+  while (g_get_monotonic_time () < deadline);
+  g_assert_cmpint (width, >, 0);
+  g_assert_cmpint (area.height, >, 0);
+  event->button.window = g_object_ref (window);
+  event->button.send_event = TRUE;
+  event->button.time = time;
+  event->button.button = 1;
+  event->button.state = type == GDK_BUTTON_RELEASE ? GDK_BUTTON1_MASK : 0;
+  event->button.x = area.x + start + width / 2;
+  event->button.y = area.y + area.height / 2;
+  gdk_window_get_origin (window, &root_x, &root_y);
+  event->button.x_root = root_x + event->button.x;
+  event->button.y_root = root_y + event->button.y;
+  gdk_event_set_device (event, gdk_seat_get_pointer (seat));
+  gdk_event_set_source_device (event, gdk_seat_get_pointer (seat));
+  g_assert_true (gtk_tree_view_get_path_at_pos (f->tree->view,
+    event->button.x, event->button.y, &hit, &hit_column, NULL, NULL));
+  g_assert_cmpint (gtk_tree_path_compare (path, hit), ==, 0);
+  g_assert_true (hit_column == column);
+  gtk_tree_path_free (path); gtk_tree_path_free (hit);
+  return event;
+}
+
+static void
+gesture_dispatch_to (GestureFixture *f,
+                     GtkWidget      *target,
+                     GdkEvent       *event)
+{
+  gint64 deadline = g_get_monotonic_time () + 2 * G_TIME_SPAN_SECOND;
+
+  g_assert_null (f->expected);
+  f->expected = event;
+  f->event_target = target;
+  f->delivered = 0;
+  gdk_event_put (event);
+  while (! f->delivered && g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL, FALSE); g_usleep (1000); }
+  g_assert_cmpuint (f->delivered, ==, 1);
+  f->expected = NULL;
+  f->event_target = NULL;
+  gdk_event_free (event);
+  gimp_test_run_mainloop_until_idle ();
+}
+
+static void
+gesture_dispatch (GestureFixture *f,
+                  GdkEvent       *event)
+{
+  gesture_dispatch_to (f, GTK_WIDGET (f->tree->view), event);
+}
+
+static void
+gesture_button (GestureFixture *f,
+                GdkEventType    type,
+                guint32         time,
+                gboolean        icon)
+{
+  gesture_dispatch (f, gesture_button_event (f, type, time, icon));
+}
+
+static void
+gesture_assert_operations (GestureFixture *f,
+                           guint           operations)
+{
+  guint clones = 0;
+
+  g_assert_cmpint (gimp_image_get_n_layers (f->image), ==, 1 + operations);
+  g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (f->image)),
+                   ==, operations);
+  for (guint i = 0; i <= operations; i++)
+    {
+      GimpLayer *layer = GIMP_LAYER (gimp_container_get_child_by_index (
+        gimp_image_get_layers (f->image), i));
+      GimpLayer *root = layer;
+      guint chain = 0;
+      if (layer == f->source) continue;
+      g_assert_true (GIMP_IS_CLONE_LAYER (layer));
+      /* Adding a layer selects it, so an uninterrupted later operation can
+       * clone the previous clone. Its finite source chain must still end at
+       * our original source; do not change selection between physical events. */
+      while (GIMP_IS_CLONE_LAYER (root))
+        {
+          g_assert_cmpuint (++chain, <=, operations);
+          root = gimp_clone_layer_get_source (GIMP_CLONE_LAYER (root));
+          g_assert_nonnull (root);
+          g_assert_true (gimp_item_get_image (GIMP_ITEM (root)) == f->image);
+        }
+      g_assert_true (root == f->source);
+      clones++;
+    }
+  g_assert_cmpuint (clones, ==, operations);
+}
+
+static void
+gesture_undo_all (GestureFixture *f,
+                  guint           operations)
+{
+  for (guint i = operations; i > 0; i--)
+    {
+      g_assert_true (gimp_image_undo (f->image));
+      gesture_assert_operations (f, i - 1);
+    }
+  assert_native_source (f->image, f->source, f->pixels, operations);
+}
+
+static void
+native_primary_click (void)
+{
+  GestureFixture f;
+
+  gesture_fixture_init (&f);
+  gesture_button (&f, GDK_BUTTON_PRESS, 1000, FALSE);
+  g_assert_cmpuint (f.press_selections, ==, 1);
+  gesture_assert_operations (&f, 1);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 1010, FALSE);
+  g_assert_cmpuint (f.release_selections, ==, 1);
+  gesture_assert_operations (&f, 1);
+  g_assert_true (gimp_image_undo (f.image));
+  assert_native_source (f.image, f.source, f.pixels, 1);
+  g_assert_true (gimp_image_redo (f.image));
+  gesture_assert_operations (&f, 1);
+  g_assert_true (gimp_image_undo (f.image));
+  assert_native_source (f.image, f.source, f.pixels, 1);
+  gesture_fixture_clear (&f);
+}
+
+static void
+native_repeated_click (void)
+{
+  GestureFixture f;
+
+  gesture_fixture_init (&f);
+  gesture_button (&f, GDK_BUTTON_PRESS, 2000, FALSE);
+  gesture_assert_operations (&f, 1);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 2010, FALSE);
+  gesture_assert_operations (&f, 1);
+  /* Two physically distinct queued pairs can share the same millisecond
+   * timestamps. Each new press is a new gesture, not a debounce timeout. */
+  gesture_button (&f, GDK_BUTTON_PRESS, 2000, FALSE);
+  gesture_assert_operations (&f, 1);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 2010, FALSE);
+  gesture_assert_operations (&f, 2);
+  /* Exercise the native preview/icon path as well as name-cell selection. */
+  gesture_button (&f, GDK_BUTTON_PRESS, 4000, TRUE);
+  gesture_assert_operations (&f, 2);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 4010, TRUE);
+  gesture_assert_operations (&f, 3);
+  g_assert_cmpuint (f.press_selections, ==, 1);
+  g_assert_cmpuint (f.release_selections, ==, 3);
+  gesture_undo_all (&f, 3);
+  gesture_fixture_clear (&f);
+}
+
+static void
+native_double_click (void)
+{
+  GestureFixture f;
+
+  gesture_fixture_init (&f);
+  /* A complete GTK double click includes the second ordinary press. The
+   * icon cell takes the native activation path rather than name editing. */
+  gesture_button (&f, GDK_BUTTON_PRESS, 5000, TRUE);
+  gesture_assert_operations (&f, 1);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 5010, TRUE);
+  gesture_assert_operations (&f, 1);
+  gesture_button (&f, GDK_BUTTON_PRESS, 5050, TRUE);
+  gesture_assert_operations (&f, 1);
+  gesture_button (&f, GDK_2BUTTON_PRESS, 5050, TRUE);
+  g_assert_cmpuint (f.activations, ==, 1);
+  gesture_assert_operations (&f, 2);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 5060, TRUE);
+  gesture_assert_operations (&f, 2);
+  g_assert_cmpuint (f.press_selections, ==, 1);
+  g_assert_cmpuint (f.release_selections, ==, 2);
+  gesture_undo_all (&f, 2);
+  gesture_fixture_clear (&f);
+}
+
+static GtkWidget *
+gesture_apply_button (GestureFixture *f)
+{
+  GimpActionGroup *group = gimp_action_factory_get_group (
+    global_action_factory, "layer-presets", f->view);
+  GimpAction *action = gimp_action_group_get_action (group, "layer-presets-apply");
+  GList *buttons = gtk_container_get_children (GTK_CONTAINER (
+    gimp_editor_get_button_box (GIMP_EDITOR (f->container))));
+  GtkWidget *result = NULL;
+
+  for (GList *l = buttons; l; l = l->next)
+    if (GTK_IS_BUTTON (l->data) &&
+        g_signal_handler_find (l->data, G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_DATA,
+                               g_signal_lookup ("clicked", GTK_TYPE_BUTTON),
+                               0, NULL, NULL, action))
+      {
+        g_assert_null (result);
+        result = l->data;
+      }
+  g_list_free (buttons);
+  g_assert_nonnull (result);
+  g_assert_true (gtk_widget_is_sensitive (result));
+  return result;
+}
+
+static void
+native_independent_actions (void)
+{
+  GestureFixture f;
+  GtkWidget *button;
+  guint operations = 0;
+
+  gesture_fixture_init (&f);
+  gesture_button (&f, GDK_BUTTON_PRESS, 6000, FALSE);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 6010, FALSE);
+  gesture_assert_operations (&f, ++operations);
+  for (guint i = 0; i < 2; i++)
+    {
+      gimp_container_view_set_1_selected (f.container, f.preset);
+      gesture_assert_operations (&f, ++operations);
+    }
+  button = gesture_apply_button (&f);
+  for (guint i = 0; i < 2; i++)
+    {
+      gtk_button_clicked (GTK_BUTTON (button));
+      gesture_assert_operations (&f, ++operations);
+    }
+  for (guint i = 0; i < 2; i++)
+    {
+      _gimp_container_view_item_activated (f.container, f.preset);
+      gesture_assert_operations (&f, ++operations);
+    }
+  g_assert_cmpuint (f.activations, ==, 2);
+  /* Independent API/Apply requests also retire an interrupted pointer press. */
+  for (guint i = 0; i < 2; i++)
+    {
+      gesture_button (&f, GDK_BUTTON_PRESS, 6200 + i * 100, FALSE);
+      gesture_assert_operations (&f, operations);
+      if (i == 0)
+        gimp_container_view_set_1_selected (f.container, f.preset);
+      else
+        gtk_button_clicked (GTK_BUTTON (button));
+      gesture_assert_operations (&f, ++operations);
+      gesture_button (&f, GDK_BUTTON_RELEASE, 6210 + i * 100, FALSE);
+      gesture_assert_operations (&f, operations);
+    }
+  gesture_undo_all (&f, operations);
+  gesture_fixture_clear (&f);
+}
+
+static GdkEvent *
+gesture_key_event (GtkWidget    *widget,
+                   GdkEventType  type,
+                   guint         keyval,
+                   guint32       time)
+{
+  GdkEvent *event = gdk_event_new (type);
+  GdkDisplay *display = gtk_widget_get_display (widget);
+  GdkSeat *seat = gdk_display_get_default_seat (display);
+  GdkKeymapKey *keys = NULL;
+  gint n_keys = 0;
+
+  event->key.window = g_object_ref (gtk_widget_get_window (widget));
+  event->key.send_event = TRUE;
+  event->key.time = time;
+  event->key.keyval = keyval;
+  g_assert_true (gdk_keymap_get_entries_for_keyval (
+    gdk_keymap_get_for_display (display), keyval, &keys, &n_keys));
+  g_assert_cmpint (n_keys, >, 0);
+  event->key.hardware_keycode = keys[0].keycode;
+  event->key.group = keys[0].group;
+  g_free (keys);
+  gdk_event_set_device (event, gdk_seat_get_keyboard (seat));
+  gdk_event_set_source_device (event, gdk_seat_get_keyboard (seat));
+  return event;
+}
+
+static void
+native_keyboard_selection (void)
+{
+  GestureFixture f;
+  GimpViewable *other;
+  GtkTreePath *first;
+
+  gesture_fixture_init (&f);
+  first = gesture_preset_path (&f);
+  g_assert_cmpint (gtk_tree_path_get_depth (first), ==, 1);
+  g_assert_cmpint (gtk_tree_path_get_indices (first)[0], ==, 0);
+  gtk_tree_path_free (first);
+  other = GIMP_VIEWABLE (gimp_container_get_child_by_name (
+    gimp_data_factory_get_container (gimp->layer_preset_factory),
+    "Duplicate as normal layer"));
+  g_assert_nonnull (other);
+  gimp_container_view_set_1_selected (f.container, other);
+  g_assert_cmpint (gimp_image_get_n_layers (f.image), ==, 2);
+  g_assert_true (gimp_image_undo (f.image));
+  assert_native_source (f.image, f.source, f.pixels, 1);
+  gtk_widget_grab_focus (GTK_WIDGET (f.tree->view));
+  g_assert_true (gtk_widget_has_focus (GTK_WIDGET (f.tree->view)));
+  gesture_dispatch (&f, gesture_key_event (GTK_WIDGET (f.tree->view),
+                                           GDK_KEY_PRESS, GDK_KEY_Home, 7000));
+  g_assert_true (gimp_container_view_get_1_selected (f.container) == f.preset);
+  gesture_assert_operations (&f, 1);
+  gesture_dispatch (&f, gesture_key_event (GTK_WIDGET (f.tree->view),
+                                           GDK_KEY_RELEASE, GDK_KEY_Home, 7010));
+  gesture_assert_operations (&f, 1);
+  gesture_undo_all (&f, 1);
+  gesture_fixture_clear (&f);
+}
+
+static void
+native_cancelled_gestures (void)
+{
+  GestureFixture f;
+
+  gesture_fixture_init (&f);
+  gimp_container_view_set_1_selected (f.container, f.preset);
+  gesture_undo_all (&f, 1);
+  for (guint kind = 0; kind < 4; kind++)
+    {
+      guint32 time = 8000 + kind * 1000;
+      GdkEvent *cancel;
+      GdkSeat *seat = gdk_display_get_default_seat (
+        gtk_widget_get_display (GTK_WIDGET (f.tree->view)));
+
+      g_test_message ("Cancel pending selected-row gesture: %s",
+                       (const gchar *[]) { "Escape", "focus-out", "unmap", "grab-broken" }[kind]);
+      gtk_widget_grab_focus (GTK_WIDGET (f.tree->view));
+      gesture_button (&f, GDK_BUTTON_PRESS, time, FALSE);
+      gesture_assert_operations (&f, 0);
+      switch (kind)
+        {
+        case 0:
+          {
+            /* GimpWindow handles Escape before forwarding to the tree: it
+             * returns focus to its primary widget. Observe the real window
+             * dispatch and let the resulting focus loss cancel the gesture. */
+            GtkWidget *window = gtk_widget_get_toplevel (GTK_WIDGET (f.tree->view));
+            gulong observer = g_signal_connect (window, "event-after",
+              G_CALLBACK (gesture_event_after), &f);
+            gesture_dispatch_to (&f, window, gesture_key_event (window,
+              GDK_KEY_PRESS, GDK_KEY_Escape, time + 1));
+            gesture_dispatch_to (&f, window, gesture_key_event (window,
+              GDK_KEY_RELEASE, GDK_KEY_Escape, time + 2));
+            g_signal_handler_disconnect (window, observer);
+            g_assert_false (gtk_widget_has_focus (GTK_WIDGET (f.tree->view)));
+          }
+          break;
+        case 1:
+          cancel = gdk_event_new (GDK_FOCUS_CHANGE);
+          cancel->focus_change.window = g_object_ref (gtk_widget_get_window (
+            GTK_WIDGET (f.tree->view)));
+          cancel->focus_change.send_event = TRUE;
+          cancel->focus_change.in = FALSE;
+          gdk_event_set_device (cancel, gdk_seat_get_keyboard (seat));
+          gdk_event_set_source_device (cancel, gdk_seat_get_keyboard (seat));
+          gesture_dispatch (&f, cancel);
+          break;
+        case 2:
+          gtk_widget_hide (GTK_WIDGET (f.tree->view));
+          g_assert_false (gtk_widget_get_mapped (GTK_WIDGET (f.tree->view)));
+          gtk_widget_show (GTK_WIDGET (f.tree->view));
+          wait_native_mapped (GTK_WIDGET (f.tree->view));
+          break;
+        case 3:
+          cancel = gdk_event_new (GDK_GRAB_BROKEN);
+          cancel->grab_broken.window = g_object_ref (
+            gtk_tree_view_get_bin_window (f.tree->view));
+          cancel->grab_broken.send_event = TRUE;
+          cancel->grab_broken.keyboard = FALSE;
+          cancel->grab_broken.implicit = FALSE;
+          cancel->grab_broken.grab_window = NULL;
+          gdk_event_set_device (cancel, gdk_seat_get_pointer (seat));
+          gdk_event_set_source_device (cancel, gdk_seat_get_pointer (seat));
+          gesture_dispatch (&f, cancel);
+          break;
+        }
+      /* A delayed activation cannot resurrect the cancelled second press.
+       * The icon route emits native item-activated even though Apply is gated. */
+      gesture_button (&f, GDK_2BUTTON_PRESS, time + 3, TRUE);
+      g_assert_cmpuint (f.activations, ==, kind + 1);
+      gesture_assert_operations (&f, 0);
+      gesture_button (&f, GDK_BUTTON_RELEASE, time + 4, FALSE);
+      gesture_assert_operations (&f, 0);
+      gesture_button (&f, GDK_BUTTON_PRESS, time + 100, FALSE);
+      gesture_assert_operations (&f, 0);
+      gesture_button (&f, GDK_BUTTON_RELEASE, time + 110, FALSE);
+      gesture_assert_operations (&f, 1);
+      gimp_container_view_set_1_selected (f.container, f.preset);
+      gesture_assert_operations (&f, 2);
+      gesture_undo_all (&f, 2);
+    }
+  gesture_fixture_clear (&f);
+}
+
+static void
+native_context_change_cancels (void)
+{
+  GestureFixture f;
+  GimpLayer *other_source;
+  GimpImage *other;
+  GimpContext *context;
+
+  gesture_fixture_init (&f);
+  gimp_container_view_set_1_selected (f.container, f.preset);
+  gesture_undo_all (&f, 1);
+  other = image_new (&other_source);
+  select_source (other, other_source);
+  gimp_image_clean_all (other);
+  gimp_context_set_image (gimp->user_context, f.image);
+  context = gimp_container_view_get_context (f.container);
+  g_assert_true (gimp_context_get_image (context) == f.image);
+  gesture_button (&f, GDK_BUTTON_PRESS, 12000, FALSE);
+  gesture_assert_operations (&f, 0);
+  gimp_context_set_image (context, other);
+  g_assert_true (gimp_container_view_get_context (f.container) == context);
+  g_assert_true (gimp_context_get_image (context) == other);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 12010, FALSE);
+  g_assert_cmpint (gimp_image_get_n_layers (other), ==, 1);
+  g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (other)), ==, 0);
+  g_assert_cmpint (gimp_image_is_dirty (other), ==, 0);
+  gesture_assert_operations (&f, 0);
+  gimp_context_set_image (context, f.image);
+  /* Returning to the same image/source cannot resurrect a pending token. */
+  gesture_button (&f, GDK_BUTTON_PRESS, 12050, FALSE);
+  gimp_context_set_image (context, other);
+  gimp_context_set_image (context, f.image);
+  gesture_button (&f, GDK_2BUTTON_PRESS, 12060, TRUE);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 12070, FALSE);
+  gesture_assert_operations (&f, 0);
+  gesture_button (&f, GDK_BUTTON_PRESS, 12100, FALSE);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 12110, FALSE);
+  gesture_assert_operations (&f, 1);
+  gesture_undo_all (&f, 1);
+  g_object_unref (other);
+  gesture_fixture_clear (&f);
+}
+
+static void
+native_pending_close_reopen (void)
+{
+  GestureFixture f;
+  GdkEvent *release;
+  GdkWindow *old_window;
+
+  gesture_fixture_init (&f);
+  gimp_container_view_set_1_selected (f.container, f.preset);
+  gesture_undo_all (&f, 1);
+  gesture_button (&f, GDK_BUTTON_PRESS, 13000, FALSE);
+  gesture_assert_operations (&f, 0);
+  release = gesture_button_event (&f, GDK_BUTTON_RELEASE, 13010, FALSE);
+  old_window = g_object_ref (release->any.window);
+  /* Queue the old release, destroy the native tab, then let GTK discard the
+   * event for its destroyed window. No widget is retained by this control. */
+  gdk_event_put (release);
+  gdk_event_free (release);
+  gesture_close (&f);
+  g_assert_true (gdk_window_is_destroyed (old_window));
+  g_object_unref (old_window);
+  assert_native_source (f.image, f.source, f.pixels, 1);
+  gesture_open (&f);
+  assert_native_source (f.image, f.source, f.pixels, 1);
+  gesture_button (&f, GDK_BUTTON_PRESS, 13100, FALSE);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 13110, FALSE);
+  gesture_assert_operations (&f, 1);
+  gesture_undo_all (&f, 1);
+  gesture_fixture_clear (&f);
+}
+
+static void
+native_blank_release_cancels (void)
+{
+  GestureFixture f;
+  GdkEvent *release;
+  GtkTreePath *hit = NULL;
+  GdkWindow *window;
+  gint root_x, root_y;
+
+  gesture_fixture_init (&f);
+  gimp_container_view_set_1_selected (f.container, f.preset);
+  gesture_undo_all (&f, 1);
+  gesture_button (&f, GDK_BUTTON_PRESS, 14000, FALSE);
+  release = gesture_button_event (&f, GDK_BUTTON_RELEASE, 14010, FALSE);
+  window = gtk_tree_view_get_bin_window (f.tree->view);
+  release->button.y = gdk_window_get_height (window) - 2;
+  g_assert_false (gtk_tree_view_get_path_at_pos (f.tree->view,
+    release->button.x, release->button.y, &hit, NULL, NULL, NULL));
+  g_assert_null (hit);
+  gdk_window_get_origin (window, &root_x, &root_y);
+  release->button.x_root = root_x + release->button.x;
+  release->button.y_root = root_y + release->button.y;
+  gesture_dispatch (&f, release);
+  gesture_assert_operations (&f, 0);
+  gesture_button (&f, GDK_2BUTTON_PRESS, 14020, TRUE);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 14030, FALSE);
+  gesture_assert_operations (&f, 0);
+  gesture_button (&f, GDK_BUTTON_PRESS, 14100, FALSE);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 14110, FALSE);
+  gesture_assert_operations (&f, 1);
+  gesture_undo_all (&f, 1);
+  gesture_fixture_clear (&f);
+}
+
+static void
+native_stale_release (void)
+{
+  GestureFixture f;
+
+  gesture_fixture_init (&f);
+  gimp_container_view_set_1_selected (f.container, f.preset);
+  gesture_undo_all (&f, 1);
+  gesture_button (&f, GDK_BUTTON_PRESS, 15000, FALSE);
+  gesture_assert_operations (&f, 0);
+  /* A late event from an older click neither applies nor consumes the live
+   * newer press. The subsequent matching release must still work once. */
+  gesture_button (&f, GDK_BUTTON_RELEASE, 14990, FALSE);
+  gesture_assert_operations (&f, 0);
+  gesture_button (&f, GDK_BUTTON_RELEASE, 15010, FALSE);
+  gesture_assert_operations (&f, 1);
+  gesture_undo_all (&f, 1);
+  gesture_fixture_clear (&f);
+}
+
 typedef struct { const gchar *text; gboolean found; } LabelSearch;
 static gboolean tree_label (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
@@ -633,6 +1377,16 @@ int main (int argc, char **argv)
   g_test_add_func ("/layer-presets-ui/preferences-registration", preferences_and_registration);
   g_test_add_func ("/layer-presets-ui/dialog-factory-dockable-lifetime", dialog_factory_dockable_lifetime);
   g_test_add_func ("/layer-presets-ui/action-dockable-close-reopen", action_dockable_close_reopen);
+  g_test_add_func ("/layer-presets-ui/native-primary-click", native_primary_click);
+  g_test_add_func ("/layer-presets-ui/native-repeated-click", native_repeated_click);
+  g_test_add_func ("/layer-presets-ui/native-double-click", native_double_click);
+  g_test_add_func ("/layer-presets-ui/native-independent-actions", native_independent_actions);
+  g_test_add_func ("/layer-presets-ui/native-keyboard-selection", native_keyboard_selection);
+  g_test_add_func ("/layer-presets-ui/native-cancelled-gestures", native_cancelled_gestures);
+  g_test_add_func ("/layer-presets-ui/native-context-change-cancels", native_context_change_cancels);
+  g_test_add_func ("/layer-presets-ui/native-pending-close-reopen", native_pending_close_reopen);
+  g_test_add_func ("/layer-presets-ui/native-blank-release-cancels", native_blank_release_cancels);
+  g_test_add_func ("/layer-presets-ui/native-stale-release", native_stale_release);
   g_test_add_func ("/layer-presets-ui/filter-storage-preferences", filter_storage_preferences);
   g_test_add_func ("/layer-presets-ui/filter-storage-reentrant-close", filter_storage_reentrant_close);
   g_application_run (gimp->app, 0, NULL);
