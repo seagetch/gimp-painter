@@ -1564,9 +1564,13 @@ gimp_number_pair_entry_history_add (GtkWidget    *entry,
   gboolean     iter_valid;
   gdouble      left_number;
   gdouble      right_number;
-  const gchar *text;
+  gchar       *text;
 
-  text = gtk_entry_get_text (GTK_ENTRY (entry));
+  /* Adding or moving a row emits signals.  Keep the history and an owned
+   * snapshot of the text alive if an observer closes the editing view.
+   */
+  g_object_ref (model);
+  text = g_strdup (gtk_entry_get_text (GTK_ENTRY (entry)));
   gimp_number_pair_entry_get_values (GIMP_NUMBER_PAIR_ENTRY (entry),
                                      &left_number,
                                      &right_number);
@@ -1602,4 +1606,7 @@ gimp_number_pair_entry_history_add (GtkWidget    *entry,
 
       /* FIXME: limit the size of the history */
     }
+
+  g_free (text);
+  g_object_unref (model);
 }
