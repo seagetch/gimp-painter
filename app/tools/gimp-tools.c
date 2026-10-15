@@ -46,6 +46,7 @@
 #include "gimptooloptions-gui.h"
 #include "gimppainterpainttoolbar.h"
 #include "gimppaintertooltoolbar.h"
+#include "gimpalignoptions.h"
 #include "gimppaintertransformtoolbar.h"
 #include "tool_manager.h"
 
@@ -159,6 +160,9 @@ gimp_tools_horizontal_options_gui (GimpToolOptions *options)
         }
       return gui;
     }
+
+  if (GIMP_IS_ALIGN_OPTIONS (options))
+    return gimp_align_options_gui_horizontal (options);
 
   gui = gimp_painter_paint_toolbar_new (options);
   if (! gui)
