@@ -27,5 +27,16 @@
     "gimp-portrait.png": "c4cac75a753d3197b465675092c37a8814c45e028b5d4d31d0e1f5ed84911be2",
     "gimp-painter-canvas.png": "b569aaded154d717d9b4946c2f19b6b8977e585825a1feadc985246ace9c6be9"
   },
-  "scope": "Startup and visible Painter controls; not full UI parity or clean shutdown acceptance"
+  "scope": "Startup and visible Painter controls; not full UI parity or clean shutdown acceptance",
+  "subsequent_clean_gui_smoke": {
+    "action": "Open same fixture with Painter enabled, focus actual window and send Ctrl+Q via XTest",
+    "exit_code": 0,
+    "tcp_display": "127.0.0.1:92",
+    "screenshot_sha256": "1acb702e37c8993291a08be9fb17fbda61f28f5b74188a334142a6697f81d49c",
+    "launch_diagnostics": [
+      "gimp_font_factory_load_names: 112 unsupported fonts were ignored. Set the GIMP_DEBUG_FONTS environment variable for a listing.",
+      "gui_dbus_name_lost: connection to the bus cannot be established."
+    ],
+    "scope": "One normal GUI quit; not exhaustive shutdown/lifetime acceptance"
+  }
 }
