@@ -155,7 +155,9 @@ after execution against the final source.
 No task was added, removed, checked or unchecked. The public baseline had
 336 DONE, 584 TODO, 14 DOING and 1 BLOCKED rows. The active substantive
 factory work now changes exactly `29.010/standard-tool-options` from TODO to
-DOING; all other statuses are preserved. Current counts:
+DOING; all other statuses were preserved in the UI recovery commit.
+The following counts are that recovery checkpoint, not a live ledger after
+subsequent task commits:
 
 | Scope | Total rows | DONE | TODO | DOING | BLOCKED |
 | --- | ---: | ---: | ---: | ---: | ---: |

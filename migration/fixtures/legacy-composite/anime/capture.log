@@ -1,0 +1,453 @@
+
+(process:402): GLib-GObject-CRITICAL **: 09:32:43.548: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:402): GLib-GObject-CRITICAL **: 09:32:43.548: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+Failed to parse tag cache: No such file or directory
+GIMP-Error: Plug-in "pagecurl"
+attempted to install procedure "plug-in-pagecurl" with invalid return-value name "Curl Layer".
+This is not allowed.
+
+GIMP-Error: Plug-in "pagecurl"
+(/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/pagecurl)
+attempted to register the menu item "<Image>/Filters/Distorts" for the procedure "plug-in-pagecurl".
+It has however not installed that procedure.  This is not allowed.
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x559ab59808e0:  set ignore_undos=0
+GimpJsonResource: Set properties_base to 8
+  Installed set_property_handler
+  Installed get_property_handler
+Installed::N4GLib13GClassWrapperINS_11UseCStructsI9_GimpData17_GimpJsonResourceEEE9WithClassE-> prop=root, id=8
+LayerPresetApplier::is_source_valid
+  passed all.
+Create replacement layer: 
+LayerPresetApplier::create_one_layer:: JSON={"target":"new","name":"New group","type":"group","opacity":"source","mode":"source","children":[{"target":"new","name":"mask","type":"clone","mode":"dst-in-mode","source":"source","opacity":1.0,"boundary":"source"},{"target":"new","name":"shadow","type":"normal","mode":"multiply-mode","boundary":"source"},{"target":"source","mode":"normal-mode","opacity":1.0}]}
+LayerPresetApplier::get_source:: JSON=
+LayerPresetApplier::get_boundary:: JSON=
+LayerPresetApplier::get_mode:: JSON="source"
+  is_value=1, value_type((null)) <==> (gchararray)
+LayerPresetApplier::get_opacity:: JSON="source"
+LayerPresetApplier::get_alpha:: JSON=
+
+---name:     New group
+---Layer:    (nil)
+---Boundary: 0,0 - 0,0
+---mode:     0
+---opacity:  1.000000
+---alpha:    1
+
+Create group layer: New group
+push_undo: GimpLayerUndo=55
+Create replacement layer: 
+LayerPresetApplier::create_one_layer:: JSON={"target":"new","name":"mask","type":"clone","mode":"dst-in-mode","source":"source","opacity":1.0,"boundary":"source"}
+LayerPresetApplier::get_source:: JSON="source"
+LayerPresetApplier::get_boundary:: JSON="source"
+LayerPresetApplier::get_mode:: JSON="dst-in-mode"
+  is_value=1, value_type((null)) <==> (gchararray)
+LayerPresetApplier::get_opacity:: JSON=1.0
+LayerPresetApplier::get_alpha:: JSON=
+
+---name:     mask
+---Layer:    0x559ab596fe80
+---Boundary: 18,16 - 66,56
+---mode:     27
+---opacity:  1.000000
+---alpha:    1
+
+Create clone layer: mask
+create clone instance type=559ab59e2960
+CloneLayer::class_init
+GimpCloneLayer: Set properties_base to 18
+CloneLayer::iface_init<GimpPickableInterface>
+new_instance::cloned=0x559ab58e5d10[layer=0x559ab58e5d10]
+push_undo: GimpLayerUndo=55
+LayerPresetApplier::create_one_layer:: JSON={"target":"new","name":"shadow","type":"normal","mode":"multiply-mode","boundary":"source"}
+LayerPresetApplier::get_source:: JSON=
+LayerPresetApplier::get_boundary:: JSON="source"
+LayerPresetApplier::get_mode:: JSON="multiply-mode"
+  is_value=1, value_type((null)) <==> (gchararray)
+LayerPresetApplier::get_opacity:: JSON=
+LayerPresetApplier::get_alpha:: JSON=
+
+---name:     shadow
+---Layer:    (nil)
+---Boundary: 18,16 - 66,56
+---mode:     3
+---opacity:  -1.000000
+---alpha:    1
+
+Create normal layer: shadow
+push_undo: GimpLayerUndo=55
+LayerPresetApplier::create_one_layer:: JSON={"target":"source","mode":"normal-mode","opacity":1.0}
+LayerPresetApplier::get_source:: JSON=
+LayerPresetApplier::get_boundary:: JSON=
+LayerPresetApplier::get_mode:: JSON="normal-mode"
+  is_value=1, value_type((null)) <==> (gchararray)
+LayerPresetApplier::get_opacity:: JSON=1.0
+LayerPresetApplier::get_alpha:: JSON=
+
+---name:     (null)
+---Layer:    (nil)
+---Boundary: 0,0 - 0,0
+---mode:     0
+---opacity:  1.000000
+---alpha:    1
+
+push_undo: GimpItemPropUndo=50
+ORIGINAL_PRESET_APPLIED /workspace/scratch/5b5281e79681/legacy-composite-20261015/gimp/data/layer-presets/new-anime-layer.json
+CHECK after preset image=0x559ab58e64f0 valid=1
+CHECK group=0x559ab59e07d0 valid=1
+CHECK lookup effect
+CHECK effect=0x559ab57f4820 source=0x559ab596fe80 sourcevalid=1
+STAGE anime-initial image=96x80
+MODEL stage=anime-initial depth=0 type=GimpGroupLayer name=New group width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial.layer-New group.pixels width=48 height=40 bpp=4 sha256=744bef22ceeebb79d7edba6adedb39674d509074bf98063474248d8da4f2d112
+MODEL stage=anime-initial depth=1 type=GimpCloneLayer name=mask width=48 height=40 x=18 y=16 mode=27 opacity=1 visible=1 source=paint source
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial.layer-mask.pixels width=48 height=40 bpp=4 sha256=815cf164c54bff6da6ea3e8886da9068aeb76efd724f679a63b1b09b9f25cac3
+MODEL stage=anime-initial depth=1 type=GimpLayer name=shadow width=48 height=40 x=18 y=16 mode=3 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial.layer-shadow.pixels width=48 height=40 bpp=4 sha256=2fe9cf9c149e18f5f6bef0e57576d479dc449b2aaa2b88d800d1ad0751b5e78a
+MODEL stage=anime-initial depth=1 type=GimpLayer name=paint source width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial.layer-paint source.pixels width=48 height=40 bpp=4 sha256=815cf164c54bff6da6ea3e8886da9068aeb76efd724f679a63b1b09b9f25cac3
+MODEL stage=anime-initial depth=0 type=GimpLayer name=paper width=96 height=80 x=0 y=0 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial.layer-paper.pixels width=96 height=80 bpp=4 sha256=1975f541ab4fb526c198d777342b6e3cf2cdafcd9874515ff9c645241bb3540f
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial.projection.rgba width=96 height=80 bpp=4 sha256=f483caa896a6289a9c59bc7a8d742736b4846f540540ebcb8a6b0ce347e91386
+Becomes save version=4
+Becomes save version=4
+Becomes save version=4
+Becomes save version=4
+xcf_save[249]: layer_props: PROP_END
+xcf_save_layer[251]: done: save_layer_props
+xcf_save_layer[251]: done: save_offset=259
+xcf_save_layer[255]: done: save_layer_mask_offset
+xcf_save_layer[259]: xcf_save_hierarchy
+xcf_save[259] hierarchy:: write width=48
+xcf_save[25d] hierarchy:: write height=40
+xcf_save[261] hierarchy:: write bpp=4
+xcf_save[265] hierarchy:: write nlevels=2
+xcf_save[26d] hierarchy::level=0
+xcf_save_layer[28d]: done: xcf_save_hierarchy
+xcf_save[33a] prop_type=33
+xcf_save[33e] length=0
+xcf_save[342] target_name=paint source
+xcf_save[353] PROP_END
+xcf_save[33e] length=25
+xcf_save[35b]: layer_props: PROP_END
+xcf_save_layer[363]: done: save_layer_props
+xcf_save_layer[363]: done: save_offset=36b
+xcf_save_layer[367]: done: save_layer_mask_offset
+xcf_save_layer[36b]: xcf_save_hierarchy
+xcf_save[36b] hierarchy:: write width=48
+xcf_save[36f] hierarchy:: write height=40
+xcf_save[373] hierarchy:: write bpp=4
+xcf_save[377] hierarchy:: write nlevels=2
+xcf_save[37f] hierarchy::level=0
+xcf_save_layer[39f]: done: xcf_save_hierarchy
+xcf_save[456]: layer_props: PROP_END
+xcf_save_layer[45e]: done: save_layer_props
+xcf_save_layer[45e]: done: save_offset=466
+xcf_save_layer[462]: done: save_layer_mask_offset
+xcf_save_layer[466]: xcf_save_hierarchy
+xcf_save[466] hierarchy:: write width=48
+xcf_save[46a] hierarchy:: write height=40
+xcf_save[46e] hierarchy:: write bpp=4
+xcf_save[472] hierarchy:: write nlevels=2
+xcf_save[47a] hierarchy::level=0
+xcf_save_layer[49a]: done: xcf_save_hierarchy
+xcf_save[54f]: layer_props: PROP_END
+xcf_save_layer[557]: done: save_layer_props
+xcf_save_layer[557]: done: save_offset=55f
+xcf_save_layer[55b]: done: save_layer_mask_offset
+xcf_save_layer[55f]: xcf_save_hierarchy
+xcf_save[55f] hierarchy:: write width=48
+xcf_save[563] hierarchy:: write height=40
+xcf_save[567] hierarchy:: write bpp=4
+xcf_save[56b] hierarchy:: write nlevels=2
+xcf_save[573] hierarchy::level=0
+xcf_save_layer[593]: done: xcf_save_hierarchy
+xcf_save[631]: layer_props: PROP_END
+xcf_save_layer[639]: done: save_layer_props
+xcf_save_layer[639]: done: save_offset=641
+xcf_save_layer[63d]: done: save_layer_mask_offset
+xcf_save_layer[641]: xcf_save_hierarchy
+xcf_save[641] hierarchy:: write width=96
+xcf_save[645] hierarchy:: write height=80
+xcf_save[649] hierarchy:: write bpp=4
+xcf_save[64d] hierarchy:: write nlevels=3
+xcf_save[659] hierarchy::level=0
+xcf_save[6b5] hierarchy::level=1
+xcf_save_layer[6c1]: done: xcf_save_hierarchy
+GIMP-Error: Failed to create thumbnail folder '/home/agent/.thumbnails/normal'.
+
+SAVE anime-initial success
+xcf_load[177]: image: PROP_END
+xcf_load_layer
+xcf_load[249]: layer_props: PROP_END
+xcf_load_layer[251]: done: load_layer_props
+xcf_load_layer[251]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[251]: read: hierarchy_offset  =259
+xcf_load_layer[255]: read: layer_mask_offset  =0
+xcf_load_layer
+xcf_load_props: PROP_FILTER_SPEC
+create clone instance type=559ab59e2960
+new_instance::cloned=0x559ab5877ff0[layer=0x559ab5877ff0]
+xcf_load[342] target_name=paint source
+xcf_load_clone_specs
+xcf_load[353] value_type=0
+0:XCF_FILTER_END
+CloneLayer::set_source_by_name(paint source)
+xcf_load[35b]: layer_props: PROP_END
+xcf_load_layer[363]: done: load_layer_props
+xcf_load_layer[363]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[363]: read: hierarchy_offset  =36b
+xcf_load_layer[367]: read: layer_mask_offset  =0
+xcf_load_layer[36b]: read: load_hierarchy
+xcf_load[36b] hierarchy:: read width=48
+xcf_load[36f] hierarchy:: read height=40
+xcf_load[373] hierarchy:: read bpp=4
+tile_manager: width=48, height=40, bpp=4
+xcf_load[377] hierarchy:: read offset=895
+xcf_load[37f] hierarchy:: xcf_load_levelxcf_load[38f] hierarchy:: done: xcf_load_levelxcf_load_layer
+xcf_load[456]: layer_props: PROP_END
+xcf_load_layer[45e]: done: load_layer_props
+xcf_load_layer[45e]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[45e]: read: hierarchy_offset  =466
+xcf_load_layer[462]: read: layer_mask_offset  =0
+xcf_load_layer[466]: read: load_hierarchy
+xcf_load[466] hierarchy:: read width=48
+xcf_load[46a] hierarchy:: read height=40
+xcf_load[46e] hierarchy:: read bpp=4
+tile_manager: width=48, height=40, bpp=4
+xcf_load[472] hierarchy:: read offset=1146
+xcf_load[47a] hierarchy:: xcf_load_levelxcf_load[48a] hierarchy:: done: xcf_load_levelxcf_load_layer
+xcf_load[54f]: layer_props: PROP_END
+xcf_load_layer[557]: done: load_layer_props
+xcf_load_layer[557]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[557]: read: hierarchy_offset  =55f
+xcf_load_layer[55b]: read: layer_mask_offset  =0
+xcf_load_layer[55f]: read: load_hierarchy
+xcf_load[55f] hierarchy:: read width=48
+xcf_load[563] hierarchy:: read height=40
+xcf_load[567] hierarchy:: read bpp=4
+tile_manager: width=48, height=40, bpp=4
+xcf_load[56b] hierarchy:: read offset=1395
+xcf_load[573] hierarchy:: xcf_load_levelxcf_load[583] hierarchy:: done: xcf_load_levelxcf_load_layer
+xcf_load[631]: layer_props: PROP_END
+xcf_load_layer[639]: done: load_layer_props
+xcf_load_layer[639]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[639]: read: hierarchy_offset  =641
+xcf_load_layer[63d]: read: layer_mask_offset  =0
+xcf_load_layer[641]: read: load_hierarchy
+xcf_load[641] hierarchy:: read width=96
+xcf_load[645] hierarchy:: read height=80
+xcf_load[649] hierarchy:: read bpp=4
+tile_manager: width=96, height=80, bpp=4
+xcf_load[64d] hierarchy:: read offset=1625
+xcf_load[659] hierarchy:: xcf_load_levelxcf_load[675] hierarchy:: done: xcf_load_levelSTAGE anime-initial-reopened image=96x80
+MODEL stage=anime-initial-reopened depth=0 type=GimpGroupLayer name=New group width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial-reopened.layer-New group.pixels width=48 height=40 bpp=4 sha256=744bef22ceeebb79d7edba6adedb39674d509074bf98063474248d8da4f2d112
+MODEL stage=anime-initial-reopened depth=1 type=GimpCloneLayer name=mask width=48 height=40 x=18 y=16 mode=27 opacity=1 visible=1 source=paint source
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial-reopened.layer-mask.pixels width=48 height=40 bpp=4 sha256=815cf164c54bff6da6ea3e8886da9068aeb76efd724f679a63b1b09b9f25cac3
+MODEL stage=anime-initial-reopened depth=1 type=GimpLayer name=shadow width=48 height=40 x=18 y=16 mode=3 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial-reopened.layer-shadow.pixels width=48 height=40 bpp=4 sha256=2fe9cf9c149e18f5f6bef0e57576d479dc449b2aaa2b88d800d1ad0751b5e78a
+MODEL stage=anime-initial-reopened depth=1 type=GimpLayer name=paint source width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial-reopened.layer-paint source.pixels width=48 height=40 bpp=4 sha256=815cf164c54bff6da6ea3e8886da9068aeb76efd724f679a63b1b09b9f25cac3
+MODEL stage=anime-initial-reopened depth=0 type=GimpLayer name=paper width=96 height=80 x=0 y=0 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial-reopened.layer-paper.pixels width=96 height=80 bpp=4 sha256=1975f541ab4fb526c198d777342b6e3cf2cdafcd9874515ff9c645241bb3540f
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial-reopened.projection.rgba width=96 height=80 bpp=4 sha256=f483caa896a6289a9c59bc7a8d742736b4846f540540ebcb8a6b0ce347e91386
+ACTION anime recolor whole source using original drawable fill to rgba=51,153,204,255
+STAGE anime-recolored image=96x80
+MODEL stage=anime-recolored depth=0 type=GimpGroupLayer name=New group width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-recolored.layer-New group.pixels width=48 height=40 bpp=4 sha256=8c335b60fe48d385734dbff1e458e73734f92de199a98c39f4dff0e49764be5a
+MODEL stage=anime-recolored depth=1 type=GimpCloneLayer name=mask width=48 height=40 x=18 y=16 mode=27 opacity=1 visible=1 source=paint source
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-recolored.layer-mask.pixels width=48 height=40 bpp=4 sha256=6e6052e85049e7e45695d85c71ee003c24607eaabcf94d37cfce2af983bc0901
+MODEL stage=anime-recolored depth=1 type=GimpLayer name=shadow width=48 height=40 x=18 y=16 mode=3 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-recolored.layer-shadow.pixels width=48 height=40 bpp=4 sha256=2fe9cf9c149e18f5f6bef0e57576d479dc449b2aaa2b88d800d1ad0751b5e78a
+MODEL stage=anime-recolored depth=1 type=GimpLayer name=paint source width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-recolored.layer-paint source.pixels width=48 height=40 bpp=4 sha256=6e6052e85049e7e45695d85c71ee003c24607eaabcf94d37cfce2af983bc0901
+MODEL stage=anime-recolored depth=0 type=GimpLayer name=paper width=96 height=80 x=0 y=0 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-recolored.layer-paper.pixels width=96 height=80 bpp=4 sha256=1975f541ab4fb526c198d777342b6e3cf2cdafcd9874515ff9c645241bb3540f
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-recolored.projection.rgba width=96 height=80 bpp=4 sha256=4c4e9c74362e2f87deb1ce4b507da66bccf228f70afeecf619d3bbbaeeba5869
+ACTION anime effect opacity set 0.6 with undo
+push_undo: GimpLayerPropUndo=58
+STAGE anime-opacity image=96x80
+MODEL stage=anime-opacity depth=0 type=GimpGroupLayer name=New group width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-opacity.layer-New group.pixels width=48 height=40 bpp=4 sha256=76d5053e219db59d0601049f6241cb8152b8836898ec4132e87162dd10bf0518
+MODEL stage=anime-opacity depth=1 type=GimpCloneLayer name=mask width=48 height=40 x=18 y=16 mode=27 opacity=1 visible=1 source=paint source
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-opacity.layer-mask.pixels width=48 height=40 bpp=4 sha256=6e6052e85049e7e45695d85c71ee003c24607eaabcf94d37cfce2af983bc0901
+MODEL stage=anime-opacity depth=1 type=GimpLayer name=shadow width=48 height=40 x=18 y=16 mode=3 opacity=0.59999999999999998 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-opacity.layer-shadow.pixels width=48 height=40 bpp=4 sha256=2fe9cf9c149e18f5f6bef0e57576d479dc449b2aaa2b88d800d1ad0751b5e78a
+MODEL stage=anime-opacity depth=1 type=GimpLayer name=paint source width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-opacity.layer-paint source.pixels width=48 height=40 bpp=4 sha256=6e6052e85049e7e45695d85c71ee003c24607eaabcf94d37cfce2af983bc0901
+MODEL stage=anime-opacity depth=0 type=GimpLayer name=paper width=96 height=80 x=0 y=0 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-opacity.layer-paper.pixels width=96 height=80 bpp=4 sha256=1975f541ab4fb526c198d777342b6e3cf2cdafcd9874515ff9c645241bb3540f
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-opacity.projection.rgba width=96 height=80 bpp=4 sha256=c9457ed5beb07f96d66b76ec1fa601cba4a7501863c885fb91ca76a490b487fe
+STAGE anime-undo image=96x80
+MODEL stage=anime-undo depth=0 type=GimpGroupLayer name=New group width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-undo.layer-New group.pixels width=48 height=40 bpp=4 sha256=8c335b60fe48d385734dbff1e458e73734f92de199a98c39f4dff0e49764be5a
+MODEL stage=anime-undo depth=1 type=GimpCloneLayer name=mask width=48 height=40 x=18 y=16 mode=27 opacity=1 visible=1 source=paint source
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-undo.layer-mask.pixels width=48 height=40 bpp=4 sha256=6e6052e85049e7e45695d85c71ee003c24607eaabcf94d37cfce2af983bc0901
+MODEL stage=anime-undo depth=1 type=GimpLayer name=shadow width=48 height=40 x=18 y=16 mode=3 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-undo.layer-shadow.pixels width=48 height=40 bpp=4 sha256=2fe9cf9c149e18f5f6bef0e57576d479dc449b2aaa2b88d800d1ad0751b5e78a
+MODEL stage=anime-undo depth=1 type=GimpLayer name=paint source width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-undo.layer-paint source.pixels width=48 height=40 bpp=4 sha256=6e6052e85049e7e45695d85c71ee003c24607eaabcf94d37cfce2af983bc0901
+MODEL stage=anime-undo depth=0 type=GimpLayer name=paper width=96 height=80 x=0 y=0 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-undo.layer-paper.pixels width=96 height=80 bpp=4 sha256=1975f541ab4fb526c198d777342b6e3cf2cdafcd9874515ff9c645241bb3540f
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-undo.projection.rgba width=96 height=80 bpp=4 sha256=4c4e9c74362e2f87deb1ce4b507da66bccf228f70afeecf619d3bbbaeeba5869
+STAGE anime-redo image=96x80
+MODEL stage=anime-redo depth=0 type=GimpGroupLayer name=New group width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-redo.layer-New group.pixels width=48 height=40 bpp=4 sha256=76d5053e219db59d0601049f6241cb8152b8836898ec4132e87162dd10bf0518
+MODEL stage=anime-redo depth=1 type=GimpCloneLayer name=mask width=48 height=40 x=18 y=16 mode=27 opacity=1 visible=1 source=paint source
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-redo.layer-mask.pixels width=48 height=40 bpp=4 sha256=6e6052e85049e7e45695d85c71ee003c24607eaabcf94d37cfce2af983bc0901
+MODEL stage=anime-redo depth=1 type=GimpLayer name=shadow width=48 height=40 x=18 y=16 mode=3 opacity=0.59999999999999998 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-redo.layer-shadow.pixels width=48 height=40 bpp=4 sha256=2fe9cf9c149e18f5f6bef0e57576d479dc449b2aaa2b88d800d1ad0751b5e78a
+MODEL stage=anime-redo depth=1 type=GimpLayer name=paint source width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-redo.layer-paint source.pixels width=48 height=40 bpp=4 sha256=6e6052e85049e7e45695d85c71ee003c24607eaabcf94d37cfce2af983bc0901
+MODEL stage=anime-redo depth=0 type=GimpLayer name=paper width=96 height=80 x=0 y=0 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-redo.layer-paper.pixels width=96 height=80 bpp=4 sha256=1975f541ab4fb526c198d777342b6e3cf2cdafcd9874515ff9c645241bb3540f
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-redo.projection.rgba width=96 height=80 bpp=4 sha256=c9457ed5beb07f96d66b76ec1fa601cba4a7501863c885fb91ca76a490b487fe
+Becomes save version=4
+Becomes save version=4
+Becomes save version=4
+Becomes save version=4
+xcf_save[249]: layer_props: PROP_END
+xcf_save_layer[251]: done: save_layer_props
+xcf_save_layer[251]: done: save_offset=259
+xcf_save_layer[255]: done: save_layer_mask_offset
+xcf_save_layer[259]: xcf_save_hierarchy
+xcf_save[259] hierarchy:: write width=48
+xcf_save[25d] hierarchy:: write height=40
+xcf_save[261] hierarchy:: write bpp=4
+xcf_save[265] hierarchy:: write nlevels=2
+xcf_save[26d] hierarchy::level=0
+xcf_save_layer[28d]: done: xcf_save_hierarchy
+xcf_save[33a] prop_type=33
+xcf_save[33e] length=0
+xcf_save[342] target_name=paint source
+xcf_save[353] PROP_END
+xcf_save[33e] length=25
+xcf_save[35b]: layer_props: PROP_END
+xcf_save_layer[363]: done: save_layer_props
+xcf_save_layer[363]: done: save_offset=36b
+xcf_save_layer[367]: done: save_layer_mask_offset
+xcf_save_layer[36b]: xcf_save_hierarchy
+xcf_save[36b] hierarchy:: write width=48
+xcf_save[36f] hierarchy:: write height=40
+xcf_save[373] hierarchy:: write bpp=4
+xcf_save[377] hierarchy:: write nlevels=2
+xcf_save[37f] hierarchy::level=0
+xcf_save_layer[39f]: done: xcf_save_hierarchy
+xcf_save[456]: layer_props: PROP_END
+xcf_save_layer[45e]: done: save_layer_props
+xcf_save_layer[45e]: done: save_offset=466
+xcf_save_layer[462]: done: save_layer_mask_offset
+xcf_save_layer[466]: xcf_save_hierarchy
+xcf_save[466] hierarchy:: write width=48
+xcf_save[46a] hierarchy:: write height=40
+xcf_save[46e] hierarchy:: write bpp=4
+xcf_save[472] hierarchy:: write nlevels=2
+xcf_save[47a] hierarchy::level=0
+xcf_save_layer[49a]: done: xcf_save_hierarchy
+xcf_save[54f]: layer_props: PROP_END
+xcf_save_layer[557]: done: save_layer_props
+xcf_save_layer[557]: done: save_offset=55f
+xcf_save_layer[55b]: done: save_layer_mask_offset
+xcf_save_layer[55f]: xcf_save_hierarchy
+xcf_save[55f] hierarchy:: write width=48
+xcf_save[563] hierarchy:: write height=40
+xcf_save[567] hierarchy:: write bpp=4
+xcf_save[56b] hierarchy:: write nlevels=2
+xcf_save[573] hierarchy::level=0
+xcf_save_layer[593]: done: xcf_save_hierarchy
+xcf_save[631]: layer_props: PROP_END
+xcf_save_layer[639]: done: save_layer_props
+xcf_save_layer[639]: done: save_offset=641
+xcf_save_layer[63d]: done: save_layer_mask_offset
+xcf_save_layer[641]: xcf_save_hierarchy
+xcf_save[641] hierarchy:: write width=96
+xcf_save[645] hierarchy:: write height=80
+xcf_save[649] hierarchy:: write bpp=4
+xcf_save[64d] hierarchy:: write nlevels=3
+xcf_save[659] hierarchy::level=0
+xcf_save[6b5] hierarchy::level=1
+xcf_save_layer[6c1]: done: xcf_save_hierarchy
+GIMP-Error: Failed to create thumbnail folder '/home/agent/.thumbnails/normal'.
+
+SAVE anime-edited success
+xcf_load[177]: image: PROP_END
+xcf_load_layer
+xcf_load[249]: layer_props: PROP_END
+xcf_load_layer[251]: done: load_layer_props
+xcf_load_layer[251]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[251]: read: hierarchy_offset  =259
+xcf_load_layer[255]: read: layer_mask_offset  =0
+xcf_load_layer
+xcf_load_props: PROP_FILTER_SPEC
+create clone instance type=559ab59e2960
+new_instance::cloned=0x559ab5a1a300[layer=0x559ab5a1a300]
+xcf_load[342] target_name=paint source
+xcf_load_clone_specs
+xcf_load[353] value_type=0
+0:XCF_FILTER_END
+CloneLayer::set_source_by_name(paint source)
+xcf_load[35b]: layer_props: PROP_END
+xcf_load_layer[363]: done: load_layer_props
+xcf_load_layer[363]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[363]: read: hierarchy_offset  =36b
+xcf_load_layer[367]: read: layer_mask_offset  =0
+xcf_load_layer[36b]: read: load_hierarchy
+xcf_load[36b] hierarchy:: read width=48
+xcf_load[36f] hierarchy:: read height=40
+xcf_load[373] hierarchy:: read bpp=4
+tile_manager: width=48, height=40, bpp=4
+xcf_load[377] hierarchy:: read offset=895
+xcf_load[37f] hierarchy:: xcf_load_levelxcf_load[38f] hierarchy:: done: xcf_load_levelxcf_load_layer
+xcf_load[456]: layer_props: PROP_END
+xcf_load_layer[45e]: done: load_layer_props
+xcf_load_layer[45e]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[45e]: read: hierarchy_offset  =466
+xcf_load_layer[462]: read: layer_mask_offset  =0
+xcf_load_layer[466]: read: load_hierarchy
+xcf_load[466] hierarchy:: read width=48
+xcf_load[46a] hierarchy:: read height=40
+xcf_load[46e] hierarchy:: read bpp=4
+tile_manager: width=48, height=40, bpp=4
+xcf_load[472] hierarchy:: read offset=1146
+xcf_load[47a] hierarchy:: xcf_load_levelxcf_load[48a] hierarchy:: done: xcf_load_levelxcf_load_layer
+xcf_load[54f]: layer_props: PROP_END
+xcf_load_layer[557]: done: load_layer_props
+xcf_load_layer[557]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[557]: read: hierarchy_offset  =55f
+xcf_load_layer[55b]: read: layer_mask_offset  =0
+xcf_load_layer[55f]: read: load_hierarchy
+xcf_load[55f] hierarchy:: read width=48
+xcf_load[563] hierarchy:: read height=40
+xcf_load[567] hierarchy:: read bpp=4
+tile_manager: width=48, height=40, bpp=4
+xcf_load[56b] hierarchy:: read offset=1395
+xcf_load[573] hierarchy:: xcf_load_levelxcf_load[583] hierarchy:: done: xcf_load_levelxcf_load_layer
+xcf_load[631]: layer_props: PROP_END
+xcf_load_layer[639]: done: load_layer_props
+xcf_load_layer[639]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[639]: read: hierarchy_offset  =641
+xcf_load_layer[63d]: read: layer_mask_offset  =0
+xcf_load_layer[641]: read: load_hierarchy
+xcf_load[641] hierarchy:: read width=96
+xcf_load[645] hierarchy:: read height=80
+xcf_load[649] hierarchy:: read bpp=4
+tile_manager: width=96, height=80, bpp=4
+xcf_load[64d] hierarchy:: read offset=1625
+xcf_load[659] hierarchy:: xcf_load_levelxcf_load[675] hierarchy:: done: xcf_load_levelSTAGE anime-edited-reopened image=96x80
+MODEL stage=anime-edited-reopened depth=0 type=GimpGroupLayer name=New group width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-edited-reopened.layer-New group.pixels width=48 height=40 bpp=4 sha256=76d5053e219db59d0601049f6241cb8152b8836898ec4132e87162dd10bf0518
+MODEL stage=anime-edited-reopened depth=1 type=GimpCloneLayer name=mask width=48 height=40 x=18 y=16 mode=27 opacity=1 visible=1 source=paint source
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-edited-reopened.layer-mask.pixels width=48 height=40 bpp=4 sha256=6e6052e85049e7e45695d85c71ee003c24607eaabcf94d37cfce2af983bc0901
+MODEL stage=anime-edited-reopened depth=1 type=GimpLayer name=shadow width=48 height=40 x=18 y=16 mode=3 opacity=0.59999999999999998 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-edited-reopened.layer-shadow.pixels width=48 height=40 bpp=4 sha256=2fe9cf9c149e18f5f6bef0e57576d479dc449b2aaa2b88d800d1ad0751b5e78a
+MODEL stage=anime-edited-reopened depth=1 type=GimpLayer name=paint source width=48 height=40 x=18 y=16 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-edited-reopened.layer-paint source.pixels width=48 height=40 bpp=4 sha256=6e6052e85049e7e45695d85c71ee003c24607eaabcf94d37cfce2af983bc0901
+MODEL stage=anime-edited-reopened depth=0 type=GimpLayer name=paper width=96 height=80 x=0 y=0 mode=0 opacity=1 visible=1
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-edited-reopened.layer-paper.pixels width=96 height=80 bpp=4 sha256=1975f541ab4fb526c198d777342b6e3cf2cdafcd9874515ff9c645241bb3540f
+PIXELS file=/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-edited-reopened.projection.rgba width=96 height=80 bpp=4 sha256=c9457ed5beb07f96d66b76ec1fa601cba4a7501863c885fb91ca76a490b487fe
+COMPOSITE_CAPTURE_COMPLETE scene=anime
+
+(script-fu:426): LibGimpBase-WARNING **: 09:32:57.815: script-fu: gimp_wire_read(): error
