@@ -46,8 +46,12 @@ public:
   void get_color (float x,float y,float radius,float *r,float *g,float *b,float *a,
                   float hardness=.5,float aspect=1,float angle=0,float grain=0,float contrast=1) override;
   void begin_session () override;
+  // Null captures the current target. A supplied snapshot is retained, not copied:
+  // it must be independent, complete, in the exact target format/extent, and
+  // remain immutable until session end (ordinary GEGL copy-on-write is valid).
   void begin_session_from (GeglBuffer *initial_snapshot);
   void end_session () override;
+  // Restore the session baseline only within the dirty bounding rectangle.
   void cancel_session ();
 private:
   struct Impl;
