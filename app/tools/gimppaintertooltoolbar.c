@@ -14,7 +14,7 @@
  * gimpmagnifyoptions, gimpcoloroptions, gimpcolorpickeroptions,
  * gimpbucketfilloptions, gimpblendoptions, gimpcageoptions,
  * gimpiscissorsoptions, gimpcropoptions, gimpmeasureoptions,
- * and gimphistogramoptions.
+ * gimphistogramoptions, and gimpforegroundselectoptions.
  *
  * The old inline/details split is retained, with GTK3 popovers replacing the
  * legacy popup window helpers. All controls bind directly to the current
@@ -34,9 +34,11 @@
 #include "tools-types.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimptooloptions.h"
+#include "widgets/gimpcolorpanel.h"
 #include "widgets/gimplayermodebox.h"
 #include "widgets/gimppropwidgets.h"
 #include "widgets/gimpviewablebox.h"
+#include "widgets/gimpwidgets-constructors.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpbucketfilloptions.h"
@@ -44,6 +46,7 @@
 #include "gimpcolorpickeroptions.h"
 #include "gimpcropoptions.h"
 #include "gimpflipoptions.h"
+#include "gimpforegroundselectoptions.h"
 #include "gimpgradientoptions.h"
 #include "gimphistogramoptions.h"
 #include "gimpiscissorsoptions.h"
@@ -136,6 +139,9 @@ painter_details (GtkWidget   *box,
   gtk_container_add (GTK_CONTAINER (scroll), content);
   gtk_container_add (GTK_CONTAINER (popover), scroll);
   gtk_widget_show_all (scroll);
+  /* GtkMenuButton applies its direction when attaching the popover, which
+   * otherwise overwrites the TOP position above with its default BOTTOM. */
+  gtk_menu_button_set_direction (GTK_MENU_BUTTON (button), GTK_ARROW_UP);
   gtk_menu_button_set_popover (GTK_MENU_BUTTON (button), popover);
   painter_pack (box, button);
   return content;
@@ -332,6 +338,108 @@ painter_rectangle (GtkWidget *box,
 }
 
 static void
+painter_foreground_reset_width (GtkWidget       *button,
+                                 GimpToolOptions *options)
+{
+  g_object_set (options, "stroke-width", 10, NULL);
+}
+
+static gboolean
+painter_foreground_engine_visible (GBinding     *binding,
+                                    const GValue *source,
+                                    GValue       *target,
+                                    gpointer      engine)
+{
+  g_value_set_boolean (target,
+                       g_value_get_enum (source) == GPOINTER_TO_INT (engine));
+  return TRUE;
+}
+
+/* Legacy gimpforegroundselectoptions.c:261-414 (afa43fae), hunks
+ * 01.002/001256-001263: separate horizontal selection controls and Details.
+ * The current tool uses GEGL matting, not the old SIOX model. Background
+ * marking maps to draw-mode, not the inherited context background color;
+ * stroke-width survives; mask-color is now a GeglColor. Contiguous, smoothness and L/a/b sensitivity have no current
+ * property/algorithm counterpart. Their legacy parity remains unresolved
+ * under 29.010/standard-tool-options; do not invent inert replacement widgets.
+ * Preview mode, unknown drawing, width reset and engine parameters below are
+ * current-tool additions, not claims of restored legacy SIOX controls. */
+static void
+painter_foreground (GtkWidget       *box,
+                    GimpToolOptions *options)
+{
+  GObject   *config = G_OBJECT (options);
+  GtkWidget *details;
+  GtkWidget *frame;
+  GtkWidget *row;
+  GtkWidget *scale;
+  GtkWidget *button;
+  GtkWidget *combo;
+  const struct
+  {
+    const gchar       *property;
+    GimpMattingEngine  engine;
+  } parameters[] = {
+    { "levels",        GIMP_MATTING_ENGINE_LEVIN  },
+    { "active-levels", GIMP_MATTING_ENGINE_LEVIN  },
+    { "iterations",    GIMP_MATTING_ENGINE_GLOBAL }
+  };
+
+  details = painter_details (box, _("Details…"),
+                              "gimp-painter-foreground-details");
+  frame = gimp_prop_enum_radio_frame_new (config, "draw-mode", NULL, 0, 0);
+  gtk_widget_set_name (frame, "gimp-painter-foreground-draw-mode");
+  painter_pack (details, frame);
+
+  row = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+  painter_pack (details, row);
+  scale = gimp_prop_spin_scale_new (config, "stroke-width", 1.0, 10.0, 2);
+  gimp_spin_scale_set_scale_limits (GIMP_SPIN_SCALE (scale), 1.0, 1000.0);
+  gimp_spin_scale_set_gamma (GIMP_SPIN_SCALE (scale), 1.7);
+  gtk_box_pack_start (GTK_BOX (row), scale, TRUE, TRUE, 0);
+  button = gimp_icon_button_new (GIMP_ICON_RESET, NULL);
+  gtk_widget_set_name (button, "gimp-painter-foreground-reset-width");
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_image_set_from_icon_name (GTK_IMAGE (gtk_bin_get_child (GTK_BIN (button))),
+                                GIMP_ICON_RESET, GTK_ICON_SIZE_MENU);
+  gimp_help_set_help_data (button, _("Reset stroke width native size"), NULL);
+  painter_pack (row, button);
+  g_signal_connect_object (button, "clicked",
+                            G_CALLBACK (painter_foreground_reset_width), options, 0);
+
+  frame = gimp_prop_enum_radio_frame_new (config, "preview-mode", NULL, 0, 0);
+  gtk_widget_set_name (frame, "gimp-painter-foreground-preview-mode");
+  painter_pack (details, frame);
+  button = gimp_prop_color_button_new (config, "mask-color", NULL,
+                                       128, 24, GIMP_COLOR_AREA_SMALL_CHECKS);
+  gimp_color_panel_set_context (GIMP_COLOR_PANEL (button), GIMP_CONTEXT (options));
+  painter_pack (details, button);
+
+  frame = gimp_frame_new (NULL);
+  painter_pack (details, frame);
+  combo = gimp_prop_enum_combo_box_new (config, "engine", 0, 0);
+  gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Engine"));
+  g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+  gtk_frame_set_label_widget (GTK_FRAME (frame), combo);
+  gtk_widget_set_sensitive (combo, gegl_has_operation ("gegl:matting-levin"));
+  row = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+  gtk_container_add (GTK_CONTAINER (frame), row);
+  gtk_widget_show (row);
+  for (guint i = 0; i < G_N_ELEMENTS (parameters); i++)
+    {
+      scale = gimp_prop_spin_scale_new (config, parameters[i].property,
+                                        1.0, 1.0, 0);
+      painter_pack (row, scale);
+      /* A later show_all() must not undo the current engine's visibility. */
+      gtk_widget_set_no_show_all (scale, TRUE);
+      g_object_bind_property_full (config, "engine", scale, "visible",
+                                   G_BINDING_SYNC_CREATE,
+                                   painter_foreground_engine_visible, NULL,
+                                   GINT_TO_POINTER (parameters[i].engine), NULL);
+    }
+}
+
+static void
 painter_selection (GtkWidget       *box,
                    GimpToolOptions *options)
 {
@@ -356,7 +464,20 @@ painter_selection (GtkWidget       *box,
                                      "gimp-painter-selection-feather");
   painter_number (details, config, "feather-radius", _("Radius"), 1.0, 1);
 
-  if (GIMP_IS_ISCISSORS_OPTIONS (options))
+  if (GIMP_IS_FOREGROUND_SELECT_OPTIONS (options))
+    {
+      GtkWidget *button = gtk_popover_get_relative_to
+        (GTK_POPOVER (gtk_widget_get_ancestor (details, GTK_TYPE_POPOVER)));
+
+      /* The old foreground factory disabled the shared antialias control;
+       * the current native GUI hides it. Keep it hidden even after show_all,
+       * without replacing the ordinary GUI's antialias_toggle pointer. */
+      gtk_widget_set_no_show_all (antialias, TRUE);
+      gtk_widget_hide (antialias);
+      painter_sensitive (config, "feather", button);
+      painter_foreground (box, options);
+    }
+  else if (GIMP_IS_ISCISSORS_OPTIONS (options))
     painter_check (box, config, "interactive", _("Interactive boundary"));
   else if (GIMP_IS_REGION_SELECT_OPTIONS (options))
     {
@@ -621,6 +742,7 @@ gimp_painter_tool_toolbar_new (GimpToolOptions *options)
   g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS (options), NULL);
 
   if (! GIMP_IS_MOVE_OPTIONS (options) &&
+      ! GIMP_IS_FOREGROUND_SELECT_OPTIONS (options) &&
       ! GIMP_IS_REGION_SELECT_OPTIONS (options) &&
       ! GIMP_IS_ISCISSORS_OPTIONS (options) &&
       ! GIMP_IS_CAGE_OPTIONS (options) &&

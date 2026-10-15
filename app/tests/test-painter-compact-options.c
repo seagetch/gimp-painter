@@ -566,6 +566,7 @@ static void native_editor_mixed_width_buttons (void)
 #include "test-painter-rectangle-toolbar.inc"
 #include "test-painter-rectangle-unit-popup.inc"
 #include "test-painter-histogram-toolbar.inc"
+#include "test-painter-foreground-toolbar.inc"
 
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
@@ -585,6 +586,9 @@ int main(int argc,char **argv) {
   g_test_add_func ("/painter-compact-options/rectangle-native-shrink-bounds", rectangle_native_shrink_bounds);
   g_test_add_func ("/painter-compact-options/rectangle-shrink-lifecycle", rectangle_shrink_lifecycle);
   g_test_add_func ("/painter-compact-options/rectangle-shrink-owner-lifetime-and-reentry", rectangle_shrink_owner_lifetime_and_reentry);
+  g_test_add_func ("/painter-compact-options/independent-foreground-toolbar", independent_foreground_toolbar);
+  g_test_add_func ("/painter-compact-options/foreground-toolbar-model-before-view", foreground_toolbar_model_before_view);
+  g_test_add_func ("/painter-compact-options/foreground-toolbar-canvas-popup-lifetime", foreground_toolbar_canvas_popup_lifetime);
   g_test_add_func ("/painter-compact-options/independent-histogram-toolbar", independent_histogram_toolbar);
   g_test_add_func ("/painter-compact-options/histogram-toolbar-native-dialogs", histogram_toolbar_native_dialogs);
   g_test_add_func ("/painter-compact-options/histogram-toolbar-canvas-popup-lifetime", histogram_toolbar_canvas_popup_lifetime);
