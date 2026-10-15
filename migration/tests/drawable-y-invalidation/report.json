@@ -1,0 +1,249 @@
+{
+  "task": "09.002/drawable-y-invalidation",
+  "status": "PASS",
+  "normal_linux_only": true,
+  "runs": [
+    {
+      "log": "drawable-red-same",
+      "sha256": "2f1a07eba6c08ca2049c9038a980f7c1ee51f91f799b91f525084c381341456e",
+      "tests": [
+        {
+          "name": "gimp:app / painter-core-metadata",
+          "result": "FAIL",
+          "duration": 1.1158523559570312,
+          "returncode": -6,
+          "evidence": [
+            "not ok /painter/core-metadata/drawable-buffer/same-size-explicit-bounds - ERROR:../source/app/tests/test-painter-core-metadata.c:259:drawable_buffer_update_regions: assertion failed (log.count == moved ? 2 : 1): (2 == 1)",
+            "Bail out!",
+            "ERROR:../source/app/tests/test-painter-core-metadata.c:259:drawable_buffer_update_regions: assertion failed (log.count == moved ? 2 : 1): (2 == 1)"
+          ]
+        }
+      ]
+    },
+    {
+      "log": "drawable-red-y",
+      "sha256": "17ae0b23ec2efff72809e2f8b379fe258ef78e67f67d9a0ecdb1fffce875a9bb",
+      "tests": [
+        {
+          "name": "gimp:app / painter-core-metadata",
+          "result": "FAIL",
+          "duration": 1.1112780570983887,
+          "returncode": -6,
+          "evidence": [
+            "not ok /painter/core-metadata/drawable-buffer/y-only-move - ERROR:../source/app/tests/test-painter-core-metadata.c:259:drawable_buffer_update_regions: assertion failed (log.count == moved ? 2 : 1): (1 == 2)",
+            "Bail out!",
+            "ERROR:../source/app/tests/test-painter-core-metadata.c:259:drawable_buffer_update_regions: assertion failed (log.count == moved ? 2 : 1): (1 == 2)"
+          ]
+        }
+      ]
+    },
+    {
+      "log": "drawable-green",
+      "sha256": "ff6c75a28fa077c3fd97e9ae2301332614aeb7bda863dbff2e1d450700f7a98a",
+      "tests": [
+        {
+          "name": "gimp:app / painter-core-metadata",
+          "result": "OK",
+          "duration": 1.1727383136749268,
+          "returncode": 0,
+          "evidence": [
+            "1..10",
+            "ok 1 /painter/core-metadata/curve/one-point-serialized",
+            "ok 2 /painter/core-metadata/multiline/true",
+            "ok 3 /painter/core-metadata/multiline/false",
+            "ok 4 /painter/core-metadata/multiline/absent",
+            "ok 5 /painter/core-metadata/drawable-buffer/same-size-explicit-bounds",
+            "ok 6 /painter/core-metadata/drawable-buffer/same-size-implicit-bounds",
+            "ok 7 /painter/core-metadata/drawable-buffer/y-only-move",
+            "ok 8 /painter/core-metadata/drawable-buffer/nonzero-same-size",
+            "ok 9 /painter/core-metadata/drawable-buffer/nonzero-implicit-bounds",
+            "ok 10 /painter/core-metadata/drawable-buffer/nonzero-y-only-move"
+          ]
+        }
+      ]
+    },
+    {
+      "log": "drawable-neighbors",
+      "sha256": "7dce11e097cb3fdc2f45cc5bb9c2a22d17d2e5970b24b818aaa45f8ee82aa2c5",
+      "tests": [
+        {
+          "name": "gimp:app / gimp-clone-layer",
+          "result": "OK",
+          "duration": 2.7979636192321777,
+          "returncode": 0,
+          "evidence": [
+            "1..52",
+            "ok 1 /gimp-clone-layer/retained_items_image_destroy",
+            "ok 2 /gimp-clone-layer/retained_item_same_gimp_relocation",
+            "ok 3 /gimp-clone-layer/replaced_item_weak_identity_transfer",
+            "ok 4 /gimp-clone-layer/retained_item_gimp_lifetime",
+            "ok 5 /gimp-clone-layer/serialization_reference_snapshot_and_restore",
+            "ok 6 /gimp-clone-layer/undo_source_image_relocation",
+            "ok 7 /gimp-clone-layer/clone_owner_image_relocation",
+            "ok 8 /gimp-clone-layer/source_reference_undo_dependent_clone",
+            "ok 9 /gimp-clone-layer/source_reference_undo_close_reentry",
+            "ok 10 /gimp-clone-layer/source_reference_undo_live",
+            "ok 11 /gimp-clone-layer/source_reference_undo_all_states",
+            "ok 12 /gimp-clone-layer/source_reference_undo_preserves_pending_live",
+            "ok 13 /gimp-clone-layer/source_reference_undo_renamed_then_expired",
+            "ok 14 /gimp-clone-layer/source_reference_undo_expired_cross_image",
+            "ok 15 /gimp-clone-layer/cross_image_copy_and_move",
+            "ok 16 /gimp-clone-layer/inherited_precision_conversion_undo",
+            "ok 17 /gimp-clone-layer/source_resize_undo_legacy_fixture",
+            "ok 18 /gimp-clone-layer/group_duplicate_complete_hierarchy",
+            "ok 19 /gimp-clone-layer/double_precision_and_trc",
+            "ok 20 /gimp-clone-layer/thaw_reentry_close_and_replace",
+            "ok 21 /gimp-clone-layer/dissolve_legacy_fixture",
+            "ok 22 /gimp-clone-layer/gray_and_high_precision",
+            "ok 23 /gimp-clone-layer/frozen_source_disposal",
+            "ok 24 /gimp-clone-layer/group_duplicate_internal_reference",
+            "ok 25 /gimp-clone-layer/inert_construction",
+            "ok 26 /gimp-clone-layer/reentrant_source_replace",
+            "ok 27 /gimp-clone-layer/cpp_header_layout",
+            "ok 28 /gimp-clone-layer/projected_pixels",
+            "ok 29 /gimp-clone-layer/partial_update_and_graph",
+            "ok 30 /gimp-clone-layer/deferred_name",
+            "ok 31 /gimp-clone-layer/native_type_lifecycle",
+            "ok 32 /gimp-clone-layer/native_undo_parent_contract",
+            "ok 33 /gimp-clone-layer/recursive_first_match",
+            "ok 34 /gimp-clone-layer/offset_size_and_noop_transforms",
+            "ok 35 /gimp-clone-layer/source_delete_undo",
+            "ok 36 /gimp-clone-layer/source_lifetime_and_detach",
+            "ok 37 /gimp-clone-layer/freeze_and_close",
+            "ok 38 /gimp-clone-layer/cycles",
+            "ok 39 /gimp-clone-layer/duplicate_and_group_update",
+            "ok 40 /gimp-clone-layer/original_void_entry_contract",
+            "ok 41 /gimp-clone-layer/original_factory_borrowed_ownership",
+            "ok 42 /gimp-clone-layer/handle_original_set_source_route",
+            "ok 43 /gimp-clone-layer/handle_original_set_source_name_route",
+            "ok 44 /gimp-clone-layer/handle_factory_and_release_orders",
+            "ok 45 /gimp-clone-layer/handle_source_reference_independence",
+            "ok 46 /gimp-clone-layer/handle_pending_null_empty_and_rename",
+            "ok 47 /gimp-clone-layer/handle_recursive_first_match",
+            "ok 48 /gimp-clone-layer/handle_updates_and_lazy_resolution",
+            "ok 49 /gimp-clone-layer/handle_reentrant_replace_and_close",
+            "ok 50 /gimp-clone-layer/handle_contained_invalid_and_closed",
+            "ok 51 /gimp-clone-layer/handle_checked_error_contract",
+            "ok 52 /gimp-clone-layer/handle_wrong_thread_containment"
+          ]
+        },
+        {
+          "name": "gimp:app / painter-xcf-open",
+          "result": "OK",
+          "duration": 1.7742769718170166,
+          "returncode": 0,
+          "evidence": [
+            "1..14",
+            "ok 1 /painter-xcf-open/absent_mode_historical_default",
+            "ok 2 /painter-xcf-open/unknown_extension_preserves_destination",
+            "ok 3 /painter-xcf-open/dual_valid_short_extension",
+            "ok 4 /painter-xcf-open/explicit_provenance_resolves_ambiguity",
+            "ok 5 /painter-xcf-open/ambiguity_and_failures",
+            "ok 6 /painter-xcf-open/unresolved_and_length_recovery",
+            "ok 7 /painter-xcf-open/large_source",
+            "ok 8 /painter-xcf-open/ordinary",
+            "ok 9 /painter-xcf-open/ordinary_projection_exact_gate",
+            "ok 10 /painter-xcf-open/clones",
+            "ok 11 /painter-xcf-open/filter_recovery",
+            "ok 12 /painter-xcf-open/standard",
+            "ok 13 /painter-xcf-open/recovery_handlers",
+            "ok 14 /painter-xcf-open/cancel"
+          ]
+        },
+        {
+          "name": "gimp:app / painter-xcf-roundtrip",
+          "result": "OK",
+          "duration": 54.69250202178955,
+          "returncode": 0,
+          "evidence": [
+            "1..49",
+            "ok 1 /painter-xcf-roundtrip/clones_edit_save_reopen",
+            "ok 2 /painter-xcf-roundtrip/filter_cache_and_arguments",
+            "ok 3 /painter-xcf-roundtrip/ordinary_exact_roundtrip",
+            "ok 4 /painter-xcf-roundtrip/duplicate_unknown_records",
+            "ok 5 /painter-xcf-roundtrip/typed_nested_expired_arguments",
+            "ok 6 /painter-xcf-roundtrip/newly_unknown_records_and_future_capsule",
+            "ok 7 /painter-xcf-roundtrip/cancel_and_reentrant_edit",
+            "ok 8 /painter-xcf-roundtrip/injected_write_failures",
+            "ok 9 /painter-xcf-roundtrip/save_observer_ownership",
+            "ok 10 /painter-xcf-roundtrip/low_level_reentrant_definitions",
+            "ok 11 /painter-xcf-roundtrip/duplicate_image_unknown_origin",
+            "ok 12 /painter-xcf-roundtrip/missing_clone_id_and_pending_name",
+            "ok 13 /painter-xcf-roundtrip/replace_uninterpreted_arguments",
+            "ok 14 /painter-xcf-roundtrip/opaque_argument_shapes",
+            "ok 15 /painter-xcf-roundtrip/external_references_remain_unresolved",
+            "ok 16 /painter-xcf-roundtrip/ambiguous_and_unknown_capsule_schema",
+            "ok 17 /painter-xcf-roundtrip/recovery_registered_save",
+            "ok 18 /painter-xcf-roundtrip/recovery_failed_save",
+            "ok 19 /painter-xcf-roundtrip/malformed_filter_cache_stays_opaque",
+            "ok 20 /painter-xcf-roundtrip/malformed_clone_reference_stays_opaque",
+            "ok 21 /painter-xcf-fields/all_owner_attributes",
+            "ok 22 /painter-xcf-fields/legacy_text_and_units",
+            "ok 23 /painter-xcf-fields/profiles_palettes_metadata",
+            "ok 24 /painter-xcf-fields/wrong_owner_capsules",
+            "ok 25 /painter-xcf-fields/retained_metadata_bound",
+            "ok 26 /painter-xcf-fields/modern_effect_records",
+            "ok 27 /painter-xcf-fields/unsupported_effect_refuses_save",
+            "ok 28 /painter-xcf-fields/modern_effect_argument_families",
+            "ok 29 /painter-xcf-fields/clone_duplicate_name_identity",
+            "ok 30 /painter-xcf-fields/absent_native_properties",
+            "ok 31 /painter-xcf-fields/native_precision_and_compression",
+            "ok 32 /painter-xcf-active/running_save_close_reopen",
+            "ok 33 /painter-xcf-active/importing_save_close_reopen",
+            "ok 34 /painter-xcf-multipart/native-small",
+            "ok 35 /painter-xcf-multipart/native-large # SKIP Run explicitly with -m slow for >256 MiB Save/Open resource evidence",
+            "ok 36 /painter-xcf-multipart/native-cancellation",
+            "ok 37 /painter-xcf-multipart/native-midprepare-cancel",
+            "ok 38 /painter-xcf-multipart/native-disk-failure",
+            "ok 39 /painter-xcf-multipart/argument-snapshot-borrow",
+            "ok 40 /painter-xcf-multipart/native-owner-duplicate-edit",
+            "ok 41 /painter-xcf-multipart/native-reordered",
+            "ok 42 /painter-xcf-multipart/native-grouped",
+            "ok 43 /painter-xcf-multipart/native-adversarial",
+            "ok 44 /painter-xcf-multipart/native-opaque-capsules",
+            "ok 45 /painter-xcf-multipart/native-unclaimed-parasites",
+            "ok 46 /painter-xcf-multipart/native-inert-ownership-changes",
+            "ok 47 /painter-xcf-multipart/native-callback-argument-leases",
+            "ok 48 /painter-xcf-multipart/native-stream-failures",
+            "ok 49 /painter-xcf-multipart/native-argument-budget"
+          ]
+        },
+        {
+          "name": "gimp:app / painter-layer-modes",
+          "result": "OK",
+          "duration": 2.676419973373413,
+          "returncode": 0,
+          "evidence": [
+            "1..2",
+            "ok 1 /painter-layer-modes/genuine_projection_and_kernel",
+            "ok 2 /painter-layer-modes/direct_paint_operation"
+          ]
+        },
+        {
+          "name": "gimp:app / painter-core-metadata",
+          "result": "OK",
+          "duration": 1.11690092086792,
+          "returncode": 0,
+          "evidence": [
+            "1..10",
+            "ok 1 /painter/core-metadata/curve/one-point-serialized",
+            "ok 2 /painter/core-metadata/multiline/true",
+            "ok 3 /painter/core-metadata/multiline/false",
+            "ok 4 /painter/core-metadata/multiline/absent",
+            "ok 5 /painter/core-metadata/drawable-buffer/same-size-explicit-bounds",
+            "ok 6 /painter/core-metadata/drawable-buffer/same-size-implicit-bounds",
+            "ok 7 /painter/core-metadata/drawable-buffer/y-only-move",
+            "ok 8 /painter/core-metadata/drawable-buffer/nonzero-same-size",
+            "ok 9 /painter/core-metadata/drawable-buffer/nonzero-implicit-bounds",
+            "ok 10 /painter/core-metadata/drawable-buffer/nonzero-y-only-move"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_sha256": {
+    "app/core/gimpdrawable.c": "b7ecbd0ceb9bb3eff0689d978758ed5feead9afa4683a8b6d64521e7eebd506a",
+    "app/tests/test-painter-core-metadata.c": "81a131b08623d6a77b6edce8875a75a533446f81435e14ddb689d511e57ea004"
+  },
+  "pre_fix_production_sha256": "e2ba45059fc33256ee103dbcabd6936ff07912a0437848fa58e4b6149b75553b"
+}
