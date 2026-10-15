@@ -562,11 +562,17 @@ static void native_editor_mixed_width_buttons (void)
 #include "test-widget-store-orientation-callers.inc"
 #include "test-painter-independent-toolbar.inc"
 #include "test-painter-align-toolbar.inc"
+#include "test-painter-vector-toolbar.inc"
 
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);gtk_window_set_default_size(GTK_WINDOW(window),1100,130);
+  g_test_add_func ("/painter-compact-options/independent-vector-toolbar", independent_vector_toolbar);
+  g_test_add_func ("/painter-compact-options/vector-selection-actions", vector_selection_actions);
+  g_test_add_func ("/painter-compact-options/vector-native-dialog-actions", vector_native_dialog_actions);
+  g_test_add_func ("/painter-compact-options/vector-model-before-view", vector_model_before_view);
+  g_test_add_func ("/painter-compact-options/vector-path-lifecycle-and-reentry", vector_path_lifecycle_and_reentry);
   g_test_add_func ("/painter-compact-options/independent-align-toolbar", independent_align_toolbar);
   g_test_add_func ("/painter-compact-options/align-model-before-view", align_model_before_view);
   g_test_add_func ("/painter-compact-options/align-actions-and-reentry", align_actions_and_reentry);

@@ -42,9 +42,20 @@ enum
 {
   PROP_0,
   PROP_VECTORS_EDIT_MODE,
-  PROP_VECTORS_POLYGONAL
+  PROP_VECTORS_POLYGONAL,
+  PROP_PATH_ACTIVE
 };
 
+
+enum
+{
+  TO_SELECTION,
+  FILL_PATH,
+  STROKE_PATH,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL];
 
 static void   gimp_vector_options_set_property (GObject      *object,
                                                 guint         property_id,
@@ -66,6 +77,21 @@ gimp_vector_options_class_init (GimpVectorOptionsClass *klass)
 
   object_class->set_property = gimp_vector_options_set_property;
   object_class->get_property = gimp_vector_options_get_property;
+
+  g_object_class_install_property (object_class, PROP_PATH_ACTIVE,
+                                   g_param_spec_boolean ("path-active", NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
+  signals[TO_SELECTION] =
+    g_signal_new ("to-selection", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 1, G_TYPE_UINT);
+  signals[FILL_PATH] =
+    g_signal_new ("fill-path", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 1, GTK_TYPE_WIDGET);
+  signals[STROKE_PATH] =
+    g_signal_new ("stroke-path", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 1, GTK_TYPE_WIDGET);
 
   GIMP_CONFIG_PROP_ENUM (object_class, PROP_VECTORS_EDIT_MODE,
                          "vectors-edit-mode",
@@ -121,6 +147,9 @@ gimp_vector_options_get_property (GObject    *object,
 
   switch (property_id)
     {
+    case PROP_PATH_ACTIVE:
+      g_value_set_boolean (value, options->path_active);
+      break;
     case PROP_VECTORS_EDIT_MODE:
       g_value_set_enum (value, options->edit_mode);
       break;
@@ -145,8 +174,91 @@ button_append_modifier (GtkWidget       *button,
   g_free (str);
 }
 
-GtkWidget *
-gimp_vector_options_gui (GimpToolOptions *tool_options)
+void
+gimp_vector_options_set_path_active (GimpVectorOptions *options,
+                                     gboolean           active)
+{
+  active = active ? TRUE : FALSE;
+  if (options->path_active != active)
+    {
+      options->path_active = active;
+      g_object_notify (G_OBJECT (options), "path-active");
+    }
+}
+
+static void
+vector_action_sensitive (GimpVectorOptions *options,
+                         GParamSpec        *pspec,
+                         GtkWidget         *button)
+{
+  /* Read current state, rather than an emission snapshot: a sensitivity
+   * notification may synchronously halt the tool or destroy another view. */
+  gtk_widget_set_sensitive (button, options->path_active);
+}
+
+static void
+vector_action_destroy (GtkWidget         *button,
+                       GimpVectorOptions *options)
+{
+  g_signal_handlers_disconnect_by_data (options, button);
+  g_signal_handlers_disconnect_by_data (button, options);
+}
+
+static void
+vector_selection_extended (GtkWidget         *button,
+                           GdkModifierType    state,
+                           GimpVectorOptions *options)
+{
+  if (options->path_active)
+    g_signal_emit (options, signals[TO_SELECTION], 0, state);
+}
+
+static void
+vector_selection_clicked (GtkWidget         *button,
+                          GimpVectorOptions *options)
+{
+  vector_selection_extended (button, 0, options);
+}
+
+static void
+vector_fill_clicked (GtkWidget         *button,
+                     GimpVectorOptions *options)
+{
+  if (options->path_active)
+    g_signal_emit (options, signals[FILL_PATH], 0, button);
+}
+
+static void
+vector_stroke_clicked (GtkWidget         *button,
+                       GimpVectorOptions *options)
+{
+  if (options->path_active)
+    g_signal_emit (options, signals[STROKE_PATH], 0, button);
+}
+
+static void
+vector_action_connect (GimpVectorOptions *options,
+                       GtkWidget         *button,
+                       guint              action)
+{
+  GCallback clicked = action == TO_SELECTION ? G_CALLBACK (vector_selection_clicked) :
+                      action == FILL_PATH    ? G_CALLBACK (vector_fill_clicked) :
+                                               G_CALLBACK (vector_stroke_clicked);
+
+  g_signal_connect_object (button, "clicked", clicked, options, 0);
+  if (action == TO_SELECTION)
+    g_signal_connect_object (button, "extended-clicked",
+                             G_CALLBACK (vector_selection_extended), options, 0);
+  g_signal_connect_object (options, "notify::path-active",
+                           G_CALLBACK (vector_action_sensitive), button, 0);
+  g_signal_connect_object (button, "destroy",
+                           G_CALLBACK (vector_action_destroy), options, 0);
+  vector_action_sensitive (options, NULL, button);
+}
+
+static GtkWidget *
+gimp_vector_options_gui_full (GimpToolOptions *tool_options,
+                              gboolean         horizontal)
 {
   GObject           *config  = G_OBJECT (tool_options);
   GimpVectorOptions *options = GIMP_VECTOR_OPTIONS (tool_options);
@@ -155,9 +267,13 @@ gimp_vector_options_gui (GimpToolOptions *tool_options)
   GtkWidget         *button;
   gchar             *str;
 
+  if (horizontal)
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (vbox), GTK_ORIENTATION_HORIZONTAL);
+
   /*  tool toggle  */
-  frame = gimp_prop_enum_radio_frame_new (config, "vectors-edit-mode", NULL,
-                                          0, 0);
+  frame = gimp_prop_enum_radio_frame_new_with_orientation
+    (config, "vectors-edit-mode", NULL, 0, 0,
+     horizontal ? GTK_ORIENTATION_HORIZONTAL : GTK_ORIENTATION_VERTICAL);
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
   button = g_object_get_data (G_OBJECT (frame), "radio-button");
@@ -196,7 +312,7 @@ gimp_vector_options_gui (GimpToolOptions *tool_options)
 
   g_free (str);
 
-  options->to_selection_button = button;
+  vector_action_connect (options, button, TO_SELECTION);
 
   button = gtk_button_new_with_label (_("Fill Path"));
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
@@ -204,7 +320,7 @@ gimp_vector_options_gui (GimpToolOptions *tool_options)
   gimp_help_set_help_data (button, NULL, GIMP_HELP_PATH_FILL);
   gtk_widget_show (button);
 
-  options->fill_button = button;
+  vector_action_connect (options, button, FILL_PATH);
 
   button = gtk_button_new_with_label (_("Stroke Path"));
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
@@ -212,7 +328,19 @@ gimp_vector_options_gui (GimpToolOptions *tool_options)
   gimp_help_set_help_data (button, NULL, GIMP_HELP_PATH_STROKE);
   gtk_widget_show (button);
 
-  options->stroke_button = button;
+  vector_action_connect (options, button, STROKE_PATH);
 
   return vbox;
+}
+
+GtkWidget *
+gimp_vector_options_gui (GimpToolOptions *tool_options)
+{
+  return gimp_vector_options_gui_full (tool_options, FALSE);
+}
+
+GtkWidget *
+gimp_vector_options_gui_horizontal (GimpToolOptions *tool_options)
+{
+  return gimp_vector_options_gui_full (tool_options, TRUE);
 }

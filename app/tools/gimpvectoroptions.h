@@ -40,10 +40,8 @@ struct _GimpVectorOptions
   GimpPathMode     edit_mode;
   gboolean         polygonal;
 
-  /*  options gui  */
-  GtkWidget       *to_selection_button;
-  GtkWidget       *fill_button;
-  GtkWidget       *stroke_button;
+  /* Runtime availability shared by independent action views, not config. */
+  gboolean         path_active;
 };
 
 
@@ -51,5 +49,8 @@ GType       gimp_vector_options_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_vector_options_gui      (GimpToolOptions *tool_options);
 
+GtkWidget * gimp_vector_options_gui_horizontal (GimpToolOptions *tool_options);
+void        gimp_vector_options_set_path_active (GimpVectorOptions *options,
+                                                 gboolean           active);
 
 #endif  /*  __GIMP_VECTOR_OPTIONS_H__  */
