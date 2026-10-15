@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "task": "09.002",
+  "duties": 13,
+  "results": [
+    {
+      "program": "legacy",
+      "output": "legacy-window-layouts=4 nested-windows=4 rejected-boundaries=28 independent-region-dispatches=1",
+      "generated_source_sha256": "881bd6431c6b48f602870882025264bc0df98744f35497c6d54e9050d2838467"
+    },
+    {
+      "program": "native",
+      "output": "native-rectangle-cases=10 negative-origin-buffer=1 padded-rows=4 clipped-write=1 rounded-display-pairs=8 affine-roundtrips=40 transformed-bounds=5",
+      "generated_source_sha256": "6568e1776df657d7c52dde6be64ce2ab01f8b90c560aef166c30a4c49c58f3c8"
+    }
+  ],
+  "sanitizers": [
+    "address",
+    "undefined",
+    "float-cast-overflow"
+  ],
+  "limits": [
+    "No DrawableFeature implementation or migration parity",
+    "No full GIMP, GTK event routing, physical device or HiDPI validation",
+    "No legacy thread scheduling or TileManager iteration parity",
+    "No signed overflow in legacy code is executed or approved",
+    "No automatic fixing of legacy aliasing or native invalidation defects",
+    "Sanitizers cover extracted code/harness; dependency libraries are uninstrumented; LSan disabled"
+  ],
+  "versions": {
+    "glib-2.0": "2.84.4",
+    "gegl-0.4": "0.4.62",
+    "cairo": "1.18.4"
+  },
+  "source_sha256": {
+    "migration/contracts/coordinate-contract.json": "36cdb77ee9271658ad26c42860eab1ac4d691fd7a56a65919779a038139503c4",
+    "tools/check_coordinate_contract.py": "19aec049d363f7bf6265600634170f4aee73534d81446d01d1d7580307324bec",
+    "tools/tests/test_coordinate_contract.py": "36474658e78500d9e06ac3b736ade5f46c9926781b8acce82e79c278390d1749",
+    "migration/contracts/coordinate-contract.md": "58b824a39f133afcaa93ef43c6b6507cdfcb3156b4d4d391683f62aded2e11e9",
+    "app/display/gimpdisplayshell-transform.c": "1532f024a9c23f673bbb6926fc8544cd8b40a5a09fdbf9184565e9e9520821fd",
+    "app/display/gimpdisplayshell.h": "6b38cd7a1fc2a6fe03f3079e7f6485d083747e11b4156053e8d93665078e303b",
+    "libgimpmath/gimpmath.h": "30cdc9adbfe876afccc171df0ce9f75c82294c7f360890a92fe919ed75bcd510"
+  }
+}
