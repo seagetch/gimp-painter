@@ -1,0 +1,58 @@
+{
+  "task": "08.016/pixbuf-owner",
+  "status": "SOURCE_AND_NATIVE_TAP_PASS",
+  "source_duties": 6,
+  "runs": [
+    {
+      "status": "PASS",
+      "focused_cases": [
+        "/painter-popup-handles/pixbuf/caller-reference-survives-renderer",
+        "/painter-popup-handles/pixbuf/column-first",
+        "/painter-popup-handles/pixbuf/failed-factory-result",
+        "/painter-popup-handles/pixbuf/handle-first",
+        "/painter-popup-handles/pixbuf/initial-and-empty",
+        "/painter-popup-handles/pixbuf/recovery",
+        "/painter-popup-handles/pixbuf/replace-same-reset",
+        "/painter-popup-handles/pixbuf/retained-after-tree-close"
+      ],
+      "focused_count": 8,
+      "registration_case_count": 30,
+      "label": "native",
+      "log_sha256": "bdb7ed0c380a153fb49256c5448f1db426a0483add4f0687b3d999441be1a24c"
+    },
+    {
+      "status": "PASS",
+      "focused_cases": [
+        "/painter-popup-handles/pixbuf/caller-reference-survives-renderer",
+        "/painter-popup-handles/pixbuf/column-first",
+        "/painter-popup-handles/pixbuf/failed-factory-result",
+        "/painter-popup-handles/pixbuf/handle-first",
+        "/painter-popup-handles/pixbuf/initial-and-empty",
+        "/painter-popup-handles/pixbuf/recovery",
+        "/painter-popup-handles/pixbuf/replace-same-reset",
+        "/painter-popup-handles/pixbuf/retained-after-tree-close"
+      ],
+      "focused_count": 8,
+      "registration_case_count": 8,
+      "label": "scale2",
+      "log_sha256": "5c660515c853b5e4ffbc1898c5fef708d8404e076cdaab9880a99e8610b9ed6c"
+    }
+  ],
+  "limits": [
+    "No allocator failure or OOM injection.",
+    "No exact old stock-icon artwork, shadow or size parity.",
+    "No full-application leak, LSan, OS input or platform claim.",
+    "Tests observe pixel storage deallocation via GdkPixbufDestroyNotify, separately from renderer weak notification."
+  ],
+  "source_sha256": {
+    "app/widgets/gimpcellrendererpopup.cpp": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+    "app/widgets/gimpcellrendererpopup.h": "a8fe7be5a98be80813d6538c4c9c05e366fcfba63774b280e0a6273a76e6f5f7",
+    "app/widgets/gimpcellrendererpopup-handle.hpp": "f63ae50a6c7e67504dd831a4e4e0bac888eaf675a67dde1a0cc6eeb43b258dbf",
+    "app/tests/test-painter-popup-handles.cpp": "e995092ae6cebf694928bef998d4b974c8e5a42d834a2a8f68268644ef45f2a7",
+    "app/tests/meson.build": "c9a36eb2256b6c9c9a0aa478ac6a32d543e537935b7ef2d05a332debe272abe7",
+    "migration/contracts/popup-pixbuf-owner.json": "9a1bd4377298145c2a2edb07b87bcb61e5840b4056985d464cfb95cf5aca36b2",
+    "migration/contracts/popup-pixbuf-owner.md": "8e4cfc1fad196f70ac654997d3de7f5996dc711c6a3579c03bf906d9f4e7959e",
+    "tools/check_popup_pixbuf_owner.py": "c63eca4c2cae3d61a09a8437017ccd8f5a362818c586692b14732a0b39bdab73",
+    "tools/tests/test_popup_pixbuf_owner.py": "6f0d1e9a33621f2f0606fe0e857a3cff94c6d88145d8b9c8990b6a82978e7fca"
+  }
+}

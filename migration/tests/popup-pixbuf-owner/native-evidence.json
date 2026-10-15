@@ -1,0 +1,104 @@
+{
+  "task": "08.016/pixbuf-owner",
+  "status": "PASS",
+  "duties": 6,
+  "implementation": "Native GtkCellRendererPixbuf owner already replaced the legacy raw pointer; this task strengthens tests and records acceptance.",
+  "runs": [
+    {
+      "label": "native",
+      "test": "gimp:app / painter-popup-handles",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.1376588344573975,
+      "expected_cases": 30,
+      "skipped_cases": 0,
+      "scale_factor": 1,
+      "tap": "migration/tests/popup-pixbuf-owner/native.tap",
+      "tap_sha256": "bdb7ed0c380a153fb49256c5448f1db426a0483add4f0687b3d999441be1a24c",
+      "original_private_meson_log_sha256": "b0a2f161a53398815296899e5e4b24009d6f8e057c6beeb2c62444bb90af2def",
+      "stderr_summary": {
+        "missing_generated_application_icon_assets": 6,
+        "disabled_plugin_dummy_entries": 68,
+        "headless_dbus_unavailable": 1,
+        "virtual_device_configuration": 2,
+        "other_lines": []
+      }
+    },
+    {
+      "label": "scale2",
+      "test": "gimp:app / painter-popup-handles",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 2.0264031887054443,
+      "expected_cases": 8,
+      "skipped_cases": 0,
+      "scale_factor": 2,
+      "tap": "migration/tests/popup-pixbuf-owner/scale2.tap",
+      "tap_sha256": "5c660515c853b5e4ffbc1898c5fef708d8404e076cdaab9880a99e8610b9ed6c",
+      "original_private_meson_log_sha256": "ca733777eedb2c2e2782f7f9f6300831e5f756fdd055920352d1dd59bd2f6330",
+      "stderr_summary": {
+        "missing_generated_application_icon_assets": 6,
+        "disabled_plugin_dummy_entries": 68,
+        "headless_dbus_unavailable": 1,
+        "virtual_device_configuration": 2,
+        "other_lines": []
+      }
+    }
+  ],
+  "runtime_source_match": [
+    {
+      "path": "app/widgets/gimpcellrendererpopup.cpp",
+      "development_sha256": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+      "executed_source_sha256": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+      "match": true
+    },
+    {
+      "path": "app/widgets/gimpcellrendererpopup.h",
+      "development_sha256": "a8fe7be5a98be80813d6538c4c9c05e366fcfba63774b280e0a6273a76e6f5f7",
+      "executed_source_sha256": "a8fe7be5a98be80813d6538c4c9c05e366fcfba63774b280e0a6273a76e6f5f7",
+      "match": true
+    },
+    {
+      "path": "app/widgets/gimpcellrendererpopup-handle.hpp",
+      "development_sha256": "f63ae50a6c7e67504dd831a4e4e0bac888eaf675a67dde1a0cc6eeb43b258dbf",
+      "executed_source_sha256": "f63ae50a6c7e67504dd831a4e4e0bac888eaf675a67dde1a0cc6eeb43b258dbf",
+      "match": true
+    },
+    {
+      "path": "app/tests/test-painter-popup-handles.cpp",
+      "development_sha256": "e995092ae6cebf694928bef998d4b974c8e5a42d834a2a8f68268644ef45f2a7",
+      "executed_source_sha256": "e995092ae6cebf694928bef998d4b974c8e5a42d834a2a8f68268644ef45f2a7",
+      "match": true
+    },
+    {
+      "path": "app/tests/meson.build",
+      "development_sha256": "c9a36eb2256b6c9c9a0aa478ac6a32d543e537935b7ef2d05a332debe272abe7",
+      "executed_source_sha256": "c9a36eb2256b6c9c9a0aa478ac6a32d543e537935b7ef2d05a332debe272abe7",
+      "match": true
+    }
+  ],
+  "binary_sha256": "b0903deba84a7be0babd94507f243455277f61ce668369aab9510dca5787be3b",
+  "checker_mutation_tests": {
+    "command": "python3 -B -m unittest discover -s tools/tests -p test_popup_pixbuf_owner.py",
+    "passed": 9,
+    "failed": 0
+  },
+  "sanitizers": {
+    "new_run": false,
+    "reason": "No new instrumented native build available; these results make no ASan/UBSan/LSan claim."
+  },
+  "acceptance": {
+    "initial_value": "Native pixbuf property is NULL, default named icon is separately owned by GTK; fresh teardown before sizing is safe.",
+    "failed_generation": "Real missing-icon factory yields NULL/error, clearing fresh or populated renderer safely; empty draw leaves Cairo bytes unchanged.",
+    "regeneration": "Replacement, borrowed/getter-retained same value, explicit reset, named-icon recovery and new pixels preserve proper ownership.",
+    "release_once": "GdkPixbufDestroyNotify increments once for actual storage release at replacement/reset/final renderer release, survives a caller reference, and covers both column/handle owner orders.",
+    "no_null_drawing": "Inherited native measure/render of cleared image is empty in LTR/RTL and sensitive/insensitive states at scale 1 and 2.",
+    "support_files": "All four popupbutton/popupper files checked individually; none declares or owns this pixbuf, so native popup lifetime stays independent."
+  },
+  "limits": [
+    "Native GTK3 Linux Xvfb test execution, not physical input or cross-platform acceptance.",
+    "No new sanitizer/LSan run, allocator/OOM simulation, or exact legacy icon/shadow visual parity.",
+    "No production lifetime code change or artificial duplicate image owner."
+  ],
+  "privacy": "Only TAP, non-sensitive result metadata, source/binary/log hashes and summarized diagnostics are retained; full environment and private display credentials are excluded."
+}

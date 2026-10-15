@@ -1,0 +1,35 @@
+TAP version 14
+# random seed: R02S0cdf6ac7226fef1750c3d132fa4f0a29
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=eb48cb7606a947eda5c05ab030c799b8 --binary-syntax --close-stderr”: Child process exited with code 1
+# Start of painter-popup-handles tests
+# Start of pixbuf tests
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-popup-handles/pixbuf/initial-and-empty
+ok 2 /painter-popup-handles/pixbuf/replace-same-reset
+ok 3 /painter-popup-handles/pixbuf/recovery
+ok 4 /painter-popup-handles/pixbuf/failed-factory-result
+ok 5 /painter-popup-handles/pixbuf/caller-reference-survives-renderer
+ok 6 /painter-popup-handles/pixbuf/column-first
+ok 7 /painter-popup-handles/pixbuf/handle-first
+ok 8 /painter-popup-handles/pixbuf/retained-after-tree-close
+# End of pixbuf tests
+# End of painter-popup-handles tests
+1..8
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

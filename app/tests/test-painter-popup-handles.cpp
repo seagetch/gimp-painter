@@ -559,11 +559,18 @@ static void named_bound_controls_and_teardown () {
 static void count_finalized (gpointer data, GObject *) {
   ++*static_cast<unsigned *> (data);
 }
+static void release_pixels (guchar *pixels, gpointer data) {
+  ++*static_cast<unsigned *> (data);
+  g_free (pixels);
+}
 static GdkPixbuf *counted_pixbuf (unsigned& finalized, guint32 color) {
-  auto *pixels = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 9, 7);
+  /* Count the actual pixel-storage destructor, not GObject weak notification:
+   * weak notification also runs during dispose with references still alive. */
+  auto *data = static_cast<guchar *> (g_malloc (9 * 7 * 4));
+  auto *pixels = gdk_pixbuf_new_from_data (data, GDK_COLORSPACE_RGB, TRUE,
+                                        8, 9, 7, 9 * 4, release_pixels, &finalized);
   g_assert_nonnull (pixels);
   gdk_pixbuf_fill (pixels, color);
-  g_object_weak_ref (G_OBJECT (pixels), count_finalized, &finalized);
   return pixels;
 }
 static void assert_pixbuf (GimpCellRendererPopup *cell, GdkPixbuf *expected) {
@@ -713,6 +720,61 @@ static void pixbuf_recovery () {
   g_assert_cmpuint (a_final, ==, 1); g_assert_cmpuint (b_final, ==, 1);
   g_assert_cmpuint (c_final, ==, 1);
 }
+static void pixbuf_failed_factory_result () {
+  PixelDraw draw;
+  unsigned before_failure_final = 0, regenerated_final = 0;
+  {
+    auto cell = CellRendererPopupRef::create ();
+    auto *theme = gtk_icon_theme_get_for_screen (gtk_widget_get_screen (draw.widget));
+    const gchar *missing = "gimp-painter-pixbuf-owner-nonexistent-08-016-9fcecab9";
+    g_assert_false (gtk_icon_theme_has_icon (theme, missing));
+    /* Exercise a real NULL-producing factory, both before any image was
+     * rendered and after a good image. icon-name fallback is a separate case. */
+    for (unsigned attempt = 0; attempt != 2; ++attempt) {
+      if (attempt) {
+        auto *pixels = counted_pixbuf (before_failure_final, 0x3366ffff);
+        g_object_set (cell.get (), "pixbuf", pixels, nullptr); g_object_unref (pixels);
+        draw.check (cell.get (), false);
+      }
+      GError *error = nullptr;
+      GdkPixbuf *failed = gtk_icon_theme_load_icon (theme, missing, 16,
+                                                   GtkIconLookupFlags (0), &error);
+      g_assert_null (failed);
+      g_assert_error (error, GTK_ICON_THEME_ERROR, GTK_ICON_THEME_NOT_FOUND);
+      g_clear_error (&error);
+      g_object_set (cell.get (), "pixbuf", failed, nullptr);
+      assert_pixbuf (cell.get (), nullptr);
+      g_assert_cmpuint (before_failure_final, ==, attempt);
+      draw.check (cell.get (), true);
+    }
+    auto *regenerated = counted_pixbuf (regenerated_final, 0x33ff66ff);
+    g_object_set (cell.get (), "pixbuf", regenerated, nullptr);
+    g_object_unref (regenerated);
+    draw.check (cell.get (), false);
+    g_assert_cmpuint (regenerated_final, ==, 0);
+  }
+  g_assert_cmpuint (before_failure_final, ==, 1);
+  g_assert_cmpuint (regenerated_final, ==, 1);
+}
+static void pixbuf_caller_reference_survives_renderer () {
+  PixelDraw draw;
+  unsigned pixels_final = 0, cell_final = 0;
+  auto *pixels = counted_pixbuf (pixels_final, 0xff3366ff);
+  {
+    auto cell = CellRendererPopupRef::create ();
+    g_object_weak_ref (G_OBJECT (cell.get ()), count_finalized, &cell_final);
+    g_object_set (cell.get (), "pixbuf", pixels, nullptr);
+    draw.check (cell.get (), false);
+    /* Retain the factory's independent reference through renderer teardown. */
+    g_assert_cmpuint (pixels_final, ==, 0);
+  }
+  g_assert_cmpuint (cell_final, ==, 1);
+  g_assert_cmpuint (pixels_final, ==, 0);
+  g_assert_cmpint (gdk_pixbuf_get_width (pixels), ==, 9);
+  g_assert_cmpint (gdk_pixbuf_get_height (pixels), ==, 7);
+  g_object_unref (pixels);
+  g_assert_cmpuint (pixels_final, ==, 1);
+}
 static void pixbuf_column_finalization (bool column_first) {
   PixelDraw draw;
   unsigned pixels_final = 0, cell_final = 0;
@@ -786,6 +848,8 @@ int main (int argc, char **argv) {
   g_test_add_func ("/painter-popup-handles/pixbuf/initial-and-empty", pixbuf_initial_and_empty);
   g_test_add_func ("/painter-popup-handles/pixbuf/replace-same-reset", pixbuf_replace_same_reset);
   g_test_add_func ("/painter-popup-handles/pixbuf/recovery", pixbuf_recovery);
+  g_test_add_func ("/painter-popup-handles/pixbuf/failed-factory-result", pixbuf_failed_factory_result);
+  g_test_add_func ("/painter-popup-handles/pixbuf/caller-reference-survives-renderer", pixbuf_caller_reference_survives_renderer);
   g_test_add_func ("/painter-popup-handles/pixbuf/column-first", [] { pixbuf_column_finalization (true); });
   g_test_add_func ("/painter-popup-handles/pixbuf/handle-first", [] { pixbuf_column_finalization (false); });
   g_test_add_func ("/painter-popup-handles/pixbuf/retained-after-tree-close", pixbuf_retained_after_tree_close);
