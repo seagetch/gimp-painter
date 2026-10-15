@@ -32,6 +32,10 @@
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
+#include "core/gimp.h"
+#include "core/gimpasyncset.h"
+#include "core/gimpdatafactory.h"
+#include "core/gimpimage.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimptooloptions.h"
 #include "widgets/gimpcolorpanel.h"
@@ -57,6 +61,8 @@
 #include "gimprectangleselectoptions.h"
 #include "gimpregionselectoptions.h"
 #include "gimpselectionoptions.h"
+#include "text/text-enums.h"
+#include "gimptextoptions.h"
 #include "gimppaintertooltoolbar.h"
 
 #include "gimp-intl.h"
@@ -733,6 +739,9 @@ painter_gradient (GtkWidget       *box,
    * the dockable; never replace its frame/hint/instant_toggle pointers. */
 }
 
+/* Separate text slice shares only the stateless packing helpers. */
+#include "gimppaintertexttoolbar.inc"
+
 GtkWidget *
 gimp_painter_tool_toolbar_new (GimpToolOptions *options)
 {
@@ -741,7 +750,8 @@ gimp_painter_tool_toolbar_new (GimpToolOptions *options)
 
   g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS (options), NULL);
 
-  if (! GIMP_IS_MOVE_OPTIONS (options) &&
+  if (! GIMP_IS_TEXT_OPTIONS (options) &&
+      ! GIMP_IS_MOVE_OPTIONS (options) &&
       ! GIMP_IS_FOREGROUND_SELECT_OPTIONS (options) &&
       ! GIMP_IS_REGION_SELECT_OPTIONS (options) &&
       ! GIMP_IS_ISCISSORS_OPTIONS (options) &&
@@ -764,7 +774,9 @@ gimp_painter_tool_toolbar_new (GimpToolOptions *options)
   g_object_set_data_full (G_OBJECT (box), "gimp-painter-toolbar-options",
                           g_object_ref (options), g_object_unref);
 
-  if (GIMP_IS_MOVE_OPTIONS (options))
+  if (GIMP_IS_TEXT_OPTIONS (options))
+    painter_text (box, options);
+  else if (GIMP_IS_MOVE_OPTIONS (options))
     painter_move (box, config);
   else if (GIMP_IS_SELECTION_OPTIONS (options))
     painter_selection (box, options);

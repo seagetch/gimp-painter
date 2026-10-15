@@ -1,0 +1,93 @@
+{
+  "format": 1,
+  "status": "passed",
+  "scope": "Independent Text toolbar, normal native and HiDPI; not entire legacy UI or text rendering acceptance",
+  "source_base": "8617101da59ed15d61b7f5722d384f40b4715bee",
+  "public_base": "fc5e77ad72c3a4a6382f823dc155a517048bc6e3",
+  "tested_sources": {
+    "app/tools/gimppaintertexttoolbar.inc": "17186982608846d1189720cd0dc9bd35bc233b1aa12cdf5d5f7f8f117dde2bf9",
+    "app/tools/gimppaintertooltoolbar.c": "4d012e722bf3660f77dcccdf969b542fff1e34704083644d42ab4722b6a9d5ac",
+    "app/tests/test-painter-text-toolbar.inc": "48b9b8b5f13d397daa7efb2d296a543c6e186391fc022de876dca737deb3e7c7",
+    "app/tests/test-painter-compact-options.c": "10efc2d674c55b220b0475a4ecf0fd9bd7175b9a49bfe5498c0132520a5d3112"
+  },
+  "runs": [
+    {
+      "name": "text-focused-final",
+      "seconds": 4.681690454483032,
+      "tap_cases": 5,
+      "exit_code": 0,
+      "unexpected_diagnostics": [],
+      "intentional_negative_warnings": [],
+      "log_sha256": "f5467bc2dc7cc0d48d2d0c0af4b0853d19b7fba9f523610158fb5cdb6724f29b"
+    },
+    {
+      "name": "text-full",
+      "seconds": 104.62744355201721,
+      "tap_cases": 58,
+      "exit_code": 0,
+      "unexpected_diagnostics": [],
+      "intentional_negative_warnings": [
+        "GIMP-Warning: There are no selected layers or channels to fill.",
+        "GIMP-Warning: There are no selected layers or channels to stroke to.",
+        "GIMP-Warning: A selected layer's pixels are locked.",
+        "GIMP-Warning: A selected layer's pixels are locked."
+      ],
+      "log_sha256": "80f97b1792456f0d4b9640bec3986edd350613a8ee4cbb83e55b2a3c1cef3673"
+    },
+    {
+      "name": "text-scale2",
+      "seconds": 4.263743877410889,
+      "tap_cases": 5,
+      "exit_code": 0,
+      "unexpected_diagnostics": [],
+      "intentional_negative_warnings": [],
+      "log_sha256": "8104c8de6eb77ea7f858ac52013a0f3c0e250244c1c9282ecdbc5db266a8f87b"
+    }
+  ],
+  "inventory": {
+    "supported": 41,
+    "missing": 9,
+    "missing_tools": [
+      "gimp-unified-transform-tool",
+      "gimp-handle-transform-tool",
+      "gimp-perspective-guide-tool",
+      "gimp-transform-3d-tool",
+      "gimp-warp-tool",
+      "gimp-brightness-contrast-tool",
+      "gimp-offset-tool",
+      "gimp-gegl-tool",
+      "gimp-operation-tool"
+    ]
+  },
+  "display": "1080x1920x24 authenticated loopback-only Xvfb; empty authority rejected",
+  "screenshot": {
+    "file": "gimp-text-portrait.png",
+    "sha256": "cebd340f0c90f49232ba72c60567458dffa8032f45ddb6ea628b422133689e99",
+    "shows": "Installed actual GIMP image window, bottom independent Text bar and open Details popup",
+    "normal_quit_exit": 0,
+    "build_app_sha256": "14c82702e88928c77e5f4831f937896e15f56b9a9140b10488a69472b5c52c1e",
+    "installed_app_sha256": "4147bda0e838f9f2bac9a2a3a5376134636afdc4ccc90cfeff9e8105c72f4a29",
+    "capture_script_sha256": "a0c5610cf19ce3f7de295a219ff0d841b25c7775a4fdabf82a50d35a0990c359",
+    "capture_log_sha256": "d5d2a1ebcf88a5809a5ebd348714d639552591af3a1ba81e72d7fef746f212ee",
+    "build_and_installed_text_section_sha256": "e4983648d99d6fb881b57cb1208025c6213b6f740a00ac7a788f307ed9b34f7c",
+    "installation_note": "Whole ELF hashes differ after normal install RPATH adjustment; executable .text bytes independently match."
+  },
+  "preserved_failures": [
+    {
+      "log": "text-focused.json",
+      "sha256": "f2fbd0f3bb74715f4e425e81524d778676bb3dedb2ffd5c5e3528a3c7fce16c0",
+      "cause": "Test initializer intentionally disables font loading; fixture incorrectly required two installed font resources. Replaced assumption with temporary native font resources and asserted cleanup."
+    },
+    {
+      "log": "text-capture-actual.log",
+      "sha256": "7c4cdd8da8c121118563b8d897ab915351533ba8c6e361b04480f3343644cc05",
+      "cause": "WM title predicate did not identify the main image window; capture did not complete. Final capture waits for complete startup then verifies actual screenshot pixels."
+    }
+  ],
+  "limitations": [
+    "No sanitizer/cross-platform run",
+    "Font resources test binding, not glyph rendering/font substitution",
+    "Modern outline controls remain in native dock; whole legacy geometry/session parity remains open",
+    "Actual app retains unsupported-font and session-bus startup notices; no fatal or critical was observed"
+  ]
+}
