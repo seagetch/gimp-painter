@@ -25,6 +25,7 @@
 #include "config/gimpcoreconfig.h"
 #include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
 #include "xcf/xcf.h"
+#include "painter/gimp-painter-binding.h"
 #include "tests.h"
 #include "gimp-app-test-utils.h"
 static Gimp *gimp;
@@ -179,6 +180,139 @@ static void rollback_after_insert (void)
   g_assert_true (gimp_image_redo (image)); g_assert_cmpfloat (gimp_layer_get_opacity (source), ==, .9);
   g_object_unref (cancel); g_object_unref (preset); gimp_context_set_image (gimp->user_context, NULL); g_object_unref (image);
 }
+/* Observe actual planner-created instances without taking references. This
+ * catches leaked preflight owners and lost owners across image/Undo transfer. */
+typedef struct
+{
+  guint created, finalized;
+  guint close_factory;
+  gboolean close_definition;
+} PresetOwners;
+static void preset_owner_finalized (gpointer data, GObject *object)
+{ ((PresetOwners *) data)->finalized++; }
+static void close_preset_definition (GObject *object, GParamSpec *pspec, gpointer data)
+{
+  GError *error = NULL;
+  g_assert_true (gimp_painter_binding_close (object, &error));
+  g_assert_no_error (error);
+}
+static gboolean observe_preset_owner (GSignalInvocationHint *hint, guint n_values,
+                                     const GValue *values, gpointer data)
+{
+  PresetOwners *owners = data;
+  GObject *object = g_value_get_object (&values[0]);
+  const gchar *name = gimp_object_get_name (object);
+  if (name && g_str_has_prefix (name, "Owned ") &&
+      (GIMP_IS_CLONE_LAYER (object) || GIMP_IS_FILTER_LAYER (object)))
+    {
+      owners->created++;
+      g_object_weak_ref (object, preset_owner_finalized, owners);
+      if ((owners->close_factory == 1 && GIMP_IS_CLONE_LAYER (object)) ||
+          (owners->close_factory == 2 && GIMP_IS_FILTER_LAYER (object)))
+        close_preset_definition (object, NULL, NULL);
+      else if (owners->close_definition && GIMP_IS_FILTER_LAYER (object))
+        g_signal_connect (object, "notify::filter-procedure",
+                          G_CALLBACK (close_preset_definition), NULL);
+    }
+  return TRUE;
+}
+static const gchar *owned_custom_layers =
+  "{\"version\":1,\"source-layer\":{\"type\":\"any\"},\"replacement-layer\":["
+  "{\"type\":\"clone\",\"name\":\"Owned clone\",\"source\":\"source\",\"boundary\":\"source\"},"
+  "{\"type\":\"filter\",\"name\":\"Owned filter\",\"filter\":{\"name\":\"opaque-preset-test\","
+  "\"args\":[{\"type\":\"STRING\",\"value\":\"retained argument\"}]}},"
+  "{\"target\":\"source\"}]}";
+static void cancel_custom_filter_added (GimpContainer *container, GimpObject *object, GCancellable *cancel)
+{
+  if (GIMP_IS_FILTER_LAYER (object)) g_cancellable_cancel (cancel);
+}
+static void custom_planner_ownership (void)
+{
+  /* success, cancellation after insertion, invalid definition publication,
+   * and failed custom factory all exercise the real C ABI planner. */
+  for (guint outcome = 0; outcome < 6; ++outcome)
+    {
+      GimpLayer *source; GimpImage *image = setup (0, &source);
+      GError *error = NULL;
+      GimpLayerPreset *preset = from_json (owned_custom_layers);
+      if (outcome == 5)
+        {
+          /* A malformed filter follows a successfully created clone. Both
+           * still belong only to validation and must finalize on rejection. */
+          JsonNode *root = gimp_layer_preset_dup_json (preset);
+          JsonArray *layers = json_object_get_array_member (json_node_get_object (root), "replacement-layer");
+          json_object_remove_member (json_array_get_object_element (layers, 1), "filter");
+          g_assert_true (gimp_layer_preset_set_json (preset, root, &error));
+          g_assert_no_error (error); json_node_unref (root);
+        }
+      GCancellable *cancel = g_cancellable_new ();
+      PresetOwners owners = {0, 0, outcome == 3 ? 1 : outcome == 4 ? 2 : 0, outcome == 2};
+      const guint signal = g_signal_lookup ("name-changed", GIMP_TYPE_OBJECT);
+      gulong hook = g_signal_add_emission_hook (signal, 0, observe_preset_owner, &owners, NULL);
+      gulong handler = 0;
+      guchar expected[4] = {37, 91, 183, 255}, actual[4] = {0};
+      GeglRectangle pixel = {0, 0, 1, 1};
+      gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)), &pixel, 0,
+                       babl_format ("R'G'B'A u8"), expected, GEGL_AUTO_ROWSTRIDE);
+      gimp_layer_set_opacity (source, .8, TRUE);
+      gimp_layer_set_opacity (source, .9, TRUE); g_assert_true (gimp_image_undo (image));
+      GimpUndo *undo = gimp_undo_stack_peek (gimp_image_get_undo_stack (image));
+      GimpUndo *redo = gimp_undo_stack_peek (gimp_image_get_redo_stack (image));
+      if (outcome == 1)
+        handler = g_signal_connect (gimp_image_get_layers (image), "add", G_CALLBACK (cancel_custom_filter_added), cancel);
+      gboolean applied = gimp_layer_preset_apply_full (preset, gimp->user_context, source, cancel, &error);
+      g_signal_remove_emission_hook (signal, hook);
+      if (handler) g_signal_handler_disconnect (gimp_image_get_layers (image), handler);
+      g_assert_cmpint (gimp_image_get_undo_group_count (image), ==, 0);
+      if (outcome == 0)
+        {
+          g_assert_true (applied); g_assert_no_error (error);
+          g_assert_cmpuint (owners.created, ==, 4);
+          g_assert_cmpuint (owners.finalized, ==, 2); /* validation only */
+          GimpLayer *clone = GIMP_LAYER (gimp_container_get_child_by_index (gimp_image_get_layers (image), 0));
+          GimpLayer *filter = GIMP_LAYER (gimp_container_get_child_by_index (gimp_image_get_layers (image), 1));
+          g_assert_true (GIMP_IS_CLONE_LAYER (clone)); g_assert_true (GIMP_IS_FILTER_LAYER (filter));
+          g_assert_false (g_object_is_floating (clone)); g_assert_false (g_object_is_floating (filter));
+          g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (clone)) == source);
+          GimpValueArray *args = gimp_filter_layer_dup_args (GIMP_FILTER_LAYER (filter));
+          g_assert_cmpuint (gimp_value_array_length (args), ==, 1);
+          g_assert_cmpstr (g_value_get_string (gimp_value_array_index (args, 0)), ==, "retained argument");
+          gimp_value_array_unref (args);
+          g_assert_true (gimp_image_undo (image));
+          g_assert_cmpuint (owners.finalized, ==, 2); /* Redo retains both */
+          g_assert_true (gimp_container_get_first_child (gimp_image_get_layers (image)) == GIMP_OBJECT (source));
+          g_assert_true (gimp_image_redo (image));
+          g_assert_true (gimp_container_get_child_by_index (gimp_image_get_layers (image), 0) == GIMP_OBJECT (clone));
+          g_assert_true (gimp_container_get_child_by_index (gimp_image_get_layers (image), 1) == GIMP_OBJECT (filter));
+          g_assert_true (gimp_clone_layer_get_source (GIMP_CLONE_LAYER (clone)) == source);
+        }
+      else
+        {
+          g_assert_false (applied);
+          g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_EXCEPTION);
+          if (outcome == 1) g_assert_cmpstr (error->message, ==, "Layer preset application cancelled");
+          if (outcome == 2) g_assert_cmpstr (error->message, ==, "Filter definition target changed during notification");
+          if (outcome == 3 || outcome == 4) g_assert_cmpstr (error->message, ==, "Unable to allocate layer preset layer");
+          if (outcome == 5) g_assert_cmpstr (error->message, ==, "Filter layer has no filter definition");
+          g_clear_error (&error);
+          g_assert_cmpuint (owners.created, ==, outcome == 1 ? 4 : outcome == 3 ? 1 : 2);
+          g_assert_cmpuint (owners.finalized, ==, owners.created);
+          g_assert_true (undo == gimp_undo_stack_peek (gimp_image_get_undo_stack (image)));
+          g_assert_true (redo == gimp_undo_stack_peek (gimp_image_get_redo_stack (image)));
+          g_assert_cmpint (gimp_container_get_n_children (gimp_image_get_layers (image)), ==, 1);
+          g_assert_true (gimp_container_get_first_child (gimp_image_get_layers (image)) == GIMP_OBJECT (source));
+          g_assert_true (gimp_image_redo (image));
+          g_assert_cmpfloat (gimp_layer_get_opacity (source), ==, .9);
+        }
+      gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)), &pixel, 1,
+                      babl_format ("R'G'B'A u8"), actual, GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+      g_assert_cmpmem (actual, sizeof actual, expected, sizeof expected);
+      g_object_unref (preset); g_object_unref (cancel);
+      gimp_context_set_image (gimp->user_context, NULL); g_object_unref (image);
+      g_assert_cmpuint (owners.finalized, ==, owners.created);
+    }
+}
+
 static void rename_preset_added (GimpContainer *container, GimpObject *object, GimpLayerPreset *preset)
 {
   gimp_object_set_name (GIMP_OBJECT (preset), "Renamed from insertion callback");
@@ -361,7 +495,7 @@ int main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir"); gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/layer-presets/" #name, name)
-  ADD (malformed_resource_loads); ADD (unknown_filter_stays_inert); ADD (all_bundled_construction); ADD (resource_roundtrip); ADD (reject_without_history_loss); ADD (rollback_after_insert); ADD (callback_rename_keeps_undo_name); ADD (preflight_rejects_changed_target); ADD (ordered_source_edits); ADD (factory_paths); ADD (save_reopen_editable);
+  ADD (custom_planner_ownership); ADD (malformed_resource_loads); ADD (unknown_filter_stays_inert); ADD (all_bundled_construction); ADD (resource_roundtrip); ADD (reject_without_history_loss); ADD (rollback_after_insert); ADD (callback_rename_keeps_undo_name); ADD (preflight_rejects_changed_target); ADD (ordered_source_edits); ADD (factory_paths); ADD (save_reopen_editable);
   int result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output"); gimp_exit (gimp, TRUE); return result;
 }
