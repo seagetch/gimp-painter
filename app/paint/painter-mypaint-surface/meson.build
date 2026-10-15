@@ -68,3 +68,16 @@ if not meson.is_cross_build()
   test('painter-mypaint-region-lifetime', painter_region_lifetime,
     suite: 'painter', timeout: 60)
 endif
+
+# Actual old GimpDrawable selection coverage: interior signed offsets/soft bytes
+# plus nonempty outside-target controls. Captured brush masks isolate Surface.
+painter_selection_trace = executable('painter-mypaint-selection-trace',
+  'tests/selection-trace.cpp', dependencies: painter_mypaint_surface_dep,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-legacy-selection', painter_brush_settings_python,
+    args: [files('tests/compare-selection.py'),
+      meson.project_source_root() / 'migration/fixtures/legacy-mypaint-selection/selection-values.tsv.gz',
+      painter_selection_trace],
+    suite: 'painter', timeout: 60)
+endif
