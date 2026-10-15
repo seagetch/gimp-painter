@@ -3,6 +3,9 @@
 #include <glib.h>
 #include <algorithm>
 #include <cassert>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -19,12 +22,119 @@ struct Raster : FilterRaster {
   void write (std::uint64_t at, std::size_t n, const std::uint8_t *p) override { g_assert (at+n <= size ()); std::copy_n (p,n,bytes.data () + at); }
   void flush () override {}
 };
+
+/* Child diagnostics must not turn a pixel pass (or an expected rejection)
+ * into a false teardown pass. Preserve the complete stderr for the caller,
+ * allowing only the exact diagnostics and counts deliberately exercised. */
+class Diagnostics {
+  FILE *file_ = nullptr;
+  int saved_ = -1;
+  void restore () noexcept {
+    if (saved_ >= 0) {
+      std::fflush (stderr);
+      if (dup2 (saved_, STDERR_FILENO) < 0) std::abort ();
+      close (saved_); saved_ = -1;
+    }
+  }
+public:
+  Diagnostics () {
+    file_ = std::tmpfile ();
+    if (!file_) throw std::runtime_error ("Cannot capture native Filter diagnostics");
+    std::fflush (stderr);
+    saved_ = dup (STDERR_FILENO);
+    if (saved_ < 0 || dup2 (fileno (file_), STDERR_FILENO) < 0) {
+      if (saved_ >= 0) close (saved_);
+      saved_ = -1; std::fclose (file_); file_ = nullptr;
+      throw std::runtime_error ("Cannot redirect native Filter diagnostics");
+    }
+  }
+  ~Diagnostics () {
+    restore ();
+    if (file_) {
+      std::rewind (file_);
+      char bytes[4096]; std::size_t count;
+      while ((count = std::fread (bytes, 1, sizeof bytes, file_)))
+        std::fwrite (bytes, 1, count, stderr);
+      std::fclose (file_);
+    }
+  }
+  void verify (unsigned expected_rgb, unsigned expected_gray) {
+    restore ();
+    if (std::fseek (file_, 0, SEEK_SET))
+      throw std::runtime_error ("Cannot read native Filter diagnostics");
+    std::string text;
+    char bytes[4096]; std::size_t count;
+    while ((count = std::fread (bytes, 1, sizeof bytes, file_))) text.append (bytes, count);
+    if (std::ferror (file_)) throw std::runtime_error ("Cannot read native Filter diagnostics");
+    std::istringstream lines (text); std::string line;
+    unsigned rgb = 0, gray = 0;
+    while (std::getline (lines, line)) {
+      if (line == "Private Filter worker: Private RGB Filter carrier must be opaque") ++rgb;
+      else if (line == "Private Filter worker: Private Filter Gray background is not triplicated") ++gray;
+      else if (!line.empty ()) throw std::runtime_error ("Unexpected native Filter diagnostic: " + line);
+    }
+    if (rgb != expected_rgb || gray != expected_gray)
+      throw std::runtime_error ("Native Filter rejection diagnostic count changed");
+  }
+};
+
+void repeated_teardown (const FilterProcessOptions& options, const char *directory) {
+  for (unsigned iteration = 0; iteration < 8; ++iteration) {
+    FilterProcedureRequest request;
+    /* Legacy Blinds leaves the last sample of an odd segment as background,
+     * even at angle zero. Three even segments in either orientation give a
+     * genuine identity while still crossing tiles and transfer chunks. */
+    request.width = 258; request.height = 198; request.gray = true;
+    request.orientation = iteration % 2;
+    request.angle = 0; request.segments = 3; request.background = {{20,20,20,255}};
+    Raster input (request.bytes ()), output (request.bytes ());
+    for (std::size_t at = 0; at < input.bytes.size (); at += 4) {
+      input.bytes[at] = input.bytes[at+1] = input.bytes[at+2] =
+        std::uint8_t (at*17+(at/257)*31+iteration);
+      input.bytes[at+3] = std::uint8_t (at/4*13);
+    }
+    std::atomic<bool> cancel {false};
+    auto outcome = std::make_shared<FilterProcedureResult> ();
+    if (!filter_process (request,input,output,cancel,options,outcome))
+      throw std::runtime_error ("Repeated native Filter identity request was cancelled");
+    if (outcome->disposition () != FilterProcedureDisposition::merged)
+      throw std::runtime_error ("Repeated native Filter identity disposition was " +
+                                std::to_string (unsigned (outcome->disposition ())));
+    if (input.bytes != output.bytes) {
+      const auto mismatch = std::mismatch (input.bytes.begin (), input.bytes.end (), output.bytes.begin ());
+      throw std::runtime_error ("Repeated native Filter teardown lost identity at byte " +
+        std::to_string (mismatch.first - input.bytes.begin ()) + ": expected " +
+        std::to_string (*mismatch.first) + ", got " + std::to_string (*mismatch.second));
+    }
+
+    /* Validation is deliberately after native buffer flush, so unwind releases
+     * real swap-backed tiles. A rejected input before GEGL starts cannot test
+     * the asynchronous destroy queue. Keep success and failure interleaved. */
+    request.background[1] = 21;
+    std::fill (output.bytes.begin (), output.bytes.end (), 0xa5);
+    bool rejected = false;
+    try { filter_process (request,input,output,cancel,options,outcome); }
+    catch (const std::runtime_error&) { rejected = true; }
+    if (!rejected || outcome->disposition () != FilterProcedureDisposition::pending ||
+        !std::all_of (output.bytes.begin (),output.bytes.end (),[] (std::uint8_t v) { return v == 0xa5; }))
+      throw std::runtime_error ("Repeated native Filter rejection published output");
+    GDir *dir = g_dir_open (directory, 0, nullptr);
+    if (!dir) throw std::runtime_error ("Cannot inspect private Filter teardown profiles");
+    const bool empty = !g_dir_read_name (dir); g_dir_close (dir);
+    if (!empty) throw std::runtime_error ("Repeated native Filter teardown left a profile");
+  }
+  std::cout << "8 repeated native Filter success/exception teardowns passed\n";
+}
 }
 int main (int argc, char **argv) {
   if (argc != 2 && argc != 3) return 2;
+  const bool teardown_only = argc == 3 && !std::strcmp (argv[2], "--teardown-only");
   gchar *directory = g_dir_make_tmp ("filter-procedure-test-XXXXXX", nullptr); g_assert (directory);
   FilterProcessOptions options {argv[1],directory};
   try {
+    Diagnostics diagnostics;
+    repeated_teardown (options, directory);
+    if (!teardown_only) {
     unsigned passed = 0;
     for (bool gray : {false,true}) for (int direction : {0,1}) for (int transparent : {0,1,-1}) {
       FilterProcedureRequest request; request.width = 36; request.height = 18;
@@ -247,8 +357,10 @@ int main (int argc, char **argv) {
       }
     }
     std::cout << raw_retinex << " analytic native Retinex raw-shadow ROI cases and " << rejected_carriers << " RGB carrier rejection cases passed\n";
+    std::cout << passed << " native Blinds identity cases passed\n";
+    }
+    diagnostics.verify (teardown_only ? 0 : 4, 8);
     GDir *dir = g_dir_open (directory,0,nullptr); g_assert (dir && !g_dir_read_name (dir)); g_dir_close (dir);
     g_assert (rmdir (directory) == 0); g_free (directory);
-    std::cout << passed << " native Blinds identity cases passed\n";
   } catch (const std::exception& error) { std::cerr << error.what () << '\n'; return 1; }
 }

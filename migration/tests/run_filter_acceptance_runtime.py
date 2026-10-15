@@ -14,6 +14,7 @@ once, with the exact relocated helper and its executable-relative plug-ins.
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import contextlib
 import fcntl
 import importlib.util
@@ -44,6 +45,7 @@ CORPUS_FILES = ('legacy-filter-context.tar.gz', 'legacy-filter-context.tar.manif
                 'legacy-convolution.tar.gz', 'legacy-convolution.tar.manifest.json',
                 'legacy-blinds-package-smoke.json', 'legacy-blinds-package-smoke.tar.gz')
 PROCEDURE_MARKERS = (
+    '8 repeated native Filter success/exception teardowns passed',
     '320 actual legacy Blinds oracles byte-exact',
     '196 actual legacy SmallTiles oracles byte-exact (RGB/RGBA/Gray/Gray-alpha, factors0..6)',
     '174 actual legacy Retinex oracles byte-exact (87 native RGB,87 native RGBA)',
@@ -53,6 +55,12 @@ PROCEDURE_MARKERS = (
 CONVOLUTION_MARKERS = (
     '296 genuine old Convolution final merges, 296 raw ROI comparisons, '
     '8 old geometry rejections, 41 native analytic requests passed',)
+PROCEDURE_DIAGNOSTICS = {
+    'Private Filter worker: Private RGB Filter carrier must be opaque': 4,
+    'Private Filter worker: Private Filter Gray background is not triplicated': 8,
+}
+RUNTIME_WARNING = re.compile(r'\b(?:WARNING|CRITICAL|ERROR)\b\s*(?:\*\*|:)')
+GEGL_DIAGNOSTIC = re.compile(r'\bGEGL-(?:WARNING|CRITICAL|ERROR)\b|Private Filter GEGL swap drain')
 
 
 def module(name, relative):
@@ -257,7 +265,34 @@ def observe_checker(checker, observation):
         checker.observer.descendants = original
 
 
-def run_process(command, env, output, observation, timeout, markers=(), required_plugins=()):
+def diagnostic_errors(stdout, stderr, expected_stderr=None):
+    errors = []
+    for stream, contents in (('stdout', stdout), ('stderr', stderr)):
+        for number, line in enumerate(contents.splitlines(), 1):
+            if RUNTIME_WARNING.search(line):
+                errors.append(f'Unexpected {stream} diagnostic at line {number}: {line}')
+    if expected_stderr is not None:
+        actual = Counter(line for line in stderr.splitlines() if line)
+        if actual != Counter(expected_stderr):
+            errors.append('Unexpected corpus stderr counts: '+repr(dict(actual)))
+    return errors
+
+
+def gegl_log_diagnostics(output, relocated):
+    # Installed checkers retain their console output in nested logs rather than
+    # forwarding it to our run_process(). Apply this teardown-specific guard to
+    # those logs too; unrelated startup warnings retain their existing policy.
+    diagnostics = []
+    for path in sorted(output.rglob('*.log')):
+        if path.is_relative_to(relocated):
+            continue
+        for number, line in enumerate(path.read_text(errors='replace').splitlines(), 1):
+            if GEGL_DIAGNOSTIC.search(line):
+                diagnostics.append(dict(log=str(path.relative_to(output)), line=number, text=line))
+    return diagnostics
+
+
+def run_process(command, env, output, observation, timeout, markers=(), required_plugins=(), expected_stderr=None):
     output.mkdir(parents=True, exist_ok=False)
     errors, began = [], time.monotonic()
     with (output/'stdout.log').open('w') as stdout, (output/'stderr.log').open('w') as stderr:
@@ -289,6 +324,7 @@ def run_process(command, env, output, observation, timeout, markers=(), required
     for diagnostic in observer.SANITIZER_DIAGNOSTICS + ('Traceback (most recent call last)',):
         if diagnostic in stdout or diagnostic in stderr:
             errors.append('Runtime diagnostic: '+diagnostic)
+    errors.extend(diagnostic_errors(stdout, stderr, expected_stderr))
     process_report = observation.report()
     for field in ('wrong_installation', 'bad_helper_protocol', 'survivors', 'leftover_profiles',
                   'unexpected_external_libraries'):
@@ -302,7 +338,8 @@ def run_process(command, env, output, observation, timeout, markers=(), required
     result = dict(status='failed' if errors else 'passed', errors=errors, exit_code=code,
                   seconds=time.monotonic()-began, command=list(map(str, command)),
                   stdout_sha256=sha(output/'stdout.log'), stderr_sha256=sha(output/'stderr.log'),
-                  expected_result_markers=list(markers), **process_report)
+                  expected_result_markers=list(markers), expected_stderr_counts=expected_stderr,
+                  **process_report)
     write_json(output/'report.json', result)
     return result
 
@@ -420,17 +457,17 @@ def execute(args):
             if result['status'] != 'passed':
                 raise RuntimeError('Installed route failed: '+name)
         # One final replay of each whole driver, against this exact runtime.
-        for name, plugins, markers, extra in (
+        for name, plugins, markers, extra, expected_stderr in (
                 ('painter-filter-procedure', PLUGINS[:3], PROCEDURE_MARKERS,
-                 [ROOT/'migration/fixtures/legacy-blinds/fixtures.tsv']),
-                ('painter-filter-convolution', PLUGINS[3:], CONVOLUTION_MARKERS, [])):
+                 [ROOT/'migration/fixtures/legacy-blinds/fixtures.tsv'], PROCEDURE_DIAGNOSTICS),
+                ('painter-filter-convolution', PLUGINS[3:], CONVOLUTION_MARKERS, [], {})):
             observation = Observation(relocated)
             observations.append(observation)
             report['corpus_invocations'] += 1
             result = run_process([sys.executable, '-B', ROOT/'migration/tests/run_filter_owner_context_fixture_test.py',
                                   '--', args.build/'app'/name, relocated/'usr/libexec/gimp-painter-filter-worker', *extra],
                                  corpus_environment(relocated, args.output/(name+'-profile')),
-                                 args.output/name, observation, 1200, markers, plugins)
+                                 args.output/name, observation, 1200, markers, plugins, expected_stderr)
             report['runs'].append(dict(name=name, **result))
             if result['status'] != 'passed':
                 raise RuntimeError('Relocated genuine-old corpus failed: '+name)
@@ -468,6 +505,12 @@ def execute(args):
             report['errors'].append('Final input/runtime verification failed: '+type(error).__name__+': '+str(error))
         if report['corpus_invocations'] != 2 or len(report['runs']) != 9:
             report['errors'].append('Incomplete required runtime/corpus coverage')
+        try:
+            report['gegl_log_diagnostics'] = gegl_log_diagnostics(args.output, relocated)
+            if report['gegl_log_diagnostics']:
+                report['errors'].append('Unexpected GEGL diagnostics in retained runtime logs')
+        except OSError as error:
+            report['errors'].append('Cannot inspect retained runtime diagnostics: '+str(error))
         report['status'] = 'failed' if report['errors'] else 'passed'
         write_json(args.output/'report.json', report)
     print(json.dumps(dict(status=report['status'], errors=report['errors'], report=str(args.output/'report.json'))))

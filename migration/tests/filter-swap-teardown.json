@@ -1,0 +1,129 @@
+{
+  "format": 1,
+  "status": "passed",
+  "errors": [],
+  "scope": "Normal Debian 13 x86_64 private Filter GEGL teardown and corpus regression; not full aggregate, sanitizer, installed-runtime acceptance or release",
+  "source_base": "8d8c06d32a6b05d0d5babaef5386e0604a2ad59d",
+  "tested_source_sha256": {
+    "app/core/gimpfilterprocedure.cpp": "9b6b68607ef62edf42abf39ee810c05eeec316f1c0f073701c30420c7f7de349",
+    "app/painter/tests/test-filter-procedure.cpp": "05da8fa8156d4f14510c4222c949c73c08ff1786299c3928820bdf0dc98606ce",
+    "migration/tests/run_filter_acceptance_runtime.py": "a7bc40f296c88d1f30e8b630c68a5e0569e02c4b82deaacab71716a6407f0c52"
+  },
+  "tested_executable_sha256": {
+    "app/gimp-painter-filter-worker": "7ae0797c705b601c6ee47ae53b0b7f739bb23d11f4d67d7dd3f312781e54a188",
+    "app/painter-filter-procedure": "1e1098c983ec153c38d83084e195e4fc1f89529c849a0182f5cdea338b4ce5a6",
+    "app/painter-filter-convolution": "9fcd55f36565f3d99c9f97bc3da29cd6cba8556cb69469dea140318d3c157e85",
+    "plug-ins/common/blinds": "027343ebf17739483f7d27db7101ea50c1f55e12cef6de6190f2c6c94ee6c6c5",
+    "plug-ins/common/tile-small": "c66e06edfddc1e0f98c23875ff9122c73130a6f8d1e251864d84cf68357cd314",
+    "plug-ins/common/contrast-retinex": "d684ab67a7bf92e48f265122bbd303f96f9f64cc43986f8285fcfd30f8fde1ee",
+    "plug-ins/common/convolution-matrix": "89f6f80a63341b06d2ced3d1b1534bd1087918cb8252ae4ed340c58933207354"
+  },
+  "input_seal_unchanged": true,
+  "development_matches_tested_source": true,
+  "gegl_version": "0.4.62",
+  "gegl_library_sha256": "320ad3dd573768121cb95af8f6831133efb7005585a34e251f6008cb933583e6",
+  "display": "Authenticated loopback-only Xvfb, 1080x1920x24; no GUI claim",
+  "implementation": "After request objects/Gimp release, wait for public swap-busy false with 5-second monotonic deadline; require swap-total and swap-queued-total zero before gegl_exit",
+  "corrected_regression": "8 interleaved success/post-flush exception pairs; 258x198 Gray-alpha, both orientations, exact identity pixels, failed-output/disposition and empty-profile checks",
+  "focused_run": {
+    "exit_code": 0,
+    "stdout_and_stderr": "Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\n8 repeated native Filter success/exception teardowns passed\n",
+    "log_sha256": "83ad1bf3eb69cc414e2ef50d864dd29c7df8ed483fe1c9350ca95018a60438b5"
+  },
+  "full_registered_tests": [
+    {
+      "name": "gimp:painter / painter-filter-procedure",
+      "result": "OK",
+      "duration": 771.9207820892334,
+      "returncode": 0,
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/shared/gimp-native.RoEPfcPS/source/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "app/painter-filter-procedure",
+        "/workspace/shared/gimp-native.RoEPfcPS/build/app/gimp-painter-filter-worker",
+        "/workspace/shared/gimp-native.RoEPfcPS/source/migration/fixtures/legacy-blinds/fixtures.tsv"
+      ],
+      "stdout": "8 repeated native Filter success/exception teardowns passed\n320 actual legacy Blinds oracles byte-exact\n196 actual legacy SmallTiles oracles byte-exact (RGB/RGBA/Gray/Gray-alpha, factors0..6)\n174 actual legacy Retinex oracles byte-exact (87 native RGB,87 native RGBA)\n6 analytic selected Retinex ROI compositions matched old whole-fixture outputs\n2 analytic native Retinex raw-shadow ROI cases and 4 RGB carrier rejection cases passed\n12 native Blinds identity cases passed\n",
+      "stderr": "Private Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private Filter Gray background is not triplicated\nPrivate Filter worker: Private RGB Filter carrier must be opaque\nPrivate Filter worker: Private RGB Filter carrier must be opaque\nPrivate Filter worker: Private RGB Filter carrier must be opaque\nPrivate Filter worker: Private RGB Filter carrier must be opaque\n",
+      "diagnostic_errors": [],
+      "expected_stderr_counts": {
+        "Private Filter worker: Private RGB Filter carrier must be opaque": 4,
+        "Private Filter worker: Private Filter Gray background is not triplicated": 8
+      }
+    },
+    {
+      "name": "gimp:painter / painter-filter-convolution",
+      "result": "OK",
+      "duration": 268.0439558029175,
+      "returncode": 0,
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/shared/gimp-native.RoEPfcPS/source/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "app/painter-filter-convolution",
+        "/workspace/shared/gimp-native.RoEPfcPS/build/app/gimp-painter-filter-worker"
+      ],
+      "stdout": "296 genuine old Convolution final merges, 296 raw ROI comparisons, 8 old geometry rejections, 41 native analytic requests passed\n",
+      "stderr": "",
+      "diagnostic_errors": [],
+      "expected_stderr_counts": {}
+    }
+  ],
+  "classifier_controls": {
+    "status": "passed",
+    "checks": {
+      "exact_negative_diagnostics_accepted": true,
+      "missing_negative_diagnostic_rejected": true,
+      "extra_negative_diagnostic_rejected": true,
+      "gegl_stderr_rejected": true,
+      "gegl_stdout_rejected": true,
+      "critical_stderr_rejected": true,
+      "critical_stdout_rejected": true,
+      "fatal_stderr_rejected": true,
+      "fatal_stdout_rejected": true,
+      "plugin_stderr_rejected": true,
+      "plugin_stdout_rejected": true,
+      "empty_convolution_stderr_accepted": true,
+      "unexpected_plain_stderr_rejected": true,
+      "nested_gegl_guard_scoped": true
+    },
+    "runner_sha256": "a7bc40f296c88d1f30e8b630c68a5e0569e02c4b82deaacab71716a6407f0c52"
+  },
+  "reproducible_classifier_test": {
+    "command": "python3 -B migration/tests/test_filter_acceptance_diagnostics.py",
+    "test_file_sha256": "f10bd8263fc231e8f97256c68a851f2b0fbd54138bf8d8ecdf220597af404ec4",
+    "output": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n",
+    "unittest_methods": 4,
+    "distinct_controls": 14
+  },
+  "preserved_failed_attempts": [
+    {
+      "log": "swap-drain-focused.log",
+      "sha256": "b4b64fdaf412e809cadaea14362a8d2cb12202855fc52a2e1bc5f46f45d71c9f",
+      "exit_code": 1,
+      "diagnosis": "Original 257x193 regression incorrectly assumed angle-zero identity for odd Blinds segments",
+      "output": "Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected\nRepeated native Filter teardown lost identity pixels\n"
+    },
+    {
+      "log": "swap-drain-diagnostic-focused.log",
+      "sha256": "566f921e2732e766533df88cc8329ad85fd6bcf8bca87cab11d07def6cc79c39",
+      "exit_code": 1,
+      "diagnosis": "Separated invariants confirmed successful merged outcome but row 192 changed from source 0 to background 20",
+      "output": "Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected\nRepeated native Filter teardown lost identity at byte 197376: expected 0, got 20\n"
+    }
+  ],
+  "evidence_sha256": {
+    "swap-drain-tested-source.patch": "2af364360ed952117cf2ac0c3fb36635d7ea4834062ed8246a4b18164d0913bd",
+    "swap-drain-run-seal.json": "5c21a14868c5b5c53b20f4c9951daff4e356129973d3c39efb8a564f1b373e9c",
+    "swap-drain-corrected-build.log": "e550db73ee46ca939f7c21276138baa9414934348eba605a5210ed565c18f1cf",
+    "swap-drain-corrected-focused.log": "83ad1bf3eb69cc414e2ef50d864dd29c7df8ed483fe1c9350ca95018a60438b5",
+    "swap-drain-full.log": "daf9dfd920ceea9d891be7a7b97d2430880f7440ef746d50218fe7937812e948"
+  },
+  "limitations": [
+    "GEGL public statistics are sampled, not a general locking API; the private helper must have no remaining producer",
+    "No GEGL timeout/invariant fault injection",
+    "No ASan/UBSan refresh, installed-runtime acceptance, or full aggregate performed by this scoped run",
+    "Repeated full-corpus execution beyond this final run was not performed"
+  ]
+}
