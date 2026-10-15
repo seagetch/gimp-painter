@@ -7,6 +7,7 @@
 #include <gegl.h>
 #include <cstring>
 #include <vector>
+#include <utility>
 using namespace GimpPainter::MyPaint;
 namespace {
 const GeglRectangle backing_rect = {-8,-7,16,14};
@@ -90,6 +91,58 @@ void target_sampling_domain(){
     sample_red(s,0,0);sample_empty(s,40,40);g_assert_true(f.read()==after);s.cancel_session();g_assert_true(f.read()==before);
   }
 }
+void overlapping_adjacent_dirty_union(){
+  for(bool wide:{false,true})for(bool floating:{false,true}){
+    Fixture f(wide);const auto before=f.read();GeglSurface s(f.target);shape(s,3,3);
+    s.set_non_incremental(floating);s.set_stroke_opacity(.5f);
+    const GeglRectangle local={-5,-4,8,6},image={local.x+9,local.y-7,local.width,local.height};
+    auto*mask=gegl_buffer_new(&image,babl_format("Y u8"));
+    std::vector<guchar> full(std::size_t(image.width)*image.height,255);
+    gegl_buffer_set(mask,&image,0,babl_format("Y u8"),full.data(),GEGL_AUTO_ROWSTRIDE);
+    s.set_selection(mask,9,-7);
+    const GeglRectangle dabs[]={{-5,-4,3,3},{-3,-3,3,3},{0,-3,3,3}};
+    const GeglRectangle unions[]={{-5,-4,3,3},{-5,-4,5,4},{-5,-4,8,4}};
+    const int centers[][2]={{-3,-2},{-1,-1},{2,-1}};
+    unsigned notifications=0;
+    s.set_dirty_callback([&](const GeglRectangle&r){
+      g_assert_cmpuint(notifications,<,3);rect_equal(r,dabs[notifications]);
+      // The accumulated box is already published when the per-dab observer runs.
+      rect_equal(s.dirty(),unions[notifications]);++notifications;
+    });
+    s.begin_session();
+    for(unsigned n=0;n<3;++n){
+      const auto previous=f.read();
+      g_assert_true(s.draw_dab(centers[n][0],centers[n][1],2,1,0,0,.5f,1));
+      rect_equal(s.dirty(),unions[n]);g_assert_cmpuint(notifications,==,n+1);
+      const auto current=f.read();unsigned newly_changed=0;
+      for(int y=backing_rect.y;y<backing_rect.y+backing_rect.height;++y)
+        for(int x=backing_rect.x;x<backing_rect.x+backing_rect.width;++x){
+          const auto i=f.index(x,y);bool covered=false,earlier=false;
+          for(unsigned j=0;j<=n;++j)covered=covered||inside(dabs[j],x,y);
+          for(unsigned j=0;j<n;++j)earlier=earlier||inside(dabs[j],x,y);
+          if(!covered)g_assert_cmpmem(current.data()+i,f.bpp(),before.data()+i,f.bpp());
+          if(inside(dabs[n],x,y)&&!earlier&&std::memcmp(current.data()+i,previous.data()+i,f.bpp()))++newly_changed;
+        }
+      g_assert_cmpuint(newly_changed,>,0);
+    }
+    const auto painted=f.read();const auto reads=s.bytes_read(),writes=s.bytes_written();
+    // First touches the target's right edge. Second intersects the target but
+    // misses/touches the translated selection. Neither can enlarge dirty state.
+    for(const auto&center:{std::pair<int,int>{8,0},{6,4}}){
+      g_assert_false(s.draw_dab(center.first,center.second,2,1,0,0,.5f,1));
+      rect_equal(s.dirty(),unions[2]);g_assert_cmpuint(notifications,==,3);
+      g_assert_cmpuint(s.bytes_read(),==,reads);g_assert_cmpuint(s.bytes_written(),==,writes);
+      g_assert_true(f.read()==painted);
+    }
+    s.end_session();rect_equal(s.dirty(),unions[2]);g_assert_cmpuint(notifications,==,3);
+    g_assert_true(f.read()==painted);g_assert_cmpuint(s.bytes_read(),==,reads);g_assert_cmpuint(s.bytes_written(),==,writes);
+    s.begin_session();g_assert_cmpint(s.dirty().width,==,0);g_assert_cmpint(s.dirty().height,==,0);
+    g_assert_cmpuint(s.bytes_read(),==,0);g_assert_cmpuint(s.bytes_written(),==,0);
+    s.cancel_session();g_assert_cmpuint(notifications,==,3);g_assert_true(f.read()==painted);
+    g_test_message("dirty overlap/adjacency: %s %s",wide?"double":"legacy-u8",floating?"nonincremental":"incremental");
+    g_object_unref(mask);
+  }
+}
 void nonincremental_cancel_dirty_union(){
   for(bool wide:{false,true}){
     Fixture f(wide);const auto before=f.read();GeglSurface s(f.target);shape(s,1,1);s.set_non_incremental(true);s.set_stroke_opacity(.5);
@@ -104,4 +157,4 @@ void nonincremental_cancel_dirty_union(){
   }
 }
 }
-int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gegl_init(&argc,&argv);g_test_add_func("/coordinates/selection-edges",selection_edges);g_test_add_func("/coordinates/empty-touch-intersections",empty_intersections);g_test_add_func("/coordinates/target-sampling-domain",target_sampling_domain);g_test_add_func("/coordinates/nonincremental-cancel-dirty-union",nonincremental_cancel_dirty_union);const int result=g_test_run();gegl_exit();return result;}
+int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gegl_init(&argc,&argv);g_test_add_func("/coordinates/selection-edges",selection_edges);g_test_add_func("/coordinates/empty-touch-intersections",empty_intersections);g_test_add_func("/coordinates/target-sampling-domain",target_sampling_domain);g_test_add_func("/coordinates/overlapping-adjacent-dirty-union",overlapping_adjacent_dirty_union);g_test_add_func("/coordinates/nonincremental-cancel-dirty-union",nonincremental_cancel_dirty_union);const int result=g_test_run();gegl_exit();return result;}
