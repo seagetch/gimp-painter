@@ -904,6 +904,13 @@ void Tiles::action (const std::string& command, GObject *target) {
   if (closed || !img () || !ctx ()) return;
   auto image_lease=image;
   auto context_lease=context;
+  const auto image_epoch = image_generation;
+  const auto context_epoch = context_generation;
+  const auto popup_epoch = popup_generation;
+  auto current = [&] {
+    return !closed && image_generation == image_epoch &&
+           context_generation == context_epoch && popup_generation == popup_epoch;
+  };
   if (command == "visibility" && target) {
     auto layer_lease=ObjectRef<GObject>::retain(target);
     auto *item=GIMP_ITEM (target);
@@ -912,7 +919,7 @@ void Tiles::action (const std::string& command, GObject *target) {
     }
   } else if (command == "layer-menu") {
     close_popup ();
-    if (!closed) gimp_editor_popup_menu_at_pointer (GIMP_EDITOR (owner), nullptr);
+    if (current ()) gimp_editor_popup_menu_at_pointer (GIMP_EDITOR (owner), nullptr);
   } else if (command == "expand" && target) {
     gimp_viewable_set_expanded (GIMP_VIEWABLE (target), !gimp_viewable_get_expanded (GIMP_VIEWABLE (target)));
   } else if (command == "layer-popup") show_popup (false);
@@ -940,7 +947,11 @@ void Tiles::action (const std::string& command, GObject *target) {
       {"layers-delete", layers_delete_cmd_callback}
     };
     for (const auto& entry : entries) if (command == entry.name) {
-      close_popup (); entry.callback (nullptr, nullptr, owner); break;
+      close_popup ();
+      /* popup-closed may replace the image/context, open a newer popup, or
+       * destroy the owner. Leases keep storage alive, not this action current. */
+      if (current ()) entry.callback (nullptr, nullptr, owner);
+      break;
     }
   }
 }
