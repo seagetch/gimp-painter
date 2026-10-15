@@ -947,6 +947,26 @@ gimp_exit (Gimp     *gimp,
   if (handled)
     return;
 
+  /* RC serialization constructs defaults using the live user context.
+   * Finish pending autosaves before dropping it. Disable both producers
+   * first, and save editable preferences last if both have queued work. */
+  {
+    GimpRc *configs[] = { GIMP_RC (gimp->config),
+                          GIMP_RC (gimp->edit_config) };
+    guint   i;
+
+    for (i = 0; i < G_N_ELEMENTS (configs); i++)
+      gimp_rc_set_autosave (configs[i], FALSE);
+
+    for (i = 0; i < G_N_ELEMENTS (configs); i++)
+      if (configs[i]->save_idle_id)
+        {
+          g_source_remove (configs[i]->save_idle_id);
+          configs[i]->save_idle_id = 0;
+          gimp_rc_save (configs[i]);
+        }
+  }
+
   gimp_contexts_exit (gimp);
 
   g_idle_add_full (G_PRIORITY_LOW,

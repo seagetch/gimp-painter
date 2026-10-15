@@ -119,8 +119,14 @@ gimp_rc_dispose (GObject *object)
 {
   GimpRc *rc = GIMP_RC (object);
 
+  gimp_rc_set_autosave (rc, FALSE);
+
   if (rc->save_idle_id)
-    gimp_rc_idle_save (rc);
+    {
+      g_source_remove (rc->save_idle_id);
+      rc->save_idle_id = 0;
+      gimp_rc_save (rc);
+    }
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -244,9 +250,9 @@ gimp_rc_duplicate (GimpConfig *config)
 static gboolean
 gimp_rc_idle_save (GimpRc *rc)
 {
-  gimp_rc_save (rc);
-
+  /* This source is already dispatching; a save may schedule new work. */
   rc->save_idle_id = 0;
+  gimp_rc_save (rc);
 
   return FALSE;
 }
@@ -505,6 +511,7 @@ gimp_rc_save (GimpRc *rc)
   GObject *gimp;
   GimpRc  *global;
   gchar   *header;
+  guint    save_idle_id;
   GError  *error = NULL;
 
   const gchar *top =
@@ -520,6 +527,8 @@ gimp_rc_save (GimpRc *rc)
     "end of gimprc";
 
   g_return_if_fail (GIMP_IS_RC (rc));
+
+  save_idle_id = rc->save_idle_id;
 
   g_object_get (rc, "gimp", &gimp, NULL);
 
@@ -547,6 +556,13 @@ gimp_rc_save (GimpRc *rc)
     {
       g_message ("%s", error->message);
       g_error_free (error);
+    }
+  else if (save_idle_id && rc->save_idle_id == save_idle_id)
+    {
+      /* A successful explicit save satisfies the queued autosave. On
+       * failure keep its existing retry, unless shutdown consumed it. */
+      g_source_remove (save_idle_id);
+      rc->save_idle_id = 0;
     }
 
   g_free (header);
