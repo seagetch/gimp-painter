@@ -1,0 +1,194 @@
+
+(process:1763): GLib-GObject-CRITICAL **: 10:26:51.948: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:1763): GLib-GObject-CRITICAL **: 10:26:51.948: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+Failed to parse tag cache: No such file or directory
+GIMP-Error: Plug-in "pagecurl"
+attempted to install procedure "plug-in-pagecurl" with invalid return-value name "Curl Layer".
+This is not allowed.
+
+GIMP-Error: Plug-in "pagecurl"
+(/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/pagecurl)
+attempted to register the menu item "<Image>/Filters/Distorts" for the procedure "plug-in-pagecurl".
+It has however not installed that procedure.  This is not allowed.
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5561eb577520:  set ignore_undos=0
+create instance type=5561eb6b5a20
+FilterLayer::class_init
+GimpFilterLayer: Set properties_base to 18
+FilterLayer::iface_init<GimpPickableInterface>
+FilterLayer::FilterLayer
+new_instance::group=0x5561eb58cbe0
+FilterLayer::filter_reset
+TL time_us=9309549219 event=drawable-update-signal ptr=0x5561eb58cbe0 id=3 ordinal=0 attached=1 name=top
+TL time_us=9309549292 event=cache-input-copy-begin ptr=0x5561eb58cbe0 id=3 ordinal=0 attached=1 name=top
+TL time_us=9309549597 event=cache-input-copy-end ptr=0x5561eb58cbe0 id=3 ordinal=0 attached=1 name=top
+TL time_us=9309549602 event=run-enter ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5561eb671700:  set ignore_undos=1
+TL time_us=9309551040 event=run-return-running ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+--->top: start runner=1
+TL time_us=9309551110 event=after-initial-flush ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+STATE time_us=9309551131 name=top pending=1 active=1 attached=1 ordinal=1
+create instance type=5561eb6b5a20
+FilterLayer::FilterLayer
+new_instance::group=0x5561eb53a8a0
+TL time_us=9309551195 event=stop-request-running ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551199 event=cancel-signal ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551204 event=stack-unblocked-requeue ptr=0x5561eb53a8a0 id=4 ordinal=0 attached=1 name=bottom
+FilterLayer::filter_reset
+TL time_us=9309551216 event=stop-request-running ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551220 event=cancel-signal ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551241 event=stop-request-running ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551245 event=cancel-signal ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551252 event=stop-request-running ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551255 event=cancel-signal ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+FilterLayer::filter_reset
+TL time_us=9309551276 event=stop-request-running ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551279 event=cancel-signal ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551283 event=drawable-update-signal ptr=0x5561eb53a8a0 id=4 ordinal=0 attached=1 name=bottom
+TL time_us=9309551290 event=stop-request-running ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551293 event=cancel-signal ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551296 event=stop-request-running ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551299 event=cancel-signal ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309551303 event=after-stack-insert ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+STATE time_us=9309551305 name=top pending=1 active=1 attached=1 ordinal=1
+TL time_us=9309551393 event=cache-input-copy-begin ptr=0x5561eb53a8a0 id=4 ordinal=0 attached=1 name=bottom
+TL time_us=9309551697 event=cache-input-copy-end ptr=0x5561eb53a8a0 id=4 ordinal=0 attached=1 name=bottom
+TL time_us=9309551709 event=run-enter ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5561eb5875e0:  set ignore_undos=1
+TL time_us=9309552663 event=run-return-running ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+--->bottom: start runner=1
+TL time_us=9309607669 event=shadow-merge-enter ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+TL time_us=9309608620 event=shadow-merge-applied ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309608729 event=drawable-update-signal ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309609478 event=progress-end-callback ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309609486 event=runner-on-end ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309609488 event=propagation-begin ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309609495 event=drawable-update-signal ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309609502 event=propagation-end ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309621223 event=shadow-merge-enter ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+TL time_us=9309621821 event=shadow-merge-applied ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309622938 event=stop-request-idle ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309622945 event=drawable-update-signal ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309624270 event=progress-end-callback ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309624281 event=runner-on-end ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309624284 event=propagation-begin ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309624293 event=stack-unblocked-requeue ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+FilterLayer::filter_reset
+TL time_us=9309624304 event=drawable-update-signal ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309624310 event=drawable-update-signal ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309624313 event=propagation-end ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309624419 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309624442 event=cache-input-copy-begin ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309624491 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309624550 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309624609 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309624629 event=cache-input-copy-end ptr=0x5561eb58cbe0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9309624632 event=run-enter ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5561eb5875e0:  set ignore_undos=1
+TL time_us=9309625696 event=run-return-running ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+--->top: start runner=1
+TL time_us=9309626936 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309627027 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309627132 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309627218 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309703923 event=shadow-merge-enter ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+TL time_us=9309704624 event=shadow-merge-applied ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9309705743 event=drawable-update-signal ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9309705825 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309705885 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309705939 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309705994 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309707149 event=progress-end-callback ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9309707155 event=runner-on-end ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9309707157 event=propagation-begin ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9309707164 event=drawable-update-signal ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9309707169 event=propagation-end ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9309707331 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309707340 event=composite-cache ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9309707391 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309707399 event=composite-cache ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9309707449 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309707457 event=composite-cache ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9309707508 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9309707516 event=composite-cache ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9311052195 event=first-window-end ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+STATE time_us=9311052248 name=top pending=0 active=0 attached=1 ordinal=2
+TL time_us=9311052252 event=first-window-end ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+STATE time_us=9311052254 name=bottom pending=0 active=0 attached=1 ordinal=1
+CACHE name=top sha256=b7997c60612a8f60f104b19583162aaac7dde1f1ab2e8ef7c9b935550e2b0aa8
+TL time_us=9311056422 event=edit-source-request ptr=0x5561eb612a20 id=2 ordinal=0 attached=1 name=source
+TL time_us=9311056563 event=stop-request-idle ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9311056581 event=stop-request-idle ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9311056583 event=stop-request-idle ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9311056778 event=cache-input-copy-begin ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9311056855 event=cache-input-copy-end ptr=0x5561eb53a8a0 id=4 ordinal=1 attached=1 name=bottom
+TL time_us=9311056861 event=run-enter ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5561eb5875e0:  set ignore_undos=1
+TL time_us=9311058536 event=run-return-running ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+--->bottom: start runner=1
+TL time_us=9311140158 event=shadow-merge-enter ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+TL time_us=9311140971 event=shadow-merge-applied ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311142133 event=stop-request-idle ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9311142144 event=drawable-update-signal ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311143532 event=progress-end-callback ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311143540 event=runner-on-end ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311143543 event=propagation-begin ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311143550 event=stack-unblocked-requeue ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+FilterLayer::filter_reset
+TL time_us=9311143564 event=drawable-update-signal ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9311143577 event=drawable-update-signal ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311143579 event=propagation-end ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311143746 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311143765 event=cache-input-copy-begin ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9311143829 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311144209 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311144291 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311144326 event=cache-input-copy-end ptr=0x5561eb58cbe0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9311144330 event=run-enter ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5561eb5875e0:  set ignore_undos=1
+TL time_us=9311145654 event=run-return-running ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+--->top: start runner=1
+TL time_us=9311146883 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311146969 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311147048 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311147153 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311228362 event=shadow-merge-enter ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+TL time_us=9311228959 event=shadow-merge-applied ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9311230139 event=drawable-update-signal ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9311230223 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311230284 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311230338 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311230392 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311231523 event=progress-end-callback ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9311231531 event=runner-on-end ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9311231534 event=propagation-begin ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9311231541 event=drawable-update-signal ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9311231546 event=propagation-end ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9311231710 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311231720 event=composite-cache ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9311231772 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311231780 event=composite-cache ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9311231832 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311231841 event=composite-cache ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9311231894 event=composite-cache ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+TL time_us=9311231903 event=composite-cache ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+TL time_us=9312556618 event=second-window-end ptr=0x5561eb58cbe0 id=3 ordinal=3 attached=1 name=top
+STATE time_us=9312556671 name=top pending=0 active=0 attached=1 ordinal=3
+TL time_us=9312556675 event=second-window-end ptr=0x5561eb53a8a0 id=4 ordinal=2 attached=1 name=bottom
+STATE time_us=9312556677 name=bottom pending=0 active=0 attached=1 ordinal=2
+CACHE name=top sha256=b7997c60612a8f60f104b19583162aaac7dde1f1ab2e8ef7c9b935550e2b0aa8
+TIMELINE_COMPLETE scene=stack
+
+(script-fu:1949): LibGimpBase-WARNING **: 10:26:56.065: script-fu: gimp_wire_read(): error

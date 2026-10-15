@@ -1,0 +1,41 @@
+
+(process:1378): GLib-GObject-CRITICAL **: 10:26:45.141: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:1378): GLib-GObject-CRITICAL **: 10:26:45.141: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+Failed to parse tag cache: No such file or directory
+GIMP-Error: Plug-in "pagecurl"
+attempted to install procedure "plug-in-pagecurl" with invalid return-value name "Curl Layer".
+This is not allowed.
+
+GIMP-Error: Plug-in "pagecurl"
+(/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/pagecurl)
+attempted to register the menu item "<Image>/Filters/Distorts" for the procedure "plug-in-pagecurl".
+It has however not installed that procedure.  This is not allowed.
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55c3eb5e16f0:  set ignore_undos=0
+create instance type=55c3eb720990
+FilterLayer::class_init
+GimpFilterLayer: Set properties_base to 18
+FilterLayer::iface_init<GimpPickableInterface>
+FilterLayer::FilterLayer
+new_instance::group=0x55c3eb5ef040
+FilterLayer::filter_reset
+TL time_us=9302713933 event=drawable-update-signal ptr=0x55c3eb5ef040 id=3 ordinal=0 attached=1 name=top
+TL time_us=9302714003 event=cache-input-copy-begin ptr=0x55c3eb5ef040 id=3 ordinal=0 attached=1 name=top
+TL time_us=9302714298 event=cache-input-copy-end ptr=0x55c3eb5ef040 id=3 ordinal=0 attached=1 name=top
+TL time_us=9302714305 event=run-enter ptr=0x55c3eb5ef040 id=3 ordinal=1 attached=1 name=top
+TL time_us=9302714782 event=shadow-merge-enter ptr=0x55c3eb5ef040 id=3 ordinal=1 attached=1 name=top
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+TL time_us=9302715468 event=shadow-merge-applied ptr=0x55c3eb5ef040 id=3 ordinal=1 attached=1 name=top
+TL time_us=9302715486 event=drawable-update-signal ptr=0x55c3eb5ef040 id=3 ordinal=1 attached=1 name=top
+TL time_us=9302715550 event=run-return-running ptr=0x55c3eb5ef040 id=3 ordinal=1 attached=1 name=top
+--->top: start runner=1
+TL time_us=9302715562 event=after-initial-flush ptr=0x55c3eb5ef040 id=3 ordinal=1 attached=1 name=top
+STATE time_us=9302715576 name=top pending=1 active=1 attached=1 ordinal=1
+TL time_us=9304216125 event=first-window-end ptr=0x55c3eb5ef040 id=3 ordinal=1 attached=1 name=top
+STATE time_us=9304216180 name=top pending=1 active=1 attached=1 ordinal=1
+CACHE name=top sha256=0d0df4f1f099ea09787b32d70a5c5c72b18553a5195791b9244a76d53a0ea08e
+TIMELINE_COMPLETE scene=builtin
+
+(script-fu:1564): LibGimpBase-WARNING **: 10:26:47.726: script-fu: gimp_wire_read(): error

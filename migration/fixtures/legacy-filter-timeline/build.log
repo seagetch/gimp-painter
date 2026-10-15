@@ -1,0 +1,47 @@
+make: Entering directory '/workspace/scratch/5b5281e79681/legacy-filter-timeline-20261015/gimp/app/tests'
+  CC       test-xcf.o
+test-xcf.c: In function ‘effect’:
+test-xcf.c:1004:2: warning: ‘g_value_array_free’ is deprecated: Use 'GArray' instead [-Wdeprecated-declarations]
+ 1004 |  l=gimp_filter_layer_new(im,256,256,name,1,GIMP_NORMAL_MODE);g_assert(gimp_image_add_layer(im,l,NULL,position,FALSE));g_signal_connect(l,"update",G_CALLBACK(updated),NULL);gimp_filter_layer_set_procedure(GIMP_FILTER_LAYER(l),pn,a);g_array_unref(a);g_value_array_free(v);return l;
+      |  ^
+In file included from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib-object.h:38,
+                 from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/include/gegl-0.3/gegl.h:22,
+                 from test-xcf.c:22:
+/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/gobject/gvaluearray.h:65:17: note: declared here
+   65 | void            g_value_array_free           (GValueArray       *value_array);
+      |                 ^~~~~~~~~~~~~~~~~~
+test-xcf.c: In function ‘main’:
+test-xcf.c:1012:2: warning: ‘g_thread_init’ is deprecated [-Wdeprecated-declarations]
+ 1012 |  g_thread_init(NULL);g_type_init();gtk_init(&argc,&argv);gimp_test_utils_setup_menus_dir();g=gimp_init_for_gui_testing(TRUE);im=gimp_create_image(g,256,256,GIMP_RGB,FALSE);src=gimp_layer_new(im,256,256,GIMP_RGBA_IMAGE,"source",1,GIMP_NORMAL_MODE);g_assert(gimp_image_add_layer(im,src,NULL,0,FALSE));gimp_drawable_fill(GIMP_DRAWABLE(src),&red,NULL);gimp_drawable_update(GIMP_DRAWABLE(src),0,0,256,256);
+      |  ^~~~~~~~~~~~~
+In file included from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib.h:115,
+                 from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib/gprintf.h:23,
+                 from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib/gstdio.h:24,
+                 from test-xcf.c:20:
+/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib/deprecated/gthread.h:271:10: note: declared here
+  271 | void     g_thread_init                   (gpointer vtable);
+      |          ^~~~~~~~~~~~~
+test-xcf.c:1012:2: warning: ‘g_type_init’ is deprecated [-Wdeprecated-declarations]
+ 1012 |  g_thread_init(NULL);g_type_init();gtk_init(&argc,&argv);gimp_test_utils_setup_menus_dir();g=gimp_init_for_gui_testing(TRUE);im=gimp_create_image(g,256,256,GIMP_RGB,FALSE);src=gimp_layer_new(im,256,256,GIMP_RGBA_IMAGE,"source",1,GIMP_NORMAL_MODE);g_assert(gimp_image_add_layer(im,src,NULL,0,FALSE));gimp_drawable_fill(GIMP_DRAWABLE(src),&red,NULL);gimp_drawable_update(GIMP_DRAWABLE(src),0,0,256,256);
+      |  ^~~~~~~~~~~~~
+In file included from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib-object.h:24:
+/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/gobject/gtype.h:737:23: note: declared here
+  737 | void                  g_type_init                    (void);
+      |                       ^~~~~~~~~~~
+test-xcf.c: At top level:
+test-xcf.c:236:1: warning: ‘write_and_read_gimp_2_8_format’ defined but not used [-Wunused-function]
+  236 | write_and_read_gimp_2_8_format (gconstpointer data)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+test-xcf.c:203:1: warning: ‘load_gimp_2_6_file’ defined but not used [-Wunused-function]
+  203 | load_gimp_2_6_file (gconstpointer data)
+      | ^~~~~~~~~~~~~~~~~~
+test-xcf.c:185:1: warning: ‘write_and_read_gimp_2_6_format_unusual’ defined but not used [-Wunused-function]
+  185 | write_and_read_gimp_2_6_format_unusual (gconstpointer data)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+test-xcf.c:166:1: warning: ‘write_and_read_gimp_2_6_format’ defined but not used [-Wunused-function]
+  166 | write_and_read_gimp_2_6_format (gconstpointer data)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  CCLD     test-xcf
+make: Leaving directory '/workspace/scratch/5b5281e79681/legacy-filter-timeline-20261015/gimp/app/tests'

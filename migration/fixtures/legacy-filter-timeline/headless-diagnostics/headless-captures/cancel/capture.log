@@ -1,0 +1,79 @@
+
+(process:806): GLib-GObject-CRITICAL **: 10:26:34.154: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:806): GLib-GObject-CRITICAL **: 10:26:34.154: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+Failed to parse tag cache: No such file or directory
+GIMP-Error: Plug-in "pagecurl"
+attempted to install procedure "plug-in-pagecurl" with invalid return-value name "Curl Layer".
+This is not allowed.
+
+GIMP-Error: Plug-in "pagecurl"
+(/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/pagecurl)
+attempted to register the menu item "<Image>/Filters/Distorts" for the procedure "plug-in-pagecurl".
+It has however not installed that procedure.  This is not allowed.
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x56340a269660:  set ignore_undos=0
+create instance type=56340a3a8860
+FilterLayer::class_init
+GimpFilterLayer: Set properties_base to 18
+FilterLayer::iface_init<GimpPickableInterface>
+FilterLayer::FilterLayer
+new_instance::group=0x56340a276fb0
+FilterLayer::filter_reset
+TL time_us=9291785332 event=drawable-update-signal ptr=0x56340a276fb0 id=3 ordinal=0 attached=1 name=top
+TL time_us=9291785404 event=cache-input-copy-begin ptr=0x56340a276fb0 id=3 ordinal=0 attached=1 name=top
+TL time_us=9291785695 event=cache-input-copy-end ptr=0x56340a276fb0 id=3 ordinal=0 attached=1 name=top
+TL time_us=9291785701 event=run-enter ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x56340a364540:  set ignore_undos=1
+TL time_us=9291787174 event=run-return-running ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+--->top: start runner=1
+TL time_us=9291787205 event=after-initial-flush ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+STATE time_us=9291787219 name=top pending=1 active=1 attached=1 ordinal=1
+TL time_us=9291787221 event=explicit-cancel-request ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291787223 event=after-explicit-cancel ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+STATE time_us=9291787225 name=top pending=1 active=1 attached=1 ordinal=1
+TL time_us=9291866995 event=shadow-merge-enter ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+TL time_us=9291867659 event=shadow-merge-applied ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291868792 event=drawable-update-signal ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291870134 event=progress-end-callback ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291870144 event=runner-on-end ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291870146 event=propagation-begin ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291870152 event=drawable-update-signal ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291870157 event=propagation-end ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291870407 event=composite-cache ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291870468 event=composite-cache ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291870520 event=composite-cache ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9291870572 event=composite-cache ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9293288032 event=first-window-end ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+STATE time_us=9293288113 name=top pending=0 active=0 attached=1 ordinal=1
+CACHE name=top sha256=b7997c60612a8f60f104b19583162aaac7dde1f1ab2e8ef7c9b935550e2b0aa8
+TL time_us=9293292202 event=edit-source-request ptr=0x56340a304fe0 id=2 ordinal=0 attached=1 name=source
+TL time_us=9293292597 event=cache-input-copy-begin ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9293292617 event=cache-input-copy-end ptr=0x56340a276fb0 id=3 ordinal=1 attached=1 name=top
+TL time_us=9293292623 event=run-enter ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x56340a364540:  set ignore_undos=1
+TL time_us=9293294051 event=run-return-running ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+--->top: start runner=1
+TL time_us=9293376052 event=shadow-merge-enter ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+TL time_us=9293376729 event=shadow-merge-applied ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9293377866 event=drawable-update-signal ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9293379253 event=progress-end-callback ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9293379262 event=runner-on-end ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9293379264 event=propagation-begin ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9293379272 event=drawable-update-signal ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9293379278 event=propagation-end ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9293379442 event=composite-cache ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9293379496 event=composite-cache ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9293379547 event=composite-cache ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9293379598 event=composite-cache ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+TL time_us=9294792715 event=second-window-end ptr=0x56340a276fb0 id=3 ordinal=2 attached=1 name=top
+STATE time_us=9294792768 name=top pending=0 active=0 attached=1 ordinal=2
+CACHE name=top sha256=b7997c60612a8f60f104b19583162aaac7dde1f1ab2e8ef7c9b935550e2b0aa8
+TIMELINE_COMPLETE scene=cancel
+
+(script-fu:992): LibGimpBase-WARNING **: 10:26:38.302: script-fu: gimp_wire_read(): error
