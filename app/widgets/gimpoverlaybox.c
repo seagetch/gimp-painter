@@ -351,11 +351,16 @@ gimp_overlay_box_pick_embedded_child (GdkWindow      *parent,
 {
   GList *list;
 
-  for (list = box->children; list; list = g_list_next (list))
+  /* Children are painted in insertion order, so the last visible child is
+   * on top. Match that order for input; a covered panel must not intercept
+   * clicks intended for the panel drawn above it. Insensitivity remains a
+   * native GTK concern and does not make a visible child click through. */
+  for (list = g_list_last (box->children); list; list = g_list_previous (list))
     {
       GimpOverlayChild *child = list->data;
 
-      if (gimp_overlay_child_pick (box, child, parent_x, parent_y))
+      if (gtk_widget_get_visible (child->widget) &&
+          gimp_overlay_child_pick (box, child, parent_x, parent_y))
         return child->window;
     }
 

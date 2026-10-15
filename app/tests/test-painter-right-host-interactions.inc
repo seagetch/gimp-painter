@@ -1,10 +1,13 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
-/* Additive actual-host controls for audit families 10--12. Include after the
- * unchanged v4 test-painter-right-docks.inc. No private Canvas state, generic
+/* Actual-host controls for audit families 10--12. Include after the
+ * native-dock fixture in test-painter-right-docks.inc. No private Canvas state, generic
  * attach helper, fabricated host, or direct shell tool-event call is used. */
 #include <math.h>
 #include "tools/tools-types.h"
 #include "tools/tool_manager.h"
+#include "widgets/gimptooloptionseditor.h"
+#include "widgets/gimpwindowstrategy.h"
+#include "core/gimp-gui.h"
 
 typedef struct
 {
@@ -91,7 +94,7 @@ right_host_settle (RightDocksFixture *f,
   g.widgets[0] = GTK_WIDGET (f->image_window);
   g.widgets[1] = f->shells[selected]->canvas;
   g.widgets[2] = right_docks_overlay_root (f->columns, g.widgets[1]);
-  g.widgets[3] = right_docks_overlay_root (f->guis[0], g.widgets[1]);
+  g.widgets[3] = right_docks_overlay_root (right_docks_toolbar (f, selected), g.widgets[1]);
   g.aspect = aspect;
   for (guint i = 0; i < G_N_ELEMENTS (g.widgets); i++)
     g_object_add_weak_pointer (G_OBJECT (g.widgets[i]), (gpointer *) &g.widgets[i]);
@@ -391,7 +394,7 @@ right_docks_panel_retreat_input (void)
   right_host_settle (&f, 0, 0);
   canvas = f.shells[0]->canvas;
   right = right_docks_overlay_root (f.columns, canvas);
-  options = right_docks_overlay_root (f.guis[0], canvas);
+  options = right_docks_overlay_root (right_docks_toolbar (&f, 0), canvas);
   g_assert_true (right != options);
   r = right_host_bounds (canvas, right);
   o = right_host_bounds (canvas, options);
@@ -478,7 +481,7 @@ right_host_recovery (GdkEventType recovery)
       drain ();
       g_assert_false (gtk_widget_has_focus (canvas));
       right = right_docks_overlay_root (f.columns, canvas);
-      options = right_docks_overlay_root (f.guis[0], canvas);
+      options = right_docks_overlay_root (right_docks_toolbar (&f, selected), canvas);
       r = right_host_bounds (canvas, right);
       o = right_host_bounds (canvas, options);
       right_host_assert_state (canvas, right, .85, FALSE);
@@ -697,6 +700,112 @@ right_host_visible_bounds (GtkWidget *canvas,
   return bounds;
 }
 
+/* Failure-only observations: do not move panels, change scrolling, or replace
+ * the center-point acceptance gate. The grid distinguishes a covered center
+ * from a control with no sampled usable input region. */
+static void
+right_host_trace_pick_failure (GtkWidget       *canvas,
+                               GtkWidget       *root,
+                               GtkWidget       *widget,
+                               RightHostBounds  sampled,
+                               GdkWindow       *picked)
+{
+  GimpOverlayChild *expected = right_host_child (canvas, root);
+  RightHostBounds fresh = right_host_visible_bounds (canvas, root, widget);
+  GList *children = gtk_container_get_children (GTK_CONTAINER (canvas));
+  const gchar *property = g_object_get_data (G_OBJECT (widget), "gimp-widget-property-name");
+  guint index = 0, hits = 0, patches = 0;
+  gdouble first_x = -1, first_y = -1;
+  gdouble patch_width = MIN (12, gtk_widget_get_allocated_width (widget));
+  gdouble patch_height = MIN (12, gtk_widget_get_allocated_height (widget));
+
+  g_test_message ("PICK-DIAG target=%p/%s/%s label=%s property=%s root=%p/%s "
+                  "expected-window=%p picked-window=%p allocated=%dx%d "
+                  "sampled=(%.2f,%.2f %.2fx%.2f) fresh=(%.2f,%.2f %.2fx%.2f)",
+                  (void *) widget, G_OBJECT_TYPE_NAME (widget), gtk_widget_get_name (widget),
+                  GTK_IS_LABEL (widget) ? gtk_label_get_text (GTK_LABEL (widget)) : "(none)",
+                  property ? property : "(none)",
+                  (void *) root, gtk_widget_get_name (root), (void *) expected->window, (void *) picked,
+                  gtk_widget_get_allocated_width (widget), gtk_widget_get_allocated_height (widget),
+                  sampled.x, sampled.y, sampled.width, sampled.height,
+                  fresh.x, fresh.y, fresh.width, fresh.height);
+  for (GList *iter = children; iter; iter = iter->next, index++)
+    {
+      GtkWidget *overlay = iter->data;
+      GimpOverlayChild *child = gimp_overlay_child_find (GIMP_OVERLAY_BOX (canvas), overlay);
+      GtkWidget *content = GTK_IS_BIN (overlay) ? gtk_bin_get_child (GTK_BIN (overlay)) : NULL;
+
+      if (!child)
+        continue;
+      g_test_message ("PICK-DIAG overlay[%u]=%p/%s/%s content=%s/%s window=%p "
+                      "visible=%d mapped=%d pass-through=%d opacity=%.2f "
+                      "request=(%.2f,%.2f) matrix=(%.2f,%.2f) allocation=%dx%d "
+                      "picks-sampled-center=%d expected=%d actual=%d",
+                      index, (void *) overlay, G_OBJECT_TYPE_NAME (overlay), gtk_widget_get_name (overlay),
+                      content ? G_OBJECT_TYPE_NAME (content) : "(none)",
+                      content ? gtk_widget_get_name (content) : "(none)", (void *) child->window,
+                      gtk_widget_get_visible (overlay), gtk_widget_get_mapped (overlay),
+                      child->input_pass_through, child->opacity, child->x, child->y,
+                      child->matrix.x0, child->matrix.y0, gtk_widget_get_allocated_width (overlay),
+                      gtk_widget_get_allocated_height (overlay),
+                      gimp_overlay_child_pick (GIMP_OVERLAY_BOX (canvas), child,
+                                               sampled.x + sampled.width / 2,
+                                               sampled.y + sampled.height / 2),
+                      child == expected, child->window == picked);
+    }
+  g_list_free (children);
+  for (guint row = 0; row < 9; row++)
+    for (guint col = 0; col < 9; col++)
+      {
+        gdouble x = fresh.x + fresh.width * (col + .5) / 9;
+        gdouble y = fresh.y + fresh.height * (row + .5) / 9;
+        GdkWindow *hit = NULL;
+        gboolean patch = fresh.width >= patch_width && fresh.height >= patch_height;
+        gdouble left = CLAMP (x - patch_width / 2, fresh.x,
+                               MAX (fresh.x, fresh.x + fresh.width - patch_width));
+        gdouble top = CLAMP (y - patch_height / 2, fresh.y,
+                              MAX (fresh.y, fresh.y + fresh.height - patch_height));
+
+        g_signal_emit_by_name (gtk_widget_get_window (canvas), "pick-embedded-child", x, y, &hit);
+        if (hit == expected->window)
+          {
+            hits++;
+            if (first_x < 0) { first_x = x; first_y = y; }
+          }
+        for (guint py = 0; patch && py < 3; py++)
+          for (guint px = 0; patch && px < 3; px++)
+            {
+              hit = NULL;
+              g_signal_emit_by_name (gtk_widget_get_window (canvas), "pick-embedded-child",
+                                     left + .5 + (patch_width - 1) * px / 2,
+                                     top + .5 + (patch_height - 1) * py / 2, &hit);
+              patch &= hit == expected->window;
+            }
+        patches += patch;
+      }
+  g_test_message ("PICK-DIAG bounded-grid expected-host=%u/81 first=(%.2f,%.2f) "
+                  "usable-%.0fx%.0f-patches=%u/81",
+                  hits, first_x, first_y, patch_width, patch_height, patches);
+  right_host_trace_ancestry ("pick-failure-target", widget);
+  if (g_getenv ("GIMP_TEST_HOST_FAILURE_SCREENSHOT"))
+    {
+      const gchar *path = g_getenv ("GIMP_TEST_HOST_FAILURE_SCREENSHOT");
+      GdkWindow *screen_root = gdk_screen_get_root_window (gtk_widget_get_screen (canvas));
+      GdkPixbuf *screenshot = gdk_pixbuf_get_from_window (screen_root, 0, 0,
+                                                        gdk_window_get_width (screen_root),
+                                                        gdk_window_get_height (screen_root));
+      GError *error = NULL;
+
+      if (screenshot && gdk_pixbuf_save (screenshot, path, "png", &error, NULL))
+        g_test_message ("PICK-DIAG screenshot: %s", path);
+      else
+        g_test_message ("PICK-DIAG screenshot failed: %s",
+                        error ? error->message : "root window capture unavailable");
+      g_clear_error (&error);
+      g_clear_object (&screenshot);
+    }
+}
+
 static void
 right_host_assert_reachable (GtkWidget *canvas,
                              GtkWidget *root,
@@ -720,6 +829,8 @@ right_host_assert_reachable (GtkWidget *canvas,
   /* Ask GdkWindow's native embedded-child picker, which uses real overlay
    * stacking/input semantics, rather than treating opacity as clickability. */
   g_signal_emit_by_name (gtk_widget_get_window (canvas), "pick-embedded-child", x, y, &picked);
+  if (picked != child->window)
+    right_host_trace_pick_failure (canvas, root, widget, visible, picked);
   g_assert_true (picked == child->window);
 }
 
@@ -801,8 +912,9 @@ right_host_compact_end_reachability (RightDocksFixture *f,
 {
   const gchar *end_properties[] = { "use-texture", "use-smoothing", "expand-use" };
   GtkWidget *canvas = f->shells[selected]->canvas;
-  GtkWidget *root = right_docks_overlay_root (f->guis[0], canvas);
-  GtkScrolledWindow *scroll = right_host_scroller (root, f->guis[0]);
+  GtkWidget *toolbar = right_docks_toolbar (f, selected);
+  GtkWidget *root = right_docks_overlay_root (toolbar, canvas);
+  GtkScrolledWindow *scroll = right_host_scroller (root, toolbar);
   GtkAdjustment *h = gtk_scrolled_window_get_hadjustment (scroll);
   GtkAdjustment *v = gtk_scrolled_window_get_vadjustment (scroll);
   gboolean clipped = FALSE;
@@ -814,16 +926,21 @@ right_host_compact_end_reachability (RightDocksFixture *f,
   gtk_adjustment_set_value (h, gtk_adjustment_get_lower (h));
   gtk_adjustment_set_value (v, gtk_adjustment_get_lower (v));
   right_host_settle (f, selected, -1);
-  g_test_message ("Compact native scroll ranges: horizontal %.0f, vertical %.0f; page %.0fx%.0f",
+  g_test_message ("Independent toolbar scroll ranges: horizontal %.0f, vertical %.0f; page %.0fx%.0f",
                   h_range, v_range, gtk_adjustment_get_page_size (h), gtk_adjustment_get_page_size (v));
   for (guint i = 0; i < G_N_ELEMENTS (end_properties); i++)
     {
-      GtkWidget *target = right_host_find_property (f->guis[0], end_properties[i]);
+      GtkWidget *target = right_host_find_property (toolbar, end_properties[i]);
+      GtkWidget *native = right_host_find_property (f->guis[0], end_properties[i]);
       RightHostBounds before;
       gdouble old_h, old_v;
       gboolean active, model_active;
 
       g_assert_true (GTK_IS_TOGGLE_BUTTON (target));
+      g_assert_true (GTK_IS_TOGGLE_BUTTON (native));
+      g_assert_true (target != native);
+      g_assert_true (g_object_get_data (G_OBJECT (target), "gimp-widget-property-config") ==
+                     f->tools[0]->tool_options);
       gtk_adjustment_set_value (h, gtk_adjustment_get_lower (h));
       gtk_adjustment_set_value (v, gtk_adjustment_get_lower (v));
       right_host_settle (f, selected, -1);
@@ -831,22 +948,25 @@ right_host_compact_end_reachability (RightDocksFixture *f,
       clipped |= before.width < MIN (12, gtk_widget_get_allocated_width (target)) ||
                  before.height < MIN (12, gtk_widget_get_allocated_height (target));
       old_h = gtk_adjustment_get_value (h); old_v = gtk_adjustment_get_value (v);
-      right_host_reveal (f, selected, root, f->guis[0], target);
+      right_host_reveal (f, selected, root, toolbar, target);
       max_movement = MAX (max_movement, MAX (fabs (gtk_adjustment_get_value (h) - old_h),
                                             fabs (gtk_adjustment_get_value (v) - old_v)));
-      /* Use the existing native end control, and restore its original state
-       * immediately. This proves an actionable control beyond the clipped end. */
+      /* The independent toolbar control and the untouched native dock control
+       * must both follow the same options model, including the clipped end. */
       active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (target));
       g_object_get (f->tools[0]->tool_options, end_properties[i], &model_active, NULL);
       g_assert_cmpint (model_active, ==, active);
+      g_assert_cmpint (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (native)), ==, active);
       gtk_button_clicked (GTK_BUTTON (target));
       g_assert_cmpint (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (target)), ==, !active);
       g_object_get (f->tools[0]->tool_options, end_properties[i], &model_active, NULL);
       g_assert_cmpint (model_active, ==, !active);
+      g_assert_cmpint (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (native)), ==, !active);
       gtk_button_clicked (GTK_BUTTON (target));
       g_assert_cmpint (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (target)), ==, active);
       g_object_get (f->tools[0]->tool_options, end_properties[i], &model_active, NULL);
       g_assert_cmpint (model_active, ==, active);
+      g_assert_cmpint (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (native)), ==, active);
     }
   if (require_overflow)
     {
@@ -859,13 +979,218 @@ right_host_compact_end_reachability (RightDocksFixture *f,
   gtk_adjustment_set_value (h, MAX (gtk_adjustment_get_lower (h), gtk_adjustment_get_upper (h) - gtk_adjustment_get_page_size (h)));
   gtk_adjustment_set_value (v, MAX (gtk_adjustment_get_lower (v), gtk_adjustment_get_upper (v) - gtk_adjustment_get_page_size (v)));
   right_host_settle (f, selected, -1);
-  right_host_assert_reachable (canvas, root, right_host_find_property (f->guis[0], "expand-use"));
+  right_host_assert_reachable (canvas, root, right_host_find_property (toolbar, "expand-use"));
 }
 
-/* Run inside the existing layout case after its unchanged positive full-mode
- * reachability gate. A disabled real GUI ancestor must remain authoritative
- * through compact/full restoration; a locally disabled native child must
- * remain disabled even when that ancestor is enabled again. */
+/* Native options retain their real editor, dockbook and scroller. Opening the
+ * dialog does not move their children into the independent toolbar. */
+static GtkWidget *
+right_host_open_native_options (RightDocksFixture *f,
+                                guint              selected)
+{
+  GtkWidget *toolbar = right_docks_toolbar (f, selected);
+  GtkWidget *dockable = gimp_window_strategy_show_dockable_dialog (
+    GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)), gimp,
+    gimp_dialog_factory_get_singleton (),
+    gimp_widget_get_monitor (GTK_WIDGET (f->image_window)), "gimp-tool-options");
+  GtkWidget *editor;
+
+  g_assert_true (GIMP_IS_DOCKABLE (dockable));
+  right_host_settle (f, selected, -1);
+  right_docks_wait_drawable (f->guis[0]);
+  g_assert_true (gtk_widget_is_ancestor (f->guis[0], dockable));
+  editor = gtk_widget_get_ancestor (f->guis[0], GIMP_TYPE_TOOL_OPTIONS_EDITOR);
+  g_assert_nonnull (editor);
+  g_assert_true (gimp_tool_options_editor_get_tool_options (GIMP_TOOL_OPTIONS_EDITOR (editor)) ==
+                 f->tools[0]->tool_options);
+  g_assert_true (right_docks_toolbar (f, selected) == toolbar);
+  right_docks_assert_options (f, selected, 0, FALSE);
+  return dockable;
+}
+
+/* Native windows use their ordinary allocation; an editor docked in the
+ * on-canvas columns must additionally honor the actual overlay transform. */
+static RightHostBounds
+right_host_native_visible_bounds (RightDocksFixture *f,
+                                   guint              selected,
+                                   GtkWidget         *target)
+{
+  GtkWidget *canvas = f->shells[selected]->canvas;
+  GtkWidget *toplevel = gtk_widget_get_toplevel (target);
+  RightHostBounds visible;
+  gint x, y;
+
+  if (gtk_widget_is_ancestor (target, canvas))
+    return right_host_visible_bounds (canvas, right_docks_overlay_root (target, canvas), target);
+  g_assert_true (GTK_IS_WINDOW (toplevel));
+  g_assert_true (gtk_widget_translate_coordinates (target, toplevel, 0, 0, &x, &y));
+  visible = (RightHostBounds) { x, y, gtk_widget_get_allocated_width (target),
+                                     gtk_widget_get_allocated_height (target) };
+  for (GtkWidget *parent = gtk_widget_get_parent (target); parent;
+       parent = gtk_widget_get_parent (parent))
+    if (GTK_IS_VIEWPORT (parent) || GTK_IS_SCROLLED_WINDOW (parent) || parent == toplevel)
+      {
+        RightHostBounds clip;
+
+        g_assert_true (gtk_widget_translate_coordinates (parent, toplevel, 0, 0, &x, &y));
+        clip = (RightHostBounds) { x, y, gtk_widget_get_allocated_width (parent),
+                                        gtk_widget_get_allocated_height (parent) };
+        right_host_intersect (&visible, clip);
+      }
+  return visible;
+}
+
+static void
+right_host_native_reveal (RightDocksFixture *f,
+                          guint              selected,
+                          GtkWidget         *target)
+{
+  GtkWidget *canvas = f->shells[selected]->canvas;
+  GtkWidget *scroll = gtk_widget_get_ancestor (target, GTK_TYPE_SCROLLED_WINDOW);
+  GtkWidget *viewport;
+  GtkWidget *content;
+  GtkAdjustment *h, *v;
+  RightHostBounds visible;
+  gint x, y;
+
+  g_assert_nonnull (scroll);
+  viewport = gtk_bin_get_child (GTK_BIN (scroll));
+  g_assert_true (GTK_IS_VIEWPORT (viewport));
+  content = gtk_bin_get_child (GTK_BIN (viewport));
+  g_assert_nonnull (content);
+  g_assert_true (gtk_widget_translate_coordinates (target, content, 0, 0, &x, &y));
+  h = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (scroll));
+  v = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (scroll));
+  gtk_adjustment_clamp_page (h, x, x + gtk_widget_get_allocated_width (target));
+  gtk_adjustment_clamp_page (v, y, y + gtk_widget_get_allocated_height (target));
+  right_host_settle (f, selected, -1);
+  right_docks_wait_drawable (target);
+  if (gtk_widget_is_ancestor (target, canvas))
+    {
+      /* Reveal the whole native editor in the right-columns host too. Its
+       * internal scroller and the outer overlay scroller are independent. */
+      GtkWidget *root = right_docks_overlay_root (target, canvas);
+      right_host_reveal (f, selected, root, f->columns, scroll);
+      right_host_assert_reachable (canvas, root, target);
+    }
+  visible = right_host_native_visible_bounds (f, selected, target);
+  g_assert_true (gtk_widget_is_sensitive (target));
+  g_assert_cmpfloat (visible.width, >=, MIN (12, gtk_widget_get_allocated_width (target)));
+  g_assert_cmpfloat (visible.height, >=, MIN (12, gtk_widget_get_allocated_height (target)));
+}
+
+static void
+right_host_native_end_reachability (RightDocksFixture *f,
+                                    guint              selected)
+{
+  const gchar *properties[] = { "use-texture", "use-smoothing", "expand-use" };
+  GtkWidget *scroll = gtk_widget_get_ancestor (f->guis[0], GTK_TYPE_SCROLLED_WINDOW);
+  GtkAdjustment *h, *v;
+  gboolean clipped = FALSE;
+  gdouble movement = 0;
+
+  g_assert_nonnull (scroll);
+  h = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (scroll));
+  v = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (scroll));
+  g_test_message ("Full native editor scroll ranges: horizontal %.0f, vertical %.0f",
+                  gtk_adjustment_get_upper (h) - gtk_adjustment_get_page_size (h) - gtk_adjustment_get_lower (h),
+                  gtk_adjustment_get_upper (v) - gtk_adjustment_get_page_size (v) - gtk_adjustment_get_lower (v));
+  for (guint i = 0; i < G_N_ELEMENTS (properties); i++)
+    {
+      GtkWidget *target = right_host_find_property (f->guis[0], properties[i]);
+      GtkWidget *peer = right_host_find_property (right_docks_toolbar (f, selected), properties[i]);
+      RightHostBounds before;
+      gboolean saved, model;
+      gdouble old_h, old_v;
+
+      g_assert_true (GTK_IS_TOGGLE_BUTTON (target));
+      g_assert_true (GTK_IS_TOGGLE_BUTTON (peer));
+      g_assert_true (target != peer);
+      gtk_adjustment_set_value (h, gtk_adjustment_get_lower (h));
+      gtk_adjustment_set_value (v, gtk_adjustment_get_lower (v));
+      right_host_settle (f, selected, -1);
+      before = right_host_native_visible_bounds (f, selected, target);
+      clipped |= before.width < MIN (12, gtk_widget_get_allocated_width (target)) ||
+                 before.height < MIN (12, gtk_widget_get_allocated_height (target));
+      old_h = gtk_adjustment_get_value (h); old_v = gtk_adjustment_get_value (v);
+      right_host_native_reveal (f, selected, target);
+      movement = MAX (movement, MAX (fabs (gtk_adjustment_get_value (h) - old_h),
+                                     fabs (gtk_adjustment_get_value (v) - old_v)));
+      saved = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (target));
+      gtk_button_clicked (GTK_BUTTON (target));
+      g_object_get (f->tools[0]->tool_options, properties[i], &model, NULL);
+      g_assert_cmpint (model, ==, !saved);
+      g_assert_cmpint (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (peer)), ==, !saved);
+      gtk_button_clicked (GTK_BUTTON (target));
+      g_object_get (f->tools[0]->tool_options, properties[i], &model, NULL);
+      g_assert_cmpint (model, ==, saved);
+      g_assert_cmpint (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (peer)), ==, saved);
+    }
+  if (clipped)
+    {
+      g_assert_cmpfloat (MAX (gtk_adjustment_get_upper (h) - gtk_adjustment_get_page_size (h) - gtk_adjustment_get_lower (h),
+                              gtk_adjustment_get_upper (v) - gtk_adjustment_get_page_size (v) - gtk_adjustment_get_lower (v)), >, 0);
+      g_assert_cmpfloat (movement, >, 0);
+    }
+  right_host_native_reveal (f, selected, right_host_find_property (f->guis[0], "expand-use"));
+}
+
+/* The source uses the image-window aspect for dock orientation and the canvas
+ * aspect for panel placement. A square window belongs to the horizontal-dock
+ * branch even when its canvas has a different aspect. */
+static void
+right_host_assert_source_layout (RightDocksFixture *f,
+                                 guint              selected)
+{
+  GtkWidget *canvas = f->shells[selected]->canvas;
+  GtkWidget *right = right_docks_overlay_root (f->columns, canvas);
+  GtkWidget *toolbar = right_docks_toolbar (f, selected);
+  GtkWidget *options = right_docks_overlay_root (toolbar, canvas);
+  GtkWidget *colors = find (canvas, "painter-color-editor");
+  GtkWidget *swatches = find (canvas, "painter-fg-bg");
+  RightHostBounds r = right_host_bounds (canvas, right);
+  RightHostBounds o = right_host_bounds (canvas, options);
+  gint w = gtk_widget_get_allocated_width (canvas);
+  gint h = gtk_widget_get_allocated_height (canvas);
+  gboolean portrait = w < h;
+  gboolean horizontal = gtk_widget_get_allocated_width (GTK_WIDGET (f->image_window)) <=
+                        gtk_widget_get_allocated_height (GTK_WIDGET (f->image_window));
+  gint color_width, color_height, fg_width;
+  gint request_width, request_height;
+  gint expected_width = MAX (1, w * 98 / 100);
+  gint expected_x = (w - expected_width) / 2;
+
+  g_assert_nonnull (colors);
+  g_assert_nonnull (swatches);
+  colors = right_docks_overlay_root (colors, canvas);
+  swatches = right_docks_overlay_root (swatches, canvas);
+  color_width = MAX (256, gtk_widget_get_allocated_width (colors));
+  color_height = MAX (256, gtk_widget_get_allocated_height (colors));
+  fg_width = MAX (84, gtk_widget_get_allocated_width (swatches));
+  for (GList *iter = gimp_dock_columns_get_docks (GIMP_DOCK_COLUMNS (f->columns)); iter; iter = iter->next)
+    g_assert_cmpint (gtk_orientable_get_orientation (GTK_ORIENTABLE (iter->data)), ==,
+                     horizontal ? GTK_ORIENTATION_HORIZONTAL : GTK_ORIENTATION_VERTICAL);
+  g_assert_cmpint (gtk_orientable_get_orientation (GTK_ORIENTABLE (toolbar)), ==,
+                   GTK_ORIENTATION_HORIZONTAL);
+  g_assert_cmpfloat (r.x, ==, portrait ? 0 : w - 88 - color_width - 4);
+  g_assert_cmpfloat (r.y, ==, portrait ? 0 : color_height + 4);
+  gtk_widget_get_size_request (right, &request_width, &request_height);
+  g_assert_cmpint (request_width, ==, portrait ? MAX (1, w - color_width - fg_width - 4) : color_width);
+  g_assert_cmpint (request_height, ==, portrait ? color_height : MAX (1, h - (gint) r.y));
+  if (!portrait && r.x < expected_x + expected_width)
+    {
+      expected_width = MAX (1, (gint) r.x - expected_x - 4);
+      expected_x = ((gint) r.x - expected_width) / 2;
+    }
+  gtk_widget_get_size_request (options, &request_width, &request_height);
+  g_assert_cmpint (request_width, ==, expected_width);
+  g_assert_cmpint (request_height, ==, -1);
+  g_assert_cmpfloat (o.x, ==, expected_x);
+  g_assert_cmpfloat (o.y, ==, h - MAX (48, (gint) o.height) + 4);
+}
+
+/* Native GUI sensitivity and child ownership survive toolbar destruction and
+ * recreation. Disabling one view does not disable the independent toolbar. */
 static void
 right_host_disabled_ancestor_roundtrip (RightDocksFixture *f,
                                         guint              selected,
@@ -873,64 +1198,67 @@ right_host_disabled_ancestor_roundtrip (RightDocksFixture *f,
 {
   const gchar *properties[] = { "use-texture", "use-smoothing", "expand-use" };
   GtkWidget *gui = f->guis[0];
-  GtkWidget *canvas = f->shells[selected]->canvas;
+  GtkWidget *parent = gtk_widget_get_parent (gui);
+  GtkWidget *old_toolbar = right_docks_toolbar (f, selected);
   GtkWidget *button;
 
   g_assert_true (gtk_widget_get_sensitive (gui));
   g_assert_false (gtk_widget_get_sensitive (disabled_control));
   gtk_widget_set_sensitive (gui, FALSE);
-  button = find (canvas, "painter-canvas-compact");
+  g_object_add_weak_pointer (G_OBJECT (old_toolbar), (gpointer *) &old_toolbar);
+  button = find (f->shells[selected]->canvas, "gimp-rect-select-tool");
   g_assert_true (GTK_IS_BUTTON (button));
   gtk_button_clicked (GTK_BUTTON (button));
   right_host_settle (f, selected, -1);
-  right_docks_assert_options (f, selected, 0, TRUE);
-  button = find (canvas, "painter-canvas-options");
+  right_docks_assert_options (f, selected, 1, TRUE);
+  g_assert_null (old_toolbar);
+  button = find (f->shells[selected]->canvas, "gimp-paintbrush-tool");
   g_assert_true (GTK_IS_BUTTON (button));
   gtk_button_clicked (GTK_BUTTON (button));
   right_host_settle (f, selected, -1);
-  right_docks_assert_options (f, selected, 0, FALSE);
+  right_host_open_native_options (f, selected);
   g_assert_true (gui == f->guis[0]);
+  g_assert_true (gtk_widget_get_parent (gui) == parent);
   g_assert_false (gtk_widget_get_sensitive (gui));
   g_assert_false (gtk_widget_is_sensitive (gui));
   for (guint i = 0; i < G_N_ELEMENTS (properties); i++)
     {
       GtkWidget *control = right_host_find_property (gui, properties[i]);
+      GtkWidget *peer = right_host_find_property (right_docks_toolbar (f, selected), properties[i]);
 
       g_assert_true (GTK_IS_TOGGLE_BUTTON (control));
+      g_assert_true (GTK_IS_TOGGLE_BUTTON (peer));
+      g_assert_true (control != peer);
       g_assert_true (gtk_widget_get_sensitive (control));
       g_assert_false (gtk_widget_is_sensitive (control));
+      g_assert_true (gtk_widget_is_sensitive (peer));
     }
   g_assert_true (right_host_find_property (gui, "brush-lock-to-view") == disabled_control);
   g_assert_false (gtk_widget_get_sensitive (disabled_control));
   g_assert_false (gtk_widget_is_sensitive (disabled_control));
-  /* Restore the test's own ancestor setting, not any native child setting. */
   gtk_widget_set_sensitive (gui, TRUE);
   right_host_settle (f, selected, -1);
   for (guint i = 0; i < G_N_ELEMENTS (properties); i++)
-    {
-      GtkWidget *control = right_host_find_property (gui, properties[i]);
-
-      g_assert_true (gtk_widget_get_sensitive (control));
-      g_assert_true (gtk_widget_is_sensitive (control));
-    }
+    g_assert_true (gtk_widget_is_sensitive (right_host_find_property (gui, properties[i])));
   g_assert_false (gtk_widget_get_sensitive (disabled_control));
   g_assert_false (gtk_widget_is_sensitive (disabled_control));
-  right_host_reveal (f, selected, right_docks_overlay_root (gui, canvas), gui,
-                     right_host_find_property (gui, "expand-use"));
+  right_host_native_reveal (f, selected, right_host_find_property (gui, "expand-use"));
 }
 
 static void
 right_host_layout_case (gint width,
                         gint height,
-                        gboolean portrait)
+                        gint canvas_aspect)
 {
   RightDocksFixture f;
   gint original_width, original_height;
   GtkWidget *disabled_control, *original_end_control, *original_end_parent;
+  GtkWidget *native_parent;
   gboolean saved_sensitive;
 
   right_docks_begin (&f);
-  right_host_trace_native_state (&f, 0, "native-before-borrow");
+  right_host_trace_native_state (&f, 0, "native-before-toolbar");
+  native_parent = gtk_widget_get_parent (f.guis[0]);
   disabled_control = right_host_find_property (f.guis[0], "brush-lock-to-view");
   g_assert_true (GTK_IS_TOGGLE_BUTTON (disabled_control));
   saved_sensitive = gtk_widget_get_sensitive (disabled_control);
@@ -945,11 +1273,11 @@ right_host_layout_case (gint width,
   gtk_window_resize (GTK_WINDOW (f.image_window), width, height);
   for (guint selected = 0; selected < 2; selected++)
     {
-      GtkWidget *canvas, *right, *options, *button, *end_control;
+      GtkWidget *canvas, *right, *options, *end_control;
       gint actual_width, actual_height;
 
       right_docks_select (&f, selected);
-      right_host_settle (&f, selected, portrait ? 1 : 0);
+      right_host_settle (&f, selected, canvas_aspect);
       gtk_window_get_size (GTK_WINDOW (f.image_window), &actual_width, &actual_height);
       g_test_message ("Requested image window %dx%d; actual %dx%d, allocation %dx%d, GTK scale %d",
                       width, height, actual_width, actual_height,
@@ -962,39 +1290,29 @@ right_host_layout_case (gint width,
       g_assert_cmpint (gtk_widget_get_allocated_height (GTK_WIDGET (f.image_window)), ==, height);
       canvas = f.shells[selected]->canvas;
       right = right_docks_overlay_root (f.columns, canvas);
-      options = right_docks_overlay_root (f.guis[0], canvas);
+      options = right_docks_overlay_root (right_docks_toolbar (&f, selected), canvas);
+      right_host_assert_source_layout (&f, selected);
       right_host_assert_separate (canvas, right, options);
       right_host_dock_reachability (&f, selected);
-      right_host_trace_native_state (&f, selected, "compact-before-end-controls");
-      right_host_compact_end_reachability (&f, selected, !portrait);
-      right_host_trace_native_state (&f, selected, "compact-after-end-controls");
-      button = find (canvas, "painter-canvas-options");
-      g_assert_true (GTK_IS_BUTTON (button));
-      gtk_button_clicked (GTK_BUTTON (button));
-      right_host_settle (&f, selected, portrait ? 1 : 0);
-      right_docks_assert_options (&f, selected, 0, FALSE);
-      right_host_trace_native_state (&f, selected, "full-after-restore-before-scroll");
-      right = right_docks_overlay_root (f.columns, canvas);
-      options = right_docks_overlay_root (f.guis[0], canvas);
-      right_host_assert_separate (canvas, right, options);
+      right_host_compact_end_reachability (&f, selected, canvas_aspect == 0);
+      right_host_open_native_options (&f, selected);
+      right_host_trace_native_state (&f, selected, "native-coexists-with-toolbar");
       end_control = right_host_find_property (f.guis[0], "expand-use");
       g_assert_true (GTK_IS_TOGGLE_BUTTON (end_control));
       g_assert_true (end_control == original_end_control);
       g_assert_true (gtk_widget_get_parent (end_control) == original_end_parent);
       g_assert_true (gtk_frame_get_label_widget (GTK_FRAME (original_end_parent)) == end_control);
+      g_assert_true (gtk_widget_get_parent (f.guis[0]) == native_parent);
       g_assert_true (right_host_find_property (f.guis[0], "brush-lock-to-view") == disabled_control);
       g_assert_false (gtk_widget_get_sensitive (disabled_control));
       g_assert_false (gtk_widget_is_sensitive (disabled_control));
-      right_host_reveal (&f, selected, options, f.guis[0], end_control);
+      right_host_native_end_reachability (&f, selected);
       right_host_dock_reachability (&f, selected);
       if (selected == 0)
         right_host_disabled_ancestor_roundtrip (&f, selected, disabled_control);
       g_assert_true (right_host_find_property (f.guis[0], "expand-use") == original_end_control);
       g_assert_true (gtk_widget_get_parent (original_end_control) == original_end_parent);
-      button = find (canvas, "painter-canvas-compact");
-      g_assert_true (GTK_IS_BUTTON (button));
-      gtk_button_clicked (GTK_BUTTON (button));
-      right_host_settle (&f, selected, portrait ? 1 : 0);
+      right_host_assert_source_layout (&f, selected);
       right_docks_assert_options (&f, selected, 0, TRUE);
       right_docks_assert_canvas (&f, selected);
     }
@@ -1003,17 +1321,23 @@ right_host_layout_case (gint width,
   right_host_settle (&f, 0, 0);
   right_docks_assert_canvas (&f, 0);
   right_docks_assert_options (&f, 0, 0, TRUE);
-  /* Brush details live in the menu button's separate popover in compact mode,
-   * not in the canonical GUI's ordinary GtkContainer descendant tree. */
+  /* Toolbar brush details are a fresh popup view of the same model. The
+   * disabled native control remains in its original dock GUI throughout. */
   {
-    GtkWidget *menu = find (f.guis[0], "painter-compact-brush");
+    GtkWidget *menu = find (right_docks_toolbar (&f, 0), "painter-paint-brush");
     GtkPopover *popup;
+    GtkWidget *peer;
 
     g_assert_true (GTK_IS_MENU_BUTTON (menu));
     popup = gtk_menu_button_get_popover (GTK_MENU_BUTTON (menu));
     g_assert_true (GTK_IS_POPOVER (popup));
     g_assert_true (gtk_popover_get_relative_to (popup) == menu);
-    g_assert_true (right_host_find_property (GTK_WIDGET (popup), "brush-lock-to-view") == disabled_control);
+    peer = right_host_find_property (GTK_WIDGET (popup), "brush-lock-to-view");
+    g_assert_true (GTK_IS_TOGGLE_BUTTON (peer));
+    g_assert_true (peer != disabled_control);
+    g_assert_true (g_object_get_data (G_OBJECT (peer), "gimp-widget-property-config") == f.tools[0]->tool_options);
+    g_assert_true (gtk_widget_is_sensitive (peer));
+    g_assert_true (right_host_find_property (f.guis[0], "brush-lock-to-view") == disabled_control);
   }
   g_assert_false (gtk_widget_get_sensitive (disabled_control));
   g_assert_false (gtk_widget_is_sensitive (disabled_control));
@@ -1022,8 +1346,11 @@ right_host_layout_case (gint width,
 }
 
 static void right_docks_controls_reachable_1240 (void)
-{ right_host_layout_case (1240, 960, FALSE); }
+{ right_host_layout_case (1240, 960, 0); }
 static void right_docks_controls_reachable_1280 (void)
-{ right_host_layout_case (1280, 960, FALSE); }
+{
+  right_host_layout_case (1280, 960, 0);
+  right_host_layout_case (960, 960, -1);
+}
 static void right_docks_controls_reachable_portrait (void)
-{ right_host_layout_case (900, 1200, TRUE); }
+{ right_host_layout_case (900, 1200, 1); }

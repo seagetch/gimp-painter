@@ -10,6 +10,9 @@
 #include "widgets/gimpitemtreeview.h"
 #include "widgets/gimppaintercompactoptions.h"
 #include "tools/gimp-tools.h"
+#include "widgets/gimpwindowstrategy.h"
+#include "widgets/gimptooloptionseditor.h"
+#include "core/gimp-gui.h"
 
 typedef struct
 {
@@ -302,6 +305,35 @@ right_docks_assert_canvas (RightDocksFixture *f,
     }
 }
 
+/* The legacy horizontal factory is independent from the canonical full
+ * options GUI. Match its model, not a tool-specific widget name. */
+static GtkWidget *
+right_docks_find_toolbar (GtkWidget *widget, GimpToolOptions *options)
+{
+  if (g_object_get_data (G_OBJECT (widget), "gimp-painter-toolbar-options") == options)
+    return widget;
+  if (GTK_IS_CONTAINER (widget))
+    {
+      GList *children = gtk_container_get_children (GTK_CONTAINER (widget));
+      GtkWidget *found = NULL;
+      for (GList *i = children; i && !found; i = i->next)
+        found = right_docks_find_toolbar (i->data, options);
+      g_list_free (children);
+      return found;
+    }
+  return NULL;
+}
+
+static GtkWidget *
+right_docks_toolbar (RightDocksFixture *f, guint selected)
+{
+  GimpToolInfo *tool = gimp_context_get_tool (gimp_get_user_context (gimp));
+  GtkWidget *toolbar = right_docks_find_toolbar (f->shells[selected]->canvas,
+                                                tool->tool_options);
+  g_assert_nonnull (toolbar);
+  return toolbar;
+}
+
 static void
 right_docks_assert_options (RightDocksFixture *f,
                             guint              selected,
@@ -309,15 +341,48 @@ right_docks_assert_options (RightDocksFixture *f,
                             gboolean           compact)
 {
   GtkWidget *canvas = f->shells[selected]->canvas;
+  GtkWidget *toolbar = right_docks_toolbar (f, selected);
 
+  (void) compact; /* Full native options and compact toolbar now coexist. */
+  g_assert_true (g_object_get_data (G_OBJECT (toolbar), "gimp-painter-toolbar-options") ==
+                 f->tools[tool]->tool_options);
   g_assert_nonnull (f->guis[tool]);
   g_assert_true (gimp_tools_get_tool_options_gui (f->tools[tool]->tool_options) ==
                  f->guis[tool]);
-  right_docks_overlay_root (f->guis[tool], canvas);
+  g_assert_true (toolbar != f->guis[tool]);
+  g_assert_false (gimp_painter_compact_options_get (f->guis[tool]));
+  g_assert_nonnull (gtk_widget_get_ancestor (f->guis[tool], GIMP_TYPE_TOOL_OPTIONS_EDITOR));
+  right_docks_overlay_root (toolbar, canvas);
   right_docks_overlay_root (f->columns, canvas);
-  g_assert_false (gtk_widget_is_ancestor (f->guis[tool], f->columns));
-  g_assert_false (gtk_widget_is_ancestor (f->columns, f->guis[tool]));
-  g_assert_cmpint (gimp_painter_compact_options_get (f->guis[tool]), ==, compact);
+  g_assert_false (gtk_widget_is_ancestor (toolbar, f->columns));
+  g_assert_false (gtk_widget_is_ancestor (f->columns, toolbar));
+  g_assert_true (gtk_widget_is_visible (toolbar));
+}
+
+typedef struct { GtkWidget *home; gint span, divider; guint stable; } RightHomeGeometry;
+static void right_docks_home_painted (GdkFrameClock *clock, gpointer data)
+{
+  RightHomeGeometry *g = data;
+  gint span = gtk_widget_get_allocated_width (g->home);
+  gint divider = gtk_paned_get_position (GTK_PANED (g->home));
+  (void) clock;
+  g->stable = span == g->span && divider == g->divider ? g->stable + 1 : 0;
+  g->span = span; g->divider = divider;
+}
+static void right_docks_settle_home (RightDocksFixture *f)
+{
+  RightHomeGeometry geometry = { f->home, -1, -1, 0 };
+  GdkFrameClock *clock = gtk_widget_get_frame_clock (GTK_WIDGET (f->image_window));
+  g_assert_nonnull (clock);
+  gulong handler = g_signal_connect (clock, "after-paint", G_CALLBACK (right_docks_home_painted), &geometry);
+  gint64 deadline = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
+  while (geometry.stable < 3 && g_get_monotonic_time () < deadline)
+    {
+      gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_PAINT);
+      gimp_test_run_temp_mainloop (10);
+    }
+  g_signal_handler_disconnect (clock, handler);
+  g_assert_cmpuint (geometry.stable, >=, 3);
 }
 
 static void
@@ -325,6 +390,9 @@ right_docks_assert_home (RightDocksFixture *f)
 {
   gboolean resize, shrink;
 
+  /* Left-column visibility changes allocate on the frame clock. Never
+   * replace the frozen expected divider with the observed value. */
+  right_docks_settle_home (f);
   right_docks_assert_parent (f);
   g_assert_true (gtk_widget_get_parent (f->columns) == f->home);
   g_assert_true (gtk_paned_get_child1 (GTK_PANED (f->home)) == f->home_child1);
@@ -491,6 +559,11 @@ right_docks_begin (RightDocksFixture *f)
       g_object_add_weak_pointer (G_OBJECT (f->guis[i]), (gpointer *) &f->guis[i]);
       g_object_add_weak_pointer (G_OBJECT (f->shells[i]), (gpointer *) &f->shells[i]);
     }
+  g_assert_nonnull (gimp_window_strategy_show_dockable_dialog (
+    GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)), gimp,
+    gimp_dialog_factory_get_singleton (), gimp_widget_get_monitor (GTK_WIDGET (f->image_window)),
+    "gimp-tool-options"));
+  drain ();
   g_object_add_weak_pointer (G_OBJECT (f->image_window), (gpointer *) &f->image_window);
   g_object_add_weak_pointer (G_OBJECT (f->columns), (gpointer *) &f->columns);
   g_object_add_weak_pointer (G_OBJECT (f->home), (gpointer *) &f->home);
@@ -751,18 +824,18 @@ right_docks_options_coexist (void)
   right_docks_enable (&f, 0);
   right_docks_assert_canvas (&f, 0);
   right_docks_assert_options (&f, 0, 0, TRUE);
-  button = find (f.shells[0]->canvas, "painter-canvas-options");
-  g_assert_true (GTK_IS_BUTTON (button));
-  gtk_button_clicked (GTK_BUTTON (button));
+  GtkWidget *toolbar = right_docks_toolbar (&f, 0);
+  GtkWidget *full = gimp_window_strategy_show_dockable_dialog (
+    GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)), gimp,
+    gimp_dialog_factory_get_singleton (), gimp_widget_get_monitor (GTK_WIDGET (f.image_window)),
+    "gimp-tool-options");
+  g_assert_true (GIMP_IS_DOCKABLE (full));
   drain ();
+  g_assert_true (gtk_widget_is_ancestor (f.guis[0], full));
+  g_assert_true (gtk_widget_is_visible (full));
+  g_assert_true (right_docks_toolbar (&f, 0) == toolbar);
   right_docks_assert_canvas (&f, 0);
   right_docks_assert_options (&f, 0, 0, FALSE);
-  button = find (f.shells[0]->canvas, "painter-canvas-compact");
-  g_assert_true (GTK_IS_BUTTON (button));
-  gtk_button_clicked (GTK_BUTTON (button));
-  drain ();
-  right_docks_assert_canvas (&f, 0);
-  right_docks_assert_options (&f, 0, 0, TRUE);
   button = find (f.shells[0]->canvas, "gimp-rect-select-tool");
   g_assert_true (GTK_IS_BUTTON (button));
   gtk_button_clicked (GTK_BUTTON (button));

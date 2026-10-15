@@ -10,6 +10,8 @@
 typedef struct
 {
   gint     span;
+  gint     window_width, window_height;
+  gint     hidden_left_span;
   gint     width;
   gint     divider;
   gboolean position_set;
@@ -193,6 +195,12 @@ right_width_begin (RightDocksFixture      *f,
   f->divider = gtk_paned_get_position (GTK_PANED (f->home));
   saved->divider = f->divider;
   saved->span = gtk_widget_get_allocated_width (f->home);
+  saved->window_width = gtk_widget_get_allocated_width (GTK_WIDGET (f->image_window));
+  saved->window_height = gtk_widget_get_allocated_height (GTK_WIDGET (f->image_window));
+  GtkWidget *left = GTK_WIDGET (gimp_image_window_get_left_docks (f->image_window));
+  g_assert_true (gtk_widget_get_visible (left));
+  saved->hidden_left_span = gtk_widget_get_allocated_width (gtk_widget_get_parent (left)) - saved->span;
+  g_assert_cmpint (saved->hidden_left_span, >, 0);
   saved->width = right_width_aux_value (f, "right-docks-width");
   g_assert_cmpint (saved->width, >, 0);
   g_assert_cmpint (saved->width, ==, saved->span - saved->divider);
@@ -265,7 +273,12 @@ right_docks_session_width_unchanged_restore (void)
 
   right_width_begin (&f, &saved);
   right_width_enable_and_switch (&f, &saved, saved.width);
-  g_assert_cmpint (gtk_widget_get_allocated_width (f.home), ==, saved.span);
+  /* Painter hides the left native column and its paned handle. The window
+   * stays fixed; the right home grows by exactly that released allocation. */
+  g_assert_cmpint (gtk_widget_get_allocated_width (GTK_WIDGET (f.image_window)), ==, saved.window_width);
+  g_assert_cmpint (gtk_widget_get_allocated_height (GTK_WIDGET (f.image_window)), ==, saved.window_height);
+  g_assert_false (gtk_widget_get_visible (GTK_WIDGET (gimp_image_window_get_left_docks (f.image_window))));
+  g_assert_cmpint (gtk_widget_get_allocated_width (f.home), ==, saved.span + saved.hidden_left_span);
   right_docks_action (&f, "view", "view-painter-canvas-ui", FALSE);
   right_width_settle (&f, -1);
   g_assert_cmpint (gtk_widget_get_allocated_width (f.home), ==, saved.span);
@@ -348,9 +361,9 @@ right_docks_session_aux_legacy_position (void)
   right_width_assert_state (&f, &saved, expected_width);
   right_docks_action (&f, "view", "view-painter-canvas-ui", FALSE);
   right_width_settle (&f, -1);
-  g_assert_cmpint (gtk_widget_get_allocated_width (f.home), ==, span_at_set);
+  g_assert_cmpint (gtk_widget_get_allocated_width (f.home), ==, span_at_set - saved.hidden_left_span);
   right_width_assert_restored (&f, &saved, expected_width, TRUE, FALSE);
-  g_assert_cmpint (gtk_paned_get_position (GTK_PANED (f.home)), ==, absolute_divider);
+  g_assert_cmpint (gtk_paned_get_position (GTK_PANED (f.home)), ==, absolute_divider - saved.hidden_left_span);
   g_free (saved.semantics);
   right_docks_end (&f);
 }
@@ -448,7 +461,11 @@ right_docks_session_aux_deferred_reborrow (void)
   right_width_enable_and_switch (&f, &saved, saved.width);
   newer_width = saved.width + 43;
   previous_span = right_width_pending_reborrow (&f, &saved, &pending, newer_width);
-  right_width_settle (&f, previous_span);
+  /* Reborrow hides the left column again before allocation. Its new saved
+   * width must not steal canvas space while Painter is enabled. */
+  right_width_settle (&f, -1);
+  g_assert_false (gtk_widget_get_visible (GTK_WIDGET (gimp_image_window_get_left_docks (f.image_window))));
+  g_assert_cmpint (gtk_widget_get_allocated_width (f.home), ==, previous_span);
   g_assert_cmpuint (pending.allocations, >, 0);
   right_docks_assert_canvas (&f, 0);
   right_width_assert_state (&f, &saved, newer_width);
