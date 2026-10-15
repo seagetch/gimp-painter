@@ -1,0 +1,65 @@
+{
+  "procedure": "gimp-brightness-contrast",
+  "width": 64,
+  "height": 64,
+  "filter": {
+    "name": "brightness filter",
+    "type": "GimpFilterLayer",
+    "offset": [
+      0,
+      0
+    ],
+    "opacity": 0.2,
+    "mode": "GIMP_DIFFERENCE_MODE",
+    "wire_args": [
+      {
+        "tag": 10,
+        "kind": "drawable-context placeholder",
+        "payload_bytes": 0
+      },
+      {
+        "tag": 2,
+        "kind": "int32",
+        "value": 25
+      },
+      {
+        "tag": 2,
+        "kind": "int32",
+        "value": -10
+      }
+    ],
+    "cache_pixel_12_12": [
+      200,
+      78,
+      118,
+      255
+    ],
+    "cache_rgba_sha256": "24280d0fab549abf2d546880814467c1e96054b193cca5715ca6c49ac960b331",
+    "cache_equal_to_original_pdb_control": true,
+    "cache_equal_after_reopen": true,
+    "pending_after_execution": 1,
+    "progress_end_callbacks": 0
+  },
+  "lower_layer": {
+    "name": "brightness source",
+    "size": [
+      24,
+      20
+    ],
+    "offset": [
+      8,
+      7
+    ],
+    "pixel_rgba": [
+      204,
+      51,
+      102,
+      255
+    ],
+    "rgba_sha256": "88a25872725ca5b4f85cb3c7e37dcdeadec0db6909afc6a093c0a84fd27812d3"
+  },
+  "layer_count": 2,
+  "independent_reopen_exit": 0,
+  "original_edge_negative_recheck_exit": 139,
+  "scheduler_acceptance_passed": false
+}

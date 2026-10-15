@@ -1,0 +1,114 @@
+
+(process:408): GLib-GObject-CRITICAL **: 09:15:09.411: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:408): GLib-GObject-CRITICAL **: 09:15:09.411: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+Failed to parse tag cache: No such file or directory
+GIMP-Error: Plug-in "pagecurl"
+attempted to install procedure "plug-in-pagecurl" with invalid return-value name "Curl Layer".
+This is not allowed.
+
+GIMP-Error: Plug-in "pagecurl"
+(/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/pagecurl)
+attempted to register the menu item "<Image>/Filters/Distorts" for the procedure "plug-in-pagecurl".
+It has however not installed that procedure.  This is not allowed.
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55e6297b26c0:  set ignore_undos=0
+create instance type=55e6298022a0
+FilterLayer::class_init
+GimpFilterLayer: Set properties_base to 18
+FilterLayer::iface_init<GimpPickableInterface>
+FilterLayer::FilterLayer
+new_instance::group=0x55e629717890
+LOWER_LAYER_SHA256 88a25872725ca5b4f85cb3c7e37dcdeadec0db6909afc6a093c0a84fd27812d3
+push_undo: GimpDrawableUndo=47
+CONTROL_ORIGINAL_PDB_CACHE_SHA256 24280d0fab549abf2d546880814467c1e96054b193cca5715ca6c49ac960b331
+FilterLayer::filter_reset
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+--->brightness filter: start runner=1
+FILTER_STATE time_us=5006130949 pending=1 completions=0
+FILTER_SAVE_STATE pending=1 completions=0 (not an idle assertion)
+FILTER_CACHE_PIXEL x=12 y=12 rgba=200,78,118,255
+FILTER_CACHE_SHA256 24280d0fab549abf2d546880814467c1e96054b193cca5715ca6c49ac960b331
+Becomes save version=4
+xcf_save[239] prop_type=32
+xcf_save[23d] length=0
+xcf_save[241] filter_name=gimp-brightness-contrast
+xcf_save[25e] value(0)
+  [25e] type=10, N/A
+xcf_save[266] value(1)
+  [266] type=2, value=25
+xcf_save[272] value(2)
+  [272] type=2, value=4294967286
+xcf_save[27e] PROP_END
+xcf_save[23d] length=69
+xcf_save[286]: layer_props: PROP_END
+xcf_save_layer[28e]: done: save_layer_props
+xcf_save_layer[28e]: done: save_offset=296
+xcf_save_layer[292]: done: save_layer_mask_offset
+xcf_save_layer[296]: xcf_save_hierarchy
+xcf_save[296] hierarchy:: write width=64
+xcf_save[29a] hierarchy:: write height=64
+xcf_save[29e] hierarchy:: write bpp=4
+xcf_save[2a2] hierarchy:: write nlevels=2
+xcf_save[2aa] hierarchy::level=0
+xcf_save_layer[412]: done: xcf_save_hierarchy
+xcf_save[4bc]: layer_props: PROP_END
+xcf_save_layer[4c4]: done: save_layer_props
+xcf_save_layer[4c4]: done: save_offset=4cc
+xcf_save_layer[4c8]: done: save_layer_mask_offset
+xcf_save_layer[4cc]: xcf_save_hierarchy
+xcf_save[4cc] hierarchy:: write width=24
+xcf_save[4d0] hierarchy:: write height=20
+xcf_save[4d4] hierarchy:: write bpp=4
+xcf_save[4d8] hierarchy:: write nlevels=2
+xcf_save[4e0] hierarchy::level=0
+xcf_save_layer[500]: done: xcf_save_hierarchy
+GIMP-Error: Failed to create thumbnail folder '/home/agent/.thumbnails/normal'.
+
+xcf_load[177]: image: PROP_END
+xcf_load_layer
+xcf_load_props: PROP_FILTER_SPEC
+create instance type=55e6298022a0
+FilterLayer::FilterLayer
+new_instance::group=0x55e6296c9840
+xcf_load[241] filter_name=gimp-brightness-contrast
+xcf_load_filter_specs
+xcf_load[25e] value_type=10
+0:XCF_FILTER_DRAWABLE
+xcf_load[266] value_type=2
+1:XCF_FILTER_INT32
+xcf_load[272] value_type=2
+2:XCF_FILTER_INT32
+xcf_load[27e] value_type=0
+3:XCF_FILTER_END
+FilterLayer::filter_reset
+xcf_load[286]: layer_props: PROP_END
+xcf_load_layer[28e]: done: load_layer_props
+xcf_load_layer[28e]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[28e]: read: hierarchy_offset  =296
+xcf_load_layer[292]: read: layer_mask_offset  =0
+xcf_load_layer[296]: read: load_hierarchy
+xcf_load[296] hierarchy:: read width=64
+xcf_load[29a] hierarchy:: read height=64
+xcf_load[29e] hierarchy:: read bpp=4
+tile_manager: width=64, height=64, bpp=4
+xcf_load[2a2] hierarchy:: read offset=682
+xcf_load[2aa] hierarchy:: xcf_load_levelxcf_load[2ba] hierarchy:: done: xcf_load_levelxcf_load_layer
+xcf_load[4bc]: layer_props: PROP_END
+xcf_load_layer[4c4]: done: load_layer_props
+xcf_load_layer[4c4]: before: gimp_text_layer_xcf_load_hack
+xcf_load_layer[4c4]: read: hierarchy_offset  =4cc
+xcf_load_layer[4c8]: read: layer_mask_offset  =0
+xcf_load_layer[4cc]: read: load_hierarchy
+xcf_load[4cc] hierarchy:: read width=24
+xcf_load[4d0] hierarchy:: read height=20
+xcf_load[4d4] hierarchy:: read bpp=4
+tile_manager: width=24, height=20, bpp=4
+xcf_load[4d8] hierarchy:: read offset=1248
+xcf_load[4e0] hierarchy:: xcf_load_levelxcf_load[4f0] hierarchy:: done: xcf_load_levelREOPEN_LOWER_LAYER_SHA256 88a25872725ca5b4f85cb3c7e37dcdeadec0db6909afc6a093c0a84fd27812d3
+FILTER_REOPEN_CACHE_SHA256 24280d0fab549abf2d546880814467c1e96054b193cca5715ca6c49ac960b331
+LEGACY_FILTER_CAPTURE_COMPLETE procedure=gimp-brightness-contrast args=3 brightness=25 contrast=-10 cache=identical source=verified
+LEGACY_BUILTIN_FILTER_CAPTURE_COMPLETE
+
+(script-fu:432): LibGimpBase-WARNING **: 09:15:11.638: script-fu: gimp_wire_read(): error
