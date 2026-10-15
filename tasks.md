@@ -260,6 +260,8 @@
 
 2026-10-02の並行化：04.003は既存C headerの可読性監査なので、全feature登録ではなく01.017の確定source台帳と04.002/common-foundationの混在compiler環境を入力とする。未実装featureのheader/link検証とG1全区分完了条件は維持する。
 
+| 03.009/tcp-portrait-environment | [x] | 新規Debian buildと認証付きTCP縦長GUI試験環境を復元する | 03.009, 04.003/tool-options-header-routes | 固定560archive・3024build・241ELFを検証し、loopback認証成功/無認証拒否と1080x1920実Painter canvasを確認。全aggregate・旧UI同等性は別gate |
+
 ### 04 C/C++ 混在ビルドの接続
 
 主対象：app の Meson と C 公開境界
