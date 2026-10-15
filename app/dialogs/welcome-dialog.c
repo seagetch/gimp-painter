@@ -121,6 +121,22 @@ static gboolean welcome_scrollable_resize            (gpointer        data);
 
 static GtkWidget *welcome_dialog;
 
+static void
+welcome_dialog_destroy (GtkWidget *dialog)
+{
+  if (welcome_dialog == dialog)
+    g_clear_weak_pointer (&welcome_dialog);
+
+  /* GtkWidget::destroy runs before the container's cleanup closure. Dispose
+   * the controls first, then release our copies even if the dialog is retained.
+   */
+  gtk_container_foreach (GTK_CONTAINER (dialog),
+                         (GtkCallback) gtk_widget_destroy, NULL);
+  g_object_set_data (G_OBJECT (dialog), "config-copy", NULL);
+  g_object_set_data (G_OBJECT (dialog), "config-orig", NULL);
+}
+
+
 GtkWidget *
 welcome_dialog_create (Gimp     *gimp,
                        gboolean  show_welcome_page)
@@ -159,10 +175,31 @@ welcome_dialog_create (Gimp     *gimp,
   g_object_set_data_full (G_OBJECT (welcome_dialog), "config-orig", config_orig,
                           (GDestroyNotify) g_object_unref);
 
+  g_signal_connect (welcome_dialog, "destroy",
+                    G_CALLBACK (welcome_dialog_destroy), NULL);
+
   gtk_style_context_add_class (gtk_widget_get_style_context (welcome_dialog),
                                "gimp-welcome-dialog");
 
   return welcome_dialog;
+}
+
+/* Startup can create this dialog without registering it with the factory.
+ * Release its configuration copies while the application's contexts are alive,
+ * even when another caller keeps a reference to the destroyed widget.
+ */
+void
+welcome_dialog_exit (void)
+{
+  if (welcome_dialog)
+    {
+      GtkWidget *dialog = g_object_ref (welcome_dialog);
+
+      /* Do not emit a response: shutdown must not save or prompt restart. */
+      gtk_widget_destroy (dialog);
+
+      g_object_unref (dialog);
+    }
 }
 
 static GtkWidget *
@@ -1128,12 +1165,12 @@ welcome_dialog_new_image_dialog (GtkWidget *button,
                                                  "gimp-image-new-dialog")))
     {
       gtk_widget_set_visible (welcome_dialog, FALSE);
-      g_signal_connect (dialog, "response",
-                        G_CALLBACK (welcome_dialog_new_dialog_response),
-                        welcome_dialog);
-      g_signal_connect_swapped (dialog, "destroy",
-                                G_CALLBACK (gtk_widget_destroy),
-                                welcome_dialog);
+      g_signal_connect_object (dialog, "response",
+                               G_CALLBACK (welcome_dialog_new_dialog_response),
+                               welcome_dialog, 0);
+      g_signal_connect_object (dialog, "destroy",
+                               G_CALLBACK (gtk_widget_destroy),
+                               welcome_dialog, G_CONNECT_SWAPPED);
     }
 }
 
@@ -1152,9 +1189,9 @@ welcome_dialog_open_image_dialog (GtkWidget *button,
 
       gtk_window_present (GTK_WINDOW (dialog));
 
-      g_signal_connect (dialog, "destroy",
-                        G_CALLBACK (welcome_dialog_open_dialog_close),
-                        welcome_dialog);
+      g_signal_connect_object (dialog, "destroy",
+                               G_CALLBACK (welcome_dialog_open_dialog_close),
+                               welcome_dialog, 0);
     }
 }
 

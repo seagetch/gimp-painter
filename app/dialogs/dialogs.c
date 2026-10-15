@@ -49,6 +49,7 @@
 
 #include "dialogs.h"
 #include "dialogs-constructors.h"
+#include "welcome-dialog.h"
 
 #include "gimp-log.h"
 
@@ -576,6 +577,8 @@ dialogs_exit (Gimp *gimp)
       g_object_unref (gimp_dialog_factory_get_singleton ());
       gimp_dialog_factory_set_singleton (NULL);
     }
+
+  welcome_dialog_exit ();
 
   g_clear_object (&global_recent_docks);
 }

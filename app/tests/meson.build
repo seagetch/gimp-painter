@@ -893,3 +893,20 @@ test('device-save-lifecycle', device_save_lifecycle,
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'GIMP3_DATADIR=' + meson.project_build_root() / 'data',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Welcome can be created directly at startup, outside the dialog factory.
+welcome_shutdown_links = apptests_links
+if painter_http_enabled
+  welcome_shutdown_links += libapphttpdgui
+endif
+welcome_shutdown = executable('welcome-shutdown',
+  'test-welcome-shutdown.c', 'test-application-owned-lifecycle-glue.c',
+  dependencies: [libapp_dep, appstream], link_with: welcome_shutdown_links,
+  override_options: ['c_std=c11'])
+test('welcome-shutdown', welcome_shutdown,
+  depends: gimp_test_icon_dependencies,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes', 'GSETTINGS_BACKEND=memory'],
+  suite: 'app', is_parallel: false, timeout: 180)
