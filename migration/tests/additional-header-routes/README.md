@@ -39,3 +39,16 @@ archives using Meson's selected toolchain. Source or metadata drift invalidates
 the recorded manifest. These probes establish compilation only; they do not
 claim runtime behavior, C/C++ link ABI, platform coverage or original 08.017
 behavioral acceptance.
+
+## Tool-options route repair (2026-10-15)
+
+A fresh native configure at `6e6f2568e7593089c4f3c93e4613354c1f915001`
+correctly rejected changed baseline tool-option headers outside the reviewed
+closure. Child `04.003/tool-options-header-routes` explicitly registers
+`gimpalignoptions.h`, `gimprectangleoptions.h`, and `gimpvectoroptions.h` with
+their original baseline blob identities and the normal core/tool/GTK prelude.
+Their added horizontal constructors, action/metadata/history state and path
+availability declarations require no extra prerequisite header. The generator
+and historical inventories are unchanged. A regression removes each route in
+turn and requires the fail-closed source scan to reject it. As with other
+routes, double-include compilation is not a cross-language link ABI claim.
