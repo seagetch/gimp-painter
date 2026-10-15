@@ -450,5 +450,86 @@ class NativeToolbarMetadataTests(NativeWidgetMetadataTests):
         self.assertEqual(A.inspect_source((root / path).read_text(), path)['data_sites'], [])
 
 
+class NativeWelcomeCleanupTests(NativeWidgetMetadataTests):
+    """NULL-only native cleanup, including the response/destroy duplicate."""
+    SITES = (
+        ('native-welcome-config-cleanup', 'app/dialogs/welcome-dialog.c',
+         'g_object_set_data',
+         '11f530fb531326d07646ae71b7c4bcd75a93de2dd1a579e944e415f3c20a7b50',
+         'g_object_set_data (G_OBJECT (dialog), "config-copy", NULL);'),
+        ('native-welcome-config-cleanup', 'app/dialogs/welcome-dialog.c',
+         'g_object_set_data',
+         '4d47dc507fdd8df2c2221e3f00bfe1f81f197b98b7d1e1256f33db5ddc8161aa',
+         'g_object_set_data (G_OBJECT (dialog), "config-orig", NULL);'),
+    )
+    COUNTS = (1, 2)
+
+    def setUp(self):
+        super().setUp()
+        self.calls = {self.SITES[0][1]: '\n'.join(
+            site[4] for site, count in zip(self.SITES, self.COUNTS)
+            for _ in range(count))}
+
+    def test_policy_pins_exact_native_metadata_sites(self):
+        self.assertEqual(len(self.policy['data_sites']), 2)
+        for site, count in zip(self.SITES, self.COUNTS):
+            name, path, operation, sha256, call = site
+            with self.subTest(call=call):
+                rows = [row for row in self.policy['data_sites']
+                        if row['sha256'] == sha256]
+                self.assertEqual(len(rows), 1)
+                row = rows[0]
+                self.assertEqual((row['path'], row['operation'], row['count'], row['provenance']),
+                                 (path, operation, count, name))
+                self.assertEqual(self.policy['reviews'][name]['paths'], [path])
+                self.assertTrue(row['reason'])
+                self.assertTrue(self.policy['reviews'][name]['reason'])
+                self.assertEqual(A.inspect_source(call, path)['data_sites'][0]['sha256'], sha256)
+
+    def test_mutated_native_metadata_calls_rejected(self):
+        for _, path, _, _, call in self.SITES:
+            for old, new in [('dialog', 'other'), ('"config-', '"impl-'),
+                             ('NULL', 'new Impl'), ('g_object_set_data', 'g_object_set_qdata')]:
+                with self.subTest(call=call, old=old):
+                    calls = dict(self.calls)
+                    calls[path] = calls[path].replace(call, call.replace(old, new), 1)
+                    result = self.scan(calls)
+                    self.assertEqual(result['status'], 'FAIL')
+                    self.assertTrue(any('unaudited object data site' in e for e in result['errors']))
+                    self.assertTrue(any('stale or changed object data review' in e for e in result['errors']))
+
+    def test_duplicate_native_metadata_calls_rejected(self):
+        for _, path, _, _, call in self.SITES:
+            with self.subTest(call=call):
+                calls = dict(self.calls)
+                calls[path] += '\n' + call
+                self.assertEqual(self.scan(calls)['status'], 'FAIL')
+
+    def test_removed_cleanup_occurrence_rejected(self):
+        for _, path, _, _, call in self.SITES:
+            with self.subTest(call=call):
+                calls = dict(self.calls)
+                calls[path] = calls[path].replace(call, '', 1)
+                result = self.scan(calls)
+                self.assertEqual(result['status'], 'FAIL')
+                self.assertTrue(any('stale or changed object data review' in e for e in result['errors']))
+
+    def test_native_metadata_source_path_drift_rejected(self):
+        path = self.SITES[0][1]
+        calls = {'app/dialogs/preferences-dialog.c': self.calls[path]}
+        result = self.scan(calls)
+        self.assertEqual(result['status'], 'FAIL')
+        self.assertTrue(any('unaudited object data site' in e for e in result['errors']))
+        self.assertTrue(any('stale or changed object data review' in e for e in result['errors']))
+
+    def test_actual_cleanup_occurrence_counts(self):
+        root = Path(__file__).resolve().parents[2]
+        path = self.SITES[0][1]
+        rows = A.inspect_source((root / path).read_text(), path)['data_sites']
+        for site, count in zip(self.SITES, self.COUNTS):
+            with self.subTest(sha256=site[3]):
+                self.assertEqual(sum(row['sha256'] == site[3] for row in rows), count)
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

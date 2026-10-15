@@ -505,6 +505,12 @@
     }
   },
   "reviews": {
+    "native-welcome-config-cleanup": {
+      "paths": [
+        "app/dialogs/welcome-dialog.c"
+      ],
+      "reason": "NULL-only cleanup of native GimpConfig duplicates owned by the dialog's existing g_object_set_data_full registrations with g_object_unref. Destroy disposes child controls before clearing config-copy and config-orig, even for a retained dialog; the existing response path also clears config-orig. No C++ implementation storage."
+    },
     "common-store": {
       "paths": [
         "app/painter/binding-store.cpp"
@@ -1700,10 +1706,18 @@
     {
       "path": "app/dialogs/welcome-dialog.c",
       "operation": "g_object_set_data",
-      "sha256": "4d47dc507fdd8df2c2221e3f00bfe1f81f197b98b7d1e1256f33db5ddc8161aa",
+      "sha256": "11f530fb531326d07646ae71b7c4bcd75a93de2dd1a579e944e415f3c20a7b50",
       "count": 1,
-      "reason": "Unchanged native upstream data site",
-      "provenance": "upstream"
+      "reason": "Destroy clears config-copy after disposing child controls, releasing the native GimpConfig duplicate through its registered g_object_unref destructor.",
+      "provenance": "native-welcome-config-cleanup"
+    },
+    {
+      "path": "app/dialogs/welcome-dialog.c",
+      "operation": "g_object_set_data",
+      "sha256": "4d47dc507fdd8df2c2221e3f00bfe1f81f197b98b7d1e1256f33db5ddc8161aa",
+      "count": 2,
+      "reason": "The original response cleanup and the destroy cleanup both clear config-orig; its registered g_object_unref releases the native GimpConfig duplicate only while the entry is populated.",
+      "provenance": "native-welcome-config-cleanup"
     },
     {
       "path": "app/dialogs/welcome-dialog.c",
