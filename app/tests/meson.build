@@ -913,3 +913,17 @@ test('welcome-shutdown', welcome_shutdown,
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes', 'GSETTINGS_BACKEND=memory'],
   suite: 'app', is_parallel: false, timeout: 180)
+
+# Bounded sparse-canvas Surface transfers; not allocation/RSS measurement.
+painter_roi_transfers = executable('painter-roi-transfers',
+  'test-painter-roi-transfers.cpp', 'tests.c',
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'])
+test('painter-roi-transfers', painter_roi_transfers,
+  env: [
+    'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+    'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+    'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+    'UI_TEST=yes',
+  ], suite: 'app', is_parallel: false, timeout: 60)
