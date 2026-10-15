@@ -16,7 +16,6 @@ extern "C" {
 #include "core/gimptoolinfo.h"
 #include "display/gimpdisplay.h"
 #include "widgets/gimppaintermybrusheditor.h"
-#include "widgets/gimpmypaintbrushoptions-gui.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpwidgets-utils.h"
 #include "gimpcoloroptions.h"
@@ -26,6 +25,7 @@ extern "C" {
 #include "gimp-intl.h"
 }
 #include "gimppaintermybrushtool.hpp"
+#include "core/gimpcontext-handle.hpp"
 #include "paint/painter-mypaint-surface/gimp-painter-options.hpp"
 #include "paint/painter-mypaint-surface/gimp-painter-session.hpp"
 #include "painter/binding-store.hpp"
@@ -274,13 +274,35 @@ void draw(GimpDrawTool*draw_tool)
 }
 GtkWidget*options_gui(GimpToolOptions*options)
 {
-  auto*box=gimp_tool_options_gui(options);GError*error=nullptr;
-  auto*selector=gimp_mypaint_brush_button_with_popup(G_OBJECT(options));
-  if(selector){gtk_box_pack_start(GTK_BOX(box),selector,FALSE,FALSE,0);gtk_widget_show(selector);}
-  auto*editor=gimp_painter_mybrush_editor_new(GIMP_CONTEXT(options),FALSE,&error);
-  if(editor){gtk_box_pack_start(GTK_BOX(box),editor,FALSE,FALSE,0);gtk_widget_show(editor);}
-  else{auto*label=gtk_label_new(error?error->message:_("Unable to open the painter brush editor"));gtk_box_pack_start(GTK_BOX(box),label,FALSE,FALSE,0);gtk_widget_show(label);g_clear_error(&error);}
-  return box;
+  return boundary<GtkWidget *> (nullptr, nullptr, [&] () -> GtkWidget * {
+    // Resolve the owning handle before creating the floating GUI, so a handle
+    // failure cannot leak the GUI or escape the registered C callback.
+    auto context = ContextRef::retain (GIMP_CONTEXT (options));
+    auto selector = context.create_mypaint_brush_button ();
+    auto *box = gimp_tool_options_gui (options);
+    if (selector)
+      {
+        gtk_box_pack_start (GTK_BOX (box), GTK_WIDGET (selector.get ()), FALSE, FALSE, 0);
+        gtk_widget_show (GTK_WIDGET (selector.get ()));
+        // GTK now owns its parent reference; release only our temporary owner.
+        selector.reset ();
+      }
+    GError *error = nullptr;
+    auto *editor = gimp_painter_mybrush_editor_new (GIMP_CONTEXT (options), FALSE, &error);
+    if (editor)
+      {
+        gtk_box_pack_start (GTK_BOX (box), editor, FALSE, FALSE, 0);
+        gtk_widget_show (editor);
+      }
+    else
+      {
+        auto *label = gtk_label_new (error ? error->message : _("Unable to open the painter brush editor"));
+        gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 0);
+        gtk_widget_show (label);
+        g_clear_error (&error);
+      }
+    return box;
+  });
 }
 }
 static void gimp_painter_mybrush_tool_class_init(GimpPainterMybrushToolClass*klass)

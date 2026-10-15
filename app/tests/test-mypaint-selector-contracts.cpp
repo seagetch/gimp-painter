@@ -1060,6 +1060,93 @@ void source_less_draft_and_missing_preview ()
   close_popup (selector.button);
 }
 
+void registered_factory_handle_lifetime ()
+{
+  Resources brushes;
+  auto options = new_options ();
+  auto *info = tool_info ();
+  g_object_set (options.get (), "tool-info", info, nullptr);
+  gimp_context_set_painter_mybrush (GIMP_CONTEXT (options.get ()), brushes.a.get ());
+  const char *keys[] = {"gimp-tool-options-gui-func",
+                        "gimp-tool-options-gui-horizontal-func"};
+  GtkWidget *guis[2], *buttons[2];
+  guint gone[2] = {0, 0}, options_gone = 0;
+  auto notify = +[](gpointer data) { ++*static_cast<guint *> (data); };
+  g_object_set_data_full (G_OBJECT (options.get ()), "registered-options-storage",
+                          &options_gone, notify);
+  for (guint i = 0; i < 2; ++i)
+    {
+      auto factory = reinterpret_cast<GimpToolOptionsGUIFunc> (
+        g_object_get_data (G_OBJECT (info), keys[i]));
+      g_assert_nonnull (factory);
+#ifdef GIMP_TEST_MYPAINT_SELECTOR_WRAP_FACTORY
+      const guint calls = selector_factory_calls;
+#endif
+      guis[i] = factory (GIMP_TOOL_OPTIONS (options.get ()));
+      g_assert_nonnull (guis[i]);
+      g_object_ref_sink (guis[i]);
+      buttons[i] = control (guis[i], selector_name);
+#ifdef GIMP_TEST_MYPAINT_SELECTOR_WRAP_FACTORY
+      g_assert_cmpuint (selector_factory_calls, ==, calls + 1);
+      g_assert_true (buttons[i] == selector_factory_result);
+#endif
+      // The factory's temporary handle has gone; only GTK owns this selector.
+      g_assert_false (g_object_is_floating (buttons[i]));
+      g_assert_true (gtk_widget_get_parent (buttons[i]) == guis[i]);
+      g_assert_cmpint (gimp_painter_compact_options_get (guis[i]), ==, i == 1);
+      g_object_set_data_full (G_OBJECT (buttons[i]), "registered-selector-storage",
+                              &gone[i], notify);
+      assert_selected (buttons[i], options.get (), brushes.a.get ());
+    }
+  g_assert_true (guis[0] != guis[1] && buttons[0] != buttons[1]);
+  choose_preset (buttons[0], brushes.b.get ());
+  assert_selected (buttons[0], options.get (), brushes.b.get ());
+  assert_selected (buttons[1], options.get (), brushes.b.get ());
+  choose_preset (buttons[1], brushes.a.get ());
+  assert_selected (buttons[0], options.get (), brushes.a.get ());
+  assert_selected (buttons[1], options.get (), brushes.a.get ());
+  for (guint i = 0; i < 2; ++i)
+    {
+      gtk_widget_destroy (guis[i]);
+      g_object_unref (guis[i]);
+      drain ();
+      g_assert_cmpuint (gone[i], ==, 1);
+      if (i == 0)
+        {
+          g_assert_cmpuint (gone[1], ==, 0);
+          choose_preset (buttons[1], brushes.b.get ());
+          assert_selected (buttons[1], options.get (), brushes.b.get ());
+        }
+    }
+  options.reset ();
+  g_assert_cmpuint (options_gone, ==, 1);
+}
+
+void registered_factory_empty_and_invalid_context ()
+{
+  auto factory = reinterpret_cast<GimpToolOptionsGUIFunc> (
+    g_object_get_data (G_OBJECT (tool_info ()), "gimp-tool-options-gui-func"));
+  g_assert_nonnull (factory);
+  // ContextRef rejects this before GTK construction. No C++ exception may
+  // cross the registered C callback, which has no GError output parameter.
+  g_assert_null (factory (nullptr));
+  auto options = new_options ();
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (options.get ()), nullptr));
+#ifdef GIMP_TEST_MYPAINT_SELECTOR_WRAP_FACTORY
+  const guint calls = selector_factory_calls;
+#endif
+  auto *gui = factory (GIMP_TOOL_OPTIONS (options.get ()));
+  g_assert_nonnull (gui);
+  g_object_ref_sink (gui);
+  g_assert_null (find (gui, selector_name));
+#ifdef GIMP_TEST_MYPAINT_SELECTOR_WRAP_FACTORY
+  g_assert_cmpuint (selector_factory_calls, ==, calls + 1);
+  g_assert_null (selector_factory_result);
+#endif
+  gtk_widget_destroy (gui);
+  g_object_unref (gui);
+}
+
 void registered_tool_gui_and_editor_identity ()
 {
   Resources brushes;
@@ -1327,5 +1414,7 @@ gimp_test_mypaint_selector_cpp_register (Gimp *gimp)
   g_test_add_func ("/mypaint-selector/cpp/13-retained-history-close-finalize", retained_history_after_close_and_finalize);
   g_test_add_func ("/mypaint-selector/cpp/14-history-model-swap-close-reentry", history_model_swap_close_reentry);
   g_test_add_func ("/mypaint-selector/cpp/15-source-context-button-destruction-orders", source_context_and_button_destruction_orders);
+  g_test_add_func ("/mypaint-selector/cpp/16-registered-factory-handle-lifetime", registered_factory_handle_lifetime);
+  g_test_add_func ("/mypaint-selector/cpp/17-registered-factory-empty-invalid-context", registered_factory_empty_and_invalid_context);
   register_selector_history_tests (application);
 }
