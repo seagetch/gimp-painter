@@ -727,6 +727,7 @@ gboolean gimp_painter_mybrush_editor_delete(GimpPainterMybrushEditor*editor,GErr
   return boundary<gboolean>(error,FALSE,[&]()->gboolean {return store(editor).with<EditorSlot>([&](EditorImpl&i)->gboolean {
     if(!i.options)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"The editor has no context");
     auto model=i.options;auto*ctx=GIMP_CONTEXT(model.get());auto selected=ObjectRef<GimpPainterMybrush>::retain(gimp_context_get_painter_mybrush(ctx));
+    const auto revision=i.ui_revision;
     if(!selected||!gimp_data_is_deletable(GIMP_DATA(selected.get())))throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"This brush cannot be deleted");
     auto*factory=ctx->gimp->painter_mybrush_factory;
     /* Native factory deletion removes its item before trying the filesystem.
@@ -736,8 +737,11 @@ gboolean gimp_painter_mybrush_editor_delete(GimpPainterMybrushEditor*editor,GErr
     if(!gimp_data_factory_data_delete(factory,GIMP_DATA(selected.get()),FALSE,error))return FALSE;
     auto*standard=gimp_context_get_painter_mybrush(ctx);
     if(!standard||standard==selected.get()){standard=GIMP_PAINTER_MYBRUSH(gimp_painter_mybrush_get_standard(ctx));gimp_context_set_painter_mybrush(ctx,standard);}
-    if(!i.closed&&i.context&&GIMP_CONTEXT(i.context.get())!=ctx)gimp_context_set_painter_mybrush(GIMP_CONTEXT(i.context.get()),standard);
-    if(!i.closed){rebuild_list(i);refresh(i);}
+    /* Factory removal and fallback selection emit synchronously. A newer
+     * editor context must not inherit this retired deletion's selection. */
+    auto current=[&]{return !i.closed&&i.ui_revision==revision&&i.options.get()==model.get();};
+    if(current()&&i.context&&GIMP_CONTEXT(i.context.get())!=ctx)gimp_context_set_painter_mybrush(GIMP_CONTEXT(i.context.get()),standard);
+    if(current()){rebuild_list(i);if(current())refresh(i);}
     return TRUE;
   });});
 }

@@ -1319,6 +1319,192 @@ static void mapping_setter_visual_demo ()
     "Mapping setter RESET | API-driven MypaintOptionsRef::set_mapping_point | 0 points; disabled");
 }
 
+/* Retired curve controls must lose their closures, not merely gate writes. */
+static void curve_control_lifetimes ()
+{
+  prepare ();
+  for (bool replace : {false, true})
+    {
+      Editor editor;
+      editor.preview ();
+      auto input = ObjectRef<GObject>::retain (G_OBJECT (editor.get ("painter-curve-input")));
+      auto toggle = ObjectRef<GObject>::retain (G_OBJECT (editor.get ("painter-curve-enabled")));
+      const auto input_handler = g_signal_handler_find (input.get (), G_SIGNAL_MATCH_ID,
+        g_signal_lookup ("changed", GTK_TYPE_COMBO_BOX), 0, nullptr, nullptr, nullptr);
+      const auto toggle_handler = g_signal_handler_find (toggle.get (), G_SIGNAL_MATCH_ID,
+        g_signal_lookup ("toggled", GTK_TYPE_TOGGLE_BUTTON), 0, nullptr, nullptr, nullptr);
+      g_assert_cmpuint (input_handler, >, 0); g_assert_cmpuint (toggle_handler, >, 0);
+      for (auto *object : {input.get (), toggle.get ()})
+        gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (GTK_WIDGET (object))), GTK_WIDGET (object));
+      const auto old_before = editor.snapshot ().encode ();
+      auto replacement = ObjectRef<GimpPainterMybrushOptions>::adopt (
+        GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, "gimp", gimp, nullptr)));
+      const auto new_before = PainterOptionsRef::retain (replacement.get ()).snapshot ().encode ();
+      GError *error = nullptr;
+      if (replace)
+        {
+          g_assert_true (gimp_painter_mybrush_editor_set_context (editor.widget, GIMP_CONTEXT (replacement.get ()), &error));
+          g_assert_no_error (error); editor.preview ();
+        }
+      else
+        {
+          g_assert_true (gimp_painter_binding_close (G_OBJECT (editor.widget), &error));
+          g_assert_no_error (error);
+        }
+      g_assert_false (g_signal_handler_is_connected (input.get (), input_handler));
+      g_assert_false (g_signal_handler_is_connected (toggle.get (), toggle_handler));
+      auto emit = [&] {
+        gtk_combo_box_set_active (GTK_COMBO_BOX (input.get ()), INPUT_SPEED1);
+        g_signal_emit_by_name (input.get (), "changed");
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle.get ()),
+          !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (toggle.get ())));
+        g_signal_emit_by_name (toggle.get (), "toggled");
+        g_assert_true (editor.snapshot ().encode () == old_before);
+        g_assert_true (PainterOptionsRef::retain (replacement.get ()).snapshot ().encode () == new_before);
+      };
+      emit ();
+      g_assert_false (gimp_painter_mybrush_editor_preview_pending (editor.widget));
+      GObject *weak = G_OBJECT (editor.widget);
+      g_object_add_weak_pointer (weak, reinterpret_cast<gpointer *> (&weak));
+      gtk_widget_destroy (GTK_WIDGET (editor.widget));
+      g_assert_null (weak);
+      emit ();
+    }
+}
+
+static void curve_emitter_first_teardown ()
+{
+  prepare ();
+  for (bool rebuild : {false, true})
+    {
+      Editor editor;
+      for (const char *name : {"painter-curve-input", "painter-curve-enabled"})
+        gtk_widget_destroy (editor.get (name));
+      GError *error = nullptr;
+      if (rebuild)
+        {
+          auto context = ObjectRef<GObject>::adopt (G_OBJECT (gimp_context_new (gimp, "emitter-first", nullptr)));
+          g_assert_true (gimp_painter_mybrush_editor_set_context (editor.widget, GIMP_CONTEXT (context.get ()), &error));
+          g_assert_no_error (error);
+          g_assert_nonnull (editor.get ("painter-curve-input"));
+          g_assert_nonnull (editor.get ("painter-curve-enabled"));
+          editor.preview ();
+        }
+      g_assert_true (gimp_painter_binding_close (G_OBJECT (editor.widget), &error));
+      g_assert_no_error (error);
+      g_assert_false (gimp_painter_mybrush_editor_preview_pending (editor.widget));
+    }
+}
+
+static void stale_prompt_responses ()
+{
+  prepare ();
+  for (int operation = 0; operation < 3; ++operation)
+    for (int retirement = 0; retirement < 3; ++retirement)
+      {
+        auto options = ObjectRef<GimpPainterMybrushOptions>::adopt (
+          GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, "gimp", gimp, nullptr)));
+        Editor editor (false, GIMP_CONTEXT (options.get ()));
+        GError *error = nullptr;
+        const auto name = std::string ("Prompt lifetime fixture ") + std::to_string (operation) + "-" + std::to_string (retirement);
+        g_assert_true (gimp_painter_mybrush_editor_save (editor.widget, name.c_str (), &error));
+        g_assert_no_error (error);
+        auto resource = ObjectRef<GimpPainterMybrush>::retain (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options.get ())));
+        auto *container = gimp_data_factory_get_container (gimp->painter_mybrush_factory);
+        const auto count = gimp_container_get_n_children (container);
+        const auto before = editor.snapshot ().encode ();
+        auto file = ObjectRef<GObject>::retain (G_OBJECT (gimp_data_get_file (GIMP_DATA (resource.get ()))));
+        const char *buttons[] = {"painter-brush-save-as", "painter-brush-rename", "painter-brush-delete"};
+        gtk_button_clicked (GTK_BUTTON (editor.get (buttons[operation])));
+        GtkDialog *dialog = nullptr;
+        auto *windows = gtk_window_list_toplevels ();
+        for (auto *item = windows; item; item = item->next)
+          if (GTK_IS_DIALOG (item->data) && gtk_window_get_transient_for (GTK_WINDOW (item->data)) == GTK_WINDOW (editor.window))
+            { g_assert_null (dialog); dialog = GTK_DIALOG (item->data); }
+        g_list_free (windows); g_assert_nonnull (dialog); g_object_ref (dialog);
+        auto *children = gtk_container_get_children (GTK_CONTAINER (gtk_dialog_get_content_area (dialog)));
+        for (auto *item = children; item; item = item->next)
+          if (GTK_IS_ENTRY (item->data)) gtk_entry_set_text (GTK_ENTRY (item->data), "Stale prompt must not create this");
+        g_list_free (children);
+        auto replacement = ObjectRef<GimpPainterMybrushOptions>::adopt (
+          GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, "gimp", gimp, nullptr)));
+        const auto replacement_before = PainterOptionsRef::retain (replacement.get ()).snapshot ().encode ();
+        if (retirement == 0)
+          g_assert_true (gimp_painter_mybrush_editor_set_context (editor.widget, GIMP_CONTEXT (replacement.get ()), &error));
+        else if (retirement == 1)
+          g_assert_true (gimp_painter_binding_close (G_OBJECT (editor.widget), &error));
+        else
+          {
+            GObject *weak = G_OBJECT (editor.widget);
+            g_object_add_weak_pointer (weak, reinterpret_cast<gpointer *> (&weak));
+            gtk_widget_destroy (GTK_WIDGET (editor.widget)); g_assert_null (weak);
+          }
+        g_assert_no_error (error);
+        gtk_dialog_response (dialog, GTK_RESPONSE_OK); g_object_unref (dialog);
+        g_assert_cmpint (gimp_container_get_n_children (container), ==, count);
+        g_assert_true (gimp_container_have (container, GIMP_OBJECT (resource.get ())));
+        g_assert_cmpstr (gimp_object_get_name (resource.get ()), ==, name.c_str ());
+        g_assert_true (g_file_query_exists (G_FILE (file.get ()), nullptr));
+        g_assert_true (editor.snapshot ().encode () == before);
+        g_assert_true (PainterOptionsRef::retain (replacement.get ()).snapshot ().encode () == replacement_before);
+        Editor cleanup (false, GIMP_CONTEXT (options.get ()));
+        g_assert_true (gimp_painter_mybrush_editor_delete (cleanup.widget, &error));
+        g_assert_no_error (error);
+      }
+}
+
+static void operation_context_reentry ()
+{
+  prepare ();
+  for (bool deleting : {false, true})
+    for (bool closing : {false, true})
+      {
+        auto options = ObjectRef<GimpPainterMybrushOptions>::adopt (
+          GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, "gimp", gimp, nullptr)));
+        auto replacement = ObjectRef<GimpPainterMybrushOptions>::adopt (
+          GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, "gimp", gimp, nullptr)));
+        auto newer = PainterMybrushRef::create ("Reentry newer target");
+        auto settings = newer.snapshot (); settings.set_base_value (BRUSH_OPAQUE, .326); newer.replace (settings);
+        gimp_context_set_painter_mybrush (GIMP_CONTEXT (replacement.get ()), newer.get ());
+        const auto before = PainterOptionsRef::retain (replacement.get ()).snapshot ().encode ();
+        g_test_message ("operation=%s retirement=%s", deleting ? "delete" : "save", closing ? "close" : "replace");
+        Editor editor (false, GIMP_CONTEXT (options.get ()));
+        GError *error = nullptr;
+        const auto name = std::string ("Editor operation reentry ") + (deleting ? "delete" : "save") + (closing ? " close" : " replace");
+        if (deleting)
+          { g_assert_true (gimp_painter_mybrush_editor_save (editor.widget, name.c_str (), &error)); g_assert_no_error (error); }
+        auto *container = gimp_data_factory_get_container (gimp->painter_mybrush_factory);
+        struct Reentry { GimpPainterMybrushEditor *editor; GimpContext *context; bool closing; bool fired = false; };
+        Reentry state {editor.widget, GIMP_CONTEXT (replacement.get ()), closing};
+        auto handler = g_signal_connect (container, deleting ? "remove" : "add",
+          G_CALLBACK (+[](GimpContainer *, GimpObject *, gpointer data) {
+            auto &state = *static_cast<Reentry *> (data);
+            g_assert_false (state.fired); state.fired = true;
+            GError *error = nullptr;
+            if (state.closing) gtk_widget_destroy (GTK_WIDGET (state.editor));
+            else g_assert_true (gimp_painter_mybrush_editor_set_context (state.editor, state.context, &error));
+            g_assert_no_error (error);
+          }), &state);
+        // The public operation has an active BindingStore borrow while the
+        // owner's last widget reference may disappear in the factory signal.
+        auto owner = ObjectRef<GObject>::retain (G_OBJECT (editor.widget));
+        if (deleting) g_assert_true (gimp_painter_mybrush_editor_delete (editor.widget, &error));
+        else g_assert_true (gimp_painter_mybrush_editor_save (editor.widget, name.c_str (), &error));
+        g_assert_no_error (error); g_signal_handler_disconnect (container, handler);
+        g_assert_true (state.fired);
+        g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (replacement.get ())) == newer.get ());
+        g_assert_true (PainterOptionsRef::retain (replacement.get ()).snapshot ().encode () == before);
+        if (!deleting)
+          {
+            auto *saved = GIMP_PAINTER_MYBRUSH (gimp_container_get_child_by_name (container, name.c_str ()));
+            g_assert_nonnull (saved);
+            gimp_context_set_painter_mybrush (GIMP_CONTEXT (options.get ()), saved);
+            Editor cleanup (false, GIMP_CONTEXT (options.get ()));
+            g_assert_true (gimp_painter_mybrush_editor_delete (cleanup.widget, &error)); g_assert_no_error (error);
+          }
+      }
+}
+
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
@@ -1342,6 +1528,10 @@ int main(int argc,char**argv){
   add_editor_case("/painter-editor/18-dialog-factory-dockable-lifetime",dialog_factory_dockable_lifetime);
   add_editor_case("/painter-editor/19-action-dockable-close-reopen",action_dockable_close_reopen);
   add_editor_case("/painter-editor/20-mapping-setter-refresh",mapping_setter_editor_refresh);
+  add_editor_case("/painter-editor/21-curve-control-lifetimes",curve_control_lifetimes);
+  add_editor_case("/painter-editor/22-curve-emitter-first-teardown",curve_emitter_first_teardown);
+  add_editor_case("/painter-editor/23-stale-prompt-responses",stale_prompt_responses);
+  add_editor_case("/painter-editor/24-operation-context-reentry",operation_context_reentry);
   if(g_getenv("PAINTER_EDITOR_DEMO"))add_editor_case("/painter-editor/visual-demo",visual_demo);
   if(g_getenv("GIMP_TEST_MAPPING_SETTER_VISUAL_DEMO"))add_editor_case("/painter-editor/mapping-setter/visual-demo",mapping_setter_visual_demo);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(gimp->app);g_clear_object(&gimp->app);g_free(original_search);return result;
