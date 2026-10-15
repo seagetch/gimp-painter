@@ -11,6 +11,16 @@ namespace GimpPainter GIMP_PAINTER_PRIVATE {
 class FilterLayerRef
 {
 public:
+  struct DefinitionFree
+  { void operator() (GBytes *value) const noexcept { g_bytes_unref (value); } };
+  struct ArgumentsSnapshotFree
+  { void operator() (GimpFilterArgumentsSnapshot *value) const noexcept
+    { gimp_filter_arguments_snapshot_free (value); } };
+  struct ArgumentsFree
+  { void operator() (GimpValueArray *value) const noexcept { gimp_value_array_unref (value); } };
+  using Definition = std::unique_ptr<GBytes, DefinitionFree>;
+  using ArgumentsSnapshot = std::unique_ptr<GimpFilterArgumentsSnapshot, ArgumentsSnapshotFree>;
+  using Arguments = std::unique_ptr<GimpValueArray, ArgumentsFree>;
   static FilterLayerRef retain (GimpFilterLayer *layer)
   { return FilterLayerRef (ObjectRef<GimpFilterLayer>::retain (layer)); }
   static FilterLayerRef adopt (GimpFilterLayer *layer)
@@ -42,6 +52,19 @@ public:
   { return String (g_strdup (gimp_filter_layer_get_procedure (get ()))); }
   ArrayRef get_procedure_args () const
   { return ArrayRef::adopt (gimp_filter_layer_get_procedure_args (get ())); }
+  /* Read handles own exactly the C provider's result. Prefix limits are bytes;
+   * repairing a split UTF-8 sequence is a display concern, not a model edit.
+   * A snapshot does not materialize arguments or retain the layer itself. */
+  String procedure_prefix (gsize max_bytes, gboolean *truncated = nullptr) const
+  { return String (gimp_filter_layer_dup_procedure_prefix (get (), max_bytes, truncated)); }
+  Definition definition () const
+  { return Definition (gimp_filter_layer_ref_definition (get ())); }
+  ArgumentsSnapshot snapshot_arguments () const
+  { return ArgumentsSnapshot (gimp_filter_layer_snapshot_arguments (get ())); }
+  Arguments arguments () const
+  { return Arguments (gimp_filter_layer_dup_args (get ())); }
+  guint64 definition_revision () const noexcept
+  { return gimp_filter_layer_get_definition_revision (get ()); }
   /* Native cache certification/cancellation, not the historical one-shot flag. */
   void mark_as_loaded () const noexcept { gimp_filter_layer_mark_as_loaded (get ()); }
   String procedure () const { return String (gimp_filter_layer_dup_procedure (get ())); }

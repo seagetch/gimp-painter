@@ -17,6 +17,7 @@ void gimp_test_filter_entry_cpp_register (Gimp *application);
 #include "core/gimpfilterlayer-handle.hpp"
 #include "painter/filter-lifetime.hpp"
 #include <memory>
+#include <algorithm>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -31,6 +32,19 @@ static_assert (std::is_same<decltype (std::declval<const FilterLayerRef&> ().get
 static_assert (std::is_same<decltype (std::declval<const FilterLayerRef&> ().mark_as_loaded ()),
                            void>::value,
                "The loaded-cache handle preserves the original void result");
+
+static_assert (std::is_same<decltype (std::declval<const FilterLayerRef&> ().procedure_prefix (128)),
+                           GimpPainter::String>::value, "The bounded prefix owns its bytes");
+static_assert (std::is_same<decltype (std::declval<const FilterLayerRef&> ().definition ()),
+                           FilterLayerRef::Definition>::value, "Definition reads own a native GBytes reference");
+static_assert (std::is_same<decltype (std::declval<const FilterLayerRef&> ().snapshot_arguments ()),
+                           FilterLayerRef::ArgumentsSnapshot>::value, "Snapshots use their native owning handle");
+static_assert (std::is_same<decltype (std::declval<const FilterLayerRef&> ().arguments ()),
+                           FilterLayerRef::Arguments>::value, "Materialized arguments own GimpValueArray, not GArray");
+static_assert (std::is_same<decltype (std::declval<const FilterLayerRef&> ().definition_revision ()),
+                           guint64>::value, "Revision reads preserve the native integer type");
+static_assert (!std::is_copy_constructible<FilterLayerRef::ArgumentsSnapshot>::value,
+               "Native snapshots must not be shallow-copied");
 
 namespace {
 Gimp *application;
@@ -312,6 +326,89 @@ void independent_image_handle_owners ()
     }
 }
 
+void bounded_dialog_read_owners ()
+{
+  FilterLayerRef::Definition saved_raw;
+  FilterLayerRef::ArgumentsSnapshot saved_snapshot;
+  FilterLayerRef::Arguments saved_args;
+  GimpPainter::String saved_prefix;
+  guint filter_finalized = 0;
+  const std::string name = std::string (127, 'x') + "\xe2\x82\xac" + std::string (5000, 'y');
+  {
+    auto image = image_new ();
+    auto filter = filter_new (image.get ());
+    g_object_weak_ref (G_OBJECT (filter.get ()), finalized, &filter_finalized);
+    g_assert_null (filter.definition ().get ());
+    g_assert_null (filter.arguments ().get ());
+    g_assert_null (filter.snapshot_arguments ().get ());
+    FilterLayerRef::Definition raw (g_bytes_new_static ("raw\0bytes", 9));
+    ValueArrayOwner input (gimp_value_array_new_from_types (nullptr,
+      G_TYPE_STRING, "saved scalar", G_TYPE_INT, 37, G_TYPE_NONE), gimp_value_array_unref);
+    const auto before = filter.definition_revision ();
+    filter.set_definition (name.c_str (), raw.get (), input.get ());
+    g_assert_cmpuint (filter.definition_revision (), >, before);
+    const auto revision = filter.definition_revision ();
+    gboolean truncated = FALSE;
+    saved_prefix = filter.procedure_prefix (128, &truncated);
+    g_assert_true (truncated);
+    g_assert_cmpuint (strlen (saved_prefix.get ()), ==, 128);
+    g_assert_cmpmem (saved_prefix.get (), 128, name.data (), 128);
+    g_assert_false (g_utf8_validate (saved_prefix.get (), -1, nullptr));
+    for (gsize limit : {gsize (0), gsize (127), gsize (4096), name.size (), name.size () + 1})
+      {
+        auto prefix = filter.procedure_prefix (limit, &truncated);
+        const auto size = std::min (limit, name.size ());
+        g_assert_cmpuint (strlen (prefix.get ()), ==, size);
+        g_assert_cmpint (truncated, ==, limit < name.size ());
+        g_assert_cmpmem (prefix.get (), size, name.data (), size);
+      }
+    saved_raw = filter.definition ();
+    saved_snapshot = filter.snapshot_arguments ();
+    saved_args = filter.arguments ();
+    auto independent = filter.arguments ();
+    g_assert_true (independent.get () != saved_args.get ());
+    g_value_set_string (gimp_value_array_index (independent.get (), 0), "caller edit");
+    g_assert_cmpstr (g_value_get_string (gimp_filter_arguments_snapshot_peek_value (saved_snapshot.get (), 0)), ==, "saved scalar");
+    g_assert_cmpuint (filter.definition_revision (), ==, revision);
+    FilterLayerRef::Definition empty_raw (g_bytes_new_static ("", 0));
+    ValueArrayOwner empty_args (gimp_value_array_new (0), gimp_value_array_unref);
+    filter.set_definition ("", empty_raw.get (), empty_args.get ());
+    g_assert_nonnull (filter.definition ().get ());
+    g_assert_cmpuint (g_bytes_get_size (filter.definition ().get ()), ==, 0);
+    g_assert_nonnull (filter.arguments ().get ());
+    g_assert_cmpuint (gimp_value_array_length (filter.arguments ().get ()), ==, 0);
+    g_assert_nonnull (filter.snapshot_arguments ().get ());
+    g_assert_cmpuint (gimp_filter_arguments_snapshot_count (filter.snapshot_arguments ().get ()), ==, 0);
+    auto empty_name = filter.procedure_prefix (0, &truncated);
+    g_assert_nonnull (empty_name.get ());
+    g_assert_cmpstr (empty_name.get (), ==, "");
+    g_assert_false (truncated);
+    filter.set_definition ("replacement", nullptr, nullptr);
+    g_assert_null (filter.definition ().get ());
+    g_assert_null (filter.arguments ().get ());
+    g_assert_null (filter.snapshot_arguments ().get ());
+    filter.set_definition (name.c_str (), saved_raw.get (), saved_args.get ());
+    const auto closed_revision = filter.definition_revision ();
+    g_assert_true (gimp_painter_binding_close (G_OBJECT (filter.get ()), nullptr));
+    g_assert_cmpuint (filter.definition_revision (), ==, closed_revision);
+    auto closed_prefix = filter.procedure_prefix (128);
+    g_assert_cmpmem (closed_prefix.get (), 128, name.data (), 128);
+    g_assert_true (g_bytes_equal (filter.definition ().get (), saved_raw.get ()));
+    g_assert_cmpuint (gimp_filter_arguments_snapshot_count (filter.snapshot_arguments ().get ()), ==, 2);
+    g_assert_cmpuint (gimp_value_array_length (filter.arguments ().get ()), ==, 2);
+  }
+  g_assert_cmpuint (filter_finalized, ==, 1);
+  g_assert_cmpmem (saved_prefix.get (), 128, name.data (), 128);
+  g_assert_cmpmem (g_bytes_get_data (saved_raw.get (), nullptr), 9, "raw\0bytes", 9);
+  g_assert_cmpuint (gimp_filter_arguments_snapshot_count (saved_snapshot.get ()), ==, 2);
+  g_assert_cmpstr (g_value_get_string (gimp_filter_arguments_snapshot_peek_value (saved_snapshot.get (), 0)), ==, "saved scalar");
+  g_assert_cmpstr (g_value_get_string (gimp_value_array_index (saved_args.get (), 0)), ==, "saved scalar");
+  g_assert_cmpint (g_value_get_int (gimp_value_array_index (saved_args.get (), 1)), ==, 37);
+  auto moved = std::move (saved_snapshot);
+  g_assert_null (saved_snapshot.get ());
+  g_assert_cmpuint (gimp_filter_arguments_snapshot_count (moved.get ()), ==, 2);
+}
+
 void owned_queries_outlive_definition_and_owner ()
 {
   GimpPainter::String saved_name;
@@ -546,6 +643,7 @@ void running_owner_close_keeps_retained_cache ()
 extern "C" void gimp_test_filter_entry_cpp_register (Gimp *gimp)
 {
   application = gimp;
+  g_test_add_func ("/filter-entry/cpp/bounded_dialog_read_owners", bounded_dialog_read_owners);
   g_test_add_func ("/filter-entry/cpp/original_entry_routes", original_entry_routes);
   g_test_add_func ("/filter-entry/cpp/native_type_factory_and_copy", native_type_factory_and_copy);
   g_test_add_func ("/filter-entry/cpp/independent_image_handle_owners", independent_image_handle_owners);
