@@ -1,0 +1,22 @@
+{
+  "scope": "Strict aggregate runner implementation and fixture verification only; no native aggregate acceptance",
+  "source_sha256": {
+    "tools/run-painter-frozen-aggregate.py": "b5d458fc19e72ca9a5882524a7fb2b9fbd8b4dc542322f201131a83eeb7bdbaa",
+    "migration/tests/test_frozen_aggregate_runner.py": "39bff54a43b05e7d6d02df5e6e092c16537cf4262141cfb99cdf07adb3dfdcaa",
+    "migration/contracts/frozen-linux-aggregate.md": "eb254eab81c1a22954c96e69393d850cf50cf8275bd6808d4a4762170d7cf96a"
+  },
+  "fixtures": [
+    {
+      "name": "test_frozen_aggregate_runner.py",
+      "passed": 41,
+      "log_sha256": "d014b1005421a724515ff96da1c2894e77f863c56259d9b451a255f0ee910590"
+    },
+    {
+      "name": "test_linux_runtime_package.py",
+      "passed": 60,
+      "log_sha256": "138a08fa659885941bd0179011b31ce8d7a57d3032dbf5e540cc5916d9b7a5a2"
+    }
+  ],
+  "independent_review": "No remaining blockers; fixed unrecognized warnings, interrupted-build evidence, hidden Git-index/content changes, short credential redaction and Meson cancellation semantics.",
+  "native_gate_passed": false
+}
