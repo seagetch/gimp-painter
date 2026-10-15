@@ -1,0 +1,9 @@
+TAP version 14
+1..149
+ok 1 /gimp-filter-layer/native_type_lifecycle
+ok 2 /gimp-filter-layer/parameter_suffix_reordering
+ok 3 /gimp-filter-layer/parameter_metadata_rejections
+ok 4 /gimp-filter-layer/parameter_assignment_validation
+ok 5 /gimp-filter-layer/parameter_object_lifetime
+not ok /gimp-filter-layer/blinds_saved_argument_policy - FATAL-ERROR: Filter failed: Private Filter procedure failed
+Bail out!

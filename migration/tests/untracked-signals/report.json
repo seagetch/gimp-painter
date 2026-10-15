@@ -1,0 +1,128 @@
+{
+  "task": "07.008/untracked-signals",
+  "status": "PARTIAL; full task remains unchecked",
+  "base_commit": "1ec1e724c6e5f2c6b7c4c25febb9a56ae5e6ff49",
+  "scope": "FilterLayer dependency registration close/reparent regression; 60-row static source coverage is not runtime acceptance",
+  "baseline": [
+    {
+      "name": "untracked-baseline",
+      "command": [
+        "meson",
+        "test",
+        "-C",
+        "recovery-ui-20261015/build",
+        "--no-rebuild",
+        "gimp-filter-layer",
+        "--test-args=-p /gimp-filter-layer/dependency_connections_close_during_reorder",
+        "--print-errorlogs"
+      ],
+      "exit": 1,
+      "failure": [
+        "not ok /gimp-filter-layer/dependency_connections_close_during_reorder - ERROR:../build-source/app/tests/test-gimp-filter-layer.c:723:dependency_connections_close_during_reorder: assertion failed (signal_handler_count (container, \"reorder\") == baseline): (1 == 0)",
+        "ERROR:../build-source/app/tests/test-gimp-filter-layer.c:723:dependency_connections_close_during_reorder: assertion failed (signal_handler_count (container, \"reorder\") == baseline): (1 == 0)"
+      ]
+    },
+    {
+      "name": "untracked-baseline-stack",
+      "command": [
+        "meson",
+        "test",
+        "-C",
+        "recovery-ui-20261015/build",
+        "--no-rebuild",
+        "gimp-filter-layer",
+        "--test-args=-p /gimp-filter-layer/dependency_connections_preserve_new_stack",
+        "--print-errorlogs"
+      ],
+      "exit": 1,
+      "failure": [
+        "not ok /gimp-filter-layer/dependency_connections_preserve_new_stack - ERROR:../build-source/app/tests/test-gimp-filter-layer.c:760:dependency_connections_preserve_new_stack: assertion failed (signal_handler_count (root, \"reorder\") == root_baseline): (1 == 0)",
+        "ERROR:../build-source/app/tests/test-gimp-filter-layer.c:760:dependency_connections_preserve_new_stack: assertion failed (signal_handler_count (root, \"reorder\") == root_baseline): (1 == 0)"
+      ]
+    }
+  ],
+  "runs": {
+    "native": {
+      "result": "OK",
+      "duration_seconds": 269.3402965068817,
+      "returncode": 0,
+      "tap_passed": 149,
+      "tap_failed": [],
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/recovery-ui-20261015/build-source/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "app/tests/gimp-filter-layer"
+      ],
+      "raw_testlog_sha256": "3d5e41fe8adc791cb7e428d95d53050e6812e58382dc2c69a912b0daa6ee4ce2"
+    },
+    "sanitizer_setup_failure": {
+      "result": "FAIL",
+      "duration_seconds": 2.1354355812072754,
+      "returncode": 251,
+      "tap_passed": 5,
+      "tap_failed": [
+        "not ok /gimp-filter-layer/blinds_saved_argument_policy - FATAL-ERROR: Filter failed: Bundled Filter executable is missing or not executable: /workspace/scratch/5b5281e79681/recovery-ui-20261015/build-asan/app/gimp-painter-filter-worker"
+      ],
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/recovery-ui-20261015/build-source/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "app/tests/gimp-filter-layer"
+      ],
+      "raw_testlog_sha256": "00e95c62a035ecc12cd982bca6cb1a0bdd3e40c997f74f0693c9d236236038f6"
+    },
+    "sanitizer_plugin_setup_failure": {
+      "result": "FAIL",
+      "duration_seconds": 2.590158224105835,
+      "returncode": 251,
+      "tap_passed": 5,
+      "diagnostics": "Private Filter worker: Bundled Filter executable is missing or not executable: /workspace/scratch/5b5281e79681/recovery-ui-20261015/build-asan/plug-ins/common/blinds\n",
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/recovery-ui-20261015/build-source/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "app/tests/gimp-filter-layer"
+      ],
+      "raw_testlog_sha256": "91c1c447a1eeaeddcbeb55e37ca916259bf385765fa6bf94a05064b08702b5e6"
+    },
+    "sanitizers": {
+      "result": "OK",
+      "duration_seconds": 319.55392694473267,
+      "returncode": 0,
+      "tap_passed": 149,
+      "tap_failed": [],
+      "command": [
+        "/usr/bin/python3",
+        "/workspace/scratch/5b5281e79681/recovery-ui-20261015/build-source/migration/tests/run_filter_owner_context_fixture_test.py",
+        "--",
+        "app/tests/gimp-filter-layer"
+      ],
+      "raw_testlog_sha256": "52cd69336b601dc563df02d6cdfd08566c1b1a2ffe34c0f94c7c52cd0a4a10af",
+      "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1",
+      "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+    }
+  },
+  "limits": [
+    "ASan/UBSan only; detect_leaks=0; system dependencies not fully instrumented",
+    "No old FilterLayer reader, full UI equivalence, MyPaintUndo or platform acceptance",
+    "No unrelated WBS status changes"
+  ],
+  "excluded_zero_case_run": "untracked-fixed-focused used a partial -p path and ran 0 cases; not accepted",
+  "source_sha256": {
+    "app/core/gimpfilterlayer.cpp": "471c9f0d73dd772f9cc823fe97fb687189d04295adce81b54c6f525802b3cc85",
+    "app/tests/test-gimp-filter-layer.c": "a4c67c1cfe6458cbbdd9fc84eda7d1c6348d258dfd820546f9079cb2d03208ec",
+    "migration/tests/untracked-signals/source-map.tsv": "3fe206456a4e9c8c78e0bf274e5b5564cd05e0a9a37cfa552bbb744599172c98"
+  },
+  "baseline_production_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+  "build_source_matches_edited_files": true,
+  "binary_sha256": {
+    "build/app/tests/gimp-filter-layer": "deb44005cddd6ae393b64c5b2220a42a1aafc529ce91051746640cea3a9f3489",
+    "build-asan/app/tests/gimp-filter-layer": "262fabb22a932698e3092d1611fad9830fa783d33c1763404342bf8af0fbfa20"
+  },
+  "verification": [
+    "python3 -B migration/tests/untracked-signals/check-source-map.py: PASS",
+    "python3 -B tools/check_tasks.py: PASS",
+    "git diff --check: PASS"
+  ]
+}

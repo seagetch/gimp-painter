@@ -12,6 +12,7 @@
 #include "gegl/gimp-babl.h"
 #include "widgets/widgets-types.h"
 #include "core/gimp.h"
+#include "core/gimpcontainer.h"
 #include "core/gimpfilterlayer.h"
 #include "core/gimpclonelayer.h"
 #include "core/gimpimage.h"
@@ -686,6 +687,81 @@ static void changed_dependency_invalidation_can_close_owner (void)
   g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, 0);
   g_assert_null (gimp_item_get_image (GIMP_ITEM (filter)));
   g_object_unref (filter); g_object_unref (sources); spin_ms (10);
+}
+
+/* Count real handlers without depending on private callback payloads. */
+static guint signal_handler_count (gpointer emitter, const gchar *name)
+{
+  guint id = g_signal_lookup (name, G_OBJECT_TYPE (emitter));
+  guint count = g_signal_handlers_block_matched (emitter, G_SIGNAL_MATCH_ID, id, 0, NULL, NULL, NULL);
+  g_assert_cmpuint (g_signal_handlers_unblock_matched (emitter, G_SIGNAL_MATCH_ID, id, 0, NULL, NULL, NULL), ==, count);
+  return count;
+}
+static void close_filter_during_topology (GimpFilterLayer *filter, gpointer data)
+{
+  gboolean *called = data;
+  if (!*called)
+    {
+      *called = TRUE;
+      g_assert_true (gimp_painter_binding_close (G_OBJECT (filter), NULL));
+    }
+}
+static void dependency_connections_close_during_reorder (void)
+{
+  GimpImage *image = image_new (16,16);
+  GimpLayer *source = source_new (image,NULL,16,16);
+  GimpContainer *container = gimp_image_get_layers (image);
+  guint baseline = signal_handler_count (container, "reorder");
+  GimpFilterLayer *filter = filter_new (image,NULL,16,16);
+  gboolean called = FALSE;
+  g_assert_cmpuint (signal_handler_count (container, "reorder"), ==, baseline + 1);
+  g_signal_connect (filter, "filter-state-changed", G_CALLBACK (close_filter_during_topology), &called);
+  gimp_container_reorder (container, GIMP_OBJECT (filter), 1);
+  g_assert_true (called);
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, GIMP_FILTER_LAYER_CLOSED);
+  /* The container and sibling deliberately outlive the closed controller. */
+  g_assert_cmpuint (signal_handler_count (container, "reorder"), ==, baseline);
+  gimp_drawable_update (GIMP_DRAWABLE (source), 0, 0, 16, 16);
+  gimp_container_reorder (container, GIMP_OBJECT (filter), 0);
+  g_assert_cmpuint (signal_handler_count (container, "reorder"), ==, baseline);
+  g_object_unref (image);
+}
+
+typedef struct { GimpImage *image; GimpLayer *group; gboolean called; } MoveFilterStack;
+static void move_filter_during_topology (GimpFilterLayer *filter, gpointer data)
+{
+  MoveFilterStack *state = data;
+  if (!state->called)
+    {
+      state->called = TRUE;
+      g_assert_true (gimp_image_reorder_item (state->image, GIMP_ITEM (filter),
+                                             GIMP_ITEM (state->group), 0, FALSE, NULL));
+    }
+}
+static void dependency_connections_preserve_new_stack (void)
+{
+  GimpImage *image = image_new (16,16);
+  GimpLayer *group = gimp_group_layer_new (image);
+  GimpContainer *root = gimp_image_get_layers (image), *children;
+  GimpFilterLayer *filter;
+  guint root_baseline, child_baseline;
+  MoveFilterStack state = {image, group, FALSE};
+  gimp_image_add_layer (image, group, NULL, 0, FALSE);
+  source_new (image, group, 16,16);
+  source_new (image, NULL, 16,16);
+  children = gimp_viewable_get_children (GIMP_VIEWABLE (group));
+  root_baseline = signal_handler_count (root, "reorder");
+  child_baseline = signal_handler_count (children, "reorder");
+  filter = filter_new (image,NULL,16,16);
+  g_signal_connect (filter, "filter-state-changed", G_CALLBACK (move_filter_during_topology), &state);
+  gimp_container_reorder (root, GIMP_OBJECT (filter), 1);
+  g_assert_true (state.called);
+  g_assert_true (gimp_item_get_parent (GIMP_ITEM (filter)) == GIMP_ITEM (group));
+  g_assert_cmpuint (signal_handler_count (root, "reorder"), ==, root_baseline);
+  g_assert_cmpuint (signal_handler_count (children, "reorder"), ==, child_baseline + 1);
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (filter), NULL));
+  g_assert_cmpuint (signal_handler_count (children, "reorder"), ==, child_baseline);
+  g_object_unref (image);
 }
 
 static void pending_cycle_resolved_during_graph_read_is_discarded (void)
@@ -2745,7 +2821,7 @@ int main (int argc, char **argv)
   ADD (checked_guard_resize_reprepares_request); ADD (checked_guard_precision_reprepares_request);
   ADD (checked_guard_nested_loop_preserves_wakeup);
   ADD (pending_cycle_resolved_during_graph_read_is_discarded); ADD (definition_revision_separates_cache_updates);
-  ADD (dependency_walk_does_not_resolve_pending_names); ADD (changed_dependency_invalidation_can_close_owner);
+  ADD (dependency_walk_does_not_resolve_pending_names); ADD (changed_dependency_invalidation_can_close_owner); ADD (dependency_connections_close_during_reorder); ADD (dependency_connections_preserve_new_stack);
   ADD (full_quantum_includes_state_callbacks); ADD (cold_graph_nodes_are_prepared_one_per_quantum); ADD (node_preparation_survives_callback_mutation);
   ADD (completion_flushes_image_projection); ADD (spill_completion_flushes_image_projection); ADD (long_chain_coalesces_state_notifications); ADD (complex_graph_remains_responsive); ADD (cached_graph_tracks_clone_reassignment);
   ADD (clone_filter_dependency_order); ADD (cached_dependency_close_before_start); ADD (cross_image_filter_cycle_has_no_signal_loop);
