@@ -121,6 +121,13 @@ struct _GimpRectangleOptionsPrivate
 
   GimpUnit               *fixed_unit;
 
+  /* Nonserialized action endpoint owned by the live rectangle tool.
+   * These are weak references; views do not own the active tool. */
+  GimpRectangleOptions   *action_options;
+  GObject                *shrink_object;
+  GCallback               shrink_callback;
+  gulong                  shrink_handler;
+
   /* options gui */
 
   GtkWidget              *auto_shrink_button;
@@ -144,6 +151,12 @@ struct _GimpRectangleOptionsPrivate
 GType       gimp_rectangle_options_get_type           (void) G_GNUC_CONST;
 
 GtkWidget * gimp_rectangle_options_gui                (GimpToolOptions      *tool_options);
+
+/* Each view owns a distinct button. Native connect/disconnect publishes the
+ * live action endpoint via auto-shrink-changed; requests use
+ * auto-shrink-requested. Neither signal is a serialized tool option. */
+GtkWidget * gimp_rectangle_options_auto_shrink_button_new
+                                                      (GimpRectangleOptions *options);
 
 void        gimp_rectangle_options_connect            (GimpRectangleOptions *options,
                                                        GimpImage            *image,

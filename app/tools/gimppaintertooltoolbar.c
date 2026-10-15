@@ -291,8 +291,11 @@ painter_rectangle (GtkWidget *box,
   painter_combo (details, config, "guide", _("Guides"),
                   GIMP_GUIDES_NONE, GIMP_GUIDES_DIAGONALS);
 
-  /* Auto-shrink is an action on the active tool, not a property. Its native
-   * callback and unit/history widgets remain in the ordinary dock options. */
+  painter_pack (details,
+                gimp_rectangle_options_auto_shrink_button_new (GIMP_RECTANGLE_OPTIONS (config)));
+  painter_check (details, config, "shrink-merged", _("Shrink merged"));
+
+  /* Unit selectors and ratio/size history remain in the ordinary dock. */
 }
 
 static void
