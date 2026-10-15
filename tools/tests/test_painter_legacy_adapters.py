@@ -327,5 +327,128 @@ class NativeWidgetMetadataTests(unittest.TestCase):
                 review['paths'] = previous
 
 
+class NativeToolbarMetadataTests(NativeWidgetMetadataTests):
+    """Exact 08.018 toolbar reviews; no general object-data permission."""
+    SITES = (
+        ('native-toolbar-factory', 'app/tools/gimp-tools.c',
+         'g_object_get_data',
+         '210be2a0c318930adf198948b10b0955b844eb99d22755b2e9d9bd67e0e51213',
+         'g_object_get_data ( G_OBJECT ( options -> tool_info ) , "gimp-tool-options-gui-func" );'),
+        ('native-toolbar-factory', 'app/tools/gimp-tools.c',
+         'g_object_set_data',
+         'c2cba03c6ffa32e15986fb629717ddc4475448d688996c8417505441f660d017',
+         'g_object_set_data ( G_OBJECT ( tool_info ) , "gimp-tool-options-gui-horizontal-func" , gimp_tools_horizontal_options_gui );'),
+        ('native-toolbar-popup-child', 'app/tools/gimppainterpainttoolbar.c',
+         'g_object_set_data',
+         '4e91be29b4311fa7a178a5d750ced1b61fab252fa20ec15dbb390e8a56ed3876',
+         'g_object_set_data ( G_OBJECT ( button ) , "gimp-painter-toolbar-popup" , contents );'),
+        ('native-toolbar-brush-property', 'app/tools/gimppainterpainttoolbar.c',
+         'g_object_get_data',
+         '1ce683ec5b0aa17313fc28b0002bc6a49908c00dfec6dd83de8556206ca93e2d',
+         'g_object_get_data ( G_OBJECT ( button ) , "brush-property" );'),
+        ('native-toolbar-brush-property', 'app/tools/gimppainterpainttoolbar.c',
+         'g_object_set_data_full',
+         '62ccd8a6750d1542b5719cdf1bedbedf5ade5e020661643a7358a59437578194',
+         'g_object_set_data_full ( G_OBJECT ( reset ) , "brush-property" , g_strdup ( property ) , g_free );'),
+        ('native-toolbar-mode-child', 'app/tools/gimppainterpainttoolbar.c',
+         'g_object_set_data',
+         '835f168c556b3fd36e25db438a3c9821085c5ac785127484aaac3117ad980484',
+         'g_object_set_data ( G_OBJECT ( toolbar ) , "gimp-paint-options-gui-paint-mode-box" , mode );'),
+        ('native-toolbar-options', 'app/tools/gimppainterpainttoolbar.c',
+         'g_object_set_data_full',
+         '9c2431cab9b0f75b10ca462b7194ce902746ecd4cbd9adc53b5e9a02be2b2d26',
+         'g_object_set_data_full ( G_OBJECT ( toolbar ) , "gimp-painter-toolbar-options" , g_object_ref ( tool_options ) , g_object_unref );'),
+        ('native-toolbar-scalar', 'app/tools/gimppaintertooltoolbar.c',
+         'g_object_get_data',
+         '6a89ec623f3dddc2bf1d94c886202a57e410c443d8094bafaacf699efd4c2326',
+         'g_object_get_data ( G_OBJECT ( row ) , "painter-fixed-rule" );'),
+        ('native-toolbar-scalar', 'app/tools/gimppaintertooltoolbar.c',
+         'g_object_set_data',
+         'c652c481d5ed8153ae7a45b19dabc3f0a5ffb7a36cad495c9f5534d4d19c721f',
+         'g_object_set_data ( G_OBJECT ( row ) , "painter-fixed-rule" , GINT_TO_POINTER ( rule ) );'),
+        ('native-toolbar-scalar', 'app/tools/gimppaintertooltoolbar.c',
+         'g_object_get_data',
+         'feaebce3f59b9b359a07e1b6056055b222467d67cd5c531a1374b82005e6f20e',
+         'g_object_get_data ( G_OBJECT ( combo ) , "painter-gradient-metric" );'),
+        ('native-toolbar-scalar', 'app/tools/gimppaintertooltoolbar.c',
+         'g_object_set_data',
+         '0a7d7b4c87e395b33d53b7a7939cb1df5d357765ef80e0536e084edf6bd0937d',
+         'g_object_set_data ( G_OBJECT ( combo ) , "painter-gradient-metric" , GINT_TO_POINTER ( TRUE ) );'),
+        ('native-toolbar-options', 'app/tools/gimppaintertooltoolbar.c',
+         'g_object_set_data_full',
+         '38c5e9ed95972e0e6a48acb643e7bcf30379c9d467cdd408a8b07d5f0cd4d24c',
+         'g_object_set_data_full ( G_OBJECT ( box ) , "gimp-painter-toolbar-options" , g_object_ref ( options ) , g_object_unref );'),
+        ('native-toolbar-options', 'app/tools/gimppaintertransformtoolbar.c',
+         'g_object_set_data_full',
+         '8595250acd6e0be229fd3c643fb517722893f41ee85bad33b41cae487fc91056',
+         'g_object_set_data_full ( G_OBJECT ( root ) , "gimp-painter-toolbar-options" , g_object_ref ( options ) , g_object_unref );'),
+        ('native-toolbar-factory', 'app/widgets/gimpwidgets-utils.c',
+         'g_object_get_data',
+         'f70a0826413b5d47f162fce9407395f331ab1db34f87c3d45b0977114eb9185e',
+         'g_object_get_data ( G_OBJECT ( tool_info ) , "gimp-tool-options-gui-horizontal-func" );'),
+    )
+
+    def setUp(self):
+        super().setUp()
+        self.calls = {}
+        for _, path, _, _, call in self.SITES:
+            self.calls[path] = self.calls.get(path, '') + call + '\n'
+
+    def test_policy_pins_exact_native_metadata_sites(self):
+        self.assertEqual(len(self.policy['data_sites']), 14)
+        for name, path, operation, sha256, _ in self.SITES:
+            rows = [row for row in self.policy['data_sites']
+                    if (row['path'], row['operation'], row['sha256']) ==
+                       (path, operation, sha256)]
+            self.assertEqual(len(rows), 1)
+            self.assertEqual((rows[0]['count'], rows[0]['provenance']), (1, name))
+            self.assertIn(path, self.policy['reviews'][name]['paths'])
+            self.assertTrue(rows[0]['reason'])
+            self.assertTrue(self.policy['reviews'][name]['reason'])
+
+    def test_mutated_native_metadata_calls_rejected(self):
+        for _, path, operation, _, call in self.SITES:
+            mutations = [call.replace('"', '"changed-', 1)]
+            if operation == 'g_object_set_data_full':
+                mutations.append(call.replace('g_free', 'destroy_impl')
+                                 if 'g_free' in call else
+                                 call.replace('g_object_unref', 'destroy_impl'))
+                mutations.append(call.replace('g_object_ref ( options )', 'new Impl')
+                                 .replace('g_object_ref ( tool_options )', 'new Impl')
+                                 .replace('g_strdup ( property )', 'new Impl'))
+            for changed in mutations:
+                with self.subTest(path=path, changed=changed):
+                    self.assertNotEqual(call, changed)
+                    calls = dict(self.calls)
+                    calls[path] = calls[path].replace(call, changed)
+                    result = self.scan(calls)
+                    self.assertEqual(result['status'], 'FAIL')
+                    self.assertTrue(any('unaudited object data site' in e for e in result['errors']))
+                    self.assertTrue(any('stale or changed object data review' in e for e in result['errors']))
+
+    def test_duplicate_native_metadata_calls_rejected(self):
+        for _, path, _, _, call in self.SITES:
+            with self.subTest(path=path, call=call):
+                calls = dict(self.calls)
+                calls[path] += call
+                self.assertEqual(self.scan(calls)['status'], 'FAIL')
+
+    def test_native_metadata_source_path_drift_rejected(self):
+        for path in self.calls:
+            with self.subTest(path=path):
+                calls = dict(self.calls)
+                calls[path + '.inc'] = calls.pop(path)
+                self.assertEqual(self.scan(calls)['status'], 'FAIL')
+
+    def test_obsolete_canvas_review_removed(self):
+        root = Path(__file__).resolve().parents[2]
+        full = json.loads((root / A.POLICY).read_text())
+        self.assertNotIn('native-color-button', full['reviews'])
+        self.assertFalse(any(row['provenance'] == 'native-color-button'
+                             for row in full['data_sites']))
+        path = 'app/display/gimppaintercanvasui.cpp'
+        self.assertEqual(A.inspect_source((root / path).read_text(), path)['data_sites'], [])
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
