@@ -1,0 +1,8 @@
+make: Entering directory '/workspace/scratch/5b5281e79681/legacy-rotation-operations-20261015/gimp/app/tests'
+  CC       test-ui.o
+test-ui.c: In function ‘event’:
+test-ui.c:33:2: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   33 |  int handled=gimp_display_shell_canvas_tool_events(s->canvas,e,s);gdk_event_free(e);record(s,scene,step,type,state,x,y,detail,handled);
+      |  ^~~
+  CCLD     test-ui
+make: Leaving directory '/workspace/scratch/5b5281e79681/legacy-rotation-operations-20261015/gimp/app/tests'

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "scope": "Linux x86_64 Debian13 local-prefix build-tool relocation",
+  "dependency_directory": "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps",
+  "output_directory": "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build",
+  "input_sha256": {
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/bin/autoconf": "301f41936a575a0fe4b50cfd34db9f4e59a30dcd57b65804df1011c4d92e01e7",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/bin/autoheader": "0cd2b7775188a6fba6106e1025f0f2ac6a40fb98fde62523eea53b93c62a8a77",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/bin/autom4te": "d28bf791b0c8397c759f7203d67c5ed5faeedc1078a2bc8eaf03da6a363a456f",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/bin/automake-1.17": "fd7801c6141889fc3063ece94e5e7af20c33467efdf590849fa0f6cab7270139",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/bin/aclocal-1.17": "637dbab4e9789082b6395fb4a6b971b6df3dfa5a7c89e9aeb630d57b02aa13bd",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/bin/libtoolize": "0b977fb33a47231b681c2cc27ded46daae3ecb9336f0f3df1e66784040dcef36",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/bin/intltoolize": "ee8690c5575721116602de74a470e84d687ce4b8a67c843fca984aeb4d6b11dd",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/bin/gtkdocize": "8c759a296db2903a42db2c4798f8abd0904c50c955963b7fdbe7589c8f23950d",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/bin/autopoint": "7136afc45d0ae6a4b802c73bda1d6ebc10e608e68b9baf12913a9ca8e99d8f27",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/bin/m4": "24066e3ebc4b7a0eeb33b3d50e108afcfd384f1f01dd1797fa0423d5494cce16",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/share/autoconf/autom4te.cfg": "a72748b80a0aa61a968f662fc07fedf2002ff5fd325692f882070c564a351662",
+    "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/env.sh": "fa1136d622072e2f23de121b9ac3ca70f42458c7f2aeaf020da2030f0fa5bd64"
+  },
+  "generated_sha256": {
+    "bin/intltoolize": "ef55857604a0b27a6703916a34423157407785e631c42eb9708a395ac1be6801",
+    "bin/gtkdocize": "e76663f653e23df98b014790d9e65edb9fb35cdd064d24756d5ff20487d29b72",
+    "bin/libtoolize": "657e9bd2e147fce3b706d518990b5866a4e1fb6a62fb625b599a426923d2ebc1",
+    "bin/automake": "65d27e03fad1104551f0b0b09c23a7a92fe9d06429c2937e216f8007f96e1b9b",
+    "bin/aclocal": "9dfbf6e1473f791c03b645b078e0ab977d79106be0d61a353ecf86e4acb10b69",
+    "autom4te.cfg": "c38f0dcd0255f456a8d82542ede1ccf7ea98b214ac353d355f432ae6dfa96e3b",
+    "env.sh": "b8b76f5c66c6f4290126e607b2a81067e3e0562e1ba52053fc1e49384c8b5727"
+  },
+  "limitations": [
+    "Not a completed legacy application build or runtime validation",
+    "Requires exact signed Debian package lock and source pins recorded separately"
+  ]
+}
