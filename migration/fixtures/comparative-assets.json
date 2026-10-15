@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "scope": "02.004-02.013 bounded comparison records, not repository-wide dependency audit",
+  "private_artworks_imported": false,
+  "original_resource_copies": [
+    {
+      "package": "legacy-brush-strokes",
+      "path": "pen/brush.myb",
+      "source_path": "data/mypaint-brushes/classic/pen.myb",
+      "sha256": "da34070ad1d6e3b32e5bf4bd0aefd1b7b2922eb9cc889d9808ee52023a384f86",
+      "notice_scope": "repository-LICENSE-fallback-no-local-override-found"
+    },
+    {
+      "package": "legacy-brush-strokes",
+      "path": "pen/brush-preview.png",
+      "source_path": "data/mypaint-brushes/classic/pen_prev.png",
+      "sha256": "2b1f2870bfaeeb11487b5e1ebf79c829f4bda483e328c5e7b05b84d3e475f18a",
+      "notice_scope": "repository-LICENSE-fallback-no-local-override-found"
+    },
+    {
+      "package": "legacy-brush-strokes",
+      "path": "textured_ink/brush.myb",
+      "source_path": "data/mypaint-brushes/classic/textured_ink.myb",
+      "sha256": "6816ee1192182586ca338f8086a0c6ae6a94a1cee9951b6006b60376b0000c7b",
+      "notice_scope": "repository-LICENSE-fallback-no-local-override-found"
+    },
+    {
+      "package": "legacy-brush-strokes",
+      "path": "textured_ink/brush-preview.png",
+      "source_path": "data/mypaint-brushes/classic/textured_ink_prev.png",
+      "sha256": "47b619659e61d429d8fe3cdf536354bee26ba34486289475a3ae055530d3cab2",
+      "notice_scope": "repository-LICENSE-fallback-no-local-override-found"
+    },
+    {
+      "package": "legacy-brush-strokes",
+      "path": "watercolor_expressive/brush.myb",
+      "source_path": "data/mypaint-brushes/deevad/watercolor_expressive.myb",
+      "sha256": "500cd7cc229651ee8440fc8f43393f83282505a4761ee923a85727c88405b1db",
+      "notice_scope": "deevad-local-public-domain-CC0-declaration"
+    },
+    {
+      "package": "legacy-brush-strokes",
+      "path": "watercolor_expressive/brush-preview.png",
+      "source_path": "data/mypaint-brushes/deevad/watercolor_expressive_prev.png",
+      "sha256": "da994c81eba61908c63956d76cd2d8d2cb0f25d48698bf5d393963b529928a90",
+      "notice_scope": "deevad-local-public-domain-CC0-declaration"
+    },
+    {
+      "package": "legacy-composite",
+      "path": "new-anime-layer.json",
+      "source_path": "data/layer-presets/new-anime-layer.json",
+      "sha256": "30d6ff23a16102a9379b45f18864f310350fc769a5718682097b29596650a4e6",
+      "notice_scope": "repository-LICENSE-fallback-no-local-override-found"
+    },
+    {
+      "package": "legacy-composite",
+      "path": "watercolor.json",
+      "source_path": "data/layer-presets/watercolor.json",
+      "sha256": "c635144e40d7b04d82b884831b61faaa90d8a4a12f2dd7eb6afa9785811da583",
+      "notice_scope": "repository-LICENSE-fallback-no-local-override-found"
+    },
+    {
+      "package": "legacy-rotation-operations",
+      "path": "original-sources/app/display/gimpdisplayshell-rotate.c",
+      "source_path": "app/display/gimpdisplayshell-rotate.c",
+      "sha256": "59374624ee30bd800d61677c6a120bcbe96ed9383be50431d70f32d506ab89e8",
+      "notice_scope": "full-original-file-preserves-own-GPL-v3-or-later-header"
+    },
+    {
+      "package": "legacy-rotation-operations",
+      "path": "original-sources/app/display/gimpstatusbar.c",
+      "source_path": "app/display/gimpstatusbar.c",
+      "sha256": "f5614bb76258ad30e0cfa46727e08cf6514f5c14d3e8f754ba159a916b221667",
+      "notice_scope": "full-original-file-preserves-own-GPL-v3-or-later-header"
+    },
+    {
+      "package": "legacy-rotation-operations",
+      "path": "original-sources/app/display/gimpdisplayshell-tool-events.c",
+      "source_path": "app/display/gimpdisplayshell-tool-events.c",
+      "sha256": "7b81d99ab288247d1452ee47053731a4c71eb8c40fa54c734f87023d31757c84",
+      "notice_scope": "full-original-file-preserves-own-GPL-v3-or-later-header"
+    },
+    {
+      "package": "legacy-brush-strokes",
+      "path": "pinned-enum-settings.h",
+      "source_path": "app/core/mypaintbrush-enum-settings.h",
+      "sha256": "36c203c31c0f45889ef5667cad4f04e4774b0505708931ccf7f410d0f935b678",
+      "notice_scope": "repository-LICENSE-fallback-no-leading-license-comment"
+    }
+  ],
+  "package_evidence": [
+    {
+      "package": "legacy-runtime",
+      "integrity_record": "manifest.json",
+      "publication_status_at_review": "present-in-maintained-source",
+      "input_kind": "newly-constructed-fixture-scene-and-explicit-synthetic-actions",
+      "output_kind": "observed-original-runtime-output; source-only rotation records separately labeled",
+      "human_artist_identity": "not recorded; no identity inferred",
+      "integrity_record_sha256": "545ad0243df43d3828b25c9674b709a0e30f97d6b2ad24c35113b0c2eecca226"
+    },
+    {
+      "package": "legacy-filter-positive",
+      "integrity_record": "manifest.json",
+      "publication_status_at_review": "present-in-maintained-source",
+      "input_kind": "newly-constructed-fixture-scene-and-explicit-synthetic-actions",
+      "output_kind": "observed-original-runtime-output; source-only rotation records separately labeled",
+      "human_artist_identity": "not recorded; no identity inferred",
+      "integrity_record_sha256": "bfb8b57657725e310dbb5dede5b1061fe481316ba454caa0213b7720ebf68f1d"
+    },
+    {
+      "package": "legacy-composite",
+      "integrity_record": "manifest.json",
+      "publication_status_at_review": "present-in-maintained-source",
+      "input_kind": "newly-constructed-fixture-scene-and-explicit-synthetic-actions",
+      "output_kind": "observed-original-runtime-output; source-only rotation records separately labeled",
+      "human_artist_identity": "not recorded; no identity inferred",
+      "integrity_record_sha256": "6aa3dd35661f83b8b59b528f10b96b0448ce5f5baf8de63c023a365010415a76"
+    },
+    {
+      "package": "legacy-brush-strokes",
+      "integrity_record": "SHA256SUMS",
+      "publication_status_at_review": "present-in-maintained-source",
+      "input_kind": "newly-constructed-fixture-scene-and-explicit-synthetic-actions",
+      "output_kind": "observed-original-runtime-output; source-only rotation records separately labeled",
+      "human_artist_identity": "not recorded; no identity inferred",
+      "integrity_record_sha256": "08ca88f377a5eec725e86944391c29f88335afe12706c485ebeec54c82a39c66"
+    },
+    {
+      "package": "legacy-layer-operations",
+      "integrity_record": "manifest.json",
+      "publication_status_at_review": "present-in-maintained-source",
+      "input_kind": "newly-constructed-fixture-scene-and-explicit-synthetic-actions",
+      "output_kind": "observed-original-runtime-output; source-only rotation records separately labeled",
+      "human_artist_identity": "not recorded; no identity inferred",
+      "integrity_record_sha256": "c163fbb5ff3dd33fcd4e3c74efeaa4fd794bba62f3e76f3c91e52b62f7ac72a5"
+    },
+    {
+      "package": "legacy-rotation-operations",
+      "integrity_record": "manifest.json",
+      "publication_status_at_review": "published-and-remote-bytes-verified",
+      "input_kind": "newly-constructed-fixture-scene-and-explicit-synthetic-actions",
+      "output_kind": "observed-original-runtime-output; source-only rotation records separately labeled",
+      "human_artist_identity": "not recorded; no identity inferred",
+      "integrity_record_sha256": "65bb539a54537433f68b52076a14601730a5a7c0c6005b0056736b6df3d0226c"
+    },
+    {
+      "package": "legacy-filter-timeline",
+      "integrity_record": "manifest.json",
+      "publication_status_at_review": "published-and-remote-bytes-verified",
+      "input_kind": "newly-constructed-fixture-scene-and-explicit-synthetic-actions",
+      "output_kind": "observed-original-runtime-output; source-only rotation records separately labeled",
+      "human_artist_identity": "not recorded; no identity inferred",
+      "integrity_record_sha256": "2b9ce1fb27b09cf7f9106c788e919ede5386b5c149bc1757b9d8dafccd1c3d6e"
+    }
+  ]
+}
