@@ -222,8 +222,8 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 02.001 | [x] | 旧版ビルド依存を固定する | 00.012 | Debian13署名済snapshotのpackage/hash、babl0.1.46・GEGL0.3.34固定commit、ローカルtool relocationと全build適合patchを記録（`migration/baseline/legacy/`） |
-| 02.002 | [x] | 旧版のビルド手順を再現する | 02.001 | 固定afa43faeと明示build適合patchからGIMP2.8.23をbuild/installしbinary hashと全stage logを保存（`migration/baseline/legacy/build-report.json`）。完成recipeの第二clean replayは未実施 |
-| 02.003 | [x] | 旧版の起動と描画を確認する | 02.002 | 隔離profileの実旧版をheadless起動し、新規96×80画像と制御された一筆・PNG・XCFを記録（`migration/fixtures/legacy-runtime/`）。GUI/ペンdevice操作は未検証 |
+| 02.002 | [x] | 旧版のビルド手順を再現する | 02.001 | 固定afa43faeと明示build適合patchからGIMP2.8.23をbuild/installしbinary hashと全stage logを保存（`migration/baseline/legacy/build-report.json`）。第二pristine replayも実施済み（`migration/baseline/legacy/replay-20261015/`）。GEGL 1件の失敗は保持 |
+| 02.003 | [x] | 旧版の起動と描画を確認する | 02.002 | 隔離profileの実旧版をheadless起動し、新規96×80画像と制御された一筆・PNG・XCFを記録（`migration/fixtures/legacy-runtime/`）。この初期証跡はheadlessのみ。後続02.012/02.013に限定GUI記録があり、実ペンdevice操作は未検証 |
 | 02.004 | [x] | 通常レイヤーの旧 XCF fixture を作る | 02.003 | 属性・画像・期待値を保存 |
 | 02.005 | [x] | CloneLayer の旧 XCF fixture を作る | 02.004 | 参照元種類と階層を識別したファイルを保存 |
 | 02.005/resize-undo-capture | [x] | 実旧CloneLayerのresize/Undo/maskを観測する | 02.005 | 2有効RGB scene・12状態・8 Undo/Redoの実行を記録し、非理想な座標/history増加とmask不変を保存（`migration/fixtures/legacy-clone-undo/`） |
@@ -238,9 +238,9 @@
 | 02.013 | [x] | 旧版の実行順序を計測する | 02.012 | FilterLayer 開始・停止要求・完了・伝播の時系列を保存 |
 | 02.014 | [x] | 比較用資産の権利と由来を記録する | 02.013, 02.014/source-register | 再配布可能 fixture とローカル専用作品を分離 |
 | 02.014/source-register | [x] | 固定source資産と比較fixtureの由来を分類する | 02.008 | 元のnoticeとhashを記録し、未採取の実行fixtureと非公開作品を分離（`migration/fixtures/PROVENANCE.md`） |
-| 02.015 | [ ] | 旧版起動失敗の復旧手順を用意する | 02.014, 02.015/recovery-procedure | 依存修復・既存実行環境利用・静的仕様抽出を手順化し、未採取の比較試験は未完了のまま追跡 |
+| 02.015 | [x] | 旧版起動失敗の復旧手順を用意する | 02.014, 02.015/recovery-procedure | 依存修復・既存実行環境利用・静的仕様抽出を手順化し、未採取の比較試験は未完了のまま追跡 |
 
-| 02.015/recovery-procedure | [x] | 旧環境の失敗を記録し復旧手順を固定する | 00.001 | 実際のbootstrap失敗と固定source・隔離依存・別環境利用・静的採取の手順を記録。旧実行未確認は親02.015に保持（`migration/baseline/legacy-build.md`） |
+| 02.015/recovery-procedure | [x] | 旧環境の失敗を記録し復旧手順を固定する | 00.001 | 実際のbootstrap失敗と固定source・隔離依存・別環境利用・静的採取の手順を記録。pristine replay・既存環境利用・静的fallbackを確認し、reader/GUI終了等の失敗と残存gateを区別（`migration/baseline/legacy-build.md`） |
 
 ### 03 GIMP 3.x 基準ビルド
 
