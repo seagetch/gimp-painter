@@ -2,6 +2,7 @@
  * Surface coverage and blend order derived from pinned gimp-painter afa43fae.
  */
 #include "gegl-surface.hpp"
+#include "buffer-read.hpp"
 #include "legacy-pixel-modes.hpp"
 #include "gray-alpha-pixels.hpp"
 #include "native-pixels.hpp"
@@ -41,9 +42,7 @@ struct GeglSurface::Impl {
   }
   std::vector<guchar> read (GeglBuffer *buffer, const GeglRectangle& rect)
   {
-    const auto *buffer_format=gegl_buffer_get_format(buffer);
-    std::vector<guchar> pixels (std::size_t (rect.width)*rect.height*babl_format_get_bytes_per_pixel(buffer_format));
-    gegl_buffer_get (buffer,&rect,1,buffer_format,pixels.data (),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+    auto pixels = BufferRead::packed (buffer, rect);
     read_bytes += pixels.size (); return pixels;
   }
   void write (GeglBuffer *buffer, const GeglRectangle& rect, const std::vector<guchar>& pixels)
@@ -92,22 +91,19 @@ struct GeglSurface::Impl {
       bw = int (std::floor (x+fringe))-bx+1; bh = int (std::floor (y+fringe))-by+1;
     }
     GeglRectangle bounds = {bx,by,bw,bh};
-    if (!gegl_rectangle_intersect (&result.rect,&bounds,gegl_buffer_get_extent (target.get ()))) return result;
-    if (selection) {
-      auto mask_rect = *gegl_buffer_get_extent (selection.get ());
-      mask_rect.x -= offset_x; mask_rect.y -= offset_y;
-      if (!gegl_rectangle_intersect (&result.rect,&result.rect,&mask_rect)) return result;
-    }
+    if (!BufferRead::intersect (result.rect, bounds, *gegl_buffer_get_extent (target.get ()))) return result;
+    if (selection && !BufferRead::intersect (result.rect, result.rect,
+                                            *gegl_buffer_get_extent (selection.get ()),
+                                            offset_x, offset_y)) return result;
     const int w = result.rect.width, h = result.rect.height;
     result.mask.resize (std::size_t (w)*h);
     if(!native.legacy)result.wide_mask.resize(std::size_t(w)*h);
     std::vector<guchar> selected;
     std::vector<double> wide_selected;
     if (selection) {
-      auto rect = result.rect; rect.x += offset_x; rect.y += offset_y;
+      const auto rect = BufferRead::translate (result.rect, offset_x, offset_y);
       if(native.legacy){
-        selected.resize (std::size_t (w)*h);
-        gegl_buffer_get (selection.get (),&rect,1,babl_format ("Y u8"),selected.data (),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+        selected = BufferRead::packed (selection.get (), rect, babl_format ("Y u8"));
         read_bytes += selected.size ();
       }else{
         NativePixel::Format mask_format(gegl_buffer_get_format(selection.get()));

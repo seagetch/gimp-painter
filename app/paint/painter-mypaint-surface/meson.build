@@ -90,3 +90,12 @@ if not meson.is_cross_build()
   test('painter-mypaint-snapshot-isolation', painter_snapshot_isolation,
     suite: 'painter', timeout: 60)
 endif
+
+# Bounded native-format reads, output stride/capacity, translated selection edges.
+painter_buffer_read = executable('painter-mypaint-buffer-read',
+  'tests/buffer-read.cpp', dependencies: painter_mypaint_surface_dep,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-buffer-read', painter_buffer_read,
+    suite: 'painter', timeout: 60)
+endif
