@@ -128,6 +128,12 @@ struct _GimpRectangleOptionsPrivate
   GCallback               shrink_callback;
   gulong                  shrink_handler;
 
+  /* Weak current native gesture context for independent unit-aware fields. */
+  GimpImage              *metrics_image;
+  gulong                  metrics_resolution_handler;
+  gulong                  metrics_size_handler;
+  guint64                 metrics_serial;
+
   /* options gui */
 
   GtkWidget              *auto_shrink_button;
@@ -157,6 +163,16 @@ GtkWidget * gimp_rectangle_options_gui                (GimpToolOptions      *too
  * auto-shrink-requested. Neither signal is a serialized tool option. */
 GtkWidget * gimp_rectangle_options_auto_shrink_button_new
                                                       (GimpRectangleOptions *options);
+
+/* Register an independent pixel-backed property entry without a separate
+ * reference-value spinner (as created by gimp_prop_size_entry_new).
+ * Before the first native connect
+ * it retains the original 300 dpi convention. Live metadata updates preserve
+ * pixel values; ordinary dock conversion remains owned by native connect. */
+void        gimp_rectangle_options_bind_size_entry    (GimpRectangleOptions *options,
+                                                       GimpSizeEntry        *entry,
+                                                       gint                  field,
+                                                       GtkOrientation        axis);
 
 void        gimp_rectangle_options_connect            (GimpRectangleOptions *options,
                                                        GimpImage            *image,

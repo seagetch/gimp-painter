@@ -55,12 +55,15 @@ enum
 {
   AUTO_SHRINK_REQUESTED,
   AUTO_SHRINK_CHANGED,
+  SIZE_METRICS_CHANGED,
   LAST_SIGNAL
 };
 
 static guint rectangle_signals[LAST_SIGNAL];
 
 /*  local function prototypes  */
+
+static void rectangle_metrics_clear (GimpRectangleOptionsPrivate *private);
 
 static void gimp_rectangle_options_shrink_owner_gone (gpointer data,
                                                       GObject *where_object_was);
@@ -98,6 +101,11 @@ gimp_rectangle_options_default_init (GimpRectangleOptionsInterface *iface)
                   G_TYPE_NONE, 0);
   rectangle_signals[AUTO_SHRINK_CHANGED] =
     g_signal_new ("auto-shrink-changed", G_TYPE_FROM_INTERFACE (iface),
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
+  rectangle_signals[SIZE_METRICS_CHANGED] =
+    g_signal_new ("size-metrics-changed", G_TYPE_FROM_INTERFACE (iface),
                   G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
@@ -330,6 +338,8 @@ gimp_rectangle_options_private_finalize (GimpRectangleOptionsPrivate *private)
     g_object_weak_unref (private->shrink_object,
                          gimp_rectangle_options_shrink_owner_gone,
                          private->action_options);
+
+  rectangle_metrics_clear (private);
 
   g_clear_object (&private->aspect_history);
   g_clear_object (&private->size_history);
@@ -1075,6 +1085,214 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
   return vbox;
 }
 
+/* Independent fields observe the current native rectangle context. They never
+ * become canonical converters: only the ordinary dock's existing connect path
+ * preserves physical intent when changing image resolution. */
+typedef struct
+{
+  guint                 references;
+  GimpRectangleOptions *options;  /* weak */
+  GimpSizeEntry        *entry;    /* weak; entry owns the destroy closure */
+  gint                  field;
+  GtkOrientation        axis;
+  gulong                handler;
+} RectangleSizeBinding;
+
+static void
+rectangle_metrics_image_gone (gpointer data,
+                              GObject *where_image_was)
+{
+  GimpRectangleOptionsPrivate *private = data;
+
+  private->metrics_image = NULL;
+  private->metrics_resolution_handler = 0;
+  private->metrics_size_handler = 0;
+  private->metrics_serial++;
+}
+
+static void
+rectangle_metrics_clear (GimpRectangleOptionsPrivate *private)
+{
+  if (private->metrics_image)
+    {
+      /* Object-bound closures may already be invalidated during options
+       * finalization, before the private data destructor runs. */
+      if (g_signal_handler_is_connected (private->metrics_image,
+                                          private->metrics_resolution_handler))
+        g_signal_handler_disconnect (private->metrics_image,
+                                     private->metrics_resolution_handler);
+      if (g_signal_handler_is_connected (private->metrics_image,
+                                          private->metrics_size_handler))
+        g_signal_handler_disconnect (private->metrics_image,
+                                     private->metrics_size_handler);
+      g_object_weak_unref (G_OBJECT (private->metrics_image),
+                           rectangle_metrics_image_gone, private);
+      private->metrics_image = NULL;
+      private->metrics_resolution_handler = 0;
+      private->metrics_size_handler = 0;
+    }
+  private->metrics_serial++;
+}
+
+static void
+rectangle_metrics_changed (GimpImage            *image,
+                            GimpRectangleOptions *options)
+{
+  GimpRectangleOptionsPrivate *private =
+    GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options);
+
+  if (private->metrics_image == image)
+    {
+      private->metrics_serial++;
+      g_signal_emit (options, rectangle_signals[SIZE_METRICS_CHANGED], 0);
+    }
+}
+
+static void
+rectangle_metrics_set_image (GimpRectangleOptions *options,
+                              GimpImage            *image)
+{
+  GimpRectangleOptionsPrivate *private =
+    GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options);
+
+  if (private->metrics_image != image)
+    {
+      rectangle_metrics_clear (private);
+      private->metrics_image = image;
+      g_object_weak_ref (G_OBJECT (image), rectangle_metrics_image_gone, private);
+      private->metrics_resolution_handler =
+        g_signal_connect_object (image, "resolution-changed",
+                                  G_CALLBACK (rectangle_metrics_changed), options, 0);
+      private->metrics_size_handler =
+        g_signal_connect_object (image, "size-changed",
+                                  G_CALLBACK (rectangle_metrics_changed), options, 0);
+    }
+  private->metrics_serial++;
+}
+
+static void
+rectangle_size_binding_refresh (GimpRectangleOptions *options,
+                                  RectangleSizeBinding *binding)
+{
+  GimpRectangleOptionsPrivate *private =
+    GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options);
+  GimpSizeEntry  *entry = binding->entry;
+  GtkWidget     *spin;
+  GtkAdjustment *adjustment;
+  guint64        serial = private->metrics_serial;
+  gdouble        xres, yres;
+  gint           extent;
+  gint           field = binding->field;
+
+  if (! private->metrics_image || ! entry)
+    return;
+
+  gimp_image_get_resolution (private->metrics_image, &xres, &yres);
+  extent = binding->axis == GTK_ORIENTATION_HORIZONTAL ?
+           gimp_image_get_width (private->metrics_image) :
+           gimp_image_get_height (private->metrics_image);
+
+  binding->references++;
+  g_object_ref (options);
+  g_object_ref (entry);
+  /* Native setters continue using the field's adjustment after emitting its
+   * signals. A nested destroy can release the child before the setter returns. */
+  spin = g_object_ref (gimp_size_entry_get_help_widget (entry, field));
+  adjustment = g_object_ref (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (spin)));
+  /* Native property helpers emit even for unchanged refvals. Metadata is a
+   * passive reflection, so suppress their write-back throughout the refresh. */
+  g_signal_handlers_block_matched (entry, G_SIGNAL_MATCH_DATA,
+                                   0, 0, NULL, NULL, options);
+  /* Set the extent first: resolution refresh also rebuilds percent display
+   * boundaries, which must use the new extent rather than the previous one. */
+  gimp_size_entry_set_size (entry, field, 0, extent);
+  /* A signal observer may destroy the view or replace the current context. */
+  if (binding->entry && serial == private->metrics_serial)
+    gimp_size_entry_set_resolution (entry, field,
+                                    binding->axis == GTK_ORIENTATION_HORIZONTAL ?
+                                    xres : yres, TRUE);
+  g_signal_handlers_unblock_matched (entry, G_SIGNAL_MATCH_DATA,
+                                     0, 0, NULL, NULL, options);
+  g_object_unref (adjustment);
+  g_object_unref (spin);
+  g_object_unref (entry);
+  g_object_unref (options);
+  if (--binding->references == 0)
+    g_free (binding);
+}
+
+static void
+rectangle_size_binding_options_gone (gpointer data,
+                                      GObject *where_options_was)
+{
+  RectangleSizeBinding *binding = data;
+
+  /* The native one-field helper uses raw config callback data. Make retained
+   * entries inert if their model disappears before the widget. */
+  if (binding->entry)
+    g_signal_handlers_disconnect_by_data (binding->entry, where_options_was);
+  binding->options = NULL;
+  binding->handler = 0;
+}
+
+static void
+rectangle_size_binding_destroy (GtkWidget            *widget,
+                                 RectangleSizeBinding *binding)
+{
+  if (binding->options)
+    {
+      g_signal_handler_disconnect (binding->options, binding->handler);
+      g_signal_handlers_disconnect_by_data (binding->options, widget);
+      g_signal_handlers_disconnect_by_data (widget, binding->options);
+      g_object_weak_unref (G_OBJECT (binding->options),
+                           rectangle_size_binding_options_gone, binding);
+      binding->options = NULL;
+      binding->handler = 0;
+    }
+  binding->entry = NULL;
+}
+
+static void
+rectangle_size_binding_free (gpointer data,
+                              GClosure *closure)
+{
+  RectangleSizeBinding *binding = data;
+
+  if (--binding->references == 0)
+    g_free (binding);
+}
+
+void
+gimp_rectangle_options_bind_size_entry (GimpRectangleOptions *options,
+                                        GimpSizeEntry        *entry,
+                                        gint                  field,
+                                        GtkOrientation        axis)
+{
+  RectangleSizeBinding *binding;
+
+  g_return_if_fail (GIMP_IS_RECTANGLE_OPTIONS (options));
+  g_return_if_fail (GIMP_IS_SIZE_ENTRY (entry));
+  g_return_if_fail (field >= 0 && field < gimp_size_entry_get_n_fields (entry));
+  g_return_if_fail (axis == GTK_ORIENTATION_HORIZONTAL ||
+                    axis == GTK_ORIENTATION_VERTICAL);
+
+  binding = g_new0 (RectangleSizeBinding, 1);
+  binding->references = 1;
+  binding->options = options;
+  binding->entry = entry;
+  binding->field = field;
+  binding->axis = axis;
+  binding->handler =
+    g_signal_connect (options, "size-metrics-changed",
+                       G_CALLBACK (rectangle_size_binding_refresh), binding);
+  g_object_weak_ref (G_OBJECT (options),
+                     rectangle_size_binding_options_gone, binding);
+  g_signal_connect_data (entry, "destroy",
+                          G_CALLBACK (rectangle_size_binding_destroy), binding,
+                          rectangle_size_binding_free, 0);
+  rectangle_size_binding_refresh (options, binding);
+}
+
 static void
 gimp_rectangle_options_shrink_owner_gone (gpointer data,
                                           GObject *where_object_was)
@@ -1082,6 +1300,8 @@ gimp_rectangle_options_shrink_owner_gone (gpointer data,
   GimpRectangleOptions *options = data;
   GimpRectangleOptionsPrivate *private =
     GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options);
+
+  rectangle_metrics_clear (private);
 
   /* The object-bound request closure is invalidated by the same finalization. */
   private->shrink_object = NULL;
@@ -1222,9 +1442,16 @@ gimp_rectangle_options_connect (GimpRectangleOptions *options,
                                 0, gimp_image_get_height (image));
     }
 
+  /* Finish the single canonical dock conversion before passive view updates.
+   * An identical action endpoint can still refer to a different image. */
+  rectangle_metrics_set_image (options, image);
+
   if (options_private->shrink_object == shrink_object &&
       options_private->shrink_callback == shrink_callback)
-    return;
+    {
+      g_signal_emit (options, rectangle_signals[SIZE_METRICS_CHANGED], 0);
+      return;
+    }
 
   /* Replace the endpoint atomically before notifying any view. */
   gimp_rectangle_options_shrink_detach (options);
@@ -1237,6 +1464,7 @@ gimp_rectangle_options_connect (GimpRectangleOptions *options,
                              G_CONNECT_SWAPPED);
   g_object_weak_ref (options_private->shrink_object,
                     gimp_rectangle_options_shrink_owner_gone, options);
+  g_signal_emit (options, rectangle_signals[SIZE_METRICS_CHANGED], 0);
   g_signal_emit (options, rectangle_signals[AUTO_SHRINK_CHANGED], 0);
 }
 
@@ -1256,6 +1484,7 @@ gimp_rectangle_options_disconnect (GimpRectangleOptions *options,
   if (options_private->shrink_object == shrink_object &&
       options_private->shrink_callback == shrink_callback)
     {
+      rectangle_metrics_clear (options_private);
       gimp_rectangle_options_shrink_detach (options);
       g_signal_emit (options, rectangle_signals[AUTO_SHRINK_CHANGED], 0);
     }

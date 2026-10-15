@@ -564,11 +564,22 @@ static void native_editor_mixed_width_buttons (void)
 #include "test-painter-align-toolbar.inc"
 #include "test-painter-vector-toolbar.inc"
 #include "test-painter-rectangle-toolbar.inc"
+#include "test-painter-rectangle-unit-popup.inc"
 
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);gtk_window_set_default_size(GTK_WINDOW(window),1100,130);
+  g_test_add_func ("/painter-compact-options/rectangle-units-real-popup-events",
+                   rectangle_units_real_popup_events);
+  g_test_add_func ("/painter-compact-options/rectangle-units-popup-model-reentry",
+                   rectangle_units_popup_model_reentry);
+  g_test_add_func ("/painter-compact-options/rectangle-units-native-baseline", rectangle_units_native_baseline);
+  g_test_add_func ("/painter-compact-options/rectangle-units-numeric-and-sync", rectangle_units_numeric_and_sync);
+  g_test_add_func ("/painter-compact-options/rectangle-units-metadata-and-lifetimes", rectangle_units_metadata_and_lifetimes);
+  g_test_add_func ("/painter-compact-options/rectangle-units-options-lifetime-and-reentry", rectangle_units_options_lifetime_and_reentry);
+  g_test_add_func ("/painter-compact-options/rectangle-units-weak-helper-lifetime", rectangle_units_weak_helper_lifetime);
+  g_test_add_func ("/painter-compact-options/rectangle-units-native-canvas-baseline", rectangle_units_native_canvas_baseline);
   g_test_add_func ("/painter-compact-options/independent-rectangle-toolbar", independent_rectangle_toolbar);
   g_test_add_func ("/painter-compact-options/rectangle-native-shrink-bounds", rectangle_native_shrink_bounds);
   g_test_add_func ("/painter-compact-options/rectangle-shrink-lifecycle", rectangle_shrink_lifecycle);
