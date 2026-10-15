@@ -42,6 +42,8 @@
 #include "core/gimpimage.h"
 #include "core/gimpprogress.h"
 #include "core/gimpcontainer.h"
+#include "core/gimptoolinfo.h"
+#include "core/gimptooloptions.h"
 
 #include "widgets/gimpactiongroup.h"
 #include "widgets/gimpdeviceinfo.h"
@@ -146,6 +148,15 @@ struct _GimpImageWindowPrivate
 
   gint               update_ui_manager_idle_id;
 
+  /* A derived window role, never a second selected-shell owner. */
+  gboolean           painter_toolbar_role;
+  guint64            painter_toolbar_revision;
+  GtkWidget         *painter_toolbar;
+  GtkWidget         *painter_toolbar_controls;
+  GtkWidget         *painter_toolbar_gui;
+  GimpToolOptions   *painter_toolbar_options;
+  GtkWidget         *painter_menu_scroll;
+
   GWeakRef           painter_owner;
   guint64            painter_revision;
   gboolean           painter_running;
@@ -216,6 +227,19 @@ static void      gimp_image_window_painter_restore_shell (GimpImageWindow    *wi
 static void      gimp_image_window_painter_context_changed (GimpContext      *context,
                                                            GimpDisplay      *display,
                                                            GimpImageWindow  *window);
+static void      gimp_image_window_painter_tool_changed (GimpContext         *context,
+                                                         GimpToolInfo        *tool,
+                                                         GimpImageWindow     *window);
+static void      gimp_image_window_painter_toolbar_clear (GimpImageWindow    *window);
+static void      gimp_image_window_painter_toolbar_update (GimpImageWindow   *window,
+                                                          guint64            revision);
+static void      gimp_image_window_menu_pack            (GimpImageWindow   *window,
+                                                         GtkWidget         *menu);
+static void      gimp_image_window_painter_menu_update   (GimpImageWindow   *window);
+static gboolean  gimp_image_window_toolbar_events       (GtkWidget         *widget,
+                                                         GdkEvent          *event,
+                                                         GimpImageWindow   *window);
+static gboolean  gimp_image_window_toolbar_target_pending (GimpImageWindow *window);
 static void      gimp_image_window_switch_page_after   (GtkNotebook         *notebook,
                                                         gpointer             page,
                                                         gint                 page_num,
@@ -427,12 +451,12 @@ gimp_image_window_constructed (GObject *object)
                            window, G_CONNECT_SWAPPED);
 
   menubar_manager = menus_get_image_manager_singleton (private->gimp);
-  g_signal_connect (menubar_manager, "show-tooltip",
-                    G_CALLBACK (gimp_image_window_show_tooltip),
-                    window);
-  g_signal_connect (menubar_manager, "hide-tooltip",
-                    G_CALLBACK (gimp_image_window_hide_tooltip),
-                    window);
+  g_signal_connect_object (menubar_manager, "show-tooltip",
+                           G_CALLBACK (gimp_image_window_show_tooltip),
+                           window, 0);
+  g_signal_connect_object (menubar_manager, "hide-tooltip",
+                           G_CALLBACK (gimp_image_window_hide_tooltip),
+                           window, 0);
 
   config = GIMP_GUI_CONFIG (private->gimp->config);
 
@@ -614,6 +638,15 @@ gimp_image_window_constructed (GObject *object)
   g_signal_connect_object (gimp_get_user_context (private->gimp), "display-changed",
                            G_CALLBACK (gimp_image_window_painter_context_changed),
                            window, 0);
+  g_signal_connect_object (gimp_get_user_context (private->gimp), "tool-changed",
+                           G_CALLBACK (gimp_image_window_painter_tool_changed),
+                           window, 0);
+  g_signal_connect (window, "focus-in-event",
+                    G_CALLBACK (gimp_image_window_toolbar_events), window);
+  g_signal_connect (window, "key-press-event",
+                    G_CALLBACK (gimp_image_window_toolbar_events), window);
+  g_signal_connect (window, "button-press-event",
+                    G_CALLBACK (gimp_image_window_toolbar_events), window);
   g_signal_connect_object (config, "notify::single-window-mode",
                            G_CALLBACK (gimp_image_window_config_notify),
                            window, G_CONNECT_SWAPPED);
@@ -753,7 +786,7 @@ gimp_image_window_delete_event (GtkWidget   *widget,
   GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
   GimpGuiConfig          *config  = GIMP_GUI_CONFIG (private->gimp->config);
 
-  if (config->single_window_mode)
+  if (config->single_window_mode || private->painter_toolbar_role)
     gimp_ui_manager_activate_action (menus_get_image_manager_singleton (private->gimp),
                                      "file", "file-quit");
   else if (shell)
@@ -826,8 +859,10 @@ gimp_image_window_update_csd_on_fullscreen (GtkWidget *child,
 
   fullscreen = gimp_image_window_get_fullscreen (window);
 
-  if (GTK_IS_HEADER_BAR (child))
+  if (GTK_IS_HEADER_BAR (child) && ! private->painter_closing)
     {
+      g_object_ref (window);
+      g_object_ref (child);
       gtk_widget_set_visible (child, !fullscreen);
 
       /* When we manage the menubar ourselves (i.e. not when using the GTK
@@ -836,25 +871,28 @@ gimp_image_window_update_csd_on_fullscreen (GtkWidget *child,
        * Note that here we only move the menubar from one parent to another.
        * This is not where we handle whether we make it visible or not.
        */
-      if (private->menubar)
+      if (! private->painter_closing && private->menubar)
         {
-          GtkWidget *parent = gtk_widget_get_parent (private->menubar);
+          GtkWidget *menu = private->painter_menu_scroll ?
+                           private->painter_menu_scroll : private->menubar;
+          GtkWidget *parent = gtk_widget_get_parent (menu);
 
-          g_object_ref (private->menubar);
-          gtk_container_remove (GTK_CONTAINER (parent), private->menubar);
-          if (fullscreen)
+          /* Former toolbar hosts keep their menu viewport. Move the entire
+           * row, preserving its menu/model and native demoted sizing policy.
+           * First wrapping can briefly leave the menu without a parent. */
+          if (parent)
             {
-              gtk_box_pack_start (GTK_BOX (private->main_vbox),
-                                  private->menubar, FALSE, FALSE, 0);
-              gtk_box_reorder_child (GTK_BOX (private->main_vbox),
-                                     private->menubar, 0);
+              g_object_ref (menu);
+              g_object_ref (parent);
+              gtk_container_remove (GTK_CONTAINER (parent), menu);
+              if (! private->painter_closing && ! gtk_widget_get_parent (menu))
+                gimp_image_window_menu_pack (window, menu);
+              g_object_unref (parent);
+              g_object_unref (menu);
             }
-          else
-            {
-              gtk_header_bar_pack_start (GTK_HEADER_BAR (child), private->menubar);
-            }
-          g_object_unref (private->menubar);
         }
+      g_object_unref (child);
+      g_object_unref (window);
     }
 }
 
@@ -1662,16 +1700,228 @@ gimp_image_window_painter_context_changed (GimpContext     *context,
   private->painter_revision++;
   private->painter_dirty = TRUE;
   gimp_image_window_painter_queue (window);
+  if (private->painter_toolbar_role)
+    gimp_image_window_update_ui_manager (window);
+}
+
+static void
+gimp_image_window_painter_tool_changed (GimpContext     *context,
+                                        GimpToolInfo    *tool,
+                                        GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  if (private->painter_toolbar_role && ! private->painter_closing)
+    {
+      private->painter_revision++;
+      private->painter_dirty = TRUE;
+      gimp_image_window_painter_queue (window);
+    }
+}
+
+/* Pack an unparented menu row into its current native home. The caller holds
+ * the window and row across callbacks, including a changed fullscreen state. */
+static void
+gimp_image_window_menu_pack (GimpImageWindow *window,
+                             GtkWidget       *menu)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GtkWidget             *home = gtk_window_get_titlebar (GTK_WINDOW (window));
+
+  if (! GTK_IS_HEADER_BAR (home) || gimp_image_window_get_fullscreen (window))
+    home = private->main_vbox;
+
+  g_object_ref (home);
+  if (GTK_IS_HEADER_BAR (home))
+    gtk_header_bar_pack_start (GTK_HEADER_BAR (home), menu);
+  else
+    {
+      gtk_box_pack_start (GTK_BOX (home), menu, FALSE, FALSE, 0);
+      if (! private->painter_closing && gtk_widget_get_parent (menu) == home)
+        gtk_box_reorder_child (GTK_BOX (home), menu, 0);
+    }
+  g_object_unref (home);
+}
+
+static void
+gimp_image_window_painter_menu_destroyed (GtkWidget       *scroll,
+                                          GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  if (private->painter_menu_scroll == scroll)
+    private->painter_menu_scroll = NULL;
+}
+
+static void
+gimp_image_window_painter_menu_update (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GtkWidget             *scroll;
+  GtkWidget             *menu;
+
+  if (! private->menubar ||
+      (! private->painter_toolbar_role && ! private->painter_menu_scroll))
+    return;
+
+  menu = g_object_ref (private->menubar);
+  scroll = private->painter_menu_scroll;
+  if (scroll)
+    g_object_ref (scroll);
+  else
+    {
+      GtkWidget *parent = gtk_widget_get_parent (menu);
+
+      if (! parent)
+        {
+          /* Promotion may be requested from the native fullscreen move's
+           * remove callback. Its lease restores a parent on return; retry
+           * through the existing weak idle rather than losing this wrap. */
+          private->painter_dirty = TRUE;
+          goto done;
+        }
+      g_object_ref (parent);
+      scroll = g_object_ref_sink (gtk_scrolled_window_new (NULL, NULL));
+      gtk_widget_set_name (scroll, "painter-toolbar-window-menu-scroll");
+      gtk_widget_set_hexpand (scroll, TRUE);
+      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll),
+                                       GTK_POLICY_AUTOMATIC, GTK_POLICY_NEVER);
+      /* Publish the leased row before either parent-set callback. Fullscreen
+       * handling must not pull the bare menu out of its new viewport while
+       * the wrapper itself is still waiting to be packed. */
+      private->painter_menu_scroll = scroll;
+      g_signal_connect_object (scroll, "destroy",
+                               G_CALLBACK (gimp_image_window_painter_menu_destroyed),
+                               window, 0);
+
+      /* Only first promotion changes the native hierarchy. The parent owns
+       * this wrapper for the rest of the window's life; demotion restores the
+       * menu-driven minimum through NEVER rather than reparenting it again.
+       * Finish attachment even if remove/add callbacks request a newer role:
+       * abandoning an unparented menu would invalidate private->menubar. */
+      gtk_container_remove (GTK_CONTAINER (parent), menu);
+      if (! private->painter_closing && ! gtk_widget_get_parent (menu))
+        gtk_container_add (GTK_CONTAINER (scroll), menu);
+      if (! private->painter_closing &&
+          gtk_widget_is_ancestor (menu, scroll))
+        gimp_image_window_menu_pack (window, scroll);
+      else
+        gtk_widget_destroy (scroll);
+      g_object_unref (parent);
+    }
+
+  if (! private->painter_closing && private->painter_menu_scroll == scroll)
+    {
+      GtkWidget *viewport = gtk_widget_get_parent (menu);
+
+      /* A role change during first wrapping is applied from current state;
+       * the enclosing reconciliation still checks its revision afterwards. */
+      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll),
+                                       private->painter_toolbar_role ?
+                                       GTK_POLICY_AUTOMATIC : GTK_POLICY_NEVER,
+                                       GTK_POLICY_NEVER);
+      if (! private->painter_closing && private->painter_menu_scroll == scroll)
+        {
+          gtk_widget_show (viewport);
+          if (! private->painter_closing && private->painter_menu_scroll == scroll)
+            gtk_widget_set_visible (scroll, gtk_widget_get_visible (menu));
+        }
+    }
+  g_object_unref (scroll);
+
+done:
+  g_object_unref (menu);
+}
+
+static void
+gimp_image_window_painter_toolbar_clear (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GtkWidget             *gui = g_steal_pointer (&private->painter_toolbar_gui);
+
+  g_clear_object (&private->painter_toolbar_options);
+  if (gui)
+    {
+      gtk_widget_destroy (gui);
+      g_object_unref (gui);
+    }
+}
+
+static void
+gimp_image_window_painter_toolbar_update (GimpImageWindow *window,
+                                          guint64          revision)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GimpToolInfo           *tool;
+  GimpToolOptions        *options;
+  GtkWidget             *controls;
+  GtkWidget             *gui;
+
+  if (! private->painter_toolbar_role || ! private->painter_toolbar_controls)
+    return;
+
+  tool = gimp_context_get_tool (gimp_get_user_context (private->gimp));
+  options = tool ? tool->tool_options : NULL;
+  if (options == private->painter_toolbar_options)
+    return;
+
+  controls = g_object_ref (private->painter_toolbar_controls);
+  if (options)
+    g_object_ref (options);
+  gimp_image_window_painter_toolbar_clear (window);
+  if (! gimp_image_window_painter_current (window, revision) ||
+      private->painter_toolbar_controls != controls)
+    goto done;
+
+  gui = options ? gimp_tools_create_painter_toolbar_gui (options) : NULL;
+  if (! gui)
+    {
+      /* Remember unsupported options too. A future tool change must not
+       * leave the preceding tool's controls on screen. */
+      if (gimp_image_window_painter_current (window, revision) &&
+          private->painter_toolbar_controls == controls)
+        g_set_object (&private->painter_toolbar_options, options);
+      goto done;
+    }
+
+  g_object_ref_sink (gui);
+  if (! gimp_image_window_painter_current (window, revision) ||
+      private->painter_toolbar_controls != controls)
+    {
+      gtk_widget_destroy (gui);
+      g_object_unref (gui);
+      goto done;
+    }
+
+  private->painter_toolbar_gui = gui;
+  g_set_object (&private->painter_toolbar_options, options);
+  /* An operation-local lease survives destruction or a newer role request
+   * emitted by parent-set. The member is a separate balanced owner. */
+  g_object_ref (gui);
+  gtk_box_pack_start (GTK_BOX (controls), gui, FALSE, FALSE, 0);
+  if (gimp_image_window_painter_current (window, revision) &&
+      private->painter_toolbar_gui == gui &&
+      private->painter_toolbar_controls == controls)
+    gtk_widget_show_all (controls);
+  else if (private->painter_toolbar_gui == gui)
+    /* A parent-set callback invalidated publication. Do not cache an unshown
+     * GUI as complete, and never retire a newer callback-created presenter. */
+    gimp_image_window_painter_toolbar_clear (window);
+  g_object_unref (gui);
+
+done:
+  g_clear_object (&options);
+  g_object_unref (controls);
 }
 
 void
 gimp_image_window_painter_reconcile (GimpImageWindow *window)
 {
   GimpImageWindowPrivate *private;
-  GimpDisplayShell      *selected;
-  GimpDisplayShell      *previous;
+  GimpDisplayShell      *selected = NULL;
+  GimpDisplayShell      *previous = NULL;
   gint                   options_mode = 1;
-  GList                 *shells;
+  GList                 *shells = NULL;
   GList                 *iter;
   guint64                revision;
   gboolean               show;
@@ -1698,11 +1948,18 @@ gimp_image_window_painter_reconcile (GimpImageWindow *window)
   private->painter_running = TRUE;
   private->painter_dirty = FALSE;
   revision = private->painter_revision;
+  gimp_image_window_painter_menu_update (window);
+  if (! gimp_image_window_painter_current (window, revision))
+    goto done;
+  gimp_image_window_painter_toolbar_update (window, revision);
+  if (! gimp_image_window_painter_current (window, revision))
+    goto done;
   selected = gimp_image_window_painter_selected (window);
   if (selected)
     g_object_ref (selected);
   shells = g_list_copy_deep (private->shells, gimp_image_window_painter_ref_shell, NULL);
-  show = private->gimp->config->painter_canvas_ui;
+  show = private->gimp->config->painter_canvas_ui &&
+         ! private->painter_toolbar_role;
   previous = g_weak_ref_get (&private->painter_owner);
   if (previous)
     options_mode = gimp_painter_canvas_ui_get_options_presentation (previous);
@@ -1849,13 +2106,35 @@ gimp_image_window_painter_close (GimpImageWindow *window)
     return;
 
   private->painter_closing = TRUE;
+  private->painter_menu_scroll = NULL;
   private->painter_revision++;
+  private->painter_toolbar_revision++;
+  g_signal_handlers_disconnect_by_func (gimp_get_user_context (private->gimp),
+                                        gimp_image_window_painter_context_changed,
+                                        window);
+  g_signal_handlers_disconnect_by_func (gimp_get_user_context (private->gimp),
+                                        gimp_image_window_painter_tool_changed,
+                                        window);
+  if (private->update_ui_manager_idle_id)
+    {
+      g_source_remove (private->update_ui_manager_idle_id);
+      private->update_ui_manager_idle_id = 0;
+    }
   if (private->painter_idle_id)
     {
       g_source_remove (private->painter_idle_id);
       private->painter_idle_id = 0;
     }
   gimp_image_window_painter_cancel_allocation (window);
+  gimp_image_window_painter_toolbar_clear (window);
+  private->painter_toolbar_controls = NULL;
+  if (private->painter_toolbar)
+    {
+      GtkWidget *toolbar = g_steal_pointer (&private->painter_toolbar);
+
+      gtk_widget_destroy (toolbar);
+      g_object_unref (toolbar);
+    }
   shells = g_list_copy_deep (private->shells, gimp_image_window_painter_ref_shell, NULL);
   for (iter = shells; iter; iter = iter->next)
     {
@@ -2103,6 +2382,158 @@ gimp_image_window_get_active_shell (GimpImageWindow *window)
   return private->active_shell;
 }
 
+gboolean
+gimp_image_window_is_painter_toolbar (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE_WINDOW (window), FALSE);
+  private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  return private->painter_toolbar_role && ! private->painter_closing;
+}
+
+void
+gimp_image_window_set_painter_toolbar (GimpImageWindow *window,
+                                       gboolean         toolbar)
+{
+  GimpImageWindowPrivate *private;
+  guint64                revision;
+
+  g_return_if_fail (GIMP_IS_IMAGE_WINDOW (window));
+  private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  toolbar = !!toolbar;
+  if (private->painter_closing || toolbar == private->painter_toolbar_role)
+    return;
+  if (toolbar)
+    {
+      g_return_if_fail (private->gimp->config->painter_canvas_ui &&
+                       ! GIMP_GUI_CONFIG (private->gimp->config)->single_window_mode);
+      g_return_if_fail (g_list_length (private->shells) == 1 &&
+                       private->active_shell && private->active_shell->display &&
+                       ! gimp_display_get_image (private->active_shell->display));
+    }
+
+  g_object_ref (window);
+  private->painter_toolbar_role = toolbar;
+  private->painter_revision++;
+  revision = ++private->painter_toolbar_revision;
+  private->painter_dirty = TRUE;
+  /* Demotion still has owned presentation state to reconcile, even after
+   * disabling Painter and completing a host pass with no canvas owner. */
+  private->painter_managed = TRUE;
+  /* Never install a foreign canvas as GimpWindow's primary focus widget. */
+  gimp_window_set_primary_focus_widget (GIMP_WINDOW (window),
+                                       toolbar || ! private->active_shell ? NULL :
+                                       private->active_shell->canvas);
+  if (toolbar)
+    gtk_window_set_focus (GTK_WINDOW (window), NULL);
+  gtk_widget_set_visible (private->notebook, ! toolbar);
+  if (private->painter_closing || private->painter_toolbar_revision != revision)
+    goto done;
+  gtk_widget_set_visible (private->hbox, ! toolbar);
+  if (private->painter_closing || private->painter_toolbar_revision != revision)
+    goto done;
+
+  if (toolbar)
+    {
+      GtkWidget *presenter = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+      GtkWidget *scroll = gtk_scrolled_window_new (NULL, NULL);
+      GtkWidget *controls = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+
+      g_object_ref_sink (presenter);
+      gtk_widget_set_name (presenter, "painter-toolbar-window-options");
+      gtk_widget_set_name (scroll, "painter-toolbar-window-scroll");
+      gtk_widget_set_name (controls, "painter-toolbar-window-controls");
+      /* Match the canvas toolbar's horizontal reachability on narrow screens.
+       * The presenter owns this scroller and its automatic viewport; neither
+       * borrows the native Tool Options Dockable or adds a lifetime owner. */
+      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll),
+                                       GTK_POLICY_AUTOMATIC, GTK_POLICY_NEVER);
+      gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (scroll), 48);
+      gtk_container_add (GTK_CONTAINER (scroll), controls);
+      gtk_box_pack_start (GTK_BOX (presenter), scroll, TRUE, TRUE, 0);
+      private->painter_toolbar = presenter;
+      private->painter_toolbar_controls = controls;
+      g_object_ref (presenter);
+      gtk_box_pack_start (GTK_BOX (private->main_vbox), presenter, FALSE, FALSE, 0);
+      if (! private->painter_closing && private->painter_toolbar_revision == revision &&
+          private->painter_toolbar == presenter)
+        gtk_widget_show_all (presenter);
+      g_object_unref (presenter);
+
+      /* The first shell can be selected before its toplevel is realized,
+       * when activate_shell() cannot yet register the empty window.  Role
+       * assignment happens after display creation; explicitly register only
+       * our owned placeholder before session_restore() needs to find it. */
+      if (! private->painter_closing && private->painter_toolbar_revision == revision &&
+          private->active_shell && private->active_shell->display &&
+          ! gimp_display_get_image (private->active_shell->display) &&
+          g_list_length (private->shells) == 1)
+        gimp_image_window_session_update (window, private->active_shell->display, NULL,
+                                          gimp_widget_get_monitor (GTK_WIDGET (window)));
+    }
+  else
+    {
+      GtkWidget *presenter = g_steal_pointer (&private->painter_toolbar);
+
+      private->painter_toolbar_controls = NULL;
+      gimp_image_window_painter_toolbar_clear (window);
+      if (presenter)
+        {
+          gtk_widget_destroy (presenter);
+          g_object_unref (presenter);
+        }
+    }
+
+done:
+  gimp_image_window_painter_reconcile (window);
+  gimp_image_window_update_ui_manager (window);
+  g_object_unref (window);
+}
+
+GimpDisplay *
+gimp_image_window_get_action_display (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private;
+  GimpImageWindowPrivate *owner_private;
+  GimpImageWindow        *owner;
+  GimpDisplay           *display;
+  GimpDisplayShell      *shell;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE_WINDOW (window), NULL);
+  private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  if (private->painter_closing)
+    return NULL;
+  if (! private->painter_toolbar_role)
+    return private->active_shell ? private->active_shell->display : NULL;
+
+  /* Borrow from the live context for the duration of this synchronous call.
+   * No toolbar reference may prolong a foreign display or shell's lifetime. */
+  display = gimp_context_get_display (gimp_get_user_context (private->gimp));
+  if (! display || ! g_list_find (gimp_get_display_iter (private->gimp), display) ||
+      ! gimp_display_get_image (display))
+    return NULL;
+  shell = gimp_display_get_shell (display);
+  if (! shell || shell->display != display ||
+      gtk_widget_in_destruction (GTK_WIDGET (shell)))
+    return NULL;
+  owner = gimp_display_shell_get_window (shell);
+  if (! owner || owner == window ||
+      ! g_list_find (private->gimp->image_windows, owner) ||
+      gtk_widget_in_destruction (GTK_WIDGET (owner)))
+    return NULL;
+  owner_private = GIMP_IMAGE_WINDOW_GET_PRIVATE (owner);
+  /* Membership is withdrawn before callback-producing restoration.  The
+   * old GTK ancestor can still exist then; neither that interval nor the
+   * subsequent parentless transfer is a valid target for host actions. */
+  if (owner_private->painter_closing ||
+      ! g_list_find (owner_private->shells, shell))
+    return NULL;
+
+  return display;
+}
+
 GimpMenuModel *
 gimp_image_window_get_menubar_model (GimpImageWindow *window)
 {
@@ -2152,8 +2583,15 @@ gimp_image_window_set_show_menubar (GimpImageWindow *window,
 
   private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
 
-  if (private->menubar)
-    gtk_widget_set_visible (private->menubar, show);
+  if (! private->painter_closing && private->menubar)
+    {
+      g_object_ref (window);
+      gtk_widget_set_visible (private->menubar, show);
+      if (! private->painter_closing && private->painter_menu_scroll)
+        gtk_widget_set_visible (private->painter_menu_scroll,
+                                gtk_widget_get_visible (private->menubar));
+      g_object_unref (window);
+    }
 }
 
 gboolean
@@ -2165,7 +2603,7 @@ gimp_image_window_get_show_menubar (GimpImageWindow *window)
 
   private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
 
-  if (private->menubar)
+  if (! private->painter_closing && private->menubar)
     return gtk_widget_get_visible (private->menubar);
 
   return FALSE;
@@ -2460,10 +2898,12 @@ gimp_image_window_keep_canvas_pos (GimpImageWindow *window)
 
   private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
 
-  if (private->suspend_keep_pos > 0)
+  if (private->suspend_keep_pos > 0 || private->painter_toolbar_role)
     return;
 
   shell = gimp_image_window_get_active_shell (window);
+  if (! shell || ! shell->display)
+    return;
 
   gimp_display_shell_transform_xy (shell, 0.0, 0.0, &canvas_x, &canvas_y);
 
@@ -2718,35 +3158,51 @@ gimp_image_window_hide_tooltip (GimpUIManager   *manager,
 }
 
 static gboolean
+gimp_image_window_toolbar_target_pending (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GimpDisplay           *display;
+
+  if (! private->painter_toolbar_role || private->painter_closing ||
+      gimp_image_window_get_action_display (window))
+    return FALSE;
+
+  /* A native shell transfer can temporarily withdraw the selected image's
+   * window membership.  This is not a true no-image state: publishing one
+   * would emit action callbacks against the still-selected image.  Leave
+   * action state alone until normal context/focus updates find an owner. */
+  display = gimp_context_get_display (gimp_get_user_context (private->gimp));
+  return (display &&
+          g_list_find (gimp_get_display_iter (private->gimp), display) &&
+          gimp_display_get_image (display));
+}
+
+static gboolean
 gimp_image_window_update_ui_manager_idle (GimpImageWindow *window)
 {
-  GimpImageWindowPrivate *private      = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
-  GimpImage              *active_image = NULL;
-  GimpContext            *context;
-
-  gimp_assert (private->active_shell != NULL);
-
-  context = gimp_get_user_context (private->active_shell->display->gimp);
-
-  if (context)
-    active_image = gimp_context_get_image (context);
-
-  /* Since we are running idle, it is possible this runs after the
-   * active display switched, and therefore we may call the wrong
-   * actions for an image. See #10441.
-   */
-  if ((active_image &&
-       (! private->active_shell->display || ! gimp_display_get_image (private->active_shell->display))) ||
-      active_image != gimp_display_get_image (private->active_shell->display))
-    {
-      private->update_ui_manager_idle_id = 0;
-      return G_SOURCE_REMOVE;
-    }
-
-  gimp_ui_manager_update (menus_get_image_manager_singleton (private->active_shell->display->gimp),
-                          private->active_shell->display);
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GimpDisplay           *display = gimp_image_window_get_action_display (window);
+  GimpContext           *context = gimp_get_user_context (private->gimp);
 
   private->update_ui_manager_idle_id = 0;
+  if (private->painter_closing ||
+      gimp_image_window_toolbar_target_pending (window))
+    return G_SOURCE_REMOVE;
+
+  /* Resolve at dispatch time: the selected image may have closed since this
+   * idle was queued. Session bookkeeping still uses the owned active shell. */
+  if (display && gimp_context_get_image (context) != gimp_display_get_image (display))
+    return G_SOURCE_REMOVE;
+  if (display || private->painter_toolbar_role)
+    {
+      g_object_ref (window);
+      if (display)
+        g_object_ref (display);
+      gimp_ui_manager_update (menus_get_image_manager_singleton (private->gimp),
+                              display ? (gpointer) display : (gpointer) private->gimp);
+      g_clear_object (&display);
+      g_object_unref (window);
+    }
 
   return G_SOURCE_REMOVE;
 }
@@ -2756,7 +3212,7 @@ gimp_image_window_update_ui_manager (GimpImageWindow *window)
 {
   GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
 
-  if (! private->update_ui_manager_idle_id)
+  if (! private->painter_closing && ! private->update_ui_manager_idle_id)
     {
       private->update_ui_manager_idle_id =
         g_idle_add_full (GIMP_PRIORITY_IMAGE_WINDOW_UPDATE_UI_MANAGER_IDLE,
@@ -2797,12 +3253,57 @@ gimp_image_window_shell_events (GtkWidget       *widget,
                                 GdkEvent        *event,
                                 GimpImageWindow *window)
 {
-  GimpDisplayShell *shell = gimp_image_window_get_active_shell (window);
+  GimpDisplay      *display = gimp_image_window_get_action_display (window);
+  GimpDisplayShell *shell = display ? gimp_display_get_shell (display) : NULL;
+  gboolean         handled;
 
-  if (! shell)
+  if (! shell || ! shell->display)
     return FALSE;
 
-  return gimp_display_shell_events (widget, event, shell);
+  g_object_ref (shell);
+  handled = gimp_display_shell_events (widget, event, shell);
+  g_object_unref (shell);
+  return handled;
+}
+
+static gboolean
+gimp_image_window_toolbar_events (GtkWidget       *widget,
+                                   GdkEvent        *event,
+                                   GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  gboolean               handled = FALSE;
+
+  if (! private->painter_toolbar_role || private->painter_closing)
+    return FALSE;
+
+  g_object_ref (window);
+  /* Focus/key delivery can be synchronous inside a native transfer callback.
+   * Do not let GtkWindow activate an image accelerator through the manager's
+   * fixed Gimp userdata while the guarded host route has no attached owner.
+   * WM delete remains the ordinary Quit path, independent of this barrier. */
+  if (gimp_image_window_toolbar_target_pending (window))
+    {
+      handled = (event->type == GDK_KEY_PRESS ||
+                 event->type == GDK_BUTTON_PRESS);
+      goto done;
+    }
+  /* Dispatch no event to the hidden placeholder. Keep accelerator data in
+   * step with the live context before GtkWindow activates a menu action. */
+  if (private->update_ui_manager_idle_id)
+    g_source_remove (private->update_ui_manager_idle_id);
+  gimp_image_window_update_ui_manager_idle (window);
+  if (! private->painter_closing)
+    {
+      if (gimp_image_window_toolbar_target_pending (window))
+        handled = (event->type == GDK_KEY_PRESS ||
+                   event->type == GDK_BUTTON_PRESS);
+      else
+        handled = gimp_image_window_shell_events (widget, event, window);
+    }
+done:
+  g_object_unref (window);
+  return handled;
 }
 
 static void
@@ -2831,7 +3332,8 @@ gimp_image_window_activate_shell (GimpImageWindow  *window,
                     G_CALLBACK (gimp_image_window_shell_rotated), window);
   g_signal_connect (shell, "notify::title",
                     G_CALLBACK (gimp_image_window_shell_title_notify), window);
-  gimp_window_set_primary_focus_widget (GIMP_WINDOW (window), shell->canvas);
+  gimp_window_set_primary_focus_widget (GIMP_WINDOW (window),
+                                         private->painter_toolbar_role ? NULL : shell->canvas);
   if (private->painter_closing || private->painter_revision != revision)
     goto done;
   gtk_window_set_title (GTK_WINDOW (window), shell->title);
@@ -2849,7 +3351,8 @@ gimp_image_window_activate_shell (GimpImageWindow  *window,
 
   /* This emits display-changed.  It requests a deferred Painter update;
    * no old-shell work is performed after it returns. */
-  gimp_context_set_display (gimp_get_user_context (private->gimp), active_display);
+  if (! private->painter_toolbar_role)
+    gimp_context_set_display (gimp_get_user_context (private->gimp), active_display);
 done:
   g_object_unref (shell);
   g_object_unref (window);
@@ -2904,7 +3407,8 @@ gimp_image_window_switch_page_after (GtkNotebook     *notebook,
       selected == private->active_shell &&
       selected == gimp_image_window_painter_selected (window))
     {
-      if (gimp_context_get_display (gimp_get_user_context (private->gimp)) != selected->display)
+      if (! private->painter_toolbar_role &&
+          gimp_context_get_display (gimp_get_user_context (private->gimp)) != selected->display)
         {
           gimp_context_set_display (gimp_get_user_context (private->gimp), selected->display);
           if (private->painter_closing || selected != private->active_shell ||
@@ -3076,6 +3580,21 @@ gimp_image_window_session_apply (GimpImageWindow *window,
   gint                    width        = -1;
   gint                    height       = -1;
 
+  if (private->gimp->config->painter_canvas_ui &&
+      strcmp (entry_id, GIMP_EMPTY_IMAGE_WINDOW_ENTRY_ID) == 0)
+    {
+      GtkWidget *registered;
+
+      session_info = gimp_dialog_factory_find_session_info (private->dialog_factory,
+                                                            entry_id);
+      registered = session_info ? gimp_session_info_get_widget (session_info) : NULL;
+      /* The toolbar's owned placeholder is the sole empty-window session
+       * owner. Repeated notifications are idempotent; an ordinary image
+       * becoming temporarily empty during deletion cannot claim its slot. */
+      if (registered)
+        return;
+    }
+
   gtk_window_unfullscreen (GTK_WINDOW (window));
 
   /*  get the NIW size before adding the display to the dialog
@@ -3116,6 +3635,13 @@ gimp_image_window_session_update (GimpImageWindow *window,
                                   GdkMonitor      *monitor)
 {
   GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  /* gimp_display_delete() removes the display from Gimp before notifying
+   * image=NULL, while its shell and window are still alive. That is teardown,
+   * not a new empty-window candidate alongside the persistent toolbar. */
+  if (new_display && private->gimp->config->painter_canvas_ui &&
+      ! g_list_find (gimp_get_display_iter (private->gimp), new_display))
+    new_display = NULL;
 
   /* Handle changes to the entry id */
   if (new_entry_id)
@@ -3171,7 +3697,7 @@ gimp_image_window_session_update (GimpImageWindow *window,
    * just keep session managing the single image window. We only need
    * to care about the multi-window mode case here
    */
-  if (new_display &&
+  if (new_display && private->entry_id &&
       strcmp (private->entry_id, GIMP_EMPTY_IMAGE_WINDOW_ENTRY_ID) == 0)
     {
       if (gimp_display_get_image (new_display))

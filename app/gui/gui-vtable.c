@@ -97,6 +97,8 @@
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplay-foreach.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimpimagewindow.h"
+#include "display/gimppaintercanvasui.h"
 #include "display/gimpsinglewindowstrategy.h"
 #include "display/gimpmultiwindowstrategy.h"
 
@@ -368,11 +370,17 @@ gui_get_empty_display (Gimp *gimp)
 
   if (gimp_container_get_n_children (gimp->displays) == 1)
     {
-      display = (GimpDisplay *) gimp_container_get_first_child (gimp->displays);
+      GimpDisplayShell *shell;
+      GimpImageWindow  *window;
 
-      if (gimp_display_get_image (display))
+      display = (GimpDisplay *) gimp_container_get_first_child (gimp->displays);
+      shell = display ? gimp_display_get_shell (display) : NULL;
+      window = shell ? gimp_display_shell_get_window (shell) : NULL;
+
+      if (! window || gimp_display_get_image (display) ||
+          gimp_image_window_is_painter_toolbar (window))
         {
-          /* The display was not empty */
+          /* A toolbar owns its placeholder for its entire multi-window life. */
           display = NULL;
         }
     }

@@ -33,6 +33,8 @@
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimpimagewindow.h"
+#include "display/gimppaintercanvasui.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
@@ -517,14 +519,36 @@ dialogs_restore_window (GimpDialogFactory *factory,
                         GdkMonitor        *monitor,
                         GimpSessionInfo   *info)
 {
-  Gimp             *gimp    = gimp_dialog_factory_get_context (factory)->gimp;
-  GimpDisplay      *display = GIMP_DISPLAY (gimp_get_empty_display (gimp));
-  GimpDisplayShell *shell   = gimp_display_get_shell (display);
-  GtkWidget        *dialog;
+  Gimp             *gimp = gimp_dialog_factory_get_context (factory)->gimp;
+  GimpDisplay      *display;
+  GimpDisplayShell *shell;
+  GList           *windows;
+  GList           *iter;
+  GtkWidget       *dialog = NULL;
 
-  dialog = GTK_WIDGET (gimp_display_shell_get_window (shell));
+  /* New/Open's reusable-empty query deliberately excludes the Painter host.
+   * Session restoration instead locates this Gimp's already-created window;
+   * its owned empty shell, never a foreign action display, owns the entry. */
+  windows = gimp_get_image_windows (gimp);
+  for (iter = windows; iter; iter = iter->next)
+    if (gimp_image_window_is_painter_toolbar (iter->data))
+      {
+        shell = gimp_image_window_get_active_shell (iter->data);
+        if (shell && shell->display &&
+            gimp_display_get_shell (shell->display) == shell &&
+            ! gimp_display_get_image (shell->display))
+          {
+            dialog = GTK_WIDGET (iter->data);
+            break;
+          }
+      }
+  g_list_free (windows);
+  if (dialog)
+    return dialog;
 
-  return dialog;
+  display = GIMP_DISPLAY (gimp_get_empty_display (gimp));
+  shell = display ? gimp_display_get_shell (display) : NULL;
+  return shell ? GTK_WIDGET (gimp_display_shell_get_window (shell)) : NULL;
 }
 
 

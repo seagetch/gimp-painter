@@ -45,6 +45,7 @@
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
 #include "display/gimpimagewindow.h"
+#include "display/gimppaintercanvasui.h"
 #include "display/gimpnavigationeditor.h"
 #include "display/gimpstatusbar.h"
 
@@ -318,6 +319,12 @@ action_data_get_gimp (gpointer data)
 
   if (GIMP_IS_GIMP (data))
     result = data;
+  else if (GIMP_IS_IMAGE_WINDOW (data))
+    {
+      GimpDisplayShell *shell = gimp_image_window_get_active_shell (data);
+
+      result = shell && shell->display ? shell->display->gimp : NULL;
+    }
 
   if (! result)
     {
@@ -400,6 +407,17 @@ action_data_get_image (gpointer data)
       recursion = FALSE;
       return result;
     }
+  else if (GIMP_IS_IMAGE_WINDOW (data) &&
+           gimp_image_window_is_painter_toolbar (data))
+    {
+      GimpDisplay *display = gimp_image_window_get_action_display (data);
+
+      /* A selected display in a native transfer gap is not an action target.
+       * Do not bypass the host's lifetime checks through the context below. */
+      result = display ? gimp_display_get_image (display) : NULL;
+      recursion = FALSE;
+      return result;
+    }
 
   if (! result)
     {
@@ -437,8 +455,10 @@ action_data_get_display (gpointer data)
     result = data;
   else if (GIMP_IS_IMAGE_WINDOW (data))
     {
-      GimpDisplayShell *shell = gimp_image_window_get_active_shell (data);
-      result = shell ? shell->display : NULL;
+      /* A toolbar with no live image must not fall back to its placeholder. */
+      result = gimp_image_window_get_action_display (data);
+      recursion = FALSE;
+      return result;
     }
 
   if (! result)

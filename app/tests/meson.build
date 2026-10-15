@@ -48,6 +48,7 @@ app_tests = [
   'painter-layer-ui',
   'painter-layer-tree',
   'painter-canvas-ui',
+  'painter-toolbar-window',
   'painter-compact-options',
   'gimp-painter-mybrush',
   'gimp-painter-mybrush-factory',
@@ -144,6 +145,10 @@ foreach test_name : app_tests
   test_timeout = test_name == 'gimp-filter-layer' ? 600 : 60
   if test_name == 'mypaint-selector-contracts'
     test_timeout = 180
+  endif
+  if test_name == 'painter-toolbar-window'
+    # Every case uses fresh GUI startup; session coverage executes two passes.
+    test_timeout = 240
   endif
   if test_name == 'painter-compact-options'
     # The first real-input case has >60s of required settle intervals alone.
