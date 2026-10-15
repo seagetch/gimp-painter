@@ -427,7 +427,7 @@
 
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
-| 09.001 | [ ] | 画素形式の対応表を作る | 03.009, 06.029 | 旧形式と RGB/Gray/Indexed、alpha、精度、色空間を対応 |
+| 09.001 | [x] | 画素形式の対応表を作る | 03.009, 06.029 | 旧形式と RGB/Gray/Indexed、alpha、精度、色空間を対応 |
 | 09.002 | [ ] | 座標契約を固定する | 09.001 | 画像・レイヤー・buffer・画面の原点と境界を記録 |
 | 09.003 | [ ] | DrawableFeature の buffer read を実装する | 09.002 | 負の offset と部分領域を読める |
 | 09.003/region-lifetime | [ ] | MyPaint Surface の一時領域を GEGL buffer 寿命へ移す | 09.003, 01.007/surface-regions | draw_dab と get_color の全 return・失敗経路で read/write/snapshot/mask/texture の buffer を一度だけ解放する |
