@@ -150,6 +150,23 @@ gimp_dock_class_init (GimpDockClass *klass)
 }
 
 static void
+gimp_dock_orientation_notify (GimpDock *dock, GParamSpec *pspec, gpointer data)
+{
+  GtkOrientation orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (dock));
+  GtkWidget *main_box = g_object_ref (dock->p->main_vbox);
+  GtkWidget *paned_box = g_object_ref (dock->p->paned_vbox);
+
+  (void) pspec; (void) data;
+  /* Either notification may synchronously destroy the owning dock. */
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (main_box), orientation);
+  if (! gtk_widget_in_destruction (paned_box) &&
+      gtk_widget_get_parent (paned_box) == main_box)
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (paned_box), orientation);
+  g_object_unref (paned_box);
+  g_object_unref (main_box);
+}
+
+static void
 gimp_dock_init (GimpDock *dock)
 {
   static gint  dock_ID = 1;
@@ -176,6 +193,8 @@ gimp_dock_init (GimpDock *dock)
   gtk_box_pack_start (GTK_BOX (dock->p->main_vbox), dock->p->paned_vbox,
                       TRUE, TRUE, 0);
   gtk_widget_show (dock->p->paned_vbox);
+  g_signal_connect (dock, "notify::orientation",
+                    G_CALLBACK (gimp_dock_orientation_notify), NULL);
 }
 
 static void

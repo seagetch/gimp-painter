@@ -49,6 +49,12 @@
 
 数値互換性は旧対応形式では旧結果を基準とする。高精度形式で許容差が必要なら、比較前に根拠と閾値を固定する。試験失敗に合わせて閾値を緩めない。応答性は入力準備・実行・反映・終了を含め測定し、非同期 API 使用だけを合格理由にしない。
 
+### 旧 UI 完了主張の訂正（2026-10-15 復旧作業）
+
+公開基準 `3f831a8a862dabcc60f0049c154f93655d8004e2` の区分29・30は完了していない。元の親行29.001–29.020、30.001–30.017はすべて未チェック/TODOである。`29.001/native-canvas-tiles` と `29.010/native-compact-runtime` の DONE は保存済みの限定コンポーネント試験の履歴であり、旧UIの忠実な復元完了を意味しない。後者の50 GUI/2868 widget保持は、旧tool別horizontal factory・独立toolbar widget・window/session modelの同等性を証明しない。過去の証跡とチェックを削除せず、その範囲を明示訂正する。
+
+受入条件・旧ソースの行番号・公開HEADとの差分・未完了割当の正本は `migration/contracts/legacy-ui-completion-correction.md`。復旧した変更は再検証中であり、旧snapshotのPASSを現在のコードへ流用しない。今回の復旧コードについて188件合格やASan合格を主張しない。下部toolbarはMyPaint専用ではなくactive toolごとの表示が要件。paint/non-paint/transformの独立horizontal factory復元は実装・再検証中であり、tool別対応表と合格証跡は未完了。toolbar window/session、実tablet・platform試験も引き続き未完了。dock orientationはwindow allocation、overlay配置はcanvas allocationで別判定し、実Dockable入りcollection試験を必要とする。`29.010/standard-tool-options`のみ実装中(DOING)へ更新し、他の状態と全チェックは保持する。
+
 ## 3. 区分一覧
 
 
@@ -1040,11 +1046,13 @@
 
 主対象：display overlay、layer/tool/color UI
 
+2026-10-15復旧進捗: `29.010/standard-tool-options` は DOING。独立horizontal factoryの実登録34tool（Painter MyPaint1、paint14、non-paint15、rotate/scale/shear/perspective4）をcompact native27/27で確認。正確な一覧・未対応16tool/詳細は `migration/contracts/legacy-ui-completion-correction.md`。34はfactory数、27はfocused test数であり全旧UIの完了ではない。元の完了条件を維持し、全control対応・残る操作・window/session・最終統合検証を必要とする。
+
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 29.001 | [ ] | overlay の配置 model を移植する | 08.020, 14.020, 15.014, 24.017 | 画像表示と独立して位置を保持 |
 | 29.001/preview-idle-lifetime-contract | [ ] | layer preview idle の捕捉寿命を定義する | 29.001, 01.005/deferred-sources | preview と viewable の所有・破棄順、再予約時の旧 source 解除を明記 |
-| 29.001/native-canvas-tiles | [x] | 実canvas overlay・layer/tool tiles・色とnative optionsを接続する | 30.001/layer-create-edit, 30.010/native-profile-migration, 24.017/native-editor-workflow | 実GTK19/52unit sanitizer19/HiDPI19合格。pointer選択/DND/Undo・Clone popup・黒赤描画・portraitを視認。alpha previewの上流bounds不具合を修正しRGBA/Gray pixel検査。full options共有は実装、旧compact toolbar/persist overlay/実tabletは未完了 |
+| 29.001/native-canvas-tiles | [x] | 実canvas overlay・layer/tool tiles・色とnative optionsを接続する | 30.001/layer-create-edit, 30.010/native-profile-migration, 24.017/native-editor-workflow | 2026-10-02凍結componentの履歴:実GTK19/52unit sanitizer19/HiDPI19合格（今回の復旧コードの結果ではない）。pointer選択/DND/Undo・Clone popup・黒赤描画・portraitを視認。alpha previewの上流bounds不具合を修正しRGBA/Gray pixel検査。当時のfull options共有は実装。旧Cairo表示・配置・独立toolbarの忠実性は未証明、旧compact toolbar/persist overlay/実tabletは当時未完了。最新の範囲訂正はlegacy-ui-completion-correction契約 |
 | 29.002 | [ ] | layer tile の表示を移植する | 29.001 | 名前・preview・選択状態が一致 |
 | 29.002/add-timeout-owner | [ ] | layer tile の長押し timeout を安全に終了する | 29.002, 06.019, 01.007/cpp-ownership | callback 実行中に自身の handler を破棄せず、押下・移動・離上・widget 破棄の各順序で popup が重複せず source を解除する |
 | 29.003 | [ ] | layer tile の可視切替を実装する | 29.002 | 状態と projection が同期 |
@@ -1062,7 +1070,7 @@
 | 29.008/icon-null | [ ] | tile icon 生成失敗時の NULL 経路を処理する | 29.002, 29.008, 01.007/cpp-ownership | layer/tool 両 tile の icon 未登録・render 失敗時に NULL を unref せず、代替表示を確認 |
 | 29.009 | [ ] | tool group を接続する | 29.008 | 旧分類と現行 action の対応が明確 |
 | 29.010/toolbar-ref-balance | [ ] | toolbar の再表示と終了時の参照数を修正する | 29.010, 01.007/toolbar-ref | hide 時の余剰参照をなくし、移動・反復表示・破棄を検証する |
-| 29.010/native-compact-runtime | [x] | 一つのnative ToolOptions GUIを可逆な横型・縦型popoversへ接続する | 29.001/native-canvas-tiles, 30.010/native-profile-migration | 50登録GUI/2868widgetのidentity・親順序・packing復元、12family/12破棄loop、native編集を通常8/sanitizer8/scale2 8＋実demo確認。旧Painter暗黙Canvas表示をprovenance付き移行し設定保存。後続geometry/HTTP/XCFを含むaggregateは別gate |
+| 29.010/native-compact-runtime | [x] | 一つのnative ToolOptions GUIを可逆な横型・縦型popoversへ接続する | 29.001/native-canvas-tiles, 30.010/native-profile-migration | 2026-10-02凍結componentの履歴:50登録GUI/2868widgetのidentity・親順序・packing復元、12family/12破棄loop、native編集を通常8/sanitizer8/scale2 8＋実demo確認。旧Painter暗黙Canvas表示をprovenance付き移行し設定保存。旧tool別horizontal factory/独立toolbar/window/session同等性と今回の復旧コードの合格は未証明。後続geometry/HTTP/XCFを含むaggregateは別gate |
 | 29.010 | [ ] | 操作バーを移植する | 29.009 | 旧 action を呼び UI 状態を反映 |
 | 29.010/standard-tool-options | [ ] | 標準ツールの横型・コンパクト操作部品を保持して共有化する | 29.009, 01.013 | hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する |
 | 29.011 | [ ] | 縦長配置を移植する | 29.010 | 部品の機能を削らず再配置 |

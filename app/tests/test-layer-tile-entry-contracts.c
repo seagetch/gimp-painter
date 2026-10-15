@@ -19,8 +19,7 @@
 #include "core/gimpundostack.h"
 #include "widgets/gimplayertileview.h"
 #include "widgets/gimppainterlayertiles.h"
-#include "widgets/gimpview.h"
-#include "widgets/gimpviewrenderer.h"
+#include "core/gimpdrawable.h"
 #include "widgets/gimpuimanager.h"
 #include "display/gimpdisplay.h"
 #include "actions/actions-types.h"
@@ -150,22 +149,98 @@ find_widget (GtkWidget   *widget,
   return result;
 }
 
-static GimpViewRenderer *
-find_renderer (GtkWidget *widget,
-               GimpLayer *layer)
+static GtkWidget *
+entry_canvas (GimpLayerTileView *view)
 {
-  GimpViewRenderer *result = NULL;
-  if (GIMP_IS_VIEW (widget) &&
-      GIMP_VIEW (widget)->renderer->viewable == GIMP_VIEWABLE (layer))
-    return GIMP_VIEW (widget)->renderer;
-  if (GTK_IS_CONTAINER (widget))
+  GtkWidget *canvas = find_widget (GTK_WIDGET (view), "painter-layer-canvas");
+  g_assert_true (GTK_IS_DRAWING_AREA (canvas));
+  return canvas;
+}
+
+static gboolean
+entry_button (GtkWidget *canvas, GdkEventType type, gdouble x, gdouble y)
+{
+  GdkEvent *event = gdk_event_new (type);
+  event->button.window = g_object_ref (gtk_widget_get_window (canvas));
+  event->button.send_event = TRUE;
+  event->button.time = GDK_CURRENT_TIME;
+  event->button.button = 1;
+  event->button.x = x;
+  event->button.y = y;
+  gdk_event_set_device (event, gdk_seat_get_pointer (
+    gdk_display_get_default_seat (gtk_widget_get_display (canvas))));
+  gboolean handled = gtk_widget_event (canvas, event);
+  gdk_event_free (event);
+  return handled;
+}
+
+static cairo_surface_t *
+entry_snapshot (GimpLayerTileView *view)
+{
+  GtkWidget *canvas = entry_canvas (view);
+  gtk_container_check_resize (GTK_CONTAINER (gtk_widget_get_toplevel (canvas)));
+  GtkAllocation allocation;
+  gtk_widget_get_allocation (canvas, &allocation);
+  g_assert_cmpint (allocation.width, >, 0);
+  g_assert_cmpint (allocation.height, >, 0);
+  cairo_surface_t *surface = cairo_image_surface_create (
+    CAIRO_FORMAT_ARGB32, allocation.width, allocation.height);
+  cairo_t *cr = cairo_create (surface);
+  gtk_widget_draw (canvas, cr);
+  g_assert_cmpint (cairo_status (cr), ==, CAIRO_STATUS_SUCCESS);
+  cairo_destroy (cr);
+  cairo_surface_flush (surface);
+  return surface;
+}
+
+static guint32
+entry_pixel (cairo_surface_t *surface, gint x, gint y)
+{
+  g_assert_cmpint (x, <, cairo_image_surface_get_width (surface));
+  g_assert_cmpint (y, <, cairo_image_surface_get_height (surface));
+  return *(guint32 *) (cairo_image_surface_get_data (surface) +
+                      y * cairo_image_surface_get_stride (surface) + x * 4);
+}
+
+static void
+paint_layer (GimpLayer *layer, const gchar *name)
+{
+  GeglColor *color = gegl_color_new (name);
+  gegl_buffer_set_color (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)), NULL, color);
+  g_object_unref (color);
+  gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, -1, -1);
+  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (layer));
+}
+
+static void
+assert_preview_color (GimpLayerTileView *view, gboolean red)
+{
+  gint64 deadline = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
+  gboolean matched = FALSE;
+  do
     {
-      GList *children = gtk_container_get_children (GTK_CONTAINER (widget));
-      for (GList *i = children; i && !result; i = i->next)
-        result = find_renderer (i->data, layer);
-      g_list_free (children);
+      drain ();
+      cairo_surface_t *surface = entry_snapshot (view);
+      guint32 pixel = entry_pixel (surface, 28, 32);
+      matched = red ? (((pixel >> 16) & 255) > (pixel & 255) + 100) :
+                      ((pixel & 255) > ((pixel >> 16) & 255) + 100);
+      cairo_surface_destroy (surface);
+      if (!matched) g_usleep (1000);
     }
-  return result;
+  while (!matched && g_get_monotonic_time () < deadline);
+  g_assert_true (matched);
+}
+
+static void
+assert_first_canvas_layer (GimpLayerTileView *view, GimpLayer *layer)
+{
+  GtkWidget *canvas = entry_canvas (view);
+  g_assert_true (entry_button (canvas, GDK_BUTTON_PRESS, 28, 32));
+  g_assert_true (entry_button (canvas, GDK_BUTTON_RELEASE, 28, 32));
+  GList *selection = gimp_image_get_selected_layers (
+    gimp_image_editor_get_image (GIMP_IMAGE_EDITOR (view)));
+  g_assert_cmpuint (g_list_length (selection), ==, 1);
+  g_assert_true (selection->data == layer);
 }
 
 static void
@@ -551,44 +626,42 @@ c_same_image_context_refreshes_previews (void)
   GimpContext *a = new_context ("preview source A", NULL);
   GimpContext *b = new_context ("preview source B", NULL);
   GimpLayerTileView *view = new_owned_view ();
-  GimpViewRenderer *renderer;
-  GimpContext *previous_action;
+  paint_layer (layer, "red");
   g_object_set (view, "context", a, "image", image, NULL);
   MountedView mounted = mount_view (view);
-  renderer = find_renderer (GTK_WIDGET (view), layer);
-  g_assert_nonnull (renderer);
-  previous_action = g_object_ref (GIMP_IMAGE_EDITOR (view)->context);
-  g_assert_true (renderer->context == previous_action);
+  assert_preview_color (view, TRUE);
+  GimpContext *previous_action = GIMP_IMAGE_EDITOR (view)->context;
+  gpointer weak_action = previous_action;
+  g_object_add_weak_pointer (G_OBJECT (previous_action), &weak_action);
+  /* Queue an old-generation update, then replace its context before the idle. */
+  paint_layer (layer, "blue");
   g_object_set (view, "context", b, NULL);
   drain ();
+  g_assert_null (weak_action);
   assert_properties (view, b, image);
   assert_action_context (view, b, image);
-  renderer = find_renderer (GTK_WIDGET (view), layer);
-  g_assert_nonnull (renderer);
-  g_assert_true (renderer->context == GIMP_IMAGE_EDITOR (view)->context);
-  g_assert_true (renderer->context != previous_action);
-  g_object_unref (previous_action);
-  gpointer pending_renderer = renderer;
-  g_object_add_weak_pointer (G_OBJECT (renderer), &pending_renderer);
-  gimp_view_renderer_update_idle (renderer);
+  assert_preview_color (view, FALSE);
+  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (layer));
   g_object_set (view, "context", NULL, NULL);
-  g_assert_null (pending_renderer);
   drain ();
-  renderer = find_renderer (GTK_WIDGET (view), layer);
-  /* Native preview drawing requires context; the independently bound image
-   * and layer rows survive while preview creation waits for configuration. */
-  g_assert_null (renderer);
   assert_properties (view, NULL, image);
-  g_object_set (view, "context", a, NULL);
+  /* Context removal releases cached pixels but preserves the row model. */
+  cairo_surface_t *blank = entry_snapshot (view);
+  guint32 pixel = entry_pixel (blank, 28, 32);
+  g_assert_cmpuint ((pixel >> 16) & 255, ==, pixel & 255);
+  cairo_surface_destroy (blank);
+  paint_layer (layer, "red");
   drain ();
-  renderer = find_renderer (GTK_WIDGET (view), layer);
-  g_assert_nonnull (renderer);
-  g_assert_true (renderer->context == GIMP_IMAGE_EDITOR (view)->context);
+  blank = entry_snapshot (view);
+  pixel = entry_pixel (blank, 28, 32);
+  g_assert_cmpuint ((pixel >> 16) & 255, ==, pixel & 255);
+  cairo_surface_destroy (blank);
+  g_object_set (view, "context", a, NULL);
+  assert_preview_color (view, TRUE);
   assert_action_context (view, a, image);
+  assert_first_canvas_layer (view, layer);
   clear_mounted (&mounted);
-  g_object_unref (a);
-  g_object_unref (b);
-  g_object_unref (image);
+  g_object_unref (a);g_object_unref (b);g_object_unref (image);
 }
 
 static void
@@ -617,12 +690,12 @@ c_contextless_image_actions_inert (void)
   MountedView mounted = mount_view (view);
   gint undo_depth = gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image));
   GtkWidget *add = find_widget (GTK_WIDGET (view), "painter-layer-add");
-  GtkWidget *visible = find_widget (GTK_WIDGET (view), "painter-layer-visible");
+  GtkWidget *visible = entry_canvas (view);
   g_assert_nonnull (add);
   g_assert_nonnull (visible);
   g_assert_null (gimp_painter_layer_tiles_popup (GIMP_PAINTER_LAYER_TILES (view), FALSE));
   g_assert_null (gimp_painter_layer_tiles_popup (GIMP_PAINTER_LAYER_TILES (view), TRUE));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (visible), FALSE);
+  g_assert_true (entry_button (visible, GDK_BUTTON_PRESS, 8, 8));
   send_button (add, GDK_BUTTON_PRESS);
   send_button (add, GDK_BUTTON_RELEASE);
   drain ();
@@ -798,8 +871,7 @@ popup_reentry_case (gboolean change_context,
     {
       assert_properties (view, reentry.context, reentry.image);
       assert_action_context (view, reentry.context, reentry.image);
-      g_assert_nonnull (find_renderer (GTK_WIDGET (view),
-                                      gimp_image_get_selected_layers (reentry.image)->data));
+      assert_first_canvas_layer (view, gimp_image_get_layer_iter (reentry.image)->data);
     }
   if (destroy) g_assert_false (g_signal_handler_is_connected (view, handler));
   else g_signal_handler_disconnect (view, handler);
@@ -870,8 +942,10 @@ c_popup_close_same_target_image (void)
   g_assert_cmpuint (reentry.calls, ==, 1);
   assert_properties (view, context, b);
   assert_action_context (view, context, b);
-  g_assert_nonnull (find_renderer (GTK_WIDGET (view), new_layer));
-  g_assert_null (find_renderer (GTK_WIDGET (view), old_layer));
+  assert_first_canvas_layer (view, new_layer);
+  g_assert_true (entry_button (entry_canvas (view), GDK_BUTTON_PRESS, 8, 8));
+  g_assert_false (gimp_item_get_visible (GIMP_ITEM (new_layer)));
+  g_assert_true (gimp_item_get_visible (GIMP_ITEM (old_layer)));
   g_signal_handler_disconnect (view, handler);
   clear_mounted (&mounted);
   g_object_unref (context);
@@ -915,25 +989,12 @@ c_context_clear_explicit_image_clear_wins (void)
   drain ();
   assert_properties (view, NULL, NULL);
   assert_action_context (view, NULL, NULL);
-  g_assert_null (find_renderer (GTK_WIDGET (view), layer));
+  /* The empty canvas must neither hit nor mutate the former image's row. */
+  g_assert_true (entry_button (entry_canvas (view), GDK_BUTTON_PRESS, 8, 8));
+  g_assert_true (gimp_item_get_visible (GIMP_ITEM (layer)));
   clear_mounted (&mounted);
   g_object_unref (context);
   g_object_unref (image);
-}
-
-static guint
-count_named_widgets (GtkWidget   *widget,
-                     const gchar *name)
-{
-  guint count = g_strcmp0 (gtk_widget_get_name (widget), name) == 0 ? 1 : 0;
-  if (GTK_IS_CONTAINER (widget))
-    {
-      GList *children = gtk_container_get_children (GTK_CONTAINER (widget));
-      for (GList *i = children; i; i = i->next)
-        count += count_named_widgets (i->data, name);
-      g_list_free (children);
-    }
-  return count;
 }
 
 typedef struct
@@ -945,11 +1006,11 @@ typedef struct
 } RowReentry;
 
 static void
-replace_on_row_destroy (GtkWidget *row,
-                       gpointer   data)
+replace_on_context_release (gpointer data,
+                            GObject *context)
 {
   RowReentry *reentry = data;
-  (void) row;
+  (void) context;
   if (reentry->calls++ == 0)
     {
       if (reentry->context)
@@ -960,7 +1021,7 @@ replace_on_row_destroy (GtkWidget *row,
 }
 
 static void
-c_context_refresh_row_destroy_reentry (void)
+c_context_refresh_cache_release_reentry (void)
 {
   for (guint replace_context = 0; replace_context < 2; replace_context++)
     {
@@ -978,9 +1039,10 @@ c_context_refresh_row_destroy_reentry (void)
       add_layer (c, "C3");
       g_object_set (view, "context", contexts[0], "image", a, NULL);
       MountedView mounted = mount_view (view);
-      GtkWidget *row = find_widget (GTK_WIDGET (view), "painter-layer-tile");
-      g_assert_nonnull (row);
-      g_signal_connect (row, "destroy", G_CALLBACK (replace_on_row_destroy), &reentry);
+      /* No row widgets exist. Reenter on release of the old cache's action
+       * context, the corresponding native ownership boundary during refresh. */
+      g_object_weak_ref (G_OBJECT (GIMP_IMAGE_EDITOR (view)->context),
+                         replace_on_context_release, &reentry);
       g_object_set (view, "context", contexts[1], NULL);
       drain ();
       GimpImage *expected_image = replace_context ? a : c;
@@ -988,13 +1050,15 @@ c_context_refresh_row_destroy_reentry (void)
       g_assert_cmpuint (reentry.calls, ==, 1);
       assert_properties (view, expected_context, expected_image);
       assert_action_context (view, expected_context, expected_image);
-      g_assert_cmpuint (count_named_widgets (GTK_WIDGET (view), "painter-layer-tile"),
-                        ==, replace_context ? 2 : 3);
-      GtkWidget *visible = find_widget (GTK_WIDGET (view), "painter-layer-visible");
+      gint width, height;
+      gtk_widget_get_size_request (entry_canvas (view), &width, &height);
+      g_assert_cmpint (height, ==, (replace_context ? 2 : 3) * 64);
+      g_assert_cmpint (width, ==, 64);
+      GtkWidget *visible = entry_canvas (view);
       GimpLayer *selected = gimp_image_get_selected_layers (expected_image)->data;
       gint undo_depth = gimp_undo_stack_get_depth (gimp_image_get_undo_stack (expected_image));
       g_assert_nonnull (visible);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (visible), FALSE);
+      g_assert_true (entry_button (visible, GDK_BUTTON_PRESS, 8, 8));
       g_assert_false (gimp_item_get_visible (GIMP_ITEM (selected)));
       g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (expected_image)),
                        ==, undo_depth + 1);
@@ -1197,7 +1261,7 @@ main (int argc, char **argv)
   ADD (c_popup_close_destroy_no_revival);
   ADD (c_popup_close_same_target_image);
   ADD (c_context_clear_explicit_image_clear_wins);
-  ADD (c_context_refresh_row_destroy_reentry);
+  ADD (c_context_refresh_cache_release_reentry);
   ADD (c_parent_image_reentry_keeps_newer_popup);
   ADD (c_native_invalid_and_wrong_thread_controls);
   ADD (c_destroyed_original_entry_is_terminal);

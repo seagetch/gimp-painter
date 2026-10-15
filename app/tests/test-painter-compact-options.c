@@ -26,8 +26,13 @@
 #include "core/gimpbrush.h"
 #include "core/gimpbrushgenerated.h"
 #include "core/gimppattern.h"
+#include "tools/tools-types.h"
 #include "tools/gimp-tools.h"
 #include "tools/gimppaintoptions-gui.h"
+#include "tools/gimpmoveoptions.h"
+#include "tools/gimpselectionoptions.h"
+#include "tools/gimpgradientoptions.h"
+#include "tools/gimptransformgridoptions.h"
 #include "widgets/gimppropwidgets.h"
 #include "widgets/gimppaintercompactoptions.h"
 #include "widgets/gimpviewablebutton.h"
@@ -376,27 +381,32 @@ static void close_shell (GimpDisplayShell *shell) {
   GimpImage *image=gimp_display_get_image(shell->display);gimp_display_delete(shell->display);g_object_unref(image);drain();
 }
 static void canvas_dock_tool_transfer_and_preference (void) {
-  gboolean old=gimp->config->painter_canvas_ui;g_object_set(gimp->config,"painter-canvas-ui",FALSE,NULL);
-  GimpToolInfo *paint=info("gimp-paintbrush-tool"),*rect=info("gimp-rect-select-tool");
+  gboolean old=gimp->config->painter_canvas_ui;
+  g_object_set(gimp->config,"painter-canvas-ui",FALSE,NULL);
+  GimpToolInfo *paint=info("gimp-painter-mypaint-tool"),*rect=info("gimp-rect-select-tool");
   gimp_context_set_tool(gimp_get_user_context(gimp),paint);
-  GtkWidget *paint_gui=gimp_tools_get_tool_options_gui(paint->tool_options),*rect_gui=gimp_tools_get_tool_options_gui(rect->tool_options);
-  GimpDisplayShell *a=new_shell();g_assert_false(gimp_painter_canvas_ui_get_visible(a));gimp_painter_canvas_ui_set_visible(a,TRUE);drain();
-  g_assert_true(gimp_painter_compact_options_get(paint_gui));g_assert_true(gtk_widget_get_ancestor(paint_gui,GIMP_TYPE_DISPLAY_SHELL)==GTK_WIDGET(a));
-  GtkWidget *button=find(a->canvas,"painter-compact-brush",GTK_TYPE_MENU_BUTTON);g_assert_nonnull(button);
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),TRUE);drain();gimp_painter_compact_options_popdown(paint_gui);drain();
-  gtk_button_clicked(GTK_BUTTON(find(a->canvas,"painter-canvas-options",GTK_TYPE_BUTTON)));drain();g_assert_false(gimp_painter_compact_options_get(paint_gui));
-  gtk_button_clicked(GTK_BUTTON(find(a->canvas,"painter-canvas-compact",GTK_TYPE_BUTTON)));drain();g_assert_true(gimp_painter_compact_options_get(paint_gui));
-  GimpDisplayShell *b=new_shell();gimp_painter_canvas_ui_set_visible(b,TRUE);drain();
-  g_assert_true(gtk_widget_get_ancestor(paint_gui,GIMP_TYPE_DISPLAY_SHELL)==GTK_WIDGET(b));
+  GtkWidget *native=gimp_tools_get_tool_options_gui(paint->tool_options);
+  GtkWidget *parent=gtk_widget_get_parent(native);
+  GimpDisplayShell *a=new_shell();
+  gimp_painter_canvas_ui_set_visible(a,TRUE);drain();
+  g_assert_false(gimp_painter_compact_options_get(native));
+  g_assert_true(gtk_widget_get_parent(native)==parent);
+  g_assert_nonnull(find(a->canvas,"painter-compact-mypaint",GTK_TYPE_MENU_BUTTON));
+  g_assert_null(find(a->canvas,"painter-canvas-undo",GTK_TYPE_BUTTON));
   gimp_context_set_tool(gimp_get_user_context(gimp),rect);drain();
-  g_assert_false(gimp_painter_compact_options_get(paint_gui));g_assert_true(gimp_painter_compact_options_get(rect_gui));
-  g_assert_true(gtk_widget_get_ancestor(rect_gui,GIMP_TYPE_DISPLAY_SHELL)==GTK_WIDGET(b));
-  gimp_painter_canvas_ui_set_visible(b,FALSE);drain();g_assert_false(gimp_painter_compact_options_get(rect_gui));
-  close_shell(a);close_shell(b);
+  g_assert_true(gtk_widget_get_parent(native)==parent);
+  g_assert_null(find(a->canvas,"painter-compact-mypaint",GTK_TYPE_MENU_BUTTON));
+  gimp_context_set_tool(gimp_get_user_context(gimp),paint);drain();
+  g_assert_nonnull(find(a->canvas,"painter-compact-mypaint",GTK_TYPE_MENU_BUTTON));
+  for(int i=0;i<3;i++) {gimp_painter_canvas_ui_set_visible(a,FALSE);gimp_painter_canvas_ui_set_visible(a,TRUE);drain();}
+  g_assert_true(gimp_tools_get_tool_options_gui(paint->tool_options)==native);
+  g_assert_true(gtk_widget_get_parent(native)==parent);
+  close_shell(a);
   g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);
   GimpDisplayShell *c=new_shell();g_assert_true(gimp_painter_canvas_ui_get_visible(c));
-  gtk_button_clicked(GTK_BUTTON(find(c->canvas,"painter-canvas-hide",GTK_TYPE_BUTTON)));drain();g_assert_false(gimp->config->painter_canvas_ui);
-  close_shell(c);GimpDisplayShell *d=new_shell();g_assert_false(gimp_painter_canvas_ui_get_visible(d));close_shell(d);
+  g_object_set(gimp->config,"painter-canvas-ui",FALSE,NULL);drain();
+  g_assert_false(gimp_painter_canvas_ui_get_visible(c));close_shell(c);
+  GimpDisplayShell *d=new_shell();g_assert_false(gimp_painter_canvas_ui_get_visible(d));close_shell(d);
   g_object_set(gimp->config,"painter-canvas-ui",old,NULL);
 }
 /* Original 08.017: native options boxes retain one store through presentation
@@ -550,11 +560,16 @@ static void native_editor_mixed_width_buttons (void)
 #include "test-widget-store-native-controls.inc"
 #include "test-widget-store-orientation.inc"
 #include "test-widget-store-orientation-callers.inc"
+#include "test-painter-independent-toolbar.inc"
 
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);gtk_window_set_default_size(GTK_WINDOW(window),1100,130);
+  g_test_add_func ("/painter-compact-options/independent-mypaint-toolbar", independent_mypaint_toolbar);
+  g_test_add_func ("/painter-compact-options/independent-horizontal-inventory", independent_horizontal_toolbar_inventory);
+  g_test_add_func ("/painter-compact-options/independent-horizontal-binding", independent_horizontal_toolbar_numeric_binding);
+  g_test_add_func ("/painter-compact-options/independent-horizontal-native-handles", independent_horizontal_toolbar_native_handles);
   g_test_add_func ("/painter-compact-options/orientation-enum-contract", orientation_enum_contract);
   g_test_add_func ("/painter-compact-options/orientation-integer-contract", orientation_integer_contract);
   g_test_add_func ("/painter-compact-options/orientation-property-contract", orientation_property_contract);

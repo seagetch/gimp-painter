@@ -34,6 +34,7 @@
 #include "widgets/gimpdocked.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimpimagewindow.h"
 #include "display/gimppaintercanvasui.h"
 #include "painter/gimp-painter-binding.h"
 #include "actions/actions-types.h"
@@ -110,15 +111,72 @@ static void channel_preview_components(void) {
     gimp_temp_buf_unref(buffer);g_object_unref(renderer);
   }
 }
+/* The layer renderer owns one canvas. Exercise its public event and draw paths,
+ * rather than relying on the removed per-layer GtkListBox/GimpView children. */
+static GtkWidget *layer_canvas(GtkWidget *owner) {
+  GtkWidget *canvas=find(owner,"painter-layer-canvas");
+  g_assert_true(GTK_IS_DRAWING_AREA(canvas));return canvas;
+}
+static gboolean layer_position(GList *items,GimpLayer *target,gint depth,gint *row,gint *out_depth) {
+  for(GList *i=items;i;i=i->next) {
+    GimpLayer *item=i->data;
+    if(item==target){*out_depth=depth;return TRUE;}
+    ++*row;
+    GimpContainer *children=gimp_viewable_get_children(GIMP_VIEWABLE(item));
+    if(children&&gimp_viewable_get_expanded(GIMP_VIEWABLE(item))&&
+       layer_position(GIMP_LIST(children)->queue->head,target,depth+1,row,out_depth))return TRUE;
+  }
+  return FALSE;
+}
+static gboolean canvas_button(GtkWidget *canvas,GdkEventType type,guint button,
+                              GdkModifierType state,gdouble x,gdouble y) {
+  GdkEvent *event=gdk_event_new(type);
+  event->button.window=g_object_ref(gtk_widget_get_window(canvas));
+  event->button.send_event=TRUE;event->button.time=GDK_CURRENT_TIME;
+  event->button.button=button;event->button.state=state;event->button.x=x;event->button.y=y;
+  gdk_event_set_device(event,gdk_seat_get_pointer(gdk_display_get_default_seat(gtk_widget_get_display(canvas))));
+  gboolean handled=gtk_widget_event(canvas,event);gdk_event_free(event);return handled;
+}
+static gboolean layer_button(GtkWidget *owner,GimpLayer *target,guint button,GdkModifierType state,gboolean eye) {
+  GimpImage *image=gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(owner));
+  gint row=0,depth=0;
+  g_assert_true(layer_position(gimp_image_get_layer_iter(image),target,0,&row,&depth));
+  GtkWidget *canvas=layer_canvas(owner);
+  gboolean handled=canvas_button(canvas,GDK_BUTTON_PRESS,button,state,depth*8+(eye?8:28),row*64+(eye?8:32));
+  if(button==1&&!gtk_widget_in_destruction(canvas))
+    canvas_button(canvas,GDK_BUTTON_RELEASE,button,state,depth*8+(eye?8:28),row*64+(eye?8:32));
+  return handled;
+}
+static cairo_surface_t *canvas_snapshot(GtkWidget *canvas) {
+  /* GTK resize is frame-clock driven; settle it before offscreen drawing. */
+  gtk_container_check_resize(GTK_CONTAINER(gtk_widget_get_toplevel(canvas)));
+  GtkAllocation a;gtk_widget_get_allocation(canvas,&a);
+  g_assert_cmpint(a.width,>,0);g_assert_cmpint(a.height,>,0);
+  cairo_surface_t *surface=cairo_image_surface_create(CAIRO_FORMAT_ARGB32,a.width,a.height);
+  cairo_t *cr=cairo_create(surface);gtk_widget_draw(canvas,cr);
+  g_assert_cmpint(cairo_status(cr),==,CAIRO_STATUS_SUCCESS);cairo_destroy(cr);
+  cairo_surface_flush(surface);return surface;
+}
+static guint32 canvas_pixel(cairo_surface_t *surface,gint x,gint y) {
+  g_assert_cmpint(x,<,cairo_image_surface_get_width(surface));
+  g_assert_cmpint(y,<,cairo_image_surface_get_height(surface));
+  return *(guint32 *)(cairo_image_surface_get_data(surface)+y*cairo_image_surface_get_stride(surface)+x*4);
+}
 static void selection_and_visibility(void) {
-  GimpImage *image=new_image(); GimpLayer *a=layer(image,NULL,"A"),*b=layer(image,NULL,"B");
-  GtkWidget *w=tiles(image),*visible=find(w,"painter-layer-visible");
-  g_assert_nonnull(visible); g_assert_true(gimp_item_get_visible(GIMP_ITEM(b)));
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(visible),FALSE); drain();
-  g_assert_false(gimp_item_get_visible(GIMP_ITEM(b))); g_assert_true(gimp_image_undo(image)); drain();
-  GList *sel=g_list_append(g_list_append(NULL,a),b); gimp_image_set_selected_layers(image,sel);g_list_free(sel); drain();
-  GtkWidget *r=find(w,"painter-layer-tile");GtkWidget *l=gtk_widget_get_parent(r);
-  GList *selected=gtk_list_box_get_selected_rows(GTK_LIST_BOX(l));g_assert_cmpuint(g_list_length(selected),==,2);g_list_free(selected);
+  GimpImage *image=new_image();GimpLayer *a=layer(image,NULL,"A"),*b=layer(image,NULL,"B");
+  GtkWidget *w=tiles(image);g_assert_true(gimp_item_get_visible(GIMP_ITEM(b)));
+  g_assert_true(layer_button(w,b,1,0,TRUE));drain();
+  g_assert_false(gimp_item_get_visible(GIMP_ITEM(b)));g_assert_true(gimp_image_undo(image));drain();
+  GList *sel=g_list_append(NULL,a);gimp_image_set_selected_layers(image,sel);g_list_free(sel);drain();
+  cairo_surface_t *single=canvas_snapshot(layer_canvas(w));
+  g_assert_true(layer_button(w,b,1,GDK_CONTROL_MASK,FALSE));drain();
+  GList *selected=gimp_image_get_selected_layers(image);
+  g_assert_cmpuint(g_list_length(selected),==,2);g_assert_nonnull(g_list_find(selected,a));g_assert_nonnull(g_list_find(selected,b));
+  cairo_surface_t *multiple=canvas_snapshot(layer_canvas(w));
+  /* Selection is painted in the gutter outside the thumbnail. */
+  g_assert_cmphex(canvas_pixel(single,60,32),!=,canvas_pixel(multiple,60,32));
+  g_assert_cmphex(canvas_pixel(single,60,96),==,canvas_pixel(multiple,60,96));
+  cairo_surface_destroy(single);cairo_surface_destroy(multiple);
   close_tiles(w);g_object_unref(image);
 }
 static void group_move_and_undo(void) {
@@ -133,7 +191,7 @@ static void image_switch_disconnect(void) {
   GimpImage *a=new_image(),*b=new_image();GimpLayer *la=layer(a,NULL,"Old"),*lb=layer(b,NULL,"New");
   GtkWidget *w=tiles(a);gimp_painter_layer_tiles_set_image(GIMP_PAINTER_LAYER_TILES(w),b);drain();
   gimp_object_set_name(GIMP_OBJECT(la),"Changed old");gimp_item_set_visible(GIMP_ITEM(la),FALSE,FALSE);drain();
-  GtkWidget *v=find(w,"painter-layer-visible");gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(v),FALSE);drain();
+  g_assert_true(layer_button(w,lb,1,0,TRUE));drain();
   g_assert_false(gimp_item_get_visible(GIMP_ITEM(lb)));
   gimp_context_set_image(gimp_get_user_context(gimp),a);drain();
   g_assert_true(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w))==b);
@@ -143,17 +201,7 @@ static gboolean send_button(GtkWidget *w,GdkEventType type,guint button) {
   GdkEventButton ev={0};gboolean handled=FALSE;ev.type=type;ev.button=button;ev.x=8;ev.y=8;
   g_signal_emit_by_name(w,type==GDK_BUTTON_PRESS?"button-press-event":"button-release-event",&ev,&handled);return handled;
 }
-/* 08.016: native composition replaces the old renderer vtable and callbacks. */
-static GtkWidget *renderer_preview_for(GtkWidget *w,GimpLayer *layer) {
-  if(GIMP_IS_VIEW(w) && GIMP_VIEW(w)->renderer->viewable==GIMP_VIEWABLE(layer))
-    return gtk_widget_get_ancestor(w,GTK_TYPE_EVENT_BOX);
-  if(GTK_IS_CONTAINER(w)) {
-    GList *children=gtk_container_get_children(GTK_CONTAINER(w));GtkWidget *result=NULL;
-    for(GList *i=children;i&&!result;i=i->next)result=renderer_preview_for(i->data,layer);
-    g_list_free(children);return result;
-  }
-  return NULL;
-}
+/* 08.016: custom Cairo canvas activation and lifecycle contracts. */
 static void renderer_wait_viewable(GtkWidget *w) {
   gint64 deadline=g_get_monotonic_time()+2*G_TIME_SPAN_SECOND;
   while((!gtk_widget_get_mapped(w)||!gdk_window_is_viewable(gtk_widget_get_window(w)))&&g_get_monotonic_time()<deadline) {
@@ -162,16 +210,6 @@ static void renderer_wait_viewable(GtkWidget *w) {
   g_assert_true(gtk_widget_get_realized(w));g_assert_true(gtk_widget_get_mapped(w));
   g_assert_true(gdk_window_is_viewable(gtk_widget_get_window(w)));
 }
-static gboolean renderer_button_event_state(GtkWidget *w,guint button,GdkModifierType state) {
-  renderer_wait_viewable(w);
-  GdkEvent *event=gdk_event_new(GDK_BUTTON_PRESS);
-  event->button.window=g_object_ref(gtk_widget_get_window(w));
-  event->button.send_event=TRUE;event->button.time=GDK_CURRENT_TIME;
-  event->button.button=button;event->button.state=state;event->button.x=8.;event->button.y=8.;
-  gdk_event_set_device(event,gdk_seat_get_pointer(gdk_display_get_default_seat(gtk_widget_get_display(w))));
-  gboolean handled=gtk_widget_event(w,event);gdk_event_free(event);return handled;
-}
-static gboolean renderer_button_event(GtkWidget *w,guint button) { return renderer_button_event_state(w,button,0); }
 static gboolean renderer_key_event(GtkWidget *w,guint keyval,GdkModifierType state) {
   renderer_wait_viewable(w);
   GdkEvent *event=gdk_event_new(GDK_KEY_PRESS);
@@ -191,9 +229,9 @@ static gboolean renderer_count_draw(GtkWidget *w,cairo_t *cr,gpointer data) {
 }
 static void renderer_native_size_draw(void) {
   GimpImage *image=new_image();GimpLayer *a=layer(image,NULL,"Native renderer");GtkWidget *w=tiles(image);
-  GtkWidget *preview=renderer_preview_for(w,a),*button=find(w,"layer-popup");
+  GtkWidget *preview=layer_canvas(w),*button=find(w,"layer-popup");
   g_assert_nonnull(preview);g_assert_true(GTK_IS_BUTTON(button));
-  GtkWidget *widgets[]={button,preview,gtk_widget_get_ancestor(preview,GTK_TYPE_LIST_BOX_ROW)};
+  GtkWidget *widgets[]={button,preview,w};
   for(guint direction=0;direction<2;direction++)for(guint state=0;state<2;state++) {
     gtk_widget_set_direction(w,direction?GTK_TEXT_DIR_RTL:GTK_TEXT_DIR_LTR);
     gtk_widget_set_sensitive(button,!state);drain();
@@ -224,9 +262,9 @@ static void renderer_native_size_draw(void) {
 static void renderer_native_activation_routes(void) {
   GimpImage *image=new_image();GimpLayer *a=layer(image,NULL,"A"),*b=layer(image,NULL,"B");
   gimp_layer_set_opacity(a,.37,FALSE);gimp_layer_set_opacity(b,.81,FALSE);
-  GtkWidget *w=tiles(image),*preview=renderer_preview_for(w,a);g_assert_nonnull(preview);
+  GtkWidget *w=tiles(image);g_assert_nonnull(layer_canvas(w));
   for(guint route=0;route<4;route++) {
-    if(route==0)g_assert_true(renderer_button_event(preview,3));
+    if(route==0)g_assert_true(layer_button(w,a,3,0,FALSE));
     else if(route==1)gtk_button_clicked(GTK_BUTTON(find(w,"layer-popup")));
     else g_assert_true(renderer_key_event(w,route==2?GDK_KEY_Menu:GDK_KEY_F10,route==2?0:GDK_SHIFT_MASK));
     drain();GtkWidget *popup=renderer_current_popup(w);
@@ -249,8 +287,8 @@ static void renderer_selection_reentry_case(gboolean superseded) {
   GList *selection=g_list_append(NULL,b);gimp_image_set_selected_layers(image,selection);g_list_free(selection);drain();
   RendererReentry f={0};f.owner=w;f.original=a;f.newer=superseded?b:a;
   g_signal_connect(image,"selected-layers-changed",G_CALLBACK(renderer_select_newer),&f);
-  GtkWidget *preview=renderer_preview_for(w,a);g_assert_nonnull(preview);
-  g_assert_true(renderer_button_event(preview,3));drain();
+  g_assert_nonnull(layer_canvas(w));
+  g_assert_true(layer_button(w,a,3,0,FALSE));drain();
   g_assert_cmpuint(f.calls,==,1);g_assert_cmpuint(g_list_length(gimp_image_get_selected_layers(image)),==,1);g_assert_true(gimp_image_get_selected_layers(image)->data==f.newer);
   /* A same-target notification completes the activation; B supersedes it. */
   if(superseded)g_assert_false(GTK_IS_POPOVER(gtk_grab_get_current()));
@@ -285,28 +323,44 @@ static void renderer_escape_owner_close(void) {
 
 static void renderer_stale_preview_disconnected(void) {
   GimpImage *a=new_image(),*b=new_image();GimpLayer *old=layer(a,NULL,"Old"),*newer=layer(b,NULL,"New");
-  GtkWidget *w=tiles(a),*preview=renderer_preview_for(w,old);g_assert_nonnull(preview);g_object_ref(preview);
-  gpointer weak_preview=preview;g_object_add_weak_pointer(G_OBJECT(preview),&weak_preview);
+  GtkWidget *w=tiles(a),*canvas=layer_canvas(w);g_object_ref(canvas);
+  gpointer weak_canvas=canvas;g_object_add_weak_pointer(G_OBJECT(canvas),&weak_canvas);
   gimp_painter_layer_tiles_set_image(GIMP_PAINTER_LAYER_TILES(w),b);drain();
-  /* Direct signal delivery is deliberate here: a destroyed widget has no GdkWindow. */
-  g_assert_false(send_button(preview,GDK_BUTTON_PRESS,3));
-  g_assert_false(send_button(preview,GDK_BUTTON_RELEASE,1));drain();
-  g_assert_false(GTK_IS_POPOVER(gtk_grab_get_current()));
+  g_assert_true(layer_canvas(w)==canvas);
+  cairo_surface_t *before=canvas_snapshot(canvas);
+  gimp_item_set_visible(GIMP_ITEM(old),FALSE,FALSE);
+  gimp_viewable_invalidate_preview(GIMP_VIEWABLE(old));drain();
+  cairo_surface_t *after=canvas_snapshot(canvas);
+  /* Compare the complete tile, including eye and selection gutter. Frame-clock
+   * resizing can change the surrounding canvas allocation between snapshots;
+   * that is independent of whether the old image still drives these pixels. */
+  g_assert_cmpint(cairo_image_surface_get_width(before),>=,64);
+  g_assert_cmpint(cairo_image_surface_get_height(before),>=,64);
+  g_assert_cmpint(cairo_image_surface_get_width(after),>=,64);
+  g_assert_cmpint(cairo_image_surface_get_height(after),>=,64);
+  for(gint y=0;y<64;y++)
+    g_assert_cmpmem(cairo_image_surface_get_data(before)+y*cairo_image_surface_get_stride(before),64*4,
+                   cairo_image_surface_get_data(after)+y*cairo_image_surface_get_stride(after),64*4);
+  g_assert_true(layer_button(w,newer,1,0,TRUE));g_assert_false(gimp_item_get_visible(GIMP_ITEM(newer)));
   g_assert_true(gimp_image_get_selected_layers(b)->data==newer);
-  g_assert_false(gimp_painter_layer_tiles_long_press_pending(GIMP_PAINTER_LAYER_TILES(w)));
-  g_object_unref(preview);drain();g_assert_null(weak_preview);
-  close_tiles(w);g_object_unref(a);g_object_unref(b);
+  cairo_surface_destroy(before);cairo_surface_destroy(after);
+  close_tiles(w);
+  /* The retained, destroyed canvas must have disconnected all callbacks. */
+  g_assert_false(send_button(canvas,GDK_BUTTON_PRESS,3));
+  g_assert_false(send_button(canvas,GDK_BUTTON_RELEASE,1));
+  g_object_unref(canvas);drain();g_assert_null(weak_canvas);
+  g_object_unref(a);g_object_unref(b);
 }
 
 static void renderer_modifier_activation(void) {
   GimpImage *image=new_image();GimpLayer *a=layer(image,NULL,"A"),*b=layer(image,NULL,"B");GtkWidget *w=tiles(image);
-  GtkWidget *preview=renderer_preview_for(w,a);g_assert_nonnull(preview);
+  g_assert_nonnull(layer_canvas(w));
   GdkModifierType states[]={0,GDK_CONTROL_MASK,GDK_SHIFT_MASK,GDK_CONTROL_MASK,GDK_CONTROL_MASK};
   for(guint i=0;i<G_N_ELEMENTS(states);i++) {
     GList *selection=g_list_append(NULL,i==3?a:b);
     if(i==0||i==4)selection=g_list_append(selection,a);
     gimp_image_set_selected_layers(image,selection);g_list_free(selection);drain();
-    g_assert_true(renderer_button_event_state(preview,3,states[i]));drain();
+    g_assert_true(layer_button(w,a,3,states[i],FALSE));drain();
     renderer_current_popup(w);selection=gimp_image_get_selected_layers(image);
     g_assert_cmpuint(g_list_length(selection),==,i>=3?1:2);
     if(i!=4)
@@ -572,8 +626,7 @@ static void image_switch_popup_newer_image(void) {
   gimp_painter_layer_tiles_set_image(GIMP_PAINTER_LAYER_TILES(w),b);drain();
   g_assert_cmpuint(switch_image.calls,==,1);
   g_assert_true(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w))==c);
-  GtkWidget *visible=find(w,"painter-layer-visible");g_assert_nonnull(visible);
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(visible),FALSE);drain();
+  g_assert_true(layer_button(w,lc,1,0,TRUE));drain();
   g_assert_false(gimp_item_get_visible(GIMP_ITEM(lc)));
   g_assert_true(gimp_item_get_visible(GIMP_ITEM(lb)));
   g_signal_handler_disconnect(w,handler);close_tiles(w);
@@ -640,10 +693,9 @@ static void destroy_on_visible(GimpItem *item,gpointer data) { gtk_widget_destro
 static void reentrant_visibility_close(void) {
   GimpImage *image=new_image();GimpLayer *a=layer(image,NULL,"Layer");GtkWidget *w=tiles(image);g_object_ref(w);
   g_signal_connect(a,"visibility-changed",G_CALLBACK(destroy_on_visible),w);
-  GtkWidget *control=find(w,"painter-layer-visible");g_object_ref(control);
-  /* The test is the caller of the GTK setter and leases its argument across
-   * the deliberately reentrant destruction of its last container owner. */
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(control),FALSE);
+  GtkWidget *control=layer_canvas(w);g_object_ref(control);
+  /* Lease the event target across synchronous destruction by visibility-changed. */
+  g_assert_true(canvas_button(control,GDK_BUTTON_PRESS,1,0,8,8));
   g_assert_false(gimp_item_get_visible(GIMP_ITEM(a)));drain();
   g_signal_handlers_disconnect_by_data(a,w);g_object_unref(control);
   g_object_unref(w);g_object_unref(image);
@@ -719,18 +771,23 @@ static void overlay_tools_and_colors(void) {
   g_assert_true(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
   gtk_button_clicked(GTK_BUTTON(button));drain();
   g_assert_true(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(find(shell->canvas,"gimp-paintbrush-tool"))));
-  GtkWidget *options=find(shell->canvas,"painter-canvas-options");gtk_button_clicked(GTK_BUTTON(options));drain();
+  g_assert_null(find(shell->canvas,"painter-canvas-options"));
   GtkWidget *gui=gimp_tools_get_tool_options_gui(info->tool_options);
-  g_assert_true(gtk_widget_get_ancestor(gui,GIMP_TYPE_DISPLAY_SHELL)==GTK_WIDGET(shell));
-  gtk_button_clicked(GTK_BUTTON(options));drain();
   g_assert_true(gtk_widget_get_ancestor(gui,GIMP_TYPE_DISPLAY_SHELL)!=GTK_WIDGET(shell));
   GtkWidget *swatches=find(shell->canvas,"painter-fg-bg"),*editor=find(shell->canvas,"painter-color-editor");
-  g_assert_nonnull(swatches);g_assert_nonnull(editor);
+  g_assert_nonnull(swatches);g_assert_true(GIMP_IS_COLOR_NOTEBOOK(editor));
+  GeglColor *color=gegl_color_new("rgb(0.125,0.25,0.75)");
+  gimp_context_set_background(gimp_get_user_context(gimp),color);
   gimp_fg_bg_editor_set_active(GIMP_FG_BG_EDITOR(swatches),GIMP_ACTIVE_COLOR_BACKGROUND);
-  g_assert_true(GIMP_COLOR_EDITOR(editor)->edit_bg);
-  gimp_fg_bg_editor_set_active(GIMP_FG_BG_EDITOR(GIMP_COLOR_EDITOR(editor)->fg_bg),GIMP_ACTIVE_COLOR_FOREGROUND);
-  g_assert_cmpint(GIMP_FG_BG_EDITOR(swatches)->active_color,==,GIMP_ACTIVE_COLOR_FOREGROUND);
-  GeglColor *color=gegl_color_new("rgb(0.125,0.25,0.75)");gimp_context_set_foreground(gimp_get_user_context(gimp),color);g_object_unref(color);drain();
+  gdouble actual[3],expected[3];
+  gegl_color_get_pixel(color,babl_format("R'G'B' double"),expected);
+  gegl_color_get_pixel(gimp_color_selector_get_color(GIMP_COLOR_SELECTOR(editor)),babl_format("R'G'B' double"),actual);
+  for(int i=0;i<3;i++)g_assert_cmpfloat_with_epsilon(actual[i],expected[i],1e-6);
+  gimp_fg_bg_editor_set_active(GIMP_FG_BG_EDITOR(swatches),GIMP_ACTIVE_COLOR_FOREGROUND);
+  gimp_context_set_foreground(gimp_get_user_context(gimp),color);drain();
+  gegl_color_get_pixel(gimp_color_selector_get_color(GIMP_COLOR_SELECTOR(editor)),babl_format("R'G'B' double"),actual);
+  for(int i=0;i<3;i++)g_assert_cmpfloat_with_epsilon(actual[i],expected[i],1e-6);
+  g_object_unref(color);
   close_shell(shell);
 }
 static void overlay_tool_group(void) {
@@ -919,7 +976,9 @@ static void multiple_canvas_context_and_dock_transfer(void) {
   g_assert_true(action_data_get_image(tb)==ib);
   g_assert_true(action_data_get_display(ta)==a->display);
   g_assert_true(action_data_get_display(tb)==b->display);
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(find(ta,"painter-layer-visible")),FALSE);drain();
+  /* Deliberately address the inactive canvas, as the former direct toggle
+   * test did. Native mapped-pointer routes have independent event tests. */
+  g_assert_true(send_button(layer_canvas(ta),GDK_BUTTON_PRESS,1));drain();
   g_assert_false(gimp_item_get_visible(GIMP_ITEM(la)));
   g_assert_true(gimp_item_get_visible(GIMP_ITEM(lb)));
   GtkWidget *parent=gtk_box_new(GTK_ORIENTATION_VERTICAL,0),*child=gtk_label_new("Transferred dock");
@@ -929,7 +988,7 @@ static void multiple_canvas_context_and_dock_transfer(void) {
   gimp_painter_canvas_ui_detach_dock(a);
   g_assert_true(gtk_widget_get_ancestor(child,GIMP_TYPE_DISPLAY_SHELL)==GTK_WIDGET(b));
   close_shell(a);
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(find(tb,"painter-layer-visible")),FALSE);drain();
+  g_assert_true(send_button(layer_canvas(tb),GDK_BUTTON_PRESS,1));drain();
   g_assert_false(gimp_item_get_visible(GIMP_ITEM(lb)));
   gimp_painter_canvas_ui_detach_dock(b);g_assert_true(gtk_widget_get_parent(child)==parent);
   gboolean expand,fill;guint padding;GtkPackType pack;
@@ -939,13 +998,12 @@ static void multiple_canvas_context_and_dock_transfer(void) {
 }
 static void overlay_owner_destroy_callbacks(void) {
   GimpDisplayShell *shell=new_shell();gimp_painter_canvas_ui_set_visible(shell,TRUE);drain();
-  GtkWidget *button=find(shell->canvas,"painter-canvas-options");g_object_ref(button);
+  GtkWidget *button=find(shell->canvas,"gimp-paintbrush-tool");g_assert_nonnull(button);g_object_ref(button);
   g_object_ref(shell);close_shell(shell);
   gtk_button_clicked(GTK_BUTTON(button));g_assert_false(gimp_painter_canvas_ui_get_visible(shell));
   g_object_unref(button);g_object_unref(shell);drain();
 }
 static gboolean demo_timeout(gpointer data) { g_main_loop_quit(data);return G_SOURCE_REMOVE; }
-static void finish_demo(GtkButton *button,gpointer data) { g_main_loop_quit(data); }
 static void demo(void) {
   GimpDisplayShell *shell=new_shell();GimpImage *image=gimp_display_get_image(shell->display);
   GimpLayer *background=gimp_image_get_selected_layers(image)->data;
@@ -966,13 +1024,10 @@ static void demo(void) {
   GList *selected=g_list_append(NULL,background);gimp_image_set_selected_layers(image,selected);g_list_free(selected);
   gimp_painter_canvas_ui_set_visible(shell,TRUE);gimp_image_flush(image);drain();
   GMainLoop *loop=g_main_loop_new(NULL,FALSE);
-  GtkWidget *finish=gtk_button_new_with_label("Finish Demo");
-  gtk_box_pack_start(GTK_BOX(gtk_widget_get_parent(find(shell->canvas,"painter-canvas-hide"))),finish,FALSE,FALSE,0);
-  g_signal_connect(finish,"clicked",G_CALLBACK(finish_demo),loop);gtk_widget_show(finish);
-  guint timeout=g_timeout_add_seconds(240,demo_timeout,loop);
+  guint timeout=g_timeout_add_seconds(30,demo_timeout,loop);
   g_print("PAINTER_CANVAS_DEMO_READY\n");g_main_loop_run(loop);
   if(g_main_context_find_source_by_id(NULL,timeout))g_source_remove(timeout);
-  g_signal_handlers_disconnect_by_data(finish,loop);g_main_loop_unref(loop);close_shell(shell);
+  g_main_loop_unref(loop);close_shell(shell);
 }
 #include "test-widget-store-native-dnd.inc"
 
@@ -1297,57 +1352,22 @@ native_renderer_background_lifetime (void)
   cairo_surface_destroy (first);
 }
 
-static GimpView *
-native_layer_preview (GtkWidget *widget, GimpLayer *target)
+static cairo_surface_t *
+native_layer_preview_render (GtkWidget *owner, GimpLayer *target, gboolean want_red)
 {
-  if (GIMP_IS_VIEW (widget) &&
-      GIMP_VIEW (widget)->renderer->viewable == GIMP_VIEWABLE (target))
-    return GIMP_VIEW (widget);
-  if (GTK_IS_CONTAINER (widget))
-    {
-      GList *children = gtk_container_get_children (GTK_CONTAINER (widget));
-      GimpView *result = NULL;
-      for (GList *iter = children; iter && ! result; iter = iter->next)
-        result = native_layer_preview (iter->data, target);
-      g_list_free (children);
-      return result;
-    }
-  return NULL;
-}
-
-static void
-native_layer_preview_render (GimpView *view, gboolean want_red)
-{
-  cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 96, 96);
-  cairo_t *cr = cairo_create (surface);
-  gint64 deadline = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
-  gboolean matched = FALSE;
-
-  g_assert_true (GIMP_IS_VIEW_RENDERER_DRAWABLE (view->renderer));
-  /* The real drawable renderer renders asynchronously and may first paint a
-   * placeholder or retain the old surface. Wait for the required pixels, not
-   * merely for one non-NULL surface or one idle pass. */
-  do
-    {
-      guint32 pixel;
-      gimp_view_renderer_draw (view->renderer, GTK_WIDGET (view), cr, 96, 96);
-      drain ();
-      if (view->renderer->surface)
-        {
-          pixel = native_surface_pixel (view->renderer->surface,
-                                          view->renderer->width / 2,
-                                          view->renderer->height / 2);
-          matched = want_red ? (((pixel >> 16) & 255) > (pixel & 255)) :
-                               ((pixel & 255) > ((pixel >> 16) & 255));
-        }
-      if (! matched)
-        g_usleep (1000);
-    }
-  while (! matched && g_get_monotonic_time () < deadline);
-  g_assert_true (matched);
-  g_assert_cmpint (cairo_status (cr), ==, CAIRO_STATUS_SUCCESS);
-  cairo_destroy (cr);
-  cairo_surface_destroy (surface);
+  gint row=0,depth=0;
+  GimpImage *image=gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(owner));
+  g_assert_true(layer_position(gimp_image_get_layer_iter(image),target,0,&row,&depth));
+  gint64 deadline=g_get_monotonic_time()+5*G_TIME_SPAN_SECOND;
+  cairo_surface_t *surface=NULL;gboolean matched=FALSE;
+  do {
+    drain();if(surface)cairo_surface_destroy(surface);
+    surface=canvas_snapshot(layer_canvas(owner));
+    guint32 pixel=canvas_pixel(surface,depth*8+28,row*64+32);
+    matched=want_red?(((pixel>>16)&255)>(pixel&255)+100):((pixel&255)>((pixel>>16)&255)+100);
+    if(!matched)g_usleep(1000);
+  } while(!matched&&g_get_monotonic_time()<deadline);
+  g_assert_true(matched);return surface;
 }
 
 static void
@@ -1363,53 +1383,166 @@ native_edge_count_finalized (gpointer data)
 static void
 native_layer_preview_pixels_lifetime (void)
 {
-  GimpImage *image = new_image ();
-  GimpLayer *target = layer (image, NULL, "Native preview pixels");
-  GeglColor *red = gegl_color_new ("red");
-  GeglColor *blue = gegl_color_new ("blue");
-  GtkWidget *widget;
-  GimpView *view;
-  guint renderer_finalized = 0;
-  cairo_surface_t *red_surface;
-  guint32 pixel;
+  GimpImage *image=new_image();GimpLayer *target=layer(image,NULL,"Cached preview pixels");
+  GeglColor *red=gegl_color_new("red"),*blue=gegl_color_new("blue");
+  gegl_buffer_set_color(gimp_drawable_get_buffer(GIMP_DRAWABLE(target)),NULL,red);
+  gimp_drawable_update(GIMP_DRAWABLE(target),0,0,-1,-1);
+  GtkWidget *widget=tiles(image);guint canvas_finalized=0,layer_finalized=0;
+  cairo_surface_t *red_surface=native_layer_preview_render(widget,target,TRUE);
+  gegl_buffer_set_color(gimp_drawable_get_buffer(GIMP_DRAWABLE(target)),NULL,blue);
+  gimp_drawable_update(GIMP_DRAWABLE(target),0,0,-1,-1);
+  gimp_viewable_invalidate_preview(GIMP_VIEWABLE(target));
+  cairo_surface_t *blue_surface=native_layer_preview_render(widget,target,FALSE);
+  g_assert_cmphex(canvas_pixel(red_surface,28,32),!=,canvas_pixel(blue_surface,28,32));
+  g_object_set_data_full(G_OBJECT(layer_canvas(widget)),"native-edge-canvas-finalization",&canvas_finalized,native_edge_count_finalized);
+  g_object_set_data_full(G_OBJECT(target),"native-edge-layer-finalization",&layer_finalized,native_edge_count_finalized);
+  /* Pending cache generation must not retain the canvas or its layer. */
+  gimp_viewable_invalidate_preview(GIMP_VIEWABLE(target));close_tiles(widget);
+  g_assert_cmpuint(canvas_finalized,==,1);
+  gimp_viewable_invalidate_preview(GIMP_VIEWABLE(target));drain();
+  g_object_unref(image);drain();g_assert_cmpuint(layer_finalized,==,1);
+  g_assert_cmpuint((canvas_pixel(red_surface,28,32)>>16)&255,>,canvas_pixel(red_surface,28,32)&255);
+  cairo_surface_destroy(red_surface);cairo_surface_destroy(blue_surface);
+  g_object_unref(red);g_object_unref(blue);
+}
 
-  gegl_buffer_set_color (gimp_drawable_get_buffer (GIMP_DRAWABLE (target)), NULL, red);
-  gimp_drawable_update (GIMP_DRAWABLE (target), 0, 0, -1, -1);
-  widget = tiles (image);
-  view = native_layer_preview (widget, target);
-  g_assert_nonnull (view);
-  native_layer_preview_render (view, TRUE);
-  pixel = native_surface_pixel (view->renderer->surface,
-                                view->renderer->width / 2,
-                                view->renderer->height / 2);
-  g_assert_cmpuint ((pixel >> 16) & 255, >, pixel & 255);
-  red_surface = cairo_surface_reference (view->renderer->surface);
-  gegl_buffer_set_color (gimp_drawable_get_buffer (GIMP_DRAWABLE (target)), NULL, blue);
-  gimp_drawable_update (GIMP_DRAWABLE (target), 0, 0, -1, -1);
-  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (target));
-  drain ();
-  native_layer_preview_render (view, FALSE);
-  pixel = native_surface_pixel (view->renderer->surface,
-                                view->renderer->width / 2,
-                                view->renderer->height / 2);
-  g_assert_cmpuint (pixel & 255, >, (pixel >> 16) & 255);
-  g_object_set_data_full (G_OBJECT (view->renderer),
-                          "native-edge-renderer-finalization",
-                          &renderer_finalized, native_edge_count_finalized);
-  /* A pending native preview invalidation cannot retain the disposed view. */
-  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (target));
-  close_tiles (widget);
-  g_assert_cmpuint (renderer_finalized, ==, 1);
-  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (target));
-  drain ();
-  pixel = native_surface_pixel (red_surface,
-                                cairo_image_surface_get_width (red_surface) / 2,
-                                cairo_image_surface_get_height (red_surface) / 2);
-  g_assert_cmpuint ((pixel >> 16) & 255, >, pixel & 255);
-  cairo_surface_destroy (red_surface);
-  g_object_unref (red);
-  g_object_unref (blue);
-  g_object_unref (image);
+static void
+cached_preview_fill (GimpDrawable *drawable, const gchar *name)
+{
+  GeglColor *color=gegl_color_new(name);
+  gegl_buffer_set_color(gimp_drawable_get_buffer(drawable),NULL,color);
+  g_object_unref(color);gimp_drawable_update(drawable,0,0,-1,-1);
+  gimp_viewable_invalidate_preview(GIMP_VIEWABLE(drawable));
+}
+
+static void
+renderer_group_cache_and_hit_regions (void)
+{
+  GimpImage *image=new_image();
+  GimpLayer *group=gimp_group_layer_new(image);
+  gimp_image_add_layer(image,group,NULL,0,FALSE);
+  GimpLayer *child=layer(image,group,"Nested pixels");
+  cached_preview_fill(GIMP_DRAWABLE(child),"red");
+  gimp_viewable_set_expanded(GIMP_VIEWABLE(group),TRUE);
+  GtkWidget *w=tiles(image),*canvas=layer_canvas(w);
+  cairo_surface_t *surface=native_layer_preview_render(w,group,TRUE);
+  cairo_surface_destroy(surface);
+  surface=native_layer_preview_render(w,child,TRUE);
+  /* Ancestor guides occupy the child's left gutter, outside its preview. */
+  guint32 bar=canvas_pixel(surface,2,96);
+  g_assert_cmpuint((bar>>16)&255,==,bar&255);
+  g_assert_cmpuint(bar&255,>,150);
+  cairo_surface_destroy(surface);
+  cached_preview_fill(GIMP_DRAWABLE(child),"blue");
+  gimp_image_flush(image);
+  surface=native_layer_preview_render(w,group,FALSE);cairo_surface_destroy(surface);
+  surface=native_layer_preview_render(w,child,FALSE);cairo_surface_destroy(surface);
+  g_assert_true(layer_button(w,child,1,0,FALSE));
+  g_assert_true(gimp_image_get_selected_layers(image)->data==child);
+  /* A click in the indentation must not toggle the child's eye or select it. */
+  g_assert_true(layer_button(w,group,1,0,FALSE));
+  g_assert_true(canvas_button(canvas,GDK_BUTTON_PRESS,1,0,4,72));
+  g_assert_true(gimp_item_get_visible(GIMP_ITEM(child)));
+  g_assert_true(gimp_image_get_selected_layers(image)->data==group);
+  /* Use the actual painted disclosure region, not a direct model setter. */
+  g_assert_true(canvas_button(canvas,GDK_BUTTON_PRESS,1,0,50,54));drain();
+  g_assert_false(gimp_viewable_get_expanded(GIMP_VIEWABLE(group)));
+  gint width,height;gtk_widget_get_size_request(canvas,&width,&height);
+  g_assert_cmpint(height,==,64);g_assert_cmpint(width,==,64);
+  cached_preview_fill(GIMP_DRAWABLE(child),"red");gimp_image_flush(image);
+  surface=native_layer_preview_render(w,group,TRUE);cairo_surface_destroy(surface);
+  g_assert_true(canvas_button(canvas,GDK_BUTTON_PRESS,1,0,50,54));drain();
+  g_assert_true(gimp_viewable_get_expanded(GIMP_VIEWABLE(group)));
+  gtk_widget_get_size_request(canvas,&width,&height);
+  g_assert_cmpint(height,==,128);g_assert_cmpint(width,==,72);
+  surface=native_layer_preview_render(w,child,TRUE);cairo_surface_destroy(surface);
+  close_tiles(w);g_object_unref(image);
+}
+
+static void
+renderer_mask_cache_and_release (void)
+{
+  GimpImage *image=new_image();GimpLayer *target=layer(image,NULL,"Masked pixels");
+  cached_preview_fill(GIMP_DRAWABLE(target),"red");
+  GimpLayerMask *mask=gimp_layer_create_mask(target,GIMP_ADD_MASK_WHITE,NULL);
+  GError *error=NULL;g_assert_nonnull(gimp_layer_add_mask(target,mask,FALSE,&error));g_assert_no_error(error);
+  gimp_layer_set_edit_mask(target,FALSE);
+  GtkWidget *w=tiles(image);
+  cairo_surface_t *surface=native_layer_preview_render(w,target,TRUE);cairo_surface_destroy(surface);
+  gimp_layer_set_edit_mask(target,TRUE);drain();
+  surface=canvas_snapshot(layer_canvas(w));guint32 white=canvas_pixel(surface,28,32);
+  g_assert_cmpuint(white&255,>,240);g_assert_cmpuint((white>>16)&255,>,240);
+  cairo_surface_destroy(surface);
+  cached_preview_fill(GIMP_DRAWABLE(mask),"black");drain();
+  surface=canvas_snapshot(layer_canvas(w));guint32 black=canvas_pixel(surface,28,32);
+  g_assert_cmpuint(black&255,<,15);g_assert_cmpuint((black>>16)&255,<,15);
+  cairo_surface_destroy(surface);
+  guint mask_finalized=0;
+  g_object_set_data_full(G_OBJECT(mask),"native-edge-mask-finalization",&mask_finalized,native_edge_count_finalized);
+  gimp_viewable_invalidate_preview(GIMP_VIEWABLE(mask));
+  gimp_layer_apply_mask(target,GIMP_MASK_DISCARD,FALSE);drain();
+  g_assert_null(gimp_layer_get_mask(target));g_assert_cmpuint(mask_finalized,==,1);
+  surface=native_layer_preview_render(w,target,TRUE);cairo_surface_destroy(surface);
+  close_tiles(w);g_object_unref(image);
+}
+
+typedef struct { GtkWidget *canvas;GdkDragContext *drag;guint starts; } LayerDragFixture;
+static void
+layer_drag_started (GtkWidget *canvas,GdkDragContext *drag,gpointer data)
+{
+  LayerDragFixture *f=data;g_assert_true(canvas==f->canvas);
+  f->starts++;f->drag=g_object_ref(drag);
+}
+static void
+layer_drag_payload_get (GtkClipboard *clipboard,GtkSelectionData *selection,guint info,gpointer data)
+{
+  LayerDragFixture *f=data;(void)clipboard;
+  g_signal_emit_by_name(f->canvas,"drag-data-get",f->drag,selection,info,GDK_CURRENT_TIME);
+}
+static void
+layer_drag_payload_clear (GtkClipboard *clipboard,gpointer data)
+{
+  (void)clipboard;(void)data;
+}
+static void
+renderer_drag_gesture_payload_and_cancel (void)
+{
+  GimpImage *image=new_image();GimpLayer *b=layer(image,NULL,"B"),*a=layer(image,NULL,"A");
+  GtkWidget *w=tiles(image),*canvas=layer_canvas(w);
+  GList *selection=g_list_append(g_list_append(NULL,a),b);
+  gimp_image_set_selected_layers(image,selection);g_list_free(selection);drain();
+  LayerDragFixture f={canvas,NULL,0};
+  gulong handler=g_signal_connect_after(canvas,"drag-begin",G_CALLBACK(layer_drag_started),&f);
+  g_assert_true(canvas_button(canvas,GDK_BUTTON_PRESS,1,0,28,32));
+  g_assert_true(gimp_painter_layer_tiles_long_press_pending(GIMP_PAINTER_LAYER_TILES(w)));
+  g_assert_cmpuint(g_list_length(gimp_image_get_selected_layers(image)),==,2);
+  GdkEvent *motion=gdk_event_new(GDK_MOTION_NOTIFY);
+  motion->motion.window=g_object_ref(gtk_widget_get_window(canvas));
+  motion->motion.send_event=TRUE;motion->motion.time=GDK_CURRENT_TIME;
+  motion->motion.state=GDK_BUTTON1_MASK;motion->motion.x=28;motion->motion.y=58;
+  gdk_event_set_device(motion,gdk_seat_get_pointer(gdk_display_get_default_seat(gtk_widget_get_display(canvas))));
+  gtk_widget_event(canvas,motion);gdk_event_free(motion);drain();
+  g_assert_cmpuint(f.starts,==,1);g_assert_nonnull(f.drag);
+  g_assert_false(gimp_painter_layer_tiles_long_press_pending(GIMP_PAINTER_LAYER_TILES(w)));
+  g_assert_cmpuint(g_list_length(gimp_image_get_selected_layers(image)),==,2);
+  GtkTargetEntry target={(gchar *)"application/x-gimp-painter-layer-tile",GTK_TARGET_SAME_APP,0};
+  GdkAtom atom=gdk_atom_intern_static_string(target.target);guint info=99;
+  g_assert_true(gtk_target_list_find(gtk_drag_source_get_target_list(canvas),atom,&info));g_assert_cmpuint(info,==,0);
+  g_assert_true(gtk_target_list_find(gtk_drag_dest_get_target_list(canvas),atom,&info));
+  GtkClipboard *clipboard=gtk_clipboard_get(gdk_atom_intern_static_string("_GIMP_PAINTER_LAYER_DRAG_TEST"));
+  g_assert_true(gtk_clipboard_set_with_data(clipboard,&target,1,layer_drag_payload_get,layer_drag_payload_clear,&f));
+  GtkSelectionData *payload=gtk_clipboard_wait_for_contents(clipboard,atom);
+  g_assert_nonnull(payload);g_assert_cmpint(gtk_selection_data_get_length(payload),==,sizeof(gint));
+  gint id=0;memcpy(&id,gtk_selection_data_get_data(payload),sizeof(id));
+  g_assert_cmpint(id,==,gimp_item_get_id(GIMP_ITEM(a)));
+  gtk_selection_data_free(payload);gtk_clipboard_clear(clipboard);
+  gtk_drag_cancel(f.drag);drain();
+  g_assert_false(gimp_painter_layer_tiles_long_press_pending(GIMP_PAINTER_LAYER_TILES(w)));
+  g_assert_cmpuint(g_list_length(gimp_image_get_selected_layers(image)),==,2);
+  g_assert_true(gimp_image_get_layer_iter(image)->data==a);
+  g_assert_true(gimp_image_get_layer_iter(image)->next->data==b);
+  g_signal_handler_disconnect(canvas,handler);g_object_unref(f.drag);
+  close_tiles(w);g_object_unref(image);
 }
 
 static void
@@ -1728,6 +1861,8 @@ native_session_boolean_reader_writer (void)
 #include "test-painter-right-docks-conversion.inc"
 #include "test-painter-right-host-interactions.inc"
 
+#include "test-painter-legacy-layout.inc"
+
 int main(int argc,char **argv) {
   const gchar *registration_group = g_getenv ("GIMP_TEST_PAINTER_CANVAS_GROUP");
 
@@ -1823,6 +1958,10 @@ ADD(w08017_dnd_relocate_later_on_cleanup);
   ADD(native_tool_dnd_wire_payload);
   ADD(native_renderer_background_lifetime);
   ADD(native_layer_preview_pixels_lifetime);
+  ADD(legacy_tabs_and_collection);ADD(legacy_options_repeated_open);
+  ADD(renderer_group_cache_and_hit_regions);
+  ADD(renderer_mask_cache_and_release);
+  ADD(renderer_drag_gesture_payload_and_cancel);
   ADD(native_tool_icon_preview_lifetime);
   ADD(native_session_boolean_literals);
   ADD(native_session_boolean_reader_writer);

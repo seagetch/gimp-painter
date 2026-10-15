@@ -420,9 +420,24 @@ void original_selection_and_visibility ()
   GimpLayer *b = add_layer (image, "Entry B");
   {
     Panel panel (gimp_get_user_context (application), image);
-    GtkWidget *visible = find (GTK_WIDGET (panel.get ()), "painter-layer-visible");
-    g_assert_true (GTK_IS_TOGGLE_BUTTON (visible));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (visible), FALSE);
+    GtkWidget *canvas = find (GTK_WIDGET (panel.get ()), "painter-layer-canvas");
+    g_assert_true (GTK_IS_DRAWING_AREA (canvas));
+    auto click = [canvas] (double x, double y) {
+      for (auto type : { GDK_BUTTON_PRESS, GDK_BUTTON_RELEASE }) {
+        GdkEvent *event = gdk_event_new (type);
+        event->button.window = GDK_WINDOW (g_object_ref (gtk_widget_get_window (canvas)));
+        event->button.send_event = TRUE;
+        event->button.time = GDK_CURRENT_TIME;
+        event->button.button = 1;
+        event->button.x = x;
+        event->button.y = y;
+        gdk_event_set_device (event, gdk_seat_get_pointer (
+          gdk_display_get_default_seat (gtk_widget_get_display (canvas))));
+        g_assert_true (gtk_widget_event (canvas, event));
+        gdk_event_free (event);
+      }
+    };
+    click (8, 8);  // The painted visibility hit region in the first tile.
     drain ();
     g_assert_false (gimp_item_get_visible (GIMP_ITEM (b)));
     g_assert_true (gimp_item_get_visible (GIMP_ITEM (a)));
@@ -433,15 +448,12 @@ void original_selection_and_visibility ()
     gimp_image_set_selected_layers (image, selection);
     g_list_free (selection);
     drain ();
-    GtkWidget *row = find (GTK_WIDGET (panel.get ()), "painter-layer-tile");
-    g_assert_nonnull (row);
-    GtkWidget *list = gtk_widget_get_parent (row);
-    g_assert_true (GTK_IS_LIST_BOX (list));
-    GList *selected = gtk_list_box_get_selected_rows (GTK_LIST_BOX (list));
-    g_assert_cmpuint (g_list_length (selected), ==, 2);
-    g_list_free (selected);
-    gtk_list_box_unselect_all (GTK_LIST_BOX (list));
-    gtk_list_box_select_row (GTK_LIST_BOX (list), GTK_LIST_BOX_ROW (row));
+    selection = gimp_image_get_selected_layers (image);
+    g_assert_cmpuint (g_list_length (selection), ==, 2);
+    g_assert_nonnull (g_list_find (selection, a));
+    g_assert_nonnull (g_list_find (selection, b));
+    // A genuine short press resolves the multi-selection to the hit layer.
+    click (28, 32);
     drain ();
     selection = gimp_image_get_selected_layers (image);
     g_assert_cmpuint (g_list_length (selection), ==, 1);

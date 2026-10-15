@@ -61,6 +61,7 @@
 #include "core/gimp.h"
 #include "core/gimpprogress.h"
 #include "core/gimptoolinfo.h"
+#include "core/gimptooloptions.h"
 
 #include "gimpaccellabel.h"
 #include "gimpaction.h"
@@ -1841,6 +1842,27 @@ gimp_dock_with_window_new (GimpDialogFactory *factory,
                                -1);
 
   return dock;
+}
+
+GtkWidget *
+gimp_tools_create_painter_toolbar_gui (GimpToolOptions *tool_options)
+{
+  GimpToolInfo           *tool_info;
+  GimpToolOptionsGUIFunc  func;
+
+  g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS (tool_options), NULL);
+
+  tool_info = tool_options->tool_info;
+  if (! tool_info || tool_info->tool_options != tool_options)
+    return NULL;
+
+  /* As in the legacy gimp-tools.c registration, the toolbar has a distinct
+   * horizontal factory. Never reparent or reconstruct the cached dock GUI:
+   * several native option classes keep private pointers to its controls. */
+  func = g_object_get_data (G_OBJECT (tool_info),
+                            "gimp-tool-options-gui-horizontal-func");
+
+  return func ? func (tool_options) : NULL;
 }
 
 GtkWidget *

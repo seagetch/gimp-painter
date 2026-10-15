@@ -1,0 +1,397 @@
+{
+  "record_version": 1,
+  "created_utc": "2026-10-14T23:58:27.412224+00:00",
+  "status": "FOCUSED_NATIVE_AND_ASAN_UBSAN_PASS_WITH_EXCLUSIONS",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "public_base_commit": "3f831a8a862dabcc60f0049c154f93655d8004e2",
+  "scope": "Source-faithful UI recovery; partial multi-tool horizontal factories. No full legacy UI, platform, tablet, whole-port or release acceptance.",
+  "source_snapshot": {
+    "meaning": "Frozen changed production/test/build/config/header-inventory files; hashes refreshed after final fixed-region renderer test correction and its native/sanitizer reruns. Documentation and this record are excluded. Compact and entry-contract sources unchanged from their passing combined runs.",
+    "files": [
+      {
+        "path": "app/display/gimpimagewindow.c",
+        "sha256": "a719a0b748eb9f7e8e76280c1c12e7597c3cded89f7f83a2c562a9c5a7b215c1",
+        "bytes": 123615
+      },
+      {
+        "path": "app/display/gimppaintercanvasui.cpp",
+        "sha256": "3c5077f0ba87982a90fb90f2c0286c3c986cffe0faec3dc8aade7552ef1f9886",
+        "bytes": 54993
+      },
+      {
+        "path": "app/display/gimpsinglewindowstrategy.c",
+        "sha256": "ed4569a321e3021a9f342636973ffbfb58ba045755a889a181e47f1f98a54e56",
+        "bytes": 11472
+      },
+      {
+        "path": "app/tests/test-layer-tile-entry-contracts.c",
+        "sha256": "052bc167d69019e2b98f6a4d116270d127eacd46a764e1f02a56c68c98c2394d",
+        "bytes": 48263
+      },
+      {
+        "path": "app/tests/test-layer-tile-entry-contracts.cpp",
+        "sha256": "991cdb5e3df2cd0a0e186e3537904262e89317a29dc68b4159d009a25edc4183",
+        "bytes": 25670
+      },
+      {
+        "path": "app/tests/test-painter-canvas-ui.c",
+        "sha256": "221ec1d59e4e12a14a558f51cf33226f2ffab15e08171ef1c3a1281494c4d8fd",
+        "bytes": 108981
+      },
+      {
+        "path": "app/tests/test-painter-compact-options.c",
+        "sha256": "f1fd4e4025a42bc1b6d1a4c98aecb5c47440806dac3b453932cc89bdf57cfc9e",
+        "bytes": 39684
+      },
+      {
+        "path": "app/tests/test-painter-independent-toolbar.inc",
+        "sha256": "8bfe54fe120a3420e1fd676420274031f4bc9a61c4cf6674472669460c0c115d",
+        "bytes": 9864
+      },
+      {
+        "path": "app/tests/test-painter-legacy-layout.inc",
+        "sha256": "c581826663a0aed68c529ef95b9ac54968d4fbb9dfb983b1535dc85836a327de",
+        "bytes": 7972
+      },
+      {
+        "path": "app/tools/gimp-tools.c",
+        "sha256": "da7c543581fb721eac16e06a44ad35c879175136c7f6d664f1892ef26a7b02dc",
+        "bytes": 28812
+      },
+      {
+        "path": "app/tools/gimppainterpainttoolbar.c",
+        "sha256": "ddb6a8702fed4374a7d8b4d352ed91834d84201bc5e8036c9b879b6347421e2b",
+        "bytes": 27641
+      },
+      {
+        "path": "app/tools/gimppainterpainttoolbar.h",
+        "sha256": "d367fe07c5a39f76d53692fa59ad997515ac459d7caa5f792f31012ae0ab800b",
+        "bytes": 496
+      },
+      {
+        "path": "app/tools/gimppaintertooltoolbar.c",
+        "sha256": "78e4630419a0e4dd9df6f46d9ebdbd98b47995cc308e5226b7a6cbf9314a7d39",
+        "bytes": 24734
+      },
+      {
+        "path": "app/tools/gimppaintertooltoolbar.h",
+        "sha256": "37b78eda7797a9108d271448449b38e551b538c2cf43446cd9fee3e3c6c718c8",
+        "bytes": 793
+      },
+      {
+        "path": "app/tools/gimppaintertransformtoolbar.c",
+        "sha256": "ce4477d33ab32931a48e952846575ec606ffa72f6426efa55cedb8f4b777e5f1",
+        "bytes": 5630
+      },
+      {
+        "path": "app/tools/gimppaintertransformtoolbar.h",
+        "sha256": "d03e3ba19673aff506e5679da3fd35f2c17f48c125ccbc1779e8b86f37220129",
+        "bytes": 299
+      },
+      {
+        "path": "app/tools/meson.build",
+        "sha256": "3f361337571ee1ac14142794106c536ce0ce2aeecb38dd1fb8c5cfe232c4ae39",
+        "bytes": 4028
+      },
+      {
+        "path": "app/widgets/gimpdock.c",
+        "sha256": "ac8e586270015db4bb33f1f380dc4ffa62aacb2c59679eb788e4b75c08bc9813",
+        "bytes": 18865
+      },
+      {
+        "path": "app/widgets/gimppainterlayertiles.cpp",
+        "sha256": "69e5a604bbb154f48e360296286a23b8df0994569efe15916bf60ebccfb40ea4",
+        "bytes": 61712
+      },
+      {
+        "path": "app/widgets/gimppanedbox.c",
+        "sha256": "304071f47852dee05c31881082054116648c628edb69f6d4d08d2f620756026b",
+        "bytes": 31808
+      },
+      {
+        "path": "app/widgets/gimpwidgets-utils.c",
+        "sha256": "fd19fa1ed92163951e467c32dae40c89f50df2fc6dc91a43bffdc48892776788",
+        "bytes": 84375
+      },
+      {
+        "path": "app/widgets/gimpwidgets-utils.h",
+        "sha256": "789ef81f329b83178847d900e9cd62d88867bb9e403711e5cc3751dad92ef70a",
+        "bytes": 11737
+      },
+      {
+        "path": "etc/sessionrc",
+        "sha256": "75f60bbb224293a5399f4d7bc043461ec1004bc8abbc3968f315bf40650b8e56",
+        "bytes": 2738
+      },
+      {
+        "path": "migration/inventory/additional-c-header-routes.json",
+        "sha256": "af74f319ee7a3091a685b29f4ec1051482f319a218327f555ee1278bc872d048",
+        "bytes": 6769
+      }
+    ]
+  },
+  "native": {
+    "status": "PASS_FINAL_FOCUSED",
+    "passed_cases": 148,
+    "suite_breakdown": [
+      89,
+      27,
+      32
+    ],
+    "suites": [
+      {
+        "name": "gimp:app / painter-canvas-ui",
+        "result": "OK",
+        "returncode": 0,
+        "planned_cases": 89,
+        "passed_cases": 89,
+        "duration_seconds": 22.609361171722412
+      },
+      {
+        "name": "gimp:app / painter-compact-options",
+        "result": "OK",
+        "returncode": 0,
+        "planned_cases": 27,
+        "passed_cases": 27,
+        "duration_seconds": 7.009586811065674
+      },
+      {
+        "name": "gimp:app / layer-tile-entry-contracts",
+        "result": "OK",
+        "returncode": 0,
+        "planned_cases": 32,
+        "passed_cases": 32,
+        "duration_seconds": 4.464298248291016
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "recovery-ui-20261015/tests-final-native/testlog.json",
+        "sha256": "a7320579cb3b887bb0e9c0c2d945caaca59ba57cb84841eb6bca22783c285354",
+        "bytes": 134431
+      },
+      {
+        "path": "recovery-ui-20261015/tests-final-native/testlog.txt",
+        "sha256": "f21e294e2ad1e8aeff8f93a0f459132e27d96b7bea56ce9fd4438043111d1851",
+        "bytes": 113120
+      },
+      {
+        "path": "recovery-ui-20261015/tests-canvas-region-final-native/testlog.json",
+        "sha256": "27f01815a63148d54f85471536d902aec7ff0cbdb9567967cd99f2bbdf82173c",
+        "bytes": 45773
+      },
+      {
+        "path": "recovery-ui-20261015/tests-canvas-region-final-native/testlog.txt",
+        "sha256": "6633bb36eb2048f4d775094abc75d9e1601b2879979c92004871dd7bc272e17c",
+        "bytes": 44777
+      }
+    ],
+    "remaining": "Final coverage is combined from corrected canvas89 and unchanged compact27/entry32. No 188-case or whole-port claim.",
+    "prior_run": {
+      "passed_cases": 148,
+      "artifacts": [
+        {
+          "path": "recovery-ui-20261015/tests-final-native/testlog.json",
+          "sha256": "a7320579cb3b887bb0e9c0c2d945caaca59ba57cb84841eb6bca22783c285354",
+          "bytes": 134431
+        },
+        {
+          "path": "recovery-ui-20261015/tests-final-native/testlog.txt",
+          "sha256": "f21e294e2ad1e8aeff8f93a0f459132e27d96b7bea56ce9fd4438043111d1851",
+          "bytes": 113120
+        },
+        {
+          "path": "recovery-ui-20261015/tests-canvas-region-final-native/testlog.json",
+          "sha256": "27f01815a63148d54f85471536d902aec7ff0cbdb9567967cd99f2bbdf82173c",
+          "bytes": 45773
+        },
+        {
+          "path": "recovery-ui-20261015/tests-canvas-region-final-native/testlog.txt",
+          "sha256": "6633bb36eb2048f4d775094abc75d9e1601b2879979c92004871dd7bc272e17c",
+          "bytes": 44777
+        }
+      ]
+    }
+  },
+  "sanitizers": {
+    "status": "PASS_FINAL_FOCUSED_ASAN_UBSAN",
+    "detect_leaks": 0,
+    "leak_sanitizer": "Unavailable; leak checking disabled, no LSan coverage claimed.",
+    "suites": [
+      {
+        "name": "gimp:app / painter-canvas-ui",
+        "result": "OK",
+        "returncode": 0,
+        "planned_cases": 89,
+        "passed_cases": 89,
+        "duration_seconds": 57.98621845245361
+      },
+      {
+        "name": "gimp:app / painter-compact-options",
+        "result": "OK",
+        "returncode": 0,
+        "planned_cases": 27,
+        "passed_cases": 27,
+        "duration_seconds": 13.775356531143188
+      },
+      {
+        "name": "gimp:app / layer-tile-entry-contracts",
+        "result": "OK",
+        "returncode": 0,
+        "planned_cases": 32,
+        "passed_cases": 32,
+        "duration_seconds": 9.28960371017456
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "recovery-ui-20261015/tests-final-asan/testlog.json",
+        "sha256": "da9a93b91811e2980ee624d3b28da5075d45f2d1c3549ef4ab5ac2cd8e89575e",
+        "bytes": 97231
+      },
+      {
+        "path": "recovery-ui-20261015/tests-final-asan/testlog.txt",
+        "sha256": "eae8e26c9b4b22d53d17da66d679b731d3cd657c347f535e1a51659532ae4604",
+        "bytes": 76555
+      },
+      {
+        "path": "recovery-ui-20261015/tests-canvas-region-final-asan/testlog.json",
+        "sha256": "05449d0bb8c82c720b9169b9a446a4c0cfa6759c1ba87627b52985df47000b95",
+        "bytes": 38329
+      },
+      {
+        "path": "recovery-ui-20261015/tests-canvas-region-final-asan/testlog.txt",
+        "sha256": "33b93410163d0d29964b82ff17ca1f0e00bc066bd68e5d91db7ee25fa8e2275d",
+        "bytes": 37341
+      }
+    ],
+    "prior_failed_attempt": {
+      "previous_attempt": "FAIL_ASSERTION",
+      "failure": "renderer_stale_preview_disconnected compares complete widget surfaces whose allocations differ (569360 vs 565840 bytes), aborting canvas suite. No ASan/UBSan diagnostic reported for that assertion failure.",
+      "suites": [
+        {
+          "name": "gimp:app / painter-canvas-ui",
+          "result": "FAIL",
+          "returncode": -6,
+          "planned_cases": 89,
+          "passed_cases": 49,
+          "duration_seconds": 23.218756914138794
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "planned_cases": 27,
+          "passed_cases": 27,
+          "duration_seconds": 13.775356531143188
+        },
+        {
+          "name": "gimp:app / layer-tile-entry-contracts",
+          "result": "OK",
+          "returncode": 0,
+          "planned_cases": 32,
+          "passed_cases": 32,
+          "duration_seconds": 9.28960371017456
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "recovery-ui-20261015/tests-final-asan/testlog.json",
+          "sha256": "da9a93b91811e2980ee624d3b28da5075d45f2d1c3549ef4ab5ac2cd8e89575e",
+          "bytes": 97231
+        },
+        {
+          "path": "recovery-ui-20261015/tests-final-asan/testlog.txt",
+          "sha256": "eae8e26c9b4b22d53d17da66d679b731d3cd657c347f535e1a51659532ae4604",
+          "bytes": 76555
+        },
+        {
+          "path": "recovery-ui-20261015/tests-canvas-region-final-asan/testlog.json",
+          "sha256": "05449d0bb8c82c720b9169b9a446a4c0cfa6759c1ba87627b52985df47000b95",
+          "bytes": 38329
+        },
+        {
+          "path": "recovery-ui-20261015/tests-canvas-region-final-asan/testlog.txt",
+          "sha256": "33b93410163d0d29964b82ff17ca1f0e00bc066bd68e5d91db7ee25fa8e2275d",
+          "bytes": 37341
+        }
+      ]
+    },
+    "passed_cases": 148,
+    "suite_breakdown": [
+      89,
+      27,
+      32
+    ],
+    "correction": "Fixed 64x64 relevant-tile region comparison; final corrected canvas89 rerun passed, combined with unchanged passing compact27/entry32. No leak checking, whole-application instrumentation, platform or hardware acceptance claim."
+  },
+  "fixture_repair": {
+    "issue": "Earlier GUI fixture lacked required generated menu assets.",
+    "correction": "Actual Meson menu generation supplied the missing menu fixtures; no fake menu substitute.",
+    "evidence_status": "Coordinator-reported recovery; final test logs above are the actual subsequent runs."
+  },
+  "ordinary_application": {
+    "status": "CAPTURE_AND_NORMAL_EXIT_0_WITH_SHUTDOWN_WARNINGS",
+    "screenshot": {
+      "path": "recovery-ui-20261015/ordinary-final-portrait-paintbrush.png",
+      "sha256": "5efbf3a44d830dac7ddd0415c439ed0fda254dcd384b9628c216e859f6df8115",
+      "bytes": 181764
+    },
+    "capture_results": {
+      "path": "recovery-ui-20261015/capture-final-portrait/results.json",
+      "sha256": "39428ead084ee03c45f67fe5d35e4ca27eeb3e33a7dc2941cd5fc7ad2836f1fb",
+      "bytes": 664
+    },
+    "capture_log": {
+      "path": "recovery-ui-20261015/capture-final-portrait/command.log",
+      "sha256": "e2cc1286c685a104439edf0785730116443699caeee179626fa3742f5456f0c5",
+      "bytes": 23
+    },
+    "evidence": "Capture command log contains CAPTURED and NORMAL_EXIT 0; this records an ordinary native application run, not all-workflow visual parity.",
+    "landscape_screenshot": {
+      "path": "recovery-ui-20261015/ordinary-final-landscape-move.png",
+      "sha256": "743a8f4e1b46bf80796b34b0e717cd87a049dacce8d182bee050505f26c23b68",
+      "bytes": 106283
+    },
+    "landscape_capture_results": {
+      "path": "recovery-ui-20261015/capture-final-landscape/results.json",
+      "sha256": "b228e356516c5883ac42ec9ad42223a6fcc188d873b650d4597c84db30416b15",
+      "bytes": 664
+    },
+    "landscape_capture_log": {
+      "path": "recovery-ui-20261015/capture-final-landscape/command.log",
+      "sha256": "e2cc1286c685a104439edf0785730116443699caeee179626fa3742f5456f0c5",
+      "bytes": 23
+    },
+    "diagnostic_logs": [
+      {
+        "path": "recovery-ui-20261015/ordinary-final-portrait-paintbrush.log",
+        "sha256": "dc2861ec77743542c2de18b182e49d359f1d03e91a8c5e08f24d9acc869c3bf3",
+        "bytes": 731
+      },
+      {
+        "path": "recovery-ui-20261015/ordinary-final-landscape-move.log",
+        "sha256": "c61d4631a9dcd51032a6547d0537eb6b811fddcfcfa815933806d4c1004c0f58",
+        "bytes": 731
+      },
+      {
+        "path": "recovery-ui-20261015/ordinary-app-v4.log",
+        "sha256": "55731d464db0dd4846faf8d05df6eaf00809a20d22e145b451ad034798d904f1",
+        "bytes": 731
+      }
+    ],
+    "shutdown_limitations": "Portrait and landscape both exited normally (0), but each logged Gimp-Widgets-CRITICAL gimp_device_info_save_tool assertion GIMP_IS_DEVICE_INFO(info), plus four stale contexts: two GimpStrokeOptions and two GimpFillOptions. Same warnings occur in earlier recovery v4 log; origin in untouched public baseline is unverified. Not a diagnostic-clean shutdown claim."
+  },
+  "task_status": {
+    "29.010/standard-tool-options": "DOING",
+    "all_other_statuses": "Unchanged from public baseline",
+    "counts": {
+      "DONE": 336,
+      "TODO": 583,
+      "DOING": 15,
+      "BLOCKED": 1
+    }
+  },
+  "remaining": "16 registered tool IDs lack horizontal factories; incomplete controls, full toolbar/window/session behavior and platform/tablet gates remain open. See migration/contracts/legacy-ui-completion-correction.md.",
+  "updated_utc": "2026-10-15T00:00:56.044387+00:00"
+}

@@ -11,6 +11,11 @@ extern "C" {
 #include "config/gimpcoreconfig.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
+#include "core/gimpimage-color-profile.h"
+#include "libgimpconfig/gimpconfig.h"
+#include "core/gimp-gui.h"
+#include "widgets/gimpwindowstrategy.h"
+#include "widgets/gimpdialogfactory.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimplist.h"
 #include "core/gimpcontainer.h"
@@ -18,6 +23,8 @@ extern "C" {
 #include "core/gimptoolgroup.h"
 #include "core/gimptooloptions.h"
 #include "widgets/gimpoverlaybox.h"
+#include "widgets/gimpdock.h"
+#include "widgets/gimpdockcolumns.h"
 #include "widgets/gimpoverlaychild.h"
 #include "widgets/gimpoverlayframe.h"
 #include "widgets/gimpcoloreditor.h"
@@ -82,11 +89,11 @@ struct Canvas {
   GimpDisplayShell *shell;
   bool visible = false, closed = false, painting = false, positioning = false, syncing_colors = false;
   std::vector<Panel> panels;
-  std::vector<Connection> signals, controls, tool_signals;
+  std::vector<Connection> signals, controls, tool_signals, color_image_signals;
   Source refresh_tools, refresh_options, refresh_layout;
   guint64 tool_revision = 0;
   GtkWidget *layers = nullptr, *colors = nullptr, *tools = nullptr, *bar = nullptr, *swatches = nullptr;
-  ObjectRef<GObject> popup, canvas;
+  ObjectRef<GObject> popup, canvas, toolbar_gui, toolbar_options;
   Connection popup_connection;
   std::shared_ptr<Borrow> options_dock, right_dock;
   guint64 options_revision = 0, right_revision = 0;
@@ -105,6 +112,9 @@ struct Canvas {
   void layout ();
   void schedule_layout ();
   void reconnect ();
+  void sync_color ();
+  void sync_color_image ();
+  bool update_toolbar ();
   void pointer (double x, double y, bool released);
   void action (const std::string& name);
   void rebuild_tools ();
@@ -147,15 +157,27 @@ void clicked (GtkWidget*,gpointer data) { dispatch(data,[](Canvas&s,GObject*,con
 void tools_changed (GObject*,gpointer data) { dispatch(data,[](Canvas&s,GObject*,const std::string&){s.schedule_tools();}); }
 void tools_added (GimpContainer*,GimpObject*,gpointer data) { tools_changed(nullptr,data); }
 void tools_reordered (GimpContainer*,GimpObject*,gint,gint,gpointer data) { tools_changed(nullptr,data); }
-void active_color (GObject *widget,GParamSpec*,gpointer data) {
+void active_color (GObject*,GParamSpec*,gpointer data) {
+  dispatch(data,[](Canvas&s,GObject*,const std::string&){s.sync_color();});
+}
+void context_color_changed (GimpContext*,GeglColor*,gpointer data) {
+  dispatch(data,[](Canvas&s,GObject*,const std::string&){s.sync_color();});
+}
+void selector_color_changed (GimpColorSelector*,GeglColor*color,gpointer data) {
   dispatch(data,[&](Canvas&s,GObject*,const std::string&){
-    if(s.syncing_colors || !s.colors || !s.swatches)return;
+    if(s.closed || s.syncing_colors || !s.swatches)return;
     s.syncing_colors=true;
-    auto active=GIMP_FG_BG_EDITOR(widget)->active_color;
-    GtkWidget *other=widget==G_OBJECT(s.swatches)?GIMP_COLOR_EDITOR(s.colors)->fg_bg:s.swatches;
-    gimp_fg_bg_editor_set_active(GIMP_FG_BG_EDITOR(other),active);
+    if(GIMP_FG_BG_EDITOR(s.swatches)->active_color==GIMP_ACTIVE_COLOR_BACKGROUND)
+      gimp_context_set_background(s.ctx(),color);
+    else gimp_context_set_foreground(s.ctx(),color);
     s.syncing_colors=false;
   });
+}
+void color_image_changed (GObject*,gpointer data) {
+  dispatch(data,[](Canvas&s,GObject*,const std::string&){s.sync_color_image();});
+}
+void color_mode_changed (GObject*,GParamSpec*,gpointer data) {
+  dispatch(data,[](Canvas&s,GObject*,const std::string&){s.sync_color_image();});
 }
 void tool_changed (GimpContext*,GimpToolInfo *tool,gpointer data) {
   dispatch(data,[&](Canvas&s,GObject*,const std::string&){
@@ -269,33 +291,29 @@ void Canvas::create () {
   gimp_painter_layer_tiles_set_display(GIMP_PAINTER_LAYER_TILES(layers),shell->display);
   if(!frame(*this,layers))return;
   connect(*this,signals,G_OBJECT(layers),"popup-closed",G_CALLBACK(popup_closed));
-  colors=gimp_color_editor_new(ctx());
+  /* Legacy uses the native notebook directly, not a dock editor with a
+   * second foreground/background editor or channel controls around it. */
+  colors=gimp_color_selector_new(GIMP_TYPE_COLOR_NOTEBOOK,
+                                gimp_context_get_foreground(ctx()),
+                                GIMP_COLOR_SELECTOR_HUE);
   gtk_widget_set_name(colors,"painter-color-editor");
-  gimp_editor_set_show_name(GIMP_EDITOR(colors),FALSE);
-  auto *notebook=GIMP_COLOR_NOTEBOOK(GIMP_COLOR_EDITOR(colors)->notebook);
+  auto *notebook=GIMP_COLOR_NOTEBOOK(colors);
   auto *pages=GTK_NOTEBOOK(gimp_color_notebook_get_notebook(notebook));
-  for(GList *i=gimp_color_notebook_get_selectors(notebook);i;i=i->next) {
-    /* GtkNotebook requests the largest page. Top-align each native selector
-     * so the compact wheel stays visible above the taller channel editors;
-     * those complete editors remain reachable through the same scroller. */
-    gtk_widget_set_valign(GTK_WIDGET(i->data),GTK_ALIGN_START);
-    if(!strcmp(G_OBJECT_TYPE_NAME(i->data),"ColorselWheel")) {
-      auto *button=GTK_WIDGET(g_object_get_data(G_OBJECT(i->data),"button"));
-      if(button)gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button),TRUE);
-      else gtk_notebook_set_current_page(pages,gtk_notebook_page_num(pages,GTK_WIDGET(i->data)));
-    }
-  }
-  GtkWidget *color_scroll=gtk_scrolled_window_new(nullptr,nullptr);
-  gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(color_scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
-  gtk_container_add(GTK_CONTAINER(color_scroll),colors);if(!frame(*this,color_scroll,1.))return;
+  gimp_color_selector_set_show_alpha(GIMP_COLOR_SELECTOR(colors),FALSE);
+  gimp_color_selector_set_config(GIMP_COLOR_SELECTOR(colors),ctx()->gimp->config->color_management);
+  for(GList *i=gimp_color_notebook_get_selectors(notebook);i;i=i->next)
+    if(!strcmp(G_OBJECT_TYPE_NAME(i->data),"ColorselWheel"))
+      gtk_notebook_set_current_page(pages,gtk_notebook_page_num(pages,GTK_WIDGET(i->data)));
+  gtk_widget_set_size_request(colors,256,256);
+  if(!frame(*this,colors,1.))return;
+  connect(*this,signals,G_OBJECT(colors),"color-changed",G_CALLBACK(selector_color_changed));
+  connect(*this,signals,G_OBJECT(ctx()),"foreground-changed",G_CALLBACK(context_color_changed));
+  connect(*this,signals,G_OBJECT(ctx()),"background-changed",G_CALLBACK(context_color_changed));
+  connect(*this,signals,G_OBJECT(gimp_display_shell_get_color_config(shell)),"notify::mode",G_CALLBACK(color_mode_changed));
   GtkWidget *toolscroll=gtk_scrolled_window_new(nullptr,nullptr);
   gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(toolscroll),GTK_POLICY_NEVER,GTK_POLICY_AUTOMATIC);
   tools=gtk_box_new(GTK_ORIENTATION_VERTICAL,0);gtk_container_add(GTK_CONTAINER(toolscroll),tools);if(!frame(*this,toolscroll))return;
   bar=gtk_box_new(GTK_ORIENTATION_HORIZONTAL,3);
-  action_button(*this,bar,_("Undo"),"painter-canvas-undo");action_button(*this,bar,_("Redo"),"painter-canvas-redo");
-  action_button(*this,bar,_("Compact Options"),"painter-canvas-compact");
-  action_button(*this,bar,_("Tool Options"),"painter-canvas-options");action_button(*this,bar,_("MyPaint Editor"),"painter-canvas-mypaint");
-  action_button(*this,bar,_("Hide"),"painter-canvas-hide");
   GtkWidget *bar_scroll=gtk_scrolled_window_new(nullptr,nullptr);
   gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(bar_scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_NEVER);
   gtk_scrolled_window_set_min_content_height(GTK_SCROLLED_WINDOW(bar_scroll),48);
@@ -304,16 +322,23 @@ void Canvas::create () {
   gtk_widget_set_size_request(swatches,80,48);
   if(!frame(*this,swatches,1.))return;
   connect(*this,signals,G_OBJECT(swatches),"notify::active-color",G_CALLBACK(active_color));
-  connect(*this,signals,G_OBJECT(GIMP_COLOR_EDITOR(colors)->fg_bg),"notify::active-color",G_CALLBACK(active_color));
+  sync_color();
+  if(closed)return;
+  color_image_signals.clear();
+  if(image())for(const char *name:{"simulation-profile-changed","simulation-intent-changed","simulation-bpc-changed","profile-changed","precision-changed"})
+    connect(*this,color_image_signals,G_OBJECT(image()),name,G_CALLBACK(color_image_changed));
+  if(image())connect(*this,color_image_signals,G_OBJECT(image()),"notify::base-type",G_CALLBACK(color_mode_changed));
+  sync_color_image();
+  if(closed)return;
   for(auto*w:{layers,colors,tools,bar,swatches}) roots.push_back(ObjectRef<GObject>::retain(G_OBJECT(w)));
   rebuild_tools();
 }
 void Canvas::close () noexcept {
   if(closed)return;
-  closed=true;refresh_tools.close();refresh_options.close();refresh_layout.close();signals.clear();controls.clear();tool_signals.clear();popup_connection.close();
+  closed=true;refresh_tools.close();refresh_options.close();refresh_layout.close();signals.clear();controls.clear();tool_signals.clear();color_image_signals.clear();popup_connection.close();
   if(popup){gtk_widget_destroy(GTK_WIDGET(popup.get()));popup.reset();}
   detach();detach(true);
-  if (colors) gimp_docked_set_context(GIMP_DOCKED(colors),nullptr);
+  toolbar_gui.reset();toolbar_options.reset();
   if (swatches) gimp_fg_bg_editor_set_context(GIMP_FG_BG_EDITOR(swatches),nullptr);
   auto old_panels=std::move(panels);
   for(auto&panel:old_panels)gtk_widget_destroy(GTK_WIDGET(panel.frame.get()));
@@ -327,15 +352,14 @@ void Canvas::show (bool value) {
   visible=value;
   if(value)create();
   if(closed || presentation_revision!=presentation)return;
-  if(value && image() && !options_dock && options_presentation &&
-     gimp_context_get_display(ctx())==shell->display)attach_options(options_presentation==1,true);
+  if(value && image())update_toolbar();
   if(closed || presentation_revision!=presentation)return;
   std::vector<ObjectRef<GObject>> snapshot;
   for(auto&panel:panels)snapshot.push_back(panel.frame);
   for(auto&panel:snapshot){if(closed || presentation_revision!=presentation)return;auto*w=GTK_WIDGET(panel.get());if(value&&image())gtk_widget_show_all(w);else gtk_widget_hide(w);}
   /* show_all would otherwise reveal GimpEditor's deliberately hidden name. */
   if(layers)gimp_editor_set_show_name(GIMP_EDITOR(layers),FALSE);
-  if(colors)gimp_editor_set_show_name(GIMP_EDITOR(colors),FALSE);
+  if(bar && panels.size()>3)gtk_widget_set_visible(GTK_WIDGET(panels[3].frame.get()),value && image() && options_presentation && bool(toolbar_gui));
   if(!value) {
     refresh_layout.close();refresh_options.close();
     if(layers)gimp_painter_layer_tiles_cancel_interaction(GIMP_PAINTER_LAYER_TILES(layers));
@@ -390,64 +414,115 @@ void Canvas::layout () {
   positioning=true;
   auto fixed_panels=panels;
   const int w=gtk_widget_get_allocated_width(shell->canvas),h=gtk_widget_get_allocated_height(shell->canvas);
-  const bool portrait=w<h;const int color_width=std::max(180,std::min(256,w-110));
-  const int color_height=std::max(180,std::min(256,h/3));
+  const bool portrait=w<h;
+  GtkWidget *window=gtk_widget_get_toplevel(GTK_WIDGET(shell));
+  const bool horizontal_docks=gtk_widget_get_allocated_width(window)<=gtk_widget_get_allocated_height(window);
   auto place=[&](int index,int x,int y,int width,int height){
     if(closed)return;
     auto*widget=GTK_WIDGET(fixed_panels[index].frame.get());
-    gtk_widget_set_size_request(widget,width,height);if(!closed)gimp_overlay_box_set_child_position(overlay(),widget,std::max(0,x),std::max(0,y));
+    gtk_widget_set_size_request(widget,width,height);
+    if(!closed)gimp_overlay_box_set_child_position(overlay(),widget,x,y);
   };
-  int layer_y=portrait?color_height+8:80;
-  int layer_width=std::max(96,gtk_widget_get_allocated_width(GTK_WIDGET(fixed_panels[0].frame.get())));
-  place(0,w-layer_width,layer_y,96,std::max(100,h-layer_y-60));
-  place(1,w-color_width-layer_width-4,0,color_width,color_height);
-  place(4,w-layer_width,0,layer_width,64);
-  place(2,0,portrait?color_height+8:60,60,std::max(100,h-(portrait?color_height:60)-80));
-  int bw=gtk_widget_get_allocated_width(GTK_WIDGET(fixed_panels[3].frame.get()));
-  int bh=gtk_widget_get_allocated_height(GTK_WIDGET(fixed_panels[3].frame.get()));
-  place(3,std::max(60,(w-bw)/2),h-bh,std::max(1,std::min(w-164,650)),-1);
-  if(closed){positioning=false;return;}
-  auto options=options_dock;
+  /* Geometry follows afa43fae gimpdisplayshell-overlays.cpp. The notebook,
+   * canvas and dock orientation are each based on their own allocation. */
+  const int layer_width=88;
+  const int offset=portrait?256:0;
+  const int layer_height=std::max(1,(h-offset)*8/10);
+  place(0,w-layer_width+4,offset+(h-offset-layer_height)/2,layer_width,layer_height);
+  const int color_width=std::max(256,gtk_widget_get_allocated_width(GTK_WIDGET(fixed_panels[1].frame.get())));
+  const int color_height=std::max(256,gtk_widget_get_allocated_height(GTK_WIDGET(fixed_panels[1].frame.get())));
+  const int fg_width=std::max(84,gtk_widget_get_allocated_width(GTK_WIDGET(fixed_panels[4].frame.get())));
+  place(1,w-color_width-fg_width,0,256,256);
+  place(4,w-84,0,80,48);
+  gint tool_min=0,tool_natural=0;
+  gtk_widget_get_preferred_height(tools,&tool_min,&tool_natural);
+  const int tools_height=std::max(1,std::min(h,tool_natural+8));
+  place(2,-4,(h-tools_height)/2,48,tools_height);
+  const int bh=std::max(48,gtk_widget_get_allocated_height(GTK_WIDGET(fixed_panels[3].frame.get())));
+  int bw=std::max(1,w*98/100),bx=(w-bw)/2;
   auto right=right_dock;
-  const int content_bottom=std::max(1,h-bh-8);
-  const int lanes=right&&options&&!options->compact&&!portrait?2:1;
-  const int right_width=std::max(1,std::min(color_width,std::max(1,w-layer_width-68)/lanes));
   if(right && right->panel.frame) {
-    const int rx=portrait?0:std::max(64,w-layer_width-right_width-4);
-    const int ry=portrait?0:color_height+8;
-    const int rh=portrait?std::max(1,color_height):std::max(1,content_bottom-ry-(options&&options->compact?76:0));
     auto*host=GTK_WIDGET(right->panel.frame.get());
+    if(GIMP_IS_DOCK_COLUMNS(right->widget.get())) {
+      std::vector<ObjectRef<GObject>> docks;
+      for(GList *i=gimp_dock_columns_get_docks(GIMP_DOCK_COLUMNS(right->widget.get()));i;i=i->next)
+        docks.push_back(ObjectRef<GObject>::retain(G_OBJECT(i->data)));
+      for(auto& dock:docks) {
+        if(!gtk_widget_is_ancestor(GTK_WIDGET(dock.get()),GTK_WIDGET(right->widget.get())))continue;
+        gtk_orientable_set_orientation(GTK_ORIENTABLE(dock.get()),horizontal_docks?GTK_ORIENTATION_HORIZONTAL:GTK_ORIENTATION_VERTICAL);
+        if(closed || right_dock!=right){positioning=false;return;}
+      }
+    }
+    const int rx=portrait?0:w-layer_width-color_width-4;
+    const int ry=portrait?0:color_height+4;
     gimp_overlay_box_set_child_position(overlay(),host,rx,ry);
     if(closed || right_dock!=right){positioning=false;return;}
-    gtk_widget_set_size_request(host,portrait?std::max(1,w-color_width-layer_width-8):right_width,rh);
+    gtk_widget_set_size_request(host,portrait?std::max(1,w-color_width-fg_width-4):color_width,
+                               portrait?color_height:std::max(1,h-ry));
+    if(!portrait && rx<bx+bw){bw=std::max(1,rx-bx-4);bx=(rx-bw)/2;}
   }
-  if(closed){positioning=false;return;}
-  if(options && options_dock==options && options->panel.frame) {
-    auto*host=GTK_WIDGET(options->panel.frame.get());
-    if(options->compact) {
-      const auto orientation=portrait?GTK_ORIENTATION_VERTICAL:GTK_ORIENTATION_HORIZONTAL;
-      if(options->widget && options->options) {
-        gimp_painter_compact_options_set(GTK_WIDGET(options->widget.get()),GIMP_TOOL_OPTIONS(options->options.get()),TRUE,orientation,nullptr);
-        finish_compact_restore(options);
-      }
-      if(closed || options_dock!=options){positioning=false;return;}
-      const int dw=portrait?std::max(1,std::min(260,w-layer_width-68)):std::max(1,w-layer_width-68);
-      const int dh=portrait?std::max(1,content_bottom-color_height-8):72;
-      gimp_overlay_box_set_child_position(overlay(),host,64,portrait?color_height+8:std::max(0,content_bottom-dh));
-      if(closed || options_dock!=options){positioning=false;return;}
-      gtk_widget_set_size_request(host,dw,dh);
-    } else {
-      const int dw=right_width;
-      const int x=portrait?64:std::max(64,w-layer_width-dw-4-(right?right_width+4:0));
-      const int y=color_height+8;
-      gimp_overlay_box_set_child_position(overlay(),host,x,y);
-      if(closed || options_dock!=options){positioning=false;return;}
-      gtk_widget_set_size_request(host,dw,std::max(1,content_bottom-y));
-    }
-  }
+  place(3,bx,h-bh+4,bw,-1);
   positioning=false;
 }
+void Canvas::sync_color () {
+  if(closed || syncing_colors || !colors || !swatches)return;
+  syncing_colors=true;
+  GeglColor *color=GIMP_FG_BG_EDITOR(swatches)->active_color==GIMP_ACTIVE_COLOR_BACKGROUND
+    ?gimp_context_get_background(ctx()):gimp_context_get_foreground(ctx());
+  gimp_color_selector_set_color(GIMP_COLOR_SELECTOR(colors),color);
+  syncing_colors=false;
+}
+void Canvas::sync_color_image () {
+  if(closed || !colors)return;
+  auto image_ref=ObjectRef<GObject>::retain(image()?G_OBJECT(image()):nullptr);
+  auto notebook_ref=ObjectRef<GObject>::retain(G_OBJECT(colors));
+  auto *im=image_ref?GIMP_IMAGE(image_ref.get()):nullptr;
+  auto *notebook=GIMP_COLOR_NOTEBOOK(notebook_ref.get());
+  auto current=[&](){return !closed && image()==im && colors==GTK_WIDGET(notebook);};
+  gimp_color_notebook_set_format(notebook,im?gimp_image_get_layer_format(im,FALSE):nullptr);
+  if(!current())return;
+  gimp_color_notebook_set_simulation(notebook,im?gimp_image_get_simulation_profile(im):nullptr,
+    im?gimp_image_get_simulation_intent(im):GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
+    im?gimp_image_get_simulation_bpc(im):FALSE);
+  if(!current())return;
+  gimp_color_notebook_enable_simulation(notebook,im &&
+    gimp_color_config_get_mode(gimp_display_shell_get_color_config(shell))==GIMP_COLOR_MANAGEMENT_SOFTPROOF);
+}
+bool Canvas::update_toolbar () {
+  if(closed || !bar)return false;
+  auto *tool=gimp_context_get_tool(ctx());
+  auto *options=tool?tool->tool_options:nullptr;
+  if(toolbar_gui && toolbar_options.get()==G_OBJECT(options)) {
+    if(panels.size()>3)gtk_widget_set_visible(GTK_WIDGET(panels[3].frame.get()),visible && image() && options_presentation);
+    return true;
+  }
+  const auto revision=tool_revision;
+  auto old=std::move(toolbar_gui);toolbar_options.reset();
+  if(old)gtk_widget_destroy(GTK_WIDGET(old.get()));
+  if(closed || tool_revision!=revision)return false;
+  GtkWidget *created=options?gimp_tools_create_painter_toolbar_gui(options):nullptr;
+  if(!created) {
+    if(panels.size()>3)gtk_widget_hide(GTK_WIDGET(panels[3].frame.get()));
+    return false;
+  }
+  auto gui=ObjectRef<GObject>::sink(G_OBJECT(created));
+  auto current=[&](){return !closed && revision==tool_revision && gimp_context_get_tool(ctx())==tool;};
+  // The registered horizontal factory already built the independent toolbar.
+  if(!current()){gtk_widget_destroy(created);return false;}
+  toolbar_gui=gui;toolbar_options=ObjectRef<GObject>::retain(G_OBJECT(options));
+  gtk_box_pack_start(GTK_BOX(bar),created,TRUE,TRUE,0);
+  if(!current())return false;
+  gtk_widget_show_all(bar);
+  if(panels.size()>3)gtk_widget_set_visible(GTK_WIDGET(panels[3].frame.get()),visible && image() && options_presentation);
+  schedule_layout();return true;
+}
 void Canvas::reconnect () {
+  color_image_signals.clear();
+  if(image())for(const char *name:{"simulation-profile-changed","simulation-intent-changed","simulation-bpc-changed","profile-changed","precision-changed"})
+    connect(*this,color_image_signals,G_OBJECT(image()),name,G_CALLBACK(color_image_changed));
+  if(image())connect(*this,color_image_signals,G_OBJECT(image()),"notify::base-type",G_CALLBACK(color_mode_changed));
+  sync_color_image();
+  if(closed)return;
   painting=false;pointer(0,0,true);
   if (!image()) {detach();detach(true);}
   if(layers)gimp_painter_layer_tiles_set_image(GIMP_PAINTER_LAYER_TILES(layers),image());
@@ -531,6 +606,7 @@ void Canvas::rebuild_tools () {
     }else if(GIMP_IS_TOOL_INFO(item))add_tool(tools,GIMP_TOOL_INFO(item));
   }
   gtk_widget_show_all(tools);
+  if(visible && image())update_toolbar();
   if (options_dock && options_dock->options) {
     auto *tool = gimp_context_get_tool(ctx());
     if (tool && G_OBJECT(tool->tool_options) != options_dock->options.get()) {
@@ -685,6 +761,16 @@ void Canvas::detach (bool right) noexcept {
   auto&revision=right?right_revision:options_revision;
   ++revision;
   auto old=std::move(slot);
+  if(right && old && GIMP_IS_DOCK_COLUMNS(old->widget.get())) {
+    std::vector<ObjectRef<GObject>> docks;
+    for(GList *i=gimp_dock_columns_get_docks(GIMP_DOCK_COLUMNS(old->widget.get()));i;i=i->next)
+      docks.push_back(ObjectRef<GObject>::retain(G_OBJECT(i->data)));
+    for(auto& dock:docks) {
+      if(right_dock)break; /* Reentrant attachment owns orientation now. */
+      if(gtk_widget_is_ancestor(GTK_WIDGET(dock.get()),GTK_WIDGET(old->widget.get())))
+        gtk_orientable_set_orientation(GTK_ORIENTABLE(dock.get()),GTK_ORIENTATION_VERTICAL);
+    }
+  }
   restore(old);
 }
 bool Canvas::attach (GtkWidget*widget,bool right,guint64 window_revision,bool from_options,bool replace) {
@@ -789,7 +875,7 @@ bool Canvas::attach (GtkWidget*widget,bool right,guint64 window_revision,bool fr
   if(!valid())return abort();
   gtk_widget_show(host);
   if(!valid())return abort();
-  layout();return valid();
+  layout();schedule_layout();return valid();
 }
 void Canvas::schedule_options () {
   if(closed || refresh_options.active())return;
@@ -809,66 +895,12 @@ void Canvas::schedule_options () {
   });
 }
 bool Canvas::attach_options (bool compact,bool preserve_transfer) {
-  const auto intent=++options_intent;
+  (void)preserve_transfer;
   if(closed)return false;
-  if(options_busy){schedule_options();return false;}
-  struct Busy { bool&value;explicit Busy(bool&v):value(v){value=true;}~Busy(){value=false;} } guard(options_busy);
-  const auto presentation=presentation_revision;
-  const auto tool_generation=tool_revision;
-  auto *tool=gimp_context_get_tool(ctx());
-  if(!tool || !tool->tool_options)return false;
-  auto selected=ObjectRef<GObject>::retain(G_OBJECT(tool));
-  auto current=[&](){return !closed && visible && options_intent==intent &&
-    presentation_revision==presentation && tool_revision==tool_generation &&
-    gimp_context_get_tool(ctx())==tool;};
-  auto *gui=gimp_tools_get_tool_options_gui(tool->tool_options);
-  if(!gui || !current())return false;
-  if(preserve_transfer) {
-    if(auto*ancestor=gtk_widget_get_ancestor(gui,GIMP_TYPE_DISPLAY_SHELL)) {
-      if(ancestor!=GTK_WIDGET(shell))use(G_OBJECT(ancestor),[&](Canvas&source){
-        if(source.options_dock && source.options_dock->widget.get()==G_OBJECT(gui) && source.options_dock->options) {
-          compact=source.options_dock->compact;
-          options_presentation=compact?1:2;
-        }
-      });
-    }
-  }
-  const bool replace=options_dock && options_dock->widget.get()==G_OBJECT(gui) && options_dock->compact!=compact;
-  if(!attach(gui,false,0,true,replace))return false;
-  auto record=options_dock;
-  if(!record)return false;
-  if(!current()) {
-    if(options_dock==record)detach();
-    if(!closed && visible && options_presentation)schedule_options();
-    return false;
-  }
-  record->options=ObjectRef<GObject>::retain(G_OBJECT(tool->tool_options));record->compact=compact;
-  GError *error=nullptr;
-  const bool transformed=gimp_painter_compact_options_set(gui,tool->tool_options,compact,GTK_ORIENTATION_HORIZONTAL,&error);
-  finish_compact_restore(record);
-  if(!transformed) {
-    if(error){if(current())gimp_message_literal(ctx()->gimp,G_OBJECT(shell),GIMP_MESSAGE_ERROR,error->message);g_clear_error(&error);}
-    else if(current()) {
-      /* An outer compact transform still owns its changing guard. Retry only
-       * on this live GUI's active store, after its stack has unwound. */
-      auto*store=BindingStore::find(G_OBJECT(gui));
-      if(store && store->state()==BindingStore::State::active)schedule_options();
-    }
-    if(options_dock==record)detach();
-    return false;
-  }
-  if(!current() || options_dock!=record) {
-    if(options_dock==record)detach();
-    if(!closed && visible && options_presentation)schedule_options();
-    return false;
-  }
-  layout();
-  if(!current() || options_dock!=record) {
-    if(options_dock==record)detach();
-    if(!closed && visible && options_presentation)schedule_options();
-    return false;
-  }
-  return true;
+  if(compact){options_presentation=1;return update_toolbar();}
+  gimp_window_strategy_show_dockable_dialog(GIMP_WINDOW_STRATEGY(gimp_get_window_strategy(ctx()->gimp)),
+    ctx()->gimp,gimp_dialog_factory_get_singleton(),gimp_widget_get_monitor(GTK_WIDGET(shell)),"gimp-tool-options");
+  return !closed;
 }
 void Canvas::action (const std::string&name) {
   if(name=="painter-canvas-hide") {
@@ -897,9 +929,9 @@ void Canvas::action (const std::string&name) {
     if(error){gimp_message_literal(ctx()->gimp,G_OBJECT(shell),GIMP_MESSAGE_ERROR,error->message);g_clear_error(&error);}
   }else if(name=="painter-canvas-options" || name=="painter-canvas-compact") {
     const bool compact=name=="painter-canvas-compact";
-    if(options_dock && options_dock->compact==compact) {
+    if(compact && options_presentation && toolbar_gui) {
       options_presentation=0;++options_intent;
-      if(options_busy)schedule_options();else detach();
+      if(panels.size()>3)gtk_widget_hide(GTK_WIDGET(panels[3].frame.get()));
       return;
     }
     options_presentation=compact?1:2;

@@ -290,6 +290,9 @@ static void      gimp_image_window_page_reordered      (GtkNotebook         *not
                                                         GtkWidget           *widget,
                                                         gint                 page_num,
                                                         GimpImageWindow     *window);
+static void      gimp_image_window_notebook_resized    (GtkNotebook         *notebook,
+                                                        GtkAllocation       *allocation,
+                                                        GimpImageWindow     *window);
 static void      gimp_image_window_disconnect_from_active_shell
                                                        (GimpImageWindow *window);
 
@@ -549,7 +552,9 @@ gimp_image_window_constructed (GObject *object)
                            menubar_manager);
   gtk_paned_pack1 (GTK_PANED (private->left_hpane), private->left_docks,
                    FALSE, FALSE);
-  gtk_widget_set_visible (private->left_docks, config->single_window_mode);
+  gtk_widget_set_visible (private->left_docks,
+                          config->single_window_mode && ! config->hide_docks &&
+                          ! private->gimp->config->painter_canvas_ui);
 
   /* Create the right pane */
   private->right_hpane = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
@@ -578,6 +583,9 @@ gimp_image_window_constructed (GObject *object)
                     window);
   g_signal_connect (private->notebook, "page-reordered",
                     G_CALLBACK (gimp_image_window_page_reordered),
+                    window);
+  g_signal_connect (private->notebook, "size-allocate",
+                    G_CALLBACK (gimp_image_window_notebook_resized),
                     window);
   gtk_widget_show (private->notebook);
 
@@ -1699,6 +1707,18 @@ gimp_image_window_painter_reconcile (GimpImageWindow *window)
   if (previous)
     options_mode = gimp_painter_canvas_ui_get_options_presentation (previous);
 
+  /* Legacy painter hides the complete left column, including its dockables.
+   * Keep the column intact so disabling painter restores the native layout. */
+  gtk_widget_set_visible (private->left_docks,
+                          ! show &&
+                          GIMP_GUI_CONFIG (private->gimp->config)->single_window_mode &&
+                          ! GIMP_GUI_CONFIG (private->gimp->config)->hide_docks);
+  if (! gimp_image_window_painter_current (window, revision))
+    goto done;
+  gimp_image_window_update_tabs (window);
+  if (! gimp_image_window_painter_current (window, revision))
+    goto done;
+
   /* Release the old owner before showing the selected shell.  The list
    * leases stay valid if a parent-set callback removes or destroys a tab. */
   for (iter = shells; iter; iter = iter->next)
@@ -2538,6 +2558,17 @@ gimp_image_window_update_tabs (GimpImageWindow *window)
                                 gimp_display_get_image (private->active_shell->display)) ||
                                g_list_length (private->shells) > 1));
 
+  /* Painter follows the legacy notebook allocation, not a fixed tab edge. */
+  if (private->gimp->config->painter_canvas_ui)
+    {
+      GtkAllocation allocation;
+
+      gtk_widget_get_allocation (private->notebook, &allocation);
+      gimp_image_window_notebook_resized (GTK_NOTEBOOK (private->notebook),
+                                          &allocation, window);
+      return;
+    }
+
   /* Tab position. */
   switch (config->tabs_position)
     {
@@ -2560,6 +2591,19 @@ gimp_image_window_update_tabs (GimpImageWindow *window)
     }
 
   gtk_notebook_set_tab_pos (GTK_NOTEBOOK (private->notebook), position);
+}
+
+static void
+gimp_image_window_notebook_resized (GtkNotebook     *notebook,
+                                    GtkAllocation   *allocation,
+                                    GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  if (private->gimp->config->painter_canvas_ui)
+    gtk_notebook_set_tab_pos (notebook,
+                             allocation->width > allocation->height ?
+                             GTK_POS_LEFT : GTK_POS_TOP);
 }
 
 
@@ -2617,7 +2661,9 @@ gimp_image_window_config_notify (GimpImageWindow *window,
       gimp_image_window_keep_canvas_pos (window);
       if (private->painter_closing || private->painter_revision != revision)
         goto done;
-      gtk_widget_set_visible (private->left_docks, show_docks);
+      gtk_widget_set_visible (private->left_docks,
+                              show_docks &&
+                              ! private->gimp->config->painter_canvas_ui);
       if (private->painter_closing || private->painter_revision != revision)
         goto done;
       gtk_widget_set_visible (private->right_docks, show_docks);
