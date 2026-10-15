@@ -20,6 +20,10 @@ extern "C" {
 #include "core/gimp.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
+#include "core/gimp-contexts.h"
+#include "core/gimpextensionmanager.h"
+#include "core/gimp-modules.h"
+#include "plug-in/gimppluginmanager.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimplayerpreset.h"
 #include "core/gimpfilterexit.h"
@@ -444,10 +448,107 @@ static void lifecycle (bool enabled, bool navigation = false) {
 static void disabled () { lifecycle (false); }
 static void enabled_pending () { lifecycle (true); }
 static void enabled_navigation () { lifecycle (true, true); }
+/* This fallback-owner case deliberately never emits Gimp::exit.  Explicit
+ * subsystem cleanup keeps the process honest without substituting service
+ * disposal for the branch in Gimp::dispose that owns it. */
+static void enabled_direct_dispose () {
+  if (!g_test_subprocess ()) {
+    g_test_trap_subprocess (nullptr, 60 * G_USEC_PER_SEC, G_TEST_SUBPROCESS_DEFAULT);
+    g_test_trap_assert_passed ();
+    return;
+  }
+  GError *error = nullptr;
+  gchar *dir = g_dir_make_tmp ("application-direct-dispose-XXXXXX", &error);
+  g_assert_no_error (error);
+  const auto port = available_port ();
+  const auto port_text = std::to_string (port);
+  g_setenv ("GIMP3_DIRECTORY", dir, TRUE);
+  g_setenv ("GIMP_PAINTER_HTTP_ENABLE", "1", TRUE);
+  g_setenv ("GIMP_PAINTER_HTTP_PORT", port_text.c_str (), TRUE);
+  g_setenv ("GIMP_PAINTER_HTTP_TOKEN", token, TRUE);
+  g_unsetenv ("GIMP_PAINTER_HTTP_WEBHOOK_ORIGIN");
+  GApplication *app = nullptr;
+  Gimp *gimp = gimp_test_application_owned_start (dir, &app, FALSE);
+  Witness owner (gimp), application (app), context (gimp->user_context);
+  guint exits = 0, adds = 0;
+  g_signal_connect (gimp, "exit", G_CALLBACK (+[](Gimp *, gboolean, gpointer p) -> gboolean {
+    ++*static_cast<guint *> (p); return FALSE;
+  }), &exits);
+  auto *images = GIMP_CONTAINER (g_object_ref (gimp->images));
+  Witness image_witness (images);
+  const auto added = g_signal_connect (images, "add",
+    G_CALLBACK (+[](GimpContainer *, GimpObject *, gpointer p) {
+      ++*static_cast<guint *> (p);
+    }), &adds);
+  GObject *service = nullptr;
+  std::unique_ptr<Pending> request;
+  std::function<void ()> active = [&] {
+    g_assert_true (gimp_is_restored (gimp));
+    g_assert_nonnull (gimp->painter_httpd);
+    service = G_OBJECT (g_object_ref (gimp->painter_httpd));
+    g_assert_cmpuint (gimp_painter_httpd_port (service), ==, port);
+    request.reset (new Pending (port));
+    request->queued (service);
+    gimp_filter_exit_quit (app);
+  };
+  g_signal_connect_after (app, "activate",
+    G_CALLBACK (+[](GApplication *, gpointer p) {
+      (*static_cast<std::function<void ()> *> (p)) ();
+    }), &active);
+  g_assert_cmpint (g_application_run (app, 0, nullptr), ==, 0);
+  g_assert_nonnull (service);
+  Witness service_witness (service);
+  g_assert_cmpuint (exits, ==, 0);
+  g_assert_true (gimp->painter_httpd == service);
+  g_assert_cmpuint (pending_count (service), ==, 1);
+  g_assert_cmpuint (adds, ==, 0);
+  /* No accepted-exit signal will clean up these initialized subsystems.
+   * Keep contexts/config alive for their normal shutdown entry points. */
+  gimp_plug_in_manager_exit (gimp->plug_in_manager);
+  gimp_extension_manager_exit (gimp->extension_manager);
+  gimp_modules_unload (gimp);
+  gimp_test_application_owned_release (gimp, app);
+  g_assert_true (application.finalized);
+  g_assert_true (gimp->painter_httpd == service);
+  g_assert_cmpuint (pending_count (service), ==, 1);
+  g_object_run_dispose (G_OBJECT (gimp));
+  g_assert_null (gimp->painter_httpd);
+  g_assert_cmpuint (pending_count (service), ==, 0);
+  g_assert_cmpuint (gimp_painter_httpd_port (service), ==, 0);
+  gimp_contexts_exit (gimp);
+  g_object_run_dispose (G_OBJECT (gimp));
+  request->finish ();
+  request.reset ();
+  drain ();
+  g_object_unref (gimp);
+  g_assert_true (owner.finalized);
+  g_assert_true (context.finalized);
+  auto *client = g_socket_client_new ();
+  g_socket_client_set_enable_proxy (client, FALSE);
+  g_socket_client_set_timeout (client, 2);
+  auto *connection = g_socket_client_connect_to_host (client, "127.0.0.1", port,
+                                                     nullptr, &error);
+  g_assert_null (connection);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CONNECTION_REFUSED);
+  g_clear_error (&error); g_object_unref (client);
+  /* No service dispose is called here: shutdown must have come from Gimp. */
+  g_object_unref (service);
+  g_assert_true (service_witness.finalized);
+  drain ();
+  g_assert_cmpuint (exits, ==, 0);
+  g_assert_cmpuint (adds, ==, 0);
+  g_assert_cmpint (gimp_container_get_n_children (images), ==, 0);
+  g_signal_handler_disconnect (images, added);
+  g_object_unref (images);
+  g_assert_true (image_witness.finalized);
+  auto *profile = g_file_new_for_path (dir);
+  remove_fixture_tree (profile); g_object_unref (profile); g_free (dir);
+}
 int main (int argc, char **argv) {
   g_test_init (&argc, &argv, nullptr);
   g_test_add_func ("/application-owned/disabled-accepted-exit", disabled);
   g_test_add_func ("/application-owned/enabled-pending-accepted-exit", enabled_pending);
   g_test_add_func ("/application-owned/enabled-navigation-accepted-exit", enabled_navigation);
+  g_test_add_func ("/application-owned/enabled-direct-dispose", enabled_direct_dispose);
   return g_test_run ();
 }
