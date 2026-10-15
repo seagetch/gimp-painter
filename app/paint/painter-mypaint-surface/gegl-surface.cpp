@@ -279,10 +279,12 @@ bool GeglSurface::draw_dab (float x,float y,float radius,float r,float g,float b
   if (!opaque) return false;
   auto dab=impl_->coverage(x,y,radius,hardness,aspect,angle,grain,contrast,false);
   const auto rect=dab.rect; if (!rect.width || !rect.height) return false;
+  // Capture the current observer after coverage callbacks, before mutation:
+  // copying its callable can throw. Keep it alive through self-replacement.
+  auto notify=impl_->notify;
   if(!impl_->native.legacy){
     if(!impl_->draw_wide(dab,r,g,b,opaque,alpha,lock_alpha,colorize))return false;
     if(!impl_->dirty.width)impl_->dirty=rect;else gegl_rectangle_bounding_box(&impl_->dirty,&impl_->dirty,&rect);
-    auto notify=impl_->notify;
     if(notify)notify(rect);
     return true;
   }
@@ -320,7 +322,6 @@ bool GeglSurface::draw_dab (float x,float y,float radius,float r,float g,float b
     impl_->write(impl_->target.get(),rect,result);
   }
   if (!impl_->dirty.width) impl_->dirty=rect;else gegl_rectangle_bounding_box(&impl_->dirty,&impl_->dirty,&rect);
-  auto notify=impl_->notify;
   if (notify) notify(rect);
   return true;
 }

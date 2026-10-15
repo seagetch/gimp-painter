@@ -212,6 +212,68 @@ void notify_exception_recovery() {
     target_final.expect(1); snapshot_final.expect(1);
   }
 }
+struct CopyObserverState {
+  bool armed = false;
+  unsigned copies = 0, calls = 0;
+};
+struct CopyObserver {
+  std::shared_ptr<CopyObserverState> state;
+  explicit CopyObserver(std::shared_ptr<CopyObserverState> value):state(std::move(value)){}
+  CopyObserver(const CopyObserver& other):state(other.state) {
+    ++state->copies;
+    if(state->armed) throw std::runtime_error("observer copy refused");
+  }
+  void operator()(const GeglRectangle&) const { ++state->calls; }
+};
+std::vector<guchar> pixels(GeglBuffer* target) {
+  const auto* format=gegl_buffer_get_format(target);
+  std::vector<guchar> result(64*babl_format_get_bytes_per_pixel(format));
+  gegl_buffer_get(target,&extent,1,format,result.data(),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+  return result;
+}
+void notify_copy_before_write() {
+  for(bool wide:{false,true}) for(bool nonincremental:{false,true}) for(bool prior:{false,true}) {
+    auto* target=buffer(wide);
+    {
+      GeglSurface surface(target); shape(surface); surface.set_non_incremental(nonincremental);
+      const auto initial=pixels(target); surface.begin_session();
+      if(prior) g_assert_true(surface.draw_dab(2,2,2,0,1,0,1,1));
+      const auto before=pixels(target); const auto dirty=surface.dirty();
+      const auto written=surface.bytes_written();
+      auto state=std::make_shared<CopyObserverState>();
+      surface.set_dirty_callback(CopyObserver(state)); state->armed=true;
+      const auto copies=state->copies;
+      throws<std::runtime_error>([&]{draw(surface);});
+      g_assert_cmpuint(state->copies,==,copies+1); g_assert_cmpuint(state->calls,==,0);
+      // Explicit ordinary callable-copy refusal, never failed allocation or OOM.
+      // Keep the red test recoverable so every bounded case releases its owners.
+      if(pixels(target)!=before || surface.bytes_written()!=written ||
+         !gegl_rectangle_equal(&surface.dirty(),&dirty)) {
+        g_test_message("observer copy changed pixels/write count/dirty: wide=%d floating=%d prior=%d",wide,nonincremental,prior);
+        g_test_fail();
+      }
+      state->armed=false; surface.set_dirty_callback({}); surface.cancel_session();
+      g_assert_true(pixels(target)==initial);
+      surface.begin_session(); g_assert_true(draw(surface)); surface.cancel_session();
+      g_assert_true(pixels(target)==initial);
+    }
+    g_object_unref(target);
+  }
+}
+void coverage_replaces_notify() {
+  for(bool wide:{false,true}) for(bool nonincremental:{false,true}) {
+    auto* target=buffer(wide); GeglSurface surface(target); g_object_unref(target);
+    unsigned old_calls=0,new_calls=0;
+    surface.set_dirty_callback([&](const GeglRectangle&){++old_calls;});
+    surface.set_shape_provider([&](float,float,float,float) {
+      surface.set_dirty_callback([&](const GeglRectangle&){++new_calls;});
+      return ShapeMask{3,3,std::vector<guchar>(9,255)};
+    });
+    surface.set_non_incremental(nonincremental); surface.begin_session();
+    g_assert_true(draw(surface)); g_assert_cmpuint(old_calls,==,0); g_assert_cmpuint(new_calls,==,1);
+    surface.set_dirty_callback({}); surface.cancel_session(); sample(surface,false);
+  }
+}
 void active_destructor_providers() {
   unsigned destroyed=0; Finalization target_final, snapshot_final;
   auto* target=buffer(false); auto* snapshot=gegl_buffer_dup(target);
@@ -238,5 +300,7 @@ int main(int argc,char**argv) {
   g_test_add_func("/region-lifetime/texture-self-clear",texture_self_clear);
   g_test_add_func("/region-lifetime/notify-self-clear",notify_self_clear);
   g_test_add_func("/region-lifetime/notify-exception-recovery",notify_exception_recovery);
+  g_test_add_func("/region-lifetime/notify-copy-before-write",notify_copy_before_write);
+  g_test_add_func("/region-lifetime/coverage-replaces-notify",coverage_replaces_notify);
   const int result=g_test_run(); gegl_exit(); return result;
 }
