@@ -1,0 +1,72 @@
+{
+  "brushmark_present": false,
+  "texture_present": false,
+  "non_incremental": false,
+  "stroke_opacity": 1,
+  "layer_offset": [
+    0,
+    0
+  ],
+  "alpha_lock": false,
+  "foreground": [
+    0.12,
+    0.24,
+    0.7,
+    1
+  ],
+  "background": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "brushmark": null,
+  "texture": null,
+  "layer_mask": null,
+  "selection": {
+    "empty": true,
+    "effective_mask": null,
+    "width": 96,
+    "height": 80,
+    "pixel_format": "Y8",
+    "bytes": {
+      "path": "pen/selection.u8",
+      "sha256": "f6e28ad1753237d42be72be187a88f09a269097eeda24bcf12908db6bd361246"
+    }
+  },
+  "sample_source": "current drawable RGBA tiles; identical to initial_pixels before first event, subsequently affected by earlier dabs",
+  "brush_resource": {
+    "path": "data/mypaint-brushes/classic/pen.myb",
+    "git_blob": "605789620961946efc844da9f6360e4010ccfa6a",
+    "sha256": "da34070ad1d6e3b32e5bf4bd0aefd1b7b2922eb9cc889d9808ee52023a384f86",
+    "bytes": "5869",
+    "kind": "brush",
+    "myb_version": "3",
+    "license_evidence": "LICENSE;COPYING",
+    "bytes_artifact": {
+      "path": "pen/brush.myb",
+      "sha256": "da34070ad1d6e3b32e5bf4bd0aefd1b7b2922eb9cc889d9808ee52023a384f86"
+    }
+  },
+  "preview_asset": {
+    "source_path": "data/mypaint-brushes/classic/pen_prev.png",
+    "artifact": {
+      "path": "pen/brush-preview.png",
+      "sha256": "2b1f2870bfaeeb11487b5e1ebf79c829f4bda483e328c5e7b05b84d3e475f18a"
+    },
+    "role": "Loaded by original brush loader for icon only; not a stroke geometry or sampling input"
+  },
+  "brush_shape": "analytic MyPaint hardness/ellipse dabs; radius, aspect, angle evaluated by original engine per dab",
+  "transform_phase": "no UI transform; all coords supplied in drawable pixels; drawable offset 0,0; no external pattern phase or brushmark transform",
+  "initial_document": {
+    "path": "pen/initial.xcf",
+    "sha256": "0989a370ca1472cd34438aaf621a5534da208d559dfac5606a576feb319b1d3b"
+  },
+  "pixel_layout": "row-major top-to-bottom, left-to-right; RGBA8 straight alpha, 96*4=384-byte rows, no padding",
+  "color_space": "untagged legacy RGB8 drawable numeric channels; no ICC profile attached or color transform requested; no claim of calibrated display color",
+  "runtime": {
+    "utc": "2026-10-15T00:43:26Z",
+    "glib": "2.84.4",
+    "num_processors": 9
+  }
+}

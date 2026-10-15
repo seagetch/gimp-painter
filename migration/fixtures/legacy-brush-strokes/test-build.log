@@ -1,0 +1,39 @@
+make: Entering directory '/workspace/scratch/5b5281e79681/legacy-strokes-20261015/gimp/app/tests'
+  CC       test-xcf.o
+test-xcf.c: In function ‘main’:
+test-xcf.c:983:1: warning: ‘g_thread_init’ is deprecated [-Wdeprecated-declarations]
+  983 | int main(int argc,char **argv){Gimp *gimp;g_thread_init(NULL);g_type_init();gimp=gimp_init_for_testing();if(g_getenv("STROKE_REOPEN")){GimpImage *im=gimp_test_load_image(gimp,g_getenv("STROKE_REOPEN"));g_assert(im);stroke_capture_verify(im);}else stroke_capture_run(gimp);return 0;}
+      | ^~~
+In file included from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib.h:115,
+                 from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib/gprintf.h:23,
+                 from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib/gstdio.h:24,
+                 from test-xcf.c:20:
+/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib/deprecated/gthread.h:271:10: note: declared here
+  271 | void     g_thread_init                   (gpointer vtable);
+      |          ^~~~~~~~~~~~~
+test-xcf.c:983:1: warning: ‘g_type_init’ is deprecated [-Wdeprecated-declarations]
+  983 | int main(int argc,char **argv){Gimp *gimp;g_thread_init(NULL);g_type_init();gimp=gimp_init_for_testing();if(g_getenv("STROKE_REOPEN")){GimpImage *im=gimp_test_load_image(gimp,g_getenv("STROKE_REOPEN"));g_assert(im);stroke_capture_verify(im);}else stroke_capture_run(gimp);return 0;}
+      | ^~~
+In file included from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/glib-object.h:24,
+                 from /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/include/gegl-0.3/gegl.h:22,
+                 from test-xcf.c:22:
+/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/deps/root/usr/include/glib-2.0/gobject/gtype.h:737:23: note: declared here
+  737 | void                  g_type_init                    (void);
+      |                       ^~~~~~~~~~~
+test-xcf.c: At top level:
+test-xcf.c:236:1: warning: ‘write_and_read_gimp_2_8_format’ defined but not used [-Wunused-function]
+  236 | write_and_read_gimp_2_8_format (gconstpointer data)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+test-xcf.c:203:1: warning: ‘load_gimp_2_6_file’ defined but not used [-Wunused-function]
+  203 | load_gimp_2_6_file (gconstpointer data)
+      | ^~~~~~~~~~~~~~~~~~
+test-xcf.c:185:1: warning: ‘write_and_read_gimp_2_6_format_unusual’ defined but not used [-Wunused-function]
+  185 | write_and_read_gimp_2_6_format_unusual (gconstpointer data)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+test-xcf.c:166:1: warning: ‘write_and_read_gimp_2_6_format’ defined but not used [-Wunused-function]
+  166 | write_and_read_gimp_2_6_format (gconstpointer data)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  CCLD     test-xcf
+make: Leaving directory '/workspace/scratch/5b5281e79681/legacy-strokes-20261015/gimp/app/tests'

@@ -1,0 +1,454 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "legacy-runtime-capture",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "capture_boundary": "GimpMypaintCore::stroke_to-before-Brush::stroke_to",
+  "provenance": {
+    "operator": "Codex isolated original-source test harness; synthetic engine-boundary inputs",
+    "captured_utc": "2026-10-15T00:43:26Z",
+    "build_manifest": {
+      "path": "build-manifest.json",
+      "sha256": "396aa3819ef733384b489c892f8f6bc790ab019566697f8e462b54fa3c817b00"
+    },
+    "instrumentation_patch": {
+      "path": "capture-source.patch",
+      "sha256": "bce04c95e8d2fbbe9e76fa16291fb421f7c7dfdedc69c633e7feac6424ce7ddc"
+    },
+    "capture_log": {
+      "path": "textured_ink/capture.log",
+      "sha256": "382044eac442b9840bb4c9c70f9eb51eb230f51b4c0fc46dd611ae1ae34b6f18"
+    }
+  },
+  "brush": {
+    "source_path": "data/mypaint-brushes/classic/textured_ink.myb",
+    "sha256": "6816ee1192182586ca338f8086a0c6ae6a94a1cee9951b6006b60376b0000c7b",
+    "effective_settings": {
+      "path": "textured_ink/effective-settings.json",
+      "sha256": "9cd35686392b3fe5ba937ae881e9bfba26ca3da49076ad0904047abb92f07d08"
+    }
+  },
+  "surface": {
+    "width": 96,
+    "height": 80,
+    "pixel_format": "RGBA8",
+    "color_space": "untagged legacy RGB8 drawable numeric channels; no ICC profile attached or color transform requested; no claim of calibrated display color",
+    "alpha_convention": "straight",
+    "initial_pixels": {
+      "path": "textured_ink/initial.rgba",
+      "sha256": "149acd30e750648bb9d1a52c38ff45f6891f63dc8a447e5716f67a34e3a7a7a9"
+    },
+    "resource_manifest": {
+      "path": "textured_ink/resources.json",
+      "sha256": "f730d0314bc059a9bf0d4b43c1c5be6457b540e8093c775beb7926a3da685c2c"
+    }
+  },
+  "engine_state": {
+    "reset_requested": true,
+    "stroke_total_painting_time": 0,
+    "stroke_current_idling_time": 0,
+    "state_f32_bits": [
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000"
+    ],
+    "state_names": [
+      "STATE_X",
+      "STATE_Y",
+      "STATE_PRESSURE",
+      "STATE_DIST",
+      "STATE_ACTUAL_RADIUS",
+      "STATE_SMUDGE_RA",
+      "STATE_SMUDGE_GA",
+      "STATE_SMUDGE_BA",
+      "STATE_SMUDGE_A",
+      "STATE_LAST_GETCOLOR_R",
+      "STATE_LAST_GETCOLOR_G",
+      "STATE_LAST_GETCOLOR_B",
+      "STATE_LAST_GETCOLOR_A",
+      "STATE_LAST_GETCOLOR_RECENTNESS",
+      "STATE_ACTUAL_X",
+      "STATE_ACTUAL_Y",
+      "STATE_NORM_DX_SLOW",
+      "STATE_NORM_DY_SLOW",
+      "STATE_NORM_SPEED1_SLOW",
+      "STATE_NORM_SPEED2_SLOW",
+      "STATE_STROKE",
+      "STATE_STROKE_STARTED",
+      "STATE_CUSTOM_INPUT",
+      "STATE_RNG_SEED",
+      "STATE_ACTUAL_ELLIPTICAL_DAB_RATIO",
+      "STATE_ACTUAL_ELLIPTICAL_DAB_ANGLE",
+      "STATE_DIRECTION_DX",
+      "STATE_DIRECTION_DY",
+      "STATE_DECLINATION",
+      "STATE_ASCENSION"
+    ],
+    "rng_seed_uint32": 0
+  },
+  "events": [
+    {
+      "sequence": 0,
+      "monotonic_ns": 0,
+      "dtime_s": 0.016,
+      "phase": "begin",
+      "modifier_state": 0,
+      "coords": {
+        "x": 12,
+        "y": 40,
+        "pressure": 0.15,
+        "xtilt": -0.3,
+        "ytilt": 0.2,
+        "wheel": 0,
+        "velocity": 0.2,
+        "direction": 0
+      },
+      "engine_split_after": true
+    },
+    {
+      "sequence": 1,
+      "monotonic_ns": 105000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 15.5,
+        "y": 44.114773689465416,
+        "pressure": 0.36943718658077074,
+        "xtilt": -0.27,
+        "ytilt": 0.18000000000000002,
+        "wheel": 0.02,
+        "velocity": 0.21500000000000002,
+        "direction": 0.04
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 2,
+      "monotonic_ns": 389000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 19,
+        "y": 47.73061224685229,
+        "pressure": 0.48480708302164943,
+        "xtilt": -0.24,
+        "ytilt": 0.16,
+        "wheel": 0.04,
+        "velocity": 0.23,
+        "direction": 0.08
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 3,
+      "monotonic_ns": 547000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 22.5,
+        "y": 50.4090787071282,
+        "pressure": 0.5921809058702812,
+        "xtilt": -0.21,
+        "ytilt": 0.14,
+        "wheel": 0.06,
+        "velocity": 0.245,
+        "direction": 0.12
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 4,
+      "monotonic_ns": 671000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 26,
+        "y": 51.82539675986152,
+        "pressure": 0.6879021683702622,
+        "xtilt": -0.18,
+        "ytilt": 0.12000000000000001,
+        "wheel": 0.08,
+        "velocity": 0.26,
+        "direction": 0.16
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 5,
+      "monotonic_ns": 777000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 29.5,
+        "y": 51.80783136248724,
+        "pressure": 0.7687111977321557,
+        "xtilt": -0.15,
+        "ytilt": 0.1,
+        "wheel": 0.1,
+        "velocity": 0.275,
+        "direction": 0.2
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 6,
+      "monotonic_ns": 874000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 33,
+        "y": 50.35851239978649,
+        "pressure": 0.8318561393807905,
+        "xtilt": -0.12,
+        "ytilt": 0.08000000000000002,
+        "wheel": 0.12,
+        "velocity": 0.29000000000000004,
+        "direction": 0.24
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 7,
+      "monotonic_ns": 968000,
+      "dtime_s": 0,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 33,
+        "y": 50.35851239978649,
+        "pressure": 0.8751866680623324,
+        "xtilt": -0.09,
+        "ytilt": 0.06,
+        "wheel": 0.14,
+        "velocity": 0.305,
+        "direction": 0.28
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 8,
+      "monotonic_ns": 1020000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 40,
+        "y": 44.01985780187086,
+        "pressure": 0.8972272145917725,
+        "xtilt": -0.06,
+        "ytilt": 0.04000000000000001,
+        "wheel": 0.16,
+        "velocity": 0.32,
+        "direction": 0.32
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 9,
+      "monotonic_ns": 1144000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 43.5,
+        "y": 39.89911303159422,
+        "pressure": 0.8972272145917725,
+        "xtilt": -0.02999999999999997,
+        "ytilt": 0.020000000000000018,
+        "wheel": 0.18,
+        "velocity": 0.335,
+        "direction": 0.36
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 10,
+      "monotonic_ns": 1261000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 47,
+        "y": 35.79060126772456,
+        "pressure": 0.8751866680623324,
+        "xtilt": 0,
+        "ytilt": 0,
+        "wheel": 0.2,
+        "velocity": 0.35,
+        "direction": 0.4
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 11,
+      "monotonic_ns": 1572000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 50.5,
+        "y": 32.19249835521799,
+        "pressure": 0.8318561393807907,
+        "xtilt": 0.02999999999999997,
+        "ytilt": -0.01999999999999999,
+        "wheel": 0.22,
+        "velocity": 0.365,
+        "direction": 0.44
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 12,
+      "monotonic_ns": 1695000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 54,
+        "y": 29.541090731036945,
+        "pressure": 0.7687111977321558,
+        "xtilt": 0.06,
+        "ytilt": -0.03999999999999998,
+        "wheel": 0.24,
+        "velocity": 0.38,
+        "direction": 0.48
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 13,
+      "monotonic_ns": 1804000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 57.5,
+        "y": 28.15787369796116,
+        "pressure": 0.6879021683702622,
+        "xtilt": 0.09000000000000002,
+        "ytilt": -0.06,
+        "wheel": 0.26,
+        "velocity": 0.395,
+        "direction": 0.52
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 14,
+      "monotonic_ns": 1903000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 61,
+        "y": 28.21056864850801,
+        "pressure": 0.5921809058702814,
+        "xtilt": 0.12,
+        "ytilt": -0.08000000000000002,
+        "wheel": 0.28,
+        "velocity": 0.41000000000000003,
+        "direction": 0.56
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 15,
+      "monotonic_ns": 1994000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 64.5,
+        "y": 29.692786078880896,
+        "pressure": 0.48480708302164965,
+        "xtilt": 0.14999999999999997,
+        "ytilt": -0.09999999999999998,
+        "wheel": 0.3,
+        "velocity": 0.425,
+        "direction": 0.6
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 16,
+      "monotonic_ns": 2093000,
+      "dtime_s": 0.016,
+      "phase": "motion",
+      "modifier_state": 0,
+      "coords": {
+        "x": 68,
+        "y": 32.42480034553214,
+        "pressure": 0.36943718658077074,
+        "xtilt": 0.18,
+        "ytilt": -0.12,
+        "wheel": 0.32,
+        "velocity": 0.44,
+        "direction": 0.64
+      },
+      "engine_split_after": false
+    },
+    {
+      "sequence": 17,
+      "monotonic_ns": 2192000,
+      "dtime_s": 0.016,
+      "phase": "end",
+      "modifier_state": 0,
+      "coords": {
+        "x": 71.5,
+        "y": 36.075342221563105,
+        "pressure": 0,
+        "xtilt": 0.21000000000000002,
+        "ytilt": -0.14,
+        "wheel": 0.34,
+        "velocity": 0.455,
+        "direction": 0.68
+      },
+      "engine_split_after": false
+    }
+  ],
+  "results": [
+    {
+      "checkpoint_sequence": 17,
+      "pixels": {
+        "path": "textured_ink/final.rgba",
+        "sha256": "545b8bf3e56c08277c9edfbe1ae98881b6f21975688e5e87e13f790384e170a0"
+      },
+      "editable_document": {
+        "path": "textured_ink/final.xcf",
+        "sha256": "91871245ea705754ad32d77dbb55390e727bc7d25510f0766e002a29953ddf3f"
+      }
+    }
+  ]
+}

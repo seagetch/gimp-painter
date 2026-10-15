@@ -2,8 +2,11 @@
 
 `stroke-record.schema.json` specifies a JSON document for one complete stroke.
 It preserves source inputs, engine state, assets and expected output separately.
-The format and validator are ready; no legacy capture or replay adapter has run.
-The unit tests construct explicitly synthetic format examples in memory only.
+The format and validator are ready. The bounded WBS 02.010 package in
+`../legacy-brush-strokes/` records three bundled brushes executed by the pinned
+old engine with explicitly synthetic, post-transform input events. These are
+measured runtime outputs, distinct from the synthetic in-memory format tests.
+No physical tablet/UI-path capture or imported-event replay adapter has run.
 
 ## Capture point and units
 

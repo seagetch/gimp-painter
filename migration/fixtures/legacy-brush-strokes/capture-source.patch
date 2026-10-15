@@ -1,0 +1,292 @@
+diff --git a/app/base/glib-cxx-impl.hpp b/app/base/glib-cxx-impl.hpp
+index a2ad35e3..23d6faed 100644
+--- a/app/base/glib-cxx-impl.hpp
++++ b/app/base/glib-cxx-impl.hpp
+@@ -517,7 +517,7 @@ gint NewGClass<name, CStructs, Impl, IFaces...>::private_offset = 0;
+ 
+ template <char const* name, typename CStructs, typename Impl, typename... IFaces>
+ inline GType NewGClass<name, CStructs, Impl, IFaces...>::get_type (void) {
+-  static volatile gsize g_define_type_id__volatile = 0;
++  static gsize g_define_type_id__volatile = 0;
+   if (g_once_init_enter (&g_define_type_id__volatile)) {
+     GType g_define_type_id =
+         g_type_register_static_simple (CStructs::ParentTraits::get_type(),
+diff --git a/app/core/gimpfilterlayer.cpp b/app/core/gimpfilterlayer.cpp
+index 9141c8c7..7be38b6e 100644
+--- a/app/core/gimpfilterlayer.cpp
++++ b/app/core/gimpfilterlayer.cpp
+@@ -769,6 +769,11 @@ void GLib::FilterLayer::end()
+   }
+ 
+   notify_filter_end();
++  if (g_getenv("GIMP_PAINTER_CAPTURE_FILTER")) {
++    gint n = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(g_object), "migration-capture-completions"));
++    g_object_set_data(G_OBJECT(g_object), "migration-capture-completions", GINT_TO_POINTER(n + 1));
++    g_print("FILTER_COMPLETE time_us=%" G_GINT64_FORMAT " name=%s\n", g_get_monotonic_time(), gimp_object_get_name(g_object));
++  }
+ }
+ 
+ gboolean GLib::FilterLayer::is_active()
+@@ -1207,3 +1212,11 @@ gimp_filter_layer_mark_as_loaded (GimpFilterLayer* layer)
+ {
+   FilterLayerInterface::cast(layer)->mark_as_loaded ();
+ }
++
++/* Read-only capture instrumentation, excluded from the reference app binary. */
++extern "C" gint gimp_filter_layer_capture_pending(GimpFilterLayer* layer)
++{
++  auto* impl = dynamic_cast<GLib::FilterLayer*>(FilterLayerInterface::cast(layer));
++  return (impl->is_waiting_to_be_processed() ? 1 : 0) |
++         (impl->waiting_for_runner ? 2 : 0);
++}
+diff --git a/app/display/gimpdisplayshell-callbacks.c b/app/display/gimpdisplayshell-callbacks.c
+index 79ebbff0..b7626470 100644
+--- a/app/display/gimpdisplayshell-callbacks.c
++++ b/app/display/gimpdisplayshell-callbacks.c
+@@ -35,6 +35,7 @@
+ #include "gimpcanvasitem.h"
+ #include "gimpdisplay.h"
+ #include "gimpdisplayshell.h"
++#include "gimpdisplayshell-overlays.h"
+ #include "gimpdisplayshell-appearance.h"
+ #include "gimpdisplayshell-callbacks.h"
+ #include "gimpdisplayshell-draw.h"
+diff --git a/app/display/gimpimagewindow.c b/app/display/gimpimagewindow.c
+index 04ffaff8..af370bab 100644
+--- a/app/display/gimpimagewindow.c
++++ b/app/display/gimpimagewindow.c
+@@ -62,6 +62,8 @@
+ #include "gimpdisplay-foreach.h"
+ #include "gimpcanvas.h"
+ #include "gimpdisplayshell.h"
++#include "gimpdisplayshell-overlays.h"
++#include "gimpdisplayshell-rotate.h"
+ #include "gimpdisplayshell-appearance.h"
+ #include "gimpdisplayshell-close.h"
+ #include "gimpdisplayshell-scroll.h"
+diff --git a/app/paint/gimpmypaintcore.cpp b/app/paint/gimpmypaintcore.cpp
+index 0677f863..1d9ce258 100644
+--- a/app/paint/gimpmypaintcore.cpp
++++ b/app/paint/gimpmypaintcore.cpp
+@@ -197,11 +197,21 @@ void GimpMypaintCore::stroke_to (GimpDrawable* drawable,
+   
+   stroke->record(dtime, coords);
+ 
++
++  FILE *capture_file=NULL;
++  if(g_getenv("STROKE_CAPTURE_DIR")) {
++    gchar *p=g_build_filename(g_getenv("STROKE_CAPTURE_DIR"),"boundary.jsonl",NULL); capture_file=fopen(p,"a");g_free(p);
++    fprintf(capture_file,"{\"sequence\":%s,\"monotonic_ns\":%lld,\"dtime_s\":%.17g,\"phase\":\"%s\",\"modifier_state\":%s,\"coords\":{\"x\":%.17g,\"y\":%.17g,\"pressure\":%.17g,\"xtilt\":%.17g,\"ytilt\":%.17g,\"wheel\":%.17g,\"velocity\":%.17g,\"direction\":%.17g},\"snapshot\":",g_getenv("STROKE_SEQUENCE"),(long long)g_get_monotonic_time()*1000,dtime,g_getenv("STROKE_PHASE"),g_getenv("STROKE_MODIFIERS"),coords->x,coords->y,coords->pressure,coords->xtilt,coords->ytilt,coords->wheel,coords->velocity,coords->direction);
++    brush->capture_snapshot(capture_file);
++    GimpRGB fg,bg;gimp_context_get_foreground(GIMP_CONTEXT(options),&fg);surface->get_bg_color(&bg);gdouble opacity;g_object_get(options,"stroke_opacity",&opacity,NULL);
++    fprintf(capture_file,",\"surface\":{\"brushmark_present\":%s,\"texture_present\":%s,\"non_incremental\":%s,\"stroke_opacity\":%.17g,\"layer_offset\":[%d,%d],\"alpha_lock\":%s,\"foreground\":[%.17g,%.17g,%.17g,%.17g],\"background\":[%.17g,%.17g,%.17g,%.17g]}",surface->get_brushmark()?"true":"false",surface->get_texture()?"true":"false",surface->get_floating_stroke()?"true":"false",opacity,gimp_item_get_offset_x(GIMP_ITEM(drawable)),gimp_item_get_offset_y(GIMP_ITEM(drawable)),gimp_layer_get_lock_alpha(GIMP_LAYER(drawable))?"true":"false",fg.r,fg.g,fg.b,fg.a,bg.r,bg.g,bg.b,bg.a);
++  }
+   /// from Layer#stroke_to
+   split = brush->stroke_to(surface, coords->x, coords->y, 
+                            coords->pressure, 
+                            coords->xtilt, coords->ytilt, dtime);
+   
++  if(capture_file){fprintf(capture_file,",\"engine_split_after\":%s}\n",split?"true":"false");fclose(capture_file);}
+   if (split)
+     split_stroke();
+ }
+diff --git a/app/paint/mypaintbrush-brush.hpp b/app/paint/mypaintbrush-brush.hpp
+index 87af9fbd..8cf5bfc1 100644
+--- a/app/paint/mypaintbrush-brush.hpp
++++ b/app/paint/mypaintbrush-brush.hpp
+@@ -180,6 +180,13 @@ public:
+     g_rand_free (rng); rng = NULL;
+   }
+ 
++
++  void capture_snapshot(FILE *f) {
++    fprintf(f,"{\"reset_requested\":%s,\"stroke_total_painting_time\":%.17g,\"stroke_current_idling_time\":%.17g,\"state_f32_bits\":[",reset_requested?"true":"false",stroke_total_painting_time,stroke_current_idling_time);
++    for(int i=0;i<STATE_COUNT;i++){guint32 bits;memcpy(&bits,&states[i],4);fprintf(f,"%s\"%08x\"",i?",":"",bits);}fprintf(f,"],\"settings\":[");
++    for(int i=0;i<BRUSH_SETTINGS_COUNT;i++){fprintf(f,"%s{\"index\":%d,\"base_value\":%.17g,\"inputs\":[",i?",":"",i,(double)settings[i]->base_value);for(int j=0;j<INPUT_COUNT;j++){fprintf(f,"%s[",j?",":"");for(int k=0;k<settings[i]->get_n(j);k++){float x,y;settings[i]->get_point(j,k,&x,&y);fprintf(f,"%s[%.17g,%.17g]",k?",":"",(double)x,(double)y);}fprintf(f,"]");}fprintf(f,"]}");}fprintf(f,"]}");
++  }
++
+   void reset()
+   {
+     reset_requested = true;
+@@ -761,7 +768,10 @@ public:
+       dtime = 0.0001;
+     }
+ 
+-    g_rand_set_seed (rng, states[STATE_RNG_SEED]);
++    const guint32 capture_actual_seed = states[STATE_RNG_SEED];
++    g_rand_set_seed (rng, capture_actual_seed);
++    if (g_getenv("STROKE_CAPTURE_DIR")) { gchar *p=g_build_filename(g_getenv("STROKE_CAPTURE_DIR"),"seeds.jsonl",NULL);FILE *f=fopen(p,"a");fprintf(f,"{\"sequence\":%s,\"actual_seed_uint32\":%u}\n",g_getenv("STROKE_SEQUENCE"),capture_actual_seed);fclose(f);g_free(p); }
++
+ 
+     { // calculate the actual "virtual" cursor position
+ 
+diff --git a/app/presets/preset-factory-gui.cpp b/app/presets/preset-factory-gui.cpp
+index c2f8bae6..d3219c6f 100644
+--- a/app/presets/preset-factory-gui.cpp
++++ b/app/presets/preset-factory-gui.cpp
+@@ -206,7 +206,7 @@ PresetGuiFactory::restore (Gimp               *gimp,
+     g_print("PresetGuiFactory::on_restore::end\n");
+ 
+     // Action group entry initialization
+-    PresetGuiConfig::ActionGroupEntry* action_group_entry = gui_config->get_action_group_entry();
++    auto* action_group_entry = gui_config->get_action_group_entry();
+ 
+     if (action_group_entry)
+       gimp_action_factory_group_register (global_action_factory,
+diff --git a/app/signals.c b/app/signals.c
+index 57b3b27f..a04c5a6b 100644
+--- a/app/signals.c
++++ b/app/signals.c
+@@ -18,6 +18,9 @@
+ #include "config.h"
+ 
+ #include <signal.h>
++#ifdef HAVE_EXECINFO_H
++#include <execinfo.h>
++#endif
+ 
+ #include <glib-object.h>
+ 
+diff --git a/app/tests/test-xcf.c b/app/tests/test-xcf.c
+index dc071cb1..666a6e16 100644
+--- a/app/tests/test-xcf.c
++++ b/app/tests/test-xcf.c
+@@ -977,40 +977,7 @@ gimp_assert_mainimage (GimpImage *image,
+  *  - Make sure that the information put into a #GimpImage is not lost
+  *    when the #GimpImage is written to a file and then read again
+  **/
+-int
+-main (int    argc,
+-      char **argv)
+-{
+-  Gimp *gimp;
+-  int   result;
+-
+-  g_thread_init (NULL);
+-  g_type_init ();
+-  g_test_init (&argc, &argv, NULL);
+-
+-  gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
+-                                       "app/tests/gimpdir");
+-
+-  /* We share the same application instance across all tests. We need
+-   * the GUI variant for the file procs
+-   */
+-  gimp = gimp_init_for_testing ();
+ 
+-  /* Add tests */
+-  ADD_TEST (write_and_read_gimp_2_6_format);
+-  ADD_TEST (write_and_read_gimp_2_6_format_unusual);
+-  ADD_TEST (load_gimp_2_6_file);
+-  ADD_TEST (write_and_read_gimp_2_8_format);
+-
+-  /* Don't write files to the source dir */
+-  gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
+-                                       "app/tests/gimpdir-output");
+-
+-  /* Run the tests */
+-  result = g_test_run ();
+-
+-  /* Exit so we don't break script-fu plug-in wire */
+-  gimp_exit (gimp, TRUE);
+-
+-  return result;
+-}
++extern void stroke_capture_run(Gimp*);
++extern void stroke_capture_verify(GimpImage*);
++int main(int argc,char **argv){Gimp *gimp;g_thread_init(NULL);g_type_init();gimp=gimp_init_for_testing();if(g_getenv("STROKE_REOPEN")){GimpImage *im=gimp_test_load_image(gimp,g_getenv("STROKE_REOPEN"));g_assert(im);stroke_capture_verify(im);}else stroke_capture_run(gimp);return 0;}
+diff --git a/configure.ac b/configure.ac
+index f47f24a1..fb1fdda8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1747,11 +1747,11 @@ AC_ARG_WITH(linux-input, [  --without-linux-input   don't build linux input even
+ 
+ have_linux_input="no (linux input support disabled)"
+ if test "x$with_linux_input" != "xno"; then
+-  AC_CHECK_HEADER(linux/input.h,
+-	AC_CHECK_DECL(KEY_OK,
+-		have_linux_input=yes,
+-		have_linux_input="no (needs Linux 2.6)",
+-		[#include <linux/input.h>]))
++  AC_CHECK_HEADER([linux/input.h],
++        [AC_CHECK_DECL([KEY_OK],
++                [have_linux_input=yes],
++                [have_linux_input="no (needs Linux 2.6)"],
++                [#include <linux/input.h>])])
+ fi
+ 
+ AM_CONDITIONAL(HAVE_LINUX_INPUT, test "x$have_linux_input" = xyes)
+diff --git a/app/tests/stroke-capture.cpp b/app/tests/stroke-capture.cpp
+new file mode 100644
+index 0000000..c62129f
+--- /dev/null
++++ b/app/tests/stroke-capture.cpp
+@@ -0,0 +1,68 @@
++#include <type_traits>
++#include <new>
++#include <glib-object.h>
++#include "base/delegators.hpp"
++#include "base/glib-cxx-types.hpp"
++__DECLARE_GTK_CLASS__(_GObject, G_TYPE_OBJECT);
++#include "base/glib-cxx-impl.hpp"
++#include "base/glib-cxx-utils.hpp"
++extern "C" {
++#include "config.h"
++#include <gegl.h>
++#include <gtk/gtk.h>
++#include "libgimpmath/gimpmath.h"
++#include "core/core-types.h"
++#include "core/gimp.h"
++#include "core/gimpcontext.h"
++#include "core/gimpcontainer.h"
++#include "core/gimpimage.h"
++#include "core/gimplayer.h"
++#include "core/gimpdrawable.h"
++#include "core/gimppickable.h"
++#include "core/gimpchannel.h"
++#include "core/gimpchannel-select.h"
++#include "core/gimp-edit.h"
++#include "core/gimpselection.h"
++#include "core/gimpmypaintbrush-load.h"
++#include "file/file-save.h"
++#include "file/file-procedure.h"
++#include "plug-in/gimppluginmanager.h"
++#include "paint/paint-types.h"
++}
++#include "paint/gimpmypaintcore.hpp"
++#include "core/gimpmypaintbrush-private.hpp"
++static gchar *path(const char *name){return g_build_filename(g_getenv("STROKE_CAPTURE_DIR"),name,NULL);}
++static void pixels(GimpPickable *p,int bpp,const char *name){guchar buf[96*80*4];GError *e=NULL;for(int y=0;y<80;y++)for(int x=0;x<96;x++)g_assert(gimp_pickable_get_pixel_at(p,x,y,buf+(y*96+x)*bpp));gchar *f=path(name);g_assert(g_file_set_contents(f,(char*)buf,96*80*bpp,&e));g_assert_no_error(e);g_free(f);}
++static void save(Gimp *g,GimpImage *im,const char *name){gchar *f=path(name);GError *e=NULL;GimpPlugInProcedure *p=file_procedure_find(g->plug_in_manager->save_procs,f,&e);g_assert_no_error(e);g_assert_cmpint(file_save(g,im,NULL,f,p,GIMP_RUN_NONINTERACTIVE,FALSE,FALSE,FALSE,&e),==,GIMP_PDB_SUCCESS);g_assert_no_error(e);g_free(f);}
++extern "C" void stroke_capture_run(Gimp *g){
++ guint processors=0;g_object_get(g->config,"num-processors",&processors,NULL);GDateTime *now=g_date_time_new_now_utc();gchar *stamp=g_date_time_format(now,"%Y-%m-%dT%H:%M:%SZ");g_print("CAPTURE_RUNTIME utc=%s glib=%u.%u.%u processors=%u\n",stamp,glib_major_version,glib_minor_version,glib_micro_version,processors);g_free(stamp);g_date_time_unref(now);
++ GError *error=NULL;GimpContext *context=gimp_get_user_context(g);
++ GList *loaded=gimp_mypaint_brush_load(context,g_getenv("STROKE_BRUSH"),&error);g_assert_no_error(error);g_assert(loaded);
++ GimpMypaintOptions *options=GIMP_MYPAINT_OPTIONS(g_object_new(GIMP_TYPE_MYPAINT_OPTIONS,"gimp",g,NULL));
++ gimp_context_set_mypaint_brush(GIMP_CONTEXT(options),GIMP_MYPAINT_BRUSH(loaded->data));
++ GimpRGB foreground={.12,.24,.7,1},background={1,1,1,1},paper={.92,.88,.8,1};
++ gimp_context_set_foreground(GIMP_CONTEXT(options),&foreground);gimp_context_set_background(GIMP_CONTEXT(options),&background);
++ GimpImage *im=gimp_create_image(g,96,80,GIMP_RGB,FALSE);GimpLayer *layer=gimp_layer_new(im,96,80,GIMP_RGBA_IMAGE,"original brush output",1,GIMP_NORMAL_MODE);g_assert(gimp_image_add_layer(im,layer,NULL,0,FALSE));gimp_drawable_fill(GIMP_DRAWABLE(layer),&paper,NULL);
++ GimpRGB inset={.8,.25,.15,1};gimp_context_set_foreground(context,&inset);
++ gimp_channel_select_rectangle(gimp_image_get_mask(im),40,0,56,80,GIMP_CHANNEL_OP_REPLACE,FALSE,0,0,FALSE);
++ g_assert(gimp_edit_fill(im,GIMP_DRAWABLE(layer),context,GIMP_FOREGROUND_FILL));gimp_channel_clear(gimp_image_get_mask(im),NULL,FALSE);
++ pixels(GIMP_PICKABLE(layer),4,"initial.rgba");pixels(GIMP_PICKABLE(gimp_image_get_mask(im)),1,"selection.u8");save(g,im,"initial.xcf");
++ GimpMypaintBrushPrivate *priv=(GimpMypaintBrushPrivate*)options->brush->p;
++ gchar *p=path("options.json");FILE *f=fopen(p,"w");fprintf(f,"{\"switches\":[");for(int i=BRUSH_BOOL_BASE;i<BRUSH_BOOL_END;i++)fprintf(f,"%s%s",i==BRUSH_BOOL_BASE?"":",",priv->get_bool_value(i)?"true":"false");fprintf(f,"],\"text\":[");for(int i=BRUSH_TEXT_BASE;i<BRUSH_TEXT_END;i++){char *v=priv->get_text_value(i);gchar *escaped=v?g_strescape(v,NULL):NULL;fprintf(f,"%s%s%s%s",i==BRUSH_TEXT_BASE?"":",",v?"\"":"",v?escaped:"null",v?"\"":"");g_free(escaped);}fprintf(f,"]}\n");fclose(f);g_free(p);
++ // Zero-initialized allocation avoids reading an indeterminate options pointer in the original constructor.
++ void *mem=g_malloc0(sizeof(GimpMypaintCore));GimpMypaintCore *core=new(mem) GimpMypaintCore();
++ for(int i=0;i<18;i++){
++  GimpCoords c={0};c.x=12+i*3.5;c.y=40+sin(i*.35)*12;c.pressure=i==17?0:(i==0?.15:(.25+.65*sin(i*3.141592653589793/17)));c.xtilt=-.3+i*.03;c.ytilt=.2-i*.02;c.wheel=i*.02;c.velocity=.2+i*.015;c.direction=i*.04;
++  if(i==7){c.x=12+6*3.5;c.y=40+sin(6*.35)*12;}
++  gchar *seq=g_strdup_printf("%d",i);g_setenv("STROKE_SEQUENCE",seq,TRUE);g_free(seq);g_setenv("STROKE_PHASE",i==0?"begin":i==17?"end":"motion",TRUE);g_setenv("STROKE_MODIFIERS","0",TRUE);
++  core->stroke_to(GIMP_DRAWABLE(layer),i==7?0:.016,&c,options);
++ }
++ core->split_stroke();pixels(GIMP_PICKABLE(layer),4,"final.rgba");save(g,im,"final.xcf");g_print("STROKE_CAPTURE_COMPLETE events=18 input=synthetic-engine-boundary no-physical-tablet no-UI-path\n");
++}
++
++extern "C" void stroke_capture_verify(GimpImage *im){
++ g_assert_cmpint(gimp_image_get_width(im),==,96);g_assert_cmpint(gimp_image_get_height(im),==,80);
++ GimpContainer *layers=gimp_image_get_layers(im);g_assert_cmpint(gimp_container_get_n_children(layers),==,1);
++ GimpLayer *layer=GIMP_LAYER(gimp_container_get_child_by_index(layers,0));pixels(GIMP_PICKABLE(layer),4,"reopened.rgba");
++ g_print("STROKE_REOPEN_COMPLETE dimensions=96x80 layers=1\n");
++}

@@ -1,0 +1,58 @@
+{
+  "scope": "three representative original-engine strokes on a two-color canvas; synthetic post-transform inputs, genuine runtime outputs",
+  "captures": [
+    {
+      "name": "pen",
+      "record": {
+        "path": "pen.json",
+        "sha256": "37ab498046ae4095a6994d836f8fe6bfcd25f25ec9eea8b2fe3516a4c5bd3a49"
+      },
+      "output_sha256": "47e881e9adcf7a1338414ce056979de7b45fabc08b5b1f97a5b77ff2c54ddf68",
+      "changed_channel_bytes": 1531,
+      "events": 18,
+      "engine_splits": [
+        0
+      ],
+      "reopen_exact_rgba": true,
+      "repeat_original_execution_exact_rgba": true,
+      "preserved_original_binary_reopen": true
+    },
+    {
+      "name": "textured_ink",
+      "record": {
+        "path": "textured_ink.json",
+        "sha256": "2135ba9a5a35076e8424831312b6a9e2090318954fcca99936019bc9c87f018e"
+      },
+      "output_sha256": "545b8bf3e56c08277c9edfbe1ae98881b6f21975688e5e87e13f790384e170a0",
+      "changed_channel_bytes": 3362,
+      "events": 18,
+      "engine_splits": [
+        0
+      ],
+      "reopen_exact_rgba": true,
+      "repeat_original_execution_exact_rgba": true,
+      "preserved_original_binary_reopen": true
+    },
+    {
+      "name": "watercolor_expressive",
+      "record": {
+        "path": "watercolor_expressive.json",
+        "sha256": "3821874f9a9b9eadb43e5dc3a00647c66dc7d61dd226d7b04955be4ca1c1dd0a"
+      },
+      "output_sha256": "5a06ad8a6ebc7fcca58f458b2a81be2c9463743c7537a83e18d43ef9a69b42a0",
+      "changed_channel_bytes": 22284,
+      "events": 18,
+      "engine_splits": [
+        0
+      ],
+      "reopen_exact_rgba": true,
+      "repeat_original_execution_exact_rgba": true,
+      "preserved_original_binary_reopen": true
+    }
+  ],
+  "acceptance_gaps": [
+    "Physical tablet and original UI event/transform paths unmeasured",
+    "No imported event replay adapter, cross-machine determinism, enabled texture/brushmark, nonempty selection, alpha lock, nonincremental or resumed state cases",
+    "Original startup/type-registration and loader warnings retained; successful capture/reopen is not a clean-runtime claim"
+  ]
+}
