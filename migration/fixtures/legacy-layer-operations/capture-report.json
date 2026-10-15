@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "task": "02.011",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "capture_date": "2026-10-15",
+  "copied_tree_from": "/workspace/scratch/5b5281e79681/legacy-composite-20261015/gimp",
+  "isolated_source_and_build": "/workspace/scratch/5b5281e79681/legacy-layer-operations-20261015/gimp",
+  "capture_binary_sha256": "d5d5419472d052694818af4e6634602cbbd2893ca338616262faa58429c7e1df",
+  "reference_installed_binary_sha256": "85bc4733504509eb7b5a215cd0d19f6b6af5c4a23cd6112987de92acf3d230a1",
+  "reference_install_untouched": true,
+  "reference_build": "migration/baseline/legacy/replay-20261015/report.json",
+  "scope": "Synthetic headless original-core operations. No physical UI/tablet claim; no GIMP3 parity claim. Filter plug-in-edge XCF reopen failures are preserved.",
+  "commands": [
+    "bash legacy-layer-operations-20261015/build.sh",
+    "bash legacy-layer-operations-20261015/run.sh",
+    "bash legacy-layer-operations-20261015/run.sh repeat-captures",
+    "bash legacy-layer-operations-20261015/independent.sh"
+  ],
+  "state_counts": {
+    "clone": 30,
+    "filter": 17
+  },
+  "pixel_count": 329,
+  "completed": {
+    "clone": true,
+    "filter": true
+  }
+}

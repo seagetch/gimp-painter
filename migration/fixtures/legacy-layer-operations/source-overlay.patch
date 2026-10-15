@@ -1,0 +1,509 @@
+diff --git a/app/base/glib-cxx-impl.hpp b/app/base/glib-cxx-impl.hpp
+index a2ad35e3..23d6faed 100644
+--- a/app/base/glib-cxx-impl.hpp
++++ b/app/base/glib-cxx-impl.hpp
+@@ -517,7 +517,7 @@ gint NewGClass<name, CStructs, Impl, IFaces...>::private_offset = 0;
+ 
+ template <char const* name, typename CStructs, typename Impl, typename... IFaces>
+ inline GType NewGClass<name, CStructs, Impl, IFaces...>::get_type (void) {
+-  static volatile gsize g_define_type_id__volatile = 0;
++  static gsize g_define_type_id__volatile = 0;
+   if (g_once_init_enter (&g_define_type_id__volatile)) {
+     GType g_define_type_id =
+         g_type_register_static_simple (CStructs::ParentTraits::get_type(),
+diff --git a/app/core/gimpfilterlayer.cpp b/app/core/gimpfilterlayer.cpp
+index 9141c8c7..7be38b6e 100644
+--- a/app/core/gimpfilterlayer.cpp
++++ b/app/core/gimpfilterlayer.cpp
+@@ -769,6 +769,11 @@ void GLib::FilterLayer::end()
+   }
+ 
+   notify_filter_end();
++  if (g_getenv("GIMP_PAINTER_CAPTURE_FILTER")) {
++    gint n = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(g_object), "migration-capture-completions"));
++    g_object_set_data(G_OBJECT(g_object), "migration-capture-completions", GINT_TO_POINTER(n + 1));
++    g_print("FILTER_COMPLETE time_us=%" G_GINT64_FORMAT " name=%s\n", g_get_monotonic_time(), gimp_object_get_name(g_object));
++  }
+ }
+ 
+ gboolean GLib::FilterLayer::is_active()
+@@ -1207,3 +1212,11 @@ gimp_filter_layer_mark_as_loaded (GimpFilterLayer* layer)
+ {
+   FilterLayerInterface::cast(layer)->mark_as_loaded ();
+ }
++
++/* Read-only capture instrumentation, excluded from the reference app binary. */
++extern "C" gint gimp_filter_layer_capture_pending(GimpFilterLayer* layer)
++{
++  auto* impl = dynamic_cast<GLib::FilterLayer*>(FilterLayerInterface::cast(layer));
++  return (impl->is_waiting_to_be_processed() ? 1 : 0) |
++         (impl->waiting_for_runner ? 2 : 0);
++}
+diff --git a/app/display/gimpdisplayshell-callbacks.c b/app/display/gimpdisplayshell-callbacks.c
+index 79ebbff0..b7626470 100644
+--- a/app/display/gimpdisplayshell-callbacks.c
++++ b/app/display/gimpdisplayshell-callbacks.c
+@@ -35,6 +35,7 @@
+ #include "gimpcanvasitem.h"
+ #include "gimpdisplay.h"
+ #include "gimpdisplayshell.h"
++#include "gimpdisplayshell-overlays.h"
+ #include "gimpdisplayshell-appearance.h"
+ #include "gimpdisplayshell-callbacks.h"
+ #include "gimpdisplayshell-draw.h"
+diff --git a/app/display/gimpimagewindow.c b/app/display/gimpimagewindow.c
+index 04ffaff8..af370bab 100644
+--- a/app/display/gimpimagewindow.c
++++ b/app/display/gimpimagewindow.c
+@@ -62,6 +62,8 @@
+ #include "gimpdisplay-foreach.h"
+ #include "gimpcanvas.h"
+ #include "gimpdisplayshell.h"
++#include "gimpdisplayshell-overlays.h"
++#include "gimpdisplayshell-rotate.h"
+ #include "gimpdisplayshell-appearance.h"
+ #include "gimpdisplayshell-close.h"
+ #include "gimpdisplayshell-scroll.h"
+diff --git a/app/presets/preset-factory-gui.cpp b/app/presets/preset-factory-gui.cpp
+index c2f8bae6..d3219c6f 100644
+--- a/app/presets/preset-factory-gui.cpp
++++ b/app/presets/preset-factory-gui.cpp
+@@ -206,7 +206,7 @@ PresetGuiFactory::restore (Gimp               *gimp,
+     g_print("PresetGuiFactory::on_restore::end\n");
+ 
+     // Action group entry initialization
+-    PresetGuiConfig::ActionGroupEntry* action_group_entry = gui_config->get_action_group_entry();
++    auto* action_group_entry = gui_config->get_action_group_entry();
+ 
+     if (action_group_entry)
+       gimp_action_factory_group_register (global_action_factory,
+diff --git a/app/signals.c b/app/signals.c
+index 57b3b27f..a04c5a6b 100644
+--- a/app/signals.c
++++ b/app/signals.c
+@@ -18,6 +18,9 @@
+ #include "config.h"
+ 
+ #include <signal.h>
++#ifdef HAVE_EXECINFO_H
++#include <execinfo.h>
++#endif
+ 
+ #include <glib-object.h>
+ 
+diff --git a/app/tests/test-xcf.c b/app/tests/test-xcf.c
+index dc071cb1..42c76f20 100644
+--- a/app/tests/test-xcf.c
++++ b/app/tests/test-xcf.c
+@@ -977,40 +977,357 @@ gimp_assert_mainimage (GimpImage *image,
+  *  - Make sure that the information put into a #GimpImage is not lost
+  *    when the #GimpImage is written to a file and then read again
+  **/
+-int
+-main (int    argc,
+-      char **argv)
+-{
+-  Gimp *gimp;
+-  int   result;
+-
+-  g_thread_init (NULL);
+-  g_type_init ();
+-  g_test_init (&argc, &argv, NULL);
+-
+-  gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
+-                                       "app/tests/gimpdir");
+-
+-  /* We share the same application instance across all tests. We need
+-   * the GUI variant for the file procs
+-   */
+-  gimp = gimp_init_for_testing ();
+ 
+-  /* Add tests */
+-  ADD_TEST (write_and_read_gimp_2_6_format);
+-  ADD_TEST (write_and_read_gimp_2_6_format_unusual);
+-  ADD_TEST (load_gimp_2_6_file);
+-  ADD_TEST (write_and_read_gimp_2_8_format);
+ 
+-  /* Don't write files to the source dir */
+-  gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
+-                                       "app/tests/gimpdir-output");
+ 
+-  /* Run the tests */
+-  result = g_test_run ();
+-
+-  /* Exit so we don't break script-fu plug-in wire */
+-  gimp_exit (gimp, TRUE);
+-
+-  return result;
++#include "core/gimpclonelayer.h"
++#include "core/gimpfilterlayer.h"
++#include "core/gimpcontainer.h"
++#include "core/gimppickable.h"
++#include "core/gimpprojection.h"
++#include "core/gimpimage-undo.h"
++#include "core/gimpundostack.h"
++#include "core/gimpitemundo.h"
++#include "core/gimpcontext.h"
++#include "core/gimp-edit.h"
++#include "pdb/gimppdb.h"
++#include "pdb/gimpprocedure.h"
++extern gint gimp_filter_layer_capture_pending(GimpFilterLayer*);
++typedef struct {
++GimpLayer *p;
++const gchar *id;
++gboolean alive;
++guint updates;
++}
++ Watch;
++static Watch watches[64];
++ static gint nw=0;
++static const gchar *step="setup";
++static guint seq=0;
++static const gchar *idof(gpointer p){
++gint i;
++if(!p)return "NULL";
++for(i=0;i<nw;i++)if(watches[i].p==p)return watches[i].id;
++return "UNWATCHED";
++}
++static void dead(gpointer data,GObject *p){
++Watch *w=data;
++w->alive=FALSE;
++g_print("EVENT seq=%u step=%s id=%s event=finalize pointer=%p\n",++seq,step,w->id,p);
++}
++static void update(GimpDrawable *d,gint x,gint y,gint width,gint height,gpointer data){
++Watch *w=data;
++w->updates++;
++g_print("EVENT seq=%u step=%s id=%s event=update rect=%d,%d,%d,%d\n",++seq,step,w->id,x,y,width,height);
++}
++static void notify(GObject *o,GParamSpec *ps,gpointer data){
++Watch *w=data;
++g_print("EVENT seq=%u step=%s id=%s event=notify property=%s\n",++seq,step,w->id,ps->name);
++}
++static void watch(GimpLayer *p,const gchar *id){
++Watch *w=&watches[nw++];
++w->p=p;
++w->id=id;
++w->alive=TRUE;
++g_object_weak_ref(G_OBJECT(p),dead,w);
++g_signal_connect(p,"update",G_CALLBACK(update),w);
++g_signal_connect(p,"notify",G_CALLBACK(notify),w);
++g_print("REGISTER id=%s pointer=%p type=%s\n",id,p,G_OBJECT_TYPE_NAME(p));
++}
++static void pixels(GimpPickable *p,gint w,gint h,gint bpp,const gchar *id){
++guchar *buf=g_malloc0(w*h*bpp);
++gint x,y;
++gchar *f,*hash;
++GError *err=NULL;
++for(y=0;y<h;y++)for(x=0;x<w;x++)g_assert(gimp_pickable_get_pixel_at(p,x,y,buf+(y*w+x)*bpp));
++f=g_strdup_printf("%s/%s.%s.pixels",g_getenv("GIMP_PAINTER_FIXTURE_DIR"),step,id);
++g_assert(g_file_set_contents(f,(gchar*)buf,w*h*bpp,&err));
++g_assert_no_error(err);
++hash=g_compute_checksum_for_data(G_CHECKSUM_SHA256,buf,w*h*bpp);
++g_print("PIXELS step=%s id=%s width=%d height=%d bpp=%d sha256=%s\n",step,id,w,h,bpp,hash);
++g_free(f);
++g_free(hash);
++g_free(buf);
++}
++static void settle(GimpImage *im){
++guchar sample[4];
++gint64 until=g_get_monotonic_time()+(g_getenv("OPERATIONS_FILTER")?2000000:100000);
++do{
++while(g_main_context_iteration(NULL,FALSE)){
++}
++gimp_pickable_flush(GIMP_PICKABLE(gimp_image_get_projection(im)));
++gimp_pickable_get_pixel_at(GIMP_PICKABLE(gimp_image_get_projection(im)),20,20,sample);
++gimp_pickable_get_pixel_at(GIMP_PICKABLE(gimp_image_get_projection(im)),72,20,sample);
++gimp_pickable_get_pixel_at(GIMP_PICKABLE(gimp_image_get_projection(im)),20,72,sample);
++gimp_pickable_get_pixel_at(GIMP_PICKABLE(gimp_image_get_projection(im)),72,72,sample);
++g_usleep(1000);
++}
++while(g_get_monotonic_time()<until);
++}
++static void history(GimpUndo *u,const gchar *stack,const gchar *path){
++gint i;
++if(!u)return;
++g_print("HISTORY step=%s stack=%s path=%s type=%s undo_type=%d item=%s\n",step,stack,path,G_OBJECT_TYPE_NAME(u),u->undo_type,GIMP_IS_ITEM_UNDO(u)?idof(GIMP_ITEM_UNDO(u)->item):"-");
++if(GIMP_IS_UNDO_STACK(u))for(i=0;i<gimp_container_get_n_children(GIMP_UNDO_STACK(u)->undos);i++){
++gchar *p=g_strdup_printf("%s.%d",path,i);
++history(GIMP_UNDO(gimp_container_get_child_by_index(GIMP_UNDO_STACK(u)->undos,i)),stack,p);
++g_free(p);
++}
++}
++static void snapshot(Gimp *gimp,GimpImage *im,const gchar *name){
++gint i;
++gchar *f;
++GError *err=NULL;
++GimpPlugInProcedure *proc;
++step=name;
++settle(im);
++g_print("STATE step=%s undo=%d redo=%d\n",step,gimp_undo_stack_get_depth(gimp_image_get_undo_stack(im)),gimp_undo_stack_get_depth(gimp_image_get_redo_stack(im)));
++for(i=0;i<nw;i++){
++Watch *w=&watches[i];
++GimpLayer *l=w->p;
++g_print("OBJECT step=%s id=%s pointer=%p alive=%d updates=%u",step,w->id,l,w->alive,w->updates);
++if(w->alive){
++g_print(" core_id=%d attached=%d parent=%s index=%d xy=%d,%d wh=%d,%d",gimp_item_get_ID(GIMP_ITEM(l)),gimp_item_is_attached(GIMP_ITEM(l)),idof(gimp_item_get_parent(GIMP_ITEM(l))),gimp_item_is_attached(GIMP_ITEM(l))?gimp_item_get_index(GIMP_ITEM(l)):-1,gimp_item_get_offset_x(GIMP_ITEM(l)),gimp_item_get_offset_y(GIMP_ITEM(l)),gimp_item_get_width(GIMP_ITEM(l)),gimp_item_get_height(GIMP_ITEM(l)));
++if(GIMP_IS_CLONE_LAYER(l)){
++GimpLayer *src=gimp_clone_layer_get_source(GIMP_CLONE_LAYER(l));
++g_print(" source=%s source_pointer=%p",idof(src),src);
++}
++if(GIMP_IS_FILTER_LAYER(l))g_print(" procedure=%s pending=%d completions=%d",gimp_filter_layer_get_procedure(GIMP_FILTER_LAYER(l)),gimp_filter_layer_capture_pending(GIMP_FILTER_LAYER(l)),GPOINTER_TO_INT(g_object_get_data(G_OBJECT(l),"migration-capture-completions")));
++}
++g_print("\n");
++if(w->alive && GIMP_IS_FILTER_LAYER(l)){
++GArray *args=gimp_filter_layer_get_procedure_args(GIMP_FILTER_LAYER(l));
++guint k;
++for(k=0;k<args->len;k++){
++GValue *v=&g_array_index(args,GValue,k);
++gchar *value=G_VALUE_TYPE(v)?g_strdup_value_contents(v):g_strdup("UNSET");
++g_print("ARG step=%s id=%s index=%u type=%s value=%s\n",step,w->id,k,G_VALUE_TYPE(v)?G_VALUE_TYPE_NAME(v):"UNSET",value);
++g_free(value);
++}
++g_array_unref(args);
++}
++if(w->alive)pixels(GIMP_PICKABLE(l),gimp_item_get_width(GIMP_ITEM(l)),gimp_item_get_height(GIMP_ITEM(l)),gimp_drawable_bytes(GIMP_DRAWABLE(l)),w->id);
++}
++ history(GIMP_UNDO(gimp_image_get_undo_stack(im)),"undo","root");
++history(GIMP_UNDO(gimp_image_get_redo_stack(im)),"redo","root");
++pixels(GIMP_PICKABLE(gimp_image_get_projection(im)),96,80,4,"projection");
++f=g_strdup_printf("%s/%s.xcf",g_getenv("GIMP_PAINTER_FIXTURE_DIR"),step);
++proc=file_procedure_find(gimp->plug_in_manager->save_procs,f,&err);
++g_assert_no_error(err);
++g_assert_cmpint(file_save(gimp,im,NULL,f,proc,GIMP_RUN_NONINTERACTIVE,FALSE,FALSE,FALSE,&err),==,GIMP_PDB_SUCCESS);
++g_assert_no_error(err);
++g_print("SAVE step=%s success=1\n",step);
++g_free(f);
++}
++static void action(const gchar *name,const gchar *description){
++step=name;
++g_print("ACTION step=%s api=%s\n",step,description);
++}
++static void undo_redo(Gimp *gimp,GimpImage *im,const gchar *prefix){
++gchar *s=g_strdup_printf("%s-undo",prefix);
++action(s,"gimp_image_undo");
++g_print("RESULT step=%s success=%d\n",step,gimp_image_undo(im));
++snapshot(gimp,im,s);
++s=g_strdup_printf("%s-redo",prefix);
++action(s,"gimp_image_redo");
++g_print("RESULT step=%s success=%d\n",step,gimp_image_redo(im));
++snapshot(gimp,im,s);
++}
++static GimpLayer *rect(GimpImage *im,GimpLayer *parent,const gchar *name,gint x,gint y,GimpRGB color){
++GimpLayer *l=gimp_layer_new(im,24,20,GIMP_RGBA_IMAGE,name,1,GIMP_NORMAL_MODE);
++g_assert(gimp_image_add_layer(im,l,parent,0,FALSE));
++gimp_item_set_offset(GIMP_ITEM(l),x,y);
++gimp_drawable_fill(GIMP_DRAWABLE(l),&color,NULL);
++gimp_drawable_update(GIMP_DRAWABLE(l),0,0,24,20);
++watch(l,name);
++return l;
++}
++static GimpLayer *clone(GimpImage *im,GimpLayer *parent,GimpLayer *source,const gchar *name){
++GimpLayer *l=gimp_clone_layer_new(im,source,24,20,name,1,GIMP_NORMAL_MODE);
++g_assert(gimp_image_add_layer(im,l,parent,0,FALSE));
++watch(l,name);
++return l;
++}
++static void capture_clone(Gimp *gimp){
++GimpImage *im=gimp_create_image(gimp,96,80,GIMP_RGB,FALSE);
++GimpLayer *group,*source,*c,*external,*ec,*direct,*copy,*copy_source,*copy_clone;
++GimpRGB red={
++.8,.2,.4,1}
++,blue={
++.2,.3,.8,1}
++,green={
++.2,.8,.3,1}
++;
++ external=rect(im,NULL,"external",60,40,blue);
++group=gimp_group_layer_new(im);
++gimp_object_set_name(GIMP_OBJECT(group),"group");
++g_assert(gimp_image_add_layer(im,group,NULL,0,FALSE));
++watch(group,"group");
++source=rect(im,group,"source",8,8,red);
++c=clone(im,group,source,"clone");
++gimp_item_set_offset(GIMP_ITEM(c),36,8);
++ec=clone(im,group,external,"external-clone");
++gimp_item_set_offset(GIMP_ITEM(ec),36,36);
++gimp_drawable_update(GIMP_DRAWABLE(source),0,0,24,20);
++gimp_drawable_update(GIMP_DRAWABLE(external),0,0,24,20);
++settle(im);
++gimp_image_undo_free(im);
++snapshot(gimp,im,"baseline");
++ action("move-source","gimp_item_translate(source,5,7,TRUE)");
++gimp_item_translate(GIMP_ITEM(source),5,7,TRUE);
++snapshot(gimp,im,"move-source");
++undo_redo(gimp,im,"move-source");
++ action("move-clone","gimp_item_translate(clone,-3,4,TRUE)");
++gimp_item_translate(GIMP_ITEM(c),-3,4,TRUE);
++snapshot(gimp,im,"move-clone");
++undo_redo(gimp,im,"move-clone");
++ action("reorder-source","gimp_image_reorder_item(source,group,0,TRUE)");
++g_assert(gimp_image_reorder_item(im,GIMP_ITEM(source),GIMP_ITEM(group),0,TRUE,"Move source in stack"));
++snapshot(gimp,im,"reorder-source");
++undo_redo(gimp,im,"reorder-source");
++ action("duplicate-clone","gimp_item_duplicate(clone,GIMP_TYPE_CLONE_LAYER)+gimp_image_add_layer(push_undo=TRUE)");
++direct=GIMP_LAYER(gimp_item_duplicate(GIMP_ITEM(c),GIMP_TYPE_CLONE_LAYER));
++watch(direct,"direct-copy");
++gimp_object_set_name(GIMP_OBJECT(direct),"direct-copy");
++g_assert(gimp_image_add_layer(im,direct,NULL,0,TRUE));
++snapshot(gimp,im,"duplicate-clone");
++undo_redo(gimp,im,"duplicate-clone");
++ action("duplicate-group","gimp_item_duplicate(group,GIMP_TYPE_GROUP_LAYER)+gimp_image_add_layer(push_undo=TRUE)");
++copy=GIMP_LAYER(gimp_item_duplicate(GIMP_ITEM(group),GIMP_TYPE_GROUP_LAYER));
++watch(copy,"group-copy");
++gimp_object_set_name(GIMP_OBJECT(copy),"group-copy");
++{
++GimpContainer *children=gimp_viewable_get_children(GIMP_VIEWABLE(copy));
++gint i;
++for(i=0;i<gimp_container_get_n_children(children);i++){
++GimpLayer *l=GIMP_LAYER(gimp_container_get_child_by_index(children,i));
++const gchar *name=gimp_object_get_name(l);
++watch(l,g_strdup_printf("copy-%s",name));
++}
++}
++ g_assert(gimp_image_add_layer(im,copy,NULL,0,TRUE));
++copy_source=watches[nw-3].p;
++copy_clone=NULL;
++{
++gint i;
++for(i=0;i<nw;i++){
++if(!strcmp(watches[i].id,"copy-source"))copy_source=watches[i].p;
++if(!strcmp(watches[i].id,"copy-clone"))copy_clone=watches[i].p;
++}
++}
++g_assert(copy_clone);
++snapshot(gimp,im,"duplicate-group");
++undo_redo(gimp,im,"duplicate-group");
++ action("edit-original","gimp_drawable_fill(source,green)+gimp_drawable_update");
++gimp_drawable_fill(GIMP_DRAWABLE(source),&green,NULL);
++gimp_drawable_update(GIMP_DRAWABLE(source),0,0,24,20);
++snapshot(gimp,im,"edit-original");
++ action("edit-copy","gimp_drawable_fill(copy-source,blue)+gimp_drawable_update");
++gimp_drawable_fill(GIMP_DRAWABLE(copy_source),&blue,NULL);
++gimp_drawable_update(GIMP_DRAWABLE(copy_source),0,0,24,20);
++snapshot(gimp,im,"edit-copy");
++ action("edit-external","gimp_drawable_fill(external,green)+gimp_drawable_update");
++gimp_drawable_fill(GIMP_DRAWABLE(external),&green,NULL);
++gimp_drawable_update(GIMP_DRAWABLE(external),0,0,24,20);
++snapshot(gimp,im,"edit-external");
++ action("delete-source","gimp_image_remove_layer(source,TRUE)");
++gimp_image_remove_layer(im,source,TRUE,NULL);
++snapshot(gimp,im,"delete-source");
++undo_redo(gimp,im,"delete-source");
++ action("restore-source","gimp_image_undo");
++g_assert(gimp_image_undo(im));
++snapshot(gimp,im,"restore-source");
++action("edit-restored","gimp_drawable_fill(source,blue)+gimp_drawable_update");
++gimp_drawable_fill(GIMP_DRAWABLE(source),&blue,NULL);
++gimp_drawable_update(GIMP_DRAWABLE(source),0,0,24,20);
++snapshot(gimp,im,"edit-restored");
++ action("delete-clone","gimp_image_remove_layer(clone,TRUE)");
++gimp_image_remove_layer(im,c,TRUE,NULL);
++snapshot(gimp,im,"delete-clone");
++undo_redo(gimp,im,"delete-clone");
++ action("delete-group","gimp_image_remove_layer(group-copy,TRUE)");
++gimp_image_remove_layer(im,copy,TRUE,NULL);
++snapshot(gimp,im,"delete-group");
++undo_redo(gimp,im,"delete-group");
++g_print("OPERATIONS_COMPLETE scene=clone\n");
++}
++static void capture_filter(Gimp *gimp){
++GimpImage *im=gimp_create_image(gimp,96,80,GIMP_RGB,FALSE);
++GimpLayer *source,*effect,*copy;
++GimpRGB red={
++.8,.2,.4,1}
++,blue={
++.1,.2,.8,1}
++;
++GimpProcedure *proc;
++GValueArray *defaults;
++GArray *args;
++guint i;
++ source=rect(im,NULL,"source",8,8,red);
++gimp_context_set_foreground(gimp_get_user_context(gimp),&blue);
++gimp_channel_select_rectangle(gimp_image_get_mask(im),14,13,10,8,GIMP_CHANNEL_OP_REPLACE,FALSE,0,0,FALSE);
++g_assert(gimp_edit_fill(im,GIMP_DRAWABLE(source),gimp_get_user_context(gimp),GIMP_FOREGROUND_FILL));
++gimp_channel_clear(gimp_image_get_mask(im),NULL,FALSE);
++gimp_drawable_update(GIMP_DRAWABLE(source),0,0,24,20);
++ proc=gimp_pdb_lookup_procedure(gimp->pdb,"plug-in-edge");
++g_assert(proc);
++defaults=gimp_procedure_get_arguments(proc);
++args=g_array_sized_new(FALSE,TRUE,sizeof(GValue),6);
++g_array_set_clear_func(args,(GDestroyNotify)g_value_unset);
++g_array_set_size(args,6);
++for(i=0;i<6;i++){
++GValue *v=&g_array_index(args,GValue,i);
++g_value_init(v,G_VALUE_TYPE(&defaults->values[i]));
++g_value_copy(&defaults->values[i],v);
++}
++g_value_set_int(&g_array_index(args,GValue,0),GIMP_RUN_NONINTERACTIVE);
++g_value_set_double(&g_array_index(args,GValue,3),2);
++g_value_set_int(&g_array_index(args,GValue,4),1);
++g_value_set_int(&g_array_index(args,GValue,5),0);
++ effect=gimp_filter_layer_new(im,24,20,"filter",1,GIMP_NORMAL_MODE);
++g_assert(gimp_image_add_layer(im,effect,NULL,0,FALSE));
++gimp_item_set_offset(GIMP_ITEM(effect),8,8);
++watch(effect,"filter");
++gimp_filter_layer_set_procedure(GIMP_FILTER_LAYER(effect),"plug-in-edge",args);
++g_array_unref(args);
++g_value_array_free(defaults);
++settle(im);
++gimp_image_undo_free(im);
++snapshot(gimp,im,"baseline");
++ action("move-source","gimp_item_translate(source,5,7,TRUE)");
++gimp_item_translate(GIMP_ITEM(source),5,7,TRUE);
++snapshot(gimp,im,"move-source");
++undo_redo(gimp,im,"move-source");
++ action("move-filter","gimp_item_translate(filter,3,4,TRUE)");
++gimp_item_translate(GIMP_ITEM(effect),3,4,TRUE);
++snapshot(gimp,im,"move-filter");
++undo_redo(gimp,im,"move-filter");
++ action("duplicate-filter","gimp_item_duplicate(filter,GIMP_TYPE_FILTER_LAYER)+gimp_image_add_layer(TRUE)");
++copy=GIMP_LAYER(gimp_item_duplicate(GIMP_ITEM(effect),GIMP_TYPE_FILTER_LAYER));
++watch(copy,"filter-copy");
++gimp_object_set_name(GIMP_OBJECT(copy),"filter-copy");
++g_assert(gimp_image_add_layer(im,copy,NULL,0,TRUE));
++snapshot(gimp,im,"duplicate-filter");
++undo_redo(gimp,im,"duplicate-filter");
++ action("delete-source","gimp_image_remove_layer(source,TRUE)");
++gimp_image_remove_layer(im,source,TRUE,NULL);
++snapshot(gimp,im,"delete-source");
++undo_redo(gimp,im,"delete-source");
++ action("restore-source","gimp_image_undo");
++g_assert(gimp_image_undo(im));
++snapshot(gimp,im,"restore-source");
++ action("delete-filter","gimp_image_remove_layer(filter-copy,TRUE)");
++gimp_image_remove_layer(im,copy,TRUE,NULL);
++snapshot(gimp,im,"delete-filter");
++undo_redo(gimp,im,"delete-filter");
++g_print("OPERATIONS_COMPLETE scene=filter\n");
++}
++int main(int argc,char **argv){
++Gimp *gimp;
++g_thread_init(NULL);
++g_type_init();
++gimp=gimp_init_for_testing();
++if(g_getenv("OPERATIONS_FILTER"))capture_filter(gimp);
++else capture_clone(gimp);
++return 0;
+ }
+diff --git a/configure.ac b/configure.ac
+index f47f24a1..fb1fdda8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1747,11 +1747,11 @@ AC_ARG_WITH(linux-input, [  --without-linux-input   don't build linux input even
+ 
+ have_linux_input="no (linux input support disabled)"
+ if test "x$with_linux_input" != "xno"; then
+-  AC_CHECK_HEADER(linux/input.h,
+-	AC_CHECK_DECL(KEY_OK,
+-		have_linux_input=yes,
+-		have_linux_input="no (needs Linux 2.6)",
+-		[#include <linux/input.h>]))
++  AC_CHECK_HEADER([linux/input.h],
++        [AC_CHECK_DECL([KEY_OK],
++                [have_linux_input=yes],
++                [have_linux_input="no (needs Linux 2.6)"],
++                [#include <linux/input.h>])])
+ fi
+ 
+ AM_CONDITIONAL(HAVE_LINUX_INPUT, test "x$have_linux_input" = xyes)

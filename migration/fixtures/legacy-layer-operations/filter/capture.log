@@ -1,0 +1,1529 @@
+
+(process:594): GLib-GObject-CRITICAL **: 09:53:15.098: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:594): GLib-GObject-CRITICAL **: 09:53:15.098: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+Failed to parse tag cache: No such file or directory
+GIMP-Error: Plug-in "pagecurl"
+attempted to install procedure "plug-in-pagecurl" with invalid return-value name "Curl Layer".
+This is not allowed.
+
+GIMP-Error: Plug-in "pagecurl"
+(/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/pagecurl)
+attempted to register the menu item "<Image>/Filters/Distorts" for the procedure "plug-in-pagecurl".
+It has however not installed that procedure.  This is not allowed.
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44cddd6d0:  set ignore_undos=0
+REGISTER id=source pointer=0x55f44ce79110 type=GimpLayer
+push_undo: GimpDrawableUndo=47
+EVENT seq=1 step=setup id=source event=update rect=6,5,10,8
+EVENT seq=2 step=setup id=source event=update rect=0,0,24,20
+create instance type=55f44cedf830
+FilterLayer::class_init
+GimpFilterLayer: Set properties_base to 18
+FilterLayer::iface_init<GimpPickableInterface>
+FilterLayer::FilterLayer
+new_instance::group=0x55f44cdeb020
+REGISTER id=filter pointer=0x55f44cdeb020 type=GimpFilterLayer
+FilterLayer::filter_reset
+EVENT seq=3 step=setup id=filter event=update rect=0,0,24,20
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=4 step=setup id=filter event=update rect=0,0,24,20
+EVENT seq=5 step=setup id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7292701455 name=filter
+STATE step=baseline undo=0 redo=0
+OBJECT step=baseline id=source pointer=0x55f44ce79110 alive=1 updates=2 core_id=2 attached=1 parent=NULL index=1 xy=8,8 wh=24,20
+PIXELS step=baseline id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=baseline id=filter pointer=0x55f44cdeb020 alive=1 updates=3 core_id=3 attached=1 parent=NULL index=0 xy=8,8 wh=24,20 procedure=plug-in-edge pending=0 completions=1
+ARG step=baseline id=filter index=0 type=GimpInt32 value=1
+ARG step=baseline id=filter index=1 type=GimpImageID value=1
+ARG step=baseline id=filter index=2 type=GimpDrawableID value=3
+ARG step=baseline id=filter index=3 type=gdouble value=2.000000
+ARG step=baseline id=filter index=4 type=GimpInt32 value=1
+ARG step=baseline id=filter index=5 type=GimpInt32 value=0
+PIXELS step=baseline id=filter width=24 height=20 bpp=4 sha256=edc7e88b3a252d27cf682e1d39091e9f8d7ce26c346d3672247b3c041318f555
+HISTORY step=baseline stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=baseline stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=baseline id=projection width=96 height=80 bpp=4 sha256=16e4982f59d51d3a8546588a1488bd411dbab8295fc2e0733e1cf813fa93f8ac
+Becomes save version=4
+xcf_save[22e] prop_type=32
+xcf_save[232] length=0
+xcf_save[236] filter_name=plug-in-edge
+xcf_save[247] value(0)
+  [247] type=2, value=1
+xcf_save[253] value(1)
+  [253] UNKNOWN
+xcf_save[25b] value(2)
+  [25b] type=10, N/A
+xcf_save[263] value(3)
+  [263] type=5, value=2.000000
+xcf_save[26f] value(4)
+  [26f] type=2, value=1
+xcf_save[27b] value(5)
+  [27b] type=2, value=0
+xcf_save[287] PROP_END
+xcf_save[232] length=89
+xcf_save[28f]: layer_props: PROP_END
+xcf_save_layer[297]: done: save_layer_props
+xcf_save_layer[297]: done: save_offset=29f
+xcf_save_layer[29b]: done: save_layer_mask_offset
+xcf_save_layer[29f]: xcf_save_hierarchy
+xcf_save[29f] hierarchy:: write width=24
+xcf_save[2a3] hierarchy:: write height=20
+xcf_save[2a7] hierarchy:: write bpp=4
+xcf_save[2ab] hierarchy:: write nlevels=2
+xcf_save[2b3] hierarchy::level=0
+xcf_save_layer[35f]: done: xcf_save_hierarchy
+xcf_save[3fe]: layer_props: PROP_END
+xcf_save_layer[406]: done: save_layer_props
+xcf_save_layer[406]: done: save_offset=40e
+xcf_save_layer[40a]: done: save_layer_mask_offset
+xcf_save_layer[40e]: xcf_save_hierarchy
+xcf_save[40e] hierarchy:: write width=24
+xcf_save[412] hierarchy:: write height=20
+xcf_save[416] hierarchy:: write bpp=4
+xcf_save[41a] hierarchy:: write nlevels=2
+xcf_save[422] hierarchy::level=0
+xcf_save_layer[482]: done: xcf_save_hierarchy
+SAVE step=baseline success=1
+ACTION step=move-source api=gimp_item_translate(source,5,7,TRUE)
+push_undo: GimpItemPropUndo=52
+EVENT seq=6 step=move-source id=source event=update rect=0,0,24,20
+EVENT seq=7 step=move-source id=source event=notify property=offset-y
+EVENT seq=8 step=move-source id=source event=notify property=offset-x
+EVENT seq=9 step=move-source id=source event=update rect=0,0,24,20
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=10 step=move-source id=filter event=update rect=0,0,24,20
+EVENT seq=11 step=move-source id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7296706940 name=filter
+STATE step=move-source undo=1 redo=0
+OBJECT step=move-source id=source pointer=0x55f44ce79110 alive=1 updates=4 core_id=2 attached=1 parent=NULL index=1 xy=13,15 wh=24,20
+PIXELS step=move-source id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=move-source id=filter pointer=0x55f44cdeb020 alive=1 updates=5 core_id=3 attached=1 parent=NULL index=0 xy=8,8 wh=24,20 procedure=plug-in-edge pending=0 completions=2
+ARG step=move-source id=filter index=0 type=GimpInt32 value=1
+ARG step=move-source id=filter index=1 type=GimpImageID value=1
+ARG step=move-source id=filter index=2 type=GimpDrawableID value=3
+ARG step=move-source id=filter index=3 type=gdouble value=2.000000
+ARG step=move-source id=filter index=4 type=GimpInt32 value=1
+ARG step=move-source id=filter index=5 type=GimpInt32 value=0
+PIXELS step=move-source id=filter width=24 height=20 bpp=4 sha256=0b3f78734b61af45b35b8dae0b651e76e0e4542ff80bc325d703213ef2ff1b69
+HISTORY step=move-source stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=move-source stack=undo path=root.0 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=move-source stack=undo path=root.0.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=move-source stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=move-source id=projection width=96 height=80 bpp=4 sha256=0ddd22f193bc062e0ce1d77bd3b065f9bf961881100cf04668113a9c91f45d73
+Becomes save version=4
+xcf_save[22e] prop_type=32
+xcf_save[232] length=0
+xcf_save[236] filter_name=plug-in-edge
+xcf_save[247] value(0)
+  [247] type=2, value=1
+xcf_save[253] value(1)
+  [253] UNKNOWN
+xcf_save[25b] value(2)
+  [25b] type=10, N/A
+xcf_save[263] value(3)
+  [263] type=5, value=2.000000
+xcf_save[26f] value(4)
+  [26f] type=2, value=1
+xcf_save[27b] value(5)
+  [27b] type=2, value=0
+xcf_save[287] PROP_END
+xcf_save[232] length=89
+xcf_save[28f]: layer_props: PROP_END
+xcf_save_layer[297]: done: save_layer_props
+xcf_save_layer[297]: done: save_offset=29f
+xcf_save_layer[29b]: done: save_layer_mask_offset
+xcf_save_layer[29f]: xcf_save_hierarchy
+xcf_save[29f] hierarchy:: write width=24
+xcf_save[2a3] hierarchy:: write height=20
+xcf_save[2a7] hierarchy:: write bpp=4
+xcf_save[2ab] hierarchy:: write nlevels=2
+xcf_save[2b3] hierarchy::level=0
+xcf_save_layer[4c9]: done: xcf_save_hierarchy
+xcf_save[568]: layer_props: PROP_END
+xcf_save_layer[570]: done: save_layer_props
+xcf_save_layer[570]: done: save_offset=578
+xcf_save_layer[574]: done: save_layer_mask_offset
+xcf_save_layer[578]: xcf_save_hierarchy
+xcf_save[578] hierarchy:: write width=24
+xcf_save[57c] hierarchy:: write height=20
+xcf_save[580] hierarchy:: write bpp=4
+xcf_save[584] hierarchy:: write nlevels=2
+xcf_save[58c] hierarchy::level=0
+xcf_save_layer[5ec]: done: xcf_save_hierarchy
+SAVE step=move-source success=1
+ACTION step=move-source-undo api=gimp_image_undo
+EVENT seq=12 step=move-source-undo id=source event=update rect=0,0,24,20
+EVENT seq=13 step=move-source-undo id=source event=notify property=offset-y
+EVENT seq=14 step=move-source-undo id=source event=notify property=offset-x
+EVENT seq=15 step=move-source-undo id=source event=update rect=0,0,24,20
+RESULT step=move-source-undo success=1
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=16 step=move-source-undo id=filter event=update rect=0,0,24,20
+EVENT seq=17 step=move-source-undo id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7298707579 name=filter
+STATE step=move-source-undo undo=0 redo=1
+OBJECT step=move-source-undo id=source pointer=0x55f44ce79110 alive=1 updates=6 core_id=2 attached=1 parent=NULL index=1 xy=8,8 wh=24,20
+PIXELS step=move-source-undo id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=move-source-undo id=filter pointer=0x55f44cdeb020 alive=1 updates=7 core_id=3 attached=1 parent=NULL index=0 xy=8,8 wh=24,20 procedure=plug-in-edge pending=0 completions=3
+ARG step=move-source-undo id=filter index=0 type=GimpInt32 value=1
+ARG step=move-source-undo id=filter index=1 type=GimpImageID value=1
+ARG step=move-source-undo id=filter index=2 type=GimpDrawableID value=3
+ARG step=move-source-undo id=filter index=3 type=gdouble value=2.000000
+ARG step=move-source-undo id=filter index=4 type=GimpInt32 value=1
+ARG step=move-source-undo id=filter index=5 type=GimpInt32 value=0
+PIXELS step=move-source-undo id=filter width=24 height=20 bpp=4 sha256=edc7e88b3a252d27cf682e1d39091e9f8d7ce26c346d3672247b3c041318f555
+HISTORY step=move-source-undo stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=move-source-undo stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=move-source-undo stack=redo path=root.0 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=move-source-undo stack=redo path=root.0.0 type=GimpItemPropUndo undo_type=52 item=source
+PIXELS step=move-source-undo id=projection width=96 height=80 bpp=4 sha256=16e4982f59d51d3a8546588a1488bd411dbab8295fc2e0733e1cf813fa93f8ac
+Becomes save version=4
+xcf_save[22e] prop_type=32
+xcf_save[232] length=0
+xcf_save[236] filter_name=plug-in-edge
+xcf_save[247] value(0)
+  [247] type=2, value=1
+xcf_save[253] value(1)
+  [253] UNKNOWN
+xcf_save[25b] value(2)
+  [25b] type=10, N/A
+xcf_save[263] value(3)
+  [263] type=5, value=2.000000
+xcf_save[26f] value(4)
+  [26f] type=2, value=1
+xcf_save[27b] value(5)
+  [27b] type=2, value=0
+xcf_save[287] PROP_END
+xcf_save[232] length=89
+xcf_save[28f]: layer_props: PROP_END
+xcf_save_layer[297]: done: save_layer_props
+xcf_save_layer[297]: done: save_offset=29f
+xcf_save_layer[29b]: done: save_layer_mask_offset
+xcf_save_layer[29f]: xcf_save_hierarchy
+xcf_save[29f] hierarchy:: write width=24
+xcf_save[2a3] hierarchy:: write height=20
+xcf_save[2a7] hierarchy:: write bpp=4
+xcf_save[2ab] hierarchy:: write nlevels=2
+xcf_save[2b3] hierarchy::level=0
+xcf_save_layer[35f]: done: xcf_save_hierarchy
+xcf_save[3fe]: layer_props: PROP_END
+xcf_save_layer[406]: done: save_layer_props
+xcf_save_layer[406]: done: save_offset=40e
+xcf_save_layer[40a]: done: save_layer_mask_offset
+xcf_save_layer[40e]: xcf_save_hierarchy
+xcf_save[40e] hierarchy:: write width=24
+xcf_save[412] hierarchy:: write height=20
+xcf_save[416] hierarchy:: write bpp=4
+xcf_save[41a] hierarchy:: write nlevels=2
+xcf_save[422] hierarchy::level=0
+xcf_save_layer[482]: done: xcf_save_hierarchy
+SAVE step=move-source-undo success=1
+ACTION step=move-source-redo api=gimp_image_redo
+EVENT seq=18 step=move-source-redo id=source event=update rect=0,0,24,20
+EVENT seq=19 step=move-source-redo id=source event=notify property=offset-y
+EVENT seq=20 step=move-source-redo id=source event=notify property=offset-x
+EVENT seq=21 step=move-source-redo id=source event=update rect=0,0,24,20
+RESULT step=move-source-redo success=1
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=22 step=move-source-redo id=filter event=update rect=0,0,24,20
+EVENT seq=23 step=move-source-redo id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7300710981 name=filter
+STATE step=move-source-redo undo=1 redo=0
+OBJECT step=move-source-redo id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=1 xy=13,15 wh=24,20
+PIXELS step=move-source-redo id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=move-source-redo id=filter pointer=0x55f44cdeb020 alive=1 updates=9 core_id=3 attached=1 parent=NULL index=0 xy=8,8 wh=24,20 procedure=plug-in-edge pending=0 completions=4
+ARG step=move-source-redo id=filter index=0 type=GimpInt32 value=1
+ARG step=move-source-redo id=filter index=1 type=GimpImageID value=1
+ARG step=move-source-redo id=filter index=2 type=GimpDrawableID value=3
+ARG step=move-source-redo id=filter index=3 type=gdouble value=2.000000
+ARG step=move-source-redo id=filter index=4 type=GimpInt32 value=1
+ARG step=move-source-redo id=filter index=5 type=GimpInt32 value=0
+PIXELS step=move-source-redo id=filter width=24 height=20 bpp=4 sha256=0b3f78734b61af45b35b8dae0b651e76e0e4542ff80bc325d703213ef2ff1b69
+HISTORY step=move-source-redo stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=move-source-redo stack=undo path=root.0 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=move-source-redo stack=undo path=root.0.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=move-source-redo stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=move-source-redo id=projection width=96 height=80 bpp=4 sha256=0ddd22f193bc062e0ce1d77bd3b065f9bf961881100cf04668113a9c91f45d73
+Becomes save version=4
+xcf_save[22e] prop_type=32
+xcf_save[232] length=0
+xcf_save[236] filter_name=plug-in-edge
+xcf_save[247] value(0)
+  [247] type=2, value=1
+xcf_save[253] value(1)
+  [253] UNKNOWN
+xcf_save[25b] value(2)
+  [25b] type=10, N/A
+xcf_save[263] value(3)
+  [263] type=5, value=2.000000
+xcf_save[26f] value(4)
+  [26f] type=2, value=1
+xcf_save[27b] value(5)
+  [27b] type=2, value=0
+xcf_save[287] PROP_END
+xcf_save[232] length=89
+xcf_save[28f]: layer_props: PROP_END
+xcf_save_layer[297]: done: save_layer_props
+xcf_save_layer[297]: done: save_offset=29f
+xcf_save_layer[29b]: done: save_layer_mask_offset
+xcf_save_layer[29f]: xcf_save_hierarchy
+xcf_save[29f] hierarchy:: write width=24
+xcf_save[2a3] hierarchy:: write height=20
+xcf_save[2a7] hierarchy:: write bpp=4
+xcf_save[2ab] hierarchy:: write nlevels=2
+xcf_save[2b3] hierarchy::level=0
+xcf_save_layer[4c9]: done: xcf_save_hierarchy
+xcf_save[568]: layer_props: PROP_END
+xcf_save_layer[570]: done: save_layer_props
+xcf_save_layer[570]: done: save_offset=578
+xcf_save_layer[574]: done: save_layer_mask_offset
+xcf_save_layer[578]: xcf_save_hierarchy
+xcf_save[578] hierarchy:: write width=24
+xcf_save[57c] hierarchy:: write height=20
+xcf_save[580] hierarchy:: write bpp=4
+xcf_save[584] hierarchy:: write nlevels=2
+xcf_save[58c] hierarchy::level=0
+xcf_save_layer[5ec]: done: xcf_save_hierarchy
+SAVE step=move-source-redo success=1
+ACTION step=move-filter api=gimp_item_translate(filter,3,4,TRUE)
+push_undo: GimpItemPropUndo=52
+EVENT seq=24 step=move-filter id=filter event=update rect=0,0,24,20
+EVENT seq=25 step=move-filter id=filter event=notify property=offset-y
+EVENT seq=26 step=move-filter id=filter event=notify property=offset-x
+EVENT seq=27 step=move-filter id=filter event=update rect=0,0,24,20
+FilterLayer::filter_reset
+EVENT seq=28 step=move-filter id=filter event=update rect=0,0,24,20
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=29 step=move-filter id=filter event=update rect=0,0,24,20
+EVENT seq=30 step=move-filter id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7302713512 name=filter
+STATE step=move-filter undo=2 redo=0
+OBJECT step=move-filter id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=1 xy=13,15 wh=24,20
+PIXELS step=move-filter id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=move-filter id=filter pointer=0x55f44cdeb020 alive=1 updates=14 core_id=3 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=5
+ARG step=move-filter id=filter index=0 type=GimpInt32 value=1
+ARG step=move-filter id=filter index=1 type=GimpImageID value=1
+ARG step=move-filter id=filter index=2 type=GimpDrawableID value=3
+ARG step=move-filter id=filter index=3 type=gdouble value=2.000000
+ARG step=move-filter id=filter index=4 type=GimpInt32 value=1
+ARG step=move-filter id=filter index=5 type=GimpInt32 value=0
+PIXELS step=move-filter id=filter width=24 height=20 bpp=4 sha256=04dc4ac86325a470f13168342ecd8206026bdb2ca0108fdb00ac79874eca9c22
+HISTORY step=move-filter stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=move-filter stack=undo path=root.0 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=move-filter stack=undo path=root.0.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=move-filter stack=undo path=root.1 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=move-filter stack=undo path=root.1.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=move-filter stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=move-filter id=projection width=96 height=80 bpp=4 sha256=7e16fdd0479eb971593fb081ff015c6be7d3c811f4ac6b61ae0c280e38565362
+Becomes save version=4
+xcf_save[22e] prop_type=32
+xcf_save[232] length=0
+xcf_save[236] filter_name=plug-in-edge
+xcf_save[247] value(0)
+  [247] type=2, value=1
+xcf_save[253] value(1)
+  [253] UNKNOWN
+xcf_save[25b] value(2)
+  [25b] type=10, N/A
+xcf_save[263] value(3)
+  [263] type=5, value=2.000000
+xcf_save[26f] value(4)
+  [26f] type=2, value=1
+xcf_save[27b] value(5)
+  [27b] type=2, value=0
+xcf_save[287] PROP_END
+xcf_save[232] length=89
+xcf_save[28f]: layer_props: PROP_END
+xcf_save_layer[297]: done: save_layer_props
+xcf_save_layer[297]: done: save_offset=29f
+xcf_save_layer[29b]: done: save_layer_mask_offset
+xcf_save_layer[29f]: xcf_save_hierarchy
+xcf_save[29f] hierarchy:: write width=24
+xcf_save[2a3] hierarchy:: write height=20
+xcf_save[2a7] hierarchy:: write bpp=4
+xcf_save[2ab] hierarchy:: write nlevels=2
+xcf_save[2b3] hierarchy::level=0
+xcf_save_layer[519]: done: xcf_save_hierarchy
+xcf_save[5b8]: layer_props: PROP_END
+xcf_save_layer[5c0]: done: save_layer_props
+xcf_save_layer[5c0]: done: save_offset=5c8
+xcf_save_layer[5c4]: done: save_layer_mask_offset
+xcf_save_layer[5c8]: xcf_save_hierarchy
+xcf_save[5c8] hierarchy:: write width=24
+xcf_save[5cc] hierarchy:: write height=20
+xcf_save[5d0] hierarchy:: write bpp=4
+xcf_save[5d4] hierarchy:: write nlevels=2
+xcf_save[5dc] hierarchy::level=0
+xcf_save_layer[63c]: done: xcf_save_hierarchy
+SAVE step=move-filter success=1
+ACTION step=move-filter-undo api=gimp_image_undo
+EVENT seq=31 step=move-filter-undo id=filter event=update rect=0,0,24,20
+EVENT seq=32 step=move-filter-undo id=filter event=notify property=offset-y
+EVENT seq=33 step=move-filter-undo id=filter event=notify property=offset-x
+EVENT seq=34 step=move-filter-undo id=filter event=update rect=0,0,24,20
+FilterLayer::filter_reset
+EVENT seq=35 step=move-filter-undo id=filter event=update rect=0,0,24,20
+RESULT step=move-filter-undo success=1
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=36 step=move-filter-undo id=filter event=update rect=0,0,24,20
+EVENT seq=37 step=move-filter-undo id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7304715509 name=filter
+STATE step=move-filter-undo undo=1 redo=1
+OBJECT step=move-filter-undo id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=1 xy=13,15 wh=24,20
+PIXELS step=move-filter-undo id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=move-filter-undo id=filter pointer=0x55f44cdeb020 alive=1 updates=19 core_id=3 attached=1 parent=NULL index=0 xy=8,8 wh=24,20 procedure=plug-in-edge pending=0 completions=6
+ARG step=move-filter-undo id=filter index=0 type=GimpInt32 value=1
+ARG step=move-filter-undo id=filter index=1 type=GimpImageID value=1
+ARG step=move-filter-undo id=filter index=2 type=GimpDrawableID value=3
+ARG step=move-filter-undo id=filter index=3 type=gdouble value=2.000000
+ARG step=move-filter-undo id=filter index=4 type=GimpInt32 value=1
+ARG step=move-filter-undo id=filter index=5 type=GimpInt32 value=0
+PIXELS step=move-filter-undo id=filter width=24 height=20 bpp=4 sha256=0b3f78734b61af45b35b8dae0b651e76e0e4542ff80bc325d703213ef2ff1b69
+HISTORY step=move-filter-undo stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=move-filter-undo stack=undo path=root.0 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=move-filter-undo stack=undo path=root.0.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=move-filter-undo stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=move-filter-undo stack=redo path=root.0 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=move-filter-undo stack=redo path=root.0.0 type=GimpItemPropUndo undo_type=52 item=filter
+PIXELS step=move-filter-undo id=projection width=96 height=80 bpp=4 sha256=0ddd22f193bc062e0ce1d77bd3b065f9bf961881100cf04668113a9c91f45d73
+Becomes save version=4
+xcf_save[22e] prop_type=32
+xcf_save[232] length=0
+xcf_save[236] filter_name=plug-in-edge
+xcf_save[247] value(0)
+  [247] type=2, value=1
+xcf_save[253] value(1)
+  [253] UNKNOWN
+xcf_save[25b] value(2)
+  [25b] type=10, N/A
+xcf_save[263] value(3)
+  [263] type=5, value=2.000000
+xcf_save[26f] value(4)
+  [26f] type=2, value=1
+xcf_save[27b] value(5)
+  [27b] type=2, value=0
+xcf_save[287] PROP_END
+xcf_save[232] length=89
+xcf_save[28f]: layer_props: PROP_END
+xcf_save_layer[297]: done: save_layer_props
+xcf_save_layer[297]: done: save_offset=29f
+xcf_save_layer[29b]: done: save_layer_mask_offset
+xcf_save_layer[29f]: xcf_save_hierarchy
+xcf_save[29f] hierarchy:: write width=24
+xcf_save[2a3] hierarchy:: write height=20
+xcf_save[2a7] hierarchy:: write bpp=4
+xcf_save[2ab] hierarchy:: write nlevels=2
+xcf_save[2b3] hierarchy::level=0
+xcf_save_layer[4c9]: done: xcf_save_hierarchy
+xcf_save[568]: layer_props: PROP_END
+xcf_save_layer[570]: done: save_layer_props
+xcf_save_layer[570]: done: save_offset=578
+xcf_save_layer[574]: done: save_layer_mask_offset
+xcf_save_layer[578]: xcf_save_hierarchy
+xcf_save[578] hierarchy:: write width=24
+xcf_save[57c] hierarchy:: write height=20
+xcf_save[580] hierarchy:: write bpp=4
+xcf_save[584] hierarchy:: write nlevels=2
+xcf_save[58c] hierarchy::level=0
+xcf_save_layer[5ec]: done: xcf_save_hierarchy
+SAVE step=move-filter-undo success=1
+ACTION step=move-filter-redo api=gimp_image_redo
+EVENT seq=38 step=move-filter-redo id=filter event=update rect=0,0,24,20
+EVENT seq=39 step=move-filter-redo id=filter event=notify property=offset-y
+EVENT seq=40 step=move-filter-redo id=filter event=notify property=offset-x
+EVENT seq=41 step=move-filter-redo id=filter event=update rect=0,0,24,20
+FilterLayer::filter_reset
+EVENT seq=42 step=move-filter-redo id=filter event=update rect=0,0,24,20
+RESULT step=move-filter-redo success=1
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=43 step=move-filter-redo id=filter event=update rect=0,0,24,20
+EVENT seq=44 step=move-filter-redo id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7306720605 name=filter
+STATE step=move-filter-redo undo=2 redo=0
+OBJECT step=move-filter-redo id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=1 xy=13,15 wh=24,20
+PIXELS step=move-filter-redo id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=move-filter-redo id=filter pointer=0x55f44cdeb020 alive=1 updates=24 core_id=3 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=7
+ARG step=move-filter-redo id=filter index=0 type=GimpInt32 value=1
+ARG step=move-filter-redo id=filter index=1 type=GimpImageID value=1
+ARG step=move-filter-redo id=filter index=2 type=GimpDrawableID value=3
+ARG step=move-filter-redo id=filter index=3 type=gdouble value=2.000000
+ARG step=move-filter-redo id=filter index=4 type=GimpInt32 value=1
+ARG step=move-filter-redo id=filter index=5 type=GimpInt32 value=0
+PIXELS step=move-filter-redo id=filter width=24 height=20 bpp=4 sha256=04dc4ac86325a470f13168342ecd8206026bdb2ca0108fdb00ac79874eca9c22
+HISTORY step=move-filter-redo stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=move-filter-redo stack=undo path=root.0 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=move-filter-redo stack=undo path=root.0.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=move-filter-redo stack=undo path=root.1 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=move-filter-redo stack=undo path=root.1.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=move-filter-redo stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=move-filter-redo id=projection width=96 height=80 bpp=4 sha256=7e16fdd0479eb971593fb081ff015c6be7d3c811f4ac6b61ae0c280e38565362
+Becomes save version=4
+xcf_save[22e] prop_type=32
+xcf_save[232] length=0
+xcf_save[236] filter_name=plug-in-edge
+xcf_save[247] value(0)
+  [247] type=2, value=1
+xcf_save[253] value(1)
+  [253] UNKNOWN
+xcf_save[25b] value(2)
+  [25b] type=10, N/A
+xcf_save[263] value(3)
+  [263] type=5, value=2.000000
+xcf_save[26f] value(4)
+  [26f] type=2, value=1
+xcf_save[27b] value(5)
+  [27b] type=2, value=0
+xcf_save[287] PROP_END
+xcf_save[232] length=89
+xcf_save[28f]: layer_props: PROP_END
+xcf_save_layer[297]: done: save_layer_props
+xcf_save_layer[297]: done: save_offset=29f
+xcf_save_layer[29b]: done: save_layer_mask_offset
+xcf_save_layer[29f]: xcf_save_hierarchy
+xcf_save[29f] hierarchy:: write width=24
+xcf_save[2a3] hierarchy:: write height=20
+xcf_save[2a7] hierarchy:: write bpp=4
+xcf_save[2ab] hierarchy:: write nlevels=2
+xcf_save[2b3] hierarchy::level=0
+xcf_save_layer[519]: done: xcf_save_hierarchy
+xcf_save[5b8]: layer_props: PROP_END
+xcf_save_layer[5c0]: done: save_layer_props
+xcf_save_layer[5c0]: done: save_offset=5c8
+xcf_save_layer[5c4]: done: save_layer_mask_offset
+xcf_save_layer[5c8]: xcf_save_hierarchy
+xcf_save[5c8] hierarchy:: write width=24
+xcf_save[5cc] hierarchy:: write height=20
+xcf_save[5d0] hierarchy:: write bpp=4
+xcf_save[5d4] hierarchy:: write nlevels=2
+xcf_save[5dc] hierarchy::level=0
+xcf_save_layer[63c]: done: xcf_save_hierarchy
+SAVE step=move-filter-redo success=1
+ACTION step=duplicate-filter api=gimp_item_duplicate(filter,GIMP_TYPE_FILTER_LAYER)+gimp_image_add_layer(TRUE)
+FilterLayer::FilterLayer
+FilterLayer::filter_reset
+REGISTER id=filter-copy pointer=0x55f44cef7800 type=GimpFilterLayer
+EVENT seq=45 step=duplicate-filter id=filter-copy event=notify property=name
+push_undo: GimpLayerUndo=55
+EVENT seq=46 step=duplicate-filter id=filter-copy event=update rect=0,0,24,20
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter-copy: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=47 step=duplicate-filter id=filter-copy event=update rect=0,0,24,20
+EVENT seq=48 step=duplicate-filter id=filter-copy event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7308720957 name=filter-copy
+STATE step=duplicate-filter undo=3 redo=0
+OBJECT step=duplicate-filter id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=2 xy=13,15 wh=24,20
+PIXELS step=duplicate-filter id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=duplicate-filter id=filter pointer=0x55f44cdeb020 alive=1 updates=24 core_id=3 attached=1 parent=NULL index=1 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=7
+ARG step=duplicate-filter id=filter index=0 type=GimpInt32 value=1
+ARG step=duplicate-filter id=filter index=1 type=GimpImageID value=1
+ARG step=duplicate-filter id=filter index=2 type=GimpDrawableID value=3
+ARG step=duplicate-filter id=filter index=3 type=gdouble value=2.000000
+ARG step=duplicate-filter id=filter index=4 type=GimpInt32 value=1
+ARG step=duplicate-filter id=filter index=5 type=GimpInt32 value=0
+PIXELS step=duplicate-filter id=filter width=24 height=20 bpp=4 sha256=04dc4ac86325a470f13168342ecd8206026bdb2ca0108fdb00ac79874eca9c22
+OBJECT step=duplicate-filter id=filter-copy pointer=0x55f44cef7800 alive=1 updates=3 core_id=4 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=1
+ARG step=duplicate-filter id=filter-copy index=0 type=GimpInt32 value=1
+ARG step=duplicate-filter id=filter-copy index=1 type=GimpImageID value=1
+ARG step=duplicate-filter id=filter-copy index=2 type=GimpDrawableID value=4
+ARG step=duplicate-filter id=filter-copy index=3 type=gdouble value=2.000000
+ARG step=duplicate-filter id=filter-copy index=4 type=GimpInt32 value=1
+ARG step=duplicate-filter id=filter-copy index=5 type=GimpInt32 value=0
+PIXELS step=duplicate-filter id=filter-copy width=24 height=20 bpp=4 sha256=2a52a65f5ad7c208c4bb78d71b280d0bb5c52b012dd18e23f696e0f1153f28cf
+HISTORY step=duplicate-filter stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=duplicate-filter stack=undo path=root.0 type=GimpLayerUndo undo_type=55 item=filter-copy
+HISTORY step=duplicate-filter stack=undo path=root.1 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=duplicate-filter stack=undo path=root.1.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=duplicate-filter stack=undo path=root.2 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=duplicate-filter stack=undo path=root.2.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=duplicate-filter stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=duplicate-filter id=projection width=96 height=80 bpp=4 sha256=656dfa0e1b3506291b97d7dc574f82648bc70b7934869ea3e68c376d53775926
+Becomes save version=4
+xcf_save[237] prop_type=32
+xcf_save[23b] length=0
+xcf_save[23f] filter_name=plug-in-edge
+xcf_save[250] value(0)
+  [250] type=2, value=1
+xcf_save[25c] value(1)
+  [25c] UNKNOWN
+xcf_save[264] value(2)
+  [264] type=10, N/A
+xcf_save[26c] value(3)
+  [26c] type=5, value=2.000000
+xcf_save[278] value(4)
+  [278] type=2, value=1
+xcf_save[284] value(5)
+  [284] type=2, value=0
+xcf_save[290] PROP_END
+xcf_save[23b] length=89
+xcf_save[298]: layer_props: PROP_END
+xcf_save_layer[2a0]: done: save_layer_props
+xcf_save_layer[2a0]: done: save_offset=2a8
+xcf_save_layer[2a4]: done: save_layer_mask_offset
+xcf_save_layer[2a8]: xcf_save_hierarchy
+xcf_save[2a8] hierarchy:: write width=24
+xcf_save[2ac] hierarchy:: write height=20
+xcf_save[2b0] hierarchy:: write bpp=4
+xcf_save[2b4] hierarchy:: write nlevels=2
+xcf_save[2bc] hierarchy::level=0
+xcf_save_layer[55e]: done: xcf_save_hierarchy
+xcf_save[5fd] prop_type=32
+xcf_save[601] length=0
+xcf_save[605] filter_name=plug-in-edge
+xcf_save[616] value(0)
+  [616] type=2, value=1
+xcf_save[622] value(1)
+  [622] UNKNOWN
+xcf_save[62a] value(2)
+  [62a] type=10, N/A
+xcf_save[632] value(3)
+  [632] type=5, value=2.000000
+xcf_save[63e] value(4)
+  [63e] type=2, value=1
+xcf_save[64a] value(5)
+  [64a] type=2, value=0
+xcf_save[656] PROP_END
+xcf_save[601] length=89
+xcf_save[65e]: layer_props: PROP_END
+xcf_save_layer[666]: done: save_layer_props
+xcf_save_layer[666]: done: save_offset=66e
+xcf_save_layer[66a]: done: save_layer_mask_offset
+xcf_save_layer[66e]: xcf_save_hierarchy
+xcf_save[66e] hierarchy:: write width=24
+xcf_save[672] hierarchy:: write height=20
+xcf_save[676] hierarchy:: write bpp=4
+xcf_save[67a] hierarchy:: write nlevels=2
+xcf_save[682] hierarchy::level=0
+xcf_save_layer[8e8]: done: xcf_save_hierarchy
+xcf_save[987]: layer_props: PROP_END
+xcf_save_layer[98f]: done: save_layer_props
+xcf_save_layer[98f]: done: save_offset=997
+xcf_save_layer[993]: done: save_layer_mask_offset
+xcf_save_layer[997]: xcf_save_hierarchy
+xcf_save[997] hierarchy:: write width=24
+xcf_save[99b] hierarchy:: write height=20
+xcf_save[99f] hierarchy:: write bpp=4
+xcf_save[9a3] hierarchy:: write nlevels=2
+xcf_save[9ab] hierarchy::level=0
+xcf_save_layer[a0b]: done: xcf_save_hierarchy
+SAVE step=duplicate-filter success=1
+ACTION step=duplicate-filter-undo api=gimp_image_undo
+RESULT step=duplicate-filter-undo success=1
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=49 step=duplicate-filter-undo id=filter event=update rect=0,0,24,20
+FilterLayer::filter_reset
+EVENT seq=50 step=duplicate-filter-undo id=filter-copy event=update rect=0,0,24,20
+EVENT seq=51 step=duplicate-filter-undo id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7310723447 name=filter
+STATE step=duplicate-filter-undo undo=2 redo=1
+OBJECT step=duplicate-filter-undo id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=1 xy=13,15 wh=24,20
+PIXELS step=duplicate-filter-undo id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=duplicate-filter-undo id=filter pointer=0x55f44cdeb020 alive=1 updates=26 core_id=3 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=8
+ARG step=duplicate-filter-undo id=filter index=0 type=GimpInt32 value=1
+ARG step=duplicate-filter-undo id=filter index=1 type=GimpImageID value=1
+ARG step=duplicate-filter-undo id=filter index=2 type=GimpDrawableID value=3
+ARG step=duplicate-filter-undo id=filter index=3 type=gdouble value=2.000000
+ARG step=duplicate-filter-undo id=filter index=4 type=GimpInt32 value=1
+ARG step=duplicate-filter-undo id=filter index=5 type=GimpInt32 value=0
+PIXELS step=duplicate-filter-undo id=filter width=24 height=20 bpp=4 sha256=04dc4ac86325a470f13168342ecd8206026bdb2ca0108fdb00ac79874eca9c22
+OBJECT step=duplicate-filter-undo id=filter-copy pointer=0x55f44cef7800 alive=1 updates=4 core_id=4 attached=0 parent=NULL index=-1 xy=11,12 wh=24,20 procedure=plug-in-edge pending=1 completions=1
+ARG step=duplicate-filter-undo id=filter-copy index=0 type=GimpInt32 value=1
+ARG step=duplicate-filter-undo id=filter-copy index=1 type=GimpImageID value=1
+ARG step=duplicate-filter-undo id=filter-copy index=2 type=GimpDrawableID value=4
+ARG step=duplicate-filter-undo id=filter-copy index=3 type=gdouble value=2.000000
+ARG step=duplicate-filter-undo id=filter-copy index=4 type=GimpInt32 value=1
+ARG step=duplicate-filter-undo id=filter-copy index=5 type=GimpInt32 value=0
+PIXELS step=duplicate-filter-undo id=filter-copy width=24 height=20 bpp=4 sha256=2a52a65f5ad7c208c4bb78d71b280d0bb5c52b012dd18e23f696e0f1153f28cf
+HISTORY step=duplicate-filter-undo stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=duplicate-filter-undo stack=undo path=root.0 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=duplicate-filter-undo stack=undo path=root.0.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=duplicate-filter-undo stack=undo path=root.1 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=duplicate-filter-undo stack=undo path=root.1.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=duplicate-filter-undo stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=duplicate-filter-undo stack=redo path=root.0 type=GimpLayerUndo undo_type=55 item=filter-copy
+PIXELS step=duplicate-filter-undo id=projection width=96 height=80 bpp=4 sha256=7e16fdd0479eb971593fb081ff015c6be7d3c811f4ac6b61ae0c280e38565362
+Becomes save version=4
+xcf_save[22e] prop_type=32
+xcf_save[232] length=0
+xcf_save[236] filter_name=plug-in-edge
+xcf_save[247] value(0)
+  [247] type=2, value=1
+xcf_save[253] value(1)
+  [253] UNKNOWN
+xcf_save[25b] value(2)
+  [25b] type=10, N/A
+xcf_save[263] value(3)
+  [263] type=5, value=2.000000
+xcf_save[26f] value(4)
+  [26f] type=2, value=1
+xcf_save[27b] value(5)
+  [27b] type=2, value=0
+xcf_save[287] PROP_END
+xcf_save[232] length=89
+xcf_save[28f]: layer_props: PROP_END
+xcf_save_layer[297]: done: save_layer_props
+xcf_save_layer[297]: done: save_offset=29f
+xcf_save_layer[29b]: done: save_layer_mask_offset
+xcf_save_layer[29f]: xcf_save_hierarchy
+xcf_save[29f] hierarchy:: write width=24
+xcf_save[2a3] hierarchy:: write height=20
+xcf_save[2a7] hierarchy:: write bpp=4
+xcf_save[2ab] hierarchy:: write nlevels=2
+xcf_save[2b3] hierarchy::level=0
+xcf_save_layer[519]: done: xcf_save_hierarchy
+xcf_save[5b8]: layer_props: PROP_END
+xcf_save_layer[5c0]: done: save_layer_props
+xcf_save_layer[5c0]: done: save_offset=5c8
+xcf_save_layer[5c4]: done: save_layer_mask_offset
+xcf_save_layer[5c8]: xcf_save_hierarchy
+xcf_save[5c8] hierarchy:: write width=24
+xcf_save[5cc] hierarchy:: write height=20
+xcf_save[5d0] hierarchy:: write bpp=4
+xcf_save[5d4] hierarchy:: write nlevels=2
+xcf_save[5dc] hierarchy::level=0
+xcf_save_layer[63c]: done: xcf_save_hierarchy
+SAVE step=duplicate-filter-undo success=1
+ACTION step=duplicate-filter-redo api=gimp_image_redo
+RESULT step=duplicate-filter-redo success=1
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter-copy: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=52 step=duplicate-filter-redo id=filter-copy event=update rect=0,0,24,20
+EVENT seq=53 step=duplicate-filter-redo id=filter-copy event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7312731316 name=filter-copy
+STATE step=duplicate-filter-redo undo=3 redo=0
+OBJECT step=duplicate-filter-redo id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=2 xy=13,15 wh=24,20
+PIXELS step=duplicate-filter-redo id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=duplicate-filter-redo id=filter pointer=0x55f44cdeb020 alive=1 updates=26 core_id=3 attached=1 parent=NULL index=1 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=8
+ARG step=duplicate-filter-redo id=filter index=0 type=GimpInt32 value=1
+ARG step=duplicate-filter-redo id=filter index=1 type=GimpImageID value=1
+ARG step=duplicate-filter-redo id=filter index=2 type=GimpDrawableID value=3
+ARG step=duplicate-filter-redo id=filter index=3 type=gdouble value=2.000000
+ARG step=duplicate-filter-redo id=filter index=4 type=GimpInt32 value=1
+ARG step=duplicate-filter-redo id=filter index=5 type=GimpInt32 value=0
+PIXELS step=duplicate-filter-redo id=filter width=24 height=20 bpp=4 sha256=04dc4ac86325a470f13168342ecd8206026bdb2ca0108fdb00ac79874eca9c22
+OBJECT step=duplicate-filter-redo id=filter-copy pointer=0x55f44cef7800 alive=1 updates=6 core_id=4 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=2
+ARG step=duplicate-filter-redo id=filter-copy index=0 type=GimpInt32 value=1
+ARG step=duplicate-filter-redo id=filter-copy index=1 type=GimpImageID value=1
+ARG step=duplicate-filter-redo id=filter-copy index=2 type=GimpDrawableID value=4
+ARG step=duplicate-filter-redo id=filter-copy index=3 type=gdouble value=2.000000
+ARG step=duplicate-filter-redo id=filter-copy index=4 type=GimpInt32 value=1
+ARG step=duplicate-filter-redo id=filter-copy index=5 type=GimpInt32 value=0
+PIXELS step=duplicate-filter-redo id=filter-copy width=24 height=20 bpp=4 sha256=2a52a65f5ad7c208c4bb78d71b280d0bb5c52b012dd18e23f696e0f1153f28cf
+HISTORY step=duplicate-filter-redo stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=duplicate-filter-redo stack=undo path=root.0 type=GimpLayerUndo undo_type=55 item=filter-copy
+HISTORY step=duplicate-filter-redo stack=undo path=root.1 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=duplicate-filter-redo stack=undo path=root.1.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=duplicate-filter-redo stack=undo path=root.2 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=duplicate-filter-redo stack=undo path=root.2.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=duplicate-filter-redo stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=duplicate-filter-redo id=projection width=96 height=80 bpp=4 sha256=656dfa0e1b3506291b97d7dc574f82648bc70b7934869ea3e68c376d53775926
+Becomes save version=4
+xcf_save[237] prop_type=32
+xcf_save[23b] length=0
+xcf_save[23f] filter_name=plug-in-edge
+xcf_save[250] value(0)
+  [250] type=2, value=1
+xcf_save[25c] value(1)
+  [25c] UNKNOWN
+xcf_save[264] value(2)
+  [264] type=10, N/A
+xcf_save[26c] value(3)
+  [26c] type=5, value=2.000000
+xcf_save[278] value(4)
+  [278] type=2, value=1
+xcf_save[284] value(5)
+  [284] type=2, value=0
+xcf_save[290] PROP_END
+xcf_save[23b] length=89
+xcf_save[298]: layer_props: PROP_END
+xcf_save_layer[2a0]: done: save_layer_props
+xcf_save_layer[2a0]: done: save_offset=2a8
+xcf_save_layer[2a4]: done: save_layer_mask_offset
+xcf_save_layer[2a8]: xcf_save_hierarchy
+xcf_save[2a8] hierarchy:: write width=24
+xcf_save[2ac] hierarchy:: write height=20
+xcf_save[2b0] hierarchy:: write bpp=4
+xcf_save[2b4] hierarchy:: write nlevels=2
+xcf_save[2bc] hierarchy::level=0
+xcf_save_layer[55e]: done: xcf_save_hierarchy
+xcf_save[5fd] prop_type=32
+xcf_save[601] length=0
+xcf_save[605] filter_name=plug-in-edge
+xcf_save[616] value(0)
+  [616] type=2, value=1
+xcf_save[622] value(1)
+  [622] UNKNOWN
+xcf_save[62a] value(2)
+  [62a] type=10, N/A
+xcf_save[632] value(3)
+  [632] type=5, value=2.000000
+xcf_save[63e] value(4)
+  [63e] type=2, value=1
+xcf_save[64a] value(5)
+  [64a] type=2, value=0
+xcf_save[656] PROP_END
+xcf_save[601] length=89
+xcf_save[65e]: layer_props: PROP_END
+xcf_save_layer[666]: done: save_layer_props
+xcf_save_layer[666]: done: save_offset=66e
+xcf_save_layer[66a]: done: save_layer_mask_offset
+xcf_save_layer[66e]: xcf_save_hierarchy
+xcf_save[66e] hierarchy:: write width=24
+xcf_save[672] hierarchy:: write height=20
+xcf_save[676] hierarchy:: write bpp=4
+xcf_save[67a] hierarchy:: write nlevels=2
+xcf_save[682] hierarchy::level=0
+xcf_save_layer[8e8]: done: xcf_save_hierarchy
+xcf_save[987]: layer_props: PROP_END
+xcf_save_layer[98f]: done: save_layer_props
+xcf_save_layer[98f]: done: save_offset=997
+xcf_save_layer[993]: done: save_layer_mask_offset
+xcf_save_layer[997]: xcf_save_hierarchy
+xcf_save[997] hierarchy:: write width=24
+xcf_save[99b] hierarchy:: write height=20
+xcf_save[99f] hierarchy:: write bpp=4
+xcf_save[9a3] hierarchy:: write nlevels=2
+xcf_save[9ab] hierarchy::level=0
+xcf_save_layer[a0b]: done: xcf_save_hierarchy
+SAVE step=duplicate-filter-redo success=1
+ACTION step=delete-source api=gimp_image_remove_layer(source,TRUE)
+push_undo: GimpLayerUndo=56
+EVENT seq=54 step=delete-source id=filter event=update rect=0,0,24,20
+EVENT seq=55 step=delete-source id=filter event=update rect=0,0,24,20
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=56 step=delete-source id=filter event=update rect=0,0,24,20
+FilterLayer::filter_reset
+EVENT seq=57 step=delete-source id=filter-copy event=update rect=0,0,24,20
+EVENT seq=58 step=delete-source id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7314729212 name=filter
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter-copy: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=59 step=delete-source id=filter-copy event=update rect=0,0,24,20
+EVENT seq=60 step=delete-source id=filter-copy event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7314757547 name=filter-copy
+STATE step=delete-source undo=4 redo=0
+OBJECT step=delete-source id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=0 parent=NULL index=-1 xy=13,15 wh=24,20
+PIXELS step=delete-source id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=delete-source id=filter pointer=0x55f44cdeb020 alive=1 updates=30 core_id=3 attached=1 parent=NULL index=1 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=9
+ARG step=delete-source id=filter index=0 type=GimpInt32 value=1
+ARG step=delete-source id=filter index=1 type=GimpImageID value=1
+ARG step=delete-source id=filter index=2 type=GimpDrawableID value=3
+ARG step=delete-source id=filter index=3 type=gdouble value=2.000000
+ARG step=delete-source id=filter index=4 type=GimpInt32 value=1
+ARG step=delete-source id=filter index=5 type=GimpInt32 value=0
+PIXELS step=delete-source id=filter width=24 height=20 bpp=4 sha256=155e437b946ac82ae591ff382b8d19efda9397b2282672dbabd91ec31ce8a651
+OBJECT step=delete-source id=filter-copy pointer=0x55f44cef7800 alive=1 updates=9 core_id=4 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=3
+ARG step=delete-source id=filter-copy index=0 type=GimpInt32 value=1
+ARG step=delete-source id=filter-copy index=1 type=GimpImageID value=1
+ARG step=delete-source id=filter-copy index=2 type=GimpDrawableID value=4
+ARG step=delete-source id=filter-copy index=3 type=gdouble value=2.000000
+ARG step=delete-source id=filter-copy index=4 type=GimpInt32 value=1
+ARG step=delete-source id=filter-copy index=5 type=GimpInt32 value=0
+PIXELS step=delete-source id=filter-copy width=24 height=20 bpp=4 sha256=155e437b946ac82ae591ff382b8d19efda9397b2282672dbabd91ec31ce8a651
+HISTORY step=delete-source stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=delete-source stack=undo path=root.0 type=GimpLayerUndo undo_type=56 item=source
+HISTORY step=delete-source stack=undo path=root.1 type=GimpLayerUndo undo_type=55 item=filter-copy
+HISTORY step=delete-source stack=undo path=root.2 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-source stack=undo path=root.2.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=delete-source stack=undo path=root.3 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-source stack=undo path=root.3.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=delete-source stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=delete-source id=projection width=96 height=80 bpp=4 sha256=4c7eea521d2218c5965fd3666c694a967a939e29a6928d528b6ed1101176b8ac
+Becomes save version=4
+xcf_save[233] prop_type=32
+xcf_save[237] length=0
+xcf_save[23b] filter_name=plug-in-edge
+xcf_save[24c] value(0)
+  [24c] type=2, value=1
+xcf_save[258] value(1)
+  [258] UNKNOWN
+xcf_save[260] value(2)
+  [260] type=10, N/A
+xcf_save[268] value(3)
+  [268] type=5, value=2.000000
+xcf_save[274] value(4)
+  [274] type=2, value=1
+xcf_save[280] value(5)
+  [280] type=2, value=0
+xcf_save[28c] PROP_END
+xcf_save[237] length=89
+xcf_save[294]: layer_props: PROP_END
+xcf_save_layer[29c]: done: save_layer_props
+xcf_save_layer[29c]: done: save_offset=2a4
+xcf_save_layer[2a0]: done: save_layer_mask_offset
+xcf_save_layer[2a4]: xcf_save_hierarchy
+xcf_save[2a4] hierarchy:: write width=24
+xcf_save[2a8] hierarchy:: write height=20
+xcf_save[2ac] hierarchy:: write bpp=4
+xcf_save[2b0] hierarchy:: write nlevels=2
+xcf_save[2b8] hierarchy::level=0
+xcf_save_layer[2d8]: done: xcf_save_hierarchy
+xcf_save[377] prop_type=32
+xcf_save[37b] length=0
+xcf_save[37f] filter_name=plug-in-edge
+xcf_save[390] value(0)
+  [390] type=2, value=1
+xcf_save[39c] value(1)
+  [39c] UNKNOWN
+xcf_save[3a4] value(2)
+  [3a4] type=10, N/A
+xcf_save[3ac] value(3)
+  [3ac] type=5, value=2.000000
+xcf_save[3b8] value(4)
+  [3b8] type=2, value=1
+xcf_save[3c4] value(5)
+  [3c4] type=2, value=0
+xcf_save[3d0] PROP_END
+xcf_save[37b] length=89
+xcf_save[3d8]: layer_props: PROP_END
+xcf_save_layer[3e0]: done: save_layer_props
+xcf_save_layer[3e0]: done: save_offset=3e8
+xcf_save_layer[3e4]: done: save_layer_mask_offset
+xcf_save_layer[3e8]: xcf_save_hierarchy
+xcf_save[3e8] hierarchy:: write width=24
+xcf_save[3ec] hierarchy:: write height=20
+xcf_save[3f0] hierarchy:: write bpp=4
+xcf_save[3f4] hierarchy:: write nlevels=2
+xcf_save[3fc] hierarchy::level=0
+xcf_save_layer[41c]: done: xcf_save_hierarchy
+SAVE step=delete-source success=1
+ACTION step=delete-source-undo api=gimp_image_undo
+EVENT seq=61 step=delete-source-undo id=filter event=update rect=0,0,24,20
+RESULT step=delete-source-undo success=1
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=62 step=delete-source-undo id=filter event=update rect=0,0,24,20
+FilterLayer::filter_reset
+EVENT seq=63 step=delete-source-undo id=filter-copy event=update rect=0,0,24,20
+EVENT seq=64 step=delete-source-undo id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7316732051 name=filter
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter-copy: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=65 step=delete-source-undo id=filter-copy event=update rect=0,0,24,20
+EVENT seq=66 step=delete-source-undo id=filter-copy event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7316758528 name=filter-copy
+STATE step=delete-source-undo undo=3 redo=1
+OBJECT step=delete-source-undo id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=2 xy=13,15 wh=24,20
+PIXELS step=delete-source-undo id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=delete-source-undo id=filter pointer=0x55f44cdeb020 alive=1 updates=33 core_id=3 attached=1 parent=NULL index=1 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=10
+ARG step=delete-source-undo id=filter index=0 type=GimpInt32 value=1
+ARG step=delete-source-undo id=filter index=1 type=GimpImageID value=1
+ARG step=delete-source-undo id=filter index=2 type=GimpDrawableID value=3
+ARG step=delete-source-undo id=filter index=3 type=gdouble value=2.000000
+ARG step=delete-source-undo id=filter index=4 type=GimpInt32 value=1
+ARG step=delete-source-undo id=filter index=5 type=GimpInt32 value=0
+PIXELS step=delete-source-undo id=filter width=24 height=20 bpp=4 sha256=04dc4ac86325a470f13168342ecd8206026bdb2ca0108fdb00ac79874eca9c22
+OBJECT step=delete-source-undo id=filter-copy pointer=0x55f44cef7800 alive=1 updates=12 core_id=4 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=4
+ARG step=delete-source-undo id=filter-copy index=0 type=GimpInt32 value=1
+ARG step=delete-source-undo id=filter-copy index=1 type=GimpImageID value=1
+ARG step=delete-source-undo id=filter-copy index=2 type=GimpDrawableID value=4
+ARG step=delete-source-undo id=filter-copy index=3 type=gdouble value=2.000000
+ARG step=delete-source-undo id=filter-copy index=4 type=GimpInt32 value=1
+ARG step=delete-source-undo id=filter-copy index=5 type=GimpInt32 value=0
+PIXELS step=delete-source-undo id=filter-copy width=24 height=20 bpp=4 sha256=2a52a65f5ad7c208c4bb78d71b280d0bb5c52b012dd18e23f696e0f1153f28cf
+HISTORY step=delete-source-undo stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=delete-source-undo stack=undo path=root.0 type=GimpLayerUndo undo_type=55 item=filter-copy
+HISTORY step=delete-source-undo stack=undo path=root.1 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-source-undo stack=undo path=root.1.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=delete-source-undo stack=undo path=root.2 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-source-undo stack=undo path=root.2.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=delete-source-undo stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=delete-source-undo stack=redo path=root.0 type=GimpLayerUndo undo_type=56 item=source
+PIXELS step=delete-source-undo id=projection width=96 height=80 bpp=4 sha256=656dfa0e1b3506291b97d7dc574f82648bc70b7934869ea3e68c376d53775926
+Becomes save version=4
+xcf_save[22f] prop_type=32
+xcf_save[233] length=0
+xcf_save[237] filter_name=plug-in-edge
+xcf_save[248] value(0)
+  [248] type=2, value=1
+xcf_save[254] value(1)
+  [254] UNKNOWN
+xcf_save[25c] value(2)
+  [25c] type=10, N/A
+xcf_save[264] value(3)
+  [264] type=5, value=2.000000
+xcf_save[270] value(4)
+  [270] type=2, value=1
+xcf_save[27c] value(5)
+  [27c] type=2, value=0
+xcf_save[288] PROP_END
+xcf_save[233] length=89
+xcf_save[290]: layer_props: PROP_END
+xcf_save_layer[298]: done: save_layer_props
+xcf_save_layer[298]: done: save_offset=2a0
+xcf_save_layer[29c]: done: save_layer_mask_offset
+xcf_save_layer[2a0]: xcf_save_hierarchy
+xcf_save[2a0] hierarchy:: write width=24
+xcf_save[2a4] hierarchy:: write height=20
+xcf_save[2a8] hierarchy:: write bpp=4
+xcf_save[2ac] hierarchy:: write nlevels=2
+xcf_save[2b4] hierarchy::level=0
+xcf_save_layer[556]: done: xcf_save_hierarchy
+xcf_save[5f5] prop_type=32
+xcf_save[5f9] length=0
+xcf_save[5fd] filter_name=plug-in-edge
+xcf_save[60e] value(0)
+  [60e] type=2, value=1
+xcf_save[61a] value(1)
+  [61a] UNKNOWN
+xcf_save[622] value(2)
+  [622] type=10, N/A
+xcf_save[62a] value(3)
+  [62a] type=5, value=2.000000
+xcf_save[636] value(4)
+  [636] type=2, value=1
+xcf_save[642] value(5)
+  [642] type=2, value=0
+xcf_save[64e] PROP_END
+xcf_save[5f9] length=89
+xcf_save[656]: layer_props: PROP_END
+xcf_save_layer[65e]: done: save_layer_props
+xcf_save_layer[65e]: done: save_offset=666
+xcf_save_layer[662]: done: save_layer_mask_offset
+xcf_save_layer[666]: xcf_save_hierarchy
+xcf_save[666] hierarchy:: write width=24
+xcf_save[66a] hierarchy:: write height=20
+xcf_save[66e] hierarchy:: write bpp=4
+xcf_save[672] hierarchy:: write nlevels=2
+xcf_save[67a] hierarchy::level=0
+xcf_save_layer[8e0]: done: xcf_save_hierarchy
+xcf_save[987]: layer_props: PROP_END
+xcf_save_layer[98f]: done: save_layer_props
+xcf_save_layer[98f]: done: save_offset=997
+xcf_save_layer[993]: done: save_layer_mask_offset
+xcf_save_layer[997]: xcf_save_hierarchy
+xcf_save[997] hierarchy:: write width=24
+xcf_save[99b] hierarchy:: write height=20
+xcf_save[99f] hierarchy:: write bpp=4
+xcf_save[9a3] hierarchy:: write nlevels=2
+xcf_save[9ab] hierarchy::level=0
+xcf_save_layer[a0b]: done: xcf_save_hierarchy
+SAVE step=delete-source-undo success=1
+ACTION step=delete-source-redo api=gimp_image_redo
+EVENT seq=67 step=delete-source-redo id=filter event=update rect=0,0,24,20
+EVENT seq=68 step=delete-source-redo id=filter event=update rect=0,0,24,20
+RESULT step=delete-source-redo success=1
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=69 step=delete-source-redo id=filter event=update rect=0,0,24,20
+FilterLayer::filter_reset
+EVENT seq=70 step=delete-source-redo id=filter-copy event=update rect=0,0,24,20
+EVENT seq=71 step=delete-source-redo id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7318734711 name=filter
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter-copy: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=72 step=delete-source-redo id=filter-copy event=update rect=0,0,24,20
+EVENT seq=73 step=delete-source-redo id=filter-copy event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7318762193 name=filter-copy
+STATE step=delete-source-redo undo=4 redo=0
+OBJECT step=delete-source-redo id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=0 parent=NULL index=-1 xy=13,15 wh=24,20
+PIXELS step=delete-source-redo id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=delete-source-redo id=filter pointer=0x55f44cdeb020 alive=1 updates=37 core_id=3 attached=1 parent=NULL index=1 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=11
+ARG step=delete-source-redo id=filter index=0 type=GimpInt32 value=1
+ARG step=delete-source-redo id=filter index=1 type=GimpImageID value=1
+ARG step=delete-source-redo id=filter index=2 type=GimpDrawableID value=3
+ARG step=delete-source-redo id=filter index=3 type=gdouble value=2.000000
+ARG step=delete-source-redo id=filter index=4 type=GimpInt32 value=1
+ARG step=delete-source-redo id=filter index=5 type=GimpInt32 value=0
+PIXELS step=delete-source-redo id=filter width=24 height=20 bpp=4 sha256=155e437b946ac82ae591ff382b8d19efda9397b2282672dbabd91ec31ce8a651
+OBJECT step=delete-source-redo id=filter-copy pointer=0x55f44cef7800 alive=1 updates=15 core_id=4 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=5
+ARG step=delete-source-redo id=filter-copy index=0 type=GimpInt32 value=1
+ARG step=delete-source-redo id=filter-copy index=1 type=GimpImageID value=1
+ARG step=delete-source-redo id=filter-copy index=2 type=GimpDrawableID value=4
+ARG step=delete-source-redo id=filter-copy index=3 type=gdouble value=2.000000
+ARG step=delete-source-redo id=filter-copy index=4 type=GimpInt32 value=1
+ARG step=delete-source-redo id=filter-copy index=5 type=GimpInt32 value=0
+PIXELS step=delete-source-redo id=filter-copy width=24 height=20 bpp=4 sha256=155e437b946ac82ae591ff382b8d19efda9397b2282672dbabd91ec31ce8a651
+HISTORY step=delete-source-redo stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=delete-source-redo stack=undo path=root.0 type=GimpLayerUndo undo_type=56 item=source
+HISTORY step=delete-source-redo stack=undo path=root.1 type=GimpLayerUndo undo_type=55 item=filter-copy
+HISTORY step=delete-source-redo stack=undo path=root.2 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-source-redo stack=undo path=root.2.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=delete-source-redo stack=undo path=root.3 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-source-redo stack=undo path=root.3.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=delete-source-redo stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=delete-source-redo id=projection width=96 height=80 bpp=4 sha256=4c7eea521d2218c5965fd3666c694a967a939e29a6928d528b6ed1101176b8ac
+Becomes save version=4
+xcf_save[233] prop_type=32
+xcf_save[237] length=0
+xcf_save[23b] filter_name=plug-in-edge
+xcf_save[24c] value(0)
+  [24c] type=2, value=1
+xcf_save[258] value(1)
+  [258] UNKNOWN
+xcf_save[260] value(2)
+  [260] type=10, N/A
+xcf_save[268] value(3)
+  [268] type=5, value=2.000000
+xcf_save[274] value(4)
+  [274] type=2, value=1
+xcf_save[280] value(5)
+  [280] type=2, value=0
+xcf_save[28c] PROP_END
+xcf_save[237] length=89
+xcf_save[294]: layer_props: PROP_END
+xcf_save_layer[29c]: done: save_layer_props
+xcf_save_layer[29c]: done: save_offset=2a4
+xcf_save_layer[2a0]: done: save_layer_mask_offset
+xcf_save_layer[2a4]: xcf_save_hierarchy
+xcf_save[2a4] hierarchy:: write width=24
+xcf_save[2a8] hierarchy:: write height=20
+xcf_save[2ac] hierarchy:: write bpp=4
+xcf_save[2b0] hierarchy:: write nlevels=2
+xcf_save[2b8] hierarchy::level=0
+xcf_save_layer[2d8]: done: xcf_save_hierarchy
+xcf_save[377] prop_type=32
+xcf_save[37b] length=0
+xcf_save[37f] filter_name=plug-in-edge
+xcf_save[390] value(0)
+  [390] type=2, value=1
+xcf_save[39c] value(1)
+  [39c] UNKNOWN
+xcf_save[3a4] value(2)
+  [3a4] type=10, N/A
+xcf_save[3ac] value(3)
+  [3ac] type=5, value=2.000000
+xcf_save[3b8] value(4)
+  [3b8] type=2, value=1
+xcf_save[3c4] value(5)
+  [3c4] type=2, value=0
+xcf_save[3d0] PROP_END
+xcf_save[37b] length=89
+xcf_save[3d8]: layer_props: PROP_END
+xcf_save_layer[3e0]: done: save_layer_props
+xcf_save_layer[3e0]: done: save_offset=3e8
+xcf_save_layer[3e4]: done: save_layer_mask_offset
+xcf_save_layer[3e8]: xcf_save_hierarchy
+xcf_save[3e8] hierarchy:: write width=24
+xcf_save[3ec] hierarchy:: write height=20
+xcf_save[3f0] hierarchy:: write bpp=4
+xcf_save[3f4] hierarchy:: write nlevels=2
+xcf_save[3fc] hierarchy::level=0
+xcf_save_layer[41c]: done: xcf_save_hierarchy
+SAVE step=delete-source-redo success=1
+ACTION step=restore-source api=gimp_image_undo
+EVENT seq=74 step=restore-source id=filter event=update rect=0,0,24,20
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=75 step=restore-source id=filter event=update rect=0,0,24,20
+FilterLayer::filter_reset
+EVENT seq=76 step=restore-source id=filter-copy event=update rect=0,0,24,20
+EVENT seq=77 step=restore-source id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7320739282 name=filter
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter-copy: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=78 step=restore-source id=filter-copy event=update rect=0,0,24,20
+EVENT seq=79 step=restore-source id=filter-copy event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7320766490 name=filter-copy
+STATE step=restore-source undo=3 redo=1
+OBJECT step=restore-source id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=2 xy=13,15 wh=24,20
+PIXELS step=restore-source id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=restore-source id=filter pointer=0x55f44cdeb020 alive=1 updates=40 core_id=3 attached=1 parent=NULL index=1 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=12
+ARG step=restore-source id=filter index=0 type=GimpInt32 value=1
+ARG step=restore-source id=filter index=1 type=GimpImageID value=1
+ARG step=restore-source id=filter index=2 type=GimpDrawableID value=3
+ARG step=restore-source id=filter index=3 type=gdouble value=2.000000
+ARG step=restore-source id=filter index=4 type=GimpInt32 value=1
+ARG step=restore-source id=filter index=5 type=GimpInt32 value=0
+PIXELS step=restore-source id=filter width=24 height=20 bpp=4 sha256=04dc4ac86325a470f13168342ecd8206026bdb2ca0108fdb00ac79874eca9c22
+OBJECT step=restore-source id=filter-copy pointer=0x55f44cef7800 alive=1 updates=18 core_id=4 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=6
+ARG step=restore-source id=filter-copy index=0 type=GimpInt32 value=1
+ARG step=restore-source id=filter-copy index=1 type=GimpImageID value=1
+ARG step=restore-source id=filter-copy index=2 type=GimpDrawableID value=4
+ARG step=restore-source id=filter-copy index=3 type=gdouble value=2.000000
+ARG step=restore-source id=filter-copy index=4 type=GimpInt32 value=1
+ARG step=restore-source id=filter-copy index=5 type=GimpInt32 value=0
+PIXELS step=restore-source id=filter-copy width=24 height=20 bpp=4 sha256=2a52a65f5ad7c208c4bb78d71b280d0bb5c52b012dd18e23f696e0f1153f28cf
+HISTORY step=restore-source stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=restore-source stack=undo path=root.0 type=GimpLayerUndo undo_type=55 item=filter-copy
+HISTORY step=restore-source stack=undo path=root.1 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=restore-source stack=undo path=root.1.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=restore-source stack=undo path=root.2 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=restore-source stack=undo path=root.2.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=restore-source stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=restore-source stack=redo path=root.0 type=GimpLayerUndo undo_type=56 item=source
+PIXELS step=restore-source id=projection width=96 height=80 bpp=4 sha256=656dfa0e1b3506291b97d7dc574f82648bc70b7934869ea3e68c376d53775926
+Becomes save version=4
+xcf_save[22f] prop_type=32
+xcf_save[233] length=0
+xcf_save[237] filter_name=plug-in-edge
+xcf_save[248] value(0)
+  [248] type=2, value=1
+xcf_save[254] value(1)
+  [254] UNKNOWN
+xcf_save[25c] value(2)
+  [25c] type=10, N/A
+xcf_save[264] value(3)
+  [264] type=5, value=2.000000
+xcf_save[270] value(4)
+  [270] type=2, value=1
+xcf_save[27c] value(5)
+  [27c] type=2, value=0
+xcf_save[288] PROP_END
+xcf_save[233] length=89
+xcf_save[290]: layer_props: PROP_END
+xcf_save_layer[298]: done: save_layer_props
+xcf_save_layer[298]: done: save_offset=2a0
+xcf_save_layer[29c]: done: save_layer_mask_offset
+xcf_save_layer[2a0]: xcf_save_hierarchy
+xcf_save[2a0] hierarchy:: write width=24
+xcf_save[2a4] hierarchy:: write height=20
+xcf_save[2a8] hierarchy:: write bpp=4
+xcf_save[2ac] hierarchy:: write nlevels=2
+xcf_save[2b4] hierarchy::level=0
+xcf_save_layer[556]: done: xcf_save_hierarchy
+xcf_save[5f5] prop_type=32
+xcf_save[5f9] length=0
+xcf_save[5fd] filter_name=plug-in-edge
+xcf_save[60e] value(0)
+  [60e] type=2, value=1
+xcf_save[61a] value(1)
+  [61a] UNKNOWN
+xcf_save[622] value(2)
+  [622] type=10, N/A
+xcf_save[62a] value(3)
+  [62a] type=5, value=2.000000
+xcf_save[636] value(4)
+  [636] type=2, value=1
+xcf_save[642] value(5)
+  [642] type=2, value=0
+xcf_save[64e] PROP_END
+xcf_save[5f9] length=89
+xcf_save[656]: layer_props: PROP_END
+xcf_save_layer[65e]: done: save_layer_props
+xcf_save_layer[65e]: done: save_offset=666
+xcf_save_layer[662]: done: save_layer_mask_offset
+xcf_save_layer[666]: xcf_save_hierarchy
+xcf_save[666] hierarchy:: write width=24
+xcf_save[66a] hierarchy:: write height=20
+xcf_save[66e] hierarchy:: write bpp=4
+xcf_save[672] hierarchy:: write nlevels=2
+xcf_save[67a] hierarchy::level=0
+xcf_save_layer[8e0]: done: xcf_save_hierarchy
+xcf_save[987]: layer_props: PROP_END
+xcf_save_layer[98f]: done: save_layer_props
+xcf_save_layer[98f]: done: save_offset=997
+xcf_save_layer[993]: done: save_layer_mask_offset
+xcf_save_layer[997]: xcf_save_hierarchy
+xcf_save[997] hierarchy:: write width=24
+xcf_save[99b] hierarchy:: write height=20
+xcf_save[99f] hierarchy:: write bpp=4
+xcf_save[9a3] hierarchy:: write nlevels=2
+xcf_save[9ab] hierarchy::level=0
+xcf_save_layer[a0b]: done: xcf_save_hierarchy
+SAVE step=restore-source success=1
+ACTION step=delete-filter api=gimp_image_remove_layer(filter-copy,TRUE)
+push_undo: GimpLayerUndo=56
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=80 step=delete-filter id=filter event=update rect=0,0,24,20
+FilterLayer::filter_reset
+EVENT seq=81 step=delete-filter id=filter-copy event=update rect=0,0,24,20
+EVENT seq=82 step=delete-filter id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7322739099 name=filter
+STATE step=delete-filter undo=4 redo=0
+OBJECT step=delete-filter id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=1 xy=13,15 wh=24,20
+PIXELS step=delete-filter id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=delete-filter id=filter pointer=0x55f44cdeb020 alive=1 updates=42 core_id=3 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=13
+ARG step=delete-filter id=filter index=0 type=GimpInt32 value=1
+ARG step=delete-filter id=filter index=1 type=GimpImageID value=1
+ARG step=delete-filter id=filter index=2 type=GimpDrawableID value=3
+ARG step=delete-filter id=filter index=3 type=gdouble value=2.000000
+ARG step=delete-filter id=filter index=4 type=GimpInt32 value=1
+ARG step=delete-filter id=filter index=5 type=GimpInt32 value=0
+PIXELS step=delete-filter id=filter width=24 height=20 bpp=4 sha256=04dc4ac86325a470f13168342ecd8206026bdb2ca0108fdb00ac79874eca9c22
+OBJECT step=delete-filter id=filter-copy pointer=0x55f44cef7800 alive=1 updates=19 core_id=4 attached=0 parent=NULL index=-1 xy=11,12 wh=24,20 procedure=plug-in-edge pending=1 completions=6
+ARG step=delete-filter id=filter-copy index=0 type=GimpInt32 value=1
+ARG step=delete-filter id=filter-copy index=1 type=GimpImageID value=1
+ARG step=delete-filter id=filter-copy index=2 type=GimpDrawableID value=4
+ARG step=delete-filter id=filter-copy index=3 type=gdouble value=2.000000
+ARG step=delete-filter id=filter-copy index=4 type=GimpInt32 value=1
+ARG step=delete-filter id=filter-copy index=5 type=GimpInt32 value=0
+PIXELS step=delete-filter id=filter-copy width=24 height=20 bpp=4 sha256=2a52a65f5ad7c208c4bb78d71b280d0bb5c52b012dd18e23f696e0f1153f28cf
+HISTORY step=delete-filter stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=delete-filter stack=undo path=root.0 type=GimpLayerUndo undo_type=56 item=filter-copy
+HISTORY step=delete-filter stack=undo path=root.1 type=GimpLayerUndo undo_type=55 item=filter-copy
+HISTORY step=delete-filter stack=undo path=root.2 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-filter stack=undo path=root.2.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=delete-filter stack=undo path=root.3 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-filter stack=undo path=root.3.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=delete-filter stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=delete-filter id=projection width=96 height=80 bpp=4 sha256=7e16fdd0479eb971593fb081ff015c6be7d3c811f4ac6b61ae0c280e38565362
+Becomes save version=4
+xcf_save[226] prop_type=32
+xcf_save[22a] length=0
+xcf_save[22e] filter_name=plug-in-edge
+xcf_save[23f] value(0)
+  [23f] type=2, value=1
+xcf_save[24b] value(1)
+  [24b] UNKNOWN
+xcf_save[253] value(2)
+  [253] type=10, N/A
+xcf_save[25b] value(3)
+  [25b] type=5, value=2.000000
+xcf_save[267] value(4)
+  [267] type=2, value=1
+xcf_save[273] value(5)
+  [273] type=2, value=0
+xcf_save[27f] PROP_END
+xcf_save[22a] length=89
+xcf_save[287]: layer_props: PROP_END
+xcf_save_layer[28f]: done: save_layer_props
+xcf_save_layer[28f]: done: save_offset=297
+xcf_save_layer[293]: done: save_layer_mask_offset
+xcf_save_layer[297]: xcf_save_hierarchy
+xcf_save[297] hierarchy:: write width=24
+xcf_save[29b] hierarchy:: write height=20
+xcf_save[29f] hierarchy:: write bpp=4
+xcf_save[2a3] hierarchy:: write nlevels=2
+xcf_save[2ab] hierarchy::level=0
+xcf_save_layer[511]: done: xcf_save_hierarchy
+xcf_save[5b8]: layer_props: PROP_END
+xcf_save_layer[5c0]: done: save_layer_props
+xcf_save_layer[5c0]: done: save_offset=5c8
+xcf_save_layer[5c4]: done: save_layer_mask_offset
+xcf_save_layer[5c8]: xcf_save_hierarchy
+xcf_save[5c8] hierarchy:: write width=24
+xcf_save[5cc] hierarchy:: write height=20
+xcf_save[5d0] hierarchy:: write bpp=4
+xcf_save[5d4] hierarchy:: write nlevels=2
+xcf_save[5dc] hierarchy::level=0
+xcf_save_layer[63c]: done: xcf_save_hierarchy
+SAVE step=delete-filter success=1
+ACTION step=delete-filter-undo api=gimp_image_undo
+RESULT step=delete-filter-undo success=1
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter-copy: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=83 step=delete-filter-undo id=filter-copy event=update rect=0,0,24,20
+EVENT seq=84 step=delete-filter-undo id=filter-copy event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7324743784 name=filter-copy
+STATE step=delete-filter-undo undo=3 redo=1
+OBJECT step=delete-filter-undo id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=2 xy=13,15 wh=24,20
+PIXELS step=delete-filter-undo id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=delete-filter-undo id=filter pointer=0x55f44cdeb020 alive=1 updates=42 core_id=3 attached=1 parent=NULL index=1 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=13
+ARG step=delete-filter-undo id=filter index=0 type=GimpInt32 value=1
+ARG step=delete-filter-undo id=filter index=1 type=GimpImageID value=1
+ARG step=delete-filter-undo id=filter index=2 type=GimpDrawableID value=3
+ARG step=delete-filter-undo id=filter index=3 type=gdouble value=2.000000
+ARG step=delete-filter-undo id=filter index=4 type=GimpInt32 value=1
+ARG step=delete-filter-undo id=filter index=5 type=GimpInt32 value=0
+PIXELS step=delete-filter-undo id=filter width=24 height=20 bpp=4 sha256=04dc4ac86325a470f13168342ecd8206026bdb2ca0108fdb00ac79874eca9c22
+OBJECT step=delete-filter-undo id=filter-copy pointer=0x55f44cef7800 alive=1 updates=21 core_id=4 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=7
+ARG step=delete-filter-undo id=filter-copy index=0 type=GimpInt32 value=1
+ARG step=delete-filter-undo id=filter-copy index=1 type=GimpImageID value=1
+ARG step=delete-filter-undo id=filter-copy index=2 type=GimpDrawableID value=4
+ARG step=delete-filter-undo id=filter-copy index=3 type=gdouble value=2.000000
+ARG step=delete-filter-undo id=filter-copy index=4 type=GimpInt32 value=1
+ARG step=delete-filter-undo id=filter-copy index=5 type=GimpInt32 value=0
+PIXELS step=delete-filter-undo id=filter-copy width=24 height=20 bpp=4 sha256=2a52a65f5ad7c208c4bb78d71b280d0bb5c52b012dd18e23f696e0f1153f28cf
+HISTORY step=delete-filter-undo stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=delete-filter-undo stack=undo path=root.0 type=GimpLayerUndo undo_type=55 item=filter-copy
+HISTORY step=delete-filter-undo stack=undo path=root.1 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-filter-undo stack=undo path=root.1.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=delete-filter-undo stack=undo path=root.2 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-filter-undo stack=undo path=root.2.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=delete-filter-undo stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=delete-filter-undo stack=redo path=root.0 type=GimpLayerUndo undo_type=56 item=filter-copy
+PIXELS step=delete-filter-undo id=projection width=96 height=80 bpp=4 sha256=656dfa0e1b3506291b97d7dc574f82648bc70b7934869ea3e68c376d53775926
+Becomes save version=4
+xcf_save[237] prop_type=32
+xcf_save[23b] length=0
+xcf_save[23f] filter_name=plug-in-edge
+xcf_save[250] value(0)
+  [250] type=2, value=1
+xcf_save[25c] value(1)
+  [25c] UNKNOWN
+xcf_save[264] value(2)
+  [264] type=10, N/A
+xcf_save[26c] value(3)
+  [26c] type=5, value=2.000000
+xcf_save[278] value(4)
+  [278] type=2, value=1
+xcf_save[284] value(5)
+  [284] type=2, value=0
+xcf_save[290] PROP_END
+xcf_save[23b] length=89
+xcf_save[298]: layer_props: PROP_END
+xcf_save_layer[2a0]: done: save_layer_props
+xcf_save_layer[2a0]: done: save_offset=2a8
+xcf_save_layer[2a4]: done: save_layer_mask_offset
+xcf_save_layer[2a8]: xcf_save_hierarchy
+xcf_save[2a8] hierarchy:: write width=24
+xcf_save[2ac] hierarchy:: write height=20
+xcf_save[2b0] hierarchy:: write bpp=4
+xcf_save[2b4] hierarchy:: write nlevels=2
+xcf_save[2bc] hierarchy::level=0
+xcf_save_layer[55e]: done: xcf_save_hierarchy
+xcf_save[5fd] prop_type=32
+xcf_save[601] length=0
+xcf_save[605] filter_name=plug-in-edge
+xcf_save[616] value(0)
+  [616] type=2, value=1
+xcf_save[622] value(1)
+  [622] UNKNOWN
+xcf_save[62a] value(2)
+  [62a] type=10, N/A
+xcf_save[632] value(3)
+  [632] type=5, value=2.000000
+xcf_save[63e] value(4)
+  [63e] type=2, value=1
+xcf_save[64a] value(5)
+  [64a] type=2, value=0
+xcf_save[656] PROP_END
+xcf_save[601] length=89
+xcf_save[65e]: layer_props: PROP_END
+xcf_save_layer[666]: done: save_layer_props
+xcf_save_layer[666]: done: save_offset=66e
+xcf_save_layer[66a]: done: save_layer_mask_offset
+xcf_save_layer[66e]: xcf_save_hierarchy
+xcf_save[66e] hierarchy:: write width=24
+xcf_save[672] hierarchy:: write height=20
+xcf_save[676] hierarchy:: write bpp=4
+xcf_save[67a] hierarchy:: write nlevels=2
+xcf_save[682] hierarchy::level=0
+xcf_save_layer[8e8]: done: xcf_save_hierarchy
+xcf_save[987]: layer_props: PROP_END
+xcf_save_layer[98f]: done: save_layer_props
+xcf_save_layer[98f]: done: save_offset=997
+xcf_save_layer[993]: done: save_layer_mask_offset
+xcf_save_layer[997]: xcf_save_hierarchy
+xcf_save[997] hierarchy:: write width=24
+xcf_save[99b] hierarchy:: write height=20
+xcf_save[99f] hierarchy:: write bpp=4
+xcf_save[9a3] hierarchy:: write nlevels=2
+xcf_save[9ab] hierarchy::level=0
+xcf_save_layer[a0b]: done: xcf_save_hierarchy
+SAVE step=delete-filter-undo success=1
+ACTION step=delete-filter-redo api=gimp_image_redo
+RESULT step=delete-filter-redo success=1
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f44ced8670:  set ignore_undos=1
+--->filter: start runner=1
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+EVENT seq=85 step=delete-filter-redo id=filter event=update rect=0,0,24,20
+FilterLayer::filter_reset
+EVENT seq=86 step=delete-filter-redo id=filter-copy event=update rect=0,0,24,20
+EVENT seq=87 step=delete-filter-redo id=filter event=update rect=0,0,24,20
+FILTER_COMPLETE time_us=7326747676 name=filter
+STATE step=delete-filter-redo undo=4 redo=0
+OBJECT step=delete-filter-redo id=source pointer=0x55f44ce79110 alive=1 updates=8 core_id=2 attached=1 parent=NULL index=1 xy=13,15 wh=24,20
+PIXELS step=delete-filter-redo id=source width=24 height=20 bpp=4 sha256=236e28a25d5ed730e7f70a6df33cbfb1a34c6c9c584816a972d7e03dc1e6bae4
+OBJECT step=delete-filter-redo id=filter pointer=0x55f44cdeb020 alive=1 updates=44 core_id=3 attached=1 parent=NULL index=0 xy=11,12 wh=24,20 procedure=plug-in-edge pending=0 completions=14
+ARG step=delete-filter-redo id=filter index=0 type=GimpInt32 value=1
+ARG step=delete-filter-redo id=filter index=1 type=GimpImageID value=1
+ARG step=delete-filter-redo id=filter index=2 type=GimpDrawableID value=3
+ARG step=delete-filter-redo id=filter index=3 type=gdouble value=2.000000
+ARG step=delete-filter-redo id=filter index=4 type=GimpInt32 value=1
+ARG step=delete-filter-redo id=filter index=5 type=GimpInt32 value=0
+PIXELS step=delete-filter-redo id=filter width=24 height=20 bpp=4 sha256=04dc4ac86325a470f13168342ecd8206026bdb2ca0108fdb00ac79874eca9c22
+OBJECT step=delete-filter-redo id=filter-copy pointer=0x55f44cef7800 alive=1 updates=22 core_id=4 attached=0 parent=NULL index=-1 xy=11,12 wh=24,20 procedure=plug-in-edge pending=1 completions=7
+ARG step=delete-filter-redo id=filter-copy index=0 type=GimpInt32 value=1
+ARG step=delete-filter-redo id=filter-copy index=1 type=GimpImageID value=1
+ARG step=delete-filter-redo id=filter-copy index=2 type=GimpDrawableID value=4
+ARG step=delete-filter-redo id=filter-copy index=3 type=gdouble value=2.000000
+ARG step=delete-filter-redo id=filter-copy index=4 type=GimpInt32 value=1
+ARG step=delete-filter-redo id=filter-copy index=5 type=GimpInt32 value=0
+PIXELS step=delete-filter-redo id=filter-copy width=24 height=20 bpp=4 sha256=2a52a65f5ad7c208c4bb78d71b280d0bb5c52b012dd18e23f696e0f1153f28cf
+HISTORY step=delete-filter-redo stack=undo path=root type=GimpUndoStack undo_type=0 item=-
+HISTORY step=delete-filter-redo stack=undo path=root.0 type=GimpLayerUndo undo_type=56 item=filter-copy
+HISTORY step=delete-filter-redo stack=undo path=root.1 type=GimpLayerUndo undo_type=55 item=filter-copy
+HISTORY step=delete-filter-redo stack=undo path=root.2 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-filter-redo stack=undo path=root.2.0 type=GimpItemPropUndo undo_type=52 item=filter
+HISTORY step=delete-filter-redo stack=undo path=root.3 type=GimpUndoStack undo_type=20 item=-
+HISTORY step=delete-filter-redo stack=undo path=root.3.0 type=GimpItemPropUndo undo_type=52 item=source
+HISTORY step=delete-filter-redo stack=redo path=root type=GimpUndoStack undo_type=0 item=-
+PIXELS step=delete-filter-redo id=projection width=96 height=80 bpp=4 sha256=7e16fdd0479eb971593fb081ff015c6be7d3c811f4ac6b61ae0c280e38565362
+Becomes save version=4
+xcf_save[226] prop_type=32
+xcf_save[22a] length=0
+xcf_save[22e] filter_name=plug-in-edge
+xcf_save[23f] value(0)
+  [23f] type=2, value=1
+xcf_save[24b] value(1)
+  [24b] UNKNOWN
+xcf_save[253] value(2)
+  [253] type=10, N/A
+xcf_save[25b] value(3)
+  [25b] type=5, value=2.000000
+xcf_save[267] value(4)
+  [267] type=2, value=1
+xcf_save[273] value(5)
+  [273] type=2, value=0
+xcf_save[27f] PROP_END
+xcf_save[22a] length=89
+xcf_save[287]: layer_props: PROP_END
+xcf_save_layer[28f]: done: save_layer_props
+xcf_save_layer[28f]: done: save_offset=297
+xcf_save_layer[293]: done: save_layer_mask_offset
+xcf_save_layer[297]: xcf_save_hierarchy
+xcf_save[297] hierarchy:: write width=24
+xcf_save[29b] hierarchy:: write height=20
+xcf_save[29f] hierarchy:: write bpp=4
+xcf_save[2a3] hierarchy:: write nlevels=2
+xcf_save[2ab] hierarchy::level=0
+xcf_save_layer[511]: done: xcf_save_hierarchy
+xcf_save[5b8]: layer_props: PROP_END
+xcf_save_layer[5c0]: done: save_layer_props
+xcf_save_layer[5c0]: done: save_offset=5c8
+xcf_save_layer[5c4]: done: save_layer_mask_offset
+xcf_save_layer[5c8]: xcf_save_hierarchy
+xcf_save[5c8] hierarchy:: write width=24
+xcf_save[5cc] hierarchy:: write height=20
+xcf_save[5d0] hierarchy:: write bpp=4
+xcf_save[5d4] hierarchy:: write nlevels=2
+xcf_save[5dc] hierarchy::level=0
+xcf_save_layer[63c]: done: xcf_save_hierarchy
+SAVE step=delete-filter-redo success=1
+OPERATIONS_COMPLETE scene=filter
+
+(script-fu:780): LibGimpBase-WARNING **: 09:53:52.225: script-fu: gimp_wire_read(): error

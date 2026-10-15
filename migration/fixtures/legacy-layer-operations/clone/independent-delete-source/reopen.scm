@@ -1,0 +1,5 @@
+(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE "/workspace/scratch/5b5281e79681/legacy-layer-operations-20261015/captures/clone/delete-source.xcf" "/workspace/scratch/5b5281e79681/legacy-layer-operations-20261015/captures/clone/delete-source.xcf"))) (layers (gimp-image-get-layers image)))
+ (if (not (= (car (gimp-image-width image)) 96)) (error "wrong width"))
+ (if (not (= (car (gimp-image-height image)) 80)) (error "wrong height"))
+ (gimp-message (string-append "INDEPENDENT_ORIGINAL_REOPEN_PASS scene=clone step=delete-source roots=" (number->string (car layers)))))
+(gimp-quit 0)
