@@ -1,0 +1,108 @@
+{
+  "source_base": "65536379b9db5ad91edd3ad3a6a9933572770b8b",
+  "source_sha256": {
+    "tools/in-build-gimp.py": "63782fb37d5710a60c8fcb43fc39df8c3fe548301d77f873fc17ec3aed01392e",
+    "migration/tests/test_in_build_gimp.py": "583b78b7d3b846713c951438bfe5db75705d68c680eeaa524380ad02fba3c538"
+  },
+  "python_controls": {
+    "passed": 7,
+    "log_sha256": "1fb2e5b3269a00a8c43767513920dfcf6fdadb5108112829797e6b861e699d5f"
+  },
+  "registered_tests": [
+    {
+      "name": "gimp:app / save-and-export",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.23551034927368,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+python3 / color-parser",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.591166019439697,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+C / color-parser",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.453874111175537,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+python3 / export-options",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 27.34820294380188,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+C / export-options",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 28.121885061264038,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+python3 / image",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.734227418899536,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+C / image",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.879967212677002,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+python3 / palette",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.75335431098938,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+C / palette",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.40292477607727,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+python3 / selection-float",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.338107585906982,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+C / selection-float",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 27.644366979599,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+python3 / unit",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.80366539955139,
+      "unexpected_diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+C / unit",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.980870008468628,
+      "unexpected_diagnostics": []
+    }
+  ],
+  "exit_code": 0,
+  "log_sha256": "a5ac29cdc9a74e3978adb36cef75127bc3c428c1133f5cfa9cba534354e65f23",
+  "transport": "Authenticated loopback TCP Xvfb 1080x1920x24",
+  "scope": "Test wrapper gradient search path only; no production data saving changes"
+}

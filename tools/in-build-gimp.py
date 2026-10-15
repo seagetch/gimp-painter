@@ -70,6 +70,16 @@ def stage_script_fu(source_root, build_root, profile):
     return staged
 
 
+def quote_config_string(value):
+    """Quote a UTF-8 gimprc string like gimp_config_string_append_escaped()."""
+    escapes = {'\b': r'\b', '\f': r'\f', '\n': r'\n', '\r': r'\r',
+               '\t': r'\t', '\\': r'\\', '"': r'\"'}
+    return '"' + ''.join(
+        escapes.get(character, '\\%03o' % ord(character))
+        if ord(character) < 32 or character in escapes else character
+        for character in value) + '"'
+
+
 def main(arguments):
     build_root = Path(os.environ.get('GIMP_GLOBAL_BUILD_ROOT', '.')).resolve()
     source_root = Path(os.environ['GIMP_GLOBAL_SOURCE_ROOT']).resolve()
@@ -90,8 +100,17 @@ def main(arguments):
         print(f'INFO: temporary GIMP configuration directory: {profile}', flush=True)
         stage_script_fu(source_root, build_root, profile)
         if not has_config_override(arguments):
-            (profile / 'gimprc').write_text(
-                '(script-fu-path "${gimp_dir}/scripts")\n', encoding='utf-8')
+            config = '(script-fu-path "${gimp_dir}/scripts")\n'
+            if 'GIMP_TESTING_ABS_TOP_SRCDIR' in environment:
+                # Testing defaults search source data only, but gradient saves
+                # still require the writable profile directory in that search.
+                # Keep the token unexpanded and never make source data writable.
+                source_gradients = (environment['GIMP_TESTING_ABS_TOP_SRCDIR'] +
+                                    os.sep + os.path.join('data', 'gradients'))
+                gradient_path = os.pathsep.join(
+                    (source_gradients, '${gimp_dir}/gradients'))
+                config += '(gradient-path ' + quote_config_string(gradient_path) + ')\n'
+            (profile / 'gimprc').write_text(config, encoding='utf-8')
 
         try:
             # macOS SIP prevents DYLD_LIBRARY_PATH from selecting these libs.

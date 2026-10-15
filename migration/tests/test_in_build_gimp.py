@@ -65,6 +65,7 @@ sys.exit(int(os.environ.get('WRAPPER_EXIT', '0')))
                                 WRAPPER_SNAPSHOT=str(self.snapshot))
         self.environment.pop('GIMP_DEBUG_SELF', None)
         self.environment.pop('GIMP_TEMP_UPDATE_RPATH', None)
+        self.environment.pop('GIMP_TESTING_ABS_TOP_SRCDIR', None)
 
     def write_map(self):
         (self.build / 'meson-info/intro-installed.json').write_text(
@@ -97,15 +98,43 @@ sys.exit(int(os.environ.get('WRAPPER_EXIT', '0')))
     def test_explicit_config_forms_and_batch_arguments_survive(self):
         config = self.root / 'explicit config'
         config.write_text('(script-fu-path "")\n')
-        for option in (['--gimprc', str(config)], ['--gimprc=' + str(config)],
-                       ['-g', str(config)], ['-g' + str(config)],
-                       ['-nisg', str(config)],
-                       ['--system-gimprc', str(config)],
-                       ['--system-gimprc=' + str(config)]):
-            with self.subTest(option=option):
-                snapshot = self.invoke([*option, '-b', '--gimprc', '--quit'])
-                self.assertNotIn('gimprc', snapshot['files'])
-                self.assertEqual(config.read_text(), '(script-fu-path "")\n')
+        for testing in (False, True):
+            if testing:
+                self.environment['GIMP_TESTING_ABS_TOP_SRCDIR'] = str(self.source)
+            for option in (['--gimprc', str(config)], ['--gimprc=' + str(config)],
+                           ['-g', str(config)], ['-g' + str(config)],
+                           ['-nisg', str(config)],
+                           ['--system-gimprc', str(config)],
+                           ['--system-gimprc=' + str(config)]):
+                with self.subTest(testing=testing, option=option):
+                    snapshot = self.invoke([*option, '-b', '--gimprc', '--quit'])
+                    self.assertNotIn('gimprc', snapshot['files'])
+                    self.assertEqual(config.read_text(), '(script-fu-path "")\n')
+
+    def test_testing_gradient_search_includes_source_and_writable_profile(self):
+        testing_source = self.root / 'separate testing source'
+        self.environment['GIMP_TESTING_ABS_TOP_SRCDIR'] = str(testing_source)
+        snapshot = self.invoke(['--quit'])
+        source_gradients = str(testing_source / 'data' / 'gradients')
+        expected_path = source_gradients + os.pathsep + '${gimp_dir}/gradients'
+        expected_path = expected_path.replace('\\', '\\\\')
+        self.assertEqual(snapshot['files']['gimprc'],
+                         '(script-fu-path "${gimp_dir}/scripts")\n'
+                         '(gradient-path "' + expected_path + '")\n')
+
+    def test_testing_gradient_path_escapes_rc_syntax_and_preserves_utf8(self):
+        # These need not exist: the fake child inspects the generated RC only.
+        prefix = str(self.root) + os.sep
+        suffix = os.sep + os.path.join('data', 'gradients') + os.pathsep
+        self.environment['GIMP_TESTING_ABS_TOP_SRCDIR'] = (
+            prefix + 'source "quoted" \\ 日本語\n\r\t\b\f\x01\x07\x0b\x1f')
+        expected_path = (prefix.replace('\\', '\\\\') +
+                         r'source \"quoted\" \\ 日本語\n\r\t\b\f\001\007\013\037' +
+                         suffix.replace('\\', '\\\\') + '${gimp_dir}/gradients')
+        snapshot = self.invoke(['--quit'])
+        self.assertEqual(snapshot['files']['gimprc'],
+                         '(script-fu-path "${gimp_dir}/scripts")\n'
+                         '(gradient-path "' + expected_path + '")\n')
 
     def test_batch_text_is_never_parsed_as_a_config_option(self):
         for arguments in (['-b', '--gimprc'], ['-nisb', '--system-gimprc'],
