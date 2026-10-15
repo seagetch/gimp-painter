@@ -21,7 +21,7 @@ No assertion, event settle interval, application timeout or numerical tolerance
 was changed. This is solely the test process's outer execution budget.
 
 The final unfiltered normal run passed all 153 targets, with zero failures,
-timeouts or skips, exit 0. Compact-options passed in 104.46 seconds in that run.
+timed-out or skipped registrations, exit 0. Compact-options passed in 104.46 seconds in that run.
 The exact native source patch was byte-identical before and after the aggregate.
 Command: `python3 tools/run-painter-xvfb.py meson test -C BUILD
 --num-processes 1 --print-errorlogs --logbase baseline-final` under the isolated
@@ -32,3 +32,7 @@ Original, measured and registered summaries preserve names, counts, timings,
 return codes and targeted TAP/popup evidence. Original full logs remain in the
 execution workspace; their hashes are recorded without publishing inherited
 environment variables.
+
+Later audit found one intentionally skipped large-XCF TAP subtest inside an OK
+registration. The zero-skip count above concerns registrations only. See
+`../exact-source-normal-baseline/` for the explicit skip and diagnostic inventory.
