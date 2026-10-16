@@ -1,0 +1,184 @@
+{
+  "format": 1,
+  "status": "passed",
+  "scope": "Legacy Sharpen raw cropped-ROI raster foundation; route remains disabled",
+  "source_base": "e321ddf3d37e2474c463135bae18dec7db2937fc",
+  "tested_sources": {
+    "app/painter/filter-sharpen.hpp": "a634868d51e25f991cd8d7e28d80a01d21f421d1eb1a0d60f90f89f7eaf47fd5",
+    "app/painter/filter-sharpen.cpp": "6327ea299abd054725e5aea2324cfe02d6c5e4ee4fcd28bb75dc76049b749ab7",
+    "app/painter/meson.build": "83151570d2ee54f3b37e7d66de1727e1c683509ca141b57e841871fc6296a955",
+    "app/painter/tests/legacy-sharpen-oracle.c": "043cf96ff8527fbb46f2da21b57d1244f81762aeb46a9557800bbf6711f732f2",
+    "app/painter/tests/legacy-sharpen-oracle.h": "3fe7ae149ca7fe75da56b14d0f6740e3c09af5ca05f5592e67e66f818d9bb03b",
+    "app/painter/tests/test-filter-sharpen.cpp": "776335a48e8077bd1bedb94b6bd6a026985c77d524d4c536e7899ab0ceac061a",
+    "app/painter/tests/run_filter_sharpen_tests.py": "48e84f5f67c8d1faefd5db516dcfc8ab5b9622b5bd21a6e1a7404945b3954e6e"
+  },
+  "legacy_source": {
+    "commit": "afa43fae3e920210146abed514f136fd49f671b5",
+    "path": "plug-ins/common/sharpen.c",
+    "sha256": "6b16f3d3ee6722157bad2772d1cfdee8e3db8e7ef7fb350ae2cbee8ee832312b",
+    "verified_blocks": {
+      "LUT AND SHARPEN": "5ea7345fcb2572a048770a78f6e9927ef0eae2c591498a496032006acbe95928",
+      "ROW FILTERS": "ce18ac1ed52a24b3b4855e326adfe60fd9e9795e5522153f2040f00af9a326af"
+    }
+  },
+  "default_build": {
+    "result": "passed",
+    "log_sha256": "820d3ac240a6c4db962383f8bb55ae79e51500733f009c159ef22c818d5c500c",
+    "note": "Default native build includes inherited upstream ignored-return-qualifier warnings; no warning-free build claim"
+  },
+  "standalone": [
+    {
+      "mode": "normal-final",
+      "all_passed": true,
+      "elapsed_seconds": 4.260430852002173,
+      "sanitizers": [],
+      "leak_detection": null,
+      "source_sha256": {
+        "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+        "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+        "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+        "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+        "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+        "app/painter/filter-native-kernels.hpp": "848a0d458281ab3494a78eac3030a8cddddd3af55ea64082d1b4d7c1b3f94ffb",
+        "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+        "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+        "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+        "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+        "app/painter/filter-sharpen.cpp": "6327ea299abd054725e5aea2324cfe02d6c5e4ee4fcd28bb75dc76049b749ab7",
+        "app/painter/filter-sharpen.hpp": "a634868d51e25f991cd8d7e28d80a01d21f421d1eb1a0d60f90f89f7eaf47fd5",
+        "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+        "app/painter/meson.build": "83151570d2ee54f3b37e7d66de1727e1c683509ca141b57e841871fc6296a955",
+        "app/painter/tests/legacy-sharpen-oracle.c": "043cf96ff8527fbb46f2da21b57d1244f81762aeb46a9557800bbf6711f732f2",
+        "app/painter/tests/legacy-sharpen-oracle.h": "3fe7ae149ca7fe75da56b14d0f6740e3c09af5ca05f5592e67e66f818d9bb03b",
+        "app/painter/tests/run_filter_sharpen_tests.py": "48e84f5f67c8d1faefd5db516dcfc8ab5b9622b5bd21a6e1a7404945b3954e6e",
+        "app/painter/tests/test-filter-sharpen.cpp": "776335a48e8077bd1bedb94b6bd6a026985c77d524d4c536e7899ab0ceac061a"
+      },
+      "executable_sha256": "60358a280292dfd9de851c7639643bff2002eaab62da96b2c4c2a0d7d553cb43",
+      "stdout": "source-extracted C / native Gray, Gray-alpha, RGB, RGBA / vector / spill: 1232 cases passed\nLUT entries, negative rounding, clamp, alpha and raw cropped shadow checks passed\nUnsupported tiny/overflow/storage cases and pre-cancelled 64-bit extents passed\nEvery read/write/flush cancellation and failure ordinal: 292 vector/spill cases; alias publication and progress checks passed\n",
+      "stderr": "",
+      "raw_receipt_sha256": "8424f3d450876ef82f3eb49a5f17d16db4c2c3897c120730674c22f583d44265"
+    },
+    {
+      "mode": "sanitize-final",
+      "all_passed": true,
+      "elapsed_seconds": 8.997492766000505,
+      "sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "leak_detection": false,
+      "source_sha256": {
+        "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+        "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+        "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+        "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+        "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+        "app/painter/filter-native-kernels.hpp": "848a0d458281ab3494a78eac3030a8cddddd3af55ea64082d1b4d7c1b3f94ffb",
+        "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+        "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+        "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+        "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+        "app/painter/filter-sharpen.cpp": "6327ea299abd054725e5aea2324cfe02d6c5e4ee4fcd28bb75dc76049b749ab7",
+        "app/painter/filter-sharpen.hpp": "a634868d51e25f991cd8d7e28d80a01d21f421d1eb1a0d60f90f89f7eaf47fd5",
+        "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+        "app/painter/meson.build": "83151570d2ee54f3b37e7d66de1727e1c683509ca141b57e841871fc6296a955",
+        "app/painter/tests/legacy-sharpen-oracle.c": "043cf96ff8527fbb46f2da21b57d1244f81762aeb46a9557800bbf6711f732f2",
+        "app/painter/tests/legacy-sharpen-oracle.h": "3fe7ae149ca7fe75da56b14d0f6740e3c09af5ca05f5592e67e66f818d9bb03b",
+        "app/painter/tests/run_filter_sharpen_tests.py": "48e84f5f67c8d1faefd5db516dcfc8ab5b9622b5bd21a6e1a7404945b3954e6e",
+        "app/painter/tests/test-filter-sharpen.cpp": "776335a48e8077bd1bedb94b6bd6a026985c77d524d4c536e7899ab0ceac061a"
+      },
+      "executable_sha256": "9e68ce70869bc5ab00b56585ced3cb78ffebee941f0544ce6fcae07f005bf4d7",
+      "stdout": "source-extracted C / native Gray, Gray-alpha, RGB, RGBA / vector / spill: 1232 cases passed\nLUT entries, negative rounding, clamp, alpha and raw cropped shadow checks passed\nUnsupported tiny/overflow/storage cases and pre-cancelled 64-bit extents passed\nEvery read/write/flush cancellation and failure ordinal: 292 vector/spill cases; alias publication and progress checks passed\n",
+      "stderr": "",
+      "raw_receipt_sha256": "ba42e464862988db4fa4f0b6826144d1e1c99f44cc5116f3fa230a2dace05501"
+    }
+  ],
+  "native_tests": [
+    {
+      "name": "painter-filter-raster",
+      "result": "OK",
+      "duration_seconds": 1.242356538772583,
+      "tap_cases": 7,
+      "stdout": "TAP version 14\n# random seed: R02S0ae127dde475071e24fbfea30548b076\n1..7\n# Start of filter-raster tests\nok 1 /filter-raster/available_capacity_is_advisory\nok 2 /filter-raster/native_bytes_and_cleanup\nok 3 /filter-raster/large_sparse_offset\nok 4 /filter-raster/invalid_access_and_unwritten_read\nok 5 /filter-raster/worker_affinity\nok 6 /filter-raster/tiled_transpose_and_roundtrip\n# slow test /filter-raster/tiled_transpose_and_roundtrip executed in 1.23 secs\nok 7 /filter-raster/cancelled_or_failed_output_stays_private\n# End of filter-raster tests\n",
+      "stderr": "",
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": []
+    },
+    {
+      "name": "painter-filter-raster-kernels",
+      "result": "OK",
+      "duration_seconds": 2.018068552017212,
+      "tap_cases": 0,
+      "stdout": "Edge genuine old runtime + vector + disk byte comparisons: 76 passed\nGaussian genuine old runtime + vector + disk byte comparisons: 104 passed\nNative Gray/Gray-alpha old runtime + vector + disk byte comparisons: 77 passed\nGenerated parity: 126 Edge halo/border cases, 86 Gaussian fractional/axis/tile cases passed\nValidation, direct/scratch alias rejection and synthetic >4GiB kernel addressing passed\nDeterministic cancellation/error injection at every read/write/flush/factory boundary: 234 passed\nBounded disk case: dimensions=4099x1281 raster_bytes=21003276 gaussian_scratch_peak_bytes=21003276 gaussian_scratch_peak_count=1 edge_max_io=4104 edge_reads=19215 edge_writes=6405\nSpill-backed filter kernel tests passed\n",
+      "stderr": "",
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": []
+    },
+    {
+      "name": "painter-filter-native-kernels",
+      "result": "OK",
+      "duration_seconds": 0.01017451286315918,
+      "tap_cases": 6,
+      "stdout": "TAP version 14\n# random seed: R02Sa7cb1ecaa478336bd7256bac8a7387bb\n1..6\n# Start of filter-native tests\n# 40 real original PDB point outputs matched byte-for-byte\nok 1 /filter-native/genuine_point_corpus\nok 2 /filter-native/real_point_equations\nok 3 /filter-native/real_edge_ramp_and_hidden\nok 4 /filter-native/real_gauss_constant_and_impulse\nok 5 /filter-native/native_rejection_and_cancel\nok 6 /filter-native/native_transpose\n# End of filter-native tests\n",
+      "stderr": "",
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": []
+    },
+    {
+      "name": "painter-filter-kernel-progress",
+      "result": "OK",
+      "duration_seconds": 0.09576272964477539,
+      "tap_cases": 3,
+      "stdout": "TAP version 14\n# random seed: R02S79042217d4040aaba1e2817b7b9604b3\n1..3\n# Start of filter-kernel-progress tests\nok 1 /filter-kernel-progress/raster\nok 2 /filter-kernel-progress/cancellation\nok 3 /filter-kernel-progress/vector\n# End of filter-kernel-progress tests\n",
+      "stderr": "",
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": []
+    },
+    {
+      "name": "painter-filter-sharpen",
+      "result": "OK",
+      "duration_seconds": 0.28193235397338867,
+      "tap_cases": 0,
+      "stdout": "source-extracted C / native Gray, Gray-alpha, RGB, RGBA / vector / spill: 1232 cases passed\nLUT entries, negative rounding, clamp, alpha and raw cropped shadow checks passed\nUnsupported tiny/overflow/storage cases and pre-cancelled 64-bit extents passed\nEvery read/write/flush cancellation and failure ordinal: 292 vector/spill cases; alias publication and progress checks passed\n",
+      "stderr": "",
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": []
+    },
+    {
+      "name": "painter-filter-context",
+      "result": "OK",
+      "duration_seconds": 0.19585728645324707,
+      "tap_cases": 0,
+      "stdout": "Exact old native shadow merges: 304\nExact old native selection bounds: 304\nFilter context scalar tests passed\n",
+      "stderr": "",
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": []
+    }
+  ],
+  "review_sha256": "d40dec03af1dfe9ed022f6398db8ba025646b3a0413ed6e6f64585f7865ced54",
+  "coverage": {
+    "source_C_vector_spill_cases_per_run": 1232,
+    "uniform_field_cases_per_run": 2048,
+    "cancellation_and_storage_error_cases_per_run": 292
+  },
+  "limitations": [
+    "Source-extracted C oracle, not actual old-GIMP runtime capture",
+    "No FilterLayer route, selection/component/final shadow merge or owner lifecycle integration",
+    "No actual Sharpen I/O beyond 4 GiB; large declared extents validated before cancellation",
+    "No LeakSanitizer claim; focused AddressSanitizer and UndefinedBehaviorSanitizer only",
+    "No installed runtime, full aggregate or cross-platform acceptance",
+    "Existing exact58af aggregate remains failed; prior exact9ff9 aggregate remains separately accepted"
+  ]
+}

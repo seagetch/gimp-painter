@@ -67,6 +67,7 @@ libapppainter = static_library('apppainter',
   'filter-raster-kernels.cpp',
   'filter-edge.cpp',
   'filter-gauss.cpp',
+  'filter-sharpen.cpp',
   'filter-native-kernels.cpp',
   dependencies: [gobject, painter_threads],
   include_directories: painter_include,
@@ -152,6 +153,18 @@ foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-
     args: feature_args,
     suite: 'painter', timeout: 60)
 endforeach
+
+# Independent native-format C oracle retains the pinned legacy row ring/LUTs.
+# The foundation produces private raw shadow bytes; no FilterLayer app route.
+filter_sharpen_test = executable('painter-filter-sharpen',
+  'tests/test-filter-sharpen.cpp',
+  'tests/legacy-sharpen-oracle.c',
+  dependencies: [painter_dep, painter_threads],
+  cpp_args: painter_cpp_args,
+  override_options: ['c_std=c11', 'cpp_std=c++14'],
+  link_language: 'cpp')
+test('painter-filter-sharpen', filter_sharpen_test,
+  suite: 'painter', timeout: 60)
 
 filter_context_test = executable('painter-filter-context',
   'tests/test-filter-context.cpp',
