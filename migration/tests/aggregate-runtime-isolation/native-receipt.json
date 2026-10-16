@@ -1,0 +1,123 @@
+{
+  "runner_sha256": "259b4add7406b2e31efb85145b01fdb4797cff063e04f67bcd652851362b7e97",
+  "tests": [
+    {
+      "name": "painter-layer-ui",
+      "path": "/painter-layer-ui/filter_progress_running_cancel",
+      "exit_status": 0,
+      "passed": true,
+      "ok_lines": 1,
+      "tap_passed_cases": [
+        "ok 1 /painter-layer-ui/filter_progress_running_cancel"
+      ],
+      "strict_diagnostics": {
+        "tap_skips": [],
+        "crashes": [],
+        "failures": [],
+        "expected_nonfatal_warnings": []
+      }
+    },
+    {
+      "name": "painter-layer-tree",
+      "path": null,
+      "exit_status": 0,
+      "passed": true,
+      "ok_lines": 35,
+      "tap_passed_cases": [
+        "ok 1 /painter-layer-tree/native_column",
+        "ok 2 /painter-layer-tree/direct_filter_button",
+        "ok 3 /painter-layer-tree/target_controls",
+        "ok 4 /painter-layer-tree/modifier_target",
+        "ok 5 /painter-layer-tree/retained_controls_owner_close",
+        "ok 6 /painter-layer-tree/image_switch_and_removed_target",
+        "ok 7 /painter-layer-tree/newer_popup_wins",
+        "ok 8 /painter-layer-tree/selection_reorders_clicked_row",
+        "ok 9 /painter-layer-tree/filter_editor_clicked_target",
+        "ok 10 /painter-layer-tree/refresh_reentry_initializes_new_target",
+        "ok 11 /painter-layer-tree/selection_newer_popup_wins",
+        "ok 12 /painter-layer-tree/selection_removes_target",
+        "ok 13 /painter-layer-tree/selection_destroys_owner",
+        "ok 14 /painter-layer-tree/repeat_popdown_disconnects_old_controls",
+        "ok 15 /painter-layer-tree/signal_observer_newer_popup_wins",
+        "ok 16 /painter-layer-tree/signal_observer_preserves_clicked_target",
+        "ok 17 /painter-layer-tree/image_switch_reentrant_old_popup",
+        "ok 18 /painter-layer-tree/scrolled_full_row_geometry",
+        "ok 19 /painter-layer-tree/group_pass_through_context",
+        "ok 20 /painter-layer-tree/same_target_refresh_keeps_latest_model",
+        "ok 21 /painter-layer-tree/selection_removes_column",
+        "ok 22 /painter-layer-tree/selection_only_supersedes_activation",
+        "ok 23 /painter-layer-tree/focus_reentry_closes_owner",
+        "ok 24 /painter-layer-tree/attributes_supersede_activation",
+        "ok 25 /painter-layer-tree/first_attributes_preserve_request",
+        "ok 26 /painter-layer-tree/removed_row_invalidates_drag_cache",
+        "ok 27 /painter-layer-tree/public_factory_floating_column_ownership",
+        "ok 28 /painter-layer-tree/public_clicked_active_property_independent",
+        "ok 29 /painter-layer-tree/public_clicked_unbound_observers",
+        "ok 30 /painter-layer-tree/public_clicked_invalid_row_observers",
+        "ok 31 /painter-layer-tree/public_clicked_null_area",
+        "ok 32 /painter-layer-tree/public_clicked_subclass_order",
+        "ok 33 /painter-layer-tree/public_clicked_nested_reopen",
+        "ok 34 /painter-layer-tree/public_clicked_close_keeps_observer_order",
+        "ok 35 /painter-layer-tree/public_clicked_last_reference_leases"
+      ],
+      "strict_diagnostics": {
+        "tap_skips": [],
+        "crashes": [],
+        "failures": [],
+        "expected_nonfatal_warnings": []
+      }
+    },
+    {
+      "name": "painter-dock-layout-ui",
+      "path": null,
+      "exit_status": 0,
+      "passed": true,
+      "ok_lines": 3,
+      "tap_passed_cases": [
+        "ok 1 /painter-canvas-ui/right_docks_controls_reachable_1240",
+        "ok 2 /painter-canvas-ui/right_docks_controls_reachable_1280",
+        "ok 3 /painter-canvas-ui/right_docks_controls_reachable_portrait"
+      ],
+      "strict_diagnostics": {
+        "tap_skips": [],
+        "crashes": [],
+        "failures": [],
+        "expected_nonfatal_warnings": []
+      }
+    }
+  ],
+  "all_passed": true,
+  "runner_unchanged": true,
+  "scope": "Focused native regression only: one selected editor case, complete layer-tree and dock-layout targets. Not a full aggregate or package-consumable gate.",
+  "source_commit": "e21634e0f43dcc351f4e450bf9546f278a20d11d",
+  "isolated_child_environment_sha256": "936646597a5e85dfad3d486fd85eeb142dd69e93e61e7ebceb81bcb88a4e09dd",
+  "post_native_change": "Only aggregate orchestration private-root placement changed to output.parent after native validation; the environment helper body is byte-identical. Final orchestration is covered by Python fixtures; no post-change full aggregate is claimed.",
+  "final_runner_sha256": "1be6a615173e19cfdefb1f5ef2937bb494c7216636d68e0f6f60cdb210c10109",
+  "retained_diagnostics": "Missing optional build-tree application icons, dummy plug-in notices and cloud-provider D-Bus DEBUG diagnostics remain visible. No warning/critical/crash/TAP-skip diagnostic or failed TAP case was accepted.",
+  "logs": {
+    "native-painter-layer-ui.stdout.gz": {
+      "sha256": "807ab538b41f9c459c0141deef5a2e2ced189ac8914c7f2f6885ec32f5bcdcb5",
+      "uncompressed_sha256": "45c28888ea9d0bfaf309194ff99a2b53fcb9f88e40fdd73be356041709d19991"
+    },
+    "native-painter-layer-ui.stderr.gz": {
+      "sha256": "4ef1f92912922eb34486a495997e1170abfdd3e027128bdb830a85d883aad09b",
+      "uncompressed_sha256": "b0aa69e89a528975a844adbfdb4d5d8d263d1a23e206f027f1304b03120113c6"
+    },
+    "native-painter-layer-tree.stdout.gz": {
+      "sha256": "193097858e0c8f63924f94c9e149aa09c104311eefa0d87dd6544d34e197d2c6",
+      "uncompressed_sha256": "82678d862cbc8e6a9898c5ef293eb5f14a3ecfa5aa9a4c1a1ca9e5fee3f24737"
+    },
+    "native-painter-layer-tree.stderr.gz": {
+      "sha256": "ef41b82604901b514a9f4b8e010f8ab7f36a55aca9c567f9bb149fd31f70afc5",
+      "uncompressed_sha256": "ec50b0f2913cad592ab38a90008d2e64e51e7137182158c28d52f0618d7b76da"
+    },
+    "native-painter-dock-layout-ui.stdout.gz": {
+      "sha256": "a9ccd442b1640e6934772ad5f610ac0856d8a3bec21311aab3fb320455e1f8f8",
+      "uncompressed_sha256": "594e2e20d97d2f79c6a1b8330031bb27b6d84871a375c52ee210210253cde8f3"
+    },
+    "native-painter-dock-layout-ui.stderr.gz": {
+      "sha256": "ef41b82604901b514a9f4b8e010f8ab7f36a55aca9c567f9bb149fd31f70afc5",
+      "uncompressed_sha256": "ec50b0f2913cad592ab38a90008d2e64e51e7137182158c28d52f0618d7b76da"
+    }
+  }
+}

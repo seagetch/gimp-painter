@@ -1,0 +1,41 @@
+{
+  "scope": "Strict aggregate runtime-environment repair with pure fixtures and focused native regressions only; not a full aggregate or packaging eligibility gate.",
+  "baseline_source_commit": "e21634e0f43dcc351f4e450bf9546f278a20d11d",
+  "source_sha256": {
+    "tools/run-painter-frozen-aggregate.py": "1be6a615173e19cfdefb1f5ef2937bb494c7216636d68e0f6f60cdb210c10109",
+    "migration/tests/test_frozen_aggregate_runner.py": "0e4c8e157c2781f156f90e542a41b1d374780ca5eac25f557b54e18d6fc0bc91",
+    "migration/contracts/frozen-linux-aggregate.md": "9a6d05f49ad671223b5de0d4fc5eae3fe9a1e45ffe4c6fe45ea97132103518e2"
+  },
+  "fixtures": [
+    {
+      "name": "test_frozen_aggregate_runner.py",
+      "passed": 48,
+      "skipped": 0,
+      "log": "runner-fixtures.log",
+      "log_sha256": "77c78a44a670840964e89aa3a57919a3a43be8357e7bf921e0272bec91ce3803"
+    },
+    {
+      "name": "test_linux_runtime_package.py",
+      "passed": 60,
+      "skipped": 0,
+      "log": "package-fixtures.log",
+      "log_sha256": "53609ef905bf28c5b1945dc70738ad515b8662c07e2d44c90c251ed8b01a60fb"
+    }
+  ],
+  "fixture_environment": "Restored dependency tools from /workspace/shared/gimp-deps-debian13/env.sh; no native build by this task. Initial host-only package fixture attempt skipped 21 Ninja-dependent tests; the retained dependency-enabled rerun passed all 60 without skips.",
+  "focused_native": {
+    "receipt": "native-receipt.json",
+    "receipt_sha256": "6f2bdf938a0606b7bf00e621ecc4a72f8d0a6f55862115d34253a476a91a1d53",
+    "passed_tap_cases": 39,
+    "targets": 3,
+    "scope": "One selected painter-layer-ui progress/cancel case; all 35 painter-layer-tree and all 3 painter-dock-layout-ui cases. Raw outputs were sanitized by the parent runner before receipt creation and are retained compressed."
+  },
+  "independent_review": "No remaining blockers. Fixed inherited TMPDIR/TMP/TEMP root placement; validated fresh private directories, write preflight including late failures, inherited dependency/display/auth inputs, cleanup and unchanged strict gate behavior. Review did not itself run native tests.",
+  "native_full_aggregate_passed": false,
+  "limitations": [
+    "Focused native execution used the pre-placement-change runner hash recorded in native-receipt.json; the environment helper body is unchanged, while final orchestration is covered by updated Python fixtures.",
+    "Previous rejected aggregate remains rejected. New exact-commit unfiltered aggregate and package eligibility are separate gates.",
+    "SIGKILL or host failure cannot guarantee temporary-directory cleanup.",
+    "Existing optional build-tree icon, dummy plug-in and cloud-provider D-Bus DEBUG notices remain recorded; no warning/critical/crash/TAP skip diagnostic was exempted."
+  ]
+}
