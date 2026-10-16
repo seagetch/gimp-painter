@@ -44,8 +44,9 @@ Geometry validate (std::size_t width, std::size_t height,
   // Subtraction is safe only after the bounded, ordered INT32 checks above.
   const auto crop_width = std::size_t (region.x2 - region.x1);
   const auto crop_height = std::size_t (region.y2 - region.y1);
-  // gimp_rgn_iterate2() used a signed gint total_area. Reject its undefined
-  // overflow domain, while admitting every positive one-dimensional crop.
+  // Threshold/Max RGB's gimp_rgn_iterate2 total_area and Value Invert's own
+  // pixel-region loop width*height both multiply signed gint operands. Reject
+  // their undefined overflow domain, admitting positive one-dimensional crops.
   if (std::uint64_t (crop_width) * crop_height > std::uint64_t (maximum))
     throw std::invalid_argument ("Point intersection overflows legacy total area");
   return {size, std::uint64_t (crop_width) * crop_height * 4,
@@ -159,7 +160,8 @@ FilterPointShadowOutcome filter_point_shadow_raster (
   const std::shared_ptr<FilterProgress>& progress)
 {
   if (operation != FilterPointShadowOperation::threshold_alpha &&
-      operation != FilterPointShadowOperation::max_rgb)
+      operation != FilterPointShadowOperation::max_rgb &&
+      operation != FilterPointShadowOperation::value_invert)
     throw std::invalid_argument ("Unknown point shadow operation");
   if (&input == &output)
     throw std::invalid_argument ("Point shadow input/output alias");
@@ -185,12 +187,23 @@ FilterPointShadowOutcome filter_point_shadow_raster (
         {
           CropRaster source (input, width, region, geometry, true, cancel, work);
           CropRaster destination (output, width, region, geometry, false, cancel, work);
-          const bool completed = operation == FilterPointShadowOperation::max_rgb ?
-            filter_max_rgb_raw_raster (source, destination, geometry.crop_width,
-                                       geometry.crop_height, argument, cancel) :
-            filter_point_raster (source, destination, geometry.crop_width,
-                                 geometry.crop_height, FilterPoint::threshold_alpha,
-                                 argument, false, cancel);
+          bool completed = false;
+          switch (operation)
+            {
+            case FilterPointShadowOperation::max_rgb:
+              completed = filter_max_rgb_raw_raster (source, destination,
+                geometry.crop_width, geometry.crop_height, argument, cancel);
+              break;
+            case FilterPointShadowOperation::value_invert:
+              completed = filter_value_invert_raw_raster (source, destination,
+                geometry.crop_width, geometry.crop_height, cancel);
+              break;
+            case FilterPointShadowOperation::threshold_alpha:
+              completed = filter_point_raster (source, destination,
+                geometry.crop_width, geometry.crop_height,
+                FilterPoint::threshold_alpha, argument, false, cancel);
+              break;
+            }
           if (!completed)
             return FilterPointShadowOutcome::cancelled;
         }
@@ -215,7 +228,8 @@ FilterPointShadowOutcome filter_point_shadow_vector (
   const std::shared_ptr<FilterProgress>& progress)
 {
   if (operation != FilterPointShadowOperation::threshold_alpha &&
-      operation != FilterPointShadowOperation::max_rgb)
+      operation != FilterPointShadowOperation::max_rgb &&
+      operation != FilterPointShadowOperation::value_invert)
     throw std::invalid_argument ("Unknown point shadow operation");
   const auto geometry = validate (width, height, region);
   if (input.size () != geometry.full_size)

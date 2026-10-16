@@ -1,0 +1,874 @@
+{
+  "task": "16.003/value-invert-raster-foundation",
+  "status": "accepted-standalone-foundation",
+  "native_acceptance": true,
+  "baseline_commit": "b0c98d7a049285e467548873806a2a19cece22d5",
+  "scope": "Non-UI U8 Threshold Alpha, Max RGB and Value Invert raw-shadow foundation; generated scalar/geometry checks, direct raw and vector/spill fault handling, completed-buffer isolation; historical final PDB comparisons",
+  "recovered_checkpoint": {
+    "commit": "024092982d99bed43937c364b6864c11313a882a",
+    "original_base_commit": "8f0a7eea7c25e539791369de3eecd7839583a801",
+    "state_at_recovery": "source-only, no native acceptance",
+    "source_archive_sha256": "f5fac9308199ff7a9b9943e66cf4b40f85137cf1772c763cfd6a17a85b2e0c39",
+    "reconciliation": "Scoped code delta with only the new Value Invert task/progress row merged into the current baseline; all later accepted rows preserved"
+  },
+  "static_api_compatibility": {
+    "compared_commit": "b0c98d7a049285e467548873806a2a19cece22d5",
+    "file": "app/painter/filter-native-kernels.cpp",
+    "function_bodies": {
+      "point_byte": {
+        "unchanged": true,
+        "sha256": "30b289e5abee3e12a1624c2b1978bdec2ed9eb5fdb39ee30e7c07aa0b2075ca1"
+      },
+      "point_real": {
+        "unchanged": true,
+        "sha256": "63e874071ea8feedfa5aca52fcef2cc1c6ade1f9c09e644e4d7f39e6196af5a9"
+      },
+      "filter_point_raster": {
+        "unchanged": true,
+        "sha256": "782dd5c0fe3e3fa72e619bcff4340938dcad6d6ca3e74e3b10574f9cb303f58b"
+      },
+      "filter_max_rgb_raw_raster": {
+        "unchanged": true,
+        "sha256": "4b97996354fa56a270ef9e025230dae42b03712cf78ac36fe6f34306cfac5446"
+      }
+    }
+  },
+  "runner_controls": {
+    "count": 16,
+    "exit_status": 0,
+    "kind": "Mocked source-only compiler/link/test controls, not native arithmetic evidence",
+    "added_controls": [
+      "changed C oracle object rejected",
+      "removed C++ object rejected",
+      "changed executable rejected"
+    ],
+    "log_sha256": "bb3b2c3c308f11fc45fcb845087f866c1f59517684fdcbee435dfdf4284d02b1"
+  },
+  "review": {
+    "result": "No scoped correctness blocker after post-run object-seal check added",
+    "resolved": [
+      "Preserved current progress instead of overlaying stale ledgers",
+      "Restored exact hash-verified legacy commit/path trees/blobs for unchanged pinned-source checks",
+      "Rechecked every linked object after execution and required unchanged hashes"
+    ]
+  },
+  "normal": {
+    "scope": "Non-UI U8 Threshold Alpha, Max RGB and Value Invert raw-shadow foundation; generated scalar/geometry checks, direct raw and vector/spill fault handling, completed-buffer isolation; historical final PDB comparisons",
+    "max_rgb_raw_evidence": "Independent generated pairwise equations, all alpha values, ties and signed mode classes; archived Max RGB outputs are compared only after explicit full-coverage merge",
+    "value_invert_raw_evidence": "Literal hash-pinned legacy vinvert_render_row callback; execution mode compiles the oracle separately as C and compares archived final Value Invert outputs only after explicit full-coverage merge",
+    "not_covered": [
+      "Fresh original-GIMP runtime capture",
+      "Native FilterLayer/XCF app integration",
+      "Final owner context timing",
+      "Owner RGB-only admission",
+      "Scheduler/owner lifetime",
+      "Full modern-real precision/owner route acceptance",
+      "UI",
+      "Windows/macOS execution",
+      "Actual I/O beyond 4 GiB",
+      "LeakSanitizer"
+    ],
+    "legacy_evidence": {
+      "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+      "verified_source_sha256": {
+        "plug-ins/common/value-invert.c": "bf7c46cac7f62c13ec73590d53c12ba3dd85fd28def5f74451aaf43b969fef20",
+        "plug-ins/common/max-rgb.c": "e783de344ff3230ad611453dd4b4c7f87a40ffa0b0fa4b49a40b4449283cfcc1",
+        "plug-ins/common/threshold-alpha.c": "608b6e013c6c2285ccdd651f1c2e8204990a8cdae1d65d8b8774b47e7a59a3ca",
+        "libgimp/gimpregioniterator.c": "1289b75a1c49185d9ddaa5f97b5a406b297eab78560854344e8b9a4da41213be"
+      },
+      "archived_capture_report": "migration/fixtures/legacy-filter-points/capture-report.json",
+      "archived_captured_utc": "2026-10-02T13:17:27.453312+00:00",
+      "archived_executable_sha256": {
+        "bin/gimp-2.8": "fefc8fa5190592780b5bd880226a99344268b07074b294431903583e9b5013c8",
+        "lib/gimp/2.0/plug-ins/value-invert": "ff4839c10bf66745ee216eb5ee491a293c96bbd06fe653d971849fcc6f6d80f6",
+        "lib/gimp/2.0/plug-ins/max-rgb": "f75346c229e9466f5601ef76412f861a06e23521d997edc445f0c1fa0bd3e141",
+        "lib/gimp/2.0/plug-ins/threshold-alpha": "e617a63bc5be70426afd10b9c2f77bff9938f96bfd91cbc29520eac496f892da",
+        "lib/gimp/2.0/plug-ins/file-png": "7adb2a2cad462481e47a4dfc9c72d8bf6e07c22885d5145ff787c3e87d8021e5"
+      },
+      "threshold_alpha_cases": 20,
+      "max_rgb_cases": 16,
+      "value_invert_cases": 4,
+      "value_invert_c_oracle": {
+        "path": "app/painter/tests/value-invert-legacy-oracle.c",
+        "sha256": "86a4ad3bc3b09aa1fce74ce740af5cf627a753711d4d78ecc2f018cbd44f7ca4",
+        "callback_sha256": "e042195d93717f9bc72b62bd385843d99eb4d5ad6f98744aef8a946cf929bea9",
+        "literal_callback_matches_pinned_source": true,
+        "build_language": "C99, separately compiled with CC/CFLAGS",
+        "note": "Literal source callback oracle; not a fresh original-GIMP runtime capture"
+      },
+      "note": "Historical full-drawable final PDB outputs, not raw callback captures; Max RGB and Value Invert comparisons follow explicit full-coverage merge. No new old-runtime or owner-context capture"
+    },
+    "source_sha256": {
+      "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+      "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+      "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+      "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+      "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+      "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+      "app/painter/filter-native-kernels.cpp": "960667b9b738acb5613bf4a893a7ccc16fdcbdf56e9d84100d983516b0e273d7",
+      "app/painter/filter-native-kernels.hpp": "eb9d70146c661c2c63b3d7c908d4a0a656fcabd3af0f879b1f53ecb4257ebb6a",
+      "app/painter/filter-point-shadow.cpp": "ec2bccab4f3d994552d1415e3db8a8716d2476098bcb1afba7664a86fdb66345",
+      "app/painter/filter-point-shadow.hpp": "90c41d85f7e4e50d6242169cab843c1fc16ff1b774eddcaa4f3c4f33edbfafdc",
+      "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+      "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+      "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+      "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+      "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+      "app/painter/meson.build": "2fc8aa66774cdcff01716cbaba66f13078625c0df8c74448e21edfbcfecb0e61",
+      "app/painter/tests/run_filter_point_shadow_tests.py": "d0fa3ad5df229ad528ffa339a090895931852e0dd3d3e9de6277fad509343ba8",
+      "app/painter/tests/test-filter-point-shadow.cpp": "4d08270cf70f4ba95b4fa2bc6d134fa8b9de133bf30fd0ecd10642161084ad87",
+      "app/painter/tests/test_filter_point_shadow_runner.py": "8d38e3db5d3d60cf275ff339e46e23005deaff184aa68942dc49949c8aecfde1",
+      "app/painter/tests/value-invert-legacy-oracle.c": "86a4ad3bc3b09aa1fce74ce740af5cf627a753711d4d78ecc2f018cbd44f7ca4"
+    },
+    "fixture_sha256": {
+      "migration/fixtures/legacy-filter-points/LA-9x8-plug-in-threshold-alpha--1.raw": "0beef7514e5c7343ccce555a04f88a6c1dda05e7fd3c512814eca43126ef5a3d",
+      "migration/fixtures/legacy-filter-points/LA-9x8-plug-in-threshold-alpha-0.raw": "d10318c3c67e3393a534bc700864cc3b7224e7a73d6d3e60f66f8c5963fa39f6",
+      "migration/fixtures/legacy-filter-points/LA-9x8-plug-in-threshold-alpha-127.raw": "d2c8051773259aae89212e9954d2fc329c5f118713faa8bde39e28680da40542",
+      "migration/fixtures/legacy-filter-points/LA-9x8-plug-in-threshold-alpha-255.raw": "9a214fbbf820ad6487b2d43ec62818f1642811a91516fdc96cf9a4eb63da56a8",
+      "migration/fixtures/legacy-filter-points/LA-9x8-plug-in-threshold-alpha-256.raw": "9a214fbbf820ad6487b2d43ec62818f1642811a91516fdc96cf9a4eb63da56a8",
+      "migration/fixtures/legacy-filter-points/LA-9x8.raw": "37b7686111186892607d5b4969150f84e07d3f59d46f9ef14aa795992ec1a6c9",
+      "migration/fixtures/legacy-filter-points/README.md": "e2964e1b8303d1ee607552d6610cf1ea963588dc373858db59e1efce2aba3d05",
+      "migration/fixtures/legacy-filter-points/RGB-9x8-plug-in-max-rgb--2.raw": "f339f767831bb096fe016f1a349524cd54f59b57aa0cc214c1ad892733f607d4",
+      "migration/fixtures/legacy-filter-points/RGB-9x8-plug-in-max-rgb-0.raw": "f339f767831bb096fe016f1a349524cd54f59b57aa0cc214c1ad892733f607d4",
+      "migration/fixtures/legacy-filter-points/RGB-9x8-plug-in-max-rgb-1.raw": "64296c5e969e49c7e1df3d228668b8e9f9ac46f8b1f0eee39117dc301c5c8f6c",
+      "migration/fixtures/legacy-filter-points/RGB-9x8-plug-in-max-rgb-3.raw": "64296c5e969e49c7e1df3d228668b8e9f9ac46f8b1f0eee39117dc301c5c8f6c",
+      "migration/fixtures/legacy-filter-points/RGB-9x8-plug-in-vinvert-0.raw": "d2aade5b59ae4ff712b283b24ea9d628f2d0b2f8e1828c4620a513629981ab35",
+      "migration/fixtures/legacy-filter-points/RGB-9x8.raw": "fa249bff627bfa27fc557982f88fdaf04ae7ebf5308a6ff860201e39121b9e16",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-max-rgb--2.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-max-rgb-0.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-max-rgb-1.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-max-rgb-3.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-threshold-alpha--1.raw": "ccc14d9bce4a428e972e570a228530e479adf6dfd9f3138a578bc717306af8cf",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-threshold-alpha-0.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-threshold-alpha-127.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-threshold-alpha-255.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-threshold-alpha-256.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-vinvert-0.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-max-rgb--2.raw": "a11c8e7d4e93472b81d9a66f8dfec3ff36712355986ce7313f1d2058ec05c46d",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-max-rgb-0.raw": "a11c8e7d4e93472b81d9a66f8dfec3ff36712355986ce7313f1d2058ec05c46d",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-max-rgb-1.raw": "060ebd8f36f3a2cddcbbe677ff970f9f4bd4b95d5bd9905957428464028b21b8",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-max-rgb-3.raw": "060ebd8f36f3a2cddcbbe677ff970f9f4bd4b95d5bd9905957428464028b21b8",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-threshold-alpha--1.raw": "e1986f3f889e60f7a10cff3a323dd0aba282a6dacca324487ac6f8b7d36f7817",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-threshold-alpha-0.raw": "61a53056a5429a5330c1ec679188b7b1cf0625707f79f645210ca8a0c382a4a3",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-threshold-alpha-127.raw": "f451efd79fbb0731dfc165d517ed7f720cbbde3e4e4727a209812645a08ba87a",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-threshold-alpha-255.raw": "fa81336891978147ce126c37f908d1c8ce112674a65faa7c6cd7b4918ece6770",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-threshold-alpha-256.raw": "fa81336891978147ce126c37f908d1c8ce112674a65faa7c6cd7b4918ece6770",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-vinvert-0.raw": "89176bab53a1bf72a7b7124027378c6210116b1f0b8680a51a493921a5b0aab7",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66.raw": "428868e492e818e4c7980973fdb8e2f95d06e9a785b6f831d72a21b7ee392fb2",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-max-rgb--2.raw": "f8e25b6cfaf8363e3fd72644a39e0e0848a5351837d80426fce7004c9a1a071c",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-max-rgb-0.raw": "f8e25b6cfaf8363e3fd72644a39e0e0848a5351837d80426fce7004c9a1a071c",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-max-rgb-1.raw": "f904e7dc790bf8bb8c46c9002a5928059672c10d66cc748da25770b2331c5b8e",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-max-rgb-3.raw": "f904e7dc790bf8bb8c46c9002a5928059672c10d66cc748da25770b2331c5b8e",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-threshold-alpha--1.raw": "e4deeccc5c969827339d4c8883a86af4b5b103f4b2b77afd47f85350b8828ee1",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-threshold-alpha-0.raw": "1513f9d528adffee7c77d142656d24ef541bd3a8a57764625c8955d8d960ba26",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-threshold-alpha-127.raw": "731c45e2582648207bd9a0b754258e5723b678b3df914cc3f9232f0935ae9fcc",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-threshold-alpha-255.raw": "6718f9cb186987a3a06fe6492177d370975915664f39785f0a67dae1d2cf50aa",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-threshold-alpha-256.raw": "6718f9cb186987a3a06fe6492177d370975915664f39785f0a67dae1d2cf50aa",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-vinvert-0.raw": "9fef79ebafbce946d65079bce07844e0310ba88cb4c47aad7019db33bc93adfd",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8.raw": "bee0c14c1d6cd99086255b8f829e37c29fe045bca7d1896df117228fd1c54695",
+      "migration/fixtures/legacy-filter-points/capture-report.json": "f49f81a3560add2fe4bd6f1899cbf1a06c5d23bfd6e077fc0e4a55bbf1a2767e",
+      "migration/fixtures/legacy-filter-points/capture.log": "7448c1fd469fd70b4920a7bd3745f6ae1b750b2676512d93a4d2ed1dfb55c345",
+      "migration/fixtures/legacy-filter-points/capture.scm": "6ba9eb2460f9841e192cc96efd2c54b4f9708b2ea4b94bf56d46eb1d621c6fd1",
+      "migration/fixtures/legacy-filter-points/fixtures.tsv": "420b45190fc23d3ef04e8d853134b9698f08bd677f96133308df2be499c8a2f8"
+    },
+    "changed_after_verify": [],
+    "sanitizers": [],
+    "leak_detection": null,
+    "leak_detection_note": "Focused ASan/UBSan mode excludes LeakSanitizer; no leak claim is made",
+    "commands": [
+      {
+        "kind": "c-compiler-version",
+        "command": [
+          "cc",
+          "--version"
+        ],
+        "exit_code": 0,
+        "stdout": "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "stderr": ""
+      },
+      {
+        "kind": "c++-compiler-version",
+        "command": [
+          "c++",
+          "--version"
+        ],
+        "exit_code": 0,
+        "stdout": "c++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "stderr": ""
+      },
+      {
+        "kind": "pkg-cflags",
+        "command": [
+          "pkg-config",
+          "--cflags",
+          "glib-2.0"
+        ],
+        "exit_code": 0,
+        "stdout": "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0 -I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6 -pthread \n",
+        "stderr": ""
+      },
+      {
+        "kind": "pkg-libs",
+        "command": [
+          "pkg-config",
+          "--libs",
+          "glib-2.0"
+        ],
+        "exit_code": 0,
+        "stdout": "-lglib-2.0 \n",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c",
+        "command": [
+          "cc",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O2",
+          "-pthread",
+          "-std=c99",
+          "-x",
+          "c",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/tests/value-invert-legacy-oracle.c",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/value-invert-legacy-oracle.c.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c++",
+        "command": [
+          "c++",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O2",
+          "-pthread",
+          "-std=c++14",
+          "-fexceptions",
+          "-fno-rtti",
+          "-I/workspace/shared/gimp-painter-value-invert/app/painter",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6",
+          "-pthread",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/filter-raster.cpp",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/filter-raster.cpp.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c++",
+        "command": [
+          "c++",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O2",
+          "-pthread",
+          "-std=c++14",
+          "-fexceptions",
+          "-fno-rtti",
+          "-I/workspace/shared/gimp-painter-value-invert/app/painter",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6",
+          "-pthread",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/filter-native-kernels.cpp",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/filter-native-kernels.cpp.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c++",
+        "command": [
+          "c++",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O2",
+          "-pthread",
+          "-std=c++14",
+          "-fexceptions",
+          "-fno-rtti",
+          "-I/workspace/shared/gimp-painter-value-invert/app/painter",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6",
+          "-pthread",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/filter-context.cpp",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/filter-context.cpp.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c++",
+        "command": [
+          "c++",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O2",
+          "-pthread",
+          "-std=c++14",
+          "-fexceptions",
+          "-fno-rtti",
+          "-I/workspace/shared/gimp-painter-value-invert/app/painter",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6",
+          "-pthread",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/filter-point-shadow.cpp",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/filter-point-shadow.cpp.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c++",
+        "command": [
+          "c++",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O2",
+          "-pthread",
+          "-std=c++14",
+          "-fexceptions",
+          "-fno-rtti",
+          "-I/workspace/shared/gimp-painter-value-invert/app/painter",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6",
+          "-pthread",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/tests/test-filter-point-shadow.cpp",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/test-filter-point-shadow.cpp.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "link",
+        "command": [
+          "c++",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/value-invert-legacy-oracle.c.o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/filter-raster.cpp.o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/filter-native-kernels.cpp.o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/filter-context.cpp.o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/filter-point-shadow.cpp.o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/test-filter-point-shadow.cpp.o",
+          "-pthread",
+          "-lglib-2.0",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/painter-filter-point-shadow"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "test",
+        "command": [
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u/painter-filter-point-shadow",
+          "/workspace/shared/gimp-painter-value-invert/migration/fixtures/legacy-filter-points/fixtures.tsv"
+        ],
+        "exit_code": 0,
+        "stdout": "Generated scalar/all-alpha/tiny/cropped/row-boundary RGBA and replicated-YA cases: 1222\n20 archived genuine original PDB Threshold Alpha outputs matched in vector/spill paths\nOffsets/outside distinction and all-final-mask/component RGB/Y invariance passed\nMalformed/overflow/alias/exact extent validation and INT32 total-area boundaries passed\nThreshold Alpha Every read/write/flush cancellation and storage-error ordinal: 200 vector/spill cases; monotone progress and transactional aliases passed\nGenerated raw Max RGB: signed modes, all ties/all alpha, unchanged legacy hidden RGB, raw-versus-merged distinction passed\nExisting point_byte and point_real Value Invert/Max RGB alpha-zero behavior preserved\nGenerated Max RGB vector/memory/spill tiny/ROI/row-boundary/no-merge cases: 276; offset and completed-buffer isolation passed\n16 archived original PDB Max RGB outputs matched after explicit merge; no fresh owner-context capture claimed\nMax RGB raw/tagged validation, no-I/O rejection, area boundaries and Threshold overload compatibility passed\nMax RGB direct raw bounded read/write/flush cancellation/error ordinals preserve completed output\nMax RGB Every read/write/flush cancellation and storage-error ordinal: 200 vector/spill cases; monotone progress and transactional aliases passed\nMax RGB Every read/write/flush cancellation and storage-error ordinal: 200 vector/spill cases; monotone progress and transactional aliases passed\nValue Invert exact pinned C callback: all 16,777,216 RGB triples, bpp=3/4, varying copied alpha passed\nValue Invert all-alpha black/achromatic/ties/rounding/hidden-color and unchanged byte/real APIs passed\nValue Invert vector/memory/spill tiny/ROI/row-boundary/no-merge cases: 138; offset and completed-buffer isolation passed\n4 archived original PDB Value Invert outputs matched after explicit merge; no fresh owner-context capture claimed\nValue Invert raw/tagged no-I/O validation, alias/geometry/extents/signed-area boundaries passed\nValue Invert direct raw bounded read/write/flush cancellation/error ordinals preserve completed output\nValue Invert Every read/write/flush cancellation and storage-error ordinal: 200 vector/spill cases; monotone progress and transactional aliases passed\n",
+        "stderr": ""
+      }
+    ],
+    "all_passed": true,
+    "output_directory": "/workspace/shared/value-invert-foundation-build/filter-point-shadow-normal-e8j09w0u",
+    "build_environment": {
+      "CC": "",
+      "CXX": "",
+      "CPPFLAGS": "",
+      "CFLAGS": "",
+      "CXXFLAGS": "",
+      "LDFLAGS": "",
+      "ASAN_OPTIONS": "",
+      "UBSAN_OPTIONS": ""
+    },
+    "changed_after_compile": [],
+    "object_sha256": {
+      "value-invert-legacy-oracle.c.o": "4f638d2465888f60dc6c13edd5b1779cddd61f885e49432283a03c6ce7f89041",
+      "filter-raster.cpp.o": "24a5445a3fdd7e913e23075eb7f97d1e0573690904d0951c942386c5cbcc25ad",
+      "filter-native-kernels.cpp.o": "a989b660441450191505fe7943db39584593d3743ef9d233f754fa611dae151c",
+      "filter-context.cpp.o": "1976796b54a70eb4c1a30ec3d7d98a9acbf6f3e8789431f5770180344f9d5aa6",
+      "filter-point-shadow.cpp.o": "0500e0174ee8fcd9f9cf6982e10e5419d2d25ec7801ba53a2d8ebb0e1b3caf55",
+      "test-filter-point-shadow.cpp.o": "97c638cffa70dfa7448300a4583dc93ed45872d1e8523ac4fe6ce2ff6a9ee8a6"
+    },
+    "executable_sha256": "cce9fac233510636ec9acab8cf950fb96472011b33456562241b573b44fd13d1",
+    "executable_sha256_after_run": "cce9fac233510636ec9acab8cf950fb96472011b33456562241b573b44fd13d1",
+    "object_sha256_after_run": {
+      "value-invert-legacy-oracle.c.o": "4f638d2465888f60dc6c13edd5b1779cddd61f885e49432283a03c6ce7f89041",
+      "filter-raster.cpp.o": "24a5445a3fdd7e913e23075eb7f97d1e0573690904d0951c942386c5cbcc25ad",
+      "filter-native-kernels.cpp.o": "a989b660441450191505fe7943db39584593d3743ef9d233f754fa611dae151c",
+      "filter-context.cpp.o": "1976796b54a70eb4c1a30ec3d7d98a9acbf6f3e8789431f5770180344f9d5aa6",
+      "filter-point-shadow.cpp.o": "0500e0174ee8fcd9f9cf6982e10e5419d2d25ec7801ba53a2d8ebb0e1b3caf55",
+      "test-filter-point-shadow.cpp.o": "97c638cffa70dfa7448300a4583dc93ed45872d1e8523ac4fe6ce2ff6a9ee8a6"
+    },
+    "changed_after_run": [],
+    "executable_unchanged": true,
+    "objects_unchanged": true,
+    "elapsed_seconds": 7.434989339999447
+  },
+  "sanitizer": {
+    "scope": "Non-UI U8 Threshold Alpha, Max RGB and Value Invert raw-shadow foundation; generated scalar/geometry checks, direct raw and vector/spill fault handling, completed-buffer isolation; historical final PDB comparisons",
+    "max_rgb_raw_evidence": "Independent generated pairwise equations, all alpha values, ties and signed mode classes; archived Max RGB outputs are compared only after explicit full-coverage merge",
+    "value_invert_raw_evidence": "Literal hash-pinned legacy vinvert_render_row callback; execution mode compiles the oracle separately as C and compares archived final Value Invert outputs only after explicit full-coverage merge",
+    "not_covered": [
+      "Fresh original-GIMP runtime capture",
+      "Native FilterLayer/XCF app integration",
+      "Final owner context timing",
+      "Owner RGB-only admission",
+      "Scheduler/owner lifetime",
+      "Full modern-real precision/owner route acceptance",
+      "UI",
+      "Windows/macOS execution",
+      "Actual I/O beyond 4 GiB",
+      "LeakSanitizer"
+    ],
+    "legacy_evidence": {
+      "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+      "verified_source_sha256": {
+        "plug-ins/common/value-invert.c": "bf7c46cac7f62c13ec73590d53c12ba3dd85fd28def5f74451aaf43b969fef20",
+        "plug-ins/common/max-rgb.c": "e783de344ff3230ad611453dd4b4c7f87a40ffa0b0fa4b49a40b4449283cfcc1",
+        "plug-ins/common/threshold-alpha.c": "608b6e013c6c2285ccdd651f1c2e8204990a8cdae1d65d8b8774b47e7a59a3ca",
+        "libgimp/gimpregioniterator.c": "1289b75a1c49185d9ddaa5f97b5a406b297eab78560854344e8b9a4da41213be"
+      },
+      "archived_capture_report": "migration/fixtures/legacy-filter-points/capture-report.json",
+      "archived_captured_utc": "2026-10-02T13:17:27.453312+00:00",
+      "archived_executable_sha256": {
+        "bin/gimp-2.8": "fefc8fa5190592780b5bd880226a99344268b07074b294431903583e9b5013c8",
+        "lib/gimp/2.0/plug-ins/value-invert": "ff4839c10bf66745ee216eb5ee491a293c96bbd06fe653d971849fcc6f6d80f6",
+        "lib/gimp/2.0/plug-ins/max-rgb": "f75346c229e9466f5601ef76412f861a06e23521d997edc445f0c1fa0bd3e141",
+        "lib/gimp/2.0/plug-ins/threshold-alpha": "e617a63bc5be70426afd10b9c2f77bff9938f96bfd91cbc29520eac496f892da",
+        "lib/gimp/2.0/plug-ins/file-png": "7adb2a2cad462481e47a4dfc9c72d8bf6e07c22885d5145ff787c3e87d8021e5"
+      },
+      "threshold_alpha_cases": 20,
+      "max_rgb_cases": 16,
+      "value_invert_cases": 4,
+      "value_invert_c_oracle": {
+        "path": "app/painter/tests/value-invert-legacy-oracle.c",
+        "sha256": "86a4ad3bc3b09aa1fce74ce740af5cf627a753711d4d78ecc2f018cbd44f7ca4",
+        "callback_sha256": "e042195d93717f9bc72b62bd385843d99eb4d5ad6f98744aef8a946cf929bea9",
+        "literal_callback_matches_pinned_source": true,
+        "build_language": "C99, separately compiled with CC/CFLAGS",
+        "note": "Literal source callback oracle; not a fresh original-GIMP runtime capture"
+      },
+      "note": "Historical full-drawable final PDB outputs, not raw callback captures; Max RGB and Value Invert comparisons follow explicit full-coverage merge. No new old-runtime or owner-context capture"
+    },
+    "source_sha256": {
+      "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+      "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+      "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+      "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+      "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+      "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+      "app/painter/filter-native-kernels.cpp": "960667b9b738acb5613bf4a893a7ccc16fdcbdf56e9d84100d983516b0e273d7",
+      "app/painter/filter-native-kernels.hpp": "eb9d70146c661c2c63b3d7c908d4a0a656fcabd3af0f879b1f53ecb4257ebb6a",
+      "app/painter/filter-point-shadow.cpp": "ec2bccab4f3d994552d1415e3db8a8716d2476098bcb1afba7664a86fdb66345",
+      "app/painter/filter-point-shadow.hpp": "90c41d85f7e4e50d6242169cab843c1fc16ff1b774eddcaa4f3c4f33edbfafdc",
+      "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+      "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+      "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+      "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+      "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+      "app/painter/meson.build": "2fc8aa66774cdcff01716cbaba66f13078625c0df8c74448e21edfbcfecb0e61",
+      "app/painter/tests/run_filter_point_shadow_tests.py": "d0fa3ad5df229ad528ffa339a090895931852e0dd3d3e9de6277fad509343ba8",
+      "app/painter/tests/test-filter-point-shadow.cpp": "4d08270cf70f4ba95b4fa2bc6d134fa8b9de133bf30fd0ecd10642161084ad87",
+      "app/painter/tests/test_filter_point_shadow_runner.py": "8d38e3db5d3d60cf275ff339e46e23005deaff184aa68942dc49949c8aecfde1",
+      "app/painter/tests/value-invert-legacy-oracle.c": "86a4ad3bc3b09aa1fce74ce740af5cf627a753711d4d78ecc2f018cbd44f7ca4"
+    },
+    "fixture_sha256": {
+      "migration/fixtures/legacy-filter-points/LA-9x8-plug-in-threshold-alpha--1.raw": "0beef7514e5c7343ccce555a04f88a6c1dda05e7fd3c512814eca43126ef5a3d",
+      "migration/fixtures/legacy-filter-points/LA-9x8-plug-in-threshold-alpha-0.raw": "d10318c3c67e3393a534bc700864cc3b7224e7a73d6d3e60f66f8c5963fa39f6",
+      "migration/fixtures/legacy-filter-points/LA-9x8-plug-in-threshold-alpha-127.raw": "d2c8051773259aae89212e9954d2fc329c5f118713faa8bde39e28680da40542",
+      "migration/fixtures/legacy-filter-points/LA-9x8-plug-in-threshold-alpha-255.raw": "9a214fbbf820ad6487b2d43ec62818f1642811a91516fdc96cf9a4eb63da56a8",
+      "migration/fixtures/legacy-filter-points/LA-9x8-plug-in-threshold-alpha-256.raw": "9a214fbbf820ad6487b2d43ec62818f1642811a91516fdc96cf9a4eb63da56a8",
+      "migration/fixtures/legacy-filter-points/LA-9x8.raw": "37b7686111186892607d5b4969150f84e07d3f59d46f9ef14aa795992ec1a6c9",
+      "migration/fixtures/legacy-filter-points/README.md": "e2964e1b8303d1ee607552d6610cf1ea963588dc373858db59e1efce2aba3d05",
+      "migration/fixtures/legacy-filter-points/RGB-9x8-plug-in-max-rgb--2.raw": "f339f767831bb096fe016f1a349524cd54f59b57aa0cc214c1ad892733f607d4",
+      "migration/fixtures/legacy-filter-points/RGB-9x8-plug-in-max-rgb-0.raw": "f339f767831bb096fe016f1a349524cd54f59b57aa0cc214c1ad892733f607d4",
+      "migration/fixtures/legacy-filter-points/RGB-9x8-plug-in-max-rgb-1.raw": "64296c5e969e49c7e1df3d228668b8e9f9ac46f8b1f0eee39117dc301c5c8f6c",
+      "migration/fixtures/legacy-filter-points/RGB-9x8-plug-in-max-rgb-3.raw": "64296c5e969e49c7e1df3d228668b8e9f9ac46f8b1f0eee39117dc301c5c8f6c",
+      "migration/fixtures/legacy-filter-points/RGB-9x8-plug-in-vinvert-0.raw": "d2aade5b59ae4ff712b283b24ea9d628f2d0b2f8e1828c4620a513629981ab35",
+      "migration/fixtures/legacy-filter-points/RGB-9x8.raw": "fa249bff627bfa27fc557982f88fdaf04ae7ebf5308a6ff860201e39121b9e16",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-max-rgb--2.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-max-rgb-0.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-max-rgb-1.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-max-rgb-3.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-threshold-alpha--1.raw": "ccc14d9bce4a428e972e570a228530e479adf6dfd9f3138a578bc717306af8cf",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-threshold-alpha-0.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-threshold-alpha-127.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-threshold-alpha-255.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-threshold-alpha-256.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1-plug-in-vinvert-0.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-1x1.raw": "ca84d3d83fa3296c97503cf10d3dba3200c5600e6f88e3606caf100917fb2879",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-max-rgb--2.raw": "a11c8e7d4e93472b81d9a66f8dfec3ff36712355986ce7313f1d2058ec05c46d",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-max-rgb-0.raw": "a11c8e7d4e93472b81d9a66f8dfec3ff36712355986ce7313f1d2058ec05c46d",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-max-rgb-1.raw": "060ebd8f36f3a2cddcbbe677ff970f9f4bd4b95d5bd9905957428464028b21b8",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-max-rgb-3.raw": "060ebd8f36f3a2cddcbbe677ff970f9f4bd4b95d5bd9905957428464028b21b8",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-threshold-alpha--1.raw": "e1986f3f889e60f7a10cff3a323dd0aba282a6dacca324487ac6f8b7d36f7817",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-threshold-alpha-0.raw": "61a53056a5429a5330c1ec679188b7b1cf0625707f79f645210ca8a0c382a4a3",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-threshold-alpha-127.raw": "f451efd79fbb0731dfc165d517ed7f720cbbde3e4e4727a209812645a08ba87a",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-threshold-alpha-255.raw": "fa81336891978147ce126c37f908d1c8ce112674a65faa7c6cd7b4918ece6770",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-threshold-alpha-256.raw": "fa81336891978147ce126c37f908d1c8ce112674a65faa7c6cd7b4918ece6770",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66-plug-in-vinvert-0.raw": "89176bab53a1bf72a7b7124027378c6210116b1f0b8680a51a493921a5b0aab7",
+      "migration/fixtures/legacy-filter-points/RGBA-67x66.raw": "428868e492e818e4c7980973fdb8e2f95d06e9a785b6f831d72a21b7ee392fb2",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-max-rgb--2.raw": "f8e25b6cfaf8363e3fd72644a39e0e0848a5351837d80426fce7004c9a1a071c",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-max-rgb-0.raw": "f8e25b6cfaf8363e3fd72644a39e0e0848a5351837d80426fce7004c9a1a071c",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-max-rgb-1.raw": "f904e7dc790bf8bb8c46c9002a5928059672c10d66cc748da25770b2331c5b8e",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-max-rgb-3.raw": "f904e7dc790bf8bb8c46c9002a5928059672c10d66cc748da25770b2331c5b8e",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-threshold-alpha--1.raw": "e4deeccc5c969827339d4c8883a86af4b5b103f4b2b77afd47f85350b8828ee1",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-threshold-alpha-0.raw": "1513f9d528adffee7c77d142656d24ef541bd3a8a57764625c8955d8d960ba26",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-threshold-alpha-127.raw": "731c45e2582648207bd9a0b754258e5723b678b3df914cc3f9232f0935ae9fcc",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-threshold-alpha-255.raw": "6718f9cb186987a3a06fe6492177d370975915664f39785f0a67dae1d2cf50aa",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-threshold-alpha-256.raw": "6718f9cb186987a3a06fe6492177d370975915664f39785f0a67dae1d2cf50aa",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8-plug-in-vinvert-0.raw": "9fef79ebafbce946d65079bce07844e0310ba88cb4c47aad7019db33bc93adfd",
+      "migration/fixtures/legacy-filter-points/RGBA-9x8.raw": "bee0c14c1d6cd99086255b8f829e37c29fe045bca7d1896df117228fd1c54695",
+      "migration/fixtures/legacy-filter-points/capture-report.json": "f49f81a3560add2fe4bd6f1899cbf1a06c5d23bfd6e077fc0e4a55bbf1a2767e",
+      "migration/fixtures/legacy-filter-points/capture.log": "7448c1fd469fd70b4920a7bd3745f6ae1b750b2676512d93a4d2ed1dfb55c345",
+      "migration/fixtures/legacy-filter-points/capture.scm": "6ba9eb2460f9841e192cc96efd2c54b4f9708b2ea4b94bf56d46eb1d621c6fd1",
+      "migration/fixtures/legacy-filter-points/fixtures.tsv": "420b45190fc23d3ef04e8d853134b9698f08bd677f96133308df2be499c8a2f8"
+    },
+    "changed_after_verify": [],
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "leak_detection": false,
+    "leak_detection_note": "Focused ASan/UBSan mode excludes LeakSanitizer; no leak claim is made",
+    "commands": [
+      {
+        "kind": "c-compiler-version",
+        "command": [
+          "cc",
+          "--version"
+        ],
+        "exit_code": 0,
+        "stdout": "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "stderr": ""
+      },
+      {
+        "kind": "c++-compiler-version",
+        "command": [
+          "c++",
+          "--version"
+        ],
+        "exit_code": 0,
+        "stdout": "c++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "stderr": ""
+      },
+      {
+        "kind": "pkg-cflags",
+        "command": [
+          "pkg-config",
+          "--cflags",
+          "glib-2.0"
+        ],
+        "exit_code": 0,
+        "stdout": "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0 -I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6 -pthread \n",
+        "stderr": ""
+      },
+      {
+        "kind": "pkg-libs",
+        "command": [
+          "pkg-config",
+          "--libs",
+          "glib-2.0"
+        ],
+        "exit_code": 0,
+        "stdout": "-lglib-2.0 \n",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c",
+        "command": [
+          "cc",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O1",
+          "-pthread",
+          "-std=c99",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-x",
+          "c",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/tests/value-invert-legacy-oracle.c",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/value-invert-legacy-oracle.c.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c++",
+        "command": [
+          "c++",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O1",
+          "-pthread",
+          "-std=c++14",
+          "-fexceptions",
+          "-frtti",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-I/workspace/shared/gimp-painter-value-invert/app/painter",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6",
+          "-pthread",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/filter-raster.cpp",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/filter-raster.cpp.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c++",
+        "command": [
+          "c++",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O1",
+          "-pthread",
+          "-std=c++14",
+          "-fexceptions",
+          "-frtti",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-I/workspace/shared/gimp-painter-value-invert/app/painter",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6",
+          "-pthread",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/filter-native-kernels.cpp",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/filter-native-kernels.cpp.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c++",
+        "command": [
+          "c++",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O1",
+          "-pthread",
+          "-std=c++14",
+          "-fexceptions",
+          "-frtti",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-I/workspace/shared/gimp-painter-value-invert/app/painter",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6",
+          "-pthread",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/filter-context.cpp",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/filter-context.cpp.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c++",
+        "command": [
+          "c++",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O1",
+          "-pthread",
+          "-std=c++14",
+          "-fexceptions",
+          "-frtti",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-I/workspace/shared/gimp-painter-value-invert/app/painter",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6",
+          "-pthread",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/filter-point-shadow.cpp",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/filter-point-shadow.cpp.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "compile-c++",
+        "command": [
+          "c++",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-g",
+          "-O1",
+          "-pthread",
+          "-std=c++14",
+          "-fexceptions",
+          "-frtti",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-I/workspace/shared/gimp-painter-value-invert/app/painter",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/glib-2.0",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+          "-I/workspace/shared/gimp-deps-debian13/root/usr/include/sysprof-6",
+          "-pthread",
+          "-c",
+          "/workspace/shared/gimp-painter-value-invert/app/painter/tests/test-filter-point-shadow.cpp",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/test-filter-point-shadow.cpp.o"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "link",
+        "command": [
+          "c++",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/value-invert-legacy-oracle.c.o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/filter-raster.cpp.o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/filter-native-kernels.cpp.o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/filter-context.cpp.o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/filter-point-shadow.cpp.o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/test-filter-point-shadow.cpp.o",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-pthread",
+          "-lglib-2.0",
+          "-o",
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/painter-filter-point-shadow"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "kind": "test",
+        "command": [
+          "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx/painter-filter-point-shadow",
+          "/workspace/shared/gimp-painter-value-invert/migration/fixtures/legacy-filter-points/fixtures.tsv"
+        ],
+        "exit_code": 0,
+        "stdout": "Generated scalar/all-alpha/tiny/cropped/row-boundary RGBA and replicated-YA cases: 1222\n20 archived genuine original PDB Threshold Alpha outputs matched in vector/spill paths\nOffsets/outside distinction and all-final-mask/component RGB/Y invariance passed\nMalformed/overflow/alias/exact extent validation and INT32 total-area boundaries passed\nThreshold Alpha Every read/write/flush cancellation and storage-error ordinal: 200 vector/spill cases; monotone progress and transactional aliases passed\nGenerated raw Max RGB: signed modes, all ties/all alpha, unchanged legacy hidden RGB, raw-versus-merged distinction passed\nExisting point_byte and point_real Value Invert/Max RGB alpha-zero behavior preserved\nGenerated Max RGB vector/memory/spill tiny/ROI/row-boundary/no-merge cases: 276; offset and completed-buffer isolation passed\n16 archived original PDB Max RGB outputs matched after explicit merge; no fresh owner-context capture claimed\nMax RGB raw/tagged validation, no-I/O rejection, area boundaries and Threshold overload compatibility passed\nMax RGB direct raw bounded read/write/flush cancellation/error ordinals preserve completed output\nMax RGB Every read/write/flush cancellation and storage-error ordinal: 200 vector/spill cases; monotone progress and transactional aliases passed\nMax RGB Every read/write/flush cancellation and storage-error ordinal: 200 vector/spill cases; monotone progress and transactional aliases passed\nValue Invert exact pinned C callback: all 16,777,216 RGB triples, bpp=3/4, varying copied alpha passed\nValue Invert all-alpha black/achromatic/ties/rounding/hidden-color and unchanged byte/real APIs passed\nValue Invert vector/memory/spill tiny/ROI/row-boundary/no-merge cases: 138; offset and completed-buffer isolation passed\n4 archived original PDB Value Invert outputs matched after explicit merge; no fresh owner-context capture claimed\nValue Invert raw/tagged no-I/O validation, alias/geometry/extents/signed-area boundaries passed\nValue Invert direct raw bounded read/write/flush cancellation/error ordinals preserve completed output\nValue Invert Every read/write/flush cancellation and storage-error ordinal: 200 vector/spill cases; monotone progress and transactional aliases passed\n",
+        "stderr": ""
+      }
+    ],
+    "all_passed": true,
+    "output_directory": "/workspace/shared/value-invert-foundation-build/filter-point-shadow-sanitize-hn1imwfx",
+    "build_environment": {
+      "CC": "",
+      "CXX": "",
+      "CPPFLAGS": "",
+      "CFLAGS": "",
+      "CXXFLAGS": "",
+      "LDFLAGS": "",
+      "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+      "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+    },
+    "changed_after_compile": [],
+    "object_sha256": {
+      "value-invert-legacy-oracle.c.o": "7721b0360980febe6ed5356a966969b2fddf72ec0496e2c87a418b8b3e3833f2",
+      "filter-raster.cpp.o": "37dbad91a1b6085320a8547a85dc1ba9eb0ffb8057a9dc9eaf293a6e0e4066b8",
+      "filter-native-kernels.cpp.o": "ef53fcef6be2e23ebcfc43bb1055e0f81c1fb41986c1857ed0ab6833d84bae04",
+      "filter-context.cpp.o": "e61d1212461746d074b600600b32d0347c49284a613de31514c79c613b71fb2e",
+      "filter-point-shadow.cpp.o": "c2bdc368819848c1c54d7ea9991a39aee17d35f0cd7f8cc8bce7d9bf73a79b4f",
+      "test-filter-point-shadow.cpp.o": "378ac01cd4a8adeb997c20fbfcd533d9894c721fb208b0d8fe82a789345caf29"
+    },
+    "executable_sha256": "8776e48b11f751bd248de48a436afb74747ffa0d32aede9d69cf85ea24589cb9",
+    "executable_sha256_after_run": "8776e48b11f751bd248de48a436afb74747ffa0d32aede9d69cf85ea24589cb9",
+    "object_sha256_after_run": {
+      "value-invert-legacy-oracle.c.o": "7721b0360980febe6ed5356a966969b2fddf72ec0496e2c87a418b8b3e3833f2",
+      "filter-raster.cpp.o": "37dbad91a1b6085320a8547a85dc1ba9eb0ffb8057a9dc9eaf293a6e0e4066b8",
+      "filter-native-kernels.cpp.o": "ef53fcef6be2e23ebcfc43bb1055e0f81c1fb41986c1857ed0ab6833d84bae04",
+      "filter-context.cpp.o": "e61d1212461746d074b600600b32d0347c49284a613de31514c79c613b71fb2e",
+      "filter-point-shadow.cpp.o": "c2bdc368819848c1c54d7ea9991a39aee17d35f0cd7f8cc8bce7d9bf73a79b4f",
+      "test-filter-point-shadow.cpp.o": "378ac01cd4a8adeb997c20fbfcd533d9894c721fb208b0d8fe82a789345caf29"
+    },
+    "changed_after_run": [],
+    "executable_unchanged": true,
+    "objects_unchanged": true,
+    "elapsed_seconds": 12.966515809999692
+  },
+  "prior_execution": {
+    "normal_before_object_seal_fix": {
+      "all_passed": true,
+      "after_run_object_seal_available": false,
+      "receipt_sha256": "35dad2e1a7e0a7d4efbc412a5cbd6ad3b4685419368f8043fc30c0e6d4b0a6cd",
+      "status": "superseded; final normal and sanitizer runs reran the strengthened runner"
+    }
+  },
+  "limitations": [
+    "Fresh original-GIMP runtime capture",
+    "Native FilterLayer/XCF app integration",
+    "Final owner context timing",
+    "Owner RGB-only admission",
+    "Scheduler/owner lifetime",
+    "Full modern-real precision/owner route acceptance",
+    "UI",
+    "Windows/macOS execution",
+    "Actual I/O beyond 4 GiB",
+    "LeakSanitizer",
+    "Registered Meson target not yet executed against this changed source",
+    "Not a new frozen full aggregate or release certification"
+  ]
+}

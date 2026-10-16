@@ -10,17 +10,18 @@ namespace GimpPainter GIMP_PAINTER_PRIVATE {
 
 class FilterProgress;
 
-/* An outside, nonempty start selection returns before the old iterator merge.
+/* An outside, nonempty start selection returns before the old plug-in merge.
  * Its private output is still initialized; no_merge forbids merging zeros. */
-enum class FilterPointShadowOperation { threshold_alpha, max_rgb };
+enum class FilterPointShadowOperation { threshold_alpha, max_rgb, value_invert };
 
 enum class FilterPointShadowOutcome { cancelled, shadow, no_merge };
 
 /* Allocation-free scalar preflight; no raster or native state is accessed.
  * Full dimensions must be positive INT32 and the RGBA8 extent fit INT64_MAX.
  * Every positive ROI dimension is supported, including 1x1, 1xN and Nx1, but
- * ROI width*height must not exceed INT32_MAX: the old iterator's signed
- * total_area multiplication is undefined above that boundary. An outside ROI
+ * ROI width*height must not exceed INT32_MAX: the old iterator's total_area
+ * and Value Invert's own width*height use signed gint multiplication, which
+ * is undefined above that boundary. An outside ROI
  * has zero area. Invalid dimensions/region throw std::invalid_argument. */
 void filter_point_shadow_validate (std::size_t width, std::size_t height,
                                    const FilterSelectionRegion& region);
@@ -46,7 +47,7 @@ void filter_point_shadow_validate (std::size_t width, std::size_t height,
  * original pixels. Progress monotonically covers zero-fill and crop writes,
  * reaches one only after successful flush and a final cancellation check, and
  * must be reset before a new operation. It is transport progress, not a claim
- * to reproduce the old iterator's tile-progress callback cadence.
+ * to reproduce any old plug-in's tile-progress callback cadence.
  */
 FilterPointShadowOutcome filter_point_shadow_raster (
   FilterRaster& input,
@@ -58,9 +59,11 @@ FilterPointShadowOutcome filter_point_shadow_raster (
   FilterRaster& output,
   const std::shared_ptr<FilterProgress>& progress = {});
 
-/* Operation-tagged raw shadow. Max RGB transforms all RGB bytes, including
- * hidden colors, and copies alpha. Gray admission belongs to the owner and is
- * unsupported for Max RGB. All private-output/ROI rules above still apply. */
+/* Operation-tagged raw shadow. Max RGB and Value Invert transform all RGB
+ * bytes, including hidden colors, and copy alpha. Value Invert ignores the
+ * argument; its public legacy procedure has no operation parameter. Owner
+ * admission remains separate: neither Gray nor indexed is supported by these
+ * RGB operations. All private-output/ROI rules above still apply. */
 FilterPointShadowOutcome filter_point_shadow_raster (
   FilterRaster& input, std::size_t width, std::size_t height,
   const FilterSelectionRegion& region, FilterPointShadowOperation operation,

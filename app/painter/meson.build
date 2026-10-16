@@ -128,8 +128,12 @@ foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-
   if feature == 'filter-raster' and get_option('b_sanitize').split(',').contains('undefined')
     feature_cpp_args += ['-DPAINTER_TEST_SANITIZER_RTTI']
   endif
+  feature_sources = ['tests/test-' + feature + '.cpp']
+  if feature == 'filter-point-shadow'
+    feature_sources += ['tests/value-invert-legacy-oracle.c']
+  endif
   feature_test = executable('painter-' + feature,
-    'tests/test-' + feature + '.cpp',
+    feature_sources,
     dependencies: [painter_dep, painter_threads],
     cpp_args: feature_cpp_args,
     link_args: feature_link_args,
