@@ -139,6 +139,38 @@
       "context": "core",
       "prerequisites": [],
       "review": "04.003/tool-options-header-routes: horizontal path options constructor and runtime path availability. Double-include the identified baseline header after normal core/tool/GTK prerequisites in C11 and C++14; preserve its original identity. Compilation only, without an outer linkage wrapper; no C/C++ link ABI claim."
+    },
+    {
+      "path": "app/gui/gimpuiconfigurer.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "db22ffccc37ec017d9c6c45a4f72ca655b441d74",
+      "context": "core",
+      "prerequisites": [],
+      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
+    },
+    {
+      "path": "app/gui/session.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "d5be445ca6639f0304038f8cac668281b1505409",
+      "context": "core",
+      "prerequisites": [],
+      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
+    },
+    {
+      "path": "app/widgets/gimpdialogfactory.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "d2015aace245252d8131ef8e5f4b15abc502451a",
+      "context": "core",
+      "prerequisites": [],
+      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
+    },
+    {
+      "path": "app/widgets/gimpsessioninfo-private.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "9b0dea0edd77251ac42428846d80e6c48056ee60",
+      "context": "core",
+      "prerequisites": [],
+      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
     }
   ]
 }

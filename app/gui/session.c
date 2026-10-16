@@ -40,6 +40,7 @@
 
 #include "dialogs/dialogs.h"
 
+#include "gimpuiconfigurer.h"
 #include "session.h"
 #include "gimp-log.h"
 
@@ -64,6 +65,262 @@ static GFile * session_file (Gimp *gimp);
 
 static gboolean   sessionrc_deleted = FALSE;
 
+
+/* A continuation belongs to its Gimp, never to the process-wide dialog
+ * factory.  Sources and observers keep only weak references to GUI owners. */
+typedef struct
+{
+  GWeakRef configurer;
+  GWeakRef factory;
+  guint    source_id;
+  gulong   factory_notify;
+  gulong   configurer_notify;
+  gboolean save_pending;
+  gboolean always_save;
+  gboolean exit_pending;
+  gboolean exit_force;
+  gboolean stopping;
+} SessionContinuation;
+
+static SessionContinuation * session_continuation_get (Gimp *gimp);
+static void session_continuation_queue (Gimp *gimp);
+
+static void
+session_continuation_notify (GObject    *object,
+                             GParamSpec *pspec,
+                             Gimp       *gimp)
+{
+  session_continuation_queue (gimp);
+}
+
+static void
+session_continuation_disconnect (SessionContinuation *state)
+{
+  GObject *object;
+
+  object = g_weak_ref_get (&state->factory);
+  if (object)
+    {
+      if (state->factory_notify &&
+          g_signal_handler_is_connected (object, state->factory_notify))
+        g_signal_handler_disconnect (object, state->factory_notify);
+      g_object_unref (object);
+    }
+  state->factory_notify = 0;
+
+  object = g_weak_ref_get (&state->configurer);
+  if (object)
+    {
+      if (state->configurer_notify &&
+          g_signal_handler_is_connected (object, state->configurer_notify))
+        g_signal_handler_disconnect (object, state->configurer_notify);
+      g_object_unref (object);
+    }
+  state->configurer_notify = 0;
+}
+
+static void
+session_continuation_free (gpointer data)
+{
+  SessionContinuation *state = data;
+
+  if (state->source_id)
+    g_source_remove (state->source_id);
+  session_continuation_disconnect (state);
+  g_weak_ref_clear (&state->factory);
+  g_weak_ref_clear (&state->configurer);
+  g_free (state);
+}
+
+static SessionContinuation *
+session_continuation_get (Gimp *gimp)
+{
+  SessionContinuation *state = g_object_get_data (G_OBJECT (gimp),
+                                                 "gimp-session-continuation");
+
+  if (! state)
+    {
+      GimpDialogFactory *factory = gimp_dialog_factory_get_singleton ();
+
+      state = g_new0 (SessionContinuation, 1);
+      g_weak_ref_init (&state->configurer, NULL);
+      g_weak_ref_init (&state->factory, factory);
+      g_object_set_data_full (G_OBJECT (gimp), "gimp-session-continuation",
+                              state, session_continuation_free);
+      if (factory)
+        state->factory_notify =
+          g_signal_connect_object (factory, "notify::restore-pending",
+                                   G_CALLBACK (session_continuation_notify),
+                                   gimp, 0);
+    }
+
+  return state;
+}
+
+gboolean
+session_is_ready (Gimp *gimp)
+{
+  SessionContinuation *state;
+  GimpDialogFactory   *factory;
+  GimpUIConfigurer    *configurer;
+  gboolean             ready;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+
+  state = session_continuation_get (gimp);
+  factory = g_weak_ref_get (&state->factory);
+  configurer = g_weak_ref_get (&state->configurer);
+  ready = (! state->stopping &&
+           (! factory ||
+            (! gimp_dialog_factory_restore_pending (factory) &&
+             ! gimp_dialog_factory_restore_stopping (factory))) &&
+           (! configurer || gimp_ui_configurer_is_ready (configurer)));
+  g_clear_object (&configurer);
+  g_clear_object (&factory);
+
+  return ready;
+}
+
+static gboolean
+session_continuation_idle (gpointer data)
+{
+  Gimp                *gimp = g_weak_ref_get (data);
+  SessionContinuation *state;
+
+  if (! gimp)
+    return G_SOURCE_REMOVE;
+
+  state = session_continuation_get (gimp);
+  state->source_id = 0;
+  if (! session_is_ready (gimp))
+    {
+      g_object_unref (gimp);
+      return G_SOURCE_REMOVE;
+    }
+
+  if (state->save_pending)
+    {
+      gboolean always_save = state->always_save;
+
+      state->save_pending = FALSE;
+      state->always_save = FALSE;
+      session_save (gimp, always_save);
+    }
+
+  /* Saving can call application code.  Recheck readiness, and consume Quit
+   * last: its ordinary lifecycle can destroy every GUI owner in this state. */
+  if (state->exit_pending && session_is_ready (gimp))
+    {
+      gboolean force = state->exit_force;
+
+      state->exit_pending = FALSE;
+      gimp_exit (gimp, force);
+    }
+
+  g_object_unref (gimp);
+  return G_SOURCE_REMOVE;
+}
+
+static void
+session_continuation_weak_free (gpointer data)
+{
+  g_weak_ref_clear (data);
+  g_free (data);
+}
+
+static void
+session_continuation_queue (Gimp *gimp)
+{
+  SessionContinuation *state = session_continuation_get (gimp);
+  GWeakRef            *weak;
+
+  if (state->stopping || state->source_id ||
+      (! state->save_pending && ! state->exit_pending))
+    return;
+
+  weak = g_new0 (GWeakRef, 1);
+  g_weak_ref_init (weak, gimp);
+  state->source_id =
+    g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, session_continuation_idle, weak,
+                     session_continuation_weak_free);
+}
+
+void
+session_bind_ui_configurer (Gimp             *gimp,
+                            GimpUIConfigurer *configurer)
+{
+  SessionContinuation *state;
+  GimpUIConfigurer    *old;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (GIMP_IS_UI_CONFIGURER (configurer));
+
+  state = session_continuation_get (gimp);
+  old = g_weak_ref_get (&state->configurer);
+  if (old)
+    {
+      if (state->configurer_notify)
+        g_signal_handler_disconnect (old, state->configurer_notify);
+      g_object_unref (old);
+    }
+  g_weak_ref_set (&state->configurer, configurer);
+  state->configurer_notify =
+    g_signal_connect_object (configurer, "notify::ready",
+                             G_CALLBACK (session_continuation_notify), gimp, 0);
+}
+
+gboolean
+session_exit_defer (Gimp     *gimp,
+                    gboolean  force)
+{
+  SessionContinuation *state;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+
+  state = session_continuation_get (gimp);
+  if (state->stopping)
+    return FALSE;
+  if (session_is_ready (gimp) && ! state->save_pending)
+    return FALSE;
+
+  state->exit_pending = TRUE;
+  state->exit_force = force;
+  session_continuation_queue (gimp);
+  return TRUE;
+}
+
+void
+session_stop (Gimp *gimp)
+{
+  SessionContinuation *state;
+  GimpUIConfigurer    *configurer;
+  GimpDialogFactory   *factory;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+
+  state = session_continuation_get (gimp);
+  state->stopping = TRUE;
+  state->save_pending = FALSE;
+  state->exit_pending = FALSE;
+  if (state->source_id)
+    {
+      g_source_remove (state->source_id);
+      state->source_id = 0;
+    }
+  session_continuation_disconnect (state);
+  configurer = g_weak_ref_get (&state->configurer);
+  if (configurer)
+    {
+      gimp_ui_configurer_stop (configurer);
+      g_object_unref (configurer);
+    }
+  factory = g_weak_ref_get (&state->factory);
+  if (factory)
+    {
+      gimp_dialog_factory_restore_stop (factory);
+      g_object_unref (factory);
+    }
+}
 
 /*  public functions  */
 
@@ -326,7 +583,7 @@ session_init (Gimp *gimp)
 void
 session_exit (Gimp *gimp)
 {
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  session_stop (gimp);
 }
 
 void
@@ -358,6 +615,20 @@ session_save (Gimp     *gimp,
   GError           *error = NULL;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
+
+  {
+    SessionContinuation *state = session_continuation_get (gimp);
+
+    if (state->stopping)
+      return;
+    if (! session_is_ready (gimp))
+      {
+        state->save_pending = TRUE;
+        state->always_save |= always_save;
+        session_continuation_queue (gimp);
+        return;
+      }
+  }
 
   if (sessionrc_deleted && ! always_save)
     return;
@@ -451,7 +722,13 @@ session_clear (Gimp    *gimp,
     }
   else
     {
+      SessionContinuation *state = session_continuation_get (gimp);
+
       sessionrc_deleted = TRUE;
+      /* Preserve ordinary call ordering: a later Clear cancels an earlier
+       * Save Now, while a new Save Now after Clear can still recreate it. */
+      state->save_pending = FALSE;
+      state->always_save = FALSE;
     }
 
   g_clear_error (&my_error);

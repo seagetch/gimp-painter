@@ -186,6 +186,23 @@ void                gimp_dialog_factory_save                 (GimpDialogFactory 
 void                gimp_dialog_factory_restore              (GimpDialogFactory       *factory,
                                                               GdkMonitor              *monitor);
 
+/* Native restoration ownership.  begin/end must bracket constructors and
+ * scheduling; add transfers payload ownership to one tracked idle. */
+gboolean            gimp_dialog_factory_restore_pending      (GimpDialogFactory       *factory);
+gboolean            gimp_dialog_factory_restore_stopping     (GimpDialogFactory       *factory);
+void                gimp_dialog_factory_restore_stop         (GimpDialogFactory       *factory);
+gboolean            gimp_dialog_factory_restore_begin        (GimpDialogFactory       *factory);
+gboolean            gimp_dialog_factory_restore_claim        (GimpDialogFactory       *factory,
+                                                              GimpSessionInfo         *info);
+gboolean            gimp_dialog_factory_restore_owns_widget  (GimpDialogFactory       *factory,
+                                                              GtkWidget               *widget);
+void                gimp_dialog_factory_restore_end          (GimpDialogFactory       *factory);
+void                gimp_dialog_factory_restore_add          (GimpDialogFactory       *factory,
+                                                              GtkWidget               *target,
+                                                              GSourceFunc              callback,
+                                                              gpointer                 data,
+                                                              GDestroyNotify           destroy);
+
 void                gimp_dialog_factory_set_state            (GimpDialogFactory       *factory,
                                                               GimpDialogsState         state);
 GimpDialogsState    gimp_dialog_factory_get_state            (GimpDialogFactory       *factory);

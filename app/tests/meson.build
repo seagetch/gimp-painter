@@ -49,6 +49,7 @@ app_tests = [
   'painter-layer-tree',
   'painter-canvas-ui',
   'painter-toolbar-window',
+  'painter-session-restore-barrier',
   'painter-compact-options',
   'gimp-painter-mybrush',
   'gimp-painter-mybrush-factory',
@@ -146,7 +147,7 @@ foreach test_name : app_tests
   if test_name == 'mypaint-selector-contracts'
     test_timeout = 180
   endif
-  if test_name == 'painter-toolbar-window'
+  if ['painter-toolbar-window', 'painter-session-restore-barrier'].contains(test_name)
     # Every case uses fresh GUI startup; session coverage executes two passes.
     test_timeout = 240
   endif

@@ -39,6 +39,7 @@ struct _GimpSessionInfoPrivate
 
   /*  only valid while restoring and saving the session  */
   gboolean                open;
+  gboolean                restoring; /* owns the saved lists until idle cleanup */
 
   /*  dialog specific list of GimpSessionInfoAux  */
   GList                  *aux_info;
