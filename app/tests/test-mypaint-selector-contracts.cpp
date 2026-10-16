@@ -500,6 +500,15 @@ void popup_repeat_pages_and_native_dismissal ()
   auto *other_tabs = GTK_NOTEBOOK (control (popup (second.button), "painter-mypaint-brush-tabs"));
   g_assert_cmpint (gtk_notebook_get_n_pages (tabs), ==, 2);
   gtk_notebook_set_current_page (tabs, 1); gtk_notebook_set_current_page (other_tabs, 0);
+  /* Establish the native host focus before checking modal input dismissal.
+   * A single idle drain does not settle a window-system focus change. */
+  gtk_window_present (GTK_WINDOW (first.window));
+  gdk_window_focus (gtk_widget_get_window (first.window), GDK_CURRENT_TIME);
+  const auto focus_deadline = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
+  while (!gtk_window_is_active (GTK_WINDOW (first.window)) &&
+         g_get_monotonic_time () < focus_deadline)
+    { g_main_context_iteration (nullptr, FALSE); g_usleep (1000); }
+  g_assert_true (gtk_window_is_active (GTK_WINDOW (first.window)));
   for (guint cycle = 0; cycle < 4; ++cycle)
     {
       open_popup (first.button); g_assert_true (popup (first.button) == popover);
