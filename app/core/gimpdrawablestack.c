@@ -25,6 +25,7 @@
 
 #include "core-types.h"
 
+#include "gimp-update-geometry.h"
 #include "gimpdrawable.h"
 #include "gimpdrawablestack.h"
 #include "gimpmarshal.h"
@@ -204,8 +205,11 @@ gimp_drawable_stack_drawable_update (GimpItem          *item,
 
       gimp_item_get_offset (item, &offset_x, &offset_y);
 
+      gimp_update_interval_translate (x, width,  offset_x, &x, &width);
+      gimp_update_interval_translate (y, height, offset_y, &y, &height);
+
       gimp_drawable_stack_update (stack,
-                                  x + offset_x, y + offset_y,
+                                  x, y,
                                   width, height);
     }
 }
@@ -218,8 +222,12 @@ gimp_drawable_stack_drawable_active (GimpItem          *item,
 
   bounding_box = gimp_drawable_get_bounding_box (GIMP_DRAWABLE (item));
 
-  bounding_box.x += gimp_item_get_offset_x (item);
-  bounding_box.y += gimp_item_get_offset_y (item);
+  gimp_update_interval_translate (bounding_box.x, bounding_box.width,
+                                  gimp_item_get_offset_x (item),
+                                  &bounding_box.x, &bounding_box.width);
+  gimp_update_interval_translate (bounding_box.y, bounding_box.height,
+                                  gimp_item_get_offset_y (item),
+                                  &bounding_box.y, &bounding_box.height);
 
   gimp_drawable_stack_update (stack,
                               bounding_box.x,     bounding_box.y,

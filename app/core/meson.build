@@ -25,6 +25,7 @@ appcoremarshal = gnome.genmarshal('gimpmarshal',
 )
 
 libappcore_sources = [
+  'gimp-update-geometry.h',
   'gimp-atomic.c',
   'gimp-batch.c',
   'gimp-cairo.c',

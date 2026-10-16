@@ -2,6 +2,13 @@
   "format": 1,
   "routes": [
     {
+      "path": "app/core/gimp-update-geometry.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "09.002/projection-update-bounds: private GLib-only signed-int update interval clipping and grid alignment helpers. Owns its GLib prerequisite and include guard; twice-include compilation in C11 and C++14 without an outer linkage wrapper. No public API or cross-language link ABI claim."
+    },
+    {
       "path": "app/widgets/gimpcellrendererpopup.h",
       "kind": "new",
       "context": "standalone",
