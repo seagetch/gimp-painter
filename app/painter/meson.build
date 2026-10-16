@@ -69,6 +69,7 @@ libapppainter = static_library('apppainter',
   'filter-gauss.cpp',
   'filter-sharpen.cpp',
   'filter-sharpen-shadow.cpp',
+  'filter-sobel.cpp',
   'filter-point-shadow.cpp',
   'filter-native-kernels.cpp',
   dependencies: [gobject, painter_threads],
@@ -178,6 +179,19 @@ filter_sharpen_shadow_test = executable('painter-filter-sharpen-shadow',
   link_language: 'cpp')
 test('painter-filter-sharpen-shadow', filter_sharpen_shadow_test,
   suite: 'painter', timeout: 60)
+
+# Non-UI Sobel raw shadow. The independently compiled native-format C oracle
+# retains the pinned original row preparation, complete arithmetic and ROUND.
+filter_sobel_test = executable('painter-filter-sobel',
+  'tests/test-filter-sobel.cpp',
+  'tests/test-filter-sobel-header.cpp',
+  'tests/legacy-sobel-oracle.c',
+  dependencies: [painter_dep, painter_threads, math],
+  cpp_args: painter_cpp_args,
+  override_options: ['c_std=c11', 'cpp_std=c++14'],
+  link_language: 'cpp')
+test('painter-filter-sobel', filter_sobel_test,
+  suite: 'painter', timeout: 120)
 
 filter_context_test = executable('painter-filter-context',
   'tests/test-filter-context.cpp',
