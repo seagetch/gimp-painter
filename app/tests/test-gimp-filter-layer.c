@@ -2642,6 +2642,7 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-retinex.inc"
 #include "test-filter-convolution.inc"
 #include "test-filter-progress.inc"
+#include "test-filter-sharpen.inc"
 
 static void
 blinds_assert_saved_arguments (GimpFilterLayer *filter,
@@ -2771,6 +2772,12 @@ int main (int argc, char **argv)
   ADD (parameter_suffix_reordering); ADD (parameter_metadata_rejections);
   ADD (parameter_assignment_validation); ADD (parameter_object_lifetime);
   ADD (blinds_saved_argument_policy);
+  ADD (sharpen_integer_native_route); ADD (sharpen_invalid_definitions_keep_cache);
+  ADD (sharpen_unsupported_geometry_precision); ADD (sharpen_late_context_routes);
+  ADD (sharpen_sealed_context_routes); ADD (sharpen_outside_selection_no_merge);
+  ADD (sharpen_cancel_replace_lower_close); ADD (sharpen_actual_old_live);
+  ADD (sharpen_native_profile_bytes); ADD (sharpen_admission_preserves_cache);
+  ADD (sharpen_partial_import_lifecycle);
   ADD(progress_native_abi); ADD(progress_start_reentry); ADD(progress_real_workers); ADD(progress_worker_cancel_replace_close); ADD(progress_independent_owners);
   ADD (blinds_owner_context); ADD (blinds_owner_context_phases);
   ADD (blinds_owner_context_expansion); ADD (blinds_owner_context_retry);

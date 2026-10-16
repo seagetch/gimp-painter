@@ -167,7 +167,7 @@ foreach test_name : app_tests
   endif
 
   test_args = []
-  if test_name == 'gimp-filter-layer'
+  if ['gimp-filter-layer', 'painter-xcf-open'].contains(test_name)
     test_args = [meson.project_source_root() /
       'migration/tests/run_filter_owner_context_fixture_test.py', '--', test_exe]
   elif test_name == 'painter-xcf-roundtrip'
@@ -175,7 +175,7 @@ foreach test_name : app_tests
   endif
 
   test(test_name,
-    test_name == 'gimp-filter-layer' ? python : test_exe,
+    ['gimp-filter-layer', 'painter-xcf-open'].contains(test_name) ? python : test_exe,
     args: test_args,
     env: [
       'GIMP_TESTING_ABS_TOP_SRCDIR='  + meson.project_source_root(),

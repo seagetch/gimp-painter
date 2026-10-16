@@ -68,6 +68,7 @@ libapppainter = static_library('apppainter',
   'filter-edge.cpp',
   'filter-gauss.cpp',
   'filter-sharpen.cpp',
+  'filter-sharpen-shadow.cpp',
   'filter-native-kernels.cpp',
   dependencies: [gobject, painter_threads],
   include_directories: painter_include,
@@ -164,6 +165,17 @@ filter_sharpen_test = executable('painter-filter-sharpen',
   override_options: ['c_std=c11', 'cpp_std=c++14'],
   link_language: 'cpp')
 test('painter-filter-sharpen', filter_sharpen_test,
+  suite: 'painter', timeout: 60)
+
+# Full-raster raw shadow wrapper, with the same source-extracted C oracle.
+filter_sharpen_shadow_test = executable('painter-filter-sharpen-shadow',
+  'tests/test-filter-sharpen-shadow.cpp',
+  'tests/legacy-sharpen-oracle.c',
+  dependencies: [painter_dep, painter_threads],
+  cpp_args: painter_cpp_args,
+  override_options: ['c_std=c11', 'cpp_std=c++14'],
+  link_language: 'cpp')
+test('painter-filter-sharpen-shadow', filter_sharpen_shadow_test,
   suite: 'painter', timeout: 60)
 
 filter_context_test = executable('painter-filter-context',

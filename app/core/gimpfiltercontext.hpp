@@ -25,6 +25,7 @@ public:
   void selection_changed () noexcept { selection_dirty_ = true; }
   void capture_input (GimpDrawable *, std::size_t offset, std::size_t count,
                        const std::uint8_t *rgba);
+  bool before_process (GimpDrawable *, FilterSelectionRegion&, std::size_t budget);
   bool before_process (GimpDrawable *, FilterProcedureRequest&, std::size_t budget);
   bool before_import (GimpDrawable *, FilterProcedureDisposition, std::size_t budget);
   void merge_chunk (std::size_t offset, std::size_t count,

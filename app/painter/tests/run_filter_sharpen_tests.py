@@ -67,8 +67,8 @@ def verify_oracle():
                                 for name, body in expected.items()}}
 
 
-def source_paths():
-    pending = [ROOT / path for path in [ORACLE, *CPP_SOURCES]]
+def source_paths(sources):
+    pending = [ROOT / path for path in [ORACLE, *sources]]
     seen = set()
     while pending:
         path = pending.pop().resolve()
@@ -104,12 +104,18 @@ def main():
     parser.add_argument("build", type=Path, nargs="?")
     parser.add_argument("--report", type=Path)
     parser.add_argument("--sanitize", action="store_true")
+    parser.add_argument("--shadow", action="store_true",
+                        help="Test full-raster zero-shadow/ROI wrapper instead of the cropped kernel")
     parser.add_argument("--verify-only", action="store_true")
     args = parser.parse_args()
     if not args.verify_only and (args.build is None or args.report is None):
         parser.error("BUILD and --report are required unless --verify-only is selected")
     provenance = verify_oracle()
-    paths = source_paths()
+    sources = list(CPP_SOURCES)
+    if args.shadow:
+        sources[-1] = "app/painter/tests/test-filter-sharpen-shadow.cpp"
+        sources += ["app/painter/filter-sharpen-shadow.cpp", "app/painter/filter-context.cpp"]
+    paths = source_paths(sources)
     before = hash_sources(paths)
     if args.verify_only:
         result = {"scope": "Source-only oracle verification; no compilation or native execution",
@@ -119,7 +125,8 @@ def main():
             args.report.write_text(json.dumps(result, indent=2) + "\n")
         return 0
 
-    out = args.build.resolve() / ("filter-sharpen-sanitize" if args.sanitize else "filter-sharpen-normal")
+    target = "filter-sharpen-shadow" if args.shadow else "filter-sharpen"
+    out = args.build.resolve() / (target + ("-sanitize" if args.sanitize else "-normal"))
     out.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ)
     sanitize = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer"] if args.sanitize else []
@@ -127,7 +134,8 @@ def main():
         append_options(env, "ASAN_OPTIONS", ["detect_leaks=0", "halt_on_error=1", "abort_on_error=1"])
         append_options(env, "UBSAN_OPTIONS", ["halt_on_error=1", "print_stacktrace=1"])
     report = {
-        "scope": "Non-UI raw-shadow sharpen kernel, native-format source C oracle, vector/spill wrappers",
+        "scope": ("Non-UI full-raster zero-shadow/ROI wrapper, source C oracle, vector/spill" if args.shadow else
+                  "Non-UI raw-shadow sharpen kernel, native-format source C oracle, vector/spill wrappers"),
         "not_covered": ["Native old-GIMP runtime", "FilterLayer app route", "Selection/component/alpha shadow merge",
                         "Scheduler/owner lifetime", "UI", "Windows/macOS execution", "Actual I/O beyond 4 GiB"],
         "legacy_source": provenance,
@@ -167,7 +175,7 @@ def main():
         includes = ["-I" + str(ROOT / "app/painter")]
         objects = []
         success = True
-        for source in [ORACLE, *CPP_SOURCES]:
+        for source in [ORACLE, *sources]:
             obj = out / (Path(source).name + ".o")
             objects.append(str(obj))
             is_c = source.endswith(".c")
@@ -178,7 +186,7 @@ def main():
             if not invoke(command, "compile-c" if is_c else "compile-c++"):
                 success = False
                 break
-        executable = out / "painter-filter-sharpen"
+        executable = out / ("painter-" + target)
         if success:
             success = invoke([*cxx, *objects, *flags("LDFLAGS"), *sanitize, "-pthread", *libs,
                               "-o", str(executable)], "link")
