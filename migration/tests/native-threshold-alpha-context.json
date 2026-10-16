@@ -1,0 +1,877 @@
+{
+  "format": 1,
+  "status": "passed",
+  "scope": "Native nonlinear U8 RGB/Gray Threshold Alpha owner-context and strict original-XCF execution",
+  "source_base": "f39a070ecc7baa63ba46bf93a8f37f4a7821e748",
+  "tested_sources": {
+    "app/core/gimpfilterlayer.cpp": "eacf71ed699b200c4ea3541186920609f50100df923d09ea7e775308933660b5",
+    "app/painter/filter-point-shadow.cpp": "67da05c6229b8804e6b95f3e0c64b1b46e1ab9fadbb116f6821d0ce22e982363",
+    "app/painter/filter-point-shadow.hpp": "24bd74477a4a2bc975823ed05f78b92f31d3d006bca5867f2a0afa27c9c784db",
+    "app/painter/meson.build": "c60fa9e827a3f4614802afc5bcb8db7f43da40a78eb64f527e113d67e9e1b42a",
+    "app/painter/tests/run_filter_point_shadow_tests.py": "3cf3820a8b8461d28cde47d5a22c280f44c71316250580069cd74731517d19ba",
+    "app/painter/tests/test-filter-point-shadow.cpp": "7b962a9c17bdac01e087983ca35c022f2335811ebf76ba8815b1dc3110e6c535",
+    "app/tests/meson.build": "ce30cf4d6f9f99013a9fff231a438501a73d385f7b36448fee00393c795747bb",
+    "app/tests/test-filter-threshold-context.inc": "0521d3037533cd48253e2d22a07d6ff59cae8124f461e1ead3586de376bdb837",
+    "app/tests/test-gimp-filter-layer.c": "904eddd8d2792f6a815b1ee4aeac01a0f16311948067ab5c4da903f030a5b829",
+    "app/tests/test-painter-xcf-open.c": "6a27a55c6a20cff8aece9667d1521dcb038b4880fef0fc96898030ab9623f140",
+    "app/tests/test-painter-xcf-threshold.inc": "fec047586dbf99ed9f47a85138ce2ca1cfefa008851aee66e9fce30e627da21d",
+    "app/xcf/painter-xcf-load.cpp": "3b8baff701c545089ecca0fc2c7415ff87b34cc7f4e6e99f6666332ee28296b3",
+    "migration/fixtures/legacy-threshold-alpha-README.md": "5252e69991d3429c2843fdae93821f638158dd53288798839d5f5b35d5dd3f66",
+    "migration/fixtures/legacy-threshold-alpha-context.tar.manifest.json": "0e49a3ef3cfbc2003b7b8a47dd0b1af1a086673b76a72afd2b8fcaae7ab93961",
+    "migration/fixtures/legacy-threshold-alpha-context.tar.xz": "2900b8082f0175123c49f02e940a23a32cbd7c4d7e803e88a4e1e06b6b64c0bf",
+    "migration/fixtures/legacy-threshold-alpha-large.tar.manifest.json": "3095578ca402ade08e220e5ea0056062069c6f933b2369162fc4c5ebc6d55876",
+    "migration/fixtures/legacy-threshold-alpha-large.tar.xz": "218e75c0bb6f333afc49e4ab26a5a6bda614770a67a675e46ff7395b955c2e73",
+    "migration/fixtures/legacy-threshold-alpha-projection-README.md": "7c35dd73dd15f95ca787595e212e9e158b16f06b47079cb0ea99d23e2b163293",
+    "migration/fixtures/legacy-threshold-alpha-projection.tar.manifest.json": "f78f235429eb87bd4b6d2499340768d8a0f464201641ae632043a3481d4e4b8c",
+    "migration/fixtures/legacy-threshold-alpha-projection.tar.xz": "0f860fb6aa0fc80a60113cd564a0bc8b00b4689743e857a6397afe9ed31e763f",
+    "migration/tests/legacy-threshold-alpha-capture.c": "670ed6c5f1c8ed6c84bfaa54baa264c20f48e1793cbdaa0091aefa076cb17699",
+    "migration/tests/legacy-threshold-projection-capture.c": "b6d6bf1695b8483601b9e19b800ca6a9e5c52459c84dbade2034857bba2926bf",
+    "migration/tests/run_filter_owner_context_fixture_test.py": "94eaad0a7a038ee014ed0c17c4573bdd6a5d68a8b1c832389ea9fc25dda0bf79",
+    "migration/tests/run_sharpen_context_sanitizers.py": "dbfa6625e9d2a3ca1fe0eff11b734d025cffe5ee3cd2eb2c8e4ed6247946a93b",
+    "migration/tests/test_sharpen_context_sanitizers.py": "4a06a8abb41fe7e1cb331fc2973b2fa739920aff67a0da13ea451e77393ad3f2",
+    "tools/capture_legacy_threshold_alpha.py": "9358f50776a2fbac8046e3547d27d11af36d88490231be439d7531d7dea85c8a",
+    "tools/capture_legacy_threshold_projection.py": "6f33b5e782faa725766f4c90b2d3d4e4fcddf3e714273efe307427113b58af5c",
+    "tools/check_threshold_alpha_evidence.py": "36dc5b672f2222c9075d28e4cc5847b2470d10ab1f048a92c12def856e9f72d1",
+    "tools/check_threshold_projection_evidence.py": "1a519664137fe4d401e23ff9c8f6ba3fd7d23cf62efd50386adc21a853784b23"
+  },
+  "default_build": {
+    "result": "passed",
+    "log_sha256": "da15c47c666e8c7635eceb719edb4ba468ce9d3849dddefef9081194ea05397d",
+    "note": "Inherited C90 mixed-declaration/upstream warnings retained; no warning-free build claim"
+  },
+  "standalone_shadow": [
+    {
+      "mode": "normal",
+      "all_passed": true,
+      "source_sha256": {
+        "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+        "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+        "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+        "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+        "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+        "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+        "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+        "app/painter/filter-native-kernels.hpp": "848a0d458281ab3494a78eac3030a8cddddd3af55ea64082d1b4d7c1b3f94ffb",
+        "app/painter/filter-point-shadow.cpp": "67da05c6229b8804e6b95f3e0c64b1b46e1ab9fadbb116f6821d0ce22e982363",
+        "app/painter/filter-point-shadow.hpp": "24bd74477a4a2bc975823ed05f78b92f31d3d006bca5867f2a0afa27c9c784db",
+        "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+        "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+        "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+        "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+        "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+        "app/painter/meson.build": "c60fa9e827a3f4614802afc5bcb8db7f43da40a78eb64f527e113d67e9e1b42a",
+        "app/painter/tests/run_filter_point_shadow_tests.py": "3cf3820a8b8461d28cde47d5a22c280f44c71316250580069cd74731517d19ba",
+        "app/painter/tests/test-filter-point-shadow.cpp": "7b962a9c17bdac01e087983ca35c022f2335811ebf76ba8815b1dc3110e6c535"
+      },
+      "fixture_count": 29,
+      "sanitizers": [],
+      "leak_detection": null,
+      "generated_cases": 1222,
+      "historical_genuine_outputs": 20,
+      "io_cancel_error_cases": 200,
+      "stdout": "Generated scalar/all-alpha/tiny/cropped/row-boundary RGBA and replicated-YA cases: 1222\n20 archived genuine original PDB Threshold Alpha outputs matched in vector/spill paths\nOffsets/outside distinction and all-final-mask/component RGB/Y invariance passed\nMalformed/overflow/alias/exact extent validation and INT32 total-area boundaries passed\nEvery read/write/flush cancellation and storage-error ordinal: 200 vector/spill cases; monotone progress and transactional aliases passed\n",
+      "stderr": "",
+      "executable_sha256": "4b69ede8e932a06f946b554d570203601504bf69674ea138abf9ed3e48ea6197",
+      "raw_receipt_sha256": "5df6b8680a614fa2d7578ade5ed709d0e80705198e6ac28cc5fa30145b8de22d"
+    },
+    {
+      "mode": "sanitizers",
+      "all_passed": true,
+      "source_sha256": {
+        "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+        "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+        "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+        "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+        "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+        "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+        "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+        "app/painter/filter-native-kernels.hpp": "848a0d458281ab3494a78eac3030a8cddddd3af55ea64082d1b4d7c1b3f94ffb",
+        "app/painter/filter-point-shadow.cpp": "67da05c6229b8804e6b95f3e0c64b1b46e1ab9fadbb116f6821d0ce22e982363",
+        "app/painter/filter-point-shadow.hpp": "24bd74477a4a2bc975823ed05f78b92f31d3d006bca5867f2a0afa27c9c784db",
+        "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+        "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+        "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+        "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+        "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+        "app/painter/meson.build": "c60fa9e827a3f4614802afc5bcb8db7f43da40a78eb64f527e113d67e9e1b42a",
+        "app/painter/tests/run_filter_point_shadow_tests.py": "3cf3820a8b8461d28cde47d5a22c280f44c71316250580069cd74731517d19ba",
+        "app/painter/tests/test-filter-point-shadow.cpp": "7b962a9c17bdac01e087983ca35c022f2335811ebf76ba8815b1dc3110e6c535"
+      },
+      "fixture_count": 29,
+      "sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "leak_detection": false,
+      "generated_cases": 1222,
+      "historical_genuine_outputs": 20,
+      "io_cancel_error_cases": 200,
+      "stdout": "Generated scalar/all-alpha/tiny/cropped/row-boundary RGBA and replicated-YA cases: 1222\n20 archived genuine original PDB Threshold Alpha outputs matched in vector/spill paths\nOffsets/outside distinction and all-final-mask/component RGB/Y invariance passed\nMalformed/overflow/alias/exact extent validation and INT32 total-area boundaries passed\nEvery read/write/flush cancellation and storage-error ordinal: 200 vector/spill cases; monotone progress and transactional aliases passed\n",
+      "stderr": "",
+      "executable_sha256": "5b8f166897f5fcfe7a22926678fe71ff14422da1a95732fe96d2202692686839",
+      "raw_receipt_sha256": "471609e9d42653982ac5e2c65ac5b4b4bf9b76ab709ec53685ba4e04df7ce6f7"
+    }
+  ],
+  "registered": [
+    {
+      "scope": "threshold-final-native",
+      "passed": true,
+      "targets": [
+        {
+          "name": "gimp-filter-layer",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 42.33219289779663,
+          "tap_passed": 15,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        }
+      ]
+    },
+    {
+      "scope": "threshold-final-xcf",
+      "passed": true,
+      "targets": [
+        {
+          "name": "painter-xcf-open",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 16.328212022781372,
+          "tap_passed": 3,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        }
+      ]
+    },
+    {
+      "scope": "threshold-final-regression",
+      "passed": true,
+      "targets": [
+        {
+          "name": "gimp-filter-layer",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 413.6692957878113,
+          "tap_passed": 175,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        },
+        {
+          "name": "painter-xcf-open",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 16.593687057495117,
+          "tap_passed": 19,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        },
+        {
+          "name": "painter-xcf-roundtrip",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 83.42943453788757,
+          "tap_passed": 49,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 295
+        },
+        {
+          "name": "painter-filter-scheduler",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 3.4734954833984375,
+          "tap_passed": 39,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        },
+        {
+          "name": "painter-filter-owner-gates",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.18138957023620605,
+          "tap_passed": 5,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        },
+        {
+          "name": "painter-filter-native-kernels",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.009060859680175781,
+          "tap_passed": 6,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        },
+        {
+          "name": "painter-filter-context-native",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.005194187164306641,
+          "tap_passed": 0,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        },
+        {
+          "name": "painter-filter-point-shadow",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.24064970016479492,
+          "tap_passed": 0,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        },
+        {
+          "name": "painter-filter-sharpen",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.23877882957458496,
+          "tap_passed": 0,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        },
+        {
+          "name": "painter-filter-sharpen-shadow",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.3808298110961914,
+          "tap_passed": 0,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        },
+        {
+          "name": "painter-filter-context",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.3385434150695801,
+          "tap_passed": 0,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        },
+        {
+          "name": "painter-filter-import-completion",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.007991552352905273,
+          "tap_passed": 0,
+          "unexpected_diagnostics": 0,
+          "skipped": 0,
+          "expected_diagnostic_count": 0
+        }
+      ]
+    }
+  ],
+  "registered_receipt_sha256": "1691f23865afd81dc0786f2a46d04050fd8f0cd7b2d60cf79bd1e32b8165f0a8",
+  "genuine_legacy": {
+    "commit": "afa43fae3e920210146abed514f136fd49f671b5",
+    "base_and_large_cases": 258,
+    "pdb_cases": 84,
+    "live_scenes": 174,
+    "native_output_comparisons": 256,
+    "old_writer_files": 28,
+    "old_writer_payload_bytes": 76,
+    "history_scenes": 16,
+    "history_output_comparisons": 48,
+    "history_before_copy_checks": 48,
+    "loaded_idle_checks": 8,
+    "archives_sha256": {
+      "legacy-threshold-alpha-context.tar.manifest.json": "0e49a3ef3cfbc2003b7b8a47dd0b1af1a086673b76a72afd2b8fcaae7ab93961",
+      "legacy-threshold-alpha-context.tar.xz": "2900b8082f0175123c49f02e940a23a32cbd7c4d7e803e88a4e1e06b6b64c0bf",
+      "legacy-threshold-alpha-large.tar.manifest.json": "3095578ca402ade08e220e5ea0056062069c6f933b2369162fc4c5ebc6d55876",
+      "legacy-threshold-alpha-large.tar.xz": "218e75c0bb6f333afc49e4ab26a5a6bda614770a67a675e46ff7395b955c2e73",
+      "legacy-threshold-alpha-projection.tar.manifest.json": "f78f235429eb87bd4b6d2499340768d8a0f464201641ae632043a3481d4e4b8c",
+      "legacy-threshold-alpha-projection.tar.xz": "0f860fb6aa0fc80a60113cd564a0bc8b00b4689743e857a6397afe9ed31e763f"
+    },
+    "note": "Fresh deterministic synthetic images only; original runtime startup has two inherited GValue criticals and fresh-profile tag-cache diagnostic, retained rather than called warning-free"
+  },
+  "buffer_visibility": {
+    "execution": "In-process asynchronous worker, not external PDB for this route",
+    "worker_output": "Separate owned vector or file raster",
+    "owner_import": "Separate new GEGL staging buffer; old completed cache remains visible through partial import",
+    "publication": "Only complete current-generation result swaps drawable buffer",
+    "lifecycle_coverage": "Vector/spill partial import; cancel, replacement, lower-source edit and close; old buffer identity/generation/all pixels unchanged",
+    "limits": "No whole-screen vsync atomicity, no subprocess crash isolation"
+  },
+  "native_sanitizers": {
+    "status": "passed",
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "scope": "threshold-alpha kernels and owner-context capture/merge, FilterLayer, scheduler/raster/spool storage, bindings, Undo/duplication, XCF load/save/typed metadata/compatibility and both C harnesses. Listed RTTI-only units are not sanitizer-instrumented; remaining GIMP/dependencies are uninstrumented. Leak detection is disabled.",
+    "leak_detection": false,
+    "instrumented_sources": [
+      "app/config/gimpgeglconfig.c",
+      "app/config/gimppainterfilterconfig.cpp",
+      "app/core/gimpclonelayer.cpp",
+      "app/core/gimpfiltercontext.cpp",
+      "app/core/gimpfilterlayer.cpp",
+      "app/core/gimpgrouplayer.c",
+      "app/core/gimpimage-duplicate.c",
+      "app/core/gimpimage-undo.c",
+      "app/core/gimpitem.c",
+      "app/painter/binding-store.cpp",
+      "app/painter/filter-context.cpp",
+      "app/painter/filter-native-kernels.cpp",
+      "app/painter/filter-point-shadow.cpp",
+      "app/painter/filter-raster-kernels.cpp",
+      "app/painter/filter-raster.cpp",
+      "app/painter/filter-scheduler.cpp",
+      "app/painter/filter-sharpen-shadow.cpp",
+      "app/painter/filter-sharpen.cpp",
+      "app/painter/filter-spool.cpp",
+      "app/painter/gimp-painter-binding.cpp",
+      "app/painter/gimp-painter-error.cpp",
+      "app/tests/test-gimp-filter-layer.c",
+      "app/tests/test-painter-xcf-open.c",
+      "app/xcf/painter-xcf-arguments.cpp",
+      "app/xcf/painter-xcf-compat.cpp",
+      "app/xcf/painter-xcf-load.cpp",
+      "app/xcf/painter-xcf-multipart.cpp",
+      "app/xcf/painter-xcf-preserve.cpp",
+      "app/xcf/painter-xcf-storage.cpp",
+      "app/xcf/painter-xcf-transport.cpp",
+      "app/xcf/xcf-load.c",
+      "app/xcf/xcf-read.c",
+      "app/xcf/xcf-save.c",
+      "app/xcf/xcf-seek.c",
+      "app/xcf/xcf-utils.c",
+      "app/xcf/xcf-write.c",
+      "app/xcf/xcf.c"
+    ],
+    "rtti_only_sources": [
+      "app/dialogs/file-save-deferred.cpp",
+      "app/dialogs/painter-layer-dialog.cpp",
+      "app/paint/gimpbrushcore-loops.cc",
+      "app/paint/gimpfillbrush.cpp",
+      "app/paint/gimppaintcore-loops.cc",
+      "app/paint/gimppainterbrushgeometry.cpp",
+      "app/paint/gimppainterpaintgate.cpp",
+      "app/paint/gimppainterpaper-paste.cpp",
+      "app/paint/gimppainterpaper.cpp",
+      "app/paint/gimppaintersmudge.cpp",
+      "app/paint/painter-bounded-fill/search.cpp",
+      "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+      "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "app/paint/painter-mypaint-surface/gimp-resources.cpp",
+      "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp",
+      "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp",
+      "app/paint/painter-mypaint-surface/paint-core.cpp",
+      "app/paint/painter-mypaint/engine.cpp",
+      "app/paint/painter-mypaint/resource.cpp",
+      "app/painter/filter-edge.cpp",
+      "app/painter/filter-gauss.cpp",
+      "app/painter/filter-lifetime.cpp",
+      "app/painter/filter-process.cpp",
+      "app/painter/filter-wire.cpp",
+      "app/tools/gimpfillbrushtool.cpp",
+      "app/tools/gimppaintermybrushtool.cpp",
+      "app/tools/gimppaintersmudgetool.cpp",
+      "app/tools/gimpperspectiveguidetool.cpp",
+      "app/widgets/gimpcellrendererpopup.cpp",
+      "app/widgets/gimpeditor-cxx.cpp",
+      "app/widgets/gimpmypaintbrushoptions-gui.cpp",
+      "app/widgets/gimppaintercompactoptions.cpp",
+      "app/widgets/gimppainterlayertiles.cpp",
+      "app/widgets/gimppaintermybrusheditor.cpp"
+    ],
+    "tests": [
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_integer_native_route",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 122,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_integer_native_route",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_invalid_definitions_keep_cache",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 123,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_invalid_definitions_keep_cache",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_tiny_selection_routes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 124,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_tiny_selection_routes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_late_context_routes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 125,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_late_context_routes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_sealed_context_routes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 126,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_sealed_context_routes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_outside_selection_no_merge",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 127,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_outside_selection_no_merge",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_cancel_replace_lower_close",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 128,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_cancel_replace_lower_close",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_actual_old_live",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 129,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_actual_old_live",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_native_profile_bytes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 130,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_native_profile_bytes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_admission_preserves_cache",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 131,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_admission_preserves_cache",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_partial_import_lifecycle",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 132,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_partial_import_lifecycle",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_real_routes_unchanged",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 133,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_real_routes_unchanged",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_idle_unchanged_notification",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 134,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_idle_unchanged_notification",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_projection_input_bounds",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 135,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_projection_input_bounds",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/threshold_actual_old_projection_history",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 136,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/threshold_actual_old_projection_history",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "0ffae7f9f8ee88a46c5c0bb90e73d4f42955fd31fdb79b330ba55064cd19f702"
+      },
+      {
+        "kind": "xcf",
+        "path": "/painter-xcf-open/threshold_old_writer_roundtrip",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 137,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/painter-xcf-open/threshold_old_writer_roundtrip",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "8253726503980daba00fd8982f8148ac4b6247ec84838dc381fc62139a503887"
+      },
+      {
+        "kind": "xcf",
+        "path": "/painter-xcf-open/threshold_malformed_writer_capsules",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 138,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/painter-xcf-open/threshold_malformed_writer_capsules",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "8253726503980daba00fd8982f8148ac4b6247ec84838dc381fc62139a503887"
+      },
+      {
+        "kind": "xcf",
+        "path": "/painter-xcf-open/threshold_active_save_close_reopen",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 139,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/painter-xcf-open/threshold_active_save_close_reopen",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "8253726503980daba00fd8982f8148ac4b6247ec84838dc381fc62139a503887"
+      }
+    ],
+    "seals": {
+      "source_seals": {
+        "count": 3046,
+        "changed": [],
+        "read_errors": {}
+      },
+      "ordinary_build_seals": {
+        "count": 114,
+        "changed": [],
+        "read_errors": {}
+      },
+      "executable_seals": {
+        "count": 2,
+        "changed": [],
+        "read_errors": {}
+      },
+      "fixture_seals": {
+        "count": 6285,
+        "changed": [],
+        "read_errors": {}
+      }
+    },
+    "elapsed_seconds": 217.495,
+    "raw_receipt_sha256": "78276607feff954943fbc30dd3d13b7b50d51f270d2572a29d82c6783a33d6e1"
+  },
+  "runner_regression": {
+    "checks": 16,
+    "receipt_sha256": "84f8811e5a28e128913a866a40c2fc33e913d20939ceff54ae2f3c1ecbee150c"
+  },
+  "retained_attempts": [
+    "Standalone first setup lacked GLib pkg-config environment; no compilation/test; separately sourced-environment run passed.",
+    "Temporary base comparison first compile rejected misleading indentation/class visibility; fixed without relaxing assertions.",
+    "First native default compile found missing gimplayer-new.h test declaration; include added.",
+    "Initial genuine negative-offset mismatch exposed lower-projection boundary and prior-cache semantics; corrected with bounded cache seed and clipped projection overwrite.",
+    "Initial idle test used another fixture helper hardcoded for different cache colors; replaced by full correct-cache assertions.",
+    "Zero-only clipping proposal held before acceptance because original copy preserves prior drawable bytes.",
+    "Projection supplement first runtime exit0 but validator overconstrained run3 alpha255; exact previous-cache checks retained and fresh corrected recapture passed.",
+    "Intermediate native run selected boundary path twice:15 TAP but14 distinct; final run uses15 unique paths including separate history consumer.",
+    "Final normal helper used pretty Meson name for short-name diagnostic lookup;295 known roundtrip negatives falsely rejected. Exact-registry retained-log reclassification preserved original false receipt and unchanged classifier patterns."
+  ],
+  "not_covered": [
+    "General arbitrary-PDB execution/process isolation",
+    "Whole-port/whole-program sanitizer or LeakSanitizer acceptance",
+    "Installed runtime, Windows/macOS, tablet and full legacy UI parity",
+    "A new full aggregate after this source change",
+    "Projection-history correction for other native operations",
+    "Atomic whole-screen compositor refresh"
+  ],
+  "review": {
+    "result": "No blocker for bounded unit after independent source, legacy-byte, archive, ordinary, sanitizer and public receipt/ledger audits",
+    "evidence_sha256": "e312472fb875069cd1465e7584b5ddbfb3422df16dbd3dcc163a394665ac967c",
+    "contract_sha256": "2e2a76b0f58fe51d44077da5a1937aea348c95e08093986751ad429c263f6035"
+  }
+}

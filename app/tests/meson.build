@@ -156,6 +156,10 @@ foreach test_name : app_tests
     # All 47 unchanged cases took 99.38s on authenticated portrait TCP Xvfb.
     test_timeout = 180
   endif
+  if test_name == 'painter-xcf-open'
+    # Genuine Sharpen/Threshold writer epochs plus vector/spill active saves.
+    test_timeout = 180
+  endif
   if test_name == 'painter-xcf-roundtrip'
     # Include the >256 MiB public Save/Open case in the registered aggregate.
     # The unchanged large case alone measured 38.96s on portrait TCP Xvfb.

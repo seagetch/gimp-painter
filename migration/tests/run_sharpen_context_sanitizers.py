@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Build and run focused Sharpen owner-context / XCF ASan+UBSan acceptance.
+"""Build and run focused native owner-context / XCF ASan+UBSan acceptance.
+
+The historical default is Sharpen. --operation threshold-alpha adds the point
+shadow wrapper and requires both verified Threshold Alpha and Sharpen corpora;
+selected paths still run exactly as requested, with no implicit extra tests.
 
 First build both ordinary app/tests targets in the configured build environment.
 Invocation order is secure-Xvfb -> verified fixture wrapper -> locking shell ->
@@ -81,6 +85,22 @@ SCRIPTS = {
     "migration/tests/run_filter_owner_context_fixture_test.py",
     "tools/check_sharpen_evidence.py",
 }
+
+
+def operation_config(name):
+    if name not in ("sharpen", "threshold-alpha"):
+        raise ValueError("Unknown native operation: " + str(name))
+    instrumented, scripts = set(INSTRUMENTED), set(SCRIPTS)
+    fixtures = ["GIMP_PAINTER_SHARPEN_FIXTURES"]
+    if name == "threshold-alpha":
+        instrumented.add("app/painter/filter-point-shadow.cpp")
+        scripts.update({"tools/check_threshold_alpha_evidence.py",
+                        "tools/check_threshold_projection_evidence.py"})
+        fixtures.extend(["GIMP_PAINTER_THRESHOLD_ALPHA_FIXTURES",
+                         "GIMP_PAINTER_THRESHOLD_PROJECTION_FIXTURES"])
+    return {"name": name, "instrumented": instrumented, "scripts": scripts,
+            "fixtures": fixtures,
+            "report_format": name + "-context-sanitizers-v1"}
 
 
 def sha(path):
@@ -235,12 +255,15 @@ def local_headers(build):
 class Run:
     def __init__(self, args):
         self.args = args
+        self.operation = operation_config(getattr(args, "operation", "sharpen"))
+        self.instrumented = self.operation["instrumented"]
         self.started = time.monotonic()
         self.deadline = self.started + args.total_timeout
-        self.report = {"report_format": "sharpen-context-sanitizers-v1",
+        self.report = {"report_format": self.operation["report_format"],
+                       "operation": self.operation["name"],
                        "status": "running", "root": str(ROOT),
                        "build": str(args.build), "scope": (
-                           "Sharpen kernels and owner-context capture/merge, FilterLayer, "
+                           self.operation["name"] + " kernels and owner-context capture/merge, FilterLayer, "
                            "scheduler/raster/spool storage, bindings, Undo/duplication, "
                            "XCF load/save/typed metadata/compatibility and both C harnesses. "
                            "Listed RTTI-only units are not sanitizer-instrumented; remaining "
@@ -257,7 +280,7 @@ class Run:
                        "timeouts_seconds": {"command": args.command_timeout,
                                             "test": args.test_timeout,
                                             "total": args.total_timeout},
-                       "instrumented_sources": sorted(INSTRUMENTED),
+                       "instrumented_sources": sorted(self.instrumented),
                        "source_seals": {}, "ordinary_build_seals": {},
                        "executable_seals": {}, "fixture_seals": {},
                        "ordinary_build_seal_scope": (
@@ -341,11 +364,14 @@ class Run:
         report["test_environment"] = {key: value for key, value in env.items()
                                       if key.startswith("GIMP_TESTING_") or
                                       (key.startswith("GIMP_PAINTER_") and key.endswith("FIXTURES"))}
-        report["fixture_verification"] = "Outer verified-fixture wrapper owns provenance; this runner seals the inherited Sharpen consumer files"
-        fixture = env.get("GIMP_PAINTER_SHARPEN_FIXTURES")
-        if not fixture or not (Path(fixture) / "captures.tsv").is_file():
-            raise RuntimeError("Inherit GIMP_PAINTER_SHARPEN_FIXTURES from the verified fixture wrapper")
-        self.fixtures = seals(path for path in Path(fixture).rglob("*") if path.is_file())
+        report["fixture_verification"] = "Outer verified-fixture wrapper owns provenance; this runner seals every selected operation's consumer files"
+        fixture_paths = set()
+        for key in self.operation["fixtures"]:
+            fixture = env.get(key)
+            if not fixture or not (Path(fixture) / "captures.tsv").is_file():
+                raise RuntimeError("Inherit " + key + " from the verified fixture wrapper")
+            fixture_paths.update(path for path in Path(fixture).rglob("*") if path.is_file())
+        self.fixtures = seals(fixture_paths)
         output = Path(tempfile.mkdtemp(prefix="sharpen-context-sanitizers-", dir=build))
         report["private_directory"] = str(output)
         entries = json.loads((build / "compile_commands.json").read_text())
@@ -377,20 +403,20 @@ class Run:
                     linked_objects.update(archive_members[path])
         linked_sources = {(Path(entry["directory"]) / entry["file"]).resolve()
                           for entry in entries if str(output_for(entry)) in linked_objects}
-        discovered = bridge_rtti_sources(ROOT, build) - INSTRUMENTED
+        discovered = bridge_rtti_sources(ROOT, build) - self.instrumented
         rtti_only = {source for source in discovered if ROOT / source in linked_sources}
         report["unlinked_rtti_discoveries"] = {
             source: {"reason": "No object for this source is in either selected harness link closure",
                      "compile_outputs": [str(output_for(entry)) for entry in entries
                                          if (Path(entry["directory"]) / entry["file"]).resolve() == ROOT / source]}
             for source in sorted(discovered - rtti_only)}
-        wanted = INSTRUMENTED | rtti_only
+        wanted = self.instrumented | rtti_only
         report["rtti_compatibility_only_sources"] = sorted(rtti_only)
         canonical = {source: canonical_entry(entries, source, build, linked_objects) for source in sorted(wanted)}
         report["canonical_compilation"] = {
             source: {"cwd": entry["directory"], "argv": argv_for(entry),
                      "original_object": str(output_for(entry)),
-                     "instrumented": source in INSTRUMENTED}
+                     "instrumented": source in self.instrumented}
             for source, entry in canonical.items()}
         ordinary = {output_for(entry) for entry in canonical.values()}
         ordinary.update(build / "app/tests" / target for target in TARGETS.values())
@@ -407,7 +433,7 @@ class Run:
                 include_paths.add((build / line.strip()).resolve())
         if not include_paths:
             raise RuntimeError("No canonical include dependencies found")
-        inputs = {ROOT / source for source in wanted | SCRIPTS} | local_headers(build) | include_paths
+        inputs = {ROOT / source for source in wanted | self.operation["scripts"]} | local_headers(build) | include_paths
         self.inputs = seals(inputs)
         report["seal_scope"] = ("All selected sources/scripts, every repository header/include, "
                                 "and canonical Ninja transitive dependencies, including generated/system headers. "
@@ -420,7 +446,7 @@ class Run:
         for source, entry in canonical.items():
             obj = output / (source.replace("/", "_") + ".o")
             depfile = obj.with_suffix(".d")
-            command = private_compile(entry, obj, depfile, source in INSTRUMENTED)
+            command = private_compile(entry, obj, depfile, source in self.instrumented)
             self.command(command, "compile " + source, Path(entry["directory"]))
             # -MD writes only our private dependency file. Every dependency must
             # have a precompile seal, so a newly introduced include cannot hide.
@@ -516,6 +542,7 @@ def positive_seconds(value):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("build", type=Path)
+    parser.add_argument("--operation", choices=("sharpen", "threshold-alpha"), default="sharpen")
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--lock-fd", type=int, required=True)
     parser.add_argument("--lock-file", type=Path, default=Path("/workspace/shared/gimp-painter-build.lock"))
@@ -533,7 +560,7 @@ def main(argv=None):
             previous = json.loads(args.report.read_text())
         except (ValueError, OSError):
             previous = {}
-        if not isinstance(previous, dict) or previous.get("report_format") != "sharpen-context-sanitizers-v1":
+        if not isinstance(previous, dict) or previous.get("report_format") != operation_config(args.operation)["report_format"]:
             parser.error("Refusing to overwrite an existing file that is not this runner's report")
     run = Run(args)
     try:
