@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import struct
 import sys
 import tempfile
 import unittest
@@ -38,6 +39,293 @@ def results(rows):
     return [{'name': runner.pretty_name(row, rows), 'command': row['cmd'], 'result': 'OK',
              'returncode': 0, 'stdout': 'TAP version 14\n1..1\nok 1 /fixture\n', 'stderr': ''}
             for row in rows]
+
+
+def compiled_catalog(header=b'Content-Type: text/plain; charset=UTF-8\n', endian='<'):
+    # A real revision-0 GNU catalog containing its empty-msgid metadata entry.
+    return (struct.pack(endian + '7I', 0x950412de, 0, 1, 28, 36, 0, 0) +
+            struct.pack(endian + '4I', 0, 44, len(header), 45) + b'\0' + header + b'\0')
+
+
+def locale_fixture(build):
+    metadata = build / 'meson-info'
+    metadata.mkdir(parents=True, exist_ok=True)
+    prefix = build.parent / 'install'
+    (build / 'config.h').write_text('#define GETTEXT_PACKAGE "gimp30"\n' +
+                                   '#define LOCALEDIR ' + json.dumps(str(prefix / 'share/locale')) + '\n' +
+                                   '#define GIMPPLUGINDIR ' + json.dumps(str(prefix / 'lib/gimp/3.0')) + '\n')
+    (metadata / 'intro-buildoptions.json').write_text(json.dumps([
+        {'name': 'prefix', 'value': str(prefix)}, {'name': 'datadir', 'value': 'share'}]))
+    plan, installed, targets = {}, {}, []
+    for directory, domain, global_catalog, install in (
+            ('po', 'gimp30', True, True), ('po-plug-ins', 'gimp30-std-plug-ins', True, True),
+            ('po-plug-ins', 'org.gimp.extension.goat-exercises', False, True),
+            ('po-tips', 'gimp30-tips', False, False)):
+        source = build / directory / 'fr/LC_MESSAGES' / (domain + '.mo')
+        source.parent.mkdir(parents=True, exist_ok=True)
+        if install:
+            source.write_bytes(compiled_catalog())
+        targets.append({'id': domain + '-fr', 'filename': [str(source)], 'installed': install,
+                        'install_filename': [str(prefix / 'irrelevant-Meson-target-install-filename')],
+                        'build_by_default': install})
+        if install:
+            relative = ('share/locale/' if global_catalog else 'lib/gimp/3.0/extensions/org.gimp.extension.goat-exercises/locale/') + 'fr/LC_MESSAGES/' + domain + '.mo'
+            plan[str(source)] = {'destination': '{prefix}/' + relative, 'tag': 'i18n'}
+            installed[str(source)] = str(prefix / relative)
+    for filename, value in (('intro-install_plan.json', {'targets': plan}),
+                            ('intro-installed.json', installed), ('intro-targets.json', targets)):
+        (metadata / filename).write_text(json.dumps(value))
+    return plan
+
+
+class LocaleTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.build = self.root / 'build'
+        self.build.mkdir()
+        self.plan = locale_fixture(self.build)
+        self.destination = self.root / 'locale'
+        self.core = self.build / 'po/fr/LC_MESSAGES/gimp30.mo'
+
+    def read(self, name):
+        return json.loads((self.build / 'meson-info' / name).read_text())
+
+    def write(self, name, value):
+        (self.build / 'meson-info' / name).write_text(json.dumps(value))
+
+    def stage(self):
+        return runner.stage_build_locales(self.build, self.destination)
+
+    def test_only_declared_global_outputs_are_copied_with_hash_provenance(self):
+        original = {name: Path(name).read_bytes() for name in self.plan}
+        manifest = self.stage()
+        self.assertEqual(manifest['catalog_count'], 2)
+        self.assertEqual(manifest['domains'], ['gimp30-std-plug-ins.mo', 'gimp30.mo'])
+        self.assertEqual(len(manifest['excluded_extension_catalog_outputs']), 1)
+        self.assertEqual(len(manifest['metadata_sha256']), 5)
+        self.assertFalse((self.root / 'install').exists())
+        for name, record in manifest['catalogs'].items():
+            payload = (self.destination / name).read_bytes()
+            self.assertEqual(payload, (self.build / record['source']).read_bytes())
+            self.assertEqual(hashlib.sha256(payload).hexdigest(), record['sha256'])
+            self.assertEqual(len(payload), record['size_bytes'])
+        self.assertEqual(original, {name: Path(name).read_bytes() for name in self.plan})
+        self.assertTrue(runner.verify_staged_locales(self.destination, manifest))
+
+    def test_missing_or_invalid_compiled_output_is_not_an_empty_directory_fallback(self):
+        for payload in (None, b'', b'not a compiled catalog'):
+            with self.subTest(payload=payload):
+                if payload is None:
+                    self.core.unlink()
+                else:
+                    self.core.write_bytes(payload)
+                with self.assertRaises(RuntimeError):
+                    self.stage()
+                self.assertFalse(self.destination.exists())
+
+    def test_metadata_sets_must_agree_in_both_directions(self):
+        for name in ('intro-install_plan.json', 'intro-installed.json', 'intro-targets.json'):
+            for remove in (True, False):
+                with self.subTest(metadata=name, remove=remove):
+                    locale_fixture(self.build)
+                    value = self.read(name)
+                    if name == 'intro-targets.json':
+                        if remove:
+                            value = value[1:]
+                        else:
+                            value.append({'id': 'extra', 'installed': True, 'filename': [str(self.build / 'extra.mo')]})
+                    else:
+                        entries = value['targets'] if name == 'intro-install_plan.json' else value
+                        if remove:
+                            del entries[str(self.core)]
+                        else:
+                            entries[str(self.build / 'extra.mo')] = next(iter(entries.values()))
+                    self.write(name, value)
+                    with self.assertRaisesRegex(RuntimeError, 'disagree'):
+                        self.stage()
+
+    def test_duplicate_declared_output_and_destination_are_rejected(self):
+        targets = self.read('intro-targets.json')
+        targets.append(copy.deepcopy(targets[0]))
+        self.write('intro-targets.json', targets)
+        with self.assertRaisesRegex(RuntimeError, 'Ambiguous'):
+            self.stage()
+        locale_fixture(self.build)
+        plan = self.read('intro-install_plan.json')
+        installed = self.read('intro-installed.json')
+        second = next(name for name in installed if name != str(self.core))
+        plan['targets'][second] = plan['targets'][str(self.core)]
+        installed[second] = installed[str(self.core)]
+        self.write('intro-install_plan.json', plan)
+        self.write('intro-installed.json', installed)
+        with self.assertRaisesRegex(RuntimeError, 'Duplicate'):
+            self.stage()
+
+    def test_leaf_and_ancestor_symlinks_cannot_supply_catalogs(self):
+        original = self.core.read_bytes()
+        other = self.root / 'outside.mo'
+        other.write_bytes(original)
+        self.core.unlink()
+        self.core.symlink_to(other)
+        with self.assertRaisesRegex(RuntimeError, 'regular build file'):
+            self.stage()
+        self.core.unlink()
+        self.core.write_bytes(original)
+        (self.build / 'po').rename(self.root / 'external-po')
+        (self.build / 'po').symlink_to(self.root / 'external-po', target_is_directory=True)
+        with self.assertRaisesRegex(RuntimeError, 'regular build file'):
+            self.stage()
+
+    def test_install_destination_mismatch_traversal_and_layout_are_rejected(self):
+        for destination in ('{prefix}/share/locale/../escape/fr/LC_MESSAGES/gimp30.mo',
+                            '{prefix}/share/locale/fr/not-LC_MESSAGES/gimp30.mo',
+                            '{unknown}/fr/LC_MESSAGES/gimp30.mo'):
+            with self.subTest(destination=destination):
+                locale_fixture(self.build)
+                plan = self.read('intro-install_plan.json')
+                plan['targets'][str(self.core)]['destination'] = destination
+                installed = self.read('intro-installed.json')
+                installed[str(self.core)] = destination.replace('{prefix}', str(self.root / 'install'))
+                self.write('intro-install_plan.json', plan)
+                self.write('intro-installed.json', installed)
+                with self.assertRaises(RuntimeError):
+                    self.stage()
+        locale_fixture(self.build)
+        installed = self.read('intro-installed.json')
+        installed[str(self.core)] += '-mismatch'
+        self.write('intro-installed.json', installed)
+        with self.assertRaisesRegex(RuntimeError, 'provenance disagrees'):
+            self.stage()
+
+    def test_core_and_standard_plugin_catalogs_are_required(self):
+        plan = self.read('intro-install_plan.json')
+        installed = self.read('intro-installed.json')
+        del plan['targets'][str(self.core)]
+        del installed[str(self.core)]
+        targets = [row for row in self.read('intro-targets.json') if str(self.core) not in row['filename']]
+        self.write('intro-install_plan.json', plan)
+        self.write('intro-installed.json', installed)
+        self.write('intro-targets.json', targets)
+        with self.assertRaisesRegex(RuntimeError, 'requires core'):
+            self.stage()
+
+    def test_global_catalog_cannot_be_silently_excluded_by_agreeing_metadata(self):
+        plan = self.read('intro-install_plan.json')
+        installed = self.read('intro-installed.json')
+        plan['targets'][str(self.core)]['destination'] = '{prefix}/lib/private/fr/LC_MESSAGES/gimp30.mo'
+        installed[str(self.core)] = str(self.root / 'install/lib/private/fr/LC_MESSAGES/gimp30.mo')
+        self.write('intro-install_plan.json', plan)
+        self.write('intro-installed.json', installed)
+        with self.assertRaisesRegex(RuntimeError, 'Unknown non-global'):
+            self.stage()
+
+    def test_duplicate_json_keys_and_false_extension_layout_are_rejected(self):
+        path = self.build / 'meson-info/intro-installed.json'
+        content = path.read_text()
+        path.write_text(content[:-1] + ', ' + json.dumps(str(self.core)) + ': "duplicate"}')
+        with self.assertRaisesRegex(RuntimeError, 'Duplicate key'):
+            self.stage()
+        locale_fixture(self.build)
+        plan = self.read('intro-install_plan.json')
+        installed = self.read('intro-installed.json')
+        extension = next(name for name in installed if 'goat-exercises.mo' in name)
+        destination = '{prefix}/lib/gimp/3.0/extensions/org.gimp.extension.wrong/locale/fr/LC_MESSAGES/org.gimp.extension.goat-exercises.mo'
+        plan['targets'][extension]['destination'] = destination
+        installed[extension] = destination.replace('{prefix}', str(self.root / 'install'))
+        self.write('intro-install_plan.json', plan)
+        self.write('intro-installed.json', installed)
+        with self.assertRaisesRegex(RuntimeError, 'Invalid extension-private'):
+            self.stage()
+
+    def test_binary_structure_accepts_both_endiannesses_and_preserves_legacy_metadata(self):
+        for endian in ('<', '>'):
+            runner.validate_compiled_catalog(compiled_catalog(endian=endian))
+        legacy = compiled_catalog(b'Plural-Forms: 2;(n!=1);\n')
+        self.core.write_bytes(legacy)
+        self.stage()
+        self.assertEqual((self.destination / 'fr/LC_MESSAGES/gimp30.mo').read_bytes(), legacy)
+        valid = compiled_catalog()
+        for payload in (valid[:27], valid[:-1], valid[:-1] + b'x',
+                        valid[:8] + struct.pack('<I', 10000) + valid[12:],
+                        valid[:24] + struct.pack('<I', 9999) + valid[28:32]):
+            with self.subTest(payload=payload), self.assertRaises(RuntimeError):
+                runner.validate_compiled_catalog(payload)
+
+    def test_revision_one_static_and_system_dependent_tables_are_bounded(self):
+        header = b'Content-Type: text/plain; charset=UTF-8\n'
+        for endian in ('<', '>'):
+            normal_start, translated_start = 120, 121
+            segment_start = translated_start + len(header) + 1
+            static_start = segment_start + 7
+            valid = (struct.pack(endian + '12I', 0x950412de, 0x10001, 1, 48, 56, 0, 0,
+                                 1, 64, 1, 72, 76) +
+                     struct.pack(endian + '8I', 0, normal_start, len(header), translated_start,
+                                 7, segment_start, 80, 100) +
+                     struct.pack(endian + '5I', static_start, 2, 0, 2, 0xffffffff) * 2 +
+                     b'\0' + header + b'\0PRIu64\0a b\0')
+            runner.validate_compiled_catalog(valid)
+            for offset, value in ((32, len(valid)), (40, len(valid)), (44, len(valid)),
+                                  (64, 0), (68, 1), (88, 1), (92, 0), (96, 0), (80, 1)):
+                broken = bytearray(valid)
+                struct.pack_into(endian + 'I', broken, offset, value)
+                with self.subTest(endian=endian, offset=offset), self.assertRaises(RuntimeError):
+                    runner.validate_compiled_catalog(broken)
+        missing_extension = bytearray(compiled_catalog())
+        struct.pack_into('<I', missing_extension, 4, 0x10001)
+        with self.assertRaises(RuntimeError):
+            runner.validate_compiled_catalog(missing_extension)
+
+    def test_extra_directory_and_special_file_in_staged_locales_are_rejected(self):
+        manifest = self.stage()
+        extra = self.destination / 'unexpected'
+        extra.mkdir()
+        with self.assertRaisesRegex(RuntimeError, 'directory inventory'):
+            runner.verify_staged_locales(self.destination, manifest)
+        extra.rmdir()
+        os.mkfifo(extra)
+        with self.assertRaisesRegex(RuntimeError, 'special filesystem'):
+            runner.verify_staged_locales(self.destination, manifest)
+        extra.unlink()
+
+    def test_staged_mutation_missing_extra_or_symlink_fails_verification(self):
+        manifest = self.stage()
+        path = self.destination / 'fr/LC_MESSAGES/gimp30.mo'
+        original = path.read_bytes()
+        for alteration in ('changed', 'missing', 'extra', 'symlink'):
+            with self.subTest(alteration=alteration):
+                if alteration == 'changed':
+                    path.write_bytes(original + b'x')
+                elif alteration == 'missing':
+                    path.unlink()
+                elif alteration == 'extra':
+                    (path.parent / 'extra.mo').write_bytes(original)
+                else:
+                    path.unlink()
+                    path.symlink_to(self.core)
+                with self.assertRaises(RuntimeError):
+                    runner.verify_staged_locales(self.destination, manifest)
+                if path.is_symlink():
+                    path.unlink()
+                path.write_bytes(original)
+                (path.parent / 'extra.mo').unlink(missing_ok=True)
+
+    def test_existing_destination_or_changed_metadata_is_rejected(self):
+        self.destination.mkdir()
+        with self.assertRaises(FileExistsError):
+            self.stage()
+        self.destination.rmdir()
+        original = runner.sha
+        calls = 0
+        def changed(path):
+            nonlocal calls
+            calls += 1
+            return original(path) if calls <= 5 else 'changed metadata'
+        with mock.patch.object(runner, 'sha', side_effect=changed):
+            with self.assertRaisesRegex(RuntimeError, 'metadata changed'):
+                self.stage()
+        self.assertFalse(self.destination.exists())
 
 
 class CoverageTests(unittest.TestCase):
@@ -464,6 +752,7 @@ class ExecutionTests(unittest.TestCase):
             path.mkdir()
         (self.build / 'app').mkdir()
         (self.build / 'meson-info').mkdir()
+        locale_fixture(self.build)
         (self.repo / 'tools').mkdir()
         for name in (runner.RUNNER, runner.HELPER):
             (self.repo / name).write_text('committed fixture')
@@ -530,7 +819,10 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual(status, 0, gate['errors'])
         self.assertEqual(count, 2)
         self.assertEqual(len(self.calls), 2)
-        self.assertEqual(self.environments[0], self.environments[1])
+        self.assertEqual({**self.environments[0], 'GIMP3_LOCALEDIR': self.environments[1]['GIMP3_LOCALEDIR']}, self.environments[1])
+        self.assertEqual(gate['build_locales']['catalog_count'], 2)
+        self.assertTrue(gate['integrity_checks']['staged_locale_files_unchanged'])
+        self.assertFalse(Path(self.environments[1]['GIMP3_LOCALEDIR']).exists())
         for variable in runner.PRIVATE_DIRECTORIES:
             self.assertFalse(Path(self.environments[0][variable]).exists(), variable)
         self.assertEqual(gate['packager_validation'], 'accepted')
@@ -540,6 +832,26 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual(package.require_aggregate_gate(gate, self.source['commit'], self.build), self.snapshot)
         self.assertNotIn('private', (self.output / 'meson-console.log').read_text())
         self.assertFalse(Path(gate['meson_command'][-1]).parent.exists())
+
+    def test_missing_catalog_rejects_after_build_before_meson_or_before_seal(self):
+        (self.build / 'po/fr/LC_MESSAGES/gimp30.mo').unlink()
+        status, gate, count = self.execute()
+        self.assertEqual((status, count, len(self.calls)), (1, 0, 1))
+        self.assertFalse(gate['all_passed'])
+        self.assertIn('existing regular build file', gate['errors'][-1])
+
+    def test_catalog_mutation_during_meson_rejects_even_with_passing_results(self):
+        original = self.fake_run
+        def mutate(command, log, environment):
+            result = original(command, log, environment)
+            if command[0] == 'meson':
+                locale = Path(environment['GIMP3_LOCALEDIR']) / 'fr/LC_MESSAGES/gimp30.mo'
+                locale.write_bytes(b'changed catalog')
+            return result
+        with mock.patch.object(self, 'fake_run', side_effect=mutate):
+            status, gate, count = self.execute()
+        self.assertEqual((status, count), (1, 2))
+        self.assertIn('locale catalog content changed', gate['errors'][-1])
 
     def test_inherited_temp_inside_source_or_build_cannot_place_private_state_there(self):
         for inherited in (self.repo, self.build):

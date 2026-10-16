@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "exit_status": 0,
+  "runner_sha256": "4cdc8a36be383487c4cca06fc173f8d3c2b949370318b66fd15f22548eecfada",
+  "runner_unchanged": true,
+  "catalog_count": 361,
+  "domains": [
+    "gimp30-libgimp.mo",
+    "gimp30-python.mo",
+    "gimp30-script-fu.mo",
+    "gimp30-std-plug-ins.mo",
+    "gimp30.mo"
+  ],
+  "catalogs_unchanged": true,
+  "success_exception_pairs": 8,
+  "expected_negative_diagnostic_count": 8,
+  "stdout_sha256": "8c647ba907a9e64be85580ce350c46b39f21c8458f23f2b9cc79154dc329f134",
+  "stderr_sha256": "664618ef4d17fe1b995bf065b7206555fae2ea1aa65ce39e7eed618c3c6031cd",
+  "scope": "Final exact-helper focused native teardown only: eight success/exception pairs and exact expected diagnostic counts. Not the twelve-minute procedure corpus or a full aggregate gate.",
+  "source_commit": "24eaefc68070d6ba7deb6f9ae9cdf375e5ae345d",
+  "command": [
+    "app/painter-filter-procedure",
+    "app/gimp-painter-filter-worker",
+    "--teardown-only"
+  ],
+  "catalog_manifest_sha256": "de37aeb01648613abf6b5dc387f6f7c7f38232943870e06327f92ff8b9c6a573"
+}

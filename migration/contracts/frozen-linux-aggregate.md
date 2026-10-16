@@ -59,6 +59,36 @@ guarantee cleanup. The fixture suite exercises inherited read-only-path replacem
 actual child writes, state preservation, preflight rejection, and lifecycle cleanup;
 native aggregate acceptance remains a separate exact-commit check.
 
+After the default build succeeds, the runner stages the actual compiled global
+gettext catalogs into a new private locale root and sets `GIMP3_LOCALEDIR` for
+Meson. It does not create an empty installed locale directory or suppress the
+native localization diagnostics. Ninja retains its inherited locale inputs;
+registered tests retain their committed per-test overrides (17 registrations in
+the observed build explicitly select `po-plug-ins`).
+
+The staging manifest requires agreement between installed target output filenames,
+`intro-install_plan.json`, `intro-installed.json`, and the compiled `LOCALEDIR` /
+`GETTEXT_PACKAGE` / `GIMPPLUGINDIR` configuration. It records hashes for those inputs,
+build options and each copied file, plus source-relative and destination-relative
+paths and declared target IDs. Sources must be existing regular build files with
+no symlink ancestors. Unknown destinations, collisions, missing/extra declarations,
+duplicate JSON keys and absent core or standard plug-in domains reject the run.
+Only exact extension-private locale destinations are excluded from the global root;
+non-installed targets are not materialized. The observed build has 361 global
+catalogs in five domains, 68 extension-private catalogs and 64 non-installed tips
+targets. These counts are observations, not hardcoded allowances.
+
+Catalog validation checks bounded GNU `.mo` binary integrity, including both byte
+orders and revision-1 system-dependent tables. It does not reinterpret translation
+text or plural expressions. The existing Dzongkha Script-Fu plural header is kept
+byte-for-byte; its Python `GNUTranslations` parser rejection is not used to alter
+native gettext behavior. The format reference is the [GNU gettext maintainer's
+layout description](https://lists.gnu.org/archive/html/poke-devel/2024-02/msg00138.html).
+The private catalog file/directory inventory and byte hashes are checked again
+after Meson. Mutation, removal, extra files, symlinks or special entries reject the
+gate alongside the unchanged source/build freshness checks. Staging and metadata
+failures produce a rejected gate before the test-before seal or Meson invocation.
+
 The default lock is `/workspace/shared/gimp-painter-build.lock`; `--lock` exists
 for isolated installations and fixtures, and must identify the lock used by
 every other build/staging process. Do not hold that lock externally while calling
@@ -157,3 +187,15 @@ aggregate private root beside the evidence directory; final orchestration passed
 the updated Python fixtures, including hostile inherited temp placement and late
 write/flush failure cleanup. This is bounded runtime-environment validation, not
 a new full aggregate acceptance or a replacement for previous rejected evidence.
+
+## Build-only locale repair, 2026-10-16
+
+[Locale staging receipt](../tests/aggregate-build-locales/report.json) retains the
+prior 24eaefc680 attempt as 88 OK plus one failed procedure registration, followed
+by interruption without a final after-seal. Its arithmetic markers do not turn
+that diagnostic failure into acceptance. The final helper passed 64 runner and
+60 package fixtures without skips, plus the native strict teardown mode's eight
+success/exception pairs with exactly eight expected negative diagnostics and no
+locale-startup diagnostic. All 361 staged catalogs and the exact helper remained
+unchanged. This focused rerun does not replace the full procedure corpus or the
+next unfiltered exact-commit aggregate.

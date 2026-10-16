@@ -20,6 +20,7 @@ import platform
 import re
 import signal
 import subprocess
+import struct
 import sys
 import tempfile
 
@@ -419,6 +420,219 @@ def isolated_child_environment(private, inherited=None):
     return environment
 
 
+def validate_compiled_catalog(payload):
+    """Check bounded GNU .mo integrity, without interpreting plural expressions.
+
+    Layout: GNU gettext gmo.h, also documented by its maintainer at
+    https://lists.gnu.org/archive/html/poke-devel/2024-02/msg00138.html.
+    This checks both static and revision-1 system-dependent table bounds, not
+    translation correctness or every semantic requirement of native gettext.
+    """
+    if len(payload) < 28 or payload[:4] not in (b'\xde\x12\x04\x95', b'\x95\x04\x12\xde'):
+        raise RuntimeError('Invalid GNU catalog header')
+    endian = '<' if payload[:4] == b'\xde\x12\x04\x95' else '>'
+    _, revision, count, original, translated, hash_count, hash_offset = struct.unpack_from(endian + '7I', payload)
+    minor = revision & 0xffff
+    header_size = 48 if minor == 1 else 28
+    if revision >> 16 > 1 or minor > 1 or not count or len(payload) < header_size:
+        raise RuntimeError('Unsupported, empty or truncated GNU catalog')
+    def span(offset, size):
+        if offset < header_size or size < 0 or offset + size > len(payload):
+            raise RuntimeError('GNU catalog table or string exceeds its file')
+    tables = [(original, count * 8), (translated, count * 8)]
+    if hash_count:
+        tables.append((hash_offset, hash_count * 4))
+    segments = sysdep_count = 0
+    if minor:
+        segments, segment_table, sysdep_count, sysdep_original, sysdep_translated = struct.unpack_from(endian + '5I', payload, 28)
+        if segments:
+            tables.append((segment_table, segments * 8))
+        if sysdep_count:
+            tables.extend(((sysdep_original, sysdep_count * 4), (sysdep_translated, sysdep_count * 4)))
+    for offset, size in tables:
+        span(offset, size)
+    def string(start, size, terminated=False):
+        span(start, size)
+        if any(start < offset + length and offset < start + size for offset, length in tables):
+            raise RuntimeError('GNU catalog string overlaps a metadata table')
+        if terminated and (not size or payload[start + size - 1] != 0):
+            raise RuntimeError('GNU catalog string lacks a terminator')
+    for offset in (original, translated):
+        for index in range(count):
+            length, start = struct.unpack_from(endian + '2I', payload, offset + index * 8)
+            string(start, length + 1, True)
+    if hash_count:
+        for index in range(hash_count):
+            if struct.unpack_from(endian + 'I', payload, hash_offset + index * 4)[0] > count + sysdep_count:
+                raise RuntimeError('GNU catalog hash entry exceeds its string inventory')
+    if minor:
+        for index in range(segments):
+            length, start = struct.unpack_from(endian + '2I', payload, segment_table + index * 8)
+            string(start, length, True)
+        for offset in (sysdep_original, sysdep_translated):
+            for index in range(sysdep_count):
+                descriptor = struct.unpack_from(endian + 'I', payload, offset + index * 4)[0]
+                span(descriptor, 4)
+                static = struct.unpack_from(endian + 'I', payload, descriptor)[0]
+                cursor = descriptor + 4
+                while True:
+                    span(cursor, 8)
+                    length, reference = struct.unpack_from(endian + '2I', payload, cursor)
+                    string(static, length, reference == 0xffffffff)
+                    static += length
+                    cursor += 8
+                    if reference == 0xffffffff:
+                        break
+                    if reference >= segments:
+                        raise RuntimeError('GNU catalog system-dependent segment reference is invalid')
+
+
+def read_locale_metadata(path):
+    def unique_pairs(pairs):
+        value = {}
+        for key, item in pairs:
+            if key in value:
+                raise RuntimeError('Duplicate key in locale metadata: ' + key)
+            value[key] = item
+        return value
+    return json.loads(path.read_text(), object_pairs_hook=unique_pairs)
+
+
+def stage_build_locales(build, destination):
+    """Stage only declared global catalog outputs, never an installed fallback."""
+    build, destination = Path(build).resolve(), Path(destination)
+    metadata = build / 'meson-info'
+    inputs = ('config.h', 'meson-info/intro-buildoptions.json',
+              'meson-info/intro-install_plan.json', 'meson-info/intro-installed.json',
+              'meson-info/intro-targets.json')
+    hashes = {name: sha(build / name) for name in inputs}
+    config_text = (build / 'config.h').read_text()
+    config = {}
+    for name in ('GETTEXT_PACKAGE', 'LOCALEDIR', 'GIMPPLUGINDIR'):
+        matches = re.findall(r'^#define ' + name + r' ("(?:[^"\\]|\\.)*")$', config_text, re.M)
+        if len(matches) != 1:
+            raise RuntimeError('Missing or ambiguous compiled locale configuration: ' + name)
+        config[name] = json.loads(matches[0])
+    locale_root = Path(config['LOCALEDIR'])
+    if not locale_root.is_absolute() or not re.fullmatch(r'gimp[0-9]+', config['GETTEXT_PACKAGE']):
+        raise RuntimeError('Invalid compiled locale root or gettext domain')
+    options = {row['name']: row['value'] for row in
+               read_locale_metadata(metadata / 'intro-buildoptions.json')}
+    prefix = Path(options['prefix'])
+    if not prefix.is_absolute() or locale_root != prefix / options['datadir'] / 'locale':
+        raise RuntimeError('Compiled locale root disagrees with configured GIMP install layout')
+    directories = {'prefix': str(prefix)}
+    directories.update({key: str(prefix / value) for key, value in options.items()
+                        if key.endswith('dir') and isinstance(value, str)})
+    plan = read_locale_metadata(metadata / 'intro-install_plan.json')['targets']
+    installed = read_locale_metadata(metadata / 'intro-installed.json')
+    targets = read_locale_metadata(metadata / 'intro-targets.json')
+    declared = {}
+    for target in targets:
+        if target.get('installed') is not True:
+            continue
+        for filename in target['filename']:
+            if Path(filename).suffix == '.mo':
+                if filename in declared:
+                    raise RuntimeError('Ambiguous declared locale output: ' + filename)
+                declared[filename] = target['id']
+    planned = {name for name in plan if Path(name).suffix == '.mo'}
+    mapped = {name for name in installed if Path(name).suffix == '.mo'}
+    if not declared or set(declared) != planned or planned != mapped:
+        raise RuntimeError('Declared locale outputs, install plan and install map disagree')
+    records, payloads, excluded = {}, {}, []
+    for filename in sorted(declared):
+        source = Path(filename)
+        if (not source.is_absolute() or source.resolve() != source or
+                not source.is_relative_to(build) or not source.is_file()):
+            raise RuntimeError('Locale output must be an existing regular build file: ' + filename)
+        details = plan[filename]
+        try:
+            planned_destination = Path(details['destination'].format_map(directories))
+        except (KeyError, ValueError) as error:
+            raise RuntimeError('Unresolved locale install destination: ' + filename) from error
+        installed_destination = Path(installed[filename])
+        if (details.get('tag') != 'i18n' or not planned_destination.is_absolute() or
+                '..' in planned_destination.parts or planned_destination != installed_destination):
+            raise RuntimeError('Locale install provenance disagrees: ' + filename)
+        if not installed_destination.is_relative_to(locale_root):
+            extension_root = Path(config['GIMPPLUGINDIR']) / 'extensions'
+            if not extension_root.is_absolute() or not installed_destination.is_relative_to(extension_root):
+                raise RuntimeError('Unknown non-global locale destination: ' + filename)
+            extension = installed_destination.relative_to(extension_root)
+            if (len(extension.parts) != 5 or extension.parts[1] != 'locale' or
+                    extension.parts[3] != 'LC_MESSAGES' or
+                    not re.fullmatch(r'org\.gimp\.extension\.[A-Za-z0-9.-]+', extension.parts[0]) or
+                    not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.@-]*', extension.parts[2]) or
+                    extension.name != extension.parts[0] + '.mo' or extension.name != source.name):
+                raise RuntimeError('Invalid extension-private locale destination: ' + filename)
+            excluded.append(str(source.relative_to(build)))
+            continue  # Extension-private catalogs do not belong to GIMP3_LOCALEDIR.
+        relative = installed_destination.relative_to(locale_root)
+        if (len(relative.parts) != 3 or relative.parts[1] != 'LC_MESSAGES' or
+                not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.@-]*', relative.parts[0]) or
+                not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*\.mo', relative.name)):
+            raise RuntimeError('Invalid global locale layout: ' + str(relative))
+        name = relative.as_posix()
+        if name in records:
+            raise RuntimeError('Duplicate global locale destination: ' + name)
+        payload = source.read_bytes()
+        try:
+            validate_compiled_catalog(payload)
+        except RuntimeError as error:
+            raise RuntimeError('Invalid compiled GNU locale catalog: ' + filename) from error
+        records[name] = {'source': str(source.relative_to(build)), 'target_id': declared[filename],
+                         'sha256': hashlib.sha256(payload).hexdigest(), 'size_bytes': len(payload)}
+        payloads[name] = payload
+    domains = sorted({Path(name).name for name in records})
+    required = {config['GETTEXT_PACKAGE'] + '.mo', config['GETTEXT_PACKAGE'] + '-std-plug-ins.mo'}
+    if not required.issubset(domains):
+        raise RuntimeError('Global locale staging requires core and standard plug-in catalogs')
+    if hashes != {name: sha(build / name) for name in inputs}:
+        raise RuntimeError('Locale metadata changed during staging')
+    destination.mkdir(mode=0o700)  # Refuse reused directories and symlinks.
+    for name, payload in payloads.items():
+        target = destination / name
+        target.parent.parent.mkdir(mode=0o700, exist_ok=True)
+        target.parent.mkdir(mode=0o700, exist_ok=True)
+        with target.open('xb') as stream:
+            stream.write(payload)
+    manifest = {'metadata_sha256': hashes, 'catalogs': records, 'catalog_count': len(records),
+                'domains': domains, 'excluded_extension_catalog_outputs': excluded}
+    verify_staged_locales(destination, manifest)
+    if any(sha(build / row['source']) != row['sha256'] for row in records.values()):
+        raise RuntimeError('Compiled locale source changed during staging')
+    return manifest
+
+
+def verify_staged_locales(destination, manifest):
+    """Fail closed if tests or other activity changed the private catalog copy."""
+    destination = Path(destination)
+    if not destination.is_dir() or destination.is_symlink():
+        raise RuntimeError('Private locale directory was removed or redirected')
+    observed, directories = set(), set()
+    expected_directories = {str(parent) for name in manifest['catalogs']
+                            for parent in Path(name).parents if str(parent) != '.'}
+    for path in destination.rglob('*'):
+        if path.is_symlink():
+            raise RuntimeError('Private locale state contains a symlink')
+        if path.is_file():
+            observed.add(path.relative_to(destination).as_posix())
+        elif path.is_dir():
+            directories.add(path.relative_to(destination).as_posix())
+        else:
+            raise RuntimeError('Private locale state contains a special filesystem entry')
+    if directories != expected_directories:
+        raise RuntimeError('Private locale directory inventory changed')
+    if observed != set(manifest['catalogs']):
+        raise RuntimeError('Private locale catalog inventory changed')
+    for name, record in manifest['catalogs'].items():
+        path = destination / name
+        if path.stat().st_size != record['size_bytes'] or sha(path) != record['sha256']:
+            raise RuntimeError('Private locale catalog content changed: ' + name)
+    return True
+
+
 def run_command(command, log_path, environment=None):
     # Python test helpers import modules from the committed source tree. Keep
     # their caches out of that tree without ignoring or excusing dirty files.
@@ -511,6 +725,9 @@ def execute_locked(args, output, sanitizer):
             if before_source != initial:
                 raise RuntimeError('Source state changed during the full default build')
             require_normal_build(build, repository)
+            locale_directory = private / 'locale'
+            gate['build_locales'] = stage_build_locales(build, locale_directory)
+            child_environment['GIMP3_LOCALEDIR'] = str(locale_directory)
             registry_path = build / 'meson-info/intro-tests.json'
             registry = json.loads(registry_path.read_text())
             validate_registry(registry)
@@ -577,6 +794,7 @@ def execute_locked(args, output, sanitizer):
                 'preexisting_elf_files_unchanged': not changed,
                 'all_new_elf_entries_are_verified_private_test_profile_aliases': not rejected,
                 'test_registry_unchanged': gate['registry_sha256'] == sha(registry_path),
+                'staged_locale_files_unchanged': verify_staged_locales(locale_directory, gate['build_locales']),
             }
             write_json(output / 'source-integrity.json', {'before': before_source, 'after': after_source}, sanitizer)
             write_json(output / 'elf-integrity.json', {'before': before_elf, 'after': after_elf}, sanitizer)

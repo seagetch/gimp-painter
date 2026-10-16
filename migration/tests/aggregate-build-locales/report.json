@@ -1,0 +1,51 @@
+{
+  "scope": "Bounded build-only locale staging/provenance repair and focused strict native teardown; no new full aggregate or package eligibility.",
+  "baseline_source_commit": "24eaefc68070d6ba7deb6f9ae9cdf375e5ae345d",
+  "source_sha256": {
+    "tools/run-painter-frozen-aggregate.py": "4cdc8a36be383487c4cca06fc173f8d3c2b949370318b66fd15f22548eecfada",
+    "migration/tests/test_frozen_aggregate_runner.py": "2a001213a0a80b8711861c4e197a498525be8f7378df7dd0b76cbcc363d9f58c",
+    "migration/contracts/frozen-linux-aggregate.md": "69d0315ff8c5bcd42574a05f4971ab939e6ae1ee9163b3993f7efb6b15c4a5a6"
+  },
+  "fixtures": [
+    {
+      "name": "test_frozen_aggregate_runner.py",
+      "passed": 64,
+      "skipped": 0,
+      "log": "runner-fixtures.log",
+      "log_sha256": "2ab896694bb2009a68e00a6af53a3e6609ce90ce6f635e2c0e4326442d1ddacd"
+    },
+    {
+      "name": "test_linux_runtime_package.py",
+      "passed": 60,
+      "skipped": 0,
+      "log": "package-fixtures.log",
+      "log_sha256": "70774adaf1c3b0382088a673d3f3e53ded82f8017eac6174e920c87c6a9bce26"
+    }
+  ],
+  "fixture_environment": "Restored dependency environment; package suite executed all60. Independent reviewer plain-environment check executed39 with21Ninja-dependent skips and is not the no-skip result.",
+  "failed_aggregate": {
+    "receipt": "interruption.json",
+    "completed_ok": 88,
+    "completed_failed": 1,
+    "status": "failed/incomplete",
+    "final_after_seal_present": false,
+    "failed_target_receipt": "failed-procedure.json"
+  },
+  "focused_native": {
+    "receipt": "native-receipt.json",
+    "receipt_sha256": "ba14fc2be31174c8f71e9c2862a8e70e8385d77409fc11b53a5499e59303438a",
+    "catalog_manifest": "catalog-manifest.json",
+    "catalog_manifest_sha256": "de37aeb01648613abf6b5dc387f6f7c7f38232943870e06327f92ff8b9c6a573",
+    "success_exception_pairs": 8,
+    "catalog_count": 361,
+    "excluded_extension_private_catalog_count": 68
+  },
+  "independent_review": "Approved after fixing unknown excluded destinations, revision1 table bounds, duplicate metadata keys and post-run special/directory entry verification. No diagnostics, catalog contents, test registry or native acceptance checks changed.",
+  "native_full_aggregate_passed": false,
+  "limitations": [
+    "Focused teardown does not rerun the twelve-minute procedure arithmetic corpus or full aggregate.",
+    "Existing Dzongkha Script-Fu Plural-Forms metadata is preserved byte-identically; bounded GNU binary integrity does not enforce Python plural-expression parsing or full translation semantics.",
+    "Registered per-test locale overrides remain unchanged;17observed registrations explicitly use build/po-plug-ins.",
+    "Initial helper native run is retained as superseded by final exact-helper native receipt."
+  ]
+}
