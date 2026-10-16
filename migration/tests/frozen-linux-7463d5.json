@@ -1,0 +1,2743 @@
+{
+  "schema_version": 1,
+  "scope": "all_registered_meson_tests_frozen_linux_normal_build",
+  "all_passed": true,
+  "baseline_exemptions_applied": false,
+  "expected_source_commit": "7463d5dc65fa74832ab7f8219aae71dc83d6b8c7",
+  "expected_source_tree": "735b6abdd2b0cb0ddade6148fe46d9dd18c63b3e",
+  "source_commit": "7463d5dc65fa74832ab7f8219aae71dc83d6b8c7",
+  "source_tree": "735b6abdd2b0cb0ddade6148fe46d9dd18c63b3e",
+  "normal_build": {
+    "backend": "ninja",
+    "buildtype": "debugoptimized",
+    "b_sanitize": "none",
+    "b_coverage": false
+  },
+  "result_counts": {
+    "OK": 160
+  },
+  "coverage_complete": true,
+  "registered_tests": 160,
+  "recorded_results": 160,
+  "meson_exit_status": 0,
+  "integrity_checks": {
+    "expected_source_commit": true,
+    "expected_source_tree": true,
+    "commit_unchanged": true,
+    "tree_unchanged": true,
+    "tracked_tree_clean_before_and_after": true,
+    "tracked_files_unchanged": true,
+    "pinned_submodules_unchanged": true,
+    "preexisting_elf_files_unchanged": true,
+    "all_new_elf_entries_are_verified_private_test_profile_aliases": true,
+    "test_registry_unchanged": true
+  },
+  "packager_validation": "accepted",
+  "errors": [],
+  "started_at": "2026-10-16T05:28:34.062516+00:00",
+  "finished_at": "2026-10-16T06:21:16.679698+00:00",
+  "provenance": {
+    "tools/run-painter-frozen-aggregate.py": {
+      "sha256": "b5d458fc19e72ca9a5882524a7fb2b9fbd8b4dc542322f201131a83eeb7bdbaa"
+    },
+    "tools/package-linux-runtime.py": {
+      "sha256": "c57c9024f97f64025daa178fd799503c1e7493739b2c069d34d3c59e0827e7eb"
+    }
+  },
+  "build_inputs": {
+    "app/gimp-3.0": {
+      "sha256": "8f980f725dbe0738b0d1a4b6f030d1de5de3d12641d4358e39a0da5dd60575c3"
+    },
+    "app/gimp-console-3.0": {
+      "sha256": "17c457d886e4eb3da58f0997dca181ad320863ab9e83587821a4597008a36c18"
+    }
+  },
+  "receipt_kind": "Sanitized acceptance summary, not the full package-consumable gate",
+  "full_gate_sha256": "b3babc4055e28617189b17d40ec7f811dfddd87f19f18e3eff45b6aa67c7e9d0",
+  "full_gate_bytes": 10567189,
+  "targets": [
+    {
+      "registry_index": 1,
+      "name": "core",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 2,
+      "name": "gimp-test-config-fixture",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 3,
+      "name": "painter-type-startup",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 4,
+      "name": "file-load-pipeline",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 5,
+      "name": "gimp-clone-layer",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 6,
+      "name": "gimp-filter-layer",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 7,
+      "name": "painter-layer-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 8,
+      "name": "painter-layer-tree",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 9,
+      "name": "painter-dock-layout-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 10,
+      "name": "painter-dock-input-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 11,
+      "name": "painter-dock-session-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 12,
+      "name": "painter-right-docks-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 13,
+      "name": "painter-canvas-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 14,
+      "name": "painter-toolbar-window",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 15,
+      "name": "painter-session-restore-barrier",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 16,
+      "name": "painter-compact-options",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: There are no selected layers or channels to fill.",
+        "GIMP-Warning: There are no selected layers or channels to stroke to.",
+        "GIMP-Warning: A selected layer's pixels are locked.",
+        "GIMP-Warning: A selected layer's pixels are locked."
+      ]
+    },
+    {
+      "registry_index": 17,
+      "name": "gimp-painter-mybrush",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 18,
+      "name": "gimp-painter-mybrush-factory",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 19,
+      "name": "gimpidtable",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 20,
+      "name": "gimp-container-deserialize",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 21,
+      "name": "gimp-tool-owner",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 22,
+      "name": "xcf",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 23,
+      "name": "painter-xcf-open",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 24,
+      "name": "painter-xcf-adversarial",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF file is corrupt!  I have loaded as much of it as I can, but it is incomplete.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: not enough tiles found in level",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: encountered garbage after reading level: 138",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: not enough tiles found in level",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: encountered garbage after reading level: 138",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "xcf: decompressed tile bigger than the expected size.xcf: decompressed tile bigger than the expected size.GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: not enough tiles found in level",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: encountered garbage after reading level: 138",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: not enough tiles found in level",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: encountered garbage after reading level: 178",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: not enough tiles found in level",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: encountered garbage after reading level: 178",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "xcf: decompressed tile bigger than the expected size.xcf: decompressed tile bigger than the expected size.GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: not enough tiles found in level",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Error: encountered garbage after reading level: 178",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+        "xcf: decompressed tile bigger than the expected size.GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss."
+      ]
+    },
+    {
+      "registry_index": 25,
+      "name": "painter-xcf-roundtrip",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Duplicate Painter metadata key; original capsule is retained and cannot be safely rewritten",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Duplicate Painter metadata key; original capsule is retained and cannot be safely rewritten",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown layer kind",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown layer kind",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Missing layer kind",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Missing layer kind",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Duplicate Painter metadata key; original capsule is retained and cannot be safely rewritten",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+        "GIMP-Warning: XCF Warning: version 0:0 of filter \"gegl:brightness-contrast\" does not have the future-value property. The property was ignored and the filter may not render properly.",
+        "GIMP-Warning: XCF Warning: version 0:0 of filter \"gegl:brightness-contrast\" does not have the future-value property. The property was ignored and the filter may not render properly.",
+        "GIMP-Warning: XCF Warning: version 0:0 of filter \"gegl:brightness-contrast\" does not have the future-value property. The property was ignored and the filter may not render properly.",
+        "GIMP-Warning: XCF Warning: the \"unavailable effect\" (xxxxxxxxxxxxxxxxxxxxxxxx) filter is not installed. It was discarded.",
+        "GIMP-Warning: XCF Warning: argument \"format\" of filter gegl:color has unsupported type gpointer. It was discarded.",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown layer kind",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown layer kind",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown layer kind",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown layer kind",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Saved Filter arguments exceed the mutable materialization limit; original definition is retained",
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Saved Filter arguments exceed the mutable materialization limit; original definition is retained"
+      ]
+    },
+    {
+      "registry_index": 26,
+      "name": "painter-provenance",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 27,
+      "name": "painter-layer-modes",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 28,
+      "name": "painter-dynamics",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 29,
+      "name": "painter-core-metadata",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 30,
+      "name": "painter-ancestry-contract",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 31,
+      "name": "painter-navigation-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 32,
+      "name": "painter-navigation-events",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 33,
+      "name": "device-dialog-events",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 34,
+      "name": "painter-perspective",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 35,
+      "name": "painter-perspective-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 36,
+      "name": "painter-perspective-events",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 37,
+      "name": "gimp-painter-context",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 38,
+      "name": "mypaint-selector-contracts",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 39,
+      "name": "gimp-ruler",
+      "suites": [
+        "gimp:libgimpwidgets"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 40,
+      "name": "painter-foundation",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 41,
+      "name": "painter-qdata-operations",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 42,
+      "name": "painter-filter-wire",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 43,
+      "name": "painter-filter-process",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 44,
+      "name": "painter-filter-scheduler",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 45,
+      "name": "painter-filter-owner-gates",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 46,
+      "name": "painter-filter-edge",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 47,
+      "name": "painter-filter-gauss",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 48,
+      "name": "painter-filter-gray",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 49,
+      "name": "painter-filter-gauss-alias",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 50,
+      "name": "painter-fair-dispatcher",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 51,
+      "name": "painter-work-admission",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 52,
+      "name": "painter-filter-raster",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 53,
+      "name": "painter-filter-spool",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 54,
+      "name": "painter-filter-raster-kernels",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 55,
+      "name": "painter-filter-native-kernels",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 56,
+      "name": "painter-filter-kernel-progress",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 57,
+      "name": "painter-filter-context-native",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 58,
+      "name": "painter-filter-point-shadow",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 59,
+      "name": "painter-filter-sharpen",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 60,
+      "name": "painter-filter-sharpen-shadow",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 61,
+      "name": "painter-filter-sobel",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 62,
+      "name": "painter-filter-context",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 63,
+      "name": "painter-filter-import-completion",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 64,
+      "name": "painter-public-mode-abi",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 65,
+      "name": "painter-brush-metadata-c",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 66,
+      "name": "painter-brush-metadata-cpp",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 67,
+      "name": "painter-brush-generator",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 68,
+      "name": "painter-mypaint-resource",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 69,
+      "name": "painter-mypaint-legacy-decoder",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 70,
+      "name": "painter-mypaint-legacy-engine",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 71,
+      "name": "painter-navigation",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 72,
+      "name": "painter-bounded-fill-legacy",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 73,
+      "name": "painter-bounded-fill",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 74,
+      "name": "painter-mypaint-legacy-surface",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 75,
+      "name": "painter-mypaint-legacy-generated",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 76,
+      "name": "painter-gray-alpha-equations",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 77,
+      "name": "painter-mypaint-native-precision",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 78,
+      "name": "painter-mypaint-coordinate-boundaries",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 79,
+      "name": "painter-mypaint-region-lifetime",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 80,
+      "name": "painter-mypaint-legacy-selection",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 81,
+      "name": "painter-mypaint-snapshot-isolation",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 82,
+      "name": "painter-mypaint-buffer-read",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 83,
+      "name": "painter-smudge-legacy-pixels",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 84,
+      "name": "painter-xcf-compat",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 85,
+      "name": "painter-public-header-compilation",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 86,
+      "name": "painter-additional-header-routes",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 87,
+      "name": "app-config",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 88,
+      "name": "painter-filter-procedure",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 89,
+      "name": "painter-filter-convolution",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 90,
+      "name": "validate-desktop",
+      "suites": [
+        "gimp:desktop"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 91,
+      "name": "gimp-test-icon-theme-generator",
+      "suites": [
+        "gimp:app",
+        "gimp:test-fixtures"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 92,
+      "name": "save-and-export",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    },
+    {
+      "registry_index": 93,
+      "name": "in-build-gimp-wrapper",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 94,
+      "name": "script-fu-startup",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 95,
+      "name": "gimp-painter-surface",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 96,
+      "name": "painter-mypaint-legacy-session",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 97,
+      "name": "painter-widget-exceptions",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 98,
+      "name": "gimp-painter-options",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 99,
+      "name": "gimp-painter-session",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 100,
+      "name": "painter-options-session-c",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 101,
+      "name": "gimp-painter-qdata-operations",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 102,
+      "name": "gimp-painter-hover",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 103,
+      "name": "gimp-fill-brush",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 104,
+      "name": "painter-fill-brush-legacy",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 105,
+      "name": "painter-fill-brush-legacyqueued",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 106,
+      "name": "painter-fill-brush-legacyasync",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 107,
+      "name": "painter-fill-brush-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+        "GIMP-Warning: Invalid Fill Brush coordinates."
+      ]
+    },
+    {
+      "registry_index": 108,
+      "name": "gimp-layer-presets",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 109,
+      "name": "layer-presets-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 110,
+      "name": "painter-mypaint-tool",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 111,
+      "name": "painter-native-interpolation",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 112,
+      "name": "gimp-painter-preview",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 113,
+      "name": "painter-mypaint-legacy-rgb-session",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 114,
+      "name": "painter-mypaint-rgb-session-fixtures",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 115,
+      "name": "painter-smudge-legacy-strokes",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 116,
+      "name": "gimp-painter-smudge",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 117,
+      "name": "painter-smudge-owned-strokes",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 118,
+      "name": "painter-mypaint-editor",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 119,
+      "name": "painter-mypaint-preview-fixture",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 120,
+      "name": "painter-smudge-ui",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Invalid Painter Smudge coordinates."
+      ]
+    },
+    {
+      "registry_index": 121,
+      "name": "painter-save-continuation",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed."
+      ]
+    },
+    {
+      "registry_index": 122,
+      "name": "gimp-painter-batch",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 123,
+      "name": "painter-mypaint-legacy-gray-session",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 124,
+      "name": "painter-mypaint-gray-session-fixtures",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 125,
+      "name": "gimp-painter-gray",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 126,
+      "name": "gimp-painter-gray-extension",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 127,
+      "name": "painter-profile-parser",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 128,
+      "name": "painter-profile-native",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 129,
+      "name": "painter-paper",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 130,
+      "name": "painter-paper-ui",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+        "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed."
+      ]
+    },
+    {
+      "registry_index": 131,
+      "name": "painter-legacy-paper",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 132,
+      "name": "painter-legacy-paper-modes",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 133,
+      "name": "painter-mypaint-legacy-pipe",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 134,
+      "name": "painter-brush-geometry",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 135,
+      "name": "painter-brush-geometry-strokes",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 136,
+      "name": "painter-brush-geometry-pixmap",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 137,
+      "name": "painter-brush-geometry-fixtures",
+      "suites": [
+        "gimp:painter"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 138,
+      "name": "painter-mypaint-precision",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 139,
+      "name": "editor-dropdown",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 140,
+      "name": "editor-dropdown-preset-control",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 141,
+      "name": "painter-popup-handles",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 142,
+      "name": "filter-entry-contracts",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 143,
+      "name": "layer-tile-entry-contracts",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 144,
+      "name": "device-save-lifecycle",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 145,
+      "name": "welcome-shutdown",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 146,
+      "name": "painter-roi-transfers",
+      "suites": [
+        "gimp:app"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 147,
+      "name": "plug-in-protocol",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 148,
+      "name": "procedure-config",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": []
+    },
+    {
+      "registry_index": 149,
+      "name": "color-parser",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    },
+    {
+      "registry_index": 150,
+      "name": "color-parser",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    },
+    {
+      "registry_index": 151,
+      "name": "export-options",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    },
+    {
+      "registry_index": 152,
+      "name": "export-options",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    },
+    {
+      "registry_index": 153,
+      "name": "image",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    },
+    {
+      "registry_index": 154,
+      "name": "image",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    },
+    {
+      "registry_index": 155,
+      "name": "palette",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    },
+    {
+      "registry_index": 156,
+      "name": "palette",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    },
+    {
+      "registry_index": 157,
+      "name": "selection-float",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!",
+        "GIMP-Error: Execution error for procedure 'gimp-selection-float':",
+        "GIMP-Error: Calling error for procedure 'gimp-selection-float':"
+      ]
+    },
+    {
+      "registry_index": 158,
+      "name": "selection-float",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!",
+        "GIMP-Error: Execution error for procedure 'gimp-selection-float':",
+        "GIMP-Error: Calling error for procedure 'gimp-selection-float':"
+      ]
+    },
+    {
+      "registry_index": 159,
+      "name": "unit",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:python3"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    },
+    {
+      "registry_index": 160,
+      "name": "unit",
+      "suites": [
+        "gimp:libgimp",
+        "gimp:C"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "classification": "passed",
+      "tap_skipped_subtests": [],
+      "runtime_crash_diagnostics": [],
+      "failure_evidence": [],
+      "nonfatal_warnings": [
+        "GIMP-Warning: Welcome to GIMP 3.0.9!"
+      ]
+    }
+  ],
+  "prior_baselines": [
+    "Exact862419 strict Linux normal aggregate passed158/158; its receipt is preserved separately.",
+    "Exact58af full run remains a retained155OK/1FAIL receipt; subsequent corrected source and frozen gates are separate evidence."
+  ],
+  "limitations": [
+    "Exact frozen Linux normal-build acceptance only.",
+    "Source changes after this commit, Windows/macOS, tablet input, installed-runtime packaging and complete legacy UI parity require separate acceptance.",
+    "Focused Sharpen/Threshold and Sobel-foundation ASan/UBSan are separate; no whole-program sanitizer or LeakSanitizer claim.",
+    "Includes published Threshold Alpha owner-context and Sobel raster foundation; later Sobel owner/XCF and projection update geometry work are not included."
+  ]
+}
