@@ -1,0 +1,2420 @@
+{
+  "format": "native-sobel-context-acceptance-v1",
+  "status": "passed-bounded-native-sobel-context",
+  "date": "2026-10-16",
+  "scope": "Bounded native nonlinear-U8 Sobel owner context, genuine legacy parity and strict old-writer XCF activation/preservation; 19 focused normal paths, 19 focused ASan/UBSan paths and 13 registered regression targets passed. Not a full aggregate or whole-port acceptance.",
+  "source_base": "8201a7ab8e2cc1034409551013db8b9b6ba8c0ad",
+  "tested_sources": {
+    "app/config/gimpgeglconfig.c": "9a88ef495155eaa308304b00ab9f4f64800a156d472c316cdadac64b0941f748",
+    "app/config/gimppainterfilterconfig.cpp": "fae6a4abc439889d74e1226dea1a7378a773d8890931bb68acc0b05282bd8219",
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/core/gimpdrawablestack.c": "38d0fcf9f64a985adfec02f0cde6ccc5d8a89eb9d20b019614fd06ce0d92b4de",
+    "app/core/gimpfiltercontext.cpp": "74e037543a5a8783d2c90983a85e687204974ca1ad3d963b6fb20a8a026f2d07",
+    "app/core/gimpfiltercontext.hpp": "462442b7d2cb09c6735793d80382c3d3859cd069f81364a911cf1f31f25f42f0",
+    "app/core/gimpfilterlayer.cpp": "6fae024404f1a7370769ee67f1b84a6bd6d6f92413858e1d33d85538cc5e56cf",
+    "app/core/gimpgrouplayer.c": "9513fd1a56dd306f19dae35d13fb45cc3010a322b11ccc558c17c6954318a3fc",
+    "app/core/gimpimage-duplicate.c": "219b4811150628cf07dab7fc68639323c477a52d46aa7717ca1e45aa9cf1490b",
+    "app/core/gimpimage-undo.c": "38d66dbc67000da9ae6a8641a67638ba627c2b15ea8da05e04dbd1d8a8e289d5",
+    "app/core/gimpitem.c": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e",
+    "app/core/gimplayerstack.c": "768d99c95ea2f1af19c21a0c8d6f6cd314d5576e6e62c120121e89dec78d2661",
+    "app/core/gimpprojection.c": "e65358fd2463a082ef9dea9f72762d8a7edfef029f238bd3bf7ae25f159e164e",
+    "app/dialogs/file-save-deferred.cpp": "1909de2bea0d6ba238cccfa3b3bfb9bd4229a4123258b87c760cad85882c0328",
+    "app/dialogs/painter-layer-dialog.cpp": "572e96bbdbe28004c3445c8e0c8207d977bf15f821553e8aad3a9022505386db",
+    "app/paint/gimpbrushcore-loops.cc": "57c1cbbf209c496d051fd5c8f095d887077332d7b988fc5022c436fe006cb0f5",
+    "app/paint/gimpfillbrush.cpp": "41ea40213ef38a3d16773e39efdf0177c0e1b6643b3fcd59bbfe545092ec361c",
+    "app/paint/gimppaintcore-loops.cc": "d4be1c9ff6a1bdc4f2818e9f13933403a0597a657c2efe33240c3a40d0894f40",
+    "app/paint/gimppainterbrushgeometry.cpp": "d230eea2c1ffed24e6a764d115f394be12de379e9941ea042888647fbf3f755d",
+    "app/paint/gimppainterpaintgate.cpp": "0adab689f1bfe4967da9f69259c7ba9b59bed6500a55d0eff643c4ad634986de",
+    "app/paint/gimppainterpaper-paste.cpp": "5c245c1798d2b7a3da8b4c9c1d565005d0325cf71655e22423f495fee6cbe84c",
+    "app/paint/gimppainterpaper.cpp": "2740721aa4952e51570c0ed8440d15a1421295874c3b3f973246d93de76f7cdb",
+    "app/paint/gimppaintersmudge.cpp": "1cbbcbb3dd373265f597a52a3d4cdb137b889c4d430f9f24064cce8cf1df7a43",
+    "app/paint/painter-bounded-fill/search.cpp": "9aefd9e47b15b8dd9eecc531df1be0bc8ac6c2c511bd6a488256b15d47ece254",
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "24921337d94409ac87460dfaa9a54d045bc8f8670af44b001bc63637da7c81dc",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "fabaa82d82cb6a9ade1fb7bb7e860dd1f54ccbe81c4e25b6c07b4aba41cb2d27",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "3784efe5ae3577d1329cc53f50102d424403385be99d66207e686ad250a2a6d9",
+    "app/paint/painter-mypaint-surface/gimp-resources.cpp": "4b0aed77cd20f25428a53ac5bee822db01b5d6630f86a2e92a648c536492cbf1",
+    "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp": "7c5da8fc893ae23073ceaae7be68d96e5eaafe2f1fa85d4991617ecafdc1cef2",
+    "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp": "a2c86b97e7b6ba5e253c8f6b0c79be3100d541a125b68ffe893a6e70e80568d2",
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "b76d784b6173aba483cc88524db66d1d13a3f22c56c96de871c16f73772863d5",
+    "app/paint/painter-mypaint/engine.cpp": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a",
+    "app/paint/painter-mypaint/resource.cpp": "ea2006b960d8e03de5c9ef77299f336d51430b4d30865bf3f37bbe2dc874f14f",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+    "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+    "app/painter/filter-edge.cpp": "ff9d6c77932043585c8e914ee98cbfb2278eabbc8928d3ea821e6a7c955b7d67",
+    "app/painter/filter-gauss.cpp": "f296f5c50198ede8833ad01c50006581d808a1c4db69858e45c36df8f12bf5e5",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+    "app/painter/filter-point-shadow.cpp": "67da05c6229b8804e6b95f3e0c64b1b46e1ab9fadbb116f6821d0ce22e982363",
+    "app/painter/filter-process.cpp": "87918ee52bfcdacca648203151292021996a850332ce25c3444cd82f83867fc8",
+    "app/painter/filter-raster-kernels.cpp": "70b6551e5bb4b800b3fc4145f9f07f25fe7400e52ca9543bd9bddf343bba6b06",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+    "app/painter/filter-scheduler.cpp": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+    "app/painter/filter-scheduler.hpp": "4939ca47e3afb0a7fc7774df18c2d9d27e333c9669d936ccf843a67216d032e1",
+    "app/painter/filter-sharpen-shadow.cpp": "7afa099e93efeb45b2a43844bfa69cd5b312329a602f51ab48642d7d1f70bacd",
+    "app/painter/filter-sharpen.cpp": "6327ea299abd054725e5aea2324cfe02d6c5e4ee4fcd28bb75dc76049b749ab7",
+    "app/painter/filter-sobel.cpp": "9856ff199ee91070d36655ef8426dc3e744c6e07c889846de8923a664e5bcfc7",
+    "app/painter/filter-sobel.hpp": "177bbc6e2e1c98bab0f5104a63c042f4ff8b14867e261337d867227b63491f7e",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-spool.hpp": "856966b186ce70a233b7fc8b41d652f2c58345bc187035365dfddb263c3d0651",
+    "app/painter/filter-wire.cpp": "24ce90825a3480c69e90d04f9048d020638004676389681d5f7d196eb279ccd6",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/tests/test-filter-sobel-context.inc": "f2484eba6f5b2db138232caa9ffd85d912ab31c8f09bb481d7aaeb5a6fe3d451",
+    "app/tests/test-gimp-filter-layer.c": "b8662db00d933380e0c44be5bbcef5011b56bb06b50bbce70c2f1e8e2234b908",
+    "app/tests/test-painter-xcf-open.c": "4596245c8507f0051abd0dacb8d47d0a4beb4b24bd54e4a0b3f521c112320b6a",
+    "app/tests/test-painter-xcf-sobel.inc": "afb09f343d3e22a0260597ceeeb5032a861f73aa2bab8fca888b4b9c174fb08b",
+    "app/tools/gimpfillbrushtool.cpp": "cc1930061b9d120bcb90f0e3efeafa502970655fde68ae493d5970fdbcf864c2",
+    "app/tools/gimppaintermybrushtool.cpp": "5d8f5122d20b38be69669b8a0a47f700aa12242ac9c6fe8113bd06ba7c4aedaf",
+    "app/tools/gimppaintersmudgetool.cpp": "c11e2e2413baaebd86f03a2a9e6f9726c2b965162a442e0714236c39354163d1",
+    "app/tools/gimpperspectiveguidetool.cpp": "a550de5fc22360452e7077e189e3a1bec46c0a16ae0bd0e56fce801a1482c43a",
+    "app/widgets/gimpcellrendererpopup.cpp": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+    "app/widgets/gimpeditor-cxx.cpp": "daee8295e94acbfdfcdb08539691f628756fe18fc6257813c158961afe6a72ea",
+    "app/widgets/gimpmypaintbrushoptions-gui.cpp": "c1fd672cbf3a7b39d8f56155c53bcf7551b6bc7776596d1866a807f74d5bdecb",
+    "app/widgets/gimppaintercompactoptions.cpp": "8a02888d76f052fcacfe26880ef78e926bcd6e23ad1156ed7f22f0d0e649cf31",
+    "app/widgets/gimppainterlayertiles.cpp": "645283109a51948d67117219f520759db2d730e3101dba9b663688e39af19cff",
+    "app/widgets/gimppaintermybrusheditor.cpp": "e98cc8320dadfab3947aacaea762c02e4dce202b99964167c165104debc3c36f",
+    "app/xcf/painter-xcf-arguments.cpp": "35927b8787496ba21ae7a5468fcb780fed09a097108eee4f4ca460e5b89f7562",
+    "app/xcf/painter-xcf-compat.cpp": "169b0dc7f774188b263ed55997817c3060291395f18f635a5e2f0cd8131043df",
+    "app/xcf/painter-xcf-load.cpp": "e4e906181835c0f52c473da11288f31506004728c79c58ec543ac92ee7e88f7c",
+    "app/xcf/painter-xcf-multipart.cpp": "e1b4af0c6ef55e4cb00138b9749848601ea6a96870c93467508314b7b8a191ed",
+    "app/xcf/painter-xcf-preserve.cpp": "9d79e3ba4657e0e4a15bf89f10a08555cfee935b362086991c59ad656df7af7a",
+    "app/xcf/painter-xcf-storage.cpp": "dac72d6077c56a627a0036ef416ba0b5a0d7efca0c9a1ed7e2585f01a038c622",
+    "app/xcf/painter-xcf-transport.cpp": "5ac76e3886dce621b1fb78428906fb220d79b3ab4c0a514fdc68053ac64741bb",
+    "app/xcf/xcf-load.c": "1747322922475573497c7b57115acf886e72bbeb78979f6172403a7db5fb9f94",
+    "app/xcf/xcf-read.c": "cc3f2ab3c6bc6ef132e9275bc1bf928b2c862a9f5db06b5f1200858f87b400bd",
+    "app/xcf/xcf-save.c": "2f5754f6d758b9036d510db9f88aa2c33aac409beb386a49525717f51292692b",
+    "app/xcf/xcf-seek.c": "0129c4ffd6e3b6444c164042cdd3a6e81ff3d1b05332ffb43ee85b1c55b5be53",
+    "app/xcf/xcf-utils.c": "309cd7df75597eafda44cf60f28fecc837028f103449f586da69008a17444841",
+    "app/xcf/xcf-write.c": "df96f13439d33a291fa9f994fe8a98ff6b5f9e0c1ed202bc250b77023164aa32",
+    "app/xcf/xcf.c": "72584175577cce7c6bb3fba7f447e4e88cb9581497d29257e86fb2b07f015913",
+    "migration/tests/legacy-sobel-capture.c": "6194d46f1ac6fcd5b9836a81b3dada65589a5a69b58c7d3f6da8f01477b462a6",
+    "migration/tests/legacy-sobel-projection-capture.c": "66528278a984dfe0f57c04edc2cd1f8e623807b1c03a5e5f0d0de8b2fa96424a",
+    "migration/tests/run_filter_owner_context_fixture_test.py": "4ad72aefc2bcaea0c2eb1d5bf81d7fa25149ba226c16cbd277af4d6b4dd41e16",
+    "migration/tests/run_sharpen_context_sanitizers.py": "6934b9c07ec2a34cedc84caf899a9b62ae38e3fa8ba95d97a747a03147b1aa8a",
+    "migration/tests/seal_sobel_capture.py": "8e60749a17627ff474f61fdcc1f08a237c38c7b1cb6d57964ad53724967351fd",
+    "migration/tests/test_sharpen_context_sanitizers.py": "8e506d29193fe1687eb76b0e6b703c5d45437ce4bb2cde5316386d8fceb82282",
+    "migration/tests/test_sobel_capture_helpers.py": "591d9f686785b23f51ca23ec62fad70d448680d0cb955c2f7565d85861c28fd8",
+    "tools/capture_legacy_sobel.py": "895839d8abb7deddf3e0b2a065c15e2dc8d93052dec55f1802419a0ab54b8e0e",
+    "tools/capture_legacy_sobel_projection.py": "dbae2c4fa263a22b8c8bd69e5ce1916cee401537dc9c62df7c6d46eb3cc4e3c0",
+    "tools/check_sobel_evidence.py": "41d6d301ba39d06499de9a4cccb8322950d945be8fd3099d8b89d1bf63291715",
+    "tools/check_sobel_projection_evidence.py": "9a53bddd79c15bd57ae2f5c3230e03320eb1448198018e6be2a97c0a0d3eb3a6"
+  },
+  "tested_overlay_artifacts": {
+    "app/core/gimpfilterlayer.cpp": {
+      "sha256": "6fae024404f1a7370769ee67f1b84a6bd6d6f92413858e1d33d85538cc5e56cf",
+      "bytes": 128365,
+      "mode": "0o644"
+    },
+    "app/tests/test-filter-sobel-context.inc": {
+      "sha256": "f2484eba6f5b2db138232caa9ffd85d912ab31c8f09bb481d7aaeb5a6fe3d451",
+      "bytes": 69136,
+      "mode": "0o644"
+    },
+    "app/tests/test-gimp-filter-layer.c": {
+      "sha256": "b8662db00d933380e0c44be5bbcef5011b56bb06b50bbce70c2f1e8e2234b908",
+      "bytes": 161235,
+      "mode": "0o644"
+    },
+    "app/xcf/painter-xcf-load.cpp": {
+      "sha256": "e4e906181835c0f52c473da11288f31506004728c79c58ec543ac92ee7e88f7c",
+      "bytes": 25624,
+      "mode": "0o644"
+    },
+    "app/tests/test-painter-xcf-sobel.inc": {
+      "sha256": "afb09f343d3e22a0260597ceeeb5032a861f73aa2bab8fca888b4b9c174fb08b",
+      "bytes": 30003,
+      "mode": "0o644"
+    },
+    "app/tests/test-painter-xcf-open.c": {
+      "sha256": "4596245c8507f0051abd0dacb8d47d0a4beb4b24bd54e4a0b3f521c112320b6a",
+      "bytes": 26184,
+      "mode": "0o644"
+    },
+    "migration/tests/run_filter_owner_context_fixture_test.py": {
+      "sha256": "4ad72aefc2bcaea0c2eb1d5bf81d7fa25149ba226c16cbd277af4d6b4dd41e16",
+      "bytes": 5948,
+      "mode": "0o644"
+    },
+    "migration/tests/run_sharpen_context_sanitizers.py": {
+      "sha256": "6934b9c07ec2a34cedc84caf899a9b62ae38e3fa8ba95d97a747a03147b1aa8a",
+      "bytes": 32675,
+      "mode": "0o644"
+    },
+    "migration/tests/test_sharpen_context_sanitizers.py": {
+      "sha256": "8e506d29193fe1687eb76b0e6b703c5d45437ce4bb2cde5316386d8fceb82282",
+      "bytes": 13030,
+      "mode": "0o644"
+    },
+    "migration/tests/legacy-sobel-capture.c": {
+      "sha256": "6194d46f1ac6fcd5b9836a81b3dada65589a5a69b58c7d3f6da8f01477b462a6",
+      "bytes": 25556,
+      "mode": "0o644"
+    },
+    "migration/tests/legacy-sobel-projection-capture.c": {
+      "sha256": "66528278a984dfe0f57c04edc2cd1f8e623807b1c03a5e5f0d0de8b2fa96424a",
+      "bytes": 23739,
+      "mode": "0o644"
+    },
+    "migration/tests/seal_sobel_capture.py": {
+      "sha256": "8e60749a17627ff474f61fdcc1f08a237c38c7b1cb6d57964ad53724967351fd",
+      "bytes": 4656,
+      "mode": "0o644"
+    },
+    "migration/tests/test_sobel_capture_helpers.py": {
+      "sha256": "591d9f686785b23f51ca23ec62fad70d448680d0cb955c2f7565d85861c28fd8",
+      "bytes": 7399,
+      "mode": "0o644"
+    },
+    "tools/capture_legacy_sobel.py": {
+      "sha256": "895839d8abb7deddf3e0b2a065c15e2dc8d93052dec55f1802419a0ab54b8e0e",
+      "bytes": 16790,
+      "mode": "0o644"
+    },
+    "tools/capture_legacy_sobel_projection.py": {
+      "sha256": "dbae2c4fa263a22b8c8bd69e5ce1916cee401537dc9c62df7c6d46eb3cc4e3c0",
+      "bytes": 15677,
+      "mode": "0o644"
+    },
+    "tools/check_sobel_evidence.py": {
+      "sha256": "41d6d301ba39d06499de9a4cccb8322950d945be8fd3099d8b89d1bf63291715",
+      "bytes": 35191,
+      "mode": "0o644"
+    },
+    "tools/check_sobel_projection_evidence.py": {
+      "sha256": "9a53bddd79c15bd57ae2f5c3230e03320eb1448198018e6be2a97c0a0d3eb3a6",
+      "bytes": 14324,
+      "mode": "0o644"
+    },
+    "migration/fixtures/legacy-sobel-context.tar.xz": {
+      "sha256": "bb8bf92f1f6f507b71fd7e67a200ee989c7ed06b4ddba8b34393a559a1ec63f7",
+      "bytes": 262768,
+      "mode": "0o644"
+    },
+    "migration/fixtures/legacy-sobel-context.tar.manifest.json": {
+      "sha256": "780c5689fc078fe3b2bab929bf9afca98031a8bb8f2dfb1eb17789a2aaf812af",
+      "bytes": 940502,
+      "mode": "0o644"
+    },
+    "migration/fixtures/legacy-sobel-large.tar.xz": {
+      "sha256": "7bf88acd2cbbd6733d1189c33cf9ee91e9c92f0089095b30a50f6219c96e8f27",
+      "bytes": 289104,
+      "mode": "0o644"
+    },
+    "migration/fixtures/legacy-sobel-large.tar.manifest.json": {
+      "sha256": "9a96ec3f498f7eaf4967cac348e805b1fd2fe2b496b19de380f0086b54ad192a",
+      "bytes": 10366,
+      "mode": "0o644"
+    },
+    "migration/fixtures/legacy-sobel-projection.tar.xz": {
+      "sha256": "8abd3b57789d5a2e8777e3c8f402545521ed2f87b95ffb5200c9d27819ad6d26",
+      "bytes": 62324,
+      "mode": "0o644"
+    },
+    "migration/fixtures/legacy-sobel-projection.tar.manifest.json": {
+      "sha256": "c310b47776fe380ab2003c4a72021099f4a1783a9d0f09a0ac6e60811bf07e12",
+      "bytes": 142535,
+      "mode": "0o644"
+    }
+  },
+  "default_build": {
+    "exit_code": 0,
+    "configuration": {
+      "backend": "ninja",
+      "buildtype": "debugoptimized",
+      "b_sanitize": "none",
+      "b_coverage": false
+    },
+    "command": [
+      "ninja",
+      "-C",
+      "${BUILD}",
+      "-j2"
+    ],
+    "retained_log": {
+      "sha256": "4f14db29f714e9239b6cf2428d888205f54664ea4f5b543f54e1ac7a0d0daf2d",
+      "bytes": 921
+    }
+  },
+  "focused_normal": {
+    "status": "passed",
+    "native_paths": 16,
+    "xcf_paths": 3,
+    "results": [
+      {
+        "name": "gimp-filter-layer",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 62.81305909156799,
+        "command_exact": true,
+        "qualified_name_exact": true,
+        "tap_paths": [
+          "/gimp-filter-layer/sobel_integer_native_route",
+          "/gimp-filter-layer/sobel_invalid_definitions_keep_cache",
+          "/gimp-filter-layer/sobel_tiny_selection_routes",
+          "/gimp-filter-layer/sobel_unsupported_precision",
+          "/gimp-filter-layer/sobel_late_context_routes",
+          "/gimp-filter-layer/sobel_component_masks",
+          "/gimp-filter-layer/sobel_sealed_context_routes",
+          "/gimp-filter-layer/sobel_outside_selection_no_merge",
+          "/gimp-filter-layer/sobel_cancel_replace_lower_close",
+          "/gimp-filter-layer/sobel_partial_import_lifecycle",
+          "/gimp-filter-layer/sobel_native_profile_bytes",
+          "/gimp-filter-layer/sobel_admission_preserves_cache",
+          "/gimp-filter-layer/sobel_projection_input_history",
+          "/gimp-filter-layer/sobel_projection_extreme_offsets",
+          "/gimp-filter-layer/sobel_actual_old_live",
+          "/gimp-filter-layer/sobel_actual_old_projection_history"
+        ],
+        "tap_plans": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "tap_numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "tap_exact": true,
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostics": []
+      },
+      {
+        "name": "painter-xcf-open",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 40.37528586387634,
+        "command_exact": true,
+        "qualified_name_exact": true,
+        "tap_paths": [
+          "/painter-xcf-open/sobel_old_writer_roundtrip",
+          "/painter-xcf-open/sobel_malformed_writer_capsules",
+          "/painter-xcf-open/sobel_active_save_close_reopen"
+        ],
+        "tap_plans": [
+          1,
+          2,
+          3
+        ],
+        "tap_numbers": [
+          1,
+          2,
+          3
+        ],
+        "tap_exact": true,
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostics": []
+      }
+    ],
+    "source_unchanged": true,
+    "external_inputs_unchanged": true,
+    "build_outputs_unchanged": true,
+    "elf_unchanged": true,
+    "build_output_count": 3977,
+    "elf_count": 3021,
+    "raw_receipt": {
+      "sha256": "abe15e2e01be8ec76f598e659050c32ca2c4453f397b04b5217c46e999b6a3d5",
+      "bytes": 77176
+    },
+    "output_executables": {
+      "app/tests/gimp-filter-layer": {
+        "sha256": "40912337f1d932da89742d685e761d9af007550c189e8ffd3a6a83e78f129570",
+        "bytes": 79325592,
+        "mode": "0o755"
+      },
+      "app/tests/painter-xcf-open": {
+        "sha256": "ad85e9187361ed37177e6ed05ee660e1d43eee028b2536e43f790ae0ff41046f",
+        "bytes": 76746200,
+        "mode": "0o755"
+      }
+    }
+  },
+  "broader_registered": {
+    "status": "passed",
+    "targets": [
+      "core",
+      "update-geometry",
+      "projection-update-bounds",
+      "gimp-clone-layer",
+      "gimp-filter-layer",
+      "painter-xcf-open",
+      "painter-xcf-roundtrip",
+      "painter-layer-modes",
+      "painter-ancestry-contract",
+      "painter-filter-sobel",
+      "painter-public-header-compilation",
+      "painter-additional-header-routes",
+      "projection-update-sanitizer-runner"
+    ],
+    "target_count": 13,
+    "results": [
+      {
+        "name": "core",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 1.4767212867736816,
+        "accepted": true,
+        "tap": {
+          "paths": [
+            "/gimp-core/add_layer",
+            "/gimp-core/remove_layer",
+            "/gimp-core/rotate_non_overlapping",
+            "/gimp-core/white_graypoint_in_red_levels"
+          ],
+          "plans": [
+            4
+          ],
+          "numbers": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "valid": true
+        },
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "projection-update-bounds",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 1.2728266716003418,
+        "accepted": true,
+        "tap": {
+          "paths": [
+            "/projection-update-bounds/projectable-grid-updates",
+            "/projection-update-bounds/extreme-layer-lifecycle",
+            "/projection-update-bounds/projection-offset-boundaries"
+          ],
+          "plans": [
+            3
+          ],
+          "numbers": [
+            1,
+            2,
+            3
+          ],
+          "valid": true
+        },
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "gimp-clone-layer",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 2.805058717727661,
+        "accepted": true,
+        "tap": {
+          "paths": [
+            "/gimp-clone-layer/retained_items_image_destroy",
+            "/gimp-clone-layer/retained_item_same_gimp_relocation",
+            "/gimp-clone-layer/replaced_item_weak_identity_transfer",
+            "/gimp-clone-layer/retained_item_gimp_lifetime",
+            "/gimp-clone-layer/serialization_reference_snapshot_and_restore",
+            "/gimp-clone-layer/undo_source_image_relocation",
+            "/gimp-clone-layer/clone_owner_image_relocation",
+            "/gimp-clone-layer/source_reference_undo_dependent_clone",
+            "/gimp-clone-layer/source_reference_undo_close_reentry",
+            "/gimp-clone-layer/source_reference_undo_live",
+            "/gimp-clone-layer/source_reference_undo_all_states",
+            "/gimp-clone-layer/source_reference_undo_preserves_pending_live",
+            "/gimp-clone-layer/source_reference_undo_renamed_then_expired",
+            "/gimp-clone-layer/source_reference_undo_expired_cross_image",
+            "/gimp-clone-layer/cross_image_copy_and_move",
+            "/gimp-clone-layer/inherited_precision_conversion_undo",
+            "/gimp-clone-layer/source_resize_undo_legacy_fixture",
+            "/gimp-clone-layer/group_duplicate_complete_hierarchy",
+            "/gimp-clone-layer/double_precision_and_trc",
+            "/gimp-clone-layer/thaw_reentry_close_and_replace",
+            "/gimp-clone-layer/dissolve_legacy_fixture",
+            "/gimp-clone-layer/gray_and_high_precision",
+            "/gimp-clone-layer/frozen_source_disposal",
+            "/gimp-clone-layer/group_duplicate_internal_reference",
+            "/gimp-clone-layer/inert_construction",
+            "/gimp-clone-layer/reentrant_source_replace",
+            "/gimp-clone-layer/cpp_header_layout",
+            "/gimp-clone-layer/projected_pixels",
+            "/gimp-clone-layer/partial_update_and_graph",
+            "/gimp-clone-layer/deferred_name",
+            "/gimp-clone-layer/native_type_lifecycle",
+            "/gimp-clone-layer/native_undo_parent_contract",
+            "/gimp-clone-layer/recursive_first_match",
+            "/gimp-clone-layer/offset_size_and_noop_transforms",
+            "/gimp-clone-layer/source_delete_undo",
+            "/gimp-clone-layer/source_lifetime_and_detach",
+            "/gimp-clone-layer/freeze_and_close",
+            "/gimp-clone-layer/cycles",
+            "/gimp-clone-layer/duplicate_and_group_update",
+            "/gimp-clone-layer/original_void_entry_contract",
+            "/gimp-clone-layer/original_factory_borrowed_ownership",
+            "/gimp-clone-layer/handle_original_set_source_route",
+            "/gimp-clone-layer/handle_original_set_source_name_route",
+            "/gimp-clone-layer/handle_factory_and_release_orders",
+            "/gimp-clone-layer/handle_source_reference_independence",
+            "/gimp-clone-layer/handle_pending_null_empty_and_rename",
+            "/gimp-clone-layer/handle_recursive_first_match",
+            "/gimp-clone-layer/handle_updates_and_lazy_resolution",
+            "/gimp-clone-layer/handle_reentrant_replace_and_close",
+            "/gimp-clone-layer/handle_contained_invalid_and_closed",
+            "/gimp-clone-layer/handle_checked_error_contract",
+            "/gimp-clone-layer/handle_wrong_thread_containment"
+          ],
+          "plans": [
+            52
+          ],
+          "numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52
+          ],
+          "valid": true
+        },
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "gimp-filter-layer",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 469.1408019065857,
+        "accepted": true,
+        "tap": {
+          "paths": [
+            "/gimp-filter-layer/native_type_lifecycle",
+            "/gimp-filter-layer/parameter_suffix_reordering",
+            "/gimp-filter-layer/parameter_metadata_rejections",
+            "/gimp-filter-layer/parameter_assignment_validation",
+            "/gimp-filter-layer/parameter_object_lifetime",
+            "/gimp-filter-layer/blinds_saved_argument_policy",
+            "/gimp-filter-layer/sharpen_integer_native_route",
+            "/gimp-filter-layer/sharpen_invalid_definitions_keep_cache",
+            "/gimp-filter-layer/sharpen_unsupported_geometry_precision",
+            "/gimp-filter-layer/sharpen_late_context_routes",
+            "/gimp-filter-layer/sharpen_sealed_context_routes",
+            "/gimp-filter-layer/sharpen_outside_selection_no_merge",
+            "/gimp-filter-layer/sharpen_cancel_replace_lower_close",
+            "/gimp-filter-layer/sharpen_actual_old_live",
+            "/gimp-filter-layer/sharpen_native_profile_bytes",
+            "/gimp-filter-layer/sharpen_admission_preserves_cache",
+            "/gimp-filter-layer/sharpen_partial_import_lifecycle",
+            "/gimp-filter-layer/threshold_integer_native_route",
+            "/gimp-filter-layer/threshold_invalid_definitions_keep_cache",
+            "/gimp-filter-layer/threshold_tiny_selection_routes",
+            "/gimp-filter-layer/threshold_late_context_routes",
+            "/gimp-filter-layer/threshold_sealed_context_routes",
+            "/gimp-filter-layer/threshold_outside_selection_no_merge",
+            "/gimp-filter-layer/threshold_cancel_replace_lower_close",
+            "/gimp-filter-layer/threshold_actual_old_live",
+            "/gimp-filter-layer/threshold_native_profile_bytes",
+            "/gimp-filter-layer/threshold_admission_preserves_cache",
+            "/gimp-filter-layer/threshold_partial_import_lifecycle",
+            "/gimp-filter-layer/threshold_real_routes_unchanged",
+            "/gimp-filter-layer/threshold_idle_unchanged_notification",
+            "/gimp-filter-layer/threshold_projection_input_bounds",
+            "/gimp-filter-layer/threshold_actual_old_projection_history",
+            "/gimp-filter-layer/sobel_integer_native_route",
+            "/gimp-filter-layer/sobel_invalid_definitions_keep_cache",
+            "/gimp-filter-layer/sobel_tiny_selection_routes",
+            "/gimp-filter-layer/sobel_unsupported_precision",
+            "/gimp-filter-layer/sobel_late_context_routes",
+            "/gimp-filter-layer/sobel_component_masks",
+            "/gimp-filter-layer/sobel_sealed_context_routes",
+            "/gimp-filter-layer/sobel_outside_selection_no_merge",
+            "/gimp-filter-layer/sobel_cancel_replace_lower_close",
+            "/gimp-filter-layer/sobel_partial_import_lifecycle",
+            "/gimp-filter-layer/sobel_native_profile_bytes",
+            "/gimp-filter-layer/sobel_admission_preserves_cache",
+            "/gimp-filter-layer/sobel_projection_input_history",
+            "/gimp-filter-layer/sobel_projection_extreme_offsets",
+            "/gimp-filter-layer/sobel_actual_old_live",
+            "/gimp-filter-layer/sobel_actual_old_projection_history",
+            "/gimp-filter-layer/progress_native_abi",
+            "/gimp-filter-layer/progress_start_reentry",
+            "/gimp-filter-layer/progress_real_workers",
+            "/gimp-filter-layer/progress_worker_cancel_replace_close",
+            "/gimp-filter-layer/progress_independent_owners",
+            "/gimp-filter-layer/blinds_owner_context",
+            "/gimp-filter-layer/blinds_owner_context_phases",
+            "/gimp-filter-layer/blinds_owner_context_expansion",
+            "/gimp-filter-layer/blinds_owner_context_retry",
+            "/gimp-filter-layer/blinds_actual_old_context",
+            "/gimp-filter-layer/blinds_actual_old_expansion",
+            "/gimp-filter-layer/blinds_gray_offset_context",
+            "/gimp-filter-layer/blinds_capture_context_edits",
+            "/gimp-filter-layer/blinds_sealed_context_chunked_import",
+            "/gimp-filter-layer/blinds_capture_replacement_cancel_close",
+            "/gimp-filter-layer/blinds_unknown_mask_latency",
+            "/gimp-filter-layer/blinds_nonquit_batch_statuses",
+            "/gimp-filter-layer/blinds_cancelled_gui_quit_keeps_worker",
+            "/gimp-filter-layer/small_tiles_live_update",
+            "/gimp-filter-layer/small_tiles_actual_old_live",
+            "/gimp-filter-layer/small_tiles_invalid_domains_keep_cache",
+            "/gimp-filter-layer/small_tiles_replace_running_definition",
+            "/gimp-filter-layer/small_tiles_selection_no_merge",
+            "/gimp-filter-layer/small_tiles_final_context",
+            "/gimp-filter-layer/small_tiles_dependency_updates",
+            "/gimp-filter-layer/small_tiles_save_reopen",
+            "/gimp-filter-layer/small_tiles_owner_close",
+            "/gimp-filter-layer/convolution_native_storage_overflow",
+            "/gimp-filter-layer/convolution_ignored_legacy_tail",
+            "/gimp-filter-layer/convolution_native_context",
+            "/gimp-filter-layer/convolution_actual_old_live",
+            "/gimp-filter-layer/convolution_invalid_arrays_keep_cache",
+            "/gimp-filter-layer/convolution_native_failure_keeps_cache",
+            "/gimp-filter-layer/convolution_native_precisions",
+            "/gimp-filter-layer/convolution_save_reopen",
+            "/gimp-filter-layer/convolution_cancel_replace_close",
+            "/gimp-filter-layer/retinex_zero_scales_and_update",
+            "/gimp-filter-layer/retinex_actual_old_live",
+            "/gimp-filter-layer/retinex_invalid_domains_keep_cache",
+            "/gimp-filter-layer/retinex_gray_keep_cache",
+            "/gimp-filter-layer/retinex_invalid_roi_keep_cache",
+            "/gimp-filter-layer/retinex_replace_running_definition",
+            "/gimp-filter-layer/retinex_final_context",
+            "/gimp-filter-layer/retinex_dependency_updates",
+            "/gimp-filter-layer/retinex_save_reopen",
+            "/gimp-filter-layer/retinex_owner_close",
+            "/gimp-filter-layer/blinds_identity_and_update",
+            "/gimp-filter-layer/blinds_context_idle",
+            "/gimp-filter-layer/blinds_final_context_merges",
+            "/gimp-filter-layer/blinds_unknown_selection_scans_in_quanta",
+            "/gimp-filter-layer/blinds_replace_running_definition",
+            "/gimp-filter-layer/blinds_background_samples_execution_start",
+            "/gimp-filter-layer/blinds_disabled_swap_preserves_cache",
+            "/gimp-filter-layer/explicit_cancel_preserves_completed_cache",
+            "/gimp-filter-layer/explicit_cancel_survives_callback_reentry",
+            "/gimp-filter-layer/configuration-admission",
+            "/gimp-filter-layer/spill_budget_failure_preserves_cache_and_retries",
+            "/gimp-filter-layer/image_close_during_undo_callbacks",
+            "/gimp-filter-layer/image_close_during_redo_callbacks",
+            "/gimp-filter-layer/image_close_during_strong_undo_callbacks",
+            "/gimp-filter-layer/image_close_during_strong_redo_callbacks",
+            "/gimp-filter-layer/image_close_reentry_during_completion_flush",
+            "/gimp-filter-layer/image_close_reentry_during_commit",
+            "/gimp-filter-layer/retained_handle_after_image_close",
+            "/gimp-filter-layer/argument_value_dag_is_bounded",
+            "/gimp-filter-layer/typed_argument_import_preserves_descriptors",
+            "/gimp-filter-layer/argument_import_validation",
+            "/gimp-filter-layer/typed_argument_snapshot_survives_expiration",
+            "/gimp-filter-layer/hiding_during_import_releases_abandoned_work",
+            "/gimp-filter-layer/concurrent_admission_resumes_after_image_close",
+            "/gimp-filter-layer/saved_snapshot_generation_restore",
+            "/gimp-filter-layer/small_image_finishes_during_large_preparation",
+            "/gimp-filter-layer/image_close_during_worker",
+            "/gimp-filter-layer/sustained_edits_converge",
+            "/gimp-filter-layer/spill_sustained_edits_converge",
+            "/gimp-filter-layer/spill_storage_failure_preserves_cache",
+            "/gimp-filter-layer/large_spill_execution_finishes",
+            "/gimp-filter-layer/spill_gaussian_native_gray",
+            "/gimp-filter-layer/spill_gaussian_native_rgb",
+            "/gimp-filter-layer/duplicate_preserves_cache_freshness",
+            "/gimp-filter-layer/opaque_arguments_duplicate_and_undo",
+            "/gimp-filter-layer/opaque_arguments_never_execute",
+            "/gimp-filter-layer/empty_opaque_arguments_are_distinct",
+            "/gimp-filter-layer/retired_definition_payload_reentry",
+            "/gimp-filter-layer/duplicate_reentry_cannot_certify_new_definition",
+            "/gimp-filter-layer/definition_edit_stops_after_undo_close",
+            "/gimp-filter-layer/definition_edit_preserves_reentered_install",
+            "/gimp-filter-layer/definition_notifications_stop_after_close",
+            "/gimp-filter-layer/checked_guard_resize_reprepares_request",
+            "/gimp-filter-layer/checked_guard_precision_reprepares_request",
+            "/gimp-filter-layer/checked_guard_nested_loop_preserves_wakeup",
+            "/gimp-filter-layer/pending_cycle_resolved_during_graph_read_is_discarded",
+            "/gimp-filter-layer/definition_revision_separates_cache_updates",
+            "/gimp-filter-layer/dependency_walk_does_not_resolve_pending_names",
+            "/gimp-filter-layer/changed_dependency_invalidation_can_close_owner",
+            "/gimp-filter-layer/dependency_connections_close_during_reorder",
+            "/gimp-filter-layer/dependency_connections_preserve_new_stack",
+            "/gimp-filter-layer/full_quantum_includes_state_callbacks",
+            "/gimp-filter-layer/cold_graph_nodes_are_prepared_one_per_quantum",
+            "/gimp-filter-layer/node_preparation_survives_callback_mutation",
+            "/gimp-filter-layer/completion_flushes_image_projection",
+            "/gimp-filter-layer/spill_completion_flushes_image_projection",
+            "/gimp-filter-layer/long_chain_coalesces_state_notifications",
+            "/gimp-filter-layer/complex_graph_remains_responsive",
+            "/gimp-filter-layer/cached_graph_tracks_clone_reassignment",
+            "/gimp-filter-layer/clone_filter_dependency_order",
+            "/gimp-filter-layer/cached_dependency_close_before_start",
+            "/gimp-filter-layer/cross_image_filter_cycle_has_no_signal_loop",
+            "/gimp-filter-layer/gray_native_default",
+            "/gimp-filter-layer/gray_native_linear_profile",
+            "/gimp-filter-layer/gray_native_lab_profile",
+            "/gimp-filter-layer/gray_without_source_alpha",
+            "/gimp-filter-layer/gaussian_native_srgb",
+            "/gimp-filter-layer/gaussian_native_adobe",
+            "/gimp-filter-layer/profile_reassignment_discards_worker",
+            "/gimp-filter-layer/genuine_point_filter_transfer",
+            "/gimp-filter-layer/native_precision_loaded_cache_and_rerun",
+            "/gimp-filter-layer/native_precision_point_and_gaussian_transfer",
+            "/gimp-filter-layer/native_precision_spill_transfer",
+            "/gimp-filter-layer/gaussian_alias_and_negative_fixtures",
+            "/gimp-filter-layer/gaussian_alias_failures_preserve_cache",
+            "/gimp-filter-layer/gaussian_alias_identity_spills",
+            "/gimp-filter-layer/gaussian_legacy_fixture",
+            "/gimp-filter-layer/duplicate_failure_releases_partial",
+            "/gimp-filter-layer/definition_undo_redo",
+            "/gimp-filter-layer/hidden_filter_and_offset",
+            "/gimp-filter-layer/cpp_header_layout",
+            "/gimp-filter-layer/clone_filter_dependency_cycle",
+            "/gimp-filter-layer/main_context_remains_responsive",
+            "/gimp-filter-layer/object_arguments_do_not_cycle",
+            "/gimp-filter-layer/expired_object_records_and_reassignment",
+            "/gimp-filter-layer/object_array_arguments_do_not_dangle",
+            "/gimp-filter-layer/removal_and_undo",
+            "/gimp-filter-layer/lower_group_failure_and_recovery",
+            "/gimp-filter-layer/independent_type_and_edge",
+            "/gimp-filter-layer/automatic_updates_and_self_exclusion",
+            "/gimp-filter-layer/saved_definition_is_separate",
+            "/gimp-filter-layer/loaded_cache",
+            "/gimp-filter-layer/dependency_order",
+            "/gimp-filter-layer/group_scope",
+            "/gimp-filter-layer/completed_buffer_only",
+            "/gimp-filter-layer/close_during_preparation",
+            "/gimp-filter-layer/duplicate_keeps_definition"
+          ],
+          "plans": [
+            191
+          ],
+          "numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120,
+            121,
+            122,
+            123,
+            124,
+            125,
+            126,
+            127,
+            128,
+            129,
+            130,
+            131,
+            132,
+            133,
+            134,
+            135,
+            136,
+            137,
+            138,
+            139,
+            140,
+            141,
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151,
+            152,
+            153,
+            154,
+            155,
+            156,
+            157,
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166,
+            167,
+            168,
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177,
+            178,
+            179,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191
+          ],
+          "valid": true
+        },
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "painter-xcf-open",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 47.43932557106018,
+        "accepted": true,
+        "tap": {
+          "paths": [
+            "/painter-xcf-open/absent_mode_historical_default",
+            "/painter-xcf-open/unknown_extension_preserves_destination",
+            "/painter-xcf-open/dual_valid_short_extension",
+            "/painter-xcf-open/explicit_provenance_resolves_ambiguity",
+            "/painter-xcf-open/ambiguity_and_failures",
+            "/painter-xcf-open/unresolved_and_length_recovery",
+            "/painter-xcf-open/large_source",
+            "/painter-xcf-open/ordinary",
+            "/painter-xcf-open/ordinary_projection_exact_gate",
+            "/painter-xcf-open/clones",
+            "/painter-xcf-open/filter_recovery",
+            "/painter-xcf-open/standard",
+            "/painter-xcf-open/recovery_handlers",
+            "/painter-xcf-open/cancel",
+            "/painter-xcf-open/sharpen_old_writer_roundtrip",
+            "/painter-xcf-open/sharpen_malformed_writer_capsules",
+            "/painter-xcf-open/threshold_old_writer_roundtrip",
+            "/painter-xcf-open/threshold_malformed_writer_capsules",
+            "/painter-xcf-open/threshold_active_save_close_reopen",
+            "/painter-xcf-open/sobel_old_writer_roundtrip",
+            "/painter-xcf-open/sobel_malformed_writer_capsules",
+            "/painter-xcf-open/sobel_active_save_close_reopen"
+          ],
+          "plans": [
+            22
+          ],
+          "numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22
+          ],
+          "valid": true
+        },
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "painter-xcf-roundtrip",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 86.38729929924011,
+        "accepted": true,
+        "tap": {
+          "paths": [
+            "/painter-xcf-roundtrip/clones_edit_save_reopen",
+            "/painter-xcf-roundtrip/filter_cache_and_arguments",
+            "/painter-xcf-roundtrip/ordinary_exact_roundtrip",
+            "/painter-xcf-roundtrip/duplicate_unknown_records",
+            "/painter-xcf-roundtrip/typed_nested_expired_arguments",
+            "/painter-xcf-roundtrip/newly_unknown_records_and_future_capsule",
+            "/painter-xcf-roundtrip/cancel_and_reentrant_edit",
+            "/painter-xcf-roundtrip/injected_write_failures",
+            "/painter-xcf-roundtrip/save_observer_ownership",
+            "/painter-xcf-roundtrip/low_level_reentrant_definitions",
+            "/painter-xcf-roundtrip/duplicate_image_unknown_origin",
+            "/painter-xcf-roundtrip/missing_clone_id_and_pending_name",
+            "/painter-xcf-roundtrip/replace_uninterpreted_arguments",
+            "/painter-xcf-roundtrip/opaque_argument_shapes",
+            "/painter-xcf-roundtrip/external_references_remain_unresolved",
+            "/painter-xcf-roundtrip/ambiguous_and_unknown_capsule_schema",
+            "/painter-xcf-roundtrip/recovery_registered_save",
+            "/painter-xcf-roundtrip/recovery_failed_save",
+            "/painter-xcf-roundtrip/malformed_filter_cache_stays_opaque",
+            "/painter-xcf-roundtrip/malformed_clone_reference_stays_opaque",
+            "/painter-xcf-fields/all_owner_attributes",
+            "/painter-xcf-fields/legacy_text_and_units",
+            "/painter-xcf-fields/profiles_palettes_metadata",
+            "/painter-xcf-fields/wrong_owner_capsules",
+            "/painter-xcf-fields/retained_metadata_bound",
+            "/painter-xcf-fields/modern_effect_records",
+            "/painter-xcf-fields/unsupported_effect_refuses_save",
+            "/painter-xcf-fields/modern_effect_argument_families",
+            "/painter-xcf-fields/clone_duplicate_name_identity",
+            "/painter-xcf-fields/absent_native_properties",
+            "/painter-xcf-fields/native_precision_and_compression",
+            "/painter-xcf-active/running_save_close_reopen",
+            "/painter-xcf-active/importing_save_close_reopen",
+            "/painter-xcf-multipart/native-small",
+            "/painter-xcf-multipart/native-large",
+            "/painter-xcf-multipart/native-cancellation",
+            "/painter-xcf-multipart/native-midprepare-cancel",
+            "/painter-xcf-multipart/native-disk-failure",
+            "/painter-xcf-multipart/argument-snapshot-borrow",
+            "/painter-xcf-multipart/native-owner-duplicate-edit",
+            "/painter-xcf-multipart/native-reordered",
+            "/painter-xcf-multipart/native-grouped",
+            "/painter-xcf-multipart/native-adversarial",
+            "/painter-xcf-multipart/native-opaque-capsules",
+            "/painter-xcf-multipart/native-unclaimed-parasites",
+            "/painter-xcf-multipart/native-inert-ownership-changes",
+            "/painter-xcf-multipart/native-callback-argument-leases",
+            "/painter-xcf-multipart/native-stream-failures",
+            "/painter-xcf-multipart/native-argument-budget"
+          ],
+          "plans": [
+            49
+          ],
+          "numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49
+          ],
+          "valid": true
+        },
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 295
+      },
+      {
+        "name": "painter-layer-modes",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 2.931102991104126,
+        "accepted": true,
+        "tap": {
+          "paths": [
+            "/painter-layer-modes/genuine_projection_and_kernel",
+            "/painter-layer-modes/direct_paint_operation"
+          ],
+          "plans": [
+            2
+          ],
+          "numbers": [
+            1,
+            2
+          ],
+          "valid": true
+        },
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "painter-ancestry-contract",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 0.03859353065490723,
+        "accepted": true,
+        "tap": {
+          "paths": [
+            "/painter-ancestry/same-parent-silent",
+            "/painter-ancestry/equal-depth-parent-identity",
+            "/painter-ancestry/descendant-depth",
+            "/painter-ancestry/ownership"
+          ],
+          "plans": [
+            4
+          ],
+          "numbers": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "valid": true
+        },
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "painter-filter-sobel",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 0.8024773597717285,
+        "accepted": true,
+        "tap": null,
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "painter-public-header-compilation",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 0.14453649520874023,
+        "accepted": true,
+        "tap": null,
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "painter-additional-header-routes",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 3.733250141143799,
+        "accepted": true,
+        "tap": null,
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "update-geometry",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 0.02305889129638672,
+        "accepted": true,
+        "tap": {
+          "paths": [
+            "/update-geometry/ordinary-grid-equivalence",
+            "/update-geometry/translation-bounds",
+            "/update-geometry/extreme-grid-bounds",
+            "/update-geometry/unrounded-intersection-bounds",
+            "/update-geometry/grid-rounding"
+          ],
+          "plans": [
+            5
+          ],
+          "numbers": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "valid": true
+        },
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      },
+      {
+        "name": "projection-update-sanitizer-runner",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 0.12490487098693848,
+        "accepted": true,
+        "tap": null,
+        "skips": [],
+        "crashes": [],
+        "unexpected_diagnostics": [],
+        "expected_diagnostic_count": 0
+      }
+    ],
+    "tap_paths": 332,
+    "python_tests": 27,
+    "header_probes": {
+      "C": 192,
+      "C++": 211
+    },
+    "source_unchanged": true,
+    "external_inputs_unchanged": true,
+    "build_outputs_unchanged": true,
+    "elf_unchanged": true,
+    "raw_receipt": {
+      "sha256": "fe4e6b55167eb51220c5a339ad71cd1a09b0b975472b003116532cbfae2d9a85",
+      "bytes": 417760
+    },
+    "registered_results": {
+      "sha256": "106f88e3ef5036125cda59b296d6bfc08c45dcb32a6b444be5a6f599f8cd3e30",
+      "bytes": 406914
+    },
+    "seal_receipts": {
+      "source": {
+        "before": {
+          "sha256": "3da04bcc99937f78d04d63ad3650df6cb34df603e64b8665c0a4ae7c2e6415d3",
+          "bytes": 2744566
+        },
+        "after": {
+          "sha256": "3da04bcc99937f78d04d63ad3650df6cb34df603e64b8665c0a4ae7c2e6415d3",
+          "bytes": 2744566
+        }
+      },
+      "external": {
+        "before": {
+          "sha256": "765c828baabf4304807c7c01153f103bf637b763a1cea65c062d7f7617eb0fbe",
+          "bytes": 2668
+        },
+        "after": {
+          "sha256": "765c828baabf4304807c7c01153f103bf637b763a1cea65c062d7f7617eb0fbe",
+          "bytes": 2668
+        }
+      },
+      "build": {
+        "before": {
+          "sha256": "54739f69ba2f8f5879376e36044be66c1600c894825e063f46c25e4743dd1b59",
+          "bytes": 4761933
+        },
+        "after": {
+          "sha256": "54739f69ba2f8f5879376e36044be66c1600c894825e063f46c25e4743dd1b59",
+          "bytes": 4761933
+        }
+      },
+      "elf": {
+        "before": {
+          "sha256": "f66ba1938c9e2e82ed64910b93a2d923b835177d50949a3d0203eca3fb94697e",
+          "bytes": 597729
+        },
+        "after": {
+          "sha256": "f66ba1938c9e2e82ed64910b93a2d923b835177d50949a3d0203eca3fb94697e",
+          "bytes": 597729
+        }
+      }
+    },
+    "expected_diagnostics": {
+      "total": 295,
+      "target": "painter-xcf-roundtrip",
+      "messages": {
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Duplicate Painter metadata key; original capsule is retained and cannot be safely rewritten": 3,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 2,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Missing layer kind": 2,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert": 218,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Saved Filter arguments exceed the mutable materialization limit; original definition is retained": 2,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 13,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version": 44,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown layer kind": 6,
+        "GIMP-Warning: XCF Warning: argument \"format\" of filter gegl:color has unsupported type gpointer. It was discarded.": 1,
+        "GIMP-Warning: XCF Warning: the \"unavailable effect\" (xxxxxxxxxxxxxxxxxxxxxxxx) filter is not installed. It was discarded.": 1,
+        "GIMP-Warning: XCF Warning: version 0:0 of filter \"gegl:brightness-contrast\" does not have the future-value property. The property was ignored and the filter may not render properly.": 3
+      }
+    },
+    "other_retained_output": "Ordinary plug-in dummy-file notices, GLib informational/debug lines, intentional negative-case helper/batch messages and Python unittest summaries remain in raw logs. No empty-stderr or warning-free claim.",
+    "registry_sha256": "82836bb633f6d15ed6d5e958dd5058cb311c6e590a6688fadf44cadcd4f78232",
+    "sobel_specific_sanitizer_runner_registered": false,
+    "cross_baseline_adjustment": {
+      "private_elf_additions": 78,
+      "reconciliation_sha256": "388dce38bf6675c8419fcd10f84ab92b58a7b0d0de0945a4ab703a209d7b0f7a",
+      "sanitizer_report_sha256": "f63f03ef6b9e1ea75bc95f6162abc0b4fbc8133aa489dff7f5493e3228bdabc4",
+      "scope": "Cross-baseline comparison only; all private outputs remain in full before/after seals",
+      "original_files_changed_or_removed": 0
+    }
+  },
+  "genuine_legacy": {
+    "reference_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+    "source_sha256": {
+      "app/base/tile-manager.c": "c0f56f68295c900a6be2e5177e433a4f2767cc56a60164e1b8e107d484624b22",
+      "app/core/gimpdrawable-combine.c": "b6766935ce9a53b043d1bb631fa3bcd297c75f78aa27c809b2f80b76b82970a9",
+      "app/core/gimpdrawable-shadow.c": "4f7492e158f793c18144bb0f55df0ca8b70a5f6eac7048a2d3d1589c1268fa97",
+      "app/core/gimpfilterlayer.cpp": "b65c569e13123fd9e89ab74c6178e75b20beaa3bd7072892314d905aa5781708",
+      "app/core/gimpgrouplayer.c": "66dbca9480720c4bad1983e4bb2ede63dcc6f89f2be479a2f097e4d44553bfea",
+      "app/core/gimpimage.c": "3ad0220951737f6a737457337a93772d32137afdf284808b1137fc49c22d48b1",
+      "app/core/gimpitem.c": "ab94cf266e03ebbd5d7802b6bc6cddd1d8070a54cddbe822dbcd78a1618c60b0",
+      "app/core/gimplayer.c": "3da1fffe7178ae3434aeaa06da5e09919ed033fb9cb73f3122f9cc2c00dc1b54",
+      "app/core/gimpparamspecs.c": "884a7dfe9e1a38a91ed2b5907a0b08cf1fec3f5c74af57f07455e5cb984cbfab",
+      "app/core/gimpprojection.c": "53da0effbdd0cd6a2f8fa7be16f2cac6d2e432c43874be936d1786b518cc1c2c",
+      "app/paint-funcs/paint-funcs-utils.h": "12917e95afa5dabb2ce961d2978878cd72c12632e5ff90426aa6eba14f04cc14",
+      "app/paint-funcs/paint-funcs.c": "41a5b121529718048b8cf3d6a9edd5bf67fb7e0734664393ea3c2a497d6d1cb5",
+      "app/pdb/drawable-cmds.c": "0d952b31ff9c096bd82432aa1dfd158855f64a708613e47faef807cab8e086b6",
+      "app/pdb/pdb-cxx-utils.hpp": "d3d086928b1fa2104fb257f190f6e4032c6b45a6de8e3c8392d5e160f26d064e",
+      "app/pdb/progress-cmds.c": "b46c25f5c2687217cda44d00b3eb501e78abc0d25c53dc69585789315a187845",
+      "app/plug-in/gimpplugin-cleanup.c": "7e2e838ff205aa83b08f48cce0341146655e30df4e92bdfd478258a49c3f824b",
+      "app/plug-in/gimppluginmanager-call.c": "45f5130f4fbc21ee7d371d2cccdd88456edbc2878a451d8d719f3207be12001a",
+      "app/plug-in/gimppluginprocedure.c": "3427261876ccff141fbfa1cc2a5a9507442e8193665f2dc3f24d7f9629749b6d",
+      "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+      "app/xcf/xcf-write.c": "ec8bce3cf10d36a99842e391723da968eaf1a3aa96e798e7bca9612c4303d09d",
+      "libgimp/gimpdrawable.c": "b1254b63e66f72adde49d53aa6f846ba937e245b1a07b6ec9846c11ae7ad22e0",
+      "libgimp/gimpdrawable_pdb.c": "d9aa1cf0f77fd62560c2be0dbe8378605e533845611ba263ca48c43884dfe11f",
+      "libgimp/gimppixelrgn.c": "46bb7842319e6eb9de56dcb58ed92853611a126793f2bd28309be0d571a7b7e1",
+      "libgimp/gimpprogress.c": "d1a26e9008ff6d94d54feff49071586d7a742818fa648aa0c22b5eba00ef0098",
+      "libgimp/gimpregioniterator.c": "1289b75a1c49185d9ddaa5f97b5a406b297eab78560854344e8b9a4da41213be",
+      "libgimpmath/gimpmath.h": "5be55b44288b5d3bac28e9fc51e5003af07734dc41b098f137e35ef6188f3ffe",
+      "plug-ins/common/edge-sobel.c": "f37f08e206559a1948977b3a2e688fc5ed19fa3c442b1766634ac5b6ed7d5402"
+    },
+    "binary_sha256_by_capture": {
+      "base": {
+        "legacy-sobel": "1ee49dea92506c27412246b9e04e635e61cd98e8422912b215839214503a17b4",
+        "gimp-2.8": "fa50380638d7aaf9a18cdec3d6a3e907f5709c6124c314fe0586b47197468220",
+        "edge-sobel": "d5bd7f4d35c8d6c77c0dd43f6608debef116ad985b982f0f6e8ce65bcb2ff44e"
+      },
+      "large": {
+        "legacy-sobel": "11cc9f3d2e648179b5fb420f44ba8c34629757511bef87cccca863fdded6a778",
+        "gimp-2.8": "fa50380638d7aaf9a18cdec3d6a3e907f5709c6124c314fe0586b47197468220",
+        "edge-sobel": "d5bd7f4d35c8d6c77c0dd43f6608debef116ad985b982f0f6e8ce65bcb2ff44e"
+      },
+      "projection": {
+        "legacy-sobel-projection": "bb90ed9eb7ced78f5a088ae5bad922ef3547e79b31dcbff1092b1756a929dbd2",
+        "gimp-2.8": "fa50380638d7aaf9a18cdec3d6a3e907f5709c6124c314fe0586b47197468220",
+        "edge-sobel": "d5bd7f4d35c8d6c77c0dd43f6608debef116ad985b982f0f6e8ce65bcb2ff44e"
+      }
+    },
+    "source_and_binary_pre_post_equal": true,
+    "base_cases": 410,
+    "large_cases": 2,
+    "main_cases": 412,
+    "original_pdb_cases": 182,
+    "main_live_scenes": 230,
+    "main_live_runs": 356,
+    "history_scenes": 24,
+    "history_live_runs": 72,
+    "writer_xcf_files": 64,
+    "modern_main_output_comparisons": 356,
+    "modern_history_output_comparisons": 72,
+    "history_before_copy_checks": 72,
+    "seeded_loaded_idle_controls": 12,
+    "selected_halo_scenes": 8,
+    "seeded_scope": "Synthetic cache initialized through original mark-as-loaded API; not an actual old XCF reopen observation.",
+    "capsule": {
+      "bytes": 90,
+      "name_bytes_hex": "706c75672d696e2d736f62656c00",
+      "name_encoded_length": 14,
+      "tags": [
+        2,
+        1,
+        10,
+        2,
+        2,
+        2,
+        0
+      ],
+      "payload_sizes": [
+        4,
+        0,
+        0,
+        4,
+        4,
+        4,
+        0
+      ],
+      "signed_scalar_offsets": [
+        26,
+        54,
+        66,
+        78
+      ]
+    },
+    "corpora": {
+      "base": {
+        "acceptance_pins_changed": false,
+        "archive": "migration/fixtures/legacy-sobel-context.tar.xz",
+        "archive_sha256": "bb8bf92f1f6f507b71fd7e67a200ee989c7ed06b4ddba8b34393a559a1ec63f7",
+        "case_count": 410,
+        "kind": "base",
+        "manifest": "migration/fixtures/legacy-sobel-context.tar.manifest.json",
+        "manifest_sha256": "780c5689fc078fe3b2bab929bf9afca98031a8bb8f2dfb1eb17789a2aaf812af",
+        "member_count": 5279,
+        "proof": {},
+        "report_sha256": "118d19252a5eb31b94b18e6e3b33519fc8017363f5e2f0415d7aa7c8d2f75fa1",
+        "total_bytes": 12042559
+      },
+      "large": {
+        "acceptance_pins_changed": false,
+        "archive": "migration/fixtures/legacy-sobel-large.tar.xz",
+        "archive_sha256": "7bf88acd2cbbd6733d1189c33cf9ee91e9c92f0089095b30a50f6219c96e8f27",
+        "case_count": 2,
+        "kind": "large",
+        "manifest": "migration/fixtures/legacy-sobel-large.tar.manifest.json",
+        "manifest_sha256": "9a96ec3f498f7eaf4967cac348e805b1fd2fe2b496b19de380f0086b54ad192a",
+        "member_count": 59,
+        "proof": {},
+        "report_sha256": "dfff84ea5b7676b47fa20538219b2c947fddd4492f04b495c046bcc05b88f263",
+        "total_bytes": 95039048
+      },
+      "projection": {
+        "acceptance_pins_changed": false,
+        "archive": "migration/fixtures/legacy-sobel-projection.tar.xz",
+        "archive_sha256": "8abd3b57789d5a2e8777e3c8f402545521ed2f87b95ffb5200c9d27819ad6d26",
+        "case_count": 24,
+        "kind": "projection",
+        "manifest": "migration/fixtures/legacy-sobel-projection.tar.manifest.json",
+        "manifest_sha256": "c310b47776fe380ab2003c4a72021099f4a1783a9d0f09a0ac6e60811bf07e12",
+        "member_count": 850,
+        "proof": {
+          "distinguishing_retained_halo_runs": 16,
+          "group_outside_image_pixels": 2664,
+          "preserved_after_first_run_pixels": 1776,
+          "vertical_halo_retained_cache_pixels": 184,
+          "zero_alpha_hidden_color_channels": 1810
+        },
+        "report_sha256": "e14788d46622dfc60dbb981b9248fcfaefa608d28cbe4410607c33e4e9bef11b",
+        "total_bytes": 1034553
+      }
+    },
+    "capture_attempts_failed": 0,
+    "diagnostics": {
+      "known_total": 9,
+      "gobject_value_holds_object_assertions": 6,
+      "missing_tag_cache": 3,
+      "unexpected": 0,
+      "retained_in_archive_logs": true
+    },
+    "artwork": "Deterministic synthetic inputs only; no user artwork loaded.",
+    "large_equation_checker_scope": "Python checker skips full raw Sobel arithmetic for both 1031x1021 cases. Provenance, context, ROI and merge checks remain. Normal and sanitizer native real-spill consumers compare every final output byte, including reruns, to actual captured outputs.",
+    "content_audit_sha256": "2369fdfa53cedf40cb8d120cb82501ac67892a851f533cda7f9e26ddf53b60b0",
+    "capture_summary": {
+      "sha256": "792dd727e5f0f948b4807f3377846489cf4280a9cce8703adbd346497179ec44",
+      "bytes": 6326
+    },
+    "post_capture_checker_change": "Only archive/report/manifest pin constants and observed-shape comment changed in the two evidence checkers after capture. Original sealed capture snapshots/reports are unmodified."
+  },
+  "xcf": {
+    "actual_old_writer_files": 64,
+    "manufactured_malformed_or_unsupported_cases": 20,
+    "synthetic_active_save_cases": 4,
+    "genuine_scope": [
+      "Open and duplicate without unsolicited execution",
+      "Save, close original image, reopen raw definition and completed cache",
+      "Changed and unchanged lower notifications against genuine second outputs",
+      "Independent H/V/K edit Undo/Redo against genuine alternate outputs",
+      "12 directly observed definition-toggle second outputs"
+    ],
+    "malformed_scope": "Raw definition/cache retained and no executions through Open, Save/close/reopen, lower invalidation and another Save/reopen.",
+    "active_save_scope": "RGB/Gray vector RUNNING or spill IMPORTING; serialized snapshot and complete synthetic sentinel image retained, separate fresh live epoch, recompute once, completed Save/reopen. Every active-save/reopen stage compares all drawable bytes with the synthetic sentinel or expected result; not genuine-old active-save evidence."
+  },
+  "buffer_visibility": {
+    "worker": "In-process scheduler thread using private vector or spool-backed input/output; no owner GObjects",
+    "import": "Owner-thread merge into separate private GEGL staging buffer",
+    "publication": "Only complete current-generation staging replaces the completed drawable buffer",
+    "limits": [
+      "No process or crash isolation",
+      "No whole-program thread-safety proof",
+      "No whole-screen compositor or display-vsync atomicity"
+    ]
+  },
+  "native_sanitizers": {
+    "status": "passed",
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "leak_detection": false,
+    "instrumented_cpp_rtti": true,
+    "instrumented_translation_units": 40,
+    "instrumented_sources": [
+      "app/config/gimpgeglconfig.c",
+      "app/config/gimppainterfilterconfig.cpp",
+      "app/core/gimpclonelayer.cpp",
+      "app/core/gimpdrawablestack.c",
+      "app/core/gimpfiltercontext.cpp",
+      "app/core/gimpfilterlayer.cpp",
+      "app/core/gimpgrouplayer.c",
+      "app/core/gimpimage-duplicate.c",
+      "app/core/gimpimage-undo.c",
+      "app/core/gimpitem.c",
+      "app/core/gimplayerstack.c",
+      "app/core/gimpprojection.c",
+      "app/painter/binding-store.cpp",
+      "app/painter/filter-context.cpp",
+      "app/painter/filter-native-kernels.cpp",
+      "app/painter/filter-raster-kernels.cpp",
+      "app/painter/filter-raster.cpp",
+      "app/painter/filter-scheduler.cpp",
+      "app/painter/filter-sharpen-shadow.cpp",
+      "app/painter/filter-sharpen.cpp",
+      "app/painter/filter-sobel.cpp",
+      "app/painter/filter-spool.cpp",
+      "app/painter/gimp-painter-binding.cpp",
+      "app/painter/gimp-painter-error.cpp",
+      "app/tests/test-gimp-filter-layer.c",
+      "app/tests/test-painter-xcf-open.c",
+      "app/xcf/painter-xcf-arguments.cpp",
+      "app/xcf/painter-xcf-compat.cpp",
+      "app/xcf/painter-xcf-load.cpp",
+      "app/xcf/painter-xcf-multipart.cpp",
+      "app/xcf/painter-xcf-preserve.cpp",
+      "app/xcf/painter-xcf-storage.cpp",
+      "app/xcf/painter-xcf-transport.cpp",
+      "app/xcf/xcf-load.c",
+      "app/xcf/xcf-read.c",
+      "app/xcf/xcf-save.c",
+      "app/xcf/xcf-seek.c",
+      "app/xcf/xcf-utils.c",
+      "app/xcf/xcf-write.c",
+      "app/xcf/xcf.c"
+    ],
+    "rtti_compatibility_only_count": 36,
+    "rtti_compatibility_only_sources": [
+      "app/dialogs/file-save-deferred.cpp",
+      "app/dialogs/painter-layer-dialog.cpp",
+      "app/paint/gimpbrushcore-loops.cc",
+      "app/paint/gimpfillbrush.cpp",
+      "app/paint/gimppaintcore-loops.cc",
+      "app/paint/gimppainterbrushgeometry.cpp",
+      "app/paint/gimppainterpaintgate.cpp",
+      "app/paint/gimppainterpaper-paste.cpp",
+      "app/paint/gimppainterpaper.cpp",
+      "app/paint/gimppaintersmudge.cpp",
+      "app/paint/painter-bounded-fill/search.cpp",
+      "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+      "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "app/paint/painter-mypaint-surface/gimp-resources.cpp",
+      "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp",
+      "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp",
+      "app/paint/painter-mypaint-surface/paint-core.cpp",
+      "app/paint/painter-mypaint/engine.cpp",
+      "app/paint/painter-mypaint/resource.cpp",
+      "app/painter/filter-edge.cpp",
+      "app/painter/filter-gauss.cpp",
+      "app/painter/filter-lifetime.cpp",
+      "app/painter/filter-point-shadow.cpp",
+      "app/painter/filter-process.cpp",
+      "app/painter/filter-wire.cpp",
+      "app/tools/gimpfillbrushtool.cpp",
+      "app/tools/gimppaintermybrushtool.cpp",
+      "app/tools/gimppaintersmudgetool.cpp",
+      "app/tools/gimpperspectiveguidetool.cpp",
+      "app/widgets/gimpcellrendererpopup.cpp",
+      "app/widgets/gimpeditor-cxx.cpp",
+      "app/widgets/gimpmypaintbrushoptions-gui.cpp",
+      "app/widgets/gimppaintercompactoptions.cpp",
+      "app/widgets/gimppainterlayertiles.cpp",
+      "app/widgets/gimppaintermybrusheditor.cpp"
+    ],
+    "unlinked_discoveries": [
+      "app/painter-filter-worker.cpp"
+    ],
+    "tests": [
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_integer_native_route",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 126,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_integer_native_route",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_invalid_definitions_keep_cache",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 127,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_invalid_definitions_keep_cache",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_tiny_selection_routes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 128,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_tiny_selection_routes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_unsupported_precision",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 129,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_unsupported_precision",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_late_context_routes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 130,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_late_context_routes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_component_masks",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 131,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_component_masks",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_sealed_context_routes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 132,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_sealed_context_routes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_outside_selection_no_merge",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 133,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_outside_selection_no_merge",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_cancel_replace_lower_close",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 134,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_cancel_replace_lower_close",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_partial_import_lifecycle",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 135,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_partial_import_lifecycle",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_native_profile_bytes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 136,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_native_profile_bytes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_admission_preserves_cache",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 137,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_admission_preserves_cache",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_projection_input_history",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 138,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_projection_input_history",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_projection_extreme_offsets",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 139,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_projection_extreme_offsets",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_actual_old_live",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 140,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_actual_old_live",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sobel_actual_old_projection_history",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 141,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sobel_actual_old_projection_history",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "253056f7dc1ec19150640dc318981870e55a7e8bfabe30b44e20eed00cb0388b"
+      },
+      {
+        "kind": "xcf",
+        "path": "/painter-xcf-open/sobel_old_writer_roundtrip",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 142,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/painter-xcf-open/sobel_old_writer_roundtrip",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "244c4787734a5fc56e155b402c32e3d78dd6ad823f11bcb6ef7384bf1f969bbb"
+      },
+      {
+        "kind": "xcf",
+        "path": "/painter-xcf-open/sobel_malformed_writer_capsules",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 143,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/painter-xcf-open/sobel_malformed_writer_capsules",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "244c4787734a5fc56e155b402c32e3d78dd6ad823f11bcb6ef7384bf1f969bbb"
+      },
+      {
+        "kind": "xcf",
+        "path": "/painter-xcf-open/sobel_active_save_close_reopen",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 144,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/painter-xcf-open/sobel_active_save_close_reopen",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "244c4787734a5fc56e155b402c32e3d78dd6ad823f11bcb6ef7384bf1f969bbb"
+      }
+    ],
+    "seals": {
+      "source_seals": {
+        "count": 3061,
+        "changed": [],
+        "read_errors": {}
+      },
+      "source_seals_before_tests": {
+        "count": 3061,
+        "changed": [],
+        "read_errors": {}
+      },
+      "ordinary_build_seals": {
+        "count": 118,
+        "changed": [],
+        "read_errors": {}
+      },
+      "fixture_seals": {
+        "count": 8487,
+        "changed": [],
+        "read_errors": {}
+      },
+      "executable_seals": {
+        "count": 2,
+        "changed": [],
+        "read_errors": {}
+      }
+    },
+    "elapsed_seconds": 253.362,
+    "raw_receipt": {
+      "sha256": "f63f03ef6b9e1ea75bc95f6162abc0b4fbc8133aa489dff7f5493e3228bdabc4",
+      "bytes": 17516464
+    },
+    "scope": "sobel kernels and owner-context capture/merge, FilterLayer, scheduler/raster/spool storage, bindings, Undo/duplication, XCF load/save/typed metadata/compatibility and both C harnesses. Listed RTTI-only units are not sanitizer-instrumented; remaining GIMP/dependencies are uninstrumented. Leak detection is disabled.",
+    "ordinary_build_seal_scope": "Canonical replacement inputs, direct link objects, original test executables, compile database/build.ninja and build-local archive containers. Other unmodified thin-archive members and shared libraries are not individually sealed; the caller owns the build lock.",
+    "transitive_source_seal_scope": "All selected sources/scripts, every repository header/include, and canonical Ninja transitive dependencies, including generated/system headers. New dependencies missing from this precompile seal fail the run.",
+    "limits": [
+      "Remaining GIMP and dependencies uninstrumented",
+      "RTTI-only units are not sanitizer instrumented",
+      "LeakSanitizer disabled",
+      "Not a whole-program or installed-runtime result"
+    ]
+  },
+  "python_controls": {
+    "capture_helpers": {
+      "tests": 12,
+      "log_sha256": "517b8135d26e02b0da6755dc27c567fde6a64c23f35191af7920a58f1ab1c051"
+    },
+    "sanitizer_runner": {
+      "tests": 17,
+      "log": {
+        "sha256": "f8723025e2d530d2c3c17b34ea25f836caaf53767e904f33d04b636e00124ca4",
+        "bytes": 2182
+      }
+    },
+    "focused_tap_parser": {
+      "tests": 7,
+      "log": {
+        "sha256": "cedb82dc56386349028ceffb44102c4710aeaac8c7851a279af282486d8d23a8",
+        "bytes": 105
+      }
+    }
+  },
+  "retained_attempts": [
+    {
+      "id": "attempt-e439gesg",
+      "accepted": false,
+      "raw_receipt": {
+        "sha256": "b6f143fb65ce89ab936fe282abc44000b7dc7caa8bc96f6183a01c971355a38a",
+        "bytes": 59942
+      },
+      "reason": "All 16 owner paths executed successfully, but initial parser rejected repeated GLib -p cumulative TAP plans. Parser corrected with seven negative/positive controls; original rejection retained and full focused rerun required."
+    },
+    {
+      "id": "attempt-l6u49h1h",
+      "accepted": false,
+      "raw_receipt": {
+        "sha256": "25b27934a4bd39afa9666a88afb294083b72bbd1ae38f3f4ef472e11468b754b",
+        "bytes": 77786
+      },
+      "reason": "Owner paths and first two XCF paths passed; active-save test wrongly equated saved generation 2 with new live generation 3. Test-only correction separately checks serialized snapshot fields and fresh live waiting/cache epoch through completion. Final complete owner/XCF groups rerun; no production change for this correction.",
+      "test_source_previous_sha256": "c3359ab600885240f2b9fc91a1689f05a206810b0638fb14b45d8537bfbc49e8",
+      "test_source_final_sha256": "afb09f343d3e22a0260597ceeeb5032a861f73aa2bab8fca888b4b9c174fb08b"
+    },
+    {
+      "id": "broader-attempt-3g6sawc5",
+      "accepted": false,
+      "tests_executed": false,
+      "reason": "Cross-baseline preflight rejected 78 private sanitizer ELF additions. No original file changed or disappeared. Reconciled exact added files against sanitizer compile/executable seals; cross-baseline comparison excludes only those additions, while new before/after seals retain all. Fresh complete broader regression then passed.",
+      "raw_receipt": {
+        "sha256": "9de4051d05dd77efb53880009fba41c9b512655bdfdf2e33ad6b697055c02bed",
+        "bytes": 1103
+      }
+    }
+  ],
+  "commands": {
+    "native_focused": [
+      "meson",
+      "test",
+      "-C",
+      "${BUILD}",
+      "--no-rebuild",
+      "--print-errorlogs",
+      "--num-processes",
+      "1",
+      "--logbase",
+      "${REPORT_PREFIX}-native_focused",
+      "gimp-filter-layer",
+      "--test-args",
+      "-p /gimp-filter-layer/sobel_integer_native_route -p /gimp-filter-layer/sobel_invalid_definitions_keep_cache -p /gimp-filter-layer/sobel_tiny_selection_routes -p /gimp-filter-layer/sobel_unsupported_precision -p /gimp-filter-layer/sobel_late_context_routes -p /gimp-filter-layer/sobel_component_masks -p /gimp-filter-layer/sobel_sealed_context_routes -p /gimp-filter-layer/sobel_outside_selection_no_merge -p /gimp-filter-layer/sobel_cancel_replace_lower_close -p /gimp-filter-layer/sobel_partial_import_lifecycle -p /gimp-filter-layer/sobel_native_profile_bytes -p /gimp-filter-layer/sobel_admission_preserves_cache -p /gimp-filter-layer/sobel_projection_input_history -p /gimp-filter-layer/sobel_projection_extreme_offsets -p /gimp-filter-layer/sobel_actual_old_live -p /gimp-filter-layer/sobel_actual_old_projection_history"
+    ],
+    "xcf_focused": [
+      "meson",
+      "test",
+      "-C",
+      "${BUILD}",
+      "--no-rebuild",
+      "--print-errorlogs",
+      "--num-processes",
+      "1",
+      "--logbase",
+      "${REPORT_PREFIX}-xcf_focused",
+      "painter-xcf-open",
+      "--test-args",
+      "-p /painter-xcf-open/sobel_old_writer_roundtrip -p /painter-xcf-open/sobel_malformed_writer_capsules -p /painter-xcf-open/sobel_active_save_close_reopen"
+    ],
+    "broader_registered": [
+      "meson",
+      "test",
+      "-C",
+      "${BUILD}",
+      "--no-rebuild",
+      "--print-errorlogs",
+      "--num-processes",
+      "1",
+      "--logbase",
+      "${REPORT_PREFIX}-broader",
+      "core",
+      "update-geometry",
+      "projection-update-bounds",
+      "gimp-clone-layer",
+      "gimp-filter-layer",
+      "painter-xcf-open",
+      "painter-xcf-roundtrip",
+      "painter-layer-modes",
+      "painter-ancestry-contract",
+      "painter-filter-sobel",
+      "painter-public-header-compilation",
+      "painter-additional-header-routes",
+      "projection-update-sanitizer-runner"
+    ],
+    "focused_sanitizers": [
+      "python3",
+      "-B",
+      "${SOURCE}/migration/tests/run_sharpen_context_sanitizers.py",
+      "${BUILD}",
+      "--operation",
+      "sobel",
+      "--lock-file",
+      "${LOCK}",
+      "--lock-fd",
+      "9",
+      "--report",
+      "${REPORT}",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_integer_native_route",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_invalid_definitions_keep_cache",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_tiny_selection_routes",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_unsupported_precision",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_late_context_routes",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_component_masks",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_sealed_context_routes",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_outside_selection_no_merge",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_cancel_replace_lower_close",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_partial_import_lifecycle",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_native_profile_bytes",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_admission_preserves_cache",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_projection_input_history",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_projection_extreme_offsets",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_actual_old_live",
+      "--native-test-path",
+      "/gimp-filter-layer/sobel_actual_old_projection_history",
+      "--xcf-test-path",
+      "/painter-xcf-open/sobel_old_writer_roundtrip",
+      "--xcf-test-path",
+      "/painter-xcf-open/sobel_malformed_writer_capsules",
+      "--xcf-test-path",
+      "/painter-xcf-open/sobel_active_save_close_reopen"
+    ],
+    "legacy_capture_base": [
+      "python3",
+      "-B",
+      "${SOURCE}/tools/capture_legacy_sobel.py",
+      "--capture",
+      "--legacy-source",
+      "${LEGACY_SOURCE}",
+      "--legacy-prefix",
+      "${LEGACY_PREFIX}",
+      "--work",
+      "${WORK_BASE}",
+      "--output",
+      "${CAPTURE_BASE}",
+      "--lock",
+      "${LOCK}"
+    ],
+    "legacy_capture_large": [
+      "python3",
+      "-B",
+      "${SOURCE}/tools/capture_legacy_sobel.py",
+      "--capture",
+      "--legacy-source",
+      "${LEGACY_SOURCE}",
+      "--legacy-prefix",
+      "${LEGACY_PREFIX}",
+      "--work",
+      "${WORK_LARGE}",
+      "--output",
+      "${CAPTURE_LARGE}",
+      "--lock",
+      "${LOCK}",
+      "--large"
+    ],
+    "legacy_capture_projection": [
+      "python3",
+      "-B",
+      "${SOURCE}/tools/capture_legacy_sobel_projection.py",
+      "--capture",
+      "--legacy-source",
+      "${LEGACY_SOURCE}",
+      "--legacy-prefix",
+      "${LEGACY_PREFIX}",
+      "--work",
+      "${WORK_PROJECTION}",
+      "--output",
+      "${CAPTURE_PROJECTION}",
+      "--lock",
+      "${LOCK}"
+    ]
+  },
+  "command_preconditions": [
+    "Source configured native or legacy ENV as appropriate",
+    "Use fresh report/output paths and the shared exclusive LOCK",
+    "Ordinary Meson commands run through authenticated private DISPLAY_WRAPPER",
+    "Sanitizer command runs inside verified run_filter_owner_context_fixture_test.py wrapper with authenticated display and inherited exclusive descriptor 9",
+    "Receipt ${...} entries are placeholders, not literal local paths"
+  ],
+  "not_covered": [
+    "General arbitrary-PDB execution or process isolation",
+    "Whole-program sanitizer or leak acceptance",
+    "A new full project aggregate",
+    "Installed runtime, Windows/macOS, tablet or full legacy UI parity",
+    "Whole-port completion",
+    "General projection-history parity for other operations",
+    "Full independent Python Sobel equation evaluation of the two large captures",
+    "Repair of the 67 pre-existing full task-validator diagnostics"
+  ],
+  "publication_policy": {
+    "construction": "Explicit allowlisted fields only; no raw report/environment/console-log copy",
+    "excluded": [
+      "Local absolute filesystem paths",
+      "Credentials and display authorization",
+      "Raw environment",
+      "Full console output"
+    ],
+    "documentation_timing": "Contract, public receipt and bounded ledger completion were written after executable source seals. These documentation updates were not present during focused/broader execution."
+  },
+  "review": {
+    "source_and_fixture": "Independent review reported no blocker; all members/raw captures/manifests, deterministic plans, old source pins and 64 writer capsules reconciled.",
+    "focused_native": "Coordinator reports independent focused review found no blocker.",
+    "broader_and_final_public_receipt": "Independent terminal broader evidence reconciliation passed; final four documentation/ledger files submitted for consistency review."
+  },
+  "prior_aggregate_scope": {
+    "source_commit": "7463d5dc65fa74832ab7f8219aae71dc83d6b8c7",
+    "scope": "Prior full aggregate remains evidence only for its exact source baseline; this Sobel work does not inherit that aggregate result."
+  },
+  "ledger_validation": {
+    "status": "baseline-failures-unchanged",
+    "full_validator_passed": false,
+    "baseline": "8201a7ab8e2cc1034409551013db8b9b6ba8c0ad",
+    "baseline_exit_code": 1,
+    "current_exit_code": 1,
+    "baseline_diagnostic_count": 67,
+    "current_diagnostic_count": 67,
+    "ordered_diagnostics_identical": true,
+    "new_diagnostics": [],
+    "removed_diagnostics": [],
+    "validator_sha256": "b3a5fedc58d422328a4f4e1732504157fe9fe874a99a3435e74c51e04e8db369",
+    "comparison": {
+      "sha256": "f5c1db97e76bf172fab01f12ff8d231e4b71536e47dbf783b4775d4f63de0e2b",
+      "bytes": 12053
+    },
+    "baseline_stderr": {
+      "sha256": "7ffb906b182da838144ff654102a9c99ecfb16df067aee6e37b32e8dc4ecad37",
+      "bytes": 4374
+    },
+    "current_stderr": {
+      "sha256": "7ffb906b182da838144ff654102a9c99ecfb16df067aee6e37b32e8dc4ecad37",
+      "bytes": 4374
+    },
+    "scoped_change": "Removing only the native-sobel-context row from tasks.md and progress.tsv restores exact public-base bytes. Its three declared prerequisites are complete; broader parent gates remain open.",
+    "limitations": "Inherited malformed rows, missing prior progress records, Threshold prerequisite reference and legacy inventory assignment diagnostics are not repaired or waived."
+  }
+}

@@ -37,6 +37,7 @@ extern "C" {
 #include "painter/filter-edge.hpp"
 #include "painter/filter-gauss.hpp"
 #include "painter/filter-sharpen-shadow.hpp"
+#include "painter/filter-sobel.hpp"
 #include "painter/filter-point-shadow.hpp"
 #include "painter/filter-raster-kernels.hpp"
 #include "painter/filter-native-kernels.hpp"
@@ -434,6 +435,72 @@ struct FilterImpl
               filter_sharpen_shadow_validate (width, height, *region, options);
             };
             prepared.outcome = outcome;
+          }
+      }
+    else if (procedure == "plug-in-sobel" && !real)
+      {
+        /* This is the independent old Sobel procedure, never Edge's Sobel
+         * mode. Claim the literal byte route before strict argument admission;
+         * no malformed definition may fall through to another executor. */
+        if (args && args->size () == 6 &&
+            (gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_RGB || gray ()) &&
+            G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
+            G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_INT (args->at (3)) &&
+            G_VALUE_HOLDS_INT (args->at (4)) && G_VALUE_HOLDS_INT (args->at (5)))
+          {
+            const auto width = request.width, height = request.height;
+            constexpr auto maximum = std::numeric_limits<std::int32_t>::max ();
+            /* Full storage/reservation bounds precede admission. The Sobel
+             * validator applies its own captured ROI row-width bound later;
+             * neither Sharpen's tiny minima nor Threshold's area limit apply. */
+            if (width && height && width <= std::size_t (maximum) && height <= std::size_t (maximum) &&
+                std::uint64_t (width) <= std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / 4 / height &&
+                std::uint64_t (width) <= (std::numeric_limits<std::uint64_t>::max () - 2 * 1024 * 1024) / 17 / height)
+              {
+                const auto region = std::make_shared<FilterSelectionRegion> ();
+                const auto outcome = std::make_shared<FilterProcedureResult> ();
+                const SobelOptions options { g_value_get_int (args->at (3)),
+                  g_value_get_int (args->at (4)), g_value_get_int (args->at (5)) };
+                const auto pixels = std::uint64_t (width) * height;
+                const auto owner_bytes = pixels * (gray () ? 5u : 9u);
+                /* Native input, final mask and private staging: 5/9 Bpp.
+                 * Two private RGBA vectors/files: 8 Bpp. The conservative
+                 * shared 304-KiB allowance covers bounded owner merge/capture
+                 * and Sobel's fixed 32,792-byte scratch. Spill additionally
+                 * charges six RGBA transport chunks. These logical admission
+                 * reservations are not a process-RSS or GEGL-cache limit. */
+                const auto bounded = std::uint64_t (FilterScheduler::pixel_budget) * 8 + 48 * 1024;
+                const auto peak = owner_bytes + bounded + (spill ?
+                  std::uint64_t (FilterScheduler::pixel_budget) * 4 * 6 : pixels * 8);
+                request.peak_bytes = std::size_t (std::min (peak,
+                  std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+                if (spill) request.peak_spill_bytes = pixels * 8 + owner_bytes;
+                request.process = [width, height, region, options, channel, outcome]
+                  (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel, FilterScheduler::Bytes& output) {
+                    const auto result = filter_sobel_shadow_vector (input, width, height, *region,
+                      options, cancel, output, channel);
+                    if (result == FilterSobelShadowOutcome::cancelled) return false;
+                    outcome->publish (result == FilterSobelShadowOutcome::shadow ?
+                      FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                    return true;
+                  };
+                if (spill)
+                  request.raster_process = [width, height, region, options, channel, outcome]
+                    (FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel, const FilterRasterFactory&) {
+                      const auto result = filter_sobel_shadow_raster (input, width, height, *region,
+                        options, cancel, output, channel);
+                      if (result == FilterSobelShadowOutcome::cancelled) return false;
+                      outcome->publish (result == FilterSobelShadowOutcome::shadow ?
+                        FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                      return true;
+                    };
+                prepared.kernel_region = region;
+                prepared.kernel_validate = [width, height, region, options] {
+                  filter_sobel_shadow_validate (width, height, *region, options);
+                };
+                prepared.outcome = outcome;
+                prepared.projection_input = true;
+              }
           }
       }
     else if (procedure == "plug-in-threshold-alpha" && !real)
@@ -1210,16 +1277,25 @@ struct FilterImpl
         GeglNode *node = gimp_filter_get_node (GIMP_FILTER (owner));
         if (!input_current (generation)) return;
         GeglNode *below_node = gegl_node_get_input_proxy (node, "input");
-        auto rect = rectangle (offset, count);
-        rect.x += gimp_item_get_offset_x (GIMP_ITEM (owner));
-        rect.y += gimp_item_get_offset_y (GIMP_ITEM (owner));
+        const auto rect = rectangle (offset, count);
+        /* Item offsets are gint but a later local chunk may move beyond that
+         * domain. Keep the translated rectangle wide until projection clipping
+         * has established whether any native read is needed. In particular, an
+         * entirely off-parent chunk still carries its completed cache bytes. */
+        const auto source_x = std::int64_t (rect.x) + gimp_item_get_offset_x (GIMP_ITEM (owner));
+        const auto source_y = std::int64_t (rect.y) + gimp_item_get_offset_y (GIMP_ITEM (owner));
         const auto size = input.size ();
         const bool real = real_samples ();
         input.resize (size + count * (real ? 32 : 4));
         const auto blit_input = [&] (void *bytes, std::size_t stride) {
           if (!native_projection_input)
             {
-              gegl_node_blit (below_node, 1.0, &rect, encoded_format (), bytes,
+              if (source_x < G_MININT || source_y < G_MININT ||
+                  source_x + rect.width > G_MAXINT || source_y + rect.height > G_MAXINT)
+                throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
+                             "Filter input exceeds the native coordinate range");
+              const GeglRectangle source {int (source_x), int (source_y), rect.width, rect.height};
+              gegl_node_blit (below_node, 1.0, &source, encoded_format (), bytes,
                               GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_CACHE);
               return;
             }
@@ -1230,7 +1306,8 @@ struct FilterImpl
            * overwrite only current lower-projection coverage. Reading the raw
            * GEGL proxy unrestricted would instead expose off-canvas source.
            * A group projection uses its own offset/extent, not the image canvas.
-           * This policy belongs only to the nonlinear-U8 Threshold route. */
+           * This policy belongs only to the nonlinear-U8 Threshold and Sobel
+           * routes. Sobel's vertical halo may sample retained cache pixels. */
           const auto local = rectangle (offset, count);
           auto cache = ObjectRef<GObject>::retain (G_OBJECT (gimp_drawable_get_buffer (GIMP_DRAWABLE (owner))));
           gegl_buffer_get (GEGL_BUFFER (cache.get ()), &local, 1.0, encoded_format (),
@@ -1242,13 +1319,16 @@ struct FilterImpl
             gimp_image_get_width (GIMP_IMAGE (image.get ())));
           const auto y2 = y1 + (parent ? gimp_item_get_height (parent) :
             gimp_image_get_height (GIMP_IMAGE (image.get ())));
-          const auto left = std::max<std::int64_t> (rect.x, x1);
-          const auto top = std::max<std::int64_t> (rect.y, y1);
-          const auto right = std::min<std::int64_t> (std::int64_t (rect.x) + rect.width, x2);
-          const auto bottom = std::min<std::int64_t> (std::int64_t (rect.y) + rect.height, y2);
+          const auto left = std::max (source_x, x1);
+          const auto top = std::max (source_y, y1);
+          const auto right = std::min (source_x + rect.width, x2);
+          const auto bottom = std::min (source_y + rect.height, y2);
           if (left >= right || top >= bottom) return;
+          if (left < G_MININT || top < G_MININT || right > G_MAXINT || bottom > G_MAXINT)
+            throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
+                         "Filter parent projection exceeds the native coordinate range");
           const GeglRectangle clipped {int (left), int (top), int (right-left), int (bottom-top)};
-          const auto destination = (std::size_t (top-rect.y) * rect.width + std::size_t (left-rect.x)) * stride;
+          const auto destination = (std::size_t (top-source_y) * rect.width + std::size_t (left-source_x)) * stride;
           gegl_node_blit (below_node, 1.0, &clipped, encoded_format (),
                           static_cast<std::uint8_t *> (bytes) + destination,
                           rect.width * stride, GEGL_BLIT_CACHE);
@@ -1362,7 +1442,7 @@ struct FilterImpl
             if (!native_context.before_process (GIMP_DRAWABLE (owner), *native_kernel_region, read_budget))
               return false;
             /* Each kernel owns its captured-crop domain. In particular,
-             * Threshold Alpha accepts one-pixel intersections while Sharpen
+             * Threshold Alpha and Sobel accept one-pixel intersections while Sharpen
              * retains the pinned kernel's unsafe tiny-crop rejection. */
             native_kernel_validate ();
             native_outcome->reset ();

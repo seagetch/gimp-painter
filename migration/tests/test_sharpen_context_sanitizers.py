@@ -70,6 +70,24 @@ class Checks(unittest.TestCase):
         with self.assertRaises(ValueError):
             m.operation_config('unknown')
 
+    def test_sobel_scope_is_separate_and_complete(self):
+        sharpen = m.operation_config('sharpen')
+        sobel = m.operation_config('sobel')
+        self.assertEqual(sobel['instrumented'] - sharpen['instrumented'],
+                         {'app/painter/filter-sobel.cpp',
+                          'app/core/gimpdrawablestack.c',
+                          'app/core/gimplayerstack.c',
+                          'app/core/gimpprojection.c'})
+        self.assertNotIn('app/painter/filter-point-shadow.cpp', sobel['instrumented'])
+        self.assertEqual(sobel['fixtures'], ['GIMP_PAINTER_SHARPEN_FIXTURES',
+                                            'GIMP_PAINTER_SOBEL_FIXTURES',
+                                            'GIMP_PAINTER_SOBEL_PROJECTION_FIXTURES'])
+        self.assertIn('tools/check_sobel_evidence.py', sobel['scripts'])
+        self.assertIn('tools/check_sobel_projection_evidence.py', sobel['scripts'])
+        self.assertEqual(sobel['report_format'], 'sobel-context-sanitizers-v1')
+        sobel['instrumented'].clear()
+        self.assertIn('app/painter/filter-sobel.cpp', m.operation_config('sobel')['instrumented'])
+
     def test_other_operation_report_is_not_overwritten(self):
         report = self.root / 'other.json'
         content = '{"report_format":"sharpen-context-sanitizers-v1","status":"passed"}'
