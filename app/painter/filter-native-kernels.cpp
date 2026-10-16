@@ -193,6 +193,37 @@ bool filter_point_raster (FilterRaster& in, FilterRaster& out, std::size_t w, st
   if (progress) progress->set_value (1.0);
   return true;
 }
+bool filter_max_rgb_raw_raster (FilterRaster& in, FilterRaster& out,
+                                std::size_t width, std::size_t height,
+                                std::int32_t mode, std::atomic<bool>& cancel,
+                                const std::shared_ptr<FilterProgress>& progress)
+{
+  const auto size = extent (in, out, width, height, 4);
+  std::array<std::uint8_t, 32768> bytes;
+  for (std::uint64_t offset = 0; offset < size; )
+    {
+      if (cancel.load (std::memory_order_relaxed)) return false;
+      const auto count = std::size_t (std::min<std::uint64_t> (bytes.size (), size - offset));
+      in.read (offset, count, bytes.data ());
+      for (std::size_t i = 0; i < count; i += 4)
+        {
+          if ((i & 1023) == 0 && cancel.load (std::memory_order_relaxed)) return false;
+          auto *pixel = bytes.data () + i;
+          const auto selected = mode > 0 ? std::max ({pixel[0], pixel[1], pixel[2]}) :
+                                           std::min ({pixel[0], pixel[1], pixel[2]});
+          for (int channel = 0; channel < 3; ++channel)
+            if (pixel[channel] != selected) pixel[channel] = 0;
+        }
+      out.write (offset, count, bytes.data ());
+      if (cancel.load (std::memory_order_relaxed)) return false;
+      offset += count;
+      if (progress) progress->set_value (0.99 * double (offset) / size);
+    }
+  out.flush ();
+  if (cancel.load (std::memory_order_relaxed)) return false;
+  if (progress) progress->set_value (1.0);
+  return true;
+}
 bool filter_edge_real_raster (FilterRaster& in, FilterRaster& out, std::size_t w, std::size_t h,
                                const EdgeOptions& options, std::atomic<bool>& cancel,
                                const std::shared_ptr<FilterProgress>& progress)

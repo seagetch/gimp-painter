@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Build/run the independent nonlinear-U8 Threshold Alpha raw-shadow wrapper.
+"""Build/run the independent nonlinear-U8 Threshold Alpha/Max RGB raw shadows.
 
-The focused test reuses the existing point arithmetic and checks 20 archived
-original-GIMP outputs plus generated scalar/geometry/merge-invariant cases.
+The focused test preserves Threshold Alpha coverage and checks 20 archived
+Threshold outputs, 16 archived final Max RGB outputs after an explicit merge,
+and generated raw arithmetic/geometry/cancellation/transactional cases.
 It does not launch old GIMP or certify the native FilterLayer/XCF integration.
 
 Source/fixture verification only (no compilation or native execution):
@@ -32,6 +33,7 @@ ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = "migration/fixtures/legacy-filter-points/fixtures.tsv"
 LEGACY_COMMIT = "afa43fae3e920210146abed514f136fd49f671b5"
 LEGACY_SOURCES = {
+    "plug-ins/common/max-rgb.c": "e783de344ff3230ad611453dd4b4c7f87a40ffa0b0fa4b49a40b4449283cfcc1",
     "plug-ins/common/threshold-alpha.c": "608b6e013c6c2285ccdd651f1c2e8204990a8cdae1d65d8b8774b47e7a59a3ca",
     "libgimp/gimpregioniterator.c": "1289b75a1c49185d9ddaa5f97b5a406b297eab78560854344e8b9a4da41213be",
 }
@@ -59,8 +61,9 @@ def verify_fixtures():
                       ("capture.log", "log_sha256")]:
         if digest(base / name) != capture.get(key):
             raise ValueError(f"Archived capture seal differs: {name}")
-    if capture.get("source_sha256", {}).get("threshold-alpha.c") != LEGACY_SOURCES["plug-ins/common/threshold-alpha.c"]:
-        raise ValueError("Archived Threshold Alpha source provenance differs")
+    for name in ("threshold-alpha.c", "max-rgb.c"):
+        if capture.get("source_sha256", {}).get(name) != LEGACY_SOURCES["plug-ins/common/" + name]:
+            raise ValueError(f"Archived point source provenance differs: {name}")
     env = dict(os.environ, GIT_NO_LAZY_FETCH="1")
     for path, expected in LEGACY_SOURCES.items():
         source = subprocess.check_output(["git", "show", f"{LEGACY_COMMIT}:{path}"], cwd=ROOT, env=env)
@@ -76,6 +79,7 @@ def verify_fixtures():
         cases[key] = case
     seen = set()
     threshold_cases = 0
+    max_rgb_cases = 0
     for line in (ROOT / MANIFEST).read_text().splitlines():
         if not line or line.startswith("#"):
             continue
@@ -87,10 +91,12 @@ def verify_fixtures():
         if key not in cases or key in seen:
             raise ValueError("Fixture manifest and archived capture cases differ")
         seen.add(key)
-        if proc != "plug-in-threshold-alpha":
+        if proc not in ("plug-in-threshold-alpha", "plug-in-max-rgb"):
             continue
-        if int(channels) not in (2, 4):
+        if proc == "plug-in-threshold-alpha" and int(channels) not in (2, 4):
             raise ValueError("Threshold Alpha fixture does not have alpha")
+        if proc == "plug-in-max-rgb" and int(channels) not in (3, 4):
+            raise ValueError("Max RGB fixture is not RGB/RGBA")
         for name in (src, dst):
             path = (base / name).resolve()
             if path.parent != base.resolve() or path.stat().st_size != int(width) * int(height) * int(channels):
@@ -98,9 +104,12 @@ def verify_fixtures():
             paths.add(path)
         if digest(base / dst) != cases[key]["output_sha256"]:
             raise ValueError(f"Archived original output hash differs: {dst}")
-        threshold_cases += 1
-    if seen != set(cases) or threshold_cases != 20:
-        raise ValueError("Fixture manifest lost original cases or Threshold Alpha subset")
+        if proc == "plug-in-threshold-alpha":
+            threshold_cases += 1
+        else:
+            max_rgb_cases += 1
+    if seen != set(cases) or threshold_cases != 20 or max_rgb_cases != 16:
+        raise ValueError("Fixture manifest lost original cases or Threshold Alpha/Max RGB subsets")
     provenance = {
         "source_commit": LEGACY_COMMIT,
         "verified_source_sha256": LEGACY_SOURCES,
@@ -108,7 +117,8 @@ def verify_fixtures():
         "archived_captured_utc": capture["captured_utc"],
         "archived_executable_sha256": capture["executables"],
         "threshold_alpha_cases": threshold_cases,
-        "note": "Historical full-drawable PDB outputs; no new old-runtime or owner-context capture",
+        "max_rgb_cases": max_rgb_cases,
+        "note": "Historical full-drawable final PDB outputs, not raw callback captures; Max RGB comparison follows explicit full-coverage merge. No new old-runtime or owner-context capture",
     }
     return sorted(paths), provenance
 
@@ -167,9 +177,10 @@ def main():
     fixtures = hash_paths(fixture_paths)
     before = {**sources, **fixtures}
     report = {
-        "scope": "Non-UI U8 Threshold Alpha full-raster raw shadow, generated scalar/geometry checks, vector/spill and final-color invariant",
+        "scope": "Non-UI U8 Threshold Alpha and Max RGB raw-shadow foundation; generated scalar/geometry checks, direct raw and vector/spill fault handling, completed-buffer isolation; historical final PDB comparisons",
+        "max_rgb_raw_evidence": "Independent generated pairwise equations, all alpha values, ties and signed mode classes; archived Max RGB outputs are compared only after explicit full-coverage merge",
         "not_covered": ["Fresh original-GIMP runtime capture", "Native FilterLayer/XCF app integration",
-                        "Final owner context timing", "Scheduler/owner lifetime", "Modern-real point route",
+                        "Final owner context timing", "Owner RGB-only admission", "Scheduler/owner lifetime", "Modern-real point route",
                         "UI", "Windows/macOS execution", "Actual I/O beyond 4 GiB", "LeakSanitizer"],
         "legacy_evidence": provenance,
         "source_sha256": sources,

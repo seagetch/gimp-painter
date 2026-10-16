@@ -153,10 +153,14 @@ void filter_point_shadow_validate (std::size_t width, std::size_t height,
 
 FilterPointShadowOutcome filter_point_shadow_raster (
   FilterRaster& input, std::size_t width, std::size_t height,
-  const FilterSelectionRegion& region, std::int32_t threshold,
+  const FilterSelectionRegion& region, FilterPointShadowOperation operation,
+  std::int32_t argument,
   std::atomic<bool>& cancel, FilterRaster& output,
   const std::shared_ptr<FilterProgress>& progress)
 {
+  if (operation != FilterPointShadowOperation::threshold_alpha &&
+      operation != FilterPointShadowOperation::max_rgb)
+    throw std::invalid_argument ("Unknown point shadow operation");
   if (&input == &output)
     throw std::invalid_argument ("Point shadow input/output alias");
   const auto geometry = validate (width, height, region);
@@ -181,9 +185,13 @@ FilterPointShadowOutcome filter_point_shadow_raster (
         {
           CropRaster source (input, width, region, geometry, true, cancel, work);
           CropRaster destination (output, width, region, geometry, false, cancel, work);
-          if (!filter_point_raster (source, destination, geometry.crop_width,
-                                    geometry.crop_height, FilterPoint::threshold_alpha,
-                                    threshold, false, cancel))
+          const bool completed = operation == FilterPointShadowOperation::max_rgb ?
+            filter_max_rgb_raw_raster (source, destination, geometry.crop_width,
+                                       geometry.crop_height, argument, cancel) :
+            filter_point_raster (source, destination, geometry.crop_width,
+                                 geometry.crop_height, FilterPoint::threshold_alpha,
+                                 argument, false, cancel);
+          if (!completed)
             return FilterPointShadowOutcome::cancelled;
         }
       else
@@ -201,10 +209,14 @@ FilterPointShadowOutcome filter_point_shadow_raster (
 
 FilterPointShadowOutcome filter_point_shadow_vector (
   const std::vector<std::uint8_t>& input, std::size_t width, std::size_t height,
-  const FilterSelectionRegion& region, std::int32_t threshold,
+  const FilterSelectionRegion& region, FilterPointShadowOperation operation,
+  std::int32_t argument,
   std::atomic<bool>& cancel, std::vector<std::uint8_t>& output,
   const std::shared_ptr<FilterProgress>& progress)
 {
+  if (operation != FilterPointShadowOperation::threshold_alpha &&
+      operation != FilterPointShadowOperation::max_rgb)
+    throw std::invalid_argument ("Unknown point shadow operation");
   const auto geometry = validate (width, height, region);
   if (input.size () != geometry.full_size)
     throw std::invalid_argument ("Point shadow is not full tightly packed RGBA8");
@@ -213,10 +225,30 @@ FilterPointShadowOutcome filter_point_shadow_vector (
     [&] (FilterRaster& source, FilterRaster& destination,
          std::atomic<bool>& stop, const FilterRasterFactory&) {
       outcome = filter_point_shadow_raster (source, width, height, region,
-                                             threshold, stop, destination, progress);
+                                             operation, argument, stop, destination, progress);
       return outcome != FilterPointShadowOutcome::cancelled;
     });
   return completed ? outcome : FilterPointShadowOutcome::cancelled;
+}
+
+FilterPointShadowOutcome filter_point_shadow_raster (
+  FilterRaster& input, std::size_t width, std::size_t height,
+  const FilterSelectionRegion& region, std::int32_t threshold,
+  std::atomic<bool>& cancel, FilterRaster& output,
+  const std::shared_ptr<FilterProgress>& progress)
+{
+  return filter_point_shadow_raster (input, width, height, region,
+    FilterPointShadowOperation::threshold_alpha, threshold, cancel, output, progress);
+}
+
+FilterPointShadowOutcome filter_point_shadow_vector (
+  const std::vector<std::uint8_t>& input, std::size_t width, std::size_t height,
+  const FilterSelectionRegion& region, std::int32_t threshold,
+  std::atomic<bool>& cancel, std::vector<std::uint8_t>& output,
+  const std::shared_ptr<FilterProgress>& progress)
+{
+  return filter_point_shadow_vector (input, width, height, region,
+    FilterPointShadowOperation::threshold_alpha, threshold, cancel, output, progress);
 }
 
 } // namespace GimpPainter

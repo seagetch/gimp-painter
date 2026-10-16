@@ -12,6 +12,8 @@ class FilterProgress;
 
 /* An outside, nonempty start selection returns before the old iterator merge.
  * Its private output is still initialized; no_merge forbids merging zeros. */
+enum class FilterPointShadowOperation { threshold_alpha, max_rgb };
+
 enum class FilterPointShadowOutcome { cancelled, shadow, no_merge };
 
 /* Allocation-free scalar preflight; no raster or native state is accessed.
@@ -56,6 +58,15 @@ FilterPointShadowOutcome filter_point_shadow_raster (
   FilterRaster& output,
   const std::shared_ptr<FilterProgress>& progress = {});
 
+/* Operation-tagged raw shadow. Max RGB transforms all RGB bytes, including
+ * hidden colors, and copies alpha. Gray admission belongs to the owner and is
+ * unsupported for Max RGB. All private-output/ROI rules above still apply. */
+FilterPointShadowOutcome filter_point_shadow_raster (
+  FilterRaster& input, std::size_t width, std::size_t height,
+  const FilterSelectionRegion& region, FilterPointShadowOperation operation,
+  std::int32_t argument, std::atomic<bool>& cancel, FilterRaster& output,
+  const std::shared_ptr<FilterProgress>& progress = {});
+
 /* Transactional vector adapter. Output is unchanged on cancellation/exception
  * and may be the same vector as input. On no_merge it contains zeros, but the
  * outcome still forbids merging those bytes into the original drawable. */
@@ -66,6 +77,13 @@ FilterPointShadowOutcome filter_point_shadow_vector (
   const FilterSelectionRegion& region,
   std::int32_t threshold,
   std::atomic<bool>& cancel,
+  std::vector<std::uint8_t>& output,
+  const std::shared_ptr<FilterProgress>& progress = {});
+
+FilterPointShadowOutcome filter_point_shadow_vector (
+  const std::vector<std::uint8_t>& input, std::size_t width, std::size_t height,
+  const FilterSelectionRegion& region, FilterPointShadowOperation operation,
+  std::int32_t argument, std::atomic<bool>& cancel,
   std::vector<std::uint8_t>& output,
   const std::shared_ptr<FilterProgress>& progress = {});
 

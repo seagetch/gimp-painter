@@ -5,6 +5,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <algorithm>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -18,6 +19,7 @@
 using namespace GimpPainter;
 using Bytes = std::vector<std::uint8_t>;
 using Outcome = FilterPointShadowOutcome;
+using PointOperation = FilterPointShadowOperation;
 namespace {
 constexpr auto int_minimum = std::numeric_limits<std::int32_t>::min ();
 constexpr auto int_maximum = std::numeric_limits<std::int32_t>::max ();
@@ -60,15 +62,33 @@ Bytes fixture (std::size_t width, std::size_t height, bool gray = false)
 /* Independent, generated scalar expectations. These assertions are not fresh
  * old-runtime captures; the genuine archived full-image outputs are separate. */
 Bytes expected_shadow (const Bytes& input, std::size_t width, std::size_t height,
-                       const FilterSelectionRegion& region, std::int32_t threshold)
+                       const FilterSelectionRegion& region, std::int32_t threshold,
+                       PointOperation operation = PointOperation::threshold_alpha)
 {
   Bytes result (width * height * 4, 0);
   for (auto y = region.y1; y < region.y2; ++y)
     for (auto x = region.x1; x < region.x2; ++x)
       {
         const auto offset = (std::size_t (y) * width + x) * 4;
-        std::copy_n (input.data () + offset, 3, result.data () + offset);
-        result[offset + 3] = threshold < input[offset + 3] ? 255 : 0;
+        if (operation == PointOperation::threshold_alpha)
+          {
+            std::copy_n (input.data () + offset, 3, result.data () + offset);
+            result[offset + 3] = threshold < input[offset + 3] ? 255 : 0;
+          }
+        else
+          {
+            // Independent pairwise predicates retain every tied channel. Never
+            // consult alpha: raw Max RGB transforms hidden color as well.
+            for (unsigned c = 0; c < 3; ++c)
+              {
+                bool keep = true;
+                for (unsigned other = 0; other < 3; ++other)
+                  if (threshold > 0 ? input[offset+c] < input[offset+other] :
+                                      input[offset+c] > input[offset+other]) keep = false;
+                result[offset+c] = keep ? input[offset+c] : 0;
+              }
+            result[offset+3] = input[offset+3];
+          }
       }
   return result;
 }
@@ -199,20 +219,42 @@ public:
   void flush () override
   { require (!source_, "Wrapper flushed source input"); audit_.event (Operation::flush); base_.flush (); }
 };
-Outcome audited_vector (const Bytes& input, std::int32_t threshold, Bytes& output, Audit& audit)
+Outcome run_shadow_raster (FilterRaster& input, std::size_t width, std::size_t height,
+                           const FilterSelectionRegion& region, std::int32_t argument,
+                           std::atomic<bool>& cancel, FilterRaster& output,
+                           const std::shared_ptr<FilterProgress>& progress,
+                           PointOperation operation)
+{
+  return operation == PointOperation::threshold_alpha ?
+    filter_point_shadow_raster (input,width,height,region,argument,cancel,output,progress) :
+    filter_point_shadow_raster (input,width,height,region,operation,argument,cancel,output,progress);
+}
+Outcome run_shadow_vector (const Bytes& input, std::size_t width, std::size_t height,
+                           const FilterSelectionRegion& region, std::int32_t argument,
+                           std::atomic<bool>& cancel, Bytes& output,
+                           const std::shared_ptr<FilterProgress>& progress,
+                           PointOperation operation)
+{
+  return operation == PointOperation::threshold_alpha ?
+    filter_point_shadow_vector (input,width,height,region,argument,cancel,output,progress) :
+    filter_point_shadow_vector (input,width,height,region,operation,argument,cancel,output,progress);
+}
+Outcome audited_vector (const Bytes& input, std::int32_t threshold, Bytes& output, Audit& audit,
+                        PointOperation operation = PointOperation::threshold_alpha)
 {
   auto outcome = Outcome::cancelled;
   const auto complete = filter_native_vector (input, audit.cancel, output,
     [&] (FilterRaster& in, FilterRaster& out, std::atomic<bool>& cancel, const FilterRasterFactory&) {
       Observed source (in, audit, true), destination (out, audit, false);
-      outcome = filter_point_shadow_raster (source, audit.width, audit.height, audit.region,
-                                            threshold, cancel, destination, audit.progress);
+      outcome = run_shadow_raster (source, audit.width, audit.height, audit.region,
+                                    threshold, cancel, destination, audit.progress, operation);
       return outcome != Outcome::cancelled;
     });
   return complete ? outcome : Outcome::cancelled;
 }
 Bytes spill_result (const Bytes& input, std::size_t width, std::size_t height,
-                    const FilterSelectionRegion& region, std::int32_t threshold)
+                    const FilterSelectionRegion& region, std::int32_t threshold,
+                    PointOperation operation = PointOperation::threshold_alpha)
 {
   TemporaryFilterRaster in (directory, input.size ()), out (directory, input.size ());
   in.write (0, input.size (), input.data ());
@@ -220,7 +262,7 @@ Bytes spill_result (const Bytes& input, std::size_t width, std::size_t height,
   std::atomic<bool> cancel {false}; auto progress = std::make_shared<FilterProgress> ();
   Audit audit (width, height, region, cancel, progress);
   Observed source (in, audit, true), destination (out, audit, false);
-  require (filter_point_shadow_raster (source, width, height, region, threshold, cancel, destination, progress) ==
+  require (run_shadow_raster (source, width, height, region, threshold, cancel, destination, progress, operation) ==
            (region.intersects ? Outcome::shadow : Outcome::no_merge), "Wrong spill outcome");
   audit.observe ();
   require (audit.last_progress == 1 && audit.flushes == 1, "Spill did not complete after flush");
@@ -230,21 +272,22 @@ Bytes spill_result (const Bytes& input, std::size_t width, std::size_t height,
   return result;
 }
 void verify_paths (const Bytes& input, std::size_t width, std::size_t height,
-                   const FilterSelectionRegion& region, std::int32_t threshold, bool spill = true)
+                   const FilterSelectionRegion& region, std::int32_t threshold, bool spill = true,
+                   PointOperation operation = PointOperation::threshold_alpha)
 {
-  const auto expected = expected_shadow (input, width, height, region, threshold);
+  const auto expected = expected_shadow (input, width, height, region, threshold, operation);
   const auto outcome = region.intersects ? Outcome::shadow : Outcome::no_merge;
   std::atomic<bool> cancel {false}; Bytes result {19,31,71};
-  require (filter_point_shadow_vector (input, width, height, region, threshold, cancel, result) == outcome &&
+  require (run_shadow_vector (input, width, height, region, threshold, cancel, result, {}, operation) == outcome &&
            result == expected, "Transactional vector disagrees with generated scalar shadow");
   Memory in (input), out (input.size ()); auto progress = std::make_shared<FilterProgress> ();
   Audit audit (width, height, region, cancel, progress);
   Observed source (in, audit, true), destination (out, audit, false);
-  require (filter_point_shadow_raster (source, width, height, region, threshold, cancel, destination, progress) == outcome &&
+  require (run_shadow_raster (source, width, height, region, threshold, cancel, destination, progress, operation) == outcome &&
            out.data == expected && in.data == input, "Memory raster changed source or disagrees with scalar shadow");
   audit.observe ();
   require (audit.last_progress == 1 && audit.flushes == 1, "Memory raster lacked completed flush/progress");
-  if (spill) require (spill_result (input, width, height, region, threshold) == expected,
+  if (spill) require (spill_result (input, width, height, region, threshold, operation) == expected,
                       "Disk shadow disagrees with scalar shadow");
 }
 
@@ -489,7 +532,8 @@ void validation ()
   std::cout << "Malformed/overflow/alias/exact extent validation and INT32 total-area boundaries passed\n";
 }
 
-void cancellation_errors_and_progress ()
+void cancellation_errors_and_progress (PointOperation point_operation = PointOperation::threshold_alpha,
+                                       std::int32_t argument = 127)
 {
   constexpr std::size_t width = 8205,height = 7;
   const auto input = fixture (width,height); const Bytes sentinel {17,29,43};
@@ -500,9 +544,9 @@ void cancellation_errors_and_progress ()
       std::atomic<bool> baseline_cancel {false}; auto baseline_progress = std::make_shared<FilterProgress> ();
       Audit baseline (width,height,region,baseline_cancel,baseline_progress); Bytes result;
       const auto expected_outcome = region.intersects ? Outcome::shadow : Outcome::no_merge;
-      require (audited_vector (input,127,result,baseline) == expected_outcome,"Audited baseline failed");
+      require (audited_vector (input,argument,result,baseline,point_operation) == expected_outcome,"Audited baseline failed");
       baseline.observe ();
-      require (result == expected_shadow (input,width,height,region,127),"Audited baseline scalar mismatch");
+      require (result == expected_shadow (input,width,height,region,argument,point_operation),"Audited baseline scalar mismatch");
       require (baseline.zero_writes == (input.size()+16383)/16384 && baseline.zero_updates > 1 &&
                baseline.flushes == 1 && baseline.last_progress == 1 && baseline.max_write == 16384 && baseline.max_read <= 16384,
                "Zero phase lacks bounded transfers/staged progress/flushed completion");
@@ -528,7 +572,7 @@ void cancellation_errors_and_progress ()
                       TemporaryFilterRaster in (directory,input.size ()),out (directory,input.size ());
                       in.write (0,input.size (),input.data ());
                       Observed source (in,audit,true),destination (out,audit,false);
-                      const auto run = [&] { return filter_point_shadow_raster (source,width,height,region,127,cancel,destination,progress); };
+                      const auto run = [&] { return run_shadow_raster (source,width,height,region,argument,cancel,destination,progress,point_operation); };
                       if (fail) rejects<StorageFailure> (run,"Disk storage error did not propagate");
                       else require (run () == Outcome::cancelled && cancel.load (),"Disk cancellation completed");
                       Bytes unchanged (input.size ()); in.read (0,unchanged.size (),unchanged.data ());
@@ -536,7 +580,7 @@ void cancellation_errors_and_progress ()
                     }
                   else
                     {
-                      const auto run = [&] { return audited_vector (input,127,published,audit); };
+                      const auto run = [&] { return audited_vector (input,argument,published,audit,point_operation); };
                       if (fail) rejects<StorageFailure> (run,"Vector storage error did not propagate");
                       else require (run () == Outcome::cancelled && cancel.load (),"Vector cancellation completed");
                       require (published == sentinel && input == fixture (width,height),"Cancelled/failed vector published or modified source");
@@ -557,7 +601,7 @@ void cancellation_errors_and_progress ()
             const auto at = operation == Operation::write ? baseline.writes : baseline.flushes;
             if (fail) { audit.fail_on = operation; audit.fail_at = at; }
             else { audit.cancel_on = operation; audit.cancel_at = at; }
-            const auto run = [&] { return audited_vector (alias,127,alias,audit); };
+            const auto run = [&] { return audited_vector (alias,argument,alias,audit,point_operation); };
             if (fail) rejects<StorageFailure> (run,"Aliased vector storage error did not propagate");
             else require (run () == Outcome::cancelled,"Late aliased vector cancellation completed");
             require (alias == input,"Late cancelled/failed aliased vector published partial output");
@@ -568,26 +612,313 @@ void cancellation_errors_and_progress ()
   Audit audit (width,height,region,cancel,progress);
   Memory in (input),out (input.size ()); Observed source (in,audit,true),destination (out,audit,false);
   const auto poison = out.data; Bytes result = sentinel;
-  require (filter_point_shadow_raster (source,width,height,region,127,cancel,destination,progress) == Outcome::cancelled &&
-           filter_point_shadow_vector (input,width,height,region,127,cancel,result,progress) == Outcome::cancelled && result == sentinel,
+  require (run_shadow_raster (source,width,height,region,argument,cancel,destination,progress,point_operation) == Outcome::cancelled &&
+           run_shadow_vector (input,width,height,region,argument,cancel,result,progress,point_operation) == Outcome::cancelled && result == sentinel,
            "Pre-cancelled shadow completed/published");
   require (in.data == input && out.data == poison && audit.reads == 0 && audit.writes == 0 && audit.flushes == 0,
            "Pre-cancelled shadow accessed input/output");
   cancel.store (false); Bytes alias = input;
-  require (filter_point_shadow_vector (alias,width,height,region,127,cancel,alias) == Outcome::shadow &&
-           alias == expected_shadow (input,width,height,region,127),"Public vector alias transaction failed");
+  require (run_shadow_vector (alias,width,height,region,argument,cancel,alias,{},point_operation) == Outcome::shadow &&
+           alias == expected_shadow (input,width,height,region,argument,point_operation),"Public vector alias transaction failed");
   alias = input; cancel.store (true);
-  require (filter_point_shadow_vector (alias,width,height,region,127,cancel,alias) == Outcome::cancelled && alias == input,
+  require (run_shadow_vector (alias,width,height,region,argument,cancel,alias,{},point_operation) == Outcome::cancelled && alias == input,
            "Pre-cancelled alias changed input");
   cancel.store (false);
-  rejects<std::invalid_argument> ([&] { filter_point_shadow_vector (alias,width,height,{true,true,0,0,0,1},127,cancel,alias); },
+  rejects<std::invalid_argument> ([&] { run_shadow_vector (alias,width,height,{true,true,0,0,0,1},argument,cancel,alias,{},point_operation); },
                                   "Malformed aliased vector region accepted");
   require (alias == input,"Malformed aliased vector changed input");
-  require (filter_point_shadow_vector (alias,width,height,{true,false,0,0,0,7},int_minimum,cancel,alias) == Outcome::no_merge &&
+  require (run_shadow_vector (alias,width,height,{true,false,0,0,0,7},int_minimum,cancel,alias,{},point_operation) == Outcome::no_merge &&
            alias == Bytes (input.size (),0),"Aliased no-merge lost distinct zero-workspace outcome");
-  std::cout << "Every read/write/flush cancellation and storage-error ordinal: " << cases
+  std::cout << (point_operation == PointOperation::max_rgb ? "Max RGB " : "Threshold Alpha ")
+            << "Every read/write/flush cancellation and storage-error ordinal: " << cases
             << " vector/spill cases; monotone progress and transactional aliases passed\n";
 }
+void max_rgb_raw_arithmetic ()
+{
+  // All distinct-channel permutations, each tied pair, equal channels, and
+  // byte extrema; repeat each color at every alpha, including hidden RGB.
+  const unsigned colors[][3] = {
+    {17,83,139},{17,139,83},{83,17,139},{83,139,17},{139,17,83},{139,83,17},
+    {83,83,17},{83,17,83},{17,83,83},{17,17,83},{17,83,17},{83,17,17},
+    {0,0,0},{255,255,255},{83,83,83},{0,255,17},{255,0,17},{17,255,0}};
+  Bytes input;
+  for (unsigned alpha = 0; alpha < 256; ++alpha)
+    for (const auto& color : colors)
+      input.insert (input.end (), {std::uint8_t(color[0]),std::uint8_t(color[1]),
+                                  std::uint8_t(color[2]),std::uint8_t(alpha)});
+  const auto width = input.size () / 4;
+  for (const auto mode : {int_minimum,-256,-2,-1,0,1,2,3,256,int_maximum})
+    {
+      const auto expected = expected_shadow (input,width,1,full_region(width,1),mode,PointOperation::max_rgb);
+      Memory source (input),raw (input.size ()),legacy (input.size ());
+      std::atomic<bool> cancel {false}; auto progress = std::make_shared<FilterProgress> ();
+      require (filter_max_rgb_raw_raster (source,raw,width,1,mode,cancel,progress) &&
+               raw.data == expected && source.data == input,"Raw Max RGB pairwise/tie/alpha equations differ");
+      FilterProgress::Snapshot snapshot;
+      require (progress->try_snapshot(snapshot) && snapshot.value == 1,"Raw Max RGB lacked completion progress");
+      require (filter_point_raster (source,legacy,width,1,FilterPoint::max_rgb,mode,false,cancel),
+               "Legacy merged-semantics Max RGB failed");
+      Bytes merged (input.size ());
+      require (filter_replace_inten_row (input.data(),raw.data.data(),nullptr,merged.data(),width,4,15),
+               "Raw Max RGB generated full-coverage merge failed");
+      require (merged == legacy.data,"Raw Max RGB plus full-coverage merge differs from legacy point route");
+      unsigned hidden_changed = 0;
+      for (std::size_t offset = 0; offset < input.size (); offset += 4)
+        {
+          require (raw.data[offset+3] == input[offset+3],"Raw Max RGB changed alpha");
+          for (unsigned c = 0; c < 3; ++c)
+            {
+              require (legacy.data[offset+c] == (input[offset+3] ? expected[offset+c] : input[offset+c]),
+                       "Existing point_byte alpha-zero behavior changed");
+              if (!input[offset+3] && raw.data[offset+c] != input[offset+c]) ++hidden_changed;
+            }
+        }
+      require (hidden_changed > 0,"Raw/merged alpha-zero distinction was not exercised");
+      verify_paths (input,width,1,full_region(width,1),mode,false,PointOperation::max_rgb);
+    }
+  std::cout << "Generated raw Max RGB: signed modes, all ties/all alpha, unchanged legacy hidden RGB, raw-versus-merged distinction passed\n";
+}
+
+void legacy_hidden_color_regression ()
+{
+  const Bytes hidden_bytes {17,83,139,0};
+  const double hidden_reals[] = {.9,.4,.7,0};
+  Bytes packed_reals (sizeof hidden_reals);
+  std::memcpy (packed_reals.data (),hidden_reals,sizeof hidden_reals);
+  for (const auto operation : {FilterPoint::value_invert,FilterPoint::max_rgb})
+    for (const auto argument : {int_minimum,0,1,int_maximum})
+      for (bool real : {false,true})
+        {
+          const auto& original = real ? packed_reals : hidden_bytes;
+          Memory input (original),output (original.size ()); std::atomic<bool> cancel {false};
+          require (filter_point_raster (input,output,1,1,operation,argument,real,cancel) &&
+                   output.data == original && input.data == original,
+                   "Existing byte/real point route no longer preserves alpha-zero hidden color");
+        }
+  std::cout << "Existing point_byte and point_real Value Invert/Max RGB alpha-zero behavior preserved\n";
+}
+
+void max_rgb_geometry_and_isolation ()
+{
+  unsigned cases = 0;
+  for (const auto& shape : {std::pair<std::size_t,std::size_t>{1,1},{1,7},{7,1},{2,2},{17,13},{67,66},{8201,3}})
+    {
+      const auto width = shape.first,height = shape.second;
+      const auto input = fixture (width,height);
+      std::vector<FilterSelectionRegion> regions {full_region(width,height),full_region(width,height,true),
+        {true,true,0,0,1,1}, {true,true,std::int32_t(width)-1,0,std::int32_t(width),std::int32_t(height)},
+        {true,true,0,std::int32_t(height)-1,std::int32_t(width),std::int32_t(height)},
+        {true,false,0,0,0,std::int32_t(height)}};
+      if (width > 2 && height > 2) regions.push_back ({true,true,1,1,std::int32_t(width)-1,std::int32_t(height)-1});
+      if (width == 67) regions.push_back ({true,true,63,63,65,65});
+      for (const auto& region : regions)
+        for (const auto mode : {int_minimum,-2,0,1,3,int_maximum})
+          { verify_paths (input,width,height,region,mode,true,PointOperation::max_rgb); ++cases; }
+    }
+  constexpr std::size_t width = 19,height = 13;
+  const FilterSelectionRegion region {true,true,3,2,16,11};
+  const auto input = fixture (width,height); auto changed = input;
+  for (std::size_t y = 0; y < height; ++y) for (std::size_t x = 0; x < width; ++x)
+    if (x < 3 || x >= 16 || y < 2 || y >= 11) std::fill_n (changed.data()+(y*width+x)*4,4,255);
+  for (const auto mode : {int_minimum,1})
+    {
+      std::atomic<bool> cancel {false}; Bytes completed,other;
+      require (filter_point_shadow_vector (input,width,height,region,PointOperation::max_rgb,mode,cancel,completed) == Outcome::shadow &&
+               filter_point_shadow_vector (changed,width,height,region,PointOperation::max_rgb,mode,cancel,other) == Outcome::shadow &&
+               completed == other,"Outside pixels influenced Max RGB ROI");
+      const auto saved = completed;
+      // A later successful operation has independent output; cancellation and
+      // storage exceptions cannot overwrite the earlier completed buffer.
+      require (filter_point_shadow_vector (input,width,height,full_region(width,height),PointOperation::max_rgb,
+                                           mode > 0 ? 0 : 1,cancel,other) == Outcome::shadow && completed == saved,
+               "Later operation mutated an earlier completed shadow");
+      cancel.store (true);
+      require (filter_point_shadow_vector (input,width,height,region,PointOperation::max_rgb,mode,cancel,completed) == Outcome::cancelled &&
+               completed == saved,"Cancellation overwrote completed Max RGB buffer");
+      cancel.store (false); Audit audit (width,height,region,cancel);
+      audit.fail_on = Operation::flush; audit.fail_at = 1;
+      rejects<StorageFailure> ([&] { audited_vector(input,mode,completed,audit,PointOperation::max_rgb); },
+                               "Max RGB flush failure did not propagate");
+      require (completed == saved,"Storage failure overwrote completed Max RGB buffer");
+    }
+  const auto offset_region = selected_region ({false,103,-39,114,-32},99,-42,width,height);
+  for (const auto mode : {0,1}) verify_paths(input,width,height,offset_region,mode,true,PointOperation::max_rgb);
+  std::cout << "Generated Max RGB vector/memory/spill tiny/ROI/row-boundary/no-merge cases: " << cases
+            << "; offset and completed-buffer isolation passed\n";
+}
+
+void genuine_max_rgb_corpus (const std::string& manifest)
+{
+  const auto base = manifest.substr (0,manifest.find_last_of ('/') + 1);
+  std::ifstream input(manifest); require(bool(input),"Cannot read genuine Max RGB manifest");
+  std::string line; unsigned cases = 0,hidden_differences = 0;
+  while (std::getline(input,line))
+    {
+      if (line.empty() || line[0] == '#') continue;
+      std::istringstream row(line); std::string proc,src,dst,extra;
+      std::int32_t mode; std::size_t width,height,channels;
+      require (bool(row >> proc >> mode >> width >> height >> channels >> src >> dst) && !(row >> extra),
+               "Malformed genuine Max RGB fixture row");
+      if (proc != "plug-in-max-rgb") continue;
+      require (channels == 3 || channels == 4,"Genuine Max RGB fixture is not RGB/RGBA");
+      const auto native = read_bytes(base+src),expected = read_bytes(base+dst);
+      require (native.size() == width*height*channels && expected.size() == native.size(),"Wrong Max RGB fixture extent");
+      Bytes rgba(width*height*4),shadow,merged(rgba.size());
+      for (std::size_t pixel = 0; pixel < width*height; ++pixel)
+        {
+          std::copy_n (native.data()+pixel*channels,3,rgba.data()+pixel*4);
+          rgba[pixel*4+3] = channels == 3 ? 255 : native[pixel*channels+3];
+        }
+      std::atomic<bool> cancel {false};
+      require (filter_point_shadow_vector(rgba,width,height,full_region(width,height),PointOperation::max_rgb,mode,cancel,shadow) == Outcome::shadow,
+               "Genuine Max RGB raw shadow failed");
+      require (shadow == expected_shadow(rgba,width,height,full_region(width,height),mode,PointOperation::max_rgb) &&
+               spill_result(rgba,width,height,full_region(width,height),mode,PointOperation::max_rgb) == shadow,
+               "Genuine Max RGB raw scalar/vector/spill mismatch");
+      // Archived bytes are final PDB output, never raw callback output. The
+      // genuine comparison must occur after the known REPLACE_INTEN equation.
+      require (filter_replace_inten_row(rgba.data(),shadow.data(),nullptr,merged.data(),width*height,4,15),
+               "Genuine Max RGB full-coverage merge rejected");
+      for (std::size_t pixel = 0; pixel < width*height; ++pixel)
+        for (std::size_t channel = 0; channel < channels; ++channel)
+          {
+            require (merged[pixel*4+channel] == expected[pixel*channels+channel],
+                     "Archived genuine final Max RGB bytes differ: "+dst);
+            if (channel < 3 && !rgba[pixel*4+3] && shadow[pixel*4+channel] != merged[pixel*4+channel]) ++hidden_differences;
+          }
+      ++cases;
+    }
+  require (cases == 16 && hidden_differences > 0,"Genuine Max RGB cases or raw/final hidden-color distinction lost");
+  std::cout << "16 archived original PDB Max RGB outputs matched after explicit merge; no fresh owner-context capture claimed\n";
+}
+
+void max_rgb_validation ()
+{
+  constexpr std::size_t width = 8,height = 7,size = width*height*4;
+  Sized input(size),output(size),short_raster(size-1),long_raster(size+1);
+  const auto region = full_region(width,height); const Bytes original = fixture(width,height),sentinel{11,23,47};
+  for (bool cancelled : {false,true})
+    {
+      std::atomic<bool> cancel{cancelled};
+      for (const auto invalid : {static_cast<PointOperation>(-1),static_cast<PointOperation>(2),static_cast<PointOperation>(99)})
+        for (const auto& selected : {region,FilterSelectionRegion{true,false,0,0,0,7}})
+          {
+            rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(input,width,height,selected,invalid,0,cancel,output); },
+                                            "Invalid operation tag passed raster validation");
+            Bytes published = sentinel;
+            rejects<std::invalid_argument> ([&] { filter_point_shadow_vector(original,width,height,selected,invalid,0,cancel,published); },
+                                            "Invalid operation tag passed vector/cancellation validation");
+            require(published == sentinel,"Invalid operation tag changed completed output");
+          }
+      for (auto *bad : {&short_raster,&long_raster})
+        {
+          rejects<std::invalid_argument> ([&] { filter_max_rgb_raw_raster(*bad,output,width,height,0,cancel); },"Raw Max RGB inexact input extent accepted");
+          rejects<std::invalid_argument> ([&] { filter_max_rgb_raw_raster(input,*bad,width,height,0,cancel); },"Raw Max RGB inexact output extent accepted");
+          rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(*bad,width,height,region,PointOperation::max_rgb,0,cancel,output); },
+                                          "Max RGB shadow inexact extent accepted");
+        }
+      rejects<std::invalid_argument> ([&] { filter_max_rgb_raw_raster(input,input,width,height,0,cancel); },"Raw Max RGB direct alias accepted");
+      rejects<std::invalid_argument> ([&] { filter_max_rgb_raw_raster(input,output,0,height,0,cancel); },"Raw Max RGB zero width accepted");
+      rejects<std::invalid_argument> ([&] { filter_max_rgb_raw_raster(input,output,width,0,0,cancel); },"Raw Max RGB zero height accepted");
+      rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(input,width,height,region,PointOperation::max_rgb,0,cancel,input); },
+                                      "Max RGB shadow direct alias accepted");
+    }
+  require(input.calls == 0 && output.calls == 0 && short_raster.calls == 0 && long_raster.calls == 0,"Max RGB rejection accessed storage");
+  std::atomic<bool> cancel{true};
+  require(!filter_max_rgb_raw_raster(input,output,width,height,int_minimum,cancel) && input.calls == 0 && output.calls == 0,
+          "Pre-cancelled raw Max RGB accessed storage");
+  for (const auto& shape : {std::pair<std::size_t,std::size_t>{46341,46341},{32768,65536},{std::size_t(int_maximum),2}})
+    {
+      Sized in(std::uint64_t(shape.first)*shape.second*4),out(in.size());
+      rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(in,shape.first,shape.second,full_region(shape.first,shape.second),
+                                                                     PointOperation::max_rgb,0,cancel,out); },
+                                      "Max RGB accepted undefined signed total_area");
+      require(in.calls == 0 && out.calls == 0,"Max RGB area rejection performed I/O");
+    }
+  for (const auto& shape : {std::pair<std::size_t,std::size_t>{1,std::size_t(int_maximum)},{std::size_t(int_maximum),1},{46340,46340}})
+    {
+      Sized in(std::uint64_t(shape.first)*shape.second*4),out(in.size());
+      require(filter_point_shadow_raster(in,shape.first,shape.second,full_region(shape.first,shape.second),
+                                         PointOperation::max_rgb,int_maximum,cancel,out) == Outcome::cancelled && in.calls == 0 && out.calls == 0,
+              "Max RGB valid signed-area boundary rejected or accessed storage");
+    }
+  // The explicit Threshold tag is an exact compatibility alias, including
+  // unrestricted signed arguments; the original overload is exercised above.
+  for (const auto argument : {int_minimum,-1,127,256,int_maximum})
+    {
+      cancel.store(false); Bytes legacy,tagged;
+      require(filter_point_shadow_vector(original,width,height,region,argument,cancel,legacy) == Outcome::shadow &&
+              filter_point_shadow_vector(original,width,height,region,PointOperation::threshold_alpha,argument,cancel,tagged) == Outcome::shadow &&
+              legacy == tagged,"Tagged Threshold API differs from preserved Threshold overload");
+    }
+  std::cout << "Max RGB raw/tagged validation, no-I/O rejection, area boundaries and Threshold overload compatibility passed\n";
+}
+
+struct RawAudit
+{
+  std::atomic<bool>& cancel;
+  const std::shared_ptr<FilterProgress>& progress;
+  Operation trigger = Operation::none;
+  std::size_t at = 0,reads = 0,writes = 0,flushes = 0;
+  bool fail = false;
+  double last = 0;
+  RawAudit(std::atomic<bool>& cancel,const std::shared_ptr<FilterProgress>& progress) : cancel(cancel),progress(progress) {}
+  void event(Operation operation,std::size_t count = 0)
+  {
+    require(!cancel.load(),"Raw Max RGB performed I/O after cancellation");
+    FilterProgress::Snapshot snapshot; require(progress->try_snapshot(snapshot),"Cannot read raw progress");
+    require(snapshot.value >= last && snapshot.value < 1,"Raw progress regressed or completed before I/O");
+    last = snapshot.value;
+    if(operation != Operation::flush) require(count && count <= 32768 && count % 4 == 0,"Raw transfer exceeded fixed chunk bound");
+    const auto ordinal = operation == Operation::read ? ++reads : operation == Operation::write ? ++writes : ++flushes;
+    if(operation == trigger && ordinal == at)
+      { if(fail) throw StorageFailure(); else cancel.store(true); }
+  }
+};
+class RawObserved final : public FilterRaster
+{
+  FilterRaster& base_; RawAudit& audit_; bool source_;
+public:
+  RawObserved(FilterRaster& base,RawAudit& audit,bool source) : base_(base),audit_(audit),source_(source) {}
+  std::uint64_t size() const noexcept override { return base_.size(); }
+  void read(std::uint64_t offset,std::size_t count,std::uint8_t *bytes) override
+  { require(source_,"Raw kernel read output"); audit_.event(Operation::read,count); base_.read(offset,count,bytes); }
+  void write(std::uint64_t offset,std::size_t count,const std::uint8_t *bytes) override
+  { require(!source_,"Raw kernel wrote input"); audit_.event(Operation::write,count); base_.write(offset,count,bytes); }
+  void flush() override
+  { require(!source_,"Raw kernel flushed input"); audit_.event(Operation::flush); base_.flush(); }
+};
+void max_rgb_raw_faults ()
+{
+  constexpr std::size_t width = 8205,height = 3;
+  const auto input = fixture(width,height); const Bytes sentinel{17,29,43};
+  const auto chunks = (input.size()+32767)/32768;
+  for (const auto mode : {int_minimum,1})
+    for (auto operation : {Operation::read,Operation::write,Operation::flush})
+      for (bool fail : {false,true})
+        for (std::size_t at = 1; at <= (operation == Operation::flush ? 1 : chunks); ++at)
+          {
+            std::atomic<bool> cancel{false}; auto progress = std::make_shared<FilterProgress>();
+            RawAudit audit(cancel,progress); audit.trigger = operation; audit.at = at; audit.fail = fail;
+            Bytes published = sentinel;
+            const auto run = [&] {
+              return filter_native_vector(input,cancel,published,
+                [&](FilterRaster& in,FilterRaster& out,std::atomic<bool>& stop,const FilterRasterFactory&) {
+                  RawObserved source(in,audit,true),destination(out,audit,false);
+                  return filter_max_rgb_raw_raster(source,destination,width,height,mode,stop,progress);
+                });
+            };
+            if(fail) rejects<StorageFailure>(run,"Raw Max RGB storage failure did not propagate");
+            else require(!run() && cancel.load(),"Raw Max RGB cancellation completed");
+            require(published == sentinel && input == fixture(width,height),"Raw fault changed source/completed output");
+            FilterProgress::Snapshot snapshot;
+            require(progress->try_snapshot(snapshot) && snapshot.value < 1,"Raw failure/cancellation reported completion");
+            const auto observed = operation == Operation::read ? audit.reads : operation == Operation::write ? audit.writes : audit.flushes;
+            require(observed == at,"Raw Max RGB continued after injected cancellation/error");
+          }
+  std::cout << "Direct raw Max RGB bounded read/write/flush cancellation/error ordinals preserve completed output\n";
+}
+
 } // namespace
 
 int main (int argc, char **argv)
@@ -608,6 +939,14 @@ int main (int argc, char **argv)
       offsets_outside_and_final_colors ();
       validation ();
       cancellation_errors_and_progress ();
+      max_rgb_raw_arithmetic ();
+      legacy_hidden_color_regression ();
+      max_rgb_geometry_and_isolation ();
+      genuine_max_rgb_corpus (argv[1]);
+      max_rgb_validation ();
+      max_rgb_raw_faults ();
+      cancellation_errors_and_progress (PointOperation::max_rgb,1);
+      cancellation_errors_and_progress (PointOperation::max_rgb,int_minimum);
     }
   catch (const std::exception& failure) { std::cerr << failure.what () << '\n'; status = 1; }
   if (g_rmdir (directory.c_str ()) != 0)
