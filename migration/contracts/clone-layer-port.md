@@ -981,3 +981,124 @@ full aggregate, packaging and release remain open. Old Edge/string-reader
 runtime remains user-approved SKIPPED and compatibility unverified. This
 closure accepts only the original bounded mid-drag Ctrl criterion while
 preserving the current strict Clone acceptance route.
+
+
+## Original zero/360 boundary acceptance and retained Clone refresh (25.007, 2026-10-17)
+
+Original task `25.007` is now DONE only for its exact
+`角度飛びと方向反転がない` criterion. Its title and prerequisite `25.006`
+are unchanged. Only the original `25.007` checkbox and progress row are closed;
+no other task or dependency status changes and no child WBS item is created.
+Original `25.008` onward and section 25 as a whole remain open.
+
+### Navigation component: tested source A
+
+The navigation component is bound only to source A `aa175058ab6e876fdbc12333e4bf53a48dec6f18`,
+tree `5ec543192cfd943fe5c6d60f1d7153040cdda0b0`. Its retained
+`migration/tests/rotation-boundary-component-receipt.json` and compact
+`rotation-boundary-component-evidence.tar.xz` bind native receipt SHA-256
+`b38ff6991e414f46fa80654e4d086f5d7e68b45828bbfb6caab3abb27a0a8f1b`.
+No navigation test is relabeled as running on source B or the documentary
+closure commit. Production/test sources, retained old fixtures, procedures,
+component/GUI receipts and archives, and `painter-navigation.md` remain
+byte-identical to source B throughout closure.
+
+The first accepted attempt passed the full default incremental build and
+28 positive normal TAP cases across three registered navigation targets:
+18 event, four UI and six arithmetic. The same 18 event registrations passed
+focused ASan/UBSan with exactly five C units instrumented, LSan disabled and
+no suppression files or options. The shell-reset path in
+`app/display/gimpdisplayshell.c` is normally tested but that translation unit
+is uninstrumented. Other GIMP, GTK and dependency units remain uninstrumented.
+All four top-level component commands exited 0. All nine component seals pass,
+including the 12 bound source/fixture inputs, 2,873 normal ELF entries, full
+default-build freshness, compile database, registry, focused artifacts/copies
+and 361 locale catalogs. Registry integrity does not mean aggregate execution.
+
+Six new event registrations add four ordered, unmirrored crossings plus angle
+persistence and ordinary/custom-policy isolation. The four crossings exercise
+free and 15-degree-snapped rotation in both increasing and decreasing order.
+Each event run retains 24 crossing observations and 20 signed adjacent steps.
+Independent constants derive from the old source geometry with a nonzero
+90-degree drag anchor, not from the production helper or a new old-runtime
+capture. Free observations include zero and both sides of the ordinary
+0.001-degree epsilon; snapped observations enter zero from 345 degrees and
+leave toward 15 degrees, in both directions.
+
+Real display-transform bases, lengths and determinant are checked against the
+independent expected geometry. Signed steps use the observed adjacent bases;
+they establish direction without treating the numerical 359-to-0 wrap as an
+angular jump. Initiating button, modifier action, inherited state, anchor,
+tool state and grab remain held. The first motion positions each crossing;
+only subsequent adjacent steps are continuity assertions. Ordinary release
+retains the final exact angle.
+
+The two tiny inherited angles also survive release, repeated transform rebuild,
+scroll, scale and horizontal flip/unflip. That flip check concerns existing
+angle persistence, not mirrored-input direction acceptance for `25.008`.
+Ordinary absolute/relative rotation and an explicit custom binding replace the
+inherited exact-angle policy and preserve the existing represented-value
+endpoint behavior. Empty-display reset clears the policy. The twelve previous
+event registrations and retained historical fixtures stay unchanged.
+
+This is finite synthetic-event evidence, not physical mouse/tablet or
+interruption/platform acceptance. Ordinary icon, plugin, D-Bus and GLib
+diagnostics remain in the logs; no warning-free or clean-from-empty claim is
+made. No old executable was accessed or run; both historical old GUI teardown
+`command_exit=-11` outcomes remain recorded. There is no new GUI run. Existing
+portrait GUI evidence stays bound only to older exact source
+`22708f41d368c6c7c2e425d30ea2765b9d29158b`; it does not establish the new boundary
+criterion or create a GUI claim for source A, B or the closure revision.
+
+### Retained strict Clone gate: distinct tested source B
+
+Receipt-integrated source B is `226beebe62a27fdcdd69f5106e55ecc10ba2ec69`,
+tree `8d4c430eea83d9b86fc26b12799106ff9d73edb8`. It differs from source A in exactly three publication
+files: `painter-navigation.md`, the boundary component receipt and its compact
+archive. The unchanged strict Clone gate ran on this exact frozen source B and
+passed all three default-build/normal-test/focused-sanitizer commands:
+
+- Run: `boundary-run-001`
+- Current strict archive: `migration/tests/rotation-boundary-acceptance-evidence.tar.xz`
+- Archive SHA-256: `07c463d10bfa645e954ff1666f347229659335c5eac2d1bc16291d9fbf1a6ac2`
+- Receipt SHA-256: `457b446f6dc96d3f9fec0881ecd9bb58eaedd3a14e3027db02953066add33c7a`
+
+The seven exact normal Meson targets passed: `core` 4,
+`projection-update-bounds` 3, `gimp-clone-layer` 62, `painter-layer-ui` 68,
+`painter-layer-tree` 35, `painter-xcf-roundtrip` 49 and `update-geometry` 5,
+totaling 226 positive TAP cases. Focused Clone ASan/UBSan passed 62 cases.
+Both Clone executions contain the same 216 unique source-mode/type/mask scenes.
+Eight translation units are instrumented; 54 RTTI-only C++ rebuilds are not
+additional sanitizer coverage. LSan remains disabled and other GIMP/dependency
+units remain uninstrumented.
+
+Strict review verified unchanged source before build, before tests and after;
+all 2,879 normal ELF inventory entries; full default-build freshness;
+compile database; all 164 registered target definitions; all
+361 locale catalogs; and private Clone sanitizer artifacts. Sealing retained
+navigation sanitizer outputs does not mean strict Clone reran them. Registry
+integrity is not full aggregate execution. Historical aggregate claims retain
+their original exact source scope.
+
+The archive contains exactly the existing 17 public strict receipt members,
+with every raw member hash and byte unchanged. The unchanged deterministic pack
+function and bounded XZ/flat-tar helpers are reused; a second pack is byte-identical.
+Original-directory, extracted-directory and archive validation produce identical
+strict results with execution source/build/private paths blocked and Git as the
+only permitted subprocess. Public environment-removal transformations remain
+intact. All earlier component, GUI and acceptance archives remain unchanged.
+
+The existing 44 receipt controls, 17 archive controls and 11 acceptance controls
+pass, together with strict current Clone acceptance, task-ledger validation and
+`git diff --check`. These closure checks are Python/Git-only and create no native
+execution or native claim for this later documentary commit. Four documentary
+files and one verified strict archive are the only closure changes. No production,
+test, fixture, validator, component/GUI receipt/archive or navigation-contract
+change is made after the freeze.
+
+Physical devices, focus/device interruption, other platforms, original `25.008`
+onward, whole section 25, broader Clone/XCF/GUI acceptance, full aggregate,
+packaging and release remain open. Old Edge/string-reader runtime remains
+user-approved SKIPPED and compatibility unverified. This closure accepts only
+the original bounded zero/360 boundary criterion while preserving the current
+strict Clone acceptance route.
