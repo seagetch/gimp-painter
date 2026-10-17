@@ -740,3 +740,108 @@ the commit above. This refresh preserves retained Clone acceptance after tracked
 header artifacts were added; it is not a fresh execution of every header parser
 test or all persistence fields. Broader Clone/XCF/GUI/compatibility gates remain
 open, and all historical receipts retain their original scope.
+
+
+## Original rotation-start acceptance and retained Clone refresh (25.001, 2026-10-17)
+
+Original task `25.001` is now DONE for its exact `button・modifier・tool 状態が一致`
+start criterion. Its title, original dependencies `02.015, 03.009` and criterion
+are unchanged. Only its original checkbox and progress row are closed. This
+accepts the finite source-defined start matrix below; it does not close those
+dependency tasks, create another child WBS item, or close all of section 25.
+
+### Navigation component: tested source A
+
+The navigation run is bound only to source A `3634001805313a297e259aea0d3020b1f6805d04`,
+tree `af466e90bbe5ac396c48360176d27fcfc3f2c932`. The unchanged
+`migration/tests/rotation-start-component-receipt.json` and its compact archive
+retain this identity; no navigation test is relabeled as running on source B
+or on the later documentary closure commit. The navigation production/test
+sources, retained fixtures, component receipt, component archive and
+`migration/contracts/painter-navigation.md` are byte-identical to source B.
+
+The three registered normal navigation targets passed 21 positive TAP cases:
+11 events, four UI and six arithmetic. The same 11 event registrations passed
+focused ASan/UBSan, with exactly five C units instrumented and LSan disabled.
+The seven new event registrations contain 62 accepted middle starts, 16 rejected
+navigation probes and two legitimate primary setups; these 80 subcases are
+not 80 registered GTests. The original four event cases are also retained.
+
+The finite matrix covers real Paintbrush and Move tool state and a recording
+tool, button/modifier starts, occupied-navigation and primary-interaction
+rejection snapshots, and release/reentry. All immediate shell/action/anchor/
+grab-pointer cleanup assertions remain intact. The GDK no-grab observation
+follows a deterministic server roundtrip and main-loop drain, preserving the
+start-time grab assertion. There is no sleep, polling until success, forced
+ungrab or discarded input event. The source rationale and exact registrations
+remain in the unchanged navigation contract.
+
+Retained historical positive sequences 2 (Shift+middle) and 222
+(Shift+Ctrl+Alt+middle) are each exercised with both real tools. The preserved
+fixture supplies the button/modifiers, handled state, exclusive rotation,
+angle/anchor and grab checks. Modern tool-state expectations are explicitly
+pinned-source-derived: those old rows contain neither tool identities nor
+negative tool-state captures. Both historical GUI captures still record
+`command_exit=-11` during teardown. No old executable or new old-runtime
+capture was used.
+
+Failed component runs 001, 002 and 003 remain failed in the unchanged component
+summary and separately retained complete public archives. They respectively
+record the missing declaration build failure, asynchronous GDK grab-observation
+failure and incorrect 25-column fixture assertion. Accepted run 004 uses the
+unchanged 24-column fixture and preserves field indices and all behavioral
+assertions. None of those failures is overwritten or relabeled.
+
+### Retained strict Clone gate: distinct tested source B
+
+The receipt-integrated source B is `d975c1ba64895bcb61995c5a807d0b440509716b`,
+tree `d3f8aa2072cf1c21c5a81fb3e58ecfaefa15b6a1`. Its only changes from source A are the
+three component publication files. The unchanged strict Clone gate ran on this
+exact frozen source B and passed all three build/test/sanitizer commands:
+
+- Run: `rotation-start-run-001`
+- Current strict archive: `migration/tests/rotation-start-acceptance-evidence.tar.xz`
+- Archive SHA-256: `a2da52eac06c31c2af0633661e94e357ea9f1cbc037a09d8f46912fbb9a523c8`
+- Receipt SHA-256: `2a997d252b2e3f4ef12c2daa589158259cfcb80aeea81eb4264834f523982e8e`
+
+The retained full default incremental build and seven exact normal Meson
+targets passed: `core` 4, `projection-update-bounds` 3, `gimp-clone-layer` 62,
+`painter-layer-ui` 68, `painter-layer-tree` 35, `painter-xcf-roundtrip` 49 and
+`update-geometry` 5, totaling 226 positive TAP cases. Focused Clone ASan/UBSan
+passed 62 cases. Both Clone executions include the same 216 distinct
+source-mode/type/mask scenes. Exactly eight translation units are instrumented;
+54 RTTI-only C++ rebuilds are not additional sanitizer coverage. LSan remains
+disabled and the remaining GIMP/dependency units remain uninstrumented.
+
+Strict review verified unchanged source before build, before tests and after
+tests; all 2,879 normal build ELF inventory entries; full default-build
+freshness; compile database; all 164 registered target definitions; all
+361 compiled locale catalogs; and unchanged private Clone sanitizer
+artifacts. Inventory counts come from this exact receipt, including retained
+navigation event sanitizer outputs where present. Sealing those outputs does
+not claim the navigation sanitizer was rerun by the strict Clone gate. Registry
+integrity is not a full aggregate execution, and the retained build is not a
+clean-from-empty build. Historical aggregate receipts keep their original scope.
+
+The strict archive contains exactly the existing 17 public receipt members with
+unchanged bytes. The reviewed deterministic pack function and existing bounded
+XZ/flat-tar helpers are reused without modification. A second pack is byte-for-
+byte identical. Original-directory, extracted-directory and archive validation
+produce identical strict results with execution source/build/private paths
+blocked and Git as the only permitted subprocess. Public environment-removal
+transformations remain intact. Every earlier evidence archive is unchanged.
+
+All 44 existing receipt controls, 17 archive controls and 11 acceptance controls
+pass, together with strict current Clone acceptance, task-ledger validation and
+`git diff --check`. These closure checks are Python/Git-only; they do not create
+another native execution or transfer source A/B native claims to this later
+commit. The four documentary files and this one exact verified strict archive
+are the only closure changes. No production, test, fixture, validator, component
+receipt, component archive or navigation-contract change is made after freeze.
+
+Physical mouse/tablet equivalence, focus/device interruption, other platforms,
+original `25.002` onward, all of section 25, broader Clone/XCF/GUI acceptance,
+full aggregate, packaging and release remain open. Old Edge/string-reader
+runtime remains user-approved SKIPPED and compatibility unverified. This
+closure establishes only the original finite rotation-start criterion while
+preserving the current strict Clone acceptance route.
