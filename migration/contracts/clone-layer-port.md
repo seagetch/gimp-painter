@@ -452,3 +452,72 @@ other operating systems or input devices, full sanitizer/LeakSanitizer coverage,
 exhaustive shutdown, or release acceptance. This later documentary publication
 is not the exact executable source tested above. Native run-004 evidence and
 all its input/receipt bytes remain unchanged.
+
+
+## Source-mode projection regression scope (14.007/source-mode-projection-regression)
+
+This bounded independent verification child uses completed
+`14.001/core-implementation`, `14.007/component-visibility-regression`,
+`10.005/normal-multiply-parity`, `02.005`, and `09.002` under the existing WBS
+parallelization rule. Parent `14.007` and predecessor `14.006` remain open. The
+implementation checkpoint adds tests only; native execution and acceptance are
+pending. The accepted component-visibility receipt above and every historical
+source hash remain unchanged.
+
+Expected bytes are independently derived from pinned legacy source
+`afa43fae3e920210146abed514f136fd49f671b5`; this is not a new genuine old-runtime
+oracle or a broader blend-compositor parity claim:
+
+- `app/core/gimpclonelayer.cpp:511–585` calls source `project_region` with
+  `combine=FALSE` for the update ROI and then notifies the same Clone ROI.
+- `app/core/gimplayer-project.c:95–144` dispatches RGB/Gray without alpha to
+  `INITIAL_INTENSITY`, RGBA/Gray-alpha to `INITIAL_INTENSITY_ALPHA`, and passes
+  opacity, applied mask, mode and visible components to `initial_region`.
+- `app/paint-funcs/paint-funcs.c:3947–4016` only special-cases Dissolve in these
+  initial-region paths. Every other mode uses the same initial intensity
+  functions; the source's final blend operation is not the Clone cache oracle.
+- `app/paint-funcs/paint-funcs-generic.h:814–995` copies visible color channels
+  and calculates generated/source alpha using the single-rounding macros in
+  `app/paint-funcs/paint-funcs-utils.h:22–28`. With opacity 0.37 (byte 94), alpha
+  inputs `[0,1,101,128,254,255]` produce `[0,0,37,47,94,94]` without a mask and
+  `[0,0,14,17,34,34]` with mask 93. No-alpha sources produce alpha 94 or 34.
+  Replacement alpha 203 produces 75 or 27. These literal expectations are not
+  calculated by the implementation under test.
+- `app/core/gimplayer.c:2052–2077` emits a full-layer drawable update only when
+  the stored mode changes; assigning the same mode does nothing.
+
+The explicit 27-entry raw-to-modern test table contains raw 0, 3–21 and 23–29.
+Raw 0 and 3 map to `PAINTER_NORMAL` and `PAINTER_MULTIPLY`; 4–21 map to the named
+legacy enums (including the old Overlay value); 23–29 map to the seven named
+Painter Erase/Replace/Anti-erase/Src-in/Dst-in/Src-out/Dst-out enums. The test
+compares the mapper result against this literal table and asserts ordinary-layer
+context before constructing the source. It does not cast colliding raw values
+into modern enums. Current mapping is in
+`app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c:94–114`;
+ordinary-layer admission is in `app/operations/layer-modes/gimp-layer-modes.c`.
+Raw 2 (Behind) and 22 (Color erase) are excluded because their mapped contexts
+do not admit ordinary layers. Dissolve is covered only by earlier fixtures;
+this child does not expand its coverage.
+
+Four nonlinear-U8 cases, `source_mode_projection_rgb`,
+`source_mode_projection_rgba`, `source_mode_projection_gray` and
+`source_mode_projection_gray_alpha`, each cover 27 modes × two mask states:
+216 scenes total. Each scene uses a 3×2 varying-color source (varying alpha
+where present), opacity 0.37, all components visible, and either no mask or an
+applied mask filled with 93. The test compares every byte in the committed
+Clone cache and its GEGL source node. It then changes to a distinct legal mode
+and reverts, requires exactly one full 3×2 Clone notification for each change,
+and requires no notification on reassigning either stored mode. Finally it
+changes the source pixel at (1,1), checks one exact 1×1 notification, and checks
+the full cache/source node so all five neighboring pixels remain unchanged.
+All expected bytes are independent of the selected blend mode.
+
+The current implementation's only mode-dependent initial-region branch is
+Dissolve in `app/core/gimpclonelayer.cpp:353–443`. Modern stored/effective-mode
+notification paths are in `app/core/gimplayer.c:1833–1842,2652–2719,2949–3007`.
+Show-mask transitions need their own contract: effective Normal can suppress
+an update even when the stored mode changes. They are intentionally excluded
+here, together with groups, indexed/high-precision images, full image
+composition, XCF admission, GUI, platforms, full aggregate and whole-port gates.
+The broader source-mode gap remains open outside this exact initial-region
+slice. No old Edge/runtime build or execution is part of this work.

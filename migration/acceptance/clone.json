@@ -350,6 +350,38 @@
       ]
     },
     {
+      "id": "14.007/source-mode-projection-regression",
+      "title": "Cloneの非Dissolve source modeとinitial-region更新を検証する",
+      "existing_checkbox": false,
+      "dependencies": "14.001/core-implementation, 14.007/component-visibility-regression, 10.005/normal-multiply-parity, 02.005, 09.002",
+      "acceptance_condition": "通常layerで有効な旧27 modeの明示mapping・RGB/RGBA/Gray/Gray-alpha×mask有無の216場面でsource由来cache/source-node・mode変更/復帰の全領域通知・同mode無通知・後続1x1更新と周囲保持を検証。native実行待ち、親14.007/14.006とgenuine runtime/合成/UI/release gateは保持",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/source_mode_projection_rgb",
+        "/gimp-clone-layer/source_mode_projection_rgba",
+        "/gimp-clone-layer/source_mode_projection_gray",
+        "/gimp-clone-layer/source_mode_projection_gray_alpha"
+      ],
+      "additional_roundtrip_tests": [],
+      "additional_dialog_tests": [],
+      "reports": [],
+      "gaps": [
+        "Fresh source-bound normal and focused ASan/UBSan execution of all 62 registered Clone tests and the seven selected targets is pending; source-only tests and controls are not native acceptance.",
+        "Raw modes 2/22, show-mask mode transitions, groups, indexed/high-precision sources, Dissolve expansion, full-image composition, XCF mode admission, GUI/platforms and aggregate/release gates remain outside this child."
+      ],
+      "state": "OPEN",
+      "component_scope": "Source-derived initial-region projection for the 27 ordinary-layer-legal non-Dissolve legacy modes across nonlinear-U8 RGB/RGBA/Gray/Gray-alpha with and without an applied mask: 216 scenes, full mode-change/return notifications, same-mode no-op, and subsequent 1x1 updates with unchanged neighbors. Parent 14.007 and predecessor 14.006 remain open.",
+      "qualifications": [
+        "The accepted 58-case component-visibility receipt at public checkpoint 1d2b621a15 remains immutable historical evidence. Source checkpoint 6f22d01bbb894d5e9608886bfc726a1162afc7dc adds four registrations and is not covered by that receipt.",
+        "The unchanged receipt contract derives all current Clone registrations and requires exact normal and focused-sanitizer TAP coverage; its existing scope identifier is retained without broadening any native claim.",
+        "A fresh passing receipt must be archived separately as migration/tests/clone-source-mode-projection-evidence.tar.xz before replacing the current_core_receipt route. Preserve migration/tests/clone-component-visibility-evidence.tar.xz and the original clone-component-baseline.json unchanged."
+      ]
+    },
+    {
       "id": "14.008",
       "title": "source 改名を処理する",
       "existing_checkbox": false,
