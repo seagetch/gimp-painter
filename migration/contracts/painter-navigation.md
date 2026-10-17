@@ -106,11 +106,14 @@ manifest rather than suppressed.
 ## Original 25.001: source-defined start acceptance matrix
 
 The added cases in `app/tests/test-painter-navigation-events.c` target only the
-original **25.001 button/modifier/tool-state** criterion. Native execution of
-this source checkpoint is **pending**; the original row remains unchecked.
-No production change or new child WBS row is part of this increment. Dependencies
-02.015 and 03.009 are already DONE. The four preceding event tests and their
-historical receipts remain unchanged.
+original **25.001 button/modifier/tool-state** criterion. The bounded native
+matrix passed on the exact source recorded below: **21 normal cases across three
+targets and 11 focused event ASan/UBSan cases**. This evidence-only checkpoint
+does not close the original row; parent closure requires the later strict Clone
+freeze on the receipt-integrated source. No production change or new child WBS
+row is part of this increment. Dependencies 02.015 and 03.009 are already DONE.
+The four preceding event tests are rerun; their historical receipts remain
+unchanged.
 
 ### Expectations fixed before execution
 
@@ -219,11 +222,13 @@ requires the same GDK no-grab assertion. It does not issue an ungrab, reset stat
 sleep, poll until success, or discard input events. A release-phase message and
 pre/post synchronization diagnostic make the observation visible. The existing
 start-time grabbed assertion and all rejection snapshots remain unchanged.
-This is a source-supported observation-timing correction; a frozen native retry
-must establish its outcome. No production defect or successful retry is claimed
-from source inspection alone.
+This is a source-supported observation-timing correction, not a production
+change. Run 003 passed both real-tool modifier matrices before encountering the
+retained-fixture schema mismatch described below. The accepted frozen run 004
+passes all 11 event cases normally and under the focused sanitizers, with the
+pre/post synchronization diagnostics preserved.
 
-### Finite execution inventory and native handoff
+### Finite execution inventory
 
 The executable has **11 registered GTest cases**: the original four plus these
 seven new registrations:
@@ -244,37 +249,111 @@ setups and 16 reentries), **16 rejected navigation probes**, and **2 legitimate
 primary setups**. These are subcases, not 80 separately registered GTests. The
 unchanged four original tests retain their own existing sequences.
 
-Required validation is a full default modern build, then the registered
-`painter-navigation-events`, `painter-navigation-ui`, and `painter-navigation`
-targets, followed by focused event ASan/UBSan from the same frozen source. In the
-configured build environment, under the shared build lock, the owner runs:
+### Accepted native component receipt (2026-10-17)
 
-```
-ninja -C "$BUILD"
-meson test -C "$BUILD" --no-rebuild --print-errorlogs \
-  painter-navigation-events painter-navigation-ui painter-navigation
-python3 "$SOURCE/migration/tests/build_navigation_event_sanitizers.py" \
-  "$BUILD" --report "$EVIDENCE/navigation-start-sanitizer-build.json"
-env GIMP_TESTING_ABS_TOP_SRCDIR="$SOURCE" \
-  GIMP_TESTING_ABS_TOP_BUILDDIR="$BUILD" \
-  GIMP_TESTING_PLUGINDIRS="$BUILD/plug-ins/common" UI_TEST=yes \
-  ASAN_OPTIONS=detect_leaks=0:halt_on_error=1:abort_on_error=1 \
-  UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \
-  "$BUILD/app/tests/painter-navigation-events-asan"
-```
+`migration/tests/rotation-start-component-receipt.json` is the publication
+summary. `migration/tests/rotation-start-component-evidence.tar.xz` preserves the
+unchanged public native receipt, commands, TAP output, source/fixture hashes,
+runner bytes and integrity snapshots for `component-run-004`:
 
-Use an authenticated native display with correct `DISPLAY`/`XAUTHORITY` and the
-configured runtime dependency environment. `$SOURCE` must match the configured
-compile database; transfer/commit the checkpoint there before rebuilding. The
-retained fixture path must exist under `GIMP_TESTING_ABS_TOP_SRCDIR`. The actual
-Paintbrush primary setup also requires the test profile's brush and enabled
-paint-dynamics resources. Native runs must report all 11 cases, not only the
-seven new ones; a display skip is not a pass. The sanitizer builder instruments
-five event/navigation/test C units; underlying core, GTK and dependencies remain
-uninstrumented and LSan is disabled. Preserve all historical receipts: do not
-use the older runner that overwrites `navigation-sanitizers.json`.
+- Tested source A: `3634001805313a297e259aea0d3020b1f6805d04`
+- Tested tree: `af466e90bbe5ac396c48360176d27fcfc3f2c932`
+- Event source SHA-256: `22bf8d4fa9c4704619c4acf85147011a16a28a47303686fbd214ea544cf59646`
+- Native receipt SHA-256: `355ce4bb641efecefea161015a4209ce1750787bb4ee2d935673f749c059fa09`
+- External runner SHA-256: `30df9978f0877c9109b7160ae2c43310936eb762a482086b39ec612d6abaf53b`
+- Pinned `gimp-data`: `a31e5dea4f572fb5f33b06f5c4b86db5f30643dc`
 
-The parent integration owns native acceptance, exact-source result receipts,
-any final original 25.001 ledger decision, and the later strict Clone source
-freeze. A source checkpoint or offline fixture integrity pass alone does not
-close 25.001.
+The recorded command order was:
+
+1. Full default `ninja -C /workspace/shared/gimp-clone-component-build -j4`:
+   exit 0, 97 incremental steps. This is not a clean-from-empty build claim.
+2. The unchanged `migration/tests/build_navigation_event_sanitizers.py` with
+   that configured build and a separate private report: exit 0.
+3. `meson test -C /workspace/shared/gimp-clone-component-build --no-rebuild
+   --num-processes 1 --print-errorlogs --logbase <private-attempt>/meson
+   painter-navigation-events painter-navigation-ui painter-navigation`: exit 0.
+4. The builder's `app/tests/painter-navigation-events-asan`, with the actual
+   environment of the exact registered event target and its recorded workdir:
+   exit 0. Only ASan/UBSan options were overridden.
+
+The exact argument arrays, workdirs and timestamps are in the unchanged receipt.
+The original external runner is archived as `external-runner.py`; it uses the
+accepted committed `tools/run-painter-xvfb.py` directly, a single authenticated
+loopback-TCP 1080×1920 display, isolated writable profile state and the shared
+build lock throughout builds, tests and all seals. It preserves the normal
+Meson dependency-library environment rather than reconstructing it. The runner
+constants retain `detect_leaks=0:halt_on_error=1:abort_on_error=1` and
+`halt_on_error=1:print_stacktrace=1`; the committed public-log redactor removes
+those environment-setting strings from the public report. No suppression file
+or suppression option is added.
+
+The three exact registered normal targets passed: `painter-navigation-events`
+11/11, `painter-navigation-ui` 4/4 and `painter-navigation` 6/6, for 21 positive
+TAP cases. Focused event ASan/UBSan passed the same 11/11 event registrations.
+There were no skipped GTests, incomplete plans, crash diagnostics or sanitizer
+errors. The five instrumented C units are the navigation arithmetic, modifier
+manager, rotate adapter, canvas event adapter and event test. Other GIMP, GTK
+and dependency units remain uninstrumented; LSan is disabled. The actual
+Paintbrush primary setup uses the profile's brush and enabled paint dynamics.
+
+All nine integrity checks are true: unchanged source; unchanged normal ELF;
+normal ELF preserved by the focused builder; unchanged full build freshness;
+unchanged compile database; unchanged full registered-test metadata; unchanged
+sanitizer artifacts; preserved sanitizer copies matching originals; and all
+361 compiled locale catalogs unchanged. Four clean source snapshots cover
+before build, after default build, before tests and after tests. The three
+normal ELF snapshots each contain 2,873 entries. Catalog content and installation
+metadata are independently read after testing. The full registry is sealed for
+identity and freshness; it was not run as a full aggregate.
+
+Native logs retain missing application icons, ignored dummy plug-in entries,
+unavailable session/cloud-provider D-Bus and GLib setenv/unsetenv thread-safety
+debug messages. Empty diagnostic-classifier warning arrays do not mean a
+warning-free application. Dummy plug-in discovery messages are not skipped
+GTests. Default/focused build logs and every original diagnostic remain stored.
+
+The compact archive's `compact-manifest.json` binds all 22 included original
+public members, including `receipt.json`, by SHA-256. It separately names and
+hashes seven omitted copied executable/object/thin-archive artifacts. Their
+hashes remain in the unchanged native receipt and `sanitizer-artifacts.json`;
+the compact archive does not contain those binary bytes. The complete public
+package, including those copies, is retained separately as
+`component-run-004-passed-public.tar.xz`, 28,283,800 bytes, SHA-256
+`799ad7c7edca5992e095f7c792fa2e622eef455835acc399df30aff0b7b909a0`.
+Neither package contains private profiles, raw environment objects or
+Xauthority data. The copied thin archive is not a standalone rebuild package.
+
+### Retained unsuccessful attempts
+
+The new summary records each exact source/tree, original receipt SHA-256,
+command exits and separately retained full public failure-archive SHA-256:
+
+1. Run 001, source `6a5df001a61b2093eba7937b2aafd07668b8f094`, stopped in the
+   default build on undeclared `gimp_tools_set_tool_options_gui_func`. No native
+   tests ran. Adding the missing `widgets/gimpwidgets-utils.h` include fixed compilation.
+2. Run 002, source `bfcb8b8ab720ca4a92978a647c4125d8c5994ffc`, reached the GDK
+   no-grab assertion described above. Event normal/sanitizer each passed only
+   the original four cases; UI 4/4 and arithmetic 6/6 passed. It remains failed.
+3. Run 003, source `e946cf1716c8485535396648bb2358c39386d0f0`, passed six event
+   cases normally and under sanitizers, then failed the retained parser's
+   25-column assertion. The unchanged header and all 370 data rows have
+   24 columns. The accepted source changes that schema-width assertion to 24,
+   preserving fixture bytes, consumed field indices and behavioral assertions.
+   UI 4/4 and arithmetic 6/6 passed; the event result remains failed.
+
+No earlier receipt or failure is overwritten or relabeled. Both old GUI
+captures' teardown `command_exit=-11` and the source-derived real-tool-state
+limits remain as stated above; no old executable is run here.
+
+### Integration boundary and remaining gates
+
+This receipt establishes the bounded native start matrix only for tested
+source A above. Its receipt-only descendant B is not relabeled as natively
+tested for navigation. The parent must run the unchanged strict Clone gate
+(226 normal / 62 focused sanitizer cases) on that receipt-integrated source
+before deciding original 25.001 ledger closure. This compact component receipt
+is not valid input for `check_clone_acceptance.py --current-evidence`.
+
+Physical mouse/tablet equivalence, focus/device interruption, other platforms,
+all of section 25, the historical full aggregate, packaging/release and skipped
+old Edge/string-reader runtime remain outside this component acceptance.
