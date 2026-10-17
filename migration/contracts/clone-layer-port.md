@@ -1448,9 +1448,11 @@ This independent child accepts only the frozen, finite modern event cases for
 transformed radial zoom and interior middle-pan. Its completed inputs are
 25.008 and 01.017. Original **25.009 and 25.009/drag-zoom-scroll remain TODO
 with byte-identical criteria and dependencies**; every existing task and
-progress row is preserved. Only this bounded child is added. Current-branch
-portrait GUI remains pending separately. This appendix records the later
-strict result; the earlier navigation-contract receipt-integration checkpoint
+progress row was preserved at this native checkpoint. Only this bounded child
+was added then; portrait GUI was pending. The later independent
+34.005/transformed-drag-portrait-smoke appendix below records its distinct
+exact-source GUI result. This appendix records the strict result; the earlier
+navigation-contract receipt-integration checkpoint
 and frozen SOURCE-ONLY input manifest retain their historical meaning.
 
 ### Component-tested source A
@@ -1570,8 +1572,10 @@ byte-identical to B. The closure uses only Python/Git documentary checks.
 Component claims remain on A and strict Clone claims remain on B; **C has no
 native execution claim**.
 
-The latest separate portrait GUI remains historical exact source
-`0f16f81557db0ab4cd1cdc1099eb8da323501c7d`. It is not a current A/B/C GUI result.
+At this native checkpoint, the latest separate portrait GUI was historical
+exact source `0f16f81557db0ab4cd1cdc1099eb8da323501c7d`, not an A/B/C GUI result.
+The later GUI appendix below separately binds public source
+`adcb50e8c7481a86f5c15e858dffb5a6dbd930ff`.
 Native anisotropy, off-center focus, fractional-pan/old-start truncation parity,
 clamp focus/offsets/overshoot/reversal/old-policy equivalence, full old
 transformed pan/radial display parity, new raster/overlay/damage/clipping,
@@ -1581,3 +1585,121 @@ packaging, release or whole-port acceptance is implied. Both historical old
 GUI teardown `command_exit=-11` outcomes remain preserved. Old Edge/string-reader
 runtime stays **SKIPPED/unverified**; no old runtime, capture or oracle was
 accessed, executed or regenerated.
+
+
+## Installed transformed-drag portrait GUI smoke (2026-10-17)
+
+Independent child **34.005/transformed-drag-portrait-smoke** uses completed
+03.009/tcp-portrait-environment, 25.009/transformed-drag-events and
+29.001/native-canvas-tiles inputs. Original **34.005, 25.009 and
+25.009/drag-zoom-scroll remain TODO with byte-identical criteria and dependencies**.
+Only this bounded GUI child is newly accepted; component, strict Clone and GUI
+execution retain separate exact-source provenance.
+
+The actual installed GUI ran on public source
+`adcb50e8c7481a86f5c15e858dffb5a6dbd930ff`, tree
+`0ee3cd8130ee08db075f9b805df26cbb2b55bd54`. Full default incremental build
+completed 96 steps, followed by install `--no-rebuild`; both exited 0. This is
+not a clean-from-empty build. The fresh 1080x1920 depth-24 display accepted an
+authenticated loopback-TCP client and rejected empty authority. Ordinary XTest
+mouse/keyboard events operated the real installed application and View >
+Painter Canvas Controls; no batch command, debugger or internal state setter
+supplied the result. The archive retains **28 original full-resolution PNGs**.
+
+One synthetic 720x1080 u8 RGB scene was set to **37 degrees, horizontal flip,
+60% base zoom**. One held middle-button drag produced **60 -> 64 -> 68 -> 64 ->
+60%**: Ctrl+Alt+middle with motion, Ctrl release while Alt+middle remained held
+with further motion, Alt release while middle remained held with reverse
+motion, return to the start and middle release. Released/settled frames
+040/041 have identical full-frame RGB bytes. A separate ordinary middle-pan
+displaced the pointer by **(36,-24) device pixels**, returned it to its start,
+and released; fixed Painter panels stayed upright. The largest recorded gap
+while held was 10.575 seconds under the unchanged 120-second idle limit.
+There was no timeout/safety release, geometry retry or held input after cleanup.
+
+Pan baseline/return frames 045/051 differ at **24 of 818,400 pixels** in the
+exclusive screen rectangle `(90,520)-(970,1450)`. Independent pixel analysis
+places all 24 within 3 pixels of the visible
+rotated-artwork boundary, with maximum channel delta 2; it does not establish
+a renderer-level cause. A strict artwork polygon inset by 3 pixels compares
+exactly on return (0/271,104); translated pan at (+36,-24), with a cursor
+exclusion, also compares exactly (0/264,704). Zoom baseline/return differs at
+280/818,400 canvas pixels, comprising those boundary locations plus 256 brush-
+cursor-region pixels; the strict inset polygon excluding the cursor compares
+exactly (0/268,459). The released/settled equality concerns only frames 040/041.
+No exact pan-return rectangle, full-frame equality or full-buffer claim is made.
+
+Explicitly focused ordinary Save Image, close-view and Open Image dialogs
+saved and reopened `transformed-drag-portrait-smoke.xcf` (124,278 bytes,
+SHA-256 `01a1846108e57776bed5b132928f6524de81c7d936dfe2be4b7cb60616c5c931`).
+The final file is independently rehashed. Equality with the immediate-save
+hash relies on the parent's observed `sha256sum`/`stat` tool output after
+request 064, chunk `249d9c` at 2026-10-17 14:01:31 UTC, before request 066;
+**no contemporaneous on-disk hash artifact exists**, so the independent audit
+cannot separately prove that temporal observation. Frame 072 reopens in a
+0-degree, unflipped view at 100%; frame 074 restores 60% and centering through
+ordinary controls. Between frames 005/074 the conservative
+interior artwork rectangle `(326,661)-(754,1306)` has **0 different pixels out
+of 276,060**, with identical RGB hash
+`72c9b7715b50ea03bb532627b080c7786a410e8b5b7123f381ba843f69f1626c`.
+This establishes only rendered interior equality, not whole-image numerical
+or complete UI-state equality.
+
+All **13,843 source entries** match before build, after build and after GUI;
+all **2,842 installed-runtime entries** and both executable seals are unchanged.
+Original source/runtime manifest SHA-256 values are respectively
+`740b78b005664c245f31c1962fe45d9ab54dc75a2496730085f3d02d064a4a1c` and
+`62882c45fde0e895fad1f8dbb03c3357b5349b52e8c9b2085178241a03d4e959`.
+Runtime inventory covers installed bin/lib/libexec/share, not every external
+dependency byte. Build/installed ELF Build IDs both equal
+`415f537e7581e6fe450ae8b6cdf26ab5e1289c26`; their 6,099,050-byte `.text`
+sections both hash to
+`ce1df04ee90cc8b48b6fc7160e9eda10d16e92f90b31766c34a2b600aca01906`.
+The independently sealed whole-file hashes differ, and installation removes
+RUNPATH; this is not a claim that RUNPATH is the only changed byte range.
+Application, driver, display, launcher and final seal check all exited 0,
+with no cleanup error. Logs retain **112 unsupported fonts, 49 dconf warnings
+and unavailable D-Bus**; no warning-free application is claimed. Historical
+preparation-script/README source labels do not identify this run; accepted-source
+files and three equal source seals do.
+
+External archive `transformed-drag-portrait-gui-run-003-evidence.tar.xz`
+contains 173 files and is 5,018,356 bytes:
+
+- Archive SHA-256: `519a89036260d073521bd2795cf2646cd0a044f025d77f6b7492a8cbc2d1c705`
+- Package-manifest SHA-256: `6aa101d031902e6157f555bfbb6a245f24a4d5d410764d0df67ac4ef9cff633d`
+- Public `transformed-drag-portrait-gui-receipt.json` SHA-256: `33f7c210043fdad09dbd1c1aca4ee0c54df18b1dd08303ccea280e4e1da75aae`
+- Original local receipt SHA-256: `b644c9bc471b6d2f3452e4417a902f2f559c11673d0718d94f87b38555aa7ff1`
+
+Readback verifies all 172 manifest members. Raw PNG/XCF bytes are unchanged;
+88 text copies replace declared project roots and the D-Bus machine ID.
+Private profiles, authentication material, raw environments and compiled
+executables are excluded. Embedded checksums identify original local text;
+the package manifest maps it to normalized public bytes. Sanitized helper
+paths are documentary placeholders, not a promised portable executable.
+Original evidence remains separately retained. The independent read-only GUI
+audit verifies all 28 screenshots, 28 request/response pairs, 27 historical
+process-map snapshots, source/runtime/binary seals, gesture chronology,
+current XCF hash and the qualified pixel comparisons above. Its temporal
+XCF-hash limitation is retained; no extra GUI or native test was executed.
+
+No new native aggregate or focused sanitizer was run on this GUI source or
+its documentary descendant. The **41 normal/31 focused** component result
+remains bound to `0c8620d9064f8c912d9424266771e045c276f582`; the **226 normal/62
+focused** strict Clone result remains bound to
+`1f911216f78d0702361bef782954b0ca14b056cf`. Only tasks.md, progress.tsv and this
+contract change after GUI, within the existing strict receipt's documentary
+exceptions. Current Clone route, validators, production/test/fixture bytes,
+prior archives and receipts remain unchanged. Existing strict acceptance,
+task-ledger, 44 receipt/17 archive/11 acceptance controls and whitespace checks
+pass. No new native execution is implied by these documentary checks.
+
+Physical devices, native anisotropy/fractional displacement, off-center/clamp
+focus, full legacy transformed-pan/radial parity, focus/device interruptions,
+arbitrary GUI image-anchored GTK children, exhaustive overlay/selection,
+damage/clipping/extents/hit-testing and other platforms remain outside this
+bounded smoke. No all-196-hunk, whole-section 25, full aggregate, final Clone
+freeze, package/release or whole-port acceptance is implied. Both old GUI
+teardown -11 outcomes remain historical. Old Edge/string-reader runtime stays
+**SKIPPED/unverified**; no old runtime, capture or oracle was accessed, executed
+or regenerated.
