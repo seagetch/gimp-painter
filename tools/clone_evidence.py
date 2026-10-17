@@ -193,6 +193,48 @@ def source_commit_gate(root, state):
     return errors
 
 
+def sealed_library_paths(libraries, build, inventory):
+    """Resolve archived loader aliases only through the sealed ELF inventory.
+
+    A fingerprint stores each alias's final content, not another nested alias.
+    Require every hop to agree with that final file, with no filesystem access.
+    """
+    import posixpath
+    build = Path(build)
+    if not build.is_absolute() or str(build) != posixpath.normpath(str(build)):
+        raise ValueError('Noncanonical recorded build directory')
+    resolved = {}
+    for name, location in libraries.items():
+        current, seen, aliases = Path(location), set(), []
+        for _ in range(41):
+            current = Path(posixpath.normpath(str(current)))
+            if not current.is_absolute() or not current.is_relative_to(build):
+                raise ValueError('Loader alias escapes sealed build: ' + name)
+            relative = current.relative_to(build).as_posix()
+            if relative in seen:
+                raise ValueError('Cyclic sealed loader alias: ' + name)
+            seen.add(relative)
+            seal = inventory.get(relative)
+            if not isinstance(seal, dict):
+                raise ValueError('Missing sealed loader alias/target: ' + relative)
+            if 'symlink' in seal:
+                if set(seal) != {'symlink', 'content'} or not isinstance(seal['symlink'], str) or not seal['symlink']:
+                    raise ValueError('Malformed sealed loader alias: ' + relative)
+                aliases.append(seal['content'])
+                current = current.parent / seal['symlink']
+                continue
+            if (set(seal) != {'sha256', 'bytes', 'mode'} or
+                    re.fullmatch(r'[0-9a-f]{64}', seal['sha256']) is None or
+                    type(seal['bytes']) is not int or seal['bytes'] <= 0 or
+                    any(content != seal for content in aliases)):
+                raise ValueError('Loader alias content differs from sealed final ELF: ' + relative)
+            resolved[name] = str(current)
+            break
+        else:
+            raise ValueError('Sealed loader alias chain exceeds 40 links: ' + name)
+    return resolved
+
+
 def validate_receipt(directory, root=ROOT, expected_sha=None, *, storage_paths=()):
     """Recompute acceptance from sealed artifacts; never trust an all_passed flag."""
     directory, root = Path(directory), Path(root)
@@ -342,7 +384,7 @@ def validate_receipt(directory, root=ROOT, expected_sha=None, *, storage_paths=(
             prefix.append(expected_listing)
             if listing['command'] != expected_listing:
                 errors.append('Original archive member discovery command changed')
-            memberships[archive] = [str((build_path / member).resolve()) for member in listing['stdout'].splitlines()]
+            memberships[archive] = [str(sanitizer_runner.lexical_path(build_path / member)) for member in listing['stdout'].splitlines()]
         plan = sanitizer_runner.build_plan(execution_root, build_path, private_path,
                     read('compile-database.json'), link_read['stdout'], memberships)
         if (plan != san['build_plan'] or plan['instrumented_sources'] != san['sources'] or
@@ -379,8 +421,8 @@ def validate_receipt(directory, root=ROOT, expected_sha=None, *, storage_paths=(
         if (normal_loader['command'] != ['ldd', str(Path(receipt['build_directory']) / 'app/tests/gimp-clone-layer')] or
                 sanitizer_loader['command'] != ['ldd', san['executable']]):
             errors.append('Missing exact normal/sanitizer loader checks')
-        normal_libraries = sanitizer_runner.gimp_library_paths(normal_loader['stdout'])
-        san_libraries = sanitizer_runner.gimp_library_paths(sanitizer_loader['stdout'])
+        normal_libraries = sealed_library_paths(sanitizer_runner.gimp_library_paths(normal_loader['stdout']), build_path, elf['before'])
+        san_libraries = sealed_library_paths(sanitizer_runner.gimp_library_paths(sanitizer_loader['stdout']), build_path, elf['before'])
         if normal_libraries != san_libraries or set(normal_libraries) != set(san['library_resolution']):
             errors.append('Normal/sanitizer libgimp loader resolutions disagree')
         for name, location in normal_libraries.items():

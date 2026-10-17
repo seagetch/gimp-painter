@@ -8,6 +8,7 @@ These extra production units get -frtti only. They are not silently claimed as
 sanitizer-instrumented. Private archive replacement must cover every old alias.
 """
 import json
+import os
 from pathlib import Path
 import shlex
 
@@ -15,13 +16,23 @@ import shlex
 CXX_SUFFIXES = frozenset({".cpp", ".cc", ".cxx", ".c++", ".cp", ".C"})
 
 
-def bridge_rtti_sources(root, build, entries=None):
-    root = Path(root).resolve()
+def lexical_path(path):
+    """Normalize an archived absolute identity without consulting its filesystem."""
+    path = Path(path)
+    if not path.is_absolute():
+        raise ValueError("Archived path identity must be absolute")
+    return Path(os.path.normpath(str(path)))
+
+
+def bridge_rtti_sources(root, build, entries=None, *, resolve_paths=True):
+    # Existing live callers keep physical resolution; archived plans must opt out.
+    normalize = (lambda path: Path(path).resolve()) if resolve_paths else lexical_path
+    root = normalize(root)
     selected = set()
     if entries is None:
         entries = json.loads((Path(build) / "compile_commands.json").read_text())
     for entry in entries:
-        source = (Path(entry["directory"]) / entry["file"]).resolve()
+        source = normalize(Path(entry["directory"]) / entry["file"])
         if source.suffix not in CXX_SUFFIXES or not source.is_relative_to(root):
             continue
         relative = source.relative_to(root)
