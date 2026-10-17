@@ -1,0 +1,9 @@
+/workspace/shared/gimp-painter-edge-raw-shadow/app/painter/tests/test-filter-edge-shadow.cpp: In function ‘void {anonymous}::tiny_border_cancellation_errors()’:
+/workspace/shared/gimp-painter-edge-raw-shadow/app/painter/tests/test-filter-edge-shadow.cpp:650:19: error: loop variable ‘shape’ creates a copy from type ‘const std::pair<long unsigned int, long unsigned int>’ [-Werror=range-loop-construct]
+  650 |   for (const auto shape : {std::pair<std::size_t,std::size_t> {1,1}, {1,5}, {5,1}, {5,4}})
+      |                   ^~~~~
+/workspace/shared/gimp-painter-edge-raw-shadow/app/painter/tests/test-filter-edge-shadow.cpp:650:19: note: use reference type to prevent copying
+  650 |   for (const auto shape : {std::pair<std::size_t,std::size_t> {1,1}, {1,5}, {5,1}, {5,4}})
+      |                   ^~~~~
+      |                   &
+cc1plus: all warnings being treated as errors
