@@ -968,6 +968,7 @@
 | 25.009 | [ ] | 現行表示行列へ接続する | 25.008 | canvas と overlay が同じ角度を使用 |
 | 25.009/common-angle-draw | [x] | 共通角度描画とupright GTK anchorの限定native経路を検証する | 25.008, 01.017 | 独立geometryで38実GTK draw/回のraster・代表item・selection・upright anchorと13行anchor修正を37通常/27 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/canvas-overlay-portrait-smokeでsource0f16限定検証。原25.009全体は未完了 |
 | 25.009/transformed-drag-events | [x] | 回転・水平反転下のradial zoomと内部middle-panの限定event経路を検証する | 25.008, 01.017 | 独立geometryで4追加登録・16 drag/16再開・6小数primary座標を41通常/31 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/transformed-drag-portrait-smokeでsource adcb50e8限定検証。原25.009全体は未完了 |
+| 25.009/fractional-pan-difference | [ ] | 小数部が変わるmiddle-panの現行整数device原点と旧source差分を限定検証する | 25.008, 01.017 | SOURCE-ONLY/TODO。既存登録内の非反転37度・1.5倍1caseで整数offset・量子化anchor不変・raw driftと通常終了を確認するsourceのみ。旧double offsetとの整列source差分を明記し、旧互換受入を現行へ再定義しない。既存31登録・6primary pair・凍結16drag証跡を保持、exact-source nativeと別strict Clone gateは未実行、親25.009とdrag-zoom-scrollは未完了 |
 | 25.009/drag-zoom-scroll | [ ] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |
 | 25.009/radial-default | [x] | 旧Ctrl+middleの距離300 radial zoomを接続する | 25.001/start-relative-route | 開始scale最大値・整数中心・固定anchorを保持し2400不変旧関数演算に一致、6 pure通常/ASan/UBSan合格。明示custom zoomは現行設定を保持。実display clamp/pan/deviceは未完了 |
 | 25.010 | [ ] | 回転 reset action を接続する | 25.009 | 状態と UI 表示が一致 |
