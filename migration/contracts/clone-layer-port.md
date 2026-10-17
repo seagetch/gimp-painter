@@ -1102,3 +1102,121 @@ packaging and release remain open. Old Edge/string-reader runtime remains
 user-approved SKIPPED and compatibility unverified. This closure accepts only
 the original bounded zero/360 boundary criterion while preserving the current
 strict Clone acceptance route.
+
+
+## Mirrored-arrow input acceptance and retained Clone refresh (25.008/mirrored-arrow-input, 2026-10-17)
+
+Task `25.008/mirrored-arrow-input` is now DONE only for its exact
+`mirrored時のLeft/Right変換と非反転時の不変を、押下・解除・toolへの転送・回転併用で試験する`
+criterion. Its title and prerequisites `25.007, 01.017` remain byte-identical.
+Only this sibling checkbox and progress row change. Original `25.008` horizontal-
+reflection calculation remains separately accepted; no other task status,
+dependency or criterion changes and no child WBS item is created.
+
+### Navigation component: tested source A
+
+The component run attests only to source A `e5f73ed431f1852fdfb337fc402c5a72d16cd6d7`,
+tree `33772929b55d176841d3dbd1a8a5c286ecc445a7`. The retained
+`migration/tests/mirrored-arrow-component-receipt.json` and compact
+`mirrored-arrow-component-evidence.tar.xz` bind native receipt SHA-256
+`c37c42e0a2920624ddfa08751a0afa06b8ceb6b1c5377c1562a49164836e2cea`.
+The first accepted attempt passed the default incremental build and **32 positive
+normal TAP cases**: 22 event, four UI and six arithmetic. All 22 event registrations
+passed focused ASan/UBSan with exactly five C units instrumented, LSan disabled
+and no suppression files or options. Other GIMP, GTK and dependency units remain
+uninstrumented. All four top-level component commands exited 0. All nine seals
+pass, including 12 source/fixture inputs, 2,873 normal ELF entries, full default-
+build freshness, compile database, registry, focused artifacts/copies and all
+361 locale catalogs. Registry integrity does not mean aggregate execution.
+
+The retained old handler supplies independent literal expectations: wants-all
+callbacks run before translation; only ordinary Left/Right **presses** swap under
+horizontal reflection. Normal unreflected presses are unchanged. All-consume
+receives the original key once. All-fallthrough receives the original key first,
+then the ordinary mapped key; the test's second callback consumes the press.
+Releases do not use the ordinary arrow callback route: only wants-all receives
+one unchanged release. This preserves the old asymmetric dispatch, while the
+modern local event copy also keeps the original allocated input immutable.
+These expectations do not call the production navigation helper.
+
+The pure six-group target explicitly checks all **20 combinations** of Left,
+Right, Up, Down and `a`, two horizontal-reflection states and press/release.
+Five previously missing unreflected-release assertions were added. Four new
+public-handler event registrations cover `idle-zero`, `idle-rotated`,
+`rotation-free` and `rotation-snapped`. Each combines both horizontal-reflection
+states, normal/all-consume/all-fallthrough recorder modes, Left/Right and
+press/release. This is **96 synthetic key sends, 64 press callbacks and 32 release
+callbacks per event execution**, not 96 additional registered tests. Vertical
+reflection is false. The prior 18 event registrations remain, including the
+24 boundary observations and 20 signed steps in each event run.
+
+A registered manager-owned focused recording tool checks callback count/order,
+phase, tool/display identity, keys and all public event fields. Original event
+fields, string content and device/source identities stay unchanged. Idle angles
+are 0 and 37 degrees. The active free/snapped contexts start at modern 37 degrees;
+independent pinned-old-source anchors are 127 unreflected and 593 reflected.
+After right-to-down motion, modern angles are 127 free and 120 snapped. Every
+key preserves action, initiating button, inherited routing, start/last points,
+rotation/zoom anchors, angle/provenance, scale/reflection and shell/native grabs.
+Continued motion to the left ray yields 217 free or 210 snapped from the same
+anchor, followed by ordinary middle release and full idle/grab cleanup. There
+are four real navigation drag lifecycles across the two active contexts.
+
+This finite matrix is source-derived. There is no retained Left/Right old-runtime
+capture for it, and no old executable, capture or oracle was run or regenerated.
+Both historical old GUI teardown `command_exit=-11` outcomes remain. No new GUI
+run is included: the older portrait GUI receipt stays bound only to source
+`22708f41d368c6c7c2e425d30ea2765b9d29158b`, without a current GUI claim for A,
+B or this documentary closure. Ordinary icon, plugin, D-Bus and GLib diagnostics
+remain; no warning-free application or clean-from-empty build claim is made.
+
+### Retained strict Clone gate: distinct tested source B
+
+Receipt-integrated source B is `25364937bf7c100e2123a4339f30de4d4a04e6fe`,
+tree `2ae2d6cdb4943690a05201deb29364e429b127b3`. Its only changes from A are `painter-navigation.md`, the
+mirrored-arrow component receipt and its compact archive. The unchanged strict
+Clone gate ran on this exact frozen B and all three default-build/normal-test/
+focused-sanitizer commands passed:
+
+- Run: `mirrored-arrow-run-001`
+- Current strict archive: `migration/tests/mirrored-arrow-acceptance-evidence.tar.xz`
+- Archive SHA-256: `6338ec2a74fd851fb3a1ab577a4a066f5173e43949cf8984ad943e987db3ddad`
+- Receipt SHA-256: `6a7794ae0e2d725553b4ab937ed9ccdf26a1ee3813eba5f478aefd04cca0b88d`
+
+Seven exact normal Meson targets passed: `core` 4, `projection-update-bounds` 3,
+`gimp-clone-layer` 62, `painter-layer-ui` 68, `painter-layer-tree` 35,
+`painter-xcf-roundtrip` 49 and `update-geometry` 5, totaling **226 positive TAP
+cases**. Focused Clone ASan/UBSan passed **62 cases**. Both Clone executions
+contain the same 216 unique source-mode/type/mask scenes. Eight translation
+units are instrumented; 54 RTTI-only C++ rebuilds are not additional sanitizer
+coverage. LSan remains disabled. Strict Clone did not rerun the navigation suite.
+
+Strict review verified identical source before build/before tests/after,
+2,879 unchanged normal ELF entries, full default-build freshness,
+compile database, all 164 registered target definitions,
+361 locale catalogs and private Clone sanitizer artifact seals.
+Historical aggregate evidence retains its original exact source scope.
+
+The new archive retains exactly the existing **17 public strict members**, all
+raw bytes and hashes unchanged. The unchanged deterministic pack function and
+bounded XZ/flat-tar helpers are reused; repacking is byte-identical. Original-
+directory, extracted-directory and archive validation give identical strict
+results with execution source/build/private paths blocked and Git as the only
+permitted subprocess. Public environment-removal transformations remain intact.
+All previous component, GUI and acceptance archives are unchanged.
+
+Existing **44 receipt, 17 archive and 11 acceptance controls** pass, as do strict
+current Clone acceptance, the task ledger and whitespace checks. The closure
+runs only Python/Git documentary checks. Its exact five files are this appended
+contract, the sibling task/progress edits, the Clone current-receipt route and
+one verified strict archive. Production, test, fixture, validator, procedure,
+component/GUI receipt/archive and navigation-contract bytes remain identical to B.
+Navigation claims remain on A, strict Clone claims on B and historical GUI claims
+on the older source. No native claim transfers to this documentary commit.
+
+Physical keyboard/tablet/mouse behavior, every tool's arrow semantics,
+keyboard-controller fallback, focus/device interruptions, vertical-reflection
+legacy parity, transformed pan/zoom, canvas/overlay equivalence, other platforms,
+whole section 25, full aggregate, final Clone freeze, packaging, release and
+whole-port acceptance remain outside this closure. Old Edge/string-reader
+runtime remains user-approved **SKIPPED/unverified**.
