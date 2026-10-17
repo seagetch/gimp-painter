@@ -1154,3 +1154,122 @@ to `22708f41d368c6c7c2e425d30ea2765b9d29158b`; current branch portrait GUI
 validation is pending. Old Edge/string-reader runtime stays
 **SKIPPED/unverified**; both retained old captures keep teardown
 `command_exit=-11`. No old runtime, capture or oracle was run or regenerated.
+
+## SOURCE-ONLY: transformed radial zoom and interior middle-pan regressions
+
+This appendix freezes a bounded extension on public baseline
+`17a1875ba049b2d349b265b6e30e41c431dda0ea`. It is **SOURCE-ONLY**:
+**default build, native normal tests, focused ASan/UBSan tests and GUI execution
+have NOT RUN for this increment**. Prior receipts above remain evidence only
+for their own exact sources. No existing result is transferred to these new
+regressions, and no old runtime, capture or oracle is run or regenerated.
+
+`migration/tests/transformed-drag-cases.json` freezes the inputs, independent
+literal geometry, retained row selection, immutable source/fixture hashes,
+old registrations and common-angle draw-block seal. Removing only the new
+block and four registrations must reproduce the complete baseline event
+fixture hash, preserving every preceding function body.
+`migration/tests/test_transformed_drag_cases.py` checks those bounded source
+and data invariants, formulas and deliberate negative controls without
+compiling or executing any GIMP or old fixture executable. Its representative
+odd/even viewport calculations are arithmetic examples, not native viewport
+observations. The real event cases must establish their actual canvas size
+and interior clamp margin before motion; they may not overwrite shell sizes.
+
+### Frozen finite input and coordinate expectations
+
+Exactly four new registrations extend the unchanged 27 event registrations:
+
+- `/navigation-events/drag/radial-transformed`: six drags, angles 0, 37 and
+  90 degrees with horizontal reflection off/on, initial scale 1.25. Relative
+  to integer viewport center C, start at (40,0) and move to (40,0), (0,40),
+  (400,0), (0,0), (40,0). Fixed anchor 335 produces factors 1.25, 1.25, 2.45,
+  67/60, 1.25. Ctrl+Alt+middle starts the drag; Ctrl release while held and an
+  unrelated button-3 release must preserve it. The geometric image center
+  stays within one display pixel per axis of C after each motion.
+- `/navigation-events/drag/radial-clamp`: two 37-degree drags. Lower,
+  horizontally reflected, starts at scale 1.25 and relative (400,0), anchor
+  -25; two center motions request -1/12 and display 1/256, then returning to
+  the start restores 1.25. Upper, unreflected, starts at scale 255.75 and
+  relative (40,0), anchor 76685; two motions to (400,0) request 256.95 and
+  display 256, then returning restores 255.75. Repeated clamp motions must
+  not replace the original anchor. Clamp focus/offset acceptance is deferred.
+- `/navigation-events/drag/pan-transformed`: six angle/reflection contexts,
+  scale 1.5, initial offsets O0=(192-Cx+13,192-Cy-9). Start P0=C+(31,-19).
+  Pointer deltas (0,0), (17,-11), repeated (17,-11), (-9,7), (0,0) require
+  offsets O0, O0+(-17,11), unchanged, O0+(9,-7), O0. Ctrl press/release and
+  unrelated button release preserve PAN. Three non-collinear image landmarks
+  (68,76), (184,92), (108,184) translate by the pointer delta; the image
+  position under the pointer is invariant.
+- `/navigation-events/drag/device-image-origin`: two 37-degree reflection
+  contexts with the same scale and O0. Genuine primary probe press/release
+  pairs before pan at P0=C+(31.25,-18.75), after pan at P1=P0+(17,-11), and
+  after pan at distinct Q=C+(67.5,29.25) check precise tool callback image
+  coordinates against the independent inverse. Only middle-pan endpoints
+  narrow to integers. There are six primary probe clicks total.
+
+There are **16 main drags and 16 separate stationary reentries**, not 32 new
+GTest registrations. Each main drag checks action/button/inheritance,
+start/last coordinates and fixed anchors, shell/native grab state, unchanged
+tool identity/idle control and image checksum. Ordinary initiating-button
+release must clear shell state immediately and the actual native grab after
+the existing GDK-sync/main-loop observation boundary. One same-action
+stationary reentry at a distinct start follows each drag. No test-side ungrab
+or state repair is permitted. The existing **38 real draw assertions per
+execution** and all preceding event cases remain unchanged and required.
+
+The independent affine oracle uses S=diag(sx,sy),
+K=(floor(256*sx)//2,floor(256*sy)//2), c=K-O, F=diag(mirror?-1:1,1), and
+A=R(angle)*F. Forward mapping is c+A*(S*image-K); inverse mapping is
+S^-1*(K+F*R(-angle)*(device-c)). It never derives expected values from the
+production rotation matrices or navigation/transform helpers. Frozen
+37-degree constants are cos=0.7986355100472928 and sin=0.6018150231520483;
+0 and 90 degrees use exact 0/1 constants. Offsets/lifetime fields use exact
+integer equality, angle/linear-matrix terms absolute 1e-10, and factors and
+coordinates absolute 1e-8. The 1.5-scale landmarks have integral scaled
+coordinates, avoiding presentation-rounding ambiguity. Clamp admission uses
+all four transformed image corners, ceil(min)/floor(max), the current 0.5
+overpan policy with C gint truncation, and a 16-pixel minimum interior margin.
+
+The retained `legacy-zoom/zoom.tsv` SHA-256 is
+`5fcf9b0f0c66b707a6a57de8e617c49ed9d32dd21750bf1670d2e46ce711a21e`.
+The selected 1-based data rows are 1411, 1412, 1413, 1420, 1491, 1500 and
+2011, 2012, 2013, 2020, 2091, 2100. Their anisotropic (1,1.25) scale pair
+establishes the raw max-scale/300 fixed-anchor formula. Native isotropic
+(1.25,1.25) and center-relative coordinate rebasing are source-derived
+adaptations, not identical retained old/current display states. The upper
+clamp case is new source-derived arithmetic; limits 1/256 and 256 come from
+the pinned zoom-model source. No old transformed-pan operation trace exists
+in the selected retained data. Old F*R order, viewport-center pivot and
+inverse-start truncation differ from modern R*F/image-center representation;
+raw old/current offsets must not be equated. Both historical old GUI capture
+teardown `command_exit=-11` outcomes remain retained.
+
+### Required exact-source execution gates, still NOT RUN
+
+Expected inventory after these four registrations: **41 normal cases
+(31 event + 4 UI + 6 pure) and 31 focused event ASan/UBSan cases**. These
+numbers are expectations, not passing results. The focused builder adds
+scale, scroll and transform to navigation arithmetic, modifier manager,
+display shell, rotate, tool-events and event fixture: **nine C units** total.
+The zoom-model shared library, device-coordinate adapter, tool dispatch,
+renderer/GTK and remaining dependencies are uninstrumented; **LSan is off**.
+This is partial instrumentation, not complete scale/device-path sanitizing.
+
+Native execution still needs the established shared build lock, exact-source
+clean snapshots, default build, no-rebuild registered normal targets and the
+focused binary under the actual registered Meson event environment/workdir,
+with unchanged normal ELFs and retained diagnostics. The component-tested
+source, receipt-integrated strict-Clone source and final documentary source
+remain distinct. Subsequent receipt integration requires the unchanged strict
+Clone **226 normal / 62 focused** gate and its evidence controls; the separate
+portrait GUI gate cannot be borrowed from the earlier 0f16 source.
+
+Original **25.009 and 25.009/drag-zoom-scroll stay TODO with their original
+criteria/dependencies unchanged**. This extension does not accept old pan or
+full radial display behavior. Native anisotropy, off-center zoom focus,
+fractional-pan/old-start truncation parity, clamp overshoot/reversal and old
+clamp-policy equivalence, new raster/overlay/damage/clipping acceptance,
+physical input, focus/device interruption and other platforms remain deferred.
+Old Edge/string-reader runtime remains **SKIPPED/unverified**. No parent,
+whole-section, aggregate, package, release or full-port acceptance is implied.

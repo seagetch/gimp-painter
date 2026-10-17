@@ -1,0 +1,370 @@
+{
+  "schema_version": 1,
+  "status": "SOURCE-ONLY; native/default/focused/GUI execution NOT RUN for this increment",
+  "scope": "Four modern synthetic-GDK regression registrations; no paired old pan/full display zoom acceptance",
+  "baseline_commit": "17a1875ba049b2d349b265b6e30e41c431dda0ea",
+  "legacy_source_pin": "afa43fae3e920210146abed514f136fd49f671b5",
+  "gimp_data_pin": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "source_sha256": {
+    "app/tests/test-painter-navigation.c": "46a82dc10dafd5a52c9dd229194fc598506d62316aefc37caaec702b4787b6ca",
+    "app/tests/test-painter-navigation-ui.c": "7a0b30dedbdc50108b2319474b79f406d4ca5ea260b63e98588cc77b14dabd6d",
+    "app/display/gimppainternavigation.c": "6d5ace7b15a13c795141e60d206bd1b044a30a6f1e15742097d3b58c65aa24e9",
+    "app/display/gimpdisplayshell-tool-events.c": "85d4fb2bd7e3623fc246ef336dc759a056d79988f2817c995e74e776b8d5ff20",
+    "app/display/gimpdisplayshell-rotate.c": "14b2c4513a9e57d5861a82c3db824655f851c44c9db23b73c912ae2ed945c4d3",
+    "app/display/gimpdisplayshell-scale.c": "215c7ed5de5d36f823e91106d0147115bfd4290f6f97adb561625f33a355675c",
+    "app/display/gimpdisplayshell-scroll.c": "78856a7185f915e174c39754cea8d38f90395d0c3fead43621401fc4c919d109",
+    "app/display/gimpdisplayshell-transform.c": "1532f024a9c23f673bbb6926fc8544cd8b40a5a09fdbf9184565e9e9520821fd",
+    "app/display/gimpdisplayshell.c": "a00ba4066f5e8ec8b034d9201013cba54407277018b6f9835546b5b5e15342bf",
+    "libgimpwidgets/gimpzoommodel.c": "1b65b716faf76f5a562f3ea087d3d78d17d53b2d7d9d46e99294f34c9dfee515",
+    "app/widgets/gimpdeviceinfo-coords.c": "0c0ce1d51c196bd1722b1178317a1d4139a334af887c34924273cec019387bbd",
+    "migration/tests/test_navigation_fixtures.py": "f55508762e3e4ebc84395cc46714d549ab4d62cfd1d38185ff8cff4a7d4dabb9",
+    "migration/fixtures/legacy-zoom/manifest.json": "e5e7ecfc50977b486031559a31b0b4fa22191c2f2a70a2d9bcd16edfcd2ae988",
+    "migration/fixtures/legacy-zoom/capture.c": "6350fe39258218399f1ba4de1262561b2aa4c5b79a2ac61aeb1527bc6dfd5d4e",
+    "migration/fixtures/legacy-zoom/zoom.tsv": "5fcf9b0f0c66b707a6a57de8e617c49ed9d32dd21750bf1670d2e46ce711a21e",
+    "migration/fixtures/legacy-navigation/rotation.tsv": "ce16608d105af71d652069410e949fd5922085fb8f749474850718821d67c5c7",
+    "migration/fixtures/legacy-rotation-operations/gui-captures/rotation.tsv": "bfc8b4ab8f532f5b8e0d97f2dd7cace9eec1aefe7a4cd532dbf4e4162cd9d46a",
+    "migration/fixtures/legacy-rotation-operations/source-captures/rotation.tsv": "34dd6d8d95637df314f1bf13b8aede31cb05136d56590536b00b125426e29fee",
+    "migration/fixtures/legacy-rotation-operations/original-sources/app/display/gimpdisplayshell-tool-events.c": "7b81d99ab288247d1452ee47053731a4c71eb8c40fa54c734f87023d31757c84",
+    "migration/fixtures/legacy-rotation-operations/original-sources/app/display/gimpdisplayshell-rotate.c": "59374624ee30bd800d61677c6a120bcbe96ed9383be50431d70f32d506ab89e8"
+  },
+  "baseline_only_sha256": {
+    "app/tests/test-painter-navigation-events.c": "b5ff043ae3518784ebb485a1634cb38806fcdf1ab8b2f8ccf3d64b68255e6568",
+    "migration/tests/build_navigation_event_sanitizers.py": "db6d567beb1efa0a7d5af440e4eb0305537de3d2748f5b34505e5b655d8ab458"
+  },
+  "legacy_git_blob_sha256": {
+    "afa43fae3e920210146abed514f136fd49f671b5:app/display/gimpdisplayshell-transform.c": "0d39265a0c2256a0692f8b3e27616384d09a3daf0338ef181068deef6bf25c65",
+    "afa43fae3e920210146abed514f136fd49f671b5:app/display/gimpdisplayshell-scroll.c": "d7f87567e504e8edbe0c9f8f776f1d2874299b784f82d0ebd7787192ac7d747b"
+  },
+  "unchanged_event_registrations": [
+    "  g_test_add_func(\"/navigation-events/default-rotation\",rotate_defaults);",
+    "  g_test_add_func(\"/navigation-events/arbitrary-buttons\",arbitrary_button_constraints);",
+    "  g_test_add_func(\"/navigation-events/radial-zoom\",radial_zoom_event);",
+    "  g_test_add_func(\"/navigation-events/picker-cleanup\",picker_clears_grab);",
+    "  g_test_add_data_func (\"/navigation-events/start/paintbrush\", real_tool_names[0], real_tool_start_matrix);",
+    "  g_test_add_data_func (\"/navigation-events/start/move\", real_tool_names[1], real_tool_start_matrix);",
+    "  g_test_add_func (\"/navigation-events/start/retained-old\", retained_old_starts);",
+    "  g_test_add_data_func (\"/navigation-events/start/reject-paintbrush\", real_tool_names[0], rejected_start_matrix);",
+    "  g_test_add_data_func (\"/navigation-events/start/reject-move\", real_tool_names[1], rejected_start_matrix);",
+    "  g_test_add_func (\"/navigation-events/start/primary-paintbrush\", paintbrush_primary_drag);",
+    "  g_test_add_func (\"/navigation-events/start/recording-tool\", recording_tool_starts);",
+    "  g_test_add_func (\"/navigation-events/rotation/ctrl-mid-drag\", retained_ctrl_mid_drag);",
+    "  g_test_add_func (\"/navigation-events/rotation/boundary/free-increasing\", free_boundary_increasing);",
+    "  g_test_add_func (\"/navigation-events/rotation/boundary/free-decreasing\", free_boundary_decreasing);",
+    "  g_test_add_func (\"/navigation-events/rotation/boundary/snapped-increasing\", snapped_boundary_increasing);",
+    "  g_test_add_func (\"/navigation-events/rotation/boundary/snapped-decreasing\", snapped_boundary_decreasing);",
+    "  g_test_add_func (\"/navigation-events/rotation/boundary/persistence\", boundary_angle_persistence);",
+    "  g_test_add_func (\"/navigation-events/rotation/boundary/policy-isolation\", boundary_policy_isolation);",
+    "  g_test_add_data_func (\"/navigation-events/keys/idle-zero\", &key_contexts[0], mirrored_arrow_keys);",
+    "  g_test_add_data_func (\"/navigation-events/keys/idle-rotated\", &key_contexts[1], mirrored_arrow_keys);",
+    "  g_test_add_data_func (\"/navigation-events/keys/rotation-free\", &key_contexts[2], mirrored_arrow_keys);",
+    "  g_test_add_data_func (\"/navigation-events/keys/rotation-snapped\", &key_contexts[3], mirrored_arrow_keys);",
+    "  g_test_add_func (\"/navigation-events/draw/common-angle\", canvas_common_angle);",
+    "  g_test_add_func (\"/navigation-events/draw/fixed-view\", canvas_fixed_view);",
+    "  g_test_add_func (\"/navigation-events/draw/tiny-ctm\", canvas_tiny_ctm);",
+    "  g_test_add_func (\"/navigation-events/draw/selection-boundary\", canvas_selection_boundary);",
+    "  g_test_add_func (\"/navigation-events/draw/widget-anchor\", canvas_widget_anchor);"
+  ],
+  "unchanged_draw_block_sha256": "50309ed9b53087b785c386671cd1d22af5f5d689d4be50f9df570f1aa981b6ff",
+  "unchanged_open_task_rows": [
+    "| 25.009 | [ ] | 現行表示行列へ接続する | 25.008 | canvas と overlay が同じ角度を使用 |",
+    "| 25.009/drag-zoom-scroll | [ ] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |"
+  ],
+  "inventory": {
+    "new_groups": 4,
+    "main_drags": 16,
+    "stationary_reentries": 16,
+    "primary_probe_clicks": 6,
+    "normal_event": 31,
+    "normal_ui": 4,
+    "normal_pure": 6,
+    "normal_total": 41,
+    "focused_event_asan_ubsan": 31
+  },
+  "sanitizer_scope": {
+    "instrumented_units": 9,
+    "leak_detection": false,
+    "status": "NOT RUN",
+    "uninstrumented": ["zoom model shared library", "device-coordinate adapter", "tool dispatch", "renderer/GTK", "remaining dependencies" ]
+  },
+  "constants": {
+    "image_size": [256, 256 ],
+    "trig": {
+      "0": {
+        "cos": 1,
+        "sin": 0
+      },
+      "37": {
+        "cos": 0.7986355100472928,
+        "sin": 0.6018150231520483
+      },
+      "90": {
+        "cos": 0,
+        "sin": 1
+      }
+    },
+    "zoom_unit": 300,
+    "zoom_limits": ["1/256", "256" ],
+    "pan_scale": 1.5,
+    "scaled_half_image": [192, 192 ],
+    "pan_center_relative_to_C": [-13, 9 ],
+    "pan_initial_offset": "(192-Cx+13,192-Cy-9)",
+    "landmarks": [
+      [68, 76 ],
+      [184, 92 ],
+      [108, 184 ]
+    ],
+    "overpan_factor": 0.5,
+    "minimum_clamp_margin": 16,
+    "tolerances": {
+      "factor_and_coordinate": 1e-08,
+      "angle_and_linear_matrix": 1e-10,
+      "center_display_pixels": 1
+    }
+  },
+  "geometry_definition": {
+    "C": "(floor(viewport_width/2),floor(viewport_height/2))",
+    "K": "(floor(256*sx)//2,floor(256*sy)//2)",
+    "c": "K-O",
+    "A": "R(angle)*diag(mirror?-1:1,1)",
+    "forward": "c+A*(diag(sx,sy)*image-K)",
+    "inverse": "diag(1/sx,1/sy)*(K+diag(mirror?-1:1,1)*R(-angle)*(device-c))",
+    "pan": "O(t)=O0-(P(t)-P0)",
+    "integer_bounds": "ceil(min transformed corners)+O, floor(max transformed corners)+O; C gint truncation in overpan limits"
+  },
+  "groups": [
+    {
+      "name": "/navigation-events/drag/radial-transformed",
+      "sequences": 6,
+      "contexts": "all",
+      "scale": 1.25,
+      "initial_start_relative_to_C": [40, 0 ],
+      "anchor": 335,
+      "motions_relative_to_C": [
+        [40, 0 ],
+        [0, 40 ],
+        [400, 0 ],
+        [0, 0 ],
+        [40, 0 ]
+      ],
+      "requested_expected": ["1.25", "1.25", "2.45", "67/60", "1.25" ],
+      "clamped_expected": "same as requested",
+      "focus_check": "geometric image center within 1 display pixel per axis of C"
+    },
+    {
+      "name": "/navigation-events/drag/radial-clamp",
+      "sequences": 2,
+      "cases": [
+        {
+          "label": "lower",
+          "angle": 37,
+          "mirror": true,
+          "scale": 1.25,
+          "start_relative_to_C": [400, 0 ],
+          "anchor": -25,
+          "motions_relative_to_C": [
+            [0, 0 ],
+            [0, 0 ],
+            [400, 0 ]
+          ],
+          "requested_expected": ["-1/12", "-1/12", "1.25" ],
+          "displayed_expected": ["1/256", "1/256", "1.25" ]
+        },
+        {
+          "label": "upper",
+          "angle": 37,
+          "mirror": false,
+          "scale": 255.75,
+          "start_relative_to_C": [40, 0 ],
+          "anchor": 76685,
+          "motions_relative_to_C": [
+            [400, 0 ],
+            [400, 0 ],
+            [40, 0 ]
+          ],
+          "requested_expected": ["256.95", "256.95", "255.75" ],
+          "displayed_expected": ["256", "256", "255.75" ]
+        }
+      ],
+      "focus_acceptance": false
+    },
+    {
+      "name": "/navigation-events/drag/pan-transformed",
+      "sequences": 6,
+      "contexts": "all",
+      "scale": 1.5,
+      "O0": "(192-Cx+13,192-Cy-9)",
+      "start_relative_to_C": [31, -19 ],
+      "motions_relative_to_start": [
+        [0, 0 ],
+        [17, -11 ],
+        [17, -11 ],
+        [-9, 7 ],
+        [0, 0 ]
+      ],
+      "expected_offsets_relative_to_O0": [
+        [0, 0 ],
+        [-17, 11 ],
+        [-17, 11 ],
+        [9, -7 ],
+        [0, 0 ]
+      ],
+      "image_landmarks": [
+        [68, 76 ],
+        [184, 92 ],
+        [108, 184 ]
+      ],
+      "clamp_acceptance": "Interior only; independently establish safe margin before execution"
+    },
+    {
+      "name": "/navigation-events/drag/device-image-origin",
+      "sequences": 2,
+      "angle": 37,
+      "mirrors": [false, true ],
+      "scale": 1.5,
+      "O0": "(192-Cx+13,192-Cy-9)",
+      "start_relative_to_C": [31.25, -18.75 ],
+      "motion_relative_to_start": [17, -11 ],
+      "probe_clicks_each": ["pre-pan P0", "post-pan P1", "post-pan Q=C+(67.5,29.25)" ],
+      "expected_pan_offset_delta": [-17, 11 ],
+      "precise_callbacks": "Primary button press and release via public canvas handler; independent inverse geometry oracle"
+    }
+  ],
+  "literal_geometry": [
+    {
+      "angle": 0,
+      "mirror": false,
+      "landmarks_relative_to_C": [
+        [-103.0, -69.0 ],
+        [71.0, -45.0 ],
+        [-43.0, 93.0 ]
+      ],
+      "pan_start_image": [157.33333333333334, 109.33333333333333 ],
+      "primary_P0_image": [157.5, 109.5 ],
+      "primary_Q_after_pan_image": [170.33333333333334, 148.83333333333334 ]
+    },
+    {
+      "angle": 0,
+      "mirror": true,
+      "landmarks_relative_to_C": [
+        [77.0, -69.0 ],
+        [-97.0, -45.0 ],
+        [17.0, 93.0 ]
+      ],
+      "pan_start_image": [98.66666666666667, 109.33333333333333 ],
+      "primary_P0_image": [98.5, 109.5 ],
+      "primary_Q_after_pan_image": [85.66666666666667, 148.83333333333334 ]
+    },
+    {
+      "angle": 37,
+      "mirror": false,
+      "landmarks_relative_to_C": [
+        [-37.93562409839659, -107.45692186737318 ],
+        [86.5833940941832, 16.42614440221824 ],
+        [-87.51152724619084, 58.03093214941114 ]
+      ],
+      "pan_start_image": [140.19276119588235, 95.43889646665713 ],
+      "primary_P0_image": [140.42616961808224, 95.47169988113966 ],
+      "primary_Q_after_pan_image": [174.34671624100307, 119.16140381254856 ]
+    },
+    {
+      "angle": 37,
+      "mirror": true,
+      "landmarks_relative_to_C": [
+        [105.81876771011612, 0.8697822999955065 ],
+        [-47.587371593761986, -84.67877948732587 ],
+        [-39.59339664335327, 94.13983353853405 ]
+      ],
+      "pan_start_image": [115.80723880411763, 95.43889646665713 ],
+      "primary_P0_image": [115.57383038191774, 95.47169988113966 ],
+      "primary_Q_after_pan_image": [81.65328375899692, 119.16140381254856 ]
+    },
+    {
+      "angle": 90,
+      "mirror": false,
+      "landmarks_relative_to_C": [
+        [65.0, -81.0 ],
+        [41.0, 93.0 ],
+        [-97.0, -21.0 ]
+      ],
+      "pan_start_image": [109.33333333333333, 98.66666666666667 ],
+      "primary_P0_image": [109.5, 98.5 ],
+      "primary_Q_after_pan_image": [148.83333333333334, 85.66666666666667 ]
+    },
+    {
+      "angle": 90,
+      "mirror": true,
+      "landmarks_relative_to_C": [
+        [65.0, 99.0 ],
+        [41.0, -75.0 ],
+        [-97.0, 39.0 ]
+      ],
+      "pan_start_image": [146.66666666666666, 98.66666666666667 ],
+      "primary_P0_image": [146.5, 98.5 ],
+      "primary_Q_after_pan_image": [107.16666666666667, 85.66666666666667 ]
+    }
+  ],
+  "static_clamp_viewports": [
+    [100, 112 ],
+    [101, 113 ],
+    [848, 450 ],
+    [849, 451 ]
+  ],
+  "static_clamp_scope": "Arithmetic exemplars only; native fixture must establish its actual unchanged viewport and clamp margins before motion",
+  "legacy_zoom_reuse": {
+    "fixture": "migration/fixtures/legacy-zoom/zoom.tsv",
+    "sha256": "5fcf9b0f0c66b707a6a57de8e617c49ed9d32dd21750bf1670d2e46ce711a21e",
+    "row_number_convention": "1-based data row; file has no header",
+    "native_adaptation": "Retained sx=1,sy=1.25 gives max=1.25. Native sx=sy=1.25 and rebased center-relative coordinates are source-derived adaptations, not identical full old/new states.",
+    "rows": [
+      {
+        "row": 1411,
+        "fields": ["101", "113", "0", "1", "1.25", "90", "56", "50", "56", "1.1166666666666667" ]
+      },
+      {
+        "row": 1412,
+        "fields": ["101", "113", "0", "1", "1.25", "90", "56", "90", "56", "1.25" ]
+      },
+      {
+        "row": 1413,
+        "fields": ["101", "113", "0", "1", "1.25", "90", "56", "50", "96", "1.25" ]
+      },
+      {
+        "row": 1420,
+        "fields": ["101", "113", "0", "1", "1.25", "90", "56", "450", "56", "2.4500000000000002" ]
+      },
+      {
+        "row": 1491,
+        "fields": ["101", "113", "0", "1", "1.25", "450", "56", "50", "56", "-0.083333333333333329" ]
+      },
+      {
+        "row": 1500,
+        "fields": ["101", "113", "0", "1", "1.25", "450", "56", "450", "56", "1.25" ]
+      },
+      {
+        "row": 2011,
+        "fields": ["101", "113", "1", "1", "1.25", "90", "56", "50", "56", "1.1166666666666667" ]
+      },
+      {
+        "row": 2012,
+        "fields": ["101", "113", "1", "1", "1.25", "90", "56", "90", "56", "1.25" ]
+      },
+      {
+        "row": 2013,
+        "fields": ["101", "113", "1", "1", "1.25", "90", "56", "50", "96", "1.25" ]
+      },
+      {
+        "row": 2020,
+        "fields": ["101", "113", "1", "1", "1.25", "90", "56", "450", "56", "2.4500000000000002" ]
+      },
+      {
+        "row": 2091,
+        "fields": ["101", "113", "1", "1", "1.25", "450", "56", "50", "56", "-0.083333333333333329" ]
+      },
+      {
+        "row": 2100,
+        "fields": ["101", "113", "1", "1", "1.25", "450", "56", "450", "56", "1.25" ]
+      }
+    ]
+  },
+  "deferred": ["No old pan or full radial-zoom display operation fixture exists in selected retained data", "Fractional pan parity and old transformed-start truncation quirk", "Pan clamp overshoot/reversal and old/current clamp-policy equivalence", "Native anisotropic zoom and off-center pointer/best-guess focus", "New raster/overlay damage or clipping acceptance", "Physical mouse/tablet, HiDPI and other platforms", "Original 25.009 and 25.009/drag-zoom-scroll closure", "Old Edge/string-reader remains SKIPPED/unverified" ]
+}

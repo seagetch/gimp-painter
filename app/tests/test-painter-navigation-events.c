@@ -2123,6 +2123,589 @@ canvas_widget_anchor (void)
   draw_scene_free (&scene);
 }
 
+/* SOURCE-ONLY 25.009/drag-zoom-scroll checkpoint. These four registrations
+ * freeze 16 main drags and 16 stationary reentries, not old pan acceptance.
+ * Literal geometry/retained old radial rows are independent oracles; production
+ * transforms below are outputs under test, never expected-value generators. */
+typedef struct { gdouble angle, cosine, sine; } DragAngle;
+typedef struct { gdouble x, y; } DragPoint;
+typedef struct
+{
+  const DragAngle *angle;
+  gboolean mirror, resize_on_zoom;
+  gint width, height, ox, oy;
+  gdouble scale;
+  GimpTool *tool;
+  GimpToolInfo *info;
+  GimpToolControl *control;
+  gint tool_id;
+  GimpDrawable *drawable;
+  gchar *checksum;
+} DragScene;
+
+static const DragAngle drag_angles[] =
+{
+  { 0.0, 1.0, 0.0 },
+  { 37.0, 0.7986355100472928, 0.6018150231520483 },
+  { 90.0, 0.0, 1.0 }
+};
+static const DragPoint drag_landmarks[] = { { 68, 76 }, { 184, 92 }, { 108, 184 } };
+
+static DragPoint
+drag_forward (const DragAngle *angle, gboolean mirror, gdouble scale,
+              gint ox, gint oy, DragPoint p)
+{
+  gint k = ((gint) (256.0 * scale)) / 2;
+  gdouble dx = (mirror ? -1.0 : 1.0) * (scale * p.x - k);
+  gdouble dy = scale * p.y - k;
+  return (DragPoint) { k - ox + angle->cosine * dx - angle->sine * dy,
+                       k - oy + angle->sine * dx + angle->cosine * dy };
+}
+
+static DragPoint
+drag_inverse (const DragAngle *angle, gboolean mirror, gdouble scale,
+              gint ox, gint oy, DragPoint p)
+{
+  gint k = ((gint) (256.0 * scale)) / 2;
+  gdouble dx = p.x - (k - ox), dy = p.y - (k - oy);
+  return (DragPoint) { (k + (mirror ? -1.0 : 1.0) *
+                            (angle->cosine * dx + angle->sine * dy)) / scale,
+                       (k - angle->sine * dx + angle->cosine * dy) / scale };
+}
+
+/* Separate fractional sender: do not narrow or change the previous sender. */
+static void
+drag_send_pointer (GdkEventType type, guint button, guint state, DragPoint p)
+{
+  GdkEvent *event = gdk_event_new (type);
+  gdk_event_set_device (event, device);
+  gdk_event_set_source_device (event, device);
+  event->any.window = g_object_ref (gtk_widget_get_window (shell->canvas));
+  event->any.send_event = TRUE;
+  if (type == GDK_MOTION_NOTIFY)
+    {
+      event->motion.state = state;
+      event->motion.x = p.x; event->motion.y = p.y;
+      event->motion.time = GDK_CURRENT_TIME;
+    }
+  else
+    {
+      event->button.button = button; event->button.state = state;
+      event->button.x = p.x; event->button.y = p.y;
+      event->button.time = GDK_CURRENT_TIME;
+    }
+  gimp_display_shell_canvas_tool_events (shell->canvas, event, shell);
+  gdk_event_free (event);
+}
+
+static void
+drag_assert_scene (const DragScene *scene, gdouble scale)
+{
+  gchar *checksum = draw_image_checksum (scene->drawable);
+  g_assert_cmpint (shell->disp_width, ==, scene->width);
+  g_assert_cmpint (shell->disp_height, ==, scene->height);
+  g_assert_cmpfloat_with_epsilon (shell->rotate_angle, scene->angle->angle, 1e-10);
+  g_assert_cmpint (shell->flip_horizontally, ==, scene->mirror);
+  g_assert_false (shell->flip_vertically);
+  if (scene->angle->angle == 0.0 && ! scene->mirror)
+    {
+      g_assert_null (shell->rotate_transform);
+      g_assert_null (shell->rotate_untransform);
+    }
+  else
+    {
+      const cairo_matrix_t *m = shell->rotate_transform;
+      gdouble h = scene->mirror ? -1.0 : 1.0;
+      g_assert_nonnull (m);
+      g_assert_nonnull (shell->rotate_untransform);
+      g_assert_cmpfloat_with_epsilon (m->xx, h * scene->angle->cosine, 1e-10);
+      g_assert_cmpfloat_with_epsilon (m->yx, h * scene->angle->sine, 1e-10);
+      g_assert_cmpfloat_with_epsilon (m->xy, -scene->angle->sine, 1e-10);
+      g_assert_cmpfloat_with_epsilon (m->yy, scene->angle->cosine, 1e-10);
+    }
+  g_assert_true (shell->dot_for_dot);
+  g_assert_false (shell->show_all);
+  g_assert_false (shell->display->config->resize_windows_on_zoom);
+  g_assert_cmpfloat_with_epsilon (gimp_zoom_model_get_factor (shell->zoom), scale, 1e-8);
+  g_assert_cmpfloat_with_epsilon (shell->scale_x, scale, 1e-8);
+  g_assert_cmpfloat_with_epsilon (shell->scale_y, scale, 1e-8);
+  g_assert_true (tool_manager_get_active (gimp) == scene->tool);
+  g_assert_true (scene->tool->tool_info == scene->info);
+  g_assert_true (scene->tool->control == scene->control);
+  g_assert_cmpint (scene->tool->ID, ==, scene->tool_id);
+  g_assert_false (gimp_tool_control_is_active (scene->control));
+  g_assert_cmpstr (checksum, ==, scene->checksum);
+  g_free (checksum);
+}
+
+static DragScene
+drag_scene_new (const DragAngle *angle, gboolean mirror, gdouble scale,
+                gboolean interior, const gchar *tool_name)
+{
+  DragScene scene = { 0 };
+  GimpImage *image;
+  gint k = ((gint) (256.0 * scale)) / 2;
+
+  create_image ();
+  scene.angle = angle; scene.mirror = mirror; scene.scale = scale;
+  scene.tool = select_start_tool (tool_name);
+  scene.info = scene.tool->tool_info; scene.control = scene.tool->control;
+  scene.tool_id = scene.tool->ID;
+  image = gimp_display_get_image (shell->display);
+  scene.drawable = GIMP_DRAWABLE (gimp_image_get_layer_iter (image)->data);
+  scene.checksum = draw_image_checksum (scene.drawable);
+  scene.resize_on_zoom = shell->display->config->resize_windows_on_zoom;
+  g_object_set (shell->display->config, "resize-windows-on-zoom", FALSE, NULL);
+  gimp_display_shell_set_show_all (shell, FALSE);
+  gimp_display_shell_set_snap_to_grid (shell, FALSE);
+  gimp_display_shell_set_snap_to_guides (shell, FALSE);
+  gimp_display_shell_set_snap_to_canvas (shell, FALSE);
+  gimp_display_shell_set_snap_to_path (shell, FALSE);
+  gimp_display_shell_set_snap_to_bbox (shell, FALSE);
+  gimp_display_shell_set_snap_to_equidistance (shell, FALSE);
+  g_assert_false (gimp_display_shell_get_snap_to_grid (shell));
+  g_assert_false (gimp_display_shell_get_snap_to_guides (shell));
+  g_assert_false (gimp_display_shell_get_snap_to_canvas (shell));
+  g_assert_false (gimp_display_shell_get_snap_to_path (shell));
+  g_assert_false (gimp_display_shell_get_snap_to_bbox (shell));
+  g_assert_false (gimp_display_shell_get_snap_to_equidistance (shell));
+  gimp_display_shell_flip (shell, mirror, FALSE);
+  gimp_display_shell_rotate_to (shell, angle->angle);
+  gimp_display_shell_scale_set_dot_for_dot (shell, TRUE);
+  gimp_display_shell_scale (shell, GIMP_ZOOM_TO, scale, GIMP_ZOOM_FOCUS_IMAGE_CENTER);
+  gimp_test_run_temp_mainloop (100);
+  scene.width = shell->disp_width; scene.height = shell->disp_height;
+  scene.ox = k - scene.width / 2 + (interior ? 13 : 0);
+  scene.oy = k - scene.height / 2 - (interior ? 9 : 0);
+  gimp_display_shell_scroll_set_offset (shell, scene.ox, scene.oy);
+  g_assert_cmpint (shell->offset_x, ==, scene.ox);
+  g_assert_cmpint (shell->offset_y, ==, scene.oy);
+  assert_navigation_idle ();
+  drag_assert_scene (&scene, scale);
+  g_test_message ("transformed drag setup angle=%.17g mirror=%d scale=%.17g "
+                  "viewport=%dx%d offsets=%d,%d", angle->angle, mirror, scale,
+                  scene.width, scene.height, scene.ox, scene.oy);
+  return scene;
+}
+
+static void
+drag_scene_free (DragScene *scene)
+{
+  drag_assert_scene (scene, scene->scale);
+  assert_navigation_idle ();
+  g_object_set (shell->display->config, "resize-windows-on-zoom", scene->resize_on_zoom, NULL);
+  g_free (scene->checksum);
+  select_start_tool (real_tool_names[0]);
+  close_image ();
+}
+
+/* Compute the actual current policy's admissible interior independently from
+ * four literal corners, ceil/floor bounds and C gint truncation at half-overpan.
+ * Bounds are offset-independent because offsets cancel in this affine model. */
+static void
+drag_assert_interior (const DragScene *scene, gint ox, gint oy)
+{
+  gdouble lo[2] = { G_MAXDOUBLE, G_MAXDOUBLE };
+  gdouble hi[2] = { -G_MAXDOUBLE, -G_MAXDOUBLE };
+  gint viewport[] = { scene->width, scene->height }, offset[] = { ox, oy };
+  for (guint n = 0; n < 4; n++)
+    {
+      DragPoint p = drag_forward (scene->angle, scene->mirror, scene->scale, 0, 0,
+                                  (DragPoint) { (n & 1) ? 256 : 0, (n & 2) ? 256 : 0 });
+      lo[0] = MIN (lo[0], p.x); lo[1] = MIN (lo[1], p.y);
+      hi[0] = MAX (hi[0], p.x); hi[1] = MAX (hi[1], p.y);
+    }
+  for (guint axis = 0; axis < 2; axis++)
+    {
+      gint low = (gint) ceil (lo[axis]), extent = (gint) floor (hi[axis]) - low;
+      gint minimum, maximum;
+      if (viewport[axis] < extent)
+        {
+          minimum = (gint) (low - viewport[axis] * 0.5);
+          maximum = (gint) (low + extent - viewport[axis] * 0.5);
+        }
+      else
+        {
+          gint overpan = (gint) (viewport[axis] - extent * 0.5);
+          minimum = low - overpan;
+          maximum = low + extent - viewport[axis] + overpan;
+        }
+      g_test_message ("interior axis=%u offset=%d limits=%d,%d margin=%d,%d",
+                      axis, offset[axis], minimum, maximum,
+                      offset[axis] - minimum, maximum - offset[axis]);
+      g_assert_cmpint (offset[axis] - minimum, >=, 16);
+      g_assert_cmpint (maximum - offset[axis], >=, 16);
+    }
+}
+
+static NavigationState
+drag_begin (const DragScene *scene, GimpModifierAction action, DragPoint p)
+{
+  guint state = action == GIMP_MODIFIER_ACTION_ZOOMING ? GDK_CONTROL_MASK | GDK_MOD1_MASK : 0;
+  gint x = (gint) p.x, y = (gint) p.y;
+  gdouble dx = x - scene->width / 2, dy = y - scene->height / 2;
+  gdouble bearing = atan2 (scene->mirror ? -dx : dx, dy) * 180.0 / G_PI;
+  gdouble angle = scene->mirror ? -scene->angle->angle : scene->angle->angle;
+  guint press_state = scene->tool->button_press_state;
+  guint active_state = scene->tool->active_modifier_state;
+
+  if (bearing < 0) bearing += 360.0;
+  if (angle < 0) angle += 360.0;
+  assert_navigation_idle ();
+  drag_send_pointer (GDK_BUTTON_PRESS, 2, state, p);
+  g_assert_cmpint (shell->mod_action, ==, action);
+  g_assert_cmpuint (shell->mod_action_button, ==, 2);
+  g_assert_true (shell->painter_navigation_inherited);
+  g_assert_cmpint (shell->scroll_start_x, ==, x);
+  g_assert_cmpint (shell->scroll_start_y, ==, y);
+  g_assert_cmpint (shell->scroll_last_x, ==, x);
+  g_assert_cmpint (shell->scroll_last_y, ==, y);
+  g_assert_cmpfloat_with_epsilon (shell->rotate_drag_angle, angle + bearing, 1e-8);
+  g_assert_cmpfloat_with_epsilon (shell->painter_zoom_anchor,
+                                  300.0 * scene->scale - hypot (dx, dy), 1e-8);
+  g_assert_true (scene->tool->focus_display == shell->display);
+  g_assert_cmpuint (scene->tool->modifier_state, ==, state | GDK_BUTTON2_MASK);
+  g_assert_cmpuint (scene->tool->button_press_state, ==, press_state);
+  g_assert_cmpuint (scene->tool->active_modifier_state, ==, active_state);
+  drag_assert_scene (scene, scene->scale);
+  assert_grab ();
+  return navigation_state ();
+}
+
+static void
+drag_assert_held (const DragScene *scene, const NavigationState *start,
+                  DragPoint p, gdouble scale)
+{
+  NavigationState expected = *start;
+  expected.last_x = (gint) p.x; expected.last_y = (gint) p.y;
+  /* The retained lifetime helper uses exact scale equality. Numerical
+   * factors are checked independently at the frozen 1e-8 tolerance below. */
+  expected.scale_x = shell->scale_x; expected.scale_y = shell->scale_y;
+  assert_navigation_unchanged (&expected);
+  assert_grab ();
+  drag_assert_scene (scene, scale);
+}
+
+static void
+drag_release (const DragScene *scene, DragPoint p)
+{
+  drag_send_pointer (GDK_BUTTON_RELEASE, 2, GDK_BUTTON2_MASK, p);
+  assert_navigation_idle ();
+  drag_assert_scene (scene, scene->scale);
+}
+
+static void
+drag_reenter (const DragScene *scene, GimpModifierAction action)
+{
+  DragPoint p = { scene->width / 2, scene->height / 2 + 60 };
+  NavigationState held = drag_begin (scene, action, p);
+  gint ox = shell->offset_x, oy = shell->offset_y;
+  drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+  drag_assert_held (scene, &held, p, scene->scale);
+  g_assert_cmpint (shell->offset_x, ==, ox);
+  g_assert_cmpint (shell->offset_y, ==, oy);
+  drag_release (scene, p);
+}
+
+/* Retained old-function rows, not old GUI observations. Native isotropic
+ * 1.25 reuses max(1,1.25); center-relative rebasing is source-derived. */
+static void
+drag_check_retained_zoom (gboolean mirror, guint row_number,
+                          gint start_radius, gint dx, gint dy, gdouble expected)
+{
+  const gchar *root = g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR");
+  gchar *path, *contents, *checksum, **lines, **row;
+  GError *error = NULL;
+  g_assert_nonnull (root);
+  path = g_build_filename (root, "migration", "fixtures", "legacy-zoom", "zoom.tsv", NULL);
+  g_assert_true (g_file_get_contents (path, &contents, NULL, &error));
+  g_assert_no_error (error);
+  checksum = g_compute_checksum_for_string (G_CHECKSUM_SHA256, contents, -1);
+  g_assert_cmpstr (checksum, ==, "5fcf9b0f0c66b707a6a57de8e617c49ed9d32dd21750bf1670d2e46ce711a21e");
+  lines = g_strsplit (contents, "\n", -1);
+  g_assert_cmpuint (g_strv_length (lines), ==, 2401);
+  row = g_strsplit (lines[row_number - 1 + (mirror ? 600 : 0)], "\t", -1);
+  g_assert_cmpuint (g_strv_length (row), ==, 10);
+  g_assert_cmpint (atoi (row[0]), ==, 101);
+  g_assert_cmpint (atoi (row[1]), ==, 113);
+  g_assert_cmpint (atoi (row[2]), ==, mirror);
+  g_assert_cmpfloat (g_ascii_strtod (row[3], NULL), ==, 1.0);
+  g_assert_cmpfloat (g_ascii_strtod (row[4], NULL), ==, 1.25);
+  g_assert_cmpint (atoi (row[5]) - 50, ==, start_radius);
+  g_assert_cmpint (atoi (row[6]), ==, 56);
+  g_assert_cmpint (atoi (row[7]) - 50, ==, dx);
+  g_assert_cmpint (atoi (row[8]) - 56, ==, dy);
+  g_assert_cmpfloat_with_epsilon (g_ascii_strtod (row[9], NULL), expected, 1e-8);
+  g_strfreev (row); g_strfreev (lines);
+  g_free (checksum); g_free (contents); g_free (path);
+}
+
+static void
+radial_transformed (void)
+{
+  static const struct { gint x, y; gdouble scale; guint row; } motions[] =
+  {
+    { 40, 0, 1.25, 1412 }, { 0, 40, 1.25, 1413 },
+    { 400, 0, 2.45, 1420 }, { 0, 0, 67.0 / 60.0, 1411 },
+    { 40, 0, 1.25, 1412 }
+  };
+  for (guint a = 0; a < G_N_ELEMENTS (drag_angles); a++)
+    for (guint mirror = 0; mirror < 2; mirror++)
+      {
+        DragScene scene = drag_scene_new (&drag_angles[a], mirror, 1.25, FALSE, real_tool_names[0]);
+        DragPoint p = { scene.width / 2 + 40, scene.height / 2 };
+        NavigationState held = drag_begin (&scene, GIMP_MODIFIER_ACTION_ZOOMING, p);
+        g_assert_cmpfloat (shell->painter_zoom_anchor, ==, 335.0);
+        for (guint n = 0; n < G_N_ELEMENTS (motions); n++)
+          {
+            DragPoint center;
+            drag_check_retained_zoom (mirror, motions[n].row, 40, motions[n].x, motions[n].y, motions[n].scale);
+            if (n == 2)
+              {
+                send_event (GDK_KEY_RELEASE, 0, GDK_BUTTON2_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK,
+                            0, 0, GDK_KEY_Control_L);
+                drag_assert_held (&scene, &held, p, motions[n - 1].scale);
+                drag_send_pointer (GDK_BUTTON_RELEASE, 3, GDK_BUTTON2_MASK | GDK_BUTTON3_MASK, p);
+                drag_assert_held (&scene, &held, p, motions[n - 1].scale);
+              }
+            p = (DragPoint) { scene.width / 2 + motions[n].x, scene.height / 2 + motions[n].y };
+            drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+            drag_assert_held (&scene, &held, p, motions[n].scale);
+            center = drag_forward (scene.angle, mirror, motions[n].scale,
+                                    shell->offset_x, shell->offset_y, (DragPoint) { 128, 128 });
+            g_test_message ("radial angle=%.17g mirror=%u motion=%u factor=%.17g offsets=%d,%d center=%.17g,%.17g",
+                            scene.angle->angle, mirror, n, motions[n].scale,
+                            shell->offset_x, shell->offset_y, center.x, center.y);
+            g_assert_cmpfloat (fabs (center.x - scene.width / 2), <=, 1.0);
+            g_assert_cmpfloat (fabs (center.y - scene.height / 2), <=, 1.0);
+          }
+        drag_release (&scene, p);
+        drag_reenter (&scene, GIMP_MODIFIER_ACTION_ZOOMING);
+        drag_scene_free (&scene);
+      }
+}
+
+static void
+radial_clamp (void)
+{
+  static const struct
+  { gboolean mirror; gdouble initial; gint start; gdouble anchor, raw, applied; } cases[] =
+  {
+    { TRUE, 1.25, 400, -25.0, -1.0 / 12.0, 1.0 / 256.0 },
+    { FALSE, 255.75, 40, 76685.0, 256.95, 256.0 }
+  };
+  for (guint n = 0; n < G_N_ELEMENTS (cases); n++)
+    {
+      DragScene scene = drag_scene_new (&drag_angles[1], cases[n].mirror,
+                                        cases[n].initial, FALSE, real_tool_names[0]);
+      DragPoint start = { scene.width / 2 + cases[n].start, scene.height / 2 };
+      DragPoint p = start;
+      NavigationState held = drag_begin (&scene, GIMP_MODIFIER_ACTION_ZOOMING, start);
+      g_assert_cmpfloat (shell->painter_zoom_anchor, ==, cases[n].anchor);
+      for (guint motion = 0; motion < 3; motion++)
+        {
+          gint radius = motion == 2 ? cases[n].start : (n == 0 ? 0 : 400);
+          gdouble raw = motion == 2 ? cases[n].initial : cases[n].raw;
+          gdouble applied = motion == 2 ? cases[n].initial : cases[n].applied;
+          g_assert_cmpfloat_with_epsilon ((radius + cases[n].anchor) / 300.0, raw, 1e-8);
+          if (n == 0)
+            drag_check_retained_zoom (TRUE, motion == 2 ? 1500 : 1491, 400, radius, 0, raw);
+          p = (DragPoint) { scene.width / 2 + radius, scene.height / 2 };
+          drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+          drag_assert_held (&scene, &held, p, applied);
+          g_test_message ("radial clamp=%u motion=%u raw=%.17g applied=%.17g offsets=%d,%d (focus not accepted)",
+                          n, motion, raw, applied, shell->offset_x, shell->offset_y);
+        }
+      drag_release (&scene, p);
+      drag_reenter (&scene, GIMP_MODIFIER_ACTION_ZOOMING);
+      drag_scene_free (&scene);
+    }
+}
+
+static void
+drag_assert_pan_geometry (const DragScene *scene, gint ox, gint oy, DragPoint p,
+                          DragPoint invariant)
+{
+  DragPoint expected = drag_inverse (scene->angle, scene->mirror, scene->scale, ox, oy, p);
+  gdouble x, y;
+  g_assert_cmpint (shell->offset_x, ==, ox);
+  g_assert_cmpint (shell->offset_y, ==, oy);
+  g_assert_cmpfloat_with_epsilon (expected.x, invariant.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (expected.y, invariant.y, 1e-8);
+  gimp_display_shell_untransform_xy_f (shell, p.x, p.y, &x, &y);
+  g_assert_cmpfloat_with_epsilon (x, expected.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (y, expected.y, 1e-8);
+  for (guint n = 0; n < G_N_ELEMENTS (drag_landmarks); n++)
+    {
+      expected = drag_forward (scene->angle, scene->mirror, scene->scale, ox, oy, drag_landmarks[n]);
+      gimp_display_shell_transform_xy_f (shell, drag_landmarks[n].x, drag_landmarks[n].y, &x, &y);
+      g_assert_cmpfloat_with_epsilon (x, expected.x, 1e-8);
+      g_assert_cmpfloat_with_epsilon (y, expected.y, 1e-8);
+    }
+}
+
+static void
+pan_transformed (void)
+{
+  static const struct { gint x, y; } motions[] = { { 0, 0 }, { 17, -11 }, { 17, -11 }, { -9, 7 }, { 0, 0 } };
+  for (guint a = 0; a < G_N_ELEMENTS (drag_angles); a++)
+    for (guint mirror = 0; mirror < 2; mirror++)
+      {
+        DragScene scene = drag_scene_new (&drag_angles[a], mirror, 1.5, TRUE, real_tool_names[0]);
+        DragPoint start = { scene.width / 2 + 31, scene.height / 2 - 19 }, p = start;
+        DragPoint invariant = drag_inverse (scene.angle, mirror, 1.5, scene.ox, scene.oy, start);
+        NavigationState held;
+        for (guint n = 0; n < G_N_ELEMENTS (motions); n++)
+          drag_assert_interior (&scene, scene.ox - motions[n].x, scene.oy - motions[n].y);
+        held = drag_begin (&scene, GIMP_MODIFIER_ACTION_PANNING, start);
+        for (guint n = 0; n < G_N_ELEMENTS (motions); n++)
+          {
+            if (n == 1)
+              {
+                send_event (GDK_KEY_PRESS, 0, GDK_BUTTON2_MASK, 0, 0, GDK_KEY_Control_L);
+                drag_assert_held (&scene, &held, p, 1.5);
+                send_event (GDK_KEY_RELEASE, 0, GDK_BUTTON2_MASK | GDK_CONTROL_MASK, 0, 0, GDK_KEY_Control_L);
+                drag_assert_held (&scene, &held, p, 1.5);
+                drag_send_pointer (GDK_BUTTON_RELEASE, 3, GDK_BUTTON2_MASK | GDK_BUTTON3_MASK, p);
+                drag_assert_held (&scene, &held, p, 1.5);
+              }
+            p = (DragPoint) { start.x + motions[n].x, start.y + motions[n].y };
+            drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+            drag_assert_held (&scene, &held, p, 1.5);
+            drag_assert_pan_geometry (&scene, scene.ox - motions[n].x, scene.oy - motions[n].y, p, invariant);
+          }
+        drag_release (&scene, p);
+        drag_reenter (&scene, GIMP_MODIFIER_ACTION_PANNING);
+        drag_scene_free (&scene);
+      }
+}
+
+/* A distinct recorder leaves every previous fixture function body untouched. */
+typedef struct
+{
+  GimpTool parent;
+  guint presses, releases;
+  DragPoint press, release;
+  GimpDisplay *press_display, *release_display;
+} DragRecordingTool;
+typedef struct { GimpToolClass parent; } DragRecordingToolClass;
+GType drag_recording_tool_get_type (void);
+G_DEFINE_TYPE (DragRecordingTool, drag_recording_tool, GIMP_TYPE_TOOL)
+
+static void
+drag_recording_press (GimpTool *tool, const GimpCoords *coords, guint32 time,
+                      GdkModifierType state, GimpButtonPressType type, GimpDisplay *display)
+{
+  DragRecordingTool *recording = (DragRecordingTool *) tool;
+  recording->presses++;
+  recording->press = (DragPoint) { coords->x, coords->y };
+  recording->press_display = display;
+  tool->display = display;
+  gimp_tool_control_activate (tool->control);
+}
+
+static void
+drag_recording_release (GimpTool *tool, const GimpCoords *coords, guint32 time,
+                        GdkModifierType state, GimpButtonReleaseType type, GimpDisplay *display)
+{
+  DragRecordingTool *recording = (DragRecordingTool *) tool;
+  recording->releases++;
+  recording->release = (DragPoint) { coords->x, coords->y };
+  recording->release_display = display;
+  gimp_tool_control_halt (tool->control);
+}
+
+static void
+drag_recording_tool_class_init (DragRecordingToolClass *klass)
+{
+  GimpToolClass *tool = GIMP_TOOL_CLASS (klass);
+  tool->initialize = start_recording_initialize;
+  tool->button_press = drag_recording_press;
+  tool->button_release = drag_recording_release;
+}
+
+static void
+drag_recording_tool_init (DragRecordingTool *recording)
+{
+  gimp_tool_control_set_handle_empty_image (GIMP_TOOL (recording)->control, TRUE);
+  gimp_tool_control_set_snap_to (GIMP_TOOL (recording)->control, FALSE);
+}
+
+static void
+ensure_drag_recording_tool (void)
+{
+  GimpToolInfo *info;
+  if (gimp_get_tool_info (gimp, "painter-drag-recording-test")) return;
+  info = gimp_tool_info_new (gimp, drag_recording_tool_get_type (), GIMP_TYPE_TOOL_OPTIONS, 0,
+                             "painter-drag-recording-test", "Record drag coordinates", "Record drag coordinates",
+                             NULL, NULL, NULL, "gimp-tool-paintbrush", "gimp-paintbrush",
+                             GIMP_ICON_TOOL_PAINTBRUSH);
+  gimp_tools_set_tool_options_gui_func (info->tool_options, gimp_tool_options_gui);
+  gimp_container_add (gimp->tool_info_list, GIMP_OBJECT (info));
+  gimp_container_add (gimp->tool_item_list, GIMP_OBJECT (info));
+  g_object_unref (info);
+}
+
+static void
+drag_probe_click (const DragScene *scene, DragPoint p, gint ox, gint oy)
+{
+  DragRecordingTool *recording = (DragRecordingTool *) scene->tool;
+  guint presses = recording->presses, releases = recording->releases;
+  DragPoint expected = drag_inverse (scene->angle, scene->mirror, 1.5, ox, oy, p);
+  assert_navigation_idle ();
+  drag_send_pointer (GDK_BUTTON_PRESS, 1, 0, p);
+  g_assert_cmpuint (recording->presses, ==, presses + 1);
+  g_assert_cmpuint (recording->releases, ==, releases);
+  g_assert_true (recording->press_display == shell->display);
+  g_assert_true (gimp_tool_control_is_active (scene->control));
+  assert_grab ();
+  g_assert_cmpfloat_with_epsilon (recording->press.x, expected.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (recording->press.y, expected.y, 1e-8);
+  drag_send_pointer (GDK_BUTTON_RELEASE, 1, GDK_BUTTON1_MASK, p);
+  g_assert_cmpuint (recording->presses, ==, presses + 1);
+  g_assert_cmpuint (recording->releases, ==, releases + 1);
+  g_assert_true (recording->release_display == shell->display);
+  g_assert_cmpfloat_with_epsilon (recording->release.x, expected.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (recording->release.y, expected.y, 1e-8);
+  assert_navigation_idle ();
+  drag_assert_scene (scene, 1.5);
+  g_assert_cmpint (shell->offset_x, ==, ox);
+  g_assert_cmpint (shell->offset_y, ==, oy);
+  g_test_message ("primary device=(%.17g,%.17g) image=(%.17g,%.17g) offsets=%d,%d",
+                  p.x, p.y, expected.x, expected.y, ox, oy);
+}
+
+static void
+device_image_origin (void)
+{
+  ensure_drag_recording_tool ();
+  for (guint mirror = 0; mirror < 2; mirror++)
+    {
+      DragScene scene = drag_scene_new (&drag_angles[1], mirror, 1.5, TRUE, "painter-drag-recording-test");
+      DragRecordingTool *recording = (DragRecordingTool *) scene.tool;
+      DragPoint start = { scene.width / 2 + 31.25, scene.height / 2 - 18.75 };
+      DragPoint p = { start.x + 17, start.y - 11 };
+      DragPoint invariant = drag_inverse (scene.angle, mirror, 1.5, scene.ox, scene.oy, start);
+      NavigationState held;
+      guint presses = recording->presses, releases = recording->releases;
+      drag_assert_interior (&scene, scene.ox, scene.oy);
+      drag_assert_interior (&scene, scene.ox - 17, scene.oy + 11);
+      drag_probe_click (&scene, start, scene.ox, scene.oy);
+      held = drag_begin (&scene, GIMP_MODIFIER_ACTION_PANNING, start);
+      drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+      drag_assert_held (&scene, &held, p, 1.5);
+      drag_assert_pan_geometry (&scene, scene.ox - 17, scene.oy + 11, p, invariant);
+      drag_release (&scene, p);
+      drag_reenter (&scene, GIMP_MODIFIER_ACTION_PANNING);
+      drag_probe_click (&scene, p, scene.ox - 17, scene.oy + 11);
+      drag_probe_click (&scene, (DragPoint) { scene.width / 2 + 67.5, scene.height / 2 + 29.25 },
+                        scene.ox - 17, scene.oy + 11);
+      g_assert_cmpuint (recording->presses, ==, presses + 3);
+      g_assert_cmpuint (recording->releases, ==, releases + 3);
+      drag_scene_free (&scene);
+    }
+}
+
 int main(int argc,char **argv)
 {
   gint result;
@@ -2155,6 +2738,10 @@ int main(int argc,char **argv)
   g_test_add_func ("/navigation-events/draw/tiny-ctm", canvas_tiny_ctm);
   g_test_add_func ("/navigation-events/draw/selection-boundary", canvas_selection_boundary);
   g_test_add_func ("/navigation-events/draw/widget-anchor", canvas_widget_anchor);
+  g_test_add_func ("/navigation-events/drag/radial-transformed", radial_transformed);
+  g_test_add_func ("/navigation-events/drag/radial-clamp", radial_clamp);
+  g_test_add_func ("/navigation-events/drag/pan-transformed", pan_transformed);
+  g_test_add_func ("/navigation-events/drag/device-image-origin", device_image_origin);
   g_application_run(gimp->app,0,NULL);
   result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
   g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;

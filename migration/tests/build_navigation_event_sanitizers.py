@@ -5,9 +5,11 @@ Run after building app/tests/painter-navigation-events, with the build environme
 This builder does not start GTK. Run the emitted executable on a real display.
 Use ASAN_OPTIONS=detect_leaks=0:halt_on_error=1:abort_on_error=1 and
 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1, plus the regular test environment.
-Instruments six C units: navigation, modifiers, shell, rotate, tool-events,
-and the event fixture, not all upstream GIMP/dependencies. Original build
-objects are never replaced. Hold /tmp/gimp-painter-build.lock when sharing it.
+Instruments nine C units: navigation, modifiers, shell, rotate, tool-events,
+scale, scroll, transform and the event fixture. The zoom-model shared library,
+device-coordinate adapter, tool dispatch, renderer, GTK and remaining
+dependencies stay uninstrumented; LSan is off. Original build objects are never
+replaced. Hold /workspace/shared/gimp-painter-build.lock when sharing it.
 """
 import argparse
 import hashlib
@@ -26,13 +28,15 @@ build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
 output = build / "painter-navigation-event-sanitizers"
 output.mkdir(exist_ok=True)
-report = {"scope": "Six C units: navigation arithmetic, modifier configuration, display shell, rotation, event adapter and GUI event fixture; other GIMP/GTK/dependencies uninstrumented",
+report = {"scope": "Nine C units: navigation arithmetic, modifier configuration, display shell, rotation, event adapter, scale, scroll, transform and GUI event fixture; partial coverage only: zoom-model shared library, device-coordinate adapter, tool dispatch, renderer, GTK and remaining dependencies uninstrumented; LSan off",
           "sanitizers": ["address", "undefined"], "leak_detection": False,
           "sources": [], "commands": [], "run_status": "not run by builder"}
 flags = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-O1"]
 wanted = {"app/display/gimppainternavigation.c", "app/display/gimpmodifiersmanager.c",
           "app/display/gimpdisplayshell.c",
           "app/display/gimpdisplayshell-rotate.c", "app/display/gimpdisplayshell-tool-events.c",
+          "app/display/gimpdisplayshell-scale.c", "app/display/gimpdisplayshell-scroll.c",
+          "app/display/gimpdisplayshell-transform.c",
           "app/tests/test-painter-navigation-events.c"}
 replacements = {}
 extra = []
