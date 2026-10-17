@@ -847,9 +847,9 @@ every-tool, controller-fallback, focus/device, vertical-reflection, pan/zoom,
 whole-display/overlay, other-platform and broader acceptance limits above
 remain, including all section 25, full-port, full-aggregate and release gates.
 
-## 25.009 common-angle draw path: bounded source-only checkpoint
+## 25.009 common-angle draw path: historical source-only checkpoint
 
-This is a **source-only, not-yet-run checkpoint** based on public
+The initial **source-only, not-yet-run checkpoint** was based on public
 `05009fa529970b491b960ef4ee91d758f9202b38`, tree
 `47e120b9d73d62fb0942ec444711ae61733efd37`. It adds five native registrations to
 `app/tests/test-painter-navigation-events.c`, preserving the preceding 22 event
@@ -945,16 +945,16 @@ does not claim every inner/outer segment topology. Image-anchored GTK widgets
 stay upright while their anchor follows the image transform.
 
 The GTK child test explicitly exercises the source-derived rotate-refresh risk:
-`rotated()` rebuilds the transform but does not itself move those children,
+at that checkpoint, `rotated()` rebuilt the transform without moving those children,
 and `scroll_set_offset()` returns early when offsets are unchanged. The test
 uses only ordinary rotation and GTK processing, with no explicit child move,
 scrolled signal, forced size allocation, or test-side repair. Immediate stored
 position is logged, but only the ordinary post-draw position is required: a
 legitimate deferred GTK refresh is allowed. It checks
 `GimpOverlayChild`'s stored position and actual embedding matrix; local widget
-allocation x/y are not screen coordinates. This is a candidate regression,
-**not an observed native failure** at the source-only checkpoint. Any failure
-must be retained and reviewed before a narrowly justified production repair.
+allocation x/y are not screen coordinates. This was a candidate regression,
+**not an observed native failure** at the initial source-only checkpoint. The
+subsequent exact-source failure and bounded repair are recorded below.
 
 ### Execution, evidence and remaining boundaries
 
@@ -965,7 +965,7 @@ available; matrix, marker and changed-pixel diagnostics appear in the test log.
 Use the shared build lock, authenticated display and isolated writable native
 profile described by the build/test coordination and profile contracts.
 
-The existing focused event ASan/UBSan builder still instruments **five C
+At that checkpoint the focused event ASan/UBSan builder instrumented **five C
 translation units only**: navigation arithmetic, modifier manager, rotate,
 tool-events, and this event fixture. The newly exercised callbacks, image
 renderer, canvas group/item/line/rectangle, selection, shell and GTK overlay
@@ -982,3 +982,71 @@ exact-A/B evidence and are not transferred to this new source. Physical input,
 clipping/extents/hit-testing, other platforms, drag zoom/pan, all 196 historical
 hunks, whole section 25, release acceptance and the user-approved skipped old
 Edge/string-reader runtime stay outside this checkpoint.
+
+### Retained exact-source widget-anchor failure (2026-10-17)
+
+External component run `component-run-001` tested public commit
+`bfbbbeade5ba733320b4c1b98a7f3213291928d2`, tree
+`5999c39edb3658effe88ee5e8a3c17cc77607d28`, with the unchanged event fixture
+SHA-256 `b5ff043ae3518784ebb485a1634cb38806fcdf1ab8b2f8ccf3d64b68255e6568`.
+Evidence remains under the external `gimp-canvas-overlay-validation` directory;
+it is retained failed-run provenance, not an accepted component receipt.
+
+The default build and five-unit focused ASan/UBSan builder both completed.
+Normal execution passed **36 of 37** expected cases: 26 of 27 event cases,
+all 4 UI cases and all 6 arithmetic cases. Focused event execution passed the
+same **26 of 27** cases. Both event executables then aborted on the explicit
+`/navigation-events/draw/widget-anchor` assertion. The actual raster/item,
+fixed-view, tiny-angle and selection cases preceded and passed that assertion;
+their success does not override the incomplete event suite.
+
+At 37 degrees, with unchanged offsets `(-296,-97)`, the independently expected
+anchor was `(490.388929396,229.950762935)`. Immediate, post-draw stored and
+visible positions remained `(480,189)`, the zero-angle position, with child
+angle zero. This is an observed stale image-anchored GTK child, not a reported
+ASan/UBSan memory error. The fixture's second rotated redraw was not reached.
+All nine recorded source/build/artifact integrity checks were true.
+
+Retained SHA-256 identities (paths relative to `component-run-001`):
+
+| Evidence | SHA-256 |
+| --- | --- |
+| `receipt.json` | `2c10891579b17f61e39a89a64556f80e6829762d677e328938d6c8e45154eaa5` |
+| `normal-gate.json` | `2a3a5a7b00d160dffffcc3725c2d86c4a42a12a2d32bcf42538ee7254fd31c89` |
+| `testlog.txt` | `192e66bcca4a988d79712cf69f82f0a5a37e7e7695ca08d868cd423f45479abb` |
+| `sanitizer-run.json` | `afc434f15db6909e7846dc377691f4552a26d24f0eb4c2b238f75597f3ec486b` |
+| `sanitizer-run.log` | `16dcc163b328e773b226f50668713a3eb284a98f020a44a2aca6d72174eda516` |
+
+The full 29-file public failure archive is retained separately: **21,887,824
+bytes**, SHA-256
+`51c4d9bb7170b4d0d332c5335534337884d410e627efece6d73ba4413ad8ecd2`.
+The parent's separate audit verified all 28 receipt-listed artifact hashes,
+nine raw-to-public transformations, four source snapshots and three normal
+ELF snapshots, plus reuse of the actual registered Meson event environment
+with only the two exact sanitizer-option overrides. Private profiles, raw
+environments and authentication material are not included in the public archive.
+
+### Source-only rotation-anchor repair checkpoint
+
+The bounded production repair makes `gimp_display_shell_rotated()` refresh
+every image-anchored child after updating the shell transform and before
+emitting `ROTATED`, using the same existing transformed-anchor helper and
+position setter as `scaled()` and `scrolled()`. It does not rotate the child
+widget itself: the existing upright child basis and angle are preserved.
+No navigation arithmetic, GTK renderer, signal consumer, fixture, expected
+value, tolerance or test registration is changed.
+
+The focused event sanitizer builder now includes `app/display/gimpdisplayshell.c`
+alongside the existing five units, for **exactly six C translation units**.
+The other callbacks, image renderer, canvas group/item/line/rectangle,
+selection, GTK overlay container/child, remaining core, GTK and dependencies
+remain uninstrumented. LSan remains disabled. Adding the shell unit is a
+source configuration change, not a new sanitizer execution result.
+
+This repair checkpoint has **no build, native, sanitizer or GUI run**. The
+unchanged 27-event/37-normal suite and six-unit focused sanitizer execution
+must be rerun on the exact repaired source by the parent. Evidence integration,
+the strict Clone gate on its separately identified source and branch portrait
+Xvfb GUI smoke remain separate. No ledger, acceptance or parent-row closure
+is part of this checkpoint; original 25.009 and 25.009/drag-zoom-scroll remain
+open, and old Edge/string-reader runtime stays **SKIPPED/unverified**.
