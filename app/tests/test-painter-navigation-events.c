@@ -456,6 +456,134 @@ retained_old_starts (void)
   g_free (path);
 }
 
+/* Original 25.004: one stationary, unmirrored old GUI sequence, with the
+ * reverse transition retained for 25.005 timing.  These literal expectations
+ * are checked against immutable rows 22-30, never a production math helper. */
+static void
+retained_ctrl_mid_drag (void)
+{
+  static const struct
+  {
+    const gchar     *step;
+    GdkEventType     type;
+    GdkModifierType  state;
+    guint            detail;
+    gdouble          angle;
+  } sequence[] =
+  {
+    { "shift-middle", GDK_BUTTON_PRESS,
+      GDK_SHIFT_MASK, 2, 7.5 },
+    { "free", GDK_MOTION_NOTIFY,
+      GDK_BUTTON2_MASK | GDK_SHIFT_MASK, 0, 7.5 },
+    { "ctrl-press", GDK_KEY_PRESS,
+      GDK_BUTTON2_MASK | GDK_SHIFT_MASK, GDK_KEY_Control_L, 7.5 },
+    { "snap", GDK_MOTION_NOTIFY,
+      GDK_BUTTON2_MASK | GDK_SHIFT_MASK | GDK_CONTROL_MASK, 0, 15.0 },
+    { "shift-release", GDK_KEY_RELEASE,
+      GDK_BUTTON2_MASK | GDK_SHIFT_MASK | GDK_CONTROL_MASK, GDK_KEY_Shift_L, 15.0 },
+    { "snap-without-shift", GDK_MOTION_NOTIFY,
+      GDK_BUTTON2_MASK | GDK_CONTROL_MASK, 0, 15.0 },
+    { "ctrl-release", GDK_KEY_RELEASE,
+      GDK_BUTTON2_MASK | GDK_CONTROL_MASK, GDK_KEY_Control_L, 15.0 },
+    { "restored", GDK_MOTION_NOTIFY,
+      GDK_BUTTON2_MASK, 0, 7.5 },
+    { "middle-release", GDK_BUTTON_RELEASE,
+      GDK_BUTTON2_MASK, 2, 7.5 }
+  };
+  const gchar *root = g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR");
+  gchar       *path, *contents, *checksum;
+  gchar      **lines;
+  GError      *error = NULL;
+
+  g_assert_nonnull (root);
+  path = g_build_filename (root, "migration", "fixtures",
+                           "legacy-rotation-operations", "gui-captures",
+                           "rotation.tsv", NULL);
+  g_assert_true (g_file_get_contents (path, &contents, NULL, &error));
+  g_assert_no_error (error);
+  checksum = g_compute_checksum_for_string (G_CHECKSUM_SHA256, contents, -1);
+  g_assert_cmpstr (checksum, ==,
+                  "bfc8b4ab8f532f5b8e0d97f2dd7cace9eec1aefe7a4cd532dbf4e4162cd9d46a");
+  lines = g_strsplit (contents, "\n", -1);
+  g_assert_cmpuint (g_strv_length (lines), >, 30);
+  g_assert_cmpstr (lines[0], ==,
+                  "seq\tscene\tstep\ttype\tstate\tx\ty\tdetail\thandled\twidth\theight"
+                  "\tmirror\tangle\tanchor\trotating\tscrolling\tscaling\tgrabbed"
+                  "\tdevice_x\tdevice_y\tunrotated_x\tunrotated_y\tback_x\tback_y");
+  for (guint i = 0; i < G_N_ELEMENTS (sequence); i++)
+    {
+      gchar    **row = g_strsplit (lines[22 + i], "\t", -1);
+      gboolean   held = sequence[i].type != GDK_BUTTON_RELEASE;
+      gboolean   key = sequence[i].type == GDK_KEY_PRESS ||
+                       sequence[i].type == GDK_KEY_RELEASE;
+
+      g_assert_cmpuint (g_strv_length (row), ==, 24);
+      g_assert_cmpuint (g_ascii_strtoull (row[0], NULL, 10), ==, 22 + i);
+      g_assert_cmpstr (row[1], ==, "stationary-m0-i2");
+      g_assert_cmpstr (row[2], ==, sequence[i].step);
+      g_assert_cmpint (atoi (row[3]), ==, sequence[i].type);
+      g_assert_cmpuint (g_ascii_strtoull (row[4], NULL, 10), ==, sequence[i].state);
+      g_assert_cmpint (atoi (row[5]) - atoi (row[9]) / 2, ==, 0);
+      g_assert_cmpint (atoi (row[6]) - atoi (row[10]) / 2, ==, 100);
+      g_assert_cmpuint (g_ascii_strtoull (row[7], NULL, 10), ==, sequence[i].detail);
+      g_assert_cmpint (atoi (row[8]), ==, ! key);
+      g_assert_cmpint (atoi (row[11]), ==, 0);
+      g_assert_cmpfloat (g_ascii_strtod (row[12], NULL), ==, sequence[i].angle);
+      g_assert_cmpfloat (g_ascii_strtod (row[13], NULL), ==, held ? 7.5 : 0.0);
+      g_assert_cmpint (atoi (row[14]), ==, held);
+      g_assert_cmpint (atoi (row[15]), ==, 0);
+      g_assert_cmpint (atoi (row[16]), ==, 0);
+      g_assert_cmpint (atoi (row[17]), ==, held);
+      g_strfreev (row);
+    }
+
+  create_image ();
+  for (guint t = 0; t < G_N_ELEMENTS (real_tool_names); t++)
+    {
+      GimpTool       *tool = select_start_tool (real_tool_names[t]);
+      NavigationState held;
+      gint            x = shell->disp_width / 2;
+      gint            y = shell->disp_height / 2 + 100;
+
+      prepare_start ();
+      gimp_display_shell_rotate_to (shell, 7.5);
+      assert_middle_start (tool, sequence[0].state, GIMP_MODIFIER_ACTION_ROTATING, x, y);
+      held = navigation_state ();
+      for (guint i = 1; i < G_N_ELEMENTS (sequence); i++)
+        {
+          NavigationState before = navigation_state ();
+
+          g_test_message ("retained old seq=%u step=%s tool=%s",
+                          22 + i, sequence[i].step, real_tool_names[t]);
+          if (sequence[i].type == GDK_BUTTON_RELEASE)
+            release_middle (0);
+          else
+            {
+              send_event (sequence[i].type, 0, sequence[i].state,
+                          x, y, sequence[i].detail);
+              if (sequence[i].type == GDK_KEY_PRESS ||
+                  sequence[i].type == GDK_KEY_RELEASE)
+                assert_navigation_unchanged (&before);
+              /* Only the displayed angle may change on stationary motion.
+               * Both anchors, initiating button, action and actual grab stay. */
+              held.angle = shell->rotate_angle;
+              assert_navigation_unchanged (&held);
+              assert_grab ();
+            }
+          g_assert_cmpfloat_with_epsilon (shell->rotate_angle, sequence[i].angle, 1e-8);
+          g_assert_true (tool_manager_get_active (gimp) == tool);
+          g_assert_false (gimp_tool_control_is_active (tool->control));
+        }
+      assert_middle_start (tool, GDK_SHIFT_MASK, GIMP_MODIFIER_ACTION_ROTATING, x, y);
+      release_middle (GDK_SHIFT_MASK);
+    }
+  close_image ();
+  g_strfreev (lines);
+  g_free (checksum);
+  g_free (contents);
+  g_free (path);
+}
+
 typedef enum
 {
   START_BUSY, START_HELD_PRIMARY, START_HELD_TERTIARY, START_UNBOUND,
@@ -676,6 +804,7 @@ int main(int argc,char **argv)
   g_test_add_data_func ("/navigation-events/start/reject-move", real_tool_names[1], rejected_start_matrix);
   g_test_add_func ("/navigation-events/start/primary-paintbrush", paintbrush_primary_drag);
   g_test_add_func ("/navigation-events/start/recording-tool", recording_tool_starts);
+  g_test_add_func ("/navigation-events/rotation/ctrl-mid-drag", retained_ctrl_mid_drag);
   g_application_run(gimp->app,0,NULL);
   result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
   g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
