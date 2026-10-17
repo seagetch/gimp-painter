@@ -1,0 +1,317 @@
+{
+  "schema": 1,
+  "kind": "25.009-bounded-fractional-pan-difference-component-publication-summary",
+  "task_status": "TODO",
+  "native_status": "passed",
+  "scope": "25.009-fractional-pan-difference-three-normal-targets-nine-c-unit-asan-ubsan-v1",
+  "attempt": "component-run-001",
+  "tested_source_commit": "8e92569df4841a458202de2dd89ed6db1cb4c974",
+  "tested_source_tree": "25bec9e511414ea7dca1e8fd7ff9740d089a7b31",
+  "started_utc": "2026-10-17T14:29:43.577894+00:00",
+  "finished_utc": "2026-10-17T14:31:45.388619+00:00",
+  "native_receipt_sha256": "459c289f3c2cc0d61c4e5f010731d3ff669fb6264dae8ad4c7748df00abf4f61",
+  "compact_archive": {
+    "path": "migration/tests/fractional-pan-component-evidence.tar.xz",
+    "sha256": "4869eafeaf6fb1205f4f2a7f0dd647fa264288482ca010216d9bc67a678e3445",
+    "bytes": 937000,
+    "member_count": 24,
+    "included_original_member_count": 23,
+    "omitted_binary_member_count": 11,
+    "manifest": "compact-manifest.json"
+  },
+  "full_public_archive": {
+    "filename": "component-run-001-passed-public.tar.xz",
+    "sha256": "601fbcc75302cf9b076fb408a0d7f902b7316b3d2110c6903618ce2b8df11cf0",
+    "bytes": 22350520,
+    "original_file_member_count": 34,
+    "storage": "Retained separately, including all eleven sanitizer binary artifacts; durable full public archive."
+  },
+  "event_source_sha256": "6b2e3fc0b7aa05e09e51ac013cf5469ca723f61515910462035f2c5ed5a0445b",
+  "historical_event_source_sha256": "47b77f074e759f89faadcc0cc8cab15cc15f7d247117715041ecae3acf641039",
+  "source_and_fixture_input_count": 40,
+  "external_runner_sha256": "2be6d11ac0e38fd98228ca8b0f4a65e16078b676c68f9f7e559f28b68e4b20f6",
+  "committed_procedure_sha256": {
+    "tools/clone_evidence.py": "b83ef664ee2b1c148276fb4c0b8e4461cb42f21f02c20b7f272f10e27c5d8601",
+    "tools/run-painter-frozen-aggregate.py": "4cdc8a36be383487c4cca06fc173f8d3c2b949370318b66fd15f22548eecfada",
+    "tools/package-linux-runtime.py": "c57c9024f97f64025daa178fd799503c1e7493739b2c069d34d3c59e0827e7eb",
+    "migration/tests/build_navigation_event_sanitizers.py": "5795df13bd3561e3130b9e613724cdbefbca3133bf9c57ef7718066ad7773a07",
+    "tools/run-painter-xvfb.py": "6481502846d9f896cb906c8b1cde26f59d6899d1d5f889e1ffbf8e106e743fde"
+  },
+  "commands": [
+    {
+      "argv": [
+        "ninja",
+        "-C",
+        "/workspace/shared/gimp-clone-component-build",
+        "-j4"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-B",
+        "/workspace/shared/gimp-painter-clone-components/migration/tests/build_navigation_event_sanitizers.py",
+        "/workspace/shared/gimp-clone-component-build",
+        "--report",
+        "/workspace/shared/gimp-fractional-pan-validation/component-run-001-private/report.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "meson",
+        "test",
+        "-C",
+        "/workspace/shared/gimp-clone-component-build",
+        "--no-rebuild",
+        "--num-processes",
+        "1",
+        "--print-errorlogs",
+        "--logbase",
+        "/workspace/shared/gimp-fractional-pan-validation/component-run-001-private/meson",
+        "painter-navigation-events",
+        "painter-navigation-ui",
+        "painter-navigation"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-events-asan"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "normal_targets": [
+    {
+      "name": "painter-navigation-events",
+      "result": "OK",
+      "returncode": 0,
+      "tap_passed_count": 31
+    },
+    {
+      "name": "painter-navigation-ui",
+      "result": "OK",
+      "returncode": 0,
+      "tap_passed_count": 4
+    },
+    {
+      "name": "painter-navigation",
+      "result": "OK",
+      "returncode": 0,
+      "tap_passed_count": 6
+    }
+  ],
+  "normal_tap_passed_count": 41,
+  "sanitizer_tap_passed_count": 31,
+  "new_event_registrations": 0,
+  "instrumented_sources": [
+    "app/display/gimpdisplayshell-rotate.c",
+    "app/display/gimpdisplayshell-scale.c",
+    "app/display/gimpdisplayshell-scroll.c",
+    "app/display/gimpdisplayshell-tool-events.c",
+    "app/display/gimpdisplayshell-transform.c",
+    "app/display/gimpdisplayshell.c",
+    "app/display/gimpmodifiersmanager.c",
+    "app/display/gimppainternavigation.c",
+    "app/tests/test-painter-navigation-events.c"
+  ],
+  "integrity_checks": {
+    "source_unchanged": true,
+    "normal_elf_unchanged": true,
+    "focused_builder_preserved_normal_elf": true,
+    "freshness_unchanged": true,
+    "compile_database_unchanged": true,
+    "registry_unchanged": true,
+    "sanitizer_artifacts_unchanged": true,
+    "preserved_sanitizer_copies_match": true,
+    "all_361_catalogs_unchanged": true
+  },
+  "integrity_inventory": {
+    "source_snapshots_equal": 4,
+    "normal_elf_snapshots_equal": 3,
+    "normal_elf_entries_each": 2873,
+    "freshness_snapshots_equal": 3,
+    "unchanged_locale_catalogs": 361,
+    "source_and_fixture_inputs": 40,
+    "committed_procedures": 5,
+    "receipt_listed_files_verified": 33,
+    "full_public_archive_files_verified": 34
+  },
+  "fractional_observations": {
+    "normal": {
+      "line": "# fractional-pan-difference offsets=-236,-31 expected=-236,-31 quantized-anchor-delta=(-2.8421709430404007e-14,-2.8421709430404007e-14) expected=(0,0) raw-drift=(0.47993821019281313,-0.0277565399148898) expected=(0.4799382101927967,-0.027756539914874517)",
+      "offsets": [
+        -236,
+        -31
+      ],
+      "quantized_anchor_delta": [
+        -2.842170943040401e-14,
+        -2.842170943040401e-14
+      ],
+      "raw_pointer_drift": [
+        0.47993821019281313,
+        -0.0277565399148898
+      ],
+      "independent_expected_drift": [
+        0.4799382101927967,
+        -0.027756539914874517
+      ],
+      "epsilon": 1e-08
+    },
+    "focused": {
+      "line": "# fractional-pan-difference offsets=-236,-31 expected=-236,-31 quantized-anchor-delta=(-2.8421709430404007e-14,-2.8421709430404007e-14) expected=(0,0) raw-drift=(0.47993821019281313,-0.0277565399148898) expected=(0.4799382101927967,-0.027756539914874517)",
+      "offsets": [
+        -236,
+        -31
+      ],
+      "quantized_anchor_delta": [
+        -2.842170943040401e-14,
+        -2.842170943040401e-14
+      ],
+      "raw_pointer_drift": [
+        0.47993821019281313,
+        -0.0277565399148898
+      ],
+      "independent_expected_drift": [
+        0.4799382101927967,
+        -0.027756539914874517
+      ],
+      "epsilon": 1e-08
+    }
+  },
+  "raw_public_log_checks": {
+    "normal": {
+      "tap_passed_count": 41,
+      "fractional_marker_count": 1,
+      "main_drags": 17,
+      "stationary_reentries_source_and_passed_assertions": 16,
+      "primary_probe_pairs": 6,
+      "pan_geometry_calls_source_and_passed_assertions": 33,
+      "forward_landmark_comparisons_source_and_passed_assertions": 99,
+      "gtk_snapshots_source_and_passed_assertions": 38,
+      "radial_motion_rows": 30,
+      "clamp_motion_rows": 6,
+      "interior_axis_rows": 72,
+      "viewport": [
+        849,
+        450
+      ],
+      "draw_ctm_rows": 34,
+      "raster_marker_rows": 51,
+      "overlay_difference_rows": 18,
+      "widget_anchor_rows": 3,
+      "key_sends": 96,
+      "press_callbacks": 64,
+      "release_callbacks": 32,
+      "boundary_observations": 24,
+      "boundary_signed_steps": 20
+    },
+    "focused": {
+      "tap_passed_count": 31,
+      "fractional_marker_count": 1,
+      "main_drags": 17,
+      "stationary_reentries_source_and_passed_assertions": 16,
+      "primary_probe_pairs": 6,
+      "pan_geometry_calls_source_and_passed_assertions": 33,
+      "forward_landmark_comparisons_source_and_passed_assertions": 99,
+      "gtk_snapshots_source_and_passed_assertions": 38,
+      "radial_motion_rows": 30,
+      "clamp_motion_rows": 6,
+      "interior_axis_rows": 72,
+      "viewport": [
+        849,
+        450
+      ],
+      "draw_ctm_rows": 34,
+      "raster_marker_rows": 51,
+      "overlay_difference_rows": 18,
+      "widget_anchor_rows": 3,
+      "key_sends": 96,
+      "press_callbacks": 64,
+      "release_callbacks": 32,
+      "boundary_observations": 24,
+      "boundary_signed_steps": 20
+    }
+  },
+  "case_boundary": {
+    "new_cases_inside_existing_registration": 1,
+    "registration": "/navigation-events/drag/device-image-origin",
+    "angle_degrees": 37,
+    "horizontal_reflection": false,
+    "scale": 1.5,
+    "press_relative_to_integer_viewport_center": [
+      31.25,
+      -18.75
+    ],
+    "floating_pointer_delta": [
+      17.6,
+      -10.6
+    ],
+    "quantized_pointer_delta": [
+      17,
+      -11
+    ],
+    "offset_delta": [
+      -17,
+      11
+    ],
+    "coordinate_epsilon": 1e-08,
+    "historical_frozen_main_drags": 16,
+    "current_main_drags": 17,
+    "historical_frozen_pan_geometry_calls": 32,
+    "current_pan_geometry_calls": 33,
+    "historical_frozen_landmark_comparisons": 96,
+    "current_landmark_comparisons": 99,
+    "stationary_reentries": 16,
+    "primary_probe_pairs": 6,
+    "source_assertion_count_basis": "The additional drag contributes one pan-helper invocation and three forward landmark comparisons, with no additional stationary reentry, primary probe pair or registration. The earlier finite inventory and receipts stay unchanged."
+  },
+  "native_audits": {
+    "parent": {
+      "filename": "parent-native-review.json",
+      "sha256": "8ed864a0ace416940ffd3da47d3bfd7eea2bbdf7bb5c402ce05148ca1bd2b2ef",
+      "status": "passed",
+      "storage": "Retained separately; does not replace the unchanged native receipt."
+    },
+    "independent": {
+      "filename": "report.json",
+      "sha256": "0e8600b4eebd1939f8a98f50d2443a8eed9cd58a12985d0cf62d1c8a769c10f9",
+      "status": "passed",
+      "storage": "Retained separately; does not replace the unchanged native receipt."
+    }
+  },
+  "build_warning_lines_ansi_stripped": {
+    "default-build.log": [
+      "../gimp-painter-clone-components/app/tests/test-painter-navigation-events.c:1488:40: warning: no previous declaration for ‘navigation_draw_observer_get_type’ [-Wmissing-declarations]"
+    ],
+    "sanitizer-build.log": [
+      "../gimp-painter-clone-components/app/tests/test-painter-navigation-events.c:1488:40: warning: no previous declaration for ‘navigation_draw_observer_get_type’ [-Wmissing-declarations]"
+    ]
+  },
+  "strict_clone_gate": {
+    "status": "pending",
+    "normal_cases": 226,
+    "focused_cases": 62,
+    "target": "Separate evidence-only descendant B; unchanged checker and acceptance must be rerun for its exact source. This component receipt does not refresh strict acceptance."
+  },
+  "limits": [
+    "Only the three named normal Meson targets are run.",
+    "ASan/UBSan covers exactly nine C units; remaining GIMP, GTK and dependencies are uninstrumented.",
+    "LeakSanitizer is disabled; no suppression files or suppression options are used.",
+    "Synthetic display events are not physical-device acceptance.",
+    "One changing-fraction modern pan difference case; exact historical quantization is not accepted.",
+    "No full aggregate, final Clone freeze, package or release acceptance is claimed.",
+    "Old Edge/string old-reader runtime is skipped and unverified; no legacy runtime is accessed.",
+    "The existing modern integer-device behavior is a source-backed replacement/difference contract, not a user-approved redefinition of exact historical compatibility. The aligned old-source translation is arithmetic only; old applied raster/overlay/runtime remains unverified.",
+    "This evidence attests only to exact source A. The five-file evidence-only descendant B has no native or GUI pass from A; its separate unchanged strict 226-normal/62-focused gate is pending. The fractional-pan child and original 25.009 and drag-zoom-scroll remain TODO.",
+    "Historical manifests, receipts, archives and original ledger rows remain untouched. The frozen 16-drag inventory is not rewritten to claim 17 historical drags.",
+    "Only nine C units are instrumented. Zoom-model shared library, device-coordinate adapter, tool dispatch, renderer/GTK and remaining GIMP/dependencies are uninstrumented; LSan is off with no suppression files or options.",
+    "Both builds retain one missing-declarations warning for navigation_draw_observer_get_type. Ordinary icon, plug-in, D-Bus and GLib debug diagnostics remain; this is neither a warning-free nor clean-from-empty build claim.",
+    "The single observed viewport is 849x450. Native anisotropy, off-center focus, exact old inverse-before-gint quantization, clamp focus/offsets/overshoot/reversal and old-policy equivalence, full legacy pan/radial behavior, physical-device interruption and other platforms remain open.",
+    "The 38 retained actual GTK snapshots are assertions from the existing cases. No new raster/overlay/damage/clipping acceptance, saved PNG capture or GUI smoke is claimed. Latest separately accepted actual-window GUI remains exact adcb50e8c7481a86f5c15e858dffb5a6dbd930ff only, with no transferred GUI claim for A or B.",
+    "Both historical old GUI teardown command_exit=-11 outcomes remain preserved. No old runtime, capture or oracle was run or regenerated.",
+    "No all-196-hunk, parent, whole-section 25, full aggregate, final Clone freeze, package, release or whole-port acceptance. The compact component archive is not valid strict Clone --current-evidence input and is not a standalone rebuild package."
+  ]
+}
