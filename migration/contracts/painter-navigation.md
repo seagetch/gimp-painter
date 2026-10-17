@@ -477,12 +477,14 @@ Both retained old GUI captures still have teardown `command_exit=-11`; no old
 runtime was executed or reclassified, and skipped/unverified old-runtime status
 is preserved.
 
-## Original 25.007: inherited zero-boundary source checkpoint
+## Original 25.007: inherited zero-boundary component evidence
 
-This is a **source-only checkpoint, not an executed native receipt or closure**.
-The original no-angle-jump/no-direction-reversal criterion remains unchanged.
+The bounded exact-source component run below passed **28 normal cases and 18
+focused event ASan/UBSan cases on its first attempt**. The original
+no-angle-jump/no-direction-reversal criterion remains unchanged, and **25.007
+remains open pending the parent strict Clone rerun and final acceptance**.
 The preceding 12 registered event cases and every retained fixture byte remain
-unchanged. Six new event cases require a new exact-source component run; earlier
+unchanged. Six new event cases are bound to the new source A below; earlier
 native receipts cannot attest to this changed implementation or test source.
 
 ### Narrow displayed-angle policy and lifecycle
@@ -585,16 +587,16 @@ crossing count:
   the same ray, requiring the ordinary epsilon rather than stale exact policy,
   while retaining normal anchor/grab lifecycle.
 
-This adds six registrations for **18 event cases total**. The required component
-gate is the unchanged default build followed by all **18 event + 4 UI + 6
+This adds six registrations for **18 event cases total**. The completed component
+gate used the unchanged default build and all **18 event + 4 UI + 6
 arithmetic = 28 normal cases**, plus **18 focused event ASan/UBSan cases**.
 The focused sanitizer instrumentation remains its five translation units (test,
 navigation math, modifier manager, rotate adapter and event adapter); the shell
 empty-reset translation unit is exercised normally but not newly instrumented.
-Record the actual final source tree/inputs, runner and TAP identities, including
-`gimpdisplayshell.c` and `.h` in the source seal. After source publication and any
-receipt integration, the parent owns the separate strict Clone gate. No ledger
-row or strict acceptance receipt is changed by this checkpoint.
+The receipt records the actual source tree/inputs, runner and TAP identities,
+including `gimpdisplayshell.c` and `.h` in the 12-input source seal. After receipt
+integration, the parent owns the separate strict Clone gate. No ledger row or
+strict acceptance receipt is changed by this checkpoint.
 
 ### Evidence distinction and retained limits
 
@@ -606,4 +608,77 @@ suite must still consume that unchanged oracle. The existing GUI traces cover
 `command_exit=-11`. No old runtime, capture or oracle regeneration is permitted
 or claimed. Physical mouse/tablet, interruption/focus/device transitions, other
 platforms, whole-display/overlay equivalence, all task 25 and full-port acceptance
-remain outside this bounded source checkpoint.
+remain outside this bounded component checkpoint.
+
+
+### Accepted exact-source native component receipt (2026-10-17)
+
+`migration/tests/rotation-boundary-component-receipt.json` is the publication
+summary. `migration/tests/rotation-boundary-component-evidence.tar.xz` preserves
+22 unchanged original public metadata/log members, including the native receipt,
+plus one compact packaging manifest, for **component-run-001**:
+
+- Tested source A: `aa175058ab6e876fdbc12333e4bf53a48dec6f18`
+- Tested tree: `5ec543192cfd943fe5c6d60f1d7153040cdda0b0`
+- Native receipt SHA-256:
+  `b38ff6991e414f46fa80654e4d086f5d7e68b45828bbfb6caab3abb27a0a8f1b`
+- External runner SHA-256:
+  `20facd6135b481f1e6d61173c295620805950f0ba2e9c4705b2c6f869476234a`
+- Pinned gimp-data: `a31e5dea4f572fb5f33b06f5c4b86db5f30643dc`
+- First attempt: **28 normal (18 event + 4 UI + 6 arithmetic)** and **18 focused
+  event ASan/UBSan**, with no skipped/failing TAP and four command exits of 0
+
+The default build, focused sanitizer builder, three-target normal Meson command
+and focused event executable all passed. Both original public normal and
+sanitizer logs contain all **24 ordered crossing observations and 20 signed
+steps**, plus the separate persistence and policy-isolation cases. The preceding
+12 cases were rerun unchanged. These are synthetic native display-event results;
+they are not a new GUI smoke or physical-device capture.
+
+All nine native integrity checks passed: four equal clean source snapshots,
+three equal 2,873-entry normal ELF snapshots, focused-builder preservation of
+normal ELFs, full build freshness, compile database, registered tests, focused
+artifacts/copies and all 361 locale catalogs. All 28 receipt-listed file hashes
+were verified. All **29 original public files**, including the original receipt,
+were byte-compared against the complete archive. The compact archive preserves
+22 originals byte-for-byte and binds seven omitted sanitizer executable/object/
+thin-archive copies by their exact hashes and sizes. Deterministic repacking
+produced identical bytes.
+
+The full public archive is `component-run-001-passed-public.tar.xz`,
+**21,743,868 bytes**, SHA-256
+`3791784ed75d4d893005b11390951999c9264681cacb78d4eef762076c73cdd3`.
+It is retained separately and bound in both the compact manifest and publication
+summary. The compact archive does not contain the seven copied binary artifacts
+and is not a standalone rebuild package. No production source, executable test,
+fixture, arithmetic oracle or committed procedure changed in this publication.
+
+The parent's separate native audit reproduced all nine public privacy transforms
+and verified reuse of the actual registered Meson event environment with only
+the two exact ASan/UBSan option overrides. The focused instrumentation remains
+exactly five C units; `gimpdisplayshell.c` shell-empty reset is exercised normally
+but remains uninstrumented. LSan stays disabled; there are no suppression files
+or suppression options. Ordinary icon, plug-in, D-Bus and GLib debug messages
+remain in the logs; empty diagnostic-classifier arrays do not mean warning-free
+execution. The incremental default build log retains 300 compiler-warning lines;
+the focused sanitizer build log contains no `warning:` lines. Neither is a clean-
+from-empty or warning-free application claim. Only completed public output is
+packaged, excluding private profiles, raw environments and authentication material.
+
+### Receipt-only descendant and pending acceptance
+
+This run attests only to source A. The three-file receipt-integration descendant B
+has no new native or GUI run from this component receipt. The existing strict
+Clone receipt is deliberately unchanged and must fail source validation until
+the parent reruns the unchanged **226 normal / 62 focused sanitizer** gate on the
+receipt-integrated source and refreshes its acceptance. Original **25.007 remains
+open** until that parent review and ledger decision. This compact component
+archive is not valid input to `check_clone_acceptance.py --current-evidence`.
+
+The existing portrait GUI receipt stays separately bound to historical source
+`22708f41d368c6c7c2e425d30ea2765b9d29158b`; no new GUI evidence or acceptance is
+inferred for A or B. Both retained old captures keep teardown `command_exit=-11`,
+and old-runtime skipped/unverified status remains unchanged. Physical input,
+focus/device interruptions, other platforms, whole-display/overlay equivalence,
+all task 25, full-port, historical full-aggregate and release acceptance remain
+outside this evidence-only integration.

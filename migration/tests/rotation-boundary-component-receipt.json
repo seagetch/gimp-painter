@@ -1,0 +1,555 @@
+{
+  "schema": 1,
+  "kind": "original25.007-navigation-boundary-component-publication-summary",
+  "scope": "original25.007-exact-boundary-three-normal-targets-five-c-unit-asan-ubsan-v1",
+  "native_status": "passed",
+  "attempt": "component-run-001",
+  "native_attempt_count": 1,
+  "tested_source_commit": "aa175058ab6e876fdbc12333e4bf53a48dec6f18",
+  "tested_source_tree": "5ec543192cfd943fe5c6d60f1d7153040cdda0b0",
+  "pinned_gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "started_utc": "2026-10-17T10:45:17.723852+00:00",
+  "finished_utc": "2026-10-17T10:47:19.439131+00:00",
+  "native_receipt_sha256": "b38ff6991e414f46fa80654e4d086f5d7e68b45828bbfb6caab3abb27a0a8f1b",
+  "compact_archive": {
+    "path": "migration/tests/rotation-boundary-component-evidence.tar.xz",
+    "sha256": "70ed87bb70be44c36caea60e5c52f61a2aa8854a3eeb0260af315bc71dbdab0d",
+    "bytes": 937440,
+    "member_count": 23,
+    "included_original_member_count": 22,
+    "omitted_binary_member_count": 7,
+    "manifest": "compact-manifest.json"
+  },
+  "full_public_archive": {
+    "filename": "component-run-001-passed-public.tar.xz",
+    "sha256": "3791784ed75d4d893005b11390951999c9264681cacb78d4eef762076c73cdd3",
+    "bytes": 21743868,
+    "original_file_member_count": 29,
+    "storage": "Retained separately from the repository; contains all original public files including the seven copied sanitizer artifacts."
+  },
+  "source_and_fixture_sha256": {
+    "app/display/gimpdisplayshell-rotate.c": "14b2c4513a9e57d5861a82c3db824655f851c44c9db23b73c912ae2ed945c4d3",
+    "app/display/gimpdisplayshell-tool-events.c": "85d4fb2bd7e3623fc246ef336dc759a056d79988f2817c995e74e776b8d5ff20",
+    "app/display/gimpdisplayshell.c": "d0b4e804318f63750b631cf344f593da48297b94a17e3bb0905080cdd766cebe",
+    "app/display/gimpdisplayshell.h": "9396f71a325af2f6c0295cf2d9a034b54ea9d977b79f4949d8b3dc65066329ab",
+    "app/display/gimpmodifiersmanager.c": "686e0ddfd749140b272c0561cc80394d3bf6e696fa20e1b97e0d8fe6095364dc",
+    "app/display/gimppainternavigation.c": "6d5ace7b15a13c795141e60d206bd1b044a30a6f1e15742097d3b58c65aa24e9",
+    "app/tests/test-painter-navigation-events.c": "61cdf6c0c5eae0ec37c7fd526a49f93d44bfd0c9e851baf08c796c47ab79f835",
+    "app/tests/test-painter-navigation-ui.c": "7a0b30dedbdc50108b2319474b79f406d4ca5ea260b63e98588cc77b14dabd6d",
+    "app/tests/test-painter-navigation.c": "3d5b7a142fa707549fa0074045bd7e7f87e1b9a3a3479d16d1082ee82b874b38",
+    "migration/fixtures/legacy-navigation/rotation.tsv": "ce16608d105af71d652069410e949fd5922085fb8f749474850718821d67c5c7",
+    "migration/fixtures/legacy-rotation-operations/gui-captures/rotation.tsv": "bfc8b4ab8f532f5b8e0d97f2dd7cace9eec1aefe7a4cd532dbf4e4162cd9d46a",
+    "migration/fixtures/legacy-zoom/zoom.tsv": "5fcf9b0f0c66b707a6a57de8e617c49ed9d32dd21750bf1670d2e46ce711a21e"
+  },
+  "external_runner_sha256": "20facd6135b481f1e6d61173c295620805950f0ba2e9c4705b2c6f869476234a",
+  "committed_procedure_sha256": {
+    "tools/clone_evidence.py": "b83ef664ee2b1c148276fb4c0b8e4461cb42f21f02c20b7f272f10e27c5d8601",
+    "tools/run-painter-frozen-aggregate.py": "4cdc8a36be383487c4cca06fc173f8d3c2b949370318b66fd15f22548eecfada",
+    "tools/package-linux-runtime.py": "c57c9024f97f64025daa178fd799503c1e7493739b2c069d34d3c59e0827e7eb",
+    "migration/tests/build_navigation_event_sanitizers.py": "1b816db8efd621d5bd991f1b88d2cd45a7187f3d959c6d58a44dd8cabfa26039",
+    "tools/run-painter-xvfb.py": "6481502846d9f896cb906c8b1cde26f59d6899d1d5f889e1ffbf8e106e743fde"
+  },
+  "commands": [
+    {
+      "argv": [
+        "ninja",
+        "-C",
+        "/workspace/shared/gimp-clone-component-build",
+        "-j4"
+      ],
+      "cwd": "/workspace/shared/gimp-painter-clone-components",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T10:45:18.951558+00:00",
+      "finished_utc": "2026-10-17T10:46:09.694384+00:00",
+      "raw_log_sha256": "0100cdbc28dd13a32209bac052c2f147c5aa68b8104ad55cfd4b2d315a8acc47",
+      "public_log_sha256": "0100cdbc28dd13a32209bac052c2f147c5aa68b8104ad55cfd4b2d315a8acc47"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-B",
+        "/workspace/shared/gimp-painter-clone-components/migration/tests/build_navigation_event_sanitizers.py",
+        "/workspace/shared/gimp-clone-component-build",
+        "--report",
+        "/workspace/shared/gimp-rotation-boundary-validation/component-run-001-private/report.json"
+      ],
+      "cwd": "/workspace/shared/gimp-painter-clone-components",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T10:46:30.655916+00:00",
+      "finished_utc": "2026-10-17T10:46:35.738362+00:00",
+      "raw_log_sha256": "8a866eb679b519337a4ab702e6d335b155218a82401e9e65914835e34b9996fe",
+      "public_log_sha256": "8a866eb679b519337a4ab702e6d335b155218a82401e9e65914835e34b9996fe"
+    },
+    {
+      "argv": [
+        "meson",
+        "test",
+        "-C",
+        "/workspace/shared/gimp-clone-component-build",
+        "--no-rebuild",
+        "--num-processes",
+        "1",
+        "--print-errorlogs",
+        "--logbase",
+        "/workspace/shared/gimp-rotation-boundary-validation/component-run-001-private/meson",
+        "painter-navigation-events",
+        "painter-navigation-ui",
+        "painter-navigation"
+      ],
+      "cwd": "/workspace/shared/gimp-painter-clone-components",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T10:46:50.894047+00:00",
+      "finished_utc": "2026-10-17T10:46:54.624954+00:00",
+      "raw_log_sha256": "897a68a09a9d2ee51ba8f52449d3296152253682a29b1029f346f3e67a40caae",
+      "public_log_sha256": "897a68a09a9d2ee51ba8f52449d3296152253682a29b1029f346f3e67a40caae"
+    },
+    {
+      "argv": [
+        "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-events-asan"
+      ],
+      "cwd": "/workspace/shared/gimp-clone-component-build",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T10:46:54.652267+00:00",
+      "finished_utc": "2026-10-17T10:46:59.801195+00:00",
+      "raw_log_sha256": "5bef53d49d3de5c62226a0fae59ee16b0c8e118d6f214351c8439330289c00d6",
+      "public_log_sha256": "5bef53d49d3de5c62226a0fae59ee16b0c8e118d6f214351c8439330289c00d6"
+    }
+  ],
+  "normal_targets": [
+    {
+      "name": "painter-navigation-events",
+      "registered_command": [
+        "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-events"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "tap": {
+        "passed": true,
+        "tap_plans": [
+          18
+        ],
+        "passed_count": 18,
+        "expected_count": 18,
+        "test_names": [
+          "/navigation-events/default-rotation",
+          "/navigation-events/arbitrary-buttons",
+          "/navigation-events/radial-zoom",
+          "/navigation-events/picker-cleanup",
+          "/navigation-events/start/paintbrush",
+          "/navigation-events/start/move",
+          "/navigation-events/start/retained-old",
+          "/navigation-events/start/reject-paintbrush",
+          "/navigation-events/start/reject-move",
+          "/navigation-events/start/primary-paintbrush",
+          "/navigation-events/start/recording-tool",
+          "/navigation-events/rotation/ctrl-mid-drag",
+          "/navigation-events/rotation/boundary/free-increasing",
+          "/navigation-events/rotation/boundary/free-decreasing",
+          "/navigation-events/rotation/boundary/snapped-increasing",
+          "/navigation-events/rotation/boundary/snapped-decreasing",
+          "/navigation-events/rotation/boundary/persistence",
+          "/navigation-events/rotation/boundary/policy-isolation"
+        ],
+        "expected_test_names": [
+          "/navigation-events/default-rotation",
+          "/navigation-events/arbitrary-buttons",
+          "/navigation-events/radial-zoom",
+          "/navigation-events/picker-cleanup",
+          "/navigation-events/start/paintbrush",
+          "/navigation-events/start/move",
+          "/navigation-events/start/retained-old",
+          "/navigation-events/start/reject-paintbrush",
+          "/navigation-events/start/reject-move",
+          "/navigation-events/start/primary-paintbrush",
+          "/navigation-events/start/recording-tool",
+          "/navigation-events/rotation/ctrl-mid-drag",
+          "/navigation-events/rotation/boundary/free-increasing",
+          "/navigation-events/rotation/boundary/free-decreasing",
+          "/navigation-events/rotation/boundary/snapped-increasing",
+          "/navigation-events/rotation/boundary/snapped-decreasing",
+          "/navigation-events/rotation/boundary/persistence",
+          "/navigation-events/rotation/boundary/policy-isolation"
+        ],
+        "skipped": [],
+        "crash_diagnostics": [],
+        "failure_diagnostics": [],
+        "nonfatal_warnings": []
+      }
+    },
+    {
+      "name": "painter-navigation-ui",
+      "registered_command": [
+        "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-ui"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "tap": {
+        "passed": true,
+        "tap_plans": [
+          4
+        ],
+        "passed_count": 4,
+        "expected_count": 4,
+        "test_names": [
+          "/navigation-ui/preferences-read",
+          "/navigation-ui/partial-override-roundtrip",
+          "/navigation-ui/existing-exact-config",
+          "/navigation-ui/explicit-any-button"
+        ],
+        "expected_test_names": [
+          "/navigation-ui/preferences-read",
+          "/navigation-ui/partial-override-roundtrip",
+          "/navigation-ui/existing-exact-config",
+          "/navigation-ui/explicit-any-button"
+        ],
+        "skipped": [],
+        "crash_diagnostics": [],
+        "failure_diagnostics": [],
+        "nonfatal_warnings": []
+      }
+    },
+    {
+      "name": "painter-navigation",
+      "registered_command": [
+        "/workspace/shared/gimp-clone-component-build/app/display/painter-navigation",
+        "/workspace/shared/gimp-painter-clone-components/migration/fixtures/legacy-navigation/rotation.tsv",
+        "/workspace/shared/gimp-painter-clone-components/migration/fixtures/legacy-zoom/zoom.tsv"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "tap": {
+        "passed": true,
+        "tap_plans": [
+          6
+        ],
+        "passed_count": 6,
+        "expected_count": 6,
+        "test_names": [
+          "/navigation/golden-rotation",
+          "/navigation/golden-zoom",
+          "/navigation/modifier-bits",
+          "/navigation/midpoint-toggle",
+          "/navigation/mirrored-keys",
+          "/navigation/custom-rotation"
+        ],
+        "expected_test_names": [
+          "/navigation/golden-rotation",
+          "/navigation/golden-zoom",
+          "/navigation/modifier-bits",
+          "/navigation/midpoint-toggle",
+          "/navigation/mirrored-keys",
+          "/navigation/custom-rotation"
+        ],
+        "skipped": [],
+        "crash_diagnostics": [],
+        "failure_diagnostics": [],
+        "nonfatal_warnings": []
+      }
+    }
+  ],
+  "sanitizer": {
+    "command": [
+      "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-events-asan"
+    ],
+    "exit_code": 0,
+    "environment_source": "actual env of exact registered painter-navigation-events Meson result",
+    "private_environment_sha256": "59f4a5992e1d4b58742c31ebe7a1175d5b75642df3ebd71e184baf4644aa9e89",
+    "environment_overrides": {
+      "ASAN_OPTIONS": "[environment line omitted]\n",
+      "UBSAN_OPTIONS": "[environment line omitted]\n"
+    },
+    "instrumented_sources": [
+      "app/display/gimpdisplayshell-rotate.c",
+      "app/display/gimpdisplayshell-tool-events.c",
+      "app/display/gimpmodifiersmanager.c",
+      "app/display/gimppainternavigation.c",
+      "app/tests/test-painter-navigation-events.c"
+    ],
+    "suppression_files": [],
+    "tap": {
+      "passed": true,
+      "tap_plans": [
+        18
+      ],
+      "passed_count": 18,
+      "expected_count": 18,
+      "test_names": [
+        "/navigation-events/default-rotation",
+        "/navigation-events/arbitrary-buttons",
+        "/navigation-events/radial-zoom",
+        "/navigation-events/picker-cleanup",
+        "/navigation-events/start/paintbrush",
+        "/navigation-events/start/move",
+        "/navigation-events/start/retained-old",
+        "/navigation-events/start/reject-paintbrush",
+        "/navigation-events/start/reject-move",
+        "/navigation-events/start/primary-paintbrush",
+        "/navigation-events/start/recording-tool",
+        "/navigation-events/rotation/ctrl-mid-drag",
+        "/navigation-events/rotation/boundary/free-increasing",
+        "/navigation-events/rotation/boundary/free-decreasing",
+        "/navigation-events/rotation/boundary/snapped-increasing",
+        "/navigation-events/rotation/boundary/snapped-decreasing",
+        "/navigation-events/rotation/boundary/persistence",
+        "/navigation-events/rotation/boundary/policy-isolation"
+      ],
+      "expected_test_names": [
+        "/navigation-events/default-rotation",
+        "/navigation-events/arbitrary-buttons",
+        "/navigation-events/radial-zoom",
+        "/navigation-events/picker-cleanup",
+        "/navigation-events/start/paintbrush",
+        "/navigation-events/start/move",
+        "/navigation-events/start/retained-old",
+        "/navigation-events/start/reject-paintbrush",
+        "/navigation-events/start/reject-move",
+        "/navigation-events/start/primary-paintbrush",
+        "/navigation-events/start/recording-tool",
+        "/navigation-events/rotation/ctrl-mid-drag",
+        "/navigation-events/rotation/boundary/free-increasing",
+        "/navigation-events/rotation/boundary/free-decreasing",
+        "/navigation-events/rotation/boundary/snapped-increasing",
+        "/navigation-events/rotation/boundary/snapped-decreasing",
+        "/navigation-events/rotation/boundary/persistence",
+        "/navigation-events/rotation/boundary/policy-isolation"
+      ],
+      "skipped": [],
+      "crash_diagnostics": [],
+      "failure_diagnostics": [],
+      "nonfatal_warnings": []
+    }
+  },
+  "integrity_checks": {
+    "source_unchanged": true,
+    "normal_elf_unchanged": true,
+    "focused_builder_preserved_normal_elf": true,
+    "freshness_unchanged": true,
+    "compile_database_unchanged": true,
+    "registry_unchanged": true,
+    "sanitizer_artifacts_unchanged": true,
+    "preserved_sanitizer_copies_match": true,
+    "all_361_catalogs_unchanged": true
+  },
+  "normal_tap_passed_count": 28,
+  "sanitizer_tap_passed_count": 18,
+  "raw_public_log_checks": {
+    "testlog.txt": {
+      "passed_count": 28,
+      "crossing_observations": 24,
+      "signed_steps": 20
+    },
+    "sanitizer-run.log": {
+      "passed_count": 18,
+      "crossing_observations": 24,
+      "signed_steps": 20
+    }
+  },
+  "new_finite_cases": {
+    "registered_case_count": 6,
+    "retained_preceding_registered_event_cases": [
+      "/navigation-events/default-rotation",
+      "/navigation-events/arbitrary-buttons",
+      "/navigation-events/radial-zoom",
+      "/navigation-events/picker-cleanup",
+      "/navigation-events/start/paintbrush",
+      "/navigation-events/start/move",
+      "/navigation-events/start/retained-old",
+      "/navigation-events/start/reject-paintbrush",
+      "/navigation-events/start/reject-move",
+      "/navigation-events/start/primary-paintbrush",
+      "/navigation-events/start/recording-tool",
+      "/navigation-events/rotation/ctrl-mid-drag"
+    ],
+    "preceding_twelve_event_cases_unchanged": true,
+    "real_tool": "Paintbrush",
+    "crossing_case_count": 4,
+    "crossing_observation_count": 24,
+    "crossing_signed_step_count": 20,
+    "crossings": [
+      {
+        "registered_test": "/navigation-events/rotation/boundary/free-increasing",
+        "ordered_k": [
+          -2,
+          -1,
+          0,
+          1,
+          2
+        ],
+        "expected_wrapped_degrees": [
+          359.9988540844099,
+          359.9994270422049,
+          0,
+          0.0005729577951117246,
+          0.0011459155901088576
+        ]
+      },
+      {
+        "registered_test": "/navigation-events/rotation/boundary/free-decreasing",
+        "ordered_k": [
+          2,
+          1,
+          0,
+          -1,
+          -2
+        ],
+        "expected_wrapped_degrees": [
+          0.0011459155901088576,
+          0.0005729577951117246,
+          0,
+          359.9994270422049,
+          359.9988540844099
+        ]
+      },
+      {
+        "registered_test": "/navigation-events/rotation/boundary/snapped-increasing",
+        "ordered_k": [
+          -25000,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          25000
+        ],
+        "expected_wrapped_degrees": [
+          345,
+          0,
+          0,
+          0,
+          0,
+          0,
+          15
+        ]
+      },
+      {
+        "registered_test": "/navigation-events/rotation/boundary/snapped-decreasing",
+        "ordered_k": [
+          25000,
+          2,
+          1,
+          0,
+          -1,
+          -2,
+          -25000
+        ],
+        "expected_wrapped_degrees": [
+          15,
+          0,
+          0,
+          0,
+          0,
+          0,
+          345
+        ]
+      }
+    ],
+    "expectation_basis": "Independent analytical constants from pinned old source geometry atan(k/100000) * 180/pi and its unchanged 15-degree snap rule; not a new old-runtime execution, GUI capture or regenerated oracle.",
+    "start_ray_relative_to_integer_midpoint": [
+      80,
+      0
+    ],
+    "immutable_anchor_degrees": 90,
+    "motion_ray_relative_to_integer_midpoint": [
+      "100000",
+      "k"
+    ],
+    "free_basis_magnitudes": {
+      "abs_k_1": [
+        99.999999995,
+        0.00099999999995
+      ],
+      "abs_k_2": [
+        99.99999998,
+        0.0019999999996
+      ]
+    },
+    "snapped_nonzero_basis_magnitudes": [
+      96.59258262890683,
+      25.881904510252074
+    ],
+    "angle_and_signed_step_tolerance_degrees": 1e-10,
+    "basis_component_tolerance_pixels": 1e-08,
+    "persistence_case": {
+      "registered_test": "/navigation-events/rotation/boundary/persistence",
+      "coverage": "Both tiny free samples survive ordinary release, direct rebuilds, offset/scale changes and horizontal flip/unflip. Closing the only display exercises ordinary shell-empty reset."
+    },
+    "policy_isolation_case": {
+      "registered_test": "/navigation-events/rotation/boundary/policy-isolation",
+      "coverage": "Ordinary rotate-to, represented epsilon endpoint behavior, relative rotation and explicit custom free rotation retain the ordinary epsilon and clear inherited exact policy."
+    }
+  },
+  "instrumentation_boundary": {
+    "instrumented_c_units": 5,
+    "shell_empty_reset_source": "app/display/gimpdisplayshell.c",
+    "shell_empty_reset_exercised_normally": true,
+    "shell_empty_reset_instrumented": false,
+    "remaining_units": "Other GIMP, GTK and dependency units remain uninstrumented. LeakSanitizer is disabled; no suppression files or suppression options."
+  },
+  "integrity_inventory": {
+    "source_snapshots_equal": 4,
+    "normal_elf_snapshots_equal": 3,
+    "normal_elf_entries_each": 2873,
+    "source_and_fixture_hashes": 12,
+    "unchanged_locale_catalogs": 361,
+    "original_public_files_verified": 29,
+    "receipt_listed_file_hashes_verified": 28
+  },
+  "parent_native_audit": {
+    "filename": "parent-native-review.json",
+    "sha256": "21b44b4fedf23c108a903c57773a8af3aa5239ed29160f8d5c999b54f5c38af5",
+    "status": "passed",
+    "public_transforms_reproduced": 9,
+    "actual_registered_environment_reused_with_only_two_exact_sanitizer_overrides": true,
+    "storage": "Retained separately; audit is not substituted for the unchanged original native receipt."
+  },
+  "warnings_and_diagnostics": [
+    "Native event logs retain missing application icons, ignored dummy plug-in entries, unavailable session/cloud-provider D-Bus and GLib setenv/unsetenv thread-safety debug messages. These are not hidden by empty nonfatal_warnings classifier arrays.",
+    "No skipped GTests, crash, failed TAP or sanitizer error is accepted. Dummy plug-in discovery messages are not skipped GTests.",
+    "The accepted incremental default build retained 300 compiler-warning lines matching warning:. The focused sanitizer build log has none matching that pattern. Neither result is a clean-from-empty or warning-free application claim."
+  ],
+  "omitted_original_members": {
+    "sanitizer-artifacts/app/tests/painter-navigation-events-asan": {
+      "sha256": "dc31ea5044371c818d5a8d08ae21bbcef90fa505f34509c748ba454f508d1d21",
+      "bytes": 77628544
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpdisplayshell-rotate.c.o": {
+      "sha256": "320c871510ddee119eb9fbb9cdff0568a0bed2e254d7f59ae7a04294227492d7",
+      "bytes": 110208
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpdisplayshell-tool-events.c.o": {
+      "sha256": "6cbb3637ab7d6827c3733a1675e88f6156c7879c857cc91c070ab0ae221a9619",
+      "bytes": 659688
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpmodifiersmanager.c.o": {
+      "sha256": "b160044fee46b3275aa82edeb8d38ff6fd429eb8fb3ab581b43d6722cb70b796",
+      "bytes": 224896
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimppainternavigation.c.o": {
+      "sha256": "733d2e7d2c90ef2ab38d2e7e76b249675bfd40a9cb25d52815e8951b846865b0",
+      "bytes": 24784
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/libappdisplay.a": {
+      "sha256": "59b32300c9bce3669f9b96703049f159d976b6dfb63cdacf8c18f82fae4aec33",
+      "bytes": 43002
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/test-painter-navigation-events.c.o": {
+      "sha256": "ccd322fa96023a98797809e2f82ccad0b5bce8ab621304a85c9139fe4ee3af63",
+      "bytes": 837792
+    }
+  },
+  "limits": [
+    "Only the three named normal Meson targets are run.",
+    "ASan/UBSan covers exactly five C units; remaining GIMP, GTK and dependencies are uninstrumented.",
+    "LeakSanitizer is disabled; no suppression files or suppression options are used.",
+    "Synthetic display events are not physical-device acceptance.",
+    "No full aggregate, final Clone freeze, package or release acceptance is claimed.",
+    "Old Edge/string old-reader runtime is skipped and unverified; no legacy runtime is accessed.",
+    "All six new registrations are finite source-derived synthetic event checks; 24 crossing observations and 20 signed steps are subcases, not separate registered tests.",
+    "Both retained old GUI captures still record command_exit=-11 during teardown. No old runtime, capture or oracle was run or regenerated for this increment.",
+    "No new GUI smoke is included. The separate portrait GUI receipt remains historical evidence on older exact source 22708f41d368c6c7c2e425d30ea2765b9d29158b, not this component source or receipt-only descendant.",
+    "No physical tablet/mouse, focus/device interruption, other-platform, whole-display/overlay, whole-section-25 or full-port acceptance is claimed.",
+    "This receipt names only tested source A above. This receipt-only publication descendant B was not natively tested by that run.",
+    "Original 25.007 remains open. Existing strict Clone acceptance must fail on this changed source until the parent runs the unchanged 226-normal/62-focused-sanitizer gate and refreshes acceptance on the receipt-integrated source.",
+    "The compact component archive is not valid input to check_clone_acceptance.py --current-evidence."
+  ]
+}
