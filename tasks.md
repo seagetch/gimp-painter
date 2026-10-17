@@ -594,7 +594,7 @@
 | 14.006/editability-contract | [ ] | CloneLayer の編集可否を現行ロック規約へ対応付ける | 14.005, 01.005/gimp3-layer-slots | 廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認 |
 | 14.007 | [ ] | source の可視性・合成変更を処理する | 14.006 | 旧版の更新範囲と表示が一致 |
 | 14.007/component-visibility-regression | [x] | Cloneのcomponent可視性と遅延ROI更新を検証する | 14.001/core-implementation, 02.005, 09.002 | 旧source由来のRGB/RGBA/Gray/Gray-alpha全component組合せ・toggle時cache保持・1x1更新通知・source-node・opacity/mask丸め・show-maskを通常/focused sanitizerで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは別途保持 |
-| 14.007/source-mode-projection-regression | [ ] | Cloneの非Dissolve source modeとinitial-region更新を検証する | 14.001/core-implementation, 14.007/component-visibility-regression, 10.005/normal-multiply-parity, 02.005, 09.002 | 通常layerで有効な旧27 modeの明示mapping・RGB/RGBA/Gray/Gray-alpha×mask有無の216場面でsource由来cache/source-node・mode変更/復帰の全領域通知・同mode無通知・後続1x1更新と周囲保持を検証。native実行待ち、親14.007/14.006とgenuine runtime/合成/UI/release gateは保持 |
+| 14.007/source-mode-projection-regression | [x] | Cloneの非Dissolve source modeとinitial-region更新を検証する | 14.001/core-implementation, 14.007/component-visibility-regression, 10.005/normal-multiply-parity, 02.005, 09.002 | 通常layerで有効な旧27 modeの明示mapping・RGB/RGBA/Gray/Gray-alpha×mask有無216場面でsource由来cache/source-node・mode変更/復帰の全領域通知・同mode無通知・後続1x1更新と周囲保持を通常62 Clone/focused ASan/UBSan62・七登録target計226 TAPで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは保持 |
 | 14.008 | [ ] | source 改名を処理する | 14.007 | 既存参照を旧仕様に沿って維持 |
 | 14.009 | [ ] | 同名 source を処理する | 14.008 | 保存前後で別レイヤーへ変わらない |
 | 14.010 | [ ] | clone の複製を実装する | 14.009 | 複製先の source が旧仕様と一致 |
