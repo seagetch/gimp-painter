@@ -170,7 +170,9 @@ the legacy log; the port's weak lifetime repair intentionally avoids the latter.
 
 ## Verification
 
-- `app/tests/test-gimp-clone-layer.c`: 37 full-GIMP integration cases
+- Historical core reports record 37 full-GIMP integration cases. The current
+  scoped receipt below reruns all 58 registered cases in the combined Clone
+  test executable (`test-gimp-clone-layer.c` and `test-gimp-clone-layout.cpp`).
 - `app/tests/test-gimp-clone-layout.cpp`: C++ typed factories/return and actual
   C/C++ struct layout, included in the same executable
 - `migration/tests/clone-layer-testlog.{txt,json}`: normal Meson results, including
@@ -224,7 +226,7 @@ This independent verification child uses completed `14.001/core-implementation`,
 `02.005`, and `09.002` under the existing WBS bounded-parallelization rule. It
 does not close parent `14.007`, predecessor `14.006`, broader blend-mode, genuine
 runtime, GUI or release gates. No eager-refresh feature or production change is
-proposed. Native acceptance is pending at this source checkpoint.
+needed. The bounded child is accepted by the current source-bound receipt below.
 
 The new expected bytes are derived from pinned legacy source
 `afa43fae3e920210146abed514f136fd49f671b5`, not a new genuine runtime capture:
@@ -244,7 +246,7 @@ The new expected bytes are derived from pinned legacy source
   source opacity and component visibility. The existing genuine 128-mask fixture
   supports only that measured show-mask behavior, not the new toggle scenarios.
 
-The six added tests cover all 16 RGB/RGBA and all 4 Gray/Gray-alpha component
+The six added nonlinear-U8 tests cover all 16 RGB/RGBA and all 4 Gray/Gray-alpha component
 visibility combinations, both without and with an applied mask (80 scenes).
 Every scene checks exact full-cache and GEGL source-node bytes before and after
 toggle-only operations, an explicit 1x1 source update at (1,1), visibility
@@ -261,6 +263,79 @@ then becomes transparent black only after source update. Gray final-projection
 semantics are outside this assertion; no assumption about them is used to
 derive Clone cache expectations.
 
-Historical core reports and their recorded source hashes remain historical.
-A new scoped source-bound receipt is required for the current Clone reruns;
-merely replacing old expected hashes cannot establish acceptance.
+### Accepted current receipt and retained attempts
+
+`migration/tests/clone-component-visibility-evidence.tar.xz` contains the complete
+strict receipt for run-004 on 2026-10-17:
+
+- Tested source commit: `63be6dcf0aed2cf715576cfd63e723e614cd0172`
+- Tested tree: `61deee83eeed8cf5a4a4a99c128beaf530694c81`
+- Archive SHA-256: `421e89882a0edc1dd16864f2380854b7326d44b973ed81a4699313252528a20e`
+- Receipt SHA-256: `c0f5de165fff330f541037420b586eab3d5906264d85134115029adb17f5057a`
+
+The full default Ninja build passed before seven exact, unfiltered registered
+Meson targets. The full 164-target registry supplies qualified identities and
+commands; the selected targets contributed 222 positive TAP cases: `core` 4,
+`projection-update-bounds` 3, `gimp-clone-layer` 58, `painter-layer-ui` 68,
+`painter-layer-tree` 35, `painter-xcf-roundtrip` 49 and `update-geometry` 5.
+All seven passed without skipped cases or timeouts. This uses the retained build
+tree from the earlier attempts, with a complete default-build revalidation; it
+is not a fresh-from-empty build claim.
+
+Focused ASan/UBSan then passed all 58 Clone cases. Exactly eight source units
+are instrumented. Another 54 linked production C++ units are rebuilt with RTTI
+only to keep the mixed harness ABI coherent; they are not sanitizer coverage.
+The eight instrumented objects are explicit early link anchors with original
+copies removed from private direct/archive slots. The compatibility-only objects
+remain archive-selected. UBSan vptr checks remain enabled; LSan remains disabled.
+Upstream/dependency code outside those eight units is uninstrumented. This does
+not establish whole-GIMP sanitizer coverage.
+
+The receipt seals source, default-build freshness, compile database, full
+registry, ELF/shared-library loader provenance and all 361 configured locale
+catalogs before/after testing. The isolated sanitizer outputs do not modify the
+normal build. Authenticated portrait Xvfb uses the existing helper. Public logs
+retain test blocks and diagnostics; explicitly recorded transformations remove
+inherited-environment headers from raw Meson output. The archive and original
+receipt directory independently validate identically, and each archived member
+matches its original bytes.
+
+Two unsuccessful attempts remain separate failed evidence; no failed status or
+diagnostic was replaced by the accepted receipt:
+
+1. Run-001 at `bf90eab07f8043f2b3d540ca7d4cdd8f7d2b6bef` stopped in the default
+   build because the evidence environment omitted `GIMP_DEPS_ROOT`, which the
+   restored Python dependency environment requires. No tests ran. The narrow
+   allowlist correction was separately reviewed. Retained archive
+   `run-001-failed-evidence.tar.gz` has SHA-256
+   `673a99d19beb06aa8eb5e942aaca8bd83d235ca91ad597038ce1427766d0686e`.
+2. Run-002 at `b7ecd1ce2566fdf0b412e84bd311d00a7a0d815e` completed the full
+   default build and all 222 normal cases, then failed sanitizer startup with a
+   mixed-RTTI `HistoryState` shared-pointer control-block vptr diagnostic.
+   Static ELF review confirmed a null typeinfo slot in a no-RTTI production
+   vtable used by an instrumented template. The bounded RTTI-compatible link
+   repair above retained vptr instrumentation; it did not suppress the check.
+   Retained archive `run-002-failed-evidence.tar.gz` has SHA-256
+   `594766b843177ea74c656aa5d6cf261ae2359e1825a313df54b04fb5b0c99c23`;
+   the separate static diagnosis has SHA-256
+   `32424ca7b61567f70aacf86b01e24f14084c48bfd84ed321be7a9cb96080f107`.
+
+Run-003 at `bc68880847d4275781eb9482159441ec532f65ab` remains a native PASS
+(222 normal and 58 focused sanitizer cases), retained with receipt SHA-256
+`d9a8ce3178c26ea0510ebcffa8b8b4de617b294f2eee8bc1cf94bb0ee327c166` and
+compact archive SHA-256
+`24ac0e10a77af45683ab0873cd0238034da268738423a0ccf03bffa94d7892e4`.
+It was superseded for final publication because the offline receipt reader
+resolved archived loader aliases using live build-tree symlinks. The reviewed
+reader correction resolves those aliases from the sealed symlink inventory,
+without consulting the historical source or build filesystem. Run-004 repeats
+the complete native sequence with that exact tooling source frozen; strict
+absent-build validation also passes. This additional publication check does not
+change the native result for run-003.
+
+Historical core reports and their recorded source hashes remain unchanged. The
+pre-existing four historical source-hash mismatches are recorded in the new
+receipt's baseline evidence, rather than hidden by replacing expected hashes.
+The current receipt supports only these actual current reruns. It does not
+refresh older broad integration checkpoints, claim a new genuine legacy capture,
+or close the parent, blend-mode, GUI, full aggregate, platform or release gates.
