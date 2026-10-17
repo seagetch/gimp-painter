@@ -31,6 +31,20 @@
 #include "widgets/gimpwidgets-utils.h"
 #include "display/gimppainternavigation.h"
 #include "display/gimpmodifiersmanager.h"
+#include "core/gimpdrawable.h"
+#include "core/gimpchannel-select.h"
+#include "core/gimppickable.h"
+#include "core/gimpprojection.h"
+#include "display/gimpcanvasitem.h"
+#include "display/gimpcanvasgroup.h"
+#include "display/gimpcanvasline.h"
+#include "display/gimpcanvasrectangle.h"
+#include "display/gimpdisplayshell-items.h"
+#include "display/gimpdisplayshell-appearance.h"
+#include "display/gimpdisplayshell-selection.h"
+#include "display/gimppaintercanvasui.h"
+#include "widgets/gimpoverlaybox.h"
+#include "widgets/gimpoverlaychild.h"
 #include "gimpcoreapp.h"
 #include "gimp-app-test-utils.h"
 #include "tests.h"
@@ -1459,6 +1473,656 @@ mirrored_arrow_keys (gconstpointer data)
   close_image ();
 }
 
+/* Original 25.009: bounded, current-source common-angle draw checkpoint.
+ * This observer is reached only through the production GTK canvas draw signal.
+ * It does not apply a transform or paint an image-space substitute. */
+typedef struct
+{
+  GimpCanvasItem parent_instance;
+  cairo_matrix_t matrix;
+  guint          draws;
+  gboolean       screen_control;
+} NavigationDrawObserver;
+
+typedef struct { GimpCanvasItemClass parent_class; } NavigationDrawObserverClass;
+G_DEFINE_TYPE (NavigationDrawObserver, navigation_draw_observer, GIMP_TYPE_CANVAS_ITEM)
+
+static void
+navigation_draw_observer_draw (GimpCanvasItem *item,
+                               cairo_t        *cr)
+{
+  NavigationDrawObserver *observer = (NavigationDrawObserver *) item;
+
+  cairo_get_matrix (cr, &observer->matrix);
+  observer->draws++;
+  if (observer->screen_control)
+    {
+      cairo_set_source_rgb (cr, 1.0, 0.0, 1.0);
+      cairo_rectangle (cr, 24, 30, 13, 7);
+      cairo_fill (cr);
+    }
+}
+
+static cairo_region_t *
+navigation_draw_observer_extents (GimpCanvasItem *item)
+{
+  GimpDisplayShell *owner = gimp_canvas_item_get_shell (item);
+  cairo_rectangle_int_t rect = { 0, 0, owner->disp_width, owner->disp_height };
+
+  return cairo_region_create_rectangle (&rect);
+}
+
+static void
+navigation_draw_observer_class_init (NavigationDrawObserverClass *klass)
+{
+  GimpCanvasItemClass *item_class = GIMP_CANVAS_ITEM_CLASS (klass);
+
+  item_class->draw = navigation_draw_observer_draw;
+  item_class->get_extents = navigation_draw_observer_extents;
+}
+
+static void
+navigation_draw_observer_init (NavigationDrawObserver *observer)
+{
+  observer->draws = 0;
+}
+
+typedef struct { gdouble x, y; } DrawPoint;
+typedef struct { DrawPoint a, b; } DrawSegment;
+typedef struct { gint x, y, w, h; } DrawLandmark;
+typedef struct { const gchar *name; gdouble angle, cosine, sine; } DrawAngle;
+typedef struct
+{
+  NavigationDrawObserver *rotated, *unrotated;
+  GimpCanvasItem         *items;
+  GimpDrawable           *drawable;
+  gchar                  *pixels_sha256;
+} DrawScene;
+
+/* Independent constants: accepted 25.008 right-ray press from 37 degrees,
+ * down-ray free motion is 127; Ctrl gives 120; release restores 127. Neither
+ * angle nor expected geometry is obtained from the target navigation helper.
+ * The tiny +/-1 samples come from the existing 100000-pixel boundary rays. */
+static const DrawAngle draw_zero = { "zero", 0.0, 1.0, 0.0 };
+static const DrawAngle draw_free =
+  { "free", 127.0, -0.6018150231520483, 0.7986355100472928 };
+static const DrawAngle draw_snap =
+  { "snap", 120.0, -0.5, 0.8660254037844386 };
+static const DrawAngle draw_anchor_angle =
+  { "anchor", 37.0, 0.7986355100472928, 0.6018150231520483 };
+static const DrawAngle draw_tiny[] =
+{
+  { "negative", 359.9994270422049, 0.99999999995, -0.0000099999999995 },
+  { "zero",     0.0,               1.0,            0.0 },
+  { "positive", 0.0005729577951117246, 0.99999999995, 0.0000099999999995 }
+};
+static const DrawLandmark draw_landmarks[] =
+{
+  { 61, 71, 14, 10 }, { 179, 83, 10, 18 }, { 99, 178, 18, 12 }
+};
+static const DrawSegment draw_segments[] =
+{
+  { { 68, 76 }, { 184, 92 } }, { { 68, 76 }, { 108, 184 } },
+  { { 99, 178 }, { 117, 178 } }, { { 117, 178 }, { 117, 190 } },
+  { { 117, 190 }, { 99, 190 } }, { { 99, 190 }, { 99, 178 } }
+};
+static const DrawSegment draw_selection_segments[] =
+{
+  { { 48, 54 }, { 168, 54 } }, { { 168, 54 }, { 168, 150 } },
+  { { 168, 150 }, { 48, 150 } }, { { 48, 150 }, { 48, 54 } }
+};
+
+/* Source-independent Euclidean point geometry using a frozen sine/cosine,
+ * explicit image dimensions and observed view parameters. The expected CTM
+ * never reads shell->rotate_transform or calls a production transform helper. */
+static DrawPoint
+draw_expected_point (const DrawAngle *angle,
+                     gboolean         mirror,
+                     gdouble          x,
+                     gdouble          y)
+{
+  gdouble cx = -shell->offset_x + ((gint) (256 * shell->scale_x)) / 2;
+  gdouble cy = -shell->offset_y + ((gint) (256 * shell->scale_y)) / 2;
+  gdouble dx = x * shell->scale_x - shell->offset_x - cx;
+  gdouble dy = y * shell->scale_y - shell->offset_y - cy;
+
+  if (mirror)
+    dx = -dx;
+  return (DrawPoint) { cx + angle->cosine * dx - angle->sine * dy,
+                       cy + angle->sine * dx + angle->cosine * dy };
+}
+
+static gchar *
+draw_image_checksum (GimpDrawable *drawable)
+{
+  guchar pixels[256 * 256 * 4];
+
+  gegl_buffer_get (gimp_drawable_get_buffer (drawable),
+                   GEGL_RECTANGLE (0, 0, 256, 256), 1.0,
+                   babl_format ("R'G'B'A u8"), pixels,
+                   GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+  return g_compute_checksum_for_data (G_CHECKSUM_SHA256, pixels, sizeof pixels);
+}
+
+static DrawScene
+draw_scene_new (void)
+{
+  DrawScene scene = { 0 };
+  GimpImage *image;
+  GimpCanvasItem *item;
+  guchar pixels[256 * 256 * 4];
+
+  create_image ();
+  select_start_tool (real_tool_names[0]);
+  image = gimp_display_get_image (shell->display);
+  scene.drawable = GIMP_DRAWABLE (gimp_image_get_layer_iter (image)->data);
+  for (guint p = 0; p < 256 * 256; p++)
+    {
+      pixels[4 * p] = pixels[4 * p + 1] = pixels[4 * p + 2] = 128;
+      pixels[4 * p + 3] = 255;
+    }
+  for (guint n = 0; n < G_N_ELEMENTS (draw_landmarks); n++)
+    {
+      const DrawLandmark *mark = &draw_landmarks[n];
+      for (gint y = mark->y; y < mark->y + mark->h; y++)
+        for (gint x = mark->x; x < mark->x + mark->w; x++)
+          {
+            guchar *pixel = pixels + 4 * (256 * y + x);
+            pixel[0] = pixel[1] = pixel[2] = 24;
+            pixel[n] = 232;
+          }
+    }
+  gegl_buffer_set (gimp_drawable_get_buffer (scene.drawable),
+                   GEGL_RECTANGLE (0, 0, 256, 256), 0,
+                   babl_format ("R'G'B'A u8"), pixels, GEGL_AUTO_ROWSTRIDE);
+  gimp_drawable_update (scene.drawable, 0, 0, 256, 256);
+  gimp_image_flush (image);
+  gimp_pickable_flush (GIMP_PICKABLE (gimp_image_get_projection (image)));
+  scene.pixels_sha256 = draw_image_checksum (scene.drawable);
+
+  gimp_painter_canvas_ui_set_visible (shell, FALSE);
+  gimp_display_shell_set_show_layer (shell, FALSE);
+  gimp_display_shell_set_show_canvas (shell, FALSE);
+  gimp_display_shell_set_show_selection (shell, FALSE);
+  gimp_canvas_item_set_visible (shell->tool_items, FALSE);
+  gimp_canvas_item_set_visible (shell->cursor, FALSE);
+  gimp_display_shell_flip (shell, FALSE, FALSE);
+  gimp_display_shell_rotate_to (shell, 0.0);
+  gimp_display_shell_scale_set_dot_for_dot (shell, TRUE);
+  gimp_display_shell_scale (shell, GIMP_ZOOM_TO, 1.0, GIMP_ZOOM_FOCUS_IMAGE_CENTER);
+  gimp_test_run_temp_mainloop (100);
+  gimp_display_shell_scroll_set_offset (shell, 128 - shell->disp_width / 2,
+                                       128 - shell->disp_height / 2);
+
+  scene.rotated = g_object_new (navigation_draw_observer_get_type (), "shell", shell, NULL);
+  scene.unrotated = g_object_new (navigation_draw_observer_get_type (), "shell", shell, NULL);
+  scene.unrotated->screen_control = TRUE;
+  gimp_display_shell_add_item (shell, GIMP_CANVAS_ITEM (scene.rotated));
+  gimp_display_shell_add_unrotated_item (shell, GIMP_CANVAS_ITEM (scene.unrotated));
+  scene.items = gimp_canvas_group_new (shell);
+  for (guint n = 0; n < 2; n++)
+    {
+      item = gimp_canvas_line_new (shell, draw_segments[n].a.x, draw_segments[n].a.y,
+                                   draw_segments[n].b.x, draw_segments[n].b.y);
+      gimp_canvas_group_add_item (GIMP_CANVAS_GROUP (scene.items), item);
+      g_object_unref (item);
+    }
+  item = gimp_canvas_rectangle_new (shell, 99, 178, 18, 12, FALSE);
+  gimp_canvas_group_add_item (GIMP_CANVAS_GROUP (scene.items), item);
+  g_object_unref (item);
+  gimp_display_shell_add_item (shell, scene.items);
+  gimp_canvas_item_set_visible (scene.items, FALSE);
+  return scene;
+}
+
+static void
+draw_scene_free (DrawScene *scene)
+{
+  gchar *checksum = draw_image_checksum (scene->drawable);
+
+  g_assert_cmpstr (checksum, ==, scene->pixels_sha256);
+  g_free (checksum);
+  g_free (scene->pixels_sha256);
+  assert_navigation_idle ();
+  gimp_display_shell_remove_item (shell, scene->items);
+  gimp_display_shell_remove_item (shell, GIMP_CANVAS_ITEM (scene->rotated));
+  gimp_display_shell_remove_unrotated_item (shell, GIMP_CANVAS_ITEM (scene->unrotated));
+  g_object_unref (scene->items);
+  g_object_unref (scene->rotated);
+  g_object_unref (scene->unrotated);
+  gimp_canvas_item_set_visible (shell->tool_items, TRUE);
+  close_image ();
+}
+
+static guint32
+draw_pixel (cairo_surface_t *surface,
+            gint             x,
+            gint             y)
+{
+  return ((guint32 *) (cairo_image_surface_get_data (surface) +
+                       y * cairo_image_surface_get_stride (surface)))[x];
+}
+
+static cairo_surface_t *
+draw_snapshot (DrawScene   *scene,
+               const gchar *name)
+{
+  GtkAllocation allocation;
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  const gchar *directory = g_getenv ("GIMP_TEST_NAVIGATION_DRAW_DIR");
+
+  /* Settle ordinary frame-clock work. Do not force child size allocation or
+   * invalidate the image cache: either could hide the regression under test. */
+  gimp_test_run_temp_mainloop (50);
+  g_assert_false (shell->size_allocate_center_image);
+  gtk_widget_get_allocation (shell->canvas, &allocation);
+  g_assert_cmpint (allocation.width, ==, shell->disp_width);
+  g_assert_cmpint (allocation.height, ==, shell->disp_height);
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, allocation.width, allocation.height);
+  cr = cairo_create (surface);
+  scene->rotated->draws = scene->unrotated->draws = 0;
+  gtk_widget_draw (shell->canvas, cr);
+  g_assert_cmpint (cairo_status (cr), ==, CAIRO_STATUS_SUCCESS);
+  cairo_destroy (cr);
+  cairo_surface_flush (surface);
+  if (directory)
+    {
+      gchar *file = g_strdup_printf ("%s.png", name);
+      gchar *path = g_build_filename (directory, file, NULL);
+      g_assert_cmpint (g_mkdir_with_parents (directory, 0700), ==, 0);
+      g_assert_cmpint (cairo_surface_write_to_png (surface, path), ==, CAIRO_STATUS_SUCCESS);
+      g_free (path);
+      g_free (file);
+    }
+  /* Earlier event-loop paints cannot satisfy these observations. */
+  g_assert_cmpuint (scene->rotated->draws, ==, 1);
+  g_assert_cmpuint (scene->unrotated->draws, ==, 1);
+  return surface;
+}
+
+static void
+draw_assert_ctm (DrawScene       *scene,
+                 const DrawAngle *angle,
+                 gboolean         mirror)
+{
+  const cairo_matrix_t *m = &scene->rotated->matrix;
+  const cairo_matrix_t *u = &scene->unrotated->matrix;
+  gdouble h = mirror ? -1.0 : 1.0;
+  DrawPoint origin = draw_expected_point (angle, mirror,
+                                          shell->offset_x / shell->scale_x,
+                                          shell->offset_y / shell->scale_y);
+
+  g_test_message ("draw CTM angle=%.17g mirror=%d zoom=%.17g offsets=%d,%d "
+                  "matrix=(%.17g,%.17g,%.17g,%.17g,%.17g,%.17g)",
+                  shell->rotate_angle, mirror, shell->scale_x,
+                  shell->offset_x, shell->offset_y,
+                  m->xx, m->yx, m->xy, m->yy, m->x0, m->y0);
+  g_assert_cmpfloat_with_epsilon (shell->rotate_angle, angle->angle, 1e-10);
+  g_assert_cmpint (shell->flip_horizontally, ==, mirror);
+  g_assert_false (shell->flip_vertically);
+  g_assert_cmpfloat_with_epsilon (m->xx, h * angle->cosine, 1e-10);
+  g_assert_cmpfloat_with_epsilon (m->yx, h * angle->sine, 1e-10);
+  g_assert_cmpfloat_with_epsilon (m->xy, -angle->sine, 1e-10);
+  g_assert_cmpfloat_with_epsilon (m->yy, angle->cosine, 1e-10);
+  g_assert_cmpfloat_with_epsilon (m->x0, origin.x, 1e-7);
+  g_assert_cmpfloat_with_epsilon (m->y0, origin.y, 1e-7);
+  g_assert_cmpfloat_with_epsilon (u->xx, 1.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (u->yy, 1.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (u->xy, 0.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (u->yx, 0.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (u->x0, 0.0, 1e-7);
+  g_assert_cmpfloat_with_epsilon (u->y0, 0.0, 1e-7);
+}
+
+static void
+draw_assert_raster (cairo_surface_t *surface,
+                    const DrawAngle *angle,
+                    gboolean         mirror)
+{
+  gint width = cairo_image_surface_get_width (surface);
+  gint height = cairo_image_surface_get_height (surface);
+
+  for (guint n = 0; n < G_N_ELEMENTS (draw_landmarks); n++)
+    {
+      const DrawLandmark *mark = &draw_landmarks[n];
+      DrawPoint expected = draw_expected_point (angle, mirror,
+                                                mark->x + mark->w / 2.0,
+                                                mark->y + mark->h / 2.0);
+      gdouble radius = hypot (mark->w * shell->scale_x, mark->h * shell->scale_y) / 2 + 2;
+      gdouble sx = 0, sy = 0;
+      guint count = 0;
+
+      g_assert_cmpfloat (expected.x - radius, >, 0);
+      g_assert_cmpfloat (expected.y - radius, >, 0);
+      g_assert_cmpfloat (expected.x + radius, <, width);
+      g_assert_cmpfloat (expected.y + radius, <, height);
+      for (gint y = 0; y < height; y++)
+        for (gint x = 0; x < width; x++)
+          {
+            guint32 pixel = draw_pixel (surface, x, y);
+            guint rgb[] = { (pixel >> 16) & 255, (pixel >> 8) & 255, pixel & 255 };
+            if (rgb[n] > 130 && rgb[(n + 1) % 3] < 110 && rgb[(n + 2) % 3] < 110)
+              {
+                count++;
+                sx += x + 0.5; sy += y + 0.5;
+                /* Reject stale colored cache trails anywhere on this canvas. */
+                g_assert_cmpfloat (hypot (x + 0.5 - expected.x, y + 0.5 - expected.y), <=, radius);
+              }
+          }
+      g_test_message ("draw raster %u expected=(%.9f,%.9f) count=%u centroid=(%.9f,%.9f)",
+                      n, expected.x, expected.y, count,
+                      count ? sx / count : 0, count ? sy / count : 0);
+      g_assert_cmpfloat (count, >=, 0.45 * mark->w * mark->h * shell->scale_x * shell->scale_y);
+      g_assert_cmpfloat (count, <=, 1.50 * mark->w * mark->h * shell->scale_x * shell->scale_y);
+      g_assert_cmpfloat_with_epsilon (sx / count, expected.x, 1.0);
+      g_assert_cmpfloat_with_epsilon (sy / count, expected.y, 1.0);
+    }
+  /* Deliberately screen-fixed control: exact solid interior, in both views. */
+  g_assert_cmphex (draw_pixel (surface, 28, 33), ==, 0xffff00ffu);
+}
+
+static gdouble
+draw_segment_distance (DrawPoint point,
+                       DrawPoint a,
+                       DrawPoint b)
+{
+  gdouble dx = b.x - a.x, dy = b.y - a.y;
+  gdouble t = CLAMP (((point.x - a.x) * dx + (point.y - a.y) * dy) /
+                    (dx * dx + dy * dy), 0.0, 1.0);
+  return hypot (point.x - a.x - t * dx, point.y - a.y - t * dy);
+}
+
+static gboolean
+draw_pixels_differ (guint32 a,
+                    guint32 b)
+{
+  for (guint shift = 0; shift < 24; shift += 8)
+    if (ABS ((gint) ((a >> shift) & 255) - (gint) ((b >> shift) & 255)) > 16)
+      return TRUE;
+  return FALSE;
+}
+
+static void
+draw_assert_segments (cairo_surface_t   *plain,
+                      cairo_surface_t   *overlay,
+                      const DrawAngle   *angle,
+                      gboolean           mirror,
+                      const DrawSegment *segments,
+                      guint              n_segments)
+{
+  DrawSegment expected[G_N_ELEMENTS (draw_segments)];
+  guint changed = 0;
+  gint width = cairo_image_surface_get_width (plain);
+  gint height = cairo_image_surface_get_height (plain);
+
+  g_assert_cmpuint (n_segments, <=, G_N_ELEMENTS (expected));
+  for (guint s = 0; s < n_segments; s++)
+    {
+      expected[s].a = draw_expected_point (angle, mirror, segments[s].a.x, segments[s].a.y);
+      expected[s].b = draw_expected_point (angle, mirror, segments[s].b.x, segments[s].b.y);
+    }
+  for (gint y = 0; y < height; y++)
+    for (gint x = 0; x < width; x++)
+      if (draw_pixels_differ (draw_pixel (plain, x, y), draw_pixel (overlay, x, y)))
+        {
+          gdouble distance = G_MAXDOUBLE;
+          changed++;
+          for (guint s = 0; s < n_segments; s++)
+            distance = MIN (distance, draw_segment_distance ((DrawPoint) { x + 0.5, y + 0.5 },
+                                                             expected[s].a, expected[s].b));
+          /* Frozen allowance for item half-pixel rounding, 3px double stroke,
+           * selection closing-edge adjustment and antialiasing. */
+          g_assert_cmpfloat (distance, <=, 3.0);
+        }
+  g_test_message ("draw overlay segments=%u changed-pixels=%u band=3px", n_segments, changed);
+  g_assert_cmpuint (changed, >, 40);
+  for (guint s = 0; s < n_segments; s++)
+    for (guint sample = 1; sample <= 3; sample++)
+      {
+        gdouble t = sample / 4.0;
+        DrawPoint p = { (1 - t) * expected[s].a.x + t * expected[s].b.x,
+                        (1 - t) * expected[s].a.y + t * expected[s].b.y };
+        gboolean found = FALSE;
+        for (gint y = MAX (0, (gint) floor (p.y) - 3); y <= MIN (height - 1, (gint) ceil (p.y) + 3); y++)
+          for (gint x = MAX (0, (gint) floor (p.x) - 3); x <= MIN (width - 1, (gint) ceil (p.x) + 3); x++)
+            if (hypot (x + 0.5 - p.x, y + 0.5 - p.y) <= 3.0 &&
+                draw_pixels_differ (draw_pixel (plain, x, y), draw_pixel (overlay, x, y)))
+              found = TRUE;
+        g_assert_true (found);
+      }
+}
+
+static void
+draw_checkpoint (DrawScene       *scene,
+                 const gchar     *name,
+                 const DrawAngle *angle,
+                 gboolean         mirror)
+{
+  cairo_surface_t *plain, *overlay;
+  gchar *plain_name = g_strdup_printf ("%s-raster", name);
+
+  gimp_canvas_item_set_visible (scene->items, FALSE);
+  plain = draw_snapshot (scene, plain_name);
+  draw_assert_ctm (scene, angle, mirror);
+  draw_assert_raster (plain, angle, mirror);
+  gimp_canvas_item_set_visible (scene->items, TRUE);
+  overlay = draw_snapshot (scene, name);
+  draw_assert_ctm (scene, angle, mirror);
+  draw_assert_segments (plain, overlay, angle, mirror, draw_segments, G_N_ELEMENTS (draw_segments));
+  cairo_surface_destroy (plain);
+  cairo_surface_destroy (overlay);
+  g_free (plain_name);
+}
+
+static void
+draw_start_oblique (gboolean mirror)
+{
+  gint cx = shell->disp_width / 2, cy = shell->disp_height / 2;
+
+  gimp_display_shell_flip (shell, mirror, FALSE);
+  gimp_display_shell_rotate_to (shell, 37.0);
+  send_event (GDK_BUTTON_PRESS, 2, GDK_SHIFT_MASK, cx + 80, cy, 0);
+  g_assert_true (shell->painter_navigation_inherited);
+  send_event (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK, cx, cy + 80, 0);
+  g_assert_true (shell->rotate_angle_exact);
+  g_assert_cmpfloat_with_epsilon (shell->rotate_angle, 127.0, 1e-10);
+  assert_grab ();
+}
+
+static void
+canvas_common_angle (void)
+{
+  DrawScene scene = draw_scene_new ();
+  const gchar *steps[] = { "zero", "free", "snap", "unsnap", "release", "redraw" };
+  const DrawAngle *angles[] = { &draw_zero, &draw_free, &draw_snap, &draw_free, &draw_free, &draw_free };
+  guint checkpoints = 0;
+
+  for (guint mirror = 0; mirror < 2; mirror++)
+    {
+      gint cx = shell->disp_width / 2, cy = shell->disp_height / 2;
+      gimp_display_shell_flip (shell, mirror, FALSE);
+      gimp_display_shell_rotate_to (shell, 0.0);
+      for (guint step = 0; step < G_N_ELEMENTS (steps); step++)
+        {
+          gchar *name = g_strdup_printf ("common-m%u-%s", mirror, steps[step]);
+          if (step == 1)
+            draw_start_oblique (mirror);
+          else if (step == 2)
+            {
+              send_event (GDK_KEY_PRESS, 0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK, 0, 0, GDK_KEY_Control_L);
+              send_event (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK | GDK_CONTROL_MASK,
+                          cx, cy + 80, 0);
+            }
+          else if (step == 3)
+            {
+              send_event (GDK_KEY_RELEASE, 0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK | GDK_CONTROL_MASK,
+                          0, 0, GDK_KEY_Control_L);
+              send_event (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK, cx, cy + 80, 0);
+            }
+          else if (step == 4)
+            {
+              send_event (GDK_BUTTON_RELEASE, 2, GDK_BUTTON2_MASK | GDK_SHIFT_MASK, cx, cy + 80, 0);
+              assert_navigation_idle ();
+            }
+          draw_checkpoint (&scene, name, angles[step], mirror);
+          checkpoints++;
+          if (step >= 1 && step <= 3)
+            assert_grab ();
+          g_free (name);
+        }
+    }
+  g_assert_cmpuint (checkpoints, ==, 12);
+  draw_scene_free (&scene);
+}
+
+static void
+canvas_fixed_view (void)
+{
+  DrawScene scene = draw_scene_new ();
+  gint ox, oy;
+
+  /* Establish the non-unit, off-center view before the inherited drag. */
+  gimp_display_shell_flip (shell, TRUE, FALSE);
+  gimp_display_shell_rotate_to (shell, 37.0);
+  gimp_display_shell_scale (shell, GIMP_ZOOM_TO, 1.5, GIMP_ZOOM_FOCUS_IMAGE_CENTER);
+  ox = 192 - shell->disp_width / 2;
+  oy = 192 - shell->disp_height / 2;
+  gimp_display_shell_scroll_set_offset (shell, ox + 13, oy - 9);
+  g_assert_cmpint (shell->offset_x, ==, ox + 13);
+  g_assert_cmpint (shell->offset_y, ==, oy - 9);
+  draw_start_oblique (TRUE);
+  send_event (GDK_BUTTON_RELEASE, 2, GDK_BUTTON2_MASK | GDK_SHIFT_MASK,
+              shell->disp_width / 2, shell->disp_height / 2 + 80, 0);
+  g_assert_cmpfloat (shell->scale_x, ==, 1.5);
+  g_assert_cmpfloat (shell->scale_y, ==, 1.5);
+  /* The 90-degree change carries viewport-center displacement (13,-9) to
+   * (9,13). These literals independently specify center-preserving offsets. */
+  g_assert_cmpint (shell->offset_x, ==, ox + 9);
+  g_assert_cmpint (shell->offset_y, ==, oy + 13);
+  g_assert_true (shell->offset_x != 0 || shell->offset_y != 0);
+  draw_checkpoint (&scene, "fixed-view-m1", &draw_free, TRUE);
+  draw_scene_free (&scene);
+}
+
+static void
+canvas_tiny_ctm (void)
+{
+  DrawScene scene = draw_scene_new ();
+  GimpTool *tool = tool_manager_get_active (gimp);
+  NavigationState held = start_boundary_drag (tool, GDK_SHIFT_MASK);
+
+  for (guint n = 0; n < G_N_ELEMENTS (draw_tiny); n++)
+    {
+      gchar *name = g_strdup_printf ("tiny-%s", draw_tiny[n].name);
+      boundary_motion (&held, tool, GDK_SHIFT_MASK, (gint) n - 1);
+      draw_checkpoint (&scene, name, &draw_tiny[n], FALSE);
+      g_free (name);
+    }
+  release_middle (GDK_SHIFT_MASK);
+  draw_scene_free (&scene);
+}
+
+static void
+canvas_selection_boundary (void)
+{
+  DrawScene scene = draw_scene_new ();
+  GimpImage *image = gimp_display_get_image (shell->display);
+  cairo_surface_t *plain, *selection, *redraw;
+
+  draw_start_oblique (TRUE);
+  release_middle (GDK_SHIFT_MASK);
+  gimp_channel_select_rectangle (gimp_image_get_mask (image), 48, 54, 120, 96,
+                                  GIMP_CHANNEL_OP_REPLACE, FALSE, 0, 0, FALSE);
+  gimp_image_flush (image);
+  gimp_display_shell_selection_pause (shell);
+  plain = draw_snapshot (&scene, "selection-m1-hidden");
+  draw_assert_ctm (&scene, &draw_free, TRUE);
+  draw_assert_raster (plain, &draw_free, TRUE);
+  gimp_display_shell_set_show_selection (shell, TRUE);
+  selection = draw_snapshot (&scene, "selection-m1-visible");
+  draw_assert_segments (plain, selection, &draw_free, TRUE,
+                         draw_selection_segments, G_N_ELEMENTS (draw_selection_segments));
+  redraw = draw_snapshot (&scene, "selection-m1-redraw");
+  draw_assert_segments (plain, redraw, &draw_free, TRUE,
+                         draw_selection_segments, G_N_ELEMENTS (draw_selection_segments));
+  cairo_surface_destroy (plain);
+  cairo_surface_destroy (selection);
+  cairo_surface_destroy (redraw);
+  gimp_display_shell_set_show_selection (shell, FALSE);
+  gimp_display_shell_selection_resume (shell);
+  draw_scene_free (&scene);
+}
+
+static void
+draw_assert_anchor (GimpOverlayChild *child,
+                    const DrawAngle  *angle)
+{
+  DrawPoint expected = draw_expected_point (angle, FALSE, 184, 92);
+
+  g_test_message ("draw widget angle=%.17g expected=(%.9f,%.9f) stored=(%.9f,%.9f) "
+                  "visible=(%.9f,%.9f) child-angle=%.17g",
+                  angle->angle, expected.x, expected.y, child->x, child->y,
+                  child->matrix.x0, child->matrix.y0, child->angle);
+  g_assert_cmpfloat_with_epsilon (child->x, expected.x, 1e-7);
+  g_assert_cmpfloat_with_epsilon (child->y, expected.y, 1e-7);
+  g_assert_cmpfloat_with_epsilon (child->matrix.x0, expected.x, 1.0);
+  g_assert_cmpfloat_with_epsilon (child->matrix.y0, expected.y, 1.0);
+  g_assert_cmpfloat (child->angle, ==, 0.0);
+  g_assert_cmpfloat_with_epsilon (child->matrix.xx, 1.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (child->matrix.yy, 1.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (child->matrix.xy, 0.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (child->matrix.yx, 0.0, 1e-10);
+}
+
+static void
+canvas_widget_anchor (void)
+{
+  DrawScene scene = draw_scene_new ();
+  /* Overlay children must be containers: the production draw path traverses
+   * their children to handle pass-through controls. */
+  GtkWidget *widget = gtk_event_box_new ();
+  GimpOverlayChild *child;
+  GtkAllocation initial, current;
+  cairo_surface_t *surface;
+  gint ox, oy;
+
+  gtk_widget_set_size_request (widget, 19, 11);
+  gimp_display_shell_add_overlay (shell, widget, 184, 92,
+                                  GIMP_HANDLE_ANCHOR_NORTH_WEST, 0, 0);
+  gtk_widget_show (widget);
+  surface = draw_snapshot (&scene, "widget-zero");
+  cairo_surface_destroy (surface);
+  child = gimp_overlay_child_find (GIMP_OVERLAY_BOX (shell->canvas), widget);
+  g_assert_nonnull (child);
+  draw_assert_anchor (child, &draw_zero);
+  gtk_widget_get_allocation (widget, &initial);
+  ox = shell->offset_x; oy = shell->offset_y;
+  g_assert_cmpint (ox, ==, 128 - shell->disp_width / 2);
+  g_assert_cmpint (oy, ==, 128 - shell->disp_height / 2);
+  gimp_display_shell_rotate_to (shell, 37.0);
+  g_test_message ("draw widget immediately after rotation: stored=(%.9f,%.9f) offsets=%d,%d",
+                  child->x, child->y, shell->offset_x, shell->offset_y);
+  g_assert_cmpint (shell->offset_x, ==, ox);
+  g_assert_cmpint (shell->offset_y, ==, oy);
+  /* Only ordinary rotation/GTK processing may refresh the anchor. No move,
+   * scrolled signal, forced allocation or test repair is permitted here. */
+  surface = draw_snapshot (&scene, "widget-rotated");
+  cairo_surface_destroy (surface);
+  g_assert_cmpint (shell->offset_x, ==, ox);
+  g_assert_cmpint (shell->offset_y, ==, oy);
+  draw_assert_ctm (&scene, &draw_anchor_angle, FALSE);
+  draw_assert_anchor (child, &draw_anchor_angle);
+  surface = draw_snapshot (&scene, "widget-redraw");
+  cairo_surface_destroy (surface);
+  draw_assert_anchor (child, &draw_anchor_angle);
+  gtk_widget_get_allocation (widget, &current);
+  g_assert_cmpint (current.width, ==, initial.width);
+  g_assert_cmpint (current.height, ==, initial.height);
+  gtk_widget_destroy (widget);
+  draw_scene_free (&scene);
+}
+
 int main(int argc,char **argv)
 {
   gint result;
@@ -1486,6 +2150,11 @@ int main(int argc,char **argv)
   g_test_add_data_func ("/navigation-events/keys/idle-rotated", &key_contexts[1], mirrored_arrow_keys);
   g_test_add_data_func ("/navigation-events/keys/rotation-free", &key_contexts[2], mirrored_arrow_keys);
   g_test_add_data_func ("/navigation-events/keys/rotation-snapped", &key_contexts[3], mirrored_arrow_keys);
+  g_test_add_func ("/navigation-events/draw/common-angle", canvas_common_angle);
+  g_test_add_func ("/navigation-events/draw/fixed-view", canvas_fixed_view);
+  g_test_add_func ("/navigation-events/draw/tiny-ctm", canvas_tiny_ctm);
+  g_test_add_func ("/navigation-events/draw/selection-boundary", canvas_selection_boundary);
+  g_test_add_func ("/navigation-events/draw/widget-anchor", canvas_widget_anchor);
   g_application_run(gimp->app,0,NULL);
   result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
   g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
