@@ -21,6 +21,8 @@
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-tool-events.h"
 #include "display/gimpdisplayshell-rotate.h"
+#include "display/gimpdisplayshell-scale.h"
+#include "display/gimpdisplayshell-scroll.h"
 #include "display/gimpdisplayshell-transform.h"
 #include "tools/gimptool.h"
 #include "tools/gimptoolcontrol.h"
@@ -584,6 +586,352 @@ retained_ctrl_mid_drag (void)
   g_free (path);
 }
 
+/* Original 25.007: source-derived geometry, not newly captured old output.
+ * The old right-center press has bearing/anchor 90 degrees.  For a motion at
+ * (cx + 100000, cy + k), its angle is atan(k / 100000) in degrees, wrapped
+ * into [0, 360).  The free x basis is 100 * (100000, k) / hypot(100000, k).
+ * Constants below are independent of the production navigation helper.
+ * k=+/-1 is strictly inside the ordinary 0.001-degree epsilon, +/-2 outside;
+ * nominal decimal epsilon endpoints would have asymmetric rounding at 360.
+ */
+typedef struct
+{
+  gint    k;
+  gdouble angle, unwrapped, vx, vy;
+} BoundarySample;
+
+static const BoundarySample free_boundary[] =
+{
+  { -2, 359.9988540844099, -0.0011459155901088576, 99.99999998,  -0.0019999999996 },
+  { -1, 359.9994270422049, -0.0005729577951117246, 99.999999995, -0.00099999999995 },
+  {  0, 0.0,              0.0,                   100.0,          0.0 },
+  {  1, 0.0005729577951117246, 0.0005729577951117246, 99.999999995, 0.00099999999995 },
+  {  2, 0.0011459155901088576, 0.0011459155901088576, 99.99999998,  0.0019999999996 }
+};
+
+/* +/-25000 gives raw +/-14.036243467926477 degrees.  Old positive-normalized
+ * 15-degree rounding therefore enters zero from 345 and leaves toward 15. */
+static const BoundarySample snapped_boundary[] =
+{
+  { -25000, 345.0, -15.0, 96.59258262890683, -25.881904510252074 },
+  {     -2,   0.0,   0.0, 100.0,             0.0 },
+  {     -1,   0.0,   0.0, 100.0,             0.0 },
+  {      0,   0.0,   0.0, 100.0,             0.0 },
+  {      1,   0.0,   0.0, 100.0,             0.0 },
+  {      2,   0.0,   0.0, 100.0,             0.0 },
+  {  25000,  15.0,  15.0, 96.59258262890683, 25.881904510252074 }
+};
+
+typedef struct
+{
+  const BoundarySample *samples;
+  guint                 count;
+  gboolean              snapped, decreasing;
+} BoundaryCase;
+
+static const BoundaryCase boundary_cases[] =
+{
+  { free_boundary,    G_N_ELEMENTS (free_boundary),    FALSE, FALSE },
+  { free_boundary,    G_N_ELEMENTS (free_boundary),    FALSE, TRUE  },
+  { snapped_boundary, G_N_ELEMENTS (snapped_boundary), TRUE,  FALSE },
+  { snapped_boundary, G_N_ELEMENTS (snapped_boundary), TRUE,  TRUE  }
+};
+
+typedef struct { gdouble x, y; } RotationBasis;
+
+static RotationBasis
+assert_rotation_basis (gdouble  angle,
+                       gdouble  vx,
+                       gdouble  vy,
+                       gboolean flip_h,
+                       gboolean flip_v)
+{
+  gdouble x0, y0, xx, xy, yx, yy;
+  gdouble sign_h = flip_h ? -1.0 : 1.0;
+  gdouble sign_v = flip_v ? -1.0 : 1.0;
+
+  g_assert_cmpint (shell->flip_horizontally, ==, flip_h);
+  g_assert_cmpint (shell->flip_vertically, ==, flip_v);
+  if (angle == 0.0)
+    g_assert_cmpfloat (shell->rotate_angle, ==, 0.0);
+  else
+    g_assert_cmpfloat_with_epsilon (shell->rotate_angle, angle, 1e-10);
+  if (angle == 0.0 && ! flip_h && ! flip_v)
+    {
+      g_assert_null (shell->rotate_transform);
+      g_assert_null (shell->rotate_untransform);
+    }
+  else
+    {
+      g_assert_nonnull (shell->rotate_transform);
+      g_assert_nonnull (shell->rotate_untransform);
+    }
+
+  /* Observe the real display transform, subtracting a common origin to remove
+   * viewport-center/offset translation.  Do not construct an expected matrix. */
+  gimp_display_shell_rotate_xy_f (shell, 10.0, 20.0, &x0, &y0);
+  gimp_display_shell_rotate_xy_f (shell, 110.0, 20.0, &xx, &xy);
+  gimp_display_shell_rotate_xy_f (shell, 10.0, 120.0, &yx, &yy);
+  xx -= x0; xy -= y0; yx -= x0; yy -= y0;
+  g_test_message ("boundary display: expected=%.17g actual=%.17g "
+                  "expected-basis=(%.17g,%.17g;%.17g,%.17g) "
+                  "actual-basis=(%.17g,%.17g;%.17g,%.17g)",
+                  angle, shell->rotate_angle, sign_h * vx, sign_h * vy,
+                  -sign_v * vy, sign_v * vx, xx, xy, yx, yy);
+  g_assert_cmpfloat_with_epsilon (xx,  sign_h * vx, 1e-8);
+  g_assert_cmpfloat_with_epsilon (xy,  sign_h * vy, 1e-8);
+  g_assert_cmpfloat_with_epsilon (yx, -sign_v * vy, 1e-8);
+  g_assert_cmpfloat_with_epsilon (yy,  sign_v * vx, 1e-8);
+  g_assert_cmpfloat_with_epsilon (hypot (xx, xy), 100.0, 1e-8);
+  g_assert_cmpfloat_with_epsilon (hypot (yx, yy), 100.0, 1e-8);
+  g_assert_cmpfloat_with_epsilon ((xx * yy - xy * yx) / 10000.0,
+                                  sign_h * sign_v, 1e-10);
+  return (RotationBasis) { xx, xy };
+}
+
+static NavigationState
+start_boundary_drag (GimpTool *tool,
+                     guint     state)
+{
+  gint x = shell->disp_width / 2 + 80;
+  gint y = shell->disp_height / 2;
+
+  assert_navigation_idle ();
+  gimp_display_shell_flip (shell, FALSE, FALSE);
+  gimp_display_shell_rotate_to (shell, 0.0);
+  g_assert_false (shell->rotate_angle_exact);
+  send_event (GDK_BUTTON_PRESS, 2, state, x, y, 0);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  g_assert_true (tool->focus_display == shell->display);
+  g_assert_cmpint (shell->mod_action, ==,
+                  (state & GDK_CONTROL_MASK) ? GIMP_MODIFIER_ACTION_STEP_ROTATING :
+                                              GIMP_MODIFIER_ACTION_ROTATING);
+  g_assert_cmpuint (shell->mod_action_button, ==, 2);
+  g_assert_true (shell->painter_navigation_inherited);
+  g_assert_cmpint (shell->scroll_start_x, ==, x);
+  g_assert_cmpint (shell->scroll_start_y, ==, y);
+  g_assert_cmpint (shell->scroll_last_x, ==, x);
+  g_assert_cmpint (shell->scroll_last_y, ==, y);
+  g_assert_cmpfloat (shell->rotate_drag_angle, ==, 90.0);
+  g_assert_cmpfloat (shell->rotate_angle, ==, 0.0);
+  g_assert_false (shell->rotate_angle_exact); /* press does not replace angle */
+  assert_grab ();
+  return navigation_state ();
+}
+
+static void
+boundary_motion (NavigationState *held,
+                 GimpTool        *tool,
+                 guint            state,
+                 gint             k)
+{
+  gint x = shell->disp_width / 2 + 100000;
+  gint y = shell->disp_height / 2 + k;
+
+  send_event (GDK_MOTION_NOTIFY, 0, state | GDK_BUTTON2_MASK, x, y, 0);
+  /* Only the displayed angle and last pointer position may change.  In
+   * particular the nonzero 90-degree anchor must survive crossing zero. */
+  held->angle = shell->rotate_angle;
+  held->last_x = x;
+  held->last_y = y;
+  assert_navigation_unchanged (held);
+  g_assert_cmpfloat (shell->rotate_drag_angle, ==, 90.0);
+  g_assert_true (shell->rotate_angle_exact);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  assert_grab ();
+}
+
+static void
+ordered_rotation_boundary (gconstpointer data)
+{
+  const BoundaryCase   *test = data;
+  const BoundarySample *previous = NULL;
+  RotationBasis         previous_basis = { 0.0, 0.0 };
+  NavigationState       held;
+  GimpTool             *tool;
+  guint                 state = GDK_SHIFT_MASK |
+                                (test->snapped ? GDK_CONTROL_MASK : 0);
+
+  create_image ();
+  tool = select_start_tool (real_tool_names[0]);
+  held = start_boundary_drag (tool, state);
+  for (guint i = 0; i < test->count; i++)
+    {
+      guint index = test->decreasing ? test->count - 1 - i : i;
+      const BoundarySample *sample = &test->samples[index];
+      RotationBasis basis;
+
+      g_test_message ("boundary %s %s observation=%u k=%d anchor=90 old-math=%.17g",
+                      test->snapped ? "snapped" : "free",
+                      test->decreasing ? "decreasing" : "increasing",
+                      i + 1, sample->k, sample->angle);
+      boundary_motion (&held, tool, state, sample->k);
+      basis = assert_rotation_basis (sample->angle, sample->vx, sample->vy,
+                                      FALSE, FALSE);
+      if (previous)
+        {
+          gdouble step = atan2 (previous_basis.x * basis.y - previous_basis.y * basis.x,
+                                previous_basis.x * basis.x + previous_basis.y * basis.y) *
+                         180.0 / G_PI;
+          gdouble expected = sample->unwrapped - previous->unwrapped;
+
+          g_test_message ("boundary signed step: expected=%.17g actual=%.17g", expected, step);
+          g_assert_cmpfloat_with_epsilon (step, expected, 1e-10);
+          if (expected == 0.0)
+            g_assert_cmpfloat (step, ==, 0.0);
+          else
+            g_assert_cmpfloat (step * (test->decreasing ? -1.0 : 1.0), >, 0.0);
+        }
+      previous = sample;
+      previous_basis = basis;
+    }
+  /* The first motion positions the crossing; only later steps are ordered. */
+  release_middle (state);
+  g_assert_true (shell->rotate_angle_exact);
+  assert_rotation_basis (previous->angle, previous->vx, previous->vy, FALSE, FALSE);
+  close_image ();
+}
+
+static void
+free_boundary_increasing (void)
+{
+  ordered_rotation_boundary (&boundary_cases[0]);
+}
+
+static void
+free_boundary_decreasing (void)
+{
+  ordered_rotation_boundary (&boundary_cases[1]);
+}
+
+static void
+snapped_boundary_increasing (void)
+{
+  ordered_rotation_boundary (&boundary_cases[2]);
+}
+
+static void
+snapped_boundary_decreasing (void)
+{
+  ordered_rotation_boundary (&boundary_cases[3]);
+}
+
+static void
+boundary_angle_persistence (void)
+{
+  const guint inner_samples[] = { 1, 3 };
+  GimpTool *tool;
+
+  create_image ();
+  tool = select_start_tool (real_tool_names[0]);
+  for (guint i = 0; i < G_N_ELEMENTS (inner_samples); i++)
+    {
+      const BoundarySample *sample = &free_boundary[inner_samples[i]];
+      NavigationState held = start_boundary_drag (tool, GDK_SHIFT_MASK);
+
+      boundary_motion (&held, tool, GDK_SHIFT_MASK, sample->k);
+      release_middle (GDK_SHIFT_MASK);
+      g_assert_true (shell->rotate_angle_exact);
+      assert_rotation_basis (sample->angle, sample->vx, sample->vy, FALSE, FALSE);
+      for (guint rebuild = 0; rebuild < 2; rebuild++)
+        {
+          gimp_display_shell_rotate_update_transform (shell);
+          assert_rotation_basis (sample->angle, sample->vx, sample->vy, FALSE, FALSE);
+        }
+      gimp_display_shell_scroll_set_offset (shell, shell->offset_x + 1, shell->offset_y + 1);
+      assert_rotation_basis (sample->angle, sample->vx, sample->vy, FALSE, FALSE);
+      gimp_display_shell_scale_by_values (shell, 1.25 + i * 0.25,
+                                          shell->offset_x, shell->offset_y, FALSE);
+      gimp_test_run_mainloop_until_idle ();
+      assert_rotation_basis (sample->angle, sample->vx, sample->vy, FALSE, FALSE);
+      gimp_display_shell_flip (shell, TRUE, FALSE);
+      g_assert_true (shell->rotate_angle_exact);
+      assert_rotation_basis (360.0 - sample->angle, sample->vx, -sample->vy, TRUE, FALSE);
+      gimp_display_shell_flip (shell, FALSE, FALSE);
+      g_assert_true (shell->rotate_angle_exact);
+      assert_rotation_basis (sample->angle, sample->vx, sample->vy, FALSE, FALSE);
+      assert_navigation_idle ();
+    }
+  /* With the only display, ordinary close empties rather than destroys it. */
+  close_image ();
+  g_assert_null (gimp_display_get_image (shell->display));
+  g_assert_false (shell->rotate_angle_exact);
+  assert_rotation_basis (0.0, 100.0, 0.0, FALSE, FALSE);
+}
+
+static void
+boundary_policy_isolation (void)
+{
+  const gdouble ordinary_angles[] = { 0.0005729577951117246, -0.0005729577951117246,
+                                     0.001, 359.999 };
+  GimpTool *tool;
+  NavigationState held;
+  gint x, y;
+
+  create_image ();
+  tool = select_start_tool (real_tool_names[0]);
+  for (guint i = 0; i < G_N_ELEMENTS (ordinary_angles); i++)
+    {
+      held = start_boundary_drag (tool, GDK_SHIFT_MASK);
+      boundary_motion (&held, tool, GDK_SHIFT_MASK, 1);
+      release_middle (GDK_SHIFT_MASK);
+      assert_rotation_basis (free_boundary[3].angle, free_boundary[3].vx,
+                              free_boundary[3].vy, FALSE, FALSE);
+      gimp_display_shell_rotate_to (shell, ordinary_angles[i]);
+      g_assert_false (shell->rotate_angle_exact);
+      if (ordinary_angles[i] == 0.001)
+        {
+          /* Existing represented-value endpoint policy: +0.001 is retained,
+           * whereas 360 - 359.999 is represented just below the epsilon. */
+          g_assert_cmpfloat (shell->rotate_angle, ==, 0.001);
+          g_assert_nonnull (shell->rotate_transform);
+          g_assert_nonnull (shell->rotate_untransform);
+        }
+      else
+        assert_rotation_basis (0.0, 100.0, 0.0, FALSE, FALSE);
+    }
+  held = start_boundary_drag (tool, GDK_SHIFT_MASK);
+  boundary_motion (&held, tool, GDK_SHIFT_MASK, 1);
+  release_middle (GDK_SHIFT_MASK);
+  assert_rotation_basis (free_boundary[3].angle, free_boundary[3].vx,
+                          free_boundary[3].vy, FALSE, FALSE);
+  gimp_display_shell_rotate (shell, 0.0); /* ordinary relative operation */
+  g_assert_false (shell->rotate_angle_exact);
+  assert_rotation_basis (0.0, 100.0, 0.0, FALSE, FALSE);
+
+  held = start_boundary_drag (tool, GDK_SHIFT_MASK);
+  boundary_motion (&held, tool, GDK_SHIFT_MASK, 1);
+  release_middle (GDK_SHIFT_MASK);
+  assert_rotation_basis (free_boundary[3].angle, free_boundary[3].vx,
+                          free_boundary[3].vy, FALSE, FALSE);
+  gimp_modifiers_manager_set (manager, device, 2, GDK_SHIFT_MASK,
+                              GIMP_MODIFIER_ACTION_ROTATING, NULL);
+  x = shell->disp_width / 2 + 80;
+  y = shell->disp_height / 2;
+  send_event (GDK_BUTTON_PRESS, 2, GDK_SHIFT_MASK, x, y, 0);
+  g_assert_false (shell->painter_navigation_inherited);
+  g_assert_true (shell->rotate_angle_exact); /* still the previous angle */
+  g_assert_cmpint (shell->mod_action, ==, GIMP_MODIFIER_ACTION_ROTATING);
+  g_assert_cmpuint (shell->mod_action_button, ==, 2);
+  assert_grab ();
+  held = navigation_state ();
+  /* Same ray preserves the tiny requested angle, but this explicit binding
+   * replaces its policy.  A stale exact flag would incorrectly retain it. */
+  send_event (GDK_MOTION_NOTIFY, 0, GDK_SHIFT_MASK | GDK_BUTTON2_MASK, x, y, 0);
+  held.angle = 0.0;
+  assert_navigation_unchanged (&held);
+  assert_grab ();
+  g_assert_false (shell->rotate_angle_exact);
+  assert_rotation_basis (0.0, 100.0, 0.0, FALSE, FALSE);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  release_middle (GDK_SHIFT_MASK);
+  gimp_modifiers_manager_clear (manager);
+  close_image ();
+}
+
 typedef enum
 {
   START_BUSY, START_HELD_PRIMARY, START_HELD_TERTIARY, START_UNBOUND,
@@ -805,6 +1153,12 @@ int main(int argc,char **argv)
   g_test_add_func ("/navigation-events/start/primary-paintbrush", paintbrush_primary_drag);
   g_test_add_func ("/navigation-events/start/recording-tool", recording_tool_starts);
   g_test_add_func ("/navigation-events/rotation/ctrl-mid-drag", retained_ctrl_mid_drag);
+  g_test_add_func ("/navigation-events/rotation/boundary/free-increasing", free_boundary_increasing);
+  g_test_add_func ("/navigation-events/rotation/boundary/free-decreasing", free_boundary_decreasing);
+  g_test_add_func ("/navigation-events/rotation/boundary/snapped-increasing", snapped_boundary_increasing);
+  g_test_add_func ("/navigation-events/rotation/boundary/snapped-decreasing", snapped_boundary_decreasing);
+  g_test_add_func ("/navigation-events/rotation/boundary/persistence", boundary_angle_persistence);
+  g_test_add_func ("/navigation-events/rotation/boundary/policy-isolation", boundary_policy_isolation);
   g_application_run(gimp->app,0,NULL);
   result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
   g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;

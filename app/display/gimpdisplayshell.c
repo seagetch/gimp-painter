@@ -1605,9 +1605,10 @@ gimp_display_shell_empty (GimpDisplayShell *shell)
 
   gimp_statusbar_empty (GIMP_STATUSBAR (shell->statusbar));
 
-  shell->flip_horizontally = FALSE;
-  shell->flip_vertically   = FALSE;
-  shell->rotate_angle      = 0.0;
+  shell->flip_horizontally  = FALSE;
+  shell->flip_vertically    = FALSE;
+  shell->rotate_angle       = 0.0;
+  shell->rotate_angle_exact = FALSE;
   gimp_display_shell_rotate_update_transform (shell);
 
   gimp_display_shell_expose_full (shell);
