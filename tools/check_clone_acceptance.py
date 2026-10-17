@@ -7,6 +7,7 @@ import re
 import tarfile
 import argparse
 from clone_evidence import validate_receipt
+from clone_archive import archive_path, validate_archive
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,10 +26,17 @@ def validate(root=ROOT, matrix=None, current_evidence=None):
     if current_evidence is not None:
         current = validate_receipt(current_evidence, root)
     elif route is not None:
-        if not isinstance(route, dict) or set(route) != {'directory', 'receipt_sha256'}:
-            errors.append('Invalid current core receipt route')
-        else:
+        if isinstance(route, dict) and set(route) == {'directory', 'receipt_sha256'}:
+            # Keep the original directory route and strict validation unchanged.
             current = validate_receipt(root / route['directory'], root, route['receipt_sha256'])
+        elif isinstance(route, dict) and set(route) == {'archive', 'archive_sha256', 'receipt_sha256'}:
+            try:
+                path = archive_path(root, route['archive'])
+                current = validate_archive(path, root, route['archive_sha256'], route['receipt_sha256'])
+            except (OSError, ValueError, TypeError) as error:
+                errors.append('Invalid current core receipt route: ' + str(error))
+        else:
+            errors.append('Invalid current core receipt route')
     if current is not None:
         errors.extend(current['errors'])
         if current['errors']:

@@ -15,10 +15,12 @@ import shlex
 CXX_SUFFIXES = frozenset({".cpp", ".cc", ".cxx", ".c++", ".cp", ".C"})
 
 
-def bridge_rtti_sources(root, build):
+def bridge_rtti_sources(root, build, entries=None):
     root = Path(root).resolve()
     selected = set()
-    for entry in json.loads((Path(build) / "compile_commands.json").read_text()):
+    if entries is None:
+        entries = json.loads((Path(build) / "compile_commands.json").read_text())
+    for entry in entries:
         source = (Path(entry["directory"]) / entry["file"]).resolve()
         if source.suffix not in CXX_SUFFIXES or not source.is_relative_to(root):
             continue

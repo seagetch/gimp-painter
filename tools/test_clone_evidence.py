@@ -110,7 +110,7 @@ class PrimitiveControls(unittest.TestCase):
         self.assertEqual(metadata['public_semantics_sha256'], digest(public))
 
     def test_compile_output_isolated_original_arguments_preserved(self):
-        entry = {'command': 'cc -DKEEP=1 -MMD -MF old.d -MTold.o -c unit.c -o normal.o'}
+        entry = {'file': 'unit.c', 'command': 'cc -DKEEP=1 -MMD -MF old.d -MTold.o -c unit.c -o normal.o'}
         cmd = sanrunner.compile_command(entry, Path('/private/unit.o'))
         self.assertEqual(cmd, ['cc', '-DKEEP=1', '-c', 'unit.c', '-o', '/private/unit.o'] + sanrunner.FLAGS)
         self.assertEqual(entry['command'], 'cc -DKEEP=1 -MMD -MF old.d -MTold.o -c unit.c -o normal.o')
@@ -144,21 +144,24 @@ class PrimitiveControls(unittest.TestCase):
             base = Path(directory)
             build = base / 'build'; build.mkdir()
             normal = build / 'normal.o'; normal.write_bytes(b'normal sentinel')
-            source = ROOT / 'app/core/gimpclonelayer.cpp'
-            entry = {'directory': str(build), 'file': str(source),
-                     'command': 'c++ -c ' + str(source) + ' -o normal.o'}
-            (build / 'compile_commands.json').write_text(json.dumps([entry]))
+            entries = [{'directory': str(build), 'file': str(ROOT / source),
+                        'command': 'cc -c ' + str(ROOT / source) + ' -o ' + Path(source).name + '.o'}
+                       for source in sorted(INSTRUMENTED)]
+            (build / 'compile_commands.json').write_text(json.dumps(entries))
             report = base / 'report.json'
+            discovery = subprocess.CompletedProcess([], 0, 'c++ -o app/tests/gimp-clone-layer ' +
+                ' '.join(Path(source).name + '.o' for source in sorted(INSTRUMENTED)), '')
             failed = subprocess.CompletedProcess([], 7, 'failed compile output', 'deliberate failure')
-            with patch.object(sanrunner.subprocess, 'run', return_value=failed):
+            with patch.object(sanrunner.subprocess, 'run', side_effect=[discovery, failed]):
                 with patch('sys.stdout'), patch('sys.stderr'):
                     status = sanrunner.main([str(build), '--report', str(report), '--output-dir', str(base / 'isolated')])
             data = json.loads(report.read_text())
             self.assertEqual(status, 7)
-            self.assertEqual(data['executions'][0]['exit_code'], 7)
-            self.assertEqual(data['executions'][0]['stderr'], 'deliberate failure')
+            self.assertEqual(data['executions'][1]['exit_code'], 7)
+            self.assertEqual(data['executions'][1]['stderr'], 'deliberate failure')
             self.assertEqual(normal.read_bytes(), b'normal sentinel')
-            self.assertIn(str(base / 'isolated/gimpclonelayer.cpp.o'), data['executions'][0]['command'])
+            self.assertIn(str(base / 'isolated' / sanrunner.object_name(sorted(INSTRUMENTED)[0])), data['executions'][1]['command'])
+
 
 
 class ReceiptControls(unittest.TestCase):
@@ -168,7 +171,8 @@ class ReceiptControls(unittest.TestCase):
         self.base = Path(self.temporary.name)
         self.root, self.output = self.base / 'source', self.base / 'evidence'
         self.root.mkdir(); self.output.mkdir()
-        for source in INSTRUMENTED:
+        self.rtti_source = 'app/paint/painter-mypaint-surface/gimp-painter-options.cpp'
+        for source in set(INSTRUMENTED) | {self.rtti_source}:
             path = self.root / source
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text('/* mocked control input */\n')
@@ -176,6 +180,7 @@ class ReceiptControls(unittest.TestCase):
         path = self.root / 'migration/tests/run_clone_layer_sanitizers.py'
         path.parent.mkdir(parents=True)
         path.write_bytes((ROOT / 'migration/tests/run_clone_layer_sanitizers.py').read_bytes())
+        (path.parent / 'painter_sanitizer_scope.py').write_bytes((ROOT / 'migration/tests/painter_sanitizer_scope.py').read_bytes())
         baseline_path = self.root / 'migration/tests/clone-component-baseline.json'
         baseline_path.write_bytes((ROOT / 'migration/tests/clone-component-baseline.json').read_bytes())
         def git(*args):
@@ -200,26 +205,33 @@ class ReceiptControls(unittest.TestCase):
         (self.output / 'testlog.txt').write_bytes(public)
         build, private = str(self.base / 'build'), self.base / 'private'
         instrumented = private / 'instrumented'
-        entries, executions, replacements, extras = [], [], {}, []
-        for source_path in sorted(INSTRUMENTED):
+        entries, members, direct = [], [], []
+        for source_path in sorted(set(INSTRUMENTED) | {self.rtti_source}):
             name = Path(source_path).name
-            entry = {'directory': build, 'file': str(self.root / source_path), 'command': 'cc -c ' + str(self.root / source_path) + ' -o normal-' + name + '.o'}
+            original_object = 'normal-' + name + '.o'
+            flags = '-fno-rtti ' if source_path.endswith('.cpp') else ''
+            entry = {'directory': build, 'file': str(self.root / source_path),
+                     'command': 'cc ' + flags + '-c ' + str(self.root / source_path) + ' -o ' + original_object}
             entries.append(entry)
-            obj = str(instrumented / (name + '.o'))
-            executions.append({'command': sanrunner.compile_command(entry, Path(obj)), 'exit_code': 0, 'stdout': '', 'stderr': ''})
+            elf[original_object] = {'sha256': 'a' * 64, 'bytes': 32, 'mode': '0o644'}
             if source_path.startswith('app/tests/'):
-                replacements['normal-' + name + '.o'] = obj
+                direct.append(original_object)
             else:
-                extras.append(obj)
+                members.append(str(Path(build) / original_object))
+        # A standalone duplicate of a production source must never displace its archive member.
+        entries.append(dict(entries[-1], command=entries[-1]['command'].rsplit(' -o ', 1)[0] + ' -o standalone-copy.o'))
+        self.write('elf-integrity.json', {'before': elf, 'after': elf})
         compile_raw = canonical(entries)
         self.transformed('compile-database.json', compile_raw)
-        original_link = ['c++', '-o', 'app/tests/gimp-clone-layer', *replacements.keys(), 'libnormal.a']
-        executions.append({'command': ['ninja', '-t', 'commands', 'app/tests/gimp-clone-layer'], 'exit_code': 0, 'stdout': ' '.join(original_link), 'stderr': ''})
-        link = [replacements.get(arg, arg) for arg in original_link]
+        link_text = ' '.join(['c++', '-o', 'app/tests/gimp-clone-layer', *direct, 'libnormal.a'])
+        plan = sanrunner.build_plan(self.root, Path(build), instrumented, entries, link_text, {'libnormal.a': members})
         exe = str(instrumented / 'gimp-clone-layer-asan')
-        link[link.index('-o') + 1] = exe
-        link[1:1] = sanrunner.FLAGS + extras
-        executions.append({'command': link, 'exit_code': 0, 'stdout': '', 'stderr': ''})
+        link = sanrunner.link_command(link_text, Path(build), Path(exe), plan['replacements'], plan['instrumented_anchors'], True)
+        executions = [
+            {'command': ['ninja', '-t', 'commands', 'app/tests/gimp-clone-layer'], 'exit_code': 0, 'stdout': link_text, 'stderr': ''},
+            {'command': ['ar', 't', 'libnormal.a'], 'exit_code': 0, 'stdout': '\n'.join(members), 'stderr': ''}]
+        for command in [job['command'] for job in plan['compilations']] + [archive['command'] for archive in plan['archives'] if archive['command']] + [link]:
+            executions.append({'command': command, 'exit_code': 0, 'stdout': '', 'stderr': ''})
         library = build + '/libgimpbase/libgimpbase-3.0.so.0'
         loader_output = 'libgimpbase-3.0.so.0 => ' + library + ' (0x1234)\n'
         executions.append({'command': ['ldd', build + '/app/tests/gimp-clone-layer'], 'exit_code': 0, 'stdout': loader_output, 'stderr': ''})
@@ -229,13 +241,16 @@ class ReceiptControls(unittest.TestCase):
                'exit_code': 0, 'stdout': tap(NEW_TESTS), 'stderr': '', 'commands': [r['command'] for r in executions],
                'executions': executions, 'executable': exe, 'origin_relocation': 'expand-against-original-executable-directory',
                'library_resolution': {'libgimpbase-3.0.so.0': {'path': library, 'sha256': 'a' * 64}}}
+        san.update(build_plan=plan, rtti_compatibility_only_sources=plan['rtti_compatibility_only_sources'],
+                   original_archive_sha256_before={'libnormal.a': 'c' * 64}, original_archive_sha256_after={'libnormal.a': 'c' * 64})
         self.transformed('sanitizers.json', canonical(san))
-        outputs = {Path(p).name + '.o': {'sha256': 'a' * 64, 'bytes': 32, 'mode': '0o644'} for p in INSTRUMENTED}
+        outputs = {sanrunner.object_name(p): {'sha256': 'a' * 64, 'bytes': 32, 'mode': '0o644'} for p in set(INSTRUMENTED) | {self.rtti_source}}
+        outputs['archive-libnormal.a'] = {'sha256': 'd' * 64, 'bytes': 32, 'mode': '0o644'}
         outputs['gimp-clone-layer-asan'] = {'sha256': 'a' * 64, 'bytes': 32, 'mode': '0o755'}
         self.write('sanitizer-artifacts.json', {'directory': str(instrumented), 'files': outputs, 'before_run': outputs, 'after_run': outputs})
         catalogs = {'catalog_count': 361, 'catalogs': {str(i): {'sha256': 'a' * 64} for i in range(361)}}
         self.write('locales.json', {'before': catalogs, 'after': catalogs})
-        fresh = {'source_commit': self.commit, 'build_metadata': {'meson-info/intro-tests.json': {'sha256': digest(raw_registry)}}}
+        fresh = {'source_commit': self.commit, 'build_outputs': {'libnormal.a': {'sha256': 'c' * 64}}, 'build_metadata': {'meson-info/intro-tests.json': {'sha256': digest(raw_registry)}}}
         self.write('freshness.json', {'before': fresh, 'after': fresh})
         self.write('environment.json', {'DISPLAY': 'localhost:42'})
         self.write('baseline.json', json.loads(baseline_path.read_text()))
@@ -332,8 +347,90 @@ class ReceiptControls(unittest.TestCase):
 
     def test_uninstrumented_sanitizer_command(self):
         data = json.loads((self.output / 'sanitizers.json').read_text())
-        data['commands'][0].remove('-fsanitize=address,undefined')
-        data['executions'][0]['command'] = data['commands'][0]
+        index = next(i for i, argv in enumerate(data['commands']) if '-fsanitize=address,undefined' in argv)
+        data['commands'][index].remove('-fsanitize=address,undefined')
+        data['executions'][index]['command'] = data['commands'][index]
+        self.transformed('sanitizers.json', canonical(data)); self.write('transforms.json', self.transforms); self.seal()
+        self.assertTrue(self.validate())
+
+    def test_instrumented_and_rtti_only_coverage_stay_distinct(self):
+        data = json.loads((self.output / 'sanitizers.json').read_text())
+        plan = data['build_plan']
+        self.assertEqual(plan['instrumented_sources'], sorted(INSTRUMENTED))
+        self.assertEqual(plan['rtti_compatibility_only_sources'], [self.rtti_source])
+        for job in plan['compilations']:
+            if job['instrumented']:
+                self.assertIn('-fsanitize=address,undefined', job['command'])
+            else:
+                self.assertNotIn('-fsanitize=address,undefined', job['command'])
+            if job['source'].endswith('.cpp'):
+                self.assertEqual(job['command'][-1], '-frtti')
+        original_objects = {job['original_object'] for job in plan['compilations']}
+        for archive in plan['archives']:
+            self.assertFalse(original_objects.intersection(archive['replacement_members']))
+        self.assertFalse(any('standalone-copy.o' in job['original_object'] for job in plan['compilations']))
+
+    def test_focused_anchors_precede_archives_without_duplicate_copies(self):
+        data = json.loads((self.output / 'sanitizers.json').read_text())
+        plan = data['build_plan']
+        link = data['executions'][-4]['command']
+        self.assertEqual(len(plan['instrumented_anchors']), 8)
+        first_archive = min(link.index(row['replacement']) for row in plan['archives'] if row['replacement'])
+        focused_originals = {job['original_object'] for job in plan['compilations'] if job['instrumented']}
+        for anchor in plan['instrumented_anchors']:
+            self.assertEqual(link.count(anchor), 1)
+            self.assertLess(link.index(anchor), first_archive)
+        for archive in plan['archives']:
+            self.assertFalse(focused_originals.intersection(archive['replacement_members']))
+            self.assertFalse(set(plan['instrumented_anchors']).intersection(archive['replacement_members']))
+
+    def test_missing_or_ambiguous_original_compilations_rejected(self):
+        data = json.loads((self.output / 'sanitizers.json').read_text())
+        entries = json.loads((self.output / 'compile-database.json').read_text())
+        plan = data['build_plan']
+        args = (Path(self.receipt['source_directory']), Path(self.receipt['build_directory']),
+                Path(data['executable']).parent)
+        link_text = data['executions'][0]['stdout']
+        members = {item['argument']: item['members'] for item in plan['archives']}
+        for altered in (entries[1:], entries + [entries[0]]):
+            with self.assertRaises(RuntimeError):
+                sanrunner.build_plan(*args, altered, link_text, members)
+        duplicated = deepcopy(members)
+        duplicated['libnormal.a'].append(duplicated['libnormal.a'][0])
+        with self.assertRaises(RuntimeError):
+            sanrunner.build_plan(*args, entries, link_text, duplicated)
+
+    def test_every_original_archive_alias_is_replaced_without_forcing_objects(self):
+        data = json.loads((self.output / 'sanitizers.json').read_text())
+        entries = json.loads((self.output / 'compile-database.json').read_text())
+        membership = data['build_plan']['archives'][0]['members']
+        text = data['executions'][0]['stdout'] + ' second-alias.a'
+        plan = sanrunner.build_plan(Path(self.receipt['source_directory']), Path(self.receipt['build_directory']),
+            Path(data['executable']).parent, entries, text,
+            {'libnormal.a': membership, 'second-alias.a': membership})
+        self.assertEqual(len([row for row in plan['archives'] if row['replacement']]), 2)
+        link = sanrunner.link_command(text, Path(self.receipt['build_directory']), Path(data['executable']), plan['replacements'], plan['instrumented_anchors'], True)
+        rtti_object = next(job['object'] for job in plan['compilations'] if not job['instrumented'])
+        self.assertNotIn(rtti_object, link)
+        self.assertNotIn('libnormal.a', link)
+        self.assertNotIn('second-alias.a', link)
+
+    def test_falsely_claimed_rtti_instrumentation_rejected(self):
+        data = json.loads((self.output / 'sanitizers.json').read_text())
+        data['sources'].append(self.rtti_source)
+        self.transformed('sanitizers.json', canonical(data)); self.write('transforms.json', self.transforms); self.seal()
+        self.assertTrue(self.validate())
+
+    def test_altered_private_archive_replacements_rejected(self):
+        data = json.loads((self.output / 'sanitizers.json').read_text())
+        record = data['build_plan']['archives'][0]
+        record['replacement_members'][0] = record['members'][0]
+        self.transformed('sanitizers.json', canonical(data)); self.write('transforms.json', self.transforms); self.seal()
+        self.assertTrue(self.validate())
+
+    def test_original_archive_mutation_rejected(self):
+        data = json.loads((self.output / 'sanitizers.json').read_text())
+        data['original_archive_sha256_after']['libnormal.a'] = 'd' * 64
         self.transformed('sanitizers.json', canonical(data)); self.write('transforms.json', self.transforms); self.seal()
         self.assertTrue(self.validate())
 
