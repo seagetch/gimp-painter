@@ -26,6 +26,7 @@
 #include "tools/gimptoolcontrol.h"
 #include "tools/gimptooloptions-gui.h"
 #include "tools/tool_manager.h"
+#include "widgets/gimpwidgets-utils.h"
 #include "display/gimppainternavigation.h"
 #include "display/gimpmodifiersmanager.h"
 #include "gimpcoreapp.h"
@@ -451,8 +452,10 @@ typedef enum
 static void
 rejected_start_matrix (gconstpointer data)
 {
+  GimpTool *tool;
+
   create_image ();
-  GimpTool *tool = select_start_tool (data);
+  tool = select_start_tool (data);
 
   for (guint test = START_BUSY; test <= START_OCCUPIED_ROTATION; test++)
     {
