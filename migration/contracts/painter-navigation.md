@@ -682,3 +682,86 @@ and old-runtime skipped/unverified status remains unchanged. Physical input,
 focus/device interruptions, other platforms, whole-display/overlay equivalence,
 all task 25, full-port, historical full-aggregate and release acceptance remain
 outside this evidence-only integration.
+
+## 25.008/mirrored-arrow-input: source-only regression checkpoint
+
+This test-only increment preserves the source-defined asymmetric key route.
+The retained full old handler, pinned above with SHA-256
+`7b81d99ab288247d1452ee47053731a4c71eb8c40fa54c734f87023d31757c84`,
+calls wants-all tools before translation (1363–1389), swaps only normal
+Left/Right presses under horizontal reflection (1378–1389), and forwards those
+presses to the tool (1391–1422). Releases use only the unchanged wants-all
+callback (1493–1542); ordinary arrow releases have no tool callback. Production
+already implements this behavior and is unchanged. The modern local key-event
+copy additionally preserves the original event shared with other handlers;
+the retained old route instead mutated that input in place.
+
+### Finite independent expectations
+
+`test-painter-navigation.c` explicitly checks all **20 helper combinations**:
+five keys (Left, Right, Up, Down and `a`), both horizontal-reflection values and
+press/release. Only the five previously missing unreflected-release assertions
+are added to that existing six-group target.
+
+Four new `/navigation-events/keys/` registrations dispatch the same matrix
+through the public canvas handler: `idle-zero`, `idle-rotated`, `rotation-free`
+and `rotation-snapped`. The existing 18 registrations and assertions remain.
+Each new group has both reflection values, three recorder modes, Left and
+Right, and separate press/release events: **24 events per group, 96 total**.
+Vertical reflection is always false.
+
+For each direction, the fixed callback sequences are:
+
+| Recorder mode | Unreflected press | Reflected press | Release in either reflection | Handler press / release |
+| --- | --- | --- | --- | --- |
+| Normal | original key | opposite key | no callback | true / false |
+| All-consume | original key | original key | original key | true / true |
+| All-fallthrough | original key, original key | original key, opposite key | original key | true / false |
+
+The recorder is a registered, manager-owned, focused tool with inactive control.
+Its registration is idempotent so each new group can also run on its own.
+All-fallthrough declines the first press and consumes the second, avoiding
+configurable keyboard-controller actions. It declines release. The tests check
+callback count, order, phase, tool/display identity, keyval and every public
+`GdkEventKey` field. The allocated incoming event's fields, string content and
+device/source identities must remain unchanged. Callback inspection never
+queries allocation-private GDK metadata through the translated stack copy.
+Each group requires exactly **16 press callbacks and 8 release callbacks**,
+with no primary-tool button callback.
+
+Idle contexts apply the reflection before selecting angle **0 or 37 degrees**.
+Active contexts start at modern 37 degrees with public Shift+middle (free) or
+Shift+Ctrl+middle (snapped), then move from the right ray to the down ray. Old
+source lines 1827–1869 give start anchors **127 unreflected / 593 reflected**:
+old angles 37/323 plus bearings 90/270. The down ray independently gives modern
+**127 free / 120 snapped** after the established mirrored-angle conversion.
+Key-event state retains button 2 and the applicable Shift/Ctrl bits.
+
+Each key must preserve the navigation action, initiating button, inherited
+routing, start and last scroll points, fixed rotation and zoom anchors, angle,
+exact-angle provenance, scales, reflection and both shell/native grab state.
+After all keys for each reflection, continued public motion to the left ray
+must yield modern **217 free / 210 snapped**, from old angles 217/143 or
+210/150. The original anchor still applies; middle release then requires the
+existing full idle/grab cleanup. The two active groups thus contain four real
+navigation drag lifecycles. No expected angle or callback key is obtained from
+the production navigation helper.
+
+### Execution still required
+
+This is a source checkpoint, **not a native test receipt or task closure**.
+The parent still owns the default build, all **22 event + 4 UI + 6 arithmetic =
+32 normal cases**, the full **22 focused event ASan/UBSan cases**, and the
+required repository/strict acceptance checks on the eventual exact source.
+The existing focused builder instruments five translation units, not all GIMP
+or dependency code; LSan remains disabled. No build or executable target was
+run for this checkpoint. No ledger, acceptance receipt, fixture or old-runtime
+oracle is changed.
+
+The expected routing and angles are pinned-old-source-derived. There is no
+retained Left/Right runtime capture for this matrix, and old runtime remains
+user-approved **SKIPPED/unverified**. This does not establish physical keyboard
+or tablet behavior, every tool's arrow semantics, keyboard-controller fallback,
+focus/overlay/device transitions, vertical-reflection legacy parity,
+whole-display/overlay parity, transformed pan/zoom, original calculation-row
+closure, all of section 25 or full-port acceptance.
