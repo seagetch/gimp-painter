@@ -1043,10 +1043,114 @@ selection, GTK overlay container/child, remaining core, GTK and dependencies
 remain uninstrumented. LSan remains disabled. Adding the shell unit is a
 source configuration change, not a new sanitizer execution result.
 
-This repair checkpoint has **no build, native, sanitizer or GUI run**. The
-unchanged 27-event/37-normal suite and six-unit focused sanitizer execution
-must be rerun on the exact repaired source by the parent. Evidence integration,
+At the source-only repair checkpoint there was **no build, native, sanitizer
+or GUI run**. The unchanged 27-event/37-normal suite and six-unit focused
+sanitizer execution were still required on the exact repaired source; their
+subsequent passed component result is recorded below. Evidence integration,
 the strict Clone gate on its separately identified source and branch portrait
 Xvfb GUI smoke remain separate. No ledger, acceptance or parent-row closure
 is part of this checkpoint; original 25.009 and 25.009/drag-zoom-scroll remain
 open, and old Edge/string-reader runtime stays **SKIPPED/unverified**.
+
+### Accepted exact-source canvas/overlay component receipt (2026-10-17)
+
+The repaired exact source A passed **37 normal cases (27 event + 4 UI + 6
+arithmetic) and all 27 focused event ASan/UBSan cases**. This is bounded
+component evidence, not original 25.009 closure. The publication summary is
+`migration/tests/canvas-overlay-component-receipt.json`; the deterministic
+`migration/tests/canvas-overlay-component-evidence.tar.xz` retains 22 unchanged
+original public metadata/log members plus one compact packaging manifest.
+
+- Tested source A: `ad0dab2d49c2bafcd85da05d76f077071cd1c6e1`
+- Tested tree: `a237803fe42b33f6c608fb993e45d838c4ecd88b`
+- Native receipt SHA-256:
+  `6be80fb0b6e1f87a5b239d1093455b3459f964ab6dbed24ffcda7fa8973a5404`
+- External runner SHA-256:
+  `27a46140530a6fe1f2f0cf8dc0b91afa77adfc0c25406a63d2e996f4da60d4e2`
+- Pinned gimp-data: `a31e5dea4f572fb5f33b06f5c4b86db5f30643dc`
+- `component-run-002`: 2026-10-17 12:14:17–12:16:06 UTC
+
+The default build, six-unit focused sanitizer builder, three-target normal
+Meson command and focused event executable all exited 0. The exact event
+fixture SHA-256 remains
+`b5ff043ae3518784ebb485a1634cb38806fcdf1ab8b2f8ccf3d64b68255e6568`,
+identical to the retained failed `component-run-001` on `bfbbbeade5ba733320b4c1b98a7f3213291928d2`.
+No assertion, expected angle, geometry, pixel tolerance or test registration
+was weakened. The previous failure is preserved, not overwritten by this pass.
+
+All five new draw registrations passed in both executions, including **38
+actual GTK snapshots per execution**: 16 raster/item pairs, three separate
+selection draws and three upright-widget draws. Logs retain 34 draw CTMs,
+51 marker classifications, 16 six-segment item differences, two four-segment
+selection differences and three anchor observations per execution. At 37
+degrees, immediate and both post-draw stored anchor positions now equal
+`(490.388929396,229.950762935)`, with visible integer placement `(490,229)`,
+unchanged offsets `(-296,-97)` and child angle zero. The unchanged second
+rotated redraw passes. These observations close the bounded stale-anchor
+regression demonstrated above; they do not establish damage or clipping.
+
+The preceding 22 event cases also pass, retaining 96 mirrored-key sends,
+64 press/32 release callbacks and 24 boundary-crossing observations/20 signed
+steps per execution. No TAP case was skipped or failed. The PNG capture hook
+was **not enabled** by this runner: real GTK draws and pixel assertions ran,
+but this archive contains execution logs rather than saved PNGs. This is not
+a branch portrait GUI smoke or physical-input capture.
+
+All nine integrity seals passed: four equal clean exact-A source snapshots,
+three equal 2,873-entry normal ELF snapshots, focused-builder preservation of
+normal ELFs, full build freshness, compile database, registered tests, focused
+artifacts/copies and all 361 locale catalogs. All **29 receipt-listed hashes**
+were verified, and all **30 original public files**, including the exact
+unchanged receipt, were compared byte-for-byte against the full archive. The
+compact archive preserves 22 originals unchanged, including the complete
+original nested file-hash inventory. It binds the eight omitted sanitizer
+executable/object/thin-archive copies by exact hash and size; those binaries
+are not present in the compact archive. Deterministic repacking reproduced
+identical bytes.
+
+The full public archive is `component-run-002-passed-public.tar.xz`,
+**22,053,024 bytes**, SHA-256
+`3cead13c93a73fdf56d579bde4d700a325c7dce033f42d3861c20a8427bbeae0`.
+It is retained separately and bound in the compact manifest and summary.
+The compact archive is not a standalone rebuild package. Only completed
+public output is packaged; private profiles, raw environments and
+authentication material are excluded.
+
+The parent's separate native audit reproduced all nine public privacy
+transformations and verified reuse of the actual registered Meson event
+environment with only the two exact ASan/UBSan option overrides. Exactly six
+C units are instrumented, including the changed display shell. The other
+callbacks, renderer, canvas group/item/line/rectangle, selection, GTK overlay
+container/child, remaining core, GTK and dependencies are uninstrumented.
+LSan stays disabled and no suppression files/options are used. After ANSI
+color stripping, the incremental default build has no compiler `warning:`
+lines. The focused sanitizer build retains one `-Wmissing-declarations`
+warning for `navigation_draw_observer_get_type` at
+`app/tests/test-painter-navigation-events.c:1488:40`; no source was changed
+to hide or remove it. Ordinary icon, plug-in, D-Bus and GLib debug diagnostics
+remain in runtime logs; empty classifier arrays are not a warning-free
+application claim. This is not a clean-from-empty build claim.
+
+### Canvas/overlay receipt-only descendant and pending acceptance
+
+This receipt attests only to tested source A. The three-file evidence-only
+descendant B has no native or GUI run from that receipt. No production source,
+test, fixture, builder, verifier, ledger or acceptance file changes in this
+integration. The unchanged strict Clone checker must reject the changed
+source seal until the parent reruns the unchanged **226 normal / 62 focused
+sanitizer** gate on B and refreshes acceptance. The final documentary
+acceptance step is separate from both tested A and the eventual strict-tested
+B; neither run may be relabeled as a run on that final descendant. This
+compact component archive is not valid input to
+`check_clone_acceptance.py --current-evidence`.
+
+**Original 25.009 and 25.009/drag-zoom-scroll remain open.** The 196 jointly
+assigned historical hunks, whole display/overlay behavior, section 25 and
+full-port, aggregate, platform and release gates are not closed. Damage,
+clipping, extents, hit-testing, every overlay/selection topology, vertical
+reflection legacy parity, physical input and transformed drag-zoom/pan/scroll
+remain outside the bounded matrix. The historical GUI receipt remains bound
+to `22708f41d368c6c7c2e425d30ea2765b9d29158b`; current branch portrait GUI
+validation is pending. Old Edge/string-reader runtime stays
+**SKIPPED/unverified**; both retained old captures keep teardown
+`command_exit=-11`. No old runtime, capture or oracle was run or regenerated.
