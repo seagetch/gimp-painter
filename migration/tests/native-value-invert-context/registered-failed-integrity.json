@@ -1,0 +1,30 @@
+{
+  "status": "failed",
+  "scope": "Post-run source-path audit of retained first registered attempt; not native acceptance",
+  "report_sha256": "55ca484087b56649bdf987273e73a2e69b617bb30a6e5eea6abdc89d3558acc8",
+  "added": {
+    "/workspace/shared/gimp-painter-value-invert-owner/migration/tests/__pycache__/filter_context_fixture_bundle.cpython-313.pyc": "7546620a87ecc43ea3a0d3187697ab0b5c821fc8c7ef619ffe8fbcc03985bb86",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/capture_legacy_filter_context.cpython-313.pyc": "be345ea93c3fee1da8d2aabece163d9a89c4d940778bb4cfa7d8f589afa499ef",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/capture_legacy_max_rgb.cpython-313.pyc": "42e721944b50dd22628f590be2dae14b640b83240b45fa7913151cc171bc6e71",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/capture_legacy_value_invert.cpython-313.pyc": "01fb1692feb442313ae6e0d2f99498bf31391bb617d1093ec4187336f2a8f7be",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/capture_legacy_value_invert_projection.cpython-313.pyc": "d9237193aff5b234bbdcd5a57d76b3192e553628e78dcd7dea759ad7ec33205f",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_convolution_evidence.cpython-313.pyc": "dd8d0384e0e8e5743b0fddbf84f424982634a26c188737d448bda622aa721ca4",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_max_rgb_evidence.cpython-313.pyc": "24568a80a0c853bcbfc94741f5c10fa5b10595aec46569be0e179d823f7f4975",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_max_rgb_projection_evidence.cpython-313.pyc": "1e1487adcee3d4640b46f432cb5c76f6320b5e178f6f82d631174df47c08b22a",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_retinex_evidence.cpython-313.pyc": "96152fbb986a77bc7b5a6210a78d5eded6bce147b8a0a88651c3fd5b1e236edd",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_sharpen_evidence.cpython-313.pyc": "1371a621286c978f69310622f7671983341c94b91becd461dd2a23d7ce6bb839",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_small_tiles_evidence.cpython-313.pyc": "8e7fd9626450aedb2661a0ea793889b47381536b700081296b76a5578dd6ac45",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_sobel_evidence.cpython-313.pyc": "eb6b7cc160974a09b0bc2fde2fb861a1cdbce82a5c5a8e4aff5f688b8bf16a1b",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_sobel_projection_evidence.cpython-313.pyc": "003ca122eb7e19fdf59afc9af65be29a6d357181bbde526280e39b9386a1da07",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_threshold_alpha_evidence.cpython-313.pyc": "29df1f9bf226acef2719235c310ae31f25c4471890b42fc38d54bfe5febca030",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_threshold_projection_evidence.cpython-313.pyc": "9e6f9f283dc8ab74893727afb4a6ceddcdf04e47cdc6454fe8de270bfef51701",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_value_invert_evidence.cpython-313.pyc": "abf037741ae67954e3529465a97d06c664ac02badf17eaa4ad8d8dc5298d15ad",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/check_value_invert_projection_evidence.cpython-313.pyc": "f8012452ae6917c96ec25bdb048ea506edcbcf94c6a7a2dcbd24f85afbc40831",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/derive_retinex_evidence.cpython-313.pyc": "3fe677c4e515c9bf20a423243261cce79bfe9faf9292268f87bba7f64114efcd",
+    "/workspace/shared/gimp-painter-value-invert-owner/tools/__pycache__/derive_small_tiles_evidence.cpython-313.pyc": "e848ab91943f9a96249dbcf838d14f7cdde3a9d82e481dfbf11b829448f0574c"
+  },
+  "removed": [],
+  "tracked_or_preexisting_changed": [],
+  "failure": "Missing generated bundled helper caused gimp-filter-layer exit251; registered fixture wrapper also generated untracked Python bytecode after pre-seal",
+  "cleanup": "After terminal result, remove only these identified generated cache files; retry all thirteen targets with PYTHONDONTWRITEBYTECODE=1 and exact path-set equality"
+}

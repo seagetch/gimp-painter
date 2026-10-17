@@ -8,7 +8,9 @@ Sharpen corpora. --operation sobel instruments the independent Sobel raster
 plus its changed host invalidation geometry, and requires verified Sobel,
 projection-history and Sharpen corpora. --operation max-rgb instruments the
 raw point-shadow and host projection boundary units, requiring verified Max RGB
-base/large/projection and Sharpen corpora. Selected
+base/large/projection and Sharpen corpora. --operation value-invert uses
+the same owner/point-shadow instrumentation and requires separately verified
+Value Invert base/large/projection and Sharpen corpora. Selected
 paths still run exactly as requested, with no implicit extra tests.
 
 First build both ordinary app/tests targets in the configured build environment.
@@ -93,7 +95,7 @@ SCRIPTS = {
 
 
 def operation_config(name):
-    if name not in ("sharpen", "threshold-alpha", "sobel", "max-rgb"):
+    if name not in ("sharpen", "threshold-alpha", "sobel", "max-rgb", "value-invert"):
         raise ValueError("Unknown native operation: " + str(name))
     instrumented, scripts = set(INSTRUMENTED), set(SCRIPTS)
     fixtures = ["GIMP_PAINTER_SHARPEN_FIXTURES"]
@@ -112,6 +114,15 @@ def operation_config(name):
                         "tools/check_max_rgb_projection_evidence.py"})
         fixtures.extend(["GIMP_TEST_MAX_RGB_FIXTURE_DIR",
                          "GIMP_TEST_MAX_RGB_PROJECTION_FIXTURE_DIR"])
+    if name == "value-invert":
+        instrumented.update({"app/painter/filter-point-shadow.cpp",
+                             "app/core/gimpdrawablestack.c",
+                             "app/core/gimplayerstack.c",
+                             "app/core/gimpprojection.c"})
+        scripts.update({"tools/check_value_invert_evidence.py",
+                        "tools/check_value_invert_projection_evidence.py"})
+        fixtures.extend(["GIMP_TEST_VALUE_INVERT_FIXTURE_DIR",
+                         "GIMP_TEST_VALUE_INVERT_PROJECTION_FIXTURE_DIR"])
     if name == "sobel":
         instrumented.update({"app/painter/filter-sobel.cpp",
                              "app/core/gimpdrawablestack.c",
@@ -589,7 +600,7 @@ def positive_seconds(value):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("build", type=Path)
-    parser.add_argument("--operation", choices=("sharpen", "threshold-alpha", "sobel", "max-rgb"), default="sharpen")
+    parser.add_argument("--operation", choices=("sharpen", "threshold-alpha", "sobel", "max-rgb", "value-invert"), default="sharpen")
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--lock-fd", type=int, required=True)
     parser.add_argument("--lock-file", type=Path, default=Path("/workspace/shared/gimp-painter-build.lock"))

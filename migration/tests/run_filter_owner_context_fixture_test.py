@@ -27,6 +27,8 @@ from check_sobel_evidence import verify as verify_sobel
 from check_sobel_projection_evidence import verify as verify_sobel_projection
 from check_max_rgb_evidence import verify as verify_max_rgb
 from check_max_rgb_projection_evidence import verify as verify_max_rgb_projection
+from check_value_invert_evidence import verify as verify_value_invert
+from check_value_invert_projection_evidence import verify as verify_value_invert_projection
 COMMIT = "afa43fae3e920210146abed514f136fd49f671b5"
 BUNDLES = (
     ("legacy-filter-context", "GIMP_PAINTER_CONTEXT_FIXTURES", 280, 24,
@@ -116,6 +118,12 @@ def main(argv=None):
         max_rgb_projection = Path(temporary) / "max-rgb-projection"
         verify_max_rgb_projection(extract=max_rgb_projection)
         environment["GIMP_TEST_MAX_RGB_PROJECTION_FIXTURE_DIR"] = str(max_rgb_projection)
+        value_invert = Path(temporary) / "value-invert"
+        verify_value_invert(extract=value_invert)
+        environment["GIMP_TEST_VALUE_INVERT_FIXTURE_DIR"] = str(value_invert)
+        value_invert_projection = Path(temporary) / "value-invert-projection"
+        verify_value_invert_projection(extract=value_invert_projection)
+        environment["GIMP_TEST_VALUE_INVERT_PROJECTION_FIXTURE_DIR"] = str(value_invert_projection)
         return subprocess.run(command, env=environment).returncode
 
 

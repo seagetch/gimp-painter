@@ -1,0 +1,60 @@
+{
+  "status": "passed",
+  "scope": "Pure Python controls, including synthetic rejection examples and mocked native subprocesses; not native or genuine runtime acceptance",
+  "tests_run": 64,
+  "source_commit": "7018d00e35b4c7ed1f1954df31c1a1e3878006d8",
+  "scripts": [
+    {
+      "script": "tools/tests/test_value_invert_capture.py",
+      "sha256": "aaf30c2fe3623f18e43f3de52b8ee1d7d67eb298cfa29ae958121d26067c7cab",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/shared/gimp-painter-value-invert-owner/tools/tests/test_value_invert_capture.py"
+      ],
+      "expected_count": 36,
+      "observed_counts": [
+        "36"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "stdout": "",
+      "stderr": "....................................\n----------------------------------------------------------------------\nRan 36 tests in 0.088s\n\nOK\n"
+    },
+    {
+      "script": "migration/tests/test_sharpen_context_sanitizers.py",
+      "sha256": "ff2dc8824f29000ff7e7f144f7fd21a2395d1685c1c7b75d3e86787335e41d59",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/shared/gimp-painter-value-invert-owner/migration/tests/test_sharpen_context_sanitizers.py"
+      ],
+      "expected_count": 20,
+      "observed_counts": [
+        "20"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "stdout": "",
+      "stderr": "test_canonical_production_entry_and_conflict_detection (__main__.Checks.test_canonical_production_entry_and_conflict_detection) ... ok\ntest_exact_positive_tap (__main__.Checks.test_exact_positive_tap) ... ok\ntest_exclusive_inherited_lock_required (__main__.Checks.test_exclusive_inherited_lock_required) ... ok\ntest_failed_preflight_retains_per_test_not_run_report_and_can_repeat (__main__.Checks.test_failed_preflight_retains_per_test_not_run_report_and_can_repeat) ... ok\ntest_linked_test_library_still_is_not_production (__main__.Checks.test_linked_test_library_still_is_not_production) ... ok\ntest_max_rgb_scope_is_separate_and_complete (__main__.Checks.test_max_rgb_scope_is_separate_and_complete) ... ok\ntest_mocked_failed_compile_keeps_diagnostics (__main__.Checks.test_mocked_failed_compile_keeps_diagnostics) ... ok\ntest_mocked_timeout_kills_only_owned_process_group_and_retains_output (__main__.Checks.test_mocked_timeout_kills_only_owned_process_group_and_retains_output) ... ok\ntest_nested_painter_production_library_requires_actual_link_membership (__main__.Checks.test_nested_painter_production_library_requires_actual_link_membership) ... ok\ntest_operation_scope_is_explicit_and_independent (__main__.Checks.test_operation_scope_is_explicit_and_independent) ... ok\ntest_options_preserve_quoted_and_unrelated_settings (__main__.Checks.test_options_preserve_quoted_and_unrelated_settings) ... ok\ntest_other_operation_report_is_not_overwritten (__main__.Checks.test_other_operation_report_is_not_overwritten) ... ok\ntest_private_compile_uses_private_objects_and_depfiles (__main__.Checks.test_private_compile_uses_private_objects_and_depfiles) ... ok\ntest_private_harness_uses_registered_build_libraries_first (__main__.Checks.test_private_harness_uses_registered_build_libraries_first) ... ok\ntest_sobel_scope_is_separate_and_complete (__main__.Checks.test_sobel_scope_is_separate_and_complete) ... ok\ntest_source_drift_fails_final_seal (__main__.Checks.test_source_drift_fails_final_seal) ... ok\ntest_syntax (__main__.Checks.test_syntax) ... ok\ntest_tap_empty_skip_prefix_failure_duplicate_and_bailout_rejected (__main__.Checks.test_tap_empty_skip_prefix_failure_duplicate_and_bailout_rejected) ... ok\ntest_unrelated_existing_report_never_overwritten (__main__.Checks.test_unrelated_existing_report_never_overwritten) ... ok\ntest_value_invert_scope_is_separate_and_complete (__main__.Checks.test_value_invert_scope_is_separate_and_complete) ... ok\n\n----------------------------------------------------------------------\nRan 20 tests in 0.014s\n\nOK\n"
+    },
+    {
+      "script": "migration/tests/test_value_invert_focused_normal.py",
+      "sha256": "2348a53baf48ca227924404e2b8f39d04ee5a36c27874ab0df707fe6732ce3b0",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/shared/gimp-painter-value-invert-owner/migration/tests/test_value_invert_focused_normal.py"
+      ],
+      "expected_count": 8,
+      "observed_counts": [
+        "8"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "stdout": "",
+      "stderr": "test_changed_and_missing_seals (__main__.Checks.test_changed_and_missing_seals) ... ok\ntest_exact_separate_scopes (__main__.Checks.test_exact_separate_scopes) ... ok\ntest_exact_success (__main__.Checks.test_exact_success) ... ok\ntest_fixture_launcher_exports_both_verified_roots (__main__.Checks.test_fixture_launcher_exports_both_verified_roots) ... ok\ntest_fixture_launcher_fails_closed_before_native_execution (__main__.Checks.test_fixture_launcher_fails_closed_before_native_execution) ... ok\ntest_fixture_roots_match_sealed_materialization (__main__.Checks.test_fixture_roots_match_sealed_materialization) ... ok\ntest_fixture_snapshot_rejects_empty_or_symlink (__main__.Checks.test_fixture_snapshot_rejects_empty_or_symlink) ... ok\ntest_timeout_kills_owned_process_group (__main__.Checks.test_timeout_kills_owned_process_group) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.008s\n\nOK\n"
+    }
+  ],
+  "previous_incomplete_invocation": "Imported sanitizer test module executed its own 20-test top-level runner and exited before other modules; retained controls-incomplete.log does not establish 64 controls."
+}

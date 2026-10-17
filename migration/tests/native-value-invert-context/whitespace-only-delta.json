@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "base_acceptance_commit": "1bf84e12b040804e833ce67f3b73bf8d62dead5a",
+  "path": "app/tests/test-filter-value-invert-capture.inc",
+  "before_sha256": "47f6b9b50d25bd2ccbf9a40a03e73fdec64a665621531da0e9530c12829b03a1",
+  "after_sha256": "c7613fff8d215d83ded1a7e152062bd8edc509899f0b9da9dcf7d1da75828d75",
+  "change": "Remove exactly one trailing newline byte, eliminating the redundant final blank line; no semantic production/test assertion change",
+  "ignore_blank_lines_command": [
+    "git",
+    "diff",
+    "--ignore-blank-lines",
+    "1bf84e12",
+    "--",
+    "app/tests/test-filter-value-invert-capture.inc"
+  ],
+  "ignore_blank_lines_exit_code": 0,
+  "ignore_blank_lines_stdout": "",
+  "ignore_blank_lines_stderr": "",
+  "full_base_diff_check_command": [
+    "git",
+    "diff",
+    "--check",
+    "f71581787e7c465de7865ba7690df2e1715f052e"
+  ],
+  "full_base_diff_check_exit_code": 0,
+  "full_base_diff_check_stdout": "",
+  "full_base_diff_check_stderr": "",
+  "native_rerun": false,
+  "native_evidence_scope": "Earlier reports retain the exact tested file hash and tested commit/tree; they are not rewritten to claim execution of the whitespace-adjusted file.",
+  "python_controls": 64,
+  "wbs": "WBS dependencies, states, and completion evidence: OK"
+}
