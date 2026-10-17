@@ -1703,3 +1703,97 @@ freeze, package/release or whole-port acceptance is implied. Both old GUI
 teardown -11 outcomes remain historical. Old Edge/string-reader runtime stays
 **SKIPPED/unverified**; no old runtime, capture or oracle was accessed, executed
 or regenerated.
+
+
+## Bounded 25.009/fractional-pan-difference acceptance (2026-10-17)
+
+Only the existing independent **25.009/fractional-pan-difference** child is
+marked DONE, with completed inputs 25.008 and 01.017. Original **25.009 and
+25.009/drag-zoom-scroll remain TODO with byte-identical criteria and
+dependencies**; every other task and progress row is unchanged. This is a
+source-backed regression for the existing modern integer-device
+replacement/difference, **not approval or redefinition of exact historical
+compatibility**. Old inverse-before-gint/double-offset arithmetic is not an
+old applied runtime, raster or overlay oracle; those obligations remain open.
+
+### Exact component source A
+
+The unchanged component evidence belongs only to public source
+`8e92569df4841a458202de2dd89ed6db1cb4c974`, tree
+`25bec9e511414ea7dca1e8fd7ff9740d089a7b31`: **41 normal TAP cases (31 event,
+4 UI, 6 pure) and 31 focused event ASan/UBSan cases**, nine instrumented C
+units, all four native commands exit 0. Original receipt SHA-256 is
+`459c289f3c2cc0d61c4e5f010731d3ff669fb6264dae8ad4c7748df00abf4f61`.
+The committed component summary and compact archive remain byte-identical;
+their historical TODO/pending-strict checkpoint is not rewritten by this
+later acceptance. The compact archive preserves 23 original nonbinary files
+plus its manifest; eleven omitted binaries remain hash/size-bound to the
+separately retained 34-file full public archive.
+
+One additional finite subcase inside the existing device-image-origin
+registration uses unmirrored 37 degrees, scale 1.5 and floating displacement
+(17.6,-10.6), which quantizes to (17,-11). Native offsets are (-236,-31),
+quantized image-anchor delta is approximately zero, and raw pointer drift is
+(0.47993821019281313,-0.0277565399148898), matching the independent frozen
+expectation within 1e-8. Ordinary release clears state and grabs through the
+existing observation boundary. No production repair or extra registration
+was introduced. Per execution, 17 current main drags, 16 stationary reentries,
+six primary pairs, 33 pan-helper calls, 99 forward landmark comparisons and
+38 retained actual GTK snapshots pass at one 849x450 viewport. Historical
+16-drag receipts/manifests remain unchanged. This adds no saved PNG, new
+raster/overlay/damage/clipping or actual-window GUI acceptance. Nine component
+integrity seals, 2,873 normal ELF entries and all 361 catalogs were preserved.
+
+### Distinct strict source B and documentary C
+
+The separate unchanged strict Clone gate belongs only to public source
+`fbe7efacdec68938d5334be6ea56cd83b0d0afdf`, tree
+`ef9ae3842a659bb1fabbe6631115c3faa78a03f8`. B integrates A's component evidence
+and narration in exactly five files; it inherits no native component or GUI
+pass. Run `fractional-pan-run-001` completed default build, normal tests and
+focused sanitizer commands with exit 0:
+
+- Current archive: `migration/tests/fractional-pan-acceptance-evidence.tar.xz`
+- Archive SHA-256: `0325d237fb3cfc3597e0b49e8b58418905c59d486bb1b39c0ab3ac35e1cc5cc9`
+- Receipt SHA-256: `b21f7750946d36776c0fd05ab75eb9c198555b84a9a6721effb38f03c947237b`
+
+Seven normal targets pass **226 positive TAP cases**: core 4,
+projection-update-bounds 3, gimp-clone-layer 62, painter-layer-ui 68,
+painter-layer-tree 35, painter-xcf-roundtrip 49 and update-geometry 5.
+Focused Clone ASan/UBSan passes **62 cases**; normal and focused Clone each
+retain 216 unique source-mode/type/mask scenes. Eight units are instrumented;
+54 RTTI-only C++ rebuilds are not sanitizer coverage. LSan is off. This gate
+does not rerun navigation or actual-window GUI.
+
+Source seals before build/before tests/after agree. The unchanged committed
+checker reconstructs full source identity and current-checkout seals,
+2,883 normal ELF entries, default-build freshness, compile database,
+all 164 registered target definitions, 361 catalogs and focused artifacts.
+The registry seal is not full aggregate execution. The deterministic archive
+contains exactly 17 unchanged public files; original-directory, extracted
+and archive checks agree with native source/build/private paths blocked and
+Git as the only subprocess. Existing bounded extraction rejects unsafe,
+duplicate, unexpected or nonregular members. All original and nested hashes
+are verified; private profiles, raw environments and credentials are excluded.
+
+The unchanged **44 receipt, 17 archive and 11 acceptance controls**, strict
+current acceptance, task-ledger and whitespace checks pass. Final documentary
+C changes exactly five paths: current_core_receipt routing in clone.json,
+this appended contract, the existing fractional child task/progress rows and
+the new archive. Matrix gates and documentary/storage exceptions are
+unchanged. All other tracked source, test, fixture, validator, procedure,
+component receipt/archive and navigation-contract bytes remain unchanged.
+**Component native claims remain on A, strict Clone claims on B; C has no
+native execution claim.**
+
+Latest separately accepted actual-window GUI remains exact
+`adcb50e8c7481a86f5c15e858dffb5a6dbd930ff` only, without transfer to A/B/C.
+Remaining GIMP/GTK/dependencies are uninstrumented; component builds retain
+the missing-declarations warning and ordinary runtime diagnostics. Native
+anisotropy, off-center/clamp focus, offsets/overshoot/reversal/old-policy
+equivalence, full legacy pan/radial behavior, physical-device interruption
+and other platforms remain open. Both historical old GUI teardown
+`command_exit=-11` outcomes remain preserved. Old Edge/string-reader runtime
+remains **user-approved SKIPPED/unverified**; no old runtime/capture/oracle was
+accessed or regenerated. No all-196-hunk, parent/whole-section 25, full
+aggregate, final Clone freeze, package, release or whole-port acceptance.
