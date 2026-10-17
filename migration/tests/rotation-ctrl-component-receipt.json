@@ -1,0 +1,388 @@
+{
+  "schema": 1,
+  "kind": "original25.004-navigation-component-publication-summary",
+  "scope": "original25.004-ctrl-mid-drag-three-normal-targets-five-c-unit-asan-ubsan-v1",
+  "native_status": "passed",
+  "attempt": "component-run-001",
+  "tested_source_commit": "edf861423cd438f275332c0e7f3b899dc3126d51",
+  "tested_source_tree": "cdb92379f0c983dbfe6c0473993e4c58ea43e9b9",
+  "pinned_gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "started_utc": "2026-10-17T10:05:34.340591+00:00",
+  "finished_utc": "2026-10-17T10:07:18.664694+00:00",
+  "native_receipt_sha256": "43e1de63ef396f2c7a9547793dfb5791426843f8470b775648b51c3ebba92ad7",
+  "compact_archive": {
+    "path": "migration/tests/rotation-ctrl-component-evidence.tar.xz",
+    "sha256": "e6071f8786ef29dbda4531c7875ab014915b70dcdd62bf71929957ed55484cb5",
+    "bytes": 924344,
+    "member_count": 23,
+    "included_original_member_count": 22,
+    "manifest": "compact-manifest.json",
+    "omitted_binary_member_count": 7
+  },
+  "source_and_fixture_sha256": {
+    "app/display/gimpdisplayshell-rotate.c": "1c07a0afa30325b85ce21540e6607b94aa4b2ed10b40acabdac62f7666cf5728",
+    "app/display/gimpdisplayshell-tool-events.c": "85d4fb2bd7e3623fc246ef336dc759a056d79988f2817c995e74e776b8d5ff20",
+    "app/display/gimpmodifiersmanager.c": "686e0ddfd749140b272c0561cc80394d3bf6e696fa20e1b97e0d8fe6095364dc",
+    "app/display/gimppainternavigation.c": "6d5ace7b15a13c795141e60d206bd1b044a30a6f1e15742097d3b58c65aa24e9",
+    "app/tests/test-painter-navigation-events.c": "bc06069a04b1d8816279854485c75aa9c8f675ce409649612c1a6e6821936257",
+    "app/tests/test-painter-navigation-ui.c": "7a0b30dedbdc50108b2319474b79f406d4ca5ea260b63e98588cc77b14dabd6d",
+    "app/tests/test-painter-navigation.c": "3d5b7a142fa707549fa0074045bd7e7f87e1b9a3a3479d16d1082ee82b874b38",
+    "migration/fixtures/legacy-navigation/rotation.tsv": "ce16608d105af71d652069410e949fd5922085fb8f749474850718821d67c5c7",
+    "migration/fixtures/legacy-rotation-operations/gui-captures/rotation.tsv": "bfc8b4ab8f532f5b8e0d97f2dd7cace9eec1aefe7a4cd532dbf4e4162cd9d46a",
+    "migration/fixtures/legacy-zoom/zoom.tsv": "5fcf9b0f0c66b707a6a57de8e617c49ed9d32dd21750bf1670d2e46ce711a21e"
+  },
+  "external_runner_sha256": "775feef07a556f62d8e0cfaaa897ef193036c307d31c969d3b7197321a1207a6",
+  "committed_procedure_sha256": {
+    "tools/clone_evidence.py": "b83ef664ee2b1c148276fb4c0b8e4461cb42f21f02c20b7f272f10e27c5d8601",
+    "tools/run-painter-frozen-aggregate.py": "4cdc8a36be383487c4cca06fc173f8d3c2b949370318b66fd15f22548eecfada",
+    "tools/package-linux-runtime.py": "c57c9024f97f64025daa178fd799503c1e7493739b2c069d34d3c59e0827e7eb",
+    "migration/tests/build_navigation_event_sanitizers.py": "1b816db8efd621d5bd991f1b88d2cd45a7187f3d959c6d58a44dd8cabfa26039",
+    "tools/run-painter-xvfb.py": "6481502846d9f896cb906c8b1cde26f59d6899d1d5f889e1ffbf8e106e743fde"
+  },
+  "commands": [
+    {
+      "argv": [
+        "ninja",
+        "-C",
+        "/workspace/shared/gimp-clone-component-build",
+        "-j4"
+      ],
+      "cwd": "/workspace/shared/gimp-painter-clone-components",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T10:05:35.548796+00:00",
+      "finished_utc": "2026-10-17T10:06:01.993082+00:00",
+      "raw_log_sha256": "2e85f433ba980da1071aee5d4d846221a79d274d1df5f36a3b006c0690910ccc",
+      "public_log_sha256": "2e85f433ba980da1071aee5d4d846221a79d274d1df5f36a3b006c0690910ccc"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-B",
+        "/workspace/shared/gimp-painter-clone-components/migration/tests/build_navigation_event_sanitizers.py",
+        "/workspace/shared/gimp-clone-component-build",
+        "--report",
+        "/workspace/shared/gimp-rotation-ctrl-validation/component-run-001-private/report.json"
+      ],
+      "cwd": "/workspace/shared/gimp-painter-clone-components",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T10:06:24.601849+00:00",
+      "finished_utc": "2026-10-17T10:06:30.101956+00:00",
+      "raw_log_sha256": "8a866eb679b519337a4ab702e6d335b155218a82401e9e65914835e34b9996fe",
+      "public_log_sha256": "8a866eb679b519337a4ab702e6d335b155218a82401e9e65914835e34b9996fe"
+    },
+    {
+      "argv": [
+        "meson",
+        "test",
+        "-C",
+        "/workspace/shared/gimp-clone-component-build",
+        "--no-rebuild",
+        "--num-processes",
+        "1",
+        "--print-errorlogs",
+        "--logbase",
+        "/workspace/shared/gimp-rotation-ctrl-validation/component-run-001-private/meson",
+        "painter-navigation-events",
+        "painter-navigation-ui",
+        "painter-navigation"
+      ],
+      "cwd": "/workspace/shared/gimp-painter-clone-components",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T10:06:48.063776+00:00",
+      "finished_utc": "2026-10-17T10:06:51.999968+00:00",
+      "raw_log_sha256": "e9f7092ff70b92fb67c90282d12ca11f92f5a1004adb954316d00928ab07b4b1",
+      "public_log_sha256": "e9f7092ff70b92fb67c90282d12ca11f92f5a1004adb954316d00928ab07b4b1"
+    },
+    {
+      "argv": [
+        "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-events-asan"
+      ],
+      "cwd": "/workspace/shared/gimp-clone-component-build",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T10:06:52.030518+00:00",
+      "finished_utc": "2026-10-17T10:06:57.258973+00:00",
+      "raw_log_sha256": "3551fde517e8cf7c0370a3b629f28907368546f28a619d77702b1a020d25318f",
+      "public_log_sha256": "3551fde517e8cf7c0370a3b629f28907368546f28a619d77702b1a020d25318f"
+    }
+  ],
+  "normal_targets": [
+    {
+      "name": "painter-navigation-events",
+      "registered_command": [
+        "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-events"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "tap": {
+        "passed": true,
+        "tap_plans": [
+          12
+        ],
+        "passed_count": 12,
+        "expected_count": 12,
+        "test_names": [
+          "/navigation-events/default-rotation",
+          "/navigation-events/arbitrary-buttons",
+          "/navigation-events/radial-zoom",
+          "/navigation-events/picker-cleanup",
+          "/navigation-events/start/paintbrush",
+          "/navigation-events/start/move",
+          "/navigation-events/start/retained-old",
+          "/navigation-events/start/reject-paintbrush",
+          "/navigation-events/start/reject-move",
+          "/navigation-events/start/primary-paintbrush",
+          "/navigation-events/start/recording-tool",
+          "/navigation-events/rotation/ctrl-mid-drag"
+        ],
+        "expected_test_names": [
+          "/navigation-events/default-rotation",
+          "/navigation-events/arbitrary-buttons",
+          "/navigation-events/radial-zoom",
+          "/navigation-events/picker-cleanup",
+          "/navigation-events/start/paintbrush",
+          "/navigation-events/start/move",
+          "/navigation-events/start/retained-old",
+          "/navigation-events/start/reject-paintbrush",
+          "/navigation-events/start/reject-move",
+          "/navigation-events/start/primary-paintbrush",
+          "/navigation-events/start/recording-tool",
+          "/navigation-events/rotation/ctrl-mid-drag"
+        ],
+        "skipped": [],
+        "crash_diagnostics": [],
+        "failure_diagnostics": [],
+        "nonfatal_warnings": []
+      }
+    },
+    {
+      "name": "painter-navigation-ui",
+      "registered_command": [
+        "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-ui"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "tap": {
+        "passed": true,
+        "tap_plans": [
+          4
+        ],
+        "passed_count": 4,
+        "expected_count": 4,
+        "test_names": [
+          "/navigation-ui/preferences-read",
+          "/navigation-ui/partial-override-roundtrip",
+          "/navigation-ui/existing-exact-config",
+          "/navigation-ui/explicit-any-button"
+        ],
+        "expected_test_names": [
+          "/navigation-ui/preferences-read",
+          "/navigation-ui/partial-override-roundtrip",
+          "/navigation-ui/existing-exact-config",
+          "/navigation-ui/explicit-any-button"
+        ],
+        "skipped": [],
+        "crash_diagnostics": [],
+        "failure_diagnostics": [],
+        "nonfatal_warnings": []
+      }
+    },
+    {
+      "name": "painter-navigation",
+      "registered_command": [
+        "/workspace/shared/gimp-clone-component-build/app/display/painter-navigation",
+        "/workspace/shared/gimp-painter-clone-components/migration/fixtures/legacy-navigation/rotation.tsv",
+        "/workspace/shared/gimp-painter-clone-components/migration/fixtures/legacy-zoom/zoom.tsv"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "tap": {
+        "passed": true,
+        "tap_plans": [
+          6
+        ],
+        "passed_count": 6,
+        "expected_count": 6,
+        "test_names": [
+          "/navigation/golden-rotation",
+          "/navigation/golden-zoom",
+          "/navigation/modifier-bits",
+          "/navigation/midpoint-toggle",
+          "/navigation/mirrored-keys",
+          "/navigation/custom-rotation"
+        ],
+        "expected_test_names": [
+          "/navigation/golden-rotation",
+          "/navigation/golden-zoom",
+          "/navigation/modifier-bits",
+          "/navigation/midpoint-toggle",
+          "/navigation/mirrored-keys",
+          "/navigation/custom-rotation"
+        ],
+        "skipped": [],
+        "crash_diagnostics": [],
+        "failure_diagnostics": [],
+        "nonfatal_warnings": []
+      }
+    }
+  ],
+  "sanitizer": {
+    "command": [
+      "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-events-asan"
+    ],
+    "exit_code": 0,
+    "environment_source": "actual env of exact registered painter-navigation-events Meson result",
+    "private_environment_sha256": "b9e595191d6cb0dd7bbc8535db1cdfac6f8567b2023c87c16ab5f95c18dbf918",
+    "environment_overrides": {
+      "ASAN_OPTIONS": "[environment line omitted]\n",
+      "UBSAN_OPTIONS": "[environment line omitted]\n"
+    },
+    "instrumented_sources": [
+      "app/display/gimpdisplayshell-rotate.c",
+      "app/display/gimpdisplayshell-tool-events.c",
+      "app/display/gimpmodifiersmanager.c",
+      "app/display/gimppainternavigation.c",
+      "app/tests/test-painter-navigation-events.c"
+    ],
+    "suppression_files": [],
+    "tap": {
+      "passed": true,
+      "tap_plans": [
+        12
+      ],
+      "passed_count": 12,
+      "expected_count": 12,
+      "test_names": [
+        "/navigation-events/default-rotation",
+        "/navigation-events/arbitrary-buttons",
+        "/navigation-events/radial-zoom",
+        "/navigation-events/picker-cleanup",
+        "/navigation-events/start/paintbrush",
+        "/navigation-events/start/move",
+        "/navigation-events/start/retained-old",
+        "/navigation-events/start/reject-paintbrush",
+        "/navigation-events/start/reject-move",
+        "/navigation-events/start/primary-paintbrush",
+        "/navigation-events/start/recording-tool",
+        "/navigation-events/rotation/ctrl-mid-drag"
+      ],
+      "expected_test_names": [
+        "/navigation-events/default-rotation",
+        "/navigation-events/arbitrary-buttons",
+        "/navigation-events/radial-zoom",
+        "/navigation-events/picker-cleanup",
+        "/navigation-events/start/paintbrush",
+        "/navigation-events/start/move",
+        "/navigation-events/start/retained-old",
+        "/navigation-events/start/reject-paintbrush",
+        "/navigation-events/start/reject-move",
+        "/navigation-events/start/primary-paintbrush",
+        "/navigation-events/start/recording-tool",
+        "/navigation-events/rotation/ctrl-mid-drag"
+      ],
+      "skipped": [],
+      "crash_diagnostics": [],
+      "failure_diagnostics": [],
+      "nonfatal_warnings": []
+    }
+  },
+  "integrity_checks": {
+    "source_unchanged": true,
+    "normal_elf_unchanged": true,
+    "focused_builder_preserved_normal_elf": true,
+    "freshness_unchanged": true,
+    "compile_database_unchanged": true,
+    "registry_unchanged": true,
+    "sanitizer_artifacts_unchanged": true,
+    "preserved_sanitizer_copies_match": true,
+    "all_361_catalogs_unchanged": true
+  },
+  "normal_tap_passed_count": 22,
+  "sanitizer_tap_passed_count": 12,
+  "new_finite_case": {
+    "registered_test": "/navigation-events/rotation/ctrl-mid-drag",
+    "real_tools": [
+      "Paintbrush",
+      "Move"
+    ],
+    "retained_old_sequences": [
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "registered_case_count": 1,
+    "real_tool_replays": 2,
+    "angle_contract_degrees": [
+      7.5,
+      7.5,
+      7.5,
+      15,
+      15,
+      15,
+      15,
+      7.5,
+      7.5
+    ],
+    "interpretation": "One registered case over two tools. Ctrl press and release alone preserve the navigation snapshot; stationary motion applies or removes the 15-degree constraint. The eleven preceding event cases are unchanged."
+  },
+  "warnings_and_diagnostics": [
+    "Native event logs retain missing application icons, ignored dummy plug-in entries, unavailable session/cloud-provider D-Bus and GLib setenv/unsetenv thread-safety debug messages. These are not hidden by empty nonfatal_warnings classifier arrays.",
+    "No skipped GTests, crash, failed TAP or sanitizer error is accepted. Dummy plug-in discovery messages are not skipped GTests.",
+    "Default and focused build logs are retained. No compiler warning lines occur in this accepted incremental default build; this is not a clean-from-empty build or warning-free application claim."
+  ],
+  "omitted_original_members": {
+    "sanitizer-artifacts/app/tests/painter-navigation-events-asan": {
+      "sha256": "abd324dde01162eb3d8d66997cba5fbb6bdabd3c42cb0362007d3efc4c86ee2c",
+      "bytes": 77504208
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpdisplayshell-rotate.c.o": {
+      "sha256": "c523553c2c35f9d78521acdc3cff628cf7a07b3b7183be5f25a0ce3b337c1c67",
+      "bytes": 107200
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpdisplayshell-tool-events.c.o": {
+      "sha256": "f06d2487e59c9ab3c280707714143ac2449df1714f179424a4c0a653a5fd75f5",
+      "bytes": 659632
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpmodifiersmanager.c.o": {
+      "sha256": "b160044fee46b3275aa82edeb8d38ff6fd429eb8fb3ab581b43d6722cb70b796",
+      "bytes": 224896
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimppainternavigation.c.o": {
+      "sha256": "733d2e7d2c90ef2ab38d2e7e76b249675bfd40a9cb25d52815e8951b846865b0",
+      "bytes": 24784
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/libappdisplay.a": {
+      "sha256": "269ba493886dba1d56e5021be8ed2ae2de991a3d46eec37607cddfeb580ae219",
+      "bytes": 43002
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/test-painter-navigation-events.c.o": {
+      "sha256": "df3afcae8ca848f55572cea0243c65eb99e7603ac488df5d7f6e57da5037e446",
+      "bytes": 655880
+    }
+  },
+  "limits": [
+    "Only the three named normal Meson targets are run.",
+    "ASan/UBSan covers exactly five C units; remaining GIMP, GTK and dependencies are uninstrumented.",
+    "LeakSanitizer is disabled; no suppression files or suppression options are used.",
+    "Synthetic display events are not physical-device acceptance.",
+    "No full aggregate, final Clone freeze, package or release acceptance is claimed.",
+    "Old Edge/string old-reader runtime is skipped and unverified; no legacy runtime is accessed.",
+    "Real-tool navigation state assertions are source-derived; retained old rows 22–30 provide the single unmirrored stationary timing sequence, not new old-runtime execution.",
+    "Both retained old GUI captures still record command_exit=-11 during teardown. No old runtime was run for this increment.",
+    "The separately published portrait GUI smoke ran on older source 22708f41d368c6c7c2e425d30ea2765b9d29158b, not this component source or its receipt-only descendant.",
+    "No physical tablet/mouse, focus/device interruption, other-platform, whole-section-25 or historical full-aggregate acceptance is claimed.",
+    "This receipt names only tested source A above. This receipt-only publication descendant B has not been natively tested for navigation by that run.",
+    "Original 25.004 and 25.005 ledger closure is not made here. The unchanged strict Clone 226-normal/62-focused-sanitizer gate must run on the receipt-integrated source before parent closure."
+  ],
+  "full_public_archive": {
+    "filename": "component-run-001-passed-public.tar.xz",
+    "sha256": "19032ddda16c72a031edaf5afb6c98f8cf61f7d21f710b8eed9c3605911fc441",
+    "bytes": 21680848,
+    "storage": "Retained separately from the repository; contains all original public files including the seven copied sanitizer artifacts."
+  }
+}
