@@ -38,7 +38,7 @@ parents complete or claim XCF round-trip/UI integration is complete.
 | Missing saved name remains pending | `:306–344` | No eager fallback; original text retained; `deferred_name` |
 | Direct setter does not clear a pending name | `:277–303` plus `:431–440` | Setter emits source update; the old update-size lookup is preserved, including resolving an already-present name during that update |
 | Actual source, not name, survives rename | `:277–303` | Weak identity retained; last name remembered safely; `deferred_name` |
-| Update uses projected source pixels | `:477–562`, `gimplayer-project.c:38–156` | Committed projected ROI feeds inherited `gimp:buffer-source-validate`, then the clone's own offset/mode/mask graph; `projected_pixels`, `partial_update_and_graph` |
+| Update uses projected source pixels | `:511–586`, `gimplayer-project.c:38–153` | Committed projected ROI feeds inherited `gimp:buffer-source-validate`, then the clone's own offset/mode/mask graph; `projected_pixels`, `partial_update_and_graph` |
 | Source opacity/applied mask are baked | `initial_inten_a_pixels`, `INT_MULT/INT_MULT3` | Original byte rounding preserved, not a double-opacity graph link |
 | Show-mask bypasses opacity | `gimplayer-project.c:50–68` | Opaque grayscale mask output; measured pixel fixture |
 | Source visibility ignored; blend mode ignored except Dissolve | `gimplayer-project.c`, `initial_sub_region` | Explicit initial-region projection, not final source mode graph |
@@ -205,7 +205,7 @@ dependency gates rather than automatically checking the parent tasks.
 
 - The complete saved-field matrix, positive same-name internal stable-ID
   checkpoint and combined-tree aggregate remain separate acceptance work
-- Indexed fixtures, component-visibility changes, cross-image workflows beyond
+- Indexed fixtures, genuine component-visibility runtime comparison, cross-image workflows beyond
   the measured ordinary RGB direct/group copy and live source relocation, full
   transform/resize Undo ordering and compound saved artworks remain broader
   comparison work
@@ -217,3 +217,50 @@ dependency gates rather than automatically checking the parent tasks.
 
 - Existing baseline `save-and-export` failure is unrelated and is not attributed
   to this feature; normal clone tests do not claim the app suite is entirely green
+
+## Component visibility regression scope (14.007/component-visibility-regression)
+
+This independent verification child uses completed `14.001/core-implementation`,
+`02.005`, and `09.002` under the existing WBS bounded-parallelization rule. It
+does not close parent `14.007`, predecessor `14.006`, broader blend-mode, genuine
+runtime, GUI or release gates. No eager-refresh feature or production change is
+proposed. Native acceptance is pending at this source checkpoint.
+
+The new expected bytes are derived from pinned legacy source
+`afa43fae3e920210146abed514f136fd49f671b5`, not a new genuine runtime capture:
+
+- `gimpclonelayer.cpp:277–303,511–586`: source update/frozen subscriptions, no
+  image component-visibility subscription; source update projects its ROI.
+- `gimplayer-project.c:95–144`: RGB/Gray without alpha selects
+  INITIAL_INTENSITY, RGBA/Gray-alpha selects INITIAL_INTENSITY_ALPHA; both
+  receive the image visibility array.
+- `paint-funcs-generic.h:814–995`: hidden colors are zero and hidden alpha is
+  zero, including generated alpha for a source without alpha.
+- `paint-funcs-utils.h:22–28`: opacity 0.37 becomes byte 94; source alpha 101 and
+  mask 93 yield INT_MULT(94,101)=37, INT_MULT(94,93)=34 and
+  INT_MULT3(94,101,93)=14. The last result would be 13 with truncated or chained
+  multiplication, making the regression sensitive to rounding changes.
+- `gimplayer-project.c:49–63`: show-mask copies opaque grayscale and bypasses
+  source opacity and component visibility. The existing genuine 128-mask fixture
+  supports only that measured show-mask behavior, not the new toggle scenarios.
+
+The six added tests cover all 16 RGB/RGBA and all 4 Gray/Gray-alpha component
+visibility combinations, both without and with an applied mask (80 scenes).
+Every scene checks exact full-cache and GEGL source-node bytes before and after
+toggle-only operations, an explicit 1x1 source update at (1,1), visibility
+restoration, an update at a distinct ROI and a final refresh of the stale ROI.
+Each explicit update must emit exactly one matching Clone update rectangle;
+all five neighboring cached pixels must remain unchanged. Four further show-mask
+scenes cover RGB/Gray with/without alpha at zero opacity with every component
+hidden and mask bytes 0, 1, 93, 128, 254, 255.
+
+Final image projection is distinct: current `gimp_image_get_graph` installs
+`gimp:mask-components` with alpha 1.0. A separate RGB test demonstrates opaque
+black final projection while Clone cache first retains its pre-toggle bytes,
+then becomes transparent black only after source update. Gray final-projection
+semantics are outside this assertion; no assumption about them is used to
+derive Clone cache expectations.
+
+Historical core reports and their recorded source hashes remain historical.
+A new scoped source-bound receipt is required for the current Clone reruns;
+merely replacing old expected hashes cannot establish acceptance.

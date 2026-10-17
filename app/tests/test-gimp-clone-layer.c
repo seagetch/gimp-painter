@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later
- * Legacy expectations measured with afa43fae, not inferred from this port.
+ * Legacy fixture expectations measured with afa43fae; the component-visibility
+ * cases below explicitly use source-derived expectations from the pinned source.
  */
 #include "config.h"
 #include <gegl.h>
@@ -236,6 +237,269 @@ static void partial_update_and_graph (void)
   gimp_drawable_update (GIMP_DRAWABLE (source), 90, 90, 1, 1);
   g_object_unref (image);
 }
+
+/* Source-derived component expectations, not a new old-runtime capture:
+ * afa43fae gimplayer-project.c:95-144 selects initial_inten[_a]_pixels,
+ * paint-funcs-generic.h:814-995 zeroes hidden color AND alpha components,
+ * including generated alpha for an RGB/Gray source without alpha.
+ * At opacity 0.37 (byte 94), source alpha 101 and mask 93:
+ * INT_MULT(94,101)=37; INT_MULT(94,93)=34; INT_MULT3(94,101,93)=14.
+ * The last value is 13 with either truncation or chained INT_MULT, so this
+ * also retains the original single-rounding applied-mask contract.
+ */
+typedef struct
+{
+  guint         count;
+  GeglRectangle rect;
+} ComponentUpdate;
+
+static void
+component_update (GimpDrawable *drawable,
+                  gint          x,
+                  gint          y,
+                  gint          width,
+                  gint          height,
+                  gpointer      data)
+{
+  ComponentUpdate *update = data;
+  update->count++;
+  update->rect = *GEGL_RECTANGLE (x, y, width, height);
+}
+
+static void
+component_assert_update (ComponentUpdate *update,
+                         gint             x,
+                         gint             y)
+{
+  g_assert_cmpuint (update->count, ==, 1);
+  g_assert_cmpint (update->rect.x, ==, x);
+  g_assert_cmpint (update->rect.y, ==, y);
+  g_assert_cmpint (update->rect.width, ==, 1);
+  g_assert_cmpint (update->rect.height, ==, 1);
+  update->count = 0;
+}
+
+/* Like partial_update_and_graph, inspect the committed drawable buffer and
+ * its source node independently of the image's final component-mask node.
+ * Compare every byte, including all five pixels outside each 1x1 update. */
+static void
+component_assert_cache_and_node (GimpLayer    *clone,
+                                 const Babl   *format,
+                                 const guchar *expected,
+                                 gsize         size)
+{
+  guchar actual[3 * 2 * 4];
+  GeglNode *node = gimp_drawable_get_source_node (GIMP_DRAWABLE (clone));
+
+  gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (clone)),
+                   GEGL_RECTANGLE (0, 0, 3, 2), 1.0, format, actual,
+                   GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+  g_assert_cmpmem (actual, size, expected, size);
+  gegl_node_blit (node, 1.0, GEGL_RECTANGLE (0, 0, 3, 2), format, actual,
+                  GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_DEFAULT);
+  g_assert_cmpmem (actual, size, expected, size);
+}
+
+static void
+component_set_visible (GimpImage *image,
+                       gboolean   gray,
+                       guint      bits)
+{
+  const GimpChannelType rgb[] = { GIMP_CHANNEL_RED, GIMP_CHANNEL_GREEN,
+                                  GIMP_CHANNEL_BLUE, GIMP_CHANNEL_ALPHA };
+  const GimpChannelType mono[] = { GIMP_CHANNEL_GRAY, GIMP_CHANNEL_ALPHA };
+  const GimpChannelType *channels = gray ? mono : rgb;
+
+  for (guint c = 0; c < (gray ? 2 : 4); c++)
+    gimp_image_set_component_visible (image, channels[c], (bits & (1u << c)) != 0);
+}
+
+static void
+component_visibility_case (gboolean gray,
+                           gboolean alpha)
+{
+  const Babl *format = babl_format (gray ? "Y'A u8" : "R'G'B'A u8");
+  const Babl *source_format = babl_format (gray ? (alpha ? "Y'A u8" : "Y' u8") :
+                                                 (alpha ? "R'G'B'A u8" : "R'G'B' u8"));
+  const guint channels = gray ? 2 : 4;
+  const guint all = (1u << channels) - 1;
+  const gsize size = 3 * 2 * channels;
+
+  for (guint apply = 0; apply < 2; apply++)
+    for (guint visible = 0; visible <= all; visible++)
+      {
+        GimpImage *image = gimp_image_new (gimp, 3, 2, gray ? GIMP_GRAY : GIMP_RGB,
+                                          GIMP_PRECISION_U8_NON_LINEAR);
+        GimpLayer *source = gimp_layer_new (image, 3, 2, source_format, "components",
+                                            0.37, GIMP_LAYER_MODE_NORMAL_LEGACY);
+        GimpLayer *clone;
+        guchar input[3 * 2 * 4], expected[3 * 2 * 4], baseline[3 * 2 * 4];
+        ComponentUpdate update = { 0 };
+        gulong handler;
+
+        g_test_message ("source-derived %s%s apply-mask=%u visibility=%u",
+                        gray ? "Gray" : "RGB", alpha ? "-alpha" : "", apply, visible);
+        g_assert_true (gimp_image_add_layer (image, source, NULL, 0, FALSE));
+        g_assert_cmpint (gimp_drawable_has_alpha (GIMP_DRAWABLE (source)), ==, alpha);
+        for (guint p = 0; p < 6; p++)
+          {
+            input[p * channels] = gray ? 129 + p : 204 + p;
+            if (!gray)
+              { input[p * channels + 1] = 51 + p; input[p * channels + 2] = 102 + p; }
+            input[p * channels + channels - 1] = 101;
+          }
+        gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)),
+                         GEGL_RECTANGLE (0, 0, 3, 2), 0, format, input, GEGL_AUTO_ROWSTRIDE);
+        if (apply)
+          {
+            GimpLayerMask *mask = gimp_layer_create_mask (source, GIMP_ADD_MASK_WHITE, NULL);
+            guchar mask_pixels[6];
+            GError *error = NULL;
+            memset (mask_pixels, 93, sizeof mask_pixels);
+            gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (mask)),
+                             GEGL_RECTANGLE (0, 0, 3, 2), 0, babl_format ("Y u8"),
+                             mask_pixels, GEGL_AUTO_ROWSTRIDE);
+            g_assert_nonnull (gimp_layer_add_mask (source, mask, FALSE, &error));
+            g_assert_no_error (error);
+          }
+        clone = gimp_clone_layer_new (image, source, 3, 2, "clone", 1.0,
+                                      GIMP_LAYER_MODE_NORMAL_LEGACY);
+        g_assert_true (gimp_image_add_layer (image, clone, NULL, 0, FALSE));
+        memcpy (baseline, input, size);
+        for (guint p = 0; p < 6; p++)
+          baseline[p * channels + channels - 1] = apply ? (alpha ? 14 : 34) : (alpha ? 37 : 94);
+        memcpy (expected, baseline, size);
+        component_assert_cache_and_node (clone, format, expected, size);
+        handler = g_signal_connect (clone, "update", G_CALLBACK (component_update), &update);
+
+        /* Visibility signals invalidate the image projection, not Clone's
+         * cache. Draining pending work catches an unintended eager idle. */
+        component_set_visible (image, gray, visible);
+        while (g_main_context_iteration (NULL, FALSE));
+        component_assert_cache_and_node (clone, format, expected, size);
+        g_assert_cmpuint (update.count, ==, 0);
+
+        /* Refresh the lower-middle pixel only, preserving every neighbor. */
+        gimp_drawable_update (GIMP_DRAWABLE (source), 1, 1, 1, 1);
+        for (guint c = 0; c < channels; c++)
+          if (!(visible & (1u << c))) expected[4 * channels + c] = 0;
+        component_assert_update (&update, 1, 1);
+        component_assert_cache_and_node (clone, format, expected, size);
+        g_assert_cmpuint (update.count, ==, 0);
+
+        /* Restoring image visibility also leaves the mixed-age cache alone.
+         * A different ROI cannot accidentally repair the previous ROI. */
+        component_set_visible (image, gray, all);
+        while (g_main_context_iteration (NULL, FALSE));
+        component_assert_cache_and_node (clone, format, expected, size);
+        g_assert_cmpuint (update.count, ==, 0);
+        gimp_drawable_update (GIMP_DRAWABLE (source), 0, 0, 1, 1);
+        component_assert_update (&update, 0, 0);
+        component_assert_cache_and_node (clone, format, expected, size);
+        gimp_drawable_update (GIMP_DRAWABLE (source), 1, 1, 1, 1);
+        component_assert_update (&update, 1, 1);
+        component_assert_cache_and_node (clone, format, baseline, size);
+        g_assert_cmpuint (update.count, ==, 0);
+        g_signal_handler_disconnect (clone, handler);
+        g_object_unref (image);
+      }
+}
+
+static void component_visibility_rgb (void) { component_visibility_case (FALSE, FALSE); }
+static void component_visibility_rgba (void) { component_visibility_case (FALSE, TRUE); }
+static void component_visibility_gray (void) { component_visibility_case (TRUE, FALSE); }
+static void component_visibility_gray_alpha (void) { component_visibility_case (TRUE, TRUE); }
+
+static void
+component_visibility_show_mask (void)
+{
+  for (guint gray = 0; gray < 2; gray++)
+    for (guint alpha = 0; alpha < 2; alpha++)
+      {
+        GimpImage *image = gimp_image_new (gimp, 3, 2, gray ? GIMP_GRAY : GIMP_RGB,
+                                          GIMP_PRECISION_U8_NON_LINEAR);
+        const Babl *format = babl_format (gray ? "Y'A u8" : "R'G'B'A u8");
+        GimpLayer *source = gimp_layer_new (image, 3, 2,
+            babl_format (gray ? (alpha ? "Y'A u8" : "Y' u8") :
+                                (alpha ? "R'G'B'A u8" : "R'G'B' u8")),
+            "show-mask", 0.0, GIMP_LAYER_MODE_NORMAL_LEGACY);
+        GimpLayerMask *mask;
+        GimpLayer *clone;
+        const guchar mask_pixels[] = { 0, 1, 93, 128, 254, 255 };
+        const guint channels = gray ? 2 : 4;
+        guchar expected[24];
+        ComponentUpdate update = { 0 };
+        gulong handler;
+        GError *error = NULL;
+
+        g_assert_true (gimp_image_add_layer (image, source, NULL, 0, FALSE));
+        mask = gimp_layer_create_mask (source, GIMP_ADD_MASK_WHITE, NULL);
+        gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (mask)),
+                         GEGL_RECTANGLE (0, 0, 3, 2), 0, babl_format ("Y u8"),
+                         mask_pixels, GEGL_AUTO_ROWSTRIDE);
+        g_assert_nonnull (gimp_layer_add_mask (source, mask, FALSE, &error));
+        g_assert_no_error (error);
+        gimp_layer_set_show_mask (source, TRUE, FALSE);
+        component_set_visible (image, gray, 0);
+        clone = gimp_clone_layer_new (image, source, 3, 2, "clone", 1.0,
+                                      GIMP_LAYER_MODE_NORMAL_LEGACY);
+        g_assert_true (gimp_image_add_layer (image, clone, NULL, 0, FALSE));
+        for (guint p = 0; p < 6; p++)
+          {
+            for (guint c = 0; c < channels - 1; c++)
+              expected[p * channels + c] = mask_pixels[p];
+            expected[p * channels + channels - 1] = 255;
+          }
+        /* Same show-mask bypass as projected_pixels and the accepted genuine
+         * 128 mask fixture. Hidden-component combinations are source-derived. */
+        component_assert_cache_and_node (clone, format, expected, 6 * channels);
+        handler = g_signal_connect (clone, "update", G_CALLBACK (component_update), &update);
+        gimp_drawable_update (GIMP_DRAWABLE (source), 1, 1, 1, 1);
+        component_assert_update (&update, 1, 1);
+        component_assert_cache_and_node (clone, format, expected, 6 * channels);
+        g_assert_cmpuint (update.count, ==, 0);
+        g_signal_handler_disconnect (clone, handler);
+        g_object_unref (image);
+      }
+}
+
+static void
+component_visibility_projection_boundary (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *source = new_layer (image, "source", NULL, 0);
+  GimpCloneLayer *clone;
+  ComponentUpdate update = { 0 };
+  guchar value[4];
+  gulong handler;
+
+  fill (source, 204, 51, 102, 128);
+  gimp_item_set_visible (GIMP_ITEM (source), FALSE, FALSE);
+  gimp_layer_set_opacity (source, 0.5, FALSE);
+  clone = new_clone (image, source);
+  gimp_pickable_flush (GIMP_PICKABLE (image));
+  handler = g_signal_connect (clone, "update", G_CALLBACK (component_update), &update);
+  component_set_visible (image, FALSE, 0);
+  gimp_pickable_flush (GIMP_PICKABLE (image));
+  /* The image graph uses mask-components alpha=1.0. It is NOT the legacy
+   * initial_region cache oracle. Only RGB final projection is asserted here. */
+  g_assert_true (gimp_pickable_get_pixel_at (GIMP_PICKABLE (image), 0, 0,
+                                            babl_format ("R'G'B'A u8"), value));
+  g_assert_cmpmem (value, 4, ((guchar[]) { 0, 0, 0, 255 }), 4);
+  pixel (GIMP_LAYER (clone), 204, 51, 102, 64);
+  g_assert_cmpuint (update.count, ==, 0);
+  gimp_drawable_update (GIMP_DRAWABLE (source), 0, 0, 1, 1);
+  component_assert_update (&update, 0, 0);
+  pixel (GIMP_LAYER (clone), 0, 0, 0, 0);
+  gimp_pickable_flush (GIMP_PICKABLE (image));
+  g_assert_true (gimp_pickable_get_pixel_at (GIMP_PICKABLE (image), 0, 0,
+                                            babl_format ("R'G'B'A u8"), value));
+  g_assert_cmpmem (value, 4, ((guchar[]) { 0, 0, 0, 255 }), 4);
+  g_assert_cmpuint (update.count, ==, 0);
+  g_signal_handler_disconnect (clone, handler);
+  g_object_unref (image);
+}
+
 static void deferred_name (void)
 {
   GimpLayer *later;
@@ -1553,6 +1817,9 @@ int main (int argc, char **argv)
   ADD (dissolve_legacy_fixture); ADD (gray_and_high_precision);
   ADD (frozen_source_disposal); ADD (group_duplicate_internal_reference);
   ADD (inert_construction); ADD (reentrant_source_replace); ADD (cpp_header_layout); ADD (projected_pixels); ADD (partial_update_and_graph); ADD (deferred_name);
+  ADD (component_visibility_rgb); ADD (component_visibility_rgba);
+  ADD (component_visibility_gray); ADD (component_visibility_gray_alpha);
+  ADD (component_visibility_show_mask); ADD (component_visibility_projection_boundary);
   ADD (native_type_lifecycle);
   ADD (native_undo_parent_contract);
   ADD (recursive_first_match); ADD (offset_size_and_noop_transforms);

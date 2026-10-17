@@ -593,6 +593,7 @@
 | 14.006 | [ ] | clone 自身の座標処理を実装する | 14.005 | source 座標との合成が一致 |
 | 14.006/editability-contract | [ ] | CloneLayer の編集可否を現行ロック規約へ対応付ける | 14.005, 01.005/gimp3-layer-slots | 廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認 |
 | 14.007 | [ ] | source の可視性・合成変更を処理する | 14.006 | 旧版の更新範囲と表示が一致 |
+| 14.007/component-visibility-regression | [ ] | Cloneのcomponent可視性と遅延ROI更新を検証する | 14.001/core-implementation, 02.005, 09.002 | 旧source由来のRGB/RGBA/Gray/Gray-alpha全component組合せ・toggle時cache保持・1x1更新通知・source-node・opacity/mask丸め・show-maskを通常/focused sanitizerで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは別途保持 |
 | 14.008 | [ ] | source 改名を処理する | 14.007 | 既存参照を旧仕様に沿って維持 |
 | 14.009 | [ ] | 同名 source を処理する | 14.008 | 保存前後で別レイヤーへ変わらない |
 | 14.010 | [ ] | clone の複製を実装する | 14.009 | 複製先の source が旧仕様と一致 |
@@ -662,6 +663,7 @@
 | 16.003/private-swap-teardown | [x] | 独立Filter helperのGEGL swap終了待機を整合させる | 16.003/isolated-convolution-route | 公開swap-busyをproducer終了後に有界監視し残storageを検査。実8成功/例外pair・procedure/convolution全corpus（771.92s/268.04s）・14診断control合格、source/binary seal不変。installed runtime・sanitizer・全aggregateは未再実行（migration/tests/filter-swap-teardown.json） |
 | 16.003/spill-components | [x] | 独立raster・有界転送queue・旧演算をspill対応する | 16.003/native-gray-transfer, 17.001/bounded-admission | storage6/transport9と257実旧・212追加・234失敗注入が通常/sanitizer合格。64bit addressing・transpose・cancel/cleanupを検証。tmpfs/RSS境界とWindows未検証を明示、live大画像gateは未完了 |
 | 16.003/edge-raw-shadow-foundation | [x] | 旧Edge全6方式の独立raw shadow基盤を実装・検証する | 16.003/spill-components, 16.003/context-merge-foundation | DONE: 固定旧C oracle・全border/ROI/hidden RGB・有界vector/spill、通常/限定sanitizer、default buildと13登録target、76 RGBA/45 Gray出力一致。失敗receipt/警告保持、owner/XCF/UI・全aggregateは別gate |
+| 16.003/legacy-edge-pilot | [ ] | 旧Edge実行pilotの未検証状態を保存する | 16.003/edge-raw-shadow-foundation | SKIPPED (user-approved); no native execution; legacy compatibility unverified。全owner/full-corpus互換gateは未完了（migration/contracts/edge-legacy-pilot-disposition.md） |
 | 16.003/sharpen-raster-foundation | [x] | 旧Sharpenの有界raw-shadow演算を独立実装する | 16.003/spill-components, 16.003/context-merge-foundation | 固定旧C oracleとvector/spillの1232比較・2048定数field・全I/O取消/失敗292を通常/ASan・UBSanで検証、native既定buildと6target合格。非UI raw RGBA8のみ、owner context/旧XCF/live route・実旧runtime capture・全aggregateは未完了（migration/tests/legacy-sharpen-raster.json） |
 | 16.003/native-sharpen-context | [x] | 旧Sharpenのowner contextと旧XCF定義を実行へ接続する | 16.003/sharpen-raster-foundation, 16.003/context-merge-foundation | native U8 RGB/GrayのROI・late context・vector/spill・取消/世代・cache保持、実旧74scene/116出力・20旧XCF・11不正capsuleを検証。11native+2XCF、7独立target+7全回帰target、同13pathの限定ASan/UBSan合格。UI/全aggregate/全OSは別gate（migration/tests/native-sharpen-context.json） |
 | 16.003/threshold-alpha-raster-foundation | [x] | 旧Threshold Alphaの有界raw-shadow演算を独立検証する | 16.003/spill-components, 16.003/context-merge-foundation | 既存receiptの通常/ASan・UBSan各1222生成case・20実旧PDB出力・200I/O取消/失敗caseを履歴hashで照合。一般精度・procedure・owner/XCFは別義務（migration/tests/native-threshold-alpha-context.json; migration/contracts/task-ledger-repair.md） |
