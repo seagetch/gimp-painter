@@ -1155,18 +1155,26 @@ validation is pending. Old Edge/string-reader runtime stays
 **SKIPPED/unverified**; both retained old captures keep teardown
 `command_exit=-11`. No old runtime, capture or oracle was run or regenerated.
 
-## SOURCE-ONLY: transformed radial zoom and interior middle-pan regressions
+## Transformed radial zoom and interior middle-pan component acceptance
 
-This appendix freezes a bounded extension on public baseline
-`17a1875ba049b2d349b265b6e30e41c431dda0ea`. It is **SOURCE-ONLY**:
-**default build, native normal tests, focused ASan/UBSan tests and GUI execution
-have NOT RUN for this increment**. Prior receipts above remain evidence only
-for their own exact sources. No existing result is transferred to these new
-regressions, and no old runtime, capture or oracle is run or regenerated.
+This appendix records the bounded extension from public baseline
+`17a1875ba049b2d349b265b6e30e41c431dda0ea`. The exact-source default build,
+**41 normal cases (31 event + 4 UI + 6 pure) and 31 focused event ASan/UBSan
+cases passed** on public source A
+`0c8620d9064f8c912d9424266771e045c276f582`, tree
+`0dbd6b2306bccb83e3d38fb97db158411e3a5ac0`, with pinned gimp-data
+`a31e5dea4f572fb5f33b06f5c4b86db5f30643dc`. This accepts only the finite
+modern component matrix below. **No new branch portrait GUI smoke ran.**
+Prior receipts remain bound to their own exact sources; no old runtime,
+capture or oracle was run or regenerated.
 
 `migration/tests/transformed-drag-cases.json` freezes the inputs, independent
 literal geometry, retained row selection, immutable source/fixture hashes,
-old registrations and common-angle draw-block seal. Removing only the new
+old registrations and common-angle draw-block seal. Its original SOURCE-ONLY /
+NOT RUN labels remain unchanged as historical pre-execution metadata. The
+new exact-source result is recorded separately in
+`migration/tests/transformed-drag-component-receipt.json`; the input manifest
+is not rewritten to pretend it was an execution receipt. Removing only the new
 block and four registrations must reproduce the complete baseline event
 fixture hash, preserving every preceding function body.
 `migration/tests/test_transformed_drag_cases.py` checks those bounded source
@@ -1245,25 +1253,102 @@ inverse-start truncation differ from modern R*F/image-center representation;
 raw old/current offsets must not be equated. Both historical old GUI capture
 teardown `command_exit=-11` outcomes remain retained.
 
-### Required exact-source execution gates, still NOT RUN
+### Exact-source component run and immutable evidence
 
-Expected inventory after these four registrations: **41 normal cases
-(31 event + 4 UI + 6 pure) and 31 focused event ASan/UBSan cases**. These
-numbers are expectations, not passing results. The focused builder adds
-scale, scroll and transform to navigation arithmetic, modifier manager,
-display shell, rotate, tool-events and event fixture: **nine C units** total.
-The zoom-model shared library, device-coordinate adapter, tool dispatch,
-renderer/GTK and remaining dependencies are uninstrumented; **LSan is off**.
-This is partial instrumentation, not complete scale/device-path sanitizing.
+`component-run-001` ran on 2026-10-17 from 13:23:00 to 13:25:05 UTC.
+All four commands exited 0: incremental default build, focused builder,
+registered no-rebuild normal targets, and focused event binary. All 41 normal
+and 31 focused cases passed in exact source-defined order, with no skipped or
+failing TAP or sanitizer failure diagnostics. The 27 preceding event cases
+and their unchanged source bodies and 38 actual GTK draw snapshots per event
+execution remain required and passed. The optional PNG hook was not enabled;
+these are logged native assertions, not saved screenshots or a portrait GUI
+smoke. The source event fixture SHA-256 is
+`47b77f074e759f89faadcc0cc8cab15cc15f7d247117715041ecae3acf641039`.
 
-Native execution still needs the established shared build lock, exact-source
-clean snapshots, default build, no-rebuild registered normal targets and the
-focused binary under the actual registered Meson event environment/workdir,
-with unchanged normal ELFs and retained diagnostics. The component-tested
-source, receipt-integrated strict-Clone source and final documentary source
-remain distinct. Subsequent receipt integration requires the unchanged strict
-Clone **226 normal / 62 focused** gate and its evidence controls; the separate
-portrait GUI gate cannot be borrowed from the earlier 0f16 source.
+Each event execution established the actual **849 x 450** canvas viewport and
+passed 16 main drags, 16 stationary reentries and six genuine fractional
+primary press/release probe pairs. Logs retain 30 radial motion records,
+six clamp records and six primary probe records. The pan assertion helper
+ran **32 times**: six angle/reflection contexts times five motions, plus two
+device-image-origin pan motions. Each invocation checks exact offsets,
+invariant image position and the production inverse, plus three independent
+forward landmarks: **32 inverse and 96 landmark comparisons**. These counts
+come from passed source assertions, not extra log rows or registered tests.
+The 34 preflight destination states produce 68 axis records; every observed
+interior margin is at least 209 pixels, exceeding the frozen 16-pixel minimum.
+The ordinary immediate shell cleanup and later synchronized native no-grab
+assertions pass. No test-side ungrab or state repair is added.
+
+Radial factors and image-center tolerance pass in the six frozen contexts.
+Both repeated lower requests apply 1/256, both repeated upper requests apply
+256, and returning to each start restores its original factor without anchor
+replacement. **Clamp focus and offsets are not accepted.** Transformed pan
+passes the frozen offset deltas, stationary repetition and return to origin;
+all six primary callbacks match the precise independent inverse. The retained
+27 event cases also preserve 34 draw CTMs, 51 raster classifications, 18
+overlay differences and three widget-anchor observations, plus 96 mirrored-key
+sends, 64 press/32 release callbacks and 24 boundary observations/20 signed
+steps per execution. These are retained checks, not new drag coverage.
+
+The original native receipt SHA-256 is
+`925c62539afbeaa6dca5edeca70cbb75a3f9ac766b83d068f0e9022b129d44a8`.
+All **32 receipt-listed file hashes** and **33 original public files** were
+verified byte-for-byte against the separate full public archive
+`component-run-001-passed-public.tar.xz`, **22,341,764 bytes**, SHA-256
+`eb119e254d43ec9036b296662fd9cbecfc48e7b34f015497e928361231b80722`.
+The compact `migration/tests/transformed-drag-component-evidence.tar.xz`
+contains **22 unchanged original files plus one packaging manifest**. It
+preserves the complete original receipt unchanged, including all nested
+hashes, and binds the eleven omitted sanitizer executable/object/thin-archive
+copies by exact size and hash. Those bytes remain in the full archive; the
+compact package is not a standalone rebuild package. Deterministic repacking
+reproduced identical bytes. Only completed public output is packaged, with no
+private profiles, raw environments or authentication material.
+
+All nine integrity seals passed, including four equal clean exact-A source
+snapshots, three equal 2,873-entry normal ELF inventories, focused-builder
+preservation of normal ELFs, full build freshness, compile database, registered
+tests, focused artifacts/copies and all 361 locale catalogs. The evidence binds
+**40 source/fixture inputs** and five committed procedures. Both the parent
+and separate independent native audits reproduced all nine public privacy
+transformations and verified the actual registered Meson event environment
+with only the two exact sanitizer option overrides. The independent audit
+also checked all nine instrumented objects and their ASan/UBSan references,
+the private display archive and test-object link.
+
+The focused builder instruments scale, scroll and transform together with
+navigation arithmetic, modifier manager, display shell, rotate, tool-events
+and the event fixture: **nine C units**. The zoom-model shared library,
+device-coordinate adapter, tool dispatch, renderer/GTK and remaining GIMP and
+dependencies are uninstrumented; **LSan is off** and no suppression files or
+options are used. This is partial instrumentation, not complete scale/device
+path sanitizing. After ANSI stripping, **both default and focused build logs
+retain one -Wmissing-declarations warning** for
+`navigation_draw_observer_get_type` at
+`app/tests/test-painter-navigation-events.c:1488:40`. No source was changed to
+hide it. Ordinary icon, plug-in, D-Bus and GLib debug diagnostics remain;
+empty failure classifiers do not imply warning-free application output.
+This is an incremental build, not a clean-from-empty build.
+
+### Receipt-only descendant and remaining exact-source gates
+
+This receipt attests only to native-tested source A. Its three-file
+receipt-only descendant B changes this appendix, the compact component archive
+and its publication summary. No production source, test, frozen input,
+builder, validator, task/progress ledger or Clone acceptance file is changed.
+B has no native or GUI run from this receipt. The unchanged strict Clone
+checker is expected to reject the stale source seal until the parent reruns
+the unchanged **226 normal / 62 focused** gate on B and refreshes acceptance.
+That strict gate is **pending**, not passed by this component run. Any later
+final documentary source remains distinct from component-tested A and
+strict-tested B. The compact component archive is not valid input to
+`check_clone_acceptance.py --current-evidence`.
+
+The latest separate portrait GUI checkpoint remains historical exact source
+`0f16f81557db0ab4cd1cdc1099eb8da323501c7d`; its evidence cannot be transferred
+to current A or B. Both current branch portrait GUI and broader acceptance
+remain pending.
 
 Original **25.009 and 25.009/drag-zoom-scroll stay TODO with their original
 criteria/dependencies unchanged**. This extension does not accept old pan or

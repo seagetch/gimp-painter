@@ -1,0 +1,715 @@
+{
+  "schema": 1,
+  "kind": "25.009-bounded-transformed-drag-component-publication-summary",
+  "scope": "25.009-transformed-drag-three-normal-targets-nine-c-unit-asan-ubsan-v1",
+  "native_status": "passed",
+  "attempt": "component-run-001",
+  "native_attempt_count": 1,
+  "tested_source_commit": "0c8620d9064f8c912d9424266771e045c276f582",
+  "tested_source_tree": "0dbd6b2306bccb83e3d38fb97db158411e3a5ac0",
+  "source_parent": "17a1875ba049b2d349b265b6e30e41c431dda0ea",
+  "pinned_gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "started_utc": "2026-10-17T13:23:00.066460+00:00",
+  "finished_utc": "2026-10-17T13:25:05.276833+00:00",
+  "native_receipt_sha256": "925c62539afbeaa6dca5edeca70cbb75a3f9ac766b83d068f0e9022b129d44a8",
+  "compact_archive": {
+    "path": "migration/tests/transformed-drag-component-evidence.tar.xz",
+    "sha256": "0fb91fe11d26ea3ab866637d76ec57e4224962e2e4c1101860d338a6df621110",
+    "bytes": 936724,
+    "member_count": 23,
+    "included_original_member_count": 22,
+    "omitted_binary_member_count": 11,
+    "manifest": "compact-manifest.json"
+  },
+  "full_public_archive": {
+    "filename": "component-run-001-passed-public.tar.xz",
+    "sha256": "eb119e254d43ec9036b296662fd9cbecfc48e7b34f015497e928361231b80722",
+    "bytes": 22341764,
+    "original_file_member_count": 33,
+    "storage": "Retained separately from the repository; contains all original public files including eleven copied sanitizer artifacts."
+  },
+  "source_and_fixture_sha256": {
+    "app/display/gimpcanvasgroup.c": "f2b75495538cf962269c51d4d07aeb4a7c086887d03fecc55e9ccafe4ed55b91",
+    "app/display/gimpcanvasitem.c": "9ec1528cd0fa350d3126d9e3863069f7fdb5dab5484ceb9f482ce6a8254c9d57",
+    "app/display/gimpcanvasline.c": "6ee1658018d78c85edcad7b090144bc75a1f019e713818f02efce823482d3000",
+    "app/display/gimpcanvasrectangle.c": "7910d73eaadb4530be396997a4cc46ea1c4e8e102fa0571da1969219e89d4ae7",
+    "app/display/gimpdisplayshell-callbacks.c": "4397687f5a08e1b464342584d62b27eaa8915feff5dfe4fbf8acfed5a716d278",
+    "app/display/gimpdisplayshell-items.c": "b976d48d269152d576f9ce6f21285612cffa4a19e1c0ddcdb67157c7ac6b5ac8",
+    "app/display/gimpdisplayshell-render.c": "25758a52552f03f4dea85154c025d17d795406b08f6263e58fe7e30ab8df7c66",
+    "app/display/gimpdisplayshell-rotate.c": "14b2c4513a9e57d5861a82c3db824655f851c44c9db23b73c912ae2ed945c4d3",
+    "app/display/gimpdisplayshell-scale.c": "215c7ed5de5d36f823e91106d0147115bfd4290f6f97adb561625f33a355675c",
+    "app/display/gimpdisplayshell-scroll.c": "78856a7185f915e174c39754cea8d38f90395d0c3fead43621401fc4c919d109",
+    "app/display/gimpdisplayshell-selection.c": "15e4853f93644aa95133c2f47c00d68854a9be9b1e68eb189566cd2168b64d77",
+    "app/display/gimpdisplayshell-tool-events.c": "85d4fb2bd7e3623fc246ef336dc759a056d79988f2817c995e74e776b8d5ff20",
+    "app/display/gimpdisplayshell-transform.c": "1532f024a9c23f673bbb6926fc8544cd8b40a5a09fdbf9184565e9e9520821fd",
+    "app/display/gimpdisplayshell.c": "a00ba4066f5e8ec8b034d9201013cba54407277018b6f9835546b5b5e15342bf",
+    "app/display/gimpdisplayshell.h": "9396f71a325af2f6c0295cf2d9a034b54ea9d977b79f4949d8b3dc65066329ab",
+    "app/display/gimpmodifiersmanager.c": "686e0ddfd749140b272c0561cc80394d3bf6e696fa20e1b97e0d8fe6095364dc",
+    "app/display/gimppainternavigation.c": "6d5ace7b15a13c795141e60d206bd1b044a30a6f1e15742097d3b58c65aa24e9",
+    "app/tests/test-painter-navigation-events.c": "47b77f074e759f89faadcc0cc8cab15cc15f7d247117715041ecae3acf641039",
+    "app/tests/test-painter-navigation-ui.c": "7a0b30dedbdc50108b2319474b79f406d4ca5ea260b63e98588cc77b14dabd6d",
+    "app/tests/test-painter-navigation.c": "46a82dc10dafd5a52c9dd229194fc598506d62316aefc37caaec702b4787b6ca",
+    "app/widgets/gimpdeviceinfo-coords.c": "0c0ce1d51c196bd1722b1178317a1d4139a334af887c34924273cec019387bbd",
+    "app/widgets/gimpoverlaybox.c": "0b848b6bc32bd5a34d77798ea207586e277f9aa7e41d32c502c7fdb0b22572e7",
+    "app/widgets/gimpoverlaychild.c": "5f76f66a9369d53d3b4d01497b5846cd261712c91de5f0e8ef7cdf501c920397",
+    "libgimpwidgets/gimpzoommodel.c": "1b65b716faf76f5a562f3ea087d3d78d17d53b2d7d9d46e99294f34c9dfee515",
+    "migration/contracts/painter-navigation.md": "c858c88151e2548f163c5407f1412405d284f9a1d725e9fc8d2af8a49bf5cd0a",
+    "migration/fixtures/legacy-navigation/manifest.json": "49cc3fb1c9da7ae71f9f34c5da1d6a35f8aee3a7c876d4b8ce727e8723b9d35c",
+    "migration/fixtures/legacy-navigation/rotation.tsv": "ce16608d105af71d652069410e949fd5922085fb8f749474850718821d67c5c7",
+    "migration/fixtures/legacy-rotation-operations/gui-captures/rotation.tsv": "bfc8b4ab8f532f5b8e0d97f2dd7cace9eec1aefe7a4cd532dbf4e4162cd9d46a",
+    "migration/fixtures/legacy-rotation-operations/manifest.json": "65bb539a54537433f68b52076a14601730a5a7c0c6005b0056736b6df3d0226c",
+    "migration/fixtures/legacy-rotation-operations/original-sources/app/display/gimpdisplayshell-rotate.c": "59374624ee30bd800d61677c6a120bcbe96ed9383be50431d70f32d506ab89e8",
+    "migration/fixtures/legacy-rotation-operations/original-sources/app/display/gimpdisplayshell-tool-events.c": "7b81d99ab288247d1452ee47053731a4c71eb8c40fa54c734f87023d31757c84",
+    "migration/fixtures/legacy-rotation-operations/source-captures/rotation.tsv": "34dd6d8d95637df314f1bf13b8aede31cb05136d56590536b00b125426e29fee",
+    "migration/fixtures/legacy-zoom/capture.c": "6350fe39258218399f1ba4de1262561b2aa4c5b79a2ac61aeb1527bc6dfd5d4e",
+    "migration/fixtures/legacy-zoom/manifest.json": "e5e7ecfc50977b486031559a31b0b4fa22191c2f2a70a2d9bcd16edfcd2ae988",
+    "migration/fixtures/legacy-zoom/zoom.tsv": "5fcf9b0f0c66b707a6a57de8e617c49ed9d32dd21750bf1670d2e46ce711a21e",
+    "migration/tests/build_navigation_event_sanitizers.py": "5795df13bd3561e3130b9e613724cdbefbca3133bf9c57ef7718066ad7773a07",
+    "migration/tests/test_navigation_fixtures.py": "f55508762e3e4ebc84395cc46714d549ab4d62cfd1d38185ff8cff4a7d4dabb9",
+    "migration/tests/test_transformed_drag_cases.py": "2eacc19b25bfe9d8b094fe85bd72d2c225df46d03ddb44b8d689bd0d000934c6",
+    "migration/tests/transformed-drag-cases.json": "27ca766619ef36c4827efb6ddf4447ef2f3fb15110a2f5abd7c515cb6f2049c5",
+    "tasks.md": "798ced270080ecccd1b12ba956ff37e2fb4a73611e01a0707044c6993c1980a1"
+  },
+  "external_runner_sha256": "c9d44636a1f34bd1d6ffa26d5e907c38e78580cfc836996321572f90339db8ce",
+  "committed_procedure_sha256": {
+    "tools/clone_evidence.py": "b83ef664ee2b1c148276fb4c0b8e4461cb42f21f02c20b7f272f10e27c5d8601",
+    "tools/run-painter-frozen-aggregate.py": "4cdc8a36be383487c4cca06fc173f8d3c2b949370318b66fd15f22548eecfada",
+    "tools/package-linux-runtime.py": "c57c9024f97f64025daa178fd799503c1e7493739b2c069d34d3c59e0827e7eb",
+    "migration/tests/build_navigation_event_sanitizers.py": "5795df13bd3561e3130b9e613724cdbefbca3133bf9c57ef7718066ad7773a07",
+    "tools/run-painter-xvfb.py": "6481502846d9f896cb906c8b1cde26f59d6899d1d5f889e1ffbf8e106e743fde"
+  },
+  "commands": [
+    {
+      "argv": [
+        "ninja",
+        "-C",
+        "/workspace/shared/gimp-clone-component-build",
+        "-j4"
+      ],
+      "cwd": "/workspace/shared/gimp-painter-clone-components",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T13:23:01.372490+00:00",
+      "finished_utc": "2026-10-17T13:23:32.420000+00:00",
+      "raw_log_sha256": "1fcc1cbfb2ded8705131109780a4f653ccccf74a974933259cc0dbab82bc3073",
+      "public_log_sha256": "1fcc1cbfb2ded8705131109780a4f653ccccf74a974933259cc0dbab82bc3073"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/shared/gimp-painter-clone-components/migration/tests/build_navigation_event_sanitizers.py",
+        "/workspace/shared/gimp-clone-component-build",
+        "--report",
+        "/workspace/shared/gimp-transformed-drag-validation/component-run-001-private/report.json"
+      ],
+      "cwd": "/workspace/shared/gimp-painter-clone-components",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T13:23:53.883104+00:00",
+      "finished_utc": "2026-10-17T13:24:02.526845+00:00",
+      "raw_log_sha256": "70b6bf69d8b1452f6fe858c64185ff5c077fb2d3dc6e3ec7496519043fb32206",
+      "public_log_sha256": "70b6bf69d8b1452f6fe858c64185ff5c077fb2d3dc6e3ec7496519043fb32206"
+    },
+    {
+      "argv": [
+        "meson",
+        "test",
+        "-C",
+        "/workspace/shared/gimp-clone-component-build",
+        "--no-rebuild",
+        "--num-processes",
+        "1",
+        "--print-errorlogs",
+        "--logbase",
+        "/workspace/shared/gimp-transformed-drag-validation/component-run-001-private/meson",
+        "painter-navigation-events",
+        "painter-navigation-ui",
+        "painter-navigation"
+      ],
+      "cwd": "/workspace/shared/gimp-painter-clone-components",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T13:24:17.960296+00:00",
+      "finished_utc": "2026-10-17T13:24:28.221971+00:00",
+      "raw_log_sha256": "9bd36ece245b779ac9264833ed3f345eea48f4d2322cce8b8d25d83b5b05c444",
+      "public_log_sha256": "9bd36ece245b779ac9264833ed3f345eea48f4d2322cce8b8d25d83b5b05c444"
+    },
+    {
+      "argv": [
+        "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-events-asan"
+      ],
+      "cwd": "/workspace/shared/gimp-clone-component-build",
+      "exit_code": 0,
+      "started_utc": "2026-10-17T13:24:28.256359+00:00",
+      "finished_utc": "2026-10-17T13:24:43.543344+00:00",
+      "raw_log_sha256": "4b10e29301bf941c6504288edb3576e92ec5b04dd77280bb5dcdb145b1b8d650",
+      "public_log_sha256": "4b10e29301bf941c6504288edb3576e92ec5b04dd77280bb5dcdb145b1b8d650"
+    }
+  ],
+  "normal_targets": [
+    {
+      "name": "painter-navigation-events",
+      "registered_command": [
+        "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-events"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "tap": {
+        "passed": true,
+        "tap_plans": [
+          31
+        ],
+        "passed_count": 31,
+        "expected_count": 31,
+        "test_names": [
+          "/navigation-events/default-rotation",
+          "/navigation-events/arbitrary-buttons",
+          "/navigation-events/radial-zoom",
+          "/navigation-events/picker-cleanup",
+          "/navigation-events/start/paintbrush",
+          "/navigation-events/start/move",
+          "/navigation-events/start/retained-old",
+          "/navigation-events/start/reject-paintbrush",
+          "/navigation-events/start/reject-move",
+          "/navigation-events/start/primary-paintbrush",
+          "/navigation-events/start/recording-tool",
+          "/navigation-events/rotation/ctrl-mid-drag",
+          "/navigation-events/rotation/boundary/free-increasing",
+          "/navigation-events/rotation/boundary/free-decreasing",
+          "/navigation-events/rotation/boundary/snapped-increasing",
+          "/navigation-events/rotation/boundary/snapped-decreasing",
+          "/navigation-events/rotation/boundary/persistence",
+          "/navigation-events/rotation/boundary/policy-isolation",
+          "/navigation-events/keys/idle-zero",
+          "/navigation-events/keys/idle-rotated",
+          "/navigation-events/keys/rotation-free",
+          "/navigation-events/keys/rotation-snapped",
+          "/navigation-events/draw/common-angle",
+          "/navigation-events/draw/fixed-view",
+          "/navigation-events/draw/tiny-ctm",
+          "/navigation-events/draw/selection-boundary",
+          "/navigation-events/draw/widget-anchor",
+          "/navigation-events/drag/radial-transformed",
+          "/navigation-events/drag/radial-clamp",
+          "/navigation-events/drag/pan-transformed",
+          "/navigation-events/drag/device-image-origin"
+        ],
+        "expected_test_names": [
+          "/navigation-events/default-rotation",
+          "/navigation-events/arbitrary-buttons",
+          "/navigation-events/radial-zoom",
+          "/navigation-events/picker-cleanup",
+          "/navigation-events/start/paintbrush",
+          "/navigation-events/start/move",
+          "/navigation-events/start/retained-old",
+          "/navigation-events/start/reject-paintbrush",
+          "/navigation-events/start/reject-move",
+          "/navigation-events/start/primary-paintbrush",
+          "/navigation-events/start/recording-tool",
+          "/navigation-events/rotation/ctrl-mid-drag",
+          "/navigation-events/rotation/boundary/free-increasing",
+          "/navigation-events/rotation/boundary/free-decreasing",
+          "/navigation-events/rotation/boundary/snapped-increasing",
+          "/navigation-events/rotation/boundary/snapped-decreasing",
+          "/navigation-events/rotation/boundary/persistence",
+          "/navigation-events/rotation/boundary/policy-isolation",
+          "/navigation-events/keys/idle-zero",
+          "/navigation-events/keys/idle-rotated",
+          "/navigation-events/keys/rotation-free",
+          "/navigation-events/keys/rotation-snapped",
+          "/navigation-events/draw/common-angle",
+          "/navigation-events/draw/fixed-view",
+          "/navigation-events/draw/tiny-ctm",
+          "/navigation-events/draw/selection-boundary",
+          "/navigation-events/draw/widget-anchor",
+          "/navigation-events/drag/radial-transformed",
+          "/navigation-events/drag/radial-clamp",
+          "/navigation-events/drag/pan-transformed",
+          "/navigation-events/drag/device-image-origin"
+        ],
+        "skipped": [],
+        "crash_diagnostics": [],
+        "failure_diagnostics": [],
+        "nonfatal_warnings": []
+      }
+    },
+    {
+      "name": "painter-navigation-ui",
+      "registered_command": [
+        "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-ui"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "tap": {
+        "passed": true,
+        "tap_plans": [
+          4
+        ],
+        "passed_count": 4,
+        "expected_count": 4,
+        "test_names": [
+          "/navigation-ui/preferences-read",
+          "/navigation-ui/partial-override-roundtrip",
+          "/navigation-ui/existing-exact-config",
+          "/navigation-ui/explicit-any-button"
+        ],
+        "expected_test_names": [
+          "/navigation-ui/preferences-read",
+          "/navigation-ui/partial-override-roundtrip",
+          "/navigation-ui/existing-exact-config",
+          "/navigation-ui/explicit-any-button"
+        ],
+        "skipped": [],
+        "crash_diagnostics": [],
+        "failure_diagnostics": [],
+        "nonfatal_warnings": []
+      }
+    },
+    {
+      "name": "painter-navigation",
+      "registered_command": [
+        "/workspace/shared/gimp-clone-component-build/app/display/painter-navigation",
+        "/workspace/shared/gimp-painter-clone-components/migration/fixtures/legacy-navigation/rotation.tsv",
+        "/workspace/shared/gimp-painter-clone-components/migration/fixtures/legacy-zoom/zoom.tsv"
+      ],
+      "result": "OK",
+      "returncode": 0,
+      "tap": {
+        "passed": true,
+        "tap_plans": [
+          6
+        ],
+        "passed_count": 6,
+        "expected_count": 6,
+        "test_names": [
+          "/navigation/golden-rotation",
+          "/navigation/golden-zoom",
+          "/navigation/modifier-bits",
+          "/navigation/midpoint-toggle",
+          "/navigation/mirrored-keys",
+          "/navigation/custom-rotation"
+        ],
+        "expected_test_names": [
+          "/navigation/golden-rotation",
+          "/navigation/golden-zoom",
+          "/navigation/modifier-bits",
+          "/navigation/midpoint-toggle",
+          "/navigation/mirrored-keys",
+          "/navigation/custom-rotation"
+        ],
+        "skipped": [],
+        "crash_diagnostics": [],
+        "failure_diagnostics": [],
+        "nonfatal_warnings": []
+      }
+    }
+  ],
+  "sanitizer": {
+    "command": [
+      "/workspace/shared/gimp-clone-component-build/app/tests/painter-navigation-events-asan"
+    ],
+    "exit_code": 0,
+    "environment_source": "actual env of exact registered painter-navigation-events Meson result",
+    "private_environment_sha256": "c4058e4cb35f97b901a2fcdf2d6cacfaf1d451cc38444995ecd8edf1a0e63b57",
+    "environment_overrides": {
+      "ASAN_OPTIONS": "[environment line omitted]\n",
+      "UBSAN_OPTIONS": "[environment line omitted]\n"
+    },
+    "instrumented_sources": [
+      "app/display/gimpdisplayshell-rotate.c",
+      "app/display/gimpdisplayshell-scale.c",
+      "app/display/gimpdisplayshell-scroll.c",
+      "app/display/gimpdisplayshell-tool-events.c",
+      "app/display/gimpdisplayshell-transform.c",
+      "app/display/gimpdisplayshell.c",
+      "app/display/gimpmodifiersmanager.c",
+      "app/display/gimppainternavigation.c",
+      "app/tests/test-painter-navigation-events.c"
+    ],
+    "suppression_files": [],
+    "tap": {
+      "passed": true,
+      "tap_plans": [
+        31
+      ],
+      "passed_count": 31,
+      "expected_count": 31,
+      "test_names": [
+        "/navigation-events/default-rotation",
+        "/navigation-events/arbitrary-buttons",
+        "/navigation-events/radial-zoom",
+        "/navigation-events/picker-cleanup",
+        "/navigation-events/start/paintbrush",
+        "/navigation-events/start/move",
+        "/navigation-events/start/retained-old",
+        "/navigation-events/start/reject-paintbrush",
+        "/navigation-events/start/reject-move",
+        "/navigation-events/start/primary-paintbrush",
+        "/navigation-events/start/recording-tool",
+        "/navigation-events/rotation/ctrl-mid-drag",
+        "/navigation-events/rotation/boundary/free-increasing",
+        "/navigation-events/rotation/boundary/free-decreasing",
+        "/navigation-events/rotation/boundary/snapped-increasing",
+        "/navigation-events/rotation/boundary/snapped-decreasing",
+        "/navigation-events/rotation/boundary/persistence",
+        "/navigation-events/rotation/boundary/policy-isolation",
+        "/navigation-events/keys/idle-zero",
+        "/navigation-events/keys/idle-rotated",
+        "/navigation-events/keys/rotation-free",
+        "/navigation-events/keys/rotation-snapped",
+        "/navigation-events/draw/common-angle",
+        "/navigation-events/draw/fixed-view",
+        "/navigation-events/draw/tiny-ctm",
+        "/navigation-events/draw/selection-boundary",
+        "/navigation-events/draw/widget-anchor",
+        "/navigation-events/drag/radial-transformed",
+        "/navigation-events/drag/radial-clamp",
+        "/navigation-events/drag/pan-transformed",
+        "/navigation-events/drag/device-image-origin"
+      ],
+      "expected_test_names": [
+        "/navigation-events/default-rotation",
+        "/navigation-events/arbitrary-buttons",
+        "/navigation-events/radial-zoom",
+        "/navigation-events/picker-cleanup",
+        "/navigation-events/start/paintbrush",
+        "/navigation-events/start/move",
+        "/navigation-events/start/retained-old",
+        "/navigation-events/start/reject-paintbrush",
+        "/navigation-events/start/reject-move",
+        "/navigation-events/start/primary-paintbrush",
+        "/navigation-events/start/recording-tool",
+        "/navigation-events/rotation/ctrl-mid-drag",
+        "/navigation-events/rotation/boundary/free-increasing",
+        "/navigation-events/rotation/boundary/free-decreasing",
+        "/navigation-events/rotation/boundary/snapped-increasing",
+        "/navigation-events/rotation/boundary/snapped-decreasing",
+        "/navigation-events/rotation/boundary/persistence",
+        "/navigation-events/rotation/boundary/policy-isolation",
+        "/navigation-events/keys/idle-zero",
+        "/navigation-events/keys/idle-rotated",
+        "/navigation-events/keys/rotation-free",
+        "/navigation-events/keys/rotation-snapped",
+        "/navigation-events/draw/common-angle",
+        "/navigation-events/draw/fixed-view",
+        "/navigation-events/draw/tiny-ctm",
+        "/navigation-events/draw/selection-boundary",
+        "/navigation-events/draw/widget-anchor",
+        "/navigation-events/drag/radial-transformed",
+        "/navigation-events/drag/radial-clamp",
+        "/navigation-events/drag/pan-transformed",
+        "/navigation-events/drag/device-image-origin"
+      ],
+      "skipped": [],
+      "crash_diagnostics": [],
+      "failure_diagnostics": [],
+      "nonfatal_warnings": []
+    }
+  },
+  "integrity_checks": {
+    "source_unchanged": true,
+    "normal_elf_unchanged": true,
+    "focused_builder_preserved_normal_elf": true,
+    "freshness_unchanged": true,
+    "compile_database_unchanged": true,
+    "registry_unchanged": true,
+    "sanitizer_artifacts_unchanged": true,
+    "preserved_sanitizer_copies_match": true,
+    "all_361_catalogs_unchanged": true
+  },
+  "normal_tap_passed_count": 41,
+  "sanitizer_tap_passed_count": 31,
+  "raw_public_log_checks": {
+    "testlog.txt": {
+      "passed_count": 41,
+      "main_drag_setup_records": 16,
+      "observed_viewport": [
+        849,
+        450
+      ],
+      "radial_motion_records": 30,
+      "clamp_motion_records": 6,
+      "primary_probe_records": 6,
+      "interior_preflight_axis_records": 68,
+      "interior_preflight_states": 34,
+      "minimum_observed_interior_margin": 209,
+      "pan_geometry_checks_source_count": 32,
+      "landmark_forward_comparisons_source_count": 96,
+      "inverse_pointer_comparisons_source_count": 32,
+      "logged_draw_ctms": 34,
+      "logged_marker_classifications": 51,
+      "six_segment_item_differences": 16,
+      "four_segment_selection_differences": 2,
+      "widget_anchor_observations": 3,
+      "retained_unique_key_sends": 96,
+      "retained_press_callbacks": 64,
+      "retained_release_callbacks": 32,
+      "retained_boundary_crossing_observations": 24,
+      "retained_boundary_signed_steps": 20
+    },
+    "sanitizer-run.log": {
+      "passed_count": 31,
+      "main_drag_setup_records": 16,
+      "observed_viewport": [
+        849,
+        450
+      ],
+      "radial_motion_records": 30,
+      "clamp_motion_records": 6,
+      "primary_probe_records": 6,
+      "interior_preflight_axis_records": 68,
+      "interior_preflight_states": 34,
+      "minimum_observed_interior_margin": 209,
+      "pan_geometry_checks_source_count": 32,
+      "landmark_forward_comparisons_source_count": 96,
+      "inverse_pointer_comparisons_source_count": 32,
+      "logged_draw_ctms": 34,
+      "logged_marker_classifications": 51,
+      "six_segment_item_differences": 16,
+      "four_segment_selection_differences": 2,
+      "widget_anchor_observations": 3,
+      "retained_unique_key_sends": 96,
+      "retained_press_callbacks": 64,
+      "retained_release_callbacks": 32,
+      "retained_boundary_crossing_observations": 24,
+      "retained_boundary_signed_steps": 20
+    }
+  },
+  "new_finite_cases": {
+    "registered_case_count": 4,
+    "registrations": [
+      "/navigation-events/drag/radial-transformed",
+      "/navigation-events/drag/radial-clamp",
+      "/navigation-events/drag/pan-transformed",
+      "/navigation-events/drag/device-image-origin"
+    ],
+    "retained_preceding_registered_event_cases": [
+      "/navigation-events/default-rotation",
+      "/navigation-events/arbitrary-buttons",
+      "/navigation-events/radial-zoom",
+      "/navigation-events/picker-cleanup",
+      "/navigation-events/start/paintbrush",
+      "/navigation-events/start/move",
+      "/navigation-events/start/retained-old",
+      "/navigation-events/start/reject-paintbrush",
+      "/navigation-events/start/reject-move",
+      "/navigation-events/start/primary-paintbrush",
+      "/navigation-events/start/recording-tool",
+      "/navigation-events/rotation/ctrl-mid-drag",
+      "/navigation-events/rotation/boundary/free-increasing",
+      "/navigation-events/rotation/boundary/free-decreasing",
+      "/navigation-events/rotation/boundary/snapped-increasing",
+      "/navigation-events/rotation/boundary/snapped-decreasing",
+      "/navigation-events/rotation/boundary/persistence",
+      "/navigation-events/rotation/boundary/policy-isolation",
+      "/navigation-events/keys/idle-zero",
+      "/navigation-events/keys/idle-rotated",
+      "/navigation-events/keys/rotation-free",
+      "/navigation-events/keys/rotation-snapped",
+      "/navigation-events/draw/common-angle",
+      "/navigation-events/draw/fixed-view",
+      "/navigation-events/draw/tiny-ctm",
+      "/navigation-events/draw/selection-boundary",
+      "/navigation-events/draw/widget-anchor"
+    ],
+    "preceding_twenty_seven_event_cases_retained": true,
+    "main_drag_sequences_per_event_execution": 16,
+    "stationary_reentries_per_event_execution": 16,
+    "primary_probe_clicks_per_event_execution": 6,
+    "radial_motion_records_per_event_execution": 30,
+    "clamp_motion_records_per_event_execution": 6,
+    "pan_geometry_checks_per_event_execution": 32,
+    "pan_geometry_count_basis": "Six pan contexts times five motions, plus two device-image-origin pan motions. Each checks exact offsets, invariant image point and production inverse, then three forward landmark comparisons; these checks are source assertions, not additional log records or GTest registrations.",
+    "landmark_forward_comparisons_per_event_execution": 96,
+    "inverse_pointer_comparisons_per_event_execution": 32,
+    "interior_preflight_states_per_event_execution": 34,
+    "interior_preflight_axis_log_records_per_event_execution": 68,
+    "interior_count_basis": "Six pan contexts times five destination states, plus two origin contexts times two destination states, checked before drag.",
+    "retained_gtk_snapshots_per_event_execution": 38,
+    "observed_canvas_viewport": [
+      849,
+      450
+    ],
+    "expectation_basis": "The unchanged pre-execution literal geometry, retained-row selection, source and fixture hashes, 27 preceding registrations and common-angle draw-block seal in transformed-drag-cases.json. Its SOURCE-ONLY / NOT RUN fields retain their historical pre-execution meaning; the exact-source native result is recorded here, without rewriting the frozen input manifest.",
+    "radial": {
+      "contexts": "angles 0,37,90 degrees times horizontal reflection off/on",
+      "anchor": 335,
+      "factors": [
+        1.25,
+        1.25,
+        2.45,
+        1.1166666666666667,
+        1.25
+      ],
+      "center_policy": "Geometric image center stays within one display pixel per axis of integer viewport center.",
+      "clamps": "Two repeated lower raw -1/12 requests apply 1/256 then return to 1.25; two repeated upper raw 256.95 requests apply 256 then return to 255.75. Original fixed anchor remains unchanged; clamp focus and offsets are not accepted."
+    },
+    "pan": {
+      "scale": 1.5,
+      "pointer_deltas": [
+        [
+          0,
+          0
+        ],
+        [
+          17,
+          -11
+        ],
+        [
+          17,
+          -11
+        ],
+        [
+          -9,
+          7
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "offset_deltas": [
+        [
+          0,
+          0
+        ],
+        [
+          -17,
+          11
+        ],
+        [
+          -17,
+          11
+        ],
+        [
+          9,
+          -7
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "landmarks": [
+        [
+          68,
+          76
+        ],
+        [
+          184,
+          92
+        ],
+        [
+          108,
+          184
+        ]
+      ],
+      "precise_primary_coordinates": "Six genuine primary press/release probe pairs use fractional device coordinates in two 37-degree reflection contexts; only middle-pan event endpoints narrow to integers."
+    },
+    "png_capture": "Optional PNG hook was not enabled. Existing actual GTK draws and pixel assertions ran; this component evidence contains execution logs, not new saved PNGs or a branch portrait GUI smoke."
+  },
+  "instrumentation_boundary": {
+    "instrumented_c_units": 9,
+    "remaining_units": "Zoom-model shared library, device-coordinate adapter, tool dispatch, renderer/GTK and remaining GIMP/dependencies are uninstrumented. LeakSanitizer is disabled; no suppression files or suppression options."
+  },
+  "integrity_inventory": {
+    "source_snapshots_equal": 4,
+    "normal_elf_snapshots_equal": 3,
+    "normal_elf_entries_each": 2873,
+    "source_and_fixture_hashes": 40,
+    "unchanged_locale_catalogs": 361,
+    "original_public_files_verified": 33,
+    "receipt_listed_file_hashes_verified": 32
+  },
+  "parent_native_audit": {
+    "filename": "parent-native-review.json",
+    "sha256": "fef562f116089f8415d3e2c5ab363f7d6edd87a362e18b5fb9e9863fe8fe48d0",
+    "status": "passed",
+    "public_transforms_reproduced": 9,
+    "actual_registered_environment_reused_with_only_two_exact_sanitizer_overrides": true,
+    "storage": "Retained separately; not substituted for the unchanged original native receipt. Independent acceptance is not inferred from this parent report."
+  },
+  "warnings_and_diagnostics": [
+    "After ANSI color stripping, both incremental default and focused sanitizer builds retain one -Wmissing-declarations warning for navigation_draw_observer_get_type at app/tests/test-painter-navigation-events.c:1488:40. No source was changed to hide or remove it.",
+    "Ordinary icon, plug-in, D-Bus and GLib debug diagnostics remain. No skipped/failing TAP or sanitizer failure diagnostics; classifier arrays do not establish warning-free application output. This is not a clean-from-empty build claim."
+  ],
+  "build_warning_lines_ansi_stripped": {
+    "default-build.log": [
+      "../gimp-painter-clone-components/app/tests/test-painter-navigation-events.c:1488:40: warning: no previous declaration for ‘navigation_draw_observer_get_type’ [-Wmissing-declarations]"
+    ],
+    "sanitizer-build.log": [
+      "../gimp-painter-clone-components/app/tests/test-painter-navigation-events.c:1488:40: warning: no previous declaration for ‘navigation_draw_observer_get_type’ [-Wmissing-declarations]"
+    ]
+  },
+  "omitted_original_members": {
+    "sanitizer-artifacts/app/tests/painter-navigation-events-asan": {
+      "sha256": "3dfa0f56e8e233ca4c6198894f9f679966497e65789720aa74683e383629770c",
+      "bytes": 79147104
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpdisplayshell-rotate.c.o": {
+      "sha256": "320c871510ddee119eb9fbb9cdff0568a0bed2e254d7f59ae7a04294227492d7",
+      "bytes": 110208
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpdisplayshell-scale.c.o": {
+      "sha256": "757ba527823d6bd3f3b63ff24517705e9de4a824a8b8e6d4a27f267075d4699b",
+      "bytes": 389848
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpdisplayshell-scroll.c.o": {
+      "sha256": "077f3abc39e555a68ae2d38b1294b28d6199115a5cac9dc21ec2f88313d7bf79",
+      "bytes": 199088
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpdisplayshell-tool-events.c.o": {
+      "sha256": "6cbb3637ab7d6827c3733a1675e88f6156c7879c857cc91c070ab0ae221a9619",
+      "bytes": 659688
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpdisplayshell-transform.c.o": {
+      "sha256": "cff8a8839b3b1cfd82b8c6b6093df0161ab13eb467d21b62c885d81b7518d822",
+      "bytes": 386664
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpdisplayshell.c.o": {
+      "sha256": "94574a721d16345643f517308464e2795590d32c1566752e9a931df52bf9662e",
+      "bytes": 906272
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimpmodifiersmanager.c.o": {
+      "sha256": "b160044fee46b3275aa82edeb8d38ff6fd429eb8fb3ab581b43d6722cb70b796",
+      "bytes": 224896
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/gimppainternavigation.c.o": {
+      "sha256": "733d2e7d2c90ef2ab38d2e7e76b249675bfd40a9cb25d52815e8951b846865b0",
+      "bytes": 24784
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/libappdisplay.a": {
+      "sha256": "70df295e5c6d68201432d1701707190568abfef6bf69db807ec5eb18534a24f3",
+      "bytes": 43026
+    },
+    "sanitizer-artifacts/painter-navigation-event-sanitizers/test-painter-navigation-events.c.o": {
+      "sha256": "afb86040c7a7829c7bf27f5a1486c23aee515c38072f849001365f5e84276d9c",
+      "bytes": 1853704
+    }
+  },
+  "limits": [
+    "Only the three named normal Meson targets are run.",
+    "ASan/UBSan covers exactly nine C units; remaining GIMP, GTK and dependencies are uninstrumented.",
+    "LeakSanitizer is disabled; no suppression files or suppression options are used.",
+    "Synthetic display events are not physical-device acceptance.",
+    "No full aggregate, final Clone freeze, package or release acceptance is claimed.",
+    "Old Edge/string old-reader runtime is skipped and unverified; no legacy runtime is accessed.",
+    "The 16 main drags and 16 stationary reentries, 6 primary clicks and 32 pan-geometry checks are finite sequences/assertion invocations inside four new registrations, not additional registered tests. All 27 preceding event cases and 38 real GTK draw snapshots remain required and passed.",
+    "The retained legacy radial rows provide raw max-scale/300 arithmetic. Native isotropic scale and center-relative rebasing are source-derived adaptations, not paired identical old/current display states. No retained old transformed-pan operation trace is available.",
+    "Native anisotropy, off-center zoom focus, full legacy radial display/pan parity, fractional-pan/old-start truncation parity, clamp focus/overshoot/reversal and old clamp-policy equivalence remain unverified.",
+    "No new raster/overlay/damage/clipping acceptance, physical mouse/tablet equivalence, full focus/device interruption, other platforms, all 196 historical hunks, whole-section 25 or full-port acceptance is claimed.",
+    "No new branch portrait GUI smoke is included. The latest separate GUI checkpoint remains historical exact source 0f16f81557db0ab4cd1cdc1099eb8da323501c7d; current source A and receipt-only descendant B have not been portrait-GUI-tested by this evidence.",
+    "Both retained old captures keep teardown command_exit=-11. No old runtime, capture or oracle was run or regenerated. Old Edge/string-reader runtime remains SKIPPED/unverified.",
+    "This receipt attests only to tested source A. Its three-file evidence-only descendant B has no native run from this receipt. Final documentary acceptance is separate and cannot be relabeled as a native-tested revision.",
+    "Original 25.009 and 25.009/drag-zoom-scroll remain open with criteria and dependencies unchanged. The unchanged strict Clone checker must reject changed source until the parent reruns the unchanged 226-normal/62-focused-sanitizer gate on B and refreshes acceptance. No ledger, validator or acceptance files are changed.",
+    "The compact component archive is not valid input to check_clone_acceptance.py --current-evidence and is not a standalone rebuild package."
+  ],
+  "independent_native_audit": {
+    "filename": "independent-native-review.json",
+    "sha256": "0f8f95041b67af66af07e6292ce878597e0498bff3575df24e688ccc4421e1ca",
+    "status": "passed",
+    "public_transforms_reproduced": 9,
+    "strict_ordered_tap_verified": true,
+    "instrumented_objects_verified": 9,
+    "actual_registered_environment_verified": true,
+    "storage": "Separately retained completed independent audit of native source A; this is not a strict Clone acceptance pass on B."
+  }
+}
