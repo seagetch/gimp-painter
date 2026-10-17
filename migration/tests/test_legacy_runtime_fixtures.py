@@ -14,6 +14,12 @@ ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / 'migration/fixtures/legacy-runtime'
 MANIFEST = json.loads((BASE/'manifest.json').read_text())
 EXPECTED = json.loads((BASE/'expectations.json').read_text())
+# Independent pins for the two genuine captures used by original task 10.002.
+# The fixture manifest remains the package-wide integrity check.
+CLONE_V4_FIXTURES = {
+    'clone-normal-in-group.xcf': (1148, '0fb12d0345bf6c6685562944dae91fb3cc79e84122bb2e67080164d79846d038'),
+    'clone-group.xcf': (1164, '6953b26108bb89196c96c2d1a5d38ddd73883c43ba4918a8693d48f867add11e'),
+}
 
 
 class LegacyRuntimeFixtureTests(unittest.TestCase):
@@ -51,6 +57,47 @@ class LegacyRuntimeFixtureTests(unittest.TestCase):
             self.assertEqual((width,height),(96,80) if name.startswith('ordinary') else (64,64))
         self.assertEqual((BASE/'clone-group.xcf').read_bytes()[9:13],b'v004')
         self.assertEqual((BASE/'filter-edge.xcf').read_bytes()[9:13],b'v004')
+
+    def _assert_clone_v4_header(self, data):
+        # Fixture-specific assertions, not a dialect classifier or XCF parser.
+        # Keep hash checking separate so mutation controls exercise the offsets.
+        self.assertEqual(data[:14], b'gimp xcf v004\0')
+        self.assertEqual(struct.unpack_from('>III', data, 14), (64, 64, 0))
+        self.assertEqual(struct.unpack_from('>I', data, 26)[0], 17,
+                         'PROP_COMPRESSION is at 26; no precision word')
+        self.assertEqual(struct.unpack_from('>I', data, 30)[0], 1,
+                         'compression payload length is at 30')
+        self.assertEqual(data[34], 1, 'RLE compression byte is at 34')
+
+    def test_clone_v4_properties_start_at_26_without_precision(self):
+        prefix = bytes.fromhex(
+            '67696d7020786366207630303400 '
+            '00000040 00000040 00000000 00000011 00000001 01')
+        for name, (size, digest) in CLONE_V4_FIXTURES.items():
+            with self.subTest(fixture=name):
+                data = (BASE/name).read_bytes()
+                self._assert_clone_v4_header(data)
+                self.assertEqual(data[:35], prefix)
+                self.assertEqual(len(data), size)
+                self.assertEqual(hashlib.sha256(data).hexdigest(), digest)
+
+    def test_clone_v4_header_rejects_shifted_or_changed_fixture_bytes(self):
+        for name in CLONE_V4_FIXTURES:
+            data = (BASE/name).read_bytes()
+            self._assert_clone_v4_header(data)
+            controls = {
+                'properties moved to 27': data[:26] + b'\0' + data[26:],
+                'precision inserted at 26': data[:26] + struct.pack('>I', 0) + data[26:],
+            }
+            for label, offset in (('version', 12), ('signature terminator', 13),
+                                  ('width', 17), ('height', 21), ('base type', 25),
+                                  ('property tag', 29), ('property size', 33),
+                                  ('compression payload', 34)):
+                controls[label] = data[:offset] + bytes([data[offset] ^ 1]) + data[offset+1:]
+            for label, changed in controls.items():
+                with self.subTest(fixture=name, mutation=label):
+                    with self.assertRaises(AssertionError):
+                        self._assert_clone_v4_header(changed)
 
     @unittest.skipIf(Image is None,'Pillow is required for decoded PNG checks')
     def test_measured_png_pixels(self):

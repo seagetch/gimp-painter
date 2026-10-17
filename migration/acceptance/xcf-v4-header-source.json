@@ -1,0 +1,228 @@
+{
+  "result": "PASS",
+  "scope": "Original 10.002 source/fixture-only acceptance: explain the genuine old v4 header without a precision word.",
+  "date_utc": "2026-10-17",
+  "base_public_commit": "2fe4ba2a4bc96ab1a6e90498494efd0be04c7cdd",
+  "base_public_tree": "5e63e9780c6bf09d57e402805f8f06ca48e9c7f5",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "task_status_at_source_freeze": {
+    "10.001": "DONE",
+    "10.002": "TODO; original checkbox and progress row left unchanged for parent-owned strict gate and closure"
+  },
+  "legacy_source_access": "Read pinned Git objects only from the isolated modern checkout; no old checkout Git, executable, or helper was used.",
+  "legacy_sources": {
+    "app/xcf/xcf-save.c": {
+      "git_blob": "c894ac58f7866196b21507508cd6c1245d9b64c4",
+      "sha256": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+      "line_ranges": [
+        "216-239",
+        "293-324",
+        "359-398",
+        "402-449"
+      ]
+    },
+    "app/xcf/xcf-load.c": {
+      "git_blob": "e95e126acd1ad59e65780c0da47eb99dc9411660",
+      "sha256": "9a0aeebda8471f78237b67df7418f56f92790fb1a5ac0504eaf14c02ac6e3168",
+      "line_ranges": [
+        "184-199"
+      ]
+    },
+    "app/xcf/xcf-write.c": {
+      "git_blob": "5c779f33bbf864997cbfcbda8bc3a599f0291bd0",
+      "sha256": "ec8bce3cf10d36a99842e391723da968eaf1a3aa96e798e7bca9612c4303d09d",
+      "line_ranges": [
+        "49-64"
+      ]
+    },
+    "app/xcf/xcf-read.c": {
+      "git_blob": "1d850a55492b1e435263e25d5d40b0e675857545",
+      "sha256": "95ba715715664c99d35fea400642b989ec23c75545eb5c4d0af97660155d96f1",
+      "line_ranges": [
+        "60-74"
+      ]
+    },
+    "app/xcf/xcf-private.h": {
+      "git_blob": "e823a8ee3edd9fc3330910d0ea0565ecd15a6286",
+      "sha256": "72b75d7eee3d63b7bfdd962bfdb14f8560cdb430cca712f21c83d4be4a325480",
+      "line_ranges": [
+        "90-107",
+        "135-141"
+      ]
+    },
+    "app/base/base-enums.h": {
+      "git_blob": "cfbc50bbd5046de793d2297cfde3e96c7019d022",
+      "sha256": "9e62f0d089b032f1b2604cfd09b49958cf97da65291eacac192dc511f65e0eaa",
+      "line_ranges": []
+    }
+  },
+  "fixture_provenance": "Existing genuine historical captures documented by the unchanged legacy-runtime manifest, README and clone-capture.log. These checks read preserved bytes; no capture or old execution was repeated.",
+  "fixtures": {
+    "migration/fixtures/legacy-runtime/clone-normal-in-group.xcf": {
+      "bytes": 1148,
+      "sha256": "0fb12d0345bf6c6685562944dae91fb3cc79e84122bb2e67080164d79846d038"
+    },
+    "migration/fixtures/legacy-runtime/clone-group.xcf": {
+      "bytes": 1164,
+      "sha256": "6953b26108bb89196c96c2d1a5d38ddd73883c43ba4918a8693d48f867add11e"
+    }
+  },
+  "common_prefix_hex": "67696d7020786366207630303400 00000040 00000040 00000000 00000011 00000001 01",
+  "layout": {
+    "signature": {
+      "offset": 0,
+      "bytes": 14,
+      "value": "gimp xcf v004 plus NUL"
+    },
+    "width": {
+      "offset": 14,
+      "bytes": 4,
+      "encoding": "u32BE",
+      "value": 64
+    },
+    "height": {
+      "offset": 18,
+      "bytes": 4,
+      "encoding": "u32BE",
+      "value": 64
+    },
+    "base_type": {
+      "offset": 22,
+      "bytes": 4,
+      "encoding": "u32BE",
+      "value": 0
+    },
+    "precision_present": false,
+    "first_image_property": {
+      "tag_offset": 26,
+      "tag": 17,
+      "size_offset": 30,
+      "declared_size": 1,
+      "payload_offset": 34,
+      "payload_byte": 1,
+      "meaning": "PROP_COMPRESSION, RLE"
+    },
+    "offset_table_word_bytes": 4,
+    "offset_table_basis": "Pinned writer xcf-save.c:402-449; existing decoder uses four-byte offsets for legacy versions0-4."
+  },
+  "version_selection_correction": "Top-level modes23-29 force v4; recursive helper checks26-29 and custom layers, omitting23-25. A group with only nested23-25 may remain v3 when nothing else forces v4. Source observation only, not a runtime test or dialect classifier.",
+  "changed_artifact_sha256": {
+    "migration/tests/test_legacy_runtime_fixtures.py": "e8ab4130bfd218f03cefd738a9b0575d5f774658a114b6601170aae6e7b222b7",
+    "migration/contracts/xcf-compatibility.md": "079cb8037dfd4c0544d11ec8d1c3e2d833b3d0fa413511022b615f272dbfcbcd"
+  },
+  "unchanged_supporting_input_sha256": {
+    "app/xcf/painter-xcf-compat.cpp": "169b0dc7f774188b263ed55997817c3060291395f18f635a5e2f0cd8131043df",
+    "app/xcf/painter-xcf-compat.hpp": "f939eefa1ee441c88cbf1e29f49cdb77b52024edd5a3b84b351ab4f3ef15b36a",
+    "app/xcf/tests/test-painter-xcf-compat.cpp": "bf4b1f20b693fcd92604dd6dc67bef3cd749d76ed74c6e4c01fcc3d61a15e263",
+    "migration/fixtures/legacy-runtime/manifest.json": "545ad0243df43d3828b25c9674b709a0e30f97d6b2ad24c35113b0c2eecca226",
+    "migration/fixtures/legacy-runtime/README.md": "17c0916663adac411fb3df06f7854c8677037a432a8b12d94452f1679d2db54b",
+    "migration/fixtures/legacy-runtime/clone-capture.log": "756d26d61a5a162a3b8615759066ac179292752b869abd2792d969d8dba361d3",
+    "migration/tests/test_persistence_field_contract.py": "d7a84771c06ff89c0c89a75d96b5177228cf605a15315d9ad1c7c63a79e20757",
+    "migration/inventory/persistence-field-contract.json": "423993d1b2b0ef20bb85248d9abb58fc30150c6125e9e56be7c59a6d9f2a9d10"
+  },
+  "checks": [
+    {
+      "label": "fixture-tests",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s migration/tests -p test_legacy_runtime_fixtures.py -v",
+      "exit_code": 0,
+      "output": "test_clone_observations_are_backed_by_log (test_legacy_runtime_fixtures.LegacyRuntimeFixtureTests.test_clone_observations_are_backed_by_log) ... ok\ntest_clone_v4_header_rejects_shifted_or_changed_fixture_bytes (test_legacy_runtime_fixtures.LegacyRuntimeFixtureTests.test_clone_v4_header_rejects_shifted_or_changed_fixture_bytes) ... ok\ntest_clone_v4_properties_start_at_26_without_precision (test_legacy_runtime_fixtures.LegacyRuntimeFixtureTests.test_clone_v4_properties_start_at_26_without_precision) ... ok\ntest_dissolve_exact_bytes (test_legacy_runtime_fixtures.LegacyRuntimeFixtureTests.test_dissolve_exact_bytes) ... ok\ntest_every_file_has_exact_size_and_hash (test_legacy_runtime_fixtures.LegacyRuntimeFixtureTests.test_every_file_has_exact_size_and_hash) ... ok\ntest_measured_png_pixels (test_legacy_runtime_fixtures.LegacyRuntimeFixtureTests.test_measured_png_pixels) ... ok\ntest_pinned_legacy_headers_and_dimensions (test_legacy_runtime_fixtures.LegacyRuntimeFixtureTests.test_pinned_legacy_headers_and_dimensions) ... ok\ntest_success_markers_and_negative_reader_are_distinct (test_legacy_runtime_fixtures.LegacyRuntimeFixtureTests.test_success_markers_and_negative_reader_are_distinct) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.008s\n\nOK\n",
+      "log_sha256": "fb4d9316400fa421708bf21c8bbc5e068048c005ba90ffb765e4426ff1ccac43"
+    },
+    {
+      "label": "persistence-positive",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B migration/tests/test_persistence_field_contract.py",
+      "exit_code": 0,
+      "output": "PASS: 1378 source-checked contract records; 873 exact candidate dispositions;16 routes; 0 rejected controls\n",
+      "log_sha256": "3530211aa64f5d60d2b6dc59ad32273b5ead115cefec3989b0186b0861700daf"
+    },
+    {
+      "label": "whitespace",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "output": "",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "fixture_suite": {
+    "tests_run": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "new_positive_test": "test_clone_v4_properties_start_at_26_without_precision",
+    "new_negative_test": "test_clone_v4_header_rejects_shifted_or_changed_fixture_bytes",
+    "control_assertion_path": "LegacyRuntimeFixtureTests._assert_clone_v4_header, the same helper used by the positive fixture test; hash checking is not part of this helper.",
+    "controls_per_fixture": [
+      "properties moved to27",
+      "precision inserted at26",
+      "version",
+      "signature terminator",
+      "width",
+      "height",
+      "base type",
+      "property tag",
+      "property size",
+      "compression payload"
+    ],
+    "rejected_controls": 20,
+    "unexpected_passes": 0
+  },
+  "persistence_positive_gate": {
+    "contract_records": 1378,
+    "classified_candidates": 873,
+    "routes": 16,
+    "negative_controls_rerun": false,
+    "basis": "Inputs unchanged; existing positive source gate rerun successfully. Prior negative-control evidence is retained without claiming a fresh run."
+  },
+  "preservation": {
+    "production_source_changed": false,
+    "fixture_bytes_changed": false,
+    "historical_acceptance_evidence_changed": false,
+    "tasks_or_progress_changed": false,
+    "strict_clone_gate_changed": false,
+    "native_or_application_tests_executed": false,
+    "legacy_runtime_executed": false,
+    "remote_writes": false
+  },
+  "remaining_acceptance": [
+    "Parent-owned strict native refresh and ledger closure remain separate from this source-only result.",
+    "The current strict Clone receipt must be refreshed because all tracked files are sealed; no gate relaxation is authorized.",
+    "Original10.003 dialect rules,10.004 property collisions and11.002 old-header decoder acceptance remain open.",
+    "Normal Open integration, runtime roundtrip, rendering and whole compatibility are not established by these header-byte checks.",
+    "Old Edge execution remains user-approved SKIPPED with compatibility unverified.",
+    "The v004 signature alone does not identify a dialect."
+  ],
+  "independent_review": {
+    "result": "PASS",
+    "scope": "Read-only pinned-source and preserved-byte fixture acceptance; Python tests only.",
+    "reviewed_artifact_sha256": {
+      "migration/tests/test_legacy_runtime_fixtures.py": "e8ab4130bfd218f03cefd738a9b0575d5f774658a114b6601170aae6e7b222b7",
+      "migration/contracts/xcf-compatibility.md": "079cb8037dfd4c0544d11ec8d1c3e2d833b3d0fa413511022b615f272dbfcbcd"
+    },
+    "fixture_suite": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "embedded_negative_controls": 20
+    },
+    "independent_controls": {
+      "rejected": 172,
+      "unexpected_passes": 0,
+      "prefix_byte_mutations": 70,
+      "inserted_precision_values_0_through_4": 10,
+      "property_offset_shifts": 10,
+      "wrong_endian_fields": 8,
+      "truncated_prefix_inputs": 70,
+      "coordinated_fixture_and_manifest_drift": 4
+    },
+    "control_limits": "Truncated inputs are rejected by the fixture assertion helper through AssertionError, struct.error or IndexError. The helper is not a production parser; these are fixture-assertion checks, not a malformed-input robustness claim.",
+    "resolved_finding": "Corrected original11.002 label to old-header decoder acceptance; normal Open integration remains a separate limit.",
+    "remaining_source_findings": [],
+    "evidence_artifact_sha256": {
+      "source-review.json": "423633e61866b07b31d3a670bc70f788c0ecaff90f51190c7a905deed1645a70",
+      "review.py": "0bb2ee4bc0b428f979495c325fce8a8ef0917eb21573e29f91d8b8f2b6a817ea",
+      "python-suite.log": "9f2c9e17935dca3080c04656f1e2a73fb60c11874b4589dae7ae3c8dd4f45a97"
+    },
+    "evidence_storage": "Exact review artifacts accompany the local recovery handoff. No external machine path is required by the fixture test or production code."
+  }
+}
