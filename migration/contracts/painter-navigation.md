@@ -194,6 +194,35 @@ executable or capture is run for this increment. Synthetic native events do not
 establish physical tablet/mouse behavior, focus interruption, all platforms, or
 all of section 25.
 
+### Native GDK grab-observation timing
+
+The first compiled native attempt (component run 002) passed the default build
+and focused five-unit sanitizer build. Both normal and instrumented event runs
+passed the original four cases, then failed the GDK no-grab assertion in the
+first new Paintbrush/plain case. The shared assertion's log alone does not
+identify whether that observation followed setup or the first release. UI 4/4
+and arithmetic 6/6 passed; this failed event run is retained, not accepted.
+
+The configured dependency is GTK 3.24.49. Its
+[GDK X11 ungrab path](https://github.com/GNOME/gtk/blob/3.24.49/gdk/x11/gdkdisplay-x11.c#L1780-L1840)
+marks the grab's ending serial and requests an asynchronous server roundtrip.
+[The reply handler](https://github.com/GNOME/gtk/blob/3.24.49/gdk/x11/gdkasync.c#L667-L760)
+then schedules the grab-update callback as an idle source.
+[The public grab query](https://github.com/GNOME/gtk/blob/3.24.49/gdk/gdkdisplay.c#L1433-L1455)
+reads that cached explicit-grab record rather than issuing a fresh server query.
+Therefore a direct synthetic canvas call cannot require the record to disappear
+before the roundtrip and idle callback have run.
+
+The test keeps every immediate shell/action/anchor/grab-pointer cleanup assertion
+before a deterministic `gdk_display_sync()` and ordinary main-loop drain, then
+requires the same GDK no-grab assertion. It does not issue an ungrab, reset state,
+sleep, poll until success, or discard input events. A release-phase message and
+pre/post synchronization diagnostic make the observation visible. The existing
+start-time grabbed assertion and all rejection snapshots remain unchanged.
+This is a source-supported observation-timing correction; a frozen native retry
+must establish its outcome. No production defect or successful retry is claimed
+from source inspection alone.
+
 ### Finite execution inventory and native handoff
 
 The executable has **11 registered GTest cases**: the original four plus these

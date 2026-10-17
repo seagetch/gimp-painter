@@ -244,6 +244,8 @@ assert_grab (void)
 static void
 assert_navigation_idle (void)
 {
+  gboolean grabbed_before_sync;
+
   g_assert_cmpint (shell->mod_action, ==, GIMP_MODIFIER_ACTION_NONE);
   g_assert_cmpuint (shell->mod_action_button, ==, 0);
   g_assert_false (shell->painter_navigation_inherited);
@@ -257,6 +259,16 @@ assert_navigation_idle (void)
   g_assert_null (shell->grab_pointer);
   g_assert_null (shell->grab_pointer_source);
   g_assert_false (shell->button1_release_pending);
+  /* The direct canvas call bypasses the normal event-loop turn.  GDK X11
+   * retires its explicit-grab record in an idle callback after an asynchronous
+   * server roundtrip.  Check the synchronous shell cleanup above first, then
+   * observe GDK after both stages; never ungrab or alter state in the test. */
+  grabbed_before_sync = gdk_display_device_is_grabbed (gdk_device_get_display (device), device);
+  gdk_display_sync (gdk_device_get_display (device));
+  gimp_test_run_mainloop_until_idle ();
+  if (grabbed_before_sync)
+    g_test_message ("pending GDK grab after shell cleanup: before-sync=1 after-sync=%d",
+                    gdk_display_device_is_grabbed (gdk_device_get_display (device), device));
   g_assert_false (gdk_display_device_is_grabbed (gdk_device_get_display (device), device));
 }
 
@@ -337,6 +349,7 @@ release_middle (GdkModifierType state)
 {
   send_event (GDK_BUTTON_RELEASE, 2, state | GDK_BUTTON2_MASK,
               shell->scroll_start_x, shell->scroll_start_y, 0);
+  g_test_message ("checking navigation cleanup after middle release");
   assert_navigation_idle ();
   /* Middle release does not update the tool's idle modifier state. */
 }
