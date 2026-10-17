@@ -653,3 +653,90 @@ contract field or establish property order/duplicates, broad malformed-input
 handling, rendering, GUI/platform equivalence, release or whole-port acceptance.
 No old executable or legacy Edge runtime was built or run. All earlier Clone,
 XCF and GUI receipts remain historical evidence of their exact original source.
+
+
+## Original v4 header acceptance and retained Clone refresh (10.002, 2026-10-17)
+
+Original task `10.002` is now DONE for its exact byte-layout criterion:
+explain the genuine old v4 header without a precision word using byte fixtures.
+The two preserved historical Clone XCF files retain their independently pinned
+sizes and SHA-256 hashes. Their layout is a 14-byte `gimp xcf v004` signature
+including NUL, followed by big-endian 32-bit width, height and image base type.
+Image properties start at byte 26, without a precision word: the first property
+is `PROP_COMPRESSION` (17), declared length 1, payload RLE (1). Layer/channel
+offsets are four bytes. These are existing saved bytes; no historical capture
+or old executable was rerun.
+
+Pinned legacy source establishes that top-level modes 23–29 force version 4.
+The recursive group helper checks 26–29 and custom layers, omitting 23–25;
+a group containing only nested 23–25 may remain version 3 if nothing else
+forces version 4. This is a source observation, not a new dialect classifier.
+The `v004` signature alone does not identify the dialect.
+
+All eight preserved-fixture Python tests passed with zero skips, including 20
+embedded negative controls. The retained independent source review rejected
+172 controls and its acceptance receipt passed 24 digest crosschecks. Those
+controls test fixture assertions, not production-parser robustness. The
+unchanged positive persistence gate was rerun and passed 1,378 records, 873
+classified source candidates and 16 routes; the previous 32 expensive negative
+controls were retained without a fresh-run claim.
+
+The header test, `migration/contracts/xcf-compatibility.md` and
+`migration/acceptance/xcf-v4-header-source.json` remain byte-identical to
+reviewed source `8e45e61fc7aebf5a88a8456bb6841ec61a423b44`, tree
+`9982e5a7b81c2e825b3ba62f3a67a65faa7c3fe1`. Their pending-handoff wording is historical
+source-stage context; this appendix and the task/progress ledgers record the
+completed bounded handoff. No decoder, fixture, validator, production code or
+native test registration changed. Original `10.003`, `10.004`, `11.002` and all
+other previously open tasks remain open. Header explanation does not establish
+normal Open integration, runtime roundtrip, rendering or whole compatibility.
+Old Edge execution remains user-approved SKIPPED, with compatibility unverified.
+
+Adding the tracked source artifacts made the previous all-source-sealed Clone
+receipt stale for this tree. The existing strict gate was rerun unchanged. Its
+new archive is `migration/tests/xcf-v4-header-acceptance-evidence.tar.xz`:
+
+- Tested source commit: `8e45e61fc7aebf5a88a8456bb6841ec61a423b44`
+- Tested source tree: `9982e5a7b81c2e825b3ba62f3a67a65faa7c3fe1`
+- Archive SHA-256: `306aa762588c5b297b2af3efe7832e2fbe136a1dbe7f741fe3775bf2c74ad2d9`
+- Receipt SHA-256: `b87780e55cd01c2d518b4ae73d3f2ed91b34486a360d0cedde373dcb502160a7`
+- Run: `v4-header-run-001`; all three build/test/sanitizer commands exited zero
+
+The retained configured build completed a full default incremental Ninja build,
+then the same seven exact registered Meson targets: `core` 4,
+`projection-update-bounds` 3, `gimp-clone-layer` 62, `painter-layer-ui` 68,
+`painter-layer-tree` 35, `painter-xcf-roundtrip` 49 and `update-geometry` 5.
+All 226 positive normal TAP cases and 62 focused ASan/UBSan Clone cases passed.
+Each Clone run includes 216 distinct source-mode/type/mask scenes. Exactly eight
+translation units are instrumented; 54 linked C++ units have RTTI-only rebuilds
+and are not additional sanitizer coverage. LSan remains disabled and other
+GIMP/dependency units remain uninstrumented. This is a retained incremental
+build, not a from-empty build.
+
+Strict offline review verified all command statuses, unchanged source before
+build/before tests/after tests, normal ELF and sanitizer artifact seals,
+default-build freshness, compile database, the full 164-target registry and all
+361 locale catalogs. Registry integrity does not mean those 164 targets were
+executed as an aggregate. The historical strict 163-target aggregate remains
+scoped to `f271db84bb9cd3d99c404a43d5c727c19d96ca5f`; there is no new 164-target
+aggregate pass or release/platform/whole-port claim.
+
+The archive contains exactly the existing 17 public receipt members, with
+unchanged bytes. The unchanged deterministic pack function was reused and a
+second pack is byte-identical. The existing bounded decompressor and flat-tar
+extractor were reused without modification. Original-directory,
+extracted-directory and archive validation return identical strict results
+while access to the execution checkout, build and private output paths is
+blocked and only Git subprocesses are allowed. Logged environment-removal
+transformations remain intact. Every previous evidence archive is unchanged.
+
+The current Clone acceptance route now uses this sealed archive. All 44 receipt
+controls, 17 archive controls and 11 acceptance controls pass, alongside the
+eight fixture tests, positive persistence gate, strict current Clone acceptance,
+task-ledger validation and `git diff --check`. These Python/Git checks do not
+constitute another native execution. Closure changes exactly the four permitted
+documentary files and this exact evidence archive. The native tested source is
+the commit above. This refresh preserves retained Clone acceptance after tracked
+header artifacts were added; it is not a fresh execution of every header parser
+test or all persistence fields. Broader Clone/XCF/GUI/compatibility gates remain
+open, and all historical receipts retain their original scope.
