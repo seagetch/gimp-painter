@@ -1797,3 +1797,74 @@ and other platforms remain open. Both historical old GUI teardown
 remains **user-approved SKIPPED/unverified**; no old runtime/capture/oracle was
 accessed or regenerated. No all-196-hunk, parent/whole-section 25, full
 aggregate, final Clone freeze, package, release or whole-port acceptance.
+
+
+## Ordinary Meson sanitizer workflow correction (2026-10-17)
+
+This is a current acceptance correction, not a rewrite of the historical runs
+above. The general native-build contracts were already mandatory when the
+2026-10-17 Clone and navigation focused runs were performed:
+
+- `b2a6948f49c3f3ecd30b3292a8d1484ca72b0aa4`, 2026-10-11 08:45:49 UTC,
+  added the ordinary Meson sanitizer workflow in `rtti-separation.md`.
+- `8121f485447917938baaf57dc4627516a109f367`, 2026-10-11 08:48:31 UTC,
+  explicitly prohibited restoring individually substituted object files in
+  `native-build-workflow.md`.
+
+Later component contracts and builders prescribed the conflicting focused
+per-object approach. They did not record a waiver of the general rule. The
+current general rule is authoritative: use an ordinary, fresh out-of-source
+Meson sanitizer configuration with the prescribed consistent RTTI, without
+rewriting generated backend state or substituting individually rebuilt objects.
+
+The recorded normal and focused passes remain real, source-bound observations.
+For example, the latest strict Clone run at `fbe7efacdec68938d5334be6ea56cd83b0d0afdf`
+passed 226 normal cases and 62 focused cases; its eight instrumented sources and
+54 RTTI-only compatibility sources must retain those labels. The navigation
+run at `8e92569df4841a458202de2dd89ed6db1cb4c974` passed 41 normal and 31 focused
+cases with nine C units instrumented. Neither observation proves the required
+ordinary-Meson sanitizer acceptance. The earlier all-163 normal aggregate at
+`f271db84bb9cd3d99c404a43d5c727c19d96ca5f` is also not a later-source sanitizer
+or aggregate result. No historical archive, log, source seal or failure is erased.
+
+Fourteen direct task checks are reopened pending compliant acceptance:
+`14.007/component-visibility-regression`,
+`14.007/source-mode-projection-regression`, originals `25.001` through `25.008`,
+`25.008/mirrored-arrow-input`, and `25.009/common-angle-draw`,
+`25.009/transformed-drag-events`, `25.009/fractional-pan-difference`.
+The three dependent portrait GUI checks under `34.005` are unchecked/BLOCKED
+because their required predecessor checks are reopened. Their actual installed
+GUI observations, screenshots and exact-source limitations remain valid; no GUI
+failure is inferred from this workflow correction. Unrelated parent and legacy
+compatibility obligations remain open as before.
+
+All 28 current Clone matrix rows now carry an explicit ordinary-Meson pending
+gap; the 23 previously COMPONENT_VERIFIED rows are PARTIAL. This changes current
+acceptance status, not the recorded behavior or old completed snapshots. The
+unchanged `current_core_receipt` still locates and verifies its exact historical
+focused evidence. A green `check_clone_acceptance.py` at this interim checkpoint
+means that evidence and source reconciliation succeeded; it is expressly not
+ordinary-Meson workflow acceptance. The separate
+`ordinary_meson_sanitizer_acceptance.status` in `clone.json` is PENDING and has no
+observed ordinary results. No validator exception or weakened assertion was
+introduced to turn that pending requirement into a pass.
+
+The bounded corrective plan is one frozen published revision and one fresh
+ordinary Meson `b_sanitize=address,undefined` build, running the four existing
+registrations `gimp-clone-layer`, `painter-navigation-events`,
+`painter-navigation-ui`, `painter-navigation` (62 + 31 + 4 + 6 = 103 cases).
+Verify actual compile commands and linked inputs, including the prescribed
+Meson RTTI policy, rather than counting configured flags alone. Do not replace
+objects or archives after Meson builds them. Run the existing ten-target normal
+union on the same frozen revision (the seven Clone component targets plus
+those three navigation targets, 267 cases); this is a bounded component run,
+not a new whole-registration aggregate. Retain exact source/tree, submodule,
+configuration, compiler, source/ELF/metadata seals, all command statuses, all
+stdout/stderr and the authenticated portrait TCP Xvfb checks. Leak detection
+remains unavailable in the confirmed executor; ASan, UBSan and vptr checks are
+not suppressed. Existing normal receipts can establish comparability but do
+not replace the newly required executions. Failed attempts stay preserved.
+
+Only after those gates pass may the explicitly reopened checks be reconsidered.
+This correction makes no ordinary-sanitizer PASS, new GUI, whole-port, historical
+pan-parity, platform or release-completion claim.
