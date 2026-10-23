@@ -107,6 +107,14 @@
       "context": "core",
       "prerequisites": [],
       "review": "Recovery 2026-10-15: independent legacy-source-based horizontal transform toolbar constructor; owns include guard and C linkage. Compile twice in C11/C++14 with standard core prerequisites; no old layout or factory completeness is implied."
+    },
+    {
+      "path": "app/dialogs/welcome-dialog.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "9e6d1a8e09009650b3a185938dce835eb87071c1",
+      "context": "core",
+      "prerequisites": [],
+      "review": "Welcome dialog shutdown ownership: preserve the baseline constructor and add the idempotent shutdown entry point with C linkage. Double-include after normal core/widget prerequisites in C11 and C++14."
     }
   ]
 }

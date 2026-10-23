@@ -22,8 +22,13 @@
 #define __WELCOME_DIALOG_H__
 
 
+G_BEGIN_DECLS
+
 GtkWidget * welcome_dialog_create (Gimp     *gimp,
                                    gboolean  show_welcome_page);
+void        welcome_dialog_exit   (void);
 
+
+G_END_DECLS
 
 #endif /* __WELCOME_DIALOG_H__ */
