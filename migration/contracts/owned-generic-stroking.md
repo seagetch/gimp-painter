@@ -74,3 +74,26 @@ checkpoint, not a physical-device, standalone PDB transport or full GUI claim.
 The existing nonlinear-u8, symmetry, ICC, pipe, large-dab memory/latency and legacy
 geometry acceptance boundaries remain. In particular, this work does not infer
 legacy geometry from a standard brush's blend mode or paper option.
+
+## Current ordinary-Meson acceptance in progress (2026-10-18)
+
+The historical normal checkpoint above is retained, but its source allowlist no
+longer matches five current files: `gimpfillbrush.cpp`, `gimpfillbrush.h`,
+`gimppaintersmudge.cpp`, `painter-native-stroking.hpp`, and
+`test-gimp-fill-brush.cpp`. It is not current-source acceptance. The old
+`run_owned_generic_sanitizers.py` object-substitution harness is historical and
+must not be used for the required current gate.
+
+The bounded completion adds ordinary Meson registrations for the six retained
+Fill/Smudge raw, Path and Boundary comparisons, without changing their fixture
+bytes or executing the old runtime. Acceptance requires a frozen current source,
+a fresh ordinary normal build and unfiltered registered aggregate, plus a
+separate ordinary ASan/UBSan build covering the complete Fill, Smudge and
+MyPaint batch suites, all six generic comparisons and the five existing family
+trace variants. Keep RTTI/vptr enabled, record any unavailable LSan coverage,
+and preserve all failures and source/build/runtime seals. No current native
+pass or task closure is claimed by this preparation checkpoint.
+
+Only `27.009/owned-generic-strokes` can close after these gates. The parent
+`27.009`, standalone PDB transport, full GUI/device, precision, resource/latency
+and platform obligations remain open.

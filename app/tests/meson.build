@@ -564,6 +564,27 @@ endif
 painter_smudge_trace = executable('painter-smudge-trace', 'painter-smudge-trace.cpp', 'tests.c',
   dependencies: [libapp_dep, appstream], link_with: apptests_links,
   cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+
+# All six pinned old generic routes are ordinary, independently reported tests.
+if not meson.is_cross_build()
+  foreach generic_family : ['fill-brush', 'smudge']
+    generic_trace = generic_family == 'fill-brush' ? painter_fill_trace : painter_smudge_trace
+    foreach generic_route : ['raw', 'path', 'boundary']
+      generic_name = 'painter-owned-generic-' + generic_family + '-' + generic_route
+      test(generic_name, painter_brush_settings_python,
+        args: ['-B', meson.project_source_root() / 'migration/tests/compare_owned_generic.py',
+               meson.project_build_root(), '--family', generic_family,
+               '--route', generic_route, '--binary', generic_trace,
+               '--report', meson.current_build_dir() / (generic_name + '.json')],
+        depends: [generic_trace],
+        suite: 'painter', is_parallel: false, timeout: 120)
+    endforeach
+  endforeach
+endif
+test('painter-owned-generic-comparator', painter_brush_settings_python,
+  args: ['-B', meson.project_source_root() / 'migration/tests/test_owned_generic_comparator.py'],
+  suite: 'painter', is_parallel: false, timeout: 30)
+
 if not meson.is_cross_build()
   test('painter-smudge-legacy-strokes', painter_brush_settings_python,
     args: [meson.project_source_root() / 'migration/tests/compare_smudge_strokes.py',

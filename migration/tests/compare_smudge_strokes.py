@@ -6,9 +6,9 @@ import subprocess
 import sys
 expected = gzip.decompress(Path(sys.argv[1]).read_bytes())
 run = subprocess.run(sys.argv[2:], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+sys.stderr.buffer.write(run.stderr)
 actual = b'\n'.join(x for x in run.stdout.splitlines() if x.startswith(b'SMUDGE ') or x == b'SMUDGE_CAPTURE_COMPLETE') + b'\n'
 if run.returncode:
-    sys.stderr.buffer.write(run.stderr)
     raise SystemExit(run.returncode)
 if actual != expected:
     summary = []
