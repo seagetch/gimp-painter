@@ -1,0 +1,244 @@
+Xvfb verified: 127.0.0.1:93, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S8e13ce6c78d4c360cc2cff65ec49e597
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..24
+# Start of undo-payload tests
+# native Undo payload precision=200 base=0 alpha=0 floating=0 cycles=3
+# native Undo payload precision=200 base=0 alpha=0 floating=1 cycles=3
+# native Undo payload precision=200 base=0 alpha=1 floating=0 cycles=3
+# native Undo payload precision=200 base=0 alpha=1 floating=1 cycles=3
+# native Undo payload precision=200 base=1 alpha=0 floating=0 cycles=3
+# native Undo payload precision=200 base=1 alpha=0 floating=1 cycles=3
+# native Undo payload precision=200 base=1 alpha=1 floating=0 cycles=3
+# native Undo payload precision=200 base=1 alpha=1 floating=1 cycles=3
+# native Undo payload precision=300 base=0 alpha=0 floating=0 cycles=3
+# native Undo payload precision=300 base=0 alpha=0 floating=1 cycles=3
+# native Undo payload precision=300 base=0 alpha=1 floating=0 cycles=3
+# native Undo payload precision=300 base=0 alpha=1 floating=1 cycles=3
+# native Undo payload precision=300 base=1 alpha=0 floating=0 cycles=3
+# native Undo payload precision=300 base=1 alpha=0 floating=1 cycles=3
+# native Undo payload precision=300 base=1 alpha=1 floating=0 cycles=3
+# native Undo payload precision=300 base=1 alpha=1 floating=1 cycles=3
+# native Undo payload precision=500 base=0 alpha=0 floating=0 cycles=3
+# native Undo payload precision=500 base=0 alpha=0 floating=1 cycles=3
+# native Undo payload precision=500 base=0 alpha=1 floating=0 cycles=3
+# native Undo payload precision=500 base=0 alpha=1 floating=1 cycles=3
+# native Undo payload precision=500 base=1 alpha=0 floating=0 cycles=3
+# native Undo payload precision=500 base=1 alpha=0 floating=1 cycles=3
+# native Undo payload precision=500 base=1 alpha=1 floating=0 cycles=3
+# native Undo payload precision=500 base=1 alpha=1 floating=1 cycles=3
+# native Undo payload precision=700 base=0 alpha=0 floating=0 cycles=3
+# native Undo payload precision=700 base=0 alpha=0 floating=1 cycles=3
+# native Undo payload precision=700 base=0 alpha=1 floating=0 cycles=3
+# native Undo payload precision=700 base=0 alpha=1 floating=1 cycles=3
+# native Undo payload precision=700 base=1 alpha=0 floating=0 cycles=3
+# native Undo payload precision=700 base=1 alpha=0 floating=1 cycles=3
+# native Undo payload precision=700 base=1 alpha=1 floating=0 cycles=3
+# native Undo payload precision=700 base=1 alpha=1 floating=1 cycles=3
+ok 1 /undo-payload/native-snapshot-bytes
+# slow test /undo-payload/native-snapshot-bytes executed in 0.60 secs
+# End of undo-payload tests
+# Start of small-boundaries tests
+# tiny=1x1 offset=(-5,5) precision=150 base=0 alpha=0
+# tiny=1x1 offset=(0,0) precision=150 base=0 alpha=0
+# tiny=1x1 offset=(4,-4) precision=150 base=0 alpha=0
+# tiny=1x1 offset=(-5,5) precision=150 base=0 alpha=1
+# tiny=1x1 offset=(0,0) precision=150 base=0 alpha=1
+# tiny=1x1 offset=(4,-4) precision=150 base=0 alpha=1
+# tiny=1x1 offset=(-5,5) precision=150 base=1 alpha=0
+# tiny=1x1 offset=(0,0) precision=150 base=1 alpha=0
+# tiny=1x1 offset=(4,-4) precision=150 base=1 alpha=0
+# tiny=1x1 offset=(-5,5) precision=150 base=1 alpha=1
+# tiny=1x1 offset=(0,0) precision=150 base=1 alpha=1
+# tiny=1x1 offset=(4,-4) precision=150 base=1 alpha=1
+# tiny=1x1 offset=(-5,5) precision=700 base=0 alpha=0
+# tiny=1x1 offset=(0,0) precision=700 base=0 alpha=0
+# tiny=1x1 offset=(4,-4) precision=700 base=0 alpha=0
+# tiny=1x1 offset=(-5,5) precision=700 base=0 alpha=1
+# tiny=1x1 offset=(0,0) precision=700 base=0 alpha=1
+# tiny=1x1 offset=(4,-4) precision=700 base=0 alpha=1
+# tiny=1x1 offset=(-5,5) precision=700 base=1 alpha=0
+# tiny=1x1 offset=(0,0) precision=700 base=1 alpha=0
+# tiny=1x1 offset=(4,-4) precision=700 base=1 alpha=0
+# tiny=1x1 offset=(-5,5) precision=700 base=1 alpha=1
+# tiny=1x1 offset=(0,0) precision=700 base=1 alpha=1
+# tiny=1x1 offset=(4,-4) precision=700 base=1 alpha=1
+# tiny=2x3 offset=(-5,5) precision=150 base=0 alpha=0
+# tiny=2x3 offset=(0,0) precision=150 base=0 alpha=0
+# tiny=2x3 offset=(4,-4) precision=150 base=0 alpha=0
+# tiny=2x3 offset=(-5,5) precision=150 base=0 alpha=1
+# tiny=2x3 offset=(0,0) precision=150 base=0 alpha=1
+# tiny=2x3 offset=(4,-4) precision=150 base=0 alpha=1
+# tiny=2x3 offset=(-5,5) precision=150 base=1 alpha=0
+# tiny=2x3 offset=(0,0) precision=150 base=1 alpha=0
+# tiny=2x3 offset=(4,-4) precision=150 base=1 alpha=0
+# tiny=2x3 offset=(-5,5) precision=150 base=1 alpha=1
+# tiny=2x3 offset=(0,0) precision=150 base=1 alpha=1
+# tiny=2x3 offset=(4,-4) precision=150 base=1 alpha=1
+# tiny=2x3 offset=(-5,5) precision=700 base=0 alpha=0
+# tiny=2x3 offset=(0,0) precision=700 base=0 alpha=0
+# tiny=2x3 offset=(4,-4) precision=700 base=0 alpha=0
+# tiny=2x3 offset=(-5,5) precision=700 base=0 alpha=1
+# tiny=2x3 offset=(0,0) precision=700 base=0 alpha=1
+# tiny=2x3 offset=(4,-4) precision=700 base=0 alpha=1
+# tiny=2x3 offset=(-5,5) precision=700 base=1 alpha=0
+# tiny=2x3 offset=(0,0) precision=700 base=1 alpha=0
+# tiny=2x3 offset=(4,-4) precision=700 base=1 alpha=0
+# tiny=2x3 offset=(-5,5) precision=700 base=1 alpha=1
+# tiny=2x3 offset=(0,0) precision=700 base=1 alpha=1
+# tiny=2x3 offset=(4,-4) precision=700 base=1 alpha=1
+# tiny=17x9 offset=(-5,5) precision=150 base=0 alpha=0
+# tiny=17x9 offset=(0,0) precision=150 base=0 alpha=0
+# tiny=17x9 offset=(4,-4) precision=150 base=0 alpha=0
+# tiny=17x9 offset=(-5,5) precision=150 base=0 alpha=1
+# tiny=17x9 offset=(0,0) precision=150 base=0 alpha=1
+# tiny=17x9 offset=(4,-4) precision=150 base=0 alpha=1
+# tiny=17x9 offset=(-5,5) precision=150 base=1 alpha=0
+# tiny=17x9 offset=(0,0) precision=150 base=1 alpha=0
+# tiny=17x9 offset=(4,-4) precision=150 base=1 alpha=0
+# tiny=17x9 offset=(-5,5) precision=150 base=1 alpha=1
+# tiny=17x9 offset=(0,0) precision=150 base=1 alpha=1
+# tiny=17x9 offset=(4,-4) precision=150 base=1 alpha=1
+# tiny=17x9 offset=(-5,5) precision=700 base=0 alpha=0
+# tiny=17x9 offset=(0,0) precision=700 base=0 alpha=0
+# tiny=17x9 offset=(4,-4) precision=700 base=0 alpha=0
+# tiny=17x9 offset=(-5,5) precision=700 base=0 alpha=1
+# tiny=17x9 offset=(0,0) precision=700 base=0 alpha=1
+# tiny=17x9 offset=(4,-4) precision=700 base=0 alpha=1
+# tiny=17x9 offset=(-5,5) precision=700 base=1 alpha=0
+# tiny=17x9 offset=(0,0) precision=700 base=1 alpha=0
+# tiny=17x9 offset=(4,-4) precision=700 base=1 alpha=0
+# tiny=17x9 offset=(-5,5) precision=700 base=1 alpha=1
+# tiny=17x9 offset=(0,0) precision=700 base=1 alpha=1
+# tiny=17x9 offset=(4,-4) precision=700 base=1 alpha=1
+ok 2 /small-boundaries/native-tiny-edges
+# End of small-boundaries tests
+# Start of commit-cancel tests
+# precision=150 floating=0 exit=0
+# precision=150 floating=0 exit=1
+# precision=150 floating=0 exit=2
+# precision=150 floating=0 exit=3
+# precision=150 floating=0 exit=4
+# precision=150 floating=0 exit=5
+# precision=150 floating=0 exit=6
+# precision=150 floating=0 exit=7
+# precision=150 floating=1 exit=0
+# precision=150 floating=1 exit=1
+# precision=150 floating=1 exit=2
+# precision=150 floating=1 exit=3
+# precision=150 floating=1 exit=4
+# precision=150 floating=1 exit=5
+# precision=150 floating=1 exit=6
+# precision=150 floating=1 exit=7
+# precision=600 floating=0 exit=0
+# precision=600 floating=0 exit=1
+# precision=600 floating=0 exit=2
+# precision=600 floating=0 exit=3
+# precision=600 floating=0 exit=4
+# precision=600 floating=0 exit=5
+# precision=600 floating=0 exit=6
+# precision=600 floating=0 exit=7
+# precision=600 floating=1 exit=0
+# precision=600 floating=1 exit=1
+# precision=600 floating=1 exit=2
+# precision=600 floating=1 exit=3
+# precision=600 floating=1 exit=4
+# precision=600 floating=1 exit=5
+# precision=600 floating=1 exit=6
+# precision=600 floating=1 exit=7
+# precision=750 floating=0 exit=0
+# precision=750 floating=0 exit=1
+# precision=750 floating=0 exit=2
+# precision=750 floating=0 exit=3
+# precision=750 floating=0 exit=4
+# precision=750 floating=0 exit=5
+# precision=750 floating=0 exit=6
+# precision=750 floating=0 exit=7
+# precision=750 floating=1 exit=0
+# precision=750 floating=1 exit=1
+# precision=750 floating=1 exit=2
+# precision=750 floating=1 exit=3
+# precision=750 floating=1 exit=4
+# precision=750 floating=1 exit=5
+# precision=750 floating=1 exit=6
+# precision=750 floating=1 exit=7
+ok 3 /commit-cancel/native-pixels-and-history
+# slow test /commit-cancel/native-pixels-and-history executed in 1.39 secs
+# End of commit-cancel tests
+# Start of painter-surface tests
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+ok 4 /painter-surface/session-undo-cancel
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+ok 5 /painter-surface/rgb-cancel-undo
+ok 6 /painter-surface/stationary-selection
+ok 7 /painter-surface/resource-lifetime-missing
+ok 8 /painter-surface/paper-invalidation
+ok 9 /painter-surface/rejected-snapshot-format
+ok 10 /painter-surface/transparent-lock-representable-masks
+Time is running backwards!
+ok 11 /painter-surface/starting-reentry-deferred-cancel
+Time is running backwards!
+Time is running backwards!
+ok 12 /painter-surface/image-lifetime-native-callbacks
+Time is running backwards!
+ok 13 /painter-surface/drawable-removal-native-callbacks
+ok 14 /painter-surface/temp-buf-read-domains
+ok 15 /painter-surface/combined-read-domains
+# End of painter-surface tests
+# Start of selection tests
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+ok 16 /selection/core-signed-offsets
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+ok 17 /selection/empty-unrestricted
+ok 18 /selection/native-handoff-coverage
+# End of selection tests
+# Start of layer-mask tests
+# 512 actual nearest sampler reads; scalar max absolute error 4.7817482196066408e-08
+ok 19 /layer-mask/native-sampler-precision
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+ok 20 /layer-mask/apply-read-raw-paint
+Time is running backwards!
+Time is running backwards!
+ok 21 /layer-mask/independent-paint-target
+# End of layer-mask tests
+# Start of snapshot tests
+ok 22 /snapshot/native-start-handoff
+# End of snapshot tests
+# Start of dirty tests
+ok 23 /dirty/native-update-undo-extent
+# End of dirty tests
+# Start of undo tests
+ok 24 /undo/native-operation-history
+# End of undo tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
