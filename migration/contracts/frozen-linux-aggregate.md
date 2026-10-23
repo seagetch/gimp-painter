@@ -199,3 +199,27 @@ success/exception pairs with exactly eight expected negative diagnostics and no
 locale-startup diagnostic. All 361 staged catalogs and the exact helper remained
 unchanged. This focused rerun does not replace the full procedure corpus or the
 next unfiltered exact-commit aggregate.
+
+## Accepted normal Linux run after environment repairs, 2026-10-16
+
+The exact public source `f271db84bb9cd3d99c404a43d5c727c19d96ca5f`, tree
+`0298836eec04665a8d424242c6161bf2369f5ba9`, passed all 163 registrations
+under the unchanged unfiltered serial runner from 19:00:29 to 19:48:12 UTC.
+The authenticated loopback TCP Xvfb harness verified 1080 × 1920 geometry
+and rejected a client with empty authority.
+
+There were zero failed, skipped or timed-out registrations, skipped subtests,
+unexpected diagnostics or baseline exemptions. All source, pinned-submodule,
+ELF, test-registry and 361 staged-catalog integrity checks passed. Independently
+observed before/after build freshness was identical, and the actual package
+helper accepted the final sanitized gate. The complete `painter-filter-procedure`
+registration passed after the locale repair; the earlier 24eaefc680 failure and
+the first f271db84 attempt lost with its executor remain failed/incomplete.
+
+[Sanitized receipt](../tests/frozen-linux-f271db84.json) records all target
+classifications, expected negative-test diagnostics, executable and runner
+hashes, and the full gate SHA-256. The complete package-consumable gate and
+source/ELF observations are preserved separately. This documentation-only
+receipt records acceptance of f271db84; it does not claim its own commit was
+rerun. Acceptance remains limited to this normal Linux source and does not
+certify other platforms, sanitizer builds, installed releases or the full port.
