@@ -1,0 +1,206 @@
+{
+  "format": 1,
+  "status": "passed",
+  "scope": "Normal Linux native test-profile isolation; not final aggregate or full-port acceptance",
+  "source_base": "8d8c06d32a6b05d0d5babaef5386e0604a2ad59d",
+  "tested_sources": {
+    "app/tests/tests.c": "e0dabd0c925f97bd5e23ed9d1134c319c856fc504a454d7fd12689fd596dd598",
+    "app/tests/test-gimp-test-config-fixture.c": "2914086d421969407a16f54d81947d6c063a3da1fce3a48afab44c8594a41cc4"
+  },
+  "display": "Authenticated loopback-only Xvfb 1080x1920x24, empty-authority rejection verified",
+  "registered_tests": [
+    {
+      "name": "gimp:app / core",
+      "result": "OK",
+      "duration": 3.062631607055664,
+      "returncode": 0,
+      "tap_cases": 4,
+      "stdout_sha256": "2e7e418765433fc670bb553b85ab0c3f0cafd8be3d02e0edcfed3541ae97e092",
+      "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+      "log": "build/meson-logs/profile-regressions.json",
+      "log_sha256": "f1335a0dedb3397af3c37f2816e5820b2446353102c8f5ece69942c2573a59e3"
+    },
+    {
+      "name": "gimp:app / painter-layer-ui",
+      "result": "OK",
+      "duration": 94.05607080459595,
+      "returncode": 0,
+      "tap_cases": 68,
+      "stdout_sha256": "ce179aaaa17e6e691ef4f9d9da0decc460e8a0a100653090c3a0a7b87d14918a",
+      "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+      "log": "build/meson-logs/profile-regressions.json",
+      "log_sha256": "f1335a0dedb3397af3c37f2816e5820b2446353102c8f5ece69942c2573a59e3"
+    },
+    {
+      "name": "gimp:app / painter-dock-input-ui",
+      "result": "OK",
+      "duration": 11.187817096710205,
+      "returncode": 0,
+      "tap_cases": 6,
+      "stdout_sha256": "bb6289749ef50e889acbf95d019bf3825c68f343e34055e5e5bcc206f352a173",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087",
+      "log": "build/meson-logs/profile-regressions.json",
+      "log_sha256": "f1335a0dedb3397af3c37f2816e5820b2446353102c8f5ece69942c2573a59e3"
+    },
+    {
+      "name": "gimp:app / painter-dock-session-ui",
+      "result": "OK",
+      "duration": 15.121856927871704,
+      "returncode": 0,
+      "tap_cases": 7,
+      "stdout_sha256": "db50cd34ef2948d41e36c11c89bb23f6e2e3e3a3853bf267c3c167d61ed806d5",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087",
+      "log": "build/meson-logs/profile-regressions.json",
+      "log_sha256": "f1335a0dedb3397af3c37f2816e5820b2446353102c8f5ece69942c2573a59e3"
+    },
+    {
+      "name": "gimp:app / painter-right-docks-ui",
+      "result": "OK",
+      "duration": 15.208348751068115,
+      "returncode": 0,
+      "tap_cases": 9,
+      "stdout_sha256": "809006e810087b4e3b4a421b2642907bf3ef86b1c02f682532ed110e7ae8c7fb",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087",
+      "log": "build/meson-logs/profile-regressions.json",
+      "log_sha256": "f1335a0dedb3397af3c37f2816e5820b2446353102c8f5ece69942c2573a59e3"
+    },
+    {
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "duration": 26.765140771865845,
+      "returncode": 0,
+      "tap_cases": 99,
+      "stdout_sha256": "2655536863947ae2c3dd0153318313417b73006b37268a20d2d91fedbd1f10b6",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087",
+      "log": "build/meson-logs/profile-regressions.json",
+      "log_sha256": "f1335a0dedb3397af3c37f2816e5820b2446353102c8f5ece69942c2573a59e3"
+    },
+    {
+      "name": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "duration": 103.98767900466919,
+      "returncode": 0,
+      "tap_cases": 53,
+      "stdout_sha256": "52ed76b9bbb62f549215db5e07fcf60a9d8abeae7ed899c7fa12c3ba63ef88b2",
+      "stderr_sha256": "6d1e321e950ca4056a38764f81adf0540be16c7da72e0b1612c9346f6f89af65",
+      "log": "build/meson-logs/profile-regressions.json",
+      "log_sha256": "f1335a0dedb3397af3c37f2816e5820b2446353102c8f5ece69942c2573a59e3"
+    },
+    {
+      "name": "gimp:app / painter-navigation-ui",
+      "result": "OK",
+      "duration": 0.06961536407470703,
+      "returncode": 0,
+      "tap_cases": 4,
+      "stdout_sha256": "abd56c616e5c1ba95142394a50e023354202731e7e252fffbf4399c79d1df79d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "build/meson-logs/profile-regressions.json",
+      "log_sha256": "f1335a0dedb3397af3c37f2816e5820b2446353102c8f5ece69942c2573a59e3"
+    },
+    {
+      "name": "gimp:app / painter-navigation-events",
+      "result": "OK",
+      "duration": 2.254422426223755,
+      "returncode": 0,
+      "tap_cases": 4,
+      "stdout_sha256": "6b9160e17402b3c6059342d0df1e9836b584b5edbae759a265b9a303c9e454b3",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087",
+      "log": "build/meson-logs/profile-regressions.json",
+      "log_sha256": "f1335a0dedb3397af3c37f2816e5820b2446353102c8f5ece69942c2573a59e3"
+    },
+    {
+      "name": "gimp:app / device-dialog-events",
+      "result": "OK",
+      "duration": 2.1690456867218018,
+      "returncode": 0,
+      "tap_cases": 1,
+      "stdout_sha256": "68e91ba2c73b658ee6b7b66e82ea0268a40f449be9dffbfcb8c7bae279549fa1",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087",
+      "log": "build/meson-logs/profile-regressions.json",
+      "log_sha256": "f1335a0dedb3397af3c37f2816e5820b2446353102c8f5ece69942c2573a59e3"
+    },
+    {
+      "name": "gimp:app / gimp-test-config-fixture",
+      "result": "OK",
+      "duration": 15.172131776809692,
+      "returncode": 0,
+      "tap_cases": 7,
+      "stdout_sha256": "02353ba5373ad46a3ab57d8d52758c8519fd0aa57f1fedbc6daf05722f273f0a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "build/meson-logs/profile-final.json",
+      "log_sha256": "c75f1bd1faf94d3875a8015495af644a176753db6449fa53f7b3caa0595664f8"
+    },
+    {
+      "name": "gimp:app / painter-dock-layout-ui",
+      "result": "OK",
+      "duration": 34.22432470321655,
+      "returncode": 0,
+      "tap_cases": 3,
+      "stdout_sha256": "37cfb769447d04c692fa61f3e8a8403c823e22b7d8691c3a036b0438ce0eed74",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087",
+      "log": "build/meson-logs/profile-final.json",
+      "log_sha256": "c75f1bd1faf94d3875a8015495af644a176753db6449fa53f7b3caa0595664f8"
+    },
+    {
+      "name": "gimp:painter / painter-profile-native",
+      "result": "OK",
+      "duration": 1.7934350967407227,
+      "returncode": 0,
+      "tap_cases": 12,
+      "stdout_sha256": "9d5c86158b63486ab7a90617f77c2c05db2865ef7bdb1e8d9cb68d11ca38393a",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087",
+      "log": "build/meson-logs/profile-final.json",
+      "log_sha256": "c75f1bd1faf94d3875a8015495af644a176753db6449fa53f7b3caa0595664f8"
+    },
+    {
+      "name": "gimp:app / device-save-lifecycle",
+      "result": "OK",
+      "duration": 1.5125768184661865,
+      "returncode": 0,
+      "tap_cases": 4,
+      "stdout_sha256": "9289a6ef46dc7552bf33701f4b172d0a0e2f9d712345a16d8481d9dfdfbe6732",
+      "stderr_sha256": "d2dafee7736c78e0524bdc95c28f9efe18a2d62ff8de8bd57a384d339357b31c",
+      "log": "build/meson-logs/profile-final.json",
+      "log_sha256": "c75f1bd1faf94d3875a8015495af644a176753db6449fa53f7b3caa0595664f8"
+    }
+  ],
+  "registrations": 14,
+  "tap_cases": 281,
+  "fixture_negative_cases": 60,
+  "source_files": 13516,
+  "first_regression_source_changes": [],
+  "final_source_changes": [
+    "Only the deliberate synthetic fixture-input correction; no runtime-generated source files"
+  ],
+  "retained_startup_notices": [
+    "GIMP-Warning: A selected layer's pixels are locked.",
+    "GIMP-Warning: There are no selected layers or channels to fill.",
+    "GIMP-Warning: There are no selected layers or channels to stroke to.",
+    "Meson .dummy files identified as unknown plug-in entries; existing startup notices retained",
+    "Source-tree application icons absent; existing startup notices retained",
+    "gimp_devices_restore_on_focused_once: set default tool on loaded GimpDeviceInfo without tool options: Offline sentinel",
+    "gui_dbus_name_lost: connection to the bus cannot be established.",
+    "set device 'Virtual core XTEST pointer' to mode: disabled",
+    "set device 'Xvfb mouse' to mode: disabled"
+  ],
+  "early_fixture": {
+    "result": "7/7 assertions passed, rejected as clean evidence due to missing synthetic template/tag inputs",
+    "log_sha256": "204681e27edce58ae6c194fc4cbc004408945c8793f59b09b64b08b1d6527791"
+  },
+  "limitations": [
+    "No ASan/UBSan or cross-platform run",
+    "Final frozen aggregate remains open",
+    "Existing app-icon, plug-in enumeration, device and bus notices plus four expected negative-case GIMP warnings remain; strict aggregate diagnostic classifier reports no unexpected diagnostic or TAP skip."
+  ],
+  "build_log_sha256": "01d2d2f9c38f823e47acb81cff7f5c6e9b88f0c4553784cedf823678530e3e78",
+  "install_log_sha256": "c7cae4a39fc7b5962c6e5a4e345d2a9c3fe24a8028a5972a374379bc39a1d94f",
+  "diagnostic_gate": {
+    "unexpected": [],
+    "intentional_negative_warnings": [
+      "GIMP-Warning: There are no selected layers or channels to fill.",
+      "GIMP-Warning: There are no selected layers or channels to stroke to.",
+      "GIMP-Warning: A selected layer's pixels are locked.",
+      "GIMP-Warning: A selected layer's pixels are locked."
+    ]
+  }
+}
