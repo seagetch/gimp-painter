@@ -465,3 +465,16 @@ before publication instead closes and is destroyed once. A failed vector growth
 must not transfer or lose that candidate. [Failure injection regressions](../tests/construction-failure/README.md)
 observe both paths and same-slot retries. GLib's fatal allocation policy and its
 void qdata registration API do not supply recoverable failure branches.
+
+## Already queued callback invalidation (original 07.009)
+
+Disconnecting a signal prevents new invocations but does not cancel an independent
+callback already queued elsewhere. Such callbacks retain only a weak owner and
+the intended lifecycle generation. On delivery, lock the owner, require an active
+store accepting that generation, and only then enter the protected Impl borrow.
+Closing invalidates before invoking close hooks; rejection therefore applies to
+nested main-context dispatch during close as well as later delivery. Never use a
+borrowed Impl or store after a failed weak lock. Explicit Source cancellation may
+avoid dispatch, but is not evidence that a delivered stale callback is safe.
+[Native queued delivery tests](../tests/queued-callback/README.md) cover both idle
+and timeout dispatch, positive control, close/finalize and mismatched generation.

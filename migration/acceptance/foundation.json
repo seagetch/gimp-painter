@@ -852,19 +852,19 @@
         "app/painter/binding-store.hpp",
         "app/painter/binding-store.cpp",
         "app/painter/source.hpp",
-        "app/painter/object-ref.hpp"
+        "app/painter/connection.hpp",
+        "app/painter/object-ref.hpp",
+        "app/painter/tests/test-reentry.cpp"
       ],
       "test_ids": [
-        "/painter/store/lifecycle",
-        "/painter/ref/weak",
-        "/painter/source/cancel-repeat",
-        "/painter/source/self-close"
+        "/painter/source/queued-callback-invalidation"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/queued-callback/native.json",
+        "migration/tests/queued-callback/sanitizers.json",
+        "migration/tests/queued-callback/meson.json"
       ],
-      "scope_or_gap": "Generation invalidation and cancelled callback ownership are verified in common fixtures; per-feature queued callback audit is separate."
+      "scope_or_gap": "Original shared queued-delivery condition accepted: real notify enqueues idle/timeout, weak owner and lifecycle generation reject closed/finalized/mismatched/closing deliveries. Connection alone does not invalidate independent queues; feature revisions and platforms remain separate."
     },
     {
       "id": "07.010",

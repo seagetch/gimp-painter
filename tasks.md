@@ -366,7 +366,7 @@
 | 07.008 | [x] | 接続先先行破棄を試験する | 07.007 | Connection の destructor が解放済み object を触らない |
 | 07.008/untracked-signals | [ ] | 返却 Connection を捨てる接続を追跡可能にする | 07.008, 01.008 | 旧 connect_noret と未保存の接続を owner の終了時に解除し、emitter・owner の先行破棄と callback 中の close を試験する |
 | 07.008/connection-name | [ ] | Connection の signal 名を解放する | 07.008, 01.007/connection-signal | 接続・切断・再切断で複製文字列を一回解放し、closure と target の寿命を検証する |
-| 07.009 | [ ] | 投入済み callback の失効を試験する | 07.008 | 切断前に予約済みでも変更を行わない |
+| 07.009 | [x] | 投入済み callback の失効を試験する | 07.008 | 切断前に予約済みでも変更を行わない |
 | 07.010 | [ ] | 例外の境界変換を試験する | 07.009 | C 入口と vfunc の両方で契約どおり返す |
 | 07.011 | [ ] | weak handle と終了状態を試験する | 07.010 | 生存中だが close 済みの object を更新しない |
 | 07.012 | [ ] | worker 完了と画像終了の競合を試験する | 07.011 | UI object の最終 unref を worker が行わない |
