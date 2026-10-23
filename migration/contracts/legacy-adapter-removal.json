@@ -597,6 +597,18 @@
         "app/tools/gimppaintertexttoolbar.inc"
       ],
       "reason": "Native C GimpSizeEntry metadata: borrowed options retained by containing toolbar until native child destruction; destroy disconnects bidirectional size/unit handlers and weak context/image observers. PainterTextMetrics is g_new0/g_free native C bookkeeping, weak image/context, qdata destroy notifier clears GWeakRef. Not feature C++ Impl storage; retained destroyed controls must not use former options. Review and95 native cases: migration/tests/native-data-site-review/"
+    },
+    "native-undo-publication-scalars": {
+      "paths": [
+        "app/core/gimpimage-undo.c"
+      ],
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/."
+    },
+    "native-preferences-static-paths": {
+      "paths": [
+        "app/dialogs/preferences-dialog.c"
+      ],
+      "reason": "Borrowed process-lifetime property-name literals from static const PrefsPathDescriptor arrays and layer_preset_path; NULL writable field stays NULL. Native prefs_path_reset reads strings synchronously. No descriptor pointer, allocation, destructor, dynamic registry or C++ implementation state stored. Exact source and original metadata/UI evidence: migration/tests/native-undo-preferences-data-review/."
     }
   },
   "syntax_exceptions": [
@@ -1574,14 +1586,6 @@
     {
       "path": "app/dialogs/preferences-dialog.c",
       "operation": "g_object_set_data",
-      "sha256": "7b5e0dd6603703f46ce9b8a0a6962f792e101c2faf39afcd546da3f35078194e",
-      "count": 1,
-      "reason": "Unchanged native upstream data site",
-      "provenance": "upstream"
-    },
-    {
-      "path": "app/dialogs/preferences-dialog.c",
-      "operation": "g_object_set_data",
       "sha256": "7f8a6b6009728838e993fac7a412f2878b7a7ab72aca28c097b342918302f4ee",
       "count": 1,
       "reason": "Unchanged native upstream data site",
@@ -1591,14 +1595,6 @@
       "path": "app/dialogs/preferences-dialog.c",
       "operation": "g_object_set_data",
       "sha256": "b2e943c1753d56623698402619b5045c832e295b7ff05c23f87aa8bed7327735",
-      "count": 1,
-      "reason": "Unchanged native upstream data site",
-      "provenance": "upstream"
-    },
-    {
-      "path": "app/dialogs/preferences-dialog.c",
-      "operation": "g_object_set_data",
-      "sha256": "c7f8b64259345fc50020b74ebc5ba2248a05f1f68e809815261d4ce1f858f16d",
       "count": 1,
       "reason": "Unchanged native upstream data site",
       "provenance": "upstream"
@@ -5346,6 +5342,86 @@
       "count": 1,
       "reason": "Native C GimpSizeEntry metadata: borrowed options retained by containing toolbar until native child destruction; destroy disconnects bidirectional size/unit handlers and weak context/image observers. PainterTextMetrics is g_new0/g_free native C bookkeeping, weak image/context, qdata destroy notifier clears GWeakRef. Not feature C++ Impl storage; retained destroyed controls must not use former options.",
       "provenance": "native-text-metrics"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_set_data",
+      "sha256": "9e8dd01d223adb0340f2b53399e41186f4a599063fbc851deb01c1a610e81754",
+      "count": 2,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_set_data",
+      "sha256": "07a742b8a9235a7a38449be84c4419d183363a8d829a01e581f7cfc8b51c0d19",
+      "count": 4,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_get_data",
+      "sha256": "ba554ba32b6cbf9fea9407c87cacdeaa489139221a573bb99964ca9fbba7274e",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_get_data",
+      "sha256": "1713fa09eb12edcb57553b29f6472ca1ddf81c094bd0391a29db5955ce279538",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_set_data",
+      "sha256": "9bb117dba9ec1cd07fc529e7463da6299dd62db2b1afe66913313e73c22465be",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_get_data",
+      "sha256": "d70acf7c2d71743c97895dfa29bc6dce23fc0ae31f6b56ed5ff07498ebdfc31e",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_set_data",
+      "sha256": "eaebafa555058fe9229da611c3a5f991e3978918ece4ee6ab5ca46849bd5d880",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_set_data",
+      "sha256": "80abe60dc24339fa8597417280f27c68d4d02703b0c7686e4c2e06e59b32ed25",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data",
+      "sha256": "d8dc5fe62377c182af43f29ecb728a7e4138370e353ef1d5909cc89efbc0d870",
+      "count": 1,
+      "reason": "Borrowed process-lifetime property-name literals from static const PrefsPathDescriptor arrays and layer_preset_path; NULL writable field stays NULL. Native prefs_path_reset reads strings synchronously. No descriptor pointer, allocation, destructor, dynamic registry or C++ implementation state stored. Exact source and original metadata/UI evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-preferences-static-paths"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data",
+      "sha256": "3bcc4590ede60c59df88cedeefe6c2bf9a18e9f9dda71ac9adef93567c6791a2",
+      "count": 1,
+      "reason": "Borrowed process-lifetime property-name literals from static const PrefsPathDescriptor arrays and layer_preset_path; NULL writable field stays NULL. Native prefs_path_reset reads strings synchronously. No descriptor pointer, allocation, destructor, dynamic registry or C++ implementation state stored. Exact source and original metadata/UI evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-preferences-static-paths"
     }
   ],
   "dormant_exceptions": [

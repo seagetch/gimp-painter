@@ -1,0 +1,21 @@
+{
+  "status": "FAIL",
+  "errors": [
+    "unaudited object data site: ('app/core/gimpimage-undo.c', 'g_object_set_data', '9e8dd01d223adb0340f2b53399e41186f4a599063fbc851deb01c1a610e81754')",
+    "unaudited object data site: ('app/core/gimpimage-undo.c', 'g_object_set_data', '07a742b8a9235a7a38449be84c4419d183363a8d829a01e581f7cfc8b51c0d19')",
+    "unaudited object data site: ('app/core/gimpimage-undo.c', 'g_object_get_data', 'ba554ba32b6cbf9fea9407c87cacdeaa489139221a573bb99964ca9fbba7274e')",
+    "unaudited object data site: ('app/core/gimpimage-undo.c', 'g_object_get_data', '1713fa09eb12edcb57553b29f6472ca1ddf81c094bd0391a29db5955ce279538')",
+    "unaudited object data site: ('app/core/gimpimage-undo.c', 'g_object_set_data', '9bb117dba9ec1cd07fc529e7463da6299dd62db2b1afe66913313e73c22465be')",
+    "unaudited object data site: ('app/core/gimpimage-undo.c', 'g_object_get_data', 'd70acf7c2d71743c97895dfa29bc6dce23fc0ae31f6b56ed5ff07498ebdfc31e')",
+    "unaudited object data site: ('app/core/gimpimage-undo.c', 'g_object_set_data', 'eaebafa555058fe9229da611c3a5f991e3978918ece4ee6ab5ca46849bd5d880')",
+    "unaudited object data site: ('app/core/gimpimage-undo.c', 'g_object_set_data', '80abe60dc24339fa8597417280f27c68d4d02703b0c7686e4c2e06e59b32ed25')",
+    "unaudited object data site: ('app/dialogs/preferences-dialog.c', 'g_object_set_data', 'd8dc5fe62377c182af43f29ecb728a7e4138370e353ef1d5909cc89efbc0d870')",
+    "unaudited object data site: ('app/dialogs/preferences-dialog.c', 'g_object_set_data', '3bcc4590ede60c59df88cedeefe6c2bf9a18e9f9dda71ac9adef93567c6791a2')",
+    "stale or changed object data review: ('app/dialogs/preferences-dialog.c', 'g_object_set_data', '7b5e0dd6603703f46ce9b8a0a6962f792e101c2faf39afcd546da3f35078194e')",
+    "stale or changed object data review: ('app/dialogs/preferences-dialog.c', 'g_object_set_data', 'c7f8b64259345fc50020b74ebc5ba2248a05f1f68e809815261d4ce1f858f16d')"
+  ],
+  "scope": "All app C/C++ source/header/include files, every potentially active configuration; tests excluded",
+  "source_commit": "171d467c2198bd93694e7effd8a1fef323aa02d9",
+  "source_count": 2517,
+  "data_call_count": 717
+}

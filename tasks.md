@@ -321,6 +321,7 @@
 | 05.013/class-init-error | [x] | class 初期化失敗を C ABI 内で処理する | 05.013, 01.007/class-pointer-exception | pointer 例外を廃止し、部分登録と再試行の状態を試験する |
 | 05.013/legacy-exit-removal | [x] | 旧 property callback の例外時 exit を C ABI 安全な処理へ変更する | 05.013, 01.005/gimp3-remaining-callbacks | 31型/15 property callbackを照合。Optionsの更新後通知欠落とGuideUndoの失敗NULL混同をnative再現して修正。通常/ASan・UBSanで型付きGValue・通知・登録・回復を検証（migration/tests/property-boundary/README.md）。全vfuncは別義務 |
 | 05.014 | [x] | 移行 adapter の撤去条件を定義する | 05.013 | 2457 source/78 C++ unitを全構成分岐で検査。681 data siteは675上流一致＋6個別規約、4無効分岐と1現行宣言を固定し39正負テスト合格。撤去条件を定義し、全feature/31.014–017の実証は別義務（migration/contracts/legacy-adapter-removal.md） |
+| 05.014/native-undo-preferences-data | [x] | native Undo scalarと静的preferences metadataのdata-site監査を更新する | 05.014, 09.011/pop-guard, 09.011/publication-outcome, 08.018/preset-prefs-entry | exact10fingerprints/14callsと2旧field-tokenを審査。committed2520source gate、69既存controlと10positive/30negativeを検証。既存runtime証跡のみ明示再利用、全feature撤去は未完（migration/tests/native-undo-preferences-data-review/） |
 | 05.014/native-session-text-data-review | [x] | native session継続とtext metricsのobject-data所有を監査する | 05.014 | 6fingerprint/7callを個別所有規約へ照合し、通常compact62+session33と既存gate69正負試験で検証。2491source/705data gate合格、全feature/38.004は未完。migration/tests/native-data-site-review/ |
 
 ### 06 単一 C++ API の共通実装

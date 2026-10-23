@@ -1,0 +1,120 @@
+{
+  "status": "REVIEWED_NATIVE_SCALARS_AND_STATIC_METADATA",
+  "rows": [
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_set_data",
+      "sha256": "9e8dd01d223adb0340f2b53399e41186f4a599063fbc851deb01c1a610e81754",
+      "count": 2,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_set_data",
+      "sha256": "07a742b8a9235a7a38449be84c4419d183363a8d829a01e581f7cfc8b51c0d19",
+      "count": 4,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_get_data",
+      "sha256": "ba554ba32b6cbf9fea9407c87cacdeaa489139221a573bb99964ca9fbba7274e",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_get_data",
+      "sha256": "1713fa09eb12edcb57553b29f6472ca1ddf81c094bd0391a29db5955ce279538",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_set_data",
+      "sha256": "9bb117dba9ec1cd07fc529e7463da6299dd62db2b1afe66913313e73c22465be",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_get_data",
+      "sha256": "d70acf7c2d71743c97895dfa29bc6dce23fc0ae31f6b56ed5ff07498ebdfc31e",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_set_data",
+      "sha256": "eaebafa555058fe9229da611c3a5f991e3978918ece4ee6ab5ca46849bd5d880",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/core/gimpimage-undo.c",
+      "operation": "g_object_set_data",
+      "sha256": "80abe60dc24339fa8597417280f27c68d4d02703b0c7686e4c2e06e59b32ed25",
+      "count": 1,
+      "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-undo-publication-scalars"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data",
+      "sha256": "d8dc5fe62377c182af43f29ecb728a7e4138370e353ef1d5909cc89efbc0d870",
+      "count": 1,
+      "reason": "Borrowed process-lifetime property-name literals from static const PrefsPathDescriptor arrays and layer_preset_path; NULL writable field stays NULL. Native prefs_path_reset reads strings synchronously. No descriptor pointer, allocation, destructor, dynamic registry or C++ implementation state stored. Exact source and original metadata/UI evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-preferences-static-paths"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data",
+      "sha256": "3bcc4590ede60c59df88cedeefe6c2bf9a18e9f9dda71ac9adef93567c6791a2",
+      "count": 1,
+      "reason": "Borrowed process-lifetime property-name literals from static const PrefsPathDescriptor arrays and layer_preset_path; NULL writable field stays NULL. Native prefs_path_reset reads strings synchronously. No descriptor pointer, allocation, destructor, dynamic registry or C++ implementation state stored. Exact source and original metadata/UI evidence: migration/tests/native-undo-preferences-data-review/.",
+      "provenance": "native-preferences-static-paths"
+    }
+  ],
+  "superseded_static_field_tokens": [
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data",
+      "sha256": "7b5e0dd6603703f46ce9b8a0a6962f792e101c2faf39afcd546da3f35078194e",
+      "count": 1,
+      "reason": "Unchanged native upstream data site",
+      "provenance": "upstream"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data",
+      "sha256": "c7f8b64259345fc50020b74ebc5ba2248a05f1f68e809815261d4ce1f858f16d",
+      "count": 1,
+      "reason": "Unchanged native upstream data site",
+      "provenance": "upstream"
+    }
+  ],
+  "source_commit": "bf547afdb60bbad58d42678791105ac3b9201570",
+  "reviewed_source_sha256": {
+    "app/core/gimpimage-undo.c": "1562e79e04ce658504e51aefea838859c2d316f17c67b6b0e8367248a6162088",
+    "app/dialogs/preferences-dialog.c": "d200008963ff81a253e416b3005e3f2091deeeffa3c14402b6610caae0b5b06f"
+  },
+  "existing_evidence_sha256": {
+    "migration/tests/filter-editability-contract/source-contract.json": "ed4de0f1d9f168b8c3bca789fe6790c267b28e8995cdefa29f6c658c856fe9f1",
+    "migration/tests/filter-editability-contract/prepared.json": "c9c89ed230fd9b5d7cc99bc6c4791f62d58055d1f466375af8d804654a378a49",
+    "migration/tests/filter-editability-contract/combined-sanitizer.json": "275efcee8cb439f06e4c500edb650ff1c54227677a120b8911681536b4c7b7f3",
+    "migration/tests/native-stroke-undo-09011/report.json": "c61c004b1e783be1671796f579c215a8acf2e14b59b4ed77787695b0adc3b46e",
+    "migration/tests/native-stroke-undo-09011/regression.json": "5b24ba53f76bfe5fe5e8f8d3263cabe98b2b50e6d18e98493fd814b69f46f526",
+    "migration/tests/preset-legacy-metadata/manifest.json": "5b20dc54dfdb4b18b5bb0c624f8fdde94474b772ea6c18d22cc80bdb73621389",
+    "migration/tests/preset-legacy-metadata/green.json": "f19137263c1b0a9a02176c2dbfb4a31d2e2d0ededade260a014e409270c58a4f",
+    "migration/tests/preset-legacy-metadata/asan-results.json": "2085efefc7847a1ae0ae7c4b0ccd55cf4d8548fcf5e01d979ccac6d66993a341",
+    "migration/tests/preset-legacy-metadata/portrait.json": "ff4fd2b429262510458cf8d7599793c47c4c3425a80397361879638f9041a1f4"
+  },
+  "runtime_scope": "Existing checkpoint evidence reused explicitly; no new runtime or whole-HEAD runtime claim. Scalar call fingerprints unchanged by subsequent Filter predicate extension. No held candidate imported."
+}
