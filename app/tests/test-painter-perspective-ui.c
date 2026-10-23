@@ -25,6 +25,7 @@
 #include "core/gimpundostack.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimppaintercanvasui.h"
 #include "display/gimpdisplayshell-callbacks.h"
 #include "display/gimpdisplayshell-rotate.h"
 #include "display/gimpdisplayshell-scale.h"
@@ -79,6 +80,7 @@ static void capture_guide_scene (void)
   GError *error = NULL;
   gint64 deadline;
   if (!path) return;
+  g_assert_true (gimp_painter_canvas_ui_get_visible (shell));
   window = gtk_widget_get_toplevel (GTK_WIDGET (shell));
   gtk_window_resize (GTK_WINDOW (window), 1040, 1800);
   gtk_window_present (GTK_WINDOW (window));
@@ -620,10 +622,16 @@ static void stale_target_motion (void)
   g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, depth);
   close_image ();
 }
+
+#include "test-painter-tool-group-retirement.inc"
+
 int main(int argc,char **argv)
 {
   gint result;g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);
+  g_test_add_func("/perspective-ui/retained-groups-deserialize",retained_groups_deserialize);
+  g_test_add_func("/perspective-ui/retained-groups-reset",retained_groups_reset);
   g_test_add_func("/perspective-ui/add-move-remove-undo",add_move_remove_undo);
   g_test_add_func("/perspective-ui/stale-target-motion",stale_target_motion);
   g_test_add_func("/perspective-ui/close-pending-resize",close_with_pending_resize);

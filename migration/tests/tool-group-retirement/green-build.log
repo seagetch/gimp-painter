@@ -1,0 +1,15 @@
+ninja: Entering directory `/workspace/shared/gimp-native-baseline/build-port'
+[1/14] Generating git-version.h.in.1 with a custom command
+[2/14] Generating git-version.h.in.2 with a custom command
+[3/14] Generating git-version.h with a custom command
+[4/8] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/8] Compiling C object app/tools/libapptools.a.p/gimp-tools.c.o
+[6/8] Linking static target app/tools/libapptools.a
+[7/8] Compiling C object app/tests/painter-perspective-ui.p/test-painter-perspective-ui.c.o
+In file included from ../source/app/tests/test-painter-perspective-ui.c:626:
+../source/app/tests/test-painter-tool-group-retirement.inc: In function ‘retained_groups_deserialize’:
+../source/app/tests/test-painter-tool-group-retirement.inc:51:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   51 |       GimpObject *first = gimp_container_get_child_by_index (gimp->tool_item_list, 0);
+      |       ^~~~~~~~~~
+[8/8] Linking target app/tests/painter-perspective-ui

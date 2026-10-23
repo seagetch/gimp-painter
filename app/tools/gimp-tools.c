@@ -127,6 +127,9 @@ static void   gimp_tools_register       (GType                   tool_type,
                                          const gchar            *icon_name,
                                          gpointer                data);
 
+static void   gimp_tools_clear_structure (Gimp                  *gimp,
+                                          GimpContainer         *container);
+
 static void   gimp_tools_copy_structure (Gimp                   *gimp,
                                          GimpContainer          *src_container,
                                          GimpContainer          *dest_container,
@@ -606,7 +609,7 @@ gimp_tools_deserialize (Gimp          *gimp,
   g_type_class_unref (g_type_class_ref (GIMP_TYPE_TOOL_GROUP));
   g_type_class_unref (g_type_class_ref (GIMP_TYPE_TOOL_INFO));
 
-  gimp_container_clear (container);
+  gimp_tools_clear_structure (gimp, container);
 
   src_container = g_object_new (GIMP_TYPE_LIST,
                                 "child-type", GIMP_TYPE_TOOL_ITEM,
@@ -693,7 +696,7 @@ gimp_tools_reset (Gimp          *gimp,
 
   gimp_container_freeze (container);
 
-  gimp_container_clear (container);
+  gimp_tools_clear_structure (gimp, container);
 
   for (list = files; list; list = g_list_next (list))
     {
@@ -722,7 +725,7 @@ gimp_tools_reset (Gimp          *gimp,
 
           g_clear_error (&error);
 
-          gimp_container_clear (container);
+          gimp_tools_clear_structure (gimp, container);
         }
 
       g_clear_pointer (&scanner, gimp_scanner_unref);
@@ -879,6 +882,36 @@ gimp_tools_register (GType                   tool_type,
 
   if (tool_type == GIMP_TYPE_PAINTBRUSH_TOOL)
     gimp_tool_info_set_standard (gimp, tool_info);
+}
+
+/* Tool infos are shared runtime objects.  Removing the root list does not
+ * retire their group membership when a toolbar still owns the old groups.
+ * Detach through the child containers so parent links, active selection and
+ * observers stay consistent, including groups retained after a caller clear.
+ */
+static void
+gimp_tools_clear_structure (Gimp          *gimp,
+                            GimpContainer *container)
+{
+  GList *iter;
+
+  for (iter = gimp_get_tool_info_iter (gimp); iter; iter = g_list_next (iter))
+    {
+      GimpToolInfo *tool_info = iter->data;
+      GimpViewable *parent = gimp_viewable_get_parent (GIMP_VIEWABLE (tool_info));
+
+      if (parent)
+        {
+          /* Removal emits synchronously; keep the retiring group alive while
+           * observers drop their own references or update the toolbar. */
+          g_object_ref (parent);
+          gimp_container_remove (gimp_viewable_get_children (parent),
+                                 GIMP_OBJECT (tool_info));
+          g_object_unref (parent);
+        }
+    }
+
+  gimp_container_clear (container);
 }
 
 static void

@@ -1108,6 +1108,7 @@
 | 29.008 | [ ] | tool tile の表示を移植する | 29.007 | tool manager の現在選択と同期 |
 | 29.008/icon-null | [ ] | tile icon 生成失敗時の NULL 経路を処理する | 29.002, 29.008, 01.007/cpp-ownership | layer/tool 両 tile の icon 未登録・render 失敗時に NULL を unref せず、代替表示を確認 |
 | 29.009 | [ ] | tool group を接続する | 29.008 | 旧分類と現行 action の対応が明確 |
+| 29.009/retained-group-reset | [x] | oncanvasが保持する旧tool groupをreset・読込前に退役する | 29.001/native-canvas-tiles, 07.008/untracked-signals | 実parent-link失敗を再現し、保持group・caller先行clear・3回reset/deserializeを修正。元22+追加2の通常24/ASan24、60秒不変、縦型oncanvas画像を検証。9 C単位限定、全UI親は未完了（migration/tests/tool-group-retirement/validate.py） |
 | 29.010/toolbar-ref-balance | [ ] | toolbar の再表示と終了時の参照数を修正する | 29.010, 01.007/toolbar-ref | hide 時の余剰参照をなくし、移動・反復表示・破棄を検証する |
 | 29.010/toolbar-ref-balance-canvas-lifetime | [x] | 現canvas toolbarのhide/show・切替・close/reopen参照寿命を検証する | 29.010/native-compact-runtime | 保持destroy controlとqdata finalizerで8toolbar/64cycle・bar解放、native Dockable/起動empty display保持をfocused2/full62/scale2 2case検証。production変更なし、移動/独立windowとsanitizerは未完了（migration/tests/toolbar-reference-lifetime.json） |
 | 29.010/native-compact-runtime | [x] | 一つのnative ToolOptions GUIを可逆な横型・縦型popoversへ接続する | 29.001/native-canvas-tiles, 30.010/native-profile-migration | 2026-10-02凍結componentの履歴:50登録GUI/2868widgetのidentity・親順序・packing復元、12family/12破棄loop、native編集を通常8/sanitizer8/scale2 8＋実demo確認。旧Painter暗黙Canvas表示をprovenance付き移行し設定保存。旧tool別horizontal factory/独立toolbar/window/session同等性と今回の復旧コードの合格は未証明。後続geometry/HTTP/XCFを含むaggregateは別gate |
