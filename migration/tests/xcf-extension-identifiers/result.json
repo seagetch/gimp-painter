@@ -1,0 +1,17 @@
+{
+  "task": "10.011",
+  "result": "PASS source-consistency only",
+  "files_sha256": {
+    "app/xcf/xcf-private.h": "981962f9d26fbd46a80213d75615907e97ce953b05844cc156e5e4f257c3d9f4",
+    "app/xcf/painter-xcf-preserve.cpp": "9d79e3ba4657e0e4a15bf89f10a08555cfee935b362086991c59ad656df7af7a",
+    "app/xcf/painter-xcf-multipart.cpp": "e1b4af0c6ef55e4cb00138b9749848601ea6a96870c93467508314b7b8a191ed",
+    "app/xcf/painter-xcf-transport.cpp": "5ac76e3886dce621b1fb78428906fb220d79b3ab4c0a514fdc68053ac64741bb",
+    "migration/contracts/xcf-extension-identifiers.md": "4c422cddf25e05a96e03e4e5d415357d997f19aa8f3e8bfbef731be5b17b3079"
+  },
+  "magic_hex": {
+    "magic": "475058434600000001000000",
+    "manifest_magic": "475058434600000002000000",
+    "chunk_magic": "475058434300000001000000",
+    "inert_magic": "475058434900000001000000"
+  }
+}
