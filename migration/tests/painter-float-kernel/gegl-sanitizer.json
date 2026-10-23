@@ -1,0 +1,18 @@
+{
+  "scope": "test-only GEGL point-composer adapter plus new isolated kernel; NOT production app layer-mode registration",
+  "graphs": 45,
+  "pixels_per_graph": 64,
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "source_sha256": {
+    "app/operations/layer-modes-legacy/gimppainterfloatkernel.c": "9ccfdaee1ecb004a6d796df36c679283feb8b9d6343eb6bc2267434d63bdee66",
+    "migration/tests/painter-float-kernel/gegl-check.c": "d452ef7d56f96f4abdd77ffbf77c711e24f1baf9b81a1f2b0f8c8b0bec764a8b",
+    "migration/tests/painter-float-kernel/run.py": "3b98507a2eb1b444194e0ae778f9552546dc3f40506faa819e4f897d0ea2ff07",
+    "migration/tests/painter-float-kernel/run-gegl.py": "85d6a91f4705bc8dd2f42412406d785472dfbcf5bf6fb8440f35a0f04b996417"
+  },
+  "exit": 0,
+  "stdout": "45 test-adapter GEGL graphs x64 RGBA pixels passed\n",
+  "stderr": ""
+}
