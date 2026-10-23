@@ -118,6 +118,11 @@ callback might already have been queued.
 
 ## Migration end condition (05.014)
 
+The executable definition and narrow native exceptions are specified in
+[legacy-adapter-removal.md](legacy-adapter-removal.md). Run
+`python3 -B tools/check_painter_legacy_adapters.py`; the distinct feature/runtime
+requirements below remain mandatory beyond this original contract-definition row.
+
 The source scanner must reject legacy `Interface::cast`, `ref(...)[...]`,
 NewGClass private placement, free-form painter qdata ownership, and obsolete
 TileManager/PixelRegion use in migrated implementation paths. Existing unrelated

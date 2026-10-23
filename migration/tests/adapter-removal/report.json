@@ -1,0 +1,33 @@
+{
+  "task": "05.014",
+  "status": "PASS",
+  "meaning": "Removal contract and executable bounded source gate, not all-feature completion",
+  "base_commit": "442d9c21737900dd7bc1ded05336ea52f54723f5",
+  "source_count": 2457,
+  "registered_cpp_units": 78,
+  "data_operations": 681,
+  "upstream_unchanged": 675,
+  "explicit_native_common_store_operations": 6,
+  "dormant_upstream_legacy_sites": 4,
+  "modern_declaration_exceptions": 1,
+  "test_cases": 39,
+  "upstream_commit": "95f6410f25c5186686db7a489d79c1e79187cd41",
+  "source_sha256": {
+    "tools/check_painter_legacy_adapters.py": "56f47a7f0598bd2f5450e2eb2ff7465f37eccc70b494949597d790c550fec4d5",
+    "tools/tests/test_painter_legacy_adapters.py": "ce02bed96e6b01e7bbed2b29081dbc5d531214fcfa5e701cdb811232de6536e2",
+    "migration/contracts/legacy-adapter-removal.json": "253d9eeb0d47e3b61116a1f49d982ca19a7f746b829ae8dd9e022e85ac5471b0",
+    "migration/contracts/legacy-adapter-removal.md": "acc353aa0150968edb383e51618e3afb73164ce5c81d7a8db7083f3544335a45"
+  },
+  "evidence_sha256": "50b8e04e04a01f07b345f11bcc7f98271553f83bec64b8c1619c45a177b18d5a",
+  "evidence_bytes": 255589,
+  "evidence_members": 10,
+  "runtime_tests": "Not rerun: application code unchanged",
+  "remaining_gates": [
+    "31.014",
+    "31.015",
+    "31.016",
+    "31.017",
+    "38.004/all-vfunc-exception-containment",
+    "feature/platform runtime acceptance"
+  ]
+}
