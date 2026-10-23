@@ -200,6 +200,7 @@ def negative_controls(root,families,assertions,manifest):
         overlay.cache_clear=real_source.cache_clear
         with patch.object(xcf,'source',overlay):
             reject('xcf:source:'+label,lambda:xcf.validate_family(families['xcf'],root))
+    controls.extend(config.tool_group_negative_controls(root))
     return controls
 
 def main():

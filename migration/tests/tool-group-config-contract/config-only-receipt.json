@@ -1,0 +1,28 @@
+{
+  "result": "PASS",
+  "head_commit": "d8656ea1612f109f0b720d501749a4c34799ff81",
+  "alternate_root": "/workspace/shared/gimp-native-baseline/mybrush-live-icon-evidence/config-only",
+  "intermediate_blobs": {
+    "migration/inventory/persistence-mypaint-fields.json": "bdca8191d88793aa19c881a1d9f8bda42de6f1a95ecf0c34d1257bff72b16b36",
+    "migration/tests/test_persistence_field_contract.py": "aa73fdb68e0aff92ca193bc25f34933a8f59f1e23dba9e6c78d7feca8f80318f",
+    "migration/inventory/persistence-field-contract.json": "b556fb234deb0ab2315fe5dfd2d77b0031818efe228a08a631f3931740f3cecf",
+    "migration/inventory/persistence-config-fields.json": "ad2007c74320ff964cd9010aab69749e31c6bcf2c1ea1cffcc4b2b49ab9bad82",
+    "migration/tests/test_persistence_config_contract.py": "7e6607f3a7d2aa7c569fcedabdd8629a2387d5a01a8268bc4e7aaa5bfcef7dda"
+  },
+  "head_mypaint_provider_sha256": "eb3b1fbcd8251bfa74dc33b3014875a65a32d0fd4d38a6926a6ede07d914a1a6",
+  "head_mypaint_checker_sha256": "a2856ef7411a8594ee9ed1e9a541024b552ac35e8f622b1bccb04964c2309d17",
+  "populations_unchanged": {
+    "config": {
+      "fields": true,
+      "candidates": true
+    },
+    "mypaint": {
+      "fields": true,
+      "candidates": true
+    }
+  },
+  "field_site_views_equal_current": {
+    "migration/inventory/persistence-fields.tsv": true,
+    "migration/inventory/persistence-site-dispositions.tsv": true
+  }
+}

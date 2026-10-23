@@ -452,7 +452,56 @@ def validate_family(data, root):
     return [f['assertion'] for f in expected]
 
 
+def validate_tool_group_retirement(text):
+    """Static semantics for runtime membership retirement, not saved-field changes."""
+    read = function_body(text, 'gimp_tools_deserialize')
+    reset = function_body(text, 'gimp_tools_reset')
+    clear = function_body(text, 'gimp_tools_clear_structure')
+    copy = function_body(text, 'gimp_tools_copy_structure')
+    retire = 'gimp_tools_clear_structure (gimp, container);'
+    assert read.count(retire) == 1 and read.index(retire) < read.index('gimp_tools_copy_structure'), 'toolrc: retire before shared tool reuse'
+    assert reset.count(retire) == 2, 'toolrc: reset and failed-read cleanup retire membership'
+    assert 'gimp_tools_copy_structure (gimp, gimp->tool_info_list, container, NULL);' in reset, 'toolrc: default order fallback retained'
+    assert 'file_version != TOOL_RC_FILE_VERSION && file_version != GIMP_PAINTER_MIGRATED_TOOLRC_VERSION' in read, 'toolrc: accepted versions unchanged'
+    assert 'gimp_get_tool_info_iter (gimp)' in clear, 'toolrc: include orphan retained groups'
+    lease = 'g_object_ref (parent);'
+    remove = 'gimp_container_remove (gimp_viewable_get_children (parent), GIMP_OBJECT (tool_info));'
+    release = 'g_object_unref (parent);'
+    empty = 'gimp_container_clear (container);'
+    assert all(clear.count(x) == 1 for x in (lease, remove, release, empty)), 'toolrc: exact owner lease and notified removal'
+    assert clear.index(lease) < clear.index(remove) < clear.index(release) < clear.index(empty), 'toolrc: detach while leased before root clear'
+    assert 'gimp_tool_group_set_active_tool (GIMP_TOOL_GROUP (dest_tool_item), active);' in copy, 'toolrc: active group selection preserved'
+    assert 'gimp_viewable_set_expanded (GIMP_VIEWABLE (dest_tool_item), gimp_viewable_get_expanded (GIMP_VIEWABLE (src_tool_item)));' in copy, 'toolrc: expansion preserved'
+    assert 'gimp_tool_item_set_visible ( dest_tool_item, gimp_tool_item_get_visible (src_tool_item));' in copy, 'toolrc: visibility preserved'
+
+
+def tool_group_negative_controls(root):
+    """Read-only source overlays, checked semantically before program hashes."""
+    text = (Path(root) / 'app/tools/gimp-tools.c').read_text()
+    validate_tool_group_retirement(text)
+    controls = []
+    mutations = [
+      ('reader-retirement', 'gimp_tools_clear_structure (gimp, container);', 'gimp_container_clear (container);'),
+      ('parent-lease', 'g_object_ref (parent);', '(void) parent;'),
+      ('notified-detach', 'gimp_container_remove (gimp_viewable_get_children (parent),', 'gimp_container_have (gimp_viewable_get_children (parent),'),
+      ('lease-release-order', 'g_object_ref (parent);', 'g_object_unref (parent);'),
+      ('default-order', 'gimp_tools_copy_structure (gimp, gimp->tool_info_list, container, NULL);', '(void) container;'),
+      ('accepted-version', 'file_version != GIMP_PAINTER_MIGRATED_TOOLRC_VERSION', 'file_version == GIMP_PAINTER_MIGRATED_TOOLRC_VERSION'),
+      ('group-selection', 'gimp_tool_group_set_active_tool (GIMP_TOOL_GROUP (dest_tool_item), active);', '(void) active;'),
+      ('group-expansion', 'gimp_viewable_get_expanded (GIMP_VIEWABLE (src_tool_item))', 'FALSE'),
+    ]
+    for name, old, new in mutations:
+        assert old in text, ('missing mutation anchor', name)
+        changed = text.replace(old, new, 1)
+        try: validate_tool_group_retirement(changed)
+        except AssertionError as error:
+            controls.append(dict(id='config:tool-group:'+name, rejected=True, reason=str(error)))
+        else: raise AssertionError('negative control accepted: '+name)
+    return controls
+
+
 def manual_fields(src, schema):
+    validate_tool_group_retirement(src.read('app/tools/gimp-tools.c'))
     # Finite JSON key population is independently read from both source
     # consumers; unknown root members are the separately explicit open schema.
     native=src.read('app/core/gimplayerpreset-apply.cpp')
@@ -2737,7 +2786,13 @@ MANUAL_SPEC = json.loads(r'''{
       "path": "app/tools/gimp-tools.c",
       "revision": "native",
       "function": "gimp_tools_deserialize",
-      "sha256": "236743afc2153ffecc4258fd29ecc1c04ebff5e328dafabdea8352e8318e6d07"
+      "sha256": "e405fedb7c411bd6eb7ee119f11db0935a6335f1940b384842eef8bf471fd05f"
+    },
+    {
+      "path": "app/tools/gimp-tools.c",
+      "revision": "native",
+      "function": "gimp_tools_clear_structure",
+      "sha256": "58f8e5f1f0eaed15cc5248791e9371f34d1fb2721211c5abf566497cb5ca6cd1"
     },
     {
       "path": "app/tools/gimp-tools.c",

@@ -1,0 +1,60 @@
+{
+  "result": "PASS",
+  "scope": "Static source-rule/semantic maintenance for committed tool-group reset; no new native runtime or field population claim",
+  "family_assertions": 740,
+  "negative_controls": [
+    {
+      "id": "config:tool-group:reader-retirement",
+      "rejected": true,
+      "reason": "toolrc: retire before shared tool reuse"
+    },
+    {
+      "id": "config:tool-group:parent-lease",
+      "rejected": true,
+      "reason": "toolrc: exact owner lease and notified removal"
+    },
+    {
+      "id": "config:tool-group:notified-detach",
+      "rejected": true,
+      "reason": "toolrc: exact owner lease and notified removal"
+    },
+    {
+      "id": "config:tool-group:lease-release-order",
+      "rejected": true,
+      "reason": "toolrc: exact owner lease and notified removal"
+    },
+    {
+      "id": "config:tool-group:default-order",
+      "rejected": true,
+      "reason": "toolrc: default order fallback retained"
+    },
+    {
+      "id": "config:tool-group:accepted-version",
+      "rejected": true,
+      "reason": "toolrc: accepted versions unchanged"
+    },
+    {
+      "id": "config:tool-group:group-selection",
+      "rejected": true,
+      "reason": "toolrc: active group selection preserved"
+    },
+    {
+      "id": "config:tool-group:group-expansion",
+      "rejected": true,
+      "reason": "toolrc: expansion preserved"
+    }
+  ],
+  "family_sha256": "ad2007c74320ff964cd9010aab69749e31c6bcf2c1ea1cffcc4b2b49ab9bad82",
+  "sources_sha256": {
+    "migration/tests/test_persistence_config_contract.py": "7e6607f3a7d2aa7c569fcedabdd8629a2387d5a01a8268bc4e7aaa5bfcef7dda",
+    "app/tools/gimp-tools.c": "ee1a445f0a626b90119008aab0a9fa29e56b8c1811bcc094f742886f3a44ccf3"
+  },
+  "native_receipt": "migration/tests/tool-group-retirement",
+  "rule_update": "Only native gimp_tools_deserialize digest updated and gimp_tools_clear_structure added; existing rules/default/grouping evidence preserved.",
+  "field_candidate_and_domain_populations_unchanged_from_HEAD": true,
+  "metadata_source_seal_only_update": {
+    "path": "app/tools/gimp-tools.c",
+    "previous": "3818f3711edadfdfbf5a10a8cf21bb6b68c417fa1161f87f0cd5a5913a2a8b3f",
+    "current": "ee1a445f0a626b90119008aab0a9fa29e56b8c1811bcc094f742886f3a44ccf3"
+  }
+}
