@@ -123,61 +123,196 @@ static void extended (GtkWidget *, GdkModifierType mask, gpointer data) {
   auto *calls = static_cast<Calls *> (data); ++calls->extended; calls->mask = mask;
 }
 static void generic_contract () {
-  Fixture fixture; Calls calls;
-  auto *button = generic (fixture, G_CALLBACK (clicked), G_CALLBACK (extended), &calls);
-  auto *arrow = fixture.arrow ();
-  g_object_ref (button); g_object_ref (arrow);
-  auto *store = BindingStore::find (G_OBJECT (arrow));
-  g_assert_nonnull (store); g_assert_true (store->state () == BindingStore::State::active);
-  g_assert_null (BindingStore::find (G_OBJECT (button)));
-  g_assert_false (gtk_box_get_homogeneous (gimp_editor_get_button_box (GIMP_EDITOR (fixture.editor))));
-  auto *box = gimp_editor_get_button_box (GIMP_EDITOR (fixture.editor));
-  gint spacing; gtk_widget_style_get (fixture.editor, "button-spacing", &spacing, nullptr);
-  g_assert_cmpint (gtk_box_get_spacing (box), ==, spacing);
-  /* The legacy/native bar is END-packed at child-property position 0.
-   * GtkBox enumerates START children before END children, so this is not
-   * the first entry returned by gtk_container_get_children(). */
-  g_assert_true (gtk_widget_get_parent (GTK_WIDGET (box)) == fixture.editor);
-  gboolean box_expand, box_fill; guint box_padding; GtkPackType box_packing;
-  gtk_box_query_child_packing (GTK_BOX (fixture.editor), GTK_WIDGET (box),
-                              &box_expand, &box_fill, &box_padding, &box_packing);
-  g_assert_false (box_expand); g_assert_false (box_fill);
-  g_assert_cmpuint (box_padding, ==, 0); g_assert_cmpint (box_packing, ==, GTK_PACK_END);
-  gint box_position = -1;
-  gtk_container_child_get (GTK_CONTAINER (fixture.editor), GTK_WIDGET (box),
-                           "position", &box_position, nullptr);
-  g_assert_cmpint (box_position, ==, 0);
-  GList *editor_children = gtk_container_get_children (GTK_CONTAINER (fixture.editor));
-  g_assert_nonnull (editor_children);
-  g_assert_true (g_list_last (editor_children)->data == box); g_list_free (editor_children);
-  GList *buttons = gtk_container_get_children (GTK_CONTAINER (box));
-  g_assert_cmpuint (g_list_length (buttons), ==, 2);
-  g_assert_true (buttons->data == button); g_assert_true (buttons->next->data == arrow); g_list_free (buttons);
-  for (auto *widget : {button, arrow}) {
-    gboolean expand, fill; guint padding; GtkPackType packing;
-    gtk_box_query_child_packing (box, widget, &expand, &fill, &padding, &packing);
-    g_assert_true (expand); g_assert_true (fill); g_assert_cmpuint (padding, ==, 0); g_assert_cmpint (packing, ==, GTK_PACK_START);
+  Calls calls;
+  GtkWidget *button = nullptr, *arrow = nullptr;
+  gulong scroll_handler = 0;
+  GObject *final_editor = nullptr;
+  {
+    Fixture fixture;
+    button = generic (fixture, G_CALLBACK (clicked), G_CALLBACK (extended), &calls);
+    arrow = fixture.arrow ();
+    g_object_ref (button); g_object_ref (arrow);
+    auto *store = BindingStore::find (G_OBJECT (arrow));
+    g_assert_nonnull (store); g_assert_true (store->state () == BindingStore::State::active);
+    g_assert_null (BindingStore::find (G_OBJECT (button)));
+    g_assert_false (gtk_box_get_homogeneous (gimp_editor_get_button_box (GIMP_EDITOR (fixture.editor))));
+    auto *box = gimp_editor_get_button_box (GIMP_EDITOR (fixture.editor));
+    gint spacing; gtk_widget_style_get (fixture.editor, "button-spacing", &spacing, nullptr);
+    g_assert_cmpint (gtk_box_get_spacing (box), ==, spacing);
+    /* The legacy/native bar is END-packed at child-property position 0.
+     * GtkBox enumerates START children before END children, so this is not
+     * the first entry returned by gtk_container_get_children(). */
+    g_assert_true (gtk_widget_get_parent (GTK_WIDGET (box)) == fixture.editor);
+    gboolean box_expand, box_fill; guint box_padding; GtkPackType box_packing;
+    gtk_box_query_child_packing (GTK_BOX (fixture.editor), GTK_WIDGET (box),
+                                &box_expand, &box_fill, &box_padding, &box_packing);
+    g_assert_false (box_expand); g_assert_false (box_fill);
+    g_assert_cmpuint (box_padding, ==, 0); g_assert_cmpint (box_packing, ==, GTK_PACK_END);
+    gint box_position = -1;
+    gtk_container_child_get (GTK_CONTAINER (fixture.editor), GTK_WIDGET (box),
+                             "position", &box_position, nullptr);
+    g_assert_cmpint (box_position, ==, 0);
+    GList *editor_children = gtk_container_get_children (GTK_CONTAINER (fixture.editor));
+    g_assert_nonnull (editor_children);
+    g_assert_true (g_list_last (editor_children)->data == box); g_list_free (editor_children);
+    GList *buttons = gtk_container_get_children (GTK_CONTAINER (box));
+    g_assert_cmpuint (g_list_length (buttons), ==, 2);
+    g_assert_true (buttons->data == button); g_assert_true (buttons->next->data == arrow); g_list_free (buttons);
+    for (auto *widget : {button, arrow}) {
+      gboolean expand, fill; guint padding; GtkPackType packing;
+      gtk_box_query_child_packing (box, widget, &expand, &fill, &padding, &packing);
+      g_assert_true (expand); g_assert_true (fill); g_assert_cmpuint (padding, ==, 0); g_assert_cmpint (packing, ==, GTK_PACK_START);
+    }
+    for (auto *widget : {button, arrow}) {
+      gchar *tooltip = gtk_widget_get_tooltip_text (widget);
+      g_assert_cmpstr (tooltip, ==, "Create a layer"); g_free (tooltip);
+      g_assert_cmpstr (static_cast<const gchar *> (g_object_get_qdata (G_OBJECT (widget), GIMP_HELP_ID)), ==, "dropdown-help");
+    }
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (calls.normal, ==, 1); g_assert_cmpuint (calls.extended, ==, 1);
+    g_assert_cmpint (calls.mask, ==, GDK_SHIFT_MASK);
+    const auto scroll_signal = g_signal_lookup ("scroll-event", GTK_TYPE_WIDGET);
+    scroll_handler = g_signal_handler_find (arrow, G_SIGNAL_MATCH_ID, scroll_signal,
+                                            0, nullptr, nullptr, nullptr);
+    g_assert_cmpuint (scroll_handler, !=, 0);
+    g_assert_true (g_signal_handler_is_connected (arrow, scroll_handler));
+    GdkEventScroll event = {}; event.type = GDK_SCROLL; gboolean handled = FALSE;
+    g_signal_emit_by_name (arrow, "scroll-event", &event, &handled); g_assert_true (handled);
+    const auto generation = store->generation ();
+    store->close (); store->close ();
+    g_assert_true (store->state () == BindingStore::State::closed);
+    g_assert_cmpuint (store->generation (), ==, generation + 1);
+    g_assert_false (g_signal_handler_is_connected (arrow, scroll_handler));
+    handled = FALSE;
+    g_signal_emit_by_name (arrow, "scroll-event", &event, &handled);
+    g_assert_false (handled);
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_signal_emit_by_name (button, "extended-clicked", GDK_CONTROL_MASK);
+    g_signal_emit_by_name (arrow, "clicked");
+    g_assert_cmpuint (calls.normal, ==, 1); g_assert_cmpuint (calls.extended, ==, 1);
+    gtk_widget_destroy (fixture.editor);
+    final_editor = G_OBJECT (fixture.editor);
+    /* Register after GTK disposal, so this witness observes the last release. */
+    g_object_add_weak_pointer (final_editor, reinterpret_cast<gpointer *> (&final_editor));
   }
-  for (auto *widget : {button, arrow}) {
-    gchar *tooltip = gtk_widget_get_tooltip_text (widget);
-    g_assert_cmpstr (tooltip, ==, "Create a layer"); g_free (tooltip);
-    g_assert_cmpstr (static_cast<const gchar *> (g_object_get_qdata (G_OBJECT (widget), GIMP_HELP_ID)), ==, "dropdown-help");
-  }
+  g_assert_null (final_editor);
+  /* The fixture has released its editor and manager. Retained emitters must
+   * have no stateless scroll closure left behind after owner finalization. */
+  g_assert_false (g_signal_handler_is_connected (arrow, scroll_handler));
+  GdkEventScroll event = {}; event.type = GDK_SCROLL; gboolean handled = FALSE;
+  g_signal_emit_by_name (arrow, "scroll-event", &event, &handled);
+  g_assert_false (handled);
   gtk_button_clicked (GTK_BUTTON (button));
   g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
   g_assert_cmpuint (calls.normal, ==, 1); g_assert_cmpuint (calls.extended, ==, 1);
-  g_assert_cmpint (calls.mask, ==, GDK_SHIFT_MASK);
-  GdkEventScroll event = {}; event.type = GDK_SCROLL; gboolean handled = FALSE;
-  g_signal_emit_by_name (arrow, "scroll-event", &event, &handled); g_assert_true (handled);
-  const auto generation = store->generation ();
-  store->close (); store->close ();
-  g_assert_true (store->state () == BindingStore::State::closed);
-  g_assert_cmpuint (store->generation (), ==, generation + 1);
-  gtk_button_clicked (GTK_BUTTON (button));
-  g_signal_emit_by_name (button, "extended-clicked", GDK_CONTROL_MASK);
-  g_signal_emit_by_name (arrow, "clicked");
-  g_assert_cmpuint (calls.normal, ==, 1); g_assert_cmpuint (calls.extended, ==, 1);
+  g_assert_cmpuint (G_OBJECT (arrow)->ref_count, ==, 1);
+  g_assert_cmpuint (G_OBJECT (button)->ref_count, ==, 1);
   g_object_unref (button); g_object_unref (arrow);
+}
+/* Exercise GTK's button/keyboard and popover event handlers rather than
+ * toggling active or emitting clicked/closed directly. */
+static void native_event (GtkWidget *widget, GdkEventType type,
+                          gdouble x = 0, gdouble y = 0, guint keyval = 0) {
+  /* GtkWindow owns the Space binding that activates its focused button. */
+  if (GTK_IS_BUTTON (widget) && (type == GDK_KEY_PRESS || type == GDK_KEY_RELEASE))
+    widget = gtk_widget_get_toplevel (widget);
+  auto *window = GTK_IS_BUTTON (widget) ? gtk_button_get_event_window (GTK_BUTTON (widget)) :
+                                        gtk_widget_get_window (widget);
+  g_assert_nonnull (window);
+  wait_for ("native event window viewable", [&] { return gdk_window_is_viewable (window); });
+  auto *event = gdk_event_new (type);
+  event->any.window = GDK_WINDOW (g_object_ref (window));
+  event->any.send_event = TRUE;
+  auto *seat = gdk_display_get_default_seat (gtk_widget_get_display (widget));
+  if (type == GDK_KEY_PRESS || type == GDK_KEY_RELEASE) {
+    event->key.time = GDK_CURRENT_TIME; event->key.keyval = keyval;
+    GdkKeymapKey *keys = nullptr; gint count = 0;
+    g_assert_true (gdk_keymap_get_entries_for_keyval (
+      gdk_keymap_get_for_display (gtk_widget_get_display (widget)), keyval, &keys, &count));
+    g_assert_cmpint (count, >, 0);
+    event->key.hardware_keycode = keys[0].keycode; event->key.group = keys[0].group;
+    g_free (keys);
+    gdk_event_set_device (event, gdk_seat_get_keyboard (seat));
+  } else if (type == GDK_ENTER_NOTIFY) {
+    event->crossing.time = GDK_CURRENT_TIME;
+    event->crossing.x = x; event->crossing.y = y;
+    event->crossing.mode = GDK_CROSSING_NORMAL;
+    event->crossing.detail = GDK_NOTIFY_NONLINEAR;
+    gdk_event_set_device (event, gdk_seat_get_pointer (seat));
+  } else {
+    event->button.time = GDK_CURRENT_TIME; event->button.button = 1;
+    event->button.x = x; event->button.y = y;
+    event->button.state = type == GDK_BUTTON_RELEASE ? GDK_BUTTON1_MASK : 0;
+    gdk_event_set_device (event, gdk_seat_get_pointer (seat));
+  }
+  gtk_widget_event (widget, event);
+  gdk_event_free (event);
+}
+static void native_activate (GtkWidget *arrow, bool keyboard) {
+  if (keyboard) {
+    gtk_widget_grab_focus (arrow);
+    g_assert_true (gtk_widget_has_focus (arrow));
+    native_event (arrow, GDK_KEY_PRESS, 0, 0, GDK_KEY_space);
+    native_event (arrow, GDK_KEY_RELEASE, 0, 0, GDK_KEY_space);
+  } else {
+    const auto x = gtk_widget_get_allocated_width (arrow) / 2.;
+    const auto y = gtk_widget_get_allocated_height (arrow) / 2.;
+    native_event (arrow, GDK_ENTER_NOTIFY, x, y);
+    native_event (arrow, GDK_BUTTON_PRESS, x, y);
+    native_event (arrow, GDK_BUTTON_RELEASE, x, y);
+  }
+}
+static void native_activation_dismissal_reopen () {
+  Fixture fixture; generic (fixture); auto *arrow = fixture.arrow ();
+  gtk_window_present (GTK_WINDOW (fixture.window));
+  gdk_window_focus (gtk_widget_get_window (fixture.window), GDK_CURRENT_TIME);
+  wait_for ("native host focus", [&] { return gtk_window_is_active (GTK_WINDOW (fixture.window)); });
+  auto *popup = GTK_WIDGET (gtk_menu_button_get_popover (GTK_MENU_BUTTON (arrow)));
+  OpeningTransition transition;
+  const auto shown = g_signal_connect (popup, "show", G_CALLBACK (opening_shown), &transition);
+  const auto opacity = g_signal_connect (popup, "notify::opacity", G_CALLBACK (opening_opacity), &transition);
+  auto *context = gimp_context_new (gimp, "Native dropdown reopened context", nullptr);
+  gboolean animations = FALSE;
+  g_object_get (gtk_widget_get_settings (popup), "gtk-enable-animations", &animations, nullptr);
+  guint dismissals = 0;
+  auto handler = g_signal_connect (popup, "closed", G_CALLBACK (+[] (GtkPopover *, gpointer data) {
+    ++*static_cast<guint *> (data);
+  }), &dismissals);
+  for (guint cycle = 0; cycle < 3; ++cycle) {
+    native_activate (arrow, false); finish_opening (popup, transition);
+    g_assert_true (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (arrow)));
+    g_assert_true (gtk_widget_get_mapped (popup)); g_assert_true (gtk_widget_has_grab (popup));
+    auto *old_view = gtk_bin_get_child (GTK_BIN (popup)); g_assert_nonnull (old_view); g_object_ref (old_view);
+    /* Escape retires synchronously; reopen by keyboard before waiting for the
+     * closing animation, using a different context for the new presentation. */
+    native_event (popup, GDK_KEY_PRESS, 0, 0, GDK_KEY_Escape);
+    g_assert_cmpuint (dismissals, ==, cycle * 2 + 1);
+    if (animations) g_assert_true (gtk_widget_get_visible (popup));
+    g_assert_false (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (arrow)));
+    g_assert_false (gtk_widget_has_grab (popup));
+    g_assert_null (gtk_bin_get_child (GTK_BIN (popup)));
+    g_assert_false (gimp_layer_preset_view_can_apply (GIMP_LAYER_PRESET_VIEW (old_view)));
+    gimp_container_view_set_context (GIMP_CONTAINER_VIEW (fixture.editor), context);
+    native_activate (arrow, true);
+    g_assert_true (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (arrow)));
+    g_assert_true (gtk_widget_get_mapped (popup)); g_assert_true (gtk_widget_has_grab (popup));
+    auto *view = gtk_bin_get_child (GTK_BIN (popup)); g_assert_nonnull (view); g_assert_true (view != old_view);
+    g_assert_true (gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view) == context);
+    native_event (popup, GDK_BUTTON_PRESS, -10, -10);
+    native_event (popup, GDK_BUTTON_RELEASE, -10, -10);
+    g_assert_cmpuint (dismissals, ==, cycle * 2 + 2);
+    g_assert_false (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (arrow)));
+    g_assert_false (gtk_widget_has_grab (popup));
+    g_assert_null (gtk_bin_get_child (GTK_BIN (popup)));
+    wait_for ("native outside-click popup hidden", [&] { return !gtk_widget_get_visible (popup); });
+    g_object_unref (old_view);
+    gimp_container_view_set_context (GIMP_CONTAINER_VIEW (fixture.editor), gimp->user_context);
+  }
+  g_signal_handler_disconnect (popup, handler);
+  g_signal_handler_disconnect (popup, shown);
+  g_signal_handler_disconnect (popup, opacity);
+  g_object_unref (context);
 }
 static void generic_reentrant_close () {
   Fixture fixture; Calls calls; calls.destroy = fixture.editor;
@@ -1372,6 +1507,7 @@ int main (int argc, char **argv) {
   gimp_data_factory_data_refresh (gimp->layer_preset_factory, gimp->user_context);
   g_test_add_func ("/editor-dropdown/generic-contract", generic_contract);
   g_test_add_func ("/editor-dropdown/generic-reentrant-close", generic_reentrant_close);
+  g_test_add_func ("/editor-dropdown/native-activation-dismissal-reopen", native_activation_dismissal_reopen);
   g_test_add_func ("/editor-dropdown/popup-cycles-context-retained-view", popup_cycles_context_and_retained_view);
   g_test_add_func ("/editor-dropdown/selection-owner-loss", selection_owner_loss);
   g_test_add_func ("/editor-dropdown/retire-reopens-newer-context", retire_reopens_newer_context);
