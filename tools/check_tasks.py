@@ -82,7 +82,7 @@ def validate(tasks_path: Path, evidence_path: Path) -> list[str]:
             errors.append(f"{task}: checked without DONE evidence")
         if record and (record["status"] == "DONE") != checked:
             errors.append(f"{task}: evidence and checkbox disagree")
-        if checked and (not record["commit_or_artifact"] or not record["test"] or not record["result"]):
+        if checked and record and (not record["commit_or_artifact"] or not record["test"] or not record["result"]):
             errors.append(f"{task}: incomplete evidence")
     for task, filename, count in (
             ("01.002", "changed-hunks.tsv", 2489),
