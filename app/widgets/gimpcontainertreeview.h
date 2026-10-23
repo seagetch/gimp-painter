@@ -125,6 +125,10 @@ void        gimp_container_tree_view_add_renderer_cell
                                                GtkCellRenderer       *cell,
                                                gint                   column_number);
 
+void        gimp_container_tree_view_add_misc_cell
+                                              (GimpContainerTreeView *tree_view,
+                                               GtkCellRenderer       *cell);
+
 void        gimp_container_tree_view_set_dnd_drop_to_empty
                                               (GimpContainerTreeView *tree_view,
                                                gboolean               dnd_drop_to_emtpy);

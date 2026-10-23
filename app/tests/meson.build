@@ -41,6 +41,7 @@ app_tests = [
   'gimp-clone-layer',
   'gimp-filter-layer',
   'painter-layer-ui',
+  'painter-layer-tree',
   'painter-canvas-ui',
   'painter-compact-options',
   'gimp-painter-mybrush',

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "routes": [
+    {
+      "path": "app/widgets/gimpcellrendererpopup.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.017: native popup renderer C interface; owns its GTK prerequisites and C linkage. Double-include in C11 and C++14 without an outer linkage wrapper."
+    },
+    {
+      "path": "app/widgets/gimpcontainertreeview.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "1473705a394041cc35205a5cc2ee151bde49cccc",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.017: native tree popup-cell registration interface, with normal core/widget type prerequisites. Extends the identified historical header without changing its original inventory identity or duties."
+    },
+    {
+      "path": "app/widgets/gimpcontainertreeview-private.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "364ca893d7c685c2c6281af00e7da9266cc02c40",
+      "context": "core",
+      "prerequisites": ["app/widgets/gimpcontainertreeview.h"],
+      "review": "08.017 original001536: the native owning misc_cells list extends the identified private tree layout. Probe after its public tree header and core/widget types, twice in both C and C++; no outer linkage wrapper."
+    }
+  ]
+}

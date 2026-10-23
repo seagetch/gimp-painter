@@ -35,6 +35,7 @@ struct _GimpContainerTreeViewPrivate
 
   GList              *toggle_cells;
   GList              *renderer_cells;
+  GList              *misc_cells; /* owns renderer refs; closed by owning tree */
 
   guint               scroll_timeout_id;
   guint               scroll_timeout_interval;

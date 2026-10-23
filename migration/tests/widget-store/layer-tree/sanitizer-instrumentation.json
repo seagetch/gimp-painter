@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "builds": [
+    {
+      "mode": "native",
+      "status": "PASS"
+    },
+    {
+      "mode": "asan",
+      "status": "PASS"
+    }
+  ],
+  "compile_checks": [
+    {
+      "mode": "native",
+      "path": "app/widgets/gimpcellrendererpopup.cpp",
+      "sanitizers": "none",
+      "rtti_flags": [
+        "-fno-rtti"
+      ],
+      "sanitizer_suppression": false,
+      "command_sha256": "faf57571a6fe39f90e74a9096d9d5e1e5ace66eb6b6b0694b77105ed545d3601"
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimplayertreeview.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "8a308b7c9d9feca52b7562edf6c818bcfa911bc433335ff2bd1e484411337f2c"
+    },
+    {
+      "mode": "native",
+      "path": "app/widgets/gimpcontainertreeview.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "2eaea3ca66e8ca17d4c59d6536bd9e6c899a7fb02dd127d5271c8ec8d55cb940"
+    },
+    {
+      "mode": "native",
+      "path": "app/tests/test-painter-layer-tree.c",
+      "sanitizers": "none",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "447c629d662bcacfdb934aaa6a7d5430e90d338f4b6e0b2e1ada61cc2511fc0b"
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimpcellrendererpopup.cpp",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [
+        "-frtti"
+      ],
+      "sanitizer_suppression": false,
+      "command_sha256": "2b82c8a0ddbf9df15b50a9766c6619f1bc62605808b4f2d4de5b426005caa2a0"
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimplayertreeview.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "dee18ed5e0af8576070a22f40c36b6dcfe313fa9f0f451e7e5f62cd0bd482360"
+    },
+    {
+      "mode": "asan",
+      "path": "app/widgets/gimpcontainertreeview.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "ad888fda097d63df9e28f73fb16c0bb84ed4f5107b7299c23a9ece346e3a5e00"
+    },
+    {
+      "mode": "asan",
+      "path": "app/tests/test-painter-layer-tree.c",
+      "sanitizers": "address,undefined",
+      "rtti_flags": [],
+      "sanitizer_suppression": false,
+      "command_sha256": "5d73fbd2742568f2cae69f161249e93b61c4bdc5941ca3c405038c1ac26cd1e0"
+    }
+  ],
+  "asan_options": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+  "ubsan_options": "halt_on_error=1:abort_on_error=1:print_stacktrace=1",
+  "native_default_no_rtti_preserved": true,
+  "asan_rtti_and_vptr_preserved": true,
+  "leak_detection": false,
+  "third_party_dependencies_instrumented": false
+}

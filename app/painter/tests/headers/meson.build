@@ -5,7 +5,8 @@ painter_header_http = painter_http_enabled ? '1' : '0'
 painter_header_scope_args = [
   '--scope', files('../../../../migration/inventory/c-header-linkage.json'),
   '--private-scope', files('../../../../migration/inventory/cpp-header-boundary.json'),
-  '--generated-scope', files('../../../../migration/inventory/generated-c-header-scope.json')]
+  '--generated-scope', files('../../../../migration/inventory/generated-c-header-scope.json'),
+  '--additional-scope', files('../../../../migration/inventory/additional-c-header-routes.json')]
 painter_header_names = run_command(python, painter_header_generator,
   painter_header_scope_args, '--http', painter_header_http, '--list',
   check: true).stdout().strip().split('\n')
@@ -19,7 +20,8 @@ endforeach
 painter_header_sources = custom_target('painter-header-probe-sources',
   input: painter_header_inputs,
   output: painter_header_names,
-  command: [python, painter_header_generator, '--http', painter_header_http,
+  command: [python, painter_header_generator, painter_header_scope_args,
+            '--http', painter_header_http,
             '--output-dir', '@OUTDIR@'],
   build_by_default: false)
 painter_header_c_sources = []
@@ -52,4 +54,7 @@ test('painter-public-header-compilation', python,
          '--library', painter_header_cpp.full_path(),
          '--report', meson.current_build_dir() / 'header-compile-result.json'],
   depends: [painter_header_c, painter_header_cpp],
+  suite: 'painter', timeout: 60)
+test('painter-additional-header-routes', python,
+  args: files('test-additional-routes.py'),
   suite: 'painter', timeout: 60)
