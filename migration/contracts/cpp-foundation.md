@@ -81,10 +81,19 @@ A live strong handle is not permission to mutate a closed object.
 GObject instance/class layouts remain C structures. Each vfunc adapter has the
 exact current slot signature and normal assignment; incompatible function-pointer
 casts are prohibited. Parent vfunc invocation is an explicit type-specific choice:
-close own/store state before parent dispose; free final C resources then parent
-finalize; pass unknown property IDs to the actual defining parent handler. Paint,
+close own/store state before the documented parent dispose/destroy phase; free
+final C resources then parent finalize. Property handlers distinguish their own
+properties, inherited owner-class dispatch, explicit parent fallback and invalid
+IDs; they do not blindly forward every unknown numeric ID. Paint,
 projection, save and interface order must follow the per-slot audit, not a global
 "always call parent first" rule.
+
+[The original 05.011 type-specific contract](cpp-vfunc-order.md) and its
+machine-readable inventory record every current application C++ GType and native
+compatibility counterpart, including deliberate instance-init activation,
+post-construction installation, inherited-only handlers and conditional types.
+They classify all legacy handle entries without claiming the remaining feature
+implementation and exception/lifecycle gates are complete.
 
 All C entries and callbacks catch C++ exceptions, map them to a declared error or
 safe return and leave output arguments initialized. They never use exit, throw a
