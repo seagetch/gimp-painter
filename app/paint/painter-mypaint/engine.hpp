@@ -17,8 +17,8 @@ public:
   class Checkpoint
   {
     friend class Engine;
-    std::shared_ptr<const Impl> value_;
-    explicit Checkpoint (std::shared_ptr<const Impl> value) : value_(std::move(value)) {}
+    std::shared_ptr<Impl> value_;
+    explicit Checkpoint (std::shared_ptr<Impl> value) : value_(std::move(value)) {}
   public:
     Checkpoint () = default;
     bool empty () const noexcept { return !value_; }
@@ -28,8 +28,8 @@ public:
   class Prepared
   {
     friend class Engine;
-    std::unique_ptr<Impl> value_;
-    explicit Prepared (std::unique_ptr<Impl> value);
+    std::shared_ptr<Impl> value_;
+    explicit Prepared (std::shared_ptr<Impl> value);
   public:
     Prepared () noexcept;
     ~Prepared ();
@@ -40,6 +40,10 @@ public:
     bool empty () const noexcept;
   };
   static Prepared prepare (const Checkpoint& checkpoint);
+  // Install immutable historical identity without allocating. Subsequent
+  // mutation detaches the complete evaluator before touching state/callbacks.
+  // The checkpoint remains reusable across arbitrary live reconfiguration.
+  bool try_install (const Checkpoint& checkpoint) noexcept;
   // Rejects empty or an active sample without modifying either side. Successful
   // exchange leaves the former live evaluator in prepared for later Redo.
   bool try_exchange (Prepared& prepared) noexcept;
@@ -68,7 +72,8 @@ public:
   float stroke_opacity () const noexcept;
   bool non_incremental () const noexcept;
 private:
-  std::unique_ptr<Impl> impl_;
+  void ensure_writable ();
+  std::shared_ptr<Impl> impl_;
 };
 } }
 #endif

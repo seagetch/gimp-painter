@@ -9,7 +9,7 @@ struct Engine::Impl {
   bool processing = false;
 };
 Engine::Prepared::Prepared () noexcept = default;
-Engine::Prepared::Prepared (std::unique_ptr<Impl> value) : value_(std::move(value)) {}
+Engine::Prepared::Prepared (std::shared_ptr<Impl> value) : value_(std::move(value)) {}
 Engine::Prepared::~Prepared () = default;
 Engine::Prepared::Prepared (Prepared&&) noexcept = default;
 Engine::Prepared& Engine::Prepared::operator= (Prepared&&) noexcept = default;
@@ -17,7 +17,7 @@ bool Engine::Prepared::empty () const noexcept { return !value_; }
 Engine::Prepared Engine::prepare (const Checkpoint& checkpoint)
 {
   if (checkpoint.empty()) throw std::invalid_argument("Empty evaluator checkpoint");
-  return Prepared(std::unique_ptr<Impl>(new Impl(*checkpoint.value_)));
+  return Prepared(std::shared_ptr<Impl>(new Impl(*checkpoint.value_)));
 }
 bool Engine::try_exchange (Prepared& prepared) noexcept
 {
@@ -26,18 +26,33 @@ bool Engine::try_exchange (Prepared& prepared) noexcept
   impl_.swap(prepared.value_);
   return true;
 }
+bool Engine::try_install (const Checkpoint& checkpoint) noexcept
+{
+  if (checkpoint.empty() || impl_->processing || checkpoint.value_->processing)
+    return false;
+  impl_ = checkpoint.value_;
+  return true;
+}
+void Engine::ensure_writable ()
+{
+  if (impl_->processing) throw std::logic_error("Evaluator sample is in progress");
+  if (!impl_.unique()) {
+    auto replacement = std::make_shared<Impl>(*impl_);
+    impl_.swap(replacement);
+  }
+}
 Engine::Engine (const Resource& r) : impl_ (new Impl) { configure (r); }
 Engine::~Engine () = default;
 Engine::Checkpoint Engine::checkpoint () const
 {
   if (impl_->processing) throw std::logic_error("Evaluator sample is in progress");
-  return Checkpoint(std::make_shared<const Impl>(*impl_));
+  return Checkpoint(std::make_shared<Impl>(*impl_));
 }
 void Engine::restore (const Checkpoint& checkpoint)
 {
   if (impl_->processing) throw std::logic_error("Evaluator sample is in progress");
   if (checkpoint.empty()) throw std::invalid_argument("Empty evaluator checkpoint");
-  std::unique_ptr<Impl> replacement(new Impl(*checkpoint.value_));
+  std::shared_ptr<Impl> replacement(new Impl(*checkpoint.value_));
   impl_.swap(replacement);
 }
 void Engine::configure (const Resource& r)
@@ -49,6 +64,7 @@ void Engine::configure (const Resource& r)
   for (int i = 0; i < BRUSH_MAPPING_COUNT; ++i) values[i] = r.mapping (i);
   // The pinned core copies mappings without re-running speed precalculation.
   // Preserve that observable behavior until a separately reviewed correction.
+  ensure_writable();
   for (int i = 0; i < BRUSH_MAPPING_COUNT; ++i) impl_->brush.copy_mapping (i, &values[i]);
   impl_->opacity = r.base_value (BRUSH_STROKE_OPACITY);
   impl_->non_incremental = r.switch_value (BRUSH_NON_INCREMENTAL);
@@ -57,6 +73,7 @@ void Engine::set_base_value (int id, float value)
 {
   if (id < 0 || id >= BRUSH_MAPPING_COUNT || !std::isfinite(value))
     throw std::invalid_argument("Invalid runtime brush setting");
+  ensure_writable();
   impl_->brush.set_base_value(id,value);
   if (id == BRUSH_STROKE_OPACITY) impl_->opacity=value;
 }
@@ -67,8 +84,8 @@ void Engine::set_foreground (double r,double g,double b)
   Legacy::gimp_rgb_to_hsv(&rgb,&hsv);
   set_base_value(BRUSH_COLOR_H,hsv.h);set_base_value(BRUSH_COLOR_S,hsv.s);set_base_value(BRUSH_COLOR_V,hsv.v);
 }
-void Engine::reset () { impl_->brush.reset (); }
-void Engine::new_stroke () { impl_->brush.new_stroke (); }
+void Engine::reset () { ensure_writable(); impl_->brush.reset (); }
+void Engine::new_stroke () { ensure_writable(); impl_->brush.new_stroke (); }
 bool Engine::stroke_to (Surface& surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime)
 {
   if (!std::isfinite (x) || !std::isfinite (y) || !std::isfinite (pressure) ||
@@ -78,6 +95,7 @@ bool Engine::stroke_to (Surface& surface, float x, float y, float pressure, floa
   // Coordinate equality is intentional: stationary pressure/time events must
   // still reach the integrator. GIMP input compression is a separate adapter.
   if (impl_->processing) throw std::logic_error("Evaluator sample is in progress");
+  ensure_writable();
   struct Processing {
     bool& active;
     explicit Processing(bool& value) : active(value) { active = true; }
@@ -93,6 +111,7 @@ float Engine::state (int i) const
 void Engine::set_state (int i, float v)
 {
   if (i < 0 || i >= STATE_COUNT || !std::isfinite (v)) throw std::invalid_argument ("Brush state");
+  ensure_writable();
   impl_->brush.set_state (i, v);
 }
 double Engine::painting_time () const { return impl_->brush.stroke_total_painting_time; }

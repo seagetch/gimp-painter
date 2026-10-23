@@ -69,3 +69,11 @@ painter_mypaint_prepared_test = executable('painter-mypaint-prepared-state',
 )
 test('painter-mypaint-prepared-state', painter_mypaint_prepared_test,
   suite: 'painter', timeout: 60)
+
+# Immutable historical install, detach before any evaluator mutation.
+painter_mypaint_historical_test = executable('painter-mypaint-historical-install',
+  'tests/test-historical-install.cpp', dependencies: painter_mypaint_dep,
+  cpp_args: painter_cpp_args, link_args: ['-Wl,--wrap=_Znwm'],
+  override_options: ['cpp_std=c++14'])
+test('painter-mypaint-historical-install', painter_mypaint_historical_test,
+  suite: 'painter', timeout: 60)
