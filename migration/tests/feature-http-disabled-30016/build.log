@@ -1,0 +1,763 @@
+ninja: Entering directory `/workspace/shared/gimp-native-preset-gui/build-http-disabled'
+[1/707] Generating libgimpbase/stamp-gimpcompatenums.h with a custom command (wrapped by meson because command contains newlines)
+[2/707] Generating libgimpbase/stamp-gimpbaseenums.h with a custom command (wrapped by meson because command contains newlines)
+[3/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpbasetypes.c.o
+[4/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpchecks.c.o
+[5/707] Compiling C object libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/gimpadaptivesupersample.c.o
+[6/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpcpuaccel.c.o
+[7/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpchoice.c.o
+[8/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpexportoptions.c.o
+[9/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpenv.c.o
+../source/libgimpbase/gimpenv.c: In function ‘gimp_directory’:
+../source/libgimpbase/gimpenv.c:364:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  364 |       const gchar *snap_path = g_getenv ("SNAP");
+      |       ^~~~~
+[10/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpmemsize.c.o
+[11/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpmetadata.c.o
+[12/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpparamspecs.c.o
+[13/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpparasiteio.c.o
+[14/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpparasite.c.o
+[15/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimprectangle.c.o
+[16/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpunit.c.o
+[17/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimputils.c.o
+[18/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpbase-private.c.o
+[19/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpvaluearray.c.o
+[20/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpreloc.c.o
+[21/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpsignal.c.o
+[22/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpwire.c.o
+[23/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpprotocol.c.o
+[24/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpcompatenums.c.o
+[25/707] Compiling C object libgimpbase/libgimpbase-3.0.so.0.8.1.p/gimpbaseenums.c.o
+[26/707] Linking target libgimpbase/libgimpbase-3.0.so.0.8.1
+[27/707] Compiling C object libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/gimpbilinear.c.o
+[28/707] Generating symbol file libgimpbase/libgimpbase-3.0.so.0.8.1.p/libgimpbase-3.0.so.0.8.1.symbols
+[29/707] Compiling C object libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/gimpcairo.c.o
+[30/707] Compiling C object libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/gimpcolor.c.o
+[31/707] Compiling C object libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/gimpcolor-parse.c.o
+[32/707] Compiling C object libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/gimpcolormanaged.c.o
+[33/707] Compiling C object libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/gimpcolortransform.c.o
+[34/707] Compiling C object libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/gimppixbuf.c.o
+[35/707] Compiling C object libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/gimpcolorprofile.c.o
+[36/707] Compiling C object libgimpmath/libgimpmath-3.0.so.0.8.1.p/gimpmatrix.c.o
+[37/707] Compiling C object libgimpmath/libgimpmath-3.0.so.0.8.1.p/gimpvector.c.o
+[38/707] Linking target libgimpcolor/libgimpcolor-3.0.so.0.8.1
+[39/707] Linking target libgimpmath/libgimpmath-3.0.so.0.8.1
+[40/707] Compiling C object gimp-data/tools/colorsvg2png.p/colorsvg2png.c.o
+[41/707] Linking target gimp-data/tools/colorsvg2png
+[42/707] Generating libgimpconfig/stamp-gimpconfigenums.h with a custom command (wrapped by meson because command contains newlines)
+[43/707] Generating symbol file libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/libgimpcolor-3.0.so.0.8.1.symbols
+[44/707] Generating symbol file libgimpmath/libgimpmath-3.0.so.0.8.1.p/libgimpmath-3.0.so.0.8.1.symbols
+[45/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpcolorconfig.c.o
+[46/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpconfig-error.c.o
+[47/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpconfig-deserialize.c.o
+[48/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpconfig-params.c.o
+[49/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpconfig-iface.c.o
+[50/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpconfig-register.c.o
+[51/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpconfig-path.c.o
+[52/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpconfig-utils.c.o
+[53/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpconfig-serialize.c.o
+[54/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpconfigwriter.c.o
+[55/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpscanner.c.o
+[56/707] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[57/707] Compiling C object libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/gimpconfigenums.c.o
+[58/707] Generating pdb/groups.pl with a custom command (wrapped by meson because command contains newlines, to capture output)
+[59/707] Generating gimp-data/icons/Default/64/icon-dialog-question with a custom command
+[60/707] Generating pdb/enums.pl with a custom command (wrapped by meson to set env)
+[61/707] Linking target libgimpconfig/libgimpconfig-3.0.so.0.8.1
+[62/707] Generating glib marshaller header app/core/gimpmarshal_h
+[63/707] Generating libgimpthumb/gimpthumb-enums.c with a custom command (wrapped by meson because command contains newlines, to capture output)
+[64/707] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[65/707] Generating pdb/stamp-pdbgen.h with a custom command (wrapped by meson to set env)
+[66/707] Generating gimp-data/cursors/gimp-tool-cursors_c with a custom command
+[67/707] Generating gimp-data/cursors/gimp-color-picker-cursors_c with a custom command
+[68/707] Generating gimp-data/cursors/gimp-color-picker-cursors_h with a custom command
+[69/707] Generating gimp-data/icons/Default/gimp-core-pixbufs_c with a custom command
+[70/707] Generating gimp-data/icons/Default/gimp-core-pixbufs_h with a custom command
+[71/707] Generating symbol file libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/libgimpconfig-3.0.so.0.8.1.symbols
+[72/707] Generating gimp-data/cursors/gimp-tool-cursors_h with a custom command
+[73/707] Compiling C object libgimpmodule/libgimpmodule-3.0.so.0.8.1.p/gimpmodule.c.o
+[74/707] Compiling C object libgimpthumb/libgimpthumb-3.0.so.0.8.1.p/meson-generated_.._gimpthumb-enums.c.o
+[75/707] Compiling C object libgimpthumb/libgimpthumb-3.0.so.0.8.1.p/gimpthumb-error.c.o
+[76/707] Compiling C object libgimpmodule/libgimpmodule-3.0.so.0.8.1.p/gimpmoduledb.c.o
+[77/707] Compiling C object libgimpthumb/libgimpthumb-3.0.so.0.8.1.p/gimpthumb-utils.c.o
+[78/707] Compiling C object libgimpthumb/libgimpthumb-3.0.so.0.8.1.p/gimpthumbnail.c.o
+[79/707] Generating app/paint/painter-brush-settings/painter-brush-settings-generated with a custom command
+[80/707] Generating glib marshaller source app/core/gimpmarshal_c
+[81/707] Generating app/core/stamp-core-enums.h with a custom command (wrapped by meson because command contains newlines)
+[82/707] Generating app/gegl/stamp-gimp-gegl-enums.h with a custom command (wrapped by meson because command contains newlines)
+[83/707] Generating app/operations/stamp-operations-enums.h with a custom command (wrapped by meson because command contains newlines)
+[84/707] Generating app/paint/stamp-paint-enums.h with a custom command (wrapped by meson because command contains newlines)
+[85/707] Generating app/plug-in/stamp-plug-in-enums.h with a custom command (wrapped by meson because command contains newlines)
+[86/707] Generating app/text/stamp-text-enums.h with a custom command (wrapped by meson because command contains newlines)
+[87/707] Generating app/config/stamp-config-enums.h with a custom command (wrapped by meson because command contains newlines)
+[88/707] Generating git-version.h with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[89/707] Linking target libgimpmodule/libgimpmodule-3.0.so.0.8.1
+[90/707] Linking target libgimpthumb/libgimpthumb-3.0.so.0.8.1
+[91/707] Compiling C++ object app/painter/libapppainter.a.p/gimp-painter-error.cpp.o
+[92/707] Compiling C++ object app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o
+[93/707] Compiling C++ object app/painter/libapppainter.a.p/binding-store.cpp.o
+[94/707] Compiling C++ object app/painter/libapppainter.a.p/filter-context.cpp.o
+[95/707] Compiling C++ object app/painter/libapppainter.a.p/filter-scheduler.cpp.o
+[96/707] Compiling C++ object app/painter/libapppainter.a.p/filter-wire.cpp.o
+[97/707] Compiling C++ object app/painter/libapppainter.a.p/filter-lifetime.cpp.o
+[98/707] Compiling C++ object app/painter/libapppainter.a.p/filter-raster.cpp.o
+[99/707] Compiling C++ object app/painter/libapppainter.a.p/filter-process.cpp.o
+[100/707] Compiling C++ object app/painter/libapppainter.a.p/filter-spool.cpp.o
+[101/707] Compiling C++ object app/painter/libapppainter.a.p/filter-raster-kernels.cpp.o
+[102/707] Compiling C++ object app/painter/libapppainter.a.p/filter-edge.cpp.o
+[103/707] Compiling C++ object app/painter/libapppainter.a.p/filter-edge-shadow.cpp.o
+[104/707] Compiling C++ object app/painter/libapppainter.a.p/filter-sharpen.cpp.o
+[105/707] Compiling C++ object app/painter/libapppainter.a.p/filter-gauss.cpp.o
+[106/707] Compiling C++ object app/painter/libapppainter.a.p/filter-sharpen-shadow.cpp.o
+[107/707] Compiling C++ object app/painter/libapppainter.a.p/filter-sobel.cpp.o
+[108/707] Compiling C++ object app/painter/libapppainter.a.p/filter-point-shadow.cpp.o
+[109/707] Compiling C++ object app/painter/libapppainter.a.p/filter-native-kernels.cpp.o
+[110/707] Compiling C++ object app/paint/painter-mypaint/libpainter-mypaint.a.p/engine.cpp.o
+In file included from ../source/app/paint/painter-mypaint/engine.cpp:3:
+../source/app/paint/painter-mypaint/legacy-brush.hpp: In member function ‘void GimpPainter::MyPaint::Legacy::Brush::update_states_and_setting_values(float, float, float, float, float, float)’:
+../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13: warning: unused variable ‘dx_old’ [-Wunused-variable]
+  398 |       float dx_old = states[STATE_DIRECTION_DX];
+      |             ^~~~~~
+../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13: warning: unused variable ‘dy_old’ [-Wunused-variable]
+  399 |       float dy_old = states[STATE_DIRECTION_DY];
+      |             ^~~~~~
+[111/707] Compiling C object app/core/libappcore.a.p/meson-generated_.._gimpmarshal.c.o
+[112/707] Compiling C++ object app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o
+[113/707] Compiling C object app/core/libappcore.a.p/meson-generated_.._.._.._gimp-data_cursors_gimp-color-picker-cursors.c.o
+[114/707] Compiling C object app/core/libappcore.a.p/meson-generated_.._.._.._gimp-data_icons_Default_gimp-core-pixbufs.c.o
+[115/707] Compiling C object app/core/libappcore.a.p/gimp-atomic.c.o
+[116/707] Compiling C object app/core/libappcore.a.p/meson-generated_.._.._.._gimp-data_cursors_gimp-tool-cursors.c.o
+[117/707] Compiling C object app/core/libappcore.a.p/gimp-batch.c.o
+[118/707] Compiling C object app/core/libappcore.a.p/gimp-cairo.c.o
+[119/707] Compiling C object app/core/libappcore.a.p/gimp-contexts.c.o
+[120/707] Compiling C object app/core/libappcore.a.p/gimp-data-factories.c.o
+[121/707] Compiling C object app/core/libappcore.a.p/gimp-filter-history.c.o
+[122/707] Compiling C object app/core/libappcore.a.p/gimp-edit.c.o
+[123/707] Compiling C object app/core/libappcore.a.p/gimp-gradients.c.o
+[124/707] Compiling C object app/core/libappcore.a.p/gimp-internal-data.c.o
+[125/707] Compiling C object app/core/libappcore.a.p/gimp-gui.c.o
+[126/707] Compiling C object app/core/libappcore.a.p/gimp-memsize.c.o
+[127/707] Compiling C object app/core/libappcore.a.p/gimp-modules.c.o
+[128/707] Compiling C object app/core/libappcore.a.p/gimp-palettes.c.o
+[129/707] Compiling C++ object app/core/libappcore.a.p/gimp-parallel.cc.o
+[130/707] Compiling C object app/core/libappcore.a.p/gimp-parasites.c.o
+[131/707] Compiling C object app/core/libappcore.a.p/gimp-spawn.c.o
+[132/707] Compiling C object app/core/libappcore.a.p/gimp-tags.c.o
+[133/707] Compiling C object app/core/libappcore.a.p/gimp-templates.c.o
+[134/707] Compiling C object app/core/libappcore.a.p/gimp-transform-resize.c.o
+[135/707] Compiling C++ object app/core/libappcore.a.p/gimp-painter-provenance.cpp.o
+[136/707] Compiling C object app/core/libappcore.a.p/gimp-transform-3d-utils.c.o
+[137/707] Compiling C object app/core/libappcore.a.p/gimp-units.c.o
+[138/707] Compiling C object app/core/libappcore.a.p/gimp-transform-utils.c.o
+[139/707] Compiling C object app/core/libappcore.a.p/gimp-user-install.c.o
+[140/707] Compiling C object app/core/libappcore.a.p/gimp-utils.c.o
+[141/707] Compiling C object app/core/libappcore.a.p/gimp.c.o
+[142/707] Compiling C++ object app/core/libappcore.a.p/gimppainterprofile.cpp.o
+[143/707] Compiling C++ object app/core/libappcore.a.p/gimpclonelayer.cpp.o
+[144/707] Compiling C++ object app/core/libappcore.a.p/gimpfiltercontext.cpp.o
+[145/707] Compiling C++ object app/core/libappcore.a.p/gimpfilterprocedure.cpp.o
+[146/707] Compiling C++ object app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o
+[147/707] Compiling C++ object app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o
+[148/707] Compiling C++ object app/core/libappcore.a.p/gimpfilterpaths.cpp.o
+[149/707] Compiling C++ object app/core/libappcore.a.p/gimpfilterlayer.cpp.o
+[150/707] Compiling C object app/core/libappcore.a.p/gimpasync.c.o
+[151/707] Compiling C++ object app/core/libappcore.a.p/gimpfilterexit.cpp.o
+[152/707] Compiling C object app/core/libappcore.a.p/gimpasyncset.c.o
+[153/707] Compiling C object app/core/libappcore.a.p/gimpauxitem.c.o
+[154/707] Compiling C object app/core/libappcore.a.p/gimpauxitemundo.c.o
+[155/707] Compiling C object app/core/libappcore.a.p/gimpbacktrace-none.c.o
+[156/707] Compiling C object app/core/libappcore.a.p/gimpbacktrace-linux.c.o
+[157/707] Compiling C object app/core/libappcore.a.p/gimpbacktrace-windows.c.o
+[158/707] Compiling C object app/core/libappcore.a.p/gimpbezierdesc.c.o
+[159/707] Compiling C object app/core/libappcore.a.p/gimpbrush-boundary.c.o
+[160/707] Compiling C object app/core/libappcore.a.p/gimpboundary.c.o
+[161/707] Compiling C object app/core/libappcore.a.p/gimpbrush-load.c.o
+[162/707] Compiling C object app/core/libappcore.a.p/gimpbrush-save.c.o
+[163/707] Compiling C++ object app/core/libappcore.a.p/gimpbrush-mipmap.cc.o
+[164/707] Compiling C++ object app/core/libappcore.a.p/gimpbrush-transform.cc.o
+[165/707] Compiling C object app/core/libappcore.a.p/gimpbrush.c.o
+[166/707] Compiling C object app/core/libappcore.a.p/gimpbrushclipboard.c.o
+[167/707] Compiling C object app/core/libappcore.a.p/gimpbrushgenerated-load.c.o
+[168/707] Compiling C object app/core/libappcore.a.p/gimpbrushcache.c.o
+[169/707] Compiling C object app/core/libappcore.a.p/gimpbrushgenerated-save.c.o
+[170/707] Compiling C object app/core/libappcore.a.p/gimpbrushpipe-load.c.o
+[171/707] Compiling C object app/core/libappcore.a.p/gimpbrushgenerated.c.o
+[172/707] Compiling C object app/core/libappcore.a.p/gimpbrushpipe-save.c.o
+[173/707] Compiling C object app/core/libappcore.a.p/gimpbrushpipe.c.o
+[174/707] Compiling C object app/core/libappcore.a.p/gimpbuffer.c.o
+[175/707] Compiling C object app/core/libappcore.a.p/gimpcancelable.c.o
+[176/707] Compiling C object app/core/libappcore.a.p/gimpchannel-combine.c.o
+[177/707] Compiling C object app/core/libappcore.a.p/gimpchannel-select.c.o
+[178/707] Compiling C object app/core/libappcore.a.p/gimpchannelpropundo.c.o
+[179/707] Compiling C object app/core/libappcore.a.p/gimpchannelundo.c.o
+[180/707] Compiling C object app/core/libappcore.a.p/gimpchannel.c.o
+[181/707] Compiling C object app/core/libappcore.a.p/gimpcontainer-filter.c.o
+[182/707] Compiling C object app/core/libappcore.a.p/gimpchunkiterator.c.o
+[183/707] Compiling C object app/core/libappcore.a.p/gimpcontainer.c.o
+[184/707] Compiling C object app/core/libappcore.a.p/gimpcoords-interpolate.c.o
+[185/707] Compiling C object app/core/libappcore.a.p/gimpcoords.c.o
+[186/707] Compiling C object app/core/libappcore.a.p/gimpcurve-load.c.o
+[187/707] Compiling C object app/core/libappcore.a.p/gimpcontext.c.o
+[188/707] Compiling C object app/core/libappcore.a.p/gimpcurve-map.c.o
+[189/707] Compiling C object app/core/libappcore.a.p/gimpcurve-save.c.o
+[190/707] Compiling C object app/core/libappcore.a.p/gimpdashpattern.c.o
+[191/707] Compiling C object app/core/libappcore.a.p/gimpcurve.c.o
+[192/707] Compiling C object app/core/libappcore.a.p/gimpdata.c.o
+[193/707] Compiling C object app/core/libappcore.a.p/gimpdatafactory.c.o
+[194/707] Compiling C object app/core/libappcore.a.p/gimpdisplay.c.o
+[195/707] Compiling C object app/core/libappcore.a.p/gimpdataloaderfactory.c.o
+[196/707] Compiling C object app/core/libappcore.a.p/gimpdocumentlist.c.o
+[197/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-bucket-fill.c.o
+[198/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-combine.c.o
+[199/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-edit.c.o
+[200/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-equalize.c.o
+[201/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-fill.c.o
+[202/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-filters.c.o
+[203/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-foreground-extract.c.o
+[204/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-floating-selection.c.o
+[205/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-gradient.c.o
+[206/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-histogram.c.o
+[207/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-levels.c.o
+[208/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-offset.c.o
+[209/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-operation.c.o
+[210/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-preview.c.o
+[211/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-shadow.c.o
+[212/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-stroke.c.o
+[213/707] Compiling C object app/core/libappcore.a.p/gimpdrawable-transform.c.o
+[214/707] Compiling C object app/core/libappcore.a.p/gimpdrawable.c.o
+[215/707] Compiling C object app/core/libappcore.a.p/gimpdrawablefiltermask.c.o
+[216/707] Compiling C object app/core/libappcore.a.p/gimpdrawablefilterundo.c.o
+[217/707] Compiling C object app/core/libappcore.a.p/gimpdrawablefilter.c.o
+[218/707] Compiling C object app/core/libappcore.a.p/gimpdrawablemodundo.c.o
+[219/707] Compiling C object app/core/libappcore.a.p/gimpdrawablepropundo.c.o
+[220/707] Compiling C object app/core/libappcore.a.p/gimpdrawablestack.c.o
+[221/707] Compiling C object app/core/libappcore.a.p/gimpdrawableundo.c.o
+[222/707] Compiling C object app/core/libappcore.a.p/gimpdynamics-load.c.o
+[223/707] Compiling C object app/core/libappcore.a.p/gimpdynamics-save.c.o
+[224/707] Compiling C object app/core/libappcore.a.p/gimpdynamics.c.o
+[225/707] Compiling C object app/core/libappcore.a.p/gimperror.c.o
+[226/707] Compiling C object app/core/libappcore.a.p/gimpdynamicsoutput.c.o
+[227/707] Compiling C object app/core/libappcore.a.p/gimpextension-error.c.o
+[228/707] Compiling C object app/core/libappcore.a.p/gimpextension.c.o
+[229/707] Compiling C object app/core/libappcore.a.p/gimpextensionmanager.c.o
+[230/707] Compiling C object app/core/libappcore.a.p/gimpfilter.c.o
+[231/707] Compiling C object app/core/libappcore.a.p/gimpfilloptions.c.o
+[232/707] Compiling C object app/core/libappcore.a.p/gimpfilteredcontainer.c.o
+[233/707] Compiling C object app/core/libappcore.a.p/gimpfilterstack.c.o
+[234/707] Compiling C object app/core/libappcore.a.p/gimpfloatingselectionundo.c.o
+[235/707] Compiling C object app/core/libappcore.a.p/gimpgradient-load.c.o
+[236/707] Compiling C object app/core/libappcore.a.p/gimpgradient-save.c.o
+[237/707] Compiling C object app/core/libappcore.a.p/gimpgrid.c.o
+[238/707] Compiling C object app/core/libappcore.a.p/gimpgradient.c.o
+[239/707] Compiling C object app/core/libappcore.a.p/gimpgrouplayer.c.o
+[240/707] Compiling C object app/core/libappcore.a.p/gimpgrouplayerundo.c.o
+[241/707] Compiling C object app/core/libappcore.a.p/gimpguide.c.o
+[242/707] Compiling C++ object app/core/libappcore.a.p/gimpperspectiveguideundo.cpp.o
+[243/707] Compiling C++ object app/core/libappcore.a.p/gimpperspectiveguide.cpp.o
+[244/707] Compiling C object app/core/libappcore.a.p/gimpguideundo.c.o
+[245/707] Compiling C object app/core/libappcore.a.p/gimpimage-perspective-guide.c.o
+[246/707] Compiling C object app/core/libappcore.a.p/gimpidtable.c.o
+[247/707] Compiling C object app/core/libappcore.a.p/gimpimage-arrange.c.o
+[248/707] Compiling C object app/core/libappcore.a.p/gimphistogram.c.o
+[249/707] Compiling C object app/core/libappcore.a.p/gimpimage-colormap.c.o
+[250/707] Compiling C object app/core/libappcore.a.p/gimpimage-color-profile.c.o
+[251/707] Compiling C object app/core/libappcore.a.p/gimpimage-convert-precision.c.o
+[252/707] Compiling C object app/core/libappcore.a.p/gimpimage-convert-type.c.o
+[253/707] Compiling C object app/core/libappcore.a.p/gimpimage-crop.c.o
+[254/707] Compiling C object app/core/libappcore.a.p/gimpimage-duplicate.c.o
+[255/707] Compiling C object app/core/libappcore.a.p/gimpimage-convert-indexed.c.o
+[256/707] Compiling C object app/core/libappcore.a.p/gimpimage-flip.c.o
+[257/707] Compiling C object app/core/libappcore.a.p/gimpimage-grid.c.o
+[258/707] Compiling C object app/core/libappcore.a.p/gimpimage-guides.c.o
+[259/707] Compiling C object app/core/libappcore.a.p/gimpimage-item-list.c.o
+[260/707] Compiling C object app/core/libappcore.a.p/gimpimage-merge.c.o
+[261/707] Compiling C object app/core/libappcore.a.p/gimpimage-metadata.c.o
+[262/707] Compiling C object app/core/libappcore.a.p/gimpimage-pick-color.c.o
+[263/707] Compiling C object app/core/libappcore.a.p/gimpimage-new.c.o
+[264/707] Compiling C object app/core/libappcore.a.p/gimpimage-pick-item.c.o
+[265/707] Compiling C object app/core/libappcore.a.p/gimpimage-preview.c.o
+[266/707] Compiling C object app/core/libappcore.a.p/gimpimage-quick-mask.c.o
+[267/707] Compiling C object app/core/libappcore.a.p/gimpimage-resize.c.o
+[268/707] Compiling C object app/core/libappcore.a.p/gimpimage-rotate.c.o
+[269/707] Compiling C object app/core/libappcore.a.p/gimpimage-sample-points.c.o
+[270/707] Compiling C object app/core/libappcore.a.p/gimpimage-scale.c.o
+[271/707] Compiling C object app/core/libappcore.a.p/gimpimage-symmetry.c.o
+[272/707] Compiling C object app/core/libappcore.a.p/gimpimage-snap.c.o
+[273/707] Compiling C object app/core/libappcore.a.p/gimpimage-transform.c.o
+[274/707] Compiling C object app/core/libappcore.a.p/gimpimage-undo.c.o
+[275/707] Compiling C object app/core/libappcore.a.p/gimpimage-undo-push.c.o
+[276/707] Compiling C object app/core/libappcore.a.p/gimpimagefile.c.o
+[277/707] Compiling C object app/core/libappcore.a.p/gimpimageproxy.c.o
+[278/707] Compiling C object app/core/libappcore.a.p/gimpimageundo.c.o
+[279/707] Compiling C object app/core/libappcore.a.p/gimpitem-exclusive.c.o
+[280/707] Compiling C object app/core/libappcore.a.p/gimpitem-preview.c.o
+[281/707] Compiling C object app/core/libappcore.a.p/gimpimage.c.o
+../source/app/core/gimpimage.c: In function ‘gimp_image_get_xcf_version’:
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_ERASE’ not handled in switch [-Wswitch]
+ 2864 |       switch (gimp_layer_get_mode (layer))
+      |       ^~~~~~
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_REPLACE’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_ANTI_ERASE’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_SRC_IN’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_DST_IN’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_SRC_OUT’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_DST_OUT’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_NORMAL’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_MULTIPLY’ not handled in switch [-Wswitch]
+[282/707] Compiling C object app/core/libappcore.a.p/gimpitemlist.c.o
+[283/707] Compiling C object app/core/libappcore.a.p/gimpitempropundo.c.o
+[284/707] Compiling C object app/core/libappcore.a.p/gimpitemstack.c.o
+[285/707] Compiling C object app/core/libappcore.a.p/gimpitem.c.o
+[286/707] Compiling C object app/core/libappcore.a.p/gimpitemundo.c.o
+[287/707] Compiling C object app/core/libappcore.a.p/gimpitemtree.c.o
+[288/707] Compiling C object app/core/libappcore.a.p/gimplayer-floating-selection.c.o
+[289/707] Compiling C object app/core/libappcore.a.p/gimplayer-new.c.o
+[290/707] Compiling C object app/core/libappcore.a.p/gimplayermask.c.o
+[291/707] Compiling C object app/core/libappcore.a.p/gimplayermaskpropundo.c.o
+[292/707] Compiling C object app/core/libappcore.a.p/gimplayermaskundo.c.o
+[293/707] Compiling C object app/core/libappcore.a.p/gimplayer.c.o
+[294/707] Compiling C object app/core/libappcore.a.p/gimplayerpropundo.c.o
+[295/707] Compiling C object app/core/libappcore.a.p/gimplayerstack.c.o
+[296/707] Compiling C object app/core/libappcore.a.p/gimplayerundo.c.o
+[297/707] Compiling C object app/core/libappcore.a.p/gimplist.c.o
+[298/707] Compiling C object app/core/libappcore.a.p/gimpmaskundo.c.o
+[299/707] Compiling C object app/core/libappcore.a.p/gimpmybrush-load.c.o
+[300/707] Compiling C object app/core/libappcore.a.p/gimpmybrush.c.o
+[301/707] Compiling C object app/core/libappcore.a.p/gimplineart.c.o
+[302/707] Compiling C object app/core/libappcore.a.p/gimpobject.c.o
+[303/707] Compiling C object app/core/libappcore.a.p/gimpobjectqueue.c.o
+[304/707] Compiling C object app/core/libappcore.a.p/gimppadactions.c.o
+[305/707] Compiling C object app/core/libappcore.a.p/gimppaintinfo.c.o
+[306/707] Compiling C object app/core/libappcore.a.p/gimppalette-import.c.o
+[307/707] Compiling C++ object app/core/libappcore.a.p/gimppaintermybrush.cpp.o
+[308/707] Compiling C object app/core/libappcore.a.p/gimppalette-save.c.o
+[309/707] Compiling C object app/core/libappcore.a.p/gimppalette-load.c.o
+[310/707] Compiling C object app/core/libappcore.a.p/gimppalette.c.o
+[311/707] Compiling C object app/core/libappcore.a.p/gimppalettemru.c.o
+[312/707] Compiling C object app/core/libappcore.a.p/gimpparamspecs-desc.c.o
+[313/707] Compiling C object app/core/libappcore.a.p/gimpparamspecs.c.o
+[314/707] Compiling C object app/core/libappcore.a.p/gimpparasitelist.c.o
+[315/707] Compiling C object app/core/libappcore.a.p/gimppattern-save.c.o
+[316/707] Compiling C object app/core/libappcore.a.p/gimppattern-load.c.o
+[317/707] Compiling C object app/core/libappcore.a.p/gimppattern.c.o
+[318/707] Compiling C object app/core/libappcore.a.p/gimppatternclipboard.c.o
+[319/707] Compiling C object app/core/libappcore.a.p/gimppdbprogress.c.o
+[320/707] Compiling C object app/core/libappcore.a.p/gimppickable-auto-shrink.c.o
+[321/707] Compiling C object app/core/libappcore.a.p/gimppickable.c.o
+[322/707] Compiling C++ object app/core/libappcore.a.p/gimppickable-contiguous-region.cc.o
+[323/707] Compiling C object app/core/libappcore.a.p/gimpprogress.c.o
+[324/707] Compiling C object app/core/libappcore.a.p/gimpprojectable.c.o
+[325/707] Compiling C object app/core/libappcore.a.p/gimpprojection.c.o
+[326/707] Compiling C object app/core/libappcore.a.p/gimpresource.c.o
+[327/707] Compiling C object app/core/libappcore.a.p/gimpsamplepointundo.c.o
+[328/707] Compiling C object app/core/libappcore.a.p/gimpsamplepoint.c.o
+[329/707] Compiling C object app/core/libappcore.a.p/gimpscanconvert.c.o
+[330/707] Compiling C object app/core/libappcore.a.p/gimpselection.c.o
+[331/707] Compiling C object app/core/libappcore.a.p/gimpsettings.c.o
+[332/707] Compiling C object app/core/libappcore.a.p/gimpsubprogress.c.o
+[333/707] Compiling C object app/core/libappcore.a.p/gimpstrokeoptions.c.o
+[334/707] Compiling C object app/core/libappcore.a.p/gimpsymmetry-mirror.c.o
+[335/707] Compiling C object app/core/libappcore.a.p/gimpsymmetry-mandala.c.o
+[336/707] Compiling C object app/core/libappcore.a.p/gimpsymmetry-tiling.c.o
+[337/707] Compiling C object app/core/libappcore.a.p/gimpsymmetry.c.o
+[338/707] Compiling C object app/core/libappcore.a.p/gimptag.c.o
+[339/707] Compiling C object app/core/libappcore.a.p/gimptagged.c.o
+[340/707] Compiling C object app/core/libappcore.a.p/gimptagcache.c.o
+[341/707] Compiling C object app/core/libappcore.a.p/gimptaggedcontainer.c.o
+[342/707] Compiling C object app/core/libappcore.a.p/gimptempbuf.c.o
+[343/707] Compiling C object app/core/libappcore.a.p/gimptilehandlerprojectable.c.o
+[344/707] Compiling C object app/core/libappcore.a.p/gimptemplate.c.o
+[345/707] Compiling C object app/core/libappcore.a.p/gimptoolgroup.c.o
+[346/707] Compiling C object app/core/libappcore.a.p/gimptoolinfo.c.o
+[347/707] Compiling C object app/core/libappcore.a.p/gimptoolitem.c.o
+[348/707] Compiling C object app/core/libappcore.a.p/gimptooloptions.c.o
+[349/707] Compiling C object app/core/libappcore.a.p/gimptoolpreset-load.c.o
+[350/707] Compiling C object app/core/libappcore.a.p/gimptoolpreset-save.c.o
+[351/707] Compiling C object app/core/libappcore.a.p/gimpjsonresource.c.o
+[352/707] Compiling C object app/core/libappcore.a.p/gimptoolpreset.c.o
+[353/707] Compiling C object app/core/libappcore.a.p/gimplayerpreset.c.o
+[354/707] Compiling C object app/core/libappcore.a.p/gimptreehandler.c.o
+[355/707] Compiling C object app/core/libappcore.a.p/gimptreeproxy.c.o
+[356/707] Compiling C object app/core/libappcore.a.p/gimptriviallycancelablewaitable.c.o
+[357/707] Compiling C object app/core/libappcore.a.p/gimpuncancelablewaitable.c.o
+[358/707] Compiling C object app/core/libappcore.a.p/gimpundo.c.o
+[359/707] Compiling C++ object app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o
+[360/707] Compiling C object app/core/libappcore.a.p/gimpundostack.c.o
+[361/707] Compiling C object app/core/libappcore.a.p/gimpunit.c.o
+[362/707] Compiling C object app/core/libappcore.a.p/gimpwaitable.c.o
+[363/707] Compiling C object app/core/libappcore.a.p/core-enums.c.o
+[364/707] Compiling C object app/core/libappcore.a.p/gimpviewable.c.o
+[365/707] Compiling C object app/file/libappfile.a.p/file-import.c.o
+[366/707] Compiling C object app/file/libappfile.a.p/file-remote.c.o
+[367/707] Compiling C object app/file/libappfile.a.p/file-open.c.o
+[368/707] Compiling C object app/file/libappfile.a.p/file-save.c.o
+[369/707] Compiling C object app/file/libappfile.a.p/file-utils.c.o
+[370/707] Compiling C object app/file-data/libappfiledata.a.p/file-data-gbr.c.o
+[371/707] Compiling C object app/file-data/libappfiledata.a.p/file-data-gex.c.o
+[372/707] Compiling C object app/file-data/libappfiledata.a.p/file-data-gih.c.o
+[373/707] Compiling C object app/file-data/libappfiledata.a.p/file-data-pat.c.o
+[374/707] Compiling C object app/file-data/libappfiledata.a.p/file-data.c.o
+[375/707] Compiling C object app/gegl/libgimp-gegl-loops-simd_sse2.a.p/gimp-gegl-loops-sse2.c.o
+[376/707] Compiling C object app/gegl/libappgegl.a.p/gimp-babl-compat.c.o
+[377/707] Compiling C object app/gegl/libappgegl.a.p/gimp-babl.c.o
+[378/707] Compiling C object app/gegl/libappgegl.a.p/gimp-gegl-apply-operation.c.o
+[379/707] Compiling C++ object app/gegl/libappgegl.a.p/gimp-gegl-mask-combine.cc.o
+[380/707] Compiling C++ object app/gegl/libappgegl.a.p/gimp-gegl-loops.cc.o
+[381/707] Compiling C object app/gegl/libappgegl.a.p/gimp-gegl-mask.c.o
+[382/707] Compiling C object app/gegl/libappgegl.a.p/gimp-gegl-tile-compat.c.o
+[383/707] Compiling C object app/gegl/libappgegl.a.p/gimp-gegl-nodes.c.o
+[384/707] Compiling C object app/gegl/libappgegl.a.p/gimp-gegl.c.o
+[385/707] Compiling C object app/gegl/libappgegl.a.p/gimp-gegl-utils.c.o
+[386/707] Compiling C object app/gegl/libappgegl.a.p/gimpapplicator.c.o
+[387/707] Compiling C object app/gegl/libappgegl.a.p/gimp-gegl-enums.c.o
+[388/707] Compiling C object app/gegl/libappgegl.a.p/gimptilehandlervalidate.c.o
+[389/707] Generating gdbus header app/gui/gimpdbusservice-generated.h
+[390/707] Generating gdbus source app/gui/gimpdbusservice-generated.c
+[391/707] Compiling C object app/operations/libappoperations.a.p/gimp-operations.c.o
+[392/707] Compiling C object app/operations/libappoperations.a.p/gimp-operation-config.c.o
+[393/707] Compiling C object app/operations/libappoperations.a.p/gimpbrightnesscontrastconfig.c.o
+[394/707] Compiling C object app/operations/libappoperations.a.p/gimpcageconfig.c.o
+[395/707] Compiling C object app/operations/libappoperations.a.p/gimpcolorbalanceconfig.c.o
+[396/707] Compiling C object app/operations/libappoperations.a.p/gimphuesaturationconfig.c.o
+[397/707] Compiling C object app/operations/libappoperations.a.p/gimpcurvesconfig.c.o
+[398/707] Compiling C object app/operations/libappoperations.a.p/gimplevelsconfig.c.o
+[399/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationborder.c.o
+[400/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationbrightnesscontrast.c.o
+[401/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationbuffersourcevalidate.c.o
+[402/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationcagecoefcalc.c.o
+[403/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationcagetransform.c.o
+[404/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationcolorbalance.c.o
+[405/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationcomposecrop.c.o
+[406/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationcolorize.c.o
+[407/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationcurves.c.o
+[408/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationdesaturate.c.o
+[409/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationequalize.c.o
+[410/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationfillsource.c.o
+[411/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationflood.c.o
+[412/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationgradient.c.o
+[413/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationhistogramsink.c.o
+[414/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationgrow.c.o
+[415/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationhuesaturation.c.o
+[416/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationlevels.c.o
+[417/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationoffset.c.o
+[418/707] Compiling C++ object app/operations/libappoperations.a.p/gimpoperationmaskcomponents.cc.o
+[419/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationpointfilter.c.o
+[420/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationposterize.c.o
+[421/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationprofiletransform.c.o
+[422/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationscalarmultiply.c.o
+[423/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationsetalpha.c.o
+[424/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationsemiflatten.c.o
+[425/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationsettings.c.o
+[426/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationshrink.c.o
+[427/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationthreshold.c.o
+[428/707] Compiling C object app/operations/libappoperations.a.p/gimpoperationthresholdalpha.c.o
+[429/707] Compiling C object app/operations/libappoperations.a.p/operations-enums.c.o
+[430/707] Compiling C object app/operations/layer-modes/libgimpoperationnormal-simd_sse2.a.p/gimpoperationnormal-sse2.c.o
+[431/707] Compiling C object app/operations/layer-modes/libgimpoperationlayermode-composite-simd_sse2.a.p/gimpoperationlayermode-composite-sse2.c.o
+[432/707] Compiling C object app/operations/layer-modes/libgimpoperationnormal-simd_sse41.a.p/gimpoperationnormal-sse4.c.o
+[433/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimp-layer-modes.c.o
+[434/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationantierase.c.o
+[435/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationbehind.c.o
+[436/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationdissolve.c.o
+[437/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationerase.c.o
+[438/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationlayermode-composite.c.o
+[439/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationlayermode-blend.c.o
+[440/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationlayermode.c.o
+[441/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationmerge.c.o
+[442/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationpassthrough.c.o
+[443/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationnormal.c.o
+[444/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationreplace.c.o
+[445/707] Compiling C object app/operations/layer-modes/libapplayermodes.a.p/gimpoperationsplit.c.o
+[446/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpcolor-legacy.c.o
+[447/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationadditionlegacy.c.o
+[448/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationpainterlegacy.c.o
+[449/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationburnlegacy.c.o
+[450/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationdarkenonlylegacy.c.o
+[451/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationdifferencelegacy.c.o
+[452/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationdividelegacy.c.o
+[453/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationdodgelegacy.c.o
+[454/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationgrainextractlegacy.c.o
+[455/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationgrainmergelegacy.c.o
+[456/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationhardlightlegacy.c.o
+[457/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationhslcolorlegacy.c.o
+[458/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationhsvhuelegacy.c.o
+[459/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationhsvsaturationlegacy.c.o
+[460/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationhsvvaluelegacy.c.o
+[461/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationlightenonlylegacy.c.o
+[462/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationmultiplylegacy.c.o
+[463/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationscreenlegacy.c.o
+[464/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationsoftlightlegacy.c.o
+[465/707] Compiling C object app/operations/layer-modes-legacy/libapplayermodeslegacy.a.p/gimpoperationsubtractlegacy.c.o
+[466/707] Compiling C++ object app/paint/painter-bounded-fill/libpainter-bounded-fill.a.p/search.cpp.o
+[467/707] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o
+[468/707] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-resources.cpp.o
+[469/707] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/.._gimppainterpaper.cpp.o
+[470/707] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o
+[471/707] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o
+[472/707] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-mask-transform.cpp.o
+[473/707] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o
+[474/707] Compiling C object app/paint/libapppaint.a.p/gimp-paint.c.o
+[475/707] Compiling C object app/paint/libapppaint.a.p/gimpairbrush.c.o
+[476/707] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/legacy-generated-mask.cpp.o
+[477/707] Compiling C object app/paint/libapppaint.a.p/gimpairbrushoptions.c.o
+[478/707] Compiling C++ object app/paint/libapppaint.a.p/gimpbrushcore-loops.cc.o
+[479/707] Compiling C object app/paint/libapppaint.a.p/gimpbrushcore.c.o
+[480/707] Compiling C object app/paint/libapppaint.a.p/gimpclone.c.o
+[481/707] Compiling C object app/paint/libapppaint.a.p/gimpcloneoptions.c.o
+[482/707] Compiling C object app/paint/libapppaint.a.p/gimpconvolve.c.o
+[483/707] Compiling C object app/paint/libapppaint.a.p/gimpconvolveoptions.c.o
+[484/707] Compiling C object app/paint/libapppaint.a.p/gimpdodgeburn.c.o
+[485/707] Compiling C object app/paint/libapppaint.a.p/gimpdodgeburnoptions.c.o
+[486/707] Compiling C object app/paint/libapppaint.a.p/gimperaser.c.o
+[487/707] Compiling C object app/paint/libapppaint.a.p/gimperaseroptions.c.o
+[488/707] Compiling C object app/paint/libapppaint.a.p/gimpheal.c.o
+[489/707] Compiling C object app/paint/libapppaint.a.p/gimpink-blob.c.o
+[490/707] Compiling C object app/paint/libapppaint.a.p/gimpink.c.o
+[491/707] Compiling C object app/paint/libapppaint.a.p/gimpinkoptions.c.o
+[492/707] Compiling C object app/paint/libapppaint.a.p/gimpinkundo.c.o
+[493/707] Compiling C object app/paint/libapppaint.a.p/gimpmybrushcore.c.o
+[494/707] Compiling C++ object app/paint/libapppaint.a.p/gimpfillbrush.cpp.o
+[495/707] Compiling C object app/paint/libapppaint.a.p/gimpmybrushoptions.c.o
+[496/707] Compiling C object app/paint/libapppaint.a.p/gimpmybrushsurface.c.o
+[497/707] Compiling C++ object app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o
+[498/707] Compiling C object app/paint/libapppaint.a.p/gimppaintbrush.c.o
+[499/707] Compiling C++ object app/paint/libapppaint.a.p/gimppainterbrushgeometry.cpp.o
+../source/app/paint/gimppainterbrushgeometry.cpp: In lambda function:
+../source/app/paint/gimppainterbrushgeometry.cpp:88:54: warning: comparison of integer expressions of different signedness: ‘const std::size_t’ {aka ‘const long unsigned int’} and ‘int’ [-Wsign-compare]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || count > G_MAXINT / channels)
+      |                                                ~~~~~~^~~~~~~~~~~~~~~~~~~~~
+[500/707] Compiling C object app/paint/libapppaint.a.p/gimppaintcore-stroke.c.o
+[501/707] Compiling C object app/paint/libapppaint.a.p/gimppaintcore.c.o
+[502/707] Compiling C object app/paint/libapppaint.a.p/gimppaintcoreundo.c.o
+[503/707] Compiling C object app/paint/libapppaint.a.p/gimppaintoptions.c.o
+[504/707] Compiling C object app/paint/libapppaint.a.p/gimppencil.c.o
+[505/707] Compiling C object app/paint/libapppaint.a.p/gimppenciloptions.c.o
+[506/707] Compiling C object app/paint/libapppaint.a.p/gimpperspectiveclone.c.o
+[507/707] Compiling C object app/paint/libapppaint.a.p/gimpperspectivecloneoptions.c.o
+[508/707] Compiling C object app/paint/libapppaint.a.p/gimpsmudge.c.o
+[509/707] Compiling C++ object app/paint/libapppaint.a.p/gimppaintcore-loops.cc.o
+[510/707] Compiling C++ object app/paint/libapppaint.a.p/gimppainterpaper-paste.cpp.o
+[511/707] Compiling C object app/paint/libapppaint.a.p/gimpsmudgeoptions.c.o
+[512/707] Compiling C object app/paint/libapppaint.a.p/gimpsourcecore.c.o
+[513/707] Compiling C object app/paint/libapppaint.a.p/gimpsourceoptions.c.o
+[514/707] Compiling C object app/paint/libapppaint.a.p/paint-enums.c.o
+[515/707] Compiling C object app/pdb/libapppdb.a.p/gimp-pdb-compat.c.o
+[516/707] Compiling C++ object app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o
+[517/707] Compiling C object app/pdb/libapppdb.a.p/gimppdb-query.c.o
+[518/707] Compiling C object app/pdb/libapppdb.a.p/gimppdb-utils.c.o
+[519/707] Compiling C object app/pdb/libapppdb.a.p/gimppdb.c.o
+[520/707] Compiling C object app/pdb/libapppdb.a.p/gimppdbcontext.c.o
+[521/707] Compiling C object app/pdb/libapppdb.a.p/gimppdberror.c.o
+[522/707] Compiling C object app/pdb/libappinternalprocs.a.p/brush-cmds.c.o
+[523/707] Compiling C object app/pdb/libapppdb.a.p/gimpprocedure.c.o
+[524/707] Compiling C object app/pdb/libappinternalprocs.a.p/brush-select-cmds.c.o
+[525/707] Compiling C object app/pdb/libappinternalprocs.a.p/brushes-cmds.c.o
+[526/707] Compiling C object app/pdb/libappinternalprocs.a.p/buffer-cmds.c.o
+[527/707] Compiling C object app/pdb/libappinternalprocs.a.p/channel-cmds.c.o
+[528/707] Compiling C object app/pdb/libappinternalprocs.a.p/debug-cmds.c.o
+[529/707] Compiling C object app/pdb/libappinternalprocs.a.p/display-cmds.c.o
+[530/707] Compiling C object app/pdb/libappinternalprocs.a.p/context-cmds.c.o
+[531/707] Compiling C object app/pdb/libappinternalprocs.a.p/drawable-cmds.c.o
+[532/707] Compiling C object app/pdb/libappinternalprocs.a.p/drawable-edit-cmds.c.o
+[533/707] Compiling C object app/pdb/libappinternalprocs.a.p/drawable-color-cmds.c.o
+[534/707] Compiling C object app/pdb/libappinternalprocs.a.p/drawable-select-cmds.c.o
+[535/707] Compiling C object app/pdb/libappinternalprocs.a.p/drawable-filter-cmds.c.o
+[536/707] Compiling C object app/pdb/libappinternalprocs.a.p/dynamics-cmds.c.o
+[537/707] Compiling C object app/pdb/libappinternalprocs.a.p/edit-cmds.c.o
+[538/707] Compiling C object app/pdb/libappinternalprocs.a.p/file-cmds.c.o
+[539/707] Compiling C object app/pdb/libappinternalprocs.a.p/floating-sel-cmds.c.o
+[540/707] Compiling C object app/pdb/libappinternalprocs.a.p/font-cmds.c.o
+[541/707] Compiling C object app/pdb/libappinternalprocs.a.p/font-select-cmds.c.o
+[542/707] Compiling C object app/pdb/libappinternalprocs.a.p/fonts-cmds.c.o
+[543/707] Compiling C object app/pdb/libappinternalprocs.a.p/gimprc-cmds.c.o
+[544/707] Compiling C object app/pdb/libappinternalprocs.a.p/gimp-cmds.c.o
+[545/707] Compiling C object app/pdb/libappinternalprocs.a.p/gradient-select-cmds.c.o
+[546/707] Compiling C object app/pdb/libappinternalprocs.a.p/gradients-cmds.c.o
+[547/707] Compiling C object app/pdb/libappinternalprocs.a.p/gradient-cmds.c.o
+[548/707] Compiling C object app/pdb/libappinternalprocs.a.p/group-layer-cmds.c.o
+[549/707] Compiling C object app/pdb/libappinternalprocs.a.p/help-cmds.c.o
+[550/707] Compiling C object app/pdb/libappinternalprocs.a.p/image-autocrop-cmds.c.o
+[551/707] Compiling C object app/pdb/libappinternalprocs.a.p/image-color-profile-cmds.c.o
+[552/707] Compiling C object app/pdb/libappinternalprocs.a.p/image-convert-cmds.c.o
+[553/707] Compiling C object app/pdb/libappinternalprocs.a.p/image-cmds.c.o
+[554/707] Compiling C object app/pdb/libappinternalprocs.a.p/image-grid-cmds.c.o
+[555/707] Compiling C object app/pdb/libappinternalprocs.a.p/image-guides-cmds.c.o
+[556/707] Compiling C object app/pdb/libappinternalprocs.a.p/image-sample-points-cmds.c.o
+[557/707] Compiling C object app/pdb/libappinternalprocs.a.p/image-select-cmds.c.o
+[558/707] Compiling C object app/pdb/libappinternalprocs.a.p/image-transform-cmds.c.o
+[559/707] Compiling C object app/pdb/libappinternalprocs.a.p/internal-procs.c.o
+[560/707] Compiling C object app/pdb/libappinternalprocs.a.p/image-undo-cmds.c.o
+[561/707] Compiling C object app/pdb/libappinternalprocs.a.p/item-cmds.c.o
+[562/707] Compiling C object app/pdb/libappinternalprocs.a.p/item-transform-cmds.c.o
+[563/707] Compiling C object app/pdb/libappinternalprocs.a.p/message-cmds.c.o
+[564/707] Compiling C object app/pdb/libappinternalprocs.a.p/layer-cmds.c.o
+[565/707] Compiling C object app/pdb/libappinternalprocs.a.p/palette-cmds.c.o
+[566/707] Compiling C object app/pdb/libappinternalprocs.a.p/paint-tools-cmds.c.o
+[567/707] Compiling C object app/pdb/libappinternalprocs.a.p/palette-select-cmds.c.o
+[568/707] Compiling C object app/pdb/libappinternalprocs.a.p/palettes-cmds.c.o
+[569/707] Compiling C object app/pdb/libappinternalprocs.a.p/pattern-cmds.c.o
+[570/707] Compiling C object app/pdb/libappinternalprocs.a.p/path-cmds.c.o
+[571/707] Compiling C object app/pdb/libappinternalprocs.a.p/pattern-select-cmds.c.o
+[572/707] Compiling C object app/pdb/libappinternalprocs.a.p/patterns-cmds.c.o
+[573/707] Compiling C object app/pdb/libappinternalprocs.a.p/plug-in-cmds.c.o
+[574/707] Compiling C object app/pdb/libappinternalprocs.a.p/pdb-cmds.c.o
+[575/707] Compiling C object app/pdb/libappinternalprocs.a.p/progress-cmds.c.o
+[576/707] Compiling C object app/pdb/libappinternalprocs.a.p/resource-cmds.c.o
+[577/707] Compiling C object app/pdb/libappinternalprocs.a.p/selection-cmds.c.o
+[578/707] Compiling C object app/pdb/libappinternalprocs.a.p/text-layer-cmds.c.o
+[579/707] Compiling C object app/pdb/libappinternalprocs.a.p/text-tool-cmds.c.o
+[580/707] Compiling C object app/pdb/libappinternalprocs.a.p/unit-cmds.c.o
+[581/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpenvirontable.c.o
+[582/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpinterpreterdb.c.o
+[583/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpgpparams.c.o
+[584/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpplugin-cleanup.c.o
+[585/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpplugin-context.c.o
+[586/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpplugin-message.c.o
+[587/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpplugin-proc.c.o
+[588/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpplugin-progress.c.o
+[589/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpplugindebug.c.o
+[590/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpplugin.c.o
+[591/707] Compiling C object app/plug-in/libappplug-in.a.p/gimpplugindef.c.o
+[592/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginerror.c.o
+[593/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginmanager-data.c.o
+[594/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginmanager-call.c.o
+[595/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginmanager-help-domain.c.o
+[596/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginmanager-file.c.o
+[597/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginmanager-menu-branch.c.o
+[598/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginmanager-query.c.o
+[599/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginmanager-restore.c.o
+[600/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginmanager.c.o
+[601/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginprocframe.c.o
+[602/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginshm.c.o
+[603/707] Compiling C object app/plug-in/libappplug-in.a.p/gimppluginprocedure.c.o
+[604/707] Compiling C object app/plug-in/libappplug-in.a.p/gimptemporaryprocedure.c.o
+[605/707] Compiling C object app/plug-in/libappplug-in.a.p/plug-in-menu-path.c.o
+[606/707] Compiling C object app/plug-in/libappplug-in.a.p/plug-in-enums.c.o
+[607/707] Compiling C object app/plug-in/libappplug-in.a.p/plug-in-rc.c.o
+[608/707] Compiling C object app/text/libapptext.a.p/gimpfont.c.o
+[609/707] Compiling C object app/text/libapptext.a.p/gimpfontfactory.c.o
+[610/707] Compiling C object app/text/libapptext.a.p/gimptext-compat.c.o
+[611/707] Compiling C object app/text/libapptext.a.p/gimptext-parasite.c.o
+[612/707] Compiling C object app/text/libapptext.a.p/gimptext-path.c.o
+[613/707] Compiling C object app/text/libapptext.a.p/gimptext-xlfd.c.o
+[614/707] Compiling C object app/text/libapptext.a.p/gimptext.c.o
+[615/707] Compiling C object app/text/libapptext.a.p/gimptextlayer-transform.c.o
+[616/707] Compiling C object app/text/libapptext.a.p/gimptextlayer-xcf.c.o
+[617/707] Compiling C object app/text/libapptext.a.p/gimptextlayout-render.c.o
+[618/707] Compiling C object app/text/libapptext.a.p/gimptextlayer.c.o
+[619/707] Compiling C object app/text/libapptext.a.p/gimptextundo.c.o
+[620/707] Compiling C object app/text/libapptext.a.p/gimptextlayout.c.o
+[621/707] Compiling C object app/text/libapptext.a.p/text-enums.c.o
+[622/707] Compiling C object app/vectors/libappvectors.a.p/gimpanchor.c.o
+[623/707] Compiling C object app/vectors/libappvectors.a.p/gimppath.c.o
+[624/707] Compiling C object app/vectors/libappvectors.a.p/gimpbezierstroke.c.o
+[625/707] Compiling C object app/vectors/libappvectors.a.p/gimppath-compat.c.o
+[626/707] Compiling C object app/vectors/libappvectors.a.p/gimppath-export.c.o
+[627/707] Compiling C object app/vectors/libappvectors.a.p/gimppath-preview.c.o
+[628/707] Compiling C object app/vectors/libappvectors.a.p/gimppath-warp.c.o
+[629/707] Compiling C object app/vectors/libappvectors.a.p/gimppath-import.c.o
+[630/707] Compiling C object app/vectors/libappvectors.a.p/gimppathmodundo.c.o
+[631/707] Compiling C object app/vectors/libappvectors.a.p/gimppathpropundo.c.o
+[632/707] Compiling C object app/vectors/libappvectors.a.p/gimppathundo.c.o
+[633/707] Compiling C object app/vectors/libappvectors.a.p/gimpstroke-new.c.o
+[634/707] Compiling C object app/vectors/libappvectors.a.p/gimpstroke.c.o
+[635/707] Compiling C++ object app/xcf/libappxcf.a.p/painter-xcf-compat.cpp.o
+[636/707] Compiling C++ object app/xcf/libappxcf.a.p/painter-xcf-load.cpp.o
+[637/707] Compiling C++ object app/xcf/libappxcf.a.p/painter-xcf-arguments.cpp.o
+[638/707] Compiling C++ object app/xcf/libappxcf.a.p/painter-xcf-storage.cpp.o
+[639/707] Compiling C++ object app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o
+[640/707] Compiling C++ object app/xcf/libappxcf.a.p/painter-xcf-multipart.cpp.o
+[641/707] Compiling C++ object app/xcf/libappxcf.a.p/painter-xcf-transport.cpp.o
+[642/707] Compiling C object app/xcf/libappxcf.a.p/xcf-read.c.o
+[643/707] Compiling C object app/xcf/libappxcf.a.p/xcf-load.c.o
+[644/707] Compiling C object app/xcf/libappxcf.a.p/xcf-save.c.o
+[645/707] Compiling C object app/xcf/libappxcf.a.p/xcf-seek.c.o
+[646/707] Compiling C object app/xcf/libappxcf.a.p/xcf-utils.c.o
+[647/707] Compiling C object app/xcf/libappxcf.a.p/xcf-write.c.o
+[648/707] Compiling C object app/config/libappconfig.a.p/gimpconfig-dump.c.o
+[649/707] Compiling C object app/xcf/libappxcf.a.p/xcf.c.o
+[650/707] Compiling C object app/config/libappconfig.a.p/gimpconfig-file.c.o
+[651/707] Compiling C object app/config/libappconfig.a.p/gimpconfig-utils.c.o
+[652/707] Compiling C object app/config/libappconfig.a.p/gimpdialogconfig.c.o
+[653/707] Compiling C object app/config/libappconfig.a.p/gimpcoreconfig.c.o
+[654/707] Compiling C object app/config/libappconfig.a.p/gimpdisplayconfig.c.o
+[655/707] Compiling C object app/config/libappconfig.a.p/gimpdisplayoptions.c.o
+[656/707] Compiling C object app/config/libappconfig.a.p/gimpearlyrc.c.o
+[657/707] Compiling C object app/config/libappconfig.a.p/gimpgeglconfig.c.o
+[658/707] Compiling C object app/config/libappconfig.a.p/gimpguiconfig.c.o
+[659/707] Compiling C object app/config/libappconfig.a.p/gimppluginconfig.c.o
+[660/707] Compiling C++ object app/config/libappconfig.a.p/gimppainterfilterconfig.cpp.o
+[661/707] Compiling C object app/config/libappconfig.a.p/gimprc-deserialize.c.o
+[662/707] Compiling C object app/config/libappconfig.a.p/gimprc-serialize.c.o
+[663/707] Compiling C object app/config/libappconfig.a.p/gimprc-unknown.c.o
+[664/707] Compiling C object app/config/libappconfig.a.p/gimpxmlparser.c.o
+[665/707] Compiling C object app/config/libappconfig.a.p/gimprc.c.o
+[666/707] Generating symbol file libgimpmodule/libgimpmodule-3.0.so.0.8.1.p/libgimpmodule-3.0.so.0.8.1.symbols
+[667/707] Compiling C object app/config/libappconfig.a.p/config-enums.c.o
+[668/707] Linking static target app/painter/libapppainter.a
+[669/707] Linking static target app/paint/painter-mypaint/libpainter-mypaint.a
+[670/707] Linking static target app/core/libappcore.a
+[671/707] Generating symbol file libgimpthumb/libgimpthumb-3.0.so.0.8.1.p/libgimpthumb-3.0.so.0.8.1.symbols
+[672/707] Linking static target app/file/libappfile.a
+[673/707] Linking static target app/file-data/libappfiledata.a
+[674/707] Linking static target app/gegl/libgimp-gegl-loops-simd_sse2.a
+[675/707] Linking static target app/gegl/libappgegl.a
+[676/707] Linking static target app/operations/layer-modes/libgimpoperationlayermode-composite-simd_sse2.a
+[677/707] Linking static target app/operations/libappoperations.a
+[678/707] Linking static target app/operations/layer-modes/libgimpoperationnormal-simd_sse2.a
+[679/707] Linking static target app/operations/layer-modes/libgimpoperationnormal-simd_sse41.a
+[680/707] Linking static target app/operations/layer-modes/libapplayermodes.a
+[681/707] Linking static target app/operations/layer-modes-legacy/libapplayermodeslegacy.a
+[682/707] Linking static target app/paint/painter-bounded-fill/libpainter-bounded-fill.a
+[683/707] Linking static target app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a
+[684/707] Linking static target app/pdb/libapppdb.a
+[685/707] Linking static target app/paint/libapppaint.a
+[686/707] Linking static target app/pdb/libappinternalprocs.a
+[687/707] Linking static target app/text/libapptext.a
+[688/707] Linking static target app/plug-in/libappplug-in.a
+[689/707] Linking static target app/vectors/libappvectors.a
+[690/707] Linking static target app/xcf/libappxcf.a
+[691/707] Linking static target app/config/libappconfig.a
+[692/707] Compiling C object app/gimp-console-3.0.p/main.c.o
+[693/707] Compiling C object app/gimp-console-3.0.p/meson-generated_.._gui_gimpdbusservice-generated.c.o
+[694/707] Compiling C object app/gimp-console-3.0.p/app.c.o
+In file included from ../source/app/app.c:27:
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/sys/param.h:102:9: warning: "MIN" redefined
+  102 | #define MIN(a,b) (((a)<(b))?(a):(b))
+      |         ^~~
+In file included from /workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h:9,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtypes.h:34,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/galloca.h:34,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:32,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:30,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24,
+                 from ../source/app/gimp-features.h:4,
+                 from ../source/app/app.c:19:
+/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gmacros.h:942:9: note: this is the location of the previous definition
+  942 | #define MIN(a, b)  (((a) < (b)) ? (a) : (b))
+      |         ^~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/sys/param.h:103:9: warning: "MAX" redefined
+  103 | #define MAX(a,b) (((a)>(b))?(a):(b))
+      |         ^~~
+/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gmacros.h:939:9: note: this is the location of the previous definition
+  939 | #define MAX(a, b)  (((a) > (b)) ? (a) : (b))
+      |         ^~~
+[695/707] Compiling C object app/gimp-console-3.0.p/errors.c.o
+[696/707] Compiling C object app/gimp-console-3.0.p/gimpcoreapp.c.o
+[697/707] Compiling C object app/gimp-console-3.0.p/gimpconsoleapp.c.o
+[698/707] Compiling C object app/gimp-console-3.0.p/gimp-debug.c.o
+[699/707] Compiling C object app/gimp-console-3.0.p/gimp-log.c.o
+[700/707] Compiling C object app/gimp-console-3.0.p/gimp-features.c.o
+[701/707] Compiling C object app/gimp-console-3.0.p/gimp-update.c.o
+[702/707] Compiling C object app/gimp-console-3.0.p/language.c.o
+[703/707] Compiling C object app/gimp-console-3.0.p/gimp-version.c.o
+[704/707] Compiling C object app/gimp-console-3.0.p/signals.c.o
+[705/707] Compiling C object app/gimp-console-3.0.p/sanity.c.o
+[706/707] Compiling C object app/gimp-console-3.0.p/unique.c.o
+[707/707] Linking target app/gimp-console-3.0

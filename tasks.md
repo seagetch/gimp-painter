@@ -1194,6 +1194,7 @@
 | 30.015 | [ ] | ヘルプ ID と操作説明を接続する | 30.014 | 独自設定の意味を参照できる |
 | 30.016 | [ ] | 起動・終了順を統合する | 30.015 | 資源と UI の終了で stale callback がない |
 | 30.016/feature-entry-point | [ ] | 旧 features_entry_point の起動時登録を現行初期化へ接続する | 04.018, 28.003 | GUI/console と HTTPD 条件分岐、Gimp 所有者、initialize/restore/exit の接続と解除を検証 |
+| 30.016/feature-http-disabled | [x] | HTTP無効の実console buildと起動終了を検証する | 08.018/features-entry | 独立disabled設定で707step実consoleをbuild、元symbol存在、実initialize/restore/exit/dispose/finalizeとexit0を確認。ENABLE=1/PORT=0でもHTTP処理/直接libsoup依存なし。元13hunkを原文/owner付き監査、親30.016/feature-entry-pointは未完。migration/tests/feature-http-disabled-30016/ |
 | 30.017 | [ ] | インストール資産の一覧を生成する | 30.016 | 必要ファイルの欠落を検出できる |
 | 30.017/brush-manifest-generator | [ ] | Ruby版ブラシmanifest生成をMeson資源台帳へ置き換える | 30.016, 01.015 | Makefile.am.skelのmyb・preview列挙とsortを保持し、全同梱資産・root未対preview・noticeの欠落を検査する |
 | 30.017/brush-preview-generator | [ ] | ImageMagickの旧ブラシpreviewラベル生成を維持する | 30.016, 01.015 | label-brush-mypaint.shのcaption・border・resizeと上書き対象を保持し、空白等のfilename・画素出力・manifest一致を試験する。GIMP batch依存と混同しない |
