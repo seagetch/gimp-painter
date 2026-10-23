@@ -1,0 +1,9 @@
+TAP version 14
+# random seed: R02S38af4f0d26fa69c1da2ae1142c64fcce
+1..10
+# Start of container tests
+# Start of reentry tests
+**
+ERROR:../source/app/tests/test-container-reentry.c:14:changed: assertion failed (removed <= s->count - pos): (1 <= 0)
+not ok /container/reentry/add-remove - ERROR:../source/app/tests/test-container-reentry.c:14:changed: assertion failed (removed <= s->count - pos): (1 <= 0)
+Bail out!

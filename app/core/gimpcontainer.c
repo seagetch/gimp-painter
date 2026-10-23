@@ -70,6 +70,21 @@ typedef struct
   GQuark     quark;  /*  used to attach the signal id's of child signals  */
 } GimpContainerHandler;
 
+/* One synchronous public mutation owns its own chain-up witness.  A nested
+ * signal may undo its parent's count change, so net length is not a witness. */
+typedef struct _GimpContainerMutation GimpContainerMutation;
+struct _GimpContainerMutation
+{
+  GimpContainerMutation *previous;
+  GimpObject            *object;
+  guint                  signal;
+  gint                   before;
+  gint                   frozen_before;
+  gboolean               chained;
+  gboolean               nested;
+  gboolean               expect_insert_add;
+};
+
 struct _GimpContainerPrivate
 {
   GType                child_type;
@@ -80,6 +95,7 @@ struct _GimpContainerPrivate
   gint                 freeze_count;
   gint                 n_children_before_freeze;
   gint                 suspend_items_changed;
+  GimpContainerMutation *mutation;
 };
 
 
@@ -353,6 +369,10 @@ gimp_container_real_add (GimpContainer *container,
                          GimpObject    *object)
 {
   container->priv->n_children++;
+  if (container->priv->mutation &&
+      container->priv->mutation->signal == ADD &&
+      container->priv->mutation->object == object)
+    container->priv->mutation->chained = TRUE;
 }
 
 static void
@@ -360,6 +380,10 @@ gimp_container_real_remove (GimpContainer *container,
                             GimpObject    *object)
 {
   container->priv->n_children--;
+  if (container->priv->mutation &&
+      container->priv->mutation->signal == REMOVE &&
+      container->priv->mutation->object == object)
+    container->priv->mutation->chained = TRUE;
 }
 
 static void
@@ -639,12 +663,59 @@ gimp_container_get_n_children (GimpContainer *container)
   return container->priv->n_children;
 }
 
+static void
+gimp_container_mutation_begin (GimpContainer         *container,
+                               GimpContainerMutation *mutation,
+                               guint                  signal,
+                               GimpObject            *object)
+{
+  *mutation = (GimpContainerMutation) {
+    .previous      = container->priv->mutation,
+    .object        = object,
+    .signal        = signal,
+    .before        = container->priv->n_children,
+    .frozen_before = container->priv->freeze_count
+  };
+  if (mutation->previous && ! mutation->previous->expect_insert_add)
+    mutation->previous->nested = TRUE;
+  container->priv->mutation = mutation;
+}
+
+static void
+gimp_container_mutation_end (GimpContainer         *container,
+                             GimpContainerMutation *mutation,
+                             gint                   index,
+                             guint                  removed,
+                             guint                  added)
+{
+  container->priv->mutation = mutation->previous;
+  if (mutation->previous)
+    {
+      mutation->previous->nested |= mutation->nested;
+      return;
+    }
+  if (container->priv->freeze_count || container->priv->suspend_items_changed)
+    return;
+
+  /* No model observer has seen intermediate nested changes.  Publish one
+   * coherent replacement, rather than remove-before-add or an index of -1. */
+  if (mutation->nested)
+    {
+      if (mutation->before || container->priv->n_children)
+        g_list_model_items_changed (G_LIST_MODEL (container), 0,
+                                    mutation->before,
+                                    container->priv->n_children);
+    }
+  else if (index >= 0)
+    g_list_model_items_changed (G_LIST_MODEL (container), index, removed, added);
+}
+
 gboolean
 gimp_container_add (GimpContainer *container,
                     GimpObject    *object)
 {
   GList *list;
-  gint   n_children;
+  GimpContainerMutation mutation;
 
   g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
   g_return_val_if_fail (object != NULL, FALSE);
@@ -658,6 +729,10 @@ gimp_container_add (GimpContainer *container,
                  G_STRFUNC, container, object);
       return FALSE;
     }
+
+  g_object_ref (container);
+  g_object_ref (object);
+  gimp_container_mutation_begin (container, &mutation, ADD, object);
 
   for (list = container->priv->handlers; list; list = g_list_next (list))
     {
@@ -686,11 +761,9 @@ gimp_container_add (GimpContainer *container,
       break;
     }
 
-  n_children = container->priv->n_children;
-
   g_signal_emit (container, container_signals[ADD], 0, object);
 
-  if (n_children == container->priv->n_children)
+  if (! mutation.chained)
     {
       g_warning ("%s: GimpContainer::add() implementation did not "
                  "chain up. Please report this at https://www.gimp.org/bugs/",
@@ -699,13 +772,11 @@ gimp_container_add (GimpContainer *container,
       container->priv->n_children++;
     }
 
-  if (container->priv->freeze_count          == 0 &&
-      container->priv->suspend_items_changed == 0)
-    {
-      gint index = gimp_container_get_child_index (container, object);
-
-      g_list_model_items_changed (G_LIST_MODEL (container), index, 0, 1);
-    }
+  gimp_container_mutation_end (container, &mutation,
+                               gimp_container_get_child_index (container, object),
+                               0, 1);
+  g_object_unref (object);
+  g_object_unref (container);
 
   return TRUE;
 }
@@ -715,7 +786,7 @@ gimp_container_remove (GimpContainer *container,
                        GimpObject    *object)
 {
   GList *list;
-  gint   n_children;
+  GimpContainerMutation mutation;
   gint   index;
 
   g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
@@ -730,6 +801,10 @@ gimp_container_remove (GimpContainer *container,
                  G_STRFUNC, container, object);
       return FALSE;
     }
+
+  g_object_ref (container);
+  g_object_ref (object);
+  gimp_container_mutation_begin (container, &mutation, REMOVE, object);
 
   for (list = container->priv->handlers; list; list = g_list_next (list))
     {
@@ -747,12 +822,17 @@ gimp_container_remove (GimpContainer *container,
         }
     }
 
-  n_children = container->priv->n_children;
   index      = gimp_container_get_child_index (container, object);
+
+  /* Disconnect the old weak membership before callbacks can re-add it. */
+  if (container->priv->policy == GIMP_CONTAINER_POLICY_WEAK)
+    g_signal_handlers_disconnect_by_func (object,
+                                          gimp_container_disconnect_callback,
+                                          container);
 
   g_signal_emit (container, container_signals[REMOVE], 0, object);
 
-  if (n_children == container->priv->n_children)
+  if (! mutation.chained)
     {
       g_warning ("%s: GimpContainer::remove() implementation did not "
                  "chain up. Please report this at https://www.gimp.org/bugs/",
@@ -768,17 +848,12 @@ gimp_container_remove (GimpContainer *container,
       break;
 
     case GIMP_CONTAINER_POLICY_WEAK:
-      g_signal_handlers_disconnect_by_func (object,
-                                            gimp_container_disconnect_callback,
-                                            container);
       break;
     }
 
-  if (container->priv->freeze_count          == 0 &&
-      container->priv->suspend_items_changed == 0)
-    {
-      g_list_model_items_changed (G_LIST_MODEL (container), index, 1, 0);
-    }
+  gimp_container_mutation_end (container, &mutation, index, 1, 0);
+  g_object_unref (object);
+  g_object_unref (container);
 
   return TRUE;
 }
@@ -789,6 +864,7 @@ gimp_container_insert (GimpContainer *container,
                        gint           index)
 {
   gboolean success = FALSE;
+  GimpContainerMutation mutation;
 
   g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
   g_return_val_if_fail (object != NULL, FALSE);
@@ -806,6 +882,10 @@ gimp_container_insert (GimpContainer *container,
       return FALSE;
     }
 
+  g_object_ref (container);
+  g_object_ref (object);
+  gimp_container_mutation_begin (container, &mutation, LAST_SIGNAL, object);
+  mutation.expect_insert_add = TRUE;
   container->priv->suspend_items_changed++;
 
   if (gimp_container_add (container, object))
@@ -815,19 +895,21 @@ gimp_container_insert (GimpContainer *container,
        */
       success = TRUE;
 
-      gimp_container_reorder (container, object, index);
+      mutation.expect_insert_add = FALSE;
+      if (gimp_container_have (container, object))
+        gimp_container_reorder (container, object,
+                                index < 0 ? index :
+                                MIN (index, container->priv->n_children - 1));
     }
 
+  mutation.expect_insert_add = FALSE;
   container->priv->suspend_items_changed--;
 
-  if (success                                     &&
-      container->priv->freeze_count          == 0 &&
-      container->priv->suspend_items_changed == 0)
-    {
-      gint index = gimp_container_get_child_index (container, object);
-
-      g_list_model_items_changed (G_LIST_MODEL (container), index, 0, 1);
-    }
+  gimp_container_mutation_end (container, &mutation,
+                               success ? gimp_container_get_child_index (container, object) : -1,
+                               0, success ? 1 : 0);
+  g_object_unref (object);
+  g_object_unref (container);
 
   return success;
 }
@@ -838,6 +920,7 @@ gimp_container_reorder (GimpContainer *container,
                         gint           new_index)
 {
   gint old_index;
+  GimpContainerMutation mutation;
 
   g_return_val_if_fail (GIMP_IS_CONTAINER (container), FALSE);
   g_return_val_if_fail (object != NULL, FALSE);
@@ -862,19 +945,19 @@ gimp_container_reorder (GimpContainer *container,
 
   if (old_index != new_index)
     {
+      g_object_ref (container);
+      g_object_ref (object);
+      gimp_container_mutation_begin (container, &mutation, REORDER, object);
       g_signal_emit (container, container_signals[REORDER], 0,
                      object, old_index, new_index);
 
-      if (container->priv->freeze_count          == 0 &&
-          container->priv->suspend_items_changed == 0)
-        {
-          gint new_index = gimp_container_get_child_index (container, object);
-
-          g_list_model_items_changed (G_LIST_MODEL (container),
-                                      MIN (old_index, new_index),
-                                      ABS (old_index - new_index) + 1,
-                                      ABS (old_index - new_index) + 1);
-        }
+      new_index = gimp_container_get_child_index (container, object);
+      gimp_container_mutation_end (container, &mutation,
+                                   MIN (old_index, new_index),
+                                   ABS (old_index - new_index) + 1,
+                                   ABS (old_index - new_index) + 1);
+      g_object_unref (object);
+      g_object_unref (container);
     }
 
   return TRUE;
@@ -890,6 +973,14 @@ gimp_container_freeze (GimpContainer *container)
   if (container->priv->freeze_count == 1)
     {
       container->priv->n_children_before_freeze = container->priv->n_children;
+      if (container->priv->mutation)
+        {
+          GimpContainerMutation *outer = container->priv->mutation;
+          while (outer->previous)
+            outer = outer->previous;
+          if (! outer->frozen_before)
+            container->priv->n_children_before_freeze = outer->before;
+        }
 
       g_signal_emit (container, container_signals[FREEZE], 0);
     }
@@ -905,9 +996,19 @@ gimp_container_thaw (GimpContainer *container)
 
   if (container->priv->freeze_count == 0)
     {
-      g_list_model_items_changed (G_LIST_MODEL (container), 0,
-                                  container->priv->n_children_before_freeze,
-                                  container->priv->n_children);
+      if (container->priv->mutation)
+        {
+          GimpContainerMutation *outer = container->priv->mutation;
+          while (outer->previous)
+            outer = outer->previous;
+          if (outer->frozen_before)
+            outer->before = container->priv->n_children_before_freeze;
+          outer->nested = TRUE;
+        }
+      else
+        g_list_model_items_changed (G_LIST_MODEL (container), 0,
+                                    container->priv->n_children_before_freeze,
+                                    container->priv->n_children);
       container->priv->n_children_before_freeze = 0;
 
       g_signal_emit (container, container_signals[THAW], 0);

@@ -1178,3 +1178,12 @@ test('native-popover-entry', native_popover_entry_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)
+
+# Per-mutation chain witnesses and coherent reentrant GListModel publication.
+container_reentry_test = executable('container-reentry',
+  'test-container-reentry.c', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  override_options: ['c_std=c11'])
+test('container-reentry', container_reentry_test, suite: 'app',
+  is_parallel: false, timeout: 120)
+

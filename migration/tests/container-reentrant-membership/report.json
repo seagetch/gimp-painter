@@ -1,0 +1,48 @@
+{
+  "task": "08.018/container-reentrant-membership",
+  "status": "DONE",
+  "production_changed": true,
+  "normal_tap": 13,
+  "sanitizer_tap": 13,
+  "instrumented_units": 4,
+  "mutations": [
+    {
+      "name": "net-count",
+      "exit_code": 133,
+      "log": "mutant-net-count.log"
+    },
+    {
+      "name": "lost-weak-membership",
+      "exit_code": 134,
+      "log": "mutant-lost-weak-membership.log"
+    },
+    {
+      "name": "nested-notifications",
+      "exit_code": 134,
+      "log": "mutant-nested-notifications.log"
+    }
+  ],
+  "source_sha256": {
+    "app/core/gimpcontainer.c": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422",
+    "app/core/gimpcontainer.h": "4147261cbdd90f476c3af5feaa5cfb7bdc70606cfc8af86946c1a2842fc87c0f",
+    "app/core/gimplist.c": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76",
+    "app/core/gimplist.h": "d8b181c935b9398c11994478d008ce359ed8467746613ec4893e3a0ec34c7077",
+    "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+    "app/core/gimpobject.h": "f29b1f418b285a9c581c71f6cddd485ebb9e837b9b945b8b9ec389812b284b78",
+    "app/tests/test-container-reentry.c": "1f420e94f51b63a3315ac38cb7eb5cc585123bfb3abf3854052ba2b4d276752a",
+    "migration/tests/build_container_reentry_sanitizers.py": "da1896e564306ada88d5cf0d384cd01bb50c936907716bf288ae47ec40bcc1c5",
+    "tools/run-painter-xvfb.py": "6481502846d9f896cb906c8b1cde26f59d6899d1d5f889e1ffbf8e106e743fde"
+  },
+  "original_source_sha256": "d289b12f38dad3a7964d0bb14ad175e55c786c4e59f56c3183998e4ef2bd5ab6",
+  "red_test_sha256": "a05c2ad8e022a52cca80c7727bde0b591117475b0c808f38649f570f24975fbb",
+  "red_exit_code": 134,
+  "whole_hunk_closure": false,
+  "rendered_ui_evidence": false,
+  "oncanvas_applicable": false,
+  "portrait_xvfb": "1080x1920x24",
+  "limitations": [
+    "Generic container model tests have no app configuration/window; user oncanvas setting covered by separate consuming registration integration, not invented here.",
+    "Four selected C units only; not whole app/dependencies/LSan.",
+    "No original feature or source-hunk closure."
+  ]
+}

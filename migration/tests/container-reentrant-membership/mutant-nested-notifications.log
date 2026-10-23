@@ -1,0 +1,10 @@
+TAP version 14
+# random seed: R02S1797e637741def3f4d12ab34d56e10f2
+1..13
+# Start of container tests
+# Start of reentry tests
+ok 1 /container/reentry/add-remove
+**
+ERROR:../source/app/tests/test-container-reentry.c:17:changed: assertion failed (s->count == g_list_model_get_n_items (m)): (0 == 1)
+not ok /container/reentry/remove-readd - ERROR:../source/app/tests/test-container-reentry.c:17:changed: assertion failed (s->count == g_list_model_get_n_items (m)): (0 == 1)
+Bail out!

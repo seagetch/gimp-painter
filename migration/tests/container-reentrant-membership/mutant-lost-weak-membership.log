@@ -1,0 +1,13 @@
+TAP version 14
+# random seed: R02S897764cbce2e7d602f6e931685324cd7
+1..13
+# Start of container tests
+# Start of reentry tests
+ok 1 /container/reentry/add-remove
+ok 2 /container/reentry/remove-readd
+ok 3 /container/reentry/add-other
+ok 4 /container/reentry/remove-other
+**
+ERROR:../source/app/tests/test-container-reentry.c:57:scenario: assertion failed (gimp_container_get_n_children (c) == 0): (1 == 0)
+not ok /container/reentry/weak-readd - ERROR:../source/app/tests/test-container-reentry.c:57:scenario: assertion failed (gimp_container_get_n_children (c) == 0): (1 == 0)
+Bail out!

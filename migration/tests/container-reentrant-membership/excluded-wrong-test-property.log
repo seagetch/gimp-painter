@@ -1,0 +1,17 @@
+TAP version 14
+# random seed: R02S8f5ed06dfff26b839ae5204a4d78bdbe
+1..10
+# Start of container tests
+# Start of reentry tests
+ok 1 /container/reentry/add-remove
+ok 2 /container/reentry/remove-readd
+ok 3 /container/reentry/add-other
+ok 4 /container/reentry/remove-other
+ok 5 /container/reentry/weak-readd
+ok 6 /container/reentry/insert-remove
+ok 7 /container/reentry/frozen-add-remove
+ok 8 /container/reentry/callback-freeze-thaw
+# End of reentry tests
+# Start of chain tests
+not ok /container/chain/missing - GLib-GObject-FATAL-CRITICAL: g_object_new_is_valid_property: object class 'BrokenList' has no property named 'children-type'
+Bail out!

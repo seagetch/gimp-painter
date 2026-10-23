@@ -1,0 +1,61 @@
+ninja: Entering directory `<native-build>'
+[1/26] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[2/26] Generating symbol file libgimpbase/libgimpbase-3.0.so.0.8.1.p/libgimpbase-3.0.so.0.8.1.symbols
+[3/19] Compiling C object app/tests/container-reentry.p/test-container-reentry.c.o
+FAILED: app/tests/container-reentry.p/test-container-reentry.c.o 
+cc -Iapp/tests/container-reentry.p -Iapp/tests -I../source/app/tests -I. -I../source -Iapp -I../source/app -I<locked-dependencies>/root/usr/include/cairo -I<locked-dependencies>/root/usr/include/libpng16 -I<locked-dependencies>/root/usr/include/freetype2 -I<locked-dependencies>/root/usr/include/pixman-1 -I<locked-dependencies>/root/usr/include/gdk-pixbuf-2.0 -I<locked-dependencies>/root/usr/include/glib-2.0 -I<locked-dependencies>/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I<locked-dependencies>/root/usr/include/sysprof-6 -I<locked-dependencies>/root/usr/include/webp -I<locked-dependencies>/root/usr/include/libmount -I<locked-dependencies>/root/usr/include/blkid -I<locked-dependencies>/root/usr/include/gegl-0.4 -I<locked-dependencies>/root/usr/include/gio-unix-2.0 -I<locked-dependencies>/root/usr/include/json-glib-1.0 -I<locked-dependencies>/root/usr/include/babl-0.1 -I<locked-dependencies>/root/usr/include/pango-1.0 -I<locked-dependencies>/root/usr/include/harfbuzz -I<locked-dependencies>/root/usr/include/fribidi -I<locked-dependencies>/root/usr/include/libsoup-3.0 -I<locked-dependencies>/root/usr/include/gtk-3.0 -I<locked-dependencies>/root/usr/include/cloudproviders -I<locked-dependencies>/root/usr/include/atk-1.0 -I<locked-dependencies>/root/usr/include/at-spi2-atk/2.0 -I<locked-dependencies>/root/usr/include/at-spi-2.0 -I<locked-dependencies>/root/usr/include/dbus-1.0 -I<locked-dependencies>/root/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I<locked-dependencies>/root/usr/include/appstream -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c11 -O2 -Wabsolute-value -Wdeclaration-after-statement -Wenum-conversion -Wno-strict-prototypes -Wold-style-definition -Wunused-function -Wunused-value -Werror=implicit-function-declaration -DGDK_PIXBUF_VERSION_MIN_REQUIRED=GDK_PIXBUF_VERSION_2_30 -DGDK_PIXBUF_VERSION_MAX_ALLOWED=GDK_PIXBUF_VERSION_2_30 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -DGDK_VERSION_MIN_REQUIRED=GDK_VERSION_3_24 -DGDK_VERSION_MAX_ALLOWED=GDK_VERSION_3_24 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -pthread -isystem <locked-dependencies>/root/usr/include/mit-krb5 -MD -MQ app/tests/container-reentry.p/test-container-reentry.c.o -MF app/tests/container-reentry.p/test-container-reentry.c.o.d -o app/tests/container-reentry.p/test-container-reentry.c.o -c ../source/app/tests/test-container-reentry.c
+../source/app/tests/test-container-reentry.c:9:22: error: unknown type name ‘GListModel’
+    9 | static void changed (GListModel *m, guint pos, guint removed, guint added, Mirror *s)
+      |                      ^~~~~~~~~~
+In file included from <locked-dependencies>/root/usr/include/glib-2.0/gobject/gobject.h:30,
+                 from <locked-dependencies>/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from <locked-dependencies>/root/usr/include/glib-2.0/glib-object.h:24,
+                 from <locked-dependencies>/root/usr/include/gegl-0.4/gegl.h:22,
+                 from ../source/app/tests/test-container-reentry.c:3:
+../source/app/tests/test-container-reentry.c: In function ‘scenario’:
+../source/app/tests/test-container-reentry.c:42:53: error: ‘changed’ undeclared (first use in this function)
+   42 |   g_signal_connect (c, "items-changed", G_CALLBACK (changed), &mirror);
+      |                                                     ^~~~~~~
+<locked-dependencies>/root/usr/include/glib-2.0/gobject/gsignal.h:549:60: note: in definition of macro ‘g_signal_connect’
+  549 |     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (GConnectFlags) 0)
+      |                                                            ^~~~~~~~~
+../source/app/tests/test-container-reentry.c:42:41: note: in expansion of macro ‘G_CALLBACK’
+   42 |   g_signal_connect (c, "items-changed", G_CALLBACK (changed), &mirror);
+      |                                         ^~~~~~~~~~
+../source/app/tests/test-container-reentry.c:42:53: note: each undeclared identifier is reported only once for each function it appears in
+   42 |   g_signal_connect (c, "items-changed", G_CALLBACK (changed), &mirror);
+      |                                                     ^~~~~~~
+<locked-dependencies>/root/usr/include/glib-2.0/gobject/gsignal.h:549:60: note: in definition of macro ‘g_signal_connect’
+  549 |     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (GConnectFlags) 0)
+      |                                                            ^~~~~~~~~
+../source/app/tests/test-container-reentry.c:42:41: note: in expansion of macro ‘G_CALLBACK’
+   42 |   g_signal_connect (c, "items-changed", G_CALLBACK (changed), &mirror);
+      |                                         ^~~~~~~~~~
+In file included from <locked-dependencies>/root/usr/include/glib-2.0/gobject/gobject.h:26:
+../source/app/tests/test-container-reentry.c: At top level:
+../source/app/tests/test-container-reentry.c:64:28: warning: no previous declaration for ‘broken_list_get_type’ [-Wmissing-declarations]
+   64 | G_DEFINE_TYPE (BrokenList, broken_list, GIMP_TYPE_LIST)
+      |                            ^~~~~~~~~~~
+<locked-dependencies>/root/usr/include/glib-2.0/gobject/gtype.h:2305:1: note: in definition of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE’
+ 2305 | type_name##_get_type (void) \
+      | ^~~~~~~~~
+<locked-dependencies>/root/usr/include/glib-2.0/gobject/gtype.h:2053:61: note: in expansion of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<locked-dependencies>/root/usr/include/glib-2.0/gobject/gtype.h:1834:61: note: in expansion of macro ‘G_DEFINE_TYPE_EXTENDED’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-container-reentry.c:64:1: note: in expansion of macro ‘G_DEFINE_TYPE’
+   64 | G_DEFINE_TYPE (BrokenList, broken_list, GIMP_TYPE_LIST)
+      | ^~~~~~~~~~~~~
+[4/19] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[5/19] Generating symbol file libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/libgimpconfig-3.0.so.0.8.1.symbols
+[6/15] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+ninja: build stopped: subcommand failed.
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: <locked-dependencies>/root/usr/bin/ninja -C <native-build> -j 4 app/tests/container-reentry

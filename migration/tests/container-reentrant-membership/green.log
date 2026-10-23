@@ -1,0 +1,22 @@
+TAP version 14
+# random seed: R02Sb8062ab44f89d8dd4ef48eeedbd4b2e7
+1..13
+# Start of container tests
+# Start of reentry tests
+ok 1 /container/reentry/add-remove
+ok 2 /container/reentry/remove-readd
+ok 3 /container/reentry/add-other
+ok 4 /container/reentry/remove-other
+ok 5 /container/reentry/weak-readd
+ok 6 /container/reentry/insert-remove
+ok 7 /container/reentry/frozen-add-remove
+ok 8 /container/reentry/callback-freeze-thaw
+ok 9 /container/reentry/reorder-remove
+ok 10 /container/reentry/callback-freeze-later-thaw
+ok 11 /container/reentry/ordinary-insert
+# End of reentry tests
+# Start of chain tests
+ok 12 /container/chain/missing
+ok 13 /container/chain/nested-does-not-hide-missing
+# End of chain tests
+# End of container tests

@@ -1,0 +1,22 @@
+TAP version 14
+# random seed: R02Sa80016acc8d80698a3ae1dbb87523a2c
+1..13
+# Start of container tests
+# Start of reentry tests
+ok 1 /container/reentry/add-remove
+ok 2 /container/reentry/remove-readd
+ok 3 /container/reentry/add-other
+ok 4 /container/reentry/remove-other
+ok 5 /container/reentry/weak-readd
+ok 6 /container/reentry/insert-remove
+ok 7 /container/reentry/frozen-add-remove
+ok 8 /container/reentry/callback-freeze-thaw
+ok 9 /container/reentry/reorder-remove
+ok 10 /container/reentry/callback-freeze-later-thaw
+ok 11 /container/reentry/ordinary-insert
+# End of reentry tests
+# Start of chain tests
+
+(<native-build>/app/tests/container-reentry:236): GLib-CRITICAL **: 13:54:15.122: Did not see expected message **-WARNING **: *add()*did not*chain up*
+not ok /container/chain/missing - Gimp-Core-FATAL-WARNING: gimp_container_add: GimpContainer::add() implementation did not chain up. Please report this at https://www.gimp.org/bugs/
+Bail out!
