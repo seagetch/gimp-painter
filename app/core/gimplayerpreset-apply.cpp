@@ -24,6 +24,8 @@ extern "C" {
 #include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
 }
 #include "gimp-intl.h"
+#include "gimpfilterlayer-handle.hpp"
+#include "gimpclonelayer-handle.hpp"
 #include "gimp-painter-type-traits.hpp"
 #include "painter/resources.hpp"
 #include <cmath>
@@ -143,7 +145,7 @@ Bounds bounds (JsonNode *node, GimpImage *image, GimpLayer *source)
     }
   return b;
 }
-void install_filter (GimpLayer *layer, JsonNode *filter)
+void install_filter (const FilterLayerRef& layer, JsonNode *filter)
 {
   if (!filter || !JSON_NODE_HOLDS_OBJECT (filter)) fail ("Filter layer has no filter definition");
   const char *procedure = string (member (filter, "name"));
@@ -174,9 +176,13 @@ void install_filter (GimpLayer *layer, JsonNode *filter)
     }
   gchar *json = json_to_string (filter, FALSE);
   std::unique_ptr<GBytes, decltype (&g_bytes_unref)> raw (g_bytes_new_take (json, std::strlen (json)), g_bytes_unref);
-  GError *error = nullptr;
-  if (!gimp_filter_layer_set_definition (GIMP_FILTER_LAYER (layer), procedure, raw.get (), values.get (), &error))
-    { std::string message = GimpPainter::take_error_message (error, "Unable to install filter definition"); throw std::runtime_error (message); }
+  try { layer.set_definition (procedure, raw.get (), values.get ()); }
+  catch (const Error& error)
+    {
+      /* Preserve the preset C boundary's historical EXCEPTION mapping while
+       * keeping the provider's diagnostic text. */
+      throw std::runtime_error (error.what ());
+    }
 }
 struct Planner {
   GimpImage *image; GimpLayer *source;
@@ -223,13 +229,29 @@ struct Planner {
             else if (equal (type, "group"))
               { created = gimp_group_layer_new (image); gimp_object_set_name (GIMP_OBJECT (created), name ? name : _("New Group Layer")); }
             else if (equal (type, "clone"))
-              created = gimp_clone_layer_new (image, content_source, w, h, name ? name : _("New Clone Layer"), p.opacity, p.mode);
+              {
+                auto layer = [&] {
+                  try { return CloneLayerRef::create (image, content_source, w, h, name ? name : _("New Clone Layer"), p.opacity, p.mode); }
+                  catch (const Error&) { fail ("Unable to allocate layer preset layer"); }
+                } ();
+                created = GIMP_LAYER (layer.get ());
+                /* Named factories already sink their floating item. Retain a
+                 * base owner before the short-lived named handle is released. */
+                p.layer = ObjectRef<GimpLayer>::retain (created);
+              }
             else if (equal (type, "filter"))
-              created = gimp_filter_layer_new (image, w, h, name ? name : _("New Filter Layer"), p.opacity, p.mode);
+              {
+                auto layer = [&] {
+                  try { return FilterLayerRef::create (image, w, h, name ? name : _("New Filter Layer"), p.opacity, p.mode); }
+                  catch (const Error&) { fail ("Unable to allocate layer preset layer"); }
+                } ();
+                created = GIMP_LAYER (layer.get ());
+                p.layer = ObjectRef<GimpLayer>::retain (created);
+                install_filter (layer, member (object, "filter"));
+              }
             else fail ("Unknown layer preset layer type");
             if (!created) fail ("Unable to allocate layer preset layer");
-            p.layer = ObjectRef<GimpLayer>::sink (created);
-            if (equal (type, "filter")) install_filter (created, member (object, "filter"));
+            if (!p.layer) p.layer = ObjectRef<GimpLayer>::sink (created);
           }
         else fail ("Unknown layer preset target");
         const auto position = plan.size ();
