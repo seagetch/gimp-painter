@@ -298,6 +298,7 @@ static void rgb_native_cancel_undo()
 #include "test-painter-surface-layer-mask.inc"
 #include "test-painter-surface-snapshot-handoff.inc"
 #include "test-painter-surface-dirty-handoff.inc"
+#include "test-painter-surface-undo-handoff.inc"
 
 int main(int argc,char**argv)
 {
@@ -322,5 +323,6 @@ int main(int argc,char**argv)
   g_test_add_func("/layer-mask/independent-paint-target",layer_mask_is_independent_paint_target);
   g_test_add_func("/snapshot/native-start-handoff",snapshot_native_start_handoff);
   g_test_add_func("/dirty/native-update-undo-extent",DirtyHandoff::native_dirty_undo_extent);
+  g_test_add_func("/undo/native-operation-history",UndoHandoff::native_operation_history);
   int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }
