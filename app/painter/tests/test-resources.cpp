@@ -350,7 +350,30 @@ void owned_closure_destroy (gpointer data, GClosure *)
   ++owned->counts->destroyed;
   delete owned;
 }
-void connection_ownership ()
+// The caller owns the signal-name buffer; Connection consumes it synchronously.
+// Destroy counts cover closure ownership, not process-wide leak freedom.
+Connection owned_connection (const ObjectRef<GObject>& emitter, const char *name,
+                             ClosureData *data, bool transient)
+{
+  if (!transient)
+    return Connection::connect (emitter, name, G_CALLBACK (owned_notify),
+                                data, owned_closure_destroy);
+  char *caller_name = g_strdup (name);
+  auto connection = Connection::connect (emitter, caller_name, G_CALLBACK (owned_notify),
+                                         data, owned_closure_destroy);
+  for (volatile char *cursor = caller_name; *cursor; ++cursor) *cursor = 'x';
+  g_free (caller_name); // immediately invalidate the input, before any emission
+  return connection;
+}
+void notify_detail (GObject *object, bool other = false)
+{
+  const char *name = other ? "other" : "value";
+  auto *spec = g_param_spec_int (name, name, name, 0, 99, 0, G_PARAM_READWRITE);
+  g_param_spec_ref_sink (spec);
+  g_signal_emit_by_name (object, other ? "notify::other" : "notify::value", spec);
+  g_param_spec_unref (spec);
+}
+void connection_teardown_orders (const char *name, bool transient)
 {
   // Target first, explicit close, wrapper destruction, external disconnect,
   // untouched expired handle destruction, and expired outstanding block depth.
@@ -362,10 +385,9 @@ void connection_ownership ()
       g_object_weak_ref (emitter.get (), count_destroy, &finalized);
       {
         auto *data = new ClosureData { &counts };
-        auto connection = Connection::connect (emitter, "notify", G_CALLBACK (owned_notify),
-                                                data, owned_closure_destroy);
+        auto connection = owned_connection (emitter, name, data, transient);
         g_assert_cmpuint (emitter.get ()->ref_count, ==, 1);
-        notify (emitter.get ());
+        if (transient) notify_detail (emitter.get ()); else notify (emitter.get ());
         g_assert_cmpint (counts.calls, ==, 1);
         g_assert_cmpint (counts.destroyed, ==, 0);
         if (order == 0 || order == 4 || order == 5)
@@ -396,13 +418,13 @@ void connection_ownership ()
           {
             g_assert_cmpuint (g_signal_handlers_disconnect_by_data (emitter.get (), data), ==, 1);
             g_assert_false (connection.connected ());
-            connection.close ();
+            connection.close (); connection.close ();
           }
       }
       g_assert_cmpint (counts.destroyed, ==, 1);
       if (emitter)
         {
-          notify (emitter.get ());
+          if (transient) notify_detail (emitter.get ()); else notify (emitter.get ());
           g_assert_cmpint (counts.calls, ==, 1);
           g_assert_cmpint (finalized, ==, 0);
           emitter.reset ();
@@ -410,6 +432,10 @@ void connection_ownership ()
       g_assert_cmpint (finalized, ==, 1);
       g_assert_cmpint (counts.destroyed, ==, 1);
     }
+}
+void connection_ownership ()
+{
+  connection_teardown_orders ("notify", false);
   ClosureCounts first, displaced;
   auto emitter = new_object ();
   auto source = Connection::connect (emitter, "notify", G_CALLBACK (owned_notify),
@@ -431,6 +457,54 @@ void connection_ownership ()
   g_assert_cmpint (first.destroyed, ==, 1);
   g_assert_cmpint (displaced.destroyed, ==, 1);
   g_assert_cmpuint (emitter.get ()->ref_count, ==, 1);
+}
+void connection_transient_name ()
+{
+  for (const char *name : {"notify", "notify::value"})
+    {
+      connection_teardown_orders (name, true);
+      constexpr int rounds = 16;
+      ClosureCounts counts[rounds];
+      int finalized = 0;
+      auto emitter = new_object ();
+      g_object_weak_ref (emitter.get (), count_destroy, &finalized);
+      {
+        Connection connection;
+        for (int round = 0; round < rounds; ++round)
+          {
+            connection = owned_connection (emitter, name,
+                                            new ClosureData { &counts[round] }, true);
+            g_assert_true (connection.connected ());
+            g_assert_cmpuint (emitter.get ()->ref_count, ==, 1);
+            notify_detail (emitter.get ());
+            g_assert_cmpint (counts[round].calls, ==, 1);
+            notify_detail (emitter.get (), true);
+            const int expected_calls = g_str_equal (name, "notify") ? 2 : 1;
+            g_assert_cmpint (counts[round].calls, ==, expected_calls);
+            g_assert_cmpint (counts[round].destroyed, ==, 0);
+            // Alternate replacement of a live closure with repeated explicit close.
+            if (round % 2)
+              {
+                connection.close (); connection.close ();
+                g_assert_false (connection.connected ());
+                g_assert_cmpint (counts[round].destroyed, ==, 1);
+                notify_detail (emitter.get ());
+                notify_detail (emitter.get (), true);
+                g_assert_cmpint (counts[round].calls, ==, expected_calls);
+              }
+            for (int previous = 0; previous < round; ++previous)
+              {
+                g_assert_cmpint (counts[previous].destroyed, ==, 1);
+                g_assert_cmpint (counts[previous].calls, ==, expected_calls);
+              }
+            g_assert_cmpint (finalized, ==, 0);
+            g_assert_cmpuint (emitter.get ()->ref_count, ==, 1);
+          }
+      }
+      emitter.reset ();
+      g_assert_cmpint (finalized, ==, 1);
+      for (const auto& count : counts) g_assert_cmpint (count.destroyed, ==, 1);
+    }
 }
 struct Reconnect
 {
@@ -692,6 +766,7 @@ void painter_test_register_resources ()
   g_test_add_func ("/painter/resources/mutex-exception", mutex_guard);
   g_test_add_func ("/painter/signal/lifetime-blocks", connections);
   g_test_add_func ("/painter/signal/owned-lifetime", connection_ownership);
+  g_test_add_func ("/painter/signal/transient-name-lifetime", connection_transient_name);
   g_test_add_func ("/painter/signal/after-order", signal_order);
   g_test_add_func ("/painter/signal/block-phase-order", signal_block_order);
   g_test_add_func ("/painter/signal/reentrant-disconnect", reentrant_disconnect);
