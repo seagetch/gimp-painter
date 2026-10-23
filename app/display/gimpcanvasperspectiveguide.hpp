@@ -21,8 +21,10 @@ public:
   { return CanvasPerspectiveGuideRef (ObjectRef<GimpCanvasPerspectiveGuide>::retain (guide)); }
   static CanvasPerspectiveGuideRef adopt (GimpCanvasPerspectiveGuide *guide)
   { return CanvasPerspectiveGuideRef (ObjectRef<GimpCanvasPerspectiveGuide>::adopt (guide)); }
-  static CanvasPerspectiveGuideRef create (GimpDisplayShell *shell)
-  { return adopt (reinterpret_cast<GimpCanvasPerspectiveGuide *> (gimp_canvas_perspective_guide_new (shell))); }
+  static CanvasPerspectiveGuideRef create (GimpDisplayShell *shell, GimpPerspectiveGuide *guide)
+  { return adopt (gimp_canvas_perspective_guide_new (shell, guide)); }
+  static CanvasPerspectiveGuideRef create_for_image (GimpDisplayShell *shell)
+  { return adopt (reinterpret_cast<GimpCanvasPerspectiveGuide *> (gimp_canvas_perspective_guide_new_for_image (shell))); }
   GimpCanvasPerspectiveGuide *get () const noexcept { return owner_.get (); }
   explicit operator bool () const noexcept { return bool (owner_); }
   void reset () noexcept { owner_.reset (); }

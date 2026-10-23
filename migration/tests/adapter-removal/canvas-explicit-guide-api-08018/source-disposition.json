@@ -1,0 +1,20 @@
+{
+  "task": "08.018/canvas-explicit-guide-api",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "original_sha256": {
+    "app/display/gimpcanvasperspectiveguide.cpp": "af33aeaaf85b401af219ac658c5abfe3eef14a7ecde1b632c08c873b199b6a2c",
+    "app/display/gimpcanvasperspectiveguide.h": "e8870f3eb04d5f5e3819a5df0c5ac39f308657e31f058025111fabefe6eb554b",
+    "app/base/glib-cxx-utils.hpp": "0f21fae6457846eda2b35e742eb3d56435b3f41b88ac5a4d0633ae25d80ede98"
+  },
+  "preceding_native_commit": "12e2434177",
+  "restored_signature": "GimpCanvasPerspectiveGuide *gimp_canvas_perspective_guide_new(GimpDisplayShell *,GimpPerspectiveGuide *)",
+  "original_ownership": "IObject<T>::operator=(T*) increments the new owner; guide READWRITE|CONSTRUCT property uses it",
+  "legacy_layout_abi_claim": false,
+  "historical_pixel_parity_claim": false,
+  "status": "VERIFIED_BOUNDED_SOURCE_OPERATION",
+  "parent_complete": false,
+  "normal_cases": 61,
+  "perspective_cases": 24,
+  "sanitizer_cases": 61,
+  "sanitizer_perspective_cases": 24
+}

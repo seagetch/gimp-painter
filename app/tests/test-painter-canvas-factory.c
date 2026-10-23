@@ -12,6 +12,7 @@
 #include "core/gimpperspectiveguide.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimpdisplayshell-items.h"
 #include "display/gimpcanvasperspectiveguide.h"
 #include "display/gimppaintercanvasui.h"
 #include "gimpcoreapp.h"
@@ -36,8 +37,8 @@ static void test_fault (gconstpointer data) {
   gpointer weak;
   setup_shell ();
   painter_canvas_fault_arm (kind, stage);
-  if (caller == 0) result = gimp_canvas_perspective_guide_new (shell);
-  else result = g_object_new (GIMP_TYPE_CANVAS_PERSPECTIVE_GUIDE, "shell", shell, NULL);
+  if (caller == 0) result = gimp_canvas_perspective_guide_new_for_image (shell);
+  else result = g_object_new (GIMP_TYPE_CANVAS_PERSPECTIVE_GUIDE, "shell", shell, "follow-image", TRUE, NULL);
   g_assert_true (painter_canvas_fault_consumed ());
   if (stage) g_assert_cmpuint (painter_canvas_fault_connections (), >=, stage);
   g_assert_true (painter_canvas_fault_disconnected ());
@@ -57,7 +58,7 @@ static void test_fault (gconstpointer data) {
     g_object_unref (result); g_assert_null (weak);
   }
   g_assert_cmpuint (painter_canvas_fault_live (), ==, 0);
-  result = gimp_canvas_perspective_guide_new (shell);
+  result = gimp_canvas_perspective_guide_new_for_image (shell);
   g_assert_nonnull (result); g_assert_false (g_object_is_floating (result));
   g_assert_false (((GimpCanvasPerspectiveGuide *) result)->binding_failed);
   weak = result; g_object_add_weak_pointer (G_OBJECT (result), &weak);
@@ -95,7 +96,7 @@ static void test_shell_init_failure (void) {
   gimp_test_run_mainloop_until_idle ();
 }
 static void test_c_signature_and_rejection (void) {
-  GimpCanvasItem *(*factory) (GimpDisplayShell *) = gimp_canvas_perspective_guide_new;
+  GimpCanvasItem *(*factory) (GimpDisplayShell *) = gimp_canvas_perspective_guide_new_for_image;
   GType (*type) (void) = gimp_canvas_perspective_guide_get_type;
   GObject *wrong;
   g_assert_true (g_type_is_a (type (), GIMP_TYPE_CANVAS_ITEM));
@@ -108,6 +109,7 @@ static void test_c_signature_and_rejection (void) {
   g_test_assert_expected_messages ();
   g_assert_cmpuint (wrong->ref_count, ==, 1); g_object_unref (wrong);
 }
+#include "test-painter-canvas-explicit-guide.inc"
 int main (int argc, char **argv) {
   gint result;
   g_test_init (&argc, &argv, NULL);
@@ -124,6 +126,7 @@ int main (int argc, char **argv) {
   g_test_add_func ("/painter-canvas-factory/typed-handle", test_handle);
   g_test_add_func ("/painter-canvas-factory/c-signature-and-rejection", test_c_signature_and_rejection);
   g_test_add_func ("/painter-canvas-factory/shell-init-failure", test_shell_init_failure);
+  register_explicit_tests ();
   g_application_run (gimp->app, 0, NULL);
   result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
   g_application_quit (G_APPLICATION (gimp->app)); g_clear_object (&gimp->app);

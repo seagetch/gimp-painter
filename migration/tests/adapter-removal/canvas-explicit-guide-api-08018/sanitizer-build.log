@@ -1,0 +1,24 @@
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:635:6:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid {anonymous}::Canvas::[01;32m[Kfinish_compact_restore[m[K(const std::shared_ptr<{anonymous}::Borrow>&)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  635 | void [01;35m[KCanvas[m[K::finish_compact_restore (const std::shared_ptr<Borrow>& borrowed) noexcept {
+      |      [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:282:12:[m[K [01;35m[Kwarning: [m[K‘[01m[KGtkWidget* {anonymous}::[01;32m[Kaction_button[m[K(Canvas&, GtkWidget*, const char*, const char*)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  282 | GtkWidget *[01;35m[Kaction_button[m[K(Canvas&s,GtkWidget*box,const char*label,const char*name) {
+      |            [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-perspective-ui.c:626[m[K:
+[01m[K../source/app/tests/test-painter-tool-group-retirement.inc:[m[K In function ‘[01m[Kretained_groups_deserialize[m[K’:
+[01m[K../source/app/tests/test-painter-tool-group-retirement.inc:51:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   51 |       [01;35m[KGimpObject[m[K *first = gimp_container_get_child_by_index (gimp->tool_item_list, 0);
+      |       [01;35m[K^~~~~~~~~~[m[K
+{"painter-canvas-factory": {"path": "/workspace/shared/gimp-native-baseline/build-port/app/tests/painter-canvas-factory-asan", "sha256": "a4089a3f070cae475f96da70b0ad6532682e9cd84c7d710876ec4a8a3c57805f"}, "painter-perspective-ui": {"path": "/workspace/shared/gimp-native-baseline/build-port/app/tests/painter-perspective-ui-asan", "sha256": "0a8383e9c59b734ba66798a4f8109332c94257eb3604f77d0de22dd42888d5e1"}}

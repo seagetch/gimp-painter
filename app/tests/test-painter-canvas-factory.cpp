@@ -46,7 +46,7 @@ extern "C" gboolean __real_g_signal_parse_name (const gchar *, GType, guint *, G
 extern "C" gboolean __wrap_g_signal_parse_name (const gchar *name, GType type, guint *id, GQuark *detail, gboolean force) {
   /* The shell notification is already connected; fail the next C++ Connection
    * before its ownership transfer. No exception crosses a GLib implementation. */
-  if (armed_kind && stage == 1 && target && g_strcmp0 (name, "notify::image") == 0) inject ();
+  if (armed_kind && target && ((stage == 1 && g_strcmp0 (name, "notify::image") == 0) || (stage == 3 && g_strcmp0 (name, "changed") == 0))) inject ();
   return __real_g_signal_parse_name (name, type, id, detail, force);
 }
 extern "C" gulong __real_g_signal_connect_data (gpointer, const gchar *, GCallback, gpointer, GClosureNotify, GConnectFlags);
@@ -97,7 +97,7 @@ void painter_canvas_handle_test (gpointer shell) {
     g_assert_true (caught); g_assert_cmpuint (wrong.get ()->ref_count, ==, 1);
   }
   const guint shell_refs = G_OBJECT (shell)->ref_count;
-  auto guide = CanvasPerspectiveGuideRef::create (static_cast<GimpDisplayShell *> (shell));
+  auto guide = CanvasPerspectiveGuideRef::create_for_image (static_cast<GimpDisplayShell *> (shell));
   g_assert_true (bool (guide)); g_assert_false (g_object_is_floating (guide.get ()));
   g_assert_cmpuint (G_OBJECT (shell)->ref_count, ==, shell_refs);
   gpointer weak = guide.get (); g_object_add_weak_pointer (G_OBJECT (guide.get ()), &weak);
@@ -111,8 +111,29 @@ void painter_canvas_handle_test (gpointer shell) {
   g_assert_cmpuint (G_OBJECT (shell)->ref_count, ==, shell_refs);
   for (int stage = 0; stage < 3; ++stage) {
     painter_canvas_fault_arm (3, stage);
-    auto failed = CanvasPerspectiveGuideRef::create (static_cast<GimpDisplayShell *> (shell));
+    auto failed = CanvasPerspectiveGuideRef::create_for_image (static_cast<GimpDisplayShell *> (shell));
     g_assert_false (bool (failed)); g_assert_true (painter_canvas_fault_consumed ());
     g_assert_cmpuint (painter_canvas_fault_live (), ==, 0);
+  }
+}
+
+#include "core/gimpperspectiveguide.hpp"
+void painter_canvas_explicit_handle_test (gpointer shell) {
+  auto model = GimpPainter::PerspectiveGuideRef::create (71);
+  auto item = CanvasPerspectiveGuideRef::create (static_cast<GimpDisplayShell *> (shell), model.get ());
+  g_assert_true (bool (item));
+  g_assert_cmpuint (G_OBJECT (model.get ())->ref_count, ==, 2);
+  gpointer weak = model.get (); g_object_add_weak_pointer (G_OBJECT (model.get ()), &weak);
+  model.reset (); g_assert_nonnull (weak);
+  auto copy = item; item.reset (); g_assert_nonnull (weak);
+  copy.reset (); g_assert_null (weak);
+  auto empty_model = CanvasPerspectiveGuideRef::create (static_cast<GimpDisplayShell *> (shell), nullptr);
+  g_assert_true (bool (empty_model));
+  for (int stage : {0, 2, 3}) {
+    painter_canvas_fault_arm (3, stage);
+    auto kept_model = GimpPainter::PerspectiveGuideRef::create (72);
+    auto failed = CanvasPerspectiveGuideRef::create (static_cast<GimpDisplayShell *> (shell), kept_model.get ());
+    g_assert_false (bool (failed)); g_assert_true (painter_canvas_fault_consumed ());
+    g_assert_cmpuint (G_OBJECT (kept_model.get ())->ref_count, ==, 1);
   }
 }

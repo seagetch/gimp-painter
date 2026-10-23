@@ -78,7 +78,7 @@ gimp_display_shell_items_init (GimpDisplayShell *shell)
   gimp_display_shell_add_item (shell, shell->grid);
   g_object_unref (shell->grid);
 
-  shell->perspective_guide = gimp_canvas_perspective_guide_new (shell);
+  shell->perspective_guide = gimp_canvas_perspective_guide_new_for_image (shell);
   if (shell->perspective_guide)
     {
       gimp_display_shell_add_item (shell, shell->perspective_guide);
