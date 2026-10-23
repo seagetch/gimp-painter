@@ -967,6 +967,7 @@
 | 25.008/mirrored-arrow-input | [x] | 表示反転中の左右キー入力を移植する | 25.007, 01.017 | mirrored時のLeft/Right変換と非反転時の不変を、押下・解除・toolへの転送・回転併用で試験する |
 | 25.009 | [ ] | 現行表示行列へ接続する | 25.008 | canvas と overlay が同じ角度を使用 |
 | 25.009/common-angle-draw | [x] | 共通角度描画とupright GTK anchorの限定native経路を検証する | 25.008, 01.017 | 独立geometryで38実GTK draw/回のraster・代表item・selection・upright anchorと13行anchor修正を37通常/27 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/canvas-overlay-portrait-smokeでsource0f16限定検証。原25.009全体は未完了 |
+| 25.009/transformed-drag-events | [x] | 回転・水平反転下のradial zoomと内部middle-panの限定event経路を検証する | 25.008, 01.017 | 独立geometryで4追加登録・16 drag/16再開・6小数primary座標を41通常/31 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。現branch GUI・原25.009全体は未完了 |
 | 25.009/drag-zoom-scroll | [ ] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |
 | 25.009/radial-default | [x] | 旧Ctrl+middleの距離300 radial zoomを接続する | 25.001/start-relative-route | 開始scale最大値・整数中心・固定anchorを保持し2400不変旧関数演算に一致、6 pure通常/ASan/UBSan合格。明示custom zoomは現行設定を保持。実display clamp/pan/deviceは未完了 |
 | 25.010 | [ ] | 回転 reset action を接続する | 25.009 | 状態と UI 表示が一致 |

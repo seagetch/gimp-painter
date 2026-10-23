@@ -1440,3 +1440,144 @@ whole-section 25, full aggregate, final Clone freeze, package, release and
 whole-port gates remain open. Both old GUI teardown -11 outcomes are historical.
 Old Edge/string-reader runtime stays **SKIPPED/unverified**; no legacy runtime,
 capture or oracle was accessed, run or regenerated.
+
+
+## Bounded 25.009/transformed-drag-events acceptance (2026-10-17)
+
+This independent child accepts only the frozen, finite modern event cases for
+transformed radial zoom and interior middle-pan. Its completed inputs are
+25.008 and 01.017. Original **25.009 and 25.009/drag-zoom-scroll remain TODO
+with byte-identical criteria and dependencies**; every existing task and
+progress row is preserved. Only this bounded child is added. Current-branch
+portrait GUI remains pending separately. This appendix records the later
+strict result; the earlier navigation-contract receipt-integration checkpoint
+and frozen SOURCE-ONLY input manifest retain their historical meaning.
+
+### Component-tested source A
+
+The native component belongs only to source A
+`0c8620d9064f8c912d9424266771e045c276f582`, tree
+`0dbd6b2306bccb83e3d38fb97db158411e3a5ac0`. The unchanged
+`migration/tests/transformed-drag-component-receipt.json` binds receipt SHA-256
+`925c62539afbeaa6dca5edeca70cbb75a3f9ac766b83d068f0e9022b129d44a8`.
+All four component commands exited 0: default incremental build, focused
+builder, registered normal targets and focused event executable. **41 normal
+TAP cases (31 event, 4 UI, 6 arithmetic) and 31 focused event ASan/UBSan cases
+passed** in exact source-defined order. No production repair was needed.
+The unchanged preceding 27 event registrations and their function bodies,
+including 38 actual GTK draw assertions per execution, remain required and
+passed. The PNG hook was disabled; these are assertions, not saved PNGs or a
+new portrait GUI run.
+
+The four new registrations are radial-transformed, radial-clamp,
+pan-transformed and device-image-origin under `/navigation-events/drag/`.
+Each event execution contains **16 main drags, 16 stationary reentries and
+six genuine fractional primary press/release probe pairs**. These are finite
+subcases, not additional GTest registrations. Radial zoom covers angles
+0, 37 and 90 degrees with horizontal reflection off/on, the fixed anchor 335
+and factors 1.25, 1.25, 2.45, 67/60, 1.25. Image center stays within one
+observed display pixel per axis of integer viewport center. Repeated lower
+requests apply 1/256 and upper requests 256; returning to start restores the
+original factor without anchor replacement. **Clamp focus and offsets are
+not accepted.** Interior pan uses scale 1.5 and frozen exact offset deltas,
+stationary repetition and return to origin. Six fractional primary callbacks
+in the two 37-degree reflection contexts match an independently calculated
+image coordinate; only middle-pan endpoints narrow to integers.
+
+The affine oracle uses literal trigonometric constants and separately
+specified geometry, never production transform matrices/helpers for expected
+values. All frozen tolerances stay unchanged. Logs establish one actual
+**849 x 450** viewport, 30 radial motion records, six clamp records and six
+primary probe records. Passed source assertions account for **32 pan/inverse
+comparisons and 96 forward landmark comparisons**; they are not extra log
+records. The 34 preflight states produce 68 axis records, with minimum
+observed interior margin **209 pixels**, above the frozen 16-pixel threshold.
+Ordinary release clears shell state immediately and native grabs after the
+existing synchronized observation boundary. No test-side ungrab or state
+repair is added. Retained mirrored-key, rotation-boundary, draw and anchor
+checks continue to pass. Full legacy transformed-pan or radial display parity
+is not established by these modern source-derived cases.
+
+Exactly **nine C units** are instrumented: scale, scroll, transform, rotate,
+navigation arithmetic, modifier manager, display shell, tool-events and the
+event fixture. Zoom-model library, device-coordinate adapter, tool dispatch,
+renderer/GTK and remaining GIMP/dependencies are uninstrumented. **LSan is off**,
+with no suppressions. All nine component integrity seals pass, including four
+equal exact-A source snapshots, three equal 2,873-entry normal ELF inventories,
+focused-builder preservation, freshness, compile database, registered tests,
+focused artifacts/copies and all 361 locale catalogs. Forty source/fixture
+inputs and five committed procedures remain bound to A. The navigation
+contract was subsequently integrated in B, and task narration is added in C;
+neither documentary difference transfers the native run to a later source.
+
+The separate full component archive
+`component-run-001-passed-public.tar.xz` has **33 original public files** and
+22,341,764 bytes, SHA-256
+`eb119e254d43ec9036b296662fd9cbecfc48e7b34f015497e928361231b80722`.
+The committed compact archive retains **22 byte-identical originals plus one
+packaging manifest**, preserving the original receipt and all nested hashes.
+Eleven omitted sanitizer binary/object/archive copies remain size/hash-bound
+to the separately retained full archive. It is not a standalone rebuild
+package. Parent and independent native audits verified the public privacy
+transformations, actual registered environment reuse and nine instrumented
+objects. Both default/focused build logs retain the missing-declarations
+warning for `navigation_draw_observer_get_type`; ordinary runtime diagnostics
+also remain. This is an incremental build, not a warning-free or
+clean-from-empty application claim.
+
+### Distinct strict-tested source B and documentary source C
+
+Receipt-integrated public source B is
+`1f911216f78d0702361bef782954b0ca14b056cf`, tree
+`31497adb13fc2f292ef06ff020c64d74735bab85`. B differs from A only in the
+navigation-contract appendix, compact component archive and component summary.
+The unchanged strict Clone gate ran on this frozen B. Default build, normal
+tests and focused sanitizer commands all exited 0:
+
+- Run: `transformed-drag-run-001`
+- Current strict archive: `migration/tests/transformed-drag-acceptance-evidence.tar.xz`
+- Archive SHA-256: `2d109a884fbd03d51ead285fe13b6c9ad1a6d632a196a21e5878bedff0702180`
+- Receipt SHA-256: `721126e400f176cbe315c914355fca3882981d6be4a6b5cf490fbbd4a207dd97`
+
+Seven normal targets passed: core 4, projection-update-bounds 3,
+gimp-clone-layer 62, painter-layer-ui 68, painter-layer-tree 35,
+painter-xcf-roundtrip 49 and update-geometry 5, totaling **226 positive TAP
+cases**. Focused Clone ASan/UBSan passed **62 cases**; both executions retain
+216 unique source-mode/type/mask scenes. Eight units are instrumented, and
+54 RTTI-only C++ rebuilds do not count as sanitizer coverage. LSan remains off.
+Strict Clone does not rerun navigation or actual-window GUI.
+
+Equal source snapshots before build/before tests/after, 2,883 unchanged
+normal ELF entries, full default-build freshness, compile database, all 164
+registered target definitions, 361 locale catalogs and sanitizer artifact
+seals were verified. Registry sealing is not full aggregate execution. The
+strict archive has exactly **17 unchanged public members**. The existing
+unchanged deterministic packing function and bounded XZ/flat-tar extraction
+helpers reproduce identical bytes. Original-directory, extracted-directory
+and archive validation agree with native execution source/build/private paths
+blocked and Git as the only subprocess. Public privacy transformations remain
+intact; private profiles, raw environments and authentication material are
+excluded.
+
+The unchanged **44 receipt, 17 archive and 11 acceptance controls**, strict
+current Clone acceptance, task-ledger and whitespace checks pass. This final
+documentary C changes exactly five paths: the current-receipt route, appended
+Clone contract, one new task row, one new progress row and the new strict
+archive. Existing documentary exceptions and single exact storage exception
+are unchanged. All production/test/fixture/validator/instrumentation/procedure
+bytes, navigation contract, component evidence and older archives remain
+byte-identical to B. The closure uses only Python/Git documentary checks.
+Component claims remain on A and strict Clone claims remain on B; **C has no
+native execution claim**.
+
+The latest separate portrait GUI remains historical exact source
+`0f16f81557db0ab4cd1cdc1099eb8da323501c7d`. It is not a current A/B/C GUI result.
+Native anisotropy, off-center focus, fractional-pan/old-start truncation parity,
+clamp focus/offsets/overshoot/reversal/old-policy equivalence, full old
+transformed pan/radial display parity, new raster/overlay/damage/clipping,
+focus/device interruptions, physical input and other platforms remain deferred.
+No all-196-hunk, whole-section 25, full aggregate, final Clone freeze,
+packaging, release or whole-port acceptance is implied. Both historical old
+GUI teardown `command_exit=-11` outcomes remain preserved. Old Edge/string-reader
+runtime stays **SKIPPED/unverified**; no old runtime, capture or oracle was
+accessed, executed or regenerated.
