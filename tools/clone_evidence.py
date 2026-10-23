@@ -193,7 +193,7 @@ def source_commit_gate(root, state):
     return errors
 
 
-def validate_receipt(directory, root=ROOT, expected_sha=None):
+def validate_receipt(directory, root=ROOT, expected_sha=None, *, storage_paths=()):
     """Recompute acceptance from sealed artifacts; never trust an all_passed flag."""
     directory, root = Path(directory), Path(root)
     errors = []
@@ -236,6 +236,14 @@ def validate_receipt(directory, root=ROOT, expected_sha=None):
         algorithm = aggregate.git(root, 'rev-parse', '--show-object-format')
         current_paths = set(aggregate.git(root, 'ls-files').splitlines())
         allowed_new = {p.relative_to(root).as_posix() for p in directory.iterdir()} if directory.is_relative_to(root) else set()
+        if len(storage_paths) > 1:
+            raise ValueError('At most one exact verified receipt archive storage path is allowed')
+        for storage in storage_paths:
+            storage = Path(storage)
+            if (not storage.is_absolute() or not storage.is_relative_to(root) or storage.is_symlink() or
+                    not storage.is_file() or storage.suffixes[-2:] != ['.tar', '.xz']):
+                raise ValueError('Receipt storage exception must be an exact regular .tar.xz within current checkout')
+            allowed_new.add(storage.relative_to(root).as_posix())
         if current_paths - set(before['tracked_files']) - set(before['submodules']) - allowed_new - documentary:
             errors.append('Current checkout has unsealed additional tracked sources')
         for name, seal in before['tracked_files'].items():
@@ -310,49 +318,63 @@ def validate_receipt(directory, root=ROOT, expected_sha=None):
                 not exact_tap(san.get('stdout', ''), required) or
                 len(re.findall(r'^ok \d+ ', san.get('stdout', ''), re.M)) != len(required)):
             errors.append('Focused sanitizer scope/execution/TAP is incomplete')
-        if (len(san['executions']) != len(INSTRUMENTED) + 5 or
-                san['commands'] != [row['command'] for row in san['executions']] or
+        if (san['commands'] != [row['command'] for row in san['executions']] or
                 any(type(row['exit_code']) is not int or row['exit_code'] != 0 for row in san['executions']) or
                 san['executions'][-1]['command'] != [san['executable']]):
             errors.append('Missing/failed sanitizer compile/link/run command receipts')
         artifacts = read('sanitizer-artifacts.json')
-        expected = {Path(name).name + '.o' for name in INSTRUMENTED} | {'gimp-clone-layer-asan'}
-        if set(artifacts['files']) != expected or artifacts['before_run'] != artifacts['after_run']:
-            errors.append('Sanitizer output inventory or executable run seal changed')
         if (artifacts['files'] != artifacts['before_run'] or artifacts['files'] != artifacts['after_run'] or
                 Path(artifacts['directory']).is_relative_to(Path(receipt['build_directory'])) or
                 Path(artifacts['directory']).is_relative_to(execution_root) or
                 san['executable'] != str(Path(artifacts['directory']) / 'gimp-clone-layer-asan')):
             errors.append('Sanitizer artifact identity/isolation mismatch')
         sanitizer_runner = load_module(root / 'migration/tests/run_clone_layer_sanitizers.py', 'clone_san_validation')
-        entries, original_sources, replacements, extras = [], [], {}, []
-        for entry in read('compile-database.json'):
-            path = (Path(entry['directory']) / entry['file']).resolve()
-            if path.is_relative_to(execution_root) and path.relative_to(execution_root).as_posix() in INSTRUMENTED:
-                entries.append(entry)
-                original_sources.append(path.relative_to(execution_root).as_posix())
-        if original_sources != san['sources'] or len(entries) != len(INSTRUMENTED):
-            errors.append('Instrumented inputs differ from full compile database')
-        import shlex
-        for entry, execution in zip(entries, san['executions']):
-            path = (Path(entry['directory']) / entry['file']).resolve()
-            obj = Path(artifacts['directory']) / (path.name + '.o')
-            if execution['command'] != sanitizer_runner.compile_command(entry, obj):
-                errors.append('Sanitizer compile command identity changed')
-            original = list(entry.get('arguments') or shlex.split(entry['command']))
-            if path.relative_to(execution_root).as_posix().startswith('app/tests/'):
-                replacements[entry.get('output') or original[original.index('-o') + 1]] = str(obj)
-            else:
-                extras.append(str(obj))
-        link_read = san['executions'][len(INSTRUMENTED)]
+        build_path, private_path = Path(receipt['build_directory']), Path(artifacts['directory'])
+        link_read = san['executions'][0]
         if link_read['command'] != ['ninja', '-t', 'commands', 'app/tests/gimp-clone-layer']:
             errors.append('Sanitizer link discovery identity changed')
-        link = sanitizer_runner.link_command(link_read['stdout'], Path(receipt['build_directory']),
-                                             Path(san['executable']), replacements, extras, True)
+        archives = sanitizer_runner.archive_arguments(link_read['stdout'], build_path)
+        memberships = {}
+        prefix = [link_read['command']]
+        for index, archive in enumerate(archives, 1):
+            listing = san['executions'][index]
+            expected_listing = ['ar', 't', archive]
+            prefix.append(expected_listing)
+            if listing['command'] != expected_listing:
+                errors.append('Original archive member discovery command changed')
+            memberships[archive] = [str((build_path / member).resolve()) for member in listing['stdout'].splitlines()]
+        plan = sanitizer_runner.build_plan(execution_root, build_path, private_path,
+                    read('compile-database.json'), link_read['stdout'], memberships)
+        if (plan != san['build_plan'] or plan['instrumented_sources'] != san['sources'] or
+                plan['rtti_compatibility_only_sources'] != san['rtti_compatibility_only_sources']):
+            errors.append('Instrumented/RTTI-only production closure differs from registered compile/link inputs')
+        expected_artifacts = {Path(job['object']).name for job in plan['compilations']}
+        expected_artifacts.update(Path(archive['replacement']).name for archive in plan['archives'] if archive['replacement'])
+        expected_artifacts.add('gimp-clone-layer-asan')
+        if set(artifacts['files']) != expected_artifacts:
+            errors.append('Unknown or missing private sanitizer objects/archives/executable')
+        if (set(san['original_archive_sha256_before']) != set(archives) or
+                san['original_archive_sha256_before'] != san['original_archive_sha256_after']):
+            errors.append('Original normal-build archives changed or lack seals')
+        for archive in plan['archives']:
+            relative = Path(archive['original_path']).relative_to(build_path).as_posix()
+            expected_sha = freshness['before']['build_outputs'].get(relative, {}).get('sha256')
+            if san['original_archive_sha256_before'].get(archive['argument']) != expected_sha or expected_sha is None:
+                errors.append('Original archive is not bound to full normal-build freshness: ' + relative)
+            for member in archive['members']:
+                path = Path(member)
+                if not path.is_relative_to(build_path) or path.relative_to(build_path).as_posix() not in elf['before']:
+                    errors.append('Original archive member lacks full normal ELF seal: ' + member)
+        link = sanitizer_runner.link_command(link_read['stdout'], build_path,
+                                             Path(san['executable']), plan['replacements'], plan['instrumented_anchors'], True)
+        expected_commands = prefix + [job['command'] for job in plan['compilations']]
+        expected_commands += [archive['command'] for archive in plan['archives'] if archive['command'] is not None]
+        expected_commands += [link, ['ldd', str(build_path / 'app/tests/gimp-clone-layer')],
+                              ['ldd', san['executable']], [san['executable']]]
+        if expected_commands != san['commands']:
+            errors.append('Exact isolated compile/archive/link/loader/run command sequence changed')
         if san.get('origin_relocation') != 'expand-against-original-executable-directory':
             errors.append('Missing preserved original executable loader resolution')
-        if link != san['executions'][len(INSTRUMENTED) + 1]['command']:
-            errors.append('Sanitizer link command identity changed')
         normal_loader, sanitizer_loader = san['executions'][-3:-1]
         if (normal_loader['command'] != ['ldd', str(Path(receipt['build_directory']) / 'app/tests/gimp-clone-layer')] or
                 sanitizer_loader['command'] != ['ldd', san['executable']]):
@@ -369,11 +391,14 @@ def validate_receipt(directory, root=ROOT, expected_sha=None):
             fingerprint = elf['before'].get(path.relative_to(Path(receipt['build_directory'])).as_posix(), {})
             if san['library_resolution'][name] != {'path': location, 'sha256': fingerprint.get('sha256')}:
                 errors.append('Loader resolved library is not the sealed normal-build ELF: ' + name)
-        for execution in san['executions'][:len(INSTRUMENTED)]:
-            argv = execution['command']
-            if ('-fsanitize=address,undefined' not in argv or '-fno-omit-frame-pointer' not in argv or
-                    Path(argv[argv.index('-o') + 1]).parent != Path(artifacts['directory'])):
-                errors.append('Uninstrumented or non-isolated sanitizer compilation')
+        for job in plan['compilations']:
+            argv = job['command']
+            if job['instrumented'] and ('-fsanitize=address,undefined' not in argv or '-fno-omit-frame-pointer' not in argv):
+                errors.append('Missing advertised sanitizer instrumentation')
+            if not job['instrumented'] and any(arg.startswith('-fsanitize') for arg in argv):
+                errors.append('RTTI-only source incorrectly labelled despite sanitizer instrumentation')
+            if Path(job['source']).suffix in sanitizer_runner.RTTI_SCOPE['CXX_SUFFIXES'] and argv[-1] != '-frtti':
+                errors.append('C++ compatibility compilation does not end with RTTI enabled')
         locales = read('locales.json')
         if (locales['before'] != locales['after'] or locales['before']['catalog_count'] != 361 or
                 len(locales['before']['catalogs']) != 361):
