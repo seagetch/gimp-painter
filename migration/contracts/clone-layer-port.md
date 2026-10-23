@@ -1230,8 +1230,9 @@ GTK-anchor implementation/test result. Its completed inputs are original
 25.009/drag-zoom-scroll stay TODO with byte-identical criteria and dependencies**.
 No existing task or progress row changes; only this bounded child is added.
 It does not accept all 196 jointly assigned historical hunks or the parent
-canvas/overlay obligation. Current actual-window portrait GUI remains pending
-as a separate next check.
+canvas/overlay obligation. At this native checkpoint, actual-window portrait
+GUI was still pending; the later independent 34.005/canvas-overlay-portrait-smoke
+appendix below records only its distinct exact-source GUI result.
 
 ### Component evidence: tested source A and retained failure
 
@@ -1329,7 +1330,8 @@ remain on A, strict Clone on B, and no native claim transfers to this final
 documentary descendant.
 
 The historical portrait GUI receipt remains bound only to older source
-`22708f41d368c6c7c2e425d30ea2765b9d29158b`; actual current-window GUI is pending.
+`22708f41d368c6c7c2e425d30ea2765b9d29158b`; the later actual-window GUI
+appendix below separately binds source `0f16f81557db0ab4cd1cdc1099eb8da323501c7d`.
 Damage, clipping, extents, hit-testing, every overlay/selection topology,
 vertical-reflection legacy parity, physical input, transformed drag-zoom/pan/
 scroll, other platforms, all 196 hunks, whole section 25, full aggregate,
@@ -1340,3 +1342,101 @@ there is no warning-free application or clean-from-empty build claim.
 Both historical old GUI teardown `command_exit=-11` outcomes are retained.
 Old Edge/string-reader runtime remains user-approved **SKIPPED/unverified**;
 no old runtime, capture or oracle was accessed, executed or regenerated.
+
+
+## Installed canvas-overlay portrait GUI smoke (2026-10-17)
+
+Independent child **34.005/canvas-overlay-portrait-smoke** uses completed
+03.009/tcp-portrait-environment, 25.009/common-angle-draw and
+29.001/native-canvas-tiles inputs. Original **34.005, 25.009 and
+25.009/drag-zoom-scroll remain TODO with unchanged criteria and dependencies**.
+Only this GUI child is newly accepted. Native renderer assertions, strict Clone
+acceptance and this later documentary publication keep separate source scopes.
+
+The actual installed GUI ran on public source
+`0f16f81557db0ab4cd1cdc1099eb8da323501c7d`, tree
+`f4b7c2dcebcd222a2a6c75413dd8c1919ef72756`. Full default incremental build
+completed 96 steps, followed by install `--no-rebuild`; both exited 0. This is
+not a clean-from-empty build. The fresh 1080x1920 depth-24 display accepted an
+authenticated client over loopback TCP and rejected empty authority. Ordinary
+XTest mouse/keyboard events operated the real application and its View >
+Painter Canvas Controls; no batch command, debugger or internal state setter
+supplied the GUI result. The archive retains 23 original full-resolution PNGs.
+
+Two ordinary ruler guides intersect the mountain apex; a committed rectangular
+selection surrounds the first three color chips. Both follow the raster during
+one held middle-button drag: Shift free **28.43 degrees**, add Ctrl with motion
+**30**, release Shift with motion **30**, release Ctrl with motion **28.43**,
+then middle-button release and settled redraw **28.43**. Top, side and bottom
+Painter panels stay upright. Released/settled frames 050/051 are byte-identical.
+The longest recorded input gap while held was 8.436 seconds under the unchanged
+120-second idle limit, with no timeout/error release or final cleanup input.
+This GUI does not instantiate an arbitrary image-anchored GTK child; that
+coverage remains only in the separate source-A native **38 draw assertions**.
+
+Normal Save Image, close-view and Open Image dialogs produced and reopened
+`canvas-overlay-portrait-smoke.xcf` (127,766 bytes, SHA-256
+`aa8eb8c7a6f07acddd03947b0f30a137538ee199217f6d86e4b83bf07eaeacbb`).
+Its final hash equals the immediate-after-save hash. Guides and chip selection
+are visible after reopen; the expected new view angle is **0 degrees**, at 70%
+zoom. Between original frames 005 and 071, the exclusive screen rectangle
+`(289,606)-(791,1361)` has **0 different pixels out of 379,010**; both RGB byte
+hashes are `4925f91b27039998a4b1fcf294df7349d2f11ce0a488f9cb3463df708c0448f7`.
+This is a rendered artwork-rectangle comparison, not full-buffer equality.
+
+The unsuccessful **056 save-focus attempt is retained**: after dialog resize
+without explicit focus, filename keystrokes reached the main window, changing
+the view to 25% and temporarily selecting all/changing tool presentation. No
+save completed. In 057, explicit dialog focus/cancel and ordinary Undo restored
+the chip selection; Paintbrush and 70% view were restored. In 059, explicit
+focus entered the filename correctly and 060 saved. The subsequent comparison
+above found no artwork-rectangle pixel change. Foreground marker and tool-group
+presentation differed afterward; no complete UI-preference restoration or
+flawless automation is claimed. Raw failed/recovery actions and images remain.
+
+All **13,838 source entries** match before build, after build and after GUI;
+all **2,842 installed-runtime entries** and both executable seals are unchanged.
+Source and runtime original manifest SHA-256 values are, respectively,
+`451600849dd5dc0814b3a32a33ee3dc024a5a034684002ae542ceae37219cd31` and
+`f7980a0452b6b9a9d6963c60ca00039aa49708c3ec845e91771e273d08070f24`.
+Runtime inventory covers installed bin/lib/libexec/share, not every external
+dependency byte. Build/installed ELF Build IDs match
+`ccb98685558dbf4093828c6830a11f5a45787091`; their 6,099,050-byte `.text` sections
+both hash to `ce1df04ee90cc8b48b6fc7160e9eda10d16e92f90b31766c34a2b600aca01906`.
+Install removes RUNPATH, so the separately sealed whole-file hashes differ.
+Application, input driver, display, launcher and final seal check all exit 0;
+no held input or cleanup error remains. Logs retain **112 unsupported fonts,
+64 dconf warnings and unavailable D-Bus**. No warning-free application is claimed.
+
+The external archive `canvas-overlay-portrait-gui-run-002-evidence.tar.xz`
+contains 148 files and is 4,437,036 bytes:
+
+- Archive SHA-256: `988f6cb2aa0299fe0b8af4e388941753560415f35fa7b31ce470567ede885c5a`
+- Package-manifest SHA-256: `986232936710a79e7548ffef22844cb8c52db1ed0950adbec35f0e9103072cad`
+- Public `canvas-overlay-portrait-gui-receipt.json` SHA-256: `33548ba3872a13770349c9732e49d6a95f3098250e0722c1553c0883d1d39777`
+- Original local receipt SHA-256: `16145d49adc08670918105c1d151294154bbe9cce574fc7755d8a2e5c1811358`
+
+Readback verifies every manifest member. Raw PNG/XCF bytes are unchanged;
+text copies replace declared project roots and the D-Bus machine ID. Private
+profiles, authentication material, raw environments and compiled executables
+are excluded. Embedded checksum records identify original local text; the
+package manifest maps it to normalized public bytes. Sanitized helper paths
+are documentary placeholders: this is evidence, not a promised one-command
+portable executable. Original evidence remains separately retained. Independent
+read-only reviews verify all 147 raw/public member hashes, 74 text transformations,
+25 unchanged PNG/XCF files, source/binary seals, held-input sequence, XCF hash,
+conservative pixel comparison and disclosed recovery limitations.
+
+No new full native aggregate or focused sanitizer run was performed on this
+GUI source. The **37 normal/27 focused** component result remains bound to
+`ad0dab2d49c2bafcd85da05d76f077071cd1c6e1`; **226 normal/62 focused** strict Clone
+result remains bound to `4c4634ead724daa30f2b0276fc6310e575d072f2`.
+Only tasks.md, progress.tsv and this contract change after the GUI, within the
+unchanged strict receipt's documentary exceptions. Validators, current Clone
+route, all prior archives/receipts, source and tests remain byte-identical.
+Physical input, arbitrary GUI image-anchored child, exhaustive overlay/selection,
+damage/clipping/extents/hit-testing, transformed pan/zoom/scroll, other platforms,
+whole-section 25, full aggregate, final Clone freeze, package, release and
+whole-port gates remain open. Both old GUI teardown -11 outcomes are historical.
+Old Edge/string-reader runtime stays **SKIPPED/unverified**; no legacy runtime,
+capture or oracle was accessed, run or regenerated.
