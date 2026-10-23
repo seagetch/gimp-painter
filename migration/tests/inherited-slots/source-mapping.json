@@ -1,0 +1,46 @@
+{
+  "task": "06.025",
+  "parent": "32ab50207bdc018e9fcb4d9ad53d293e9ec1918e",
+  "source_duties": [
+    {
+      "work_id": "legacy-e91b998d13e9f2d79015",
+      "source_id": "01.002/000043",
+      "path": "app/base/glib-cxx-bridge.hpp",
+      "source_blob": "5a56ab19e30499a86fa93d81419f907812652c4d",
+      "source_sha256": "16eb3824d7ce715852b1e8e365976e8587d1e99b69021990e631992da37cba33",
+      "source_range": "-0,0 -> 1,42",
+      "recovered_full_file_sha256": "c7288258efa4826a7fcc10da63ede842cbfa863a183da96145040056a4ac4134",
+      "source_copy": "migration/tests/inherited-slots/legacy-source/glib-cxx-bridge.hpp",
+      "replacement": "SlotSpec<Owner, Impl>, TypeTraits native GType ancestry, BindingStore identity<Slot>",
+      "tests": [
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/type-ancestry",
+        "/painter/hierarchy/slot-identity",
+        "/painter/hierarchy/base-missing-derived",
+        "/painter/store/multiple-slots",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup"
+      ]
+    },
+    {
+      "work_id": "legacy-52fc6db9158cc54ecf54",
+      "source_id": "01.002/000046",
+      "path": "app/base/glib-cxx-types.hpp",
+      "source_blob": "19a9d47773fa06a1c654283a6d2e033a67b2428a",
+      "source_sha256": "c838223f5bfeacef1026dc348db1b4ce7d9a01146b28be8f2a8e7542dde46649",
+      "source_range": "-0,0 -> 1,114",
+      "recovered_full_file_sha256": "ecf261a0d66c562924ca0f72cacc7cf84183e4f442af8002b6e8ab5082a6885e",
+      "source_copy": "migration/tests/inherited-slots/legacy-source/glib-cxx-types.hpp",
+      "replacement": "SlotSpec<Owner, Impl>, TypeTraits native GType ancestry, BindingStore identity<Slot>",
+      "tests": [
+        "/painter/hierarchy/properties-interface",
+        "/painter/hierarchy/type-ancestry",
+        "/painter/hierarchy/slot-identity",
+        "/painter/hierarchy/base-missing-derived",
+        "/painter/store/multiple-slots",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup"
+      ]
+    }
+  ]
+}

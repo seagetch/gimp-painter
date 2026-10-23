@@ -399,3 +399,15 @@ must not consult an owner-thread store. [The current boundary audit and counter
 tests](../tests/qdata-operations/README.md) distinguish store finds, typed slot
 searches and buffer-copy work. Test-only observation leaves production ABI and
 execution unchanged.
+
+## Inherited slot selection (original 06.025)
+
+Native base, derived, interface and GObject views of one instance resolve the
+same BindingStore. They do not determine which implementation is requested.
+`identity<Slot>()` selects the exact declared slot even if two slots have equal
+Owner and Impl types. A C++ alias names that same slot; a distinct declaration
+has a distinct identity. Registration validates native owner compatibility;
+lookup of an absent derived slot reports MISSING_SLOT without invoking a borrow
+callback, falling back to the base implementation or creating a new slot.
+[Native hierarchy tests](../tests/inherited-slots/README.md) exercise the same
+Impl type in both levels, independent mutation and base-only negative lookup.
