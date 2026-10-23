@@ -244,6 +244,13 @@
       "context": "core",
       "prerequisites": [],
       "review": "25.009 default-only applied legacy zoom C entry taking opaque GimpDisplayShell and gdouble; existing public/custom signatures unchanged. Baseline header now owns extern-C linkage and original include guard. C11/C++14 double-inclusion probes use reviewed core/display prelude. Compile admission alone does not close old geometry acceptance."
+    },
+    {
+      "path": "app/tools/gimpbucketfillbrushtool.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018/bucket-fill-tool-entries: original C get_type/register operation names and source aliases to sole native FillBrush tool. Double-include C11/C++14 with normal core/tool prerequisites and owned C linkage; not historical runtime GType name, object/class layout, direct registry or old options semantics."
     }
   ]
 }

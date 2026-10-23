@@ -1,0 +1,36 @@
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:645:6:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid {anonymous}::Canvas::[01;32m[Kfinish_compact_restore[m[K(const std::shared_ptr<{anonymous}::Borrow>&)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  645 | void [01;35m[KCanvas[m[K::finish_compact_restore (const std::shared_ptr<Borrow>& borrowed) noexcept {
+      |      [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:288:12:[m[K [01;35m[Kwarning: [m[K‘[01m[KGtkWidget* {anonymous}::[01;32m[Kaction_button[m[K(Canvas&, GtkWidget*, const char*, const char*)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  288 | GtkWidget *[01;35m[Kaction_button[m[K(Canvas&s,GtkWidget*box,const char*label,const char*name) {
+      |            [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-bucket-fill-brush-entry.c:[m[K In function ‘[01m[Kactual_registered_ui[m[K’:
+[01m[K../source/app/tests/test-bucket-fill-brush-entry.c:119:5:[m[K [01;35m[Kwarning: [m[K‘[01m[Kgdk_screen_get_width[m[K’ is deprecated [[01;35m[K-Wdeprecated-declarations[m[K]
+  119 |     [01;35m[Kg_assert_cmpint[m[K (gdk_screen_get_width (gtk_widget_get_screen (window)), ==, 1080);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gdk/gdkapplaunchcontext.h:31[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gdk/gdk.h:32[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gtk/gtk.h:30[m[K,
+                 from [01m[K../source/app/tests/test-bucket-fill-brush-entry.c:4[m[K:
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gdk/gdkscreen.h:58:14:[m[K [01;36m[Knote: [m[Kdeclared here
+   58 | gint         [01;36m[Kgdk_screen_get_width[m[K             (GdkScreen   *screen);
+      |              [01;36m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-bucket-fill-brush-entry.c:120:5:[m[K [01;35m[Kwarning: [m[K‘[01m[Kgdk_screen_get_height[m[K’ is deprecated [[01;35m[K-Wdeprecated-declarations[m[K]
+  120 |     [01;35m[Kg_assert_cmpint[m[K (gdk_screen_get_height (gtk_widget_get_screen (window)), ==, 1920);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gdk/gdkscreen.h:60:14:[m[K [01;36m[Knote: [m[Kdeclared here
+   60 | gint         [01;36m[Kgdk_screen_get_height[m[K            (GdkScreen   *screen);
+      |              [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+{"bucket-fill-brush-entry": {"path": "/workspace/shared/gimp-native-baseline/build-port/app/tests/bucket-fill-brush-entry-asan", "sha256": "d706a33fcd4bf492b840c9783efec1b1c0f1a061eb4ca6ad8d3d1d3101dfbe39"}}

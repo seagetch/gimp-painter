@@ -1,0 +1,25 @@
+{
+  "cmd": [
+    "/workspace/shared/gimp-native-baseline/build-port/app/tests/bucket-fill-brush-entry"
+  ],
+  "env": {
+    "GIMP_TESTING_ABS_TOP_SRCDIR": "/workspace/shared/gimp-native-baseline/source",
+    "GIMP_TESTING_ABS_TOP_BUILDDIR": "/workspace/shared/gimp-native-baseline/build-port",
+    "GIMP_TESTING_PLUGINDIRS": "/workspace/shared/gimp-native-baseline/build-port/plug-ins/common",
+    "UI_TEST": "yes",
+    "LD_LIBRARY_PATH": "/workspace/shared/gimp-native-baseline/build-port/libgimpcolor:/workspace/shared/gimp-native-baseline/build-port/libgimpconfig:/workspace/shared/gimp-native-baseline/build-port/libgimpwidgets:/workspace/shared/gimp-native-baseline/build-port/libgimpbase:/workspace/shared/gimp-native-baseline/build-port/libgimpthumb:/workspace/shared/gimp-native-baseline/build-port/libgimpmodule:/workspace/shared/gimp-native-baseline/build-port/libgimpmath"
+  },
+  "name": "bucket-fill-brush-entry",
+  "workdir": null,
+  "timeout": 60,
+  "suite": [
+    "gimp:app"
+  ],
+  "is_parallel": false,
+  "priority": 0,
+  "protocol": "exitcode",
+  "depends": [
+    "b2e8cd9@@bucket-fill-brush-entry@exe"
+  ],
+  "extra_paths": []
+}

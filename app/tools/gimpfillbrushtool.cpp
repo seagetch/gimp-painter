@@ -26,6 +26,7 @@ extern "C" {
 #include "gimptoolcontrol.h"
 #include "gimp-intl.h"
 }
+#include "gimpbucketfillbrushtool.hpp"
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/gimp-painter-binding.h"
@@ -39,7 +40,6 @@ extern "C" {
 using namespace GimpPainter;
 G_DEFINE_TYPE (GimpFillBrushTool, gimp_fill_brush_tool, GIMP_TYPE_BRUSH_TOOL)
 namespace GimpPainter {
-template<> struct TypeTraits<GimpFillBrushTool> { static GType type () { return GIMP_TYPE_FILL_BRUSH_TOOL; } };
 template<> struct TypeTraits<GimpFillBrush> { static GType type () { return GIMP_TYPE_FILL_BRUSH; } };
 template<> struct TypeTraits<GimpDrawable> { static GType type () { return GIMP_TYPE_DRAWABLE; } };
 template<> struct TypeTraits<GimpImage> { static GType type () { return GIMP_TYPE_IMAGE; } };
@@ -468,14 +468,24 @@ static void gimp_fill_brush_tool_init (GimpFillBrushTool *tool) {
   GIMP_PAINT_TOOL (tool)->status_line = _("Click to fill along the line");
 }
 void gimp_fill_brush_tool_register (GimpToolRegisterCallback callback, gpointer data) {
+  boundary_void (nullptr, [&] {
+    if (!callback) return;
   callback (GIMP_TYPE_FILL_BRUSH_TOOL, GIMP_TYPE_FILL_BRUSH_OPTIONS, options_gui,
             GimpContextPropMask (GIMP_PAINT_OPTIONS_CONTEXT_MASK), "gimp-bucket-fill-brush-tool", _("Fill Brush"),
             _("Fill Brush: Fill connected colors within a brush stroke"), N_("_Fill Brush"), "bracketright",
             nullptr, GIMP_HELP_TOOL_BUCKET_FILL, GIMP_ICON_TOOL_BUCKET_FILL, data);
+  });
 }
 gboolean gimp_fill_brush_tool_is_pending (GimpFillBrushTool *tool) {
   return boundary<gboolean> (nullptr, FALSE, [&] {
     auto *store = BindingStore::find (G_OBJECT (tool));
     return store ? store->read<ToolSlot> ([] (const Controller& self) { return !self.strokes.empty (); }) : FALSE;
   });
+}
+
+GType gimp_bucket_fill_brush_tool_get_type (void) {
+  return gimp_fill_brush_tool_get_type ();
+}
+void gimp_bucket_fill_brush_tool_register (GimpToolRegisterCallback callback, gpointer data) {
+  gimp_fill_brush_tool_register (callback, data);
 }

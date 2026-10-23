@@ -1128,3 +1128,15 @@ test('preset-gui-entries', preset_gui_entries_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)
+
+# Original BucketFillBrush C entry names share the sole native FillBrush provider.
+bucket_fill_entry_test = executable('bucket-fill-brush-entry',
+  'test-bucket-fill-brush-entry.c', 'test-bucket-fill-brush-entry.cpp', 'tests.c',
+  link_args: ['-Wl,--wrap=gimp_bucket_fill_brush_tool_register'],
+  dependencies: [libapp_dep, painter_bounded_fill_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('bucket-fill-brush-entry', bucket_fill_entry_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)
