@@ -1,0 +1,482 @@
+{
+  "task": "09.002",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "duties": [
+    {
+      "work_id": "legacy-3bac0bc4370932a8c4c7",
+      "source_id": "01.002/000049",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-60,0 -> 61,6",
+      "source_sha256": "22b0fb45e1a9734d3bb06f2573bb1a3163a004b2d364a000ab6fae096fa752bf",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Five-region callback carries five independently positioned descriptors, not one shared origin.",
+      "check": "dispatch"
+    },
+    {
+      "work_id": "legacy-58003e83c3947fdd1ede",
+      "source_id": "01.002/000050",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-78 -> 84",
+      "source_sha256": "5eb666c56e0f6b70bcc5f648166ee4947de2e0cc23a83ebc4ddaab0058cece2d",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Five stored region pointers retain their own x/y, size, byte stride and optional null status.",
+      "check": "dispatch"
+    },
+    {
+      "work_id": "legacy-686c5e7c65c7b11598a8",
+      "source_id": "01.002/000051",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-88 -> 94",
+      "source_sha256": "a8999843b77003ffca7f984f2bdc758fb3c5e5007b11c4f627e06a4d83519934",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Parallel local descriptor copy preserves each region origin and rowstride; concurrency semantics remain untested.",
+      "check": "dispatch"
+    },
+    {
+      "work_id": "legacy-f9ad23759b5676ca5f6f",
+      "source_id": "01.002/000052",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-143,0 -> 150,8",
+      "source_sha256": "545f78cae36ad14bd1d7bda5c5a3ae63c33efe3ffb0029554cd685baacdae380",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Parallel p5 forwards the five copied descriptors without applying an image or layer translation.",
+      "check": "dispatch"
+    },
+    {
+      "work_id": "legacy-d65cf232ccff6d390845",
+      "source_id": "01.002/000053",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-233,0 -> 248,9",
+      "source_sha256": "a066146a27bf8e373e714609f98a6c0b8ebe1bc5d49b0d5214cdee20acff7d1e",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Serial p5 forwards independent original descriptors; executable callback checks distinct origins and a null region.",
+      "check": "dispatch"
+    },
+    {
+      "work_id": "legacy-94aae95d369131510d12",
+      "source_id": "01.002/000054",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-386,0 -> 410,9",
+      "source_sha256": "7ab4c7c2492e6cb8890873a1c45223c9fb91799e53006504c3e65830ae8dacc9",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Five-region registration forwards all five pointers; caller must express corresponding ROIs in each buffer space.",
+      "check": "dispatch"
+    },
+    {
+      "work_id": "legacy-b49931881390128c831d",
+      "source_id": "01.002/000076",
+      "path": "app/base/pixel.hpp",
+      "source_blob": "0b2920644eb36b391f0c03f021c0dd0a19348529",
+      "source_range": "-0,0 -> 1,358",
+      "source_sha256": "27e6b82a44193d668e2a8b3783e0c15dcf14f5f1d48b9fed7891f915315fd397",
+      "blob_sha256": "1917b7267eb1253fbf14b5ce06bbfc6e77838d5d3b7bfc041eb35ba262bafa1c",
+      "mapping": "Pixel scalar-expression arithmetic has no spatial state; it does not convert image, layer, buffer or screen coordinates.",
+      "check": "scalar-only"
+    },
+    {
+      "work_id": "legacy-c868c9aa74d2c5a47991",
+      "source_id": "01.002/000081",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-67,0 -> 68",
+      "source_sha256": "2e726669ca470ef24ade1ed01aed0f92b54a846a13999b81c22f7d22b98f4b82",
+      "blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "mapping": "Root TempBuf retains caller x/y as its logical origin, while data starts at local (0,0); parent is NULL.",
+      "check": "temp-window"
+    },
+    {
+      "work_id": "legacy-ffb1222cfbb3d4663fda",
+      "source_id": "01.002/000082",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-149,0 -> 151,43",
+      "source_sha256": "e8433ef033793e56674a8df7d327fc22122fcf1e6d419563990eff34c04d1ccb",
+      "blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "mapping": "Subwindow intersects half-open rectangles in parent logical space, retains that origin, and offsets data relative to parent x/y using inherited stride.",
+      "check": "temp-window"
+    },
+    {
+      "work_id": "legacy-3cee125f9ba1319bae06",
+      "source_id": "01.002/000083",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-348,0 -> 393,3",
+      "source_sha256": "ecd11421d80dd69f8de37c586386cae9456a5c931678543aa5f93cbd111ea25b",
+      "blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "mapping": "Freeing a subwindow returns before releasing its wrapper or parent; wrapper leak is observed, not adopted as the new ownership policy.",
+      "check": "temp-window"
+    },
+    {
+      "work_id": "legacy-49c60797eebdedf64a4b",
+      "source_id": "01.002/000084",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-502,0 -> 550,10",
+      "source_sha256": "dd3bd20a85f768aa0b5137104106c635263abf742fd3c7c4996c5001f7bb16bf",
+      "blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "mapping": "Recursive rowstride follows parent storage, independent of subwindow origin and width.",
+      "check": "temp-window"
+    },
+    {
+      "work_id": "legacy-097fb3ad2d4e5f8d175b",
+      "source_id": "01.002/000085",
+      "path": "app/base/temp-buf.h",
+      "source_blob": "6094354a057238e104ed0baa734e41d3346ff91d",
+      "source_range": "-29,0 -> 30,4",
+      "source_sha256": "6195a468f4586941c8182ebb7a93058d2d6b21e7803ff5ccb5290d3905ea75f7",
+      "blob_sha256": "baf2dae7c0d9467af1d958c63f90ecb8acb944ffceeabf6c993082384996346c",
+      "mapping": "Parent field denotes shared storage; x/y are logical placement, not extra offsets to add to the already-positioned data pointer.",
+      "check": "temp-window"
+    },
+    {
+      "work_id": "legacy-e7ec5db23128408647ce",
+      "source_id": "01.002/000086",
+      "path": "app/base/temp-buf.h",
+      "source_blob": "6094354a057238e104ed0baa734e41d3346ff91d",
+      "source_range": "-71,0 -> 76,7",
+      "source_sha256": "a89f18c48f787ed74c13c3c9d38f0a21b34e7b6ed2667feaa1d5af0892381777",
+      "blob_sha256": "baf2dae7c0d9467af1d958c63f90ecb8acb944ffceeabf6c993082384996346c",
+      "mapping": "Subwindow arguments use parent logical coordinates; rowstride declaration exposes ancestor stride. Empty/disjoint/touching requests return NULL.",
+      "check": "temp-window"
+    }
+  ],
+  "legacy_context": [
+    {
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff"
+    },
+    {
+      "path": "app/base/pixel-region.h",
+      "source_blob": "3e3be550908d09c312f82f693018599fc586497f",
+      "blob_sha256": "d6976812ed40984af8f52bee0e1ff80f9d316a55a1352d306767f4dc196c1f9b"
+    },
+    {
+      "path": "app/base/base-types.h",
+      "source_blob": "bdbab69beda109ecb27b7dba838224e11b4a7bb3",
+      "blob_sha256": "a573a4c70a2b5598bfd52e1f30ef31c33efd7858a188fd22675379894c7308e5"
+    },
+    {
+      "path": "app/base/pixel-processor.h",
+      "source_blob": "74622a34c0b8f0bedb34279e6c3bb69451bbf314",
+      "blob_sha256": "7cbc34edb8975d3134f178bd6f3a7ec084cf70ce0281ee9084599929dc7fd497"
+    },
+    {
+      "path": "app/paint/gimpmypaintcore-drawablefeature.hpp",
+      "source_blob": "f822f8d4ede027ac9185d38669b66f7133d8a7d7",
+      "blob_sha256": "6eb9434216b09585e6a45ed591ae5c2831cc032af5f1afca9c4c3e9f5dfcb283"
+    },
+    {
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "source_blob": "11ec34bfee9b0ea7738994388e53bb59a3f50201",
+      "blob_sha256": "0d39265a0c2256a0692f8b3e27616384d09a3daf0338ef181068deef6bf25c65"
+    },
+    {
+      "path": "app/display/gimpdisplayshell.h",
+      "source_blob": "703b631b434fcc85631660c810c0f5c147ed9617",
+      "blob_sha256": "e4c1d130dd77748c8bef25da88e25fc6c27545ef584f662a67a66befd2978826"
+    },
+    {
+      "path": "libgimpmath/gimpmath.h",
+      "source_blob": "b7f5d6a81a2abe5a81f6217f6a9e83bb6c8787da",
+      "blob_sha256": "5be55b44288b5d3bac28e9fc51e5003af07734dc41b098f137e35ef6188f3ffe"
+    }
+  ],
+  "spaces": {
+    "image": {
+      "origin": [
+        0,
+        0
+      ],
+      "axes": [
+        "right",
+        "down"
+      ],
+      "bounds": "[0,width) x [0,height)"
+    },
+    "layer": {
+      "origin": [
+        0,
+        0
+      ],
+      "axes": [
+        "right",
+        "down"
+      ],
+      "to_image": "image = layer + item_offset"
+    },
+    "buffer": {
+      "origin": "explicit GEGL extent x/y",
+      "axes": [
+        "right",
+        "down"
+      ],
+      "to_image": "image = buffer + item_offset for drawable-backed buffers"
+    },
+    "screen": {
+      "origin": "canvas widget top-left",
+      "axes": [
+        "right",
+        "down"
+      ],
+      "units": "GTK logical pixels",
+      "to_image": "inverse rotation/flip, then add scroll offset, then divide by zoom"
+    }
+  },
+  "boundaries": {
+    "interval": "half-open",
+    "empty": "width <= 0 or height <= 0",
+    "read_abyss": "GEGL_ABYSS_NONE when explicitly requested",
+    "write": "clip in buffer coordinates before mutation",
+    "arithmetic": "widen to signed 64-bit; reject non-representable native coordinates before narrowing",
+    "sample_cell": "floor for pixel containment; do not truncate negative continuous coordinates"
+  },
+  "offset_cases": [
+    {
+      "image": [
+        0,
+        0
+      ],
+      "offset": [
+        -5,
+        7
+      ],
+      "buffer": [
+        5,
+        -7
+      ]
+    },
+    {
+      "image": [
+        -6,
+        10
+      ],
+      "offset": [
+        -5,
+        7
+      ],
+      "buffer": [
+        -1,
+        3
+      ]
+    },
+    {
+      "image": [
+        3,
+        -2
+      ],
+      "offset": [
+        8,
+        -9
+      ],
+      "buffer": [
+        -5,
+        7
+      ]
+    },
+    {
+      "image": [
+        0.25,
+        -0.75
+      ],
+      "offset": [
+        -5,
+        7
+      ],
+      "buffer": [
+        5.25,
+        -7.75
+      ]
+    }
+  ],
+  "intersections": [
+    {
+      "a": [
+        -5,
+        7,
+        7,
+        5
+      ],
+      "b": [
+        -3,
+        8,
+        3,
+        2
+      ],
+      "expected": [
+        -3,
+        8,
+        3,
+        2
+      ]
+    },
+    {
+      "a": [
+        -5,
+        7,
+        7,
+        5
+      ],
+      "b": [
+        -9,
+        5,
+        6,
+        4
+      ],
+      "expected": [
+        -5,
+        7,
+        2,
+        2
+      ]
+    },
+    {
+      "a": [
+        -5,
+        7,
+        7,
+        5
+      ],
+      "b": [
+        0,
+        10,
+        7,
+        7
+      ],
+      "expected": [
+        0,
+        10,
+        2,
+        2
+      ]
+    },
+    {
+      "a": [
+        -5,
+        7,
+        7,
+        5
+      ],
+      "b": [
+        2,
+        7,
+        1,
+        1
+      ],
+      "expected": null
+    },
+    {
+      "a": [
+        -5,
+        7,
+        7,
+        5
+      ],
+      "b": [
+        -5,
+        12,
+        1,
+        1
+      ],
+      "expected": null
+    },
+    {
+      "a": [
+        -5,
+        7,
+        7,
+        5
+      ],
+      "b": [
+        -8,
+        7,
+        3,
+        1
+      ],
+      "expected": null
+    },
+    {
+      "a": [
+        -5,
+        7,
+        7,
+        5
+      ],
+      "b": [
+        -5,
+        4,
+        1,
+        3
+      ],
+      "expected": null
+    },
+    {
+      "a": [
+        -5,
+        7,
+        7,
+        5
+      ],
+      "b": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "expected": null
+    },
+    {
+      "a": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "b": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "expected": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "a": [
+        -1,
+        -1,
+        2,
+        2
+      ],
+      "b": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "expected": [
+        0,
+        0,
+        1,
+        1
+      ]
+    }
+  ],
+  "non_claims": [
+    "No DrawableFeature implementation or migration parity",
+    "No full GIMP, GTK event routing, physical device or HiDPI validation",
+    "No legacy thread scheduling or TileManager iteration parity",
+    "No signed overflow in legacy code is executed or approved",
+    "No automatic fixing of legacy aliasing or native invalidation defects"
+  ]
+}
