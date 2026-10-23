@@ -683,7 +683,7 @@ focus/device interruptions, other platforms, whole-display/overlay equivalence,
 all task 25, full-port, historical full-aggregate and release acceptance remain
 outside this evidence-only integration.
 
-## 25.008/mirrored-arrow-input: source-only regression checkpoint
+## 25.008/mirrored-arrow-input: regression source and component evidence
 
 This test-only increment preserves the source-defined asymmetric key route.
 The retained full old handler, pinned above with SHA-256
@@ -747,16 +747,17 @@ existing full idle/grab cleanup. The two active groups thus contain four real
 navigation drag lifecycles. No expected angle or callback key is obtained from
 the production navigation helper.
 
-### Execution still required
+### Historical source-only checkpoint
 
-This is a source checkpoint, **not a native test receipt or task closure**.
-The parent still owns the default build, all **22 event + 4 UI + 6 arithmetic =
-32 normal cases**, the full **22 focused event ASan/UBSan cases**, and the
-required repository/strict acceptance checks on the eventual exact source.
-The existing focused builder instruments five translation units, not all GIMP
-or dependency code; LSan remains disabled. No build or executable target was
-run for this checkpoint. No ledger, acceptance receipt, fixture or old-runtime
-oracle is changed.
+At the initial source checkpoint, this was **not a native test receipt or task
+closure**. No build or executable target had been run for that checkpoint; the
+parent still owned the default build, all **22 event + 4 UI + 6 arithmetic =
+32 normal cases**, the full **22 focused event ASan/UBSan cases**, and required
+repository/strict acceptance checks. The exact-source component run below now
+supplies the 32/22 result, while strict acceptance remains pending for this
+increment. The focused builder instruments five translation units, not all
+GIMP or dependency code; LSan remains disabled. No ledger, acceptance receipt,
+fixture or old-runtime oracle is changed by this evidence integration.
 
 The expected routing and angles are pinned-old-source-derived. There is no
 retained Left/Right runtime capture for this matrix, and old runtime remains
@@ -765,3 +766,83 @@ or tablet behavior, every tool's arrow semantics, keyboard-controller fallback,
 focus/overlay/device transitions, vertical-reflection legacy parity,
 whole-display/overlay parity, transformed pan/zoom, original calculation-row
 closure, all of section 25 or full-port acceptance.
+
+
+### Accepted exact-source mirrored-arrow component receipt (2026-10-17)
+
+The first attempt passed **32 normal (22 event + 4 UI + 6 arithmetic) cases and
+22 focused event ASan/UBSan cases**. This is current component evidence on exact
+source A, not task closure. The publication summary is
+`migration/tests/mirrored-arrow-component-receipt.json`; the deterministic
+`migration/tests/mirrored-arrow-component-evidence.tar.xz` retains 22 unchanged
+original public metadata/log members plus one compact packaging manifest.
+
+- Tested source A: `e5f73ed431f1852fdfb337fc402c5a72d16cd6d7`
+- Tested tree: `33772929b55d176841d3dbd1a8a5c286ecc445a7`
+- Native receipt SHA-256:
+  `c37c42e0a2920624ddfa08751a0afa06b8ceb6b1c5377c1562a49164836e2cea`
+- External runner SHA-256:
+  `353eb47afb45890eb64f55a0baae8a129588686490bc1cad2238529bf8eac5bf`
+- Pinned gimp-data: `a31e5dea4f572fb5f33b06f5c4b86db5f30643dc`
+- `component-run-001`: 2026-10-17 11:26:49–11:28:29 UTC
+
+The default build, focused sanitizer builder, three-target normal Meson command
+and focused event executable all exited 0. Both public execution logs retain
+all four new key registrations: **96 unique key sends, 64 press callbacks and
+32 release callbacks per execution**, with 24 sends and 16/8 callbacks in each
+new group. The preceding 18 event groups passed again, including the separate
+24 boundary-crossing observations and 20 signed steps. The six-group arithmetic
+target includes all 20 helper combinations. No TAP was skipped or failed.
+These are synthetic native display-event results, with source-derived old key
+semantics and angle expectations as described above. They are not observations
+from a newly executed old runtime, a GUI smoke or physical keyboard capture.
+
+All nine native integrity seals passed: four equal clean source snapshots,
+three equal 2,873-entry normal ELF snapshots, focused-builder preservation of
+normal ELFs, full build freshness, compile database, registered tests, focused
+artifacts/copies and all 361 locale catalogs. All 28 receipt-listed hashes were
+verified. All **29 original public files**, including the receipt, were compared
+byte-for-byte against the completed full archive. The compact archive preserves
+22 originals unchanged and binds the seven omitted sanitizer executable/object/
+thin-archive copies by exact hash and size. Deterministic repacking reproduced
+identical bytes. No production source, executable test, fixture, arithmetic
+oracle or committed procedure changes in this three-file integration.
+
+The full public archive is `component-run-001-passed-public.tar.xz`,
+**21,777,852 bytes**, SHA-256
+`35dac069ca3b0fd80edb8458a576ec262c69e9647d76895a914710febfc7b283`.
+It is retained separately and bound in the compact manifest and summary. The
+compact archive omits those seven binary artifacts and is not a standalone
+rebuild package. Only completed public output is packaged; private profiles,
+raw environments and authentication material are excluded.
+
+The parent's separate native audit reproduced all nine public privacy
+transformations and verified reuse of the actual registered Meson event
+environment with only the two exact ASan/UBSan option overrides. Instrumentation
+remains exactly five C units; other GIMP, GTK and dependency units remain
+uninstrumented, LSan stays disabled, and no suppression files/options are used.
+The incremental default build and focused sanitizer build logs have no compiler
+`warning:` lines. Ordinary icon, plug-in, D-Bus and GLib debug diagnostics remain
+in runtime logs. Empty diagnostic-classifier arrays do not mean warning-free
+application execution, and this is not a clean-from-empty build claim.
+
+### Mirrored-arrow receipt-only descendant and pending acceptance
+
+This component run attests only to A. The three-file receipt-integration
+descendant B has no native or GUI run from that receipt. The unchanged strict
+Clone acceptance must reject its changed source seal until the parent reruns
+the unchanged **226 normal / 62 focused sanitizer** gate on B and refreshes
+acceptance. A final documentary acceptance/ledger step remains separate from
+both tested A and the eventual strict-tested B; neither run may be relabeled
+as a run on that final descendant. This compact component archive is not valid
+input to `check_clone_acceptance.py --current-evidence`.
+
+**25.008/mirrored-arrow-input remains TODO**. The already accepted original
+25.008 horizontal-reflection calculation row is unchanged, as are all other
+ledger and acceptance files. The historical portrait GUI receipt remains bound
+to `22708f41d368c6c7c2e425d30ea2765b9d29158b`; it supplies no new GUI evidence
+for A or B. Both retained old captures keep teardown `command_exit=-11`, and
+old-runtime **SKIPPED/unverified** status remains. The physical-input,
+every-tool, controller-fallback, focus/device, vertical-reflection, pan/zoom,
+whole-display/overlay, other-platform and broader acceptance limits above
+remain, including all section 25, full-port, full-aggregate and release gates.
