@@ -743,17 +743,26 @@
       "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
         "app/painter/binding-store.hpp",
-        "app/painter/binding-store.cpp"
+        "app/painter/binding-store.cpp",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/painter/tests/test-fixture.c",
+        "app/painter/tests/test-gobject.cpp",
+        "app/painter/tests/test-foundation.cpp",
+        "app/painter/tests/test-hierarchy.c",
+        "app/painter/tests/test-hierarchy.cpp"
       ],
       "test_ids": [
         "/painter/gobject/property-dispose-finalize",
-        "/painter/hierarchy/parent-dispose-reentry"
+        "/painter/gobject/construction-property-callbacks",
+        "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/hierarchy/shutdown-paths",
+        "/painter/store/close-transitions"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/construction-property/native.json",
+        "migration/tests/construction-property/sanitizers.json"
       ],
-      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+      "scope_or_gap": "Original repeated-dispose condition verified with unchanged current66-case native/ASanUBSan/Meson evidence: real C native dispose and parent reentry preserve saved properties, closed state, generation and deferred per-slot destruction; callbacks stay disconnected. One exact old finalize-only wrapper duty mapped without claiming legacy dispose support. No redundant execution, production change, LSan or platform claim."
     },
     {
       "id": "07.007",
