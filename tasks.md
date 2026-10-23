@@ -1002,7 +1002,7 @@
 | 25.009/common-angle-draw | [x] | 共通角度描画とupright GTK anchorの限定native経路を検証する | 25.008, 01.017 | 独立geometryで38実GTK draw/回のraster・代表item・selection・upright anchorと13行anchor修正を37通常/27 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/canvas-overlay-portrait-smokeでsource0f16限定検証。原25.009全体は未完了 |
 | 25.009/transformed-drag-events | [x] | 回転・水平反転下のradial zoomと内部middle-panの限定event経路を検証する | 25.008, 01.017 | 独立geometryで4追加登録・16 drag/16再開・6小数primary座標を41通常/31 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/transformed-drag-portrait-smokeでsource adcb50e8限定検証。原25.009全体は未完了 |
 | 25.009/fractional-pan-difference | [x] | 小数部が変わるmiddle-panの現行整数device原点と旧source差分を限定検証する | 25.008, 01.017 | exact public A 8e92569d/tree 25bec9e5の限定native41 normal/31 focused・9 C unitsと、別source B fbe7efac/tree ef9ae384のstrict Clone226 normal/62 focusedを確認。1caseの整数offset・量子化anchor・非零raw driftを限定受入れ、31登録・6 primary pairs・旧16-drag証跡保持。最終documentary Cへnative/GUI合格は転用しない。現行source-backed differenceはexact旧互換の承認ではなく、旧runtime/raster/overlay・原25.009・drag-zoom-scrollは未完了 |
-| 25.009/drag-zoom-scroll | [x] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |
+| 25.009/drag-zoom-scroll | [ ] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |
 | 25.009/radial-default | [x] | 旧Ctrl+middleの距離300 radial zoomを接続する | 25.001/start-relative-route | 開始scale最大値・整数中心・固定anchorを保持し2400不変旧関数演算に一致、6 pure通常/ASan/UBSan合格。明示custom zoomは現行設定を保持。実display clamp/pan/deviceは未完了 |
 | 25.010 | [ ] | 回転 reset action を接続する | 25.009 | 状態と UI 表示が一致 |
 | 25.011 | [ ] | modifier を含む操作試験を実行する | 25.010 | 記録した全キー遷移の期待角に一致 |
@@ -1498,3 +1498,5 @@ Gate は進捗指標であり、早期 gate の合格だけで互換移植完了
 - 保存：[app/xcf](https://github.com/seagetch/gimp-painter/tree/afa43fae3e920210146abed514f136fd49f671b5/app/xcf)
 - 拡張描画：[app/paint](https://github.com/seagetch/gimp-painter/tree/afa43fae3e920210146abed514f136fd49f671b5/app/paint)
 
+
+2026-10-21再監査: `25.009/drag-zoom-scroll` は18件の元source duty照合でSpace-pan開始時のinverse-before-gint未接続（行1976/1985/1990）が判明しDOINGへ再開。4ec50d3626の47通常/47sanitizerは達成済みmiddle/rotation/zoom経路の証拠として保持し、Space-panと全18件の対応が完了するまで再完了しない。元criterion・依存は変更しない。
