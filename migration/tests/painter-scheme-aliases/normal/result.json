@@ -1,0 +1,24 @@
+{
+  "scope": "Execute production-extracted enum/constant binding code in actual TinyScheme.\n\nThis deliberately does not launch a plug-in/PDB session: no GUI or whole Script-Fu\nstartup claim. All registration bodies/table and interpreter C sources are exact\ncurrent repository inputs; the supplied built typelib is separately inventoried.\n",
+  "sanitize": false,
+  "compile_exit": 0,
+  "run_exit": 0,
+  "source_sha256": {
+    "plug-ins/script-fu/libscriptfu/scheme-wrapper.c": "978c1fdc7a0a522dfe9788f938fe6a2a36ac112063e51cb761756232a6e335b3",
+    "libgimp/gimpenums.h": "a01f9f8a97073251e12c57f115d79c45894d71be082432509624308ec5e71220",
+    "plug-ins/script-fu/libscriptfu/tinyscheme/scheme.c": "3dffe000ea8dea31f27942d7662528790423e5586ed747db2a13ec022a3dc18b",
+    "plug-ins/script-fu/libscriptfu/tinyscheme/string-port.c": "0b7352be465c647421300ebf2ccd8577c5a57f2701f37449af390bf1a1114333",
+    "plug-ins/script-fu/libscriptfu/tinyscheme/error-port.c": "b316dae3ee55da336d93f9f584566b9a8a7c0a500e847ea7dc154f4a3319f36f",
+    "plug-ins/script-fu/libscriptfu/tinyscheme/scheme.h": "efc13a19146deaf8d0778aa015ed06b4093fb26da59013fa1927648c24c3839d",
+    "plug-ins/script-fu/libscriptfu/tinyscheme/scheme-private.h": "b5e8741c6e04cc6dd24411881d2d06f9ee3f4c2a9e03aaf9f6918040c0f09d9d",
+    "plug-ins/script-fu/libscriptfu/tinyscheme/opdefines.h": "2ba4ee5b7bda21093e474a605646151ccd2ebe82b5ac58451de50fb2230021b5",
+    "/workspace/shared/gimp-native-baseline/build-port/libgimp/Gimp-3.0.typelib": "ada9932c80240ae5df6ae9a8ad548c274f5b285fdb9a0ff4c6fe5c3e97c0c151"
+  },
+  "cases": {
+    "aliases": 7,
+    "GI_identity": 7,
+    "collision_checks": 7,
+    "modern_identities": 2
+  },
+  "instrumented": "normal"
+}

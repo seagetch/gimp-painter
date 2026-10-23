@@ -135,6 +135,16 @@ typedef struct
 /* LHS is text in a script, RHS is constant defined in C. */
 static const NamedConstant script_constants[] =
 {
+  /* Historical gimp-painter short names denote byte-compatible operators,
+   * not the distinct modern ERASE/REPLACE or opt-in float operators. */
+  { "ERASE",         GIMP_LAYER_MODE_PAINTER_ERASE      },
+  { "REPLACE",       GIMP_LAYER_MODE_PAINTER_REPLACE    },
+  { "ANTI-ERASE",    GIMP_LAYER_MODE_PAINTER_ANTI_ERASE },
+  { "SRC-IN",        GIMP_LAYER_MODE_PAINTER_SRC_IN     },
+  { "DST-IN",        GIMP_LAYER_MODE_PAINTER_DST_IN     },
+  { "SRC-OUT",       GIMP_LAYER_MODE_PAINTER_SRC_OUT    },
+  { "DST-OUT",       GIMP_LAYER_MODE_PAINTER_DST_OUT    },
+
   /* Useful values from libgimpbase/gimplimits.h */
   { "MIN-IMAGE-SIZE", GIMP_MIN_IMAGE_SIZE },
   { "MAX-IMAGE-SIZE", GIMP_MAX_IMAGE_SIZE },

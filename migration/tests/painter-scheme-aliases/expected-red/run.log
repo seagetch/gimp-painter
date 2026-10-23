@@ -1,0 +1,20 @@
+aliases=7 enum-identities=7 no-GI-alias-collisions=7 failures=7
+FAILED (if (= ERASE 64) #t (error "wrong legacy alias"))
+
+** (process:25): WARNING **: 14:09:57.346: error_port_redirect_output error port exists already
+FAILED (if (= REPLACE 65) #t (error "wrong legacy alias"))
+
+** (process:25): WARNING **: 14:09:57.346: error_port_redirect_output error port exists already
+FAILED (if (= ANTI-ERASE 66) #t (error "wrong legacy alias"))
+
+** (process:25): WARNING **: 14:09:57.346: error_port_redirect_output error port exists already
+FAILED (if (= SRC-IN 67) #t (error "wrong legacy alias"))
+
+** (process:25): WARNING **: 14:09:57.346: error_port_redirect_output error port exists already
+FAILED (if (= DST-IN 68) #t (error "wrong legacy alias"))
+
+** (process:25): WARNING **: 14:09:57.346: error_port_redirect_output error port exists already
+FAILED (if (= SRC-OUT 69) #t (error "wrong legacy alias"))
+
+** (process:25): WARNING **: 14:09:57.346: error_port_redirect_output error port exists already
+FAILED (if (= DST-OUT 70) #t (error "wrong legacy alias"))
